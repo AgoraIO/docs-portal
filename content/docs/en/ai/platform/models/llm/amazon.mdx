@@ -14,39 +14,13 @@ The following example shows how to configure Amazon Bedrock as the agent's LLM w
 
 Amazon Bedrock supports BYOK only. It isn't available in managed mode. Store your Bedrock credentials in a secret set, and refer to them from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Bedrock API key. To use an AWS access key pair instead, set `credential.fields.access_key` and `credential.fields.secret_key`. Your AWS region isn't secret. Pass it in `params`. In the following example, the key is stored as `bedrock` in the `support_prod` set:
-
-```json
-"llm": {
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "api_key": "$secrets.support_prod.bedrock"
-    }
-  },
-  "vendor": "amazon",
-  "style": "bedrock",
-  "model": "us.anthropic.claude-sonnet-4-20250514-v1:0",
-  "url": "https://bedrock-runtime.us-east-1.amazonaws.com/model/us.anthropic.claude-sonnet-4-20250514-v1:0/converse-stream",
-  "params": {
-    "region": "us-east-1"
-  }
-}
-```
-
-Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -121,6 +95,32 @@ agent := agentkit.NewAgent(client).
 	})).
 	WithTts( /* configure your TTS vendor */ )
 ```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Bedrock API key. To use an AWS access key pair instead, set `credential.fields.access_key` and `credential.fields.secret_key`. Your AWS region isn't secret. Pass it in `params`. In the following example, the key is stored as `bedrock` in the `support_prod` set:
+
+```json
+"llm": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.bedrock"
+    }
+  },
+  "vendor": "amazon",
+  "style": "bedrock",
+  "model": "us.anthropic.claude-sonnet-4-20250514-v1:0",
+  "url": "https://bedrock-runtime.us-east-1.amazonaws.com/model/us.anthropic.claude-sonnet-4-20250514-v1:0/converse-stream",
+  "params": {
+    "region": "us-east-1"
+  }
+}
+```
+
+Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
 
 </TabsContent>
 </Tabs>

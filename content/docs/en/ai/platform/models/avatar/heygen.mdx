@@ -14,38 +14,13 @@ The following example shows how to configure LiveAvatar as the agent's avatar wh
 
 LiveAvatar supports BYOK only. It isn't available in managed mode. Store your LiveAvatar API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Add an `avatar` block to the `pipeline`. Set `credential.mode` to `byok` and `credential.fields.api_key` to the reference. In the following example, the key is stored as `liveavatar` in the `support_prod` set:
-
-```json
-"avatar": {
-  "enabled": true,
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "api_key": "$secrets.support_prod.liveavatar"
-    }
-  },
-  "vendor": "liveavatar",
-  "params": {
-    "agora_token": "<avatar_rtc_token>",
-    "agora_uid": "<avatar_rtc_uid>",
-    "quality": "high",
-    "avatar_id": "65f9e3c9-d48b-4118-b73a-4ae2e3cbb8f0"
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -110,6 +85,31 @@ agent := agentkit.NewAgent(client).
 		AgoraToken: "<avatar_rtc_token>",
 		AvatarID:   "65f9e3c9-d48b-4118-b73a-4ae2e3cbb8f0",
 	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Add an `avatar` block to the `pipeline`. Set `credential.mode` to `byok` and `credential.fields.api_key` to the reference. In the following example, the key is stored as `liveavatar` in the `support_prod` set:
+
+```json
+"avatar": {
+  "enabled": true,
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.liveavatar"
+    }
+  },
+  "vendor": "liveavatar",
+  "params": {
+    "agora_token": "<avatar_rtc_token>",
+    "agora_uid": "<avatar_rtc_uid>",
+    "quality": "high",
+    "avatar_id": "65f9e3c9-d48b-4118-b73a-4ae2e3cbb8f0"
+  }
+}
 ```
 
 </TabsContent>

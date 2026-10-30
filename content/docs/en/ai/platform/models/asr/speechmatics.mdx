@@ -14,36 +14,13 @@ The following example shows how to configure Speechmatics as the agent's ASR whe
 
 Speechmatics supports BYOK only. It isn't available in managed mode. Store your Speechmatics API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `credential.mode` to `byok` and `credential.fields.key` to a reference to your Speechmatics API key in a secret set. In the following example, the key is stored as `speechmatics` in the `support_prod` set:
-
-```json
-"asr": {
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "key": "$secrets.support_prod.speechmatics"
-    }
-  },
-  "vendor": "speechmatics",
-  "language": "en",
-  "url": "wss://eu2.rt.speechmatics.com/v2",
-  "params": {
-    "language": "en"
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -99,9 +76,32 @@ agent := agentkit.NewAgent(client).
 ```
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.key` to a reference to your Speechmatics API key in a secret set. In the following example, the key is stored as `speechmatics` in the `support_prod` set:
+
+```json
+"asr": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "key": "$secrets.support_prod.speechmatics"
+    }
+  },
+  "vendor": "speechmatics",
+  "language": "en",
+  "url": "wss://eu2.rt.speechmatics.com/v2",
+  "params": {
+    "language": "en"
+  }
+}
+```
+
+</TabsContent>
 </Tabs>
 
-{/* TODO(platform-confirm): Since 2026-10-29, the pre-release API requires `params.language` for this vendor. The REST example passes it and saves. The SDK examples fail with `400 MissingRequiredField` at `/pipeline/asr/params/language`, because the SDKs send only the block-level `language` (SDK bug list #34). Retest the SDK examples when the SDKs send `params.language`. */}
+{/* TODO(platform-confirm): The pre-release API requires `params.language` for this vendor. The SDK examples need the alpha.3 SDK previews, which keep `params.language` (SDK bug list #34). Tested on 2026-10-30 from the preview branches: all three SDK examples saved with `params.language`. */}
 
 {/* TODO(platform-confirm): SDK tabs tested in pre-release testing on 2026-10-28. All three SDKs saved the BYOK example. The SDK examples omit the endpoint: the SDKs' `uri` option is sent as `params.uri`, not as the block-level `url` (SDK bug list #32). TypeScript and Python also set the block-level `language` to `en-US` (their default interaction language) instead of the vendor's language, while Go leaves it unset (SDK bug list #31). */}
 

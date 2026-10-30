@@ -14,38 +14,13 @@ The following example shows how to configure Hume AI as the agent's TTS when you
 
 Hume AI supports BYOK only. It isn't available in managed mode. Store your Hume AI API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `credential.mode` to `byok` and `credential.fields.key` to a reference to your Hume AI API key. In the following example, the key is stored as `humeai` in the `support_prod` set:
-
-```json
-"tts": {
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "key": "$secrets.support_prod.humeai"
-    }
-  },
-  "vendor": "humeai",
-  "url": "https://api.hume.ai",
-  "params": {
-    "voice_id": "<your_voice_id>",
-    "provider": "HUME_AI",
-    "speed": 1,
-    "trailing_silence": 0.35
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -111,6 +86,31 @@ agent := agentkit.NewAgent(client).
 		Speed:           &speed,
 		TrailingSilence: &trailingSilence,
 	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.key` to a reference to your Hume AI API key. In the following example, the key is stored as `humeai` in the `support_prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "key": "$secrets.support_prod.humeai"
+    }
+  },
+  "vendor": "humeai",
+  "url": "https://api.hume.ai",
+  "params": {
+    "voice_id": "<your_voice_id>",
+    "provider": "HUME_AI",
+    "speed": 1,
+    "trailing_silence": 0.35
+  }
+}
 ```
 
 </TabsContent>

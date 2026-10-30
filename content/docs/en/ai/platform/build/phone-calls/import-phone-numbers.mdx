@@ -27,70 +27,13 @@ Before you begin, make sure that you have:
 
 Import the number with its SIP trunk. To have an agent answer calls to the number, also set the inbound agent and a call policy, as in the following example. For details, see [Route inbound calls to an agent](/en/ai/platform/build/phone-calls/route-inbound-calls).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Send a request to [Create a phone number](/en/api-reference/api-ref/conversational-ai/platform/create-number):
-
-```bash
-curl --request POST \
-  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/numbers \
-  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
-  --header 'Content-Type: application/json' \
-  --data '
-{
-  "number": "+14155550100",
-  "description": "Customer support line",
-  "sip_trunk": {
-    "name": "support-line",
-    "hostname": "acme.pstn.example.com",
-    "transport": "tls",
-    "auth": {
-      "username": "acme",
-      "password": "<your_sip_password>"
-    }
-  },
-  "inbound": {
-    "agent": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
-    "call_policy": {
-      "max_call_duration_seconds": 1800
-    }
-  }
-}'
-```
-
-If the request is successful, the response contains the number's ID and its configuration. The `auth` credentials aren't returned.
-
-```json
-// 201 Created
-{
-  "number_id": "92e68758-3d3a-4f27-8b93-3fd8d834467c",
-  "number": "+14155550100",
-  "description": "Customer support line",
-  "sip_trunk": {
-    "name": "support-line",
-    "hostname": "acme.pstn.example.com",
-    "port": 5061,
-    "transport": "tls"
-  },
-  "inbound": {
-    "agent": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
-    "call_policy": {
-      "max_call_duration_seconds": 1800
-    }
-  },
-  "create_ts": 1786543331
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -163,6 +106,63 @@ if err != nil {
 	log.Fatal(err)
 }
 fmt.Println(number.Body.NumberID) // The number ID
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Create a phone number](/en/api-reference/api-ref/conversational-ai/platform/create-number):
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/numbers \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "number": "+14155550100",
+  "description": "Customer support line",
+  "sip_trunk": {
+    "name": "support-line",
+    "hostname": "acme.pstn.example.com",
+    "transport": "tls",
+    "auth": {
+      "username": "acme",
+      "password": "<your_sip_password>"
+    }
+  },
+  "inbound": {
+    "agent": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
+    "call_policy": {
+      "max_call_duration_seconds": 1800
+    }
+  }
+}'
+```
+
+If the request is successful, the response contains the number's ID and its configuration. The `auth` credentials aren't returned.
+
+```json
+// 201 Created
+{
+  "number_id": "92e68758-3d3a-4f27-8b93-3fd8d834467c",
+  "number": "+14155550100",
+  "description": "Customer support line",
+  "sip_trunk": {
+    "name": "support-line",
+    "hostname": "acme.pstn.example.com",
+    "port": 5061,
+    "transport": "tls"
+  },
+  "inbound": {
+    "agent": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
+    "call_policy": {
+      "max_call_duration_seconds": 1800
+    }
+  },
+  "create_ts": 1786543331
+}
 ```
 
 </TabsContent>

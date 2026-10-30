@@ -14,38 +14,13 @@ The following example shows how to configure Google as the agent's ASR when you 
 
 Google supports BYOK only. It isn't available in managed mode. Store your Google Cloud service account credentials in a secret set, and refer to them from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `credential.mode` to `byok` and `credential.fields.adc_credentials_string` to a reference to your service account credentials in a secret set. In the following example, the credentials are stored as `google` in the `support_prod` set:
-
-```json
-"asr": {
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "adc_credentials_string": "$secrets.support_prod.google"
-    }
-  },
-  "vendor": "google",
-  "model": "long",
-  "language": "en-US",
-  "params": {
-    "language": "en-US",
-    "project_id": "<GOOGLE_ASR_PROJECT_ID>",
-    "location": "global"
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -110,9 +85,34 @@ agent := agentkit.NewAgent(client).
 ```
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.adc_credentials_string` to a reference to your service account credentials in a secret set. In the following example, the credentials are stored as `google` in the `support_prod` set:
+
+```json
+"asr": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "adc_credentials_string": "$secrets.support_prod.google"
+    }
+  },
+  "vendor": "google",
+  "model": "long",
+  "language": "en-US",
+  "params": {
+    "language": "en-US",
+    "project_id": "<GOOGLE_ASR_PROJECT_ID>",
+    "location": "global"
+  }
+}
+```
+
+</TabsContent>
 </Tabs>
 
-{/* TODO(platform-confirm): Since 2026-10-29, the pre-release API requires `params.language` for this vendor. The REST example passes it and saves. The SDK examples fail with `400 MissingRequiredField` at `/pipeline/asr/params/language`, because the SDKs send only the block-level `language` (SDK bug list #34). Retest the SDK examples when the SDKs send `params.language`. */}
+{/* TODO(platform-confirm): The pre-release API requires `params.language` for this vendor. The SDK examples need the alpha.3 SDK previews, which keep `params.language` (SDK bug list #34). Tested on 2026-10-30 from the preview branches: all three SDK examples saved with `params.language`. */}
 
 {/* TODO(platform-confirm): Google authenticates with a service account credentials JSON string (Voice Agent `params.adc_credentials_string`), not an API key. Confirm that the Platform takes it in `credential.fields.adc_credentials_string` as a secret reference, or give the correct format. */}
 

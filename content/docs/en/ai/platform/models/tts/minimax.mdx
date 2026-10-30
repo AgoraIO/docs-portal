@@ -14,66 +14,13 @@ The following example shows how to configure MiniMax as the agent's TTS when you
 
 MiniMax supports managed mode and BYOK. In managed mode, Agora provides access to MiniMax, and you don't need a MiniMax account. For BYOK, store your MiniMax API key in a secret set, and refer to it from the agent. For details, see [Use managed mode](/en/ai/platform/build/managed-mode) and [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-- **Managed mode**
-
-    Set `credential.mode` to `managed` in the `tts` block. Agora provides access to MiniMax, and you don't need a MiniMax account.
-
-    ```json
-    "tts": {
-      "credential": { "mode": "managed" },
-      "vendor": "minimax",
-      "params": {
-        "model": "speech-2.8-turbo",
-        "voice_setting": {
-          "voice_id": "English_captivating_female1",
-          "speed": 1.0
-        },
-        "audio_setting": {
-          "sample_rate": 44100
-        }
-      }
-    }
-    ```
-
-- **BYOK**
-
-    Set `credential.mode` to `byok` and `credential.fields.key` to a reference to your MiniMax API key in a secret set. Your MiniMax group ID isn't secret. Pass it in `params`. In the following example, the key is stored as `minimax` in the `support_prod` set:
-
-    ```json
-    "tts": {
-      "credential": {
-        "mode": "byok",
-        "fields": {
-          "key": "$secrets.support_prod.minimax"
-        }
-      },
-      "vendor": "minimax",
-      "url": "wss://api-uw.minimax.io/ws/v1/t2a_v2",
-      "params": {
-        "group_id": "<your_minimax_group_id>",
-        "model": "speech-2.8-turbo",
-        "voice_setting": {
-          "voice_id": "English_captivating_female1",
-          "speed": 1.0
-        },
-        "audio_setting": {
-          "sample_rate": 44100
-        }
-      }
-    }
-    ```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -143,6 +90,59 @@ agent := agentkit.NewAgent(client).
 		SampleRate: &sampleRate,
 	}))
 ```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+- **Managed mode**
+
+    Set `credential.mode` to `managed` in the `tts` block. Agora provides access to MiniMax, and you don't need a MiniMax account.
+
+    ```json
+    "tts": {
+      "credential": { "mode": "managed" },
+      "vendor": "minimax",
+      "params": {
+        "model": "speech-2.8-turbo",
+        "voice_setting": {
+          "voice_id": "English_captivating_female1",
+          "speed": 1.0
+        },
+        "audio_setting": {
+          "sample_rate": 44100
+        }
+      }
+    }
+    ```
+
+- **BYOK**
+
+    Set `credential.mode` to `byok` and `credential.fields.key` to a reference to your MiniMax API key in a secret set. Your MiniMax group ID isn't secret. Pass it in `params`. In the following example, the key is stored as `minimax` in the `support_prod` set:
+
+    ```json
+    "tts": {
+      "credential": {
+        "mode": "byok",
+        "fields": {
+          "key": "$secrets.support_prod.minimax"
+        }
+      },
+      "vendor": "minimax",
+      "url": "wss://api-uw.minimax.io/ws/v1/t2a_v2",
+      "params": {
+        "group_id": "<your_minimax_group_id>",
+        "model": "speech-2.8-turbo",
+        "voice_setting": {
+          "voice_id": "English_captivating_female1",
+          "speed": 1.0
+        },
+        "audio_setting": {
+          "sample_rate": 44100
+        }
+      }
+    }
+    ```
 
 </TabsContent>
 </Tabs>

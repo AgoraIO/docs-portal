@@ -79,43 +79,12 @@ Keep this terminal open. You will reuse these credentials in both the backend an
 
 Select the tab for your preferred language.
 
-<Tabs defaultValue="typescript" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
   <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
   <TabsTrigger value="go">Go</TabsTrigger>
 </TabsList>
-
-<TabsContent value="typescript">
-
-For TypeScript, the backend and frontend live in the same Next.js app.
-
-1. Scaffold a Next.js app with TypeScript, the App Router, Tailwind CSS, and ESLint, then install the required Agora packages:
-
-   ```bash
-   pnpm dlx create-next-app@latest conv-ai-tutorial --typescript --app --tailwind --eslint --src-dir=false --import-alias='@/*'
-   cd conv-ai-tutorial
-   pnpm add agora-agents agora-rtc-sdk-ng agora-rtm-sdk agora-token
-   ```
-
-   - `agora-agents`: Starts and stops agent sessions from the backend
-   - `agora-rtc-sdk-ng`: Handles mic capture and RTC channel joining in the browser
-   - `agora-rtm-sdk`: Receives live transcript messages from the agent
-   - `agora-token`: Generates RTC and RTM tokens
-
-2. Write your Agora credentials to `.env.local`:
-
-   ```bash
-   eval "$(agora project env --shell)"
-   cat > .env.local <<EOF
-   NEXT_PUBLIC_AGORA_APP_ID=$AGORA_APP_ID
-   NEXT_AGORA_APP_CERTIFICATE=$AGORA_APP_CERTIFICATE
-   EOF
-   ```
-
-The `NEXT_PUBLIC_` prefix makes `AGORA_APP_ID` available in the browser, which is required to join the RTC channel. Never apply this prefix to `APP_CERTIFICATE`; it must remain server-side only.
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -169,6 +138,37 @@ The backend reads `APP_ID` and `APP_CERTIFICATE` directly. The frontend only rec
 
 </TabsContent>
 
+<TabsContent value="typescript">
+
+For TypeScript, the backend and frontend live in the same Next.js app.
+
+1. Scaffold a Next.js app with TypeScript, the App Router, Tailwind CSS, and ESLint, then install the required Agora packages:
+
+   ```bash
+   pnpm dlx create-next-app@latest conv-ai-tutorial --typescript --app --tailwind --eslint --src-dir=false --import-alias='@/*'
+   cd conv-ai-tutorial
+   pnpm add agora-agents agora-rtc-sdk-ng agora-rtm-sdk agora-token
+   ```
+
+   - `agora-agents`: Starts and stops agent sessions from the backend
+   - `agora-rtc-sdk-ng`: Handles mic capture and RTC channel joining in the browser
+   - `agora-rtm-sdk`: Receives live transcript messages from the agent
+   - `agora-token`: Generates RTC and RTM tokens
+
+2. Write your Agora credentials to `.env.local`:
+
+   ```bash
+   eval "$(agora project env --shell)"
+   cat > .env.local <<EOF
+   NEXT_PUBLIC_AGORA_APP_ID=$AGORA_APP_ID
+   NEXT_AGORA_APP_CERTIFICATE=$AGORA_APP_CERTIFICATE
+   EOF
+   ```
+
+The `NEXT_PUBLIC_` prefix makes `AGORA_APP_ID` available in the browser, which is required to join the RTC channel. Never apply this prefix to `APP_CERTIFICATE`; it must remain server-side only.
+
+</TabsContent>
+
 <TabsContent value="go">
 
 :::info[Coming soon]
@@ -184,162 +184,12 @@ In the meantime, use the [Voice AI quickstart](../get-started/quickstart) for a 
 
 The backend exposes three endpoints, one for each operation the frontend needs.
 
-<Tabs defaultValue="typescript" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
   <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
   <TabsTrigger value="go">Go</TabsTrigger>
 </TabsList>
-
-<TabsContent value="typescript">
-
-### Generate tokens
-
-Endpoint: `POST /api/token`
-
-This endpoint builds an RTC token and an RTM token for the browser client. It is the only place the App Certificate is used.
-
-```ts
-// app/api/token/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import { RtcTokenBuilder, RtcRole, RtmTokenBuilder } from 'agora-token';
-
-const APP_ID = process.env.NEXT_PUBLIC_AGORA_APP_ID!;
-const APP_CERTIFICATE = process.env.NEXT_AGORA_APP_CERTIFICATE!;
-const TOKEN_TTL_SECONDS = 60 * 60; // 1 hour
-
-export async function POST(req: NextRequest) {
-  const { channel, uid } = await req.json();
-  if (!channel || typeof uid !== 'number') {
-    return NextResponse.json({ error: 'channel and numeric uid required' }, { status: 400 });
-  }
-
-  const expireAt = Math.floor(Date.now() / 1000) + TOKEN_TTL_SECONDS;
-
-  const rtcToken = RtcTokenBuilder.buildTokenWithUid(
-    APP_ID,
-    APP_CERTIFICATE,
-    channel,
-    uid,
-    RtcRole.PUBLISHER,
-    expireAt,
-    expireAt,
-  );
-  const rtmToken = RtmTokenBuilder.buildToken(
-    APP_ID,
-    APP_CERTIFICATE,
-    String(uid),
-    expireAt,
-  );
-
-  return NextResponse.json({ rtcToken, rtmToken, expireAt });
-}
-```
-
-### Start an agent session
-
-Endpoint: `POST /api/invite-agent`
-
-This endpoint uses the Agora Agent SDK to configure an agent and start a session. The STT, LLM, and TTS configurations use Agora-managed presets and therefore do not require an `apiKey`.
-
-```ts
-// app/api/invite-agent/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import {
-  AgoraClient,
-  Agent,
-  Area,
-  DeepgramSTT,
-  ExpiresIn,
-  MiniMaxTTS,
-  OpenAI,
-} from 'agora-agents';
-
-const client = new AgoraClient({
-  area: Area.US,
-  appId: process.env.NEXT_PUBLIC_AGORA_APP_ID!,
-  appCertificate: process.env.NEXT_AGORA_APP_CERTIFICATE!,
-});
-
-const AGENT_UID = 123456;
-
-export async function POST(req: NextRequest) {
-  const { channel } = await req.json();
-  if (!channel) {
-    return NextResponse.json({ error: 'channel required' }, { status: 400 });
-  }
-
-  const agent = new Agent({
-    client,
-    instructions: 'You are a friendly support agent for Acme Corp. Keep answers under 30 seconds.',
-    greeting: 'Hi there! How can I help you today?',
-    failureMessage: 'Sorry, I had trouble hearing that. Could you repeat?',
-    maxHistory: 50,
-    advancedFeatures: { enable_rtm: true, enable_tools: false },
-    parameters: { data_channel: 'rtm', enable_error_message: true },
-  })
-    .withStt(new DeepgramSTT({ model: 'nova-3', language: 'en' }))
-    .withLlm(new OpenAI({ model: 'gpt-4o-mini', maxHistory: 15 }))
-    .withTts(
-      new MiniMaxTTS({
-        model: 'speech_2_6_turbo',
-        voiceId: 'English_captivating_female1',
-      }),
-    );
-
-  const session = agent.createSession({
-    channel,
-    agentUid: AGENT_UID,
-    remoteUids: ['*'],
-    name: 'support-agent',
-    idleTimeout: 30,
-    expiresIn: ExpiresIn.hours(1),
-  });
-
-  try {
-    const { agentId } = await session.start();
-    return NextResponse.json({ agentId, agentUid: AGENT_UID });
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : String(err);
-    return NextResponse.json({ error: `start failed: ${message}` }, { status: 502 });
-  }
-}
-```
-
-### Stop an agent session
-
-Endpoint: `POST /api/stop-conversation`
-
-This endpoint stops a running agent session by ID.
-
-```ts
-// app/api/stop-conversation/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import { AgoraClient, Area } from 'agora-agents';
-
-const client = new AgoraClient({
-  area: Area.US,
-  appId: process.env.NEXT_PUBLIC_AGORA_APP_ID!,
-  appCertificate: process.env.NEXT_AGORA_APP_CERTIFICATE!,
-});
-
-export async function POST(req: NextRequest) {
-  const { agentId } = await req.json();
-  if (!agentId) {
-    return NextResponse.json({ error: 'agentId required' }, { status: 400 });
-  }
-
-  try {
-    await client.agents.leave(agentId);
-    return NextResponse.json({ stopped: true });
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : String(err);
-    return NextResponse.json({ error: `stop failed: ${message}` }, { status: 502 });
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -496,6 +346,156 @@ uvicorn main:app --reload --port 8000
 ```
 
 Swagger docs are available at `http://localhost:8000/docs`.
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+### Generate tokens
+
+Endpoint: `POST /api/token`
+
+This endpoint builds an RTC token and an RTM token for the browser client. It is the only place the App Certificate is used.
+
+```ts
+// app/api/token/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { RtcTokenBuilder, RtcRole, RtmTokenBuilder } from 'agora-token';
+
+const APP_ID = process.env.NEXT_PUBLIC_AGORA_APP_ID!;
+const APP_CERTIFICATE = process.env.NEXT_AGORA_APP_CERTIFICATE!;
+const TOKEN_TTL_SECONDS = 60 * 60; // 1 hour
+
+export async function POST(req: NextRequest) {
+  const { channel, uid } = await req.json();
+  if (!channel || typeof uid !== 'number') {
+    return NextResponse.json({ error: 'channel and numeric uid required' }, { status: 400 });
+  }
+
+  const expireAt = Math.floor(Date.now() / 1000) + TOKEN_TTL_SECONDS;
+
+  const rtcToken = RtcTokenBuilder.buildTokenWithUid(
+    APP_ID,
+    APP_CERTIFICATE,
+    channel,
+    uid,
+    RtcRole.PUBLISHER,
+    expireAt,
+    expireAt,
+  );
+  const rtmToken = RtmTokenBuilder.buildToken(
+    APP_ID,
+    APP_CERTIFICATE,
+    String(uid),
+    expireAt,
+  );
+
+  return NextResponse.json({ rtcToken, rtmToken, expireAt });
+}
+```
+
+### Start an agent session
+
+Endpoint: `POST /api/invite-agent`
+
+This endpoint uses the Agora Agent SDK to configure an agent and start a session. The STT, LLM, and TTS configurations use Agora-managed presets and therefore do not require an `apiKey`.
+
+```ts
+// app/api/invite-agent/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import {
+  AgoraClient,
+  Agent,
+  Area,
+  DeepgramSTT,
+  ExpiresIn,
+  MiniMaxTTS,
+  OpenAI,
+} from 'agora-agents';
+
+const client = new AgoraClient({
+  area: Area.US,
+  appId: process.env.NEXT_PUBLIC_AGORA_APP_ID!,
+  appCertificate: process.env.NEXT_AGORA_APP_CERTIFICATE!,
+});
+
+const AGENT_UID = 123456;
+
+export async function POST(req: NextRequest) {
+  const { channel } = await req.json();
+  if (!channel) {
+    return NextResponse.json({ error: 'channel required' }, { status: 400 });
+  }
+
+  const agent = new Agent({
+    client,
+    instructions: 'You are a friendly support agent for Acme Corp. Keep answers under 30 seconds.',
+    greeting: 'Hi there! How can I help you today?',
+    failureMessage: 'Sorry, I had trouble hearing that. Could you repeat?',
+    maxHistory: 50,
+    advancedFeatures: { enable_rtm: true, enable_tools: false },
+    parameters: { data_channel: 'rtm', enable_error_message: true },
+  })
+    .withStt(new DeepgramSTT({ model: 'nova-3', language: 'en' }))
+    .withLlm(new OpenAI({ model: 'gpt-4o-mini', maxHistory: 15 }))
+    .withTts(
+      new MiniMaxTTS({
+        model: 'speech_2_6_turbo',
+        voiceId: 'English_captivating_female1',
+      }),
+    );
+
+  const session = agent.createSession({
+    channel,
+    agentUid: AGENT_UID,
+    remoteUids: ['*'],
+    name: 'support-agent',
+    idleTimeout: 30,
+    expiresIn: ExpiresIn.hours(1),
+  });
+
+  try {
+    const { agentId } = await session.start();
+    return NextResponse.json({ agentId, agentUid: AGENT_UID });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: `start failed: ${message}` }, { status: 502 });
+  }
+}
+```
+
+### Stop an agent session
+
+Endpoint: `POST /api/stop-conversation`
+
+This endpoint stops a running agent session by ID.
+
+```ts
+// app/api/stop-conversation/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { AgoraClient, Area } from 'agora-agents';
+
+const client = new AgoraClient({
+  area: Area.US,
+  appId: process.env.NEXT_PUBLIC_AGORA_APP_ID!,
+  appCertificate: process.env.NEXT_AGORA_APP_CERTIFICATE!,
+});
+
+export async function POST(req: NextRequest) {
+  const { agentId } = await req.json();
+  if (!agentId) {
+    return NextResponse.json({ error: 'agentId required' }, { status: 400 });
+  }
+
+  try {
+    await client.agents.leave(agentId);
+    return NextResponse.json({ stopped: true });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: `stop failed: ${message}` }, { status: 502 });
+  }
+}
+```
 
 </TabsContent>
 
@@ -744,22 +744,12 @@ Start the app and verify that the agent joins, responds, and stops cleanly.
 
 ### Run the app
 
-<Tabs defaultValue="typescript" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
   <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
   <TabsTrigger value="go">Go</TabsTrigger>
 </TabsList>
-
-<TabsContent value="typescript">
-
-```bash
-pnpm dev
-```
-
-Open `http://localhost:3000`, click **Start conversation**, allow microphone access, and speak.
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -779,6 +769,16 @@ pnpm dev
 ```
 
 Open `http://localhost:3000`.
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```bash
+pnpm dev
+```
+
+Open `http://localhost:3000`, click **Start conversation**, allow microphone access, and speak.
 
 </TabsContent>
 

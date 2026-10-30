@@ -14,44 +14,13 @@ The following example shows how to configure Claude as the agent's LLM when you 
 
 Claude supports BYOK only. It isn't available in managed mode. Store your Anthropic API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. In the following example, the key is stored as `anthropic` in the `support_prod` set:
-
-```json
-"llm": {
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "api_key": "$secrets.support_prod.anthropic"
-    }
-  },
-  "vendor": "anthropic",
-  "style": "anthropic",
-  "model": "claude-opus-4-8",
-  "url": "https://api.anthropic.com/v1/messages",
-  "headers": {
-    "anthropic-version": "2023-06-01"
-  },
-  "max_history": 32,
-  "failure_message": "Please hold on a second.",
-  "params": {
-    "max_tokens": 1024
-  }
-}
-```
-
-Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -133,6 +102,37 @@ agent := agentkit.NewAgent(client).
 	})).
 	WithTts( /* configure your TTS vendor */ )
 ```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. In the following example, the key is stored as `anthropic` in the `support_prod` set:
+
+```json
+"llm": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.anthropic"
+    }
+  },
+  "vendor": "anthropic",
+  "style": "anthropic",
+  "model": "claude-opus-4-8",
+  "url": "https://api.anthropic.com/v1/messages",
+  "headers": {
+    "anthropic-version": "2023-06-01"
+  },
+  "max_history": 32,
+  "failure_message": "Please hold on a second.",
+  "params": {
+    "max_tokens": 1024
+  }
+}
+```
+
+Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
 
 </TabsContent>
 </Tabs>

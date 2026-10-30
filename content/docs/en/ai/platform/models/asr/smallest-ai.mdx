@@ -14,53 +14,13 @@ The following example shows how to configure Smallest AI as the agent's ASR when
 
 Smallest AI supports BYOK only. It isn't available in managed mode. Store your Smallest AI API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Smallest AI API key in a secret set. In the following example, the key is stored as `smallestai` in the `support_prod` set. Only `credential` and `vendor` are required:
-
-```json
-"asr": {
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "api_key": "$secrets.support_prod.smallestai"
-    }
-  },
-  "vendor": "smallestai",
-  "language": "zh",
-  "url": "wss://api.us.smallest.ai/waves/v1/stt/live",
-  "params": {
-    "sample_rate": 16000,
-    "encoding": "linear16",
-    "word_timestamps": "true",
-    "sentence_timestamps": "true",
-    "diarize": "true",
-    "vad_events": "true",
-    "endpointing": "true",
-    "eou_timeout_ms": 480,
-    "format": "true",
-    "finalize_on_words": "true",
-    "max_words": "100",
-    "punctuate": "true",
-    "capitalize": "true",
-    "itn_normalize": "true",
-    "full_transcript": "true",
-    "keywords": "Codex:2,Smallest AI:2",
-    "redact_pii": "false",
-    "redact_pci": "false"
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -176,6 +136,46 @@ agent := agentkit.NewAgent(client).
 	})).
 	WithLlm( /* configure your LLM vendor */ ).
 	WithTts( /* configure your TTS vendor */ )
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Smallest AI API key in a secret set. In the following example, the key is stored as `smallestai` in the `support_prod` set. Only `credential` and `vendor` are required:
+
+```json
+"asr": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.smallestai"
+    }
+  },
+  "vendor": "smallestai",
+  "language": "zh",
+  "url": "wss://api.us.smallest.ai/waves/v1/stt/live",
+  "params": {
+    "sample_rate": 16000,
+    "encoding": "linear16",
+    "word_timestamps": "true",
+    "sentence_timestamps": "true",
+    "diarize": "true",
+    "vad_events": "true",
+    "endpointing": "true",
+    "eou_timeout_ms": 480,
+    "format": "true",
+    "finalize_on_words": "true",
+    "max_words": "100",
+    "punctuate": "true",
+    "capitalize": "true",
+    "itn_normalize": "true",
+    "full_transcript": "true",
+    "keywords": "Codex:2,Smallest AI:2",
+    "redact_pii": "false",
+    "redact_pci": "false"
+  }
+}
 ```
 
 </TabsContent>

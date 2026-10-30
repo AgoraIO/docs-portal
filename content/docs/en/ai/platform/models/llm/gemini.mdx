@@ -12,59 +12,13 @@ Google Gemini provides advanced multimodal AI capabilities with fast performance
 
 Google Gemini supports BYOK only. It isn't available in managed mode. The following example starts an [ephemeral session](/en/ai/platform/get-started/start-stop-agent#test-a-configuration-without-saving-an-agent) with Gemini as the LLM. In an ephemeral session, you pass the agent configuration in the request, with your Gemini API key in the endpoint URL, and the Platform doesn't save them. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Send a request to [Start an ephemeral session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session). In the `llm` block, set `url` to the Gemini `streamGenerateContent` endpoint for your model, with `alt=sse` and your API key in the `key` query parameter. Set `credential.mode` to `byok`, and leave out `credential.fields`.
-
-```bash
-curl --request POST \
-  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions/ephemeral \
-  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
-  --header 'Content-Type: application/json' \
-  --data '
-{
-  "agent": {
-    "instructions": "You are a friendly support agent for Acme. Keep your answers short.",
-    "pipeline": {
-      "mode": "cascaded",
-      "asr": { "credential": { "mode": "managed" }, "vendor": "deepgram", "model": "nova-3", "language": "en-US" },
-      "llm": {
-        "credential": { "mode": "byok" },
-        "vendor": "gemini",
-        "style": "gemini",
-        "model": "gemini-3.6-flash",
-        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:streamGenerateContent?alt=sse&key=<your_gemini_api_key>",
-        "max_history": 32,
-        "failure_message": "Hold on a second."
-      },
-      "tts": {
-        "credential": { "mode": "managed" },
-        "vendor": "minimax",
-        "params": { "model": "speech-2.6-turbo", "voice_setting": { "voice_id": "English_captivating_female1", "speed": 1 } }
-      }
-    }
-  },
-  "transport": {
-    "type": "rtc",
-    "channel": "<your_channel_name>",
-    "token": "<your_rtc_token>",
-    "uid": "1002",
-    "subscribe_uids": ["1001"]
-  }
-}'
-```
-
-A saved agent can't have a key in its `url`. The response has the same format as Start a session. Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -171,6 +125,52 @@ if err != nil {
 	log.Fatal(err)
 }
 ```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Start an ephemeral session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session). In the `llm` block, set `url` to the Gemini `streamGenerateContent` endpoint for your model, with `alt=sse` and your API key in the `key` query parameter. Set `credential.mode` to `byok`, and leave out `credential.fields`.
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions/ephemeral \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "agent": {
+    "instructions": "You are a friendly support agent for Acme. Keep your answers short.",
+    "pipeline": {
+      "mode": "cascaded",
+      "asr": { "credential": { "mode": "managed" }, "vendor": "deepgram", "model": "nova-3", "language": "en-US" },
+      "llm": {
+        "credential": { "mode": "byok" },
+        "vendor": "gemini",
+        "style": "gemini",
+        "model": "gemini-3.6-flash",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:streamGenerateContent?alt=sse&key=<your_gemini_api_key>",
+        "max_history": 32,
+        "failure_message": "Hold on a second."
+      },
+      "tts": {
+        "credential": { "mode": "managed" },
+        "vendor": "minimax",
+        "params": { "model": "speech-2.6-turbo", "voice_setting": { "voice_id": "English_captivating_female1", "speed": 1 } }
+      }
+    }
+  },
+  "transport": {
+    "type": "rtc",
+    "channel": "<your_channel_name>",
+    "token": "<your_rtc_token>",
+    "uid": "1002",
+    "subscribe_uids": ["1001"]
+  }
+}'
+```
+
+A saved agent can't have a key in its `url`. The response has the same format as Start a session. Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
 
 </TabsContent>
 </Tabs>

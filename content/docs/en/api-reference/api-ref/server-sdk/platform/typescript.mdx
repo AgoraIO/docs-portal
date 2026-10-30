@@ -5,7 +5,7 @@ description: API reference for the Conversational AI Platform (Preview) features
 
 {/* PLATFORM-NEW: new page for the Platform SDK reference. Status: drafted on 2026-10-28 from the agora-agents-ts preview branch (feat/v3-api-preview, commit 739feba) and its docs/reference/v3.md, pending review. Signatures were checked against the SDK source; the examples on the Platform guide pages were run in pre-release testing. */}
 
-{/* TODO(platform-confirm): Platform support is in the SDK preview `agora-agents` 3.0.0-alpha.2 (Git tag v3.0.0-alpha.2, published 2026-10-29 under the npm `alpha` tag). It has the same code as preview commit 4900f4c. Update the version when the Platform release is published, and recheck this page against that release. */}
+{/* TODO(platform-confirm): Pinned to agora-agents 3.0.0-alpha.3 ahead of its publication, which the SDK team confirmed for the launch. The code was tested on 2026-10-30 from the TypeScript preview branch (aee48c9): the client setup, agent and session examples, and Basic authentication work. After publication, verify that this install command works. */}
 
 The `agora-agents` TypeScript SDK supports the Conversational AI Platform (Preview) alongside the Voice Agent API. This page covers the Platform features: saved agents, Platform sessions, secret sets, phone numbers, campaigns, and the low-level `client.v3` namespace.
 
@@ -13,10 +13,10 @@ The vendor classes, such as `OpenAI` and `DeepgramSTT`, and the builder methods,
 
 ## Install
 
-Platform support is in the SDK preview, version 3.0.0-alpha.2. You need Node.js 18 or later. Install the SDK in your project, and specify the version, because the default `agora-agents` release doesn't support the Platform API:
+Platform support is in the SDK preview, version 3.0.0-alpha.3. You need Node.js 18 or later. Install the SDK in your project, and specify the version, because the default `agora-agents` release doesn't support the Platform API:
 
 ```bash
-npm install agora-agents@3.0.0-alpha.2
+npm install agora-agents@3.0.0-alpha.3
 ```
 
 Import the classes you use, for example:
@@ -27,25 +27,40 @@ import { Agent, AgoraClient, Area, SavedAgent, secretRef } from 'agora-agents';
 
 ## AgoraClient
 
-Create a client with your App ID and App Certificate. The SDK generates a ConvoAI token for each Platform request.
+Create a client with one of the following authentication methods. To choose one, see [Choose an authentication method](/en/api-reference/api-ref/conversational-ai/platform/authentication#choose-an-authentication-method).
 
-```ts
-const client = new AgoraClient({
-  area: Area.US,
-  appId: process.env.AGORA_APP_ID!,
-  appCertificate: process.env.AGORA_APP_CERTIFICATE!,
-});
-```
+- **Token authentication**: Pass your App ID and App Certificate. The SDK generates a ConvoAI token for each Platform request.
+
+    ```ts
+    const client = new AgoraClient({
+      area: Area.US,
+      appId: process.env.AGORA_APP_ID!,
+      appCertificate: process.env.AGORA_APP_CERTIFICATE!,
+    });
+    ```
+
+- **Basic HTTP authentication**: Pass your App ID, customer ID, and customer secret. The SDK sends `Authorization: Basic <base64_credentials>` with each request.
+
+    ```ts
+    const client = new AgoraClient({
+      area: Area.US,
+      appId: process.env.AGORA_APP_ID!,
+      customerId: process.env.AGORA_CUSTOMER_ID!,
+      customerSecret: process.env.AGORA_CUSTOMER_SECRET!,
+    });
+    ```
 
 | Option | Type | Description |
 |---|---|---|
 | `area` | `Area` | Required. The region for Voice Agent API routing. Platform requests use the Platform origin. |
 | `appId` | `string` | Required. Your Agora App ID. |
-| `appCertificate` | `string` | Required. Your App Certificate. The SDK uses it to generate a token for each request. |
-| `authToken` | `string` | A token you generated yourself. The SDK sends it as `Authorization: agora token=<authToken>` instead of generating one. |
+| `appCertificate` | `string` | Your App Certificate. With token authentication, the SDK uses it to generate a token for each request. With Basic authentication, it's optional, and the SDK uses it only to generate the agent's RTC token. |
+| `authToken` | `string` | A token you generated yourself. The SDK sends it as `Authorization: agora token=<authToken>` instead of generating one. The token must include the ConvoAI service. |
+| `customerId` | `string` | Your customer ID, for Basic authentication. Set it with `customerSecret`. Don't combine it with `authToken`. |
+| `customerSecret` | `string` | Your customer secret, for Basic authentication. |
 | `v3` | `{ baseUrl?: string; headers?: Record<string, string> }` | Platform request settings. `baseUrl` overrides the Platform origin, which defaults to `https://preview.ai.agora.io`. You can also set the `AGORA_AGENTS_V3_BASE_URL` environment variable. The option takes precedence. |
 
-Platform requests support token authentication only. A client configured with `customerId` and `customerSecret` (Basic auth) can't call the Platform. For details, see [Authentication](/en/api-reference/api-ref/conversational-ai/platform/authentication).
+Without an App Certificate, the SDK can't generate the agent's RTC token. To start an RTC session with a Basic client and no App Certificate, pass the RTC token when you create the session.
 
 The client exposes the following Platform resources:
 

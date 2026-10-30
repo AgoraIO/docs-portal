@@ -19,61 +19,13 @@ For a complete agent example, see [Create an agent](/en/ai/platform/get-started/
 
 Set the managed models when you create an agent. This example uses Deepgram Nova 3 for ASR, OpenAI GPT-4.1 Mini for the LLM, and OpenAI TTS-1 for TTS. The SDK examples use the `client` that you create in [Prerequisites](/en/ai/platform/get-started/start-stop-agent#prerequisites).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Send a request to [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent) with a `pipeline`:
-
-```bash
-curl --request POST \
-  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents \
-  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
-  --header 'Content-Type: application/json' \
-  --data '
-{
-  "agent_name": "Support agent",
-  "instructions": "You are a friendly support agent for Acme. Keep your answers short.",
-  "pipeline": {
-    "mode": "cascaded",
-    "asr": {
-      "credential": { "mode": "managed" },
-      "vendor": "deepgram",
-      "model": "nova-3",
-      "language": "en-US"
-    },
-    "llm": {
-      "credential": { "mode": "managed" },
-      "vendor": "openai",
-      "style": "openai",
-      "model": "gpt-4.1-mini"
-    },
-    "tts": {
-      "credential": { "mode": "managed" },
-      "vendor": "openai",
-      "params": {
-        "model": "tts-1",
-        "voice": "alloy"
-      }
-    }
-  }
-}'
-```
-
-In this example:
-
-- Each block sets `credential.mode` to `managed`. A managed block doesn't accept `fields` or a custom provider endpoint `url`.
-- The `asr` block uses Deepgram Nova 3 for US English.
-- The `llm` block uses OpenAI GPT-4.1 Mini.
-- The `tts` block uses OpenAI TTS-1, with the voice in `params`.
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -145,6 +97,54 @@ if err != nil {
 	log.Fatal(err)
 }
 ```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent) with a `pipeline`:
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "agent_name": "Support agent",
+  "instructions": "You are a friendly support agent for Acme. Keep your answers short.",
+  "pipeline": {
+    "mode": "cascaded",
+    "asr": {
+      "credential": { "mode": "managed" },
+      "vendor": "deepgram",
+      "model": "nova-3",
+      "language": "en-US"
+    },
+    "llm": {
+      "credential": { "mode": "managed" },
+      "vendor": "openai",
+      "style": "openai",
+      "model": "gpt-4.1-mini"
+    },
+    "tts": {
+      "credential": { "mode": "managed" },
+      "vendor": "openai",
+      "params": {
+        "model": "tts-1",
+        "voice": "alloy"
+      }
+    }
+  }
+}'
+```
+
+In this example:
+
+- Each block sets `credential.mode` to `managed`. A managed block doesn't accept `fields` or a custom provider endpoint `url`.
+- The `asr` block uses Deepgram Nova 3 for US English.
+- The `llm` block uses OpenAI GPT-4.1 Mini.
+- The `tts` block uses OpenAI TTS-1, with the voice in `params`.
 
 </TabsContent>
 </Tabs>

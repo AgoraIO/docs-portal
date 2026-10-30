@@ -12,59 +12,13 @@ Google Vertex AI provides enterprise-grade access to Google's generative AI mode
 
 Google Vertex AI supports BYOK only. It isn't available in managed mode. The following example starts an [ephemeral session](/en/ai/platform/get-started/start-stop-agent#test-a-configuration-without-saving-an-agent) with Vertex AI as the LLM. In an ephemeral session, you pass the agent configuration and your credential in the request, and the Platform doesn't save them. Agora sends the credential to Vertex AI as an OAuth 2.0 access token, in an `Authorization: Bearer` header. Get a token for your Google Cloud project, for example with `gcloud auth print-access-token`. For details, see [REST authentication](https://cloud.google.com/docs/authentication/rest).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Send a request to [Start an ephemeral session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session). In the `llm` block, set `credential.mode` to `byok` and `credential.fields.api_key` to the access token. Your project ID and location aren't secret. Pass them in the `url`, replacing `<your_project_id>`. The following example uses the global endpoint:
-
-```bash
-curl --request POST \
-  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions/ephemeral \
-  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
-  --header 'Content-Type: application/json' \
-  --data '
-{
-  "agent": {
-    "instructions": "You are a friendly support agent for Acme. Keep your answers short.",
-    "pipeline": {
-      "mode": "cascaded",
-      "asr": { "credential": { "mode": "managed" }, "vendor": "deepgram", "model": "nova-3", "language": "en-US" },
-      "llm": {
-        "credential": { "mode": "byok", "fields": { "api_key": "<your_access_token>" } },
-        "vendor": "vertexai",
-        "style": "gemini",
-        "model": "gemini-3.8-flash",
-        "url": "https://aiplatform.googleapis.com/v1/projects/<your_project_id>/locations/global/publishers/google/models/gemini-3.8-flash:streamGenerateContent?alt=sse",
-        "max_history": 32,
-        "failure_message": "Hold on a second."
-      },
-      "tts": {
-        "credential": { "mode": "managed" },
-        "vendor": "minimax",
-        "params": { "model": "speech-2.6-turbo", "voice_setting": { "voice_id": "English_captivating_female1", "speed": 1 } }
-      }
-    }
-  },
-  "transport": {
-    "type": "rtc",
-    "channel": "<your_channel_name>",
-    "token": "<your_rtc_token>",
-    "uid": "1002",
-    "subscribe_uids": ["1001"]
-  }
-}'
-```
-
-The response has the same format as Start a session. Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -182,6 +136,52 @@ if err != nil {
 	log.Fatal(err)
 }
 ```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Start an ephemeral session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session). In the `llm` block, set `credential.mode` to `byok` and `credential.fields.api_key` to the access token. Your project ID and location aren't secret. Pass them in the `url`, replacing `<your_project_id>`. The following example uses the global endpoint:
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions/ephemeral \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "agent": {
+    "instructions": "You are a friendly support agent for Acme. Keep your answers short.",
+    "pipeline": {
+      "mode": "cascaded",
+      "asr": { "credential": { "mode": "managed" }, "vendor": "deepgram", "model": "nova-3", "language": "en-US" },
+      "llm": {
+        "credential": { "mode": "byok", "fields": { "api_key": "<your_access_token>" } },
+        "vendor": "vertexai",
+        "style": "gemini",
+        "model": "gemini-3.8-flash",
+        "url": "https://aiplatform.googleapis.com/v1/projects/<your_project_id>/locations/global/publishers/google/models/gemini-3.8-flash:streamGenerateContent?alt=sse",
+        "max_history": 32,
+        "failure_message": "Hold on a second."
+      },
+      "tts": {
+        "credential": { "mode": "managed" },
+        "vendor": "minimax",
+        "params": { "model": "speech-2.6-turbo", "voice_setting": { "voice_id": "English_captivating_female1", "speed": 1 } }
+      }
+    }
+  },
+  "transport": {
+    "type": "rtc",
+    "channel": "<your_channel_name>",
+    "token": "<your_rtc_token>",
+    "uid": "1002",
+    "subscribe_uids": ["1001"]
+  }
+}'
+```
+
+The response has the same format as Start a session. Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
 
 </TabsContent>
 </Tabs>

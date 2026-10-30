@@ -32,40 +32,13 @@ Before you begin, make sure that you have created an agent and started a session
 
 Configure filler words when you [create](/en/api-reference/api-ref/conversational-ai/platform/create-agent) or [update](/en/api-reference/api-ref/conversational-ai/platform/update-agent) the agent. In the following example, the agent plays a phrase from the list when the LLM hasn't responded within 1.5 seconds. The SDK examples start from the `agent` builder in [Create an agent](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Add a `filler_words` object to the agent configuration, at the same level as `instructions` and `pipeline`:
-
-```json
-"filler_words": {
-  "enable": true,
-  "trigger": {
-    "mode": "fixed_time",
-    "response_wait_ms": 1500
-  },
-  "content": {
-    "mode": "static",
-    "phrases": [
-      "Please wait.",
-      "Okay.",
-      "Uh-huh.",
-      "Let me look into that.",
-      "One moment."
-    ],
-    "selection_rule": "shuffle"
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -157,6 +130,33 @@ fillerAgent := agent.WithFillerWords(&agentkit.FillerWordsConfig{
 ```
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+Add a `filler_words` object to the agent configuration, at the same level as `instructions` and `pipeline`:
+
+```json
+"filler_words": {
+  "enable": true,
+  "trigger": {
+    "mode": "fixed_time",
+    "response_wait_ms": 1500
+  },
+  "content": {
+    "mode": "static",
+    "phrases": [
+      "Please wait.",
+      "Okay.",
+      "Uh-huh.",
+      "Let me look into that.",
+      "One moment."
+    ],
+    "selection_rule": "shuffle"
+  }
+}
+```
+
+</TabsContent>
 </Tabs>
 
 | Field | Description |
@@ -172,32 +172,13 @@ fillerAgent := agent.WithFillerWords(&agentkit.FillerWordsConfig{
 
 To have Agora generate a phrase that fits the conversation, use the same settings with the content mode set to `generated`. Generated mode requires the agent's LLM to use your own key with OpenAI, Groq, or xAI. With a managed LLM, the request is rejected. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys). In the instructions, describe the kind of phrase to generate. Set the fallback strategy to `static` to use a static phrase when a generated one isn't ready in time.
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-```json
-"filler_words": {
-  "enable": true,
-  "trigger": {
-    "mode": "fixed_time",
-    "response_wait_ms": 1500
-  },
-  "content": {
-    "mode": "generated",
-    "instructions": "Generate a short, natural filler phrase that shows you're working on the request. Don't answer the question.",
-    "fallback_strategy": "static"
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -268,6 +249,25 @@ generatedFillerAgent := agent.WithFillerWords(&agentkit.FillerWordsConfig{
 		},
 	},
 })
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```json
+"filler_words": {
+  "enable": true,
+  "trigger": {
+    "mode": "fixed_time",
+    "response_wait_ms": 1500
+  },
+  "content": {
+    "mode": "generated",
+    "instructions": "Generate a short, natural filler phrase that shows you're working on the request. Don't answer the question.",
+    "fallback_strategy": "static"
+  }
+}
 ```
 
 </TabsContent>

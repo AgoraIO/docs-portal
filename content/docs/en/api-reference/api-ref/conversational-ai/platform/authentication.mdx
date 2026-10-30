@@ -7,12 +7,23 @@ description: Set up RESTful authentication for Conversational AI Platform REST A
 
 Conversational AI Platform REST API requests require authentication. Use one of the following methods:
 
-- **[Token authentication](#token-authentication) (recommended)**: Generate a token with your App ID and App Certificate, and set `Authorization: agora token="<your_token>"`.
+- **[Token authentication](#token-authentication)**: Generate a token with your App ID and App Certificate, and set `Authorization: agora token="<your_token>"`.
 - **[Basic HTTP authentication](#basic-http-authentication)**: Generate a Base64-encoded credential from your customer ID and customer secret, and set `Authorization: Basic <base64_credentials>`.
 
 :::info
 Implement authentication on the server to mitigate the risk of data leakage.
 :::
+
+## Choose an authentication method
+
+You can use either method for any Platform API request. Choose the one recommended for your use case:
+
+| Use case | Recommended method | Why |
+| --- | --- | --- |
+| **Telephony only**: inbound calls, outbound calls, and campaigns, with no RTC channel | [Basic HTTP authentication](#basic-http-authentication) | You authenticate with your customer ID and customer secret. You don't need to generate tokens. |
+| **RTC**, or **RTC and telephony** | [Token authentication](#token-authentication) | An RTC session needs a token for the agent to join the channel. You can use the same token to authenticate your requests. |
+
+{/* TODO(platform-confirm): Confirm with engineering that Basic HTTP authentication is a supported, long-term method for the Platform API. In pre-release testing, it was refused on every route for part of 2026-10-29 and worked again on 2026-10-30. The SDK alpha.3 changelogs describe Basic authentication support as restored. */}
 
 ## Token authentication
 
@@ -42,7 +53,7 @@ The services a token needs depend on the request:
 - **Requests that start an RTC session**: Use a token with the ConvoAI, RTC, and RTM services, such as one from [`ConvoAITokenBuilder.buildToken`](#build-a-convoai-token). Put the same token in the `Authorization` header and in `transport.token`, which lets the agent join the channel. This applies when you [start a session](start-session) or [start an ephemeral session](start-ephemeral-session) with an RTC transport, and when you renew the token with [Update a session](update-session).
 - **All other requests**: A token with only the ConvoAI service is enough. These include managing agents, secrets, phone numbers, and campaigns; listing, retrieving, and stopping sessions; and starting telephony sessions. See [Build a token with specific services](#build-a-token-with-specific-services).
 
-{/* TODO(platform-confirm): In pre-release testing (2026-10-29), a ConvoAI-only token authenticated agent, secret, number, campaign, and session list requests and agent create, retrieve, and delete. An RTC-only token was also accepted for List agents, so the ConvoAI service requirement isn't enforced yet. Session starts were refused for the test projects, so the RTC session rules here are untested. */}
+{/* TODO(platform-confirm): In pre-release testing (2026-10-30), the API requires the ConvoAI service in the `Authorization` token on every route: a token without it (for example, RTC and RTM only) returns `403 InvalidPermission`. ConvoAI-only, ConvoAI + RTC, and ConvoAITokenBuilder tokens all listed resources and started an RTC session. */}
 
 To start an RTC session, you can also generate a separate token for each place. Put the REST authentication token in the `Authorization` header and a token with the RTC service in `transport.token`.
 

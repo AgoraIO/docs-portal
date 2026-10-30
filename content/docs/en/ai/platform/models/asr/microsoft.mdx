@@ -14,37 +14,13 @@ The following example shows how to configure Microsoft Azure as the agent's ASR 
 
 Microsoft Azure supports BYOK only. It isn't available in managed mode. Store your Azure Speech key in a secret set, and refer to it from the agent. Your Azure region isn't secret. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `credential.mode` to `byok` and `credential.fields.key` to a reference to your Azure Speech key in a secret set. Pass the region in `params`. In the following example, the key is stored as `microsoft` in the `support_prod` set:
-
-```json
-"asr": {
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "key": "$secrets.support_prod.microsoft"
-    }
-  },
-  "vendor": "microsoft",
-  "language": "en-US",
-  "params": {
-    "language": "en-US",
-    "region": "eastus",
-    "phrase_list": ["agora", "conversational", "ai", "engine"]
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -108,9 +84,33 @@ agent := agentkit.NewAgent(client).
 ```
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.key` to a reference to your Azure Speech key in a secret set. Pass the region in `params`. In the following example, the key is stored as `microsoft` in the `support_prod` set:
+
+```json
+"asr": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "key": "$secrets.support_prod.microsoft"
+    }
+  },
+  "vendor": "microsoft",
+  "language": "en-US",
+  "params": {
+    "language": "en-US",
+    "region": "eastus",
+    "phrase_list": ["agora", "conversational", "ai", "engine"]
+  }
+}
+```
+
+</TabsContent>
 </Tabs>
 
-{/* TODO(platform-confirm): Since 2026-10-29, the pre-release API requires `params.language` for this vendor. The REST example passes it and saves. The SDK examples fail with `400 MissingRequiredField` at `/pipeline/asr/params/language`, because the SDKs send only the block-level `language` (SDK bug list #34). Retest the SDK examples when the SDKs send `params.language`. */}
+{/* TODO(platform-confirm): The pre-release API requires `params.language` for this vendor. The SDK examples need the alpha.3 SDK previews, which keep `params.language` (SDK bug list #34). Tested on 2026-10-30 from the preview branches: all three SDK examples saved with `params.language`. */}
 
 {/* TODO(platform-confirm): SDK tabs tested in pre-release testing on 2026-10-28. All three SDKs saved the BYOK example. The SDKs send the key as the `key` credential field, and the region and phrase list in `params`. TypeScript and Python also set the block-level `language` to `en-US` (their default interaction language) instead of the vendor's language, while Go leaves it unset (SDK bug list #31). */}
 

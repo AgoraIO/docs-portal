@@ -14,37 +14,13 @@ The following example shows how to configure Gemini as the agent's ASR when you 
 
 Gemini supports BYOK only. It isn't available in managed mode. Store your Gemini API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Gemini API key in a secret set. In the following example, the key is stored as `gemini` in the `support_prod` set:
-
-```json
-"asr": {
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "api_key": "$secrets.support_prod.gemini"
-    }
-  },
-  "vendor": "gemini",
-  "model": "gemini-3.5-transcribe-live",
-  "language": "en-US",
-  "params": {
-    "sample_rate": 16000,
-    "word_timestamp": true
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -108,6 +84,30 @@ agent := agentkit.NewAgent(client).
 	})).
 	WithLlm( /* configure your LLM vendor */ ).
 	WithTts( /* configure your TTS vendor */ )
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Gemini API key in a secret set. In the following example, the key is stored as `gemini` in the `support_prod` set:
+
+```json
+"asr": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.gemini"
+    }
+  },
+  "vendor": "gemini",
+  "model": "gemini-3.5-transcribe-live",
+  "language": "en-US",
+  "params": {
+    "sample_rate": 16000,
+    "word_timestamp": true
+  }
+}
 ```
 
 </TabsContent>

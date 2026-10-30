@@ -14,41 +14,13 @@ The following example shows how to configure Generic TTS as the agent's TTS when
 
 Generic TTS uses your own TTS service. Store the API key for your service in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `url` to your service endpoint. Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the API key for your service. In the following example, the key is stored as `custom_tts` in the `support_prod` set:
-
-```json
-"tts": {
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "api_key": "$secrets.support_prod.custom_tts"
-    }
-  },
-  "vendor": "generic_http",
-  "url": "https://your-tts-service.example.com/v1/audio/speech",
-  "params": {
-    "model": "gpt-4o-mini-tts",
-    "voice": "alloy",
-    "speed": 1.0,
-    "sample_rate": 16000,
-    "response_format": "pcm",
-    "instructions": "calm",
-    "enable_request_id": false
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -120,6 +92,34 @@ agent := agentkit.NewAgent(client).
 		ResponseFormat:   "pcm",
 		AdditionalParams: map[string]interface{}{"instructions": "calm", "enable_request_id": false},
 	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `url` to your service endpoint. Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the API key for your service. In the following example, the key is stored as `custom_tts` in the `support_prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.custom_tts"
+    }
+  },
+  "vendor": "generic_http",
+  "url": "https://your-tts-service.example.com/v1/audio/speech",
+  "params": {
+    "model": "gpt-4o-mini-tts",
+    "voice": "alloy",
+    "speed": 1.0,
+    "sample_rate": 16000,
+    "response_format": "pcm",
+    "instructions": "calm",
+    "enable_request_id": false
+  }
+}
 ```
 
 </TabsContent>

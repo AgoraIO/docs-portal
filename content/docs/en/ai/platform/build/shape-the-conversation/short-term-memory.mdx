@@ -25,27 +25,13 @@ Before you begin, make sure that you have created an agent and started a session
 
 Set the LLM's maximum history to the number of recent messages the LLM receives with each request. It counts messages, not pairs of user and agent messages, and the agent's instructions don't count toward it. It accepts `1` to `1024`, and the default is `32`.
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-In the agent's `llm` block, set `max_history`:
-
-```json
-"pipeline": {
-  "llm": {
-    "max_history": 12
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -86,6 +72,20 @@ llm := vendors.NewOpenAI(vendors.OpenAIOptions{
 ```
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+In the agent's `llm` block, set `max_history`:
+
+```json
+"pipeline": {
+  "llm": {
+    "max_history": 12
+  }
+}
+```
+
+</TabsContent>
 </Tabs>
 
 A lower value keeps each request smaller and faster, but the agent may forget earlier parts of a long conversation. A higher value preserves more context.
@@ -94,27 +94,13 @@ A lower value keeps each request smaller and faster, but the agent may forget ea
 
 To start each conversation with context, such as an earlier exchange or a worked example, add messages to the agent. Each message has a `role` (`system`, `user`, or `assistant`) and `content`. The messages follow the agent's instructions.
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Add `messages` to the agent configuration, at the same level as `instructions`:
-
-```json
-"instructions": "You are a friendly support agent for Acme. Keep your answers short.",
-"messages": [
-  { "role": "user", "content": "What are your opening hours?" },
-  { "role": "assistant", "content": "We're open from 9 AM to 6 PM, Monday to Friday." }
-]
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -166,6 +152,20 @@ llm := vendors.NewOpenAI(vendors.OpenAIOptions{
 ```
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+Add `messages` to the agent configuration, at the same level as `instructions`:
+
+```json
+"instructions": "You are a friendly support agent for Acme. Keep your answers short.",
+"messages": [
+  { "role": "user", "content": "What are your opening hours?" },
+  { "role": "assistant", "content": "We're open from 9 AM to 6 PM, Monday to Friday." }
+]
+```
+
+</TabsContent>
 </Tabs>
 
 You can use the agent's variables in `messages`. For details, see [Personalize conversations](/en/ai/platform/build/shape-the-conversation/personalize-conversations).
@@ -186,36 +186,13 @@ The agent doesn't keep memory between sessions. To give a returning user continu
 
 For example:
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Declare the variable when you create the agent:
-
-```json
-"instructions": "You are a friendly support agent for Acme. Here is what the user discussed in earlier conversations: {{previous_context}}",
-"variables": {
-  "previous_context": {
-    "type": "str"
-  }
-}
-```
-
-Pass the value when you start the session:
-
-```json
-"values": {
-  "previous_context": "The user asked about upgrading to the pro plan and wanted a callback about pricing."
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -336,6 +313,29 @@ session := savedAgent.CreateSession(agentkit.CreateSessionOptions{
 		"previous_context": "The user asked about upgrading to the pro plan and wanted a callback about pricing.",
 	},
 })
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Declare the variable when you create the agent:
+
+```json
+"instructions": "You are a friendly support agent for Acme. Here is what the user discussed in earlier conversations: {{previous_context}}",
+"variables": {
+  "previous_context": {
+    "type": "str"
+  }
+}
+```
+
+Pass the value when you start the session:
+
+```json
+"values": {
+  "previous_context": "The user asked about upgrading to the pro plan and wanted a callback about pricing."
+}
 ```
 
 </TabsContent>

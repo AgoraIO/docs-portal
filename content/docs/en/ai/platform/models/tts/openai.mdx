@@ -14,57 +14,13 @@ The following example shows how to configure OpenAI as the agent's TTS when you 
 
 OpenAI supports managed mode and BYOK. In managed mode, Agora provides access to OpenAI, and you don't need a OpenAI account. For BYOK, store your OpenAI API key in a secret set, and refer to it from the agent. For details, see [Use managed mode](/en/ai/platform/build/managed-mode) and [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-- **Managed mode**
-
-    Set `credential.mode` to `managed` in the `tts` block. Agora provides access to OpenAI, and you don't need a OpenAI account.
-
-    ```json
-    "tts": {
-      "credential": { "mode": "managed" },
-      "vendor": "openai",
-      "params": {
-        "model": "tts-1",
-        "voice": "coral",
-        "instructions": "Please use standard American English, natural tone, moderate pace, and steady intonation",
-        "speed": 1
-      }
-    }
-    ```
-
-- **BYOK**
-
-    Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your OpenAI API key in a secret set. In the following example, the key is stored as `openai` in the `support_prod` set:
-
-    ```json
-    "tts": {
-      "credential": {
-        "mode": "byok",
-        "fields": {
-          "api_key": "$secrets.support_prod.openai"
-        }
-      },
-      "vendor": "openai",
-      "url": "https://api.openai.com/v1/audio/speech",
-      "params": {
-        "model": "gpt-4o-mini-tts",
-        "voice": "coral",
-        "instructions": "Please use standard American English, natural tone, moderate pace, and steady intonation",
-        "speed": 1
-      }
-    }
-    ```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -131,6 +87,50 @@ agent := agentkit.NewAgent(client).
 		Speed:        &speed,
 	}))
 ```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+- **Managed mode**
+
+    Set `credential.mode` to `managed` in the `tts` block. Agora provides access to OpenAI, and you don't need a OpenAI account.
+
+    ```json
+    "tts": {
+      "credential": { "mode": "managed" },
+      "vendor": "openai",
+      "params": {
+        "model": "tts-1",
+        "voice": "coral",
+        "instructions": "Please use standard American English, natural tone, moderate pace, and steady intonation",
+        "speed": 1
+      }
+    }
+    ```
+
+- **BYOK**
+
+    Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your OpenAI API key in a secret set. In the following example, the key is stored as `openai` in the `support_prod` set:
+
+    ```json
+    "tts": {
+      "credential": {
+        "mode": "byok",
+        "fields": {
+          "api_key": "$secrets.support_prod.openai"
+        }
+      },
+      "vendor": "openai",
+      "url": "https://api.openai.com/v1/audio/speech",
+      "params": {
+        "model": "gpt-4o-mini-tts",
+        "voice": "coral",
+        "instructions": "Please use standard American English, natural tone, moderate pace, and steady intonation",
+        "speed": 1
+      }
+    }
+    ```
 
 </TabsContent>
 </Tabs>

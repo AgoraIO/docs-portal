@@ -14,40 +14,13 @@ The following example shows how to configure Anam as the agent's avatar when you
 
 Anam supports BYOK only. It isn't available in managed mode. Store your Anam API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Add an `avatar` block to the `pipeline`. Set `credential.mode` to `byok` and `credential.fields.api_key` to the reference. In the following example, the key is stored as `anam` in the `support_prod` set:
-
-```json
-"avatar": {
-  "enabled": true,
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "api_key": "$secrets.support_prod.anam"
-    }
-  },
-  "vendor": "anam",
-  "params": {
-    "avatar_id": "960f614f-ea88-47c3-9883-f02094f70874",
-    "agora_uid": "<avatar_rtc_uid>",
-    "agora_token": "<avatar_rtc_token>",
-    "sample_rate": 24000,
-    "quality": "high",
-    "video_encoding": "H264"
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -124,6 +97,33 @@ agent := agentkit.NewAgent(client).
 			"video_encoding": "H264",
 		},
 	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Add an `avatar` block to the `pipeline`. Set `credential.mode` to `byok` and `credential.fields.api_key` to the reference. In the following example, the key is stored as `anam` in the `support_prod` set:
+
+```json
+"avatar": {
+  "enabled": true,
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.anam"
+    }
+  },
+  "vendor": "anam",
+  "params": {
+    "avatar_id": "960f614f-ea88-47c3-9883-f02094f70874",
+    "agora_uid": "<avatar_rtc_uid>",
+    "agora_token": "<avatar_rtc_token>",
+    "sample_rate": 24000,
+    "quality": "high",
+    "video_encoding": "H264"
+  }
+}
 ```
 
 </TabsContent>

@@ -14,54 +14,13 @@ The following example shows how to configure Deepgram as the agent's ASR when yo
 
 Deepgram supports managed mode and BYOK. In managed mode, Agora provides access to Deepgram, and you don't need a Deepgram account. For BYOK, store your Deepgram API key in a secret set, and refer to it from the agent. For details, see [Use managed mode](/en/ai/platform/build/managed-mode) and [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-- **Managed mode**
-
-    Set `credential.mode` to `managed` in the `asr` block. Agora provides access to Deepgram, and you don't need a Deepgram account.
-
-    ```json
-    "asr": {
-      "credential": { "mode": "managed" },
-      "vendor": "deepgram",
-      "model": "nova-3",
-      "language": "en-US",
-      "params": {
-        "keyterm": "agora%20convo"
-      }
-    }
-    ```
-
-- **BYOK**
-
-    Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Deepgram API key in a secret set. In the following example, the key is stored as `deepgram` in the `support_prod` set:
-
-    ```json
-    "asr": {
-      "credential": {
-        "mode": "byok",
-        "fields": {
-          "api_key": "$secrets.support_prod.deepgram"
-        }
-      },
-      "vendor": "deepgram",
-      "model": "nova-3",
-      "language": "en-US",
-      "params": {
-        "keyterm": "term1%20term2"
-      }
-    }
-    ```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -121,6 +80,47 @@ agent := agentkit.NewAgent(client).
 	WithLlm( /* configure your LLM vendor */ ).
 	WithTts( /* configure your TTS vendor */ )
 ```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+- **Managed mode**
+
+    Set `credential.mode` to `managed` in the `asr` block. Agora provides access to Deepgram, and you don't need a Deepgram account.
+
+    ```json
+    "asr": {
+      "credential": { "mode": "managed" },
+      "vendor": "deepgram",
+      "model": "nova-3",
+      "language": "en-US",
+      "params": {
+        "keyterm": "agora%20convo"
+      }
+    }
+    ```
+
+- **BYOK**
+
+    Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Deepgram API key in a secret set. In the following example, the key is stored as `deepgram` in the `support_prod` set:
+
+    ```json
+    "asr": {
+      "credential": {
+        "mode": "byok",
+        "fields": {
+          "api_key": "$secrets.support_prod.deepgram"
+        }
+      },
+      "vendor": "deepgram",
+      "model": "nova-3",
+      "language": "en-US",
+      "params": {
+        "keyterm": "term1%20term2"
+      }
+    }
+    ```
 
 </TabsContent>
 </Tabs>

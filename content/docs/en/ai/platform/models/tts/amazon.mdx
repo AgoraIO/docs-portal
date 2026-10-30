@@ -14,37 +14,13 @@ The following example shows how to configure Amazon Polly as the agent's TTS whe
 
 Amazon Polly supports BYOK only. It isn't available in managed mode. Store your AWS credentials in a secret set, and refer to them from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `credential.mode` to `byok`, and set `credential.fields.aws_access_key_id` and `credential.fields.aws_secret_access_key` to references to your AWS access key ID and secret access key. Your AWS region isn't secret. Pass it in `params`. In the following example, the keys are stored as `amazon_access_key_id` and `amazon` in the `support_prod` set:
-
-```json
-"tts": {
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "aws_access_key_id": "$secrets.support_prod.amazon_access_key_id",
-      "aws_secret_access_key": "$secrets.support_prod.amazon"
-    }
-  },
-  "vendor": "amazon",
-  "params": {
-    "region_name": "<your_aws_region>",
-    "voice": "Joanna",
-    "engine": "neural"
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -112,6 +88,30 @@ agent := agentkit.NewAgent(client).
 		VoiceID:   "Joanna",
 		Engine:    "neural",
 	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok`, and set `credential.fields.aws_access_key_id` and `credential.fields.aws_secret_access_key` to references to your AWS access key ID and secret access key. Your AWS region isn't secret. Pass it in `params`. In the following example, the keys are stored as `amazon_access_key_id` and `amazon` in the `support_prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "aws_access_key_id": "$secrets.support_prod.amazon_access_key_id",
+      "aws_secret_access_key": "$secrets.support_prod.amazon"
+    }
+  },
+  "vendor": "amazon",
+  "params": {
+    "region_name": "<your_aws_region>",
+    "voice": "Joanna",
+    "engine": "neural"
+  }
+}
 ```
 
 </TabsContent>

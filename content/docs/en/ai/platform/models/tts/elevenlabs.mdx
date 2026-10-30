@@ -20,37 +20,13 @@ The following example shows how to configure ElevenLabs as the agent's TTS when 
 
 ElevenLabs supports BYOK only. It isn't available in managed mode. Store your ElevenLabs API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `credential.mode` to `byok` and `credential.fields.key` to a reference to your ElevenLabs API key. In the following example, the key is stored as `elevenlabs` in the `support_prod` set:
-
-```json
-"tts": {
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "key": "$secrets.support_prod.elevenlabs"
-    }
-  },
-  "vendor": "elevenlabs",
-  "url": "wss://api.elevenlabs.io/v1",
-  "params": {
-    "model_id": "eleven_flash_v2_5",
-    "voice_id": "pNInz6obpgDQGcFmaJgB",
-    "sample_rate": 24000
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -113,6 +89,30 @@ agent := agentkit.NewAgent(client).
 		VoiceID:    "pNInz6obpgDQGcFmaJgB",
 		SampleRate: &sampleRate,
 	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.key` to a reference to your ElevenLabs API key. In the following example, the key is stored as `elevenlabs` in the `support_prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "key": "$secrets.support_prod.elevenlabs"
+    }
+  },
+  "vendor": "elevenlabs",
+  "url": "wss://api.elevenlabs.io/v1",
+  "params": {
+    "model_id": "eleven_flash_v2_5",
+    "voice_id": "pNInz6obpgDQGcFmaJgB",
+    "sample_rate": 24000
+  }
+}
 ```
 
 </TabsContent>
