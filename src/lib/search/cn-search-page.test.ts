@@ -349,6 +349,122 @@ describe('full CN search adapter', () => {
       '参考生成 Token',
     );
   });
+  it('removes code-tab fence metadata from old-index snippets without dropping code or highlights', () => {
+    expect(
+      cleanSearchSnippet(
+        '生成 <mark>Token</mark>。\n```cpp tab="C++" tabGroup="token-sample-code"\nconst char* tabGroup = "app";\n```\n```python tab="Python3" tabGroup="token-sample-code"\nprint("Token")\n```',
+      ),
+    ).toBe(
+      '生成 <mark>Token</mark>。 const char* tabGroup = "app"; print("Token")',
+    );
+  });
+  it.each(['```cpp', '~~~~cpp'])(
+    'removes fence metadata after the Meilisearch crop marker (%s)',
+    (fence) => {
+      expect(
+        cleanSearchSnippet(
+          `…${fence} tab="C++" tabGroup="token-sample-code"\nconst char* tabGroup = "app"; // <mark>Token</mark>\n…`,
+        ),
+      ).toBe('… const char* tabGroup = "app"; // <mark>Token</mark> …');
+    },
+  );
+  it('cleans cropped indented fences without removing literal metadata in prose or code', () => {
+    expect(
+      cleanSearchSnippet(
+        '正文 tab="C++" tabGroup="example"\n  …  ```cpp tab="C++" tabGroup="token-sample-code"\nconst char* tabGroup = "app";\n```',
+      ),
+    ).toBe('正文 tab="C++" tabGroup="example" … const char* tabGroup = "app";');
+  });
+  it('cleans a cropped old-index result through the search adapter while preserving highlights', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      Response.json({
+        hits: [
+          {
+            ...hit,
+            _formatted: {
+              content:
+                '…```cpp tab="C++" tabGroup="token-sample-code"\nconst char* token = "<mark>Token</mark>";\n```…',
+            },
+          },
+        ],
+        totalHits: 1,
+        totalPages: 1,
+        page: 1,
+      }),
+    );
+    const result = await queryCnSearch(
+      config,
+      parseSearchPageState({ q: 'Token', type: 'docs' }),
+    );
+    expect(result.groups[0].sections[0].highlights?.content).toEqual([
+      { text: '… const char* token = "', highlighted: false },
+      { text: 'Token', highlighted: true },
+      { text: '";', highlighted: false },
+    ]);
+  });
+  it('cleans a cropped legacy fence header through the search adapter while preserving code highlights', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      Response.json({
+        hits: [
+          {
+            ...hit,
+            _formatted: {
+              content:
+                '…kotlin  tabGroup="<mark>language</mark>"\n    val uuid = "unique-image-id-123"\n    val <mark>imageUrl</mark> = "https://example.com/image.jpg"',
+            },
+          },
+        ],
+        totalHits: 1,
+        totalPages: 1,
+        page: 1,
+      }),
+    );
+
+    const result = await queryCnSearch(
+      config,
+      parseSearchPageState({ q: 'language', type: 'docs' }),
+    );
+    expect(result.groups[0].sections[0].highlights.content).toEqual([
+      {
+        text: '… val uuid = "unique-image-id-123" val ',
+        highlighted: false,
+      },
+      { text: 'imageUrl', highlighted: true },
+      { text: ' = "https://example.com/image.jpg"', highlighted: false },
+    ]);
+  });
+  it.each([
+    '…```cpp tabGroup="language"',
+    '…~~~python tab="Python" tabGroup="language"',
+    '…c tabGroup="datatype"',
+    '...<em>js</em> <mark>tabGroup</mark>="language"',
+    '…curl title="Request example" tabGroup="language" lineNumbers',
+    "…text tabGroup='language'",
+  ])(
+    'removes the cropped fence header %s while retaining the following example',
+    (header) => {
+      expect(
+        cleanSearchSnippet(
+          `${header}\r\nconst <mark>tabGroup</mark> = "app";\r\nrun();`,
+        ),
+      ).toBe(
+        `${header.startsWith('...') ? '...' : '…'} const <mark>tabGroup</mark> = "app"; run();`,
+      );
+    },
+  );
+  it.each([
+    '…const tabGroup="app"',
+    '…var tabGroup = "app";',
+    '…tabGroup="app"',
+    '…kotlin tabGroup="language" is metadata in this example.',
+    '…python print("Token")',
+    '…unknown tabGroup="language"',
+  ])(
+    'preserves cropped code and prose that are not recognizable fence headers: %s',
+    (snippet) => {
+      expect(cleanSearchSnippet(snippet)).toBe(snippet);
+    },
+  );
   it('uses exact pagination and filters, groups sections in ranking order, and discards non-public results', async () => {
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
       new Response(

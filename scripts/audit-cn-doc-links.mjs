@@ -11,6 +11,7 @@ import {
   resolvePlatformQueryUrl,
 } from '../src/lib/platforms/query-route.ts';
 import { normalizePlatformKey } from '../src/lib/platforms/registry.ts';
+import { DOCS_PRERENDER_PATHS_MANIFEST_PATH } from '../src/lib/published-docs-routes.server.ts';
 import {
   hasPlatformQueryScope,
   sameQuery,
@@ -106,8 +107,14 @@ export function fingerprintArtifacts(
   manifestPath = 'public/__static/docs-routes.json',
 ) {
   const hash = createHash('sha256');
+  const manifestFile = path.resolve(repoRoot, manifestPath);
+  const prerenderFile = path.join(
+    path.dirname(manifestFile),
+    path.basename(DOCS_PRERENDER_PATHS_MANIFEST_PATH),
+  );
   const files = [
-    path.resolve(repoRoot, manifestPath),
+    manifestFile,
+    ...(fs.existsSync(prerenderFile) ? [prerenderFile] : []),
     ...listFiles(path.resolve(repoRoot, htmlRoot)).filter(
       (file) => path.basename(file) !== 'cn-link-build.json',
     ),

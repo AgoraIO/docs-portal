@@ -3,6 +3,7 @@ import GithubSlugger from 'github-slugger';
 import type { Root, RootContent } from 'mdast';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
+import { visit } from 'unist-util-visit';
 import { zhCNApiReferenceCards } from '../api-reference-cards-data.zh-cn';
 import type { SearchEntry } from '../docs-search';
 import { isKnownPlatform, platformRegistry } from '../platforms/registry';
@@ -50,6 +51,167 @@ function getRouteMetadata(route: PublishedDocsRoute) {
   };
 }
 
+const markdownParser = unified().use(remarkParse);
+// Fumadocs serializes these renderer containers with two spaces per level.
+// Unwrap complete generated blocks, preserving ordinary fenced examples even
+// when an example itself contains component-looking text.
+function normalizeSearchContainers(markdown: string) {
+  if (!/<(?:CodeBlockTabs|CalloutContainer)\b/.test(markdown)) return markdown;
+  const literals: [number, number][] = [];
+  const fencedCode: [number, number][] = [];
+  visit(markdownParser.parse(markdown), (node) => {
+    if (node.type !== 'inlineCode' && node.type !== 'code') return;
+    const start = node.position?.start.offset;
+    const end = node.position?.end.offset;
+    if (start === undefined || end === undefined) return;
+    if (node.type === 'inlineCode') literals.push([start, end]);
+    // AST positions point at the fence even inside blockquotes or list items.
+    // Indented serialized platform content is not a literal fenced example.
+    else if (/^(?:`{3,}|~{3,})/.test(markdown.slice(start)))
+      fencedCode.push([start, end]);
+  });
+  fencedCode.sort(([a], [b]) => a - b);
+  const isLiteral = (offset: number) =>
+    literals.some(([start, end]) => start <= offset && offset < end);
+  const output: string[] = [];
+  let original: string[] = [];
+  let normalized: string[] = [];
+  const stack: { name: string; indent: number }[] = [];
+  let fence = '';
+  let fenceQuoteDepth = 0;
+  let tableFence = false;
+  let offset = 0;
+  let fencedCodeIndex = 0;
+  for (const line of markdown.split('\n')) {
+    const lineOffset = offset;
+    offset += line.length + 1;
+    const indent = line.match(/^[ \t]*/)?.[0].length ?? 0;
+    const contentIndent = stack.length
+      ? stack[stack.length - 1].indent + 2 - stack[0].indent
+      : 0;
+    const content = line.slice(Math.min(indent, contentIndent));
+    while (
+      fencedCodeIndex < fencedCode.length &&
+      fencedCode[fencedCodeIndex][1] <= lineOffset
+    )
+      fencedCodeIndex++;
+    const literal = fencedCode[fencedCodeIndex];
+    if (literal && literal[0] < offset) {
+      // A serialized table-cell closing fence can look like an opening fence
+      // to remark. Let the existing table-fence state own that boundary.
+      if (tableFence) fencedCodeIndex++;
+      else {
+        const active = stack.length > 0;
+        (active ? normalized : output).push(active ? content : line);
+        if (active) original.push(line);
+        continue;
+      }
+    }
+    const marker = line.match(
+      /^[ \t]*(?:(?:>[ \t]?|(?:[-+*]|\d+[.)])[ \t]+)[ \t]*)*(`{3,}|~{3,})([^\r\n]*)$/,
+    );
+    const markerPrefix = marker
+      ? line.slice(0, line.length - marker[1].length - marker[2].length)
+      : '';
+    const quoteDepth = (markerPrefix.match(/>/g) ?? []).length;
+    const hasListMarker = /(?:[-+*]|\d+[.)])[ \t]+/.test(markerPrefix);
+    const tableOpening =
+      !fence && line.match(/^[ \t]*\|[ \t]*(`{3,}|~{3,})([^\r\n]*)$/);
+    const opening =
+      !fence &&
+      !marker &&
+      !tableOpening &&
+      [...line.matchAll(/<(CodeBlockTabs|CalloutContainer)\b/g)].some(
+        (match) => !isLiteral(lineOffset + (match.index ?? 0)),
+      );
+    const active = stack.length > 0 || opening;
+    const tableClosing =
+      tableFence &&
+      line.match(
+        /^[ \t]*(`{3,}|~{3,})[ \t]*\|(?:[ \t]*(`{3,}|~{3,})([^\r\n]*))?[ \t]*$/,
+      );
+    const padding = ' '.repeat(Math.max(0, indent - contentIndent));
+    let renderedTable: string | undefined;
+    if (tableOpening) {
+      renderedTable = `${padding}${tableOpening[1]}${tableOpening[2]}`;
+      fence = tableOpening[1];
+      fenceQuoteDepth = 0;
+      tableFence = true;
+    } else if (
+      tableClosing &&
+      tableClosing[1][0] === fence[0] &&
+      tableClosing[1].length >= fence.length
+    ) {
+      renderedTable = `${padding}${tableClosing[1]}`;
+      if (tableClosing[2])
+        renderedTable += `\n\n${padding}${tableClosing[2]}${tableClosing[3]}`;
+      fence = tableClosing[2] ?? '';
+      tableFence = Boolean(fence);
+    }
+    if (renderedTable !== undefined) {
+      (active ? normalized : output).push(renderedTable);
+      if (active) original.push(line);
+      continue;
+    }
+    if (marker) {
+      const openingFence = !fence;
+      if (!fence) {
+        fence = marker[1];
+        fenceQuoteDepth = quoteDepth;
+      } else if (
+        marker[1][0] === fence[0] &&
+        marker[1].length >= fence.length &&
+        quoteDepth === fenceQuoteDepth &&
+        !hasListMarker &&
+        !marker[2].trim()
+      )
+        fence = '';
+      if (!fence) tableFence = false;
+      const language = marker[2].trim().split(/[ \t]/, 1)[0];
+      const rendered =
+        active && openingFence
+          ? `${markerPrefix.slice(Math.min(indent, contentIndent))}${marker[1]}${language.includes('=') ? '' : language}`
+          : active
+            ? content
+            : line;
+      (active ? normalized : output).push(rendered);
+      if (active) original.push(line);
+      continue;
+    }
+    if (!active) {
+      output.push(line);
+      continue;
+    }
+    original.push(line);
+    if (fence) {
+      normalized.push(content);
+      continue;
+    }
+    normalized.push(
+      content.replace(
+        /<(\/?)(CodeBlockTabs(?:List|Trigger)?|CodeBlockTab|CalloutContainer|CalloutTitle|CalloutDescription)\b(?:[^"'>]|"[^"]*"|'[^']*')*>/g,
+        (tag, closing: string, name: string, tagOffset: number) => {
+          if (
+            isLiteral(lineOffset + Math.min(indent, contentIndent) + tagOffset)
+          )
+            return tag;
+          if (closing) {
+            const index = stack.map((entry) => entry.name).lastIndexOf(name);
+            if (index >= 0) stack.splice(index);
+          } else if (!tag.endsWith('/>')) stack.push({ name, indent });
+          return '';
+        },
+      ),
+    );
+    if (!stack.length) {
+      output.push('', ...normalized, '');
+      original = [];
+      normalized = [];
+    }
+  }
+  // A truncated container must not cause the rest of the source to disappear.
+  return [...output, ...original].join('\n');
+}
 function text(node: Root | RootContent): string {
   if ('value' in node) {
     return node.type === 'html' ? load(node.value).text() : node.value;
@@ -72,7 +234,8 @@ export function extractPublishedCnSections(
     ...route,
     canonicalPath: toCnContentSearchUrl(route.canonicalPath),
   };
-  let tree = unified().use(remarkParse).parse(markdown);
+  markdown = normalizeSearchContainers(markdown);
+  let tree = markdownParser.parse(markdown);
   // 平台和折叠容器导出后可能保留四空格缩进，remark 会把正文误当代码。
   // 非平台页必须由真实 HTML 标题确认锚点，不能把普通代码示例提升成章节。
   if (route.platform || renderedHeadingIds?.size) {
@@ -129,7 +292,7 @@ export function extractPublishedCnSections(
           value +
           markdown.slice(node.position.end.offset);
       }
-      tree = unified().use(remarkParse).parse(markdown);
+      tree = markdownParser.parse(markdown);
     }
   }
   const slugger = new GithubSlugger();
