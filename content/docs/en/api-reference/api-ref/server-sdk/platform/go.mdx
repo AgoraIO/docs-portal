@@ -5,7 +5,7 @@ description: API reference for the Conversational AI Platform (Preview) features
 
 {/* PLATFORM-NEW: new page for the Platform SDK reference. Status: drafted on 2026-10-28 from the agora-agents-go preview branch (feat/v3-api-preview, commit 72032cd) and its docs/guides/v3-preview.md, pending review. Signatures were checked against the SDK source; the examples on the Platform guide pages were run in pre-release testing. */}
 
-{/* TODO(platform-confirm): Platform support isn't in a tagged release of `github.com/AgoraIO/agora-agents-go/v2` yet (the latest tag is v2.12.0). The TypeScript and Python previews are published as v3.0.0-alpha.2, and the Go v3.0.0-alpha.2 changelog is ready on feat/v3-api-preview. Replace `@v3-api-preview` with the tag when it's published, and recheck this page against that release. */}
+{/* TODO(platform-confirm): Pinned to v2.14.0-alpha.3 ahead of its publication, which the SDK team confirmed for the launch. The code was tested on 2026-10-30 from the Go preview branch (c6d81a2): the client setup, agent and session examples, and Basic authentication work. After publication, verify that this install command works. */}
 
 The `github.com/AgoraIO/agora-agents-go/v2` Go SDK supports the Conversational AI Platform (Preview) alongside the Voice Agent API. This page covers the Platform features: saved agents, Platform sessions, secret sets, phone numbers, campaigns, and the low-level `client.V3` client.
 
@@ -13,10 +13,10 @@ The vendor constructors, such as `vendors.NewOpenAI()` and `vendors.NewDeepgramS
 
 ## Install
 
-Platform support is on the SDK's `v3-api-preview` branch. You need Go 1.21 or later. Add the SDK to your Go module:
+Platform support is in the SDK preview, version v2.14.0-alpha.3. You need Go 1.21 or later. Add the SDK to your Go module:
 
 ```bash
-go get github.com/AgoraIO/agora-agents-go/v2@v3-api-preview
+go get github.com/AgoraIO/agora-agents-go/v2@v2.14.0-alpha.3
 go mod tidy
 ```
 
@@ -35,25 +35,40 @@ The `v3` package holds the low-level Platform types, such as `v3.ListOptions`. I
 
 ## AgoraClient
 
-Create a client with your App ID and App Certificate. The SDK generates a ConvoAI token for each Platform request.
+Create a client with one of the following authentication methods. To choose one, see [Choose an authentication method](/en/api-reference/api-ref/conversational-ai/platform/authentication#choose-an-authentication-method).
 
-```go
-client := agentkit.NewAgoraClient(agentkit.AgoraClientOptions{
-	Area:           option.AreaUS,
-	AppID:          os.Getenv("AGORA_APP_ID"),
-	AppCertificate: os.Getenv("AGORA_APP_CERTIFICATE"),
-})
-```
+- **Token authentication**: Pass your App ID and App Certificate. The SDK generates a ConvoAI token for each Platform request.
+
+    ```go
+    client := agentkit.NewAgoraClient(agentkit.AgoraClientOptions{
+    	Area:           option.AreaUS,
+    	AppID:          os.Getenv("AGORA_APP_ID"),
+    	AppCertificate: os.Getenv("AGORA_APP_CERTIFICATE"),
+    })
+    ```
+
+- **Basic HTTP authentication**: Pass your App ID, customer ID, and customer secret. The SDK sends `Authorization: Basic <base64_credentials>` with each request.
+
+    ```go
+    client := agentkit.NewAgoraClient(agentkit.AgoraClientOptions{
+    	Area:           option.AreaUS,
+    	AppID:          os.Getenv("AGORA_APP_ID"),
+    	CustomerID:     os.Getenv("AGORA_CUSTOMER_ID"),
+    	CustomerSecret: os.Getenv("AGORA_CUSTOMER_SECRET"),
+    })
+    ```
 
 | Field | Type | Description |
 |---|---|---|
 | `Area` | `option.Area` | Required. The region for Voice Agent API routing. Platform requests use the Platform origin. |
 | `AppID` | `string` | Required. Your Agora App ID. |
-| `AppCertificate` | `string` | Your App Certificate. The SDK uses it to generate a token for each request. |
-| `Token` | `string` | A token you generated yourself, instead of `AppCertificate`. |
+| `AppCertificate` | `string` | Your App Certificate. With token authentication, the SDK uses it to generate a token for each request. With Basic authentication, it's optional, and the SDK uses it only to generate the agent's RTC token. |
+| `Token` | `string` | A token you generated yourself, instead of `AppCertificate`. The token must include the ConvoAI service. |
+| `CustomerID` | `string` | Your customer ID, for Basic authentication. Set it with `CustomerSecret`. Don't combine it with `Token`. |
+| `CustomerSecret` | `string` | Your customer secret, for Basic authentication. |
 | `V3` | `*agentkit.V3Options` | Platform request settings. `BaseURL` overrides the Platform origin, which defaults to `https://preview.ai.agora.io`. You can also set the `AGORA_AGENTS_V3_BASE_URL` environment variable. The option takes precedence. |
 
-Platform requests support token authentication only. Basic auth isn't supported. For details, see [Authentication](/en/api-reference/api-ref/conversational-ai/platform/authentication).
+Without an App Certificate, the SDK can't generate the agent's RTC token. To start an RTC session with a Basic client and no App Certificate, pass the RTC token when you create the session.
 
 The client exposes the following Platform resources:
 
@@ -122,7 +137,7 @@ Creates a session from the builder without saving it. The SDK starts an [ephemer
 - **Unsupported fields**: Builder settings without a Platform equivalent, such as SAL, advanced features, labels, RTC settings, and pipeline IDs, make `Save()` return an error that wraps `agentkit.ErrUnsupportedField` and lists them.
 - **Generated types**: Interruption, turn detection, and filler word settings use generated types from the root package. Where `agentkit` has a shorter alias, such as `agentkit.FillerWordsContent` or `agentkit.InterruptionModeKeywords`, use it.
 
-{/* TODO(platform-confirm): SDK bug list #1 and #15 are fixed in the SDK preview commits of 2026-10-29. #18: interruption, turn detection, and filler word options take the Voice Agent field shapes, and some types have no `agentkit` alias. */}
+{/* TODO(platform-confirm): SDK bug list #1 and #15 are fixed in the SDK preview commits of 2026-10-29. #18: interruption, turn detection, and filler word options take the Voice Agent field shapes, by design. The `agentkit` aliases and pointer helpers that #18 asked for are in v2.14.0-alpha.3. */}
 
 ## Secret references
 

@@ -2106,14 +2106,20 @@ components:
     basicAuth:
       type: http
       scheme: basic
-      description: Use Basic HTTP authentication with your Agora customer ID and customer secret.
+      description: >-
+        Use Basic HTTP authentication with your Agora customer ID and customer secret.
+        Recommended for telephony-only use. See [Choose an authentication
+        method](/en/api-reference/api-ref/conversational-ai/platform/authentication#choose-an-authentication-method).
     tokenAuth:
       type: apiKey
       in: header
       name: Authorization
       description: >-
         Use a token generated with your App ID and App Certificate, in the format
-        `agora token="<your_token>"`. A token with the ConvoAI service authenticates any request.
+        `agora token="<your_token>"`. Recommended when your agent joins an RTC channel. See
+        [Choose an authentication
+        method](/en/api-reference/api-ref/conversational-ai/platform/authentication#choose-an-authentication-method).
+        A token with the ConvoAI service authenticates any request.
         To start an RTC session, also include the RTC service and pass the same token in
         `transport.token`.
   parameters:
