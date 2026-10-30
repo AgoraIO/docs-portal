@@ -550,10 +550,10 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
 
   it.each([
     [
-      ['conversational-ai', 'rest-api', 'user-guides', 'http-basic-auth'],
+      ['conversational-ai', 'rest-api', 'api', 'response-code'],
       ['Agent SDK API', '客户端组件 API'],
     ],
-    [['cloud-recording', 'restful', 'landing-page'], ['REST Client API']],
+    [['api-ref', 'cloud-recording', 'acquire'], ['REST Client API']],
   ])(
     'keeps cross-entry SDK links out of RESTful sidebars',
     async (route, excluded) => {

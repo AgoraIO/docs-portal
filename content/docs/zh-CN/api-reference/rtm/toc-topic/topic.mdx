@@ -66,7 +66,7 @@ StreamChannel
 - 在执行此操作之前，用户需要首先创建 `StreamChannel` 对象实例，并调用 `join` 方法加入频道，详见[频道](/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-basic)。
 :::
 
-成功加入 Topic 后，订阅该 Topic 并添加事件监听的用户会收到 `REMOTE_JOIN` 类型的 `onTopicEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功加入 Topic 后，订阅该 Topic 并添加事件监听的用户会收到 `REMOTE_JOIN` 类型的 `onTopicEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
 
 ### 接口方法
 
@@ -128,7 +128,7 @@ streamChannel.joinTopic("topic_name", options, new ResultCallback<Void>() {
 
 `publishTopicMessage` 方法用于向 Topic 发送消息，频道中订阅此 Topic 及此消息发布者的用户会在 100 毫秒内收到此消息。调用 `publishTopicMessage` 方法需要用户首先加入 Stream Channel 并且通过调用 `joinTopic` 方法注册成为该 Topic 的消息发布者。
 
-用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/toc-configuration/configuration)。
+用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/android/configuration)。
 
 ### 接口方法
 
@@ -224,7 +224,7 @@ streamChannel.publishTopicMessage("topic_name", message, options, new ResultCall
 
 当你不再需要向某个 Topic 发布消息，你可以调用 `leaveTopic` 方法取消注册为该 Topic 的消息发布者，从而释放资源。该方法不影响你是否订阅该 Topic，也不影响其他用户对该 Topic 的任何操作。
 
-成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `REMOTE_LEAVE` 类型的 `onTopicEvent` 事件通知，详见 [事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `REMOTE_LEAVE` 类型的 `onTopicEvent` 事件通知，详见 [事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
 
 ### 接口方法
 
@@ -455,7 +455,7 @@ StreamChannel
 - 在执行此操作之前，用户需要首先创建 `StreamChannel` 对象实例，并调用 `join` 方法加入频道，详见[频道](/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-basic)。
 :::
 
-成功加入 Topic 后，订阅该 Topic 并添加事件监听的用户会收到 `remoteJoinTopic` 类型的 `topic` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功加入 Topic 后，订阅该 Topic 并添加事件监听的用户会收到 `remoteJoinTopic` 类型的 `topic` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 ### 接口方法
 
@@ -527,7 +527,7 @@ class RtmStatus {
 
 `publishTextMessage` 方法用于向 Topic 发送 String 型消息，频道中订阅此 Topic 及此消息发布者的用户会在 100 毫秒内收到此消息。调用 `publishTextMessage` 方法需要用户首先加入 Stream Channel 并且通过调用 `joinTopic` 方法注册成为该 Topic 的消息发布者。
 
-用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/toc-configuration/configuration)。
+用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/flutter/configuration)。
 
 ### 接口方法
 
@@ -607,7 +607,7 @@ class RtmStatus {
 
 `publishBinaryMessage` 方法用于向 Topic 发送 Binary 型消息，频道中订阅此 Topic 及此消息发布者的用户会在 100 毫秒内收到此消息。调用 `publishBinaryMessage` 方法需要用户首先加入 Stream Channel 并且通过调用 `joinTopic` 方法注册成为该 Topic 的消息发布者。
 
-用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/toc-configuration/configuration)。
+用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/flutter/configuration)。
 
 ### 接口方法
 
@@ -679,7 +679,7 @@ class RtmStatus {
 
 当你不再需要向某个 Topic 发布消息，你可以调用 `leaveTopic` 方法取消注册为该 Topic 的消息发布者，从而释放资源。该方法不影响你是否订阅该 Topic，也不影响其他用户对该 Topic 的任何操作。
 
-成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `remoteLeaveTopic` 类型的 `topic` 事件通知，详见 [事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `remoteLeaveTopic` 类型的 `topic` 事件通知，详见 [事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 ### 接口方法
 
@@ -917,7 +917,7 @@ IStreamChannel
 - 在执行此操作之前，用户需要首先创建 `StreamChannel` 对象实例，并调用 `join` 方法加入频道，详见[频道](/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-basic)。
 :::
 
-成功加入 Topic 后，订阅该 Topic 并添加事件监听的用户会收到 `REMOTE_JOIN` 类型的 `topic` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功加入 Topic 后，订阅该 Topic 并添加事件监听的用户会收到 `REMOTE_JOIN` 类型的 `topic` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
 
 ### 接口方法
 
@@ -986,7 +986,7 @@ try {
 
 `publishTopicMessage` 方法用于向 Topic 发送消息，频道中订阅此 Topic 及此消息发布者的用户会在 100 毫秒内收到此消息。调用 `publishTopicMessage` 方法需要用户首先加入 Stream Channel 并且通过调用 `joinTopic` 方法注册成为该 Topic 的消息发布者。
 
-用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/toc-configuration/configuration)。
+用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/harmonyos/configuration)。
 
 ### 接口方法
 
@@ -1077,7 +1077,7 @@ try {
 
 当你不再需要向某个 Topic 发布消息，你可以调用 `leaveTopic` 方法取消注册为该 Topic 的消息发布者，从而释放资源。该方法不影响你是否订阅该 Topic，也不影响其他用户对该 Topic 的任何操作。
 
-成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `REMOTE_LEAVE` 类型的 `topic` 事件通知，详见 [事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `REMOTE_LEAVE` 类型的 `topic` 事件通知，详见 [事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1325,7 +1325,7 @@ AgoraRtmStreamChannel
 - 在执行此操作之前，用户需要首先创建 `AgoraRtmStreamChannel` 对象实例，并调用 `joinWithOption` 方法加入频道，详见[频道](/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-basic)。
 :::
 
-成功加入 Topic 后，订阅该 Topic 并添加事件监听的用户会收到 `AgoraRtmTopicEventTypeRemoteJoinTopic` 类型的 `didReceiveTopicEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功加入 Topic 后，订阅该 Topic 并添加事件监听的用户会收到 `AgoraRtmTopicEventTypeRemoteJoinTopic` 类型的 `didReceiveTopicEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1381,7 +1381,7 @@ join_topic_opt.qos = AgoraRtmMessageQosOrdered;
 
 `publishTopicMessage` 方法用于向 Topic 发送消息，频道中订阅此 Topic 及此消息发布者的用户会在 100 毫秒内收到此消息。调用 `publishTopicMessage` 方法需要用户首先加入 Stream Channel 并且通过调用 `joinTopic` 方法注册成为该 Topic 的消息发布者。
 
-用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/toc-configuration/configuration)。
+用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/ios/configuration)。
 
 ### 接口方法
 
@@ -1465,7 +1465,7 @@ NSString* channel = @"your_channel";
 
 当你不再需要向某个 Topic 发布消息，你可以调用 `leaveTopic` 方法取消注册为该 Topic 的消息发布者，从而释放资源。该方法不影响你是否订阅该 Topic，也不影响其他用户对该 Topic 的任何操作。
 
-成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `AgoraRtmTopicEventTypeRemoteLeaveTopic` 类型的 `didReceiveTopicEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `AgoraRtmTopicEventTypeRemoteLeaveTopic` 类型的 `didReceiveTopicEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1673,7 +1673,7 @@ RTMStreamChannel
 - 在执行此操作之前，用户需要首先创建 `RTMStreamChannel` 对象实例，并调用 `join` 方法加入频道，详见[频道](/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-basic)。
 :::
 
-成功加入 Topic 后，订阅该 Topic 并添加事件监听的用户会收到 `REMOTE_JOIN` 类型的 `topic` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功加入 Topic 后，订阅该 Topic 并添加事件监听的用户会收到 `REMOTE_JOIN` 类型的 `topic` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1732,7 +1732,7 @@ type ErrorInfo = {
 
 `publishTopicMessage` 方法用于向 Topic 发送消息，频道中订阅此 Topic 及此消息发布者的用户会在 100 毫秒内收到此消息。调用 `publishTopicMessage` 方法需要用户首先加入 Stream Channel 并且通过调用 `joinTopic` 方法注册成为该 Topic 的消息发布者。
 
-用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/toc-configuration/configuration)。
+用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/web/configuration)。
 
 ### 接口方法
 
@@ -1821,7 +1821,7 @@ type ErrorInfo = {
 
 当你不再需要向某个 Topic 发布消息，你可以调用 `leaveTopic` 方法取消注册为该 Topic 的消息发布者，从而释放资源。该方法不影响你是否订阅该 Topic，也不影响其他用户对该 Topic 的任何操作。
 
-成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `REMOTE_LEAVE` 类型的 `topic` 事件通知，详见 [事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `REMOTE_LEAVE` 类型的 `topic` 事件通知，详见 [事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
 ### 接口方法
 
@@ -2138,7 +2138,7 @@ else
 
 `PublishTopicMessageAsync` 方法用于向 Stream Channel 中的 Topic 发送消息，频道中订阅此 Topic 及此消息发布者的用户会在 100 毫秒内收到此消息。调用 `PublishTopicMessageAsync` 方法需要用户首先加入 Stream Channel 并且通过调用 `JoinTopicAsync` 方法注册成为该 Topic 的消息发布者。
 
-用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/toc-configuration/configuration)。
+用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/unity/configuration)。
 
 ### 接口方法
 
@@ -2209,7 +2209,7 @@ if (status.Error)
 
 当你不再需要向某个 Topic 发布消息，你可以调用 `LeaveTopicAsync` 方法取消注册为该 Topic 的消息发布者，从而释放资源。该方法不影响你是否订阅该 Topic，也不影响其他用户对该 Topic 的任何操作。
 
-成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `REMOTE_LEAVE` 类型的 `OnTopicEvent` 事件通知，详见 [事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `REMOTE_LEAVE` 类型的 `OnTopicEvent` 事件通知，详见 [事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
 
 ### 接口方法
 

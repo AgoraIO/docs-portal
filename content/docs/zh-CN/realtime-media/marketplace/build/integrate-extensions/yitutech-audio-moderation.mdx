@@ -6,7 +6,7 @@ description: "了解如何在云市场中依图语音审核，包括适用场景
 
 本文介绍如何在你的项目中使用依图语音审核服务。
 
-通过[声网云端录制](/zh-CN/api-reference/cloud-recording/restful/api/reference)提供的 RESTful API，你可以对声网频道内的音频流使用第三方语音审核服务。当频道内有用户发送音频流时，审核结果会由第三方直接返回到你的服务器。
+通过[声网云端录制](/zh-CN/realtime-media/cloud-recording/reference/api-reference)提供的 RESTful API，你可以对声网频道内的音频流使用第三方语音审核服务。当频道内有用户发送音频流时，审核结果会由第三方直接返回到你的服务器。
 
 <DocsImage alt="语音审核流程" src="https://web-cdn.agora.io/docs-files/1669343507453" displayWidth="80%" />
 
@@ -230,7 +230,7 @@ curl --location --request POST 'https://api.agora.io/v1/apps/{appid}/cloud_recor
 
 ### 录制音频流
 
-如果你需要在审核的同时录制音频流，在调用 `/start` 时可以通过 `recordingFileConfig` 配置录制文件格式，通过 `storageConfig` 配置第三方云存储。具体参数详见[开始云端录制 API](/zh-CN/api-reference/cloud-recording/restful/api/reference)。
+如果你需要在审核的同时录制音频流，在调用 `/start` 时可以通过 `recordingFileConfig` 配置录制文件格式，通过 `storageConfig` 配置第三方云存储。具体参数详见[开始云端录制 API](/zh-CN/realtime-media/cloud-recording/reference/api-reference)。
 
 开启录制音频流的功能后，你可以从 `/stop` 请求的响应 Body 中获取录制文件上传的状态和录制文件的信息。
 

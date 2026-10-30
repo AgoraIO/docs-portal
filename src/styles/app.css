@@ -783,7 +783,7 @@
     border-bottom: 1px solid var(--docs-prose-table-border);
     padding: 0.85rem 1rem;
     text-align: left;
-    vertical-align: top;
+    vertical-align: middle;
     word-break: normal;
     overflow-wrap: break-word;
   }
@@ -1622,7 +1622,7 @@
   border-bottom: 1px solid var(--docs-openapi-table-border);
   padding: 0.85rem 1rem;
   text-align: left;
-  vertical-align: top;
+  vertical-align: middle;
   word-break: normal;
   overflow-wrap: break-word;
 }
@@ -1730,6 +1730,26 @@
   color: var(--foreground);
   -webkit-text-decoration-color: var(--foreground);
   text-decoration-color: var(--foreground);
+}
+
+.docs-external-link-icon {
+  display: none;
+}
+
+.prose
+  :where(a):not(:where(.not-prose, .not-prose *))
+  > .docs-external-link-icon,
+.prose :where([data-parameter-description] a) > .docs-external-link-icon {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  margin-inline-start: 0.2em;
+  vertical-align: baseline;
+}
+
+/* Linked screenshots retain their image-only presentation. */
+.prose a:has(img) > .docs-external-link-icon {
+  display: none;
 }
 
 /* Fumadocs prose/table/code styles are emitted outside Tailwind layers.

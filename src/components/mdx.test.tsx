@@ -277,6 +277,7 @@ describe('common MDX registry', () => {
 
     expect(components.img).not.toBe(defaults.img);
     expect(components.table).not.toBe(defaults.table);
+    expect(components.DocsTable).toBe(components.table);
     expect(components.Card).not.toBe(defaults.Card);
     expect(components.Cards).not.toBe(defaults.Cards);
     expect(components.Callout).not.toBe(defaults.Callout);
@@ -343,6 +344,36 @@ describe('common MDX registry', () => {
       'data-table-scroll-end',
       'false',
     );
+  });
+
+  it('renders native merged cells through the same accessible table container', () => {
+    const Table = getMDXComponents(undefined, { locale: 'zh-CN' })
+      .DocsTable as TableComponent;
+    const { container } = render(
+      <Table>
+        <thead>
+          <tr>
+            <th colSpan={2}>参数</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowSpan={2}>option</td>
+            <td>enable</td>
+          </tr>
+          <tr>
+            <td>strength</td>
+          </tr>
+        </tbody>
+      </Table>,
+    );
+    expect(
+      screen.getByRole('region', { name: '可横向滚动的表格' }),
+    ).toContainElement(screen.getByRole('table'));
+    expect(container.querySelector('th')).toHaveAttribute('colspan', '2');
+    expect(screen.getByText('option')).toHaveAttribute('rowspan', '2');
+    expect(screen.getAllByText('option')).toHaveLength(1);
+    expect(container.querySelectorAll('tbody tr')[1].children).toHaveLength(1);
   });
 
   it('marks SDK compliance callouts for platform download spacing', () => {
@@ -584,6 +615,32 @@ describe('common MDX registry', () => {
       'href',
       'https://example.com/page.md',
     );
+    expect(
+      screen.getByRole('link', { name: 'External' }).querySelector('svg'),
+    ).toHaveAttribute('aria-hidden', 'true');
+  });
+
+  it('marks web links without adding icons to hashes or non-web protocols', () => {
+    const Anchor = getMDXComponents().a as AnchorComponent;
+    render(
+      <>
+        <Anchor href="//example.com">Web link</Anchor>
+        <Anchor href="#overview">Overview</Anchor>
+        <Anchor href="mailto:help@example.com">Email</Anchor>
+        <Anchor href="/downloads/sdk.zip" download>
+          Download
+        </Anchor>
+      </>,
+    );
+
+    expect(
+      screen.getByRole('link', { name: 'Web link' }).querySelector('svg'),
+    ).toHaveAttribute('aria-hidden', 'true');
+    for (const name of ['Overview', 'Email', 'Download']) {
+      expect(
+        screen.getByRole('link', { name }).querySelector('svg'),
+      ).toBeNull();
+    }
   });
 
   it('keeps hash-only and opted-out links compatible with standard anchors', () => {
@@ -1506,6 +1563,68 @@ describe('common MDX registry', () => {
     expect(components.TabsList).toBe(fumadocsTabs.TabsList);
     expect(components.TabsTrigger).toBe(fumadocsTabs.TabsTrigger);
     expect(components.TabsContent).not.toBe(fumadocsTabs.TabsContent);
+  });
+
+  it.each([
+    ['新增特性', 'feature'],
+    ['升级必看', 'compatibility'],
+    ['改进', 'improve'],
+    ['问题修复', 'bugfix'],
+    ['已知问题和局限性', 'fix'],
+    ['API 变更', 'api'],
+  ])(
+    'restores the legacy icon for %s without changing its anchor or accessible label',
+    (label, category) => {
+      const Heading = getMDXComponents(undefined, {
+        contentPath: 'zh-CN/realtime-media/rtc/reference/release-notes.mdx',
+      }).h3 as HeadingComponent;
+      render(
+        <Heading id="category">
+          <strong>{label}</strong>
+        </Heading>,
+      );
+      const heading = screen.getByRole('heading', { name: label, level: 3 });
+      expect(heading).toHaveAttribute('id', 'category');
+      expect(within(heading).getByRole('link')).toHaveAttribute(
+        'href',
+        '#category',
+      );
+      expect(heading.querySelector('img')).toHaveAttribute(
+        'src',
+        `/img/release-notes/version-${category}.png`,
+      );
+      expect(heading.querySelector('img')).toHaveAttribute('alt', '');
+      expect(heading.querySelector('img')).toHaveAttribute(
+        'aria-hidden',
+        'true',
+      );
+      expect(
+        within(heading).getByRole('button', { name: /copy anchor/i }),
+      ).toBeInTheDocument();
+    },
+  );
+
+  it('keeps release icons out of ordinary guides and feature detail headings', () => {
+    const GuideHeading = getMDXComponents(undefined, {
+      contentPath: 'zh-CN/realtime-media/rtc/build/quickstart.mdx',
+    }).h3 as HeadingComponent;
+    const ReleaseHeading = getMDXComponents(undefined, {
+      contentPath: 'zh-CN/realtime-media/rtc/reference/release-notes.mdx',
+    }).h4 as HeadingComponent;
+    render(
+      <>
+        <GuideHeading>问题修复</GuideHeading>
+        <ReleaseHeading>视频首帧体验优化</ReleaseHeading>
+      </>,
+    );
+    expect(
+      screen.getByRole('heading', { name: '问题修复' }).querySelector('img'),
+    ).toBeNull();
+    expect(
+      screen
+        .getByRole('heading', { name: '视频首帧体验优化' })
+        .querySelector('img'),
+    ).toBeNull();
   });
 
   it('renders structured parameter lists with nested fields and badges', () => {

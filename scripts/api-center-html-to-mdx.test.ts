@@ -30,6 +30,27 @@ async function compileGeneratedMdx(source: string) {
 }
 
 describe('API Center shared HTML to MDX converter', () => {
+  it('preserves rowspan occupancy, rich groups, and multi-level headers', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Options</h1><table><thead>
+      <tr><td rowspan="2">Option</td><td colspan="2">Setting</td></tr>
+      <tr><td>Key</td><td>Type</td></tr></thead><tbody>
+      <tr><td rowspan="2"><p>Beauty <a href="https://example.com">guide</a></p></td><td>enable</td><td>bool</td></tr>
+      <tr><td>strength</td><td>float</td></tr></tbody></table></article>`,
+      sourcePath: 'options.html',
+      sourceUrl: 'https://example.com/options',
+    });
+    expect(result.body).toContain('<DocsTable>');
+    expect(result.body).toContain('<th rowSpan={2} scope="col">Option</th>');
+    expect(result.body).toContain(
+      '<th colSpan={2} scope="colgroup">Setting</th>',
+    );
+    expect(result.body).toContain(
+      '<td rowSpan={2}>Beauty [guide](https://example.com/)</td>',
+    );
+    expect(result.body.match(/Beauty /g)).toHaveLength(1);
+    expect(result.body).not.toContain('<Slot');
+  });
   it.each(['v4.24.8', '4.24.9', 'v2.0.0-beta.0'])(
     'keeps SDK version %s out of generated page titles',
     async (version) => {
@@ -1110,11 +1131,12 @@ describe('API Center shared HTML to MDX converter', () => {
       sourcePath: 'page.html',
     });
 
-    expect(result.body).toContain('| Enum value |  |');
     expect(result.body).toContain(
-      '| READY | <Slot name="api-center-table-0" /> |',
+      '<th colSpan={2} scope="colgroup">Enum value</th>',
     );
-    expect(result.body).toContain('<Slot for="api-center-table-0">');
+    expect(result.body).toContain('<td>READY</td>');
+    expect(result.body).toContain('<td>Ready description.</td>');
+    expect(result.body).not.toContain('<Slot');
   });
 
   it('preserves explicit fragment anchors inside table cells', async () => {

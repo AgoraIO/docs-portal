@@ -555,18 +555,97 @@ else
 
 根据本地用户是否发送音频视频数据，及订阅该 Topic 的远端用户是否订阅本地用户的音视频流，远端用户的同步播放会有以下几种情况：
 
-| 发送音频数据 | 发送视频数据 | 订阅音频数据 | 订阅视频数据 | 订阅 Topic 数据 | 同步行为 |
-| --- | --- | --- | --- | --- | --- |
-| 发送端行为 |  | 接收端行为 |  |  | 接收端 Topic 数据行为 |
-| True | False | True | False | True | Topic 数据与音频数据同步 |
-| True | False | False | False | True | 实时传输 |
-| True | True | True | True | True | Topic 数据与音频数据同步 |
-| True | True | True | False | True | Topic 数据与音频数据同步 |
-| True | True | False | True | True | Topic 数据与视频数据同步 |
-| True | True | False | False | True | 实时传输 |
-| False | True | False | True | True | Topic 数据与视频数据同步 |
-| False | True | False | False | True | 实时传输 |
-| False | False | False | False | True | 实时传输 |
+<DocsTable>
+<thead>
+<tr>
+<th scope="col">发送音频数据</th>
+<th scope="col">发送视频数据</th>
+<th scope="col">订阅音频数据</th>
+<th scope="col">订阅视频数据</th>
+<th scope="col">订阅 Topic 数据</th>
+<th scope="col">同步行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colSpan={2}>发送端行为</td>
+<td colSpan={3}>接收端行为</td>
+<td>接收端 Topic 数据行为</td>
+</tr>
+<tr>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>Topic 数据与音频数据同步</td>
+</tr>
+<tr>
+<td>True</td>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+<td>True</td>
+<td>实时传输</td>
+</tr>
+<tr>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>Topic 数据与音频数据同步</td>
+</tr>
+<tr>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>Topic 数据与音频数据同步</td>
+</tr>
+<tr>
+<td>True</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>Topic 数据与视频数据同步</td>
+</tr>
+<tr>
+<td>True</td>
+<td>True</td>
+<td>False</td>
+<td>False</td>
+<td>True</td>
+<td>实时传输</td>
+</tr>
+<tr>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>Topic 数据与视频数据同步</td>
+</tr>
+<tr>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+<td>False</td>
+<td>True</td>
+<td>实时传输</td>
+</tr>
+<tr>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+<td>True</td>
+<td>实时传输</td>
+</tr>
+</tbody>
+</DocsTable>
 
 当开启 `syncWithMedia` 后，Topic 中传输的数据因需要等待音视频流数据实现同步对齐，因而在接收端会引入一定程度的延迟。如果在接收数据的过程中，接收方突然取消音视频数据流的订阅，此时 Topic 中数据的延迟逐渐降低直到恢复实时。
 

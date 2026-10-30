@@ -37,11 +37,38 @@ description: "了解实时互动 RTC 的计费方式、计费项、免费额度�
 
 根据[基础计费项目单价表](/zh-CN/realtime-media/rtc/reference/legacy-billing/billing-strategy-old#基础计费项目单价表)，得出所有集合分辨率所属的用量类型，从而计算得出每种用量类型产生的费用，最后得出费用总和，如下表所示：
 
-| 视频用量类型 | 时长用量（分钟） | 单价（元/千分钟） | 服务费用（元） | 费用总和（元） |
-| --- | --- | --- | --- | --- |
-| 全高清视频（Full HD） | 60 （主播 A） | 63 | (60/1000) × 63 = 3.78 | 168.42 |
-| 2K | 120 （主播 B ＋ 主播 C） | 112 | (120/1000) × 112 = 13.44 |  |
-| 2K+ | 600（10 位观众） | 252 | (600/1000) × 252 = 151.2 |  |
+<DocsTable>
+<thead>
+<tr>
+<th scope="col">视频用量类型</th>
+<th scope="col">时长用量（分钟）</th>
+<th scope="col">单价（元/千分钟）</th>
+<th scope="col">服务费用（元）</th>
+<th scope="col">费用总和（元）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全高清视频（Full HD）</td>
+<td>60 （主播 A）</td>
+<td>63</td>
+<td>(60/1000) × 63 = 3.78</td>
+<td rowSpan={3}>168.42</td>
+</tr>
+<tr>
+<td>2K</td>
+<td>120 （主播 B ＋ 主播 C）</td>
+<td>112</td>
+<td>(120/1000) × 112 = 13.44</td>
+</tr>
+<tr>
+<td>2K+</td>
+<td>600（10 位观众）</td>
+<td>252</td>
+<td>(600/1000) × 252 = 151.2</td>
+</tr>
+</tbody>
+</DocsTable>
 
 ## 极速直播计费示例
 
@@ -75,11 +102,38 @@ description: "了解实时互动 RTC 的计费方式、计费项、免费额度�
 
 根据[基础计费项目单价表](/zh-CN/realtime-media/rtc/reference/legacy-billing/billing-strategy-old#基础计费项目单价表)，得出所有集合分辨率所属的用量类型，从而计算得出每种用量类型产生的费用，最后得出费用总和，如下表所示：
 
-| 视频用量类型 | 时长用量（分钟） | 单价（元/千分钟） | 服务费用（元） | 费用总和（元） |
-| --- | --- | --- | --- | --- |
-| 全高清视频（Full HD） | 60 （主播 A） | 63 | (60/1000) × 63 = 3.78 | 92.82 |
-| 2K | 120 （主播 B ＋ 主播 C） | 112 | (60/1000) × 2 × 112 = 13.44 |  |
-| 2K+ | 600（10 位观众） | 126 | (600/1000) × 126 = 75.6 |  |
+<DocsTable>
+<thead>
+<tr>
+<th scope="col">视频用量类型</th>
+<th scope="col">时长用量（分钟）</th>
+<th scope="col">单价（元/千分钟）</th>
+<th scope="col">服务费用（元）</th>
+<th scope="col">费用总和（元）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全高清视频（Full HD）</td>
+<td>60 （主播 A）</td>
+<td>63</td>
+<td>(60/1000) × 63 = 3.78</td>
+<td rowSpan={3}>92.82</td>
+</tr>
+<tr>
+<td>2K</td>
+<td>120 （主播 B ＋ 主播 C）</td>
+<td>112</td>
+<td>(60/1000) × 2 × 112 = 13.44</td>
+</tr>
+<tr>
+<td>2K+</td>
+<td>600（10 位观众）</td>
+<td>126</td>
+<td>(600/1000) × 126 = 75.6</td>
+</tr>
+</tbody>
+</DocsTable>
 
 ## 纯音频计费示例
 
@@ -87,10 +141,32 @@ description: "了解实时互动 RTC 的计费方式、计费项、免费额度�
 
 根据[基础计费项目单价表](/zh-CN/realtime-media/rtc/reference/legacy-billing/billing-strategy-old#基础计费项目单价表)中的音频用量类型计算出每个用户的费用，最后得出费用总和，如下表所示：
 
-| 用量类型 | 时长用量（分钟） | 单价（元/千分钟） | 服务费用（元） | 费用总和（元） |
-| --- | --- | --- | --- | --- |
-| 音频 | 120 | 7 | (120/1000) × 7 = 0.84 | 1.68 |
-| 音频 | 120 | 7 | (120/1000) × 7 = 0.84 |  |
+<DocsTable>
+<thead>
+<tr>
+<th scope="col">用量类型</th>
+<th scope="col">时长用量（分钟）</th>
+<th scope="col">单价（元/千分钟）</th>
+<th scope="col">服务费用（元）</th>
+<th scope="col">费用总和（元）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>音频</td>
+<td>120</td>
+<td>7</td>
+<td>(120/1000) × 7 = 0.84</td>
+<td rowSpan={2}>1.68</td>
+</tr>
+<tr>
+<td>音频</td>
+<td>120</td>
+<td>7</td>
+<td>(120/1000) × 7 = 0.84</td>
+</tr>
+</tbody>
+</DocsTable>
 
 ## 阶梯折扣计算示例
 

@@ -4,6 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { auditDocsLinks } from './audit-doc-links.mjs';
+import { consolidatedLegacyTarget } from './lib/api-center/document-consolidation.mjs';
 import {
   findLegacyBodyLinks,
   reconcileMappedBodyLink,
@@ -450,7 +451,7 @@ const EXACT_FRAGMENT_ALIAS_TARGETS = new Map([
     '在线状态事件类型',
   ],
   [
-    'content/docs/zh-CN/api-reference/rtc/restful/webhook/receive-webhook.mdx#用户配置',
+    'content/docs/zh-CN/realtime-media/rtc/build/optimize-and-operate/receive_webhook.mdx#用户配置',
     '开通消息通知服务',
   ],
   [
@@ -521,10 +522,7 @@ const EXACT_FRAGMENT_ALIAS_TARGETS = new Map([
     'content/docs/zh-CN/solutions/game-voice/build/setup-and-access/enable-service.mdx#创建游戏语音项目',
     '创建项目',
   ],
-  [
-    'content/docs/zh-CN/solutions/iot-apaas/index.mdx#设备端',
-    '功能和场景',
-  ],
+  ['content/docs/zh-CN/solutions/iot-apaas/index.mdx#设备端', '功能和场景'],
   [
     'content/docs/zh-CN/solutions/iot-apaas/build/setup-and-access/license.mdx#license-激活',
     'activate',
@@ -566,11 +564,11 @@ const EXACT_LINK_OVERRIDES = new Map([
   ],
   [
     '/api-ref/rtm2//toc-configuration/configuration#事件监听',
-    '/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听',
+    '/zh-CN/api-reference/rtm/android/configuration#事件监听',
   ],
   [
     '/api-ref/rtm2//toc-configuration/configuration',
-    '/zh-CN/api-reference/rtm/toc-configuration/configuration',
+    '/zh-CN/api-reference/rtm/android/configuration',
   ],
   [
     '/api-ref/rtm2//toc-topic/topic',
@@ -594,7 +592,7 @@ const EXACT_LINK_OVERRIDES = new Map([
   ],
   [
     'https://docportal.shengwang.cn/cn/media-push/streaming_restful?platform=All%20Platforms',
-    '/zh-CN/api-reference/media-push/restful/overview/product-overview',
+    '/zh-CN/realtime-media/media-push',
   ],
   [
     'https://docportal.shengwang.cn/cn/smart_doorbell/landing-page?platform=Android',
@@ -1058,7 +1056,7 @@ async function validateLocalFragment(href, fragmentIndex) {
   return mapped ? `${route}#${mapped}` : href;
 }
 
-async function resolveLegacyHref(href, { fragmentIndex, routeMap }) {
+export async function resolveLegacyHref(href, { fragmentIndex, routeMap }) {
   let targetHref = exactOverrideForHref(href);
 
   if (!targetHref) {
@@ -1074,6 +1072,11 @@ async function resolveLegacyHref(href, { fragmentIndex, routeMap }) {
     targetHref = mapped.href;
   }
 
+  if (targetHref?.startsWith('/zh-CN/')) {
+    const url = new URL(targetHref, 'https://doc.shengwang.cn');
+    const owner = consolidatedLegacyTarget(url);
+    if (owner) targetHref = `${owner.targetRoute}${url.search}${url.hash}`;
+  }
   return targetHref ? validateLocalFragment(targetHref, fragmentIndex) : null;
 }
 
@@ -1217,7 +1220,9 @@ async function readArchivedUnresolved(repoRoot, archivePath = ARCHIVE_PATH) {
       await fs.readFile(path.join(repoRoot, archivePath), 'utf8'),
     );
     if (archive.version !== 1 || !Array.isArray(archive.entries)) {
-      throw new Error(`Unsupported CN API unavailable-link archive: ${archivePath}`);
+      throw new Error(
+        `Unsupported CN API unavailable-link archive: ${archivePath}`,
+      );
     }
     return archive.entries;
   } catch (error) {
@@ -1579,12 +1584,12 @@ export async function normalizeCnApiLinks({
   );
   let unresolved = sortUnresolvedEntries(
     mergeUnresolvedGroups(
-    (await collectUnresolved(files, root)).map((entry) => ({
-      ...entry,
-      reason: 'no-exact-migrated-target',
-    })),
-    unresolvedFragments,
-    await collectAuditUnresolved(root),
+      (await collectUnresolved(files, root)).map((entry) => ({
+        ...entry,
+        reason: 'no-exact-migrated-target',
+      })),
+      unresolvedFragments,
+      await collectAuditUnresolved(root),
     ),
   );
   let archivedEntries = sortUnresolvedEntries(

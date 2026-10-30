@@ -9,6 +9,7 @@ import { buildDocPath } from '../docs-routing';
 import { getSearchEntryMetadata } from '../docs-search';
 import type { AppLocale } from '../i18n/i18n-config';
 import { remarkAccordionHeadings } from '../mdx/accordion-toc';
+import { remarkLiteralDirectives } from '../mdx/remark-literal-directives';
 import {
   getOpenApiEndpointUrl,
   getOpenApiLaneLocales,
@@ -206,8 +207,13 @@ export function buildAlgoliaOpenApiRecord({
  */
 export function extractDocSearchContent(markdown: string) {
   const plugins = markdown.includes('<Accordion')
-    ? [remarkMdx, remarkDirective, remarkAccordionHeadings]
-    : [remarkDirective];
+    ? [
+        remarkMdx,
+        remarkDirective,
+        remarkLiteralDirectives,
+        remarkAccordionHeadings,
+      ]
+    : [remarkDirective, remarkLiteralDirectives];
   const extracted = structure(markdown, plugins, {
     types: STRUCTURE_CONTENT_TYPES,
   });
@@ -261,6 +267,7 @@ export function toPlainText(markdown: string) {
     .replace(/\*\*([^*]+)\*\*/g, '$1') // bold
     .replace(/\*([^*\n]+)\*/g, '$1') // italic
     .replace(/~~([^~]+)~~/g, '$1') // strikethrough
+    .replace(/\\([:@])/g, '$1') // Markdown serializer escapes in literal colon/email text
     .replace(/[ \t]+/g, ' ')
     .replace(/\n{2,}/g, '\n')
     .trim();

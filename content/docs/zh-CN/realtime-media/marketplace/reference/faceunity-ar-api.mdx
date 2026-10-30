@@ -211,46 +211,64 @@ value 不包含任何参数。
 - 声网 SDK 层的错误码：通过对应 API 的返回值查看。
 - 插件层的错误码：通过 `agorasdk.log` 文件查看。例如：`fuSetup ret: -1` 表示调用 `setExtensionProperty` 并传入 `key` 为 `fuSetup` 时出错，错误码为 `-1`。
 
-| API | 错误码 | 说明 |
-| --- | --- | --- |
-| `enableExtension` | `-3`（SDK 层） | <Slot name="faceunity-ar-api-android-ios-flutter-html-0-1-2" /> |
-| `setExtensionProperty` | `-1`（插件层） | <Slot name="faceunity-ar-api-android-ios-flutter-html-0-2-2" /> |
-| `-2`（SDK 层） | `enableExtension` 的调用时序错误或调用时机太晚。 |  |
-| `-2`（插件层） | <Slot name="faceunity-ar-api-android-ios-flutter-html-0-4-1" /> |  |
-| `-20`（插件层） | <Slot name="faceunity-ar-api-android-ios-flutter-html-0-5-1" /> |  |
-
-<Slot for="faceunity-ar-api-android-ios-flutter-html-0-1-2">
+<DocsTable>
+<thead>
+<tr>
+<th scope="col">API</th>
+<th scope="col">错误码</th>
+<th scope="col">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>`enableExtension`</td>
+<td>`-3`（SDK 层）</td>
+<td>
 
 SDK 找不到对应的插件动态库。可能的原因有：
 
   - 插件动态库没有正确导入工程。
   - 传入的插件名称有误。
 
-</Slot>
-
-<Slot for="faceunity-ar-api-android-ios-flutter-html-0-2-2">
+</td>
+</tr>
+<tr>
+<td rowSpan={4}>`setExtensionProperty`</td>
+<td>`-1`（插件层）</td>
+<td>
 
 - `key` 为 `fuSetup`：重复调用，`fuSetup` 只需要调用一次。
 - `key` 为 `fuLoadAIModelFromPackage` 或 `fuCreateItemFromPackage`：传入的 value 值有误。
 
-</Slot>
-
-<Slot for="faceunity-ar-api-android-ios-flutter-html-0-4-1">
+</td>
+</tr>
+<tr>
+<td>`-2`（SDK 层）</td>
+<td>`enableExtension` 的调用时序错误或调用时机太晚。</td>
+</tr>
+<tr>
+<td>`-2`（插件层）</td>
+<td>
 
 参数错误。可能的原因有：
 
   - 传入的 `key` 或 `value` 为空。
   - `value` 无法按照 JSON 规则解析，请参考文档中的规范传值。
 
-</Slot>
-
-<Slot for="faceunity-ar-api-android-ios-flutter-html-0-5-1">
+</td>
+</tr>
+<tr>
+<td>`-20`（插件层）</td>
+<td>
 
 - 传入的 `key` 暂不支持。
 - `key` 为 `fuLoadAIModelFromPackage`：该 AI 能力已经加载过，无需重复加载。
 - `key` 为 `fuDestroyItem` 时：该道具已经销毁，无需重复销毁。
 
-</Slot>
+</td>
+</tr>
+</tbody>
+</DocsTable>
 
 </PlatformStructured>
 
@@ -463,46 +481,64 @@ value 不包含任何参数。
 - 声网 SDK 层的错误码：通过对应 API 的返回值查看。
 - 插件层的错误码：通过 `agorasdk.log` 文件查看。例如：`fuSetup ret: -1` 表示调用 `setExtensionPropertyWithVendor` 并传入 `key` 为 `fuSetup` 时出错，错误码为 `-1`。
 
-| API | 错误码 | 说明 |
-| --- | --- | --- |
-| `enableExtensionWithVendor` | `-3`（SDK 层） | <Slot name="faceunity-ar-api-android-ios-flutter-html-0-1-2" /> |
-| `setExtensionPropertyWithVendor` | `-1`（插件层） | <Slot name="faceunity-ar-api-android-ios-flutter-html-0-2-2" /> |
-| `-2`（SDK 层） | `enableExtension` 的调用时序错误或调用时机太晚。 |  |
-| `-2`（插件层） | <Slot name="faceunity-ar-api-android-ios-flutter-html-0-4-1" /> |  |
-| `-20`（插件层） | <Slot name="faceunity-ar-api-android-ios-flutter-html-0-5-1" /> |  |
-
-<Slot for="faceunity-ar-api-android-ios-flutter-html-0-1-2">
+<DocsTable>
+<thead>
+<tr>
+<th scope="col">API</th>
+<th scope="col">错误码</th>
+<th scope="col">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>`enableExtensionWithVendor`</td>
+<td>`-3`（SDK 层）</td>
+<td>
 
 SDK 找不到对应的插件动态库。可能的原因有：
 
   - 插件动态库没有正确导入工程。
   - 传入的插件名称有误。
 
-</Slot>
-
-<Slot for="faceunity-ar-api-android-ios-flutter-html-0-2-2">
+</td>
+</tr>
+<tr>
+<td rowSpan={4}>`setExtensionPropertyWithVendor`</td>
+<td>`-1`（插件层）</td>
+<td>
 
 - `key` 为 `fuSetup`：重复调用，`fuSetup` 只需要调用一次。
 - `key` 为 `fuLoadAIModelFromPackage` 或 `fuCreateItemFromPackage`：传入的 value 值有误。
 
-</Slot>
-
-<Slot for="faceunity-ar-api-android-ios-flutter-html-0-4-1">
+</td>
+</tr>
+<tr>
+<td>`-2`（SDK 层）</td>
+<td>`enableExtension` 的调用时序错误或调用时机太晚。</td>
+</tr>
+<tr>
+<td>`-2`（插件层）</td>
+<td>
 
 参数错误。可能的原因有：
 
   - 传入的 `key` 或 `value` 为空。
   - `value` 无法按照 JSON 规则解析，请参考文档中的规范传值。
 
-</Slot>
-
-<Slot for="faceunity-ar-api-android-ios-flutter-html-0-5-1">
+</td>
+</tr>
+<tr>
+<td>`-20`（插件层）</td>
+<td>
 
 - 传入的 `key` 暂不支持。
 - `key` 为 `fuLoadAIModelFromPackage`：该 AI 能力已经加载过，无需重复加载。
 - `key` 为 `fuDestroyItem` 时：该道具已经销毁，无需重复销毁。
 
-</Slot>
+</td>
+</tr>
+</tbody>
+</DocsTable>
 
 </PlatformStructured>
 
@@ -715,45 +751,63 @@ value 不包含任何参数。
 - 声网 SDK 层的错误码：通过对应 API 的返回值查看。
 - 插件层的错误码：通过 `agorasdk.log` 文件查看。例如：`fuSetup ret: -1` 表示调用 `setExtensionProperty` 并传入 `key` 为 `fuSetup` 时出错，错误码为 `-1`。
 
-| API | 错误码 | 说明 |
-| --- | --- | --- |
-| `enableExtension` | `-3`（SDK 层） | <Slot name="faceunity-ar-api-android-ios-flutter-html-0-1-2" /> |
-| `setExtensionProperty` | `-1`（插件层） | <Slot name="faceunity-ar-api-android-ios-flutter-html-0-2-2" /> |
-| `-2`（SDK 层） | `enableExtension` 的调用时序错误或调用时机太晚。 |  |
-| `-2`（插件层） | <Slot name="faceunity-ar-api-android-ios-flutter-html-0-4-1" /> |  |
-| `-20`（插件层） | <Slot name="faceunity-ar-api-android-ios-flutter-html-0-5-1" /> |  |
-
-<Slot for="faceunity-ar-api-android-ios-flutter-html-0-1-2">
+<DocsTable>
+<thead>
+<tr>
+<th scope="col">API</th>
+<th scope="col">错误码</th>
+<th scope="col">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>`enableExtension`</td>
+<td>`-3`（SDK 层）</td>
+<td>
 
 SDK 找不到对应的插件动态库。可能的原因有：
 
   - 插件动态库没有正确导入工程。
   - 传入的插件名称有误。
 
-</Slot>
-
-<Slot for="faceunity-ar-api-android-ios-flutter-html-0-2-2">
+</td>
+</tr>
+<tr>
+<td rowSpan={4}>`setExtensionProperty`</td>
+<td>`-1`（插件层）</td>
+<td>
 
 - `key` 为 `fuSetup`：重复调用，`fuSetup` 只需要调用一次。
 - `key` 为 `fuLoadAIModelFromPackage` 或 `fuCreateItemFromPackage`：传入的 value 值有误。
 
-</Slot>
-
-<Slot for="faceunity-ar-api-android-ios-flutter-html-0-4-1">
+</td>
+</tr>
+<tr>
+<td>`-2`（SDK 层）</td>
+<td>`enableExtension` 的调用时序错误或调用时机太晚。</td>
+</tr>
+<tr>
+<td>`-2`（插件层）</td>
+<td>
 
 参数错误。可能的原因有：
 
   - 传入的 `key` 或 `value` 为空。
   - `value` 无法按照 JSON 规则解析，请参考文档中的规范传值。
 
-</Slot>
-
-<Slot for="faceunity-ar-api-android-ios-flutter-html-0-5-1">
+</td>
+</tr>
+<tr>
+<td>`-20`（插件层）</td>
+<td>
 
 - 传入的 `key` 暂不支持。
 - `key` 为 `fuLoadAIModelFromPackage`：该 AI 能力已经加载过，无需重复加载。
 - `key` 为 `fuDestroyItem` 时：该道具已经销毁，无需重复销毁。
 
-</Slot>
+</td>
+</tr>
+</tbody>
+</DocsTable>
 
 </PlatformStructured>

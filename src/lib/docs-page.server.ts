@@ -2598,19 +2598,19 @@ const ZH_CN_RTC_REST_SIDEBAR_GROUPS: readonly {
     links: [
       [
         '调用 RESTful API',
-        '/zh-CN/api-reference/rtc/restful/user-guides/call-api',
+        '/zh-CN/realtime-media/rtc/build/setup-and-access/call-api',
       ],
       [
         'HTTP 基本认证',
-        '/zh-CN/api-reference/rtc/restful/user-guides/http-basic-auth',
+        '/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth',
       ],
       [
         '管理频道和用户',
-        '/zh-CN/api-reference/rtc/restful/user-guides/channel-management',
+        '/zh-CN/realtime-media/rtc/build/security-and-auth/channel-management',
       ],
       [
         '封禁用户权限',
-        '/zh-CN/api-reference/rtc/restful/user-guides/user-privilege',
+        '/zh-CN/realtime-media/rtc/build/security-and-auth/user-privilege',
       ],
     ],
     title: '接入指南',
@@ -2620,7 +2620,7 @@ const ZH_CN_RTC_REST_SIDEBAR_GROUPS: readonly {
     links: [
       [
         '接收 Webhook 事件',
-        '/zh-CN/api-reference/rtc/restful/webhook/receive-webhook',
+        '/zh-CN/realtime-media/rtc/build/optimize-and-operate/receive_webhook',
       ],
       ['频道事件类型', '/zh-CN/api-reference/rtc/restful/webhook/events'],
     ],
@@ -2631,18 +2631,18 @@ const ZH_CN_RTC_REST_SIDEBAR_GROUPS: readonly {
     links: [
       [
         '维护用户在线状态',
-        '/zh-CN/api-reference/rtc/restful/best-practice/online-user-status',
+        '/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status',
       ],
       [
         'REST 服务高可用',
-        '/zh-CN/api-reference/rtc/restful/best-practice/rest-availability',
+        '/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability',
       ],
     ],
     title: '最佳实践',
   },
 ];
 const ZH_CN_RTC_REST_REFERENCE_LINKS: readonly ZhCnRtcRestSidebarLink[] = [
-  ['响应状态码', '/zh-CN/api-reference/rtc/restful/reference/response-code'],
+  ['响应状态码', '/zh-CN/realtime-media/rtc/reference/response-code'],
 ];
 
 async function embedZhCnServiceApiSidebars(

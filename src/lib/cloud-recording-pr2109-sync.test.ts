@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
@@ -7,7 +7,6 @@ function readContent(path: string) {
 }
 
 const apiRoot = 'content/docs/zh-CN/api-reference/cloud-recording/restful';
-const api = readContent(`${apiRoot}/overview/billing-strategy/billing.mdx`);
 const main = readContent(
   'content/docs/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/billing.mdx',
 );
@@ -21,10 +20,10 @@ function readDurationInfo(content: string) {
 }
 
 describe('Cloud Recording upstream PR #2109 parity', () => {
-  it('puts the robot subscription-fee clarification first in the API duration callout', () => {
-    const info = readDurationInfo(api);
+  it('puts the robot subscription-fee clarification first in the canonical duration callout', () => {
+    const info = readDurationInfo(main);
     expect(info.split('\n')[0]).toBe(feeBullet);
-    expect(api.split(feeBullet)).toHaveLength(2);
+    expect(main.split(feeBullet)).toHaveLength(2);
     expect(info).toContain(
       '- 如果频道内启动了一个录制进程，同时录制多路音频流和视频流，录制的时长用量不会叠加计算。',
     );
@@ -33,13 +32,16 @@ describe('Cloud Recording upstream PR #2109 parity', () => {
     );
   });
 
-  it('preserves the clarification already present in the main product guide', () => {
+  it('keeps the clarification in one product source', () => {
+    expect(existsSync(`${apiRoot}/overview/billing-strategy/billing.mdx`)).toBe(
+      false,
+    );
     expect(readDurationInfo(main).split('\n')[0]).toBe(feeBullet);
     expect(main.split(feeBullet)).toHaveLength(2);
   });
 
   it('preserves the original recording-fee formula', () => {
-    expect(api).toContain(
+    expect(main).toContain(
       '**录制费用 = 视频录制时长 × 视频录制单价 + 音频录制时长 × 音频录制单价**',
     );
   });
@@ -53,13 +55,13 @@ describe('Cloud Recording upstream PR #2109 parity', () => {
       '| 2K+ | 3,686,400 (2560 × 1440) ＜ 集合分辨率 ≤ 8,847,360 (4096 × 2160) | 324 |',
       '| 超清 (HD+) | 集合分辨率 ＞ 921,600（1280 × 720） | 135 |',
     ]) {
-      expect(api).toContain(row);
+      expect(main).toContain(row);
     }
   });
 
   it('preserves the original recording examples and total calculation', () => {
     const examples =
-      api.match(/## 计费示例\n([\s\S]*?)(?=## 注意事项)/)?.[1] ?? '';
+      main.match(/## 计费示例\n([\s\S]*?)(?=## 注意事项)/)?.[1] ?? '';
     for (const heading of ['录制一', '录制二', '录制三', '录制四']) {
       expect(examples).toContain(`#### ${heading}`);
     }
@@ -68,12 +70,14 @@ describe('Cloud Recording upstream PR #2109 parity', () => {
     expect(examples).toContain('**(2.7 + 2.124 + 2.268 + 2.916 = 10.008)**');
   });
 
-  it('preserves the existing API billing navigation entry', () => {
+  it('links the API navigation directly to the canonical product article', () => {
     const meta = JSON.parse(readContent(`${apiRoot}/meta.json`));
-    expect(meta.pages).toContain('overview/billing-strategy/billing');
+    expect(meta.pages).toContain(
+      '[计费说明](/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/billing)',
+    );
     expect(
       meta.sidebarLabels[
-        '/zh-CN/api-reference/cloud-recording/restful/overview/billing-strategy/billing'
+        '/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/billing'
       ],
     ).toBe('计费说明');
   });
