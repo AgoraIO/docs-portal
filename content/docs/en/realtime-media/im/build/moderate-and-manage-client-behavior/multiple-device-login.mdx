@@ -18,25 +18,35 @@ In cases of multiple device login, all logged-in devices synchronize the followi
 The following table summarizes the strategy of forcing other devices to log out and the automatic login security check in the single-device and multi-device login use-cases:
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `ConnectionListener#onLogout` callback. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ConnectionListener#onLogout` callback. Agora Chat only supports forced logout for the devices on the same end. |
-
-**Automatic login security check (single-device and multi-device login)**
-
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
 
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `ConnectionListener#onLogout` callback.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
 
-**Automatic login security check (single-device and multi-device login)**
 
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ConnectionListener#onLogout` callback. Agora Chat only supports forced logout for the devices on the same end.
+
+
+
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
+
+
+
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end.
 
 
 | Single/multi-device login | Forced logout strategy |
@@ -47,25 +57,35 @@ For devices that log in automatically, the device will automatically reconnect t
 The Agora server provides a RESTful interface to force a specified account to [log out from a single device](/en/api-reference/api-ref/im/user-system-registration#forcing-a-user-offline).
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
-
-**Automatic login security check (single-device and multi-device login)**
-
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
 
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
 
-**Automatic login security check (single-device and multi-device login)**
 
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. Agora Chat only supports forced logout for the devices on the same end.
+
+
+
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
+
+
+
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end.
 
 
 ## Understand the tech
@@ -344,14 +364,19 @@ In cases of multiple device login, all logged-in devices synchronize the followi
 The following table summarizes the strategy of forcing other devices to log out and the automatic login security check in the single-device and multi-device login use-cases:
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
 
-**Automatic login security check (single-device and multi-device login)**
 
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end.
 
 
 | Single/multi-device login | Forced logout strategy |
@@ -362,25 +387,35 @@ For devices that log in automatically, the device will automatically reconnect t
 The Agora server provides a RESTful interface to force a specified account to [log out from a single device](/en/api-reference/api-ref/im/user-system-registration#forcing-a-user-offline).
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
-
-**Automatic login security check (single-device and multi-device login)**
-
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
 
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
 
-**Automatic login security check (single-device and multi-device login)**
 
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. Agora Chat only supports forced logout for the devices on the same end.
+
+
+
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
+
+
+
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end.
 
 
 ## Understand the tech
@@ -642,14 +677,19 @@ In cases of multiple device login, all logged-in devices synchronize the followi
 The following table summarizes the strategy of forcing other devices to log out and the automatic login security check in the single-device and multi-device login use-cases:
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
 
-**Automatic login security check (single-device and multi-device login)**
 
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end.
 
 
 | Single/multi-device login | Forced logout strategy |
@@ -660,25 +700,35 @@ For devices that log in automatically, the device will automatically reconnect t
 The Agora server provides a RESTful interface to force a specified account to [log out from a single device](/en/api-reference/api-ref/im/user-system-registration#forcing-a-user-offline).
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
-
-**Automatic login security check (single-device and multi-device login)**
-
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
 
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
 
-**Automatic login security check (single-device and multi-device login)**
 
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. Agora Chat only supports forced logout for the devices on the same end.
+
+
+
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
+
+
+
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end.
 
 
 ## Understand the tech
@@ -812,14 +862,19 @@ In cases of multiple device login, all logged-in devices synchronize the followi
 The following table summarizes the strategy of forcing other devices to log out and the automatic login security check in the single-device and multi-device login use-cases:
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
 
-**Automatic login security check (single-device and multi-device login)**
 
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end.
 
 
 | Single/multi-device login | Forced logout strategy |
@@ -830,25 +885,35 @@ For devices that log in automatically, the device will automatically reconnect t
 The Agora server provides a RESTful interface to force a specified account to [log out from a single device](/en/api-reference/api-ref/im/user-system-registration#forcing-a-user-offline).
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
-
-**Automatic login security check (single-device and multi-device login)**
-
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
 
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
 
-**Automatic login security check (single-device and multi-device login)**
 
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. Agora Chat only supports forced logout for the devices on the same end.
+
+
+
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
+
+
+
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end.
 
 
 ## Understand the tech
@@ -1122,14 +1187,19 @@ In cases of multiple device login, all logged-in devices synchronize the followi
 The following table summarizes the strategy of forcing other devices to log out and the automatic login security check in the single-device and multi-device login use-cases:
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
 
-**Automatic login security check (single-device and multi-device login)**
 
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end.
 
 
 | Single/multi-device login | Forced logout strategy |
@@ -1140,25 +1210,35 @@ For devices that log in automatically, the device will automatically reconnect t
 The Agora server provides a RESTful interface to force a specified account to [log out from a single device](/en/api-reference/api-ref/im/user-system-registration#forcing-a-user-offline).
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
-
-**Automatic login security check (single-device and multi-device login)**
-
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
 
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
 
-**Automatic login security check (single-device and multi-device login)**
 
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. Agora Chat only supports forced logout for the devices on the same end.
+
+
+
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
+
+
+
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end.
 
 
 ## Understand the tech
@@ -1468,14 +1548,19 @@ In cases of multiple device login, all logged-in devices synchronize the followi
 The following table summarizes the strategy of forcing other devices to log out and the automatic login security check in the single-device and multi-device login use-cases:
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
 
-**Automatic login security check (single-device and multi-device login)**
 
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end.
 
 
 | Single/multi-device login | Forced logout strategy |
@@ -1486,25 +1571,35 @@ For devices that log in automatically, the device will automatically reconnect t
 The Agora server provides a RESTful interface to force a specified account to [log out from a single device](/en/api-reference/api-ref/im/user-system-registration#forcing-a-user-offline).
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
-
-**Automatic login security check (single-device and multi-device login)**
-
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
 
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
 
-**Automatic login security check (single-device and multi-device login)**
 
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. Agora Chat only supports forced logout for the devices on the same end.
+
+
+
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
+
+
+
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end.
 
 
 ## Understand the tech
@@ -1552,14 +1647,19 @@ In cases of multiple device login, all logged-in devices synchronize the followi
 The following table summarizes the strategy of forcing other devices to log out and the automatic login security check in the single-device and multi-device login use-cases:
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
 
-**Automatic login security check (single-device and multi-device login)**
 
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end.
 
 
 | Single/multi-device login | Forced logout strategy |
@@ -1570,25 +1670,35 @@ For devices that log in automatically, the device will automatically reconnect t
 The Agora server provides a RESTful interface to force a specified account to [log out from a single device](/en/api-reference/api-ref/im/user-system-registration#forcing-a-user-offline).
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
-
-**Automatic login security check (single-device and multi-device login)**
-
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
 
 
 
-| Single/multi-device login | Forced logout strategy |
-| --- | --- |
-| Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. |
-| Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end. |
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
 
-**Automatic login security check (single-device and multi-device login)**
 
-For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ConnectionEventHandler#onUserDidLoginTooManyDevice` event. Agora Chat only supports forced logout for the devices on the same end.
+
+
+
+    Single/multi-device login
+    Forced logout strategy
+    Automatic login security check
+
+
+
+    Single-device login
+    The newly logged-in device will force the current device to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event.
+    For devices that log in automatically, the device will automatically reconnect to the Agora server after going offline. If the reconnection is successful, the current logged-in device will be forced to log out by default (for multiple devices, the earliest logged-in device will be logged out). If you want to keep the current device logged in, contact [support@agora.io](mailto:support@agora.io). In this use-case, the device that logs in automatically won't be able to log in and will receive error 214, indicating that the number of currently logged-in devices exceeds the limit.
+
+
+    Multi-device login
+    If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event. Agora Chat only supports forced logout for the devices on the same end.
 
 
 ## Understand the tech

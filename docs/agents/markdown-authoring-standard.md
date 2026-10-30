@@ -394,7 +394,7 @@ Rules:
   flattening does not imply separate allowances or duplicate charges.
 - Escape literal pipes as `\|`, including inside inline code. Every body row
   must have the same number of cells as its header. Run `bun run docs:tables`
-  to check all Chinese and English documents for unsupported HTML tables and
+  to check all Chinese documents for unsupported HTML tables and
   mismatched column counts, and validate rich-cell Slot placement.
 
 ## Agent Checklist

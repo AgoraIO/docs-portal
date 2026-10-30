@@ -94,12 +94,10 @@ The usage calculation is as follows:
 
 The following table shows the calculation of the total cost of the lecture:
 
-| Billed service | Unit price, US$/1,000 minutes | Cost of each service, US$ |
-| --- | --- | --- |
-| Online whiteboard | $1.40/1,000 minutes | (12,060 - 10,000)/1000 × 1.40 = 2.884 |
-| File conversion to web page | $2.50/1,000 web pages | 0 (The first 1,000 converted web pages are free of charge) |
-
-Total cost, US$: 2.884 **≈ 2.89**
+| Billed service | Unit price, US$/1,000 minutes | Cost of each service, US$ | Total cost, US$ |
+| --- | --- | --- | --- |
+| Online whiteboard | $1.40/1,000 minutes | (12,060 - 10,000)/1000 × 1.40 = 2.884 | 2.89 |
+| File conversion to web page | $2.50/1,000 web pages | 0 (The first 1,000 converted web pages are free of charge) | 2.89 |
 
 Agora rounds up the total cost to two decimal places.
 

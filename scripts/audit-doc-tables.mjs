@@ -87,7 +87,7 @@ export function auditTableStructure(source, isMdx = true) {
   return diagnostics;
 }
 
-export async function auditDocTables(root = 'content/docs') {
+export async function auditDocTables(root = 'content/docs/zh-CN') {
   const files = (await readdir(root, { recursive: true })).filter((file) =>
     /\.mdx?$/.test(file),
   );

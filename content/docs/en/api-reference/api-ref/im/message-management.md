@@ -1262,11 +1262,18 @@ This method enables you to upload images, audios, videos, or other types of file
 
 
 
-| File size | Thumbnail size |
-| --- | --- |
-| ≤10 MB | The size of the thumbnail remains the same as that of the original file. |
-| 10 MB | A thumbnail is generated based on the specified `thumbnail-height` and `thumbnail-width` parameters. |
-| 10 MB | If you leave `thumbnail-height` and `thumbnail-width` empty, the height and width of the thumbnail is 170 × 170 pixels by default. |
+            File sizeThumbnail size
+
+
+
+
+            ≤10 MBThe size of the thumbnail remains the same as that of the original file.
+
+
+            10 MBA thumbnail is generated based on the specified `thumbnail-height` and `thumbnail-width` parameters.
+
+
+            If you leave `thumbnail-height` and `thumbnail-width` empty, the height and width of the thumbnail is 170 × 170 pixels by default.
 
 
 
