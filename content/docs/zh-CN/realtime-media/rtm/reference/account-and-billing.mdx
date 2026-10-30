@@ -13,11 +13,34 @@ description: "了解实时消息 RTM 的账号准备、项目隔离方式和计�
 
 例如，为你的一款社交应用申请三个 `appId`，并将这三个项目的配置（数据存储区域、状态属性、服务发现等）保持一致。这三个 `appId` 分别用于开发新功能、QA 测试和生产环境。这样你在开发测试的过程中也不会影响现有业务运营。该项目和用途的对应关系见下表：
 
-| 应用名称 | 项目名称 | `appId` | 用途 |
-| --- | --- | --- | --- |
-| Play with Me | PWM-DEV | cd1f5580fba8496caef1db648f08**** | 用于开发阶段，开发和验证新功能及问题修复情况。 |
-| Play with Me | PWM-QA | fba8cd1f5231496caef1db648f07**** | 用于测试阶段，更全面地验证新功能和问题修复情况并进行灰度测试。 |
-| Play with Me | PWM-PRD | bfbacd1f5444caef1d8496648f07**** | 用于生产环境，项目正式上线，面向终端用户。 |
+<DocsTable>
+<thead>
+<tr>
+<th scope="col">应用名称</th>
+<th scope="col">项目名称</th>
+<th scope="col">`appId`</th>
+<th scope="col">用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td rowSpan={3}>Play with Me</td>
+<td>PWM-DEV</td>
+<td>cd1f5580fba8496caef1db648f08****</td>
+<td>用于开发阶段，开发和验证新功能及问题修复情况。</td>
+</tr>
+<tr>
+<td>PWM-QA</td>
+<td>fba8cd1f5231496caef1db648f07****</td>
+<td>用于测试阶段，更全面地验证新功能和问题修复情况并进行灰度测试。</td>
+</tr>
+<tr>
+<td>PWM-PRD</td>
+<td>bfbacd1f5444caef1d8496648f07****</td>
+<td>用于生产环境，项目正式上线，面向终端用户。</td>
+</tr>
+</tbody>
+</DocsTable>
 
 ## 计费模型
 

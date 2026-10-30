@@ -68,9 +68,13 @@ describe('published Chinese billing content', () => {
     await renderPage('realtime-media/rtm/reference/account-and-billing');
     const row = screen.getByRole('row', { name: /PWM-QA/ });
     const cells = within(row).getAllByRole('cell');
-    expect(cells).toHaveLength(4);
-    expect(cells[1]).toHaveTextContent('PWM-QA');
-    expect(cells[2]).toHaveTextContent('fba8cd1f5231496caef1db648f07****');
+    expect(cells).toHaveLength(3);
+    expect(screen.getByRole('cell', { name: 'Play with Me' })).toHaveAttribute(
+      'rowspan',
+      '3',
+    );
+    expect(cells[0]).toHaveTextContent('PWM-QA');
+    expect(cells[1]).toHaveTextContent('fba8cd1f5231496caef1db648f07****');
     expect(screen.getByRole('row', { name: /^每月消息数/ })).toHaveTextContent(
       '150,000,000',
     );

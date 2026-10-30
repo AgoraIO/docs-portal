@@ -277,6 +277,7 @@ describe('common MDX registry', () => {
 
     expect(components.img).not.toBe(defaults.img);
     expect(components.table).not.toBe(defaults.table);
+    expect(components.DocsTable).toBe(components.table);
     expect(components.Card).not.toBe(defaults.Card);
     expect(components.Cards).not.toBe(defaults.Cards);
     expect(components.Callout).not.toBe(defaults.Callout);
@@ -343,6 +344,36 @@ describe('common MDX registry', () => {
       'data-table-scroll-end',
       'false',
     );
+  });
+
+  it('renders native merged cells through the same accessible table container', () => {
+    const Table = getMDXComponents(undefined, { locale: 'zh-CN' })
+      .DocsTable as TableComponent;
+    const { container } = render(
+      <Table>
+        <thead>
+          <tr>
+            <th colSpan={2}>参数</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowSpan={2}>option</td>
+            <td>enable</td>
+          </tr>
+          <tr>
+            <td>strength</td>
+          </tr>
+        </tbody>
+      </Table>,
+    );
+    expect(
+      screen.getByRole('region', { name: '可横向滚动的表格' }),
+    ).toContainElement(screen.getByRole('table'));
+    expect(container.querySelector('th')).toHaveAttribute('colspan', '2');
+    expect(screen.getByText('option')).toHaveAttribute('rowspan', '2');
+    expect(screen.getAllByText('option')).toHaveLength(1);
+    expect(container.querySelectorAll('tbody tr')[1].children).toHaveLength(1);
   });
 
   it('marks SDK compliance callouts for platform download spacing', () => {

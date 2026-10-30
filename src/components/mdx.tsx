@@ -2392,11 +2392,13 @@ export function getMDXComponents(
   components?: MDXComponents,
   context?: MDXContext,
 ) {
+  const DocsTable = createDocsTableComponent(context?.locale);
   return {
     ...defaultMdxComponents,
     Callout: DocsCallout,
     CalloutContainer: DocsCalloutContainer,
-    table: createDocsTableComponent(context?.locale),
+    table: DocsTable,
+    DocsTable,
     img: ZoomableImage,
     DocsImage: ZoomableImage,
     InlineImage,

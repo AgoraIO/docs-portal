@@ -6,6 +6,11 @@ import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import { normalizeLegacyCodeHighlights } from './lib/legacy-code-highlights.mjs';
 import { resolveLegacyProductLabel } from './lib/legacy-product-labels.mjs';
+import {
+  layoutMergedTable,
+  parseLegacyTableHeaders,
+  renderMergedTable,
+} from './lib/merged-table.mjs';
 import { normalizeTableGrid } from './lib/table-grid.mjs';
 import {
   isRedirectContentRow,
@@ -111,6 +116,7 @@ const LANGUAGE_GROUP_TAB_VALUES = new Set([
   'web',
 ]);
 const ALLOWED_MDX_TAGS = new Set([
+  'DocsTable',
   'Accordion',
   'Accordions',
   'Card',
@@ -696,6 +702,7 @@ function createMigrationState({
     sourceRoot,
     syntaxPatternUsage: new Map(),
     tableHeaders: new Map(),
+    tableHeaderCells: new Map(),
   };
 }
 
@@ -732,6 +739,9 @@ async function expandLegacyFile({
   }
   for (const [name, header] of parseExportedTableHeaders(activeBody)) {
     state.tableHeaders.set(name, header);
+  }
+  for (const [name, cells] of parseLegacyTableHeaders(activeBody)) {
+    state.tableHeaderCells.set(name, cells);
   }
   let body = stripImportExport(activeBody);
 
@@ -949,37 +959,17 @@ function parseExportedLinkLists(content) {
 }
 
 function parseExportedTableHeaders(content) {
-  const tableHeaders = new Map();
-  const exportPattern =
-    /^export\s+const\s+([A-Za-z0-9_]+)\s*=\s*\[([\s\S]*?)^\s*]\s*;?\s*$/gm;
-  let exportMatch = exportPattern.exec(content);
-
-  while (exportMatch) {
-    const labels = [];
-    const itemPattern = /\{([\s\S]*?)}/g;
-    let itemMatch = itemPattern.exec(exportMatch[2]);
-    while (itemMatch) {
-      const label =
-        itemMatch[1].match(/\blabel\s*:\s*['"]([^'"]*)['"]/)?.[1] ?? '';
-      const span = Math.max(
-        1,
-        Number.parseInt(
-          itemMatch[1].match(/\bcol\s*:\s*(\d+)/)?.[1] ?? '1',
-          10,
-        ),
-      );
-      labels.push(label, ...Array.from({ length: span - 1 }, () => ''));
-      itemMatch = itemPattern.exec(exportMatch[2]);
-    }
-
-    if (labels.length > 0) {
-      tableHeaders.set(exportMatch[1], labels);
-    }
-
-    exportMatch = exportPattern.exec(content);
-  }
-
-  return tableHeaders;
+  return new Map(
+    [...parseLegacyTableHeaders(content)].map(([name, rows]) => [
+      name,
+      rows
+        .flat()
+        .flatMap((cell) => [
+          cell.raw,
+          ...Array.from({ length: cell.colspan - 1 }, () => ''),
+        ]),
+    ]),
+  );
 }
 
 export function stripImportExport(content) {
@@ -2649,14 +2639,24 @@ function transformHtmlTables(value, state) {
           ];
 
           return cells.map((cellMatch) => ({
-            colspan: readNumericAttribute(cellMatch[2], 'colspan', 'col'),
+            colspan: readNumericAttribute(
+              cellMatch[2],
+              'colspan',
+              'colSpan',
+              'col',
+            ),
             kind:
               /<thead\b[^>]*>[\s\S]*$/i.test(body.slice(0, rowMatch.index)) &&
               !/<\/thead>[\s\S]*$/i.test(body.slice(0, rowMatch.index))
                 ? 'h'
                 : cellMatch[1].toLowerCase(),
             raw: cellMatch[3],
-            rowspan: readNumericAttribute(cellMatch[2], 'rowspan', 'row'),
+            rowspan: readNumericAttribute(
+              cellMatch[2],
+              'rowspan',
+              'rowSpan',
+              'row',
+            ),
           }));
         },
       );
@@ -2675,6 +2675,31 @@ function transformHtmlTables(value, state) {
       const configuredHeader = headerName
         ? state.tableHeaders.get(headerName)
         : null;
+      const headerCells =
+        state.tableHeaderCells?.get(headerName) ?? configuredHeader;
+      const layout = layoutMergedTable(rawRows, headerCells);
+      if (layout.hasSpans || layout.headerCount > 1) {
+        const normalize = (cell) => ({
+          ...cell,
+          raw: isComplexTableCell(cell.raw)
+            ? normalizeSlotDefinitionContent(cell.raw)
+            : collapseInline(transformInlineHtml(cell.raw)),
+        });
+        if (configuredHeader)
+          state.issues.push(`normalized-table-header:${headerName}`);
+        const normalizedHeaders =
+          headerCells &&
+          (Array.isArray(headerCells[0])
+            ? headerCells.map((row) => row.map(normalize))
+            : headerCells.map((cell) =>
+                typeof cell === 'string' ? cell : normalize(cell),
+              ));
+        tableIndex++;
+        return renderMergedTable(
+          rawRows.map((row) => row.map(normalize)),
+          normalizedHeaders,
+        );
+      }
       const { header, bodyRows } = normalizeTableGrid(
         rawRows,
         configuredHeader,

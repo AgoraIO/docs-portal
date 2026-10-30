@@ -41,20 +41,111 @@ description: "了解如何在游戏语音中优化游戏语音音频体验，包
 
 设备系统音量是指在设备上可以调整的音量，由声网 RTC SDK 控制。假设 SDK 使用的是通话音量，那么调整系统音量就意味着调整通话音量。你可以根据下表查询 SDK 使用的具体音量类型：
 
-| 运行平台 | AUDIO SCENARIO | 用户角色 | 有线耳机 | 扬声器 | 听筒 | 蓝牙耳机 |
-| --- | --- | --- | --- | --- | --- | --- |
-| Android | `AUDIO_SCENARIO_GAME_STREAMING` | 多主播 | 媒体音量 | 媒体音量 | 通话音量 | 通话音量 |
-| Android | `AUDIO_SCENARIO_GAME_STREAMING` | 单主播 | 媒体音量 | 媒体音量 | 通话音量 | 通话音量 |
-| Android | `AUDIO_SCENARIO_GAME_STREAMING` | 观众 | 媒体音量 | 媒体音量 | 通话音量 | 媒体音量 |
-| Android | `AUDIO_SCENARIO_CHATROOM` | 多主播 | 媒体音量 | 通话音量 | 通话音量 | 通话音量 |
-| Android | `AUDIO_SCENARIO_CHATROOM` | 单主播 | 媒体音量 | 通话音量 | 通话音量 | 通话音量 |
-| Android | `AUDIO_SCENARIO_CHATROOM` | 观众 | 媒体音量 | 通话音量 | 通话音量 | 通话音量 |
-| iOS | `AgoraAudioScenarioGameStreaming` | 多主播 | 媒体音量 | 媒体音量 | 媒体音量 | 媒体音量 |
-| iOS | `AgoraAudioScenarioGameStreaming` | 单主播 | 媒体音量 | 媒体音量 | 媒体音量 | 媒体音量 |
-| iOS | `AgoraAudioScenarioGameStreaming` | 观众 | 媒体音量 | 媒体音量 | 媒体音量 | 媒体音量 |
-| iOS | `AgoraAudioScenarioChatRoom` | 多主播 | 媒体音量 | 通话音量 | 通话音量 | 通话音量 |
-| iOS | `AgoraAudioScenarioChatRoom` | 单主播 | 媒体音量 | 通话音量 | 通话音量 | 通话音量 |
-| iOS | `AgoraAudioScenarioChatRoom` | 观众 | 媒体音量 | 通话音量 | 通话音量 | 通话音量 |
+<DocsTable>
+<thead>
+<tr>
+<th scope="col">运行平台</th>
+<th scope="col">AUDIO SCENARIO</th>
+<th scope="col">用户角色</th>
+<th scope="col">有线耳机</th>
+<th scope="col">扬声器</th>
+<th scope="col">听筒</th>
+<th scope="col">蓝牙耳机</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td rowSpan={6}>Android</td>
+<td rowSpan={3}>`AUDIO_SCENARIO_GAME_STREAMING`</td>
+<td>多主播</td>
+<td>媒体音量</td>
+<td>媒体音量</td>
+<td>通话音量</td>
+<td>通话音量</td>
+</tr>
+<tr>
+<td>单主播</td>
+<td>媒体音量</td>
+<td>媒体音量</td>
+<td>通话音量</td>
+<td>通话音量</td>
+</tr>
+<tr>
+<td>观众</td>
+<td>媒体音量</td>
+<td>媒体音量</td>
+<td>通话音量</td>
+<td>媒体音量</td>
+</tr>
+<tr>
+<td rowSpan={3}>`AUDIO_SCENARIO_CHATROOM`</td>
+<td>多主播</td>
+<td>媒体音量</td>
+<td>通话音量</td>
+<td>通话音量</td>
+<td>通话音量</td>
+</tr>
+<tr>
+<td>单主播</td>
+<td>媒体音量</td>
+<td>通话音量</td>
+<td>通话音量</td>
+<td>通话音量</td>
+</tr>
+<tr>
+<td>观众</td>
+<td>媒体音量</td>
+<td>通话音量</td>
+<td>通话音量</td>
+<td>通话音量</td>
+</tr>
+<tr>
+<td rowSpan={6}>iOS</td>
+<td rowSpan={3}>`AgoraAudioScenarioGameStreaming`</td>
+<td>多主播</td>
+<td>媒体音量</td>
+<td>媒体音量</td>
+<td>媒体音量</td>
+<td>媒体音量</td>
+</tr>
+<tr>
+<td>单主播</td>
+<td>媒体音量</td>
+<td>媒体音量</td>
+<td>媒体音量</td>
+<td>媒体音量</td>
+</tr>
+<tr>
+<td>观众</td>
+<td>媒体音量</td>
+<td>媒体音量</td>
+<td>媒体音量</td>
+<td>媒体音量</td>
+</tr>
+<tr>
+<td rowSpan={3}>`AgoraAudioScenarioChatRoom`</td>
+<td>多主播</td>
+<td>媒体音量</td>
+<td>通话音量</td>
+<td>通话音量</td>
+<td>通话音量</td>
+</tr>
+<tr>
+<td>单主播</td>
+<td>媒体音量</td>
+<td>通话音量</td>
+<td>通话音量</td>
+<td>通话音量</td>
+</tr>
+<tr>
+<td>观众</td>
+<td>媒体音量</td>
+<td>通话音量</td>
+<td>通话音量</td>
+<td>通话音量</td>
+</tr>
+</tbody>
+</DocsTable>
 
 ## 设置蓝牙协议
 

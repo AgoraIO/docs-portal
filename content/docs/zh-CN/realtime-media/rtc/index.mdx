@@ -325,43 +325,67 @@ RTC SDK 支持多种平台，并支持平台间互通。各 SDK 的系统版本�
 带宽计算公式为：PCU × 主播的发送码率 × 并发主播数（单个频道）
 :::
 
-| 服务 | PCU/PCW/带宽 | 中国大陆 | 欧洲 | 美洲 | 亚洲（除中国大陆） |
-| --- | --- | --- | --- | --- | --- |
-| 实时互动 | PCU | 10 K | 10 K | 10 K | 10 K |
-| 实时互动 | 带宽 | 10 Gbps | 10 Gbps | 10 Gbps | 10 Gbps |
-| 旁路推流 | PCW | <Slot name="rtc-quota-mainland" /> | <Slot name="rtc-quota-europe" /> | <Slot name="rtc-quota-americas" /> | <Slot name="rtc-quota-asia" /> |
-
-<Slot for="rtc-quota-mainland">
+<DocsTable>
+<thead>
+<tr>
+<th scope="col">服务</th>
+<th scope="col">PCU/PCW/带宽</th>
+<th scope="col">中国大陆</th>
+<th scope="col">欧洲</th>
+<th scope="col">美洲</th>
+<th scope="col">亚洲（除中国大陆）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td rowSpan={2}>实时互动</td>
+<td>PCU</td>
+<td>10 K</td>
+<td>10 K</td>
+<td>10 K</td>
+<td>10 K</td>
+</tr>
+<tr>
+<td>带宽</td>
+<td>10 Gbps</td>
+<td>10 Gbps</td>
+<td>10 Gbps</td>
+<td>10 Gbps</td>
+</tr>
+<tr>
+<td>旁路推流</td>
+<td>PCW</td>
+<td>
 
 - SD：200
 - HD：50
 - FHD：20
 
-</Slot>
-
-<Slot for="rtc-quota-europe">
-
-- SD：50
-- HD：20
-- FHD：5
-
-</Slot>
-
-<Slot for="rtc-quota-americas">
+</td>
+<td>
 
 - SD：50
 - HD：20
 - FHD：5
 
-</Slot>
-
-<Slot for="rtc-quota-asia">
+</td>
+<td>
 
 - SD：50
 - HD：20
 - FHD：5
 
-</Slot>
+</td>
+<td>
+
+- SD：50
+- HD：20
+- FHD：5
+
+</td>
+</tr>
+</tbody>
+</DocsTable>
 
 :::info[信息]
 视频分辨率说明：

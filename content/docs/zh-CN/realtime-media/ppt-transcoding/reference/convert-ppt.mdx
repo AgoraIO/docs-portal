@@ -107,29 +107,32 @@ description: "查看 PPT 转码服务的 PPT 转换效果支持情况，了解�
 
 ## 支持的效果
 
-| PPT 元素 | 效果菜单 | 支持的效果 | 备注 |
-| --- | --- | --- | --- |
-| 文字 | 字体 | <Slot name="convert-ppt-html-1-1-2" /> | 部分字体转换后，需确认本地已安装字体文件，以保证该字体正确显示 |
-| 文字 | 段落 | <Slot name="convert-ppt-html-1-2-1" /> | / |
-| 形状 | 形状格式 | <Slot name="convert-ppt-html-1-3-2" /> | / |
-| 表格 | 表设计 | <Slot name="convert-ppt-html-1-4-2" /> | / |
-| 表格 | 表布局 | 全部 | / |
-| 图片 | 图片格式 | <Slot name="convert-ppt-html-1-6-2" /> | / |
-| 音视频 | 音频/视频格式 | <Slot name="convert-ppt-html-1-7-2" /> | / |
-| 动画 | 动画类型 | <Slot name="convert-ppt-html-1-8-2" /> | / |
-| 动画 | 动画属性 | <Slot name="convert-ppt-html-1-9-1" /> | / |
-| 其他 | 其他菜单 | 修改 PPT 主题、自定义主题 | / |
-
-<Slot for="convert-ppt-html-1-1-2">
+<DocsTable>
+<thead>
+<tr>
+<th scope="col">PPT 元素</th>
+<th scope="col">效果菜单</th>
+<th scope="col">支持的效果</th>
+<th scope="col">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td rowSpan={2}>文字</td>
+<td>字体</td>
+<td>
 
 - 字体、字形、字号：全部
 - 颜色和下划线：全部
 - 效果：支持删除线、双删除线、上标、下标、等高字符
 - 字符间距：全部
 
-</Slot>
-
-<Slot for="convert-ppt-html-1-2-1">
+</td>
+<td>部分字体转换后，需确认本地已安装字体文件，以保证该字体正确显示</td>
+</tr>
+<tr>
+<td>段落</td>
+<td>
 
 - 项目符号
 - 编号
@@ -139,16 +142,24 @@ description: "查看 PPT 转码服务的 PPT 转换效果支持情况，了解�
 - 中文版式：全部
 - 多栏排版
 
-</Slot>
-
-<Slot for="convert-ppt-html-1-3-2">
+</td>
+<td>/</td>
+</tr>
+<tr>
+<td>形状</td>
+<td>形状格式</td>
+<td>
 
 - 形状填充：全部
 - 形状轮廓/线条：全部
 
-</Slot>
-
-<Slot for="convert-ppt-html-1-4-2">
+</td>
+<td>/</td>
+</tr>
+<tr>
+<td rowSpan={2}>表格</td>
+<td>表设计</td>
+<td>
 
 - 表格样式选项：全部
 - 表格样式：
@@ -157,9 +168,18 @@ description: "查看 PPT 转码服务的 PPT 转换效果支持情况，了解�
   - 边框
   - 填充：颜色填充/图片填充/纹理填充/渐变填充/图案填充
 
-</Slot>
-
-<Slot for="convert-ppt-html-1-6-2">
+</td>
+<td>/</td>
+</tr>
+<tr>
+<td>表布局</td>
+<td>全部</td>
+<td>/</td>
+</tr>
+<tr>
+<td>图片</td>
+<td>图片格式</td>
+<td>
 
 - 删除背景
 - 调整：全部
@@ -171,16 +191,24 @@ description: "查看 PPT 转码服务的 PPT 转换效果支持情况，了解�
 - 排列：全部
 - 裁剪
 
-</Slot>
-
-<Slot for="convert-ppt-html-1-7-2">
+</td>
+<td>/</td>
+</tr>
+<tr>
+<td>音视频</td>
+<td>音频/视频格式</td>
+<td>
 
 - 裁剪（进度裁剪）
 - 添加书签
 
-</Slot>
-
-<Slot for="convert-ppt-html-1-8-2">
+</td>
+<td>/</td>
+</tr>
+<tr>
+<td rowSpan={2}>动画</td>
+<td>动画类型</td>
+<td>
 
 - 切页动画：淡入/淡出/推入/擦除/分割/显示/切入/随机线条/形状/揭开/覆盖/跌落/悬挂/帘式/剥离/溶解/棋盘/百叶窗/时钟/涟漪/切换/旋转/库/立方体/框/梳理/缩放/平移/传送带
 - 出现/消失动画：全部
@@ -189,15 +217,28 @@ description: "查看 PPT 转码服务的 PPT 转换效果支持情况，了解�
 - 模板动画：全部
 - 带声音的动画
 
-</Slot>
-
-<Slot for="convert-ppt-html-1-9-1">
+</td>
+<td>/</td>
+</tr>
+<tr>
+<td>动画属性</td>
+<td>
 
 - 计时：开始条件/持续时间/延迟/重复
 - 触发器：通过单击/通过书签
 - 设置文本动画、组合文本
 
-</Slot>
+</td>
+<td>/</td>
+</tr>
+<tr>
+<td>其他</td>
+<td>其他菜单</td>
+<td>修改 PPT 主题、自定义主题</td>
+<td>/</td>
+</tr>
+</tbody>
+</DocsTable>
 
 ## 修复 PPT 最佳实践
 

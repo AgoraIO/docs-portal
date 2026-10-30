@@ -40,18 +40,16 @@ describe('API Center shared HTML to MDX converter', () => {
       sourcePath: 'options.html',
       sourceUrl: 'https://example.com/options',
     });
+    expect(result.body).toContain('<DocsTable>');
+    expect(result.body).toContain('<th rowSpan={2} scope="col">Option</th>');
     expect(result.body).toContain(
-      '| Option | Setting / Key | Setting / Type |',
+      '<th colSpan={2} scope="colgroup">Setting</th>',
     );
     expect(result.body).toContain(
-      '| <Slot name="api-center-table-0" /> | enable | bool |',
+      '<td rowSpan={2}>Beauty [guide](https://example.com/)</td>',
     );
-    expect(result.body).toContain(
-      '| <Slot name="api-center-table-0" /> | strength | float |',
-    );
-    expect(result.body.match(/<Slot for="api-center-table-0">/g)).toHaveLength(
-      1,
-    );
+    expect(result.body.match(/Beauty /g)).toHaveLength(1);
+    expect(result.body).not.toContain('<Slot');
   });
   it.each(['v4.24.8', '4.24.9', 'v2.0.0-beta.0'])(
     'keeps SDK version %s out of generated page titles',
@@ -1133,11 +1131,12 @@ describe('API Center shared HTML to MDX converter', () => {
       sourcePath: 'page.html',
     });
 
-    expect(result.body).toContain('| Enum value | Enum value |');
     expect(result.body).toContain(
-      '| READY | <Slot name="api-center-table-0" /> |',
+      '<th colSpan={2} scope="colgroup">Enum value</th>',
     );
-    expect(result.body).toContain('<Slot for="api-center-table-0">');
+    expect(result.body).toContain('<td>READY</td>');
+    expect(result.body).toContain('<td>Ready description.</td>');
+    expect(result.body).not.toContain('<Slot');
   });
 
   it('preserves explicit fragment anchors inside table cells', async () => {

@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 import { getTableOfContents } from 'fumadocs-core/content/toc';
+import { layoutMergedTable, renderMergedTable } from '../merged-table.mjs';
 import { normalizeTableGrid } from '../table-grid.mjs';
 import { rewriteLegacyBodyLinks } from './legacy-links.mjs';
 import {
@@ -1212,10 +1213,25 @@ async function renderTable($, table, state) {
         continue;
       }
       const slotName = `api-center-table-${state.tableSlotCounter++}`;
-      renderedCells.push({ ...metadata, raw: `<Slot name="${slotName}" />` });
+      renderedCells.push({
+        ...metadata,
+        raw: `<Slot name="${slotName}" />`,
+        nativeRaw: body,
+      });
       definitions.push(`<Slot for="${slotName}">\n\n${body}\n\n</Slot>`);
     }
     values.push(renderedCells);
+  }
+  const layout = layoutMergedTable(values);
+  if (layout.hasSpans || layout.headerCount > 1) {
+    return renderMergedTable(
+      values.map((row) =>
+        row.map((cell) => ({
+          ...cell,
+          raw: cell.nativeRaw ?? cell.raw,
+        })),
+      ),
+    );
   }
   const { header, bodyRows } = normalizeTableGrid(values);
   return [

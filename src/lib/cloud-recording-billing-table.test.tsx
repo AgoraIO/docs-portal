@@ -3,8 +3,8 @@ import { within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { renderDocsMdx } from '@/test/render-docs-mdx';
 
-describe('Cloud Recording billing example tables', () => {
-  it('associates every usage and fee value with a nonempty column heading', async () => {
+describe('Cloud Recording merged billing example', () => {
+  it('preserves two header levels, all usage values and the shared note/total as actual merged cells', async () => {
     const source = readFileSync(
       'content/docs/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/billing.mdx',
       'utf8',
@@ -14,40 +14,61 @@ describe('Cloud Recording billing example tables', () => {
     )?.[1];
     expect(section).toBeDefined();
     const { container } = await renderDocsMdx(section ?? '');
-    const tables = within(container).getAllByRole('table');
-    for (const table of tables) {
-      const headings = within(table).getAllByRole('columnheader');
-      expect(headings.every((heading) => heading.textContent?.trim())).toBe(
-        true,
-      );
-      expect(headings.length).toBeLessThanOrEqual(6);
-      for (const row of table.querySelectorAll('tbody tr')) {
-        expect(row.querySelectorAll('td')).toHaveLength(headings.length);
+    const table = within(container).getByRole('table') as HTMLTableElement;
+    expect(table.querySelectorAll('thead > tr')).toHaveLength(2);
+    const headings = within(table).getAllByRole('columnheader');
+    expect(headings.every((heading) => heading.textContent?.trim())).toBe(true);
+    expect(table.querySelector('th')).toHaveAttribute('rowspan', '2');
+    expect(within(table).getByText('实际用量（秒）')).toHaveAttribute(
+      'colspan',
+      '5',
+    );
+    expect(within(table).getByText('控制台展示用量（分钟）')).toHaveAttribute(
+      'colspan',
+      '5',
+    );
+    expect(table.querySelector('tr > p, tbody > p, thead > p')).toBeNull();
+
+    const grid: HTMLTableCellElement[][] = [];
+    for (const [r, row] of Array.from(table.rows).entries()) {
+      grid[r] ??= [];
+      let c = 0;
+      for (const cell of Array.from(row.cells)) {
+        while (grid[r][c]) c++;
+        for (let y = 0; y < cell.rowSpan; y++) {
+          grid[r + y] ??= [];
+          for (let x = 0; x < cell.colSpan; x++) grid[r + y][c + x] = cell;
+        }
+        c += cell.colSpan;
       }
     }
-    expect(tables).toHaveLength(3);
-    const [actual, displayed, fees] = tables;
-    expect(
-      within(actual).getByRole('row', { name: /2020-02-13/ }),
-    ).toHaveTextContent('3,500');
-    expect(
-      within(displayed).getByRole('row', { name: /2020-02-13/ }),
-    ).toHaveTextContent('59');
-    expect(within(fees).getByRole('row', { name: /^音频/ })).toHaveTextContent(
-      '300',
+    expect(grid).toHaveLength(10);
+    expect(grid.every((row) => row.length === 11 && row.every(Boolean))).toBe(
+      true,
     );
-    expect(within(fees).getByRole('row', { name: /^音频/ })).toHaveTextContent(
-      '2.7',
-    );
-    expect(within(fees).getByRole('row', { name: /^2K\+/ })).toHaveTextContent(
-      '2.916',
-    );
-    expect(container).toHaveTextContent(
-      '控制台用量仅供参考，不用作实际计费依据。',
-    );
+    const values = grid
+      .slice(2, 7)
+      .map((row) => row.slice(1).map((cell) => cell.textContent?.trim()));
+    expect(values).toEqual([
+      ['6,000', '0', '0', '0', '0', '100', '0', '0', '0', '0'],
+      ['12,000', '0', '0', '0', '0', '200', '0', '0', '0', '0'],
+      ['0', '3,500', '0', '0', '0', '0', '59', '0', '0', '0'],
+      ['0', '0', '1,680', '0', '520', '0', '0', '28', '0', '9'],
+      ['18,000', '3,500', '1,680', '0', '520', '300', '59', '28', '0', '9'],
+    ]);
+    const note = within(table)
+      .getByText('控制台用量仅供参考，不用作实际计费依据。')
+      .closest('td');
+    expect(note).toHaveAttribute('rowspan', '3');
+    expect(note).toHaveAttribute('colspan', '5');
+    const fees = within(table).getByRole('row', { name: /^计费/ });
+    expect(fees).toHaveTextContent('2.7');
+    expect(fees).toHaveTextContent('2.916');
     expect(container).toHaveTextContent('10.01');
     expect(container).toHaveTextContent(
       '(2.7 + 2.124 + 2.268 + 2.916 = 10.008)',
     );
+    const total = within(table).getByText('10.01').closest('td');
+    expect(total).toHaveAttribute('colspan', '5');
   });
 });

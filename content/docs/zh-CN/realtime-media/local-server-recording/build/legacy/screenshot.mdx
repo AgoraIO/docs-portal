@@ -20,18 +20,36 @@ description: "了解如何在本地服务端录制中本地截图，包括适用
 
 单流录制模式（`isMixingEnabled` 为 `0`）下，`getVideoFrame` 参数可设为 `3`，`4`，`5`。
 
-| 参数设置 | 录制方式 | 录制文件格式 |
-| --- | --- | --- |
-| `--getVideoFrame 3` | 只截图 | 原始视频数据 JPG 帧格式。 |
-| `--getVideoFrame 4` | 只截图 | JPG 文件格式。 |
-| `--getVideoFrame 5` | 边录制边截图 | <Slot name="screenshot-html-0-3-2" /> |
-
-<Slot for="screenshot-html-0-3-2">
+<DocsTable>
+<thead>
+<tr>
+<th scope="col">参数设置</th>
+<th scope="col">录制方式</th>
+<th scope="col">录制文件格式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>`--getVideoFrame 3`</td>
+<td rowSpan={2}>只截图</td>
+<td>原始视频数据 JPG 帧格式。</td>
+</tr>
+<tr>
+<td>`--getVideoFrame 4`</td>
+<td>JPG 文件格式。</td>
+</tr>
+<tr>
+<td>`--getVideoFrame 5`</td>
+<td>边录制边截图</td>
+<td>
 
 - Native 和框架端每个 UID 生成一个 MP4 视频文件和多个 JPG 文件。
 - Web 端每个 UID 生成一个 WebM/MP4 视频文件和多个 JPG 文件。
 
-</Slot>
+</td>
+</tr>
+</tbody>
+</DocsTable>
 
 ### 设置截图时间间隔
 

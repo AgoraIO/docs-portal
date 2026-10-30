@@ -4,7 +4,9 @@ import remarkGfm from 'remark-gfm';
 import remarkMdx from 'remark-mdx';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
+import { remarkMergedTables } from '../src/lib/mdx/remark-merged-tables.ts';
 import { remarkTableSlots } from '../src/lib/mdx/remark-table-slots.ts';
+import { auditMergedTable } from './lib/audit-merged-table.mjs';
 
 const markdown = unified().use(remarkParse).use(remarkGfm);
 const mdx = unified().use(remarkParse).use(remarkGfm).use(remarkMdx);
@@ -15,7 +17,28 @@ export function auditTableStructure(source, isMdx = true) {
   );
   const diagnostics = [];
   const tree = (isMdx ? mdx : markdown).parse(body);
+  try {
+    remarkMergedTables()(tree);
+  } catch (error) {
+    return [{ line: 1, message: error.message }];
+  }
   function walk(node) {
+    if (node.type === 'html' && /<DocsTable\b/.test(node.value)) {
+      diagnostics.push({
+        line: node.position.start.line,
+        message: 'DocsTable requires an .mdx source file',
+      });
+    }
+    if (node.type === 'mdxJsxFlowElement' && node.name === 'DocsTable') {
+      try {
+        auditMergedTable(node);
+      } catch (error) {
+        diagnostics.push({
+          line: node.position.start.line,
+          message: error.message,
+        });
+      }
+    }
     if (node.type === 'table') {
       const width = node.children[0].children.length;
       const text = (cell) =>
@@ -56,7 +79,8 @@ export function auditTableStructure(source, isMdx = true) {
     ) {
       diagnostics.push({
         line: node.position.start.line,
-        message: 'Use a native GFM table with Slot blocks for rich cells',
+        message:
+          'Use GFM for simple tables or DocsTable for explicit merged cells',
       });
     }
     for (const child of node.children ?? []) walk(child);

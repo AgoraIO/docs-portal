@@ -2,6 +2,30 @@ import { describe, expect, it } from 'vitest';
 import { auditTableStructure } from './audit-doc-tables.mjs';
 
 describe('documentation table structure audit', () => {
+  it('accepts native merged cells and rejects invalid coverage and row-group spans', () => {
+    expect(
+      auditTableStructure('<DocsTable>\n</DocsTable>', false)[0].message,
+    ).toContain('.mdx source');
+    expect(
+      auditTableStructure(`<DocsTable>
+<thead><tr><th colSpan={2}>Parameters</th></tr></thead>
+<tbody>
+<tr><td rowSpan={2}>group</td><td>one</td></tr>
+<tr><td>two</td></tr>
+</tbody>
+</DocsTable>`),
+    ).toEqual([]);
+    const invalid = auditTableStructure(`<DocsTable>
+<thead><tr><th rowSpan={2}>Header</th></tr></thead>
+<tbody><tr><td>Value</td></tr></tbody>
+</DocsTable>`);
+    expect(invalid[0].message).toContain('beyond');
+    const gap = auditTableStructure(`<DocsTable>
+<thead><tr><th>A</th><th>B</th></tr></thead>
+<tbody><tr><td>only one cell</td></tr></tbody>
+</DocsTable>`);
+    expect(gap[0].message).toContain('do not cover');
+  });
   it('rejects prose separating a table from its rich cell definition', () => {
     for (const isMdx of [true, false]) {
       const issues = auditTableStructure(

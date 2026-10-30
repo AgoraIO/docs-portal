@@ -378,9 +378,9 @@ Use GFM tables only for simple, inline cell content.
 
 Rules:
 
-- Do not put lists, callouts, code fences, images, or raw HTML lists inside a
-  table cell.
-- If a cell needs block content, move that content below the table under a
+- Do not put lists, callouts, code fences, images, or raw HTML lists directly
+  inside a GFM table cell.
+- If a GFM cell needs block content, move that content below the table under a
   heading or list item, or use the approved table `Slot` pattern when preserving
   the tabular shape matters.
 - For table slots, put `<Slot name="..." />` alone in the table cell, then put
@@ -388,14 +388,33 @@ Rules:
 - Put totals or other prose after all of the table's Slot definitions; text
   between the table and those definitions prevents rich cells from rendering.
 - Keep table rows single-line whenever possible.
-- Flatten legacy merged cells before publication: repeat vertical group labels
-  in their related rows and combine multi-level column headers into explicit
-  labels. Keep shared allowances and aggregate totals outside detail rows so
-  flattening does not imply separate allowances or duplicate charges.
+- Preserve merged cells with the approved native MDX `DocsTable` primitive,
+  which uses the same accessible scroll container as GFM tables. Use native
+  `thead`, `tbody`, `tr`, `th` and `td` elements with explicit `rowSpan` and
+  `colSpan` positive integers. Keep multiple header rows inside `thead`.
+- Preserve the source's merge boundaries, including group labels, shared
+  allowances and aggregate totals. Do not repeat their text to simulate a merge,
+  and do not automatically merge independent cells just because values match.
+- Inside a `DocsTable` cell, write inline Markdown directly. For lists, code
+  blocks or multiple paragraphs, put blank lines after the opening cell tag and
+  before its closing tag. Rich content belongs directly in its owning cell;
+  the GFM `Slot` placeholder pattern is unnecessary there.
 - Escape literal pipes as `\|`, including inside inline code. Every body row
   must have the same number of cells as its header. Run `bun run docs:tables`
-  to check all Chinese documents for unsupported HTML tables and
-  mismatched column counts, and validate rich-cell Slot placement.
+  to check all Chinese documents for unsupported raw HTML tables, mismatched
+  logical column counts, overlapping/out-of-range spans and rich-cell Slot placement.
+
+```mdx
+<DocsTable>
+<thead>
+<tr><th>Option</th><th>Key</th></tr>
+</thead>
+<tbody>
+<tr><td rowSpan={2}>`beauty_effect_option`</td><td>`enable`</td></tr>
+<tr><td>`smoothness`</td></tr>
+</tbody>
+</DocsTable>
+```
 
 ## Agent Checklist
 
