@@ -1,0 +1,162 @@
+---
+title: Deepgram
+description: >
+ Use Deepgram for speech recognition (ASR) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/deepgram.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Pattern page for the ASR vendor conversion. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+
+Deepgram provides fast, accurate automatic speech recognition with advanced AI models optimized for real-time streaming and conversational applications across multiple languages.
+
+## Sample configuration
+
+The following example shows how to configure Deepgram as the agent's ASR when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+
+Deepgram supports managed mode and BYOK. In managed mode, Agora provides access to Deepgram, and you don't need a Deepgram account. For BYOK, store your Deepgram API key in a secret set, and refer to it from the agent. For details, see [Use managed mode](/en/ai/platform/build/managed-mode) and [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, DeepgramSTT, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(
+        DeepgramSTT(
+            api_key=secret_ref("support_prod", "deepgram"),  # omit to use managed mode
+            model="nova-3",
+            language="en-US",
+            keyterm="agora%20convo",
+        )
+    )
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, DeepgramSTT, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(
+    new DeepgramSTT({
+      apiKey: secretRef('support_prod', 'deepgram'), // omit to use managed mode
+      model: 'nova-3',
+      language: 'en-US',
+      keyterm: 'agora%20convo',
+    }),
+  )
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).
+	WithStt(vendors.NewDeepgramSTT(vendors.DeepgramSTTOptions{
+		APIKey:   agentkit.SecretRef("support_prod", "deepgram"), // omit to use managed mode
+		Model:    "nova-3",
+		Language: "en-US",
+		Keyterm:  "agora%20convo",
+	})).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts( /* configure your TTS vendor */ )
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+- **Managed mode**
+
+    Set `credential.mode` to `managed` in the `asr` block. Agora provides access to Deepgram, and you don't need a Deepgram account.
+
+    ```json
+    "asr": {
+      "credential": { "mode": "managed" },
+      "vendor": "deepgram",
+      "model": "nova-3",
+      "language": "en-US",
+      "params": {
+        "keyterm": "agora%20convo"
+      }
+    }
+    ```
+
+- **BYOK**
+
+    Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Deepgram API key in a secret set. In the following example, the key is stored as `deepgram` in the `support_prod` set:
+
+    ```json
+    "asr": {
+      "credential": {
+        "mode": "byok",
+        "fields": {
+          "api_key": "$secrets.support_prod.deepgram"
+        }
+      },
+      "vendor": "deepgram",
+      "model": "nova-3",
+      "language": "en-US",
+      "params": {
+        "keyterm": "term1%20term2"
+      }
+    }
+    ```
+
+</TabsContent>
+</Tabs>
+
+## Key parameters
+
+The `asr` block takes the following fields. In the SDKs, `DeepgramSTT` sets them from its options, and passes any other Deepgram parameters from its additional parameters option to `params`.
+
+<ParameterList title="asr" required={true}>
+ <Parameter name="vendor" type="string" required={true}>
+ Set to `deepgram`.
+ </Parameter>
+ <Parameter name="credential" type="object" required={true}>
+ How the agent authenticates with Deepgram. Set `mode` to `managed`, or to `byok` with `fields.api_key` set to a `$secrets.<set>.<key>` reference to your Deepgram API key. Get your API key from the [Deepgram Console](https://console.deepgram.com/).
+ </Parameter>
+ <Parameter name="model" type="string" required={false}>
+ The speech recognition model to use. Required in managed mode, where it must be `nova-2` or `nova-3`.
+ </Parameter>
+ <Parameter name="language" type="string" required={false}>
+ The language code for speech recognition, for example `en-US`, `es`, or `fr`. See [supported languages](https://developers.deepgram.com/docs/models-languages-overview) for language codes.
+ </Parameter>
+ <Parameter name="url" type="string" required={false}>
+ A custom WebSocket endpoint for Deepgram's streaming API, for example `wss://api.deepgram.com/v1/listen`. Omit it to use the default endpoint.
+ </Parameter>
+ <Parameter name="params" type="object" required={false}>
+  <Parameter name="keyterm" type="string" required={false}>
+  Boost specialized terms and brands. Only compatible with the `nova-3` model.
+  </Parameter>
+ </Parameter>
+</ParameterList>
+
+{/* TODO(platform-confirm): Confirm that a BYOK Deepgram stage works without `url`, using the default endpoint. The contract describes `url` only as a custom endpoint. In pre-release testing (2026-10-28), the Python and TypeScript SDKs sent `language` both at the top level of the `asr` block and in `params`; Go sent it only in `params` (SDK bug list #6). The Go BYOK example fails: Go sends the key as `credential.fields.key`, which the API rejects with `400 InvalidRequestBody` (SDK bug list #23). Passing the reference as `AdditionalParams: map[string]interface{}{"api_key": ref}` works around it. The managed examples in all three SDKs and the BYOK examples in Python and TypeScript passed in pre-release testing on 2026-10-28. */}
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Deepgram without validation. For a full list of supported options, refer to the [Deepgram API documentation](https://developers.deepgram.com/docs/getting-started-with-live-streaming-audio).
+
+The following parameters are not passed through and instead use default values set by Agora:
+`callback`, `callback_method`, `channels`, `encoding`, `multichannel`, `sample_rate`
+:::

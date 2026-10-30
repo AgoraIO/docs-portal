@@ -1,0 +1,189 @@
+---
+title: MiniMax
+description: >
+ Use MiniMax for text-to-speech (TTS) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/minimax.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Pattern page for the TTS vendor conversion. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+
+MiniMax provides text-to-speech (TTS) with multiple voice styles and low-latency streaming output.
+
+## Sample configuration
+
+The following example shows how to configure MiniMax as the agent's TTS when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+
+MiniMax supports managed mode and BYOK. In managed mode, Agora provides access to MiniMax, and you don't need a MiniMax account. For BYOK, store your MiniMax API key in a secret set, and refer to it from the agent. For details, see [Use managed mode](/en/ai/platform/build/managed-mode) and [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, MiniMaxTTS, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your ASR vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(
+        MiniMaxTTS(
+            key=secret_ref("support_prod", "minimax"),  # omit to use managed mode
+            group_id="<your_minimax_group_id>",  # omit to use managed mode
+            url="wss://api-uw.minimax.io/ws/v1/t2a_v2",  # omit to use managed mode
+            model="speech-2.8-turbo",
+            voice_id="English_captivating_female1",
+            speed=1.0,
+            sample_rate=44100,
+        )
+    )
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, MiniMaxTTS, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(
+    new MiniMaxTTS({
+      key: secretRef('support_prod', 'minimax'), // omit to use managed mode
+      groupId: '<your_minimax_group_id>', // omit to use managed mode
+      url: 'wss://api-uw.minimax.io/ws/v1/t2a_v2', // omit to use managed mode
+      model: 'speech-2.8-turbo',
+      voiceId: 'English_captivating_female1',
+      speed: 1.0,
+      sampleRate: 44100,
+    }),
+  );
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// client is your configured Agora client
+speed, sampleRate := 1.0, 44100
+agent := agentkit.NewAgent(client).
+	WithStt( /* configure your ASR vendor */ ).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts(vendors.NewMiniMaxTTS(vendors.MiniMaxTTSOptions{
+		Key:        agentkit.SecretRef("support_prod", "minimax"), // omit to use managed mode
+		GroupID:    "<your_minimax_group_id>",                     // omit to use managed mode
+		URL:        "wss://api-uw.minimax.io/ws/v1/t2a_v2",        // omit to use managed mode
+		Model:      "speech-2.8-turbo",
+		VoiceID:    "English_captivating_female1",
+		Speed:      &speed,
+		SampleRate: &sampleRate,
+	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+- **Managed mode**
+
+    Set `credential.mode` to `managed` in the `tts` block. Agora provides access to MiniMax, and you don't need a MiniMax account.
+
+    ```json
+    "tts": {
+      "credential": { "mode": "managed" },
+      "vendor": "minimax",
+      "params": {
+        "model": "speech-2.8-turbo",
+        "voice_setting": {
+          "voice_id": "English_captivating_female1",
+          "speed": 1.0
+        },
+        "audio_setting": {
+          "sample_rate": 44100
+        }
+      }
+    }
+    ```
+
+- **BYOK**
+
+    Set `credential.mode` to `byok` and `credential.fields.key` to a reference to your MiniMax API key in a secret set. Your MiniMax group ID isn't secret. Pass it in `params`. In the following example, the key is stored as `minimax` in the `support_prod` set:
+
+    ```json
+    "tts": {
+      "credential": {
+        "mode": "byok",
+        "fields": {
+          "key": "$secrets.support_prod.minimax"
+        }
+      },
+      "vendor": "minimax",
+      "url": "wss://api-uw.minimax.io/ws/v1/t2a_v2",
+      "params": {
+        "group_id": "<your_minimax_group_id>",
+        "model": "speech-2.8-turbo",
+        "voice_setting": {
+          "voice_id": "English_captivating_female1",
+          "speed": 1.0
+        },
+        "audio_setting": {
+          "sample_rate": 44100
+        }
+      }
+    }
+    ```
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): SDK tabs tested in pre-release testing (2026-10-29) against the SDK preview commits TypeScript 4900f4c, Python ed4466c, and Go 362ce9a. All three saved in managed mode, sent `voice_setting.speed` and `audio_setting.sample_rate`, and stored the same `tts` block as the REST example (SDK bug list #2, fixed). In pre-release testing (2026-10-28), BYOK saved in Python and Go, with the key sent as `credential.fields.key`. */}
+
+## Key parameters
+
+The `tts` block takes the following fields. In the SDKs, the MiniMax TTS class sets them from its options.
+
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `minimax`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    How the agent authenticates with MiniMax. Set `mode` to `managed`, or to `byok` with `fields.key` set to a `$secrets.<set>.<key>` reference to your MiniMax API key.
+  </Parameter>
+  <Parameter name="url" type="string" required={false}>
+    A custom WebSocket endpoint for streaming TTS output, for example `wss://api-uw.minimax.io/ws/v1/t2a_v2`. Not needed in managed mode.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="group_id" type="string" required={false}>
+      The MiniMax group identifier. Required for BYOK.
+    </Parameter>
+    <Parameter name="model" type="string" required={true}>
+      The TTS model to use, for example `speech-02-turbo`. For managed mode, use `speech-2.6-turbo` or `speech-2.8-turbo`.
+    </Parameter>
+    <Parameter name="voice_setting.voice_id" type="string" required={true}>
+      The voice style identifier to use, for example `English_captivating_female1`.
+    </Parameter>
+    <Parameter name="voice_setting.speed" type="number" required={true}>
+      The speaking speed, for example `1.0`.
+    </Parameter>
+    <Parameter name="audio_setting.sample_rate" type="number" possibleValues="8000, 16000, 22050, 24000, 32000, 44100" required={false}>
+      The audio sampling rate in Hz.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+{/* TODO(platform-confirm): Managed MiniMax TTS without `voice_setting.speed` was rejected in pre-release testing (2026-10-27). It's listed as required for that reason. Confirm whether BYOK needs `url`, or whether Agora uses a default MiniMax endpoint. */}
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to MiniMax without validation. For a full list of supported options, refer to the [MiniMax documentation](https://www.minimax.io/platform/document/t2a_http).
+:::

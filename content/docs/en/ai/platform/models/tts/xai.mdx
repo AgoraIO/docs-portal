@@ -1,0 +1,143 @@
+---
+title: xAI
+description: >
+  Use xAI for text-to-speech (TTS) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/xai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+
+xAI provides text-to-speech (TTS) with a range of expressive voices for conversational AI applications.
+
+## Sample configuration
+
+The following example shows how to configure xAI as the agent's TTS when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+
+xAI supports BYOK only. It isn't available in managed mode. Store your xAI API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, XaiTTS, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your ASR vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(
+        XaiTTS(
+            api_key=secret_ref("support_prod", "xai"),
+            voice_id="eve",
+            language="en",
+            sample_rate=16000,
+        )
+    )
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, XAiTTS, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(
+    new XAiTTS({
+      apiKey: secretRef('support_prod', 'xai'),
+      voiceId: 'eve',
+      language: 'en',
+      sampleRate: 16000,
+    }),
+  );
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+sampleRate := vendors.SampleRate16kHz
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).
+	WithStt( /* configure your ASR vendor */ ).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts(vendors.NewXaiTTS(vendors.XaiTTSOptions{
+		APIKey:     agentkit.SecretRef("support_prod", "xai"),
+		VoiceID:    "eve",
+		Language:   "en",
+		SampleRate: &sampleRate,
+	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your xAI API key in a secret set. In the following example, the key is stored as `xai` in the `support_prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.xai"
+    }
+  },
+  "vendor": "xai",
+  "params": {
+    "voice_id": "eve",
+    "language": "en",
+    "sample_rate": 16000
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): In pre-release testing (2026-10-28), the Python, TypeScript, and Go BYOK examples saved as written. */}
+
+## Key parameters
+
+The `tts` block takes the following fields. In the SDKs, the xAI TTS class sets them from its options.
+
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `xai`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your xAI API key.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="voice_id" type="string" required={false}>
+      The voice to use for speech synthesis. For voice IDs and samples, refer to the [xAI documentation](https://docs.x.ai/developers/model-capabilities/audio/text-to-speech#voices).
+    </Parameter>
+    <Parameter name="language" type="string" required={true}>
+      The BCP-47 language code for speech synthesis. For example, use `en` for English. For supported language codes, refer to the [xAI documentation](https://docs.x.ai/developers/model-capabilities/audio/text-to-speech#supported-languages).
+    </Parameter>
+    <Parameter name="sample_rate" type="integer" required={false}>
+      The audio sample rate in Hz. Supported values: `8000`, `16000`, `22050`, `24000`, `44100`, `48000`.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to xAI without validation. For a full list of supported options, refer to the [xAI Text to Speech documentation](https://docs.x.ai/developers/model-capabilities/audio/text-to-speech).
+:::
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

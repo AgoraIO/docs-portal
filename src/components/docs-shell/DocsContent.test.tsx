@@ -188,6 +188,37 @@ describe('DocsContent', () => {
     expect(screen.queryByLabelText('Breadcrumb')).not.toBeInTheDocument();
   });
 
+  it('keeps version selection out of the article and shows only the preview notice below its header', async () => {
+    renderWithRouter(
+      <DocsContent
+        activePath="/en/api-reference/api-ref/conversational-ai/platform/authentication"
+        breadcrumb={[]}
+        contentPath="en/api-reference/api-ref/conversational-ai/platform/authentication.mdx"
+        markdownUrl="/en/api-reference/api-ref/conversational-ai/platform/authentication.md"
+        slug="api-ref/conversational-ai/platform/authentication"
+        title="RESTful authentication"
+        toc={[]}
+      />,
+      '/en/api-reference/widgets',
+    );
+
+    const heading = await screen.findByRole('heading', {
+      level: 1,
+      name: 'RESTful authentication',
+    });
+    const header = heading.closest('header');
+    expect(
+      screen.queryByRole('button', { name: /^Documentation:/ }),
+    ).not.toBeInTheDocument();
+    const note = screen.getByRole('note', { name: 'Preview documentation' });
+    expect(header?.nextElementSibling).toBe(note);
+    expect(note.nextElementSibling).toHaveAttribute('data-static-docs-body');
+    expect(within(note).getByRole('link')).toHaveAttribute(
+      'href',
+      '/en/api-reference/api-ref/conversational-ai/authentication',
+    );
+  });
+
   it('registers canonical server context for the active docs page', async () => {
     renderWithRouter(
       <DocsContent

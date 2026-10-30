@@ -1,0 +1,390 @@
+---
+analyticsPageType: task-guide
+title: Use your own provider keys
+description: Bring your own key (BYOK) for ASR, LLM, and TTS. Store your provider keys in a secret set, and reference them from an agent.
+---
+
+{/* PLATFORM-NEW: new page for the Platform, no Voice Agent equivalent. Status: drafted on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+
+To use your own provider accounts for ASR, LLM, or TTS, bring your own key (BYOK). You store each provider API key in a secret set in your project, and your agent refers to the key by name. The key never appears in the agent's configuration, and the API never returns it.
+
+## Understand the tech
+
+A secret set is a named group of keys in your project, such as `support_prod`. Each key holds one secret value, such as an OpenAI API key. The workflow is as follows:
+
+1. You create a secret set that contains your provider keys.
+2. For each model that uses your own provider account, you pass a reference to a key in the format `$secrets.<set>.<key>` instead of the key itself. Agents accept only references, never the keys themselves. Agora checks that the set and key exist when you create or update the agent.
+3. When a session starts, Agora resolves each reference to the key's current value. The session keeps that value until it ends.
+
+You choose the credential mode for each model. For example, an agent can use your own LLM key while ASR and TTS use [managed mode](/en/ai/platform/build/managed-mode).
+
+## Prerequisites
+
+Before you begin, make sure that you have:
+
+- An Agora project and its App ID. To create one, use the [Agora CLI](/en/introduction/agora-cli).
+- REST API credentials for the Platform, or an SDK client. For details, see [Prerequisites](/en/ai/platform/get-started/start-stop-agent#prerequisites).
+- An account with each provider you want to use, and an API key for it.
+
+## Store your keys in a secret set
+
+Create a secret set with a name for the set and your keys. Choose key names that describe their purpose. This example stores an OpenAI API key under the name `llm`.
+
+Set names and key names are case-sensitive, and can contain up to 64 letters, digits, and underscores. Hyphens aren't allowed. A set name must be unique in your project. Key names only need to be unique in their set. A set can hold at most 64 KiB of keys and values. By default, an account can have up to 10 secret sets across all of its projects. To raise this limit, contact Agora support.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+client.secrets.create(
+    name="support_prod",
+    secrets={"llm": "<your_openai_api_key>"},
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+await client.secrets.create({
+  name: 'support_prod',
+  secrets: { llm: '<your_openai_api_key>' },
+});
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+The last argument is an idempotency key. Secret set creation doesn't support one, so pass an empty string.
+
+```go
+secretSet, err := client.Secrets.Create(ctx, agentkit.SecretCreate{
+	Name:    "support_prod",
+	Secrets: map[string]string{"llm": "<your_openai_api_key>"},
+}, "")
+if err != nil {
+	log.Fatal(err)
+}
+fmt.Println(secretSet.Body.Name) // The secret set name
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Create a secret set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set):
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/secrets \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "name": "support_prod",
+  "secrets": {
+    "llm": "<your_openai_api_key>"
+  }
+}'
+```
+
+If the request is successful, the response contains the set's name and key names. It never contains the values.
+
+```json
+// 201 Created
+{
+  "name": "support_prod",
+  "keys": ["llm"],
+  "create_ts": 1789898400,
+  "update_ts": 1789898400
+}
+```
+
+</TabsContent>
+</Tabs>
+
+
+:::tip
+Create one secret set for each environment, such as `support_dev` and `support_prod`, with the same key names in each. To switch an agent between environments, you then only change the set name in its references.
+:::
+
+## Use the key in an agent
+
+Create an agent that refers to the key. For each model that uses your own key, pass the reference instead of the key. If a provider needs another secret in a header, such as an organization ID, set the header value in the model's `headers` to a reference too. Don't put keys anywhere else in the agent.
+
+In the following example, the LLM uses the OpenAI key stored as `llm` in the `support_prod` set. ASR and TTS use managed mode.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+Pass the reference that `secret_ref()` returns as the API key. With your own key, you also set the provider's endpoint in `base_url`.
+
+```python
+from agora_agent import Agent, DeepgramSTT, OpenAI, OpenAITTS, secret_ref
+
+agent = (
+    Agent(client=client)
+    .with_stt(DeepgramSTT(model="nova-3", language="en-US"))
+    .with_llm(
+        OpenAI(
+            # [!code highlight]
+            api_key=secret_ref("support_prod", "llm"),
+            base_url="https://api.openai.com/v1/chat/completions",
+            model="gpt-4.1-mini",
+            system_messages=[
+                {"role": "system", "content": "You are a friendly support agent for Acme. Keep your answers short."}
+            ],
+        )
+    )
+    .with_tts(OpenAITTS(model="tts-1", voice="alloy"))
+)
+
+saved_agent = agent.save(name="Support agent")
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+Pass the reference that `secretRef()` returns as the API key. With your own key, you also set the provider's endpoint in `url`.
+
+```ts
+import { Agent, DeepgramSTT, OpenAI, OpenAITTS, secretRef } from 'agora-agents';
+
+const agent = new Agent({ client })
+  .withStt(new DeepgramSTT({ model: 'nova-3', language: 'en-US' }))
+  .withLlm(
+    new OpenAI({
+      // [!code highlight]
+      apiKey: secretRef('support_prod', 'llm'),
+      url: 'https://api.openai.com/v1/chat/completions',
+      model: 'gpt-4.1-mini',
+      systemMessages: [
+        { role: 'system', content: 'You are a friendly support agent for Acme. Keep your answers short.' },
+      ],
+    }),
+  )
+  .withTts(new OpenAITTS({ model: 'tts-1', voice: 'alloy' }));
+
+const savedAgent = await agent.save({ name: 'Support agent' });
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+Pass the reference that `agentkit.SecretRef()` returns as the API key. With your own key, you also set the provider's endpoint in `BaseURL`.
+
+```go
+agent := agentkit.NewAgent(client).
+	WithStt(vendors.NewDeepgramSTT(vendors.DeepgramSTTOptions{Model: "nova-3", Language: "en-US"})).
+	WithLlm(vendors.NewOpenAI(vendors.OpenAIOptions{
+		// [!code highlight]
+		APIKey:  agentkit.SecretRef("support_prod", "llm"),
+		BaseURL: "https://api.openai.com/v1/chat/completions",
+		Model:   "gpt-4.1-mini",
+		SystemMessages: []map[string]interface{}{
+			{"role": "system", "content": "You are a friendly support agent for Acme. Keep your answers short."},
+		},
+	})).
+	WithTts(vendors.NewOpenAITTS(vendors.OpenAITTSOptions{Model: "tts-1", Voice: "alloy"}))
+
+savedAgent, err := agent.Save(ctx, agentkit.SaveOptions{Name: "Support agent"})
+if err != nil {
+	log.Fatal(err)
+}
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent) with a `pipeline`. For each block that uses your own key, set `credential.mode` to `byok`, and set the provider's key field in `credential.fields` to the reference. For most providers, the field is `api_key`. Each model page lists its provider's fields. Managed blocks don't accept `fields`, and keys don't belong in `params`.
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "agent_name": "Support agent",
+  "instructions": "You are a friendly support agent for Acme. Keep your answers short.",
+  "pipeline": {
+    "mode": "cascaded",
+    "asr": {
+      "credential": { "mode": "managed" },
+      "vendor": "deepgram",
+      "model": "nova-3",
+      "language": "en-US"
+    },
+    "llm": {
+# [!code highlight:6]
+      "credential": {
+        "mode": "byok",
+        "fields": {
+          "api_key": "$secrets.support_prod.llm"
+        }
+      },
+      "vendor": "openai",
+      "style": "openai",
+      "model": "gpt-4.1-mini"
+    },
+    "tts": {
+      "credential": { "mode": "managed" },
+      "vendor": "minimax",
+      "params": {
+        "model": "speech-2.6-turbo",
+        "voice_setting": {
+          "voice_id": "English_captivating_female1",
+          "speed": 1
+        }
+      }
+    }
+  }
+}'
+```
+
+{/* TODO(platform-confirm): Managed MiniMax TTS without `voice_setting.speed` was rejected in pre-release testing (2026-10-27). The example includes it for that reason. */}
+
+If the request is successful, the response contains the agent ID and the saved configuration. In the response, each block's `credential` contains only `mode`. Neither the reference nor the key is returned.
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): The SDK examples use managed OpenAI `tts-1`. Since the afternoon of 2026-10-28, the pre-release API accepts only `credential.fields` and rejects `credential.api_key`. The REST examples use `fields`. All three SDK examples on this page (create the set, create the agent, rotate the key) passed in pre-release testing on 2026-10-29 with the SDK preview commits TypeScript 4900f4c, Python ed4466c, and Go 362ce9a. */}
+
+You then start sessions with the agent as usual. The session request doesn't change. For details, see [Start a session](/en/ai/platform/get-started/start-stop-agent#start-a-session).
+
+## Rotate a key
+
+To replace a key's value, set the key to its new value. You don't need to change the agents that reference the key.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+client.secrets.set_key(
+    name="support_prod",
+    key="llm",
+    value="<your_new_openai_api_key>",
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+await client.secrets.setKey({
+  name: 'support_prod',
+  key: 'llm',
+  value: '<your_new_openai_api_key>',
+});
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+This example also imports `github.com/AgoraIO/agora-agents-go/v2/v3`.
+
+```go
+secretKey, err := client.Secrets.SetKey(ctx, "support_prod", "llm",
+	v3.SecretKeyWrite{Value: "<your_new_openai_api_key>"}, v3.SecretKeyOptions{})
+if err != nil {
+	log.Fatal(err)
+}
+fmt.Println(secretKey.Body.Key) // The key name
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Set a secret key](/en/api-reference/api-ref/conversational-ai/platform/set-secret-key) with the new value:
+
+```bash
+curl --request PUT \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/secrets/support_prod/keys/llm \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "value": "<your_new_openai_api_key>"
+}'
+```
+
+If the request is successful, the response contains the key's name:
+
+```json
+// 200 OK
+{
+  "key": "llm"
+}
+```
+
+</TabsContent>
+</Tabs>
+
+New sessions use the new value. Sessions that are already running keep the value they started with. Keep the old key active with your provider until those sessions end.
+
+To change several keys at the same time, [update the secret set](/en/api-reference/api-ref/conversational-ai/platform/update-secret-set) with all the new values in one request.
+
+## Troubleshoot secret references
+
+The following table lists common errors when you work with secret sets and references:
+
+| Error | Cause | Solution |
+|---|---|---|
+| `400 UnknownSecretReference` | An agent refers to a set or key that doesn't exist. | Check the spelling and case of the set and key names in `$secrets.<set>.<key>`. Names can't contain dots. |
+| `400 MissingRequiredField` | A `byok` block has no `fields`. | Pass your credentials in `credential.fields`, as described in [Use the key in an agent](#use-the-key-in-an-agent). |
+| `400 InvalidRequestBody` | A `managed` block has `fields`. | Remove `fields`, or set `mode` to `byok`. |
+| `400 InvalidFieldValue` | `fields` uses the wrong field names for the provider, a value in `fields` isn't a `$secrets.<set>.<key>` reference, a key is in `params`, or the vendor doesn't support the credential mode. | Use the field names on the provider's model page, refer to your keys by reference, and keep keys out of `params`. |
+| `409 SecretSetAlreadyExists` | A secret set with this name already exists. | To change its keys, [set a key](/en/api-reference/api-ref/conversational-ai/platform/set-secret-key) or [update the set](/en/api-reference/api-ref/conversational-ai/platform/update-secret-set). |
+| `409 SecretSetInUse` | You tried to delete a key or set that an agent refers to. | Update or delete the agents that refer to it first. |
+| `422 ResourceQuotaLimitExceeded` | Your account has reached its secret set quota. By default, an account can have up to 10 secret sets across all of its projects. | Delete secret sets you no longer use. |
+
+{/* TODO(platform-confirm): Add the secret set and key quotas for the Preview. Also confirm how a session reports a provider key that the provider rejects, for example an expired key. */}
+
+For all error reasons, see [Status codes](/en/api-reference/api-ref/conversational-ai/platform/status-codes).
+
+## Reference
+
+For more information, see the following pages:
+
+- [Use managed mode](/en/ai/platform/build/managed-mode)
+- [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent)
+
+### API reference
+
+- [Create a secret set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set)
+- [List secret sets](/en/api-reference/api-ref/conversational-ai/platform/list-secret-sets)
+- [Update a secret set](/en/api-reference/api-ref/conversational-ai/platform/update-secret-set)
+- [Set a secret key](/en/api-reference/api-ref/conversational-ai/platform/set-secret-key)
+- [Delete a secret key](/en/api-reference/api-ref/conversational-ai/platform/delete-secret-key)
+- [Delete a secret set](/en/api-reference/api-ref/conversational-ai/platform/delete-secret-set)
+- [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent)

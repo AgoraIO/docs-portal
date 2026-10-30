@@ -1,0 +1,133 @@
+---
+title: AssemblyAI
+description: >
+ Use AssemblyAI for speech recognition (ASR) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/assembly-ai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+
+AssemblyAI provides advanced automatic speech recognition with high accuracy and support for multiple languages, designed for real-time conversational AI applications.
+
+## Sample configuration
+
+The following example shows how to configure AssemblyAI as the agent's ASR when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+
+AssemblyAI supports BYOK only. It isn't available in managed mode. Store your AssemblyAI API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, AssemblyAISTT, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(
+        AssemblyAISTT(
+            api_key=secret_ref("support_prod", "assemblyai"),
+            language="en-US",
+        )
+    )
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, AssemblyAISTT, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(
+    new AssemblyAISTT({
+      apiKey: secretRef('support_prod', 'assemblyai'),
+      language: 'en-US',
+    }),
+  )
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).
+	WithStt(vendors.NewAssemblyAISTT(vendors.AssemblyAISTTOptions{
+		APIKey:   agentkit.SecretRef("support_prod", "assemblyai"),
+		Language: "en-US",
+	})).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts( /* configure your TTS vendor */ )
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your AssemblyAI API key in a secret set. In the following example, the key is stored as `assemblyai` in the `support_prod` set:
+
+```json
+"asr": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.assemblyai"
+    }
+  },
+  "vendor": "assemblyai",
+  "language": "en-US",
+  "url": "wss://streaming.assemblyai.com/v3/ws",
+  "params": {
+    "language": "en-US"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): The pre-release API requires `params.language` for this vendor. The SDK examples need the alpha.3 SDK previews, which keep `params.language` (SDK bug list #34). Tested on 2026-10-30 from the preview branches: all three SDK examples saved with `params.language`. */}
+
+{/* TODO(platform-confirm): SDK tabs tested in pre-release testing on 2026-10-28. All three SDKs saved the BYOK example. The SDK examples omit the endpoint: the SDKs' `ws_url` option is sent as `params.ws_url`, not as the block-level `url` (SDK bug list #32). TypeScript and Python also set the block-level `language` to `en-US` (their default interaction language) instead of the vendor's language, while Go leaves it unset (SDK bug list #31). */}
+
+## Key parameters
+
+The `asr` block takes the following fields. In the SDKs, `AssemblyAISTT` sets them from its options, and passes any other AssemblyAI parameters from its additional parameters option to `params`.
+
+<ParameterList title="asr" required={true}>
+ <Parameter name="vendor" type="string" required={true}>
+ Set to `assemblyai`.
+ </Parameter>
+ <Parameter name="credential" type="object" required={true}>
+ How the agent authenticates with AssemblyAI. Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your AssemblyAI API key. Get your API key from the [AssemblyAI Dashboard](https://www.assemblyai.com/dashboard/signup).
+ </Parameter>
+ <Parameter name="language" type="string" required={true}>
+ The language code for speech recognition.
+ </Parameter>
+ <Parameter name="url" type="string" required={false}>
+ The WebSocket URL for AssemblyAI's streaming API. Specify this to target a particular region, for example, `wss://streaming.assemblyai.com/v3/ws`. Omit it to use the default endpoint.
+ </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to AssemblyAI without validation. For a full list of supported options, refer to the [AssemblyAI official documentation](https://www.assemblyai.com/docs/universal-streaming).
+:::
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

@@ -1,0 +1,157 @@
+---
+title: Azure OpenAI
+description: >
+  Use Azure OpenAI as the LLM in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/azure-openai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+
+Azure OpenAI service provides REST API access to OpenAI's powerful language models through Microsoft Azure's secure infrastructure.
+
+## Sample configuration
+
+The following example shows how to configure Azure OpenAI as the agent's LLM when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+
+Azure OpenAI supports BYOK only. It isn't available in managed mode. Store your Azure OpenAI API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, AzureOpenAI, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your ASR vendor
+    .with_llm(
+        AzureOpenAI(
+            api_key=secret_ref("support_prod", "azure_openai"),
+            endpoint="https://your-resource-name.openai.azure.com",
+            deployment_name="YOUR_DEPLOYMENT_NAME",
+            api_version="AZURE_API_VERSION",
+            model="gpt-4o-mini",
+            max_history=32,
+            failure_message="Please hold on a second.",
+            system_messages=[
+                {"role": "system", "content": "You are a friendly support agent for Acme. Keep your answers short."}
+            ],
+        )
+    )
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, AzureOpenAI, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(
+    new AzureOpenAI({
+      apiKey: secretRef('support_prod', 'azure_openai'),
+      endpoint: 'https://your-resource-name.openai.azure.com',
+      deploymentName: 'YOUR_DEPLOYMENT_NAME',
+      apiVersion: 'AZURE_API_VERSION',
+      model: 'gpt-4o-mini',
+      maxHistory: 32,
+      failureMessage: 'Please hold on a second.',
+      systemMessages: [
+        { role: 'system', content: 'You are a friendly support agent for Acme. Keep your answers short.' },
+      ],
+    }),
+  )
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// client is your configured Agora client
+maxHistory := 32
+agent := agentkit.NewAgent(client).
+	WithStt( /* configure your ASR vendor */ ).
+	WithLlm(vendors.NewAzureOpenAI(vendors.AzureOpenAIOptions{
+		APIKey:         agentkit.SecretRef("support_prod", "azure_openai"),
+		Endpoint:       "https://your-resource-name.openai.azure.com",
+		DeploymentName: "YOUR_DEPLOYMENT_NAME",
+		APIVersion:     "AZURE_API_VERSION",
+		Model:          "gpt-4o-mini",
+		MaxHistory:     &maxHistory,
+		FailureMessage: "Please hold on a second.",
+		SystemMessages: []map[string]interface{}{
+			{"role": "system", "content": "You are a friendly support agent for Acme. Keep your answers short."},
+		},
+	})).
+	WithTts( /* configure your TTS vendor */ )
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. In the following example, the key is stored as `azure_openai` in the `support_prod` set:
+
+```json
+"llm": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.azure_openai"
+    }
+  },
+  "vendor": "azure",
+  "style": "openai",
+  "model": "gpt-4o-mini",
+  "url": "https://your-resource-name.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/chat/completions?api-version=AZURE_API_VERSION",
+  "max_history": 32,
+  "failure_message": "Please hold on a second."
+}
+```
+
+Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): Confirm the `vendor` value for Azure OpenAI (`azure` is assumed, as in the Voice Agent API), and whether `url` is required. */}
+
+{/* TODO(platform-confirm): SDK tabs tested in pre-release testing (2026-10-28). BYOK saved in all three SDKs with real values in place of the placeholders. With the placeholders as written, the API rejects the URL (`InvalidFieldValue`, "not a valid HTTPS destination"), because `your-resource-name` contains underscores. The REST example has the same placeholder. Consider a hostname-safe placeholder such as `your-resource-name`. */}
+
+## Key parameters
+
+The `llm` block takes the following fields. In the SDKs, the LLM class sets them from its options. The SDK builds the endpoint URL from the resource endpoint, the deployment name, and the API version, and sets the vendor to `azure`.
+
+<ParameterList title="llm">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `azure`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Azure OpenAI API key. Find your API key in the Azure portal under your OpenAI resource.
+  </Parameter>
+  <Parameter name="style" type="string" required={false}>
+    Set to `openai`.
+  </Parameter>
+  <Parameter name="model" type="string" required={true}>
+    Use the deployment name you created in Azure, not the base model name.
+  </Parameter>
+  <Parameter name="url" type="string" required={true}>
+    Replace `your-resource-name` with your Azure resource name and `YOUR_DEPLOYMENT_NAME` with your model deployment name.
+  </Parameter>
+</ParameterList>
+
+For complete `llm` block options, see [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). For advanced configuration options, deployment setup, and detailed parameter descriptions, see the [Azure OpenAI API documentation](https://learn.microsoft.com/en-us/azure/ai-services/openai/reference).

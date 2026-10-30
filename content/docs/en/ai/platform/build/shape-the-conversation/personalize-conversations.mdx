@@ -1,0 +1,435 @@
+---
+analyticsPageType: task-guide
+title: Personalize conversations
+description: Use variables to personalize an agent for each session.
+---
+
+{/* PLATFORM-NEW: new page for the Platform, replaces the copied custom-information page. Status: drafted on 2026-10-23, pending review. Required variables and MissingRequiredField were verified on staging on 2026-10-20. Extraction results weren't verified. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+
+Variables let you customize an agent for each conversation and capture its key outcomes. You declare variables when you create an agent and pass their values when you start a session. You can also choose whether Agora retains each session's conversation data.
+
+## Understand the tech
+
+A variable is a named value that the agent declares. Each variable has a type, and you use it in one or both of the following ways:
+
+- **Personalize the conversation**: Refer to the variable as `{{variable_name}}` in the agent's `instructions`, `messages`, or `greeting.text`. When you start a session, you pass its value in `values`, and the Platform replaces each placeholder with that value. The agent doesn't store values. You pass them for every session.
+- **Extract outcomes**: In the variable declaration, set `extract` to `true` and describe what the variable means. After the session ends, the Platform extracts the value from the conversation transcript. The Preview API doesn't return the extracted values yet.
+
+You can also use variables in the LLM's failure message, the silence message, and generated filler word instructions.
+
+## Prerequisites
+
+Before you begin, make sure that you have created an agent and started a session as described in [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent). The SDK examples use the `client` you create there.
+
+## Declare variables
+
+When you create or update an agent, declare every variable the agent uses. A variable name starts with a lowercase letter and contains up to 64 lowercase letters, digits, and underscores.
+
+In the following example, `customer_name` and `plan` personalize the conversation, and `appointment_confirmed` and `follow_up_date` are extracted after it ends:
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+Declare each variable with `with_variable()`:
+
+```python
+from agora_agent import Agent, DeepgramSTT, OpenAI, OpenAITTS
+
+agent = (
+    Agent(client=client)
+    .with_stt(DeepgramSTT(model="nova-3", language="en-US"))
+    .with_llm(
+        OpenAI(
+            model="gpt-4.1-mini",
+            system_messages=[
+                {
+                    "role": "system",
+                    "content": "You confirm appointments for Acme customers. The customer is {{customer_name}}, on the {{plan}} plan. Ask whether they can attend their appointment, and if not, when they want to reschedule.",
+                }
+            ],
+            greeting_message="Hi {{customer_name}}, I am calling about your upcoming appointment.",
+            greeting_configs={"on": "each_join"},
+        )
+    )
+    .with_tts(OpenAITTS(model="tts-1", voice="alloy"))
+    # [!code highlight:14]
+    .with_variable("customer_name", type="str", required=True)
+    .with_variable("plan", type="str", options=["basic", "pro"])
+    .with_variable(
+        "appointment_confirmed",
+        type="bool",
+        extract=True,
+        description="Whether the customer confirmed that they can attend the appointment.",
+    )
+    .with_variable(
+        "follow_up_date",
+        type="date",
+        extract=True,
+        description="The date the customer wants to reschedule to, if they can't attend.",
+    )
+)
+
+saved_agent = agent.save(name="Appointment agent")
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+Declare each variable with `withVariable()`:
+
+```ts
+import { Agent, DeepgramSTT, OpenAI, OpenAITTS } from 'agora-agents';
+
+const agent = new Agent({ client })
+  .withStt(new DeepgramSTT({ model: 'nova-3', language: 'en-US' }))
+  .withLlm(
+    new OpenAI({
+      model: 'gpt-4.1-mini',
+      systemMessages: [
+        {
+          role: 'system',
+          content:
+            'You confirm appointments for Acme customers. The customer is {{customer_name}}, on the {{plan}} plan. Ask whether they can attend their appointment, and if not, when they want to reschedule.',
+        },
+      ],
+      greetingMessage: 'Hi {{customer_name}}, I am calling about your upcoming appointment.',
+      greetingConfigs: { on: 'each_join' },
+    }),
+  )
+  .withTts(new OpenAITTS({ model: 'tts-1', voice: 'alloy' }))
+  // [!code highlight:12]
+  .withVariable('customer_name', { type: 'str', required: true })
+  .withVariable('plan', { type: 'str', options: ['basic', 'pro'] })
+  .withVariable('appointment_confirmed', {
+    type: 'bool',
+    extract: true,
+    description: 'Whether the customer confirmed that they can attend the appointment.',
+  })
+  .withVariable('follow_up_date', {
+    type: 'date',
+    extract: true,
+    description: "The date the customer wants to reschedule to, if they can't attend.",
+  });
+
+const savedAgent = await agent.save({ name: 'Appointment agent' });
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+Declare each variable with `WithVariable()`:
+
+```go
+agent := agentkit.NewAgent(client).
+	WithStt(vendors.NewDeepgramSTT(vendors.DeepgramSTTOptions{Model: "nova-3", Language: "en-US"})).
+	WithLlm(vendors.NewOpenAI(vendors.OpenAIOptions{
+		Model: "gpt-4.1-mini",
+		SystemMessages: []map[string]interface{}{
+			{
+				"role":    "system",
+				"content": "You confirm appointments for Acme customers. The customer is {{customer_name}}, on the {{plan}} plan. Ask whether they can attend their appointment, and if not, when they want to reschedule.",
+			},
+		},
+		GreetingMessage: "Hi {{customer_name}}, I am calling about your upcoming appointment.",
+		GreetingConfigs: map[string]interface{}{"on": "each_join"},
+	})).
+	WithTts(vendors.NewOpenAITTS(vendors.OpenAITTSOptions{Model: "tts-1", Voice: "alloy"})).
+	// [!code highlight:12]
+	WithVariable("customer_name", agentkit.VariableDefinition{Type: "str", Required: true}).
+	WithVariable("plan", agentkit.VariableDefinition{Type: "str", Options: []any{"basic", "pro"}}).
+	WithVariable("appointment_confirmed", agentkit.VariableDefinition{
+		Type:        "bool",
+		Extract:     true,
+		Description: "Whether the customer confirmed that they can attend the appointment.",
+	}).
+	WithVariable("follow_up_date", agentkit.VariableDefinition{
+		Type:        "date",
+		Extract:     true,
+		Description: "The date the customer wants to reschedule to, if they can't attend.",
+	})
+
+savedAgent, err := agent.Save(ctx, agentkit.SaveOptions{Name: "Appointment agent"})
+if err != nil {
+	log.Fatal(err)
+}
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent) or [Update an agent](/en/api-reference/api-ref/conversational-ai/platform/update-agent) with the variables in `variables`, keyed by name:
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "agent_name": "Appointment agent",
+  "instructions": "You confirm appointments for Acme customers. The customer is {{customer_name}}, on the {{plan}} plan. Ask whether they can attend their appointment, and if not, when they want to reschedule.",
+  "greeting": {
+    "mode": "text",
+    "on": "each_join",
+    "text": "Hi {{customer_name}}, I am calling about your upcoming appointment."
+  },
+  # [!code highlight:20]
+  "variables": {
+    "customer_name": {
+      "type": "str",
+      "required": true
+    },
+    "plan": {
+      "type": "str",
+      "options": ["basic", "pro"]
+    },
+    "appointment_confirmed": {
+      "type": "bool",
+      "extract": true,
+      "description": "Whether the customer confirmed that they can attend the appointment."
+    },
+    "follow_up_date": {
+      "type": "date",
+      "extract": true,
+      "description": "The date the customer wants to reschedule to, if they can't attend."
+    }
+  },
+  "pipeline": {
+    "mode": "cascaded",
+    "asr": { "credential": { "mode": "managed" }, "vendor": "deepgram", "model": "nova-3", "language": "en-US" },
+    "llm": { "credential": { "mode": "managed" }, "vendor": "openai", "style": "openai", "model": "gpt-4.1-mini" },
+    "tts": {
+      "credential": { "mode": "managed" },
+      "vendor": "minimax",
+      "params": { "model": "speech-2.6-turbo", "voice_setting": { "voice_id": "English_captivating_female1", "speed": 1 } }
+    }
+  }
+}'
+```
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): The SDK examples use managed OpenAI `tts-1`. In pre-release testing (2026-10-29) with the SDK preview commits TypeScript 4900f4c, Python ed4466c, and Go 362ce9a, all three SDKs saved these variables as written (SDK bug list #1, fixed). */}
+
+Each variable takes the following fields:
+
+| Field | Description |
+|---|---|
+| `type` | Required. The data type: `str`, `int`, `float`, `bool`, `date`, or `datetime`. Pass `date` and `datetime` values as ISO 8601 strings, for example `"2026-09-30"` and `"2026-09-30T14:00:00Z"`. |
+| `required` | Whether you must pass a value when you start a session. The default is `false`. |
+| `options` | The allowed values, 1 to 100 unique items of the declared type. Values you pass must be one of them, and extraction chooses one of them. |
+| `extract` | Whether to extract the variable from the conversation after the session ends. The default is `false`. An agent can have up to 50 extract variables. |
+| `description` | Required when `extract` is `true`. Up to 2,000 characters. Describe what the variable means as a clear extraction instruction, such as "Whether the customer confirmed that they can attend the appointment." |
+
+## Pass values when you start a session
+
+When you start a session, pass the values, keyed by variable name. The values apply to this session only.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+session = saved_agent.create_session(
+    channel="<your_channel_name>",
+    token="<your_rtc_token>",
+    agent_uid="1002",
+    remote_uids=["1001"],
+    # [!code highlight]
+    values={"customer_name": "Ada", "plan": "pro"},
+)
+session_id = session.start()
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+const session = savedAgent.createSession({
+  channel: '<your_channel_name>',
+  token: '<your_rtc_token>',
+  agentUid: '1002',
+  remoteUids: ['1001'],
+  // [!code highlight]
+  values: { customer_name: 'Ada', plan: 'pro' },
+});
+const sessionId = await session.start();
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+session := savedAgent.CreateSession(agentkit.CreateSessionOptions{
+	Channel:    "<your_channel_name>",
+	Token:      "<your_rtc_token>",
+	AgentUID:   "1002",
+	RemoteUIDs: []string{"1001"},
+	// [!code highlight]
+	Values:     map[string]any{"customer_name": "Ada", "plan": "pro"},
+})
+sessionID, err := session.Start(ctx)
+if err != nil {
+	log.Fatal(err)
+}
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session) with the values in `values`:
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
+  # [!code highlight:4]
+  "values": {
+    "customer_name": "Ada",
+    "plan": "pro"
+  },
+  "transport": {
+    "type": "rtc",
+    "channel": "<your_channel_name>",
+    "token": "<your_rtc_token>",
+    "uid": "1002",
+    "subscribe_uids": ["1001"]
+  }
+}'
+```
+
+</TabsContent>
+</Tabs>
+
+The Platform checks the values when the session starts:
+
+- Each key must be a variable that the agent declares.
+- Each value must match the variable's `type`, and one of its `options` if it has any.
+- You must pass a value for every variable with `required` set to `true`. If one is missing, the request fails with `400 MissingRequiredField`, and no session starts.
+- `null` values are rejected.
+
+Expansion runs once. A value that contains a placeholder isn't expanded again.
+
+{/* TODO(platform-confirm): Confirm what the agent says for a placeholder whose optional variable has no value (left as the literal `{{plan}}`, or removed). */}
+
+When you [create a campaign](/en/api-reference/api-ref/conversational-ai/platform/create-campaign), you pass `values` for each contact instead. An [ephemeral session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session) takes `values` in the same way, for the variables declared in its `agent`.
+
+{/* PLATFORM-DEFERRED: The "Get the extracted results" section is removed because the Preview session responses don't include `analysis`. Restore it when extraction results are delivered. */}
+
+## Choose whether Agora retains conversation data
+
+When you start a session, set the data retention to choose how Agora handles the session's conversation data:
+
+- `30_days`: Agora retains the data for 30 days. This is the default.
+- `none`: Agora doesn't retain the data, and extraction doesn't run.
+
+For example, use `none` when a caller declines to have the conversation recorded:
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+session = saved_agent.create_session(
+    channel="<your_channel_name>",
+    token="<your_rtc_token>",
+    agent_uid="1002",
+    remote_uids=["1001"],
+    values={"customer_name": "Ada", "plan": "pro"},
+    # [!code highlight]
+    data_policy={"retention": "none"},
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+const session = savedAgent.createSession({
+  channel: '<your_channel_name>',
+  token: '<your_rtc_token>',
+  agentUid: '1002',
+  remoteUids: ['1001'],
+  values: { customer_name: 'Ada', plan: 'pro' },
+  // [!code highlight]
+  dataPolicy: { retention: 'none' },
+});
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+session := savedAgent.CreateSession(agentkit.CreateSessionOptions{
+	Channel:    "<your_channel_name>",
+	Token:      "<your_rtc_token>",
+	AgentUID:   "1002",
+	RemoteUIDs: []string{"1001"},
+	Values:     map[string]any{"customer_name": "Ada", "plan": "pro"},
+	// [!code highlight]
+	DataPolicy: &agentkit.SessionDataPolicy{Retention: "none"},
+})
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `data_policy.retention` in the request to [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session):
+
+```json
+"data_policy": {
+  "retention": "none"
+}
+```
+
+</TabsContent>
+</Tabs>
+
+You set the data policy when the session starts, and you can't change it afterward.
+
+## Reference
+
+For more information, see the following pages:
+
+- [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent)
+
+### API reference
+
+- [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent)
+- [Update an agent](/en/api-reference/api-ref/conversational-ai/platform/update-agent)
+- [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session)
+- [Retrieve a session](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session)
+- [Create a campaign](/en/api-reference/api-ref/conversational-ai/platform/create-campaign)

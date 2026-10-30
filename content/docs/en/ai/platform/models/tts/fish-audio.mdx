@@ -1,0 +1,135 @@
+---
+title: Fish Audio
+description: >
+ Use Fish Audio for text-to-speech (TTS) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/fish-audio.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+
+Fish Audio provides text-to-speech (TTS) with flexible models and high-quality synthetic voices.
+
+## Sample configuration
+
+The following example shows how to configure Fish Audio as the agent's TTS when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+
+Fish Audio supports BYOK only. It isn't available in managed mode. Store your Fish Audio API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, FishAudioTTS, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your ASR vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(
+        FishAudioTTS(
+            key=secret_ref("support_prod", "fishaudio"),
+            reference_id="<voice_model_id>",
+            backend="speech-1.5",
+        )
+    )
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, FishAudioTTS, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(
+    new FishAudioTTS({
+      key: secretRef('support_prod', 'fishaudio'),
+      referenceId: '<voice_model_id>',
+      backend: 'speech-1.5',
+    }),
+  );
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).
+	WithStt( /* configure your ASR vendor */ ).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts(vendors.NewFishAudioTTS(vendors.FishAudioTTSOptions{
+		Key:         agentkit.SecretRef("support_prod", "fishaudio"),
+		ReferenceID: "<voice_model_id>",
+		Backend:     "speech-1.5",
+	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Fish Audio API key. In the following example, the key is stored as `fishaudio` in the `support_prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.fishaudio"
+    }
+  },
+  "vendor": "fishaudio",
+  "params": {
+    "reference_id": "<voice_model_id>",
+    "backend": "speech-1.5"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): In pre-release testing (2026-10-28), the Python, TypeScript, and Go examples saved as written, and the stored `tts` block matched the REST example. */}
+
+## Key parameters
+
+The `tts` block takes the following fields. In the SDKs, `FishAudioTTS` sets them from its options.
+
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `fishaudio`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Fish Audio API key.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="reference_id" type="string" required={true}>
+      The identifier of the voice model to use for speech synthesis.
+    </Parameter>
+    <Parameter name="backend" type="string" required={true}>
+      The backend model version to use. For example, `speech-1.5`.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Fish Audio without validation. For a full list of supported options, refer to the [Fish Audio documentation](https://docs.fish.audio/sdk-reference/python/api-reference).
+:::
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

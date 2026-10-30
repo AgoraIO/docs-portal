@@ -1,0 +1,161 @@
+---
+title: Akool
+description: >
+ Use an Akool avatar to represent your agent on video in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/avatar/akool.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-26, pending review. Pattern page for the avatar vendor conversion. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+
+Akool provides AI-powered avatars with realistic facial expressions and lip-sync capabilities, enabling natural video conversations with your AI agents. Their platform offers a variety of pre-built avatars and supports custom avatar creation.
+
+## Sample configuration
+
+The following example shows how to configure Akool as the agent's avatar when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+
+Akool supports BYOK only. It isn't available in managed mode. Store your Akool API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, AkoolAvatar, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your ASR vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure a TTS vendor with a 16,000 Hz sample rate
+    .with_avatar(
+        AkoolAvatar(
+            api_key=secret_ref("support_prod", "akool"),
+            avatar_id="<akool_avatar_id>",
+            additional_params={
+                "agora_uid": "<avatar_rtc_uid>",
+                "agora_token": "<avatar_rtc_token>",
+            },
+        )
+    )
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, AkoolAvatar, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure a TTS vendor with a 16,000 Hz sample rate */)
+  .withAvatar(
+    new AkoolAvatar({
+      apiKey: secretRef('support_prod', 'akool'),
+      avatarId: '<akool_avatar_id>',
+      additionalParams: {
+        agora_uid: '<avatar_rtc_uid>',
+        agora_token: '<avatar_rtc_token>',
+      },
+    }),
+  );
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).
+	WithStt( /* configure your ASR vendor */ ).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts( /* configure a TTS vendor with a 16,000 Hz sample rate */ ).
+	WithAvatar(vendors.NewAkoolAvatar(vendors.AkoolAvatarOptions{
+		APIKey:   agentkit.SecretRef("support_prod", "akool"),
+		AvatarID: "<akool_avatar_id>",
+		AdditionalParams: map[string]interface{}{
+			"agora_uid":   "<avatar_rtc_uid>",
+			"agora_token": "<avatar_rtc_token>",
+		},
+	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Add an `avatar` block to the `pipeline`. Set `credential.mode` to `byok` and `credential.fields.api_key` to the reference. In the following example, the key is stored as `akool` in the `support_prod` set:
+
+```json
+"avatar": {
+  "enabled": true,
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.akool"
+    }
+  },
+  "vendor": "akool",
+  "params": {
+    "agora_uid": "<avatar_rtc_uid>",
+    "agora_token": "<avatar_rtc_token>",
+    "avatar_id": "<akool_avatar_id>"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): The avatar block is saved with the agent, but `agora_uid` and `agora_token` identify the avatar in one session's RTC channel, and RTC tokens expire. Confirm how the Platform supplies the avatar's UID and token for each session, and update this example. */}
+
+:::info[Info]
+Akool avatars only support audio with a sample rate of 16,000 Hz. Using a TTS model configured with a different sample rate results in an error. Make sure that your TTS configuration matches this requirement.
+:::
+
+{/* TODO(platform-confirm): SDK examples tested in pre-release testing on 2026-10-28 (BYOK only; agents saved and the stored `avatar` block checked). Python, TypeScript, and Go all saved this avatar as written. Python and Go check that the TTS sample rate is 16,000 Hz when you add the avatar, so the test used BYOK ElevenLabs at 16,000 Hz. */}
+
+## Key parameters
+
+The `avatar` block takes the following fields. In the SDKs, `AkoolAvatar` sets them from its options, and passes any other parameters from its additional parameters option to `params`.
+
+<ParameterList title="avatar" required={true}>
+ <Parameter name="enabled" type="boolean" required={true}>
+ Set to `true` to show the avatar.
+ </Parameter>
+ <Parameter name="vendor" type="string" required={true}>
+ Set to `akool`.
+ </Parameter>
+ <Parameter name="credential" type="object" required={true}>
+ Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Akool API key.
+
+ :::info[Info]
+ To purchase an Akool API key, contact [Agora sales](mailto:sales@agora.io).
+ :::
+ </Parameter>
+ <Parameter name="params" type="object" required={true}>
+  <Parameter name="agora_uid" type="string" required={true}>
+  The unique identifier for the avatar's RTC connection. This must be different from other participants in the channel.
+  </Parameter>
+  <Parameter name="agora_token" type="string" required={false}>
+  The RTC token that authorizes the avatar to join the video channel. Generate this token using your Agora project credentials.
+  </Parameter>
+  <Parameter name="avatar_id" type="string" required={true}>
+  The unique identifier for the specific Akool avatar you want to use. Find available avatar IDs in your Akool dashboard.
+  </Parameter>
+ </Parameter>
+</ParameterList>
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

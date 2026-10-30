@@ -2,6 +2,65 @@ import { describe, expect, it } from 'vitest';
 import { getLLMText, getPlatformLLMText, source } from './source.server';
 
 describe('fumadocs source loader', () => {
+  it('does not publish former demonstration pages in the source collection', () => {
+    expect(
+      source
+        .getPages('en')
+        .filter((page) => page.url.includes('/versioning-demo')),
+    ).toEqual([]);
+    expect(
+      source.getPage(['api-reference', 'versioning-demo', 'v2'], 'en'),
+    ).toBeUndefined();
+    expect(
+      source.getPage(['introduction', 'versioning-demo', 'new'], 'en'),
+    ).toBeUndefined();
+  });
+  it.each(['canonical', 'android'] as const)(
+    'cleans versioned %s exports while retaining their documentation identity',
+    async (variant) => {
+      const page = source.getPage(
+        ['ai', 'platform', 'build', 'managed-mode'],
+        'en',
+      );
+      if (page?.type !== 'docs') {
+        throw new Error('Expected the versioned guide page');
+      }
+      const processed = `<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="android" platform="android" />
+<Tabs items={['Java']}>
+<Tab>
+
+\`\`\`java
+if (ready) {
+  connect();
+}
+\`\`\`
+
+</Tab>
+</Tabs>
+<_PlatformProcessedMarker close="true" />
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="android" platform="web" />
+Web instructions only.
+<_PlatformProcessedMarker close="true" />`;
+      const versionedPage = {
+        ...page,
+        data: { ...page.data, getText: async () => processed },
+      };
+      const markdown =
+        variant === 'canonical'
+          ? await getLLMText(versionedPage)
+          : await getPlatformLLMText(versionedPage, variant);
+
+      expect(markdown).toContain('**Java**');
+      expect(markdown).toContain('```java\nif (ready) {\n  connect();\n}\n```');
+      expect(markdown).not.toMatch(/<\/?(?:Tabs|Tab|_Platform)/);
+      expect(markdown).not.toContain('Web instructions only.');
+      expect(markdown).toContain('Documentation: Conversational AI.');
+      expect(markdown).toContain('Documentation version: Preview.');
+      expect(markdown).toContain('/llms/doc-versions-convoai-guides-v2.txt');
+      expect(markdown?.match(/Documentation version:/g)).toHaveLength(1);
+    },
+  );
+
   it('exports Start with AI as clean Markdown with labeled installation alternatives', async () => {
     const page = source.getPage(['introduction', 'start-with-ai'], 'en');
     if (!page) throw new Error('Expected the Start with AI page');

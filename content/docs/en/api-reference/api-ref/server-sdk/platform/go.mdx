@@ -1,0 +1,319 @@
+---
+title: Go SDK
+description: API reference for the Conversational AI Platform (Preview) features of the Agora agents Go SDK, including saved agents, sessions, secrets, numbers, and campaigns.
+---
+
+{/* PLATFORM-NEW: new page for the Platform SDK reference. Status: drafted on 2026-10-28 from the agora-agents-go preview branch (feat/v3-api-preview, commit 72032cd) and its docs/guides/v3-preview.md, pending review. Signatures were checked against the SDK source; the examples on the Platform guide pages were run in pre-release testing. */}
+
+{/* TODO(platform-confirm): Pinned to v2.14.0-alpha.3 ahead of its publication, which the SDK team confirmed for the launch. The code was tested on 2026-10-30 from the Go preview branch (c6d81a2): the client setup, agent and session examples, and Basic authentication work. After publication, verify that this install command works. */}
+
+The `github.com/AgoraIO/agora-agents-go/v2` Go SDK supports the Conversational AI Platform (Preview) alongside the Voice Agent API. This page covers the Platform features: saved agents, Platform sessions, secret sets, phone numbers, campaigns, and the low-level `client.V3` client.
+
+The vendor constructors, such as `vendors.NewOpenAI()` and `vendors.NewDeepgramSTT()`, and the builder methods, such as `WithLlm()`, are shared with the Voice Agent API. For those, see the [Go SDK reference for Voice Agents](/en/api-reference/api-ref/server-sdk/go).
+
+## Install
+
+Platform support is in the SDK preview, version v2.14.0-alpha.3. You need Go 1.21 or later. Add the SDK to your Go module:
+
+```bash
+go get github.com/AgoraIO/agora-agents-go/v2@v2.14.0-alpha.3
+go mod tidy
+```
+
+Import the packages you use:
+
+```go
+import (
+	"github.com/AgoraIO/agora-agents-go/v2/agentkit"
+	"github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+	"github.com/AgoraIO/agora-agents-go/v2/option"
+	"github.com/AgoraIO/agora-agents-go/v2/v3"
+)
+```
+
+The `v3` package holds the low-level Platform types, such as `v3.ListOptions`. Import it when you use them.
+
+## AgoraClient
+
+Create a client with one of the following authentication methods. To choose one, see [Choose an authentication method](/en/api-reference/api-ref/conversational-ai/platform/authentication#choose-an-authentication-method).
+
+- **Token authentication**: Pass your App ID and App Certificate. The SDK generates a ConvoAI token for each Platform request.
+
+    ```go
+    client := agentkit.NewAgoraClient(agentkit.AgoraClientOptions{
+    	Area:           option.AreaUS,
+    	AppID:          os.Getenv("AGORA_APP_ID"),
+    	AppCertificate: os.Getenv("AGORA_APP_CERTIFICATE"),
+    })
+    ```
+
+- **Basic HTTP authentication**: Pass your App ID, customer ID, and customer secret. The SDK sends `Authorization: Basic <base64_credentials>` with each request.
+
+    ```go
+    client := agentkit.NewAgoraClient(agentkit.AgoraClientOptions{
+    	Area:           option.AreaUS,
+    	AppID:          os.Getenv("AGORA_APP_ID"),
+    	CustomerID:     os.Getenv("AGORA_CUSTOMER_ID"),
+    	CustomerSecret: os.Getenv("AGORA_CUSTOMER_SECRET"),
+    })
+    ```
+
+| Field | Type | Description |
+|---|---|---|
+| `Area` | `option.Area` | Required. The region for Voice Agent API routing. Platform requests use the Platform origin. |
+| `AppID` | `string` | Required. Your Agora App ID. |
+| `AppCertificate` | `string` | Your App Certificate. With token authentication, the SDK uses it to generate a token for each request. With Basic authentication, it's optional, and the SDK uses it only to generate the agent's RTC token. |
+| `Token` | `string` | A token you generated yourself, instead of `AppCertificate`. The token must include the ConvoAI service. |
+| `CustomerID` | `string` | Your customer ID, for Basic authentication. Set it with `CustomerSecret`. Don't combine it with `Token`. |
+| `CustomerSecret` | `string` | Your customer secret, for Basic authentication. |
+| `V3` | `*agentkit.V3Options` | Platform request settings. `BaseURL` overrides the Platform origin, which defaults to `https://preview.ai.agora.io`. You can also set the `AGORA_AGENTS_V3_BASE_URL` environment variable. The option takes precedence. |
+
+Without an App Certificate, the SDK can't generate the agent's RTC token. To start an RTC session with a Basic client and no App Certificate, pass the RTC token when you create the session.
+
+The client exposes the following Platform resources:
+
+| Field | Description |
+|---|---|
+| `client.V3` | The low-level Platform client: `Agents`, `Secrets`, `Numbers`, `Sessions`, and `Campaigns`. See [Low-level API](#low-level-api). |
+| `client.Secrets` | The same client as `client.V3.Secrets`. |
+| `client.Numbers` | The same client as `client.V3.Numbers`. |
+| `client.Campaigns` | The same client as `client.V3.Campaigns`. |
+
+## Agent
+
+`*agentkit.Agent` is an immutable builder. Each builder method returns a new `*Agent`. To save a configuration on the Platform, build it with the vendor constructors and call `Save()`.
+
+```go
+agent := agentkit.NewAgent(client).
+	WithStt(vendors.NewDeepgramSTT(vendors.DeepgramSTTOptions{Model: "nova-3", Language: "en-US"})).
+	WithLlm(vendors.NewOpenAI(vendors.OpenAIOptions{Model: "gpt-4.1-mini"})).
+	WithTts(vendors.NewOpenAITTS(vendors.OpenAITTSOptions{Model: "tts-1", Voice: "alloy"})).
+	WithVariable("customer_name", agentkit.VariableDefinition{Type: "str", Required: true})
+
+savedAgent, err := agent.Save(ctx, agentkit.SaveOptions{Name: "Support agent"})
+```
+
+The vendor constructors and `WithVariable()` panic on invalid input, because they don't return an error.
+
+### Variables
+
+```go
+func (a *Agent) WithVariable(name string, def VariableDefinition) *Agent
+```
+
+Declares a [variable](/en/ai/platform/build/shape-the-conversation/personalize-conversations) and returns a new `*Agent`. `def` is an `agentkit.VariableDefinition`:
+
+| Field | Type | Description |
+|---|---|---|
+| `Type` | `string` | Required. The data type: `"str"`, `"int"`, `"float"`, `"bool"`, `"date"`, or `"datetime"`. |
+| `Required` | `bool` | Whether every session must pass a value. |
+| `Options` | `[]any` | The allowed values, 1 to 100 unique items. |
+| `Extract` | `bool` | Whether to extract the value after the session ends. Requires `Description`. |
+| `Description` | `string` | Up to 2,000 characters. Required when `Extract` is `true`. |
+
+A variable name starts with a lowercase letter and contains up to 64 lowercase letters, digits, and underscores.
+
+### Save an agent
+
+```go
+func (a *Agent) Save(ctx context.Context, opts SaveOptions) (*SavedAgent, error)
+```
+
+Saves the configuration and returns a [`*SavedAgent`](#savedagent). `opts` is an `agentkit.SaveOptions` with `Name` and `AgentID`. Without `AgentID`, it creates a new agent. Names aren't unique, so saving twice creates two agents. To update a saved agent, prefer [`savedAgent.Update()`](#savedagent).
+
+### Start a session without saving
+
+```go
+func (a *Agent) CreateSession(opts CreateSessionOptions) *AgentSession
+```
+
+Creates a session from the builder without saving it. The SDK starts an [ephemeral session](/en/ai/platform/get-started/start-stop-agent#test-a-configuration-without-saving-an-agent) on the Platform when the configuration has a secret reference or a variable, or when you set a Platform session option such as `MaxDuration`, `Values`, `Labels`, or `DataPolicy`. Otherwise, it uses the Voice Agent API. For the options, see [Session options](#session-options).
+
+### How the builder maps to the Platform
+
+- **Credentials**: A model without an API key uses [managed mode](/en/ai/platform/build/managed-mode). A model with an API key uses BYOK. A saved agent must use an [`agentkit.SecretRef()`](#secret-references) as the key. An ephemeral session also accepts a key value.
+- **Instructions and messages**: The LLM's system messages become the agent's `instructions`. Its other messages become `messages`. `GreetingMessage` and `GreetingConfigs` become the agent's `greeting`.
+- **Pipeline**: Only cascaded ASR, LLM, and TTS pipelines are supported. An MLLM configuration can't be saved or used in a Platform session.
+- **Unsupported fields**: Builder settings without a Platform equivalent, such as SAL, advanced features, labels, RTC settings, and pipeline IDs, make `Save()` return an error that wraps `agentkit.ErrUnsupportedField` and lists them.
+- **Generated types**: Interruption, turn detection, and filler word settings use generated types from the root package. Where `agentkit` has a shorter alias, such as `agentkit.FillerWordsContent` or `agentkit.InterruptionModeKeywords`, use it.
+
+{/* TODO(platform-confirm): SDK bug list #1 and #15 are fixed in the SDK preview commits of 2026-10-29. #18: interruption, turn detection, and filler word options take the Voice Agent field shapes, by design. The `agentkit` aliases and pointer helpers that #18 asked for are in v2.14.0-alpha.3. */}
+
+## Secret references
+
+```go
+func SecretRef(set, key string) string
+```
+
+Returns the reference `$secrets.<set>.<key>` for a key in a [secret set](/en/ai/platform/build/use-your-own-keys). It validates both names locally, makes no request, and panics on an invalid name. Each name contains 1 to 64 letters, digits, and underscores.
+
+## SavedAgent
+
+A handle to an agent saved on the Platform.
+
+| Member | Description |
+|---|---|
+| `ID` | The agent ID. |
+| `Name` | The agent name. |
+| `ETag` | The agent's ETag when the handle was loaded or saved. |
+| `Raw` | The `client.V3.Agents` client. |
+| `agentkit.GetSavedAgent(ctx, client, id)` | Loads a saved agent. Returns `(*SavedAgent, error)`. |
+| `CreateSession(opts)` | Creates a session that runs this agent. Returns an [`*AgentSession`](#agentsession). See [Session options](#session-options). |
+| `Update(ctx, config)` | Saves a revised `*Agent` to this agent ID, and keeps its name. The `*Agent` must use the same client. Returns `(*SavedAgent, error)`. |
+| `Delete(ctx)` | Deletes the agent. |
+| `AssignNumber(ctx, number, opts)` | Routes inbound calls on a phone number to this agent. `number` is a number ID, an E.164 string, or a `v3.Number`. `opts` is an `agentkit.AssignNumberOptions` with `MaxCallDurationSeconds` and `MaxSilenceDurationMs` (both `*int`). Returns `(*v3.Number, error)`. |
+| `UnassignNumber(ctx, number)` | Removes this agent from a number's inbound routing. |
+| `ListNumbers(ctx)` | Returns the numbers assigned to this agent. Scans all project numbers. |
+
+A handle is a snapshot. If another process changes the agent, load it again with `agentkit.GetSavedAgent()`.
+
+## Session options
+
+`savedAgent.CreateSession()` and `agent.CreateSession()` take an `agentkit.CreateSessionOptions`. The following fields apply to Platform sessions:
+
+| Field | Type | Description |
+|---|---|---|
+| `Channel` | `string` | Required. The RTC channel. |
+| `Token` | `string` | The RTC token for the agent's UID. The SDK doesn't generate it for Platform sessions. |
+| `AgentUID` | `string` | The agent's UID in the channel. Omit it to have the Platform assign one. |
+| `RemoteUIDs` | `[]string` | Required. The UID of the user the agent talks to. Pass exactly one. |
+| `Values` | `map[string]any` | Values for the agent's variables. |
+| `Labels` | `map[string]string` | Labels returned in notification events. |
+| `IdleTimeout` | `*int` | Seconds without a user before the session ends, `0` to `3600`. |
+| `MaxDuration` | `*int` | The maximum session length in seconds, `1` to `3600`. |
+| `GracefulStop` | `*agentkit.GracefulStopOptions` | Lets the agent finish speaking before it stops. `TimeoutMS` is `0` to `120000`. |
+| `DataPolicy` | `*agentkit.SessionDataPolicy` | Whether Agora retains the session's conversation data. Set `Retention` to `"30_days"` or `"none"`. |
+| `Encryption` | `*agentkit.RTCEncryption` | RTC media encryption settings. |
+| `AudioScenario` | `string` | The RTC audio scenario, such as `"aiserver"`. |
+| `Geofence` | `*agentkit.SessionGeofence` | Restricts the regions the session connects through. |
+| `IdempotencyKey` | `string` | An `Idempotency-Key` for the start request. Retry an uncertain start with the same key: if the first attempt started the session, the retry fails with `409 IdempotencyKeyConflict` instead of starting another. Use a new key for a new session. |
+
+## AgentSession
+
+A session handle. On the Platform, the following methods are available:
+
+| Method | Description |
+|---|---|
+| `Start(ctx)` | Starts the session. Returns `(string, error)`, the session ID. |
+| `GetInfo(ctx)` | Retrieves the session. The result includes `Status`. |
+| `Update(ctx, properties)` | Updates a running session. Accepts only the RTC token, the conversation messages, and the LLM params. A params object replaces the current one. |
+| `Stop(ctx)` | Stops the session. |
+
+`Say()`, `Interrupt()`, and the history and turns methods return `agentkit.ErrUnsupportedSessionOperation` on Platform sessions.
+
+To read or stop a session by ID without a handle, use `client.V3.Sessions.Get(ctx, id)` and `client.V3.Sessions.Stop(ctx, id)`.
+
+## Low-level API
+
+`client.V3` has one client for each part of the [Platform REST API](/en/api-reference/api-ref/conversational-ai/platform). Every method takes `ctx` first and returns `(*v3.Response[T], error)`. A `v3.Response` has `Body` (the parsed response), `Header`, `ETag`, `RequestID`, and `StatusCode`.
+
+Pass `""` for an optional string argument, such as an `ifMatch` or an idempotency key, to leave it out.
+
+```go
+current, err := client.V3.Agents.Get(ctx, agentID)
+if err != nil {
+	log.Fatal(err)
+}
+etag := current.ETag
+```
+
+### Agents
+
+| Method | REST API |
+|---|---|
+| `Agents.Create(ctx, body)` | [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent) |
+| `Agents.List(ctx, v3.ListOptions)` | [List agents](/en/api-reference/api-ref/conversational-ai/platform/list-agents) |
+| `Agents.Get(ctx, id)` | [Retrieve an agent](/en/api-reference/api-ref/conversational-ai/platform/retrieve-agent) |
+| `Agents.Update(ctx, id, ifMatch, patch)` | [Update an agent](/en/api-reference/api-ref/conversational-ai/platform/update-agent) |
+| `Agents.Delete(ctx, id)` | [Delete an agent](/en/api-reference/api-ref/conversational-ai/platform/delete-agent) |
+
+### Sessions
+
+| Method | REST API |
+|---|---|
+| `Sessions.Start(ctx, body, opts...)` | [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session) |
+| `Sessions.StartEphemeral(ctx, body, opts...)` | [Start an ephemeral session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session) |
+| `Sessions.List(ctx, v3.SessionListOptions)` | [List sessions](/en/api-reference/api-ref/conversational-ai/platform/list-sessions) |
+| `Sessions.Get(ctx, id)` | [Retrieve a session](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session) |
+| `Sessions.Update(ctx, id, patch)` | [Update a session](/en/api-reference/api-ref/conversational-ai/platform/update-session) |
+| `Sessions.Stop(ctx, id)` | [Stop a session](/en/api-reference/api-ref/conversational-ai/platform/stop-session) |
+
+
+### Secrets
+
+| Method | REST API |
+|---|---|
+| `Secrets.Create(ctx, body, "")` | [Create a secret set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set) |
+| `Secrets.List(ctx, v3.ListOptions)` | [List secret sets](/en/api-reference/api-ref/conversational-ai/platform/list-secret-sets) |
+| `Secrets.Get(ctx, name)` | [Retrieve a secret set](/en/api-reference/api-ref/conversational-ai/platform/retrieve-secret-set) |
+| `Secrets.Update(ctx, name, ifMatch, body)` | [Update a secret set](/en/api-reference/api-ref/conversational-ai/platform/update-secret-set) |
+| `Secrets.Replace(ctx, name, ifMatch, body)` | [Replace a secret set](/en/api-reference/api-ref/conversational-ai/platform/replace-secret-set) |
+| `Secrets.Delete(ctx, name, ifMatch)` | [Delete a secret set](/en/api-reference/api-ref/conversational-ai/platform/delete-secret-set) |
+| `Secrets.SetKey(ctx, name, key, v3.SecretKeyWrite, v3.SecretKeyOptions)` | [Set a secret key](/en/api-reference/api-ref/conversational-ai/platform/set-secret-key) |
+| `Secrets.DeleteKey(ctx, name, key, ifMatch)` | [Delete a secret key](/en/api-reference/api-ref/conversational-ai/platform/delete-secret-key) |
+
+`Secrets.Create` and `Numbers.Create` take an idempotency-key argument for compatibility. Pass `""`. A non-empty key returns an error.
+
+### Phone numbers
+
+| Method | REST API |
+|---|---|
+| `Numbers.Create(ctx, body, "")` | [Create a phone number](/en/api-reference/api-ref/conversational-ai/platform/create-number) |
+| `Numbers.List(ctx, v3.ListOptions)` | [List phone numbers](/en/api-reference/api-ref/conversational-ai/platform/list-numbers) |
+| `Numbers.Get(ctx, id)` | [Retrieve a phone number](/en/api-reference/api-ref/conversational-ai/platform/retrieve-number) |
+| `Numbers.Update(ctx, id, ifMatch, patch)` | [Update a phone number](/en/api-reference/api-ref/conversational-ai/platform/update-number) |
+| `Numbers.Delete(ctx, id)` | [Delete a phone number](/en/api-reference/api-ref/conversational-ai/platform/delete-number) |
+
+### Campaigns
+
+| Method | REST API |
+|---|---|
+| `Campaigns.Create(ctx, body, opts...)` | [Create a campaign](/en/api-reference/api-ref/conversational-ai/platform/create-campaign) |
+| `Campaigns.List(ctx, v3.CampaignListOptions)` | [List campaigns](/en/api-reference/api-ref/conversational-ai/platform/list-campaigns) |
+| `Campaigns.Get(ctx, id)` | [Retrieve a campaign](/en/api-reference/api-ref/conversational-ai/platform/retrieve-campaign) |
+| `Campaigns.Update(ctx, id, ifMatch, body)` | [Update a campaign](/en/api-reference/api-ref/conversational-ai/platform/update-campaign) |
+| `Campaigns.Delete(ctx, id)` | [Delete a campaign](/en/api-reference/api-ref/conversational-ai/platform/delete-campaign) |
+| `Campaigns.Pause(ctx, id, opts...)` | [Pause a campaign](/en/api-reference/api-ref/conversational-ai/platform/pause-campaign) |
+| `Campaigns.Resume(ctx, id, opts...)` | [Resume a campaign](/en/api-reference/api-ref/conversational-ai/platform/resume-campaign) |
+| `Campaigns.Cancel(ctx, id, opts...)` | [Cancel a campaign](/en/api-reference/api-ref/conversational-ai/platform/cancel-campaign) |
+
+### Pagination
+
+Each `List` method returns one page. The page body has `Data.Count`, `Data.List`, `HasMore`, and `NextCursor`. To read every page, pass `NextCursor` as `Cursor` until `HasMore` is `false`:
+
+```go
+cursor := ""
+for {
+	page, err := client.V3.Agents.List(ctx, v3.ListOptions{Limit: 100, Cursor: cursor})
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, item := range page.Body.Data.List {
+		fmt.Println(item.AgentID, item.AgentName)
+	}
+	if !page.Body.HasMore || page.Body.NextCursor == nil || *page.Body.NextCursor == "" {
+		break
+	}
+	cursor = *page.Body.NextCursor
+}
+```
+
+`v3.SessionListOptions` adds `Channel`, `Status`, `StartedAfter`, and `StartedBefore`. Without `Status`, `Sessions.List` returns running sessions. To list others, pass a comma-separated list, for example `"STOPPED,FAILED"`.
+
+### Conditional writes and retries
+
+Updates to agents, numbers, and campaigns, and deletes and replacements of secret sets, require the resource's current ETag in `ifMatch`. Get it from `Response.ETag`. If the resource changed since you read it, the method returns a `*v3.PreconditionFailedError`. Call its `Latest(ctx)` method to reload the resource and its new ETag. It doesn't retry the write.
+
+The SDK makes one attempt for every write. To retry a session start safely, pass the same idempotency key. Other operations don't support idempotency keys.
+
+## Errors
+
+| Error | Returned when |
+|---|---|
+| `*core.APIError` | The Platform returns an error. It has `StatusCode` and the response body, which usually has `reason` and `detail`. Import `github.com/AgoraIO/agora-agents-go/v2/core`, and match it with `errors.As`. For the reasons, see [Status codes](/en/api-reference/api-ref/conversational-ai/platform/status-codes). |
+| `*v3.PreconditionFailedError` | A conditional write fails with `412`. Match it with `errors.As`. |
+| `agentkit.ErrPreconditionFailed` | `savedAgent.Update()` fails with `412`. Match it with `errors.Is`. |
+| `agentkit.ErrUnsupportedField` | The builder has settings with no Platform equivalent. Returned before any request. |
+| `agentkit.ErrSecretRefNotSupported` | A secret reference is used on the Voice Agent API. |
+| `agentkit.ErrNumberNotFound` | `AssignNumber()` or `UnassignNumber()` can't find the number in the project. |
+| `agentkit.ErrUnsupportedSessionOperation` | A session method isn't available on Platform sessions. |

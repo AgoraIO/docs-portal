@@ -1,0 +1,156 @@
+---
+title: Tavus
+description: >
+  Use a Tavus avatar to represent your agent on video in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/avatar/tavus.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-26, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+
+Tavus provides lifelike AI avatars that see, hear, and respond in real time, enabling natural video conversations with your AI agents.
+
+## Sample configuration
+
+The following example shows how to configure Tavus as the agent's avatar when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+
+Tavus supports BYOK only. It isn't available in managed mode. Store your Tavus API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, Tavus, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your ASR vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+    .with_avatar(
+        Tavus(
+            api_key=secret_ref("support_prod", "tavus"),
+            api_base_url="https://tavusapi.com/v2/conversations/agora",
+            avatar_id="<tavus_face_id>",
+            agora_uid="<avatar_rtc_uid>",
+            agora_token="<avatar_rtc_token>",
+        )
+    )
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, Tavus, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */)
+  .withAvatar(
+    new Tavus({
+      apiKey: secretRef('support_prod', 'tavus'),
+      apiBaseUrl: 'https://tavusapi.com/v2/conversations/agora',
+      avatarId: '<tavus_face_id>',
+      agoraUid: '<avatar_rtc_uid>',
+      agoraToken: '<avatar_rtc_token>',
+    }),
+  );
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).
+	WithStt( /* configure your ASR vendor */ ).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts( /* configure your TTS vendor */ ).
+	WithAvatar(vendors.NewTavus(vendors.TavusOptions{
+		APIKey:     agentkit.SecretRef("support_prod", "tavus"),
+		APIBaseURL: "https://tavusapi.com/v2/conversations/agora",
+		AvatarID:   "<tavus_face_id>",
+		AgoraUID:   "<avatar_rtc_uid>",
+		AgoraToken: "<avatar_rtc_token>",
+	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Add an `avatar` block to the `pipeline`. Tavus uses the `generic` avatar vendor. Set `credential.mode` to `byok` and `credential.fields.api_key` to the reference. In the following example, the key is stored as `tavus` in the `support_prod` set:
+
+```json
+"avatar": {
+  "enabled": true,
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.tavus"
+    }
+  },
+  "vendor": "generic",
+  "params": {
+    "api_base_url": "https://tavusapi.com/v2/conversations/agora",
+    "avatar_id": "<tavus_face_id>",
+    "agora_token": "<avatar_rtc_token>",
+    "agora_uid": "<avatar_rtc_uid>"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): The avatar block is saved with the agent, but `agora_uid` and `agora_token` identify the avatar in one session's RTC channel, and RTC tokens expire. Confirm how the Platform supplies the avatar's UID and token for each session, and update this example. */}
+
+{/* TODO(platform-confirm): SDK tabs tested in pre-release testing (2026-10-29) against the SDK preview commits TypeScript 4900f4c, Python ed4466c, and Go 362ce9a. BYOK only; agents saved and the stored `avatar` block checked. All three saved this avatar as written and stored the same `avatar` block as the REST example (SDK bug list #24, fixed). */}
+
+## Key parameters
+
+The `avatar` block takes the following fields. In the SDKs, `Tavus` sets them from its options, and passes any other parameters from its additional parameters option to `params`.
+
+<ParameterList title="avatar" required={true}>
+  <Parameter name="enabled" type="boolean" required={true}>
+    Set to `true` to show the avatar.
+  </Parameter>
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `generic`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Tavus API key. Get your API key from your Tavus account. For details, refer to [Tavus authentication](https://docs.tavus.io/api-reference/authentication).
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="api_base_url" type="string" required={true}>
+      The base URL of the Tavus API endpoint. Set to `https://tavusapi.com/v2/conversations/agora`.
+    </Parameter>
+    <Parameter name="avatar_id" type="string" required={true}>
+      The ID of the Tavus face (formerly called a replica) to render the avatar. Find or create a face in the [Tavus Developer Portal](https://maker.tavus.io/dev/faces).
+    </Parameter>
+    <Parameter name="agora_token" type="string" required={false}>
+      The RTC token that authorizes the avatar to join the video channel. Generate this token using your Agora project credentials.
+    </Parameter>
+    <Parameter name="agora_uid" type="string" required={true}>
+      The unique identifier for the avatar's RTC connection. This must be different from other participants in the channel.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+For more information about Tavus faces and conversations, refer to the [Tavus documentation](https://docs.tavus.io).
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

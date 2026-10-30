@@ -1,0 +1,182 @@
+---
+title: OpenAI
+description: >
+ Use OpenAI for text-to-speech (TTS) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/openai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+
+OpenAI provides natural-sounding text-to-speech with customizable voice instructions and multiple voice options.
+
+## Sample configuration
+
+The following example shows how to configure OpenAI as the agent's TTS when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+
+OpenAI supports managed mode and BYOK. In managed mode, Agora provides access to OpenAI, and you don't need a OpenAI account. For BYOK, store your OpenAI API key in a secret set, and refer to it from the agent. For details, see [Use managed mode](/en/ai/platform/build/managed-mode) and [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, OpenAITTS, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your ASR vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(
+        OpenAITTS(
+            api_key=secret_ref("support_prod", "openai"),  # omit to use managed mode
+            base_url="https://api.openai.com/v1/audio/speech",  # omit to use managed mode
+            model="tts-1",
+            voice="coral",
+            instructions="Please use standard American English, natural tone, moderate pace, and steady intonation",
+            speed=1,
+        )
+    )
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, OpenAITTS, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(
+    new OpenAITTS({
+      apiKey: secretRef('support_prod', 'openai'), // omit to use managed mode
+      baseUrl: 'https://api.openai.com/v1/audio/speech', // omit to use managed mode
+      model: 'tts-1',
+      voice: 'coral',
+      instructions: 'Please use standard American English, natural tone, moderate pace, and steady intonation',
+      speed: 1,
+    }),
+  );
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+speed := 1.0
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).
+	WithStt( /* configure your ASR vendor */ ).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts(vendors.NewOpenAITTS(vendors.OpenAITTSOptions{
+		APIKey:       agentkit.SecretRef("support_prod", "openai"), // omit to use managed mode
+		BaseURL:      "https://api.openai.com/v1/audio/speech",     // omit to use managed mode
+		Model:        "tts-1",
+		Voice:        "coral",
+		Instructions: "Please use standard American English, natural tone, moderate pace, and steady intonation",
+		Speed:        &speed,
+	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+- **Managed mode**
+
+    Set `credential.mode` to `managed` in the `tts` block. Agora provides access to OpenAI, and you don't need a OpenAI account.
+
+    ```json
+    "tts": {
+      "credential": { "mode": "managed" },
+      "vendor": "openai",
+      "params": {
+        "model": "tts-1",
+        "voice": "coral",
+        "instructions": "Please use standard American English, natural tone, moderate pace, and steady intonation",
+        "speed": 1
+      }
+    }
+    ```
+
+- **BYOK**
+
+    Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your OpenAI API key in a secret set. In the following example, the key is stored as `openai` in the `support_prod` set:
+
+    ```json
+    "tts": {
+      "credential": {
+        "mode": "byok",
+        "fields": {
+          "api_key": "$secrets.support_prod.openai"
+        }
+      },
+      "vendor": "openai",
+      "url": "https://api.openai.com/v1/audio/speech",
+      "params": {
+        "model": "gpt-4o-mini-tts",
+        "voice": "coral",
+        "instructions": "Please use standard American English, natural tone, moderate pace, and steady intonation",
+        "speed": 1
+      }
+    }
+    ```
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): In pre-release testing (2026-10-28), the Python, TypeScript, and Go examples saved in both managed mode and BYOK. The SDK examples use `tts-1`, the only managed OpenAI TTS model in the SDKs, so one example covers both modes. */}
+
+{/* TODO(platform-confirm): Confirm whether BYOK needs `url`, or whether Agora uses OpenAI's default endpoint. The Voice Agent API requires `params.url`. */}
+
+## Key parameters
+
+The `tts` block takes the following fields. In the SDKs, the OpenAI TTS class sets them from its options.
+
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `openai`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    How the agent authenticates with OpenAI. Set `mode` to `managed`, or to `byok` with `fields.api_key` set to a `$secrets.<set>.<key>` reference to your OpenAI API key. Get your API key from the [OpenAI Console](https://platform.openai.com/api-keys).
+  </Parameter>
+  <Parameter name="url" type="string" required={false}>
+    The full endpoint URL for the OpenAI speech API, for example `https://api.openai.com/v1/audio/speech`. Not needed in managed mode. See [How to use data residency](https://platform.openai.com/docs/guides/your-data#how-to-use-data-residency).
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="model" type="string" required={true}>
+      Identifier of the model to be used. For managed mode, use `tts-1`.
+    </Parameter>
+    <Parameter name="voice" type="string" required={true}>
+      The voice identifier for speech synthesis.
+    </Parameter>
+    <Parameter name="instructions" type="string" required={false}>
+      Custom instructions for voice style, accent, pace, and tone. Helps fine-tune the speech characteristics.
+    </Parameter>
+    <Parameter name="speed" type="number" defaultValue="1.0" required={false}>
+      Speaking rate multiplier. Values between `0.25` and `4.0`, where `1.0` is normal speed.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+:::info[Info]
+OpenAI TTS models do not support changing the sample rate. The audio output is fixed at 24,000 Hz.
+:::
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to OpenAI without validation. For a full list of supported options, refer to the [OpenAI TTS documentation](https://platform.openai.com/docs/guides/text-to-speech).
+:::
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

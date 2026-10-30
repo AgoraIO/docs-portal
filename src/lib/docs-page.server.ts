@@ -7,6 +7,7 @@ import {
   type DocsPageType,
   inferDocsPageType,
 } from './analytics/docs-page-type';
+import { resolveDocVersion } from './doc-versions';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import { resolveMovedDocsRedirect } from './docs-moved-redirects';
@@ -445,7 +446,9 @@ export async function loadDocsPagePayload(
     pathname: page.url,
     sourcePath: page.path,
     title,
-    version: sidebarHeader?.versionSwitcher?.currentId,
+    version:
+      resolveDocVersion(page.url)?.version.id ??
+      sidebarHeader?.versionSwitcher?.currentId,
   });
   const lastUpdated = await resolveDocsLastUpdatedMetadata(
     Array.from(
@@ -1252,7 +1255,7 @@ async function getDocsSidebarNodes({
   source: typeof docsSource;
   tab: string;
 }) {
-  if (tab === 'ai') {
+  if (tab === 'ai' && usesAiProductSidebar(activePath ?? pageUrl ?? '')) {
     const aiNodes = getNavScopeSidebarNodes({
       getNodeMeta: (node) =>
         getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
@@ -1269,7 +1272,14 @@ async function getDocsSidebarNodes({
             tab: OPENAPI_TAB,
           });
 
-    return buildAiProductSidebar(aiNodes, apiReferenceNodes);
+    return buildAiProductSidebar(
+      aiNodes.filter(
+        (node) =>
+          node.type !== 'section' ||
+          node.title !== 'Conversational AI Platform (Preview)',
+      ),
+      apiReferenceNodes,
+    );
   }
 
   if (
@@ -1331,6 +1341,10 @@ async function getDocsSidebarNodes({
     sidebarWithRealtimeMediaApiReference,
     locale,
     tab,
+    resolveDocVersion(activePath ?? pageUrl ?? '')?.version
+      .restrictToMappedPages
+      ? navScope?.sidebarRoot.index?.url
+      : undefined,
   );
 
   if (isRecipesApiReferencePath(activePath)) {
@@ -1937,6 +1951,14 @@ function stripSidebarSectionMeta(
   return rest;
 }
 
+function usesAiProductSidebar(activePath: string) {
+  const context = resolveDocVersion(activePath);
+  return (
+    !context ||
+    (context.scope.id === 'convoai-guides' && context.version.id === 'v1')
+  );
+}
+
 function resolveDocsSidebarHeader({
   activePath,
   hidePlatformTabs,
@@ -1954,7 +1976,7 @@ function resolveDocsSidebarHeader({
   source: typeof docsSource;
   tab: string;
 }) {
-  if (tab === 'ai') {
+  if (tab === 'ai' && usesAiProductSidebar(activePath)) {
     return undefined;
   }
 
@@ -2154,7 +2176,31 @@ async function addOpenApiEndpointSidebarItems(
   sidebar: DocsSidebarNode[],
   locale: AppLocale,
   tab: string,
+  scopedRootUrl?: string,
 ): Promise<DocsSidebarNode[]> {
+  // Scoped navigation flattens its root section. Restore that context while
+  // injecting generated operations, then return only its children.
+  if (
+    getOpenApiLanes().some(
+      (lane) =>
+        lane.tab === tab &&
+        getOpenApiLaneLocales(lane).includes(locale) &&
+        lane.parentUrl[locale] === scopedRootUrl,
+    )
+  ) {
+    const root = await appendEndpointPagesToOpenApiParent(
+      {
+        type: 'section',
+        id: scopedRootUrl ?? '',
+        title: '',
+        url: scopedRootUrl,
+        children: sidebar,
+      },
+      locale,
+      tab,
+    );
+    return root.type === 'section' ? root.children : sidebar;
+  }
   return Promise.all(
     sidebar.map((node) =>
       appendEndpointPagesToOpenApiParent(node, locale, tab),

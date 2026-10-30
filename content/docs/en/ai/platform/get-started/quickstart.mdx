@@ -1,0 +1,195 @@
+---
+analyticsPageType: task-guide
+title: Platform quickstart
+description: Run a working Conversational AI Platform agent in under five minutes by cloning an officially maintained starter project.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/get-started/quickstart.mdx at e0d27b674 on 2026-10-21. Status: DEFERRED on 2026-10-23, hidden from the Platform sidebar for the Oct 29 Preview. Rewritten for the Platform API, but the starter projects, CLI templates, and Agora Skills workflows it describes won't exist in time. Unhide it when they ship, and test it end to end. */}
+
+{/* TODO(platform-confirm): The Platform starter projects and the `platform-python`, `platform-nextjs`, and `platform-go` CLI templates are placeholder names. Replace them, and the commands that use them, once engineering confirms what ships for the Preview. If no starter ships, replace this page with a REST quickstart (create an agent, start a session, join from a client, stop the session). */}
+
+Set up a working Conversational AI Platform agent in under five minutes. This page walks you through installing Agora Skills to give your AI coding assistant the official Platform quickstarts and Agora CLI workflows. You then use the CLI to sign in, clone the official Platform starter, and run it locally. You can follow the CLI steps yourself or paste the sample prompt and let your assistant handle setup for you.
+
+If you are new to Agora, read [Core concepts](/en/introduction/core-concepts) first to understand how RTC, Signaling, channels, UIDs, and tokens fit together.
+
+:::info
+The Conversational AI Platform is in Preview. During the Preview, agent sessions run in North America (US).
+:::
+
+## Set up your tools
+
+Install Agora Skills to let your AI coding assistant set up the starter for you, or install the Agora CLI to run each command yourself.
+
+### Install Agora Skills
+
+Agora Skills teach your AI coding assistant how to work with Conversational AI Platform projects using official starter repos and the Agora CLI, including signing in, project binding, generating environment files, and running diagnostics. Install the Agora CLI yourself, or ask your assistant to run the installer for you.
+
+{/* TODO(platform-confirm): Confirm that AgoraIO/skills includes the Platform workflows, or give the name of the skill package that does. */}
+
+```bash
+npx skills add AgoraIO/skills
+```
+
+Paste the following prompt into your assistant's chat. You can replace Python with TypeScript or Go depending on your language preference:
+
+```text
+Set up and run the Agora Conversational AI Platform Python starter project locally.
+```
+
+Your assistant installs the CLI, signs you in, scaffolds the official Platform starter, and guides you through the remaining steps.
+
+### Install the Agora CLI
+
+The Agora CLI is a native Go binary available at [AgoraIO-Community/cli](https://github.com/AgoraIO-Community/cli).
+
+{/* TODO(platform-confirm): Add the minimum CLI version that supports the Platform templates. */}
+
+<Tabs defaultValue="mac-linux" groupId="ai-install-os" persist>
+<TabsList>
+  <TabsTrigger value="mac-linux">macOS and Linux</TabsTrigger>
+  <TabsTrigger value="windows-powershell">Windows (PowerShell)</TabsTrigger>
+</TabsList>
+
+<TabsContent value="mac-linux">
+
+```bash
+curl -fsSL https://dl.agora.io/cli/install.sh | sh
+agora --help
+```
+
+If your shell can't find the `agora` command after installation, re-run the installer with
+`--add-to-path`, or add the install directory to your shell profile.
+
+</TabsContent>
+
+<TabsContent value="windows-powershell">
+
+```powershell
+irm https://dl.agora.io/cli/install.ps1 | iex
+agora --help
+```
+
+If your execution policy blocks inline scripts, download `install.ps1` and run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install.ps1
+```
+
+</TabsContent>
+</Tabs>
+
+## Sign in, scaffold, and run
+
+Sign in with the Agora CLI, clone the Platform starter project, and configure it for your chosen language.
+
+1. Sign in to Agora Console.
+
+    ```bash
+    agora login
+    ```
+
+2. Use `agora init` to clone the official Platform starter for your chosen template, bind it to your
+    Agora project, and write the runtime-specific environment file.
+
+    {/* TODO(platform-confirm): Confirm the environment file the starter needs: App ID, the REST API credentials (Basic auth customer ID and secret, or a ConvoAI token), and the App Certificate for RTC tokens. Also confirm the setup and run commands for each starter. */}
+
+    <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+    <TabsList>
+      <TabsTrigger value="python">Python</TabsTrigger>
+      <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+      <TabsTrigger value="go">Go</TabsTrigger>
+    </TabsList>
+
+    <TabsContent value="python">
+
+    ```bash
+    agora init my-platform-python-demo --template platform-python
+    cd my-platform-python-demo
+    # Set up the web client and Python backend.
+    bun run setup
+    # Start the web client and Python backend.
+    bun run dev
+    ```
+
+    </TabsContent>
+
+    <TabsContent value="typescript">
+
+    ```bash
+    agora init my-platform-nextjs-demo --template platform-nextjs
+    cd my-platform-nextjs-demo
+    pnpm install
+    pnpm dev
+    ```
+
+    </TabsContent>
+
+    <TabsContent value="go">
+
+    ```bash
+    agora init my-platform-go-demo --template platform-go
+    cd my-platform-go-demo
+    make setup
+    make dev
+    ```
+
+    </TabsContent>
+    </Tabs>
+
+3. Open `http://localhost:3000` and click **Start conversation**.
+
+If the agent does not join or transcripts do not appear, run `agora project doctor` to
+check credential validity, Platform access, and network reachability.
+
+{/* TODO(platform-confirm): Confirm that `agora project doctor` checks Platform access and the REST API credentials. Confirm whether projects need Platform access enabled during the Preview, and if so, add a callout that explains how to get it. */}
+
+## What just happened
+
+The CLI cloned the selected Platform starter, connected it to your Agora project, and wrote
+the environment configuration required to run the demo locally.
+
+The demo runs a local browser app and server-side agent controls:
+
+- **Browser app**: Joins an RTC channel, sends your microphone audio to the agent, plays the agent's spoken responses, and shows the conversation transcript.
+- **Server-side controls**: Create a saved agent in your project, generate tokens, and start or stop sessions that run the agent.
+
+The starter saves the agent configuration in your project once. Each time you click
+**Start conversation**, it starts a new session that refers to the saved agent by its ID.
+
+{/* TODO(platform-confirm): Confirm when the starter creates the agent (on first run or with a setup command), and that it reuses the saved agent on later runs instead of creating a new one each time. */}
+
+Agora provides the real-time path between the user and the agent. The user and
+agent join the same Agora channel, and Agora transports low-latency audio and
+session events between them.
+
+{/* TODO(platform-confirm): Confirm whether the starter generates the agent's RTC token or leaves `transport.token` out and lets Agora issue it. */}
+
+The agent uses managed mode. Agora provides access to the models, and the starter
+doesn't need provider API keys. The models handle the speech pipeline:
+
+1. ASR converts user speech to text.
+2. The LLM reasons over the conversation and generates a response.
+3. TTS converts the response back to speech.
+
+{/* TODO(platform-confirm): Confirm which managed ASR, LLM, and TTS models the starter uses, and that they're available in the Preview. */}
+
+## Next steps
+
+### Build and customize
+
+- **[Manage agent sessions](start-stop-agent)**: Create agents, and start and stop sessions with the REST API.
+- **[Customize models](../build/managed-mode)**: Use managed mode, or bring your own provider keys stored in secret sets.
+- **[Improve conversation quality](../best-practices/optimize-latency)**: Tune latency, audio settings, interruptions, and turn taking.
+- **[Optimize audio setup](../best-practices/audio-setup)**: Set audio profiles, scenarios, and capture behavior for your target clients.
+- **[Review the API reference](/en/api-reference/api-ref/conversational-ai/platform)**: Check Platform REST API parameters when you move beyond the starter.
+
+### Observe and troubleshoot
+
+- **[Observe runtime behavior](../build/handle-runtime-events/monitor-agent-runtime)**: Monitor notification events, session status, and failures.
+- **[Debug agent failures](../build/handle-runtime-events/debug-agent-failures)**: Correlate client callbacks with notification events.
+
+### Prepare for production
+
+- **[Review security and privacy](/en/introduction/security-privacy)**: Check authentication, encryption, compliance, and operational safeguards.
+
+{/* TODO(platform-docs): The Voice Agent quickstart also links to "Restrict where agents run". Geofencing isn't supported in the Preview. Add the link back if the Platform supports it later. */}

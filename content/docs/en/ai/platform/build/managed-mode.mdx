@@ -1,0 +1,193 @@
+---
+title: Use managed mode
+description: Use ASR, LLM, and TTS models that Agora provides access to, without your own provider accounts or API keys.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/build/managed-mode.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+Managed mode lets your agent use supported ASR, LLM, and TTS models without your own provider accounts or API keys. Agora provides access to the models. You choose the vendor and model to use for ASR, LLM, and TTS, or let the Platform select them. To use your own provider accounts instead, see [Use your own provider keys (BYOK)](/en/ai/platform/build/use-your-own-keys).
+
+## Understand the tech
+
+An agent has ASR, LLM, and TTS models. To use managed mode for a model, choose a vendor and model from [Supported vendors and models](#supported-vendors-and-models), and don't provide a provider API key.
+
+You choose the credential mode for each model. For example, an agent can use managed ASR and TTS with your own LLM key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+For a complete agent example, see [Create an agent](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+
+## Choose managed models
+
+Set the managed models when you create an agent. This example uses Deepgram Nova 3 for ASR, OpenAI GPT-4.1 Mini for the LLM, and OpenAI TTS-1 for TTS. The SDK examples use the `client` that you create in [Prerequisites](/en/ai/platform/get-started/start-stop-agent#prerequisites).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+Create each model without an API key:
+
+```python
+from agora_agent import Agent, DeepgramSTT, OpenAI, OpenAITTS
+
+agent = (
+    Agent(client=client)
+    .with_stt(DeepgramSTT(model="nova-3", language="en-US"))
+    .with_llm(
+        OpenAI(
+            model="gpt-4.1-mini",
+            system_messages=[
+                {"role": "system", "content": "You are a friendly support agent for Acme. Keep your answers short."}
+            ],
+        )
+    )
+    .with_tts(OpenAITTS(model="tts-1", voice="alloy"))
+)
+
+saved_agent = agent.save(name="Support agent")
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+Create each model without an API key:
+
+```ts
+import { Agent, DeepgramSTT, OpenAI, OpenAITTS } from 'agora-agents';
+
+const agent = new Agent({ client })
+  .withStt(new DeepgramSTT({ model: 'nova-3', language: 'en-US' }))
+  .withLlm(
+    new OpenAI({
+      model: 'gpt-4.1-mini',
+      systemMessages: [
+        { role: 'system', content: 'You are a friendly support agent for Acme. Keep your answers short.' },
+      ],
+    }),
+  )
+  .withTts(new OpenAITTS({ model: 'tts-1', voice: 'alloy' }));
+
+const savedAgent = await agent.save({ name: 'Support agent' });
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+Create each model without an API key:
+
+```go
+agent := agentkit.NewAgent(client).
+	WithStt(vendors.NewDeepgramSTT(vendors.DeepgramSTTOptions{Model: "nova-3", Language: "en-US"})).
+	WithLlm(vendors.NewOpenAI(vendors.OpenAIOptions{
+		Model: "gpt-4.1-mini",
+		SystemMessages: []map[string]interface{}{
+			{"role": "system", "content": "You are a friendly support agent for Acme. Keep your answers short."},
+		},
+	})).
+	WithTts(vendors.NewOpenAITTS(vendors.OpenAITTSOptions{Model: "tts-1", Voice: "alloy"}))
+
+savedAgent, err := agent.Save(ctx, agentkit.SaveOptions{Name: "Support agent"})
+if err != nil {
+	log.Fatal(err)
+}
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent) with a `pipeline`:
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "agent_name": "Support agent",
+  "instructions": "You are a friendly support agent for Acme. Keep your answers short.",
+  "pipeline": {
+    "mode": "cascaded",
+    "asr": {
+      "credential": { "mode": "managed" },
+      "vendor": "deepgram",
+      "model": "nova-3",
+      "language": "en-US"
+    },
+    "llm": {
+      "credential": { "mode": "managed" },
+      "vendor": "openai",
+      "style": "openai",
+      "model": "gpt-4.1-mini"
+    },
+    "tts": {
+      "credential": { "mode": "managed" },
+      "vendor": "openai",
+      "params": {
+        "model": "tts-1",
+        "voice": "alloy"
+      }
+    }
+  }
+}'
+```
+
+In this example:
+
+- Each block sets `credential.mode` to `managed`. A managed block doesn't accept `fields` or a custom provider endpoint `url`.
+- The `asr` block uses Deepgram Nova 3 for US English.
+- The `llm` block uses OpenAI GPT-4.1 Mini.
+- The `tts` block uses OpenAI TTS-1, with the voice in `params`.
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): All examples use managed OpenAI `tts-1`. In pre-release testing (2026-10-29) with the SDK preview commits TypeScript 4900f4c, Python ed4466c, and Go 362ce9a, all three SDK examples saved as written, and the SDKs now send `vendor` for managed OpenAI (SDK bug list #1, fixed). */}
+
+You then start sessions with the agent as usual. For details, see [Start a session](/en/ai/platform/get-started/start-stop-agent#start-a-session).
+
+## Supported vendors and models
+
+The following vendors and models are available in managed mode.
+
+{/* TODO(platform-confirm): In pre-release testing (2026-10-27), every model in these tables was accepted when creating an agent, and managed Microsoft TTS was rejected. Acceptance at create time doesn't guarantee that a model works in a session. Confirm the list for the Preview. The SDK previews (2026-10-28) don't accept `gpt-5.6-luna` without an API key: their managed allowlists stop at `gpt-5-mini` (SDK bug list #12). */}
+
+### ASR
+
+| Vendor | Models |
+|--------|--------|
+| [ARES](/en/ai/platform/models/asr/ares) | Built-in ASR engine |
+| [Deepgram](/en/ai/platform/models/asr/deepgram) | `nova-2`, `nova-3` |
+
+### LLM
+
+| Vendor | Models |
+|--------|--------|
+| [OpenAI](/en/ai/platform/models/llm/openai) | `gpt-4o-mini`, `gpt-4.1-mini`, `gpt-5-nano`, `gpt-5-mini`, `gpt-5.6-luna` |
+
+### TTS
+
+| Vendor | Models |
+|--------|--------|
+| [MiniMax](/en/ai/platform/models/tts/minimax) | `speech-2.6-turbo`, `speech-2.8-turbo` |
+| [OpenAI](/en/ai/platform/models/tts/openai) | `tts-1` |
+
+## Reference
+
+For more information, see the following pages:
+
+- [Use your own provider keys](/en/ai/platform/build/use-your-own-keys)
+- [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent)
+- For the settings each vendor supports, see the vendor pages under Models, for example [Deepgram](/en/ai/platform/models/asr/deepgram), [OpenAI](/en/ai/platform/models/llm/openai), and [MiniMax](/en/ai/platform/models/tts/minimax).
+
+### API reference
+
+- [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent)
+- [Update an agent](/en/api-reference/api-ref/conversational-ai/platform/update-agent)

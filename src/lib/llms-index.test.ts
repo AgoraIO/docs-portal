@@ -51,10 +51,16 @@ describe('machine-readable docs indexes', () => {
     expect(rootTargets).toEqual(
       sectionFiles.map((file) => `https://docs.example.com${file.path}`),
     );
-    expect(files[0]?.content).toContain('[AI](');
+    expect(files[0]?.content).toContain('[Conversational AI — Main](');
 
-    const leafTargets = sectionFiles.flatMap((file) =>
+    const allSectionTargets = sectionFiles.flatMap((file) =>
       getMarkdownTargets(file.content),
+    );
+    expect(allSectionTargets).toContain(
+      'https://docs.example.com/llms/doc-versions-convoai-guides-v1-full.txt',
+    );
+    const leafTargets = allSectionTargets.filter(
+      (target) => !target.endsWith('-full.txt'),
     );
     expect(leafTargets).toEqual([
       'https://docs.example.com/en/ai/get-started/quickstart.md',

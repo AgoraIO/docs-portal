@@ -1,0 +1,182 @@
+---
+title: Generic TTS
+description: >
+  Use a custom TTS service that implements the OpenAI TTS protocol in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/generic-http.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. DEFERRED on 2026-10-28, hidden from the Platform sidebar for the Preview. Reason: in pre-release testing (2026-10-28), Generic TTS returned `400 NotImplemented` ("Generic HTTP TTS requires the local custom-destination capability") from the REST API and all three SDKs. Add it back to models/tts/meta.json when custom destinations are supported. */}
+
+The `generic_http` TTS vendor lets you integrate a custom TTS service that implements the OpenAI TTS protocol into a Conversational AI Platform agent. For a walkthrough of preparing and verifying a compatible TTS service, see [Connect your own TTS service](/en/ai/platform/build/custom-model-integration/custom-tts).
+
+## Sample configuration
+
+The following example shows how to configure Generic TTS as the agent's TTS when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+
+Generic TTS uses your own TTS service. Store the API key for your service in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, GenericTTS, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your ASR vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(
+        GenericTTS(
+            url="https://your-tts-service.example.com/v1/audio/speech",
+            api_key=secret_ref("support_prod", "custom_tts"),
+            model="gpt-4o-mini-tts",
+            voice="alloy",
+            speed=1.0,
+            sample_rate=16000,
+            response_format="pcm",
+            additional_params={"instructions": "calm", "enable_request_id": False},
+        )
+    )
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, GenericTTS, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(
+    new GenericTTS({
+      url: 'https://your-tts-service.example.com/v1/audio/speech',
+      apiKey: secretRef('support_prod', 'custom_tts'),
+      model: 'gpt-4o-mini-tts',
+      voice: 'alloy',
+      speed: 1.0,
+      sampleRate: 16000,
+      responseFormat: 'pcm',
+      additionalParams: { instructions: "calm", enable_request_id: false },
+    }),
+  );
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// client is your configured Agora client
+speed, sampleRate := 1.0, vendors.SampleRate16kHz
+agent := agentkit.NewAgent(client).
+	WithStt( /* configure your ASR vendor */ ).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts(vendors.NewGenericTTS(vendors.GenericTTSOptions{
+		URL:              "https://your-tts-service.example.com/v1/audio/speech",
+		APIKey:           agentkit.SecretRef("support_prod", "custom_tts"),
+		Model:            "gpt-4o-mini-tts",
+		Voice:            "alloy",
+		Speed:            &speed,
+		SampleRate:       &sampleRate,
+		ResponseFormat:   "pcm",
+		AdditionalParams: map[string]interface{}{"instructions": "calm", "enable_request_id": false},
+	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `url` to your service endpoint. Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the API key for your service. In the following example, the key is stored as `custom_tts` in the `support_prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.custom_tts"
+    }
+  },
+  "vendor": "generic_http",
+  "url": "https://your-tts-service.example.com/v1/audio/speech",
+  "params": {
+    "model": "gpt-4o-mini-tts",
+    "voice": "alloy",
+    "speed": 1.0,
+    "sample_rate": 16000,
+    "response_format": "pcm",
+    "instructions": "calm",
+    "enable_request_id": false
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+To send other custom headers to your service, add a `headers` object to the block. Headers are write-only and are never returned.
+
+{/* TODO(platform-confirm): Confirm the Platform `vendor` value for a custom TTS service (`generic_http` as in the Voice Agent API, or `generic`). The Voice Agent API authenticates with `headers.Authorization` or `params.api_key`. Confirm whether the Platform sends `credential.fields.api_key` as a bearer token, and how a secret goes into an `Authorization` header (for example, a `$secrets` reference inside the header value). */}
+
+{/* TODO(platform-confirm): In pre-release testing (2026-10-28), the Platform rejected Generic TTS in every form, including the REST example: `400 NotImplemented` ("Generic HTTP TTS requires the local custom-destination capability"). The SDKs sent the expected block shape. The SDKs' `instruction` option sends `params.instruction` (singular), so the SDK examples pass `instructions` through the additional parameters option to match the REST example (see the open instruction-versus-instructions question). */}
+
+## Key parameters
+
+The `tts` block takes the following fields. In the SDKs, `GenericTTS` sets them from its options.
+
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `generic_http`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to the API key for your TTS service.
+  </Parameter>
+  <Parameter name="url" type="string" required={true}>
+    The OpenAI TTS protocol compatible service endpoint.
+  </Parameter>
+  <Parameter name="headers" type="object" required={false}>
+    Custom request headers to include in requests to the TTS service.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="model" type="string" required={false}>
+      The name of the TTS model.
+    </Parameter>
+    <Parameter name="voice" type="string" required={false}>
+      The voice name. Omit this parameter if your TTS service does not support multiple voices.
+    </Parameter>
+    <Parameter name="speed" type="number" required={false}>
+      The speech rate.
+    </Parameter>
+    <Parameter name="sample_rate" type="integer" defaultValue="16000" required={false}>
+      The sample rate, in Hz, of the output audio. If your TTS service does not support multiple sample rates, make sure the sample rate of the returned audio matches this value.
+    </Parameter>
+    <Parameter name="response_format" type="string" defaultValue="pcm" required={false}>
+      The output audio format. Currently only `pcm` is supported.
+    </Parameter>
+    <Parameter name="instructions" type="string" required={false}>
+      Instructions for voice style, emotion, or other playback directives.
+    </Parameter>
+    <Parameter name="enable_request_id" type="boolean" defaultValue="false" required={false}>
+      Whether to include `request_id`, `request_seq_id`, and `request_end` in the TTS request body.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+Your TTS service must implement the OpenAI TTS protocol. The parameters listed on this page are validated for use with the Conversational AI Platform. Any additional fields in `params` are passed through directly to your TTS service without validation.
+:::
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}
