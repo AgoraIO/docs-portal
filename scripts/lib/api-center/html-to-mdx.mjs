@@ -533,6 +533,9 @@ async function renderInlineNode($, node, state, options = {}) {
   if (name === 'del' || name === 's') return `~~${content}~~`;
   if (name === 'a') {
     const rawHref = element.attr('href');
+    if (!content && (element.attr('id') || element.attr('name'))) {
+      return anchorFor(element);
+    }
     if (!rawHref) {
       const stableAnchor = anchorFor(element);
       return `${stableAnchor}${content}`;

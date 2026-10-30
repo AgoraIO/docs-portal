@@ -30,6 +30,30 @@ async function compileGeneratedMdx(source: string) {
 }
 
 describe('API Center shared HTML to MDX converter', () => {
+  it('keeps an empty Doxygen section anchor out of the member table label', async () => {
+    const result = await convertHtmlToMdx({
+      html: '<div class="contents"><div class="textblock"><table class="memberdecls"><tr class="heading"><td colspan="2"><h2 class="groupheader"><a href="#pub-methods" id="pub-methods"></a>Public 成员函数</h2></td></tr><tr><td>double</td><td><a href="#speed">getPlaybackSpeed</a> ()</td></tr></table><h3><a id="init" href="#init"></a>SDK 初始化</h3></div></div>',
+      sourceUrl: 'https://doc.shengwang.cn/api-ref/whiteboard/android/player',
+      sourcePath: 'html-docs/whiteboard/Android/player.html',
+      rootSelector: '.contents',
+      routeMap: new Map([
+        [
+          '/api-ref/whiteboard/android/player',
+          '/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/player',
+        ],
+      ]),
+    });
+    expect(result.body).toContain(
+      '| <a id="pub-methods"></a>Public 成员函数 |',
+    );
+    expect(result.body).not.toContain('player#pub-methods Public');
+    expect(result.body).toContain('<a id="pub-methods"></a>');
+    expect(result.body).toContain('[getPlaybackSpeed]');
+    expect(result.body).toContain('### SDK 初始化');
+    expect(result.body).not.toContain('player#init SDK');
+    expect(result.body).toContain('<a id="init"></a>');
+  });
+
   it('retains a Doxygen public type named Source inside the main description', async () => {
     const result = await convertHtmlToMdx({
       html: '<div class="contents"><div class="textblock"><h2>公开类型</h2><p>参见 <a href="class_background_image_source.html">BackgroundImageSource</a>。</p></div></div>',

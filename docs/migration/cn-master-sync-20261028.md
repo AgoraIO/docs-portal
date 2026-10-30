@@ -89,6 +89,10 @@
 
 用户指出概览跳转丢失，已确认原有 89 个链接被降成文字，并按原始源/目标注册恢复。类型列表、类型索引、两个 buildSdkOptions 页面同步补回链接；原排除的 functions.html 按完整源迁移为非主导航成员索引。现鸿蒙 93 份文档的 1159 个本地链接及锚点全部有效，主侧栏仍为六项。五份已有文档的文字/代码/显式锚点不变；本轮共恢复 749 个跳转。完整原因、源索引分类修正、旧站自身坏链接的说明和验收见 [链接修复报告](../agents/reports/2026-10-30-whiteboard-harmonyos-link-restoration.md)。
 
+## 2026-10-30 Android 表头及章节空锚点修复
+
+随后修复 Player 的“Public 成员函数”等两处表头，以及 API 概览的 10 处同类标题。空锚点仅保留定位用途，不再把 URL 当作文字；306 个原有链接、源代码和原锚点保留，完整测试 4979 项通过、2 项跳过。详见 [专题记录](../agents/reports/2026-10-30-doxygen-empty-anchor-labels.md)。
+
 ## 下一轮起点
 
 先核实本轮 PR 实际合并。合并后才能将 `72dd878e3703f154f26d9fb1bf5274b465a6c2cb` 作为新的有效源基线；当前只记录待合入批次，统一入口为 [checkpoint](./cn-hotfix-checkpoint.md) 与 [本轮机器记录](./cn-master-sync-20261028.json)。

@@ -81,6 +81,20 @@ function findTokenOutsideFences(source: string, token: string) {
 }
 
 describe('whiteboard audit regressions', () => {
+  it('keeps the Android Player member-table label free of its anchor URL', () => {
+    const source = readContent(
+      'content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/(current)/classcom-1-1herewhite-1-1sdk-1-1-player.mdx',
+    );
+    expect(source).toContain('| <a id="pub-methods"></a>Public 成员函数 |');
+    expect(source).not.toContain('player#pub-methods Public 成员函数');
+    expect(source).not.toContain('player#inherited 额外继承的成员函数');
+    const overview = readContent(
+      'content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/(current)/overview.mdx',
+    );
+    expect(overview).not.toMatch(/^#{1,6}\s+\/zh-CN\/\S+#/m);
+    expect(overview).toContain('### SDK 初始化');
+  });
+
   it('keeps HarmonyOS overview type entries and indexes as actual links', () => {
     const source = readContent(
       'content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/(current)/overview.mdx',
