@@ -1437,14 +1437,6 @@ function getOpenApiSchemaMetadata(
     rangeMetadata
       ? null
       : getConstraintMetadata('Maximum', schemaRecord?.maximum),
-    getConstraintMetadata('Min length', schemaRecord?.minLength),
-    getConstraintMetadata('Max length', schemaRecord?.maxLength),
-    getString(schemaRecord?.pattern)
-      ? {
-          label: 'Pattern',
-          value: getString(schemaRecord?.pattern) ?? '',
-        }
-      : null,
     owner.example !== undefined
       ? {
           label: 'Example',

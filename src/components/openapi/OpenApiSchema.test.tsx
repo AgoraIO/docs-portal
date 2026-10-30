@@ -364,7 +364,7 @@ describe('OpenApiSchema', () => {
       Array.from(
         (row as HTMLElement).querySelectorAll('.openapi-schema-metadata-label'),
       ).map((label) => label.textContent),
-    ).toEqual(['Default:', 'Range:', 'Allowed values:', 'Match:', 'Format:']);
+    ).toEqual(['Default:', 'Range:', 'Allowed values:', 'Format:']);
     expect(
       within(row as HTMLElement)
         .getByText(/"mode": "managed"/)

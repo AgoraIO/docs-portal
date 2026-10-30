@@ -112,12 +112,16 @@ export function OpenApiSchema({
       writeOnly,
     });
 
-    const itemsLabel = getOpenApiSchemaLabel(translations, 'Items', 'Items');
+    const hiddenMetadataLabels = new Set(
+      ['Items', 'Length', 'Match'].map((key) =>
+        getOpenApiSchemaLabel(translations, key, key),
+      ),
+    );
     for (const schema of Object.values(generated.refs)) {
       schema.infoTags = schema.infoTags?.filter(
         ({ node }) =>
           !isValidElement<{ label?: string }>(node) ||
-          node.props.label !== itemsLabel,
+          !hiddenMetadataLabels.has(node.props.label ?? ''),
       );
     }
 
