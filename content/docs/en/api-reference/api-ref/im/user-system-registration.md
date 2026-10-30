@@ -840,7 +840,6 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 }
 ```
 
-<a id="unbanning-a-user"></a>
 ## Forcing a user offline
 
 This method forcibly moves a user offline. The offline user must log in again to use the Chat service.

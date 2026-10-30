@@ -50,7 +50,6 @@ In Real-Time STT, the UID is an integer value that uniquely identifies a user wi
 
 The UID is used by Agora's services and components to identify and manage users within a channel. Ensure that UIDs are properly assigned to prevent conflicts.
 
-<a id="agora-sd-rtn"></a>
 ### Agora SDRTN®
 
 Agora's core engagement services are powered by its Software-Defined Real-Time Network (SDRTN<sup>®</sup>), a global infrastructure accessible anytime, anywhere. Unlike traditional networks, Agora SDRTN<sup>®</sup> is not restricted by devices, phone numbers, or telecom coverage areas. With data centers in over 200 countries and regions, it ensures sub-second latency and high availability for real-time media.

@@ -62,7 +62,6 @@ POST https://api.agora.io/{region}/v1/projects/{appId}/rtmp-converters?regionHin
 
   > Agora recommends that you assign a value to `X-Request-ID`. Agora server returns an `X-Custom-Request-ID` field in the response header for trouble shooting.
 
-<a id="createbody"></a>
 #### Request body
 
 You can implement different types of Media Push depending on the live streaming use-case requires transcoded or non-transcoded streaming. Generally speaking, in the case of multiple-hosts live streaming, you need to enable transcoding when using Media Push RESTful APIs; in the case of single-host live streaming, only one media stream is pushed to the CDN, so you do not need to enable transcoding. For details, see [Media Push Features](/en/realtime-media/media-push#key-features).
@@ -1061,7 +1060,6 @@ The Agora server limits the call rate for the Media Push API by method. When a c
 | `Update` | In a project, the rate limit for the rate of updating a specified Converter is 2 times per second. |
 | `Get` | In a project, the rate limit for the rate of getting the status of a specified Converter is 50 times per second. |
 
-<a id="code"></a>
 ## Status codes
 
 - If the status code is 2XX, the request is successful.

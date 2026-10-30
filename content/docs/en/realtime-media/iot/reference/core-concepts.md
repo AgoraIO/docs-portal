@@ -97,7 +97,6 @@ A user role is used to define whether users in the channel have permission to pu
 
 The connection between the SDK and the channel. When you need to publish or receive multiple streams in multiple channels, a connection is used to specify the target channel.
 
-<a name="agora-sd-rtn"></a>
 ### Agora SDRTN®
 
 Agora's core engagement services are powered by its Software-Defined Real-Time Network (SDRTN®) that is accessible and available anytime, anywhere around the world. The software-defined network isn’t confined by device, phone numbers, or a telecommunication provider’s coverage area like traditional networks. Agora SDRTN® has data centers globally that cover over 200+ countries and regions. The network delivers sub-second latency and high availability of real-time video and audio anywhere on the globe. With Agora SDRTN®, Agora can deliver live user engagement experiences in the form of real-time communication (RTC) with the following advantages:

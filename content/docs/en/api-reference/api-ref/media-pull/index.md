@@ -599,7 +599,6 @@ Do not exceed the API rate limits, otherwise you receive the `429(Too Many Reque
 
 </Slot>
 
-<a id="code"></a>
 ## Status codes
 
 - If the status code is 2XX, the request succeeds.
