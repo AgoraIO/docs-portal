@@ -636,32 +636,32 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/get-started/skills-integrate.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/get-started/start-stop-agent.mdx':
-    '2026-10-29T14:06:07.000Z',
+    '2026-10-30T04:20:45.000Z',
   'content/docs/en/ai/platform/index.mdx': '2026-10-29T14:06:07.000Z',
   'content/docs/en/ai/platform/meta.json': '2026-10-29T14:06:08.000Z',
   'content/docs/en/ai/platform/models/asr/amazon.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/asr/ares.mdx': '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/models/asr/assembly-ai.mdx':
-    '2026-10-29T03:58:29.000Z',
+    '2026-10-30T04:20:45.000Z',
   'content/docs/en/ai/platform/models/asr/deepgram.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/asr/gemini.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/asr/google.mdx':
-    '2026-10-29T03:58:29.000Z',
+    '2026-10-30T04:20:45.000Z',
   'content/docs/en/ai/platform/models/asr/meta.json':
     '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/models/asr/microsoft.mdx':
-    '2026-10-29T03:58:29.000Z',
+    '2026-10-30T04:20:45.000Z',
   'content/docs/en/ai/platform/models/asr/openai.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/asr/sarvam.mdx':
-    '2026-10-29T03:58:29.000Z',
+    '2026-10-30T04:20:45.000Z',
   'content/docs/en/ai/platform/models/asr/smallest-ai.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/asr/speechmatics.mdx':
-    '2026-10-29T03:58:29.000Z',
+    '2026-10-30T04:20:45.000Z',
   'content/docs/en/ai/platform/models/asr/xai.mdx': '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/avatar/akool.mdx':
     '2026-10-28T15:51:55.000Z',
@@ -730,7 +730,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/tts/rime.mdx': '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/tts/sarvam.mdx':
-    '2026-10-29T03:58:29.000Z',
+    '2026-10-30T04:20:45.000Z',
   'content/docs/en/ai/platform/models/tts/smallest-ai.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/tts/typecast.mdx':
@@ -1010,7 +1010,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/conversational-ai/meta.json':
     '2026-10-21T05:55:36.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/platform/authentication.mdx':
-    '2026-10-30T03:40:19.000Z',
+    '2026-10-30T04:20:45.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/platform/index.mdx':
     '2026-10-29T02:43:49.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/platform/meta.json':
@@ -1186,13 +1186,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/server-sdk/meta.json':
     '2026-06-28T07:39:07.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/platform/go.mdx':
-    '2026-10-29T12:23:49.000Z',
+    '2026-10-30T04:20:45.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/platform/meta.json':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/platform/python.mdx':
-    '2026-10-29T12:23:49.000Z',
+    '2026-10-30T04:20:45.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/platform/typescript.mdx':
-    '2026-10-29T12:23:49.000Z',
+    '2026-10-30T04:20:45.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/python.mdx':
     '2026-10-09T04:05:18.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/typescript.mdx':
@@ -11918,7 +11918,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/openapi/conversational-ai/overrides/.gitkeep':
     '2026-05-22T09:51:26.000Z',
   'content/openapi/conversational-ai/rest-api-platform.en.yaml':
-    '2026-10-29T11:27:57.000Z',
+    '2026-10-30T04:20:45.000Z',
   'content/openapi/conversational-ai/rest-api-v3.en.yaml':
     '2026-10-18T10:19:52.000Z',
   'content/openapi/conversational-ai/rest-api.en.yaml':
