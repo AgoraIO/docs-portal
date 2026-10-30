@@ -636,9 +636,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/get-started/skills-integrate.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/get-started/start-stop-agent.mdx':
-    '2026-10-29T12:23:49.000Z',
-  'content/docs/en/ai/platform/index.mdx': '2026-10-29T02:43:49.000Z',
-  'content/docs/en/ai/platform/meta.json': '2026-10-29T11:27:57.000Z',
+    '2026-10-29T14:06:07.000Z',
+  'content/docs/en/ai/platform/index.mdx': '2026-10-29T14:06:07.000Z',
+  'content/docs/en/ai/platform/meta.json': '2026-10-29T14:06:08.000Z',
   'content/docs/en/ai/platform/models/asr/amazon.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/asr/ares.mdx': '2026-10-29T03:58:29.000Z',
@@ -739,7 +739,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/reference/event-types.mdx':
     '2026-10-27T09:58:06.000Z',
   'content/docs/en/ai/platform/reference/pricing.mdx':
-    '2026-10-29T11:27:57.000Z',
+    '2026-10-29T14:06:07.000Z',
   'content/docs/en/ai/platform/release-notes.mdx': '2026-10-29T11:27:57.000Z',
   'content/docs/en/ai/pricing.md': '2026-07-02T09:19:20.000Z',
   'content/docs/en/ai/product-overview.md': '2026-05-18T10:29:54.000Z',
