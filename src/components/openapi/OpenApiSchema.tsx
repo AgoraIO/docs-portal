@@ -112,6 +112,15 @@ export function OpenApiSchema({
       writeOnly,
     });
 
+    const itemsLabel = getOpenApiSchemaLabel(translations, 'Items', 'Items');
+    for (const schema of Object.values(generated.refs)) {
+      schema.infoTags = schema.infoTags?.filter(
+        ({ node }) =>
+          !isValidElement<{ label?: string }>(node) ||
+          node.props.label !== itemsLabel,
+      );
+    }
+
     appendOpenApiSchemaAllowedValues(
       generated,
       normalizedRoot,

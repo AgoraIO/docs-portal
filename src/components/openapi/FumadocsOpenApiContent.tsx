@@ -1439,8 +1439,6 @@ function getOpenApiSchemaMetadata(
       : getConstraintMetadata('Maximum', schemaRecord?.maximum),
     getConstraintMetadata('Min length', schemaRecord?.minLength),
     getConstraintMetadata('Max length', schemaRecord?.maxLength),
-    getConstraintMetadata('Min items', schemaRecord?.minItems),
-    getConstraintMetadata('Max items', schemaRecord?.maxItems),
     getString(schemaRecord?.pattern)
       ? {
           label: 'Pattern',
