@@ -18,7 +18,7 @@
   "verifiedTargetTip": "837c5f58f5b8a59105e7c083a39d627d5032cb31",
   "targetTipOverlap": "Merged target through #1326 and #1334; 39 Web API conflicts retain current full source bodies without old Hierarchy/Index blocks; download test preserves both restored historical metadata and current source version coverage.",
   "verification": {
-    "date": "2026-10-29",
+    "date": "2026-10-30",
     "status": "passed-content-and-navigation-checks-local-production-build-not-rerun",
     "typesCheck": "passed",
     "diffCheck": "passed",
@@ -29,7 +29,7 @@
     },
     "scopedNavigationTestsPassed": 61,
     "testFiles": 315,
-    "testsPassed": 4973,
+    "testsPassed": 4977,
     "testsSkipped": 2,
     "testsFailed": 0,
     "apiParagraphsChecked": 3141,
@@ -37,15 +37,18 @@
     "guideAndManualApiExamplesChecked": 535,
     "webApiDeclarationBlocksChecked": 420,
     "sourceFidelityMissing": 0,
-    "harmonyosMdxFilesPreserved": 92,
-    "harmonyosBodiesChanged": 0,
+    "harmonyosMdxFilesPreserved": 93,
+    "harmonyosBodiesChanged": 6,
     "navigationHttpRoutesChecked": 7,
     "cnProductionBuild": "not-rerun-locally-after-navigation-follow-up",
     "previousLocalProductionBuildCommit": "2be79d0b69996d3d3f120afafa99c49c60854513",
     "previousCloudPreviewHead": "3aae4c1aee9e0f0e13d6391c11fcf9fe8d74dbb7",
     "previousCloudPreviewRun": 40700243282,
     "previousCloudPreviewConclusion": "success",
-    "scopeNote": "Latest checks include the cross-product API sidebar parity follow-up; no MDX body changed."
+    "scopeNote": "Five existing bodies retain text/code/IDs while restoring links; member index newly migrated in full.",
+    "mdxCompiled": 6,
+    "harmonyosInternalLinksChecked": 1159,
+    "harmonyosInvalidLinks": 0
   },
   "ledger": "cn-master-sync-20261028-ledger.json",
   "fileMap": "cn-master-sync-20261028-file-map.csv",
@@ -287,7 +290,7 @@
     "previousSuccessfulHead": "3aae4c1aee9e0f0e13d6391c11fcf9fe8d74dbb7"
   },
   "initialImplementationCommit": "e2d6a9cf59554161c5c69252e1ab53ccbee0655a",
-  "lastUpdated": "2026-10-29",
+  "lastUpdated": "2026-10-30",
   "verificationHistory": [
     {
       "commit": "2be79d0b69996d3d3f120afafa99c49c60854513",
@@ -355,6 +358,43 @@
         "previousCloudPreviewConclusion": "success",
         "scopeNote": "Latest checks include the cross-product API sidebar parity follow-up; no MDX body changed."
       }
+    },
+    {
+      "commit": "879bbca1ddc47dc93f26a9df4a0e5876e23b2450",
+      "date": "2026-10-29",
+      "results": {
+        "date": "2026-10-30",
+        "status": "passed-content-and-navigation-checks-local-production-build-not-rerun",
+        "typesCheck": "passed",
+        "diffCheck": "passed",
+        "lint": {
+          "errors": 0,
+          "warnings": 19,
+          "infos": 5
+        },
+        "scopedNavigationTestsPassed": 61,
+        "testFiles": 315,
+        "testsPassed": 4977,
+        "testsSkipped": 2,
+        "testsFailed": 0,
+        "apiParagraphsChecked": 3141,
+        "apiTableCellsChecked": 3136,
+        "guideAndManualApiExamplesChecked": 535,
+        "webApiDeclarationBlocksChecked": 420,
+        "sourceFidelityMissing": 0,
+        "harmonyosMdxFilesPreserved": 93,
+        "harmonyosBodiesChanged": 6,
+        "navigationHttpRoutesChecked": 7,
+        "cnProductionBuild": "not-rerun-locally-after-navigation-follow-up",
+        "previousLocalProductionBuildCommit": "2be79d0b69996d3d3f120afafa99c49c60854513",
+        "previousCloudPreviewHead": "3aae4c1aee9e0f0e13d6391c11fcf9fe8d74dbb7",
+        "previousCloudPreviewRun": 40700243282,
+        "previousCloudPreviewConclusion": "success",
+        "scopeNote": "Five existing bodies retain text/code/IDs while restoring links; member index newly migrated in full.",
+        "mdxCompiled": 6,
+        "harmonyosInternalLinksChecked": 1159,
+        "harmonyosInvalidLinks": 0
+      }
     }
   ],
   "integrationHistory": [
@@ -412,5 +452,16 @@
       "testFiles": 315
     },
     "productionBuild": "not-rerun-locally-new-head-CI-pending"
+  },
+  "linkRestoration": {
+    "date": "2026-10-30",
+    "report": "docs/agents/reports/2026-10-30-whiteboard-harmonyos-link-restoration.md",
+    "machineReport": "docs/agents/reports/2026-10-30-whiteboard-harmonyos-link-restoration.json",
+    "overviewSourceLinks": 89,
+    "overviewTargetLinks": 89,
+    "newIndexLinks": 482,
+    "restoredLinks": 749,
+    "existingTextCodeIdsPreserved": true,
+    "sidebarItems": 6
   }
 }

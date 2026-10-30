@@ -1,5 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import remarkGfm from 'remark-gfm';
+import remarkMdx from 'remark-mdx';
+import remarkParse from 'remark-parse';
+import { unified } from 'unified';
+import { visit } from 'unist-util-visit';
 import { describe, expect, it } from 'vitest';
 
 const orderedListTargets = [
@@ -76,6 +81,56 @@ function findTokenOutsideFences(source: string, token: string) {
 }
 
 describe('whiteboard audit regressions', () => {
+  it('keeps HarmonyOS overview type entries and indexes as actual links', () => {
+    const source = readContent(
+      'content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/(current)/overview.mdx',
+    ).replace(/^---\n[\s\S]*?\n---\n/, '');
+    const ast = unified()
+      .use(remarkParse)
+      .use(remarkMdx)
+      .use(remarkGfm)
+      .parse(source);
+    const links: { label: string; url: string }[] = [];
+    visit(ast, 'link', (node) => {
+      links.push({
+        label: node.children
+          .map((child) => ('value' in child ? child.value : ''))
+          .join(''),
+        url: node.url,
+      });
+    });
+    for (const label of [
+      '类型列表',
+      '成员索引',
+      'WhiteboardController',
+      'BackgroundImageSource',
+      'Whiteboard',
+      'DynamicConfigOptions',
+    ]) {
+      expect(
+        links.some((link) => link.label === label),
+        label,
+      ).toBe(true);
+    }
+    let typeRows = 0;
+    visit(ast, 'table', (table) => {
+      for (const row of table.children.slice(1)) {
+        typeRows++;
+        expect(
+          row.children[0].children.some((child) => child.type === 'link'),
+        ).toBe(true);
+      }
+    });
+    expect(typeRows).toBeGreaterThan(0);
+    expect(
+      links.every((link) =>
+        link.url.startsWith(
+          '/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/',
+        ),
+      ),
+    ).toBe(true);
+  });
+
   it('keeps ordered procedures source-numbered after the first step', () => {
     for (const path of orderedListTargets) {
       expect(findRepeatedOneMarkerRuns(readContent(path)), path).toEqual([]);

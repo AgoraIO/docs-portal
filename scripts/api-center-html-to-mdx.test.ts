@@ -30,6 +30,33 @@ async function compileGeneratedMdx(source: string) {
 }
 
 describe('API Center shared HTML to MDX converter', () => {
+  it('retains a Doxygen public type named Source inside the main description', async () => {
+    const result = await convertHtmlToMdx({
+      html: '<div class="contents"><div class="textblock"><h2>公开类型</h2><p>参见 <a href="class_background_image_source.html">BackgroundImageSource</a>。</p></div></div>',
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/index.html',
+      sourcePath: 'html-docs/whiteboard/HarmonyOS/index.html',
+      rootSelector: '.contents',
+      routeMap: buildLegacyRouteMap({
+        pageEvidence: [
+          {
+            requestedUrl:
+              'https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/class_background_image_source.html',
+            sourceResolution: {
+              targetRoute:
+                '/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-background-image-source',
+            },
+          },
+        ],
+      }),
+    });
+    expect(result.body).toContain('## 公开类型');
+    expect(result.body).toContain(
+      '[BackgroundImageSource](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-background-image-source)',
+    );
+    expect(result.warnings).toEqual([]);
+  });
+
   it.each(['v4.24.8', '4.24.9', 'v2.0.0-beta.0'])(
     'keeps SDK version %s out of generated page titles',
     async (version) => {

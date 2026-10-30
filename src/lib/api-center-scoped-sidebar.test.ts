@@ -61,6 +61,36 @@ async function loadReferencePayload(slugs: string[]) {
 
 // These integration tests load the real MDX/OpenAPI graph under parallel suite load.
 describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
+  it.each(['class-background-image-source', 'functions'])(
+    'keeps linked HarmonyOS %s inside the SDK scope without expanding the main menu',
+    async (page) => {
+      const payload = await loadApiReferencePayload([
+        'whiteboard',
+        'whiteboard-sdk',
+        'harmonyos',
+        page,
+      ]);
+      expect(payload.sidebarHeader).toMatchObject({
+        title: '互动白板 HarmonyOS',
+        versionSwitcher: {
+          currentId: 'current',
+          versions: [{ id: 'current', label: 'v0.2.11' }],
+        },
+      });
+      expect(collectTitles(payload.sidebar as SidebarNode[])).toEqual([
+        'API 参考',
+        'API 概览',
+        '核心接口',
+        'Whiteboard',
+        'WhiteboardController',
+        'WhiteboardCallbacks',
+        '配置参数',
+        'WhiteboardOptions',
+        'DynamicConfigOptions',
+      ]);
+    },
+  );
+
   it.each([
     ['android', 'android'],
     ['csharp-windows', 'windows'],
