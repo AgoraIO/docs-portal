@@ -1,0 +1,418 @@
+---
+title: 新版 API 与多窗口课件控制
+---
+
+<PlatformStructured platform="android">
+
+适用于 **Whiteboard Android SDK 2.16.131**。先按[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)完成 SDK 初始化。
+
+## 开启多窗口
+
+```java
+WhiteSdkConfiguration config = new WhiteSdkConfiguration("APP_IDENTIFIER", true);
+config.setRegion(Region.cn);
+config.setUseMultiViews(true);
+config.setEnableAppliancePlugin(true);
+
+WindowParams windows = new WindowParams()
+    .setUseBoxesStatus(false)
+    .setForceMaximized(true)
+    .setLazySetupInMaximizedMode(true)
+    .setMaxCachedAppsInMaximizedMode(4)
+    .setOriginSize(new WindowOriginSize(1280, 720))
+    .setPageScaleRange(new PageScaleRange().setMinScale(0.5).setMaxScale(4.0));
+RoomParams params = new RoomParams("ROOM_UUID", "ROOM_TOKEN", "CLIENT_UID");
+params.setRegion(Region.cn);
+params.setWindowParams(windows);
+params.setWritable(true);
+// config 传给 WhiteSdk 构造函数，params 传给 joinRoom。
+```
+
+以上类型的 import：`com.herewhite.sdk.WhiteSdkConfiguration`、`com.herewhite.sdk.RoomParams`，其余类型位于 `com.herewhite.sdk.domain`。这些配置必须在创建 SDK / 加入房间前设置。
+
+## 插入课件与切换焦点
+
+```java
+// room 是 joinRoom 成功返回的 Room。
+WindowAppParam app = WindowAppParam.createSlideApp("TASK_UUID", "PREFIX_URL", "课件");
+app.setOriginSize(new WindowOriginSize(1280, 720));
+room.addApp(app, new Promise<String>() {
+    @Override public void then(String appId) {
+        // 保存 appId，后续用它查询、聚焦或关闭课件。
+    }
+    @Override public void catchEx(SDKError error) {
+        // 显示创建失败或初始化失败提示。
+    }
+});
+```
+
+通过 `room.focusApp(appId, Promise<Boolean>)` 等待焦点提交；通过 `queryApp/queryAllApps` 查询课件。`WindowAppParam.createPresentationApp(...)` 可创建内置 Presentation。自定义 App 需先调用 `whiteSdk.registerApp(...)`，再通过 `addApp` 添加。
+
+## 统一页面控制
+
+```java
+room.dispatchDocsEvent(WindowDocsEvent.ScalePage(1.5).withTarget("mainView"),
+    new Promise<DispatchDocsEventResult>() {
+        @Override public void then(DispatchDocsEventResult result) {
+            if (!result.isAccepted()) {
+                String reason = result.getReason();
+                String message = result.getMessage();
+            }
+        }
+        @Override public void catchEx(SDKError error) {
+            // 处理 Bridge/异步异常。
+        }
+    });
+whiteSdk.setUnifiedPageStateListener(new UnifiedPageStateListener() {
+    @Override public void onUnifiedPageStateChange(UnifiedPageStateChange state) {
+        // 观察实际页码、相对倍率，或异步命令失败。
+    }
+});
+room.getPageState(new WindowPageStateOptions().withTarget("mainView"),
+    new Promise<UnifiedPageState>() {
+        @Override public void then(UnifiedPageState state) {}
+        @Override public void catchEx(SDKError error) {}
+    });
+```
+
+`Promise` 和结果类型位于 `com.herewhite.sdk.domain`；`UnifiedPageStateListener` 位于 `com.herewhite.sdk.window`。统一控制与状态类型自 2.16.130 提供，focusApp 的 Promise 重载及 lazy 配置自 2.16.131 提供。
+
+旧 `SlideListener.onSlidePageStateChanged(appId, page, pageCount)` 与 `Room.querySlidePageState(...)` 继续可用。主白板 `nextPage/prevPage` 与课件事件控制要按目标选择；不要用场景零基索引作为统一事件页码。
+
+## 页面事件和返回结果
+
+| 字段 / 事件 | 类型与含义 |
+| --- | --- |
+| `target` 输入 | 可选字符串：`mainView` 或具体 appId；省略时跟随当前焦点，无焦点时回退 MainView |
+| `prevPage` / `nextPage` | 前一页 / 后一页 |
+| `prevStep` / `nextStep` | 前一步 / 后一步；用于具有步骤能力的课件 |
+| `jumpToPage` | `options.page`：从 1 开始的整数页码 |
+| `scalePage` | `options.scale`：正数相对倍率，1 表示适配尺寸；DocsViewer 不支持此事件 |
+| `accepted` | 布尔值，表示命令是否被接收，不表示渲染完成 |
+| `reason` / `message` | 被拒绝时的原因码和说明 |
+
+原因码为 `invalidEvent`、`invalidOptions`、`targetNotFound`、`targetNotSupported`、`eventNotSupported`、`notWritable`、`stateUnavailable`、`outOfRange`、`commandFailed`。
+
+状态查询返回 `target`（`mainView`、`DocsViewer`、`Slide` 或 `Presentation`）、可选 `appId`、1-based `page/pageCount` 与可选 `scale`。实际观察回调还可包含 `status: pending/success`、`changeType: page/scale`；异步失败包含 `status: failure`、`event`、`reason: commandFailed` 和可选 `message`。
+
+## 参考尺寸与缩放
+
+`WindowParams.originSize` 作用于 MainView。实时房间可写端传入新的参考尺寸时，会重置并同步 MainView 的 origin/active camera-size contract。Slide/Presentation 必须在 `WindowAppParam.originSize` 单独传入，并序列化为 `attributes.originSize`，不会从 MainView 配置隐式继承。
+
+`width/height` 应为正数。`pageScaleRange.minScale/maxScale` 是可选的相对适配倍率边界，未配置的边界不增加业务限制。`fitOriginSizeAndCamera()` 恢复 MainView 参考尺寸与初始相机，不改变课件 App 的参考尺寸。
+
+## 最大化与本地缓存
+
+| 配置 | 默认与生效条件 |
+| --- | --- |
+| `forceMaximized` | 默认关闭；可写端开启后同步房间级强制最大化，支持协议的客户端不能进入 normal |
+| `lazySetupInMaximizedMode` | 默认关闭；仅在房间已 forceMaximized 且处于 maximized/minimized 时按焦点初始化，否则使用 eager |
+| `maxCachedAppsInMaximizedMode` | 默认 4；本地 App runtime LRU 容量，不是房间 App 数量上限 |
+| `useBoxesStatus` | 每个窗口独立状态，与 forceMaximized 不能同时生效；继承房间强制最大化或有效 lazy 模式时忽略本地独立窗口状态，否则同时请求两者时独立窗口状态优先 |
+
+Slide 从 LRU 移出或最小化后可以保留 runtime，播放器按焦点/活动状态协调资源，因此缓存容量不能直接解释为 Slide runtime 的销毁数量。
+
+`focusApp` 的布尔结果只表示共享 focus、Box 焦点、zIndex 的最终提交状态。setup 失败或超时只记录日志，不单独决定返回值。`addApp` 在创建失败或未取得 ID 时走本端错误路径；lazy 模式或最小化状态可先返回 ID。eager 模式尝试等待 setup，但 setup 失败可仅记录日志，仍可能返回 ID，因此成功返回不保证初始化和渲染成功。`closeApp` 当前 Native 层收到完成回调后固定返回 true，不能据此设计 false 业务失败分支。
+
+## Slide 配置
+
+| 字段 | 默认 / 可选值 |
+| --- | --- |
+| `enableScale` | 默认 false；允许内容缩放 |
+| `enableGlobalClick` | 默认 true；允许点击画面执行下一步 |
+| `syncEventQueuePolicy` | 默认 fifo；latest-pending-render 需显式开启，非 interactive 模式仍走 FIFO |
+| `navigationButtonMode` | 默认 page；step 按动画步骤，仅控制底部前后按钮 |
+| `resolution` | 默认 1，可显式覆盖 |
+| `maxResolutionLevel` | 0~4；常见运行时默认 2，Android WebView ≤69 默认 1 |
+| `minFPS/maxFPS` | 常见运行时 15/30；Android WebView ≤89 默认 5/15。ArkWeb 使用 15/30 |
+
+这里的性能默认值来自当前内嵌 Bridge 的 WebView UA 判断。显式 Native 参数优先；不能把 app-slide 的基础默认值直接当作 Native 的最终默认值。
+
+## 更多公开接口
+
+完整方法、getter/setter、模型字段和回调见[客户端 API](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/overview)。本地日志见[本地日志](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/local-log)，教具与扩展功能见[教具插件介绍](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/overview)，背景图诊断与恢复见[背景图加载与恢复](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/background-image-recovery)。
+
+- `RoomParams.appliancePluginOptions` 的 Java 类型是 `AppliancePluginOptions`，通过 `setExtras(Map<String, Object>)` 配置 cursor、syncOpt、bezier、textEditor 和运行时兼容选项。
+- `RoomParams.undoCacheScenesCount` 在入房前设置。
+- `WhiteboardViewOptions.enableAssetsHttps` 控制内置资源使用 HTTPS 方案。
+- `WhiteSdkConfiguration.SlideAppOptions.resourceMaxRetries` 与 `SlideListener.onSlideResourceMaxRetries` 用于资源加载重试和耗尽通知。
+- `AudioEffectImplement.setEffectSoundId/setEffectDurationUpdate` 用于更新音效混音状态和总时长。
+- `Room.getSyncedStore()` 需初始化时 `config.setEnableSyncedStore(true)`；通过 SyncedStore 公共方法连接、查询、写入并监听存储。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+适用于 **Whiteboard iOS SDK 2.16.145**。使用 Objective-C 或 Swift Native 接口。
+
+## WhiteSDK
+
+```objc
+- (void)reloadBackgroundImage:(WhiteReloadBackgroundImageParams *)params completionHandler:(WhiteReloadBackgroundImageCompletionHandler)completionHandler;
+- (void)hasBackgroundImage:(WhiteHasBackgroundImageParams *)params completionHandler:(WhiteHasBackgroundImageCompletionHandler)completionHandler;
+```
+
+## WhiteRoom
+
+```objc
+- (void)addApp:(WhiteAppParam *)appParams completionHandler:(void (^)(NSString * _Nullable appId))completionHandler;
+- (void)fitOriginSizeAndCamera;
+- (void)focusApp:(NSString *)appId;
+- (void)focusApp:(NSString *)appId completionHandler:(void (^ _Nullable)(BOOL committed))completionHandler;
+- (void)dispatchDocsEvent:(WhiteWindowDocsEventKey)docsEvent options:(WhiteWindowDocsEventOptions * _Nullable)options completionHandler:(void (^)(WhiteDispatchDocsEventResult *result))completionHandler;
+- (void)querySlidePageState:(NSString * _Nullable)appId completionHandler:(void (^)(WhiteSlidePageState * _Nullable pageState, NSError * _Nullable error))completionHandler;
+- (void)getPageState:(WhiteWindowPageStateOptions * _Nullable)options completionHandler:(void (^)(WhiteUnifiedPageState * _Nullable pageState, NSError * _Nullable error))completionHandler;
+```
+
+## 统一页面控制
+
+MainView、DocsViewer、Slide、Presentation 的 page 从 1 开始；target 输入可为 mainView 或 appId，省略时跟随焦点。查询输出的 target 为 mainView/DocsViewer/Slide/Presentation。scale 为相对适配尺寸倍率，1 表示适配尺寸，DocsViewer 不支持 scalePage。
+
+accepted=true 表示命令接收；accepted=false 包含 reason/message。通过统一页事件或查询观察实际状态，不能把命令回调作为首帧完成信号。
+
+## 窗口与课件配置
+
+| 参数 | 行为 |
+| --- | --- |
+| originSize | 正数 width/height 参考尺寸；MainView 与各 App 分别设置 |
+| pageScaleRange | 相对适配尺寸的 minScale/maxScale，均为有限正数 |
+| forceMaximized | 房间级强制最大化，与 useBoxesStatus 不兼容 |
+| lazySetupInMaximizedMode | 本端按焦点初始化，默认关闭 |
+| maxCachedAppsInMaximizedMode | 本端 LRU runtime 缓存，默认 4 |
+| navigationButtonMode | Slide 底部按钮：page 默认按页，step 按动画步骤 |
+| syncEventQueuePolicy | fifo 默认；latest-pending-render 仅合并待执行渲染页 |
+
+focusApp 的布尔值表示焦点提交完成；不能用它判断 setup 或全部资源就绪。插入课件需先转换，普通图片页可以创建 Presentation；原有静态文档 API 保持 DocsViewer 行为。
+
+## 插件背景与本端回调
+
+背景配置与查询/恢复见[背景图加载与恢复](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/background-image-recovery)。WhiteCommonCallbackDelegate 的背景图与初始化回调使用 WhiteBackgroundImageLoadEvent、WhiteApplianceInitLoadingChangeEvent；统一页事件通过 WhiteRoomCallbackDelegate.onUnifiedPageStateChange 接收。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+适用于 **Whiteboard Web SDK 2.16.58**。多窗口和教具插件是独立组合能力，详见[教具插件介绍](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/overview)。
+
+## View 尺寸刷新
+
+```typescript
+view.refreshSize(width, height);
+```
+
+按已知 CSS 像素尺寸刷新 View；width/height 必须为有限正数。调用期间暂时断开 ResizeObserver，结束后恢复。
+
+## 本地日志
+
+```typescript
+getLocalLogState(): WhiteLocalLogState;
+onLocalLogStateChange(listener: (state: WhiteLocalLogState)=>void): ()=>void;
+collectLocalLogs(): Promise<WhiteLocalLogExportResult>;
+flushLocalLogs(): Promise<void>;
+uploadLocalLogs(request?: WhiteLocalLogUploadRequest): Promise<WhiteLocalLogUploadResult>;
+```
+
+Web 2.16.58 初始化时默认尝试启用本地日志；通过 `loggerOptions.localLog.enabled=false` 关闭。`enabledUpload` 默认 true，设为 false 可关闭上传而保留本地写入；运行时是否可用还取决于日志 Worker 等资源，需读取状态确认。`getLocalLogState` 同步返回，状态监听返回解除订阅函数，collect/flush/upload 均需等待异步完成。
+
+基础 SDK 配置与教具插件配置分别维护；背景恢复使用插件 API，详见[背景图加载与恢复](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/background-image-recovery)。
+## 统一页面控制
+
+MainView、DocsViewer、Slide、Presentation 的 page 从 1 开始；target 输入可为 mainView 或 appId，省略时跟随焦点。查询输出的 target 为 mainView/DocsViewer/Slide/Presentation。scale 为相对适配尺寸倍率，1 表示适配尺寸，DocsViewer 不支持 scalePage。
+
+accepted=true 表示命令接收；accepted=false 包含 reason/message。通过统一页事件或查询观察实际状态，不能把命令回调作为首帧完成信号。
+
+## 窗口与课件配置
+
+| 参数 | 行为 |
+| --- | --- |
+| originSize | 正数 width/height 参考尺寸；MainView 与各 App 分别设置 |
+| pageScaleRange | 相对适配尺寸的 minScale/maxScale，均为有限正数 |
+| forceMaximized | 房间级强制最大化，与 useBoxesStatus 不兼容 |
+| lazySetupInMaximizedMode | 本端按焦点初始化，默认关闭 |
+| maxCachedAppsInMaximizedMode | 本端 LRU runtime 缓存，默认 4 |
+| navigationButtonMode | Slide 底部按钮：page 默认按页，step 按动画步骤 |
+| syncEventQueuePolicy | fifo 默认；latest-pending-render 仅合并待执行渲染页 |
+
+focusApp 的布尔值表示焦点提交完成；不能用它判断 setup 或全部资源就绪。插入课件需先转换，普通图片页可以创建 Presentation；原有静态文档 API 保持 DocsViewer 行为。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+适用于 **@shengwang/whiteboard 0.2.9**。先按[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)完成集成。
+
+## 开启多窗口
+
+```typescript
+import { WindowParams, WhiteboardOptions, Region } from '@shengwang/whiteboard';
+
+const windows: WindowParams = new WindowParams()
+  .setUseBoxesStatus(false)
+  .setForceMaximized(true)
+  .setLazySetupInMaximizedMode(true)
+  .setMaxCachedAppsInMaximizedMode(4)
+  .setOriginSize({ width: 1280, height: 720 })
+  .setPageScaleRange({ minScale: 0.5, maxScale: 4 });
+
+const options: WhiteboardOptions = {
+  appIdentifier: 'APP_IDENTIFIER', roomUuid: 'ROOM_UUID',
+  roomToken: 'ROOM_TOKEN', uid: 'CLIENT_UID', region: Region.CN_HZ,
+  writable: true, useMultiViews: true, enableAppliancePlugin: true,
+  windowParams: windows,
+  slideAppOptions: {
+    enableScale: true,
+    navigationButtonMode: 'page',
+    syncEventQueuePolicy: 'fifo'
+  }
+};
+```
+
+配置传给组件前设置；成功入房后再使用 Controller。
+
+## 插入课件
+
+```typescript
+import { WindowAppParam } from '@shengwang/whiteboard';
+
+const app: WindowAppParam = {
+  kind: 'Slide',
+  options: { title: '课件', scenePath: '/slides/lesson-1' },
+  attributes: { taskId: 'TASK_UUID', url: 'PREFIX_URL' },
+  originSize: { width: 1280, height: 720 }
+};
+const appId: string = await controller.addApp(app);
+const committed: boolean = await controller.focusApp(appId);
+```
+
+以上为入房成功回调后的异步函数体示例，需处理 Promise rejection。`WindowAppParam` 用于描述待添加的 App，以对象形式填写 `kind`、`options`、`attributes` 和可选 `originSize`。内置类型可使用 `Slide`、`DocsViewer`、`MediaPlayer`、`Presentation`，按各 App 的参数结构传入 `options/attributes`。`Slide`、`DocsViewer` 和 `Presentation` 的 `options.scenePath` 应使用以 `/` 开头的合法场景目录，并为每个 App 使用不同目录，避免重复打开。`taskId/url` 指向已完成转换的课件。本版没有公开 `registerApp` 方法。
+
+`controller.queryApp(appId)` 返回 `Promise<WindowAppSyncAttrs>`；`queryAllApps()` 返回 `Promise<Record<string, WindowAppSyncAttrs>>`。
+
+## 统一页面控制
+
+```typescript
+import { DispatchDocsEventResult, DispatchDocsEventRejectedResult, UnifiedPageStateChange } from '@shengwang/whiteboard';
+
+callbacks.setOnUnifiedPageStateChange((state: UnifiedPageStateChange) => {
+  console.info(`${state.target}: ${state.status}`);
+});
+const result: DispatchDocsEventResult = await controller.dispatchDocsEvent({
+  event: 'scalePage', options: { target: 'mainView', scale: 1.5 }
+});
+if (!result.accepted) {
+  const rejected = result as DispatchDocsEventRejectedResult;
+  console.error(`${rejected.reason}: ${rejected.message}`);
+}
+const state = await controller.getPageState({ target: 'mainView' });
+```
+
+统一控制与状态接口自 0.2.8 提供，lazy 配置自 0.2.9 提供。传统 Slide 页码事件为 `callbacks.onSlidePageStateChanged(appId, page, pageCount)`，不是独立的 Controller 查询接口。
+
+## 页面事件和返回结果
+
+| 字段 / 事件 | 类型与含义 |
+| --- | --- |
+| `target` 输入 | 可选字符串：`mainView` 或具体 appId；省略时跟随当前焦点，无焦点时回退 MainView |
+| `prevPage` / `nextPage` | 前一页 / 后一页 |
+| `prevStep` / `nextStep` | 前一步 / 后一步；用于具有步骤能力的课件 |
+| `jumpToPage` | `options.page`：从 1 开始的整数页码 |
+| `scalePage` | `options.scale`：正数相对倍率，1 表示适配尺寸；DocsViewer 不支持此事件 |
+| `accepted` | 布尔值，表示命令是否被接收，不表示渲染完成 |
+| `reason` / `message` | 被拒绝时的原因码和说明 |
+
+ArkTS 示例在 `accepted=false` 分支中显式转换为 `DispatchDocsEventRejectedResult` 后读取原因字段，以适配 API 12 的类型检查。
+
+原因码为 `invalidEvent`、`invalidOptions`、`targetNotFound`、`targetNotSupported`、`eventNotSupported`、`notWritable`、`stateUnavailable`、`outOfRange`、`commandFailed`。
+
+状态查询返回 `target`（`mainView`、`DocsViewer`、`Slide` 或 `Presentation`）、可选 `appId`、1-based `page/pageCount` 与可选 `scale`。实际观察回调还可包含 `status: pending/success`、`changeType: page/scale`；异步失败包含 `status: failure`、`event`、`reason: commandFailed` 和可选 `message`。
+
+## 参考尺寸与缩放
+
+`WindowParams.originSize` 作用于 MainView。实时房间可写端传入新的参考尺寸时，会重置并同步 MainView 的 origin/active camera-size contract。Slide/Presentation 必须在 `WindowAppParam.originSize` 单独传入，并序列化为 `attributes.originSize`，不会从 MainView 配置隐式继承。
+
+`width/height` 应为正数。`pageScaleRange.minScale/maxScale` 是可选的相对适配倍率边界，未配置的边界不增加业务限制。`fitOriginSizeAndCamera()` 恢复 MainView 参考尺寸与初始相机，不改变课件 App 的参考尺寸。
+
+## 最大化与本地缓存
+
+| 配置 | 默认与生效条件 |
+| --- | --- |
+| `forceMaximized` | 默认关闭；可写端开启后同步房间级强制最大化，支持协议的客户端不能进入 normal |
+| `lazySetupInMaximizedMode` | 默认关闭；仅在房间已 forceMaximized 且处于 maximized/minimized 时按焦点初始化，否则使用 eager |
+| `maxCachedAppsInMaximizedMode` | 默认 4；本地 App runtime LRU 容量，不是房间 App 数量上限 |
+| `useBoxesStatus` | 每个窗口独立状态，与 forceMaximized 不能同时生效；继承房间强制最大化或有效 lazy 模式时忽略本地独立窗口状态，否则同时请求两者时独立窗口状态优先 |
+
+Slide 从 LRU 移出或最小化后可以保留 runtime，播放器按焦点/活动状态协调资源，因此缓存容量不能直接解释为 Slide runtime 的销毁数量。
+
+`focusApp` 的布尔结果只表示共享 focus、Box 焦点、zIndex 的最终提交状态。setup 失败或超时只记录日志，不单独决定返回值。`addApp` 在创建失败或未取得 ID 时走本端错误路径；lazy 模式或最小化状态可先返回 ID。eager 模式尝试等待 setup，但 setup 失败可仅记录日志，仍可能返回 ID，因此成功返回不保证初始化和渲染成功。`closeApp` 当前 Native 层收到完成回调后固定返回 true，不能据此设计 false 业务失败分支。
+
+## Slide 配置
+
+| 字段 | 默认 / 可选值 |
+| --- | --- |
+| `enableScale` | 默认 false；允许内容缩放 |
+| `enableGlobalClick` | 默认 true；允许点击画面执行下一步 |
+| `syncEventQueuePolicy` | 默认 fifo；latest-pending-render 需显式开启，非 interactive 模式仍走 FIFO |
+| `navigationButtonMode` | 默认 page；step 按动画步骤，仅控制底部前后按钮 |
+| `resolution` | 默认 1，可显式覆盖 |
+| `maxResolutionLevel` | 0~4；ArkWeb 默认 2 |
+| `minFPS/maxFPS` | ArkWeb 默认 15/30 |
+
+这里的性能默认值来自当前内嵌 Bridge 的 WebView UA 判断。显式 Native 参数优先；不能把 app-slide 的基础默认值直接当作 Native 的最终默认值。
+
+## 参数的实际 JSON 层级
+
+组件把公开配置映射为入房参数：`roomUuid → uuid`、`writable → isWritable`（默认 true）；`windowParams`、`appliancePluginOptions`、`undoCacheScenesCount` 保留入房层级。本地日志 `localLogOptions` 映射到 SDK 层 `loggerOptions.localLog`。
+
+```json
+{
+  "uuid": "ROOM_UUID", "roomToken": "ROOM_TOKEN", "uid": "CLIENT_UID",
+  "region": "cn-hz", "isWritable": true,
+  "windowParams": { "forceMaximized": true, "lazySetupInMaximizedMode": true }
+}
+```
+
+App 的 `originSize` 写入 `attributes.originSize`，不会以顶层参数透传：
+
+```json
+{
+  "kind": "Slide",
+  "options": { "title": "课件", "scenePath": "/slides/lesson-1" },
+  "attributes": {
+    "taskId": "TASK_UUID", "url": "PREFIX_URL",
+    "originSize": { "width": 1280, "height": 720 }
+  }
+}
+```
+
+## 能力边界与完整 API
+
+[客户端 API](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/overview) 包含公开导出类型及公开参数/返回值所引用结构的字段、可选标记、方法签名和回调 payload。类型列表分别列出用途、配置/读取位置和导入方式。
+
+### 类型导入与嵌套配置
+
+`AppliancePluginOptions`、`AppliancePluginExtrasOptions` 等类型由 SDK 包入口导出，可以从 `@shengwang/whiteboard` 直接 import。`ApplianceCursorOptions` 及其标签、外观等子结构未单独导出类型名，但可以通过公开配置字段填写：
+
+```typescript
+import { AppliancePluginExtrasOptions } from '@shengwang/whiteboard';
+
+const extras: AppliancePluginExtrasOptions = {
+  cursor: { enable: true, expirationTime: 3000 }
+};
+```
+
+将 `extras` 放入 `WhiteboardOptions.appliancePluginOptions.extras`，并设置 `enableAppliancePlugin=true`。提供 `cursor` 对象时，0.2.9 的 ArkTS 类型要求同时填写 `enable` 和 `expirationTime`；后者单位为毫秒。未单独导出类型名不影响通过外层配置使用这些字段。
+
+| 引用结构 | 配置或读取入口 | 包入口导入 |
+| --- | --- | --- |
+| `ApplianceCursorOptions` | `appliancePluginOptions.extras.cursor` | 不支持单独导入该类型名 |
+| `ApplianceCursorSyncedLabelOptions` | `appliancePluginOptions.extras.cursor.syncedLabel` | 不支持单独导入该类型名 |
+| `ApplianceCursorAppearanceMap` | `appliancePluginOptions.extras.cursor.appearance` | 不支持单独导入该类型名 |
+| `ApplianceCanvasOptions` | `appliancePluginOptions.extras.canvasOpt` | 不支持单独导入该类型名 |
+| `CameraState` / `PageState` | `RoomState.cameraState` / `RoomState.pageState` | 不支持单独导入这些类型名；可以读取状态字段 |
+| `SceneState` | `controller.getSceneState()` 或 `RoomState.sceneState` | 不支持单独导入该类型名；可以接收返回值 |
+
+接口和类型别名用于描述数据结构，不能用 `new` 创建实例。`ViewMode`、`AnimationMode`、`WindowPrefersColorScheme` 虽出现在公共签名中，0.2.9 未从包入口导出其枚举对象，无法从包名导入或直接取得枚举成员。
+
+本地日志见[本地日志](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/local-log)，教具与扩展功能见[教具插件介绍](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/overview)，背景图见[背景图加载与恢复](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/background-image-recovery)。
+
+</PlatformStructured>

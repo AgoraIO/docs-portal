@@ -1,0 +1,24 @@
+---
+title: MagixEventListenerOptions
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/magixeventlisteneroptions
+  sourcePath: html-docs/whiteboard/Web/interfaces/magixeventlisteneroptions.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type MagixEventListenerOptions = {
+    /**
+     * 限定回调间隔（毫秒），如果回调频率过高，会将调用频率降低到每经过一段间隔事件统一调用一次
+     */
+    fireInterval?: number;
+    /**
+     * 对于自己发出的事件，是否在服务器确认后回调，否则将会在发出的一瞬间就回调。默认是 ``false``。
+     */
+    fireSelfEventAfterCommit?: boolean;
+};
+```

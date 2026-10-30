@@ -9,205 +9,178 @@ _migration:
   warnings: []
 ---
 
-| Inherits from | WhiteObject |
-| --- | --- |
-| Declared in | WhiteImageInformation.h |
+Whiteboard iOS SDK 2.16.147 公开接口。
 
-<a id="overview"></a>
+@interface WhiteImageInformation: WhiteObject
 
-## Overview
+## 成员
 
-白板图片信息。
-
-<a id="tasks"></a>
+- [initWithFrame:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-image-information#//api/name/initWithFrame:)
+- [initWithSize:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-image-information#//api/name/initWithSize:)
+- [initWithUuid\:frame:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-image-information#//api/name/initWithUuid:frame:)
+- [uuid](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-image-information#//api/name/uuid)
+- [centerX](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-image-information#//api/name/centerX)
+- [centerY](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-image-information#//api/name/centerY)
+- [width](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-image-information#//api/name/width)
+- [height](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-image-information#//api/name/height)
+- [locked](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-image-information#//api/name/locked)
 
 <a id="//api/name/initWithFrame:"></a>
 
-### `– initWithFrame:`
 
-设置图片框架并初始化 `WhiteImageInformation` 对象。
+<a id="tasks"></a>
+
+### `– initWithFrame:`
 
 <ApiSignature>
 
-\- (instancetype)initWithFrame:(CGRect)*frame*
+\- (instancetype)initWithFrame:(CGRect)frame;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="frame">
+```text
+设置图片框架并初始化 `WhiteImageInformation` 对象。
+ @param frame 图片框架。包括宽高以及左上角坐标（白板坐标系内）。
 
-图片框架。包括宽高以及左上角坐标（白板坐标系内）。
+ @return 初始化的 `WhiteImageInformation` 对象。
+```
 
-</Parameter>
-</ParameterList>
-
-#### Return Value
-
-初始化的 `WhiteImageInformation` 对象。
-
-#### Declared In
-
-`WhiteImageInformation.h`
+Declared in Room/WhiteImageInformation.h
 
 <a id="//api/name/initWithSize:"></a>
 
 ### `– initWithSize:`
 
-设置图片尺寸并初始化 `WhiteImageInformation` 对象。
-
 <ApiSignature>
 
-\- (instancetype)initWithSize:(CGSize)*size*
+\- (instancetype)initWithSize:(CGSize)size;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="size">
+```text
+设置图片尺寸并初始化 `WhiteImageInformation` 对象。
+ @param size 图片尺寸。
 
-图片尺寸。
+ @return 初始化的 `WhiteImageInformation` 对象。
+```
 
-</Parameter>
-</ParameterList>
-
-#### Return Value
-
-初始化的 `WhiteImageInformation` 对象。
-
-#### Declared In
-
-`WhiteImageInformation.h`
+Declared in Room/WhiteImageInformation.h
 
 <a id="//api/name/initWithUuid:frame:"></a>
 
 ### `– initWithUuid:frame:`
 
-设置图片的 UUID 和框架并初始化 `WhiteImageInformation` 对象。
-
 <ApiSignature>
 
-\- (instancetype)initWithUuid:(NSString *)*uuid* frame:(CGRect)*frame*
+\- (instancetype)initWithUuid:(NSString *)uuid frame:(CGRect)frame;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="uuid">
+```text
+设置图片的 UUID 和框架并初始化 `WhiteImageInformation` 对象。
+ @param uuid 图片的 UUID，即图片在互动白板实时房间中的唯一标识符。
+ @param frame 图片框架。包括宽高以及左上角坐标（白板坐标系内）。
+ @return 初始化的 `WhiteImageInformation` 对象。
+```
 
-图片的 UUID，即图片在互动白板实时房间中的唯一标识符。
-
-</Parameter>
-<Parameter name="frame">
-
-图片框架。包括宽高以及左上角坐标（白板坐标系内）。
-
-</Parameter>
-</ParameterList>
-
-#### Return Value
-
-初始化的 `WhiteImageInformation` 对象。
-
-#### Declared In
-
-`WhiteImageInformation.h`
+Declared in Room/WhiteImageInformation.h
 
 <a id="//api/name/uuid"></a>
 
 ### `uuid`
 
-图片的 UUID，即图片在互动白板实时房间中的唯一标识符。
-
 <ApiSignature>
 
-@property (nonatomic, copy) NSString *uuid
+@property (nonatomic, copy) NSString *uuid;
 
 </ApiSignature>
 
-#### Declared In
+```text
+图片的 UUID，即图片在互动白板实时房间中的唯一标识符。
+```
 
-`WhiteImageInformation.h`
+Declared in Room/WhiteImageInformation.h
 
 <a id="//api/name/centerX"></a>
 
 ### `centerX`
 
-图片的中心在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的横向坐标。
-
 <ApiSignature>
 
-@property (nonatomic, assign) CGFloat centerX
+@property (nonatomic, assign) CGFloat centerX;
 
 </ApiSignature>
 
-#### Declared In
+```text
+图片的中心在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的横向坐标。
+```
 
-`WhiteImageInformation.h`
+Declared in Room/WhiteImageInformation.h
 
 <a id="//api/name/centerY"></a>
 
 ### `centerY`
 
-图片的中心在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的纵向坐标。
-
 <ApiSignature>
 
-@property (nonatomic, assign) CGFloat centerY
+@property (nonatomic, assign) CGFloat centerY;
 
 </ApiSignature>
 
-#### Declared In
+```text
+图片的中心在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的纵向坐标。
+```
 
-`WhiteImageInformation.h`
+Declared in Room/WhiteImageInformation.h
 
 <a id="//api/name/width"></a>
 
 ### `width`
 
-图片的宽度，单位为像素。
-
 <ApiSignature>
 
-@property (nonatomic, assign) CGFloat width
+@property (nonatomic, assign) CGFloat width;
 
 </ApiSignature>
 
-#### Declared In
+```text
+图片的宽度，单位为像素。
+```
 
-`WhiteImageInformation.h`
+Declared in Room/WhiteImageInformation.h
 
 <a id="//api/name/height"></a>
 
 ### `height`
 
-图片的高度，单位为像素。
-
 <ApiSignature>
 
-@property (nonatomic, assign) CGFloat height
+@property (nonatomic, assign) CGFloat height;
 
 </ApiSignature>
 
-#### Declared In
+```text
+图片的高度，单位为像素。
+```
 
-`WhiteImageInformation.h`
+Declared in Room/WhiteImageInformation.h
 
 <a id="//api/name/locked"></a>
 
 ### `locked`
 
-是否锁定图片。
-图片被锁定后，用户无法移动或缩放图片。
-
 <ApiSignature>
 
-@property (nonatomic, assign) BOOL locked
+@property (nonatomic, assign) BOOL locked;
 
 </ApiSignature>
 
-#### Discussion
+```text
+是否锁定图片。
+ 图片被锁定后，用户无法移动或缩放图片。
 
-- `YES`：锁定。
-- `NO`：不锁定。
+ - `YES`：锁定。
+ - `NO`：不锁定。
+```
 
-#### Declared In
-
-`WhiteImageInformation.h`
+Declared in Room/WhiteImageInformation.h

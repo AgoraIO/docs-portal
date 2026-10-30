@@ -1,6 +1,6 @@
 ---
-title: Interface Callbacks<CALLBACKS>
-description: 回调。
+title: Callbacks
+description: Whiteboard Web SDK 2.16.59 公开 interface。
 _migration:
   type: generated-html
   status: migrated
@@ -10,101 +10,18 @@ _migration:
   warnings: []
 ---
 
-### Type parameters
+```ts
+export declare interface Callbacks<CALLBACKS>
+```
 
-<ParameterList>
-<Parameter name="CALLBACKS" type="\&#123;\&#125;" />
-</ParameterList>
+## 成员
+
+- [on](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#on)
+- [once](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#once)
+- [off](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#off)
+- [forwardTo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#forwardto)
 
 ## Methods
-
-<a id="forwardto"></a>
-
-### forwardTo
-
-<ApiSignature>
-
-forwardTo&lt;NAME&gt;(name: NAME, toCallbacks: [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks)&lt;CALLBACKS&gt;): any
-
-</ApiSignature>
-
-- Defined in [index-zh.d.ts\:963](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L963)
-
-将注册的回调转到另一个 `Callbacks` 对象。
-
-<ParameterList title="Type parameters">
-<Parameter name="NAME" type="string" />
-</ParameterList>
-
-<ParameterList title="Parameters">
-<Parameter name="name" type="NAME" required>
-
-注册回调的名称。
-
-</Parameter>
-<Parameter name="toCallbacks" required>
-
-<ParameterType>
-
-[Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks) & lt;CALLBACKS & gt;
-
-</ParameterType>
-
-转到的 `Callbacks` 对象。
-
-</Parameter>
-</ParameterList>
-
-<ApiReturns>
-
-<ApiReturnType>
-
-any
-
-</ApiReturnType>
-
-</ApiReturns>
-
-<a id="off"></a>
-
-### off
-
-<ApiSignature>
-
-off&lt;NAME&gt;(name?: NAME, listener?: any): void
-
-</ApiSignature>
-
-- Defined in [index-zh.d.ts\:956](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L956)
-
-注销回调。
-
-<ParameterList title="Type parameters">
-<Parameter name="NAME" type="string" />
-</ParameterList>
-
-<ParameterList title="Parameters">
-<Parameter name="name" type="NAME" optional>
-
-回调名。
-
-</Parameter>
-<Parameter name="listener" type="any" optional>
-
-回调函数。
-
-</Parameter>
-</ParameterList>
-
-<ApiReturns>
-
-<ApiReturnType>
-
-void
-
-</ApiReturnType>
-
-</ApiReturns>
 
 <a id="on"></a>
 
@@ -112,30 +29,15 @@ void
 
 <ApiSignature>
 
-on&lt;NAME&gt;(name: NAME, listener: any): void
+on&lt;NAME extends string&gt;(name: NAME, listener: any): void;
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:942](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L942)
-
-注册一个回调。
-
-<ParameterList title="Type parameters">
-<Parameter name="NAME" type="string" />
-</ParameterList>
-
-<ParameterList title="Parameters">
-<Parameter name="name" type="NAME" required>
-
-回调名。
-
-</Parameter>
-<Parameter name="listener" type="any" required>
-
-回调函数。
-
-</Parameter>
-</ParameterList>
+```text
+注册回调函数
+@param name 注册函数名
+@param listener 回调函数
+```
 
 <ApiReturns>
 
@@ -153,36 +55,73 @@ void
 
 <ApiSignature>
 
-once&lt;NAME&gt;(name: NAME, listener: any): void
+once&lt;NAME extends string&gt;(name: NAME, listener: any): void;
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:949](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L949)
-
-注册只使用一次的回调。
-
-<ParameterList title="Type parameters">
-<Parameter name="NAME" type="string" />
-</ParameterList>
-
-<ParameterList title="Parameters">
-<Parameter name="name" type="NAME" required>
-
-回调名。
-
-</Parameter>
-<Parameter name="listener" type="any" required>
-
-回调函数。
-
-</Parameter>
-</ParameterList>
+```text
+注册只调用一次的回调函数
+@param name 注册函数名
+@param listener 回调函数
+```
 
 <ApiReturns>
 
 <ApiReturnType>
 
 void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="off"></a>
+
+### off
+
+<ApiSignature>
+
+off&lt;NAME extends string&gt;(name?: NAME, listener?: any): void;
+
+</ApiSignature>
+
+```text
+注销回调函数
+@param name 注册函数名
+@param listener 回调函数
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="forwardto"></a>
+
+### forwardTo
+
+<ApiSignature>
+
+forwardTo&lt;NAME extends string&gt;(name: NAME, toCallbacks: Callbacks&lt;CALLBACKS&gt;): any;
+
+</ApiSignature>
+
+```text
+将注册函数回调转到另一个 ``callbacks`` 对象
+@param name 注册函数名
+@param toCallbacks 转到的 ``callbacks`` 对象
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+any
 
 </ApiReturnType>
 

@@ -1,0 +1,136 @@
+---
+title: 统一笔记
+---
+
+<PlatformStructured platform="android">
+
+适用于 **Fastboard Android SDK 1.8.2（内置 Whiteboard 2.16.131）**。
+
+统一笔记通过 `originSize` 固定书写参考尺寸，便于不同屏幕比例的客户端以一致的课件坐标显示和编辑笔记。MainView、Slide、Presentation 分别配置；MainView 的配置不会自动继承给课件。
+
+## 主白板参考尺寸
+
+```java
+WindowParams windows = new WindowParams()
+    .setOriginSize(new WindowOriginSize(1280, 720))
+    .setPageScaleRange(new PageScaleRange().setMinScale(0.5).setMaxScale(4.0));
+roomOptions.getRoomParams().setWindowParams(windows);
+```
+
+width/height 必须为有限正数。可写端传入新的 MainView originSize 时，会重置并同步主视图参考尺寸与相机尺寸约定；同房间应约定一致的尺寸。它不是单纯改变本端 CSS 宽高。
+
+## Slide 与 Presentation 参考尺寸
+
+```java
+WindowAppParam slide = WindowAppParam.createSlideApp(taskId, url, "动态课件");
+slide.setOriginSize(new WindowOriginSize(1280, 720));
+fastRoom.getRoom().addApp(slide, null);
+WindowAppParam presentation = WindowAppParam.createPresentationApp(
+    "/presentation/lesson-1", scenes, "静态课件");
+presentation.setOriginSize(new WindowOriginSize(1280, 720));
+fastRoom.getRoom().addApp(presentation, null);
+```
+
+课件的 originSize 最终写入 `attributes.originSize`。Slide 仍使用自己的动态转码资源，Presentation 使用图片页 scenes；参考尺寸不会把静态图片变成动态 PPT。已有课件不会因为新建参数改变而自动批量更新。
+
+## 恢复与读取
+
+```java
+fastRoom.getRoom().fitOriginSizeAndCamera();
+```
+
+`fitOriginSizeAndCamera` 恢复 MainView 的参考尺寸和初始相机，不改变其他 App 的 originSize。页面倍率与翻页控制见[统一页面控制](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/unified-page-control)：scale=1 为适配大小，可能与相机的绝对 scale 不同。`pageScaleRange` 限制相对适配倍率，未提供的边界不新增业务限制。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+适用于 **Fastboard iOS SDK 1.4.6（依赖 Whiteboard 2.16.145）**。
+
+统一笔记通过 `originSize` 固定书写参考尺寸，便于不同屏幕比例的客户端以一致的课件坐标显示和编辑笔记。MainView、Slide、Presentation 分别配置；MainView 的配置不会自动继承给课件。
+
+## 主白板参考尺寸
+
+```swift
+let windows = config.whiteRoomConfig.windowParams ?? WhiteWindowParams()
+windows.originSize = WhiteWindowOriginSize(width: 1280, height: 720)
+let range = WhiteWindowPageScaleRange()
+range.minScale = 0.5
+range.maxScale = 4
+windows.pageScaleRange = range
+config.whiteRoomConfig.windowParams = windows
+```
+
+width/height 必须为有限正数。可写端传入新的 MainView originSize 时，会重置并同步主视图参考尺寸与相机尺寸约定；同房间应约定一致的尺寸。它不是单纯改变本端 CSS 宽高。
+
+## Slide 与 Presentation 参考尺寸
+
+```swift
+let size = WhiteWindowOriginSize(width: 1280, height: 720)
+let slide = WhiteAppParam.createSlideApp("/slide/lesson-1", taskId: taskId,
+                                       url: url, title: "动态课件")
+slide.originSize = size
+fastRoom.room?.addApp(slide, completionHandler: { appId in print(appId as Any) })
+let presentation = WhiteAppParam.createPresentationApp("/presentation/lesson-1",
+                                                       scenes: scenes, title: "静态课件")
+presentation.originSize = size
+fastRoom.room?.addApp(presentation, completionHandler: { appId in print(appId as Any) })
+```
+
+课件的 originSize 最终写入 `attributes.originSize`。Slide 仍使用自己的动态转码资源，Presentation 使用图片页 scenes；参考尺寸不会把静态图片变成动态 PPT。已有课件不会因为新建参数改变而自动批量更新。
+
+## 恢复与读取
+
+```swift
+fastRoom.room?.fitOriginSizeAndCamera()
+```
+
+`fitOriginSizeAndCamera` 恢复 MainView 的参考尺寸和初始相机，不改变其他 App 的 originSize。页面倍率与翻页控制见[统一页面控制](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/unified-page-control)：scale=1 为适配大小，可能与相机的绝对 scale 不同。`pageScaleRange` 限制相对适配倍率，未提供的边界不新增业务限制。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+适用于 **Fastboard Web SDK 1.1.10**。
+
+统一笔记通过 `originSize` 固定书写参考尺寸，便于不同屏幕比例的客户端以一致的课件坐标显示和编辑笔记。MainView、Slide、Presentation 分别配置；MainView 的配置不会自动继承给课件。
+
+## 主白板参考尺寸
+
+```typescript
+const managerConfig = {
+  originSize: { width: 1280, height: 720 },
+  pageScaleRange: { minScale: 0.5, maxScale: 4 }
+};
+// 作为 createFastboard 的 managerConfig 传入。
+```
+
+width/height 必须为有限正数。可写端传入新的 MainView originSize 时，会重置并同步主视图参考尺寸与相机尺寸约定；同房间应约定一致的尺寸。它不是单纯改变本端 CSS 宽高。
+
+## Slide 与 Presentation 参考尺寸
+
+```typescript
+// taskId、url 为已完成动态转码的任务 ID 和资源前缀；scenes 为静态转码图片页。
+await app.manager.addApp({
+  kind: "Slide", options: { scenePath: "/slide/lesson-1", title: "动态课件" },
+  attributes: { taskId, url, originSize: { width: 1280, height: 720 } }
+});
+await app.manager.addApp({
+  kind: "Presentation",
+  options: { scenePath: "/presentation/lesson-1", scenes, title: "静态课件" },
+  attributes: { originSize: { width: 1280, height: 720 } }
+});
+```
+
+课件的 originSize 最终写入 `attributes.originSize`。Slide 仍使用自己的动态转码资源，Presentation 使用图片页 scenes；参考尺寸不会把静态图片变成动态 PPT。已有课件不会因为新建参数改变而自动批量更新。
+
+## 恢复与读取
+
+```typescript
+app.manager.fitOriginSizeAndCamera();
+console.log(app.manager.originSize);
+```
+
+`fitOriginSizeAndCamera` 恢复 MainView 的参考尺寸和初始相机，不改变其他 App 的 originSize。页面倍率与翻页控制见[统一页面控制](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/unified-page-control)：scale=1 为适配大小，可能与相机的绝对 scale 不同。`pageScaleRange` 限制相对适配倍率，未提供的边界不新增业务限制。
+
+</PlatformStructured>

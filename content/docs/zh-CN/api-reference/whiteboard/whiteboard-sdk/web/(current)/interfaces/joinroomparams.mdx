@@ -1,0 +1,129 @@
+---
+title: JoinRoomParams
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/joinroomparams
+  sourcePath: html-docs/whiteboard/Web/interfaces/joinroomparams.html
+  generator: typedoc
+  warnings: []
+---
+
+````ts
+export declare type JoinRoomParams = ConstructRoomParams & {
+    /**
+     * 房间的 ``uuid``，在构造房间时会返回，是该房间的唯一标识符。
+     */
+    uuid: string;
+    /**
+     * 加入该房间的用户的唯一标识符
+     */
+    uid: string;
+    /**
+     * 连接的数据中心。优先级高于 ``WhiteWebSdkConfiguration`` 中的 ``region`` 字段
+     */
+    region?: string;
+    /**
+     * 房间的 Token，用于鉴权。阅读[《访问密钥｜项目与鉴权》](/document-zh/home/project-and-authority#访问密钥)以便了解如何签出房间的 Token。
+     */
+    roomToken: string;
+    /**
+     * 一个存储用户自定义信息的 object。房间内用户在加入房间设置的 ``userPayload`` 可被房间内其他用户通过如下代码读取。
+     *
+     * @example
+     * ```javascript
+     * for (var member of room.state.roomMembers) {
+     *     // 读取房间内某个用户的 userPayload 字段
+     *     console.log(member.userPayload);
+     * }
+     * ```
+     */
+    userPayload?: {
+        [key: string]: any;
+    };
+    /**
+     * 是否以**可写模式**加入房间，默认是 ``true``，若为 ``false`` 则为**只读模式**。
+     * 注意区分「只读模式」与「禁止设备操作」，具体参考进阶教程[《只读模式｜禁止操作》](/javascript-zh/home/disable#只读模式)。
+     */
+    isWritable?: boolean;
+    /**
+     * 是否禁止设备操作，默认是 ``false``。
+     * 注意区分「只读模式」与「禁止设备操作」，具体参考进阶教程[《禁止设备操作｜禁止操作》](/javascript-zh/home/disable#禁止设备操作)。
+     */
+    disableDeviceInputs?: boolean;
+    /**
+     * 默认值为 ``false``。表明是否允许使用用 ``pencil`` 工具画点。
+     * 如果设置成 ``false``，则当使用 ``pencil`` 工具单击白板绘制的点不会保留在屏幕上。该参数只有在 ``disableNewPencil`` 的值为 ``false`` 时才会起作用。
+     */
+    enableDrawPoint?: boolean;
+    /**
+     * 默认值为 ``true``。
+     * 是否禁止 2.12.5 以及之后版本的带笔锋的铅笔工具（参考 [《版本历史 - 2.13.5》](/javascript-zh/home/js-changelog#h-2123-2021-03-15)）。若为 ``true``，则使用 2.12.5 之前的没有笔锋的铅笔工具。
+     * 房间内任意一个用户开启笔锋后，如果绘制了任何笔迹，都会导致房间内所有 2.12.5 以下版本的用户控制台报错。
+     * 此外，绘制过任何带笔锋笔迹的房间所产生了录像，若使用 2.12.5 以下版本播放，也会报错。为了避免问题，要么保证同一个房间的所有用户都升级到了 2.12.5 及以上版本，要么将所有的 2.12.5 及以上版本的用户关闭笔锋功能。
+     */
+    disableNewPencil?: boolean;
+    /**
+     * 默认值 ``false``
+     * 是否禁止对发送自定义事件进行限频率
+     */
+    disableMagixEventDispatchLimit?: boolean;
+    /**
+     * 是否禁止橡皮擦除图片，默认值为 ``true``。
+     */
+    disableEraseImage?: boolean;
+    /**
+     * 是否禁止绘制笔迹时为了提高性能而进行的限频。默认值为 ``false``。
+     */
+    disablePencilWrittingLimitFrequency?: boolean;
+    /**
+     * 是否关闭 ``insertText`` 与 ``updateText`` 操作权限
+     */
+    disableTextOperations?: boolean;
+    /**
+     * 新铅笔的书写质量，越高效果他人看起来越顺畅，但性能也越差，默认是 Height
+     */
+    newPencilWritingQuality?: NewPencilWritingQuality;
+    /**
+     * 撤回 / 重做最多缓存多少个场景，默认是 12 个
+     */
+    undoCacheScenesCount?: number;
+    /**
+     * 在用选择工具（``currentApplianceName="selector"``）选中物体后，出现的浮动条。
+     * 若为 ``false``（默认值），则永远不会出现浮动条。若为 ``true``，则会出现浮动条。
+     */
+    floatBar?: boolean | Partial<FloatBarOptions>;
+    /**
+     * 用于配置热键。若不传，则使用**默认热键**方案，具体如下。
+     *
+     * | 键盘按键                | 效果                     |
+     * | :--------------------- | :---------------------- |
+     * | backspace / delete     | 删除所选对象              |
+     * | shift                  | 锁定放缩长宽比，令其等比放缩 |
+     * | command                | 锁定沿着圆心放缩           |
+     * | option / alt           | 铅笔工具绘制正圆           |
+     * | ctrl + z / command + z | 撤回                     |
+     * | ctrl + y / command + y | 重做                    |
+     * | ctrl + c / command + c | 复制                     |
+     * | ctrl + v / command + v | 粘贴                    |
+     *
+     * 如果你想关闭热键功能，可以将其值置为 ``{}``。
+     */
+    hotKeys?: Partial<HotKeys>;
+    /**
+     * 决定了，在房间没有写权限时，如果主动调用了写操作，此时 SDK 应该做何响应
+     */
+    rejectWhenReadonlyErrorLevel?: RoomErrorLevel;
+    /**
+     * 优化配置项
+     */
+    optimizeOptions?: OptimizeOptions;
+    /**
+     * 是否使用原生剪贴板。
+     * 设为 ``true`` 后，快捷键里的复制和粘贴将失效而使用原生 ``copy`` ``paste`` 事件。
+     * 此功能需要浏览器支持以及用户授予剪贴板权限，如果失败，将自动回退到虚拟剪贴板实现。
+     */
+    useNativeClipboard?: boolean;
+};
+````

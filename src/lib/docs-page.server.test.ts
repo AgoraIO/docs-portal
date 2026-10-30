@@ -3346,6 +3346,67 @@ Web body
     });
   });
 
+  it.each([
+    ['toc-configuration', 'configuration'],
+    [null, 'enumv'],
+  ])(
+    'keeps the C++ SDK for a legacy RTM suffix link (%s)',
+    async (folder, leaf) => {
+      const canonical = `/zh-CN/api-reference/rtm/cpp/${leaf}`;
+      const genericSlugs = [
+        'api-reference',
+        'rtm',
+        ...(folder ? [folder] : []),
+        leaf,
+      ].join('/');
+      mockedGetPage.mockImplementation((slugs: string[], locale = 'en') => {
+        if (locale !== 'zh-CN') return undefined;
+        if (
+          slugs.join('/') === `api-reference/rtm/cpp/${leaf}` ||
+          slugs.join('/') === genericSlugs
+        ) {
+          return {
+            ...createPage(),
+            url:
+              slugs.join('/') === genericSlugs
+                ? `/zh-CN/${genericSlugs}`
+                : canonical,
+          };
+        }
+        return undefined;
+      });
+      await expect(
+        loadDocsPagePayload('zh-CN', 'api-reference', [
+          'rtm',
+          ...(folder ? [folder] : []),
+          `${leaf}.cpp`,
+        ]),
+      ).resolves.toEqual({
+        preserveSearch: true,
+        redirectUrl: canonical,
+      });
+    },
+  );
+
+  it('retains the shared-page fallback when a scoped suffix target does not exist', async () => {
+    const generic = 'api-reference/rtm/toc-configuration/configuration';
+    mockedGetPage.mockImplementation((slugs: string[], locale = 'en') =>
+      locale === 'zh-CN' && slugs.join('/') === generic
+        ? { ...createPage(), url: `/zh-CN/${generic}` }
+        : undefined,
+    );
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', [
+        'rtm',
+        'toc-configuration',
+        'configuration.cpp',
+      ]),
+    ).resolves.toEqual({
+      preserveSearch: false,
+      redirectUrl: `/zh-CN/${generic}?platform=cpp`,
+    });
+  });
+
   it('redirects legacy docs.agora.io sitemap URLs to article-level targets when available', async () => {
     await expect(
       loadDocsPagePayload(

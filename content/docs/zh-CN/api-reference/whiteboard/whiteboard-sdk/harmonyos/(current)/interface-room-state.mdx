@@ -1,0 +1,66 @@
+---
+title: RoomState interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_room_state
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_room_state.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+房间状态，继承 SharedState 的共享状态字段；状态回调通常只含变化字段。
+
+可从 @shengwang/whiteboard 直接导入 RoomState。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface RoomState extends SharedState
+```
+
+| [memberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-room-state#af64a9481fde0c142c6168f8dff0e57a1) | `memberState?: MemberState` |
+| --- | --- |
+| [broadcastState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-room-state#a770ae741dadde4c073ac0ce197301c3c) | `broadcastState?: BroadcastState` |
+| [globalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-room-state#aa233c5dbbb40011acc6e47f4740dd5ad) | `globalState?: GlobalState` |
+
+## 变量说明
+
+<a id="af64a9481fde0c142c6168f8dff0e57a1"></a>
+
+### memberState
+
+```text
+memberState?: MemberState
+```
+
+当前的白板工具状态
+
+<a id="a770ae741dadde4c073ac0ce197301c3c"></a>
+
+### broadcastState
+
+```text
+broadcastState?: BroadcastState
+```
+
+房间内当前的视角状态
+
+<a id="aa233c5dbbb40011acc6e47f4740dd5ad"></a>
+
+### globalState
+
+```text
+globalState?: GlobalState
+```
+
+房间公共全局状态

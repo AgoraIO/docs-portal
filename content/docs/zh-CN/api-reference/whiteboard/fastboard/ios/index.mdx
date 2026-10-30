@@ -1,7 +1,7 @@
 ---
 title: "Fastboard iOS SDK API 参考"
 ---
-本页提供声网 Fastboard SDK（iOS）的 Swift API 参考。
+本页提供 **Fastboard iOS 1.4.6** 的 Swift API 参考，固定依赖 Whiteboard iOS 2.16.145，最低 iOS 12。房间操作在主线程、入房成功后调用。
 
 <a id="fastboard"></a>
 <a id="createfastroom"></a>
@@ -9,7 +9,7 @@ title: "Fastboard iOS SDK API 参考"
 ### createFastRoom
 
 ```swift
-public class func createFastRoom(withFastRoomConfig config: FastRoomConfiguration)
+public class func createFastRoom(withFastRoomConfig config: FastRoomConfiguration) -> FastRoom
 ```
 
 创建 `FastRoom` 实例。
@@ -65,36 +65,11 @@ public init(appIdentifier: String,
 ### FastUserPayload
 
 ```swift
-public class FastUserPayload: NSObject {
-    let nickName: String?
-    let avatar: String?
-    
-    var dic: [String: String] {
-        var r = [String: String]()
-        if let nickName = nickName { r["nickName"] = nickName }
-        if let avatar = avatar { r["avatar"] = avatar }
-        return r
-    }
-    
-    public init(nickName: String) {
-        self.nickName = nickName
-        self.avatar = nil
-        super.init()
-    }
-    
-    public init(nickName: String, avatar: String) {
-        self.nickName = nickName
-        self.avatar = avatar
-        super.init()
-    }
-}
+public init(nickName: String)
+public init(nickName: String, avatar: String)
 ```
 
-`FastUserPayload` 类，用于储存光标上显示的用户信息，包含以下属性：
-
-- `nickName`：String。（可选）用户光标上显示的用户昵称。
-
-- `avatar`：String。（可选）用户光标上显示的用户头像，应传入头像对应的 URL 地址。
+创建 `FastUserPayload` 时传入用户光标的昵称和可选头像 URL。1.4.6 的 `nickName`、`avatar` 和内部字典未声明为 public，业务不能直接读取或修改；需要变更时创建新的对象。
 
 <a id="fastroom"></a>
 ## FastRoom 类
@@ -105,27 +80,19 @@ public class FastUserPayload: NSObject {
 ### joinRoom
 
 ```swift
+public func joinRoom()
 public func joinRoom(completionHandler: ((Result<WhiteRoom, FastRoomError>)->Void)? = nil)
 ```
-
-加入白板房间。
-
-**注意**
-
-该方法需要在创建`FastRoom` 对象后调用。
-
-**参数**
-
-- `completionHandler`：方法调用结果回调。传入 `nil`，表示不注册回调。
 
 <a id="disconnectroom"></a>
 ### disconnectRoom
 
 ```swift
 public func disconnectRoom()
+public func disconnectRoom(completionHandler: (() -> Void)?)
 ```
 
-离开白板房间。
+ 完成回调在挂起入房已取消且房间离开后触发。
 
 <a id="insertimg"></a>
 ### insertImg
@@ -140,48 +107,32 @@ public func insertImg(_ src: URL, imageSize: CGSize)
 
 **参数**
 
-- `src`：String。图片的 URL 地址。请确保 app 客户端能够访问该 URL，否则图片无法正常展示。
-- `imageSizewidth`：CGSize。图片的尺寸。
+- `src`：URL。图片地址。请确保 app 客户端能够访问该 URL，否则图片无法正常展示。
+- `imageSize`：CGSize。图片的尺寸。
 
 <a id="insertmedia"></a>
 ### insertMedia
 
 ```swift
-public func insertMedia(_ src: URL, title: String, completionHandler: ((String)->Void)? = nil)
+public func insertMedia(_ src: URL, title: String, completionHandler: ((String?)->Void)? = nil)
 ```
 
-在白板子窗口中插入并播放音视频。
-
-**参数**
-
-- `src`：String。音视频文件的 URL 地址。请确保 app 客户端能够访问该 URL，否则无法正常加载音视频文件。
-- `title`：String。窗口标题。
-- `completionHandler`：方法调用结果回调。传入 `nil`，表示不注册回调。
+ App ID 完成回调为 String?；参数无效、未取得 App ID 或会话已取消时可能为 nil；setup 失败也可能返回 ID。
 
 <a id="insertpptx"></a>
 ### insertPptx
 
 ```swift
-public func insertPptx(
-    uuid: String,
-    url: String,
-    title: String,
-    completionHandler: ((String)->Void)? = nil
-)
+public func insertPptx(_ pages: [WhitePptPage],
+                           title: String,
+                           completionHandler: ((String?)->Void)? = nil)
+public func insertPptx(uuid: String,
+                           url: String,
+                           title: String,
+                           completionHandler: ((String?)->Void)? = nil)
 ```
 
-在白板子窗口中插入并展示动态文档。
-
-动态文档指通过[声网互动白板文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)，由 PPTX 格式的文件转换成的 HTML 网页。转换后的文件会保留源文件里的动画效果。
-
-成功[发起文档转换任务](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)并调用[查询文档转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)获取文档转换结果后，可以调用该方法并传入获取的文档转换结果，SDK 会自动创建子窗口，插入并分页展示转换后的文档。
-
-**参数**
-
-- `uuid`：转换任务的 uuid，转换任务的唯一标识符。
-- `url`：转换结果文件地址前缀路径。
-- `title`：插入时的窗口标题。
-- `completionHandler`：方法调用结果回调。传入 `nil`，表示不注册回调。
+ App ID 完成回调为 String?；参数无效、未取得 App ID 或会话已取消时可能为 nil；setup 失败也可能返回 ID。
 
 <a id="insertstaticdocument"></a>
 ### insertStaticDocument
@@ -189,32 +140,112 @@ public func insertPptx(
 ```swift
 public func insertStaticDocument(_ pages: [WhitePptPage],
                                      title: String,
-                                     completionHandler: ((String)->Void)? = nil)
+                                     completionHandler: ((String?)->Void)? = nil)
 ```
 
-在白板子窗口中插入并展示静态文档。
-
-静态文档指通过[声网互动白板文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)，由 PPT、PPTX、DOC、DOCX、PDF 格式的文件转换成的 PNG、JPG/JPEG 格式的静态图片。
-
-成功[发起文档转换任务](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)并调用[查询文档转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)获取文档转换结果后，可以调用该方法并传入获取的文档转换结果，SDK 会自动创建子窗口，插入并分页展示转换后的文档。
-
-**参数**
-
-- `pages`：转换后的文件列表。详见[查询文档转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)请求成功后返回的响应包体中 `convertedFileList` 参数的值。
-- `title`：窗口标题。
-- `completionHandler`：方法调用结果回调。传入 `nil`，表示不注册回调。
+ App ID 完成回调为 String?；参数无效、未取得 App ID 或会话已取消时可能为 nil；setup 失败也可能返回 ID。
 
 <a id="followsystempencilbehavior"></a>
 ### followSystemPencilBehavior
 
 ```swift
-public static var followSystemPencilBehavior
+public static var followSystemPencilBehavior: Bool
 ```
 
-（仅适用于 iPad）设置使用白板时， Apple Pencil 的行为是否跟随系统默认设置：
+默认值为 `true`。在 iPad 的常规尺寸类下，控制 SDK 是否跟随系统的 Apple Pencil 绘制偏好和双击动作。
 
-- `YES`：跟随系统默认设置。在该状态下，用户可以使用 Apple Pencil 的系统默认功能操作白板，例如，双击切换当前工具为橡皮擦，双击显示调色板，使用 Apple Pencil 涂鸦等。
-- `NO`：不跟随系统默认设置。在该状态下，Apple Pencil 的系统默认功能不可用。
+- `true`：iOS 14 及以上跟随“仅使用 Apple Pencil 绘制”偏好；iOS 12.1 及以上安装 Pencil 双击交互，由当前 overlay 响应切换橡皮、返回上一工具或显示调色板。
+- `false`：移除上述双击交互，是否仅使用 Pencil 绘制由房间 `drawOnlyApplePencil` 配置决定。
+
+自定义 overlay 需实现对应的 Pencil 动作处理；此开关不提供手写涂鸦转文字等识别 API。
+
+<a id="addapp"></a>
+### addApp
+
+```swift
+public func addApp(_ param: WhiteAppParam, completionHandler: ((String?) -> Void)? = nil)
+```
+
+添加 App。lazy 模式或最小化状态可先返回 ID；eager 模式尝试等待 setup 并确认焦点，但 setup 异常可仅记录日志，仍可能返回 ID。返回 ID 不保证初始化或渲染成功；创建失败或未取得 ID 的结果按本端错误/空值接口处理。originSize 写入 attributes.originSize。 App ID 完成回调为 String?；参数无效、未取得 App ID 或会话已取消时可能为 nil；setup 失败也可能返回 ID。
+
+<a id="focusapp"></a>
+### focusApp
+
+```swift
+public func focusApp(_ appId: String, completionHandler: @escaping (Bool, Error?) -> Void)
+```
+
+可等待的布尔值表示共享 focus、本端 Box 焦点和 zIndex 已提交；不表示 App setup 或首帧完成。
+
+<a id="insertpresentation"></a>
+### insertPresentation
+
+```swift
+public func insertPresentation(_ pages: [WhitePptPage],
+                                   title: String,
+                                   originSize: WhiteWindowOriginSize? = nil,
+                                   completionHandler: ((String?) -> Void)? = nil)
+```
+
+插入转换后的静态图片页，创建 Presentation；动态 ppt:// 和原始 PDF/PPT URL 需先转换。原有静态接口继续创建 DocsViewer。 App ID 完成回调为 String?；参数无效、未取得 App ID 或会话已取消时可能为 nil；setup 失败也可能返回 ID。
+
+<a id="dispatchdocsevent"></a>
+### dispatchDocsEvent
+
+```swift
+public func dispatchDocsEvent(_ event: WhiteWindowDocsEventKey,
+                                  options: WhiteWindowDocsEventOptions? = nil,
+                                  completionHandler: @escaping (Result<WhiteDispatchDocsEventResult, Error>) -> Void)
+```
+
+统一控制 MainView、DocsViewer、Slide、Presentation。target 省略时跟随焦点，或指定 mainView/appId；page 从 1 开始，scale=1 为适配尺寸。accepted 表示命令接收，拒绝时检查 reason/message；不保证渲染完成。 Swift 返回 `Result<WhiteDispatchDocsEventResult, Error>`；.success 中还需检查 accepted，业务拒绝和生命周期错误分别处理。
+
+<a id="getpagestate"></a>
+### getPageState
+
+```swift
+public func getPageState(_ options: WhiteWindowPageStateOptions? = nil,
+                                   completionHandler: @escaping (WhiteUnifiedPageState?, Error?) -> Void)
+```
+
+查询统一页面状态，返回 target、可选 appId、1-based page/pageCount、可选相对 scale。状态 target 为 mainView/DocsViewer/Slide/Presentation。
+
+<a id="queryslidepagestate"></a>
+### querySlidePageState
+
+```swift
+public func querySlidePageState(_ appId: String? = nil,
+                                          completionHandler: @escaping (WhiteSlidePageState?, Error?) -> Void)
+```
+
+查询当前焦点或指定 Slide App 的页码和总页数，页码从 1 开始。
+
+<a id="setslidedelegate"></a>
+### setSlideDelegate
+
+```swift
+public func setSlideDelegate(_ delegate: WhiteSlideDelegate?)
+```
+
+<a id="updatewritable"></a>
+### updateWritable
+
+```swift
+public func updateWritable(_ writable: Bool, completion: ((Error?) -> Void)?)
+```
+
+在主线程且房间已加入后更新可写状态。completion 的 error 为空表示成功；未入房返回 notReady，已有修改进行中返回 busy，退出或会话切换可返回 operationCancelled。completion 参数没有默认值；无需结果时显式传 nil。
+
+<a id="panel-control"></a>
+### 面板控制
+
+```swift
+public func dismissAllSubPanels()
+public func setAllPanel(hide: Bool)
+public func setPanelItemHide(item: FastRoomDefaultOperationIdentifier, hide: Bool)
+```
+
+在主线程调用。dismissAllSubPanels 收起所有展开的子面板；setAllPanel 控制全部面板显隐；setPanelItemHide 控制指定默认操作项的显隐。自定义覆盖层应实现对应控制方法。
 
 <a id="fastroomthememanager"></a>
 ## FastRoomThemeManager 类
@@ -253,13 +284,23 @@ Fastboard SDK 在 iOS 13.0 或以上版本上默认跟随系统的主题设置�
 
    ```swift
    let white = FastRoomWhiteboardAssets(whiteboardBackgroundColor: .green, containerColor: .yellow)
-    
+
    let control = FastRoomControlBarAssets(backgroundColor: .blue, borderColor: .gray, effectStyle: .init(style: .regular))
-    
-   let panel = FastRoomPanelItemAssets(normalIconColor: .black, selectedIconColor: .systemRed, highlightBgColor: .cyan, subOpsIndicatorColor: .yellow, pageTextLabelColor: .orange)
-    
+
+   let panel = FastRoomPanelItemAssets(
+       normalIconColor: .black,
+       selectedIconColor: .red,
+       selectedIconBgColor: .clear,
+       highlightColor: .black,
+       highlightBgColor: .cyan,
+       disableColor: .gray,
+       subOpsIndicatorColor: .yellow,
+       pageTextLabelColor: .orange,
+       selectedBackgroundCornerradius: 4,
+       selectedBackgroundEdgeinset: .zero)
+
    let theme = FastRoomThemeAsset(whiteboardAssets: white, controlBarAssets: control, panelItemAssets: panel)
-    
+
    FastRoomThemeManager.shared.apply(theme)
    ```
 
@@ -279,13 +320,13 @@ open class FastRoomThemeAsset: NSObject {
        self.controlBarAssets = controlBarAssets
        self.panelItemAssets = panelItemAssets
    }
-     
+
    @objc
    open var whiteboardAssets: FastRoomWhiteboardAssets
-     
+
    @objc
    open var controlBarAssets: FastRoomControlBarAssets
-     
+
    @objc
    open var panelItemAssets: FastRoomPanelItemAssets
 }
@@ -310,10 +351,10 @@ open class FastRoomWhiteboardAssets: NSObject {
        self.whiteboardBackgroundColor = whiteboardBackgroundColor
        self.containerColor = containerColor
    }
-     
+
    @objc
    open var whiteboardBackgroundColor: UIColor
-     
+
    @objc
    open var containerColor: UIColor
 }
@@ -338,15 +379,15 @@ open class FastRoomControlBarAssets: NSObject {
        self.borderColor = borderColor
        self.effectStyle = effectStyle
    }
-     
+
    @objc
-   var backgroundColor: UIColor
-     
+   open var backgroundColor: UIColor
+
    @objc
-   var borderColor: UIColor
-     
+   open var borderColor: UIColor
+
    @objc
-   var effectStyle: UIBlurEffect?
+   open var effectStyle: UIBlurEffect?
 }
 ```
 
@@ -386,34 +427,34 @@ open class FastRoomPanelItemAssets: NSObject {
         self.selectedBackgroundCornerRadius = selectedBackgroundCornerradius
         self.selectedBackgroundEdgeinset = selectedBackgroundEdgeinset
     }
- 
+
     @objc
     open var selectedBackgroundCornerRadius: CGFloat
- 
+
     @objc
     open var selectedBackgroundEdgeinset: UIEdgeInsets
-     
+
     @objc
     open var normalIconColor: UIColor
-     
+
     @objc
     open var selectedIconColor: UIColor
-     
+
     @objc
     open var selectedIconBgColor: UIColor
-     
+
     @objc
     open var highlightColor: UIColor
-     
+
     @objc
     open var highlightBgColor: UIColor
-     
+
     @objc
     open var disableColor: UIColor
-     
+
     @objc
     open var subOpsIndicatorColor: UIColor
-     
+
     @objc
     open var pageTextLabelColor: UIColor
 }
@@ -429,7 +470,7 @@ open class FastRoomPanelItemAssets: NSObject {
 - `disableColor`：不可点击状态下按钮的颜色。
 - `subOpsIndicatorColor`：下拉按钮的颜色。
 - `pageTextLabelColor`：页码的颜色。
-- `selectedBackgroundCornerradius`：选中状态的背景圆角。
+- `selectedBackgroundCornerRadius`：选中状态的背景圆角。
 - `selectedBackgroundEdgeinset` ：选中状态的背景内边距。
 
 <a id="fastroomdefaultoperationitem"></a>
@@ -447,3 +488,15 @@ public static var defaultColors: [UIColor]
 调色盘默认的颜色集合。
 
 你可以在该属性中传入自定义的 `[UIColor]` 对象，修改调色盘的颜色集合。通过该属性设置的调色盘颜色集合应用于铅笔、文字和图形等工具。
+<a id="nativeconfiguration"></a>
+## 原生 SDK 与插件配置
+
+```swift
+config.whiteSdkConfiguration.useMultiViews = true
+config.whiteSdkConfiguration.enableAppliancePlugin = true
+let pluginOptions = WhiteAppliancePluginOptions()
+pluginOptions.extras = ["useBackgroundThread": true]
+config.whiteRoomConfig.appliancePluginOptions = pluginOptions
+```
+
+在 Fastboard.createFastRoom 前配置。入房成功后可用 fastRoom.room 与 fastRoom.whiteSDK；回调通过 commonDelegate、roomDelegate、setSlideDelegate 设置。详见[教具插件文档](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview?platform=ios)。

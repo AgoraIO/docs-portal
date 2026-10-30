@@ -1,5 +1,5 @@
 ---
-title: com.herewhite.sdk.Room类 参考
+title: com.herewhite.sdk.Room class 参考
 tocMaxDepth: 3
 _migration:
   type: generated-html
@@ -8,44 +8,128 @@ _migration:
   sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1_room.html
   generator: doxygen
   warnings:
-    - code: missing-source-text
+    - code: unresolved-link
       severity: warning
-      message: >-
-        The source image classcom_1_1herewhite_1_1sdk_1_1_room.png has no meaningful alt or title
-        text; the converter used contextual alt text "com.herewhite.sdk.Room类 参考 图示".
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/whiteboard/android/deprecated.html#_deprecated000015 as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/whiteboard/android/deprecated.html#_deprecated000016 as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/whiteboard/android/deprecated.html#_deprecated000017 as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/whiteboard/android/deprecated.html#_deprecated000018 as local text.
+      message: No local target route for /api-ref/whiteboard/android/deprecated.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/whiteboard/android/deprecated.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/whiteboard/android/deprecated.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/whiteboard/android/deprecated.html.
 ---
-
-类 com.herewhite.sdk.Room 继承关系图:
-
-![com.herewhite.sdk.Room类 参考 图示](https://web-cdn.agora.io/docs-portal/img/api-center-generated/504d4d433e3f-classcom_1_1herewhite_1_1sdk_1_1_room.png)
 
 <a id="details"></a>
 
 ## 详细描述
 
-[`Room`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) 类，用于操作互动白板实时房间。
+适用版本：**Whiteboard Android SDK 2.16.134**。
 
-## 成员函数说明
+`Room` 类，用于操作互动白板实时房间。
+
+父类：[Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer)；继承接口详见父类。
+
+## 状态读取
+
+Java 非公开字段通过对应 getter/setter 访问；可选包装类型未设置时通常不写入 JSON。初值包含字段声明及无参构造中的直接赋值；其他构造参数以签名为准。
+
+通过 getRoomPhase、getRoomState、isWritable 等公开方法读取状态，字段含义以对应方法为准。
+
+| 公开成员签名 |  |
+| --- | --- |
+| Boolean | [getDisconnectedBySelf](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#af0769957f685bc185fcb6d53dec6a5cb) () |
+| Boolean | [getWritable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a3d1f57d33e446dd2002f93e1f3840606) () |
+| Long | [getObserverId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a43f3b32f18de3cd71c95a449deae6a6c) () |
+| void | [copy](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ad06f67470a69830938a901baa8cab2bd) () |
+| void | [paste](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a8e1c5006771674ae3b468813e29492f4) () |
+| void | [duplicate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ab5415f550b394c8b19a121f5d4861426) () |
+| void | [deleteOperation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ab3a428118f9e090b0e62880d566af261) () |
+| void | [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a7c790db1b2fc9404d39094c5592685e6) (boolean disable) |
+| void | [redo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a9ad047897d74af1590316cc5d338408c) () |
+| void | [undo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a0cd3966f1df8de10f2bb5759fa28998b) () |
+| void | [setViewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a62f41d229dee8d67211b3eeaaa46ef6e) (ViewMode viewMode) |
+| void | [disconnect](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ac10c063697e5224ef05d341bb3987004) () |
+| void | [disconnect](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ad8aa1d2ce5b8e6d78094c2a9a3836dfa) (Promise&lt;Object&gt; promise) |
+| void | [insertImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a195049bf53b03d538c847e0eecf9b679) (ImageInformation imageInfo) |
+| void | [completeImageUpload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a355bbeefe466ac0c2c5b2cdc420ce5dc) (String uuid, String url) |
+| void | [insertImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a6c85af35615b4d4696717b862fb428bc) (ImageInformationWithUrl imageInformationWithUrl) |
+| void | [insertText](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ad03cd581ff32c16b49dcb4ee61049ba7) (int x, int y, String text) |
+| void | [insertText](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a6ed25a156436b44b6405a279aeac6e6d) (int x, int y, String text, Promise&lt;String&gt; promise) |
+| void | [updateText](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a6f3389698783fc57286518b370a80357) (String id, String text) |
+| GlobalState | [getGlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ac21ea599028066b2c54caece51372b77) () |
+| void | [setGlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a50bf9e950f3cbce8b9ed5b250444ea70) (GlobalState globalState) |
+| void | [getGlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a9d92ee9c480ff653ea44fb269740765d) (Promise&lt;GlobalState&gt; promise) |
+| MemberState | [getMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#adb7d0a6430be84c8ff5ce5ae67aeb5ca) () |
+| void | [setMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ab2d72aca8bef76ded5aa3c3ee873902f) (MemberState memberState) |
+| void | [getMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ae6d6f0c6ae7385a00efa62732cc04543) (Promise&lt;MemberState&gt; promise) |
+| RoomMember[] | [getRoomMembers](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a2388307121c075620ba48f71fa970483) () |
+| void | [getRoomMembers](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a48ab27e5a0dbcb3d9cc06ae161cb7b58) (Promise&lt;RoomMember[]&gt; promise) |
+| BroadcastState | [getBroadcastState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#af6f8d5c76a3d331cd1cd9d6f15565976) () |
+| void | [getBroadcastState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#abd40d4f3d60e963105a09eb514ecf29d) (Promise&lt;BroadcastState&gt; promise) |
+| SceneState | [getSceneState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a8a708f07fc9914a6a54a6c18e696ce2d) () |
+| void | [getSceneState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a76bd84717f518dddd9396c61f9e2f606) (Promise&lt;SceneState&gt; promise) |
+| Scene[] | [getScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a5a9590e60683101fc8715c606180cd19) () |
+| void | [getScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a9d9265ad1fb0e698e0c8b281dfbd66f1) (Promise&lt;Scene[]&gt; promise) |
+| double | [getZoomScale](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ac287ed3712b957412281f1330f7df32c) () |
+| void | [getZoomScale](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#aff289f9e1bac68426d93fdfd8f7486e7) (Promise&lt;Number&gt; promise) |
+| RoomPhase | [getRoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a2c0ef694235dccda2fb92b3ba141880d) () |
+| void | [getRoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a6759ad742065c0e82592e8a0ed8aabee) (Promise&lt;RoomPhase&gt; promise) |
+| RoomState | [getRoomState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a9578a9ae744eb64d8bd939e3af3b68db) () |
+| void | [getRoomState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a7c00f3eb5374d153b594fb772cf7339f) (Promise&lt;RoomState&gt; promise) |
+| void | [setScenePath](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a4dfb1c0aac90cd2678aa773629198b1e) (String path) |
+| void | [setScenePath](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#afb89dfcb412caf3377c75522aa3ab6c0) (String path, Promise&lt;Boolean&gt; promise) |
+| void | [setSceneIndex](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a003fc53c0744799200fbac3ac6128e1a) (Integer index, Promise&lt;Boolean&gt; promise) |
+| void | [putScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ae2b7a63167b67f28d6a689d618184e4d) (String dir, Scene[] scenes, int index) |
+| void | [moveScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a7361194cdc471d597921c14d2096e145) (String sourcePath, String targetDirOrPath) |
+| void | [removeScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#affd9982f863d1e91168428fa2df1053a) (String dirOrPath) |
+| void | [cleanScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ad051bd3599948c161bcb2c983d80ef5a) (boolean retainPpt) |
+| void | [pptNextStep](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a2f0b17c6af0f8c2bcaef84ad600e51af) () |
+| void | [pptPreviousStep](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#aa54cbba71f9d37d3f00809337015fe03) () |
+| void | [addPage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a566026198b2d988e816e1b6ae7a82fd3) () |
+| void | [addPage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a4028654e92a04b5e209650f58e90f969) (Scene scene, boolean after) |
+| void | [removePage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a045fabaff4ea72af8ef72c04fa070225) (Promise&lt;Boolean&gt; promise) |
+| void | [removePage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a70ef00a6a33a306cab048919218b8f34) (int index, Promise&lt;Boolean&gt; promise) |
+| void | [nextPage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ab4f0c417f4ad2af1ea9e69715d8a7825) (Promise&lt;Boolean&gt; promise) |
+| void | [prevPage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ac16b93d99f0acfed5b787053f090c8a3) (Promise&lt;Boolean&gt; promise) |
+| void | [zoomChange](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a81fddb80f2f65a70f2f5fe1e5652a5d0) (double scale) |
+| void | [debugInfo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a78cb9ef60e7a4e61696dfc5e8301d064) (Promise&lt;JSONObject&gt; promise) |
+| void | [disableOperations](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a6b265bdee91f2d961373d172bb969fe0) (boolean disableOperations) |
+| void | [setWritable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a1cea527622d0cdf3d6eb0b01835b1370) (boolean writable, Promise&lt;Boolean&gt; promise) |
+| void | [disableEraseImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a4f860e53b4cab0f574b22a2e8fdf235d) (boolean disable) |
+| void | [disableCameraTransform](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a0cadc59b5eb670a2361f5befedc90f4f) (boolean disableCameraTransform) |
+| void | [disableDeviceInputs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a468b0fa46f8cea857e6857b9f2945101) (boolean disableOperations) |
+| void | [disableWindowOperation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ae287e91c5d3f92c5abbd8253ee09f680) (boolean disableWindowOperation) |
+| void | [setWindowBoxState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ab96f5130fbd7180c641ec95a00c9364b) (String state) |
+| Double | [getTimeDelay](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ac35dafcef0ed29d406a29d7fccf0e7e1) () |
+| void | [setTimeDelay](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ae4fe2b66cc439a1f3822728a1a92ff94) (double delaySec) |
+| void | [syncBlockTimestamp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ae5fd629c651259844aed2869eeaa966d) (long utcMs) |
+| void | [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ae1518bd8a09077367b2b4d21e32c00d1) (AkkoEvent eventEntry) |
+| void | [addApp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a45539d0e6e928c2eaa16d97ba50717bd) (WindowAppParam appParam, Promise&lt;String&gt; promise) |
+| void | [fitOriginSizeAndCamera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#aec888d4b79e015f13c2e9d50234dca98) () |
+| void | [closeApp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a9039ca655718cf4ae83788e9cb3f880e) (String appId, Promise&lt;Boolean&gt; promise) |
+| void | [focusApp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#afb5c3bcd1384aedd25821f9450fa403c) (String appId) |
+| void | [focusApp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a7400b161f3efc5cf50a47a91a6b4e5db) (String appId, Promise&lt;Boolean&gt; promise) |
+| void | [queryApp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a4716222443f7501be43292b5a8682aa3) (String appId, Promise&lt;WindowAppSyncAttrs&gt; promise) |
+| void | [queryAllApps](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a1ca46777a002ee9167f669f2bbcc0de7) (Promise&lt;Map&lt;String, WindowAppSyncAttrs&gt;&gt; promise) |
+| void | [setWindowManagerAttributes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#af63adc7bef6f6aa17d41f01de80dd420) (String attributes) |
+| void | [setContainerSizeRatio](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#ab0abf016e02ab7452423b66b5b95e5c5) (float ratio) |
+| void | [setPrefersColorScheme](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a60fab6ac5f07ed634ac28437c986d96e) (WindowPrefersColorScheme colorScheme) |
+| void | [dispatchDocsEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a4e7b20d12d67517e01a02be0e3e50a4c) (WindowDocsEvent docsEvent, Promise&lt;DispatchDocsEventResult&gt; promise) |
+| void | [getPageState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a0109ba9b7a90cf2773c23478eccc6827) (WindowPageStateOptions options, Promise&lt;UnifiedPageState&gt; promise) |
+| void | [getPageState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a9bdab96cdb8986350b6f892fd190b331) (Promise&lt;UnifiedPageState&gt; promise) |
+| void | [querySlidePageState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#afb5c9eeac662f24381f58e70b918dee7) (Promise&lt;SlidePageState&gt; promise) |
+| void | [querySlidePageState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a8d6660d6cff96a41b7c7aa6ea33732b1) (String appId, Promise&lt;SlidePageState&gt; promise) |
+| void | [setSyncMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a6c417c79b6bccd7eb07b88b04ef8c4eb) (boolean useSyncMode) |
+| RoomDelegate | [getRoomDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a8d2b63438a833fb843be771f827ddb2e) () |
+
+/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a4b4ee486693efafc4683e312244d1129
+
+## 变量说明
+
+## 函数说明
 
 <a id="af0769957f685bc185fcb6d53dec6a5cb"></a>
 
@@ -53,7 +137,7 @@ _migration:
 
 <ApiSignature>
 
-Boolean com.herewhite.sdk.Room.getDisconnectedBySelf()
+Boolean getDisconnectedBySelf()
 
 </ApiSignature>
 
@@ -67,7 +151,7 @@ Boolean com.herewhite.sdk.Room.getDisconnectedBySelf()
 
 <ApiSignature>
 
-Boolean com.herewhite.sdk.Room.getWritable()
+Boolean getWritable()
 
 </ApiSignature>
 
@@ -86,7 +170,7 @@ Boolean com.herewhite.sdk.Room.getWritable()
 
 <ApiSignature>
 
-Long com.herewhite.sdk.Room.getObserverId()
+Long getObserverId()
 
 </ApiSignature>
 
@@ -100,57 +184,13 @@ Long com.herewhite.sdk.Room.getObserverId()
 
 用户 ID。
 
-<a id="a50bf9e950f3cbce8b9ed5b250444ea70"></a>
-
-### setGlobalState()
-
-<ApiSignature>
-
-void com.herewhite.sdk.Room.setGlobalState([GlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state) *globalState*)
-
-</ApiSignature>
-
-修改互动白板实时房间的公共全局状态。
-
-实时房间的 `globalState` 属性为公共全局变量，房间内所有用户都可以读取 `globalState`，互动模式用户可以修改 `globalState`。 修改后的 `globalState` 会立即同步给所有用户。
-
-<ParameterList title="参数">
-<Parameter name="globalState">
-
-房间公共全局状态，详见 [`GlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state).
-
-</Parameter>
-</ParameterList>
-
-<a id="ab2d72aca8bef76ded5aa3c3ee873902f"></a>
-
-### setMemberState()
-
-<ApiSignature>
-
-void com.herewhite.sdk.Room.setMemberState([MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state) *memberState*)
-
-</ApiSignature>
-
-修改房间内的白板工具状态。
-
-调用该方法会立刻更新房间的 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state)。 你可以调用 [`getMemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#adb7d0a6430be84c8ff5ce5ae67aeb5ca) 获取最新设置的白板工具状态。
-
-<ParameterList title="参数">
-<Parameter name="memberState">
-
-需要修改的白板工具状态，详见 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state)。
-
-</Parameter>
-</ParameterList>
-
 <a id="ad06f67470a69830938a901baa8cab2bd"></a>
 
 ### copy()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.copy()
+void copy()
 
 </ApiSignature>
 
@@ -172,7 +212,7 @@ void com.herewhite.sdk.Room.copy()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.paste()
+void paste()
 
 </ApiSignature>
 
@@ -195,7 +235,7 @@ void com.herewhite.sdk.Room.paste()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.duplicate()
+void duplicate()
 
 </ApiSignature>
 
@@ -218,7 +258,7 @@ void com.herewhite.sdk.Room.duplicate()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.deleteOperation()
+void deleteOperation()
 
 </ApiSignature>
 
@@ -234,7 +274,7 @@ void com.herewhite.sdk.Room.deleteOperation()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.disableSerialization(boolean *disable*)
+void disableSerialization(boolean disable)
 
 </ApiSignature>
 
@@ -277,7 +317,7 @@ void com.herewhite.sdk.Room.disableSerialization(boolean *disable*)
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.redo()
+void redo()
 
 </ApiSignature>
 
@@ -297,7 +337,7 @@ void com.herewhite.sdk.Room.redo()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.undo()
+void undo()
 
 </ApiSignature>
 
@@ -317,7 +357,7 @@ void com.herewhite.sdk.Room.undo()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.setViewMode([ViewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-view-mode) *viewMode*)
+void setViewMode(ViewMode viewMode)
 
 </ApiSignature>
 
@@ -347,11 +387,11 @@ void com.herewhite.sdk.Room.setViewMode([ViewMode](/zh-CN/api-reference/whiteboa
 
 <a id="ac10c063697e5224ef05d341bb3987004"></a>
 
-### disconnect() [1/2]
+### disconnect()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.disconnect()
+void disconnect()
 
 </ApiSignature>
 
@@ -365,11 +405,11 @@ void com.herewhite.sdk.Room.disconnect()
 
 <a id="ad8aa1d2ce5b8e6d78094c2a9a3836dfa"></a>
 
-### disconnect() [2/2]
+### disconnect()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.disconnect(@Nullable final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Object &gt; *promise*)
+void disconnect(Promise&lt;Object&gt; promise)
 
 </ApiSignature>
 
@@ -384,7 +424,7 @@ void com.herewhite.sdk.Room.disconnect(@Nullable final [Promise](/zh-CN/api-refe
 
 `Promise<Object>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `disconnect` 的调用结果：
 
-- 如果方法调用成功，则返回房间的全局状态。
+- 成功仅通知异步退房完成，不提供房间全局状态快照。当前 Android 转换层将关闭确认解码为 GlobalState，业务不得从此回调读取房间状态；新接入优先使用 WhiteSdk.leaveRoom(Promise&lt;Object&gt;)。
 - 如果方法调用失败，则返回错误信息。
 
 </Parameter>
@@ -392,11 +432,11 @@ void com.herewhite.sdk.Room.disconnect(@Nullable final [Promise](/zh-CN/api-refe
 
 <a id="a195049bf53b03d538c847e0eecf9b679"></a>
 
-### insertImage() [1/2]
+### insertImage()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.insertImage([ImageInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-image-information) *imageInfo*)
+void insertImage(ImageInformation imageInfo)
 
 </ApiSignature>
 
@@ -422,7 +462,7 @@ SDK 会根据你传入的 `ImageInformation` 在白板上设置并插入图片�
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.completeImageUpload(String *uuid*, String *url*)
+void completeImageUpload(String uuid, String url)
 
 </ApiSignature>
 
@@ -449,11 +489,11 @@ void com.herewhite.sdk.Room.completeImageUpload(String *uuid*, String *url*)
 
 <a id="a6c85af35615b4d4696717b862fb428bc"></a>
 
-### insertImage() [2/2]
+### insertImage()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.insertImage([ImageInformationWithUrl](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-image-information-with-url) *imageInformationWithUrl*)
+void insertImage(ImageInformationWithUrl imageInformationWithUrl)
 
 </ApiSignature>
 
@@ -469,13 +509,33 @@ void com.herewhite.sdk.Room.insertImage([ImageInformationWithUrl](/zh-CN/api-ref
 </Parameter>
 </ParameterList>
 
+<a id="ad03cd581ff32c16b49dcb4ee61049ba7"></a>
+
+### insertText()
+
+<ApiSignature>
+
+void insertText(int x, int y, String text)
+
+</ApiSignature>
+
+在指定位置插入文字
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="x" />
+<Parameter name="y" />
+<Parameter name="text" />
+</ParameterList>
+
 <a id="a6ed25a156436b44b6405a279aeac6e6d"></a>
 
 ### insertText()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.insertText(int *x*, int *y*, String *text*, [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; String &gt; *promise*)
+void insertText(int x, int y, String text, Promise&lt;String&gt; promise)
 
 </ApiSignature>
 
@@ -513,7 +573,7 @@ void com.herewhite.sdk.Room.insertText(int *x*, int *y*, String *text*, [Promise
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.updateText(String *id*, String *text*)
+void updateText(String id, String text)
 
 </ApiSignature>
 
@@ -534,11 +594,11 @@ void com.herewhite.sdk.Room.updateText(String *id*, String *text*)
 
 <a id="ac21ea599028066b2c54caece51372b77"></a>
 
-### getGlobalState() [1/2]
+### getGlobalState()
 
 <ApiSignature>
 
-[GlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state) com.herewhite.sdk.Room.getGlobalState()
+GlobalState getGlobalState()
 
 </ApiSignature>
 
@@ -558,13 +618,35 @@ void com.herewhite.sdk.Room.updateText(String *id*, String *text*)
 
 房间的全局状态，详见 [`GlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state)。
 
-<a id="a9d92ee9c480ff653ea44fb269740765d"></a>
+<a id="a50bf9e950f3cbce8b9ed5b250444ea70"></a>
 
-### getGlobalState() [2/2]
+### setGlobalState()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.getGlobalState(final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [GlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state) &gt; *promise*)
+void setGlobalState(GlobalState globalState)
+
+</ApiSignature>
+
+修改互动白板实时房间的公共全局状态。
+
+实时房间的 `globalState` 属性为公共全局变量，房间内所有用户都可以读取 `globalState`，互动模式用户可以修改 `globalState`。 修改后的 `globalState` 会立即同步给所有用户。
+
+<ParameterList title="参数">
+<Parameter name="globalState">
+
+房间公共全局状态，详见 [`GlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-global-state).
+
+</Parameter>
+</ParameterList>
+
+<a id="a9d92ee9c480ff653ea44fb269740765d"></a>
+
+### getGlobalState()
+
+<ApiSignature>
+
+void getGlobalState(Promise&lt;GlobalState&gt; promise)
 
 </ApiSignature>
 
@@ -594,11 +676,11 @@ void com.herewhite.sdk.Room.getGlobalState(final [Promise](/zh-CN/api-reference/
 
 <a id="adb7d0a6430be84c8ff5ce5ae67aeb5ca"></a>
 
-### getMemberState() [1/2]
+### getMemberState()
 
 <ApiSignature>
 
-[MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state) com.herewhite.sdk.Room.getMemberState()
+MemberState getMemberState()
 
 </ApiSignature>
 
@@ -617,13 +699,35 @@ void com.herewhite.sdk.Room.getGlobalState(final [Promise](/zh-CN/api-reference/
 
 当前的白板工具状态，详见 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state)。
 
-<a id="ae6d6f0c6ae7385a00efa62732cc04543"></a>
+<a id="ab2d72aca8bef76ded5aa3c3ee873902f"></a>
 
-### getMemberState() [2/2]
+### setMemberState()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.getMemberState(final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state) &gt; *promise*)
+void setMemberState(MemberState memberState)
+
+</ApiSignature>
+
+修改房间内的白板工具状态。
+
+调用该方法会立刻更新房间的 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state)。 你可以调用 [`getMemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#adb7d0a6430be84c8ff5ce5ae67aeb5ca) 获取最新设置的白板工具状态。
+
+<ParameterList title="参数">
+<Parameter name="memberState">
+
+需要修改的白板工具状态，详见 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state)。
+
+</Parameter>
+</ParameterList>
+
+<a id="ae6d6f0c6ae7385a00efa62732cc04543"></a>
+
+### getMemberState()
+
+<ApiSignature>
+
+void getMemberState(Promise&lt;MemberState&gt; promise)
 
 </ApiSignature>
 
@@ -646,11 +750,11 @@ void com.herewhite.sdk.Room.getMemberState(final [Promise](/zh-CN/api-reference/
 
 <a id="a2388307121c075620ba48f71fa970483"></a>
 
-### getRoomMembers() [1/2]
+### getRoomMembers()
 
 <ApiSignature>
 
-[RoomMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member)[] com.herewhite.sdk.Room.getRoomMembers()
+RoomMember[] getRoomMembers()
 
 </ApiSignature>
 
@@ -667,11 +771,11 @@ void com.herewhite.sdk.Room.getMemberState(final [Promise](/zh-CN/api-reference/
 
 <a id="a48ab27e5a0dbcb3d9cc06ae161cb7b58"></a>
 
-### getRoomMembers() [2/2]
+### getRoomMembers()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.getRoomMembers(final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [RoomMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member)[]&gt; *promise*)
+void getRoomMembers(Promise&lt;RoomMember[]&gt; promise)
 
 </ApiSignature>
 
@@ -695,11 +799,11 @@ void com.herewhite.sdk.Room.getRoomMembers(final [Promise](/zh-CN/api-reference/
 
 <a id="af6f8d5c76a3d331cd1cd9d6f15565976"></a>
 
-### getBroadcastState() [1/2]
+### getBroadcastState()
 
 <ApiSignature>
 
-[BroadcastState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-broadcast-state) com.herewhite.sdk.Room.getBroadcastState()
+BroadcastState getBroadcastState()
 
 </ApiSignature>
 
@@ -720,11 +824,11 @@ void com.herewhite.sdk.Room.getRoomMembers(final [Promise](/zh-CN/api-reference/
 
 <a id="abd40d4f3d60e963105a09eb514ecf29d"></a>
 
-### getBroadcastState() [2/2]
+### getBroadcastState()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.getBroadcastState(final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [BroadcastState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-broadcast-state) &gt; *promise*)
+void getBroadcastState(Promise&lt;BroadcastState&gt; promise)
 
 </ApiSignature>
 
@@ -748,11 +852,11 @@ void com.herewhite.sdk.Room.getBroadcastState(final [Promise](/zh-CN/api-referen
 
 <a id="a8a708f07fc9914a6a54a6c18e696ce2d"></a>
 
-### getSceneState() [1/2]
+### getSceneState()
 
 <ApiSignature>
 
-[SceneState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene-state) com.herewhite.sdk.Room.getSceneState()
+SceneState getSceneState()
 
 </ApiSignature>
 
@@ -777,11 +881,11 @@ void com.herewhite.sdk.Room.getBroadcastState(final [Promise](/zh-CN/api-referen
 
 <a id="a76bd84717f518dddd9396c61f9e2f606"></a>
 
-### getSceneState() [2/2]
+### getSceneState()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.getSceneState(final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [SceneState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene-state) &gt; *promise*)
+void getSceneState(Promise&lt;SceneState&gt; promise)
 
 </ApiSignature>
 
@@ -809,11 +913,11 @@ void com.herewhite.sdk.Room.getSceneState(final [Promise](/zh-CN/api-reference/w
 
 <a id="a5a9590e60683101fc8715c606180cd19"></a>
 
-### getScenes() [1/2]
+### getScenes()
 
 <ApiSignature>
 
-[Scene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene)[] com.herewhite.sdk.Room.getScenes()
+Scene[] getScenes()
 
 </ApiSignature>
 
@@ -838,11 +942,11 @@ void com.herewhite.sdk.Room.getSceneState(final [Promise](/zh-CN/api-reference/w
 
 <a id="a9d9265ad1fb0e698e0c8b281dfbd66f1"></a>
 
-### getScenes() [2/2]
+### getScenes()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.getScenes(final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [Scene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene)[]&gt; *promise*)
+void getScenes(Promise&lt;Scene[]&gt; promise)
 
 </ApiSignature>
 
@@ -870,11 +974,11 @@ void com.herewhite.sdk.Room.getScenes(final [Promise](/zh-CN/api-reference/white
 
 <a id="ac287ed3712b957412281f1330f7df32c"></a>
 
-### getZoomScale() [1/2]
+### getZoomScale()
 
 <ApiSignature>
 
-double com.herewhite.sdk.Room.getZoomScale()
+double getZoomScale()
 
 </ApiSignature>
 
@@ -901,11 +1005,11 @@ double com.herewhite.sdk.Room.getZoomScale()
 
 <a id="aff289f9e1bac68426d93fdfd8f7486e7"></a>
 
-### getZoomScale() [2/2]
+### getZoomScale()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.getZoomScale(final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Number &gt; *promise*)
+void getZoomScale(Promise&lt;Number&gt; promise)
 
 </ApiSignature>
 
@@ -935,11 +1039,11 @@ void com.herewhite.sdk.Room.getZoomScale(final [Promise](/zh-CN/api-reference/wh
 
 <a id="a2c0ef694235dccda2fb92b3ba141880d"></a>
 
-### getRoomPhase() [1/2]
+### getRoomPhase()
 
 <ApiSignature>
 
-[RoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-phase) com.herewhite.sdk.Room.getRoomPhase()
+RoomPhase getRoomPhase()
 
 </ApiSignature>
 
@@ -960,11 +1064,11 @@ void com.herewhite.sdk.Room.getZoomScale(final [Promise](/zh-CN/api-reference/wh
 
 <a id="a6759ad742065c0e82592e8a0ed8aabee"></a>
 
-### getRoomPhase() [2/2]
+### getRoomPhase()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.getRoomPhase(final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [RoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-phase) &gt; *promise*)
+void getRoomPhase(Promise&lt;RoomPhase&gt; promise)
 
 </ApiSignature>
 
@@ -988,11 +1092,11 @@ void com.herewhite.sdk.Room.getRoomPhase(final [Promise](/zh-CN/api-reference/wh
 
 <a id="a9578a9ae744eb64d8bd939e3af3b68db"></a>
 
-### getRoomState() [1/2]
+### getRoomState()
 
 <ApiSignature>
 
-[RoomState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-state) com.herewhite.sdk.Room.getRoomState()
+RoomState getRoomState()
 
 </ApiSignature>
 
@@ -1013,11 +1117,11 @@ void com.herewhite.sdk.Room.getRoomPhase(final [Promise](/zh-CN/api-reference/wh
 
 <a id="a7c00f3eb5374d153b594fb772cf7339f"></a>
 
-### getRoomState() [2/2]
+### getRoomState()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.getRoomState(final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [RoomState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-state) &gt; *promise*)
+void getRoomState(Promise&lt;RoomState&gt; promise)
 
 </ApiSignature>
 
@@ -1041,11 +1145,11 @@ void com.herewhite.sdk.Room.getRoomState(final [Promise](/zh-CN/api-reference/wh
 
 <a id="a4dfb1c0aac90cd2678aa773629198b1e"></a>
 
-### setScenePath() [1/2]
+### setScenePath()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.setScenePath(String *path*)
+void setScenePath(String path)
 
 </ApiSignature>
 
@@ -1074,11 +1178,11 @@ void com.herewhite.sdk.Room.setScenePath(String *path*)
 
 <a id="afb89dfcb412caf3377c75522aa3ab6c0"></a>
 
-### setScenePath() [2/2]
+### setScenePath()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.setScenePath(String *path*, final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Boolean &gt; *promise*)
+void setScenePath(String path, Promise&lt;Boolean&gt; promise)
 
 </ApiSignature>
 
@@ -1118,7 +1222,7 @@ void com.herewhite.sdk.Room.setScenePath(String *path*, final [Promise](/zh-CN/a
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.setSceneIndex(Integer *index*, @Nullable final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Boolean &gt; *promise*)
+void setSceneIndex(Integer index, Promise&lt;Boolean&gt; promise)
 
 </ApiSignature>
 
@@ -1148,7 +1252,7 @@ void com.herewhite.sdk.Room.setSceneIndex(Integer *index*, @Nullable final [Prom
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.putScenes(String *dir*, [Scene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene)[] *scenes*, int *index*)
+void putScenes(String dir, Scene[] scenes, int index)
 
 </ApiSignature>
 
@@ -1190,7 +1294,7 @@ room.setScenePath("ppt" + "/page1");
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.moveScene(String *sourcePath*, String *targetDirOrPath*)
+void moveScene(String sourcePath, String targetDirOrPath)
 
 </ApiSignature>
 
@@ -1225,7 +1329,7 @@ void com.herewhite.sdk.Room.moveScene(String *sourcePath*, String *targetDirOrPa
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.removeScenes(String *dirOrPath*)
+void removeScenes(String dirOrPath)
 
 </ApiSignature>
 
@@ -1256,7 +1360,7 @@ void com.herewhite.sdk.Room.removeScenes(String *dirOrPath*)
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.cleanScene(boolean *retainPpt*)
+void cleanScene(boolean retainPpt)
 
 </ApiSignature>
 
@@ -1279,7 +1383,7 @@ void com.herewhite.sdk.Room.cleanScene(boolean *retainPpt*)
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.pptNextStep()
+void pptNextStep()
 
 </ApiSignature>
 
@@ -1297,7 +1401,7 @@ void com.herewhite.sdk.Room.pptNextStep()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.pptPreviousStep()
+void pptPreviousStep()
 
 </ApiSignature>
 
@@ -1309,13 +1413,60 @@ void com.herewhite.sdk.Room.pptPreviousStep()
 
 当前 PPT 页面的动画全部回退完成时，SDK 会将场景切回至上一页 PPT。
 
-<a id="a045fabaff4ea72af8ef72c04fa070225"></a>
+<a id="a566026198b2d988e816e1b6ae7a82fd3"></a>
 
-### removePage() [1/2]
+### addPage()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.removePage(@Nullable [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Boolean &gt; *promise*)
+void addPage()
+
+</ApiSignature>
+
+添加新页面到场景集最后位置
+
+:::info[自此版本]
+2.16.3
+:::
+
+<a id="a4028654e92a04b5e209650f58e90f969"></a>
+
+### addPage()
+
+<ApiSignature>
+
+void addPage(Scene scene, boolean after)
+
+</ApiSignature>
+
+添加新页面
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="scene">
+
+场景
+
+</Parameter>
+<Parameter name="after">
+
+true 时添加到当前页面的下一个页面, false 时添加到最后一页  添加页面之后不自动切换，需要调用`setSceneIndex`或者 `nextPage` 切换页面
+
+</Parameter>
+</ParameterList>
+
+:::info[自此版本]
+2.16.3
+:::
+
+<a id="a045fabaff4ea72af8ef72c04fa070225"></a>
+
+### removePage()
+
+<ApiSignature>
+
+void removePage(Promise&lt;Boolean&gt; promise)
 
 </ApiSignature>
 
@@ -1327,11 +1478,11 @@ void com.herewhite.sdk.Room.removePage(@Nullable [Promise](/zh-CN/api-reference/
 
 <a id="a70ef00a6a33a306cab048919218b8f34"></a>
 
-### removePage() [2/2]
+### removePage()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.removePage(int *index*, @Nullable [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Boolean &gt; *promise*)
+void removePage(int index, Promise&lt;Boolean&gt; promise)
 
 </ApiSignature>
 
@@ -1349,13 +1500,57 @@ void com.herewhite.sdk.Room.removePage(int *index*, @Nullable [Promise](/zh-CN/a
 </Parameter>
 </ParameterList>
 
+<a id="ab4f0c417f4ad2af1ea9e69715d8a7825"></a>
+
+### nextPage()
+
+<ApiSignature>
+
+void nextPage(Promise&lt;Boolean&gt; promise)
+
+</ApiSignature>
+
+切换到下一个页面
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="promise" />
+</ParameterList>
+
+:::info[自此版本]
+2.16.3
+:::
+
+<a id="ac16b93d99f0acfed5b787053f090c8a3"></a>
+
+### prevPage()
+
+<ApiSignature>
+
+void prevPage(Promise&lt;Boolean&gt; promise)
+
+</ApiSignature>
+
+切换到上一个页面
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="promise" />
+</ParameterList>
+
+:::info[自此版本]
+2.16.3
+:::
+
 <a id="a81fddb80f2f65a70f2f5fe1e5652a5d0"></a>
 
 ### zoomChange()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.zoomChange(double *scale*)
+void zoomChange(double scale)
 
 </ApiSignature>
 
@@ -1381,7 +1576,7 @@ void com.herewhite.sdk.Room.zoomChange(double *scale*)
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.debugInfo(final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; JSONObject &gt; *promise*)
+void debugInfo(Promise&lt;JSONObject&gt; promise)
 
 </ApiSignature>
 
@@ -1408,7 +1603,7 @@ void com.herewhite.sdk.Room.debugInfo(final [Promise](/zh-CN/api-reference/white
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.disableOperations(final boolean *disableOperations*)
+void disableOperations(boolean disableOperations)
 
 </ApiSignature>
 
@@ -1436,7 +1631,7 @@ void com.herewhite.sdk.Room.disableOperations(final boolean *disableOperations*)
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.setWritable(final boolean *writable*, @Nullable final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Boolean &gt; *promise*)
+void setWritable(boolean writable, Promise&lt;Boolean&gt; promise)
 
 </ApiSignature>
 
@@ -1471,7 +1666,7 @@ void com.herewhite.sdk.Room.setWritable(final boolean *writable*, @Nullable fina
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.disableEraseImage(boolean *disable*)
+void disableEraseImage(boolean disable)
 
 </ApiSignature>
 
@@ -1498,7 +1693,7 @@ void com.herewhite.sdk.Room.disableEraseImage(boolean *disable*)
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.disableCameraTransform(final boolean *disableCameraTransform*)
+void disableCameraTransform(boolean disableCameraTransform)
 
 </ApiSignature>
 
@@ -1525,7 +1720,7 @@ void com.herewhite.sdk.Room.disableCameraTransform(final boolean *disableCameraT
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.disableDeviceInputs(final boolean *disableOperations*)
+void disableDeviceInputs(boolean disableOperations)
 
 </ApiSignature>
 
@@ -1546,13 +1741,67 @@ void com.herewhite.sdk.Room.disableDeviceInputs(final boolean *disableOperations
 </Parameter>
 </ParameterList>
 
+<a id="ae287e91c5d3f92c5abbd8253ee09f680"></a>
+
+### disableWindowOperation()
+
+<ApiSignature>
+
+void disableWindowOperation(boolean disableWindowOperation)
+
+</ApiSignature>
+
+禁止/允许窗口操作。
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="disableWindowOperation">
+
+是否禁止窗口操作： - `true`：禁止窗口操作。 - `false`：（默认）允许窗口操作。
+
+</Parameter>
+</ParameterList>
+
+:::info[自此版本]
+2.2.0
+:::
+
+<a id="ab96f5130fbd7180c641ec95a00c9364b"></a>
+
+### setWindowBoxState()
+
+<ApiSignature>
+
+void setWindowBoxState(String state)
+
+</ApiSignature>
+
+设置窗口状态：normal、maximized 或 minimized；强制最大化策略生效时不能进入 normal。
+
+<a id="ac35dafcef0ed29d406a29d7fccf0e7e1"></a>
+
+### getTimeDelay()
+
+<ApiSignature>
+
+Double getTimeDelay()
+
+</ApiSignature>
+
+获取本地显示远端白板内容的延时。
+
+<h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
+
+延时时长，单位为秒。
+
 <a id="ae4fe2b66cc439a1f3822728a1a92ff94"></a>
 
 ### setTimeDelay()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.setTimeDelay(double *delaySec*)
+void setTimeDelay(double delaySec)
 
 </ApiSignature>
 
@@ -1570,29 +1819,13 @@ void com.herewhite.sdk.Room.setTimeDelay(double *delaySec*)
 </Parameter>
 </ParameterList>
 
-<a id="ac35dafcef0ed29d406a29d7fccf0e7e1"></a>
-
-### getTimeDelay()
-
-<ApiSignature>
-
-Double com.herewhite.sdk.Room.getTimeDelay()
-
-</ApiSignature>
-
-获取本地显示远端白板内容的延时。
-
-<h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
-
-延时时长，单位为秒。
-
 <a id="ae5fd629c651259844aed2869eeaa966d"></a>
 
 ### syncBlockTimestamp()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.syncBlockTimestamp(long *utcMs*)
+void syncBlockTimestamp(long utcMs)
 
 </ApiSignature>
 
@@ -1620,7 +1853,7 @@ void com.herewhite.sdk.Room.syncBlockTimestamp(long *utcMs*)
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.dispatchMagixEvent([AkkoEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-akko-event) *eventEntry*)
+void dispatchMagixEvent(AkkoEvent eventEntry)
 
 </ApiSignature>
 
@@ -1644,33 +1877,23 @@ void com.herewhite.sdk.Room.dispatchMagixEvent([AkkoEvent](/zh-CN/api-reference/
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.addApp(WindowAppParam *appParam*, [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; String &gt; *promise*)
+void addApp(WindowAppParam appParam, Promise&lt;String&gt; promise)
 
 </ApiSignature>
 
-插入小窗应用。
+在多窗口模式添加 App，成功返回 appId；创建失败或焦点未提交进入异步错误路径。添加 App。lazy 模式或最小化状态可先返回 ID；eager 模式尝试等待 setup 并确认焦点，但 setup 异常可仅记录日志，仍可能返回 ID。返回 ID 不保证初始化或渲染成功；创建失败或未取得 ID 的结果按本端错误/空值接口处理。成功返回不能泛化为所有资源渲染完成。originSize 序列化到 attributes.originSize。
 
-多窗口模式下，PPT 或自定义插件等可以作为小窗应用插入白板，在一个新的窗口中展示。
+<a id="aec888d4b79e015f13c2e9d50234dca98"></a>
 
-<ParameterList title="参数">
-<Parameter name="appParam">
+### fitOriginSizeAndCamera()
 
-小窗应用属性，详见 [`WindowAppParam`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-app-param)。
+<ApiSignature>
 
-</Parameter>
-<Parameter name="promise">
+void fitOriginSizeAndCamera()
 
-`Promise<String>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果：
+</ApiSignature>
 
-- 如果方法调用成功，则返回小窗应用 ID。
-- 如果方法调用失败，则返回错误信息。
-
-</Parameter>
-</ParameterList>
-
-:::info[注解]
-多次插入同一个小窗应用会导致插入失败，返回的 `appId` 为 `nil` 。
-:::
+启用 MainView originSize 模式后恢复 MainView 参考尺寸和初始相机状态，不修改 Slide/Presentation 的 App 参考尺寸。
 
 <a id="a9039ca655718cf4ae83788e9cb3f880e"></a>
 
@@ -1678,29 +1901,11 @@ void com.herewhite.sdk.Room.addApp(WindowAppParam *appParam*, [Promise](/zh-CN/a
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.closeApp(String *appId*, [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Boolean &gt; *promise*)
+void closeApp(String appId, Promise&lt;Boolean&gt; promise)
 
 </ApiSignature>
 
-关闭指定小窗应用的窗口。
-
-该方法仅在多窗口模式下有效, 无论应用 ID 是否有效都会触发回调。
-
-<ParameterList title="参数">
-<Parameter name="appId">
-
-小窗应用 ID。
-
-</Parameter>
-<Parameter name="promise">
-
-`Promise<Boolean>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取方法调用结果：
-
-- 如果方法调用成功，则窗口关闭。
-- 如果方法调用失败，则返回错误信息。
-
-</Parameter>
-</ParameterList>
+等待内嵌 Window Manager 完成关闭和后继焦点交接后回调。当前 Native 层收到完成回调后固定返回 true，不提供可靠的 false 业务失败结果；需要结合查询和房间状态处理未收到完成的情况。
 
 <a id="afb5c3bcd1384aedd25821f9450fa403c"></a>
 
@@ -1708,21 +1913,23 @@ void com.herewhite.sdk.Room.closeApp(String *appId*, [Promise](/zh-CN/api-refere
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.focusApp(String *appId*)
+void focusApp(String appId)
 
 </ApiSignature>
 
-切换聚焦窗口为指定小窗应用的窗口。
+切换焦点。可等待的布尔结果表示房间共享 focus、本地 Box 焦点及 zIndex 已提交；false 表示请求被取代或未提交。setup 失败/超时只记录日志，不能用 true 判断课件首帧已就绪。Android 无 Promise 的重载只发出请求。
 
-该方法仅在多窗口模式下有效。
+<a id="a7400b161f3efc5cf50a47a91a6b4e5db"></a>
 
-<ParameterList title="参数">
-<Parameter name="appId">
+### focusApp()
 
-小窗应用 ID。
+<ApiSignature>
 
-</Parameter>
-</ParameterList>
+void focusApp(String appId, Promise&lt;Boolean&gt; promise)
+
+</ApiSignature>
+
+切换焦点。可等待的布尔结果表示房间共享 focus、本地 Box 焦点及 zIndex 已提交；false 表示请求被取代或未提交。setup 失败/超时只记录日志，不能用 true 判断课件首帧已就绪。Android 无 Promise 的重载只发出请求。
 
 <a id="a4716222443f7501be43292b5a8682aa3"></a>
 
@@ -1730,7 +1937,7 @@ void com.herewhite.sdk.Room.focusApp(String *appId*)
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.queryApp(String *appId*, [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; WindowAppSyncAttrs &gt; *promise*)
+void queryApp(String appId, Promise&lt;WindowAppSyncAttrs&gt; promise)
 
 </ApiSignature>
 
@@ -1760,7 +1967,7 @@ void com.herewhite.sdk.Room.queryApp(String *appId*, [Promise](/zh-CN/api-refere
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.queryAllApps([Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Map&lt; String, WindowAppSyncAttrs &gt; &gt; *promise*)
+void queryAllApps(Promise&lt;Map&lt;String, WindowAppSyncAttrs&gt;&gt; promise)
 
 </ApiSignature>
 
@@ -1779,33 +1986,127 @@ void com.herewhite.sdk.Room.queryAllApps([Promise](/zh-CN/api-reference/whiteboa
 - 如果方法调用成功，则返回一个以应用 ID 为键，包含所有小窗应用信息的字典。详见 `WhiteAppSyncAttributes`。
 - 如果方法调用失败，则返回错误信息。
 
+<a id="af63adc7bef6f6aa17d41f01de80dd420"></a>
+
+### setWindowManagerAttributes()
+
+<ApiSignature>
+
+void setWindowManagerAttributes(String attributes)
+
+</ApiSignature>
+
+恢复当前多窗口状态
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="attributes" />
+</ParameterList>
+
+<a id="ab0abf016e02ab7452423b66b5b95e5c5"></a>
+
+### setContainerSizeRatio()
+
+<ApiSignature>
+
+void setContainerSizeRatio(float ratio)
+
+</ApiSignature>
+
+设置多窗口显示比例
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="ratio">
+
+高与宽比例
+
+</Parameter>
+</ParameterList>
+
+<a id="a60fab6ac5f07ed634ac28437c986d96e"></a>
+
+### setPrefersColorScheme()
+
+<ApiSignature>
+
+void setPrefersColorScheme(WindowPrefersColorScheme colorScheme)
+
+</ApiSignature>
+
+设置设置暗色模式
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="colorScheme">
+
+WindowPrefersColorScheme
+
+</Parameter>
+</ParameterList>
+
 <a id="a4e7b20d12d67517e01a02be0e3e50a4c"></a>
 
 ### dispatchDocsEvent()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.dispatchDocsEvent(WindowDocsEvent *docsEvent*, [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Boolean &gt; *promise*)
+void dispatchDocsEvent(WindowDocsEvent docsEvent, Promise&lt;DispatchDocsEventResult&gt; promise)
 
 </ApiSignature>
 
-发送文档操作事件。
+统一控制 MainView、DocsViewer、Slide、Presentation。target 可为 mainView 或具体 appId，省略时跟随焦点；page 从 1 开始，scale=1 表示适配尺寸。返回 DispatchDocsEventResult：accepted=true 仅表示命令接收，不保证画面完成；accepted=false 包含 reason/message。DocsViewer 不支持 scalePage。传输/执行异常进入异步错误路径，实际状态通过统一页状态回调观察。
 
-<ParameterList title="参数">
-<Parameter name="docsEvent">
+<a id="a0109ba9b7a90cf2773c23478eccc6827"></a>
 
-事件内容，详见 [`WindowDocsEvent`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event)。
+### getPageState()
 
-</Parameter>
-<Parameter name="promise">
+<ApiSignature>
 
-`Promise<Boolean>` 接口，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `dispatchDocsEvent` 的调用结果：
+void getPageState(WindowPageStateOptions options, Promise&lt;UnifiedPageState&gt; promise)
 
-- 如果方法调用成功，则返回 `true`.
-- 如果方法调用失败，则返回错误信息。
+</ApiSignature>
 
-</Parameter>
-</ParameterList>
+查询统一页面状态，返回 target、可选 appId、1-based page/pageCount 和可选相对 scale。查询目标用 mainView 或 appId；状态 target 返回 mainView/DocsViewer/Slide/Presentation。
+
+<a id="a9bdab96cdb8986350b6f892fd190b331"></a>
+
+### getPageState()
+
+<ApiSignature>
+
+void getPageState(Promise&lt;UnifiedPageState&gt; promise)
+
+</ApiSignature>
+
+查询统一页面状态，返回 target、可选 appId、1-based page/pageCount 和可选相对 scale。查询目标用 mainView 或 appId；状态 target 返回 mainView/DocsViewer/Slide/Presentation。
+
+<a id="afb5c9eeac662f24381f58e70b918dee7"></a>
+
+### querySlidePageState()
+
+<ApiSignature>
+
+void querySlidePageState(Promise&lt;SlidePageState&gt; promise)
+
+</ApiSignature>
+
+查询当前焦点 Slide 或指定 appId 的页码和总页数，页码从 1 开始；统一跨课件控制使用 getPageState。
+
+<a id="a8d6660d6cff96a41b7c7aa6ea33732b1"></a>
+
+### querySlidePageState()
+
+<ApiSignature>
+
+void querySlidePageState(String appId, Promise&lt;SlidePageState&gt; promise)
+
+</ApiSignature>
+
+查询当前焦点 Slide 或指定 appId 的页码和总页数，页码从 1 开始；统一跨课件控制使用 getPageState。
 
 <a id="a6c417c79b6bccd7eb07b88b04ef8c4eb"></a>
 
@@ -1813,7 +2114,7 @@ void com.herewhite.sdk.Room.dispatchDocsEvent(WindowDocsEvent *docsEvent*, [Prom
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.setSyncMode(boolean *useSyncMode*)
+void setSyncMode(boolean useSyncMode)
 
 </ApiSignature>
 
@@ -1830,35 +2131,14 @@ void com.herewhite.sdk.Room.setSyncMode(boolean *useSyncMode*)
 </Parameter>
 </ParameterList>
 
-<a id="a42157e1f6d64d9676c17b3b94c1c5bbe"></a>
+<a id="a8d2b63438a833fb843be771f827ddb2e"></a>
 
-### isDisableInitialStateCallback()
-
-<ApiSignature>
-
-boolean com.herewhite.sdk.Room.isDisableInitialStateCallback()
-
-</ApiSignature>
-
-获取是否禁止初始化状态回调。
-
-<a id="ad2a99dc3b812a11ddede1387edd918c1"></a>
-
-### setDisableInitialStateCallback()
+### getRoomDelegate()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Room.setDisableInitialStateCallback(boolean *disableInitialStateCallback*)
+RoomDelegate getRoomDelegate()
 
 </ApiSignature>
 
-禁止初始化状态回调。
-
-<ParameterList title="参数">
-<Parameter name="disableInitialStateCallback">
-
-- `true`：禁止。
-- `false`：（默认）不禁止。
-
-</Parameter>
-</ParameterList>
+getRoomDelegate：com.herewhite.sdk.Room 的公开成员。参数和返回类型见下方签名。

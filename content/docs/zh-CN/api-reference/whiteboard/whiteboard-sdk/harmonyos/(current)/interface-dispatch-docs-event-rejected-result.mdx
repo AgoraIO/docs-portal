@@ -1,0 +1,67 @@
+---
+title: DispatchDocsEventRejectedResult interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_dispatch_docs_event_rejected_result
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_dispatch_docs_event_rejected_result.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+统一课件命令拒绝结果，包含 accepted=false、reason 和 message。
+
+可从 @shengwang/whiteboard 直接导入 DispatchDocsEventRejectedResult。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface DispatchDocsEventRejectedResult
+```
+
+| [accepted](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-dispatch-docs-event-rejected-result#ac845462bd08f815158c270e317ed267a) | `accepted: false` |
+| --- | --- |
+| [reason](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-dispatch-docs-event-rejected-result#af95c49107f8d69f290cbe26f3b750b64) | `reason: DispatchDocsEventFailureReason` |
+| [message](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-dispatch-docs-event-rejected-result#af2206daf7fa5fa5c1234a1f7a89fb04c) | `message: string` |
+
+## 变量说明
+
+<a id="ac845462bd08f815158c270e317ed267a"></a>
+
+### accepted
+
+```text
+accepted: false
+```
+
+固定为 false，表示统一课件命令被拒绝；reason 和 message 说明原因。
+
+<a id="af95c49107f8d69f290cbe26f3b750b64"></a>
+
+### reason
+
+```text
+reason: DispatchDocsEventFailureReason
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="af2206daf7fa5fa5c1234a1f7a89fb04c"></a>
+
+### message
+
+```text
+message: string
+```
+
+类型成员，必填性和返回类型以声明为准。

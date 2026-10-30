@@ -220,8 +220,14 @@ describe('ProductSdkDownloads', () => {
     expect(screen.queryByText('历史版本')).not.toBeInTheDocument();
   });
 
-  it('retains the old whiteboard ZIP and metadata without needing a pinned version', () => {
-    render(<ProductSdkDownloads platform="android" product="whiteboard-sdk" />);
+  it('retains restored historical whiteboard ZIP metadata when explicitly requested', () => {
+    render(
+      <ProductSdkDownloads
+        platform="android"
+        product="whiteboard-sdk"
+        versionIds={['2.16.100-interactive-whiteboard-android']}
+      />,
+    );
     expect(
       screen.getByRole('link', { name: '下载 Android 互动白板 SDK' }),
     ).toHaveAttribute(
@@ -231,6 +237,16 @@ describe('ProductSdkDownloads', () => {
     expect(screen.getByText('ecf0c9d1f35124d93264dc46810d3e28')).toBeVisible();
     expect(screen.getByText('com.herewhite.sdk')).toBeVisible();
     expect(screen.getByText('发布日期：2025 年 4 月 7 日')).toBeVisible();
+  });
+
+  it('uses the current Whiteboard Web package-manager release', () => {
+    render(<ProductSdkDownloads platform="web" product="whiteboard-sdk" />);
+    expect(
+      screen.getByRole('link', { name: '获取 Web 互动白板 SDK' }),
+    ).toHaveAttribute(
+      'href',
+      'https://www.npmjs.com/package/white-web-sdk/v/2.16.59',
+    );
   });
 
   it('uses package-manager links for SDKs without ZIP downloads', () => {

@@ -1,0 +1,581 @@
+---
+title: WhiteboardCallbacks class 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/class_whiteboard_callbacks
+  sourcePath: html-docs/whiteboard/HarmonyOS/class_whiteboard_callbacks.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+房间、课件、日志及初始化事件回调；实际传给 Whiteboard 组件的 callbacks 参数。
+
+可从 @shengwang/whiteboard 直接导入 WhiteboardCallbacks。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export class WhiteboardCallbacks
+```
+
+| [throwError](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a8a04fb571be0ffeea83f6f3448d945bd) | `throwError?: (args: object) => void` |
+| --- | --- |
+| [onMessage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#ac538cea56945756ab11433e411ccb020) | `onMessage?: (args: object) => void` |
+| [onBackgroundImageLoad](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a9687dce5b151b8dbea6528df51037b48) | `onBackgroundImageLoad?: (event: BackgroundImageLoadEvent) => void` |
+| [onApplianceInitLoadingChange](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a03a90e14bae69cd88577669ca89cb098) | `onApplianceInitLoadingChange?: (event: ApplianceInitLoadingChangeEvent) => void` |
+| [onSlidePageStateChanged](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a96a2346a5408879d50215b1aeb3b57cc) | `onSlidePageStateChanged?: (appId: string, page: number, pageCount: number) => void` |
+| [onUnifiedPageStateChange](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#aa729fcd20ea9f5f5839ece3eb21fcc93) | `onUnifiedPageStateChange?: (state: UnifiedPageStateChange) => void` |
+| [onLogger](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a4df446cd7206f98c9e63f0cd038345aa) | `onLogger?: (args: object) => void` |
+| [onLocalLogStateChange](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#abc2266ed126aad2143ed9b4a63af7417) | `onLocalLogStateChange?: (state: object) => void` |
+| [onRoomReady](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a61d08986575635114fd17f297c42a9d3) | `onRoomReady?: () => void` |
+| [sdkSetupFail](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#acc696173a7cacbd1d72a3d764b737c31) | `sdkSetupFail?: (error: SDKError) => void` |
+| [onRoomPhaseChanged](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#ac6760f3915577963a59ca80dd87ff5e7) | `onRoomPhaseChanged?: (roomPhase: RoomPhase) => void` |
+| [onRoomStateChanged](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a3a30f55370eaab6d4f2005637a580330) | `onRoomStateChanged?: (roomState: RoomState) => void` |
+| [onCanUndoStepsUpdate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a3614a3a63496a57dd32e267f82a6994c) | `onCanUndoStepsUpdate?: (steps: number) => void` |
+| [onCanRedoStepsUpdate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a8abc2f4db5b74d4ef4e4bbe852d5b5db) | `onCanRedoStepsUpdate?: (steps: number) => void` |
+| [onMagixEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a95c686b979d0d58a50056fea4ba2c42b) | `onMagixEvent?: (event: EventEntry) => void` |
+| [onHighFrequencyEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a7c5e441c686812edbc29b6f2e53684ba) | `onHighFrequencyEvent?: (events: EventEntry[]) => void` |
+| [onDisconnectWithError](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#aeaf0654ac4a63dc9bde6a1e3272aef29) | `onDisconnectWithError?: (error: RoomDisconnectError) => void` |
+| [onKickedWithReason](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a09eaa83c0c7c09dd63c653f8aae01a91) | `onKickedWithReason?: (reason: RoomKickedReason) => void` |
+| [setThrowError](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#acb8dd8f71c98eadfc763cd565e17e62b) | `setThrowError(callback: (args: object) => void) : WhiteboardCallbacks` |
+| [setOnBackgroundImageLoad](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a99406753375035484606efa9c4c337e3) | `setOnBackgroundImageLoad(callback: (event: BackgroundImageLoadEvent) => void) : WhiteboardCallbacks` |
+| [setOnApplianceInitLoadingChange](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#adcd423bedbeb9409856ba9fe8c7108ef) | `setOnApplianceInitLoadingChange( callback: (event: ApplianceInitLoadingChangeEvent) => void, ) : WhiteboardCallbacks` |
+| [setOnSlidePageStateChanged](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a3e3e51f2eaac9417a9b8ea56a26b6480) | `setOnSlidePageStateChanged( callback: (appId: string, page: number, pageCount: number) => void, ) : WhiteboardCallbacks` |
+| [setOnUnifiedPageStateChange](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#aff6d3f3b9ed8b25132b9a63bda597743) | `setOnUnifiedPageStateChange( callback: (state: UnifiedPageStateChange) => void, ) : WhiteboardCallbacks` |
+| [setOnLogger](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a4baa8ee4faa751e12edd80be694bc79c) | `setOnLogger(callback: (args: object) => void) : WhiteboardCallbacks` |
+| [setOnLocalLogStateChange](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#af15c72e5a2ec90ab5959075d9cac6726) | `setOnLocalLogStateChange(callback: (state: object) => void) : WhiteboardCallbacks` |
+| [setOnRoomReady](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a5c664f1239e5c230467d7d63170d4797) | `setOnRoomReady(callback: () => void) : WhiteboardCallbacks` |
+| [setOnRoomPhaseChanged](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a7708999dd3df4c0f18946896886ab0dc) | `setOnRoomPhaseChanged(callback: (roomPhase: RoomPhase) => void) : WhiteboardCallbacks` |
+| [setOnRoomStateChanged](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a8370cbd4872474245d46a52252621b5e) | `setOnRoomStateChanged(callback: (roomState: RoomState) => void) : WhiteboardCallbacks` |
+| [setOnCanUndoStepsChanged](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a38cafb814e93596aaf336998efcd8b98) | `setOnCanUndoStepsChanged(callback: (steps: number) => void) : WhiteboardCallbacks` |
+| [setOnCanRedoStepsChanged](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a259cdd094f06e8f09247fbf648bbf6b2) | `setOnCanRedoStepsChanged(callback: (steps: number) => void) : WhiteboardCallbacks` |
+| [setOnMagixEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#abbc71fa8d1fcd53eaee2e5303098893d) | `setOnMagixEvent(callback: (event: EventEntry) => void) : WhiteboardCallbacks` |
+| [setOnHighFrequencyEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#a6d9d7af6ff35c88aad3b33bc787eccb2) | `setOnHighFrequencyEvent(callback: (events: EventEntry[]) => void) : WhiteboardCallbacks` |
+| [setOnDisconnectWithError](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#ab7149e03f320579f0d943d3eab9d55fe) | `setOnDisconnectWithError(callback: (error: RoomDisconnectError) => void) : WhiteboardCallbacks` |
+| [setOnKickedWithReason](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-callbacks#ad8230daa467f93d85c87fcdab5376eaa) | `setOnKickedWithReason(callback: (reason: RoomKickedReason) => void) : WhiteboardCallbacks` |
+
+## 函数说明
+
+<a id="a8a04fb571be0ffeea83f6f3448d945bd"></a>
+
+### throwError
+
+```text
+throwError?: (args: object) => void
+```
+
+错误回调函数，处理错误信息。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| args | 错误信息对象 |
+
+<a id="ac538cea56945756ab11433e411ccb020"></a>
+
+### onMessage
+
+```text
+onMessage?: (args: object) => void
+```
+
+消息回调函数，用于处理接收到的消息。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| args | 消息对象 |
+
+<a id="a9687dce5b151b8dbea6528df51037b48"></a>
+
+### onBackgroundImageLoad
+
+```text
+onBackgroundImageLoad?: (event: BackgroundImageLoadEvent) => void
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="a03a90e14bae69cd88577669ca89cb098"></a>
+
+### onApplianceInitLoadingChange
+
+```text
+onApplianceInitLoadingChange?: (event: ApplianceInitLoadingChangeEvent) => void
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="a96a2346a5408879d50215b1aeb3b57cc"></a>
+
+### onSlidePageStateChanged
+
+```text
+onSlidePageStateChanged?: (appId: string, page: number, pageCount: number) => void
+```
+
+Slide 页面状态变化回调，页码从 1 开始。
+
+<a id="aa729fcd20ea9f5f5839ece3eb21fcc93"></a>
+
+### onUnifiedPageStateChange
+
+```text
+onUnifiedPageStateChange?: (state: UnifiedPageStateChange) => void
+```
+
+MainView, DocsViewer, Slide or Presentation page/scale state change.
+
+<a id="a4df446cd7206f98c9e63f0cd038345aa"></a>
+
+### onLogger
+
+```text
+onLogger?: (args: object) => void
+```
+
+日志回调函数，用于记录日志。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| args | 日志信息对象 |
+
+<a id="abc2266ed126aad2143ed9b4a63af7417"></a>
+
+### onLocalLogStateChange
+
+```text
+onLocalLogStateChange?: (state: object) => void
+```
+
+WebView 内本地日志状态变化回调。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| state | 本地日志运行状态 |
+
+<a id="a61d08986575635114fd17f297c42a9d3"></a>
+
+### onRoomReady
+
+```text
+onRoomReady?: () => void
+```
+
+房间准备就绪回调函数，房间准备好后调用。
+
+<a id="acc696173a7cacbd1d72a3d764b737c31"></a>
+
+### sdkSetupFail
+
+```text
+sdkSetupFail?: (error: SDKError) => void
+```
+
+SDK 初始化失败回调。触发后需要重新初始化 SDK，再重新加入房间。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| error | 初始化失败错误 |
+
+<a id="ac6760f3915577963a59ca80dd87ff5e7"></a>
+
+### onRoomPhaseChanged
+
+```text
+onRoomPhaseChanged?: (roomPhase: RoomPhase) => void
+```
+
+房间状态变更回调函数，当房间阶段发生变化时调用。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| roomPhase | 房间阶段 |
+
+<a id="a3a30f55370eaab6d4f2005637a580330"></a>
+
+### onRoomStateChanged
+
+```text
+onRoomStateChanged?: (roomState: RoomState) => void
+```
+
+房间状态变化回调函数，当房间状态变化时调用。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| roomState | 房间状态 |
+
+<a id="a3614a3a63496a57dd32e267f82a6994c"></a>
+
+### onCanUndoStepsUpdate
+
+```text
+onCanUndoStepsUpdate?: (steps: number) => void
+```
+
+可撤销步骤更新回调函数，当可撤销步骤发生变化时调用。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| steps | 当前可撤销的步骤数 |
+
+<a id="a8abc2f4db5b74d4ef4e4bbe852d5b5db"></a>
+
+### onCanRedoStepsUpdate
+
+```text
+onCanRedoStepsUpdate?: (steps: number) => void
+```
+
+可重做步骤更新回调函数，当可重做步骤发生变化时调用。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| steps | 当前可重做的步骤数 |
+
+<a id="a95c686b979d0d58a50056fea4ba2c42b"></a>
+
+### onMagixEvent
+
+```text
+onMagixEvent?: (event: EventEntry) => void
+```
+
+自定义事件回调函数。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| event | 自定义事件 |
+
+<a id="a7c5e441c686812edbc29b6f2e53684ba"></a>
+
+### onHighFrequencyEvent
+
+```text
+onHighFrequencyEvent?: (events: EventEntry[]) => void
+```
+
+高频事件回调函数。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| events | 高频事件列表 |
+
+<a id="aeaf0654ac4a63dc9bde6a1e3272aef29"></a>
+
+### onDisconnectWithError
+
+```text
+onDisconnectWithError?: (error: RoomDisconnectError) => void
+```
+
+房间断连错误回调函数。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| error | 断连错误 |
+
+<a id="a09eaa83c0c7c09dd63c653f8aae01a91"></a>
+
+### onKickedWithReason
+
+```text
+onKickedWithReason?: (reason: RoomKickedReason) => void
+```
+
+被踢下线回调函数。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| reason | 原因 |
+
+<a id="acb8dd8f71c98eadfc763cd565e17e62b"></a>
+
+### setThrowError
+
+```text
+setThrowError(callback: (args: object) => void) : WhiteboardCallbacks
+```
+
+设置错误回调函数。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| callback | 错误回调函数 |
+
+@returns 当前的 WhiteboardCallbacks 实例
+
+<a id="a99406753375035484606efa9c4c337e3"></a>
+
+### setOnBackgroundImageLoad
+
+```text
+setOnBackgroundImageLoad(callback: (event: BackgroundImageLoadEvent) => void) : WhiteboardCallbacks
+```
+
+setOnBackgroundImageLoad：WhiteboardCallbacks 的公开成员。参数和返回类型见下方签名。
+
+<a id="adcd423bedbeb9409856ba9fe8c7108ef"></a>
+
+### setOnApplianceInitLoadingChange
+
+```text
+setOnApplianceInitLoadingChange( callback: (event: ApplianceInitLoadingChangeEvent) => void, ) : WhiteboardCallbacks
+```
+
+setOnApplianceInitLoadingChange：WhiteboardCallbacks 的公开成员。参数和返回类型见下方签名。
+
+<a id="a3e3e51f2eaac9417a9b8ea56a26b6480"></a>
+
+### setOnSlidePageStateChanged
+
+```text
+setOnSlidePageStateChanged( callback: (appId: string, page: number, pageCount: number) => void, ) : WhiteboardCallbacks
+```
+
+setOnSlidePageStateChanged：WhiteboardCallbacks 的公开成员。参数和返回类型见下方签名。
+
+<a id="aff6d3f3b9ed8b25132b9a63bda597743"></a>
+
+### setOnUnifiedPageStateChange
+
+```text
+setOnUnifiedPageStateChange( callback: (state: UnifiedPageStateChange) => void, ) : WhiteboardCallbacks
+```
+
+setOnUnifiedPageStateChange：WhiteboardCallbacks 的公开成员。参数和返回类型见下方签名。
+
+<a id="a4baa8ee4faa751e12edd80be694bc79c"></a>
+
+### setOnLogger
+
+```text
+setOnLogger(callback: (args: object) => void) : WhiteboardCallbacks
+```
+
+设置日志回调函数。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| callback | 日志回调函数 |
+
+@returns 当前的 WhiteboardCallbacks 实例
+
+<a id="af15c72e5a2ec90ab5959075d9cac6726"></a>
+
+### setOnLocalLogStateChange
+
+```text
+setOnLocalLogStateChange(callback: (state: object) => void) : WhiteboardCallbacks
+```
+
+设置 WebView 内本地日志状态变化回调函数。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| callback | 本地日志状态变化回调函数 |
+
+@returns 当前的 WhiteboardCallbacks 实例
+
+<a id="a5c664f1239e5c230467d7d63170d4797"></a>
+
+### setOnRoomReady
+
+```text
+setOnRoomReady(callback: () => void) : WhiteboardCallbacks
+```
+
+设置房间准备就绪回调函数。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| callback | 房间准备就绪的回调函数 |
+
+@returns 当前的 WhiteboardCallbacks 实例
+
+<a id="a7708999dd3df4c0f18946896886ab0dc"></a>
+
+### setOnRoomPhaseChanged
+
+```text
+setOnRoomPhaseChanged(callback: (roomPhase: RoomPhase) => void) : WhiteboardCallbacks
+```
+
+设置房间阶段变更回调函数。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| callback | 房间阶段变更的回调函数 |
+
+@returns 当前的 WhiteboardCallbacks 实例
+
+<a id="a8370cbd4872474245d46a52252621b5e"></a>
+
+### setOnRoomStateChanged
+
+```text
+setOnRoomStateChanged(callback: (roomState: RoomState) => void) : WhiteboardCallbacks
+```
+
+设置房间状态变化回调函数。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| callback | 房间状态变化的回调函数 |
+
+@returns 当前的 WhiteboardCallbacks 实例
+
+<a id="a38cafb814e93596aaf336998efcd8b98"></a>
+
+### setOnCanUndoStepsChanged
+
+```text
+setOnCanUndoStepsChanged(callback: (steps: number) => void) : WhiteboardCallbacks
+```
+
+设置可撤销步骤更新回调函数。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| callback | 可撤销步骤更新的回调函数 |
+
+@returns 当前的 WhiteboardCallbacks 实例
+
+<a id="a259cdd094f06e8f09247fbf648bbf6b2"></a>
+
+### setOnCanRedoStepsChanged
+
+```text
+setOnCanRedoStepsChanged(callback: (steps: number) => void) : WhiteboardCallbacks
+```
+
+设置可重做步骤更新回调函数。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| callback | 可重做步骤更新的回调函数 |
+
+@returns 当前的 WhiteboardCallbacks 实例
+
+<a id="abbc71fa8d1fcd53eaee2e5303098893d"></a>
+
+### setOnMagixEvent
+
+```text
+setOnMagixEvent(callback: (event: EventEntry) => void) : WhiteboardCallbacks
+```
+
+设置自定义事件回调函数。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| callback | 自定义事件回调函数 |
+
+@returns 当前的 WhiteboardCallbacks 实例
+
+<a id="a6d9d7af6ff35c88aad3b33bc787eccb2"></a>
+
+### setOnHighFrequencyEvent
+
+```text
+setOnHighFrequencyEvent(callback: (events: EventEntry[]) => void) : WhiteboardCallbacks
+```
+
+设置高频事件回调函数。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| callback | 高频事件回调函数 |
+
+@returns 当前的 WhiteboardCallbacks 实例
+
+<a id="ab7149e03f320579f0d943d3eab9d55fe"></a>
+
+### setOnDisconnectWithError
+
+```text
+setOnDisconnectWithError(callback: (error: RoomDisconnectError) => void) : WhiteboardCallbacks
+```
+
+设置房间断连错误回调函数。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| callback | 房间断连错误回调函数 |
+
+@returns 当前的 WhiteboardCallbacks 实例
+
+<a id="ad8230daa467f93d85c87fcdab5376eaa"></a>
+
+### setOnKickedWithReason
+
+```text
+setOnKickedWithReason(callback: (reason: RoomKickedReason) => void) : WhiteboardCallbacks
+```
+
+设置被踢下线回调函数。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| callback | 被踢下线回调函数 |
+
+@returns 当前的 WhiteboardCallbacks 实例

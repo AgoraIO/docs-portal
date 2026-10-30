@@ -46,3 +46,19 @@ Fastboard SDK 是基于 Whiteboard SDK 开发的新一代 SDK，提供默认白�
 ## 适用场景
 
 Fastboard SDK 适用于希望快速集成白板能力的在线教育、在线会议、协作办公和互动娱乐应用。如果你需要完全自定义 UI 和白板状态管理，请选择[互动白板 SDK](/zh-CN/realtime-media/whiteboard/whiteboard-sdk)。
+
+## 与当前客户端 SDK 配合
+
+服务端先创建房间和签发 Room Token，再交给客户端加入。房间 UUID、region 和 Token 对应的权限应保持一致；SDK Token 保存在业务服务端。RESTful v5 路径由服务端接口定义，客户端 SDK 版本升级无需更改这些路径。
+
+| 客户端 | 推荐正式版本 |
+| --- | --- |
+| Whiteboard Web | 2.16.59 |
+| Whiteboard iOS | 2.16.147 |
+| Whiteboard Android | 2.16.134 |
+| Whiteboard HarmonyOS | 0.2.11 |
+| Fastboard Web | 1.1.10 |
+| Fastboard iOS | 1.4.6 |
+| Fastboard Android | 1.8.2 |
+
+Appliance Plugin 是客户端初始化与绘制配置：服务端创建房间、生成 Token、转换课件后，各客户端按自己的 SDK 入口开启插件。配置示例见 [Web 教具插件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)、[Android 教具插件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)、[iOS 教具插件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)。

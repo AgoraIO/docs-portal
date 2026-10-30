@@ -1,5 +1,5 @@
 ---
-title: com.herewhite.sdk.Displayer类 参考
+title: com.herewhite.sdk.Displayer class 参考
 tocMaxDepth: 3
 _migration:
   type: generated-html
@@ -8,42 +8,105 @@ _migration:
   sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1_displayer.html
   generator: doxygen
   warnings:
-    - code: missing-source-text
+    - code: unresolved-link
       severity: warning
-      message: >-
-        The source image classcom_1_1herewhite_1_1sdk_1_1_displayer.png has no meaningful alt or
-        title text; the converter used contextual alt text "com.herewhite.sdk.Displayer类 参考 图示".
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/whiteboard/android/deprecated.html#_deprecated000005 as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/whiteboard/android/deprecated.html#_deprecated000006 as local text.
+      message: No local target route for /api-ref/whiteboard/android/deprecated.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/whiteboard/android/deprecated.html.
 ---
-
-类 com.herewhite.sdk.Displayer 继承关系图:
-
-![com.herewhite.sdk.Displayer类 参考 图示](https://web-cdn.agora.io/docs-portal/img/api-center-generated/2ccaa1f7f56d-classcom_1_1herewhite_1_1sdk_1_1_displayer.png)
 
 <a id="details"></a>
 
 ## 详细描述
 
-[`Displayer`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer) 类。该类为 [`Room`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) 类和 [`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 类的父类。 [`Room`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) 和 [`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 类可以继承该类下的方法。
+适用版本：**Whiteboard Android SDK 2.16.134**。
 
-## 成员函数说明
+`Displayer` 类。该类为 Room 类和 Player 类的父类。
+`Room` 和 `Player` 类可以继承该类下的方法。
+
+## 属性与 JSON 字段
+
+Java 非公开字段通过对应 getter/setter 访问；可选包装类型未设置时通常不写入 JSON。初值包含字段声明及无参构造中的直接赋值；其他构造参数以签名为准。
+
+| 字段 | 声明 | 源码初值 | 说明 |
+| --- | --- | --- | --- |
+| [backgroundColor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#afcfe8a00185c94e03dc1533cbc56d1eb) | `int backgroundColor` | Color.WHITE | <Slot name="api-center-table-0" /> |
+| [syncedStore](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#ab1907cf0830fe6eefff3efaf5fcbd98b) | `SyncedStore syncedStore` | 未显式赋值 | <Slot name="api-center-table-1" /> |
+
+<Slot for="api-center-table-0">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-1">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+| 公开成员签名 |  |
+| --- | --- |
+| void | [postIframeMessage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a218d273792fc859b2f343f9185368407) (String string) |
+| void | [postIframeMessage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#aafcea84ae1fc2539996f6d0e2710a362) (WhiteObject object) |
+| void | [getScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#ac47409b4e5ca783e080e11e0c032c145) (String path, Promise&lt;WhiteScenePathType&gt; promise) |
+| void | [getScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#ac8467c97aecb62aa78d8520dabd108bd) (String path, Promise&lt;Scene&gt; promise) |
+| void | [getEntireScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a8fd708269f78c0a4d8fbee3f3ec465f2) (Promise&lt;Map&lt;String, Scene[]&gt;&gt; promise) |
+| void | [refreshViewSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a20be8e5cc145577cd66706d9012989a6) () |
+| void | [scaleIframeToFit](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a65bbfa5b2fd5fa7d0cb1e1cfe03413f7) () |
+| void | [scalePptToFit](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a4b8ecbbc38569db7868c25790f191fbe) () |
+| void | [scalePptToFit](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a29f2d682f7d728e53767ded3889c60ee) (AnimationMode mode) |
+| void | [addMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a5789b995344ae4c9bd0872dfb3fd8cae) (String eventName, EventListener eventListener) |
+| void | [addHighFrequencyEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a53b433bf7d24a786c4976ba85dee9940) (String eventName, FrequencyEventListener eventListener, Integer fireInterval) |
+| void | [removeMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a071edba37f99285bbea69988481eb3ae) (String eventName) |
+| void | [convertToPointInWorld](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a1bfd39e7482e2937908a2dea49db1c27) (double x, double y, Promise&lt;Point&gt; promise) |
+| void | [setCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a7ebc499b1f6ca5457d41fcec9bad214e) (CameraBound bound) |
+| int | [getBackgroundColor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#aa164b4edc632f73ac9a83b3f1bdab64c) () |
+| void | [setBackgroundColor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a67b020e6d15247e1bdc7dbd9b86bcfbe) (int intColor) |
+| void | [getScenePreviewImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a01268dd20584fcebfa1aecc5d98e3616) (String scenePath, Promise&lt;Bitmap&gt; promise) |
+| void | [getSceneSnapshotImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a0995da14d5d9b20d5f98c2639018700e) (String scenePath, Promise&lt;Bitmap&gt; promise) |
+| void | [disableCameraTransform](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#a4b4ee486693efafc4683e312244d1129) (Boolean disable) |
+| void | [moveCamera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#aa73a9b1c04e23e0f8b1ecb79099d858a) (CameraConfig camera) |
+| void | [moveCameraToContainer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#af19ee0561ddd8b547b22040e58309549) (RectangleConfig rectangle) |
+| void | [getWindowManagerAttributes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#af38f8a6b7aa60683b15741dd3fe3b462) (Promise&lt;String&gt; promise) |
+| SyncedStore | [getSyncedStore](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer#ae32ee0a2fa5eb8f135e029636205d68e) () |
+
+## 变量说明
+
+<a id="afcfe8a00185c94e03dc1533cbc56d1eb"></a>
+
+### backgroundColor
+
+```text
+int backgroundColor
+```
+
+源码初值：Color.WHITE
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="ab1907cf0830fe6eefff3efaf5fcbd98b"></a>
+
+### syncedStore
+
+```text
+SyncedStore syncedStore
+```
+
+源码初值：未显式赋值
+
+模型属性；通过对应 getter/setter 访问。
+
+## 函数说明
 
 <a id="a218d273792fc859b2f343f9185368407"></a>
 
-### postIframeMessage() [1/2]
+### postIframeMessage()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.postIframeMessage(String *string*)
+void postIframeMessage(String string)
 
 </ApiSignature>
 
@@ -63,11 +126,11 @@ void com.herewhite.sdk.Displayer.postIframeMessage(String *string*)
 
 <a id="aafcea84ae1fc2539996f6d0e2710a362"></a>
 
-### postIframeMessage() [2/2]
+### postIframeMessage()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.postIframeMessage([WhiteObject](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-object) *object*)
+void postIframeMessage(WhiteObject object)
 
 </ApiSignature>
 
@@ -91,7 +154,7 @@ key-value 格式的信息，必须为 [`WhiteObject`](/zh-CN/api-reference/white
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.getScenePathType(String *path*, final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [WhiteScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-scene-path-type) &gt; *promise*)
+void getScenePathType(String path, Promise&lt;WhiteScenePathType&gt; promise)
 
 </ApiSignature>
 
@@ -121,7 +184,7 @@ void com.herewhite.sdk.Displayer.getScenePathType(String *path*, final [Promise]
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.getScene(String *path*, final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [Scene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene) &gt; *promise*)
+void getScene(String path, Promise&lt;Scene&gt; promise)
 
 </ApiSignature>
 
@@ -149,7 +212,7 @@ void com.herewhite.sdk.Displayer.getScene(String *path*, final [Promise](/zh-CN/
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.getEntireScenes(final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Map&lt; String, [Scene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene)[]&gt; &gt; *promise*)
+void getEntireScenes(Promise&lt;Map&lt;String, Scene[]&gt;&gt; promise)
 
 </ApiSignature>
 
@@ -172,7 +235,7 @@ void com.herewhite.sdk.Displayer.getEntireScenes(final [Promise](/zh-CN/api-refe
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.refreshViewSize()
+void refreshViewSize()
 
 </ApiSignature>
 
@@ -186,7 +249,7 @@ void com.herewhite.sdk.Displayer.refreshViewSize()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.scaleIframeToFit()
+void scaleIframeToFit()
 
 </ApiSignature>
 
@@ -198,11 +261,11 @@ void com.herewhite.sdk.Displayer.scaleIframeToFit()
 
 <a id="a4b8ecbbc38569db7868c25790f191fbe"></a>
 
-### scalePptToFit() [1/2]
+### scalePptToFit()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.scalePptToFit()
+void scalePptToFit()
 
 </ApiSignature>
 
@@ -214,11 +277,11 @@ void com.herewhite.sdk.Displayer.scalePptToFit()
 
 <a id="a29f2d682f7d728e53767ded3889c60ee"></a>
 
-### scalePptToFit() [2/2]
+### scalePptToFit()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.scalePptToFit([AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode) *mode*)
+void scalePptToFit(AnimationMode mode)
 
 </ApiSignature>
 
@@ -242,7 +305,7 @@ void com.herewhite.sdk.Displayer.scalePptToFit([AnimationMode](/zh-CN/api-refere
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.addMagixEventListener(String *eventName*, [EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-event-listener) *eventListener*)
+void addMagixEventListener(String eventName, EventListener eventListener)
 
 </ApiSignature>
 
@@ -273,7 +336,7 @@ void com.herewhite.sdk.Displayer.addMagixEventListener(String *eventName*, [Even
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.addHighFrequencyEventListener(String *eventName*, [FrequencyEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-frequency-event-listener) *eventListener*, Integer *fireInterval*)
+void addHighFrequencyEventListener(String eventName, FrequencyEventListener eventListener, Integer fireInterval)
 
 </ApiSignature>
 
@@ -309,7 +372,7 @@ SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.removeMagixEventListener(String *eventName*)
+void removeMagixEventListener(String eventName)
 
 </ApiSignature>
 
@@ -329,7 +392,7 @@ void com.herewhite.sdk.Displayer.removeMagixEventListener(String *eventName*)
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.convertToPointInWorld(double *x*, double *y*, final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [Point](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-point) &gt; *promise*)
+void convertToPointInWorld(double x, double y, Promise&lt;Point&gt; promise)
 
 </ApiSignature>
 
@@ -364,7 +427,7 @@ void com.herewhite.sdk.Displayer.convertToPointInWorld(double *x*, double *y*, f
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.setCameraBound([CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound) *bound*)
+void setCameraBound(CameraBound bound)
 
 </ApiSignature>
 
@@ -382,13 +445,39 @@ void com.herewhite.sdk.Displayer.setCameraBound([CameraBound](/zh-CN/api-referen
 </Parameter>
 </ParameterList>
 
+<a id="aa164b4edc632f73ac9a83b3f1bdab64c"></a>
+
+### getBackgroundColor()
+
+<ApiSignature>
+
+int getBackgroundColor()
+
+</ApiSignature>
+
+获取本地白板的背景色。
+
+:::info[自从]
+2.4.0
+:::
+
+<a id="弃用"></a>
+
+:::error[弃用:]
+该方法已废弃。
+:::
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+本地白板的背景色，格式为 16 进制 ARGB 定义下的 Hex 值。
+
 <a id="a67b020e6d15247e1bdc7dbd9b86bcfbe"></a>
 
 ### setBackgroundColor()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.setBackgroundColor(@ColorInt int *intColor*)
+void setBackgroundColor(int intColor)
 
 </ApiSignature>
 
@@ -398,7 +487,7 @@ void com.herewhite.sdk.Displayer.setBackgroundColor(@ColorInt int *intColor*)
 2.4.14
 :::
 
-<a id="弃用"></a>
+<a id="弃用-1"></a>
 
 :::error[弃用:]
 该方法已废弃，请改用 Android 系统的 [setBackgroundColor](https://developer.android.com/reference/android/view/View#setBackgroundColor(int)) 方法。
@@ -416,39 +505,13 @@ void com.herewhite.sdk.Displayer.setBackgroundColor(@ColorInt int *intColor*)
 </Parameter>
 </ParameterList>
 
-<a id="aa164b4edc632f73ac9a83b3f1bdab64c"></a>
-
-### getBackgroundColor()
-
-<ApiSignature>
-
-int com.herewhite.sdk.Displayer.getBackgroundColor()
-
-</ApiSignature>
-
-获取本地白板的背景色。
-
-:::info[自从]
-2.4.0
-:::
-
-<a id="弃用-1"></a>
-
-:::error[弃用:]
-该方法已废弃。
-:::
-
-<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
-
-本地白板的背景色，格式为 16 进制 ARGB 定义下的 Hex 值。
-
 <a id="a01268dd20584fcebfa1aecc5d98e3616"></a>
 
 ### getScenePreviewImage()
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.getScenePreviewImage(String *scenePath*, final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Bitmap &gt; *promise*)
+void getScenePreviewImage(String scenePath, Promise&lt;Bitmap&gt; promise)
 
 </ApiSignature>
 
@@ -480,7 +543,7 @@ void com.herewhite.sdk.Displayer.getScenePreviewImage(String *scenePath*, final 
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.getSceneSnapshotImage(String *scenePath*, final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Bitmap &gt; *promise*)
+void getSceneSnapshotImage(String scenePath, Promise&lt;Bitmap&gt; promise)
 
 </ApiSignature>
 
@@ -512,7 +575,7 @@ void com.herewhite.sdk.Displayer.getSceneSnapshotImage(String *scenePath*, final
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.disableCameraTransform(Boolean *disable*)
+void disableCameraTransform(Boolean disable)
 
 </ApiSignature>
 
@@ -541,7 +604,7 @@ void com.herewhite.sdk.Displayer.disableCameraTransform(Boolean *disable*)
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.moveCamera([CameraConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-config) *camera*)
+void moveCamera(CameraConfig camera)
 
 </ApiSignature>
 
@@ -567,7 +630,7 @@ void com.herewhite.sdk.Displayer.moveCamera([CameraConfig](/zh-CN/api-reference/
 
 <ApiSignature>
 
-void com.herewhite.sdk.Displayer.moveCameraToContainer([RectangleConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-rectangle-config) *rectangle*)
+void moveCameraToContainer(RectangleConfig rectangle)
 
 </ApiSignature>
 
@@ -584,3 +647,33 @@ void com.herewhite.sdk.Displayer.moveCameraToContainer([RectangleConfig](/zh-CN/
 
 </Parameter>
 </ParameterList>
+
+<a id="af38f8a6b7aa60683b15741dd3fe3b462"></a>
+
+### getWindowManagerAttributes()
+
+<ApiSignature>
+
+void getWindowManagerAttributes(Promise&lt;String&gt; promise)
+
+</ApiSignature>
+
+获取当前多窗口状态
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="promise" />
+</ParameterList>
+
+<a id="ae32ee0a2fa5eb8f135e029636205d68e"></a>
+
+### getSyncedStore()
+
+<ApiSignature>
+
+SyncedStore getSyncedStore()
+
+</ApiSignature>
+
+getSyncedStore：com.herewhite.sdk.Displayer 的公开成员。参数和返回类型见下方签名。

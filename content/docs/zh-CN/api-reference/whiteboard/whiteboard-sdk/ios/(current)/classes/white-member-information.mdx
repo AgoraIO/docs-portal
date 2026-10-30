@@ -2,103 +2,109 @@
 title: WhiteMemberInformation Class Reference
 _migration:
   type: generated-html
-  status: migrated
+  status: warning
   sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteMemberInformation
   sourcePath: html-docs/whiteboard/iOS/Classes/WhiteMemberInformation.html
   generator: appledoc
-  warnings: []
+  warnings:
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
 ---
 
-| Inherits from | WhiteObject |
-| --- | --- |
-| Declared in | WhiteMemberInformation.h |
+Whiteboard iOS SDK 2.16.147 公开接口。
 
-<a id="overview"></a>
+@interface WhiteMemberInformation: WhiteObject
 
-## Overview
+## 成员
 
-用于自定义用户信息。
-
-<a id="tasks"></a>
+- [initWithUserId\:name\:avatar:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-member-information#//api/name/initWithUserId:name:avatar:)
+- [id](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-member-information#//api/name/id)
+- [nickName](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-member-information#//api/name/nickName)
+- [avatar](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-member-information#//api/name/avatar)
+- [userId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-member-information#//api/name/userId)
 
 <a id="//api/name/initWithUserId:name:avatar:"></a>
 
-### `– initWithUserId:name:avatar:`
 
-`MemberInformation` 构造方法，用于初始化用户信息对象。
+<a id="tasks"></a>
+
+### `– initWithUserId:name:avatar:`
 
 <ApiSignature>
 
-\- (instancetype)initWithUserId:(NSString *)*userId* name:(NSString *)*nickName* avatar:(NSString *)*avatarUrl*
+\- (instancetype)initWithUserId:(NSString *)userId name:(NSString *)nickName avatar:(NSString *)avatarUrl;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="userId">
+```text
+`MemberInformation` 构造方法，用于初始化用户信息对象。
 
-用户 ID
+ @param userId 用户 ID
+ @param nickName 用户昵称
+ @param avatarUrl 用户头像图片地址
+```
 
-</Parameter>
-<Parameter name="nickName">
+Declared in Object/WhiteMemberInformation.h
 
-用户昵称
+<a id="//api/name/id"></a>
 
-</Parameter>
-<Parameter name="avatarUrl">
+### `id`
 
-用户头像图片地址
+<ApiSignature>
 
-</Parameter>
-</ParameterList>
+@property (nonatomic, assign, readwrite) NSInteger id;
 
-#### Declared In
+</ApiSignature>
 
-`WhiteMemberInformation.h`
+Declared in Object/WhiteMemberInformation.h
 
 <a id="//api/name/nickName"></a>
 
 ### `nickName`
 
-用户昵称
-
 <ApiSignature>
 
-@property (nonatomic, copy, readonly) NSString *nickName
+@property (nonatomic, copy, readonly) NSString *nickName;
 
 </ApiSignature>
 
-#### Declared In
+```text
+用户昵称
+```
 
-`WhiteMemberInformation.h`
+Declared in Object/WhiteMemberInformation.h
 
 <a id="//api/name/avatar"></a>
 
 ### `avatar`
 
-头像图片地址
-
 <ApiSignature>
 
-@property (nonatomic, copy, readonly, nullable) NSString *avatar
+@property (nonatomic, copy, readonly, nullable) NSString *avatar;
 
 </ApiSignature>
 
-#### Declared In
+```text
+头像图片地址
+```
 
-`WhiteMemberInformation.h`
+Declared in Object/WhiteMemberInformation.h
 
 <a id="//api/name/userId"></a>
 
 ### `userId`
 
-用户 ID。请保证用户 ID 的唯一性。
-
 <ApiSignature>
 
-@property (nonatomic, copy, readonly, nullable) NSString *userId
+@property (nonatomic, copy, readonly, nullable) NSString *userId;
 
 </ApiSignature>
 
-#### Declared In
+```text
+用户 ID。请保证用户 ID 的唯一性。
+```
 
-`WhiteMemberInformation.h`
+Declared in Object/WhiteMemberInformation.h

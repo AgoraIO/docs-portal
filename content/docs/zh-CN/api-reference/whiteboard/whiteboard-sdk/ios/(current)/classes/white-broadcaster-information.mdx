@@ -9,46 +9,46 @@ _migration:
   warnings: []
 ---
 
-| Inherits from | WhiteObject |
-| --- | --- |
-| Declared in | WhiteBroadcastState.h |
+Whiteboard iOS SDK 2.16.147 公开接口。
 
-<a id="overview"></a>
+@interface WhiteBroadcasterInformation: WhiteObject
 
-## Overview
+## 成员
 
-主播模式用户的用户信息。
-
-<a id="tasks"></a>
+- [id](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-broadcaster-information#//api/name/id)
+- [payload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-broadcaster-information#//api/name/payload)
 
 <a id="//api/name/id"></a>
 
-### `id`
 
-主播模式用户在房间中的用户 ID。数据类型为 NSNumber。
+<a id="tasks"></a>
+
+### `id`
 
 <ApiSignature>
 
-@property (nonatomic, assign, readonly) NSNumber *id
+@property (nonatomic, assign, readonly) NSNumber *id;
 
 </ApiSignature>
 
-#### Declared In
+```text
+主播模式用户在房间中的用户 ID。数据类型为 NSNumber。
+```
 
-`WhiteBroadcastState.h`
+Declared in Room/WhiteBroadcastState.h
 
 <a id="//api/name/payload"></a>
 
 ### `payload`
 
-主播模式用户的用户信息。
-
 <ApiSignature>
 
-@property (nonatomic, assign, readonly, nullable) id payload
+@property (nonatomic, assign, readonly, nullable) id payload;
 
 </ApiSignature>
 
-#### Declared In
+```text
+主播模式用户的用户信息。
+```
 
-`WhiteBroadcastState.h`
+Declared in Room/WhiteBroadcastState.h

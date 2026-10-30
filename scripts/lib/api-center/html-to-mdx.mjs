@@ -533,6 +533,9 @@ async function renderInlineNode($, node, state, options = {}) {
   if (name === 'del' || name === 's') return `~~${content}~~`;
   if (name === 'a') {
     const rawHref = element.attr('href');
+    if (!content && (element.attr('id') || element.attr('name'))) {
+      return anchorFor(element);
+    }
     if (!rawHref) {
       const stableAnchor = anchorFor(element);
       return `${stableAnchor}${content}`;
@@ -1689,7 +1692,22 @@ export async function convertHtmlToMdx({
     .filter((_, node) => {
       const element = $(node);
       const text = cleanText(element.text());
-      const sourceLink = element.find('a[href*="_source.html"]').length > 0;
+      const sourceLink = element
+        .find('a[href*="_source.html"]')
+        .toArray()
+        .some((link) => {
+          const filename = ($(link).attr('href') ?? '')
+            .split(/[?#]/, 1)[0]
+            .split('/')
+            .at(-1);
+          if (!filename || !/_source\.html$/i.test(filename)) return false;
+          // Doxygen source-file names encode extensions with _8. A public
+          // type such as class_background_image_source.html is not a file view.
+          return (
+            /_8[^/]*_source\.html$/i.test(filename) ||
+            !/^(?:class|struct|interface|union|enum)/i.test(filename)
+          );
+        });
       const includeOnly =
         text.startsWith('#include') &&
         element.find('code').length > 0 &&

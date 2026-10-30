@@ -9,557 +9,437 @@ _migration:
   warnings: []
 ---
 
-| Inherits from | NSObject |
-| --- | --- |
-| Declared in | WhiteDisplayer.h |
+Whiteboard iOS SDK 2.16.147 公开接口。
 
-<a id="overview"></a>
+@interface WhiteDisplayer: NSObject
 
-## Overview
+## 成员
 
-该类为白板房间的基类。
-
-<a id="tasks"></a>
-
-<a id="//api/name/backgroundColor"></a>
-
-### `backgroundColor`
-
-该属性已废弃。`WhiteboardView` 类继承自 `UIView` 类，你可以直接在 `WhiteboardView` 对象中调用 `UIView` 类的 `backgroundColor` 属性修改白板背景色。详见 [`backgroundColor`](https://developer.apple.com/documentation/uikit/uiview/1622591-backgroundcolor)。
-
-<ApiSignature>
-
-@property (nonatomic, strong) UIColor *backgroundColor __deprecated_msg ("use WhiteboardView's backgroundColor property")
-
-</ApiSignature>
-
-#### Declared In
-
-`WhiteDisplayer.h`
+- [postIframeMessage:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/postIframeMessage:)
+- [getSceneFromScenePath\:result:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/getSceneFromScenePath:result:)
+- [getScenePathType\:result:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/getScenePathType:result:)
+- [getEntireScenes:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/getEntireScenes:)
+- [obtainSyncedStore](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/obtainSyncedStore)
+- [addMagixEventListener:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/addMagixEventListener:)
+- [addHighFrequencyEventListener\:fireInterval:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/addHighFrequencyEventListener:fireInterval:)
+- [removeMagixEventListener:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/removeMagixEventListener:)
+- [refreshViewSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/refreshViewSize)
+- [convertToPointInWorld\:result:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/convertToPointInWorld:result:)
+- [setCameraBound:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/setCameraBound:)
+- [moveCamera:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/moveCamera:)
+- [moveCameraToContainer:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/moveCameraToContainer:)
+- [scalePptToFit:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/scalePptToFit:)
+- [scaleIframeToFit](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/scaleIframeToFit)
+- [disableCameraTransform:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/disableCameraTransform:)
+- [getScenePreviewImage\:completion:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/getScenePreviewImage:completion:)
+- [getSceneSnapshotImage\:completion:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/getSceneSnapshotImage:completion:)
+- [getLocalSnapShotWithCompletion:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/getLocalSnapShotWithCompletion:)
+- [getWindowManagerAttributesWithResult:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-displayer#//api/name/getWindowManagerAttributesWithResult:)
 
 <a id="//api/name/postIframeMessage:"></a>
 
 ### `– postIframeMessage:`
 
-向 iframe 插件发送的关键信息。
-
 <ApiSignature>
 
-\- (void)postIframeMessage:(id)*payload*
+\- (void)postIframeMessage:(id)payload;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="payload">
+```text
+向 iframe 插件发送的关键信息。
+@param payload 关键信息。
+```
 
-关键信息。
-
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhiteDisplayer.h`
+Declared in Displayer/WhiteDisplayer.h
 
 <a id="//api/name/getSceneFromScenePath:result:"></a>
 
 ### `– getSceneFromScenePath:result:`
 
-获取指定场景的信息。
-
 <ApiSignature>
 
-\- (void)getSceneFromScenePath:(NSString *)*scenePath* result:(void (^) (WhiteScene *_Nullable scene))*result*
+\- (void)getSceneFromScenePath:(NSString *)scenePath result:(void (^) (WhiteScene* _Nullable scene))result;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="scenePath">
+```text
+根据scenePath查询指定场景
 
-场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如，`/math/classA`。
+ @param scenePath 场景路径
+ @param result 返回指定场景的查询结果，详见 [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-scene)
+```
 
-</Parameter>
-<Parameter name="result">
-
-方法调用结果回调。方法调用成功时，返回场景信息。详见 [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-scene)。
-
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhiteDisplayer.h`
+Declared in Displayer/WhiteDisplayer.h
 
 <a id="//api/name/getScenePathType:result:"></a>
 
 ### `– getScenePathType:result:`
 
-查询场景路径类型。
-
 <ApiSignature>
 
-\- (void)getScenePathType:(NSString *)*pathOrDir* result:(void (^) (WhiteScenePathType pathType))*result*
+\- (void)getScenePathType:(NSString *)pathOrDir result:(void (^) (WhiteScenePathType pathType))result;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="pathOrDir">
+```text
+查询场景路径类型。
 
-场景路径类型。
+ 你可以在该方法中指定想要查询的场景路径，SDK 会返回该路径对应的场景类型。
 
-</Parameter>
-<Parameter name="result">
+ @param pathOrDir 场景路径类型。
+ @param result 回调。返回指定场景的路径类型，详见 [WhiteScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-scene-path-type)。
+```
 
-回调。返回指定场景的路径类型，详见 [WhiteScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-scene-path-type)。
-
-</Parameter>
-</ParameterList>
-
-#### Discussion
-
-你可以在该方法中指定想要查询的场景路径，SDK 会返回该路径对应的场景类型。
-
-#### Declared In
-
-`WhiteDisplayer.h`
+Declared in Displayer/WhiteDisplayer.h
 
 <a id="//api/name/getEntireScenes:"></a>
 
 ### `– getEntireScenes:`
 
-获取当前房间内所有场景的信息。
-
 <ApiSignature>
 
-\- (void)getEntireScenes:(void (^) (NSDictionary&lt;NSString*, NSArray&lt;WhiteScene*&gt; *&gt; *dict))*result*
+\- (void)getEntireScenes:(void (^) (NSDictionary&lt;NSString *, NSArray&lt;WhiteScene *&gt;*&gt; *dict))result;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="result">
+```text
+获取房间内所有场景的信息，返回格式：
+场景目录路径: 对应场景目录下，所有的页面数组
+key 为 scenePath，value 为 WhiteScene 数组。
+只存在 /init 的房间，返回结构为：
+{"/": @[init WhiteScene]}
 
-回调。返回当前房间内所有场景的信息。
+ @param result 回调。返回当前房间内所有场景的信息。
+```
 
-</Parameter>
-</ParameterList>
+Declared in Displayer/WhiteDisplayer.h
 
-#### Declared In
+<a id="//api/name/obtainSyncedStore"></a>
 
-`WhiteDisplayer.h`
+### `– obtainSyncedStore`
+
+<ApiSignature>
+
+\- (SyncedStore *)obtainSyncedStore;
+
+</ApiSignature>
+
+```text
+获取 SyncedStore 对象
+注意 SyncedStore 只有在 `WhiteSdkConfiguration` 的 `enableSyncedStore` 为  YES  的情况下才能正常使用
+```
+
+Declared in Displayer/WhiteDisplayer.h
 
 <a id="//api/name/addMagixEventListener:"></a>
 
 ### `– addMagixEventListener:`
 
-注册自定义事件监听。
-
 <ApiSignature>
 
-\- (void)addMagixEventListener:(NSString *)*eventName*
+\- (void)addMagixEventListener:(NSString *)eventName;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="eventName">
+```text
+注册自定义事件监听。
 
-想要监听的自定义事件名称。
+ 成功注册后，你可以接收到对应的自定义事件通知。
 
-</Parameter>
-</ParameterList>
+*Note:** 对于同名的自定义事件，SDK 仅支持触发一个回调。
 
-#### Discussion
+ @param eventName 想要监听的自定义事件名称。
+```
 
-成功注册后，你可以接收到对应的自定义事件通知。
-
-**Note:**
-
-对于同名的自定义事件，SDK 仅支持触发一个回调。
-
-#### Declared In
-
-`WhiteDisplayer.h`
+Declared in Displayer/WhiteDisplayer.h
 
 <a id="//api/name/addHighFrequencyEventListener:fireInterval:"></a>
 
 ### `– addHighFrequencyEventListener:fireInterval:`
 
-注册高频自定义事件监听。
-
 <ApiSignature>
 
-\- (void)addHighFrequencyEventListener:(NSString *)*eventName* fireInterval:(NSUInteger)*millseconds*
+\- (void)addHighFrequencyEventListener:(NSString *)eventName fireInterval:(NSUInteger)millseconds;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="eventName">
+```text
+注册高频自定义事件监听。
 
-想要监听的自定义事件名称。
+ 成功注册后，你可以接收到对应的自定义事件通知。
 
-</Parameter>
-<Parameter name="millseconds">
+*Note:** 对于同名的自定义事件，SDK 仅支持触发一个回调。
 
-SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如果设置为低于该值会被重置为 500 ms。
+ @param eventName 想要监听的自定义事件名称。
 
-</Parameter>
-</ParameterList>
+ @param millseconds SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如果设置为低于该值会被重置为 500 ms。
+```
 
-#### Discussion
-
-成功注册后，你可以接收到对应的自定义事件通知。
-
-**Note:**
-
-对于同名的自定义事件，SDK 仅支持触发一个回调。
-
-#### Declared In
-
-`WhiteDisplayer.h`
+Declared in Displayer/WhiteDisplayer.h
 
 <a id="//api/name/removeMagixEventListener:"></a>
 
 ### `– removeMagixEventListener:`
 
-移除自定义事件监听。
-
 <ApiSignature>
 
-\- (void)removeMagixEventListener:(NSString *)*eventName*
+\- (void)removeMagixEventListener:(NSString *)eventName;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="eventName">
+```text
+移除自定义事件监听。
 
-想要移除监听的自定义事件名称。
+ @param eventName 想要移除监听的自定义事件名称。
+```
 
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhiteDisplayer.h`
+Declared in Displayer/WhiteDisplayer.h
 
 <a id="//api/name/refreshViewSize"></a>
 
 ### `– refreshViewSize`
 
-刷新白板的界面。
-
 <ApiSignature>
 
-\- (void)refreshViewSize
+\- (void)refreshViewSize;
 
 </ApiSignature>
 
-#### Discussion
+```text
+刷新白板的界面。
 
-当 `WhiteboardView` 出现改变时，需要手动调用该方法刷新白板的界面。
+ 当 `WhiteboardView` 出现改变时，需要调用该方法刷新白板的界面。
+ 目前该方法 SDK 会主动调用，不再需要手动调用
+```
 
-#### Declared In
-
-`WhiteDisplayer.h`
+Declared in Displayer/WhiteDisplayer.h
 
 <a id="//api/name/convertToPointInWorld:result:"></a>
 
 ### `– convertToPointInWorld:result:`
 
-转换白板上点的坐标。
-
 <ApiSignature>
 
-\- (void)convertToPointInWorld:(WhitePanEvent *)*point* result:(void (^) (WhitePanEvent *convertPoint))*result*
+\- (void)convertToPointInWorld:(WhitePanEvent *)point result:(void (^) (WhitePanEvent *convertPoint))result;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="point">
+```text
+转换白板上点的坐标。
 
-点在 iOS 坐标系中的坐标。详见 [WhitePanEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-pan-event)。
+ 该方法可以将 iOS 内部坐标系中的坐标转换为世界坐标系（以白板初始化时的中点为原点，横轴为 X 轴，正方向向右，纵轴为 Y 轴，正方向向下）坐标。
 
-</Parameter>
-<Parameter name="result">
+ @param point 点在 iOS 坐标系中的坐标。
+ @param result 回调。返回点在世界坐标系上的坐标，详见 [WhitePanEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-pan-event)。
+```
 
-回调。返回点在世界坐标系上的坐标，详见 [WhitePanEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-pan-event)。
-
-</Parameter>
-</ParameterList>
-
-#### Discussion
-
-该方法可以将 iOS 内部坐标系中的坐标转换为世界坐标系（以白板初始化时的中点为原点，横轴为 X 轴，正方向向右，纵轴为 Y 轴，正方向向下）坐标。
-
-#### Declared In
-
-`WhiteDisplayer.h`
+Declared in Displayer/WhiteDisplayer.h
 
 <a id="//api/name/setCameraBound:"></a>
 
 ### `– setCameraBound:`
 
-设置视角边界。
-
 <ApiSignature>
 
-\- (void)setCameraBound:(WhiteCameraBound *)*cameraBound*
+\- (void)setCameraBound:(WhiteCameraBound *)cameraBound;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="cameraBound">
+```text
+设置视角边界。
 
-视角边界，详见 [WhiteCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound)。
+ @param cameraBound 视角边界，详见 [WhiteCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound)。
+```
 
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhiteDisplayer.h`
+Declared in Displayer/WhiteDisplayer.h
 
 <a id="//api/name/moveCamera:"></a>
 
 ### `– moveCamera:`
 
-调整视角。
-
 <ApiSignature>
 
-\- (void)moveCamera:(WhiteCameraConfig *)*camera*
+\- (void)moveCamera:(WhiteCameraConfig *)camera;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="camera">
+```text
+调整视角。
 
-视角的参数配置，详见 [WhiteCameraConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-config)。
+ 调用该方法后，SDK 会根据传入的参数调整视角。
 
-</Parameter>
-</ParameterList>
+ @param camera 视角的参数配置，详见 [WhiteCameraConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-config)。
+```
 
-#### Discussion
-
-调用该方法后，SDK 会根据传入的参数调整视角。
-
-#### Declared In
-
-`WhiteDisplayer.h`
+Declared in Displayer/WhiteDisplayer.h
 
 <a id="//api/name/moveCameraToContainer:"></a>
 
 ### `– moveCameraToContainer:`
 
-调整视角，以保证完整显示视觉矩形。
-
 <ApiSignature>
 
-\- (void)moveCameraToContainer:(WhiteRectangleConfig *)*rectangle*
+\- (void)moveCameraToContainer:(WhiteRectangleConfig *)rectangle;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="rectangle">
+```text
+调整视角，以保证完整显示视觉矩形。
 
-视觉矩形的参数设置，详见 [WhiteRectangleConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config)。
+ @param rectangle 视觉矩形的参数设置，详见 [WhiteRectangleConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-rectangle-config)。
+```
 
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhiteDisplayer.h`
+Declared in Displayer/WhiteDisplayer.h
 
 <a id="//api/name/scalePptToFit:"></a>
 
 ### `– scalePptToFit:`
 
-调整视角以保证完整显示 PPT 的内容。
-
 <ApiSignature>
 
-\- (void)scalePptToFit:(WhiteAnimationMode)*mode*
+\- (void)scalePptToFit:(WhiteAnimationMode)mode;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="mode">
+```text
+调整视角以保证完整显示 PPT 的内容。
 
-视角调整时的动画模式，详见 [WhiteAnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-animation-mode)。
+ 该操作为一次性操作。
 
-</Parameter>
-</ParameterList>
+ @since 2.5.1
 
-#### Availability
+*Note:**
 
-2.5.1
+ - 如果当前用户已经调用 [setViewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/setViewMode:) 方法并设置为 `follower`，调用该方法可能造成当前用户与主播内容不完全一致。
+ - 该方法为一次性操作。如果没有插入 PPT，调用该方法不生效。
 
-**Note:**
+ @param mode 视角调整时的动画模式，详见 [WhiteAnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-animation-mode)。
+```
 
-- 如果当前用户已经调用 [setViewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/setViewMode:) 方法并设置为 `follower`，调用该方法可能造成当前用户与主播内容不完全一致。
-- 如果没有插入 PPT，调用该方法不生效。
-
-#### Discussion
-
-该操作为一次性操作。
-
-#### Declared In
-
-`WhiteDisplayer.h`
+Declared in Displayer/WhiteDisplayer.h
 
 <a id="//api/name/scaleIframeToFit"></a>
 
 ### `– scaleIframeToFit`
 
-调整视角以保证完整显示 HTML5 课件。
-
 <ApiSignature>
 
-\- (void)scaleIframeToFit
+\- (void)scaleIframeToFit;
 
 </ApiSignature>
 
-#### Availability
+```text
+调整视角以保证完整显示 H5 课件。
 
-2.12.5
+ 该方法为一次性操作。如果没有插入 H5 课件，调用该方法不生效。
 
-**Note:**
+ @since 2.12.5
 
-如果当前用户已经调用 [setViewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/setViewMode:) 方法并设置为 `follower`，调用该方法可能造成当前用户与主播内容不完全一致。
+*Note:** 如果当前用户已经调用 [setViewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/setViewMode:) 方法并设置为 `follower`，调用该方法可能造成当前用户与主播内容不完全一致。
+```
 
-#### Discussion
-
-该方法为一次性操作。如果没有插入 HTML5 课件，调用该方法不生效。
-
-#### Declared In
-
-`WhiteDisplayer.h`
+Declared in Displayer/WhiteDisplayer.h
 
 <a id="//api/name/disableCameraTransform:"></a>
 
 ### `– disableCameraTransform:`
 
-禁止/允许用户调整视角。
-
 <ApiSignature>
 
-\- (void)disableCameraTransform:(BOOL)*disable*
+\- (void)disableCameraTransform:(BOOL)disable;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="disable">
+```text
+禁止/允许用户调整视角。
 
-是否禁止用户调整视角：
+ @since 2.11.0
 
-- `YES`: 禁止用户调整视角。
-- `NO`: (默认) 允许用户调整视角。
+ @param disable 是否禁止用户调整视角：
 
-</Parameter>
-</ParameterList>
+ - `YES`: 禁止用户调整视角。
+ - `NO`: (默认) 允许用户调整视角。
+```
 
-#### Availability
-
-2.11.0
-
-#### Declared In
-
-`WhiteDisplayer.h`
+Declared in Displayer/WhiteDisplayer.h
 
 <a id="//api/name/getScenePreviewImage:completion:"></a>
 
 ### `– getScenePreviewImage:completion:`
 
-获取特定场景的预览图。
-
 <ApiSignature>
 
-\- (void)getScenePreviewImage:(NSString *)*scenePath* completion:(void (^) (UIImage *_Nullable image))*completionHandler*
+\- (void)getScenePreviewImage:(NSString *)scenePath completion:(void (^)(UIImage * _Nullable image))completionHandler;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="scenePath">
+```text
+获取特定场景的预览图。
+*Note:**
 
-场景路径。
+ - 截取用户切换时，看到的场景内容，不是场景内全部内容。
+ - 图片支持：只有当图片服务器支持跨域，才可以显示在截图中。（请真机中运行）
 
-</Parameter>
-<Parameter name="completionHandler">
+ @param scenePath 场景路径。
+ @param completionHandler 返回指定场景的预览图。
+```
 
-返回指定场景的预览图。
-
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhiteDisplayer.h`
+Declared in Displayer/WhiteDisplayer.h
 
 <a id="//api/name/getSceneSnapshotImage:completion:"></a>
 
 ### `– getSceneSnapshotImage:completion:`
 
-获取特定场景的截图。
-
 <ApiSignature>
 
-\- (void)getSceneSnapshotImage:(NSString *)*scenePath* completion:(void (^) (UIImage *_Nullable image))*completionHandler*
+\- (void)getSceneSnapshotImage:(NSString *)scenePath completion:(void (^)(UIImage * _Nullable image))completionHandler;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="scenePath">
+```text
+获取特定场景的截图。
 
-场景路径。
+*Note:** 只有当前图片服务器支持跨区域，才能显示截图。
 
-</Parameter>
-<Parameter name="completionHandler">
+ @param scenePath 场景路径。
+ @param completionHandler 你可以通过该接口获取 `getSceneSnapshotImage` 方法的调用结果：
+```
 
-方法调用结果：
-
-- 如果方法调用成功，将返回指定场景的截图。
-- 如果方法调用失败，将返回错误信息。
-
-</Parameter>
-</ParameterList>
-
-#### Discussion
-
-**Note:**
-
-- 如果场景中展示了图片或动态 PPT 幻灯片，请确保该图片或PPT幻灯片的存储服务器支持跨域资源共享； 否则，生成的截图中可能不会显示图片或 PPT 幻灯片。
-- 为确保截图正常显示，声网推荐使用[互动白板服务端截图功能](/zh-CN/api-reference/api-ref/whiteboard/restful/screenshot-scene)。
-
-#### Declared In
-
-`WhiteDisplayer.h`
+Declared in Displayer/WhiteDisplayer.h
 
 <a id="//api/name/getLocalSnapShotWithCompletion:"></a>
 
 ### `– getLocalSnapShotWithCompletion:`
 
-获取当前的白板截图。
-
 <ApiSignature>
 
-\- (void)getLocalSnapShotWithCompletion:(void (^) (UIImage *_Nullable image, NSError *_Nullable error))*completionHandler*
+\- (void)getLocalSnapShotWithCompletion:(void(^)(UIImage * _Nullable image, NSError * _Nullable error))completionHandler;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="completionHandler">
+```text
+获取当前的白板截图
 
-方法调用结果：
+*NOTE:** 该方法得到的截图尺寸为当前的白板视图大小。
+```
 
-- 如果方法调用成功，将返回指定场景的截图。
-- 如果方法调用失败，将返回错误信息。
+Declared in Displayer/WhiteDisplayer.h
 
-</Parameter>
-</ParameterList>
+<a id="//api/name/getWindowManagerAttributesWithResult:"></a>
 
-#### Discussion
+### `– getWindowManagerAttributesWithResult:`
 
-**NOTE:** 该方法得到的截图尺寸为当前的白板视图大小。
+<ApiSignature>
 
-#### Declared In
+\- (void)getWindowManagerAttributesWithResult:(void(^)(NSDictionary * attributes))result;
 
-`WhiteDisplayer.h`
+</ApiSignature>
+
+```text
+获取当前的 WindowManager
+
+ @param result 获取的attributes回调
+```
+
+Declared in Displayer/WhiteDisplayer.h

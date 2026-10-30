@@ -1,0 +1,60 @@
+---
+title: 多窗口模式
+titlePlatforms:
+  - web
+---
+
+适用于 **Whiteboard Web SDK 2.16.59**。
+
+多窗口模式使用 WindowManager 管理主白板（MainView）和各类课件窗口。适用于需要同时展示多个课件、切换焦点、统一翻页与协同书写的业务。
+
+## 安装与接入
+
+```shell
+npm install white-web-sdk@2.16.59 @netless/window-manager@1.0.25
+```
+
+```typescript
+import { WhiteWebSdk, type InvisiblePluginClass } from 'white-web-sdk';
+import { WindowManager } from '@netless/window-manager';
+import '@netless/window-manager/dist/style.css';
+const sdk = new WhiteWebSdk({ appIdentifier, region: 'cn-hz', useMobXState: true });
+const room = await sdk.joinRoom({
+  uuid, roomToken, uid, region: 'cn-hz',
+  useMultiViews: true, disableMagixEventDispatchLimit: true,
+  invisiblePlugins: [WindowManager as unknown as InvisiblePluginClass<string, object, object>]
+});
+const manager = await WindowManager.mount({
+  room, container, containerSizeRatio: 9 / 16, cursor: true
+});
+```
+
+container 是已有且具备有效尺寸的 DOM 元素。invisiblePlugins 在入房前注册，mount 在入房后执行；useMobXState 与 disableMagixEventDispatchLimit 应同时开启。同房间客户端保持一致的比例约定。使用[教具插件](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/overview?platform=web)时，还需要该页面介绍的插件注册与初始化。
+
+## 按功能选择 API
+
+| 功能 | 公开入口 | 作用 |
+| --- | --- | --- |
+| 课件生命周期 | addApp / closeApp | 添加与关闭房间中的课件实例 |
+| 课件查询 | queryAll / queryOne | 查询本端 AppProxy；实例是否存在不代表已渲染 |
+| 窗口焦点 | focusApp、focused、focusedChange | 提交或观察窗口焦点；focusApp 返回 `Promise<boolean>` |
+| 主白板场景 | setMainViewScenePath / setMainViewSceneIndex | 切换主白板目录或零基场景索引 |
+| 主白板页导航 | nextPage / prevPage / jumpPage | 操作主白板页面；jumpPage 使用零基索引 |
+| 窗口状态 | setBoxState / boxState / boxStateChange | 最大化、最小化、普通窗口状态 |
+| 视角与权限 | setViewMode / setReadonly | 配置跟随和只读；不能提升房间本身的写权限 |
+| 光标 | mount 的 cursor、入房 userPayload | 配置多窗口用户光标与昵称 |
+| 相机与撤销 | moveCamera / undo / redo | 移动主视图、撤销重做 |
+
+统一控制接口使用从 1 开始的页码，与上述零基场景索引区分。操作回调只代表其定义的提交状态，课件可见/初始化/资源渲染需要分别观察。WindowManager 事件由 `manager.emitter.on(...)` 订阅，保存并调用返回的解除订阅函数。
+
+## 课件与进阶配置
+
+- [课件接入](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/courseware-integration?platform=web)：动态 Slide、静态 Presentation、DocsViewer、MediaPlayer 与自定义 H5。
+- [统一页面控制](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-page-control?platform=web)：按 mainView 或具体 appId 控制页面、查询倍率、监听页码和缩放。
+- [统一笔记](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-notes?platform=web)：MainView 与 Slide/Presentation 的 originSize。
+- [课件按需加载](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/courseware-lazy-loading?platform=web)：forceMaximized、按焦点初始化与 LRU 缓存。
+- [动态配置](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/dynamic-config?platform=web)：配置平台下发窗口参数与本地覆盖优先级。
+
+## 退出
+
+先解除业务监听；若创建了教具插件实例，先等待其 destroy，再等待 manager.destroy 和 room.disconnect，最后移除容器。不要一边销毁 manager 一边继续向它发送课件操作。

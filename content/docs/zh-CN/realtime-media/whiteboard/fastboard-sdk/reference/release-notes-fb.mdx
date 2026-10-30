@@ -9,6 +9,59 @@ description: "查看 Fastboard SDK 的版本更新、问题修复、行为变更
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="1.8.2 版" id="182-版" headingLevel={2} value="182-版">
+
+该版本于 2026 年 9 月 28 日发布。
+
+### 新增特性
+
+- 新增 Presentation 静态课件、App 聚焦、结构化文档命令和统一页面状态。
+
+### 改进
+
+- 依赖升级至 Whiteboard Android 2.16.131，提升背景图恢复、焦点切换和播放器生命周期的稳定性。
+
+### 问题修复
+
+- 修复入房取消、晚到结果、回放生命周期和回调重入问题，并完善 SDK 与插件回调转发。
+
+</Accordion>
+
+<Accordion title="1.8.1 版" id="181-版" headingLevel={2} value="181-版">
+
+该版本于 2026 年 1 月 22 日发布。
+
+### 改进
+
+- 统一使用 Activity Context 创建 WhiteboardView。
+- 依赖升级至 Whiteboard Android 2.16.115，改进 PPT 公式渲染和等待 App 关闭完成的行为。
+
+</Accordion>
+
+<Accordion title="1.8.0 版" id="180-版" headingLevel={2} value="180-版">
+
+该版本于 2026 年 1 月 8 日发布。
+
+### 新增特性
+
+- 新增 `FastboardConfig.enableAssetsHttps`，支持通过 HTTPS 代理加载本地资源。
+
+### 改进
+
+- 依赖升级至 Whiteboard Android 2.16.114。
+
+</Accordion>
+
+<Accordion title="1.7.3 版" id="173-版" headingLevel={2} value="173-版">
+
+该版本于 2025 年 11 月 17 日发布。
+
+### 问题修复
+
+- 修复入房失败后点击部分按钮可能出现的空指针异常。
+
+</Accordion>
+
 <Accordion title="1.7.2 版" id="172-版" headingLevel={2} value="172-版">
 
 该版本于 2025 年 7 月 11 日发布。
@@ -260,6 +313,59 @@ Fastboard SDK 支持在白板中插入和展示多种形式的文件，例如，
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="1.4.6 版" id="146-版" headingLevel={2} value="146-版">
+
+该版本于 2026 年 9 月 28 日发布。
+
+### 新增特性
+
+- 新增 Presentation 静态课件、App 聚焦和结构化分页 API。
+
+### API 变更
+
+- 插入媒体或课件时的 App ID 回调类型调整为 `String?`。如果 App ID 不存在，回调值可能为 `nil`，业务代码需要增加空值处理。
+
+### 改进
+
+- Whiteboard 依赖改为精确版本 `2.16.145`，最低支持 iOS 12。
+
+### 问题修复
+
+- 修复入房取消、重叠入房、晚到回调、Pencil 手势和多房间工具共享问题。
+- 修复 SwiftPM 图标资源加载问题。
+
+</Accordion>
+
+<Accordion title="1.4.5 版" id="145-版" headingLevel={2} value="145-版">
+
+该版本于 2026 年 3 月 24 日发布。
+
+### 问题修复
+
+- 修复 `FastProxy` 代理提前释放时可能发生的崩溃。
+
+</Accordion>
+
+<Accordion title="1.4.4 版" id="144-版" headingLevel={2} value="144-版">
+
+该版本于 2026 年 1 月 8 日发布。
+
+### 新增特性
+
+- 新增 `FastRoomConfiguration.enableHttpScheme`，支持使用 `WKWebView.loadHTMLString:baseURL:` 加载本地资源。
+
+</Accordion>
+
+<Accordion title="1.4.3 版" id="143-版" headingLevel={2} value="143-版">
+
+该版本于 2025 年 6 月 23 日发布。
+
+### 改进
+
+- 开放 `FastRoomOverlay` 的部分实现，便于自定义覆盖层。
+
+</Accordion>
+
 <Accordion title="1.4.2 版" id="142-版" headingLevel={2} value="142-版">
 
 该版本于 2024 年 9 月 14 日发布。
@@ -390,6 +496,87 @@ Fastboard SDK 支持在白板中插入和展示多种形式的文件，例如，
 本文提供声网 Fastboard SDK for Web 的发版说明。
 
 <Accordions type="multiple" openFirst>
+
+<Accordion title="1.1.10 版" id="1110-版" headingLevel={2} value="1110-版">
+
+该版本于 2026 年 10 月 12 日发布。
+
+### 新增特性
+
+#### 动态配置与依赖更新
+
+支持动态配置覆盖工厂默认值，保留业务显式参数优先级，改善不兼容配置的清理流程。
+
+### 改进
+
+更新 Whiteboard Web 至 ^2.16.59、WindowManager 至 ^1.0.25、Appliance Plugin 至 ^1.1.45、app-slide 至 ^0.2.107。
+
+</Accordion>
+
+<Accordion title="1.1.9 版" id="119-版" headingLevel={2} value="119-版">
+
+该版本于 2026 年 9 月 28 日发布。
+
+### 新增特性
+
+- 支持 Presentation 静态课件、结构化页面查询和统一页面控制。
+- 支持在未传入 `managerConfig` 时启用教具插件，并扩展教具成员状态。
+
+### 改进
+
+- 改进初始化、销毁、重连、图片加载失败和小窗应用创建失败时的资源清理与恢复能力。
+- 支持回放订阅前设置播放速度。
+- 依赖升级，提升容器尺寸同步、背景图恢复、焦点切换和播放器生命周期的稳定性。
+
+### 问题修复
+
+- 修复入房前 Worker URL 校验、晚到图片回调和工具栏创建 App 失败等问题。
+
+</Accordion>
+
+<Accordion title="1.1.8 版" id="118-版" headingLevel={2} value="118-版">
+
+该版本于 2026 年 7 月 17 日发布。
+
+### 改进
+
+- 补充 `managerConfig.builtinAppOptions.Presentation` 配置说明，并升级 Window Manager 和 Web SDK。
+
+</Accordion>
+
+<Accordion title="1.1.7 版" id="117-版" headingLevel={2} value="117-版">
+
+该版本于 2026 年 7 月 14 日发布。
+
+### 新增特性
+
+- `insertDocs` 新增可选参数 `staticRenderer: "presentation"`，支持使用 Presentation 渲染静态文档。
+
+</Accordion>
+
+<Accordion title="1.1.6 版" id="116-版" headingLevel={2} value="116-版">
+
+该版本于 2026 年 7 月 3 日发布。
+
+### 改进
+
+- 升级教具插件和 AppInMainView 依赖，增加自定义选择器能力及 full 包 bridge 入口。
+
+</Accordion>
+
+<Accordion title="1.1.5 版" id="115-版" headingLevel={2} value="115-版">
+
+该版本于 2026 年 4 月 28 日发布。
+
+### 新增特性
+
+- 拆分 normal、lite 和 full 独立包，提供不同体积和依赖组织方式。
+
+### 改进
+
+- 升级窗口管理器、教具插件和 PPT 播放器，改善异步加载、动画、公式和资源重试体验。
+
+</Accordion>
 
 <Accordion title="1.1.0 版" id="110-版" headingLevel={2} value="110-版">
 

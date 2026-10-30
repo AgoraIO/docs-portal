@@ -2,71 +2,250 @@
 title: WhiteAppParam Class Reference
 _migration:
   type: generated-html
-  status: migrated
+  status: warning
   sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteAppParam
   sourcePath: html-docs/whiteboard/iOS/Classes/WhiteAppParam.html
   generator: appledoc
-  warnings: []
+  warnings:
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
 ---
 
-| Inherits from | WhiteObject |
-| --- | --- |
-| Declared in | WhiteAppParam.h |
+Whiteboard iOS SDK 2.16.147 公开接口。
 
-<a id="overview"></a>
+@interface WhiteAppParam: WhiteObject
 
-## Overview
+## 成员
 
-多窗口模式下，小窗应用的配置参数项。
-
-直接使用类方法生成，不需要主动配置各个属性值。
-
-<a id="tasks"></a>
+- [kind](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-param#//api/name/kind)
+- [options](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-param#//api/name/options)
+- [attrs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-param#//api/name/attrs)
+- [originSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-param#//api/name/originSize)
+- [resolvedAttrs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-param#//api/name/resolvedAttrs)
+- [createSlideApp\:taskId\:url\:title:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-param#//api/name/createSlideApp:taskId:url:title:)
+- [createSlideApp\:taskId\:url\:title\:previewlist\:resourceList:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-param#//api/name/createSlideApp:taskId:url:title:previewlist:resourceList:)
+- [createSlideApp\:taskId\:url\:title\:previewlist\:resourceList\:customLinks:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-param#//api/name/createSlideApp:taskId:url:title:previewlist:resourceList:customLinks:)
+- [createSlideApp\:scenes\:title:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-param#//api/name/createSlideApp:scenes:title:)
+- [createDocsViewerApp\:scenes\:title:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-param#//api/name/createDocsViewerApp:scenes:title:)
+- [createPresentationApp\:scenes\:title:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-param#//api/name/createPresentationApp:scenes:title:)
+- [createMediaPlayerApp\:title:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-param#//api/name/createMediaPlayerApp:title:)
+- [initWithKind\:options\:attrs:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-param#//api/name/initWithKind:options:attrs:)
 
 <a id="//api/name/kind"></a>
 
-### `kind`
 
-小窗应用类型。
+<a id="tasks"></a>
+
+### `kind`
 
 <ApiSignature>
 
-@property (nonatomic, copy, readonly) NSString *kind
+@property (nonatomic, copy, readonly) NSString *kind;
 
 </ApiSignature>
 
-#### Declared In
+```text
+插件类型
+```
 
-`WhiteAppParam.h`
+Declared in Object/WhiteAppParam.h
 
 <a id="//api/name/options"></a>
 
 ### `options`
 
-小窗应用的必须配置项。
-
 <ApiSignature>
 
-@property (nonatomic, strong, readonly) WhiteAppOptions *options
+@property (nonatomic, strong, readonly) WhiteAppOptions *options;
 
 </ApiSignature>
 
-#### Declared In
+```text
+插件固定需要的一些配置项
+```
 
-`WhiteAppParam.h`
+Declared in Object/WhiteAppParam.h
 
 <a id="//api/name/attrs"></a>
 
 ### `attrs`
 
-小窗应用的额外可选配置项。
-
 <ApiSignature>
 
-@property (nonatomic, copy, readonly) NSDictionary *attrs
+@property (nonatomic, copy, readonly) NSDictionary *attrs;
 
 </ApiSignature>
 
-#### Declared In
+```text
+插件所需要的一些额外可选属性,可以不填
+```
 
-`WhiteAppParam.h`
+Declared in Object/WhiteAppParam.h
+
+<a id="//api/name/originSize"></a>
+
+### `originSize`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteWindowOriginSize *originSize;
+
+</ApiSignature>
+
+正数 width/height 组成的参考尺寸；App 参数序列化为 attributes.originSize。
+
+```text
+Slide / Presentation 的固定参考尺寸，序列化为 attributes.originSize。
+```
+
+Declared in Object/WhiteAppParam.h
+
+<a id="//api/name/resolvedAttrs"></a>
+
+### `– resolvedAttrs`
+
+<ApiSignature>
+
+\- (NSDictionary *)resolvedAttrs;
+
+</ApiSignature>
+
+```text
+合并通用 attributes 与强类型 originSize 后的 Bridge 参数。
+```
+
+Declared in Object/WhiteAppParam.h
+
+<a id="//api/name/createSlideApp:taskId:url:title:"></a>
+
+### `+ createSlideApp:taskId:url:title:`
+
+<ApiSignature>
+
+\+ (instancetype)createSlideApp:(NSString *)dir taskId:(NSString *)taskId url:(NSString *)url title:(NSString *)title;
+
+</ApiSignature>
+
+```text
+合并通用 attributes 与强类型 originSize 后的 Bridge 参数。
+```
+
+Declared in Object/WhiteAppParam.h
+
+<a id="//api/name/createSlideApp:taskId:url:title:previewlist:resourceList:"></a>
+
+### `+ createSlideApp:taskId:url:title:previewlist:resourceList:`
+
+<ApiSignature>
+
+\+ (instancetype)createSlideApp:(NSString *)dir taskId:(NSString *)taskId url:(NSString *)url title:(NSString *)title previewlist:(NSArray &lt;NSString *&gt;*)previewList resourceList: (NSArray &lt;NSString *&gt;*)resourceList;
+
+</ApiSignature>
+
+Declared in Object/WhiteAppParam.h
+
+<a id="//api/name/createSlideApp:taskId:url:title:previewlist:resourceList:customLinks:"></a>
+
+### `+ createSlideApp:taskId:url:title:previewlist:resourceList:customLinks:`
+
+<ApiSignature>
+
+\+ (instancetype)createSlideApp:(NSString *)dir taskId:(NSString *)taskId url:(NSString *)url title:(NSString *)title previewlist:(NSArray &lt;NSString *&gt;*)previewList resourceList: (NSArray &lt;NSString *&gt;*)resourceList customLinks:(NSArray &lt;WhiteSlideCustomLink *&gt;*)customLinks;
+
+</ApiSignature>
+
+Declared in Object/WhiteAppParam.h
+
+<a id="//api/name/createSlideApp:scenes:title:"></a>
+
+### `+ createSlideApp:scenes:title:`
+
+<ApiSignature>
+
+\+ (instancetype)createSlideApp:(NSString *)dir scenes:(NSArray &lt;WhiteScene *&gt;*)scenes title:(NSString *)title;
+
+</ApiSignature>
+
+```text
+合并通用 attributes 与强类型 originSize 后的 Bridge 参数。
+```
+
+Declared in Object/WhiteAppParam.h
+
+<a id="//api/name/createDocsViewerApp:scenes:title:"></a>
+
+### `+ createDocsViewerApp:scenes:title:`
+
+<ApiSignature>
+
+\+ (instancetype)createDocsViewerApp:(NSString *)dir scenes:(NSArray &lt;WhiteScene *&gt;*)scenes title:(NSString *)title;
+
+</ApiSignature>
+
+Declared in Object/WhiteAppParam.h
+
+<a id="//api/name/createPresentationApp:scenes:title:"></a>
+
+### `+ createPresentationApp:scenes:title:`
+
+<ApiSignature>
+
+\+ (instancetype)createPresentationApp:(NSString *)dir scenes:(NSArray &lt;WhiteScene *&gt;*)scenes title:(NSString *)title;
+
+</ApiSignature>
+
+Declared in Object/WhiteAppParam.h
+
+<a id="//api/name/createMediaPlayerApp:title:"></a>
+
+### `+ createMediaPlayerApp:title:`
+
+<ApiSignature>
+
+\+ (instancetype)createMediaPlayerApp:(NSString *)src title:(NSString *)title;
+
+</ApiSignature>
+
+Declared in Object/WhiteAppParam.h
+
+<a id="//api/name/initWithKind:options:attrs:"></a>
+
+### `– initWithKind:options:attrs:`
+
+<ApiSignature>
+
+\- (instancetype)initWithKind:(NSString *)kind options:(WhiteAppOptions *)options attrs:(NSDictionary *)attrs;
+
+</ApiSignature>
+
+```text
+特定的App，一般用来创建自定义的App插入参数
+ @param kind 注册App时使用的kind
+ @param options 详见[WhiteAppOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-app-options)
+ @param attrs 初始化App的参数，按需填
+```
+
+Declared in Object/WhiteAppParam.h

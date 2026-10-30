@@ -193,6 +193,83 @@ function getNodeMeta(node: Folder | Root): DocsMeta | undefined {
 }
 
 describe('docs nav scope', () => {
+  it.each([false, true])(
+    'uses a scope-declared sidebar without exposing the generated index (versioned: %s)',
+    (versioned) => {
+      const url = '/en/api-reference/rtc/android/overview';
+      const configuredMeta = (node: Folder | Root): DocsMeta | undefined => {
+        const meta = getNodeMeta(node);
+        if (node.$id !== 'android-folder' || !meta) return meta;
+        return {
+          ...meta,
+          navScope: {
+            ...(versioned ? meta.navScope : {}),
+            sidebar: [
+              { title: 'API 参考', pages: [{ title: 'SDK API', url }] },
+            ],
+          },
+        };
+      };
+      const scope = resolveDocsNavScope({
+        activePath: url,
+        getNodeMeta: configuredMeta,
+        root: apiReferenceTree,
+        tab: 'api-reference',
+      });
+      if (!scope) throw new Error('expected SDK scope');
+      expect(
+        getScopedNavScopeSidebarNodes({
+          getNodeMeta: configuredMeta,
+          navScope: scope,
+        }),
+      ).toEqual([
+        {
+          children: [{ id: url, title: 'SDK API', type: 'page', url }],
+          collapsible: true,
+          id: 'version-sidebar-API 参考',
+          title: 'API 参考',
+          type: 'section',
+        },
+      ]);
+      if (!versioned) expect(scope.header.versionSwitcher).toBeUndefined();
+    },
+  );
+
+  it('keeps version-specific navigation ahead of the scope default', () => {
+    const url = '/en/api-reference/rtc/android/overview';
+    const configuredMeta = (node: Folder | Root): DocsMeta | undefined => {
+      const meta = getNodeMeta(node);
+      if (node.$id !== 'android-folder' || !meta) return meta;
+      return {
+        ...meta,
+        navScope: {
+          ...meta.navScope,
+          sidebar: [
+            { title: 'Scope default', url: '/en/api-reference/rtc/android' },
+          ],
+          versions: meta.navScope?.versions?.map((version) =>
+            version.id === 'current'
+              ? { ...version, sidebar: [{ title: 'Version API', url }] }
+              : version,
+          ),
+        },
+      };
+    };
+    const scope = resolveDocsNavScope({
+      activePath: url,
+      getNodeMeta: configuredMeta,
+      root: apiReferenceTree,
+      tab: 'api-reference',
+    });
+    if (!scope) throw new Error('expected SDK scope');
+    expect(
+      getScopedNavScopeSidebarNodes({
+        getNodeMeta: configuredMeta,
+        navScope: scope,
+      }),
+    ).toEqual([{ id: url, title: 'Version API', type: 'page', url }]);
+  });
+
   describe('context-specific version lists', () => {
     const base = '/zh-CN/api-reference/rtc/react-sdk';
     const reactVersions = [

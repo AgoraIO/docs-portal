@@ -1,0 +1,30 @@
+---
+title: Event
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/event
+  sourcePath: html-docs/whiteboard/Web/interfaces/event.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type Event = {
+    /**
+     * 事件名称
+     */
+    event: string;
+    /**
+     * 事件的负载
+     */
+    payload: any;
+    /**
+     * 事件触发者的用户 ID，若是系统事件，则为 AdminObserverId
+     */
+    authorId: number;
+    scope: Scope;
+    phase: EventPhase;
+};
+```

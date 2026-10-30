@@ -309,7 +309,8 @@ export function getScopedNavScopeSidebarNodes({
   getNodeMeta: GetDocsNodeMeta;
   navScope: DocsNavScopeResolution;
 }): DocsSidebarNode[] {
-  const versionSidebar = navScope.activeVersion?.sidebar;
+  const versionSidebar =
+    navScope.activeVersion?.sidebar ?? navScope.scope.meta.navScope?.sidebar;
   if (versionSidebar) {
     return versionSidebar.map((entry) =>
       'pages' in entry
@@ -694,6 +695,7 @@ function navScopeNodeToSidebarNodes(
   if (node.type === 'page') {
     return [
       {
+        ...(node.external ? { external: true } : {}),
         id: node.url,
         title:
           rootMeta?.sidebarLabels?.[node.url] ??
