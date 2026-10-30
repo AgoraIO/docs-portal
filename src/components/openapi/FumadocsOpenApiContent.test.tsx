@@ -1342,12 +1342,19 @@ describe('FumadocsOpenApiContent', () => {
     expect(rail.querySelector('.openapi-request-examples')).toBeInTheDocument();
     expect(rail.querySelector('.openapi-response-example')).toBeInTheDocument();
     const layout = rail.closest('.openapi-operation-layout');
-    expect(layout?.firstElementChild).toHaveClass('min-w-0');
-    expect(layout?.lastElementChild).toHaveClass(
-      'openapi-examples-rail-anchor',
+    const documentation = layout?.querySelector(
+      '[data-openapi-operation-panel="documentation"]',
     );
-    expect(layout?.lastElementChild?.lastElementChild).toBe(rail);
-    expect(layout?.children).toHaveLength(2);
+    const examples = layout?.querySelector(
+      '[data-openapi-operation-panel="examples"]',
+    );
+    expect(documentation).toHaveClass('min-w-0');
+    expect(examples).toContainElement(rail);
+    expect(documentation).not.toContainElement(rail);
+    expect(
+      examples?.querySelector('.openapi-examples-rail-anchor')
+        ?.lastElementChild,
+    ).toBe(rail);
     expect(rail.className).not.toContain('w-[360px]');
   });
 

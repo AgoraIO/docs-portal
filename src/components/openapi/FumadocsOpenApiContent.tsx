@@ -58,6 +58,7 @@ import {
 import { resolveLocalOpenApiReference } from '@/lib/openapi/schema-tree';
 import { OpenApiCodePreview } from './OpenApiCodePreview';
 import { OpenApiExamplesRail } from './OpenApiExamplesRail';
+import { OpenApiOperationPanels } from './OpenApiOperationPanels';
 import { OpenApiResponseHeaderRow } from './OpenApiResponseHeaderRow';
 import { OpenApiResponses } from './OpenApiResponses';
 import { OpenApiSchema } from './OpenApiSchema';
@@ -475,40 +476,53 @@ function OpenApiOperationLayout({
   method: OpenApiOperation;
   slots: OpenApiOperationLayoutSlots;
 }) {
+  const locale = useContext(OpenApiLocaleContext);
+
   return (
-    <div className="openapi-operation-layout gap-6">
-      <div className="min-w-0 flex-1">
-        {slots.header}
-        <OpenApiEndpointBar operation={method} />
-        <OpenApiDocsSections operation={method} position="after-description" />
-        <OpenApiDocsCallouts operation={method} position="after-description" />
-        <OpenApiInlineAuthorizationSection operation={method} />
-        {slots.parameters}
-        <OpenApiDocsSections operation={method} position="after-parameters" />
-        {slots.body}
-        <OpenApiDocsSections
-          operation={method}
-          position="before-response-body"
-        />
-        <OpenApiResponseBody operation={method} />
-        <OpenApiDocsSections
-          operation={method}
-          position="after-response-body"
-        />
-        <OpenApiDocsCallouts operation={method} position="after-responses" />
-        <OpenApiDocsSections
-          operation={method}
-          position="after-response-example"
-        />
-        {slots.callbacks}
-      </div>
-      <OpenApiExamplesRail>
-        <OpenApiAuthorizationSection operation={method} />
-        <OpenApiOperationContext.Provider value={method}>
-          {slots.apiExample}
-        </OpenApiOperationContext.Provider>
-      </OpenApiExamplesRail>
-    </div>
+    <OpenApiOperationPanels
+      locale={locale}
+      documentation={
+        <>
+          {slots.header}
+          <OpenApiEndpointBar operation={method} />
+          <OpenApiDocsSections
+            operation={method}
+            position="after-description"
+          />
+          <OpenApiDocsCallouts
+            operation={method}
+            position="after-description"
+          />
+          <OpenApiInlineAuthorizationSection operation={method} />
+          {slots.parameters}
+          <OpenApiDocsSections operation={method} position="after-parameters" />
+          {slots.body}
+          <OpenApiDocsSections
+            operation={method}
+            position="before-response-body"
+          />
+          <OpenApiResponseBody operation={method} />
+          <OpenApiDocsSections
+            operation={method}
+            position="after-response-body"
+          />
+          <OpenApiDocsCallouts operation={method} position="after-responses" />
+          <OpenApiDocsSections
+            operation={method}
+            position="after-response-example"
+          />
+          {slots.callbacks}
+        </>
+      }
+      examples={
+        <OpenApiExamplesRail>
+          <OpenApiAuthorizationSection operation={method} />
+          <OpenApiOperationContext.Provider value={method}>
+            {slots.apiExample}
+          </OpenApiOperationContext.Provider>
+        </OpenApiExamplesRail>
+      }
+    />
   );
 }
 

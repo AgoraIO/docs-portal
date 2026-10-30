@@ -1131,12 +1131,6 @@
     overflow-wrap: anywhere;
   }
 
-  .openapi-operation-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
   .openapi-examples-rail-anchor {
     position: relative;
     min-width: 0;
@@ -1240,13 +1234,7 @@
     margin-inline-start: 16px;
   }
 
-  @container (min-width: 56rem) {
-    .openapi-operation-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 400px;
-      align-items: start;
-    }
-
+  @container (min-width: 40rem) {
     .openapi-examples-rail {
       position: sticky;
       top: var(--openapi-examples-sticky-top, 48px);
@@ -1269,7 +1257,7 @@
       scrollbar-width: thin;
     }
 
-    .openapi-examples-rail-anchor {
+    [data-openapi-operation-panel="examples"] {
       align-self: stretch;
     }
   }
@@ -1549,7 +1537,7 @@
   background: transparent;
 }
 
-@container (max-width: 55.999rem) {
+@container (max-width: 39.999rem) {
   .openapi-code-preview [data-openapi-code-viewport] {
     /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */
     max-block-size: min(50dvh, 24rem) !important;
