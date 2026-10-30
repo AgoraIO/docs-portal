@@ -25,7 +25,7 @@ const productGroups = [
       { value: 'ppt-transcoding', label: 'PPT 转码服务' },
       { value: 'console', label: '控制台' },
       { value: 'cloud-recording', label: '云端录制' },
-      { value: 'meeting', label: '灵动会议' },
+      { value: 'meeting', label: '智能云会议引擎' },
       { value: 'transcoding', label: '云端转码' },
       { value: 'marketplace', label: '云市场' },
       { value: 'sdk-extensions', label: 'SDK 拓展插件' },

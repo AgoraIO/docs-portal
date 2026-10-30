@@ -10,6 +10,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useEffectEvent,
   useId,
   useLayoutEffect,
   useMemo,
@@ -17,7 +18,10 @@ import {
   useState,
 } from 'react';
 import { cn } from '@/lib/cn';
-import { DOCS_HASH_TARGET_EVENT } from '@/lib/docs-hash';
+import {
+  DOCS_HASH_TARGET_EVENT,
+  findDocsHeadingForHash,
+} from '@/lib/docs-hash';
 import { type AppLocale, DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 import {
   getStoredPlatformPreference,
@@ -53,7 +57,10 @@ const PlatformTabsPlacementContext = createContext<{
 });
 const PlatformPageContext = createContext<{
   activePlatform?: PlatformKey;
-  handlePlatformChange: (value: string) => void;
+  handlePlatformChange: (
+    value: string,
+    options?: { preserveLocation?: boolean },
+  ) => void;
 } | null>(null);
 const useBrowserLayoutEffect =
   typeof window === 'undefined' ? useEffect : useLayoutEffect;
@@ -139,10 +146,9 @@ function useHashPlatformPreference(
   platforms: PlatformKey[],
 ) {
   useEffect(() => {
-    // An explicit platform in the URL takes precedence over an old fragment.
-    if (initialPlatform) return;
     let observer: MutationObserver | undefined;
     let timeout: number | undefined;
+    let targetHash = '';
     const stopWaiting = () => {
       observer?.disconnect();
       observer = undefined;
@@ -150,14 +156,13 @@ function useHashPlatformPreference(
       timeout = undefined;
     };
     const revealTarget = () => {
-      let id: string;
+      let target: HTMLElement | null;
       try {
-        id = decodeURIComponent(window.location.hash.slice(1));
+        target = findDocsHeadingForHash(targetHash);
       } catch {
         stopWaiting();
         return true;
       }
-      const target = document.getElementById(id);
       if (!target) return false;
       stopWaiting();
       const platform = target.closest<HTMLElement>('[data-platform-panel]')
@@ -172,9 +177,14 @@ function useHashPlatformPreference(
       }
       return true;
     };
-    const requestTarget = () => {
+    const requestTarget = (event?: Event) => {
       stopWaiting();
-      if (!window.location.hash || revealTarget()) return;
+      // Preserve an explicit URL platform on arrival, but allow subsequent
+      // fragment navigation to reveal another panel without rewriting the URL.
+      if (initialPlatform && !event) return;
+      const detail = (event as CustomEvent<string> | undefined)?.detail;
+      targetHash = typeof detail === 'string' ? detail : window.location.hash;
+      if (!targetHash || revealTarget()) return;
       // MDX can arrive after the page shell; stop observing once it does.
       observer = new MutationObserver(() => {
         revealTarget();
@@ -216,6 +226,7 @@ export function PlatformTabsGroup({
 }) {
   const parsedPlatforms = usePlatformList(platforms);
   const platformContext = useContext(PlatformTabsPlacementContext);
+  const hasPageContext = useContext(PlatformPageContext) !== null;
   const resolvedInitialPlatform =
     initialPlatform ?? platformContext.initialPlatform;
   const resolvedDefaultPlatform =
@@ -234,6 +245,46 @@ export function PlatformTabsGroup({
     deferStoredPreference: false,
     syncPath: shouldSyncPlatformPath,
   });
+
+  const groupRef = useRef<HTMLDivElement>(null);
+  const revealHashPlatform = useEffectEvent((hash: string) => {
+    const heading = findDocsHeadingForHash(hash);
+    const panel = heading?.closest<HTMLElement>('[data-platform-panel]');
+    const platform = panel?.dataset.platformPanel;
+    if (
+      panel?.closest('[data-platform-group]') === groupRef.current &&
+      platform &&
+      platform !== activePlatform &&
+      isKnownPlatform(platform) &&
+      parsedPlatforms.includes(platform)
+    ) {
+      // Deep links select their containing panel without clearing the hash,
+      // unlike an explicit platform-tab click.
+      handlePlatformChange(platform, { preserveLocation: true });
+    }
+  });
+  useEffect(() => {
+    // The page provider owns hash selection, including explicit URL platforms.
+    if (hasPageContext) return;
+    const applyCurrentHash = () => revealHashPlatform(window.location.hash);
+    const handleHashTarget = (event: Event) => {
+      const hash = (event as CustomEvent<string>).detail;
+      revealHashPlatform(
+        typeof hash === 'string' ? hash : window.location.hash,
+      );
+    };
+    applyCurrentHash();
+    const observer = new MutationObserver(applyCurrentHash);
+    if (groupRef.current)
+      observer.observe(groupRef.current, { childList: true, subtree: true });
+    window.addEventListener('hashchange', applyCurrentHash);
+    window.addEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('hashchange', applyCurrentHash);
+      window.removeEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    };
+  }, [hasPageContext]);
 
   if (activePlatform === undefined) {
     return null;
@@ -256,6 +307,7 @@ export function PlatformTabsGroup({
           ? 'flex flex-col gap-4'
           : 'flex flex-col gap-3',
       )}
+      ref={groupRef}
       data-platform-group={groupMode}
       data-platforms={parsedPlatforms.join(' ')}
     >
@@ -960,13 +1012,16 @@ function usePlatformSelection({
     };
   }, [parsedPlatforms]);
 
-  function handlePlatformChange(value: string) {
+  function handlePlatformChange(
+    value: string,
+    options: { preserveLocation?: boolean } = {},
+  ) {
     if (!isKnownPlatform(value) || !parsedPlatforms.includes(value)) {
       return;
     }
 
     if (pageContext) {
-      pageContext.handlePlatformChange(value);
+      pageContext.handlePlatformChange(value, options);
       return;
     }
 
@@ -980,7 +1035,7 @@ function usePlatformSelection({
       setStoredPlatformPreference(value);
     }
 
-    if (syncPath) {
+    if (syncPath && !options.preserveLocation) {
       syncPlatformPath(value);
     }
   }

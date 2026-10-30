@@ -28,10 +28,17 @@ function docsCodeTransformer(): ShikiTransformer {
       const lines: string[] = [];
       let active = false;
       let next = false;
+      const comment =
+        /^(bash|sh|shell|shellscript|curl|python|py|ruby|rb|yaml|yml|toml|powershell|ps1|r)$/.test(
+          options.lang,
+        )
+          ? '(?:\\/\\/|#)'
+          : '\\/\\/';
+      const markerPattern = new RegExp(
+        `^\\s*${comment}\\s*highlight-(start|end|next-line)\\s*$`,
+      );
       for (const line of code.split('\n')) {
-        const marker = /^\s*\/\/\s*highlight-(start|end|next-line)\s*$/.exec(
-          line,
-        );
+        const marker = markerPattern.exec(line);
         if (marker) {
           if (marker[1] === 'next-line') next = true;
           else active = marker[1] === 'start';

@@ -10,83 +10,6 @@ _migration:
   warnings: []
 ---
 
-### Hierarchy
-
-- EventEmitter
-
-  - IAgoraRTC
-
-## Index
-
-### Events
-
-- [audio-context-state-changed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_audio_context_state_changed)
-- [autoplay-failed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_autoplay_failed)
-- [camera-changed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_camera_changed)
-- [microphone-changed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_microphone_changed)
-- [playback-device-changed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_playback_device_changed)
-- [security-policy-violation](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#event_security_policy_violation)
-
-### Global Callback Properties
-
-- [onAudioAutoplayFailed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onaudioautoplayfailed)
-- [onAutoplayFailed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onautoplayfailed)
-- [onCameraChanged](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#oncamerachanged)
-- [onMicrophoneChanged](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onmicrophonechanged)
-- [onPlaybackDeviceChanged](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onplaybackdevicechanged)
-- [onSecurityPolicyViolation](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onsecuritypolicyviolation)
-
-### Other Properties
-
-- [VERSION](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#version)
-
-### Agora Core Methods
-
-- [createClient](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createclient)
-
-### Local Track Methods
-
-- [createBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createbuffersourceaudiotrack)
-- [createCameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcameravideotrack)
-- [createCustomAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcustomaudiotrack)
-- [createCustomVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcustomvideotrack)
-- [createMicrophoneAndCameraTracks](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createmicrophoneandcameratracks)
-- [createMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createmicrophoneaudiotrack)
-- [createScreenVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createscreenvideotrack)
-
-### Logger Methods
-
-- [disableLogUpload](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#disablelogupload)
-- [enableLogUpload](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#enablelogupload)
-- [setLogLevel](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#setloglevel)
-
-### Media Devices Methods
-
-- [getCameras](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getcameras)
-- [getDevices](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getdevices)
-- [getElectronScreenSources](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getelectronscreensources)
-- [getMicrophones](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getmicrophones)
-- [getPlaybackDevices](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getplaybackdevices)
-
-### Other Methods
-
-- [checkAudioTrackIsActive](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#checkaudiotrackisactive)
-- [checkSystemRequirements](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#checksystemrequirements)
-- [checkVideoTrackIsActive](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#checkvideotrackisactive)
-- [createChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createchannelmediarelayconfiguration)
-- [getListeners](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getlisteners)
-- [getSupportedCodec](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getsupportedcodec)
-- [off](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#off)
-- [on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on)
-- [once](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#once)
-- [preload](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#preload)
-- [processExternalMediaAEC](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#processexternalmediaaec)
-- [registerExtensions](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#registerextensions)
-- [removeAllListeners](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#removealllisteners)
-- [resumeAudioContext](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#resumeaudiocontext)
-- [setArea](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#setarea)
-- [startLastmileProbeTest](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#startlastmileprobetest)
-
 ## Events
 
 <a id="event_audio_context_state_changed"></a>
@@ -353,7 +276,7 @@ onAudioAutoplayFailed: function
 
 该回调在音频轨道自动播放失败的时候触发。如果短时间内有多个音频轨道对象都调用了 `play`，SDK 会触发多次 `onAudioAutoplayFailed`。
 
-音频自动播放失败是浏览器的[自动播放策略](https://developer.mozilla.org/en-US/docs/Web/Media/Autoplay_guide#Autoplay_and_autoplay_blocking)导致的，视频轨道的播放不受此影响。
+音频自动播放失败是浏览器的[自动播放策略](https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Autoplay#autoplay_and_autoplay_blocking)导致的，视频轨道的播放不受此影响。
 
 在 Agora Web SDK 中，只要用户和页面发生过一次点击交互，就会自动解锁浏览器音频自动播放的限制，所以针对音频自动播放有两种解决方案：
 
@@ -414,7 +337,7 @@ onAutoplayFailed: function
 
 SDK 在音频或视频轨道自动播放失败时触发该回调。
 
-- 音频自动播放失败是由浏览器的[自动播放策略](https://developer.mozilla.org/en-US/docs/Web/Media/Autoplay_guide#Autoplay_and_autoplay_blocking)导致的。
+- 音频自动播放失败是由浏览器的[自动播放策略](https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Autoplay#autoplay_and_autoplay_blocking)导致的。
 - 在大部分浏览器中，纯视频不受到自动播放策略的限制，但是在低电量模式下的 iOS Safari 浏览器中以及开启自定义自动播放限制的 iOS `WKWebView` 中（如 iOS 微信浏览器），纯视频的自动播放也会受到限制。
 
 在 Agora Web SDK 中，只要用户和页面发生过一次点击交互，就会自动解锁浏览器音频或视频的自动播放限制，所以针对自动播放有两种解决方案：

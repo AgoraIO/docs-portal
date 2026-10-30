@@ -6,13 +6,17 @@ import mdx from 'fumadocs-mdx/vite';
 import { nitro } from 'nitro/vite';
 import { defineConfig } from 'vitest/config';
 import { getOpenApiPrerenderPaths } from './src/lib/openapi/lanes';
+import { createPlatformQueryIndex } from './src/lib/platforms/query-route';
 import { getContentDocsPrerenderPaths } from './src/lib/prerender-content-routes';
 import { shouldPrerenderPage } from './src/lib/prerender-filter';
 import {
   createDocsPrerenderPaths,
   selectStaticDocsPrerenderPaths,
 } from './src/lib/prerender-pages';
-import { readDocsPrerenderPaths } from './src/lib/published-docs-routes.server';
+import {
+  readDocsPrerenderPaths,
+  readPublishedDocsRoutes,
+} from './src/lib/published-docs-routes.server';
 
 const isTest = process.env.VITEST === 'true';
 const buildTarget = process.env.DOCS_BUILD_TARGET;
@@ -28,6 +32,8 @@ const isStaticDeployment =
 const selectedPrerenderPaths = process.env.TSS_PRERENDER_PATHS?.split(',')
   .map((path) => path.trim())
   .filter(Boolean);
+const publishedDocsRoutes =
+  !isTest && isStaticDeployment ? readPublishedDocsRoutes() : [];
 const docsPrerenderPaths =
   isTest || isServiceDeployment
     ? []
@@ -47,6 +53,12 @@ const prerenderPages = (
 ).map((path) => ({ path }));
 
 export default defineConfig({
+  define: {
+    'import.meta.env.DOCS_PLATFORM_QUERY_INDEX':
+      isStaticDeployment && !isTest
+        ? JSON.stringify(createPlatformQueryIndex(publishedDocsRoutes))
+        : 'undefined',
+  },
   // The service build must not overwrite the separately published static site.
   ...(isServiceDeployment
     ? { publicDir: false, build: { outDir: 'dist/service' } }

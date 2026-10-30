@@ -180,6 +180,68 @@ describe('published CN index export', () => {
     expect(record.content).not.toContain('CalloutContainer');
     expect(record.content).not.toContain('tabGroup=');
   });
+  it.each([
+    ['android', 'Maven', 'maven'],
+    ['ios', 'CocoaPods', 'cocoapods'],
+    ['web', 'Package Manager', 'package-manager'],
+  ])(
+    'indexes the first rendered heading in a %s language tab',
+    async (platform, title, anchor) => {
+      const records = await exportPublishedCnRecords({
+        routes: [route],
+        pages: [page],
+        readMarkdown: async () =>
+          `# RTC API\n\n## 集成组件 [#install]\n\n  <TabsContent value="${platform}">\n    #### ${title} [#${anchor}]\n\n    安装组件依赖。\n\n    \`\`\`md\n    ## 示例标题 [#sample]\n    \`\`\`\n  </TabsContent>`,
+        readRenderedHtml: async () =>
+          `<h2 id="install">集成组件</h2><h4 id="${anchor}">${title}</h4><p>安装组件依赖。</p><pre><code>## 示例标题 [#sample]</code></pre>`,
+      });
+      expect(records.map((record) => record.url)).toEqual([
+        `${url.replace('/zh-CN', '')}#install`,
+        `${url.replace('/zh-CN', '')}#${anchor}`,
+      ]);
+      expect(records[1].content).toContain('安装组件依赖。');
+      expect(records[1].content).toContain('示例标题 [#sample]');
+    },
+  );
+
+  it('indexes a rendered platform heading nested in a preceding Markdown list', async () => {
+    const canonicalPath = '/zh-CN/solutions/art-class/get-started/quick-start';
+    const url = `${canonicalPath}/android`;
+    const records = await exportPublishedCnRecords({
+      routes: [
+        {
+          url,
+          canonicalPath,
+          markdownPath: `${url}.md`,
+          platform: 'android',
+          defaultPlatform: 'android',
+        },
+      ],
+      pages: [{ url: canonicalPath, title: '集成指引', objectType: 'docs' }],
+      readMarkdown: async () =>
+        '# 集成指引\n\n### 实时消息互动 [#实时消息互动]\n\n* SDK 下载地址\n* GitHub 示例项目\n\n    * 集成指引\n    * API 参考\n\n    ### 互动白板 [#互动白板]\n\n    教师在白板上涂鸦。\n\n    * 下载互动白板 SDK\n    * 开启和配置互动白板服务\n\n    ```md\n    ### 示例 [#sample]\n    ```\n\n    ### 未渲染标题 [#unrendered]\n\n    示例说明。\n\n## 画质增强 [#画质增强]\n\n设置视频编码属性。',
+      readRenderedHtml: async () =>
+        '<h3 id="实时消息互动">实时消息互动</h3><div data-platform-panel="android"><h3 id="互动白板">互动白板</h3><p>教师在白板上涂鸦。</p><span id="unrendered"></span></div><h2 id="画质增强">画质增强</h2>',
+    });
+    expect(records.map((record) => record.url)).toEqual([
+      `${url.replace('/zh-CN', '')}#实时消息互动`,
+      `${url.replace('/zh-CN', '')}#互动白板`,
+      `${url.replace('/zh-CN', '')}#画质增强`,
+    ]);
+    expect(records[0].content).toContain('API 参考');
+    expect(records[0].content).not.toContain('教师在白板上涂鸦');
+    expect(records[1]).toMatchObject({
+      platform: ['android'],
+      sectionTitle: '互动白板',
+      headingPath: ['集成指引', '互动白板'],
+    });
+    expect(records[1].content).toContain('教师在白板上涂鸦。');
+    expect(records[1].content).toContain('开启和配置互动白板服务');
+    expect(records[1].content).toContain('示例 [#sample]');
+    expect(records[1].content).toContain('示例说明。');
+    expect(records[2].content).toContain('设置视频编码属性。');
+  });
+
   it('indexes rendered subheadings inside a non-platform release-note accordion', async () => {
     const url = '/zh-CN/ai/release-notes';
     const records = await exportPublishedCnRecords({

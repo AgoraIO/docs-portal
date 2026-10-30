@@ -6,6 +6,7 @@ import type {
   DocsPagePayload,
   DocsRedirectPayload,
 } from '@/lib/docs-page.server';
+import { preserveRedirectSearch } from '@/lib/docs-redirect-url';
 import { preloadDocsPageContent } from '@/lib/docs-route-preload';
 import { isPublishedDocLocale } from '@/lib/docs-routing';
 import {
@@ -149,16 +150,4 @@ function TabIndexPage() {
       toc={toc}
     />
   );
-}
-
-function preserveRedirectSearch(
-  href: string,
-  location: { hash?: string; searchStr?: string },
-  preserveSearch = true,
-) {
-  if (/[?#]/.test(href)) {
-    return href;
-  }
-
-  return `${href}${preserveSearch ? (location.searchStr ?? '') : ''}${location.hash ?? ''}`;
 }

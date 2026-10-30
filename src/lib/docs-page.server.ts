@@ -752,17 +752,9 @@ export async function loadDocsPagePayload(
       };
     }
 
-    const parentPage = source.getPage(
-      platformGroupParent.slugs.slice(1),
-      locale,
-    );
-    if (!parentPage) {
-      return {
-        redirectUrl: platformGroupParent.url,
-      };
-    }
-
-    page = parentPage;
+    // The parent is already resolved from this locale's source pages. Looking
+    // it up again after slicing slugs can remove the tab, not a locale prefix.
+    page = platformGroupParent;
     requestedPlatform = panelPlatform;
   }
 

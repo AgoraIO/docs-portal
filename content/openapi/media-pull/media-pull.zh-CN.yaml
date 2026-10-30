@@ -7,13 +7,13 @@ info:
   description: '输入一路在线媒体流至声网频道内播放相当于创建了一个云端播放器（cloud player）。用户可以通过 RESTful API 控制云端播放器，实现对该媒体流的控制：
 
 
-    - [`Create`](create)：在项目中创建一个云端播放器。
+    - [`Create`](/zh-CN/api-reference/api-ref/media-pull/create)：在项目中创建一个云端播放器。
 
-    - [`Update`](update)：更新指定的云端播放器。
+    - [`Update`](/zh-CN/api-reference/api-ref/media-pull/update)：更新指定的云端播放器。
 
-    - [`List`](list)：分页列出该项目中所有云端播放器。
+    - [`List`](/zh-CN/api-reference/api-ref/media-pull/list)：分页列出该项目中所有云端播放器。
 
-    - [`Delete`](delete)：在项目中销毁一个云端播放器。
+    - [`Delete`](/zh-CN/api-reference/api-ref/media-pull/delete)：在项目中销毁一个云端播放器。
 
 
     > 请确保声网频道的场景为直播，而非通信，否则输入媒体流会失败。
@@ -29,7 +29,7 @@ info:
     - [云端播放器销毁成功](/zh-CN/realtime-media/media-pull/reference/ncs-events)。
 
 
-    因为声网会动态调整消息通知服务器的 IP 地址，为不影响你接收事件，你需要定期[查询 IP 地址](get-ncs-ip)并更新防火墙白名单配置。'
+    因为声网会动态调整消息通知服务器的 IP 地址，为不影响你接收事件，你需要定期[查询 IP 地址](/zh-CN/api-reference/api-ref/media-pull/get-ncs-ip)并更新防火墙白名单配置。'
   contact:
     name: 声网技术支持
     url: https://ticket.shengwang.cn/
@@ -949,7 +949,7 @@ components:
 
         - `false`：（默认）播放媒体流源文件。
 
-        > 在暂停状态下，不会触发 `idelTimeout` 倒计时销毁播放器，因此暂停时也会正常计费。如果不再需要输入在线媒体流，可直接调用[销毁云端播放器](delete)结束播放任务，不要停留在暂停状态，否则会一直产生费用。'
+        > 在暂停状态下，不会触发 `idelTimeout` 倒计时销毁播放器，因此暂停时也会正常计费。如果不再需要输入在线媒体流，可直接调用[销毁云端播放器](/zh-CN/api-reference/api-ref/media-pull/delete)结束播放任务，不要停留在暂停状态，否则会一直产生费用。'
       default: false
       x-stoplight:
         id: i67jtefedndnc

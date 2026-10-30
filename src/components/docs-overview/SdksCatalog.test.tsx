@@ -38,6 +38,146 @@ function openProductCard(name: string) {
 }
 
 describe('SdksCatalog', () => {
+  it('keeps old macOS RTM catalog links on the current Apple SDK', () => {
+    render(<SdksCatalog locale="zh-CN" product="signaling" platform="macos" />);
+    const product = openProductCard('实时消息 SDK');
+    expect(within(product).getByRole('combobox')).toHaveValue('ios');
+    expect(within(product).getAllByRole('article')).toHaveLength(1);
+    expect(
+      within(product).getByRole('link', {
+        name: '下载 Objective-C 实时消息 SDK',
+      }),
+    ).toHaveAttribute(
+      'href',
+      'https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.3.0.zip',
+    );
+    expect(within(product).queryByText('v2.2.8')).not.toBeInTheDocument();
+  });
+
+  it.each([
+    [
+      '实时消息 SDK',
+      [
+        'JavaScript',
+        'Java',
+        'Objective-C',
+        'Swift',
+        'C++',
+        'HarmonyOS',
+        '小程序（Beta）',
+        'Unity',
+        'Flutter',
+      ],
+    ],
+    [
+      '视频 SDK',
+      [
+        'Android',
+        'iOS',
+        'macOS',
+        'Web',
+        'Windows',
+        'HarmonyOS',
+        '小程序',
+        'Electron',
+        'Unity',
+        'Flutter',
+        'React Native',
+        'Unreal (C++)',
+        'Unreal (Blueprint)',
+        'React',
+      ],
+    ],
+    [
+      '语音 SDK',
+      [
+        'Android',
+        'iOS',
+        'macOS',
+        'Web',
+        'Windows',
+        'HarmonyOS',
+        'Electron',
+        'Unity',
+        'Flutter',
+        'Unreal (C++)',
+        'Unreal (Blueprint)',
+        'React',
+      ],
+    ],
+    ['RTC 服务端 SDK', ['C++', 'Java', 'Python', 'Go']],
+    ['本地服务端录制 SDK', ['服务端 C++', '服务端 Java']],
+    ['Agora Agents SDK', ['Go', 'Python', 'TypeScript']],
+    ['客户端组件 SDK', ['Android', 'iOS', 'Web']],
+    ['媒体流加速 RTSA SDK', ['C']],
+    ['智能云会议引擎 SDK', ['Android', 'iOS', 'Electron']],
+    ['互动白板 SDK', ['Android', 'iOS', 'Web']],
+    ['Fastboard SDK', ['Android', 'iOS', 'Web']],
+  ])('matches the legacy entry names and order for %s', (name, options) => {
+    render(<SdksCatalog locale="zh-CN" />);
+    const card = openProductCard(name);
+    const selector = within(card).getByRole('combobox');
+    expect(
+      within(selector)
+        .getAllByRole('option')
+        .map((option) => option.textContent),
+    ).toEqual(options);
+  });
+
+  it('groups Windows and Linux builds under the one legacy C++ RTM entry', () => {
+    render(<SdksCatalog locale="zh-CN" product="signaling" platform="cpp" />);
+    const product = openProductCard('实时消息 SDK');
+    expect(within(product).getByRole('combobox')).toHaveValue('cpp');
+    expect(within(product).getAllByRole('article')).toHaveLength(2);
+    for (const os of ['Windows', 'Linux']) {
+      expect(
+        within(product).getByRole('link', {
+          name: `下载 ${os} C++ 实时消息 SDK`,
+        }),
+      ).toHaveAttribute(
+        'href',
+        `https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_${os}_v2.3.0.zip`,
+      );
+    }
+  });
+
+  it.each([
+    ['android', 'Java', 'java.svg', 'RTM_JAVA_SDK_for_Android', 'java'],
+    ['ios', 'Objective-C', 'oc.svg', 'RTM_OC_SDK', 'objective-c'],
+    ['swift', 'Swift', 'swift.svg', 'RTM_OC_SDK', 'swift'],
+    ['web', 'JavaScript', 'js.svg', 'JavaScript_SDK_for_Web', 'javascript'],
+  ])(
+    'labels RTM %s by language while retaining its download package',
+    (id, label, icon, filename, route) => {
+      render(<SdksCatalog locale="zh-CN" product="signaling" />);
+      const product = openProductCard('实时消息 SDK');
+      const selector = within(product).getByRole('combobox', {
+        name: '实时消息 SDK 语言 / 平台',
+      });
+      expect(within(selector).getByRole('option', { name: label })).toHaveValue(
+        id,
+      );
+      fireEvent.change(selector, { target: { value: id } });
+      const card = within(product).getByRole('article', {
+        name: `${label} 实时消息 SDK`,
+      });
+      expect(card.querySelector('img')?.getAttribute('src')).toMatch(
+        new RegExp(`/${icon.replace('.', '\\.')}$`),
+      );
+      expect(
+        within(card)
+          .getByRole('link', { name: `下载 ${label} 实时消息 SDK` })
+          .getAttribute('href'),
+      ).toContain(filename);
+      expect(
+        within(product).getByRole('link', { name: '更多 ↗' }),
+      ).toHaveAttribute(
+        'href',
+        `/zh-CN/realtime-media/rtm/reference/downloads/${route}`,
+      );
+    },
+  );
+
   it('shows all RTSA C architecture downloads in the realtime capability group', () => {
     render(<SdksCatalog locale="zh-CN" />);
 
@@ -45,7 +185,7 @@ describe('SdksCatalog', () => {
     const product = openProductCard('媒体流加速 RTSA SDK');
     expect(group).toContainElement(product);
     const platform = within(product).getByRole('combobox', {
-      name: '媒体流加速 RTSA SDK 平台',
+      name: '媒体流加速 RTSA SDK 编程语言',
     });
     expect(platform).toHaveValue('c');
     expect(within(platform).getAllByRole('option')).toHaveLength(1);
@@ -200,7 +340,7 @@ describe('SdksCatalog', () => {
       within(videoCard).getByRole('article', { name: 'Android Full' }),
     ).toBeVisible();
     expect(
-      within(videoCard).getByRole('combobox', { name: '视频 SDK 平台' }),
+      within(videoCard).getByRole('combobox', { name: '视频 SDK 平台 / 框架' }),
     ).toHaveValue('android');
     const moreLink = within(videoCard).getByRole('link', {
       name: '更多 ↗',
@@ -222,7 +362,7 @@ describe('SdksCatalog', () => {
 
     const videoCard = openProductCard('视频 SDK');
     fireEvent.change(
-      within(videoCard).getByRole('combobox', { name: '视频 SDK 平台' }),
+      within(videoCard).getByRole('combobox', { name: '视频 SDK 平台 / 框架' }),
       { target: { value: 'ios' } },
     );
 
@@ -323,7 +463,7 @@ describe('SdksCatalog', () => {
       const details = card.querySelector('details') as HTMLDetailsElement;
       expect(details).toHaveAttribute('open');
       expect(
-        within(card).getByRole('combobox', { name: '视频 SDK 平台' }),
+        within(card).getByRole('combobox', { name: '视频 SDK 平台 / 框架' }),
       ).toHaveValue(platform);
 
       fireEvent.click(details.querySelector('summary') as HTMLElement);
@@ -453,7 +593,7 @@ describe('SdksCatalog', () => {
 
     const agentsCard = openProductCard('Agora Agents SDK');
     const typescriptPlatform = within(agentsCard).getByRole('combobox', {
-      name: 'Agora Agents SDK 平台',
+      name: 'Agora Agents SDK 编程语言',
     });
 
     fireEvent.change(typescriptPlatform, { target: { value: 'typescript' } });
@@ -507,10 +647,10 @@ describe('SdksCatalog', () => {
     expect(overflowCue).toHaveClass('opacity-0');
     expect(typescriptPlatform).toHaveClass('min-h-11');
     expect(copyButton).toHaveClass('min-h-11', 'min-w-11');
-    const packageManager = within(agentsCard).getByRole('link', {
-      name: '包管理器 ↗',
+    const packageManager = within(agentsCard).queryByRole('link', {
+      name: 'npm',
     });
-    expect(packageManager).not.toHaveClass('min-h-11');
+    expect(packageManager).not.toBeInTheDocument();
   });
 
   it('only exposes the latest SDK version for download', () => {
@@ -765,7 +905,7 @@ describe('SdksCatalog', () => {
     const signalingCard = openProductCard('实时消息 SDK');
     expect(
       within(signalingCard).getByRole('combobox', {
-        name: '实时消息 SDK 平台',
+        name: '实时消息 SDK 语言 / 平台',
       }),
     ).toHaveValue('harmonyos');
     const downloadCard = within(signalingCard).getByRole('article', {
@@ -792,15 +932,15 @@ describe('SdksCatalog', () => {
     const signalingCard = openProductCard('实时消息 SDK');
     expect(
       within(signalingCard).getByRole('combobox', {
-        name: '实时消息 SDK 平台',
+        name: '实时消息 SDK 语言 / 平台',
       }),
-    ).toHaveValue('linux');
+    ).toHaveValue('cpp');
     const downloadCard = within(signalingCard).getByRole('article', {
-      name: 'Linux 实时消息 SDK C++',
+      name: 'Linux C++ 实时消息 SDK',
     });
     expect(
       within(downloadCard).getByRole('link', {
-        name: '下载 Linux 实时消息 SDK C++',
+        name: '下载 Linux C++ 实时消息 SDK',
       }),
     ).toHaveAttribute(
       'href',
@@ -883,7 +1023,7 @@ describe('SdksCatalog', () => {
       'https://www.npmjs.com/package/fcr-ui-scene/v/3.1.0',
     ],
   ])(
-    'opens the %s %s %s package registry without changing the install command',
+    'keeps the %s %s %s install command without a package registry link',
     (product, label, platform, command, href) => {
       render(
         <SdksCatalog locale="zh-CN" platform={platform} product={product} />,
@@ -891,8 +1031,16 @@ describe('SdksCatalog', () => {
       const card = openProductCard(label);
       expect(within(card).getByText(command)).toBeVisible();
       expect(
-        within(card).getByRole('link', { name: '包管理器 ↗' }),
-      ).toHaveAttribute('href', href);
+        within(card).queryByRole('link', {
+          name:
+            platform === 'android'
+              ? 'Maven'
+              : platform === 'ios'
+                ? 'CocoaPods'
+                : 'npm',
+        }),
+      ).not.toBeInTheDocument();
+      expect(card.querySelector(`a[href="${href}"]`)).toBeNull();
     },
   );
 
@@ -948,11 +1096,8 @@ describe('SdksCatalog', () => {
       'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_9_FULL.zip',
     );
     expect(
-      within(downloadCard).getByRole('link', { name: '包管理器' }),
-    ).toHaveAttribute(
-      'href',
-      'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.9',
-    );
+      within(downloadCard).queryByRole('link', { name: 'npm' }),
+    ).not.toBeInTheDocument();
     expect(
       within(voiceCard).queryByRole('combobox', { name: /版本/ }),
     ).not.toBeInTheDocument();
@@ -1028,7 +1173,7 @@ describe('SdksCatalog', () => {
 
     const serverCard = openProductCard('RTC 服务端 SDK');
     const serverPlatform = within(serverCard).getByRole('combobox', {
-      name: 'RTC 服务端 SDK 平台',
+      name: 'RTC 服务端 SDK 编程语言',
     });
     fireEvent.change(serverPlatform, { target: { value: 'go' } });
     expect(
@@ -1194,15 +1339,16 @@ describe('SdksCatalog', () => {
 
     const serverCard = openProductCard('RTC 服务端 SDK');
     const platform = within(serverCard).getByRole('combobox', {
-      name: 'RTC 服务端 SDK 平台',
+      name: 'RTC 服务端 SDK 编程语言',
     });
 
-    expect(platform).toHaveValue('linux-java');
+    expect(platform).toHaveValue('linux-cpp');
     expect(
       within(platform)
         .getAllByRole('option')
         .map((option) => option.textContent),
-    ).toEqual(['Linux Java', 'Linux C++', 'Python', 'Go']);
+    ).toEqual(['C++', 'Java', 'Python', 'Go']);
+    fireEvent.change(platform, { target: { value: 'linux-java' } });
     expect(
       within(serverCard).getByRole('article', {
         name: 'Linux RTC 服务端 SDK Java x86-64',
@@ -1215,7 +1361,7 @@ describe('SdksCatalog', () => {
       within(serverCard).getByRole('link', { name: '更多 ↗' }),
     ).toHaveAttribute(
       'href',
-      '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/linux-cpp',
+      '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/cpp',
     );
   });
 
@@ -1230,7 +1376,7 @@ describe('SdksCatalog', () => {
 
     const recordingCard = openProductCard('本地服务端录制 SDK');
     const platform = within(recordingCard).getByRole('combobox', {
-      name: '本地服务端录制 SDK 平台',
+      name: '本地服务端录制 SDK 编程语言',
     });
 
     expect(platform).toHaveValue('linux-cpp');
@@ -1238,13 +1384,13 @@ describe('SdksCatalog', () => {
       within(platform)
         .getAllByRole('option')
         .map((option) => option.textContent),
-    ).toEqual(['Linux C++', 'Linux Java']);
+    ).toEqual(['服务端 C++', '服务端 Java']);
     expect(within(recordingCard).getAllByRole('article')).toHaveLength(2);
     expect(
       within(recordingCard).getByRole('link', { name: '更多 ↗' }),
     ).toHaveAttribute(
       'href',
-      '/zh-CN/realtime-media/local-server-recording/reference/downloads/linux-cpp',
+      '/zh-CN/realtime-media/local-server-recording/reference/downloads/server-cpp',
     );
   });
 
@@ -1268,7 +1414,7 @@ describe('SdksCatalog', () => {
     render(<SdksCatalog locale="zh-CN" platform="web" product="signaling" />);
     const product = openProductCard('实时消息 SDK');
     const card = within(product).getByRole('article', {
-      name: 'Web 实时消息 SDK',
+      name: 'JavaScript 实时消息 SDK',
     });
     expect(within(card).getByText('v2.3.0')).toBeVisible();
     expect(
@@ -1278,7 +1424,7 @@ describe('SdksCatalog', () => {
       within(card).getByText('发布日期：2026 年 8 月 10 日'),
     ).toBeVisible();
     expect(
-      within(card).getByRole('link', { name: '下载 Web 实时消息 SDK' }),
+      within(card).getByRole('link', { name: '下载 JavaScript 实时消息 SDK' }),
     ).toHaveAttribute(
       'href',
       'https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.3.0.zip',

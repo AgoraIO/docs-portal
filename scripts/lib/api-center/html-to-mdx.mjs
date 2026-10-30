@@ -31,15 +31,11 @@ export const API_CENTER_GENERATOR_CONVERSION_OPTIONS = Object.freeze({
 });
 
 export const EDU_STORE_TYPEDOC_CONVERSION_PROFILE = 'edu-store-typedoc';
-export const RTC_REACT_TYPEDOC_CONVERSION_PROFILE = 'rtc-react-typedoc';
 
 export function apiCenterHtmlConversionProfile({
   sourcePath = '',
   supplementalGeneratedSource,
 } = {}) {
-  if (/^html-docs\/rtc\/React\//.test(sourcePath)) {
-    return RTC_REACT_TYPEDOC_CONVERSION_PROFILE;
-  }
   if (
     supplementalGeneratedSource?.kind === EDU_STORE_TYPEDOC_CONVERSION_PROFILE
   ) {
@@ -201,8 +197,56 @@ function selectArticle($) {
   return $('body').first();
 }
 
+function removeTypeDocNavigation($, article, sourceUrl, sourcePath) {
+  article.find('.tsd-hierarchy').remove();
+  if (!article.find('.tsd-index-group').length) return;
+  const page = new URL(
+    sourceUrl || sourcePath || '',
+    'https://doc.shengwang.cn',
+  );
+  const isOverview = /(?:^|\/)(?:globals|index)(?:\.html)?$/.test(
+    sourcePath || page.pathname,
+  );
+  article.find('.tsd-index-group').each((_, node) => {
+    const index = $(node);
+    if (isOverview) {
+      // Overview indexes also contain the only links to other API pages.
+      // Keep those categories, without the Index wrapper or same-page links.
+      const pagePath = page.pathname.replace(/\.html$/, '');
+      const sourcePagePath = new URL(
+        sourcePath?.split('/').at(-1) || page.href,
+        page,
+      ).pathname.replace(/\.html$/, '');
+      index.find('.tsd-index-section').each((_, section) => {
+        const category = $(section);
+        category.find('li').each((_, item) => {
+          const href = $(item).find('a[href]').first().attr('href');
+          const target = href ? new URL(href, page) : null;
+          if (
+            !target ||
+            (target.origin === page.origin &&
+              [pagePath, sourcePagePath].includes(
+                target.pathname.replace(/\.html$/, ''),
+              ))
+          ) {
+            $(item).remove();
+          }
+        });
+        if (!category.find('a[href]').length) return;
+        category.children('h3').each((_, heading) => {
+          $(heading).replaceWith($('<h2>').text($(heading).text()));
+        });
+        index.before(category);
+      });
+    }
+    index.remove();
+  });
+}
+
 function loadHtmlPage({
   html,
+  sourceUrl,
+  sourcePath,
   rootSelector,
   titleSelector,
   conversionProfile,
@@ -230,12 +274,7 @@ function loadHtmlPage({
       description: '',
     };
   }
-  if (
-    conversionProfile === EDU_STORE_TYPEDOC_CONVERSION_PROFILE ||
-    conversionProfile === RTC_REACT_TYPEDOC_CONVERSION_PROFILE
-  ) {
-    article.children('section.tsd-hierarchy, section.tsd-index-group').remove();
-  }
+  removeTypeDocNavigation($, article, sourceUrl, sourcePath);
   const selectedTitleNode = titleSelector ? $(titleSelector).first() : null;
   const titleNode =
     selectedTitleNode?.length > 0
@@ -310,6 +349,39 @@ function renderCodeSpan(value) {
   const fence = '`'.repeat(longestBacktickRun + 1);
   const padding = content.startsWith('`') || content.endsWith('`') ? ' ' : '';
   return `${fence}${padding}${content}${padding}${fence}`;
+}
+
+function renderCodeWithLinks($, element, state) {
+  const parts = [];
+  let text = '';
+  const flushText = () => {
+    if (text) parts.push(renderCodeSpan(text));
+    text = '';
+  };
+  const visit = (node) => {
+    if (node.type === 'text') {
+      text += node.data ?? '';
+      return;
+    }
+    if (node.type !== 'tag') return;
+    const child = $(node);
+    if (elementName(node) === 'a' && child.attr('href')) {
+      const rewritten = rewriteLegacyHref(child.attr('href'), state);
+      if (rewritten.warning) state.warnings.push(rewritten.warning);
+      const label = child.text();
+      if (rewritten.href && label) {
+        flushText();
+        parts.push(`[${renderCodeSpan(label)}](${rewritten.href})`);
+      } else {
+        text += label;
+      }
+      return;
+    }
+    for (const nested of child.contents().toArray()) visit(nested);
+  };
+  for (const node of element.contents().toArray()) visit(node);
+  flushText();
+  return parts.join('');
 }
 
 function hasExplicitCodeLineBreak(element) {
@@ -434,6 +506,9 @@ async function renderInlineNode($, node, state, options = {}) {
   const element = $(node);
   const name = elementName(node);
   if (name === 'code' || name === 'kbd') {
+    if (element.find('a[href]').length > 0) {
+      return renderCodeWithLinks($, element, state);
+    }
     const codeContent = await renderInlineNodes(
       $,
       element.contents().toArray(),
@@ -481,6 +556,12 @@ async function renderTypeDocInlineNode($, node, state) {
   const element = $(node);
   const name = elementName(node);
   if (name === 'wbr') return '';
+  if (
+    (name === 'code' || name === 'kbd') &&
+    element.find('a[href]').length > 0
+  ) {
+    return renderCodeWithLinks($, element, state);
+  }
   let content = '';
   for (const child of element.contents().toArray()) {
     content += await renderTypeDocInlineNode($, child, state);
@@ -1030,6 +1111,7 @@ async function renderList($, element, state, ordered) {
         );
       } else if (
         [
+          'aside',
           'blockquote',
           'div',
           'dl',
@@ -1037,6 +1119,7 @@ async function renderList($, element, state, ordered) {
           'img',
           'p',
           'pre',
+          'section',
           'table',
         ].includes(name)
       ) {
@@ -1564,6 +1647,8 @@ export async function convertHtmlToMdx({
   const { $, article, titleNode, descriptionNode, title, description } =
     loadHtmlPage({
       html,
+      sourceUrl,
+      sourcePath,
       rootSelector,
       titleSelector,
       conversionProfile,

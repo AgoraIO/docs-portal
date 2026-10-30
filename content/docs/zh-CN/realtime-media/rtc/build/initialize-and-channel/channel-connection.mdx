@@ -1605,7 +1605,7 @@ internal class UserEventHandler : IRtcEngineEventHandler
 
 ![监听 OnConnectionStateChanged 回调](https://web-cdn.agora.io/docs-portal/img/rtc/channel-connection-event.png)
 
-3. 当频道连接状态发生变化，触发 **OnConnectionStateChanged** 回调时，打印监听到的网络连接状态信息。你可以从日志中读取当前连接状态以及状态更改的触发原因，进而帮助网络故障排查，详见[状态说明及排障指导](#状态说明及排障指导)。如下图所示：
+3. 当频道连接状态发生变化，触发 **OnConnectionStateChanged** 回调时，打印监听到的网络连接状态信息。你可以从日志中读取当前连接状态以及状态更改的触发原因，进而帮助网络故障排查，详见[状态说明及排障指导](#状态说明及排障指导-10)。如下图所示：
 
 ![频道连接状态日志示例](https://web-cdn.agora.io/docs-portal/img/rtc/channel-connection-log.png)
 
@@ -1676,7 +1676,7 @@ internal class UserEventHandler : IRtcEngineEventHandler
 
 <Slot for="channel-connection-unreal-blueprint-markdown-2-4-1">
 
-- `INTERRUPTED`(2)：当网络连接中断时，SDK 自动重新连接频道，连接状态持续变化。关于自动重连时连接状态如何改变， 详见[断线重连](#断线重连)。
+- `INTERRUPTED`(2)：当网络连接中断时，SDK 自动重新连接频道，连接状态持续变化。关于自动重连时连接状态如何改变， 详见[断线重连](#断线重连-10)。
 - `LOST`(16)：SDK 和服务器失去连接。
 - `SETTING_PROXY_SERVER`(11)：由于设置了代理服务器，SDK 尝试重连。
 - `CLIENT_IP_ADDRESS_CHANGED`(13)：客户端 IP 地址变更。如多次收到该状态码，请提示用户更换网络后尝试重新加入频道。

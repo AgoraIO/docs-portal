@@ -12,7 +12,7 @@ import { isKnownPlatform } from './platforms/registry';
 
 const docsRoot = 'content/docs/zh-CN/realtime-media/rtm';
 const quickStartHref =
-  '/zh-CN/realtime-media/rtm/get-started/quick-start?platform=mini-program';
+  '/zh-CN/realtime-media/rtm/get-started/quick-start/mini-program';
 const npmHref = 'https://www.npmjs.com/package/shengwang-rtm-miniapp';
 
 function readDoc(path: string) {

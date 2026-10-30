@@ -770,6 +770,11 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
             label: '版本 2.16.100 （最新）',
             packageManager:
               'https://github.com/netless-io/whiteboard-android/releases/tag/2.16.100',
+            downloadLink:
+              'https://github.com/netless-io/whiteboard-android/archive/refs/tags/2.16.100.zip',
+            md5: 'ecf0c9d1f35124d93264dc46810d3e28',
+            packageName: 'com.herewhite.sdk',
+            releaseDate: '2025 年 4 月 7 日',
           },
           {
             id: '2.16.86-interactive-whiteboard-android',
@@ -1515,6 +1520,11 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
             label: '版本 2.16.112 （最新）',
             packageManager:
               'https://github.com/netless-io/Whiteboard-iOS/releases/tag/2.16.112',
+            downloadLink:
+              'https://github.com/netless-io/Whiteboard-iOS/archive/refs/tags/2.16.112.zip',
+            md5: '5446cb723f59e7626db8ec1472ec6dc8',
+            packageName: 'Whiteboard',
+            releaseDate: '2025 年 4 月 7 日',
           },
           {
             id: '2.16.95-interactive-whiteboard-ios',
@@ -1555,6 +1565,11 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
             label: '版本 1.4.2 （最新）',
             packageManager:
               'https://github.com/netless-io/fastboard-iOS/releases/tag/1.4.2',
+            downloadLink:
+              'https://github.com/netless-io/fastboard-iOS/archive/refs/tags/1.4.2.zip',
+            md5: 'b6366d11ab62b055b1ccd055290111e2',
+            packageName: 'Fastboard',
+            releaseDate: '2024 年 9 月 14 日',
           },
           {
             id: '1.4.0-fastboard-ios',

@@ -2,7 +2,9 @@ import { isRetiredCnDocsPath } from '@/lib/retired-cn-docs.mjs';
 
 const platformRouteAliases: Record<string, string> = {
   'react-js': 'react',
-  'unreal-engine': 'unreal',
+  'unreal-engine': 'unreal-cpp',
+  'unreal-cpp': 'unreal-cpp',
+  'unreal-blueprint': 'unreal-blueprint',
 };
 
 const rtcProducts = new Set(['video', 'voice']);
@@ -20,9 +22,14 @@ const rtcPlatforms = new Set([
   'react-native',
   'unity',
   'unreal-engine',
+  'unreal-cpp',
+  'unreal-blueprint',
   'react-js',
 ]);
 const signalingPlatforms = new Set([
+  'cpp',
+  'swift',
+  'mini-program',
   'android',
   'ios',
   'web',
@@ -52,7 +59,17 @@ export function getZhCNSdkDownloadPageHref(
 
   if (productId === 'signaling') {
     if (!signalingPlatforms.has(platformId)) return null;
-    const platform = platformId === 'linux' ? 'linux-cpp' : platformId;
+    const platform =
+      (
+        {
+          web: 'javascript',
+          android: 'java',
+          ios: 'objective-c',
+          windows: 'cpp',
+          linux: 'cpp',
+          'mini-program': 'mini-program-beta',
+        } as Record<string, string>
+      )[platformId] ?? platformId;
     return `/zh-CN/realtime-media/rtm/reference/downloads/${platform}`;
   }
 
@@ -81,10 +98,10 @@ export function getZhCNSdkDownloadPageHref(
 
   if (productId === 'server-gateway') {
     if (platformId === 'linux-java') {
-      return '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/linux-java';
+      return '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/java';
     }
     if (platformId === 'linux-cpp') {
-      return '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/linux-cpp';
+      return '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/cpp';
     }
     if (platformId === 'python') {
       return '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/python';
@@ -97,10 +114,10 @@ export function getZhCNSdkDownloadPageHref(
 
   if (productId === 'on-premise-recording') {
     if (platformId === 'linux-cpp') {
-      return '/zh-CN/realtime-media/local-server-recording/reference/downloads/linux-cpp';
+      return '/zh-CN/realtime-media/local-server-recording/reference/downloads/server-cpp';
     }
     if (platformId === 'linux-java') {
-      return '/zh-CN/realtime-media/local-server-recording/reference/downloads/linux-java';
+      return '/zh-CN/realtime-media/local-server-recording/reference/downloads/server-java';
     }
     return '/zh-CN/realtime-media/local-server-recording/reference/downloads';
   }

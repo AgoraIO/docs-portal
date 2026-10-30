@@ -521,6 +521,7 @@ describe('docs route locale guards', () => {
   });
 
   it('recognizes legacy query-string platform values for docs pages', () => {
+    expect(getKnownPlatformSearchParam('?platform=iOS')).toBe('ios');
     expect(getKnownPlatformSearchParam('?platform=macos')).toBe('macos');
     expect(getKnownPlatformSearchParam('?foo=bar&platform=react-native')).toBe(
       'react-native',
@@ -529,6 +530,55 @@ describe('docs route locale guards', () => {
       'javascript',
     );
     expect(getKnownPlatformSearchParam('?platform=all')).toBeUndefined();
+  });
+
+  it('redirects a supported platform query to its platform path with other URL state', async () => {
+    docsPagePayloadOverride.mockReturnValue(
+      createPlatformPayload('["web","ios"]'),
+    );
+    try {
+      await expect(
+        getLoader(DocPageRoute)({
+          location: { hash: 'details', searchStr: '?platform=iOS&from=legacy' },
+          params: {
+            locale: 'en',
+            tab: 'realtime-media',
+            _splat: 'rtm/build/presence',
+          },
+        } as never),
+      ).rejects.toMatchObject({
+        options: {
+          href: '/en/realtime-media/rtm/build/presence/ios?from=legacy#details',
+        },
+      });
+    } finally {
+      docsPagePayloadOverride.mockReset();
+    }
+  });
+
+  it('cleans a conflicting query on an explicit platform route', async () => {
+    const payload = createPlatformPayload('["web","ios"]');
+    if (payload.body.kind !== 'openapi' && payload.body.platformTabs)
+      payload.body.platformTabs.initialPlatform = 'ios';
+    docsPagePayloadOverride.mockReturnValue(payload);
+    try {
+      await expect(
+        getLoader(DocPageRoute)({
+          location: { hash: '', searchStr: '?platform=web&from=legacy' },
+          params: {
+            locale: 'en',
+            tab: 'realtime-media',
+            _splat: 'rtm/build/presence/ios',
+          },
+        } as never),
+      ).rejects.toMatchObject({
+        options: {
+          href: '/en/realtime-media/rtm/build/presence/ios?from=legacy',
+        },
+      });
+    } finally {
+      docsPagePayloadOverride.mockReset();
+    }
   });
 
   it('checks whether a docs payload supports a requested platform', () => {
@@ -1037,4 +1087,115 @@ describe('docs route locale guards', () => {
     },
     REAL_DOCS_ROUTE_TIMEOUT,
   );
+});
+
+describe('docs redirect fragments', () => {
+  it.each([
+    ['page', DocPageRoute],
+    ['index', TabIndexRoute],
+    ['layout', TabLayoutRoute],
+  ] as const)(
+    '%s preserves decoded router hashes in a valid Location header',
+    async (_, route) => {
+      const target = '/zh-CN/realtime-media/rtc/reference/error-code';
+      publishedLocaleOverride.value = true;
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+      docsPagePayloadOverride.mockReturnValue({ redirectUrl: target });
+      docsTabIndexOverride.mockReturnValue({ url: target });
+
+      try {
+        for (const hash of [
+          'appintoolbar',
+          '其他错误码-1',
+          '%E5%85%B6%E4%BB%96',
+        ]) {
+          const expected = `${target}?from=legacy#${hash.includes('%') ? hash : encodeURIComponent(hash)}`;
+          const result = await Promise.resolve()
+            .then(() =>
+              getLoader(route)({
+                location: {
+                  hash,
+                  pathname: '/zh-CN/api-reference',
+                  searchStr: '?from=legacy',
+                },
+                params: {
+                  locale: 'zh-CN',
+                  tab: 'api-reference',
+                  _splat: 'rtc/error-code',
+                },
+              } as never),
+            )
+            .catch((error: unknown) => error);
+          expect(isRedirect(result)).toBe(true);
+          expect((result as Response).headers.get('Location')).toBe(expected);
+        }
+      } finally {
+        publishedLocaleOverride.value = false;
+        docsPagePayloadOverride.mockReset();
+        docsTabIndexOverride.mockReset();
+      }
+    },
+  );
+});
+
+describe('legacy API deep-link platforms', () => {
+  it.each([
+    [
+      'whiteboard/fastboard/fastboard-api',
+      'appintoolbar',
+      'whiteboard/fastboard/web',
+    ],
+    [
+      'whiteboard/fastboard/fastboard-api',
+      'roomconfig',
+      'whiteboard/fastboard/ios',
+    ],
+    [
+      'rtm/toc-configuration/configuration',
+      'tokenevent',
+      'rtm/harmonyos/configuration',
+    ],
+    [
+      'rtm/toc-configuration/configuration',
+      'agorartmmessageevent',
+      'rtm/ios/configuration',
+    ],
+    ['rtm/toc-storage/storage', 'metadataitem', 'rtm/flutter/storage'],
+    ['rtm/toc-storage/storage', 'agorartmmetadata', 'rtm/ios/storage'],
+  ])('routes %s#%s to %s', async (slug, hash, target) => {
+    publishedLocaleOverride.value = true;
+    try {
+      for (const staticMode of [false, true]) {
+        vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(staticMode);
+        staticLegacyRedirectOverride.value = null;
+        const fallback = {
+          redirectUrl: '/zh-CN/api-reference/rtm/android/configuration',
+        };
+        docsPagePayloadOverride.mockReturnValue(fallback);
+        vi.mocked(resolvePlatformStaticDocsPayload).mockResolvedValue(fallback);
+        const result = await Promise.resolve()
+          .then(() =>
+            getLoader(DocPageRoute)({
+              location: {
+                hash,
+                searchStr: '?from=legacy',
+                pathname: `/zh-CN/api-reference/${slug}`,
+              },
+              params: { locale: 'zh-CN', tab: 'api-reference', _splat: slug },
+            } as never),
+          )
+          .catch((error: unknown) => error);
+        expect(isRedirect(result)).toBe(true);
+        expect((result as Response).headers.get('Location')).toBe(
+          `/zh-CN/api-reference/${target}?from=legacy#${hash}`,
+        );
+      }
+    } finally {
+      publishedLocaleOverride.value = false;
+      staticLegacyRedirectOverride.value = undefined;
+      docsPagePayloadOverride.mockReset();
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+      vi.mocked(resolvePlatformStaticDocsPayload).mockReset();
+    }
+  });
 });
