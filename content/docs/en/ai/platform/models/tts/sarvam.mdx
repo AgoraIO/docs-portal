@@ -104,7 +104,7 @@ agent := agentkit.NewAgent(client).
 </TabsContent>
 </Tabs>
 
-{/* TODO(platform-confirm): Since 2026-10-29, the pre-release API requires `params.model` for Sarvam TTS and accepts only `bulbul:v3` (`bulbul:v2` returns `InvalidFieldValue`). The REST example passes it. The SDK examples fail with `400 MissingRequiredField` at `/pipeline/tts/params/model`, because no SDK can set the model (SDK bug list #35). Python rejects extra fields. Update the SDK examples when the SDKs add a model option. Confirm that the speaker list on this page is valid for `bulbul:v3`. In pre-release testing (2026-10-28), the SDKs sent the key as `credential.fields.api_subscription_key`, and the API accepted it. */}
+{/* TODO(platform-confirm): The pre-release API requires `params.model` for Sarvam TTS and accepts only `bulbul:v3`. The alpha.3 SDK previews default the model to `bulbul:v3` (SDK bug list #35). Tested on 2026-10-30 from the preview branches: all three SDK examples saved with `model: bulbul:v3`. Confirm that the speaker list on this page is valid for `bulbul:v3`. In pre-release testing (2026-10-28), the SDKs sent the key as `credential.fields.api_subscription_key`, and the API accepted it. */}
 
 {/* TODO(platform-confirm): The Voice Agent API takes the Sarvam key in `params.api_subscription_key`. This page passes it in `credential.fields.api_subscription_key`. Confirm that the Platform maps it to Sarvam's subscription key. */}
 

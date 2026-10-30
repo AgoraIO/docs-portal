@@ -54,10 +54,10 @@ Get REST API credentials for the Platform. For details, see [Authentication](/en
 Install the SDK preview in your project's virtual environment. You need Python 3.8 or later. Specify the version, because the default `agora-agents` release doesn't support the Platform API.
 
 ```bash
-pip install agora-agents==3.0.0a2
+pip install agora-agents==3.0.0a3
 ```
 
-{/* TODO(platform-confirm): Update the version when the SDK team publishes the Platform release. Tested on 2026-10-29 (Windows, Python 3.14): `agora-agents==3.0.0a2` installed from PyPI, and this page's client setup and Create an agent example ran as written. PyPI's default version is still 2.12.0. 3.0.0a2 has the same code as preview commit ed4466c, which the other SDK examples were tested against. */}
+{/* TODO(platform-confirm): Pinned to agora-agents 3.0.0a3 ahead of its publication, which the SDK team confirmed for the launch. The code was tested on 2026-10-30 from the Python preview branch (83b48f5): the client setup, agent and session examples, and Basic authentication work. After publication, verify that this install command works. */}
 
 Create a client with your App ID and App Certificate. The SDK uses them to generate a token for each request. The Python examples on this page use this `client`:
 
@@ -80,10 +80,10 @@ Install the SDK preview in your project. You need Node.js 18 or later. Specify t
 
 ```bash
 cd <your_project_folder>
-npm install agora-agents@3.0.0-alpha.2
+npm install agora-agents@3.0.0-alpha.3
 ```
 
-{/* TODO(platform-confirm): Update the version when the SDK team publishes the Platform release. Tested on 2026-10-29 (Windows, Node 24): `agora-agents@3.0.0-alpha.2` installed from npm, and this page's client setup and Create an agent example ran as written. The npm `latest` tag is still 2.12.0; 3.0.0-alpha.2 is under the `alpha` tag. It has the same code as preview commit 4900f4c, which the other SDK examples were tested against. */}
+{/* TODO(platform-confirm): Pinned to agora-agents 3.0.0-alpha.3 ahead of its publication, which the SDK team confirmed for the launch. The code was tested on 2026-10-30 from the TypeScript preview branch (aee48c9): the client setup, agent and session examples, and Basic authentication work. After publication, verify that this install command works. */}
 
 Create a client with your App ID and App Certificate. The SDK uses them to generate a token for each request. The TypeScript examples on this page use this `client`:
 
@@ -105,11 +105,11 @@ Add the SDK to your Go module. You need Go 1.21 or later.
 
 ```bash
 cd <your_project_folder>
-go get github.com/AgoraIO/agora-agents-go/v2@v3-api-preview
+go get github.com/AgoraIO/agora-agents-go/v2@v2.14.0-alpha.3
 go mod tidy
 ```
 
-{/* TODO(platform-confirm): Replace `@v3-api-preview` with the Go v3.0.0-alpha.2 tag when the SDK team publishes it (the changelog is ready on feat/v3-api-preview, with no code changes since 362ce9a). Tested on 2026-10-29 (Windows, Go 1.26.3): `go get` resolved to commit 362ce9a, and a build then needed `go mod tidy` to add the token builder dependency to go.sum. */}
+{/* TODO(platform-confirm): Pinned to v2.14.0-alpha.3 ahead of its publication, which the SDK team confirmed for the launch. The code was tested on 2026-10-30 from the Go preview branch (c6d81a2): the client setup, agent and session examples, and Basic authentication work. After publication, verify that this install command works. */}
 
 Create a client with your App ID and App Certificate. The SDK uses them to generate a token for each request. The Go examples on this page use this `client` and `ctx`, and these imports:
 
@@ -136,9 +136,9 @@ client := agentkit.NewAgoraClient(agentkit.AgoraClientOptions{
 </TabsContent>
 </Tabs>
 
-{/* Verified in pre-release testing: Basic auth (2026-10-27) and ConvoAI token auth (2026-10-28) both work. A quoted or unquoted token header and a token with or without a channel scope were all accepted. The REST examples on this page use Basic auth. The SDKs support only token auth. */}
+{/* Verified in pre-release testing: Basic auth (2026-10-27) and ConvoAI token auth (2026-10-28) both work. A quoted or unquoted token header and a token with or without a channel scope were all accepted. The REST examples on this page use Basic auth. The SDK examples use token auth; the alpha.3 SDK previews also support Basic auth. */}
 
-{/* TODO(platform-confirm): The TypeScript and Python SDK previews are published as v3.0.0-alpha.2 (npm 3.0.0-alpha.2, PyPI 3.0.0a2). The Go preview isn't tagged yet and installs from the v3-api-preview branch. Update the versions when the Platform release is published. */}
+{/* TODO(platform-confirm): The SDK examples on this page need the alpha.3 SDK previews: TypeScript 3.0.0-alpha.3, Python 3.0.0a3, and Go v2.14.0-alpha.3. Earlier previews can't call the Platform API, because their tokens lack the ConvoAI service. */}
 
 ## Create an agent
 

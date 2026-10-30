@@ -101,7 +101,7 @@ agent := agentkit.NewAgent(client).
 </TabsContent>
 </Tabs>
 
-{/* TODO(platform-confirm): Since 2026-10-29, the pre-release API requires `params.language` for this vendor. The REST example passes it and saves. The SDK examples fail with `400 MissingRequiredField` at `/pipeline/asr/params/language`, because the SDKs send only the block-level `language` (SDK bug list #34). Retest the SDK examples when the SDKs send `params.language`. */}
+{/* TODO(platform-confirm): The pre-release API requires `params.language` for this vendor. The SDK examples need the alpha.3 SDK previews, which keep `params.language` (SDK bug list #34). Tested on 2026-10-30 from the preview branches: all three SDK examples saved with `params.language`. */}
 
 {/* TODO(platform-confirm): SDK tabs tested in pre-release testing on 2026-10-28. All three SDKs saved the BYOK example. The SDK examples omit the endpoint: the SDKs' `uri` option is sent as `params.uri`, not as the block-level `url` (SDK bug list #32). TypeScript and Python also set the block-level `language` to `en-US` (their default interaction language) instead of the vendor's language, while Go leaves it unset (SDK bug list #31). */}
 
