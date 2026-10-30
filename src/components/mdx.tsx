@@ -471,7 +471,17 @@ export function createDocsTableComponent(locale?: string) {
           ref={scrollRef}
           tabIndex={hasOverflow ? 0 : undefined}
         >
-          <table className={className} {...props} />
+          <table
+            className={cn(
+              // Physical first-child changes when earlier columns span rows.
+              // The MDX compiler marks logical columns and final-row edges.
+              '[&_[data-table-column]:not([data-table-column="0"])]:[border-inline-start:1px_solid_var(--docs-prose-table-border,var(--color-fd-border))]!',
+              '[&_[data-table-column="0"]]:[border-inline-start:0]!',
+              '[&_[data-table-bottom-edge]]:border-b-0!',
+              className,
+            )}
+            {...props}
+          />
         </section>
         <span className="sr-only" id={descriptionId}>
           {copy.tableOverflowDescription}

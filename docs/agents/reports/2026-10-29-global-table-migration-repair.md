@@ -67,14 +67,31 @@ original conversion factor in one merged cell.
 - Browser measurements confirm beauty option groups span six rows, makeup
   spans 18 rows, and Cloud Recording retains its merged header/disclaimer/total.
 - Types and lint passed. The final serial full suite passed 323 files and
-  5,069 tests, with two skipped.
-- Full Chinese production build passed with all 196 merged tables: 5,789
+  5,070 tests, with two skipped, including the border follow-up.
+- Full Chinese production build at merged-content commit `6b560cbc5` passed with all 196 merged tables: 5,789
   static payloads, 6,979 machine-readable files and 6,744 route HTML files.
 - Browser checks cover seven representative pages on desktop and at 390px:
   beauty, Cloud Recording billing, Whiteboard billing, Unreal C++ compatibility,
   RTSA enums, RTC overview and ByteDance integration. All 64 visible merged cells
   are vertically centered, their bottoms align exactly with their covered rows,
   all final columns are reachable, and no structural paragraph wrappers remain.
+
+## Logical cell borders
+
+Fumadocs removes the start border from physical `:first-child` cells. With
+rowspans, the first physical cell can belong to a later logical column, leaving
+gaps beside a merged cell. The publication transform now marks each cell's
+logical column and whether it reaches the table's final row. Shared table
+styles use those markers to retain internal vertical borders and avoid doubled
+bottom outlines on cells that begin above the final row. Ordinary GFM cells
+without these markers keep their existing styles.
+
+The border follow-up is validated by 112 focused tests, types, lint, the full
+suite above and all 57 affected pages in a real browser: all 196 merged tables
+and 3,818 cells have correct borders on desktop, at 390px and in dark mode.
+No source content or merge boundaries changed. The earlier complete production
+build result applies to the merged-content implementation; this border-only
+follow-up was checked through actual Vite-compiled styles on every affected page.
 
 The API samples have separate non-table narrow-screen overflow: hiding tables
 still leaves 564 pixels on Unreal C++ and 477 pixels on the RTSA enum page at a
