@@ -1010,7 +1010,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/conversational-ai/meta.json':
     '2026-10-21T05:55:36.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/platform/authentication.mdx':
-    '2026-10-29T11:27:57.000Z',
+    '2026-10-30T03:40:19.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/platform/index.mdx':
     '2026-10-29T02:43:49.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/platform/meta.json':
