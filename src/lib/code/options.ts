@@ -2,19 +2,11 @@ import { rehypeCodeDefaultOptions } from 'fumadocs-core/mdx-plugins/rehype-code'
 import type { ShikiTransformer } from 'shiki';
 import { normalizeShellOptions } from './shell-options';
 
+export { codeLanguageAliases } from './languages';
+
 function isShellLanguage(language: string) {
   return /^(bash|sh|shell|shellscript|curl)$/.test(language);
 }
-
-export const codeLanguageAliases: Record<string, string> = {
-  curl: 'bash',
-  shell: 'bash',
-  js: 'javascript',
-  node: 'javascript',
-  md: 'markdown',
-  objectivec: 'objc',
-  txt: 'text',
-};
 
 /** Keep legacy emphasis and Shell grammar fixes in the highlighting pipeline. */
 function docsCodeTransformer(): ShikiTransformer {

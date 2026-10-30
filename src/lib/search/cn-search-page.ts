@@ -1,3 +1,4 @@
+import { codeLanguageNames } from '../code/languages';
 import { normalizeCnProductFacets } from './cn-products';
 import { type CnSearchFamily, getCnSearchFamily } from './cn-search-family';
 import { isPublicCnSearchUrl } from './cn-search-urls.mjs';
@@ -99,7 +100,7 @@ export async function loadCnSearchCatalog(signal?: AbortSignal) {
 // removing authoring syntax from the cropped, text-only search preview.
 // Meilisearch may prepend its crop marker directly to an opening fence.
 export function cleanSearchSnippet(value: string): string {
-  return value
+  return stripCroppedFenceHeader(value)
     .replace(/\bOpenAPI:\s*\/openapi\/\S*/gi, '')
     .replace(/\|?\s*:?-{3,}:?\s*(?=\||$)/gm, ' ')
     .replace(/(^|\s)\|(?=\s|$)/gm, '$1')
@@ -113,6 +114,25 @@ export function cleanSearchSnippet(value: string): string {
     .replace(/(?:\*\*|__|`)/g, '')
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+function stripCroppedFenceHeader(value: string): string {
+  const firstLine = value.match(/^([ \t]*(?:…|\.{3}))[ \t]*([^\r\n]*)/);
+  if (!firstLine) return value;
+
+  // Only inspect a copy without highlights; the remaining snippet stays intact.
+  const header = firstLine[2].replace(/<\/?(?:mark|em)>/gi, '').trim();
+  if (!/^(?:`{3,}|~{3,})/.test(header)) {
+    const info = header.match(/^(\S+)[ \t]+(.+)$/);
+    if (!info || !codeLanguageNames.has(info[1].toLowerCase())) return value;
+    const remainder = info[2].replace(
+      /\b(?:tab|tabGroup|title)[ \t]*=[ \t]*(?:"[^"]*"|'[^']*')|\blineNumbers\b/g,
+      '',
+    );
+    if (remainder.trim()) return value;
+  }
+
+  return `${firstLine[1]} ${value.slice(firstLine[0].length)}`;
 }
 
 export function mergeSearchPageGroups(

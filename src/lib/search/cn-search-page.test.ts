@@ -402,6 +402,69 @@ describe('full CN search adapter', () => {
       { text: '";', highlighted: false },
     ]);
   });
+  it('cleans a cropped legacy fence header through the search adapter while preserving code highlights', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      Response.json({
+        hits: [
+          {
+            ...hit,
+            _formatted: {
+              content:
+                '…kotlin  tabGroup="<mark>language</mark>"\n    val uuid = "unique-image-id-123"\n    val <mark>imageUrl</mark> = "https://example.com/image.jpg"',
+            },
+          },
+        ],
+        totalHits: 1,
+        totalPages: 1,
+        page: 1,
+      }),
+    );
+
+    const result = await queryCnSearch(
+      config,
+      parseSearchPageState({ q: 'language', type: 'docs' }),
+    );
+    expect(result.groups[0].sections[0].highlights.content).toEqual([
+      {
+        text: '… val uuid = "unique-image-id-123" val ',
+        highlighted: false,
+      },
+      { text: 'imageUrl', highlighted: true },
+      { text: ' = "https://example.com/image.jpg"', highlighted: false },
+    ]);
+  });
+  it.each([
+    '…```cpp tabGroup="language"',
+    '…~~~python tab="Python" tabGroup="language"',
+    '…c tabGroup="datatype"',
+    '...<em>js</em> <mark>tabGroup</mark>="language"',
+    '…curl title="Request example" tabGroup="language" lineNumbers',
+    "…text tabGroup='language'",
+  ])(
+    'removes the cropped fence header %s while retaining the following example',
+    (header) => {
+      expect(
+        cleanSearchSnippet(
+          `${header}\r\nconst <mark>tabGroup</mark> = "app";\r\nrun();`,
+        ),
+      ).toBe(
+        `${header.startsWith('...') ? '...' : '…'} const <mark>tabGroup</mark> = "app"; run();`,
+      );
+    },
+  );
+  it.each([
+    '…const tabGroup="app"',
+    '…var tabGroup = "app";',
+    '…tabGroup="app"',
+    '…kotlin tabGroup="language" is metadata in this example.',
+    '…python print("Token")',
+    '…unknown tabGroup="language"',
+  ])(
+    'preserves cropped code and prose that are not recognizable fence headers: %s',
+    (snippet) => {
+      expect(cleanSearchSnippet(snippet)).toBe(snippet);
+    },
+  );
   it('uses exact pagination and filters, groups sections in ranking order, and discards non-public results', async () => {
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
       new Response(
