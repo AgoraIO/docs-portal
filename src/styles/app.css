@@ -1867,8 +1867,7 @@
      adds a row), so anchor targets clear whatever the header currently is.
      Must live in `utilities` to beat the flat 7rem `scroll-m-28` utility
      fumadocs puts on every heading: layer order outranks specificity. */
-  .prose
-    :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
+  .prose :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
     scroll-margin-top: max(
       7rem,
       calc(var(--docs-shell-header-offset, 0px) + 1.5rem)
@@ -2015,4 +2014,35 @@
     :where(:not(a:empty) ~ h2)
   )::before {
   content: none;
+}
+
+.doc-version-callout {
+  margin: 0;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  border-color: color-mix(in srgb, var(--docs-info) 19%, var(--line));
+  background: color-mix(in srgb, var(--docs-info) 6%, var(--bg-card));
+  box-shadow: none;
+}
+
+.doc-version-callout > div[role="none"] {
+  display: none;
+}
+
+.doc-version-callout > div:last-child {
+  gap: 4px;
+}
+
+.doc-version-callout > div:last-child > p {
+  color: var(--ink-1);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+}
+
+.doc-version-callout > div:last-child > div {
+  color: var(--ink-3);
+  font-size: 13px;
+  line-height: 20px;
 }

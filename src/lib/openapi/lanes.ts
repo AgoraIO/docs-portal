@@ -531,6 +531,60 @@ export const OPENAPI_LANES = [
       },
     },
   },
+  {
+    id: 'test-api-v1',
+    locales: ['en'],
+    parentUrl: {
+      en: '/en/api-reference/versioning-demo/v1',
+      'zh-CN': '/zh-CN/api-reference/versioning-demo/v1',
+    },
+    publicSourceUrl: {
+      en: '/openapi/versioning-demo/v1.en.yaml',
+      'zh-CN': '/openapi/versioning-demo/v1.en.yaml',
+    },
+    routePrefix: 'api-reference/versioning-demo/v1',
+    sourcePath: {
+      en: 'content/openapi/versioning-demo/v1.en.yaml',
+      'zh-CN': 'content/openapi/versioning-demo/v1.en.yaml',
+    },
+    tab: 'api-reference',
+    operations: {
+      'list-test-widgets': {
+        routeLeaf: 'widgets',
+        title: {
+          en: 'List test widgets — v1',
+          'zh-CN': 'List test widgets — v1',
+        },
+      },
+    },
+  },
+  {
+    id: 'test-api-v2',
+    locales: ['en'],
+    parentUrl: {
+      en: '/en/api-reference/versioning-demo/v2',
+      'zh-CN': '/zh-CN/api-reference/versioning-demo/v2',
+    },
+    publicSourceUrl: {
+      en: '/openapi/versioning-demo/v2.en.yaml',
+      'zh-CN': '/openapi/versioning-demo/v2.en.yaml',
+    },
+    routePrefix: 'api-reference/versioning-demo/v2',
+    sourcePath: {
+      en: 'content/openapi/versioning-demo/v2.en.yaml',
+      'zh-CN': 'content/openapi/versioning-demo/v2.en.yaml',
+    },
+    tab: 'api-reference',
+    operations: {
+      'list-test-widgets': {
+        routeLeaf: 'list-widgets',
+        title: {
+          en: 'List test widgets — v2',
+          'zh-CN': 'List test widgets — v2',
+        },
+      },
+    },
+  },
 ] as const satisfies OpenApiLane[];
 
 export type OpenApiLaneId = (typeof OPENAPI_LANES)[number]['id'];
@@ -577,7 +631,9 @@ export function resolveOpenApiEndpointRoute(
   tab: string,
   slugSegments: string[],
 ) {
-  for (const lane of getOpenApiLanes()) {
+  for (const lane of [...getOpenApiLanes()].sort(
+    (a, b) => b.routePrefix.length - a.routePrefix.length,
+  )) {
     if (lane.tab !== tab || !getOpenApiLaneLocales(lane).includes(locale)) {
       continue;
     }
@@ -619,7 +675,9 @@ export function resolveOpenApiLaneRoute(
   tab: string,
   slugSegments: string[],
 ) {
-  for (const lane of getOpenApiLanes()) {
+  for (const lane of [...getOpenApiLanes()].sort(
+    (a, b) => b.routePrefix.length - a.routePrefix.length,
+  )) {
     if (lane.tab !== tab || !getOpenApiLaneLocales(lane).includes(locale)) {
       continue;
     }

@@ -2,6 +2,54 @@ import { describe, expect, it } from 'vitest';
 import { getLLMText, getPlatformLLMText, source } from './source.server';
 
 describe('fumadocs source loader', () => {
+  it.each(['canonical', 'android'] as const)(
+    'cleans versioned %s exports while retaining their documentation identity',
+    async (variant) => {
+      const page = source.getPage(
+        ['introduction', 'versioning-demo', 'new', 'configure'],
+        'en',
+      );
+      if (page?.type !== 'docs') {
+        throw new Error('Expected the versioned guide page');
+      }
+      const processed = `<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="android" platform="android" />
+<Tabs items={['Java']}>
+<Tab>
+
+\`\`\`java
+if (ready) {
+  connect();
+}
+\`\`\`
+
+</Tab>
+</Tabs>
+<_PlatformProcessedMarker close="true" />
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="android" platform="web" />
+Web instructions only.
+<_PlatformProcessedMarker close="true" />`;
+      const versionedPage = {
+        ...page,
+        data: { ...page.data, getText: async () => processed },
+      };
+      const markdown =
+        variant === 'canonical'
+          ? await getLLMText(versionedPage)
+          : await getPlatformLLMText(versionedPage, variant);
+
+      expect(markdown).toContain('**Java**');
+      expect(markdown).toContain('```java\nif (ready) {\n  connect();\n}\n```');
+      expect(markdown).not.toMatch(/<\/?(?:Tabs|Tab|_Platform)/);
+      expect(markdown).not.toContain('Web instructions only.');
+      expect(markdown).toContain(
+        'Documentation family: Guide demo (test-guides).',
+      );
+      expect(markdown).toContain('Documentation version: New docs (v2).');
+      expect(markdown).toContain('/llms/doc-versions-test-guides-v2.txt');
+      expect(markdown?.match(/Documentation version:/g)).toHaveLength(1);
+    },
+  );
+
   it('exports Start with AI as clean Markdown with labeled installation alternatives', async () => {
     const page = source.getPage(['introduction', 'start-with-ai'], 'en');
     if (!page) throw new Error('Expected the Start with AI page');

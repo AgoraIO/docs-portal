@@ -177,7 +177,7 @@ function renderDocsShell(
   );
   const docsRoute = createRoute({
     getParentRoute: () => rootRoute,
-    path: '/$locale/$tab/$slug',
+    path: '/$locale/$tab/$',
     component: shellComponent,
   });
   const docsIndexRoute = createRoute({
@@ -477,6 +477,57 @@ describe('DocsShell', () => {
     expect(
       within(mobileDialog).getByRole('link', { name: 'REST quickstart' }),
     ).toBeInTheDocument();
+  });
+
+  it('keeps documentation preview controls out of the global navigation', async () => {
+    renderDocsShell({
+      activePath: '/en/api-reference/versioning-demo/v1/widgets',
+      activeTab: 'api-reference',
+    });
+    const strip = await screen.findByTestId('docs-tabs-strip');
+    expect(
+      within(strip).queryByRole('button', { name: /^Documentation:/ }),
+    ).not.toBeInTheDocument();
+    expect(
+      within(screen.getByTestId('docs-sidebar')).getByRole('button', {
+        name: 'Documentation: Previous docs',
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it('switches ordinary documentation from the collapsed mobile sidebar and closes it after selection', async () => {
+    const currentPath = '/en/introduction/versioning-demo/new/configure';
+    const { router } = renderDocsShell(
+      { activePath: currentPath },
+      currentPath,
+    );
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Open navigation' }),
+    );
+    const dialog = await screen.findByRole('dialog');
+    const selector = within(dialog).getByRole('button', {
+      name: 'Documentation: New docs · Preview',
+    });
+    expect(
+      within(dialog).getByText('Documentation version'),
+    ).toBeInTheDocument();
+    fireEvent.keyDown(selector, { key: 'ArrowDown' });
+    const previous = await screen.findByRole('menuitem', {
+      name: 'Previous docs',
+    });
+    expect(previous).toHaveAttribute(
+      'href',
+      '/en/introduction/versioning-demo/previous/setup',
+    );
+    fireEvent.click(previous);
+    await waitFor(() =>
+      expect(router.state.location.pathname).toBe(
+        '/en/introduction/versioning-demo/previous/setup',
+      ),
+    );
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+    );
   });
 
   it('renders a separate desktop header row and docs tabs strip', async () => {

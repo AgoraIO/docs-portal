@@ -57,6 +57,7 @@ import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsSidebarTree } from './DocsSidebarTree';
 import { DocsSiteFooter } from './DocsSiteFooter';
 import { DocsTocRail } from './DocsTocRail';
+import { DocVersionSelector } from './DocVersionControls';
 import { getDocsSourceLinks } from './docs-source-links';
 
 const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
@@ -632,6 +633,11 @@ function MobileSidebar({
                 onSelectPath={onSelectPath}
               />
             ) : null}
+            <DocVersionSelector
+              activePath={activePath}
+              className="mb-2"
+              onSelectPath={onSelectPath}
+            />
             <DocsSidebarTree
               activePath={activePath}
               nodes={sidebar}

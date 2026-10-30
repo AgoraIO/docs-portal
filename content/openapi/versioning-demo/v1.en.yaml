@@ -1,0 +1,31 @@
+openapi: 3.0.3
+info:
+  title: Test API v1 — MOCK DOCUMENTATION ONLY
+  version: v1
+  description: Test content for documentation version switching. Not an Agora API release.
+servers:
+  - url: https://versioning-demo.invalid
+    description: Imaginary service for documentation tests only.
+paths:
+  /v1/test-widgets:
+    get:
+      operationId: list-test-widgets
+      summary: List test widgets — v1
+      description: TEST CURRENT VERSION. Returns imaginary widgets for documentation testing only.
+      x-docs-sections:
+        - position: after-description
+          markdown: 'MOCK DOCUMENTATION ONLY. Read [test authentication](/en/api-reference/versioning-demo/v1/authentication).'
+      responses:
+        '200':
+          description: Mock widgets, not a real service response.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [legacyName]
+                properties:
+                  legacyName:
+                    type: string
+                    description: Test field unique to v1.
+              example:
+                legacyName: 'TEST CURRENT VERSION'

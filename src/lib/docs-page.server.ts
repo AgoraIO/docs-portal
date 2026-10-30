@@ -7,6 +7,7 @@ import {
   type DocsPageType,
   inferDocsPageType,
 } from './analytics/docs-page-type';
+import { resolveDocVersion } from './doc-versions';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import { resolveMovedDocsRedirect } from './docs-moved-redirects';
@@ -445,7 +446,9 @@ export async function loadDocsPagePayload(
     pathname: page.url,
     sourcePath: page.path,
     title,
-    version: sidebarHeader?.versionSwitcher?.currentId,
+    version:
+      resolveDocVersion(page.url)?.version.id ??
+      sidebarHeader?.versionSwitcher?.currentId,
   });
   const lastUpdated = await resolveDocsLastUpdatedMetadata(
     Array.from(

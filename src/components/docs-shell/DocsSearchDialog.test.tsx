@@ -16,6 +16,7 @@ import {
 import type { SortedResult } from 'fumadocs-core/search';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
+import { DOC_VERSION_STORAGE_KEY } from '@/lib/doc-version-preference';
 import { RECENTLY_VIEWED_STORAGE_KEY } from '@/lib/recently-viewed';
 import {
   type AlgoliaSearchStatus,
@@ -139,6 +140,41 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', '');
     window.localStorage.clear();
     window.sessionStorage.clear();
+  });
+
+  it('shows both release labels regardless of the saved browsing version', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-key');
+    localStorage.setItem(DOC_VERSION_STORAGE_KEY, '{"convoai-v3":"v2"}');
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: [],
+      getLastStatus: successfulAlgoliaStatus,
+      search: vi.fn().mockResolvedValue([
+        {
+          id: 'old',
+          type: 'page',
+          content: 'Old widget documentation',
+          url: '/en/api-reference/versioning-demo/v1/widgets',
+        },
+        {
+          id: 'new',
+          type: 'page',
+          content: 'New widget documentation',
+          url: '/en/api-reference/versioning-demo/v2/list-widgets',
+        },
+      ]),
+    });
+    renderAlgoliaSearchDialog();
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.change(
+      screen.getByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'widget' } },
+    );
+    expect(await screen.findByText('Previous docs')).toBeVisible();
+    expect(await screen.findByText('New docs')).toBeVisible();
+    expect(
+      screen.queryByRole('button', { name: /documentation versions/i }),
+    ).not.toBeInTheDocument();
   });
 
   it('renders compact trigger variants and lets the mobile trigger navigate through the same dialog', async () => {

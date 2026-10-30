@@ -1,5 +1,6 @@
 import type { Folder, Item, Node, Root } from 'fumadocs-core/page-tree';
 import type { ReactNode } from 'react';
+import { resolveDocVersion } from './doc-versions';
 import type { DocsMeta, DocsNavScopeVersion } from './docs-meta-schema';
 import {
   type DocsSidebarNode,
@@ -70,6 +71,32 @@ export function resolveDocsNavScope({
   const tabNode = findTabFolder(root, tab);
   if (!tabNode) {
     return null;
+  }
+
+  const documentVersion = resolveDocVersion(activePath);
+  if (documentVersion) {
+    const { scope, version } = documentVersion;
+    const findVersionRoot = (node: Folder): Folder | undefined => {
+      if (getFolderHref(node) === version.rootUrl) return node;
+      for (const child of node.children) {
+        if (child.type !== 'folder') continue;
+        const match = findVersionRoot(child);
+        if (match) return match;
+      }
+      return undefined;
+    };
+    const versionRoot = findVersionRoot(tabNode);
+    if (versionRoot) {
+      return {
+        header: {
+          backHref: scope.entryUrl.split('/').slice(0, 3).join('/'),
+          backLabel: normalizeLabel(tabNode.name, tab),
+          title: scope.label,
+        },
+        scope: { meta: getNodeMeta(versionRoot) ?? {}, node: versionRoot },
+        sidebarRoot: versionRoot,
+      };
+    }
   }
 
   const ancestors = findFolderAncestorsByUrl(tabNode, activePath);

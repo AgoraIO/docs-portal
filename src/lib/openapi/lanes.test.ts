@@ -72,6 +72,16 @@ describe('openapi lanes', () => {
         routePrefix: 'api-reference/api-ref/speech-to-text',
         tab: 'api-reference',
       }),
+      expect.objectContaining({
+        id: 'test-api-v1',
+        locales: ['en'],
+        routePrefix: 'api-reference/versioning-demo/v1',
+      }),
+      expect.objectContaining({
+        id: 'test-api-v2',
+        locales: ['en'],
+        routePrefix: 'api-reference/versioning-demo/v2',
+      }),
     ]);
   });
 
@@ -140,7 +150,13 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/api-ref/speech-to-text/join',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(87);
+    expect(getOpenApiPrerenderPaths()).toContain(
+      '/en/api-reference/versioning-demo/v1/widgets',
+    );
+    expect(getOpenApiPrerenderPaths()).toContain(
+      '/en/api-reference/versioning-demo/v2/list-widgets',
+    );
+    expect(getOpenApiPrerenderPaths()).toHaveLength(89);
   });
 
   it('resolves RTC REST endpoint routes in the api-reference tab', () => {

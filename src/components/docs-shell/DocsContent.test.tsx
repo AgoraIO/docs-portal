@@ -188,6 +188,37 @@ describe('DocsContent', () => {
     expect(screen.queryByLabelText('Breadcrumb')).not.toBeInTheDocument();
   });
 
+  it('keeps version selection out of the article and shows only the preview notice below its header', async () => {
+    renderWithRouter(
+      <DocsContent
+        activePath="/en/api-reference/versioning-demo/v2/list-widgets"
+        breadcrumb={[]}
+        contentPath="en/api-reference/versioning-demo/v2/index.md"
+        markdownUrl="/en/api-reference/versioning-demo/v2/list-widgets.md"
+        slug="versioning-demo/v2/list-widgets"
+        title="List test widgets"
+        toc={[]}
+      />,
+      '/en/api-reference/widgets',
+    );
+
+    const heading = await screen.findByRole('heading', {
+      level: 1,
+      name: 'List test widgets',
+    });
+    const header = heading.closest('header');
+    expect(
+      screen.queryByRole('button', { name: /^Documentation:/ }),
+    ).not.toBeInTheDocument();
+    const note = screen.getByRole('note', { name: 'Preview documentation' });
+    expect(header?.nextElementSibling).toBe(note);
+    expect(note.nextElementSibling).toHaveAttribute('data-static-docs-body');
+    expect(within(note).getByRole('link')).toHaveAttribute(
+      'href',
+      '/en/api-reference/versioning-demo/v1/widgets',
+    );
+  });
+
   it('registers canonical server context for the active docs page', async () => {
     renderWithRouter(
       <DocsContent
