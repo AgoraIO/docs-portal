@@ -718,7 +718,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/models/tts/humeai.mdx':
     '2026-10-30T05:03:27.000Z',
   'content/docs/en/ai/platform/models/tts/meta.json':
-    '2026-10-30T05:29:23.000Z',
+    '2026-10-30T08:02:30.000Z',
   'content/docs/en/ai/platform/models/tts/microsoft.mdx':
     '2026-10-30T05:03:27.000Z',
   'content/docs/en/ai/platform/models/tts/minimax.mdx':
@@ -740,7 +740,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-10-27T09:58:06.000Z',
   'content/docs/en/ai/platform/reference/pricing.mdx':
     '2026-10-29T14:06:07.000Z',
-  'content/docs/en/ai/platform/release-notes.mdx': '2026-10-30T05:29:23.000Z',
+  'content/docs/en/ai/platform/release-notes.mdx': '2026-10-30T05:49:05.000Z',
   'content/docs/en/ai/pricing.md': '2026-07-02T09:19:20.000Z',
   'content/docs/en/ai/product-overview.md': '2026-05-18T10:29:54.000Z',
   'content/docs/en/ai/production-checklist.md': '2026-05-19T10:33:06.000Z',
