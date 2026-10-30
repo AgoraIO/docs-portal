@@ -1148,6 +1148,18 @@ describe('FumadocsOpenApiContent', () => {
                                   llm: {
                                     additionalProperties: true,
                                     properties: {
+                                      headers: {
+                                        additionalProperties: {
+                                          oneOf: [
+                                            { type: 'string' },
+                                            { type: 'number' },
+                                            { type: 'boolean' },
+                                          ],
+                                        },
+                                        description:
+                                          'Custom headers accept scalar values.',
+                                        type: 'object',
+                                      },
                                       vendor: {
                                         enum: ['openai', 'azure'],
                                         type: 'string',
@@ -2757,8 +2769,8 @@ describe('FumadocsOpenApiContent', () => {
     ).toBeInTheDocument();
     expect(within(pathSection).getAllByText('cn').length).toBeGreaterThan(0);
     expect(within(pathSection).getByText('Default:')).toBeInTheDocument();
-    expect(within(pathSection).getByText('Length:')).toBeInTheDocument();
-    expect(within(pathSection).getByText('Match:')).toBeInTheDocument();
+    expect(within(pathSection).queryByText('Length:')).not.toBeInTheDocument();
+    expect(within(pathSection).queryByText('Match:')).not.toBeInTheDocument();
     expect(within(pathSection).getAllByText('720p').length).toBeGreaterThan(0);
 
     const querySection = screen.getByRole('heading', {

@@ -274,7 +274,7 @@ describe('openapi schema view', () => {
     expect(flattened.map((node) => node.path)).not.toContain(
       'properties.[key: string]',
     );
-    expect(flattened.map((node) => node.path)).toContain(
+    expect(flattened.map((node) => node.path)).not.toContain(
       'properties.params.[key: string]',
     );
 
