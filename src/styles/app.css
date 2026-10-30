@@ -1573,6 +1573,20 @@
   list-style: lower-roman;
 }
 
+/* Markdown loose lists wrap item text in paragraphs. Keep item spacing equal
+   to tight lists in both the document body and nested prose containers. */
+:where(html)
+  .prose
+  :where(li > p:first-child):not(:where(.not-prose, .not-prose *)) {
+  margin-top: 0;
+}
+
+:where(html)
+  .prose
+  :where(li > p:last-child):not(:where(.not-prose, .not-prose *)) {
+  margin-bottom: 0;
+}
+
 /* Fumadocs ships unlayered prose table styles with `overflow: hidden`.
    Keep this unlayered override after the base layer so unwrapped/raw tables
    retain their own horizontal scrolling fallback. */
