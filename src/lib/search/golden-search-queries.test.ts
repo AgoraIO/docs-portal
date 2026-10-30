@@ -69,7 +69,7 @@ const DOC_TARGET_ROUTE_BY_QUERY: Readonly<Record<string, string>> = {
   'in-call quality monitoring':
     '/en/realtime-media/rtc/build/manage-connection-and-quality/in-call-quality-monitoring',
   'enable adaptive bitrate':
-    '/en/realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/enable-adaptive-bitrate',
+    '/en/realtime-media/rtmp-gateway/build/process-media/enable-adaptive-bitrate',
   'stream channels':
     '/en/realtime-media/rtm/build/work-with-channels/stream-channel',
   'signaling quickstart': '/en/realtime-media/rtm/quickstart',

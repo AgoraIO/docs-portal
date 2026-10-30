@@ -17,7 +17,7 @@ When using the SRT protocol to push streams to Media Gateway, the following code
 
 ## Configure with OBS
 
-Set up SRT streaming in OBS Studio by configuring the server and stream key settings.
+Set up SRT streaming in OBS Studio by configuring the server and streaming key settings.
 
 1. In the **Server** field, enter your streaming domain name in the following format:
 
@@ -36,10 +36,10 @@ You can use the Agora unified domain name or bind your own domain name.
   - `cn`: Mainland China
 - To use your own domain name, contact Agora [technical support](mailto:support@agora.io) for configuration before use.
 
-2. In the **Stream Key** field, enter the streaming key. To obtain a key, see [Get streaming key](../quickstart#get-streaming-key).
+2. In the **Stream Key** field, enter the streaming key. To obtain a key, see [Get streaming key](../../quickstart#get-streaming-key).
 
     :::note
-    When using a custom domain name, you must add domain parameters to your stream key using the format:
+    When using a custom domain name, you must add domain parameters to your streaming key using the format:
 
     `{streaming_code}?h={streaming_domain_name}`
 
