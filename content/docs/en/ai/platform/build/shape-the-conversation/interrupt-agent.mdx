@@ -28,30 +28,13 @@ The interruption mode is one of the following:
 
 Use `keywords` mode when background speech or short acknowledgments, such as "uh-huh", shouldn't stop the agent. Pass up to 128 phrases.
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-In the agent's `pipeline`, set `turn_detection.interruption`:
-
-```json
-"pipeline": {
-  "turn_detection": {
-    "interruption": {
-      "mode": "keywords",
-      "keywords": ["stop", "wait", "hold on"]
-    }
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -91,6 +74,23 @@ keywordAgent := agent.WithInterruption(&agentkit.InterruptionConfig{
 ```
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+In the agent's `pipeline`, set `turn_detection.interruption`:
+
+```json
+"pipeline": {
+  "turn_detection": {
+    "interruption": {
+      "mode": "keywords",
+      "keywords": ["stop", "wait", "hold on"]
+    }
+  }
+}
+```
+
+</TabsContent>
 </Tabs>
 
 ### Turn interruption off
@@ -100,28 +100,13 @@ Use `off` mode when the agent must finish what it's saying, for example when it 
 - `append`: The agent responds to the speech after its current reply. This is the default.
 - `ignore`: The agent discards the speech.
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-```json
-"pipeline": {
-  "turn_detection": {
-    "interruption": {
-      "mode": "off",
-      "when_off": "ignore"
-    }
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -165,6 +150,21 @@ quietAgent := agent.WithInterruption(&agentkit.InterruptionConfig{
 ```
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+```json
+"pipeline": {
+  "turn_detection": {
+    "interruption": {
+      "mode": "off",
+      "when_off": "ignore"
+    }
+  }
+}
+```
+
+</TabsContent>
 </Tabs>
 
 ## Tune when speech counts as an interruption
@@ -174,31 +174,13 @@ In `start_of_speech` mode, the start-of-speech settings control how quickly user
 - `semantic`: Detects a meaningful start of speech. This is the default.
 - `vad`: Uses voice activity detection (VAD) on the audio signal.
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-```json
-"pipeline": {
-  "turn_detection": {
-    "speech_threshold": 0.5,
-    "start_of_speech": {
-      "type": "vad",
-      "speaking_interrupt_duration_ms": 320,
-      "interrupt_duration_ms": 160,
-      "prefix_padding_ms": 800
-    }
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -264,6 +246,24 @@ vadAgent := agent.WithTurnDetection(&agentkit.TurnDetectionConfig{
 		},
 	},
 })
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```json
+"pipeline": {
+  "turn_detection": {
+    "speech_threshold": 0.5,
+    "start_of_speech": {
+      "type": "vad",
+      "speaking_interrupt_duration_ms": 320,
+      "interrupt_duration_ms": 160,
+      "prefix_padding_ms": 800
+    }
+  }
+}
 ```
 
 </TabsContent>

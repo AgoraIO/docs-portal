@@ -14,38 +14,13 @@ The following example shows how to configure a generic avatar provider as the ag
 
 Generic avatar providers support BYOK only. They aren't available in managed mode. Store your avatar provider's API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Add an `avatar` block to the `pipeline`. Set `credential.mode` to `byok` and `credential.fields.api_key` to the reference. In the following example, the key is stored as `avatar` in the `support_prod` set:
-
-```json
-"avatar": {
-  "enabled": true,
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "api_key": "$secrets.support_prod.avatar"
-    }
-  },
-  "vendor": "generic",
-  "params": {
-    "api_base_url": "<avatar_api_base_url>",
-    "avatar_id": "<avatar_id>",
-    "agora_token": "<avatar_rtc_token>",
-    "agora_uid": "<avatar_rtc_uid>"
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -110,6 +85,31 @@ agent := agentkit.NewAgent(client).
 		AgoraUID:   "<avatar_rtc_uid>",
 		AgoraToken: "<avatar_rtc_token>",
 	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Add an `avatar` block to the `pipeline`. Set `credential.mode` to `byok` and `credential.fields.api_key` to the reference. In the following example, the key is stored as `avatar` in the `support_prod` set:
+
+```json
+"avatar": {
+  "enabled": true,
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.avatar"
+    }
+  },
+  "vendor": "generic",
+  "params": {
+    "api_base_url": "<avatar_api_base_url>",
+    "avatar_id": "<avatar_id>",
+    "agora_token": "<avatar_rtc_token>",
+    "agora_uid": "<avatar_rtc_uid>"
+  }
+}
 ```
 
 </TabsContent>

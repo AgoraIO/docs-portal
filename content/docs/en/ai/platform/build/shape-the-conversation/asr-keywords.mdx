@@ -19,36 +19,13 @@ Before you begin, make sure that you have created an agent and started a session
 
 When you [create](/en/api-reference/api-ref/conversational-ai/platform/create-agent) or [update](/en/api-reference/api-ref/conversational-ai/platform/update-agent) an agent, pass the keywords in its ARES configuration. The following example adds three product terms as ARES keywords:
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Pass the keywords in `params.keywords` of the agent's `asr` block:
-
-```json
-"pipeline": {
-  "asr": {
-    "credential": { "mode": "managed" },
-    "vendor": "ares",
-    "language": "en-US",
-    "params": {
-      "keywords": [
-        "Agora",
-        "Conversational AI",
-        "RTC"
-      ]
-    }
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -96,6 +73,29 @@ agent := agentkit.NewAgent(client).
 	})).
 	WithLlm( /* configure your LLM vendor */ ).
 	WithTts( /* configure your TTS vendor */ )
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Pass the keywords in `params.keywords` of the agent's `asr` block:
+
+```json
+"pipeline": {
+  "asr": {
+    "credential": { "mode": "managed" },
+    "vendor": "ares",
+    "language": "en-US",
+    "params": {
+      "keywords": [
+        "Agora",
+        "Conversational AI",
+        "RTC"
+      ]
+    }
+  }
+}
 ```
 
 </TabsContent>

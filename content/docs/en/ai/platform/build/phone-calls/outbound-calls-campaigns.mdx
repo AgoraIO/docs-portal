@@ -25,45 +25,13 @@ Before you begin, make sure that you have:
 
 Start a session with telephony transport. Set the number to call from, by its ID, and the number to call, in E.164 format. Pass the values for the agent's variables, as for any session.
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Send a request to [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session). In `transport`, set `type` to `telephony`, `from` to your number's `number_id`, and `to` to the number to call. `from` doesn't accept a phone number:
-
-```bash
-curl --request POST \
-  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions \
-  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
-  --header 'Content-Type: application/json' \
-  --data '
-{
-  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
-  "values": {
-    "customer_name": "Ada"
-  },
-  "transport": {
-    "type": "telephony",
-    "from": "92e68758-3d3a-4f27-8b93-3fd8d834467c",
-    "to": "+14155550123",
-    "call_policy": {
-      "max_ring_duration_ms": 30000,
-      "max_call_duration_seconds": 600,
-      "voicemail": {
-        "mode": "hangup"
-      }
-    }
-  }
-}'
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -140,6 +108,38 @@ fmt.Println(session.Body.AgentSessionID) // The agent_session_id
 ```
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session). In `transport`, set `type` to `telephony`, `from` to your number's `number_id`, and `to` to the number to call. `from` doesn't accept a phone number:
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
+  "values": {
+    "customer_name": "Ada"
+  },
+  "transport": {
+    "type": "telephony",
+    "from": "92e68758-3d3a-4f27-8b93-3fd8d834467c",
+    "to": "+14155550123",
+    "call_policy": {
+      "max_ring_duration_ms": 30000,
+      "max_call_duration_seconds": 600,
+      "voicemail": {
+        "mode": "hangup"
+      }
+    }
+  }
+}'
+```
+
+</TabsContent>
 </Tabs>
 
 The response contains the session ID and its status, as for an RTC session. A session status of `RUNNING` doesn't mean that the call was answered. To end the call, [stop the session](/en/ai/platform/get-started/start-stop-agent#stop-the-session).
@@ -165,114 +165,13 @@ Create a campaign with the agent, the number to call from, the contacts, and a s
 
 The following example calls customers on weekday mornings and afternoons in New York time for two weeks:
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Send a request to [Create a campaign](/en/api-reference/api-ref/conversational-ai/platform/create-campaign):
-
-```bash
-curl --request POST \
-  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/campaigns \
-  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
-  --header 'Content-Type: application/json' \
-  --data '
-{
-  "name": "november-appointments",
-  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
-  "transport": {
-    "type": "telephony",
-    "from": "92e68758-3d3a-4f27-8b93-3fd8d834467c",
-    "call_policy": {
-      "max_ring_duration_ms": 30000,
-      "voicemail": {
-        "mode": "hangup"
-      }
-    }
-  },
-  "contacts": [
-    {
-      "phone": "+12025550123",
-      "values": { "customer_name": "Ava", "plan": "pro" }
-    },
-    {
-      "phone": "+12025550124",
-      "values": { "customer_name": "Ben", "plan": "basic" }
-    }
-  ],
-  "schedule": {
-    "mode": "scheduled",
-    "timezone": "America/New_York",
-    "start": "2026-11-02T09:00",
-    "end": "2026-11-13T17:00",
-    "days": [
-      { "weekday": "mon", "ranges": [{ "start": "09:00", "end": "12:00" }, { "start": "13:00", "end": "17:00" }] },
-      { "weekday": "tue", "ranges": [{ "start": "09:00", "end": "12:00" }, { "start": "13:00", "end": "17:00" }] },
-      { "weekday": "wed", "ranges": [{ "start": "09:00", "end": "12:00" }, { "start": "13:00", "end": "17:00" }] },
-      { "weekday": "thu", "ranges": [{ "start": "09:00", "end": "12:00" }, { "start": "13:00", "end": "17:00" }] },
-      { "weekday": "fri", "ranges": [{ "start": "09:00", "end": "12:00" }, { "start": "13:00", "end": "17:00" }] }
-    ]
-  },
-  "pacing": {
-    "max_concurrent": 10
-  }
-}'
-```
-
-You can pass up to 50,000 contacts, and the whole request body can be at most 10 MiB. You can't change the contacts after you create the campaign. A phone number that appears more than once is called once for each entry. If a contact is missing a value for a `required` variable, that contact is rejected before it's dialed.
-
-If the request is successful, the response contains the campaign, including its ID and status:
-
-```json
-// 201 Created
-{
-  "campaign_id": "b4f0581e-f138-43a2-851c-a8f8d228bb37",
-  "name": "november-appointments",
-  "status": "scheduled",
-  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
-  "transport": {
-    "type": "telephony",
-    "from": ["92e68758-3d3a-4f27-8b93-3fd8d834467c"],
-    "call_policy": {
-      "max_ring_duration_ms": 30000,
-      "voicemail": {
-        "mode": "hangup"
-      }
-    }
-  },
-  "lifecycle": {
-    "idle_timeout_ms": 30000,
-    "max_duration_ms": 259200000,
-    "graceful_stop": {
-      "enabled": false,
-      "timeout_ms": 30000
-    }
-  },
-  "schedule": { ... },  // The schedule you set in the request.
-  "counts": {
-    "contacts": 2,
-    "pending": 2,
-    "calling": 0,
-    "completed": 0,
-    "failed": 0,
-    "canceled": 0
-  },
-  "create_ts": 1787673602,
-  "start_ts": null,
-  "complete_ts": null,
-  "failure": null
-}
-```
-
-The response returns `transport.from` as a list, and fills in the default `lifecycle` values for the settings you didn't pass.
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -386,6 +285,107 @@ fmt.Println(campaign.Body.CampaignID, campaign.Body.Status)
 ```
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Create a campaign](/en/api-reference/api-ref/conversational-ai/platform/create-campaign):
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/campaigns \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "name": "november-appointments",
+  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
+  "transport": {
+    "type": "telephony",
+    "from": "92e68758-3d3a-4f27-8b93-3fd8d834467c",
+    "call_policy": {
+      "max_ring_duration_ms": 30000,
+      "voicemail": {
+        "mode": "hangup"
+      }
+    }
+  },
+  "contacts": [
+    {
+      "phone": "+12025550123",
+      "values": { "customer_name": "Ava", "plan": "pro" }
+    },
+    {
+      "phone": "+12025550124",
+      "values": { "customer_name": "Ben", "plan": "basic" }
+    }
+  ],
+  "schedule": {
+    "mode": "scheduled",
+    "timezone": "America/New_York",
+    "start": "2026-11-02T09:00",
+    "end": "2026-11-13T17:00",
+    "days": [
+      { "weekday": "mon", "ranges": [{ "start": "09:00", "end": "12:00" }, { "start": "13:00", "end": "17:00" }] },
+      { "weekday": "tue", "ranges": [{ "start": "09:00", "end": "12:00" }, { "start": "13:00", "end": "17:00" }] },
+      { "weekday": "wed", "ranges": [{ "start": "09:00", "end": "12:00" }, { "start": "13:00", "end": "17:00" }] },
+      { "weekday": "thu", "ranges": [{ "start": "09:00", "end": "12:00" }, { "start": "13:00", "end": "17:00" }] },
+      { "weekday": "fri", "ranges": [{ "start": "09:00", "end": "12:00" }, { "start": "13:00", "end": "17:00" }] }
+    ]
+  },
+  "pacing": {
+    "max_concurrent": 10
+  }
+}'
+```
+
+You can pass up to 50,000 contacts, and the whole request body can be at most 10 MiB. You can't change the contacts after you create the campaign. A phone number that appears more than once is called once for each entry. If a contact is missing a value for a `required` variable, that contact is rejected before it's dialed.
+
+If the request is successful, the response contains the campaign, including its ID and status:
+
+```json
+// 201 Created
+{
+  "campaign_id": "b4f0581e-f138-43a2-851c-a8f8d228bb37",
+  "name": "november-appointments",
+  "status": "scheduled",
+  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
+  "transport": {
+    "type": "telephony",
+    "from": ["92e68758-3d3a-4f27-8b93-3fd8d834467c"],
+    "call_policy": {
+      "max_ring_duration_ms": 30000,
+      "voicemail": {
+        "mode": "hangup"
+      }
+    }
+  },
+  "lifecycle": {
+    "idle_timeout_ms": 30000,
+    "max_duration_ms": 259200000,
+    "graceful_stop": {
+      "enabled": false,
+      "timeout_ms": 30000
+    }
+  },
+  "schedule": { ... },  // The schedule you set in the request.
+  "counts": {
+    "contacts": 2,
+    "pending": 2,
+    "calling": 0,
+    "completed": 0,
+    "failed": 0,
+    "canceled": 0
+  },
+  "create_ts": 1787673602,
+  "start_ts": null,
+  "complete_ts": null,
+  "failure": null
+}
+```
+
+The response returns `transport.from` as a list, and fills in the default `lifecycle` values for the settings you didn't pass.
+
+</TabsContent>
 </Tabs>
 
 You can't change the contacts after you create the campaign. A phone number that appears more than once is called once for each entry. If a contact is missing a value for a `required` variable, that contact is rejected before it's dialed.
@@ -414,25 +414,13 @@ In the pacing settings, control how fast the campaign dials. The campaign calls 
 
 To check a campaign's progress, retrieve it. The response contains its `status` and `counts`, the number of contacts that are pending, calling, completed, failed, or canceled.
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Send a request to [Retrieve a campaign](/en/api-reference/api-ref/conversational-ai/platform/retrieve-campaign):
-
-```bash
-curl --request GET \
-  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/campaigns/<campaign_id> \
-  --header 'Authorization: Basic <your_base64_encoded_credentials>'
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -463,6 +451,18 @@ fmt.Println(campaign.Body.Status, campaign.Body.Counts)
 ```
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Retrieve a campaign](/en/api-reference/api-ref/conversational-ai/platform/retrieve-campaign):
+
+```bash
+curl --request GET \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/campaigns/<campaign_id> \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>'
+```
+
+</TabsContent>
 </Tabs>
 
 A campaign has one of the following statuses:
@@ -484,23 +484,13 @@ To control a running campaign, use one of the following operations:
 
 For example, to pause a campaign:
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-```bash
-curl --request POST \
-  --url 'https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/campaigns/<campaign_id>:pause' \
-  --header 'Authorization: Basic <your_base64_encoded_credentials>'
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -524,6 +514,16 @@ await client.campaigns.pause({ id: '<campaign_id>' });
 if _, err := client.Campaigns.Pause(ctx, "<campaign_id>"); err != nil {
 	log.Fatal(err)
 }
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```bash
+curl --request POST \
+  --url 'https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/campaigns/<campaign_id>:pause' \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>'
 ```
 
 </TabsContent>

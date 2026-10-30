@@ -14,30 +14,13 @@ The following example shows how to configure ARES as the agent's ASR when you cr
 
 ARES is available in managed mode only. Agora provides ARES, and you don't need a provider account or API key. For details, see [Use managed mode](/en/ai/platform/build/managed-mode).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `credential.mode` to `managed` in the `asr` block:
-
-```json
-"asr": {
-  "credential": { "mode": "managed" },
-  "vendor": "ares",
-  "language": "en-US",
-  "params": {
-    "keywords": ["Agora", "Conversational AI", "RTC"]
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -79,6 +62,23 @@ agent := agentkit.NewAgent(client).
 	})).
 	WithLlm( /* configure your LLM vendor */ ).
 	WithTts( /* configure your TTS vendor */ )
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `managed` in the `asr` block:
+
+```json
+"asr": {
+  "credential": { "mode": "managed" },
+  "vendor": "ares",
+  "language": "en-US",
+  "params": {
+    "keywords": ["Agora", "Conversational AI", "RTC"]
+  }
+}
 ```
 
 </TabsContent>

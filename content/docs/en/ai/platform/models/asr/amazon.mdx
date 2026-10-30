@@ -14,39 +14,13 @@ The following example shows how to configure Amazon Transcribe as the agent's AS
 
 Amazon Transcribe supports BYOK only. It isn't available in managed mode. Store your AWS credentials in a secret set, and refer to them from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `credential.mode` to `byok`, and set `credential.fields.access_key_id` and `credential.fields.secret_access_key` to references to your AWS access key ID and secret access key in a secret set. In the following example, they're stored as `amazon_access_key_id` and `amazon` in the `support_prod` set:
-
-```json
-"asr": {
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "access_key_id": "$secrets.support_prod.amazon_access_key_id",
-      "secret_access_key": "$secrets.support_prod.amazon"
-    }
-  },
-  "vendor": "amazon",
-  "language": "en-US",
-  "params": {
-    "language_code": "en-US",
-    "region": "<AWS_ASR_REGION>",
-    "media_sample_rate_hz": 16000,
-    "media_encoding": "pcm"
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -111,6 +85,32 @@ agent := agentkit.NewAgent(client).
 	})).
 	WithLlm( /* configure your LLM vendor */ ).
 	WithTts( /* configure your TTS vendor */ )
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok`, and set `credential.fields.access_key_id` and `credential.fields.secret_access_key` to references to your AWS access key ID and secret access key in a secret set. In the following example, they're stored as `amazon_access_key_id` and `amazon` in the `support_prod` set:
+
+```json
+"asr": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "access_key_id": "$secrets.support_prod.amazon_access_key_id",
+      "secret_access_key": "$secrets.support_prod.amazon"
+    }
+  },
+  "vendor": "amazon",
+  "language": "en-US",
+  "params": {
+    "language_code": "en-US",
+    "region": "<AWS_ASR_REGION>",
+    "media_sample_rate_hz": 16000,
+    "media_encoding": "pcm"
+  }
+}
 ```
 
 </TabsContent>

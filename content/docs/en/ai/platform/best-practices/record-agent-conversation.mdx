@@ -19,41 +19,13 @@ To keep the audio stable, set the agent's audio scenario to `chorus` when you st
 
 When you [start a session](/en/ai/platform/get-started/start-stop-agent#start-a-session), set its audio scenario to `chorus`. The SDK examples use the saved agent from [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-In the request to [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session), set `transport.audio_scenario`:
-
-```bash
-curl --request POST \
-  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions \
-  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
-  --header 'Content-Type: application/json' \
-  --data '
-{
-  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
-  "values": {
-    "customer_name": "Ada"
-  },
-  "transport": {
-    "type": "rtc",
-    "channel": "<your_channel_name>",
-    "token": "<your_rtc_token>",
-    "uid": "1002",
-    "subscribe_uids": ["1001"],
-    "audio_scenario": "chorus"
-  }
-}'
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -102,6 +74,34 @@ sessionID, err := session.Start(ctx)
 if err != nil {
 	log.Fatal(err)
 }
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+In the request to [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session), set `transport.audio_scenario`:
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
+  "values": {
+    "customer_name": "Ada"
+  },
+  "transport": {
+    "type": "rtc",
+    "channel": "<your_channel_name>",
+    "token": "<your_rtc_token>",
+    "uid": "1002",
+    "subscribe_uids": ["1001"],
+    "audio_scenario": "chorus"
+  }
+}'
 ```
 
 </TabsContent>

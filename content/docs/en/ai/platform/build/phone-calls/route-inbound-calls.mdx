@@ -19,38 +19,13 @@ Before you begin, make sure that you have:
 
 Assign the agent that answers calls to the number, and set a call policy. A call policy is required whenever you assign an agent. For its fields, see [Set limits and behavior for inbound calls](#set-limits-and-behavior-for-inbound-calls). You can set both when you [import the number](/en/ai/platform/build/phone-calls/import-phone-numbers#import-a-number), or later by updating the number.
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-In the number's `inbound` object, set `agent` to the agent ID, and set a `call_policy`. To update a number, send a request to [Update a phone number](/en/api-reference/api-ref/conversational-ai/platform/update-number), and pass its `ETag` from your last create or retrieve request in the `If-Match` header:
-
-```bash
-curl --request PATCH \
-  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/numbers/<number_id> \
-  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
-  --header 'Content-Type: application/json' \
-  --header 'If-Match: <etag>' \
-  --data '
-{
-  "inbound": {
-    "agent": "c8a1e5d2-6f3b-4a9c-b7e0-2d4f6a8c1e3b",
-    "call_policy": {
-      "max_call_duration_seconds": 1800
-    }
-  }
-}'
-```
-
-If the number has changed since you read its `ETag`, the request fails with `412 PreconditionFailed`. Retrieve the number again, and retry with its current `ETag`.
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -97,23 +72,42 @@ if err != nil {
 ```
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+In the number's `inbound` object, set `agent` to the agent ID, and set a `call_policy`. To update a number, send a request to [Update a phone number](/en/api-reference/api-ref/conversational-ai/platform/update-number), and pass its `ETag` from your last create or retrieve request in the `If-Match` header:
+
+```bash
+curl --request PATCH \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/numbers/<number_id> \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --header 'If-Match: <etag>' \
+  --data '
+{
+  "inbound": {
+    "agent": "c8a1e5d2-6f3b-4a9c-b7e0-2d4f6a8c1e3b",
+    "call_policy": {
+      "max_call_duration_seconds": 1800
+    }
+  }
+}'
+```
+
+If the number has changed since you read its `ETag`, the request fails with `412 PreconditionFailed`. Retrieve the number again, and retry with its current `ETag`.
+
+</TabsContent>
 </Tabs>
 
 To reject inbound calls to a number, remove its agent. A number without inbound routing also rejects inbound calls.
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `inbound.agent` to `null` in a request to [Update a phone number](/en/api-reference/api-ref/conversational-ai/platform/update-number).
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -141,6 +135,12 @@ if err != nil {
 ```
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `inbound.agent` to `null` in a request to [Update a phone number](/en/api-reference/api-ref/conversational-ai/platform/update-number).
+
+</TabsContent>
 </Tabs>
 
 {/* TODO(platform-confirm): Callers can't pass `values`. Confirm what happens when the routed agent has `required` variables (inbound calls rejected, or variables left empty), and add guidance. */}
@@ -149,32 +149,13 @@ if err != nil {
 
 The call policy sets limits and behavior for inbound calls:
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `call_policy` in the number's `inbound` object:
-
-```json
-"inbound": {
-  "agent": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
-  "call_policy": {
-    "max_call_duration_seconds": 1800,
-    "max_silence_duration_ms": 60000,
-    "end_call": {
-      "on_user_request": true
-    }
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -245,6 +226,25 @@ _, err = client.V3.Numbers.Update(ctx, "92e68758-3d3a-4f27-8b93-3fd8d834467c", c
 })
 if err != nil {
 	log.Fatal(err)
+}
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `call_policy` in the number's `inbound` object:
+
+```json
+"inbound": {
+  "agent": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
+  "call_policy": {
+    "max_call_duration_seconds": 1800,
+    "max_silence_duration_ms": 60000,
+    "end_call": {
+      "on_user_request": true
+    }
+  }
 }
 ```
 

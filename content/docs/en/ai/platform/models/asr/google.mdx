@@ -14,38 +14,13 @@ The following example shows how to configure Google as the agent's ASR when you 
 
 Google supports BYOK only. It isn't available in managed mode. Store your Google Cloud service account credentials in a secret set, and refer to them from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `credential.mode` to `byok` and `credential.fields.adc_credentials_string` to a reference to your service account credentials in a secret set. In the following example, the credentials are stored as `google` in the `support_prod` set:
-
-```json
-"asr": {
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "adc_credentials_string": "$secrets.support_prod.google"
-    }
-  },
-  "vendor": "google",
-  "model": "long",
-  "language": "en-US",
-  "params": {
-    "language": "en-US",
-    "project_id": "<GOOGLE_ASR_PROJECT_ID>",
-    "location": "global"
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -107,6 +82,31 @@ agent := agentkit.NewAgent(client).
 	})).
 	WithLlm( /* configure your LLM vendor */ ).
 	WithTts( /* configure your TTS vendor */ )
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.adc_credentials_string` to a reference to your service account credentials in a secret set. In the following example, the credentials are stored as `google` in the `support_prod` set:
+
+```json
+"asr": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "adc_credentials_string": "$secrets.support_prod.google"
+    }
+  },
+  "vendor": "google",
+  "model": "long",
+  "language": "en-US",
+  "params": {
+    "language": "en-US",
+    "project_id": "<GOOGLE_ASR_PROJECT_ID>",
+    "location": "global"
+  }
+}
 ```
 
 </TabsContent>

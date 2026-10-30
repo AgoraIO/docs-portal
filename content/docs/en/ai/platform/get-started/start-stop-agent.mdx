@@ -35,19 +35,13 @@ You also need:
 - An [RTC token](/en/realtime-media/rtc/build/authenticate-users/integrate-token-generation) for the agent's UID in the channel.
 - A client app that can join an Agora RTC channel, such as the [Voice Calling](/en/realtime-media/rtc/voice-quickstart) or [Video Calling](/en/realtime-media/rtc/get-started-sdk) quickstart.
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Get REST API credentials for the Platform. For details, see [Authentication](/en/api-reference/api-ref/conversational-ai/platform/authentication).
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -134,6 +128,12 @@ client := agentkit.NewAgoraClient(agentkit.AgoraClientOptions{
 ```
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+Get REST API credentials for the Platform. For details, see [Authentication](/en/api-reference/api-ref/conversational-ai/platform/authentication).
+
+</TabsContent>
 </Tabs>
 
 {/* Verified in pre-release testing: Basic auth (2026-10-27) and ConvoAI token auth (2026-10-28) both work. A quoted or unquoted token header and a token with or without a channel scope were all accepted. The REST examples on this page use Basic auth. The SDK examples use token auth; the alpha.3 SDK previews also support Basic auth. */}
@@ -144,93 +144,13 @@ client := agentkit.NewAgoraClient(agentkit.AgoraClientOptions{
 
 Create an agent with its name, instructions, greeting, and models. This example declares a `customer_name` variable and uses it in the instructions and the greeting. You pass its value when you start a session.
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Send a request to [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). The `pipeline` sets the agent's ASR, LLM, and TTS models.
-
-```bash
-curl --request POST \
-  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents \
-  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
-  --header 'Content-Type: application/json' \
-  --data '
-{
-  "agent_name": "Support agent",
-  "instructions": "You are a friendly support agent for Acme. Address the user as {{customer_name}}. Keep your answers short.",
-  "variables": {
-    "customer_name": {
-      "type": "str",
-      "required": true
-    }
-  },
-  "greeting": {
-    "mode": "text",
-    "on": "each_join",
-    "text": "Hi {{customer_name}}, how can I help you today?"
-  },
-  "pipeline": {
-    "mode": "cascaded",
-    "asr": {
-      "credential": { "mode": "managed" },
-      "vendor": "deepgram",
-      "model": "nova-3",
-      "language": "en-US"
-    },
-    "llm": {
-      "credential": { "mode": "managed" },
-      "vendor": "openai",
-      "style": "openai",
-      "model": "gpt-4.1-mini"
-    },
-    "tts": {
-      "credential": { "mode": "managed" },
-      "vendor": "minimax",
-      "params": {
-        "model": "speech-2.6-turbo",
-        "voice_setting": {
-          "voice_id": "English_captivating_female1",
-          "speed": 1
-        }
-      }
-    }
-  }
-}'
-```
-
-If the request is successful, the response contains the agent ID and the saved configuration:
-
-```json
-// 201 Created
-{
-  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
-  "agent_name": "Support agent",
-  "instructions": "You are a friendly support agent for Acme. Address the user as {{customer_name}}. Keep your answers short.",
-  "variables": {
-    "customer_name": {
-      "type": "str",
-      "required": true
-    }
-  },
-  "greeting": {
-    "mode": "text",
-    "on": "each_join",
-    "text": "Hi {{customer_name}}, how can I help you today?"
-  },
-  "pipeline": { ... },  // The pipeline you set in the request.
-  "create_ts": 1786543331,
-  "update_ts": 1786543331
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -320,6 +240,86 @@ fmt.Println(savedAgent.ID) // The agent ID
 ```
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). The `pipeline` sets the agent's ASR, LLM, and TTS models.
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "agent_name": "Support agent",
+  "instructions": "You are a friendly support agent for Acme. Address the user as {{customer_name}}. Keep your answers short.",
+  "variables": {
+    "customer_name": {
+      "type": "str",
+      "required": true
+    }
+  },
+  "greeting": {
+    "mode": "text",
+    "on": "each_join",
+    "text": "Hi {{customer_name}}, how can I help you today?"
+  },
+  "pipeline": {
+    "mode": "cascaded",
+    "asr": {
+      "credential": { "mode": "managed" },
+      "vendor": "deepgram",
+      "model": "nova-3",
+      "language": "en-US"
+    },
+    "llm": {
+      "credential": { "mode": "managed" },
+      "vendor": "openai",
+      "style": "openai",
+      "model": "gpt-4.1-mini"
+    },
+    "tts": {
+      "credential": { "mode": "managed" },
+      "vendor": "minimax",
+      "params": {
+        "model": "speech-2.6-turbo",
+        "voice_setting": {
+          "voice_id": "English_captivating_female1",
+          "speed": 1
+        }
+      }
+    }
+  }
+}'
+```
+
+If the request is successful, the response contains the agent ID and the saved configuration:
+
+```json
+// 201 Created
+{
+  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
+  "agent_name": "Support agent",
+  "instructions": "You are a friendly support agent for Acme. Address the user as {{customer_name}}. Keep your answers short.",
+  "variables": {
+    "customer_name": {
+      "type": "str",
+      "required": true
+    }
+  },
+  "greeting": {
+    "mode": "text",
+    "on": "each_join",
+    "text": "Hi {{customer_name}}, how can I help you today?"
+  },
+  "pipeline": { ... },  // The pipeline you set in the request.
+  "create_ts": 1786543331,
+  "update_ts": 1786543331
+}
+```
+
+</TabsContent>
 </Tabs>
 
 {/* TODO(platform-confirm): In pre-release testing (2026-10-29) with the SDK preview commits TypeScript 4900f4c, Python ed4466c, and Go 362ce9a, the SDKs send `vendor: "openai"` for the managed OpenAI LLM (SDK bug list #1, fixed), and agent creation saved as written in all three SDKs. Session starts couldn't be tested: the pre-release API refused every session start for the test project on 2026-10-29 (`403 InvalidPermission` with token auth, `401` with Basic auth). The SDKs don't send `Idempotency-Key` when they create an agent, which matches the contract. */}
@@ -340,62 +340,13 @@ To start a conversation, start a session with the agent ID and the following det
 - The UID of the user the agent talks to.
 - A value for each required variable that you defined when you created the agent, such as `customer_name`.
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Send a request to [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session). In `transport`, set:
-
-- `type`: `rtc`, to run the session in an RTC channel. To run the session in a phone call, you use `telephony` instead. For details, see [Make outbound calls and run campaigns](/en/ai/platform/build/phone-calls/outbound-calls-campaigns).
-- `channel`: The RTC channel for the conversation.
-- `token`: The RTC token for the agent's UID.
-- `uid`: The UID the agent uses in the channel, as a string. It must be different from the user's UID. If you omit it, Agora assigns one.
-- `subscribe_uids`: The UID of the user the agent talks to.
-
-In `values`, pass the variable values.
-
-In the `Idempotency-Key` header, pass a unique value for each session you start. If a request times out, retry it with the same key and the same body. The Platform returns the session it already started instead of starting a second one.
-
-```bash
-curl --request POST \
-  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions \
-  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
-  --header 'Content-Type: application/json' \
-  --header 'Idempotency-Key: <your_unique_key>' \
-  --data '
-{
-  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
-  "values": {
-    "customer_name": "Ada"
-  },
-  "transport": {
-    "type": "rtc",
-    "channel": "<your_channel_name>",
-    "token": "<your_rtc_token>",
-    "uid": "1002",
-    "subscribe_uids": ["1001"]
-  }
-}'
-```
-
-If the request is successful, the response contains the session ID and its [status](#check-the-session-status):
-
-```json
-// 200 OK
-{
-  "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
-  "create_ts": 1737111452,
-  "status": "RUNNING"
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -466,6 +417,55 @@ fmt.Println(sessionID) // The agent_session_id
 ```
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session). In `transport`, set:
+
+- `type`: `rtc`, to run the session in an RTC channel. To run the session in a phone call, you use `telephony` instead. For details, see [Make outbound calls and run campaigns](/en/ai/platform/build/phone-calls/outbound-calls-campaigns).
+- `channel`: The RTC channel for the conversation.
+- `token`: The RTC token for the agent's UID.
+- `uid`: The UID the agent uses in the channel, as a string. It must be different from the user's UID. If you omit it, Agora assigns one.
+- `subscribe_uids`: The UID of the user the agent talks to.
+
+In `values`, pass the variable values.
+
+In the `Idempotency-Key` header, pass a unique value for each session you start. If a request times out, retry it with the same key and the same body. The Platform returns the session it already started instead of starting a second one.
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --header 'Idempotency-Key: <your_unique_key>' \
+  --data '
+{
+  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
+  "values": {
+    "customer_name": "Ada"
+  },
+  "transport": {
+    "type": "rtc",
+    "channel": "<your_channel_name>",
+    "token": "<your_rtc_token>",
+    "uid": "1002",
+    "subscribe_uids": ["1001"]
+  }
+}'
+```
+
+If the request is successful, the response contains the session ID and its [status](#check-the-session-status):
+
+```json
+// 200 OK
+{
+  "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
+  "create_ts": 1737111452,
+  "status": "RUNNING"
+}
+```
+
+</TabsContent>
 </Tabs>
 
 Store the session ID. You use it to check and stop the session.
@@ -474,37 +474,13 @@ Store the session ID. You use it to check and stop the session.
 
 A session starts asynchronously. Starting a session successfully confirms that the session exists, not that the agent has joined the channel. To follow the session, retrieve it with its session ID:
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Send a request to [Retrieve a session](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session):
-
-```bash
-curl --request GET \
-  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions/<agent_session_id> \
-  --header 'Authorization: Basic <your_base64_encoded_credentials>'
-```
-
-When the agent is in the channel, the response looks like this:
-
-```json
-// 200 OK
-{
-  "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
-  "status": "RUNNING",
-  "start_ts": 1735035893,
-  "message": "ok"
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -541,6 +517,30 @@ fmt.Println(info.Body.Status)
 If you still have the `session` object from Start a session, you can call `session.GetInfo(ctx)` instead.
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Retrieve a session](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session):
+
+```bash
+curl --request GET \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions/<agent_session_id> \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>'
+```
+
+When the agent is in the channel, the response looks like this:
+
+```json
+// 200 OK
+{
+  "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
+  "status": "RUNNING",
+  "start_ts": 1735035893,
+  "message": "ok"
+}
+```
+
+</TabsContent>
 </Tabs>
 
 When the agent is in the channel, `status` is `RUNNING`. A session has one of the following statuses:
@@ -560,32 +560,13 @@ When the agent is in the channel, `status` is `RUNNING`. A session has one of th
 
 When the conversation ends, stop the session with its session ID. The agent leaves the channel.
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Send a request to [Stop a session](/en/api-reference/api-ref/conversational-ai/platform/stop-session) without a body:
-
-```bash
-curl --request POST \
-  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions/<agent_session_id>/stop \
-  --header 'Authorization: Basic <your_base64_encoded_credentials>'
-```
-
-If the request is successful, the response is an empty JSON object:
-
-```json
-// 200 OK
-{}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -618,6 +599,25 @@ if _, err := client.V3.Sessions.Stop(ctx, "<agent_session_id>"); err != nil {
 If you still have the `session` object from Start a session, you can call `session.Stop(ctx)` instead.
 
 </TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Stop a session](/en/api-reference/api-ref/conversational-ai/platform/stop-session) without a body:
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions/<agent_session_id>/stop \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>'
+```
+
+If the request is successful, the response is an empty JSON object:
+
+```json
+// 200 OK
+{}
+```
+
+</TabsContent>
 </Tabs>
 
 A session also stops asynchronously. To confirm that the session has ended, retrieve it and check that `status` is `STOPPED`. If you don't stop a session, it ends when it reaches a limit you set when you start it, such as an idle timeout or a maximum duration.
@@ -628,56 +628,13 @@ A session also stops asynchronously. To confirm that the session has ended, retr
 
 To try a configuration before you save it, start an ephemeral session. You pass the agent configuration instead of an agent ID, and the Platform doesn't save the configuration.
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Send a request to [Start an ephemeral session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session). The request is the same as Start a session, but you pass the agent configuration in `agent` instead of `agent_id`.
-
-```bash
-curl --request POST \
-  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions/ephemeral \
-  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
-  --header 'Content-Type: application/json' \
-  --data '
-{
-  "agent": {
-    "instructions": "You are a friendly support agent for Acme. Keep your answers short.",
-    "greeting": {
-      "mode": "text",
-      "on": "each_join",
-      "text": "Hi, how can I help you today?"
-    },
-    "pipeline": {
-      "mode": "cascaded",
-      "asr": { "credential": { "mode": "managed" }, "vendor": "deepgram", "model": "nova-3", "language": "en-US" },
-      "llm": { "credential": { "mode": "managed" }, "vendor": "openai", "style": "openai", "model": "gpt-4.1-mini" },
-      "tts": {
-        "credential": { "mode": "managed" },
-        "vendor": "minimax",
-        "params": { "model": "speech-2.6-turbo", "voice_setting": { "voice_id": "English_captivating_female1", "speed": 1 } }
-      }
-    }
-  },
-  "transport": {
-    "type": "rtc",
-    "channel": "<your_channel_name>",
-    "token": "<your_rtc_token>",
-    "uid": "1002",
-    "subscribe_uids": ["1001"]
-  }
-}'
-```
-
-The response has the same format as Start a session.
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -777,6 +734,49 @@ if err != nil {
 	log.Fatal(err)
 }
 ```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Send a request to [Start an ephemeral session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session). The request is the same as Start a session, but you pass the agent configuration in `agent` instead of `agent_id`.
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions/ephemeral \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "agent": {
+    "instructions": "You are a friendly support agent for Acme. Keep your answers short.",
+    "greeting": {
+      "mode": "text",
+      "on": "each_join",
+      "text": "Hi, how can I help you today?"
+    },
+    "pipeline": {
+      "mode": "cascaded",
+      "asr": { "credential": { "mode": "managed" }, "vendor": "deepgram", "model": "nova-3", "language": "en-US" },
+      "llm": { "credential": { "mode": "managed" }, "vendor": "openai", "style": "openai", "model": "gpt-4.1-mini" },
+      "tts": {
+        "credential": { "mode": "managed" },
+        "vendor": "minimax",
+        "params": { "model": "speech-2.6-turbo", "voice_setting": { "voice_id": "English_captivating_female1", "speed": 1 } }
+      }
+    }
+  },
+  "transport": {
+    "type": "rtc",
+    "channel": "<your_channel_name>",
+    "token": "<your_rtc_token>",
+    "uid": "1002",
+    "subscribe_uids": ["1001"]
+  }
+}'
+```
+
+The response has the same format as Start a session.
 
 </TabsContent>
 </Tabs>

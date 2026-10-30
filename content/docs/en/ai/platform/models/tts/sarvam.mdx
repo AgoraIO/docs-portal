@@ -14,36 +14,13 @@ The following example shows how to configure Sarvam as the agent's TTS when you 
 
 Sarvam supports BYOK only. It isn't available in managed mode. Store your Sarvam API subscription key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `credential.mode` to `byok` and `credential.fields.api_subscription_key` to a reference to your Sarvam API subscription key in a secret set. In the following example, the key is stored as `sarvam` in the `support_prod` set:
-
-```json
-"tts": {
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "api_subscription_key": "$secrets.support_prod.sarvam"
-    }
-  },
-  "vendor": "sarvam",
-  "params": {
-    "model": "bulbul:v3",
-    "speaker": "anushka",
-    "target_language_code": "en-IN"
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -99,6 +76,29 @@ agent := agentkit.NewAgent(client).
 		Speaker:            "anushka",
 		TargetLanguageCode: "en-IN",
 	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_subscription_key` to a reference to your Sarvam API subscription key in a secret set. In the following example, the key is stored as `sarvam` in the `support_prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_subscription_key": "$secrets.support_prod.sarvam"
+    }
+  },
+  "vendor": "sarvam",
+  "params": {
+    "model": "bulbul:v3",
+    "speaker": "anushka",
+    "target_language_code": "en-IN"
+  }
+}
 ```
 
 </TabsContent>

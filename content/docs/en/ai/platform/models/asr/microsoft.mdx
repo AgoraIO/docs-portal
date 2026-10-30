@@ -14,37 +14,13 @@ The following example shows how to configure Microsoft Azure as the agent's ASR 
 
 Microsoft Azure supports BYOK only. It isn't available in managed mode. Store your Azure Speech key in a secret set, and refer to it from the agent. Your Azure region isn't secret. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `credential.mode` to `byok` and `credential.fields.key` to a reference to your Azure Speech key in a secret set. Pass the region in `params`. In the following example, the key is stored as `microsoft` in the `support_prod` set:
-
-```json
-"asr": {
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "key": "$secrets.support_prod.microsoft"
-    }
-  },
-  "vendor": "microsoft",
-  "language": "en-US",
-  "params": {
-    "language": "en-US",
-    "region": "eastus",
-    "phrase_list": ["agora", "conversational", "ai", "engine"]
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -105,6 +81,30 @@ agent := agentkit.NewAgent(client).
 	})).
 	WithLlm( /* configure your LLM vendor */ ).
 	WithTts( /* configure your TTS vendor */ )
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.key` to a reference to your Azure Speech key in a secret set. Pass the region in `params`. In the following example, the key is stored as `microsoft` in the `support_prod` set:
+
+```json
+"asr": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "key": "$secrets.support_prod.microsoft"
+    }
+  },
+  "vendor": "microsoft",
+  "language": "en-US",
+  "params": {
+    "language": "en-US",
+    "region": "eastus",
+    "phrase_list": ["agora", "conversational", "ai", "engine"]
+  }
+}
 ```
 
 </TabsContent>

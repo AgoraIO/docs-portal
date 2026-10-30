@@ -14,35 +14,13 @@ The following example shows how to configure Fish Audio as the agent's TTS when 
 
 Fish Audio supports BYOK only. It isn't available in managed mode. Store your Fish Audio API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
-
-<TabsContent value="rest-api">
-
-Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Fish Audio API key. In the following example, the key is stored as `fishaudio` in the `support_prod` set:
-
-```json
-"tts": {
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "api_key": "$secrets.support_prod.fishaudio"
-    }
-  },
-  "vendor": "fishaudio",
-  "params": {
-    "reference_id": "<voice_model_id>",
-    "backend": "speech-1.5"
-  }
-}
-```
-
-</TabsContent>
 
 <TabsContent value="python">
 
@@ -98,6 +76,28 @@ agent := agentkit.NewAgent(client).
 		ReferenceID: "<voice_model_id>",
 		Backend:     "speech-1.5",
 	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Fish Audio API key. In the following example, the key is stored as `fishaudio` in the `support_prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.fishaudio"
+    }
+  },
+  "vendor": "fishaudio",
+  "params": {
+    "reference_id": "<voice_model_id>",
+    "backend": "speech-1.5"
+  }
+}
 ```
 
 </TabsContent>
