@@ -46,7 +46,7 @@ describe('ConvoAI source PR 2074 Agents SDK contracts', () => {
   it('lists the Python generated filler and custom tool aliases in Type aliases', () => {
     const section = between(
       read(`${apiRoot}/agent-python/index.mdx`),
-      '### Type aliases',
+      '### 类型别名 [#type-aliases]',
       '## AgentSession',
     );
     for (const name of [
@@ -79,7 +79,7 @@ describe('ConvoAI source PR 2074 Agents SDK contracts', () => {
   it('explains Python LLM template serialization and runtime placeholders', () => {
     const section = between(
       read(`${apiRoot}/agent-python/index.mdx`),
-      '### LLM vendors',
+      '### LLM 服务商 [#llm-vendors]',
       '#### CustomLLM',
     );
     for (const text of [
@@ -100,13 +100,13 @@ describe('ConvoAI source PR 2074 Agents SDK contracts', () => {
     const section = between(
       read(`${apiRoot}/agent-python/index.mdx`),
       '#### CustomLLM',
-      '### TTS vendors',
+      '### 语音合成服务商 [#tts-vendors]',
     );
     expect(section).toContain(
-      '| `template_variables` | `Dict[str, str]` | No | `None` |',
+      '| `template_variables` | `Dict[str, str]` | 否 | `None` |',
     );
     expect(section).toContain(
-      '| `tools` | `List[Dict[str, Any]]` | No | `None` |',
+      '| `tools` | `List[Dict[str, Any]]` | 否 | `None` |',
     );
     expect(section).toContain('`with_tools(True)`');
   });
@@ -124,7 +124,7 @@ describe('ConvoAI source PR 2074 Agents SDK contracts', () => {
   it('lists TypeScript generated filler and tool aliases beside their shared switch', () => {
     const section = between(
       read(`${apiRoot}/agent-typescript/index.mdx`),
-      '### Type aliases',
+      '### 类型别名 [#type-aliases]',
       '## AgentSession',
     );
     for (const name of [
@@ -137,20 +137,20 @@ describe('ConvoAI source PR 2074 Agents SDK contracts', () => {
     ]) {
       expect(section).toContain(`\`${name}\``);
     }
-    expect(section).toContain('`llm.tools` 与 MCP server 配置相互独立');
+    expect(section).toContain('`llm.tools` 与 MCP 服务器配置相互独立');
     expect(section).toContain('`withTools(true)`');
   });
 
   it('documents TypeScript LLM tools and synchronous endpoint behavior', () => {
     const section = between(
       read(`${apiRoot}/agent-typescript/index.mdx`),
-      '### LLM vendors',
-      '### TTS vendors',
+      '### LLM 服务商 [#llm-vendors]',
+      '### 语音合成服务商 [#tts-vendors]',
     );
-    expect(section).toContain('| `tools` | `LlmTool[]` | No |');
+    expect(section).toContain('| `tools` | `LlmTool[]` | 否 |');
     expect(section).toContain('同步 `GET` 或 `POST` 请求');
     expect(section).toContain(
-      '`withTools(true)` 同时适用于 `tools` 和 MCP server 配置',
+      '`withTools(true)` 同时适用于 `tools` 和 MCP 服务器配置',
     );
   });
 });

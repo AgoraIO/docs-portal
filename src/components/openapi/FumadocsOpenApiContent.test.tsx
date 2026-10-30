@@ -116,6 +116,96 @@ function makeSectionHeadingPageProps(): OpenAPIPageProps {
 }
 
 describe('FumadocsOpenApiContent', () => {
+  it('retains schema-less parameters inherited from paths and referenced from components', () => {
+    const project = {
+      name: 'project',
+      in: 'path',
+      required: true,
+      description: 'Inherited project parameter.',
+    };
+    const cursor = {
+      name: 'cursor',
+      in: 'query',
+      description: 'Referenced pagination cursor.',
+      example: 'next-cursor',
+    };
+    const { container } = render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'get', path: '/legacy/{project}' }],
+          payload: {
+            bundled: {
+              openapi: '3.2.0',
+              info: { title: 'Legacy parameters', version: '1' },
+              components: { parameters: { cursor } },
+              paths: {
+                '/legacy/{project}': {
+                  parameters: [project],
+                  get: {
+                    parameters: [
+                      { $ref: '#/components/parameters/cursor' },
+                      {
+                        name: 'trace',
+                        in: 'header',
+                        description: 'Trace identifier.',
+                      },
+                      {
+                        name: 'session',
+                        in: 'cookie',
+                        description: 'Session identifier.',
+                      },
+                    ],
+                    responses: { '200': { description: 'OK' } },
+                  },
+                },
+              },
+            } as Document,
+          },
+        }}
+      />,
+    );
+    const fields = container.querySelectorAll(
+      '.openapi-schema-parameter-fields',
+    );
+    expect(fields).toHaveLength(4);
+    expect(container).toHaveTextContent('Inherited project parameter.');
+    expect(container).toHaveTextContent('Referenced pagination cursor.');
+    expect(container).toHaveTextContent('next-cursor');
+    expect(container).toHaveTextContent('Trace identifier.');
+    expect(container).toHaveTextContent('Session identifier.');
+    expect(project).not.toHaveProperty('schema');
+    expect(cursor).not.toHaveProperty('schema');
+  });
+
+  it('preserves the schema-less appid parameter in the published RTC channel-list source', async () => {
+    const document = yaml.load(
+      await readFile(
+        'content/openapi/rtc/channel-management.zh-CN.yaml',
+        'utf8',
+      ),
+    ) as Document;
+    const { container } = render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [{ method: 'get', path: '/dev/v1/channel/{appid}' }],
+          payload: { bundled: document },
+        }}
+      />,
+    );
+    const appid = Array.from(
+      container.querySelectorAll('.openapi-schema-field-row'),
+    ).find((row) => row.querySelector('code')?.textContent === 'appid');
+    expect(appid).toBeDefined();
+    expect(container).toHaveTextContent('项目的 App ID。可通过以下方式获取');
+    expect(container).toHaveTextContent('从声网控制台获取');
+    expect(
+      container.querySelector(
+        'a[href="/zh-CN/api-reference/api-ref/console/list-projects"]',
+      ),
+    ).toHaveTextContent('获取所有项目信息 API');
+  });
+
   it.each([
     {
       source: 'cloud-recording/cloud-recording.zh-CN.yaml',
@@ -1342,12 +1432,19 @@ describe('FumadocsOpenApiContent', () => {
     expect(rail.querySelector('.openapi-request-examples')).toBeInTheDocument();
     expect(rail.querySelector('.openapi-response-example')).toBeInTheDocument();
     const layout = rail.closest('.openapi-operation-layout');
-    expect(layout?.firstElementChild).toHaveClass('min-w-0');
-    expect(layout?.lastElementChild).toHaveClass(
-      'openapi-examples-rail-anchor',
+    const documentation = layout?.querySelector(
+      '[data-openapi-operation-panel="documentation"]',
     );
-    expect(layout?.lastElementChild?.lastElementChild).toBe(rail);
-    expect(layout?.children).toHaveLength(2);
+    const examples = layout?.querySelector(
+      '[data-openapi-operation-panel="examples"]',
+    );
+    expect(documentation).toHaveClass('min-w-0');
+    expect(examples).toContainElement(rail);
+    expect(documentation).not.toContainElement(rail);
+    expect(
+      examples?.querySelector('.openapi-examples-rail-anchor')
+        ?.lastElementChild,
+    ).toBe(rail);
     expect(rail.className).not.toContain('w-[360px]');
   });
 
