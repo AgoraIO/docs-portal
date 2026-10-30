@@ -30,7 +30,7 @@ Before you begin, make sure that you have:
 
 Create a secret set with a name for the set and your keys. Choose key names that describe their purpose. This example stores an OpenAI API key under the name `llm`.
 
-Set names and key names are case-sensitive, and can contain up to 64 letters, digits, and underscores. Hyphens aren't allowed. A set name must be unique in your project. Key names only need to be unique in their set.
+Set names and key names are case-sensitive, and can contain up to 64 letters, digits, and underscores. Hyphens aren't allowed. A set name must be unique in your project. Key names only need to be unique in their set. A set can hold at most 64 KiB of keys and values. By default, an account can have up to 10 secret sets across all of its projects. To raise this limit, contact Agora support.
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -103,13 +103,7 @@ If the request is successful, the response contains the set's name and key names
 // 201 Created
 {
   "name": "support_prod",
-  "keys": [
-    {
-      "key": "llm",
-      "create_ts": 1789898400,
-      "update_ts": 1789898400
-    }
-  ],
+  "keys": ["llm"],
   "create_ts": 1789898400,
   "update_ts": 1789898400
 }
@@ -118,7 +112,6 @@ If the request is successful, the response contains the set's name and key names
 </TabsContent>
 </Tabs>
 
-{/* TODO(platform-confirm): The response examples follow the launch contract. Pre-release testing (2026-10-28) returned `keys` as a list of names (`["llm"]`), and Set a secret key returned only `{"key": "llm"}`. The Go SDK models those shapes. */}
 
 :::tip
 Create one secret set for each environment, such as `support_dev` and `support_prod`, with the same key names in each. To switch an agent between environments, you then only change the set name in its references.
@@ -126,7 +119,7 @@ Create one secret set for each environment, such as `support_dev` and `support_p
 
 ## Use the key in an agent
 
-Create an agent that refers to the key. For each model that uses your own key, pass the reference instead of the key. Don't put keys anywhere else in the agent.
+Create an agent that refers to the key. For each model that uses your own key, pass the reference instead of the key. If a provider needs another secret in a header, such as an organization ID, set the header value in the model's `headers` to a reference too. Don't put keys anywhere else in the agent.
 
 In the following example, the LLM uses the OpenAI key stored as `llm` in the `support_prod` set. ASR and TTS use managed mode.
 
@@ -345,14 +338,12 @@ curl --request PUT \
 }'
 ```
 
-If the request is successful, the response contains the key's name and timestamps:
+If the request is successful, the response contains the key's name:
 
 ```json
 // 200 OK
 {
-  "key": "llm",
-  "create_ts": 1789898400,
-  "update_ts": 1790000000
+  "key": "llm"
 }
 ```
 
@@ -370,10 +361,12 @@ The following table lists common errors when you work with secret sets and refer
 | Error | Cause | Solution |
 |---|---|---|
 | `400 UnknownSecretReference` | An agent refers to a set or key that doesn't exist. | Check the spelling and case of the set and key names in `$secrets.<set>.<key>`. Names can't contain dots. |
-| `400 InvalidModuleParameter` | A `byok` block has no `fields`, a `managed` block has `fields`, `fields` uses the wrong field names for the provider, or a key is in `params`. | Set `credential` in each block as described in [Use the key in an agent](#use-the-key-in-an-agent). |
+| `400 MissingRequiredField` | A `byok` block has no `fields`. | Pass your credentials in `credential.fields`, as described in [Use the key in an agent](#use-the-key-in-an-agent). |
+| `400 InvalidRequestBody` | A `managed` block has `fields`. | Remove `fields`, or set `mode` to `byok`. |
+| `400 InvalidFieldValue` | `fields` uses the wrong field names for the provider, a value in `fields` isn't a `$secrets.<set>.<key>` reference, a key is in `params`, or the vendor doesn't support the credential mode. | Use the field names on the provider's model page, refer to your keys by reference, and keep keys out of `params`. |
 | `409 SecretSetAlreadyExists` | A secret set with this name already exists. | To change its keys, [set a key](/en/api-reference/api-ref/conversational-ai/platform/set-secret-key) or [update the set](/en/api-reference/api-ref/conversational-ai/platform/update-secret-set). |
 | `409 SecretSetInUse` | You tried to delete a key or set that an agent refers to. | Update or delete the agents that refer to it first. |
-| `422 ResourceQuotaLimitExceeded` | Your project has reached its secret set quota. | Delete secret sets you no longer use. |
+| `422 ResourceQuotaLimitExceeded` | Your account has reached its secret set quota. By default, an account can have up to 10 secret sets across all of its projects. | Delete secret sets you no longer use. |
 
 {/* TODO(platform-confirm): Add the secret set and key quotas for the Preview. Also confirm how a session reports a provider key that the provider rejects, for example an expired key. */}
 

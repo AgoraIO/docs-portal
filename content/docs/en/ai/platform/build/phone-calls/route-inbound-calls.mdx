@@ -96,6 +96,8 @@ curl --request PATCH \
 
 If the number has changed since you read its `ETag`, the request fails with `412 PreconditionFailed`. Retrieve the number again, and retry with its current `ETag`.
 
+The `inbound` object you pass replaces the saved one as a whole, so include the complete `call_policy` each time. The same applies to `sip_trunk`: if you update it, pass every field you want to keep, including `auth`.
+
 </TabsContent>
 </Tabs>
 
@@ -255,9 +257,9 @@ Set `call_policy` in the number's `inbound` object:
 |---|---|
 | `max_call_duration_seconds` | The maximum length of a call in seconds, from when it's answered. |
 | `max_silence_duration_ms` | Hang up when nobody on the call has spoken for this many milliseconds. |
-| `end_call` | The conditions under which the agent can end the call itself: `on_conversation_complete`, `on_user_request`, `on_voicemail`, and `on_ai_assistant`. Each condition is off unless you set it to `true`. |
+| `end_call` | The conditions under which the agent can end the call itself. Each condition is off unless you set it to `true`. `on_user_request`: the caller clearly says goodbye or asks to hang up. `on_voicemail`: the call reaches voicemail. `on_ai_assistant`: an AI assistant or another automated system answers. |
 
-If you omit a limit, it doesn't apply. Transferring calls to a person isn't available in the Preview.
+If you omit a limit, it doesn't apply.
 
 {/* TODO(platform-confirm): In pre-release testing (2026-10-27), inbound `end_call` was accepted, `transfer` returned `400 NotImplemented` ("Transfer policy is not supported"), and `inbound.agent` without `call_policy` returned `400 MissingRequiredField`. The launch contract lists `transfer`. Add it back when it's supported. */}
 

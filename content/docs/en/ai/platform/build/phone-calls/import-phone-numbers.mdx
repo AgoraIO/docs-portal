@@ -176,7 +176,7 @@ In `sip_trunk`, set the following fields:
 | `transport` | The transport protocol: `tls`, `tcp`, or `udp`. The default is `tls`. |
 | `port` | The SIP signaling port. The default is `5061` for `tls`, and `5060` for `udp` and `tcp`. |
 | `auth` | Your SIP username and password. The API never returns them. Referring to a secret set for the password isn't supported in the Preview. |
-| `allowed_ips` | The CIDR ranges allowed to send inbound SIP traffic, for example `54.172.60.0/23`. Omit it to accept your carrier's published ranges. |
+| `allowed_ips` | The addresses allowed to send inbound SIP traffic, as IPv4 addresses such as `54.172.60.1` or IPv4 CIDR ranges such as `54.172.60.0/23`. If you omit it, inbound SIP traffic is accepted from any address, so set it to your carrier's signaling addresses. |
 | `name` | A name that helps you identify the carrier connection. |
 
 {/* TODO(platform-confirm): In pre-release testing (2026-10-27), a plain SIP password and `allowed_ips` were accepted, and a `$secrets` SIP password returned `400 NotImplemented` ("SIP password secret references are not supported"). The launch contract lists secret references. Switch the example back to a `$secrets` reference when it's supported. */}

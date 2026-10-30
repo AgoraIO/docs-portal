@@ -10,9 +10,7 @@ Google Gemini provides advanced multimodal AI capabilities with fast performance
 
 ## Sample configuration
 
-The following example shows how to configure Google Gemini as the agent's LLM when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
-
-Google Gemini supports BYOK only. It isn't available in managed mode. Store your Gemini API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Google Gemini supports BYOK only. It isn't available in managed mode. The following example starts an [ephemeral session](/en/ai/platform/get-started/start-stop-agent#test-a-configuration-without-saving-an-agent) with Gemini as the LLM. In an ephemeral session, you pass the agent configuration in the request, with your Gemini API key in the endpoint URL, and the Platform doesn't save them. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -24,16 +22,17 @@ Google Gemini supports BYOK only. It isn't available in managed mode. Store your
 
 <TabsContent value="python">
 
-```python
-from agora_agent import Agent, Gemini, secret_ref
+Pass your key as `api_key`, and leave it out of `url`. Call `create_session()` on an `Agent`. The SDK starts an ephemeral session when you set a Platform session option, such as `max_duration` in seconds.
 
-# client is your configured Agora client
-agent = (
+```python
+from agora_agent import Agent, DeepgramSTT, Gemini, OpenAITTS
+
+test_agent = (
     Agent(client=client)
-    .with_stt(...)  # configure your ASR vendor
+    .with_stt(DeepgramSTT(model="nova-3", language="en-US"))
     .with_llm(
         Gemini(
-            api_key=secret_ref("support_prod", "gemini"),
+            api_key="<your_gemini_api_key>",
             model="gemini-3.6-flash",
             url="https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:streamGenerateContent?alt=sse",
             max_history=32,
@@ -43,23 +42,33 @@ agent = (
             ],
         )
     )
-    .with_tts(...)  # configure your TTS vendor
+    .with_tts(OpenAITTS(model="tts-1", voice="alloy"))
 )
+
+session = test_agent.create_session(
+    channel="<your_channel_name>",
+    token="<your_rtc_token>",
+    agent_uid="1002",
+    remote_uids=["1001"],
+    max_duration=600,
+)
+session_id = session.start()
 ```
 
 </TabsContent>
 
 <TabsContent value="typescript">
 
-```ts
-import { Agent, Gemini, secretRef } from 'agora-agents';
+Pass your key as `apiKey`, and leave it out of `url`. Call `createSession()` on an `Agent`. The SDK starts an ephemeral session when you set a Platform session option, such as `maxDuration` in seconds.
 
-// client is your configured Agora client
-const agent = new Agent({ client })
-  .withStt(/* configure your ASR vendor */)
+```ts
+import { Agent, DeepgramSTT, Gemini, OpenAITTS } from 'agora-agents';
+
+const testAgent = new Agent({ client })
+  .withStt(new DeepgramSTT({ model: 'nova-3', language: 'en-US' }))
   .withLlm(
     new Gemini({
-      apiKey: secretRef('support_prod', 'gemini'),
+      apiKey: '<your_gemini_api_key>',
       model: 'gemini-3.6-flash',
       url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:streamGenerateContent?alt=sse',
       maxHistory: 32,
@@ -69,20 +78,30 @@ const agent = new Agent({ client })
       ],
     }),
   )
-  .withTts(/* configure your TTS vendor */);
+  .withTts(new OpenAITTS({ model: 'tts-1', voice: 'alloy' }));
+
+const session = testAgent.createSession({
+  channel: '<your_channel_name>',
+  token: '<your_rtc_token>',
+  agentUid: '1002',
+  remoteUids: ['1001'],
+  maxDuration: 600,
+});
+const sessionId = await session.start();
 ```
 
 </TabsContent>
 
 <TabsContent value="go">
 
+Pass your key as `APIKey`, and leave it out of `URL`. Call `CreateSession()` on an `Agent`. The SDK starts an ephemeral session when you set a Platform session option, such as `MaxDuration` in seconds.
+
 ```go
-// client is your configured Agora client
 maxHistory := 32
-agent := agentkit.NewAgent(client).
-	WithStt( /* configure your ASR vendor */ ).
+testAgent := agentkit.NewAgent(client).
+	WithStt(vendors.NewDeepgramSTT(vendors.DeepgramSTTOptions{Model: "nova-3", Language: "en-US"})).
 	WithLlm(vendors.NewGemini(vendors.GeminiOptions{
-		APIKey:         agentkit.SecretRef("support_prod", "gemini"),
+		APIKey:         "<your_gemini_api_key>",
 		Model:          "gemini-3.6-flash",
 		URL:            "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:streamGenerateContent?alt=sse",
 		MaxHistory:     &maxHistory,
@@ -91,40 +110,70 @@ agent := agentkit.NewAgent(client).
 			{"role": "system", "content": "You are a friendly support agent for Acme. Keep your answers short."},
 		},
 	})).
-	WithTts( /* configure your TTS vendor */ )
+	WithTts(vendors.NewOpenAITTS(vendors.OpenAITTSOptions{Model: "tts-1", Voice: "alloy"}))
+
+maxDuration := 600
+session := testAgent.CreateSession(agentkit.CreateSessionOptions{
+	Channel:     "<your_channel_name>",
+	Token:       "<your_rtc_token>",
+	AgentUID:    "1002",
+	RemoteUIDs:  []string{"1001"},
+	MaxDuration: &maxDuration,
+})
+sessionID, err := session.Start(ctx)
+if err != nil {
+	log.Fatal(err)
+}
 ```
 
 </TabsContent>
 
 <TabsContent value="rest-api">
 
-Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. Don't put the key in the `url` query string. In the following example, the key is stored as `gemini` in the `support_prod` set:
+Send a request to [Start an ephemeral session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session). In the `llm` block, set `url` to the Gemini `streamGenerateContent` endpoint for your model, with `alt=sse` and your API key in the `key` query parameter. Set `credential.mode` to `byok`, and leave out `credential.fields`.
 
-```json
-"llm": {
-  "credential": {
-    "mode": "byok",
-    "fields": {
-      "api_key": "$secrets.support_prod.gemini"
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions/ephemeral \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "agent": {
+    "instructions": "You are a friendly support agent for Acme. Keep your answers short.",
+    "pipeline": {
+      "mode": "cascaded",
+      "asr": { "credential": { "mode": "managed" }, "vendor": "deepgram", "model": "nova-3", "language": "en-US" },
+      "llm": {
+        "credential": { "mode": "byok" },
+        "vendor": "gemini",
+        "style": "gemini",
+        "model": "gemini-3.6-flash",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:streamGenerateContent?alt=sse&key=<your_gemini_api_key>",
+        "max_history": 32,
+        "failure_message": "Hold on a second."
+      },
+      "tts": {
+        "credential": { "mode": "managed" },
+        "vendor": "minimax",
+        "params": { "model": "speech-2.6-turbo", "voice_setting": { "voice_id": "English_captivating_female1", "speed": 1 } }
+      }
     }
   },
-  "vendor": "gemini",
-  "style": "gemini",
-  "model": "gemini-3.6-flash",
-  "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:streamGenerateContent?alt=sse",
-  "max_history": 32,
-  "failure_message": "Hold on a second."
-}
+  "transport": {
+    "type": "rtc",
+    "channel": "<your_channel_name>",
+    "token": "<your_rtc_token>",
+    "uid": "1002",
+    "subscribe_uids": ["1001"]
+  }
+}'
 ```
 
-Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
+A saved agent can't have a key in its `url`. The response has the same format as Start a session. Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
 
 </TabsContent>
 </Tabs>
-
-{/* TODO(platform-confirm): Confirm the `vendor` value for Google Gemini (`gemini` is assumed), and whether `url` is required. The Voice Agent API passes the key in the `url` query string (`&key=<api_key>`). Confirm that the Platform sends `credential.fields.api_key` to Gemini without it. Also confirm where `ignore_empty` goes. It isn't a block field in the Platform spec. This page lists it in `params`. */}
-
-{/* TODO(platform-confirm): SDK tabs tested in pre-release testing (2026-10-29) against the SDK preview commits TypeScript 4900f4c, Python ed4466c, and Go 362ce9a. All three saved as written, sent the key in `credential.fields.api_key`, and stored the same `llm` block as the REST example (SDK bug list #26, fixed). */}
 
 ## Key parameters
 
@@ -135,7 +184,7 @@ The `llm` block takes the following fields.
     Set to `gemini`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Gemini API key. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+    Set `mode` to `byok`.
   </Parameter>
   <Parameter name="style" type="string" required={true}>
     Set to `gemini` to use Gemini's message format.
@@ -144,7 +193,7 @@ The `llm` block takes the following fields.
     Refer to [Gemini models](https://ai.google.dev/gemini-api/docs/models/gemini) for available models.
   </Parameter>
   <Parameter name="url" type="string" required={true}>
-    The Gemini `streamGenerateContent` endpoint for your model.
+    The Gemini `streamGenerateContent` endpoint for your model, with `alt=sse` and `key=<your_gemini_api_key>`. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
   </Parameter>
   <Parameter name="params" type="object" required={false}>
     <Parameter name="ignore_empty" type="boolean" required={false}>

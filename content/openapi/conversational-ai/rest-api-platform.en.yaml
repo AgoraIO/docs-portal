@@ -119,9 +119,12 @@ paths:
                 tts:
                   credential:
                     mode: managed
-                  vendor: microsoft
+                  vendor: minimax
                   params:
-                    voice_name: en-US-AvaMultilingualNeural
+                    model: speech-2.6-turbo
+                    voice_setting:
+                      voice_id: English_captivating_female1
+                      speed: 1
                 silence_config:
                   enabled: true
                   timeout_ms: 3000
@@ -140,8 +143,6 @@ paths:
               $ref: "#/components/headers/Agora-Request-Id"
             ETag:
               $ref: "#/components/headers/ETag"
-            Location:
-              $ref: "#/components/headers/Location"
           content:
             application/json:
               schema:
@@ -183,9 +184,12 @@ paths:
                   tts:
                     credential:
                       mode: managed
-                    vendor: microsoft
+                    vendor: minimax
                     params:
-                      voice_name: en-US-AvaMultilingualNeural
+                      model: speech-2.6-turbo
+                      voice_setting:
+                        voice_id: English_captivating_female1
+                        speed: 1
                   silence_config:
                     enabled: true
                     timeout_ms: 3000
@@ -201,15 +205,14 @@ paths:
         "400":
           $ref: "#/components/responses/BadRequest"
           description: >-
-            The request is invalid. For example, `InvalidModuleParameter` when a pipeline stage has
-            an unsupported vendor, model, credential mode, or parameter, `UnknownSecretReference`
-            when a `$secrets` reference names a set or key that doesn't exist, or `NotImplemented`
-            when a field isn't available yet.
+            The request is invalid. For example, `InvalidFieldValue` when a pipeline stage has an
+            unsupported vendor, model, or credential mode, `MissingRequiredField` when a stage is
+            missing a provider parameter or its BYOK `fields`, `UnknownSecretReference` when a
+            `$secrets` reference names a set or key that doesn't exist, `InvalidModuleParameter`
+            when the resulting pipeline is invalid, or `NotImplemented` when a field isn't
+            available yet.
         "401":
           $ref: "#/components/responses/Unauthorized"
-        "422":
-          $ref: "#/components/responses/Error"
-          description: "`ResourceQuotaLimitExceeded`: The project has reached its agent quota."
         default:
           $ref: "#/components/responses/Error"
       # TODO(platform-confirm): Staging (14 Oct) required `params.url` for managed ASR and TTS and `url`
@@ -318,7 +321,8 @@ paths:
           markdown: >-
             The request body is a JSON merge patch. Send only the fields you want to change.
             Nested objects merge field by field, arrays replace the saved value, and `null` removes
-            a field. Each variable definition you pass replaces the saved definition as a whole.
+            a field. Variable definitions merge field by field too: to drop a saved `options`,
+            `extract`, or `description`, set it to `null`.
 
 
             The update applies to sessions that start afterward. Running sessions keep the
@@ -366,8 +370,6 @@ paths:
           $ref: "#/components/responses/PreconditionFailed"
         default:
           $ref: "#/components/responses/Error"
-      # TODO(platform-confirm): The contract says each variable definition is replaced as a whole. On
-      # staging (10 Oct), a patch with only `description` merged into the saved definition.
     delete:
       tags:
         - Agents
@@ -468,16 +470,14 @@ paths:
                     call_policy:
                       max_ring_duration_ms: 30000
                       max_call_duration_seconds: 600
-                      voicemail:
-                        mode: hangup
+                      end_call:
+                        on_voicemail: true
       responses:
         "200":
           description: The session was created.
           headers:
             Agora-Request-Id:
               $ref: "#/components/headers/Agora-Request-Id"
-            Idempotent-Replayed:
-              $ref: "#/components/headers/Idempotent-Replayed"
           content:
             application/json:
               schema:
@@ -490,9 +490,9 @@ paths:
           $ref: "#/components/responses/BadRequest"
           description: >-
             The request was rejected and no session was created. For example,
-            `InvalidModuleParameter` when the agent's pipeline is invalid,
-            `UnknownSecretReference` when the agent references a secret that no longer exists, or
-            `MissingRequiredField` when a required variable has no value.
+            `InvalidModuleParameter` when the agent's pipeline is invalid, `MissingRequiredField`
+            when a required variable has no value, or `InvalidFieldValue` when a telephony session
+            uses an agent that is deployed for inbound calls.
         "401":
           $ref: "#/components/responses/Unauthorized"
         "404":
@@ -504,21 +504,20 @@ paths:
           $ref: "#/components/responses/Conflict"
           description: >-
             `TaskConflict`: An agent is already running with the same RTC channel and UID.
-            `IdempotencyKeyConflict`: The `Idempotency-Key` was used with a different body, or its
-            original request is still in progress.
+            `IdempotencyKeyConflict`: A session was already started with this `Idempotency-Key`.
         "422":
           $ref: "#/components/responses/Error"
           description: "`ResourceQuotaLimitExceeded`: The project has reached its session quota."
         "429":
           $ref: "#/components/responses/TooManyRequests"
           description: >-
-            `ConcurrencyLimitExceeded`: The project has reached its concurrent session limit. Try
-            again after `Retry-After` seconds.
+            `ConcurrencyLimitExceeded`: The project has reached its concurrent session limit. Stop
+            a session, or retry later with exponential backoff.
         "503":
           $ref: "#/components/responses/Error"
           description: >-
-            `ResourceAllocationFailed`: No capacity is available to start the session. Try again
-            after `Retry-After` seconds.
+            `ResourceAllocationFailed`: No capacity is available to start the session. Retry with
+            exponential backoff.
         "504":
           $ref: "#/components/responses/Error"
           description: >-
@@ -650,9 +649,12 @@ paths:
                   tts:
                     credential:
                       mode: managed
-                    vendor: microsoft
+                    vendor: minimax
                     params:
-                      voice_name: en-US-AvaMultilingualNeural
+                      model: speech-2.6-turbo
+                      voice_setting:
+                        voice_id: English_captivating_female1
+                        speed: 1
               transport:
                 type: rtc
                 channel: support-4821
@@ -666,8 +668,6 @@ paths:
           headers:
             Agora-Request-Id:
               $ref: "#/components/headers/Agora-Request-Id"
-            Idempotent-Replayed:
-              $ref: "#/components/headers/Idempotent-Replayed"
           content:
             application/json:
               schema:
@@ -691,21 +691,20 @@ paths:
           $ref: "#/components/responses/Conflict"
           description: >-
             `TaskConflict`: An agent is already running with the same RTC channel and UID.
-            `IdempotencyKeyConflict`: The `Idempotency-Key` was used with a different body, or its
-            original request is still in progress.
+            `IdempotencyKeyConflict`: A session was already started with this `Idempotency-Key`.
         "422":
           $ref: "#/components/responses/Error"
           description: "`ResourceQuotaLimitExceeded`: The project has reached its session quota."
         "429":
           $ref: "#/components/responses/TooManyRequests"
           description: >-
-            `ConcurrencyLimitExceeded`: The project has reached its concurrent session limit. Try
-            again after `Retry-After` seconds.
+            `ConcurrencyLimitExceeded`: The project has reached its concurrent session limit. Stop
+            a session, or retry later with exponential backoff.
         "503":
           $ref: "#/components/responses/Error"
           description: >-
-            `ResourceAllocationFailed`: No capacity is available to start the session. Try again
-            after `Retry-After` seconds.
+            `ResourceAllocationFailed`: No capacity is available to start the session. Retry with
+            exponential backoff.
         "504":
           $ref: "#/components/responses/Error"
           description: >-
@@ -775,8 +774,10 @@ paths:
           markdown: >-
             Use this endpoint to renew the agent's RTC token, or to replace the conversation
             messages or LLM parameters of a running session. Each field you pass replaces its
-            current value as a whole, so include every LLM parameter that must stay. You can't
-            change other session or transport fields after the session starts.
+            current value as a whole, so include every LLM parameter that must stay. `messages`
+            also replaces the agent's `instructions`, so pass the instructions as the first
+            `system` message to keep them. You can't change other session or transport fields after
+            the session starts.
 
 
             Support for runtime changes depends on the provider. If the provider can't apply a
@@ -869,7 +870,9 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "404":
           $ref: "#/components/responses/NotFound"
-          description: "`TaskNotFound`: No session has this `agent_session_id`."
+          description: >-
+            `TaskNotFound`: No session has this `agent_session_id`, or the session has already ended
+            or failed to start and is no longer tracked.
         "409":
           $ref: "#/components/responses/Conflict"
           description: >-
@@ -882,8 +885,6 @@ paths:
             its status.
         default:
           $ref: "#/components/responses/Error"
-      # TODO(platform-confirm): Staging (14 Oct) returned 404 TaskNotFound for an ended session, not
-      # 409 TaskNotRunning.
   /v1/projects/{appid}/secrets:
     post:
       tags:
@@ -925,8 +926,6 @@ paths:
               $ref: "#/components/headers/Agora-Request-Id"
             ETag:
               $ref: "#/components/headers/ETag"
-            Location:
-              $ref: "#/components/headers/Location"
           content:
             application/json:
               schema:
@@ -934,15 +933,9 @@ paths:
               example:
                 name: support_prod
                 keys:
-                  - key: asr
-                    create_ts: 1789898400
-                    update_ts: 1789898400
-                  - key: llm
-                    create_ts: 1789898400
-                    update_ts: 1789898400
-                  - key: tts
-                    create_ts: 1789898400
-                    update_ts: 1789898400
+                  - asr
+                  - llm
+                  - tts
                 create_ts: 1789898400
                 update_ts: 1789898400
         "400":
@@ -955,7 +948,9 @@ paths:
             `SecretSetAlreadyExists`: A set with this name exists.
         "422":
           $ref: "#/components/responses/Error"
-          description: "`ResourceQuotaLimitExceeded`: The project has reached its secret set quota."
+          description: >-
+            `ResourceQuotaLimitExceeded`: The account has reached its secret set quota. By default,
+            an account can have up to 10 secret sets across all of its projects.
         default:
           $ref: "#/components/responses/Error"
     get:
@@ -995,9 +990,7 @@ paths:
                   list:
                     - name: support_prod
                       keys:
-                        - key: llm
-                          create_ts: 1789898400
-                          update_ts: 1790000000
+                        - llm
                       create_ts: 1789898400
                       update_ts: 1790000000
                 has_more: false
@@ -1033,9 +1026,7 @@ paths:
               example:
                 name: support_prod
                 keys:
-                  - key: llm
-                    create_ts: 1789898400
-                    update_ts: 1790000000
+                  - llm
                 create_ts: 1789898400
                 update_ts: 1790000000
         "401":
@@ -1253,8 +1244,6 @@ paths:
                 $ref: "#/components/schemas/SecretKey"
               example:
                 key: llm
-                create_ts: 1789898400
-                update_ts: 1790000000
         "201":
           description: The key was added to the set.
           headers:
@@ -1268,8 +1257,6 @@ paths:
                 $ref: "#/components/schemas/SecretKey"
               example:
                 key: tts
-                create_ts: 1790000000
-                update_ts: 1790000000
         "401":
           $ref: "#/components/responses/Unauthorized"
         "404":
@@ -1379,8 +1366,6 @@ paths:
               $ref: "#/components/headers/Agora-Request-Id"
             ETag:
               $ref: "#/components/headers/ETag"
-            Location:
-              $ref: "#/components/headers/Location"
           content:
             application/json:
               schema:
@@ -1401,16 +1386,14 @@ paths:
                     max_silence_duration_ms: 60000
                     end_call:
                       on_user_request: true
-                    transfer:
-                      phone_number: "+14155550199"
-                      description: when the caller asks for a human
                 create_ts: 1787223852
         "400":
           $ref: "#/components/responses/BadRequest"
           description: >-
             The request is invalid. For example, `InvalidFieldValue` when the phone number isn't
-            valid, or `UnknownSecretReference` when the SIP password references a secret that
-            doesn't exist.
+            valid, `MissingRequiredField` when `inbound.agent` is set without
+            `inbound.call_policy`, or `NotImplemented` when the SIP password is a `$secrets`
+            reference.
         "401":
           $ref: "#/components/responses/Unauthorized"
         "404":
@@ -1420,9 +1403,8 @@ paths:
           $ref: "#/components/responses/Conflict"
           description: >-
             `NumberAlreadyExists`: The number is already registered in the project.
-        "422":
-          $ref: "#/components/responses/Error"
-          description: "`ResourceQuotaLimitExceeded`: The project has reached its number quota."
+            `ResourceConflict`: The number is registered to another account, or another project
+            in your account already routes its inbound calls to an agent.
         default:
           $ref: "#/components/responses/Error"
       # TODO(platform-confirm): In pre-release testing (27 Oct), allowed_ips and inbound end_call were
@@ -1473,6 +1455,11 @@ paths:
                         transport: tls
                       inbound:
                         agent: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
+                        call_policy:
+                          max_call_duration_seconds: 1800
+                          max_silence_duration_ms: 60000
+                          end_call:
+                            on_user_request: true
                       create_ts: 1787223852
                 has_more: false
                 next_cursor: null
@@ -1515,6 +1502,11 @@ paths:
                   transport: tls
                 inbound:
                   agent: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
+                  call_policy:
+                    max_call_duration_seconds: 1800
+                    max_silence_duration_ms: 60000
+                    end_call:
+                      on_user_request: true
                 create_ts: 1787223852
         "401":
           $ref: "#/components/responses/Unauthorized"
@@ -1531,8 +1523,11 @@ paths:
       x-docs-sections:
         - position: after-description
           markdown: >-
-            Send only the fields you want to change. You can't change the phone number itself. To
-            use a different number, create a new one.
+            Send only the fields you want to change. `sip_trunk` and `inbound` are each replaced as
+            a whole, so pass the complete object, including `sip_trunk.auth` if the trunk uses
+            authentication. If you leave out `auth` or `allowed_ips`, the saved values are removed.
+            To stop routing inbound calls to an agent, set `inbound` to `null`. You can't change
+            the phone number itself. To use a different number, create a new one.
       parameters:
         - $ref: "#/components/parameters/AppId"
         - $ref: "#/components/parameters/NumberId"
@@ -1546,6 +1541,8 @@ paths:
             example:
               inbound:
                 agent: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
+                call_policy:
+                  max_call_duration_seconds: 1800
       responses:
         "200":
           description: The number was updated. The response body contains the full number.
@@ -1562,8 +1559,9 @@ paths:
           $ref: "#/components/responses/BadRequest"
           description: >-
             The request is invalid. For example, `MissingRequiredField` when the `If-Match` header
-            is missing, or `UnknownSecretReference` when the SIP password references a secret that
-            doesn't exist.
+            is missing or `inbound.agent` is set without `inbound.call_policy`, or `NotImplemented`
+            when the SIP password is a `$secrets` reference or `number` is a different phone
+            number.
         "401":
           $ref: "#/components/responses/Unauthorized"
         "404":
@@ -1571,6 +1569,11 @@ paths:
           description: >-
             `ResourceNotFound`: No number has this ID. `AgentNotFound`: The agent in
             `inbound.agent` doesn't exist.
+        "409":
+          $ref: "#/components/responses/Conflict"
+          description: >-
+            `ResourceConflict`: Another project in your account already routes this number's
+            inbound calls to an agent.
         "412":
           $ref: "#/components/responses/PreconditionFailed"
         default:
@@ -1598,6 +1601,11 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "404":
           $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+          description: >-
+            `ResourceConflict`: A campaign that hasn't finished still calls from this number.
+            Wait for the campaign to finish, or cancel it, before you delete the number.
         default:
           $ref: "#/components/responses/Error"
 
@@ -1615,15 +1623,14 @@ paths:
         - position: after-description
           markdown: >-
             Each contact is one dial task, and each dial starts a telephony session with the agent
-            in `agent_id`. Retries follow `pacing`. You supply the contacts when you create the
-            campaign, and you can't change them afterward.
+            in `agent_id`. You supply the contacts when you create the campaign, and you can't
+            change them afterward.
 
 
             Before you create a campaign, [create the
             agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent) and [register the
             phone number](/en/api-reference/api-ref/conversational-ai/platform/create-number) to call
-            from. Send an `Idempotency-Key` so that retrying the request can't create a second
-            campaign.
+            from.
       x-docs-callouts:
         - type: caution
           title: Caution
@@ -1646,7 +1653,7 @@ paths:
                 summary: Scheduled campaign
                 value:
                   name: q3-renewals
-                  agent_id: agent_renewals
+                  agent_id: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
                   transport:
                     type: telephony
                     from: 92e68758-3d3a-4f27-8b93-3fd8d834467c
@@ -1680,7 +1687,7 @@ paths:
                 summary: Immediate campaign
                 value:
                   name: q3-renewals-now
-                  agent_id: agent_renewals
+                  agent_id: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
                   transport:
                     type: telephony
                     from: 92e68758-3d3a-4f27-8b93-3fd8d834467c
@@ -1699,8 +1706,6 @@ paths:
               $ref: "#/components/headers/Agora-Request-Id"
             ETag:
               $ref: "#/components/headers/ETag"
-            Location:
-              $ref: "#/components/headers/Location"
           content:
             application/json:
               schema:
@@ -1709,14 +1714,14 @@ paths:
                 campaign_id: b4f0581e-f138-43a2-851c-a8f8d228bb37
                 name: q3-renewals
                 status: scheduled
-                agent_id: agent_renewals
+                agent_id: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
                 transport:
                   type: telephony
                   from:
                     - 92e68758-3d3a-4f27-8b93-3fd8d834467c
                 lifecycle:
                   idle_timeout_ms: 30000
-                  max_duration_ms: 259200000
+                  max_duration_ms: 300000
                   graceful_stop:
                     enabled: false
                     timeout_ms: 30000
@@ -1749,13 +1754,10 @@ paths:
           description: >-
             `AgentNotFound`: No agent has this `agent_id`. `NumberNotFound`: A number in
             `transport.from` isn't in the project.
-        "422":
-          $ref: "#/components/responses/Error"
-          description: "`ResourceQuotaLimitExceeded`: The project has reached its campaign quota."
         default:
           $ref: "#/components/responses/Error"
-      # TODO(platform-confirm): Staging (14 Oct) rejected call_policy.voicemail with NotImplemented. The
-      # contract lists voicemail, end_call, transfer, and max_silence_duration_ms at launch.
+      # TODO(platform-confirm): end_call.on_voicemail replaces the call_policy.voicemail object, and
+      # on_conversation_complete is removed. Both depend on the backend end-call changes.
     get:
       tags:
         - Campaigns
@@ -1796,7 +1798,7 @@ paths:
                     - campaign_id: b4f0581e-f138-43a2-851c-a8f8d228bb37
                       name: q3-renewals
                       status: running
-                      agent_id: agent_renewals
+                      agent_id: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
                       transport:
                         type: telephony
                         from:
@@ -1847,14 +1849,14 @@ paths:
                 campaign_id: b4f0581e-f138-43a2-851c-a8f8d228bb37
                 name: q3-renewals
                 status: running
-                agent_id: agent_renewals
+                agent_id: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
                 transport:
                   type: telephony
                   from:
                     - 92e68758-3d3a-4f27-8b93-3fd8d834467c
                 lifecycle:
                   idle_timeout_ms: 30000
-                  max_duration_ms: 259200000
+                  max_duration_ms: 300000
                   graceful_stop:
                     enabled: false
                     timeout_ms: 30000
@@ -1888,7 +1890,8 @@ paths:
           markdown: >-
             Before the campaign starts dialing, you can change `pacing`, `schedule`, `lifecycle`,
             and `transport.call_policy`. After it starts, you can change only `pacing`, and other
-            fields fail with `CampaignNotEditable`. You can never change `agent_id`,
+            fields fail with `CampaignNotEditable`. After the campaign is `completed`, `canceled`,
+            or `failed`, you can't change it. You can never change `agent_id`,
             `transport.type`, `transport.from`, or `contacts`.
       parameters:
         - $ref: "#/components/parameters/AppId"
@@ -1925,7 +1928,8 @@ paths:
         "409":
           $ref: "#/components/responses/Conflict"
           description: >-
-            `CampaignNotEditable`: The campaign has started dialing, so only `pacing` can change.
+            `CampaignNotEditable`: The campaign has started dialing, so only `pacing` can change, or
+            the campaign is `completed`, `canceled`, or `failed`, so nothing can change.
         "412":
           $ref: "#/components/responses/PreconditionFailed"
         default:
@@ -1961,7 +1965,8 @@ paths:
         "409":
           $ref: "#/components/responses/Conflict"
           description: >-
-            `CampaignActive`: The campaign is `scheduled`, `running`, or `paused`. Cancel it first.
+            `CampaignActive`: The campaign is `scheduled`, `running`, or `paused`, or it still has
+            calls in progress. Cancel it, and wait for its calls to end before you delete it.
         default:
           $ref: "#/components/responses/Error"
   /v1/projects/{appid}/campaigns/{campaign_id}:pause:
@@ -2068,7 +2073,7 @@ paths:
                 campaign_id: b4f0581e-f138-43a2-851c-a8f8d228bb37
                 name: q3-renewals
                 status: canceled
-                agent_id: agent_renewals
+                agent_id: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
                 transport:
                   type: telephony
                   from:
@@ -2136,6 +2141,7 @@ components:
       required: true
       schema:
         type: string
+        format: uuid
       description: The ID of the agent, returned in `agent_id` when you create the agent.
     SecretSetName:
       name: name
@@ -2159,6 +2165,7 @@ components:
       required: true
       schema:
         type: string
+        format: uuid
       description: The ID of the phone number, returned in `number_id` when you create the number.
     AgentSessionId:
       name: agent_session_id
@@ -2174,6 +2181,7 @@ components:
       required: true
       schema:
         type: string
+        format: uuid
       description: The ID of the campaign, returned in `campaign_id` when you create the campaign.
     IfMatchRequired:
       name: If-Match
@@ -2205,12 +2213,12 @@ components:
         maxLength: 256
         pattern: ^[\x21-\x7E]+$
       description: >-
-        A unique key that makes the request safe to retry for 24 hours. If you retry with the same
-        key and body, the API returns the original response with the `Idempotent-Replayed: true`
-        header and doesn't repeat the operation. If you reuse the key with a different body, or
-        while the original request is still in progress, the request fails with `409` and reason
-        `IdempotencyKeyConflict`. Keep the same key when you retry; never switch keys. Only Start a
-        session and Start an ephemeral session accept this header.
+        A unique key, so that retrying the request can't start a second session. If a session was
+        already started with this key, the request fails with `409` and reason
+        `IdempotencyKeyConflict`, and no new session starts. The API doesn't return the original
+        response. To find the session, [list
+        sessions](/en/api-reference/api-ref/conversational-ai/platform/list-sessions). Keep the same
+        key when you retry; never switch keys.
     Cursor:
       name: cursor
       in: query
@@ -2246,19 +2254,6 @@ components:
         update or delete request for this resource.
       schema:
         type: string
-    Location:
-      description: The path of the new resource.
-      schema:
-        type: string
-    Idempotent-Replayed:
-      description: >-
-        `true` when the response replays an earlier request that used the same `Idempotency-Key`.
-      schema:
-        type: string
-    Retry-After:
-      description: The number of seconds to wait before you retry the request.
-      schema:
-        type: integer
   responses:
     BadRequest:
       description: >-
@@ -2312,13 +2307,10 @@ components:
             $ref: "#/components/schemas/ErrorResponse"
     TooManyRequests:
       description: >-
-        Too many requests. The reason is `RateLimitExceeded`. Try again after `Retry-After`
-        seconds.
+        Too many requests. The reason is `RateLimitExceeded`. Retry with exponential backoff.
       headers:
         Agora-Request-Id:
           $ref: "#/components/headers/Agora-Request-Id"
-        Retry-After:
-          $ref: "#/components/headers/Retry-After"
       content:
         application/json:
           schema:
@@ -2434,20 +2426,14 @@ components:
       properties:
         mode:
           type: string
-          enum:
-            - text
-            - audio
-          description: |-
-            How the agent delivers the greeting:
-
-            - `text`: The agent speaks `text` using the TTS stage.
-            - `audio`: The agent plays the audio file at `url`. If the file can't be downloaded or
-              played, the agent speaks `text` instead.
+          const: text
+          description: "`text`: The agent speaks `text` using the TTS stage."
         "on":
           type: string
           enum:
             - each_join
             - first_join
+          default: each_join
           description: |-
             Which participants the agent greets:
 
@@ -2463,31 +2449,7 @@ components:
             greeting.
         text:
           type: string
-          minLength: 1
-          description: >-
-            The greeting text. When `mode` is `audio`, this is the transcript of the audio file.
-            The agent uses it as conversation context, and speaks it with the TTS stage if the
-            audio download fails.
-        url:
-          type: string
-          maxLength: 2048
-          description: >-
-            The URL of the greeting audio file. Supported formats are MP3, WAV, and PCM. Required
-            when `mode` is `audio`.
-        download_timeout_ms:
-          type: integer
-          minimum: 200
-          maximum: 10000
-          default: 1000
-          description: >-
-            The timeout in milliseconds for downloading the audio file. If the download times out,
-            the agent speaks `text` instead. Applies only when `mode` is `audio`.
-        pcm_sample_rate:
-          type: integer
-          default: 16000
-          description: >-
-            The sample rate in Hz of the audio file when its format is raw PCM. Not needed for MP3
-            or WAV files. Applies only when `mode` is `audio`.
+          description: The greeting text.
     VariableDefinition:
       type: object
       required:
@@ -2571,6 +2533,7 @@ components:
       properties:
         enable:
           type: boolean
+          default: false
           description: Whether to play filler words.
         trigger:
           type: object
@@ -2589,74 +2552,113 @@ components:
               type: integer
               minimum: 100
               maximum: 10000
-              default: 1500
               description: >-
-                How long in milliseconds to wait for the LLM response before playing a filler word.
+                How long in milliseconds to wait for the LLM response before playing a filler word,
+                for example `1500`.
         content:
-          type: object
-          required:
-            - mode
-          description: Where the filler words come from.
-          properties:
-            mode:
-              type: string
-              enum:
-                - static
-                - generated
-              description: |-
-                The source of the filler words:
-
-                - `static`: Pick a phrase from `phrases`.
-                - `generated`: Generate a phrase from `instructions`.
-            phrases:
-              type: array
-              minItems: 1
-              maxItems: 100
-              items:
-                type: string
-                minLength: 1
-              description: The filler phrases, 1 to 100 non-empty strings. Required when `mode` is `static`.
-            selection_rule:
-              type: string
-              enum:
-                - shuffle
-                - round_robin
-              default: shuffle
-              description: |-
-                How the agent picks the next phrase. Applies when `mode` is `static`.
-
-                - `shuffle`: In random order.
-                - `round_robin`: In list order, starting over after the last phrase.
-            instructions:
-              type: string
-              description: >-
-                The instructions used to generate filler phrases. Required when `mode` is
-                `generated`.
-            fallback_strategy:
-              type: string
-              const: static
-              description: >-
-                What to use when a generated phrase isn't available. Applies when `mode` is
-                `generated`.
-    Credential:
+          $ref: "#/components/schemas/FillerWordsContent"
+    FillerWordsContent:
+      description: Where the filler words come from. Pass the fields of one source only.
+      oneOf:
+        - $ref: "#/components/schemas/StaticFillerWordsContent"
+        - $ref: "#/components/schemas/GeneratedFillerWordsContent"
+      discriminator:
+        propertyName: mode
+        mapping:
+          static: "#/components/schemas/StaticFillerWordsContent"
+          generated: "#/components/schemas/GeneratedFillerWordsContent"
+    StaticFillerWordsContent:
       type: object
+      title: Static
       required:
         - mode
-      description: >-
-        How this stage authenticates with the provider. Set it explicitly on each stage. Responses
-        return only `mode`.
+        - phrases
       properties:
         mode:
           type: string
+          const: static
+          description: "`static`: Pick a phrase from `phrases`."
+        phrases:
+          type: array
+          minItems: 1
+          maxItems: 100
+          items:
+            type: string
+            minLength: 1
+          description: The filler phrases, 1 to 100 non-empty strings.
+        selection_rule:
+          type: string
           enum:
-            - byok
-            - managed
+            - shuffle
+            - round_robin
+          default: shuffle
           description: |-
-            The credential mode:
+            How the agent picks the next phrase:
 
-            - `byok`: Bring your own key. Pass your provider credentials in `fields`.
-            - `managed`: Agora provides the provider authentication. Don't pass `fields`, and don't
-              set a custom `url` on the stage.
+            - `shuffle`: In random order.
+            - `round_robin`: In list order, starting over after the last phrase.
+    GeneratedFillerWordsContent:
+      type: object
+      title: Generated
+      required:
+        - mode
+        - instructions
+      description: >-
+        Generates filler phrases with the agent's LLM. The LLM stage must be a BYOK `openai`,
+        `groq`, or `xai` stage with `style: openai`, a `model`, and no custom `headers`. Managed
+        LLMs aren't supported.
+      properties:
+        mode:
+          type: string
+          const: generated
+          description: "`generated`: Generate a phrase from `instructions`."
+        instructions:
+          type: string
+          minLength: 1
+          description: The instructions used to generate filler phrases. They can't be empty or only whitespace.
+        fallback_strategy:
+          type: string
+          const: static
+          default: static
+          description: What to use when a generated phrase isn't available.
+    Credential:
+      description: >-
+        How this stage authenticates with the provider. Set it explicitly on each stage. Pass the
+        fields of one credential mode only. Responses return only `mode`.
+      oneOf:
+        - $ref: "#/components/schemas/ManagedCredential"
+        - $ref: "#/components/schemas/ByokCredential"
+      discriminator:
+        propertyName: mode
+        mapping:
+          managed: "#/components/schemas/ManagedCredential"
+          byok: "#/components/schemas/ByokCredential"
+    ManagedCredential:
+      type: object
+      title: Managed
+      required:
+        - mode
+      description: >-
+        Agora provides access to the provider. Don't set a custom `url` on the stage.
+      properties:
+        mode:
+          type: string
+          const: managed
+          description: "`managed`: Agora provides the provider authentication."
+    ByokCredential:
+      type: object
+      title: BYOK
+      required:
+        - mode
+      description: >-
+        Bring your own key. Pass your provider credentials in `fields`. `fields` is required,
+        except for a Google Gemini LLM stage in an ephemeral session whose `url` contains the
+        key. Then omit `fields`.
+      properties:
+        mode:
+          type: string
+          const: byok
+          description: "`byok`: You pass your own provider credentials."
         fields:
           type: object
           minProperties: 1
@@ -2672,17 +2674,20 @@ components:
             provider's fields. In an agent, each value must be a `$secrets.<set_name>.<key>`
             reference to a [secret
             set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set). An
-            ephemeral session also accepts the values themselves. Required when `mode` is `byok`,
-            and not accepted when `mode` is `managed`. Agora resolves references when each session
-            starts. The values are never returned.
+            ephemeral session also accepts the values themselves. Agora resolves references when
+            each session starts. The values are never returned.
     StageHeaders:
       type: object
       additionalProperties:
         type: string
       writeOnly: true
       description: >-
-        Custom HTTP headers sent to the provider endpoint. They are write-only and are never
-        returned.
+        Custom HTTP headers sent to the provider endpoint, at most 32. They are write-only and are
+        never returned. A value can be a whole `$secrets.<set>.<key>` reference when the stage uses
+        `byok` and an approved provider endpoint. Agora resolves it when each session starts. A
+        header name that looks like a credential, such as `X-Api-Key`, must use a reference.
+        Transport, identity, and provider authentication headers are reserved. Set provider
+        authentication in `credential`.
     AsrConfig:
       type: object
       description: The automatic speech recognition (ASR) stage, which transcribes the user's speech.
@@ -2728,7 +2733,9 @@ components:
         url:
           type: string
           description: >-
-            A custom provider endpoint. Don't also put the endpoint in `params`.
+            A custom provider endpoint. Don't also put the endpoint in `params`. For Google Gemini
+            in an ephemeral session, the URL can include your API key as `key=<your_api_key>`, with
+            `credential.fields` left out. A saved agent's `url` can't contain a key.
         headers:
           $ref: "#/components/schemas/StageHeaders"
         params:
@@ -2763,6 +2770,7 @@ components:
             response.
         tools:
           type: array
+          maxItems: 32
           items:
             $ref: "#/components/schemas/FunctionTool"
           description: >-
@@ -2828,13 +2836,20 @@ components:
               description: The HTTP method.
             url:
               type: string
-              description: The HTTPS URL of the endpoint.
+              minLength: 1
+              maxLength: 2048
+              pattern: ^https://
+              description: The HTTPS URL of the endpoint, up to 2,048 characters.
             headers:
               type: object
+              maxProperties: 32
+              propertyNames:
+                minLength: 1
+                maxLength: 128
               additionalProperties:
                 type: string
               writeOnly: true
-              description: HTTP headers sent to the endpoint. They are write-only and are never returned.
+              description: HTTP headers sent to the endpoint, up to 32. They are write-only and are never returned.
             body:
               type: object
               additionalProperties: true
@@ -2859,7 +2874,10 @@ components:
           description: A name for the MCP server, 1 to 48 letters and digits.
         endpoint:
           type: string
-          description: The URL of the MCP server.
+          minLength: 1
+          maxLength: 2048
+          pattern: ^https://
+          description: The HTTPS URL of the MCP server, up to 2,048 characters.
         transport:
           type: string
           const: streamable_http
@@ -2868,12 +2886,18 @@ components:
           type: object
           additionalProperties:
             type: string
+          maxProperties: 32
+          propertyNames:
+            minLength: 1
+            maxLength: 128
           writeOnly: true
-          description: HTTP headers sent to the MCP server. They are write-only and are never returned.
+          description: HTTP headers sent to the MCP server, up to 32. They are write-only and are never returned.
         allowed_tools:
           type: array
+          uniqueItems: true
           items:
             type: string
+            minLength: 1
           description: |-
             The tools the model can call from this server:
 
@@ -2959,40 +2983,60 @@ components:
       # TODO(platform-confirm): Ticket: avatar runtime support needs Samyak's confirmation before the
       # Models pages publish it.
     StartOfSpeech:
+      description: >-
+        How the agent detects that the user starts speaking. Pass the fields of one detection type
+        only. If you omit it, the agent uses `semantic` detection with its defaults.
+      oneOf:
+        - $ref: "#/components/schemas/SemanticStartOfSpeech"
+        - $ref: "#/components/schemas/VadStartOfSpeech"
+        - $ref: "#/components/schemas/ManualStartOfSpeech"
+      discriminator:
+        propertyName: type
+        mapping:
+          semantic: "#/components/schemas/SemanticStartOfSpeech"
+          vad: "#/components/schemas/VadStartOfSpeech"
+          manual: "#/components/schemas/ManualStartOfSpeech"
+    SemanticStartOfSpeech:
       type: object
+      title: Semantic
       required:
         - type
-      description: >-
-        How the agent detects that the user starts speaking. If you omit it, the agent uses
-        `semantic` detection with its defaults.
       properties:
         type:
           type: string
-          enum:
-            - semantic
-            - vad
-            - manual
+          const: semantic
           default: semantic
-          description: |-
-            The detection method:
-
-            - `semantic`: Detects a meaningful start of speech.
-            - `vad`: Uses voice activity detection (VAD) on the audio signal.
-            - `manual`: Your client signals when the user starts speaking. This needs client
-              signaling, which isn't available yet.
+          description: "`semantic`: Detects a meaningful start of speech. If you omit `type`, the agent uses `semantic`."
         speaking_interrupt_duration_ms:
           type: integer
           default: 160
           description: >-
             How long in milliseconds the user must speak to interrupt the agent while it's
-            speaking. Applies when `type` is `semantic` or `vad`. With `vad`, 120 to 1,200.
+            speaking.
+    VadStartOfSpeech:
+      type: object
+      title: VAD
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          const: vad
+          description: "`vad`: Uses voice activity detection (VAD) on the audio signal."
         interrupt_duration_ms:
           type: integer
           minimum: 120
           maximum: 1200
           default: 160
+          description: Speech shorter than this, in milliseconds, is ignored.
+        speaking_interrupt_duration_ms:
+          type: integer
+          minimum: 120
+          maximum: 1200
+          default: 160
           description: >-
-            Speech shorter than this, in milliseconds, is ignored. Applies when `type` is `vad`.
+            How long in milliseconds the user must speak to interrupt the agent while it's
+            speaking.
         prefix_padding_ms:
           type: integer
           minimum: 0
@@ -3000,36 +3044,51 @@ components:
           default: 800
           description: >-
             How many milliseconds of audio before the detected start of speech to keep, so the
-            beginning of the speech isn't clipped. Applies when `type` is `vad`.
-    EndOfSpeech:
+            beginning of the speech isn't clipped.
+    ManualStartOfSpeech:
       type: object
+      title: Manual
       required:
         - type
-      description: >-
-        How the agent detects that the user has finished speaking. If you omit it, the agent uses
-        `semantic` detection with its defaults.
       properties:
         type:
           type: string
-          enum:
-            - semantic
-            - vad
-            - manual
+          const: manual
+          description: >-
+            `manual`: Your client signals when the user starts speaking. This needs client
+            signaling, which isn't available yet.
+    EndOfSpeech:
+      description: >-
+        How the agent detects that the user has finished speaking. Pass the fields of one
+        detection type only. If you omit it, the agent uses `semantic` detection with its
+        defaults.
+      oneOf:
+        - $ref: "#/components/schemas/SemanticEndOfSpeech"
+        - $ref: "#/components/schemas/VadEndOfSpeech"
+        - $ref: "#/components/schemas/ManualEndOfSpeech"
+      discriminator:
+        propertyName: type
+        mapping:
+          semantic: "#/components/schemas/SemanticEndOfSpeech"
+          vad: "#/components/schemas/VadEndOfSpeech"
+          manual: "#/components/schemas/ManualEndOfSpeech"
+    SemanticEndOfSpeech:
+      type: object
+      title: Semantic
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          const: semantic
           default: semantic
-          description: |-
-            The detection method:
-
-            - `semantic`: Considers whether the utterance sounds complete.
-            - `vad`: Uses the length of the silence after the speech.
-            - `manual`: Your client signals when the user stops speaking. This needs client
-              signaling, which isn't available yet.
+          description: "`semantic`: Considers whether the utterance sounds complete. If you omit `type`, the agent uses `semantic`."
         silence_duration_ms:
           type: integer
           minimum: 120
           maximum: 2000
-          description: >-
-            The silence in milliseconds that ends the turn. Defaults to `320` when `type` is
-            `semantic` and `640` when `type` is `vad`. Not valid when `type` is `manual`.
+          default: 320
+          description: The silence in milliseconds that ends the turn.
         max_wait_ms:
           oneOf:
             - type: integer
@@ -3040,41 +3099,96 @@ components:
           default: 3000
           description: >-
             The maximum time in milliseconds to wait before ending the turn, from 500 to 10,000. Set
-            to `-1` to wait without a timeout. Applies when `type` is `semantic`.
+            to `-1` to wait without a timeout.
         pause_state_enabled:
           type: boolean
           default: true
           description: >-
             Whether the agent detects a pause within an utterance, such as "hold on", and waits for
-            more input. Applies when `type` is `semantic`.
-    Interruption:
+            more input.
+    VadEndOfSpeech:
       type: object
+      title: VAD
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          const: vad
+          description: "`vad`: Uses the length of the silence after the speech."
+        silence_duration_ms:
+          type: integer
+          minimum: 120
+          maximum: 2000
+          default: 640
+          description: The silence in milliseconds that ends the turn.
+    ManualEndOfSpeech:
+      type: object
+      title: Manual
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          const: manual
+          description: >-
+            `manual`: Your client signals when the user stops speaking. This needs client
+            signaling, which isn't available yet.
+    Interruption:
+      description: >-
+        How the user can interrupt the agent while it speaks or thinks. Pass the fields of one
+        interruption mode only. If you omit it, any user speech interrupts the agent.
+      oneOf:
+        - $ref: "#/components/schemas/StartOfSpeechInterruption"
+        - $ref: "#/components/schemas/KeywordsInterruption"
+        - $ref: "#/components/schemas/OffInterruption"
+      default:
+        mode: start_of_speech
+      discriminator:
+        propertyName: mode
+        mapping:
+          start_of_speech: "#/components/schemas/StartOfSpeechInterruption"
+          keywords: "#/components/schemas/KeywordsInterruption"
+          "off": "#/components/schemas/OffInterruption"
+    StartOfSpeechInterruption:
+      type: object
+      title: Start of speech
       required:
         - mode
-      description: >-
-        How the user can interrupt the agent while it speaks or thinks. If you omit it, any user
-        speech interrupts the agent.
       properties:
         mode:
           type: string
-          enum:
-            - start_of_speech
-            - keywords
-            - "off"
-          description: |-
-            The interruption mode:
-
-            - `start_of_speech`: Any user speech interrupts the agent.
-            - `keywords`: Only the phrases in `keywords` interrupt the agent.
-            - `off`: The user can't interrupt the agent. Set `when_off` to choose what happens to
-              the user's speech.
+          const: start_of_speech
+          description: "`start_of_speech`: Any user speech interrupts the agent."
+    KeywordsInterruption:
+      type: object
+      title: Keywords
+      required:
+        - mode
+        - keywords
+      properties:
+        mode:
+          type: string
+          const: keywords
+          description: "`keywords`: Only the phrases in `keywords` interrupt the agent."
         keywords:
           type: array
+          minItems: 1
           maxItems: 128
           items:
             type: string
-          description: >-
-            The phrases that interrupt the agent, up to 128. Required when `mode` is `keywords`.
+            minLength: 1
+          description: The phrases that interrupt the agent, 1 to 128.
+    OffInterruption:
+      type: object
+      title: "Off"
+      required:
+        - mode
+      properties:
+        mode:
+          type: string
+          const: "off"
+          description: "`off`: The user can't interrupt the agent."
         when_off:
           type: string
           enum:
@@ -3082,8 +3196,7 @@ components:
             - ignore
           default: append
           description: |-
-            What happens to user speech that arrives while the agent speaks or thinks. Applies when
-            `mode` is `off`.
+            What happens to user speech that arrives while the agent speaks or thinks:
 
             - `append`: The agent responds to the speech after the current reply.
             - `ignore`: The agent discards the speech.
@@ -3121,7 +3234,11 @@ components:
           description: Whether to act on silence.
         timeout_ms:
           type: integer
-          description: How long the silence lasts, in milliseconds, before the agent acts.
+          minimum: 0
+          maximum: 60000
+          description: >-
+            How long the silence lasts, in milliseconds, before the agent acts, up to 60,000.
+            Applies only when `enabled` is `true`.
         action:
           type: string
           enum:
@@ -3139,8 +3256,11 @@ components:
       type: object
       required:
         - mode
+        - llm
+        - tts
       description: >-
-        The models that power the agent: separate ASR, LLM, and TTS stages.
+        The models that power the agent: separate ASR, LLM, and TTS stages. When you pass a
+        pipeline, `llm` and `tts` are required.
       # TODO(platform-confirm): The launch contract says an omitted pipeline gets a managed default. In
       # pre-release testing (2026-10-27), sessions for an agent without a pipeline failed with 502. Confirm.
       properties:
@@ -3163,7 +3283,8 @@ components:
     AgentName:
       type: string
       minLength: 1
-      description: A name for the agent. It doesn't need to be unique.
+      maxLength: 255
+      description: A name for the agent, 1 to 255 characters. It doesn't need to be unique.
     Instructions:
       type: string
       description: >-
@@ -3232,8 +3353,9 @@ components:
               - $ref: "#/components/schemas/VariableDefinition"
               - type: "null"
           description: >-
-            Changes to the variables, keyed by variable name. Each definition you pass replaces the
-            saved definition as a whole. Set a variable to `null` to remove it.
+            Changes to the variables, keyed by variable name. Each definition you pass merges into
+            the saved definition field by field, so set a field such as `options` to `null` to
+            remove it. Set a variable to `null` to remove the variable.
         greeting:
           type: object
           additionalProperties: true
@@ -3264,7 +3386,8 @@ components:
       properties:
         agent_id:
           type: string
-          description: The ID of the agent, with the prefix `agent_`.
+          format: uuid
+          description: The ID of the agent, a UUID.
         agent_name:
           $ref: "#/components/schemas/AgentName"
         instructions:
@@ -3356,6 +3479,7 @@ components:
           description: The encryption key.
         salt:
           type: string
+          pattern: ^[A-Za-z0-9+/]{43}=$
           writeOnly: true
           description: >-
             A Base64-encoded salt that is 32 bytes long after decoding. Required when `mode` is
@@ -3366,43 +3490,22 @@ components:
         Conditions under which the agent can end the call itself. Every condition is off unless you
         set it to `true`.
       properties:
-        on_conversation_complete:
-          type: boolean
-          default: false
-          description: End the call when the conversation has clearly concluded.
         on_user_request:
           type: boolean
           default: false
-          description: End the call when the caller asks to hang up.
+          description: End the call when the caller clearly says goodbye or asks to hang up.
         on_voicemail:
           type: boolean
           default: false
-          description: End the call when voicemail is on the other end.
+          description: >-
+            End the call when the agent reaches voicemail, such as a "please leave a message after
+            the tone" announcement.
         on_ai_assistant:
           type: boolean
           default: false
           description: >-
-            End the call when another AI assistant or automated screening system is on the other
-            end.
-    TransferPolicy:
-      type: object
-      required:
-        - phone_number
-        - description
-      description: >-
-        Lets the agent transfer the call to a person. The agent decides when to transfer based on
-        `description`, and then leaves the call. Omit it to turn off transfers.
-      properties:
-        phone_number:
-          type: string
-          description: The phone number to transfer to, in E.164 format.
-        description:
-          type: string
-          minLength: 1
-          maxLength: 1000
-          description: >-
-            When the agent should transfer, in natural language, for example "when the caller asks
-            for a human". 1 to 1,000 characters.
+            End the call when the call is answered by an AI assistant, a voice secretary, or another
+            automated answering system.
     CallPolicy:
       type: object
       description: >-
@@ -3426,26 +3529,8 @@ components:
           description: >-
             Hang up when nobody on the call has spoken for this many milliseconds. This is separate
             from `pipeline.silence_config`, which only prompts the user.
-        voicemail:
-          type: object
-          required:
-            - mode
-          description: What the agent does when it detects voicemail.
-          properties:
-            mode:
-              type: string
-              enum:
-                - continue
-                - hangup
-              description: |-
-                The voicemail behavior:
-
-                - `continue`: The agent continues the call.
-                - `hangup`: The agent ends the call.
         end_call:
           $ref: "#/components/schemas/EndCallPolicy"
-        transfer:
-          $ref: "#/components/schemas/TransferPolicy"
     CampaignCallPolicy:
       type: object
       description: >-
@@ -3454,41 +3539,26 @@ components:
         max_ring_duration_ms:
           type: integer
           minimum: 1
+          maximum: 259200000
           description: >-
             The maximum time in milliseconds from starting the dial until the call is answered. If
             the call isn't answered in time, the dial attempt ends.
         max_call_duration_seconds:
           type: integer
           minimum: 1
+          maximum: 259200
           description: >-
             The maximum length of the call in seconds, measured from when it's answered. The
             session's `lifecycle` limits can end the call earlier.
         max_silence_duration_ms:
           type: integer
           minimum: 30000
+          maximum: 259200000
           description: >-
             Hang up when nobody on the call has spoken for this many milliseconds. This is separate
             from `pipeline.silence_config`, which only prompts the user.
-        voicemail:
-          type: object
-          required:
-            - mode
-          description: What the agent does when it detects voicemail.
-          properties:
-            mode:
-              type: string
-              enum:
-                - continue
-                - hangup
-              description: |-
-                The voicemail behavior:
-
-                - `continue`: The agent continues the call.
-                - `hangup`: The agent ends the call.
         end_call:
           $ref: "#/components/schemas/EndCallPolicy"
-        transfer:
-          $ref: "#/components/schemas/TransferPolicy"
     RtcTransport:
       type: object
       title: RTC
@@ -3504,7 +3574,9 @@ components:
           description: "`rtc`: The agent joins an RTC channel."
         channel:
           type: string
-          description: The name of the RTC channel to join.
+          minLength: 1
+          maxLength: 256
+          description: The name of the RTC channel to join, 1 to 256 characters.
         token:
           type: string
           writeOnly: true
@@ -3512,23 +3584,41 @@ components:
             The RTC token the agent uses to join the channel. Required when the project has an App
             Certificate enabled. To renew it, [update the
             session](/en/api-reference/api-ref/conversational-ai/platform/update-session).
+        # TODO(platform-confirm): uid and subscribe_uids are documented as string or integer, as the
+        # product supports both. On 2026-10-30, studio-backend main (v3 RtcTransport) accepted only
+        # strings and returned 400 for an integer uid.
         uid:
-          type: string
-          minLength: 1
-          maxLength: 255
+          oneOf:
+            - type: string
+              title: String
+              minLength: 1
+              maxLength: 255
+            - type: integer
+              title: Integer
+              minimum: 0
+              maximum: 4294967295
+          default: "0"
           description: >-
-            The user ID the agent uses in the channel, as a string of up to 255 characters, for
-            example `"1002"` or `"agent-bot"`. Omit it to let Agora assign a user ID.
+            The user ID the agent uses in the channel. Pass a string of up to 255 characters, such
+            as `"1002"` or `"agent-bot"`, or an integer from 0 to 4294967295, such as `1002`. Omit
+            it, or pass `0`, to let Agora assign a user ID that differs from `subscribe_uids`.
         subscribe_uids:
           type: array
           minItems: 1
           maxItems: 1
           items:
-            type: string
-            minLength: 1
-            maxLength: 255
+            oneOf:
+              - type: string
+                title: String
+                minLength: 1
+                maxLength: 255
+              - type: integer
+                title: Integer
+                minimum: 1
+                maximum: 4294967295
           description: >-
-            The user ID of the participant the agent talks to. Pass exactly one user ID.
+            The user ID of the participant the agent talks to, as a string or an integer. Pass
+            exactly one user ID.
         audio_scenario:
           type: string
           enum:
@@ -3565,6 +3655,7 @@ components:
             first.
         to:
           type: string
+          pattern: ^\+[1-9][0-9]{1,14}$
           description: The phone number to call, in E.164 format, for example `+14155550100`.
         call_policy:
           $ref: "#/components/schemas/CallPolicy"
@@ -3597,10 +3688,10 @@ components:
           type: integer
           minimum: 1000
           maximum: 3600000
-          default: 3600000
+          default: 300000
           description: >-
             The maximum length of the session in milliseconds, measured from `start_ts`. Defaults to
-            1 hour, which is also the maximum. Campaign sessions allow up to 72 hours.
+            5 minutes. The maximum is 1 hour.
         graceful_stop:
           type: object
           description: >-
@@ -3624,7 +3715,7 @@ components:
         idle_timeout_ms:
           type: integer
           minimum: 0
-          maximum: 259200000
+          maximum: 3600000
           default: 30000
           description: >-
             How long in milliseconds the session continues with no participant present: after the
@@ -3634,11 +3725,11 @@ components:
         max_duration_ms:
           type: integer
           minimum: 1000
-          maximum: 259200000
-          default: 259200000
+          maximum: 3600000
+          default: 300000
           description: >-
-            The maximum length of the session in milliseconds, measured from `start_ts`. Defaults to
-            72 hours, which is also the maximum.
+            The maximum length of each session in milliseconds, measured from `start_ts`. Defaults to
+            5 minutes. The maximum is 1 hour.
         graceful_stop:
           type: object
           description: >-
@@ -3675,6 +3766,8 @@ components:
               example, when a caller declines recording.
     SessionValues:
       type: object
+      propertyNames:
+        pattern: ^[a-z][a-z0-9_]{0,63}$
       additionalProperties: true
       description: >-
         Values for the agent's variables, keyed by variable name, for this session only. Each key
@@ -3697,6 +3790,7 @@ components:
       properties:
         agent_id:
           type: string
+          format: uuid
           description: The ID of the saved agent to run.
         transport:
           $ref: "#/components/schemas/SessionTransport"
@@ -3792,7 +3886,10 @@ components:
                 messages:
                   $ref: "#/components/schemas/Messages"
                   description: >-
-                    The conversation messages the agent uses. They replace the current messages.
+                    The conversation messages the agent uses. They replace all of the current
+                    messages, including the agent's `instructions`, which the session received as
+                    its first `system` message. To keep the instructions, pass them as the first
+                    `system` message in this list.
                 pipeline:
                   type: object
                   description: Runtime model parameters.
@@ -3900,7 +3997,8 @@ components:
       description: >-
         The secrets, as key-value pairs. Each key is 1 to 64 characters from `A-Z`, `a-z`, `0-9`,
         and `_`, and must be unique within the set. Values are write-only and are never
-        returned.
+        returned. A set can hold at most 64 KiB, measured as the UTF-8 size of its keys and values
+        encoded as a JSON object. A larger set is rejected with `400`.
     SecretSetCreate:
       type: object
       required:
@@ -4001,7 +4099,9 @@ components:
           minLength: 1
           format: password
           writeOnly: true
-          description: The secret value. It is write-only and is never returned.
+          description: >-
+            The secret value. It is write-only and is never returned. The whole set, including this
+            value, can hold at most 64 KiB.
 
     # ---------------------------------------------------------------------------------------------
     # Phone numbers
@@ -4036,6 +4136,7 @@ components:
           description: A name for the carrier connection that helps you identify it.
         hostname:
           type: string
+          pattern: ^[^:/\s]+$
           description: >-
             The carrier's SIP hostname, without a scheme or port. For example,
             `acme.pstn.example.com`.
@@ -4061,8 +4162,10 @@ components:
           items:
             type: string
           description: >-
-            The CIDR ranges allowed to send inbound SIP traffic, for example `54.172.60.0/23`. Omit
-            it to accept the carrier's published ranges.
+            The addresses allowed to send inbound SIP traffic to this number. Each entry is an IPv4
+            address, such as `54.172.60.1`, or an IPv4 CIDR range, such as `54.172.60.0/23`. IPv6
+            addresses and hostnames aren't accepted. If you omit it, inbound SIP traffic is
+            accepted from any address, so set it to your carrier's signaling addresses.
     SipTrunkResponse:
       type: object
       properties:
@@ -4086,7 +4189,7 @@ components:
           type: array
           items:
             type: string
-          description: The CIDR ranges allowed to send inbound SIP traffic.
+          description: The addresses allowed to send inbound SIP traffic.
     InboundCallPolicy:
       type: object
       description: >-
@@ -4103,16 +4206,13 @@ components:
             Hang up when nobody on the call has spoken for this many milliseconds.
         end_call:
           $ref: "#/components/schemas/EndCallPolicy"
-        transfer:
-          $ref: "#/components/schemas/TransferPolicy"
     Inbound:
       type: object
       required:
         - agent
-        - call_policy
       description: >-
         What happens when someone calls this number. If you omit it, inbound calls are rejected.
-        `call_policy` is required whenever you set `agent`.
+        `call_policy` is required when `agent` isn't `null`.
       properties:
         agent:
           type:
@@ -4146,7 +4246,10 @@ components:
           $ref: "#/components/schemas/Inbound"
     NumberUpdate:
       type: object
-      description: The fields to change. Fields you omit keep their saved values.
+      description: >-
+        The fields to change. Fields you omit keep their saved values. `sip_trunk` and `inbound`
+        replace the saved object as a whole, so pass every field you want to keep. Set `inbound` to
+        `null` to stop routing inbound calls to an agent. Other fields can't be `null`.
       properties:
         number:
           type: string
@@ -4161,14 +4264,13 @@ components:
           $ref: "#/components/schemas/SipTrunk"
         inbound:
           $ref: "#/components/schemas/Inbound"
-      # TODO(platform-confirm): Whether `sip_trunk` in a patch merges or replaces (for example, whether
-      # omitting `auth` clears the saved credentials).
     Number:
       type: object
       properties:
         number_id:
           type: string
-          description: The ID of the phone number, with the prefix `num_`.
+          format: uuid
+          description: The ID of the phone number, a UUID.
         number:
           type: string
           description: The phone number in E.164 format.
@@ -4216,15 +4318,19 @@ components:
         from:
           oneOf:
             - type: string
+              format: uuid
               title: One number
             - type: array
               title: Several numbers
               minItems: 1
+              maxItems: 100
+              uniqueItems: true
               items:
                 type: string
+                format: uuid
           description: >-
-            The `number_id` of the number to call from, or a list of `number_id` values. With a
-            list, the campaign rotates across the numbers.
+            The `number_id` of the number to call from, or a list of up to 100 unique `number_id`
+            values. With a list, the campaign rotates across the numbers.
         call_policy:
           $ref: "#/components/schemas/CampaignCallPolicy"
     CampaignContact:
@@ -4241,9 +4347,11 @@ components:
           maxProperties: 100
           additionalProperties: true
           description: >-
-            Values for the agent's variables for this contact, keyed by variable name, up to 100. Pass a value
-            for every `required` variable, or the contact is rejected before it's dialed. `null`
-            values are rejected.
+            Values for the agent's variables for this contact, keyed by variable name, up to 100.
+            Each key must be a variable the agent declares, and each value must match its `type` and
+            `options`. Pass a value for every `required` variable. If any contact breaks these
+            rules, the whole request fails with `400`, and no campaign is created. `null` values are
+            rejected.
     CampaignPacing:
       type: object
       description: How fast the campaign dials. Each contact is called once.
@@ -4259,9 +4367,9 @@ components:
           minimum: 1
           maximum: 1000
           description: >-
-            The maximum number of new dials in any one-second window. Omit it to dial as fast as
-            `max_concurrent` and the project's carrier limits allow. A value above the project's
-            limit is rejected with `InvalidFieldValue`.
+            The maximum number of new dials in any one-second window. If you omit it, the campaign
+            uses your project's default dial rate. A value above the project's limit is rejected
+            with `InvalidFieldValue`.
     CampaignScheduleWindow:
       type: object
       required:
@@ -4301,43 +4409,33 @@ components:
             $ref: "#/components/schemas/CampaignScheduleWindow"
           description: One to 10 windows on this day, which can't overlap.
     CampaignSchedule:
+      description: >-
+        When the campaign dials. Pass the fields of one schedule mode only.
+      oneOf:
+        - $ref: "#/components/schemas/ImmediateCampaignSchedule"
+        - $ref: "#/components/schemas/ScheduledCampaignSchedule"
+      discriminator:
+        propertyName: mode
+        mapping:
+          immediate: "#/components/schemas/ImmediateCampaignSchedule"
+          scheduled: "#/components/schemas/ScheduledCampaignSchedule"
+    ImmediateCampaignSchedule:
       type: object
+      title: Immediate
       required:
         - mode
-      description: >-
-        When the campaign dials. A local time that doesn't exist because of a daylight saving
-        change moves forward to the next valid time. A repeated local time uses its first
-        occurrence.
       properties:
         mode:
           type: string
-          enum:
-            - immediate
-            - scheduled
-          description: |-
-            When the campaign starts:
-
-            - `immediate`: The campaign starts dialing as soon as it's created. Don't pass `start`
-              or `end`.
-            - `scheduled`: The campaign dials from `start` until `end`.
+          const: immediate
+          description: "`immediate`: The campaign starts dialing as soon as it's created."
         timezone:
           type: string
+          minLength: 1
+          maxLength: 255
           description: >-
-            The IANA time zone for `start`, `end`, and `days`, for example `America/New_York`.
-            Daylight saving time is handled automatically. Required when `mode` is `scheduled` or
-            when you pass `days`.
-        start:
-          type: string
-          description: >-
-            When the campaign can start dialing, as a local date and time in `YYYY-MM-DDTHH:MM`
-            format with no offset, for example `2026-11-02T09:00`. Required when `mode` is
-            `scheduled`.
-        end:
-          type: string
-          description: >-
-            When the campaign stops placing new calls, as a local date and time in
-            `YYYY-MM-DDTHH:MM` format, later than `start`. Calls in progress continue. Required
-            when `mode` is `scheduled`.
+            The IANA time zone for `days`, for example `America/New_York`. Daylight saving time is
+            handled automatically. Required when you pass `days`.
         days:
           type: array
           minItems: 1
@@ -4345,9 +4443,49 @@ components:
           items:
             $ref: "#/components/schemas/CampaignScheduleDay"
           description: >-
-            The weekly hours when new calls can start. Outside these hours, no new calls start and
-            retries wait for the next window. A day you don't list has no dialing. Omit `days` to
-            dial at any time.
+            The weekly hours when new calls can start. Outside these hours, no new calls start. A
+            day you don't list has no dialing. Omit `days` to dial at any time.
+    ScheduledCampaignSchedule:
+      type: object
+      title: Scheduled
+      required:
+        - mode
+        - timezone
+        - start
+        - end
+      properties:
+        mode:
+          type: string
+          const: scheduled
+          description: "`scheduled`: The campaign dials from `start` until `end`."
+        timezone:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: >-
+            The IANA time zone for `start`, `end`, and `days`, for example `America/New_York`.
+            Daylight saving time is handled automatically.
+        start:
+          type: string
+          description: >-
+            When the campaign can start dialing, as a local date and time in `YYYY-MM-DDTHH:MM`
+            format with no offset, for example `2026-11-02T09:00`. A local time that doesn't exist
+            or occurs twice because of a daylight saving change is rejected.
+        end:
+          type: string
+          description: >-
+            When the campaign stops placing new calls, as a local date and time in
+            `YYYY-MM-DDTHH:MM` format, later than `start`. Calls in progress continue. A local time
+            that doesn't exist or occurs twice because of a daylight saving change is rejected.
+        days:
+          type: array
+          minItems: 1
+          maxItems: 7
+          items:
+            $ref: "#/components/schemas/CampaignScheduleDay"
+          description: >-
+            The weekly hours when new calls can start. Outside these hours, no new calls start. A
+            day you don't list has no dialing. Omit `days` to dial at any time.
     CampaignCreate:
       type: object
       required:
@@ -4359,9 +4497,12 @@ components:
       properties:
         name:
           type: string
-          description: A name for the campaign that helps you identify it.
+          minLength: 1
+          maxLength: 255
+          description: A name for the campaign that helps you identify it, 1 to 255 characters.
         agent_id:
           type: string
+          format: uuid
           description: The ID of the saved agent that makes the calls.
         transport:
           $ref: "#/components/schemas/CampaignTransport"
@@ -4377,11 +4518,10 @@ components:
         schedule:
           $ref: "#/components/schemas/CampaignSchedule"
         lifecycle:
-          $ref: "#/components/schemas/SessionLifecycle"
+          $ref: "#/components/schemas/CampaignLifecycle"
           description: >-
-            The lifecycle settings for each session the campaign starts. See [Start a
-            session](/en/api-reference/api-ref/conversational-ai/platform/start-session) for the fields
-            and limits.
+            The lifecycle settings for each session the campaign starts. Each session can last up to
+            1 hour, and lasts up to 5 minutes by default.
         pacing:
           $ref: "#/components/schemas/CampaignPacing"
         data_policy:
@@ -4403,10 +4543,13 @@ components:
           properties:
             max_concurrent:
               type: integer
+              minimum: 1
+              maximum: 10000
               description: The maximum number of calls in progress at the same time.
             max_calls_per_second:
               type: integer
               minimum: 1
+              maximum: 1000
               description: The maximum number of new dials in any one-second window.
         schedule:
           $ref: "#/components/schemas/CampaignSchedule"
@@ -4466,7 +4609,8 @@ components:
       properties:
         campaign_id:
           type: string
-          description: The ID of the campaign, with the prefix `camp_`.
+          format: uuid
+          description: The ID of the campaign, a UUID.
         name:
           type: string
           description: The name of the campaign.
@@ -4474,6 +4618,7 @@ components:
           $ref: "#/components/schemas/CampaignStatus"
         agent_id:
           type: string
+          format: uuid
           description: The ID of the agent that makes the calls.
         transport:
           type: object

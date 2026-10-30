@@ -180,7 +180,7 @@ A handle is a snapshot. If another process changes the agent, load it again with
 | `encryption` | `object` | RTC media encryption settings. |
 | `audioScenario` | `string` | The RTC audio scenario, such as `'aiserver'`. |
 | `geofence` | `{ area: string; exclude_area?: string }` | Restricts the regions the session connects through. |
-| `idempotencyKey` | `string` | An `Idempotency-Key` for the start request, kept for 24 hours. Retry an uncertain start with the same key. Use a new key for a new session. |
+| `idempotencyKey` | `string` | An `Idempotency-Key` for the start request. Retry an uncertain start with the same key: if the first attempt started the session, the retry fails with `409 IdempotencyKeyConflict` instead of starting another. Use a new key for a new session. |
 
 ## AgentSession
 

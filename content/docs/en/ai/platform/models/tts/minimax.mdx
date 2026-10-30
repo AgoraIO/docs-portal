@@ -176,7 +176,7 @@ The `tts` block takes the following fields. In the SDKs, the MiniMax TTS class s
     <Parameter name="voice_setting.speed" type="number" required={true}>
       The speaking speed, for example `1.0`.
     </Parameter>
-    <Parameter name="audio_setting.sample_rate" type="number" required={true}>
+    <Parameter name="audio_setting.sample_rate" type="number" possibleValues="8000, 16000, 22050, 24000, 32000, 44100" required={false}>
       The audio sampling rate in Hz.
     </Parameter>
   </Parameter>
