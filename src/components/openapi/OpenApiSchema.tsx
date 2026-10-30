@@ -113,7 +113,7 @@ export function OpenApiSchema({
     });
 
     const hiddenMetadataLabels = new Set(
-      ['Items', 'Length', 'Match'].map((key) =>
+      ['Items', 'Length', 'Match', 'Properties'].map((key) =>
         getOpenApiSchemaLabel(translations, key, key),
       ),
     );
