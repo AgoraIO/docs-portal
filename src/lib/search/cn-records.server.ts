@@ -58,11 +58,19 @@ const markdownParser = unified().use(remarkParse);
 function normalizeSearchContainers(markdown: string) {
   if (!/<(?:CodeBlockTabs|CalloutContainer)\b/.test(markdown)) return markdown;
   const literals: [number, number][] = [];
-  visit(markdownParser.parse(markdown), 'inlineCode', (node) => {
+  const fencedCode: [number, number][] = [];
+  visit(markdownParser.parse(markdown), (node) => {
+    if (node.type !== 'inlineCode' && node.type !== 'code') return;
     const start = node.position?.start.offset;
     const end = node.position?.end.offset;
-    if (start !== undefined && end !== undefined) literals.push([start, end]);
+    if (start === undefined || end === undefined) return;
+    if (node.type === 'inlineCode') literals.push([start, end]);
+    // AST positions point at the fence even inside blockquotes or list items.
+    // Indented serialized platform content is not a literal fenced example.
+    else if (/^(?:`{3,}|~{3,})/.test(markdown.slice(start)))
+      fencedCode.push([start, end]);
   });
+  fencedCode.sort(([a], [b]) => a - b);
   const isLiteral = (offset: number) =>
     literals.some(([start, end]) => start <= offset && offset < end);
   const output: string[] = [];
@@ -70,13 +78,43 @@ function normalizeSearchContainers(markdown: string) {
   let normalized: string[] = [];
   const stack: { name: string; indent: number }[] = [];
   let fence = '';
+  let fenceQuoteDepth = 0;
   let tableFence = false;
   let offset = 0;
+  let fencedCodeIndex = 0;
   for (const line of markdown.split('\n')) {
     const lineOffset = offset;
     offset += line.length + 1;
     const indent = line.match(/^[ \t]*/)?.[0].length ?? 0;
-    const marker = line.match(/^[ \t]*(`{3,}|~{3,})([^\r\n]*)$/);
+    const contentIndent = stack.length
+      ? stack[stack.length - 1].indent + 2 - stack[0].indent
+      : 0;
+    const content = line.slice(Math.min(indent, contentIndent));
+    while (
+      fencedCodeIndex < fencedCode.length &&
+      fencedCode[fencedCodeIndex][1] <= lineOffset
+    )
+      fencedCodeIndex++;
+    const literal = fencedCode[fencedCodeIndex];
+    if (literal && literal[0] < offset) {
+      // A serialized table-cell closing fence can look like an opening fence
+      // to remark. Let the existing table-fence state own that boundary.
+      if (tableFence) fencedCodeIndex++;
+      else {
+        const active = stack.length > 0;
+        (active ? normalized : output).push(active ? content : line);
+        if (active) original.push(line);
+        continue;
+      }
+    }
+    const marker = line.match(
+      /^[ \t]*(?:(?:>[ \t]?|(?:[-+*]|\d+[.)])[ \t]+)[ \t]*)*(`{3,}|~{3,})([^\r\n]*)$/,
+    );
+    const markerPrefix = marker
+      ? line.slice(0, line.length - marker[1].length - marker[2].length)
+      : '';
+    const quoteDepth = (markerPrefix.match(/>/g) ?? []).length;
+    const hasListMarker = /(?:[-+*]|\d+[.)])[ \t]+/.test(markerPrefix);
     const tableOpening =
       !fence && line.match(/^[ \t]*\|[ \t]*(`{3,}|~{3,})([^\r\n]*)$/);
     const opening =
@@ -87,10 +125,6 @@ function normalizeSearchContainers(markdown: string) {
         (match) => !isLiteral(lineOffset + (match.index ?? 0)),
       );
     const active = stack.length > 0 || opening;
-    const contentIndent = stack.length
-      ? stack[stack.length - 1].indent + 2 - stack[0].indent
-      : 0;
-    const content = line.slice(Math.min(indent, contentIndent));
     const tableClosing =
       tableFence &&
       line.match(
@@ -101,6 +135,7 @@ function normalizeSearchContainers(markdown: string) {
     if (tableOpening) {
       renderedTable = `${padding}${tableOpening[1]}${tableOpening[2]}`;
       fence = tableOpening[1];
+      fenceQuoteDepth = 0;
       tableFence = true;
     } else if (
       tableClosing &&
@@ -120,10 +155,14 @@ function normalizeSearchContainers(markdown: string) {
     }
     if (marker) {
       const openingFence = !fence;
-      if (!fence) fence = marker[1];
-      else if (
+      if (!fence) {
+        fence = marker[1];
+        fenceQuoteDepth = quoteDepth;
+      } else if (
         marker[1][0] === fence[0] &&
         marker[1].length >= fence.length &&
+        quoteDepth === fenceQuoteDepth &&
+        !hasListMarker &&
         !marker[2].trim()
       )
         fence = '';
@@ -131,7 +170,7 @@ function normalizeSearchContainers(markdown: string) {
       const language = marker[2].trim().split(/[ \t]/, 1)[0];
       const rendered =
         active && openingFence
-          ? `${padding}${marker[1]}${language.includes('=') ? '' : language}`
+          ? `${markerPrefix.slice(Math.min(indent, contentIndent))}${marker[1]}${language.includes('=') ? '' : language}`
           : active
             ? content
             : line;

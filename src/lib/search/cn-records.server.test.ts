@@ -8,6 +8,104 @@ const url = '/zh-CN/api-reference/rtc/web/4.6.0/api';
 const route = { url, canonicalPath: url, markdownPath: `${url}.md` };
 const page = { url, title: 'RTC API', objectType: 'docs' as const };
 describe('published CN index export', () => {
+  it('preserves a quoted code example after serialized table fences', () => {
+    const [record, next] = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n| 新 | 旧 |\n| --- | --- |\n| ```json\n{"new": true}\n``` | ```json\n{"old": true}\n``` |\n\n> ```xml\n> <CalloutContainer type="info">\n>   <CalloutTitle>LiteralName</CalloutTitle>\n> </CalloutContainer>\n> ```\n\n<CalloutContainer type="warning">\n  <CalloutDescription>\n    实际提示。\n  </CalloutDescription>\n</CalloutContainer>\n\n## Next [#next]\n\n后续步骤。',
+    );
+    expect(record.content).toContain('{"new": true}');
+    expect(record.content).toContain('{"old": true}');
+    expect(record.content).toContain(
+      '<CalloutContainer type="info">\n  <CalloutTitle>LiteralName</CalloutTitle>\n</CalloutContainer>',
+    );
+    expect(record.content).toContain('实际提示。');
+    expect(record.content).not.toContain('CalloutDescription');
+    expect(next.url).toBe(`${url}#next`);
+  });
+  it.each([
+    [
+      'a quoted fence',
+      '> ```xml\n> <CalloutContainer type="info">\n>   <CalloutTitle>LiteralName</CalloutTitle>\n> </CalloutContainer>\n> ```',
+      '<CalloutTitle>LiteralName</CalloutTitle>',
+    ],
+    [
+      'a code example containing quoted fences',
+      '```markdown\n> ```xml\n> <CalloutContainer type="info">\n>   <CalloutTitle>LiteralName</CalloutTitle>\n> </CalloutContainer>\n> ```\n```',
+      '>   <CalloutTitle>LiteralName</CalloutTitle>',
+    ],
+    [
+      'a code example containing list fences',
+      '````markdown\n- ```xml\n  <CalloutContainer type="info">\n    <CalloutTitle>LiteralName</CalloutTitle>\n  </CalloutContainer>\n  ```\n````',
+      '    <CalloutTitle>LiteralName</CalloutTitle>',
+    ],
+    [
+      'a code example with a literal list fence opener',
+      '```markdown\n- ```\n<CalloutContainer type="info">\n  <CalloutTitle>LiteralName</CalloutTitle>\n</CalloutContainer>\n```',
+      '  <CalloutTitle>LiteralName</CalloutTitle>',
+    ],
+  ])(
+    'preserves %s in serialized platform indentation',
+    (_name, example, literal) => {
+      const indented = example
+        .split('\n')
+        .map((line) => `    ${line}`)
+        .join('\n');
+      const records = extractPublishedCnSections(
+        { ...route, platform: 'android' },
+        page,
+        `# RTC API\n\n    ## 示例 [#sample]\n\n${indented}\n\n    <CalloutContainer type="warning">\n      <CalloutDescription>\n        实际提示。\n      </CalloutDescription>\n    </CalloutContainer>\n\n    ## Next [#next]\n\n    后续步骤。`,
+      );
+      expect(records.map((record) => record.url)).toEqual([
+        `${url}#sample`,
+        `${url}#next`,
+      ]);
+      expect(records[0].content).toContain(literal);
+      expect(records[0].content).toContain('实际提示。');
+      expect(records[0].content).not.toContain('CalloutDescription');
+      expect(records[1].content).toContain('后续步骤。');
+    },
+  );
+  it.each([
+    [
+      'a blockquoted fence',
+      '> ```xml\n> <CalloutContainer type="info">\n>   <CalloutTitle>LiteralName</CalloutTitle>\n> </CalloutContainer>\n> ```',
+    ],
+    [
+      'a fence starting a list item',
+      '- ```xml\n  <CalloutContainer type="info">\n    <CalloutTitle>LiteralName</CalloutTitle>\n  </CalloutContainer>\n  ```',
+    ],
+    [
+      'a fence following list text',
+      '1. 示例\n\n   ```xml\n   <CalloutContainer type="info">\n     <CalloutTitle>LiteralName</CalloutTitle>\n   </CalloutContainer>\n   ```',
+    ],
+    [
+      'a blockquoted fence without a language',
+      '> ```\n> <CalloutContainer type="info">\n>   <CalloutTitle>LiteralName</CalloutTitle>\n> </CalloutContainer>\n> ```',
+    ],
+    [
+      'a longer tilde fence',
+      '> ~~~~xml\n> <CalloutContainer type="info">\n>   <CalloutTitle>LiteralName</CalloutTitle>\n> </CalloutContainer>\n> ~~~~',
+    ],
+    [
+      'a fence in a quoted list',
+      '> - ```xml\n>   <CalloutContainer type="info">\n>     <CalloutTitle>LiteralName</CalloutTitle>\n>   </CalloutContainer>\n>   ```',
+    ],
+  ])('preserves %s and cleans the following callout', (_name, example) => {
+    const records = extractPublishedCnSections(
+      route,
+      page,
+      `# RTC API\n\n${example}\n\n<CalloutContainer type="warning">\n  <CalloutDescription>\n    实际提示。\n  </CalloutDescription>\n</CalloutContainer>\n\n## Next [#next]\n\n后续步骤。`,
+    );
+    expect(records.map((record) => record.url)).toEqual([url, `${url}#next`]);
+    expect(records[0].content).toContain(
+      '<CalloutContainer type="info">\n  <CalloutTitle>LiteralName</CalloutTitle>\n</CalloutContainer>',
+    );
+    expect(records[0].content).toContain('实际提示。');
+    expect(records[0].content).not.toContain('CalloutDescription');
+    expect(records[0].content).not.toContain('type="warning"');
+    expect(records[1].content).toContain('后续步骤。');
+  });
   it('keeps later platform headings after an indented callout list', () => {
     const records = extractPublishedCnSections(
       { ...route, platform: 'android' },
