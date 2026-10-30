@@ -1148,6 +1148,18 @@ describe('FumadocsOpenApiContent', () => {
                                   llm: {
                                     additionalProperties: true,
                                     properties: {
+                                      headers: {
+                                        additionalProperties: {
+                                          oneOf: [
+                                            { type: 'string' },
+                                            { type: 'number' },
+                                            { type: 'boolean' },
+                                          ],
+                                        },
+                                        description:
+                                          'Custom headers accept scalar values.',
+                                        type: 'object',
+                                      },
                                       vendor: {
                                         enum: ['openai', 'azure'],
                                         type: 'string',

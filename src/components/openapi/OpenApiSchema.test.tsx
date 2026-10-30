@@ -92,7 +92,7 @@ describe('OpenApiSchema', () => {
     expect(screen.getByText('name')).toBeVisible();
   });
 
-  it('hides string map placeholders outside params while preserving params maps', () => {
+  it('hides scalar map placeholders while preserving parent descriptions', () => {
     render(
       <AnchorSection segments={['request-body', 'application-json']}>
         <OpenApiSchema
@@ -109,6 +109,18 @@ describe('OpenApiSchema', () => {
                 additionalProperties: { type: 'string' },
                 type: 'object',
               },
+              headers: {
+                additionalProperties: {
+                  oneOf: [
+                    { type: 'string' },
+                    { type: 'number' },
+                    { type: 'boolean' },
+                  ],
+                },
+                description:
+                  'Custom headers accept string, number or boolean values.',
+                type: 'object',
+              },
             },
             type: 'object',
           }}
@@ -117,14 +129,15 @@ describe('OpenApiSchema', () => {
       </AnchorSection>,
     );
 
-    const paramsMapRow = screen.getByText('[key: string]', { exact: true });
-    expect(paramsMapRow).not.toBeVisible();
-
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Expand params properties' }),
-    );
-
-    expect(screen.getByText('[key: string]', { exact: true })).toBeVisible();
+    expect(
+      screen.queryAllByText('[key: string]', { exact: true }),
+    ).toHaveLength(0);
+    expect(screen.getByText('headers')).toBeVisible();
+    expect(
+      screen.getByText(
+        'Custom headers accept string, number or boolean values.',
+      ),
+    ).toBeVisible();
   });
 
   it('collapses supplier descriptions until their variant row is expanded', () => {

@@ -230,10 +230,9 @@ const OpenAPIPage = createOpenAPIPage({
           }
           renderExtraDescription={(schema) => {
             const record = getRecord(schema);
-            return record ? (
-              <OpenApiInlineCallouts
-                callouts={getOpenApiDocsCallouts(record)}
-              />
+            const callouts = record ? getOpenApiDocsCallouts(record) : [];
+            return callouts.length > 0 ? (
+              <OpenApiInlineCallouts callouts={callouts} />
             ) : null;
           }}
           renderMarkdown={(markdown) =>
@@ -943,10 +942,9 @@ function OpenApiResponseBody({ operation }: { operation?: OpenApiOperation }) {
               }
               renderExtraDescription={(source) => {
                 const record = getRecord(source);
-                return record ? (
-                  <OpenApiInlineCallouts
-                    callouts={getOpenApiDocsCallouts(record)}
-                  />
+                const callouts = record ? getOpenApiDocsCallouts(record) : [];
+                return callouts.length > 0 ? (
+                  <OpenApiInlineCallouts callouts={callouts} />
                 ) : null;
               }}
               renderMarkdown={(markdown) =>
