@@ -2091,3 +2091,19 @@
   padding-top: 0;
   border-top: 0;
 }
+
+/* Chinese API names can exceed a narrow article column. Keep titles and
+   prose readable while tables and code retain their own scroll containers. */
+article[lang="zh-CN"] > header h1,
+article[lang="zh-CN"]
+  .docs-body
+  :where(p, li):not(:where(.not-prose, .not-prose *, table *)) {
+  overflow-wrap: anywhere;
+}
+
+/* Shrink heading text beside Fumadocs' fixed-size copy button. These follow
+   Fumadocs' unlayered typography rules so the fix also applies after build. */
+article[lang="zh-CN"] .docs-body .group\/heading > a {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}

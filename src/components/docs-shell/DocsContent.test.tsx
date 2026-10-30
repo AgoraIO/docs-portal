@@ -566,6 +566,26 @@ describe('DocsContent', () => {
     expect(screen.getByText('Learn the platform basics.')).toBeInTheDocument();
   });
 
+  it.each(['zh-CN', 'en'] as const)(
+    'identifies the %s article language for scoped typography',
+    async (locale) => {
+      renderWithRouter(
+        <DocsContent
+          contentPath={`${locale}/introduction/about-agora.md`}
+          locale={locale}
+          slug="about-agora"
+          title="About Agora"
+          toc={[]}
+        />,
+      );
+
+      expect(await screen.findByRole('article')).toHaveAttribute(
+        'lang',
+        locale,
+      );
+    },
+  );
+
   it('uses a compact header-to-body gap on non-platform-tabs pages', async () => {
     renderWithRouter(
       <DocsContent

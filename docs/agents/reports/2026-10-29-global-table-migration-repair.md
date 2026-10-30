@@ -93,10 +93,14 @@ No source content or merge boundaries changed. The earlier complete production
 build result applies to the merged-content implementation; this border-only
 follow-up was checked through actual Vite-compiled styles on every affected page.
 
-The API samples have separate non-table narrow-screen overflow: hiding tables
-still leaves 564 pixels on Unreal C++ and 477 pixels on the RTSA enum page at a
-390-pixel viewport. Their tables remain independently scrollable. This repair
-does not claim full-page typography parity.
+The initial API samples exposed separate non-table narrow-screen overflow:
+hiding tables still left 564 pixels on Unreal C++ and 477 pixels on the RTSA
+enum page at a 390-pixel viewport. A subsequent 20-page review found seven
+affected pages. The Chinese article typography follow-up fixes the long-title,
+heading flex-item and prose wrapping causes; all seven now measure 390 pixels.
+See [the narrow-screen report](2026-10-30-cn-api-narrow-screen-overflow.md) for
+the measurements and browser regression scope. Tables retain their independent
+scroll containers; this is not a claim of full-site typography parity.
 
 Detailed source mappings, retention results and local browser measurements are
 kept in ignored `.agent/artifacts/merged-tables-20261030/`.
