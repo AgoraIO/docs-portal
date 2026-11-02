@@ -116,6 +116,65 @@ function makeSectionHeadingPageProps(): OpenAPIPageProps {
 }
 
 describe('FumadocsOpenApiContent', () => {
+  it('groups cloud-transcoding response headers and body under the response section for each status', async () => {
+    const source = yaml.load(
+      await readFile(
+        'content/openapi/cloud-transcoding/cloud-transcoding.zh-CN.yaml',
+        'utf8',
+      ),
+    ) as Document;
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v1/projects/{appId}/rtsc/cloud-transcoder/tasks',
+            },
+          ],
+          payload: { bundled: source },
+        }}
+      />,
+    );
+    const heading = await screen.findByRole('heading', {
+      name: '响应',
+      level: 2,
+    });
+    expect(heading).toHaveAttribute('id', 'response-body');
+    for (const status of ['2XX', '非 2XX']) {
+      const trigger = screen.getByRole('button', {
+        name: `${status} application/json`,
+      });
+      if (trigger.getAttribute('aria-expanded') === 'false')
+        fireEvent.click(trigger);
+      const panel = document.getElementById(
+        trigger.getAttribute('aria-controls') ?? '',
+      ) as HTMLElement;
+      const headers = within(panel).getByRole('heading', {
+        name: '响应 Header',
+        level: 3,
+      });
+      const body = within(panel).getByRole('heading', {
+        name: '响应 Body',
+        level: 3,
+      });
+      expect(
+        headers.compareDocumentPosition(body) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+      const name = status === '2XX' ? 'taskId' : 'message';
+      const field = Array.from(
+        panel.querySelectorAll('.openapi-schema-field-row'),
+      ).find((row) => row.querySelector('code')?.textContent === name);
+      expect(field).toBeDefined();
+      expect(
+        body.compareDocumentPosition(field as HTMLElement) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+    }
+  });
+
   it('preserves RTC error guidance without inferring an empty response body', async () => {
     const document = yaml.load(
       await readFile(
@@ -469,7 +528,7 @@ describe('FumadocsOpenApiContent', () => {
       ['parameters-header', 'Header Parameters'],
       ['parameters-cookie', 'Cookie Parameters'],
       ['request-body', 'Request Body'],
-      ['response-body', 'Response Body'],
+      ['response-body', 'Responses'],
     ] as const;
 
     for (const [id, title] of sections) {
@@ -736,11 +795,11 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     expect(
-      await screen.findByRole('heading', { name: 'Response Body' }),
+      await screen.findByRole('heading', { name: 'Responses' }),
     ).toBeInTheDocument();
-    expect(
-      screen.getAllByRole('heading', { name: 'Response Body' }),
-    ).toHaveLength(1);
+    expect(screen.getAllByRole('heading', { name: 'Responses' })).toHaveLength(
+      1,
+    );
     expect(
       document.querySelector('[data-openapi-responses]'),
     ).toBeInTheDocument();
@@ -1684,9 +1743,7 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       screen.getByRole('heading', { name: '请求 Body' }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: '响应 Body' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: '响应' })).toBeInTheDocument();
     expect(
       screen.queryByRole('heading', { name: 'Header Parameters' }),
     ).not.toBeInTheDocument();
@@ -2628,7 +2685,7 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     await screen.findByRole('heading', {
-      name: 'Response Body',
+      name: 'Responses',
     });
     expect(
       document.querySelector(
@@ -2923,7 +2980,7 @@ describe('FumadocsOpenApiContent', () => {
       within(responseHeaderSection).getByText('response-123'),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: 'Response Body' }),
+      screen.getByRole('heading', { name: 'Responses' }),
     ).toBeInTheDocument();
 
     expect(screen.getByText('Note')).toBeInTheDocument();
@@ -2938,7 +2995,7 @@ describe('FumadocsOpenApiContent', () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/previous request finishes/)).toBeInTheDocument();
     const responseBodyHeading = screen.getByRole('heading', {
-      name: 'Response Body',
+      name: 'Responses',
     });
     const responseHeadersHeading = screen.getByRole('heading', {
       name: 'Response Headers',
@@ -3064,7 +3121,7 @@ describe('FumadocsOpenApiContent', () => {
       name: 'Request Body',
     });
     const responseBodyHeading = screen.getByRole('heading', {
-      name: 'Response Body',
+      name: 'Responses',
     });
 
     expect(pathHeading).toHaveAttribute('id', 'parameters-path');
@@ -3829,7 +3886,7 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     expect(
-      await screen.findByRole('heading', { name: '响应 Body' }),
+      await screen.findByRole('heading', { name: '响应' }),
     ).toBeInTheDocument();
     expect(
       document.querySelector('[data-openapi-responses]'),
@@ -3933,7 +3990,7 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     expect(
-      await screen.findByRole('heading', { name: '响应 Body' }),
+      await screen.findByRole('heading', { name: '响应' }),
     ).toBeInTheDocument();
     expect(screen.getByText('Schema 中没有字段')).toBeInTheDocument();
   });
@@ -4030,7 +4087,7 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     expect(
-      await screen.findByRole('heading', { name: '响应 Body' }),
+      await screen.findByRole('heading', { name: '响应' }),
     ).toBeInTheDocument();
     expect(screen.queryByText('Schema 中没有字段')).not.toBeInTheDocument();
     expect(screen.getAllByText('string').length).toBeGreaterThan(0);
@@ -4186,7 +4243,7 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     expect(
-      await screen.findByRole('heading', { name: 'Response Body' }),
+      await screen.findByRole('heading', { name: 'Responses' }),
     ).toBeInTheDocument();
     expect(
       screen.queryByRole('heading', { name: 'Response schema' }),

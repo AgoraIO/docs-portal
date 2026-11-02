@@ -25,6 +25,7 @@ import { OpenApiSectionHeading } from './OpenApiSectionHeading';
 
 export type OpenApiResponseLabels = {
   mediaTypeForResponse: (status: string) => string;
+  responses: string;
   responseBody: string;
   schemaHasNoFields: string;
   schemaNotProvided: string;
@@ -110,7 +111,7 @@ export function OpenApiResponses({
   return (
     <section className="mt-8" data-openapi-responses>
       <OpenApiSectionHeading id={sectionId}>
-        {labels.responseBody}
+        {labels.responses}
       </OpenApiSectionHeading>
       <div className="border border-fd-border text-fd-card-foreground">
         {responses.map((response, index) => {
@@ -181,48 +182,54 @@ export function OpenApiResponses({
                         {renderDescription(response.description)}
                       </div>
                     ) : null}
-                    {response.mediaTypes.length > 1 ? (
-                      <div className="mt-3">
-                        <label className="sr-only" htmlFor={mediaSelectId}>
-                          {labels.mediaTypeForResponse(response.statusCode)}
-                        </label>
-                        <select
-                          className="h-9 rounded-md border border-fd-border bg-fd-secondary px-2 text-sm"
-                          id={mediaSelectId}
-                          onChange={(event) =>
-                            setSelectedMediaTypes((current) => {
-                              const next = new Map(current);
-                              next.set(response.statusCode, event.target.value);
-                              return next;
-                            })
-                          }
-                          value={selectedMediaType}
-                        >
-                          {response.mediaTypes.map((media) => (
-                            <option
-                              key={media.mediaType}
-                              value={media.mediaType}
-                            >
-                              {media.mediaType}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    ) : null}
                     {response.headers.length > 0 ? (
                       <div className="mt-4">
                         {renderHeaders(response.headers, response.statusCode)}
                       </div>
                     ) : null}
                     {response.hasContent ? (
-                      <div className="mt-4">
+                      <section className="mt-6">
+                        <h3 className="mb-3 font-semibold text-base">
+                          {labels.responseBody}
+                        </h3>
+                        {response.mediaTypes.length > 1 ? (
+                          <div className="mb-3">
+                            <label className="sr-only" htmlFor={mediaSelectId}>
+                              {labels.mediaTypeForResponse(response.statusCode)}
+                            </label>
+                            <select
+                              className="h-9 rounded-md border border-fd-border bg-fd-secondary px-2 text-sm"
+                              id={mediaSelectId}
+                              onChange={(event) =>
+                                setSelectedMediaTypes((current) => {
+                                  const next = new Map(current);
+                                  next.set(
+                                    response.statusCode,
+                                    event.target.value,
+                                  );
+                                  return next;
+                                })
+                              }
+                              value={selectedMediaType}
+                            >
+                              {response.mediaTypes.map((media) => (
+                                <option
+                                  key={media.mediaType}
+                                  value={media.mediaType}
+                                >
+                                  {media.mediaType}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        ) : null}
                         <ResponseSchemaState
                           labels={labels}
                           response={response}
                           selectedMedia={selectedMedia}
                           renderSchema={renderSchema}
                         />
-                      </div>
+                      </section>
                     ) : null}
                   </>
                 ) : null}

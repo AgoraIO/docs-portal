@@ -120,6 +120,7 @@ const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   'Request example scenario': '请求示例场景',
   'Request examples': '请求示例',
   'Response Body': '响应 Body',
+  Responses: '响应',
   'Response Body schema fields': '响应 Body 字段',
   'Response Headers': '响应 Header',
   'Response example': '响应示例',
@@ -136,7 +137,7 @@ const ZH_CN_OPENAPI_GENERATED_HEADING_LABELS: Record<string, string> = {
   'parameters-path': '路径参数',
   'parameters-query': '查询参数',
   'request-body': '请求 Body',
-  'response-body': '响应 Body',
+  'response-body': '响应',
 };
 const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
   'Allowed values(schema UI)': '可选值',
@@ -929,6 +930,7 @@ function OpenApiResponseBody({ operation }: { operation?: OpenApiOperation }) {
             ? `${status} 响应的媒体类型`
             : `Media type for ${status} response`,
         responseBody: getOpenApiLabel('Response Body', locale),
+        responses: getOpenApiLabel('Responses', locale),
         schemaHasNoFields: getOpenApiLabel('Schema has no fields', locale),
         schemaNotProvided: getOpenApiLabel('Schema not provided', locale),
       }}
