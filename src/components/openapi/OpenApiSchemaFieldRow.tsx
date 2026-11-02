@@ -99,13 +99,13 @@ export function OpenApiSchemaFieldRow({
           {expandable ? (
             <>
               <span
-                className="flex size-3 shrink-0 items-center justify-center"
+                className="relative flex size-3 shrink-0 items-center justify-center"
                 data-openapi-field-gutter
               >
                 <Button
                   aria-expanded={expanded}
                   aria-label={`${expanded ? labels.collapse : labels.expand} ${node.name} ${labels.properties}`}
-                  className="size-3 shrink-0 p-0 hover:bg-transparent"
+                  className="absolute left-1/2 top-1/2 size-6 shrink-0 -translate-x-1/2 -translate-y-1/2 p-0 hover:bg-transparent"
                   onClick={() => onExpandedChange(!expanded)}
                   size="sm"
                   type="button"

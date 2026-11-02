@@ -1,4 +1,5 @@
 ---
+tocMaxDepth: 2
 title: "User system registration"
 description: "Agora Chat RESTful APIs for user system registration and management."
 ---
@@ -6,6 +7,8 @@ description: "Agora Chat RESTful APIs for user system registration and managemen
 This page shows how to call Chat RESTful APIs to create and manage the user system, including how to register, modify, delete, ban, and unban a user, get user information, and force a user to log out.
 
 Before calling the following methods, make sure you understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](./limitations#call-limit-of-server-sides).
+
+<a id="param"></a>
 
 ## Common parameters
 
@@ -786,6 +789,8 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 }
 ```
 
+<a id="unban"></a>
+
 ## Unbanning a user
 
 This method unbans a deactivated user account. After the ban is lifted, the user can log in to Chat.
@@ -906,6 +911,8 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToke
     "applicationName": "XXXX"
 }
 ```
+
+<a id="code"></a>
 
 ## Querying the online state of a user
 

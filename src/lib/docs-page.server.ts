@@ -362,7 +362,11 @@ export async function loadDocsPagePayload(
     : await resolvePageToc(page, processedText, artifactPlatform);
   // Only generated OpenAPI operation pages need the wide layout. Hand-written
   // pages inside an OpenAPI lane keep the docs layout and its TOC.
-  const tocMaxDepth = resolveDocsTocMaxDepth(page.data, tab === OPENAPI_TAB);
+  const tocMaxDepth = resolveDocsTocMaxDepth(
+    page.data,
+    tab === OPENAPI_TAB,
+    unboundedToc,
+  );
   const toc = filterDocsToc(unboundedToc, tocMaxDepth);
   const layoutMode: DocsLayoutMode = isOpenApiPage ? 'openapi' : 'docs';
   const sidebar = await getDocsSidebarNodes({

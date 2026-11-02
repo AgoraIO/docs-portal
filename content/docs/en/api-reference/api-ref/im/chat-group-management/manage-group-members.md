@@ -1,4 +1,5 @@
 ---
+tocMaxDepth: 2
 title: "Manage group members"
 description: "Shows how to manage group members by calling the Agora Chat RESTful APIs."
 ---
@@ -948,6 +949,8 @@ curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H
     "applicationName": "XXXX"
 }
 ```
+
+<a id="code"></a>
 
 ## Status codes
 

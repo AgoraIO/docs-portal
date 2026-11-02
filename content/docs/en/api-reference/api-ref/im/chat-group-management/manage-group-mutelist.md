@@ -7,6 +7,8 @@ Muting means to prevent group users from sending messages in the group. Chat pro
 
 This page shows how to manage the mute list by calling Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../limitations#call-limit-of-server-sides).
 
+<a id="param"></a>
+
 ## Common parameters
 
 The following table lists common request and response parameters of the Chat RESTful APIs:

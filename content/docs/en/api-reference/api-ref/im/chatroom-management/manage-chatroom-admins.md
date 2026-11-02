@@ -7,6 +7,8 @@ In an app integrated with Chat, only the super admin of chat rooms has the permi
 
 This page shows how to manage super administrators of chat rooms by calling the Chat RESTful APIs, including adding and retrieving super administrators and revoking the chat room creation privilege of a super administrator. Before calling the following methods, ensure that you understand the call frequency limit of the Chat RESTful APIs described in [Limitations](../limitations#call-limit-of-server-sides).
 
+<a id="param"></a>
+
 ## Common parameters
 
 The following table lists common request and response parameters of the Chat RESTful APIs:
@@ -279,6 +281,8 @@ curl -X GET http://XXXX/app-id/XXXX/chatrooms/super_admin?pagenum=2&pagesize=2 -
 }
 ```
 	
+
+<a id="code"></a>
 
 ## Status codes
 

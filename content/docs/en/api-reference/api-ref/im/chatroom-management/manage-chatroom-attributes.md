@@ -7,6 +7,8 @@ This page shows how to manage custom attributes by calling Agora Chat RESTful AP
 
 Before calling the following methods, ensure that you understand the call frequency limit of Agora Chat RESTful API calls described in [Limitations](../limitations#call-limit-of-server-sides).
 
+<a id="param"></a>
+
 ## Common parameters
 
 The following table lists common request and response parameters of the Agora Chat RESTful APIs:
@@ -62,7 +64,7 @@ In order to improve the security of the project, Agora uses a token (dynamic key
 Adds new custom attributes or modifies existing ones set by the current user.
 
 :::info
-This method is only used to modify the existing key-value pairs set by the current user. To perform the overwrite operation, see [Forcibly set custom attributes](overwrite).
+This method is only used to modify the existing key-value pairs set by the current user. To perform the overwrite operation, see [Forcibly set custom attributes](/en/api-reference/api-ref/im/chatroom-management/manage-chatroom-attributes#forcibly-set-custom-attributes).
 :::
 
 ### HTTP request
@@ -333,6 +335,8 @@ curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H
   }
 }
 ```
+
+<a id="force"></a>
 
 ## Forcibly remove custom attributes
 

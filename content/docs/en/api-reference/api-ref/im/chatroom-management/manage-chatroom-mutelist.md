@@ -7,6 +7,8 @@ This page shows how to perform chat room member mute management by calling the C
 
 Before calling the following methods, ensure that you understand the call frequency limit of the Chat RESTful APIs described in [Limitations](../limitations#call-limit-of-server-sides).
 
+<a id="param"></a>
+
 ## Common parameters
 
 The following table lists common request and response parameters of the Chat RESTful APIs:
@@ -412,6 +414,8 @@ curl -X DELETE -H 'Content-Type: application/json' -H 'Accept: application/json'
   "applicationName": "XXXX"
 }
 ```
+
+<a id="code"></a>
 
 ## Status codes 
 

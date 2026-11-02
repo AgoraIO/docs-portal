@@ -389,10 +389,11 @@ describe('OpenApiSchemaFieldRow', () => {
     const expandButton = screen.getByRole('button', {
       name: `Expand ${longFieldName} properties`,
     });
-    expect(expandButton).toHaveClass('size-3', 'shrink-0');
-    expect(
-      expandButton.closest('[data-openapi-field-gutter]'),
-    ).toBeInTheDocument();
+    expect(expandButton).toHaveClass('absolute', 'size-6', 'shrink-0');
+    expect(expandButton.closest('[data-openapi-field-gutter]')).toHaveClass(
+      'relative',
+      'size-3',
+    );
     expect(
       expandButton
         .closest('[data-openapi-field-leading]')

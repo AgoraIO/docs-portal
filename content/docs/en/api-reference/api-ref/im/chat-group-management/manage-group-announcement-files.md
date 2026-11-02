@@ -5,6 +5,8 @@ description: "Shows how to manage the group announcement and group files by call
 
 This page shows how to manage the group announcement and group files by calling Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../limitations#call-limit-of-server-sides).
 
+<a id="param"></a>
+
 ## Common parameters
 
 The following table lists common request and response parameters of the Chat RESTful APIs:
@@ -199,6 +201,8 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
     "applicationName": "XXXX"
 }
 ```
+
+<a id="getall"></a>
 
 ## Retrieving the group shared files
 
@@ -495,6 +499,8 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http:/
     "applicationName": "XXXX"
 }
 ```
+
+<a id="code"></a>
 
 ## Status codes
 

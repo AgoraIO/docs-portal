@@ -1503,9 +1503,21 @@ function isDocsRouteHref(href: string) {
   );
 }
 
-function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
+function ZoomableImage({
+  alt = '',
+  src,
+  referrerPolicy = 'no-referrer',
+  ...props
+}: ComponentProps<'img'>) {
   if (typeof src !== 'string' || src.length === 0) {
-    return <FumadocsImage alt={alt} src={src} {...props} />;
+    return (
+      <FumadocsImage
+        alt={alt}
+        src={src}
+        referrerPolicy={referrerPolicy}
+        {...props}
+      />
+    );
   }
 
   const title = alt || 'Documentation image';
@@ -1518,7 +1530,12 @@ function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
           className="block cursor-zoom-in"
           type="button"
         >
-          <FumadocsImage alt={alt} src={src} {...props} />
+          <FumadocsImage
+            alt={alt}
+            src={src}
+            referrerPolicy={referrerPolicy}
+            {...props}
+          />
         </button>
       </DialogTrigger>
       <DialogContent className="max-h-[calc(100vh-2rem)] w-fit max-w-[calc(100vw-2rem)] justify-items-center border-0 bg-transparent p-0 shadow-none sm:max-w-[calc(100vw-2rem)]">
@@ -1530,6 +1547,7 @@ function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
           alt={alt}
           className="max-h-[calc(100vh-4rem)] max-w-[calc(100vw-4rem)] rounded-md object-contain shadow-2xl"
           src={src}
+          referrerPolicy={referrerPolicy}
         />
       </DialogContent>
     </Dialog>

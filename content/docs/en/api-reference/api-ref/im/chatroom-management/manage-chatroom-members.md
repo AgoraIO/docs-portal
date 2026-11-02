@@ -1,4 +1,5 @@
 ---
+tocMaxDepth: 2
 title: "Manage chat room members"
 description: "Shows how to manage chat room members by calling the Agora Chat RESTful APIs."
 ---
@@ -13,6 +14,8 @@ Before calling the following methods, ensure that you understand the call freque
 | Regular member | Chat room members without administrative privileges. | Regular chat room members can modify their own chat room profiles. |
 | chat room admin | Chat room admins are authorized by the chat room owner and have chat room management privileges. | The admins can manage regular members of the chat room.  A maximum of 99 admins can be added. |
 | chat room owner | The creator of the chat room. Chat room owners have the highest privileges. | The chat room owner can add chat room admins, disband the chat room, modify chat room information, and manage regular members of the chat room. |
+
+<a id="param"></a>
 
 ## Common parameters
 
@@ -656,6 +659,8 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http:/
     "applicationName": "XXXX"
 }
 ```
+
+<a id="code"></a>
 
 ## Status codes
 

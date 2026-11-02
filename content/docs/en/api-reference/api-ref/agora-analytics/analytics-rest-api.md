@@ -1,4 +1,5 @@
 ---
+tocMaxDepth: 3
 title: "Analytics REST API reference"
 description: "Agora Analytics REST APIs for call quality, usage, and real-time monitoring metrics."
 ---

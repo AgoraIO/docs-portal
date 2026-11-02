@@ -1,3 +1,27 @@
+/* Muted document metadata must remain readable in both theme palettes. */
+article {
+  --ink-4: var(--ink-3);
+}
+
+/* Long API tokens also occur in prose links and parameter descriptions. */
+.prose,
+[data-parameter-description],
+.openapi-operation .openapi-markdown {
+  overflow-wrap: anywhere;
+}
+
+/* Document titles also contain unbroken SDK identifiers. */
+article :where(h1) {
+  overflow-wrap: anywhere;
+}
+
+/* Fumadocs headings pair a link with a fixed-size anchor button. Let the
+   link shrink and wrap long API identifiers inside the available line. */
+.prose :where(.group\/heading > a) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 /* Signatures can contain Markdown paragraphs and type links. Keep their code
    face explicit so locale typography cannot override the inherited monospace. */
 [data-api-signature] > :last-child,
@@ -8,13 +32,37 @@
 /* Keep multi-column tables readable on narrow screens. The existing scroll
    wrapper exposes the remaining columns without squeezing prose into a strip. */
 .prose
-  table:not(.im-pricing-api-table):has(tr > :nth-child(4)):not(
+  table:not(.im-pricing-api-table):has(tr > :nth-child(3)):not(
     :where(.not-prose, .not-prose *)
   ),
 .openapi-operation
   .openapi-markdown
-  table:not(.im-pricing-api-table):has(tr > :nth-child(4)) {
+  table:not(.im-pricing-api-table):has(tr > :nth-child(3)) {
   min-width: 42rem;
+}
+
+/* A code example's intrinsic width must not consume the prose columns.
+   Fumadocs keeps the code's own horizontal scroll container. */
+.prose
+  table:not(.im-pricing-api-table):not(:where(.not-prose, .not-prose *))
+  td
+  figure.shiki,
+.openapi-operation
+  .openapi-markdown
+  table:not(.im-pricing-api-table)
+  td
+  figure.shiki {
+  contain: inline-size;
+  min-inline-size: 24ch;
+}
+
+/* Long column labels can wrap at spaces rather than reserve a whole line.
+   Keep words intact and let the cells determine the table's natural widths. */
+.prose
+  table:not(.im-pricing-api-table):not(:where(.not-prose, .not-prose *))
+  th {
+  white-space: normal;
+  overflow-wrap: normal;
 }
 
 /* Share the existing OpenAPI Markdown table treatment across site regions. */
@@ -59,7 +107,8 @@
   font-size: 0.92rem;
   font-weight: 600;
   line-height: 1.45;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: normal;
 }
 
 :where(html) .openapi-operation .openapi-markdown :where(td) {
@@ -96,4 +145,70 @@
   .openapi-markdown
   :where(tbody tr:nth-child(even)) {
   background: var(--docs-openapi-table-row-bg);
+}
+
+/* OpenAPI descriptions sit outside prose. Apply the same inline-token
+   wrapping contract as MDX without changing preformatted code blocks. */
+.openapi-operation .openapi-markdown :where(a, :not(pre) > code) {
+  overflow-wrap: anywhere;
+}
+
+/* Parameter cards are outside prose too. Keep names and type badges inside
+   their column while preserving code-block scrolling. */
+[data-parameter-main] :where(:not(pre) > code, span.font-mono) {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+/* Preserve ordinary words in table cells. Explicit inline code and links can
+   still wrap identifiers; the table's existing wrapper handles wider columns. */
+.prose :where(td):not(:where(.not-prose, .not-prose *)),
+.openapi-operation .openapi-markdown :where(td) {
+  min-width: 14ch;
+  overflow-wrap: break-word;
+}
+
+.prose :where(td a, td :not(pre) > code):not(:where(.not-prose, .not-prose *)) {
+  overflow-wrap: anywhere;
+}
+
+/* API descriptions contain normal Markdown inside not-prose cards. Keep
+   list semantics in parameters and returns, excluding the value badge list. */
+:is([data-parameter-description], [data-api-return-description])
+  :where(ul, ol):not([data-parameter-possible-values]) {
+  margin-block: 0.75rem;
+  padding-inline-start: 1.4rem;
+}
+
+:is([data-parameter-description], [data-api-return-description])
+  :where(ul):not([data-parameter-possible-values]) {
+  list-style-type: disc;
+}
+
+:is([data-parameter-description], [data-api-return-description])
+  :where(ul ul):not([data-parameter-possible-values]) {
+  list-style-type: circle;
+}
+
+:is([data-parameter-description], [data-api-return-description]) :where(ol) {
+  list-style-type: decimal;
+}
+
+:is([data-parameter-description], [data-api-return-description]) :where(ol ol) {
+  list-style-type: lower-alpha;
+}
+
+:is([data-parameter-description], [data-api-return-description])
+  :where(ul:not([data-parameter-possible-values]), ol)
+  > li {
+  margin-block: 0.35rem;
+  padding-inline-start: 0.2rem;
+}
+
+/* Fumadocs callout prose needs room inside table cells after icon and padding.
+   Its intrinsic minimum lets the existing table wrapper handle the width. */
+.prose td :where(.prose-no-margin),
+.openapi-operation .openapi-markdown td :where(.prose-no-margin) {
+  min-inline-size: 24ch;
 }

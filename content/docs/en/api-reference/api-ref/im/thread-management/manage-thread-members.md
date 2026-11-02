@@ -5,6 +5,10 @@ description: "Shows how to manage thread members by calling the Agora Chat RESTf
 
 This page shows how to manage thread members by calling the Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../limitations#call-limit-of-server-sides).
 
+<a id="request"></a>
+
+<a id="response"></a>
+
 ## Common parameters
 
 The following table lists common request and response parameters of the Chat RESTful APIs:
@@ -31,6 +35,8 @@ The following table lists common request and response parameters of the Chat RES
 | `path` | String | The request path, which is part of the request URI. You can safely ignore this parameter. |
 | `entities ` | JSON | The response entity. |
 | `properties` | String | The request property. |
+
+<a id="auth"></a>
 
 ## Authorization 
 
