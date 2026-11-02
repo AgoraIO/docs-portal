@@ -159,16 +159,22 @@ export function buildOpenApiSchemaView(
         ];
 
         const branchSchema = generated.refs[item.$type];
+        const groupBranch =
+          schema.type === 'or' &&
+          (branchSchema?.type === 'object' || branchSchema?.type === 'array');
         const children = childrenFor(
           branchSchema,
           nextParentPath,
           fieldPath,
-          depth,
+          groupBranch ? depth + 1 : depth,
           nextAncestors,
           item.$type,
         );
 
-        if (children.length === 0 && branchSchema?.type === 'object') {
+        if (
+          groupBranch ||
+          (children.length === 0 && branchSchema?.type === 'object')
+        ) {
           const branchNodePath = [
             ...nextParentPath,
             { $ref: item.$type, name: item.name },
@@ -177,9 +183,10 @@ export function buildOpenApiSchemaView(
           return [
             {
               $type: item.$type,
-              children: [],
+              children,
               depth,
               detailsCollapsible:
+                groupBranch ||
                 branchSchema.description !== undefined ||
                 (branchSchema.infoTags?.length ?? 0) > 0,
               id: encodeOpenApiSchemaNodeId(branchNodePath),

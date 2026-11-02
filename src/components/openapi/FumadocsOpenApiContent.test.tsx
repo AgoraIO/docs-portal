@@ -1085,6 +1085,79 @@ describe('FumadocsOpenApiContent', () => {
     expect(examples.getByRole('tabpanel')).toHaveTextContent('curl second');
   });
 
+  it.each(['start_of_speech', 'end_of_speech'])(
+    'keeps %s configuration branches collapsible with their descriptions and examples',
+    async (configuration) => {
+      const document = yaml.load(
+        await readFile(
+          path.resolve('content/openapi/conversational-ai/rest-api.zh-CN.yaml'),
+          'utf8',
+        ),
+      ) as Document;
+      render(
+        <FumadocsOpenApiContent
+          locale="zh-CN"
+          pageProps={{
+            operations: [{ method: 'post', path: '/v2/projects/{appid}/join' }],
+            payload: { bundled: document },
+          }}
+        />,
+      );
+
+      const rootPath = `properties.turn_detection.config.${configuration}.{mode}_config`;
+      const getNode = (fieldPath: string) =>
+        window.document.querySelector<HTMLElement>(
+          `[data-openapi-schema-path=${JSON.stringify(fieldPath)}]`,
+        );
+      const getRow = (fieldPath: string) =>
+        getNode(fieldPath)?.querySelector<HTMLElement>(
+          ':scope > .openapi-schema-field-row',
+        ) as HTMLElement;
+
+      for (const fieldPath of [
+        'properties.turn_detection',
+        'properties.turn_detection.config',
+        `properties.turn_detection.config.${configuration}`,
+        rootPath,
+      ]) {
+        fireEvent.click(
+          within(getRow(fieldPath)).getByRole('button', { name: /^展开 / }),
+        );
+      }
+
+      const branch = getNode(`${rootPath}.vad_config`);
+      expect(branch).not.toBeNull();
+      if (!branch) throw new Error('Missing VAD configuration branch');
+
+      const toggle = within(branch).getByRole('button', {
+        name: '展开 vad_config 属性',
+      });
+      expect(toggle).toHaveAttribute('aria-expanded', 'false');
+      expect(getRow(rootPath)).toHaveTextContent('不可同时传入多个模式配置');
+      expect(getRow(rootPath)).toHaveTextContent('公开接口不支持该字段');
+      expect(getNode(rootPath)).not.toHaveTextContent('oneOf');
+      expect(getNode(rootPath)).not.toHaveTextContent('以下配置任选一种');
+      expect(within(branch).queryByText(/基于 VAD 的对话/)).toBeNull();
+
+      fireEvent.click(toggle);
+
+      expect(toggle).toHaveAttribute('aria-expanded', 'true');
+      expect(within(branch).getByText(/基于 VAD 的对话/)).toBeVisible();
+      await waitFor(() =>
+        expect(branch.querySelector('pre')).toHaveTextContent('"vad_config"'),
+      );
+      expect(
+        getRow(
+          `${rootPath}.${configuration === 'start_of_speech' ? 'interrupt_duration_ms' : 'silence_duration_ms'}`,
+        ),
+      ).toBeVisible();
+
+      fireEvent.click(toggle);
+      expect(toggle).toHaveAttribute('aria-expanded', 'false');
+      expect(within(branch).queryByText(/基于 VAD 的对话/)).toBeNull();
+    },
+  );
+
   it('keeps the Conversational AI join request body readable', async () => {
     render(
       <FumadocsOpenApiContent

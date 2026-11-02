@@ -514,6 +514,7 @@ describe('OpenApiSchema', () => {
     fireEvent.click(
       screen.getByRole('button', { name: 'Expand variant properties' }),
     );
+    fireEvent.click(screen.getByRole('button', { name: 'Expand all' }));
     expect(screen.getByText('one-value')).toBeVisible();
     expect(screen.getByText('any-value')).toBeVisible();
   });
@@ -877,6 +878,7 @@ describe('OpenApiSchema', () => {
     fireEvent.click(
       screen.getByRole('button', { name: 'Expand choice properties' }),
     );
+    fireEvent.click(screen.getByRole('button', { name: 'Expand all' }));
 
     expect(screen.getByText('First branch callout.')).toBeVisible();
     expect(screen.getByText('Second branch callout.')).toBeVisible();
