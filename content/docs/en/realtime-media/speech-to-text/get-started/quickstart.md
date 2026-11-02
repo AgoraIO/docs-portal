@@ -213,9 +213,9 @@ This section contains content that completes the information on this page, or po
 
 ### Demo app and source code
 
-Check out the [demo](https://stt-demo.agora.io) to try out Real-Time STT and evaluate its accuracy and latency.
+To try Real-Time STT and evaluate its accuracy and latency, use the [demo app](https://stt-demo-global.agora.io/).
 
-You can also refer to the [demo code on Github](https://github.com/AgoraIO-Community/Agora-RTT-Demo) to see how captions and transcription are implemented. For more demo code, contact [support@agora.io](mailto:support@agora.io).
+To see how captions and transcription are implemented, refer to the [sample project on GitHub](https://github.com/AgoraIO-Community/Agora-RTT-Demo/tree/release/7.x). This sample is for testing only. Don't use it in production. For more demo code, contact [support@agora.io](mailto:support@agora.io).
 
 ### REST API middleware
 
