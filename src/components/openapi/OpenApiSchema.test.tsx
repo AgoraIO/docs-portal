@@ -866,6 +866,12 @@ describe('OpenApiSchema', () => {
     );
 
     expect(screen.getByText('First branch callout.')).toBeVisible();
+    expect(screen.getByText('Second branch callout.')).not.toBeVisible();
+    fireEvent.mouseDown(screen.getAllByRole('tab')[1], {
+      button: 0,
+      ctrlKey: false,
+    });
+    expect(screen.getByText('First branch callout.')).not.toBeVisible();
     expect(screen.getByText('Second branch callout.')).toBeVisible();
   });
 

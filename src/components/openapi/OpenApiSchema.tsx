@@ -233,7 +233,13 @@ export function OpenApiSchema({
   const rootSchema = generated.refs[generated.$root] as OpenApiSchemaData;
   const rootIsBodyTree =
     client.as === 'body' && rootSchema?.type !== 'primitive';
-  const rootHasContainer = rootIsBodyTree && rootSchema?.type !== 'object';
+  const rootHasContainer =
+    rootIsBodyTree &&
+    rootSchema?.type !== 'object' &&
+    rootSchema?.type !== 'or';
+  const hasChoices = flattenOpenApiSchemaView(schemaView).some(
+    (node) => node.choices?.length,
+  );
 
   if (root === false || (rootIsBodyTree && schemaView.length === 0)) {
     return emptyFallback ?? null;
@@ -265,13 +271,17 @@ export function OpenApiSchema({
             rootMetadata.filter((item) => item.label !== exampleLabel),
           )
         : null}
-      {rootIsBodyTree ? (
+      {rootIsBodyTree || hasChoices ? (
         <OpenApiSchemaTree
           client={client}
           key={navigationKey}
           labels={labels}
           legacyAnchorIdsByFieldPath={legacyAnchorIdsByFieldPath}
-          nodes={schemaView}
+          nodes={
+            rootIsBodyTree
+              ? schemaView
+              : [{ ...rootNode, children: schemaView, rootContainer: true }]
+          }
           onCopyFieldLink={(node) => copyOpenApiSchemaFieldLink(rootId, node)}
           renderRemainingInfoTags={renderRemainingInfoTags}
           revealTarget={revealTarget}
