@@ -292,6 +292,9 @@ export function OpenApiSchema({
         />
       ) : (
         <OpenApiSchemaParameterFields
+          hideRootType={
+            isRecord(root) && root['x-docs-parameter-schema-missing'] === true
+          }
           labels={labels}
           legacyAnchorIdsByFieldPath={legacyAnchorIdsByFieldPath}
           nodes={[
@@ -348,6 +351,7 @@ function renderOpenApiSchemaDetails(
 }
 
 function OpenApiSchemaParameterFields({
+  hideRootType,
   legacyAnchorIdsByFieldPath,
   labels,
   nodes,
@@ -356,6 +360,7 @@ function OpenApiSchemaParameterFields({
   revealTarget,
   rootId,
 }: {
+  hideRootType: boolean;
   legacyAnchorIdsByFieldPath: ReadonlyMap<string, string[]>;
   labels: OpenApiSchemaFieldRowLabels;
   nodes: OpenApiSchemaViewNode[];
@@ -437,6 +442,7 @@ function OpenApiSchemaParameterFields({
           copied={copiedId === node.id}
           domId={stableDomId(rootId, node.id)}
           expanded={false}
+          hideType={hideRootType && node.id === rootId}
           labels={labels}
           key={node.id}
           legacyAnchorIds={legacyAnchorIdsByFieldPath.get(node.path)}
