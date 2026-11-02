@@ -19,6 +19,20 @@ function between(content: string, start: string, end: string) {
   return content.slice(first, last);
 }
 
+function platformPanel(content: string, platform: string) {
+  const first = content.indexOf(`<TabsContent value="${platform}">`);
+  expect(first).toBeGreaterThanOrEqual(0);
+  let depth = 0;
+  for (const match of content
+    .slice(first)
+    .matchAll(/<\/?TabsContent\b[^>]*>/g)) {
+    depth += match[0].startsWith('</') ? -1 : 1;
+    if (depth === 0)
+      return content.slice(first, first + match.index + match[0].length);
+  }
+  throw new Error(`Unclosed platform panel: ${platform}`);
+}
+
 const installationPages = [
   `${aiRoot}/build/harden-and-optimize/audio-setup.mdx`,
   `${aiRoot}/build/shape-the-conversation/interrupt-agent.mdx`,
@@ -226,11 +240,7 @@ describe('ConvoAI source PR 2074 expanded shared content', () => {
         '### 集成组件',
         '### 初始化组件',
       );
-      const section = between(
-        installation,
-        `<TabsContent value="${platform}">`,
-        '</TabsContent>',
-      );
+      const section = platformPanel(installation, platform);
       for (const text of required) expect(section).toContain(text);
       expect(section).toContain('<Card');
     },

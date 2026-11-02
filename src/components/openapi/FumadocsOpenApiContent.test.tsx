@@ -206,6 +206,188 @@ describe('FumadocsOpenApiContent', () => {
     expect(within(panel).queryByText('响应 Body 为空')).not.toBeInTheDocument();
   });
 
+  it('offers both schema-derived response examples for the actual Converter status endpoint', async () => {
+    const document = yaml.load(
+      await readFile(
+        'content/openapi/media-push/media-push.zh-CN.yaml',
+        'utf8',
+      ),
+    ) as Document;
+    const { container } = render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'get',
+              path: '/{region}/v1/projects/{appId}/rtmp-converters/{converterId}',
+            },
+          ],
+          payload: { bundled: document },
+        }}
+      />,
+    );
+    const section = container.querySelector(
+      '.openapi-response-example',
+    ) as HTMLElement;
+    const transcode = await within(section).findByRole('tab', {
+      name: '转码推流',
+    });
+    await waitFor(() =>
+      expect(section.querySelector('pre')?.textContent).toContain(
+        'transcodeOptions',
+      ),
+    );
+    fireEvent.mouseDown(
+      within(section).getByRole('tab', { name: '不转码推流' }),
+      { button: 0, ctrlKey: false },
+    );
+    await waitFor(() => {
+      const data = JSON.parse(
+        section.querySelector('pre')?.textContent ?? '{}',
+      );
+      expect(data.converter.rawOptions).toHaveProperty('rtcChannel');
+      expect(data.converter).not.toHaveProperty('transcodeOptions');
+    });
+    fireEvent.mouseDown(transcode, { button: 0, ctrlKey: false });
+    await waitFor(() =>
+      expect(section.querySelector('pre')?.textContent).toContain(
+        'transcodeOptions',
+      ),
+    );
+    expect(
+      within(section).getByRole('button', { name: '复制文本' }),
+    ).toBeInTheDocument();
+  });
+
+  it.each(['oneOf', 'anyOf'])(
+    'keeps parent fields and referenced %s branches in separate response samples',
+    async (kind) => {
+      const document = {
+        openapi: '3.2.0',
+        info: { title: 'Referenced choices' },
+        paths: {
+          '/choices': {
+            get: {
+              responses: {
+                '200': {
+                  description: 'OK',
+                  content: {
+                    'application/json': {
+                      schema: { $ref: '#/components/schemas/Choice' },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        components: {
+          schemas: {
+            Choice: {
+              type: 'object',
+              properties: {
+                common: { type: 'string', const: 'shared-value' },
+              },
+              [kind]: [
+                { $ref: '#/components/schemas/Alpha' },
+                { $ref: '#/components/schemas/Beta' },
+              ],
+            },
+            Alpha: {
+              title: 'Alpha',
+              type: 'object',
+              properties: { alpha: { type: 'string' } },
+            },
+            Beta: {
+              title: 'Beta',
+              type: 'object',
+              properties: { beta: { type: 'string' } },
+            },
+          },
+        },
+      } as unknown as Document;
+      const { container } = render(
+        <FumadocsOpenApiContent
+          pageProps={{
+            operations: [{ method: 'get', path: '/choices' }],
+            payload: { bundled: document },
+          }}
+        />,
+      );
+      const section = container.querySelector(
+        '.openapi-response-example',
+      ) as HTMLElement;
+      fireEvent.mouseDown(
+        await within(section).findByRole('tab', { name: 'Beta' }),
+        { button: 0, ctrlKey: false },
+      );
+      await waitFor(() => {
+        const data = JSON.parse(
+          section.querySelector('pre')?.textContent ?? '{}',
+        );
+        expect(data.common).toBe('shared-value');
+        expect(data).toHaveProperty('beta');
+        expect(data).not.toHaveProperty('alpha');
+      });
+    },
+  );
+
+  it('prefers an authored response example over schema-derived alternative samples', async () => {
+    const document = {
+      openapi: '3.2.0',
+      info: { title: 'Authored example' },
+      paths: {
+        '/choices': {
+          get: {
+            responses: {
+              '200': {
+                description: 'OK',
+                content: {
+                  'application/json': {
+                    example: { authored: 'keep-me' },
+                    schema: {
+                      oneOf: [
+                        {
+                          type: 'object',
+                          title: 'Alpha',
+                          properties: { alpha: { type: 'string' } },
+                        },
+                        {
+                          type: 'object',
+                          title: 'Beta',
+                          properties: { beta: { type: 'string' } },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    } as unknown as Document;
+    const { container } = render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'get', path: '/choices' }],
+          payload: { bundled: document },
+        }}
+      />,
+    );
+    const section = container.querySelector(
+      '.openapi-response-example',
+    ) as HTMLElement;
+    await waitFor(() =>
+      expect(section.querySelector('pre')?.textContent).toContain('keep-me'),
+    );
+    expect(within(section).queryByRole('tab', { name: 'Alpha' })).toBeNull();
+    expect(
+      JSON.parse(section.querySelector('pre')?.textContent ?? '{}'),
+    ).toEqual({ authored: 'keep-me' });
+  });
+
   it('renders a localized, padded example placeholder for the actual stop-agent response', async () => {
     const document = yaml.load(
       await readFile(
