@@ -29,6 +29,34 @@ const lanes = getOpenApiLanes().filter((lane) =>
 );
 const compact = (text: string) => text.replace(/\s+/g, '');
 
+// These legacy tutorial references must survive source edits as well as rendering.
+// Deriving all expectations from the current YAML would miss deleted sentences.
+const requiredAuthGuides: Record<string, Record<string, string>> = {
+  'agora-analytics-rest': {
+    Authorization:
+      '/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth',
+  },
+  'console-rest': {
+    Authorization:
+      '/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth',
+  },
+  'media-pull-rest': {
+    'Basic Auth': '/zh-CN/realtime-media/media-pull/build/http-basic-auth',
+  },
+  'rtc-rest-zh-cn': {
+    'Basic Auth':
+      '/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth',
+  },
+  'cloud-transcoding-rest-zh-cn': {
+    'Basic Auth': '/zh-CN/realtime-media/transcoding/build/http-auth',
+    'API Key':
+      '/zh-CN/realtime-media/transcoding/build/http-auth#实现-http-hmac-鉴权',
+  },
+  'voip-callkit-rest': {
+    'Basic Auth': '/zh-CN/solutions/voip-call/build/http-basic-auth',
+  },
+};
+
 function resolve(document: RecordValue, raw: unknown): RecordValue {
   const value = raw as RecordValue;
   if (typeof value?.$ref !== 'string' || !value.$ref.startsWith('#/'))
@@ -64,6 +92,20 @@ describe('published Chinese REST parameter coverage', () => {
       const document = yaml.load(
         readFileSync(lane.sourcePath['zh-CN'], 'utf8'),
       ) as RecordValue;
+      const schemes = (document.components as RecordValue)?.securitySchemes as
+        | RecordValue
+        | undefined;
+      for (const [name, href] of Object.entries(
+        requiredAuthGuides[lane.id] ?? {},
+      )) {
+        const scheme = resolve(document, schemes?.[name]);
+        const description =
+          typeof scheme?.description === 'string' ? scheme.description : '';
+        expect(
+          proseLinks(remark().parse(description)),
+          `${lane.id}/security/${name}: required tutorial reference`,
+        ).toContain(href);
+      }
       for (const [path, rawItem] of Object.entries(
         document.paths as RecordValue,
       )) {
@@ -118,8 +160,6 @@ describe('published Chinese REST parameter coverage', () => {
                 expect(text, `${context}: ${part}`).toContain(part);
             }
           }
-          const schemes = (document.components as RecordValue)
-            ?.securitySchemes as RecordValue | undefined;
           const security = (operation.security ??
             document.security ??
             []) as RecordValue[];
