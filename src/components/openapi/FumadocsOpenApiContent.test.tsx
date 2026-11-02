@@ -206,6 +206,120 @@ describe('FumadocsOpenApiContent', () => {
     expect(within(panel).queryByText('响应 Body 为空')).not.toBeInTheDocument();
   });
 
+  it('renders a localized, padded example placeholder for the actual stop-agent response', async () => {
+    const document = yaml.load(
+      await readFile(
+        'content/openapi/conversational-ai/rest-api.zh-CN.yaml',
+        'utf8',
+      ),
+    ) as Document;
+    const { container } = render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/agents/{agentId}/leave',
+            },
+          ],
+          payload: { bundled: document },
+        }}
+      />,
+    );
+    const placeholder = await screen.findByText('未提供响应示例。');
+    expect(placeholder).toHaveClass('px-4', 'py-5', 'text-sm');
+    expect(placeholder.closest('.openapi-response-example')).not.toBeNull();
+    expect(
+      within(
+        container.querySelector('.openapi-response-example') as HTMLElement,
+      ).queryByText('Empty'),
+    ).toBeNull();
+    expect(screen.getByText(/响应包体为空/)).toBeInTheDocument();
+  });
+
+  it.each([
+    ['zh-CN', '未提供响应示例。'],
+    ['en', 'No response example provided.'],
+  ])(
+    'uses a neutral example placeholder without inferring an empty body in %s',
+    async (locale, label) => {
+      const { container } = render(
+        <FumadocsOpenApiContent
+          locale={locale}
+          pageProps={makeMinimalOpenApiPageProps('get')}
+        />,
+      );
+      expect(await screen.findByText(label)).toBeInTheDocument();
+      expect(container).not.toHaveTextContent('响应 Body 为空');
+      expect(container).not.toHaveTextContent('Empty response body');
+    },
+  );
+
+  it('preserves response status selection, named examples, descriptions, and falsy example values', async () => {
+    const pageProps = makeMinimalOpenApiPageProps('get');
+    const bundled = (
+      pageProps as Extract<OpenAPIPageProps, { payload: unknown }>
+    ).payload.bundled;
+    const response = (bundled.paths?.['/method-get']?.get?.responses ??
+      {}) as Record<string, unknown>;
+    response['400'] = {
+      description: 'Invalid request',
+      content: {
+        'application/json': {
+          examples: {
+            first: {
+              summary: 'First example',
+              description: 'First response detail.',
+              value: { error: 0 },
+            },
+            second: {
+              summary: 'Second example',
+              description: 'Second response detail.',
+              value: false,
+            },
+          },
+        },
+      },
+    };
+    const { container } = render(
+      <FumadocsOpenApiContent pageProps={pageProps} />,
+    );
+    await screen.findByText('No response example provided.');
+    const section = container.querySelector(
+      '.openapi-response-example',
+    ) as HTMLElement;
+    fireEvent.mouseDown(within(section).getByRole('tab', { name: '400' }), {
+      button: 0,
+      ctrlKey: false,
+    });
+    expect(
+      await within(section).findByText('First response detail.'),
+    ).toBeVisible();
+    await waitFor(() =>
+      expect(section.querySelector('pre')?.textContent).toContain('"error": 0'),
+    );
+    fireEvent.click(
+      within(section).getByRole('button', { name: 'Second example' }),
+    );
+    expect(
+      await within(section).findByText('Second response detail.'),
+    ).toBeVisible();
+    await waitFor(() =>
+      expect(section.querySelector('pre')?.textContent).toContain('false'),
+    );
+    expect(
+      within(section).getByRole('button', { name: 'Copy Text' }),
+    ).toBeVisible();
+    fireEvent.mouseDown(within(section).getByRole('tab', { name: '200' }), {
+      button: 0,
+      ctrlKey: false,
+    });
+    expect(
+      within(section).getByText('No response example provided.'),
+    ).toBeVisible();
+  });
+
   it('retains schema-less parameters inherited from paths and referenced from components', () => {
     const project = {
       name: 'project',

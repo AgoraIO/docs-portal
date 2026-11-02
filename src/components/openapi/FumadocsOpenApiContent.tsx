@@ -1,4 +1,11 @@
 import { TranslationProvider } from '@fuma-translate/react';
+import {
+  AccordionContent,
+  AccordionHeader,
+  AccordionItem,
+  Accordions,
+  AccordionTrigger,
+} from '@fumadocs/api-docs/components/accordion';
 import { defaultShikiFactory } from 'fumadocs-core/highlight/shiki/full';
 import { useShikiDynamic } from 'fumadocs-core/highlight/shiki/react';
 import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
@@ -17,6 +24,7 @@ import {
   CodeBlockTabsTrigger,
   Pre,
 } from 'fumadocs-ui/components/codeblock';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime';
 import { Check, Clipboard } from 'lucide-react';
@@ -180,6 +188,7 @@ const OpenAPIPage = createOpenAPIPage({
     CodeBlock: ({ code, lang }) => renderOpenApiCodeBlock(lang, code),
   },
   content: {
+    renderResponseTabs: (options) => <OpenApiResponseExamples {...options} />,
     renderAPIExampleLayout: (slots) => (
       <OpenApiRightExamplesLayout
         slots={{
@@ -644,6 +653,71 @@ function OpenApiRightExamplesLayout({
         {slots.responseTabs}
       </OpenApiRightSection>
     </div>
+  );
+}
+
+type OpenApiResponseExamplesProps = Parameters<
+  NonNullable<
+    NonNullable<CreateOpenAPIPageOptions['content']>['renderResponseTabs']
+  >
+>[0];
+
+function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
+  const locale = useContext(OpenApiLocaleContext);
+  const empty = (
+    <p
+      className="m-0 px-4 py-5 text-fd-muted-foreground text-sm"
+      data-openapi-response-example-empty=""
+    >
+      {isZhCnLocale(locale)
+        ? '未提供响应示例。'
+        : 'No response example provided.'}
+    </p>
+  );
+  function renderExample(
+    example: NonNullable<
+      OpenApiResponseExamplesProps['tabs'][number]['examples']
+    >[number],
+  ) {
+    const code = JSON.stringify(example.sample, null, 2);
+    return (
+      <>
+        {example.description
+          ? renderOpenApiMarkdown(example.description)
+          : null}
+        {code === undefined ? empty : renderOpenApiCodeBlock('json', code)}
+      </>
+    );
+  }
+  return (
+    <Tabs
+      groupId="fumadocs_openapi_responses"
+      items={tabs.map((tab) => tab.code)}
+    >
+      {tabs.map(({ code, examples = [] }) => (
+        <Tab key={code} value={code}>
+          {examples.length === 0 ? (
+            empty
+          ) : examples.length === 1 ? (
+            renderExample(examples[0])
+          ) : (
+            <Accordions className="pt-2" defaultValue="0" type="single">
+              {examples.map((example, index) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: Fumadocs supplies an immutable ordered example list without IDs.
+                <AccordionItem key={index} value={String(index)}>
+                  <AccordionHeader>
+                    <AccordionTrigger>{example.label}</AccordionTrigger>
+                  </AccordionHeader>
+                  <AccordionContent className="prose-no-margin">
+                    {renderExample(example)}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordions>
+          )}
+        </Tab>
+      ))}
+    </Tabs>
   );
 }
 
