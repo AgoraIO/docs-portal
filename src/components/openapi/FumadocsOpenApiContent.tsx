@@ -369,12 +369,22 @@ function adaptOpenApiPathItemParameters(value: unknown) {
 
 function adaptOpenApiParameterSchema(value: unknown) {
   if (!isRecord(value) || isReferenceObject(value)) return value;
-  const schema = getRecord(value.schema);
+  // Legacy parameters can have a name and prose without declaring a schema.
+  const schema =
+    getRecord(value.schema) ??
+    (value.schema == null
+      ? { 'x-docs-parameter-schema-missing': true }
+      : undefined);
   if (!schema) return value;
   const callouts = value['x-docs-callouts'];
   const example = value.example ?? getFirstExample(value.examples);
   const deprecated = value.deprecated === true;
-  if (callouts === undefined && example === undefined && !deprecated) {
+  if (
+    value.schema != null &&
+    callouts === undefined &&
+    example === undefined &&
+    !deprecated
+  ) {
     return value;
   }
 

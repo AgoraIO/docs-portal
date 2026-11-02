@@ -26,6 +26,7 @@ export type OpenApiSchemaFieldRowProps = {
   detailsCollapsible?: boolean;
   domId?: string;
   expanded: boolean;
+  hideType?: boolean;
   labels: OpenApiSchemaFieldRowLabels;
   legacyAnchorIds?: string[];
   node: OpenApiSchemaViewNode;
@@ -39,6 +40,7 @@ export function OpenApiSchemaFieldRow({
   detailsCollapsible = false,
   domId,
   expanded,
+  hideType = false,
   labels,
   legacyAnchorIds = [],
   node,
@@ -63,7 +65,7 @@ export function OpenApiSchemaFieldRow({
       >
         {displayName}
       </code>
-      {!isSyntheticVariant && displayType !== displayName ? (
+      {!hideType && !isSyntheticVariant && displayType !== displayName ? (
         <span className="min-w-0 break-words font-mono text-sm text-muted-foreground [overflow-wrap:anywhere]">
           {displayType}
         </span>
