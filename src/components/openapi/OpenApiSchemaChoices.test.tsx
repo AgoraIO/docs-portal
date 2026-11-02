@@ -206,9 +206,6 @@ describe('OpenAPI schema alternative selection', () => {
     expect(screen.getByText('text-value')).toBeVisible();
     choose('Empty');
     expect(screen.getByText('text-value')).not.toBeVisible();
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Expand Empty properties' }),
-    );
     expect(screen.getByText('Empty option description')).toBeVisible();
   });
 

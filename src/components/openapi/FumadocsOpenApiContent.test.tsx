@@ -1562,6 +1562,79 @@ describe('FumadocsOpenApiContent', () => {
     expect(examples.getByRole('tabpanel')).toHaveTextContent('curl second');
   });
 
+  it.each(['start_of_speech', 'end_of_speech'])(
+    'keeps %s branch descriptions, examples, and inherited rules when switching tabs',
+    async (configuration) => {
+      const document = yaml.load(
+        await readFile(
+          path.resolve('content/openapi/conversational-ai/rest-api.zh-CN.yaml'),
+          'utf8',
+        ),
+      ) as Document;
+      render(
+        <FumadocsOpenApiContent
+          locale="zh-CN"
+          pageProps={{
+            operations: [{ method: 'post', path: '/v2/projects/{appid}/join' }],
+            payload: { bundled: document },
+          }}
+        />,
+      );
+
+      const rootPath = `properties.turn_detection.config.${configuration}.{mode}_config`;
+      const getNode = (fieldPath: string) =>
+        window.document.querySelector<HTMLElement>(
+          `[data-openapi-schema-path=${JSON.stringify(fieldPath)}]`,
+        );
+      const getRow = (fieldPath: string) =>
+        getNode(fieldPath)?.querySelector<HTMLElement>(
+          ':scope > .openapi-schema-field-row',
+        ) as HTMLElement;
+
+      for (const fieldPath of [
+        'properties.turn_detection',
+        'properties.turn_detection.config',
+        `properties.turn_detection.config.${configuration}`,
+        rootPath,
+      ]) {
+        fireEvent.click(
+          within(getRow(fieldPath)).getByRole('button', { name: /^展开 / }),
+        );
+      }
+
+      const branch = getNode(`${rootPath}.vad_config`);
+      expect(branch).not.toBeNull();
+      if (!branch) throw new Error('Missing VAD configuration branch');
+
+      const root = getNode(rootPath) as HTMLElement;
+      const choice = within(root).getByRole('tab', { name: 'vad_config' });
+      expect(choice).toHaveAttribute('aria-selected', 'true');
+      expect(getRow(rootPath)).toHaveTextContent('不可同时传入多个模式配置');
+      expect(getRow(rootPath)).toHaveTextContent('公开接口不支持该字段');
+      expect(getNode(rootPath)).not.toHaveTextContent('oneOf');
+      expect(getNode(rootPath)).not.toHaveTextContent('以下配置任选一种');
+      expect(within(branch).getByText(/基于 VAD 的对话/)).toBeVisible();
+      await waitFor(() =>
+        expect(branch.querySelector('pre')).toHaveTextContent('"vad_config"'),
+      );
+      expect(
+        getRow(
+          `${rootPath}.${configuration === 'start_of_speech' ? 'interrupt_duration_ms' : 'silence_duration_ms'}`,
+        ),
+      ).toBeVisible();
+
+      const alternative = within(root)
+        .getAllByRole('tab')
+        .find((tab) => tab !== choice) as HTMLElement;
+      fireEvent.mouseDown(alternative, { button: 0, ctrlKey: false });
+      expect(alternative).toHaveAttribute('aria-selected', 'true');
+      expect(branch).not.toBeVisible();
+      fireEvent.mouseDown(choice, { button: 0, ctrlKey: false });
+      expect(branch).toBeVisible();
+      expect(within(branch).getByText(/基于 VAD 的对话/)).toBeVisible();
+    },
+  );
+
   it('keeps the Conversational AI join request body readable', async () => {
     render(
       <FumadocsOpenApiContent
@@ -1625,6 +1698,18 @@ describe('FumadocsOpenApiContent', () => {
                                   llm: {
                                     additionalProperties: true,
                                     properties: {
+                                      headers: {
+                                        additionalProperties: {
+                                          oneOf: [
+                                            { type: 'string' },
+                                            { type: 'number' },
+                                            { type: 'boolean' },
+                                          ],
+                                        },
+                                        description:
+                                          'Custom headers accept scalar values.',
+                                        type: 'object',
+                                      },
                                       vendor: {
                                         enum: ['openai', 'azure'],
                                         type: 'string',
@@ -3239,8 +3324,8 @@ describe('FumadocsOpenApiContent', () => {
     ).toBeInTheDocument();
     expect(within(pathSection).getAllByText('cn').length).toBeGreaterThan(0);
     expect(within(pathSection).getByText('Default:')).toBeInTheDocument();
-    expect(within(pathSection).getByText('Length:')).toBeInTheDocument();
-    expect(within(pathSection).getByText('Match:')).toBeInTheDocument();
+    expect(within(pathSection).queryByText('Length:')).not.toBeInTheDocument();
+    expect(within(pathSection).queryByText('Match:')).not.toBeInTheDocument();
     expect(within(pathSection).getAllByText('720p').length).toBeGreaterThan(0);
 
     const querySection = screen.getByRole('heading', {

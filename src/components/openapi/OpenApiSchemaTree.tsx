@@ -46,7 +46,8 @@ function getInitialExpandedIds(nodes: OpenApiSchemaViewNode[]) {
 function getExpandableNodeIds(nodes: OpenApiSchemaViewNode[]): string[] {
   return nodes.flatMap((node) => [
     ...((node.children.length > 0 || node.detailsCollapsible) &&
-    !(node.rootContainer && node.schema.type === 'or')
+    !(node.rootContainer && node.schema.type === 'or') &&
+    !(node.branchContainer && node.choices?.length)
       ? [node.id]
       : []),
     ...getExpandableNodeIds(node.children),
@@ -64,6 +65,7 @@ function getOpenApiSchemaNodeIdentity(node: OpenApiSchemaViewNode): unknown[] {
     node.$type,
     node.name,
     node.variant,
+    node.branchContainer,
     node.choices?.map((choice) => [
       choice.id,
       choice.value,
@@ -105,7 +107,6 @@ function getOpenApiSchemaIdentity(schema: OpenApiSchemaViewNode['schema']) {
 export type OpenApiSchemaTreeLabels = OpenApiSchemaFieldRowLabels & {
   collapseAll: string;
   expandAll: string;
-  fields?: string;
 };
 
 export type OpenApiSchemaRevealTarget = {
@@ -402,6 +403,22 @@ export function OpenApiSchemaTree({
           </div>,
         ];
       }
+      if (node.branchContainer && choiceDepth > 0) {
+        return [
+          <div
+            data-openapi-schema-node=""
+            data-openapi-schema-node-id={node.id}
+            data-openapi-schema-path={node.path}
+            key={node.id}
+          >
+            <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
+              {node.schema.description}
+              <OpenApiSchemaMetadata items={renderRemainingInfoTags(node)} />
+            </div>
+            {renderNodes(node.children, nextSeen, 0, active)}
+          </div>,
+        ];
+      }
       const hasChildren = node.children.length > 0;
       const expandable = hasChildren || node.detailsCollapsible === true;
       const expanded = expandable && expandedIds.has(node.id);
@@ -512,10 +529,7 @@ export function OpenApiSchemaTree({
       ref={treeRef}
     >
       {expandableNodeIds.length > 0 ? (
-        <div className="openapi-schema-toolbar mb-1 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-fd-border border-b pb-2">
-          <span className="font-medium text-fd-muted-foreground text-sm">
-            {labels.fields ?? labels.properties}
-          </span>
+        <div className="openapi-schema-toolbar mb-1 flex items-center justify-end border-fd-border border-b pb-2">
           <Button
             aria-label={allExpanded ? labels.collapseAll : labels.expandAll}
             className="min-h-11 sm:min-h-9"
