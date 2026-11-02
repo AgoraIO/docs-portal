@@ -130,7 +130,7 @@ paths:
                               height: 480
                               lowBitrateHighQuality: false
       responses:
-        '200':
+        2XX:
           description: 如果状态码为 2XX，则请求成功。
           content:
             application/json:
@@ -371,7 +371,7 @@ paths:
                               width: 960
                               height: 480
       responses:
-        '200':
+        2XX:
           $ref: '#/components/responses/create-success'
         非 2XX:
           $ref: '#/components/responses/failure-with-message'
@@ -398,7 +398,7 @@ paths:
       - $ref: '#/components/parameters/taskId'
       - $ref: '#/components/parameters/appId'
       responses:
-        '200':
+        2XX:
           $ref: '#/components/responses/query-success'
         非 2XX:
           $ref: '#/components/responses/failure-with-message'
@@ -523,7 +523,7 @@ paths:
                               height: 480
                               lowBitrateHighQuality: false
       responses:
-        '200':
+        2XX:
           description: 如果状态码为 2XX，则请求成功。包体为空。
           headers:
             X-Request-ID:
@@ -572,7 +572,7 @@ paths:
       - $ref: '#/components/parameters/appId'
       - $ref: '#/components/parameters/builderToken2'
       responses:
-        '200':
+        2XX:
           $ref: '#/components/responses/delete-success'
         非 2XX:
           $ref: '#/components/responses/failure-with-message'
