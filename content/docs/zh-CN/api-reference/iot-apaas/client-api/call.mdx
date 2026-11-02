@@ -2328,19 +2328,19 @@ public class RtcNetworkStatus : NSObject{
 
 该方法适用于用户已经自行实现第三方账号管理系统的情况。声网不会保存用户名和密码，用户需要自行处理保存逻辑。
 
-#### 方法原型
+<h4 id="方法原型" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 (property) AccountManager.registerAccount: (username: any, password: any) => Promise<any>
 ```
 
-#### 示例代码
+<h4 id="示例代码" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 CallKitSDK.getAccountManager().registerAccount(username, password)
 ```
 
-#### 参数
+<h4 id="参数" data-toc-hidden="true" className="scroll-m-28">参数</h4>
 
 该方法参数为
 
@@ -2356,7 +2356,7 @@ CallKitSDK.getAccountManager().registerAccount(username, password)
   - 26 个大写英文字母 A-Z
   - 26 个小写英文字母 a-z
 
-#### 返回值
+<h4 id="返回值" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法返回值为 `Promise<any>`。
 
@@ -2367,19 +2367,19 @@ CallKitSDK.getAccountManager().registerAccount(username, password)
 
 该方法需在 [registerAccount](#registeraccount) 之后调用。该方法中设置的 `username` 和 `password` 参数需与 `registerAccount` 中的对应参数保持一致，否则无法登陆。
 
-#### 方法原型
+<h4 id="方法原型-1" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 function initSdk(config: any, username: any, password: any): Promise<void>
 ```
 
-#### 示例代码
+<h4 id="示例代码-1" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 CallKitSDK.getAccountManager().initSdk(config, username, password)
 ```
 
-#### 参数
+<h4 id="参数-1" data-toc-hidden="true" className="scroll-m-28">参数</h4>
 
 该方法参数为
 
@@ -2401,7 +2401,7 @@ CallKitSDK.getAccountManager().initSdk(config, username, password)
   - 26 个大写英文字母 A-Z
   - 26 个小写英文字母 a-z
 
-#### 返回值
+<h4 id="返回值-1" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法返回值为 `Promise<void>`。
 
@@ -2410,19 +2410,19 @@ CallKitSDK.getAccountManager().initSdk(config, username, password)
 
 退出登陆用户账号并销毁 SDK。
 
-#### 方法原型
+<h4 id="方法原型-2" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 function destroySdk(): void
 ```
 
-#### 示例代码
+<h4 id="示例代码-2" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 CallKitSDK.getAccountManager().destroySdk();
 ```
 
-#### 返回值
+<h4 id="返回值-2" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法返回值为 `void`。
 
@@ -2432,19 +2432,19 @@ CallKitSDK.getAccountManager().destroySdk();
 
 获取缓存中当前登录的用户信息。
 
-#### 方法原型
+<h4 id="方法原型-3" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 function getUserData()
 ```
 
-#### 示例代码
+<h4 id="示例代码-3" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 const userData = CallkitSDK.getInstanceManager().getUserData()
 ```
 
-#### 返回值
+<h4 id="返回值-3" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法返回一个用户信息的 Object，其中包含如下字段：
 
@@ -2457,13 +2457,13 @@ const userData = CallkitSDK.getInstanceManager().getUserData()
 
 发布音视频流。
 
-#### 方法原型
+<h4 id="方法原型-4" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 function userPublishStream()
 ```
 
-#### 示例代码
+<h4 id="示例代码-4" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 CallKitSDK.getInstanceManager().userPublishStream().then(
@@ -2474,7 +2474,7 @@ CallKitSDK.getInstanceManager().userPublishStream().then(
     })
 ```
 
-#### 返回值
+<h4 id="返回值-4" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法返回一个 `Promise` 对象，包含如下参数：
 
@@ -2485,13 +2485,13 @@ CallKitSDK.getInstanceManager().userPublishStream().then(
 
 发出呼叫邀请。
 
-#### 方法原型
+<h4 id="方法原型-5" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 async function callDevice(deviceMac, msg) 
 ```
 
-#### 示例代码
+<h4 id="示例代码-5" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 CallKitSDK.getInstanceManager().callDevice({
@@ -2504,14 +2504,14 @@ CallKitSDK.getInstanceManager().callDevice({
 })
 ```
 
-#### 参数
+<h4 id="参数-2" data-toc-hidden="true" className="scroll-m-28">参数</h4>
 
 该方法参数为包含了被叫端设备信息的 Object 对象，包含如下字段：
 
 - `deviceMac`: 被叫设备端的 ID，数据类型为 String。
 - `msg`: 发送给被叫设备端的呼叫邀请消息，数据类型为 String。
 
-#### 返回值
+<h4 id="返回值-5" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法返回值为 `Promise<void>`。
 
@@ -2520,13 +2520,13 @@ CallKitSDK.getInstanceManager().callDevice({
 
 接听来电。
 
-#### 方法原型
+<h4 id="方法原型-6" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 async function answerDevice()
 ```
 
-#### 示例代码
+<h4 id="示例代码-6" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 CallKitSDK.getInstanceManager().answerDevice().then((res) => {
@@ -2536,7 +2536,7 @@ CallKitSDK.getInstanceManager().answerDevice().then((res) => {
 })
 ```
 
-#### 返回值
+<h4 id="返回值-6" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法返回值为 `Promise<void>`。
 
@@ -2545,13 +2545,13 @@ CallKitSDK.getInstanceManager().answerDevice().then((res) => {
 
 挂断来电。
 
-#### 方法原型
+<h4 id="方法原型-7" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 async function hangupDevice()
 ```
 
-#### 示例代码
+<h4 id="示例代码-7" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 CallKitSDK.getInstanceManager().hangupDevice().then((res) => {
@@ -2561,7 +2561,7 @@ CallKitSDK.getInstanceManager().hangupDevice().then((res) => {
 })
 ```
 
-#### 返回值
+<h4 id="返回值-7" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法返回值为 `Promise<void>`。
 
@@ -2572,19 +2572,19 @@ CallKitSDK.getInstanceManager().hangupDevice().then((res) => {
 
 该方法需要在加入频道后调用。
 
-#### 方法原型
+<h4 id="方法原型-8" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 (property) CallkitManager.muteLocal: (target: any, isMuted: any) => void
 ```
 
-#### 示例代码
+<h4 id="示例代码-8" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 CallKitSDK.getCallkitManager().muteLocal('video', true);
 ```
 
-#### 参数
+<h4 id="参数-3" data-toc-hidden="true" className="scroll-m-28">参数</h4>
 
 该方法参数为
 
@@ -2599,7 +2599,7 @@ CallKitSDK.getCallkitManager().muteLocal('video', true);
   - `true`：停止发送
   - `false`：恢复发送
 
-#### 返回值
+<h4 id="返回值-8" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法返回值为 `void`。
 
@@ -2610,26 +2610,26 @@ CallKitSDK.getCallkitManager().muteLocal('video', true);
 
 SDK 默认使用 G722 编码格式，如需修改音频编码格式，你可以调用该方法。
 
-#### 方法原型
+<h4 id="方法原型-9" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 (property) CallkitManager.setAudioCodec: (audioCodec: any) => void
 ```
 
-#### 示例代码
+<h4 id="示例代码-9" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 CallKitSDK.getCallkitManager().setAudioCodec(e.detail.value);
 ```
 
-#### 参数
+<h4 id="参数-4" data-toc-hidden="true" className="scroll-m-28">参数</h4>
 
 该方法参数为 `audioCodec`，表示音频编码属性。数据类型为 String。支持的字符如下：
 
 - `g711u`：G711U
 - `g722`：G722
 
-#### 返回值
+<h4 id="返回值-9" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法返回值为 `void`。
 
@@ -2640,19 +2640,19 @@ CallKitSDK.getCallkitManager().setAudioCodec(e.detail.value);
 
 该方法可以获取 SDK 当前设置的音频编码属性。
 
-#### 方法原型
+<h4 id="方法原型-10" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 (property) CallkitManager.getAudioCodec: () => "" | "g711u" | "g722"
 ```
 
-#### 示例代码
+<h4 id="示例代码-10" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 const currentAudioCodec = CallKitSDK.getCallkitManager().getAudioCodec();
 ```
 
-#### 返回值
+<h4 id="返回值-10" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法返回值为 SDK 当前设置的音频编码属性：
 
@@ -2665,13 +2665,13 @@ const currentAudioCodec = CallKitSDK.getCallkitManager().getAudioCodec();
 
 接收到对端用户发起的呼叫邀请时，SDK 会触发该回调。
 
-#### 方法原型
+<h4 id="方法原型-11" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 function peerRequestEventCallback(callback)
 ```
 
-#### 示例代码
+<h4 id="示例代码-11" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 onLoad: function() {
@@ -2685,13 +2685,13 @@ onUnload: function() {
 }
 ```
 
-#### 参数
+<h4 id="参数-5" data-toc-hidden="true" className="scroll-m-28">参数</h4>
 
 该方法参数为一个 `callback` 对象 `function<event>`，其中 `event` 对象为呼叫时必需的参数，包含：
 
 -  `attachMsg`，即对端发起呼叫邀请时发出的消息。
 
-#### 返回值
+<h4 id="返回值-11" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法会返回一个同步的 `peerRequestEventCallbackUnsubscribe` 函数，用于取消监听 `peerRequestEventCallback` 事件。当小程序退出、页面被卸载，或者不想再监听该事件时，可以调用该方法。
 
@@ -2700,13 +2700,13 @@ onUnload: function() {
 
 接收到对端用户发布的音视频流时，SDK 会触发该回调。
 
-#### 方法原型
+<h4 id="方法原型-12" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 function peerStreamAddedEventCallback(callback)
 ```
 
-#### 示例代码
+<h4 id="示例代码-12" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 onLoad: function() {
@@ -2720,11 +2720,11 @@ onUnload: function() {
 }
 ```
 
-#### 参数
+<h4 id="参数-6" data-toc-hidden="true" className="scroll-m-28">参数</h4>
 
 该方法参数为一个 `callback` 对象 `function<playUrl>`，其中 `playUrl` 为用于音视频流下行播放的 URL 地址。
 
-#### 返回值
+<h4 id="返回值-12" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法会返回一个同步的 `peerStreamAddedEventCallbackUnsubscribe` 函数，用于取消监听 `peerStreamAddedEventCallback` 事件。当小程序退出、页面被卸载，或者不想再监听该事件时，可以调用该方法。
 
@@ -2733,13 +2733,13 @@ onUnload: function() {
 
 对端用户接听发出的呼叫邀请时，SDK 会触发该回调。
 
-#### 方法原型
+<h4 id="方法原型-13" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 function peerAnswerEventCallback(callback)
 ```
 
-#### 示例代码
+<h4 id="示例代码-13" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 onLoad: function() {
@@ -2753,11 +2753,11 @@ onUnload: function() {
 }
 ```
 
-#### 参数
+<h4 id="参数-7" data-toc-hidden="true" className="scroll-m-28">参数</h4>
 
 该方法参数为一个 `callback` 对象 `function<void>`。
 
-#### 返回值
+<h4 id="返回值-13" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法会返回一个同步的 `peerAnswerEventCallbackUnsubscribe` 函数，用于取消监听 `peerAnswerEventCallback` 事件。当小程序退出、页面被卸载，或者不想再监听该事件时，可以调用该方法。
 
@@ -2766,13 +2766,13 @@ onUnload: function() {
 
 对端用户挂断电话时，SDK 会触发该回调。
 
-#### 方法原型
+<h4 id="方法原型-14" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 function peerHangupEventCallback(callback)
 ```
 
-#### 示例代码
+<h4 id="示例代码-14" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 onLoad: function() {
@@ -2786,11 +2786,11 @@ onUnload: function() {
 }
 ```
 
-#### 参数
+<h4 id="参数-8" data-toc-hidden="true" className="scroll-m-28">参数</h4>
 
 该方法参数为一个 `callback` 对象 `function<void>`。
 
-#### 返回值
+<h4 id="返回值-14" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法会返回一个同步的 `peerHangupEventCallbackUnsubscribe` 函数，用于取消监听 `peerHangupEventCallback` 事件。当小程序退出、页面被卸载，或者不想再监听该事件时，可以调用该方法。
 
@@ -2799,13 +2799,13 @@ onUnload: function() {
 
 对端用户占线时，SDK 会触发该回调。
 
-#### 方法原型
+<h4 id="方法原型-15" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 function peerBusyEventCallback(callback)
 ```
 
-#### 示例代码
+<h4 id="示例代码-15" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 onLoad: function() {
@@ -2819,11 +2819,11 @@ onUnload: function() {
 }
 ```
 
-#### 参数
+<h4 id="参数-9" data-toc-hidden="true" className="scroll-m-28">参数</h4>
 
 该方法参数为一个 `callback` 对象 `function<void>`。
 
-#### 返回值
+<h4 id="返回值-15" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法会返回一个同步的 `peerBusyEventCallbackUnsubscribe` 函数，用于取消监听 `peerBusyEventCallback` 事件。当小程序退出、页面被卸载，或者不想再监听该事件时，可以调用该方法。
 
@@ -2832,13 +2832,13 @@ onUnload: function() {
 
 MQTT 连接状态或用户登录状态发生改变时，SDK 会触发该回调。你需要提醒用户退出登录。
 
-#### 方法原型
+<h4 id="方法原型-16" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 function userSessionEndEventCallback(callback)
 ```
 
-#### 示例代码
+<h4 id="示例代码-16" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 onLoad: function() {
@@ -2852,11 +2852,11 @@ onUnload: function() {
 }
 ```
 
-#### 参数
+<h4 id="参数-10" data-toc-hidden="true" className="scroll-m-28">参数</h4>
 
 该方法参数为一个 `callback` 对象 `function<void>`。
 
-#### 返回值
+<h4 id="返回值-16" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法会返回一个同步的 `userSessionEndEventCallbackUnsubscribe` 函数，用于取消监听 `userSessionEndEventCallback` 事件。当小程序退出、页面被卸载，或者不想再监听该事件时，可以调用该方法。
 
@@ -2865,13 +2865,13 @@ onUnload: function() {
 
 重连 MQTT 时，SDK 会触发该回调。
 
-#### 方法原型
+<h4 id="方法原型-17" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 function mqttReconnectedEvent(callback: any): () => void
 ```
 
-#### 示例代码
+<h4 id="示例代码-17" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 CallKitSDK.getCallkitManager().mqttReconnectedEvent(() => {
@@ -2879,11 +2879,11 @@ CallKitSDK.getCallkitManager().mqttReconnectedEvent(() => {
     })
 ```
 
-#### 参数
+<h4 id="参数-11" data-toc-hidden="true" className="scroll-m-28">参数</h4>
 
 该方法参数为一个 `callback` 对象 `function<void>`。
 
-#### 返回值
+<h4 id="返回值-17" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法返回值为 `void`。
 
@@ -2892,13 +2892,13 @@ CallKitSDK.getCallkitManager().mqttReconnectedEvent(() => {
 
 与 MQTT 断开连接时，SDK 会触发该回调。
 
-#### 方法原型
+<h4 id="方法原型-18" data-toc-hidden="true" className="scroll-m-28">方法原型</h4>
 
 ```javascript
 function mqttReconnectedEvent(callback: any): () => void
 ```
 
-#### 示例代码
+<h4 id="示例代码-18" data-toc-hidden="true" className="scroll-m-28">示例代码</h4>
 
 ```javascript
 CallKitSDK.getCallkitManager().mqttDisconnectedEvent(() => {
@@ -2906,11 +2906,11 @@ CallKitSDK.getCallkitManager().mqttDisconnectedEvent(() => {
     })
 ```
 
-#### 参数
+<h4 id="参数-12" data-toc-hidden="true" className="scroll-m-28">参数</h4>
 
 该方法参数为一个 `callback` 对象 `function<void>`。
 
-#### 返回值
+<h4 id="返回值-18" data-toc-hidden="true" className="scroll-m-28">返回值</h4>
 
 该方法返回值为 `void`。
 

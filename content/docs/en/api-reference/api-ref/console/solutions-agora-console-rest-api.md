@@ -1,4 +1,5 @@
 ---
+tocMaxDepth: 3
 title: "Agora Console"
 description: "Interact with Agora Console using the REST API."
 ---

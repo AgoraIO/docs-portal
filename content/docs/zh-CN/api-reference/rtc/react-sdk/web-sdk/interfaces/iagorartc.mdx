@@ -342,7 +342,7 @@ onAudioAutoplayFailed: function
 
 音频轨道自动播放失败回调。
 
-### deprecated
+#### deprecated
 
 自 4.6.0 起废弃，请改用 [onAutoplayFailed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#onautoplayfailed)。
 
@@ -948,21 +948,11 @@ Promise&lt;[IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
 
 ### createScreenVideoTrack
 
+#### createScreenVideoTrack [1/3]
+
 <ApiSignature>
 
 createScreenVideoTrack(config: [ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig), withAudio: "enable"): Promise&lt;[[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack), [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack)]&gt;
-
-</ApiSignature>
-
-<ApiSignature>
-
-createScreenVideoTrack(config: [ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig), withAudio: "disable"): Promise&lt;[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack)&gt;
-
-</ApiSignature>
-
-<ApiSignature>
-
-createScreenVideoTrack(config: [ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig), withAudio?: "enable" | "disable" | "auto"): Promise&lt;[[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack), [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack)] | [ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack)&gt;
 
 </ApiSignature>
 
@@ -1018,6 +1008,14 @@ Promise&lt;[[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interf
 
 </ApiReturns>
 
+#### createScreenVideoTrack [2/3]
+
+<ApiSignature>
+
+createScreenVideoTrack(config: [ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig), withAudio: "disable"): Promise&lt;[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack)&gt;
+
+</ApiSignature>
+
 创建用于屏幕共享的视频轨道。
 
 <ParameterList title="Parameters">
@@ -1069,6 +1067,14 @@ Promise&lt;[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfa
   - 如果用户没有勾选**分享音频**，只返回屏幕共享视频轨道。
 
 </ApiReturns>
+
+#### createScreenVideoTrack [3/3]
+
+<ApiSignature>
+
+createScreenVideoTrack(config: [ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/screenvideotrackinitconfig), withAudio?: "enable" | "disable" | "auto"): Promise&lt;[[ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack), [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack)] | [ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack)&gt;
+
+</ApiSignature>
 
 创建用于屏幕共享的视频轨道。
 
@@ -1740,39 +1746,11 @@ void
 
 ### on
 
+#### on [1/6]
+
 <ApiSignature>
 
 on(event: "camera-changed", listener: typeof event_camera_changed): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "microphone-changed", listener: typeof event_microphone_changed): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "playback-device-changed", listener: typeof event_playback_device_changed): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "autoplay-failed", listener: typeof event_autoplay_failed): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "security-policy-violation", listener: typeof event_security_policy_violation): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "audio-context-state-changed", listener: typeof event_audio_context_state_changed): void
 
 </ApiSignature>
 
@@ -1805,6 +1783,14 @@ void
 
 </ApiReturns>
 
+#### on [2/6]
+
+<ApiSignature>
+
+on(event: "microphone-changed", listener: typeof event_microphone_changed): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 :::info[自从]
@@ -1833,6 +1819,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [3/6]
+
+<ApiSignature>
+
+on(event: "playback-device-changed", listener: typeof event_playback_device_changed): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -1863,6 +1857,14 @@ void
 
 </ApiReturns>
 
+#### on [4/6]
+
+<ApiSignature>
+
+on(event: "autoplay-failed", listener: typeof event_autoplay_failed): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 :::info[自从]
@@ -1892,6 +1894,14 @@ void
 
 </ApiReturns>
 
+#### on [5/6]
+
+<ApiSignature>
+
+on(event: "security-policy-violation", listener: typeof event_security_policy_violation): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 :::info[自从]
@@ -1920,6 +1930,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [6/6]
+
+<ApiSignature>
+
+on(event: "audio-context-state-changed", listener: typeof event_audio_context_state_changed): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 

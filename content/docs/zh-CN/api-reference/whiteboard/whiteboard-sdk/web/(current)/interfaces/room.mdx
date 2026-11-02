@@ -52,7 +52,7 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 回调函数。你可以通过如下方式设置回调函数：
 
-### example
+#### example
 
 ```ts
 // 监听到 onSliceChanged 回调
@@ -199,7 +199,7 @@ disableSerialization: boolean
 - `copy`
 - `paste`
 
-### warning
+#### warning
 
 如果要设置 `disableSerialization(false)`，必须确保同一房间内所有用户使用的 SDK 满足以下版本要求，否则会导致 app 客户端崩溃：
 
@@ -407,7 +407,7 @@ useNativeClipboard: boolean
 - `true`：使用原生剪贴板。白板快捷键，即 \{@link Hotkeys HotKeys\} 里的复制和粘贴将失效，改为使用原生的 `copy` 和 `paste` 事件。
 - `false`：（默认）不使用原生剪贴板。
 
-### note
+#### note
 
 此功能需要浏览器支持以及用户授予剪贴板权限，否则将自动回退到虚拟剪贴板实现。
 
@@ -443,15 +443,11 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 ### addMagixEventListener
 
+#### addMagixEventListener [1/2]
+
 <ApiSignature>
 
 addMagixEventListener(event: string, listener: [EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener), options?: [MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-addMagixEventListener(event: string, listener: [EventsListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventslistener), fireInterval: number): void
 
 </ApiSignature>
 
@@ -507,6 +503,14 @@ void
 
 </ApiReturns>
 
+#### addMagixEventListener [2/2]
+
+<ApiSignature>
+
+addMagixEventListener(event: string, listener: [EventsListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventslistener), fireInterval: number): void
+
+</ApiSignature>
+
 Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer).[addMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#addmagixeventlistener)
 
 - Defined in [index-zh.d.ts\:1841](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1841)
@@ -519,7 +523,7 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 对于同名的自定义事件，SDK 仅支持触发一个回调。
 
-### example
+#### example
 
 ```ts
 function listener(events) {
@@ -893,7 +897,7 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 成功创建监听器对象后，当指定场景目录下的场景、子场景目录发生变化时，SDK 会触发你在 [ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks) 中实现的回调。
  当不再需要使用已创建的监听器时，需要调用 [dispose](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode#dispose) 来释放该监听器对象。
 
-### note
+#### note
 
 - 该方法需要在加入白板房间后调用。
 - 对于每个场景目录，仅支持创建一个监听器对象。如果需要创建新的监听器对象，必须先调用 `dispose` 释放已创建的监听器对象。
@@ -1192,7 +1196,7 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 生成特定场景的截图。
 
-### deprecated
+#### deprecated
 
 该方法已废弃，请使用 [screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#screenshottocanvasasync) 方法。
 
@@ -2393,7 +2397,7 @@ Inherited from [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/in
 
 等待目标场景的图片加载完成后生成屏幕快照，写入指定的 `CanvasRenderingContext2D` 对象中。
 
-### note
+#### note
 
 - 该功能处于实验阶段。
 - 如果目标场景的图片无法完成加载，则该函数无法返回屏幕快照，你需要自行处理超时逻辑。
@@ -2511,7 +2515,7 @@ setGlobalState(modifyState: Partial&lt;[GlobalState](/zh-CN/api-reference/whiteb
 
 你可以通过如下方法修改该属性：
 
-### example
+#### example
 
 ```ts
 room.setGlobalState({
@@ -2521,7 +2525,7 @@ room.setGlobalState({
 
 如果要删除该字段，可以将它设为 `undefined`：
 
-### example
+#### example
 
 ```ts
 room.setGlobalState({
@@ -2573,7 +2577,7 @@ setMemberState(modifyState: Partial&lt;[MemberState](/zh-CN/api-reference/whiteb
 
 你可以通过如下方法修改该字段：
 
-### example
+#### example
 
 ```ts
 room.setMemberState({
@@ -2583,7 +2587,7 @@ room.setMemberState({
 
 如果要删除该字段，可以将它设为 `undefined`：
 
-### example
+#### example
 
 ```ts
 room.setMemberState({

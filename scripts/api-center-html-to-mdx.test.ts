@@ -569,6 +569,54 @@ describe('API Center shared HTML to MDX converter', () => {
     );
   });
 
+  it('keeps each TypeDoc overload with its own description, parameters and return', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Client</h1><h3 id="run">run</h3>
+        <ul class="tsd-signatures"><li>run(mode: "audio"): Audio</li><li>run(mode: "video"): Video</li></ul>
+        <ul class="tsd-descriptions">
+          <li class="tsd-description"><p>Audio description.</p><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>mode: "audio"</h5><p>Audio input.</p></li></ul><h4 class="tsd-returns-title">Returns Audio</h4><p>Audio output.</p></li>
+          <li class="tsd-description"><p>Video description.</p><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>mode: "video"</h5><p>Video input.</p></li></ul><h4 class="tsd-returns-title">Returns Video</h4><p>Video output.</p></li>
+        </ul></article>`,
+      sourceUrl: 'https://example.com/client.html',
+      sourcePath: 'client.html',
+    });
+    const first = result.body
+      .split('#### run [1/2]')[1]
+      ?.split('#### run [2/2]')[0];
+    const second = result.body.split('#### run [2/2]')[1];
+    expect(first).toContain('run(mode: "audio"): Audio');
+    expect(first).toContain('Audio description.');
+    expect(first).toContain('Audio input.');
+    expect(first).toContain('Audio output.');
+    expect(first).not.toContain('Video');
+    expect(second).toContain('run(mode: "video"): Video');
+    expect(second).toContain('Video description.');
+    expect(second).toContain('Video input.');
+    expect(second).toContain('Video output.');
+    expect(second).not.toContain('Audio');
+    expect(result.body.match(/<ApiSignature>/g)).toHaveLength(2);
+    expect(result.body.match(/<ApiReturns>/g)).toHaveLength(2);
+    expect(result.body).toContain('<a id="run"></a>');
+    await expect(compileGeneratedMdx(result.body)).resolves.toBeDefined();
+  });
+
+  it('flags ambiguous TypeDoc overloads without guessing a description pairing', async () => {
+    const result = await convertHtmlToMdx({
+      html: '<article><h1>Client</h1><ul class="tsd-signatures"><li>run(): Audio</li><li>run(): Video</li></ul><ul class="tsd-descriptions"><li class="tsd-description"><p>Shared description.</p></li></ul></article>',
+      sourceUrl: 'https://example.com/client.html',
+      sourcePath: 'client.html',
+    });
+    expect(result.warnings).toContainEqual(
+      expect.objectContaining({
+        code: 'unsupported-html-structure',
+        message: expect.stringContaining('counts differ'),
+      }),
+    );
+    expect(result.body.match(/<ApiSignature>/g)).toHaveLength(2);
+    expect(result.body).toContain('Shared description.');
+    expect(result.body).not.toContain('[1/2]');
+  });
+
   it('renders Oxygen parameter definition lists as structured MDX fields', async () => {
     const result = await convertHtmlToMdx({
       html: `<article><h1>Channel relay</h1><section id="set-destination__parameters"><h2>参数</h2>
@@ -785,6 +833,32 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(compiled).not.toContain('_components.ul');
   });
 
+  it('nests TypeDoc comment tags below member headings without changing ordinary definitions', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Client</h1>
+        <section class="tsd-member"><h3>connect</h3>
+          <dl class="tsd-comment-tags">
+            <dt>note</dt><dd>Keep the token valid.</dd>
+            <dt>compatibility</dt><dd>Available on all supported clients.</dd>
+          </dl>
+        </section>
+        <dl><dt>Service</dt><dd>A normal API definition.</dd></dl>
+      </article>`,
+      sourceUrl: 'https://doc.shengwang.cn/api-ref/rtc/web/classes/client',
+      sourcePath: 'html-docs/rtc/Web/classes/Client.html',
+    });
+
+    expect(result.body).toContain('### connect');
+    expect(result.body).toContain('#### note\n\nKeep the token valid.');
+    expect(result.body).toContain(
+      '#### compatibility\n\nAvailable on all supported clients.',
+    );
+    expect(result.body).toContain('### Service\n\nA normal API definition.');
+    expect(await compileGeneratedMdx(result.body)).toContain(
+      'Keep the token valid.',
+    );
+  });
+
   it('renders Oxygen, Doxygen, and TypeDoc since definitions as info callouts', async () => {
     const result = await convertHtmlToMdx({
       html: `<article><h1>API</h1>
@@ -811,7 +885,7 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).toContain(
       ':::info[自从]\n*4.17.1*\n\nTypeDoc details.\n:::',
     );
-    expect(result.body).toContain('### deprecated\n\nUse the replacement.');
+    expect(result.body).toContain('#### deprecated\n\nUse the replacement.');
     expect(result.body).toContain(
       '<ApiReturnType>\n\n[Replacement](/zh-CN/api-reference/rtc/electron/replacement)\n\n</ApiReturnType>',
     );

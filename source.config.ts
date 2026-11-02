@@ -13,6 +13,7 @@ import {
 import { createScopedDocsFiles } from './src/lib/docs-dev-scope';
 import { docsMetaSchema } from './src/lib/docs-meta-schema';
 import { directiveCalloutTypes } from './src/lib/mdx/directive-callouts';
+import { remarkLiteralInlineDirectives } from './src/lib/mdx/remark-literal-inline-directives';
 import { remarkNormalizeLegacyHeadingAnchors } from './src/lib/mdx/remark-normalize-legacy-heading-anchors';
 import { remarkOmitMdxComments } from './src/lib/mdx/remark-omit-mdx-comments';
 import { remarkTableSlots } from './src/lib/mdx/remark-table-slots';
@@ -121,6 +122,7 @@ export const docs = defineDocs({
       remarkPlugins: (plugins) => [
         remarkOmitMdxComments,
         remarkDirective,
+        remarkLiteralInlineDirectives,
         [
           remarkDirectiveAdmonition,
           {

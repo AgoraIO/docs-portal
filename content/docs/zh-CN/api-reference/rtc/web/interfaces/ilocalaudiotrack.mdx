@@ -264,7 +264,7 @@ Overrides [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack).[ge
 
 获取本地音频轨道的质量相关信息。
 
-### deprecated
+#### deprecated
 
 自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getlocalaudiostats)。
 
@@ -399,21 +399,11 @@ void
 
 ### on
 
+#### on [1/3]
+
 <ApiSignature>
 
 on(event: "track-updated", listener: typeof event_track_updated): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "track-ended", listener: typeof event_track_ended): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "transceiver-updated", listener: typeof event_transceiver_updated): void
 
 </ApiSignature>
 
@@ -444,6 +434,14 @@ void
 
 </ApiReturns>
 
+#### on [2/3]
+
+<ApiSignature>
+
+on(event: "track-ended", listener: typeof event_track_ended): void
+
+</ApiSignature>
+
 Inherited from [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
 
 Overrides EventEmitter.on
@@ -470,6 +468,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [3/3]
+
+<ApiSignature>
+
+on(event: "transceiver-updated", listener: typeof event_transceiver_updated): void
+
+</ApiSignature>
 
 Inherited from [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
 

@@ -788,7 +788,11 @@ export async function loadDocsPagePayload(
   const unboundedToc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
     : await resolvePageToc(page, processedText, artifactPlatform);
-  const tocMaxDepth = resolveDocsTocMaxDepth(page.data, tab === OPENAPI_TAB);
+  const tocMaxDepth = resolveDocsTocMaxDepth(
+    page.data,
+    tab === OPENAPI_TAB,
+    unboundedToc,
+  );
   const toc = filterDocsToc(unboundedToc, tocMaxDepth);
   const layoutMode: DocsLayoutMode =
     isOpenApiPage || openApiLaneRoute !== null ? 'openapi' : 'docs';

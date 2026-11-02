@@ -309,7 +309,7 @@ getStats(): [LocalVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
 
 </ApiSignature>
 
-### deprecated
+#### deprecated
 
 自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalaudiostats)。
 
@@ -422,21 +422,11 @@ void
 
 ### on
 
+#### on [1/3]
+
 <ApiSignature>
 
 on(event: "track-updated", listener: typeof event_track_updated): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "track-ended", listener: typeof event_track_ended): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "transceiver-updated", listener: typeof event_transceiver_updated): void
 
 </ApiSignature>
 
@@ -465,6 +455,14 @@ void
 
 </ApiReturns>
 
+#### on [2/3]
+
+<ApiSignature>
+
+on(event: "track-ended", listener: typeof event_track_ended): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 <ParameterList title="Parameters">
@@ -489,6 +487,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [3/3]
+
+<ApiSignature>
+
+on(event: "transceiver-updated", listener: typeof event_transceiver_updated): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 

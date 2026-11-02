@@ -42,7 +42,7 @@ import {
 } from '@/lib/docs-last-updated';
 import type { DocsLayoutMode } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
-import { filterDocsToc } from '@/lib/docs-toc';
+import { filterDocsToc, getDocsHeadingTitle } from '@/lib/docs-toc';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
 import {
   type AppLocale,
@@ -353,7 +353,7 @@ export function DocsContent({
                 )}
               </p>
               {description ? (
-                <p className="mt-3 max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)]">
+                <p className="mt-3 max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)] [overflow-wrap:anywhere]">
                   {description}
                 </p>
               ) : null}
@@ -1133,7 +1133,7 @@ export function DocsTableOfContents({
           />
         </button>
       ) : (
-        <div className="px-3 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
+        <div className="px-3 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-3)] uppercase">
           {t('docs.toc')}
         </div>
       )}
@@ -1232,9 +1232,9 @@ function TocLinks({
           <a
             aria-current={isPrimary ? 'location' : undefined}
             className={cn(
-              'leading-5 transition-colors hover:bg-[color:var(--docs-soft-fill)]',
+              'min-w-0 [overflow-wrap:anywhere] leading-5 transition-colors hover:bg-[color:var(--docs-soft-fill)]',
               variant === 'rail'
-                ? '-ml-px rounded-r-md border-l-2 border-transparent px-3 py-1.5 text-[12.5px] text-[color:var(--ink-4)] hover:text-[color:var(--ink-2)]'
+                ? '-ml-px rounded-r-md border-l-2 border-transparent px-3 py-1.5 text-[12.5px] text-[color:var(--ink-3)] hover:text-[color:var(--ink-2)]'
                 : 'rounded-md px-2 py-2 text-sm text-[color:var(--ink-3)] hover:text-[color:var(--ink-1)]',
               isVisible &&
                 variant === 'rail' &&
@@ -1290,7 +1290,7 @@ function getVisibleArticleHeadingItems(): TOCItemType[] {
         depth: heading.hasAttribute('data-accordion-value')
           ? Math.min(headingDepth + 1, 4)
           : headingDepth,
-        title: heading.textContent?.trim() ?? '',
+        title: getDocsHeadingTitle(heading),
         url: `#${heading.id}`,
       };
     })
