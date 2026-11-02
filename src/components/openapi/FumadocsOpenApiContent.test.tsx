@@ -116,6 +116,482 @@ function makeSectionHeadingPageProps(): OpenAPIPageProps {
 }
 
 describe('FumadocsOpenApiContent', () => {
+  it('groups cloud-transcoding response headers and body under the response section for each status', async () => {
+    const source = yaml.load(
+      await readFile(
+        'content/openapi/cloud-transcoding/cloud-transcoding.zh-CN.yaml',
+        'utf8',
+      ),
+    ) as Document;
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v1/projects/{appId}/rtsc/cloud-transcoder/tasks',
+            },
+          ],
+          payload: { bundled: source },
+        }}
+      />,
+    );
+    const heading = await screen.findByRole('heading', {
+      name: '响应',
+      level: 2,
+    });
+    expect(heading).toHaveAttribute('id', 'response-body');
+    for (const status of ['2XX', '非 2XX']) {
+      const trigger = screen.getByRole('button', {
+        name: `${status} application/json`,
+      });
+      if (trigger.getAttribute('aria-expanded') === 'false')
+        fireEvent.click(trigger);
+      const panel = document.getElementById(
+        trigger.getAttribute('aria-controls') ?? '',
+      ) as HTMLElement;
+      const headers = within(panel).getByRole('heading', {
+        name: '响应 Header',
+        level: 3,
+      });
+      const body = within(panel).getByRole('heading', {
+        name: '响应 Body',
+        level: 3,
+      });
+      expect(
+        headers.compareDocumentPosition(body) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+      const name = status === '2XX' ? 'taskId' : 'message';
+      const field = Array.from(
+        panel.querySelectorAll('.openapi-schema-field-row'),
+      ).find((row) => row.querySelector('code')?.textContent === name);
+      expect(field).toBeDefined();
+      expect(
+        body.compareDocumentPosition(field as HTMLElement) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+    }
+  });
+
+  it('preserves RTC error guidance without inferring an empty response body', async () => {
+    const document = yaml.load(
+      await readFile(
+        'content/openapi/rtc/channel-management.zh-CN.yaml',
+        'utf8',
+      ),
+    ) as Document;
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [{ method: 'get', path: '/dev/v1/kicking-rule' }],
+          payload: { bundled: document },
+        }}
+      />,
+    );
+    const trigger = await screen.findByRole('button', { name: '非 200' });
+    fireEvent.click(trigger);
+    const panel = globalThis.document.getElementById(
+      trigger.getAttribute('aria-controls') ?? '',
+    ) as HTMLElement;
+    expect(panel).toHaveTextContent('如果状态码不为 200，则请求失败。');
+    expect(
+      within(panel).getByRole('link', { name: '响应状态码' }),
+    ).toHaveAttribute(
+      'href',
+      '/zh-CN/realtime-media/rtc/reference/response-code',
+    );
+    expect(within(panel).queryByText('响应 Body 为空')).not.toBeInTheDocument();
+  });
+
+  it('offers both schema-derived response examples for the actual Converter status endpoint', async () => {
+    const document = yaml.load(
+      await readFile(
+        'content/openapi/media-push/media-push.zh-CN.yaml',
+        'utf8',
+      ),
+    ) as Document;
+    const { container } = render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'get',
+              path: '/{region}/v1/projects/{appId}/rtmp-converters/{converterId}',
+            },
+          ],
+          payload: { bundled: document },
+        }}
+      />,
+    );
+    const section = container.querySelector(
+      '.openapi-response-example',
+    ) as HTMLElement;
+    const transcode = await within(section).findByRole('tab', {
+      name: '转码推流',
+    });
+    await waitFor(() =>
+      expect(section.querySelector('pre')?.textContent).toContain(
+        'transcodeOptions',
+      ),
+    );
+    fireEvent.mouseDown(
+      within(section).getByRole('tab', { name: '不转码推流' }),
+      { button: 0, ctrlKey: false },
+    );
+    await waitFor(() => {
+      const data = JSON.parse(
+        section.querySelector('pre')?.textContent ?? '{}',
+      );
+      expect(data.converter.rawOptions).toHaveProperty('rtcChannel');
+      expect(data.converter).not.toHaveProperty('transcodeOptions');
+    });
+    fireEvent.mouseDown(transcode, { button: 0, ctrlKey: false });
+    await waitFor(() =>
+      expect(section.querySelector('pre')?.textContent).toContain(
+        'transcodeOptions',
+      ),
+    );
+    expect(
+      within(section).getByRole('button', { name: '复制文本' }),
+    ).toBeInTheDocument();
+  });
+
+  it.each(['oneOf', 'anyOf'])(
+    'keeps parent fields and referenced %s branches in separate response samples',
+    async (kind) => {
+      const document = {
+        openapi: '3.2.0',
+        info: { title: 'Referenced choices' },
+        paths: {
+          '/choices': {
+            get: {
+              responses: {
+                '200': {
+                  description: 'OK',
+                  content: {
+                    'application/json': {
+                      schema: { $ref: '#/components/schemas/Choice' },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        components: {
+          schemas: {
+            Choice: {
+              type: 'object',
+              properties: {
+                common: { type: 'string', const: 'shared-value' },
+              },
+              [kind]: [
+                { $ref: '#/components/schemas/Alpha' },
+                { $ref: '#/components/schemas/Beta' },
+              ],
+            },
+            Alpha: {
+              title: 'Alpha',
+              type: 'object',
+              properties: { alpha: { type: 'string' } },
+            },
+            Beta: {
+              title: 'Beta',
+              type: 'object',
+              properties: { beta: { type: 'string' } },
+            },
+          },
+        },
+      } as unknown as Document;
+      const { container } = render(
+        <FumadocsOpenApiContent
+          pageProps={{
+            operations: [{ method: 'get', path: '/choices' }],
+            payload: { bundled: document },
+          }}
+        />,
+      );
+      const section = container.querySelector(
+        '.openapi-response-example',
+      ) as HTMLElement;
+      fireEvent.mouseDown(
+        await within(section).findByRole('tab', { name: 'Beta' }),
+        { button: 0, ctrlKey: false },
+      );
+      await waitFor(() => {
+        const data = JSON.parse(
+          section.querySelector('pre')?.textContent ?? '{}',
+        );
+        expect(data.common).toBe('shared-value');
+        expect(data).toHaveProperty('beta');
+        expect(data).not.toHaveProperty('alpha');
+      });
+    },
+  );
+
+  it('prefers an authored response example over schema-derived alternative samples', async () => {
+    const document = {
+      openapi: '3.2.0',
+      info: { title: 'Authored example' },
+      paths: {
+        '/choices': {
+          get: {
+            responses: {
+              '200': {
+                description: 'OK',
+                content: {
+                  'application/json': {
+                    example: { authored: 'keep-me' },
+                    schema: {
+                      oneOf: [
+                        {
+                          type: 'object',
+                          title: 'Alpha',
+                          properties: { alpha: { type: 'string' } },
+                        },
+                        {
+                          type: 'object',
+                          title: 'Beta',
+                          properties: { beta: { type: 'string' } },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    } as unknown as Document;
+    const { container } = render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'get', path: '/choices' }],
+          payload: { bundled: document },
+        }}
+      />,
+    );
+    const section = container.querySelector(
+      '.openapi-response-example',
+    ) as HTMLElement;
+    await waitFor(() =>
+      expect(section.querySelector('pre')?.textContent).toContain('keep-me'),
+    );
+    expect(within(section).queryByRole('tab', { name: 'Alpha' })).toBeNull();
+    expect(
+      JSON.parse(section.querySelector('pre')?.textContent ?? '{}'),
+    ).toEqual({ authored: 'keep-me' });
+  });
+
+  it('renders a localized, padded example placeholder for the actual stop-agent response', async () => {
+    const document = yaml.load(
+      await readFile(
+        'content/openapi/conversational-ai/rest-api.zh-CN.yaml',
+        'utf8',
+      ),
+    ) as Document;
+    const { container } = render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/agents/{agentId}/leave',
+            },
+          ],
+          payload: { bundled: document },
+        }}
+      />,
+    );
+    const placeholder = await screen.findByText('未提供响应示例。');
+    expect(placeholder).toHaveClass('px-4', 'py-5', 'text-sm');
+    expect(placeholder.closest('.openapi-response-example')).not.toBeNull();
+    expect(
+      within(
+        container.querySelector('.openapi-response-example') as HTMLElement,
+      ).queryByText('Empty'),
+    ).toBeNull();
+    expect(screen.getByText(/响应包体为空/)).toBeInTheDocument();
+  });
+
+  it.each([
+    ['zh-CN', '未提供响应示例。'],
+    ['en', 'No response example provided.'],
+  ])(
+    'uses a neutral example placeholder without inferring an empty body in %s',
+    async (locale, label) => {
+      const { container } = render(
+        <FumadocsOpenApiContent
+          locale={locale}
+          pageProps={makeMinimalOpenApiPageProps('get')}
+        />,
+      );
+      expect(await screen.findByText(label)).toBeInTheDocument();
+      expect(container).not.toHaveTextContent('响应 Body 为空');
+      expect(container).not.toHaveTextContent('Empty response body');
+    },
+  );
+
+  it('preserves response status selection, named examples, descriptions, and falsy example values', async () => {
+    const pageProps = makeMinimalOpenApiPageProps('get');
+    const bundled = (
+      pageProps as Extract<OpenAPIPageProps, { payload: unknown }>
+    ).payload.bundled;
+    const response = (bundled.paths?.['/method-get']?.get?.responses ??
+      {}) as Record<string, unknown>;
+    response['400'] = {
+      description: 'Invalid request',
+      content: {
+        'application/json': {
+          examples: {
+            first: {
+              summary: 'First example',
+              description: 'First response detail.',
+              value: { error: 0 },
+            },
+            second: {
+              summary: 'Second example',
+              description: 'Second response detail.',
+              value: false,
+            },
+          },
+        },
+      },
+    };
+    const { container } = render(
+      <FumadocsOpenApiContent pageProps={pageProps} />,
+    );
+    await screen.findByText('No response example provided.');
+    const section = container.querySelector(
+      '.openapi-response-example',
+    ) as HTMLElement;
+    fireEvent.mouseDown(within(section).getByRole('tab', { name: '400' }), {
+      button: 0,
+      ctrlKey: false,
+    });
+    expect(
+      await within(section).findByText('First response detail.'),
+    ).toBeVisible();
+    await waitFor(() =>
+      expect(section.querySelector('pre')?.textContent).toContain('"error": 0'),
+    );
+    fireEvent.click(
+      within(section).getByRole('button', { name: 'Second example' }),
+    );
+    expect(
+      await within(section).findByText('Second response detail.'),
+    ).toBeVisible();
+    await waitFor(() =>
+      expect(section.querySelector('pre')?.textContent).toContain('false'),
+    );
+    expect(
+      within(section).getByRole('button', { name: 'Copy Text' }),
+    ).toBeVisible();
+    fireEvent.mouseDown(within(section).getByRole('tab', { name: '200' }), {
+      button: 0,
+      ctrlKey: false,
+    });
+    expect(
+      within(section).getByText('No response example provided.'),
+    ).toBeVisible();
+  });
+
+  it('retains schema-less parameters inherited from paths and referenced from components', () => {
+    const project = {
+      name: 'project',
+      in: 'path',
+      required: true,
+      description: 'Inherited project parameter.',
+    };
+    const cursor = {
+      name: 'cursor',
+      in: 'query',
+      description: 'Referenced pagination cursor.',
+      example: 'next-cursor',
+    };
+    const { container } = render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'get', path: '/legacy/{project}' }],
+          payload: {
+            bundled: {
+              openapi: '3.2.0',
+              info: { title: 'Legacy parameters', version: '1' },
+              components: { parameters: { cursor } },
+              paths: {
+                '/legacy/{project}': {
+                  parameters: [project],
+                  get: {
+                    parameters: [
+                      { $ref: '#/components/parameters/cursor' },
+                      {
+                        name: 'trace',
+                        in: 'header',
+                        description: 'Trace identifier.',
+                      },
+                      {
+                        name: 'session',
+                        in: 'cookie',
+                        description: 'Session identifier.',
+                      },
+                    ],
+                    responses: { '200': { description: 'OK' } },
+                  },
+                },
+              },
+            } as Document,
+          },
+        }}
+      />,
+    );
+    const fields = container.querySelectorAll(
+      '.openapi-schema-parameter-fields',
+    );
+    expect(fields).toHaveLength(4);
+    expect(container).toHaveTextContent('Inherited project parameter.');
+    expect(container).toHaveTextContent('Referenced pagination cursor.');
+    expect(container).toHaveTextContent('next-cursor');
+    expect(container).toHaveTextContent('Trace identifier.');
+    expect(container).toHaveTextContent('Session identifier.');
+    expect(project).not.toHaveProperty('schema');
+    expect(cursor).not.toHaveProperty('schema');
+  });
+
+  it('preserves the schema-less appid parameter in the published RTC channel-list source', async () => {
+    const document = yaml.load(
+      await readFile(
+        'content/openapi/rtc/channel-management.zh-CN.yaml',
+        'utf8',
+      ),
+    ) as Document;
+    const { container } = render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [{ method: 'get', path: '/dev/v1/channel/{appid}' }],
+          payload: { bundled: document },
+        }}
+      />,
+    );
+    const appid = Array.from(
+      container.querySelectorAll('.openapi-schema-field-row'),
+    ).find((row) => row.querySelector('code')?.textContent === 'appid');
+    expect(appid).toBeDefined();
+    expect(container).toHaveTextContent('项目的 App ID。可通过以下方式获取');
+    expect(container).toHaveTextContent('从声网控制台获取');
+    expect(
+      container.querySelector(
+        'a[href="/zh-CN/api-reference/api-ref/console/list-projects"]',
+      ),
+    ).toHaveTextContent('获取所有项目信息 API');
+  });
+
   it.each([
     {
       source: 'cloud-recording/cloud-recording.zh-CN.yaml',
@@ -348,7 +824,7 @@ describe('FumadocsOpenApiContent', () => {
       ['parameters-header', 'Header Parameters'],
       ['parameters-cookie', 'Cookie Parameters'],
       ['request-body', 'Request Body'],
-      ['response-body', 'Response Body'],
+      ['response-body', 'Responses'],
     ] as const;
 
     for (const [id, title] of sections) {
@@ -615,11 +1091,11 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     expect(
-      await screen.findByRole('heading', { name: 'Response Body' }),
+      await screen.findByRole('heading', { name: 'Responses' }),
     ).toBeInTheDocument();
-    expect(
-      screen.getAllByRole('heading', { name: 'Response Body' }),
-    ).toHaveLength(1);
+    expect(screen.getAllByRole('heading', { name: 'Responses' })).toHaveLength(
+      1,
+    );
     expect(
       document.querySelector('[data-openapi-responses]'),
     ).toBeInTheDocument();
@@ -654,7 +1130,8 @@ describe('FumadocsOpenApiContent', () => {
       screen.getByRole('button', { name: '200 text/plain' }),
     ).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: '204' }));
-    expect(screen.getByText('Empty response body')).toBeInTheDocument();
+    expect(screen.getByText('No content')).toBeInTheDocument();
+    expect(screen.queryByText('Empty response body')).not.toBeInTheDocument();
   });
 
   it('opens a hashed English response panel and its schema ancestors', async () => {
@@ -1086,7 +1563,7 @@ describe('FumadocsOpenApiContent', () => {
   });
 
   it.each(['start_of_speech', 'end_of_speech'])(
-    'keeps %s configuration branches collapsible with their descriptions and examples',
+    'keeps %s branch descriptions, examples, and inherited rules when switching tabs',
     async (configuration) => {
       const document = yaml.load(
         await readFile(
@@ -1129,19 +1606,13 @@ describe('FumadocsOpenApiContent', () => {
       expect(branch).not.toBeNull();
       if (!branch) throw new Error('Missing VAD configuration branch');
 
-      const toggle = within(branch).getByRole('button', {
-        name: '展开 vad_config 属性',
-      });
-      expect(toggle).toHaveAttribute('aria-expanded', 'false');
+      const root = getNode(rootPath) as HTMLElement;
+      const choice = within(root).getByRole('tab', { name: 'vad_config' });
+      expect(choice).toHaveAttribute('aria-selected', 'true');
       expect(getRow(rootPath)).toHaveTextContent('不可同时传入多个模式配置');
       expect(getRow(rootPath)).toHaveTextContent('公开接口不支持该字段');
       expect(getNode(rootPath)).not.toHaveTextContent('oneOf');
       expect(getNode(rootPath)).not.toHaveTextContent('以下配置任选一种');
-      expect(within(branch).queryByText(/基于 VAD 的对话/)).toBeNull();
-
-      fireEvent.click(toggle);
-
-      expect(toggle).toHaveAttribute('aria-expanded', 'true');
       expect(within(branch).getByText(/基于 VAD 的对话/)).toBeVisible();
       await waitFor(() =>
         expect(branch.querySelector('pre')).toHaveTextContent('"vad_config"'),
@@ -1152,9 +1623,15 @@ describe('FumadocsOpenApiContent', () => {
         ),
       ).toBeVisible();
 
-      fireEvent.click(toggle);
-      expect(toggle).toHaveAttribute('aria-expanded', 'false');
-      expect(within(branch).queryByText(/基于 VAD 的对话/)).toBeNull();
+      const alternative = within(root)
+        .getAllByRole('tab')
+        .find((tab) => tab !== choice) as HTMLElement;
+      fireEvent.mouseDown(alternative, { button: 0, ctrlKey: false });
+      expect(alternative).toHaveAttribute('aria-selected', 'true');
+      expect(branch).not.toBeVisible();
+      fireEvent.mouseDown(choice, { button: 0, ctrlKey: false });
+      expect(branch).toBeVisible();
+      expect(within(branch).getByText(/基于 VAD 的对话/)).toBeVisible();
     },
   );
 
@@ -1427,12 +1904,19 @@ describe('FumadocsOpenApiContent', () => {
     expect(rail.querySelector('.openapi-request-examples')).toBeInTheDocument();
     expect(rail.querySelector('.openapi-response-example')).toBeInTheDocument();
     const layout = rail.closest('.openapi-operation-layout');
-    expect(layout?.firstElementChild).toHaveClass('min-w-0');
-    expect(layout?.lastElementChild).toHaveClass(
-      'openapi-examples-rail-anchor',
+    const documentation = layout?.querySelector(
+      '[data-openapi-operation-panel="documentation"]',
     );
-    expect(layout?.lastElementChild?.lastElementChild).toBe(rail);
-    expect(layout?.children).toHaveLength(2);
+    const examples = layout?.querySelector(
+      '[data-openapi-operation-panel="examples"]',
+    );
+    expect(documentation).toHaveClass('min-w-0');
+    expect(examples).toContainElement(rail);
+    expect(documentation).not.toContainElement(rail);
+    expect(
+      examples?.querySelector('.openapi-examples-rail-anchor')
+        ?.lastElementChild,
+    ).toBe(rail);
     expect(rail.className).not.toContain('w-[360px]');
   });
 
@@ -1640,9 +2124,7 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       screen.getByRole('heading', { name: '请求 Body' }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: '响应 Body' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: '响应' })).toBeInTheDocument();
     expect(
       screen.queryByRole('heading', { name: 'Header Parameters' }),
     ).not.toBeInTheDocument();
@@ -2584,7 +3066,7 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     await screen.findByRole('heading', {
-      name: 'Response Body',
+      name: 'Responses',
     });
     expect(
       document.querySelector(
@@ -2879,7 +3361,7 @@ describe('FumadocsOpenApiContent', () => {
       within(responseHeaderSection).getByText('response-123'),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: 'Response Body' }),
+      screen.getByRole('heading', { name: 'Responses' }),
     ).toBeInTheDocument();
 
     expect(screen.getByText('Note')).toBeInTheDocument();
@@ -2894,7 +3376,7 @@ describe('FumadocsOpenApiContent', () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/previous request finishes/)).toBeInTheDocument();
     const responseBodyHeading = screen.getByRole('heading', {
-      name: 'Response Body',
+      name: 'Responses',
     });
     const responseHeadersHeading = screen.getByRole('heading', {
       name: 'Response Headers',
@@ -3020,7 +3502,7 @@ describe('FumadocsOpenApiContent', () => {
       name: 'Request Body',
     });
     const responseBodyHeading = screen.getByRole('heading', {
-      name: 'Response Body',
+      name: 'Responses',
     });
 
     expect(pathHeading).toHaveAttribute('id', 'parameters-path');
@@ -3785,7 +4267,7 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     expect(
-      await screen.findByRole('heading', { name: '响应 Body' }),
+      await screen.findByRole('heading', { name: '响应' }),
     ).toBeInTheDocument();
     expect(
       document.querySelector('[data-openapi-responses]'),
@@ -3853,7 +4335,8 @@ describe('FumadocsOpenApiContent', () => {
       responseScope.getByText('Description of why the request failed.'),
     ).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: '204' }));
-    expect(screen.getByText('响应 Body 为空')).toBeInTheDocument();
+    expect(screen.getByText('No response content.')).toBeInTheDocument();
+    expect(screen.queryByText('响应 Body 为空')).not.toBeInTheDocument();
   });
 
   it('renders the localized fieldless state for a real empty response schema', async () => {
@@ -3888,7 +4371,7 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     expect(
-      await screen.findByRole('heading', { name: '响应 Body' }),
+      await screen.findByRole('heading', { name: '响应' }),
     ).toBeInTheDocument();
     expect(screen.getByText('Schema 中没有字段')).toBeInTheDocument();
   });
@@ -3985,7 +4468,7 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     expect(
-      await screen.findByRole('heading', { name: '响应 Body' }),
+      await screen.findByRole('heading', { name: '响应' }),
     ).toBeInTheDocument();
     expect(screen.queryByText('Schema 中没有字段')).not.toBeInTheDocument();
     expect(screen.getAllByText('string').length).toBeGreaterThan(0);
@@ -4141,7 +4624,7 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     expect(
-      await screen.findByRole('heading', { name: 'Response Body' }),
+      await screen.findByRole('heading', { name: 'Responses' }),
     ).toBeInTheDocument();
     expect(
       screen.queryByRole('heading', { name: 'Response schema' }),

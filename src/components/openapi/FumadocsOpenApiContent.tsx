@@ -1,4 +1,13 @@
 import { TranslationProvider } from '@fuma-translate/react';
+import {
+  AccordionContent,
+  AccordionHeader,
+  AccordionItem,
+  Accordions,
+  AccordionTrigger,
+} from '@fumadocs/api-docs/components/accordion';
+import type { ParsedSchema } from '@fumadocs/api-docs/schema';
+import { sample } from '@fumadocs/api-docs/schema/sample';
 import { defaultShikiFactory } from 'fumadocs-core/highlight/shiki/full';
 import { useShikiDynamic } from 'fumadocs-core/highlight/shiki/react';
 import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
@@ -17,6 +26,7 @@ import {
   CodeBlockTabsTrigger,
   Pre,
 } from 'fumadocs-ui/components/codeblock';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime';
 import { Check, Clipboard } from 'lucide-react';
@@ -41,6 +51,12 @@ import remarkRehype from 'remark-rehype';
 import { useMeasuredDocsBody } from '@/components/docs-shell/DocsContentMeasurement';
 import { createDocsTableComponent } from '@/components/mdx';
 import { Badge } from '@/components/ui/badge';
+import {
+  TabsContent as ChoiceContent,
+  TabsList as ChoiceList,
+  Tabs as ChoiceTabs,
+  TabsTrigger as ChoiceTrigger,
+} from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
 import { codeHighlightOptions, codeLanguageAliases } from '@/lib/code/options';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
@@ -58,6 +74,7 @@ import {
 import { resolveLocalOpenApiReference } from '@/lib/openapi/schema-tree';
 import { OpenApiCodePreview } from './OpenApiCodePreview';
 import { OpenApiExamplesRail } from './OpenApiExamplesRail';
+import { OpenApiOperationPanels } from './OpenApiOperationPanels';
 import { OpenApiResponseHeaderRow } from './OpenApiResponseHeaderRow';
 import { OpenApiResponses } from './OpenApiResponses';
 import { OpenApiSchema } from './OpenApiSchema';
@@ -119,6 +136,7 @@ const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   'Request example scenario': '请求示例场景',
   'Request examples': '请求示例',
   'Response Body': '响应 Body',
+  Responses: '响应',
   'Response Body schema fields': '响应 Body 字段',
   'Response Headers': '响应 Header',
   'Response example': '响应示例',
@@ -135,7 +153,7 @@ const ZH_CN_OPENAPI_GENERATED_HEADING_LABELS: Record<string, string> = {
   'parameters-path': '路径参数',
   'parameters-query': '查询参数',
   'request-body': '请求 Body',
-  'response-body': '响应 Body',
+  'response-body': '响应',
 };
 const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
   'Allowed values(schema UI)': '可选值',
@@ -177,6 +195,9 @@ const OpenAPIPage = createOpenAPIPage({
     CodeBlock: ({ code, lang }) => renderOpenApiCodeBlock(lang, code),
   },
   content: {
+    renderResponseTabs: (options, ctx) => (
+      <OpenApiResponseExamples {...options} resolve={ctx.schema.resolve} />
+    ),
     renderAPIExampleLayout: (slots) => (
       <OpenApiRightExamplesLayout
         slots={{
@@ -369,12 +390,20 @@ function adaptOpenApiPathItemParameters(value: unknown) {
 
 function adaptOpenApiParameterSchema(value: unknown) {
   if (!isRecord(value) || isReferenceObject(value)) return value;
-  const schema = getRecord(value.schema);
+  // Older sources omit the schema on otherwise documented parameters.
+  // Keep an unconstrained schema so the renderer retains the name and prose.
+  const schema =
+    getRecord(value.schema) ?? (value.schema == null ? {} : undefined);
   if (!schema) return value;
   const callouts = value['x-docs-callouts'];
   const example = value.example ?? getFirstExample(value.examples);
   const deprecated = value.deprecated === true;
-  if (callouts === undefined && example === undefined && !deprecated) {
+  if (
+    value.schema != null &&
+    callouts === undefined &&
+    example === undefined &&
+    !deprecated
+  ) {
     return value;
   }
 
@@ -473,40 +502,53 @@ function OpenApiOperationLayout({
   method: OpenApiOperation;
   slots: OpenApiOperationLayoutSlots;
 }) {
+  const locale = useContext(OpenApiLocaleContext);
+
   return (
-    <div className="openapi-operation-layout gap-6">
-      <div className="min-w-0 flex-1">
-        {slots.header}
-        <OpenApiEndpointBar operation={method} />
-        <OpenApiDocsSections operation={method} position="after-description" />
-        <OpenApiDocsCallouts operation={method} position="after-description" />
-        <OpenApiInlineAuthorizationSection operation={method} />
-        {slots.parameters}
-        <OpenApiDocsSections operation={method} position="after-parameters" />
-        {slots.body}
-        <OpenApiDocsSections
-          operation={method}
-          position="before-response-body"
-        />
-        <OpenApiResponseBody operation={method} />
-        <OpenApiDocsSections
-          operation={method}
-          position="after-response-body"
-        />
-        <OpenApiDocsCallouts operation={method} position="after-responses" />
-        <OpenApiDocsSections
-          operation={method}
-          position="after-response-example"
-        />
-        {slots.callbacks}
-      </div>
-      <OpenApiExamplesRail>
-        <OpenApiAuthorizationSection operation={method} />
-        <OpenApiOperationContext.Provider value={method}>
-          {slots.apiExample}
-        </OpenApiOperationContext.Provider>
-      </OpenApiExamplesRail>
-    </div>
+    <OpenApiOperationPanels
+      locale={locale}
+      documentation={
+        <>
+          {slots.header}
+          <OpenApiEndpointBar operation={method} />
+          <OpenApiDocsSections
+            operation={method}
+            position="after-description"
+          />
+          <OpenApiDocsCallouts
+            operation={method}
+            position="after-description"
+          />
+          <OpenApiInlineAuthorizationSection operation={method} />
+          {slots.parameters}
+          <OpenApiDocsSections operation={method} position="after-parameters" />
+          {slots.body}
+          <OpenApiDocsSections
+            operation={method}
+            position="before-response-body"
+          />
+          <OpenApiResponseBody operation={method} />
+          <OpenApiDocsSections
+            operation={method}
+            position="after-response-body"
+          />
+          <OpenApiDocsCallouts operation={method} position="after-responses" />
+          <OpenApiDocsSections
+            operation={method}
+            position="after-response-example"
+          />
+          {slots.callbacks}
+        </>
+      }
+      examples={
+        <OpenApiExamplesRail>
+          <OpenApiAuthorizationSection operation={method} />
+          <OpenApiOperationContext.Provider value={method}>
+            {slots.apiExample}
+          </OpenApiOperationContext.Provider>
+        </OpenApiExamplesRail>
+      }
+    />
   );
 }
 
@@ -619,6 +661,150 @@ function OpenApiRightExamplesLayout({
         {slots.responseTabs}
       </OpenApiRightSection>
     </div>
+  );
+}
+
+type OpenApiResponseExamplesProps = Parameters<
+  NonNullable<
+    NonNullable<CreateOpenAPIPageOptions['content']>['renderResponseTabs']
+  >
+>[0];
+
+type OpenApiResponseExample = NonNullable<
+  OpenApiResponseExamplesProps['tabs'][number]['examples']
+>[number];
+
+function getOpenApiResponseSchemaExamples(
+  tab: OpenApiResponseExamplesProps['tabs'][number],
+  resolve: RenderContext['schema']['resolve'],
+  locale?: string,
+): OpenApiResponseExample[] | undefined {
+  const media = getRecord(
+    resolve(tab.mediaType ? tab.response.content?.[tab.mediaType] : undefined),
+  );
+  // Authored examples take precedence over generated samples, including empty example maps.
+  if (!media || 'examples' in media || 'example' in media) return undefined;
+  const schema = getRecord(resolve(media.schema));
+  if (!schema) return undefined;
+  const kind = Array.isArray(schema.oneOf) ? 'oneOf' : 'anyOf';
+  const branches = schema[kind];
+  if (!Array.isArray(branches) || branches.length < 2) return undefined;
+  return branches.map((branch, index) => {
+    const resolved = getRecord(resolve(branch));
+    return {
+      label:
+        typeof resolved?.title === 'string'
+          ? resolved.title
+          : `${isZhCnLocale(locale) ? '示例' : 'Example'} ${index + 1}`,
+      description:
+        typeof resolved?.description === 'string'
+          ? resolved.description
+          : undefined,
+      // Keep common parent fields while selecting just this alternative. Nested refs
+      // retain Fumadocs' lazy proxy so its sampler can resolve them safely.
+      sample: sample({ ...schema, [kind]: [branch] } as ParsedSchema),
+    };
+  });
+}
+
+function OpenApiResponseExamples({
+  tabs,
+  resolve,
+}: OpenApiResponseExamplesProps & {
+  resolve: RenderContext['schema']['resolve'];
+}) {
+  const locale = useContext(OpenApiLocaleContext);
+  const empty = (
+    <p
+      className="m-0 px-4 py-5 text-fd-muted-foreground text-sm"
+      data-openapi-response-example-empty=""
+    >
+      {isZhCnLocale(locale)
+        ? '未提供响应示例。'
+        : 'No response example provided.'}
+    </p>
+  );
+  function renderExample(
+    example: NonNullable<
+      OpenApiResponseExamplesProps['tabs'][number]['examples']
+    >[number],
+  ) {
+    const code = JSON.stringify(example.sample, null, 2);
+    return (
+      <>
+        {example.description
+          ? renderOpenApiMarkdown(example.description)
+          : null}
+        {code === undefined ? empty : renderOpenApiCodeBlock('json', code)}
+      </>
+    );
+  }
+  return (
+    <Tabs
+      groupId="fumadocs_openapi_responses"
+      items={tabs.map((tab) => tab.code)}
+    >
+      {tabs.map((tab) => {
+        const { code, examples = [] } = tab;
+        const alternatives = getOpenApiResponseSchemaExamples(
+          tab,
+          resolve,
+          locale,
+        );
+        return (
+          <Tab key={code} value={code}>
+            {alternatives ? (
+              <ChoiceTabs
+                className="openapi-response-schema-examples min-w-0"
+                defaultValue="0"
+              >
+                <ChoiceList
+                  aria-label={
+                    isZhCnLocale(locale)
+                      ? '响应示例场景'
+                      : 'Response example scenario'
+                  }
+                  className="mx-3 mt-3 min-h-11 max-w-[calc(100%-1.5rem)] flex-wrap justify-start group-data-[orientation=horizontal]/tabs:h-auto"
+                >
+                  {alternatives.map((example, index) => (
+                    <ChoiceTrigger
+                      className="min-h-11 h-auto whitespace-normal"
+                      key={String(index)}
+                      value={String(index)}
+                    >
+                      {example.label}
+                    </ChoiceTrigger>
+                  ))}
+                </ChoiceList>
+                {alternatives.map((example, index) => (
+                  <ChoiceContent key={String(index)} value={String(index)}>
+                    {renderExample(example)}
+                  </ChoiceContent>
+                ))}
+              </ChoiceTabs>
+            ) : examples.length === 0 ? (
+              empty
+            ) : examples.length === 1 ? (
+              renderExample(examples[0])
+            ) : (
+              <Accordions className="pt-2" defaultValue="0" type="single">
+                {examples.map((example, index) => (
+                  // biome-ignore lint/suspicious/noArrayIndexKey: Fumadocs supplies an immutable ordered example list without IDs.
+                  <AccordionItem key={index} value={String(index)}>
+                    <AccordionHeader>
+                      <AccordionTrigger>{example.label}</AccordionTrigger>
+                    </AccordionHeader>
+                    <AccordionContent className="prose-no-margin">
+                      {renderExample(example)}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordions>
+            )}
+          </Tab>
+        );
+      })}
+    </Tabs>
   );
 }
 
@@ -900,12 +1086,12 @@ function OpenApiResponseBody({ operation }: { operation?: OpenApiOperation }) {
   return (
     <OpenApiResponses
       labels={{
-        emptyResponseBody: getOpenApiLabel('Empty response body', locale),
         mediaTypeForResponse: (status) =>
           isZhCnLocale(locale)
             ? `${status} 响应的媒体类型`
             : `Media type for ${status} response`,
         responseBody: getOpenApiLabel('Response Body', locale),
+        responses: getOpenApiLabel('Responses', locale),
         schemaHasNoFields: getOpenApiLabel('Schema has no fields', locale),
         schemaNotProvided: getOpenApiLabel('Schema not provided', locale),
       }}
