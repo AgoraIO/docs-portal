@@ -147,7 +147,6 @@ const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
   'Deprecated(schema UI)': '已废弃',
   'Example(schema UI)': '示例',
   'Expand all(schema UI)': '展开所有字段',
-  'Fields(schema UI)': '字段',
   'JSON example(schema UI)': 'JSON 示例',
   'Filter Properties(schema UI)': '筛选属性',
   'Format(schema UI)': '格式',
@@ -231,10 +230,9 @@ const OpenAPIPage = createOpenAPIPage({
           }
           renderExtraDescription={(schema) => {
             const record = getRecord(schema);
-            return record ? (
-              <OpenApiInlineCallouts
-                callouts={getOpenApiDocsCallouts(record)}
-              />
+            const callouts = record ? getOpenApiDocsCallouts(record) : [];
+            return callouts.length > 0 ? (
+              <OpenApiInlineCallouts callouts={callouts} />
             ) : null;
           }}
           renderMarkdown={(markdown) =>
@@ -944,10 +942,9 @@ function OpenApiResponseBody({ operation }: { operation?: OpenApiOperation }) {
               }
               renderExtraDescription={(source) => {
                 const record = getRecord(source);
-                return record ? (
-                  <OpenApiInlineCallouts
-                    callouts={getOpenApiDocsCallouts(record)}
-                  />
+                const callouts = record ? getOpenApiDocsCallouts(record) : [];
+                return callouts.length > 0 ? (
+                  <OpenApiInlineCallouts callouts={callouts} />
                 ) : null;
               }}
               renderMarkdown={(markdown) =>
@@ -1438,16 +1435,6 @@ function getOpenApiSchemaMetadata(
     rangeMetadata
       ? null
       : getConstraintMetadata('Maximum', schemaRecord?.maximum),
-    getConstraintMetadata('Min length', schemaRecord?.minLength),
-    getConstraintMetadata('Max length', schemaRecord?.maxLength),
-    getConstraintMetadata('Min items', schemaRecord?.minItems),
-    getConstraintMetadata('Max items', schemaRecord?.maxItems),
-    getString(schemaRecord?.pattern)
-      ? {
-          label: 'Pattern',
-          value: getString(schemaRecord?.pattern) ?? '',
-        }
-      : null,
     owner.example !== undefined
       ? {
           label: 'Example',

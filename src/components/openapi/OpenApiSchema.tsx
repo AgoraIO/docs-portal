@@ -112,6 +112,19 @@ export function OpenApiSchema({
       writeOnly,
     });
 
+    const hiddenMetadataLabels = new Set(
+      ['Items', 'Length', 'Match', 'Properties'].map((key) =>
+        getOpenApiSchemaLabel(translations, key, key),
+      ),
+    );
+    for (const schema of Object.values(generated.refs)) {
+      schema.infoTags = schema.infoTags?.filter(
+        ({ node }) =>
+          !isValidElement<{ label?: string }>(node) ||
+          !hiddenMetadataLabels.has(node.props.label ?? ''),
+      );
+    }
+
     appendOpenApiSchemaAllowedValues(
       generated,
       normalizedRoot,
@@ -575,7 +588,6 @@ function getOpenApiSchemaLabels(
     deprecated: translate('Deprecated', 'Deprecated'),
     expand: translate('Expand', 'Expand'),
     expandAll: translate('Expand all', 'Expand all'),
-    fields: translate('Fields', 'Fields'),
     properties: translate('properties', 'properties'),
     range: translate('Range', 'Range'),
     required: translate('Required', 'Required'),
