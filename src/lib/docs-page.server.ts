@@ -1976,7 +1976,11 @@ function resolveDocsSidebarHeader({
   source: typeof docsSource;
   tab: string;
 }) {
-  if (tab === 'ai' && usesAiProductSidebar(activePath)) {
+  if (
+    tab === 'ai' &&
+    (usesAiProductSidebar(activePath) ||
+      resolveDocVersion(activePath)?.scope.id === 'convoai-guides')
+  ) {
     return undefined;
   }
 

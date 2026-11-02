@@ -33,6 +33,7 @@ import {
 import * as JsxRuntime from 'react/jsx-runtime';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
+import { Callout as OpenApiCallout } from '@/components/Callout';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/cn';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
@@ -69,7 +70,6 @@ const removeGeneratedCodeSamples = GENERATED_CODE_SAMPLE_IDS.map((id) => ({
   lang: id,
   source: false,
 })) satisfies InlineCodeUsageGenerator[];
-const OpenApiCallout = defaultMdxComponents.Callout;
 const OpenApiOperationContext = createContext<OpenApiOperation | undefined>(
   undefined,
 );

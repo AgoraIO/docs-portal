@@ -87,7 +87,7 @@ describe('real ConvoAI edition sidebars', () => {
     expect(urls).not.toContain('/en/ai/platform/models/tts/generic-http');
     expect(urls.some((url) => url.startsWith('/en/ai/studio'))).toBe(false);
     expect(urls.some((url) => url.startsWith('/en/ai/device-kit'))).toBe(false);
-    expect(payload.sidebarHeader).not.toHaveProperty('backHref');
+    expect(payload.sidebarHeader).toBeUndefined();
   });
 
   it('keeps the API selector context while removing retired operations', async () => {
