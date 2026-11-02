@@ -924,7 +924,6 @@ function OpenApiResponseBody({ operation }: { operation?: OpenApiOperation }) {
   return (
     <OpenApiResponses
       labels={{
-        emptyResponseBody: getOpenApiLabel('Empty response body', locale),
         mediaTypeForResponse: (status) =>
           isZhCnLocale(locale)
             ? `${status} 响应的媒体类型`

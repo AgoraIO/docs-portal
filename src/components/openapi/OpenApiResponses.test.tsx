@@ -12,7 +12,6 @@ vi.mock('@/lib/docs-hash', () => ({
 }));
 
 const ENGLISH_RESPONSE_LABELS = {
-  emptyResponseBody: 'Empty response body',
   mediaTypeForResponse: (status: string) => `Media type for ${status} response`,
   responseBody: 'Response Body',
   schemaHasNoFields: 'Schema has no fields',
@@ -90,7 +89,6 @@ describe('OpenApiResponses', () => {
     render(
       <OpenApiResponses
         labels={{
-          emptyResponseBody: '响应 Body 为空',
           mediaTypeForResponse: (status) => `${status} 响应的媒体类型`,
           responseBody: '响应 Body',
           schemaHasNoFields: 'Schema 中没有字段',
@@ -129,7 +127,7 @@ describe('OpenApiResponses', () => {
     fireEvent.click(
       screen.getByRole('button', { name: '204 application/json' }),
     );
-    expect(screen.getByText('响应 Body 为空')).toBeInTheDocument();
+    expect(screen.queryByText('响应 Body 为空')).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: '400' }));
     expect(screen.getByText('未提供 Schema')).toBeInTheDocument();
   });
@@ -175,11 +173,16 @@ describe('OpenApiResponses', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('distinguishes empty content, absent schemas, and an explicit false schema', () => {
+  it('omits inferred empty-body text while distinguishing absent and explicit false schemas', () => {
     const renderSchema = vi.fn(() => ({ hasFields: false, node: null }));
     renderResponses(
       [
-        view('200', { hasContent: false }),
+        view('200', {
+          hasContent: false,
+          mediaTypes: [],
+          description: 'The operation succeeded.',
+          headers: [{ name: 'X-Request-ID', source: {} }],
+        }),
         view('201', { mediaTypes: [] }),
         view('202', {
           mediaTypes: [
@@ -194,7 +197,12 @@ describe('OpenApiResponses', () => {
       renderSchema,
     );
 
-    expect(screen.getByText('Empty response body')).toBeInTheDocument();
+    expect(screen.queryByText('Empty response body')).not.toBeInTheDocument();
+    expect(
+      screen.getByText('Description: The operation succeeded.'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Headers: 200')).toBeInTheDocument();
+    expect(renderSchema).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: '201' }));
     expect(screen.getByText('Schema not provided')).toBeInTheDocument();
     fireEvent.click(

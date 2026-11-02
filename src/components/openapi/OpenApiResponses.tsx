@@ -24,7 +24,6 @@ import {
 import { OpenApiSectionHeading } from './OpenApiSectionHeading';
 
 export type OpenApiResponseLabels = {
-  emptyResponseBody: string;
   mediaTypeForResponse: (status: string) => string;
   responseBody: string;
   schemaHasNoFields: string;
@@ -215,14 +214,16 @@ export function OpenApiResponses({
                         {renderHeaders(response.headers, response.statusCode)}
                       </div>
                     ) : null}
-                    <div className="mt-4">
-                      <ResponseSchemaState
-                        labels={labels}
-                        response={response}
-                        selectedMedia={selectedMedia}
-                        renderSchema={renderSchema}
-                      />
-                    </div>
+                    {response.hasContent ? (
+                      <div className="mt-4">
+                        <ResponseSchemaState
+                          labels={labels}
+                          response={response}
+                          selectedMedia={selectedMedia}
+                          renderSchema={renderSchema}
+                        />
+                      </div>
+                    ) : null}
                   </>
                 ) : null}
               </div>
@@ -253,7 +254,6 @@ function ResponseSchemaState({
     status: string;
   }) => { hasFields: boolean; node: ReactNode };
 }) {
-  if (!response.hasContent) return <p>{labels.emptyResponseBody}</p>;
   if (response.mediaTypes.length === 0 || !selectedMedia) {
     return <p>{labels.schemaNotProvided}</p>;
   }

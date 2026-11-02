@@ -116,6 +116,37 @@ function makeSectionHeadingPageProps(): OpenAPIPageProps {
 }
 
 describe('FumadocsOpenApiContent', () => {
+  it('preserves RTC error guidance without inferring an empty response body', async () => {
+    const document = yaml.load(
+      await readFile(
+        'content/openapi/rtc/channel-management.zh-CN.yaml',
+        'utf8',
+      ),
+    ) as Document;
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [{ method: 'get', path: '/dev/v1/kicking-rule' }],
+          payload: { bundled: document },
+        }}
+      />,
+    );
+    const trigger = await screen.findByRole('button', { name: '非 200' });
+    fireEvent.click(trigger);
+    const panel = globalThis.document.getElementById(
+      trigger.getAttribute('aria-controls') ?? '',
+    ) as HTMLElement;
+    expect(panel).toHaveTextContent('如果状态码不为 200，则请求失败。');
+    expect(
+      within(panel).getByRole('link', { name: '响应状态码' }),
+    ).toHaveAttribute(
+      'href',
+      '/zh-CN/realtime-media/rtc/reference/response-code',
+    );
+    expect(within(panel).queryByText('响应 Body 为空')).not.toBeInTheDocument();
+  });
+
   it('retains schema-less parameters inherited from paths and referenced from components', () => {
     const project = {
       name: 'project',
@@ -744,7 +775,8 @@ describe('FumadocsOpenApiContent', () => {
       screen.getByRole('button', { name: '200 text/plain' }),
     ).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: '204' }));
-    expect(screen.getByText('Empty response body')).toBeInTheDocument();
+    expect(screen.getByText('No content')).toBeInTheDocument();
+    expect(screen.queryByText('Empty response body')).not.toBeInTheDocument();
   });
 
   it('opens a hashed English response panel and its schema ancestors', async () => {
@@ -3865,7 +3897,8 @@ describe('FumadocsOpenApiContent', () => {
       responseScope.getByText('Description of why the request failed.'),
     ).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: '204' }));
-    expect(screen.getByText('响应 Body 为空')).toBeInTheDocument();
+    expect(screen.getByText('No response content.')).toBeInTheDocument();
+    expect(screen.queryByText('响应 Body 为空')).not.toBeInTheDocument();
   });
 
   it('renders the localized fieldless state for a real empty response schema', async () => {

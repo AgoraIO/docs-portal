@@ -55,3 +55,11 @@
 - 实际访问 staging 的 `api-reference/api-ref/rtc/get-ban-rule-list`，鉴权说明没有教程链接；同站公开的 `/openapi/rtc/channel-management.zh-CN.yaml` 也没有恢复后的句子。没有可用的部署 revision，因此不将 staging 归因到某个具体 SHA。
 - 为 6 组来源中的 7 个必备教程引用增加独立验收数据。现有测试继续核对全部 126 个接口的实际渲染；新检查额外防止教程句子从 YAML 中整体删除后，测试因同步丢掉预期而仍然通过。
 - 本次全量覆盖测试的 14 组用例和 `types:check` 通过；未合并 PR 或部署 staging。
+
+## 2026-11-02 移除额外的空 Body 提示
+
+“获取规则列表”的错误响应只有来源描述与响应状态码链接，没有 `content` 定义。共用组件此前将这一情况显示成“响应 Body 为空”，构成来源中不存在的推断。
+
+缺少 `content` 时现在只显示来源已有的响应说明和 Header，不创建 Schema 占位块或附加空 Body 提示。真实提供的 Schema、响应字段与来源明确写出的无内容说明继续正常呈现；该规则统一作用于共用组件。
+
+两条既有空状态测试先复现失败；修复后响应组件、实际 RTC YAML 渲染及响应视图共 83 项测试通过，`types:check`、Biome 和 diff 检查通过。
