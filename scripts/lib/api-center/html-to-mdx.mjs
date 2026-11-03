@@ -1,5 +1,9 @@
 import * as cheerio from 'cheerio';
 import { getTableOfContents } from 'fumadocs-core/content/toc';
+import {
+  readLegacyImageSizing,
+  renderMigratedImage,
+} from '../legacy-image-sizing.mjs';
 import { layoutMergedTable, renderMergedTable } from '../merged-table.mjs';
 import { normalizeTableGrid } from '../table-grid.mjs';
 import { rewriteLegacyBodyLinks } from './legacy-links.mjs';
@@ -1052,6 +1056,18 @@ async function renderImage($, element, state, fallbackAlt = '') {
       ),
     );
   }
+  const sizing = readLegacyImageSizing(
+    ['width', 'height']
+      .filter((name) => element.attr(name))
+      .map((name) => `${name}=${JSON.stringify(element.attr(name))}`)
+      .join(' '),
+  );
+  const render = (src) =>
+    renderMigratedImage({
+      ...sizing,
+      src,
+      alt: sizing.width || sizing.height ? alt : escapeMdxText(alt),
+    });
   if (!state.onAsset) {
     state.warnings.push(
       createWarning(
@@ -1059,7 +1075,7 @@ async function renderImage($, element, state, fallbackAlt = '') {
         `No asset handler is configured for ${source}.`,
       ),
     );
-    return `![${escapeMdxText(alt)}](${source})`;
+    return render(source);
   }
   try {
     const target = await state.onAsset({
@@ -1069,12 +1085,12 @@ async function renderImage($, element, state, fallbackAlt = '') {
       sourcePath: state.sourcePath,
     });
     state.assets.push({ source, target });
-    return `![${escapeMdxText(alt)}](${target})`;
+    return render(target);
   } catch (error) {
     state.warnings.push(
       createWarning('asset-missing', `${source}: ${error.message}`),
     );
-    return `![${escapeMdxText(alt)}](${source})`;
+    return render(source);
   }
 }
 

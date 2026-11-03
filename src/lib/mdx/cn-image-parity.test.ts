@@ -7,6 +7,7 @@ import { describe, expect, it } from 'vitest';
 import { isRetiredCnDocsPath } from '../retired-cn-docs.mjs';
 import dimensions from './fixtures/cn-docs-image-dimensions.json';
 import previousFixtures from './fixtures/cn-image-parity.json';
+import followup from './fixtures/cn-image-parity-followup.json';
 
 type ImageFixture = {
   file: string;
@@ -34,10 +35,27 @@ const consolidatedSources = new Set(
 const fixtures: ImageFixture[] = [
   ...previousFixtures,
   ...dimensions.restore,
+  ...followup.restore,
 ].filter((fixture) => !consolidatedSources.has(fixture.file));
-const activeDeferred = dimensions.deferred.filter(
-  (fixture) => !consolidatedSources.has(fixture.file),
+const restoredInstanceKeys = new Set(
+  followup.restore.flatMap((fixture) =>
+    fixture.images.map((image) =>
+      JSON.stringify([fixture.file, fixture.src, image.platform]),
+    ),
+  ),
 );
+const activeDeferred = dimensions.deferred
+  .filter((fixture) => !consolidatedSources.has(fixture.file))
+  .map((fixture) => {
+    const images = fixture.images.filter(
+      (image) =>
+        !restoredInstanceKeys.has(
+          JSON.stringify([fixture.file, fixture.src, image.platform]),
+        ),
+    );
+    return { ...fixture, images, count: images.length };
+  })
+  .filter((fixture) => fixture.count > 0);
 const parser = unified().use(remarkParse).use(remarkMdx);
 const trees = new Map(
   [
@@ -77,7 +95,15 @@ describe('reviewed Chinese image sizing', () => {
     const tree = trees.get(fixture.file);
     if (!tree) throw new Error(`Missing parsed document: ${fixture.file}`);
 
+    const expectedPlatforms = fixture.images
+      ? new Set(fixture.images.map((image) => image.platform))
+      : undefined;
     visit(tree, (node) => {
+      if (
+        expectedPlatforms &&
+        !expectedPlatforms.has(platforms.get(node) ?? null)
+      )
+        return;
       if (node.type === 'image' && node.url === fixture.src) markdownCopies++;
       if (
         node.type !== 'mdxJsxTextElement' &&
@@ -99,9 +125,19 @@ describe('reviewed Chinese image sizing', () => {
     });
 
     expect(markdownCopies, 'image must not fall back to unsized Markdown').toBe(
-      dimensions.deferred.find(
-        (entry) => entry.file === fixture.file && entry.src === fixture.src,
-      )?.count ?? 0,
+      activeDeferred
+        .filter(
+          (entry) => entry.file === fixture.file && entry.src === fixture.src,
+        )
+        .reduce(
+          (total, entry) =>
+            total +
+            entry.images.filter(
+              (image) =>
+                !expectedPlatforms || expectedPlatforms.has(image.platform),
+            ).length,
+          0,
+        ),
     );
     expect(matches).toHaveLength(fixture.count);
     for (const [index, attributes] of matches.entries()) {
@@ -126,6 +162,22 @@ describe('reviewed Chinese image sizing', () => {
           expect(attributes[dimension]).toBeUndefined();
         }
       }
+    }
+  });
+
+  it('records the reviewed follow-up and preserves the remaining negative controls', () => {
+    expect(
+      followup.restore.reduce((total, item) => total + item.count, 0),
+    ).toBe(21);
+    expect(new Set(followup.restore.map((item) => item.file)).size).toBe(10);
+    expect(activeDeferred.reduce((total, item) => total + item.count, 0)).toBe(
+      35,
+    );
+    for (const fixture of followup.restore) {
+      expect(fixture.legacySource.length).toBeGreaterThan(0);
+      expect(fixture.images).toHaveLength(fixture.count);
+      expect(fixture.displayWidth).not.toBe('100%');
+      expect(isRetiredCnDocsPath(`zh-CN/${fixture.file}`)).toBe(false);
     }
   });
 
