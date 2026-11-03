@@ -242,6 +242,7 @@ export function DocsContent({
 
   const article = (
     <article
+      lang={currentLocale}
       data-docs-home={isHomePage ? 'true' : undefined}
       className={cn(
         'flex min-w-0 flex-col',

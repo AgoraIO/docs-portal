@@ -22,13 +22,26 @@ type ImageFixture = {
 
 // Keep the previous inline-icon / RTC run-demo batch and the independently
 // reviewed screenshot dimensions explicit. Never infer global asset defaults.
-const fixtures: ImageFixture[] = [...previousFixtures, ...dimensions.restore];
+const consolidatedSources = new Set(
+  (
+    JSON.parse(
+      readFileSync('docs/migration/cn-document-ownership.json', 'utf8'),
+    ).documents as Array<{ supersededSource: string }>
+  ).map(({ supersededSource }) =>
+    supersededSource.replace(/^content\/docs\/zh-CN\//, ''),
+  ),
+);
+const fixtures: ImageFixture[] = [
+  ...previousFixtures,
+  ...dimensions.restore,
+].filter((fixture) => !consolidatedSources.has(fixture.file));
+const activeDeferred = dimensions.deferred.filter(
+  (fixture) => !consolidatedSources.has(fixture.file),
+);
 const parser = unified().use(remarkParse).use(remarkMdx);
 const trees = new Map(
   [
-    ...new Set(
-      [...fixtures, ...dimensions.deferred].map((fixture) => fixture.file),
-    ),
+    ...new Set([...fixtures, ...activeDeferred].map((fixture) => fixture.file)),
   ].map((file) => [
     file,
     parser.parse(readFileSync(`content/docs/zh-CN/${file}`, 'utf8')),
@@ -184,7 +197,7 @@ describe('reviewed Chinese image sizing', () => {
     }
   });
 
-  it.each(dimensions.deferred)(
+  it.each(activeDeferred)(
     '$file leaves $reason Markdown unsized for $src',
     (fixture) => {
       let markdownCopies = 0;

@@ -11,11 +11,14 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import remarkDirective from 'remark-directive';
 import { describe, expect, it } from 'vitest';
 import { directiveCalloutTypes } from '../src/lib/mdx/directive-callouts';
+import { remarkLiteralDirectives } from '../src/lib/mdx/remark-literal-directives';
 import { remarkTableSlots } from '../src/lib/mdx/remark-table-slots';
 
 async function renderPage(file: string) {
   const source = readFileSync(
-    `content/docs/zh-CN/api-reference/${file}`,
+    file.startsWith('content/docs/')
+      ? file
+      : `content/docs/zh-CN/api-reference/${file}`,
     'utf8',
   );
   const body = source.replace(/^---\n[\s\S]*?\n---\n/, '');
@@ -24,6 +27,7 @@ async function renderPage(file: string) {
     remarkPlugins: [
       remarkGfm,
       remarkDirective,
+      remarkLiteralDirectives,
       [
         remarkDirectiveAdmonition,
         { types: directiveCalloutTypes, useImport: false },
@@ -48,7 +52,9 @@ async function renderPage(file: string) {
 
 describe('Chinese API literal text rendering', () => {
   it('keeps the China page-recording SD limit in the second quota table', async () => {
-    const $ = await renderPage('cloud-recording/restful/quota.mdx');
+    const $ = await renderPage(
+      'content/docs/zh-CN/realtime-media/cloud-recording/reference/quota.mdx',
+    );
     const table = $('h2')
       .filter((_, node) => $(node).text() === '转码分辨率和路数限制')
       .nextAll('table')

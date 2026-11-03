@@ -89,7 +89,7 @@ String encodedToken = Uri.encode(token);
    | --- | --- | --- |
    | `{appid}` | 必须 | 你的项目的 App ID，可在声网控制台获取。 |
    | `{appname}` | 可选 | 发布点。如果你配置了 CDN 回源拉流，可以设置该参数。 |
-   | `{channelname}` | 必须 | 频道名。如果填了 `appname`，则频道名为 `appname\\|channelname`。频道名支持的合法字符为 a-z A-Z 0-9 '-' '_' '.' '~'。 |
+   | `{channelname}` | 必须 | 频道名。如果填了 `appname`，则频道名为 `appname\|channelname`。频道名支持的合法字符为 a-z A-Z 0-9 '-' '_' '.' '~'。 |
    | `{token}` | 可选 | 用于鉴权的 Token。生成 Token 后你可以参考[步骤 1](#1-拼接-url) 对 Token 进行编码。为确保安全性，声网推荐你使用 Token 鉴权。 |
    | `{uid}` | 可选 | 观众的用户 ID。 |
    | `{streamid}` | 可选 | 主播的用户 ID。你可以通过指定 `streamid` 来订阅对应主播的媒体流。 |
@@ -249,7 +249,7 @@ ABR（自适应码率）功能允许观众端根据网络状况来选择订阅�
 调用 RESTful API 来创建一个转码模板并设置转码参数。
 
 :::warning[注意]
-发送 HTTP 请求时，你需要通过 Basic HTTP 认证，并将生成的凭证填入 HTTP 请求头部的 `Authorization` 字段。具体生成 `Authorization` 字段的方法请参考[实现 HTTP 基本认证](/zh-CN/api-reference/rtc/restful/user-guides/http-basic-auth)。
+发送 HTTP 请求时，你需要通过 Basic HTTP 认证，并将生成的凭证填入 HTTP 请求头部的 `Authorization` 字段。具体生成 `Authorization` 字段的方法请参考[实现 HTTP 基本认证](/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth)。
 :::
 
 **HTTP 请求**
@@ -578,7 +578,7 @@ curl -X GET "https://api.agora.io/v1/projects/{appid}/abr/config/layers" \
 | --- | --- | --- |
 | `200 OK` | 请求成功，服务器成功返回请求的数据。 | 无需处理。 |
 | `400 Bad Request` | 请求无效，可能的原因见下方。 | 根据响应包体中的 `message` 信息进行响应的处理。 |
-| `401 Unauthorized` | RESTful API 鉴权失败。 | 请检查 [HTTP 基本认证](/zh-CN/api-reference/rtc/restful/user-guides/http-basic-auth)是否符合要求。 |
+| `401 Unauthorized` | RESTful API 鉴权失败。 | 请检查 [HTTP 基本认证](/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth)是否符合要求。 |
 | `404 Not Found` | 传入的 `layerid` 不存在。 | 请检查 `layerid` 字段。 |
 | `405 Method Not Allowed` | 该 App ID 未开通 ABR 功能。 | 请联系[技术支持](https://ticket.shengwang.cn/)开通 ABR 功能。 |
 | `429 Too Many Requests` | QPS 超过限制。QPS 默认限制为 100。 | 请采取退避策略进行重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |

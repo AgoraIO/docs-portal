@@ -81,7 +81,7 @@ API 参考详见[封禁用户权限](/zh-CN/api-reference/api-ref/rtc/create-ban
 
 - 在频道不会复用的情况下，可以用封禁一段时间来确保频道结束后不会有用户再加入这个频道。
 - 如果频道会复用，且能知道下次频道创建的确切时间，请确保频道封禁的结束时间不晚于下次频道的创建时间。不建议长时间封禁，等到频道开始的时候才调用解封接口。因为一旦解封失败，用户将无法加入频道。
-- 如果频道会复用，但不知道下次频道创建的确切时间，建议将[用户踢出频道](/zh-CN/api-reference/rtc/restful/user-guides/user-privilege)，或者将封禁时间设置为 1 分钟。
+- 如果频道会复用，但不知道下次频道创建的确切时间，建议将[用户踢出频道](/zh-CN/realtime-media/rtc/build/security-and-auth/user-privilege)，或者将封禁时间设置为 1 分钟。
 
 ### 封禁非法 IP
 
@@ -109,7 +109,7 @@ API 参考详见[封禁用户权限](/zh-CN/api-reference/api-ref/rtc/create-ban
 不适用原因：RTC 业务逻辑依赖踢人接口的可用性，如解封失败则用户无法再次加入频道。离开频道时推荐使用一次性踢人以确保用户离开频道。
 
 :::info[信息]
-为了更好地实现麦位管理，声网提供了频道状态查询和消息通知服务 (NCS)，可以通过该服务获得频道实时状态并设计后续的业务逻辑。详见[使用消息通知服务](/zh-CN/api-reference/rtc/restful/webhook/receive-webhook)。
+为了更好地实现麦位管理，声网提供了频道状态查询和消息通知服务 (NCS)，可以通过该服务获得频道实时状态并设计后续的业务逻辑。详见[使用消息通知服务](/zh-CN/realtime-media/rtc/build/optimize-and-operate/receive_webhook)。
 :::
 
 ## 接口调用异常处理最佳实践

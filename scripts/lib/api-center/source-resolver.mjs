@@ -3,6 +3,7 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import * as cheerio from 'cheerio';
 import yaml from 'js-yaml';
+import { consolidatedSourceTarget } from './document-consolidation.mjs';
 import {
   resolveExistingApiCenterTarget,
   resolveSupersededApiCenterTarget,
@@ -1188,11 +1189,13 @@ export async function resolveLegacyPage({
       `No platform-specific MDX, generated source, or generic MDX produces ${route.pathname}.`,
     );
   }
-  const target =
+  const resolvedTarget =
     resolveExistingApiCenterTarget(page.requestedUrl) ??
     (resolution.type === 'manual-mdx'
       ? await selectManualTarget(route, resolution.sourcePath, pathMap, newRoot)
       : generatedTarget(route, resolution, sourceIndex));
+  const target =
+    consolidatedSourceTarget(resolvedTarget.targetPath) ?? resolvedTarget;
   const targetPath = target.targetPath;
   const targetExists = targetPath
     ? await fileExists(path.resolve(newRoot, targetPath))
