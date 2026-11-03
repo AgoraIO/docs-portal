@@ -27,7 +27,13 @@ import {
 import { buttonVariants } from 'fumadocs-ui/components/ui/button';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
-import { ArrowRightIcon, Check, ExternalLink, LinkIcon } from 'lucide-react';
+import {
+  ArrowRightIcon,
+  Check,
+  CopyCheckIcon,
+  ExternalLink,
+  LinkIcon,
+} from 'lucide-react';
 import type { MDXComponents } from 'mdx/types';
 import {
   type AnchorHTMLAttributes,
@@ -69,6 +75,8 @@ import {
   DOCS_HASH_TARGET_EVENT,
   findDocsHeadingForHash,
   getActiveDocsScrollContainer,
+  getDocsHashHref,
+  scrollDocsHashTargetAfterLayout,
 } from '@/lib/docs-hash';
 import {
   type NormalizedDocsHref,
@@ -292,12 +300,11 @@ function AccordionCopyButton({ id }: { id: string }) {
   const { t } = useTranslation('common');
   const platform = usePlatformPageContext()?.activePlatform;
   const [checked, onClick] = useCopyButton(() => {
-    const url = new URL(window.location.href);
+    const url = new URL(getDocsHashHref(`#${id}`), window.location.href);
     if (platform) {
       url.pathname = buildPlatformPathname(url.pathname, platform);
       url.searchParams.delete('platform');
     }
-    url.hash = id;
     return navigator.clipboard.writeText(url.toString());
   });
 
@@ -1351,17 +1358,29 @@ type MdxHeadingLevel = 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 function TabAwareHeading({
   as,
   children,
+  id,
+  className,
   contentPath,
   ...props
 }: ComponentProps<'h2'> & { as: MdxHeadingLevel; contentPath?: string }) {
+  const { t } = useTranslation('common');
   const tabLabel = useContext(MdxTabLabelContext);
-  const Heading = (defaultMdxComponents[as] ?? as) as ComponentType<
-    ComponentProps<'h2'>
-  >;
+  const activePlatform = usePlatformPageContext()?.activePlatform;
+  const hash = id ? `#${id}` : '';
+  const [href, setHref] = useState(hash);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Platform changes update the URL while the heading ID stays the same.
+  useEffect(() => {
+    setHref(getDocsHashHref(hash));
+  }, [hash, activePlatform]);
+  const [checked, onCopy] = useCopyButton(() => {
+    if (!id) return;
+    return navigator.clipboard.writeText(
+      new URL(getDocsHashHref(hash), window.location.href).href,
+    );
+  });
   const icon = getReleaseNoteCategoryIcon(contentPath, headingLabel(children));
-
-  return (
-    <Heading {...props}>
+  const content = (
+    <>
       {icon && (
         <img
           alt=""
@@ -1374,6 +1393,69 @@ function TabAwareHeading({
       )}
       {children}
       {tabLabel ? <span className="sr-only"> ({tabLabel})</span> : null}
+    </>
+  );
+  if (!id || href === hash) {
+    const DefaultHeading = defaultMdxComponents[as] as ComponentType<
+      ComponentProps<'h2'>
+    >;
+    return (
+      <DefaultHeading {...props} id={id} className={className}>
+        {content}
+      </DefaultHeading>
+    );
+  }
+  // Fumadocs Heading has no href/copy-URL override. Adapt only platform anchors,
+  // preserving its heading chrome and leaving ordinary headings untouched.
+  const Heading = as;
+
+  return (
+    <Heading
+      {...props}
+      id={id}
+      className={cn(
+        id && 'group/heading flex scroll-m-28 flex-row items-center gap-1',
+        className,
+      )}
+    >
+      {id ? (
+        <>
+          <a
+            data-card=""
+            href={href}
+            onClick={(event) => {
+              if (
+                event.button !== 0 ||
+                event.ctrlKey ||
+                event.metaKey ||
+                event.shiftKey ||
+                event.altKey
+              )
+                return;
+              event.preventDefault();
+              scrollDocsHashTargetAfterLayout(hash, { behavior: 'auto' });
+            }}
+          >
+            {content}
+          </a>
+          <button
+            type="button"
+            aria-label={t('docs.copyLink')}
+            className={cn(
+              buttonVariants({
+                variant: 'ghost',
+                size: 'icon-xs',
+              }),
+              'not-prose shrink-0 text-fd-muted-foreground opacity-0 transition-opacity group-hover/heading:opacity-100',
+            )}
+            onClick={onCopy}
+          >
+            {checked ? <CopyCheckIcon /> : <LinkIcon />}
+          </button>
+        </>
+      ) : (
+        children
+      )}
     </Heading>
   );
 }

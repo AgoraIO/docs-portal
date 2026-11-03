@@ -33,6 +33,7 @@ import { isCnPublicDocsPath } from '@/lib/cn-public-routing';
 import {
   findDocsHeadingForHash,
   getActiveDocsScrollContainer,
+  getDocsHashHref,
   scrollDocsHashTargetAfterLayout,
   syncDocsHashTargetFromLocation,
 } from '@/lib/docs-hash';
@@ -1179,6 +1180,14 @@ function TocLinks({
   visibleUrls: Set<string>;
 }) {
   const activeRailLinkRef = useRef<HTMLAnchorElement | null>(null);
+  const [shareHrefs, setShareHrefs] = useState<Record<string, string>>({});
+  useEffect(() => {
+    setShareHrefs(
+      Object.fromEntries(
+        items.map((item) => [item.url, getDocsHashHref(item.url)]),
+      ),
+    );
+  }, [items]);
   const scrollActiveLinkIntoView = useCallback(() => {
     if (variant !== 'rail') {
       return;
@@ -1243,10 +1252,17 @@ function TocLinks({
             )}
             data-primary={isPrimary ? 'true' : undefined}
             data-visible={isVisible ? 'true' : undefined}
-            href={item.url}
+            href={shareHrefs[item.url] ?? item.url}
             key={item.url}
             onClick={(event) => {
-              if (!item.url.startsWith('#')) {
+              if (
+                !item.url.startsWith('#') ||
+                event.button !== 0 ||
+                event.ctrlKey ||
+                event.metaKey ||
+                event.shiftKey ||
+                event.altKey
+              ) {
                 return;
               }
 
