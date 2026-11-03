@@ -13,6 +13,7 @@ import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import yaml from 'js-yaml';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
+import { createLocalizedOpenApiSource } from '@/lib/openapi/fumadocs-source.server';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
 
 type Document = Extract<
@@ -1287,7 +1288,7 @@ describe('FumadocsOpenApiContent', () => {
     );
   });
 
-  it('keeps generated language tabs when an operation does not define x-codeSamples', async () => {
+  it('limits generated request samples to the three legacy clients', async () => {
     render(
       <FumadocsOpenApiContent
         locale="zh-CN"
@@ -1342,7 +1343,14 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       await screen.findByRole('tab', { name: 'cURL' }),
     ).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'JavaScript' })).toBeInTheDocument();
+    const requestExamples = screen
+      .getByRole('tab', { name: 'cURL' })
+      .closest('.openapi-request-examples') as HTMLElement;
+    expect(
+      within(requestExamples)
+        .getAllByRole('tab')
+        .map((tab) => tab.textContent),
+    ).toEqual(['cURL', 'Python/Requests', 'Node.js/Fetch']);
     const generatedPreview = screen.getByTestId('openapi-code-preview');
     const generatedPanel = within(generatedPreview).getByRole('tabpanel');
     expect(generatedPanel.closest('.openapi-request-code-tabs')).toHaveClass(
@@ -1374,7 +1382,70 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       screen.getByText('响应示例').closest('.openapi-response-example'),
     ).not.toHaveAttribute('data-markdown-ignore');
+
+    fireEvent.mouseDown(
+      within(requestExamples).getByRole('tab', { name: 'Python/Requests' }),
+    );
+    expect(within(requestExamples).getByRole('tabpanel')).toHaveTextContent(
+      'requests.request("GET", url)',
+    );
+    fireEvent.mouseDown(
+      within(requestExamples).getByRole('tab', { name: 'Node.js/Fetch' }),
+    );
+    expect(within(requestExamples).getByRole('tabpanel')).toHaveTextContent(
+      'fetch(',
+    );
+    expect(within(requestExamples).getByRole('tabpanel')).toHaveTextContent(
+      '/api/speech-to-text/v1/projects/',
+    );
   });
+
+  it('uses the same three fallback clients on every registered endpoint without authored samples', async () => {
+    const source = await createLocalizedOpenApiSource();
+    const checkedPaths: string[] = [];
+
+    for (const file of source.files) {
+      if (file.type !== 'page') continue;
+      const pageProps = await file.data.getOpenAPIPageProps();
+      const route = pageProps.operations?.[0];
+      if (!route) continue;
+      const operation = pageProps.payload.bundled.paths?.[route.path]?.[
+        route.method
+      ] as Record<string, unknown>;
+      if (
+        operation['x-codeSamples'] ||
+        operation['x-docs-code-sample-groups']
+      ) {
+        continue;
+      }
+
+      const $ = load(
+        renderToStaticMarkup(
+          <FumadocsOpenApiContent
+            locale={file.path.startsWith('zh-CN/') ? 'zh-CN' : 'en'}
+            pageProps={pageProps}
+          />,
+        ),
+      );
+      expect(
+        $('.openapi-request-examples [role="tab"]')
+          .map((_, tab) => $(tab).text())
+          .get(),
+        file.path,
+      ).toEqual(['cURL', 'Python/Requests', 'Node.js/Fetch']);
+      checkedPaths.push(file.path);
+    }
+
+    expect(checkedPaths).toContain(
+      'zh-CN/api-reference/api-ref/cloud-transcoding/create.mdx',
+    );
+    expect(checkedPaths).toContain(
+      'zh-CN/api-reference/api-ref/rtc/query-channel-list.mdx',
+    );
+    expect(checkedPaths).toContain(
+      'zh-CN/api-reference/api-ref/whiteboard/restful/get-room.mdx',
+    );
+  }, 30_000);
 
   it('uses explicit x-codeSamples without adding default generated language tabs', async () => {
     render(

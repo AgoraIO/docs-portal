@@ -11,7 +11,7 @@ import { load } from 'js-yaml';
 import { expect, it } from 'vitest';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
 
-it('generates all seven Cloud Recording request languages with Basic Auth from the maintained source', async () => {
+it('generates the three legacy Cloud Recording clients with Basic Auth from the maintained source', async () => {
   const document = load(
     await readFile(
       'content/openapi/cloud-recording/cloud-recording.zh-CN.yaml',
@@ -35,7 +35,11 @@ it('generates all seven Cloud Recording request languages with Basic Auth from t
     '.openapi-request-examples',
   ) as HTMLElement;
   const tabs = within(examples).getAllByRole('tab');
-  expect(tabs).toHaveLength(7);
+  expect(tabs.map((tab) => tab.textContent)).toEqual([
+    'cURL',
+    'Python/Requests',
+    'Node.js/Fetch',
+  ]);
   for (const tab of tabs) {
     fireEvent.mouseDown(tab);
     await waitFor(() => expect(tab).toHaveAttribute('aria-selected', 'true'));
