@@ -27,7 +27,13 @@ import {
 import { buttonVariants } from 'fumadocs-ui/components/ui/button';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
-import { ArrowRightIcon, Check, CopyCheckIcon, LinkIcon } from 'lucide-react';
+import {
+  ArrowRightIcon,
+  Check,
+  CopyCheckIcon,
+  ExternalLink,
+  LinkIcon,
+} from 'lucide-react';
 import type { MDXComponents } from 'mdx/types';
 import {
   type AnchorHTMLAttributes,
@@ -93,6 +99,7 @@ import {
 } from './mdx/PlatformTabsGroup';
 import { RepositoryCardTitle } from './mdx/RepositoryCardTitle';
 import { RTCMinutesCalculator } from './mdx/RTCMinutesCalculator';
+import { getReleaseNoteCategoryIcon } from './mdx/release-note-category';
 
 type MDXContext = {
   contentPath?: string;
@@ -471,7 +478,17 @@ export function createDocsTableComponent(locale?: string) {
           ref={scrollRef}
           tabIndex={hasOverflow ? 0 : undefined}
         >
-          <table className={className} {...props} />
+          <table
+            className={cn(
+              // Physical first-child changes when earlier columns span rows.
+              // The MDX compiler marks logical columns and final-row edges.
+              '[&_[data-table-column]:not([data-table-column="0"])]:[border-inline-start:1px_solid_var(--docs-prose-table-border,var(--color-fd-border))]!',
+              '[&_[data-table-column="0"]]:[border-inline-start:0]!',
+              '[&_[data-table-bottom-edge]]:border-b-0!',
+              className,
+            )}
+            {...props}
+          />
         </section>
         <span className="sr-only" id={descriptionId}>
           {copy.tableOverflowDescription}
@@ -1343,8 +1360,9 @@ function TabAwareHeading({
   children,
   id,
   className,
+  contentPath,
   ...props
-}: ComponentProps<'h2'> & { as: MdxHeadingLevel }) {
+}: ComponentProps<'h2'> & { as: MdxHeadingLevel; contentPath?: string }) {
   const { t } = useTranslation('common');
   const tabLabel = useContext(MdxTabLabelContext);
   const activePlatform = usePlatformPageContext()?.activePlatform;
@@ -1360,8 +1378,19 @@ function TabAwareHeading({
       new URL(getDocsHashHref(hash), window.location.href).href,
     );
   });
+  const icon = getReleaseNoteCategoryIcon(contentPath, headingLabel(children));
   const content = (
     <>
+      {icon && (
+        <img
+          alt=""
+          aria-hidden="true"
+          className="not-prose mr-3 inline-block h-8 w-9 align-middle"
+          width={36}
+          height={32}
+          src={icon}
+        />
+      )}
       {children}
       {tabLabel ? <span className="sr-only"> ({tabLabel})</span> : null}
     </>
@@ -1428,6 +1457,24 @@ function TabAwareHeading({
         children
       )}
     </Heading>
+  );
+}
+
+function headingLabel(children: ReactNode): string {
+  return Children.toArray(children)
+    .map((child) => {
+      if (typeof child === 'string' || typeof child === 'number')
+        return String(child);
+      return isValidElement<{ children?: ReactNode }>(child)
+        ? headingLabel(child.props.children)
+        : '';
+    })
+    .join('');
+}
+
+function createDocsHeading(as: MdxHeadingLevel, contentPath?: string) {
+  return (props: ComponentProps<'h2'>) => (
+    <TabAwareHeading as={as} contentPath={contentPath} {...props} />
   );
 }
 
@@ -2140,6 +2187,7 @@ function getRequiredState({
 function createDocsAnchor(contentPath?: string) {
   function DocsAnchor({
     href,
+    children,
     ...props
   }: AnchorHTMLAttributes<HTMLAnchorElement>) {
     const normalized =
@@ -2149,10 +2197,28 @@ function createDocsAnchor(contentPath?: string) {
     const normalizedHref = normalized?.href ?? href;
 
     if (normalized && shouldUseRouterLink(normalized, props)) {
-      return <RouterFumadocsAnchor {...props} to={normalized.href} />;
+      return (
+        <RouterFumadocsAnchor {...props} to={normalized.href}>
+          {children}
+        </RouterFumadocsAnchor>
+      );
     }
 
-    return <FumadocsAnchor href={normalizedHref} {...props} />;
+    const isWebLink =
+      typeof normalizedHref === 'string' &&
+      /^(?:https?:)?\/\//i.test(normalizedHref);
+
+    return (
+      <FumadocsAnchor href={normalizedHref} {...props}>
+        {children}
+        {isWebLink && children && (
+          <ExternalLink
+            aria-hidden="true"
+            className="docs-external-link-icon"
+          />
+        )}
+      </FumadocsAnchor>
+    );
   }
 
   return DocsAnchor;
@@ -2418,19 +2484,21 @@ export function getMDXComponents(
   components?: MDXComponents,
   context?: MDXContext,
 ) {
+  const DocsTable = createDocsTableComponent(context?.locale);
   return {
     ...defaultMdxComponents,
     Callout: DocsCallout,
     CalloutContainer: DocsCalloutContainer,
-    table: createDocsTableComponent(context?.locale),
+    table: DocsTable,
+    DocsTable,
     img: ZoomableImage,
     DocsImage: ZoomableImage,
     InlineImage,
-    h2: (props) => <TabAwareHeading as="h2" {...props} />,
-    h3: (props) => <TabAwareHeading as="h3" {...props} />,
-    h4: (props) => <TabAwareHeading as="h4" {...props} />,
-    h5: (props) => <TabAwareHeading as="h5" {...props} />,
-    h6: (props) => <TabAwareHeading as="h6" {...props} />,
+    h2: createDocsHeading('h2', context?.contentPath),
+    h3: createDocsHeading('h3', context?.contentPath),
+    h4: createDocsHeading('h4', context?.contentPath),
+    h5: createDocsHeading('h5', context?.contentPath),
+    h6: createDocsHeading('h6', context?.contentPath),
     a: createDocsAnchor(context?.contentPath),
     Link: createLegacyDocsLink(context?.contentPath),
     Card: createDocsCard(context?.contentPath),

@@ -1,4 +1,10 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import { act } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { buildOpenApiResponseSchemaAnchorId } from '@/lib/openapi/anchors';
@@ -65,6 +71,12 @@ function renderResponses(
   };
 }
 
+function getResponseTab(status: string) {
+  return within(
+    document.querySelector('[data-openapi-responses]') as HTMLElement,
+  ).getByRole('tab', { name: status });
+}
+
 describe('OpenApiResponses', () => {
   afterEach(() => {
     window.location.hash = '';
@@ -87,9 +99,7 @@ describe('OpenApiResponses', () => {
     expect(
       document.querySelector('[data-openapi-responses]'),
     ).not.toHaveAttribute('id');
-    expect(
-      screen.getByRole('button', { name: '200 application/json' }),
-    ).toBeInTheDocument();
+    expect(getResponseTab('200')).toBeInTheDocument();
   });
 
   it('uses supplied labels for response chrome and empty states', () => {
@@ -132,39 +142,66 @@ describe('OpenApiResponses', () => {
     ).toBeInTheDocument();
     expect(screen.getByLabelText('200 响应的媒体类型')).toBeInTheDocument();
     expect(screen.getByText('Schema 中没有字段')).toBeInTheDocument();
-    fireEvent.click(
-      screen.getByRole('button', { name: '204 application/json' }),
-    );
+    fireEvent.mouseDown(getResponseTab('204'));
     expect(screen.queryByText('响应 Body 为空')).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: '400' }));
+    fireEvent.mouseDown(getResponseTab('400'));
     expect(screen.getByText('未提供 Schema')).toBeInTheDocument();
   });
 
-  it('defaults to the first 2xx response and keeps accordion panels independently expanded', () => {
+  it('defaults to the first 2xx response and switches to one status at a time', () => {
     renderResponses([view('default'), view('200')]);
 
-    expect(
-      screen.getByRole('button', { name: 'default application/json' }),
-    ).toHaveAttribute('aria-expanded', 'false');
-    expect(
-      screen.getByRole('button', { name: '200 application/json' }),
-    ).toHaveAttribute('aria-expanded', 'true');
+    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'false');
+    expect(getResponseTab('200')).toHaveAttribute('aria-selected', 'true');
 
-    fireEvent.click(
-      screen.getByRole('button', { name: 'default application/json' }),
+    fireEvent.mouseDown(getResponseTab('default'));
+
+    expect(screen.getAllByText('Schema: application/json')).toHaveLength(1);
+    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
+    expect(getResponseTab('200')).toHaveAttribute('aria-selected', 'false');
+  });
+
+  it('switches all response content and supports keyboard navigation', async () => {
+    renderResponses([
+      view('200', {
+        description: 'Success',
+        headers: [{ name: 'X-Success', source: {} }],
+      }),
+      view('非 200', {
+        description: 'Failure',
+        hasContent: false,
+        mediaTypes: [],
+      }),
+    ]);
+    const success = getResponseTab('200');
+    expect(screen.getByText('Description: Success')).toBeVisible();
+    expect(screen.getByText('Headers: 200')).toBeVisible();
+    expect(screen.queryByText('Description: Failure')).not.toBeInTheDocument();
+    act(() => success.focus());
+    fireEvent.keyDown(success, { key: 'ArrowRight' });
+    await waitFor(() =>
+      expect(getResponseTab('非 200')).toHaveAttribute('aria-selected', 'true'),
     );
-
-    expect(screen.getAllByText('Schema: application/json')).toHaveLength(2);
+    expect(getResponseTab('非 200')).toHaveFocus();
+    for (const tab of [success, getResponseTab('非 200')]) {
+      expect(tab.id).not.toMatch(/\s/);
+      const panel = document.getElementById(
+        tab.getAttribute('aria-controls') ?? '',
+      );
+      expect(panel).toHaveAttribute('aria-labelledby', tab.id);
+    }
+    expect(screen.getByText('Description: Failure')).toBeVisible();
+    expect(screen.queryByText('Description: Success')).not.toBeInTheDocument();
+    expect(screen.queryByText('Headers: 200')).not.toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: '200 application/json' }),
-    ).toHaveAttribute('aria-expanded', 'true');
+      screen.queryByRole('heading', { name: 'Response Body' }),
+    ).not.toBeInTheDocument();
+    expect(screen.getAllByRole('tabpanel')).toHaveLength(1);
   });
 
   it('opens the first response without a 2xx and handles no responses', () => {
     const { rerender } = renderResponses([view('default'), view('404')]);
-    expect(
-      screen.getByRole('button', { name: 'default application/json' }),
-    ).toHaveAttribute('aria-expanded', 'true');
+    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
 
     rerender(
       <OpenApiResponses
@@ -176,9 +213,7 @@ describe('OpenApiResponses', () => {
         sectionId="test-responses"
       />,
     );
-    expect(
-      screen.queryByRole('button', { name: /application\/json/ }),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole('tab')).not.toBeInTheDocument();
   });
 
   it('omits inferred empty-body text while distinguishing absent and explicit false schemas', () => {
@@ -214,11 +249,9 @@ describe('OpenApiResponses', () => {
       screen.queryByRole('heading', { name: 'Response Body' }),
     ).not.toBeInTheDocument();
     expect(renderSchema).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole('button', { name: '201' }));
+    fireEvent.mouseDown(getResponseTab('201'));
     expect(screen.getByText('Schema not provided')).toBeInTheDocument();
-    fireEvent.click(
-      screen.getByRole('button', { name: '202 application/json' }),
-    );
+    fireEvent.mouseDown(getResponseTab('202'));
     expect(renderSchema).toHaveBeenCalledWith({
       mediaType: 'application/json',
       schema: false,
@@ -275,17 +308,13 @@ describe('OpenApiResponses', () => {
     const select = screen.getByLabelText('Media type for 200 response');
     expect(select).toHaveValue('application/json');
     fireEvent.change(select, { target: { value: 'text/plain' } });
-    expect(
-      screen.getByRole('button', { name: '200 text/plain' }),
-    ).toHaveAttribute('aria-expanded', 'true');
+    expect(getResponseTab('200')).toHaveAttribute('aria-selected', 'true');
     expect(renderSchema).toHaveBeenLastCalledWith({
       mediaType: 'text/plain',
       schema: {},
       status: '200',
     });
-    expect(
-      screen.getByRole('button', { name: '201 application/json' }),
-    ).toHaveAttribute('aria-expanded', 'false');
+    expect(getResponseTab('201')).toHaveAttribute('aria-selected', 'false');
   });
 
   it('renders description, headers, then a body subsection containing the media selector and schema', () => {
@@ -327,14 +356,10 @@ describe('OpenApiResponses', () => {
     const removeEventListener = vi.spyOn(window, 'removeEventListener');
     window.location.hash = 'responses-default-detail';
     const { unmount } = renderResponses([view('default'), view('200')]);
-    expect(
-      screen.getByRole('button', { name: 'default application/json' }),
-    ).toHaveAttribute('aria-expanded', 'true');
+    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
     window.location.hash = 'response-headers-default-x-request-id';
     fireEvent(window, new HashChangeEvent('hashchange'));
-    expect(
-      screen.getByRole('button', { name: 'default application/json' }),
-    ).toHaveAttribute('aria-expanded', 'true');
+    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
     unmount();
     expect(removeEventListener).toHaveBeenCalledWith(
       'hashchange',
@@ -347,12 +372,8 @@ describe('OpenApiResponses', () => {
     window.location.hash = 'response-headers-default-x-request-id';
     renderResponses([view('default'), view('200')]);
 
-    expect(
-      screen.getByRole('button', { name: '200 application/json' }),
-    ).toHaveAttribute('aria-expanded', 'true');
-    expect(
-      screen.getByRole('button', { name: 'default application/json' }),
-    ).toHaveAttribute('aria-expanded', 'true');
+    expect(getResponseTab('200')).toHaveAttribute('aria-selected', 'false');
+    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
   });
 
   it('restores a copied response schema hash with its status and media type', () => {
@@ -383,9 +404,7 @@ describe('OpenApiResponses', () => {
       }),
     ]);
 
-    expect(
-      screen.getByRole('button', { name: `404 ${selectedMediaType}` }),
-    ).toHaveAttribute('aria-expanded', 'true');
+    expect(getResponseTab('404')).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByLabelText('Media type for 404 response')).toHaveValue(
       selectedMediaType,
     );
@@ -395,9 +414,7 @@ describe('OpenApiResponses', () => {
   it('preserves user state for the same response identity and resets it for a new identity', () => {
     const responses = [view('default'), view('200')];
     const { rerender } = renderResponses(responses);
-    fireEvent.click(
-      screen.getByRole('button', { name: 'default application/json' }),
-    );
+    fireEvent.mouseDown(getResponseTab('default'));
     rerender(
       <OpenApiResponses
         labels={ENGLISH_RESPONSE_LABELS}
@@ -408,9 +425,7 @@ describe('OpenApiResponses', () => {
         sectionId="test-responses"
       />,
     );
-    expect(
-      screen.getByRole('button', { name: 'default application/json' }),
-    ).toHaveAttribute('aria-expanded', 'true');
+    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
     rerender(
       <OpenApiResponses
         labels={ENGLISH_RESPONSE_LABELS}
@@ -421,40 +436,33 @@ describe('OpenApiResponses', () => {
         sectionId="test-responses"
       />,
     );
-    expect(
-      screen.getByRole('button', { name: '201 application/json' }),
-    ).toHaveAttribute('aria-expanded', 'true');
+    expect(getResponseTab('201')).toHaveAttribute('aria-selected', 'true');
   });
 
   it('provides matching accessible controls for response panels', () => {
     renderResponses([view('200')]);
-    const trigger = screen.getByRole('button', {
-      name: '200 application/json',
-    });
+    const trigger = getResponseTab('200');
     const panel = document.getElementById(
       trigger.getAttribute('aria-controls') ?? '',
     );
-    const expandIcon = trigger.querySelector('svg');
     expect(panel).toBeInTheDocument();
-    expect(trigger).toHaveAttribute('aria-expanded', 'true');
-    expect(expandIcon).toBeInTheDocument();
-    expect(expandIcon).toHaveClass('rotate-90');
+    expect(trigger).toHaveAttribute('aria-selected', 'true');
+    expect(panel).toHaveAttribute('role', 'tabpanel');
+    expect(panel).toHaveAttribute('aria-labelledby', trigger.id);
   });
 
-  it('keeps collapsed panels in the DOM with an accessible region relationship', () => {
+  it('keeps inactive tab panels hidden with an accessible relationship', () => {
     renderResponses([view('default'), view('200')]);
-    const trigger = screen.getByRole('button', {
-      name: 'default application/json',
-    });
+    const trigger = getResponseTab('default');
     const panel = document.getElementById(
       trigger.getAttribute('aria-controls') ?? '',
     );
 
-    expect(panel).toHaveAttribute('role', 'region');
+    expect(panel).toHaveAttribute('role', 'tabpanel');
     expect(panel).toHaveAttribute('hidden');
     expect(panel).toHaveAttribute('aria-labelledby', trigger.id);
-    expect(trigger.querySelector('svg')).toBeInTheDocument();
-    expect(trigger.querySelector('svg')).not.toHaveClass('rotate-90');
+    expect(trigger).toHaveAttribute('aria-selected', 'false');
+    expect(panel).toBeEmptyDOMElement();
   });
 
   it('generates distinct relationship and media IDs for separate instances', () => {
@@ -487,9 +495,7 @@ describe('OpenApiResponses', () => {
       </>,
     );
 
-    const triggers = screen.getAllByRole('button', {
-      name: '200 application/json',
-    });
+    const triggers = screen.getAllByRole('tab', { name: '200' });
     const selects = screen.getAllByLabelText('Media type for 200 response');
     expect(new Set(triggers.map((trigger) => trigger.id)).size).toBe(2);
     expect(
@@ -541,9 +547,7 @@ describe('OpenApiResponses', () => {
     );
 
     const panel = document.getElementById(
-      screen
-        .getByRole('button', { name: 'default application/json' })
-        .getAttribute('aria-controls') ?? '',
+      getResponseTab('default').getAttribute('aria-controls') ?? '',
     );
     expect(panel).not.toHaveAttribute('hidden');
     const target = document.getElementById(

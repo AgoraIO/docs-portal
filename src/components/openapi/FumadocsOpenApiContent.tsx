@@ -12,7 +12,13 @@ import { defaultShikiFactory } from 'fumadocs-core/highlight/shiki/full';
 import { useShikiDynamic } from 'fumadocs-core/highlight/shiki/react';
 import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
 import type { RenderContext } from 'fumadocs-openapi';
-import type { InlineCodeUsageGenerator } from 'fumadocs-openapi/requests/generators';
+import {
+  createCodeUsageGeneratorRegistry,
+  type InlineCodeUsageGenerator,
+} from 'fumadocs-openapi/requests/generators';
+import { curl } from 'fumadocs-openapi/requests/generators/curl';
+import { javascript } from 'fumadocs-openapi/requests/generators/javascript';
+import { python } from 'fumadocs-openapi/requests/generators/python';
 import {
   type CreateOpenAPIPageOptions,
   createOpenAPIPage,
@@ -86,19 +92,20 @@ import {
 const LEGACY_DOC_ORIGIN = 'https://doc.shengwang.cn';
 const LEGACY_DOC_PATH_PATTERN =
   /(]\()(\/(?:api-center|basics|codebox|doc|faq)(?:[^)]*))(\))/g;
-const GENERATED_CODE_SAMPLE_IDS = [
-  'curl',
-  'js',
-  'go',
-  'python',
-  'java',
-  'csharp',
-] as const;
-const removeGeneratedCodeSamples = GENERATED_CODE_SAMPLE_IDS.map((id) => ({
-  id,
-  lang: id,
-  source: false,
-})) satisfies InlineCodeUsageGenerator[];
+// Keep fallback clients aligned with the legacy reference instead of inheriting
+// the upstream language list, which can grow across Fumadocs upgrades.
+const codeUsages = createCodeUsageGeneratorRegistry();
+codeUsages.add('curl', curl);
+codeUsages.add('python', { ...python, label: 'Python/Requests' });
+codeUsages.add('js', { ...javascript, label: 'Node.js/Fetch' });
+const removeGeneratedCodeSamples = Array.from(
+  codeUsages.map().keys(),
+  (id) => ({
+    id,
+    lang: id,
+    source: false,
+  }),
+) satisfies InlineCodeUsageGenerator[];
 const OpenApiCallout = defaultMdxComponents.Callout;
 const OpenApiOperationContext = createContext<OpenApiOperation | undefined>(
   undefined,
@@ -191,6 +198,7 @@ const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
 } as const;
 
 const OpenAPIPage = createOpenAPIPage({
+  codeUsages,
   components: {
     CodeBlock: ({ code, lang }) => renderOpenApiCodeBlock(lang, code),
   },
@@ -507,7 +515,7 @@ function OpenApiOperationLayout({
   return (
     <OpenApiOperationPanels
       locale={locale}
-      documentation={
+      overview={
         <>
           {slots.header}
           <OpenApiEndpointBar operation={method} />
@@ -519,6 +527,10 @@ function OpenApiOperationLayout({
             operation={method}
             position="after-description"
           />
+        </>
+      }
+      documentation={
+        <>
           <OpenApiInlineAuthorizationSection operation={method} />
           {slots.parameters}
           <OpenApiDocsSections operation={method} position="after-parameters" />
@@ -1437,6 +1449,7 @@ function OpenApiDocsCallouts({
   operation?: OpenApiOperation;
   position: 'after-description' | 'after-responses' | 'before-description';
 }) {
+  const locale = useContext(OpenApiLocaleContext);
   const callouts = arrayOfRecords(operation?.['x-docs-callouts']).filter(
     (callout): callout is OpenApiResolvedCalloutItem =>
       typeof callout.markdown === 'string' &&
@@ -1449,19 +1462,27 @@ function OpenApiDocsCallouts({
 
   return (
     <div className={position === 'before-description' ? 'mb-6' : 'mt-6'}>
-      {callouts.map((callout) => (
-        <OpenApiCallout
-          key={`${position}:${getOpenApiCalloutKey(callout)}`}
-          title={callout.title}
-          type={toCalloutType(callout.type)}
-        >
-          <div className="prose-no-margin">
-            {renderOpenApiMarkdown(
-              normalizeOpenApiDescriptionMarkdown(callout.markdown),
-            )}
-          </div>
-        </OpenApiCallout>
-      ))}
+      {callouts.map((callout) => {
+        // The legacy Chinese REST renderer presents untyped blockquotes as
+        // caution notices titled 注意. Preserve authored type/title overrides.
+        const legacyNotice =
+          isZhCnLocale(locale) && !callout.type && !callout.title;
+        return (
+          <OpenApiCallout
+            key={`${position}:${getOpenApiCalloutKey(callout)}`}
+            title={
+              legacyNotice ? getOpenApiLabel('Note', locale) : callout.title
+            }
+            type={toCalloutType(legacyNotice ? 'caution' : callout.type)}
+          >
+            <div className="prose-no-margin">
+              {renderOpenApiMarkdown(
+                normalizeOpenApiDescriptionMarkdown(callout.markdown),
+              )}
+            </div>
+          </OpenApiCallout>
+        );
+      })}
     </div>
   );
 }

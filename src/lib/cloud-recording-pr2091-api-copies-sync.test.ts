@@ -49,7 +49,7 @@ function readDoc(path: string) {
 }
 
 function apiDoc(index: number) {
-  return readDoc(`${apiRoot}/${copies[index].api}.mdx`);
+  return readDoc(`${productRoot}/${copies[index].product}.mdx`);
 }
 
 function section(body: string, heading: string, endHeading: string) {
@@ -60,44 +60,21 @@ function section(body: string, heading: string, endHeading: string) {
   return body.slice(start, end);
 }
 
-describe('Cloud Recording PR 2091 API guide copies', () => {
-  it.each(copies)('matches the canonical body for $api', ({ api, product }) => {
-    expect(readDoc(`${apiRoot}/${api}.mdx`).body).toBe(
-      readDoc(`${productRoot}/${product}.mdx`).body,
-    );
-  });
-
+describe('Cloud Recording PR 2091 canonical guide fidelity', () => {
   it.each(copies)(
-    'preserves API provenance for $api',
-    ({ api, title, normalizedSignals, normalizedFragments }) => {
-      const { metadata } = readDoc(`${apiRoot}/${api}.mdx`);
-      expect(metadata.title).toBe(title);
-      expect(metadata._migration).toMatchObject({
-        type: 'manual-mdx',
-        status: 'migrated',
-        sourceUrl: `https://doc.shengwang.cn/doc/cloud-recording/restful/${api}`,
-        sourcePath: `docs/cloud-recording/${api}.mdx`,
-        generator: 'legacy-mdx',
-      });
-      expect(metadata._migration.warnings).toEqual([
-        {
-          code: 'manual-mdx-normalized',
-          severity: 'info',
-          message: `Normalized ${normalizedSignals} legacy MDX syntax signal(s).`,
-        },
-        {
-          code: 'manual-fragment-normalized',
-          severity: 'info',
-          message: `Normalized ${normalizedFragments} legacy fragment link(s) to stable local anchors.`,
-        },
-      ]);
+    'keeps a single canonical source for $api',
+    ({ api, product, title }) => {
+      expect(existsSync(`${apiRoot}/${api}.mdx`)).toBe(false);
+      expect(readDoc(`${productRoot}/${product}.mdx`).metadata.title).toBe(
+        title,
+      );
     },
   );
 
   it.each(copies)(
     'keeps the new-mode notice and old-guide link for $api',
-    ({ api, legacy }) => {
-      const { body } = readDoc(`${apiRoot}/${api}.mdx`);
+    ({ product, legacy }) => {
+      const { body } = readDoc(`${productRoot}/${product}.mdx`);
       expect(body).toContain('本文内容适用于新单流录制。');
       expect(body).toContain(`/zh-CN/realtime-media/cloud-recording/${legacy}`);
       expect(
