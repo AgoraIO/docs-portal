@@ -43,6 +43,10 @@ import {
 } from '@/lib/openapi/anchors';
 import { highlightOpenApiCode } from '@/lib/openapi/code-highlight';
 import {
+  getOpenApiQuoteCallout,
+  remarkOpenApiCallouts,
+} from '@/lib/openapi/remark-callouts';
+import {
   buildOpenApiResponseViews,
   type OpenApiResponseHeaderView,
 } from '@/lib/openapi/response-view';
@@ -101,7 +105,15 @@ const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   required: '必填',
   properties: '属性',
   'Header Parameters': '请求 Header',
-  Note: '注意',
+  Note: '说明',
+  Info: '提示',
+  Tip: '建议',
+  Success: '成功',
+  Important: '重要',
+  Warning: '警告',
+  Caution: '注意',
+  Danger: '危险',
+  Error: '错误',
   'Path Parameters': '路径参数',
   'Query Parameters': '查询参数',
   'Request Body': '请求 Body',
@@ -1848,16 +1860,26 @@ function useOpenApiCopyButton(onCopy: () => void | Promise<void>) {
   return [checked, onClick] as const;
 }
 
-function OpenApiMarkdownBlockquote({ children }: { children?: ReactNode }) {
+function OpenApiMarkdownBlockquote({
+  children,
+  'data-callout': marker,
+}: {
+  children?: ReactNode;
+  'data-callout'?: string;
+}) {
   const locale = useContext(OpenApiLocaleContext);
+  const callout = getOpenApiQuoteCallout(marker);
 
-  if (!isZhCnLocale(locale)) {
+  if (!callout && !isZhCnLocale(locale)) {
     return <blockquote>{children}</blockquote>;
   }
 
   return (
     <div className="openapi-markdown-blockquote">
-      <OpenApiCallout title={getOpenApiLabel('Note', locale)} type="info">
+      <OpenApiCallout
+        title={getOpenApiLabel(callout?.title ?? 'Note', locale)}
+        type={callout?.type ?? 'info'}
+      >
         <div className="prose-no-margin">{children}</div>
       </OpenApiCallout>
     </div>
@@ -1882,7 +1904,11 @@ function createOpenApiMarkdownProcessor() {
       });
   }
 
-  return remark().use(remarkGfm).use(remarkRehype).use(rehypeReact);
+  return remark()
+    .use(remarkGfm)
+    .use(remarkOpenApiCallouts)
+    .use(remarkRehype)
+    .use(rehypeReact);
 }
 
 function toCalloutType(type: string | undefined) {
