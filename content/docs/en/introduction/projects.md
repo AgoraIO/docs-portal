@@ -44,8 +44,8 @@ Enabling an App Certificate allows your server to generate tokens. It does not, 
 Before switching a project that allows App ID-only access, update all clients to use valid tokens. Requests that use only the App ID will fail after App ID-only access is disabled.
 
 1. Open **Project credentials** for the intended project.
-2. Under **Authentication mode**, click **Require App ID + Token**.
-3. Review the affected App ID and the warning, then confirm **Require App ID + Token**. Cancel to keep the current setting.
+2. Under **Authentication mode**, click **Disable App ID-only Access**.
+3. Review the affected App ID and the warning, then confirm **Disable App ID-only Access**. Cancel to keep the current setting.
 4. Check that the displayed mode is **App ID + Token required**.
 
 The confirmation changes the authentication requirement. It does not disable the project or delete its certificates. See [Credentials](/en/realtime-media/rtc/core-concepts?platform=web#credentials) for App ID, App Certificate, and Token usage.
