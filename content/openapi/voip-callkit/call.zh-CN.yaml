@@ -262,7 +262,7 @@ paths:
                         minutes: 100
                         period: 00:00~23:59
         非 200:
-          description: 请求失败。你可以根据返回的响应状态码和响应 Body 中 `message` 字段的描述排查错误。
+          $ref: '#/components/responses/license-error'
       x-stoplight:
         id: 3esnxokjrilcr
   /dabiz/license/v3/projects/{appId}/pids/{pid}/expiringLicenses:
@@ -358,7 +358,7 @@ paths:
                         activeTime: '2024-12-02T08:15:39Z'
                         expireTime: '2024-12-05T08:15:39Z'
         非 200:
-          description: 请求失败。你可以根据返回的响应状态码和响应 Body 中 `message` 字段的描述排查错误。
+          $ref: '#/components/responses/license-error'
       x-stoplight:
         id: 0ffuumxjc8gnl
       x-docs-sections:
@@ -448,7 +448,7 @@ paths:
                       activationTime: 1700642665
                       expireTime: 1705913065
         非 200:
-          description: 请求失败。你可以根据返回的响应状态码和响应 Body 中 `message` 字段的描述排查错误。
+          $ref: '#/components/responses/license-error'
       x-stoplight:
         id: rs72nbaqzt2zj
       x-docs-sections:
@@ -557,7 +557,7 @@ paths:
                         allocateCount: 0
                         createTime: '2024-12-02T08:25:30Z'
         非 200:
-          description: 请求失败。你可以根据返回的响应状态码和响应 Body 中 `message` 字段的描述排查错误。
+          $ref: '#/components/responses/license-error'
       x-stoplight:
         id: 51tlwjis84ad6
       x-docs-sections:
@@ -565,6 +565,17 @@ paths:
         markdown: |-
           该方法可以查询指定 PID 下所有的续期订单，方便你根据剩余数量和有效期等信息，确定使用哪一个 `renewId` 进行续期。
 components:
+  responses:
+    license-error:
+      description: 请求失败。你可以根据返回的响应状态码和响应 Body 中 `message` 字段的描述排查错误。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: 请求失败的错误信息。请结合返回的响应状态码排查错误。
   schemas:
     StandardResponse:
       type: object
