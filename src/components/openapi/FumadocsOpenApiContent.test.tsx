@@ -175,7 +175,7 @@ describe('FumadocsOpenApiContent', () => {
     }
   });
 
-  it('preserves RTC error guidance without inferring an empty response body', async () => {
+  it('preserves RTC error guidance and its declared response fields', async () => {
     const document = yaml.load(
       await readFile(
         'content/openapi/rtc/channel-management.zh-CN.yaml',
@@ -191,7 +191,9 @@ describe('FumadocsOpenApiContent', () => {
         }}
       />,
     );
-    const trigger = await screen.findByRole('button', { name: '非 200' });
+    const trigger = await screen.findByRole('button', {
+      name: '非 200 application/json',
+    });
     fireEvent.click(trigger);
     const panel = globalThis.document.getElementById(
       trigger.getAttribute('aria-controls') ?? '',
@@ -204,6 +206,11 @@ describe('FumadocsOpenApiContent', () => {
       '/zh-CN/realtime-media/rtc/reference/response-code',
     );
     expect(within(panel).queryByText('响应 Body 为空')).not.toBeInTheDocument();
+    const fieldNames = Array.from(
+      panel.querySelectorAll('.openapi-schema-field-row code'),
+      (element) => element.textContent,
+    );
+    expect(fieldNames).toEqual(expect.arrayContaining(['message', 'reason']));
   });
 
   it('offers both schema-derived response examples for the actual Converter status endpoint', async () => {
