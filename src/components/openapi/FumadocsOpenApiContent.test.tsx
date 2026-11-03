@@ -123,6 +123,42 @@ function getResponseTab(status: string) {
 }
 
 describe('FumadocsOpenApiContent', () => {
+  it('keeps the turns endpoint and legacy notice in the overview above both panels', async () => {
+    const bundled = yaml.load(
+      await readFile(
+        'content/openapi/conversational-ai/rest-api.zh-CN.yaml',
+        'utf8',
+      ),
+    ) as Document;
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'get',
+              path: '/v2/projects/{appid}/agents/{agentId}/turns',
+            },
+          ],
+          payload: { bundled },
+        }}
+      />,
+    );
+    const endpoint = screen.getByRole('button', { name: '复制接口 URL' });
+    expect(endpoint.closest('[data-openapi-operation-panel]')).toBeNull();
+    const overview = endpoint.closest(
+      '[data-openapi-operation-overview]',
+    ) as HTMLElement;
+    expect(overview).toBeInTheDocument();
+    expect(within(overview).getByText('注意')).toBeInTheDocument();
+    expect(
+      within(overview).getByText('自 v2.7 起', { exact: false }),
+    ).toBeInTheDocument();
+    expect(
+      overview.querySelector('svg.lucide-triangle-alert'),
+    ).toBeInTheDocument();
+  });
+
   it('groups cloud-transcoding response headers and body under the response section for each status', async () => {
     const source = yaml.load(
       await readFile(
@@ -1405,6 +1441,18 @@ describe('FumadocsOpenApiContent', () => {
         ),
       );
       const responseTabs = $('[data-openapi-responses] > [data-slot="tabs"]');
+      const overview = $('[data-openapi-operation-overview]');
+      expect(overview.length, file.path).toBe(1);
+      expect(
+        overview.closest('[data-openapi-operation-panel]').length,
+        file.path,
+      ).toBe(0);
+      expect(
+        overview.find(
+          'button[aria-label="复制接口 URL"], button[aria-label="Copy endpoint URL"]',
+        ).length,
+        file.path,
+      ).toBe(1);
       expect(
         responseTabs
           .children()

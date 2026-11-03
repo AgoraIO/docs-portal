@@ -9,10 +9,12 @@ export function OpenApiOperationPanels({
   documentation,
   examples,
   locale,
+  overview,
 }: {
   documentation: ReactNode;
   examples: ReactNode;
   locale?: string;
+  overview?: ReactNode;
 }) {
   const [view, setView] = useState('documentation');
   const rootRef = useRef<HTMLDivElement>(null);
@@ -24,7 +26,7 @@ export function OpenApiOperationPanels({
     const navigation = navigationRef.current;
     if (navigation && getComputedStyle(navigation).display !== 'none') {
       requestAnimationFrame(() => {
-        rootRef.current?.scrollIntoView?.({ block: 'start' });
+        navigation.scrollIntoView?.({ block: 'start' });
       });
     }
   };
@@ -60,6 +62,14 @@ export function OpenApiOperationPanels({
       ref={rootRef}
       value={view}
     >
+      {overview ? (
+        <div
+          className="min-w-0 @min-[40rem]:col-span-2"
+          data-openapi-operation-overview
+        >
+          {overview}
+        </div>
+      ) : null}
       <TabsList
         aria-label={chinese ? 'API 文档视图' : 'API documentation view'}
         className="sticky top-[var(--docs-shell-header-offset,48px)] z-10 grid w-full grid-cols-2 group-data-[orientation=horizontal]/tabs:h-auto @min-[40rem]:hidden"

@@ -515,7 +515,7 @@ function OpenApiOperationLayout({
   return (
     <OpenApiOperationPanels
       locale={locale}
-      documentation={
+      overview={
         <>
           {slots.header}
           <OpenApiEndpointBar operation={method} />
@@ -527,6 +527,10 @@ function OpenApiOperationLayout({
             operation={method}
             position="after-description"
           />
+        </>
+      }
+      documentation={
+        <>
           <OpenApiInlineAuthorizationSection operation={method} />
           {slots.parameters}
           <OpenApiDocsSections operation={method} position="after-parameters" />
@@ -1445,6 +1449,7 @@ function OpenApiDocsCallouts({
   operation?: OpenApiOperation;
   position: 'after-description' | 'after-responses' | 'before-description';
 }) {
+  const locale = useContext(OpenApiLocaleContext);
   const callouts = arrayOfRecords(operation?.['x-docs-callouts']).filter(
     (callout): callout is OpenApiResolvedCalloutItem =>
       typeof callout.markdown === 'string' &&
@@ -1457,19 +1462,27 @@ function OpenApiDocsCallouts({
 
   return (
     <div className={position === 'before-description' ? 'mb-6' : 'mt-6'}>
-      {callouts.map((callout) => (
-        <OpenApiCallout
-          key={`${position}:${getOpenApiCalloutKey(callout)}`}
-          title={callout.title}
-          type={toCalloutType(callout.type)}
-        >
-          <div className="prose-no-margin">
-            {renderOpenApiMarkdown(
-              normalizeOpenApiDescriptionMarkdown(callout.markdown),
-            )}
-          </div>
-        </OpenApiCallout>
-      ))}
+      {callouts.map((callout) => {
+        // The legacy Chinese REST renderer presents untyped blockquotes as
+        // caution notices titled 注意. Preserve authored type/title overrides.
+        const legacyNotice =
+          isZhCnLocale(locale) && !callout.type && !callout.title;
+        return (
+          <OpenApiCallout
+            key={`${position}:${getOpenApiCalloutKey(callout)}`}
+            title={
+              legacyNotice ? getOpenApiLabel('Note', locale) : callout.title
+            }
+            type={toCalloutType(legacyNotice ? 'caution' : callout.type)}
+          >
+            <div className="prose-no-margin">
+              {renderOpenApiMarkdown(
+                normalizeOpenApiDescriptionMarkdown(callout.markdown),
+              )}
+            </div>
+          </OpenApiCallout>
+        );
+      })}
     </div>
   );
 }
