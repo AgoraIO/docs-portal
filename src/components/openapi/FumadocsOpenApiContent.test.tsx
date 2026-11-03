@@ -116,6 +116,12 @@ function makeSectionHeadingPageProps(): OpenAPIPageProps {
   };
 }
 
+function getResponseTab(status: string) {
+  return within(
+    document.querySelector('[data-openapi-responses]') as HTMLElement,
+  ).getByRole('tab', { name: status });
+}
+
 describe('FumadocsOpenApiContent', () => {
   it('groups cloud-transcoding response headers and body under the response section for each status', async () => {
     const source = yaml.load(
@@ -144,11 +150,9 @@ describe('FumadocsOpenApiContent', () => {
     });
     expect(heading).toHaveAttribute('id', 'response-body');
     for (const status of ['2XX', '非 2XX']) {
-      const trigger = screen.getByRole('button', {
-        name: `${status} application/json`,
-      });
-      if (trigger.getAttribute('aria-expanded') === 'false')
-        fireEvent.click(trigger);
+      const trigger = getResponseTab(status);
+      if (trigger.getAttribute('aria-selected') === 'false')
+        fireEvent.mouseDown(trigger);
       const panel = document.getElementById(
         trigger.getAttribute('aria-controls') ?? '',
       ) as HTMLElement;
@@ -192,8 +196,8 @@ describe('FumadocsOpenApiContent', () => {
         }}
       />,
     );
-    const trigger = await screen.findByRole('button', { name: '非 200' });
-    fireEvent.click(trigger);
+    const trigger = getResponseTab('非 200');
+    fireEvent.mouseDown(trigger);
     const panel = globalThis.document.getElementById(
       trigger.getAttribute('aria-controls') ?? '',
     ) as HTMLElement;
@@ -1032,7 +1036,7 @@ describe('FumadocsOpenApiContent', () => {
     }
   });
 
-  it('renders one English response body accordion with status-local headers', async () => {
+  it('renders one English response body tabs with status-local headers', async () => {
     render(
       <FumadocsOpenApiContent
         pageProps={{
@@ -1103,12 +1107,8 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       screen.queryByRole('heading', { name: 'Response schema' }),
     ).not.toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: '200 application/json' }),
-    ).toHaveAttribute('aria-expanded', 'true');
-    expect(
-      screen.getByRole('button', { name: 'default application/json' }),
-    ).toHaveAttribute('aria-expanded', 'false');
+    expect(getResponseTab('200')).toHaveAttribute('aria-selected', 'true');
+    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'false');
     expect(
       document.getElementById('response-headers-200-x-request-id'),
     ).toBeInTheDocument();
@@ -1127,10 +1127,8 @@ describe('FumadocsOpenApiContent', () => {
     expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
     const select = screen.getByLabelText('Media type for 200 response');
     fireEvent.change(select, { target: { value: 'text/plain' } });
-    expect(
-      screen.getByRole('button', { name: '200 text/plain' }),
-    ).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: '204' }));
+    expect(getResponseTab('200')).toBeInTheDocument();
+    fireEvent.mouseDown(getResponseTab('204'));
     expect(screen.getByText('No content')).toBeInTheDocument();
     expect(screen.queryByText('Empty response body')).not.toBeInTheDocument();
   });
@@ -1175,9 +1173,7 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    expect(
-      screen.getByRole('button', { name: 'default application/json' }),
-    ).toHaveAttribute('aria-expanded', 'true');
+    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
     await waitFor(() => {
       expect(screen.getAllByText('id').length).toBeGreaterThan(0);
       const url = new URL(window.location.href);
@@ -1218,17 +1214,14 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    expect(screen.getByRole('button', { name: 'default' })).toHaveAttribute(
-      'aria-expanded',
-      'true',
-    );
+    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
     expect(
       document.getElementById('response-headers-default-x-request-id'),
     ).toBeInTheDocument();
     window.location.hash = '';
   });
 
-  it('preserves English response accordion state for unchanged response references', () => {
+  it('preserves English response tab selection for unchanged response references', () => {
     const responses = {
       default: {
         content: {
@@ -1254,18 +1247,12 @@ describe('FumadocsOpenApiContent', () => {
       <FumadocsOpenApiContent pageProps={pageProps} />,
     );
 
-    fireEvent.click(
-      screen.getByRole('button', { name: 'default application/json' }),
-    );
-    expect(
-      screen.getByRole('button', { name: 'default application/json' }),
-    ).toHaveAttribute('aria-expanded', 'true');
+    fireEvent.mouseDown(getResponseTab('default'));
+    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
 
     rerender(<FumadocsOpenApiContent pageProps={pageProps} />);
 
-    expect(
-      screen.getByRole('button', { name: 'default application/json' }),
-    ).toHaveAttribute('aria-expanded', 'true');
+    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
 
     const nextPageProps = {
       operations: pageProps.operations,
@@ -1282,10 +1269,7 @@ describe('FumadocsOpenApiContent', () => {
     } as unknown as OpenAPIPageProps;
     rerender(<FumadocsOpenApiContent pageProps={nextPageProps} />);
 
-    expect(screen.getByRole('button', { name: '201' })).toHaveAttribute(
-      'aria-expanded',
-      'true',
-    );
+    expect(getResponseTab('201')).toHaveAttribute('aria-selected', 'true');
   });
 
   it('limits generated request samples to the three legacy clients', async () => {
@@ -1400,7 +1384,7 @@ describe('FumadocsOpenApiContent', () => {
     );
   });
 
-  it('uses the same three fallback clients on every registered endpoint without authored samples', async () => {
+  it('renders response status tabs on every registered endpoint and keeps three fallback clients', async () => {
     const source = await createLocalizedOpenApiSource();
     const checkedPaths: string[] = [];
 
@@ -1412,13 +1396,6 @@ describe('FumadocsOpenApiContent', () => {
       const operation = pageProps.payload.bundled.paths?.[route.path]?.[
         route.method
       ] as Record<string, unknown>;
-      if (
-        operation['x-codeSamples'] ||
-        operation['x-docs-code-sample-groups']
-      ) {
-        continue;
-      }
-
       const $ = load(
         renderToStaticMarkup(
           <FumadocsOpenApiContent
@@ -1427,6 +1404,26 @@ describe('FumadocsOpenApiContent', () => {
           />,
         ),
       );
+      const responseTabs = $('[data-openapi-responses] > [data-slot="tabs"]');
+      expect(
+        responseTabs
+          .children()
+          .first()
+          .find('[role="tab"]')
+          .map((_, tab) => $(tab).text())
+          .get(),
+        file.path,
+      ).toEqual(Object.keys(operation.responses as Record<string, unknown>));
+      expect(
+        responseTabs.children('[role="tabpanel"]:not([hidden])').length,
+        file.path,
+      ).toBe(1);
+      if (
+        operation['x-codeSamples'] ||
+        operation['x-docs-code-sample-groups']
+      ) {
+        continue;
+      }
       expect(
         $('.openapi-request-examples [role="tab"]')
           .map((_, tab) => $(tab).text())
@@ -4042,7 +4039,11 @@ describe('FumadocsOpenApiContent', () => {
     expect(examplesScope.getByRole('tabpanel')).not.toHaveTextContent(
       'curl --request POST https://example.com/join',
     );
-    expect(screen.getByRole('tab', { name: '200' })).toBeInTheDocument();
+    expect(
+      within(
+        document.querySelector('.openapi-response-example') as HTMLElement,
+      ).getByRole('tab', { name: '200' }),
+    ).toBeInTheDocument();
     expect(
       screen.queryByText('x-docs-code-sample-groups'),
     ).not.toBeInTheDocument();
@@ -4175,7 +4176,11 @@ describe('FumadocsOpenApiContent', () => {
         'Sends a custom text instruction to a specified Conversational AI agent instance.',
       ),
     ).not.toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: '200' })).toBeInTheDocument();
+    expect(
+      within(
+        document.querySelector('.openapi-response-example') as HTMLElement,
+      ).getByRole('tab', { name: '200' }),
+    ).toBeInTheDocument();
     expect(
       screen.queryByText('x-docs-code-sample-groups'),
     ).not.toBeInTheDocument();
@@ -4355,13 +4360,10 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       document.getElementById('response-headers-200-x-request-id'),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: '200 application/json' }),
-    ).toHaveAttribute('aria-expanded', 'true');
-    fireEvent.click(
-      screen.getByRole('button', { name: '401 application/json' }),
+    expect(getResponseTab('200')).toHaveAttribute('aria-selected', 'true');
+    const responseScope = within(
+      document.querySelector('[data-openapi-responses]') as HTMLElement,
     );
-    const responseScope = within(document.body);
 
     expect(
       responseScope.getByText(
@@ -4399,13 +4401,19 @@ describe('FumadocsOpenApiContent', () => {
         'Unix timestamp, in seconds, when the streaming key was created.',
       ),
     ).toBeInTheDocument();
+    fireEvent.mouseDown(getResponseTab('401'));
+    expect(
+      responseScope.queryByText(
+        'The request succeeded and returned the created streaming key.',
+      ),
+    ).not.toBeInTheDocument();
     expect(document.body).toHaveTextContent(
       'A 401 (Unauthorized) response status code means the request is not authorized.',
     );
     expect(
       responseScope.getByText('Description of why the request failed.'),
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: '204' }));
+    fireEvent.mouseDown(getResponseTab('204'));
     expect(screen.getByText('No response content.')).toBeInTheDocument();
     expect(screen.queryByText('响应 Body 为空')).not.toBeInTheDocument();
   });
@@ -4623,11 +4631,9 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     const panelFor = (status: string) => {
-      const trigger = screen.getByRole('button', {
-        name: `${status} application/json`,
-      });
-      if (trigger.getAttribute('aria-expanded') === 'false') {
-        fireEvent.click(trigger);
+      const trigger = getResponseTab(status);
+      if (trigger.getAttribute('aria-selected') === 'false') {
+        fireEvent.mouseDown(trigger);
       }
       return within(
         document.getElementById(
@@ -4646,7 +4652,7 @@ describe('FumadocsOpenApiContent', () => {
     expect(panelFor('205').getAllByText('object').length).toBeGreaterThan(0);
   });
 
-  it('keeps English response schemas inside the response body accordion', async () => {
+  it('keeps English response schemas inside the response body tabs', async () => {
     render(
       <FumadocsOpenApiContent
         pageProps={{
