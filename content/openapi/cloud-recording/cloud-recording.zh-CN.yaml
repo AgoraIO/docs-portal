@@ -37,6 +37,7 @@ paths:
             在开始云端录制之前，你需要调用 `acquire` 方法获取一个 Resource ID。一个 Resource ID 只能用于一次云端录制服务。
       x-docs-callouts:
         - type: caution
+          title: 注意
           position: after-description
           markdown: |-
             - `acquire` 和 `start` 的请求需配对调用。
@@ -97,6 +98,7 @@ paths:
             通过 [`acquire`](acquire) 方法获取云端录制资源后，调用 `start` 方法开始云端录制。
       x-docs-callouts:
         - type: caution
+          title: 注意
           position: after-description
           markdown: 发起 `start` 请求后，你还需要依据[保障录制成功启动](/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/recording-status#monitor_status)检查录制服务是否已经成功启动。
       operationId: start-cloud-recording
@@ -363,6 +365,7 @@ paths:
             - 对页面录制，设置暂停/恢复页面录制，或更新页面录制转推到 CDN 的推流地址（URL）。
       x-docs-callouts:
         - type: caution
+          title: 注意
           position: after-description
           markdown: |-
             - `update` 请求仅在会话内有效。如果录制启动错误，或录制已结束，调用 `update` 将返回 `404`。
@@ -449,6 +452,7 @@ paths:
             每次调用该方法都会覆盖原来的布局设置。例如，在开始录制时设置了 `backgroundColor` 为 `"#FF0000"`（红色），如果调用 `updateLayout` 方法更新合流布局时如果不再设置 `backgroundColor` 字段，背景色就会变为黑色（默认值）。
       x-docs-callouts:
         - type: caution
+          title: 注意
           position: after-description
           markdown: |-
             - `updateLayout` 请求仅在会话内有效。如果录制启动错误，或录制已结束，调用 `updateLayout` 将返回 `404`。
@@ -532,6 +536,7 @@ paths:
             开始录制后，你可以调用 `query` 方法查询录制状态。
       x-docs-callouts:
         - type: caution
+          title: 注意
           position: after-description
           markdown: '`query` 请求仅在会话内有效。如果录制启动错误，或录制已结束，调用 `query` 将返回 `404`。'
       operationId: query-cloud-recording
@@ -569,6 +574,7 @@ paths:
             开始录制后，你可以调用 `stop` 方法离开频道，停止录制。录制停止后如需再次录制，必须再调用 `acquire` 方法请求一个新的 Resource ID。
       x-docs-callouts:
         - type: caution
+          title: 注意
           position: after-description
           markdown: |-
             - `stop` 请求仅在会话内有效。如果录制启动错误，或录制已结束，调用 `stop` 将返回 `404`。
@@ -621,6 +627,7 @@ paths:
             开通消息通知服务后，声网消息通知服务可以将云端录制业务中的发生的一些事件以 HTTPS 请求的方式通知到你的服务器。声网会动态调整消息通知服务器的 IP 地址，周期为 24 小时。你可以通过本方法查询 IP 地址。查询后，你需要将 IP 地址（或 IP 地址列表）添加到白名单中。
       x-docs-callouts:
         - type: caution
+          title: 注意
           position: after-description
           markdown: 我们强烈推荐你至少每 24 小时进行一次查询，并自动更新防火墙配置，否则可能会影响你接收通知。
       operationId: get-ncs-ip

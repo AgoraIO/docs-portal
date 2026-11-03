@@ -9,7 +9,7 @@ type Document = Extract<
 >['payload']['bundled'];
 
 function makeNoticePageProps(
-  type: string,
+  type: string | undefined,
   deprecated = false,
   description?: string,
 ): OpenAPIPageProps {
@@ -54,6 +54,21 @@ function makeNoticePageProps(
 }
 
 describe('OpenAPI callout coverage', () => {
+  it('preserves the 注意 caption for a legacy untyped operation caution', async () => {
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={makeNoticePageProps(undefined)}
+      />,
+    );
+    const notice = await screen.findByText('Operation notice');
+    const callout = notice.closest('.docs-callout');
+    expect(
+      callout?.querySelector(':scope > div:last-child > p'),
+    ).toHaveTextContent(/^注意$/);
+    expect(callout?.getAttribute('style')).toContain('--color-fd-warning');
+  });
+
   it.each([
     ['CAUTION', 'warning'],
     ['DANGER', 'error'],

@@ -808,6 +808,7 @@ paths:
       - API Key: []
       x-docs-callouts:
       - type: info
+        title: 说明
         position: after-description
         markdown: 自定义录制与标准录制的区别在于，自定义录制支持使用第三方云存储服务。
     get:
@@ -920,6 +921,7 @@ paths:
       - API Key: []
       x-docs-callouts:
       - type: info
+        title: 说明
         position: after-description
         markdown: 调用[设置自定义录制配置 API](custom-recording-config-update) 后，会自动为该发布点下的所有直播流开启自定义录制。
   /v1/projects/{appid}/fls/entry_points/{entry_point}/admin/record/custom/regions/{region}/tasks:
@@ -955,6 +957,7 @@ paths:
         markdown: 调用该 API 只能录制一条正在推的流，或者接下来 24 小时内会推的流。录制会在推流停止时结束。
       x-docs-callouts:
       - type: caution
+        title: 注意
         position: after-description
         markdown: 调用该 API 之前，请确保已经调用[开启/结束发布点的自定义录制 API](custom-recording-auto-update)，结束对该直播流所属发布点的自定义录制。
   /v1/projects/{appid}/fls/entry_points/{entry_point}/admin/record/custom/regions/{region}/tasks/{stream_name}:
@@ -1038,6 +1041,7 @@ paths:
       - API Key: []
       x-docs-callouts:
       - type: info
+        title: 说明
         position: after-description
         markdown: 自定义录制与标准录制的区别在于，自定义录制支持使用第三方云存储服务。
     get:
@@ -1135,6 +1139,7 @@ paths:
       - API Key: []
       x-docs-callouts:
       - type: info
+        title: 说明
         position: after-description
         markdown: 调用[设置标准录制配置 API](standard-recording-config-update) 后，会自动为该发布点下的所有直播流开启标准录制。
   /v1/projects/{appid}/fls/entry_points/{entry_point}/admin/record/standard/regions/{region}/tasks:
@@ -1170,6 +1175,7 @@ paths:
         markdown: 调用该 API 只能录制一条正在推的流，或者接下来 24 小时内会推的流。录制会在推流停止时结束。
       x-docs-callouts:
       - type: caution
+        title: 注意
         position: after-description
         markdown: 调用该 API 之前，请确保已经调用[开启/结束发布点的标准录制 API](standard-recording-auto-update)，结束该直播流所属发布点的标准录制。
   /v1/projects/{appid}/fls/entry_points/{entry_point}/admin/record/standard/regions/{region}/tasks/{stream_name}:
@@ -1456,6 +1462,7 @@ paths:
       - API Key: []
       x-docs-callouts:
       - type: info
+        title: 说明
         position: after-description
         markdown: 自定义截图及存储与标准截图及存储的区别在于，自定义截图及存储支持使用第三方云存储服务。
     get:
@@ -1573,6 +1580,7 @@ paths:
       - API Key: []
       x-docs-callouts:
       - type: info
+        title: 说明
         position: after-description
         markdown: 自定义截图及存储与标准截图及存储的区别在于，自定义截图及存储支持使用第三方云存储服务。
     get:
@@ -1670,6 +1678,7 @@ paths:
       - API Key: []
       x-docs-callouts:
       - type: caution
+        title: 注意
         position: after-description
         markdown: 该功能处于内测阶段，使用前请联系 sales@shengwang.cn。
     get:
@@ -1717,6 +1726,7 @@ paths:
       - API Key: []
       x-docs-callouts:
       - type: caution
+        title: 注意
         position: after-description
         markdown: 该功能处于内测阶段，使用前请联系 sales@shengwang.cn。
     parameters:
@@ -2319,6 +2329,7 @@ paths:
         markdown: 延迟播放（简称“延播”）是指认为设置一个时间间隔，让用户看到的播放画面落后于直播现场画面。
       x-docs-callouts:
       - type: caution
+        title: 注意
         position: after-description
         markdown: 延播功能目前仅支持[推流 & 播放模式](/zh-CN/realtime-media/fusion-cdn/get-started/quick-start)。
     delete:
@@ -2541,6 +2552,7 @@ paths:
       - API Key: []
       x-docs-callouts:
       - type: caution
+        title: 注意
         position: after-description
         markdown: 该功能处于内测阶段，使用前请联系 sales@shengwang.cn。
     delete:

@@ -1486,15 +1486,15 @@ function OpenApiDocsCallouts({
   return (
     <div className={position === 'before-description' ? 'mb-6' : 'mt-6'}>
       {callouts.map((callout) => {
-        // The legacy Chinese REST renderer presents untyped blockquotes as
-        // caution notices titled 注意. Preserve authored type/title overrides.
+        // Untyped legacy Chinese operation notices keep their caution styling.
+        // Explicit source type/title metadata takes precedence.
         const legacyNotice =
           isZhCnLocale(locale) && !callout.type && !callout.title;
         return (
           <OpenApiCallout
             key={`${position}:${getOpenApiCalloutKey(callout)}`}
             title={
-              legacyNotice ? getOpenApiLabel('Note', locale) : callout.title
+              legacyNotice ? getOpenApiLabel('Caution', locale) : callout.title
             }
             type={toCalloutType(legacyNotice ? 'caution' : callout.type)}
           >
