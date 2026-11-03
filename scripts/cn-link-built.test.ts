@@ -36,6 +36,55 @@ afterEach(() => {
 });
 
 describe('built CN HTML evidence', () => {
+  it.each([
+    ['/zh-CN/api-reference/api-ref/cloud-recording', 'acquire'],
+    ['/zh-CN/guide/entry', 'current'],
+  ])(
+    'audits the prerendered entry %s without declaring Markdown',
+    (root, leaf) => {
+      const endpoint = `${root}/${leaf}`;
+      const { repoRoot, write } = fixture([
+        {
+          url: endpoint,
+          canonicalPath: endpoint,
+          markdownPath: `${endpoint}.md`,
+        },
+      ]);
+      write(
+        'public/__static/docs-prerender-paths.json',
+        JSON.stringify([root, endpoint]),
+      );
+      write(`dist/client${root}/index.html`, body('<h1>Cloud Recording</h1>'));
+      write(`dist/client${endpoint}/index.html`, body('<h1>Acquire</h1>'));
+
+      const site = loadBuiltSite({ repoRoot });
+      expect(site.gaps).toEqual([]);
+      expect(
+        validateLocalTarget(
+          { kind: 'link' },
+          {
+            target: root.replace('/zh-CN', ''),
+            pathname: root.replace('/zh-CN', ''),
+          },
+          site,
+        ),
+      ).toMatchObject({ status: 'valid', reason: 'built-page-target' });
+      expect(
+        JSON.parse(
+          fs.readFileSync(
+            path.join(repoRoot, 'public/__static/docs-routes.json'),
+            'utf8',
+          ),
+        ),
+      ).toEqual([
+        {
+          url: endpoint,
+          canonicalPath: endpoint,
+          markdownPath: `${endpoint}.md`,
+        },
+      ]);
+    },
+  );
   it('loads isolated routes and actual anchors, body references, and content digest', () => {
     const { repoRoot, write } = fixture();
     const html = body(
@@ -114,6 +163,25 @@ describe('built CN HTML evidence', () => {
     },
   );
 
+  it.each([
+    '{}',
+    '{bad',
+    '[{"url":"/zh-CN/guide/start"}]',
+    '["/zh-CN/guide/../outside"]',
+    '["/zh-CN/guide/start?platform=android"]',
+  ])('rejects malformed or unsafe prerender navigation input: %s', (value) => {
+    const { repoRoot, write } = fixture();
+    write('dist/client/zh-CN/guide/start/index.html', body('正文'));
+    write('public/__static/docs-prerender-paths.json', value);
+    expect(loadBuiltSite({ repoRoot }).gaps).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          reason: expect.stringMatching(/^invalid-prerender-/),
+        }),
+      ]),
+    );
+  });
+
   it('retains distinct platform route evidence and excludes English routes', () => {
     const { repoRoot, write } = fixture([
       { url: '/zh-CN/guide/start', canonicalPath: '/zh-CN/guide/start' },
@@ -126,6 +194,14 @@ describe('built CN HTML evidence', () => {
       { url: '/guide/public', canonicalPath: '/guide/public' },
       { url: '/search', canonicalPath: '/search' },
     ]);
+    write(
+      'public/__static/docs-prerender-paths.json',
+      JSON.stringify([
+        '/zh-CN/guide/start',
+        '/zh-CN/guide/start/android',
+        '/en/guide/start',
+      ]),
+    );
     for (const name of [
       'zh-CN/guide/start',
       'zh-CN/guide/start/android',
@@ -139,6 +215,10 @@ describe('built CN HTML evidence', () => {
       '/guide/public',
     ]);
     expect(site.gaps).toEqual([]);
+    expect(site.routes.get('/guide/start/android')).toMatchObject({
+      platform: 'android',
+      canonicalPath: '/zh-CN/guide/start',
+    });
   });
 
   it('includes docs navigation links outside the article without collecting global scripts', () => {
