@@ -2112,3 +2112,48 @@ article[lang="zh-CN"] .docs-body .group\/heading > a {
   min-width: 0;
   overflow-wrap: anywhere;
 }
+
+.docs-callout {
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  border-color: color-mix(in srgb, var(--callout-color) 19%, var(--line));
+  background: color-mix(in srgb, var(--callout-color) 6%, var(--bg-card));
+  box-shadow: none;
+}
+
+.docs-callout > div[role="none"] {
+  display: none;
+}
+
+.docs-callout > svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  margin-inline-end: 0;
+  fill: none;
+  color: var(--callout-color);
+}
+
+.docs-callout > div:last-child {
+  gap: 4px;
+}
+
+.docs-callout > div:last-child > p {
+  color: var(--ink-1);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+}
+
+.docs-callout > div:last-child > div {
+  color: var(--ink-3);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.docs-callout > div:last-child > div :where(p, ul, ol, li) {
+  color: inherit;
+  line-height: inherit;
+}

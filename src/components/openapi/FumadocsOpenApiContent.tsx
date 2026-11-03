@@ -54,6 +54,7 @@ import * as JsxRuntime from 'react/jsx-runtime';
 import rehypeRaw from 'rehype-raw';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
+import { Callout as OpenApiCallout } from '@/components/Callout';
 import { useMeasuredDocsBody } from '@/components/docs-shell/DocsContentMeasurement';
 import { createDocsTableComponent } from '@/components/mdx';
 import { Badge } from '@/components/ui/badge';
@@ -106,7 +107,6 @@ const removeGeneratedCodeSamples = Array.from(
     source: false,
   }),
 ) satisfies InlineCodeUsageGenerator[];
-const OpenApiCallout = defaultMdxComponents.Callout;
 const OpenApiOperationContext = createContext<OpenApiOperation | undefined>(
   undefined,
 );
