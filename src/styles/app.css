@@ -2114,8 +2114,9 @@ article[lang="zh-CN"] .docs-body .group\/heading > a {
 }
 
 .docs-callout {
+  margin-block: 1.5rem;
   gap: 12px;
-  padding: 14px 16px;
+  padding: 1rem;
   border-radius: 8px;
   border-color: color-mix(in srgb, var(--callout-color) 19%, var(--line));
   background: color-mix(in srgb, var(--callout-color) 6%, var(--bg-card));
@@ -2130,30 +2131,50 @@ article[lang="zh-CN"] .docs-body .group\/heading > a {
   flex-shrink: 0;
   width: 16px;
   height: 16px;
-  margin-top: 2px;
+  margin-top: 4px;
   margin-inline-end: 0;
   fill: none;
   color: var(--callout-color);
 }
 
 .docs-callout > div:last-child {
-  gap: 4px;
+  gap: 0.5rem;
 }
 
 .docs-callout > div:last-child > p {
   color: var(--ink-1);
-  font-size: 14px;
+  font-size: 1rem;
   font-weight: 600;
-  line-height: 21px;
+  line-height: 1.5;
 }
 
 .docs-callout > div:last-child > div {
   color: var(--ink-3);
-  font-size: 13px;
-  line-height: 20px;
+  font-size: 1rem;
+  line-height: 1.625;
+}
+
+.docs-callout > div:last-child > div :where(p, ul, ol, li, .openapi-markdown) {
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
 }
 
 .docs-callout > div:last-child > div :where(p, ul, ol, li) {
-  color: inherit;
-  line-height: inherit;
+  margin-block: 0;
+}
+
+.docs-callout > div:last-child > div :where(p, ul, ol) + :where(p, ul, ol) {
+  margin-block-start: 0.75rem;
+}
+
+.docs-callout > div:last-child > div :where(li + li) {
+  margin-block-start: 0.25rem;
+}
+
+@media (min-width: 640px) {
+  .docs-callout > div:last-child > div {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
 }
