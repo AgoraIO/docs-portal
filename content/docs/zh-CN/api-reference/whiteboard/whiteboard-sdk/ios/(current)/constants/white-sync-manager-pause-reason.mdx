@@ -3,46 +3,48 @@ title: WhiteSyncManagerPauseReason Constants Reference
 _migration:
   type: generated-html
   status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Constants/WhiteSyncManagerPauseReason
   sourcePath: html-docs/whiteboard/iOS/Constants/WhiteSyncManagerPauseReason.html
   generator: appledoc
   warnings: []
 ---
 
-| Declared in | WhiteCombinePlayer.h |
-| --- | --- |
-
 ### WhiteSyncManagerPauseReason
+
+Whiteboard iOS SDK 2.16.147 公开接口。
 
 #### Definition
 
-```text
-typedef NS_OPTIONS(NSUInteger, WhiteSyncManagerPauseReason ) {
-  WhiteSyncManagerPauseReasonNone = 0,
-  WhiteSyncManagerPauseReasonWaitingWhitePlayerBuffering = 1 << 0,
-  WhiteSyncManagerPauseReasonWaitingNativePlayerBuffering = 1 << 1,
-  SyncManagerWaitingPauseReasonPlayerPause = 1 << 2,
-  WhiteSyncManagerPauseReasonInit = WhiteSyncManagerPauseReasonWaitingWhitePlayerBuffering | WhiteSyncManagerPauseReasonWaitingNativePlayerBuffering | SyncManagerWaitingPauseReasonPlayerPause,
-};
-```
+`typedef NS_OPTIONS(NSUInteger, WhiteSyncManagerPauseReason) { WhiteSyncManagerPauseReasonNone = 0, WhiteSyncManagerPauseReasonWaitingWhitePlayerBuffering = 1 << 0, WhiteSyncManagerPauseReasonWaitingNativePlayerBuffering = 1 << 1, SyncManagerWaitingPauseReasonPlayerPause = 1 << 2, WhiteSyncManagerPauseReasonInit = WhiteSyncManagerPauseReasonWaitingWhitePlayerBuffering | WhiteSyncManagerPauseReasonWaitingNativePlayerBuffering | SyncManagerWaitingPauseReasonPlayerPause, };`
 
 #### Constants
 
-**`WhiteSyncManagerPauseReasonNone`**
+**<a id="WhiteSyncManagerPauseReasonNone"></a>`WhiteSyncManagerPauseReasonNone`**
 
-Declared In `WhiteCombinePlayer.h`.
+声明值：0
 
-**`WhiteSyncManagerPauseReasonWaitingWhitePlayerBuffering`**
+Declared In SDK public headers.
 
-Declared In `WhiteCombinePlayer.h`.
+**<a id="WhiteSyncManagerPauseReasonWaitingWhitePlayerBuffering"></a>`WhiteSyncManagerPauseReasonWaitingWhitePlayerBuffering`**
 
-**`WhiteSyncManagerPauseReasonWaitingNativePlayerBuffering`**
+声明值：1 &lt;&lt; 0
 
-Declared In `WhiteCombinePlayer.h`.
+Declared In SDK public headers.
 
-**`SyncManagerWaitingPauseReasonPlayerPause`**
+**<a id="WhiteSyncManagerPauseReasonWaitingNativePlayerBuffering"></a>`WhiteSyncManagerPauseReasonWaitingNativePlayerBuffering`**
 
-Declared In `WhiteCombinePlayer.h`.
+声明值：1 &lt;&lt; 1
 
-**`WhiteSyncManagerPauseReasonInit`**
+Declared In SDK public headers.
 
-Declared In `WhiteCombinePlayer.h`.
+**<a id="SyncManagerWaitingPauseReasonPlayerPause"></a>`SyncManagerWaitingPauseReasonPlayerPause`**
+
+声明值：1 &lt;&lt; 2
+
+Declared In SDK public headers.
+
+**<a id="WhiteSyncManagerPauseReasonInit"></a>`WhiteSyncManagerPauseReasonInit`**
+
+声明值：WhiteSyncManagerPauseReasonWaitingWhitePlayerBuffering | WhiteSyncManagerPauseReasonWaitingNativePlayerBuffering | SyncManagerWaitingPauseReasonPlayerPause
+
+Declared In SDK public headers.

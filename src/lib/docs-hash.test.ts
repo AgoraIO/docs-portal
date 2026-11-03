@@ -565,3 +565,21 @@ describe('scrollDocsHashTargetAfterLayout', () => {
     expect(scrollTo).not.toHaveBeenCalled();
   });
 });
+
+describe('legacy hash targets inside platform panels', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  it('supports named anchors and prefers the active platform', () => {
+    document.body.innerHTML = `<section data-platform-panel="ios" hidden><a name="rate">iOS</a></section>
+      <section data-platform-panel="react-native"><a name="rate">React Native</a></section>`;
+    expect(findDocsHeadingForHash('#rate')?.textContent).toBe('React Native');
+  });
+
+  it('keeps the active platform when every matching heading is in a closed accordion', () => {
+    document.body.innerHTML = `<section data-platform-panel="ios" hidden><div role="region" data-state="closed"><h2 id="apichange">iOS</h2></div></section>
+      <section data-platform-panel="macos"><div role="region" data-state="closed"><h2 id="apichange">macOS</h2></div></section>`;
+    expect(findDocsHeadingForHash('#apichange')?.textContent).toBe('macOS');
+  });
+});

@@ -112,6 +112,19 @@ export function OpenApiSchema({
       writeOnly,
     });
 
+    const hiddenMetadataLabels = new Set(
+      ['Items', 'Length', 'Match', 'Properties'].map((key) =>
+        getOpenApiSchemaLabel(translations, key, key),
+      ),
+    );
+    for (const schema of Object.values(generated.refs)) {
+      schema.infoTags = schema.infoTags?.filter(
+        ({ node }) =>
+          !isValidElement<{ label?: string }>(node) ||
+          !hiddenMetadataLabels.has(node.props.label ?? ''),
+      );
+    }
+
     appendOpenApiSchemaAllowedValues(
       generated,
       normalizedRoot,
@@ -233,7 +246,13 @@ export function OpenApiSchema({
   const rootSchema = generated.refs[generated.$root] as OpenApiSchemaData;
   const rootIsBodyTree =
     client.as === 'body' && rootSchema?.type !== 'primitive';
-  const rootHasContainer = rootIsBodyTree && rootSchema?.type !== 'object';
+  const rootHasContainer =
+    rootIsBodyTree &&
+    rootSchema?.type !== 'object' &&
+    rootSchema?.type !== 'or';
+  const hasChoices = flattenOpenApiSchemaView(schemaView).some(
+    (node) => node.choices?.length,
+  );
 
   if (root === false || (rootIsBodyTree && schemaView.length === 0)) {
     return emptyFallback ?? null;
@@ -265,13 +284,17 @@ export function OpenApiSchema({
             rootMetadata.filter((item) => item.label !== exampleLabel),
           )
         : null}
-      {rootIsBodyTree ? (
+      {rootIsBodyTree || hasChoices ? (
         <OpenApiSchemaTree
           client={client}
           key={navigationKey}
           labels={labels}
           legacyAnchorIdsByFieldPath={legacyAnchorIdsByFieldPath}
-          nodes={schemaView}
+          nodes={
+            rootIsBodyTree
+              ? schemaView
+              : [{ ...rootNode, children: schemaView, rootContainer: true }]
+          }
           onCopyFieldLink={(node) => copyOpenApiSchemaFieldLink(rootId, node)}
           renderRemainingInfoTags={renderRemainingInfoTags}
           revealTarget={revealTarget}
@@ -575,7 +598,6 @@ function getOpenApiSchemaLabels(
     deprecated: translate('Deprecated', 'Deprecated'),
     expand: translate('Expand', 'Expand'),
     expandAll: translate('Expand all', 'Expand all'),
-    fields: translate('Fields', 'Fields'),
     properties: translate('properties', 'properties'),
     range: translate('Range', 'Range'),
     required: translate('Required', 'Required'),

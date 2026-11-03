@@ -1,0 +1,108 @@
+---
+title: MemberState
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/memberstate
+  sourcePath: html-docs/whiteboard/Web/interfaces/memberstate.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type MemberState = {
+    /**
+     * 当前用户所选择的教具
+     */
+    currentApplianceName: ApplianceNames;
+    /**
+     * 教具绘制线条的颜色
+     */
+    strokeColor: Color;
+    /**
+     * 教具绘制线条的粗细
+     */
+    strokeWidth: number;
+    /**
+     * 文字颜色
+     */
+    textColor?: Color;
+    /**
+     * 文字的字体大小，默认 16
+     */
+    textSize: number;
+    /**
+     * 铅笔橡皮的尺寸，取值 1~3
+     */
+    pencilEraserSize?: number;
+    /**
+     * 是否加粗文字
+     */
+    bold?: boolean;
+    /**
+     * 是否使用斜体
+     */
+    italic?: boolean;
+    /**
+     * 是否显示下划线
+     */
+    underline?: boolean;
+    /**
+     * 是否显示删除线
+     */
+    lineThrough?: boolean;
+    /**
+     * 是否绘制虚线（仅限新铅笔工具）
+     */
+    dottedLine?: boolean;
+    /**
+     * 使用 ``shape`` 教具时，绘制图形的具体类型
+     */
+    shapeType?: ShapeType;
+    /**
+     * 是否允许 text 选择和编辑文字
+     */
+    textCanSelectText?: boolean;
+    /**
+     * 是否自动选中粘贴产生的图形
+     */
+    autoSelectPaste?: boolean;
+    /**
+     * 是否自动选中拷贝（浮动工具栏上的按钮）产生的图形
+     */
+    autoSelectDuplicate?: boolean;
+    /**
+     * text 打完字后自动切到选择工具
+     */
+    textCompleteToSelector?: boolean;
+    /**
+     * 填充色，只有圆、矩形等封闭图形可以有填充色
+     */
+    fillColor?: Color;
+    /**
+     * 覆盖 text 默认字体大小，如果不设置则默认使用 textSize 即上一次设置的文字大小
+     */
+    textSizeOverride?: number;
+    /**
+     * 画完矩形后自动切到选择工具
+     */
+    rectangleCompleteToSelector?: boolean;
+    /**
+     * 画完圆形后自动切到选择工具
+     */
+    ellipseCompleteToSelector?: boolean;
+    /**
+     * 画完直线后自动切到选择工具
+     */
+    straightCompleteToSelector?: boolean;
+    /**
+     * 画完箭头后自动切到选择工具
+     */
+    arrowCompleteToSelector?: boolean;
+    /**
+     * 画完三角、气泡等图形后自动切到选择工具
+     */
+    shapeCompleteToSelector?: boolean;
+};
+```

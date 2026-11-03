@@ -76,7 +76,8 @@ export function extractPublishedCnSections(
   // 平台和折叠容器导出后可能保留四空格缩进，remark 会把正文误当代码。
   // 非平台页必须由真实 HTML 标题确认锚点，不能把普通代码示例提升成章节。
   if (route.platform || renderedHeadingIds?.size) {
-    const accordionOpening = /^[ \t]*<Accordion\b[^\r\n]*>\r?\n/;
+    const containerOpening =
+      /^[ \t]*<(?:Accordion|TabsContent)\b[^\r\n]*>\r?\n/;
     while (true) {
       const blocks = tree.children.filter((node) => {
         if ((node.type !== 'code' && node.type !== 'html') || !node.position)
@@ -87,7 +88,7 @@ export function extractPublishedCnSections(
         if (node.type === 'html') {
           // 紧跟开标签的第一个标题会被 remark 吞进 HTML 节点，而不是缩进代码块。
           return (
-            accordionOpening.test(node.value) &&
+            containerOpening.test(node.value) &&
             headingIds.some((id) => renderedHeadingIds?.has(id))
           );
         }
@@ -106,7 +107,7 @@ export function extractPublishedCnSections(
           continue;
         let value = node.value;
         if (node.type === 'html') {
-          value = value.replace(accordionOpening, '$&\n');
+          value = value.replace(containerOpening, '$&\n');
         }
         // Slot 中的代码被序列化到表格单元格时，闭合 fence 后会残留列分隔符。
         // 只在确认存在表格代码单元格的生成块内恢复两列代码的 fence 边界。
@@ -214,8 +215,27 @@ export function extractPublishedCnSections(
     assertValidSearchSection(record);
     records.push(record);
   };
-  for (const [index, node] of tree.children.entries()) {
-    if (node.type !== 'heading') {
+  const isRenderedHeading = (node: RootContent) => {
+    if (node.type !== 'heading') return false;
+    const id = text(node)
+      .trim()
+      .match(/\s*\[#(.+)\]$/)?.[1];
+    return !!id && !!renderedHeadingIds?.has(id);
+  };
+  // 平台块保留的缩进可能让真实标题成为前一个列表的子节点。
+  // 只拆开包含已渲染标题的列表，代码示例和未验证的嵌套标题仍作为正文。
+  const splitRenderedListHeadings = (node: RootContent): RootContent[] => {
+    if (node.type !== 'list' && node.type !== 'listItem') return [node];
+    const children = node.children.flatMap(splitRenderedListHeadings);
+    return children.some(isRenderedHeading) ? children : [node];
+  };
+  const topLevelNodes = new Set(tree.children);
+  const sectionNodes = tree.children.flatMap(splitRenderedListHeadings);
+  for (const [index, node] of sectionNodes.entries()) {
+    if (
+      node.type !== 'heading' ||
+      (!topLevelNodes.has(node) && !isRenderedHeading(node))
+    ) {
       const content = text(node);
       if (!content.startsWith('For AI agents:')) current.parts.push(content);
       continue;

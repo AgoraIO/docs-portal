@@ -1,5 +1,5 @@
 ---
-title: com.herewhite.sdk.window.SlideListener接口 参考
+title: com.herewhite.sdk.window.SlideListener interface 参考
 tocMaxDepth: 3
 _migration:
   type: generated-html
@@ -11,7 +11,21 @@ _migration:
   warnings: []
 ---
 
-## 成员函数说明
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**Whiteboard Android SDK 2.16.134**。
+
+| 公开成员签名 |  |
+| --- | --- |
+| void | [slideUrlInterrupter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1window-1-1-slide-listener#aa7b55dbd3cb671d2ba2ae5b69973baed) (String sourceUrl, ResultCaller&lt;String&gt; resultCaller) |
+| void | [onSlideError](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1window-1-1-slide-listener#afb9deb51a77275c18ebc66369ba98ea9) (SlideErrorType errorType, String errorMsg, String slideId, int slideIndex) |
+| void | [slideOpenUrl](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1window-1-1-slide-listener#aee695703ff1356d580b2c1c2abfea64c) (String url) |
+| void | [onSlideResourceMaxRetries](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1window-1-1-slide-listener#a251a8d62e670bbcbcf02bf17310fe528) (String url, String message) |
+| void | [onSlidePageStateChanged](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1window-1-1-slide-listener#a92c5ee2c8120d1aeb8c371ba4004bb27) (String appId, int page, int pageCount) |
+
+## 函数说明
 
 <a id="aa7b55dbd3cb671d2ba2ae5b69973baed"></a>
 
@@ -19,7 +33,7 @@ _migration:
 
 <ApiSignature>
 
-void com.herewhite.sdk.window.SlideListener.slideUrlInterrupter(String *sourceUrl*, ResultCaller&lt; String &gt; *resultCaller*)
+void slideUrlInterrupter(String sourceUrl, ResultCaller&lt;String&gt; resultCaller)
 
 </ApiSignature>
 
@@ -56,7 +70,7 @@ void com.herewhite.sdk.window.SlideListener.slideUrlInterrupter(String *sourceUr
 
 <ApiSignature>
 
-default void com.herewhite.sdk.window.SlideListener.onSlideError([SlideErrorType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-slide-error-type) *errorType*, String *errorMsg*, String *slideId*, int *slideIndex*)
+void onSlideError(SlideErrorType errorType, String errorMsg, String slideId, int slideIndex)
 
 </ApiSignature>
 
@@ -88,3 +102,56 @@ PPT 索引。
 
 </Parameter>
 </ParameterList>
+
+<a id="aee695703ff1356d580b2c1c2abfea64c"></a>
+
+### slideOpenUrl()
+
+<ApiSignature>
+
+void slideOpenUrl(String url)
+
+</ApiSignature>
+
+slideOpenUrl：com.herewhite.sdk.window.SlideListener 的公开成员。参数和返回类型见下方签名。
+
+<a id="a251a8d62e670bbcbcf02bf17310fe528"></a>
+
+### onSlideResourceMaxRetries()
+
+<ApiSignature>
+
+void onSlideResourceMaxRetries(String url, String message)
+
+</ApiSignature>
+
+Slide 资源加载重试次数耗尽回调。
+
+&lt;p&gt;当 Slide 资源加载失败并且重试次数耗尽时，SDK 会触发该回调。
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="url">
+
+加载失败的资源 URL。
+
+</Parameter>
+<Parameter name="message">
+
+错误信息。
+
+</Parameter>
+</ParameterList>
+
+<a id="a92c5ee2c8120d1aeb8c371ba4004bb27"></a>
+
+### onSlidePageStateChanged()
+
+<ApiSignature>
+
+void onSlidePageStateChanged(String appId, int page, int pageCount)
+
+</ApiSignature>
+
+Slide App 页码或总页数变化时触发，参数 appId、page、pageCount；page 从 1 开始。

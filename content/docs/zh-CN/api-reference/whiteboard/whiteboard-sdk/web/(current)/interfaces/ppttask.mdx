@@ -1,0 +1,80 @@
+---
+title: PPTTask
+description: Whiteboard Web SDK 2.16.59 公开 interface。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/ppttask
+  sourcePath: html-docs/whiteboard/Web/interfaces/ppttask.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare interface PPTTask
+```
+
+## 成员
+
+- [uuid](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/ppttask#uuid)
+- [kind](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/ppttask#kind)
+- [callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/ppttask#callbacks)
+- [checkUtilGet](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/ppttask#checkutilget)
+
+## Properties
+
+<a id="uuid"></a>
+
+### uuid
+
+readonly uuid: string;
+
+```text
+转换任务的唯一识别符 ``taskUUID``
+```
+
+<a id="kind"></a>
+
+### kind
+
+readonly kind: PPTKind;
+
+```text
+转换任务类型
+```
+
+<a id="callbacks"></a>
+
+### callbacks
+
+readonly callbacks: Callbacks&lt;PPTTaskCallbacks&gt;;
+
+```text
+回调函数
+```
+
+## Methods
+
+<a id="checkutilget"></a>
+
+### checkUtilGet
+
+<ApiSignature>
+
+checkUtilGet(): Promise&lt;PPT&gt;;
+
+</ApiSignature>
+
+```text
+自动轮询，等到该任务成功或失败
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;PPT&gt;
+
+</ApiReturnType>
+
+</ApiReturns>

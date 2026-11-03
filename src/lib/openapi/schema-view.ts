@@ -13,9 +13,17 @@ export type OpenApiSchemaData = SchemaData & {
   allowedValues?: unknown[];
 };
 
+export type OpenApiSchemaChoice = {
+  id: string;
+  options: { value: string; name: string; schema?: OpenApiSchemaData }[];
+  value: string;
+};
+
 export type OpenApiSchemaViewNode = {
   $type: string;
+  branchContainer?: boolean;
   children: OpenApiSchemaViewNode[];
+  choices?: OpenApiSchemaChoice[];
   depth: number;
   detailsCollapsible?: boolean;
   id: string;
@@ -88,7 +96,12 @@ export function buildOpenApiSchemaView(
         if (
           !childSchema ||
           isSyntheticAnyProperty(property.name, childSchema) ||
-          isSyntheticStringMapProperty(property.name, childSchema, parentPath)
+          isSyntheticScalarMapProperty(
+            property.name,
+            childSchema,
+            parentPath,
+            generated.refs,
+          )
         ) {
           return [];
         }
@@ -141,7 +154,7 @@ export function buildOpenApiSchemaView(
     }
 
     if (schema.type === 'and' || schema.type === 'or') {
-      return schema.items.flatMap((item): OpenApiSchemaViewNode[] => {
+      return schema.items.flatMap((item, index): OpenApiSchemaViewNode[] => {
         const current = parentPath.at(-1);
         if (!current) return [];
 
@@ -154,27 +167,32 @@ export function buildOpenApiSchemaView(
         ];
 
         const branchSchema = generated.refs[item.$type];
-        const children = childrenFor(
+        const groupBranch =
+          schema.type === 'or' &&
+          (branchSchema?.type === 'object' || branchSchema?.type === 'array');
+        let children = childrenFor(
           branchSchema,
           nextParentPath,
           fieldPath,
-          depth,
+          groupBranch ? depth + 1 : depth,
           nextAncestors,
           item.$type,
         );
 
-        if (children.length === 0 && branchSchema?.type === 'object') {
+        if (groupBranch || (children.length === 0 && branchSchema)) {
           const branchNodePath = [
             ...nextParentPath,
             { $ref: item.$type, name: item.name },
           ];
 
-          return [
+          children = [
             {
               $type: item.$type,
-              children: [],
+              branchContainer: groupBranch,
+              children,
               depth,
               detailsCollapsible:
+                groupBranch ||
                 branchSchema.description !== undefined ||
                 (branchSchema.infoTags?.length ?? 0) > 0,
               id: encodeOpenApiSchemaNodeId(branchNodePath),
@@ -187,7 +205,28 @@ export function buildOpenApiSchemaView(
           ];
         }
 
-        return children.map((node) => ({ ...node, variant: item.name }));
+        return children.map((node) => ({
+          ...node,
+          ...(schema.type === 'or' && schema.items.length > 1
+            ? {
+                choices: [
+                  {
+                    id: `${encodeOpenApiSchemaNodeId(parentPath)}:${activeRef}`,
+                    options: schema.items.map((option, optionIndex) => ({
+                      value: String(optionIndex),
+                      name: option.name,
+                      schema: generated.refs[option.$type] as
+                        | OpenApiSchemaData
+                        | undefined,
+                    })),
+                    value: String(index),
+                  },
+                  ...(node.choices ?? []),
+                ],
+              }
+            : {}),
+          variant: item.name,
+        }));
       });
     }
 
@@ -300,17 +339,41 @@ function isSyntheticAnyProperty(name: string, schema: OpenApiSchemaData) {
   );
 }
 
-function isSyntheticStringMapProperty(
+function isSyntheticScalarMapProperty(
   name: string,
   schema: OpenApiSchemaData,
   parentPath: OpenApiSchemaPathItem[],
+  refs: SchemaUIGeneratedData['refs'],
 ) {
   return (
     name === '[key: string]' &&
-    schema.typeName === 'string' &&
     parentPath.length > 1 &&
-    parentPath.at(-1)?.name !== 'params' &&
-    (schema.infoTags?.length ?? 0) === 0 &&
-    (schema.allowedValues?.length ?? 0) === 0
+    isUndocumentedScalarSchema(schema, refs)
+  );
+}
+
+function isUndocumentedScalarSchema(
+  schema: OpenApiSchemaData,
+  refs: SchemaUIGeneratedData['refs'],
+  ancestors = new Set<SchemaData>(),
+): boolean {
+  if (
+    ancestors.has(schema) ||
+    schema.description !== undefined ||
+    (schema.infoTags?.length ?? 0) > 0 ||
+    (schema.allowedValues?.length ?? 0) > 0
+  ) {
+    return false;
+  }
+  if (schema.type === 'primitive') return true;
+  if (schema.type !== 'or' && schema.type !== 'and') return false;
+
+  const nextAncestors = new Set(ancestors).add(schema);
+  return (
+    schema.items.length > 0 &&
+    schema.items.every(({ $type }) => {
+      const branch = refs[$type];
+      return branch && isUndocumentedScalarSchema(branch, refs, nextAncestors);
+    })
   );
 }
