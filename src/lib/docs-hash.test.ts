@@ -1,8 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+  findDocsHeadingForHash,
   getDocsHashHref,
   scrollDocsHashTarget,
   scrollDocsHashTargetAfterLayout,
+  syncDocsHashTargetFromLocation,
 } from './docs-hash';
 
 describe('getDocsHashHref', () => {
@@ -29,7 +31,7 @@ describe('getDocsHashHref', () => {
     document.body.innerHTML =
       '<section data-platform-panel="web"><h2 id="224-版-2">2.2.4</h2></section>';
     expect(getDocsHashHref('#224-%E7%89%88-2')).toBe(
-      '/realtime-media/rtm/reference/release-notes/web?from=guide%23code&view=all&platform=web#224-%E7%89%88-2',
+      '/realtime-media/rtm/reference/release-notes/web?from=guide%23code&view=all#224-%E7%89%88-2',
     );
   });
 
@@ -42,7 +44,7 @@ describe('getDocsHashHref', () => {
     document.body.innerHTML =
       '<section data-platform-panel="web"><h2 id="224-版-2">2.2.4</h2></section>';
     expect(getDocsHashHref('#224-版-2')).toBe(
-      '/zh-CN/realtime-media/rtm/reference/release-notes/web?platform=web&view=all#224-%E7%89%88-2',
+      '/zh-CN/realtime-media/rtm/reference/release-notes/web?view=all#224-%E7%89%88-2',
     );
   });
 });
@@ -304,6 +306,99 @@ describe('scrollDocsHashTarget', () => {
       top: 204,
     });
   });
+
+  it('resolves legacy named anchors in the visible page-level platform', () => {
+    document.body.innerHTML = `
+      <section data-platform-panel="android" hidden aria-hidden="true" inert>
+        <a name="rate"> </a>
+        <h3>Android quality ratings</h3>
+      </section>
+      <section data-platform-panel="ios" aria-hidden="false">
+        <a name="rate"> </a>
+        <h3>iOS quality ratings</h3>
+      </section>
+    `;
+    const visibleAnchor = document.querySelector(
+      '[data-platform-panel="ios"] a',
+    );
+
+    expect(findDocsHeadingForHash('#rate')).toBe(visibleAnchor);
+  });
+
+  it('keeps canonical id targets ahead of legacy name aliases', () => {
+    document.body.innerHTML = `
+      <a name="rate">Legacy alias</a>
+      <h3 id="rate">Canonical quality rating</h3>
+    `;
+
+    expect(findDocsHeadingForHash('#rate')).toBe(
+      document.getElementById('rate'),
+    );
+  });
+
+  it('revisits a legacy named link and uses the newly visible platform after switching', () => {
+    document.body.innerHTML = `
+      <section data-platform-panel="android" hidden>
+        <a name="rate"> </a>
+        <h3>Android quality ratings</h3>
+      </section>
+      <section data-platform-panel="ios">
+        <a name="rate"> </a>
+        <h3>iOS quality ratings</h3>
+      </section>
+    `;
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/realtime-media/rtc/build/optimize-and-operate/in-call-quality/ios?from=guide',
+    );
+    Object.defineProperty(window, 'scrollY', {
+      configurable: true,
+      value: 0,
+    });
+    const android = document.querySelector<HTMLElement>(
+      '[data-platform-panel="android"]',
+    );
+    const ios = document.querySelector<HTMLElement>(
+      '[data-platform-panel="ios"]',
+    );
+    const androidAnchor = android?.querySelector('a');
+    const iosAnchor = ios?.querySelector('a');
+    if (!android || !ios || !androidAnchor || !iosAnchor) {
+      throw new Error('expected platform switching fixture nodes');
+    }
+    vi.spyOn(androidAnchor, 'getBoundingClientRect').mockReturnValue({
+      top: 1200,
+      height: 0,
+    } as DOMRect);
+    vi.spyOn(iosAnchor, 'getBoundingClientRect').mockReturnValue({
+      top: 300,
+      height: 0,
+    } as DOMRect);
+    const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+
+    expect(scrollDocsHashTarget('#rate', { behavior: 'auto' })).toBe(true);
+    expect(scrollTo).toHaveBeenLastCalledWith({
+      behavior: 'auto',
+      top: 204,
+    });
+    scrollTo.mockClear();
+    expect(scrollDocsHashTarget('#rate', { behavior: 'auto' })).toBe(true);
+    expect(scrollTo).toHaveBeenLastCalledWith({
+      behavior: 'auto',
+      top: 204,
+    });
+
+    ios.hidden = true;
+    android.hidden = false;
+    expect(scrollDocsHashTarget('#rate', { behavior: 'auto' })).toBe(true);
+    expect(scrollTo).toHaveBeenLastCalledWith({
+      behavior: 'auto',
+      top: 1104,
+    });
+    expect(window.location.hash).toBe('#rate');
+    expect(window.location.search).toBe('?from=guide');
+  });
 });
 
 describe('scrollDocsHashTargetAfterLayout', () => {
@@ -328,6 +423,53 @@ describe('scrollDocsHashTargetAfterLayout', () => {
     document.body.innerHTML = '';
     vi.restoreAllMocks();
     vi.useRealTimers();
+  });
+
+  it('reaches a legacy deep link after hydration names the anchor beneath a taller sticky header', async () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/realtime-media/rtc/build/optimize-and-operate/in-call-quality/ios#rate',
+    );
+    document.body.innerHTML = `
+      <header data-testid="docs-shell-header" style="position: sticky"></header>
+      <section data-platform-panel="ios">
+        <a> </a>
+        <h3>Quality ratings</h3>
+      </section>
+    `;
+    const header = document.querySelector<HTMLElement>(
+      '[data-testid="docs-shell-header"]',
+    );
+    const anchor = document.querySelector<HTMLElement>(
+      '[data-platform-panel="ios"] a',
+    );
+    if (!header || !anchor) {
+      throw new Error('expected deep link fixture nodes');
+    }
+    let headerHeight = 64;
+    vi.spyOn(header, 'getBoundingClientRect').mockImplementation(
+      () => ({ top: 0, height: headerHeight }) as DOMRect,
+    );
+    vi.spyOn(anchor, 'getBoundingClientRect').mockReturnValue({
+      top: 1200,
+      height: 0,
+    } as DOMRect);
+    const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+
+    syncDocsHashTargetFromLocation('auto');
+    await vi.advanceTimersByTimeAsync(200);
+    expect(scrollTo).not.toHaveBeenCalled();
+
+    headerHeight = 131;
+    anchor.setAttribute('name', 'rate');
+    await vi.advanceTimersByTimeAsync(200);
+
+    expect(scrollTo).toHaveBeenLastCalledWith({
+      behavior: 'auto',
+      top: 1045,
+    });
+    expect(window.location.hash).toBe('#rate');
   });
 
   it.each([120, 6000])(
@@ -464,5 +606,23 @@ describe('scrollDocsHashTargetAfterLayout', () => {
     await vi.advanceTimersByTimeAsync(200);
 
     expect(scrollTo).not.toHaveBeenCalled();
+  });
+});
+
+describe('legacy hash targets inside platform panels', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  it('supports named anchors and prefers the active platform', () => {
+    document.body.innerHTML = `<section data-platform-panel="ios" hidden><a name="rate">iOS</a></section>
+      <section data-platform-panel="react-native"><a name="rate">React Native</a></section>`;
+    expect(findDocsHeadingForHash('#rate')?.textContent).toBe('React Native');
+  });
+
+  it('keeps the active platform when every matching heading is in a closed accordion', () => {
+    document.body.innerHTML = `<section data-platform-panel="ios" hidden><div role="region" data-state="closed"><h2 id="apichange">iOS</h2></div></section>
+      <section data-platform-panel="macos"><div role="region" data-state="closed"><h2 id="apichange">macOS</h2></div></section>`;
+    expect(findDocsHeadingForHash('#apichange')?.textContent).toBe('macOS');
   });
 });

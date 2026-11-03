@@ -66,14 +66,12 @@ _migration:
 #### 请求
 
 ```shell
-// highlight-start
+# [!code highlight:1]
 curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/cloud_recording/acquire' \
-// highlight-end
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
-// highlight-start
+# [!code highlight:1]
 --header 'Authorization: <http_basic_auth>' \
-// highlight-end
 --data '{
   "cname": "show",
   "uid": "123",
@@ -89,9 +87,8 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/clo
 {
     "cname": "show",
     "uid": "123",
-    // highlight-start
+    // [!code highlight:1]
     "resourceId": "SGXETXXX"
-    // highlight-end
 }
 ```
 
@@ -102,25 +99,22 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/clo
 #### 请求
 
 ```shell
-// highlight-start
+# [!code highlight:1]
 curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/cloud_recording/resourceid/<resourceId_returned>/mode/mix/start' \
-// highlight-end
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
-// highlight-start
+# [!code highlight:1]
 --header 'Authorization: <http_basic_auth>' \
-// highlight-end
 --data '{
   "cname": "show",
   "uid": "123",
   "clientRequest": {
-    // highlight-start
+    # [!code highlight:1]
     "token": "<your_token>",
-    // highlight-end
     "recordingConfig": {
       "channelType": 1
     },
-    // highlight-start
+    # [!code highlight:10]
     "storageConfig": {
       "vendor": 2,
       "region": 3,
@@ -131,7 +125,6 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/clo
         "quickstart"
       ]
     }
-    // highlight-end
   }
 }'
 ```
@@ -155,9 +148,8 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/clo
     "cname": "show",
     "uid": "123",
     "resourceId": "SGXETXXX",
-    // highlight-start
+    // [!code highlight:1]
     "sid": "04a85XXX"
-    // highlight-end
 }
 ```
 
@@ -174,14 +166,12 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/clo
 如果还需要查看 `.mp4` 文件，你需要先结束录制，再查看云存储文件。结束录制可参照如下代码：
 
 ```shell
-// highlight-start
+# [!code highlight:1]
 curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/cloud_recording/resourceid/<resourceId_returned>/sid/<sid_returned>/mode/mix/stop' \
-// highlight-end
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
-// highlight-start
+# [!code highlight:1]
 --header 'Authorization: <http_basic_auth>' \
-// highlight-end
 --data '{
   "cname": "show",
   "uid": "123",
@@ -226,7 +216,7 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/clo
   "uid": "123",
   "clientRequest": {
     "token": "<your_token>",
-    // highlight-start
+    # [!code highlight:20]
     "recordingConfig": {
       "channelType": 1,
       "streamTypes": 2,
@@ -247,7 +237,6 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/clo
         "#allstream#"
       ]
     },
-    // highlight-end
     "recordingFileConfig": {
       "avFileType": [
         "hls",

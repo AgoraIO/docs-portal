@@ -54,6 +54,38 @@ describe('ApiReferenceCards', () => {
     ).not.toBeInTheDocument();
   });
 
+  it.each([
+    ['android', 'Java', 'android'],
+    ['ios', 'Objective-C', 'ios'],
+    ['web', 'JavaScript', 'web'],
+  ])(
+    'keeps the RTM %s reference when narrowing a shared platform filter to RTM',
+    (platform, language, route) => {
+      window.history.replaceState(
+        {},
+        '',
+        `/zh-CN/api-reference/api?apiType=client&platform=${platform}`,
+      );
+      render(<ApiReferenceCards locale="zh-CN" type="all" />);
+
+      const reference = () =>
+        screen.getByRole('link', {
+          name: `实时消息 RTM ${language} 客户端 SDK`,
+        });
+      expect(reference()).toHaveAttribute(
+        'href',
+        `/zh-CN/api-reference/rtm/${route}/configuration`,
+      );
+
+      fireEvent.change(screen.getByLabelText('产品'), {
+        target: { value: 'rtm' },
+      });
+      expect(screen.getByLabelText('平台/语言')).toHaveValue(platform);
+      expect(reference()).toBeVisible();
+      expect(screen.getAllByRole('link')).toHaveLength(1);
+    },
+  );
+
   it('renders server API cards for server SDK and RESTful API entries', () => {
     render(<ApiReferenceCards locale="zh-CN" type="server" />);
 
@@ -554,13 +586,13 @@ describe('ApiReferenceCards', () => {
 
     expect(
       within(aiCard as HTMLElement).getByRole('heading', {
-        name: '对话式 AI Toolkit',
+        name: '客户端组件 SDK',
       }),
     ).toBeVisible();
     expect(within(aiCard as HTMLElement).getByText('客户端 SDK')).toBeVisible();
     expect(
       within(aiCard as HTMLElement).getByRole('heading', {
-        name: 'Agora Agents',
+        name: 'Agora Agents SDK',
       }),
     ).toBeVisible();
     expect(within(aiCard as HTMLElement).getByText('服务端 SDK')).toBeVisible();

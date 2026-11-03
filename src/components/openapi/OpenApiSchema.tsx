@@ -7,6 +7,7 @@ import {
 import type { SchemaUIProps } from '@fumadocs/api-docs/components/schema/client';
 import type { ParsedSchema } from '@fumadocs/api-docs/schema';
 import { schemaToString } from '@fumadocs/api-docs/schema/to-string';
+import { ChevronRight } from 'lucide-react';
 import {
   Children,
   isValidElement,
@@ -101,13 +102,28 @@ export function OpenApiSchema({
   const generated = useMemo(() => {
     const generated = generateSchemaUI({
       readOnly,
-      renderCodeblock,
+      renderCodeblock: (options) => (
+        <div data-openapi-schema-code-value="">{renderCodeblock(options)}</div>
+      ),
       renderMarkdown,
       root: removeOpenApiSchemaEnums(normalizedRoot) as ParsedSchema,
       showExample,
       translations,
       writeOnly,
     });
+
+    const hiddenMetadataLabels = new Set(
+      ['Items', 'Length', 'Match', 'Properties'].map((key) =>
+        getOpenApiSchemaLabel(translations, key, key),
+      ),
+    );
+    for (const schema of Object.values(generated.refs)) {
+      schema.infoTags = schema.infoTags?.filter(
+        ({ node }) =>
+          !isValidElement<{ label?: string }>(node) ||
+          !hiddenMetadataLabels.has(node.props.label ?? ''),
+      );
+    }
 
     appendOpenApiSchemaAllowedValues(
       generated,
@@ -230,11 +246,28 @@ export function OpenApiSchema({
   const rootSchema = generated.refs[generated.$root] as OpenApiSchemaData;
   const rootIsBodyTree =
     client.as === 'body' && rootSchema?.type !== 'primitive';
-  const rootHasContainer = rootIsBodyTree && rootSchema?.type !== 'object';
+  const rootHasContainer =
+    rootIsBodyTree &&
+    rootSchema?.type !== 'object' &&
+    rootSchema?.type !== 'or';
+  const hasChoices = flattenOpenApiSchemaView(schemaView).some(
+    (node) => node.choices?.length,
+  );
 
   if (root === false || (rootIsBodyTree && schemaView.length === 0)) {
     return emptyFallback ?? null;
   }
+
+  const rootMetadata = getOpenApiSchemaMetadataItems(rootSchema, labels);
+  const exampleLabel = getOpenApiSchemaLabel(
+    translations,
+    'Example',
+    'Example',
+  );
+  const rootExamples =
+    rootIsBodyTree && !rootHasContainer
+      ? rootMetadata.filter((item) => item.label === exampleLabel)
+      : [];
 
   const rootNode = createOpenApiSchemaRootNode(
     generated,
@@ -246,15 +279,22 @@ export function OpenApiSchema({
   return (
     <>
       {rootIsBodyTree && !rootHasContainer
-        ? renderOpenApiSchemaDetails(rootSchema, labels)
+        ? renderOpenApiSchemaDetails(
+            rootSchema,
+            rootMetadata.filter((item) => item.label !== exampleLabel),
+          )
         : null}
-      {rootIsBodyTree ? (
+      {rootIsBodyTree || hasChoices ? (
         <OpenApiSchemaTree
           client={client}
           key={navigationKey}
           labels={labels}
           legacyAnchorIdsByFieldPath={legacyAnchorIdsByFieldPath}
-          nodes={schemaView}
+          nodes={
+            rootIsBodyTree
+              ? schemaView
+              : [{ ...rootNode, children: schemaView, rootContainer: true }]
+          }
           onCopyFieldLink={(node) => copyOpenApiSchemaFieldLink(rootId, node)}
           renderRemainingInfoTags={renderRemainingInfoTags}
           revealTarget={revealTarget}
@@ -277,15 +317,36 @@ export function OpenApiSchema({
           rootId={rootId}
         />
       )}
+      {rootExamples.length > 0 ? (
+        <details className="openapi-schema-example group mt-4 min-w-0 border-fd-border border-t pt-3">
+          <summary className="flex min-h-11 w-fit cursor-pointer list-none items-center gap-2 rounded-md py-2 font-medium text-fd-foreground text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring [&::-webkit-details-marker]:hidden">
+            <ChevronRight
+              aria-hidden="true"
+              className="size-4 shrink-0 group-open:rotate-90"
+            />
+            {getOpenApiSchemaLabel(
+              translations,
+              'JSON example',
+              'JSON example',
+            )}
+          </summary>
+          <div className="min-w-0 space-y-3 pt-2">
+            {rootExamples.map(({ key, value }, index) => (
+              <div className="min-w-0" key={key ?? index}>
+                {value}
+              </div>
+            ))}
+          </div>
+        </details>
+      ) : null}
     </>
   );
 }
 
 function renderOpenApiSchemaDetails(
   schema: OpenApiSchemaData,
-  labels: OpenApiSchemaFieldRowLabels,
+  metadata: OpenApiSchemaMetadataItem[],
 ) {
-  const metadata = getOpenApiSchemaMetadataItems(schema, labels);
   if (!schema.description && metadata.length === 0) return null;
 
   return (
@@ -490,6 +551,14 @@ function getSchemaMetadataItem(
     ? {
         key: `info-${index}`,
         label: node.props.label,
+        display:
+          isValidElement<{ 'data-openapi-schema-code-value'?: string }>(
+            node.props.children,
+          ) &&
+          node.props.children.props['data-openapi-schema-code-value'] !==
+            undefined
+            ? 'block'
+            : undefined,
         value: node.props.children,
       }
     : null;

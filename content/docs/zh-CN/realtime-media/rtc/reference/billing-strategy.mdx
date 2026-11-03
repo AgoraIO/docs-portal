@@ -47,11 +47,77 @@ description: "了解实时互动 RTC 的计费方式、计费项、免费额度�
 
 | 套餐类型 | 套餐信息 | 总配额 | 折扣 |
 | --- | --- | --- | --- |
-| 免费版 | 1 万分钟；0 元/月；原价：70 元/月 | 总共 1 万分钟/月；套餐内含 0 分钟，赠送 1 万分钟 | 无折扣 |
-| 基础版 | 12 万分钟；738 元/月；原价：840 元/月 | 总共 12 万分钟/月；套餐内含 10.5 万分钟，赠送 1.5 万分钟 | 88 折 |
-| 尊享版 | 40 万分钟；2388 元/月；原价：2800 元/月 | 总共 40 万分钟/月；套餐内含 34 万分钟，赠送 6 万分钟 | 85 折 |
-| 旗舰版 | 150 万分钟；8399 元/月；原价：10500 元/月 | 总共 150 万分钟/月；套餐内含 120 万分钟，赠送 30 万分钟 | 8 折 |
-| 企业版 | 300 万分钟起 | 用量：300 万分钟/月起 | - |
+| 免费版 | <Slot name="free-plan-info" /> | <Slot name="free-plan-quota" /> | 无折扣 |
+| 基础版 | <Slot name="basic-plan-info" /> | <Slot name="basic-plan-quota" /> | 88 折 |
+| 尊享版 | <Slot name="premium-plan-info" /> | <Slot name="premium-plan-quota" /> | 85 折 |
+| 旗舰版 | <Slot name="flagship-plan-info" /> | <Slot name="flagship-plan-quota" /> | 8 折 |
+| 企业版 | 300 万分钟起 | <Slot name="enterprise-plan-quota" /> | - |
+
+<Slot for="free-plan-info">
+
+- 1 万分钟
+- 0 元/月
+- 原价：70 元/月
+
+</Slot>
+
+<Slot for="free-plan-quota">
+
+- 总共 1 万分钟/月
+- 套餐内含 0 分钟，赠送 1 万分钟
+
+</Slot>
+
+<Slot for="basic-plan-info">
+
+- 12 万分钟
+- 738 元/月
+- 原价：840 元/月
+
+</Slot>
+
+<Slot for="basic-plan-quota">
+
+- 总共 12 万分钟/月
+- 套餐内含 10.5 万分钟，赠送 1.5 万分钟
+
+</Slot>
+
+<Slot for="premium-plan-info">
+
+- 40 万分钟
+- 2388 元/月
+- 原价：2800 元/月
+
+</Slot>
+
+<Slot for="premium-plan-quota">
+
+- 总共 40 万分钟/月
+- 套餐内含 34 万分钟，赠送 6 万分钟
+
+</Slot>
+
+<Slot for="flagship-plan-info">
+
+- 150 万分钟
+- 8399 元/月
+- 原价：10500 元/月
+
+</Slot>
+
+<Slot for="flagship-plan-quota">
+
+- 总共 150 万分钟/月
+- 套餐内含 120 万分钟，赠送 30 万分钟
+
+</Slot>
+
+<Slot for="enterprise-plan-quota">
+
+- 用量：300 万分钟/月起
+
+</Slot>
 
 ### 超出套餐费用
 
@@ -71,9 +137,33 @@ description: "了解实时互动 RTC 的计费方式、计费项、免费额度�
 
 | 加油包类型 | 配额 | 价格 | 折扣 |
 | --- | --- | --- | --- |
-| 25K 分钟 | 25,000 分钟标准时长；有效期一年 | 168 元 | 96 折 |
-| 250K 分钟 | 250,000 分钟标准时长；有效期一年 | 1599 元 | 91 折 |
-| 1,000K 分钟 | 1,000,000 分钟标准时长；有效期一年 | 6180 元 | 88 折 |
+| 25K 分钟 | <Slot name="table-list-cn-08" /> | 168 元 | 96 折 |
+| 250K 分钟 | <Slot name="table-list-cn-09" /> | 1599 元 | 91 折 |
+| 1,000K 分钟 | <Slot name="table-list-cn-10" /> | 6180 元 | 88 折 |
+
+<Slot for="table-list-cn-08">
+
+- 25,000 分钟标准时长
+- 有效期一年
+
+</Slot>
+
+
+<Slot for="table-list-cn-09">
+
+- 250,000 分钟标准时长
+- 有效期一年
+
+</Slot>
+
+
+<Slot for="table-list-cn-10">
+
+- 1,000,000 分钟标准时长
+- 有效期一年
+
+</Slot>
+
 
 #### 后付费
 

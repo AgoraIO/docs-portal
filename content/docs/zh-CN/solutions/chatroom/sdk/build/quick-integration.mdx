@@ -76,7 +76,7 @@ description: "了解语聊房在不同平台上的语聊房方式，包括接入
         ```
 
         :::info[信息]
-        如果你的 Android 项目设置了 [dependencyResolutionManagement](https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration)，添加 Maven Central 依赖的方式可能存在差异。
+        如果你的 Android 项目设置了 [dependencyResolutionManagement](https://docs.gradle.org/current/userguide/centralizing_repositories.html)，添加 Maven Central 依赖的方式可能存在差异。
         :::
 
    2. 在 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件中添加如下代码，将声网 RTC SDK 和 IM SDK 集成到你的 Android 项目中：
@@ -458,7 +458,7 @@ val rtcEngine = RtcEngineEx.create(config) as RtcEngineEx
 - 即时通讯 SDK 实现房间内的信令通信。
 - 云服务 (Service) 实现了房间列表的存储和房间生命周期的管理。
 
-本节会详细介绍如何调用声网云服务（`voiceServiceProtocol`）、IM SDK 和 RTC SDK 的 API 完成登录即时通讯系统、获取房间列表、创建房间、进入房间、加入 RTC 房间、离开 RTC 房间等关键逻辑。完整的调用时序可以参考 [API 时序图](#api-时序图)。
+本节会详细介绍如何调用声网云服务（`voiceServiceProtocol`）、IM SDK 和 RTC SDK 的 API 完成登录即时通讯系统、获取房间列表、创建房间、进入房间、加入 RTC 房间、离开 RTC 房间等关键逻辑。完整的调用时序可以参考 [API 时序图](#api-时序图-1)。
 
 :::warning[注意]
 声网云服务为内部自研服务，暂不对外提供。你可以调用声网云服务的 API 用于测试，但是对于正式环境，声网建议你参考文档自行实现相似的一套服务。如需协助，请[联系技术支持](https://ticket.shengwang.cn/)。
@@ -489,7 +489,7 @@ ChatRoomServiceImp.getSharedInstance().fetchRoomList(page: 0) { error, rooms in
 
 参考如下步骤登录即时通讯 (IM) 系统：
 
-1. 根据[前提条件](#前提条件)开启声网即时通讯服务，并获取登录即时通讯系统所需的用户名 (ID) 和 Token。
+1. 根据[前提条件](#前提条件-1)开启声网即时通讯服务，并获取登录即时通讯系统所需的用户名 (ID) 和 Token。
 2. 调用声网即时通讯（IM）SDK 中 `AgoraChatClient` 类的 [`loginWithUsername:token:completion:`](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_oc/v1.1.0/interface_agora_chat_client.html#ad1f4dbc685867ed236fcb57c2d29c2b0) 方法并传入即时通讯服务的用户名和 Token 以登录即时通讯系统。
 
 ```swift

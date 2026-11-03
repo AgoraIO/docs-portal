@@ -2,6 +2,27 @@ import { describe, expect, it } from 'vitest';
 import { docsMetaSchema } from './docs-meta-schema';
 
 describe('docsMetaSchema', () => {
+  it('retains a declared sidebar on a scope without version metadata', () => {
+    const sidebar = [
+      {
+        title: 'API 参考',
+        pages: [
+          {
+            title: '会议 SDK API',
+            url: '/zh-CN/api-reference/meeting/android',
+          },
+        ],
+      },
+    ];
+    const parsed = docsMetaSchema.parse({
+      title: 'Android',
+      navScope: { sidebar },
+      pages: ['index'],
+    });
+    expect(parsed.navScope).toEqual({ sidebar });
+    expect(parsed.navScope?.versions).toBeUndefined();
+  });
+
   it('accepts a plain nav scope', () => {
     expect(
       docsMetaSchema.parse({

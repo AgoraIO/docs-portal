@@ -1,0 +1,905 @@
+---
+title: WhiteboardController class 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/class_whiteboard_controller
+  sourcePath: html-docs/whiteboard/HarmonyOS/class_whiteboard_controller.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+房间操作控制器；由 Whiteboard 组件绑定，在 onRoomReady 后调用房间方法。
+
+可从 @shengwang/whiteboard 直接导入 WhiteboardController。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export class WhiteboardController
+```
+
+| [setInitialWritable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#adf941f118b7c8c425ae34ee29994df51) | `setInitialWritable(writable: boolean) : void` |
+| --- | --- |
+| [attachWhiteboard](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a7ca552bdf4a2d6d763fe5be8181bd36a) | `attachWhiteboard = (whiteboard: DsBridge) => boolean` |
+| [detachWhiteboard](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a56e7d8e4a00fe4e254929f6f28366996) | `detachWhiteboard = (whiteboard: DsBridge) => void` |
+| [setWritable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a2c35210ceb93257fd37506b74824c085) | `setWritable(writable: boolean) : Promise<boolean>` |
+| [getWritable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a2398a04490cbe55055ac47d3b1ffcef1) | `getWritable() : boolean` |
+| [setAppliance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a2df3396a2bdd5d03fdafc8396678aefc) | `setAppliance(appliance: Appliance, shapeType?: ShapeType) : void` |
+| [setStrokeColor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#aaa1831850a6f59098ed596d00c103180) | `setStrokeColor(color: ResourceColor) : void` |
+| [setStrokeWidth](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a6d15cabe89d15d1737d6ad9336d24d75) | `setStrokeWidth(width: number) : void` |
+| [setTextSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a347da2ffa13b7d7f9d9f2b694b61b3b6) | `setTextSize(size: number) : void` |
+| [setTextColor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#af1daa567d61586b231bbc2c5d9cd0213) | `setTextColor(color: ResourceColor) : void` |
+| [setMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a206073cef1ff28c5e9a34717679f76d9) | `setMemberState(state: MemberState) : void` |
+| [copy](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a9f0d0a914aaa1a545ad1d27347469877) | `copy() : void` |
+| [paste](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a94e0eef351b2a93d262cfd20e5a4c7d7) | `paste() : void` |
+| [duplicate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#ae2ebb1e5e0c589ecc26931feda8aaa4e) | `duplicate() : void` |
+| [deleteOperation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a5c5f7c71ee327b60fabe9cf4926c76f8) | `deleteOperation() : void` |
+| [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a6df08c287a0406fbcd95052678407c4f) | `disableSerialization(disable: boolean) : void` |
+| [redo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a4c940dd84c2747109e781380c23b6de2) | `redo() : void` |
+| [undo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#aef435a8701d86dbed9732acd39a7ef76) | `undo() : void` |
+| [setViewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a79970ca8f482261c4fa818eadf793480) | `setViewMode(viewMode: ViewMode) : void` |
+| [disconnect](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#ad59f1c11175243f7227ac2ab31d1437e) | `disconnect() : Promise<object>` |
+| [insertImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#aba1f5f9398f6175559dd679ae8bd3f86) | `insertImage(info: ImageInformation) : void` |
+| [getRoomState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a4a6a9f43a48de80d5b9f694b0d825f39) | `getRoomState() : Promise<RoomState>` |
+| [getRoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a436ca6e963df32b52369e282055efc55) | `getRoomPhase() : Promise<RoomPhase>` |
+| [getRoomMembers](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a863230a45253b1409ff065992ec34584) | `getRoomMembers() : Promise<RoomMember[]>` |
+| [getMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a318fe0fb048c49280490de0bb5973449) | `getMemberState() : Promise<MemberState>` |
+| [getGlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a057c6531075953346f02e7ff1632805f) | `getGlobalState() : Promise<GlobalState>` |
+| [getBroadcastState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#ad386cc2599e8a9be56df7aa5abe975aa) | `getBroadcastState() : Promise<BroadcastState>` |
+| [getSceneState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a174a7a2eb0d5fcca90d7871f72b5d188) | `getSceneState() : Promise<SceneState>` |
+| [getEntireScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a6708e8831825656f3df2e0e04953d543) | `getEntireScenes() : Promise<Record<string, Scene[]>>` |
+| [setScenePath](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a17335b6309ef73ede6b5d05d77f8ffe7) | `setScenePath(path: string) : Promise<boolean>` |
+| [setSceneIndex](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a4aaba404560e7e6cf8acd11dcb98e3ab) | `setSceneIndex(index: number) : Promise<boolean>` |
+| [putScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a798992a8fedaaa49ecf4198c33b1a6b8) | `putScenes(dir: string, scenes: Scene[], index: number) : void` |
+| [moveScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a1eadfb81cffd70573f97c5a95a019249) | `moveScene(srcPath: string, dstPath: string) : void` |
+| [removeScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#ad805cbca5d785eae0ee330cd5a40e488) | `removeScenes(dirOrPath: string) : void` |
+| [cleanScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a199fb98ebfe7d6383766eccedea93ef3) | `cleanScene(retainPpt?: boolean) : void` |
+| [refreshViewSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a523390c0527c1a8b0d9a3e3d87a565ba) | `refreshViewSize() : void` |
+| [scalePptToFit](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a1197f0502cbb2ea69837067bc81df7f7) | `scalePptToFit(mode?: AnimationMode) : void` |
+| [disableCameraTransform](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a02a0d574a8121d3711d81d2c54eb34f9) | `disableCameraTransform(disable: boolean) : void` |
+| [disableDeviceInputs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a47f9f208f7ad63c6e4eeab09997d9efc) | `disableDeviceInputs(disable: boolean) : void` |
+| [disableWindowOperation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#ab4bb3ad3a9e7165b875e9c0d7c67ab03) | `disableWindowOperation(disable: boolean) : void` |
+| [setContainerSizeRatio](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a65f8aae0c3a9e2e1f693c857553572dd) | `setContainerSizeRatio(ratio: number) : void` |
+| [setPrefersColorScheme](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#aa265e3df861675227f92a72608a1721d) | `setPrefersColorScheme(colorScheme: WindowPrefersColorScheme) : void` |
+| [addApp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a1947483479b24337950592844f0d3e14) | `addApp(appParam: WindowAppParam) : Promise<string>` |
+| [fitOriginSizeAndCamera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a96ae7f741f084e78dd1769c03a271978) | `fitOriginSizeAndCamera() : void` |
+| [closeApp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a4e3fbf5dc849e5b21c0a070fa90e387b) | `closeApp(appId: string) : Promise<boolean>` |
+| [focusApp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a19ccd285a2a8f985e734ba76882f44dc) | `focusApp(appId: string) : Promise<boolean>` |
+| [queryApp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a1c0d36a89a83a5217e751eb68681fb1d) | `queryApp(appId: string) : Promise<WindowAppSyncAttrs>` |
+| [queryAllApps](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#ac39b836f36ea89451bf46cc23752112e) | `queryAllApps() : Promise<Record<string, WindowAppSyncAttrs>>` |
+| [addPage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a7b844d0183ca80d888a7af24838f2b75) | `addPage(param: AddPageParam = {}) : void` |
+| [removePage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#ad7e04aeeaf2923ace94e6e250f26353c) | `removePage(param: RemovePageParam = {}) : void` |
+| [insertText](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a2ce59d3ef039612bfbc3a09d567a2df4) | `insertText(x: number, y: number, text: string) : Promise<string>` |
+| [updateText](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a96ce79e0b1c15d59a3fbf851d61cb003) | `updateText(identifier: string, text: string) : void` |
+| [dispatchDocsEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a887fa786d853dcd89ab2981c509fa0cc) | `dispatchDocsEvent(event: WindowDocsEvent) : Promise<DispatchDocsEventResult>` |
+| [getPageState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a70d3417c5b2924c6a4671475c4e52816) | `getPageState(options?: WindowPageStateOptions) : Promise<UnifiedPageState>` |
+| [setSyncMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#ae74332b84f7b36c00f62c9ee31801a6e) | `setSyncMode(useSyncMode: boolean) : void` |
+| [nextPage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a5d4649585b052a5ada92458299a0959f) | `nextPage() : Promise<boolean>` |
+| [prevPage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a45b1ba11f49393defbfdfbd491a1af7d) | `prevPage() : Promise<boolean>` |
+| [getLocalLogState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a5ff7f3a85388e83459ae6ca2716a62f3) | `getLocalLogState() : Promise<object>` |
+| [collectLocalLogs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a3d0dd7056b7f0492c78dc3914283fded) | `collectLocalLogs() : Promise<object>` |
+| [flushLocalLogs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a482393cc824918f8774ee097bd811f5c) | `flushLocalLogs() : Promise<object>` |
+| [uploadLocalLogs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#ac8f27cd257c335aba8f5afb33b14f513) | `uploadLocalLogs() : Promise<object>` |
+| [reloadBackgroundImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a919fc3fa741bc4d142a0b4dbcdf2be20) | `reloadBackgroundImage(params: ReloadBackgroundImageParams) : Promise<ReloadBackgroundImageResult>` |
+| [hasBackgroundImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a01ff563c94e46755ab966545b1232d1b) | `hasBackgroundImage(params: HasBackgroundImageParams) : Promise<boolean>` |
+| [leaveRoom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-whiteboard-controller#a23c34f64ff9a47ba25435bf166fd20f6) | `leaveRoom(): Promise<object>` |
+
+## 函数说明
+
+<a id="adf941f118b7c8c425ae34ee29994df51"></a>
+
+### setInitialWritable
+
+```text
+setInitialWritable(writable: boolean) : void
+```
+
+组件内部生命周期接口；由 Whiteboard 组件管理，不作为业务入房或销毁入口。
+
+<a id="a7ca552bdf4a2d6d763fe5be8181bd36a"></a>
+
+### attachWhiteboard
+
+```text
+attachWhiteboard = (whiteboard: DsBridge) => boolean
+```
+
+组件内部生命周期接口；由 Whiteboard 组件管理，不作为业务入房或销毁入口。
+
+供 Whiteboard 组件绑定控制器；返回 boolean（当前实现为 true），不代表业务入房成功。房间方法等待 onRoomReady 后使用。
+
+<a id="a56e7d8e4a00fe4e254929f6f28366996"></a>
+
+### detachWhiteboard
+
+```text
+detachWhiteboard = (whiteboard: DsBridge) => void
+```
+
+组件内部生命周期接口；由 Whiteboard 组件管理，不作为业务入房或销毁入口。
+
+组件解绑不等于所属房间退出完成；清理所有权仍由 SDK 保留，可继续通过 leaveRoom 等待所属 Room 清理。业务不应直接调用此内部绑定接口。
+
+<a id="a2c35210ceb93257fd37506b74824c085"></a>
+
+### setWritable
+
+```text
+setWritable(writable: boolean) : Promise<boolean>
+```
+
+设置用户在房间中是否为互动模式。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| writable | 用户在房间中是否为互动模式： - `true`：互动模式，即具有读写权限。 - `false`：订阅模式，即具有只读权限。 |
+
+@returns Promise 如果方法调用成功，则返回用户在房间中的读写状态（`true` 或 `false`）。 如果方法调用失败，则返回错误信息。
+
+<a id="a2398a04490cbe55055ac47d3b1ffcef1"></a>
+
+### getWritable
+
+```text
+getWritable() : boolean
+```
+
+getWritable：WhiteboardController 的公开成员。参数和返回类型见下方签名。
+
+<a id="a2df3396a2bdd5d03fdafc8396678aefc"></a>
+
+### setAppliance
+
+```text
+setAppliance(appliance: Appliance, shapeType?: ShapeType) : void
+```
+
+设置教具类型
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| appliance | 教具类型 |
+| shapeType | 形状 |
+
+<a id="aaa1831850a6f59098ed596d00c103180"></a>
+
+### setStrokeColor
+
+```text
+setStrokeColor(color: ResourceColor) : void
+```
+
+设置画笔颜色
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| color |  |
+
+<a id="a6d15cabe89d15d1737d6ad9336d24d75"></a>
+
+### setStrokeWidth
+
+```text
+setStrokeWidth(width: number) : void
+```
+
+设置画笔粗细
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| width |  |
+
+<a id="a347da2ffa13b7d7f9d9f2b694b61b3b6"></a>
+
+### setTextSize
+
+```text
+setTextSize(size: number) : void
+```
+
+设置字大小
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| size |  |
+
+<a id="af1daa567d61586b231bbc2c5d9cd0213"></a>
+
+### setTextColor
+
+```text
+setTextColor(color: ResourceColor) : void
+```
+
+设置字颜色
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| color |  |
+
+@remarks 默认状态下，文字的颜色和画笔颜色保持一致
+
+<a id="a206073cef1ff28c5e9a34717679f76d9"></a>
+
+### setMemberState
+
+```text
+setMemberState(state: MemberState) : void
+```
+
+修改房间内的白板工具状态。
+
+<a id="a9f0d0a914aaa1a545ad1d27347469877"></a>
+
+### copy
+
+```text
+copy() : void
+```
+
+复制选中内容。
+
+<a id="a94e0eef351b2a93d262cfd20e5a4c7d7"></a>
+
+### paste
+
+```text
+paste() : void
+```
+
+粘贴复制的内容。
+
+<a id="ae2ebb1e5e0c589ecc26931feda8aaa4e"></a>
+
+### duplicate
+
+```text
+duplicate() : void
+```
+
+复制并粘贴选中的内容。
+
+<a id="a5c5f7c71ee327b60fabe9cf4926c76f8"></a>
+
+### deleteOperation
+
+```text
+deleteOperation() : void
+```
+
+删除选中的内容。
+
+<a id="a6df08c287a0406fbcd95052678407c4f"></a>
+
+### disableSerialization
+
+```text
+disableSerialization(disable: boolean) : void
+```
+
+开启/禁止本地序列化。
+
+设置 `disableSerialization(true)` 后，undo redo 计数不生效、以下方法将不生效：
+- `redo`
+- `undo`
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| disable | 默认为 true |
+
+<a id="a4c940dd84c2747109e781380c23b6de2"></a>
+
+### redo
+
+```text
+redo() : void
+```
+
+重做，即回退撤销操作。
+
+@note 该方法仅当 disableSerialization 设为 `false` 时生效。
+
+<a id="aef435a8701d86dbed9732acd39a7ef76"></a>
+
+### undo
+
+```text
+undo() : void
+```
+
+撤销上一步操作。
+
+@note 该方法仅当 disableSerialization 设为 `false` 时生效。
+
+<a id="a79970ca8f482261c4fa818eadf793480"></a>
+
+### setViewMode
+
+```text
+setViewMode(viewMode: ViewMode) : void
+```
+
+切换视角模式。
+
+<a id="ad59f1c11175243f7227ac2ab31d1437e"></a>
+
+### disconnect
+
+```text
+disconnect() : Promise<object>
+```
+
+主动断开与互动白板实时房间实例的连接。
+
+兼容入口，委托 leaveRoom() 的异步清理；等待 Promise 成功后再复用或销毁。失败时暂停下一次入房。
+
+<a id="aba1f5f9398f6175559dd679ae8bd3f86"></a>
+
+### insertImage
+
+```text
+insertImage(info: ImageInformation) : void
+```
+
+插入图片显示区域。
+
+<a id="a4a6a9f43a48de80d5b9f694b0d825f39"></a>
+
+### getRoomState
+
+```text
+getRoomState() : Promise<RoomState>
+```
+
+获取房间的所有状态。
+
+<a id="a436ca6e963df32b52369e282055efc55"></a>
+
+### getRoomPhase
+
+```text
+getRoomPhase() : Promise<RoomPhase>
+```
+
+获取房间的连接状态。
+
+<a id="a863230a45253b1409ff065992ec34584"></a>
+
+### getRoomMembers
+
+```text
+getRoomMembers() : Promise<RoomMember[]>
+```
+
+获取房间的用户列表。
+
+@remarks 房间的用户列表仅包含互动模式（具有读写权限）的用户，不包含订阅模式（只读权限）的用户。
+
+@return 用户列表
+
+<a id="a318fe0fb048c49280490de0bb5973449"></a>
+
+### getMemberState
+
+```text
+getMemberState() : Promise<MemberState>
+```
+
+获取房间内白板工具状态。
+
+<a id="a057c6531075953346f02e7ff1632805f"></a>
+
+### getGlobalState
+
+```text
+getGlobalState() : Promise<GlobalState>
+```
+
+获取房间公共全局状态。
+
+<a id="ad386cc2599e8a9be56df7aa5abe975aa"></a>
+
+### getBroadcastState
+
+```text
+getBroadcastState() : Promise<BroadcastState>
+```
+
+获取当前房间视角状态。
+
+<a id="a174a7a2eb0d5fcca90d7871f72b5d188"></a>
+
+### getSceneState
+
+```text
+getSceneState() : Promise<SceneState>
+```
+
+获取房间当前场景组下的场景状态。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| promise | `Promise&lt;SceneState&gt;` 接口实例，详见 Promise。你可以通过该接口获取 `getSceneState` 的调用结果： - 如果方法调用成功，则返回场景状态，详见 SceneState。 - 如果方法调用失败，则返回错误信息。 |
+
+@note - 该方法为异步调用。 - 调用以下方法修改或新增场景后，你可以通过 getSceneState 立即获取最新的场景状态。 - setScenePath[1/2] - setScenePath[2/2] - int)
+
+<a id="a6708e8831825656f3df2e0e04953d543"></a>
+
+### getEntireScenes
+
+```text
+getEntireScenes() : Promise<Record<string, Scene[]>>
+```
+
+获取当前房间内所有场景的信息。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| promise | `Promise&lt;Map&lt;String, Scene[]&gt;&gt;` 接口实例，详见 Promise。你可以通过该接口获取 `getEntireScenes` 方法的调用结果： - 如果方法调用成功，将返回当前房间内所有场景的信息。 - 如果方法调用失败，将返回错误信息。 |
+
+<a id="a17335b6309ef73ede6b5d05d77f8ffe7"></a>
+
+### setScenePath
+
+```text
+setScenePath(path: string) : Promise<boolean>
+```
+
+切换至指定的场景。
+方法调用成功后，房间内的所有用户看到的白板都会切换到指定场景。
+
+<a id="a4aaba404560e7e6cf8acd11dcb98e3ab"></a>
+
+### setSceneIndex
+
+```text
+setSceneIndex(index: number) : Promise<boolean>
+```
+
+切换至当前场景组下的指定场景。
+
+方法调用成功后，房间内的所有用户看到的白板都会切换到指定场景。
+指定的场景必须在当前场景组中，否则方法调用会失败。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| index | - 目标场景在当前场景组下的索引号。 |
+
+@returns 一个 `Promise&lt;boolean&gt;`，用于获取 `setSceneIndex` 的调用结果： - 如果方法调用成功，则返回 `true`。 - 如果方法调用失败，则抛出错误信息。
+
+<a id="a798992a8fedaaa49ecf4198c33b1a6b8"></a>
+
+### putScenes
+
+```text
+putScenes(dir: string, scenes: Scene[], index: number) : void
+```
+
+在指定场景组下插入多个场景。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| dir | - 场景组名称，必须以 `/` 开头。不能为场景路径。 |
+| scenes | - 由多个场景构成的数组。单个场景的字段详见 Scene。 |
+| index | - 待插入的多个场景中，第一个场景在该场景组的索引号。 - 如果传入的索引号大于该场景组已有场景总数，新插入的场景会排在现有场景的最后。 - 场景的索引号从 0 开始。 |
+
+@remarks 调用该方法插入多个场景后不会切换到新插入的场景。如果要切换至新插入的场景，需要调用 `setScenePath`。
+
+<a id="a1eadfb81cffd70573f97c5a95a019249"></a>
+
+### moveScene
+
+```text
+moveScene(srcPath: string, dstPath: string) : void
+```
+
+移动场景。
+
+成功移动场景后，场景路径也会改变。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| sourcePath | - 需要移动的场景原路径。必须为场景路径，不能是场景组的路径。 |
+| targetDirOrPath | - 目标场景组路径或目标场景路径： - 当 `targetDirOrPath` 设置为目标场景组路径时，表示将指定场景移至其他场景组中，场景路径会发生改变，但是场景名称不变。 - 当 `targetDirOrPath` 设置为目标场景路径时，表示改变指定场景在当前场景组的位置，场景路径和场景名称都会发生改变。 |
+
+@remarks - 该方法只能移动场景，不能移动场景组，即 `sourcePath` 只能是场景路径，不能是场景组路径。 - 该方法支持改变指定场景在当前所属场景组下的位置，也支持将指定场景移至其他场景组。
+
+<a id="ad805cbca5d785eae0ee330cd5a40e488"></a>
+
+### removeScenes
+
+```text
+removeScenes(dirOrPath: string) : void
+```
+
+removeScenes：WhiteboardController 的公开成员。参数和返回类型见下方签名。
+
+<a id="a199fb98ebfe7d6383766eccedea93ef3"></a>
+
+### cleanScene
+
+```text
+cleanScene(retainPpt?: boolean) : void
+```
+
+清除当前场景的所有内容。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| retainPpt | 是否保留 PPT 内容： - `true`：保留 PPT。 - `false`：连 PPT 一起清空。 |
+
+<a id="a523390c0527c1a8b0d9a3e3d87a565ba"></a>
+
+### refreshViewSize
+
+```text
+refreshViewSize() : void
+```
+
+刷新白板的界面。
+&lt;p&gt;
+当 `WhiteboardView` 出现改变时，需要手动调用该方法刷新白板的界面。
+
+<a id="a1197f0502cbb2ea69837067bc81df7f7"></a>
+
+### scalePptToFit
+
+```text
+scalePptToFit(mode?: AnimationMode) : void
+```
+
+根据指定的动画模式调整视角，以保证完整显示 PPT 的内容。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| mode | 视角调整时的动画模式。 |
+
+<a id="a02a0d574a8121d3711d81d2c54eb34f9"></a>
+
+### disableCameraTransform
+
+```text
+disableCameraTransform(disable: boolean) : void
+```
+
+禁止/允许用户调整视角。
+
+该方法用于禁止或允许用户通过触屏手势移动或缩放视角。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| disable | 是否禁止用户调整视角： - `true`: 禁止用户调整视角。 - `false`: (默认) 允许用户调整视角。 |
+
+<a id="a47f9f208f7ad63c6e4eeab09997d9efc"></a>
+
+### disableDeviceInputs
+
+```text
+disableDeviceInputs(disable: boolean) : void
+```
+
+禁止/允许用户操作白板工具。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| disable | 是否禁止用户操作白板工具： - `true`：禁止用户操作白板工具操作。 - `false`：（默认）允许用户操作白板工具输入操作。 |
+
+<a id="ab4bb3ad3a9e7165b875e9c0d7c67ab03"></a>
+
+### disableWindowOperation
+
+```text
+disableWindowOperation(disable: boolean) : void
+```
+
+多窗口模式下，禁止/允许窗口操作。
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| disable | - 是否禁止窗口操作： - `true`：禁止窗口操作。 - `false`：（默认）允许窗口操作。 |
+
+<a id="a65f8aae0c3a9e2e1f693c857553572dd"></a>
+
+### setContainerSizeRatio
+
+```text
+setContainerSizeRatio(ratio: number) : void
+```
+
+设置多窗口显示比例
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| ratio | 高与宽比例, 初始化默认值 9\:16 |
+
+<a id="aa265e3df861675227f92a72608a1721d"></a>
+
+### setPrefersColorScheme
+
+```text
+setPrefersColorScheme(colorScheme: WindowPrefersColorScheme) : void
+```
+
+设置设置暗色模式
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| colorScheme |  |
+
+<a id="a1947483479b24337950592844f0d3e14"></a>
+
+### addApp
+
+```text
+addApp(appParam: WindowAppParam) : Promise<string>
+```
+
+在多窗口模式添加 App，成功返回 appId；创建失败或焦点未提交时 Promise 拒绝。0.2.8 开始等待 setup 并清理半初始化窗口；0.2.9 的 lazy 模式还按焦点协调 setup。成功返回不表示所有资源已渲染完成。originSize 序列化到 attributes.originSize。
+
+<a id="a96ae7f741f084e78dd1769c03a271978"></a>
+
+### fitOriginSizeAndCamera
+
+```text
+fitOriginSizeAndCamera() : void
+```
+
+启用 MainView originSize 模式后恢复 MainView 参考尺寸和初始相机状态，不修改 Slide/Presentation 的 App 参考尺寸。
+
+<a id="a4e3fbf5dc849e5b21c0a070fa90e387b"></a>
+
+### closeApp
+
+```text
+closeApp(appId: string) : Promise<boolean>
+```
+
+等待内嵌 Window Manager 完成关闭和后继焦点交接后回调。当前 Native 层收到完成回调后固定返回 true，不提供可靠的 false 业务失败结果；需要结合查询和房间状态处理未收到完成的情况。
+
+<a id="a19ccd285a2a8f985e734ba76882f44dc"></a>
+
+### focusApp
+
+```text
+focusApp(appId: string) : Promise<boolean>
+```
+
+切换 App 焦点。Promise&lt;boolean&gt; 表示房间共享 focus、本地 Box 焦点及 zIndex 是否已提交；false 表示请求被取代或未提交。setup 失败或超时只记录日志，不能用 true 判断课件首帧已就绪。
+
+<a id="a1c0d36a89a83a5217e751eb68681fb1d"></a>
+
+### queryApp
+
+```text
+queryApp(appId: string) : Promise<WindowAppSyncAttrs>
+```
+
+查询窗口信息
+
+#### 参数
+
+| 名称 | 描述 |
+| --- | --- |
+| appId |  |
+
+<a id="ac39b836f36ea89451bf46cc23752112e"></a>
+
+### queryAllApps
+
+```text
+queryAllApps() : Promise<Record<string, WindowAppSyncAttrs>>
+```
+
+查询所有窗口信息
+
+<a id="a7b844d0183ca80d888a7af24838f2b75"></a>
+
+### addPage
+
+```text
+addPage(param: AddPageParam = {}) : void
+```
+
+添加新页面
+
+添加页面之后不自动切换，需要调用`setSceneIndex`或者 `nextPage` 切换页面
+
+<a id="ad7e04aeeaf2923ace94e6e250f26353c"></a>
+
+### removePage
+
+```text
+removePage(param: RemovePageParam = {}) : void
+```
+
+删除当前场景集指定页面，多窗口下限定为主白板场景集下页面
+
+<a id="a2ce59d3ef039612bfbc3a09d567a2df4"></a>
+
+### insertText
+
+```text
+insertText(x: number, y: number, text: string) : Promise<string>
+```
+
+在指定位置插入文字。
+
+<a id="a96ce79e0b1c15d59a3fbf851d61cb003"></a>
+
+### updateText
+
+```text
+updateText(identifier: string, text: string) : void
+```
+
+更新指定文字内容。
+
+<a id="a887fa786d853dcd89ab2981c509fa0cc"></a>
+
+### dispatchDocsEvent
+
+```text
+dispatchDocsEvent(event: WindowDocsEvent) : Promise<DispatchDocsEventResult>
+```
+
+统一控制 MainView、DocsViewer、Slide、Presentation。target 可为 mainView 或具体 appId，省略时跟随焦点；page 从 1 开始，scale=1 表示适配尺寸。返回 DispatchDocsEventResult：accepted=true 仅表示命令接收，不保证画面完成；accepted=false 包含 reason/message。DocsViewer 不支持 scalePage。传输/执行异常进入异步错误路径，实际状态通过统一页状态回调观察。
+
+<a id="a70d3417c5b2924c6a4671475c4e52816"></a>
+
+### getPageState
+
+```text
+getPageState(options?: WindowPageStateOptions) : Promise<UnifiedPageState>
+```
+
+查询统一页面状态，返回 target、可选 appId、1-based page/pageCount 和可选相对 scale。查询目标用 mainView 或 appId；状态 target 返回 mainView/DocsViewer/Slide/Presentation。
+
+<a id="ae74332b84f7b36c00f62c9ee31801a6e"></a>
+
+### setSyncMode
+
+```text
+setSyncMode(useSyncMode: boolean) : void
+```
+
+设置同步模式。
+
+<a id="a5d4649585b052a5ada92458299a0959f"></a>
+
+### nextPage
+
+```text
+nextPage() : Promise<boolean>
+```
+
+切换到下一个页面
+
+<a id="a45b1ba11f49393defbfdfbd491a1af7d"></a>
+
+### prevPage
+
+```text
+prevPage() : Promise<boolean>
+```
+
+切换到上一个页面
+
+<a id="a5ff7f3a85388e83459ae6ca2716a62f3"></a>
+
+### getLocalLogState
+
+```text
+getLocalLogState() : Promise<object>
+```
+
+查询 WebView 内本地日志运行状态，异步返回 JSON 对象。
+
+<a id="a3d0dd7056b7f0492c78dc3914283fded"></a>
+
+### collectLocalLogs
+
+```text
+collectLocalLogs() : Promise<object>
+```
+
+收集本地诊断日志，异步返回 JSON 对象；需要初始化时显式开启本地日志。
+
+<a id="a482393cc824918f8774ee097bd811f5c"></a>
+
+### flushLocalLogs
+
+```text
+flushLocalLogs() : Promise<object>
+```
+
+将 WebView 内本地日志刷新到持久化存储，异步返回 JSON 对象。
+
+<a id="ac8f27cd257c335aba8f5afb33b14f513"></a>
+
+### uploadLocalLogs
+
+```text
+uploadLocalLogs() : Promise<object>
+```
+
+触发本地日志上传；enabled 与 enabledUpload 均需启用，结果通过异步 JSON 和日志状态事件观察。
+
+<a id="a919fc3fa741bc4d142a0b4dbcdf2be20"></a>
+
+### reloadBackgroundImage
+
+```text
+reloadBackgroundImage(params: ReloadBackgroundImageParams) : Promise<ReloadBackgroundImageResult>
+```
+
+重新加载当前聚焦场景此前失败的 Appliance Plugin 背景图。参数包含 source="appliance"、viewId 和可选 scenePath/url；返回 accepted/reloadedCount/可选 reason，accepted 不表示图片已加载成功。需要同时开启 useMultiViews 和 enableAppliancePlugin。
+
+<a id="a01ff563c94e46755ab966545b1232d1b"></a>
+
+### hasBackgroundImage
+
+```text
+hasBackgroundImage(params: HasBackgroundImageParams) : Promise<boolean>
+```
+
+按 viewId、scenePath、imageUrl 及 sources 查询 Appliance Plugin 管理的背景图，sources 填写 ["appliance"]，返回布尔值。需要同时开启 useMultiViews 和 enableAppliancePlugin。
+
+## 公开成员函数
+
+<a id="a23c34f64ff9a47ba25435bf166fd20f6"></a>
+
+### leaveRoom
+
+```text
+leaveRoom(): Promise<object>
+```
+
+等待所属 Room 完成清理，重复退出复用清理结果。disconnect() 为兼容入口并委托相同流程；组件绑定/解绑不能替代业务退房完成通知。

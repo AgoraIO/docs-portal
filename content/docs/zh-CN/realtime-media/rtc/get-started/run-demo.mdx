@@ -4,12 +4,14 @@ description: "了解如何快速接入实时互动 RTC，完成环境准备、�
 ---
 <PlatformStructured platform="android">
 
+声网提供开源示例项目演示声网 RTC SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。
+
 <Cards>
   <Card title={<RepositoryCardTitle provider="gitee">API-Examples</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples/tree/main/Android" />
   <Card title={<RepositoryCardTitle provider="github">API-Examples</RepositoryCardTitle>} href="https://github.com/Shengwang-Community/API-Examples/tree/main/Android" />
 </Cards>
 
-声网提供开源示例项目演示声网 RTC SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。本文介绍如何快速跑通 Android 示例项目，体验实时音视频功能。
+本文介绍如何快速跑通 Android 示例项目，体验实时音视频功能。
 
 ## 前提条件
 
@@ -516,7 +518,7 @@ Web API Example 项目中包含有丰富的功能模块，你可以参考如下�
 
 - 一个经过企业认证的微信小程序账号。在调试小程序示例项目过程中，需要使用 live-pusher 和 live-player 组件。只有特定行业的认证企业账号才可以使用这两个组件。详见[小程序官网文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-player.html)。
 - 下载并安装最新版本的[微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)。
-- 参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)在控制台创建项目、获取 App ID 和临时 Token，并开启小程序服务。
+- 参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)在控制台创建项目、获取 App ID 和临时 Token，并[开通小程序服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service#mini-program-service)。
 
   :::warning[注意]
   临时 Token 的有效期是 24 小时。Token 过期会引起项目编译失败。
@@ -879,10 +881,10 @@ yarn
 
 <Cards>
   <Card title={<RepositoryCardTitle provider="gitee">API-Examples</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/react-native-agora/tree/main/example" />
-  <Card title={<RepositoryCardTitle provider="github">API-Examples</RepositoryCardTitle>} href="https://github.com/AgoraIO-Extensions/react-native-agora/tree/main/example" />
+  <Card title={<RepositoryCardTitle provider="github">API-Examples</RepositoryCardTitle>} href="https://github.com/AgoraIO-Extensions/react-native-agora/tree/main/examples/legacy" />
 </Cards>
 
-本文介绍如何快速跑通 React Native 示例项目，体验实时音视频功能。
+本文使用 GitHub 仓库中的 `examples/legacy` 工程，介绍如何跑通 React Native 示例并体验实时音视频功能。
 
 ## 前提条件
 
@@ -930,20 +932,20 @@ yarn
 ### 获取示例项目
 
 1. 从以下两种方式中任选一种获取示例项目：
-    - 前往[下载](/zh-CN/realtime-media/rtc/reference/downloads)页面，下载最新版的 React Native 视频 SDK。
+    - 打开上方 GitHub 示例项目链接，通过 **Code** 菜单中的 **Download ZIP** 下载源码。
     - 运行以下命令将 React Native SDK 克隆至本地。
 
         ```shell
-        git clone git@github.com:AgoraIO-Extensions/react-native-agora.git
+        git clone --branch main --depth 1 https://github.com/AgoraIO-Extensions/react-native-agora.git
         ```
 
-2. React Native SDK 的 API 使用示例位于 `/example/` 路径下。
+2. React Native SDK 的 API 使用示例位于 `/examples/legacy/` 路径下。
 
     | 路径                        | 描述                           |
     |:---------------------------|:-------------------------------|
-    | `/example/src/examples/basic`      | 基础功能。 |
-    | `/example/src/examples/advanced`   | 进阶功能。 |
-    | `/example/src/examples/hook`   | [Hook](https://react.dev/reference/react) 示例。 |
+    | `/examples/legacy/src/examples/basic`      | 基础功能。 |
+    | `/examples/legacy/src/examples/advanced`   | 进阶功能。 |
+    | `/examples/legacy/src/examples/hook`   | [Hook](https://react.dev/reference/react) 示例。 |
 
 ### 配置示例项目
 
@@ -961,13 +963,13 @@ yarn
 
 2. 设置 App ID 和临时 Token
 
-    打开 `/example/src/config/agora.config.ts` 文件，在指定位置填入控制台获取的 App ID、临时 Token 以及生成 Token 时使用的频道名并保存修改。
+    打开 `/examples/legacy/src/config/agora.config.ts` 文件，在指定位置填入控制台获取的 App ID、临时 Token 以及生成 Token 时使用的频道名并保存修改。
 
     ```typescript
     // 填入 App ID
     let localAppId = '';
     try {
-    localAppId = require('./appID').default;
+    localAppId = require('./appID')?.appId;
     console.log('appID', localAppId);
     } catch (error) {
     console.warn(error);
@@ -992,10 +994,10 @@ yarn
 
     ```shell
     // 目标平台为 Android
-    yarn example android
+    yarn legacy android
 
     // 目标平台为 iOS
-    yarn example ios
+    yarn legacy ios
     ```
 
 2. 以 Android 为例，运行完成后，你的电脑上会弹出以下应用。

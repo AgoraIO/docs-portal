@@ -12,6 +12,9 @@ const enCommon = {
       system: 'System',
     },
     site: {
+      switchSite: 'Switch site',
+      chinese: '简体中文',
+      english: 'English',
       label: 'Site',
       description: 'Product coverage differs between the two sites.',
       global: 'International site',

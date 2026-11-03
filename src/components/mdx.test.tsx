@@ -37,6 +37,7 @@ import {
 } from './mdx';
 import {
   PlatformHeaderTabs,
+  PlatformPageProvider,
   PlatformTabsPlacementProvider,
 } from './mdx/PlatformTabsGroup';
 
@@ -758,6 +759,113 @@ describe('common MDX registry', () => {
     expect(screen.getByText('Example source')).toBeVisible();
   });
 
+  it.each([
+    '/zh-CN/realtime-media/rtc/reference/release-notes',
+    '/realtime-media/rtc/reference/release-notes/',
+    '/en/realtime-media/video/reference/release-notes',
+  ])(
+    'includes the visible platform when sharing a release from %s',
+    async (path) => {
+      window.history.replaceState({}, '', `${path}?example=1#overview`);
+      window.localStorage.setItem('docs-portal:platform:v1', 'web');
+      const writeText = vi
+        .spyOn(navigator.clipboard, 'writeText')
+        .mockResolvedValue(undefined);
+      const components = getMDXComponents();
+      const Accordions = components.Accordions as AccordionsComponent;
+      const Accordion = components.Accordion as AccordionComponent;
+
+      render(
+        <PlatformPageProvider
+          canonicalPlatform="android"
+          platforms='["android","web"]'
+        >
+          <MDXAccordionProvider>
+            <Accordions type="multiple" openFirst>
+              <Accordion title="v4.24.8" id="v4248" headingLevel={2}>
+                Web release details
+              </Accordion>
+            </Accordions>
+          </MDXAccordionProvider>
+        </PlatformPageProvider>,
+      );
+
+      fireEvent.click(screen.getByRole('button', { name: 'docs.copyLink' }));
+
+      await waitFor(() =>
+        expect(writeText).toHaveBeenCalledWith(
+          `${window.location.origin}${path.replace(/\/$/, '')}/web?example=1#v4248`,
+        ),
+      );
+      expect(window.location.pathname).toBe(path);
+      writeText.mockRestore();
+    },
+  );
+
+  it('keeps the explicit platform when sharing with a conflicting saved preference', async () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/zh-CN/realtime-media/rtc/reference/release-notes/web?platform=android&example=1',
+    );
+    window.localStorage.setItem('docs-portal:platform:v1', 'android');
+    const writeText = vi
+      .spyOn(navigator.clipboard, 'writeText')
+      .mockResolvedValue(undefined);
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    render(
+      <PlatformPageProvider
+        canonicalPlatform="android"
+        initialPlatform="web"
+        platforms='["android","web"]'
+      >
+        <MDXAccordionProvider>
+          <Accordions type="multiple" openFirst>
+            <Accordion title="v4.24.8" id="v4248" headingLevel={2}>
+              Web release details
+            </Accordion>
+          </Accordions>
+        </MDXAccordionProvider>
+      </PlatformPageProvider>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'docs.copyLink' }));
+
+    await waitFor(() =>
+      expect(writeText).toHaveBeenCalledWith(
+        `${window.location.origin}/zh-CN/realtime-media/rtc/reference/release-notes/web?example=1#v4248`,
+      ),
+    );
+    writeText.mockRestore();
+  });
+
+  it('does not add a saved platform to releases without page-level platform tabs', async () => {
+    window.history.replaceState({}, '', '/en/ai/release-notes?example=1');
+    window.localStorage.setItem('docs-portal:platform:v1', 'android');
+    const writeText = vi
+      .spyOn(navigator.clipboard, 'writeText')
+      .mockResolvedValue(undefined);
+    const components = getMDXComponents();
+    const Accordion = components.Accordion as AccordionComponent;
+
+    render(
+      <Accordion title="v2.0" id="v20" headingLevel={2}>
+        Release details
+      </Accordion>,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'docs.copyLink' }));
+
+    await waitFor(() =>
+      expect(writeText).toHaveBeenCalledWith(
+        `${window.location.origin}/en/ai/release-notes?example=1#v20`,
+      ),
+    );
+    writeText.mockRestore();
+  });
+
   it('expands the version containing an encoded Chinese subsection hash', async () => {
     window.history.replaceState(
       {},
@@ -1414,7 +1522,7 @@ describe('common MDX registry', () => {
     fireEvent.click(screen.getByRole('button', { name: /copy.?link/i }));
     await waitFor(() =>
       expect(writeText).toHaveBeenCalledWith(
-        `${window.location.origin}/realtime-media/rtm/reference/release-notes?from=overview&platform=web#224-%E7%89%88-2`,
+        `${window.location.origin}/realtime-media/rtm/reference/release-notes/web?from=overview#224-%E7%89%88-2`,
       ),
     );
     expect(window.location.search).toBe('?from=overview');
@@ -1444,7 +1552,7 @@ describe('common MDX registry', () => {
     await waitFor(() =>
       expect(within(heading).getByRole('link')).toHaveAttribute(
         'href',
-        '/realtime-media/rtm/reference/release-notes?from=overview&platform=web#%E5%8D%87%E7%BA%A7%E5%BF%85%E7%9C%8B-2',
+        '/realtime-media/rtm/reference/release-notes/web?from=overview#%E5%8D%87%E7%BA%A7%E5%BF%85%E7%9C%8B-2',
       ),
     );
     fireEvent.click(
@@ -1452,7 +1560,7 @@ describe('common MDX registry', () => {
     );
     await waitFor(() =>
       expect(writeText).toHaveBeenCalledWith(
-        `${window.location.origin}/realtime-media/rtm/reference/release-notes?from=overview&platform=web#%E5%8D%87%E7%BA%A7%E5%BF%85%E7%9C%8B-2`,
+        `${window.location.origin}/realtime-media/rtm/reference/release-notes/web?from=overview#%E5%8D%87%E7%BA%A7%E5%BF%85%E7%9C%8B-2`,
       ),
     );
   });
@@ -2118,6 +2226,96 @@ describe('common MDX registry', () => {
     ).toBeVisible();
     expect(document.documentElement.dataset.docsPlatform).toBe('android');
   });
+
+  it('reveals a hash-selected platform without discarding the deep link', async () => {
+    const url =
+      '/zh-CN/realtime-media/rtc/reference/error-code?from=legacy#%E9%94%99%E8%AF%AF%E7%A0%81';
+    window.history.replaceState({}, '', url);
+    window.localStorage.setItem('docs-portal:platform:v1', 'android');
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+    render(
+      <PlatformPageProvider
+        canonicalPlatform="android"
+        defaultPlatform="android"
+        platforms='["android","ios"]'
+      >
+        <Group
+          canonicalPlatform="android"
+          groupMode="structured"
+          tabsPlacement="header"
+          platforms='["android","ios"]'
+        >
+          <Panel platform="android">
+            <h2 id="android-section">Android body</h2>
+          </Panel>
+          <Panel platform="ios">
+            <h2 id="错误码">iOS error codes</h2>
+          </Panel>
+        </Group>
+      </PlatformPageProvider>,
+    );
+    await waitFor(() =>
+      expect(screen.getByText('iOS error codes')).toBeVisible(),
+    );
+    expect(
+      window.location.pathname + window.location.search + window.location.hash,
+    ).toBe(url);
+    act(() => {
+      window.history.replaceState({}, '', '#android-section');
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+    });
+    await waitFor(() => expect(screen.getByText('Android body')).toBeVisible());
+    expect(window.location.hash).toBe('#android-section');
+  });
+
+  it.each(['lazy content', 'hash target event'])(
+    'reveals the platform after %s arrives',
+    async (trigger) => {
+      window.history.replaceState(
+        {},
+        '',
+        '/zh-CN/realtime-media/rtc/reference/error-code#late-ios',
+      );
+      const components = getMDXComponents() as Record<string, unknown>;
+      const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+      const Panel = components._PlatformPanel as PlatformPanelComponent;
+      const content = (ready: boolean) => (
+        <Group
+          canonicalPlatform="android"
+          groupMode="structured"
+          platforms='["android","ios"]'
+        >
+          <Panel platform="android">Android instructions</Panel>
+          <Panel platform="ios">
+            {ready ? (
+              <h2 id="late-ios">Lazy iOS section</h2>
+            ) : (
+              <span>Loading</span>
+            )}
+          </Panel>
+        </Group>
+      );
+      if (trigger === 'hash target event')
+        window.history.replaceState({}, '', '#unknown');
+      const view = render(content(trigger === 'hash target event'));
+      expect(screen.getByText('Android instructions')).toBeVisible();
+      if (trigger === 'lazy content') view.rerender(content(true));
+      else
+        act(() =>
+          window.dispatchEvent(
+            new CustomEvent(DOCS_HASH_TARGET_EVENT, { detail: '#late-ios' }),
+          ),
+        );
+      await waitFor(() =>
+        expect(screen.getByText('Lazy iOS section')).toBeVisible(),
+      );
+      expect(window.location.hash).toBe(
+        trigger === 'lazy content' ? '#late-ios' : '#unknown',
+      );
+    },
+  );
 
   it('switches structured platform panels on normal click interaction', () => {
     const components = getMDXComponents() as Record<string, unknown>;

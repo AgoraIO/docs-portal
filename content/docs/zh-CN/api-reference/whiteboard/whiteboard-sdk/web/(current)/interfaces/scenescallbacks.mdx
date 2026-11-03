@@ -1,0 +1,40 @@
+---
+title: ScenesCallbacks
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/scenescallbacks
+  sourcePath: html-docs/whiteboard/Web/interfaces/scenescallbacks.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type ScenesCallbacks = {
+    /**
+     * 包含的场景数变化
+     */
+    onScenesCountUpdate: (scenesCallbacks: ScenesCallbacksNode, scenesCount: number)=>void;
+    /**
+     * 有新场景加入
+     */
+    onAddScene: (scenesCallbacks: ScenesCallbacksNode, name: string)=>void;
+    /**
+     * 场景被删除
+     */
+    onRemoveScene: (scenesCallbacks: ScenesCallbacksNode, name: string)=>void;
+    /**
+     * 包含的场景组数目变化
+     */
+    onScenesGroupCountUpdate: (scenesCallbacks: ScenesCallbacksNode, sceneGroupsCount: number)=>void;
+    /**
+     * 有新场景组加入
+     */
+    onAddSceneGroup: (scenesCallbacks: ScenesCallbacksNode, name: string)=>void;
+    /**
+     * 场景组被删除
+     */
+    onRemoveSceneGroup: (scenesCallbacks: ScenesCallbacksNode, name: string)=>void;
+};
+```

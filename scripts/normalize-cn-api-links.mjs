@@ -30,12 +30,30 @@ const LEGACY_DOC_HOSTS = new Set([
   'docportal.shengwang.cn',
   'docs.agora.io',
 ]);
+// These education examples use RTM 1.x. Keep their verified version-specific
+// resources instead of mapping them to RTM 2.x or reducing them to plain text.
+const EDUCATION_RTM1_RESOURCES = [
+  'downloads?platform=All%20Platforms',
+  'messaging_android?platform=Android',
+  'messaging_ios?platform=iOS',
+  'messaging_mac?platform=macOS',
+  'messaging_cpp_windows?platform=Windows',
+  'API%20Reference/RTM_java/index.html',
+  'API%20Reference/RTM_oc/docs/headers/API-Overview.html',
+  'API%20Reference/RTM_cpp/index.html',
+];
 const APPROVED_LEGACY_FALLBACKS = new Set([
   'content/docs/zh-CN/realtime-media/rtc/reference/downloads/android.mdx\0https://doc.shengwang.cn/codebox/detail?demo=24&platform=2',
   'content/docs/zh-CN/realtime-media/rtc/reference/downloads/ios.mdx\0https://doc.shengwang.cn/codebox/detail?demo=24&platform=1',
   'content/docs/zh-CN/realtime-media/rtc/reference/migration-guide.mdx\0https://docportal.shengwang.cn/cn/video-legacy/release_ios_video?platform=iOS',
   'content/docs/zh-CN/realtime-media/rtc/reference/migration-guide.mdx\0https://docportal.shengwang.cn/cn/video-legacy/release_mac_video?platform=macOS',
   'content/docs/zh-CN/realtime-media/rtc/reference/migration-guide.mdx\0https://docportal.shengwang.cn/cn/video-legacy/release_windows_video?platform=Windows',
+  ...['art-class', 'online-music-class'].flatMap((product) =>
+    EDUCATION_RTM1_RESOURCES.map(
+      (resource) =>
+        `content/docs/zh-CN/solutions/${product}/get-started/quick-start.mdx\0https://docportal.shengwang.cn/cn/Real-time-Messaging/${resource}`,
+    ),
+  ),
 ]);
 
 const EXACT_FRAGMENT_ALIAS_TARGETS = new Map([

@@ -12,9 +12,9 @@ vi.mock('@/lib/docs-hash', () => ({
 }));
 
 const ENGLISH_RESPONSE_LABELS = {
-  emptyResponseBody: 'Empty response body',
   mediaTypeForResponse: (status: string) => `Media type for ${status} response`,
   responseBody: 'Response Body',
+  responses: 'Responses',
   schemaHasNoFields: 'Schema has no fields',
   schemaNotProvided: 'Schema not provided',
 };
@@ -70,14 +70,20 @@ describe('OpenApiResponses', () => {
     window.location.hash = '';
   });
 
-  it('renders the response body title as an anchored section heading', () => {
+  it('renders responses above its body subsection while preserving the section anchor', () => {
     renderResponses([view('200')]);
 
-    const heading = screen.getByRole('heading', { name: 'Response Body' });
+    const heading = screen.getByRole('heading', {
+      name: 'Responses',
+      level: 2,
+    });
     expect(heading.tagName).toBe('H2');
     expect(heading).toHaveClass('openapi-section-heading');
     expect(heading.querySelector('a[href="#test-responses"]')).toBeTruthy();
     expect(document.querySelectorAll('#test-responses')).toHaveLength(1);
+    expect(
+      screen.getByRole('heading', { name: 'Response Body', level: 3 }),
+    ).toBeInTheDocument();
     expect(
       document.querySelector('[data-openapi-responses]'),
     ).not.toHaveAttribute('id');
@@ -90,9 +96,9 @@ describe('OpenApiResponses', () => {
     render(
       <OpenApiResponses
         labels={{
-          emptyResponseBody: '响应 Body 为空',
           mediaTypeForResponse: (status) => `${status} 响应的媒体类型`,
           responseBody: '响应 Body',
+          responses: '响应',
           schemaHasNoFields: 'Schema 中没有字段',
           schemaNotProvided: '未提供 Schema',
         }}
@@ -122,14 +128,14 @@ describe('OpenApiResponses', () => {
     );
 
     expect(
-      screen.getByRole('heading', { name: '响应 Body' }),
+      screen.getByRole('heading', { name: '响应', level: 2 }),
     ).toBeInTheDocument();
     expect(screen.getByLabelText('200 响应的媒体类型')).toBeInTheDocument();
     expect(screen.getByText('Schema 中没有字段')).toBeInTheDocument();
     fireEvent.click(
       screen.getByRole('button', { name: '204 application/json' }),
     );
-    expect(screen.getByText('响应 Body 为空')).toBeInTheDocument();
+    expect(screen.queryByText('响应 Body 为空')).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: '400' }));
     expect(screen.getByText('未提供 Schema')).toBeInTheDocument();
   });
@@ -175,11 +181,16 @@ describe('OpenApiResponses', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('distinguishes empty content, absent schemas, and an explicit false schema', () => {
+  it('omits inferred empty-body text while distinguishing absent and explicit false schemas', () => {
     const renderSchema = vi.fn(() => ({ hasFields: false, node: null }));
     renderResponses(
       [
-        view('200', { hasContent: false }),
+        view('200', {
+          hasContent: false,
+          mediaTypes: [],
+          description: 'The operation succeeded.',
+          headers: [{ name: 'X-Request-ID', source: {} }],
+        }),
         view('201', { mediaTypes: [] }),
         view('202', {
           mediaTypes: [
@@ -194,7 +205,15 @@ describe('OpenApiResponses', () => {
       renderSchema,
     );
 
-    expect(screen.getByText('Empty response body')).toBeInTheDocument();
+    expect(screen.queryByText('Empty response body')).not.toBeInTheDocument();
+    expect(
+      screen.getByText('Description: The operation succeeded.'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Headers: 200')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: 'Response Body' }),
+    ).not.toBeInTheDocument();
+    expect(renderSchema).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: '201' }));
     expect(screen.getByText('Schema not provided')).toBeInTheDocument();
     fireEvent.click(
@@ -269,7 +288,7 @@ describe('OpenApiResponses', () => {
     ).toHaveAttribute('aria-expanded', 'false');
   });
 
-  it('renders description, media selector, headers, then schema', () => {
+  it('renders description, headers, then a body subsection containing the media selector and schema', () => {
     renderResponses([
       view('200', {
         description: 'A response',
@@ -285,14 +304,21 @@ describe('OpenApiResponses', () => {
     const description = screen.getByText('Description: A response');
     const select = screen.getByLabelText('Media type for 200 response');
     const headers = screen.getByText('Headers: 200');
+    const body = screen.getByRole('heading', {
+      name: 'Response Body',
+      level: 3,
+    });
     const schema = screen.getByText('Schema: application/json');
-    expect(description.compareDocumentPosition(select)).toBe(
+    expect(description.compareDocumentPosition(headers)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
-    expect(select.compareDocumentPosition(headers)).toBe(
+    expect(headers.compareDocumentPosition(body)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
-    expect(headers.compareDocumentPosition(schema)).toBe(
+    expect(body.compareDocumentPosition(select)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    expect(select.compareDocumentPosition(schema)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
   });

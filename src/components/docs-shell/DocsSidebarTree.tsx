@@ -27,7 +27,7 @@ import {
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/cn';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
-import { getOpenApiMethodBadgeClassName } from '@/lib/openapi/method-badge';
+import { DocsSidebarEndpointLabel } from './DocsSidebarEndpointLabel';
 
 type SidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 type SidebarSectionNode = Extract<DocsSidebarNode, { type: 'section' }>;
@@ -925,6 +925,10 @@ function SidebarPageLabel({
   showNavigationArrow?: boolean;
   title: string;
 }) {
+  if (method) {
+    return <DocsSidebarEndpointLabel method={method} title={title} />;
+  }
+
   return (
     <>
       <span
@@ -935,17 +939,7 @@ function SidebarPageLabel({
       >
         {title}
       </span>
-      {method ? (
-        <span
-          className={cn(
-            'ml-auto shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none',
-            getOpenApiMethodBadgeClassName(method),
-          )}
-          data-openapi-method={method}
-        >
-          {method}
-        </span>
-      ) : showNavigationArrow ? (
+      {showNavigationArrow ? (
         <ArrowRightIcon
           aria-hidden="true"
           className="ml-auto size-3.5 shrink-0 text-[color:var(--ink-4)] transition-colors group-hover:text-[color:var(--ink-1)] group-focus-visible:text-[color:var(--ink-1)]"

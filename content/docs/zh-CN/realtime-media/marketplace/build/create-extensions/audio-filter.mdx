@@ -390,14 +390,14 @@ REGISTER_AGORA_EXTENSION_PROVIDER(ByteDance, agora::extension::ExtensionProvider
 
 音频插件通过 `IAudioFilter` 接口实现。该接口位于 `NGIAgoraMediaNode.h` 文件中。你需要实现 `IAudioFilter` 接口类的如下方法：
 
-- [`adaptAudioFrame`](#adaptaudioframe)
-- [`setEnabled`](#setenabled)
-- [`isEnabled`](#isenabled)
-- [`setProperty`](#setproperty)
-- [`getProperty`](#getproperty)
-- [`getName`](#getname)
-- [`getPreferredSampleRate`](#getpreferredsamplerate)（可选）
-- [`getPreferredChannelNumbers`](#getpreferredchannelnumbers)（可选）
+- [`adaptAudioFrame`](#adaptaudioframe-1)
+- [`setEnabled`](#setenabled-1)
+- [`isEnabled`](#isenabled-1)
+- [`setProperty`](#setproperty-1)
+- [`getProperty`](#getproperty-1)
+- [`getName`](#getname-1)
+- [`getPreferredSampleRate`](#getpreferredsamplerate-1)（可选）
+- [`getPreferredChannelNumbers`](#getpreferredchannelnumbers-1)（可选）
 
 #### adaptAudioFrame
 
@@ -551,9 +551,9 @@ int ExtensionAudioFilter::getPreferredChannelNumbers() override { return 2; };
 
 封装插件通过 `IExtensionProvider` 接口类实现。该接口类位于 `NGIAgoraExtensionProvider.h` 文件中。你需要先实现这个接口类，并实现如下方法：
 
-- [`setExtensionControl`](#setextensioncontrol)
-- [`enumerateExtensions`](#enumerateextensions)
-- [`createAudioFilter`](#createaudiofilter)
+- [`setExtensionControl`](#setextensioncontrol-1)
+- [`enumerateExtensions`](#enumerateextensions-1)
+- [`createAudioFilter`](#createaudiofilter-1)
 
 `IExtensionProvider` 是插件动态库的提供者，由全局唯一的名字标识。每一个插件动态库可以提供一个或多个有不同功能的插件，如音频前处理插件库可以提供不同功能的音频插件（Audio filter）。每个插件是一个具体的 Extension 对象。
 
@@ -733,14 +733,14 @@ REGISTER_AGORA_EXTENSION_PROVIDER(ByteDance, agora::extension::ExtensionProvider
 
 音频插件通过 `IAudioFilter` 接口实现。该接口位于 `NGIAgoraMediaNode.h` 文件中。你需要实现 `IAudioFilter` 接口类的如下方法：
 
-- [`adaptAudioFrame`](#adaptaudioframe)
-- [`setEnabled`](#setenabled)
-- [`isEnabled`](#isenabled)
-- [`setProperty`](#setproperty)
-- [`getProperty`](#getproperty)
-- [`getName`](#getname)
-- [`getPreferredSampleRate`](#getpreferredsamplerate)（可选）
-- [`getPreferredChannelNumbers`](#getpreferredchannelnumbers)（可选）
+- [`adaptAudioFrame`](#adaptaudioframe-2)
+- [`setEnabled`](#setenabled-2)
+- [`isEnabled`](#isenabled-2)
+- [`setProperty`](#setproperty-2)
+- [`getProperty`](#getproperty-2)
+- [`getName`](#getname-2)
+- [`getPreferredSampleRate`](#getpreferredsamplerate-2)（可选）
+- [`getPreferredChannelNumbers`](#getpreferredchannelnumbers-2)（可选）
 
 #### adaptAudioFrame
 
@@ -894,9 +894,9 @@ int ExtensionAudioFilter::getPreferredChannelNumbers() override { return 2; };
 
 封装插件通过 `IExtensionProvider` 接口类实现。该接口类位于 `NGIAgoraExtensionProvider.h` 文件中。你需要先实现这个接口类，并实现如下方法：
 
-- [`setExtensionControl`](#setextensioncontrol)
-- [`enumerateExtensions`](#enumerateextensions)
-- [`createAudioFilter`](#createaudiofilter)
+- [`setExtensionControl`](#setextensioncontrol-2)
+- [`enumerateExtensions`](#enumerateextensions-2)
+- [`createAudioFilter`](#createaudiofilter-2)
 
 `IExtensionProvider` 是插件动态库的提供者，由全局唯一的名字标识。每一个插件动态库可以提供一个或多个有不同功能的插件，如音频前处理插件库可以提供不同功能的音频插件（Audio filter）。每个插件是一个具体的 Extension 对象。
 
@@ -1419,14 +1419,14 @@ interface AgoraApiExecutor<T> {
 
 音频插件通过 `IAudioFilter` 接口实现。该接口位于 `NGIAgoraMediaNode.h` 文件中。你需要实现 `IAudioFilter` 接口类的如下方法：
 
-- [`adaptAudioFrame`](#adaptaudioframe)
-- [`setEnabled`](#setenabled)
-- [`isEnabled`](#isenabled)
-- [`setProperty`](#setproperty)
-- [`getProperty`](#getproperty)
-- [`getName`](#getname)
-- [`getPreferredSampleRate`](#getpreferredsamplerate)（可选）
-- [`getPreferredChannelNumbers`](#getpreferredchannelnumbers)（可选）
+- [`adaptAudioFrame`](#adaptaudioframe-3)
+- [`setEnabled`](#setenabled-3)
+- [`isEnabled`](#isenabled-3)
+- [`setProperty`](#setproperty-3)
+- [`getProperty`](#getproperty-3)
+- [`getName`](#getname-3)
+- [`getPreferredSampleRate`](#getpreferredsamplerate-3)（可选）
+- [`getPreferredChannelNumbers`](#getpreferredchannelnumbers-3)（可选）
 
 #### adaptAudioFrame
 
@@ -1580,9 +1580,9 @@ int ExtensionAudioFilter::getPreferredChannelNumbers() override { return 2; };
 
 封装插件通过 `IExtensionProvider` 接口类实现。该接口类位于 `NGIAgoraExtensionProvider.h` 文件中。你需要先实现这个接口类，并实现如下方法：
 
-- [`setExtensionControl`](#setextensioncontrol)
-- [`enumerateExtensions`](#enumerateextensions)
-- [`createAudioFilter`](#createaudiofilter)
+- [`setExtensionControl`](#setextensioncontrol-3)
+- [`enumerateExtensions`](#enumerateextensions-3)
+- [`createAudioFilter`](#createaudiofilter-3)
 
 `IExtensionProvider` 是插件动态库的提供者，由全局唯一的名字标识。每一个插件动态库可以提供一个或多个有不同功能的插件，如音频前处理插件库可以提供不同功能的音频插件（Audio filter）。每个插件是一个具体的 Extension 对象。
 

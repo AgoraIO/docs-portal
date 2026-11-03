@@ -26,6 +26,7 @@ vi.mock('@/lib/analytics/visibility', () => ({
 vi.mock('@/lib/search/cn-search-page', async (original) => ({
   ...(await original<typeof import('@/lib/search/cn-search-page')>()),
   searchCnDocsPage: vi.fn(),
+  loadCnSearchCatalog: vi.fn().mockResolvedValue({}),
 }));
 beforeEach(() => {
   events = [];

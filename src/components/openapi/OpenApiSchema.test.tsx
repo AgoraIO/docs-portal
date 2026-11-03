@@ -92,7 +92,7 @@ describe('OpenApiSchema', () => {
     expect(screen.getByText('name')).toBeVisible();
   });
 
-  it('hides string map placeholders outside params while preserving params maps', () => {
+  it('hides scalar map placeholders while preserving parent descriptions', () => {
     render(
       <AnchorSection segments={['request-body', 'application-json']}>
         <OpenApiSchema
@@ -109,6 +109,18 @@ describe('OpenApiSchema', () => {
                 additionalProperties: { type: 'string' },
                 type: 'object',
               },
+              headers: {
+                additionalProperties: {
+                  oneOf: [
+                    { type: 'string' },
+                    { type: 'number' },
+                    { type: 'boolean' },
+                  ],
+                },
+                description:
+                  'Custom headers accept string, number or boolean values.',
+                type: 'object',
+              },
             },
             type: 'object',
           }}
@@ -117,14 +129,15 @@ describe('OpenApiSchema', () => {
       </AnchorSection>,
     );
 
-    const paramsMapRow = screen.getByText('[key: string]', { exact: true });
-    expect(paramsMapRow).not.toBeVisible();
-
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Expand params properties' }),
-    );
-
-    expect(screen.getByText('[key: string]', { exact: true })).toBeVisible();
+    expect(
+      screen.queryAllByText('[key: string]', { exact: true }),
+    ).toHaveLength(0);
+    expect(screen.getByText('headers')).toBeVisible();
+    expect(
+      screen.getByText(
+        'Custom headers accept string, number or boolean values.',
+      ),
+    ).toBeVisible();
   });
 
   it('collapses supplier descriptions until their variant row is expanded', () => {
@@ -364,7 +377,7 @@ describe('OpenApiSchema', () => {
       Array.from(
         (row as HTMLElement).querySelectorAll('.openapi-schema-metadata-label'),
       ).map((label) => label.textContent),
-    ).toEqual(['Default:', 'Range:', 'Allowed values:', 'Match:', 'Format:']);
+    ).toEqual(['Default:', 'Range:', 'Allowed values:', 'Format:']);
     expect(
       within(row as HTMLElement)
         .getByText(/"mode": "managed"/)
@@ -444,7 +457,24 @@ describe('OpenApiSchema', () => {
       within(row as HTMLElement).getByText('property-value'),
     ).toBeVisible();
     expect(screen.getByText(/"enum": "default-data"/)).toBeVisible();
-    expect(screen.getByText(/"enum": "example-data"/)).toBeVisible();
+    const example = screen.getByText(/"enum": "example-data"/);
+    expect(example).not.toBeVisible();
+    const disclosure = example.closest('details');
+    expect(disclosure).not.toHaveAttribute('open');
+    expect(
+      (row as HTMLElement).compareDocumentPosition(disclosure as Node) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    fireEvent.click(
+      within(disclosure as HTMLElement).getByText('JSON example'),
+    );
+    expect(example).toBeVisible();
+    expect(example.closest('.openapi-schema-value-container')).toBeNull();
+    expect(
+      screen
+        .getByText(/"enum": "default-data"/)
+        .closest('.openapi-schema-value-container'),
+    ).toBeNull();
   });
 
   it('keeps oneOf and anyOf branch values in their own generated branches', () => {
@@ -484,6 +514,7 @@ describe('OpenApiSchema', () => {
     fireEvent.click(
       screen.getByRole('button', { name: 'Expand variant properties' }),
     );
+    fireEvent.click(screen.getByRole('button', { name: 'Expand all' }));
     expect(screen.getByText('one-value')).toBeVisible();
     expect(screen.getByText('any-value')).toBeVisible();
   });
@@ -849,6 +880,12 @@ describe('OpenApiSchema', () => {
     );
 
     expect(screen.getByText('First branch callout.')).toBeVisible();
+    expect(screen.getByText('Second branch callout.')).not.toBeVisible();
+    fireEvent.mouseDown(screen.getAllByRole('tab')[1], {
+      button: 0,
+      ctrlKey: false,
+    });
+    expect(screen.getByText('First branch callout.')).not.toBeVisible();
     expect(screen.getByText('Second branch callout.')).toBeVisible();
   });
 

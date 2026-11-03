@@ -7,6 +7,59 @@ const readDoc = (path: string) =>
 
 describe('Chinese download page release constraints', () => {
   it.each([
+    [
+      'rtm',
+      [
+        'javascript',
+        'java',
+        'objective-c',
+        'swift',
+        'cpp',
+        'harmonyos',
+        'mini-program-beta',
+        'unity',
+        'flutter',
+      ],
+    ],
+    ['rtc-server-sdk', ['cpp', 'java', 'python', 'go']],
+    ['local-server-recording', ['server-cpp', 'server-java']],
+    [
+      'rtc',
+      [
+        'android',
+        'ios',
+        'macos',
+        'web',
+        'windows',
+        'harmonyos',
+        'mini-program',
+        'electron',
+        'unity',
+        'flutter',
+        'react-native',
+        'unreal-cpp',
+        'unreal-blueprint',
+        'react',
+      ],
+    ],
+  ])(
+    'preserves the old site entry order and available panels for %s',
+    (product, platforms) => {
+      const root = `realtime-media/${product}/reference/downloads`;
+      const page = readDoc(`${root}/index.mdx`);
+      const entries = [
+        ...page
+          .split('platforms:\n')[1]
+          .split('defaultPlatform:')[0]
+          .matchAll(/^ {2}- (.+)$/gm),
+      ].map((match) => match[1]);
+      expect(entries).toEqual(platforms);
+      for (const platform of platforms)
+        expect(readDoc(`${root}/${platform}.mdx`).trim()).not.toBe('');
+    },
+  );
+
+  it.each([
     ['android', '4.4.1'],
     ['ios', '4.4.0'],
   ])(
@@ -36,9 +89,9 @@ describe('Chinese download page release constraints', () => {
   );
 
   it.each([
-    ['android', '1.7.2-fastboard-android'],
-    ['ios', '1.4.2-fastboard-ios'],
-    ['web', '1.1.0-interactive-whiteboard-web'],
+    ['android', '1.8.2-fastboard-android'],
+    ['ios', '1.4.6-fastboard-ios'],
+    ['web', '1.1.10-fastboard-web'],
   ])(
     'keeps Fastboard %s downloads aligned with the latest release notes',
     (platform, id) => {

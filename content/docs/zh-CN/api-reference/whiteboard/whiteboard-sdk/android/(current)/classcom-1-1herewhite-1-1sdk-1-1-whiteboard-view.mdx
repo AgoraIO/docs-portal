@@ -1,41 +1,77 @@
 ---
-title: com.herewhite.sdk.WhiteboardView类 参考
+title: com.herewhite.sdk.WhiteboardView class 参考
 tocMaxDepth: 3
 _migration:
   type: generated-html
-  status: warning
+  status: migrated
   sourceUrl: >-
     https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_whiteboard_view
   sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1_whiteboard_view.html
   generator: doxygen
-  warnings:
-    - code: missing-source-text
-      severity: warning
-      message: >-
-        The source image classcom_1_1herewhite_1_1sdk_1_1_whiteboard_view.png has no meaningful alt
-        or title text; the converter used contextual alt text "com.herewhite.sdk.WhiteboardView类 参考
-        图示".
+  warnings: []
 ---
-
-类 com.herewhite.sdk.WhiteboardView 继承关系图:
-
-![com.herewhite.sdk.WhiteboardView类 参考 图示](https://web-cdn.agora.io/docs-portal/img/api-center-generated/64be066ddd7b-classcom_1_1herewhite_1_1sdk_1_1_whiteboard_view.png)
 
 <a id="details"></a>
 
 ## 详细描述
 
-[`WhiteboardView`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view) 类，用于配置白板界面。
+适用版本：**Whiteboard Android SDK 2.16.134**。
 
-## 构造及析构函数说明
+`WhiteboardView` 类，用于配置白板界面。
+
+## 属性与 JSON 字段
+
+Java 非公开字段通过对应 getter/setter 访问；可选包装类型未设置时通常不写入 JSON。初值包含字段声明及无参构造中的直接赋值；其他构造参数以签名为准。
+
+| 字段 | 声明 | 源码初值 | 说明 |
+| --- | --- | --- | --- |
+| [entryUrl](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view#ab38475eba8943a2147e1be56ce461572) | `String entryUrl` | sEntryUrl | <Slot name="api-center-table-0" /> |
+
+<Slot for="api-center-table-0">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+| 公开成员签名 |  |
+| --- | --- |
+|  | [WhiteboardView](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view#ae1a0c09dae78a51f726167b4f89ff189) (Context context) |
+|  | [WhiteboardView](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view#a088419e006f988620cbe1492ca433d6e) (Context context, WhiteboardViewOptions options) |
+|  | [WhiteboardView](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view#aa2a27ad34f7129daff153f2552c801ea) (Context context, AttributeSet attrs) |
+| void | [setEntryUrl](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view#a149a684db46803221bf7c490ab9ce3af) (String entryUrl) |
+| void | [setWebViewClient](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view#a8b84c962cf74852f2e84fc125836cca3) (WebViewClient client) |
+| &lt;T&gt; void | [callHandler](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view#a58e62670a90d3b8342ccfe0e5f4eb6bd) (String method, Object[] args, OnReturnValue&lt;T&gt; handler) |
+| void | [callHandler](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view#a3a44abbff280ebe8e9fbf0f5317e3c74) (String method, Object[] args) |
+| &lt;T&gt; void | [callHandler](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view#a39df8fd439e0cab9b4591750c24a3354) (String method, OnReturnValue&lt;T&gt; handler) |
+| void | [callFocusView](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view#ae0d1264de7f38f85376a770433eb5f00) () |
+|  | [destroy](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view#a5166438d461fb863e631e0096cc24afe)`public void destroy()` |
+|  | [reload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view#a553ca7dfe1e096b661e3512d0e38c8cf)`public void reload()` |
+
+生命周期：主动退出先调用 WhiteSdk.leaveRoom 并等待成功，再释放引用或销毁 View。destroy 会使当前宿主失效，不能代替异步退房确认；页面 reload 会建立新的 document，不能继续使用旧房间对象或旧回调作为新会话的结果。内部宿主协调方法由 SDK 管理，不作为业务接口调用。
+
+## 变量说明
+
+<a id="ab38475eba8943a2147e1be56ce461572"></a>
+
+### entryUrl
+
+```text
+String entryUrl
+```
+
+源码初值：sEntryUrl
+
+模型属性；通过对应 getter/setter 访问。
+
+## 函数说明
 
 <a id="ae1a0c09dae78a51f726167b4f89ff189"></a>
 
-### WhiteboardView() [1/2]
+### WhiteboardView()
 
 <ApiSignature>
 
-com.herewhite.sdk.WhiteboardView.WhiteboardView(Context *context*)
+WhiteboardView(Context context)
 
 </ApiSignature>
 
@@ -51,11 +87,11 @@ com.herewhite.sdk.WhiteboardView.WhiteboardView(Context *context*)
 
 <a id="a088419e006f988620cbe1492ca433d6e"></a>
 
-### WhiteboardView() [2/2]
+### WhiteboardView()
 
 <ApiSignature>
 
-com.herewhite.sdk.WhiteboardView.WhiteboardView(Context *context*, AttributeSet *attrs*)
+WhiteboardView(Context context, WhiteboardViewOptions options)
 
 </ApiSignature>
 
@@ -73,3 +109,126 @@ com.herewhite.sdk.WhiteboardView.WhiteboardView(Context *context*, AttributeSet 
 
 </Parameter>
 </ParameterList>
+
+<a id="aa2a27ad34f7129daff153f2552c801ea"></a>
+
+### WhiteboardView()
+
+<ApiSignature>
+
+WhiteboardView(Context context, AttributeSet attrs)
+
+</ApiSignature>
+
+初始化白板界面。
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="context">
+
+安卓活动 (Android Activity) 的上下文。
+
+</Parameter>
+<Parameter name="attrs">
+
+自定义白板界面属性，[AttributeSet](https://developer.android.com/reference/android/util/AttributeSet).
+
+</Parameter>
+</ParameterList>
+
+<a id="a149a684db46803221bf7c490ab9ce3af"></a>
+
+### setEntryUrl()
+
+<ApiSignature>
+
+static void setEntryUrl(String entryUrl)
+
+</ApiSignature>
+
+setEntryUrl：com.herewhite.sdk.WhiteboardView 的公开成员。参数和返回类型见下方签名。
+
+<a id="a8b84c962cf74852f2e84fc125836cca3"></a>
+
+### setWebViewClient()
+
+<ApiSignature>
+
+void setWebViewClient(WebViewClient client)
+
+</ApiSignature>
+
+setWebViewClient：com.herewhite.sdk.WhiteboardView 的公开成员。参数和返回类型见下方签名。
+
+<a id="a58e62670a90d3b8342ccfe0e5f4eb6bd"></a>
+
+### callHandler()
+
+<ApiSignature>
+
+&lt;T&gt; void callHandler(String method, Object[] args, OnReturnValue&lt;T&gt; handler)
+
+</ApiSignature>
+
+callHandler：com.herewhite.sdk.WhiteboardView 的公开成员。参数和返回类型见下方签名。
+
+<a id="a3a44abbff280ebe8e9fbf0f5317e3c74"></a>
+
+### callHandler()
+
+<ApiSignature>
+
+void callHandler(String method, Object[] args)
+
+</ApiSignature>
+
+callHandler：com.herewhite.sdk.WhiteboardView 的公开成员。参数和返回类型见下方签名。
+
+<a id="a39df8fd439e0cab9b4591750c24a3354"></a>
+
+### callHandler()
+
+<ApiSignature>
+
+&lt;T&gt; void callHandler(String method, OnReturnValue&lt;T&gt; handler)
+
+</ApiSignature>
+
+callHandler：com.herewhite.sdk.WhiteboardView 的公开成员。参数和返回类型见下方签名。
+
+<a id="ae0d1264de7f38f85376a770433eb5f00"></a>
+
+### callFocusView()
+
+<ApiSignature>
+
+void callFocusView()
+
+</ApiSignature>
+
+callFocusView：com.herewhite.sdk.WhiteboardView 的公开成员。参数和返回类型见下方签名。
+
+## 公开成员函数
+
+<a id="a5166438d461fb863e631e0096cc24afe"></a>
+
+### destroy()
+
+```text
+public void destroy()
+```
+
+销毁白板 WebView 并使当前异步操作失效。先等待 WhiteSdk.leaveRoom 完成，再在主线程销毁视图；销毁后不复用此 View。
+
+## 公开成员函数
+
+<a id="a553ca7dfe1e096b661e3512d0e38c8cf"></a>
+
+### reload()
+
+```text
+public void reload()
+```
+
+重新加载白板 WebView，并开启新的视图生命周期。此前绑定的 SDK/Room 不可继续使用，应重新初始化和加入房间。

@@ -1,0 +1,40 @@
+---
+title: LoggerOptions
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/loggeroptions
+  sourcePath: html-docs/whiteboard/Web/interfaces/loggeroptions.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type LoggerOptions = {
+    /**
+     * 上报 debug 日志的模式
+     */
+    reportDebugLogMode?: LoggerReportMode;
+    /**
+     * 上报质量数据的模式
+     */
+    reportQualityMode?: LoggerReportMode;
+    /**
+     * 上报 debug 日志的等级过滤
+     */
+    reportLevelMask?: Level;
+    /**
+     * 在 Console 打印 debug 日志的等级过滤
+     */
+    printLevelMask?: Level;
+    /**
+     * 当产生日志时通知到外部订阅
+     */
+    callbacksWhenReceiveLog?: LoggerCallbacks;
+    /**
+     * 白板 1.0 本地日志落盘与独立上传配置
+     */
+    localLog?: WhiteLocalLogOptions;
+};
+```

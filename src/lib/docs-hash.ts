@@ -1,4 +1,5 @@
 import { isKnownPlatform } from './platforms/registry';
+import { buildPlatformPathname } from './platforms/route';
 
 const DESKTOP_SCROLL_SELECTOR = '[data-testid="docs-main-desktop-scroll"]';
 const DOCS_HEADER_SELECTOR = '[data-testid="docs-shell-header"]';
@@ -27,14 +28,8 @@ export function getDocsHashHref(hash: string) {
   if (!platform || !isKnownPlatform(platform)) return hash;
 
   const url = new URL(window.location.href);
-  const segments = url.pathname.split('/');
-  let lastSegment = segments.length - 1;
-  while (lastSegment >= 0 && !segments[lastSegment]) lastSegment -= 1;
-  if (isKnownPlatform(segments[lastSegment] ?? '')) {
-    segments[lastSegment] = platform;
-    url.pathname = segments.join('/');
-  }
-  url.searchParams.set('platform', platform);
+  url.pathname = buildPlatformPathname(url.pathname, platform);
+  url.searchParams.delete('platform');
   url.hash = hash;
   return `${url.pathname}${url.search}${url.hash}`;
 }
@@ -180,7 +175,14 @@ export function scrollDocsHashTargetAfterLayout(
   cancelPendingHashScroll = cancel;
   observer.observe(document.body, {
     attributes: true,
-    attributeFilter: ['hidden', 'aria-hidden', 'inert', 'data-state', 'id'],
+    attributeFilter: [
+      'hidden',
+      'aria-hidden',
+      'inert',
+      'data-state',
+      'id',
+      'name',
+    ],
     childList: true,
     subtree: true,
   });
@@ -268,7 +270,12 @@ function getHeadingForUrl(url: string) {
   }
 
   const selector = `[id="${escapeCssIdentifier(id)}"]`;
-  const headings = document.querySelectorAll<HTMLElement>(selector);
+  const headings = [
+    ...document.querySelectorAll<HTMLElement>(selector),
+    ...Array.from(document.getElementsByName(id)).filter(
+      (element) => element.tagName === 'A',
+    ),
+  ];
   const visibleHeading = Array.from(headings).find(
     (heading) =>
       !isHiddenFromDocs(heading) && heading.getClientRects().length > 0,
@@ -277,7 +284,20 @@ function getHeadingForUrl(url: string) {
     (heading) => !isHiddenFromDocs(heading),
   );
 
-  return visibleHeading ?? renderedHeading ?? headings[0] ?? null;
+  // A repeated release-note ID may be inside a closed accordion on every
+  // platform. Keep the selected platform before asking the accordion to open.
+  const activePlatformHeading = headings.find((heading) => {
+    const panel = heading.closest<HTMLElement>('[data-platform-panel]');
+    return panel && !isHiddenFromDocs(panel);
+  });
+
+  return (
+    visibleHeading ??
+    renderedHeading ??
+    activePlatformHeading ??
+    headings[0] ??
+    null
+  );
 }
 
 function isHiddenFromDocs(element: HTMLElement) {

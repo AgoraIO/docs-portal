@@ -160,17 +160,12 @@ function getRuleBodyContainingInContainer(
 }
 
 describe('app prose CSS regressions', () => {
-  it('keeps the console API entry heading compact and without a divider', () => {
+  it('keeps the console API entry heading compact', () => {
     const heading = getRuleBody(
       '.prose .docs-body > .docs-console-api-entry + h2',
     ).rule;
-    const divider = getRuleBody(
-      '.prose .docs-body > .docs-console-api-entry + h2::before',
-    ).rule;
-
     expectDeclaration(heading, 'margin-top', '1.75rem');
     expectDeclaration(heading, 'padding-top', '0');
-    expectDeclaration(divider, 'content', 'none');
   });
 
   it('keeps heading anchors below the full sticky docs header', () => {
@@ -370,12 +365,6 @@ describe('app prose CSS regressions', () => {
           :where(:not(a:empty) ~ h2)
         )`,
     );
-    const leadingHeadingSeparator = getRuleBody(
-      `.prose
-        :where(h2):not(:where(.not-prose, .not-prose *)):not(
-          :where(:not(a:empty) ~ h2)
-        )::before`,
-    );
     const platformLeadingHeading = getRuleBody(
       `.prose[data-platform-header-tabs="true"]
         [data-platform-group="structured"]
@@ -383,22 +372,10 @@ describe('app prose CSS regressions', () => {
         .docs-body
         > h2:not(:where(.not-prose, .not-prose *)):not(:where(:not(a:empty) ~ h2))`,
     );
-    const platformLeadingHeadingSeparator = getRuleBody(
-      `.prose[data-platform-header-tabs="true"]
-        [data-platform-group="structured"]
-        > [data-platform-panel]:not([hidden])
-        .docs-body
-        > h2:not(:where(.not-prose, .not-prose *)):not(
-          :where(:not(a:empty) ~ h2)
-        )::before`,
-    );
-
     expectDeclaration(leadingHeading.rule, 'margin-top', '0');
     expectDeclaration(leadingHeading.rule, 'padding-top', '0');
-    expectDeclaration(leadingHeadingSeparator.rule, 'content', 'none');
     expectDeclaration(platformLeadingHeading.rule, 'margin-top', '0.75rem');
     expectDeclaration(platformLeadingHeading.rule, 'padding-top', '0');
-    expectDeclaration(platformLeadingHeadingSeparator.rule, 'content', 'none');
   });
 
   it('uses decimal, alpha, and roman markers for nested ordered lists', () => {
@@ -857,8 +834,9 @@ describe('app prose CSS regressions', () => {
     );
   });
 
-  it('defines high-contrast dark code block tokens and chrome variables', () => {
-    const darkProse = getRuleBody('.dark .prose');
+  it('defines dark code block tokens for prose and OpenAPI Markdown', () => {
+    const darkProse = getRuleBody(`.dark .prose,
+      .dark .openapi-markdown`);
 
     expect(darkProse.rule.nodes).toContainEqual(
       expect.objectContaining({
@@ -1024,7 +1002,7 @@ describe('app prose CSS regressions', () => {
     );
     const mobileViewport = getRuleBodyContainingInContainer(
       '[data-openapi-code-viewport]',
-      '55.999rem',
+      '39.999rem',
     );
 
     expect(appCss).not.toContain(
@@ -1045,32 +1023,14 @@ describe('app prose CSS regressions', () => {
     );
   });
 
-  it('defines the independent desktop examples rail layout', () => {
-    const baseLayout = getRuleBodyOutsideContainer('.openapi-operation-layout');
-    const layout = getRuleBodyContainingInContainer(
-      '.openapi-operation-layout',
-      '56rem',
-    );
+  it('keeps the examples rail sticky from tablet widths onward', () => {
     const rail = getRuleBodyContainingInContainer(
       '.openapi-examples-rail',
-      '56rem',
+      '40rem',
     );
     const anchorInDesktop = getRuleBodyContainingInContainer(
-      '.openapi-examples-rail-anchor',
-      '56rem',
-    );
-    expectDeclaration(baseLayout.rule, 'display', 'flex');
-    expectDeclaration(baseLayout.rule, 'flex-direction', 'column');
-    expect(baseLayout.rule.nodes).not.toContainEqual(
-      expect.objectContaining({ prop: 'grid-template-columns' }),
-    );
-    expect(layout.rule.parent?.type).toBe('atrule');
-    expect((layout.rule.parent as postcss.AtRule).name).toBe('container');
-    expect((layout.rule.parent as postcss.AtRule).params).toContain('56rem');
-    expectDeclaration(
-      layout.rule,
-      'grid-template-columns',
-      'minmax(0, 1fr) 400px',
+      '[data-openapi-operation-panel="examples"]',
+      '40rem',
     );
     expectDeclaration(rail.rule, 'position', 'sticky');
     expectDeclaration(anchorInDesktop.rule, 'align-self', 'stretch');

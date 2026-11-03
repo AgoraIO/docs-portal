@@ -1,7 +1,18 @@
 'use client';
 
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { MessageSquareTextIcon } from 'lucide-react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import {
   type FeedbackQuestion,
@@ -10,11 +21,10 @@ import {
 } from '@/lib/analytics/docs-measurement';
 import {
   getDocsMeasurement,
-  invitationAllowed,
-  markInvitationVisible,
   measurementEnabled,
 } from '@/lib/analytics/measurement';
 import { observeVisible } from '@/lib/analytics/visibility';
+import { cn } from '@/lib/cn';
 
 const resolutionLabels = ['解决', '部分解决', '未解决', '尚未验证'];
 const reasonLabels = [
@@ -30,11 +40,13 @@ const reasonLabels = [
 ];
 
 export function DocsTaskFeedback({
+  compact = false,
   surface,
 }: {
+  compact?: boolean;
   surface: 'content' | 'search_page' | 'search_dialog';
 }) {
-  const [expanded, setExpanded] = useState(false);
+  const [open, setOpen] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const measurement = getDocsMeasurement();
   useSyncExternalStore(
@@ -45,59 +57,82 @@ export function DocsTaskFeedback({
   const resolution = measurement?.answer('resolution');
   const ease = measurement?.answer('ease');
   const reasons = measurement?.answer('reasons');
-  const [saved, setSaved] = useState(false);
-  const root = useRef<HTMLDivElement>(null);
-  const invited = enabled && invitationAllowed();
-  const source = invited ? 'sampled_invitation' : 'manual';
+  const saved = Boolean(
+    resolution || ease || (Array.isArray(reasons) && reasons.length),
+  );
+  // A portal mounts after the initial effect; observe its actual content node.
+  const [root, setRoot] = useState<HTMLDivElement | null>(null);
   useEffect(() => {
     setEnabled(measurementEnabled());
   }, []);
-  const visible = expanded || invited;
   useEffect(() => {
-    if (!enabled || !visible || !root.current) return;
+    if (!enabled || !open || !root) return;
     const stops = [
-      ...root.current.querySelectorAll<HTMLElement>('[data-feedback-question]'),
+      ...root.querySelectorAll<HTMLElement>('[data-feedback-question]'),
     ].map((element) =>
       observeVisible(element, () => {
         const question = element.dataset.feedbackQuestion as FeedbackQuestion;
-        if (invited && question === 'resolution') markInvitationVisible();
-        getDocsMeasurement()?.prompt(question, surface, source);
+        getDocsMeasurement()?.prompt(question, surface, 'manual');
       }),
     );
     return () => {
       for (const stop of stops) stop();
     };
-  }, [visible, invited, surface, source, enabled]);
+  }, [open, root, surface, enabled]);
   if (!enabled) return null;
   const answer = (question: FeedbackQuestion, value: string | string[]) => {
-    getDocsMeasurement()?.feedback(question, value, surface, source);
-    setSaved(true);
+    getDocsMeasurement()?.feedback(question, value, surface, 'manual');
   };
   return (
-    <div
-      className="not-prose rounded-lg border bg-card px-4 py-3 text-sm"
-      ref={root}
-      data-testid="docs-task-feedback"
-    >
-      {!visible ? (
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={() => setExpanded(true)}
-          className="h-auto px-0 py-1 text-muted-foreground"
-        >
-          反馈这次查找是否解决了问题
-        </Button>
-      ) : (
-        <div className="flex flex-col gap-4">
+    <Dialog open={open} onOpenChange={setOpen}>
+      <div
+        className={cn(
+          'not-prose',
+          compact
+            ? 'contents'
+            : 'flex flex-wrap items-center justify-between gap-2',
+        )}
+        data-testid="docs-task-feedback"
+      >
+        {!compact && (
+          <p className="text-xs text-muted-foreground">
+            {saved
+              ? '谢谢反馈，帮助我们改进文档。'
+              : '这次查找体验如何？欢迎告诉我们。'}
+          </p>
+        )}
+        <DialogTrigger asChild>
+          <Button
+            size="sm"
+            variant={compact ? 'outline' : 'ghost'}
+            className={compact ? 'h-8 rounded-md px-3 text-xs' : undefined}
+          >
+            <MessageSquareTextIcon data-icon="inline-start" />
+            {compact ? '查找体验' : saved ? '修改查找反馈' : '反馈查找体验'}
+          </Button>
+        </DialogTrigger>
+      </div>
+      <DialogContent
+        className="not-prose max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-xl"
+        closeLabel="关闭反馈"
+        ref={setRoot}
+      >
+        <DialogHeader className="text-left">
+          <DialogTitle>这次查找有帮助吗？</DialogTitle>
+          <DialogDescription>
+            可只答一题，选择后自动保存。你的反馈将帮助我们改进文档。
+          </DialogDescription>
+        </DialogHeader>
+        <div className="flex min-w-0 flex-col gap-6 py-2 text-sm">
           <fieldset
-            className="min-w-0 space-y-2"
+            className="flex min-w-0 flex-col gap-3"
             data-feedback-question="resolution"
           >
-            <legend className="font-medium">
+            <legend className="mb-3 font-medium">
               这次找到的信息解决你的问题了吗？
             </legend>
             <ToggleGroup
+              aria-label="问题解决情况"
               type="single"
               value={typeof resolution === 'string' ? resolution : ''}
               onValueChange={(value) => {
@@ -105,9 +140,9 @@ export function DocsTaskFeedback({
                 answer('resolution', value);
               }}
               variant="contrast"
-              size="sm"
+              size="default"
               spacing={2}
-              className="flex-wrap justify-start"
+              className="grid w-full grid-cols-2 sm:grid-cols-4"
             >
               {resolutionAnswers.map((value, index) => (
                 <ToggleGroupItem key={value} value={value}>
@@ -116,14 +151,18 @@ export function DocsTaskFeedback({
               ))}
             </ToggleGroup>
           </fieldset>
-          <fieldset className="min-w-0 space-y-2" data-feedback-question="ease">
-            <legend className="font-medium">
+          <fieldset
+            className="flex min-w-0 flex-col gap-3"
+            data-feedback-question="ease"
+          >
+            <legend className="mb-3 font-medium">
               找到并使用这些信息有多容易？
               <span className="ml-1 font-normal text-muted-foreground">
                 （选填）
               </span>
             </legend>
             <ToggleGroup
+              aria-label="查找易用性评分"
               type="single"
               value={typeof ease === 'string' ? ease : ''}
               onValueChange={(value) => {
@@ -131,8 +170,9 @@ export function DocsTaskFeedback({
                 answer('ease', value);
               }}
               variant="contrast"
-              size="sm"
+              size="default"
               spacing={2}
+              className="grid w-full grid-cols-5"
             >
               {[1, 2, 3, 4, 5].map((value) => (
                 <ToggleGroupItem
@@ -144,21 +184,23 @@ export function DocsTaskFeedback({
                 </ToggleGroupItem>
               ))}
             </ToggleGroup>
-            <p className="text-xs text-muted-foreground">
-              1 非常困难 · 5 非常容易
+            <p className="flex justify-between text-xs text-muted-foreground">
+              <span>1 非常困难</span>
+              <span>5 非常容易</span>
             </p>
           </fieldset>
           <fieldset
-            className="min-w-0 space-y-2"
+            className="flex min-w-0 flex-col gap-3"
             data-feedback-question="reasons"
           >
-            <legend className="font-medium">
+            <legend className="mb-3 font-medium">
               哪一步没有帮上忙？
               <span className="ml-1 font-normal text-muted-foreground">
                 （选填，可多选）
               </span>
             </legend>
             <ToggleGroup
+              aria-label="未能帮上忙的原因"
               type="multiple"
               value={Array.isArray(reasons) ? reasons : []}
               onValueChange={(value) => {
@@ -176,26 +218,29 @@ export function DocsTaskFeedback({
               ))}
             </ToggleGroup>
           </fieldset>
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <p className="text-xs text-muted-foreground" role="status">
-              {saved
-                ? '谢谢反馈，你可以随时修改。'
-                : '可只答一题，不填写也可以继续阅读。'}
-            </p>
+        </div>
+        <div className="flex flex-col gap-3 border-t pt-4">
+          <p className="text-xs text-muted-foreground" role="status">
+            {saved
+              ? '谢谢反馈，已自动保存，你可以随时修改。'
+              : '不填写也可以关闭，继续阅读。'}
+          </p>
+          <DialogFooter className="flex-row justify-between sm:justify-between">
             <Button
-              size="sm"
               variant="ghost"
               onClick={() => {
                 getDocsMeasurement()?.reset();
-                setSaved(false);
-                setExpanded(false);
+                setOpen(false);
               }}
             >
               开始新问题
             </Button>
-          </div>
+            <DialogClose asChild>
+              <Button>完成</Button>
+            </DialogClose>
+          </DialogFooter>
         </div>
-      )}
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

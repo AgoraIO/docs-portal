@@ -545,15 +545,15 @@ REGISTER_AGORA_EXTENSION_PROVIDER(ByteDance, agora::extension::ExtensionProvider
 
 视频插件通过 `IExtensionVideoFilter` 接口实现。该接口位于 `NGIAgoraMediaNode.h` 文件中。`IExtensionVideoFilter` 接口类包含如下方法：
 
-- [`getProcessMode`](#getprocessmode)
-- [`start`](#start)
-- [`stop`](#stop)
-- [`getVideoFormatWanted`](#getvideoformatwanted)
-- [`adaptVideoFrame`](#adaptvideoframe)
-- [`pendVideoFrame`](#pendvideoframe)
-- [`deliverVideoFrame`](#delivervideoframe)
-- [`setProperty`](#setproperty)
-- [`getProperty`](#getproperty)
+- [`getProcessMode`](#getprocessmode-1)
+- [`start`](#start-1)
+- [`stop`](#stop-1)
+- [`getVideoFormatWanted`](#getvideoformatwanted-1)
+- [`adaptVideoFrame`](#adaptvideoframe-1)
+- [`pendVideoFrame`](#pendvideoframe-1)
+- [`deliverVideoFrame`（见 Control 定义）](#start-1)
+- [`setProperty`](#setproperty-1)
+- [`getProperty`](#getproperty-1)
 
 #### getProcessMode
 
@@ -868,8 +868,8 @@ namespace agora {
 
 封装插件通过 `IExtensionProvider` 接口类实现。该接口位于 `NGIAgoraExtensionProvider.h` 文件中。你需要先实现这个接口类，并至少实现如下方法：
 
-- [`enumerateExtensions`](#enumerateextensions)
-- [`createVideoFilter`](#createvideofilter)
+- [`enumerateExtensions`](#enumerateextensions-1)
+- [`createVideoFilter`](#createvideofilter-1)
 
 `IExtensionProvider` 是插件动态库的提供者，由全局唯一的名字标识。每一个插件动态库可以提供一个或多个有不同功能的插件，如视频前处理插件库可以提供不同功能的视频插件（Video filter）。每个插件是一个具体的 Extension 对象。
 
@@ -999,15 +999,15 @@ namespace agora {
 
 视频插件通过 `IExtensionVideoFilter` 接口实现。该接口位于 `NGIAgoraMediaNode.h` 文件中。`IExtensionVideoFilter` 接口类包含如下方法：
 
-- [`getProcessMode`](#getprocessmode)
-- [`start`](#start)
-- [`stop`](#stop)
-- [`getVideoFormatWanted`](#getvideoformatwanted)
-- [`adaptVideoFrame`](#adaptvideoframe)
-- [`pendVideoFrame`](#pendvideoframe)
-- [`deliverVideoFrame`](#delivervideoframe)
-- [`setProperty`](#setproperty)
-- [`getProperty`](#getproperty)
+- [`getProcessMode`](#getprocessmode-2)
+- [`start`](#start-2)
+- [`stop`](#stop-2)
+- [`getVideoFormatWanted`](#getvideoformatwanted-2)
+- [`adaptVideoFrame`](#adaptvideoframe-2)
+- [`pendVideoFrame`](#pendvideoframe-2)
+- [`deliverVideoFrame`（见 Control 定义）](#start-2)
+- [`setProperty`](#setproperty-2)
+- [`getProperty`](#getproperty-2)
 
 #### getProcessMode
 
@@ -1347,8 +1347,8 @@ namespace agora {
 
 封装插件通过 `IExtensionProvider` 接口类实现。该接口位于 `NGIAgoraExtensionProvider.h` 文件中。你需要先实现这个接口类，并至少实现如下方法：
 
-- [`enumerateExtensions`](#enumerateextensions)
-- [ `createVideoFilter`](#createvideofilter)
+- [`enumerateExtensions`](#enumerateextensions-2)
+- [ `createVideoFilter`](#createvideofilter-2)
 
 #### enumerateExtensions
 
@@ -1515,15 +1515,15 @@ REGISTER_AGORA_EXTENSION_PROVIDER(ByteDance, agora::extension::ExtensionProvider
 
 视频插件通过 `IExtensionVideoFilter` 接口实现。该接口位于 `NGIAgoraMediaNode.h` 文件中。`IExtensionVideoFilter` 接口类包含如下方法：
 
-- [`getProcessMode`](#getprocessmode)
-- [`start`](#start)
-- [`stop`](#stop)
-- [`getVideoFormatWanted`](#getvideoformatwanted)
-- [`adaptVideoFrame`](#adaptvideoframe)
-- [`pendVideoFrame`](#pendvideoframe)
-- [`deliverVideoFrame`](#delivervideoframe)
-- [`setProperty`](#setproperty)
-- [`getProperty`](#getproperty)
+- [`getProcessMode`](#getprocessmode-3)
+- [`start`](#start-3)
+- [`stop`](#stop-3)
+- [`getVideoFormatWanted`](#getvideoformatwanted-3)
+- [`adaptVideoFrame`](#adaptvideoframe-3)
+- [`pendVideoFrame`](#pendvideoframe-3)
+- [`deliverVideoFrame`（见 Control 定义）](#start-3)
+- [`setProperty`](#setproperty-3)
+- [`getProperty`](#getproperty-3)
 
 #### getProcessMode
 
@@ -1838,8 +1838,8 @@ namespace agora {
 
 封装插件通过 `IExtensionProvider` 接口类实现。该接口位于 `NGIAgoraExtensionProvider.h` 文件中。你需要先实现这个接口类，并至少实现如下方法：
 
-- [`enumerateExtensions`](#enumerateextensions)
-- [`createVideoFilter`](#createvideofilter)
+- [`enumerateExtensions`](#enumerateextensions-3)
+- [`createVideoFilter`](#createvideofilter-3)
 
 `IExtensionProvider` 是插件动态库的提供者，由全局唯一的名字标识。每一个插件动态库可以提供一个或多个有不同功能的插件，如视频前处理插件库可以提供不同功能的视频插件（Video filter）。每个插件是一个具体的 Extension 对象。
 
@@ -1969,15 +1969,15 @@ namespace agora {
 
 视频插件通过 `IExtensionVideoFilter` 接口实现。该接口位于 `NGIAgoraMediaNode.h` 文件中。`IExtensionVideoFilter` 接口类包含如下方法：
 
-- [`getProcessMode`](#getprocessmode)
-- [`start`](#start)
-- [`stop`](#stop)
-- [`getVideoFormatWanted`](#getvideoformatwanted)
-- [`adaptVideoFrame`](#adaptvideoframe)
-- [`pendVideoFrame`](#pendvideoframe)
-- [`deliverVideoFrame`](#delivervideoframe)
-- [`setProperty`](#setproperty)
-- [`getProperty`](#getproperty)
+- [`getProcessMode`](#getprocessmode-4)
+- [`start`](#start-4)
+- [`stop`](#stop-4)
+- [`getVideoFormatWanted`](#getvideoformatwanted-4)
+- [`adaptVideoFrame`](#adaptvideoframe-4)
+- [`pendVideoFrame`](#pendvideoframe-4)
+- [`deliverVideoFrame`（见 Control 定义）](#start-4)
+- [`setProperty`](#setproperty-4)
+- [`getProperty`](#getproperty-4)
 
 #### getProcessMode
 
@@ -2317,8 +2317,8 @@ namespace agora {
 
 封装插件通过 `IExtensionProvider` 接口类实现。该接口位于 `NGIAgoraExtensionProvider.h` 文件中。你需要先实现这个接口类，并至少实现如下方法：
 
-- [`enumerateExtensions`](#enumerateextensions)
-- [ `createVideoFilter`](#createvideofilter)
+- [`enumerateExtensions`](#enumerateextensions-4)
+- [ `createVideoFilter`](#createvideofilter-4)
 
 #### enumerateExtensions
 
@@ -2825,15 +2825,15 @@ interface AgoraApiExecutor<T> {
 
 视频插件通过 `IExtensionVideoFilter` 接口实现。该接口位于 `NGIAgoraMediaNode.h` 文件中。`IExtensionVideoFilter` 接口类包含如下方法：
 
-- [`getProcessMode`](#getprocessmode)
-- [`start`](#start)
-- [`stop`](#stop)
-- [`getVideoFormatWanted`](#getvideoformatwanted)
-- [`adaptVideoFrame`](#adaptvideoframe)
-- [`pendVideoFrame`](#pendvideoframe)
-- [`deliverVideoFrame`](#delivervideoframe)
-- [`setProperty`](#setproperty)
-- [`getProperty`](#getproperty)
+- [`getProcessMode`](#getprocessmode-5)
+- [`start`](#start-5)
+- [`stop`](#stop-5)
+- [`getVideoFormatWanted`](#getvideoformatwanted-5)
+- [`adaptVideoFrame`](#adaptvideoframe-5)
+- [`pendVideoFrame`](#pendvideoframe-5)
+- [`deliverVideoFrame`（见 Control 定义）](#start-5)
+- [`setProperty`](#setproperty-5)
+- [`getProperty`](#getproperty-5)
 
 #### getProcessMode
 
@@ -3148,8 +3148,8 @@ namespace agora {
 
 封装插件通过 `IExtensionProvider` 接口类实现。该接口位于 `NGIAgoraExtensionProvider.h` 文件中。你需要先实现这个接口类，并至少实现如下方法：
 
-- [`enumerateExtensions`](#enumerateextensions)
-- [`createVideoFilter`](#createvideofilter)
+- [`enumerateExtensions`](#enumerateextensions-5)
+- [`createVideoFilter`](#createvideofilter-5)
 
 `IExtensionProvider` 是插件动态库的提供者，由全局唯一的名字标识。每一个插件动态库可以提供一个或多个有不同功能的插件，如视频前处理插件库可以提供不同功能的视频插件（Video filter）。每个插件是一个具体的 Extension 对象。
 

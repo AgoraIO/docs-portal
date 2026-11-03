@@ -108,7 +108,7 @@ describe('Chinese SDK account guidance', () => {
       'docs_resource_action_started',
     ]);
     const platform = screen.getByRole('combobox', {
-      name: '实时消息 SDK 平台',
+      name: '实时消息 SDK 语言 / 平台',
       hidden: true,
     });
     fireEvent.change(platform, { target: { value: 'ios' } });
