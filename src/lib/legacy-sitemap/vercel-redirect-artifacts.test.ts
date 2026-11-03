@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { isRetiredCnDocsPath } from '../retired-cn-docs.mjs';
 import { ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS } from '../zh-cn-product-ia-redirects';
 import redirectsConfig from './redirects.json';
 import staticRedirects from './static-redirects.json';
@@ -178,7 +179,13 @@ const RTM_OLD_CATEGORY_SEGMENTS = [
 ];
 
 describe('legacy redirect Vercel artifacts', () => {
-  const legacyRules = redirectsConfig.rules as LegacySitemapRedirectRule[];
+  const legacyRules = (
+    redirectsConfig.rules as LegacySitemapRedirectRule[]
+  ).filter(
+    (rule) =>
+      !isRetiredCnDocsPath(rule.legacyPath) &&
+      !isRetiredCnDocsPath(rule.target),
+  );
   const vercelConfig = JSON.parse(readFileSync('vercel.json', 'utf8')) as {
     bulkRedirectsPath: string;
     redirects?: VercelRedirect[];
@@ -204,6 +211,22 @@ describe('legacy redirect Vercel artifacts', () => {
     expect(staticRedirects).toHaveLength(legacyRules.length);
     expect(vercelConfig.bulkRedirectsPath).toBe('vercel-legacy-redirects.json');
     expect(vercelConfig.rewrites).toBeUndefined();
+  });
+
+  it('redirects RTC mini-program setup before the generic old-host fallback', () => {
+    const source = '/doc/rtc/mini-program/get-started/enable-service';
+    const redirects = vercelConfig.redirects ?? [];
+    const ruleIndex = redirects.findIndex((rule) => rule.source === source);
+    expect(redirects[ruleIndex]).toEqual({
+      source,
+      destination:
+        '/realtime-media/rtc/build/setup-and-access/enable-service#mini-program-service',
+      statusCode: 301,
+    });
+    const fallbackIndex = redirects.findIndex((rule) =>
+      rule.source.startsWith('/doc/:path'),
+    );
+    expect(ruleIndex).toBeLessThan(fallbackIndex);
   });
 
   it('negotiates canonical docs URLs to markdown before filesystem routing', () => {
@@ -323,12 +346,6 @@ describe('legacy redirect Vercel artifacts', () => {
       expect.arrayContaining([
         {
           destination:
-            '/zh-CN/introduction/security/sdk-compliance/flexible-classroom-sdk-third-party',
-          source: '/basics/security/flexible-classroom-sdk-third-party',
-          statusCode: 301,
-        },
-        {
-          destination:
             '/zh-CN/realtime-media/speech-to-text/reference/third-party-services',
           source: '/basics/security/speech-to-text-third-party',
           statusCode: 301,
@@ -369,6 +386,14 @@ describe('legacy redirect Vercel artifacts', () => {
     )) {
       const source = `/zh-CN/${path}`;
 
+      if (isRetiredCnDocsPath(source)) {
+        expect(bulkRedirects.some((rule) => rule.source === source)).toBe(
+          false,
+        );
+        expect(staticRedirects.some((rule) => rule.p === source)).toBe(false);
+        continue;
+      }
+
       expect(bulkRedirects).toContainEqual({
         destination,
         preserveQueryParams: true,
@@ -384,12 +409,14 @@ describe('legacy redirect Vercel artifacts', () => {
       expect.arrayContaining([
         {
           destination: 'https://doc.shengwang.cn/doc/:path*',
-          source: '/doc/:path*',
+          source:
+            '/doc/:path((?!(?:fusion-cdn|flexible-classroom|sdk-extension|analytics/general/fls/data)(?:/|\\.(?:html|mdx?)|$)).*)?',
           statusCode: 308,
         },
         {
           destination: 'https://doc.shengwang.cn/api-ref/:path*',
-          source: '/api-ref/:path*',
+          source:
+            '/api-ref/:path((?!(?:fusion-cdn|flexible-classroom)(?:/|\\.(?:html|mdx?)|$)).*)?',
           statusCode: 308,
         },
       ]),

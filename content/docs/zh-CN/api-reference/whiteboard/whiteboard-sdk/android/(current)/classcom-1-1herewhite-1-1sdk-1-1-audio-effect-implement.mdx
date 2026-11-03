@@ -1,0 +1,109 @@
+---
+title: com.herewhite.sdk.AudioEffectImplement class 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_audio_effect_implement
+  sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1_audio_effect_implement.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**Whiteboard Android SDK 2.16.134**。
+
+`AudioMixerImplement` 类，用于实现 `AudioMixerBridge` 接口。
+
+| 公开成员签名 |  |
+| --- | --- |
+| void | [setEffectFinished](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-audio-effect-implement#a45340ffd209907ef6e2130f892c1eb65) (int soundId) |
+| void | [setEffectSoundId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-audio-effect-implement#aa69f7d4076bba800ae413a681ac29f96) (int soundId, int state) |
+| void | [setEffectDurationUpdate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-audio-effect-implement#a509b1ed559d252f61909b9979e1ffc08) (String filePath, int duration) |
+
+## 函数说明
+
+<a id="a45340ffd209907ef6e2130f892c1eb65"></a>
+
+### setEffectFinished()
+
+<ApiSignature>
+
+void setEffectFinished(int soundId)
+
+</ApiSignature>
+
+通知白板音乐播放已结束。
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="soundId">
+
+播放的音乐 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="aa69f7d4076bba800ae413a681ac29f96"></a>
+
+### setEffectSoundId()
+
+<ApiSignature>
+
+void setEffectSoundId(int soundId, int state)
+
+</ApiSignature>
+
+设置音乐文件播放状态。
+&lt;p&gt;
+你需要在 Agora RTC SDK 触发的 `rtcEngine.onAudioEffectStateChanged` 回调中调用该方法，
+将音乐文件播放状态传递给白板中的 PPT。PPT 根据收到的音频播放状态判断是否显示画面，以确保音画同步。
+&lt;/p&gt;
+&lt;strong&gt;注意：&lt;/strong&gt;如果你使用的实时音视频 SDK 没有该状态回调方法，会导致播放的 PPT 音画不同步。
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="soundId">
+
+播放的音乐 ID。
+
+</Parameter>
+<Parameter name="state">
+
+音乐文件播放状态： &lt;ul&gt; &lt;li&gt;810：开始播放音乐&lt;/li&gt; &lt;li&gt;811：音乐被暂停&lt;/li&gt; &lt;li&gt;813：音乐被停止&lt;/li&gt; &lt;li&gt;814：音乐播放失败&lt;/li&gt; &lt;/ul&gt;
+
+</Parameter>
+</ParameterList>
+
+<a id="a509b1ed559d252f61909b9979e1ffc08"></a>
+
+### setEffectDurationUpdate()
+
+<ApiSignature>
+
+void setEffectDurationUpdate(String filePath, int duration)
+
+</ApiSignature>
+
+更新音频文件的总时长。
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="filePath">
+
+音乐文件的路径或 URL。
+
+</Parameter>
+<Parameter name="duration">
+
+音乐长度，单位为毫秒 (ms)。
+
+</Parameter>
+</ParameterList>

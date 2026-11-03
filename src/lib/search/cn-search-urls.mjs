@@ -43,7 +43,15 @@ export function isPublicCnSearchUrl(value) {
     const url = new URL(value, 'https://docs.local');
     const rawPath = value.split(/[?#]/, 1)[0];
     const decodedPath = decodeURIComponent(rawPath);
-    if (isRetiredCnDocsPath(toCnContentSearchUrl(decodedPath))) return false;
+    const contentPath = toCnContentSearchUrl(decodedPath);
+    if (isRetiredCnDocsPath(contentPath)) return false;
+    // Keep IoT aPaaS pages accessible by URL, but omit discovery entries.
+    if (
+      /^\/zh-CN\/(?:solutions|api-reference)\/iot-apaas(?:\/|$)/.test(
+        contentPath,
+      )
+    )
+      return false;
     if (
       url.origin !== 'https://docs.local' ||
       hasUnsafeCharacters(decodedPath) ||

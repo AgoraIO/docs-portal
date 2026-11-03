@@ -2144,6 +2144,35 @@ Web body
     });
   });
 
+  it('keeps the requested panel when source slugs already exclude the locale', async () => {
+    const parentPage = {
+      ...createPlatformGroupPage(),
+      slugs: ['ai', 'get-started', 'platform-split'],
+    };
+    const iosPage = {
+      ...createPlatformPanelPage('ios'),
+      slugs: ['ai', 'get-started', 'platform-split', 'ios'],
+    };
+    const pages = [parentPage, iosPage];
+    mockedGetPage.mockImplementation((slugs) =>
+      pages.find((page) => page.slugs.join('/') === slugs?.join('/')),
+    );
+    mockedGetPages.mockReturnValue(pages);
+    mockedGetPageTree.mockReturnValue(pageTree);
+
+    const payload = await loadDocsPagePayload('en', 'ai', [
+      'get-started',
+      'platform-split',
+      'ios',
+    ]);
+    expect(payload).toMatchObject({
+      body: {
+        kind: 'platform-group',
+        platformTabs: { initialPlatform: 'ios' },
+      },
+    });
+  });
+
   it('infers zh-CN title platform badges from API reference platform paths', async () => {
     const page = {
       ...createZhPage(),
@@ -3314,6 +3343,67 @@ Web body
       preserveSearch: false,
       redirectUrl:
         '/zh-CN/api-reference/conversational-ai/client-toolkit/overview?platform=go',
+    });
+  });
+
+  it.each([
+    ['toc-configuration', 'configuration'],
+    [null, 'enumv'],
+  ])(
+    'keeps the C++ SDK for a legacy RTM suffix link (%s)',
+    async (folder, leaf) => {
+      const canonical = `/zh-CN/api-reference/rtm/cpp/${leaf}`;
+      const genericSlugs = [
+        'api-reference',
+        'rtm',
+        ...(folder ? [folder] : []),
+        leaf,
+      ].join('/');
+      mockedGetPage.mockImplementation((slugs: string[], locale = 'en') => {
+        if (locale !== 'zh-CN') return undefined;
+        if (
+          slugs.join('/') === `api-reference/rtm/cpp/${leaf}` ||
+          slugs.join('/') === genericSlugs
+        ) {
+          return {
+            ...createPage(),
+            url:
+              slugs.join('/') === genericSlugs
+                ? `/zh-CN/${genericSlugs}`
+                : canonical,
+          };
+        }
+        return undefined;
+      });
+      await expect(
+        loadDocsPagePayload('zh-CN', 'api-reference', [
+          'rtm',
+          ...(folder ? [folder] : []),
+          `${leaf}.cpp`,
+        ]),
+      ).resolves.toEqual({
+        preserveSearch: true,
+        redirectUrl: canonical,
+      });
+    },
+  );
+
+  it('retains the shared-page fallback when a scoped suffix target does not exist', async () => {
+    const generic = 'api-reference/rtm/toc-configuration/configuration';
+    mockedGetPage.mockImplementation((slugs: string[], locale = 'en') =>
+      locale === 'zh-CN' && slugs.join('/') === generic
+        ? { ...createPage(), url: `/zh-CN/${generic}` }
+        : undefined,
+    );
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', [
+        'rtm',
+        'toc-configuration',
+        'configuration.cpp',
+      ]),
+    ).resolves.toEqual({
+      preserveSearch: false,
+      redirectUrl: `/zh-CN/${generic}?platform=cpp`,
     });
   });
 

@@ -78,6 +78,7 @@ import {
 } from './platforms/registry';
 import { resolvePlatformRoutePage } from './platforms/route';
 import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
+import { resolveCnSdkPublication } from './search/cn-sdk-publication.server';
 import { buildDocsSearchNavigation } from './search/docs-search-navigation';
 import { isPublishedDocsLocale, PUBLISHED_DOCS_LOCALES } from './site-region';
 import {
@@ -751,17 +752,9 @@ export async function loadDocsPagePayload(
       };
     }
 
-    const parentPage = source.getPage(
-      platformGroupParent.slugs.slice(1),
-      locale,
-    );
-    if (!parentPage) {
-      return {
-        redirectUrl: platformGroupParent.url,
-      };
-    }
-
-    page = parentPage;
+    // The parent is already resolved from this locale's source pages. Looking
+    // it up again after slicing slugs can remove the tab, not a locale prefix.
+    page = platformGroupParent;
     requestedPlatform = panelPlatform;
   }
 
@@ -893,6 +886,25 @@ export async function loadDocsPagePayload(
     processedText,
     requestedPlatform,
   });
+  const declaredSidebar =
+    navScope?.activeVersion?.sidebar ?? navScope?.scope.meta.navScope?.sidebar;
+  const navigationRoot =
+    declaredSidebar && navScope
+      ? {
+          name: 'Scoped navigation',
+          children: flattenSidebarPageNodes(
+            getScopedNavScopeSidebarNodes({
+              getNodeMeta: (node) =>
+                getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+              navScope,
+            }),
+          ).map(({ title, url }) => ({
+            type: 'page' as const,
+            name: title,
+            url,
+          })),
+        }
+      : (navScope?.sidebarRoot ?? pageTree);
 
   const apiPayload = {
     activePath: page.url,
@@ -949,7 +961,7 @@ export async function loadDocsPagePayload(
             openApiRoute.operationId,
           )
         : getPrevNextLinksFromNode(
-            navScope?.sidebarRoot ?? pageTree,
+            navigationRoot,
             page.url,
             sourcePageUrls ? (url) => sourcePageUrls.has(url) : undefined,
           ),
@@ -1092,6 +1104,12 @@ export async function loadDocsSearchIndex(
     getCanonicalPageTree(source, supportedLocale),
     supportedLocale,
   );
+  if (supportedLocale === 'zh-CN') {
+    for (const url of searchNavigation.keys()) {
+      if (!resolveCnSdkPublication(url).searchable)
+        searchNavigation.delete(url);
+    }
+  }
   const pages = await Promise.all(
     getCanonicalSourcePages(source.getPages(locale))
       .filter(
@@ -1105,6 +1123,11 @@ export async function loadDocsSearchIndex(
           content,
           description: item.data.description,
           ...getSearchEntryMetadata(item.url, content),
+          ...(supportedLocale === 'zh-CN'
+            ? {
+                version: resolveCnSdkPublication(item.url).version,
+              }
+            : {}),
           title: item.data.title ?? item.slugs.at(-1) ?? item.url,
           url: item.url,
         };
@@ -1876,6 +1899,24 @@ function resolveMergedPlatformSuffixRedirect({
   const targetSegments = [...slugSegments.slice(0, -1), baseSlug];
   const targetUrl = `/${[locale, tab, ...targetSegments].join('/')}`;
 
+  const canonicalApiUrl =
+    locale === 'zh-CN' && tab === OPENAPI_TAB
+      ? ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS[targetSegments.join('/')]
+      : undefined;
+  if (canonicalApiUrl) {
+    const canonicalSegments = canonicalApiUrl.split('/').filter(Boolean);
+    const platformIndex = canonicalSegments.findIndex(
+      (segment, index) => index >= 3 && isKnownPlatform(segment),
+    );
+    if (platformIndex >= 0) {
+      canonicalSegments[platformIndex] = platform;
+      const platformUrl = `/${canonicalSegments.join('/')}`;
+      if (hasDocsPageForUrl(source, platformUrl)) {
+        return { preserveSearch: true, redirectUrl: platformUrl };
+      }
+    }
+  }
+
   if (!hasDocsPageForUrl(source, targetUrl)) {
     return null;
   }
@@ -1962,11 +2003,11 @@ async function resolvePageToc(
       ? buildPlatformTocText(processedText, platform)
       : buildCanonicalPlatformTocText(processedText);
 
-    return normalizeToc(await getAccordionTableOfContents(tocText));
+    return normalizeToc(await getMdxAwareTableOfContents(tocText));
   } catch {
     try {
       return normalizeToc(
-        await getAccordionTableOfContents(
+        await getMdxAwareTableOfContents(
           buildCanonicalPlatformTocText(processedText),
         ),
       );
@@ -1976,9 +2017,12 @@ async function resolvePageToc(
   }
 }
 
-function getAccordionTableOfContents(markdown: string) {
-  return markdown.includes('<Accordion')
-    ? getTableOfContents(markdown, [remarkMdx, remarkAccordionHeadings])
+function getMdxAwareTableOfContents(markdown: string) {
+  if (markdown.includes('<Accordion')) {
+    return getTableOfContents(markdown, [remarkMdx, remarkAccordionHeadings]);
+  }
+  return markdown.includes('<Tabs')
+    ? getTableOfContents(markdown, [remarkMdx])
     : getTableOfContents(markdown);
 }
 

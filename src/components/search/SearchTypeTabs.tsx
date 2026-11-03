@@ -7,8 +7,9 @@ import type { SearchPageState } from '@/lib/search/search-page-state';
 
 const types = [
   { value: 'all', label: '全部文档' },
-  { value: 'docs', label: '文档与指南' },
-  { value: 'openapi', label: 'REST API' },
+  { value: 'docs', label: '产品文档' },
+  { value: 'api', label: 'API 文档' },
+  { value: 'faq', label: 'FAQ' },
 ] as const;
 
 // Aceternity Animated Tabs' shared-layout indicator, with Radix keyboard behavior.
@@ -27,7 +28,12 @@ export function SearchTypeTabs({
         aria-label="内容类型"
         className="search-page-types"
         onValueChange={(next) => {
-          if (next === 'all' || next === 'docs' || next === 'openapi')
+          if (
+            next === 'all' ||
+            next === 'docs' ||
+            next === 'api' ||
+            next === 'faq'
+          )
             onChange(next);
         }}
         spacing={1}

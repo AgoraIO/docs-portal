@@ -18,6 +18,20 @@ first; use MDX only for the repo-approved primitives listed here.
 - Use a code language listed in `source.config.ts`. If no better language
   exists, use `text` for plain output.
 
+## Repository Cards
+
+Use `RepositoryCardTitle` inside a Card's `title` to place a repository host icon
+beside the unchanged repository name. Supported providers are `gitee` and
+`github`. The platform label is screen-reader-only; do not append it to the
+visible title or use the separate Card icon slot.
+
+```mdx
+<Cards>
+  <Card title={<RepositoryCardTitle provider="gitee">API-Examples</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples" />
+  <Card title={<RepositoryCardTitle provider="github">API-Examples</RepositoryCardTitle>} href="https://github.com/AgoraIO/API-Examples" />
+</Cards>
+```
+
 ## Callouts
 
 Use directive callouts with exactly three colons. The opening and closing
@@ -121,6 +135,11 @@ Rules:
 
 For code-only alternatives, use code fence tabs. Use MDX tabs only when a pane
 contains mixed prose, lists, images, or multiple code blocks.
+
+When several steps share one scenario choice and include mixed content, use
+MDX tabs for every synchronized set, including a step containing only code.
+Give those sets the same `groupId` and stable values (for example, `live` and
+`rtc`) so code, instructions, and expected results switch together.
 
 ````mdx
 <Tabs defaultValue="macos" groupId="install-os" persist>
@@ -325,21 +344,25 @@ Rules:
 - Do not use raw `<img>` tags in docs content.
 
 For small UI icons embedded in a sentence, use the approved `InlineImage`
-primitive with meaningful alt text and an explicit pixel width. It preserves
+primitive with meaningful alt text and an explicit pixel width or height. It preserves
 inline alignment and does not open the screenshot zoom dialog. This is the
 exception to the standalone Markdown image rule.
 
 ```mdx
 Click <InlineImage alt="Run" src="https://example.com/run.png" width={25} /> to build.
+Click <InlineImage alt="Play" src="https://example.com/play.png" height={20} /> to start.
 ```
 
 Keep screenshots as Markdown unless they require an explicit display width.
 For that case, use `DocsImage` with `displayWidth` (a CSS width), which sizes
-the thumbnail but keeps the full-size zoom preview. Indent it to the list
+the thumbnail but keeps the full-size zoom preview. For screenshots with a
+legacy height limit, use `displayHeight` (a CSS maximum height); the thumbnail
+keeps its aspect ratio and stays within the available width. Indent it to the list
 content column when it belongs to a list item.
 
 ```mdx
 <DocsImage alt="Karaoke room" src="https://example.com/room.png" displayWidth="40%" />
+<DocsImage alt="Unity scenes" src="https://example.com/scenes.png" displayHeight="320px" />
 ```
 
 ## Tables

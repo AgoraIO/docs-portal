@@ -22,6 +22,7 @@ import {
   PlatformPanel,
   PlatformTabsGroup,
 } from '@/components/mdx/PlatformTabsGroup';
+import { scrollDocsHashTargetAfterLayout } from '@/lib/docs-hash';
 import { i18n } from '@/lib/i18n/i18n';
 import {
   PLATFORM_PREFERENCE_STORAGE_KEY,
@@ -142,6 +143,50 @@ beforeEach(() => {
 });
 
 afterEach(cleanup);
+
+it('reveals a hidden platform targeted by a cross-platform fragment while preserving the URL', async () => {
+  window.history.replaceState(
+    {},
+    '',
+    '/zh-CN/realtime-media/cloud-recording/quick-start',
+  );
+  render(
+    <PlatformPageProvider
+      canonicalPlatform="restful-api"
+      initialPlatform="go"
+      platforms='["restful-api","go"]'
+    >
+      <PlatformHeaderTabs
+        canonicalPlatform="restful-api"
+        initialPlatform="go"
+        platforms='["restful-api","go"]'
+      />
+      <PlatformTabsGroup
+        canonicalPlatform="restful-api"
+        initialPlatform="go"
+        groupMode="structured"
+        platforms='["restful-api","go"]'
+        tabsPlacement="header"
+      >
+        <PlatformPanel platform="restful-api">
+          <h2 id="模拟场景">模拟场景</h2>
+        </PlatformPanel>
+        <PlatformPanel platform="go">Go instructions</PlatformPanel>
+      </PlatformTabsGroup>
+    </PlatformPageProvider>,
+  );
+  expect(screen.getByText('模拟场景')).not.toBeVisible();
+  await act(async () => {
+    scrollDocsHashTargetAfterLayout('#%E6%A8%A1%E6%8B%9F%E5%9C%BA%E6%99%AF');
+  });
+  expect(screen.getByText('模拟场景')).toBeVisible();
+  expect(screen.getByText('Go instructions')).not.toBeVisible();
+  expect(screen.getByRole('tab', { name: 'RESTful API' })).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+  expect(window.location.hash).toBe('#%E6%A8%A1%E6%8B%9F%E5%9C%BA%E6%99%AF');
+});
 
 it('restores iOS tab, badge and MDX body after fallback and a non-platform page', async () => {
   window.localStorage.setItem(PLATFORM_PREFERENCE_STORAGE_KEY, 'ios');

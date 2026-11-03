@@ -152,6 +152,45 @@ describe('ApiReferenceProductNav', () => {
     ).not.toBeInTheDocument();
   });
 
+  it.each(['服务端 SDK', 'RESTful API'])(
+    'keeps the RTC navigation after selecting %s',
+    async (apiType) => {
+      window.history.replaceState(
+        {},
+        '',
+        '/zh-CN/api-reference/api?product=rtc',
+      );
+      render(
+        <>
+          <ApiReferenceProductNav />
+          <ApiReferenceCards locale="zh-CN" type="all" />
+        </>,
+      );
+      const navigation = screen.getByRole('navigation', {
+        name: 'API 参考产品',
+      });
+      await waitFor(() => {
+        expect(within(navigation).getAllByRole('link')).toHaveLength(1);
+      });
+
+      fireEvent.click(screen.getByRole('radio', { name: apiType }));
+      await new Promise((resolve) => window.requestAnimationFrame(resolve));
+
+      expect(
+        screen.getByRole('radio', { name: apiType, checked: true }),
+      ).toBeVisible();
+      expect(
+        within(navigation).getByRole('link', { name: '实时互动 RTC' }),
+      ).toBeVisible();
+      expect(
+        within(navigation).getByRole('heading', { name: '实时互动基础能力' }),
+      ).toBeVisible();
+      expect(
+        document.querySelector('#api-reference-product-rtc'),
+      ).toBeVisible();
+    },
+  );
+
   it('tracks the visible product and scrolls its left navigation link into view', async () => {
     let hasScrolledToRtc = false;
     const originalScrollIntoView = window.HTMLElement.prototype.scrollIntoView;

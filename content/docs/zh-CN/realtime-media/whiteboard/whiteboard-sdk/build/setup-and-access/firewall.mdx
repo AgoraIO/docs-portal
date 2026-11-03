@@ -70,3 +70,26 @@ rest-argus-ad.agoralab.co
 ```
 
 </PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+大型企业、医院、高校、银行等安全需求较高的机构会部署防火墙将办公环境与外网隔离开来，保护内部信息安全。为了方便企业用户接入声网互动白板服务，本文介绍如何通过配置防火墙白名单，允许用户在有网络访问限制的环境中使用互动白板服务。
+
+## 前提条件
+
+HarmonyOS 0.2.11 内嵌 white-web-sdk 2.16.59，支持多域名接入。详见[发版说明](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/release-notes-wb)。
+
+## 实现方法
+
+将以下域名添加至防火墙白名单，所有域名的访问端口为 443，以确保正常访问声网互动白板服务。
+
+```shell
+*.whiteboard.sd-rtn.com
+*.baiban.shengwang.cn
+*.whiteboard.rtelink.com
+*.netless.link
+*.whiteboard.agora.io
+rest-argus-ad.agoralab.co
+```
+
+</PlatformStructured>

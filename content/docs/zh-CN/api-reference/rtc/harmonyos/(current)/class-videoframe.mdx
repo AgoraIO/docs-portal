@@ -10,18 +10,24 @@ _migration:
   warnings: []
 ---
 
+
+
+<a id="ystride"></a>
+
+<a id="class_videoframe"></a>
+
 <a id="class_videoframe__prototype"></a>
 
 ```text
 export class VideoFrame {
-  public buffer:ArrayBuffer | null = null;
+  public buffer:ArrayBuffer | undefined;
   public yBuffer: ArrayBuffer | null = null;
   public uBuffer: ArrayBuffer | null = null;
   public vBuffer: ArrayBuffer | null = null;
 
   public rotation:number = 0;
   public timestamp:number = 0;
-  public yStride:number = 0;
+  public stride:number = 0;
   public uStride:number = 0;
   public vStride:number = 0;
   public width:number = 0;
@@ -70,8 +76,8 @@ export class VideoFrame {
 视频像素高度。
 
 </Parameter>
-<a id="ystride"></a>
-<Parameter name="yStride">
+<a id="stride"></a>
+<Parameter name="stride">
 
 对 YUV 数据，表示 Y 缓冲区的行跨度；对 RGBA 数据，表示总的数据长度。
 
@@ -120,10 +126,6 @@ export class VideoFrame {
 </Parameter>
 <a id="buffer"></a>
 <Parameter name="buffer">
-
-:::caution
-注意： 该参数不可为空，否则会发生异常。
-:::
 
 缓冲区的数据。与该参数相关的方法如下所示：
 

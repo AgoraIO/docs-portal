@@ -22,8 +22,9 @@ import {
   normalizePlatformKey,
 } from '../src/lib/platforms/registry.ts';
 import { getContentDocsPrerenderPaths } from '../src/lib/prerender-content-routes.ts';
-import { createStaticDocsRouteSets } from '../src/lib/published-docs-routes.ts';
 import { readPublishedDocVersion } from '../src/lib/published-doc-version.ts';
+import { createStaticDocsRouteSets } from '../src/lib/published-docs-routes.ts';
+import { resolveCnSdkPublication } from '../src/lib/search/cn-sdk-publication.server.ts';
 import {
   DOCS_LOCALES,
   isPublishedDocsPath,
@@ -86,10 +87,12 @@ export async function generateStaticDocsPayload() {
   const platformKeysByPageUrl = new Map();
   const versionByPageUrl = new Map();
   for (const route of canonicalRoutes) {
-    const version = await readPublishedDocVersion(
-      path.join(repoRoot, 'content', 'docs'),
-      route,
-    );
+    const version = route.startsWith('/zh-CN/')
+      ? resolveCnSdkPublication(route).version
+      : await readPublishedDocVersion(
+          path.join(repoRoot, 'content', 'docs'),
+          route,
+        );
     if (version) versionByPageUrl.set(route, version);
   }
   const platformPages = [];

@@ -9,7 +9,11 @@ import {
 } from 'motion/react';
 import { type MouseEvent, useId, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
-import { getPlatformLabel, isKnownPlatform } from '@/lib/platforms/registry';
+import { cn } from '@/lib/cn';
+import {
+  getCnSearchPlatformLabel,
+  getCnSearchSdkLabel,
+} from '@/lib/search/cn-search-context';
 import {
   getSearchPageGroupKey,
   getSearchSectionHref,
@@ -42,9 +46,11 @@ export function SearchResultList({
   groups,
   productLabel,
   onSelectResult,
+  rankOffset = 0,
 }: {
   groups: SearchPageGroup[];
   productLabel: (product?: string) => string;
+  rankOffset?: number;
   onSelectResult?: (
     event: MouseEvent<HTMLAnchorElement>,
     path: string,
@@ -59,9 +65,12 @@ export function SearchResultList({
     <LayoutGroup id={id}>
       <ul className="search-page-results">
         {groups.map((group, groupIndex) => {
+          const sdkLabel = getCnSearchSdkLabel(group.pageUrl);
           const first = group.sections[0];
           const groupKey = getSearchPageGroupKey(group);
           const firstHref = getSearchSectionHref(group.pageUrl, first.url);
+          const hasSectionTitle = first.sectionTitle !== group.title;
+          const titleHref = hasSectionTitle ? group.pageUrl : firstHref;
           const ancestors = first.headingPath
             .slice(0, -1)
             .filter((heading) => heading !== group.title)
@@ -91,7 +100,7 @@ export function SearchResultList({
                   />
                 )}
               </AnimatePresence>
-              <div className="relative min-w-0">
+              <div className="min-w-0">
                 <div className="search-page-result-context">
                   <div className="search-page-result-path">
                     {group.product && (
@@ -108,25 +117,37 @@ export function SearchResultList({
                     {group.docType === 'openapi' && (
                       <Badge variant="secondary">REST API</Badge>
                     )}
-                    {group.platform.map((platform) => (
-                      <span key={platform}>
-                        {isKnownPlatform(platform)
-                          ? getPlatformLabel(platform, 'zh-CN')
-                          : platform}
-                      </span>
-                    ))}
-                    {group.version && <span>{group.version}</span>}
+                    {sdkLabel ? (
+                      <span>{sdkLabel}</span>
+                    ) : (
+                      [
+                        ...new Set(
+                          group.platform.map(getCnSearchPlatformLabel),
+                        ),
+                      ].map((label) => <span key={label}>{label}</span>)
+                    )}
                   </div>
                 </div>
                 <div className="search-page-result-heading">
                   <a
-                    className="search-page-result-title"
-                    href={group.pageUrl}
+                    className={cn(
+                      'search-page-result-title',
+                      !hasSectionTitle && 'search-page-result-link',
+                    )}
+                    href={titleHref}
                     onClick={(event) =>
-                      onSelectResult?.(event, group.pageUrl, groupIndex + 1)
+                      onSelectResult?.(
+                        event,
+                        titleHref,
+                        groupIndex + 1 + rankOffset,
+                      )
                     }
                     onAuxClick={(event) =>
-                      onSelectResult?.(event, group.pageUrl, groupIndex + 1)
+                      onSelectResult?.(
+                        event,
+                        titleHref,
+                        groupIndex + 1 + rankOffset,
+                      )
                     }
                   >
                     <h2>{group.title}</h2>
@@ -135,15 +156,25 @@ export function SearchResultList({
                       className="size-4 shrink-0"
                     />
                   </a>
-                  {first.sectionTitle !== group.title && (
+                  {hasSectionTitle && (
                     <a
-                      className="search-page-section"
+                      className="search-page-section search-page-result-link"
                       href={firstHref}
                       onClick={(event) =>
-                        onSelectResult?.(event, firstHref, groupIndex + 1, 1)
+                        onSelectResult?.(
+                          event,
+                          firstHref,
+                          groupIndex + 1 + rankOffset,
+                          1,
+                        )
                       }
                       onAuxClick={(event) =>
-                        onSelectResult?.(event, firstHref, groupIndex + 1, 1)
+                        onSelectResult?.(
+                          event,
+                          firstHref,
+                          groupIndex + 1 + rankOffset,
+                          1,
+                        )
                       }
                     >
                       <HashIcon
@@ -175,7 +206,7 @@ export function SearchResultList({
                                   group.pageUrl,
                                   section.url,
                                 ),
-                                groupIndex + 1,
+                                groupIndex + 1 + rankOffset,
                                 sectionIndex + 2,
                               )
                             }
@@ -186,7 +217,7 @@ export function SearchResultList({
                                   group.pageUrl,
                                   section.url,
                                 ),
-                                groupIndex + 1,
+                                groupIndex + 1 + rankOffset,
                                 sectionIndex + 2,
                               )
                             }

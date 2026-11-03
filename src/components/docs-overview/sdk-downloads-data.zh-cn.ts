@@ -1,4 +1,17 @@
-import type { SdkDownloadPlatform } from './sdk-downloads-data';
+import { zhCNRtsaSdkDownloadPlatform } from './rtsa-sdk-downloads-data.zh-cn';
+import type {
+  SdkDownloadPlatform,
+  SdkDownloadVersion,
+} from './sdk-downloads-data';
+
+const latestWebRtcSdkVersion: SdkDownloadVersion = {
+  id: '4.24.9',
+  label: '版本 4.24.9（最新）',
+  downloadLink:
+    'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_9_FULL.zip',
+  packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.9',
+  releaseDate: '2026 年 10 月 13 日',
+};
 
 const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
   {
@@ -753,10 +766,23 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for Interactive Whiteboard',
         versions: [
           {
+            id: '2.16.134-interactive-whiteboard-android',
+            label: '版本 2.16.134（最新）',
+            downloadLink:
+              'https://github.com/netless-io/whiteboard-android/archive/refs/tags/2.16.134.zip',
+            packageName: 'com.herewhite.sdk',
+            releaseDate: '2026 年 10 月 21 日',
+          },
+          {
             id: '2.16.100-interactive-whiteboard-android',
-            label: '版本 2.16.100 （最新）',
+            label: '版本 2.16.100',
             packageManager:
               'https://github.com/netless-io/whiteboard-android/releases/tag/2.16.100',
+            downloadLink:
+              'https://github.com/netless-io/whiteboard-android/archive/refs/tags/2.16.100.zip',
+            md5: 'ecf0c9d1f35124d93264dc46810d3e28',
+            packageName: 'com.herewhite.sdk',
+            releaseDate: '2025 年 4 月 7 日',
           },
           {
             id: '2.16.86-interactive-whiteboard-android',
@@ -778,7 +804,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '2.16.100-interactive-whiteboard-android',
-            label: '版本 2.16.100（最新）',
+            label: '版本 2.16.100',
             downloadLink:
               'https://github.com/netless-io/whiteboard-android/archive/refs/tags/2.16.100.zip',
             md5: 'ecf0c9d1f35124d93264dc46810d3e28',
@@ -793,8 +819,16 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Interactive Whiteboard Fastboard',
         versions: [
           {
+            id: '1.8.2-fastboard-android',
+            label: '版本 1.8.2（最新）',
+            downloadLink:
+              'https://github.com/netless-io/fastboard-android/archive/refs/tags/1.8.2.zip',
+            packageName: 'io.agora.board.fast',
+            releaseDate: '2026 年 9 月 28 日',
+          },
+          {
             id: '1.7.2-fastboard-android',
-            label: '版本 1.7.2 （最新）',
+            label: '版本 1.7.2',
             releaseDate: '2025 年 7 月 11 日',
             packageManager:
               'https://github.com/netless-io/fastboard-android/releases/tag/1.7.2',
@@ -819,7 +853,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '1.6.2-fastboard-android',
-            label: '版本 1.6.2（最新）',
+            label: '版本 1.6.2',
             downloadLink:
               'https://github.com/netless-io/fastboard-android/archive/refs/tags/1.6.2.zip',
             md5: '92a2240199faa74dc2bea46830623404',
@@ -866,7 +900,8 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           {
             id: '3.1.0-meeting-sdk-android',
             label: '版本 3.1.0（最新）',
-            packageManager: 'gradle://io.github.agora-apaas/FcrUIScene/3.1.0',
+            packageManager:
+              'https://central.sonatype.com/artifact/io.github.agora-apaas/FcrUIScene/3.1.0',
           },
         ],
       },
@@ -880,7 +915,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
             label: '版本 2.9.0（最新）',
             packageName: 'io.agora.agents:agora-agent-client-toolkit',
             packageManager:
-              'gradle://io.agora.agents/agora-agent-client-toolkit/2.9.0',
+              'https://central.sonatype.com/artifact/io.agora.agents/agora-agent-client-toolkit/2.9.0',
           },
         ],
       },
@@ -1497,10 +1532,23 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for Interactive Whiteboard',
         versions: [
           {
+            id: '2.16.147-interactive-whiteboard-ios',
+            label: '版本 2.16.147（最新）',
+            downloadLink:
+              'https://github.com/netless-io/Whiteboard-iOS/archive/refs/tags/2.16.147.zip',
+            packageName: 'Whiteboard',
+            releaseDate: '2026 年 10 月 21 日',
+          },
+          {
             id: '2.16.112-interactive-whiteboard-ios',
-            label: '版本 2.16.112 （最新）',
+            label: '版本 2.16.112',
             packageManager:
               'https://github.com/netless-io/Whiteboard-iOS/releases/tag/2.16.112',
+            downloadLink:
+              'https://github.com/netless-io/Whiteboard-iOS/archive/refs/tags/2.16.112.zip',
+            md5: '5446cb723f59e7626db8ec1472ec6dc8',
+            packageName: 'Whiteboard',
+            releaseDate: '2025 年 4 月 7 日',
           },
           {
             id: '2.16.95-interactive-whiteboard-ios',
@@ -1522,7 +1570,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '2.16.112-interactive-whiteboard-ios',
-            label: '版本 2.16.112（最新）',
+            label: '版本 2.16.112',
             downloadLink:
               'https://github.com/netless-io/Whiteboard-iOS/archive/refs/tags/2.16.112.zip',
             md5: '5446cb723f59e7626db8ec1472ec6dc8',
@@ -1537,10 +1585,23 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Interactive Whiteboard Fastboard',
         versions: [
           {
+            id: '1.4.6-fastboard-ios',
+            label: '版本 1.4.6（最新）',
+            downloadLink:
+              'https://github.com/netless-io/fastboard-iOS/archive/refs/tags/1.4.6.zip',
+            packageName: 'Fastboard',
+            releaseDate: '2026 年 9 月 28 日',
+          },
+          {
             id: '1.4.2-fastboard-ios',
-            label: '版本 1.4.2 （最新）',
+            label: '版本 1.4.2',
             packageManager:
               'https://github.com/netless-io/fastboard-iOS/releases/tag/1.4.2',
+            downloadLink:
+              'https://github.com/netless-io/fastboard-iOS/archive/refs/tags/1.4.2.zip',
+            md5: 'b6366d11ab62b055b1ccd055290111e2',
+            packageName: 'Fastboard',
+            releaseDate: '2024 年 9 月 14 日',
           },
           {
             id: '1.4.0-fastboard-ios',
@@ -1556,7 +1617,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '1.4.2-fastboard-ios',
-            label: '版本 1.4.2（最新）',
+            label: '版本 1.4.2',
             downloadLink:
               'https://github.com/netless-io/fastboard-iOS/archive/refs/tags/1.4.2.zip',
             md5: 'b6366d11ab62b055b1ccd055290111e2',
@@ -1600,7 +1661,8 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           {
             id: '3.1.0-meeting-sdk-ios',
             label: '版本 3.1.0（最新）',
-            packageManager: 'cocoapods://FcrUIScene?version=3.1.0',
+            packageManager:
+              'https://github.com/CocoaPods/Specs/blob/master/Specs/0/7/4/FcrUIScene/3.1.0/FcrUIScene.podspec.json',
           },
         ],
       },
@@ -1614,7 +1676,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
             label: '版本 2.9.0（最新）',
             packageName: 'agent-client-toolkit-swift',
             packageManager:
-              'cocoapods://agent-client-toolkit-swift?version=2.9.0',
+              'https://github.com/CocoaPods/Specs/blob/master/Specs/0/9/0/agent-client-toolkit-swift/2.9.0/agent-client-toolkit-swift.podspec.json',
           },
         ],
       },
@@ -1630,13 +1692,8 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于 Web 端音视频通话、互动直播和极速直播的实时互动 SDK',
         versions: [
           {
-            id: '4.24.9-video-sdk-web',
-            label: '版本 4.24.9（最新）',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_9_FULL.zip',
-            packageManager:
-              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.9',
-            releaseDate: '2026 年 10 月 13 日',
+            ...latestWebRtcSdkVersion,
+            id: `${latestWebRtcSdkVersion.id}-video-sdk-web`,
           },
           {
             id: '4.24.6-video-sdk-web',
@@ -2025,8 +2082,12 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for Voice Calling, Interactive Live Streaming (voice only), and Broadcast Streaming (voice only)',
         versions: [
           {
+            ...latestWebRtcSdkVersion,
+            id: `${latestWebRtcSdkVersion.id}-voice-sdk-web`,
+          },
+          {
             id: '4.24.6-voice-sdk-web',
-            label: '版本 4.24.6（最新）',
+            label: '版本 4.24.6',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip',
             packageManager:
@@ -2347,8 +2408,15 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Interactive Whiteboard',
         versions: [
           {
+            id: '2.16.59-interactive-whiteboard-web',
+            label: '版本 2.16.59（最新）',
+            packageManager:
+              'https://www.npmjs.com/package/white-web-sdk/v/2.16.59',
+            releaseDate: '2026 年 10 月 10 日',
+          },
+          {
             id: '2.16.53-interactive-whiteboard-web',
-            label: '版本 2.16.53 （最新）',
+            label: '版本 2.16.53',
             packageManager:
               'https://www.npmjs.com/package/white-web-sdk/v/2.16.53',
           },
@@ -2372,7 +2440,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: 'white-web-sdk',
-            label: 'npm 包（最新）',
+            label: 'npm 包',
             packageName: 'white-web-sdk',
             packageManager: 'https://www.npmjs.com/package/white-web-sdk',
             releaseDate: '2025 年 4 月 7 日',
@@ -2385,8 +2453,15 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Interactive Whiteboard Fastboard',
         versions: [
           {
+            id: '1.1.10-fastboard-web',
+            label: '版本 1.1.10（最新）',
+            downloadLink:
+              'https://github.com/netless-io/fastboard/archive/refs/tags/v1.1.10.zip',
+            releaseDate: '2026 年 10 月 12 日',
+          },
+          {
             id: '1.1.0-interactive-whiteboard-web',
-            label: '版本 1.1.0 （最新）',
+            label: '版本 1.1.0',
             releaseDate: '2025 年 7 月 11 日',
             packageManager:
               'https://www.npmjs.com/package/@netless/fastboard/v/1.1.0',
@@ -2411,7 +2486,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: 'fastboard-web',
-            label: 'GitHub 源码（最新）',
+            label: 'GitHub 源码',
             downloadLink: 'https://github.com/netless-io/fastboard',
             releaseDate: '2024 年 12 月 12 日',
           },
@@ -3701,18 +3776,35 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
     label: 'HarmonyOS',
     core: [
       {
+        id: 'interactive-whiteboard-harmonyos',
+        label: '互动白板 SDK',
+        info: 'Whiteboard HarmonyOS SDK',
+        versions: [
+          {
+            id: '0.2.11-interactive-whiteboard-harmonyos',
+            label: '版本 0.2.11（最新）',
+            downloadLink:
+              'https://github.com/netless-io/whiteboard-harmony/archive/refs/tags/0.2.11.zip',
+            packageManager:
+              'https://ohpm.openharmony.cn/#/cn/detail/@shengwang%2Fwhiteboard',
+            packageName: '@shengwang/whiteboard',
+            releaseDate: '2026 年 10 月 21 日',
+          },
+        ],
+      },
+      {
         id: 'voice-sdk-harmonyos',
         label: '语音 SDK',
         info: '适用于 HarmonyOS NEXT 端纯音频互动场景的实时互动 SDK',
         versions: [
           {
-            id: '4.4.2-voice-sdk-harmonyos',
-            label: '版本 4.4.2（最新）',
+            id: '4.6.3-voice-sdk-harmonyos',
+            label: '版本 4.6.3（最新）',
             downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_HarmonyOS_V4.4.2_VOICE.har',
-            md5: 'c23e66633da8fe341501b9572ed064c4',
+              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_HarmonyOS_v4.6.3_VOICE.zip',
+            md5: 'a1d6a77792811e23954645a6bc4590a5',
             packageName: '@shengwang/rtc-voice',
-            releaseDate: '2024 年 11 月 29 日',
+            releaseDate: '2026 年 9 月 20 日',
           },
         ],
       },
@@ -3722,13 +3814,13 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于 HarmonyOS NEXT 端音视频互动场景的实时互动 SDK',
         versions: [
           {
-            id: '4.4.2-video-sdk-harmonyos',
-            label: '版本 4.4.2（最新）',
+            id: '4.6.3-video-sdk-harmonyos',
+            label: '版本 4.6.3（最新）',
             downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_HarmonyOS_v4.4.2_FULL.har',
-            md5: 'f02df2e181a7e25218eb87dbdca0db7d',
+              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_HarmonyOS_v4.6.3_FULL.zip',
+            md5: '52b13901ba39f907d1c52bd642a57ab8',
             packageName: '@shengwang/rtc-full',
-            releaseDate: '2024 年 11 月 29 日',
+            releaseDate: '2026 年 9 月 20 日',
           },
         ],
       },
@@ -4027,7 +4119,8 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           {
             id: '3.1.0-meeting-sdk-electron',
             label: '版本 3.1.0（最新）',
-            packageManager: 'npm://fcr-ui-scene?version=3.1.0',
+            packageManager:
+              'https://www.npmjs.com/package/fcr-ui-scene/v/3.1.0',
           },
         ],
       },
@@ -5040,22 +5133,20 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
       },
     ],
   },
+  zhCNRtsaSdkDownloadPlatform,
 ] as const;
 
-// Retain the classroom SDK records while hiding the retired product family.
-const retiredClassroomSdkIds =
-  /^(?:flexible-classroom|cloud-scene|proctor)-sdk-/;
+// Retain source records while hiding classroom and IoT aPaaS downloads.
+const hiddenSdkIds = /^(?:flexible-classroom|cloud-scene|proctor|iot)-sdk-/;
 
 export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] =
   zhCNSdkDownloadSourcePlatforms.map((platform) => ({
     ...platform,
-    core: platform.core.filter(
-      (product) => !retiredClassroomSdkIds.test(product.id),
-    ),
+    core: platform.core.filter((product) => !hiddenSdkIds.test(product.id)),
     ...(platform.addOns
       ? {
           addOns: platform.addOns.filter(
-            (product) => !retiredClassroomSdkIds.test(product.id),
+            (product) => !hiddenSdkIds.test(product.id),
           ),
         }
       : {}),

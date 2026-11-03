@@ -91,6 +91,8 @@ jobs:
       - name: Resolve preview context
         id: preview-context
         uses: actions/github-script@v7
+        env:
+          PREVIEW_PR_NUMBER: ${{ inputs.pr_number }}
         with:
           script: |
             if (context.eventName === 'pull_request') {
@@ -102,8 +104,11 @@ jobs:
             }
 
             if (context.eventName === 'workflow_dispatch') {
-              const manualInput = `${{ toJson(inputs.pr_number) }}`;
-              if (manualInput && manualInput !== 'null' && manualInput !== '') {
+              const manualInput = (process.env.PREVIEW_PR_NUMBER || '').trim();
+              if (manualInput) {
+                if (!/^[1-9]\d*$/.test(manualInput) || !Number.isSafeInteger(Number(manualInput))) {
+                  throw new Error('Invalid preview PR number. Expected a positive integer.');
+                }
                 core.setOutput('should_deploy', 'true');
                 core.setOutput('pr_number', manualInput);
                 core.setOutput('reason', 'manual preview deploy');
@@ -154,6 +159,8 @@ jobs:
       - name: Checkout
         if: steps.preview-context.outputs.should_deploy == 'true'
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Bun
         if: steps.preview-context.outputs.should_deploy == 'true'
@@ -187,8 +194,11 @@ jobs:
         if: steps.preview-context.outputs.should_deploy == 'true'
         env:
           VITE_DOCS_REGION: ${{ inputs.docs_region || steps.preview-context.outputs.docs_region || 'global' }}
-          VITE_POSTHOG_HOST: ${{ secrets.VITE_POSTHOG_HOST }}
-          VITE_POSTHOG_KEY: ${{ secrets.VITE_POSTHOG_KEY }}
+          VITE_DOCS_MEASUREMENT_ENABLED: ${{ (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'cn' && 'true' || 'false' }}
+          VITE_DOCS_ENVIRONMENT: staging
+          VITE_DOCS_APP_RELEASE: ${{ github.event.pull_request.head.sha || github.sha }}
+          VITE_POSTHOG_HOST: ${{ (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'cn' && secrets.VITE_CN_POSTHOG_HOST || secrets.VITE_POSTHOG_HOST }}
+          VITE_POSTHOG_KEY: ${{ (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'cn' && secrets.VITE_CN_POSTHOG_KEY || secrets.VITE_POSTHOG_KEY }}
           VERCEL_GIT_PROVIDER: github
           VERCEL_GIT_REPO_OWNER: ${{ github.repository_owner }}
           VERCEL_GIT_REPO_SLUG: ${{ github.event.repository.name }}
@@ -311,6 +321,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event_name == 'workflow_dispatch' && 'release/prod' || github.ref }}
+          fetch-depth: 0
 
       - name: Verify release ref
         id: release-ref

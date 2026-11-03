@@ -34,6 +34,7 @@ describe('createMeilisearchClient', () => {
               status: 'published',
               hidden: false,
               platform: ['web'],
+              version: '2.9.0',
               _formatted: {
                 sectionTitle: '<mark>manualSOS</mark>',
                 content: '手动触发 <mark>SOS</mark>。',
@@ -77,6 +78,7 @@ describe('createMeilisearchClient', () => {
     expect(results).toEqual([
       expect.objectContaining({
         id: 'safe-id',
+        version: '2.9.0',
         title: '<mark>manualSOS</mark>',
         section: '<mark>manualSOS</mark>',
         snippet: '手动触发 <mark>SOS</mark>。',

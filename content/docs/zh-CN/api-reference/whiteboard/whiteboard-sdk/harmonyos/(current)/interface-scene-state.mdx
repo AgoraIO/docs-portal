@@ -1,0 +1,88 @@
+---
+title: SceneState interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_scene_state
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_scene_state.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+场景状态，由 controller.getSceneState() 返回，也可通过 RoomState.sceneState 读取。
+
+当前版本未从 SDK 包入口单独导出此类型名；通过所述配置、参数或返回值使用其结构。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface SceneState
+```
+
+| [scenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-scene-state#a0d3505a8d4b0acf1e7ef5f9162b17004) | `scenes?: Scene[]` |
+| --- | --- |
+| [scenePath](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-scene-state#a5f7375b45e3d8a8643c5517f3bfa02ec) | `scenePath?: string` |
+| [sceneName](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-scene-state#adcdff390385fbd9a41a95c66cc5dcd0a) | `sceneName?: string` |
+| [contextPath](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-scene-state#ab66d1298da85ee6a16fb0862b942aba3) | `contextPath?: string` |
+| [index](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-scene-state#aee059516744ed3d913da1315b0bf9280) | `index?: number` |
+
+## 变量说明
+
+<a id="a0d3505a8d4b0acf1e7ef5f9162b17004"></a>
+
+### scenes
+
+```text
+scenes?: Scene[]
+```
+
+当前场景组下的所有场景列表。
+
+<a id="a5f7375b45e3d8a8643c5517f3bfa02ec"></a>
+
+### scenePath
+
+```text
+scenePath?: string
+```
+
+当前场景的路径。
+
+<a id="adcdff390385fbd9a41a95c66cc5dcd0a"></a>
+
+### sceneName
+
+```text
+sceneName?: string
+```
+
+当前场景的名称。
+
+<a id="ab66d1298da85ee6a16fb0862b942aba3"></a>
+
+### contextPath
+
+```text
+contextPath?: string
+```
+
+当前场景的目录。
+
+<a id="aee059516744ed3d913da1315b0bf9280"></a>
+
+### index
+
+```text
+index?: number
+```
+
+当前场景在所属场景组中的索引号。

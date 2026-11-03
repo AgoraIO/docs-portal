@@ -1,14 +1,78 @@
-import type { Root } from 'mdast';
+import { slug } from 'github-slugger';
+import type { Nodes, Root } from 'mdast';
 import type { MdxJsxFlowElement } from 'mdast-util-mdx-jsx';
 
 export function remarkNormalizeLegacyHeadingAnchors() {
   return (tree: Root) => {
     processFlowContainer(tree);
+    visitNodes(tree, (node) => {
+      if (node.type === 'mdxJsxFlowElement' && node.name === '_PlatformPanel') {
+        normalizePlatformHeadingLinks(node);
+      }
+    });
   };
 }
 
 type FlowContainer = Root | MdxJsxFlowElement;
 type FlowChild = FlowContainer['children'][number];
+
+// Fumadocs assigns globally unique heading IDs before this plugin runs. A
+// local reference copied from a single-platform page must use its own panel's
+// suffixed ID, while explicit anchors and links outside that panel stay intact.
+function normalizePlatformHeadingLinks(panel: MdxJsxFlowElement) {
+  const ids = new Set<string>();
+  const headings = new Map<string, Set<string>>();
+  visitNodes(panel, (node) => {
+    if (node.type === 'heading') {
+      const id = node.data?.hProperties?.id;
+      if (typeof id !== 'string') return;
+      ids.add(id);
+      const key = slug(headingText(node));
+      const matches = headings.get(key) ?? new Set<string>();
+      matches.add(id);
+      headings.set(key, matches);
+    } else if (
+      node.type === 'mdxJsxFlowElement' ||
+      node.type === 'mdxJsxTextElement'
+    ) {
+      for (const attribute of node.attributes) {
+        if (
+          attribute.type === 'mdxJsxAttribute' &&
+          attribute.name === 'id' &&
+          typeof attribute.value === 'string'
+        ) {
+          ids.add(attribute.value);
+        }
+      }
+    }
+  });
+  visitNodes(panel, (node) => {
+    if (node.type !== 'link' || !node.url.startsWith('#')) return;
+    let key: string;
+    try {
+      key = decodeURIComponent(node.url.slice(1));
+    } catch {
+      return;
+    }
+    if (ids.has(key)) return;
+    const matches = headings.get(key);
+    if (matches?.size === 1) node.url = `#${[...matches][0]}`;
+  });
+}
+
+function headingText(node: Nodes): string {
+  if (node.type === 'text' || node.type === 'inlineCode') return node.value;
+  return 'children' in node
+    ? node.children.map((child) => headingText(child as Nodes)).join('')
+    : '';
+}
+
+function visitNodes(node: Nodes, visitor: (node: Nodes) => void) {
+  visitor(node);
+  if ('children' in node) {
+    for (const child of node.children) visitNodes(child as Nodes, visitor);
+  }
+}
 
 function processFlowContainer(container: FlowContainer) {
   for (let index = 0; index < container.children.length; index += 1) {

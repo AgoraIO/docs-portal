@@ -46,6 +46,54 @@ export const retiredCnDocPaths = [
   ...retiredCnDocPages,
 ];
 
+// Old Shengwang namespaces stay retired even when their migration mapping
+// points to a shared introduction page (for example MCP or Skills).
+const retiredCnLegacyDirectories = [
+  'doc/fusion-cdn',
+  'api-ref/fusion-cdn',
+  'doc/flexible-classroom',
+  'api-ref/flexible-classroom',
+  'doc/sdk-extension',
+];
+const retiredCnLegacyPages = [
+  'doc/analytics/general/fls/data',
+  'basics/security/flexible-classroom-sdk',
+  'basics/security/flexible-classroom-sdk-third-party',
+  ...[
+    'class-courseware',
+    'class-custom-ui',
+    'class-errors',
+    'class-im',
+    'class-language',
+    'class-packaging',
+    'class-properties',
+    'class-record',
+    'class-restapi',
+    'class-states',
+    'class-stop',
+    'class-threea',
+  ].map((page) => `faq/integration-issues/${page}`),
+  'faq/quality-issues/class-audio-video',
+];
+
+export const retiredCnLegacyDocsRoute = {
+  src: `^/(?:${[...retiredCnLegacyDirectories, ...retiredCnLegacyPages].join('|')})(?:/.*|\\.(?:html|mdx?))?/?$`,
+  dest: '/404.html',
+  status: 404,
+};
+const retiredCnLegacyMatcher = new RegExp(retiredCnLegacyDocsRoute.src);
+
+/** @param {string} value A path from the old Shengwang documentation site. */
+export function isRetiredCnLegacyDocsPath(value) {
+  try {
+    return retiredCnLegacyMatcher.test(
+      decodeURIComponent(value.split(/[?#]/, 1)[0]),
+    );
+  } catch {
+    return false;
+  }
+}
+
 /** @param {string} value A locale-prefixed content URL or public OpenAPI asset. */
 export function isRetiredCnDocsPath(value) {
   let path;

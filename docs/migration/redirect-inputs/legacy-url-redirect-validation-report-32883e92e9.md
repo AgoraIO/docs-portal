@@ -1,6 +1,21 @@
 # Shengwang 301 映射验证报告
 
-## 2026-10-19：最终目标 URL 去除语言前缀
+## 2026-10-23：下线产品的旧 URL 直接返回 404
+
+按 [PR #1248](https://github.com/AgoraIO/docs-portal/pull/1248) 的发布边界，最终化时在原始候选快照之上应用当前中文下线策略。融合 CDN、灵动课堂（含各平台 API）、整个 SDK 拓展插件，以及专属 FAQ、合规页和水晶球融合 CDN 分析页的旧 URL 不再生成 301，直接返回 HTTP 404。
+
+当前最终统计：**7,119 条 301、1,100 条 `retired`、2 条 `no-redirect`，共 8,221 条记录**。1,100 条下线记录包括 1,076 条原本指向下线目标的映射、20 条下线产品目录中原本跳到通用 MCP/Skills 页的映射，以及 4 条原无跳转的灵动课堂 dummy API 路径。独立 RTC、RTM、白板、一对一和小班课，以及仍供声网会议使用的共用 FAQ 保持原映射。
+
+- 最终 JSON/CSV 中 `retired` 记录清空 `target`，设 `targetExists: false`，`mappingType: "retired-cn-docs"`；notes 保留原目标和下线依据。这里的 `targetExists: false` 表示没有跳转目标。原始候选、人工覆盖表和带 SHA-256 的历史路由快照保持不变。
+- `legacy-url-redirects.vercel.json` 只输出 7,119 条 301。新增 `legacy-url-retired.vercel.json` 输出 404 路由片段；部署时需与 301 清单一起安装，放在 filesystem/SPA fallback 之前，并保证 `/404.html` 可用。仅删除 301 无法确保旧站停止服务原内容。
+- `legacy-url-redirects.nginx.conf` 同时输出 7,119 条 301 和 1,100 条精确路径 404，并添加下线目录/专属页面的正则 404，覆盖快照以外的深链及 `.html`、Markdown 形式。其他源路径的目标、参数策略不变。
+- 新站 `vercel.json` 同步包含旧地址 404；`/doc/*`、`/api-ref/*` 转发回旧站的通用规则排除下线目录和专属分析页，专属合规页的单独 301 停用。另停用 8 条中文融合 CDN 旧 Build 路径的托管和应用兜底跳转。
+
+维护入口为 `src/lib/retired-cn-docs.mjs`。运行 `bun run shengwang-redirects:finalize` 更新上述五份最终产物，运行 `bun run legacy-redirects:generate` 更新新站托管/静态兜底配置；两者对应的 `:check` 命令均可只读校验。旧候选快照继续保留历史目标，不代表这些目标仍在发布。
+
+本次交付仓库配置与 PR，不部署旧站或新站。下文的 8,215 条等数字为历史阶段记录，当前数量以上述统计及 `legacy-url-map.json` 为准。
+
+## 2026-10-19：最终目标 URL 去除语言前缀（历史记录）
 
 最终化脚本现在会先按原始候选及路由快照完成校验，再移除目标路径开头的完整 `/zh-CN` 段。例如 `/zh-CN/realtime-media/rtc/overview#intro` 输出为 `/realtime-media/rtc/overview#intro`。继续重定向的目标中的查询参数和锚点不变；旧站源 URL、其余映射关系、查询参数保留策略及原有 5 条 `no-redirect` 记录不变。
 

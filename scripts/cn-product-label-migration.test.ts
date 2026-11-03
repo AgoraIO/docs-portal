@@ -238,10 +238,25 @@ describe('approved Chinese product label content repairs', () => {
       if (scenarioPreparationPages.has(file))
         expect(content).toContain('title: "接入准备"');
       for (const replacement of replacements) {
-        expect(content).not.toContain(replacement.before);
-        expect(content).toContain(
-          scenarioPreparationPages.has(file) ? label : replacement.after,
-        );
+        if (
+          file ===
+          'content/docs/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service.mdx'
+        ) {
+          // The user removed this introduction, including its legacy placeholder.
+          expect(content).not.toContain(replacement.before);
+          expect(content).not.toContain(replacement.after);
+        } else {
+          // Preserve the historical repair fixture while checking the current
+          // product name used by the published meeting documentation.
+          const expected = scenarioPreparationPages.has(file)
+            ? label
+            : file.startsWith('content/docs/zh-CN/realtime-media/meeting/')
+              ? replacement.after.replaceAll('灵动会议', '智能云会议')
+              : replacement.after;
+          expect(content).toContain(expected);
+          if (scenarioPreparationPages.has(file))
+            expect(content).not.toContain(replacement.before);
+        }
       }
     },
   );

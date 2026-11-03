@@ -2,440 +2,542 @@
 title: WhiteSdkConfiguration Class Reference
 _migration:
   type: generated-html
-  status: migrated
+  status: warning
   sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteSdkConfiguration
   sourcePath: html-docs/whiteboard/iOS/Classes/WhiteSdkConfiguration.html
   generator: appledoc
-  warnings: []
+  warnings:
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
 ---
 
-| Inherits from | WhiteObject |
-| --- | --- |
-| Declared in | WhiteSdkConfiguration.h |
+Whiteboard iOS SDK 2.16.147 公开接口。
 
-<a id="overview"></a>
+@interface WhiteSdkConfiguration: WhiteObject
 
-## Overview
+## 成员
 
-用于配置 [`WhiteSDK`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk) 对象。
+- [init](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/init)
+- [initWithApp:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/initWithApp:)
+- [appIdentifier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/appIdentifier)
+- [enableImgErrorCallback](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/enableImgErrorCallback)
+- [backgroundImageLoadOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/backgroundImageLoadOptions)
+- [enableIFramePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/enableIFramePlugin)
+- [deviceType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/deviceType)
+- [region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/region)
+- [renderEngine](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/renderEngine)
+- [userCursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/userCursor)
+- [fonts](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/fonts)
+- [preloadDynamicPPT](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/preloadDynamicPPT)
+- [enableInterrupterAPI](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/enableInterrupterAPI)
+- [log](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/log)
+- [loggerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/loggerOptions)
+- [whiteSlideAppParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/whiteSlideAppParams)
+- [presentationAppOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/presentationAppOptions)
+- [localLogOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/localLogOptions)
+- [enableSlideInterrupterAPI](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/enableSlideInterrupterAPI)
+- [disableDeviceInputs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/disableDeviceInputs)
+- [disableNewPencilStroke](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/disableNewPencilStroke)
+- [enableSyncedStore](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/enableSyncedStore)
+- [useMultiViews](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/useMultiViews)
+- [enableAppliancePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/enableAppliancePlugin)
+- [apiHosts](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/apiHosts)
+- [useWebKeyboardInjection](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration#//api/name/useWebKeyboardInjection)
 
-<a id="tasks"></a>
+<a id="//api/name/init"></a>
 
-<a id="//api/name/initWithApp:"></a>
-
-### `– initWithApp:`
-
-初始化 `WhiteSdkConfiguration` 对象。
+### `– init`
 
 <ApiSignature>
 
-\- (instancetype)initWithApp:(NSString *)*appIdentifier*
+\- (instancetype)init NS_UNAVAILABLE;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="appIdentifier">
+Declared in SDK/WhiteSdkConfiguration.h
 
-白板项目的唯一标识。详见[获取白板项目的 App Identifier](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service)。
+<a id="//api/name/initWithApp:"></a>
 
-</Parameter>
-</ParameterList>
 
-#### Return Value
+<a id="tasks"></a>
 
-初始化的 `WhiteSdkConfiguration` 对象。
+### `– initWithApp:`
 
-#### Declared In
+<ApiSignature>
 
-`WhiteSdkConfiguration.h`
+\- (instancetype)initWithApp:(NSString *)appIdentifier NS_DESIGNATED_INITIALIZER;
+
+</ApiSignature>
+
+```text
+初始化 `WhiteSdkConfiguration` 对象。
+
+ @param appIdentifier 白板项目的唯一标识。详见[获取白板项目的 App Identifier](https://docs.agora.io/cn/whiteboard/enable_whiteboard?platform=iOS#获取-app-identifier)。
+ @return 初始化的 `WhiteSdkConfiguration` 对象。
+```
+
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/appIdentifier"></a>
 
 ### `appIdentifier`
 
-白板项目的唯一标识。
-
 <ApiSignature>
 
-@property (nonatomic, copy) NSString *appIdentifier
+@property (nonatomic, copy) NSString *appIdentifier;
 
 </ApiSignature>
 
-#### Availability
+```text
+白板项目的唯一标识。
 
-2.8.0
+ @since 2.8.0
+```
 
-#### Declared In
-
-`WhiteSdkConfiguration.h`
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/enableImgErrorCallback"></a>
 
 ### `enableImgErrorCallback`
 
-是否监听图片加载失败事件。
-
 <ApiSignature>
 
-@property (nonatomic, assign) BOOL enableImgErrorCallback
+@property (nonatomic, assign) BOOL enableImgErrorCallback;
 
 </ApiSignature>
 
-#### Availability
+```text
+是否监听图片加载失败事件。
 
-2.12.0
+  - `YES`：开启监听。
+  - `NO`：（默认）关闭。
 
-#### Discussion
+ @since 2.12.0
+```
 
-- `YES`：开启监听。
-- `NO`：（默认）关闭。
+Declared in SDK/WhiteSdkConfiguration.h
 
-#### Declared In
+<a id="//api/name/backgroundImageLoadOptions"></a>
 
-`WhiteSdkConfiguration.h`
+### `backgroundImageLoadOptions`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteBackgroundImageLoadOptions *backgroundImageLoadOptions;
+
+</ApiSignature>
+
+可见背景图片加载配置：maxRetries 为 -1 或 0～10，timeoutMs 为 1000～120000，retryIntervalMs 为 0～30000 毫秒。
+
+```text
+可见背景图片的超时与重试策略。
+```
+
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/enableIFramePlugin"></a>
 
 ### `enableIFramePlugin`
 
-是否启用 iframe 插件。
-
 <ApiSignature>
 
-@property (nonatomic, assign) BOOL enableIFramePlugin
+@property (nonatomic, assign) BOOL enableIFramePlugin;
 
 </ApiSignature>
 
-#### Discussion
+```text
+是否启用 iframe 插件。
 
-- `YES`：开启。
-- `NO`：未启用。
+ - `YES`：开启。
+ - `NO`：未启用。
 
-2.10.0 默认打开，后续版本默认关闭。
+ 2.10.0 默认打开，后续版本默认关闭。
+```
 
-#### Declared In
+Declared in SDK/WhiteSdkConfiguration.h
 
-`WhiteSdkConfiguration.h`
+<a id="//api/name/deviceType"></a>
+
+### `deviceType`
+
+<ApiSignature>
+
+@property (nonatomic, assign) WhiteDeviceType deviceType;
+
+</ApiSignature>
+
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/region"></a>
 
 ### `region`
 
-互动白板房间所在的数据中心。
-
 <ApiSignature>
 
-@property (nonatomic, strong, nullable) WhiteRegionKey region
+@property (nonatomic, strong, nullable) WhiteRegionKey region;
 
 </ApiSignature>
 
-#### Availability
+```text
+待回放的互动白板房间所在的数据中心。
+```
 
-2.11.0
-
-#### Discussion
-
-数据中心包括：
-
-- `WhiteRegionCN`：中国杭州。该数据中心为其他数据中心服务区未覆盖的地区提供服务。
-- `WhiteRegionUS`：美国硅谷。该数据中心为北美洲、南美洲地区提供服务。
-- `WhiteRegionIN`：印度孟买。该数据中心为印度地区提供服务。
-- `WhiteRegionSG`：新加坡。该数据中心为新加坡、东亚、东南亚地区提供服务。
-- `WhiteRegionEU`：欧洲（法兰克福）。该数据中心为欧洲地区提供服务。
-
-**Note:**
-
-SDK 初始化时设置的 `region` 必须和[创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)时指定的 `region` 一致；否则，SDK 无法连接到房间。
-
-#### Declared In
-
-`WhiteSdkConfiguration.h`
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/renderEngine"></a>
 
 ### `renderEngine`
 
-画笔教具的渲染引擎模式。可选择以下两种模式：
-- `WhiteSdkRenderEngineSvg`：SVG 渲染模式。2.8.0 及之前版本默认使用渲染模式，该模式兼容性较好，但性能较差。
-- `WhiteSdkRenderEngineCanvas`：Canvas 渲染模式。2.8.0 版本起新增 `canvas` 渲染模式，该模式性能较好，但兼容性较差。2.9.0 及之后版本的 `WhiteSdk` 默认使用 `canvas` 渲染模式。
-
 <ApiSignature>
 
-@property (nonatomic, copy) WhiteSdkRenderEngineKey renderEngine
+@property (nonatomic, copy) WhiteSdkRenderEngineKey renderEngine;
 
 </ApiSignature>
 
-#### Availability
+```text
+画笔教具的渲染引擎模式。详见 [WhiteSdkRenderEngineKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-sdk-render-engine-key)。
 
-2.8.0
+ @since 2.8.0
 
-2.8.0 版本新增 `canvas` 渲染引擎。从 2.9.0 版本开始，默认值为 `WhiteSdkRenderEngineCanvas`。
+ 2.8.0 版本新增 `canvas` 渲染引擎。从 2.9.0 版本开始，默认值为 `WhiteSdkRenderEngineCanvas`。
+```
 
-#### Declared In
-
-`WhiteSdkConfiguration.h`
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/userCursor"></a>
 
 ### `userCursor`
 
-是否显示用户头像。
-
 <ApiSignature>
 
-@property (nonatomic, assign) BOOL userCursor
+@property (nonatomic, assign) BOOL userCursor;
 
 </ApiSignature>
 
-#### Discussion
+```text
+是否显示用户头像。
 
-要显示用户头像，请确保你在 [initWithUuid](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/initWithUUID:roomToken:uid:userPayload:) 时，在`userPayload` 对象中传入了头像的键值对。
+ - `YES`：显示。
+ - `NO`：（默认）不显示。
+```
 
-- `YES`：显示。
-- `NO`：（默认）不显示。
-
-#### Declared In
-
-`WhiteSdkConfiguration.h`
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/fonts"></a>
 
 ### `fonts`
 
-自定义字体名称和地址。
-
 <ApiSignature>
 
-@property (nonatomic, copy, nullable) NSDictionary *fonts
+@property (nonatomic, copy, nullable) NSDictionary *fonts;
 
 </ApiSignature>
 
-#### Declared In
+```text
+自定义字体名称和地址。
+```
 
-`WhiteSdkConfiguration.h`
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/preloadDynamicPPT"></a>
 
 ### `preloadDynamicPPT`
 
-是否在加载动态 PPT 首页时，一次性加载动态 PPT 中的所有图片资源。
-
 <ApiSignature>
 
-@property (nonatomic, assign) BOOL preloadDynamicPPT
+@property (nonatomic, assign) BOOL preloadDynamicPPT;
 
 </ApiSignature>
 
-#### Discussion
+```text
+一次性加载动态 PPT 中的所有图片资源开启状态。
+ 2.12.20 以后，预加载功能通过重构，不在有性能和兼容问题，每次只预加载后一页内容。
 
-**Note：**
+ - `YES`：开启。
+ - `NO`: （默认）未开启。
+```
 
-声网不推荐设置 setPreloadDynamicPPT(true)，这样会使 PPT 显示缓慢。
-
-- `YES`：开启。
-- `NO`: （默认）未开启。
-
-#### Declared In
-
-`WhiteSdkConfiguration.h`
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/enableInterrupterAPI"></a>
 
 ### `enableInterrupterAPI`
 
-是否开启图片拦截和替换功能。
-
 <ApiSignature>
 
-@property (nonatomic, assign) BOOL enableInterrupterAPI
+@property (nonatomic, assign) BOOL enableInterrupterAPI;
 
 </ApiSignature>
 
-#### Discussion
+```text
+是否开启图片拦截和替换功能。
 
-- `YES`：开启。
-- `NO`：关闭。
+ - `YES`：开启。
+ - `NO`：关闭。
+```
 
-#### Declared In
-
-`WhiteSdkConfiguration.h`
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/log"></a>
 
 ### `log`
 
-是否开启调试日志回调。
-
 <ApiSignature>
 
-@property (nonatomic, assign) BOOL log
+@property (nonatomic, assign) BOOL log;
 
 </ApiSignature>
 
-#### Discussion
+```text
+是否开启调试日志回调。
 
-- `YES`：开启。
-- `NO`：（默认）关闭。
+ - `YES`：开启。
+ - `NO`：（默认）关闭。
+```
 
-#### Declared In
-
-`WhiteSdkConfiguration.h`
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/loggerOptions"></a>
 
 ### `loggerOptions`
 
+<ApiSignature>
+
+@property (nonatomic, copy) NSDictionary *loggerOptions;
+
+</ApiSignature>
+
+```text
 日志等级。
 
-<ApiSignature>
+ 日志级别顺序依次为 `error`、`warn`、`info`、和 `debug`。
 
-@property (nonatomic, copy) NSDictionary *loggerOptions
+ 例如，选择 `info` 级别，就可以看到在 `error`、`warn`、`info` 级别上的所有日志信息。
 
-</ApiSignature>
+ 字段：值
 
-#### Discussion
+ 上报 debug 日志的模式，默认为`上报`。
+ @"reportDebugLogMode": WhiteSDKLoggerReportModeKey
+ 上报质量数据的模式，默认为`上报`。
+ @"reportQualityMode": WhiteSDKLoggerReportModeKey
+ 上报 debug 日志的等级过滤，默认为 `info`。
+ @"reportLevelMask": WhiteSDKLoggerOptionLevelKey;
+ 在 webView console 打印 debug 日志的等级过滤，默认为 `info`。
+ @"printLevelMask": WhiteSDKLoggerOptionLevelKey;
+```
 
-日志级别顺序依次为 `error`、`warn`、`info`、和 `debug`。选择一个级别，你就可以看到在该级别之前所有级别的日志信息。
-
-例如，你选择 `info` 级别，就可以看到在 `error`、`warn`、`info` 级别上的所有日志信息。
-
-#### Declared In
-
-`WhiteSdkConfiguration.h`
-
-<a id="//api/name/pptParams"></a>
-
-### `pptParams`
-
-该属性已废弃。请使用 [WhiteSlideAppParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params) (**Deprecated:**该属性已废弃。请使用 WhiteSlideAppParams)
-
-<ApiSignature>
-
-@property (nonatomic, strong) WhitePptParams *pptParams __deprecated_msg ("use WhiteSlideAppParams instead")
-
-</ApiSignature>
-
-#### Declared In
-
-`WhiteSdkConfiguration.h`
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/whiteSlideAppParams"></a>
 
 ### `whiteSlideAppParams`
 
-PPT 渲染显示相关参数。详见 [WhiteSlideAppParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params)。
-
 <ApiSignature>
 
-@property (nonatomic, strong) WhiteSlideAppParams *whiteSlideAppParams
+@property (nonatomic, strong) WhiteSlideAppParams *whiteSlideAppParams;
 
 </ApiSignature>
 
-#### Declared In
+```text
+SlideApp 参数。详见 [WhiteSlideAppParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params)
+```
 
-`WhiteSdkConfiguration.h`
+Declared in SDK/WhiteSdkConfiguration.h
+
+<a id="//api/name/presentationAppOptions"></a>
+
+### `presentationAppOptions`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhitePresentationAppOptions *presentationAppOptions;
+
+</ApiSignature>
+
+```text
+Window Manager 内置 Presentation 的本地配置。
+```
+
+Declared in SDK/WhiteSdkConfiguration.h
+
+<a id="//api/name/localLogOptions"></a>
+
+### `localLogOptions`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteLocalLogOptions *localLogOptions;
+
+</ApiSignature>
+
+本地日志配置，需显式开启 enabled；enabledUpload 只控制上传。
+
+```text
+WebView 内本地日志配置。内部会序列化到 loggerOptions.localLog。
+
+ iOS 12 及以下会强制关闭 enabled 与 enabledUpload，以规避低版本 WKWebView Worker IndexedDB 不可用问题。
+```
+
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/enableSlideInterrupterAPI"></a>
 
 ### `enableSlideInterrupterAPI`
 
-是否开启 PPT 资源 URL 拦截替换功能。
-开启之后，你需要通过 `WhiteSDK.setSlideDelegate` 设置多窗口 PPT 回调事件，并在 `slideUrlInterrupter` 回调中添加 URL 的替换处理逻辑。
-
 <ApiSignature>
 
-@property (nonatomic, assign) BOOL enableSlideInterrupterAPI
+@property (nonatomic, assign) BOOL enableSlideInterrupterAPI;
 
 </ApiSignature>
 
-#### Discussion
+```text
+是否开启 Slide 资源 url 拦截替换功能。
+ 开启之后，需要同时设置 `WhiteSDK.setSlideDelegate` 在 `slideUrlInterrupter` 回调中对 url 进行处理。
 
-- `YES`：开启。
-- `NO`：（默认）关闭。
+ - `YES`：开启。
+ - `NO`：（默认）关闭。
+```
 
-#### Declared In
+Declared in SDK/WhiteSdkConfiguration.h
 
-`WhiteSdkConfiguration.h`
+<a id="//api/name/disableDeviceInputs"></a>
+
+### `disableDeviceInputs`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL disableDeviceInputs;
+
+</ApiSignature>
+
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/disableNewPencilStroke"></a>
 
 ### `disableNewPencilStroke`
 
-是否关闭新铅笔工具（`AppliancePencil`）的笔锋效果。
-
 <ApiSignature>
 
-@property (nonatomic, assign) BOOL disableNewPencilStroke
+@property (nonatomic, assign) BOOL disableNewPencilStroke;
 
 </ApiSignature>
 
-#### Discussion
+```text
+是否禁止新铅笔工具展示笔锋，默认是 `NO`。
+```
 
-- `YES`：关闭笔锋效果。
-- `NO`：（默认）开启笔锋效果。
+Declared in SDK/WhiteSdkConfiguration.h
 
-该属性仅在 `disableNewPencil` 设为 `NO` 时生效。
+<a id="//api/name/enableSyncedStore"></a>
 
-#### Declared In
+### `enableSyncedStore`
 
-`WhiteSdkConfiguration.h`
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL enableSyncedStore;
+
+</ApiSignature>
+
+```text
+独立的 SyncedStore 状态，与 globalState 类似，但是没有任何 SDK 内部的状态
+```
+
+Declared in SDK/WhiteSdkConfiguration.h
+
+<a id="//api/name/useMultiViews"></a>
+
+### `useMultiViews`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL useMultiViews;
+
+</ApiSignature>
+
+```text
+是否开启多窗口，默认为 NO，开启后，各种 API 会进行更改。
+```
+
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/enableAppliancePlugin"></a>
 
 ### `enableAppliancePlugin`
 
-启用。
-启用后，原基础教具将被替换。请确保同一房间的所有终端使用相同配置。
-默认为 NO。
-
 <ApiSignature>
 
-@property (nonatomic, assign) BOOL enableAppliancePlugin
+@property (nonatomic, assign) BOOL enableAppliancePlugin;
 
 </ApiSignature>
 
-#### Declared In
+Native 初始化配置为布尔开关；Fastboard Web 初始化配置为带 cdn/extras 的对象。具体类型以本页签名为准。
 
-`WhiteSdkConfiguration.h`
+```text
+启用 Appliance插件。
+ 启用后，原基础教具将被替换。请确保同一房间的所有终端使用相同配置。
+ 默认为 NO。
+```
+
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/apiHosts"></a>
 
 ### `apiHosts`
 
-配置白板的 API 服务器域名列表，可以用于服务器代理。配置后，白板不再使用 SDK 自带配置。
-@example
-[api.example.com]
-
 <ApiSignature>
 
-@property (nonatomic, copy, nullable) NSArray&lt;NSString*&gt; *apiHosts
+@property (nonatomic, copy, nullable) NSArray&lt;NSString*&gt; *apiHosts;
 
 </ApiSignature>
 
-#### Declared In
+```text
+配置白板的 API 服务器域名列表，可以用于服务器代理。配置后，白板不再使用 sdk 自带配置。
+@example
+[api.example.com]
+```
 
-`WhiteSdkConfiguration.h`
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/useWebKeyboardInjection"></a>
 
 ### `useWebKeyboardInjection`
 
-是否允许 WKWebview 自动获得输入焦点：
-- `YES`：（默认）允许。
-- `NO`：不允许。
-
 <ApiSignature>
 
-@property (nonatomic, assign) BOOL useWebKeyboardInjection
+@property (nonatomic, assign) BOOL useWebKeyboardInjection;
 
 </ApiSignature>
 
-#### Discussion
+```text
+用于配置是否允许通过程序聚焦到 WKWebview 上，这个开关可能会影响应用中其他 WKWebView 实例上，如果不需要自动聚焦功能可以选择关闭。
+默认为 YES。
+```
 
-:::note
-**Note:** 由于在一个 App 中，同一时间只能有一个控件获得焦点，该属性可能会影响 App 中其他 WKWebView 实例，如果不需要自动聚焦功能可以选择关闭。
-:::
+Declared in SDK/WhiteSdkConfiguration.h
 
-#### Declared In
+## 动态配置与生命周期
 
-`WhiteSdkConfiguration.h`
+<a id="//api/name/dynamicConfig"></a>
+
+### `dynamicConfig`
+
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) NSDictionary&lt;NSString *, NSString *&gt; *dynamicConfig;
+
+</ApiSignature>
+
+region 到当前 iOS 配置 URL 的映射。创建 SDK 前设置。每次入房前加载，默认超时 5 秒，失败回退本地参数；本地显式参数优先。

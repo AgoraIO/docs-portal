@@ -7,6 +7,53 @@ import {
 
 describe('resolveMovedDocsRedirect', () => {
   it.each([
+    'whiteboard/whiteboard-sdk/build/setup-and-access/generate-token',
+    'whiteboard/fastboard-sdk/build/setup-and-access/generate-token',
+  ])('keeps the source RESTful guide address for %s reachable', (path) => {
+    const segments = [...path.split('/'), 'restful'];
+    expect(resolveMovedDocsRedirect('zh-CN', 'realtime-media', segments)).toBe(
+      `/zh-CN/realtime-media/${path}-restful`,
+    );
+    expect(
+      isPermanentMovedDocsRedirect('zh-CN', 'realtime-media', segments),
+    ).toBe(true);
+    const deployment = JSON.parse(readFileSync('vercel.base.json', 'utf8'));
+    for (const localePrefix of ['/zh-CN', '']) {
+      expect(deployment.redirects).toContainEqual({
+        source: `${localePrefix}/realtime-media/${path}/restful`,
+        destination: `${localePrefix}/realtime-media/${path}-restful`,
+        statusCode: 301,
+      });
+    }
+    expect(
+      resolveMovedDocsRedirect('en', 'realtime-media', segments),
+    ).toBeNull();
+    expect(
+      resolveMovedDocsRedirect('zh-CN', 'realtime-media', path.split('/')),
+    ).toBeNull();
+  });
+
+  it.each([
+    ['enable-service-restful', 'restful-service'],
+    ['enable-service/restful', 'restful-service'],
+    ['enable-mini-program', 'mini-program-service'],
+    ['enable-service/web', 'sdk-service'],
+    ['enable-service/android', 'sdk-service'],
+    ['enable-service/mini-program', 'sdk-service'],
+  ])('redirects RTC setup %s to its merged tab', (page, fragment) => {
+    const segments = `rtc/build/setup-and-access/${page}`.split('/');
+    expect(resolveMovedDocsRedirect('zh-CN', 'realtime-media', segments)).toBe(
+      `/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service#${fragment}`,
+    );
+    expect(
+      isPermanentMovedDocsRedirect('zh-CN', 'realtime-media', segments),
+    ).toBe(true);
+    expect(
+      resolveMovedDocsRedirect('en', 'realtime-media', segments),
+    ).toBeNull();
+  });
+
+  it.each([
     ['rest-tool', '/zh-CN/ai/build/shape-the-conversation/rest-tool'],
     ['asr-keywords', '/zh-CN/ai/build/custom-model-integration/asr-keywords'],
     ['filler-words', '/zh-CN/ai/build/shape-the-conversation/filler-words'],

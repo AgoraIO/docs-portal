@@ -199,6 +199,13 @@ export function resolveSupersededApiCenterTarget(value) {
 export function resolveExistingApiCenterTarget(value) {
   const pathname = normalizeLegacyPath(value);
 
+  if (pathname === '/doc/rtc/javascript/error-code') {
+    return targetForPath(
+      'content/docs/zh-CN/realtime-media/rtc/reference/error-code.mdx',
+      '/zh-CN/realtime-media/rtc/reference/error-code?platform=web',
+    );
+  }
+
   const routeAliases = {
     '/basics/glossary': 'content/docs/zh-CN/introduction/glossary.mdx',
     '/basics/security/information':

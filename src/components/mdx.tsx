@@ -49,6 +49,7 @@ import {
   useEffect,
   useEffectEvent,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -76,13 +77,19 @@ import {
 import { normalizeLocale } from '@/lib/i18n/i18n-config';
 import { resources } from '@/lib/i18n/resources';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
+import { buildPlatformPathname } from '@/lib/platforms/route';
 import { PlanCards, PricingCards } from './mdx/PlanCards';
 import {
   PlatformInline,
   PlatformProcessedMarker,
   PlatformStructured,
 } from './mdx/PlatformContent';
-import { PlatformPanel, PlatformTabsGroup } from './mdx/PlatformTabsGroup';
+import {
+  PlatformPanel,
+  PlatformTabsGroup,
+  usePlatformPageContext,
+} from './mdx/PlatformTabsGroup';
+import { RepositoryCardTitle } from './mdx/RepositoryCardTitle';
 import { RTCMinutesCalculator } from './mdx/RTCMinutesCalculator';
 
 type MDXContext = {
@@ -282,8 +289,13 @@ function Accordion({
 
 function AccordionCopyButton({ id }: { id: string }) {
   const { t } = useTranslation('common');
+  const platform = usePlatformPageContext()?.activePlatform;
   const [checked, onClick] = useCopyButton(() => {
     const url = new URL(window.location.href);
+    if (platform) {
+      url.pathname = buildPlatformPathname(url.pathname, platform);
+      url.searchParams.delete('platform');
+    }
     url.hash = id;
     return navigator.clipboard.writeText(url.toString());
   });
@@ -666,11 +678,21 @@ function Tabs({
   defaultValue,
   items,
   onValueChange,
+  onMouseDownCapture,
+  onKeyDownCapture,
+  onFocusCapture,
   ref,
   value,
   ...props
 }: TabsRootProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
+  const scrollAnchorRef = useRef<{
+    list: HTMLElement;
+    top: number;
+    owner: HTMLElement | null;
+    expiry: number;
+    value: string | undefined;
+  } | null>(null);
   const setRootRef = useCallback(
     (element: HTMLDivElement | null) => {
       rootRef.current = element;
@@ -694,6 +716,84 @@ function Tabs({
     value,
     values,
   });
+
+  function captureScrollAnchor(target: EventTarget | null) {
+    const root = rootRef.current;
+    const tab =
+      target instanceof Element
+        ? target.closest<HTMLElement>('[role="tab"]')
+        : null;
+    if (
+      !props.groupId ||
+      !root ||
+      !tab ||
+      tab.closest('[data-mdx-tabs-root]') !== root ||
+      tab.getAttribute('aria-selected') === 'true' ||
+      scrollAnchorRef.current
+    )
+      return;
+    const list = tab.closest<HTMLElement>('[role="tablist"]');
+    if (!list) return;
+    let owner = list.parentElement;
+    while (
+      owner &&
+      owner !== document.body &&
+      owner !== document.documentElement
+    ) {
+      const style = window.getComputedStyle(owner);
+      if (
+        /(auto|scroll|overlay)/.test(style.overflowY || style.overflow) &&
+        owner.scrollHeight > owner.clientHeight
+      )
+        break;
+      owner = owner.parentElement;
+    }
+    const anchor = {
+      list,
+      top: list.getBoundingClientRect().top,
+      owner:
+        owner === document.body || owner === document.documentElement
+          ? null
+          : owner,
+      expiry: 0,
+      value: safeValue,
+    };
+    scrollAnchorRef.current = anchor;
+    // Only the initiating input's commit may compensate. A later task, storage
+    // update or hash activation must not inherit a stale reading position.
+    anchor.expiry = window.setTimeout(() => {
+      if (scrollAnchorRef.current === anchor) scrollAnchorRef.current = null;
+    }, 0);
+  }
+
+  useLayoutEffect(() => {
+    const anchor = scrollAnchorRef.current;
+    scrollAnchorRef.current = null;
+    if (!anchor) return;
+    window.clearTimeout(anchor.expiry);
+    if (anchor.value === safeValue || !anchor.list.isConnected) return;
+    // Reading layout also lets native scroll anchoring settle. Correct only
+    // the residual displacement, so already-anchored browsers do not jump twice.
+    const delta = anchor.list.getBoundingClientRect().top - anchor.top;
+    if (Math.abs(delta) < 1) return;
+    if (anchor.owner) {
+      anchor.owner.scrollTo({
+        top: anchor.owner.scrollTop + delta,
+        behavior: 'instant',
+      });
+    } else {
+      window.scrollTo({ top: window.scrollY + delta, behavior: 'instant' });
+    }
+  }, [safeValue]);
+
+  useLayoutEffect(
+    () => () => {
+      if (scrollAnchorRef.current)
+        window.clearTimeout(scrollAnchorRef.current.expiry);
+      scrollAnchorRef.current = null;
+    },
+    [],
+  );
 
   const revealHashTab = useEffectEvent((url: string) => {
     const root = rootRef.current;
@@ -744,6 +844,23 @@ function Tabs({
         defaultValue={defaultValue}
         items={items}
         onValueChange={setSafeValue}
+        onMouseDownCapture={(event) => {
+          onMouseDownCapture?.(event);
+          if (!event.defaultPrevented && event.button === 0 && !event.ctrlKey)
+            captureScrollAnchor(event.target);
+        }}
+        onKeyDownCapture={(event) => {
+          onKeyDownCapture?.(event);
+          if (
+            !event.defaultPrevented &&
+            (event.key === 'Enter' || event.key === ' ')
+          )
+            captureScrollAnchor(event.target);
+        }}
+        onFocusCapture={(event) => {
+          onFocusCapture?.(event);
+          if (!event.defaultPrevented) captureScrollAnchor(event.target);
+        }}
         value={safeValue}
       >
         {children}
@@ -1163,7 +1280,7 @@ function CodeBlockTabs({
   return (
     <FumadocsCodeBlockTabs
       {...props}
-      className={cn('bg-fd-card', className)}
+      className={cn('overflow-hidden bg-fd-card', className)}
       defaultValue={defaultValue}
       groupId={groupId}
       onValueChange={setSafeValue}
@@ -1184,15 +1301,10 @@ function Pre({ className, ...props }: PreProps) {
       className={cn('bg-fd-card shadow-none', className)}
       viewportProps={{
         ...props.viewportProps,
-        className: cn(
-          'overflow-x-hidden overflow-y-auto',
-          props.viewportProps?.className,
-        ),
+        className: cn('overflow-auto', props.viewportProps?.className),
       }}
     >
-      <FumadocsCodeBlockPre className="w-full max-w-full min-w-0 whitespace-pre-wrap [overflow-wrap:anywhere] break-words">
-        {props.children}
-      </FumadocsCodeBlockPre>
+      <FumadocsCodeBlockPre>{props.children}</FumadocsCodeBlockPre>
     </FumadocsCodeBlock>
   );
 }
@@ -2138,12 +2250,21 @@ function isDocsRouteHref(href: string) {
   );
 }
 
-function InlineImage({ alt, ...props }: ComponentProps<'img'>) {
+function InlineImage({
+  alt,
+  width,
+  height,
+  style,
+  ...props
+}: ComponentProps<'img'>) {
   return (
     <img
       referrerPolicy="no-referrer"
       {...props}
       alt={alt}
+      width={width}
+      height={height}
+      style={{ width, height, ...style }}
       className="not-prose m-0 inline-block h-auto max-w-full align-middle"
     />
   );
@@ -2153,9 +2274,18 @@ function ZoomableImage({
   alt = '',
   src,
   displayWidth,
+  displayHeight,
+  style,
   referrerPolicy = 'no-referrer',
   ...props
-}: ComponentProps<'img'> & { displayWidth?: CSSProperties['width'] }) {
+}: ComponentProps<'img'> & {
+  displayWidth?: CSSProperties['width'];
+  displayHeight?: CSSProperties['maxHeight'];
+}) {
+  const thumbnailStyle =
+    displayHeight === undefined
+      ? style
+      : { ...style, maxHeight: displayHeight, width: 'auto', height: 'auto' };
   if (typeof src !== 'string' || src.length === 0) {
     return (
       <FumadocsImage
@@ -2163,6 +2293,7 @@ function ZoomableImage({
         src={src}
         referrerPolicy={referrerPolicy}
         {...props}
+        style={thumbnailStyle}
       />
     );
   }
@@ -2187,6 +2318,7 @@ function ZoomableImage({
             src={src}
             referrerPolicy={referrerPolicy}
             {...props}
+            style={thumbnailStyle}
           />
         </button>
       </DialogTrigger>
@@ -2227,6 +2359,7 @@ export function getMDXComponents(
     Link: createLegacyDocsLink(context?.contentPath),
     Card: createDocsCard(context?.contentPath),
     Cards,
+    RepositoryCardTitle,
     CommandBlock,
     Tabs,
     Tab: FumadocsTab,

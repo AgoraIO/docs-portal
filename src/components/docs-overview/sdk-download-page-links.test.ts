@@ -13,7 +13,7 @@ describe('getZhCNSdkDownloadPageHref', () => {
 
   it('maps RTM and whiteboard platform route aliases', () => {
     expect(getZhCNSdkDownloadPageHref('signaling', 'linux')).toBe(
-      '/zh-CN/realtime-media/rtm/reference/downloads/linux-cpp',
+      '/zh-CN/realtime-media/rtm/reference/downloads/cpp',
     );
     expect(getZhCNSdkDownloadPageHref('whiteboard', 'web')).toBe(
       '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/downloads/web',
@@ -34,7 +34,7 @@ describe('getZhCNSdkDownloadPageHref', () => {
 
   it('maps server product variants to their exact download pages', () => {
     expect(getZhCNSdkDownloadPageHref('server-gateway', 'linux-cpp')).toBe(
-      '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/linux-cpp',
+      '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/cpp',
     );
     expect(getZhCNSdkDownloadPageHref('server-gateway', 'python')).toBe(
       '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/python',
@@ -42,7 +42,7 @@ describe('getZhCNSdkDownloadPageHref', () => {
     expect(
       getZhCNSdkDownloadPageHref('on-premise-recording', 'linux-java'),
     ).toBe(
-      '/zh-CN/realtime-media/local-server-recording/reference/downloads/linux-java',
+      '/zh-CN/realtime-media/local-server-recording/reference/downloads/server-java',
     );
   });
 

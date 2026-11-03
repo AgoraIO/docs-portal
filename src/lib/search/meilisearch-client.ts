@@ -178,6 +178,7 @@ export function mapSearchHit(
     availablePlatforms: hit.availablePlatforms,
     canonicalUrl: hit.canonicalUrl,
     product: hit.product,
+    version: hit.version,
     type: 'page',
     objectType: 'docs',
   };

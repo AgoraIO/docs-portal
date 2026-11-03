@@ -1,3 +1,5 @@
+import { getCnSdkDownloadTarget } from './cn-sdk-download-targets';
+
 export const SDK_DOWNLOAD_PRODUCT_GROUP_ORDER = [
   'agents',
   'client-toolkit',
@@ -5,6 +7,7 @@ export const SDK_DOWNLOAD_PRODUCT_GROUP_ORDER = [
   'video',
   'signaling',
   'chat',
+  'rtsa',
   'iot',
   'whiteboard',
   'fastboard',
@@ -41,6 +44,10 @@ export const ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY = {
   chat: {
     label: '即时通讯 SDK',
     info: '适用于即时通讯场景的 SDK',
+  },
+  rtsa: {
+    label: '媒体流加速 RTSA SDK',
+    info: '轻量级的智能硬件专属 SDK',
   },
   iot: {
     label: '物联网 aPaaS SDK',
@@ -91,4 +98,31 @@ export function getZhCNSdkDownloadProductCopy(productId: string) {
   return ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY[
     productId as keyof typeof ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY
   ];
+}
+
+export function getZhCNSdkDownloadTarget(
+  productId: string,
+  platformId: string,
+) {
+  if (productId !== 'signaling') return undefined;
+  if (platformId === 'windows' || platformId === 'linux') {
+    return {
+      label: `${platformId === 'windows' ? 'Windows' : 'Linux'} C++`,
+      iconPlatformId: 'cpp',
+    };
+  }
+  return getCnSdkDownloadTarget(productId, platformId);
+}
+
+export function getZhCNSdkDownloadSelectorLabel(productId: string) {
+  if (
+    ['agents', 'rtsa', 'server-gateway', 'on-premise-recording'].includes(
+      productId,
+    )
+  ) {
+    return '编程语言';
+  }
+  if (productId === 'signaling') return '语言 / 平台';
+  if (['voice', 'video', 'meeting'].includes(productId)) return '平台 / 框架';
+  return '平台';
 }

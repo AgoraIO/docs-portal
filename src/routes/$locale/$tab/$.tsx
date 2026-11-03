@@ -1,6 +1,7 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
+import { resolveLegacyApiHashRedirect } from '@/lib/docs-api-hash-redirects';
 import { ensureDocsLastUpdatedMetadata } from '@/lib/docs-last-updated';
 import {
   isPermanentMovedDocsRedirect,
@@ -11,6 +12,7 @@ import type {
   DocsPagePayload,
   DocsRedirectPayload,
 } from '@/lib/docs-page.server';
+import { preserveRedirectSearch } from '@/lib/docs-redirect-url';
 import { preloadDocsPageContent } from '@/lib/docs-route-preload';
 import { isPublishedDocLocale } from '@/lib/docs-routing';
 import { parseProductSidebarContext } from '@/lib/docs-sidebar-context';
@@ -20,6 +22,10 @@ import {
   shouldUseStaticDocsPayload,
 } from '@/lib/docs-static-manifest';
 import { resolveStaticLegacySitemapRedirect } from '@/lib/legacy-sitemap/static-redirects';
+import {
+  createPlatformQueryIndex,
+  resolvePlatformQueryUrl,
+} from '@/lib/platforms/query-route';
 import {
   isKnownPlatform,
   normalizePlatformKey,
@@ -58,6 +64,17 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       )
     ) {
       throw notFound();
+    }
+    const apiHashRedirect = resolveLegacyApiHashRedirect(
+      params.locale,
+      params.tab,
+      slugSegments,
+      location.hash,
+    );
+    if (apiHashRedirect) {
+      throw redirect({
+        href: preserveRedirectSearch(apiHashRedirect, location),
+      });
     }
     const movedDocsRedirect = resolveMovedDocsRedirect(
       params.locale,
@@ -117,6 +134,10 @@ export const Route = createFileRoute('/$locale/$tab/$')({
           });
 
     let payload = await loadPayload(slugSegments);
+    const currentPath = `/${[params.locale, params.tab, ...slugSegments].join('/')}`;
+    let platformRoute:
+      | { canonicalPath: string; platform: PlatformKey; url: string }
+      | undefined;
     const queryPlatform = getKnownPlatformSearchParam(location.searchStr);
 
     if (
@@ -131,8 +152,41 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       ]);
 
       if (platformPayload && !('redirectUrl' in platformPayload)) {
-        payload = platformPayload;
+        platformRoute = {
+          canonicalPath: currentPath,
+          platform: queryPlatform,
+          url: `${currentPath}/${queryPlatform}`,
+        };
       }
+    }
+
+    const explicitPlatform = payload
+      ? getPayloadPlatformTabs(payload)?.initialPlatform
+      : undefined;
+    if (
+      payload &&
+      explicitPlatform &&
+      slugSegments.at(-1) === explicitPlatform &&
+      payloadSupportsPlatform(payload, explicitPlatform)
+    ) {
+      platformRoute = {
+        canonicalPath: currentPath.slice(0, currentPath.lastIndexOf('/')),
+        platform: explicitPlatform,
+        url: currentPath,
+      };
+    }
+    if (platformRoute) {
+      const target = resolvePlatformQueryUrl(
+        new URL(
+          preserveRedirectSearch(currentPath, location),
+          'https://docs.invalid',
+        ),
+        createPlatformQueryIndex([platformRoute]),
+      );
+      if (target)
+        throw redirect({
+          href: `${target.pathname}${target.search}${target.hash}`,
+        });
     }
 
     if (!payload) {
@@ -246,18 +300,6 @@ function Page() {
   );
 }
 
-function preserveRedirectSearch(
-  href: string,
-  location: { hash?: string; searchStr?: string },
-  preserveSearch = true,
-) {
-  if (/[?#]/.test(href)) {
-    return href;
-  }
-
-  return `${href}${preserveSearch ? (location.searchStr ?? '') : ''}${location.hash ?? ''}`;
-}
-
 function normalizeDocsPagePayload(payload: DocsPagePayload): DocsPagePayload {
   return {
     ...payload,
@@ -267,7 +309,9 @@ function normalizeDocsPagePayload(payload: DocsPagePayload): DocsPagePayload {
 
 export function getKnownPlatformSearchParam(searchStr?: string) {
   const platform = new URLSearchParams(searchStr ?? '').get('platform');
-  const normalizedPlatform = platform ? normalizePlatformKey(platform) : null;
+  const normalizedPlatform = platform
+    ? normalizePlatformKey(platform.trim().toLowerCase())
+    : null;
 
   return normalizedPlatform && isKnownPlatform(normalizedPlatform)
     ? normalizedPlatform

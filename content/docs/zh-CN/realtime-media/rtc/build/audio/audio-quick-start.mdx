@@ -15,7 +15,7 @@ description: "了解如何快速接入实时互动 RTC，完成环境准备、�
 
 下图展示在 App 中实现纯语音互动的基本工作流程：
 
-![实现音频互动](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png)
+<DocsImage alt="实现音频互动" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png" displayWidth="60%" />
 
 1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
 2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
@@ -225,7 +225,7 @@ description: "了解如何快速接入实时互动 RTC，完成环境准备、�
 
 下图展示了使用声网 RTC SDK 实现音频互动的基本流程：
 
-![实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg)
+<DocsImage alt="实现流程" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg" displayWidth="70%" />
 
 下面列出了一段实现实时互动基本流程的完整代码以供参考。复制以下代码到 `/app/src/main/java/com/example/<projectname>/MainActivity.java` 文件中替换 `package com.example.<projectname>` 后的全部内容，即可快速体验实时互动基础功能。
 
@@ -595,9 +595,9 @@ protected void onCreate(Bundle savedInstanceState) {
 
 1. 开启 Android 设备的开发者选项，打开 USB 调试，通过 USB 连接线将 Android 设备接入电脑，并在 Android 设备选项中勾选你的 Android 设备。
 
-2. 在 Android Studio 中，点击 ![](https://web-cdn.agora.io/docs-files/1689672727614) (**Sync Project with Gradle Files**) 进行 Gradle 同步。
+2. 在 Android Studio 中，点击 <InlineImage alt="同步 Gradle 项目" src="https://web-cdn.agora.io/docs-files/1689672727614" width={25} /> (**Sync Project with Gradle Files**) 进行 Gradle 同步。
 
-3. 待同步成功后，点击 ![](https://web-cdn.agora.io/docs-files/1687670569781) (**Run 'app'**) 开始编译。片刻后，App 便会安装到你的 Android 设备上。
+3. 待同步成功后，点击 <InlineImage alt="运行" src="https://web-cdn.agora.io/docs-files/1687670569781" width={25} /> (**Run 'app'**) 开始编译。片刻后，App 便会安装到你的 Android 设备上。
 
 4. 启动 App，授予录音权限。
 
@@ -614,8 +614,8 @@ protected void onCreate(Bundle savedInstanceState) {
 声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
 
 <Cards>
-  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/basic/JoinChannelAudio.java" />
-  <Card title="JoinChannelAudio" href="https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/basic/JoinChannelAudio.java" />
+  <Card title={<RepositoryCardTitle provider="gitee">JoinChannelAudio</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/basic/JoinChannelAudio.java" />
+  <Card title={<RepositoryCardTitle provider="github">JoinChannelAudio</RepositoryCardTitle>} href="https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/basic/JoinChannelAudio.java" />
 </Cards>
 
 ### 常见问题
@@ -646,7 +646,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
 下图展示在 App 中实现纯语音互动的基本工作流程：
 
-![实现音频互动](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png)
+<DocsImage alt="实现音频互动" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png" displayWidth="60%" />
 
 1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
 2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
@@ -787,7 +787,7 @@ class ViewController: UIViewController {
 
 下图展示了使用声网 RTC SDK 实现纯语音互动的基本流程。
 
-![实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg)
+<DocsImage alt="实现流程" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg" displayWidth="70%" />
 
 下面列出了一段实现纯语音互动基本流程的完整代码以供参考。复制以下代码到 `ViewController.swift` 文件中替换原有内容即可。
 
@@ -935,7 +935,7 @@ override func viewDidLoad() {
     ```
 
     :::error[警告]
-    - 调用该方法后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+    - 调用该方法后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎-1)。
         - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
     :::
 
@@ -959,8 +959,8 @@ override func viewDidLoad() {
 
 声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
 <Cards>
-  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Basic/JoinChannelAudio" />
-  <Card title="JoinChannelAudio" href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Basic/JoinChannelAudio" />
+  <Card title={<RepositoryCardTitle provider="gitee">JoinChannelAudio</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Basic/JoinChannelAudio" />
+  <Card title={<RepositoryCardTitle provider="github">JoinChannelAudio</RepositoryCardTitle>} href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Basic/JoinChannelAudio" />
 </Cards>
 
 ### 常见问题
@@ -993,7 +993,7 @@ override func viewDidLoad() {
 
 下图展示在 App 中实现音视频互动的基本工作流程：
 
-![实现音视频互动](https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-tech.png)
+<DocsImage alt="实现音视频互动" src="https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-tech.png" displayWidth="60%" />
 
 1. 所有用户调用 `joinChannel` 方法加入频道，并根据需要设置用户角色：
 
@@ -1148,7 +1148,7 @@ override func viewDidLoad() {
 
 下图展示了使用声网 RTC SDK 实现纯语音互动的基本流程。
 
-![实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg)
+<DocsImage alt="实现流程" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg" displayWidth="70%" />
 
 下面列出了一段实现纯语音互动基本流程的完整代码以供参考。复制以下代码到 `ViewController.swift` 文件中替换原有内容即可。
 
@@ -1315,7 +1315,7 @@ override func viewDidLoad() {
     ```
 
     :::error[警告]
-    - 调用该方法后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+    - 调用该方法后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎-2)。
         - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
     :::
 
@@ -1338,8 +1338,8 @@ override func viewDidLoad() {
 
 声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
 <Cards>
-  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/API-Examples/tree/main/macOS/APIExample/Examples/Basic/JoinChannelAudio" />
-  <Card title="JoinChannelAudio" href="https://github.com/Shengwang-Community/API-Examples/blob/main/macOS/APIExample/Examples/Basic/JoinChannelAudio" />
+  <Card title={<RepositoryCardTitle provider="gitee">JoinChannelAudio</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples/tree/main/macOS/APIExample/Examples/Basic/JoinChannelAudio" />
+  <Card title={<RepositoryCardTitle provider="github">JoinChannelAudio</RepositoryCardTitle>} href="https://github.com/Shengwang-Community/API-Examples/blob/main/macOS/APIExample/Examples/Basic/JoinChannelAudio" />
 </Cards>
 
 ### 常见问题
@@ -1462,7 +1462,7 @@ override func viewDidLoad() {
 
 ![实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/js-audio-quick-start.svg)
 
-将以下代码复制到 `basicVoiceCall.js` 文件中，注意将 `appId` 和 `token` 参数替换为[你自己的 App ID 和临时 Token](#前提条件)。
+将以下代码复制到 `basicVoiceCall.js` 文件中，注意将 `appId` 和 `token` 参数替换为[你自己的 App ID 和临时 Token](#前提条件-3)。
 
 ```javascript
 import AgoraRTC from "agora-rtc-sdk-ng";
@@ -1613,7 +1613,7 @@ startBasicCall();
 
 :::info[信息]
 - 在本地服务器（localhost）运行 Web 应用仅作为测试用途。部署生产环境时，请确保使用 HTTPS 协议。
-- 由于浏览器的安全策略对除 127.0.0.1 以外的 HTTP 地址作了限制，声网 Web SDK 仅支持 HTTPS 协议、 http://localhost（http://127.0.0.1） 。请勿使用 HTTP 协议在 http://localhost（http://127.0.0.1） 之外访问你的项目。
+- 由于浏览器的安全策略对除 127.0.0.1 以外的 HTTP 地址作了限制，声网 Web SDK 仅支持 HTTPS 协议、 `http://localhost`（`http://127.0.0.1`） 。请勿使用 HTTP 协议在 `http://localhost`（`http://127.0.0.1`） 之外访问你的项目。
 :::
 
 ## 后续步骤
@@ -1626,8 +1626,8 @@ startBasicCall();
 
 声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
 <Cards>
-  <Card title="示例项目" href="https://gitee.com/agoraio-community/API-Examples-Web/tree/main/src/example" />
-  <Card title="示例项目" href="https://github.com/Shengwang-Lab/API-Examples-Web/tree/main/src/example" />
+  <Card title={<RepositoryCardTitle provider="gitee">示例项目</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples-Web/tree/main/src/example" />
+  <Card title={<RepositoryCardTitle provider="github">示例项目</RepositoryCardTitle>} href="https://github.com/Shengwang-Lab/API-Examples-Web/tree/main/src/example" />
 </Cards>
 
 ### 其它集成方式
@@ -1684,7 +1684,7 @@ startBasicCall();
 
 下图展示在 App 中实现纯语音互动的基本工作流程：
 
-![实现音频互动](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png)
+<DocsImage alt="实现音频互动" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png" displayWidth="60%" />
 
 1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
 2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
@@ -1764,7 +1764,7 @@ startBasicCall();
 
 1. 在右侧菜单栏将项目切换为资源视图，然后打开 `.Dialog` 文件，此时你的界面如下图所示：
 
-![ui](https://web-cdn.agora.io/docs-portal/img/rtc/windows-quickstart-ui1.png)
+<DocsImage alt="ui" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-quickstart-ui1.png" displayWidth="70%" />
 
     2. 添加输入频道名称的输入框。在**视图 > 工具箱**中，选择添加 **Static Text** 控件，在**属性**中将**描述文字**改为**频道名**。然后再添加一个 **Edit Control** 控件作为输入框，在**属性 > 杂项**中，将该控件的 ID 设为 **IDC_EDIT_CHANNEL**。
 
@@ -1772,7 +1772,7 @@ startBasicCall();
 
        此时的用户界面如下图所示：
 
-![ui](https://web-cdn.agora.io/docs-portal/img/rtc/windows-audio-quickstart.png)
+<DocsImage alt="ui" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-audio-quickstart.png" displayWidth="70%" />
 
 
     ## 实现步骤
@@ -1781,7 +1781,7 @@ startBasicCall();
 
     下图展示了使用声网 RTC SDK 实现纯语音互动的基本流程。
 
-![实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg)
+<DocsImage alt="实现流程" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg" displayWidth="70%" />
 
     以下展示实现实时互动基本流程的完整示例代码：
     :::warning[注意]
@@ -2255,7 +2255,7 @@ LRESULT CAgoraQuickStartDlg::OnEIDUserOffline(WPARAM wParam, LPARAM lParam) {
     如果你不再需要互动，调用 `release` 方法释放引擎资源。
 
     :::warning[注意]
-    - 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+    - 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#创建并初始化-irtcengine)。
         - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
     :::
 
@@ -2328,7 +2328,7 @@ LRESULT CAgoraQuickStartDlg::OnEIDUserOffline(WPARAM wParam, LPARAM lParam) {
 
     下图展示了使用声网 RTC SDK 实现纯语音互动的基本流程。
 
-![实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg)
+<DocsImage alt="实现流程" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg" displayWidth="70%" />
 
     下面列出了一段实现实时互动基本流程的完整代码以供参考。
 
@@ -2617,8 +2617,8 @@ namespace WindowsFormsApp2
 <TabsContent value="windows">
 
 <Cards>
-  <Card title="LiveBroadcasting" href="https://gitee.com/agoraio-community/API-Examples/tree/main/windows/APIExample/APIExample/Basic/LiveBroadcasting" />
-  <Card title="LiveBroadcasting" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Basic/LiveBroadcasting" />
+  <Card title={<RepositoryCardTitle provider="gitee">LiveBroadcasting</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples/tree/main/windows/APIExample/APIExample/Basic/LiveBroadcasting" />
+  <Card title={<RepositoryCardTitle provider="github">LiveBroadcasting</RepositoryCardTitle>} href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Basic/LiveBroadcasting" />
 </Cards>
 
 </TabsContent>
@@ -2626,8 +2626,8 @@ namespace WindowsFormsApp2
 <TabsContent value="csharp">
 
 <Cards>
-  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/Agora-C_Sharp-SDK/tree/main/Agora-C_Sharp-RTC-SDK-API_Example/src/Basic/JoinChannelAudio" />
-  <Card title="JoinChannelAudio" href="https://github.com/AgoraIO-Extensions/Agora-C_Sharp-SDK/tree/master/APIExample/src/Basic/JoinChannelAudio" />
+  <Card title={<RepositoryCardTitle provider="gitee">JoinChannelAudio</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/Agora-C_Sharp-SDK/tree/main/Agora-C_Sharp-RTC-SDK-API_Example/src/Basic/JoinChannelAudio" />
+  <Card title={<RepositoryCardTitle provider="github">JoinChannelAudio</RepositoryCardTitle>} href="https://github.com/AgoraIO-Extensions/Agora-C_Sharp-SDK/tree/master/APIExample/src/Basic/JoinChannelAudio" />
 </Cards>
 
 </TabsContent>
@@ -2661,7 +2661,7 @@ namespace WindowsFormsApp2
 
 下图展示在 App 中实现纯语音互动的基本工作流程：
 
-![实现音频互动](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png)
+<DocsImage alt="实现音频互动" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png" displayWidth="60%" />
 
 1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
 2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
@@ -2670,9 +2670,8 @@ namespace WindowsFormsApp2
 
 在实现功能以前，请按照以下要求准备开发环境：
 
-- DevEco Studio NEXT Beta1 及以上版本。
-- API Version 11 的 HarmonyOS NEXT SDK 及以上版本。
-- API Version 11 的 HarmonyOS NEXT 2.0.0.59 操作系统及以上版本。
+- DevEco Studio 5.1.0 Release 及以上版本，已包含所需的 HarmonyOS SDK。
+- 运行 API 12 及以上版本 HarmonyOS 的设备。
 - 华为开发者账号。可在[华为开发者联盟](https://developer.huawei.com/consumer/cn/)注册账号。
 - 两台支持 HarmonyOS 的设备，建议使用 Mate 60 Pro 及更高性能的设备。
 - 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
@@ -2746,7 +2745,7 @@ namespace WindowsFormsApp2
 
 下图展示了使用声网 RTC SDK 实现纯语音互动的基本流程。
 
-![实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg)
+<DocsImage alt="实现流程" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg" displayWidth="70%" />
 
 下面列出了一段实现纯语音互动基本流程的完整代码以供参考。复制以下代码到 `pages/Index.ets` 文件中替换原有内容，即可快速体验纯语音互动。
 
@@ -3020,7 +3019,7 @@ Button("Join")
 1. 调用 `leaveChannel` 离开当前频道，释放所有会话相关的资源。
 2. 调用 `destroy` 销毁引擎，并释放声网 SDK 中使用的所有资源。
    :::warning[注意]
-   - 调用 `destroy` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+   - 调用 `destroy` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎-4)。
        - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
    :::
 
@@ -3059,8 +3058,8 @@ Button("Join")
 声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
 
 <Cards>
-  <Card title="JoinAudioChannel" href="https://gitee.com/agoraio-community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/ets/pages/basic/JoinAudioChannel.ets" />
-  <Card title="JoinAudioChannel" href="https://github.com/Shengwang-Community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/ets/pages/basic/JoinAudioChannel.ets" />
+  <Card title={<RepositoryCardTitle provider="gitee">JoinAudioChannel</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples/tree/main/HarmonyOS/APIExample/entry/src/main/ets/pages/basic/JoinAudioChannel.ets" />
+  <Card title={<RepositoryCardTitle provider="github">JoinAudioChannel</RepositoryCardTitle>} href="https://github.com/Shengwang-Community/API-Examples/tree/main/HarmonyOS/APIExample/entry/src/main/ets/pages/basic/JoinAudioChannel.ets" />
 </Cards>
 
 ### 常见问题
@@ -3091,7 +3090,7 @@ Button("Join")
 
 下图展示在 App 中实现纯语音互动的基本工作流程：
 
-![实现音频互动](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png)
+<DocsImage alt="实现音频互动" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png" displayWidth="60%" />
 
 1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
 2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
@@ -3234,7 +3233,7 @@ Button("Join")
 
 下图展示了使用声网 RTC SDK 实现纯语音互动的基本流程。
 
-![实时互动快速开始流程图](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg)
+<DocsImage alt="实时互动快速开始流程图" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg" displayWidth="70%" />
 
 下面列出了实现纯语音互动基本流程的完整代码以供参考，你可以先将 `main.js` 和 `renderer.js` 文件的全部内容分别替换为以下代码，参考[测试项目](#测试项目)中的步骤快速体验实时纯语音互动的基础功能，再按照实现流程了解其中的核心 API 调用。
 
@@ -3364,7 +3363,7 @@ window.onload = () => {
 
 :::info[信息]
 - 将 `renderer.js` 文件中的 `<-- Insert App Id -->`、`<-- Insert Token -->` 和 `<-- Insert Channel Name -->` 分别替换为你在控制台获取到的 App ID、临时 Token，以及生成临时 Token 时填入的频道名。
-- 如果你的目标平台为 macOS v10.14 及以上，还需参考[获取设备权限](#获取设备权限)在 `main.js` 中补充设备权限相关代码。
+- 如果你的目标平台为 macOS v10.14 及以上，还需参考[获取设备权限](#获取设备权限-macos)在 `main.js` 中补充设备权限相关代码。
 :::
 
 ### 设计主进程
@@ -3559,7 +3558,7 @@ rtcEngine.release();
 ```
 
 :::error[警告]
-- 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+- 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎-5)。
 - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
 :::
 
@@ -3593,8 +3592,8 @@ rtcEngine.release();
 
 声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
 <Cards>
-  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/Electron-SDK/blob/main/example/src/renderer/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx" />
-  <Card title="JoinChannelAudio" href="https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx" />
+  <Card title={<RepositoryCardTitle provider="gitee">JoinChannelAudio</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/Electron-SDK/blob/main/example/src/renderer/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx" />
+  <Card title={<RepositoryCardTitle provider="github">JoinChannelAudio</RepositoryCardTitle>} href="https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx" />
 </Cards>
 
 ### 常见问题
@@ -3626,7 +3625,7 @@ rtcEngine.release();
 
 下图展示在 App 中实现纯语音互动的基本工作流程：
 
-![实现音频互动](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png)
+<DocsImage alt="实现音频互动" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png" displayWidth="60%" />
 
 1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
 2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
@@ -3658,7 +3657,7 @@ rtcEngine.release();
 
 ## 创建项目
 
-参考以下步骤或 [Unity 官方文档](https://docs.unity3d.com/hub/manual/AddProject.html#add-projects)创建一个 **Unity** 项目。若已有 **Unity** 项目，可略过此步骤至下一步[集成 SDK](#integrate)。
+参考以下步骤或 [Unity 官方文档](https://docs.unity.com/en-us/hub/project-create)创建一个 **Unity** 项目。若已有 **Unity** 项目，可略过此步骤至下一步[集成 SDK](#integrate)。
 
 1. 开始前确保你已安装 Unity。若未安装，点击[此处](https://unity.com/cn/products#plans-individual)下载。
 2. 打开 Unity Editor，点击 **New** 新建一个项目。
@@ -3717,7 +3716,7 @@ rtcEngine.release();
 
 下图展示了实现纯语音互动的基本流程。
 
-![实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg)
+<DocsImage alt="实现流程" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg" displayWidth="70%" />
 
 下面列出了一段实现实时纯语音互动基本流程的完整代码以供参考。复制以下代码到 `JoinChannelAudio.cs` 文件中替换原有内容即可。
 
@@ -4133,8 +4132,8 @@ void OnApplicationQuit()
 声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
 
 <Cards>
-  <Card title="JoinChannelAudio" href="https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples/Basic/JoinChannelAudio" />
-  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples/Basic/JoinChannelAudio" />
+  <Card title={<RepositoryCardTitle provider="github">JoinChannelAudio</RepositoryCardTitle>} href="https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples/Basic/JoinChannelAudio" />
+  <Card title={<RepositoryCardTitle provider="gitee">JoinChannelAudio</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples/Basic/JoinChannelAudio" />
 </Cards>
 
 ### 相关文档
@@ -4159,7 +4158,7 @@ void OnApplicationQuit()
 
 下图展示在 App 中实现纯语音互动的基本工作流程：
 
-![实现音频互动](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png)
+<DocsImage alt="实现音频互动" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png" displayWidth="60%" />
 
 1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
 2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
@@ -4247,7 +4246,7 @@ Widget build(BuildContext context) {
 
 下图展示了使用声网 RTC SDK 实现音频互动的基本流程：
 
-![实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg)
+<DocsImage alt="实现流程" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg" displayWidth="70%" />
 
 下面列出了一段实现实时音频互动基本流程的完整代码以供参考。复制以下代码替换 `/lib/main.dart` 文件的全部内容，即可快速体验实时音频互动基础功能。
 
@@ -4517,7 +4516,7 @@ void initState() {
 1. 调用 `leaveChannel` 离开当前频道，释放所有会话相关的资源。
 2. 调用 `release` 销毁引擎，并释放声网 SDK 中使用的所有资源。
     :::warning[注意]
-    - 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+    - 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎-7)。
         - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
     :::
 
@@ -4556,8 +4555,8 @@ Future<void> _dispose() async {
 声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
 
 <Cards>
-  <Card title="join_channel_audio.dart" href="https://gitee.com/agoraio-community/Agora-Flutter-SDK/tree/main/example/lib/examples/basic/join_channel_audio" />
-  <Card title="join_channel_audio.dart" href="https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/tree/main/example/lib/examples/basic/join_channel_audio" />
+  <Card title={<RepositoryCardTitle provider="gitee">join_channel_audio.dart</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/Agora-Flutter-SDK/tree/main/example/lib/examples/basic/join_channel_audio" />
+  <Card title={<RepositoryCardTitle provider="github">join_channel_audio.dart</RepositoryCardTitle>} href="https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/tree/main/example/lib/examples/basic/join_channel_audio" />
 </Cards>
 
 ### 常见问题
@@ -4590,7 +4589,7 @@ Future<void> _dispose() async {
 
 下图展示在 App 中实现纯语音互动的基本工作流程：
 
-![实现音频互动](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png)
+<DocsImage alt="实现音频互动" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png" displayWidth="60%" />
 
 1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
 2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
@@ -4814,7 +4813,7 @@ export default App;
 
 下图展示了使用声网 RTC SDK 实现纯语音互动的基本流程。
 
-![纯语音通话快速开始流程图](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg)
+<DocsImage alt="纯语音通话快速开始流程图" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg" displayWidth="70%" />
 
 下面列出了一段实现纯语音互动基本流程的完整代码以供参考，你可以先复制完整的示例代码到你的项目中，参考[调试项目](#调试项目)中的步骤快速体验实时音视频互动的基础功能，再按照实现流程了解其中的核心 API 调用。
 
@@ -5189,7 +5188,7 @@ agoraEngineRef.current?.release();
 ```
 
 :::error[警告]
-- 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+- 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎-8)。
 - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
 :::
 
@@ -5230,8 +5229,8 @@ agoraEngineRef.current?.release();
 
 声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
 <Cards>
-  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/react-native-agora/blob/3.x/example/src/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx" />
-  <Card title="JoinChannelAudio" href="https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx" />
+  <Card title={<RepositoryCardTitle provider="gitee">JoinChannelAudio</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/react-native-agora/blob/3.x/example/src/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx" />
+  <Card title={<RepositoryCardTitle provider="github">JoinChannelAudio</RepositoryCardTitle>} href="https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/examples/legacy/src/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx" />
 </Cards>
 
 ### 常见问题
@@ -5262,7 +5261,7 @@ agoraEngineRef.current?.release();
 
 下图展示在 App 中实现纯语音互动的基本工作流程：
 
-![实现音频互动](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png)
+<DocsImage alt="实现音频互动" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png" displayWidth="60%" />
 
 1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
 2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
@@ -5356,7 +5355,7 @@ agoraEngineRef.current?.release();
 
 下图展示了使用声网 RTC SDK 实现纯语音互动的基本流程：
 
-![实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg)
+<DocsImage alt="实现流程" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-sequence.svg" displayWidth="70%" />
 
 下面列出了实现实时互动基本流程的完整代码以供参考。复制以下代码即可快速体验实时互动基础功能。
 
@@ -5842,7 +5841,7 @@ void UAgoraWidget::onJoinChannelSuccess(const char* channel, agora::rtc::uid_t u
 
 :::warning[注意]
 - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
-- 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+- 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎-9)。
 :::
 
 ```cpp tab="AgoraWidget.h" tabGroup="ue-quickstart"
@@ -5917,7 +5916,7 @@ void UAgoraWidget::NativeDestruct()
 
 下图展示在 App 中实现纯语音互动的基本工作流程：
 
-![实现音频互动](https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png)
+<DocsImage alt="实现音频互动" src="https://web-cdn.agora.io/docs-portal/img/rtc/audio-quick-start-tech.png" displayWidth="60%" />
 
 1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
 2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
@@ -5940,7 +5939,7 @@ void UAgoraWidget::NativeDestruct()
 
 ## 创建项目
 
-参考以下步骤或 [Unreal 官方操作指南](https://docs.unrealengine.com/4.27/zh-CN/Basics/Projects/Browser/)创建一个 **Unreal** 项目。如果已有 **Unreal** 项目，可进行下一步[集成 SDK](#集成-sdk)。
+参考以下步骤或 [Unreal 官方操作指南](https://docs.unrealengine.com/4.27/zh-CN/Basics/Projects/Browser/)创建一个 **Unreal** 项目。如果已有 **Unreal** 项目，可进行下一步[集成 SDK](#集成-sdk-11)。
 
 1. 打开 **Unreal Engine**，在 **New Project Categories** 下选择 **Games**，点击 **Next**。
 2. 在 **SelectTemplate** 页面，选择 **Blank**，点击 **Next**。
@@ -6028,7 +6027,7 @@ void UAgoraWidget::NativeDestruct()
 - 该节点仅适用于 Windows 和 macOS。
 - 如果在创建时检索不到该节点，可以取消勾选 **Context Sensitive**。
 
-![](https://web-cdn.agora.io/docs-files/1689863102745)
+<DocsImage alt="Unreal Blueprint 基础流程节点示例" src="https://web-cdn.agora.io/docs-files/1689863102745" displayWidth="30%" />
 
 </Slot>
 
@@ -6202,7 +6201,7 @@ void UAgoraWidget::NativeDestruct()
 按照以下步骤来测试你的语音通话项目：
 
 1. 在 **Load Agora Config** 函数中，分别填入你的项目的 App ID、频道名以及临时 Token。
-    2. 在 **Unreal Editor** 中，点击 ![](https://web-cdn.agora.io/docs-files/1690867946685) 来运行你的项目，然后点击 **JoinChannel** 加入语音通话。
+    2. 在 **Unreal Editor** 中，点击 <InlineImage alt="编译按钮" src="https://web-cdn.agora.io/docs-files/1690867946685" width={25} /> 来运行你的项目，然后点击 **JoinChannel** 加入语音通话。
     3. 邀请一位朋友通过另一台设备来使用相同的 App ID、频道名、Token 加入频道。你们可以听见对方。
 
 ## 后续步骤

@@ -1,0 +1,29 @@
+---
+title: API 下架说明
+description: 本页仅列出 HarmonyOS SDK 从 v4.4.2 升级到 v4.6.3 期间移除的 API 和属性。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/rtc_api_sunset
+  sourcePath: html-docs/rtc/HarmonyOS/API/rtc_api_sunset.html
+  generator: oxygen
+  warnings: []
+---
+
+## 已删除 API
+
+| API | 说明 | 版本 |
+| --- | --- | --- |
+| `RtcEngine.destroySync` | 同步销毁 RtcEngine 的方法已删除；请使用 `destroy`。 | v4.6.3 |
+| `RtcEngine.setAINSMode` | 该方法已从公开接口移除。 | v4.6.3 |
+| `RtcEngine.setRemoteUserPriority` | 该方法已从公开接口移除。 | v4.6.3 |
+| `IMetadataObserver.getMaxMetadataSize` | 该回调已从公开接口移除。 | v4.6.3 |
+| `IMetadataObserver.onReadyToSendMetadata` | 该回调已从公开接口移除。 | v4.6.3 |
+
+## 已删除属性
+
+| 属性 | 说明 | 版本 |
+| --- | --- | --- |
+| `LiveTranscoding.metadata` | 已废弃的 metadata 属性不再提供。 | v4.6.3 |
+
+此外，`VideoFrame.yStride` 更名为 [VideoFrame.stride](/zh-CN/api-reference/rtc/harmonyos/class-videoframe)；这是字段更名，并非 API 下架。

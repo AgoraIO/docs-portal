@@ -17,6 +17,7 @@ export function observeVisible(element: HTMLElement, callback: () => void) {
     ].some(
       (dialog) =>
         !dialog.contains(element) &&
+        !dialog.closest('[hidden], [inert], [aria-hidden="true"]') &&
         dialog.getBoundingClientRect().width > 0 &&
         getComputedStyle(dialog).display !== 'none' &&
         getComputedStyle(dialog).visibility !== 'hidden',

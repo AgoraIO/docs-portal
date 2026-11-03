@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 export type OpenApiSchemaMetadataItem = {
   key?: string;
   label: string;
+  display?: 'block';
   value: ReactNode;
 };
 
@@ -32,13 +33,21 @@ export function OpenApiSchemaMetadata({
 
   return (
     <div className="openapi-schema-metadata">
-      {items.map(({ key, label, value }) => (
-        <div className="openapi-schema-metadata-row" key={key ?? label}>
+      {items.map(({ key, label, display, value }) => (
+        <div
+          className="openapi-schema-metadata-row"
+          data-display={display}
+          key={key ?? label}
+        >
           <span className="openapi-schema-metadata-label">{label}:</span>
           <div className="openapi-schema-metadata-value">
-            <div className="openapi-schema-value-container min-w-0 max-w-full [overflow-wrap:anywhere]">
-              {value}
-            </div>
+            {display === 'block' ? (
+              value
+            ) : (
+              <div className="openapi-schema-value-container min-w-0 max-w-full [overflow-wrap:anywhere]">
+                {value}
+              </div>
+            )}
           </div>
         </div>
       ))}

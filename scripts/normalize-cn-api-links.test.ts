@@ -9,6 +9,32 @@ import {
 } from './normalize-cn-api-links.mjs';
 
 describe('CN API link normalization', () => {
+  it.each(['art-class', 'online-music-class'])(
+    'preserves verified RTM 1.x resources in the %s integration guide',
+    (product) => {
+      const source = `content/docs/zh-CN/solutions/${product}/get-started/quick-start.mdx`;
+      for (const resource of [
+        'downloads?platform=All%20Platforms',
+        'messaging_android?platform=Android',
+        'messaging_ios?platform=iOS',
+        'messaging_mac?platform=macOS',
+        'messaging_cpp_windows?platform=Windows',
+        'API%20Reference/RTM_java/index.html',
+        'API%20Reference/RTM_oc/docs/headers/API-Overview.html',
+        'API%20Reference/RTM_cpp/index.html',
+      ]) {
+        const href = `https://docportal.shengwang.cn/cn/Real-time-Messaging/${resource}`;
+        expect(isApprovedLegacyFallback(source, href)).toBe(true);
+        expect(
+          isApprovedLegacyFallback(
+            'content/docs/zh-CN/realtime-media/rtm/get-started/quick-start.mdx',
+            href,
+          ),
+        ).toBe(false);
+      }
+    },
+  );
+
   it('includes missing pages linked from API reference content', () => {
     expect(
       isApiRelatedMissingInternal({

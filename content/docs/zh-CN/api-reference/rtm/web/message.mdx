@@ -178,9 +178,9 @@ getMessages(
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
 | `channelType` | string | 必填 | - | 频道类型。详见 [HistoryChannelType](/zh-CN/api-reference/rtm/web/enumv#historychanneltype)。 |
-| `options` | object | 必填 | - | 查询选项。 |
+| `options` | object | 选填 | - | 查询选项。 |
 
-`GetHistoryMessagesOptions` 数据类型包含以下属性：
+`GetHistoryMessageOptions` 数据类型包含以下属性：
 
 |     属性     |  类型  | 是否必填 | 默认值 | 描述          |
 | --------- | --- | ----- | --- | -------- |
@@ -211,7 +211,7 @@ try {
 
 ### 返回值
 
-如果方法调用成功，则返回一个 `PublishResponse` 类型数据：
+如果方法调用成功，则返回一个 `GetMessagesResponse` 类型数据：
 
 ```javascript
 export interface GetMessagesResponse extends BaseResponse {

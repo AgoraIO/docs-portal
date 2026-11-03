@@ -156,6 +156,26 @@ describe('API Center shared migration framework', () => {
     ).toBe('/zh-CN/api-reference/whiteboard/ios/classes/foo#//api/name/%29');
   });
 
+  it.each([
+    '/doc/rtc/javascript/error-code',
+    '/doc/rtc/javascript/error-code.html',
+  ])(
+    'preserves the Web platform when migrating %s from API references',
+    (href) => {
+      expect(
+        rewriteLegacyHref(href, {
+          sourceUrl: 'https://doc.shengwang.cn/api-ref/rtc/javascript/overview',
+          routeMap: new Map([
+            [href, '/zh-CN/realtime-media/rtc/reference/error-code'],
+          ]),
+        }),
+      ).toEqual({
+        href: '/zh-CN/realtime-media/rtc/reference/error-code?platform=web',
+        warning: null,
+      });
+    },
+  );
+
   it('repairs platformized and empty-platform legacy routes before lookup', () => {
     const routeMap = new Map([
       [

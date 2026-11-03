@@ -40,6 +40,82 @@ const hit = {
 afterEach(() => vi.restoreAllMocks());
 
 describe('full CN search adapter', () => {
+  it('returns a product-document preview before API matches from the legacy-style overview', async () => {
+    const guide = {
+      ...hit,
+      id: 'guide',
+      url: '/realtime-media/rtc/build/video/advanced-beauty/android',
+      pageTitle: '高级美颜',
+      sectionTitle: '高级美颜',
+      product: 'rtc',
+      tab: 'realtime-media',
+    };
+    const api = {
+      ...hit,
+      id: 'api',
+      url: '/api-reference/rtc/android/video#beauty',
+      pageTitle: '视频增强',
+      sectionTitle: 'setBeautyEffectOptions',
+      product: 'rtc',
+      tab: 'api-reference',
+    };
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      Response.json({
+        results: [
+          {
+            hits: [guide],
+            totalHits: 1,
+            totalPages: 1,
+            page: 1,
+            facetDistribution: { products: { rtc: 1 } },
+          },
+          {
+            hits: [api],
+            totalHits: 1,
+            totalPages: 1,
+            page: 1,
+            facetDistribution: { products: { rtc: 1 } },
+          },
+          {
+            hits: [
+              {
+                ...hit,
+                id: 'faq',
+                url: '/reference/faq/integration/set_log_file',
+                pageTitle: '如何设置日志文件？',
+                sectionTitle: '设置日志文件',
+              },
+            ],
+            totalHits: 1,
+            totalPages: 1,
+            page: 1,
+          },
+        ],
+      }),
+    );
+    const result = await queryCnSearch(
+      config,
+      parseSearchPageState({ q: '高级美颜' }),
+    );
+    expect(result.groups.map((group) => group.title)).toEqual([
+      '高级美颜',
+      '视频增强',
+      '如何设置日志文件？',
+    ]);
+    expect(result.totalHits).toBe(3);
+    expect(result.familyTotalHits).toEqual({ docs: 1, api: 1, faq: 1 });
+    const [url, request] = fetchMock.mock.calls[0];
+    expect(url).toBe('http://127.0.0.1:7700/multi-search');
+    const { queries } = JSON.parse(request?.body as string);
+    expect(queries[0].filter).toContain('searchFamily = "docs"');
+    expect(queries[1].filter).toContain('searchFamily = "api"');
+    expect(queries[2].filter).toContain('searchFamily = "faq"');
+    expect(
+      queries.every(
+        (query: { filter: string }) => !query.filter.includes('version ='),
+      ),
+    ).toBe(true);
+  });
   it('hides retired documents and product facets returned by an older search service', async () => {
     const groups = groupSearchSections([
       hit,
@@ -102,7 +178,7 @@ describe('full CN search adapter', () => {
         );
       await queryCnSearch(
         config,
-        parseSearchPageState({ q: 'Token', platform }),
+        parseSearchPageState({ q: 'Token', platform, type: 'api' }),
       );
       const body = JSON.parse(request.mock.calls[0][1]?.body as string);
       if (platform) {
@@ -319,7 +395,7 @@ describe('full CN search adapter', () => {
       page: 2,
       hitsPerPage: 20,
       filter:
-        'locale = "zh-CN" AND hidden = false AND status = "published" AND (product = "conversational-ai" OR products = "conversational-ai") AND platform = "web" AND version = "4.6.0" AND docType = "docs"',
+        'locale = "zh-CN" AND hidden = false AND status = "published" AND (product = "conversational-ai" OR products = "conversational-ai") AND platform = "web" AND searchFamily = "docs"',
     });
     expect(result.groups).toHaveLength(1);
     expect(
@@ -338,10 +414,10 @@ describe('full CN search adapter', () => {
         ),
       );
     await expect(
-      queryCnSearch(config, parseSearchPageState({ q: 'Token' })),
+      queryCnSearch(config, parseSearchPageState({ q: 'Token', type: 'api' })),
     ).rejects.toThrow('503');
     await expect(
-      queryCnSearch(config, parseSearchPageState({ q: 'none' })),
+      queryCnSearch(config, parseSearchPageState({ q: 'none', type: 'api' })),
     ).resolves.toMatchObject({ groups: [], totalHits: 0 });
     expect(mock).toHaveBeenCalledTimes(2);
   });
@@ -351,7 +427,7 @@ describe('full CN search adapter', () => {
       new Response(JSON.stringify({ hits: [] })),
     );
     await expect(
-      queryCnSearch(config, parseSearchPageState({ q: 'Token' })),
+      queryCnSearch(config, parseSearchPageState({ q: 'Token', type: 'api' })),
     ).rejects.toThrow('Invalid search response');
   });
 

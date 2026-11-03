@@ -8,6 +8,136 @@ const url = '/zh-CN/api-reference/rtc/web/4.6.0/api';
 const route = { url, canonicalPath: url, markdownPath: `${url}.md` };
 const page = { url, title: 'RTC API', objectType: 'docs' as const };
 describe('published CN index export', () => {
+  it.each([
+    ['android', 'Maven', 'maven'],
+    ['ios', 'CocoaPods', 'cocoapods'],
+    ['web', 'Package Manager', 'package-manager'],
+  ])(
+    'indexes the first rendered heading in a %s language tab',
+    async (platform, title, anchor) => {
+      const records = await exportPublishedCnRecords({
+        routes: [route],
+        pages: [page],
+        readMarkdown: async () =>
+          `# RTC API\n\n## 集成组件 [#install]\n\n  <TabsContent value="${platform}">\n    #### ${title} [#${anchor}]\n\n    安装组件依赖。\n\n    \`\`\`md\n    ## 示例标题 [#sample]\n    \`\`\`\n  </TabsContent>`,
+        readRenderedHtml: async () =>
+          `<h2 id="install">集成组件</h2><h4 id="${anchor}">${title}</h4><p>安装组件依赖。</p><pre><code>## 示例标题 [#sample]</code></pre>`,
+      });
+      expect(records.map((record) => record.url)).toEqual([
+        `${url.replace('/zh-CN', '')}#install`,
+        `${url.replace('/zh-CN', '')}#${anchor}`,
+      ]);
+      expect(records[1].content).toContain('安装组件依赖。');
+      expect(records[1].content).toContain('示例标题 [#sample]');
+    },
+  );
+
+  it('indexes a rendered platform heading nested in a preceding Markdown list', async () => {
+    const canonicalPath = '/zh-CN/solutions/art-class/get-started/quick-start';
+    const url = `${canonicalPath}/android`;
+    const records = await exportPublishedCnRecords({
+      routes: [
+        {
+          url,
+          canonicalPath,
+          markdownPath: `${url}.md`,
+          platform: 'android',
+          defaultPlatform: 'android',
+        },
+      ],
+      pages: [{ url: canonicalPath, title: '集成指引', objectType: 'docs' }],
+      readMarkdown: async () =>
+        '# 集成指引\n\n### 实时消息互动 [#实时消息互动]\n\n* SDK 下载地址\n* GitHub 示例项目\n\n    * 集成指引\n    * API 参考\n\n    ### 互动白板 [#互动白板]\n\n    教师在白板上涂鸦。\n\n    * 下载互动白板 SDK\n    * 开启和配置互动白板服务\n\n    ```md\n    ### 示例 [#sample]\n    ```\n\n    ### 未渲染标题 [#unrendered]\n\n    示例说明。\n\n## 画质增强 [#画质增强]\n\n设置视频编码属性。',
+      readRenderedHtml: async () =>
+        '<h3 id="实时消息互动">实时消息互动</h3><div data-platform-panel="android"><h3 id="互动白板">互动白板</h3><p>教师在白板上涂鸦。</p><span id="unrendered"></span></div><h2 id="画质增强">画质增强</h2>',
+    });
+    expect(records.map((record) => record.url)).toEqual([
+      `${url.replace('/zh-CN', '')}#实时消息互动`,
+      `${url.replace('/zh-CN', '')}#互动白板`,
+      `${url.replace('/zh-CN', '')}#画质增强`,
+    ]);
+    expect(records[0].content).toContain('API 参考');
+    expect(records[0].content).not.toContain('教师在白板上涂鸦');
+    expect(records[1]).toMatchObject({
+      platform: ['android'],
+      sectionTitle: '互动白板',
+      headingPath: ['集成指引', '互动白板'],
+    });
+    expect(records[1].content).toContain('教师在白板上涂鸦。');
+    expect(records[1].content).toContain('开启和配置互动白板服务');
+    expect(records[1].content).toContain('示例 [#sample]');
+    expect(records[1].content).toContain('示例说明。');
+    expect(records[2].content).toContain('设置视频编码属性。');
+  });
+
+  it('indexes rendered subheadings inside a non-platform release-note accordion', async () => {
+    const url = '/zh-CN/ai/release-notes';
+    const records = await exportPublishedCnRecords({
+      routes: [{ url, canonicalPath: url, markdownPath: `${url}.md` }],
+      pages: [{ url, title: '发版说明', objectType: 'docs' }],
+      readMarkdown: async () =>
+        '# 发版说明\n\n<Accordions type="multiple">\n\n### v2.13 [#v213]\n\n<Accordion title="v2.13" id="v213" headingLevel="2" value="v213">\n    该版本于 2026 年 9 月 18 日发布。\n\n    ### 改进 [#改进]\n\n    支持多轮对话上下文。\n\n    ### API 变更 [#api-变更]\n\n    新增接口参数。\n  </Accordion>\n</Accordions>',
+      readRenderedHtml: async () =>
+        '<article><h2 id="v213">v2.13</h2><h3 id="改进">改进</h3><p>支持多轮对话上下文。</p><h3 id="api-变更">API 变更</h3><p>新增接口参数。</p></article>',
+    });
+    expect(records.map((record) => record.url)).toEqual([
+      '/ai/release-notes#v213',
+      '/ai/release-notes#改进',
+      '/ai/release-notes#api-变更',
+    ]);
+    expect(records[0].content).toContain('2026 年 9 月 18 日');
+    expect(records[1].content).toContain('支持多轮对话上下文。');
+    expect(records[2].content).toContain('新增接口参数。');
+  });
+
+  it('keeps fenced examples inside a verified accordion body out of the section index', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n## 版本 [#version]\n\n    ### 改进 [#improved]\n\n    优化连接。\n\n    ```md\n    ## 示例标题 [#not-a-section]\n    ```\n\n    ### 修复 [#fixed]\n\n    修复音频。',
+      readRenderedHtml: async () =>
+        '<h2 id="version">版本</h2><h3 id="improved">改进</h3><pre><code>## 示例标题 [#not-a-section]</code></pre><h3 id="fixed">修复</h3>',
+    });
+    expect(records.map((record) => record.url)).toEqual([
+      `${url.replace('/zh-CN', '')}#version`,
+      `${url.replace('/zh-CN', '')}#improved`,
+      `${url.replace('/zh-CN', '')}#fixed`,
+    ]);
+    expect(records[1].content).toContain('示例标题 [#not-a-section]');
+  });
+
+  it('indexes the first heading immediately after an Accordion opening tag', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n### v4.6 [#v46]\n\n<Accordion title="v4.6" id="v46" headingLevel="2">\n    ### 升级必看 [#upgrade]\n\n    更新调用方式。\n  </Accordion>',
+      readRenderedHtml: async () =>
+        '<h2 id="v46">v4.6</h2><h3 id="upgrade">升级必看</h3><p>更新调用方式。</p>',
+    });
+    expect(records.map((record) => record.url)).toEqual([
+      `${url.replace('/zh-CN', '')}#v46`,
+      `${url.replace('/zh-CN', '')}#upgrade`,
+    ]);
+    expect(records[1].content).toContain('更新调用方式。');
+  });
+
+  it('does not promote indented examples just because a non-heading element has the same ID', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n    ## 示例 [#sample]\n    code();',
+      readRenderedHtml: async () =>
+        '<span id="sample"></span><pre><code>## 示例 [#sample]\ncode();</code></pre>',
+    });
+    expect(records.map((record) => record.url)).toEqual([
+      url.replace('/zh-CN', ''),
+    ]);
+    expect(records[0].content).toContain('code();');
+  });
+
   it('keeps recording and transcoding FAQ memberships under the navigation product IDs', () => {
     const url = '/zh-CN/reference/faq/integration/ncs_vs_query';
     const records = extractPublishedCnSections(
@@ -18,6 +148,8 @@ describe('published CN index export', () => {
     expect(records[0].products).toEqual(['cloud-recording', 'transcoding']);
   });
   it.each([
+    ['/zh-CN/ai/device-kit/build/run-r1-demo', 'docs', 'device-kit'],
+    ['/zh-CN/ai/get-started/quick-start', 'docs', 'conversational-ai'],
     ['/zh-CN/realtime-media/transcoding', 'docs', 'transcoding'],
     [
       '/zh-CN/api-reference/api-ref/cloud-transcoding/acquire',

@@ -6,6 +6,10 @@ import {
 import { applyMdxPreset, defineConfig, defineDocs } from 'fumadocs-mdx/config';
 import remarkDirective from 'remark-directive';
 import { z } from 'zod';
+import {
+  codeHighlightOptions,
+  codeLanguageAliases,
+} from './src/lib/code/options';
 import { createScopedDocsFiles } from './src/lib/docs-dev-scope';
 import { docsMetaSchema } from './src/lib/docs-meta-schema';
 import { directiveCalloutTypes } from './src/lib/mdx/directive-callouts';
@@ -74,6 +78,7 @@ export const docs = defineDocs({
     mdxOptions: applyMdxPreset({
       rehypeCodeOptions: {
         ...rehypeCodeDefaultOptions,
+        ...codeHighlightOptions,
         langs: [
           'bash',
           'cpp',
@@ -99,16 +104,8 @@ export const docs = defineDocs({
           'xml',
           'yaml',
         ],
-        langAlias: {
-          ...rehypeCodeDefaultOptions.langAlias,
-          curl: 'bash',
-          js: 'javascript',
-          md: 'markdown',
-          objectivec: 'objc',
-          text: 'bash',
-          txt: 'bash',
-        },
-        fallbackLanguage: 'bash',
+        langAlias: codeLanguageAliases,
+        fallbackLanguage: 'text',
         lazy: false,
       },
       remarkImageOptions: {
