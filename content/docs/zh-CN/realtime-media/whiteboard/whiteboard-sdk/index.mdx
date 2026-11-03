@@ -46,3 +46,31 @@ description: "了解互动白板 SDK 的核心能力、适用场景、接入路�
 ## 适用场景
 
 互动白板 SDK 适用于在线教育、在线会议、协作办公和互动娱乐等需要深度定制白板体验的场景。如果你希望使用默认 UI 并减少界面开发成本，可以选择[Fastboard SDK](/zh-CN/realtime-media/whiteboard/fastboard-sdk)。
+
+## 与当前客户端 SDK 配合
+
+服务端先创建房间和签发 Room Token，再交给客户端加入。房间 UUID、region 和 Token 对应的权限应保持一致；SDK Token 保存在业务服务端。RESTful v5 路径由服务端接口定义，客户端 SDK 版本升级无需更改这些路径。
+
+| 客户端 | 推荐正式版本 |
+| --- | --- |
+| Whiteboard Web | 2.16.59 |
+| Whiteboard iOS | 2.16.147 |
+| Whiteboard Android | 2.16.134 |
+| Whiteboard HarmonyOS | 0.2.11 |
+| Fastboard Web | 1.1.10 |
+| Fastboard iOS | 1.4.6 |
+| Fastboard Android | 1.8.2 |
+
+Appliance Plugin 是客户端初始化与绘制配置：服务端创建房间、生成 Token、转换课件后，各客户端按自己的 SDK 入口开启插件。配置示例见 [Web 教具插件](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/overview)、[Android 教具插件](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/overview)、[iOS 教具插件](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/overview)。
+
+## 当前 Android 版本
+
+当前正式版本为 **2.16.134**。新增接口见[新版 API 与多窗口课件控制](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-page-control)。
+
+## HarmonyOS SDK
+
+当前版本 **0.2.11**，通过 `ohpm install @shengwang/whiteboard@0.2.11` 集成。
+
+使用官方 ArkUI 示例集成 Whiteboard 组件，体验实时房间、多窗口和课件控制。
+
+[HarmonyOS Demo 源码](https://github.com/netless-io/whiteboard-harmony/tree/0.2.11/entry)

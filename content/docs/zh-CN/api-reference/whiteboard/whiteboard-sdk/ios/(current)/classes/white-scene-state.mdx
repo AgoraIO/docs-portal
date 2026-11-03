@@ -9,62 +9,63 @@ _migration:
   warnings: []
 ---
 
-| Inherits from | WhiteObject |
-| --- | --- |
-| Declared in | WhiteSceneState.h |
+Whiteboard iOS SDK 2.16.147 公开接口。
 
-<a id="overview"></a>
+@interface WhiteSceneState: WhiteObject
 
-## Overview
+## 成员
 
-场景状态。
-
-<a id="tasks"></a>
+- [scenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-scene-state#//api/name/scenes)
+- [scenePath](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-scene-state#//api/name/scenePath)
+- [index](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-scene-state#//api/name/index)
 
 <a id="//api/name/scenes"></a>
 
-### `scenes`
 
-当前场景目录下所有场景的列表。
+<a id="tasks"></a>
+
+### `scenes`
 
 <ApiSignature>
 
-@property (nonatomic, nonnull, strong, readonly) NSArray&lt;WhiteScene*&gt; *scenes
+@property (nonatomic, nonnull, strong, readonly) NSArray&lt;WhiteScene *&gt; *scenes;
 
 </ApiSignature>
 
-#### Declared In
+```text
+当前场景组下所有场景的列表。
+```
 
-`WhiteSceneState.h`
+Declared in Object/WhiteSceneState.h
 
 <a id="//api/name/scenePath"></a>
 
 ### `scenePath`
 
-当前场景的路径（场景目录+当前场景名）。
-
 <ApiSignature>
 
-@property (nonatomic, nonnull, strong, readonly) NSString *scenePath
+@property (nonatomic, nonnull, strong, readonly) NSString *scenePath;
 
 </ApiSignature>
 
-#### Declared In
+```text
+当前场景的路径（场景目录+当前场景名）。
+```
 
-`WhiteSceneState.h`
+Declared in Object/WhiteSceneState.h
 
 <a id="//api/name/index"></a>
 
 ### `index`
 
-当前场景在所属场景目录中的索引号。
-
 <ApiSignature>
 
-@property (nonatomic, assign, readonly) NSInteger index
+@property (nonatomic, assign, readonly) NSInteger index;
 
 </ApiSignature>
 
-#### Declared In
+```text
+当前场景在所属场景组中的索引号。
+```
 
-`WhiteSceneState.h`
+Declared in Object/WhiteSceneState.h

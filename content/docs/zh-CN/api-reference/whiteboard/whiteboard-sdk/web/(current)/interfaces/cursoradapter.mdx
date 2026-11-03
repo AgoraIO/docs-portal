@@ -1,66 +1,25 @@
 ---
-title: Interface CursorAdapter
-description: 设置鼠标的光标适配器。
+title: CursorAdapter
+description: Whiteboard Web SDK 2.16.59 公开 interface。
 _migration:
   type: generated-html
   status: migrated
-  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/cursoradapter.html
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/cursoradapter
   sourcePath: html-docs/whiteboard/Web/interfaces/cursoradapter.html
   generator: typedoc
   warnings: []
 ---
 
-## Properties
+```ts
+export declare interface CursorAdapter
+```
 
-<a id="onaddedcursor"></a>
+## 成员
 
-### onAddedCursor
-
-onAddedCursor: ((cursor:[Cursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor))=&gt;void)|undefined
-
-- Defined in [index-zh.d.ts\:487](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L487)
-
-光标出现在白板上的回调。
-
-### param
-
-光标对象。
-
-<a id="onmovingcursor"></a>
-
-### onMovingCursor
-
-onMovingCursor: ((cursor:[Cursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor), positionX:number, positionY:number)=&gt;void)|undefined
-
-- Defined in [index-zh.d.ts\:501](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L501)
-
-光标在白板上移动的回调。
-
-### param
-
-光标对象。
-
-### param
-
-光标指示区域中心的 X 轴坐标（以白板左上角为原点）。
-
-### param
-
-光标指示区域中心的 Y 轴坐标（以白板左上角为原点）。
-
-<a id="onremovedcursor"></a>
-
-### onRemovedCursor
-
-onRemovedCursor: ((cursor:[Cursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor))=&gt;void)|undefined
-
-- Defined in [index-zh.d.ts\:493](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L493)
-
-光标从白板上消失的回调。
-
-### param
-
-光标对象。
+- [createCursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursoradapter#createcursor)
+- [onAddedCursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursoradapter#onaddedcursor)
+- [onRemovedCursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursoradapter#onremovedcursor)
+- [onMovingCursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursoradapter#onmovingcursor)
 
 ## Methods
 
@@ -70,30 +29,59 @@ onRemovedCursor: ((cursor:[Cursor](/zh-CN/api-reference/whiteboard/whiteboard-sd
 
 <ApiSignature>
 
-createCursor(memberId: number): [CursorDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#cursordescription) & \{ reactNode?: any \}
+createCursor(memberId: number): CursorDescription & \{ reactNode?: any; \};
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:479](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L479)
-
-创建光标的描述。该方法在用户光标首次出现之前会被调用。
-
-<ParameterList title="Parameters">
-<Parameter name="memberId" type="number" required>
-
-用户 ID。
-
-</Parameter>
-</ParameterList>
+```text
+创建对光标的描述。某个用户的光标首次出现之前会被调用。
+@param memberId 该用户的 ID
+@returns 对应用户光标的描述对象
+```
 
 <ApiReturns>
 
 <ApiReturnType>
 
-[CursorDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#cursordescription) & \{ reactNode?: any \}
+CursorDescription & \{ reactNode?: any; \}
 
 </ApiReturnType>
 
-用户光标的描述。
-
 </ApiReturns>
+
+## Properties
+
+<a id="onaddedcursor"></a>
+
+### onAddedCursor
+
+readonly onAddedCursor: ((cursor: Cursor)=&gt;void) | undefined;
+
+```text
+在某个光标出现在白板上时回调
+@param cursor 光标对象
+```
+
+<a id="onremovedcursor"></a>
+
+### onRemovedCursor
+
+readonly onRemovedCursor: ((cursor: Cursor)=&gt;void) | undefined;
+
+```text
+在某个光标从白板上消失时回调
+@param cursor 光标对象
+```
+
+<a id="onmovingcursor"></a>
+
+### onMovingCursor
+
+readonly onMovingCursor: ((cursor: Cursor, positionX: number, positionY: number)=&gt;void) | undefined;
+
+```text
+在某个光标在白板上移动时回调
+@param cursor 光标对象
+@param positionX 光标指示中心点的 x 坐标（相对于白板左上角）
+@param positionY 光标指示中心点的 y 坐标（相对于白板左上角）
+```

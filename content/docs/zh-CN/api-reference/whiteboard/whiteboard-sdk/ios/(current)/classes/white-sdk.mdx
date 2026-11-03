@@ -2,648 +2,777 @@
 title: WhiteSDK Class Reference
 _migration:
   type: generated-html
-  status: migrated
+  status: warning
   sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteSDK
   sourcePath: html-docs/whiteboard/iOS/Classes/WhiteSDK.html
   generator: appledoc
-  warnings: []
+  warnings:
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
 ---
 
-| Inherits from | NSObject |
-| --- | --- |
-| Declared in | WhiteSDK.h |
-
-<a id="overview"></a>
-
-## Overview
-
-白板 SDK 相关方法。
-
-<a id="tasks"></a>
-
-## Other Methods
-
-<a id="//api/name/version"></a>
-
-### `+ version`
-
-白板 SDK 版本号。
-
-<ApiSignature>
-
-\+ (NSString *)version
-
-</ApiSignature>
-
-#### Declared In
-
-`WhiteSDK.h`
-
-<a id="//api/name/initWithWhiteBoardView:config:commonCallbackDelegate:audioMixerBridgeDelegate:"></a>
-
-### `– initWithWhiteBoardView:config:commonCallbackDelegate:audioMixerBridgeDelegate:`
-
-设置 RTC 混音并初始化 `WhiteSDK` 对象。
-请确保在调用其他 API 前先调用该方法创建并初始化白板 SDK 对象。
-
-<ApiSignature>
-
-\- (instancetype)initWithWhiteBoardView:(WhiteBoardView *)*boardView* config:(WhiteSdkConfiguration *)*config* commonCallbackDelegate:(nullable id&lt;WhiteCommonCallbackDelegate&gt;)*callback* audioMixerBridgeDelegate:(nullable id&lt;WhiteAudioMixerBridgeDelegate&gt;)*mixer*
-
-</ApiSignature>
-
-<ParameterList title="Parameters">
-<Parameter name="boardView">
-
-白板界面，详见 [WhiteBoardView](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-board-view)。
-
-</Parameter>
-<Parameter name="config">
-
-白板 SDK 对象配置，详见 [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration)。
-
-</Parameter>
-<Parameter name="callback">
-
-通用回调事件，详见 [WhiteCommonCallbackDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-common-callback-delegate)。
-
-</Parameter>
-<Parameter name="mixer">
-
-RTC 混音设置，详见 [WhiteAudioMixerBridge](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-audio-mixer-bridge)。当你同时使用声网 RTC SDK 和互动白板 SDK, 且互动白板中展示的动态 PPT 中包含音频文件时，你可以调用 [`WhiteAudioMixerBridge`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-audio-mixer-bridge) 接口，将动态 PPT 中的所有音频交给声网 RTC SDK 进行混音播放。
-
-</Parameter>
-</ParameterList>
-
-#### Return Value
-
-初始化的 `WhiteSDK` 对象。
-
-#### Declared In
-
-`WhiteSDK.h`
-
-<a id="//api/name/initWithWhiteBoardView:config:commonCallbackDelegate:"></a>
-
-### `– initWithWhiteBoardView:config:commonCallbackDelegate:`
-
-初始化 `WhiteSDK` 对象。
-请确保在调用其他 API 前先调用该方法创建并初始化白板 SDK 对象。
-
-<ApiSignature>
-
-\- (instancetype)initWithWhiteBoardView:(WhiteBoardView *)*boardView* config:(WhiteSdkConfiguration *)*config* commonCallbackDelegate:(nullable id&lt;WhiteCommonCallbackDelegate&gt;)*callback*
-
-</ApiSignature>
-
-<ParameterList title="Parameters">
-<Parameter name="boardView">
-
-白板界面，详见 [WhiteBoardView](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-board-view)。
-
-</Parameter>
-<Parameter name="config">
-
-白板 SDK 对象配置，详见 [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration)。
-
-</Parameter>
-<Parameter name="callback">
-
-通用回调事件，详见 [WhiteCommonCallbackDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-common-callback-delegate)。
-
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhiteSDK.h`
-
-<a id="//api/name/initWithWhiteBoardView:config:"></a>
-
-### `– initWithWhiteBoardView:config:`
-
-该方法已废弃。请使用 [`initWithWhiteBoardView:config:commonCallbackDelegate:`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/initWithWhiteBoardView:config:commonCallbackDelegate:) 或 [`initWithWhiteBoardView:config:commonCallbackDelegate:audioMixerBridgeDelegate:`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/initWithWhiteBoardView:config:commonCallbackDelegate:audioMixerBridgeDelegate:) 方法。 (**Deprecated:**该方法已废弃。请使用 `initWithWhiteBoardView:config:commonCallbackDelegate:` 或 `initWithWhiteBoardView:config:commonCallbackDelegate:audioMixerBridgeDelegate:` 方法。
-
-初始化 `WhiteSDK` 对象。)
-
-<ApiSignature>
-
-\- (instancetype)initWithWhiteBoardView:(WhiteBoardView *)*boardView* config:(WhiteSdkConfiguration *)*config*
-
-</ApiSignature>
-
-<ParameterList title="Parameters">
-<Parameter name="boardView">
-
-白板界面，详见 [WhiteBoardView](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-board-view)。
-
-</Parameter>
-<Parameter name="config">
-
-白板 SDK 对象配置，详见 [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration)。
-
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhiteSDK.h`
-
-<a id="//api/name/prepareWhiteConnectionForAppId:region:expireSeconds:attachingSuperView:"></a>
-
-### `+ prepareWhiteConnectionForAppId:region:expireSeconds:attachingSuperView:`
-
-提前选择最佳接入域名，用于加快用户首次连接速度。
-
-<ApiSignature>
-
-\+ (void)prepareWhiteConnectionForAppId:(NSString *)*appId* region:(WhiteRegionKey)*region* expireSeconds:(NSNumber *_Nullable)*expireSeconds* attachingSuperView:(UIView *_Nullable)*superView*
-
-</ApiSignature>
-
-<ParameterList title="Parameters">
-<Parameter name="appId">
-
-白板项目的唯一标识，详见[获取白板项目的 App Identifier](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service)。
-
-</Parameter>
-<Parameter name="region">
-
-需要选择的数据中心。可选值包括：
- - `WhiteRegionCN`：中国杭州。该数据中心为其他数据中心服务区未覆盖的地区提供服务。
- - `WhiteRegionUS`：美国硅谷。该数据中心为北美洲、南美洲地区提供服务。
- - `WhiteRegionIN`：印度孟买。该数据中心为印度地区提供服务。
- - `WhiteRegionSG`：新加坡。该数据中心为新加坡、东亚、东南亚地区提供服务。
- - `WhiteRegionEU`：欧洲（法兰克福）。该数据中心为欧洲地区提供服务。
-
-</Parameter>
-<Parameter name="expireSeconds">
-
-数据缓存时间 (s)，可为空，默认为 24 小时。
-
-</Parameter>
-<Parameter name="superView">
-
-挂载的父视图，可为空，默认为 `UIApplication.shared.keyWindow`。
-
-</Parameter>
-</ParameterList>
-
-#### Discussion
-
-声网建议在加入白板房间前调用该方法，例如设备检测页、白板房间列表页等，有助于提升加入白板房间的连接速度。
-
-#### Declared In
-
-`WhiteSDK.h`
-
-<a id="//api/name/audioMixer"></a>
-
-### `audioMixer`
-
-混音设置。
-
-<ApiSignature>
-
-@property (nonatomic, strong, readonly, nullable) WhiteAudioMixerBridge *audioMixer
-
-</ApiSignature>
-
-#### Declared In
-
-`WhiteSDK.h`
-
-<a id="//api/name/setupFontFaces:"></a>
-
-### `– setupFontFaces:`
-
-声明在本地白板中可用的字体。
-
-<ApiSignature>
-
-\- (void)setupFontFaces:(NSArray&lt;WhiteFontFace*&gt; *)*fontFaces*
-
-</ApiSignature>
-
-<ParameterList title="Parameters">
-<Parameter name="fontFaces">
-
-字体配置文件，详见 [WhiteFontFace](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-font-face)。
-
-</Parameter>
-</ParameterList>
-
-#### Availability
-
-2.11.3
-
-调用该方法声明的字体可用于显示 PPT 中的文字和工具输入的文字。
-
-该方法和 [loadFontFaces](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/loadFontFaces:completionHandler:) 都可以声明在本地白板中可用的字体，区别是 `setupFontFaces` 没有回调，因为无法判断字体声明是否正确；[loadFontFaces](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/loadFontFaces:completionHandler:) 会触发回调，报告每一种的预加载结果。
-
-**Note:**
-
-- 该方法只对本地白板生效，不影响远端白板的字体显示。
-- 通过该方法声明的字体，只有当被使用时，才会触发下载。
-- 不同的字体在不同设备上的渲染可能不同，例如，在某些设备上，要等字体加载完成后，才会渲染文字；而在另外一些设备上，会先使用默认的字体渲染文字，等指定的字体加载完毕后，再整体刷新。
-- 每次调用该方法都会覆盖原来的字体声明。
-- 请勿同时调用该方法和 [loadFontFaces](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/loadFontFaces:completionHandler:) 方法。否则，无法预期行为。
-
-#### Declared In
-
-`WhiteSDK.h`
-
-<a id="//api/name/loadFontFaces:completionHandler:"></a>
-
-### `– loadFontFaces:completionHandler:`
-
-声明在本地白板中可用的字体并预加载。
-
-<ApiSignature>
-
-\- (void)loadFontFaces:(NSArray&lt;WhiteFontFace*&gt; *)*fontFaces* completionHandler:(void (^) (BOOL success, WhiteFontFace *fontFace, NSError *_Nullable error))*completionHandler*
-
-</ApiSignature>
-
-<ParameterList title="Parameters">
-<Parameter name="fontFaces">
-
-[`WhiteFontFace`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-font-face) 对象，详见 [WhiteFontFace](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-font-face)。
-
-</Parameter>
-<Parameter name="completionHandler">
-
-方法调用结果：
-
-- 如果方法调用成功，则返回 [`WhiteFontFace`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-font-face) 对象
-- 如果方法调用失败，则返回错误信息。
-
-每加载完成一种字体，会触发一个回调，报告该字体是否加载成功。传入的 [`WhiteFontFace`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-font-face) 对象中有多少种字体，就会有多少个回调。
-
-</Parameter>
-</ParameterList>
-
-#### Availability
-
-2.11.3
-
-调用该方法预加载的字体可以用于显示 PPT 中的文字和工具输入的文字。
-
-该方法和 [setupFontFaces](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/setupFontFaces:) 都可以声明在本地白板中可用的字体，区别是 `loadFontFaces` 会触发回调，报告每一种的预加载结果。
-
-**Note:**
-
-- 该方法只对本地白板生效，不影响远端白板的字体显示。
-- 使用该方法预加载的字体，只有当该字体被使用时，才会触发下载。
-- 不同的字体在不同设备上的渲染可能不同，例如，在某些设备上，要等字体加载完成后，才会渲染文字；而在另外一些设备上，会先使用默认的字体渲染文字，等指定的字体加载完毕后，再整体刷新。
-- 通过该方法预加载的字体无法删除，每次调用都会在原来的基础上新增。
-- 请勿同时调用该方法和 [setupFontFaces](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/setupFontFaces:) 方法。否则，无法预期行为。
-
-#### Declared In
-
-`WhiteSDK.h`
-
-<a id="//api/name/updateTextFont:"></a>
-
-### `– updateTextFont:`
-
-设置文字工具在本地白板中使用的字体。
-
-<ApiSignature>
-
-\- (void)updateTextFont:(NSArray&lt;NSString*&gt; *)*fonts*
-
-</ApiSignature>
-
-<ParameterList title="Parameters">
-<Parameter name="fonts">
-
-字体名称。如果用户系统中不存在该字体，则文字工具无法使用该字体。请确保你已经调用 [setupFontFaces](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/setupFontFaces:) 或 [loadFontFaces](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/loadFontFaces:completionHandler:) 将指定字体加载到本地白板中。
-
-</Parameter>
-</ParameterList>
-
-#### Availability
-
-2.11.3
-
-**Note:**
-
-- 该方法只对本地白板生效，不影响远端白板的字体显示。
-- 该方法只能设置文字工具使用的字体，不能用于 PPT 中的文字显示。
-
-#### Declared In
-
-`WhiteSDK.h`
-
-<a id="//api/name/getSlideVolumeWithCompletionHandler:"></a>
-
-### `– getSlideVolumeWithCompletionHandler:`
-
-获取当前 PPT 的音量。
-
-<ApiSignature>
-
-\- (void)getSlideVolumeWithCompletionHandler:(void (^) (CGFloat volume, NSError *error))*completionHandler*
-
-</ApiSignature>
-
-<ParameterList title="Parameters">
-<Parameter name="completionHandler">
-
-方法调用结果：
-- 调用成功：返回音量信息。`volume` 为 (0,1] 之间的值，`error` 为 `nil`。
-- 调用失败：返回错误消息。`volume` 返回值为 0，`error` 为错误消息。
-
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhiteSDK.h`
-
-<a id="//api/name/updateSlideVolume:"></a>
-
-### `– updateSlideVolume:`
-
-更新当前 PPT 的音量。
-
-<ApiSignature>
-
-\- (void)updateSlideVolume:(CGFloat)*volume*
-
-</ApiSignature>
-
-<ParameterList title="Parameters">
-<Parameter name="volume">
-
-音量值，取值范围为 (0,1]。
-
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhiteSDK.h`
-
-<a id="//api/name/recoverSlide:slideIndex:"></a>
-
-### `– recoverSlide:slideIndex:`
-
-恢复 Slide 并跳转到其他页。
-RESOURCE_ERROR 和 RUNTIME_ERROR 可以用这种方式恢复。
-
-<ApiSignature>
-
-\- (void)recoverSlide:(NSString *)*slideId* slideIndex:(NSInteger)*slideIndex*
-
-</ApiSignature>
-
-<ParameterList title="Parameters">
-<Parameter name="slideId">
-
-使用错误消息里告知的 slideId
-
-</Parameter>
-<Parameter name="slideIndex">
-
-指定要跳转到哪一页, 如果想要跳转到下一页可以使用错误消息里告知的报错页码 + 1
-
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhiteSDK.h`
-
-<a id="//api/name/recoverSlide:"></a>
-
-### `– recoverSlide:`
-
-恢复 Slide。
-RESOURCE_ERROR 可以用这种方式恢复。
-
-<ApiSignature>
-
-\- (void)recoverSlide:(NSString *)*slideId*
-
-</ApiSignature>
-
-<ParameterList title="Parameters">
-<Parameter name="slideId">
-
-错误消息里告知的 slideId。
-
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhiteSDK.h`
-
-<a id="//api/name/setCommonCallbackDelegate:"></a>
-
-### `– setCommonCallbackDelegate:`
-
-设置通用回调事件。
-
-<ApiSignature>
-
-\- (void)setCommonCallbackDelegate:(nullable id&lt;WhiteCommonCallbackDelegate&gt;)*callbackDelegate*
-
-</ApiSignature>
-
-<ParameterList title="Parameters">
-<Parameter name="callbackDelegate">
-
-通用回调事件，详见 [WhiteCommonCallbackDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-common-callback-delegate)。
-
-</Parameter>
-</ParameterList>
-
-#### Discussion
-
-SDK 通过 [WhiteCommonCallbackDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-common-callback-delegate) 类向 app 报告 SDK 运行时的各项事件。
-
-#### Declared In
-
-`WhiteSDK.h`
-
-<a id="//api/name/setSlideDelegate:"></a>
-
-### `– setSlideDelegate:`
-
-设置多窗口 PPT 回调事件。
-
-<ApiSignature>
-
-\- (void)setSlideDelegate:(nullable id&lt;WhiteSlideDelegate&gt;)*slideDelegate*
-
-</ApiSignature>
-
-<ParameterList title="Parameters">
-<Parameter name="slideDelegate">
-
-PPT 回调事件，详见 [WhiteSlideDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-slide-delegate)。
-
-</Parameter>
-</ParameterList>
-
-#### Discussion
-
-SDK 通过 [WhiteSlideDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-slide-delegate) 类处理 PPT 相关回调。
-
-#### Declared In
-
-`WhiteSDK.h`
-
-<a id="//api/name/requestSlideLogToFilePath:result:"></a>
-
-### `– requestSlideLogToFilePath:result:`
-
-将 Slide 日志写入到指定的文件路径。
-
-<ApiSignature>
-
-\- (void)requestSlideLogToFilePath:(NSString *)*path* result:(void (^) (BOOL success, NSError *error))*result*
-
-</ApiSignature>
-
-<ParameterList title="Parameters">
-<Parameter name="path">
-
-将要写入文件的 path。如果文件不存在，会直接创建文件。如果文件已存在，则会在文件末尾继续写入日志。
-
-</Parameter>
-<Parameter name="result">
-
-日志写入结果。
-
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhiteSDK.h`
-
-<a id="task_Replayer-Methods"></a>
-
-## Replayer Methods
+Whiteboard iOS SDK 2.16.147 公开接口。
+
+@interface WhiteSDK (Replayer)
+
+## 成员
+
+- [createReplayerWithConfig\:callbacks\:completionHandler:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/createReplayerWithConfig:callbacks:completionHandler:)
+- [isPlayable\:result:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/isPlayable:result:)
+- [joinRoomWithConfig\:callbacks\:completionHandler:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/joinRoomWithConfig:callbacks:completionHandler:)
+- [version](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/version)
+- [initWithWhiteBoardView\:config\:commonCallbackDelegate\:effectMixerBridgeDelegate:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/initWithWhiteBoardView:config:commonCallbackDelegate:effectMixerBridgeDelegate:)
+- [initWithWhiteBoardView\:config\:commonCallbackDelegate\:pcmDataDelegate:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/initWithWhiteBoardView:config:commonCallbackDelegate:pcmDataDelegate:)
+- [initWithWhiteBoardView\:config\:commonCallbackDelegate\:audioMixerBridgeDelegate:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/initWithWhiteBoardView:config:commonCallbackDelegate:audioMixerBridgeDelegate:)
+- [initWithWhiteBoardView\:config\:commonCallbackDelegate:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/initWithWhiteBoardView:config:commonCallbackDelegate:)
+- [initWithWhiteBoardView\:config:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/initWithWhiteBoardView:config:)
+- [prepareWhiteConnectionForAppId\:region\:expireSeconds\:attachingSuperView:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/prepareWhiteConnectionForAppId:region:expireSeconds:attachingSuperView:)
+- [effectMixer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/effectMixer)
+- [setupFontFaces:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/setupFontFaces:)
+- [loadFontFaces\:completionHandler:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/loadFontFaces:completionHandler:)
+- [updateTextFont:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/updateTextFont:)
+- [getSlideVolumeWithCompletionHandler:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/getSlideVolumeWithCompletionHandler:)
+- [updateSlideVolume:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/updateSlideVolume:)
+- [recoverSlide\:slideIndex:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/recoverSlide:slideIndex:)
+- [recoverSlide:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/recoverSlide:)
+- [setCommonCallbackDelegate:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/setCommonCallbackDelegate:)
+- [setSlideDelegate:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/setSlideDelegate:)
+- [registerAppWithParams\:completionHandler:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/registerAppWithParams:completionHandler:)
+- [requestSlideLogToFilePath\:result:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/requestSlideLogToFilePath:result:)
+- [getLocalLogStateWithCompletionHandler:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/getLocalLogStateWithCompletionHandler:)
+- [collectLocalLogsWithCompletionHandler:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/collectLocalLogsWithCompletionHandler:)
+- [flushLocalLogsWithCompletionHandler:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/flushLocalLogsWithCompletionHandler:)
+- [uploadLocalLogsWithCompletionHandler:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/uploadLocalLogsWithCompletionHandler:)
+- [reloadBackgroundImage\:completionHandler:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/reloadBackgroundImage:completionHandler:)
+- [hasBackgroundImage\:completionHandler:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/hasBackgroundImage:completionHandler:)
+- [setParameters:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk#//api/name/setParameters:)
 
 <a id="//api/name/createReplayerWithConfig:callbacks:completionHandler:"></a>
 
 ### `– createReplayerWithConfig:callbacks:completionHandler:`
 
-创建互动白板回放房间。
-
 <ApiSignature>
 
-\- (void)createReplayerWithConfig:(WhitePlayerConfig *)*config* callbacks:(nullable id&lt;WhitePlayerEventDelegate&gt;)*eventCallbacks* completionHandler:(void (^) (BOOL success, WhitePlayer *_Nullable player, NSError *_Nullable error))*completionHandler*
+\- (void)createReplayerWithConfig:(WhitePlayerConfig *)config callbacks:(nullable id&lt;WhitePlayerEventDelegate&gt;)eventCallbacks completionHandler:(void (^) (BOOL success, WhitePlayer * _Nullable player, NSError * _Nullable error))completionHandler;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="config">
+创建互动白板回放房间。
 
-白板回放的参数配置，详见 [WhitePlayerConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config)。
+Declared in Replayer/WhiteSDK+Replayer.h
 
-</Parameter>
-<Parameter name="eventCallbacks">
+#### 参数
+
+| `config` | 白板回放的参数配置，详见 [WhitePlayerConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config)。 |
+| --- | --- |
+| `eventCallbacks` | <Slot name="api-center-table-0" /> |
+| `completionHandler` | <Slot name="api-center-table-1" /> |
+
+<Slot for="api-center-table-0">
 
 白板回放事件的回调。详见 [WhitePlayerEventDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-player-event-delegate)。
 
-</Parameter>
-<Parameter name="completionHandler">
+</Slot>
 
-方法调用结果：
+<Slot for="api-center-table-1">
 
-- 如果方法调用成功，将返回新创建的回放房间对象，详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player)。
-- 如果方法调用失败，将返回错误信息。
+你可以通过该接口获取 `createReplayerWithConfig` 的调用结果：
 
-</Parameter>
-</ParameterList>
+ - 如果方法调用成功，将返回新创建的回放房间对象，详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player)。
+ - 如果方法调用失败，将返回错误信息。
 
-#### Declared In
-
-`WhiteSDK+Replayer.h`
+</Slot>
 
 <a id="//api/name/isPlayable:result:"></a>
 
 ### `– isPlayable:result:`
 
-查看房间是否能够回放。
-
 <ApiSignature>
 
-\- (void)isPlayable:(WhitePlayerConfig *)*config* result:(void (^) (BOOL isPlayable))*result*
+\- (void)isPlayable:(WhitePlayerConfig *)config result:(void (^)(BOOL isPlayable))result;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="config">
+主动查询给定回放配置对应的房间是否能够回放。调用不会创建播放器或启动回放。
 
-白板回放的参数配置，详见 [WhitePlayerConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config)。
+Declared in Replayer/WhiteSDK+Replayer.h
 
-</Parameter>
-<Parameter name="result">
+#### 参数
 
-回调。返回房间是否能够回放。
+| `config` | WhitePlayerConfig 回放配置。 |
+| --- | --- |
+| `result` | <Slot name="api-center-table-2" /> |
 
-- `YES`：该房间能够回放。
-- `NO`：该房间不能回放。
+<Slot for="api-center-table-2">
 
-</Parameter>
-</ParameterList>
+查询完成回调，BOOL isPlayable：YES 表示可回放，NO 表示不可回放。此方法自身返回 void。
 
-#### Availability
-
-2.11.0
-
-#### Discussion
-
-当播放器状态改变时，Player 会触发该回调，向你报告新的播放状态。
-
-#### Declared In
-
-`WhiteSDK+Replayer.h`
-
-<a id="task_Room-Methods"></a>
-
-## Room Methods
+</Slot>
 
 <a id="//api/name/joinRoomWithConfig:callbacks:completionHandler:"></a>
 
 ### `– joinRoomWithConfig:callbacks:completionHandler:`
 
-设置房间参数和事件回调并加入互动白板实时房间。
-
 <ApiSignature>
 
-\- (void)joinRoomWithConfig:(WhiteRoomConfig *)*config* callbacks:(nullable id&lt;WhiteRoomCallbackDelegate&gt;)*callbacks* completionHandler:(void (^) (BOOL success, WhiteRoom *_Nullable room, NSError *_Nullable error))*completionHandler*
+\- (void)joinRoomWithConfig:(WhiteRoomConfig *)config callbacks:(nullable id&lt;WhiteRoomCallbackDelegate&gt;)callbacks completionHandler:(void (^) (BOOL success, WhiteRoom * _Nullable room, NSError * _Nullable error))completionHandler;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="config">
+设置房间参数和事件回调并加入互动白板实时房间。
 
-互动白板实时房间的参数配置，详见 [WhiteRoomConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config)。
+Declared in Room/WhiteSDK+Room.h
 
-</Parameter>
-<Parameter name="callbacks">
+#### 参数
+
+| `config` | 互动白板实时房间的参数配置，详见 [WhiteRoomConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config)。 |
+| --- | --- |
+| `callbacks` | <Slot name="api-center-table-3" /> |
+| `completionHandler` | <Slot name="api-center-table-4" /> |
+
+<Slot for="api-center-table-3">
 
 房间事件回调，详见 [WhiteRoomCallbackDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-room-callback-delegate)。
 
-</Parameter>
-<Parameter name="completionHandler">
+</Slot>
 
-方法调用结果：
+<Slot for="api-center-table-4">
 
-- 如果方法调用成功，将返回房间对象，详见 [WhiteRoom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room)。
-- 如果方法调用失败，将返回错误信息。
+调用结果：
 
-</Parameter>
-</ParameterList>
+ - 如果方法调用成功，将返回房间对象，详见 [WhiteRoom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room)。
+ - 如果方法调用失败，将返回错误信息，详见 NSError。
 
-#### Declared In
+</Slot>
 
-`WhiteSDK+Room.h`
+<a id="//api/name/version"></a>
+
+### `+ version`
+
+<ApiSignature>
+
+\+ (NSString *)version;
+
+</ApiSignature>
+
+```text
+白板 SDK 版本号。
+```
+
+Declared in SDK/WhiteSDK.h
+
+<a id="//api/name/initWithWhiteBoardView:config:commonCallbackDelegate:effectMixerBridgeDelegate:"></a>
+
+### `– initWithWhiteBoardView:config:commonCallbackDelegate:effectMixerBridgeDelegate:`
+
+<ApiSignature>
+
+\- (instancetype)initWithWhiteBoardView:(WhiteBoardView *)boardView config:(WhiteSdkConfiguration *)config commonCallbackDelegate:(nullable id&lt;WhiteCommonCallbackDelegate&gt;)callback effectMixerBridgeDelegate:(nullable id&lt;WhiteAudioEffectMixerBridgeDelegate&gt;)effectMixer;
+
+</ApiSignature>
+
+设置 RTC 混音并初始化 `WhiteSDK` 对象。
+ 请确保在调用其他 API 前先调用该方法创建并初始化白板 SDK 对象。
+
+Declared in SDK/WhiteSDK.h
+
+#### 返回
+
+初始化的 `WhiteSDK` 对象。
+
+#### 参数
+
+| `boardView` | 白板界面，详见 [WhiteBoardView](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-board-view)。 |
+| --- | --- |
+| `config` | <Slot name="api-center-table-5" /> |
+| `callback` | <Slot name="api-center-table-6" /> |
+| `effectMixer` | <Slot name="api-center-table-7" /> |
+
+<Slot for="api-center-table-5">
+
+白板 SDK 对象配置，详见 [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration)。
+
+</Slot>
+
+<Slot for="api-center-table-6">
+
+通用回调事件，详见 [WhiteCommonCallbackDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-common-callback-delegate)。
+
+</Slot>
+
+<Slot for="api-center-table-7">
+
+RTC 混音设置，详见 [WhiteAudioEffectMixerBridge](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-audio-effect-mixer-bridge)。当你同时使用 Agora RTC SDK 和互动白板 SDK, 且互动白板中展示的动态 PPT 中包含音频文件时，你可以调用 `WhiteAudioEffectMixerBridge` 接口，将动态 PPT 中的所有音频交给 Agora RTC SDK 进行混音播放。
+
+</Slot>
+
+<a id="//api/name/initWithWhiteBoardView:config:commonCallbackDelegate:pcmDataDelegate:"></a>
+
+### `– initWithWhiteBoardView:config:commonCallbackDelegate:pcmDataDelegate:`
+
+<ApiSignature>
+
+\- (instancetype)initWithWhiteBoardView:(WhiteBoardView *)boardView config:(WhiteSdkConfiguration *)config commonCallbackDelegate:(nullable id&lt;WhiteCommonCallbackDelegate&gt;)callback pcmDataDelegate:(nullable id&lt;WhiteAudioPcmDataDelegate&gt;)pcmDataDelegate;
+
+</ApiSignature>
+
+设置 RTC 混音并初始化 `WhiteSDK` 对象。
+ 请确保在调用其他 API 前先调用该方法创建并初始化白板 SDK 对象。
+
+Declared in SDK/WhiteSDK.h
+
+#### 返回
+
+初始化的 `WhiteSDK` 对象。
+
+#### 参数
+
+| `boardView` | 白板界面，详见 [WhiteBoardView](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-board-view)。 |
+| --- | --- |
+| `config` | <Slot name="api-center-table-8" /> |
+| `callback` | <Slot name="api-center-table-9" /> |
+| `pcmDataDelegate` | <Slot name="api-center-table-10" /> |
+
+<Slot for="api-center-table-8">
+
+白板 SDK 对象配置，详见 [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration)。
+
+</Slot>
+
+<Slot for="api-center-table-9">
+
+通用回调事件，详见 [WhiteCommonCallbackDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-common-callback-delegate)。
+
+</Slot>
+
+<Slot for="api-center-table-10">
+
+PCM 裸数据回调，详见 [WhiteAudioPcmDataDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-audio-pcm-data-delegate)。设置该对象之后，白板中的所有音频会以 pcm data 的形式传出。
+
+</Slot>
+
+<a id="//api/name/initWithWhiteBoardView:config:commonCallbackDelegate:audioMixerBridgeDelegate:"></a>
+
+### `– initWithWhiteBoardView:config:commonCallbackDelegate:audioMixerBridgeDelegate:`
+
+<ApiSignature>
+
+\- (instancetype)initWithWhiteBoardView:(WhiteBoardView *)boardView config:(WhiteSdkConfiguration *)config commonCallbackDelegate:(nullable id&lt;WhiteCommonCallbackDelegate&gt;)callback audioMixerBridgeDelegate:(nullable id&lt;WhiteAudioMixerBridgeDelegate&gt;)mixer DEPRECATED_MSG_ATTRIBUTE("use initWithWhiteBoardView\:config: commonCallbackDelegate\:effectMixerBridgeDelegate: instead");
+
+</ApiSignature>
+
+@deprecated 已废弃，请使用 initWithWhiteBoardView\:config: commonCallbackDelegate\:effectMixerBridgeDelegate:。
+
+Declared in SDK/WhiteSDK.h
+
+<a id="//api/name/initWithWhiteBoardView:config:commonCallbackDelegate:"></a>
+
+### `– initWithWhiteBoardView:config:commonCallbackDelegate:`
+
+<ApiSignature>
+
+\- (instancetype)initWithWhiteBoardView:(WhiteBoardView *)boardView config:(WhiteSdkConfiguration *)config commonCallbackDelegate:(nullable id&lt;WhiteCommonCallbackDelegate&gt;)callback;
+
+</ApiSignature>
+
+初始化 `WhiteSDK` 对象。
+ 请确保在调用其他 API 前先调用该方法创建并初始化白板 SDK 对象。
+
+Declared in SDK/WhiteSDK.h
+
+#### 参数
+
+| `boardView` | 白板界面，详见 [WhiteBoardView](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-board-view)。 |
+| --- | --- |
+| `config` | <Slot name="api-center-table-11" /> |
+| `callback` | <Slot name="api-center-table-12" /> |
+
+<Slot for="api-center-table-11">
+
+白板 SDK 对象配置，详见 [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration)。
+
+</Slot>
+
+<Slot for="api-center-table-12">
+
+通用回调事件，详见 [WhiteCommonCallbackDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-common-callback-delegate)。
+
+</Slot>
+
+<a id="//api/name/initWithWhiteBoardView:config:"></a>
+
+### `– initWithWhiteBoardView:config:`
+
+<ApiSignature>
+
+\- (instancetype)initWithWhiteBoardView:(WhiteBoardView *)boardView config:(WhiteSdkConfiguration *)config DEPRECATED_MSG_ATTRIBUTE("initWithWhiteBoardView\:config\:commonCallbackDelegate");
+
+</ApiSignature>
+
+@deprecated 该方法已废弃。请使用 initWithWhiteBoardView\:config\:commonCallbackDelegate: 和 initWithWhiteBoardView\:config\:commonCallbackDelegate\:audioMixerBridgeDelegate: 方法。
+
+Declared in SDK/WhiteSDK.h
+
+<a id="//api/name/prepareWhiteConnectionForAppId:region:expireSeconds:attachingSuperView:"></a>
+
+### `+ prepareWhiteConnectionForAppId:region:expireSeconds:attachingSuperView:`
+
+<ApiSignature>
+
+\+ (void)prepareWhiteConnectionForAppId:(NSString *)appId region:(WhiteRegionKey)region expireSeconds:(NSNumber * _Nullable)expireSeconds attachingSuperView: (UIView * _Nullable)superView;
+
+</ApiSignature>
+
+提前选择最佳接入域名，用于加快用户首次连接速度。
+
+Declared in SDK/WhiteSDK.h
+
+#### 参数
+
+| `appId` | SDK 的 appId |
+| --- | --- |
+| `region` | <Slot name="api-center-table-13" /> |
+| `expireSeconds` | <Slot name="api-center-table-14" /> |
+| `superView` | <Slot name="api-center-table-15" /> |
+
+<Slot for="api-center-table-13">
+
+需要选择的数据中心
+
+</Slot>
+
+<Slot for="api-center-table-14">
+
+数据缓存时间，单位为秒，可为空，默认为 24 小时
+
+</Slot>
+
+<Slot for="api-center-table-15">
+
+挂载的父视图，可为空，默认为 UIApplication.shared.keyWindow
+
+</Slot>
+
+<a id="//api/name/effectMixer"></a>
+
+### `effectMixer`
+
+<ApiSignature>
+
+@property (nonatomic, strong, readonly, nullable) WhiteAudioEffectMixerBridge *effectMixer;
+
+</ApiSignature>
+
+```text
+Play effect 混音设置。
+```
+
+Declared in SDK/WhiteSDK.h
+
+<a id="//api/name/setupFontFaces:"></a>
+
+### `– setupFontFaces:`
+
+<ApiSignature>
+
+\- (void)setupFontFaces:(NSArray &lt;WhiteFontFace *&gt;*)fontFaces;
+
+</ApiSignature>
+
+声明在本地白板中可用的字体。
+
+Declared in SDK/WhiteSDK.h
+
+#### 版本
+
+2.11.3
+
+ 调用该方法声明的字体可用于显示 PPT 中的文字和工具输入的文字。
+
+ 该方法和 [loadFontFaces](#//api/name/loadFontFaces:completionHandler:) 都可以声明在本地白板中可用的字体，区别是 [setupFontFaces](#//api/name/setupFontFaces:) 没有回调，因为无法判断字体声明是否正确；loadFontFaces 会触发回调，报告每一种的预加载结果。
+
+*Note:**
+
+ - 该方法只对本地白板生效，不影响远端白板的字体显示。
+ - 通过该方法声明的字体，只有当被使用时，才会触发下载。
+ - 不同的字体在不同设备上的渲染可能不同，例如，在某些设备上，要等字体加载完成后，才会渲染文字；而在另外一些设备上，会先使用默认的字体渲染文字，等指定的字体加载完毕后，再整体刷新。
+ - 每次调用该方法都会覆盖原来的字体声明。
+ - 请勿同时调用该方法和 [loadFontFaces](#//api/name/loadFontFaces:completionHandler:) 方法。否则，无法预期行为。
+
+#### 参数
+
+| `fontFaces` | 字体配置文件，详见 [WhiteFontFace](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-font-face)。 |
+| --- | --- |
+
+<a id="//api/name/loadFontFaces:completionHandler:"></a>
+
+### `– loadFontFaces:completionHandler:`
+
+<ApiSignature>
+
+\- (void)loadFontFaces:(NSArray &lt;WhiteFontFace *&gt;*)fontFaces completionHandler:(void (^)(BOOL success, WhiteFontFace *fontFace, NSError * _Nullable error))completionHandler;
+
+</ApiSignature>
+
+声明在本地白板中可用的字体并预加载。
+
+Declared in SDK/WhiteSDK.h
+
+#### 版本
+
+2.11.3
+
+ 调用该方法预加载的字体可以用于显示 PPT 中的文字和工具输入的文字。
+
+ 该方法和 [setupFontFaces](#//api/name/setupFontFaces:) 都可以声明在本地白板中可用的字体，区别是 [setupFontFaces](#//api/name/setupFontFaces:) 没有回调，因为无法判断字体声明是否正确；[loadFontFaces](#//api/name/loadFontFaces:completionHandler:) 会触发回调，报告每一种的预加载结果。
+
+*Note:**
+
+ - 该方法只对本地白板生效，不影响远端白板的字体显示。
+ - 使用该方法预加载的字体，只有当该字体被使用时，才会触发下载。
+ - 不同的字体在不同设备上的渲染可能不同，例如，在某些设备上，要等字体加载完成后，才会渲染文字；而在另外一些设备上，会先使用默认的字体渲染文字，等指定的字体加载完毕后，再整体刷新。
+ - 通过该方法预加载的字体无法删除，每次调用都会在原来的基础上新增。
+ - 请勿同时调用该方法和 setupFontFaces 方法。否则，无法预期行为。
+
+#### 参数
+
+| `fontFaces` | WhiteFontFace 对象，详见 WhiteFontFace。 |
+| --- | --- |
+| `completionHandler` | <Slot name="api-center-table-16" /> |
+
+<Slot for="api-center-table-16">
+
+调用结果：
+
+ - 如果方法调用成功，则返回 `FontFace` 对象
+ - 如果方法调用失败，则返回错误信息，详见 NSError。
+
+ 每加载完成一种字体，会触发一个回调，报告该字体是否加载成功。传入的 [WhiteFontFace](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-font-face) 对象中有多少种字体，就会有多少个回调。
+
+</Slot>
+
+<a id="//api/name/updateTextFont:"></a>
+
+### `– updateTextFont:`
+
+<ApiSignature>
+
+\- (void)updateTextFont:(NSArray &lt;NSString *&gt;*)fonts;
+
+</ApiSignature>
+
+设置文字工具在本地白板中使用的字体。
+
+Declared in SDK/WhiteSDK.h
+
+#### 版本
+
+2.11.3
+*Note:**
+
+ - 该方法只对本地白板生效，不影响远端白板的字体显示。
+ - 该方法只能设置文字工具使用的字体，不能用于 PPT 中的文字显示。
+
+#### 参数
+
+| `fonts` | 字体名称。如果用户系统中不存在该字体，则文字工具无法使用该字体。请确保你已经调用 [setupFontFaces](#//api/name/setupFontFaces:) 或 [loadFontFaces](#//api/name/loadFontFaces:completionHandler:) 将指定字体加载到本地白板中。 |
+| --- | --- |
+
+<a id="//api/name/getSlideVolumeWithCompletionHandler:"></a>
+
+### `– getSlideVolumeWithCompletionHandler:`
+
+<ApiSignature>
+
+\- (void)getSlideVolumeWithCompletionHandler:(void(^)(CGFloat volume, NSError *error))completionHandler;
+
+</ApiSignature>
+
+获取当前 slide 音量
+
+Declared in SDK/WhiteSDK.h
+
+#### 参数
+
+| `completionHandler` | 调用结果 - 如果调用成功： volume 返回值为 0-1 之间的值，error 为 nil - 如果调用失败： volume 返回值为0，error 会返回详细信息 |
+| --- | --- |
+
+<a id="//api/name/updateSlideVolume:"></a>
+
+### `– updateSlideVolume:`
+
+<ApiSignature>
+
+\- (void)updateSlideVolume:(CGFloat)volume;
+
+</ApiSignature>
+
+更新当前 slide 音量
+
+Declared in SDK/WhiteSDK.h
+
+#### 参数
+
+| `volume` | 音量值，0-1 |
+| --- | --- |
+
+<a id="//api/name/recoverSlide:slideIndex:"></a>
+
+### `– recoverSlide:slideIndex:`
+
+<ApiSignature>
+
+\- (void)recoverSlide:(NSString *)slideId slideIndex:(NSInteger)slideIndex;
+
+</ApiSignature>
+
+恢复 Slide, 跳转到其他页, RESOURCE_ERROR 和 RUNTIME_ERROR 可以用这种方式恢复
+
+Declared in SDK/WhiteSDK.h
+
+#### 参数
+
+| `slideId` | 使用错误消息里告知的 slideId |
+| --- | --- |
+| `slideIndex` | <Slot name="api-center-table-17" /> |
+
+<Slot for="api-center-table-17">
+
+指定要跳转到哪一页, 如果想要跳转到下一页可以使用错误消息里告知的报错页码 + 1
+
+</Slot>
+
+<a id="//api/name/recoverSlide:"></a>
+
+### `– recoverSlide:`
+
+<ApiSignature>
+
+\- (void)recoverSlide:(NSString *)slideId;
+
+</ApiSignature>
+
+恢复 Slide, RESOURCE_ERROR 可以用这种方式恢复
+
+Declared in SDK/WhiteSDK.h
+
+#### 参数
+
+| `slideId` | 使用错误消息里告知的 slideId |
+| --- | --- |
+
+<a id="//api/name/setCommonCallbackDelegate:"></a>
+
+### `– setCommonCallbackDelegate:`
+
+<ApiSignature>
+
+\- (void)setCommonCallbackDelegate:(nullable id&lt;WhiteCommonCallbackDelegate&gt;)callbackDelegate;
+
+</ApiSignature>
+
+设置通用回调事件。
+
+ SDK 通过 [WhiteCommonCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-common-callbacks) 类向 app 报告 SDK 运行时的各项事件。
+
+Declared in SDK/WhiteSDK.h
+
+#### 参数
+
+| `callbackDelegate` | 通用回调事件，详见 [WhiteCommonCallbackDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-common-callback-delegate)。 |
+| --- | --- |
+
+<a id="//api/name/setSlideDelegate:"></a>
+
+### `– setSlideDelegate:`
+
+<ApiSignature>
+
+\- (void)setSlideDelegate:(nullable id&lt;WhiteSlideDelegate&gt;)slideDelegate;
+
+</ApiSignature>
+
+设置 多窗口 Slide 回调事件。
+
+ SDK 通过 [WhiteSlideDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-slide-delegate) 类处理 Slide 的回调。
+
+Declared in SDK/WhiteSDK.h
+
+#### 参数
+
+| `slideDelegate` | Slide 回调事件，详见 [WhiteSlideDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-slide-delegate)。 |
+| --- | --- |
+
+<a id="//api/name/registerAppWithParams:completionHandler:"></a>
+
+### `– registerAppWithParams:completionHandler:`
+
+<ApiSignature>
+
+\- (void)registerAppWithParams:(WhiteRegisterAppParams *)params completionHandler:(void (^)(NSError * _Nullable error))completionHandler;
+
+</ApiSignature>
+
+注册自定义App
+
+Declared in SDK/WhiteSDK.h
+
+#### 参数
+
+| `params` | 注册参数，详见 [WhiteRegisterAppParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-register-app-params) |
+| --- | --- |
+
+<a id="//api/name/requestSlideLogToFilePath:result:"></a>
+
+### `– requestSlideLogToFilePath:result:`
+
+<ApiSignature>
+
+\- (void)requestSlideLogToFilePath:(NSString *)path result:(void(^)(BOOL success, NSError *error))result;
+
+</ApiSignature>
+
+将 Slide 日志写入到指定的文件路径。
+
+Declared in SDK/WhiteSDK.h
+
+#### 参数
+
+| `path` | 将要写入文件的 path，如果文件不存在，会直接创建。如果已存在，会在文件末尾下继续写入日志。 |
+| --- | --- |
+| `result` | <Slot name="api-center-table-18" /> |
+
+<Slot for="api-center-table-18">
+
+日志写入结果
+
+</Slot>
+
+<a id="//api/name/getLocalLogStateWithCompletionHandler:"></a>
+
+### `– getLocalLogStateWithCompletionHandler:`
+
+<ApiSignature>
+
+\- (void)getLocalLogStateWithCompletionHandler:(WhiteLocalLogCompletionHandler)completionHandler;
+
+</ApiSignature>
+
+```text
+获取 WebView 内本地日志状态。
+```
+
+Declared in SDK/WhiteSDK.h
+
+<a id="//api/name/collectLocalLogsWithCompletionHandler:"></a>
+
+### `– collectLocalLogsWithCompletionHandler:`
+
+<ApiSignature>
+
+\- (void)collectLocalLogsWithCompletionHandler:(WhiteLocalLogCompletionHandler)completionHandler;
+
+</ApiSignature>
+
+```text
+收集 WebView 内本地日志。该接口主要用于诊断。
+```
+
+Declared in SDK/WhiteSDK.h
+
+<a id="//api/name/flushLocalLogsWithCompletionHandler:"></a>
+
+### `– flushLocalLogsWithCompletionHandler:`
+
+<ApiSignature>
+
+\- (void)flushLocalLogsWithCompletionHandler:(WhiteLocalLogCompletionHandler)completionHandler;
+
+</ApiSignature>
+
+```text
+将 WebView 内本地日志刷新到持久化存储。
+```
+
+Declared in SDK/WhiteSDK.h
+
+<a id="//api/name/uploadLocalLogsWithCompletionHandler:"></a>
+
+### `– uploadLocalLogsWithCompletionHandler:`
+
+<ApiSignature>
+
+\- (void)uploadLocalLogsWithCompletionHandler:(WhiteLocalLogCompletionHandler)completionHandler;
+
+</ApiSignature>
+
+```text
+触发 WebView 内本地日志上传。
+```
+
+Declared in SDK/WhiteSDK.h
+
+<a id="//api/name/reloadBackgroundImage:completionHandler:"></a>
+
+### `– reloadBackgroundImage:completionHandler:`
+
+<ApiSignature>
+
+\- (void)reloadBackgroundImage:(WhiteReloadBackgroundImageParams *)params completionHandler:(WhiteReloadBackgroundImageCompletionHandler)completionHandler;
+
+</ApiSignature>
+
+重载当前聚焦场景此前失败的插件背景图；source 填 appliance。accepted 表示接收，reloadedCount 表示触发重载数量，不表示加载成功。
+
+```text
+重新加载当前聚焦场景中此前加载失败的背景图片。
+```
+
+Declared in SDK/WhiteSDK.h
+
+<a id="//api/name/hasBackgroundImage:completionHandler:"></a>
+
+### `– hasBackgroundImage:completionHandler:`
+
+<ApiSignature>
+
+\- (void)hasBackgroundImage:(WhiteHasBackgroundImageParams *)params completionHandler:(WhiteHasBackgroundImageCompletionHandler)completionHandler;
+
+</ApiSignature>
+
+按 viewId、scenePath、imageUrl 和 sources 查询插件背景图；当前来源填 appliance。需要启用多窗口和教具插件。
+
+```text
+查询指定白板、场景和 URL 是否已有任一来源的背景图。
+```
+
+Declared in SDK/WhiteSDK.h
+
+<a id="//api/name/setParameters:"></a>
+
+### `– setParameters:`
+
+<ApiSignature>
+
+\- (void)setParameters:(NSDictionary *)parameters;
+
+</ApiSignature>
+
+Declared in SDK/WhiteSDK.h
+
+## 动态配置与生命周期
+
+<a id="//api/name/leaveRoomWithCompletionHandler:"></a>
+
+### `– leaveRoomWithCompletionHandler:`
+
+<ApiSignature>
+
+\- (void)leaveRoomWithCompletionHandler:(void (^_Nullable)(NSError * _Nullable error))completionHandler;
+
+</ApiSignature>
+
+等待所属 Room 完成清理；error 为空表示成功。不返回房间全局状态快照。等待完成后再继续入房或销毁宿主。

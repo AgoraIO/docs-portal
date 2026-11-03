@@ -1,45 +1,53 @@
 ---
-title: Interface CursorMember
-description: 光标所属用户的信息。
+title: CursorMember
+description: Whiteboard Web SDK 2.16.59 公开 interface。
 _migration:
   type: generated-html
   status: migrated
-  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/cursormember.html
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/cursormember
   sourcePath: html-docs/whiteboard/Web/interfaces/cursormember.html
   generator: typedoc
   warnings: []
 ---
 
+```ts
+export declare interface CursorMember
+```
+
+## 成员
+
+- [color](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursormember#color)
+- [appliance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursormember#appliance)
+- [information](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursormember#information)
+
 ## Properties
-
-<a id="appliance"></a>
-
-### appliance
-
-appliance: string
-
-- Defined in [index-zh.d.ts\:461](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L461)
-
-用户选择的白板工具。
 
 <a id="color"></a>
 
 ### color
 
-color: [Color](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#color)
+readonly color: Color;
 
-- Defined in [index-zh.d.ts\:456](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L456)
+```text
+用户所选择的 strokeColor
+```
 
-用户选择的颜色（RGB 格式）。
+<a id="appliance"></a>
+
+### appliance
+
+readonly appliance: string;
+
+```text
+用户所选择的教具
+```
 
 <a id="information"></a>
 
 ### information
 
-information: [MemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberinformation)
+readonly information: MemberInformation;
 
-- Defined in [index-zh.d.ts\:466](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L466)
-
-### deprecated
-
-已废弃。请改用 [JoinRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#joinroomparams) 中的 `userPayload`。
+```text
+@deprecated 过期属性
+```

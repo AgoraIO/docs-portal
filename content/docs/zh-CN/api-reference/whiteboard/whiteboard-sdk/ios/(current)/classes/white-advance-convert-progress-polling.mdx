@@ -1,0 +1,171 @@
+---
+title: WhiteAdvanceConvertProgressPolling Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteAdvanceConvertProgressPolling
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteAdvanceConvertProgressPolling.html
+  generator: appledoc
+  warnings: []
+---
+
+Whiteboard iOS SDK 2.16.147 公开接口。
+
+@interface WhiteAdvanceConvertProgressPolling: NSObject
+
+## 成员
+
+- [init](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-advance-convert-progress-polling#//api/name/init)
+- [initWithPollingTimeinterval:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-advance-convert-progress-polling#//api/name/initWithPollingTimeinterval:)
+- [startPolling](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-advance-convert-progress-polling#//api/name/startPolling)
+- [pausePolling](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-advance-convert-progress-polling#//api/name/pausePolling)
+- [endPolling](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-advance-convert-progress-polling#//api/name/endPolling)
+- [cancelPollingTaskWithTaskUUID:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-advance-convert-progress-polling#//api/name/cancelPollingTaskWithTaskUUID:)
+- [insertV5PollingTaskWithTaskUUID\:token\:region\:taskType\:progress\:result:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-advance-convert-progress-polling#//api/name/insertV5PollingTaskWithTaskUUID:token:region:taskType:progress:result:)
+- [insertProjectorPollingTaskWithTaskUUID\:token\:region\:progress\:result:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-advance-convert-progress-polling#//api/name/insertProjectorPollingTaskWithTaskUUID:token:region:progress:result:)
+
+<a id="//api/name/init"></a>
+
+### `– init`
+
+<ApiSignature>
+
+\- (instancetype)init;
+
+</ApiSignature>
+
+```text
+默认初始的轮询时间为15S
+```
+
+Declared in Converter/WhiteAdvanceConvertProgressPolling.h
+
+<a id="//api/name/initWithPollingTimeinterval:"></a>
+
+### `– initWithPollingTimeinterval:`
+
+<ApiSignature>
+
+\- (instancetype)initWithPollingTimeinterval:(NSTimeInterval)interval;
+
+</ApiSignature>
+
+```text
+指定轮询时间
+```
+
+Declared in Converter/WhiteAdvanceConvertProgressPolling.h
+
+<a id="//api/name/startPolling"></a>
+
+### `– startPolling`
+
+<ApiSignature>
+
+\- (void)startPolling;
+
+</ApiSignature>
+
+```text
+启动轮询
+```
+
+Declared in Converter/WhiteAdvanceConvertProgressPolling.h
+
+<a id="//api/name/pausePolling"></a>
+
+### `– pausePolling`
+
+<ApiSignature>
+
+\- (void)pausePolling;
+
+</ApiSignature>
+
+```text
+暂停轮询
+```
+
+Declared in Converter/WhiteAdvanceConvertProgressPolling.h
+
+<a id="//api/name/endPolling"></a>
+
+### `– endPolling`
+
+<ApiSignature>
+
+\- (void)endPolling;
+
+</ApiSignature>
+
+```text
+停止轮询并且删除所有轮询任务
+```
+
+Declared in Converter/WhiteAdvanceConvertProgressPolling.h
+
+<a id="//api/name/cancelPollingTaskWithTaskUUID:"></a>
+
+### `– cancelPollingTaskWithTaskUUID:`
+
+<ApiSignature>
+
+\- (void)cancelPollingTaskWithTaskUUID:(NSString *)taskUUID;
+
+</ApiSignature>
+
+```text
+取消特定的一个轮询任务
+ @param taskUUID 任务id
+```
+
+Declared in Converter/WhiteAdvanceConvertProgressPolling.h
+
+<a id="//api/name/insertV5PollingTaskWithTaskUUID:token:region:taskType:progress:result:"></a>
+
+### `– insertV5PollingTaskWithTaskUUID:token:region:taskType:progress:result:`
+
+<ApiSignature>
+
+\- (NSString *)insertV5PollingTaskWithTaskUUID:(NSString *)taskUUID token:(NSString *)token region:(WhiteRegionKey)region taskType:(WhiteConvertTypeV5)type progress:(_Nullable ProgressHandler)progress result:(_Nullable ConvertCompletionHandlerV5)result;
+
+</ApiSignature>
+
+```text
+插入一个V5任务查询的轮询任务
+ 该任务会在转码失败或者成功之后被移出轮询队列
+
+ @param taskUUID 转码id
+ @param token 转码token
+ @param region 转码Region
+ @param type 转码类型, WhiteConvertTypeDynamic或者WhiteConvertTypeStatic
+ @param progress 进度回调
+ @param result 转码成功或者失败回调
+ @return 任务id
+```
+
+Declared in Converter/WhiteAdvanceConvertProgressPolling.h
+
+<a id="//api/name/insertProjectorPollingTaskWithTaskUUID:token:region:progress:result:"></a>
+
+### `– insertProjectorPollingTaskWithTaskUUID:token:region:progress:result:`
+
+<ApiSignature>
+
+\- (NSString *)insertProjectorPollingTaskWithTaskUUID:(NSString *)taskUUID token:(NSString *)token region:(WhiteRegionKey)region progress:(_Nullable ProgressHandler)progress result:(_Nullable ProjectorCompletionHandler)result;
+
+</ApiSignature>
+
+```text
+插入一个Projector任务查询的轮询任务
+ 该任务会在转码失败或者成功之后被移出轮询队列
+
+ @param taskUUID 转码id
+ @param token 转码token
+ @param region 转码Region
+ @param progress 进度回调
+ @param result 转码成功或者失败回调
+ @return 任务id
+```
+
+Declared in Converter/WhiteAdvanceConvertProgressPolling.h

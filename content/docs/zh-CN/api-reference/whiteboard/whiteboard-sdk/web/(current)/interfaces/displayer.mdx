@@ -1,28 +1,75 @@
 ---
-title: Interface Displayer<CALLBACKS>
-description: Displayer 接口是白板房间的基础接口。
+title: Displayer
+description: Whiteboard Web SDK 2.16.59 公开 interface。
 _migration:
   type: generated-html
-  status: migrated
+  status: warning
   sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/displayer
   sourcePath: html-docs/whiteboard/Web/interfaces/displayer.html
   generator: typedoc
-  warnings: []
+  warnings:
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
 ---
 
-### Type parameters
+```ts
+export declare interface Displayer<CALLBACKS extends DisplayerCallbacks = DisplayerCallbacks>
+```
 
-<ParameterList>
-<Parameter name="CALLBACKS">
+## 成员
 
-<ParameterType>
-
-[DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#displayercallbacks)
-
-</ParameterType>
-
-</Parameter>
-</ParameterList>
+- [callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#callbacks)
+- [observerId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#observerid)
+- [region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#region)
+- [slice](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#slice)
+- [version](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#version)
+- [deviceType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#devicetype)
+- [screenType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#screentype)
+- [state](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#state)
+- [enableWriteNow](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#enablewritenow)
+- [handToolKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#handtoolkey)
+- [views](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#views)
+- [useMobXState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#usemobxstate)
+- [useMultiViews](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#usemultiviews)
+- [handToolActive](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#handtoolactive)
+- [disableOthersSelectingBox](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#disableothersselectingbox)
+- [disableCameraTransform](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#disablecameratransform)
+- [commandWheelToZoom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#commandwheeltozoom)
+- [refreshViewSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#refreshviewsize)
+- [setCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#setcamerabound)
+- [createScenesCallback](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#createscenescallback)
+- [memberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#memberstate)
+- [moveCamera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#movecamera)
+- [moveCameraToContain](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#movecameratocontain)
+- [bindHtmlElement](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#bindhtmlelement)
+- [getInvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#getinvisibleplugin)
+- [convertToPointInWorld](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#converttopointinworld)
+- [scenePreview](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scenepreview)
+- [generateScreenshot](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#generatescreenshot)
+- [fillSceneSnapshot](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#fillscenesnapshot)
+- [screenshotToCanvas](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#screenshottocanvas)
+- [screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#screenshottocanvasasync)
+- [getBoundingRect](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#getboundingrect)
+- [addMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#addmagixeventlistener)
+- [removeMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#removemagixeventlistener)
+- [waitMagixEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#waitmagixevent)
+- [scalePptToFit](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scaleppttofit)
+- [scenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scenepathtype)
+- [entireScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#entirescenes)
+- [getScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#getscene)
 
 ## Properties
 
@@ -30,18 +77,15 @@ _migration:
 
 ### callbacks
 
-callbacks: [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks)&lt;CALLBACKS&gt;
+readonly callbacks: Callbacks&lt;CALLBACKS&gt;;
 
-- Defined in [index-zh.d.ts\:1540](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1540)
+````text
+回调函数，你可以通过如下方式来操作回调函数。
 
-回调函数。你可以通过如下方式设置回调函数：
-
-### example
-
-```ts
-// 监听到 onSliceChanged 回调
+@example
+```typescript
 function sliceChangeCallback(slice) {
-
+    // 监听到 onSliceChanged 回调
 }
 
 // 注册回调函数
@@ -50,292 +94,183 @@ displayer.callbacks.on("onSliceChanged", sliceChangeCallback);
 // 注销回调函数
 displayer.callbacks.off("onSliceChanged", sliceChangeCallback);
 
-// 仅仅回调一次
 displayer.callbacks.once("onSliceChanged", function(slice) {
-
+    // 仅仅回调一次
 });
+```
+````
+
+<a id="observerid"></a>
+
+### observerId
+
+readonly observerId: number;
+
+```text
+当前观察者的用户 ID。
+若是实时房间，观察者是我自己。若是回放房间，观察者是当前跟随视角的用户，如果当前没有跟随任何用户的视角，则取值 AdminObserverId。
+```
+
+<a id="region"></a>
+
+### region
+
+readonly region: string;
+
+```text
+当前房间所在的区域
+```
+
+<a id="slice"></a>
+
+### slice
+
+readonly slice: string;
+
+```text
+当前所处的 ``slice`` 的 UUID
+```
+
+<a id="version"></a>
+
+### version
+
+readonly version: string;
+
+```text
+当前 SDK 的版本
 ```
 
 <a id="devicetype"></a>
 
 ### deviceType
 
-deviceType: [DeviceType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/devicetype)
+readonly deviceType: DeviceType;
 
-- Defined in [index-zh.d.ts\:1578](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1578)
-
-该客户端的设备类型，决定 SDK 如何处理鼠标事件和触碰事件。
-
-<a id="disablecameratransform"></a>
-
-### disableCameraTransform
-
-disableCameraTransform: boolean
-
-- Defined in [index-zh.d.ts\:1635](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1635)
-
-是否禁止用户通过触屏手势或鼠标滚轮调整视角（即移动或缩放视角）：
-
-- `true`：禁止用户调整视角。
-- `false`：（默认）允许用户调整视角。
-
-**Note**
-
-该属性不影响 `setCameraBound`、`moveCamera`、`moveCameraToContain` 方法的使用。
-
-<a id="disableothersselectingbox"></a>
-
-### disableOthersSelectingBox
-
-disableOthersSelectingBox: boolean
-
-- Defined in [index-zh.d.ts\:1624](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1624)
-
-是否隐藏其他人的鼠标移动到白板组件上时显示的高亮框。
-
-:::info[since]
-2.12.0
-
-- `true`：隐藏高亮框。
-- `false`：（默认）不隐藏高亮框。
-
-**Note**
-
-该属性不影响自己的高亮框显示。
-:::
-
-<a id="enablewritenow"></a>
-
-### enableWriteNow
-
-enableWriteNow: boolean
-
-- Defined in [index-zh.d.ts\:1598](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1598)
-
-用户当前是否有写的权限:
-
-:::info[since]
-2.10.0
-
-- `true`：有写的权限。
-- `false`：没有写的权限。
-:::
-
-<a id="handtoolactive"></a>
-
-### handToolActive
-
-handToolActive: boolean
-
-- Defined in [index-zh.d.ts\:1610](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1610)
-
-报告抓手工具是否启用:
-
-- `true`：启用抓手工具。
-- `false`：不启用抓手工具。
-
-<a id="handtoolkey"></a>
-
-### handToolKey
-
-handToolKey: string|undefined
-
-- Defined in [index-zh.d.ts\:1603](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1603)
-
-抓手工具的快捷键。用户可以使用抓手工具拖动页面。如果设为 `undefined`，表示不启用快捷键功能。
-
-<a id="observerid"></a>
-
-### observerId
-
-observerId: number
-
-- Defined in [index-zh.d.ts\:1549](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1549)
-
-用户 ID。
-
-- 在实时房间中，指本地用户的用户 ID。
-- 在回放房间中:
-
-  - 当用户的 `ObserverMode` 为 `Directory` 时，`observerId` 为被跟随的用户的用户 ID。
-  - 当用户的 `ObserverMode` 为 `Freedom` 时，为 `AdminObserverId`。
-
-<a id="region"></a>
-
-### region
-
-region: string
-
-- Defined in [index-zh.d.ts\:1562](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1562)
-
-数据中心。支持传入以下值：
-
-| `region` | 数据中心 | 服务区 |
-| --- | --- | --- |
-| `us-sv` | 美国硅谷 | 北美洲、南美洲 |
-| `sg` | 新加坡 | 新加坡、东亚、东南亚 |
-| `in-mum` | 印度孟买 | 印度 |
-| `eu` | 欧洲（法兰克福） | 欧洲 |
-| `cn-hz` | 中国杭州 | 其他数据中心服务区未覆盖的地区 |
+```text
+该客户端的设备类型，决定 SDK 如何处理鼠标事件和触碰事件
+```
 
 <a id="screentype"></a>
 
 ### screenType
 
-screenType: [ScreenType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/screentype)
+readonly screenType: ScreenType;
 
-- Defined in [index-zh.d.ts\:1583](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1583)
-
-用户的屏幕类型，用于调整手势识别参数。
-
-<a id="slice"></a>
-
-### slice
-
-slice: string
-
-- Defined in [index-zh.d.ts\:1567](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1567)
-
-当前所处分片的 UUID。
+```text
+该客户端的屏幕类型，用于调整手势识别参数
+```
 
 <a id="state"></a>
 
 ### state
 
-state: [DisplayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#displayerstate)
+readonly state: DisplayerState;
 
-- Defined in [index-zh.d.ts\:1588](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1588)
+```text
+状态
+```
 
-`Displayer` 对象的状态。
+<a id="enablewritenow"></a>
 
-<a id="version"></a>
+### enableWriteNow
 
-### version
+readonly enableWriteNow: boolean;
 
-version: string
+```text
+当前是否允许对房间进行写操作
+```
 
-- Defined in [index-zh.d.ts\:1573](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1573)
+<a id="handtoolkey"></a>
 
-当前 SDK 的版本。
+### handToolKey
 
-:::info[since]
-2.13.14
-:::
+readonly handToolKey: string | undefined;
+
+```text
+按下键盘上哪个键能唤出抓手工具抓住屏幕以供用户拖动，若为 ``undefined`` 则关闭该功能
+```
+
+<a id="views"></a>
+
+### views
+
+readonly views: Views;
+
+<a id="usemobxstate"></a>
+
+### useMobXState
+
+readonly useMobXState: boolean;
+
+<a id="usemultiviews"></a>
+
+### useMultiViews
+
+readonly useMultiViews: boolean;
+
+<a id="handtoolactive"></a>
+
+### handToolActive
+
+handToolActive: boolean;
+
+```text
+是否启动抓手工具抓住屏幕以供用户拖动
+```
+
+<a id="disableothersselectingbox"></a>
+
+### disableOthersSelectingBox
+
+disableOthersSelectingBox: boolean;
+
+```text
+是否隐藏其他人鼠标移动到白板组建上时，显示的高亮框。
+该属性不会影响自己的高亮框显示。
+```
+
+<a id="disablecameratransform"></a>
+
+### disableCameraTransform
+
+disableCameraTransform: boolean;
+
+```text
+是否禁止设备主动操作视角。
+禁止后，用户无法使用鼠标滚轮，或在 touch 设备上通过多指手势来改变视角。
+该属性不会影响 ``setCameraBound``、``moveCamera``、``moveCameraToContain`` 方法的使用。
+```
+
+<a id="commandwheeltozoom"></a>
+
+### commandWheelToZoom
+
+commandWheelToZoom: boolean;
+
+```text
+在 macOS 系统上，是否允许按住 ``command`` 键并滚动来放大缩小白板。
+此选项不影响 ``control`` 滚轮的放大缩小行为。
+默认为 ``false``。
+```
 
 ## Methods
 
-<a id="addmagixeventlistener"></a>
+<a id="refreshviewsize"></a>
 
-### addMagixEventListener
-
-<ApiSignature>
-
-addMagixEventListener(event: string, listener: [EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener), options?: [MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)): void
-
-</ApiSignature>
+### refreshViewSize
 
 <ApiSignature>
 
-addMagixEventListener(event: string, listener: [EventsListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventslistener), fireInterval: number): void
+refreshViewSize(): void;
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:1815](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1815)
-
-注册自定义事件监听。
-
-成功注册后，你可以接收到对应的自定义事件通知。
-
-**Note**
-
-对于同名的自定义事件，SDK 仅支持触发一个回调。
-
-<ParameterList title="Parameters">
-<Parameter name="event" type="string" required>
-
-想要监听的自定义事件名称。
-
-</Parameter>
-<Parameter name="listener" required>
-
-<ParameterType>
-
-[EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)
-
-</ParameterType>
-
-自定义事件回调，详见 [EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。
-
-</Parameter>
-<Parameter name="options" optional>
-
-<ParameterType>
-
-[MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)
-
-</ParameterType>
-
-自从 v2.15.2。 自定义事件监听设置选项。详见 [MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)。
-
-</Parameter>
-</ParameterList>
-
-<ApiReturns>
-
-<ApiReturnType>
-
-void
-
-</ApiReturnType>
-
-</ApiReturns>
-
-- Defined in [index-zh.d.ts\:1841](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1841)
-
-注册高频自定义事件监听。
-
-成功注册后，你可以接收到对应的自定义事件通知。
-
-**Note**
-
-对于同名的自定义事件，SDK 仅支持触发一个回调。
-
-### example
-
-```ts
-function listener(events) {
-    // events 是一个数组
-    for (const event of events) {
-        // 回调事件 event
-    }
-}
-displayer.addMagixEventListener("my-event", listener, 100);
+```text
+仅当 ``autoResize: false`` 时调用有意义。
+当白板的尺寸改变后，必须主动调用该方法让其同步。
 ```
 
-<ParameterList title="Parameters">
-<Parameter name="event" type="string" required>
-
-想要监听的自定义事件名称。
-
-</Parameter>
-<Parameter name="listener" required>
-
-<ParameterType>
-
-[EventsListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventslistener)
-
-</ParameterType>
-
-自定义事件回调，详见 [EventsListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventslistener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。
-
-</Parameter>
-<Parameter name="fireInterval" type="number" required>
-
-SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如果设置为低于该值会被重置为 500 ms。
-
-</Parameter>
-</ParameterList>
-
 <ApiReturns>
 
 <ApiReturnType>
@@ -346,27 +281,19 @@ void
 
 </ApiReturns>
 
-<a id="bindhtmlelement"></a>
+<a id="setcamerabound"></a>
 
-### bindHtmlElement
+### setCameraBound
 
 <ApiSignature>
 
-bindHtmlElement(element: HTMLDivElement | null): void
+setCameraBound(cameraBound: CameraBound): void;
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:1701](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1701)
-
-将白板绑定到 HTML 元素上。
-
-<ParameterList title="Parameters">
-<Parameter name="element" type="HTMLDivElement | null" required>
-
-用于容纳白板的 HTML 元素容器。若为 `null`，表示解除对白板的绑定。
-
-</Parameter>
-</ParameterList>
+```text
+修改 ``cameraBound`` 以调整视角边界
+```
 
 <ApiReturns>
 
@@ -375,70 +302,6 @@ bindHtmlElement(element: HTMLDivElement | null): void
 void
 
 </ApiReturnType>
-
-</ApiReturns>
-
-<a id="converttopointinworld"></a>
-
-### convertToPointInWorld
-
-<ApiSignature>
-
-convertToPointInWorld(point: \{ x: number; y: number \}): \{ x: number; y: number \}
-
-</ApiSignature>
-
-- Defined in [index-zh.d.ts\:1721](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1721)
-
-转换白板上点的坐标。
-
-该方法可以将屏幕坐标系（以屏幕左上角为原点，横轴为 X 轴，正方向向右，纵轴为 Y 轴，正方向向下）
- 中的坐标转换为世界坐标系（以白板初始化时的中点为原点，横轴为 X 轴，正方向向右，纵轴为 Y 轴，正方向向下）
- 中的坐标。
-
-<ParameterList title="Parameters">
-<Parameter name="point" type="\&#123;x:number;y:number\&#125;" required>
-
-点在屏幕坐标系中的坐标。
-
-<ParameterList>
-<Parameter name="x" type="number" required>
-
-点在屏幕坐标系上的 X 轴坐标。
-
-</Parameter>
-<Parameter name="y" type="number" required>
-
-点在屏幕坐标系上的 Y 轴坐标。
-
-</Parameter>
-</ParameterList>
-
-</Parameter>
-</ParameterList>
-
-<ApiReturns>
-
-<ApiReturnType>
-
-\{ x: number; y: number \}
-
-</ApiReturnType>
-
-点在世界坐标系中的坐标。
-
-<ParameterList>
-<Parameter name="x" type="number" required>
-
-点在世界坐标系上的 X 轴坐标。
-
-</Parameter>
-<Parameter name="y" type="number" required>
-
-点在世界坐标系上的 Y 轴坐标。
-
-</Parameter>
-</ParameterList>
 
 </ApiReturns>
 
@@ -448,248 +311,27 @@ convertToPointInWorld(point: \{ x: number; y: number \}): \{ x: number; y: numbe
 
 <ApiSignature>
 
-createScenesCallback(path: string, callbacks?: Partial&lt;[ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks)&gt;): [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode) | null
+createScenesCallback(path: string, callbacks?: Partial&lt;ScenesCallbacks&gt;): ScenesCallbacksNode | null;
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:1668](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1668)
+```text
+创建监听器，以监听特定地址的场景组中子场景、子场景组列表的变化情况。
+创建的监听器对象必须在使用完毕后调用 ``dispose()`` 释放。
+当某个场景组已经被监听之后，无法再次创建新的监听器，除非上一个监听器被释放。
 
-创建场景目录的监听器对象。
-
-成功创建监听器对象后，当指定场景目录下的场景、子场景目录发生变化时，SDK 会触发你在 [ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks) 中实现的回调。
- 当不再需要使用已创建的监听器时，需要调用 [dispose](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode#dispose) 来释放该监听器对象。
-
-### note
-
-- 该方法需要在加入白板房间后调用。
-- 对于每个场景目录，仅支持创建一个监听器对象。如果需要创建新的监听器对象，必须先调用 `dispose` 释放已创建的监听器对象。
-
-<ParameterList title="Parameters">
-<Parameter name="path" type="string" required>
-
-场景目录的路径。如果你传入的是场景路径，SDK 会将监听对象设置为其父场景目录。
-
-</Parameter>
-<Parameter name="callbacks" optional>
-
-<ParameterType>
-
-Partial & lt;[ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks) & gt;
-
-</ParameterType>
-
-需要监听的回调。详见 `ScenesCallbacks`。
-
-</Parameter>
-</ParameterList>
+@param path 要监听的场景组地址。如果该地址对应一个场景，则取其父场景组
+@param callbacks 一开始要监听的内容，可选
+@returns 返回一个 ScenesCallbacksNode 对象，当对应地址不存在时，返回 ``null``
+```
 
 <ApiReturns>
 
 <ApiReturnType>
 
-[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode) | null
+ScenesCallbacksNode | null
 
 </ApiReturnType>
-
-- 方法调用成功时，返回 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode) 对象。
-- 方法调用失败时，返回 `null`。方法调用失败可能是因为指定的场景目录不存在。
-
-</ApiReturns>
-
-<a id="entirescenes"></a>
-
-### entireScenes
-
-<ApiSignature>
-
-entireScenes(): [SceneMap](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenemap)
-
-</ApiSignature>
-
-- Defined in [index-zh.d.ts\:1881](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1881)
-
-获取当前房间内所有场景的信息。
-
-<ApiReturns>
-
-<ApiReturnType>
-
-[SceneMap](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenemap)
-
-</ApiReturnType>
-
-当前房间内所有场景的信息。
-
-</ApiReturns>
-
-<a id="fillscenesnapshot"></a>
-
-### fillSceneSnapshot
-
-<ApiSignature>
-
-fillSceneSnapshot(scenePath: string, div: HTMLElement, width: number, height: number): void
-
-</ApiSignature>
-
-- Defined in [index-zh.d.ts\:1771](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1771)
-
-生成特定场景的屏幕快照。
-
-<ParameterList title="Parameters">
-<Parameter name="scenePath" type="string" required>
-
-特定场景的路径。
-
-</Parameter>
-<Parameter name="div" type="HTMLElement" required>
-
-用于显示屏幕快照的 div。
-
-</Parameter>
-<Parameter name="width" type="number" required>
-
-屏幕快照的宽度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示屏幕快照的 div 的宽度。
-
-</Parameter>
-<Parameter name="height" type="number" required>
-
-屏幕快照的高度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示屏幕快照的 div 的高度。
-
-</Parameter>
-</ParameterList>
-
-<ApiReturns>
-
-<ApiReturnType>
-
-void
-
-</ApiReturnType>
-
-</ApiReturns>
-
-<a id="generatescreenshot"></a>
-
-### generateScreenshot
-
-<ApiSignature>
-
-generateScreenshot(scenePath?: string, width?: number, height?: number): Promise&lt;string&gt;
-
-</ApiSignature>
-
-- Defined in [index-zh.d.ts\:1762](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1762)
-
-生成特定场景的截图。
-
-### deprecated
-
-该方法已废弃，请使用 [screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#screenshottocanvasasync) 方法。
-
-<ParameterList title="Parameters">
-<Parameter name="scenePath" type="string" optional>
-
-特定场景的路径。
-
-</Parameter>
-<Parameter name="width" type="number" optional>
-
-截图的宽度。
-
-</Parameter>
-<Parameter name="height" type="number" optional>
-
-截图的高度
-
-</Parameter>
-</ParameterList>
-
-<ApiReturns>
-
-<ApiReturnType>
-
-Promise&lt;string&gt;
-
-</ApiReturnType>
-
-截图的 URL 地址。
-
-**Note**
-
-如果场景中展示了图片或动态 PPT 幻灯片，请确保该图片或 PPT 幻灯片的存储服务器支持跨域资源共享；否则，生成的截图中可能不会显示该图片或 PPT 幻灯片。
-
-</ApiReturns>
-
-<a id="getinvisibleplugin"></a>
-
-### getInvisiblePlugin
-
-<ApiSignature>
-
-getInvisiblePlugin&lt;A&gt;(kind: string): [InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)&lt;A&gt; | null
-
-</ApiSignature>
-
-- Defined in [index-zh.d.ts\:1709](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1709)
-
-获取指定的不可见插件。
-
-<ParameterList title="Type parameters">
-<Parameter name="A" type="Object" />
-</ParameterList>
-
-<ParameterList title="Parameters">
-<Parameter name="kind" type="string" required>
-
-不可见插件的类型。
-
-</Parameter>
-</ParameterList>
-
-<ApiReturns>
-
-<ApiReturnType>
-
-[InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)&lt;A&gt; | null
-
-</ApiReturnType>
-
-指定的不可见插件。
-
-</ApiReturns>
-
-<a id="getscene"></a>
-
-### getScene
-
-<ApiSignature>
-
-getScene(path: string): [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene) | undefined
-
-</ApiSignature>
-
-- Defined in [index-zh.d.ts\:1889](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1889)
-
-获取指定场景的信息。
-
-<ParameterList title="Parameters">
-<Parameter name="path" type="string" required>
-
-场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如，`/math/classA`。
-
-</Parameter>
-</ParameterList>
-
-<ApiReturns>
-
-<ApiReturnType>
-
-[WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene) | undefined
-
-</ApiReturnType>
-
-场景信息。详见 [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene)。
 
 </ApiReturns>
 
@@ -699,31 +341,22 @@ getScene(path: string): [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-
 
 <ApiSignature>
 
-memberState(memberId: number): [MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)
+memberState(memberId: number): MemberState;
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:1676](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1676)
-
-获取房间内指定用户的白板工具状态。
-
-<ParameterList title="Parameters">
-<Parameter name="memberId" type="number" required>
-
-指定用户的 ID。
-
-</Parameter>
-</ParameterList>
+```text
+获取房间内特定用户的自定义状态
+@param memberId 用户的 ID
+```
 
 <ApiReturns>
 
 <ApiReturnType>
 
-[MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)
+MemberState
 
 </ApiReturnType>
-
-指定用户的白板工具状态。
 
 </ApiReturns>
 
@@ -733,27 +366,13 @@ memberState(memberId: number): [MemberState](/zh-CN/api-reference/whiteboard/whi
 
 <ApiSignature>
 
-moveCamera(camera: Partial&lt;[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)&gt; & Readonly&lt;\{ animationMode?: [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode) \}&gt;): void
+moveCamera(camera: Partial&lt;Camera&gt; & Readonly&lt;\{ animationMode?: AnimationMode; \}&gt;): void;
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:1683](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1683)
-
-调整视角。
-
-<ParameterList title="Parameters">
-<Parameter name="camera" required>
-
-<ParameterType>
-
-Partial & lt;[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera) & gt; & Readonly & lt;\{animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)\} & gt;
-
-</ParameterType>
-
-视角的参数配置，详见 [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)。
-
-</Parameter>
-</ParameterList>
+```text
+移动视角
+```
 
 <ApiReturns>
 
@@ -771,27 +390,13 @@ void
 
 <ApiSignature>
 
-moveCameraToContain(rectangle: [Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames#rectangle) & Readonly&lt;\{ animationMode?: [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode) \}&gt;): void
+moveCameraToContain(rectangle: Rectangle & Readonly&lt;\{ animationMode?: AnimationMode; \}&gt;): void;
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:1692](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1692)
-
-调整视角，以保证完整显示视觉矩形。
-
-<ParameterList title="Parameters">
-<Parameter name="rectangle" required>
-
-<ParameterType>
-
-[Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames#rectangle) & Readonly & lt;\{animationMode?:[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)\} & gt;
-
-</ParameterType>
-
-视觉矩形的参数设置，详见 [Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames#rectangle)。
-
-</Parameter>
-</ParameterList>
+```text
+移动视角以容纳特定的视觉矩形
+```
 
 <ApiReturns>
 
@@ -803,22 +408,20 @@ void
 
 </ApiReturns>
 
-<a id="refreshviewsize"></a>
+<a id="bindhtmlelement"></a>
 
-### refreshViewSize
+### bindHtmlElement
 
 <ApiSignature>
 
-refreshViewSize(): void
+bindHtmlElement(element: HTMLDivElement | null): void;
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:1643](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1643)
-
-刷新白板的界面。
-
-当白板的 view 发生改变时，需要手动调用该方法刷新白板的界面。
- 该方法仅在 `autoResize` 为 `false` 时生效。
+```text
+将白板绑定到 HTML 元素上
+@param element 用于容纳白板的 HTML 元素容器。若为 ``null``，表明解除对白板的绑定。
+```
 
 <ApiReturns>
 
@@ -830,122 +433,53 @@ void
 
 </ApiReturns>
 
-<a id="removemagixeventlistener"></a>
+<a id="getinvisibleplugin"></a>
 
-### removeMagixEventListener
+### getInvisiblePlugin
 
 <ApiSignature>
 
-removeMagixEventListener(event: string, listener?: [EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)): void
+getInvisiblePlugin&lt;A extends Object, MA extends Object&gt;(kind: string): InvisiblePlugin&lt;A, MA&gt; | null;
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:1849](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1849)
-
-移除自定义事件监听。
-
-<ParameterList title="Parameters">
-<Parameter name="event" type="string" required>
-
-想要移除监听的自定义事件名称。
-
-</Parameter>
-<Parameter name="listener" optional>
-
-<ParameterType>
-
-[EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)
-
-</ParameterType>
-
-要移除的监听。若不传，该自定义事件之下的所有监听器将全部注销。
-
-</Parameter>
-</ParameterList>
+```text
+获取特定的不可件插件
+```
 
 <ApiReturns>
 
 <ApiReturnType>
 
-void
+InvisiblePlugin&lt;A, MA&gt; | null
 
 </ApiReturnType>
 
 </ApiReturns>
 
-<a id="scaleppttofit"></a>
+<a id="converttopointinworld"></a>
 
-### scalePptToFit
+### convertToPointInWorld
 
 <ApiSignature>
 
-scalePptToFit(animationMode?: [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)): void
+convertToPointInWorld(point: \{ x: number; y: number; \}): \{ x: number; y: number; \};
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:1866](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1866)
-
-根据指定的动画模式调整视角，以保证完整显示 PPT 的内容。
-
-:::info[since]
-2.3.18
-:::
-
-<ParameterList title="Parameters">
-<Parameter name="animationMode" optional>
-
-<ParameterType>
-
-[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)
-
-</ParameterType>
-
-视角调整时的动画模式，详见 [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)。
-
-</Parameter>
-</ParameterList>
+```text
+点的坐标系转换
+@param point 屏幕坐标系上的点，以屏幕坐上角为原点。
+@returns 世界坐标系上的点
+```
 
 <ApiReturns>
 
 <ApiReturnType>
 
-void
+\{ x: number; y: number; \}
 
 </ApiReturnType>
-
-</ApiReturns>
-
-<a id="scenepathtype"></a>
-
-### scenePathType
-
-<ApiSignature>
-
-scenePathType(path: string): [ScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype)
-
-</ApiSignature>
-
-- Defined in [index-zh.d.ts\:1874](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1874)
-
-查询场景路径类型。
-
-<ParameterList title="Parameters">
-<Parameter name="path" type="string" required>
-
-场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如，`/math/classA`。
-
-</Parameter>
-</ParameterList>
-
-<ApiReturns>
-
-<ApiReturnType>
-
-[ScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype)
-
-</ApiReturnType>
-
-场景路径的类型。
 
 </ApiReturns>
 
@@ -955,36 +489,65 @@ scenePathType(path: string): [ScenePathType](/zh-CN/api-reference/whiteboard/whi
 
 <ApiSignature>
 
-scenePreview(scenePath: string, div: HTMLElement, width: number | undefined, height: number | undefined): void
+scenePreview(scenePath: string, div: HTMLElement, width?: number, height?: number, engine?: RenderEngine): void;
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:1749](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1749)
+```text
+生成场景预览
+@param  scenePath 想要获取预览内容的场景的场景路径
+@param  div 想要展示预览内容的 div
+@param  width 白板的缩放宽度：将当前白板内容，缩小到真实像素宽度。2.3.8 后，该参数为可选参数，如果不填，则默认为展示内容 div 的宽度。
+@param  height 白板的缩放高度：将当前白板的内容，缩小到真实像素高度。2.3.8 后，该参数为可选参数，如果不填，则默认为展示内容 div 的高度。
+```
 
-生成特定场景的预览图。
+<ApiReturns>
 
-<ParameterList title="Parameters">
-<Parameter name="scenePath" type="string" required>
+<ApiReturnType>
 
-特定场景的路径。
+void
 
-</Parameter>
-<Parameter name="div" type="HTMLElement" required>
+</ApiReturnType>
 
-用于显示预览内容的 div。
+</ApiReturns>
 
-</Parameter>
-<Parameter name="width" type="number | undefined" required>
+<a id="generatescreenshot"></a>
 
-预览图的宽度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示预览内容的 div 的宽度。
+### generateScreenshot
 
-</Parameter>
-<Parameter name="height" type="number | undefined" required>
+<ApiSignature>
 
-预览图的高度。自 2.3.8 起，该参数为可选参数，如果不填，则默认为展示预览内容的 div 的高度。
+generateScreenshot(scenePath?: string, width?: number, height?: number): Promise&lt;string&gt;;
 
-</Parameter>
-</ParameterList>
+</ApiSignature>
+
+```text
+读取场景背景图 ``scene.ppt.src`` 并生成他的 base64 URL
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;string&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="fillscenesnapshot"></a>
+
+### fillSceneSnapshot
+
+<ApiSignature>
+
+fillSceneSnapshot(scenePath: string, div: HTMLElement, width?: number, height?: number, engine?: RenderEngine): void;
+
+</ApiSignature>
+
+```text
+生成场景预览，和 {@link scenePreview} 的区别是此函数会选取一个框住所有元素的视角，而 scenePreview 选取的是用户当前视角
+```
 
 <ApiReturns>
 
@@ -1002,52 +565,31 @@ void
 
 <ApiSignature>
 
-screenshotToCanvas(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera), ratio?: number): void
+screenshotToCanvas(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: Camera, ratio?: number): void;
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:1782](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1782)
-
+````text
 生成屏幕快照，并写入指定的 CanvasRenderingContext2D 对象中。
+调用此方法时可能存在一些图片还未加载完成从而不会渲染出来。
 
-<ParameterList title="Parameters">
-<Parameter name="context" type="CanvasRenderingContext2D" required>
+@param context canvas 2D 上下文, 你可以通过 ``canvas.getContext("2d")`` 来获取
+@param scenePath 要截图的场景路径
+@param width canvas 的宽度，单位像素
+@param height canvas 的高度，单位像素
+@param camera 目标视角
+@param ratio 缩放比例，默认为 1
 
-CanvasRenderingContext2D 对象。
-
-</Parameter>
-<Parameter name="scenePath" type="string" required>
-
-场景的路径。你可以通过 `room.state.sceneState.scenePath` 获取当前场景。
-
-</Parameter>
-<Parameter name="width" type="number" required>
-
-屏幕快照的宽度。
-
-</Parameter>
-<Parameter name="height" type="number" required>
-
-屏幕快照的高度。
-
-</Parameter>
-<Parameter name="camera" required>
-
-<ParameterType>
-
-[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)
-
-</ParameterType>
-
-视角的描述。
-
-</Parameter>
-<Parameter name="ratio" type="number" optional>
-
-设备像素比。该参数为可选参数，如果不填，则默认值为 1。
-
-</Parameter>
-</ParameterList>
+@example
+```javascript
+const canvas = document.createElement("canvas");
+const { scenePath } = room.state.sceneState;
+const { width, height, ...camera } = room.state.cameraState;
+canvas.width = width;
+canvas.height = height;
+room.screenshotToCanvas(canvas.getContext("2d"), scenePath, width, height, camera);
+```
+````
 
 <ApiReturns>
 
@@ -1065,63 +607,16 @@ void
 
 <ApiSignature>
 
-screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera), ratio?: number, timeout?: number): Promise&lt;void&gt;
+screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: Camera, ratio?: number, timeout?: number): Promise&lt;void&gt;;
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:1800](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1800)
+```text
+**实验性** 等待目标场景的图片加载完成，然后生成屏幕快照，写入指定的渲染上下文中。
 
-等待目标场景的图片加载完成后生成屏幕快照，写入指定的 `CanvasRenderingContext2D` 对象中。
-
-### note
-
-- 该功能处于实验阶段。
-- 如果目标场景的图片无法完成加载，则该函数无法返回屏幕快照，你需要自行处理超时逻辑。
-- 如果你希望生成的屏幕快照不包含图片，请使用 [screenshotToCanvas](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#screenshottocanvas)。
-
-<ParameterList title="Parameters">
-<Parameter name="context" type="CanvasRenderingContext2D" required>
-
-CanvasRenderingContext2D 对象。
-
-</Parameter>
-<Parameter name="scenePath" type="string" required>
-
-场景的路径。你可以通过 `room.state.sceneState.scenePath` 获取当前场景。
-
-</Parameter>
-<Parameter name="width" type="number" required>
-
-屏幕快照的宽度。
-
-</Parameter>
-<Parameter name="height" type="number" required>
-
-屏幕快照的高度。
-
-</Parameter>
-<Parameter name="camera" required>
-
-<ParameterType>
-
-[Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)
-
-</ParameterType>
-
-视角的描述。详见 [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)。
-
-</Parameter>
-<Parameter name="ratio" type="number" optional>
-
-设备像素比。该参数为可选参数，如果不填，则默认值为 1。
-
-</Parameter>
-<Parameter name="timeout" type="number" optional>
-
-图片加载的超时时间 (ms)，默认为永不超时，只能设为大于 `0` 的数。图片的加载时间超过该值后，SDK 会直接进行下一步绘制操作，而不会等待图片加载完成。
-
-</Parameter>
-</ParameterList>
+@param timeout 超时时间，单位毫秒，默认为永远等待。超时后，不会等待图片加载完成，直接进行下一步绘制操作。
+               只能设为大于 ``0`` 的数，否则等于不设超时。
+```
 
 <ApiReturns>
 
@@ -1133,33 +628,95 @@ Promise&lt;void&gt;
 
 </ApiReturns>
 
-<a id="setcamerabound"></a>
+<a id="getboundingrect"></a>
 
-### setCameraBound
+### getBoundingRect
 
 <ApiSignature>
 
-setCameraBound(cameraBound: [CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerabound)): void
+getBoundingRect(scenePath: string): Rectangle;
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:1649](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1649)
+```text
+获取某个场景里包含所有元素的矩形
+```
 
-设置用户的视角边界。
+<ApiReturns>
 
-<ParameterList title="Parameters">
-<Parameter name="cameraBound" required>
+<ApiReturnType>
 
-<ParameterType>
+Rectangle
 
-[CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerabound)
+</ApiReturnType>
 
-</ParameterType>
+</ApiReturns>
 
-视角边界。
+<a id="addmagixeventlistener"></a>
 
-</Parameter>
-</ParameterList>
+### addMagixEventListener
+
+<ApiSignature>
+
+addMagixEventListener(event: string, listener: EventListener, options?: MagixEventListenerOptions): void;
+
+</ApiSignature>
+
+<ApiSignature>
+
+addMagixEventListener(event: string, listener: EventsListener, fireInterval: number): void;
+
+</ApiSignature>
+
+```text
+添加自定义事件监听器
+@param event 自定义事件名
+@param listener 自定义事件监听器
+@param options 监听配置
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+```text
+添加自定义事件监听器
+@param event 自定义事件名
+@param listener 自定义事件监听器
+@param options 监听配置
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removemagixeventlistener"></a>
+
+### removeMagixEventListener
+
+<ApiSignature>
+
+removeMagixEventListener(event: string, listener?: EventListener): void;
+
+</ApiSignature>
+
+```text
+注销自定义事件监听器
+@param event 自定定义事件名
+@param listener 要注销的监听器，若不传，则将该自定义事件之下的所有监听器全部注销
+```
 
 <ApiReturns>
 
@@ -1177,36 +734,120 @@ void
 
 <ApiSignature>
 
-waitMagixEvent(filter: [EventFilter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventfilter)): Promise&lt;[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)&gt;
+waitMagixEvent(filter: EventFilter): Promise&lt;Event&gt;;
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:1857](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L1857)
-
-等待特定的自定义事件发生。
-
-<ParameterList title="Parameters">
-<Parameter name="filter" required>
-
-<ParameterType>
-
-[EventFilter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventfilter)
-
-</ParameterType>
-
-事件过滤器。
-
-</Parameter>
-</ParameterList>
+```text
+等待直到特定的自定义事件发生
+@param filter 用于判断是否是想要的自定义事件，若是，该方法应该返回 ``true``。
+@returns 当特定自定义事件发生时，返回该事件
+```
 
 <ApiReturns>
 
 <ApiReturnType>
 
-Promise&lt;[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)&gt;
+Promise&lt;Event&gt;
 
 </ApiReturnType>
 
-当特定自定义事件发生时，返回该事件。
+</ApiReturns>
+
+<a id="scaleppttofit"></a>
+
+### scalePptToFit
+
+<ApiSignature>
+
+scalePptToFit(animationMode?: AnimationMode): void;
+
+</ApiSignature>
+
+```text
+调整视角以将 PPT 充满屏幕。若当前场景没有 PPT，则什么都不做。
+@param animationMode 调整视角时的过渡动画模式
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="scenepathtype"></a>
+
+### scenePathType
+
+<ApiSignature>
+
+scenePathType(path: string): ScenePathType;
+
+</ApiSignature>
+
+```text
+查看特定场景的类型
+@param path 该场景的路径
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+ScenePathType
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="entirescenes"></a>
+
+### entireScenes
+
+<ApiSignature>
+
+entireScenes(): SceneMap;
+
+</ApiSignature>
+
+```text
+获取当前房间中所有场景信息
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+SceneMap
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getscene"></a>
+
+### getScene
+
+<ApiSignature>
+
+getScene(path: string): WhiteScene | undefined;
+
+</ApiSignature>
+
+```text
+获取特定场景信息
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+WhiteScene | undefined
+
+</ApiReturnType>
 
 </ApiReturns>

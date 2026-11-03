@@ -1,52 +1,135 @@
 ---
-title: com.herewhite.sdk.domain.MemberInformation类 参考
+title: com.herewhite.sdk.domain.MemberInformation class 参考
 tocMaxDepth: 3
 _migration:
   type: generated-html
-  status: warning
+  status: migrated
   sourceUrl: >-
     https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_member_information
   sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_member_information.html
   generator: doxygen
-  warnings:
-    - code: missing-source-text
-      severity: warning
-      message: >-
-        The source image classcom_1_1herewhite_1_1sdk_1_1domain_1_1_member_information.png has no
-        meaningful alt or title text; the converter used contextual alt text
-        "com.herewhite.sdk.domain.MemberInformation类 参考 图示".
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/whiteboard/android/deprecated.html#_deprecated000008 as local text.
+  warnings: []
 ---
-
-类 com.herewhite.sdk.domain.MemberInformation 继承关系图:
-
-![com.herewhite.sdk.domain.MemberInformation类 参考 图示](https://web-cdn.agora.io/docs-portal/img/api-center-generated/fb195a68fc58-classcom_1_1herewhite_1_1sdk_1_1domain_1_1_member_information.png)
 
 <a id="details"></a>
 
 ## 详细描述
 
-[`MemberInformation`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information) 类，用于自定义用户信息。
+适用版本：**Whiteboard Android SDK 2.16.134**。
 
-<a id="弃用"></a>
+`MemberInformation` 类，用于自定义用户信息。
 
-:::error[弃用:]
-该类已废弃。请使用 [`setUserPayload`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a17c8130727ea71cdeca6c3c2362cc0b7) 自定义用户信息。
-:::
+@deprecated 该类已废弃。请使用 com.herewhite.sdk.RoomParams#setUserPayload(Object) 自定义用户信息。
 
-## 构造及析构函数说明
+父类：[WhiteObject](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-object)；继承接口详见父类。
+
+## 属性与 JSON 字段
+
+Java 非公开字段通过对应 getter/setter 访问；可选包装类型未设置时通常不写入 JSON。初值包含字段声明及无参构造中的直接赋值；其他构造参数以签名为准。
+
+| 字段 | 声明 | 源码初值 | 说明 |
+| --- | --- | --- | --- |
+| [id](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information#a349813fe81033c7f6020f0058f97e650) | `Long id` | 未显式赋值 | <Slot name="api-center-table-0" /> |
+| [nickName](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information#ae45c1a3c758dded1b5a67ce72690523d) | `String nickName` | 未显式赋值 | <Slot name="api-center-table-1" /> |
+| [avatar](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information#ac37dfaff01d7f5fa78ab3591cec97cb4) | `String avatar` | 未显式赋值 | <Slot name="api-center-table-2" /> |
+| [userId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information#aa90b483694d2e1b89d10a9304660c6c3) | `String userId` | 未显式赋值 | <Slot name="api-center-table-3" /> |
+
+<Slot for="api-center-table-0">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-1">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-2">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-3">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+| 公开成员签名 |  |
+| --- | --- |
+|  | [MemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information#afb7f396390fc56818f681a1fbc559c4e) () |
+|  | [MemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information#a90e0f56b61bc565628716b9f23c5fded) (String userId) |
+| long | [getId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information#a183d5bc96a688428318806c898353381) () |
+| void | [setId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information#a5752f4e91bdfa0d9863c62e2470ec3c9) (long id) |
+| String | [getNickName](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information#ac786fa4448eed2d669d16c3f64ede834) () |
+| void | [setNickName](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information#a17da2c5d9f2ddfb39261e4d86a68a2e5) (String nickName) |
+| String | [getUserId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information#a501d6bf7949c0dfbbb5e8425b66ae1b8) () |
+| void | [setUserId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information#aa483582c650a5556bb3d83fb0d8735ce) (String userId) |
+| String | [getAvatar](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information#a6588942aa0bf7809350ea0b875a40d78) () |
+| void | [setAvatar](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information#adba187bcab846db0939c90a5e41ab309) (String avatar) |
+
+## 变量说明
+
+<a id="a349813fe81033c7f6020f0058f97e650"></a>
+
+### id
+
+```text
+Long id
+```
+
+源码初值：未显式赋值
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="ae45c1a3c758dded1b5a67ce72690523d"></a>
+
+### nickName
+
+```text
+String nickName
+```
+
+源码初值：未显式赋值
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="ac37dfaff01d7f5fa78ab3591cec97cb4"></a>
+
+### avatar
+
+```text
+String avatar
+```
+
+源码初值：未显式赋值
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="aa90b483694d2e1b89d10a9304660c6c3"></a>
+
+### userId
+
+```text
+String userId
+```
+
+源码初值：未显式赋值
+
+模型属性；通过对应 getter/setter 访问。
+
+## 函数说明
 
 <a id="afb7f396390fc56818f681a1fbc559c4e"></a>
 
-### MemberInformation() [1/2]
+### MemberInformation()
 
 <ApiSignature>
 
-com.herewhite.sdk.domain.MemberInformation.MemberInformation()
+MemberInformation()
 
 </ApiSignature>
 
@@ -54,11 +137,11 @@ com.herewhite.sdk.domain.MemberInformation.MemberInformation()
 
 <a id="a90e0f56b61bc565628716b9f23c5fded"></a>
 
-### MemberInformation() [2/2]
+### MemberInformation()
 
 <ApiSignature>
 
-com.herewhite.sdk.domain.MemberInformation.MemberInformation(String *userId*)
+MemberInformation(String userId)
 
 </ApiSignature>
 
@@ -72,15 +155,13 @@ com.herewhite.sdk.domain.MemberInformation.MemberInformation(String *userId*)
 </Parameter>
 </ParameterList>
 
-## 成员函数说明
-
 <a id="a183d5bc96a688428318806c898353381"></a>
 
 ### getId()
 
 <ApiSignature>
 
-long com.herewhite.sdk.domain.MemberInformation.getId()
+long getId()
 
 </ApiSignature>
 
@@ -96,7 +177,7 @@ long 型的用户 ID。
 
 <ApiSignature>
 
-void com.herewhite.sdk.domain.MemberInformation.setId(long *id*)
+void setId(long id)
 
 </ApiSignature>
 
@@ -116,7 +197,7 @@ long 型的用户 ID。
 
 <ApiSignature>
 
-String com.herewhite.sdk.domain.MemberInformation.getNickName()
+String getNickName()
 
 </ApiSignature>
 
@@ -126,13 +207,33 @@ String com.herewhite.sdk.domain.MemberInformation.getNickName()
 
 用户昵称。
 
+<a id="a17da2c5d9f2ddfb39261e4d86a68a2e5"></a>
+
+### setNickName()
+
+<ApiSignature>
+
+void setNickName(String nickName)
+
+</ApiSignature>
+
+设置用户昵称。
+
+<ParameterList title="参数">
+<Parameter name="nickName">
+
+用户昵称。
+
+</Parameter>
+</ParameterList>
+
 <a id="a501d6bf7949c0dfbbb5e8425b66ae1b8"></a>
 
 ### getUserId()
 
 <ApiSignature>
 
-String com.herewhite.sdk.domain.MemberInformation.getUserId()
+String getUserId()
 
 </ApiSignature>
 
@@ -148,7 +249,7 @@ String 型的用户 ID。
 
 <ApiSignature>
 
-void com.herewhite.sdk.domain.MemberInformation.setUserId(String *userId*)
+void setUserId(String userId)
 
 </ApiSignature>
 
@@ -162,33 +263,13 @@ String 型的用户 ID。
 </Parameter>
 </ParameterList>
 
-<a id="a17da2c5d9f2ddfb39261e4d86a68a2e5"></a>
-
-### setNickName()
-
-<ApiSignature>
-
-void com.herewhite.sdk.domain.MemberInformation.setNickName(String *nickName*)
-
-</ApiSignature>
-
-设置用户昵称。
-
-<ParameterList title="参数">
-<Parameter name="nickName">
-
-用户昵称。
-
-</Parameter>
-</ParameterList>
-
 <a id="a6588942aa0bf7809350ea0b875a40d78"></a>
 
 ### getAvatar()
 
 <ApiSignature>
 
-String com.herewhite.sdk.domain.MemberInformation.getAvatar()
+String getAvatar()
 
 </ApiSignature>
 
@@ -204,7 +285,7 @@ String com.herewhite.sdk.domain.MemberInformation.getAvatar()
 
 <ApiSignature>
 
-void com.herewhite.sdk.domain.MemberInformation.setAvatar(String *avatar*)
+void setAvatar(String avatar)
 
 </ApiSignature>
 

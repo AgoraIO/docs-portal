@@ -2,37 +2,72 @@
 title: WhiteWindowDocsEventOptions Class Reference
 _migration:
   type: generated-html
-  status: migrated
+  status: warning
   sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteWindowDocsEventOptions
   sourcePath: html-docs/whiteboard/iOS/Classes/WhiteWindowDocsEventOptions.html
   generator: appledoc
-  warnings: []
+  warnings:
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
 ---
 
-| Inherits from | WhiteObject |
-| --- | --- |
-| Declared in | WhiteWindowDocsEventOptions.h |
+Whiteboard iOS SDK 2.16.147 公开接口。
 
-<a id="overview"></a>
+@interface WhiteWindowDocsEventOptions: WhiteObject
 
-## Overview
+## 成员
 
-事件参数。仅当 `WhiteWindowDocsEventKey` 为 `WhiteWindowDocsEventJumpToPage` 时调用，用于指定期望跳转的页码。
+- [target](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-window-docs-event-options#//api/name/target)
+- [page](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-window-docs-event-options#//api/name/page)
+- [scale](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-window-docs-event-options#//api/name/scale)
 
-<a id="tasks"></a>
+<a id="//api/name/target"></a>
 
-<a id="//api/name/page"></a>
-
-### `page`
-
-跳转至页码。
+### `target`
 
 <ApiSignature>
 
-@property (nonatomic, copy) NSNumber *page
+@property (nonatomic, copy, nullable) NSString *target;
 
 </ApiSignature>
 
-#### Declared In
+```text
+`mainView` 或具体的 DocsViewer/Slide/Presentation appId。
+```
 
-`WhiteWindowDocsEventOptions.h`
+Declared in Room/WhiteWindowDocsEventOptions.h
+
+<a id="//api/name/page"></a>
+
+
+<a id="tasks"></a>
+
+### `page`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSNumber *page;
+
+</ApiSignature>
+
+Declared in Room/WhiteWindowDocsEventOptions.h
+
+<a id="//api/name/scale"></a>
+
+### `scale`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSNumber *scale;
+
+</ApiSignature>
+
+Declared in Room/WhiteWindowDocsEventOptions.h

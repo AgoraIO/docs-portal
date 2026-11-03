@@ -1,6 +1,6 @@
 ---
-title: Enumeration ViewMode
-description: 用户的视角模式。
+title: ViewMode
+description: Whiteboard Web SDK 2.16.59 公开 enum。
 _migration:
   type: generated-html
   status: migrated
@@ -10,53 +10,55 @@ _migration:
   warnings: []
 ---
 
-## Enumeration members
+```ts
+export declare enum ViewMode {
+    /**
+     * 自由模式。不跟随任何人，也不被任何人跟随，自己可以自由操作视角。
+     */
+    Freedom = "freedom",
+    /**
+     * 跟随模式。跟随当前房间的主播视角。
+     */
+    Follower = "follower",
+    /**
+     * 主播模式。可以自由操作视角，但房间中处于跟随模式的人会跟随。
+     */
+    Broadcaster = "broadcaster",
+}
+```
 
-<a id="broadcaster"></a>
+## 成员
 
-### Broadcaster
-
-Broadcaster: = "broadcaster"
-
-- Defined in [index-zh.d.ts\:887](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L887)
-
-主播模式。
-
-该模式下用户可以主动调整视角，并将自己的视角同步给房间内所有其他用户。
-
-**Note**
-
-- 每个房间只能有一个主播模式视角的用户。
-- 当一个用户的视角设置为主播模式后，房间内所有其他用户（包括新加入房间的用户）的视角会被自动设置为跟随模式。
-
-<a id="follower"></a>
-
-### Follower
-
-Follower: = "follower"
-
-- Defined in [index-zh.d.ts\:877](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L877)
-
-跟随模式。
-
-该模式下用户的视角会跟随主播的视角。
-
-**Note**
-
-- 当一个用户的视角设置为主播模式后，房间内其他所有用户（包括新加入房间的用户）的视角会被自动设置为跟随模式。
-- 跟随模式的用户进行白板操作时，其视角会自动切换为自由模式。
+- [Freedom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/viewmode#freedom)
+- [Follower](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/viewmode#follower)
+- [Broadcaster](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/viewmode#broadcaster)
 
 <a id="freedom"></a>
 
 ### Freedom
 
-Freedom: = "freedom"
+`Freedom = "freedom";`
 
-- Defined in [index-zh.d.ts\:867](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L867)
+```text
+自由模式。不跟随任何人，也不被任何人跟随，自己可以自由操作视角。
+```
 
-（默认）自由模式。
+<a id="follower"></a>
 
-该模式下用户可以主动调整视角，不受其他用户视角模式设置的影响，也不会影响其他用户的视角模式设置。
+### Follower
 
-**Note**
- 当房间内不存在视角为主播模式的用户时，所有用户的视角都默认为自由模式。
+`Follower = "follower";`
+
+```text
+跟随模式。跟随当前房间的主播视角。
+```
+
+<a id="broadcaster"></a>
+
+### Broadcaster
+
+`Broadcaster = "broadcaster";`
+
+```text
+主播模式。可以自由操作视角，但房间中处于跟随模式的人会跟随。
+```

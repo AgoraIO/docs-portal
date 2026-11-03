@@ -157,9 +157,6 @@ paths:
                           maxItems: 128
                         params:
                           $ref: '#/components/schemas/asr_params'
-                          description: |
-                            指定 ASR 供应商的配置参数。
-                            > 你可以参考调用示例中不同 ASR 供应商的参数填写样例。
                     tts:
                       type: object
                       description: 文本转语音 (TTS) 模块配置。
@@ -480,9 +477,6 @@ paths:
 
                                 '{mode}_config':
                                   $ref: '#/components/schemas/start_of_speech_config'
-                                  description: |
-                                    对话开始检测配置参数。根据 `mode` 传入对应的配置字段。
-                                    - 当 `mode = "manual"` 时无需传入额外配置字段。
                             end_of_speech:
                               type: object
                               description: 对话结束 (End of Speech, EoS) 检测配置，用于判定用户何时结束说话。
@@ -501,9 +495,6 @@ paths:
                                     > - 不支持传入 `manual_config`；该模式下无需公开配置项。
                                 '{mode}_config':
                                   $ref: '#/components/schemas/end_of_speech_config'
-                                  description: |
-                                    对话结束检测配置参数。根据 `mode` 传入对应的配置字段。
-                                    - 当 `mode = "manual"` 时，不支持传入 `manual_config`。
                     interruption:
                       type: object
                       description: |-

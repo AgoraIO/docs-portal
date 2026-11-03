@@ -1,0 +1,54 @@
+---
+title: DynamicConfigFieldSource
+description: 动态配置公开声明，可从 white-web-sdk 导入。字段语义见动态配置接入。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/dynamicconfigfieldsource
+  sourcePath: html-docs/whiteboard/Web/interfaces/dynamicconfigfieldsource.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export interface DynamicConfigFieldSource {
+    readonly source: "defaults" | "webviewVersion";
+    readonly runtime?: string;
+    readonly upper?: string;
+    readonly omitted: boolean;
+}
+```
+
+## Properties
+
+<a id="source"></a>
+
+### Readonly source
+
+readonly source: "defaults" | "webviewVersion";
+
+此字段命中 defaults 或 webviewVersion；与 DynamicConfigState.source 的加载来源含义不同。
+
+<a id="runtime"></a>
+
+### Readonly Optional runtime
+
+readonly runtime?: string;
+
+命中版本表时使用的运行时标识，未提供时不要假定存在。
+
+<a id="upper"></a>
+
+### Readonly Optional upper
+
+readonly upper?: string;
+
+命中的版本上限键，是字符串；只在适用的版本覆盖命中时提供。
+
+<a id="omitted"></a>
+
+### Readonly omitted
+
+readonly omitted: boolean;
+
+是否在求值后省略该字段，例如配置求值为 null。为 true 时不把该字段作为业务 API 参数下发。

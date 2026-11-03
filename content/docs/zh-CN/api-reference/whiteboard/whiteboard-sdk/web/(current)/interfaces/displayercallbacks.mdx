@@ -1,0 +1,64 @@
+---
+title: DisplayerCallbacks
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/displayercallbacks
+  sourcePath: html-docs/whiteboard/Web/interfaces/displayercallbacks.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type DisplayerCallbacks = {
+    /**
+     * 表示 ``displayer.enableWriteNow`` 发生了改变。
+     */
+    onEnableWriteNowChanged: (isReadOnly: boolean)=>void;
+    /**
+     * 表示 ``displayer.handToolKey`` 发生了改变。
+     */
+    onHandToolActive: (active: boolean)=>void;
+    /**
+     * ``displayer.slice`` 发生了变化。
+     */
+    onSliceChanged: (slice: string)=>void;
+    /**
+     * 表示某个用户（``userId`` 所指示的用户）的行为在同步过来的时候报错了。
+     * 一般而言，这个报错通常是可以忽略的，具体请根据业务情况来自行决定是否监听它。
+     *
+     * @param userId 哪个用户同步时报的错
+     * @param error 错误对象
+     */
+    onCatchErrorWhenAppendFrame: (userId: number, error: Error)=>void;
+    /**
+     * 表示渲染画面时发生了错误。
+     */
+    onCatchErrorWhenRender: (error: Error)=>void;
+    onRenderDuration: (renderDuration: number)=>void;
+    /**
+     * 加载背景图片失败。
+     */
+    onBackgroundError: (url: string)=>void;
+    /**
+     * 加载转网页 PPT 的进度回调。
+     *
+     * @param uuid 对应 PPT 的 ``taskUUID``
+     * @param progress 进度，一个 0.0 ～ 1.0 的实数
+     */
+    onPPTLoadProgress: (uuid: string, progress: number)=>void;
+    /**
+     * 表明转网页 PPT 中某个 ``shape`` 对应的媒体资源开始播放了
+     */
+    onPPTMediaPlay: (shapeId: string, type: MediaType)=>void;
+    /**
+     * 表明转网页 PPT 中某个 ``shape`` 对应的媒体资源暂停了
+     */
+    onPPTMediaPause: (shapeId: string, type: MediaType)=>void;
+    /**
+     * 表明转网页 PPT 中某个 ``shape`` 对应的媒体资源播放异常
+     */
+    onPPTMediaPlayError: (shapeId: string, type: MediaType, error: Error)=>void;
+};
+```

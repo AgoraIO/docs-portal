@@ -54,7 +54,10 @@ describe('Chinese AI guide choices across steps', () => {
     await renderDocsMdx(readGuide('ai/build/transcripts'));
 
     const tablists = screen.getAllByRole('tablist');
-    expect(tablists).toHaveLength(10);
-    expectSynchronizedChoices(tablists, ['Web', 'iOS', 'Android'], 3);
+    const clientLists = tablists.filter((list) =>
+      within(list).queryByRole('tab', { name: 'Android' }),
+    );
+    expect(clientLists).toHaveLength(10);
+    expectSynchronizedChoices(clientLists, ['Web', 'iOS', 'Android'], 3);
   }, 30000);
 });

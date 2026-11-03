@@ -1,21 +1,10 @@
 ---
-title: 方案对比
-_migration:
-  type: manual-mdx
-  status: migrated
-  sourceUrl: https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/solution-compare
-  sourcePath: docs/whiteboard/fastboard-sdk/solution-compare.mdx
-  generator: legacy-mdx
-  warnings:
-    - code: manual-mdx-normalized
-      severity: info
-      message: Normalized 4 legacy MDX syntax signal(s).
+title: "方案对比"
 ---
-
 为满足不同的需求，声网互动白板提供如下两套客户端 SDK 供你选择：
 
-:::warning[注意]
-Fastboard SDK 与 Whiteboard SDK **不互通**，声网建议你根据自身需求从中选择一套使用。
+:::caution[注意]
+Fastboard SDK 基于 Whiteboard SDK 封装。房间内各端应对齐多窗口模式、教具插件开关与课件 App 配置；单窗口和多窗口接入方式应分别规划。
 :::
 
 <DocsTable>
@@ -41,7 +30,7 @@ Fastboard SDK 与 Whiteboard SDK **不互通**，声网建议你根据自身需�
 <tr>
 <td>白板插件</td>
 <td>官方内置开源插件，包括 docsViewr、MediaPlayer、Monaco、Countdown、GeoGebra、EmbeddedPage、Plyr，如不符合需求需自己基于开源代码进行二次开发，官方不提供自定义功能支持。</td>
-<td>不支持</td>
+<td>可通过多窗口 API 使用内置课件 App；Web 可组合 Window Manager 注册 App。需按所用平台配置。</td>
 </tr>
 <tr>
 <td>社区开源插件</td>
@@ -69,14 +58,14 @@ Fastboard SDK 与 Whiteboard SDK **不互通**，声网建议你根据自身需�
 
 - Web：Chrome 58+ 或 Safari 11+（macOS 10+）
 - Android：Android 5.0（SDK API Level 21）及以上版本
-- iOS：iOS 12.0 及以上版本，支持平台间互通
+- iOS：iOS 12.0 及以上版本
 
 </td>
 <td>
 
 - Web：Chrome 58+ 或 Safari 11+（macOS 10+）
 - Android：Android 5.0（SDK API Level 21）及以上版本
-- iOS：CocoaPods 为 iOS 10.0+，SwiftPM 为 iOS 12.0+，支持平台间互通
+- iOS：CocoaPods 为 iOS 10.0+，SwiftPM 为 iOS 12.0+
 
 </td>
 </tr>
