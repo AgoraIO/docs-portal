@@ -1,0 +1,41 @@
+---
+title: WhiteLocalLogOptions
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/whitelocallogoptions
+  sourcePath: html-docs/whiteboard/Web/interfaces/whitelocallogoptions.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type WhiteLocalLogOptions = {
+    /**
+     * Defaults to true. Set false to disable local persistence entirely.
+     */
+    enabled?: boolean;
+    /**
+     * Defaults to true. FCR Web sets false so FCR performs the unified upload.
+     */
+    enabledUpload?: boolean;
+    /**
+     * Local logger label used by agora-foundation/logger collection. Defaults to agora-whiteboard.
+     */
+    label?: string;
+    appId?: string;
+    appVersion?: string;
+    policyHost?: string;
+    whiteboardPolicyHost?: string;
+    autoUpload?: WhiteLocalLogAutoUploadOptions;
+    platformOverride?: "web" | "electron";
+    console?: boolean;
+    /**
+     * Advanced fallback for hosts whose build pipeline cannot publish agora-foundation's worker asset.
+     * createWorker has higher priority than workerUrl.
+     */
+    workerUrl?: string;
+    createWorker?: ()=>Worker;
+};
+```

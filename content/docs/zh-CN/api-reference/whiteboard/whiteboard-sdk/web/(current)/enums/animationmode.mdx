@@ -1,6 +1,6 @@
 ---
-title: Enumeration AnimationMode
-description: 移动或缩放视角时的动画模式。
+title: AnimationMode
+description: Whiteboard Web SDK 2.16.59 公开 enum。
 _migration:
   type: generated-html
   status: migrated
@@ -10,35 +10,40 @@ _migration:
   warnings: []
 ---
 
-:::info[since]
-2.2.2
-:::
+```ts
+export declare enum AnimationMode {
+    /**
+     * 以播放渐变动画的方式移动视角
+     */
+    Continuous = "continuous",
+    /**
+     * 一瞬间就将视角移动到目标
+     */
+    Immediately = "immediately",
+}
+```
 
-## Index
-
-### Enumeration members
+## 成员
 
 - [Continuous](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode#continuous)
 - [Immediately](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode#immediately)
-
-## Enumeration members
 
 <a id="continuous"></a>
 
 ### Continuous
 
-Continuous: = "continuous"
+`Continuous = "continuous";`
 
-- Defined in [index-zh.d.ts\:220](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L220)
-
-（默认）渐变模式。
+```text
+以播放渐变动画的方式移动视角
+```
 
 <a id="immediately"></a>
 
 ### Immediately
 
-Immediately: = "immediately"
+`Immediately = "immediately";`
 
-- Defined in [index-zh.d.ts\:224](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L224)
-
-瞬间切换模式。
+```text
+一瞬间就将视角移动到目标
+```

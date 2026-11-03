@@ -1,14 +1,168 @@
 ---
 title: "实现 HTTP 鉴权"
-description: "本文介绍如何在对话式 AI 引擎中使用 HTTP 基本认证进行安全鉴权。"
 ---
+
+本文介绍在对话式 AI 引擎中使用 Token 或 HTTP 基本认证进行 HTTP 安全认证的方法。
+
 ## 前提条件
 
-已参考[开通服务](/zh-CN/ai/get-started/enable-service)开通对话式 AI 引擎服务。
+- 已参考[开通服务](/zh-CN/ai/get-started/enable-service)开通对话式 AI 引擎服务。
+
+<a id="使用-token-认证"></a>
+## 使用 Token 认证（推荐）
+
+推荐使用 Token 认证调用对话式 AI 引擎 RESTful API。将 Token 填入 HTTP 请求 Header 的 `Authorization` 字段，格式为 `agora token="<token>"`。
+
+### 使用临时 Token
+
+测试环境下，你可以参考[开通服务](/zh-CN/ai/get-started/enable-service#获取临时-token)从声网控制台为你的项目生成临时 Token，有效期为 24 小时。
+
+### 在服务端生成 Token
+
+生产环境下，你需要在自己的服务端生成 Token。本节以生成包含 ConvoAI、RTC 和 RTM service 的 Token 为例。请先从[声网控制台](https://console.shengwang.cn/)获取 App ID 和 App Certificate，再参考以下示例生成 Token。
+
+以下示例使用 Go 的 [`convoaitokenbuilder.BuildToken`](https://github.com/AgoraIO/Tools/blob/b75635c32d30cedd25fd1199926fd55219533688/DynamicKey/AgoraDynamicKey/go/src/convoaitokenbuilder/convoaitokenbuilder.go) 生成包含 ConvoAI、RTC 和 RTM service 的 Token。
+
+将 `appID` 和 `appCertificate` 替换为你的 App ID 和 App 证书：
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+	"github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/convoaitokenbuilder"
+)
+
+func main() {
+	appID := "<your_app_id>"
+	appCertificate := "<your_app_certificate>"
+	channelName := "testChannel"
+	account := "0" // 智能体 UID
+
+	tokenExpire := uint32(24 * 60 * 60) // Token 有效期，单位：秒
+	privilegeExpire := uint32(60 * 60)  // RTC 和 RTM 权限有效期，单位：秒
+
+	token, err := convoaitokenbuilder.BuildToken(
+            appID,
+            appCertificate,
+            channelName,
+            account,
+            tokenExpire,
+            privilegeExpire,
+        )
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(token)
+}
+```
+
+<Accordions>
+<Accordion title="运行示例">
+
+在空目录中将代码保存为 `main.go`，运行以下命令：
+
+```bash
+go mod init example.com/convoai-token-generator
+go get github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src@v0.0.0-20261010073935-b75635c32d30
+go run main.go
+```
+
+运行成功后输出以 `007` 开头的 Token。示例仅用于本地调试，请勿提交真实凭据或将 Token 写入公开日志。
+
+</Accordion>
+</Accordions>
+
+自定义权限使用 [`BuildTokenWithPrivilege`](https://github.com/AgoraIO/Tools/blob/b75635c32d30cedd25fd1199926fd55219533688/DynamicKey/AgoraDynamicKey/go/src/convoaitokenbuilder/convoaitokenbuilder.go#L75-L96)；其他语言参见 [AgoraDynamicKey](https://github.com/AgoraIO/Tools/tree/feature/access-token2-convoai-stt-services/DynamicKey/AgoraDynamicKey)。
+
+### 使用 Token
+
+使用上述示例生成 Token 时，请确保以下参数与请求体保持一致：
+
+- `channelName` 与 `properties.channel` 保持一致。
+- `account` 与 `properties.agent_rtc_uid` 保持一致。
+
+将生成的 Token 同时填入以下两个位置：
+
+- HTTP Header：`Authorization: agora token="<token>"`，用于 ConvoAI REST API 鉴权。
+- Request Body：`properties.token`，用于 Agent 加入 RTC 频道。
+
+#### 请求示例
+
+```bash
+curl --request POST \
+  --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/join \
+  --header 'Authorization: agora token="007abcxxxxxxx123"' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "name": "unique_name",
+  "properties": {
+    "channel": "testChannel",
+    "token": "<rawToken>",
+    "agent_rtc_uid": "0",
+    "remote_rtc_uids": [
+      "123"
+    ],
+    "enable_string_uid": false,
+    "idle_timeout": 120,
+    "advanced_features": {
+      "enable_rtm": true,
+      "enable_aivad": true
+    },
+    "llm": {
+      "url": "https://api.minimax.chat/v2/text/chatcompletion_v2",
+      "api_key": "xxx",
+      "system_messages": [
+        {
+          "role": "system",
+          "content": "You are a helpful chatbot."
+        }
+      ],
+      "greeting_message": "您好，有什么可以帮您？",
+      "failure_message": "抱歉，我无法回答这个问题。",
+      "max_history": 32,
+      "params": {
+        "model": "abab6.5s-chat",
+        "max_token": 1024,
+        "userName": "Tomas"
+      }
+    },
+    "asr": {
+      "language": "zh-CN",
+      "vendor": "fengming"
+    },
+    "tts": {
+      "vendor": "minimax",
+      "skip_patterns": [
+        1
+      ],
+      "params": {
+        "group_id": "xxxx",
+        "key": "xxxx",
+        "model": "speech-01-turbo",
+        "voice_setting": {
+          "voice_id": "female-shaonv",
+          "speed": 1,
+          "vol": 1,
+          "pitch": 0,
+          "emotion": "happy"
+        },
+        "audio_setting": {
+          "sample_rate": 16000
+        }
+      }
+    }
+  }
+}
+'
+```
 
 ## 使用 HTTP 基本认证
 
-进行 HTTP 基本认证时，你可以使用声网提供的客户 ID 和客户密钥生成一个 Base64 算法编码的凭证，并填入 HTTP 请求 Header 的 `Authorization` 字段中。本节介绍如何获取用于 HTTP 基本认证的 `Authorization` 字段。
+除推荐的 Token 认证外，你也可以使用 HTTP 基本认证（HTTP Basic Auth）。该方式使用声网提供的客户 ID 和客户密钥，而非 Token，生成 Base64 编码的凭证，并填入 HTTP 请求 Header 的 `Authorization` 字段中。本节介绍如何获取用于 HTTP 基本认证的 `Authorization` 字段。
 
 ### 使用三方工具生成
 

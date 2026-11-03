@@ -29,8 +29,8 @@ _migration:
 | 响应状态码 | 描述                    | 建议措施                                                     |
 | :----- | :---------------------- | :----------------------------------------------------------- |
 | 400    | 请求参数异常            | 针对 `detail` 字段提示进行检查。                                |
-| 401    | 认证失败                | 检查 Authorization 请求头、凭证或 token 后重试。                |
-| 403    | 当前账号不允许使用该服务 | 解决账号或计费问题，或[联系技术支持](https://ticket.shengwang.cn/)开通服务。                                                     |
+| 401    | 认证失败                | 如果使用 Token 认证，确认 Token 以 `007` 开头且格式正确；如果使用 Basic Auth，检查 Authorization 请求头和凭证。 |
+| 403    | 当前账号不允许使用该服务，或 Token 缺少所需服务权限 | 检查项目是否已开通服务；如果使用 Token 认证，确认 Token 包含 ConvoAI service。                                                     |
 | 404    | Agent 未找到或者已经销毁 | 确认任务是否启动成功或者已经退出。                             |
 | 409    | Agent 冲突               | 使用服务返回的任务信息继续后续操作，或改用其他智能体名称重试。 |
 | 422    | 访问超限                | [联系技术支持](https://ticket.shengwang.cn/)提升配额。                                                 |
@@ -47,7 +47,7 @@ _migration:
 | `ServiceNotEnabled`         | 当前项目未启用该服务。                                       |
 | `AccountSuspended`          | 账号已被停用，无法使用该服务。                               |
 | `InternalError`              | 服务端内部错误。                                             |
-| `InvalidPermission`          | 未开通服务。                                                 |
+| `InvalidPermission`          | 未开通服务，或 Token 缺少所需服务权限。         |
 | `InvalidRequestBody`         | 请求 Body 不是合法的 JSON。                                      |
 | `MissingRequiredField`       | 请求中缺少必填字段。                                         |
 | `InvalidFieldValue`          | 请求字段存在非法取值。                                       |

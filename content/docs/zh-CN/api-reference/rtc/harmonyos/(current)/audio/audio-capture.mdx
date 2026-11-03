@@ -262,9 +262,58 @@ public abstract enableLocalAudio(enabled: boolean): number;
 
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
-<a id="api_irtcengine_setinearmonitoringvolume"></a>
+<a id="api_irtcengine_muterecordingsignal"></a>
 
 <a id="ariaid-title6"></a>
+
+## muteRecordingSignal
+
+是否将录音信号静音。
+
+<a id="api_irtcengine_muterecordingsignal__prototype"></a>
+
+```text
+public abstract muteRecordingSignal(muted:boolean):number;
+```
+
+<a id="api_irtcengine_muterecordingsignal__detailed_desc"></a>
+
+如果你已经调用 [adjustRecordingSignalVolume](/zh-CN/api-reference/rtc/harmonyos/audio/audio-capture#api_irtcengine_adjustrecordingsignalvolume) 调节了音频采集信号音量，则调用该方法并设置为 `true` 时，SDK 的行为如下：
+
+1. 记录调节后的音量。
+2. 将音频采集信号静音。
+
+当你再次调用该方法并设置为 `false` 时，录音信号会恢复为静音前 SDK 记录的音量。
+
+<a id="api_irtcengine_muterecordingsignal__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_muterecordingsignal__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_muterecordingsignal__parameters"></a>
+
+### 参数
+
+- `true`: 静音。
+- `false`:（默认）原始音量。
+
+<a id="api_irtcengine_muterecordingsignal__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+<a id="api_irtcengine_setinearmonitoringvolume"></a>
+
+<a id="ariaid-title7"></a>
 
 ## setInEarMonitoringVolume
 

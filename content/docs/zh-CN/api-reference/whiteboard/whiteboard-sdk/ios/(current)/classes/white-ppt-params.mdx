@@ -3,66 +3,61 @@ title: WhitePptParams Class Reference
 _migration:
   type: generated-html
   status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhitePptParams
   sourcePath: html-docs/whiteboard/iOS/Classes/WhitePptParams.html
   generator: appledoc
   warnings: []
 ---
 
-| Inherits from | WhiteObject |
-| --- | --- |
-| Declared in | WhiteSdkConfiguration.h |
+Whiteboard iOS SDK 2.16.147 公开接口。
 
-<a id="overview"></a>
+@interface WhitePptParams: WhiteObject
 
-## Overview
+## 成员
 
-设置动态 PPT 参数。
-
-<a id="tasks"></a>
+- [scheme](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-ppt-params#//api/name/scheme)
+- [useServerWrap](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-ppt-params#//api/name/useServerWrap)
 
 <a id="//api/name/scheme"></a>
 
-### `scheme`
 
-`scheme`：更改动态 PPT 请求时的请求协议，可以将 [https://www.example.com/1.pptx](https://www.example.com/1.pptx) 更改成 `scheme://www.example.com/1.pptx`。
+<a id="tasks"></a>
+
+### `scheme`
 
 <ApiSignature>
 
-@property (nonatomic, copy, nullable) NSString *scheme API_AVAILABLE (ios (11.0))
+@property (nonatomic, copy, nullable) NSString *scheme API_AVAILABLE(ios(11.0));
 
 </ApiSignature>
 
-#### Discussion
+```text
+更改动态 ppt 请求时的请求协议，可以将 https://www.exmaple.com/1.pptx 更改成 scheme://www.example.com/1.pptx
 
-该属性配合 iOS 11 WebKit 中 `WKWebViewConfiguration` 类的 `setURLSchemeHandler:forURLScheme:` 方法，可以对 PPT 的资源进行拦截，选择使用本地资源。
+ 该属性配合 iOS 11 WebKit 中 `WKWebViewConfiguration` 类的 `setURLSchemeHandler:forURLScheme:` 方法，可以对 PPT 的资源进行拦截，选择使用本地资源。
+```
 
-#### Declared In
-
-`WhiteSdkConfiguration.h`
+Declared in SDK/WhiteSdkConfiguration.h
 
 <a id="//api/name/useServerWrap"></a>
 
 ### `useServerWrap`
 
-动态 PPT 服务端排版功能的开启状态。
-
 <ApiSignature>
 
-@property (nonatomic, assign) BOOL useServerWrap
+@property (nonatomic, assign) BOOL useServerWrap;
 
 </ApiSignature>
 
-#### Availability
+```text
+动态 PPT 服务端排版功能的开启状态。
 
-2.12.25
+ @since 2.12.25
 
-- `YES`：（默认）开启。
-- `NO`：关闭。
+ - `YES`：开启(默认开启)。
+ - `NO`：关闭。
 
-**Note：**
+ @note 2021-02-10 之后转换的动态 PPT 支持服务端排版功能，可以确保不同平台排版一致。
+```
 
-2021-02-10 之后转换的动态 PPT 支持服务端排版功能，可以确保不同平台排版一致。
-
-#### Declared In
-
-`WhiteSdkConfiguration.h`
+Declared in SDK/WhiteSdkConfiguration.h

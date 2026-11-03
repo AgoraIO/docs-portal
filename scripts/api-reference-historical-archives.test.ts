@@ -4,6 +4,15 @@ import { describe, expect, it } from 'vitest';
 import { docsMetaSchema } from '../src/lib/docs-meta-schema';
 
 const contentRoot = 'content/docs/zh-CN/api-reference';
+const { apiHistoricalAdditions } = JSON.parse(
+  readFileSync('docs/migration/cn-master-sync-20261023.json', 'utf8'),
+) as {
+  apiHistoricalAdditions: {
+    directory: string;
+    label: string;
+    href: string;
+  }[];
+};
 type ArchiveOverride = {
   newPlatform: string;
   sdkVersion: string;
@@ -11,6 +20,16 @@ type ArchiveOverride = {
   verifiedArchiveVersion: string;
   href: string;
   renderedVersion: string;
+};
+const { apiHistoricalAdditions: whiteboardAdditions } = JSON.parse(
+  readFileSync('docs/migration/cn-master-sync-20261028.json', 'utf8'),
+) as {
+  apiHistoricalAdditions: {
+    directory: string;
+    label: string;
+    href: string;
+    placement: 'prepend' | 'append';
+  }[];
 };
 const { overrides } = JSON.parse(
   readFileSync(
@@ -128,7 +147,24 @@ describe('Chinese API Reference historical archives', () => {
       expect(
         versions.slice(1).map(({ label, href }) => ({ label, href })),
       ).toEqual(
-        history.map((entry) => ({
+        [
+          ...whiteboardAdditions
+            .filter(
+              (entry) =>
+                entry.directory === directory && entry.placement === 'prepend',
+            )
+            .map(({ label, href }) => ({ label, href })),
+          ...apiHistoricalAdditions
+            .filter((entry) => entry.directory === directory)
+            .map(({ label, href }) => ({ label, href })),
+          ...history,
+          ...whiteboardAdditions
+            .filter(
+              (entry) =>
+                entry.directory === directory && entry.placement === 'append',
+            )
+            .map(({ label, href }) => ({ label, href })),
+        ].map((entry) => ({
           ...entry,
           href:
             overrideByVersion.get(`${directory}:${entry.label}`)?.href ??

@@ -18,7 +18,8 @@ export class RtcEngineConfig{
   public mAppId:string;
   public mEventHandler: IRtcEngineEventHandler ;
   public mLogConfig?:LogConfig;
-  public areaCode: Constants.AreaCode = Constants.AreaCode.GLOB;
+  public mParameters:string = '';
+  public areaCode: Constants.AreaCode = Constants.AreaCode.CN;
 }
 ```
 
@@ -64,6 +65,12 @@ export class RtcEngineConfig{
   4. 将 `agorasdk.1.log` 重命名为 `agorasdk.2.log`。
   5. 新建 `agorasdk.log` 文件。
 - `agoraapi.log` 文件的覆盖规则与 `agorasdk.log` 相同。
+
+</Parameter>
+<a id="mparameters"></a>
+<Parameter name="mParameters">
+
+用于通过 JSON 选项配置 SDK 的技术预览功能或特殊定制能力。
 
 </Parameter>
 </ParameterList>

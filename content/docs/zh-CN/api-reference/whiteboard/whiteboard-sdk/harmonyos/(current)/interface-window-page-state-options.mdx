@@ -1,0 +1,44 @@
+---
+title: WindowPageStateOptions interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_window_page_state_options
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_window_page_state_options.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+controller.getPageState(...) 的查询目标配置。
+
+可从 @shengwang/whiteboard 直接导入 WindowPageStateOptions。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface WindowPageStateOptions
+```
+
+| [target](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-window-page-state-options#ac55d9e9969b5c16a8faab69f810027d3) | `target?: string` |
+| --- | --- |
+
+## 变量说明
+
+<a id="ac55d9e9969b5c16a8faab69f810027d3"></a>
+
+### target
+
+```text
+target?: string
+```
+
+查询目标：mainView 或具体 appId。省略时跟随焦点，无 App 焦点时回退 MainView。

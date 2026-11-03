@@ -109,7 +109,7 @@ License 申请通过后，License 激活标识（PID） 会关联到你的 CID �
 在请求路径中传入查询参数的示例如下：
 
 ```shell
-curl --location 'https://api.sd-rtn.com/dabiz/license/v2/active?pid=02F5xxxxxxxxxxxxxxxxxxxxxxxxEC30&licenseKey=xxxx&appid=a6d6xxxxxxxxxxxxxxxxxxxxxxxxf75e' \
+curl --location -X POST 'https://api.sd-rtn.com/dabiz/license/v2/active?pid=02F5xxxxxxxxxxxxxxxxxxxxxxxxEC30&licenseKey=xxxx&appid=a6d6xxxxxxxxxxxxxxxxxxxxxxxxf75e' \
 --header 'Authorization: Basic <Basic Auth>'
 ```
 
@@ -360,7 +360,7 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/pids/{
 #### 请求示例
 
 ```shell
-curl --location 'https://api.sd-rtn.com/dabiz/license/v2/renew?appid=a6d6xxxxxxxxxxxxxxxxxxxxxxxxf75e&renewId=4750xxxxxxxxxxxxxxxxxxxxxxxx6270&license=85B3xxxxxxxxxxxxxxxxxxxxxxxx656F' \
+curl --location -X POST 'https://api.sd-rtn.com/dabiz/license/v2/renew?appid=a6d6xxxxxxxxxxxxxxxxxxxxxxxxf75e&renewId=4750xxxxxxxxxxxxxxxxxxxxxxxx6270&license=85B3xxxxxxxxxxxxxxxxxxxxxxxx656F' \
 --header 'Authorization: Basic <Basic Auth>'
 ```
 

@@ -5,6 +5,7 @@ import {
   normalizeCnProductFacets,
   normalizeCnProductList,
 } from './cn-products';
+import { type CnSearchFamily, cnSearchFamilies } from './cn-search-family';
 import {
   type CnSearchPageResponse,
   cleanSearchSnippet,
@@ -38,20 +39,41 @@ export async function queryCnSearch(
   const filter = ['locale = "zh-CN"', 'hidden = false', 'status = "published"'];
   // Filter before pagination so other platform copies cannot consume result slots.
   if (!state.platform) filter.push('isDefaultPlatform = true');
-  for (const field of ['product', 'platform', 'version', 'tab'] as const) {
+  for (const field of ['product', 'platform', 'tab'] as const) {
     if (state[field]) {
       const value = JSON.stringify(state[field]);
       filter.push(
         field === 'product'
           ? buildProductFilter(state[field])
-          : `${field} = ${value}`,
+          : field === 'platform' &&
+              ['restful', 'restful-api'].includes(state[field])
+            ? '(platform = "restful" OR platform = "restful-api")'
+            : `${field} = ${value}`,
       );
     }
   }
-  if (state.type !== 'all')
-    filter.push(`docType = ${JSON.stringify(state.type)}`);
+  const query = normalizeMeilisearchQuery(state.q);
+  const overview = state.type === 'all' && query.length > 0;
+  const familyFilter = (family: CnSearchFamily) => `searchFamily = "${family}"`;
+  const makeQuery = (family?: CnSearchFamily) => ({
+    q: query,
+    filter: [...filter, ...(family ? [familyFilter(family)] : [])].join(
+      ' AND ',
+    ),
+    page: state.page,
+    hitsPerPage: overview ? 5 : SEARCH_PAGE_SIZE,
+    facets: ['products', 'platform', 'version', 'docType'],
+    attributesToHighlight: ['sectionTitle', 'content'],
+    highlightPreTag: '<mark>',
+    highlightPostTag: '</mark>',
+    attributesToCrop: ['content'],
+    cropLength: 65,
+  });
+  const host = config.host.replace(/\/$/, '');
   const response = await fetch(
-    `${config.host.replace(/\/$/, '')}/indexes/${encodeURIComponent(config.indexUid)}/search`,
+    overview
+      ? `${host}/multi-search`
+      : `${host}/indexes/${encodeURIComponent(config.indexUid)}/search`,
     {
       method: 'POST',
       headers: {
@@ -59,31 +81,53 @@ export async function queryCnSearch(
         'Content-Type': 'application/json',
       },
       signal,
-      body: JSON.stringify({
-        q: normalizeMeilisearchQuery(state.q),
-        filter: filter.join(' AND '),
-        page: state.page,
-        hitsPerPage: SEARCH_PAGE_SIZE,
-        facets: ['products', 'platform', 'version', 'docType'],
-        attributesToHighlight: ['sectionTitle', 'content'],
-        highlightPreTag: '<mark>',
-        highlightPostTag: '</mark>',
-        attributesToCrop: ['content'],
-        cropLength: 65,
-      }),
+      body: JSON.stringify(
+        overview
+          ? {
+              queries: cnSearchFamilies.map((family) => ({
+                indexUid: config.indexUid,
+                ...makeQuery(family),
+              })),
+            }
+          : makeQuery(state.type === 'all' ? undefined : state.type),
+      ),
     },
   );
   if (!response.ok)
     throw new Error(`Search unavailable (HTTP ${response.status})`);
-  const result = (await response.json()) as EngineResponse;
+  const payload = await response.json();
+  const responses: EngineResponse[] = overview ? payload.results : [payload];
   if (
-    !Array.isArray(result.hits) ||
-    !Number.isSafeInteger(result.totalHits) ||
-    !Number.isSafeInteger(result.totalPages) ||
-    !Number.isSafeInteger(result.page)
-  ) {
+    !Array.isArray(responses) ||
+    (overview && responses.length !== cnSearchFamilies.length) ||
+    responses.some(
+      (item) =>
+        !item ||
+        !Array.isArray(item.hits) ||
+        !Number.isSafeInteger(item.totalHits) ||
+        !Number.isSafeInteger(item.totalPages) ||
+        !Number.isSafeInteger(item.page),
+    )
+  )
     throw new Error('Invalid search response');
+  const facetDistribution: SearchFacets = {};
+  for (const item of responses) {
+    for (const [field, values] of Object.entries(
+      item.facetDistribution ?? {},
+    )) {
+      const merged = facetDistribution[field] ?? {};
+      facetDistribution[field] = merged;
+      for (const [value, count] of Object.entries(values))
+        merged[value] = (merged[value] ?? 0) + count;
+    }
   }
+  const result: EngineResponse = {
+    hits: responses.flatMap((item) => item.hits),
+    totalHits: responses.reduce((sum, item) => sum + item.totalHits, 0),
+    totalPages: Math.max(...responses.map((item) => item.totalPages)),
+    page: state.page,
+    facetDistribution,
+  };
   const publicHits = result.hits
     .filter(
       (hit) =>
@@ -133,6 +177,15 @@ export async function queryCnSearch(
     totalPages: Math.min(result.totalPages, 500),
     page: result.page,
     facets,
+    ...(overview
+      ? {
+          familyTotalHits: {
+            docs: responses[0].totalHits,
+            api: responses[1].totalHits,
+            faq: responses[2].totalHits,
+          },
+        }
+      : {}),
   };
 }
 

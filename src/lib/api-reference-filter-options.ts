@@ -55,14 +55,29 @@ export function buildApiReferenceFilterOptions(
   return kind === 'platform' ? sortPlatformOptions(options) : options;
 }
 
-// These shared references explicitly include Windows; other C++ SDKs may target
-// different operating systems and must keep their own documented platform scope.
-const windowsClientReferences = new Set(['rtc/cpp', 'rtc/csharp', 'im/cpp']);
+// Preserve language-based links while also matching their supported platforms.
+// Only explicitly Windows-compatible C++ and C# references share that alias.
+const clientPlatformAliases: Record<
+  string,
+  { label: string; references: ReadonlySet<string> }
+> = {
+  android: { label: 'Android', references: new Set(['rtm/java']) },
+  windows: {
+    label: 'Windows',
+    references: new Set(['rtc/cpp', 'rtc/csharp', 'im/cpp']),
+  },
+};
 
-function supportsWindows(entry: ApiReferenceCardEntry) {
+function supportsClientPlatform(
+  entry: ApiReferenceCardEntry,
+  platformId: string,
+) {
   return (
     entry.apiType === 'client-api' &&
-    windowsClientReferences.has(`${entry.productId}/${entry.platformId}`)
+    (clientPlatformAliases[platformId]?.references.has(
+      `${entry.productId}/${entry.platformId}`,
+    ) ??
+      false)
   );
 }
 
@@ -73,7 +88,7 @@ export function matchesApiReferencePlatform(
   return (
     platformId === 'all' ||
     entry.platformId === platformId ||
-    (platformId === 'windows' && supportsWindows(entry))
+    supportsClientPlatform(entry, platformId)
   );
 }
 
@@ -83,11 +98,13 @@ export function getApiReferencePlatformOptions(
   const sdkEntries = entries.filter((entry) => entry.apiType !== 'restful-api');
   const options = buildApiReferenceFilterOptions(sdkEntries, 'platform');
 
-  if (
-    sdkEntries.some(supportsWindows) &&
-    !options.some((option) => option.id === 'windows')
-  ) {
-    options.push({ id: 'windows', label: 'Windows' });
+  for (const [id, { label }] of Object.entries(clientPlatformAliases)) {
+    if (
+      sdkEntries.some((entry) => supportsClientPlatform(entry, id)) &&
+      !options.some((option) => option.id === id)
+    ) {
+      options.push({ id, label });
+    }
   }
 
   return sortPlatformOptions(options);

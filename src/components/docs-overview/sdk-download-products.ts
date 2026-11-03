@@ -1,3 +1,5 @@
+import { getCnSdkDownloadTarget } from './cn-sdk-download-targets';
+
 export const SDK_DOWNLOAD_PRODUCT_GROUP_ORDER = [
   'agents',
   'client-toolkit',
@@ -96,4 +98,31 @@ export function getZhCNSdkDownloadProductCopy(productId: string) {
   return ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY[
     productId as keyof typeof ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY
   ];
+}
+
+export function getZhCNSdkDownloadTarget(
+  productId: string,
+  platformId: string,
+) {
+  if (productId !== 'signaling') return undefined;
+  if (platformId === 'windows' || platformId === 'linux') {
+    return {
+      label: `${platformId === 'windows' ? 'Windows' : 'Linux'} C++`,
+      iconPlatformId: 'cpp',
+    };
+  }
+  return getCnSdkDownloadTarget(productId, platformId);
+}
+
+export function getZhCNSdkDownloadSelectorLabel(productId: string) {
+  if (
+    ['agents', 'rtsa', 'server-gateway', 'on-premise-recording'].includes(
+      productId,
+    )
+  ) {
+    return '编程语言';
+  }
+  if (productId === 'signaling') return '语言 / 平台';
+  if (['voice', 'video', 'meeting'].includes(productId)) return '平台 / 框架';
+  return '平台';
 }

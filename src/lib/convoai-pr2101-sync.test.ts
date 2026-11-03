@@ -9,7 +9,7 @@ const page = readFileSync(
   ),
   'utf8',
 );
-const aliasesStart = page.indexOf('### Type aliases\n');
+const aliasesStart = page.indexOf('### 类型别名 [#type-aliases]\n');
 const aliasesEnd = page.indexOf('\n## AgentSession', aliasesStart);
 if (aliasesStart < 0 || aliasesEnd <= aliasesStart) {
   throw new Error(
@@ -44,7 +44,7 @@ describe('ConvoAI source PR 2101 TypeScript context configuration', () => {
   });
 
   it('counts only historical text as Unicode code points', () => {
-    expect(aliases).toContain('后者只统计历史消息文本的 Unicode code points');
+    expect(aliases).toContain('后者只统计历史消息文本的 Unicode 码点');
   });
 
   it('preserves mandatory nonempty fallback and service-managed credentials', () => {

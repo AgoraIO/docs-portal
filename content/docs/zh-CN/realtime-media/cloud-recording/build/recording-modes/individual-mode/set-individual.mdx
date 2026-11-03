@@ -109,9 +109,8 @@ title: "实现单流录制"
 单流音视频录制的请求 Body 示例如下：
 
 ```shell
-// highlight-start
+# [!code highlight:1]
 curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/cloud_recording/resourceid/<resourceid>/mode/raw/start' \
-// highlight-end
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
 --header 'Authorization: <http_basic_auth>' \
@@ -122,9 +121,8 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/clo
     "token": "<your_token>",
     "recordingConfig": {
       "channelType": 1,
-      // highlight-start
+      # [!code highlight:1]
       "streamTypes": 2,
-      //highlight-end
       "videoStreamType": 0,
       "maxIdleTime": 30,
       "subscribeAudioUids": [
@@ -143,7 +141,7 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/clo
         "mp4"
       ]
     },
-    // highlight-start
+    # [!code highlight:8]
     "storageConfig": {
       "vendor": 2,
       "region": 3,
@@ -152,7 +150,6 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/clo
       "secretKey": "<your_storage_secret_key>",
       "fileNamePrefix": [
         "quickstart",
-        // highlight-end
       ]
     },
   }
@@ -202,9 +199,8 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/clo
     "cname": "show",
     "uid": "123",
     "resourceId": "SGXETXXX",
-    // highlight-start
+    // [!code highlight:1]
     "sid": "04a85XXX"
-    // highlight-end
 }
 ```
 
@@ -246,9 +242,8 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<yourappid>/cloud
         "uid": "xxx"
       }
     ],
-    //highlight-start
+    // [!code highlight:1]
     "uploadingStatus": "uploaded"
-    //highlight-end
   },
   "cname": "show",
   "uid": "123"

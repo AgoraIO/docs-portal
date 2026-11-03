@@ -12,6 +12,9 @@ const zhCnCommon = {
       system: '跟随系统',
     },
     site: {
+      switchSite: '切换站点 / Switch site',
+      chinese: '简体中文',
+      english: 'English',
       label: '站点',
       description: '两个站点覆盖的产品范围并不完全相同。',
       global: '国际站',
@@ -337,7 +340,7 @@ const zhCnCommon = {
         section1: {
           title: '推荐入口',
           body: '可以优先展示会议、在线 K 歌房和秀场直播等最具代表性的方案，再逐步扩展到课堂和硬件。',
-          link1: '查看灵动会议文档',
+          link1: '查看智能云会议文档',
           link2: '查看在线 K 歌房文档',
           link3: '查看秀场直播文档',
         },

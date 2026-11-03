@@ -1,0 +1,36 @@
+---
+title: WhiteLocalLogUploadRequest
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/whitelocalloguploadrequest
+  sourcePath: html-docs/whiteboard/Web/interfaces/whitelocalloguploadrequest.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type WhiteLocalLogUploadRequest = {
+    trigger?: WhiteLocalLogTrigger;
+    roomUuid?: string;
+    userUuid?: string;
+    tag?: {
+        roomUuid?: string;
+        userUuid?: string;
+    };
+    /**
+     * @deprecated Use roomUuid.
+     */
+    roomId?: string;
+    /**
+     * @deprecated Use userUuid.
+     */
+    userId?: string;
+    headers?: {
+        [key: string]: string;
+    };
+    ts?: string;
+    flushOnSuccess?: boolean;
+};
+```

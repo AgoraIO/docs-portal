@@ -9,127 +9,120 @@ _migration:
   warnings: []
 ---
 
-| Inherits from | WhiteObject |
-| --- | --- |
-| Declared in | WhiteEvent.h |
+Whiteboard iOS SDK 2.16.147 公开接口。
 
-<a id="overview"></a>
+@interface WhiteEvent: WhiteObject
 
-## Overview
+## 成员
 
-SDK 可以触发的自定义事件回调。
-
-<a id="tasks"></a>
+- [initWithName\:payload:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-event#//api/name/initWithName:payload:)
+- [eventName](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-event#//api/name/eventName)
+- [payload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-event#//api/name/payload)
+- [uuid](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-event#//api/name/uuid)
+- [scope](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-event#//api/name/scope)
+- [authorId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-event#//api/name/authorId)
 
 <a id="//api/name/initWithName:payload:"></a>
 
-### `– initWithName:payload:`
 
-指定回调事件名称和内容并初始化一个 `WhiteEvent` 对象。
+<a id="tasks"></a>
+
+### `– initWithName:payload:`
 
 <ApiSignature>
 
-\- (instancetype)initWithName:(NSString *)*eventName* payload:(id)*payload*
+\- (instancetype)initWithName:(NSString *)eventName payload:(id)payload;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="eventName">
+```text
+指定回调事件名称和内容并初始化一个 `WhiteEvent` 对象。
+ @param eventName 回调事件名称。
 
-回调事件名称。
+ @param payload 回调事件内容。
 
-</Parameter>
-<Parameter name="payload">
+ @return 初始化的 `WhiteEvent` 对象。
+```
 
-回调事件内容。
-
-</Parameter>
-</ParameterList>
-
-#### Return Value
-
-初始化的 `WhiteEvent` 对象。
-
-#### Declared In
-
-`WhiteEvent.h`
+Declared in Object/WhiteEvent.h
 
 <a id="//api/name/eventName"></a>
 
 ### `eventName`
 
-回调事件名称。
-
 <ApiSignature>
 
-@property (nonatomic, strong) NSString *eventName
+@property (nonatomic, strong) NSString *eventName;
 
 </ApiSignature>
 
-#### Declared In
+```text
+回调事件名称。
+```
 
-`WhiteEvent.h`
+Declared in Object/WhiteEvent.h
 
 <a id="//api/name/payload"></a>
 
 ### `payload`
 
-回调事件内容。
-
 <ApiSignature>
 
-@property (nonatomic, strong, nullable) id payload
+@property (nonatomic, strong, nullable) id payload;
 
 </ApiSignature>
 
-#### Declared In
+```text
+回调事件内容。
+ 消息格式取决于发送方，可以为 NSArray（内部元素也需要可以被转换成 JSON ），NSString，NSDictionary，NSNumber（with Boolean，NSInteger，CGFloat）等可以在 JSON 中正常展示的类型。
+```
 
-`WhiteEvent.h`
+Declared in Object/WhiteEvent.h
 
 <a id="//api/name/uuid"></a>
 
 ### `uuid`
 
-白板房间号。
-
 <ApiSignature>
 
-@property (nonatomic, strong, readonly) NSString *uuid
+@property (nonatomic, strong, readonly) NSString *uuid;
 
 </ApiSignature>
 
-#### Declared In
+```text
+白板房间号。
+```
 
-`WhiteEvent.h`
+Declared in Object/WhiteEvent.h
 
 <a id="//api/name/scope"></a>
 
 ### `scope`
 
-发送事件的用户角色。包括 `system`，`app`，`custom`，`magix`，自定义事件为 `custom`。
-
 <ApiSignature>
 
-@property (nonatomic, strong, readonly) NSString *scope
+@property (nonatomic, strong, readonly) NSString *scope;
 
 </ApiSignature>
 
-#### Declared In
+```text
+发送事件的用户角色。包括 `system`，`app`，`custom`，`magix`，自定义事件为 `custom`。
+```
 
-`WhiteEvent.h`
+Declared in Object/WhiteEvent.h
 
 <a id="//api/name/authorId"></a>
 
 ### `authorId`
 
-发送事件的用户。
-
 <ApiSignature>
 
-@property (nonatomic, strong, readonly) NSString *authorId
+@property (nonatomic, strong, readonly) NSString *authorId;
 
 </ApiSignature>
 
-#### Declared In
+```text
+发送事件的用户。
+```
 
-`WhiteEvent.h`
+Declared in Object/WhiteEvent.h

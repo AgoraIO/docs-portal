@@ -39,7 +39,7 @@ export function parseSearchApiQuery(params: URLSearchParams): CnSearchQuery {
     (input.page !== undefined &&
       (!/^[1-9]\d{0,2}$/.test(input.page) || Number(input.page) > 500)) ||
     (input.type !== undefined &&
-      !['all', 'docs', 'openapi'].includes(input.type)) ||
+      !['all', 'docs', 'api', 'faq', 'openapi'].includes(input.type)) ||
     (input.product !== undefined && !identifier.test(input.product)) ||
     (input.tab !== undefined && !identifier.test(input.tab)) ||
     (input.platform !== undefined && !isKnownPlatform(input.platform)) ||
