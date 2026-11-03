@@ -456,6 +456,17 @@ function OpenApiOperationLayoutWithSource({
   );
 }
 
+function renderOpenApiOperationHeader(header: ReactNode) {
+  // Fumadocs uses a warning callout for a deprecated endpoint without a title.
+  if (
+    isValidElement<ComponentProps<typeof OpenApiCallout>>(header) &&
+    (header.props.type === 'warn' || header.props.type === 'warning')
+  ) {
+    return <OpenApiCallout {...header.props} />;
+  }
+  return header;
+}
+
 function OpenApiOperationLayout({
   method,
   slots,
@@ -468,7 +479,7 @@ function OpenApiOperationLayout({
   return (
     <div className="openapi-operation-layout gap-6">
       <div className="min-w-0 flex-1">
-        {slots.header}
+        {renderOpenApiOperationHeader(slots.header)}
         <OpenApiEndpointBar operation={method} />
         <OpenApiDocsSections operation={method} position="after-description" />
         <OpenApiDocsCallouts operation={method} position="after-description" />
@@ -1881,10 +1892,13 @@ function toCalloutType(type: string | undefined) {
     case 'warn':
     case 'warning':
       return 'warning';
+    case 'danger':
     case 'error':
       return 'error';
     case 'idea':
       return 'idea';
+    case 'ok':
+    case 'tip':
     case 'success':
       return 'success';
     default:
