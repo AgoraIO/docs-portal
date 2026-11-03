@@ -11,7 +11,7 @@ If your project setup is wrong, the rest of the docs may still be correct but yo
 
 ## What you do here
 
-Use the **Projects** page in Agora Console to:
+Use the project selector and **Project credentials** in Agora Console to:
 
 - create a new project for a product or environment
 - choose the authentication mode for that project
@@ -30,11 +30,25 @@ For most teams:
 
 ## Create a project
 
-1. Open the **Projects** page in Agora Console.
-2. Click **Create New**.
-3. Enter a project name and use case.
-4. Select **App ID + Token (Recommended)** as the authentication mechanism.
-5. Click **Submit**.
+1. In [Agora Console](https://console.agora.io), open the project selector at the top of the page.
+2. Select **Create project**.
+3. Enter a project name. The default authentication mode is **App ID + Token**: clients need a valid token to connect.
+4. Click **Create Project**.
+
+Eligible existing accounts can select **Testing mode: App ID only** under **Need App ID-only access?**. In this mode, anyone with your App ID can join without a token. Use it only for testing, and switch to App ID + Token before production.
+
+## Require App ID + Token for an existing project
+
+Enabling an App Certificate allows your server to generate tokens. It does not, by itself, confirm that App ID-only access is disabled. Check the **Authentication mode** in **Project credentials**.
+
+Before switching a project that allows App ID-only access, update all clients to use valid tokens. Requests that use only the App ID will fail after App ID-only access is disabled.
+
+1. Open **Project credentials** for the intended project.
+2. Under **Authentication mode**, click **Require App ID + Token**.
+3. Review the affected App ID and the warning, then confirm **Require App ID + Token**. Cancel to keep the current setting.
+4. Check that the displayed mode is **App ID + Token required**.
+
+The confirmation changes the authentication requirement. It does not disable the project or delete its certificates. See [Credentials](/en/realtime-media/rtc/core-concepts?platform=web#credentials) for App ID, App Certificate, and Token usage.
 
 ## What to check in project details
 
