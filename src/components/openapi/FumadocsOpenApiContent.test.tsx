@@ -2329,7 +2329,7 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    expect(await screen.findAllByText('注意')).toHaveLength(5);
+    expect(await screen.findAllByText('说明')).toHaveLength(5);
     const channelCode = screen.getAllByText('channel').at(0);
     expect(channelCode?.tagName).toBe('CODE');
     const channelNote = screen.getByText((_content, node) =>

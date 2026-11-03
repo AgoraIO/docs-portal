@@ -73,7 +73,14 @@ function resolve(document: RecordValue, raw: unknown): RecordValue {
 }
 
 function proseParts(node: Root | RootContent): string[] {
-  if (node.type === 'text' || node.type === 'inlineCode') return [node.value];
+  if (node.type === 'text')
+    return [
+      node.value.replace(
+        /^\[!(?:NOTE|INFO|TIP|SUCCESS|IMPORTANT|WARNING|CAUTION|DANGER|ERROR)\](?:[ \t]*\r?\n|[ \t]*$)/,
+        '',
+      ),
+    ];
+  if (node.type === 'inlineCode') return [node.value];
   if (node.type === 'html') return [load(node.value).text()];
   if ('children' in node) return node.children.flatMap(proseParts);
   return [];

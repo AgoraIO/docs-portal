@@ -203,6 +203,8 @@ PY
 
 正常情况下不应输出 operation。字段级 schema/parameter/response `description` 可以继续使用 Markdown，因为它们由 OpenAPI renderer 的 Markdown 处理器渲染。其中 Markdown blockquote（`> ...`）可以保留，用于提示类内容；不要把旧源 raw HTML tag 当作 Markdown 保留。
 
+提示类引用应按 [OpenAPI callout 类型约定](./openapi-callouts.md) 写入显式标记，例如 `> [!NOTE]` 或 `> [!CAUTION]`。保留正文，并依据源类型决定颜色；普通补充说明与使用约束分别使用蓝色“说明”和橙色“注意”。
+
 迁移后用脚本检查 OpenAPI 描述中是否仍包含 raw HTML tag：
 
 ```bash

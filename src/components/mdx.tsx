@@ -64,6 +64,10 @@ import { useTranslation } from 'react-i18next';
 import { useResourceAccountGuidance } from '@/components/account-guidance/AccountGuidance';
 import { getChineseAccountGuidanceResource } from '@/components/account-guidance/resource-registry';
 import {
+  Callout as FumadocsCallout,
+  CalloutContainer as FumadocsCalloutContainer,
+} from '@/components/Callout';
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -113,8 +117,6 @@ const FumadocsCards = defaultMdxComponents.Cards as ComponentType<
 const FumadocsCodeBlockTab = defaultMdxComponents.CodeBlockTab;
 const FumadocsCodeBlockTabs = defaultMdxComponents.CodeBlockTabs;
 const FumadocsCodeBlockTabsList = defaultMdxComponents.CodeBlockTabsList;
-const FumadocsCallout = defaultMdxComponents.Callout;
-const FumadocsCalloutContainer = defaultMdxComponents.CalloutContainer;
 const FumadocsCalloutTitle = defaultMdxComponents.CalloutTitle;
 const FumadocsImage = defaultMdxComponents.img;
 const RouterFumadocsAnchor = createLink(FumadocsAnchor);
