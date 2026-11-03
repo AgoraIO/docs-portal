@@ -11,6 +11,7 @@ type Document = Extract<
 function makeNoticePageProps(
   type: string,
   deprecated = false,
+  description?: string,
 ): OpenAPIPageProps {
   return {
     showTitle: false,
@@ -38,6 +39,7 @@ function makeNoticePageProps(
                   in: 'query',
                   schema: {
                     type: 'string',
+                    description,
                     'x-docs-callouts': [{ type, markdown: 'Field notice' }],
                   },
                 },
@@ -52,6 +54,48 @@ function makeNoticePageProps(
 }
 
 describe('OpenAPI callout coverage', () => {
+  it.each([
+    ['CAUTION', 'warning'],
+    ['DANGER', 'error'],
+    ['TIP', 'success'],
+    ['NOTE', 'info'],
+  ])(
+    'preserves an explicit %s marker in a field description',
+    async (marker, color) => {
+      render(
+        <FumadocsOpenApiContent
+          locale="zh-CN"
+          pageProps={makeNoticePageProps(
+            'note',
+            false,
+            `> [!${marker}]\n> 同一频道不可混用两类 UID。`,
+          )}
+        />,
+      );
+      const body = await screen.findByText('同一频道不可混用两类 UID。');
+      const callout = body.closest('.docs-callout');
+      expect(callout).toBeInTheDocument();
+      expect(callout?.getAttribute('style')).toContain(`--color-fd-${color}`);
+      expect(screen.queryByText(`[!${marker}]`)).not.toBeInTheDocument();
+      if (marker === 'CAUTION') expect(callout).toHaveTextContent('注意');
+    },
+  );
+
+  it('labels an untyped explanatory quote as 说明 while keeping info severity', async () => {
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={makeNoticePageProps('note', false, '> 普通补充说明。')}
+      />,
+    );
+    const body = await screen.findByText('普通补充说明。');
+    const callout = body.closest('.docs-callout');
+    expect(
+      callout?.querySelector(':scope > div:last-child > p'),
+    ).toHaveTextContent(/^说明$/);
+    expect(callout?.getAttribute('style')).toContain('--color-fd-info');
+  });
+
   it.each([
     ['note', 'info'],
     ['info', 'info'],

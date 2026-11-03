@@ -54,6 +54,7 @@ paths:
                       type: string
                       description: |-
                         智能体在 RTC 频道内的用户 ID。
+                        > [!CAUTION]
                         > 同一 `channel` 内的用户 ID 不可重复，否则智能体加入频道会失败。
                     remote_rtc_uids:
                       type: array
@@ -73,6 +74,7 @@ paths:
                         是否启用 String UID：
                         - `true`：智能体和订阅用户 ID 均使用 String UID。
                         - `false`：（默认）智能体和订阅用户 ID 均使用 Int UID。
+                        > [!CAUTION]
                         > 同一频道内，Int 型和 String 型的用户 ID 不可混用。更多使用 String UID 的相关信息请参考[如何使用 String 型用户 ID](/zh-CN/reference/faq/integration/string_uid)。
                     idle_timeout:
                       type: integer
@@ -107,12 +109,14 @@ paths:
                           description: |-
                             是否启用实时消息 RTM 服务。启用后智能体会自动登录 RTM 并订阅 `channel` 中指定的频道，可结合 RTM 提供的能力实现一些进阶功能，例如[传递自定义信息](/zh-CN/ai/build/shape-the-conversation/custom-information)。
 
+                            > [!CAUTION]
                             > 启用 RTM 服务前需要确保 Token 同时具备 RTC 和 RTM 权限。智能体加入 RTM 频道会复用 `token` 字段配置的 Token。你可以参考 [FAQ](/zh-CN/reference/faq/integration/rtc_rtm_token) 了解如何生成同时具备 RTC 和 RTM 权限的 Token。
                           default: false
                         enable_sal:
                           type: boolean
                           description: |-
                             是否启用选择性注意力锁定（Selective Attention Locking, SAL）功能。启用后，在 `sal` 字段中完成相关设置，智能体即可识别用户的声纹特征，有效区分不同说话者，屏蔽 95% 的环境人声、噪声。
+                            > [!NOTE]
                             > 该功能目前处于 Beta 阶段。
                           default: false
                         enable_tools:
@@ -123,6 +127,7 @@ paths:
                             - `true`：启用自定义工具和 MCP 工具调用。
                             - `false`：（默认）不启用工具调用，也不会访问工具端点。
 
+                            > [!CAUTION]
                             > 即使该字段为 `false` 或省略，请求中传入的 `llm.tools` 仍需通过字段类型、大小、模板语法和工具名称重复性校验。
                           default: false
                     asr:
@@ -151,6 +156,7 @@ paths:
 
                                 `Invalid value at properties.asr.keywords: can only be set when properties.asr.vendor is unset or fengming.`
 
+                            > [!CAUTION]
                             > 设置热词可能影响其他词汇的识别准确度，请根据业务场景谨慎配置。
                           items:
                             type: string
@@ -180,13 +186,14 @@ paths:
                           type: array
                           description: |
                             过滤模式配置，用于控制是否跳过 LLM 返回文本中括号内的内容，避免智能体播报不必要的结构性提示信息如语气、动作描述等。默认值为 `[]`，即不过滤任何内容。可选值如下，传入即启用该功能：
-                            
+
                             - `1`：跳过中文圆括号（ ）中的内容
                             - `2`：跳过中文方括号【 】中的内容
                             - `3`：跳过英文圆括号 ( ) 中的内容
                             - `4`：跳过英文方括号 [ ] 中的内容
                             - `5`：跳过英文花括号 \{ } 中的内容
 
+                            > [!CAUTION]
                             > - 当输入文本中存在嵌套括号，且多种括号类型都被配置为跳过时，智能体只处理最外层括号，即系统将从文本的起始位置开始匹配，一旦找到第一个符合跳过规则的最外层括号对，该括号对及其包含的所有内容（包括任何嵌套的其他类型括号）都将被整体跳过。
                             > - 无论是否打开[实时字幕](/zh-CN/ai/build/transcripts)，智能体短期记忆都会包含被过滤的内容，即 LLM 生成的完整文本。
                             > - 开启[实时字幕](/zh-CN/ai/build/transcripts)时，实时字幕在 TTS 播报时不会包含被过滤的内容，等这句话播报完毕后，字幕会把这些内容添加回来。
@@ -198,6 +205,7 @@ paths:
                           $ref: '#/components/schemas/tts_params'
                           description: |
                             指定 TTS 供应商的配置参数。
+                            > [!NOTE]
                             > 你可以参考调用示例中不同 TTS 供应商的参数填写样例。
                     llm:
                       type: object
@@ -264,6 +272,7 @@ paths:
                             - 仅支持 `http://` 或 `https://` 开头的 URL；空字符串、非 URL 字符串或长度超过 `2048` 字节时，请求会返回 `400` 错误。
                             - 对于 `pcm` 文件，需要额外通过 `greeting_configs.audio_pcm_sample_rate` 指定采样率。
                             - 系统会将导入的音频统一转换为与 `tts.params.sample_rate` 一致的采样率后再进行播报。
+                            > [!CAUTION]
                             >- 配置 `greeting_audio_url` 时，必须同时配置 `greeting_message`用于异常回退；否则请求会返回 `400` 错误。
                             >- 当 `greeting_audio_url` 对应的录音下载失败、解码失败或格式不支持时，系统会自动使用 `greeting_message` 进行 TTS 合成并继续播报。
                         greeting_configs:
@@ -304,8 +313,9 @@ paths:
                           type: object
                           description: |-
                             动态参数配置，用于在智能体的 `system_messages`、`greeting_message`、`failure_message` 和 `parameters.silence_config.content` 文本中插入变量。键值对形式，键为变量名，值为变量值。
-                            
+
                             **使用方式**:在 Prompt 文本中使用 `{{variable_name}}` 格式引用变量，系统会自动将其替换为 `template_variables` 中定义的对应值。
+                            > [!CAUTION]
                             > 变量名和变量值不支持引用其他变量。例如自定义变量 `"farewell": "期待下次再见，{{name}}"`，其中的 `{{name}}` 不会被解析。
                           additionalProperties:
                             type: string
@@ -371,6 +381,7 @@ paths:
                                 type: array
                                 description: |
                                   允许智能体调用的工具列表。只有在此列表中的工具才能被智能体使用。
+                                  > [!NOTE]
                                   > `allowed_tools` 字段生效规则:
                                   > - 不填写 `allowed_tools` 字段：所有工具都生效
                                   > - 填写 `allowed_tools` 字段：
@@ -392,6 +403,7 @@ paths:
 
                             自定义工具、MCP 工具、内置工具和模型原生工具共用同一个工具名称空间，名称按 ASCII 大小写不敏感的方式比较。完成 MCP 发现和过滤后，向大模型提供的工具总数最多为 32 个；名称冲突或超过上限时，智能体启动失败，不会自动覆盖、重命名或截断工具。
 
+                            > [!CAUTION]
                             > - 使用工具前需将 `advanced_features.enable_tools` 设为 `true`。
                             > - 当前仅支持同步调用标准文本 LLM，暂不支持自定义 LLM、MLLM、Dify、异步工具和已存储工具引用。
                           items:
@@ -400,6 +412,7 @@ paths:
                           type: object
                           description: |
                             请求 LLM 时附带的自定义请求 Header。你可以通过该字段透传业务自定义字段、租户标识等业务相关信息。
+                            > [!NOTE]
                             > - 该参数传入的请求 Header 会与对话式 AI 引擎默认生成的请求 Header 合并；当键冲突时，以对话式 AI 引擎生成的请求 Header 为准（例如认证相关 Header）。
                             > - Header 键按字符串精确匹配进行合并（区分大小写），声网建议统一使用标准写法，避免同名不同大小写导致歧义。
                           additionalProperties: {}
@@ -419,6 +432,7 @@ paths:
                             - `true`：启用。启用后需配置 `vendor` 和 `params` 字段。
                             - `false`：（默认）不启用。
 
+                            > [!CAUTION]
                             > 开启数字人功能将产生 RTC 视频通话费用，详见 [RTC 计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
                         vendor:
                           type: string
@@ -430,12 +444,14 @@ paths:
                           $ref: '#/components/schemas/avatar_params'
                           description: |
                             指定数字人供应商的配置参数。
+                            > [!NOTE]
                             > 你可以参考调用示例中不同数字人供应商的参数填写样例。
                     turn_detection:
                       type: object
                       description: |-
                         对话轮次检测设置，用于控制语音活动检测和对话轮次判定逻辑。
 
+                        > [!NOTE]
                         > 自 v2.6 起，`turn_detection` 仅负责开始说话（SoS）和结束说话（EoS）的检测。关键词打断和关闭打断后的处理策略已迁移至顶级 `interruption` 字段。
                       properties:
                         mode:
@@ -470,6 +486,7 @@ paths:
                                     - `"keywords"`：已废弃，请改用 `properties.interruption.mode = "keywords"` 配置关键词打断。
                                     - `"disabled"`：已废弃，请改用 `properties.interruption.enable = false` 配合 `properties.interruption.disabled_config.strategy` 配置关闭打断后的处理策略。
 
+                                    > [!CAUTION]
                                     > 使用 `"manual"` 时：
                                     > - 必须同时开启 `advanced_features.enable_rtm = true`。
                                     > - 必须同时设置 `parameters.data_channel = "rtm"`。
@@ -489,6 +506,7 @@ paths:
                                     - `"semantic"`：优雅打断，基于语义触发，使用语义理解模块判定用户是否结束说话还是短暂停顿。该模式目前仅支持识别中文和英文文本。
                                     - `"manual"`：手动 EoS 模式。关闭服务端自动 EoS 判停，由客户端通过 RTM 消息显式声明用户结束说话。
 
+                                    > [!CAUTION]
                                     > 使用 `"manual"` 时：
                                     > - 必须同时开启 `advanced_features.enable_rtm = true`。
                                     > - 必须同时设置 `parameters.data_channel = "rtm"`。
@@ -539,6 +557,7 @@ paths:
                       type: object
                       description: |-
                         选择性注意力锁定（Selective Attention Locking, SAL）配置。
+                        > [!NOTE]
                         > 该功能目前处于 Beta 阶段。
                       properties:
                         sal_mode: 
@@ -554,6 +573,7 @@ paths:
                           type: object
                           description: |-
                             注册声纹 URL，为键值对形式，键为注册的声纹名称，值为对应说话者的声纹 URL 下载地址。
+                            > [!CAUTION]
                             > - 传入的声纹名称不可设置为 `"unknown"`，这是一个保留关键字，用于标识未知说话人。
                             > - 对于注册的声纹，需满足以下条件：
                             >   - 数量: 每个任务请求的注册声纹URL数量，目前仅支持单声纹，数量为 1 个。
@@ -576,11 +596,13 @@ paths:
                           type: string
                           description: |-
                             字符串类型的加密密钥，长度不受限制。声网建议使用 32 字节的密钥。
+                            > [!CAUTION]
                             > 如果未设置加密密钥或将其设置为空，则无法使用内置加密。
                         encryption_salt:
                           type: string
                           description: |-
                             用于加密的盐值，Base64 编码的字符串，解码后长度为 32 字节。
+                            > [!CAUTION]
                             > 该参数仅在 `encryption_mode` 设为 `7`（AES_128_GCM2）或 `8`（AES_256_GCM2）时生效。在此情况下，请确保该参数不为空。
                         encryption_mode:
                           type: integer
@@ -594,7 +616,8 @@ paths:
                             - `6`: AES_256_GCM - 256 位 AES 加密，GCM 模式。
                             - `7`: AES_128_GCM2 - 128 位 AES 加密，GCM 模式。该模式需设置 salt（`encryption_salt`）。
                             - `8`: AES_256_GCM2 - 256 位 AES 加密，GCM 模式。该模式需设置 salt（`encryption_salt`）。
-                            
+
+                            > [!TIP]
                             > 声网建议使用 `7`（AES_128_GCM2）或 `8`（AES_256_GCM2）模式，这两种模式支持使用加密盐以提升安全性。
                     filler_words:
                       type: object
@@ -678,6 +701,7 @@ paths:
                             - `rtm`：使用 RTM 传输。该配置仅在 `advanced_features.enable_rtm` 为 `true` 时生效。
                             - `datastream`：（默认）使用 RTC 的 [`DataStream`](/zh-CN/api-reference/rtc/android/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 传输。
 
+                            > [!CAUTION]
                             > 如果 `turn_detection.config.start_of_speech.mode` 或 `turn_detection.config.end_of_speech.mode` 为 `manual`，则必须同时开启 `advanced_features.enable_rtm = true`，并将该字段设为 `rtm`。
                         enable_metrics:
                           type: boolean
@@ -706,6 +730,7 @@ paths:
                             - `false`：（默认）不关闭。
                             - `true`：关闭会话数据留存。关闭后将无法依托历史内容开展故障排查、效果复盘与智能体优化。
 
+                            > [!CAUTION]
                             > 为保障服务运行、智能体迭代调优与故障排查，默认在最短必要周期内临时留存会话交互文本、音频。若您的业务对数据存储有严格的安全或合规要求，建议启用该字段，关闭当前会话的数据留存。
                         # ifttt:
                         #   type: object
@@ -1238,7 +1263,7 @@ paths:
                         params:
                           type: object
                           
-                          description: "在消息体内传输的 LLM 附加信息，例如使用的模型、最大 Token 数限制等。不同的 LLM 供应商支持的配置不同，请参考对应文档按需填入。\r\n> 该字段更新后将覆盖智能体创建时的配置。更新时，请确保传入完整的 `params` 字段。"
+                          description: "在消息体内传输的 LLM 附加信息，例如使用的模型、最大 Token 数限制等。不同的 LLM 供应商支持的配置不同，请参考对应文档按需填入。\r\n> [!CAUTION]\n> 该字段更新后将覆盖智能体创建时的配置。更新时，请确保传入完整的 `params` 字段。"
                           additionalProperties: {}
             examples:
               Example 1:
@@ -1351,7 +1376,8 @@ paths:
       operationId: get-agent-list
       description: 检索符合指定条件的智能体列表。
       x-docs-callouts:
-        - position: after-description
+        - type: caution
+          position: after-description
           markdown: 该接口仅支持查询最近 7 天内创建的智能体列表。
       parameters:
         - $ref: '#/components/parameters/Authorization'
@@ -1864,7 +1890,8 @@ paths:
       summary: 查询对话轮次信息
       description: 在与智能体会话结束后，调用该接口分页查询本次会话的对话轮次信息，包含每个对话轮次的开始信息、结束信息、性能指标。
       x-docs-callouts:
-        - position: after-description
+        - type: caution
+          position: after-description
           markdown: |-
             自 v2.7 起，该接口从单次返回全部对话轮次改为分页返回。默认请求第 1 页，默认每页返回 50 条对话轮次数据。
             仅支持查询 7 天内的会话。
@@ -2158,6 +2185,7 @@ components:
       title: params
       description: |-
         TTS 配置参数。不同 TTS 供应商下该参数结构不同。
+        > [!CAUTION]
         > 各供应商示例代码中未提及的参数，声网对话式 AI 引擎不保证完全支持。
       oneOf:
         - $ref: '#/components/schemas/tts_minimax'
@@ -2314,6 +2342,7 @@ components:
         - `volume`：（可选）Number。音量。取值范围为 [0.0, 100.0]，默认值为 100。例如，值为 75 表示音量设置为最大音量的 75%。
         - `sample_rate`：（可选）Integer。音频采样率 (Hz)。可选取值为 [16000, 24000, 48000]，默认值为 24000。
 
+        > [!NOTE]
         > 更多信息请参考[微软官方文档](https://docs.azure.cn/zh-cn/ai-services/speech-service/)。
     metrics_modality:
       title: modality
@@ -2472,6 +2501,7 @@ components:
       title: params
       description: |-
         ASR 配置参数。不同 ASR 供应商下该参数结构不同。
+        > [!CAUTION]
         > 各供应商示例代码中未提及的参数，声网对话式 AI 引擎不保证完全支持。
       oneOf:
         - $ref: '#/components/schemas/asr_tencent'
@@ -2513,6 +2543,7 @@ components:
       title: params
       description: |-
         数字人配置参数。不同数字人供应商下该参数结构不同。
+        > [!CAUTION]
         > 各供应商示例代码中未提及的参数，声网对话式 AI 引擎不保证完全支持。
       oneOf:
         - $ref: '#/components/schemas/avatar_sensetime'
@@ -2540,6 +2571,7 @@ components:
             ]
         }
         ```
+        > [!CAUTION]
         > - 以下商汤数字人配置字段当前不支持在 `params` 中透传：`tts_config`、`tts_query`、`audios`、`quick_response`、`quick_response_preload_list`、`opening_words`。
         > - `agora_uid` 必须为大小不超过 32 位(`0` 到 `2^32-1`))的纯数字字符串，例如 `"1234"`。
         > - `agora_uid` 作为数字人在 RTC 频道内使用的用户 ID，同一 `channel` 内的用户 ID 不可重复，否则数字人加入频道会失败。
@@ -2580,6 +2612,7 @@ components:
       description: |-
         自定义工具定义。大模型决定是否调用工具并生成参数；对话式 AI 引擎校验参数后发起一次同步 HTTP 请求，并将结果返回给大模型。
 
+        > [!CAUTION]
         > - 当前仅支持同步 `GET` 和 `POST` 请求，不支持异步调用、自动重试或 HTTP 重定向。
         > - 响应包体原始大小上限为 1 MiB，且必须是 UTF-8 文本。
         > - `application/json` 和 `+json` 响应会保留 JSON 原始类型，包括 object、array、scalar 和 `null`；其他响应按 UTF-8 字符串处理。
@@ -2685,6 +2718,7 @@ components:
         - 如果占位符引用的变量不存在或值为 `null`，工具调用会返回 `UnresolvedTemplate`。
         - URL 和 Header 中的变量值只能是字符串、数字或布尔值。
 
+        > [!CAUTION]
         > 认证信息只能作为完整的 Header 值传入。请勿将认证信息放入 URL 或请求体。所有 Header 值均按敏感信息处理，不会传递给大模型或写入普通日志、事件、字幕和 TTS。
       properties:
         method:
@@ -2787,6 +2821,7 @@ components:
       title: config
       description: |-
         承接词内容配置参数。不同内容模式下配置要求如下：
+        > [!CAUTION]
         > - `mode` 为 `"static"` 或省略时，需传入 `static_config`。
         > - `mode` 为 `"generated"` 时，需传入 `static_config` 作为兜底承接词配置，并可传入 `generated_config` 配置生成承接词提示词。
       type: object

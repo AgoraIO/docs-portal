@@ -570,6 +570,7 @@ components:
       title: webhookEndpoint
       description: |-
         Webhook 回调地址，一般为 app 服务端地址，用于接收服务端发送的转换任务进度等信息。传入该参数即可激活 Webhook 回调，接收来自服务端的文档转换进度和运行状态信息。
+        > [!CAUTION]
         > Webhook 回调有一定概率重复回调，为保证 app 服务端在接到相同响应时的处理方式保持一致，需要做好幂等处理。
       examples:
       - https://example.com/agoracallback
@@ -591,6 +592,7 @@ components:
         - `3`：输出图片使用的最大颜色数量限制为 128。
         - `4`：输出图片使用的最大颜色数量限制为 64。
         该参数仅在 `type` 设为 `dynamic` 时生效。
+        > [!NOTE]
         > 通常，在保证画质不受明显影响的前提下，输出图片的体积最高可以压缩至原图的 10%。压缩图片体积可在弱网环境下改善转换后 PPT 的首次加载时间。
       default: 0
     uuid-convert:

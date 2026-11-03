@@ -164,6 +164,7 @@ paths:
         description: |
           设备的唯一标识。例如设备的 SN 号、Mac 地址等。字符串长度需小于 64 字节。
 
+          > [!CAUTION]
           > - 请注意区分大小写。
           > - 请确保传入的 `licenseKey` 的值和发起呼叫接口中传入的 `wechat.deviceId` 一致。在调用发起呼叫接口时，SD-RTN™ 会对这两个值进行校验，如果一致且 License 在有效期，则呼叫成功，否则呼叫失败。
         required: true
@@ -393,6 +394,7 @@ paths:
         description: |
           需要续期的 License 值。你可以在激活接口的 `license` 响应参数中获取。
 
+          > [!CAUTION]
           > 请注意区分大小写。
         required: true
         schema:
