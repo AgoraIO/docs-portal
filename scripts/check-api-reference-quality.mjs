@@ -549,6 +549,26 @@ export async function main() {
   )
     throw new Error(`Unknown mode: ${mode}`);
   await mkdir(out, { recursive: true });
+  if (['run', 'prepare', 'seal', 'browser'].includes(mode)) {
+    await writeFile(
+      path.join(out, 'browser.json'),
+      JSON.stringify(
+        {
+          status: 'INCOMPLETE',
+          region,
+          scope: values.scope,
+          head: git('rev-parse', 'HEAD'),
+          startedAt: new Date().toISOString(),
+          reason:
+            'Current attempt has not completed. Read the command log and source/build receipts.',
+          results: [],
+        },
+        null,
+        2,
+      ),
+    );
+  }
+
   if (mode === 'checklist') {
     const origin = new URL(values.origin ?? 'http://127.0.0.1:3110');
     if (!['http:', 'https:'].includes(origin.protocol))
