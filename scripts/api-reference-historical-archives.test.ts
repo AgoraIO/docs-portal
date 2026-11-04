@@ -43,6 +43,25 @@ const overrideByVersion = new Map(
     override,
   ]),
 );
+const { overrides: followupOverrides } = JSON.parse(
+  readFileSync(
+    'docs/migration/cnqa-fastboard-historical-snapshots.json',
+    'utf8',
+  ),
+) as {
+  overrides: {
+    newPlatform: string;
+    sdkVersion: string;
+    href: string;
+    targetPath?: string;
+  }[];
+};
+const followupByVersion = new Map(
+  followupOverrides.map((entry) => [
+    `${entry.newPlatform}:${entry.sdkVersion}`,
+    entry,
+  ]),
+);
 const initialAudit = JSON.parse(
   readFileSync(
     'docs/migration/api-reference-historical-archive-url-check-20261020.json',
@@ -124,6 +143,7 @@ describe('Chinese API Reference historical archives', () => {
         platforms.flatMap(({ directory, history }) =>
           history.map(
             (item) =>
+              followupByVersion.get(`${directory}:${item.label}`)?.href ??
               overrideByVersion.get(`${directory}:${item.label}`)?.href ??
               item.href,
           ),
@@ -167,6 +187,7 @@ describe('Chinese API Reference historical archives', () => {
         ].map((entry) => ({
           ...entry,
           href:
+            followupByVersion.get(`${directory}:${entry.label}`)?.href ??
             overrideByVersion.get(`${directory}:${entry.label}`)?.href ??
             entry.href,
         })),
@@ -175,9 +196,17 @@ describe('Chinese API Reference historical archives', () => {
         versions.length,
       );
       for (const version of versions.slice(1)) {
-        expect(version.href).toMatch(
-          /^https:\/\/doc-archive\.shengwang\.cn\/archive\//,
-        );
+        const restored = followupByVersion.get(`${directory}:${version.label}`);
+        if (restored?.targetPath) {
+          expect(readFileSync(restored.targetPath, 'utf8')).toContain(
+            '发布快照 0.0.323',
+          );
+          expect(version.href).toBe(restored.href);
+        } else {
+          expect(version.href).toMatch(
+            /^https:\/\/doc-archive\.shengwang\.cn\/archive\//,
+          );
+        }
         expect(version.id).not.toBe('legacy');
       }
     },

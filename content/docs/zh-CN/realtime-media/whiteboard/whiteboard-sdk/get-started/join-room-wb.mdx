@@ -411,9 +411,9 @@ SDK 已内嵌 Appliance Plugin 与 Worker 资源，业务继续使用 `room.setM
 
 ## 前提条件
 
-- Xcode 10.10+
-- CocoaPods 接入：iOS 10.0+；SwiftPM 接入：iOS 12.0+
-- CocoaPods [最新版本](https://cocoapods.org/)。
+- CocoaPods 接入：iOS 10.0+，并安装 [CocoaPods 最新版本](https://cocoapods.org/)。
+- Swift Package Manager（SwiftPM）接入：iOS 12.0+，Xcode 15+（Swift 5.9 工具链）。
+- 根据所选接入方式设置项目的最低 iOS 版本。
 - 有效的声网[开发者账号](/zh-CN/introduction/quickstart)。
 - 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 
@@ -446,7 +446,7 @@ SDK 已内嵌 Appliance Plugin 与 Worker 资源，业务继续使用 `room.setM
 - **Language** 选择 `Swift`。
 - **User Interface** 选择 `Storyboard`。
 
-声网互动白板 SDK 使用 Objective-C 语言开发。要在 Swift 项目中使用 Objective-C 代码，你还需要在项目中创建一个 Objective-C 桥接文件，步骤如下：
+声网互动白板 SDK 使用 Objective-C 语言开发。使用 SwiftPM 集成时，在 Swift 文件中通过 `import Whiteboard` 导入模块。采用 Objective-C 桥接头方式集成的 Swift 项目，可按以下步骤创建桥接文件：
 
 - 在项目中添加 `Whiteboard-Bridging_Header.h` 文件。
 - 在 `Whiteboard-Bridging_Header.h` 文件中添加如下行引用 `Whiteboard.h`:
@@ -459,6 +459,10 @@ SDK 已内嵌 Appliance Plugin 与 Worker 资源，业务继续使用 `room.setM
 </Tabs>
 
 ## 获取 SDK
+
+以下两种方式任选其一，均固定使用 Whiteboard 2.16.147，避免在同一 Target 中重复集成。
+
+### 使用 CocoaPods
 
 1. 在 Terminal 里进入项目所在路径。运行以下命令创建 `Podfile` 文件。项目路径下会出现一个 `Podfile` 文本文件。
 
@@ -486,6 +490,29 @@ SDK 已内嵌 Appliance Plugin 与 Worker 资源，业务继续使用 `room.setM
 :::info[信息]
 对于中国大陆用户，如果在执行 `pod install` 命令时由于网络原因失败，可以使用 [TUNA 镜像源](https://mirrors.tuna.tsinghua.edu.cn/help/CocoaPods/)。
 :::
+
+
+### 使用 Swift Package Manager
+
+1. 在 Xcode 中选择 **File > Add Package Dependencies**，输入官方仓库地址 `https://github.com/netless-io/Whiteboard-iOS.git`。
+2. 将 **Dependency Rule** 设为 **Exact Version**，填写 `2.16.147`，然后点击 **Add Package**。
+3. 选择 `Whiteboard` 产品并添加到应用 Target，将该 Target 的最低部署版本设为 iOS 12.0 或以上。
+4. 等待 Xcode 解析依赖。SDK 的 `Package.swift` 会引入所需的 `NTLBridge`、`White_YYModel` 和资源，无需再运行 `pod install`。Swift 文件通过 `import Whiteboard` 导入模块。
+
+如果在自己的 Swift package 中声明依赖，在现有 `Package.swift` 中添加以下依赖，并将产品加入使用白板的 target：
+
+```swift
+// Package.dependencies
+.package(
+    url: "https://github.com/netless-io/Whiteboard-iOS.git",
+    exact: "2.16.147"
+)
+
+// Target.dependencies
+.product(name: "Whiteboard", package: "whiteboard-ios")
+```
+
+该版本的 [Package.swift](https://github.com/netless-io/Whiteboard-iOS/blob/2.16.147/Package.swift) 声明 Swift tools 5.9 和 iOS 12.0；这两个要求仅用于 SwiftPM 接入，不替代 CocoaPods 的系统要求。
 
 ## 实现步骤
 
