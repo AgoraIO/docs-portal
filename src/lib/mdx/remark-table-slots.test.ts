@@ -344,3 +344,58 @@ it('exports raw Markdown slot details once with a table link', async () => {
   expect(indexed).toContain('First unique option');
   expect(indexed).toContain('Second unique option');
 });
+
+it.each([
+  {
+    language: 'groovy',
+    fence: '```',
+    meta: 'title="Example"',
+    body: "    dependencies {\n        implementation 'example:sdk:1.0'\n    }",
+  },
+  {
+    language: 'md',
+    fence: '````',
+    meta: 'title="Example"',
+    body: '    ```js\n    example();\n    ```',
+  },
+  {
+    language: 'js',
+    fence: '~~~~~',
+    meta: 'title="Run `example`"',
+    body: '    ## Not a heading\n    ~~~~\n    example();',
+  },
+])(
+  'keeps headings after an exported $language slot code block',
+  async ({ language, fence, meta, body }) => {
+    const source = [
+      '| Current | Previous |',
+      '| --- | --- |',
+      '| <Slot name="current" /> | previous |',
+      '',
+      '<Slot for="current">',
+      '',
+      `${fence}${language} ${meta}`,
+      body,
+      `    ${fence}`,
+      '',
+      '</Slot>',
+      '',
+      '## Following release',
+      '',
+      'Release documentation.',
+    ].join('\n');
+    const result = String(
+      await compile(source, {
+        remarkPlugins: [remarkGfm, remarkTableSlots, remarkLLMs],
+      }),
+    );
+    const markdown = JSON.parse(
+      result.match(/export let _markdown = (".*");/)?.[1] ?? '""',
+    );
+    expect(markdown).toContain(`${language} ${meta}`);
+    expect(markdown).toContain(body);
+    expect(await getTableOfContents(markdown)).toEqual([
+      { title: 'Following release', url: '#following-release', depth: 2 },
+    ]);
+  },
+);
