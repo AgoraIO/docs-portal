@@ -543,7 +543,7 @@ describe('FumadocsOpenApiContent', () => {
       const bundled = (
         pageProps as Extract<OpenAPIPageProps, { payload: unknown }>
       ).payload.bundled;
-      const responses = bundled.paths?.['/method-get']?.get?.responses;
+      const responses = bundled?.paths?.['/method-get']?.get?.responses;
       if (!responses) throw new Error('Missing fixture responses');
       responses['200'] = { description: '' };
       const { container } = render(
