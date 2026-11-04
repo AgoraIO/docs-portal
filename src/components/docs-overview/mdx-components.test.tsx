@@ -7,6 +7,7 @@ import {
 } from '@testing-library/react';
 import type { ComponentType, ReactNode } from 'react';
 import { describe, expect, it, vi } from 'vitest';
+import { DOCS_HASH_TARGET_EVENT } from '@/lib/docs-hash';
 import { getOverviewMDXComponents } from './mdx-components';
 
 type SolutionCardGridComponent = ComponentType<{
@@ -914,6 +915,64 @@ describe('overview MDX components', () => {
     expect(screen.getByText('Android Demo')).toBeVisible();
     expect(window.location.search).toBe('?platform=android');
   });
+
+  it.each(['android-release', 'Android 更新内容'])(
+    'reveals the Demo platform for initial and changing heading target %s',
+    async (anchor) => {
+      window.history.replaceState(
+        {},
+        '',
+        `/zh-CN/reference/demo/agora-lab#${encodeURIComponent(anchor)}`,
+      );
+      const components = getOverviewMDXComponents();
+      const DemoPlatformTabs =
+        components.DemoPlatformTabs as DemoPlatformTabsComponent;
+      const DemoPlatform = components.DemoPlatform as DemoPlatformComponent;
+      const { container } = render(
+        <DemoPlatformTabs
+          defaultValue="ios"
+          platforms={[
+            { label: 'iOS', value: 'ios' },
+            { label: 'Android', value: 'android' },
+          ]}
+        >
+          <DemoPlatform value="ios">
+            <h3 id="ios-release">iOS content</h3>
+          </DemoPlatform>
+          <DemoPlatform value="android">
+            <h3 id={anchor}>Android content</h3>
+          </DemoPlatform>
+        </DemoPlatformTabs>,
+      );
+      const expectSelected = async (name: string) =>
+        waitFor(() =>
+          expect(screen.getByRole('tab', { name })).toHaveAttribute(
+            'aria-selected',
+            'true',
+          ),
+        );
+      await expectSelected('Android');
+      const iosPanel = container.querySelector('[data-demo-platform="ios"]');
+      expect(iosPanel).toHaveAttribute('data-state', 'inactive');
+      expect(iosPanel).toHaveClass('data-[state=inactive]:hidden');
+      expect(screen.getByText('iOS content')).toBeInTheDocument();
+
+      window.dispatchEvent(
+        new CustomEvent(DOCS_HASH_TARGET_EVENT, { detail: '#ios-release' }),
+      );
+      await expectSelected('iOS');
+      window.dispatchEvent(new Event('hashchange'));
+      await expectSelected('Android');
+
+      fireEvent.mouseDown(screen.getByRole('tab', { name: 'iOS' }), {
+        button: 0,
+        ctrlKey: false,
+      });
+      await expectSelected('iOS');
+      expect(window.location.search).toBe('?platform=ios');
+      expect(window.location.hash).toBe('');
+    },
+  );
 
   it('stacks Demo media on small screens and uses one row from sm', () => {
     const components = getOverviewMDXComponents();
