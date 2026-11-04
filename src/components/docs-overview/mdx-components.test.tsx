@@ -240,10 +240,6 @@ describe('overview MDX components', () => {
     );
     expect(marketplaceLink).toHaveAttribute('target', '_blank');
     expect(marketplaceLink).toHaveAttribute('rel', 'noreferrer noopener');
-    expect(
-      marketplaceLink.querySelector('.docs-external-link-icon'),
-    ).not.toBeNull();
-    expect(downloadsLink.querySelector('.docs-external-link-icon')).toBeNull();
   });
 
   it('does not render overview actions outside approved overview pages', () => {

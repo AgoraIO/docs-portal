@@ -61,10 +61,7 @@ import {
   Callout as FumadocsCallout,
   CalloutContainer as FumadocsCalloutContainer,
 } from '@/components/Callout';
-import {
-  DocsLinkIcon,
-  shouldShowDocsLinkIcon,
-} from '@/components/DocsLinkIcon';
+import { DocsLinkIcon } from '@/components/DocsLinkIcon';
 import {
   Dialog,
   DialogContent,
@@ -2341,27 +2338,14 @@ function createDocsCard(contentPath?: string) {
       href && 'docs-card-interactive docs-card-link',
       className,
     );
-    const target =
-      cardProps.target ??
-      (props.external || normalized?.kind === 'external'
-        ? '_blank'
-        : undefined);
     const content = (
       <>
         {children}
         {href ? (
-          shouldShowDocsLinkIcon(normalizedHref, target) ? (
-            <DocsLinkIcon
-              href={normalizedHref}
-              target={target}
-              className="absolute right-4 top-4 ms-0 size-4 text-muted-foreground"
-            />
-          ) : (
-            <ArrowRightIcon
-              aria-hidden="true"
-              className="docs-card-arrow absolute right-4 top-4 size-4 text-muted-foreground"
-            />
-          )
+          <ArrowRightIcon
+            aria-hidden="true"
+            className="docs-card-arrow absolute right-4 top-4 size-4 text-muted-foreground"
+          />
         ) : null}
       </>
     );

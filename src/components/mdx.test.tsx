@@ -757,7 +757,7 @@ describe('common MDX registry', () => {
     });
   });
 
-  it('marks external cards and internal cards opening a new window', () => {
+  it('keeps card navigation arrows without document-link external indicators', () => {
     const Card = getMDXComponents(undefined, { contentPath: 'en/ai/index.md' })
       .Card as CardComponent;
     render(
@@ -773,7 +773,8 @@ describe('common MDX registry', () => {
     for (const name of ['External card', 'New-window card']) {
       const card = screen.getByRole('link', { name: new RegExp(name) });
       expect(card).toHaveAttribute('target', '_blank');
-      expect(card.querySelectorAll('.docs-external-link-icon')).toHaveLength(1);
+      expect(card.querySelector('.docs-external-link-icon')).toBeNull();
+      expect(card.querySelector('.docs-card-arrow')).not.toBeNull();
     }
   });
 
