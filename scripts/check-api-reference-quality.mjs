@@ -119,13 +119,13 @@ export function assertReceipt(receipt, expected) {
     if (receipt[key] !== expected[key])
       throw new Error(`Stale or wrong build receipt: ${key}`);
 }
-async function ready(chrome, sessionId, url) {
+async function ready(chrome, sessionId, url, expectedUrl = url) {
   const result = await chrome.send('Page.navigate', { url }, sessionId);
   if (result.errorText) throw new Error(result.errorText);
   for (let n = 0; n < 200; n++) {
     const done = await chrome.evaluate(
       sessionId,
-      `(() => { const roots = [...document.querySelectorAll('article .docs-body, article .openapi-operation')].filter(e => e.checkVisibility()); return location.href === ${JSON.stringify(url)} && document.readyState !== 'loading' && roots.length > 0 && roots.every(e => Object.keys(e).some(k => k.startsWith('__reactProps$'))) && !document.querySelector('[data-testid="docs-content-skeleton"]') && !!getComputedStyle(document.documentElement).getPropertyValue('--font-sans').trim(); })()`,
+      `(() => { const roots = [...document.querySelectorAll('article .docs-body, article .openapi-operation')].filter(e => e.checkVisibility()); return location.href === ${JSON.stringify(expectedUrl)} && document.readyState !== 'loading' && roots.length > 0 && roots.every(e => Object.keys(e).some(k => k.startsWith('__reactProps$'))) && !document.querySelector('[data-testid="docs-content-skeleton"]') && !!getComputedStyle(document.documentElement).getPropertyValue('--font-sans').trim(); })()`,
     );
     if (done) {
       await chrome.evaluate(
@@ -277,6 +277,7 @@ async function browserAudit({
     startedAt: new Date().toISOString(),
     inventory: identity.rows.length,
     selected: selected.length,
+    redirectEntrances: selected.filter((row) => row.kind === 'redirect').length,
     expectedPages: selected.map((row) => row.url),
     results: [],
     limitations:
@@ -397,7 +398,14 @@ async function browserAudit({
               region === 'cn' ? row.url.replace(/^\/zh-CN/, '') : row.url,
               server.origin,
             ).href;
-            await ready(chrome, sid, url);
+            const target = new URL(
+              region === 'cn'
+                ? row.expectedPath.replace(/^\/zh-CN/, '')
+                : row.expectedPath,
+              server.origin,
+            ).href;
+            result.expectedDestination = row.expectedPath;
+            await ready(chrome, sid, url, target);
             const detailed =
               row.acceptanceCase ||
               (await chrome.evaluate(sid, expression)).detailed;
@@ -430,6 +438,16 @@ async function browserAudit({
                 );
                 await settle(chrome, sid);
                 const evidence = await chrome.evaluate(sid, expression);
+                if (
+                  Math.abs(evidence.actualViewport.width - viewport.width) >
+                    1 ||
+                  Math.abs(evidence.actualViewport.height - viewport.height) >
+                    1 ||
+                  evidence.actualTheme !== theme
+                )
+                  throw new Error(
+                    'Browser viewport/theme did not match the requested state',
+                  );
                 result.states.push({
                   viewport: viewport.name,
                   width: viewport.width,
