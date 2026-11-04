@@ -90,11 +90,15 @@
 2. 点击「产品文档」，教程出现在第 3 篇：[产品文档复查入口](https://docs-portal-staging.sh3.agoralab.co/search?q=%E8%99%9A%E6%8B%9F%E8%83%8C%E6%99%AF&type=docs&page=1)。
 3. [切换前后文本快照](evidence/2026-11-04-search-comparison/virtual-background-view-switch.json)随报告提交；截图与完整可访问性快照保留在本地。
 
-### ISSUE-005：搜索页直接加载/刷新新增 React #418 错误（中，P2）
+### ISSUE-005：React 错误码 418：服务端与客户端 HTML 不一致（中，P2 暂定）
 
 打开新站 `Token` 搜索页，再连续刷新两次，浏览器异常列表每次新增一条 `Minified React error #418`。日志为会话累计值，两次复测分别为 5 条与 6 条，不能解释为单次刷新产生 5/6 条。旧站同类会话的未捕获异常列表为空。
 
-预期：搜索页不产生此类运行时异常。本轮未观察到搜索阻断，未读取应用代码，也未验证它是否影响分析事件或交互状态。
+[React 错误码 418：服务端与客户端 HTML 不一致](https://react.dev/errors/418)对应页面初始化时的 hydration mismatch。根据 React 官方说明，检测到不一致后，React 会在浏览器中重新生成受影响的组件树。
+
+对应本次测试，每次直接打开或刷新搜索页都会新增该错误，React 恢复后搜索仍能使用。目前没有证据表明它影响搜索结果、排序或召回；具体由哪个组件引起，仍需研发进一步定位。P2 是暂定排查优先级，不代表已确认搜索质量受到影响。未读取应用代码，也未验证它是否影响分析事件或其他交互状态。
+
+预期：搜索页初始化时服务端与客户端渲染一致，不产生此类错误。
 
 证据：[第一次日志](evidence/2026-11-04-search-comparison/new-reload-errors-1.json)、[第二次日志](evidence/2026-11-04-search-comparison/new-reload-errors-2.json)。这是加载时可观察错误，没有对应的可见错误弹窗。
 

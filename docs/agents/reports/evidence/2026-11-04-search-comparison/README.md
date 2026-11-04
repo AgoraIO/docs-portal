@@ -7,7 +7,7 @@
 - `new-latency.json`、`old-latency.json`：每站 15 次端到端界面响应测量。
 - `new-landings.json`、`old-landings.json`：新站 12 个、旧站 10 个落地页及锚点检查。
 - `virtual-background-view-switch.json`：虚拟背景查询在全部文档与产品文档视图切换前后的结果。
-- `new-reload-errors-1.json`、`new-reload-errors-2.json`：连续加载/刷新后的累计浏览器异常列表，数量分别为 5 与 6，新增一条 React #418。
+- `new-reload-errors-1.json`、`new-reload-errors-2.json`：连续加载/刷新后的累计浏览器异常列表，数量分别为 5 与 6，新增一条 [React 错误码 418：服务端与客户端 HTML 不一致](https://react.dev/errors/418)。原始日志中的错误字符串保持不变。
 
 纯空白样本（第 38 组）在新站未提交，URL 保留前一个无结果查询，不能视作空白查询的零召回。虚拟背景最初的加载中样本已被稳定结果替换，未作为无结果计数。
 
