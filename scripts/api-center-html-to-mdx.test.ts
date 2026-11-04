@@ -683,6 +683,25 @@ describe('API Center shared HTML to MDX converter', () => {
     await expect(compileGeneratedMdx(result.body)).resolves.toBeDefined();
   });
 
+  it('labels paired TypeDoc accessors from their own signatures', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Config</h1><h3 id="host">host</h3>
+        <ul class="tsd-signatures"><li>get host(): string</li><li>set host(value: string): void</li></ul>
+        <ul class="tsd-descriptions"><li class="tsd-description"><p>Reads the host.</p></li><li class="tsd-description"><p>Sets the host.</p></li></ul></article>`,
+      sourceUrl: 'https://example.com/config.html',
+      sourcePath: 'config.html',
+    });
+    expect(result.body).toContain('#### get host [1/2]');
+    expect(result.body).toContain('#### set host [2/2]');
+    expect(result.body).not.toContain('#### get host [2/2]');
+    const setter = result.body.split('#### set host [2/2]')[1];
+    expect(setter).toContain('set host(value: string): void');
+    expect(setter).toContain('Sets the host.');
+    expect(setter).not.toContain('Reads the host.');
+    expect(result.body).toContain('<a id="host"></a>');
+    await expect(compileGeneratedMdx(result.body)).resolves.toBeDefined();
+  });
+
   it('flags ambiguous TypeDoc overloads without guessing a description pairing', async () => {
     const result = await convertHtmlToMdx({
       html: '<article><h1>Client</h1><ul class="tsd-signatures"><li>run(): Audio</li><li>run(): Video</li></ul><ul class="tsd-descriptions"><li class="tsd-description"><p>Shared description.</p></li></ul></article>',

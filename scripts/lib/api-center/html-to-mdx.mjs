@@ -1372,11 +1372,10 @@ async function renderNodeSequence($, nodes, state) {
         if (items.length === signatures.length) {
           if (inline.trim()) blocks.push(inline.trim());
           inline = '';
-          const memberName =
-            cleanText($(signatures[0]).text()).split('(')[0] ||
-            'Call signature';
           blocks.push(anchorFor($(child)), anchorFor(descriptions));
           for (const [overloadIndex, signature] of signatures.entries()) {
+            const memberName =
+              cleanText($(signature).text()).split('(')[0] || 'Call signature';
             const list = $('<ul></ul>').append($(signature).clone());
             blocks.push(
               `#### ${escapeMdxText(memberName)} [${overloadIndex + 1}/${signatures.length}]`,
