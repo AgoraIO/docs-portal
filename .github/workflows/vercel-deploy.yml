@@ -14,6 +14,10 @@ on:
       - "source.config.ts"
       - "tsconfig.json"
       - "vite.config.ts"
+      - "docs/api-reference-quality.md"
+      - "AGENTS.md"
+      - ".github/PULL_REQUEST_TEMPLATE.md"
+      - ".github/workflows/vercel-deploy.yml"
       - "vercel.json"
       - "vercel.base.json"
       - "vercel-legacy-redirects.json"
@@ -35,6 +39,10 @@ on:
       - "source.config.ts"
       - "tsconfig.json"
       - "vite.config.ts"
+      - "docs/api-reference-quality.md"
+      - "AGENTS.md"
+      - ".github/PULL_REQUEST_TEMPLATE.md"
+      - ".github/workflows/vercel-deploy.yml"
       - "vercel.json"
       - "vercel.base.json"
       - "vercel-legacy-redirects.json"
@@ -172,6 +180,14 @@ jobs:
         if: steps.preview-context.outputs.should_deploy == 'true'
         run: bun install --frozen-lockfile
 
+      - name: Check API quality policy and prepare build evidence
+        if: steps.preview-context.outputs.should_deploy == 'true'
+        env:
+          VITE_DOCS_REGION: global
+        run: |
+          bun run test scripts/api-reference-quality.test.ts
+          bun run qa:api prepare --region "$VITE_DOCS_REGION"
+
       - name: Pull Vercel preview environment
         if: steps.preview-context.outputs.should_deploy == 'true'
         run: vercel pull --yes --environment=preview --token="${{ secrets.VERCEL_TOKEN }}"
@@ -202,6 +218,26 @@ jobs:
           test -d .vercel/output/static
           test -f .vercel/output/static/index.html
           test ! -d .vercel/output/functions
+
+      - name: Check API reference quality in Chrome
+        if: steps.preview-context.outputs.should_deploy == 'true'
+        env:
+          VITE_DOCS_REGION: global
+        run: |
+          npm install --global agent-browser@0.41.1
+          agent-browser install --with-deps
+          bun run qa:api seal --region "$VITE_DOCS_REGION" --root .vercel/output/static
+          bun run qa:api browser --region "$VITE_DOCS_REGION" --root .vercel/output/static --scope all
+
+      - name: Retain API quality evidence
+        if: always() && steps.preview-context.outputs.should_deploy == 'true'
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: api-reference-quality-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .agent/artifacts/api-reference-quality/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14
 
       - name: Deploy prebuilt output
         if: steps.preview-context.outputs.should_deploy == 'true'

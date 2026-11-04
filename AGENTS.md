@@ -51,3 +51,7 @@ This is a single-context repo with root `CONTEXT.md` and optional ADRs under `do
 ### Markdown authoring
 
 Docs content uses the minimum Markdown/Fumadocs syntax standard in `docs/agents/markdown-authoring-standard.md`. Check it before editing or migrating `content/docs/**`.
+
+### API reference quality
+
+Before changing API reference content/importers, OpenAPI schemas, shared MDX/OpenAPI components or styles, reference routing, or dependencies/build configuration that affect their rendering, read [the API reference quality contract](docs/api-reference-quality.md). Follow its source checks, regional browser coverage and independent acceptance record before declaring the work complete.
