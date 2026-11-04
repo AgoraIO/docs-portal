@@ -503,7 +503,8 @@ export function extractPublishedCnSections(
       hierarchy.pop();
     current = {
       title,
-      anchor: explicitAnchor ?? headingWithId?.[2] ?? automaticAnchor,
+      // Published renderer IDs match the TOC; preceding anchors remain aliases.
+      anchor: headingWithId?.[2] ?? explicitAnchor ?? automaticAnchor,
       path: [page.title, ...hierarchy.map((item) => item.title), title],
       parts: [title],
       start: node.position?.start.offset ?? 0,

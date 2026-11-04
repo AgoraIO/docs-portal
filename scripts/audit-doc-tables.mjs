@@ -89,7 +89,7 @@ export function auditTableStructure(source, isMdx = true) {
   try {
     // Use the publication transform to validate adjacency and reusable rich
     // definitions, not just whether matching names occur somewhere in a file.
-    remarkTableSlots()(tree);
+    unified().use(remarkTableSlots).runSync(tree, body);
     const checkRawSlots = (node) => {
       if (
         node.type === 'tableCell' &&

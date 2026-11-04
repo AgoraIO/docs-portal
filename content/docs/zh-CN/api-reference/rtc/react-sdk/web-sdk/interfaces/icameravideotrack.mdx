@@ -330,7 +330,7 @@ Overrides [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/il
 
 获取本地视频轨道的相关信息。
 
-### deprecated
+#### deprecated
 
 自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalaudiostats)。
 
@@ -477,27 +477,11 @@ void
 
 ### on
 
+#### on [1/4]
+
 <ApiSignature>
 
 on(event: "track-updated", listener: typeof event_track_updated): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "track-ended", listener: typeof event_track_ended): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "video-element-visible-status", listener: typeof event_video_element_visible_status): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "transceiver-updated", listener: typeof event_transceiver_updated): void
 
 </ApiSignature>
 
@@ -528,6 +512,14 @@ void
 
 </ApiReturns>
 
+#### on [2/4]
+
+<ApiSignature>
+
+on(event: "track-ended", listener: typeof event_track_ended): void
+
+</ApiSignature>
+
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#on)
 
 Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack#on)
@@ -555,6 +547,14 @@ void
 
 </ApiReturns>
 
+#### on [3/4]
+
+<ApiSignature>
+
+on(event: "video-element-visible-status", listener: typeof event_video_element_visible_status): void
+
+</ApiSignature>
+
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#on)
 
 Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack#on)
@@ -581,6 +581,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [4/4]
+
+<ApiSignature>
+
+on(event: "transceiver-updated", listener: typeof event_transceiver_updated): void
+
+</ApiSignature>
 
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#on)
 

@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import * as cheerio from 'cheerio';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import { consolidatedSourceTarget } from './document-consolidation.mjs';
 import {
   resolveExistingApiCenterTarget,

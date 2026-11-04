@@ -30,24 +30,25 @@ it('generates the three legacy Cloud Recording clients with Basic Auth from the 
     />,
   );
 
-  const rail = await screen.findByTestId('openapi-examples-rail');
-  const examples = rail.querySelector(
-    '.openapi-request-examples',
-  ) as HTMLElement;
-  const tabs = within(examples).getAllByRole('tab');
-  expect(tabs.map((tab) => tab.textContent)).toEqual([
-    'cURL',
-    'Python/Requests',
-    'Node.js/Fetch',
-  ]);
-  for (const tab of tabs) {
-    fireEvent.mouseDown(tab);
-    await waitFor(() => expect(tab).toHaveAttribute('aria-selected', 'true'));
+  await screen.findByTestId('openapi-examples-rail');
+  for (const language of ['cURL', 'Python/Requests', 'Node.js/Fetch']) {
+    fireEvent.click(
+      within(
+        globalThis.document.querySelector(
+          '.openapi-request-examples',
+        ) as HTMLElement,
+      ).getByRole('combobox', { name: /Code language|代码语言/i }),
+    );
+    const option = await screen.findByRole('option', { name: language });
+    fireEvent.pointerDown(option, { pointerType: 'mouse' });
+    fireEvent.click(option, { detail: 1 });
     await waitFor(() => {
-      const panel = within(examples).getByRole('tabpanel');
-      expect(panel).toHaveTextContent('Authorization');
-      expect(panel).toHaveTextContent('Basic <credentials>');
-      expect(panel).toHaveTextContent('cloud_recording/acquire');
+      const code = globalThis.document.querySelector(
+        '.openapi-request-examples pre',
+      );
+      expect(code).toHaveTextContent('Authorization');
+      expect(code).toHaveTextContent('Basic <credentials>');
+      expect(code).toHaveTextContent('cloud_recording/acquire');
     });
   }
 });

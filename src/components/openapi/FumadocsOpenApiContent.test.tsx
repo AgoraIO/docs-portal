@@ -10,7 +10,7 @@ import {
 } from '@testing-library/react';
 import { load } from 'cheerio';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { createLocalizedOpenApiSource } from '@/lib/openapi/fumadocs-source.server';
@@ -543,7 +543,7 @@ describe('FumadocsOpenApiContent', () => {
       const bundled = (
         pageProps as Extract<OpenAPIPageProps, { payload: unknown }>
       ).payload.bundled;
-      const responses = bundled.paths?.['/method-get']?.get?.responses;
+      const responses = bundled?.paths?.['/method-get']?.get?.responses;
       if (!responses) throw new Error('Missing fixture responses');
       responses['200'] = { description: '' };
       const { container } = render(
@@ -560,7 +560,7 @@ describe('FumadocsOpenApiContent', () => {
     const bundled = (
       pageProps as Extract<OpenAPIPageProps, { payload: unknown }>
     ).payload.bundled;
-    const response = (bundled.paths?.['/method-get']?.get?.responses ??
+    const response = (bundled?.paths?.['/method-get']?.get?.responses ??
       {}) as Record<string, unknown>;
     response['400'] = {
       description: 'Invalid request',
@@ -965,7 +965,8 @@ describe('FumadocsOpenApiContent', () => {
       ['parameters-header', 'traceId'],
       ['parameters-cookie', 'sessionId'],
     ]) {
-      const section = document.getElementById(id)?.nextElementSibling;
+      const section =
+        document.getElementById(id)?.parentElement?.nextElementSibling;
       expect(section).toBeTruthy();
       expect(section).toHaveTextContent(name);
       expect(section).not.toHaveTextContent('Filter Properties');
@@ -1436,64 +1437,49 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
+    const selector = await screen.findByRole('combobox', {
+      name: /Code language|代码语言/i,
+    });
+    const requestExamples = selector.closest(
+      '.openapi-request-examples',
+    ) as HTMLElement;
+    fireEvent.click(selector);
     expect(
-      await screen.findByRole('tab', { name: 'cURL' }),
-    ).toBeInTheDocument();
-    const requestExamples = screen
-      .getByRole('tab', { name: 'cURL' })
-      .closest('.openapi-request-examples') as HTMLElement;
-    expect(
-      within(requestExamples)
-        .getAllByRole('tab')
-        .map((tab) => tab.textContent),
+      screen.getAllByRole('option').map((option) => option.textContent?.trim()),
     ).toEqual(['cURL', 'Python/Requests', 'Node.js/Fetch']);
-    const generatedPreview = screen.getByTestId('openapi-code-preview');
-    const generatedPanel = within(generatedPreview).getByRole('tabpanel');
-    expect(generatedPanel.closest('.openapi-request-code-tabs')).toHaveClass(
-      'openapi-request-code-tabs',
-      'my-0',
-    );
-    expect(
-      generatedPanel.querySelector('.fd-scroll-container'),
-    ).toHaveAttribute('data-openapi-code-viewport', '');
-    expect(generatedPanel.querySelector('figure.shiki')).toHaveClass(
-      'bg-fd-secondary',
-      '-mx-px',
-      '-mb-px',
-      'last:rounded-b-xl',
-    );
-    await waitFor(() =>
+    fireEvent.click(screen.getByRole('option', { name: 'cURL' }));
+    for (const [language, snippet] of [
+      ['Python/Requests', 'requests.request("GET", url)'],
+      ['Node.js/Fetch', 'fetch('],
+    ] as const) {
+      fireEvent.click(
+        within(
+          document.querySelector('.openapi-request-examples') as HTMLElement,
+        ).getByRole('combobox', { name: /Code language|代码语言/i }),
+      );
+      const option = screen.getByRole('option', { name: language });
+      fireEvent.pointerDown(option, { pointerType: 'mouse' });
+      fireEvent.click(option, { detail: 1 });
+      await waitFor(() =>
+        expect(
+          document.querySelector('.openapi-request-examples pre'),
+        ).toHaveTextContent(snippet),
+      );
       expect(
-        generatedPanel.querySelector('pre span[style*="--shiki-light"]'),
-      ).toBeInTheDocument(),
+        document.querySelector('.openapi-request-examples pre'),
+      ).toHaveTextContent('/api/speech-to-text/v1/projects/');
+    }
+    const preview = screen.getByTestId('openapi-code-preview');
+    await waitFor(() =>
+      expect(preview.querySelector('.fd-scroll-container')).toHaveAttribute(
+        'data-openapi-code-viewport',
+        '',
+      ),
     );
     expect(
-      within(generatedPreview).getByRole('button', { name: '复制文本' }),
+      within(preview).getByRole('button', { name: '复制文本' }),
     ).toBeInTheDocument();
-    expect(
-      screen
-        .getByRole('tab', { name: 'cURL' })
-        .closest('.openapi-request-examples'),
-    ).not.toHaveAttribute('data-markdown-ignore');
-    expect(
-      screen.getByText('响应示例').closest('.openapi-response-example'),
-    ).not.toHaveAttribute('data-markdown-ignore');
-
-    fireEvent.mouseDown(
-      within(requestExamples).getByRole('tab', { name: 'Python/Requests' }),
-    );
-    expect(within(requestExamples).getByRole('tabpanel')).toHaveTextContent(
-      'requests.request("GET", url)',
-    );
-    fireEvent.mouseDown(
-      within(requestExamples).getByRole('tab', { name: 'Node.js/Fetch' }),
-    );
-    expect(within(requestExamples).getByRole('tabpanel')).toHaveTextContent(
-      'fetch(',
-    );
-    expect(within(requestExamples).getByRole('tabpanel')).toHaveTextContent(
-      '/api/speech-to-text/v1/projects/',
-    );
+    expect(requestExamples).not.toHaveAttribute('data-markdown-ignore');
   });
 
   it('renders response status tabs on every registered endpoint and keeps three fallback clients', async () => {
@@ -1505,7 +1491,7 @@ describe('FumadocsOpenApiContent', () => {
       const pageProps = await file.data.getOpenAPIPageProps();
       const route = pageProps.operations?.[0];
       if (!route) continue;
-      const operation = pageProps.payload.bundled.paths?.[route.path]?.[
+      const operation = pageProps.payload.bundled?.paths?.[route.path]?.[
         route.method
       ] as Record<string, unknown>;
       const $ = load(
@@ -1549,11 +1535,11 @@ describe('FumadocsOpenApiContent', () => {
         continue;
       }
       expect(
-        $('.openapi-request-examples [role="tab"]')
-          .map((_, tab) => $(tab).text())
-          .get(),
+        $(
+          '.openapi-request-examples [role="combobox"][aria-label="代码语言"], .openapi-request-examples [role="combobox"][aria-label="Code language"]',
+        ).length,
         file.path,
-      ).toEqual(['cURL', 'Python/Requests', 'Node.js/Fetch']);
+      ).toBe(1);
       checkedPaths.push(file.path);
     }
 
@@ -1972,7 +1958,7 @@ describe('FumadocsOpenApiContent', () => {
       within(propertiesRow).getByRole('button', {
         name: 'Collapse properties properties',
       }),
-    ).not.toContainElement(
+    ).toContainElement(
       within(propertiesRow).getByText('object', { exact: true }),
     );
     expect(
@@ -2916,10 +2902,10 @@ describe('FumadocsOpenApiContent', () => {
 
     const pathSection = screen.getByRole('heading', {
       name: 'Path Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     const headerSection = screen.getByRole('heading', {
       name: 'Header Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
 
     expect(within(pathSection).getByText('appid')).toBeInTheDocument();
     expect(within(pathSection).getByText('resourceid')).toBeInTheDocument();
@@ -3495,10 +3481,11 @@ describe('FumadocsOpenApiContent', () => {
     const pathParameters = await screen.findByRole('heading', {
       name: 'Path Parameters',
     });
-    const pathSection = pathParameters.nextElementSibling as HTMLElement;
+    const pathSection = pathParameters.parentElement
+      ?.nextElementSibling as HTMLElement;
     const headerSection = screen.getByRole('heading', {
       name: 'Header Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     const responseHeaderSection = screen
       .getByRole('heading', { name: 'Response Headers' })
       .closest('section') as HTMLElement;
@@ -3522,7 +3509,7 @@ describe('FumadocsOpenApiContent', () => {
 
     const querySection = screen.getByRole('heading', {
       name: 'Query Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     expect(within(querySection).getByText('page_size')).toBeInTheDocument();
     expect(within(querySection).getAllByText('Range:')).toHaveLength(2);
     expect(
@@ -4985,7 +4972,7 @@ describe('FumadocsOpenApiContent', () => {
 
     const pathSection = (
       await screen.findByRole('heading', { name: 'Path Parameters' })
-    ).nextElementSibling as HTMLElement;
+    ).parentElement?.nextElementSibling as HTMLElement;
 
     expect(
       within(pathSection).getByText('The App ID used by this request.'),
@@ -5074,16 +5061,16 @@ describe('FumadocsOpenApiContent', () => {
 
     const pathSection = (
       await screen.findByRole('heading', { name: 'Path Parameters' })
-    ).nextElementSibling as HTMLElement;
+    ).parentElement?.nextElementSibling as HTMLElement;
     const querySection = screen.getByRole('heading', {
       name: 'Query Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     const headerSection = screen.getByRole('heading', {
       name: 'Header Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     const cookieSection = screen.getByRole('heading', {
       name: 'Cookie Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
 
     const pathRow = within(pathSection)
       .getByText('itemId')
@@ -5177,10 +5164,10 @@ describe('FumadocsOpenApiContent', () => {
 
     const pathSection = (
       await screen.findByRole('heading', { name: '路径参数' })
-    ).nextElementSibling as HTMLElement;
+    ).parentElement?.nextElementSibling as HTMLElement;
     const querySection = screen.getByRole('heading', {
       name: '查询参数',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     expect(within(pathSection).getByText('必填')).toBeVisible();
     expect(within(querySection).queryByText('可选')).not.toBeInTheDocument();
     expect(

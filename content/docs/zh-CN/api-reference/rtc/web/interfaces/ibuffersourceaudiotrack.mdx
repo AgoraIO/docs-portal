@@ -353,7 +353,7 @@ Overrides [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack).[ge
 
 获取本地音频轨道的质量相关信息。
 
-### deprecated
+#### deprecated
 
 自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getlocalaudiostats)。
 
@@ -490,15 +490,11 @@ void
 
 ### on
 
+#### on [1/2]
+
 <ApiSignature>
 
 on(event: "source-state-change", listener: typeof event_source_state_change): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: string, listener: Function): void
 
 </ApiSignature>
 
@@ -526,6 +522,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [2/2]
+
+<ApiSignature>
+
+on(event: string, listener: Function): void
+
+</ApiSignature>
 
 Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
 

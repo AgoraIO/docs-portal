@@ -270,7 +270,7 @@ ConstructRoomParams: \{cameraBound?:[CameraBound](/zh-CN/api-reference/whiteboar
 - `false`：(默认)不允许按住 `command` 键并滚动来放大缩小白板。
 :::
 
-### note
+#### note
 
 - 该属性仅使用于 macOS 系统。
 - 该属性不影响 `control` 滚轮的放大缩小行为。
@@ -354,15 +354,15 @@ ContentMode: (screenSize:[Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/w
 
 实时缩放比例。
 
-### param
+#### param
 
 屏幕的尺寸。
 
-### param
+#### param
 
 视角边界的尺寸。
 
-### returns
+#### returns
 
 根据 `screenSize` 和 `boundSize` 计算出来的缩放比例。
 
@@ -1142,15 +1142,15 @@ HotKeyChecker: (event:[HotKeyEvent](/zh-CN/api-reference/whiteboard/whiteboard-s
 
 快捷键检查器。
 
-### param
+#### param
 
 自定义快捷键的事件。
 
-### param
+#### param
 
 键盘的类型。
 
-### returns
+#### returns
 
 是否为指定的快捷键：
 
@@ -1883,7 +1883,7 @@ JoinRoomParams: [ConstructRoomParams](/zh-CN/api-reference/whiteboard/whiteboard
 
   房间内其他用户可以通过如下代码读取特定用户在加入房间时设置的 `userPayload`：
 
-### example
+#### example
 
 ```javascript
 for (var member of room.state.roomMembers) {
@@ -2160,7 +2160,7 @@ MemberInformation: \{id:number;payload:any;session:string\}
 
 自定义用户信息。
 
-### deprecated
+#### deprecated
 
 已废弃。请改用 [JoinRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#joinroomparams) 中的 `userPayload`。
 
@@ -2447,7 +2447,7 @@ PlayerCallbacks: [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard
 
   `isPlayable` 发生改变的回调。
 
-### param
+#### param
 
 `isPlayable` 是否能立即播放：
 
@@ -2458,7 +2458,7 @@ PlayerCallbacks: [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard
 
   回放阶段发生改变的回调。
 
-### param
+#### param
 
 `phase` 回放阶段。
 
@@ -2469,7 +2469,7 @@ PlayerCallbacks: [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard
 
   回放状态发生改变的回调。
 
-### param
+#### param
 
 `modifyState` 回放状态。
 
@@ -2477,7 +2477,7 @@ PlayerCallbacks: [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard
 
   出错导致回放暂停的回调。
 
-### param
+#### param
 
 `error` 错误信息。
 
@@ -2485,7 +2485,7 @@ PlayerCallbacks: [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard
 
   回放进度发生改变的回调。
 
-### param
+#### param
 
 `progressTimestamp` 回放进度。
 
@@ -3673,7 +3673,7 @@ RoomCallbacks: [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-s
 
   房间连接成功回调，报告已经建立 WebSocket 连接，将要进入初始化阶段。
 
-### param
+#### param
 
 `duration` 建立连接的时间，单位是毫秒。
 
@@ -3681,7 +3681,7 @@ RoomCallbacks: [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-s
 
   房间连接状态发生变化的回调。
 
-### param
+#### param
 
 `phase` 房间的连接状态，详见 [RoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomphase)。你可以阅读[管理房间连接状态](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/manage-room-phase)了解更多信息。
 
@@ -3691,7 +3691,7 @@ RoomCallbacks: [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-s
 
   该回调仅返回发生变化的房间状态属性，未发生变化的房间状态字段均为空。
 
-### param
+#### param
 
 `modifyState` 发生变化的房间状态属性，详见 [RoomState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#roomstate)。
 
@@ -3699,7 +3699,7 @@ RoomCallbacks: [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-s
 
   白板 SDK 与白板服务器连接中断回调。
 
-### param
+#### param
 
 `error` 错误信息。
 
@@ -3707,11 +3707,11 @@ RoomCallbacks: [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-s
 
   白板中的元素数量超过限制回调。
 
-### param
+#### param
 
 `limit` 白板中的元素数量限制。
 
-### param
+#### param
 
 `soft` 是否为软限制：
  - `true`：软限制。当白板中的元素数量超过限制时，SDK 会发出警告，但仍可以插入白板元素。
@@ -3721,7 +3721,7 @@ RoomCallbacks: [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-s
 
   用户被服务器移出房间回调。
 
-### param
+#### param
 
 `reason` 用户被移出房间的原因。
 
@@ -3741,7 +3741,7 @@ RoomCallbacks: [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-s
 
   当本地用户调用 [undo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#undo) 撤销上一步操作时，会触发该回调，报告剩余的可撤销次数。
 
-### param
+#### param
 
 `canUndoSteps` 剩余的可撤销次数。
 
@@ -3751,7 +3751,7 @@ RoomCallbacks: [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-s
 
   当本地用户调用 [undo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#undo) 重做上一步操作时，会触发该回调，报告剩余的可重做次数。
 
-### param
+#### param
 
 `canRedoSteps` 剩余的可重做次数。
 
@@ -3972,11 +3972,11 @@ ScenesCallbacks: \{onAddScene:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-
 
 新增场景回调。
 
-### param
+#### param
 
 场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)。
 
-### param
+#### param
 
 新增场景的场景名称。
 
@@ -4020,11 +4020,11 @@ void
 
 新增子场景目录回调。
 
-### param
+#### param
 
 场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)。
 
-### param
+#### param
 
 新增的子场景目录的名称。
 
@@ -4068,11 +4068,11 @@ void
 
 删除场景回调。
 
-### param
+#### param
 
 场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)。
 
-### param
+#### param
 
 被删除场景的场景名称。
 
@@ -4116,11 +4116,11 @@ void
 
 删除子场景目录回调。
 
-### param
+#### param
 
 场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)。
 
-### param
+#### param
 
 被删除的子场景目录的名称。
 
@@ -4164,11 +4164,11 @@ void
 
 指定场景目录下场景数量发生变化回调。
 
-### param
+#### param
 
 场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)。
 
-### param
+#### param
 
 指定场景目录下当前的场景数量。
 
@@ -4212,11 +4212,11 @@ void
 
 指定场景目录下子场景目录数量发生变化回调。
 
-### param
+#### param
 
 场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)。
 
-### param
+#### param
 
 指定场景目录下当前子场景目录的数量。
 
@@ -4472,7 +4472,7 @@ WhiteWebSdkConfiguration: \{appIdentifier:string;deviceType?:[DeviceType](/zh-CN
 - `true`：关闭补间动画功能。关闭该功能后，会缩短延时，但远端用户看到的笔迹绘制过程可能出现卡顿。
 - `false`：（默认）开启补间动画功能。开启后，当本地用户使用 `pencil` 在白板上绘制或书写时，SDK 会自动在关键帧之间插入帧，使远端用户看到的书写或绘制过程更加流畅，但会因此增加延时。
 
-### note
+#### note
 
 该属性仅在 `disableNewPencil` 设为 `fasle` 时生效。
 
@@ -4484,7 +4484,7 @@ WhiteWebSdkConfiguration: \{appIdentifier:string;deviceType?:[DeviceType](/zh-CN
 - `true`：关闭笔锋效果。
 - `false`：（默认）开启笔锋效果。
 
-### note
+#### note
 
 该属性仅在 `disableNewPencil` 设为 `fasle` 时生效。
 
@@ -4554,7 +4554,7 @@ SDK 上报日志的选项，详见 [LoggerOptions](/zh-CN/api-reference/whiteboa
 
 `WhiteWebSdk` 初始化失败的回调。
 
-### example
+#### example
 
 ```ts
 const whiteWebSdk = new WhiteWebSdk({
@@ -4682,7 +4682,7 @@ Partial & lt;[ReconnectionOptions](/zh-CN/api-reference/whiteboard/whiteboard-sd
 
 例如，你可以使用如下代码给所有图片的 URL 增加尾缀：
 
-### example
+#### example
 
 ```ts
 const whiteWebSdk = new WhiteWebSdk({
@@ -4734,7 +4734,7 @@ string
 
 你可以使用如下代码对白板的界面进行自定义包装：
 
-### example
+#### example
 
 ```ts
 import React from "react";

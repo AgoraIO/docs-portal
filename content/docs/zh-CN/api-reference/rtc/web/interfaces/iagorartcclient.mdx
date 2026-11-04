@@ -471,7 +471,7 @@ join-fallback-to-proxy(proxyServer: string): void
 
 </ApiSignature>
 
-### deprecated
+#### deprecated
 
 自 4.19.0 起废弃。SDK 不再使用代理保障连通性，因此不会再触发该回调。
 
@@ -1532,21 +1532,11 @@ Promise&lt;void&gt;
 
 ### subscribe
 
+#### subscribe [1/3]
+
 <ApiSignature>
 
 subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser) | [UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType: "video"): Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack)&gt;
-
-</ApiSignature>
-
-<ApiSignature>
-
-subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser) | [UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType: "audio"): Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack)&gt;
-
-</ApiSignature>
-
-<ApiSignature>
-
-subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser) | [UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType: "video" | "audio" | "datachannel", channelId?: number): Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack) | IRemoteDataChannel&gt;
 
 </ApiSignature>
 
@@ -1594,6 +1584,14 @@ Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotevi
 
 </ApiReturns>
 
+#### subscribe [2/3]
+
+<ApiSignature>
+
+subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser) | [UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType: "audio"): Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack)&gt;
+
+</ApiSignature>
+
 订阅远端用户的音视频轨道。
 
 ```javascript
@@ -1601,7 +1599,7 @@ await client.subscribe(user，"audio");
 user.audioTrack.play();
 ```
 
-### category
+#### category
 
 Agora Core
 
@@ -1642,6 +1640,14 @@ Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteau
 
 </ApiReturns>
 
+#### subscribe [3/3]
+
+<ApiSignature>
+
+subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser) | [UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType: "video" | "audio" | "datachannel", channelId?: number): Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack) | IRemoteDataChannel&gt;
+
+</ApiSignature>
+
 订阅远端用户的音视频轨道。
 
 ```javascript
@@ -1649,7 +1655,7 @@ await client.subscribe(user，"audio");
 user.audioTrack.play();
 ```
 
-### category
+#### category
 
 Agora Core
 
@@ -2892,177 +2898,11 @@ void
 
 ### on
 
+#### on [1/29]
+
 <ApiSignature>
 
 on(event: "peerconnection-state-change", listener: typeof event_peerconnection_state_change): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "connection-state-change", listener: typeof event_connection_state_change): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "user-joined", listener: typeof event_user_joined): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "user-left", listener: typeof event_user_left): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "user-published", listener: typeof event_user_published): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "user-unpublished", listener: typeof event_user_unpublished): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "user-info-updated", listener: typeof event_user_info_updated): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "media-reconnect-start", listener: typeof event_media_reconnect_start): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "media-reconnect-end", listener: typeof event_media_reconnect_end): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "stream-type-changed", listener: typeof event_stream_type_changed): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "stream-fallback", listener: typeof event_stream_fallback): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "channel-media-relay-state", listener: typeof event_channel_media_relay_state): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "channel-media-relay-event", listener: typeof event_channel_media_relay_event): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "volume-indicator", listener: typeof event_volume_indicator): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "crypt-error", listener: typeof event_crypt_error): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "token-privilege-will-expire", listener: typeof event_token_privilege_will_expire): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "token-privilege-did-expire", listener: typeof event_token_privilege_did_expire): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "network-quality", listener: typeof event_network_quality): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "live-streaming-error", listener: typeof event_live_streaming_error): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "live-streaming-warning", listener: typeof event_live_streaming_warning): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "exception", listener: typeof event_exception): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "is-using-cloud-proxy", listener: typeof event_is_using_cloud_proxy): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "join-fallback-to-proxy", listener: typeof event_join_fallback_to_proxy): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "published-user-list", listener: typeof event_published_user_list): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "content-inspect-connection-state-change", listener: typeof event_content_inspect_connection_state_change): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "content-inspect-error", listener: typeof event_content_inspect_error): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "image-moderation-connection-state-change", listener: typeof event_image_moderation_connection_state_change): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "stream-message", listener: typeof event_stream_message): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: string, listener: Function): void
 
 </ApiSignature>
 
@@ -3097,6 +2937,14 @@ void
 
 </ApiReturns>
 
+#### on [2/29]
+
+<ApiSignature>
+
+on(event: "connection-state-change", listener: typeof event_connection_state_change): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 SDK 与服务器的连接状态发生改变回调。
@@ -3123,6 +2971,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [3/29]
+
+<ApiSignature>
+
+on(event: "user-joined", listener: typeof event_user_joined): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3151,6 +3007,14 @@ void
 
 </ApiReturns>
 
+#### on [4/29]
+
+<ApiSignature>
+
+on(event: "user-left", listener: typeof event_user_left): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 远端用户离线回调。
@@ -3177,6 +3041,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [5/29]
+
+<ApiSignature>
+
+on(event: "user-published", listener: typeof event_user_published): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3205,6 +3077,14 @@ void
 
 </ApiReturns>
 
+#### on [6/29]
+
+<ApiSignature>
+
+on(event: "user-unpublished", listener: typeof event_user_unpublished): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 远端用户停止或取消发布了音频或视频轨道。
@@ -3231,6 +3111,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [7/29]
+
+<ApiSignature>
+
+on(event: "user-info-updated", listener: typeof event_user_info_updated): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3259,6 +3147,14 @@ void
 
 </ApiReturns>
 
+#### on [8/29]
+
+<ApiSignature>
+
+on(event: "media-reconnect-start", listener: typeof event_media_reconnect_start): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 SDK 开始尝试重新建立媒体连接（用于发布和订阅）的回调。
@@ -3285,6 +3181,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [9/29]
+
+<ApiSignature>
+
+on(event: "media-reconnect-end", listener: typeof event_media_reconnect_end): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3313,6 +3217,14 @@ void
 
 </ApiReturns>
 
+#### on [10/29]
+
+<ApiSignature>
+
+on(event: "stream-type-changed", listener: typeof event_stream_type_changed): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 视频的订阅流类型发生改变回调。
@@ -3339,6 +3251,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [11/29]
+
+<ApiSignature>
+
+on(event: "stream-fallback", listener: typeof event_stream_fallback): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3367,6 +3287,14 @@ void
 
 </ApiReturns>
 
+#### on [12/29]
+
+<ApiSignature>
+
+on(event: "channel-media-relay-state", listener: typeof event_channel_media_relay_state): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 跨频道媒体流转发状态发生改变回调。
@@ -3393,6 +3321,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [13/29]
+
+<ApiSignature>
+
+on(event: "channel-media-relay-event", listener: typeof event_channel_media_relay_event): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3421,6 +3357,14 @@ void
 
 </ApiReturns>
 
+#### on [14/29]
+
+<ApiSignature>
+
+on(event: "volume-indicator", listener: typeof event_volume_indicator): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 报告频道内正在说话的本地和远端用户及其音量的回调。
@@ -3447,6 +3391,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [15/29]
+
+<ApiSignature>
+
+on(event: "crypt-error", listener: typeof event_crypt_error): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3475,6 +3427,14 @@ void
 
 </ApiReturns>
 
+#### on [16/29]
+
+<ApiSignature>
+
+on(event: "token-privilege-will-expire", listener: typeof event_token_privilege_will_expire): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 Token 即将过期回调。
@@ -3501,6 +3461,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [17/29]
+
+<ApiSignature>
+
+on(event: "token-privilege-did-expire", listener: typeof event_token_privilege_did_expire): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3529,6 +3497,14 @@ void
 
 </ApiReturns>
 
+#### on [18/29]
+
+<ApiSignature>
+
+on(event: "network-quality", listener: typeof event_network_quality): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 网络上下行质量报告回调。
@@ -3555,6 +3531,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [19/29]
+
+<ApiSignature>
+
+on(event: "live-streaming-error", listener: typeof event_live_streaming_error): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3583,6 +3567,14 @@ void
 
 </ApiReturns>
 
+#### on [20/29]
+
+<ApiSignature>
+
+on(event: "live-streaming-warning", listener: typeof event_live_streaming_warning): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 推流发生警告回调。
@@ -3609,6 +3601,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [21/29]
+
+<ApiSignature>
+
+on(event: "exception", listener: typeof event_exception): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3637,6 +3637,14 @@ void
 
 </ApiReturns>
 
+#### on [22/29]
+
+<ApiSignature>
+
+on(event: "is-using-cloud-proxy", listener: typeof event_is_using_cloud_proxy): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 通知当前媒体流是否经云代理服务转发回调。
@@ -3664,9 +3672,17 @@ void
 
 </ApiReturns>
 
+#### on [23/29]
+
+<ApiSignature>
+
+on(event: "join-fallback-to-proxy", listener: typeof event_join_fallback_to_proxy): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
-### deprecated
+#### deprecated
 
 自 4.19.0 起废弃。
  SDK 自动切换连接通道回调。
@@ -3693,6 +3709,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [24/29]
+
+<ApiSignature>
+
+on(event: "published-user-list", listener: typeof event_published_user_list): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3721,6 +3745,14 @@ void
 
 </ApiReturns>
 
+#### on [25/29]
+
+<ApiSignature>
+
+on(event: "content-inspect-connection-state-change", listener: typeof event_content_inspect_connection_state_change): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 视频截图上传服务的连接状态发生改变回调。
@@ -3747,6 +3779,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [26/29]
+
+<ApiSignature>
+
+on(event: "content-inspect-error", listener: typeof event_content_inspect_error): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3775,6 +3815,14 @@ void
 
 </ApiReturns>
 
+#### on [27/29]
+
+<ApiSignature>
+
+on(event: "image-moderation-connection-state-change", listener: typeof event_image_moderation_connection_state_change): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 第三方视频审核服务连接状态发生改变回调。
@@ -3802,6 +3850,14 @@ void
 
 </ApiReturns>
 
+#### on [28/29]
+
+<ApiSignature>
+
+on(event: "stream-message", listener: typeof event_stream_message): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 收到数据流消息回调。
@@ -3828,6 +3884,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [29/29]
+
+<ApiSignature>
+
+on(event: string, listener: Function): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3899,21 +3963,11 @@ void
 
 ### presubscribe
 
+#### presubscribe [1/3]
+
 <ApiSignature>
 
 presubscribe(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType: "audio"): Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack)&gt;
-
-</ApiSignature>
-
-<ApiSignature>
-
-presubscribe(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType: "video"): Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack)&gt;
-
-</ApiSignature>
-
-<ApiSignature>
-
-presubscribe(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType: "video" | "audio"): Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack)&gt;
 
 </ApiSignature>
 
@@ -3940,6 +3994,14 @@ Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteau
 
 </ApiReturns>
 
+#### presubscribe [2/3]
+
+<ApiSignature>
+
+presubscribe(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType: "video"): Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack)&gt;
+
+</ApiSignature>
+
 <ParameterList title="Parameters">
 <Parameter name="uid" required>
 
@@ -3962,6 +4024,14 @@ Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotevi
 </ApiReturnType>
 
 </ApiReturns>
+
+#### presubscribe [3/3]
+
+<ApiSignature>
+
+presubscribe(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid), mediaType: "video" | "audio"): Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack)&gt;
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="uid" required>
@@ -4292,15 +4362,11 @@ void
 
 ### setImageModeration
 
+#### setImageModeration [1/2]
+
 <ApiSignature>
 
 setImageModeration(enabled: false): Promise&lt;void&gt;
-
-</ApiSignature>
-
-<ApiSignature>
-
-setImageModeration(enabled: true, config: [ImageModerationConfiguration](/zh-CN/api-reference/rtc/web/interfaces/imagemoderationconfiguration)): Promise&lt;void&gt;
 
 </ApiSignature>
 
@@ -4323,6 +4389,14 @@ Promise&lt;void&gt;
 </ApiReturnType>
 
 </ApiReturns>
+
+#### setImageModeration [2/2]
+
+<ApiSignature>
+
+setImageModeration(enabled: true, config: [ImageModerationConfiguration](/zh-CN/api-reference/rtc/web/interfaces/imagemoderationconfiguration)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 开启和配置第三方视频审核服务。
 

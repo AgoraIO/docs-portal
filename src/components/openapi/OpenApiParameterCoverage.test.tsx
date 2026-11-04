@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { load } from 'cheerio';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import type { Root, RootContent } from 'mdast';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { remark } from 'remark';

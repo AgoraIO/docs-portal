@@ -945,7 +945,7 @@ describe('OpenApiSchema', () => {
     ).toBeTruthy();
     expect(nameRow.querySelector('.openapi-schema-field-leading')).toBeTruthy();
     expect(
-      configRow.querySelector('[data-openapi-field-gutter] button'),
+      configRow.querySelector('button [data-openapi-field-gutter]'),
     ).toBeInTheDocument();
     expect(
       nameRow.querySelector('[data-openapi-field-gutter] button'),

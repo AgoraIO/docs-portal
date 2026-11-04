@@ -7,7 +7,7 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { getOpenApiLaneLocales, getOpenApiLanes } from '@/lib/openapi/lanes';
 import { OpenApiSchema } from './OpenApiSchema';

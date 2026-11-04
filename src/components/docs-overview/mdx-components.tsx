@@ -47,6 +47,7 @@ import {
   useDeferredValue,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import {
@@ -62,6 +63,10 @@ import {
   TabsTrigger as UiTabsTrigger,
 } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
+import {
+  DOCS_HASH_TARGET_EVENT,
+  findDocsHeadingForHash,
+} from '@/lib/docs-hash';
 
 const SdksCatalog = lazy(() =>
   import('./SdksCatalog').then((module) => ({
@@ -264,6 +269,7 @@ export function DemoPlatformTabs({
     ? defaultValue
     : platforms.at(0)?.value;
   const [activePlatform, setActivePlatform] = useState(fallbackValue);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const queryPlatform = new URLSearchParams(window.location.search).get(
@@ -273,6 +279,28 @@ export function DemoPlatformTabs({
     if (queryPlatform && values.has(queryPlatform)) {
       setActivePlatform(queryPlatform);
     }
+
+    const revealHashPlatform = (event?: Event) => {
+      const detail = (event as CustomEvent<string> | undefined)?.detail;
+      const hash = typeof detail === 'string' ? detail : window.location.hash;
+      const panel = findDocsHeadingForHash(hash)?.closest<HTMLElement>(
+        '[data-demo-platform]',
+      );
+      if (
+        !panel ||
+        panel.closest('[data-demo-platform-root]') !== rootRef.current
+      )
+        return;
+      const platform = panel.getAttribute('data-demo-platform');
+      if (platform && values.has(platform)) setActivePlatform(platform);
+    };
+    revealHashPlatform();
+    window.addEventListener('hashchange', revealHashPlatform);
+    window.addEventListener(DOCS_HASH_TARGET_EVENT, revealHashPlatform);
+    return () => {
+      window.removeEventListener('hashchange', revealHashPlatform);
+      window.removeEventListener(DOCS_HASH_TARGET_EVENT, revealHashPlatform);
+    };
   }, [values]);
 
   if (!activePlatform) {
@@ -284,13 +312,24 @@ export function DemoPlatformTabs({
 
     const url = new URL(window.location.href);
     url.searchParams.set('platform', nextPlatform);
+    const targetPanel = findDocsHeadingForHash(url.hash)?.closest<HTMLElement>(
+      '[data-demo-platform]',
+    );
+    if (
+      targetPanel &&
+      targetPanel.closest('[data-demo-platform-root]') === rootRef.current &&
+      targetPanel.getAttribute('data-demo-platform') !== nextPlatform
+    )
+      url.hash = '';
     window.history.replaceState(window.history.state, '', url);
   };
 
   return (
     <UiTabs
       className="my-6 gap-0"
+      data-demo-platform-root=""
       onValueChange={changePlatform}
+      ref={rootRef}
       value={activePlatform}
     >
       <UiTabsList
@@ -330,7 +369,12 @@ export function DemoPlatform({
   value: string;
 }) {
   return (
-    <UiTabsContent className="mt-6" value={value}>
+    <UiTabsContent
+      className="mt-6 data-[state=inactive]:hidden"
+      data-demo-platform={value}
+      forceMount
+      value={value}
+    >
       {children}
     </UiTabsContent>
   );

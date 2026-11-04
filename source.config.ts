@@ -68,6 +68,7 @@ const rawDocSchema = z.object({
   titlePlatforms: z.array(z.string()).optional(),
   defaultPlatform: z.string().optional(),
   _openapi: z.looseObject({}).optional(),
+  _migration: z.object({ generator: z.string().optional() }).optional(),
 });
 
 export const docs = defineDocs({

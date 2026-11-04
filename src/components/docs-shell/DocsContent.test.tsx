@@ -859,34 +859,6 @@ describe('DocsContent', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('uses rendered headings when the payload TOC is incomplete', async () => {
-    renderWithRouter(
-      <AppProviders>
-        <article>
-          <h2 id="overview">Overview</h2>
-          <h2 id="guide">Guide</h2>
-          <h3 id="late-section">Late section</h3>
-          <h4 data-toc-hidden="true" id="parameter-details">
-            Parameter details
-          </h4>
-          <DocsTableOfContents
-            toc={[
-              { depth: 2, title: 'Overview', url: '#overview' },
-              { depth: 2, title: 'Guide', url: '#guide' },
-            ]}
-          />
-        </article>
-      </AppProviders>,
-    );
-
-    expect(
-      await screen.findByRole('link', { name: 'Late section' }),
-    ).toHaveAttribute('href', '#late-section');
-    expect(
-      screen.queryByRole('link', { name: 'Parameter details' }),
-    ).not.toBeInTheDocument();
-  });
-
   it('keeps navigable subsections under known issues in the TOC', async () => {
     renderWithRouter(
       <AppProviders>
@@ -1769,6 +1741,37 @@ describe('DocsContent', () => {
 });
 
 describe('DocsTableOfContents', () => {
+  it('keeps the depth limit after deriving rendered and newly added headings', async () => {
+    const fixture = (extra: boolean) => (
+      <AppProviders>
+        <article>
+          <h3 id="member">Member</h3>
+          <h4 id="detail">Declared In</h4>
+          {extra ? <h4 id="new-detail">New detail</h4> : null}
+        </article>
+        <DocsTableOfContents
+          toc={[{ depth: 3, title: 'Member', url: '#member' }]}
+          tocMaxDepth={3}
+        />
+      </AppProviders>
+    );
+    const { rerender } = render(fixture(false));
+    await waitFor(() =>
+      expect(screen.getByRole('link', { name: 'Member' })).toBeInTheDocument(),
+    );
+    rerender(fixture(true));
+    await waitFor(() => {
+      expect(
+        screen.queryByRole('link', { name: 'Declared In' }),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('link', { name: 'New detail' }),
+      ).not.toBeInTheDocument();
+    });
+    expect(document.getElementById('detail')).toBeInTheDocument();
+    expect(document.getElementById('new-detail')).toBeInTheDocument();
+  });
+
   it.each([
     '/realtime-media/rtm/reference/release-notes',
     '/zh-CN/realtime-media/rtm/reference/release-notes',

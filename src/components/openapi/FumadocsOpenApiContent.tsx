@@ -11,7 +11,7 @@ import { sample } from '@fumadocs/api-docs/schema/sample';
 import { defaultShikiFactory } from 'fumadocs-core/highlight/shiki/full';
 import { useShikiDynamic } from 'fumadocs-core/highlight/shiki/react';
 import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
-import type { RenderContext } from 'fumadocs-openapi';
+import { type OpenAPIComponents, useOpenAPI } from 'fumadocs-openapi';
 import {
   createCodeUsageGeneratorRegistry,
   type InlineCodeUsageGenerator,
@@ -123,12 +123,12 @@ const OpenApiCodeSourceContext = createContext<string | undefined>(undefined);
 const OpenApiRequestCodeContext = createContext(false);
 const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   Authorization: '鉴权',
-  'Collapse all': '收起所有字段',
+  'Collapse all': '全部收起',
   Collapse: '折叠',
   'Copied endpoint URL': '已复制接口 URL',
   'Copied Text': '已复制文本',
   'Cookie Parameters': 'Cookie 参数',
-  'Expand all': '展开所有字段',
+  'Expand all': '全部展开',
   Expand: '展开',
   'Copy link to': '复制链接到',
   'Copy endpoint URL': '复制接口 URL',
@@ -175,15 +175,21 @@ const ZH_CN_OPENAPI_GENERATED_HEADING_LABELS: Record<string, string> = {
   'response-body': '响应',
 };
 const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
+  'Code language(operation page)': '代码语言',
+  'Example request(operation page)': '请求示例场景',
+  'Response status(operation page)': '响应状态',
+  'Copy Anchor Link(heading anchor)(aria-label)': '复制锚点链接',
+  'Copied Anchor Link(heading anchor)(aria-label)': '已复制锚点链接',
   'Allowed values(schema UI)': '可选值',
   'Cookie Parameters': 'Cookie 参数',
-  'Collapse all(schema UI)': '收起所有字段',
+  'Collapse all(schema UI)': '全部收起',
   'Copied link to(schema UI)': '已复制字段链接到',
   'Copy link to(schema UI)': '复制字段链接到',
   'Default(schema UI)': '默认值',
   'Deprecated(schema UI)': '已废弃',
   'Example(schema UI)': '示例',
-  'Expand all(schema UI)': '展开所有字段',
+  'Expand all(schema UI)': '全部展开',
+  'Fields(schema UI)': '字段',
   'JSON example(schema UI)': 'JSON 示例',
   'Filter Properties(schema UI)': '筛选属性',
   'Format(schema UI)': '格式',
@@ -211,13 +217,8 @@ const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
 
 const OpenAPIPage = createOpenAPIPage({
   codeUsages,
-  components: {
-    CodeBlock: ({ code, lang }) => renderOpenApiCodeBlock(lang, code),
-  },
   content: {
-    renderResponseTabs: (options, ctx) => (
-      <OpenApiResponseExamples {...options} resolve={ctx.schema.resolve} />
-    ),
+    renderResponseTabs: (options) => <OpenApiResponseExamples {...options} />,
     renderAPIExampleLayout: (slots) => (
       <OpenApiRightExamplesLayout
         slots={{
@@ -228,17 +229,12 @@ const OpenAPIPage = createOpenAPIPage({
         }}
       />
     ),
-    renderOperationLayout: (
-      slots,
-      { ctx, method: operationMethod, operation },
-    ) => (
+    renderOperationLayout: (slots, { method: operationMethod, operation }) => (
       <OpenApiOperationLayoutWithSource
         method={
           {
             ...(operation as OpenApiOperation),
             method: operationMethod,
-            __documentSecurity: ctx.schema.dereferenced.security,
-            __document: ctx.schema.dereferenced as OpenApiRecord,
           } as OpenApiOperation
         }
         slots={slots}
@@ -250,12 +246,24 @@ const OpenAPIPage = createOpenAPIPage({
   playground: {
     enabled: false,
   },
-  renderHeading: renderOpenApiHeading,
-  renderMarkdown: renderOpenApiMarkdown,
-  schemaUI: {
-    render: (options, ctx) => {
+  components: {
+    CodeBlock: ({ code, lang, codeblock }) =>
+      renderOpenApiCodeBlock(lang, code, codeblock),
+    Heading: ({ depth, ...props }) => {
+      const locale = useContext(OpenApiLocaleContext);
+      const label = isZhCnLocale(locale)
+        ? ZH_CN_OPENAPI_GENERATED_HEADING_LABELS[props.id]
+        : undefined;
+      return renderOpenApiHeading(
+        { ...props, children: label ?? props.children },
+        depth,
+      );
+    },
+    Markdown: ({ md }) => renderOpenApiMarkdown(md),
+    SchemaUI: (options) => {
+      const { doc } = useOpenAPI();
       const schemaOptions = options as typeof options & {
-        client: ComponentProps<RenderContext['SchemaUI']>['client'];
+        client: ComponentProps<OpenAPIComponents['SchemaUI']>['client'];
         legacyAnchorPrefix?: string;
         showExample?: boolean;
       };
@@ -263,7 +271,7 @@ const OpenAPIPage = createOpenAPIPage({
       return (
         <OpenApiSchema
           client={schemaOptions.client}
-          document={ctx.schema.bundled}
+          document={doc.bundled}
           legacyAnchorPrefix={schemaOptions.legacyAnchorPrefix}
           readOnly={schemaOptions.readOnly}
           renderCodeblock={({ code, lang }) =>
@@ -349,6 +357,7 @@ function adaptOpenApiParameterSchemaExtensions(
 ): OpenAPIPageProps {
   if (!('payload' in pageProps)) return pageProps;
   const document = pageProps.payload.bundled;
+  if (!document) return pageProps;
   const paths = getRecord(document.paths);
   const components = getRecord(document.components);
   const componentParameters = getRecord(components?.parameters);
@@ -506,10 +515,18 @@ function OpenApiOperationLayoutWithSource({
   slots: OpenApiOperationLayoutSlots;
 }) {
   const sourceOperation = useContext(OpenApiSourceOperationContext);
+  const { doc } = useOpenAPI();
 
   return (
     <OpenApiOperationLayout
-      method={mergeOpenApiOperationExtensions(method, sourceOperation)}
+      method={mergeOpenApiOperationExtensions(
+        {
+          ...method,
+          __documentSecurity: doc.dereferenced.security,
+          __document: doc.dereferenced as OpenApiRecord,
+        },
+        sourceOperation,
+      )}
       slots={slots}
     />
   );
@@ -711,7 +728,7 @@ type OpenApiResponseExample = NonNullable<
 
 function getOpenApiResponseSchemaExamples(
   tab: OpenApiResponseExamplesProps['tabs'][number],
-  resolve: RenderContext['schema']['resolve'],
+  resolve: ReturnType<typeof useOpenAPI>['doc']['resolve'],
   locale?: string,
 ): OpenApiResponseExample[] | undefined {
   const media = getRecord(
@@ -742,12 +759,9 @@ function getOpenApiResponseSchemaExamples(
   });
 }
 
-function OpenApiResponseExamples({
-  tabs,
-  resolve,
-}: OpenApiResponseExamplesProps & {
-  resolve: RenderContext['schema']['resolve'];
-}) {
+function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
+  const { doc } = useOpenAPI();
+  const resolve = doc.resolve;
   const locale = useContext(OpenApiLocaleContext);
   const empty = (
     <p
@@ -1099,7 +1113,7 @@ function getCurrentOperation(
 
   const operation = pageProps.operations?.at(0);
   const pathItem = operation
-    ? getRecord(pageProps.payload.bundled.paths)?.[operation.path]
+    ? getRecord(pageProps.payload.bundled?.paths)?.[operation.path]
     : undefined;
 
   if (!operation || !isRecord(pathItem)) {
@@ -1818,18 +1832,27 @@ function renderOpenApiMarkdown(markdown: string): ReactNode {
   return <div className="openapi-markdown prose-no-margin">{content}</div>;
 }
 
-function renderOpenApiCodeBlock(lang: string, source: string) {
+function renderOpenApiCodeBlock(
+  lang: string,
+  source: string,
+  codeblock?: Omit<ComponentProps<typeof CodeBlock>, 'children'>,
+) {
   return (
     <OpenApiCodeSourceContext.Provider key={source} value={source}>
-      {renderOpenApiMarkdown(`\`\`\`${lang}\n${source}\n\`\`\``)}
+      <OpenApiMarkdownCodeBlock codeblock={codeblock}>
+        <code className={`language-${lang}`}>{source}</code>
+      </OpenApiMarkdownCodeBlock>
     </OpenApiCodeSourceContext.Provider>
   );
 }
 
 function OpenApiMarkdownCodeBlock({
   children,
+  codeblock,
   ...props
-}: ComponentProps<'pre'>) {
+}: ComponentProps<'pre'> & {
+  codeblock?: Omit<ComponentProps<typeof CodeBlock>, 'children'>;
+}) {
   const contextSource = useContext(OpenApiCodeSourceContext);
   const isRequestCode = useContext(OpenApiRequestCodeContext);
   const childProps = isValidElement(children)
@@ -1859,20 +1882,29 @@ function OpenApiMarkdownCodeBlock({
     [source, language],
   );
 
+  const Actions = codeblock?.Actions;
+
   return (
     <CodeBlock
       {...props}
+      {...codeblock}
       className={cn(
         props.className,
+        codeblock?.className,
         'shadow-none',
         isRequestCode &&
           'my-0 -mx-px -mb-px rounded-none bg-fd-secondary last:rounded-b-xl',
       )}
-      Actions={({ className, children }) => (
-        <div className={cn('empty:hidden', className)}>
-          {children && <OpenApiCodeCopyButton />}
-        </div>
-      )}
+      Actions={(actions) => {
+        const children = actions.children && <OpenApiCodeCopyButton />;
+        return Actions ? (
+          <Actions {...actions}>{children}</Actions>
+        ) : (
+          <div className={cn('empty:hidden', actions.className)}>
+            {children}
+          </div>
+        );
+      }}
     >
       <Pre>{source === undefined ? children : highlighted}</Pre>
     </CodeBlock>

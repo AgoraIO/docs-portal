@@ -1,4 +1,3 @@
-import { ChevronsDownUp } from 'lucide-react';
 import {
   createElement,
   type ReactNode,
@@ -107,6 +106,7 @@ function getOpenApiSchemaIdentity(schema: OpenApiSchemaViewNode['schema']) {
 export type OpenApiSchemaTreeLabels = OpenApiSchemaFieldRowLabels & {
   collapseAll: string;
   expandAll: string;
+  fields?: string;
 };
 
 export type OpenApiSchemaRevealTarget = {
@@ -529,16 +529,17 @@ export function OpenApiSchemaTree({
       ref={treeRef}
     >
       {expandableNodeIds.length > 0 ? (
-        <div className="openapi-schema-toolbar mb-1 flex items-center justify-end border-fd-border border-b pb-2">
+        <div className="openapi-schema-toolbar mb-1 flex flex-wrap items-center justify-between gap-x-3 border-fd-border border-b">
+          <span className="text-fd-muted-foreground text-sm">
+            {labels.fields ?? labels.properties}
+          </span>
           <Button
             aria-label={allExpanded ? labels.collapseAll : labels.expandAll}
-            className="min-h-11 sm:min-h-9"
+            className="h-auto min-h-11 cursor-pointer px-2 text-xs font-normal text-muted-foreground hover:text-foreground"
             onClick={handleToggleAll}
-            size="sm"
             type="button"
             variant="ghost"
           >
-            <ChevronsDownUp aria-hidden="true" data-icon="inline-start" />
             {allExpanded ? labels.collapseAll : labels.expandAll}
           </Button>
         </div>

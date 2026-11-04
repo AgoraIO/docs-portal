@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import {
   buildApiReferenceRehomePlan,
   rehomeRouteAliases,
@@ -56,24 +56,12 @@ const MARKDOWN_LINK_PATTERN =
 
 function markdownScalarRanges(raw) {
   const ranges = [];
-  let scalarStart = null;
-  yaml.load(raw, {
-    listener(event, state) {
-      if (event === 'open' && state.kind === 'scalar') {
-        scalarStart = state.position;
-        return;
-      }
-      if (event !== 'close' || state.kind !== 'scalar') return;
-      if (
-        scalarStart !== null &&
-        typeof state.result === 'string' &&
-        state.result.includes('](')
-      ) {
-        ranges.push({ end: state.position, start: scalarStart });
-      }
-      scalarStart = null;
-    },
-  });
+  for (const event of yaml.parseEvents(raw, {})) {
+    if (event.type !== yaml.EVENT_ID.SCALAR) continue;
+    if (yaml.getScalarValue(raw, event).includes('](')) {
+      ranges.push({ start: event.valueStart, end: event.valueEnd });
+    }
+  }
   return ranges;
 }
 

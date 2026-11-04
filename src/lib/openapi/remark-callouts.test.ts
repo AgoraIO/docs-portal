@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import type { Root } from 'mdast';
 import { remark } from 'remark';
 import { describe, expect, it } from 'vitest';

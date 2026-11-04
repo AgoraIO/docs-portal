@@ -263,6 +263,7 @@ function Page() {
     sidebarHeader,
     slug,
     toc,
+    tocMaxDepth,
     title,
     titlePlatforms,
   } = Route.useLoaderData();
@@ -296,6 +297,7 @@ function Page() {
       title={title}
       titlePlatforms={titlePlatforms}
       toc={toc}
+      tocMaxDepth={tocMaxDepth}
     />
   );
 }

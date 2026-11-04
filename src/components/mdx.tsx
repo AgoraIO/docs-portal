@@ -90,6 +90,7 @@ import { normalizeLocale } from '@/lib/i18n/i18n-config';
 import { resources } from '@/lib/i18n/resources';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import { buildPlatformPathname } from '@/lib/platforms/route';
+import { DocsHeading } from './mdx/DocsHeading';
 import { PlanCards, PricingCards } from './mdx/PlanCards';
 import {
   PlatformInline,
@@ -1442,9 +1443,10 @@ function TabAwareHeading({
       new URL(getDocsHashHref(hash), window.location.href).href,
     );
   });
+  const labelId = useId();
   const icon = getReleaseNoteCategoryIcon(contentPath, headingLabel(children));
   const content = (
-    <>
+    <span id={labelId}>
       {icon && (
         <img
           alt=""
@@ -1457,16 +1459,13 @@ function TabAwareHeading({
       )}
       {children}
       {tabLabel ? <span className="sr-only"> ({tabLabel})</span> : null}
-    </>
+    </span>
   );
   if (!id || href === hash) {
-    const DefaultHeading = defaultMdxComponents[as] as ComponentType<
-      ComponentProps<'h2'>
-    >;
     return (
-      <DefaultHeading {...props} id={id} className={className}>
+      <DocsHeading as={as} {...props} id={id} className={className}>
         {content}
-      </DefaultHeading>
+      </DocsHeading>
     );
   }
   // Fumadocs Heading has no href/copy-URL override. Adapt only platform anchors,
@@ -1476,6 +1475,7 @@ function TabAwareHeading({
   return (
     <Heading
       {...props}
+      aria-labelledby={labelId}
       id={id}
       className={cn(
         id && 'group/heading flex scroll-m-28 flex-row items-center gap-1',

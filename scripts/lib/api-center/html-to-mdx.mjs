@@ -1308,6 +1308,9 @@ async function renderDefinitionList($, list, state) {
         } else if (listIsDoxygenParams || listIsDoxygenReturn) {
           const title = listIsDoxygenReturn ? '返回值' : term;
           blocks.push(`#### ${title} [!toc]\n\n${body}`);
+        } else if (listIsTypeDocCommentTags && !termHasLink) {
+          // A comment tag describes its member; it is not another API member.
+          blocks.push(`#### ${term}\n\n${body}`);
         } else {
           blocks.push(
             `${termHasLink ? `**${term}**` : `### ${term}`}\n\n${body}`,
@@ -1352,8 +1355,45 @@ async function renderRelatedLinks($, element, state) {
 async function renderNodeSequence($, nodes, state) {
   const blocks = [];
   let inline = '';
-  for (const child of nodes) {
+  for (let index = 0; index < nodes.length; index += 1) {
+    const child = nodes[index];
     const name = elementName(child);
+    // TypeDoc stores signatures and their descriptions in parallel lists.
+    // Preserve that association in Markdown rather than flattening both lists.
+    if (name === 'ul' && $(child).hasClass('tsd-signatures')) {
+      let next = index + 1;
+      while (nodes[next]?.type === 'text' && !nodes[next].data.trim()) {
+        next += 1;
+      }
+      const descriptions = $(nodes[next]);
+      const signatures = $(child).children('li').toArray();
+      if (signatures.length > 1 && descriptions.hasClass('tsd-descriptions')) {
+        const items = descriptions.children('li').toArray();
+        if (items.length === signatures.length) {
+          if (inline.trim()) blocks.push(inline.trim());
+          inline = '';
+          blocks.push(anchorFor($(child)), anchorFor(descriptions));
+          for (const [overloadIndex, signature] of signatures.entries()) {
+            const memberName =
+              cleanText($(signature).text()).split('(')[0] || 'Call signature';
+            const list = $('<ul></ul>').append($(signature).clone());
+            blocks.push(
+              `#### ${escapeMdxText(memberName)} [${overloadIndex + 1}/${signatures.length}]`,
+              await parseTypeDocSignatures($, list, state),
+              await renderTypeDocDescription($, $(items[overloadIndex]), state),
+            );
+          }
+          index = next;
+          continue;
+        }
+        state.warnings.push(
+          createWarning(
+            'unsupported-html-structure',
+            'TypeDoc overload signature and description counts differ; their source order was preserved for review.',
+          ),
+        );
+      }
+    }
     const isHeadingAnchor =
       name === 'a' && $(child).children('h1, h2, h3, h4, h5, h6').length > 0;
     const isMultilineCode =

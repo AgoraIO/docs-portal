@@ -1993,7 +1993,7 @@ startChannelMediaRelay(config: [ChannelMediaRelayConfiguration](/zh-CN/api-refer
 - 直播场景下，只有主播可以调用该方法。
 - 成功调用该方法后，若你想再次调用该方法，必须先调用 [stopChannelMediaRelay](/zh-CN/api-reference/rtc/mini-program/classes/client#stopchannelmediarelay) 方法退出当前的转发状态。
 
-### example
+#### example
 
 **示例代码**
 
@@ -2086,7 +2086,7 @@ stopChannelMediaRelay(callback: function): void
 - 如果成功停止跨频道媒体流转发，该回调中 `state` 为 0。
 - 如果未成功停止跨频道媒体流转发，该回调中 `state` 为 3，`code` 错误码可能为 2 或 8，一般是在网络较差的情况下，退出的消息发送不成功导致的。你可以调用 [Client.leave](/zh-CN/api-reference/rtc/mini-program/classes/client#leave) 离开频道来停止跨频道媒体流转发。
 
-### example
+#### example
 
 **示例代码**
 
@@ -2601,7 +2601,7 @@ updateChannelMediaRelay(config: [ChannelMediaRelayConfiguration](/zh-CN/api-refe
 - 请在 [startChannelMediaRelay](/zh-CN/api-reference/rtc/mini-program/classes/client#startchannelmediarelay) 后调用该方法，更新媒体流转发的频道。
 - 跨频道媒体流转发最多支持 4 个目标频道。
 
-### example
+#### example
 
 **示例代码**
 

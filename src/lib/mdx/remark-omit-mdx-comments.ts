@@ -1,20 +1,19 @@
+import { replaceSource } from 'fumadocs-core/mdx-plugins/stringifier';
 import type { Root } from 'mdast';
 import { visit } from 'unist-util-visit';
+import type { VFile } from 'vfile';
 
-// MDX comments belong to the source, including when generating public Markdown.
-// Code blocks and expressions that contain executable content remain intact.
+// Hide comments from exported Markdown. Keep their AST nodes as boundaries
+// between adjacent platform groups; MDX itself renders empty expressions away.
 export function remarkOmitMdxComments() {
-  return (tree: Root) => {
-    visit(tree, (node, index, parent) => {
+  return (tree: Root, file: VFile) => {
+    visit(tree, (node) => {
       if (
         (node.type === 'mdxFlowExpression' ||
           node.type === 'mdxTextExpression') &&
-        node.data?.estree?.body.length === 0 &&
-        parent &&
-        index !== undefined
+        node.data?.estree?.body.length === 0
       ) {
-        parent.children.splice(index, 1);
-        return index;
+        replaceSource(file, node, '');
       }
     });
   };

@@ -1,8 +1,11 @@
 import { compile } from '@mdx-js/mdx';
+import { getTableOfContents } from 'fumadocs-core/content/toc';
 import {
   remarkDirectiveAdmonition,
   remarkGfm,
+  structure,
 } from 'fumadocs-core/mdx-plugins';
+import { remarkLLMs } from 'fumadocs-core/mdx-plugins/remark-llms';
 import remarkDirective from 'remark-directive';
 import { describe, expect, it } from 'vitest';
 import { remarkTableSlots } from './remark-table-slots';
@@ -20,6 +23,7 @@ async function compileWithTableSlots(
         remarkDirective,
         [
           remarkDirectiveAdmonition,
+          structure,
           {
             types: {
               info: 'info',
@@ -321,3 +325,93 @@ Text between the table and definition.
     expect(result).not.toContain('Missing slot definition');
   });
 });
+
+it('exports raw Markdown slot details once with a table link', async () => {
+  const source = [
+    '| Field | Description |',
+    '| --- | --- |',
+    '| options | <Slot name="options" /> |',
+    '',
+    '<Slot for="options">',
+    '',
+    '- First unique option',
+    '- Second unique option',
+    '',
+    '</Slot>',
+  ].join('\n');
+  const result = String(
+    await compile(source, {
+      format: 'md',
+      remarkPlugins: [remarkGfm, remarkTableSlots, remarkLLMs],
+    }),
+  );
+  const markdown = JSON.parse(
+    result.match(/export let _markdown = (".*");/)?.[1] ?? '""',
+  );
+  expect(markdown).not.toContain('<Slot');
+  expect(markdown.match(/First unique option/g)).toHaveLength(1);
+  expect(markdown.match(/Second unique option/g)).toHaveLength(1);
+  expect(markdown).toContain('[options details](#table-slot-options)');
+  expect(markdown).toContain('<a id="table-slot-options"></a>');
+  expect(await getTableOfContents(markdown)).toEqual([]);
+  const indexed = structure(source, [remarkTableSlots])
+    .contents.map((item) => item.content)
+    .join(' ');
+  expect(indexed).toContain('First unique option');
+  expect(indexed).toContain('Second unique option');
+});
+
+it.each([
+  {
+    language: 'groovy',
+    fence: '```',
+    meta: 'title="Example"',
+    body: "    dependencies {\n        implementation 'example:sdk:1.0'\n    }",
+  },
+  {
+    language: 'md',
+    fence: '````',
+    meta: 'title="Example"',
+    body: '    ```js\n    example();\n    ```',
+  },
+  {
+    language: 'js',
+    fence: '~~~~~',
+    meta: 'title="Run `example`"',
+    body: '    ## Not a heading\n    ~~~~\n    example();',
+  },
+])(
+  'keeps headings after an exported $language slot code block',
+  async ({ language, fence, meta, body }) => {
+    const source = [
+      '| Current | Previous |',
+      '| --- | --- |',
+      '| <Slot name="current" /> | previous |',
+      '',
+      '<Slot for="current">',
+      '',
+      `${fence}${language} ${meta}`,
+      body,
+      `    ${fence}`,
+      '',
+      '</Slot>',
+      '',
+      '## Following release',
+      '',
+      'Release documentation.',
+    ].join('\n');
+    const result = String(
+      await compile(source, {
+        remarkPlugins: [remarkGfm, remarkTableSlots, remarkLLMs],
+      }),
+    );
+    const markdown = JSON.parse(
+      result.match(/export let _markdown = (".*");/)?.[1] ?? '""',
+    );
+    expect(markdown).toContain(`${language} ${meta}`);
+    expect(markdown).toContain(body);
+    expect(await getTableOfContents(markdown)).toEqual([
+      { title: 'Following release', url: '#following-release', depth: 2 },
+    ]);
+  },
+);

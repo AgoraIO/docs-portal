@@ -63,7 +63,7 @@ const filterAccountFlowEvent: BeforeSendFn = (event) => {
 
 const filterOutboundEvent: BeforeSendFn = (event) => {
   const filtered = filterAccountFlowEvent(event);
-  return import.meta.env.VITE_DOCS_REGION === 'cn'
+  return filtered && import.meta.env.VITE_DOCS_REGION === 'cn'
     ? filterCnMeasurementEvent(filtered)
     : filtered;
 };

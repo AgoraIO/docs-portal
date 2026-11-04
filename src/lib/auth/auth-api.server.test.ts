@@ -1,5 +1,4 @@
 // @vitest-environment node
-import { requestHandler } from '@tanstack/react-start/server';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   createDocsAuthService,
@@ -61,9 +60,7 @@ function fixture(
       return Response.json({ status: 1 });
     });
   const createHandler = (options = config) =>
-    requestHandler((request) =>
-      createDocsAuthService(options, fetcher).handle(request),
-    );
+    createDocsAuthService(options, fetcher).handle;
   const handle = createHandler();
   async function call(
     path: string,
@@ -75,7 +72,6 @@ function fixture(
         ...init,
         headers: { Cookie: [...jar.values()].join('; '), ...init.headers },
       }),
-      {},
     );
   }
   async function login(query = '') {
@@ -94,7 +90,7 @@ function fixture(
   return { config, sent, fetcher, createHandler, call, login };
 }
 
-describe('Docs confidential OAuth with existing framework sessions', () => {
+describe('Docs confidential OAuth with encrypted cookie sessions', () => {
   it('binds the SDK flow to a sealed cookie and exposes only trusted minimal identity', async () => {
     const f = fixture();
     const flowId = '00000000-0000-4000-8000-000000000001';
@@ -123,12 +119,11 @@ describe('Docs confidential OAuth with existing framework sessions', () => {
       'https://console.shengwang.cn/product/RTM2?tab=config',
     );
     acceptCookies(callback, attempt.jar);
-    expect([...attempt.jar.keys()]).toEqual(['__Host-docs_session']);
+    expect([...attempt.jar.keys()]).toEqual(['__Host-docs_session_v2']);
     const info = await f.createHandler()(
       new Request(`${f.config.docsOrigin}/api/userinfo`, {
         headers: { Cookie: [...attempt.jar.values()].join('; ') },
       }),
-      {},
     );
     expect(info.status).toBe(200);
     expect(await info.json()).toMatchObject({
@@ -354,7 +349,6 @@ describe('Docs confidential OAuth with existing framework sessions', () => {
           new Request(`${f.config.docsOrigin}/api/userinfo`, {
             headers: { Cookie: copied },
           }),
-          {},
         )
       ).status,
     ).toBe(401);

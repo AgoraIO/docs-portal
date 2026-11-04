@@ -16,6 +16,41 @@ async function compileWithLegacyHeadingAnchorNormalization(source: string) {
 }
 
 describe('remarkNormalizeLegacyHeadingAnchors', () => {
+  it.each(['id', 'name'])(
+    'preserves a standalone HTML anchor with %s in Markdown input',
+    async (attribute) => {
+      const result = String(
+        await compile(
+          `<a ${attribute}="param"></a>\n\n## Common parameters\n\n[Common parameters](#param)`,
+          {
+            format: 'md',
+            jsx: true,
+            remarkPlugins: [remarkHeading, remarkNormalizeLegacyHeadingAnchors],
+          },
+        ),
+      );
+      expect(result).toContain('<_components.span id="param" />');
+      expect(result).toContain('id="common-parameters"');
+      expect(result).toContain('href="#param"');
+    },
+  );
+
+  it('does not enable arbitrary HTML when preserving Markdown anchors', async () => {
+    const result = String(
+      await compile(
+        '<a id="related" href="/related"></a>\n\n<a id="nonempty">Text</a>\n\n<script>alert(1)</script>',
+        {
+          format: 'md',
+          jsx: true,
+          remarkPlugins: [remarkHeading, remarkNormalizeLegacyHeadingAnchors],
+        },
+      ),
+    );
+    expect(result).not.toContain('id="related"');
+    expect(result).not.toContain('id="nonempty"');
+    expect(result).not.toContain('alert(1)');
+  });
+
   it('resolves local heading references inside the selected platform without renaming headings', async () => {
     const result = String(
       await compile(
