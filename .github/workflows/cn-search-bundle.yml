@@ -58,7 +58,7 @@ jobs:
       - id: revision
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: Check release contracts
-        run: bun run test scripts/search/cn-release.test.ts src/lib/search/cn-sdk-publication.test.ts src/lib/search/cn-sdk-release.test.ts src/lib/search/meilisearch-index.server.test.ts src/lib/search/cn-demo-platform-publication.test.tsx --maxWorkers=2
+        run: bun run test scripts/search/cn-release.test.ts src/lib/search/cn-sdk-publication.test.ts src/lib/search/cn-sdk-release.test.ts src/lib/search/meilisearch-index.server.test.ts src/lib/search/cn-demo-platform-publication.test.tsx src/lib/search/cn-records.server.test.ts src/lib/mdx/remark-table-slots.test.ts --maxWorkers=2
       - name: Build and seal one CN release
         env:
           RELEASE_SHA: ${{ steps.revision.outputs.sha }}
