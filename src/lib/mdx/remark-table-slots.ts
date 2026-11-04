@@ -177,7 +177,22 @@ function processFlowContainer(
           [...definitions]
             .map(([name, definition]) => {
               const label = labels.get(name);
-              return `<a id="${label?.id}"></a>\n\n**${label?.title ?? name}**\n\n${definition.children.map((child) => s.stringify(child)).join('\n\n')}`;
+              const content = definition.children
+                .map((child) => {
+                  if (child.type !== 'code') return s.stringify(child);
+                  // A lifted MDX code block needs a standalone closing fence.
+                  const info = `${child.lang ?? ''}${child.meta ? ` ${child.meta}` : ''}`;
+                  const marker = info.includes('`') ? '~' : '`';
+                  const runs = child.value.match(
+                    marker === '`' ? /`+/g : /~+/g,
+                  );
+                  const fence = marker.repeat(
+                    Math.max(3, ...(runs ?? []).map((run) => run.length + 1)),
+                  );
+                  return `${fence}${info}\n${child.value}\n${fence}`;
+                })
+                .join('\n\n');
+              return `<a id="${label?.id}"></a>\n\n**${label?.title ?? name}**\n\n${content}`;
             })
             .join('\n\n'),
       );

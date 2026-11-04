@@ -774,6 +774,18 @@ enableAutoReceive 配置。
       content: '加入频道\n调用 joinChannel。',
     });
   });
+  it('indexes the published heading ID while preserving a preceding legacy alias', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n<a id="old-method"></a>\n\n## Method [#current-method]\n\nMethod documentation.',
+      readRenderedHtml: async () =>
+        '<article><a id="old-method"></a><h2 id="current-method">Method</h2></article>',
+    });
+    expect(records[0].url).toBe(`${url.replace('/zh-CN', '')}#current-method`);
+    expect(records[0].content).toContain('Method documentation.');
+  });
   it('keeps section anchors, duplicate heading slugs, code identifiers and platform/version metadata', () => {
     const records = extractPublishedCnSections(
       route,
