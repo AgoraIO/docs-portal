@@ -434,7 +434,7 @@ describe('FumadocsOpenApiContent', () => {
     ).toEqual({ authored: 'keep-me' });
   });
 
-  it('renders a localized, padded example placeholder for the actual stop-agent response', async () => {
+  it('preserves the description and Markdown link for a response without content', async () => {
     const document = yaml.load(
       await readFile(
         'content/openapi/conversational-ai/rest-api.zh-CN.yaml',
@@ -455,15 +455,70 @@ describe('FumadocsOpenApiContent', () => {
         }}
       />,
     );
-    const placeholder = await screen.findByText('未提供响应示例。');
-    expect(placeholder).toHaveClass('px-4', 'py-5', 'text-sm');
-    expect(placeholder.closest('.openapi-response-example')).not.toBeNull();
+    const section = container.querySelector(
+      '.openapi-response-example',
+    ) as HTMLElement;
     expect(
-      within(
-        container.querySelector('.openapi-response-example') as HTMLElement,
-      ).queryByText('Empty'),
-    ).toBeNull();
-    expect(screen.getByText(/响应包体为空/)).toBeInTheDocument();
+      await within(section).findByText(/响应包体为空/),
+    ).toBeInTheDocument();
+    expect(
+      within(section).getByRole('link', { name: '响应状态码' }),
+    ).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/conversational-ai/rest-api/api/response-code',
+    );
+    expect(within(section).queryByText('未提供响应示例。')).toBeNull();
+    expect(section.querySelector('pre')).toBeNull();
+  });
+
+  it('matches the legacy Cloud Recording non-200 description in both response panels', async () => {
+    const bundled = yaml.load(
+      await readFile(
+        'content/openapi/cloud-recording/cloud-recording.zh-CN.yaml',
+        'utf8',
+      ),
+    ) as Document;
+    const { container } = render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/mode/{mode}/start',
+            },
+          ],
+          payload: { bundled },
+        }}
+      />,
+    );
+    for (const selector of [
+      '[data-openapi-responses]',
+      '.openapi-response-example',
+    ]) {
+      const section = container.querySelector(selector) as HTMLElement;
+      fireEvent.mouseDown(
+        within(section).getByRole('tab', { name: '非 200' }),
+        {
+          button: 0,
+          ctrlKey: false,
+        },
+      );
+      expect(
+        await within(section).findByText(/如果 HTTP 状态码不为/),
+      ).toBeVisible();
+      expect(
+        within(section).getByRole('link', { name: '响应状态码' }),
+      ).toHaveAttribute(
+        'href',
+        '/zh-CN/realtime-media/cloud-recording/reference/response-code',
+      );
+      expect(within(section).queryByText('响应 Body')).toBeNull();
+      expect(section.querySelector('pre')).toBeNull();
+      expect(section).not.toHaveTextContent(
+        'Invalid authentication credentials',
+      );
+    }
   });
 
   it.each([
@@ -472,11 +527,15 @@ describe('FumadocsOpenApiContent', () => {
   ])(
     'uses a neutral example placeholder without inferring an empty body in %s',
     async (locale, label) => {
+      const pageProps = makeMinimalOpenApiPageProps('get');
+      const bundled = (
+        pageProps as Extract<OpenAPIPageProps, { payload: unknown }>
+      ).payload.bundled;
+      const responses = bundled.paths?.['/method-get']?.get?.responses;
+      if (!responses) throw new Error('Missing fixture responses');
+      responses['200'] = { description: '' };
       const { container } = render(
-        <FumadocsOpenApiContent
-          locale={locale}
-          pageProps={makeMinimalOpenApiPageProps('get')}
-        />,
+        <FumadocsOpenApiContent locale={locale} pageProps={pageProps} />,
       );
       expect(await screen.findByText(label)).toBeInTheDocument();
       expect(container).not.toHaveTextContent('响应 Body 为空');
@@ -513,7 +572,9 @@ describe('FumadocsOpenApiContent', () => {
     const { container } = render(
       <FumadocsOpenApiContent pageProps={pageProps} />,
     );
-    await screen.findByText('No response example provided.');
+    await waitFor(() =>
+      expect(screen.getAllByText('OK').length).toBeGreaterThan(1),
+    );
     const section = container.querySelector(
       '.openapi-response-example',
     ) as HTMLElement;
@@ -543,9 +604,7 @@ describe('FumadocsOpenApiContent', () => {
       button: 0,
       ctrlKey: false,
     });
-    expect(
-      within(section).getByText('No response example provided.'),
-    ).toBeVisible();
+    expect(within(section).getByText('OK')).toBeVisible();
   });
 
   it('retains schema-less parameters inherited from paths and referenced from components', () => {
