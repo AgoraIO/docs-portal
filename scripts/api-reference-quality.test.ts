@@ -108,6 +108,42 @@ describe('API reference quality policy', () => {
     rmSync(path.join(root, 'zh-CN/api-reference/sample/ios/index.html'));
     expect(() => inventory(root, 'cn')).toThrow(/Missing published HTML/);
   });
+  it('validates declared redirect targets and refuses missing targets or cycles', () => {
+    const root = fixture();
+    put(root, '__static/docs-routes.json', [
+      { url: '/en/api-reference/old', canonicalPath: '/en/api-reference/old' },
+      {
+        url: '/en/api-reference/current',
+        canonicalPath: '/en/api-reference/current',
+      },
+    ]);
+    put(root, '__static/docs/en/api-reference/old.json', {
+      redirectUrl: '/en/api-reference/current',
+    });
+    put(root, '__static/docs/en/api-reference/current.json', {
+      body: { kind: 'mdx' },
+    });
+    put(root, 'en/api-reference/old/index.html', '<article>Alias</article>');
+    put(
+      root,
+      'en/api-reference/current/index.html',
+      '<article>Current</article>',
+    );
+    expect(inventory(root, 'global')[0]).toMatchObject({
+      kind: 'redirect',
+      expectedPath: '/en/api-reference/current',
+    });
+    put(root, '__static/docs/en/api-reference/current.json', {
+      redirectUrl: '/en/api-reference/old',
+    });
+    expect(() => inventory(root, 'global')).toThrow(/Cyclic/);
+    put(root, '__static/docs/en/api-reference/old.json', {
+      redirectUrl: '/en/api-reference/missing',
+    });
+    expect(() => inventory(root, 'global')).toThrow(
+      /Missing published redirect target/,
+    );
+  });
   it('refuses a vanished acceptance case rather than silently dropping it', () => {
     const cases = [{ urls: { cn: ['/zh-CN/api-reference/missing#member'] } }];
     expect(() => selectRows([], cases, 'all', 'cn')).toThrow(

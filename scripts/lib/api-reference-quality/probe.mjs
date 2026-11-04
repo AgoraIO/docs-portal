@@ -104,6 +104,14 @@ export function inspectReference() {
   }
   return {
     issues,
+    actualViewport: {
+      width: innerWidth,
+      height: innerHeight,
+      dpr: devicePixelRatio,
+    },
+    actualTheme: document.documentElement.classList.contains('dark')
+      ? 'dark'
+      : 'light',
     title: article?.querySelector('h1')?.textContent ?? document.title,
     url: location.href,
     detailed: !!document.querySelector('article table, .openapi-operation'),

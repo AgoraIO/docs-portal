@@ -16,7 +16,8 @@ export const localeFor = (region) => {
   return region === 'cn' ? 'zh-CN' : 'en';
 };
 export const referencePath = (url) =>
-  /\/(?:api-reference|reference|api)(?:\/|$)/.test(url);
+  /\/(?:api-reference|api)(?:\/|$)/.test(url) ||
+  /\/reference\/[^/]*(?:api|restful)[^/]*(?:\/|$)/.test(url);
 export const referenceSource = (file, text) =>
   referencePath(file) ||
   /<(?:ApiSignature|ApiParameterTable|ApiReturns|ApiOverload|APIPage)\b/.test(
@@ -148,19 +149,55 @@ export function sourceFingerprint() {
 export function inventory(root, region) {
   const locale = localeFor(region),
     routes = readJson(path.join(root, '__static/docs-routes.json'));
-  const rows = [];
-  for (const route of routes.filter((row) =>
-    row.url.startsWith(`/${locale}/`),
-  )) {
+  const byUrl = new Map(routes.map((route) => [route.url, route]));
+  const payloads = new Map();
+  const load = (route) => {
+    if (payloads.has(route.canonicalPath))
+      return payloads.get(route.canonicalPath);
     const direct = path.join(
       root,
       '__static/docs',
       `${route.canonicalPath}.json`,
     );
-    const payloadFile = existsSync(direct)
+    const file = existsSync(direct)
       ? direct
       : path.join(root, '__static/docs', route.canonicalPath, 'index.json');
-    const payload = readJson(payloadFile);
+    const value = { file, payload: readJson(file) };
+    payloads.set(route.canonicalPath, value);
+    return value;
+  };
+  const destination = (route) => {
+    const seen = new Set();
+    let current = route,
+      expectedPath = route.url;
+    while (load(current).payload.redirectUrl) {
+      if (seen.has(current.url))
+        throw new Error(`Cyclic published redirect: ${route.url}`);
+      seen.add(current.url);
+      expectedPath = load(current).payload.redirectUrl;
+      if (!expectedPath.startsWith('/') || expectedPath.startsWith('//'))
+        throw new Error(
+          `External redirect requires a dedicated entrance audit: ${route.url}`,
+        );
+      const pathname = new URL(expectedPath, 'https://built.invalid').pathname;
+      current = byUrl.get(pathname) ?? byUrl.get(decodeURI(pathname));
+      if (!current)
+        throw new Error(
+          `Missing published redirect target: ${route.url} -> ${expectedPath}`,
+        );
+    }
+    return expectedPath;
+  };
+  const registered = new Set(
+    readJson('scripts/api-reference-quality-cases.json')
+      .flatMap((entry) => entry.urls[region] ?? [])
+      .map((url) => url.split('#')[0]),
+  );
+  const rows = [];
+  for (const route of routes.filter((row) =>
+    row.url.startsWith(`/${locale}/`),
+  )) {
+    const { file: payloadFile, payload } = load(route);
     const source = payload.body?.contentPath ?? payload.contentPath;
     const text =
       source && existsSync(`content/docs/${source}`)
@@ -168,6 +205,8 @@ export function inventory(root, region) {
         : '';
     if (
       !referencePath(route.url) &&
+      !referencePath(payload.redirectUrl ?? '') &&
+      !registered.has(route.url) &&
       payload.body?.kind !== 'openapi' &&
       !referenceSource(source ?? '', text)
     )
@@ -180,7 +219,8 @@ export function inventory(root, region) {
       canonicalPath: route.canonicalPath,
       platform: route.platform ?? null,
       source,
-      kind: payload.body?.kind,
+      kind: payload.redirectUrl ? 'redirect' : payload.body?.kind,
+      expectedPath: destination(route),
       htmlHash: digest(readFileSync(htmlFile)),
       payloadHash: digest(readFileSync(payloadFile)),
     });
