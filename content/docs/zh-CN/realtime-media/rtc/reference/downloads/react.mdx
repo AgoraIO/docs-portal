@@ -13,13 +13,15 @@ npm install agora-rtc-react
 在你的 HTML 文件中添加如下代码，使用 CDN 方法获取 SDK：
 
 ```html
-<!-- 必须按照以下顺序依次引入 -->
-<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<!-- React 18 与 ReactDOM 18 必须先于 Agora React SDK 加载 -->
+<script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
 
-<!-- 如果以上依赖库都已经通过 npm 集成，只需要添加这一行 -->
+<!-- 仅当页面已提供 React 和 ReactDOM 全局变量时，才可省略上面两行 -->
 <script src="https://download.agora.io/sdk/release/agora-rtc-react.2.5.1.js"></script>
 ```
+
+以上示例使用 React 18.3.1、ReactDOM 18.3.1 和 Agora React SDK 2.5.1，适用于没有预先加载 React 的普通 HTML 页面。保持上述加载顺序，不要添加 `async`。只有页面已提供 `window.React` 和 `window.ReactDOM` 时，才可省略对应依赖的脚本；仅通过 npm 安装依赖不会自动提供这些全局变量。使用模块打包工具的项目请采用前面的 npm 集成方式。
 
 ## 下载 SDK
 

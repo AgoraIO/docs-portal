@@ -74,10 +74,10 @@ describe('Chinese product download detail parity', () => {
   it('loads React and ReactDOM before the RTC React CDN bundle', () => {
     const page = read('realtime-media/rtc/reference/downloads/react.mdx');
     const react = page.indexOf(
-      'https://unpkg.com/react@18/umd/react.development.js',
+      'https://unpkg.com/react@18.3.1/umd/react.development.js',
     );
     const reactDom = page.indexOf(
-      'https://unpkg.com/react-dom@18/umd/react-dom.development.js',
+      'https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js',
     );
     const sdk = page.indexOf(
       'https://download.agora.io/sdk/release/agora-rtc-react.2.5.1.js',
