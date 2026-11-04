@@ -36,6 +36,36 @@ describe('Start search API', () => {
   );
 
   it.each([
+    ['api', 'api'],
+    ['faq', 'faq'],
+    ['openapi', 'api'],
+  ])(
+    'accepts the public %s filter and searches the %s family',
+    async (type, family) => {
+      vi.stubEnv('MEILI_HOST', 'http://meili.internal:7700');
+      vi.stubEnv('MEILI_INDEX_UID', 'docs_cn');
+      vi.stubEnv('MEILI_SEARCH_API_KEY', 'private-read-key');
+      const fetchMock = vi
+        .spyOn(globalThis, 'fetch')
+        .mockResolvedValue(Response.json(empty));
+
+      const response = await handleSearchRequest(
+        request(`q=joinChannel&type=${type}`),
+      );
+
+      expect(response.status).toBe(200);
+      expect(await response.json()).toMatchObject({
+        groups: [],
+        totalHits: 0,
+        page: 1,
+      });
+      expect(
+        JSON.parse(fetchMock.mock.calls[0][1]?.body as string).filter,
+      ).toContain(`searchFamily = "${family}"`);
+    },
+  );
+
+  it.each([
     ['cloud-transcoding', 'transcoding'],
     ['signaling', 'rtm'],
   ])(
