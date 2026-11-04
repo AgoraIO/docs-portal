@@ -1,0 +1,53 @@
+name: API Reference Quality
+
+on:
+  pull_request:
+    paths:
+      - 'content/**'
+      - 'src/**'
+      - 'scripts/**'
+      - 'patches/**'
+      - 'docs/api-reference-quality.md'
+      - 'AGENTS.md'
+      - '.github/**'
+      - 'package.json'
+      - 'bun.lock'
+      - 'source.config.ts'
+      - 'vite.config.ts'
+      - 'tsconfig.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: api-source-regression-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-regression:
+    name: API source regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: oven-sh/setup-bun@v2.2.0
+        with:
+          bun-version: 1.4.4
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 26.13.0
+      - run: bun install --frozen-lockfile
+      - name: Test the quality checker
+        run: bun run test scripts/api-reference-quality.test.ts
+      - name: Reject new source defects in either locale
+        run: bun run qa:api source --region global --out .agent/artifacts/api-reference-quality/source
+      - name: Retain source findings
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: api-source-regression-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .agent/artifacts/api-reference-quality/source/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14
