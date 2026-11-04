@@ -4,7 +4,7 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import react from '@vitejs/plugin-react';
 import mdx from 'fumadocs-mdx/vite';
 import { nitro } from 'nitro/vite';
-import { defineConfig } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 import { getOpenApiPrerenderPaths } from './src/lib/openapi/lanes';
 import { createPlatformQueryIndex } from './src/lib/platforms/query-route';
 import { getContentDocsPrerenderPaths } from './src/lib/prerender-content-routes';
@@ -74,6 +74,7 @@ export default defineConfig({
     include: ['react', 'react/jsx-runtime', 'react/jsx-dev-runtime'],
   },
   test: {
+    exclude: [...configDefaults.exclude, '.agent/**'],
     environment: 'happy-dom',
     globals: true,
     setupFiles: './src/test/setup.ts',
