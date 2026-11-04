@@ -1737,23 +1737,8 @@
   text-decoration-color: var(--foreground);
 }
 
-.docs-external-link-icon {
-  display: none;
-}
-
-.prose
-  :where(a):not(:where(.not-prose, .not-prose *))
-  > .docs-external-link-icon,
-.prose :where([data-parameter-description] a) > .docs-external-link-icon {
-  display: inline-block;
-  width: 0.8em;
-  height: 0.8em;
-  margin-inline-start: 0.2em;
-  vertical-align: baseline;
-}
-
 /* Linked screenshots retain their image-only presentation. */
-.prose a:has(img) > .docs-external-link-icon {
+.prose a:not(.docs-card-interactive):has(img) > .docs-external-link-icon {
   display: none;
 }
 

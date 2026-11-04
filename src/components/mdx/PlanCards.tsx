@@ -2,6 +2,7 @@ import { createLink } from '@tanstack/react-router';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { CheckIcon } from 'lucide-react';
 import { Children, isValidElement, type ReactNode } from 'react';
+import { DocsLinkIcon } from '@/components/DocsLinkIcon';
 import { cn } from '@/lib/cn';
 import {
   type NormalizedDocsHref,
@@ -234,6 +235,10 @@ function PlanCardCtaLink({
   return (
     <FumadocsAnchor className={className} href={normalizedHref}>
       {children}
+      <DocsLinkIcon
+        href={normalizedHref}
+        target={normalized.kind === 'external' ? '_blank' : undefined}
+      />
     </FumadocsAnchor>
   );
 }

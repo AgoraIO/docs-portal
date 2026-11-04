@@ -1,5 +1,6 @@
 import { DownloadIcon, ExternalLinkIcon, QrCodeIcon } from 'lucide-react';
 import { useState } from 'react';
+import { DocsLinkIcon } from '@/components/DocsLinkIcon';
 import { DownloadCardIcon } from './DownloadCardIcon';
 import { getPlatformIconSrc } from './platform-icon-src';
 
@@ -64,14 +65,21 @@ export function DownloadResourceCards({
                   {item.href ? (
                     <a
                       aria-label={`${action} ${item.title}`}
-                      className="inline-flex size-9 shrink-0 items-center justify-center rounded-md text-foreground hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                      className="relative inline-flex size-9 shrink-0 items-center justify-center rounded-md text-foreground hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                       href={item.href}
                       rel={isExternal ? 'noopener noreferrer' : undefined}
                       target={isExternal ? '_blank' : undefined}
                       title={`${action} ${item.title}`}
                     >
                       {isDownload ? (
-                        <DownloadIcon aria-hidden="true" className="size-5" />
+                        <>
+                          <DownloadIcon aria-hidden="true" className="size-5" />
+                          <DocsLinkIcon
+                            href={item.href}
+                            target={isExternal ? '_blank' : undefined}
+                            className="absolute right-0 top-0 ms-0 size-2.5"
+                          />
+                        </>
                       ) : (
                         <ExternalLinkIcon
                           aria-hidden="true"
@@ -229,6 +237,7 @@ function DownloadQrCode({ alt, src }: { alt: string; src: string }) {
       target="_blank"
     >
       查看下载二维码
+      <DocsLinkIcon href={src} target="_blank" />
     </a>
   ) : (
     <img

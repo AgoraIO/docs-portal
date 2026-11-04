@@ -395,6 +395,9 @@ Rules:
 - Preserve the source's merge boundaries, including group labels, shared
   allowances and aggregate totals. Do not repeat their text to simulate a merge,
   and do not automatically merge independent cells just because values match.
+- For dense numeric comparisons, use `<DocsTable compact>` to fit columns to
+  the content width and wrap headings and formulas. It keeps a 40rem minimum
+  width so narrow screens can scroll without breaking numeric values apart.
 - Inside a `DocsTable` cell, write inline Markdown directly. For lists, code
   blocks or multiple paragraphs, put blank lines after the opening cell tag and
   before its closing tag. Rich content belongs directly in its owning cell;

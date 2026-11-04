@@ -28,6 +28,9 @@ describe('SDK download actions', () => {
         downloadLink ?? 'https://www.npmjs.com/package/example',
       );
       expect(screen.queryByText('包管理器')).not.toBeInTheDocument();
+      const action = screen.getByRole('link');
+      expect(action).toHaveAttribute('target', '_blank');
+      expect(action.querySelectorAll('.lucide-external-link')).toHaveLength(1);
     },
   );
 });

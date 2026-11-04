@@ -1,4 +1,5 @@
 import { DownloadIcon, ExternalLinkIcon } from 'lucide-react';
+import { DocsLinkIcon } from '@/components/DocsLinkIcon';
 import { DownloadCardIcon } from './DownloadCardIcon';
 import type { SdkDownloadVersion } from './sdk-downloads-data';
 
@@ -38,7 +39,7 @@ export function SdkDownloadCard({
               aria-label={
                 version.downloadLink ? `下载 ${title}` : `获取 ${title}`
               }
-              className="inline-flex size-9 shrink-0 items-center justify-center rounded-md text-foreground hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              className="relative inline-flex size-9 shrink-0 items-center justify-center rounded-md text-foreground hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
               href={download}
               onClick={version.downloadLink ? onDownload : undefined}
               rel="noopener noreferrer"
@@ -46,7 +47,14 @@ export function SdkDownloadCard({
               title={version.downloadLink ? `下载 ${title}` : `获取 ${title}`}
             >
               {version.downloadLink ? (
-                <DownloadIcon aria-hidden="true" className="size-5" />
+                <>
+                  <DownloadIcon aria-hidden="true" className="size-5" />
+                  <DocsLinkIcon
+                    href={download}
+                    target="_blank"
+                    className="absolute right-0 top-0 ms-0 size-2.5"
+                  />
+                </>
               ) : (
                 <ExternalLinkIcon aria-hidden="true" className="size-5" />
               )}

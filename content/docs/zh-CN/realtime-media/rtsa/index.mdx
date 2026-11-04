@@ -2,7 +2,9 @@
 title: 媒体流加速 RTSA 概览
 description: "了解媒体流加速 RTSA 的核心能力、适用场景、接入路径和相关参考资源。"
 ---
-声网媒体流加速（原实时码流加速，Real-Time Streaming Acceleration，RTSA）提供优质的音视频流传输，帮助开发者通过第三方或自研编解码模块为智能硬件实现人与人、人与物、物与物的实时互动连接。
+声网媒体流加速（原实时码流加速，Real-Time Streaming Acceleration，RTSA）提供优质的音视频流传输，帮助开发者通过第三方或自研编解码模块为智能硬件实现人与人、人与物、物与物的实时互动连接。RTSA 依托声网底层实时传输网络 [SD-RTN™](/zh-CN/introduction/glossary#sd-rtn)，运用全球全网节点、智能动态路由以及端侧弱网对抗算法，提供高联通性、低延时、高稳定性的音视频码流传输云服务，减少延时、丢包等网络问题对音视频传输质量和体验的影响。此外，RTSA 适配多种 IoT 平台以及 x86 架构，助力开发者在任意设备与场景中开启实时互动能力。
+
+媒体流加速不包含音视频采集和视频编解码模块。主要适用于 IoT 场景，如实时监控、电话手表等仅需媒体流传输互通的单主播、一对一场景。
 
 <OverviewActions actions={[
   { label: '下载', href: '/zh-CN/realtime-media/rtsa/reference/downloads' },
@@ -24,7 +26,7 @@ RTSA SDK 支持以下功能：
 
 | 功能 | 描述 |
 | --- | --- |
-| RTSA SDK 间的互通 | 支持多种编码格式的音视频流互通。C 接口的数据类型详见 [`audio_data_type_e`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713) 和 [`video_data_type_e`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1ccdeb97ac0c919ca5de750fad95c222)；Java 接口使用 `AudioDataType` 和 `VideoDataType`。 |
+| RTSA SDK 间的互通 | 支持多种编码格式的音视频流互通。C 接口的数据类型详见 [`audio_data_type_e`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713) 和 [`video_data_type_e`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1ccdeb97ac0c919ca5de750fad95c222)。 |
 | RTSA SDK 与 RTC SDK 互通 | 支持 RTSA SDK 与 RTC Native SDK、RTC 三方框架 SDK、RTC Web SDK 和 RTC 小程序 SDK 的双向互通。详见[音视频互通](/zh-CN/realtime-media/rtsa/build/rtc-interoperability/interoperate-rtc)。 |
 | 上行带宽预测 | 支持根据带宽预测算法提出目标码率建议，反馈当前应该提高还是降低码率以及相应的建议值。 |
 | 关键帧 | 支持本地关键帧主动请求和远端关键帧请求响应回调。 |

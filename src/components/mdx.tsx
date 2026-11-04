@@ -27,13 +27,7 @@ import {
 import { buttonVariants } from 'fumadocs-ui/components/ui/button';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
-import {
-  ArrowRightIcon,
-  Check,
-  CopyCheckIcon,
-  ExternalLink,
-  LinkIcon,
-} from 'lucide-react';
+import { ArrowRightIcon, Check, CopyCheckIcon, LinkIcon } from 'lucide-react';
 import type { MDXComponents } from 'mdx/types';
 import {
   type AnchorHTMLAttributes,
@@ -67,6 +61,10 @@ import {
   Callout as FumadocsCallout,
   CalloutContainer as FumadocsCalloutContainer,
 } from '@/components/Callout';
+import {
+  DocsLinkIcon,
+  shouldShowDocsLinkIcon,
+} from '@/components/DocsLinkIcon';
 import {
   Dialog,
   DialogContent,
@@ -477,7 +475,11 @@ export function createDocsTableComponent(locale?: string) {
   const normalizedLocale = normalizeLocale(locale) ?? 'en';
   const copy = resources[normalizedLocale].common.docs;
 
-  return function DocsTable({ className, ...props }: ComponentProps<'table'>) {
+  return function DocsTable({
+    className,
+    compact,
+    ...props
+  }: ComponentProps<'table'> & { compact?: boolean }) {
     const scrollRef = useRef<HTMLDivElement>(null);
     const descriptionId = useId();
     const [hasOverflow, setHasOverflow] = useState(false);
@@ -535,6 +537,8 @@ export function createDocsTableComponent(locale?: string) {
               '[&_[data-table-column]:not([data-table-column="0"])]:[border-inline-start:1px_solid_var(--docs-prose-table-border,var(--color-fd-border))]!',
               '[&_[data-table-column="0"]]:[border-inline-start:0]!',
               '[&_[data-table-bottom-edge]]:border-b-0!',
+              compact &&
+                'w-full! min-w-[40rem]! table-fixed! [&_th]:min-w-0! [&_td]:min-w-0! [&_th]:p-1.5! [&_td]:p-1.5! [&_th]:whitespace-normal! [&_th]:[overflow-wrap:anywhere] [&_td]:[overflow-wrap:anywhere]',
               className,
             )}
             {...props}
@@ -2268,19 +2272,13 @@ function createDocsAnchor(contentPath?: string) {
       );
     }
 
-    const isWebLink =
-      typeof normalizedHref === 'string' &&
-      /^(?:https?:)?\/\//i.test(normalizedHref);
+    const target =
+      props.target ?? (normalized?.kind === 'external' ? '_blank' : undefined);
 
     return (
       <FumadocsAnchor href={normalizedHref} {...props}>
         {children}
-        {isWebLink && children && (
-          <ExternalLink
-            aria-hidden="true"
-            className="docs-external-link-icon"
-          />
-        )}
+        {children && <DocsLinkIcon href={normalizedHref} target={target} />}
       </FumadocsAnchor>
     );
   }
@@ -2343,14 +2341,27 @@ function createDocsCard(contentPath?: string) {
       href && 'docs-card-interactive docs-card-link',
       className,
     );
+    const target =
+      cardProps.target ??
+      (props.external || normalized?.kind === 'external'
+        ? '_blank'
+        : undefined);
     const content = (
       <>
         {children}
         {href ? (
-          <ArrowRightIcon
-            aria-hidden="true"
-            className="docs-card-arrow absolute right-4 top-4 size-4 text-muted-foreground"
-          />
+          shouldShowDocsLinkIcon(normalizedHref, target) ? (
+            <DocsLinkIcon
+              href={normalizedHref}
+              target={target}
+              className="absolute right-4 top-4 ms-0 size-4 text-muted-foreground"
+            />
+          ) : (
+            <ArrowRightIcon
+              aria-hidden="true"
+              className="docs-card-arrow absolute right-4 top-4 size-4 text-muted-foreground"
+            />
+          )
         ) : null}
       </>
     );

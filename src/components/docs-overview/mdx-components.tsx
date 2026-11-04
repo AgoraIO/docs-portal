@@ -3,9 +3,7 @@ import {
   AppleIcon,
   AppWindowIcon,
   ArrowDownToLineIcon,
-  ArrowRightIcon,
   ArrowUpFromLineIcon,
-  ArrowUpRightIcon,
   AtomIcon,
   AudioLinesIcon,
   BarChart3Icon,
@@ -49,6 +47,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { DocsLinkArrow, DocsLinkIcon } from '@/components/DocsLinkIcon';
 import {
   ReferenceFilterSelect,
   ReferenceFilterToggleGroup,
@@ -219,6 +218,10 @@ function OverviewActions({ actions }: { actions: OverviewAction[] }) {
               target={external ? '_blank' : undefined}
             >
               {action.label}
+              <DocsLinkIcon
+                href={action.href}
+                target={external ? '_blank' : undefined}
+              />
             </a>
           </Button>
         );
@@ -502,7 +505,10 @@ function HelpHub({
                 <span className="flex size-7 items-center justify-center rounded-md bg-muted text-foreground">
                   <HelpHubIcon kind={card.icon} />
                 </span>
-                <ArrowUpRightIcon className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground" />
+                <DocsLinkArrow
+                  href={card.href}
+                  className="size-4 shrink-0 text-muted-foreground"
+                />
               </div>
               <h4 className="mt-4 text-base font-semibold tracking-[-0.02em] text-foreground">
                 {card.title}
@@ -542,7 +548,10 @@ function HelpHub({
                   target={isExternalHref(item.href) ? '_blank' : undefined}
                 >
                   <span className="leading-6">{item.label}</span>
-                  <ArrowUpRightIcon className="size-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:text-foreground group-hover:opacity-100" />
+                  <DocsLinkArrow
+                    href={item.href}
+                    className="size-4 shrink-0 text-muted-foreground"
+                  />
                 </a>
               </li>
             ))}
@@ -565,7 +574,10 @@ function HelpHub({
                 target={isExternalHref(item.href) ? '_blank' : undefined}
               >
                 <span>{item.label}</span>
-                <ArrowRightIcon className="size-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+                <DocsLinkArrow
+                  href={item.href}
+                  className="size-5 shrink-0 text-muted-foreground"
+                />
               </a>
             ))}
           </div>
@@ -720,10 +732,14 @@ function OverviewImageCard({
 
   return (
     <a
-      className="group overflow-hidden docs-card-surface docs-card-interactive"
+      className="group relative overflow-hidden docs-card-surface docs-card-interactive"
       href={href}
     >
       {content}
+      <DocsLinkIcon
+        href={href}
+        className="absolute right-4 top-4 ms-0 size-4"
+      />
     </a>
   );
 }
@@ -750,7 +766,10 @@ function OverviewLinkBanner({
           {description}
         </p>
       </div>
-      <ArrowRightIcon className="size-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+      <DocsLinkArrow
+        href={href}
+        className="size-5 shrink-0 text-muted-foreground"
+      />
     </a>
   );
 }
@@ -813,6 +832,7 @@ function ToolkitItem({
         <ToolkitIcon kind={icon} />
       </span>
       <span>{label}</span>
+      <DocsLinkIcon href={href} />
     </a>
   );
 }
@@ -1032,7 +1052,10 @@ function SolutionCard({
           ) : null}
         </div>
         {href ? (
-          <ArrowRightIcon className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+          <DocsLinkArrow
+            href={href}
+            className="size-4 shrink-0 text-muted-foreground"
+          />
         ) : null}
       </>
     ) : (
@@ -1049,7 +1072,7 @@ function SolutionCard({
         ) : null}
         {imageSrc && href ? (
           <span className="absolute top-4 right-4 flex size-7 items-center justify-center rounded-full bg-background/85 text-muted-foreground shadow-sm ring-1 ring-border backdrop-blur transition-colors group-hover:text-foreground">
-            <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
+            <DocsLinkArrow href={href} className="size-4" />
           </span>
         ) : null}
         {imageSrc ? null : (
@@ -1079,7 +1102,8 @@ function SolutionCard({
               </h3>
             ) : null}
             {href ? (
-              <ArrowRightIcon
+              <DocsLinkArrow
+                href={href}
                 className={cn(
                   'size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground',
                   hasBesideIconTitle && 'shrink-0',
@@ -1127,7 +1151,11 @@ function SolutionCard({
                 target={action.href.startsWith('http') ? '_blank' : undefined}
               >
                 <span>{action.label}</span>
-                <ArrowRightIcon className="size-3.5" />
+                <DocsLinkArrow
+                  href={action.href}
+                  target={action.href.startsWith('http') ? '_blank' : undefined}
+                  className="size-3.5"
+                />
               </a>
             ))}
           </div>
@@ -1346,7 +1374,7 @@ export function DemoGallery({
                 />
               </div>
               <span className="absolute top-3 right-3 flex size-8 items-center justify-center rounded-full bg-background/90 text-muted-foreground shadow-sm ring-1 ring-border backdrop-blur transition-colors group-hover:text-foreground">
-                <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
+                <DocsLinkArrow href={item.href} className="size-4" />
               </span>
               <div className="p-5">
                 <h2 className="m-0 text-base font-semibold text-foreground">
@@ -2181,7 +2209,7 @@ function OverviewSpotlightCard({
             </p>
           ) : null}
         </div>
-        <ArrowRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+        <DocsLinkArrow href={href} className="size-4 text-muted-foreground" />
       </div>
     </a>
   );

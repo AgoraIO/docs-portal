@@ -121,7 +121,6 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
   'realtime-media/rtsa/reference/meta.json': [
     'downloads',
     'error-codes',
-    'sunset',
     'supported-platforms',
   ],
   'realtime-media/sdk-extensions/metakit/reference/meta.json': [
@@ -272,6 +271,7 @@ const intentionallyChangedReferencePages = new Set([
   'realtime-media/rtc/reference/meta.json',
   'realtime-media/rtm/reference/meta.json',
   'realtime-media/rtmp-gateway/reference/meta.json',
+  'realtime-media/rtsa/reference/meta.json',
   'realtime-media/speech-to-text/reference/meta.json',
   'realtime-media/transcoding/reference/meta.json',
   'solutions/flexible-classroom/reference/meta.json',

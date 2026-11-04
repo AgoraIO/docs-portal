@@ -104,6 +104,7 @@ type LegacyLinkComponent = ComponentType<{
 type CardComponent = ComponentType<{
   description?: ReactNode;
   href?: string;
+  target?: string;
   title: ReactNode;
 }>;
 type AccordionsComponent = ComponentType<{
@@ -621,7 +622,7 @@ describe('common MDX registry', () => {
     ).toHaveAttribute('aria-hidden', 'true');
   });
 
-  it('marks web links without adding icons to hashes or non-web protocols', () => {
+  it('marks external and new-window links while keeping same-window anchors plain', () => {
     const Anchor = getMDXComponents().a as AnchorComponent;
     render(
       <>
@@ -637,7 +638,16 @@ describe('common MDX registry', () => {
     expect(
       screen.getByRole('link', { name: 'Web link' }).querySelector('svg'),
     ).toHaveAttribute('aria-hidden', 'true');
-    for (const name of ['Overview', 'Email', 'Download']) {
+    expect(screen.getByRole('link', { name: 'Email' })).toHaveAttribute(
+      'target',
+      '_blank',
+    );
+    expect(
+      screen
+        .getByRole('link', { name: 'Email' })
+        .querySelector('.docs-external-link-icon'),
+    ).not.toBeNull();
+    for (const name of ['Overview', 'Download']) {
       expect(
         screen.getByRole('link', { name }).querySelector('svg'),
       ).toBeNull();
@@ -672,6 +682,11 @@ describe('common MDX registry', () => {
     expect(
       screen.getByRole('link', { name: 'Targeted quickstart' }),
     ).toHaveAttribute('target', '_blank');
+    expect(
+      screen
+        .getByRole('link', { name: 'Targeted quickstart' })
+        .querySelector('.docs-external-link-icon'),
+    ).not.toBeNull();
     expect(screen.getByRole('link', { name: 'Download SDK' })).toHaveAttribute(
       'href',
       '/downloads/sdk.zip',
@@ -730,6 +745,7 @@ describe('common MDX registry', () => {
       '/en/ai/choose-your-path/quickstart-coding',
     );
     expect(card).toHaveClass('docs-card-link');
+    expect(card.querySelector('.docs-external-link-icon')).toBeNull();
     await act(async () => {
       fireEvent.click(card);
     });
@@ -739,6 +755,26 @@ describe('common MDX registry', () => {
         '/en/ai/choose-your-path/quickstart-coding',
       );
     });
+  });
+
+  it('marks external cards and internal cards opening a new window', () => {
+    const Card = getMDXComponents(undefined, { contentPath: 'en/ai/index.md' })
+      .Card as CardComponent;
+    render(
+      <>
+        <Card title="External card" href="https://example.com" />
+        <Card
+          title="New-window card"
+          href="/en/ai/quickstart"
+          target="_blank"
+        />
+      </>,
+    );
+    for (const name of ['External card', 'New-window card']) {
+      const card = screen.getByRole('link', { name: new RegExp(name) });
+      expect(card).toHaveAttribute('target', '_blank');
+      expect(card.querySelectorAll('.docs-external-link-icon')).toHaveLength(1);
+    }
   });
 
   it('guides Demo immediate-experience cards without changing source cards', async () => {

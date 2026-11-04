@@ -22,7 +22,10 @@ type Document = Extract<
 >['payload']['bundled'];
 type OpenApiOperationItem = NonNullable<OpenAPIPageProps['operations']>[number];
 
-function makeMinimalOpenApiPageProps(method: string): OpenAPIPageProps {
+function makeMinimalOpenApiPageProps(
+  method: string,
+  description?: string,
+): OpenAPIPageProps {
   const path = `/method-${method.toLowerCase()}`;
 
   return {
@@ -34,6 +37,16 @@ function makeMinimalOpenApiPageProps(method: string): OpenAPIPageProps {
         paths: {
           [path]: {
             [method.toLowerCase()]: {
+              parameters: description
+                ? [
+                    {
+                      in: 'query',
+                      name: 'docs',
+                      schema: { type: 'string' },
+                      description,
+                    },
+                  ]
+                : undefined,
               responses: { '200': { description: 'OK' } },
             },
           },
@@ -123,6 +136,29 @@ function getResponseTab(status: string) {
 }
 
 describe('FumadocsOpenApiContent', () => {
+  it('marks external and new-window Markdown links inside OpenAPI descriptions', async () => {
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={makeMinimalOpenApiPageProps(
+          'get',
+          '[External docs](https://example.com/docs) [Same-window docs](/zh-CN/introduction) <a href="/zh-CN/reference" target="_blank">New-window docs</a>',
+        )}
+      />,
+    );
+    for (const name of ['External docs', 'New-window docs']) {
+      const link = await screen.findByRole('link', { name });
+      expect(link.querySelectorAll('.docs-external-link-icon')).toHaveLength(1);
+    }
+    expect(
+      screen
+        .getByRole('link', { name: 'Same-window docs' })
+        .querySelector('.docs-external-link-icon'),
+    ).toBeNull();
+    expect(
+      screen.getByRole('link', { name: 'New-window docs' }),
+    ).toHaveAttribute('target', '_blank');
+  });
   it('keeps the turns endpoint and legacy notice in the overview above both panels', async () => {
     const bundled = yaml.load(
       await readFile(
