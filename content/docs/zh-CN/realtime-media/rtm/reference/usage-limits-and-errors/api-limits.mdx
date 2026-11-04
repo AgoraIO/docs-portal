@@ -248,45 +248,85 @@ Metadata 写入后会长期保存，频道销毁或用户注销不会自动删�
 
 ## 7. 常见问题
 
-### 所有 API 加起来每秒只能调用 20 次吗？
+<Accordions type="multiple">
+<Accordion title="所有 API 加起来每秒只能调用 20 次吗？" id="所有-api-加起来每秒只能调用-20-次吗">
 
 不是。限频按操作类别分别计算，20 次/秒是单个类别的默认配额。发送消息的 60 次/秒不占用其他类别的配额，反之亦然。
 
-### 发群消息和发私信各有 60 次/秒吗？
+</Accordion>
+</Accordions>
+
+<Accordions type="multiple">
+<Accordion title="发群消息和发私信各有 60 次/秒吗？" id="发群消息和发私信各有-60-次秒吗">
 
 不是。Message Channel 和 User Channel 的 `publish` 共用同一个 60 次/秒配额。
 
-### 我没超过 60 次/秒，为什么消息延迟还是上去了？
+</Accordion>
+</Accordions>
+
+<Accordions type="multiple">
+<Accordion title="我没超过 60 次/秒，为什么消息延迟还是上去了？" id="我没超过-60-次秒为什么消息延迟还是上去了">
 
 客户端限频只是第一层。频道另有消息速率建议值（3.2），项目另有总上行 10 万条/秒（第 2 章）。多个客户端同时向一个频道高频发送时，单个客户端都没超限，频道合计仍可能超出建议值。
 
-### Topic 每秒 200 次是整个客户端的上限吗？
+</Accordion>
+</Accordions>
+
+<Accordions type="multiple">
+<Accordion title="Topic 每秒 200 次是整个客户端的上限吗？" id="topic-每秒-200-次是整个客户端的上限吗">
 
 不是。200 次/秒按单个 Stream Channel 计算；同一客户端加入多个 Stream Channel 时各自独立。
 
-### 超出限频的调用会被排队，稍后自动发出吗？
+</Accordion>
+</Accordions>
+
+<Accordions type="multiple">
+<Accordion title="超出限频的调用会被排队，稍后自动发出吗？" id="超出限频的调用会被排队稍后自动发出吗">
 
 不会。超出配额的调用不会被执行，SDK 返回错误，需要业务层重试。
 
-### 订阅人数不限，所以频道容量无限吗？
+</Accordion>
+</Accordions>
+
+<Accordions type="multiple">
+<Accordion title="订阅人数不限，所以频道容量无限吗？" id="订阅人数不限所以频道容量无限吗">
 
 “不限数量”只说明人数不设限，频道仍受 3.2 的消息速率建议值约束；开启 Presence 后，5000 人以上请提前联系技术支持。
 
-### Stream Channel 128 人是默认值，可以申请提高吗？
+</Accordion>
+</Accordions>
+
+<Accordions type="multiple">
+<Accordion title="Stream Channel 128 人是默认值，可以申请提高吗？" id="stream-channel-128-人是默认值可以申请提高吗">
 
 不能。128 人是固定上限。需要更大规模时使用多个 Stream Channel 或改用 Message Channel。
 
-### Metadata Item 数量不限，所以可以存很多数据吗？
+</Accordion>
+</Accordions>
+
+<Accordions type="multiple">
+<Accordion title="Metadata Item 数量不限，所以可以存很多数据吗？" id="metadata-item-数量不限所以可以存很多数据吗">
 
 Item 数量不设限，但整组 Metadata 和单个 Item 各受 16 KB 约束，两者同时生效。
 
-### RESTful API 发消息每个频道最多 60 次/秒吗？
+</Accordion>
+</Accordions>
+
+<Accordions type="multiple">
+<Accordion title="RESTful API 发消息每个频道最多 60 次/秒吗？" id="restful-api-发消息每个频道最多-60-次秒吗">
 
 没有这个单独限制。RESTful API 发送量与客户端发送量一起计入 3.2 的频道消息速率，RESTful API 本身受账号级 1000 次/秒约束。
 
-### 锁 TTL 到期前掉线，锁就没了吗？
+</Accordion>
+</Accordions>
+
+<Accordions type="multiple">
+<Accordion title="锁 TTL 到期前掉线，锁就没了吗？" id="锁-ttl-到期前掉线锁就没了吗">
 
 不会。TTL 内重新回到频道仍持有该锁；超过 TTL 才自动释放并触发事件。
+
+</Accordion>
+</Accordions>
 
 ## 8. 超出限制后怎么办
 
