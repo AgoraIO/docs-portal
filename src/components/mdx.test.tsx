@@ -307,6 +307,43 @@ describe('common MDX registry', () => {
     expect(components.TabsContent).not.toBe(fumadocsTabs.TabsContent);
   });
 
+  it.each([false, true])(
+    'gives simple parameter tables readable columns without reclassifying merged tables (merged: %s)',
+    (merged) => {
+      const Table = getMDXComponents().table as TableComponent;
+      render(
+        <Table>
+          <thead>
+            <tr>
+              {['属性', '类型', '是否必填', '默认值', '描述'].map((label) => (
+                <th key={label}>{label}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowSpan={merged ? 2 : undefined}>cloudProxy</td>
+              <td>boolean</td>
+              <td>选填</td>
+              <td>false</td>
+              <td>仅适用于 Message Channel。</td>
+            </tr>
+          </tbody>
+        </Table>,
+      );
+      if (merged) {
+        expect(screen.getByRole('table')).not.toHaveAttribute(
+          'data-table-layout',
+        );
+      } else {
+        expect(screen.getByRole('table')).toHaveAttribute(
+          'data-table-layout',
+          'parameters',
+        );
+      }
+    },
+  );
+
   it('describes overflowing prose tables and exposes a pre-scroll cue', async () => {
     const components = getMDXComponents(undefined, { locale: 'zh-CN' });
     const Table = components.table as TableComponent;

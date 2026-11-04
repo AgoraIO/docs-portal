@@ -465,6 +465,36 @@ function DocsCalloutContainer(props: CalloutContainerProps) {
   );
 }
 
+function isSimpleParameterTable(children: ReactNode): boolean {
+  const elements = (value: ReactNode) =>
+    Children.toArray(value).filter(isValidElement<ComponentProps<'td'>>);
+  const hasMergedCells = (value: ReactNode): boolean =>
+    elements(value).some(
+      ({ props }) =>
+        (props.colSpan ?? 1) > 1 ||
+        (props.rowSpan ?? 1) > 1 ||
+        hasMergedCells(props.children),
+    );
+  if (hasMergedCells(children)) return false;
+  const head = elements(children).find((node) => node.type === 'thead');
+  const rows = elements(head?.props.children);
+  if (rows.length !== 1 || rows[0].type !== 'tr') return false;
+  const cells = elements(rows[0].props.children);
+  if (cells.length !== 5 || cells.some((node) => node.type !== 'th'))
+    return false;
+  const labels = cells
+    .map((cell) => headingLabel(cell.props.children).trim().toLowerCase())
+    .join('|');
+  return (
+    /^(?:参数|属性|名称)\|类型\|是否必填\|默认值\|(?:描述|说明)$/.test(
+      labels,
+    ) ||
+    /^(?:parameter|property|name)\|type\|required\|default(?: value)?\|description$/.test(
+      labels,
+    )
+  );
+}
+
 export function createDocsTableComponent(locale?: string) {
   const normalizedLocale = normalizeLocale(locale) ?? 'en';
   const copy = resources[normalizedLocale].common.docs;
@@ -474,6 +504,10 @@ export function createDocsTableComponent(locale?: string) {
     compact,
     ...props
   }: ComponentProps<'table'> & { compact?: boolean }) {
+    const parameterTable = useMemo(
+      () => isSimpleParameterTable(props.children),
+      [props.children],
+    );
     const scrollRef = useRef<HTMLDivElement>(null);
     const descriptionId = useId();
     const [hasOverflow, setHasOverflow] = useState(false);
@@ -525,6 +559,7 @@ export function createDocsTableComponent(locale?: string) {
           tabIndex={hasOverflow ? 0 : undefined}
         >
           <table
+            data-table-layout={parameterTable ? 'parameters' : undefined}
             className={cn(
               // Physical first-child changes when earlier columns span rows.
               // The MDX compiler marks logical columns and final-row edges.
@@ -533,6 +568,8 @@ export function createDocsTableComponent(locale?: string) {
               '[&_[data-table-bottom-edge]]:border-b-0!',
               compact &&
                 'w-full! min-w-[40rem]! table-fixed! [&_th]:min-w-0! [&_td]:min-w-0! [&_th]:p-1.5! [&_td]:p-1.5! [&_th]:whitespace-normal! [&_th]:[overflow-wrap:anywhere] [&_td]:[overflow-wrap:anywhere]',
+              parameterTable &&
+                '[&_:is(th,td):nth-child(2)]:min-w-24 [&_:is(th,td):nth-child(3)]:min-w-16 [&_:is(th,td):nth-child(4)]:min-w-20 [&_:is(th,td):nth-child(5)]:min-w-[min(24rem,calc(100vw_-_4rem))]',
               className,
             )}
             {...props}
