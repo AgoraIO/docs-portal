@@ -159,6 +159,26 @@ describe('FumadocsOpenApiContent', () => {
       screen.getByRole('link', { name: 'New-window docs' }),
     ).toHaveAttribute('target', '_blank');
   });
+  it('uses matching tab frames without an inset response card', () => {
+    const $ = load(
+      renderToStaticMarkup(
+        <FumadocsOpenApiContent pageProps={makeSectionHeadingPageProps()} />,
+      ),
+    );
+    for (const selector of [
+      '.openapi-request-examples',
+      '.openapi-response-example',
+    ]) {
+      const tabs = $(selector).find('[role="tablist"]').first().parent();
+      expect(tabs.hasClass('bg-fd-card')).toBe(true);
+      expect(tabs.hasClass('my-0')).toBe(true);
+      expect(tabs.children('[role="tabpanel"]').first().hasClass('p-4')).toBe(
+        false,
+      );
+      expect(tabs.find('figure.shiki').first().hasClass('my-4')).toBe(false);
+    }
+  });
+
   it('uses the documentation code-block frame for request and response examples', () => {
     const $ = load(
       renderToStaticMarkup(

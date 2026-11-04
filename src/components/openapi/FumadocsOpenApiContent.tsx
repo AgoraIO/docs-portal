@@ -30,7 +30,6 @@ import {
   CodeBlockTabsList,
   CodeBlockTabsTrigger,
 } from 'fumadocs-ui/components/codeblock';
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime';
 import { Check, Clipboard } from 'lucide-react';
@@ -772,6 +771,9 @@ function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
   const { doc } = useOpenAPI();
   const resolve = doc.resolve;
   const locale = useContext(OpenApiLocaleContext);
+  // Keep the values used by Fumadocs' ordinary Tabs so shared status selection
+  // survives switching to the same code-tab frame as request examples.
+  const tabValue = (code: string) => code.toLowerCase().replace(/\s/, '-');
   const empty = (
     <p
       className="m-0 px-4 py-5 text-fd-muted-foreground text-sm"
@@ -798,10 +800,18 @@ function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
     );
   }
   return (
-    <Tabs
+    <CodeBlockTabs
+      className="openapi-response-code-tabs my-0"
+      defaultValue={tabs[0] ? tabValue(tabs[0].code) : undefined}
       groupId="fumadocs_openapi_responses"
-      items={tabs.map((tab) => tab.code)}
     >
+      <CodeBlockTabsList>
+        {tabs.map(({ code }) => (
+          <CodeBlockTabsTrigger key={code} value={tabValue(code)}>
+            {code}
+          </CodeBlockTabsTrigger>
+        ))}
+      </CodeBlockTabsList>
       {tabs.map((tab) => {
         const { code, examples = [] } = tab;
         const alternatives = getOpenApiResponseSchemaExamples(
@@ -810,7 +820,7 @@ function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
           locale,
         );
         return (
-          <Tab key={code} value={code}>
+          <CodeBlockTab key={code} value={tabValue(code)}>
             {alternatives ? (
               <ChoiceTabs
                 className="openapi-response-schema-examples min-w-0"
@@ -865,10 +875,10 @@ function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
                 ))}
               </Accordions>
             )}
-          </Tab>
+          </CodeBlockTab>
         );
       })}
-    </Tabs>
+    </CodeBlockTabs>
   );
 }
 
