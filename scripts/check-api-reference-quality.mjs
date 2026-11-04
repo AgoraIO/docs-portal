@@ -50,7 +50,10 @@ export async function serveBuild(root, region) {
         throw new Error('Invalid path');
       if (existsSync(path.join(file, 'index.html')))
         file = path.join(file, 'index.html');
-      else if (region === 'cn' && !path.extname(pathname))
+      else if (
+        region === 'cn' &&
+        existsSync(path.join(root, 'zh-CN', pathname, 'index.html'))
+      )
         file = path.join(root, 'zh-CN', pathname, 'index.html');
       if (!existsSync(file)) {
         response.writeHead(404);

@@ -186,11 +186,21 @@ describe('API reference quality policy', () => {
           }).on('error', reject);
         },
       );
+    put(
+      root,
+      'zh-CN/api-reference/response.go/index.html',
+      '<article>Dotted document slug</article>',
+    );
     const server = await serveBuild(root, 'cn');
     try {
       const response = await request(`${server.origin}/api-reference/sample`);
       expect(response.status).toBe(200);
       expect(response.text).toContain('Expected build');
+      const dotted = await request(
+        `${server.origin}/api-reference/response.go`,
+      );
+      expect(dotted.status).toBe(200);
+      expect(dotted.text).toContain('Dotted document slug');
       expect(
         (await request(`${server.origin}/api-reference/missing`)).status,
       ).toBe(404);
