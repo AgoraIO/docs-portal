@@ -29,5 +29,5 @@ Fumadocs 11.2.2 的默认请求示例仅从 parameters 构造请求，未读取 
 - `bun run test --maxWorkers=2 --testTimeout=20000`：339 个文件通过、1 个跳过；5,650 项通过、6 项跳过。
 - `bun run types:check`、变更 TS/TSX 的 Biome、`git diff --check` 通过。
 - 本地实际 RTC 页面 cURL 已显示 Authorization；未向业务服务发请求。
-- 构建生成 6,174 份页面数据与 7,446 份机器出口；最终完整打包结果在 PR 验证记录中另行标注。
+- `VITE_DOCS_REGION=cn bun run build` 完整通过：6,174 份页面数据、7,446 份机器出口、7,210 份路由 HTML。
 - 本 PR 未部署，不代表新站线上复验完成。诊断日志、截图、生成出口清单在 ignored `.agent/artifacts/cnqa/`。
