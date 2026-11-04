@@ -4,6 +4,7 @@ import {
   normalizeCnProductList,
 } from './cn-products';
 import { getCnSearchFamily } from './cn-search-family';
+import { getCnSearchLanguageTerms } from './cn-search-terms';
 import { toCnPublicSearchUrl } from './cn-search-urls.mjs';
 import type { SearchSection } from './kb-record';
 
@@ -78,6 +79,11 @@ export const cnSearchSynonyms: Record<string, string[]> = {
   云端合流: ['云端转码'],
   云端合图: ['云端转码'],
   画中画: ['人像画中画', '合图'],
+  大小流: ['大流', '小流', '双流模式'],
+  双流: ['双流模式', '大流', '小流'],
+  产品概述: ['概览'],
+  产品概览: ['概览'],
+  开启: ['开始', '开通', '启用'],
 };
 export const cnTechnicalWords = [
   '日志',
@@ -93,7 +99,14 @@ export const cnTechnicalWords = [
   '直播',
   '屏幕共享',
   '大小流',
+  '大流',
+  '小流',
+  '双流',
+  '双流模式',
   '云信令',
+  '开启',
+  '开始',
+  '开通',
 ];
 
 function sequence(
@@ -152,6 +165,43 @@ export function buildCnSearchDocument(record: SearchSection) {
   const versionAliases = record.headingPath
     .map((heading) => heading.replace(/\bv(?=\d+\.\d)/gi, ''))
     .filter((heading, index) => heading !== record.headingPath[index]);
+  const guideHeading =
+    getCnSearchFamily({ pageUrl: publicUrl, docType: record.docType }) ===
+      'docs' &&
+    !/\/release-notes(?:\/|#|$)/.test(publicUrl) &&
+    !record.headingPath
+      .slice(1)
+      .some((title) => /示例|参考|注意事项|前提条件|准备开发环境/.test(title));
+  const family = getCnSearchFamily({
+    pageUrl: publicUrl,
+    docType: record.docType,
+  });
+  const languageEntryRank =
+    family === 'faq' ||
+    /\/release-notes(?:\/|#|$)/.test(publicUrl) ||
+    /迁移|升级|下架/.test(record.pageTitle)
+      ? 1000
+      : /(?:下载|集成)\s*(?:SDK|开发包)|(?:SDK|开发包).*下载|NuGet.*SDK/i.test(
+            record.sectionTitle,
+          )
+        ? 0
+        : /快速开始|集成\s*(?:指引|指南)|跑通.*示例/.test(
+              record.sectionTitle,
+            ) ||
+            (pageEntry && /\/get-started\//.test(publicUrl))
+          ? 1
+          : pageEntry &&
+              /概览|概述|API\s*列表|(?:API|SDK).*\bReference\b|(?:API|SDK).*参考/i.test(
+                record.sectionTitle,
+              )
+            ? 2
+            : 1000;
+  // SDK applicability comes from the maintained title/platform, never a code
+  // sample in the body or a product's list of supported languages.
+  const languageEntryTerms =
+    languageEntryRank < 1000
+      ? getCnSearchLanguageTerms(record.sectionTitle, record.platform)
+      : [];
   return {
     ...record,
     ...(versionAliases.length
@@ -159,13 +209,28 @@ export function buildCnSearchDocument(record: SearchSection) {
           aliases: [...new Set([...(record.aliases ?? []), ...versionAliases])],
         }
       : {}),
+    languageEntryTerms,
+    languageEntryRank: languageEntryTerms.length ? languageEntryRank : 1000,
+    languageTerms: getCnSearchLanguageTerms(
+      `${record.pageTitle}\n${record.sectionTitle}\n${record.content}`,
+      record.platform,
+    ),
     searchFamily: getCnSearchFamily({
       pageUrl: record.url,
       docType: record.docType,
     }),
     product,
     products,
+    ...(guideHeading ? { guideHeading: record.sectionTitle } : {}),
     ...(pageEntry ? { entryTitle: [...entryAliases, entryTitle] } : {}),
+    // Match maintained product names before similarly named event/reference pages.
+    // Separate complete acronyms so RTM and the RTMP prefix share equal word positions.
+    ...(pageEntry && productEntry
+      ? {
+          productTitle: entryTitle.trim(),
+          productCode: entryTitle.match(/\b[A-Z][A-Z\d]+\b/g) ?? [],
+        }
+      : {}),
     // 相关性相同才优先产品说明入口，其次 API 入口，最后普通页/章节。
     entrySeq:
       productEntry && publicUrl.startsWith('/realtime-media/')

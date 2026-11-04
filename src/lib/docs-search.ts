@@ -4,6 +4,8 @@ export type SearchEntry = {
   description?: string;
   objectType?: 'docs' | 'openapi';
   platform?: string[];
+  /** Maintained applicability from the published page, not inferred body words. */
+  titlePlatforms?: string[];
   product?: string;
   tab?: string;
   title: string;

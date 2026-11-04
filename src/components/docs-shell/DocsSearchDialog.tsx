@@ -58,9 +58,9 @@ import {
 } from '@/lib/search/cn-search-context';
 import {
   type CnSearchFamily,
-  cnSearchFamilies,
   getCnSearchFamily,
 } from '@/lib/search/cn-search-family';
+import { getCnSearchFamilyOrder } from '@/lib/search/cn-search-intent';
 import {
   loadCnSearchCatalog,
   type SearchFacets,
@@ -591,7 +591,11 @@ export function DocsSearchDialog({
           searchResultToEntry(result, searchLocale === 'zh-CN', productScopes),
         );
   const resultGroups = isCn
-    ? cnSearchFamilies.map((family) => {
+    ? getCnSearchFamilyOrder(
+        draftSearch,
+        resultEntries,
+        platformFilter ?? undefined,
+      ).map((family) => {
         const entries = resultEntries.filter(
           (entry) => entry.family === family,
         );
@@ -1103,6 +1107,8 @@ export function DocsSearchDialog({
 }
 
 type RenderedSearchEntry = SearchEntry & {
+  languageEntryTerms?: string[];
+  languageEntryRank?: number;
   family: CnSearchFamily;
   familyTotalHits?: number;
   context: string[];
@@ -1124,6 +1130,8 @@ function searchResultToEntry(
   result: {
     breadcrumbs?: unknown[];
     familyTotalHits?: unknown;
+    languageEntryTerms?: unknown;
+    languageEntryRank?: unknown;
     content: unknown;
     id?: unknown;
     objectType?: unknown;
@@ -1146,6 +1154,11 @@ function searchResultToEntry(
   const sdkLabel = isCn ? getCnSearchSdkLabel(result.url) : undefined;
 
   return {
+    languageEntryTerms: getStringArray(result.languageEntryTerms),
+    languageEntryRank:
+      typeof result.languageEntryRank === 'number'
+        ? result.languageEntryRank
+        : undefined,
     family: getCnSearchFamily({
       pageUrl: result.url,
       docType: objectType === 'openapi' ? 'openapi' : 'docs',
