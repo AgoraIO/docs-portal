@@ -159,6 +159,98 @@ describe('FumadocsOpenApiContent', () => {
       screen.getByRole('link', { name: 'New-window docs' }),
     ).toHaveAttribute('target', '_blank');
   });
+
+  it('preserves media-pull lists, superscripts and nested protobuf code frames', async () => {
+    const document = yaml.load(
+      await readFile(
+        'content/openapi/media-pull/media-pull.zh-CN.yaml',
+        'utf8',
+      ),
+    ) as Document;
+    const $ = load(
+      renderToStaticMarkup(
+        <FumadocsOpenApiContent
+          locale="zh-CN"
+          pageProps={{
+            operations: [
+              {
+                method: 'post',
+                path: '/{region}/v1/projects/{appId}/cloud-player/players',
+              },
+            ],
+            payload: { bundled: document },
+          }}
+        />,
+      ),
+    );
+    const region = $('p')
+      .filter((_, node) => $(node).text().startsWith('云端播放器的区域'))
+      .parent();
+    expect(region.find('li').length).toBe(4);
+    expect(
+      region
+        .find('li')
+        .map((_, node) => $(node).find('code').first().text())
+        .get(),
+    ).toEqual(['cn', 'ap', 'na', 'eu']);
+    const uid = $('.openapi-schema-field-row')
+      .filter((_, node) => $(node).find('code').first().text() === 'uid')
+      .first();
+    expect(uid.find('sup').text()).toBe('32');
+    expect(uid.find('.openapi-markdown-blockquote li')).toHaveLength(2);
+    expect(uid.text()).not.toContain('> -');
+    const proto = $('pre').filter((_, node) =>
+      $(node).text().includes('message PositionData'),
+    );
+    expect(proto.closest('figure').attr('data-line-numbers')).toBeDefined();
+    expect(proto.text()).toContain('int32 duration = 1;');
+    expect(proto.text()).toContain('int32 position = 2;');
+    expect(proto.text()).toContain('int32 uid = 3;');
+  });
+
+  it('keeps authentication, optional headers and the authored media-pull request in every generated client', async () => {
+    const document = yaml.load(
+      await readFile(
+        'content/openapi/media-pull/media-pull.zh-CN.yaml',
+        'utf8',
+      ),
+    ) as Document;
+    const route = '/{region}/v1/projects/{appId}/cloud-player/players';
+    const { container } = render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [{ method: 'post', path: route }],
+          payload: { bundled: document },
+        }}
+      />,
+    );
+    const request = container.querySelector(
+      '.openapi-request-examples',
+    ) as HTMLElement;
+    for (const client of ['cURL', 'Python/Requests', 'Node.js/Fetch']) {
+      fireEvent.click(
+        within(request).getByRole('combobox', {
+          name: /代码语言|Code language/i,
+        }),
+      );
+      const option = screen.getByRole('option', { name: client });
+      fireEvent.pointerDown(option, { pointerType: 'mouse' });
+      fireEvent.click(option, { detail: 1 });
+      await waitFor(() => {
+        const code = request.querySelector('pre')?.textContent ?? '';
+        expect(code).toContain('Authorization');
+        expect(code).toContain('Basic <credentials>');
+        expect(code).toContain('X-Request-ID');
+        expect(code.match(/Content-Type/g)).toHaveLength(1);
+        expect(code).toContain('application/json');
+        expect(code).not.toContain('Content-Type: string');
+        expect(code).toContain('class32');
+        expect(code).toContain('2a78446***');
+      });
+    }
+  });
+
   it('uses matching tab frames without an inset response card', () => {
     const $ = load(
       renderToStaticMarkup(
@@ -169,13 +261,10 @@ describe('FumadocsOpenApiContent', () => {
       '.openapi-request-examples',
       '.openapi-response-example',
     ]) {
-      const tabs = $(selector).find('[role="tablist"]').first().parent();
-      expect(tabs.hasClass('bg-fd-card')).toBe(true);
-      expect(tabs.hasClass('my-0')).toBe(true);
-      expect(tabs.children('[role="tabpanel"]').first().hasClass('p-4')).toBe(
-        false,
-      );
-      expect(tabs.find('figure.shiki').first().hasClass('my-4')).toBe(false);
+      const frame = $(selector).find('figure.shiki').first();
+      expect(frame.attr('data-line-numbers')).toBeDefined();
+      expect(frame.hasClass('my-4')).toBe(false);
+      expect(frame.find('.fd-scroll-container[role="region"]')).toHaveLength(1);
     }
   });
 
@@ -229,7 +318,8 @@ describe('FumadocsOpenApiContent', () => {
     );
     const command = $('.openapi-request-examples pre code').first().text();
     expect(command.split('\n')[0]).toBe('curl --request GET \\');
-    expect(command.split('\n')[1]).toMatch(
+    const urlLine = command.split('\n')[1].replace(/ \\$/, '');
+    expect(urlLine).toMatch(
       /^ {2}--url ["']https:\/\/[^/]+\/dev\/v1\/channel\/user\/.*\/hosts_only["']$/,
     );
   });
@@ -557,7 +647,7 @@ describe('FumadocsOpenApiContent', () => {
     ).toEqual({ authored: 'keep-me' });
   });
 
-  it('preserves the description and Markdown link for a response without content', async () => {
+  it('renders the source explanation without inventing a stop-agent response body', async () => {
     const document = yaml.load(
       await readFile(
         'content/openapi/conversational-ai/rest-api.zh-CN.yaml',
@@ -584,6 +674,10 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       await within(section).findByText(/响应包体为空/),
     ).toBeInTheDocument();
+    const explanation = section.querySelector(
+      '[data-openapi-response-description]',
+    );
+    expect(explanation).toHaveClass('px-4', 'py-3.5');
     expect(
       within(section).getByRole('link', { name: '响应状态码' }),
     ).toHaveAttribute(
@@ -648,7 +742,7 @@ describe('FumadocsOpenApiContent', () => {
     ['zh-CN', '未提供响应示例。'],
     ['en', 'No response example provided.'],
   ])(
-    'uses a neutral example placeholder without inferring an empty body in %s',
+    'uses source text or a neutral placeholder without inferring an empty body in %s',
     async (locale, label) => {
       const pageProps = makeMinimalOpenApiPageProps('get');
       const bundled = (
@@ -660,7 +754,10 @@ describe('FumadocsOpenApiContent', () => {
       const { container } = render(
         <FumadocsOpenApiContent locale={locale} pageProps={pageProps} />,
       );
-      expect(await screen.findByText(label)).toBeInTheDocument();
+      const section = container.querySelector(
+        '.openapi-response-example',
+      ) as HTMLElement;
+      expect(await within(section).findByText(label)).toBeInTheDocument();
       expect(container).not.toHaveTextContent('响应 Body 为空');
       expect(container).not.toHaveTextContent('Empty response body');
     },
@@ -695,12 +792,12 @@ describe('FumadocsOpenApiContent', () => {
     const { container } = render(
       <FumadocsOpenApiContent pageProps={pageProps} />,
     );
-    await waitFor(() =>
-      expect(screen.getAllByText('OK').length).toBeGreaterThan(1),
-    );
     const section = container.querySelector(
       '.openapi-response-example',
     ) as HTMLElement;
+    expect(
+      await within(section).findByRole('tab', { name: '200' }),
+    ).toBeVisible();
     fireEvent.mouseDown(within(section).getByRole('tab', { name: '400' }), {
       button: 0,
       ctrlKey: false,
@@ -727,7 +824,9 @@ describe('FumadocsOpenApiContent', () => {
       button: 0,
       ctrlKey: false,
     });
-    expect(within(section).getByText('OK')).toBeVisible();
+    expect(
+      within(section).getByText('No response example provided.'),
+    ).toBeVisible();
   });
 
   it('retains schema-less parameters inherited from paths and referenced from components', () => {

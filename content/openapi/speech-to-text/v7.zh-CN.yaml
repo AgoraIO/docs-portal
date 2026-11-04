@@ -86,6 +86,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    detail: 请求失败的详细信息。
+                    reason: 请求失败的原因。
       x-stoplight:
         id: 8cszmljwg1pj9
   /api/speech-to-text/v1/projects/{appid}/agents/{agentId}:
@@ -120,6 +126,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AgentErrorResponse'
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    message: 请求失败的详细信息。
+                    agent_id: 服务的 ID。
+                    create_ts: null
+                    status: 服务的状态。如果返回的状态码不为 `200`，请求失败。请根据 `details` 和 `reason` 字段进行排查
       x-stoplight:
         id: q5zhmt9clu0jy
   /api/speech-to-text/v1/projects/{appid}/agents/{agentId}/leave:
@@ -203,6 +217,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    detail: 请求失败的详细信息。
+                    reason: 请求失败的原因。
       x-stoplight:
         id: 22wvkg0m89suu
   /api/speech-to-text/v1/projects/{appid}/agents:
@@ -293,6 +313,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    detail: 请求失败的详细信息。
+                    reason: 请求失败的原因。
       x-stoplight:
         id: 0ar5tao1h52r0
 components:

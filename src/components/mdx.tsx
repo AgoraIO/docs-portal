@@ -1900,6 +1900,7 @@ function ParameterDescription({
       <div
         className={cn(
           'min-w-0 space-y-3 text-fd-muted-foreground [&>:first-child]:mt-0 [&>:last-child]:mb-0',
+          '[&_ul]:list-disc [&_ol]:list-decimal [&_ul]:pl-5 [&_ol]:pl-5 [&_li]:my-1.5 [&_li>ul]:list-[circle] [&_ol>li>ol]:list-[lower-alpha]',
           variant === 'table' && !compact && 'px-4 py-4',
           compact && 'mt-1',
         )}

@@ -66,6 +66,28 @@ describe('OpenApiSchemaFieldRow', () => {
     expect(onExpandedChange).toHaveBeenCalledWith(true);
   });
 
+  it('shows an array element type even when its alias repeats the field name', () => {
+    render(
+      <OpenApiSchemaFieldRow
+        copied={false}
+        expanded={false}
+        labels={labels}
+        node={makeNode({
+          name: 'rtcStreamUids',
+          schema: {
+            type: 'array',
+            typeName: 'number[]',
+            aliasName: 'rtcStreamUids',
+            item: { $type: 'number' },
+          },
+        })}
+        onCopy={() => {}}
+        onExpandedChange={() => {}}
+      />,
+    );
+    expect(screen.getByText('number[]')).toBeInTheDocument();
+  });
+
   it('keeps expandable and leaf fields on the same content column', () => {
     render(
       <>

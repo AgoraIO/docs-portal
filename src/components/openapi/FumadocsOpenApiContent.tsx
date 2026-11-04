@@ -16,7 +16,6 @@ import {
   createCodeUsageGeneratorRegistry,
   type InlineCodeUsageGenerator,
 } from 'fumadocs-openapi/requests/generators';
-import { curl } from 'fumadocs-openapi/requests/generators/curl';
 import { javascript } from 'fumadocs-openapi/requests/generators/javascript';
 import { python } from 'fumadocs-openapi/requests/generators/python';
 import {
@@ -78,6 +77,11 @@ import {
   remarkOpenApiCallouts,
 } from '@/lib/openapi/remark-callouts';
 import {
+  buildRequestExampleContext,
+  completeRequestExample,
+  documentationCurl,
+} from '@/lib/openapi/request-examples';
+import {
   buildOpenApiResponseViews,
   type OpenApiResponseHeaderView,
 } from '@/lib/openapi/response-view';
@@ -99,16 +103,7 @@ const LEGACY_DOC_PATH_PATTERN =
 // Keep fallback clients aligned with the legacy reference instead of inheriting
 // the upstream language list, which can grow across Fumadocs upgrades.
 const codeUsages = createCodeUsageGeneratorRegistry();
-codeUsages.add('curl', {
-  ...curl,
-  generate(data, context) {
-    // Keep the upstream escaping, headers and body, but put the URL on its own
-    // continued line even for a GET request without headers or a body.
-    return curl
-      .generate(data, context)
-      .replace(/^curl -X ([A-Z]+) /, 'curl --request $1 \\\n  --url ');
-  },
-});
+codeUsages.add('curl', documentationCurl);
 codeUsages.add('python', { ...python, label: 'Python/Requests' });
 codeUsages.add('js', { ...javascript, label: 'Node.js/Fetch' });
 const removeGeneratedCodeSamples = Array.from(
@@ -223,86 +218,93 @@ const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
   'Value in(schema UI)': '可选值',
 } as const;
 
-const OpenAPIPage = createOpenAPIPage({
-  codeUsages,
-  content: {
-    renderResponseTabs: (options) => <OpenApiResponseExamples {...options} />,
-    renderAPIExampleLayout: (slots) => (
-      <OpenApiRightExamplesLayout
-        slots={{
-          ...slots,
-          usageTabs: (
-            <OpenApiCodeSampleUsageTabs defaultUsageTabs={slots.usageTabs} />
-          ),
-        }}
-      />
-    ),
-    renderOperationLayout: (slots, { method: operationMethod, operation }) => (
-      <OpenApiOperationLayoutWithSource
-        method={
-          {
-            ...(operation as OpenApiOperation),
-            method: operationMethod,
-          } as OpenApiOperation
-        }
-        slots={slots}
-      />
-    ),
-  },
-  generateTypeScriptDefinitions: () => undefined,
-  generateCodeSamples: getGeneratedCodeSampleOverrides,
-  playground: {
-    enabled: false,
-  },
-  components: {
-    CodeBlock: ({ code, lang, codeblock }) =>
-      renderOpenApiCodeBlock(lang, code, codeblock),
-    Heading: ({ depth, ...props }) => {
-      const locale = useContext(OpenApiLocaleContext);
-      const label = isZhCnLocale(locale)
-        ? ZH_CN_OPENAPI_GENERATED_HEADING_LABELS[props.id]
-        : undefined;
-      return renderOpenApiHeading(
-        { ...props, children: label ?? props.children },
-        depth,
-      );
-    },
-    Markdown: ({ md }) => renderOpenApiMarkdown(md),
-    SchemaUI: (options) => {
-      const { doc } = useOpenAPI();
-      const schemaOptions = options as typeof options & {
-        client: ComponentProps<OpenAPIComponents['SchemaUI']>['client'];
-        legacyAnchorPrefix?: string;
-        showExample?: boolean;
-      };
+function createDocsOpenApiPage(requestCodeUsages: typeof codeUsages) {
+  return createOpenAPIPage({
+    codeUsages: requestCodeUsages,
+    components: {
+      CodeBlock: ({ code, lang, codeblock }) =>
+        renderOpenApiCodeBlock(lang, code, codeblock),
+      Heading: ({ depth, ...props }) => {
+        const locale = useContext(OpenApiLocaleContext);
+        const label = isZhCnLocale(locale)
+          ? ZH_CN_OPENAPI_GENERATED_HEADING_LABELS[props.id]
+          : undefined;
+        return renderOpenApiHeading(
+          { ...props, children: label ?? props.children },
+          depth,
+        );
+      },
+      Markdown: ({ md }) => renderOpenApiMarkdown(md),
+      SchemaUI: (options) => {
+        const { doc } = useOpenAPI();
+        const schemaOptions = options as typeof options & {
+          client: ComponentProps<OpenAPIComponents['SchemaUI']>['client'];
+          legacyAnchorPrefix?: string;
+          showExample?: boolean;
+        };
 
-      return (
-        <OpenApiSchema
-          client={schemaOptions.client}
-          document={doc.bundled}
-          legacyAnchorPrefix={schemaOptions.legacyAnchorPrefix}
-          readOnly={schemaOptions.readOnly}
-          renderCodeblock={({ code, lang }) =>
-            renderOpenApiCodeBlock(lang, code)
-          }
-          renderExtraDescription={(schema) => {
-            const record = getRecord(schema);
-            const callouts = record ? getOpenApiDocsCallouts(record) : [];
-            return callouts.length > 0 ? (
-              <OpenApiInlineCallouts callouts={callouts} />
-            ) : null;
-          }}
-          renderMarkdown={(markdown) =>
-            renderOpenApiMarkdown(normalizeOpenApiDescriptionMarkdown(markdown))
-          }
-          root={schemaOptions.root}
-          showExample={schemaOptions.showExample ?? true}
-          writeOnly={schemaOptions.writeOnly}
-        />
-      );
+        return (
+          <OpenApiSchema
+            client={schemaOptions.client}
+            document={doc.bundled}
+            legacyAnchorPrefix={schemaOptions.legacyAnchorPrefix}
+            readOnly={schemaOptions.readOnly}
+            renderCodeblock={({ code, lang }) =>
+              renderOpenApiCodeBlock(lang, code)
+            }
+            renderExtraDescription={(schema) => {
+              const record = getRecord(schema);
+              const callouts = record ? getOpenApiDocsCallouts(record) : [];
+              return callouts.length > 0 ? (
+                <OpenApiInlineCallouts callouts={callouts} />
+              ) : null;
+            }}
+            renderMarkdown={(markdown) =>
+              renderOpenApiMarkdown(
+                normalizeOpenApiDescriptionMarkdown(markdown),
+              )
+            }
+            root={schemaOptions.root}
+            showExample={schemaOptions.showExample ?? true}
+            writeOnly={schemaOptions.writeOnly}
+          />
+        );
+      },
     },
-  },
-});
+    content: {
+      renderResponseTabs: (options) => <OpenApiResponseExamples {...options} />,
+      renderAPIExampleLayout: (slots) => (
+        <OpenApiRightExamplesLayout
+          slots={{
+            ...slots,
+            usageTabs: (
+              <OpenApiCodeSampleUsageTabs defaultUsageTabs={slots.usageTabs} />
+            ),
+          }}
+        />
+      ),
+      renderOperationLayout: (
+        slots,
+        { method: operationMethod, operation },
+      ) => (
+        <OpenApiOperationLayoutWithSource
+          method={
+            {
+              ...(operation as OpenApiOperation),
+              method: operationMethod,
+            } as OpenApiOperation
+          }
+          slots={slots}
+        />
+      ),
+    },
+    generateTypeScriptDefinitions: () => undefined,
+    generateCodeSamples: getGeneratedCodeSampleOverrides,
+    playground: {
+      enabled: false,
+    },
+  });
+}
 
 type GenerateCodeSamplesOptions = Parameters<
   NonNullable<CreateOpenAPIPageOptions['generateCodeSamples']>
@@ -330,6 +332,31 @@ export function FumadocsOpenApiContent({
     () => adaptOpenApiParameterSchemaExtensions(pageProps),
     [pageProps],
   );
+  const OpenAPIPage = useMemo(() => {
+    const sourceOperation = getCurrentOperation(pageProps);
+    const registry = createCodeUsageGeneratorRegistry(codeUsages);
+    const document = sourceOperation?.__document;
+    if (sourceOperation && document) {
+      const pathItem =
+        getRecord(getRecord(document.paths)?.[sourceOperation.__path ?? '']) ??
+        {};
+      const context = buildRequestExampleContext(
+        document,
+        pathItem,
+        sourceOperation,
+        pageProps.operations?.[0]?.method ?? 'get',
+        isZhCnLocale(locale),
+      );
+      for (const [id, generator] of codeUsages.map()) {
+        registry.add(id, {
+          ...generator,
+          generate: (data, options) =>
+            generator.generate(completeRequestExample(data, context), options),
+        });
+      }
+    }
+    return createDocsOpenApiPage(registry);
+  }, [pageProps, locale]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useMeasuredDocsBody(containerRef);
@@ -742,6 +769,12 @@ function getOpenApiResponseSchemaExamples(
   const media = getRecord(
     resolve(tab.mediaType ? tab.response.content?.[tab.mediaType] : undefined),
   );
+  if (
+    media?.['x-docs-schema-examples'] === true &&
+    (tab.examples?.length ?? 0) > 1
+  ) {
+    return tab.examples;
+  }
   // Authored examples take precedence over generated samples, including empty example maps.
   if (!media || 'examples' in media || 'example' in media) return undefined;
   const schema = getRecord(resolve(media.schema));
@@ -851,8 +884,13 @@ function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
                 ))}
               </ChoiceTabs>
             ) : examples.length === 0 ? (
-              !tab.mediaType && tab.response.description ? (
-                <div className="px-4 py-5 text-fd-muted-foreground text-sm">
+              isZhCnLocale(locale) &&
+              !tab.response.content &&
+              tab.response.description ? (
+                <div
+                  className="px-4 py-3.5"
+                  data-openapi-response-description=""
+                >
                   {renderOpenApiMarkdown(tab.response.description)}
                 </div>
               ) : (

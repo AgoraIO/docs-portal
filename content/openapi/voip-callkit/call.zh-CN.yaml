@@ -104,6 +104,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StandardResponse'
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    code: null
+                    msg: 提示信息。
+                    taskId: 本次请求的唯一标识符。该字段的值和 NCS 事件中返回的 sid 一致，你可以使用该字段定位出现异常的请求，然后排查问题。
       x-stoplight:
         id: pdeehoylysppo
   /v1/miniapp/{appId}/voip/call/{modelId}/{deviceId}:
@@ -141,6 +148,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StandardResponse'
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    code: null
+                    msg: 提示信息。
+                    taskId: 本次请求的唯一标识符。该字段的值和 NCS 事件中返回的 sid 一致，你可以使用该字段定位出现异常的请求，然后排查问题。
       x-stoplight:
         id: i06dczcxk5xt3
   /dabiz/license/v2/active:
