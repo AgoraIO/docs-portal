@@ -7,7 +7,13 @@ import {
   SlidersHorizontalIcon,
   XIcon,
 } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react';
 import { DocsTaskFeedback } from '@/components/docs-shell/DocsTaskFeedback';
 import { SearchBrowseFilters } from '@/components/search/SearchBrowseFilters';
 import { SearchInput } from '@/components/search/SearchInput';
@@ -55,10 +61,8 @@ import {
   getCnSearchPlatformLabel,
   getCnSearchPlatforms,
 } from '@/lib/search/cn-search-context';
-import {
-  cnSearchFamilies,
-  getCnSearchFamily,
-} from '@/lib/search/cn-search-family';
+import { getCnSearchFamily } from '@/lib/search/cn-search-family';
+import { getCnSearchFamilyOrder } from '@/lib/search/cn-search-intent';
 import {
   type CnSearchPageResponse,
   isPublicCnSearchUrl,
@@ -68,12 +72,40 @@ import {
   type SearchPageGroup,
   searchCnDocsPage,
 } from '@/lib/search/cn-search-page';
-import type { SearchPageState } from '@/lib/search/search-page-state';
+import {
+  parseSearchPageState,
+  type SearchPageState,
+} from '@/lib/search/search-page-state';
 
 type SearchStatus = 'loading' | 'loaded' | 'error';
 const examples = ['Token', 'manualSOS', '云端录制', '降噪'];
 
-export function DocsSearchPage({
+const subscribeHydration = () => () => {};
+const clientSnapshot = () => true;
+const serverSnapshot = () => false;
+const staticSearchState = parseSearchPageState({});
+
+export function DocsSearchPage(props: {
+  state: SearchPageState;
+  onChange: (patch: Partial<SearchPageState>) => void;
+  productScopes?: ProductScope[];
+}) {
+  // One prerendered HTML file serves every search URL. Hydrate its empty state
+  // first, then apply the actual query/filters without replacing the SSR tree.
+  const hydrated = useSyncExternalStore(
+    subscribeHydration,
+    clientSnapshot,
+    serverSnapshot,
+  );
+  return (
+    <DocsSearchPageContent
+      {...props}
+      state={hydrated ? props.state : staticSearchState}
+    />
+  );
+}
+
+function DocsSearchPageContent({
   state,
   onChange,
   productScopes = [],
@@ -85,6 +117,18 @@ export function DocsSearchPage({
   const [draft, setDraft] = useState(state.q);
   const [status, setStatus] = useState<SearchStatus>('loading');
   const [data, setData] = useState<CnSearchPageResponse | null>(null);
+  const familyOrder = getCnSearchFamilyOrder(
+    state.q,
+    data?.groups.flatMap((group) =>
+      group.sections.map((section) => ({
+        family: getCnSearchFamily(group),
+        title: section.sectionTitle,
+        languageEntryTerms: section.languageEntryTerms,
+        languageEntryRank: section.languageEntryRank,
+      })),
+    ) ?? [],
+    state.platform,
+  );
   const [catalog, setCatalog] = useState<SearchFacets>({});
   const [recent, setRecent] = useState<RecentPage[]>([]);
   const [retry, setRetry] = useState(0);
@@ -532,7 +576,7 @@ export function DocsSearchPage({
             (data.groups.length ? (
               <>
                 {state.type === 'all'
-                  ? cnSearchFamilies.map((family, familyIndex) => {
+                  ? familyOrder.map((family, familyIndex) => {
                       const groups = data.groups.filter(
                         (group) => getCnSearchFamily(group) === family,
                       );
@@ -560,7 +604,7 @@ export function DocsSearchPage({
                           {renderResults(
                             groups,
                             data.groups.filter((group) =>
-                              cnSearchFamilies
+                              familyOrder
                                 .slice(0, familyIndex)
                                 .includes(getCnSearchFamily(group)),
                             ).length,

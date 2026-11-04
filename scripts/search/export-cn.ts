@@ -2,8 +2,13 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { parseArgs } from 'node:util';
 import { load } from 'cheerio';
+import type { SearchEntry } from '../../src/lib/docs-search';
+import { getStaticDocsPayloadPath } from '../../src/lib/docs-static-manifest';
 import { exportPublishedCnRecords } from '../../src/lib/search/cn-records.server';
-import { toCnPublicSearchUrl } from '../../src/lib/search/cn-search-urls.mjs';
+import {
+  toCnContentSearchUrl,
+  toCnPublicSearchUrl,
+} from '../../src/lib/search/cn-search-urls.mjs';
 
 const { values } = parseArgs({
   options: {
@@ -32,7 +37,26 @@ const records = await exportPublishedCnRecords({
     (route: { url: string }) =>
       publishedUrls.has(toCnPublicSearchUrl(route.url)),
   ),
-  pages: await readJson('docs-search/zh-CN.json'),
+  pages: await Promise.all(
+    (await readJson('docs-search/zh-CN.json'))
+      .filter((page: SearchEntry) =>
+        publishedUrls.has(toCnPublicSearchUrl(page.url)),
+      )
+      .map(async (page: SearchEntry) => {
+        const [locale, tab, ...slugSegments] = toCnContentSearchUrl(page.url)
+          .split('/')
+          .filter(Boolean);
+        const payloadPath = getStaticDocsPayloadPath({
+          locale,
+          tab,
+          slugSegments,
+        });
+        const payload = await readJson(
+          payloadPath.replace(/^\/__static\//, ''),
+        );
+        return { ...page, titlePlatforms: payload.titlePlatforms };
+      }),
+  ),
   readMarkdown: (markdownPath) => {
     const file = path.resolve(publicRoot, `.${markdownPath}`);
     if (!file.startsWith(`${publicRoot}${path.sep}`))

@@ -46,7 +46,18 @@ function getRouteMetadata(route: PublishedDocsRoute) {
         : route.canonicalPath.split('/').find(isKnownPlatform));
   return {
     product: normalizeCnProduct(product),
-    platform,
+    platforms: route.platform
+      ? [route.platform]
+      : [
+          ...new Set(
+            [
+              platform,
+              route.canonicalPath.split('/').find(isKnownPlatform),
+            ].filter((value): value is NonNullable<typeof value> =>
+              Boolean(value),
+            ),
+          ),
+        ],
     version: route.version,
   };
 }
@@ -223,6 +234,31 @@ function text(node: Root | RootContent): string {
     : '';
 }
 
+function proseText(node: Root | RootContent, keepInlineCode = false): string {
+  if (
+    node.type === 'heading' ||
+    node.type === 'code' ||
+    (node.type === 'inlineCode' && !keepInlineCode)
+  )
+    return '';
+  if (node.type === 'html') {
+    // Generated HTML tab containers can still hold Markdown fences as text.
+    const html = load(
+      node.value.replace(
+        /^[ \t]*(`{3,}|~{3,})[^\r\n]*\r?\n[\s\S]*?^[ \t]*\1[ \t]*$/gm,
+        '',
+      ),
+    );
+    html('pre,code,script,style,CodeBlockTabsTrigger,TabsTrigger').remove();
+    return html.text();
+  }
+  if ('children' in node)
+    return node.children
+      .map((child) => proseText(child, keepInlineCode))
+      .join('');
+  return 'value' in node ? node.value : '';
+}
+
 export function extractPublishedCnSections(
   route: PublishedDocsRoute,
   page: SearchEntry,
@@ -295,6 +331,21 @@ export function extractPublishedCnSections(
       tree = markdownParser.parse(markdown);
     }
   }
+  // HTML tab blocks can be split at blank lines before remark sees their closing
+  // fences. Remove the whole code container before parsing prose, retaining
+  // offsets so summaries still belong to the original document sections.
+  const proseMarkdown = markdown.replace(
+    /<(CodeBlockTabs|CodeBlockTab|CodeBlockTabsContent)\b[^>]*>[\s\S]*?<\/\1\s*>/gi,
+    (block) => block.replace(/[^\r\n]/g, ' '),
+  );
+  const proseNodes = unified()
+    .use(remarkParse)
+    .parse(proseMarkdown)
+    .children.map((node) => ({
+      start: node.position?.start.offset ?? 0,
+      introduction: proseText(node),
+      summary: proseText(node, true),
+    }));
   const slugger = new GithubSlugger();
   const [, tab] = route.canonicalPath.split('/').filter(Boolean);
   const routeMetadata = getRouteMetadata(route);
@@ -326,9 +377,11 @@ export function extractPublishedCnSections(
       ? faq.platform.length
         ? faq.platform
         : undefined
-      : routeMetadata.platform
-        ? [routeMetadata.platform]
-        : undefined,
+      : routeMetadata.platforms.length
+        ? routeMetadata.platforms
+        : page.objectType === 'openapi'
+          ? ['restful']
+          : page.titlePlatforms?.filter(isKnownPlatform),
     docType: page.objectType ?? 'docs',
     audience: ['developer', 'customer-support'],
     status: 'published',
@@ -356,15 +409,32 @@ export function extractPublishedCnSections(
     return [record];
   }
   const records: SearchSection[] = [];
+  const firstProse = proseNodes
+    .map((node) => node.introduction)
+    .map((value) => value.trim())
+    .find((value) => value && !value.startsWith('For AI agents:'));
+  // API reference chapters keep their symbol entries; guide pages also need a
+  // title entry when their maintained body begins directly with a section.
+  const pageIntroduction = firstProse
+    ? page.description?.trim() ||
+      (!toCnPublicSearchUrl(route.url).startsWith('/api-reference/')
+        ? firstProse.slice(0, 700)
+        : '')
+    : '';
   const hierarchy: { level: number; title: string }[] = [];
   let current = {
     title: page.title,
     anchor: '',
     path: [page.title],
     parts: [] as string[],
+    start: 0,
   };
-  const flush = () => {
-    const content = current.parts.join('\n').trim();
+  const flush = (end = markdown.length) => {
+    // A maintained description is a real page introduction even when the body
+    // starts at H2. Otherwise product pages lose their title-ranking entry.
+    const content =
+      current.parts.join('\n').trim() ||
+      (!current.anchor ? pageIntroduction : '');
     if (!content) return;
     const record: SearchSection = {
       ...metadata,
@@ -373,6 +443,13 @@ export function extractPublishedCnSections(
       url: `${route.url}${current.anchor ? `#${current.anchor}` : ''}`,
       sectionTitle: current.title,
       content,
+      summary:
+        proseNodes
+          .filter((node) => node.start >= current.start && node.start < end)
+          .map((node) => node.summary)
+          .filter((value) => !value.startsWith('For AI agents:'))
+          .join('\n')
+          .trim() || (!current.anchor ? pageIntroduction : ''),
       headingPath: current.path,
     };
     assertValidSearchSection(record);
@@ -410,7 +487,7 @@ export function extractPublishedCnSections(
     const headingWithId = headingText.match(/^(.*?)\s*\[#(.+)\]$/);
     const title = headingWithId?.[1] ?? headingText;
     if (!title) continue;
-    flush();
+    flush(node.position?.start.offset);
     const automaticAnchor = slugger.slug(title);
     const prefix = markdown.slice(
       Math.max(0, (node.position?.start.offset ?? 0) - 300),
@@ -429,6 +506,7 @@ export function extractPublishedCnSections(
       anchor: explicitAnchor ?? headingWithId?.[2] ?? automaticAnchor,
       path: [page.title, ...hierarchy.map((item) => item.title), title],
       parts: [title],
+      start: node.position?.start.offset ?? 0,
     };
     hierarchy.push({ level: node.depth, title });
   }
@@ -447,6 +525,7 @@ export function extractPublishedCnSections(
         ? record
         : existing),
       content,
+      summary: [existing.summary, record.summary].filter(Boolean).join('\n'),
     });
   }
   return [...unique.values()];

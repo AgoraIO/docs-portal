@@ -5,6 +5,8 @@ export type SearchSection = {
   pageTitle: string;
   sectionTitle: string;
   content: string;
+  /** Explanatory prose for previews; full content remains searchable. */
+  summary?: string;
   headingPath: string[];
   locale: string;
   product?: string;
