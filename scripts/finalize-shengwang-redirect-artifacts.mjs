@@ -65,13 +65,21 @@ for (const [legacyPath, target] of Object.entries(guideRedirects)) {
       `Reviewed guide redirect has no legacy source: ${legacyPath}`,
     );
   }
-  await access(
-    path.join(
-      repoRoot,
-      'content/docs/zh-CN',
-      `${target.split(/[?#]/, 1)[0].slice(1)}.mdx`,
-    ),
+  const contentPath = path.join(
+    repoRoot,
+    'content/docs/zh-CN',
+    target.split(/[?#]/, 1)[0].slice(1),
   );
+  // Fumadocs serves both leaf files and directory index pages as documents.
+  await Promise.any(
+    ['.mdx', '.md', '/index.mdx', '/index.md'].map((suffix) =>
+      access(`${contentPath}${suffix}`),
+    ),
+  ).catch(() => {
+    throw new Error(
+      `Reviewed guide redirect has no current content: ${legacyPath} -> ${target}`,
+    );
+  });
 }
 const records = candidate.records.map((record) => {
   // The historical route snapshot includes products retired since collection.

@@ -109,9 +109,10 @@ export function cleanSearchSnippet(value: string): string {
     .replace(/```[\w+-]*\s*/g, ' ')
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
     .replace(/\[([^\]]*)\]\([^)]*(?:\)|$)/g, '$1')
-    .replace(/<\/?[a-z][^<>]*>/gi, (tag) =>
+    .replace(/<\/?[a-z_][^<>]*>/gi, (tag) =>
       /^<\/?(?:mark|em)>$/i.test(tag) ? tag : '',
     )
+    .replace(/<\/?_[a-z][^<>]*$/gi, '')
     .replace(/(?:\*\*|__|`)/g, '')
     .replace(/\s+/g, ' ')
     .trim();
@@ -197,7 +198,7 @@ export function groupSearchSections(
       version: hit.version,
     });
     const platforms = platformFiltered
-      ? selectedPlatform
+      ? selectedPlatform && hit.platform?.includes(selectedPlatform)
         ? [selectedPlatform]
         : (hit.platform ?? [])
       : (hit.availablePlatforms ?? hit.platform ?? []);

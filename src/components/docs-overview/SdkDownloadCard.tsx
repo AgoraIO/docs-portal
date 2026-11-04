@@ -1,16 +1,19 @@
 import { DownloadIcon, ExternalLinkIcon } from 'lucide-react';
+import type { ReactNode } from 'react';
 import { DownloadCardIcon } from './DownloadCardIcon';
 import type { SdkDownloadVersion } from './sdk-downloads-data';
 
 export function SdkDownloadCard({
   iconSrc,
   onDownload,
+  packageSizeContent,
   title,
   version,
   versionSuffix,
 }: {
   iconSrc: string;
   onDownload?: () => void;
+  packageSizeContent?: ReactNode;
   title: string;
   version: SdkDownloadVersion;
   versionSuffix?: string;
@@ -73,13 +76,18 @@ export function SdkDownloadCard({
               <dd className="mt-1 font-mono text-xs">{version.md5}</dd>
             </div>
           ) : null}
-          {version.packageSize ? (
+          {version.packageSize && !packageSizeContent ? (
             <div className="break-all">
               <dt>包体积：</dt>
               <dd className="mt-1">{version.packageSize}</dd>
             </div>
           ) : null}
         </dl>
+        {packageSizeContent ? (
+          <div className="mt-2 text-sm text-muted-foreground">
+            {packageSizeContent}
+          </div>
+        ) : null}
       </div>
       {version.releaseDate ? (
         <div className="flex items-center gap-2 border-border border-t px-5 py-3 text-sm text-muted-foreground">

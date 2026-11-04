@@ -6,6 +6,8 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { useState } from 'react';
+import { hydrateRoot } from 'react-dom/client';
+import { renderToString } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { recordRecentPage } from '@/lib/recently-viewed';
 import {
@@ -31,6 +33,106 @@ const empty: CnSearchPageResponse = {
 };
 
 describe('DocsSearchPage', () => {
+  it('hydrates the static empty-query HTML with a real query and selected filters without replacing the tree', async () => {
+    vi.mocked(searchCnDocsPage).mockResolvedValue(empty);
+    vi.mocked(loadCnSearchCatalog).mockResolvedValue({});
+    const container = document.createElement('div');
+    document.body.append(container);
+    container.innerHTML = renderToString(
+      <DocsSearchPage state={parseSearchPageState({})} onChange={() => {}} />,
+    );
+    const recoverable: unknown[] = [];
+    let root: ReturnType<typeof hydrateRoot> | undefined;
+    await act(async () => {
+      root = hydrateRoot(
+        container,
+        <DocsSearchPage
+          state={parseSearchPageState({
+            q: 'Token',
+            platform: 'web',
+            type: 'api',
+          })}
+          onChange={() => {}}
+        />,
+        { onRecoverableError: (error) => recoverable.push(error) },
+      );
+    });
+    try {
+      await waitFor(() =>
+        expect(container.querySelector('input')?.value).toBe('Token'),
+      );
+      expect(recoverable).toEqual([]);
+      expect(searchCnDocsPage).toHaveBeenCalledWith(
+        expect.objectContaining({ q: 'Token', platform: 'web', type: 'api' }),
+        expect.any(AbortSignal),
+        undefined,
+      );
+    } finally {
+      await act(async () => root?.unmount());
+      container.remove();
+    }
+  });
+  it.each(['joinChannel', 'joinChannel Android', 'C#'])(
+    'puts exact API definitions first for %s while keeping the document family available',
+    async (query) => {
+      const groups = [
+        { pageUrl: '/realtime-media/rtc/build/join', title: '加入频道' },
+        {
+          pageUrl: '/api-reference/rtc/android/channel',
+          title: query === 'C#' ? 'API 概览' : 'joinChannel',
+        },
+      ].map((page) => ({
+        ...page,
+        product: 'rtc',
+        platform: ['android'],
+        docType: 'docs' as const,
+        sections: [
+          {
+            id: page.pageUrl,
+            sourceId: page.pageUrl,
+            url: page.pageUrl,
+            pageTitle: page.title,
+            sectionTitle: page.title,
+            content: page.title,
+            snippet: page.title,
+            headingPath: [page.title],
+            locale: 'zh-CN',
+            docType: 'docs' as const,
+            audience: ['developer'],
+            status: 'published' as const,
+            hidden: false,
+            ...(query === 'C#' && page.pageUrl.startsWith('/api-reference/')
+              ? { languageEntryTerms: ['csharp'], languageEntryRank: 2 }
+              : {}),
+            highlights: {
+              sectionTitle: [{ text: page.title, highlighted: false }],
+              content: [{ text: page.title, highlighted: false }],
+            },
+          },
+        ],
+      }));
+      vi.mocked(searchCnDocsPage).mockResolvedValue({
+        ...empty,
+        groups,
+        totalHits: 2,
+        totalPages: 1,
+      });
+      render(
+        <DocsSearchPage
+          state={parseSearchPageState({ q: query })}
+          onChange={vi.fn()}
+        />,
+      );
+      await screen.findByRole('link', {
+        name: query === 'C#' ? 'API 概览' : 'joinChannel',
+      });
+      const families = screen
+        .getAllByRole('region')
+        .map((region) => region.getAttribute('aria-label'))
+        .filter((label) => label === '产品文档' || label === 'API 文档');
+      expect(families).toEqual(['API 文档', '产品文档']);
+    },
+  );
   it('shows product documentation before APIs and links to the complete API family', async () => {
     const groups = [
       {

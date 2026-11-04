@@ -38,6 +38,38 @@ const hit = {
   hidden: false,
 };
 afterEach(() => vi.restoreAllMocks());
+it('keeps a language-specific SDK entry variant and its concrete landing URL', async () => {
+  const request = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+    Response.json({
+      hits: [
+        {
+          ...hit,
+          url: '/realtime-media/rtc/reference/downloads/windows#nuget',
+          canonicalUrl: '/realtime-media/rtc/reference/downloads',
+          platform: ['windows'],
+          pageTitle: '下载',
+          sectionTitle: '通过 NuGet 集成 SDK (C#)',
+          languageEntryTerms: ['csharp'],
+          languageEntryRank: 0,
+        },
+      ],
+      totalHits: 1,
+      totalPages: 1,
+      page: 1,
+    }),
+  );
+  const result = await queryCnSearch(
+    config,
+    parseSearchPageState({ q: 'C#', type: 'docs' }),
+  );
+  const body = JSON.parse(request.mock.calls[0][1]?.body as string);
+  expect(body.filter).not.toContain('isDefaultPlatform');
+  expect(body.sort).toEqual(['languageEntryRank:asc']);
+  expect(result.groups[0].pageUrl).toBe(
+    '/realtime-media/rtc/reference/downloads/windows',
+  );
+  expect(result.groups[0].platform).toEqual(['windows']);
+});
 
 describe('full CN search adapter', () => {
   it('finds a non-default platform chapter without a platform filter', async () => {
@@ -88,6 +120,182 @@ describe('full CN search adapter', () => {
     expect(groups[0].sections).toHaveLength(2);
   });
 
+  it('previews highlighted explanation instead of concatenated code when the index provides prose', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      Response.json({
+        hits: [
+          {
+            ...hit,
+            content: 'client.manualSOS() Kotlin Swift',
+            summary: '仅在手动模式下调用 manualSOS。',
+            _formatted: {
+              summary: '仅在手动模式下调用 <mark>manualSOS</mark>。',
+              content: 'client.<mark>manualSOS</mark>() Kotlin Swift',
+            },
+          },
+        ],
+        totalHits: 1,
+        totalPages: 1,
+        page: 1,
+      }),
+    );
+    const result = await queryCnSearch(
+      config,
+      parseSearchPageState({ q: 'manualSOS', type: 'docs' }),
+    );
+    expect(
+      result.groups[0].sections[0].highlights.content
+        .map((segment) => segment.text)
+        .join(''),
+    ).toBe('仅在手动模式下调用 manualSOS。');
+    expect(result.groups[0].sections[0].content).toContain(
+      'client.manualSOS()',
+    );
+    expect(result.groups[0].sections[0].highlights.content).toContainEqual({
+      text: 'manualSOS',
+      highlighted: true,
+    });
+  });
+  it('matches a complete code identifier in guides while leaving API prefix lookup available', async () => {
+    const response = (hits: unknown[]) => ({
+      hits,
+      totalHits: hits.length,
+      totalPages: 1,
+      page: 1,
+    });
+    const request = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      Response.json({
+        results: [response([hit]), response([hit]), response([])],
+      }),
+    );
+    await queryCnSearch(config, parseSearchPageState({ q: 'audioScenario' }));
+    const { queries } = JSON.parse(request.mock.calls[0][1]?.body as string);
+    expect(queries[0].q).toBe('"audioScenario"');
+    expect(queries[1].q).toBe('audioScenario');
+  });
+  it('falls back to prefix matches when a guide has no complete identifier match', async () => {
+    const request = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(
+        Response.json({ hits: [], totalHits: 0, totalPages: 0, page: 1 }),
+      )
+      .mockResolvedValueOnce(
+        Response.json({ hits: [hit], totalHits: 1, totalPages: 1, page: 1 }),
+      );
+    const result = await queryCnSearch(
+      config,
+      parseSearchPageState({ q: 'audioScen', type: 'docs' }),
+    );
+    expect(result.groups).toHaveLength(1);
+    expect(JSON.parse(request.mock.calls[0][1]?.body as string).q).toBe(
+      '"audioScen"',
+    );
+    expect(JSON.parse(request.mock.calls[1][1]?.body as string).q).toBe(
+      'audioScen',
+    );
+  });
+  it.each(['c', 'web', 'restful'])(
+    'retains shared setup instructions under the explicit %s filter for ordinary queries',
+    async (platform) => {
+      const request = vi
+        .spyOn(globalThis, 'fetch')
+        .mockResolvedValue(
+          Response.json({ hits: [], totalHits: 0, totalPages: 0, page: 1 }),
+        );
+      await queryCnSearch(
+        config,
+        parseSearchPageState({ q: 'License', platform, type: 'docs' }),
+      );
+      const body = JSON.parse(request.mock.calls[0][1]?.body as string);
+      expect(body.filter).toContain(`platform = "${platform}"`);
+      expect(body.filter).toContain('platform NOT EXISTS');
+      expect(body.filter).toContain('platform IS EMPTY');
+    },
+  );
+  it.each([
+    ['C#', 'csharp', 'csharp'],
+    ['C++', 'cpp', 'cplusplus'],
+  ])(
+    'requires explicit platform applicability for the language-qualified query %s',
+    async (q, platform, normalized) => {
+      const request = vi
+        .spyOn(globalThis, 'fetch')
+        .mockResolvedValue(
+          Response.json({ hits: [], totalHits: 0, totalPages: 0, page: 1 }),
+        );
+      await queryCnSearch(
+        config,
+        parseSearchPageState({ q, platform, type: 'docs' }),
+      );
+      const body = JSON.parse(request.mock.calls[0][1]?.body as string);
+      expect(body.q).toBe(normalized);
+      expect(body.filter).toContain(`platform = "${platform}"`);
+      expect(body.filter).not.toContain('platform IS EMPTY');
+      expect(body.filter).not.toContain('platform NOT EXISTS');
+    },
+  );
+  it('keeps the exact API definition ahead of guide mentions in the overview', async () => {
+    const response = (hits: unknown[]) => ({
+      hits,
+      totalHits: hits.length,
+      totalPages: 1,
+      page: 1,
+    });
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      Response.json({
+        results: [
+          response([
+            {
+              ...hit,
+              id: 'guide',
+              url: '/realtime-media/rtc/build/join',
+              pageTitle: '加入频道',
+              sectionTitle: '调用 joinChannel',
+            },
+          ]),
+          response([{ ...hit, id: 'api', sectionTitle: 'joinChannel [1/2]' }]),
+          response([]),
+        ],
+      }),
+    );
+    const result = await queryCnSearch(
+      config,
+      parseSearchPageState({ q: 'joinChannel' }),
+    );
+    expect(result.groups[0].sections[0].sectionTitle).toBe('joinChannel [1/2]');
+  });
+
+  it('searches and links the Web variant when JavaScript is part of the original query', async () => {
+    const url = '/realtime-media/rtc/build/video/screen-share/web';
+    const request = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      Response.json({
+        hits: [
+          {
+            ...hit,
+            url: `${url}#share`,
+            canonicalUrl: '/realtime-media/rtc/build/video/screen-share',
+            sectionTitle: '屏幕共享',
+            platform: ['web'],
+            availablePlatforms: ['android', 'web'],
+          },
+        ],
+        totalHits: 1,
+        totalPages: 1,
+        page: 1,
+      }),
+    );
+    const result = await queryCnSearch(
+      config,
+      parseSearchPageState({ q: '屏幕共享 JavaScript', type: 'docs' }),
+    );
+    const query = JSON.parse(request.mock.calls[0][1]?.body as string);
+    expect(query.q).toBe('屏幕共享');
+    expect(query.filter).toContain('platform = "web"');
+    expect(query.filter).toContain('platform NOT EXISTS');
+    expect(query.filter).not.toContain('isDefaultPlatform');
+    expect(result.groups[0].pageUrl).toBe(url);
+    expect(result.groups[0].platform).toEqual(['web']);
+  });
   it('returns a product-document preview before API matches from the legacy-style overview', async () => {
     const guide = {
       ...hit,
@@ -327,6 +535,14 @@ describe('full CN search adapter', () => {
     expect(mergeSearchPageGroups([first, second])).toHaveLength(1);
   });
 
+  it('does not label shared results with an inferred platform absent from their metadata', () => {
+    const groups = groupSearchSections(
+      [{ ...hit, platform: undefined, availablePlatforms: undefined }],
+      { platformFiltered: true, selectedPlatform: 'web' },
+    );
+    expect(groups[0].platform).toEqual([]);
+  });
+
   it('uses the primary product when an old record has an empty product list', () => {
     const document = buildCnSearchDocument({
       id: 'reference',
@@ -349,6 +565,40 @@ describe('full CN search adapter', () => {
       product: 'reference',
       products: ['reference'],
     });
+  });
+
+  it('removes a generated tag cut off at the end of a cropped snippet', () => {
+    expect(
+      cleanSearchSnippet('<mark>WebRTC</mark> 说明 </_PlatformTabsGroup'),
+    ).toBe('<mark>WebRTC</mark> 说明');
+    expect(cleanSearchSnippet('x < y，保留比较式')).toBe('x < y，保留比较式');
+  });
+
+  it('indexes product names and their complete acronyms only on real product entries', () => {
+    const entry = {
+      ...hit,
+      audience: ['developer' as const],
+      url: '/realtime-media/rtm',
+      pageTitle: '实时消息 RTM 概览',
+      sectionTitle: '实时消息 RTM 概览',
+    };
+    expect(buildCnSearchDocument(entry)).toMatchObject({
+      productTitle: '实时消息 RTM',
+      productCode: ['RTM'],
+    });
+    expect(
+      buildCnSearchDocument({
+        ...entry,
+        url: '/realtime-media/rtm#use',
+        sectionTitle: '使用 RTM',
+      }),
+    ).not.toHaveProperty('productTitle');
+    expect(
+      buildCnSearchDocument({
+        ...entry,
+        url: '/realtime-media/rtm/build/init',
+      }),
+    ).not.toHaveProperty('productCode');
   });
 
   it('preserves an explicit primary product when legacy memberships are reordered', () => {
@@ -513,6 +763,28 @@ describe('full CN search adapter', () => {
       expect(cleanSearchSnippet(snippet)).toBe(snippet);
     },
   );
+
+  it('removes code-fence tab metadata including cropped fence headers', () => {
+    expect(
+      cleanSearchSnippet(
+        '…```swift tab="iOS" tabGroup="language"\nconfig.<mark>audioScenario</mark> = .aiClient',
+      ),
+    ).toBe('… config.<mark>audioScenario</mark> = .aiClient');
+    expect(cleanSearchSnippet('…```cpp tab="C++" tabGroup="token-sample')).toBe(
+      '…',
+    );
+    expect(cleanSearchSnippet('代码变量 tabGroup="language" 保留')).toBe(
+      '代码变量 tabGroup="language" 保留',
+    );
+  });
+
+  it('removes generated platform component markup without losing highlighted text', () => {
+    expect(
+      cleanSearchSnippet(
+        '<_PlatformTabsGroup groupMode="structured"><_PlatformProcessedMarker platform="web" />支持 <mark>webrtc</mark>。<_PlatformProcessedMarker close="true" /></_PlatformTabsGroup>',
+      ),
+    ).toBe('支持 <mark>webrtc</mark>。');
+  });
   it('uses exact pagination and filters, groups sections in ranking order, and discards non-public results', async () => {
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
       new Response(
@@ -559,7 +831,7 @@ describe('full CN search adapter', () => {
       page: 2,
       hitsPerPage: 20,
       filter:
-        'locale = "zh-CN" AND hidden = false AND status = "published" AND (product = "conversational-ai" OR products = "conversational-ai") AND platform = "web" AND searchFamily = "docs"',
+        'locale = "zh-CN" AND hidden = false AND status = "published" AND (product = "conversational-ai" OR products = "conversational-ai") AND (platform = "web" OR platform NOT EXISTS OR platform IS EMPTY) AND searchFamily = "docs"',
     });
     expect(result.groups).toHaveLength(1);
     expect(

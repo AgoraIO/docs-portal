@@ -10,6 +10,12 @@ import {
 
 const repoRoot = process.cwd();
 const inputRoot = path.join(repoRoot, 'docs/migration/redirect-inputs');
+const reviewedGuideRedirects: Record<string, string> = JSON.parse(
+  readFileSync(
+    path.join(repoRoot, 'src/lib/shengwang-guide-redirects.json'),
+    'utf8',
+  ),
+);
 
 function readJson<T>(fileName: string): T {
   return JSON.parse(readFileSync(path.join(inputRoot, fileName), 'utf8')) as T;
@@ -189,13 +195,10 @@ describe('Shengwang redirect artifacts', () => {
           : {
               ...record,
               target:
-                record.legacyPath ===
-                '/doc/rtc/mini-program/get-started/enable-service'
-                  ? '/realtime-media/rtc/build/setup-and-access/enable-service#mini-program-service'
-                  : record.target ===
-                      '/zh-CN/realtime-media/rtc/reference/events'
-                    ? '/api-reference/rtc/restful/webhook/events'
-                    : record.target.replace(/^\/zh-CN\//, '/'),
+                reviewedGuideRedirects[record.legacyPath] ??
+                (record.target === '/zh-CN/realtime-media/rtc/reference/events'
+                  ? '/api-reference/rtc/restful/webhook/events'
+                  : record.target.replace(/^\/zh-CN\//, '/')),
             },
     );
     expect(finalMap.records).toEqual(expectedRecords);

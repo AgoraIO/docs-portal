@@ -7,60 +7,70 @@ import { parseSearchPageState } from './search-page-state';
 afterEach(() => vi.restoreAllMocks());
 const empty = { groups: [], totalHits: 0, totalPages: 0, page: 1, facets: {} };
 describe('browser search API transport', () => {
-  it('reserves three preview slots per family and carries full family counts', async () => {
-    const paths = {
-      api: '/api-reference/rtc/android/method',
-      docs: '/realtime-media/rtc/guide',
-      faq: '/reference/faq/integration/set_log_file',
-    };
-    const groups = (['api', 'docs', 'faq'] as const).map((family) => ({
-      pageUrl: paths[family],
-      title: family,
-      platform: ['android'],
-      docType: 'docs',
-      sections: Array.from({ length: 5 }, (_, i) =>
-        normalizeMeilisearchHit({
-          id: `${family}-${i}`,
-          url: `${paths[family]}#section-${i}`,
-          pageTitle: family,
-          sectionTitle: `${family}-${i}`,
-          content: 'summary',
-          headingPath: [],
-          locale: 'zh-CN',
-          audience: [],
-          docType: 'docs',
-          status: 'published',
-          hidden: false,
+  it.each(['method', 'apiMethod'])(
+    'reserves three slots per family and preserves intent for %s',
+    async (query) => {
+      const paths = {
+        api: '/api-reference/rtc/android/method',
+        docs: '/realtime-media/rtc/guide',
+        faq: '/reference/faq/integration/set_log_file',
+      };
+      const groups = (['api', 'docs', 'faq'] as const).map((family) => ({
+        pageUrl: paths[family],
+        title: family,
+        platform: ['android'],
+        docType: 'docs',
+        sections: Array.from({ length: 5 }, (_, i) =>
+          normalizeMeilisearchHit({
+            id: `${family}-${i}`,
+            url: `${paths[family]}#section-${i}`,
+            pageTitle: family,
+            sectionTitle:
+              family === 'api' && i === 0 ? 'apiMethod' : `${family}-${i}`,
+            content: 'summary',
+            headingPath: [],
+            locale: 'zh-CN',
+            audience: [],
+            docType: 'docs',
+            status: 'published',
+            hidden: false,
+          }),
+        ),
+      }));
+      vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+        Response.json({
+          ...empty,
+          groups,
+          totalHits: 57,
+          familyTotalHits: { docs: 7, api: 39, faq: 11 },
         }),
-      ),
-    }));
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
-      Response.json({
-        ...empty,
-        groups,
-        totalHits: 57,
-        familyTotalHits: { docs: 7, api: 39, faq: 11 },
-      }),
-    );
-    const result = await createCnDocsSearchClient({}).search('method');
-    expect(result).toMatchObject([
-      ...[0, 1, 2].map((i) => ({
-        id: `docs-${i}`,
-        family: 'docs',
-        familyTotalHits: 7,
-      })),
-      ...[0, 1, 2].map((i) => ({
-        id: `api-${i}`,
-        family: 'api',
-        familyTotalHits: 39,
-      })),
-      ...[0, 1, 2].map((i) => ({
-        id: `faq-${i}`,
-        family: 'faq',
-        familyTotalHits: 11,
-      })),
-    ]);
-  });
+      );
+      const result = await createCnDocsSearchClient({}).search(query);
+      expect(result[0].id).toBe(query === 'apiMethod' ? 'api-0' : 'docs-0');
+      expect(result).toHaveLength(9);
+      expect(result.filter((item) => item.id.startsWith('api-'))).toHaveLength(
+        3,
+      );
+      if (query === 'apiMethod') return;
+      expect(result).toMatchObject([
+        ...[0, 1, 2].map((i) => ({
+          id: `docs-${i}`,
+          family: 'docs',
+          familyTotalHits: 7,
+        })),
+        ...[0, 1, 2].map((i) => ({
+          id: `api-${i}`,
+          family: 'api',
+          familyTotalHits: 39,
+        })),
+        ...[0, 1, 2].map((i) => ({
+          id: `faq-${i}`,
+          family: 'faq',
+          familyTotalHits: 11,
+        })),
+      ]);
+    },
+  );
   it('loads the publication catalog without query or selected filters', async () => {
     const facets = {
       platform: { android: 3, harmonyos: 2, swift: 1 },
