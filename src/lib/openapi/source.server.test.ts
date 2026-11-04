@@ -178,7 +178,7 @@ describe('openapi source loader', () => {
     }
   });
 
-  it('loads documented error bodies for every Chinese RTC channel-management operation', async () => {
+  it('preserves legacy description-only errors for every Chinese RTC channel-management operation', async () => {
     const chineseRtcLane = OPENAPI_LANES.find(
       (item) => item.id === 'rtc-rest-zh-cn',
     );
@@ -189,17 +189,9 @@ describe('openapi source loader', () => {
 
     expect(operations).toHaveLength(9);
     for (const operation of operations) {
-      const json = operation.responses['非 200']?.content?.['application/json'];
-      expect(json?.schema, operation.operationId).toMatchObject({
-        type: 'object',
-        properties: {
-          message: { type: 'string' },
-          reason: { type: 'string' },
-        },
-      });
-      expect(json?.schema).not.toHaveProperty('required');
-      expect(json?.examples?.['invalid-app-id']?.value).toEqual({
-        message: 'invalid appid',
+      expect(operation.responses['非 200'], operation.operationId).toEqual({
+        description:
+          '如果状态码不为 200，则请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/rtc/reference/response-code)排查问题。',
       });
     }
   });
