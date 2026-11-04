@@ -22,7 +22,7 @@ Fumadocs 11.2.2 的默认请求示例仅从 parameters 构造请求，未读取 
 - 浏览器：保存 Android 偏好后直接打开 RTM `?platform=swift`，最终进入 `/quick-start/swift`；选中 Swift，正文包含 Xcode，没有 Gradle 步骤；刷新、从概览 Swift 入口进入、后退／前进后仍显示对应正文。
 - RTC 13 个、RTM 8 个非 Android 平台共有 21 份独立 Markdown 生产产物，全部存在且不含未处理的平台标签。Swift 产物对应 Swift 正文。
 - 浏览器确认 RTC 查询用户状态的 appid、uid、channelName、必填状态及不支持 String 用户名的说明；参数覆盖测试检查所有中文 lane，生成 Markdown 中也保留该信息。
-- 21 平台完整浏览器矩阵在本地开发服务器出现导航超时，未将它计为通过；以上 21 项数字指生成出口覆盖，不是全量浏览器回归。Swift 浏览器场景与现有路由单元测试分别记录。
+- 开发服务器的 21 平台浏览器矩阵曾因导航超时中断。改用完整生产构建产物，并按部署方式将中文无语言前缀 URL 映射到 /zh-CN 后，21 个非 Android 入口全部通过：每次先保存 Android 偏好，再打开带 platform 的 URL，最终独立路径、平台状态与页面平台正文对应。浏览器记录见本地 platform-matrix.json；这是本地生产产物复验，不是线上部署复验。
 
 ## 验证边界
 
