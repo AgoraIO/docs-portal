@@ -148,12 +148,12 @@ request(options, function (error, response) {
     ```groovy
     dependencies {
         ...
-        implementation 'com.github.netless-io:fastboard-android:1.2.0'
+        implementation 'com.github.netless-io:fastboard-android:1.8.2'
     }
     ```
 
 :::info[信息]
-本文使用 Fastboard Android SDK 1.2.0 版本。更多版本详见[发版说明](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/release-notes-fb)。
+本文使用 Fastboard Android SDK 1.8.2 版本。更多版本详见[发版说明](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/release-notes-fb)。
 :::
 
 ### 2. 实现用户界面
@@ -232,6 +232,7 @@ class MainActivity : AppCompatActivity() {
         )
  
         // 创建 FastRoom 对象
+        roomOptions.sdkConfiguration.setEnableAppliancePlugin(true)
         val fastRoom = fastboard.createFastRoom(roomOptions)
         // 加入房间
         fastRoom.join()
@@ -250,6 +251,10 @@ class MainActivity : AppCompatActivity() {
 ## 后续步骤
 
 体验完带 UI 的白板功能后，你可以调用 Fastboard SDK 的 API 并自定义 UI，以实现插入图片、播放音视频、演示文档等功能。详见[展示文件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/manage-whiteboard/present-files-fb)。
+
+## 推荐教具插件配置
+
+推荐在创建 SDK 前开启 `useMultiViews` 和 `enableAppliancePlugin`。本端插件资源随 SDK 内嵌，配置入口、教具与样式见[教具插件介绍与启用](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)。
 
 </PlatformStructured>
 
@@ -276,7 +281,7 @@ class MainActivity : AppCompatActivity() {
 ## 前提条件
 
 - Xcode 10+
-- iOS 10.0+
+- iOS 12.0+
 - CocoaPods [最新版本](https://cocoapods.org/)。
 - 有效的声网[开发者账号](/zh-CN/introduction/quickstart#注册账号)。
 - 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
@@ -403,10 +408,10 @@ request(options, function (error, response) {
 2. 打开 `Podfile` 文件，添加如下内容：
 
    ```ruby
-    platform :ios, '10.0'
+    platform :ios, '12.0'
     use_frameworks!
     target 'ExampleFastboard' do
-        pod 'Fastboard'
+        pod 'Fastboard', '1.4.6'
     end
    ```
 
@@ -465,6 +470,7 @@ class ViewController: UIViewController {
                                            roomToken: "房间的 Token",
                                            region: .CN,
                                            userUID: "用户 UID")
+        config.whiteSdkConfiguration.enableAppliancePlugin = true
         // 创建 FastRoom 实例
         let fastRoom = Fastboard.createFastRoom(withFastRoomConfig: config)
         // 添加 FastRoomView
@@ -493,6 +499,10 @@ class ViewController: UIViewController {
 ## 后续步骤
 
 体验完带 UI 的白板功能后，你可以调用 Fastboard SDK 的 API 并自定义 UI，以实现插入图片、播放音视频、演示文档等功能。详见[展示文件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/manage-whiteboard/present-files-fb)。
+
+## 推荐教具插件配置
+
+推荐在创建 SDK 前开启 `useMultiViews` 和 `enableAppliancePlugin`。本端插件资源随 SDK 内嵌，配置入口、教具与样式见[教具插件介绍与启用](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)。
 
 </PlatformStructured>
 
@@ -648,7 +658,7 @@ request(options, function (error, response) {
 2. 运行如下命令安装最新版本的 Fastboard SDK 及相关依赖项：
 
     ```shell
-    npm add @netless/fastboard @netless/window-manager white-web-sdk
+    npm add @netless/fastboard@1.1.10 @netless/window-manager@1.0.25 white-web-sdk@2.16.59 @netless/appliance-plugin@1.1.45
     ```
 
     各字段的含义如下：
@@ -709,7 +719,7 @@ request(options, function (error, response) {
 调用 Fastboard SDK 的如下方法加入白板房间：
 
 1. 调用 `createFastboard` 创建一个 `FastboardApp` 实例并加入白板房间。
-2. 调用 `mount` 将 `FastboardApp` 实例挂载到网页元素中。
+2. 调用 `createUI` 将 `FastboardApp` 实例挂载到网页元素中。
 
 调用 `createFastboard` 方法时，你需要填入以下参数：
 
@@ -725,8 +735,8 @@ request(options, function (error, response) {
 将以下代码复制到 `main.js` 实现加入白板房间的逻辑：
 
 ```javascript
-import { createFastboard, mount } from "@netless/fastboard";
- 
+import { createFastboard, createUI } from "@netless/fastboard";
+
 let app;
 async function mountFastboard(div) {
   app = await createFastboard({
@@ -739,12 +749,18 @@ async function mountFastboard(div) {
       uuid: "房间 UUID",
       roomToken: "房间 Token",
     },
+    enableAppliancePlugin: {
+      cdn: {
+        fullWorkerUrl: "/appliance-1.1.45/fullWorker.js",
+        subWorkerUrl: "/appliance-1.1.45/subWorker.js",
+      },
+    },
     managerConfig: {
       cursor: true,
     },
   });
   window.app = app;
-  return mount(app, div);
+  return createUI(app, div);
 }
  
 mountFastboard(document.getElementById("app"));
@@ -777,5 +793,9 @@ mountFastboard(document.getElementById("app"));
 ## 后续步骤
 
 体验完带 UI 的白板功能后，你可以调用 Fastboard SDK 的 API 并自定义 UI，以实现插入图片、播放音视频、演示文档等功能。详见[展示文件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/manage-whiteboard/present-files-fb)。
+
+## 推荐教具插件配置
+
+推荐传入 `enableAppliancePlugin` 配置对象；运行示例前按[教具插件介绍与启用](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)准备对应版本的 Full/Sub Worker 资源，并引入插件 CSS。
 
 </PlatformStructured>

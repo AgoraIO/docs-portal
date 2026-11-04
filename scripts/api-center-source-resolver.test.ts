@@ -466,7 +466,7 @@ describe('API Center source resolver', () => {
     ],
     [
       '/api-ref/rtm2/harmonyos/toc-configuration/configuration',
-      'content/docs/zh-CN/api-reference/rtm/toc-configuration/configuration.mdx',
+      'content/docs/zh-CN/api-reference/rtm/harmonyos/configuration.mdx',
       '/zh-CN/api-reference/rtm/harmonyos/configuration',
     ],
     [

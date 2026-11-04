@@ -849,7 +849,7 @@ describe('ApiReferenceCards', () => {
       }),
     ).toHaveAttribute(
       'href',
-      '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/music-content-center',
+      '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center',
     );
   });
 });

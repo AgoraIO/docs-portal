@@ -1,6 +1,6 @@
 ---
-title: Enumeration PlayerSeekingResult
-description: 调用 seekToProgressTime 定位回放的结果。
+title: PlayerSeekingResult
+description: Whiteboard Web SDK 2.16.59 公开 enum。
 _migration:
   type: generated-html
   status: migrated
@@ -10,48 +10,70 @@ _migration:
   warnings: []
 ---
 
-:::info[since]
-v2.15.0
-:::
+```ts
+export declare enum PlayerSeekingResult {
+    /**
+     * 跳转进度条成功，并修改了进度
+     */
+    Success = "success",
+    /**
+     * 跳转进度条成功，但并未更新进度
+     */
+    SuccessButUnnecessary = "successButUnnecessary",
+    /**
+     * 跳转事件被另一个跳转操作覆盖，因此被取消
+     */
+    Override = "override",
+    /**
+     * 播放器停止，因而终止本次跳转行为
+     */
+    Stopped = "stopped",
+}
+```
 
-## Enumeration members
+## 成员
 
-<a id="override"></a>
-
-### Override
-
-Override: = "override"
-
-- Defined in [index-zh.d.ts\:4807](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L4807)
-
-跳转操作被另一个跳转操作覆盖，因此被取消。
-
-<a id="stopped"></a>
-
-### Stopped
-
-Stopped: = "stopped"
-
-- Defined in [index-zh.d.ts\:4811](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L4811)
-
-跳转操作因播放器停止而终止。
+- [Success](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/playerseekingresult#success)
+- [SuccessButUnnecessary](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/playerseekingresult#successbutunnecessary)
+- [Override](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/playerseekingresult#override)
+- [Stopped](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/playerseekingresult#stopped)
 
 <a id="success"></a>
 
 ### Success
 
-Success: = "success"
+`Success = "success";`
 
-- Defined in [index-zh.d.ts\:4799](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L4799)
-
-成功跳转至指定播放位置。
+```text
+跳转进度条成功，并修改了进度
+```
 
 <a id="successbutunnecessary"></a>
 
 ### SuccessButUnnecessary
 
-SuccessButUnnecessary: = "successButUnnecessary"
+`SuccessButUnnecessary = "successButUnnecessary";`
 
-- Defined in [index-zh.d.ts\:4803](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L4803)
+```text
+跳转进度条成功，但并未更新进度
+```
 
-当前播放位置已经是指定播放位置，无需跳转。
+<a id="override"></a>
+
+### Override
+
+`Override = "override";`
+
+```text
+跳转事件被另一个跳转操作覆盖，因此被取消
+```
+
+<a id="stopped"></a>
+
+### Stopped
+
+`Stopped = "stopped";`
+
+```text
+播放器停止，因而终止本次跳转行为
+```

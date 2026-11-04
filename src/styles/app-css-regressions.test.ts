@@ -1002,7 +1002,7 @@ describe('app prose CSS regressions', () => {
     );
     const mobileViewport = getRuleBodyContainingInContainer(
       '[data-openapi-code-viewport]',
-      '55.999rem',
+      '39.999rem',
     );
 
     expect(appCss).not.toContain(
@@ -1023,32 +1023,14 @@ describe('app prose CSS regressions', () => {
     );
   });
 
-  it('defines the independent desktop examples rail layout', () => {
-    const baseLayout = getRuleBodyOutsideContainer('.openapi-operation-layout');
-    const layout = getRuleBodyContainingInContainer(
-      '.openapi-operation-layout',
-      '56rem',
-    );
+  it('keeps the examples rail sticky from tablet widths onward', () => {
     const rail = getRuleBodyContainingInContainer(
       '.openapi-examples-rail',
-      '56rem',
+      '40rem',
     );
     const anchorInDesktop = getRuleBodyContainingInContainer(
-      '.openapi-examples-rail-anchor',
-      '56rem',
-    );
-    expectDeclaration(baseLayout.rule, 'display', 'flex');
-    expectDeclaration(baseLayout.rule, 'flex-direction', 'column');
-    expect(baseLayout.rule.nodes).not.toContainEqual(
-      expect.objectContaining({ prop: 'grid-template-columns' }),
-    );
-    expect(layout.rule.parent?.type).toBe('atrule');
-    expect((layout.rule.parent as postcss.AtRule).name).toBe('container');
-    expect((layout.rule.parent as postcss.AtRule).params).toContain('56rem');
-    expectDeclaration(
-      layout.rule,
-      'grid-template-columns',
-      'minmax(0, 1fr) 400px',
+      '[data-openapi-operation-panel="examples"]',
+      '40rem',
     );
     expectDeclaration(rail.rule, 'position', 'sticky');
     expectDeclaration(anchorInDesktop.rule, 'align-self', 'stretch');

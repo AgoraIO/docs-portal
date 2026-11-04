@@ -13,18 +13,17 @@ const publishedRoutes = new Set([
 
 const linkCases = [
   {
-    href: '/zh-CN/realtime-media/rtc/build/video/content-inspect/android',
+    href: '/zh-CN/realtime-media/rtc/build/video/content-inspect',
     expectedTitle: '本地截图上传',
     source:
-      'content/docs/zh-CN/api-reference/cloud-recording/restful/overview/billing-strategy/snapshot-billing.mdx',
-    target: '/zh-CN/realtime-media/rtc/build/video/content-inspect/android',
+      'content/docs/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/snapshot-billing.mdx',
+    target: '/zh-CN/realtime-media/rtc/build/video/content-inspect',
   },
   {
-    href: '/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size/android#%E5%88%A0%E9%99%A4%E4%B8%8D%E9%9C%80%E8%A6%81%E7%9A%84%E6%8F%92%E4%BB%B6',
+    href: '/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size/android#删除不需要的插件',
     expectedHeading: '删除不需要的插件',
     expectedTitle: '减小 App 体积',
-    source:
-      'content/docs/zh-CN/api-reference/conversational-ai/rest-api/best-practice/audio-settings.mdx',
+    source: 'content/docs/zh-CN/ai/build/harden-and-optimize/audio-setup.mdx',
     target:
       '/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size/android',
   },
@@ -32,8 +31,7 @@ const linkCases = [
     href: '/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size/ios#删除不需要的插件-1',
     expectedHeading: '删除不需要的插件',
     expectedTitle: '减小 App 体积',
-    source:
-      'content/docs/zh-CN/api-reference/conversational-ai/rest-api/best-practice/audio-settings.mdx',
+    source: 'content/docs/zh-CN/ai/build/harden-and-optimize/audio-setup.mdx',
     target:
       '/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size/ios',
   },
@@ -130,8 +128,7 @@ const linkCases = [
   {
     href: '/zh-CN/realtime-media/rtc/reference/browser-compatibility',
     expectedTitle: '浏览器兼容性和已知问题',
-    source:
-      'content/docs/zh-CN/api-reference/rtc/restful/overview/product-overview.mdx',
+    source: 'content/docs/zh-CN/realtime-media/rtc/index.mdx',
     target: '/zh-CN/realtime-media/rtc/reference/browser-compatibility',
   },
   {
@@ -221,10 +218,10 @@ const releaseNoteLinkCases = [
 const legacyAnchorLinkCases = [
   {
     expectedTitle: '本地截图上传',
-    href: '/zh-CN/realtime-media/rtc/build/video/content-inspect/android',
+    href: '/zh-CN/realtime-media/rtc/build/video/content-inspect',
     source:
-      'content/docs/zh-CN/api-reference/cloud-recording/restful/user-guides/snapshot.mdx',
-    target: '/zh-CN/realtime-media/rtc/build/video/content-inspect/android',
+      'content/docs/zh-CN/realtime-media/cloud-recording/build/recording-modes/snapshot.mdx',
+    target: '/zh-CN/realtime-media/rtc/build/video/content-inspect',
   },
   {
     expectedHeading: 'VIDEO_VIEW_SETUP_MODE',

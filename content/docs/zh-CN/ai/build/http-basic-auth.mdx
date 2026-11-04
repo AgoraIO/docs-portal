@@ -11,6 +11,8 @@ title: "实现 HTTP 鉴权"
 <a id="使用-token-认证"></a>
 ## 使用 Token 认证（推荐）
 
+<a id="使用-rtc-token-认证-推荐"></a>
+
 推荐使用 Token 认证调用对话式 AI 引擎 RESTful API。将 Token 填入 HTTP 请求 Header 的 `Authorization` 字段，格式为 `agora token="<token>"`。
 
 ### 使用临时 Token
@@ -18,6 +20,8 @@ title: "实现 HTTP 鉴权"
 测试环境下，你可以参考[开通服务](/zh-CN/ai/get-started/enable-service#获取临时-token)从声网控制台为你的项目生成临时 Token，有效期为 24 小时。
 
 ### 在服务端生成 Token
+
+<a id="部署-token-服务器生成"></a>
 
 生产环境下，你需要在自己的服务端生成 Token。本节以生成包含 ConvoAI、RTC 和 RTM service 的 Token 为例。请先从[声网控制台](https://console.shengwang.cn/)获取 App ID 和 App Certificate，再参考以下示例生成 Token。
 

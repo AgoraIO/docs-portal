@@ -8,6 +8,7 @@ import {
   useState,
 } from 'react';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type {
   OpenApiSchemaPathItem,
   OpenApiSchemaViewNode,
@@ -16,7 +17,10 @@ import {
   OpenApiSchemaFieldRow,
   type OpenApiSchemaFieldRowLabels,
 } from './OpenApiSchemaFieldRow';
-import type { OpenApiSchemaMetadataItem } from './OpenApiSchemaMetadata';
+import {
+  OpenApiSchemaMetadata,
+  type OpenApiSchemaMetadataItem,
+} from './OpenApiSchemaMetadata';
 
 export function stableDomId(rootId: string, nodeId: string) {
   if (nodeId === rootId) return rootId;
@@ -40,7 +44,11 @@ function getInitialExpandedIds(nodes: OpenApiSchemaViewNode[]) {
 
 function getExpandableNodeIds(nodes: OpenApiSchemaViewNode[]): string[] {
   return nodes.flatMap((node) => [
-    ...(node.children.length > 0 || node.detailsCollapsible ? [node.id] : []),
+    ...((node.children.length > 0 || node.detailsCollapsible) &&
+    !(node.rootContainer && node.schema.type === 'or') &&
+    !(node.branchContainer && node.choices?.length)
+      ? [node.id]
+      : []),
     ...getExpandableNodeIds(node.children),
   ]);
 }
@@ -56,6 +64,12 @@ function getOpenApiSchemaNodeIdentity(node: OpenApiSchemaViewNode): unknown[] {
     node.$type,
     node.name,
     node.variant,
+    node.branchContainer,
+    node.choices?.map((choice) => [
+      choice.id,
+      choice.value,
+      choice.options.map((option) => [option.value, option.name]),
+    ]),
     node.depth,
     node.detailsCollapsible,
     node.required,
@@ -133,6 +147,9 @@ export function OpenApiSchemaTree({
   const [copiedId, setCopiedId] = useState<string>();
   const copyTimer = useRef<number | undefined>(undefined);
   const [highlightedId, setHighlightedId] = useState<string>();
+  const [selectedChoices, setSelectedChoices] = useState<
+    Record<string, string>
+  >({});
   const latestNodesRef = useRef(nodes);
   const mountedRef = useRef(false);
   const copyRequestRef = useRef(0);
@@ -159,6 +176,7 @@ export function OpenApiSchemaTree({
     setExpandedIds(getInitialExpandedIds(latestNodesRef.current));
     setCopiedId(undefined);
     setHighlightedId(undefined);
+    setSelectedChoices({});
     lastRevealTarget.current = undefined;
   }, [rootId, schemaIdentity]);
 
@@ -201,17 +219,35 @@ export function OpenApiSchemaTree({
     [nodes],
   );
 
+  const revealChoices = useCallback(
+    (chain: OpenApiSchemaViewNode[], throughChoiceId?: string) => {
+      setSelectedChoices((current) => {
+        const next = { ...current };
+        for (const node of chain) {
+          for (const choice of node.choices ?? []) {
+            next[choice.id] = choice.value;
+            // An ancestor's beforematch must not overwrite a child's selection.
+            if (choice.id === throughChoiceId) return next;
+          }
+        }
+        return next;
+      });
+    },
+    [],
+  );
+
   const revealNode = useCallback(
-    (nodeId: string, highlight = false) => {
+    (nodeId: string, highlight = false, throughChoiceId?: string) => {
       const chain = findNodeChain((node) => node.id === nodeId);
       if (chain.length === 0) return;
 
       setExpandedIds(
         (current) => new Set([...current, ...chain.map((node) => node.id)]),
       );
+      revealChoices(chain, throughChoiceId);
       if (highlight) setHighlightedId(nodeId);
     },
-    [findNodeChain],
+    [findNodeChain, revealChoices],
   );
 
   const findNodeRow = useCallback((nodeId: string) => {
@@ -243,8 +279,9 @@ export function OpenApiSchemaTree({
     setExpandedIds(
       (current) => new Set([...current, ...chain.map((node) => node.id)]),
     );
+    revealChoices(chain);
     setHighlightedId(target.id);
-  }, [findNodeChain, revealTarget]);
+  }, [findNodeChain, revealChoices, revealTarget]);
 
   useEffect(() => {
     if (!highlightedId) return;
@@ -277,11 +314,111 @@ export function OpenApiSchemaTree({
   function renderNodes(
     candidates: OpenApiSchemaViewNode[],
     seen: Set<string> = new Set(),
+    choiceDepth = 0,
+    active = true,
   ): ReactNode[] {
+    const renderedChoices = new Set<string>();
     return candidates.flatMap((node) => {
+      const choice = node.choices?.[choiceDepth];
+      if (choice) {
+        if (renderedChoices.has(choice.id)) return [];
+        renderedChoices.add(choice.id);
+        const selected = selectedChoices[choice.id] ?? choice.options[0].value;
+        const members = candidates.filter(
+          (candidate) => candidate.choices?.[choiceDepth]?.id === choice.id,
+        );
+        return [
+          <Tabs
+            className="openapi-schema-choice min-w-0 max-w-full"
+            key={choice.id}
+            value={selected}
+            onValueChange={(value) => {
+              setHighlightedId(undefined);
+              setSelectedChoices((current) => ({
+                ...current,
+                [choice.id]: value,
+              }));
+            }}
+          >
+            <TabsList
+              aria-label={client.name}
+              className="min-h-11 max-w-full flex-wrap justify-start gap-1 group-data-[orientation=horizontal]/tabs:h-auto"
+            >
+              {choice.options.map((option) => (
+                <TabsTrigger
+                  className="min-h-11 h-auto whitespace-normal text-left"
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.name}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            {choice.options.map((option) => (
+              <ChoicePanel
+                active={selected === option.value}
+                key={option.value}
+                value={option.value}
+                onBeforeMatch={() => {
+                  const member = members.find(
+                    (candidate) =>
+                      candidate.choices?.[choiceDepth]?.value === option.value,
+                  );
+                  if (member) revealNode(member.id, false, choice.id);
+                }}
+              >
+                {option.schema &&
+                !members.some((member) => member.schema === option.schema) ? (
+                  <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
+                    {option.schema.description}
+                    <OpenApiSchemaMetadata
+                      items={renderRemainingInfoTags({
+                        ...node,
+                        schema: option.schema,
+                      })}
+                    />
+                  </div>
+                ) : null}
+                {renderNodes(
+                  members.filter(
+                    (member) =>
+                      member.choices?.[choiceDepth]?.value === option.value,
+                  ),
+                  seen,
+                  choiceDepth + 1,
+                  active && selected === option.value,
+                )}
+              </ChoicePanel>
+            ))}
+          </Tabs>,
+        ];
+      }
       if (seen.has(node.id)) return [];
 
       const nextSeen = new Set(seen).add(node.id);
+      if (node.rootContainer && node.schema.type === 'or') {
+        return [
+          <div key={node.id}>
+            {renderNodes(node.children, nextSeen, 0, active)}
+          </div>,
+        ];
+      }
+      if (node.branchContainer && choiceDepth > 0) {
+        return [
+          <div
+            data-openapi-schema-node=""
+            data-openapi-schema-node-id={node.id}
+            data-openapi-schema-path={node.path}
+            key={node.id}
+          >
+            <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
+              {node.schema.description}
+              <OpenApiSchemaMetadata items={renderRemainingInfoTags(node)} />
+            </div>
+            {renderNodes(node.children, nextSeen, 0, active)}
+          </div>,
+        ];
+      }
       const hasChildren = node.children.length > 0;
       const expandable = hasChildren || node.detailsCollapsible === true;
       const expanded = expandable && expandedIds.has(node.id);
@@ -293,7 +430,7 @@ export function OpenApiSchemaTree({
                 className="openapi-schema-children"
                 key={`${node.id}-children`}
               >
-                {renderNodes(node.children, nextSeen)}
+                {renderNodes(node.children, nextSeen, 0, active)}
               </div>,
             ]
           : [
@@ -302,7 +439,7 @@ export function OpenApiSchemaTree({
                 key={`${node.id}-hidden`}
                 onBeforeMatch={() => revealNode(node.id)}
               >
-                {renderNodes(node.children, nextSeen)}
+                {renderNodes(node.children, nextSeen, 0, active)}
               </HiddenDescendants>,
             ]
         : [];
@@ -326,8 +463,10 @@ export function OpenApiSchemaTree({
             domId={stableDomId(rootId, node.id)}
             expanded={expanded}
             labels={labels}
-            legacyAnchorIds={legacyAnchorIdsByFieldPath?.get(node.path)}
-            node={node}
+            legacyAnchorIds={
+              active ? legacyAnchorIdsByFieldPath?.get(node.path) : undefined
+            }
+            node={choiceDepth > 0 ? { ...node, variant: undefined } : node}
             onCopy={() => {
               void handleTreeCopy(node);
             }}
@@ -407,6 +546,39 @@ export function OpenApiSchemaTree({
       ) : null}
       <div data-openapi-schema-fields="">{renderNodes(nodes)}</div>
     </div>
+  );
+}
+
+function ChoicePanel({
+  active,
+  children,
+  onBeforeMatch,
+  value,
+}: {
+  active: boolean;
+  children: ReactNode;
+  onBeforeMatch: () => void;
+  value: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const panel = ref.current;
+    if (!panel || active) return;
+    panel.setAttribute('hidden', 'until-found');
+    panel.addEventListener('beforematch', onBeforeMatch);
+    return () => panel.removeEventListener('beforematch', onBeforeMatch);
+  }, [active, onBeforeMatch]);
+  return (
+    <TabsContent
+      className="min-w-0"
+      forceMount
+      hidden={!active}
+      ref={ref}
+      tabIndex={active ? 0 : -1}
+      value={value}
+    >
+      {children}
+    </TabsContent>
   );
 }
 

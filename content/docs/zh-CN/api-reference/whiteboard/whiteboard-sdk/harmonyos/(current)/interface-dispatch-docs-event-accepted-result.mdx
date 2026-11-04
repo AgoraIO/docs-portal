@@ -1,0 +1,45 @@
+---
+title: DispatchDocsEventAcceptedResult interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_dispatch_docs_event_accepted_result
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_dispatch_docs_event_accepted_result.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+统一课件命令接收结果，accepted 固定为 true。
+
+可从 @shengwang/whiteboard 直接导入 DispatchDocsEventAcceptedResult。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface DispatchDocsEventAcceptedResult
+```
+
+| [accepted](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-dispatch-docs-event-accepted-result#a3ec665196133e0e320c11374dd624033) | `accepted: true` |
+| --- | --- |
+
+## 变量说明
+
+<a id="a3ec665196133e0e320c11374dd624033"></a>
+
+### accepted
+
+```text
+accepted: true
+```
+
+固定为 true，表示统一课件命令已接收，不保证渲染完成；该分支没有 reason/message 字段。

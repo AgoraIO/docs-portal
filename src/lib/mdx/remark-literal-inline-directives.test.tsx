@@ -6,7 +6,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import remarkDirective from 'remark-directive';
 import { describe, expect, it } from 'vitest';
 import { directiveCalloutTypes } from './directive-callouts';
-import { remarkLiteralInlineDirectives } from './remark-literal-inline-directives';
+import { remarkLiteralDirectives } from './remark-literal-directives';
 
 const Block = ({ children }: PropsWithChildren) => <aside>{children}</aside>;
 
@@ -16,7 +16,7 @@ async function renderMarkdown(source: string, format: 'md' | 'mdx') {
     format,
     remarkPlugins: [
       remarkDirective,
-      remarkLiteralInlineDirectives,
+      remarkLiteralDirectives,
       [remarkDirectiveAdmonition, { types: directiveCalloutTypes }],
     ],
   });

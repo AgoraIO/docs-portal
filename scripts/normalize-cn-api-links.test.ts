@@ -1,14 +1,27 @@
 import { describe, expect, it } from 'vitest';
 import { buildLocalFragmentIndex } from './lib/api-center/local-fragment-index.mjs';
 import {
-  isApprovedLegacyFallback,
   isApiRelatedMissingInternal,
+  isApprovedLegacyFallback,
   neutralizeUnresolvedBodyLinks,
   renderReport,
   resolveLegacyApiReferenceHref,
+  resolveLegacyHref,
 } from './normalize-cn-api-links.mjs';
 
 describe('CN API link normalization', () => {
+  it('does not recreate consolidated product guide URLs', async () => {
+    const fragmentIndex = await buildLocalFragmentIndex({
+      repoRoot: '/tmp/cn-api-links-test',
+      virtualPages: [],
+    });
+    await expect(
+      resolveLegacyHref(
+        'https://docportal.shengwang.cn/cn/media-push/streaming_restful?platform=All%20Platforms',
+        { fragmentIndex, routeMap: new Map() },
+      ),
+    ).resolves.toBe('/zh-CN/realtime-media/media-push');
+  });
   it.each(['art-class', 'online-music-class'])(
     'preserves verified RTM 1.x resources in the %s integration guide',
     (product) => {
@@ -106,14 +119,17 @@ describe('CN API link normalization', () => {
   });
 
   it('separates active broken links from archived unavailable targets', () => {
-    const report = renderReport([], [
-      {
-        href: 'https://doc.shengwang.cn/removed',
-        line: 12,
-        reason: 'missing-migrated-content',
-        sourcePath: 'content/docs/zh-CN/example.mdx',
-      },
-    ]);
+    const report = renderReport(
+      [],
+      [
+        {
+          href: 'https://doc.shengwang.cn/removed',
+          line: 12,
+          reason: 'missing-migrated-content',
+          sourcePath: 'content/docs/zh-CN/example.mdx',
+        },
+      ],
+    );
 
     expect(report).toContain('- Active unresolved link occurrences: 0');
     expect(report).toContain(
@@ -126,8 +142,7 @@ describe('CN API link normalization', () => {
   });
 
   it('allows a verified legacy fallback only in its approved source file', () => {
-    const href =
-      'https://doc.shengwang.cn/codebox/detail?demo=24&platform=2';
+    const href = 'https://doc.shengwang.cn/codebox/detail?demo=24&platform=2';
 
     expect(
       isApprovedLegacyFallback(

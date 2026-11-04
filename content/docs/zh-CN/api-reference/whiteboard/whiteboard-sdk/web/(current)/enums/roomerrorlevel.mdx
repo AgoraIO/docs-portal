@@ -1,43 +1,64 @@
 ---
-title: Enumeration RoomErrorLevel
-description: 没有可写权限的用户进行写操作时，SDK 的应对方式。
+title: RoomErrorLevel
+description: Whiteboard Web SDK 2.16.59 公开 enum。
 _migration:
   type: generated-html
   status: migrated
-  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/enums/roomerrorlevel.html
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/enums/roomerrorlevel
   sourcePath: html-docs/whiteboard/Web/enums/roomerrorlevel.html
   generator: typedoc
   warnings: []
 ---
 
-## Enumeration members
+```ts
+export declare enum RoomErrorLevel {
+    /**
+     * 当无权写时执行写操作，则直接抛出错误
+     */
+    ThrowError = "throwError",
+    /**
+     * 当无权写时执行写操作，拦截操作，并在控制台打印警告
+     */
+    Warn = "warn",
+    /**
+     * 当无权写时执行写操作，拦截操作，什么也不做
+     */
+    Ignore = "ignore",
+}
+```
 
-<a id="ignore"></a>
+## 成员
 
-### Ignore
-
-Ignore: = "ignore"
-
-- Defined in [index-zh.d.ts\:2645](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L2645)
-
-拦截该操作，但不报错也不打印警告。
+- [ThrowError](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomerrorlevel#throwerror)
+- [Warn](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomerrorlevel#warn)
+- [Ignore](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomerrorlevel#ignore)
 
 <a id="throwerror"></a>
 
 ### ThrowError
 
-ThrowError: = "throwError"
+`ThrowError = "throwError";`
 
-- Defined in [index-zh.d.ts\:2637](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L2637)
-
-直接报错。
+```text
+当无权写时执行写操作，则直接抛出错误
+```
 
 <a id="warn"></a>
 
 ### Warn
 
-Warn: = "warn"
+`Warn = "warn";`
 
-- Defined in [index-zh.d.ts\:2641](https://github.com/Nero-Hu/Whiteboard-Docs/blob/23e952d7ae62eefb7e95dfb3440c287425d8d328/web/Whiteboard/CN/index-zh.d.ts#L2641)
+```text
+当无权写时执行写操作，拦截操作，并在控制台打印警告
+```
 
-拦截该操作，并在浏览器的控制台打印警告。
+<a id="ignore"></a>
+
+### Ignore
+
+`Ignore = "ignore";`
+
+```text
+当无权写时执行写操作，拦截操作，什么也不做
+```

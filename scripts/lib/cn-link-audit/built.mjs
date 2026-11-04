@@ -3,9 +3,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { load } from 'cheerio';
 import { resolveLegacyApiHashRedirect } from '../../../src/lib/docs-api-hash-redirects.ts';
-import { preserveRedirectSearch } from '../../../src/lib/docs-redirect-url.ts';
 import { resolveMovedDocsRedirect } from '../../../src/lib/docs-moved-redirects.ts';
+import { preserveRedirectSearch } from '../../../src/lib/docs-redirect-url.ts';
 import { resolveStaticLegacySitemapRedirect } from '../../../src/lib/legacy-sitemap/static-redirects.ts';
+import {
+  DOCS_PRERENDER_PATHS_MANIFEST_PATH,
+  readDocsPrerenderPaths,
+} from '../../../src/lib/published-docs-routes.server.ts';
 import { isRetiredCnDocsPath } from '../../../src/lib/retired-cn-docs.mjs';
 import { resolveZhCnProductIaRedirect } from '../../../src/lib/zh-cn-product-ia-redirects.ts';
 import { docsContentEvidence } from './content-evidence.mjs';
@@ -286,6 +290,37 @@ export function loadBuiltSite({
           : 'invalid-route-manifest',
       detail: error.message,
     });
+  }
+  // Readable Markdown routes exclude redirects; navigation still needs every
+  // prerendered entry. Older build artifacts may not have the separate manifest.
+  const prerenderFile = path.join(
+    path.dirname(manifestFile),
+    path.basename(DOCS_PRERENDER_PATHS_MANIFEST_PATH),
+  );
+  if (fs.existsSync(prerenderFile)) {
+    try {
+      const knownUrls = new Set(manifest.map((entry) => entry?.url));
+      for (const url of readDocsPrerenderPaths(prerenderFile)) {
+        if (unsafePath(url) || /[?#]/.test(url)) {
+          gaps.push({
+            sourcePath: prerenderFile,
+            reason: 'invalid-prerender-route',
+            detail: url,
+          });
+          continue;
+        }
+        if (!knownUrls.has(url)) {
+          manifest.push({ url, canonicalPath: url });
+          knownUrls.add(url);
+        }
+      }
+    } catch (error) {
+      gaps.push({
+        sourcePath: prerenderFile,
+        reason: 'invalid-prerender-manifest',
+        detail: error.message,
+      });
+    }
   }
   for (const entry of manifest) {
     if (

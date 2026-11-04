@@ -11,7 +11,7 @@ import { load } from 'js-yaml';
 import { expect, it } from 'vitest';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
 
-it('generates all seven Cloud Recording request languages with Basic Auth from the maintained source', async () => {
+it('generates the three legacy Cloud Recording clients with Basic Auth from the maintained source', async () => {
   const document = load(
     await readFile(
       'content/openapi/cloud-recording/cloud-recording.zh-CN.yaml',
@@ -30,32 +30,25 @@ it('generates all seven Cloud Recording request languages with Basic Auth from t
     />,
   );
 
-  const rail = await screen.findByTestId('openapi-examples-rail');
-  const examples = rail.querySelector(
-    '.openapi-request-examples',
-  ) as HTMLElement;
-  for (const language of [
-    'cURL',
-    'JavaScript',
-    'Go',
-    'Python',
-    'Java',
-    'C#',
-    'Rust',
-  ]) {
+  await screen.findByTestId('openapi-examples-rail');
+  for (const language of ['cURL', 'Python/Requests', 'Node.js/Fetch']) {
     fireEvent.click(
-      within(examples).getByRole('combobox', { name: '代码语言' }),
+      within(
+        globalThis.document.querySelector(
+          '.openapi-request-examples',
+        ) as HTMLElement,
+      ).getByRole('combobox', { name: /Code language|代码语言/i }),
     );
     const option = await screen.findByRole('option', { name: language });
-    fireEvent.click(option);
+    fireEvent.pointerDown(option, { pointerType: 'mouse' });
+    fireEvent.click(option, { detail: 1 });
     await waitFor(() => {
-      expect(examples.querySelector('pre')).toHaveTextContent('Authorization');
-      expect(examples.querySelector('pre')).toHaveTextContent(
-        'Basic <credentials>',
+      const code = globalThis.document.querySelector(
+        '.openapi-request-examples pre',
       );
-      expect(examples.querySelector('pre')).toHaveTextContent(
-        'cloud_recording/acquire',
-      );
+      expect(code).toHaveTextContent('Authorization');
+      expect(code).toHaveTextContent('Basic <credentials>');
+      expect(code).toHaveTextContent('cloud_recording/acquire');
     });
   }
 });

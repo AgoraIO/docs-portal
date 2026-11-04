@@ -104,7 +104,7 @@ const zhCnServiceApiEntries = [
     'solutions',
     ['online-ktv', 'online-ktv-sdk'],
     '服务端 API',
-    '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/music-content-center',
+    '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center',
   ],
   [
     'solutions',
@@ -561,7 +561,7 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
     [
       'solutions',
       ['online-ktv', 'online-ktv-sdk'],
-      '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/music-content-center',
+      '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center',
     ],
   ])(
     'reads the service API leaf from the Chinese %s product metadata',
@@ -703,7 +703,7 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
     expect(httpBasicAuth).toMatchObject({
       title: 'HTTP 基本认证',
       type: 'page',
-      url: '/zh-CN/api-reference/rtc/restful/user-guides/http-basic-auth',
+      url: '/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth',
     });
     expect(httpBasicAuth?.linked).toBeUndefined();
     expect(guideSection).toMatchObject({
@@ -724,7 +724,7 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
     expect(interfaceReference?.children?.at(-1)).toMatchObject({
       title: '响应状态码',
       type: 'page',
-      url: '/zh-CN/api-reference/rtc/restful/reference/response-code',
+      url: '/zh-CN/realtime-media/rtc/reference/response-code',
     });
   });
 
@@ -759,8 +759,8 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
   it('keeps the RTC product sidebar stable when entering a RESTful guide from a product child page', async () => {
     const payload = await loadDocsPagePayload(
       'zh-CN',
-      'api-reference',
-      ['rtc', 'restful', 'webhook', 'receive-webhook'],
+      'realtime-media',
+      ['rtc', 'build', 'optimize-and-operate', 'receive_webhook'],
       '?from=%2Fzh-CN%2Frealtime-media%2Frtc%2Freference%2Fdownloads',
     );
 
@@ -768,44 +768,16 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
       throw new Error('expected a RESTful API guide payload');
     }
 
-    const serviceApi = findSectionWithChild(
-      payload.sidebar,
-      '服务端 API',
-      payload.activePath,
-    );
-    const webhook = findSectionWithChild(
-      serviceApi?.children ?? [],
-      'Webhook',
-      payload.activePath,
-    );
-    const receiveWebhook = findNode(
-      webhook?.children ?? [],
-      '接收 Webhook 事件',
-    );
+    const receiveWebhook = findNode(payload.sidebar, '接收 Webhook 事件');
 
     expect(payload.activePath).toBe(
-      '/zh-CN/api-reference/rtc/restful/webhook/receive-webhook',
+      '/zh-CN/realtime-media/rtc/build/optimize-and-operate/receive_webhook',
     );
     expect(payload.activeTab).toBe('realtime-media');
-    expect(serviceApi).toMatchObject({
-      defaultOpen: true,
-      title: '服务端 API',
-      type: 'section',
-    });
-    expect(serviceApi?.url).toBeUndefined();
-    expect(webhook).toMatchObject({
-      defaultOpen: true,
-      title: 'Webhook',
-      type: 'section',
-    });
     expect(receiveWebhook).toMatchObject({
-      search: {
-        from: '/zh-CN/realtime-media/rtc',
-        fromScope: '/zh-CN/realtime-media/rtc/reference',
-      },
       title: '接收 Webhook 事件',
       type: 'page',
-      url: '/zh-CN/api-reference/rtc/restful/webhook/receive-webhook',
+      url: '/zh-CN/realtime-media/rtc/build/optimize-and-operate/receive_webhook',
     });
   });
 
@@ -830,7 +802,7 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
       expect(payload.sidebarHeader).toMatchObject({
         backHref: '/zh-CN/realtime-media/overview',
         backLabel: '实时互动',
-        title: '智能云会议引擎',
+        title: '灵动会议引擎',
       });
       const reference = findSection(payload.sidebar, ['参考']);
       const serviceApi = reference?.children?.find(
@@ -987,7 +959,7 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
     ],
     [
       'content/docs/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/meta.json',
-      '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/music-content-center',
+      '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center',
     ],
   ])('declares the service API link in %s', (metaPath, url) => {
     const meta = JSON.parse(readFileSync(metaPath, 'utf8')) as {

@@ -2,101 +2,140 @@
 title: WhiteFontFace Class Reference
 _migration:
   type: generated-html
-  status: migrated
+  status: warning
   sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteFontFace
   sourcePath: html-docs/whiteboard/iOS/Classes/WhiteFontFace.html
   generator: appledoc
-  warnings: []
+  warnings:
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
 ---
 
-| Inherits from | WhiteObject |
-| --- | --- |
-| Declared in | WhiteFontFace.h |
+Whiteboard iOS SDK 2.16.147 公开接口。
 
-<a id="overview"></a>
+@interface WhiteFontFace: WhiteObject
 
-## Overview
+## 成员
 
-字体配置文件，与 CSS 中的 FontFace 属性对应。
+- [init](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-font-face#//api/name/init)
+- [initWithFontFamily\:src:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-font-face#//api/name/initWithFontFamily:src:)
+- [fontFamily](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-font-face#//api/name/fontFamily)
+- [fontStyle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-font-face#//api/name/fontStyle)
+- [fontWeight](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-font-face#//api/name/fontWeight)
+- [src](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-font-face#//api/name/src)
+- [unicodeRange](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-font-face#//api/name/unicodeRange)
 
-<a id="tasks"></a>
+<a id="//api/name/init"></a>
 
-<a id="//api/name/fontFamily"></a>
-
-### `fontFamily`
-
-字体名称，需要和 CSS 中 `font-family` 字段的值对应。
+### `– init`
 
 <ApiSignature>
 
-@property (nonatomic, strong) NSString *fontFamily
+\- (instancetype)init NS_UNAVAILABLE;
 
 </ApiSignature>
 
-#### Declared In
+Declared in Object/WhiteFontFace.h
 
-`WhiteFontFace.h`
+<a id="//api/name/initWithFontFamily:src:"></a>
+
+### `– initWithFontFamily:src:`
+
+<ApiSignature>
+
+\- (instancetype)initWithFontFamily:(NSString *)name src:(NSString *)src;
+
+</ApiSignature>
+
+Declared in Object/WhiteFontFace.h
+
+<a id="//api/name/fontFamily"></a>
+
+
+<a id="tasks"></a>
+
+### `fontFamily`
+
+<ApiSignature>
+
+@property (nonatomic, strong) NSString *fontFamily;
+
+</ApiSignature>
+
+```text
+字体名称，需要和 CSS 中 `font-family` 字段的值对应。
+```
+
+Declared in Object/WhiteFontFace.h
 
 <a id="//api/name/fontStyle"></a>
 
 ### `fontStyle`
 
-字体样式，需要和 CSS 中 `font-style` 字段的值对应。默认值为 `normal`。
-
 <ApiSignature>
 
-@property (nonatomic, strong, nullable) NSString *fontStyle
+@property (nonatomic, strong, nullable) NSString *fontStyle;
 
 </ApiSignature>
 
-#### Declared In
+```text
+字体样式，需要和 CSS 中 `font-style` 字段的值对应。默认值为 `normal`。
+```
 
-`WhiteFontFace.h`
+Declared in Object/WhiteFontFace.h
 
 <a id="//api/name/fontWeight"></a>
 
 ### `fontWeight`
 
-字体粗细，需要和 CSS 中 `font-weight` 字段的值对应。
-
 <ApiSignature>
 
-@property (nonatomic, strong, nullable) NSString *fontWeight
+@property (nonatomic, strong, nullable) NSString *fontWeight;
 
 </ApiSignature>
 
-#### Declared In
+```text
+字体粗细，需要和 CSS 中 `font-weight` 字段的值对应。
+```
 
-`WhiteFontFace.h`
+Declared in Object/WhiteFontFace.h
 
 <a id="//api/name/src"></a>
 
 ### `src`
 
-字体文件的地址，需要和 CSS 中 `src` 字段的值对应。
-
 <ApiSignature>
 
-@property (nonatomic, strong) NSString *src
+@property (nonatomic, strong) NSString *src;
 
 </ApiSignature>
 
-#### Declared In
+```text
+字体文件的地址，需要和 CSS 中 `src` 字段的值对应。
+```
 
-`WhiteFontFace.h`
+Declared in Object/WhiteFontFace.h
 
 <a id="//api/name/unicodeRange"></a>
 
 ### `unicodeRange`
 
-字体的字符编码范围，需要和 CSS 中 `unicode-range` 字段的值对应。
-
 <ApiSignature>
 
-@property (nonatomic, strong, nullable) NSString *unicodeRange
+@property (nonatomic, strong, nullable) NSString *unicodeRange;
 
 </ApiSignature>
 
-#### Declared In
+```text
+字体的字符编码范围，需要和 CSS 中 `unicode-range` 字段的值对应。
+```
 
-`WhiteFontFace.h`
+Declared in Object/WhiteFontFace.h

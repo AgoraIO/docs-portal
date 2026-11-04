@@ -407,6 +407,27 @@ it('refuses to certify a custom output directory using the standard build', asyn
   );
 });
 
+it('binds build evidence to the prerender manifest used for navigation audits', () => {
+  const { repoRoot } = fixture();
+  fs.mkdirSync(path.join(repoRoot, 'public/__static'), { recursive: true });
+  fs.mkdirSync(path.join(repoRoot, 'dist/client'), { recursive: true });
+  fs.writeFileSync(
+    path.join(repoRoot, 'public/__static/docs-routes.json'),
+    '[]',
+  );
+  const prerenderFile = path.join(
+    repoRoot,
+    'public/__static/docs-prerender-paths.json',
+  );
+  fs.writeFileSync(prerenderFile, JSON.stringify(['/zh-CN/guide/start']));
+  const before = fingerprintArtifacts(repoRoot);
+  fs.writeFileSync(
+    prerenderFile,
+    JSON.stringify(['/zh-CN/guide/start', '/zh-CN/guide/alias']),
+  );
+  expect(fingerprintArtifacts(repoRoot)).not.toBe(before);
+});
+
 it('reconciles platform-route output with its canonical source page', async () => {
   const setup = fixture('/ai');
   setup.site.links[0].pageUrl = '/ai/ios';

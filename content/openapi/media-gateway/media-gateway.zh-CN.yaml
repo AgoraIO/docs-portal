@@ -3,7 +3,7 @@ info:
   version: ''
   title: RTMP 网关 RESTful API
   summary: ''
-  description: "RTMP 网关服务能够把使用标准推流协议（RTMP 和 SRT）的媒体流推送到声网 SD-RTN™，并以主播身份将这些内容发布到对应的频道内。RTMP 网关服务包含以下三套 API：\n1. **推流码 API**\n\n    开始推流前，你需要先创建推流码，它能够确保媒体流被推送到正确的频道与主播 uid 下。这套 RESTful API 可供你创建、查询和删除推流码。\n2. **流配置模板 API**\n\n    在使用 RTMP 网关推流进频道时，你可以自行控制网关将流推送到频道之前的处理，比如开启音频或视频转码，并指定相应的转码参数。同时，一个流配置模板，既可以用于所属 App ID 的全局配置，也可以只关联到指定的推流码。你可以使用这套 RESTful API 来创建、查询和删除流配置模板。\n3. **查询在推流信息 API**\n\n    你可以使用这套 RESTful API 来查询指定 App ID 下当前正在推送到 RTMP 网关的流列表信息，包括使用的推流域名、推流码和音视频流的基础参数（分辨率、码率、声道数、采样率、GOP 等信息），也可以强制断开正在推送的流。\n\n> 请确保声网频道的场景为直播，而非通信，否则 RTMP 网关服务会失败。有关直播与通信场景的信息，请参考[设置频道场景](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_setchannelprofile)。\n为方便你监听 RTMP 网关的状态，声网提供[消息通知服务](/zh-CN/realtime-media/rtmp-gateway/build/enable-ncs)。开通该服务后，你可以通过 Webhook 接收相关的[事件回调](/zh-CN/realtime-media/rtmp-gateway/reference/ncs-events)。\n\n因为声网会动态调整消息通知服务器的 IP 地址，为了不影响你接收事件，你需要定期[查询 IP 地址](/zh-CN/api-reference/api-ref/rtmp-gateway/query-ip-address)并更新防火墙白名单配置。"
+  description: "RTMP 网关服务能够把使用标准推流协议（RTMP 和 SRT）的媒体流推送到声网 SD-RTN™，并以主播身份将这些内容发布到对应的频道内。RTMP 网关服务包含以下三套 API：\n1. **推流码 API**\n\n    开始推流前，你需要先创建推流码，它能够确保媒体流被推送到正确的频道与主播 uid 下。这套 RESTful API 可供你创建、查询和删除推流码。\n2. **流配置模板 API**\n\n    在使用 RTMP 网关推流进频道时，你可以自行控制网关将流推送到频道之前的处理，比如开启音频或视频转码，并指定相应的转码参数。同时，一个流配置模板，既可以用于所属 App ID 的全局配置，也可以只关联到指定的推流码。你可以使用这套 RESTful API 来创建、查询和删除流配置模板。\n3. **查询在推流信息 API**\n\n    你可以使用这套 RESTful API 来查询指定 App ID 下当前正在推送到 RTMP 网关的流列表信息，包括使用的推流域名、推流码和音视频流的基础参数（分辨率、码率、声道数、采样率、GOP 等信息），也可以强制断开正在推送的流。\n\n> [!CAUTION]\n> 请确保声网频道的场景为直播，而非通信，否则 RTMP 网关服务会失败。有关直播与通信场景的信息，请参考[设置频道场景](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_setchannelprofile)。\n为方便你监听 RTMP 网关的状态，声网提供[消息通知服务](/zh-CN/realtime-media/rtmp-gateway/build/enable-ncs)。开通该服务后，你可以通过 Webhook 接收相关的[事件回调](/zh-CN/realtime-media/rtmp-gateway/reference/ncs-events)。\n\n因为声网会动态调整消息通知服务器的 IP 地址，为了不影响你接收事件，你需要定期[查询 IP 地址](/zh-CN/api-reference/api-ref/rtmp-gateway/query-ip-address)并更新防火墙白名单配置。"
 servers:
 - url: https://api.sd-rtn.com/
 paths:
@@ -106,10 +106,11 @@ paths:
                               description: 推流码创建的 Unix 时间戳，单位为秒。
                       cursor:
                         type: string
-                        description: '下次查询时的起始位置值。
+                        description: |-
+                          下次查询时的起始位置值。
 
-
-                          > 请根据 `hasMore` 字段决定是否需要进行下一次查询，而不是仅依据 `cursor` 字段是否为空。'
+                          > [!CAUTION]
+                          > 请根据 `hasMore` 字段决定是否需要进行下一次查询，而不是仅依据 `cursor` 字段是否为空。
               examples:
                 Example 1:
                   value:
@@ -256,10 +257,11 @@ paths:
       - $ref: '#/components/parameters/appId'
       - $ref: '#/components/parameters/templateId'
       requestBody:
-        description: '请求包体为 JSON Object 类型的 `settings` 字段。
+        description: |-
+          请求包体为 JSON Object 类型的 `settings` 字段。
 
-
-          > 为确保请求成功，请不要将必填字段设为 `null` 或 `""`。'
+          > [!CAUTION]
+          > 为确保请求成功，请不要将必填字段设为 `null` 或 `""`。
         content:
           application/json:
             schema:
@@ -333,22 +335,17 @@ paths:
       - $ref: '#/components/parameters/appId'
       - $ref: '#/components/parameters/templateId'
       requestBody:
-        description: '请求包体为 JSON Object 类型的 `settings` 字段。
+        description: |-
+          请求包体为 JSON Object 类型的 `settings` 字段。
 
-
+          > [!CAUTION]
           > - 为确保请求成功，请不要将必填字段设为 `null` 或 `""`。
-
           > - 更新支持的最小单元为：
-
           >   - `transcoding.video`
-
           >   - `transcoding.audio`
-
           >   - `jitterBuffer`
-
           >   举例来说，如果只希望更新 `transcoding.video` 中的 `fps` 字段，也需要再次传入整个 `transcoding.video` ，仅修改 `fps` 字段，其他字段保持不变一起传入。不能单独传入 `fps` 字段。
-
-          > - `transcoding.video`、`transcoding.audio`、`jitterBuffer` 之间相互独立，互不影响。如果只传入 `transcoding.video`，那么就只会更新它的参数，不会影响 `transcoding.audio` 和 `jitterBuffer` 的参数值。'
+          > - `transcoding.video`、`transcoding.audio`、`jitterBuffer` 之间相互独立，互不影响。如果只传入 `transcoding.video`，那么就只会更新它的参数，不会影响 `transcoding.audio` 和 `jitterBuffer` 的参数值。
         content:
           application/json:
             schema:
@@ -443,20 +440,18 @@ paths:
                   properties:
                     defaultStreamTemplate:
                       type: string
-                      description: '流配置模板 ID，必须已经创建。
-
+                      description: |-
+                        流配置模板 ID，必须已经创建。
 
                         如果将 `defaultStreamTemplate` 的值设为 `null`，那么会清除之前为该 App ID 设置的全局流配置模板。该 App ID 下的所有推流都将按照无模板设置进行，即默认不开启视频转码。
 
-
+                        > [!NOTE]
                         > 针对使用过 Beta 版本的用户：在 Beta 版本中，此 API 还可以设置 `transcoding` 转码参数，现在建议你改用[创建或重置流配置模板 API](create-reset-template) 设置。
 
-
+                        > [!CAUTION]
                         > 如果你之前使用此 API 设置过 `transcoding`，目前的生效机制如下：
-
                         >   - 如果现在重新设置 `defaultStreamTemplate`，那么之前通过此 API 设置的 `transcoding` 就会自动失效，以新模板中的参数为准。
-
-                        >   - 如果现在不设置新的 `defaultStreamTemplate`，那么之前通过此 API 设置的 `transcoding` 仍会保留，作为此 App ID 的默认全局配置参数。'
+                        >   - 如果现在不设置新的 `defaultStreamTemplate`，那么之前通过此 API 设置的 `transcoding` 仍会保留，作为此 App ID 的默认全局配置参数。
       responses:
         default:
           $ref: '#/components/responses/failure'
@@ -483,22 +478,17 @@ paths:
         name: region
         in: path
         required: true
-        description: '创建推流码的区域。声网支持分区域创建推流码，目前支持以下区域：
-
+        description: |-
+          创建推流码的区域。声网支持分区域创建推流码，目前支持以下区域：
           - `cn`：中国大陆
-
           - `ap`：除中国大陆以外的亚洲区域
-
           - `na`：北美
-
           - `eu`：欧洲
 
-
+          > [!CAUTION]
           > - 请确保设置的 `region` 与输出的源流在同一个区域。
-
           > - 请确保设置的 `region` 与推流使用的域名在同一个区域。
-
-          > - 请确保传入的 `region` 的值为小写。'
+          > - 请确保传入的 `region` 的值为小写。
       - schema:
           type: string
         name: version
@@ -622,22 +612,17 @@ paths:
         name: region
         in: path
         required: true
-        description: '创建推流码的区域。声网支持分区域创建推流码，目前支持以下区域：
-
+        description: |-
+          创建推流码的区域。声网支持分区域创建推流码，目前支持以下区域：
           - `cn`：中国大陆
-
           - `ap`：除中国大陆以外的亚洲区域
-
           - `na`：北美
-
           - `eu`：欧洲
 
-
+          > [!CAUTION]
           > - 请确保设置的 `region` 与输出的源流在同一个区域。
-
           > - 请确保设置的 `region` 与推流使用的域名在同一个区域。
-
-          > - 请确保传入的 `region` 的值为小写。'
+          > - 请确保传入的 `region` 的值为小写。
       - schema:
           type: string
         name: version
@@ -825,22 +810,17 @@ paths:
         name: region
         in: path
         required: true
-        description: '使用 RTMP 网关的区域。声网支持分区域创建推流码，目前支持以下区域：
-
+        description: |-
+          使用 RTMP 网关的区域。声网支持分区域创建推流码，目前支持以下区域：
           - `cn`：中国大陆
-
           - `ap`：除中国大陆以外的亚洲区域
-
           - `na`：北美
-
           - `eu`：欧洲
 
-
+          > [!CAUTION]
           > - 请确保设置的 `region` 与输入的源流在同一个区域。
-
           > - 请确保设置的 `region` 与推流使用的域名在同一个区域。
-
-          > - 请确保传入 `region` 的值为小写。'
+          > - 请确保传入 `region` 的值为小写。
       - schema:
           type: string
         name: version
@@ -903,12 +883,12 @@ paths:
       - Basic Auth: []
       - API Key: []
       requestBody:
-        description: '请求 Body 为 JSON Object 类型的 settings 字段。
+        description: |-
+          请求 Body 为 JSON Object 类型的 settings 字段。
 
-
+          > [!CAUTION]
           > - 为确保请求成功，请不要将必填字段设为 `null` 或者 `""`。
-
-          > - 如果某条流当前已经处于 muted （或 unmuted）状态，那么重复设置为 muted（或 unmuted），请求仍然会执行成功，但是不会执行任何操作。'
+          > - 如果某条流当前已经处于 muted （或 unmuted）状态，那么重复设置为 muted（或 unmuted），请求仍然会执行成功，但是不会执行任何操作。
         content:
           application/json:
             schema:
@@ -1015,22 +995,17 @@ components:
     region:
       name: region
       in: path
-      description: '创建推流码的区域。声网支持分区域创建推流码，目前支持以下区域：
-
+      description: |-
+        创建推流码的区域。声网支持分区域创建推流码，目前支持以下区域：
         - `cn`：中国大陆
-
         - `ap`：除中国大陆以外的亚洲区域
-
         - `na`：北美
-
         - `eu`：欧洲
 
-
+        > [!CAUTION]
         > - 请确保设置的 `region` 与输入的源流在同一个区域。
-
         > - 请确保设置的 `region` 与推流使用的域名在同一个区域。
-
-        > - 请确保传入 `region` 的值为小写。'
+        > - 请确保传入 `region` 的值为小写。
       required: true
       schema:
         type: string
@@ -1051,22 +1026,17 @@ components:
     region2:
       name: region
       in: path
-      description: '使用 RTMP 网关的区域。声网支持分区域创建推流码，目前支持以下区域：
-
+      description: |-
+        使用 RTMP 网关的区域。声网支持分区域创建推流码，目前支持以下区域：
         - `cn`：中国大陆
-
         - `ap`：除中国大陆以外的亚洲区域
-
         - `na`：北美
-
         - `eu`：欧洲
 
-
+        > [!CAUTION]
         > - 请确保设置的 `region` 与输入的源流在同一个区域。
-
         > - 请确保设置的 `region` 与推流使用的域名在同一个区域。
-
-        > - 请确保传入 `region` 的值为小写。'
+        > - 请确保传入 `region` 的值为小写。
       required: true
       schema:
         type: string
@@ -1244,38 +1214,28 @@ components:
                 - `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`。'
             uid:
               type: string
-              description: 'RTMP 网关在声网频道内的主播用户 UID，可以为数字 ID 或[字符串 ID](/zh-CN/reference/faq/integration/string_uid)。如果为数字 ID，取值范围为 1 到 2^32 - 1（即 4294967295，大于此数值则会被识别为字符串）；如果为字符串 ID，不能超过 255 字节。支持以下字符集（共 89 个字符）：
-
+              description: |-
+                RTMP 网关在声网频道内的主播用户 UID，可以为数字 ID 或[字符串 ID](/zh-CN/reference/faq/integration/string_uid)。如果为数字 ID，取值范围为 1 到 2^32 - 1（即 4294967295，大于此数值则会被识别为字符串）；如果为字符串 ID，不能超过 255 字节。支持以下字符集（共 89 个字符）：
                 - 所有小写英文字母（a-z）
-
                 - 所有大写英文字母（A-Z）
-
                 - 数字 0-9
-
                 - 空格
-
                 - `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`
-
                 允许填 "" 或者 "0"，此时会使用随机的整型 uid 进入频道。具体 uid 的值可通过[查询在推流列表 API](query-streaming-list)  或[接收 NCS 回调](/zh-CN/realtime-media/rtmp-gateway/reference/ncs-events)获得。
-
+                > [!CAUTION]
                 > `uid` 和 `channel` 不能同时为空，即在 `channel` 为 "" 的情况下，`uid` 就不能为 "0" 或 ""。
-
                 输入的 `uid` 与实际识别值举例：
-
                 > - "123" → 整型 uid，123
-
                 > - "0123" → 整型 uid，123
-
                 > - "4294967295" → 整型 uid，4294967295
-
                 > - "4294967296" → 字符串 uid，"4294967296"
-
-                > - "123abc" → 字符串 uid，"123abc"'
+                > - "123abc" → 字符串 uid，"123abc"
             expiresAfter:
               type: number
-              description: '创建的推流码的有效时长，单位为秒。从创建时开始计算。如果填 `0`，则推流码永远有效。
-
-                > 为确保请求成功，请不要将该必填字段设为 `null` 或 `""`。'
+              description: |-
+                创建的推流码的有效时长，单位为秒。从创建时开始计算。如果填 `0`，则推流码永远有效。
+                > [!CAUTION]
+                > 为确保请求成功，请不要将该必填字段设为 `null` 或 `""`。
             templateId:
               type: string
               description: 关联的流配置模板 ID，具体请见[流配置模板](create-reset-template)。如果你不确定它的作用，请不要提供此字段。
@@ -1314,10 +1274,11 @@ components:
           maximum: 1920
         height:
           type: number
-          description: '视频编码高度，单位为 px。如不填或填 `0`，则跟随源流的高度。
+          description: |-
+            视频编码高度，单位为 px。如不填或填 `0`，则跟随源流的高度。
 
-
-            > width 和 height 需要同时填入或同时都不填，目前暂不支持只填其中 1 个。'
+            > [!CAUTION]
+            > width 和 height 需要同时填入或同时都不填，目前暂不支持只填其中 1 个。
           minimum: 0
           maximum: 1920
         fps:
@@ -1327,7 +1288,7 @@ components:
           maximum: 60
         bitrate:
           type: number
-          description: "视频编码码率，单位为 Kbps。\n- 如果开启小流（提供下面的 `simulcastStream`），则该字段为必填，且要保证值大于 `simulcastStream.bitrate`。\n- 如果未开启小流（不提供 `simulcastStream`），则该字段为选填。如果不填，会跟随源流码率；如果填 `0`，会根据 `width`、`height` 和 `fps` 三个字段的值自动匹配声网推荐的码率，详见[常用视频属性](/zh-CN/api-reference/rtmp-gateway/restful/api/video-profile)。\n    > 在不开启小流的情况下，建议使用自动匹配的码率，无需自行设置码率。"
+          description: "视频编码码率，单位为 Kbps。\n- 如果开启小流（提供下面的 `simulcastStream`），则该字段为必填，且要保证值大于 `simulcastStream.bitrate`。\n- 如果未开启小流（不提供 `simulcastStream`），则该字段为选填。如果不填，会跟随源流码率；如果填 `0`，会根据 `width`、`height` 和 `fps` 三个字段的值自动匹配声网推荐的码率，详见[常用视频属性](/zh-CN/api-reference/rtmp-gateway/restful/api/video-profile)。\n    > [!TIP]\n    > 在不开启小流的情况下，建议使用自动匹配的码率，无需自行设置码率。"
           minimum: 0
           maximum: 14000
         simulcastStream:
@@ -1356,9 +1317,10 @@ components:
           default: 15
         bitrate:
           type: number
-          description: '视频小流的码率，单位为 Kbps。该参数的值需要小于上面 `video.bitrate` 的值。如果不填或填 `0`，则根据 `video.bitrate`、小流的分辨率和 fps，自动计算声网推荐码率。
-
-            > 当开启小流且指定小流 bitrate 时，需要同时指定 `video.bitrate`。'
+          description: |-
+            视频小流的码率，单位为 Kbps。该参数的值需要小于上面 `video.bitrate` 的值。如果不填或填 `0`，则根据 `video.bitrate`、小流的分辨率和 fps，自动计算声网推荐码率。
+            > [!CAUTION]
+            > 当开启小流且指定小流 bitrate 时，需要同时指定 `video.bitrate`。
     audio:
       type: object
       description: 音频转码参数。
@@ -1561,14 +1523,16 @@ components:
       properties:
         codec:
           type: string
-          description: '视频编码类型，可选值 `"NONE"`, `"H.264"`, `"H.265"`,`"VP8"` 等。
-
-            > 如果 `codec` 值为 `"None"`，则表示本条流为开始视频转码或音频转码。'
+          description: |-
+            视频编码类型，可选值 `"NONE"`, `"H.264"`, `"H.265"`,`"VP8"` 等。
+            > [!NOTE]
+            > 如果 `codec` 值为 `"None"`，则表示本条流为开始视频转码或音频转码。
         bitrate:
           type: number
-          description: '视频大流码率，单位为 Kbps。
-
-            > 如果开启了视频转码，则 `bitrate` 的值为实际编码输出的码率。当画面复杂度较低时，输出码率可能低于设定的编码目标码率。原因是在保证相同画质的条件下，编码器认为不需要达到那么高的码率。'
+          description: |-
+            视频大流码率，单位为 Kbps。
+            > [!NOTE]
+            > 如果开启了视频转码，则 `bitrate` 的值为实际编码输出的码率。当画面复杂度较低时，输出码率可能低于设定的编码目标码率。原因是在保证相同画质的条件下，编码器认为不需要达到那么高的码率。
         width:
           type: number
           description: 视频大流宽度，单位为 px。
@@ -1604,9 +1568,10 @@ components:
           description: 音频采样率。
         bitrate:
           type: number
-          description: '推流的源流音频码率，单位为 Kbps。
-
-            > 如果开启了音频转码，`bitrate` 的值是根据源流声道数和设置的 `profile` 值计算所得，是编码输出的目标码率，非实际码率。通常情况下，银瀑呢输出码率会保持设定码率。'
+          description: |-
+            推流的源流音频码率，单位为 Kbps。
+            > [!NOTE]
+            > 如果开启了音频转码，`bitrate` 的值是根据源流声道数和设置的 `profile` 值计算所得，是编码输出的目标码率，非实际码率。通常情况下，银瀑呢输出码率会保持设定码率。
     sid-query-body:
       title: v1 版本
       type: object

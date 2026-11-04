@@ -19,17 +19,27 @@ function between(content: string, start: string, end: string) {
   return content.slice(first, last);
 }
 
+function platformPanel(content: string, platform: string) {
+  const first = content.indexOf(`<TabsContent value="${platform}">`);
+  expect(first).toBeGreaterThanOrEqual(0);
+  let depth = 0;
+  for (const match of content
+    .slice(first)
+    .matchAll(/<\/?TabsContent\b[^>]*>/g)) {
+    depth += match[0].startsWith('</') ? -1 : 1;
+    if (depth === 0)
+      return content.slice(first, first + match.index + match[0].length);
+  }
+  throw new Error(`Unclosed platform panel: ${platform}`);
+}
+
 const installationPages = [
   `${aiRoot}/build/harden-and-optimize/audio-setup.mdx`,
   `${aiRoot}/build/shape-the-conversation/interrupt-agent.mdx`,
   `${aiRoot}/build/handle-runtime-events/event-notifications.mdx`,
   `${aiRoot}/build/shape-the-conversation/manual-turn-control.mdx`,
   `${aiRoot}/build/send-multimodal-messages.mdx`,
-  `${apiRoot}/rest-api/best-practice/audio-settings.mdx`,
-  `${apiRoot}/rest-api/user-guides/interrupt-agent.mdx`,
-  `${apiRoot}/rest-api/user-guides/listen-agent-events.mdx`,
-  `${apiRoot}/rest-api/user-guides/realtime-sub.mdx`,
-  `${apiRoot}/rest-api/user-guides/send-multimodal-message.mdx`,
+  `${aiRoot}/build/transcripts.mdx`,
 ];
 
 describe('ConvoAI source PR 2074 Agents SDK contracts', () => {
@@ -46,7 +56,7 @@ describe('ConvoAI source PR 2074 Agents SDK contracts', () => {
   it('lists the Python generated filler and custom tool aliases in Type aliases', () => {
     const section = between(
       read(`${apiRoot}/agent-python/index.mdx`),
-      '### Type aliases',
+      '### 类型别名 [#type-aliases]',
       '## AgentSession',
     );
     for (const name of [
@@ -79,7 +89,7 @@ describe('ConvoAI source PR 2074 Agents SDK contracts', () => {
   it('explains Python LLM template serialization and runtime placeholders', () => {
     const section = between(
       read(`${apiRoot}/agent-python/index.mdx`),
-      '### LLM vendors',
+      '### LLM 服务商 [#llm-vendors]',
       '#### CustomLLM',
     );
     for (const text of [
@@ -100,13 +110,13 @@ describe('ConvoAI source PR 2074 Agents SDK contracts', () => {
     const section = between(
       read(`${apiRoot}/agent-python/index.mdx`),
       '#### CustomLLM',
-      '### TTS vendors',
+      '### 语音合成服务商 [#tts-vendors]',
     );
     expect(section).toContain(
-      '| `template_variables` | `Dict[str, str]` | No | `None` |',
+      '| `template_variables` | `Dict[str, str]` | 否 | `None` |',
     );
     expect(section).toContain(
-      '| `tools` | `List[Dict[str, Any]]` | No | `None` |',
+      '| `tools` | `List[Dict[str, Any]]` | 否 | `None` |',
     );
     expect(section).toContain('`with_tools(True)`');
   });
@@ -124,7 +134,7 @@ describe('ConvoAI source PR 2074 Agents SDK contracts', () => {
   it('lists TypeScript generated filler and tool aliases beside their shared switch', () => {
     const section = between(
       read(`${apiRoot}/agent-typescript/index.mdx`),
-      '### Type aliases',
+      '### 类型别名 [#type-aliases]',
       '## AgentSession',
     );
     for (const name of [
@@ -137,20 +147,20 @@ describe('ConvoAI source PR 2074 Agents SDK contracts', () => {
     ]) {
       expect(section).toContain(`\`${name}\``);
     }
-    expect(section).toContain('`llm.tools` 与 MCP server 配置相互独立');
+    expect(section).toContain('`llm.tools` 与 MCP 服务器配置相互独立');
     expect(section).toContain('`withTools(true)`');
   });
 
   it('documents TypeScript LLM tools and synchronous endpoint behavior', () => {
     const section = between(
       read(`${apiRoot}/agent-typescript/index.mdx`),
-      '### LLM vendors',
-      '### TTS vendors',
+      '### LLM 服务商 [#llm-vendors]',
+      '### 语音合成服务商 [#tts-vendors]',
     );
-    expect(section).toContain('| `tools` | `LlmTool[]` | No |');
+    expect(section).toContain('| `tools` | `LlmTool[]` | 否 |');
     expect(section).toContain('同步 `GET` 或 `POST` 请求');
     expect(section).toContain(
-      '`withTools(true)` 同时适用于 `tools` 和 MCP server 配置',
+      '`withTools(true)` 同时适用于 `tools` 和 MCP 服务器配置',
     );
   });
 });
@@ -226,11 +236,7 @@ describe('ConvoAI source PR 2074 expanded shared content', () => {
         '### 集成组件',
         '### 初始化组件',
       );
-      const section = between(
-        installation,
-        `<TabsContent value="${platform}">`,
-        '</TabsContent>',
-      );
+      const section = platformPanel(installation, platform);
       for (const text of required) expect(section).toContain(text);
       expect(section).toContain('<Card');
     },

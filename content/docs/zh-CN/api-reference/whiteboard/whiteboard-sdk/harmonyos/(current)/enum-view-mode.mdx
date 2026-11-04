@@ -1,0 +1,75 @@
+---
+title: ViewMode enum 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/enum_view_mode
+  sourcePath: html-docs/whiteboard/HarmonyOS/enum_view_mode.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+WhiteboardController.setViewMode(...) 和 BroadcastState.mode 引用的视角模式枚举。
+
+当前版本未从 SDK 包入口导出此枚举对象；不能从包名导入或直接取得其枚举成员。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export enum ViewMode
+```
+
+| [Freedom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/enum-view-mode#a511d3d20723da776d9119538f0854a6a) | `Freedom = "freedom",` |
+| --- | --- |
+| [Follower](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/enum-view-mode#a1a82e7330c8390b3de542ac8dea70c39) | `Follower = "follower",` |
+| [Broadcaster](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/enum-view-mode#aa5fafdb683ffac658a09306b96342587) | `Broadcaster = "broadcaster"` |
+
+## 变量说明
+
+<a id="a511d3d20723da776d9119538f0854a6a"></a>
+
+### Freedom
+
+```text
+Freedom = "freedom",
+```
+
+（默认）自由模式。
+该模式下用户可以主动调整视角，不受其他用户视角模式设置的影响，也不会影响其他用户的视角模式设置。
+
+@note 当房间内不存在视角为主播模式的用户时，所有用户的视角都默认为自由模式。
+
+<a id="a1a82e7330c8390b3de542ac8dea70c39"></a>
+
+### Follower
+
+```text
+Follower = "follower",
+```
+
+跟随模式。
+该模式下用户的视角会跟随主播的视角。
+
+@note - 当一个用户的视角设置为主播模式后，房间内其他所有用户（包括新加入房间的用户）的视角会被自动设置为跟随模式。 - 跟随模式的用户进行白板操作时，其视角会自动切换为自由模式。 如有需要，可以调用 `disableOperations` 禁止用户操作，以锁定用户的视角模式。
+
+<a id="aa5fafdb683ffac658a09306b96342587"></a>
+
+### Broadcaster
+
+```text
+Broadcaster = "broadcaster"
+```
+
+主播模式。
+该模式下用户可以主动调整视角，并将自己的视角同步给房间内所有其他用户。
+
+@note - 每个房间只能有一个主播模式视角的用户。 - 当一个用户的视角设置为主播模式后，房间内所有其他用户（包括新加入房间的用户）的视角会被自动设置为跟随模式。
