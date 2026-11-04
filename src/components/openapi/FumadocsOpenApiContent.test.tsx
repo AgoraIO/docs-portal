@@ -216,7 +216,7 @@ describe('FumadocsOpenApiContent', () => {
     }
   });
 
-  it('preserves RTC error guidance and its declared response fields', async () => {
+  it('preserves legacy RTC error guidance without added fields or examples', async () => {
     const document = yaml.load(
       await readFile(
         'content/openapi/rtc/channel-management.zh-CN.yaml',
@@ -245,11 +245,23 @@ describe('FumadocsOpenApiContent', () => {
       '/zh-CN/realtime-media/rtc/reference/response-code',
     );
     expect(within(panel).queryByText('响应 Body 为空')).not.toBeInTheDocument();
-    const fieldNames = Array.from(
-      panel.querySelectorAll('.openapi-schema-field-row code'),
-      (element) => element.textContent,
+    expect(panel.querySelectorAll('.openapi-schema-field-row')).toHaveLength(0);
+    expect(within(panel).queryByText('响应 Body')).toBeNull();
+    const examples = globalThis.document.querySelector(
+      '.openapi-response-example',
+    ) as HTMLElement;
+    fireEvent.mouseDown(within(examples).getByRole('tab', { name: '非 200' }));
+    await waitFor(() => {
+      expect(examples).toHaveTextContent('如果状态码不为 200，则请求失败。');
+    });
+    expect(
+      within(examples).getByRole('link', { name: '响应状态码' }),
+    ).toHaveAttribute(
+      'href',
+      '/zh-CN/realtime-media/rtc/reference/response-code',
     );
-    expect(fieldNames).toEqual(expect.arrayContaining(['message', 'reason']));
+    expect(examples.querySelector('pre')).toBeNull();
+    expect(examples).not.toHaveTextContent('invalid appid');
   });
 
   it('offers both schema-derived response examples for the actual Converter status endpoint', async () => {
