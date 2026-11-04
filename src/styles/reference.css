@@ -168,27 +168,25 @@ article :where(h1) {
   overflow-wrap: break-word;
 }
 
-/* Two-column enum tables need a floor beside long API identifiers. Applying
-   this to every column also widens short metadata columns in larger tables. */
+/* Give plain-text cells a readable floor too. Rich descriptions and longer
+   identifiers contribute their own intrinsic widths to the native layout. */
 .prose
-  table:not(:has(tr > :nth-child(3))):not(:where(.not-prose, .not-prose *))
+  table:not(.im-pricing-api-table):not(:where(.not-prose, .not-prose *))
   td,
-.openapi-operation .openapi-markdown table:not(:has(tr > :nth-child(3))) td {
+.openapi-operation .openapi-markdown table:not(.im-pricing-api-table) td {
   min-width: 14ch;
 }
 
-.prose :where(td a):not(:where(.not-prose, .not-prose *)) {
-  overflow-wrap: anywhere;
-}
-
-/* Preserve the intrinsic word width of inline declarations in tables. The
-   prose code default uses word-break: break-word, which can shrink a whole
-   declaration column to a few letters. Wider tables use their scroll wrapper. */
-.prose table :where(td code):not(:where(pre code, .not-prose, .not-prose *)),
+/* Preserve intrinsic word widths for linked API names and inline declarations.
+   The prose code default can otherwise shrink a whole column to a few letters.
+   Wider tables use their existing scroll wrapper. */
+.prose
+  table:not(.im-pricing-api-table)
+  :where(td a, td code):not(:where(pre code, .not-prose, .not-prose *)),
 .openapi-operation
   .openapi-markdown
-  table
-  :where(td code):not(:where(pre code)) {
+  table:not(.im-pricing-api-table)
+  :where(td a, td code):not(:where(pre code)) {
   word-break: normal;
   overflow-wrap: break-word;
 }
@@ -226,9 +224,17 @@ article :where(h1) {
   padding-inline-start: 0.2rem;
 }
 
-/* Fumadocs callout prose needs room inside table cells after icon and padding.
-   Its intrinsic minimum lets the existing table wrapper handle the width. */
-.prose td :where(.prose-no-margin),
-.openapi-operation .openapi-markdown td :where(.prose-no-margin) {
+/* Reserve a readable measure for rich prose beside intrinsic API identifiers,
+   including callouts after their icon and padding. Let the wrapper scroll
+   instead of squeezing paragraphs and lists into a narrow strip. */
+.prose
+  table:not(.im-pricing-api-table):not(:where(.not-prose, .not-prose *))
+  td
+  :where(p, ul, ol, .prose-no-margin),
+.openapi-operation
+  .openapi-markdown
+  table:not(.im-pricing-api-table)
+  td
+  :where(p, ul, ol, .prose-no-margin) {
   min-inline-size: 24ch;
 }
