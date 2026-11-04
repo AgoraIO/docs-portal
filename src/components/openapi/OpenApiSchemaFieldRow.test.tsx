@@ -47,6 +47,25 @@ function makeNode(
 }
 
 describe('OpenApiSchemaFieldRow', () => {
+  it('toggles an expandable field when its name is clicked', () => {
+    const onExpandedChange = vi.fn();
+    render(
+      <OpenApiSchemaFieldRow
+        copied={false}
+        expanded={false}
+        labels={labels}
+        node={makeNode({
+          name: 'settings',
+          children: [makeNode({ id: 'child', name: 'child' })],
+        })}
+        onCopy={() => {}}
+        onExpandedChange={onExpandedChange}
+      />,
+    );
+    fireEvent.click(screen.getByText('settings'));
+    expect(onExpandedChange).toHaveBeenCalledWith(true);
+  });
+
   it('keeps expandable and leaf fields on the same content column', () => {
     render(
       <>
@@ -107,7 +126,7 @@ describe('OpenApiSchemaFieldRow', () => {
       leafLeading?.querySelector('[data-openapi-field-gutter] button'),
     ).toBeNull();
     expect(
-      expandableLeading?.querySelector('[data-openapi-field-gutter] button'),
+      expandableLeading?.querySelector('button [data-openapi-field-gutter]'),
     ).toBeInTheDocument();
     expect(
       expandableLeading?.querySelector('.openapi-schema-field-content'),
@@ -440,16 +459,9 @@ describe('OpenApiSchemaFieldRow', () => {
     const expandButton = screen.getByRole('button', {
       name: `Expand ${longFieldName} properties`,
     });
-    expect(expandButton).toHaveClass('absolute', 'size-6', 'shrink-0');
-    expect(expandButton.closest('[data-openapi-field-gutter]')).toHaveClass(
-      'relative',
-      'size-3',
-    );
-    expect(
-      expandButton
-        .closest('[data-openapi-field-leading]')
-        ?.querySelector('.openapi-schema-field-content'),
-    ).toBeInTheDocument();
+    expect(expandButton).toContainElement(screen.getByText(longFieldName));
+    expect(expandButton).toContainElement(screen.getByText(longTypeName));
+
     expect(screen.getByText(longFieldName)).toHaveClass(
       'min-w-0',
       'break-words',

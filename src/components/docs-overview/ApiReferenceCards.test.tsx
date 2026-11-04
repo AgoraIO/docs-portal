@@ -744,7 +744,7 @@ describe('ApiReferenceCards', () => {
       ).getByRole('presentation', { hidden: true }),
     ).toHaveAttribute(
       'src',
-      'https://assets-docs.agora.io/images/api-reference/platforms/android.svg',
+      'https://web-cdn.agora.io/docs-portal/img/platforms/android.svg',
     );
     expect(
       within(
@@ -754,7 +754,7 @@ describe('ApiReferenceCards', () => {
       ).getByRole('presentation', { hidden: true }),
     ).toHaveAttribute(
       'src',
-      'https://assets-docs.agora.io/images/api-reference/platforms/restful.svg',
+      'https://web-cdn.agora.io/docs-portal/img/platforms/restful.svg',
     );
     expect(
       within(
@@ -764,7 +764,7 @@ describe('ApiReferenceCards', () => {
       ).getByRole('presentation', { hidden: true }),
     ).toHaveAttribute(
       'src',
-      'https://assets-docs.agora.io/images/api-reference/platforms/c.svg',
+      'https://web-cdn.agora.io/docs-portal/img/platforms/c.svg',
     );
     expect(
       within(
@@ -774,7 +774,7 @@ describe('ApiReferenceCards', () => {
       ).getByRole('presentation', { hidden: true }),
     ).toHaveAttribute(
       'src',
-      'https://doc.shengwang.cn/img/platforms/windows.svg',
+      'https://web-cdn.agora.io/docs-portal/img/platforms/windows.svg',
     );
   });
 

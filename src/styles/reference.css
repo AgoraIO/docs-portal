@@ -165,8 +165,16 @@ article :where(h1) {
    still wrap identifiers; the table's existing wrapper handles wider columns. */
 .prose :where(td):not(:where(.not-prose, .not-prose *)),
 .openapi-operation .openapi-markdown :where(td) {
-  min-width: 14ch;
   overflow-wrap: break-word;
+}
+
+/* Two-column enum tables need a floor beside long API identifiers. Applying
+   this to every column also widens short metadata columns in larger tables. */
+.prose
+  table:not(:has(tr > :nth-child(3))):not(:where(.not-prose, .not-prose *))
+  td,
+.openapi-operation .openapi-markdown table:not(:has(tr > :nth-child(3))) td {
+  min-width: 14ch;
 }
 
 .prose :where(td a, td :not(pre) > code):not(:where(.not-prose, .not-prose *)) {

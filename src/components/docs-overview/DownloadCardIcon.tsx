@@ -1,5 +1,7 @@
 import { PackageIcon } from 'lucide-react';
 import { useState } from 'react';
+import { cn } from '@/lib/cn';
+import { isMonochromePlatformIcon } from './platform-icon-src';
 
 export function DownloadCardIcon({ src }: { src?: string }) {
   const [failedSrc, setFailedSrc] = useState<string>();
@@ -12,7 +14,10 @@ export function DownloadCardIcon({ src }: { src?: string }) {
       {src && src !== failedSrc ? (
         <img
           alt=""
-          className="size-7 object-contain"
+          className={cn(
+            'size-7 object-contain',
+            isMonochromePlatformIcon(src) && 'dark:invert',
+          )}
           loading="lazy"
           onError={() => setFailedSrc(src)}
           src={src}

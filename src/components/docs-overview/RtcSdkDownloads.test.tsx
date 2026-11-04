@@ -175,8 +175,8 @@ describe('RtcSdkDownloads', () => {
       expect(card?.querySelector('img')).toHaveAttribute(
         'src',
         icon === 'windows.svg'
-          ? 'https://doc.shengwang.cn/img/platforms/windows.svg'
-          : `https://assets-docs.agora.io/images/api-reference/platforms/${icon}`,
+          ? 'https://web-cdn.agora.io/docs-portal/img/platforms/windows.svg'
+          : `https://web-cdn.agora.io/docs-portal/img/platforms/${icon}`,
       );
     },
   );

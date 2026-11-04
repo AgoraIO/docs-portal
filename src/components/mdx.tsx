@@ -1281,7 +1281,7 @@ function CodeBlockTabs({
   return (
     <FumadocsCodeBlockTabs
       {...props}
-      className={cn('bg-fd-card', className)}
+      className={cn('overflow-hidden bg-fd-card', className)}
       defaultValue={defaultValue}
       groupId={groupId}
       onValueChange={setSafeValue}

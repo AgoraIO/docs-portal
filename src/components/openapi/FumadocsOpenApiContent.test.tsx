@@ -1216,7 +1216,7 @@ describe('FumadocsOpenApiContent', () => {
       within(propertiesRow).getByRole('button', {
         name: 'Collapse properties properties',
       }),
-    ).not.toContainElement(
+    ).toContainElement(
       within(propertiesRow).getByText('object', { exact: true }),
     );
     expect(
