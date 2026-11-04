@@ -22,6 +22,9 @@ export async function createBrowserDriver({
     ),
   );
   env.AGENT_BROWSER_DEFAULT_TIMEOUT = String(timeoutMs);
+  // Native CDP traffic does not refresh the daemon's CLI idle timer.
+  // This isolated audit session is owned and closed explicitly by this driver.
+  env.AGENT_BROWSER_IDLE_TIMEOUT_MS = '0';
   const run = async (...args) => {
     let stdout, executionError;
     try {
