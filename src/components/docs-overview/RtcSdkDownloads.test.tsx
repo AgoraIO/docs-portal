@@ -20,14 +20,14 @@ describe('RtcSdkDownloads', () => {
     'shows the current #2084 %s video package',
     (platform, label, version, url) => {
       render(<RtcSdkDownloads platform={platform} product="video" />);
-      const card = screen.getByRole('article', { name: `${label} 视频 SDK` });
+      const card = screen.getByRole('article', { name: label });
       expect(screen.getAllByRole('article')).toHaveLength(1);
       expect(within(card).getByText(`v${version}`)).toBeVisible();
       expect(
         within(card).getByText('发布日期：2026 年 8 月 31 日'),
       ).toBeVisible();
       expect(
-        within(card).getByRole('link', { name: `获取 ${label} 视频 SDK` }),
+        within(card).getByRole('link', { name: `获取 ${label}` }),
       ).toHaveAttribute('href', url);
     },
   );
@@ -44,11 +44,7 @@ describe('RtcSdkDownloads', () => {
       within(full).getByText('867fb78c2eb1ec8ff02ba073a1fd2e1d'),
     ).toBeVisible();
     expect(within(full).getByText('io.agora.rtc2.video')).toBeVisible();
-    expect(
-      within(full).getByText(
-        'armeabi-v7a 16.55 MB；arm64-v8a 17.17 MB；x86 17.81 MB；x86_64 17.44 MB',
-      ),
-    ).toBeVisible();
+    expect(within(full).getByText('armeabi-v7a：16.55')).toBeVisible();
     expect(
       within(full).getByText('发布日期：2026 年 9 月 22 日'),
     ).toBeVisible();
@@ -78,9 +74,7 @@ describe('RtcSdkDownloads', () => {
   it('uses the same data for the audio variant without showing video packages', () => {
     render(<RtcSdkDownloads platform="android" product="voice" />);
 
-    expect(
-      screen.getByRole('article', { name: 'Android 音频 SDK' }),
-    ).toBeVisible();
+    expect(screen.getByRole('article', { name: 'Android' })).toBeVisible();
     expect(
       screen.queryByRole('article', { name: 'Android Full' }),
     ).not.toBeInTheDocument();
@@ -98,8 +92,14 @@ describe('RtcSdkDownloads', () => {
     expect(
       within(lite).getByText('c29b295befc44fe4ab5023e166e93e41'),
     ).toBeVisible();
-    expect(within(full).getByText('31.69 MB')).toBeVisible();
-    expect(within(lite).getByText('14.97 MB')).toBeVisible();
+    expect(
+      within(full).getByText(
+        '集成基础库 (RtcBasic) SDK 后增加的包体积为 31.69 MB',
+      ),
+    ).toBeVisible();
+    expect(
+      within(lite).getByText('集成 SDK 后增加的包体积为 14.97 MB'),
+    ).toBeVisible();
     expect(
       within(full).getByText('发布日期：2026 年 9 月 22 日'),
     ).toBeVisible();
@@ -107,15 +107,11 @@ describe('RtcSdkDownloads', () => {
 
   it('shows the Native 4.7.0 macOS and Windows packages', () => {
     render(<RtcSdkDownloads platform="macos" product="video" />);
-    expect(
-      screen.getByRole('article', { name: 'macOS 视频 SDK' }),
-    ).toBeVisible();
+    expect(screen.getByRole('article', { name: 'macOS' })).toBeVisible();
     expect(screen.getByText('v4.7.0')).toBeVisible();
 
     render(<RtcSdkDownloads platform="windows" product="video" />);
-    expect(
-      screen.getByRole('article', { name: 'Windows 视频 SDK' }),
-    ).toBeVisible();
+    expect(screen.getByRole('article', { name: 'Windows' })).toBeVisible();
     expect(screen.getAllByText('v4.7.0')).toHaveLength(2);
   });
 
@@ -123,7 +119,7 @@ describe('RtcSdkDownloads', () => {
     render(<RtcSdkDownloads platform="electron" product="video" />);
 
     const standard = screen.getByRole('article', {
-      name: 'Electron 视频 SDK',
+      name: 'Electron',
     });
     const unionTech = screen.getByRole('article', {
       name: 'Electron for 统信 OS',
@@ -131,7 +127,7 @@ describe('RtcSdkDownloads', () => {
     expect(screen.getAllByRole('article')).toHaveLength(2);
     expect(within(standard).getByText('v4.6.2')).toBeVisible();
     expect(
-      within(standard).getByRole('link', { name: '获取 Electron 视频 SDK' }),
+      within(standard).getByRole('link', { name: '获取 Electron' }),
     ).toHaveAttribute(
       'href',
       'https://www.npmjs.com/package/shengwang-electron-sdk/v/4.6.2',
