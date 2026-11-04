@@ -1,0 +1,32 @@
+---
+title: WhiteLocalLogUploadResult
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/whitelocalloguploadresult
+  sourcePath: html-docs/whiteboard/Web/interfaces/whitelocalloguploadresult.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type WhiteLocalLogUploadResult = {
+    status: "success";
+    taskId: number;
+    fileSize: number;
+    fileName: string;
+    lastId?: number;
+    serialNumber?: string;
+} | {
+    status: "skipped";
+    reason: "disabled" | "unsupported" | "foundationUnavailable" | "workerUnavailable" | "uploadDisabled" | "missingPolicyHost" | "empty" | "missingContext" | "busy" | "timeout";
+    fileSize?: number;
+} | {
+    status: "failure";
+    taskId: number;
+    stage: WhiteLocalLogUploadStage;
+    fileSize?: number;
+    error: Error;
+};
+```

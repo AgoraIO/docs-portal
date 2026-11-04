@@ -159,7 +159,7 @@ describe('RtcSdkDownloads', () => {
     ['android', 'android.svg'],
     ['ios', 'ios.svg'],
     ['web', 'js.svg'],
-    ['react-js', 'js.svg'],
+    ['react-js', 'react-native.svg'],
     ['unreal-engine', 'unreal-engine.svg'],
     ['windows', 'windows.svg'],
   ])(
@@ -172,7 +172,7 @@ describe('RtcSdkDownloads', () => {
 
       expect(card).toHaveClass('bg-background');
       expect(card).not.toHaveClass('bg-sky-50/50');
-      expect(card?.querySelector('div.border-t img')).toHaveAttribute(
+      expect(card?.querySelector('img')).toHaveAttribute(
         'src',
         icon === 'windows.svg'
           ? 'https://doc.shengwang.cn/img/platforms/windows.svg'

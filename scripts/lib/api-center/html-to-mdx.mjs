@@ -1,5 +1,11 @@
 import * as cheerio from 'cheerio';
 import { getTableOfContents } from 'fumadocs-core/content/toc';
+import {
+  readLegacyImageSizing,
+  renderMigratedImage,
+} from '../legacy-image-sizing.mjs';
+import { layoutMergedTable, renderMergedTable } from '../merged-table.mjs';
+import { normalizeTableGrid } from '../table-grid.mjs';
 import { rewriteLegacyBodyLinks } from './legacy-links.mjs';
 import {
   createWarning,
@@ -31,15 +37,11 @@ export const API_CENTER_GENERATOR_CONVERSION_OPTIONS = Object.freeze({
 });
 
 export const EDU_STORE_TYPEDOC_CONVERSION_PROFILE = 'edu-store-typedoc';
-export const RTC_REACT_TYPEDOC_CONVERSION_PROFILE = 'rtc-react-typedoc';
 
 export function apiCenterHtmlConversionProfile({
   sourcePath = '',
   supplementalGeneratedSource,
 } = {}) {
-  if (/^html-docs\/rtc\/React\//.test(sourcePath)) {
-    return RTC_REACT_TYPEDOC_CONVERSION_PROFILE;
-  }
   if (
     supplementalGeneratedSource?.kind === EDU_STORE_TYPEDOC_CONVERSION_PROFILE
   ) {
@@ -201,8 +203,56 @@ function selectArticle($) {
   return $('body').first();
 }
 
+function removeTypeDocNavigation($, article, sourceUrl, sourcePath) {
+  article.find('.tsd-hierarchy').remove();
+  if (!article.find('.tsd-index-group').length) return;
+  const page = new URL(
+    sourceUrl || sourcePath || '',
+    'https://doc.shengwang.cn',
+  );
+  const isOverview = /(?:^|\/)(?:globals|index)(?:\.html)?$/.test(
+    sourcePath || page.pathname,
+  );
+  article.find('.tsd-index-group').each((_, node) => {
+    const index = $(node);
+    if (isOverview) {
+      // Overview indexes also contain the only links to other API pages.
+      // Keep those categories, without the Index wrapper or same-page links.
+      const pagePath = page.pathname.replace(/\.html$/, '');
+      const sourcePagePath = new URL(
+        sourcePath?.split('/').at(-1) || page.href,
+        page,
+      ).pathname.replace(/\.html$/, '');
+      index.find('.tsd-index-section').each((_, section) => {
+        const category = $(section);
+        category.find('li').each((_, item) => {
+          const href = $(item).find('a[href]').first().attr('href');
+          const target = href ? new URL(href, page) : null;
+          if (
+            !target ||
+            (target.origin === page.origin &&
+              [pagePath, sourcePagePath].includes(
+                target.pathname.replace(/\.html$/, ''),
+              ))
+          ) {
+            $(item).remove();
+          }
+        });
+        if (!category.find('a[href]').length) return;
+        category.children('h3').each((_, heading) => {
+          $(heading).replaceWith($('<h2>').text($(heading).text()));
+        });
+        index.before(category);
+      });
+    }
+    index.remove();
+  });
+}
+
 function loadHtmlPage({
   html,
+  sourceUrl,
+  sourcePath,
   rootSelector,
   titleSelector,
   conversionProfile,
@@ -230,12 +280,7 @@ function loadHtmlPage({
       description: '',
     };
   }
-  if (
-    conversionProfile === EDU_STORE_TYPEDOC_CONVERSION_PROFILE ||
-    conversionProfile === RTC_REACT_TYPEDOC_CONVERSION_PROFILE
-  ) {
-    article.children('section.tsd-hierarchy, section.tsd-index-group').remove();
-  }
+  removeTypeDocNavigation($, article, sourceUrl, sourcePath);
   const selectedTitleNode = titleSelector ? $(titleSelector).first() : null;
   const titleNode =
     selectedTitleNode?.length > 0
@@ -494,6 +539,9 @@ async function renderInlineNode($, node, state, options = {}) {
   if (name === 'del' || name === 's') return `~~${content}~~`;
   if (name === 'a') {
     const rawHref = element.attr('href');
+    if (!content && (element.attr('id') || element.attr('name'))) {
+      return anchorFor(element);
+    }
     if (!rawHref) {
       const stableAnchor = anchorFor(element);
       return `${stableAnchor}${content}`;
@@ -1008,6 +1056,18 @@ async function renderImage($, element, state, fallbackAlt = '') {
       ),
     );
   }
+  const sizing = readLegacyImageSizing(
+    ['width', 'height']
+      .filter((name) => element.attr(name))
+      .map((name) => `${name}=${JSON.stringify(element.attr(name))}`)
+      .join(' '),
+  );
+  const render = (src) =>
+    renderMigratedImage({
+      ...sizing,
+      src,
+      alt: sizing.width || sizing.height ? alt : escapeMdxText(alt),
+    });
   if (!state.onAsset) {
     state.warnings.push(
       createWarning(
@@ -1015,7 +1075,7 @@ async function renderImage($, element, state, fallbackAlt = '') {
         `No asset handler is configured for ${source}.`,
       ),
     );
-    return `![${escapeMdxText(alt)}](${source})`;
+    return render(source);
   }
   try {
     const target = await state.onAsset({
@@ -1025,12 +1085,12 @@ async function renderImage($, element, state, fallbackAlt = '') {
       sourcePath: state.sourcePath,
     });
     state.assets.push({ source, target });
-    return `![${escapeMdxText(alt)}](${target})`;
+    return render(target);
   } catch (error) {
     state.warnings.push(
       createWarning('asset-missing', `${source}: ${error.message}`),
     );
-    return `![${escapeMdxText(alt)}](${source})`;
+    return render(source);
   }
 }
 
@@ -1129,49 +1189,77 @@ async function renderTable($, table, state) {
   if (rows.length === 0) return '';
   const values = [];
   const definitions = [];
-  let width = 0;
+  const firstHeaderSpan = Math.max(
+    1,
+    ...$(rows[0])
+      .children('th')
+      .toArray()
+      .map((cell) => Number.parseInt($(cell).attr('rowspan') ?? '1', 10) || 1),
+  );
   for (const [rowIndex, row] of rows.entries()) {
     const cells = $(row).children('th, td').toArray();
     const renderedCells = [];
     for (const cell of cells) {
       const element = $(cell);
-      const span = Math.max(
-        1,
-        Number.parseInt(element.attr('colspan') ?? '1', 10) || 1,
-      );
+      const metadata = {
+        kind:
+          element.is('th') ||
+          $(row).parent().is('thead') ||
+          rowIndex < firstHeaderSpan
+            ? 'h'
+            : 'd',
+        colspan: Number.parseInt(element.attr('colspan') ?? '1', 10) || 1,
+        rowspan: Number.parseInt(element.attr('rowspan') ?? '1', 10) || 1,
+      };
       const rich =
         rowIndex > 0 &&
+        metadata.kind !== 'h' &&
         element.find(
           'table, ul, ol, pre, blockquote, img, div, section, p, dl, figure, [id], a[name]',
         ).length > 0;
       if (!rich) {
-        renderedCells.push(
-          cleanText(
+        renderedCells.push({
+          ...metadata,
+          raw: cleanText(
             await renderInlineNodes($, element.contents().toArray(), state),
           ),
-        );
-        renderedCells.push(...Array.from({ length: span - 1 }, () => ''));
+        });
         continue;
       }
       const body = await renderChildren($, element, state);
       if (!body) {
-        renderedCells.push('');
+        renderedCells.push({ ...metadata, raw: '' });
         continue;
       }
       const slotName = `api-center-table-${state.tableSlotCounter++}`;
-      renderedCells.push(`<Slot name="${slotName}" />`);
-      renderedCells.push(...Array.from({ length: span - 1 }, () => ''));
+      renderedCells.push({
+        ...metadata,
+        raw: `<Slot name="${slotName}" />`,
+        nativeRaw: body,
+      });
       definitions.push(`<Slot for="${slotName}">\n\n${body}\n\n</Slot>`);
     }
-    width = Math.max(width, renderedCells.length);
     values.push(renderedCells);
   }
-  const normalized = values.map((row) => [
-    ...row,
-    ...Array.from({ length: width - row.length }, () => ''),
-  ]);
-  const headerRow = normalized.shift();
-  return [renderSimpleTable(headerRow, normalized), ...definitions]
+  const layout = layoutMergedTable(values);
+  if (layout.hasSpans || layout.headerCount > 1) {
+    return renderMergedTable(
+      values.map((row) =>
+        row.map((cell) => ({
+          ...cell,
+          raw: cell.nativeRaw ?? cell.raw,
+        })),
+      ),
+    );
+  }
+  const { header, bodyRows } = normalizeTableGrid(values);
+  return [
+    renderSimpleTable(
+      header.map((cell) => cell.raw),
+      bodyRows.map((row) => row.map((cell) => cell.raw)),
+    ),
+    ...definitions,
+  ]
     .filter(Boolean)
     .join('\n\n');
 }
@@ -1608,6 +1696,8 @@ export async function convertHtmlToMdx({
   const { $, article, titleNode, descriptionNode, title, description } =
     loadHtmlPage({
       html,
+      sourceUrl,
+      sourcePath,
       rootSelector,
       titleSelector,
       conversionProfile,
@@ -1648,7 +1738,22 @@ export async function convertHtmlToMdx({
     .filter((_, node) => {
       const element = $(node);
       const text = cleanText(element.text());
-      const sourceLink = element.find('a[href*="_source.html"]').length > 0;
+      const sourceLink = element
+        .find('a[href*="_source.html"]')
+        .toArray()
+        .some((link) => {
+          const filename = ($(link).attr('href') ?? '')
+            .split(/[?#]/, 1)[0]
+            .split('/')
+            .at(-1);
+          if (!filename || !/_source\.html$/i.test(filename)) return false;
+          // Doxygen source-file names encode extensions with _8. A public
+          // type such as class_background_image_source.html is not a file view.
+          return (
+            /_8[^/]*_source\.html$/i.test(filename) ||
+            !/^(?:class|struct|interface|union|enum)/i.test(filename)
+          );
+        });
       const includeOnly =
         text.startsWith('#include') &&
         element.find('code').length > 0 &&

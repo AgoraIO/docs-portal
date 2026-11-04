@@ -30,6 +30,89 @@ async function compileGeneratedMdx(source: string) {
 }
 
 describe('API Center shared HTML to MDX converter', () => {
+  it('preserves explicit source image dimensions after asset localization', async () => {
+    const result = await convertHtmlToMdx({
+      html: '<article><h1>开通服务</h1><img src="/enable.png" alt="功能配置" width="40%" /></article>',
+      sourcePath: 'enable.html',
+      sourceUrl: 'https://example.com/enable',
+      onAsset: async () => '/img/localized.png',
+    });
+    expect(result.body).toContain(
+      '<DocsImage alt="功能配置" src="/img/localized.png" displayWidth="40%" />',
+    );
+    await expect(compileGeneratedMdx(result.body)).resolves.toBeTruthy();
+  });
+  it('preserves rowspan occupancy, rich groups, and multi-level headers', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Options</h1><table><thead>
+      <tr><td rowspan="2">Option</td><td colspan="2">Setting</td></tr>
+      <tr><td>Key</td><td>Type</td></tr></thead><tbody>
+      <tr><td rowspan="2"><p>Beauty <a href="https://example.com">guide</a></p></td><td>enable</td><td>bool</td></tr>
+      <tr><td>strength</td><td>float</td></tr></tbody></table></article>`,
+      sourcePath: 'options.html',
+      sourceUrl: 'https://example.com/options',
+    });
+    expect(result.body).toContain('<DocsTable>');
+    expect(result.body).toContain('<th rowSpan={2} scope="col">Option</th>');
+    expect(result.body).toContain(
+      '<th colSpan={2} scope="colgroup">Setting</th>',
+    );
+    expect(result.body).toContain(
+      '<td rowSpan={2}>Beauty [guide](https://example.com/)</td>',
+    );
+    expect(result.body.match(/Beauty /g)).toHaveLength(1);
+    expect(result.body).not.toContain('<Slot');
+  });
+  it('keeps an empty Doxygen section anchor out of the member table label', async () => {
+    const result = await convertHtmlToMdx({
+      html: '<div class="contents"><div class="textblock"><table class="memberdecls"><tr class="heading"><td colspan="2"><h2 class="groupheader"><a href="#pub-methods" id="pub-methods"></a>Public 成员函数</h2></td></tr><tr><td>double</td><td><a href="#speed">getPlaybackSpeed</a> ()</td></tr></table><h3><a id="init" href="#init"></a>SDK 初始化</h3></div></div>',
+      sourceUrl: 'https://doc.shengwang.cn/api-ref/whiteboard/android/player',
+      sourcePath: 'html-docs/whiteboard/Android/player.html',
+      rootSelector: '.contents',
+      routeMap: new Map([
+        [
+          '/api-ref/whiteboard/android/player',
+          '/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/player',
+        ],
+      ]),
+    });
+    expect(result.body).toContain('<th colSpan={2} scope="colgroup">');
+    expect(result.body).toContain('<a id="pub-methods"></a>Public 成员函数');
+    expect(result.body).not.toContain('player#pub-methods Public');
+    expect(result.body).toContain('<a id="pub-methods"></a>');
+    expect(result.body).toContain('[getPlaybackSpeed]');
+    expect(result.body).toContain('### SDK 初始化');
+    expect(result.body).not.toContain('player#init SDK');
+    expect(result.body).toContain('<a id="init"></a>');
+  });
+
+  it('retains a Doxygen public type named Source inside the main description', async () => {
+    const result = await convertHtmlToMdx({
+      html: '<div class="contents"><div class="textblock"><h2>公开类型</h2><p>参见 <a href="class_background_image_source.html">BackgroundImageSource</a>。</p></div></div>',
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/index.html',
+      sourcePath: 'html-docs/whiteboard/HarmonyOS/index.html',
+      rootSelector: '.contents',
+      routeMap: buildLegacyRouteMap({
+        pageEvidence: [
+          {
+            requestedUrl:
+              'https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/class_background_image_source.html',
+            sourceResolution: {
+              targetRoute:
+                '/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-background-image-source',
+            },
+          },
+        ],
+      }),
+    });
+    expect(result.body).toContain('## 公开类型');
+    expect(result.body).toContain(
+      '[BackgroundImageSource](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-background-image-source)',
+    );
+    expect(result.warnings).toEqual([]);
+  });
+
   it.each(['v4.24.8', '4.24.9', 'v2.0.0-beta.0'])(
     'keeps SDK version %s out of generated page titles',
     async (version) => {
@@ -373,6 +456,10 @@ describe('API Center shared HTML to MDX converter', () => {
   it.each([
     ['Edu Store', 'html-docs/flexible-classroom/Electron/classes/store.html'],
     ['RTC React', 'html-docs/rtc/React/interfaces/ilocaltrack.html'],
+    ['RTC Web', 'html-docs/rtc/Web/interfaces/ilocaltrack.html'],
+    ['RTC mini-program', 'html-docs/rtc/mini-program/classes/client.html'],
+    ['Whiteboard Web', 'html-docs/whiteboard/Web/classes/whitewebsdk.html'],
+    ['another product', 'html-docs/new-product/classes/client.html'],
   ])(
     'omits TypeDoc hierarchy and index chrome for %s',
     async (_, sourcePath) => {
@@ -447,20 +534,72 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).not.toContain('## Index');
   });
 
-  it('does not apply the Edu Store TypeDoc body profile to other TypeDoc pages', async () => {
+  it('filters nested TypeDoc navigation without requiring a product profile', async () => {
     const result = await convertHtmlToMdx({
-      html: `<div class="col-content">
+      html: `<div class="col-content"><div>
         <section class="tsd-panel tsd-hierarchy"><h3>Hierarchy</h3><p>Base</p></section>
         <section class="tsd-panel-group tsd-index-group"><h2>Index</h2><p>Member index</p></section>
-      </div>`,
+      <section><h2>Methods</h2><a id="run"></a><h3>run</h3><p>Runs the client.</p></section>
+      </div></div>`,
       sourceUrl: 'https://doc.shengwang.cn/api-ref/rtc/web/classes/client.html',
       sourcePath: 'html-docs/rtc/Web/classes/client.html',
       rootSelector: '.col-content',
     });
 
-    expect(result.body).toContain('### Hierarchy');
-    expect(result.body).toContain('## Index');
+    expect(result.body).not.toContain('Hierarchy');
+    expect(result.body).not.toContain('Index');
+    expect(result.body).toContain('Runs the client.');
+    expect(result.fragments).toContain('run');
   });
+
+  it.each([
+    ['globals.html', 'globals'],
+    ['index.html', 'index'],
+    ['index.html', 'overview'],
+  ])(
+    'keeps cross-page API navigation in %s (published as %s) without duplicate member indexes',
+    async (file, publishedPath) => {
+      const result = await convertHtmlToMdx({
+        html: `<div class="col-content">
+          <section class="tsd-index-group"><h2>Index</h2>
+            <section class="tsd-index-panel"><div class="tsd-index-content">
+              <section class="tsd-index-section"><h3>Interfaces</h3><ul>
+                <li><a href="interfaces/client.html">Client</a></li>
+              </ul></section>
+              <section class="tsd-index-section"><h3>Type aliases</h3><ul>
+                <li><a href="${file}#uid">UID</a></li>
+                <li><a href="#mode">Mode</a></li>
+              </ul></section>
+            </div></section>
+          </section>
+          <section class="tsd-member-group"><h2>Type aliases</h2>
+            <a id="uid"></a><h3>UID</h3><p>UID: string</p>
+            <a id="mode"></a><h3>Mode</h3><p>Mode: number</p>
+          </section>
+        </div>`,
+        sourceUrl: `https://doc.shengwang.cn/api-ref/example/${publishedPath}`,
+        sourcePath: `html-docs/example/${file}`,
+        rootSelector: '.col-content',
+        routeMap: new Map([
+          [
+            'https://doc.shengwang.cn/api-ref/example/interfaces/client.html',
+            '/zh-CN/api-reference/example/interfaces/client',
+          ],
+        ]),
+      });
+
+      expect(result.body).not.toContain('## Index');
+      expect(result.body).toContain('## Interfaces');
+      expect(result.body).toContain(
+        '[Client](/zh-CN/api-reference/example/interfaces/client)',
+      );
+      expect(result.body.match(/^## Type aliases$/gm)).toHaveLength(1);
+      expect(result.body).not.toContain('[UID]');
+      expect(result.body).toContain('UID: string');
+      expect(result.fragments).toEqual(['uid', 'mode']);
+      await expect(compileGeneratedMdx(result.body)).resolves.toBeDefined();
+    },
+  );
 
   it('renders TypeDoc signatures and returns as structured API member blocks', async () => {
     const result = await convertHtmlToMdx({
@@ -1054,11 +1193,12 @@ describe('API Center shared HTML to MDX converter', () => {
       sourcePath: 'page.html',
     });
 
-    expect(result.body).toContain('| Enum value |  |');
     expect(result.body).toContain(
-      '| READY | <Slot name="api-center-table-0" /> |',
+      '<th colSpan={2} scope="colgroup">Enum value</th>',
     );
-    expect(result.body).toContain('<Slot for="api-center-table-0">');
+    expect(result.body).toContain('<td>READY</td>');
+    expect(result.body).toContain('<td>Ready description.</td>');
+    expect(result.body).not.toContain('<Slot');
   });
 
   it('preserves explicit fragment anchors inside table cells', async () => {

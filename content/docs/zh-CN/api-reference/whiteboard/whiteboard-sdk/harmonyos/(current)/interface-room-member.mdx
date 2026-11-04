@@ -1,0 +1,66 @@
+---
+title: RoomMember interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_room_member
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_room_member.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+房间互动用户及其工具状态、用户信息结构。
+
+可从 @shengwang/whiteboard 直接导入 RoomMember。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface RoomMember
+```
+
+| [memberId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-room-member#a48ad765e1f816d760853190a47b91283) | `memberId?: number` |
+| --- | --- |
+| [memberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-room-member#a12a3524a38c1dd6e8f9158098f128e2f) | `memberState?: MemberState` |
+| [payload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-room-member#a83755193e7aabb669e9c625c6f18d9d6) | `payload?: object` |
+
+## 变量说明
+
+<a id="a48ad765e1f816d760853190a47b91283"></a>
+
+### memberId
+
+```text
+memberId?: number
+```
+
+用户 ID，用于标识房间内的用户。同一房间中的每个用户具有唯一的用户 ID。
+
+<a id="a12a3524a38c1dd6e8f9158098f128e2f"></a>
+
+### memberState
+
+```text
+memberState?: MemberState
+```
+
+互动模式用户的所有白板工具信息。
+
+<a id="a83755193e7aabb669e9c625c6f18d9d6"></a>
+
+### payload
+
+```text
+payload?: object
+```
+
+用户加入房间时携带的自定义用户信息。

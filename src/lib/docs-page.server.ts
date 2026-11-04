@@ -752,17 +752,9 @@ export async function loadDocsPagePayload(
       };
     }
 
-    const parentPage = source.getPage(
-      platformGroupParent.slugs.slice(1),
-      locale,
-    );
-    if (!parentPage) {
-      return {
-        redirectUrl: platformGroupParent.url,
-      };
-    }
-
-    page = parentPage;
+    // The parent is already resolved from this locale's source pages. Looking
+    // it up again after slicing slugs can remove the tab, not a locale prefix.
+    page = platformGroupParent;
     requestedPlatform = panelPlatform;
   }
 
@@ -894,6 +886,25 @@ export async function loadDocsPagePayload(
     processedText,
     requestedPlatform,
   });
+  const declaredSidebar =
+    navScope?.activeVersion?.sidebar ?? navScope?.scope.meta.navScope?.sidebar;
+  const navigationRoot =
+    declaredSidebar && navScope
+      ? {
+          name: 'Scoped navigation',
+          children: flattenSidebarPageNodes(
+            getScopedNavScopeSidebarNodes({
+              getNodeMeta: (node) =>
+                getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+              navScope,
+            }),
+          ).map(({ title, url }) => ({
+            type: 'page' as const,
+            name: title,
+            url,
+          })),
+        }
+      : (navScope?.sidebarRoot ?? pageTree);
 
   const apiPayload = {
     activePath: page.url,
@@ -950,7 +961,7 @@ export async function loadDocsPagePayload(
             openApiRoute.operationId,
           )
         : getPrevNextLinksFromNode(
-            navScope?.sidebarRoot ?? pageTree,
+            navigationRoot,
             page.url,
             sourcePageUrls ? (url) => sourcePageUrls.has(url) : undefined,
           ),
@@ -1095,8 +1106,13 @@ export async function loadDocsSearchIndex(
   );
   if (supportedLocale === 'zh-CN') {
     for (const url of searchNavigation.keys()) {
-      if (!resolveCnSdkPublication(url).searchable)
+      const [, , tab, ...slugSegments] = url.split('/');
+      if (
+        !resolveCnSdkPublication(url).searchable ||
+        resolveApiReferenceRedirect(supportedLocale, tab, slugSegments)
+      ) {
         searchNavigation.delete(url);
+      }
     }
   }
   const pages = await Promise.all(
@@ -1888,6 +1904,24 @@ function resolveMergedPlatformSuffixRedirect({
   const targetSegments = [...slugSegments.slice(0, -1), baseSlug];
   const targetUrl = `/${[locale, tab, ...targetSegments].join('/')}`;
 
+  const canonicalApiUrl =
+    locale === 'zh-CN' && tab === OPENAPI_TAB
+      ? ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS[targetSegments.join('/')]
+      : undefined;
+  if (canonicalApiUrl) {
+    const canonicalSegments = canonicalApiUrl.split('/').filter(Boolean);
+    const platformIndex = canonicalSegments.findIndex(
+      (segment, index) => index >= 3 && isKnownPlatform(segment),
+    );
+    if (platformIndex >= 0) {
+      canonicalSegments[platformIndex] = platform;
+      const platformUrl = `/${canonicalSegments.join('/')}`;
+      if (hasDocsPageForUrl(source, platformUrl)) {
+        return { preserveSearch: true, redirectUrl: platformUrl };
+      }
+    }
+  }
+
   if (!hasDocsPageForUrl(source, targetUrl)) {
     return null;
   }
@@ -2606,19 +2640,19 @@ const ZH_CN_RTC_REST_SIDEBAR_GROUPS: readonly {
     links: [
       [
         '调用 RESTful API',
-        '/zh-CN/api-reference/rtc/restful/user-guides/call-api',
+        '/zh-CN/realtime-media/rtc/build/setup-and-access/call-api',
       ],
       [
         'HTTP 基本认证',
-        '/zh-CN/api-reference/rtc/restful/user-guides/http-basic-auth',
+        '/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth',
       ],
       [
         '管理频道和用户',
-        '/zh-CN/api-reference/rtc/restful/user-guides/channel-management',
+        '/zh-CN/realtime-media/rtc/build/security-and-auth/channel-management',
       ],
       [
         '封禁用户权限',
-        '/zh-CN/api-reference/rtc/restful/user-guides/user-privilege',
+        '/zh-CN/realtime-media/rtc/build/security-and-auth/user-privilege',
       ],
     ],
     title: '接入指南',
@@ -2628,7 +2662,7 @@ const ZH_CN_RTC_REST_SIDEBAR_GROUPS: readonly {
     links: [
       [
         '接收 Webhook 事件',
-        '/zh-CN/api-reference/rtc/restful/webhook/receive-webhook',
+        '/zh-CN/realtime-media/rtc/build/optimize-and-operate/receive_webhook',
       ],
       ['频道事件类型', '/zh-CN/api-reference/rtc/restful/webhook/events'],
     ],
@@ -2639,18 +2673,18 @@ const ZH_CN_RTC_REST_SIDEBAR_GROUPS: readonly {
     links: [
       [
         '维护用户在线状态',
-        '/zh-CN/api-reference/rtc/restful/best-practice/online-user-status',
+        '/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status',
       ],
       [
         'REST 服务高可用',
-        '/zh-CN/api-reference/rtc/restful/best-practice/rest-availability',
+        '/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability',
       ],
     ],
     title: '最佳实践',
   },
 ];
 const ZH_CN_RTC_REST_REFERENCE_LINKS: readonly ZhCnRtcRestSidebarLink[] = [
-  ['响应状态码', '/zh-CN/api-reference/rtc/restful/reference/response-code'],
+  ['响应状态码', '/zh-CN/realtime-media/rtc/reference/response-code'],
 ];
 
 async function embedZhCnServiceApiSidebars(

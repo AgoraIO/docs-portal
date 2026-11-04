@@ -2,7 +2,11 @@ import { createHash, randomUUID } from 'node:crypto';
 import { setTimeout as delay } from 'node:timers/promises';
 import { isPublicCnSearchUrl } from './cn-search-page';
 import { buildCnSearchDocument } from './cn-search-strategy';
-import { assertValidSearchSection, type SearchSection } from './kb-record';
+import {
+  assertValidSearchSection,
+  getSearchSectionIdentity,
+  type SearchSection,
+} from './kb-record';
 import { buildPublishedCnSearchSettings as buildMeilisearchSettings } from './meilisearch-settings';
 
 const RELEASE_ID = '_docs_release';
@@ -182,7 +186,10 @@ export async function prepareSearchIndex({
       throw new Error(`Duplicate search section ID: ${record.id}`);
     seen.add(record.id);
   }
-  const preparedRecords = records.map(buildCnSearchDocument);
+  const preparedRecords = records.map((record) => ({
+    ...buildCnSearchDocument(record),
+    distinctKey: hash(getSearchSectionIdentity(record)),
+  }));
   // 回执同时覆盖检索字段和设置；源文档相同不代表搜索行为相同。
   const checksum = hash(
     JSON.stringify({

@@ -27,7 +27,13 @@ import {
 import { buttonVariants } from 'fumadocs-ui/components/ui/button';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
-import { ArrowRightIcon, Check, LinkIcon } from 'lucide-react';
+import {
+  ArrowRightIcon,
+  Check,
+  CopyCheckIcon,
+  ExternalLink,
+  LinkIcon,
+} from 'lucide-react';
 import type { MDXComponents } from 'mdx/types';
 import {
   type AnchorHTMLAttributes,
@@ -58,6 +64,10 @@ import { useTranslation } from 'react-i18next';
 import { useResourceAccountGuidance } from '@/components/account-guidance/AccountGuidance';
 import { getChineseAccountGuidanceResource } from '@/components/account-guidance/resource-registry';
 import {
+  Callout as FumadocsCallout,
+  CalloutContainer as FumadocsCalloutContainer,
+} from '@/components/Callout';
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -69,6 +79,8 @@ import {
   DOCS_HASH_TARGET_EVENT,
   findDocsHeadingForHash,
   getActiveDocsScrollContainer,
+  getDocsHashHref,
+  scrollDocsHashTargetAfterLayout,
 } from '@/lib/docs-hash';
 import {
   type NormalizedDocsHref,
@@ -91,6 +103,7 @@ import {
 } from './mdx/PlatformTabsGroup';
 import { RepositoryCardTitle } from './mdx/RepositoryCardTitle';
 import { RTCMinutesCalculator } from './mdx/RTCMinutesCalculator';
+import { getReleaseNoteCategoryIcon } from './mdx/release-note-category';
 
 type MDXContext = {
   contentPath?: string;
@@ -104,8 +117,6 @@ const FumadocsCards = defaultMdxComponents.Cards as ComponentType<
 const FumadocsCodeBlockTab = defaultMdxComponents.CodeBlockTab;
 const FumadocsCodeBlockTabs = defaultMdxComponents.CodeBlockTabs;
 const FumadocsCodeBlockTabsList = defaultMdxComponents.CodeBlockTabsList;
-const FumadocsCallout = defaultMdxComponents.Callout;
-const FumadocsCalloutContainer = defaultMdxComponents.CalloutContainer;
 const FumadocsCalloutTitle = defaultMdxComponents.CalloutTitle;
 const FumadocsImage = defaultMdxComponents.img;
 const RouterFumadocsAnchor = createLink(FumadocsAnchor);
@@ -113,7 +124,10 @@ const RouterFumadocsCard = createLink(FumadocsCard);
 const CodeBlockTabsValueContext = createContext<string | undefined>(undefined);
 const MdxTabLabelsContext = createContext<Record<string, string>>({});
 const MdxTabLabelContext = createContext<string | undefined>(undefined);
-const MdxAccordionRootContext = createContext(false);
+const MdxAccordionRootContext = createContext<{
+  values: string[];
+  reveal: (value: string) => void;
+} | null>(null);
 
 type TabsRootProps = ComponentProps<typeof FumadocsTabs> & {
   children?: ReactNode;
@@ -229,7 +243,35 @@ function Accordion({
   value = String(title),
   ...props
 }: AccordionProps) {
-  const hasAccordionRoot = useContext(MdxAccordionRootContext);
+  const accordionRoot = useContext(MdxAccordionRootContext);
+  const [standaloneValue, setStandaloneValue] = useState(value);
+  const contentRef = useRef<HTMLElement>(null);
+  const expanded = accordionRoot
+    ? accordionRoot.values.includes(value)
+    : standaloneValue === value;
+  const reveal = useEffectEvent(() => {
+    if (accordionRoot) accordionRoot.reveal(value);
+    else setStandaloneValue(value);
+  });
+  useLayoutEffect(() => {
+    const element = contentRef.current;
+    if (headingLevel === undefined || !element) return;
+    const supportsBeforeMatch = Reflect.has(element, 'onbeforematch');
+    if (expanded) {
+      element.removeAttribute('hidden');
+      element.style.removeProperty('display');
+    } else {
+      element.setAttribute('hidden', supportsBeforeMatch ? 'until-found' : '');
+      // display:block overrides the ordinary hidden attribute in older Safari.
+      // Keep SSR and unsupported browsers collapsed until the reader opens it.
+      if (supportsBeforeMatch) element.style.removeProperty('display');
+      else element.style.display = 'none';
+    }
+    if (!supportsBeforeMatch) return;
+    const handleBeforeMatch = () => reveal();
+    element.addEventListener('beforematch', handleBeforeMatch);
+    return () => element.removeEventListener('beforematch', handleBeforeMatch);
+  }, [expanded, headingLevel]);
   const titleContent = (
     <FumadocsAccordionTrigger>{title}</FumadocsAccordionTrigger>
   );
@@ -259,26 +301,43 @@ function Accordion({
     </FumadocsAccordionHeader>
   );
 
+  const body = (
+    <div className="px-4 pb-2 text-[0.9375rem] prose-no-margin">{children}</div>
+  );
   const accordionItem = (
     <FumadocsAccordionItem value={value} {...props}>
       {header}
       <FumadocsAccordionContent
         data-toc-hidden={headingLevel !== undefined ? 'true' : undefined}
-        className={
-          headingLevel !== undefined ? 'data-[state=closed]:hidden' : undefined
-        }
         forceMount={headingLevel !== undefined ? true : undefined}
       >
-        <div className="px-4 pb-2 text-[0.9375rem] prose-no-margin">
-          {children}
-        </div>
+        {headingLevel === undefined
+          ? body
+          : // A custom element preserves the until-found string when enhanced
+            // after hydration; SSR stays collapsed without browser assumptions.
+            createElement(
+              'docs-accordion-body',
+              {
+                className: 'block',
+                hidden: expanded ? undefined : '',
+                style: expanded ? undefined : { display: 'none' },
+                ref: contentRef,
+              },
+              body,
+            )}
       </FumadocsAccordionContent>
     </FumadocsAccordionItem>
   );
 
-  if (!hasAccordionRoot) {
+  if (!accordionRoot) {
     return (
-      <ControlledFumadocsAccordions defaultValue={value} type="single">
+      <ControlledFumadocsAccordions
+        onValueChange={(next) =>
+          setStandaloneValue(typeof next === 'string' ? next : '')
+        }
+        type="single"
+        value={standaloneValue}
+      >
         {accordionItem}
       </ControlledFumadocsAccordions>
     );
@@ -291,12 +350,11 @@ function AccordionCopyButton({ id }: { id: string }) {
   const { t } = useTranslation('common');
   const platform = usePlatformPageContext()?.activePlatform;
   const [checked, onClick] = useCopyButton(() => {
-    const url = new URL(window.location.href);
+    const url = new URL(getDocsHashHref(`#${id}`), window.location.href);
     if (platform) {
       url.pathname = buildPlatformPathname(url.pathname, platform);
       url.searchParams.delete('platform');
     }
-    url.hash = id;
     return navigator.clipboard.writeText(url.toString());
   });
 
@@ -470,7 +528,17 @@ export function createDocsTableComponent(locale?: string) {
           ref={scrollRef}
           tabIndex={hasOverflow ? 0 : undefined}
         >
-          <table className={className} {...props} />
+          <table
+            className={cn(
+              // Physical first-child changes when earlier columns span rows.
+              // The MDX compiler marks logical columns and final-row edges.
+              '[&_[data-table-column]:not([data-table-column="0"])]:[border-inline-start:1px_solid_var(--docs-prose-table-border,var(--color-fd-border))]!',
+              '[&_[data-table-column="0"]]:[border-inline-start:0]!',
+              '[&_[data-table-bottom-edge]]:border-b-0!',
+              className,
+            )}
+            {...props}
+          />
         </section>
         <span className="sr-only" id={descriptionId}>
           {copy.tableOverflowDescription}
@@ -1211,7 +1279,21 @@ function Accordions({
     );
 
   return (
-    <MdxAccordionRootContext value>{accordionRoot}</MdxAccordionRootContext>
+    <MdxAccordionRootContext
+      value={{
+        values: type === 'multiple' ? selectedMultipleValue : [selectedValue],
+        reveal: (target) =>
+          handleValueChange(
+            type === 'multiple'
+              ? selectedMultipleValue.includes(target)
+                ? selectedMultipleValue
+                : [...selectedMultipleValue, target]
+              : target,
+          ),
+      }}
+    >
+      {accordionRoot}
+    </MdxAccordionRootContext>
   );
 }
 
@@ -1280,7 +1362,7 @@ function CodeBlockTabs({
   return (
     <FumadocsCodeBlockTabs
       {...props}
-      className={cn('bg-fd-card', className)}
+      className={cn('overflow-hidden bg-fd-card', className)}
       defaultValue={defaultValue}
       groupId={groupId}
       onValueChange={setSafeValue}
@@ -1340,18 +1422,123 @@ type MdxHeadingLevel = 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 function TabAwareHeading({
   as,
   children,
+  id,
+  className,
+  contentPath,
   ...props
-}: ComponentProps<'h2'> & { as: MdxHeadingLevel }) {
+}: ComponentProps<'h2'> & { as: MdxHeadingLevel; contentPath?: string }) {
+  const { t } = useTranslation('common');
   const tabLabel = useContext(MdxTabLabelContext);
-  const Heading = (defaultMdxComponents[as] ?? as) as ComponentType<
-    ComponentProps<'h2'>
-  >;
-
-  return (
-    <Heading {...props}>
+  const activePlatform = usePlatformPageContext()?.activePlatform;
+  const hash = id ? `#${id}` : '';
+  const [href, setHref] = useState(hash);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Platform changes update the URL while the heading ID stays the same.
+  useEffect(() => {
+    setHref(getDocsHashHref(hash));
+  }, [hash, activePlatform]);
+  const [checked, onCopy] = useCopyButton(() => {
+    if (!id) return;
+    return navigator.clipboard.writeText(
+      new URL(getDocsHashHref(hash), window.location.href).href,
+    );
+  });
+  const icon = getReleaseNoteCategoryIcon(contentPath, headingLabel(children));
+  const content = (
+    <>
+      {icon && (
+        <img
+          alt=""
+          aria-hidden="true"
+          className="not-prose mr-3 inline-block h-8 w-9 align-middle"
+          width={36}
+          height={32}
+          src={icon}
+        />
+      )}
       {children}
       {tabLabel ? <span className="sr-only"> ({tabLabel})</span> : null}
+    </>
+  );
+  if (!id || href === hash) {
+    const DefaultHeading = defaultMdxComponents[as] as ComponentType<
+      ComponentProps<'h2'>
+    >;
+    return (
+      <DefaultHeading {...props} id={id} className={className}>
+        {content}
+      </DefaultHeading>
+    );
+  }
+  // Fumadocs Heading has no href/copy-URL override. Adapt only platform anchors,
+  // preserving its heading chrome and leaving ordinary headings untouched.
+  const Heading = as;
+
+  return (
+    <Heading
+      {...props}
+      id={id}
+      className={cn(
+        id && 'group/heading flex scroll-m-28 flex-row items-center gap-1',
+        className,
+      )}
+    >
+      {id ? (
+        <>
+          <a
+            data-card=""
+            href={href}
+            onClick={(event) => {
+              if (
+                event.button !== 0 ||
+                event.ctrlKey ||
+                event.metaKey ||
+                event.shiftKey ||
+                event.altKey
+              )
+                return;
+              event.preventDefault();
+              scrollDocsHashTargetAfterLayout(hash, { behavior: 'auto' });
+            }}
+          >
+            {content}
+          </a>
+          <button
+            type="button"
+            aria-label={t('docs.copyLink')}
+            className={cn(
+              buttonVariants({
+                variant: 'ghost',
+                size: 'icon-xs',
+              }),
+              'not-prose shrink-0 text-fd-muted-foreground opacity-0 transition-opacity group-hover/heading:opacity-100',
+            )}
+            onClick={onCopy}
+          >
+            {checked ? <CopyCheckIcon /> : <LinkIcon />}
+          </button>
+        </>
+      ) : (
+        children
+      )}
     </Heading>
+  );
+}
+
+function headingLabel(children: ReactNode): string {
+  return Children.toArray(children)
+    .map((child) => {
+      if (typeof child === 'string' || typeof child === 'number')
+        return String(child);
+      return isValidElement<{ children?: ReactNode }>(child)
+        ? headingLabel(child.props.children)
+        : '';
+    })
+    .join('');
+}
+
+function createDocsHeading(as: MdxHeadingLevel, contentPath?: string) {
+  return (props: ComponentProps<'h2'>) => (
+    <TabAwareHeading as={as} contentPath={contentPath} {...props} />
   );
 }
 
@@ -2064,6 +2251,7 @@ function getRequiredState({
 function createDocsAnchor(contentPath?: string) {
   function DocsAnchor({
     href,
+    children,
     ...props
   }: AnchorHTMLAttributes<HTMLAnchorElement>) {
     const normalized =
@@ -2073,10 +2261,28 @@ function createDocsAnchor(contentPath?: string) {
     const normalizedHref = normalized?.href ?? href;
 
     if (normalized && shouldUseRouterLink(normalized, props)) {
-      return <RouterFumadocsAnchor {...props} to={normalized.href} />;
+      return (
+        <RouterFumadocsAnchor {...props} to={normalized.href}>
+          {children}
+        </RouterFumadocsAnchor>
+      );
     }
 
-    return <FumadocsAnchor href={normalizedHref} {...props} />;
+    const isWebLink =
+      typeof normalizedHref === 'string' &&
+      /^(?:https?:)?\/\//i.test(normalizedHref);
+
+    return (
+      <FumadocsAnchor href={normalizedHref} {...props}>
+        {children}
+        {isWebLink && children && (
+          <ExternalLink
+            aria-hidden="true"
+            className="docs-external-link-icon"
+          />
+        )}
+      </FumadocsAnchor>
+    );
   }
 
   return DocsAnchor;
@@ -2342,19 +2548,21 @@ export function getMDXComponents(
   components?: MDXComponents,
   context?: MDXContext,
 ) {
+  const DocsTable = createDocsTableComponent(context?.locale);
   return {
     ...defaultMdxComponents,
     Callout: DocsCallout,
     CalloutContainer: DocsCalloutContainer,
-    table: createDocsTableComponent(context?.locale),
+    table: DocsTable,
+    DocsTable,
     img: ZoomableImage,
     DocsImage: ZoomableImage,
     InlineImage,
-    h2: (props) => <TabAwareHeading as="h2" {...props} />,
-    h3: (props) => <TabAwareHeading as="h3" {...props} />,
-    h4: (props) => <TabAwareHeading as="h4" {...props} />,
-    h5: (props) => <TabAwareHeading as="h5" {...props} />,
-    h6: (props) => <TabAwareHeading as="h6" {...props} />,
+    h2: createDocsHeading('h2', context?.contentPath),
+    h3: createDocsHeading('h3', context?.contentPath),
+    h4: createDocsHeading('h4', context?.contentPath),
+    h5: createDocsHeading('h5', context?.contentPath),
+    h6: createDocsHeading('h6', context?.contentPath),
     a: createDocsAnchor(context?.contentPath),
     Link: createLegacyDocsLink(context?.contentPath),
     Card: createDocsCard(context?.contentPath),

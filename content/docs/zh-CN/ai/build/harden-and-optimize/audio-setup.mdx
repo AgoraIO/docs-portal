@@ -28,7 +28,7 @@ description: "了解对话式 AI 引擎中优化音频设置相关内容的适�
 - AI 降噪插件：`libagora_ai_noise_suppression_extension.so`
 - AI 回声消除插件：`libagora_ai_echo_cancellation_extension.so`
 
-集成方式请参考[减小 App 体积](/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size#删除不需要的插件)。
+集成方式请参考[减小 App 体积](/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size/android#删除不需要的插件)。
 
 </TabsContent>
 
@@ -37,7 +37,7 @@ description: "了解对话式 AI 引擎中优化音频设置相关内容的适�
 - AI 降噪插件：`AgoraAiNoiseSuppressionExtension.xcframework`
 - AI 回声消除插件：`AgoraAiEchoCancellationExtension.xcframework`
 
-集成方式请参考[减小 App 体积](/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size#删除不需要的插件)。
+集成方式请参考[减小 App 体积](/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size/ios#删除不需要的插件-1)。
 
 </TabsContent>
 
@@ -85,6 +85,14 @@ description: "了解对话式 AI 引擎中优化音频设置相关内容的适�
 
 <TabsContent value="android">
 
+<Tabs defaultValue="maven" groupId="convoai-android-install-method" persist>
+<TabsList aria-label="Android 组件集成方式">
+  <TabsTrigger value="maven">Maven</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="maven">
+
 #### Maven
 
 在 Android 项目的 `build.gradle` 文件中添加如下依赖：
@@ -92,6 +100,10 @@ description: "了解对话式 AI 引擎中优化音频设置相关内容的适�
 ```groovy
 implementation 'io.agora.agents:agora-agent-client-toolkit:2.10.0'
 ```
+
+</TabsContent>
+
+<TabsContent value="source">
 
 #### 源码集成
 
@@ -103,7 +115,20 @@ implementation 'io.agora.agents:agora-agent-client-toolkit:2.10.0'
 
 </TabsContent>
 
+</Tabs>
+
+</TabsContent>
+
 <TabsContent value="ios">
+
+<Tabs defaultValue="cocoapods" groupId="convoai-ios-install-method" persist>
+<TabsList aria-label="iOS 组件集成方式">
+  <TabsTrigger value="cocoapods">CocoaPods</TabsTrigger>
+  <TabsTrigger value="swiftpm">Swift Package Manager</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cocoapods">
 
 #### CocoaPods
 
@@ -113,6 +138,10 @@ implementation 'io.agora.agents:agora-agent-client-toolkit:2.10.0'
 pod 'agent-client-toolkit-swift', '2.10.0'
 ```
 
+</TabsContent>
+
+<TabsContent value="swiftpm">
+
 #### Swift Package Manager
 
 在 Xcode 中添加如下 Package URL，并将版本指定为 tag `2.10.0`：
@@ -120,6 +149,10 @@ pod 'agent-client-toolkit-swift', '2.10.0'
 ```text
 https://github.com/AgoraIO/agent-client-toolkit-swift.git
 ```
+
+</TabsContent>
+
+<TabsContent value="source">
 
 #### 源码集成
 
@@ -131,7 +164,19 @@ https://github.com/AgoraIO/agent-client-toolkit-swift.git
 
 </TabsContent>
 
+</Tabs>
+
+</TabsContent>
+
 <TabsContent value="web">
+
+<Tabs defaultValue="package" groupId="convoai-web-install-method" persist>
+<TabsList aria-label="Web 组件集成方式">
+  <TabsTrigger value="package">Package Manager</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="package">
 
 #### Package Manager
 
@@ -149,6 +194,10 @@ https://github.com/AgoraIO/agent-client-toolkit-swift.git
   pnpm add agora-agent-client-toolkit@2.10.0 agora-agent-client-toolkit-react@2.10.0
   ```
 
+</TabsContent>
+
+<TabsContent value="source">
+
 #### 源码集成
 
 将 `conversational-ai-api` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
@@ -156,6 +205,10 @@ https://github.com/AgoraIO/agent-client-toolkit-swift.git
 <Cards>
   <Card title="agent-client-toolkit-ts" href="https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-ts/tree/main" />
 </Cards>
+
+</TabsContent>
+
+</Tabs>
 
 </TabsContent>
 </Tabs>

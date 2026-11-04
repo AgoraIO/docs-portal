@@ -100,6 +100,7 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
       collapsible: true,
       pages: ['supported-platforms', 'browser-compatibility'],
     },
+    'response-code',
   ],
   'realtime-media/rtm/reference/meta.json': [
     'downloads',
@@ -225,7 +226,7 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
   ],
   'solutions/online-ktv/online-ktv-sdk/reference/meta.json': [
     'downloads',
-    '[服务端 API](/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/music-content-center)',
+    '[服务端 API](/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center)',
     '[在线 K 歌房 API 参考](/zh-CN/api-reference/online-ktv?from=%2Fzh-CN%2Fsolutions%2Fonline-ktv&fromScope=%2Fzh-CN%2Fsolutions%2Fonline-ktv%2Fonline-ktv-sdk)',
     'solution-compare',
   ],

@@ -12,19 +12,19 @@ info:
 
     ### 移动端云开播
 
-    - [获取云游戏列表](get-cloud-game-list)
-    - [获取云游戏详情](get-cloud-game-detail)
-    - [启动云游戏服务](start-cloud-game)
-    - [关闭云游戏服务](stop-cloud-game)
-    - [查询云游戏任务状态](get-cloud-game-status)
-    - [更新云游戏推流 Token](renew-cloud-game-token)
-    - [推送直播间消息](push-message)
+    - [获取云游戏列表](/zh-CN/api-reference/api-ref/danmaku/get-cloud-game-list)
+    - [获取云游戏详情](/zh-CN/api-reference/api-ref/danmaku/get-cloud-game-detail)
+    - [启动云游戏服务](/zh-CN/api-reference/api-ref/danmaku/start-cloud-game)
+    - [关闭云游戏服务](/zh-CN/api-reference/api-ref/danmaku/stop-cloud-game)
+    - [查询云游戏任务状态](/zh-CN/api-reference/api-ref/danmaku/get-cloud-game-status)
+    - [更新云游戏推流 Token](/zh-CN/api-reference/api-ref/danmaku/renew-cloud-game-token)
+    - [推送直播间消息](/zh-CN/api-reference/api-ref/danmaku/push-message)
 
     ### Windows 端开播
 
-    - [启动云游戏服务](start-pc-game)
-    - [关闭云游戏服务](stop-pc-game)
-    - [推送直播间消息](push-message)
+    - [启动云游戏服务](/zh-CN/api-reference/api-ref/danmaku/start-pc-game)
+    - [关闭云游戏服务](/zh-CN/api-reference/api-ref/danmaku/stop-pc-game)
+    - [推送直播间消息](/zh-CN/api-reference/api-ref/danmaku/push-message)
 
     ## 响应状态码
 
@@ -96,7 +96,9 @@ paths:
             description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: '- 调用频率限制：单个 APP ID 调用上限为 10 次/秒。'
   /cloud-bullet-game/api/live-data/games/{gameid}:
     get:
@@ -196,7 +198,9 @@ paths:
             description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: '- 调用频率限制：单个 APP ID 调用上限为 10 次/秒。'
   /cloud-bullet-game/api/live-data/games/{gameid}/mode/cloud/rooms/{roomid}:start:
     post:
@@ -310,7 +314,9 @@ paths:
             description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: '- 调用频率限制：单个 APP ID 调用上限为 10 次/秒。'
   /cloud-bullet-game/api/live-data/games/{gameid}/mode/cloud/rooms/{roomid}:stop:
     post:
@@ -382,7 +388,9 @@ paths:
             description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: '- 调用频率限制：单个 APP ID 调用上限为 10 次/秒。'
   /cloud-bullet-game/api/live-data/tasks/{taskid}/status:
     get:
@@ -453,7 +461,9 @@ paths:
             description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: '- 调用频率限制：单个 taskid 调用上限为 5 次/秒。'
   /cloud-bullet-game/api/live-data/tasks/{taskid}/renew-token:
     post:
@@ -532,7 +542,9 @@ paths:
             description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: '- 调用频率限制：单个 taskid 调用上限为 5 次/秒。'
   /bullet-game/api/live-data/games/{gameid}/rooms/${roomid}/msgType/{msg_type}:push:
     post:
@@ -561,6 +573,7 @@ paths:
       requestBody:
         description: |-
           根据推送的消息类型不同，请求包体中的 `payload` 字段内容也有所不同。
+          > [!CAUTION]
           > - 支持单次调用提交多个与路径参数中的 `msg_type` 类型一致的 `payload`。
           > - 三种消息类型的 `payload` 字段名均为 `payload`，参数说明中的中文仅作区分用，实际调用时需要删除。
         content:
@@ -720,7 +733,9 @@ paths:
             description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: |-
           - 调用频率限制：单个直播间调用上限为 200 次/秒。
           - 建议平台侧对单个用户做消息聚合，以减小请求数。
@@ -815,7 +830,9 @@ paths:
             description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: '- 调用频率限制：单个 APP ID 调用上限为 10 次/秒。'
   /cloud-bullet-game/api/live-data/games/{gameid}/mode/pc/rooms/{roomid}:stop:
     post:
@@ -868,7 +885,9 @@ paths:
             description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
             default: ''
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: '- 调用频率限制：单个 APP ID 调用上限为 10 次/秒。'
 tags:
 - name: 移动端云开播
@@ -895,7 +914,7 @@ components:
     gameid:
       name: gameid
       in: path
-      description: 游戏编号，调用[获取云游戏列表](get-cloud-game-list)获得。
+      description: 游戏编号，调用[获取云游戏列表](/zh-CN/api-reference/api-ref/danmaku/get-cloud-game-list)获得。
       required: true
       schema:
         type: string
@@ -911,7 +930,7 @@ components:
     taskid:
       name: taskid
       in: path
-      description: 云游戏任务 ID，调用[启动云游戏服务](start-cloud-game)获得。
+      description: 云游戏任务 ID，调用[启动云游戏服务](/zh-CN/api-reference/api-ref/danmaku/start-cloud-game)获得。
       required: true
       schema:
         type: string
@@ -1061,7 +1080,7 @@ components:
     taskid:
       type: string
       title: taskid
-      description: 云游戏任务 ID，调用[启动云游戏服务](start-cloud-game)获得。
+      description: 云游戏任务 ID，调用[启动云游戏服务](/zh-CN/api-reference/api-ref/danmaku/start-cloud-game)获得。
     msg_id:
       type: string
       title: msg_id

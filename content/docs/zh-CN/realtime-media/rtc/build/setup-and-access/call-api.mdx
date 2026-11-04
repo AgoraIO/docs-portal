@@ -56,7 +56,7 @@ curl --location --request POST 'https://api.sd-rtn.com/dev/v1/kicking-rule' \
 请求 Header 包含处理请求所需的信息，例如：
 
 - `Accept`：告知服务器，客户端可以处理哪些类型的响应，如 `application/json`。
-- `Authorization`：声网 RESTful API 要求 HTTP 鉴权。每次发送 HTTP 请求时，都必须在请求 Header 部填入 Authorization 字段。关于如何生成该字段的值，请参考[实现 HTTP 基本认证](/zh-CN/api-reference/rtc/restful/user-guides/http-basic-auth)。
+- `Authorization`：声网 RESTful API 要求 HTTP 鉴权。每次发送 HTTP 请求时，都必须在请求 Header 部填入 Authorization 字段。关于如何生成该字段的值，请参考[实现 HTTP 基本认证](/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth)。
 - `Content-Type`：指定请求 Body 的类型为 `application/json`。
 
 ### 请求包体（可选）
@@ -69,7 +69,7 @@ curl --location --request POST 'https://api.sd-rtn.com/dev/v1/kicking-rule' \
 
 ### 响应状态码
 
-响应的 HTTP 状态码分为 200 和非 200 两种情况，详情可参考[REST 响应状态码](/zh-CN/api-reference/rtc/restful/reference/response-code)。
+响应的 HTTP 状态码分为 200 和非 200 两种情况，详情可参考[REST 响应状态码](/zh-CN/realtime-media/rtc/reference/response-code)。
 
 - 如果返回的 HTTP 状态码为 200，表示请求成功。
 - 如果 HTTP 状态码不为 200，参考响应状态码排查问题。
@@ -88,4 +88,4 @@ curl --location --request POST 'https://api.sd-rtn.com/dev/v1/kicking-rule' \
 ```
 
 ## 错误处理
-当你遇到问题时，可以使用开发者工具查看请求和响应，结合[REST 响应状态码](/zh-CN/api-reference/rtc/restful/reference/response-code)进行排查。如未能解决问题，可联系[技术支持](https://ticket.shengwang.cn)。
+当你遇到问题时，可以使用开发者工具查看请求和响应，结合[REST 响应状态码](/zh-CN/realtime-media/rtc/reference/response-code)进行排查。如未能解决问题，可联系[技术支持](https://ticket.shengwang.cn)。

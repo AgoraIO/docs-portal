@@ -11,6 +11,130 @@ description: "查看互动白板 SDK 的版本更新、问题修复、行为变�
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="2.16.134 版" id="216134-版" headingLevel={2} value="216134-版">
+
+该版本于 2026 年 10 月 21 日发布。
+
+:::info[桥接说明]
+内嵌 Web SDK 版本为 [2.16.59](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/release-notes-wb#21659-版)，Window Manager 为 1.0.25，Appliance Plugin 为 1.1.45。动态 PPT 组件 app-slide 升级至 0.2.108，对应 Slide 1.4.65。
+:::
+
+### 新增特性
+
+#### 等待房间退出完成
+
+新增 `WhiteSdk.leaveRoom(Promise<Object> promise)`，用于等待待完成的入房流程以及当前房间或回放实例清理。通过 `Promise.then` 或 `Promise.catchEx` 获取操作完成或失败结果；不应将成功返回值作为房间全局状态读取。
+
+### 改进
+
+#### 房间与回放生命周期
+
+- 串行处理房间、回放实例的替换，新实例创建前等待旧实例退出，降低重叠入房造成的状态冲突。
+- 隔离旧实例的生命周期回调，避免已退出实例的事件影响当前房间。
+- 按入房参数指定的 region 获取动态配置。
+- 更新内嵌动态 PPT 组件，改善课件播放兼容性。
+
+### API 变更
+
+#### 新增
+
+- `WhiteSdk.leaveRoom(Promise<Object> promise)`。
+
+</Accordion>
+
+<Accordion title="2.16.133 版" id="216133-版" headingLevel={2} value="216133-版">
+
+该版本于 2026 年 10 月 12 日发布。
+
+### 改进
+
+#### 构建与依赖兼容
+
+调整 JitPack 依赖下载与 Java 8 构建基线；SDK 接口及运行时沿用 2.16.132。
+
+</Accordion>
+
+<Accordion title="2.16.132 版" id="216132-版" headingLevel={2} value="216132-版">
+
+该版本于 2026 年 10 月 12 日发布。
+
+### 新增特性
+
+#### 动态配置
+
+新增 WhiteSdkConfiguration.dynamicConfig 地址映射，按入房 region 下载动态配置，默认超时 5 秒，失败使用本地参数。
+
+### 改进
+
+升级内嵌 Web SDK 2.16.59、WindowManager 1.0.25、Appliance Plugin 1.1.45。
+
+</Accordion>
+
+<Accordion title="2.16.131 版" id="216131-版" headingLevel={2} value="216131-版">
+
+该版本于 2026 年 9 月 28 日发布。
+
+### 新增特性
+
+- 新增强制最大化、课件按需加载、本地 App 缓存和 `navigationButtonMode`。本地 App 缓存默认容量为 4。
+- `focusApp` 返回成功表示焦点、窗口层级和 zIndex 已提交，不代表页面已经完成渲染。
+
+### 改进
+
+- 依赖升级，提升背景图恢复、焦点切换和播放器生命周期的稳定性。
+- 相关依赖升级至 Window Manager `1.0.23`、Appliance Plugin `1.1.44` 和 app-slide `0.2.106`。
+
+</Accordion>
+
+<Accordion title="2.16.130 版" id="216130-版" headingLevel={2} value="216130-版">
+
+该版本于 2026 年 9 月 14 日发布。
+
+### API 变更
+
+- 新增 `originSize`、`fitOriginSizeAndCamera`、`getPageState` 和 `onUnifiedPageStateChange`。
+
+### 改进
+
+- `Room.addApp` 等待 App setup 完成，失败时返回失败结果并清理窗口。
+- 新增 `pageScaleRange`，并完善渲染任务同步以及 camera/eraser 恢复。
+
+</Accordion>
+
+<Accordion title="2.16.129 版" id="216129-版" headingLevel={2} value="216129-版">
+
+该版本于 2026 年 8 月 27 日发布。
+
+### 改进
+
+- 升级课件播放器，支持本地 GIF 播放、旧版 Safari 兼容和 WebGL 页面转场恢复。
+
+</Accordion>
+
+<Accordion title="2.16.128 版" id="216128-版" headingLevel={2} value="216128-版">
+
+该版本于 2026 年 8 月 27 日发布。
+
+### 改进
+
+- 完善 Slide 页状态回调。
+
+### 问题修复
+
+- 修复冻结恢复闪烁和 Canvas/WebGL 播放器销毁问题。
+
+</Accordion>
+
+<Accordion title="2.16.127 版" id="216127-版" headingLevel={2} value="216127-版">
+
+该版本于 2026 年 8 月 21 日发布。
+
+### 新增特性
+
+- 新增主动刷新尺寸、背景图查询和恢复能力。
+
+</Accordion>
+
 <Accordion title="2.16.100 版" id="216100-版" headingLevel={2} value="216100-版">
 
 该版本于 2025 年 4 月 7 日发布。
@@ -954,6 +1078,117 @@ dependencies {
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="2.16.147 版" id="216147-版" headingLevel={2} value="216147-版">
+
+该版本于 2026 年 10 月 21 日发布。
+
+:::info[桥接说明]
+内嵌 Web SDK 版本为 [2.16.59](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/release-notes-wb#21659-版)，Window Manager 为 1.0.25，Appliance Plugin 为 1.1.45。动态 PPT 组件 app-slide 升级至 0.2.108，对应 Slide 1.4.65。
+:::
+
+### 新增特性
+
+#### 等待房间退出完成
+
+新增 `WhiteSDK.leaveRoomWithCompletionHandler:`，用于等待待完成的入房流程以及当前房间或回放实例清理。完成回调接收可空的 `NSError`：`nil` 表示退出完成，非 `nil` 表示失败；该回调不返回房间全局状态。
+
+### 改进
+
+#### 房间与回放生命周期
+
+- 串行处理房间、回放实例的替换，新实例创建前等待旧实例退出，降低重叠入房造成的状态冲突。
+- 隔离旧实例的生命周期回调，避免已退出实例的事件影响当前房间。
+- 更新内嵌动态 PPT 组件，改善课件播放兼容性。
+
+### API 变更
+
+#### 新增
+
+- `-[WhiteSDK leaveRoomWithCompletionHandler:]`，完成回调类型为 `void (^)(NSError * _Nullable error)`。
+
+</Accordion>
+
+<Accordion title="2.16.146 版" id="216146-版" headingLevel={2} value="216146-版">
+
+该版本于 2026 年 10 月 12 日发布。
+
+### 新增特性
+
+#### 动态配置
+
+新增 dynamicConfig 地址映射，按入房 region 下载动态配置，默认超时 5 秒，失败使用本地参数。
+
+### 改进
+
+升级内嵌 Web SDK 2.16.59、WindowManager 1.0.25、Appliance Plugin 1.1.45。
+
+</Accordion>
+
+<Accordion title="2.16.145 版" id="216145-版" headingLevel={2} value="216145-版">
+
+该版本于 2026 年 9 月 28 日发布。
+
+### 问题修复
+
+- 修复 SwiftPM 公共头和资源加载问题，并在房间释放、断开连接或替换 handler 时正确解绑 Pencil 手势。
+
+</Accordion>
+
+<Accordion title="2.16.144 版" id="216144-版" headingLevel={2} value="216144-版">
+
+该版本于 2026 年 9 月 28 日发布。
+
+### 新增特性
+
+- 新增强制最大化、课件按需加载、本地 App 缓存和 `navigationButtonMode`。本地 App 缓存默认容量为 4。
+- `focusApp` 返回成功表示最终焦点已提交，不代表页面已经完成渲染。
+
+### 改进
+
+- 依赖升级，提升背景图恢复、焦点切换和播放器生命周期的稳定性。
+- 相关依赖升级至 Window Manager `1.0.23`、Appliance Plugin `1.1.44` 和 app-slide `0.2.106`。
+
+</Accordion>
+
+<Accordion title="2.16.143 版" id="216143-版" headingLevel={2} value="216143-版">
+
+该版本于 2026 年 9 月 14 日发布。
+
+### API 变更
+
+- 新增 `originSize`、`fitOriginSizeAndCamera`、`getPageState` 和 `onUnifiedPageStateChange`。
+
+### 改进
+
+- App setup 失败时返回 `nil` 并清理半初始化窗口。
+- 新增 `pageScaleRange`，并完善渲染任务同步以及 camera/eraser 恢复。
+
+</Accordion>
+
+<Accordion title="2.16.142 版" id="216142-版" headingLevel={2} value="216142-版">
+
+该版本于 2026 年 8 月 27 日发布。
+
+### 改进
+
+- 升级课件播放器，支持本地 GIF 播放和旧版 Safari 兼容，并恢复 WebGL 页面转场。
+
+</Accordion>
+
+<Accordion title="2.16.141 版" id="216141-版" headingLevel={2} value="216141-版">
+
+该版本于 2026 年 8 月 27 日发布。
+
+### 改进
+
+- 完善 Slide 页码回调链路。
+
+### 问题修复
+
+- 修复冻结恢复闪烁和 Canvas/WebGL 播放器销毁问题。
+
+</Accordion>
+
 <Accordion title="2.16.112 版" id="216112-版" headingLevel={2} value="216112-版">
 
 该版本于 2025 年 4 月 7 日发布。
@@ -1359,7 +1594,7 @@ PPT 渲染配置项 `WhiteSlideAppParams` 新增了以下属性：
 
 同时，为方便管理房间内的用户，该版本在 `WhiteRoomConfig` 类的 `initWithUuid` 中新增 `uid` 参数，用于设置用户 ID。
 
-如果你将 SDK 升级到 v2.15.0 或之后版本，要加入房间，你必须调用 `joinRoomWithConfig`，并确保初始化 `WhiteRoomConfig` 对象时在 `initWithUuid` 中传入字符串格式的 `uid`。每个用户的 `uid` 长度不能超过 1024 字节，且在同一房间内必须唯一。详见[加入实时房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb#3-初始化-sdk-并加入房间)。
+如果你将 SDK 升级到 v2.15.0 或之后版本，要加入房间，你必须调用 `joinRoomWithConfig`，并确保初始化 `WhiteRoomConfig` 对象时在 `initWithUuid` 中传入字符串格式的 `uid`。每个用户的 `uid` 长度不能超过 1024 字节，且在同一房间内必须唯一。详见[加入实时房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb#4-初始化-sdk-并加入房间)。
 
 ### 新增特性
 
@@ -1884,6 +2119,83 @@ PPT 渲染配置项 `WhiteSlideAppParams` 新增了以下属性：
 本文提供声网 Whiteboard Web SDK 的发版说明。
 
 <Accordions type="multiple" openFirst>
+
+<Accordion title="2.16.59 版" id="21659-版" headingLevel={2} value="21659-版">
+
+该版本于 2026 年 10 月 10 日发布。
+
+### 新增特性
+
+#### 动态配置
+
+新增按房间 region 加载动态配置的能力。你可以通过 `WhiteWebSdkConfiguration.dynamicConfig` 配置各数据中心对应的配置文件地址，SDK 在加入房间前读取并应用配置。本地显式传入的参数优先；配置未提供或读取失败时，沿用本地参数。
+
+`Room.dynamicConfig` 提供本次入房解析后的只读配置快照；`Room.dynamicConfigState` 提供配置来源和回退原因等状态信息。自动重连不会重新读取该快照。接入流程与配置方式详见[动态配置](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/dynamic-config)。
+
+### API 变更
+
+#### 新增
+
+- `WhiteWebSdkConfiguration.dynamicConfig?: DynamicConfigOptions`。
+- `Room.dynamicConfig?: DynamicConfigSnapshot`，只读。
+- `Room.dynamicConfigState?: DynamicConfigState`，只读。
+- 公开配置类型：`DynamicConfigOptions`、`DynamicConfigRegionOptions`、`DynamicConfigURLOptions`、`DynamicConfigSnapshot`、`DynamicConfigState`、`DynamicConfigFieldSource`、`DynamicConfigFieldSources`、`DynamicConfigJSON` 和 `DynamicConfigObject`。
+
+</Accordion>
+
+<Accordion title="2.16.58 版" id="21658-版" headingLevel={2} value="21658-版">
+
+该版本于 2026 年 8 月 21 日发布。
+
+### 问题修复
+
+- 隔离 `undoWatcher.watch()` 异常并记录上下文，避免异常中断页面切换；该修复不会重建已经停止的 watcher。
+
+</Accordion>
+
+<Accordion title="2.16.57 版" id="21657-版" headingLevel={2} value="21657-版">
+
+该版本于 2026 年 8 月 17 日发布。
+
+### 新增特性
+
+- 新增 `View.refreshSize(width, height)`，支持在容器尺寸已知但未被 ResizeObserver 捕获时主动刷新白板视图尺寸。
+
+</Accordion>
+
+<Accordion title="2.16.56 版" id="21656-版" headingLevel={2} value="21656-版">
+
+该版本于 2026 年 7 月 16 日发布。
+
+### 新增特性
+
+- 增加本地日志上传的可追踪性，支持关联房间、用户和当前运行上下文。
+
+</Accordion>
+
+<Accordion title="2.16.55 版" id="21655-版" headingLevel={2} value="21655-版">
+
+该版本于 2026 年 7 月 15 日发布。
+
+### 新增特性
+
+- 增加本地日志、状态监听、日志收集、flush 和上传能力。
+
+</Accordion>
+
+<Accordion title="2.16.54 版" id="21654-版" headingLevel={2} value="21654-版">
+
+该版本于 2026 年 3 月 27 日发布。
+
+### 改进
+
+- 增加接口调用日志，并在背景图加载失败时自动重试。
+
+### 问题修复
+
+- 修复部分绘制场景中的 `invalid node` 问题。
+
+</Accordion>
 
 <Accordion title="2.16.53 版" id="21653-版" headingLevel={2} value="21653-版">
 
@@ -2846,6 +3158,230 @@ PPT 渲染配置项 `WhiteSlideAppParams` 新增了以下属性：
 :::warning[注意]
 2.6.4 及之前版本已经停止维护，建议升级到最新版本。
 :::
+
+</Accordion>
+
+</Accordions>
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+本文提供声网 Whiteboard HarmonyOS SDK（OHPM 包 `@shengwang/whiteboard`）的发版说明。
+
+:::info[桥接说明]
+SDK 使用 ArkUI 组件和 ArkWeb 内嵌白板运行时。Native 包版本与内嵌 Web SDK 版本不同，各版本的内嵌依赖请参见对应版本说明。
+:::
+
+接入与新增接口见[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)和[新版 API 与多窗口课件控制](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/native-api-extension)。
+
+<Accordions type="multiple" openFirst>
+
+<Accordion title="0.2.11 版" id="0211-版" headingLevel={2} value="0211-版">
+
+该版本于 2026 年 10 月 22 日发布。
+
+:::info[桥接说明]
+内嵌 Web SDK 版本为 [2.16.59](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/release-notes-wb#21659-版)，Window Manager 为 1.0.25，Appliance Plugin 为 1.1.45。动态 PPT 组件 app-slide 升级至 0.2.108，对应 Slide 1.4.65。
+:::
+
+### 新增特性
+
+#### 等待房间退出完成
+
+新增 `WhiteboardController.leaveRoom(): Promise<object>`，等待当前控制器所属房间完成清理。原有 `disconnect(): Promise<object>` 接口继续保留，并使用相同的异步退出流程。通过 `await` 或 Promise 获取操作结果，并处理退出失败的异常；不应将成功返回值作为房间全局状态读取。
+
+### 改进
+
+#### 房间生命周期
+
+- 同身份房间实例替换前等待旧实例退出，隔离旧实例的生命周期回调。
+- 重复退出请求复用正在进行或已经完成的清理结果，保留清理失败信息。
+- 更新内嵌动态 PPT 组件，改善课件播放兼容性。
+
+### API 变更
+
+#### 新增
+
+- `WhiteboardController.leaveRoom(): Promise<object>`。
+
+#### 调整
+
+- `WhiteboardController.disconnect(): Promise<object>` 保持原签名，等待所属房间清理完成后返回异步结果。
+
+</Accordion>
+
+<Accordion title="0.2.10 版" id="0210-版" headingLevel={2} value="0210-版">
+
+该版本于 2026 年 10 月 12 日发布。
+
+### 新增特性
+
+#### 动态配置
+
+新增 WhiteboardOptions.dynamicConfig 和导出 DynamicConfigOptions，按 region 读取配置；保留未显式配置字段的继承语义，提供 buildSdkOptions。
+
+### 改进
+
+升级内嵌 Web SDK 2.16.59、WindowManager 1.0.25、Appliance Plugin 1.1.45。
+
+</Accordion>
+
+<Accordion title="0.2.9 版" id="029-版" headingLevel={2} value="029-版">
+
+该版本于 2026 年 9 月 28 日发布。
+
+### 更新
+
+新增窗口强制最大化、按焦点初始化、本端 App 缓存及 Slide `navigationButtonMode` 配置；`focusApp` 返回焦点提交结果。
+
+内嵌 Window Manager 1.0.23、Appliance Plugin 1.1.44、app-slide 0.2.106。改进窗口焦点与关闭交接、图片初始化失败处理和 PPT 媒体恢复。
+
+</Accordion>
+
+<Accordion title="0.2.8 版" id="028-版" headingLevel={2} value="028-版">
+
+该版本于 2026 年 9 月 14 日发布。
+
+### 更新
+
+`dispatchDocsEvent` 支持 MainView、DocsViewer、Slide 和 Presentation 统一异步控制；新增 `originSize`、`pageScaleRange`、`getPageState`、`onUnifiedPageStateChange` 及 `fitOriginSizeAndCamera`。`addApp` 等待 App 初始化，失败 reject 并清理窗口。
+
+内嵌 Window Manager 1.0.22、Appliance Plugin 1.1.43、app-slide 0.2.104。修复相机、橡皮及 Worker 渲染恢复问题。
+
+</Accordion>
+
+<Accordion title="0.2.7 版" id="027-版" headingLevel={2} value="027-版">
+
+该版本于 2026 年 8 月 28 日发布。
+
+### 更新
+
+改进动态课件 GIF 解码及 WebGL 转场恢复。
+
+app-slide 升级至 0.2.103，内嵌 Slide 1.4.57。
+
+</Accordion>
+
+<Accordion title="0.2.6 版" id="026-版" headingLevel={2} value="026-版">
+
+该版本于 2026 年 8 月 27 日发布。
+
+### 更新
+
+新增 `onSlidePageStateChanged`，回调包含 `appId/page/pageCount`，页码从 1 开始；改进初始化失败事件解析。
+
+app-slide 升级至 0.2.102，内嵌 Slide 1.4.56，修复课件冻结恢复和销毁问题。
+
+</Accordion>
+
+<Accordion title="0.2.5 版" id="025-版" headingLevel={2} value="025-版">
+
+该版本于 2026 年 8 月 22 日发布。
+
+### 更新
+
+修复回调数据为 JSON 字符串时的解析问题，恢复背景图加载、教具初始化、消息及 Slide 错误事件分发。
+
+内嵌 Whiteboard Web 2.16.58、Window Manager 1.0.19、Appliance Plugin 1.1.42、app-slide 0.2.100。
+
+</Accordion>
+
+<Accordion title="0.2.4 版" id="024-版" headingLevel={2} value="024-版">
+
+该版本于 2026.08.21 发布。
+
+### 新增特性与改进
+
+- `WhiteboardCallbacks` 新增 `sdkSetupFail`，用于在 SDK 初始化失败时通知业务侧重新初始化并重新加房，并与 Android、iOS 的公开接口命名保持一致。
+- 公开导出 `SDKError`，提供初始化失败原因和 JS 堆栈信息。
+
+### API 变更
+
+详见[公开 API](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/overview)。
+
+</Accordion>
+
+<Accordion title="0.2.3 版" id="023-版" headingLevel={2} value="023-版">
+
+该版本于 2026.08.15 发布。
+
+### 新增特性与改进
+
+- 升级内嵌 `Whiteboard-bridge` 资源至提交 `42c7f0d`，将 `@netless/appliance-plugin` 从 `1.1.39` 升级至 `1.1.40`。
+- 新增 `workerRenderModeBlacklist` 与 `workerCanvasContextBlacklist` 配置类型，支持按 Harmony ArkWeb 等运行时版本覆盖 Appliance Plugin Worker 渲染和 Canvas context 兼容性策略。
+- 导出 `VersionWorkerBlacklist` 与 `WorkerBlacklistByRuntime`，供 Harmony 业务侧构造类型安全的 Worker 黑名单配置。
+
+### API 变更
+
+详见[公开 API](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/overview)。
+
+</Accordion>
+
+<Accordion title="0.2.2 版" id="022-版" headingLevel={2} value="022-版">
+
+该版本于 2026.08.14 发布。
+
+### 新增特性与改进
+
+- 升级内嵌 `Whiteboard-bridge` 资源至提交 `aa1dfd7`，包含 `appliance-plugin@1.1.39` 和 `window-manager@1.0.18`。
+- 新增 `enableAppliancePlugin` 与 `appliancePluginOptions`，支持透传 cursor、同步、贝塞尔曲线和文本编辑器配置。
+- Harmony demo 增加自定义 cursor 配置；模拟器验证时局部使用 2D canvas context。
+
+### API 变更
+
+详见[公开 API](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/overview)。
+
+</Accordion>
+
+<Accordion title="0.2.1 版" id="021-版" headingLevel={2} value="021-版">
+
+该版本于 2026.07.17 发布。
+
+### 新增特性与改进
+
+- 升级内嵌 `Whiteboard-bridge` jsbridge 资源，包含 `white-web-sdk@2.16.56`、本地日志上传链路、`window-manager@1.0.17` 以及 Presentation/Docs/Slide 课件能力更新。
+- `WhiteboardOptions` 新增 `localLogOptions`，支持 Harmony 侧显式开启 WebView 内本地日志与上传配置。
+- `WhiteboardCallbacks` 新增 `onLocalLogStateChange`，用于接收 bridge 侧本地日志运行状态变化。
+- `WhiteboardOptions` 新增 `slideAppOptions`、`presentationAppOptions`，支持透传 Slide 缩放配置和 Presentation 内置课件配置。
+- `WindowParams` 新增 `useBoxesStatus` 参数，用于开启每个窗口独立的状态管理；新增 `builtinAppOptions` 用于配置 window-manager 内置 App。
+- 多窗口 API 补充 `dispatchDocsEvent` 的 `scalePage` 事件类型，用于统一缩放 DocsViewer、Slide 和 Presentation 课件页面。
+- 更新 Harmony demo：开启本地日志、Slide `enableScale`、Presentation 课件插入、`scalePage` 操作按钮，以及固定高度滚动测试按钮区域。
+- 补充单元测试覆盖本地日志 bridge 方法、内置 App 配置、`useBoxesStatus` 和课件配置透传。
+
+### API 变更
+
+详见[公开 API](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/overview)。
+
+</Accordion>
+
+<Accordion title="0.2.0 版" id="020-版" headingLevel={2} value="020-版">
+
+该版本于 2026.05.09 发布。
+
+### 新增特性与改进
+
+- 升级内嵌 `Whiteboard-bridge` jsbridge 资源。
+- 对齐 Harmony 与 Android 已公开且 bridge 已支持的 `joinRoom`、`room`、多窗口和多页相关接口。
+- 新增 `WhiteboardController` / 回调解析 / join 参数映射单元测试支持。
+
+### API 变更
+
+详见[公开 API](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/overview)。
+
+</Accordion>
+
+<Accordion title="0.1.0 版" id="010-版" headingLevel={2} value="010-版">
+
+该版本于 2024.12.09 发布。
+
+### 新增特性与改进
+
+- initial
+
+### API 变更
+
+详见[公开 API](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/overview)。
 
 </Accordion>
 

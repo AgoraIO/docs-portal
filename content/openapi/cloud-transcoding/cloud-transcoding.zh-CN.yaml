@@ -130,7 +130,7 @@ paths:
                               height: 480
                               lowBitrateHighQuality: false
       responses:
-        '200':
+        2XX:
           description: 如果状态码为 2XX，则请求成功。
           content:
             application/json:
@@ -371,7 +371,7 @@ paths:
                               width: 960
                               height: 480
       responses:
-        '200':
+        2XX:
           $ref: '#/components/responses/create-success'
         非 2XX:
           $ref: '#/components/responses/failure-with-message'
@@ -398,7 +398,7 @@ paths:
       - $ref: '#/components/parameters/taskId'
       - $ref: '#/components/parameters/appId'
       responses:
-        '200':
+        2XX:
           $ref: '#/components/responses/query-success'
         非 2XX:
           $ref: '#/components/responses/failure-with-message'
@@ -523,7 +523,7 @@ paths:
                               height: 480
                               lowBitrateHighQuality: false
       responses:
-        '200':
+        2XX:
           description: 如果状态码为 2XX，则请求成功。包体为空。
           headers:
             X-Request-ID:
@@ -572,7 +572,7 @@ paths:
       - $ref: '#/components/parameters/appId'
       - $ref: '#/components/parameters/builderToken2'
       responses:
-        '200':
+        2XX:
           $ref: '#/components/responses/delete-success'
         非 2XX:
           $ref: '#/components/responses/failure-with-message'
@@ -739,6 +739,7 @@ components:
       in: query
       description: |-
         通过 `Acquire` 方法的响应包体得到的 `tokenName` 的值。
+        > [!CAUTION]
         > 同一时间仅允许一个 `builderToken` 运行任务。
       required: true
       schema:
@@ -805,18 +806,17 @@ components:
       required: true
       schema:
         type: string
-      description: "通过 `Acquire` 方法的响应包体得到的 `tokenName` 的值。 \n> 请确保填入的 `builderToken`\
-        \ 和你在 `Create` 接口中传入的 `builderToken` 一致。"
+      description: "通过 `Acquire` 方法的响应包体得到的 `tokenName` 的值。 \n> [!CAUTION]\n> 请确保填入的 `builderToken` 和你在 `Create` 接口中传入的 `builderToken` 一致。"
   securitySchemes:
     Basic Auth:
       type: http
       description: 声网云端转码 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成 Base64
-        编码凭证，并填入请求头部的 `Authorization` 字段中。
+        编码凭证，并填入请求头部的 `Authorization` 字段中。详见[实现 HTTP 基本认证](/zh-CN/realtime-media/transcoding/build/http-auth)。
       scheme: basic
     API Key:
       type: apiKey
       description: '**HTTP HMAC 认证**：每次发送 HTTP 请求时，都必须在请求 Header 部填入 `Authorization`
-        字段。'
+        字段。关于如何生成该字段的值，请参考[实现 HTTP HMAC 认证](/zh-CN/realtime-media/transcoding/build/http-auth#实现-http-hmac-鉴权)。'
       name: API Key
       in: header
   responses:
@@ -1160,6 +1160,7 @@ components:
         - 所有大写英文字母（A-Z）
         - 数字 0-9
         - "-", "_"
+        > [!CAUTION]
         > 一个 `instanceId` 可以生成多个 `builderToken`，但同一时间仅允许一个 `builderToken` 运行任务。
       x-stoplight:
         id: xiydvjp8ydj6s
@@ -1215,6 +1216,7 @@ components:
       description: |-
         Cloud transcoder 在进入待转码视频源所属 RTC 频道时所需设置的 Token。该值可用于确保频道安全，避免异常用户扰乱频道内其他用户。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
+        > [!CAUTION]
         > Cloud transcoder 在待转码音视频源所属 RTC 频道内的 UID 为声网随机分配，因此，生成 Token 时，你使用的 `uid` 必须为 0。
       x-stoplight:
         id: n3vyt0n45lyzo
@@ -1306,6 +1308,7 @@ components:
       description: |-
         画布背景图。必须为合法 URL，且包含 `jpg` 或 `png` 后缀。
 
+        > [!NOTE]
         > 如果不传值，则没有画布背景图。
       x-stoplight:
         id: wc63oetcssjj2
@@ -1394,6 +1397,7 @@ components:
       description: |-
         Cloud transcoder 在进入输出音视频流所属 RTC 频道时所需设置的 Token。该值可用于确保频道安全，避免异常用户扰乱频道内其他用户。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
+        > [!CAUTION]
         > Cloud transcoder 在转码输出音视频流所属 RTC 频道内的 UID 为你指定的 `outputs.rtc.rtcUid`，因此，生成 Token 时，你使用的 `uid` 必须和 `outputs.rtc.rtcUid` 一致。
       x-stoplight:
         id: 8u0elg96dwfmc
@@ -1460,6 +1464,7 @@ components:
         - `true`：开启。
         - `false`：不开启。
 
+        > [!CAUTION]
         > 低码高清功能可以以较低的码率达到人眼感受的较高质量视频的效果。该功能会增加费用，开通前请联系声网销售咨询费用。
       default: false
       x-stoplight:
@@ -1623,6 +1628,7 @@ components:
         - `"heterogeneous-single"`: 异构单流模式，也就是输入流和输出流的类型可以不同，也可以相同，当前支持的流类型是 RTC 流和 CDN 流。
         - `"single"`: RTC 流 Relay 模式，即把源频道内主播的音视频数据和信令一同 Relay 到目的频道。
 
+        > [!CAUTION]
         > - 如果 `streamProcessMode` 设置为 `"heterogeneous-single"` 或者 `"single"`，那 `audioInputs` 或者 `videoInputs` 列表最多只能包含一项。
         > - 如果需要混音、合图或混音合图，则无需设置 `streamProcessMode`。
       default: mix
@@ -1636,6 +1642,7 @@ components:
         - `-1`：循环播放媒体流。
         - `n`：自定义播放媒体流次数。不可设置为 0。
 
+        > [!NOTE]
         > 仅在音频输入源是 CDN 场景下设置。
     transcoder:
       title: transcoder
@@ -1681,6 +1688,7 @@ components:
       description: |-
         音频输入源列表，支持 RTC 音频流和 CDN 音频流两种类型。如果 `audioInputs` 包含多个输入音频源，则表示需要混音。
 
+        > [!CAUTION]
         > `streamUrl` 和 `rtc` 两者中必须填一个。
       items:
         x-stoplight:
@@ -1694,6 +1702,7 @@ components:
             description: |-
               音频源流的 URL。
 
+              > [!CAUTION]
               > 在音频输入源是 CDN 场景下，该参数为必填。
           volume:
             type: number
@@ -1702,6 +1711,7 @@ components:
             description: |-
               音频源流的音量。
 
+              > [!NOTE]
               > 仅在音频输入源是 CDN 场景下设置。
             minimum: 0
             maximum: 200
@@ -1744,6 +1754,7 @@ components:
       description: |-
         视频输入源列表，支持 RTC 视频流和 CDN 视频流两种类型。如果 `videoInputs` 包含多个输入视频源，则表示需要合图。
 
+        > [!CAUTION]
         > `streamUrl` 和 `rtc` 两者中必须填一个。
       items:
         x-stoplight:
@@ -1759,6 +1770,7 @@ components:
             description: |-
               视频源流的 URL。
 
+              > [!CAUTION]
               > 在视频输入源是 CDN 场景下，该参数为必填。
           repeat:
             $ref: '#/components/schemas/repeat'
@@ -1805,6 +1817,7 @@ components:
       description: |-
         视频流画面在其画布上布局的位置和大小信息。
 
+        > [!CAUTION]
         > 如果需要合图，那 `videoInputs` 列表中的每一项都要设置 `region` 字段，指定其在输出画布中的位置，要保证不能超过画布大小。
       required:
       - x
@@ -1925,6 +1938,7 @@ components:
       description: |-
         服务配置的输出设置，可选择输出到 RTC 频道或者 CDN 地址。
 
+        > [!CAUTION]
         > `streamUrl` 和 `rtc` 两者中必须填一个。
       items:
         x-stoplight:
@@ -1938,6 +1952,7 @@ components:
             description: |-
               CDN 推流地址。
 
+              > [!CAUTION]
               > 在输出到 CDN 推流地址场景中，该参数为必填。
           rtc:
             $ref: '#/components/schemas/output-rtc'
@@ -1970,6 +1985,7 @@ components:
       type: object
       description: |
         输出视频的编码参数。
+        > [!CAUTION]
         > 支持的最大转码分辨率为 1080p (1920 x 1080 px)。
       required:
       - width
@@ -2004,6 +2020,7 @@ components:
           description: |-
             可以设为 `"RAW"`，表示输出视频不转码，即保持输入视频的编码格式不变。
 
+            > [!CAUTION]
             > - 如果输出的视频转码，请勿设置该字段。
             > - `"RAW"` 模式下，`videoInputs` 中设置的输入数量只能为 1。
     seiOption:

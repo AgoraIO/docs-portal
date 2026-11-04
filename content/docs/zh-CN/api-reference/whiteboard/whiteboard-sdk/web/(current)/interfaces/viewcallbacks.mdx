@@ -1,0 +1,28 @@
+---
+title: ViewCallbacks
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/viewcallbacks
+  sourcePath: html-docs/whiteboard/Web/interfaces/viewcallbacks.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type ViewCallbacks = {
+    onCameraTransform: (mode: CameraTransformation)=>void;
+    onHandToolActive: (active: boolean)=>void;
+    onSizeUpdated: (size: Size)=>void;
+    onRenderDuration: (renderDuration: number)=>void;
+    onCameraUpdated: (camera: Camera)=>void;
+    onCameraUpdatedByDevice: (camera: Camera)=>void;
+    onScenePathUpdated: (scenePath: string)=>void;
+    onKeyDown: (event: KeyboardEvent)=>void;
+    onKeyUp: (event: KeyboardEvent)=>void;
+    onCanUndoStepsUpdate: (canUndoSteps: number)=>void;
+    onCanRedoStepsUpdate: (canRedoSteps: number)=>void;
+    onActiveHotkey: (hotKey: string)=>void;
+};
+```

@@ -1,0 +1,22 @@
+---
+title: Logger
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/logger
+  sourcePath: html-docs/whiteboard/Web/interfaces/logger.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type Logger<C = {
+    [key: string]: any;
+}> = LoggerPrinter<C> & {
+    context?: Partial<C> & {
+        [key: string]: any;
+    };
+    withContext: <T extends Object>(context: Partial<C> & T)=>Logger<C & T>;
+};
+```

@@ -1,6 +1,6 @@
 ---
-title: Enumeration ScenePathType
-description: 场景路径的类型。
+title: ScenePathType
+description: Whiteboard Web SDK 2.16.59 公开 enum。
 _migration:
   type: generated-html
   status: migrated
@@ -10,57 +10,70 @@ _migration:
   warnings: []
 ---
 
-## Index
+```ts
+export declare enum ScenePathType {
+    /**
+     * 该场景不存在
+     */
+    None = "none",
+    /**
+     * 场景组
+     */
+    Dir = "dir",
+    /**
+     * 场景
+     */
+    Page = "page",
+    /**
+     * 路径中存在一个场景，导致该路径无法存在
+     */
+    Conflict = "conflict",
+}
+```
 
-### Enumeration members
+## 成员
 
-- [Conflict](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype#conflict)
-- [Dir](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype#dir)
 - [None](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype#none)
+- [Dir](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype#dir)
 - [Page](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype#page)
-
-## Enumeration members
-
-<a id="conflict"></a>
-
-### Conflict
-
-Conflict: = "conflict"
-
-- Defined in [index-zh.d.ts\:1501](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1501)
-
-该路径中包含已有场景的路径，无法存在。
-
-:::info[since]
-2.14.5
-:::
-
-<a id="dir"></a>
-
-### Dir
-
-Dir: = "dir"
-
-- Defined in [index-zh.d.ts\:1491](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1491)
-
-场景目录。
+- [Conflict](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype#conflict)
 
 <a id="none"></a>
 
 ### None
 
-None: = "none"
+`None = "none";`
 
-- Defined in [index-zh.d.ts\:1487](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1487)
+```text
+该场景不存在
+```
 
-该场景不存在。
+<a id="dir"></a>
+
+### Dir
+
+`Dir = "dir";`
+
+```text
+场景组
+```
 
 <a id="page"></a>
 
 ### Page
 
-Page: = "page"
+`Page = "page";`
 
-- Defined in [index-zh.d.ts\:1495](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1495)
+```text
+场景
+```
 
-场景。
+<a id="conflict"></a>
+
+### Conflict
+
+`Conflict = "conflict";`
+
+```text
+路径中存在一个场景，导致该路径无法存在
+```

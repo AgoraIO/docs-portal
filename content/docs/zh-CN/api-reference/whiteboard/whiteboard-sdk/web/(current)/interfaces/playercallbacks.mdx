@@ -1,0 +1,41 @@
+---
+title: PlayerCallbacks
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/playercallbacks
+  sourcePath: html-docs/whiteboard/Web/interfaces/playercallbacks.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type PlayerCallbacks = DisplayerCallbacks & {
+    /**
+     * 表明 ``player.isPlayable`` 发生了改变。
+     */
+    onIsPlayableChanged: (isPlayable: boolean)=>void;
+    /**
+     * 表明 ``player.phase`` 发生了改变。
+     */
+    onPhaseChanged: (phase: PlayerPhase)=>void;
+    /**
+     * 表明首帧加载完毕，该回调在 ``player`` 整个声明周期中最多调一次。
+     * 在首帧加载出来之前，白板不会显示录像中的任何东西，也无法在代码中读取 ``player.state``。
+     */
+    onLoadFirstFrame: ()=>void;
+    /**
+     * 表明 ``player.state`` 发生了变化。具体参考[《房间与回放的业务状态管理》](/javascript-zh/home/business-state-management)。
+     */
+    onPlayerStateChanged: (modifyState: Partial<PlayerState>)=>void;
+    /**
+     * 回放发生了错误，并因此失败，``player.phase`` 的状态变成了 ``PlayerPhase.Stopped``。
+     */
+    onStoppedWithError: (error: Error)=>void;
+    /**
+     * 表明 ``player.progressTime`` 发生了变化。
+     */
+    onProgressTimeChanged: (progressTimestamp: number)=>void;
+};
+```

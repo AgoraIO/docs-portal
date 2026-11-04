@@ -216,7 +216,10 @@ describe('RTC upstream PR #2098 complete content parity', () => {
       );
       const audio = tabBody(body, `${platform}-audio-sdk`);
       contains(audio, plugin);
-      contains(audio, `?platform=${platform}#按需集成-ffmpeg-插件-${platform}`);
+      contains(
+        audio,
+        `/reduce-app-size/${platform}#按需集成-ffmpeg-插件-${platform}`,
+      );
       if (platform === 'android') {
         expect(audio.includes('libagora-ffmpeg.so')).toBe(false);
         contains(tabBody(body, 'android-video-sdk'), 'libagora-ffmpeg.so');
@@ -228,18 +231,19 @@ describe('RTC upstream PR #2098 complete content parity', () => {
     const body = platformBody(reduce, 'macos');
     const audio = tabBody(body, 'ios-audio-sdk');
     contains(audio, 'AgoraffmpegExtension.xcframework');
-    contains(audio, '?platform=ios#按需集成-ffmpeg-插件-ios');
+    contains(audio, '/reduce-app-size/ios#按需集成-ffmpeg-插件-ios');
     expect(body.includes('### 按需集成 FFmpeg 插件')).toBe(false);
     contains(tabBody(body, 'ios-video-sdk'), 'Agoraffmpeg.xcframework');
     contains(tabBody(body, 'mac-video-sdk'), 'Agoraffmpeg.xcframework');
   });
 
-  it('places the Android Maven package migration before every release version', () => {
+  it('combines the Android Gradle notices before every release version', () => {
     const body = platformBody('reference/release-notes.mdx', 'android');
     const notice = beforeMarker(body, '<Accordions type="multiple" openFirst>');
     contains(notice, ':::caution[注意]');
     contains(notice, '额外配置声网 Maven CDN 仓库');
-    expect(notice.match(/:::caution\[注意\]/g)).toHaveLength(2);
+    expect(notice.match(/:::caution\[注意\]/g)).toHaveLength(1);
+    expect(notice.match(/^:::\s*$/gm)).toHaveLength(1);
     expect(notice.indexOf('额外配置声网 Maven CDN 仓库')).toBeLessThan(
       notice.indexOf('通过 Gradle 自动集成并升级至 v4.6.0 及以上版本时'),
     );

@@ -56,7 +56,7 @@ RtmStorage
 - 如果设置的 Metadata Item `key` 值不同，则会根据调用顺序依次增加。
 - 如果设置的 Metadata Item `key` 值相同，则最后一次设置的 Metadata Item 的 `value` 会覆盖之前的值。
 
-成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
 
 Channel Metadata 同时也引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
 
@@ -86,7 +86,7 @@ void setChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#metadata)。 |
 | `options` | `MetadataOptions` | 必填 | - | Channel Metadata 配置选项。 |
 | `lockName` | String | 必填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -159,7 +159,7 @@ void getChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `resultCallback` | `ResultCallback<Metadata>` | 必填 | - | <Slot name="storage-android-html-1-3-4" /> |
 
 <Slot for="storage-android-html-1-3-4">
@@ -202,7 +202,7 @@ rtmClient.getStorage().getChannelMetadata("channelName", RtmChannelType.MESSAGE,
 - 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会删除该值；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
 - 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后删除对应值；否则 SDK 会返回错误码。
 
-成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
 
 ### 接口方法
 
@@ -222,7 +222,7 @@ void removeChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#metadata)。 |
 | `options` | `MetadataOptions` | 必填 | - | Channel Metadata 配置选项。 |
 | `lockName` | String | 必填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -278,7 +278,7 @@ rtmClient.getStorage().removeChannelMetadata("channelName", RtmChannelType.MESSA
 
 `updateChannelMetadata` 方法可以更新已有的 Channel Metadata。每次调用该方法，你可以更新一个 Channel Metadata，也可以更新一个或多个 Channel Metadata Item 数组。
 
-成功更新后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功更新后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
 
 :::info[信息]
 该方法不能对不存在的 Metadata Item 进行操作。
@@ -302,7 +302,7 @@ void updateChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#metadata)。 |
 | `options` | `MetadataOptions` | 必填 | - | Channel Metadata 配置选项。 |
 | `lockName` | String | 必填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -359,7 +359,7 @@ rtmClient.getStorage().updateChannelMetadata("channelName", RtmChannelType.MESSA
 - 如果设置的 Metadata Item key 值不同，则会根据调用顺序依次增加。
 - 如果设置的 Metadata Item key 值相同，则最后一次设置的 Metadata 的 value 会覆盖之前的值。
 
-成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `USER` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `USER` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
 
 User Metadata 同时也引进了版本控制逻辑 CAS，该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
 
@@ -490,7 +490,7 @@ rtmClient.getStorage().getUserMetadata("userName", new ResultCallback<Metadata>(
 
 `removeUserMetadata` 方法可以删除 User Metadata 或某几个 User Metadata Item。
 
-成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `USER` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `USER` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
 
 ### 接口方法
 
@@ -560,7 +560,7 @@ rtmClient.getStorage().removeUserMetadata("Tony", metadata, options, new ResultC
 
 ### 接口描述
 
-`updateUserMetadata` 方法可以更新已有的 User Metadata 或 Metadata Item。成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `USER` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+`updateUserMetadata` 方法可以更新已有的 User Metadata 或 Metadata Item。成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `USER` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
 
 :::info[信息]
 该方法不能对不存在的 Metadata Item 进行操作。
@@ -633,7 +633,7 @@ rtmClient.getStorage().updateUserMetadata("Tony", metadata, options, new ResultC
 
 ### 接口描述
 
-`subscribeUserMetadata` 方法可以订阅指定用户的 Metadata。成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `USER` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+`subscribeUserMetadata` 方法可以订阅指定用户的 Metadata。成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `USER` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
 
 ### 接口方法
 
@@ -777,7 +777,7 @@ RtmStorage
 - 如果设置的 Metadata Item `key` 值不同，则会根据调用顺序依次增加。
 - 如果设置的 Metadata Item `key` 值相同，则最后一次设置的 Metadata Item 的 `value` 会覆盖之前的值。
 
-成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 Channel Metadata 同时也引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
 
@@ -789,7 +789,7 @@ Channel Metadata 同时也引进了版本控制逻辑 CAS（Compare And Set）�
 - 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则该值会被最新值覆盖；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会创建该值。
 - 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；否则 SDK 会返回错误码。
 
-成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 ### 接口方法
 
@@ -812,7 +812,7 @@ Future<(RtmStatus, SetChannelMetadataResult?)> setChannelMetadata(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | `message` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | `message` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `metadata` | `List<MetadataItem>` | 必填 | - | Metadata Item。详见 [`MetadataItem`](#metadataitem)。 |
 | `majorRevision` | int | 选填 | -1 | <Slot name="storage-flutter-html-0-4-4" /> |
 | `recordTs` | bool | 选填 | `false` | 是否记录编辑的时间戳。 |
@@ -908,7 +908,7 @@ Future<(RtmStatus, GetChannelMetadataResult?)> getChannelMetadata(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 
 ### 接口方法
 
@@ -963,7 +963,7 @@ class RtmStatus {
 - 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会删除该值；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
 - 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后删除对应值；否则 SDK 会返回错误码。
 
-成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 ### 接口方法
 
@@ -986,7 +986,7 @@ Future<(RtmStatus, RemoveChannelMetadataResult?) removeChannelMetadata(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `majorRevision` | int | 选填 | -1 | <Slot name="storage-flutter-html-2-3-4" /> |
 | `metadata` | `List<MetadataItem>` | 选填 | - | Metadata Item。详见 [`MetadataItem`](#metadataitem)。 |
 | `lockName` | String | 选填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -1066,7 +1066,7 @@ class RtmStatus {
 
 `updateChannelMetadata` 方法可以更新已有的 Channel Metadata。每次调用该方法，你可以更新一个 Channel Metadata，也可以更新一个或多个 Channel Metadata Item 数组。
 
-成功更新后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功更新后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 :::info[信息]
 该方法不能对不存在的 Metadata Item 进行操作。
@@ -1093,7 +1093,7 @@ Future<(RtmStatus, UpdateChannelMetadataResult?)> updateChannelMetadata(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `metadata` | `List<MetadataItem>` | 选填 | - | Metadata Item。详见 [`MetadataItem`](#metadataitem)。 |
 | `majorRevision` | int | 选填 | -1 | <Slot name="storage-flutter-html-3-4-4" /> |
 | `recordTs` | bool | 选填 | `false` | 是否记录编辑的时间戳。 |
@@ -1178,7 +1178,7 @@ class RtmStatus {
 - 如果设置的 Metadata Item key 值不同，则会根据调用顺序依次增加。
 - 如果设置的 Metadata Item key 值相同，则最后一次设置的 Metadata 的 value 会覆盖之前的值。
 
-成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `user` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `user` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 User Metadata 同时也引进了版本控制逻辑 CAS，该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
 
@@ -1342,7 +1342,7 @@ class RtmStatus {
 
 `removeUserMetadata` 方法可以删除 User Metadata 或某几个 User Metadata Item。
 
-成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `user` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `user` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1436,7 +1436,7 @@ class RtmStatus {
 
 ### 接口描述
 
-`updateUserMetadata` 方法可以更新已有的 User Metadata 或 Metadata Item。成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `user` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+`updateUserMetadata` 方法可以更新已有的 User Metadata 或 Metadata Item。成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `user` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 :::info[信息]
 该方法不能对不存在的 Metadata Item 进行操作。
@@ -1536,7 +1536,7 @@ class RtmStatus {
 
 ### 接口描述
 
-`subscribeUserMetadata` 方法可以订阅指定用户的 Metadata。成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `user` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+`subscribeUserMetadata` 方法可以订阅指定用户的 Metadata。成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `user` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1690,7 +1690,7 @@ Channel Metadata 同时也引进了版本控制逻辑 CAS（Compare And Set）�
 - 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则该值会被最新值覆盖；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会创建该值。
 - 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；否则 SDK 会返回错误码。
 
-成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1708,7 +1708,7 @@ async setChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
 | `options` | `MetadataOptions` | 选填 | `{}` | Channel Metadata 配置选项。 |
 
@@ -1730,7 +1730,7 @@ async setChannelMetadata(
 | --- | --- | --- |
 | `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
 | `channelName` | string | 频道名称。 |
-| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 
 ### 基本用法
 
@@ -1785,7 +1785,7 @@ async getChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 
 ### 返回值
 
@@ -1797,7 +1797,7 @@ async getChannelMetadata(
 | --- | --- | --- |
 | `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
 | `channelName` | string | 频道名称。 |
-| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `data` | `Metadata` | Metadata 对象。详见 [`Metadata`](#metadata)。 |
 
 ### 基本用法
@@ -1835,7 +1835,7 @@ try {
 - 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会删除该值；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
 - 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后删除对应值；否则 SDK 会返回错误码。
 
-成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1853,7 +1853,7 @@ async removeChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
 | `options` | `MetadataOptions` | 选填 | `{}` | Channel Metadata 配置选项。 |
 
@@ -1875,7 +1875,7 @@ async removeChannelMetadata(
 | --- | --- | --- |
 | `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
 | `channelName` | string | 频道名称。 |
-| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 
 ### 基本用法
 
@@ -1931,7 +1931,7 @@ try {
 
 `updateChannelMetadata` 方法可以更新已有的 Channel Metadata。每次调用该方法，你可以更新一个 Channel Metadata，也可以更新一个或多个 Channel Metadata Item 数组。
 
-成功更新后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功更新后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
 
 :::info[信息]
 该方法不能对不存在的 Metadata Item 进行操作。
@@ -1953,7 +1953,7 @@ async updateChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
 | `options` | `MetadataOptions` | 选填 | `{}` | Channel Metadata 配置选项。 |
 
@@ -1975,7 +1975,7 @@ async updateChannelMetadata(
 | --- | --- | --- |
 | `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
 | `channelName` | string | 频道名称。 |
-| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 
 ### 基本用法
 
@@ -2018,7 +2018,7 @@ try {
 - 如果设置的 Metadata Item key 值不同，则会根据调用顺序依次增加。
 - 如果设置的 Metadata Item key 值相同，则最后一次设置的 Metadata 的 value 会覆盖之前的值。
 
-成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
 
 User Metadata 同时也引进了版本控制逻辑 CAS，该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
 
@@ -2158,7 +2158,7 @@ try {
 
 `removeUserMetadata` 方法可以删除 User Metadata 或某几个 User Metadata Item。
 
-成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
 
 ### 接口方法
 
@@ -2244,7 +2244,7 @@ try {
 
 `updateUserMetadata` 方法可以更新已有的 User Metadata 或 Metadata Item。
 
-成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
 
 :::info[信息]
 该方法不能对不存在的 Metadata Item 进行操作。
@@ -2323,7 +2323,7 @@ try {
 
 `subscribeUserMetadata` 方法可以订阅指定用户的 Metadata。
 
-成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
 
 ### 接口方法
 
@@ -2463,7 +2463,7 @@ AgoraRtmStorage
 - 如果设置的 Metadata Item `key` 值不同，则会根据调用顺序依次增加。
 - 如果设置的 Metadata Item `key` 值相同，则最后一次设置的 Metadata Item 的 `value` 会覆盖之前的值。
 
-成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `AgoraRtmStorageTypeChannel` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `AgoraRtmStorageTypeChannel` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 
 Channel Metadata 同时也引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
 
@@ -2491,7 +2491,7 @@ Channel Metadata 同时也引进了版本控制逻辑 CAS（Compare And Set）�
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#agorartmmetadata)。 |
 | `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
 | `lock` | NSString | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -2565,7 +2565,7 @@ metadata_opt.recordTs = true;
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `completion` | `AgoraRtmGetMetadataBlock` | 选填 | - | <Slot name="storage-ios-html-1-3-4" /> |
 
 <Slot for="storage-ios-html-1-3-4">
@@ -2612,7 +2612,7 @@ metadata_opt.recordTs = true;
 - 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会删除该值；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
 - 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后删除对应值；否则 SDK 会返回错误码。
 
-成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `AgoraRtmStorageTypeChannel` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `AgoraRtmStorageTypeChannel` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 
 ### 接口方法
 
@@ -2630,7 +2630,7 @@ metadata_opt.recordTs = true;
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#agorartmmetadata)。 |
 | `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
 | `lock` | NSString | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -2680,7 +2680,7 @@ metadata.majorRevision = 174298100;
 
 `updateChannelMetadata` 方法可以更新已有的 Channel Metadata。每次调用该方法，你可以更新一个 Channel Metadata，也可以更新一个或多个 Channel Metadata Item 数组。
 
-成功更新后，订阅该频道且开启事件监听的用户会收到 `AgoraRtmStorageTypeChannel` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功更新后，订阅该频道且开启事件监听的用户会收到 `AgoraRtmStorageTypeChannel` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 
 :::info[信息]
 该方法不能对不存在的 Metadata Item 进行操作。
@@ -2702,7 +2702,7 @@ metadata.majorRevision = 174298100;
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#agorartmmetadata)。 |
 | `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
 | `lock` | NSString | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -2766,7 +2766,7 @@ metadata_opt.recordTs = true;
 - 如果设置的 Metadata Item key 值不同，则会根据调用顺序依次增加。
 - 如果设置的 Metadata Item key 值相同，则最后一次设置的 Metadata 的 value 会覆盖之前的值。
 
-成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `AgoraRtmStorageTypeUser` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `AgoraRtmStorageTypeUser` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 
 User Metadata 同时也引进了版本控制逻辑 CAS，该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
 
@@ -2900,7 +2900,7 @@ metadata_opt.recordTs = true;
 
 `removeUserMetadata` 方法可以删除 User Metadata 或某几个 User Metadata Item。
 
-成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `AgoraRtmStorageTypeUser` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `AgoraRtmStorageTypeUser` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 
 ### 接口方法
 
@@ -2962,7 +2962,7 @@ metadata.majorRevision = 174298100;
 
 ### 接口描述
 
-`updateUserMetadata` 方法可以更新已有的 User Metadata 或 Metadata Item。成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `AgoraRtmStorageTypeUser` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+`updateUserMetadata` 方法可以更新已有的 User Metadata 或 Metadata Item。成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `AgoraRtmStorageTypeUser` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 
 :::info[信息]
 该方法不能对不存在的 Metadata Item 进行操作。
@@ -3033,7 +3033,7 @@ metadata_opt.recordTs = true;
 
 ### 接口描述
 
-`subscribeUserMetadata` 方法可以订阅指定用户的 Metadata。成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `AgoraRtmStorageTypeUser` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+`subscribeUserMetadata` 方法可以订阅指定用户的 Metadata。成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `AgoraRtmStorageTypeUser` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 
 ### 接口方法
 
@@ -3167,7 +3167,7 @@ RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者�
 - 如果设置的 Metadata Item `key` 值不同，则会根据调用顺序依次增加。
 - 如果设置的 Metadata Item `key` 值相同，则最后一次设置的 Metadata Item 的 `value` 会覆盖之前的值。
 
-成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
 Channel Metadata 同时也引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
 
@@ -3372,7 +3372,7 @@ type ErrorInfo = {
 - 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会删除该值；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
 - 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后删除对应值；否则 SDK 会返回错误码。
 
-成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
 ### 接口方法
 
@@ -3481,7 +3481,7 @@ type ErrorInfo = {
 
 `updateChannelMetadata` 方法可以更新已有的 Channel Metadata。每次调用该方法，你可以更新一个 Channel Metadata，也可以更新一个或多个 Channel Metadata Item 数组。
 
-成功更新后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功更新后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
 :::info[信息]
 该方法不能对不存在的 Metadata Item 进行操作。
@@ -3603,7 +3603,7 @@ type ErrorInfo = {
 - 如果设置的 Metadata Item key 值不同，则会根据调用顺序依次增加。
 - 如果设置的 Metadata Item key 值相同，则最后一次设置的 Metadata 的 value 会覆盖之前的值。
 
-成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
 User Metadata 同时也引进了版本控制逻辑 CAS，该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
 
@@ -3800,7 +3800,7 @@ type ErrorInfo = {
 
 `removeUserMetadata` 方法可以删除 User Metadata 或某几个 User Metadata Item。
 
-成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
 ### 接口方法
 
@@ -3904,7 +3904,7 @@ type ErrorInfo = {
 
 ### 接口描述
 
-`updateUserMetadata` 方法可以更新已有的 User Metadata 或 Metadata Item。成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+`updateUserMetadata` 方法可以更新已有的 User Metadata 或 Metadata Item。成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
 :::info[信息]
 该方法不能对不存在的 Metadata Item 进行操作。
@@ -4015,7 +4015,7 @@ type ErrorInfo = {
 
 ### 接口描述
 
-`subscribeUserMetadata` 方法可以订阅指定用户的 Metadata。成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+`subscribeUserMetadata` 方法可以订阅指定用户的 Metadata。成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
 ### 接口方法
 
@@ -4108,7 +4108,7 @@ IRtmClient
 - 如果设置的 Metadata Item `key` 值不同，则会根据调用顺序依次增加。
 - 如果设置的 Metadata Item `key` 值相同，则最后一次设置的 Metadata Item 的 `value` 会覆盖之前的值。
 
-成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
 
 Channel Metadata 同时也引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
 
@@ -4240,7 +4240,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 `SetChannelMetadataResult` 包含以下属性：
 
@@ -4312,7 +4312,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 `GetChannelMetadataResult` 包含以下属性：
 
@@ -4376,7 +4376,7 @@ else
 - 版本参数为 `-1` 时，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Channel Metadata Item 已存在，则 SDK 会删除该值；如果 Channel Metadata 或 Channel Metadata Item 不存在，则 SDK 会返回错误码。
 - 版本参数为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Channel Metadata Item 已存在，则 SDK 会在版本号验证成功后删除对应值；如果 Channel Metadata 或 Channel Metadata Item 不存在，则 SDK 会返回错误码。
 
-成功删除 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功删除 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
 
 ### 接口方法
 
@@ -4486,7 +4486,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 `RemoveChannelMetadataResult` 包含以下属性：
 
@@ -4501,7 +4501,7 @@ else
 
 `UpdateChannelMetadataAsync` 方法可以更新已有的 Channel Metadata。每次调用该方法，你可以更新一个 Channel Metadata，也可以更新一个或多个 Channel Metadata Item 数组。
 
-成功更新 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功更新 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
 
 :::info[信息]
 该方法不能对不存在的 Channel Metadata 进行操作。
@@ -4628,7 +4628,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 `UpdateChannelMetadataResult` 包含以下属性：
 
@@ -4646,7 +4646,7 @@ else
 - 如果多次设置的 User Metadata 名称不同，则设置的 User Metadata 会根据调用顺序依次增加。
 - 如果多次设置的 User Metadata 名称相同，则最后一次设置的 User Metadata 会覆盖之前的设置。
 
-成功设置 User Metadata 后，订阅该 User Metadata 且开启事件监听的用户会收到 `USER` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功设置 User Metadata 后，订阅该 User Metadata 且开启事件监听的用户会收到 `USER` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
 
 User Metadata 同时也引进了版本控制逻辑 CAS，该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
 
@@ -4773,7 +4773,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 `SetUserMetadataResult` 包含以下属性：
 
@@ -4840,7 +4840,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 `GetUserMetadataResult` 包含以下属性：
 
@@ -4898,7 +4898,7 @@ else
 
 `RemoveUserMetadataAsync` 方法可以删除 User Metadata 或 User Metadata Item 数组。
 
-成功删除 User Metadata 后，订阅该 User Metadata 且开启事件监听的用户会收到 `USER` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功删除 User Metadata 后，订阅该 User Metadata 且开启事件监听的用户会收到 `USER` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
 
 ### 接口方法
 
@@ -4998,7 +4998,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 `RemoveUserMetadataResult` 包含以下属性：
 
@@ -5010,7 +5010,7 @@ else
 
 ### 接口描述
 
-`UpdateUserMetadataAsync` 方法可以更新已有的 User Metadata 或 User Metadata Item。成功更新 User Metadata 后，订阅该 User Metadata 且开启事件监听的用户会收到 `USER` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+`UpdateUserMetadataAsync` 方法可以更新已有的 User Metadata 或 User Metadata Item。成功更新 User Metadata 后，订阅该 User Metadata 且开启事件监听的用户会收到 `USER` 类型的 `OnStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
 
 :::info[信息]
 该方法不能对不存在的 User Metadata 进行操作。
@@ -5125,7 +5125,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 `UpdateUserMetadataResult` 包含以下属性：
 

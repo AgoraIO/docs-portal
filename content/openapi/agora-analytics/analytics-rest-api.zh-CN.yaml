@@ -4,47 +4,34 @@ x-stoplight:
 info:
   version: ''
   title: API 概述
-  description: '水晶球为实时音视频（RTC）产品提供 RESTful API，让你直接通过网络请求获取水晶球里的数据，在自己的网页或应用中灵活使用。
-
+  description: |-
+    水晶球为实时音视频（RTC）产品提供 RESTful API，让你直接通过网络请求获取水晶球里的数据，在自己的网页或应用中灵活使用。
 
     调用水晶球 RESTful API 之前，我们推荐你先在[控制台](https://console.shengwang.cn)中试用水晶球，以便对各项参数和数据指标有更直观的了解。详情可参考以下使用指南：
 
-
     - [通话调查](/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/overview)
-
     - [数据洞察普通版](/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/basic)
-
     - [数据洞察 Plus](/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/plus)
-
     - [实时监控](/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/monitor)
-
 
     ## 认证方式
 
-
     水晶球 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成一个 Base64 算法编码的凭证，并填入 HTTP 请求头部的 Authorization 字段中。
-
 
     ## 数据格式
 
-
     为了提高请求的响应速度，你需要根据业务服务器所在的地址选择发送请求的域名：
-
     - 业务服务器 DNS 地址位于中国大陆时，设置主域名为 `api.sd-rtn.com`。
-
     - 业务服务器 DNS 地址位于中国大陆以外的国家或地区时，设置主域名为 `api.agora.io`。
 
-
+    > [!NOTE]
     > 水晶球 RESTful API 参考文档将以 `api.sd-rtn.com` 为例。
-
 
     请求直接在 URL 中使用查询字符串参数（query String）；响应内容的格式为 JSON。
 
-
     ## 调用限制
 
-
-    水晶球 RESTful API 根据项目订阅的水晶球套餐包具有不同的调用限制，包括请求频率、查询范围、数据延迟等，详见[调用限制](/zh-CN/realtime-media/usage-analytics/reference/api-limits)。'
+    水晶球 RESTful API 根据项目订阅的水晶球套餐包具有不同的调用限制，包括请求频率、查询范围、数据延迟等，详见[调用限制](/zh-CN/realtime-media/usage-analytics/reference/api-limits)。
 servers:
 - url: https://api.sd-rtn.com
 paths:
@@ -752,9 +739,10 @@ paths:
                   $ref: '#/components/schemas/dimension_quality'
                 dimensionValues:
                   type: string
-                  description: '统计维度的值 ，即对 `dimension` 中设定的维度指定取值，仅在传入 `dimension` 时有效。所有值必须用双引号包括，并以逗号分隔。设置该参数后，将返回 `dimensionValues` 中传入的值对应的聚合指标数据。
-
-                    > 你可以在首次请求时，通过不传 `dimensionValues` 来获取当前 `dimension` 下的 TOP 值，再根据业务需要从中选取几个值，来作为下次请求时传入 `dimensionValues` 的值。'
+                  description: |-
+                    统计维度的值 ，即对 `dimension` 中设定的维度指定取值，仅在传入 `dimension` 时有效。所有值必须用双引号包括，并以逗号分隔。设置该参数后，将返回 `dimensionValues` 中传入的值对应的聚合指标数据。
+                    > [!NOTE]
+                    > 你可以在首次请求时，通过不传 `dimensionValues` 来获取当前 `dimension` 下的 TOP 值，再根据业务需要从中选取几个值，来作为下次请求时传入 `dimensionValues` 的值。
                 filters:
                   $ref: '#/components/schemas/filters'
             examples:
@@ -1421,7 +1409,7 @@ components:
   securitySchemes:
     Authorization:
       type: http
-      description: 使用声网 RESTful API 的凭证。发送请求时，你需要使用声网提供的**客户 ID** 和**客户密钥**生成一个使用 Base64 算法编码的凭证，并填入 HTTP 请求头部的 `Authorization` 字段。
+      description: 使用声网 RESTful API 的凭证。发送请求时，你需要使用声网提供的**客户 ID** 和**客户密钥**生成一个使用 Base64 算法编码的凭证，并填入 HTTP 请求头部的 `Authorization` 字段。详见[使用 HTTP 认证](/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth)。
       scheme: basic
   schemas:
     code:
@@ -1755,29 +1743,25 @@ components:
     dimension:
       type: string
       title: dimension
-      description: '统计维度，仅支持单维度指定。支持设为以下值：
-
+      description: |-
+        统计维度，仅支持单维度指定。支持设为以下值：
         - `country`：国家。
-
         - `region`：地区。
-
         - `net`：网络类型。
-
         - `sdk`：SDK 版本。
-
         - `os`：操作系统。
-
         - `device`：设备型号。将默认返回维度对应 TOP 20 的值（仅当 `dimension` 为 `device` 时，将默认返回 TOP 50 的值）。
-
-        > 当 `metric` 为 `peakConcurrentUsers` 或 `peakConcurrentChannels` 时，不支持传 `dimension` 和 `dimensionValues`，仅返回 App ID 维度的聚合结果。'
+        > [!CAUTION]
+        > 当 `metric` 为 `peakConcurrentUsers` 或 `peakConcurrentChannels` 时，不支持传 `dimension` 和 `dimensionValues`，仅返回 App ID 维度的聚合结果。
       x-stoplight:
         id: 9cydve2ke713f
     dimensionValues:
       type: string
       title: dimensionValues
-      description: '统计维度的值 ，即对 `dimension` 中设定的维度指定取值，仅在传入 `dimension` 时有效。所有值必须用双引号包括，并以逗号分隔。设置该参数后，将返回 `dimensionValues` 中传入的值对应的聚合指标数据。
-
-        > 你可以在首次请求时，通过不传 `dimensionValues` 来获取当前 `dimension` 下的 TOP 值，再根据业务需要从中选取几个值，来作为下次请求时传入 `dimensionValues` 的值。'
+      description: |-
+        统计维度的值 ，即对 `dimension` 中设定的维度指定取值，仅在传入 `dimension` 时有效。所有值必须用双引号包括，并以逗号分隔。设置该参数后，将返回 `dimensionValues` 中传入的值对应的聚合指标数据。
+        > [!NOTE]
+        > 你可以在首次请求时，通过不传 `dimensionValues` 来获取当前 `dimension` 下的 TOP 值，再根据业务需要从中选取几个值，来作为下次请求时传入 `dimensionValues` 的值。
       x-stoplight:
         id: 4hx6oik5kly9r
     filters:

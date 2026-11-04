@@ -77,7 +77,7 @@ RtmClient
 - 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
 :::
 
-成功调用该方法后，订阅了该频道并且开启了事件监听的用户会通过 `onMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅了该频道并且开启了事件监听的用户会通过 `onMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
 
 ### 接口方法
 
@@ -131,7 +131,7 @@ void publish(
 
 | 属性 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `customType` | String | 选填 | - | 用户自定义字段。仅支持 String 型。 |
 | `storeInHistory` | boolean | 选填 | `false` | <Slot name="message-android-html-1-3-4" /> |
 
@@ -252,7 +252,7 @@ void getMessages(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `options` | `GetHistoryMessagesOptions` | 必填 | - | 查询选项。 |
 | `resultCallback` | `ResultCallback<GetMessagesResult>` | 必填 | - | <Slot name="message-android-html-2-4-4" /> |
 
@@ -362,7 +362,7 @@ RTM 提供消息、状态、事件变更等信息的事件通知。通过设置�
 
   ```
 
-关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)章节。
 
 </PlatformStructured>
 
@@ -397,7 +397,7 @@ RtmClient
 - 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
 :::
 
-成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `message` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `message` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 ### 接口方法
 
@@ -419,7 +419,7 @@ Future<(RtmStatus, PublishResult?)> publish(
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | <Slot name="message-flutter-html-0-1-4" /> |
 | `message` | String | 必填 | - | 消息负载。 |
-| `channelType` | `RtmChannelType` | 选填 | `message` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 选填 | `message` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `customType` | String | 选填 | - | 用户自定义字段。仅支持字符串型。 |
 | `storeInHistory` | bool | 选填 | false | <Slot name="message-flutter-html-0-5-4" /> |
 
@@ -518,7 +518,7 @@ class RtmStatus {
 - 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
 :::
 
-成功调用该方法后，SDK 会触发 `message` 事件通知。订阅了该频道并且开启了事件监听的用户将会收到该事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，SDK 会触发 `message` 事件通知。订阅了该频道并且开启了事件监听的用户将会收到该事件通知，详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 ### 接口方法
 
@@ -540,7 +540,7 @@ Future<PublishResult> publishBinaryMessage(
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | <Slot name="message-flutter-html-1-1-4" /> |
 | `message` | Uint8List | 必填 | - | 消息负载。 |
-| `channelType` | `RtmChannelType` | 选填 | `message` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 选填 | `message` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `customType` | String | 选填 | - | 用户自定义字段。仅支持字符串型。 |
 | `storeInHistory` | bool | 选填 | false | <Slot name="message-flutter-html-1-5-4" /> |
 
@@ -639,7 +639,7 @@ Future<(RtmStatus, GetMessagesResult?)> getMessages(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `options` | `GetHistoryMessagesOptions` | 必填 | - | 查询选项。 |
 
 `GetHistoryMessagesOptions` 数据类型包含以下属性：
@@ -713,7 +713,7 @@ rtm.addListener(
 String message = utf8.decode(event.message!);
 ```
 
-关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)章节。
 
 </PlatformStructured>
 
@@ -748,7 +748,7 @@ IRtmClient
 - 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
 :::
 
-成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `message` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `message` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
 
 ### 接口方法
 
@@ -775,7 +775,7 @@ async publish(channelName: string, message: string | Uint8Array, options: Publis
 
 | 属性 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
-| `channelType` | `RtmChannelType` | 选填 | `MESSAGE` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 选填 | `MESSAGE` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `customType` | string | 选填 | `''` | 用户自定义字段。仅支持字符串型。 |
 | `storeInHistory` | boolean | 选填 | `false` | <Slot name="message-harmonyos-html-1-3-4" /> |
 
@@ -912,7 +912,7 @@ async getMessages(channelName: string, channelType: RtmChannelType, options?: Ge
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `options` | `GetHistoryMessagesOptions` | 选填 | `{}` | 查询选项。 |
 
 `GetHistoryMessagesOptions` 数据类型包含以下属性：
@@ -1014,7 +1014,7 @@ rtmClient.addEventListener('message', (event: object) => {
 });
 ```
 
-关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)章节。
 
 </PlatformStructured>
 
@@ -1045,7 +1045,7 @@ AgoraRtmClientKit
 - 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
 :::
 
-成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `didReceiveMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `didReceiveMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1096,7 +1096,7 @@ AgoraRtmClientKit
 
 | 属性 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `customType` | NSString | 必填 | - | 用户自定义字段。仅支持 String 型。 |
 | `storeInHistory` | BOOL | 选填 | `false` | <Slot name="message-ios-html-1-3-4" /> |
 
@@ -1184,7 +1184,7 @@ publish_option.storeInHistory = YES;
 ```
 
 :::info[信息]
-成功调用该方法后，SDK 会触发 `didReceiveMessageEvent` 事件通知。订阅了该频道并且开启了事件监听的用户将会收到该事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，SDK 会触发 `didReceiveMessageEvent` 事件通知。订阅了该频道并且开启了事件监听的用户将会收到该事件通知，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 :::
 
 AgoraRtmHistory
@@ -1209,7 +1209,7 @@ AgoraRtmHistory
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `options` | `AgoraRtmGetHistoryMessagesOptions` | 必填 | - | 查询选项。 |
 | `completion` | `AgoraRtmGetHistoryMessagesBlock` | 选填 | - | <Slot name="message-ios-html-2-4-4" /> |
 
@@ -1321,7 +1321,7 @@ RTM 提供消息、状态、事件变更等信息的事件通知。通过设置�
   [rtm addDelegate:handler];
   ```
 
-关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)章节。
 
 </PlatformStructured>
 
@@ -1354,7 +1354,7 @@ RTM 有 3 种频道类型，分别是 Message Channel、User Channel 和 Stream 
 - 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
 :::
 
-成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `message` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `message` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1454,7 +1454,7 @@ try {
 ```
 
 :::info[信息]
-成功调用该方法后，SDK 会触发 `message` 事件通知。订阅了该频道并且开启了事件监听的用户将会收到该事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，SDK 会触发 `message` 事件通知。订阅了该频道并且开启了事件监听的用户将会收到该事件通知，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 :::
 
 ### 返回值
@@ -1582,7 +1582,7 @@ rtm.addEventListener("message", event => {
 });
 ```
 
-关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)章节。
 
 </PlatformStructured>
 
@@ -1616,7 +1616,7 @@ IRtmClient
 - 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
 :::
 
-成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `OnMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `OnMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1683,7 +1683,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 `PublishResult` 包含以下属性：
 
@@ -1696,6 +1696,6 @@ else
 
 RTM 提供消息、状态、事件变更等信息的事件通知。通过设置事件监听，你可以接收已订阅频道中的消息和事件。
 
-关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)章节。
 
 </PlatformStructured>

@@ -13,6 +13,142 @@ afterEach(async () => {
   );
 });
 
+it('rejects retained SDK history in an index snapshot even when its HTML and anchors still exist', async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), 'cn-history-index-'));
+  temporaryDirectories.push(root);
+  const current = '/zh-CN/api-reference/rtc/android/channel';
+  const history = '/zh-CN/api-reference/rtc/android/4.6.0/channel';
+  await mkdir(path.join(root, '__static/docs-search'), { recursive: true });
+  await writeFile(
+    path.join(root, '__static/docs-routes.json'),
+    JSON.stringify([
+      { url: current, canonicalPath: current, version: '4.7.0' },
+      // Retained history stays readable but is not an active publication.
+      { url: history, canonicalPath: history },
+    ]),
+  );
+  await writeFile(
+    path.join(root, '__static/docs-search/zh-CN.json'),
+    JSON.stringify([{ url: current }]),
+  );
+  for (const url of [current, history]) {
+    await mkdir(path.join(root, url), { recursive: true });
+    await writeFile(
+      path.join(root, url, 'index.html'),
+      '<h2 id="joinchannel">joinChannel</h2>',
+    );
+  }
+  await writeFile(
+    path.join(root, 'sitemap.xml'),
+    `<urlset>${[current, history].map((url) => `<url><loc>https://docs.example${url}</loc></url>`).join('')}</urlset>`,
+  );
+  await writeFile(
+    path.join(root, 'records.json'),
+    JSON.stringify(
+      [current, history].map((url, index) => ({
+        id: String(index),
+        url: `${url}#joinchannel`,
+        canonicalUrl: url,
+        locale: 'zh-CN',
+        docType: 'docs',
+        version: index === 0 ? '4.7.0' : '4.6.0',
+      })),
+    ),
+  );
+  const reportPath = path.join(root, 'report.json');
+  const result = spawnSync(
+    process.execPath,
+    [
+      'scripts/search/audit-cn-coverage.mjs',
+      `--records=${path.join(root, 'records.json')}`,
+      `--html=${root}`,
+      `--out=${reportPath}`,
+    ],
+    { encoding: 'utf8' },
+  );
+  const report = JSON.parse(await readFile(reportPath, 'utf8'));
+  expect(result.status, result.stderr).toBe(1);
+  expect(report.findings.nonSearchableRecords).toEqual([
+    `${history.replace('/zh-CN', '')}#joinchannel`,
+  ]);
+  expect(report.findings.missingHtml).toEqual([]);
+  expect(report.findings.invalidIndexedAnchors).toEqual([]);
+  expect(report.findings.routeVersionMismatch).toEqual([]);
+});
+
+it('accepts the published platform, OpenAPI and FAQ records from the same search snapshot', async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), 'cn-published-index-'));
+  temporaryDirectories.push(root);
+  const routes = [
+    {
+      url: '/zh-CN/realtime-media/rtc/build/token-authentication/ios',
+      canonicalPath: '/zh-CN/realtime-media/rtc/build/token-authentication',
+      platform: 'ios',
+      version: '4.7.0',
+      docType: 'docs',
+    },
+    {
+      url: '/zh-CN/api-reference/api-ref/cloud-recording/start',
+      canonicalPath: '/zh-CN/api-reference/api-ref/cloud-recording/start',
+      docType: 'openapi',
+    },
+    {
+      url: '/zh-CN/reference/faq/account/billing_basis',
+      canonicalPath: '/zh-CN/reference/faq/account/billing_basis',
+      docType: 'docs',
+    },
+  ];
+  await mkdir(path.join(root, '__static/docs-search'), { recursive: true });
+  await writeFile(
+    path.join(root, '__static/docs-routes.json'),
+    JSON.stringify(routes),
+  );
+  await writeFile(
+    path.join(root, '__static/docs-search/zh-CN.json'),
+    JSON.stringify(routes.map((route) => ({ url: route.canonicalPath }))),
+  );
+  for (const route of routes) {
+    await mkdir(path.join(root, route.url), { recursive: true });
+    await writeFile(
+      path.join(root, route.url, 'index.html'),
+      '<h2 id="details">说明</h2>',
+    );
+  }
+  await writeFile(
+    path.join(root, 'sitemap.xml'),
+    `<urlset>${routes.map((route) => `<url><loc>https://docs.example${route.url}</loc></url>`).join('')}</urlset>`,
+  );
+  await writeFile(
+    path.join(root, 'records.json'),
+    JSON.stringify(
+      routes.map((route, index) => ({
+        id: String(index),
+        url: `${route.url.replace('/zh-CN', '')}#details`,
+        canonicalUrl: route.canonicalPath.replace('/zh-CN', ''),
+        locale: 'zh-CN',
+        docType: route.docType,
+        platform: route.platform ? [route.platform] : undefined,
+        version: route.version,
+      })),
+    ),
+  );
+  const reportPath = path.join(root, 'report.json');
+  const result = spawnSync(
+    process.execPath,
+    [
+      'scripts/search/audit-cn-coverage.mjs',
+      `--records=${path.join(root, 'records.json')}`,
+      `--html=${root}`,
+      `--out=${reportPath}`,
+    ],
+    { encoding: 'utf8' },
+  );
+  expect(result.status, result.stderr).toBe(0);
+  const report = JSON.parse(await readFile(reportPath, 'utf8'));
+  expect(report.findings.nonSearchableRecords).toEqual([]);
+  expect(report.counts.checkedPages).toBe(3);
+});
+
 it.each(['/zh-CN', ''])(
   'audits unprefixed results against %s build artifacts',
   async (prefix) => {

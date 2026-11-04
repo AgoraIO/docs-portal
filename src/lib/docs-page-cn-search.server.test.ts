@@ -9,6 +9,15 @@ vi.mock('./source.server', () => ({
     getPageTree: () => ({
       name: 'Docs',
       children: [
+        ...[
+          'conversational-ai/rest-api',
+          'conversational-ai/rest-api/api/response-code',
+          'api-ref/conversational-ai',
+        ].map((slug) => ({
+          type: 'page',
+          name: slug,
+          url: `/zh-CN/api-reference/${slug}`,
+        })),
         ...['channel', '4.6.0/channel'].map((slug) => ({
           type: 'page',
           name: slug,
@@ -36,6 +45,19 @@ vi.mock('./source.server', () => ({
               getText: async () => 'joinChannel [1/2]',
             },
           })),
+        )
+        .concat(
+          [
+            'conversational-ai/rest-api',
+            'conversational-ai/rest-api/api/response-code',
+            'api-ref/conversational-ai',
+          ].map((slug) => ({
+            type: 'docs',
+            path: `zh-CN/api-reference/${slug}/index.md`,
+            slugs: ['api-reference', ...slug.split('/')],
+            url: `/zh-CN/api-reference/${slug}`,
+            data: { title: 'REST API', getText: async () => 'REST API 正文。' },
+          })),
         ),
   },
 }));
@@ -43,9 +65,29 @@ vi.mock('./openapi/markdown', () => ({
   getOpenApiMarkdownPages: async () => [],
 }));
 
-import { loadDocsSearchIndex } from './docs-page.server';
+import { loadDocsPagePayload, loadDocsSearchIndex } from './docs-page.server';
 
 describe('CN search component navigation', () => {
+  it('omits redirected REST navigation while retaining the canonical page and unmoved descendants', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', [
+        'conversational-ai',
+        'rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/api-reference/api-ref/conversational-ai',
+    });
+    const entries = await loadDocsSearchIndex('zh-CN');
+    const urls = entries.map((entry) => entry.url);
+    expect(urls).not.toContain(
+      '/zh-CN/api-reference/conversational-ai/rest-api',
+    );
+    expect(urls).toContain('/zh-CN/api-reference/api-ref/conversational-ai');
+    expect(urls).toContain(
+      '/zh-CN/api-reference/conversational-ai/rest-api/api/response-code',
+    );
+  });
+
   it('exports linked FAQ content while excluding an unlisted sibling', async () => {
     const entries = await loadDocsSearchIndex('zh-CN');
     expect(entries.filter((entry) => entry.url.includes('/faq/'))).toEqual([

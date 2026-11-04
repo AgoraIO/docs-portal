@@ -1,3 +1,6 @@
+import { isKnownPlatform } from './platforms/registry';
+import { buildPlatformPathname } from './platforms/route';
+
 const DESKTOP_SCROLL_SELECTOR = '[data-testid="docs-main-desktop-scroll"]';
 const DOCS_HEADER_SELECTOR = '[data-testid="docs-shell-header"]';
 const HASH_SCROLL_OFFSET = 24;
@@ -14,6 +17,22 @@ const HASH_SCROLL_CANCEL_EVENTS = [
 ] as const;
 let cancelPendingHashScroll: (() => void) | undefined;
 export const DOCS_HASH_TARGET_EVENT = 'docs-portal:hash-target';
+
+/** Keep a heading's platform explicit when sharing a preference-driven page. */
+export function getDocsHashHref(hash: string) {
+  if (typeof window === 'undefined' || !hash.startsWith('#')) return hash;
+
+  const platform = getHeadingForUrl(hash)
+    ?.closest<HTMLElement>('[data-platform-panel]')
+    ?.getAttribute('data-platform-panel');
+  if (!platform || !isKnownPlatform(platform)) return hash;
+
+  const url = new URL(window.location.href);
+  url.pathname = buildPlatformPathname(url.pathname, platform);
+  url.searchParams.delete('platform');
+  url.hash = hash;
+  return `${url.pathname}${url.search}${url.hash}`;
+}
 
 export function scrollDocsHashTarget(
   url: string,
@@ -156,7 +175,14 @@ export function scrollDocsHashTargetAfterLayout(
   cancelPendingHashScroll = cancel;
   observer.observe(document.body, {
     attributes: true,
-    attributeFilter: ['hidden', 'aria-hidden', 'inert', 'data-state', 'id'],
+    attributeFilter: [
+      'hidden',
+      'aria-hidden',
+      'inert',
+      'data-state',
+      'id',
+      'name',
+    ],
     childList: true,
     subtree: true,
   });
@@ -243,8 +269,13 @@ function getHeadingForUrl(url: string) {
     return null;
   }
 
-  const selector = `#${escapeCssIdentifier(id)}`;
-  const headings = document.querySelectorAll<HTMLElement>(selector);
+  const selector = `[id="${escapeCssIdentifier(id)}"]`;
+  const headings = [
+    ...document.querySelectorAll<HTMLElement>(selector),
+    ...Array.from(document.getElementsByName(id)).filter(
+      (element) => element.tagName === 'A',
+    ),
+  ];
   const visibleHeading = Array.from(headings).find(
     (heading) =>
       !isHiddenFromDocs(heading) && heading.getClientRects().length > 0,
@@ -253,7 +284,20 @@ function getHeadingForUrl(url: string) {
     (heading) => !isHiddenFromDocs(heading),
   );
 
-  return visibleHeading ?? renderedHeading ?? headings[0] ?? null;
+  // A repeated release-note ID may be inside a closed accordion on every
+  // platform. Keep the selected platform before asking the accordion to open.
+  const activePlatformHeading = headings.find((heading) => {
+    const panel = heading.closest<HTMLElement>('[data-platform-panel]');
+    return panel && !isHiddenFromDocs(panel);
+  });
+
+  return (
+    visibleHeading ??
+    renderedHeading ??
+    activePlatformHeading ??
+    headings[0] ??
+    null
+  );
 }
 
 function isHiddenFromDocs(element: HTMLElement) {
@@ -287,10 +331,13 @@ function escapeCssIdentifier(value: string) {
 }
 
 function updateHash(url: string) {
+  const href = getDocsHashHref(url);
   window.history.replaceState(
     null,
     '',
-    `${window.location.pathname}${window.location.search}${url}`,
+    href.startsWith('#')
+      ? `${window.location.pathname}${window.location.search}${href}`
+      : href,
   );
 }
 

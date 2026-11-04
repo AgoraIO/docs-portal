@@ -1,14 +1,28 @@
 # CN Hotfix Migration Checkpoint
 
-Last updated: 2026-10-23
+Last updated: 2026-10-29
 
-## Latest handoff (2026-10-23)
+## Latest handoff (2026-10-28)
+
+- Target branch: `codex/cn-newdoc-html-api-migration`.
+- Last confirmed merged incremental batch: [#1291](https://github.com/AgoraIO/docs-portal/pull/1291), squash merge `6b9a602e83a9a1bcd112c0856fe77e32aa7ff369` on 2026-10-26.
+- Effective source baseline: `427a27358efd3f2eeb1b9dc6e841e828b9a53366` (0.0.535).
+- Current pending batch: [`cn-master-sync-20261028.json`](./cn-master-sync-20261028.json), source `427a27358..72dd878e3` (Whiteboard/Fastboard #2121, historical API entries #2131, releases 0.0.536/0.0.537), initial fixed target `3bb8afbf2a2b5dff6ec52ba39f6fd7fb7b95ba9e`; subsequently integrated target #1313 at `d3baceb3717b8cf0491ae87e2fcaf04a7caf81b1`.
+- Pending PR: [#1338](https://github.com/AgoraIO/docs-portal/pull/1338), working branch `codex/cn-whiteboard-hotfix-20261028`. The JSON checkpoint records final verification state; do not treat the pending source head as effective until that PR merges.
+- 2026-10-29 follow-up: user chose a compact HarmonyOS sidebar based on actual public exports after confirming the old site incorrectly reused Android links. All 92 API bodies are retained. Target #1326/#1334 through `837c5f58f` is integrated; current checks and earlier production-build evidence are separately scoped in the batch JSON.
+- Additional 2026-10-29 cross-product sidebar review: [report](../agents/reports/2026-10-29-cn-api-sidebar-parity.md) covers 50 dedicated API entries plus the current catalog classification. It corrects 32 navigation configurations without changing MDX bodies or advancing the source baseline.
+- All 1270 source files and four source commits are recorded in [`cn-master-sync-20261028-ledger.json`](./cn-master-sync-20261028-ledger.json). Image upload and source-issue follow-ups remain explicit.
+- The two earlier AI deferrals were restored by target #1324 with hidden navigation entries. Their present-but-hidden state has been checked and preserved; they are not missing public guides in this batch.
+
+After the pending batch merges, the next source comparison may start at `72dd878e3703f154f26d9fb1bf5274b465a6c2cb`, carrying its image-host and source-consistency follow-ups.
+
+## Previous handoff (2026-10-23; superseded)
 
 - Target branch: `codex/cn-newdoc-html-api-migration`.
 - Last confirmed merged incremental batch: [#1198](https://github.com/AgoraIO/docs-portal/pull/1198), merge `82d1138723ad805c7032a19880ada68b3c27e652`.
 - Effective source baseline from that batch: `5ff6834d544e9c647252540da97c574b2aeeef56`.
 - Pending batch: [`cn-master-sync-20261023.json`](./cn-master-sync-20261023.json), source range `5ff6834d5..427a27358`, target base `be9871602d5e5a6bd89b1b18944dae975e57259b`.
-- Pending PR: [#1291](https://github.com/AgoraIO/docs-portal/pull/1291), branch `codex/cn-master-hotfix-20261023`. It has not been treated as merged or deployed.
+- PR: [#1291](https://github.com/AgoraIO/docs-portal/pull/1291), branch `codex/cn-master-hotfix-20261023`, subsequently merged on 2026-10-26 as `6b9a602e8`; its confirmed effective baseline is recorded above. A merge does not establish deployment completion.
 - Full per-source decisions and target hashes are in [`cn-master-sync-20261023-ledger.json`](./cn-master-sync-20261023-ledger.json). Two unpublished AI guides remain explicitly deferred; carry them forward even after the pending batch merges.
 
 Before the next increment, confirm that the pending branch has merged. Only then use its fixed source head `427a27358efd3f2eeb1b9dc6e841e828b9a53366` as the new comparison start, while retaining its deferred items. Do not use the older `5d03551cf` source baseline, historical `99e7f81b4` target base, or the August checkpoint below for this branch.

@@ -1,0 +1,66 @@
+---
+title: ReloadBackgroundImageResult interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_reload_background_image_result
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_reload_background_image_result.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+背景图重载请求接收结果，含 accepted/reloadedCount/可选 reason。
+
+可从 @shengwang/whiteboard 直接导入 ReloadBackgroundImageResult。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface ReloadBackgroundImageResult
+```
+
+| [accepted](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-reload-background-image-result#a7516de8a5892868dbad9bb0e88b0a049) | `accepted: boolean` |
+| --- | --- |
+| [reloadedCount](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-reload-background-image-result#a8adec1c41b3a83fc97f04b17c8257b50) | `reloadedCount: number` |
+| [reason](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-reload-background-image-result#afdfff40a1a7a83c56c79e3c8f6e78c76) | `reason?: 'viewNotFound' \| 'sceneNotFocused' \| 'resourceNotFound' \| 'alreadyLoading'` |
+
+## 变量说明
+
+<a id="a7516de8a5892868dbad9bb0e88b0a049"></a>
+
+### accepted
+
+```text
+accepted: boolean
+```
+
+背景图重载请求是否被接收；不表示图片已加载成功。false 时查看可选 reason；此结果类型没有 message 字段。
+
+<a id="a8adec1c41b3a83fc97f04b17c8257b50"></a>
+
+### reloadedCount
+
+```text
+reloadedCount: number
+```
+
+本次触发重新加载的背景图数量。
+
+<a id="afdfff40a1a7a83c56c79e3c8f6e78c76"></a>
+
+### reason
+
+```text
+reason?: 'viewNotFound' | 'sceneNotFocused' | 'resourceNotFound' | 'alreadyLoading'
+```
+
+可选拒绝原因：viewNotFound、sceneNotFocused、resourceNotFound 或 alreadyLoading。

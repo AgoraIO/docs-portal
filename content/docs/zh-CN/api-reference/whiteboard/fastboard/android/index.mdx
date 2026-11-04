@@ -1,7 +1,7 @@
 ---
 title: "Fastboard Android SDK API 参考"
 ---
-本页提供声网 Fastboard SDK (Android) 的 Java API 参考。
+本页提供 **Fastboard Android 1.8.2** 的 Java API 参考，固定依赖 Whiteboard Android 2.16.131。方法在入房完成后使用，生命周期取消与操作失败通过 FastResult.onError 返回。
 
 <a id="fastboardview"></a>
 <a id="getfastboard"></a>
@@ -14,7 +14,7 @@ public Fastboard getFastboard()
 
 获取 `Fastboard` 对象。
 
-Fastboard SDK 不支持直接初始化 `Fastboard` 对象。你需要先将 `FastboardView` 添加到 app 的布局中，然后调用 `getFastboard` 方法获取 `Fastboard` 对象。
+推荐将 `FastboardView` 添加到 app 布局后，通过 `getFastboard()` 获取视图所管理的 `Fastboard` 对象。1.8.2 也有公开的 `Fastboard(FastboardView)` 构造函数；使用视图入口可避免为同一视图重复创建管理对象。
 
 **注意**
 
@@ -61,7 +61,7 @@ public static void preloadWhiteboardView() {
 
 预加载白板视图。
 
-该方法仅在 [`FastboardConfig`](#fastboardconfig) 中的 `autoPreload` 为 `false` 时生效。成功调用该方法将消耗内存执行一次白板视图预加载，提升下次加入房间的速度。
+在首次创建 FastboardView 前，通过 `FastboardConfig.Builder` 设置 `enablePreload=true`。`autoPreload=false` 时需由应用调用本方法触发预加载；开启自动预加载时也可调用，缓存已满则不新增。成功调用该方法将消耗内存执行一次白板视图预加载，提升下次加入房间的速度。
 
 <a id="setconfig"></a>
 ### setConfig
@@ -89,7 +89,7 @@ public class FastRoomOptions {
     private final String token;
     private final String uid;
     private final boolean writable;
- 
+
     private final FastRegion fastRegion;
 
     private Float containerSizeRatio;
@@ -150,7 +150,7 @@ public class FastRoomOptions {
 public class FastUserPayload {
     private final String nickName;
     private final String avatar;
-   
+
     public FastUserPayload(String nickName) {
         this(nickName, null);
     }
@@ -184,10 +184,19 @@ public class FastboardConfig {
 - `enablePreload`：boolean。是否开启白板预加载功能：
   - `true`：开启白板预加载。
   - `false`：（默认）关闭白板预加载。
-- `preloadCount`：int。预加载的 WebView 数量，默认为 `0`。该属性的实际生效情况受内存容量的限制，你需要根据实际情况适当调整设置。
+- `preloadCount`：int。预加载的 WebView 数量，默认为 `1`；仅在 enablePreload=true 时生效，开启时必须为正整数。该属性的实际生效情况受内存容量的限制，你需要根据实际情况适当调整设置。
 - `autoPreload`:boolean。该属性仅在 `enablePreload` 为 `true` 时生效。是否启用自动预加载：
   - `true`：（默认）启用自动预加载。开启后可自动预加载白板视图，提升白板加载速度，但会占用额外的内存。
   - `false`：关闭自动预加载。关闭后，你可以调用 [`preloadWhiteboardView`](#preloadwhiteboardview) 手动执行预加载。
+
+<a id="createfastreplay"></a>
+### createFastReplay
+
+```java
+public FastReplay createFastReplay(FastReplayOptions replayOptions);
+```
+
+使用回放配置创建 FastReplay。创建后调用 join，等待 ready 后控制播放；同一 FastboardView 不同时承载实时房间与回放。
 
 <a id="fastroom"></a>
 ## FastRoom 类
@@ -207,7 +216,7 @@ public void join()
 
 该方法需要在成功创建 `FastRoom` 对象后调用。
 
-<a id="join"></a>
+<a id="join-with-callback"></a>
 ### join [2/2]
 
 ```java
@@ -271,7 +280,7 @@ public boolean isReady()
 ### isWritable
 
 ```java
-public boolean isWritable() 
+public boolean isWritable()
 ```
 
 获取本地用户在当前互动白板实时房间是否为互动模式。
@@ -329,7 +338,7 @@ public void setWritable(boolean writable, FastResult<Boolean> result)
 - `writable`：用户在房间中是否为互动模式：
   - `true`：互动模式，即具有读写权限。
   - `false`：订阅模式，即具有只读权限。
-- `result`：`setWritable` 方法调用的结果。详见 [FastResult](#result)。传入 `FastResult` 实例，SDK 会触发在 `FastResult` 接口中实现的回调，报告 `setWritable` 方法调用是否成功；传入 `null` 表示不监听回调。
+- `result`：`setWritable` 方法调用的结果。详见 [FastResult](#fastresult)。传入 `FastResult` 实例，SDK 会触发在 `FastResult` 接口中实现的回调，报告 `setWritable` 方法调用是否成功；传入 `null` 表示不监听回调。
 
 <a id="undo"></a>
 ### undo
@@ -507,8 +516,8 @@ public class DocPage {
   - 图片：URL 地址，可以是你自己生成的 URL 地址，也可以是通过[文档转换功能](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)生成的 URL 地址。你可以从[查询转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)返回的 `image` 字段中获取该地址。请确保 App 客户端能够访问该 URL，否则无法正常加载图片。
   - 动态 PPT 页：通过[文档转换功能](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)生成的 URI 地址。
 - `preview`：String。（可选）图片或动态 PPT 预览图的 URL 地址。动态 PPT 预览图的 URL 地址可以从[查询文档转换进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)返回的 `preview` 字段获取。传入后，将在 App 左侧展示预览图。请确保 App 客户端能够访问该 URL，否则无法正常加载预览图。
-- `width`：int。插入的文档在白板中的宽度（px）。
-- `height`：int。插入的文档在白板中的高度（px）。
+- `width`：Double。插入的文档在白板中的宽度（px）。
+- `height`：Double。插入的文档在白板中的高度（px）。
 
 <a id="insertpptx"></a>
 ### insertPptx
@@ -519,7 +528,7 @@ public void insertPptx(String taskUuid, String prefixUrl, String title, FastResu
 
 在白板子窗口中插入动态文档。
 
-该方法可以插入通过[动态文档转换](/zh-CN/realtime-media/whiteboard/concepts#动态文档转换)转换后的动态 HTML 网页。
+该方法可以插入通过[动态文档转换](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)转换后的动态 HTML 网页。
 
 **参数**
 
@@ -532,23 +541,11 @@ public void insertPptx(String taskUuid, String prefixUrl, String title, FastResu
 ### insertDocs
 
 ```java
-public void insertDocs(FastInsertDocParams params, FastResult<String> result)
+public void insertDocs(FastInsertDocParams params, @Nullable FastResult<String> result);
 ```
 
-在白板子窗口中插入并展示文档。
+支持转换结果和结构化参数重载；staticRenderer=presentation 创建 Presentation，未设置时静态页使用 DocsViewer。返回 App ID 或 undefined。
 
-:::info
-该方法自 v1.6.0 起废弃，请改用 [insertStaticDoc](#insertstaticdoc) 或 [insertPptx](#insertpptx) 以插入静态和动态文档。
-:::
-
-[成功发起文档转换任务](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)后，可以调用该方法，传入转换后文档的相关参数，SDK 会自动创建子窗口，插入并分页展示转换后的文档。
-
-**参数**
-
-- `params`：插入文档的参数设置。详见 [FastInsertDocParams](#docparams)。
-- `result`：`insertDocs` 方法调用结果。详见 [FastResult](#result)。传入 `FastResult` 实例，SDK 会触发在 `FastResult` 接口中实现的回调，报告 `insertDocs` 方法调用是否成功；传入 `null` 表示不监听回调。
-
-<a id="docparams"></a>
 <a id="fastinsertdocparams"></a>
 ### FastInsertDocParams
 
@@ -559,7 +556,7 @@ public class FastInsertDocParams {
     private String taskUUID;
     private String taskToken;
     private FastRegion region;
-    private ConverterType converterType;   
+    private ConverterType converterType;
     private String fileType;
     private Boolean dynamicDoc;
     private String title;
@@ -602,26 +599,26 @@ public void setFastStyle(FastStyle style)
 public class FastStyle {
     private int mainColor;
     private boolean darkMode;
- 
+
     public FastStyle() {
     }
- 
+
     public int getMainColor() {
         return mainColor;
     }
- 
+
     public void setMainColor(@ColorInt int color) {
         this.mainColor = color;
     }
- 
+
     public boolean isDarkMode() {
         return darkMode;
     }
- 
+
     public void setDarkMode(boolean darkMode) {
         this.darkMode = darkMode;
     }
- 
+
     public FastStyle copy() {
         FastStyle style = new FastStyle();
         style.mainColor = mainColor;
@@ -767,7 +764,7 @@ public void registerApp(FastRegisterAppParams params, FastResult<Boolean> result
 **参数**
 
 - `params`：注册参数，包含应用配置。详见 [FastRegisterAppParams](#fastregisterappparams)。
-- `result`：`registerApp` 方法调用的结果。详见 [FastResult](#result)。传入 `FastResult` 实例，SDK 会触发在 `FastResult` 接口中实现的回调，报告 `registerApp` 方法调用是否成功；传入 `null` 表示不监听回调。
+- `result`：`registerApp` 方法调用的结果。详见 [FastResult](#fastresult)。传入 `FastResult` 实例，SDK 会触发在 `FastResult` 接口中实现的回调，报告 `registerApp` 方法调用是否成功；传入 `null` 表示不监听回调。
 
 <a id="fastregisterappparams"></a>
 <a id="fastregisterappparams"></a>
@@ -830,8 +827,105 @@ public class FastRegisterAppParams {
 - `javascriptString`：String。本地 JS 脚本代码，用于本地脚本注册。
 - `kind`：String。注册的 App 名称，即 App 的类型名称。
 - `url`：String。远程注册包的 URL 地址，用于远程包注册。
-- `appOptions`：`Map<String, Object>`。初始化 App 实例时会被传入的参数。这段配置不会被同步到其他端，属于本地设置。常常用来设置 debug 的开关。
+- `appOptions`：Map&lt;String, Object&gt;。初始化 App 实例时会被传入的参数。这段配置不会被同步到其他端，属于本地设置。常常用来设置 debug 的开关。
 - `variable`：String。挂载在 window 上的变量名，挂载后为 `window.variable`。
+
+<a id="focusapp"></a>
+### focusApp
+
+```java
+public void focusApp(String appId, FastResult<Boolean> result);
+```
+
+可等待的布尔值表示共享 focus、本端 Box 焦点和 zIndex 已提交；不表示 App setup 或首帧完成。
+
+<a id="insertpresentation"></a>
+### insertPresentation
+
+```java
+public void insertPresentation(DocPage[] pages, String title, @Nullable FastResult<String> result);
+public void insertPresentation(DocPage[] pages, String title, @Nullable WindowOriginSize originSize, @Nullable FastResult<String> result);
+```
+
+插入转换后的静态图片页，创建 Presentation；动态 ppt:// 和原始 PDF/PPT URL 需先转换。原有静态接口继续创建 DocsViewer。
+
+<a id="dispatchdocsevent"></a>
+### dispatchDocsEvent
+
+```java
+public void dispatchDocsEvent(WindowDocsEvent event, FastResult<DispatchDocsEventResult> result);
+```
+
+统一控制 MainView、DocsViewer、Slide、Presentation。target 省略时跟随焦点，或指定 mainView/appId；page 从 1 开始，scale=1 为适配尺寸。accepted 表示命令接收，拒绝时检查 reason/message；不保证渲染完成。
+
+<a id="getpagestate"></a>
+### getPageState
+
+```java
+public void getPageState(@Nullable WindowPageStateOptions options, FastResult<UnifiedPageState> result);
+```
+
+查询统一页面状态，返回 target、可选 appId、1-based page/pageCount、可选相对 scale。状态 target 为 mainView/DocsViewer/Slide/Presentation。
+
+<a id="queryslidepagestate"></a>
+### querySlidePageState
+
+```java
+public void querySlidePageState(@Nullable String appId, FastResult<SlidePageState> result);
+```
+
+查询当前焦点或指定 Slide App 的页码和总页数，页码从 1 开始。
+
+<a id="setunifiedpagestatelistener"></a>
+### setUnifiedPageStateListener
+
+```java
+public void setUnifiedPageStateListener(@Nullable UnifiedPageStateListener listener);
+```
+
+<a id="getroom"></a>
+### getRoom
+
+```java
+public Room getRoom();
+```
+
+获取 Fastboard 管理的底层 Native 对象，加入成功后使用；delegate/listener 按 Fastboard 的公开代理入口设置。
+
+<a id="getwhitesdk"></a>
+### getWhiteSdk
+
+```java
+public WhiteSdk getWhiteSdk();
+```
+
+获取 Fastboard 管理的底层 Native 对象，加入成功后使用；delegate/listener 按 Fastboard 的公开代理入口设置。
+
+<a id="disconnect"></a>
+### disconnect
+
+```java
+public void disconnect();
+public void disconnect(@Nullable FastResult<Object> result);
+```
+
+<a id="requiresrecreation"></a>
+### requiresRecreation
+
+```java
+public boolean requiresRecreation();
+```
+
+在主线程查询当前实例是否必须重建。SDK 初始化失败、无法确认退出完成或实例已销毁时，创建新的 FastboardView/FastRoom，不能在该实例重试。
+
+<a id="canretryjoin"></a>
+### canRetryJoin
+
+```java
+public boolean canRetryJoin();
+```
+
+在主线程查询当前实例能否安全重试入房。仅空闲状态返回 true；调用前同时确认无需重建。
 
 <a id="fastuisettings"></a>
 ## FastUiSettings 类
@@ -921,7 +1015,7 @@ config.add(Arrays.asList(
         FastAppliance.TRIANGLE
 ));
 config.add(Arrays.asList(FastAppliance.OTHER_CLEAR));
- 
+
 FastUiSettings.setToolsExpandAppliances(config);
 ```
 
@@ -956,7 +1050,7 @@ collapseAppliances.add(FastAppliance.ARROW);
 collapseAppliances.add(FastAppliance.SELECTOR);
 collapseAppliances.add(FastAppliance.TEXT);
 collapseAppliances.add(FastAppliance.OTHER_CLEAR);
- 
+
 FastUiSettings.setToolsCollapseAppliances(collapseAppliances);
 ```
 
@@ -1035,100 +1129,11 @@ public void setToolboxExpand(boolean expand)
 ### setStrokeRange
 
 ```java
-public void setStrokeRange(int min, int max)
+public void setStrokeRange(int min, int max);
 ```
 
-设置工具箱中线条宽度滑块的范围。
+通过 FastUiSettings 设置工具栏画笔粗细选择范围，min 不大于 max。
 
-该方法配置工具箱扩展面板中线条宽度滑块的最小值和最大值。用户在使用铅笔、矩形、圆形等绘图工具时，可以在此范围内调整线条宽度。默认范围为 [1, 24]。
-
-:::warning[注意]
-- 线条宽度滑块将被限制在指定的范围内。
-- 如果当前线条宽度超出新范围，将被限制到新范围内。
-- 此设置影响所有支持线条宽度调整的绘图工具。
-:::
-
-**参数**
-
-- `min`：int。线条宽度的最小值（包含）。
-- `max`：int。线条宽度的最大值（包含）。
-
-<a id="fastlogger"></a>
-## FastLogger 类
-
-`FastLogger` 类提供一个灵活的白板运行日志记录工具，可以方便地记录 `debug`、`info`、`warn`、`error` 共四种不同级别的日志信息。`FastLogger` 类使用一个 `Logger` 接口，并提供了一个默认实现 `DefaultLogger` 来使用系统的 `Log` 类。
-
-<a id="setlogger"></a>
-### setLogger
-
-```java
-public static void setLogger(Logger logger)
-```
-
-自定义日志记录器。
-
-**参数**
-
-- `logger`：日志记录器实例。如需自定义日志记录器，你需要传入 `Logger` 接口的实现类，详见 [`Logger`](#logger)；传入 `null` 将使用系统默认的日志记录器。
-
-<a id="logger"></a>
-### Logger
-
-定义了日志记录器的规范，包含所有日志级别的记录方法。
-
-<a id="debug"></a>
-### debug
-
-```java
-static void debug(String msg)
-```
-
-记录 debug 级别的日志。
-
-**参数**
-
-- `msg`：String。日志消息。
-
-<a id="info"></a>
-### info
-
-```java
-static void info(String msg)
-```
-
-记录 info 级别的日志。
-
-**参数**
-
-- `msg`：String。日志消息。
-
-<a id="warn"></a>
-### warn
-
-```java
-static void warn(String msg)
-```
-
-记录 warn 级别的日志。
-
-**参数**
-
-- `msg`：String。日志消息。
-
-<a id="error"></a>
-### error
-
-```java
-static void error(String msg)
-```
-
-记录 error 级别日志。
-
-**参数**
-
-- `msg`：String。日志消息。
-
-<a id="result"></a>
 <a id="fastresult"></a>
 ## FastResult
 
@@ -1145,3 +1150,106 @@ public interface FastResult<T> {
 
 - `onSuccess`：方法调用成功回调。
 - `onError`：发生错误回调。
+<a id="nativeconfiguration"></a>
+## 原生 SDK 与插件配置
+
+```java
+WhiteSdkConfiguration config = fastRoomOptions.getSdkConfiguration();
+config.setUseMultiViews(true);
+config.setEnableAppliancePlugin(true);
+RoomParams params = fastRoomOptions.getRoomParams();
+```
+
+初始化前配置底层 SDK 和 RoomParams。插件 extras、背景图加载和 Auto Shape 见[教具插件文档](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview?platform=android)。
+
+<a id="fastreplay"></a>
+## FastReplay 类
+
+```java
+// FastReplay replay = fastboard.createFastReplay(options);
+```
+
+以下为已公开的回放 API。创建、join、播放控制、stop、destroy 均在主线程调用。stop 释放当前播放器；需要再次回放时调用 join。destroy 后不复用该实例。
+
+<a id="fastreplay-join"></a>
+### join
+
+```java
+public void join();
+public void join(@Nullable OnReplayReadyCallback onReplayReadyCallback);
+```
+
+创建回放播放器；ready 回调签名为 void onReplayReady(FastReplay fastReplay)。先检查 isReady()，失败通过 FastReplayListener.onFastError 接收。
+
+<a id="fastreplay-isready"></a>
+### isReady / getPlayer
+
+```java
+public boolean isReady();
+public Player getPlayer();
+```
+
+查询是否已可用，获取底层 Player；未就绪或销毁后可能为 null。
+
+<a id="fastreplay-监听"></a>
+### 监听
+
+```java
+public void addListener(FastReplayListener listener);
+public void removeListener(FastReplayListener listener);
+```
+
+FastReplayListener 提供 onReplayReadyChanged(FastReplay fastReplay) 和 onFastError(FastException error)。保留同一监听对象用于移除。
+
+<a id="fastreplay-播放控制"></a>
+### 播放控制
+
+```java
+public void play();
+public void pause();
+public void stop();
+public void seekTo(long time);
+public void setPlaybackSpeed(double playbackSpeed);
+public void destroy();
+```
+
+seekTo 的 time 为回放进度毫秒；playbackSpeed 为倍速。stop 会取消待创建回放并释放 Player；destroy 同时清理监听和宿主资源。
+
+<a id="fastreplayoptions"></a>
+## FastReplayOptions
+
+```java
+public FastReplayOptions(String appId, String uuid, String token);
+public void setFastRegion(FastRegion fastRegion);
+public void setPlayerConfiguration(PlayerConfiguration playerConfiguration);
+public void setSdkConfiguration(WhiteSdkConfiguration sdkConfiguration);
+public void setContainerSizeRatio(Float ratio);
+public void setDuration(Long duration);
+public void setBeginTimestamp(Long beginTimestamp);
+public String getAppId();
+public String getUuid();
+public String getToken();
+public FastRegion getFastRegion();
+public PlayerConfiguration getPlayerConfiguration();
+public WhiteSdkConfiguration getSdkConfiguration();
+public Float getContainerSizeRatio();
+public Long getDuration();
+public Long getBeginTimestamp();
+```
+
+appId 为白板项目标识，uuid 为房间 UUID，token 为该房间访问凭证。region 默认 CN_HZ；beginTimestamp 为回放开始时间戳，duration 为时长，单位均为毫秒。各字段均有对应 get 方法；getPlayerConfiguration/getSdkConfiguration 在未设置时根据基础选项生成配置，显式提供配置时应完整设置所需字段。创建 FastReplay 前配置。
+
+```java
+FastReplayOptions options = new FastReplayOptions(appId, roomUuid, roomToken);
+options.setFastRegion(FastRegion.CN_HZ);
+FastReplay replay = fastboard.createFastReplay(options);
+replay.addListener(new FastReplayListener() {
+    @Override public void onFastError(FastException error) {
+        // 处理回放创建错误。
+    }
+});
+replay.join(ready -> {
+    if (ready.isReady()) ready.play();
+});
+// 在宿主销毁时于主线程调用 replay.destroy()。
+```

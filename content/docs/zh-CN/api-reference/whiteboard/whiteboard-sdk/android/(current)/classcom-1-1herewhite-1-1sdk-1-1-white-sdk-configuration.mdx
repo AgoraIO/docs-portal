@@ -1,45 +1,522 @@
 ---
-title: com.herewhite.sdk.WhiteSdkConfiguration类 参考
+title: com.herewhite.sdk.WhiteSdkConfiguration class 参考
 tocMaxDepth: 3
 _migration:
   type: generated-html
-  status: warning
+  status: migrated
   sourceUrl: >-
     https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_white_sdk_configuration
   sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1_white_sdk_configuration.html
   generator: doxygen
-  warnings:
-    - code: missing-source-text
-      severity: warning
-      message: >-
-        The source image classcom_1_1herewhite_1_1sdk_1_1_white_sdk_configuration.png has no
-        meaningful alt or title text; the converter used contextual alt text
-        "com.herewhite.sdk.WhiteSdkConfiguration类 参考 图示".
+  warnings: []
 ---
-
-类 com.herewhite.sdk.WhiteSdkConfiguration 继承关系图:
-
-![com.herewhite.sdk.WhiteSdkConfiguration类 参考 图示](https://web-cdn.agora.io/docs-portal/img/api-center-generated/ae4a093fddb2-classcom_1_1herewhite_1_1sdk_1_1_white_sdk_configuration.png)
 
 <a id="details"></a>
 
 ## 详细描述
 
-[`WhiteSdk`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk) 实例的配置。
+适用版本：**Whiteboard Android SDK 2.16.134**。
 
-### 注解
+`WhiteSdk` 实例的配置。
 
-成功初始化 [`WhiteSdk`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk) 后，无法再调用 [`WhiteSdkConfiguration`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration) 类中的任何方法修改 [`WhiteSdk`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk) 的配置。
+@note 成功初始化 `WhiteSdk` 后，无法再调用 `WhiteSdkConfiguration` 类中的任何方法修改 `WhiteSdk` 的配置。
 
-## 构造及析构函数说明
+父类：[WhiteObject](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-object)；继承接口详见父类。
+
+## 属性与 JSON 字段
+
+Java 非公开字段通过对应 getter/setter 访问；可选包装类型未设置时通常不写入 JSON。初值包含字段声明及无参构造中的直接赋值；其他构造参数以签名为准。
+
+| 字段 | 声明 | 源码初值 | 说明 |
+| --- | --- | --- | --- |
+| [backgroundImageLoadOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#afee878f0541f31202bbd14cbe226b5b4) | `com.herewhite.sdk.domain.BackgroundImageLoadOptions backgroundImageLoadOptions` | 未显式赋值 | <Slot name="api-center-table-0" /> |
+| [region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a667353b38a2bfc14147c24a9e784844c) | `Region region` | 未显式赋值 | <Slot name="api-center-table-1" /> |
+| [log](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a36de6bdaa33c1342da8248192bafd8a0) | `boolean log` | false | <Slot name="api-center-table-2" /> |
+| [renderEngine](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a680694b7d7575da69f18bd6cd1a1cf22) | `RenderEngineType renderEngine` | RenderEngineType.canvas | <Slot name="api-center-table-3" /> |
+| [enableInterrupterAPI](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a77a4548d1d4a62274c25a3d8e3b4efd7) | `boolean enableInterrupterAPI` | false | <Slot name="api-center-table-4" /> |
+| [enableSlideInterrupterAPI](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a3de3fcd861845a9ad986775f4bc6265e) | `boolean enableSlideInterrupterAPI` | false | <Slot name="api-center-table-5" /> |
+| [preloadDynamicPPT](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#aa8a862e26387a87f72013f54be49467b) | `boolean preloadDynamicPPT` | false | <Slot name="api-center-table-6" /> |
+| [userCursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a5bfdee2e39b447a0ca57471d9d6f46ec) | `boolean userCursor` | false | <Slot name="api-center-table-7" /> |
+| [onlyCallbackRemoteStateModify](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a5924ea6899dab6caede613112ac70bed) | `boolean onlyCallbackRemoteStateModify` | false | <Slot name="api-center-table-8" /> |
+| [enableIFramePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a6c93c8c7a6b9f233867b3b9e6e68980a) | `boolean enableIFramePlugin` | false | <Slot name="api-center-table-9" /> |
+| [enableRtcAudioEffectIntercept](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a11982650384a33d9a5604bbc58bfea76) | `boolean enableRtcAudioEffectIntercept` | false | <Slot name="api-center-table-10" /> |
+| [enableSyncedStore](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a77793d360e752054520bde56297915c6) | `boolean enableSyncedStore` | false | <Slot name="api-center-table-11" /> |
+| [enableAppliancePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a7f10a09bafaf53a2798abed4b5113256) | `boolean enableAppliancePlugin` | false | <Slot name="api-center-table-12" /> |
+| [disableNewPencilStroke](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a3012d639a5a85703e10b4d8256a33d0b) | `boolean disableNewPencilStroke` | false | <Slot name="api-center-table-13" /> |
+| [loggerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#aa0e11a5de4d3690939bc27c3acf426dc) | `LoggerOptions loggerOptions` | 未显式赋值 | <Slot name="api-center-table-14" /> |
+| [pptParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#ab230d2bbd28af5f9dac17aaeec1b1e7f) | `PptParams pptParams` | new PptParams(...) | <Slot name="api-center-table-15" /> |
+| [slideAppOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a79647087cc200679ed0cdbe20346cff8) | `SlideAppOptions slideAppOptions` | new SlideAppOptions(...) | <Slot name="api-center-table-16" /> |
+| [presentationAppOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#aead886fe6012608f90cc7b272eebccd2) | `PresentationAppOptions presentationAppOptions` | 未显式赋值 | <Slot name="api-center-table-17" /> |
+| [fonts](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#abddd71b82802051a76375cdaa88aed21) | `HashMap<String, String> fonts` | 未显式赋值 | <Slot name="api-center-table-18" /> |
+| [enableImgErrorCallback](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a17ca63184cb30738946bae208116aafb) | `boolean enableImgErrorCallback` | 未显式赋值 | <Slot name="api-center-table-19" /> |
+| [useMultiViews](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#ab7e3f18c4f865c73e07105e2c7424fd0) | `Boolean useMultiViews` | false | <Slot name="api-center-table-20" /> |
+| [apiHosts](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a82b82ea774ef5b1a1166463585265e67) | `List<String> apiHosts` | 未显式赋值 | <Slot name="api-center-table-21" /> |
+
+<Slot for="api-center-table-0">
+
+背景图片加载重试和超时配置，见 BackgroundImageLoadOptions。
+
+</Slot>
+
+<Slot for="api-center-table-1">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-2">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-3">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-4">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-5">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-6">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-7">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-8">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-9">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-10">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-11">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-12">
+
+启用内嵌高性能绘制插件，默认 false；Android/Harmony 无需单独安装 npm 插件，同房间各端应一致开启。
+
+</Slot>
+
+<Slot for="api-center-table-13">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-14">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-15">
+
+pptParams 动态 ppt 专用参数
+
+</Slot>
+
+<Slot for="api-center-table-16">
+
+SlideApp 的配置项
+
+</Slot>
+
+<Slot for="api-center-table-17">
+
+本地内置 Presentation 配置，初始化 SDK 前传入。
+
+</Slot>
+
+<Slot for="api-center-table-18">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-19">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-20">
+
+多窗口支持
+
+</Slot>
+
+<Slot for="api-center-table-21">
+
+配置白板的 API 服务器域名列表，可以用于服务器代理。配置后，白板不再使用 sdk 自带配置。
+
+@example [api.example.com]
+
+</Slot>
+
+| 公开成员签名 |  |
+| --- | --- |
+|  | [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a1bdc84ab8acbe9f4732f07a62f429a3d) (String appIdentifier, boolean log) |
+|  | [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#adefcf4cfce48f523164941ca1e2859a5) (String appIdentifier) |
+| boolean | [isEnableIFramePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a3d6c7edc68f7143f7b045c89e5ce2d26) () |
+| void | [setEnableIFramePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a5983a2cd7a0fa6e51ce8ff7a78ef7c02) (boolean enableIFramePlugin) |
+| Region | [getRegion](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a8acd28da7ca8b16197e36b46f51fd2ea) () |
+| void | [setRegion](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a26095c960c0c25f4e5d07ac7dcea3b9d) (Region region) |
+| boolean | [isEnableRtcAudioEffectIntercept](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a0832d96d6dcd2fb6736f8cab85d0a4ee) () |
+| void | [setEnableRtcAudioEffectIntercept](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#ac1ccb3a7cccdb4960b48b9f173e7b37b) (boolean enableRtcAudioEffectIntercept) |
+| boolean | [isDisableNewPencilStroke](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#aea5543307dfdda534d09dc3fa609bbc8) () |
+| void | [setDisableNewPencilStroke](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a9145cf669a6de058fa0fd53dc1f2ff8b) (boolean disableNewPencilStroke) |
+| RenderEngineType | [getRenderEngine](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a8f4ae303b78245fa3820ada74c1cecd3) () |
+| void | [setRenderEngine](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#ae74760b5bbf80d908566a35d0146252b) (RenderEngineType renderEngine) |
+| PptParams | [getPptParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a0cf413fba8c882bd85d3525f39868494) () |
+| void | [setPptParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a18fb497bc4386158c0e20f7f7f778780) (PptParams pptParams) |
+| HashMap&lt;String, String&gt; | [getFonts](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a56a503cb128959dda43df21d3274e467) () |
+| void | [setFonts](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#ae27b638d67a38871ebb59dc800fc6411) (HashMap&lt;String, String&gt; fonts) |
+| boolean | [isPreloadDynamicPPT](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a0e0f16c7abeef7ce60ae8c8537688999) () |
+| void | [setPreloadDynamicPPT](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a7a06793aeeade42d1e539765b27f2642) (boolean preloadDynamicPPT) |
+| void | [addNativeTag](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a23220ca8298da2d2f321dc2fd59cb9e3) (String tag, String value) |
+| LoggerOptions | [getLoggerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#ad9538a651c2d1a5a59592d9642d7ab06) () |
+| void | [setLoggerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a54bb35b0fecf880950fa8cb8e6026098) (LoggerOptions loggerOptions) |
+| List&lt;String&gt; | [getNetlessUA](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a0bb1c190bfb05a93ded803e0e7323dc9) () |
+| void | [setNetlessUA](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#ab6f5ff9718db061a7bd76a075552c1e9) (List&lt;String&gt; netlessUA) |
+| boolean | [isUserCursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#af1dc5d8e78cec31cdc7d70e6431a9fca) () |
+| void | [setUserCursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a58d1cff22044c385de34a7e239b34ca4) (boolean userCursor) |
+| boolean | [isOnlyCallbackRemoteStateModify](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#ac3ec01e31aa709a3a62b40528c3045a8) () |
+| void | [setOnlyCallbackRemoteStateModify](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a86641862170f62dbaed5e9b2548fc296) (boolean onlyCallbackRemoteStateModify) |
+| boolean | [isLog](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a35e6de1283b312c6c8720bdc0b18b2d8) () |
+| void | [setLog](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#af29676180672f3e54d050d591707312c) (boolean log) |
+| boolean | [isEnableInterrupterAPI](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a04a8a5e4f6e942e1fadd061cb6cd27f8) () |
+| void | [setEnableInterrupterAPI](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#aa2e118f6e449997fbd487a5d5357745b) (boolean enableInterrupterAPI) |
+| boolean | [isEnableImgErrorCallback](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a1b0ac65018c580328b68c52af6793f35) () |
+| void | [setEnableImgErrorCallback](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#ac84ef5bcce300c954e05eace8b18c36b) (boolean enableImgErrorCallback) |
+| com.herewhite.sdk.domain.BackgroundImageLoadOptions | [getBackgroundImageLoadOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a7cefc9a048561233206e9de78218a1f5) () |
+| void | [setBackgroundImageLoadOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a30016236b68a3bd9dd244eb0ebc8e8c5) (com.herewhite.sdk.domain.BackgroundImageLoadOptions options) |
+| boolean | [isEnableSyncedStore](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#aca115dec8e4845b14adc728806e9fe31) () |
+| void | [setEnableSyncedStore](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#aa568ec1caabbb457d3ed342242bcda7a) (boolean enableSyncedStore) |
+| Boolean | [getUseMultiViews](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#ad9a248a0071ab6d53050fa42cd92268b) () |
+| void | [setUseMultiViews](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#afc8be74170b3377d3fe830d6b8e93466) (Boolean useMultiViews) |
+| SlideAppOptions | [getSlideAppOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a3484b5774a99a0aac4f048e1d1cad393) () |
+| void | [setSlideAppOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a8c91c61059e628d467aee6c2f54a66a4) (SlideAppOptions slideAppOptions) |
+| PresentationAppOptions | [getPresentationAppOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a34234ac94fbea20a3966d2da3743269d) () |
+| void | [setPresentationAppOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#acb9eedc3b38c315ddc452565852c5668) (PresentationAppOptions presentationAppOptions) |
+| boolean | [isEnableSlideInterrupterAPI](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a10342ae9c7b48b3c5a9634461ecaa8c4) () |
+| void | [setEnableSlideInterrupterAPI](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#aa056117366231f9c6a94e4c3c8e69ebe) (boolean enableSlideInterrupterAPI) |
+| List&lt;String&gt; | [getApiHosts](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#aede0a2d191b0dfc5c54c8ea5364392c5) () |
+| void | [setApiHosts](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#ac600c7ef3c6ac6c6973230d9d201a32b) (List&lt;String&gt; apiHosts) |
+| boolean | [isEnableAppliancePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a38ec00b67242c2df696027e7f7b856fa) () |
+| void | [setEnableAppliancePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a826074833f28c8b49a8c475eb1a162d5) (boolean enableAppliancePlugin) |
+| [setDynamicConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a46b649f96b291b8d415d613b549d9120) | `public void setDynamicConfig(Map<String, String> dynamicConfig)` |
+| [getDynamicConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#a0b3c09124190d94c2d2140f7324fbaa1) | `public Map<String, String> getDynamicConfig()` |
+
+## 变量说明
+
+<a id="afee878f0541f31202bbd14cbe226b5b4"></a>
+
+### backgroundImageLoadOptions
+
+```text
+com.herewhite.sdk.domain.BackgroundImageLoadOptions backgroundImageLoadOptions
+```
+
+源码初值：未显式赋值
+
+背景图片加载重试和超时配置，见 BackgroundImageLoadOptions。
+
+<a id="a667353b38a2bfc14147c24a9e784844c"></a>
+
+### region
+
+```text
+Region region
+```
+
+源码初值：未显式赋值
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a36de6bdaa33c1342da8248192bafd8a0"></a>
+
+### log
+
+```text
+boolean log
+```
+
+源码初值：false
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a680694b7d7575da69f18bd6cd1a1cf22"></a>
+
+### renderEngine
+
+```text
+RenderEngineType renderEngine
+```
+
+源码初值：RenderEngineType.canvas
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a77a4548d1d4a62274c25a3d8e3b4efd7"></a>
+
+### enableInterrupterAPI
+
+```text
+boolean enableInterrupterAPI
+```
+
+源码初值：false
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a3de3fcd861845a9ad986775f4bc6265e"></a>
+
+### enableSlideInterrupterAPI
+
+```text
+boolean enableSlideInterrupterAPI
+```
+
+源码初值：false
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="aa8a862e26387a87f72013f54be49467b"></a>
+
+### preloadDynamicPPT
+
+```text
+boolean preloadDynamicPPT
+```
+
+源码初值：false
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a5bfdee2e39b447a0ca57471d9d6f46ec"></a>
+
+### userCursor
+
+```text
+boolean userCursor
+```
+
+源码初值：false
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a5924ea6899dab6caede613112ac70bed"></a>
+
+### onlyCallbackRemoteStateModify
+
+```text
+boolean onlyCallbackRemoteStateModify
+```
+
+源码初值：false
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a6c93c8c7a6b9f233867b3b9e6e68980a"></a>
+
+### enableIFramePlugin
+
+```text
+boolean enableIFramePlugin
+```
+
+源码初值：false
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a11982650384a33d9a5604bbc58bfea76"></a>
+
+### enableRtcAudioEffectIntercept
+
+```text
+boolean enableRtcAudioEffectIntercept
+```
+
+源码初值：false
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a77793d360e752054520bde56297915c6"></a>
+
+### enableSyncedStore
+
+```text
+boolean enableSyncedStore
+```
+
+源码初值：false
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a7f10a09bafaf53a2798abed4b5113256"></a>
+
+### enableAppliancePlugin
+
+```text
+boolean enableAppliancePlugin
+```
+
+源码初值：false
+
+启用内嵌高性能绘制插件，默认 false；Android/Harmony 无需单独安装 npm 插件，同房间各端应一致开启。
+
+<a id="a3012d639a5a85703e10b4d8256a33d0b"></a>
+
+### disableNewPencilStroke
+
+```text
+boolean disableNewPencilStroke
+```
+
+源码初值：false
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="aa0e11a5de4d3690939bc27c3acf426dc"></a>
+
+### loggerOptions
+
+```text
+LoggerOptions loggerOptions
+```
+
+源码初值：未显式赋值
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="ab230d2bbd28af5f9dac17aaeec1b1e7f"></a>
+
+### pptParams
+
+```text
+PptParams pptParams
+```
+
+源码初值：new PptParams(...)
+
+pptParams 动态 ppt 专用参数
+
+<a id="a79647087cc200679ed0cdbe20346cff8"></a>
+
+### slideAppOptions
+
+```text
+SlideAppOptions slideAppOptions
+```
+
+源码初值：new SlideAppOptions(...)
+
+SlideApp 的配置项
+
+<a id="aead886fe6012608f90cc7b272eebccd2"></a>
+
+### presentationAppOptions
+
+```text
+PresentationAppOptions presentationAppOptions
+```
+
+源码初值：未显式赋值
+
+本地内置 Presentation 配置，初始化 SDK 前传入。
+
+<a id="abddd71b82802051a76375cdaa88aed21"></a>
+
+### fonts
+
+```text
+HashMap<String, String> fonts
+```
+
+源码初值：未显式赋值
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a17ca63184cb30738946bae208116aafb"></a>
+
+### enableImgErrorCallback
+
+```text
+boolean enableImgErrorCallback
+```
+
+源码初值：未显式赋值
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="ab7e3f18c4f865c73e07105e2c7424fd0"></a>
+
+### useMultiViews
+
+```text
+Boolean useMultiViews
+```
+
+源码初值：false
+
+多窗口支持
+
+<a id="a82b82ea774ef5b1a1166463585265e67"></a>
+
+### apiHosts
+
+```text
+List<String> apiHosts
+```
+
+源码初值：未显式赋值
+
+配置白板的 API 服务器域名列表，可以用于服务器代理。配置后，白板不再使用 sdk 自带配置。
+
+@example [api.example.com]
+
+## 函数说明
 
 <a id="a1bdc84ab8acbe9f4732f07a62f429a3d"></a>
 
-### WhiteSdkConfiguration() [1/2]
+### WhiteSdkConfiguration()
 
 <ApiSignature>
 
-com.herewhite.sdk.WhiteSdkConfiguration.WhiteSdkConfiguration(String *appIdentifier*, boolean *log*)
+WhiteSdkConfiguration(String appIdentifier, boolean log)
 
 </ApiSignature>
 
@@ -63,11 +540,11 @@ com.herewhite.sdk.WhiteSdkConfiguration.WhiteSdkConfiguration(String *appIdentif
 
 <a id="adefcf4cfce48f523164941ca1e2859a5"></a>
 
-### WhiteSdkConfiguration() [2/2]
+### WhiteSdkConfiguration()
 
 <ApiSignature>
 
-com.herewhite.sdk.WhiteSdkConfiguration.WhiteSdkConfiguration(String *appIdentifier*)
+WhiteSdkConfiguration(String appIdentifier)
 
 </ApiSignature>
 
@@ -81,15 +558,13 @@ com.herewhite.sdk.WhiteSdkConfiguration.WhiteSdkConfiguration(String *appIdentif
 </Parameter>
 </ParameterList>
 
-## 成员函数说明
-
 <a id="a3d6c7edc68f7143f7b045c89e5ce2d26"></a>
 
 ### isEnableIFramePlugin()
 
 <ApiSignature>
 
-boolean com.herewhite.sdk.WhiteSdkConfiguration.isEnableIFramePlugin()
+boolean isEnableIFramePlugin()
 
 </ApiSignature>
 
@@ -108,7 +583,7 @@ boolean com.herewhite.sdk.WhiteSdkConfiguration.isEnableIFramePlugin()
 
 <ApiSignature>
 
-void com.herewhite.sdk.WhiteSdkConfiguration.setEnableIFramePlugin(boolean *enableIFramePlugin*)
+void setEnableIFramePlugin(boolean enableIFramePlugin)
 
 </ApiSignature>
 
@@ -133,7 +608,7 @@ iframe 插件的功能，详见 [iframe-bridge](https://github.com/netless-io/ne
 
 <ApiSignature>
 
-[Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) com.herewhite.sdk.WhiteSdkConfiguration.getRegion()
+Region getRegion()
 
 </ApiSignature>
 
@@ -149,7 +624,7 @@ iframe 插件的功能，详见 [iframe-bridge](https://github.com/netless-io/ne
 
 <ApiSignature>
 
-void com.herewhite.sdk.WhiteSdkConfiguration.setRegion([Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) *region*)
+void setRegion(Region region)
 
 </ApiSignature>
 
@@ -167,13 +642,51 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setRegion([Region](/zh-CN/api-refer
 </Parameter>
 </ParameterList>
 
+<a id="a0832d96d6dcd2fb6736f8cab85d0a4ee"></a>
+
+### isEnableRtcAudioEffectIntercept()
+
+<ApiSignature>
+
+boolean isEnableRtcAudioEffectIntercept()
+
+</ApiSignature>
+
+isEnableRtcAudioEffectIntercept：com.herewhite.sdk.WhiteSdkConfiguration 的公开成员。参数和返回类型见下方签名。
+
+<a id="ac1ccb3a7cccdb4960b48b9f173e7b37b"></a>
+
+### setEnableRtcAudioEffectIntercept()
+
+<ApiSignature>
+
+void setEnableRtcAudioEffectIntercept(boolean enableRtcAudioEffectIntercept)
+
+</ApiSignature>
+
+设置是否启用 RTC SDK 的音效方法播放动态 PPT 中的音频。
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="enableRtcAudioEffectIntercept" />
+</ParameterList>
+
+:::info[自此版本]
+2.16.75  当同时使用 Agora RTC SDK 和互动白板 SDK, 且互动白板中展示的动态 PPT 中包含音频文件时，你可以调用 RTC SDK 的音效方法播放动态 PPT 中的音频，以保证音频正常播放。
+:::
+
+:::info[注意]
+初始化 `WhiteSdk` 时，如果你实现并传入 AudioEffectBridge 类，SDK 会自动设置 `setEnableRtcAudioEffectIntercept(true)`。你无需主动调用该方法。
+:::
+
 <a id="aea5543307dfdda534d09dc3fa609bbc8"></a>
 
 ### isDisableNewPencilStroke()
 
 <ApiSignature>
 
-boolean com.herewhite.sdk.WhiteSdkConfiguration.isDisableNewPencilStroke()
+boolean isDisableNewPencilStroke()
 
 </ApiSignature>
 
@@ -192,7 +705,7 @@ boolean com.herewhite.sdk.WhiteSdkConfiguration.isDisableNewPencilStroke()
 
 <ApiSignature>
 
-void com.herewhite.sdk.WhiteSdkConfiguration.setDisableNewPencilStroke(boolean *disableNewPencilStroke*)
+void setDisableNewPencilStroke(boolean disableNewPencilStroke)
 
 </ApiSignature>
 
@@ -213,104 +726,21 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setDisableNewPencilStroke(boolean *
 - `true`：关闭笔锋效果。
 - `false`：（默认）开启笔锋效果。
 
-<a id="aa056117366231f9c6a94e4c3c8e69ebe"></a>
+<a id="a8f4ae303b78245fa3820ada74c1cecd3"></a>
 
-### setEnableSlideInterrupterAPI()
-
-<ApiSignature>
-
-void com.herewhite.sdk.WhiteSdkConfiguration.setEnableSlideInterrupterAPI(boolean *enableSlideInterrupterAPI*)
-
-</ApiSignature>
-
-开启/关闭 PPT 拦截替换功能。
-
-该方法可以开启或关闭 PPT 资源的拦截功能。 如果开启，在加载 URL 资源时会拦截资源并触发 `com.herewhite.sdk.window.SlideListener#slideUrlInterrupter(String, ResultCaller)` 回调，你可以在该回调中替换资源的地址。
-
-<ParameterList title="参数">
-<Parameter name="enableSlideInterrupterAPI">
-
-是否开启 PPT 资源拦截和替换功能：
-
-- `true`：开启。
-- `false`：（默认）关闭。
-
-</Parameter>
-</ParameterList>
-
-<a id="aede0a2d191b0dfc5c54c8ea5364392c5"></a>
-
-### getApiHosts()
+### getRenderEngine()
 
 <ApiSignature>
 
-List&lt; String &gt; com.herewhite.sdk.WhiteSdkConfiguration.getApiHosts()
+RenderEngineType getRenderEngine()
 
 </ApiSignature>
 
-获取白板的 API 服务器域名列表。
-
-<a id="ac600c7ef3c6ac6c6973230d9d201a32b"></a>
-
-### setApiHosts()
-
-<ApiSignature>
-
-void com.herewhite.sdk.WhiteSdkConfiguration.setApiHosts(List&lt; String &gt; *apiHosts*)
-
-</ApiSignature>
-
-配置白板的 API 服务器域名列表。 可以用于配置服务器代理。配置后，白板不再使用 SDK 自带配置。
-
-<ParameterList title="参数">
-<Parameter name="apiHosts">
-
-白板的 API 服务器域名列表。例如 [api.example.com]。
-
-</Parameter>
-</ParameterList>
-
-<a id="a38ec00b67242c2df696027e7f7b856fa"></a>
-
-### isEnableAppliancePlugin()
-
-<ApiSignature>
-
-boolean com.herewhite.sdk.WhiteSdkConfiguration.isEnableAppliancePlugin()
-
-</ApiSignature>
-
-获取是否启用高性能白板绘制工具插件 (appliance-plugin)。
+获取绘图的渲染模式。
 
 <h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
 
-是否启用 appliance-plugin：
-
-- `true`：开启。
-- `false`：（默认）关闭。
-
-<a id="a826074833f28c8b49a8c475eb1a162d5"></a>
-
-### setEnableAppliancePlugin()
-
-<ApiSignature>
-
-void com.herewhite.sdk.WhiteSdkConfiguration.setEnableAppliancePlugin(boolean *enableAppliancePlugin*)
-
-</ApiSignature>
-
-启用/禁用高性能白板绘制工具插件 (appliance-plugin)。
-
-<ParameterList title="参数">
-<Parameter name="enableAppliancePlugin">
-
-是否启用 appliance-plugin：
-
-- `true`：开启。
-- `false`：（默认）关闭。
-
-</Parameter>
-</ParameterList>
+绘图的渲染模式，详见 [`RenderEngineType`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration-1-1-render-engine-type)。
 
 <a id="ae74760b5bbf80d908566a35d0146252b"></a>
 
@@ -318,7 +748,7 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setEnableAppliancePlugin(boolean *e
 
 <ApiSignature>
 
-void com.herewhite.sdk.WhiteSdkConfiguration.setRenderEngine([RenderEngineType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration-1-1-render-engine-type) *renderEngine*)
+void setRenderEngine(RenderEngineType renderEngine)
 
 </ApiSignature>
 
@@ -342,35 +772,19 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setRenderEngine([RenderEngineType](
 </Parameter>
 </ParameterList>
 
-<a id="a8f4ae303b78245fa3820ada74c1cecd3"></a>
-
-### getRenderEngine()
-
-<ApiSignature>
-
-[RenderEngineType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration-1-1-render-engine-type) com.herewhite.sdk.WhiteSdkConfiguration.getRenderEngine()
-
-</ApiSignature>
-
-获取绘图的渲染模式。
-
-<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
-
-绘图的渲染模式，详见 [`RenderEngineType`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration-1-1-render-engine-type)。
-
 <a id="a0cf413fba8c882bd85d3525f39868494"></a>
 
 ### getPptParams()
 
 <ApiSignature>
 
-[PptParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration-1-1-ppt-params) com.herewhite.sdk.WhiteSdkConfiguration.getPptParams()
+PptParams getPptParams()
 
 </ApiSignature>
 
 获取设置的动态 PPT 参数。
 
-<h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
+<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
 
 设置的动态 PPT 参数，详见 [`PptParams`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration-1-1-ppt-params)。
 
@@ -380,7 +794,7 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setRenderEngine([RenderEngineType](
 
 <ApiSignature>
 
-void com.herewhite.sdk.WhiteSdkConfiguration.setPptParams([PptParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration-1-1-ppt-params) *pptParams*)
+void setPptParams(PptParams pptParams)
 
 </ApiSignature>
 
@@ -400,13 +814,13 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setPptParams([PptParams](/zh-CN/api
 
 <ApiSignature>
 
-HashMap&lt; String, String &gt; com.herewhite.sdk.WhiteSdkConfiguration.getFonts()
+HashMap&lt;String, String&gt; getFonts()
 
 </ApiSignature>
 
 获取自定义字体。
 
-<h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
+<h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
 
 自定义字体名称和地址。
 
@@ -416,7 +830,7 @@ HashMap&lt; String, String &gt; com.herewhite.sdk.WhiteSdkConfiguration.getFonts
 
 <ApiSignature>
 
-void com.herewhite.sdk.WhiteSdkConfiguration.setFonts(HashMap&lt; String, String &gt; *fonts*)
+void setFonts(HashMap&lt;String, String&gt; fonts)
 
 </ApiSignature>
 
@@ -446,13 +860,13 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setFonts(HashMap&lt; String, String
 
 <ApiSignature>
 
-boolean com.herewhite.sdk.WhiteSdkConfiguration.isPreloadDynamicPPT()
+boolean isPreloadDynamicPPT()
 
 </ApiSignature>
 
 获取是否开启一次性加载动态 PPT 中的所有图片资源。
 
-<h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
+<h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
 
 一次性加载动态 PPT 中的所有图片资源开启状态：
 
@@ -465,7 +879,7 @@ boolean com.herewhite.sdk.WhiteSdkConfiguration.isPreloadDynamicPPT()
 
 <ApiSignature>
 
-void com.herewhite.sdk.WhiteSdkConfiguration.setPreloadDynamicPPT(boolean *preloadDynamicPPT*)
+void setPreloadDynamicPPT(boolean preloadDynamicPPT)
 
 </ApiSignature>
 
@@ -486,19 +900,31 @@ Agora 不推荐设置 `setPreloadDynamicPPT(true)`，这样会使 PPT 显示缓�
 </Parameter>
 </ParameterList>
 
+<a id="a23220ca8298da2d2f321dc2fd59cb9e3"></a>
+
+### addNativeTag()
+
+<ApiSignature>
+
+void addNativeTag(String tag, String value)
+
+</ApiSignature>
+
+addNativeTag：com.herewhite.sdk.WhiteSdkConfiguration 的公开成员。参数和返回类型见下方签名。
+
 <a id="ad9538a651c2d1a5a59592d9642d7ab06"></a>
 
 ### getLoggerOptions()
 
 <ApiSignature>
 
-[LoggerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options) com.herewhite.sdk.WhiteSdkConfiguration.getLoggerOptions()
+LoggerOptions getLoggerOptions()
 
 </ApiSignature>
 
 获取设置的日志选项。
 
-<h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
+<h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
 
 设置的日志选项，详见 [`LoggerOptions`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options)。
 
@@ -508,7 +934,7 @@ Agora 不推荐设置 `setPreloadDynamicPPT(true)`，这样会使 PPT 显示缓�
 
 <ApiSignature>
 
-void com.herewhite.sdk.WhiteSdkConfiguration.setLoggerOptions([LoggerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options) *loggerOptions*)
+void setLoggerOptions(LoggerOptions loggerOptions)
 
 </ApiSignature>
 
@@ -526,13 +952,56 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setLoggerOptions([LoggerOptions](/z
 </Parameter>
 </ParameterList>
 
+<a id="a0bb1c190bfb05a93ded803e0e7323dc9"></a>
+
+### getNetlessUA()
+
+<ApiSignature>
+
+List&lt;String&gt; getNetlessUA()
+
+</ApiSignature>
+
+getNetlessUA：com.herewhite.sdk.WhiteSdkConfiguration 的公开成员。参数和返回类型见下方签名。
+
+<a id="ab6f5ff9718db061a7bd76a075552c1e9"></a>
+
+### setNetlessUA()
+
+<ApiSignature>
+
+void setNetlessUA(List&lt;String&gt; netlessUA)
+
+</ApiSignature>
+
+setNetlessUA：com.herewhite.sdk.WhiteSdkConfiguration 的公开成员。参数和返回类型见下方签名。
+
+<a id="af1dc5d8e78cec31cdc7d70e6431a9fca"></a>
+
+### isUserCursor()
+
+<ApiSignature>
+
+boolean isUserCursor()
+
+</ApiSignature>
+
+获取是否显示用户头像。
+
+<h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
+
+是否显示用户头像：
+
+- `true`：显示。
+- `false`：不显示。
+
 <a id="a58d1cff22044c385de34a7e239b34ca4"></a>
 
 ### setUserCursor()
 
 <ApiSignature>
 
-void com.herewhite.sdk.WhiteSdkConfiguration.setUserCursor(boolean *userCursor*)
+void setUserCursor(boolean userCursor)
 
 </ApiSignature>
 
@@ -551,38 +1020,19 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setUserCursor(boolean *userCursor*)
 </Parameter>
 </ParameterList>
 
-<a id="af1dc5d8e78cec31cdc7d70e6431a9fca"></a>
-
-### isUserCursor()
-
-<ApiSignature>
-
-boolean com.herewhite.sdk.WhiteSdkConfiguration.isUserCursor()
-
-</ApiSignature>
-
-获取是否显示用户头像。
-
-<h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
-
-是否显示用户头像：
-
-- `true`：显示。
-- `false`：不显示。
-
 <a id="ac3ec01e31aa709a3a62b40528c3045a8"></a>
 
 ### isOnlyCallbackRemoteStateModify()
 
 <ApiSignature>
 
-boolean com.herewhite.sdk.WhiteSdkConfiguration.isOnlyCallbackRemoteStateModify()
+boolean isOnlyCallbackRemoteStateModify()
 
 </ApiSignature>
 
 获取是否开启仅接收远端用户状态改变的回调。
 
-<h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
+<h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
 
 是否开启仅接收远端用户状态改变回调：
 
@@ -595,7 +1045,7 @@ boolean com.herewhite.sdk.WhiteSdkConfiguration.isOnlyCallbackRemoteStateModify(
 
 <ApiSignature>
 
-void com.herewhite.sdk.WhiteSdkConfiguration.setOnlyCallbackRemoteStateModify(boolean *onlyCallbackRemoteStateModify*)
+void setOnlyCallbackRemoteStateModify(boolean onlyCallbackRemoteStateModify)
 
 </ApiSignature>
 
@@ -620,13 +1070,13 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setOnlyCallbackRemoteStateModify(bo
 
 <ApiSignature>
 
-boolean com.herewhite.sdk.WhiteSdkConfiguration.isLog()
+boolean isLog()
 
 </ApiSignature>
 
 获取是否开启调试日志打印。
 
-<h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
+<h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
 
 是否开启调试日志打印：
 
@@ -639,7 +1089,7 @@ boolean com.herewhite.sdk.WhiteSdkConfiguration.isLog()
 
 <ApiSignature>
 
-void com.herewhite.sdk.WhiteSdkConfiguration.setLog(boolean *log*)
+void setLog(boolean log)
 
 </ApiSignature>
 
@@ -664,13 +1114,13 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setLog(boolean *log*)
 
 <ApiSignature>
 
-boolean com.herewhite.sdk.WhiteSdkConfiguration.isEnableInterrupterAPI()
+boolean isEnableInterrupterAPI()
 
 </ApiSignature>
 
 获取是否开启图片拦截和替换功能。
 
-<h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
+<h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
 
 是否开启图片拦截和替换功能：
 
@@ -683,7 +1133,7 @@ boolean com.herewhite.sdk.WhiteSdkConfiguration.isEnableInterrupterAPI()
 
 <ApiSignature>
 
-void com.herewhite.sdk.WhiteSdkConfiguration.setEnableInterrupterAPI(boolean *enableInterrupterAPI*)
+void setEnableInterrupterAPI(boolean enableInterrupterAPI)
 
 </ApiSignature>
 
@@ -712,13 +1162,13 @@ Agora 建议不要开启图片拦截功能，否则会频繁触发回调。
 
 <ApiSignature>
 
-boolean com.herewhite.sdk.WhiteSdkConfiguration.isEnableImgErrorCallback()
+boolean isEnableImgErrorCallback()
 
 </ApiSignature>
 
 获取是否开启对图片加载失败事件的监听。
 
-<h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
+<h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
 
 是否监听图片加载失败事件：
 
@@ -731,7 +1181,7 @@ boolean com.herewhite.sdk.WhiteSdkConfiguration.isEnableImgErrorCallback()
 
 <ApiSignature>
 
-void com.herewhite.sdk.WhiteSdkConfiguration.setEnableImgErrorCallback(boolean *enableImgErrorCallback*)
+void setEnableImgErrorCallback(boolean enableImgErrorCallback)
 
 </ApiSignature>
 
@@ -747,3 +1197,258 @@ void com.herewhite.sdk.WhiteSdkConfiguration.setEnableImgErrorCallback(boolean *
 
 </Parameter>
 </ParameterList>
+
+<a id="a7cefc9a048561233206e9de78218a1f5"></a>
+
+### getBackgroundImageLoadOptions()
+
+<ApiSignature>
+
+com.herewhite.sdk.domain.BackgroundImageLoadOptions getBackgroundImageLoadOptions()
+
+</ApiSignature>
+
+背景图片加载重试和超时配置，见 BackgroundImageLoadOptions。
+
+<a id="a30016236b68a3bd9dd244eb0ebc8e8c5"></a>
+
+### setBackgroundImageLoadOptions()
+
+<ApiSignature>
+
+void setBackgroundImageLoadOptions(com.herewhite.sdk.domain.BackgroundImageLoadOptions options)
+
+</ApiSignature>
+
+背景图片加载重试和超时配置，见 BackgroundImageLoadOptions。
+
+<a id="aca115dec8e4845b14adc728806e9fe31"></a>
+
+### isEnableSyncedStore()
+
+<ApiSignature>
+
+boolean isEnableSyncedStore()
+
+</ApiSignature>
+
+isEnableSyncedStore：com.herewhite.sdk.WhiteSdkConfiguration 的公开成员。参数和返回类型见下方签名。
+
+<a id="aa568ec1caabbb457d3ed342242bcda7a"></a>
+
+### setEnableSyncedStore()
+
+<ApiSignature>
+
+void setEnableSyncedStore(boolean enableSyncedStore)
+
+</ApiSignature>
+
+setEnableSyncedStore：com.herewhite.sdk.WhiteSdkConfiguration 的公开成员。参数和返回类型见下方签名。
+
+<a id="ad9a248a0071ab6d53050fa42cd92268b"></a>
+
+### getUseMultiViews()
+
+<ApiSignature>
+
+Boolean getUseMultiViews()
+
+</ApiSignature>
+
+getUseMultiViews：com.herewhite.sdk.WhiteSdkConfiguration 的公开成员。参数和返回类型见下方签名。
+
+<a id="afc8be74170b3377d3fe830d6b8e93466"></a>
+
+### setUseMultiViews()
+
+<ApiSignature>
+
+void setUseMultiViews(Boolean useMultiViews)
+
+</ApiSignature>
+
+setUseMultiViews：com.herewhite.sdk.WhiteSdkConfiguration 的公开成员。参数和返回类型见下方签名。
+
+<a id="a3484b5774a99a0aac4f048e1d1cad393"></a>
+
+### getSlideAppOptions()
+
+<ApiSignature>
+
+SlideAppOptions getSlideAppOptions()
+
+</ApiSignature>
+
+getSlideAppOptions：com.herewhite.sdk.WhiteSdkConfiguration 的公开成员。参数和返回类型见下方签名。
+
+<a id="a8c91c61059e628d467aee6c2f54a66a4"></a>
+
+### setSlideAppOptions()
+
+<ApiSignature>
+
+void setSlideAppOptions(SlideAppOptions slideAppOptions)
+
+</ApiSignature>
+
+setSlideAppOptions：com.herewhite.sdk.WhiteSdkConfiguration 的公开成员。参数和返回类型见下方签名。
+
+<a id="a34234ac94fbea20a3966d2da3743269d"></a>
+
+### getPresentationAppOptions()
+
+<ApiSignature>
+
+PresentationAppOptions getPresentationAppOptions()
+
+</ApiSignature>
+
+本地内置 Presentation 配置，初始化 SDK 前传入。
+
+<a id="acb9eedc3b38c315ddc452565852c5668"></a>
+
+### setPresentationAppOptions()
+
+<ApiSignature>
+
+void setPresentationAppOptions(PresentationAppOptions presentationAppOptions)
+
+</ApiSignature>
+
+本地内置 Presentation 配置，初始化 SDK 前传入。
+
+<a id="a10342ae9c7b48b3c5a9634461ecaa8c4"></a>
+
+### isEnableSlideInterrupterAPI()
+
+<ApiSignature>
+
+boolean isEnableSlideInterrupterAPI()
+
+</ApiSignature>
+
+isEnableSlideInterrupterAPI：com.herewhite.sdk.WhiteSdkConfiguration 的公开成员。参数和返回类型见下方签名。
+
+<a id="aa056117366231f9c6a94e4c3c8e69ebe"></a>
+
+### setEnableSlideInterrupterAPI()
+
+<ApiSignature>
+
+void setEnableSlideInterrupterAPI(boolean enableSlideInterrupterAPI)
+
+</ApiSignature>
+
+开启/关闭 PPT 拦截替换功能。
+
+该方法可以开启或关闭 PPT 资源的拦截功能。 如果开启，在加载 URL 资源时会拦截资源并触发 `com.herewhite.sdk.window.SlideListener#slideUrlInterrupter(String, ResultCaller)` 回调，你可以在该回调中替换资源的地址。
+
+<ParameterList title="参数">
+<Parameter name="enableSlideInterrupterAPI">
+
+是否开启 PPT 资源拦截和替换功能：
+
+- `true`：开启。
+- `false`：（默认）关闭。
+
+</Parameter>
+</ParameterList>
+
+<a id="aede0a2d191b0dfc5c54c8ea5364392c5"></a>
+
+### getApiHosts()
+
+<ApiSignature>
+
+List&lt;String&gt; getApiHosts()
+
+</ApiSignature>
+
+获取白板的 API 服务器域名列表。
+
+<a id="ac600c7ef3c6ac6c6973230d9d201a32b"></a>
+
+### setApiHosts()
+
+<ApiSignature>
+
+void setApiHosts(List&lt;String&gt; apiHosts)
+
+</ApiSignature>
+
+配置白板的 API 服务器域名列表。 可以用于配置服务器代理。配置后，白板不再使用 SDK 自带配置。
+
+<ParameterList title="参数">
+<Parameter name="apiHosts">
+
+白板的 API 服务器域名列表。例如 [api.example.com]。
+
+</Parameter>
+</ParameterList>
+
+<a id="a38ec00b67242c2df696027e7f7b856fa"></a>
+
+### isEnableAppliancePlugin()
+
+<ApiSignature>
+
+boolean isEnableAppliancePlugin()
+
+</ApiSignature>
+
+获取是否启用高性能白板绘制工具插件 (appliance-plugin)。
+
+<h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
+
+是否启用 appliance-plugin：
+
+- `true`：开启。
+- `false`：（默认）关闭。
+
+<a id="a826074833f28c8b49a8c475eb1a162d5"></a>
+
+### setEnableAppliancePlugin()
+
+<ApiSignature>
+
+void setEnableAppliancePlugin(boolean enableAppliancePlugin)
+
+</ApiSignature>
+
+启用/禁用高性能白板绘制工具插件 (appliance-plugin)。
+
+<ParameterList title="参数">
+<Parameter name="enableAppliancePlugin">
+
+是否启用 appliance-plugin：
+
+- `true`：开启。
+- `false`：（默认）关闭。
+
+</Parameter>
+</ParameterList>
+
+## 公开成员函数
+
+<a id="a46b649f96b291b8d415d613b549d9120"></a>
+
+### setDynamicConfig
+
+```text
+public void setDynamicConfig(Map<String, String> dynamicConfig)
+```
+
+设置 region 到平台配置 HTTPS URL 的映射。创建 SDK 前设置；每次入房前按实际 region 加载，默认超时 5 秒，读取失败使用本地参数。本地显式参数优先。
+
+## 公开成员函数
+
+<a id="a0b3c09124190d94c2d2140f7324fbaa1"></a>
+
+### getDynamicConfig
+
+```text
+public Map<String, String> getDynamicConfig()
+```
+
+返回本地配置地址映射，不是远端配置 JSON 或解析后的生效参数。
