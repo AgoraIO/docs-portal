@@ -78,6 +78,7 @@ import {
   getOpenApiQuoteCallout,
   remarkOpenApiCallouts,
 } from '@/lib/openapi/remark-callouts';
+import { withOpenApiRequestAuth } from '@/lib/openapi/request-auth';
 import {
   buildOpenApiResponseViews,
   type OpenApiResponseHeaderView,
@@ -209,7 +210,7 @@ const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
   'Value in(schema UI)': '可选值',
 } as const;
 
-const OpenAPIPage = createOpenAPIPage({
+const openApiPageOptions: CreateOpenAPIPageOptions = {
   codeUsages,
   components: {
     CodeBlock: ({ code, lang }) => renderOpenApiCodeBlock(lang, code),
@@ -246,7 +247,6 @@ const OpenAPIPage = createOpenAPIPage({
     ),
   },
   generateTypeScriptDefinitions: () => undefined,
-  generateCodeSamples: getGeneratedCodeSampleOverrides,
   playground: {
     enabled: false,
   },
@@ -286,7 +286,7 @@ const OpenAPIPage = createOpenAPIPage({
       );
     },
   },
-});
+};
 
 type GenerateCodeSamplesOptions = Parameters<
   NonNullable<CreateOpenAPIPageOptions['generateCodeSamples']>
@@ -309,11 +309,33 @@ export function FumadocsOpenApiContent({
   locale?: string;
   pageProps: OpenAPIPageProps;
 }) {
-  const operation = getCurrentOperation(pageProps);
+  const operation = useMemo(() => getCurrentOperation(pageProps), [pageProps]);
   const adaptedPageProps = useMemo(
     () => adaptOpenApiParameterSchemaExtensions(pageProps),
     [pageProps],
   );
+  const OpenAPIPage = useMemo(() => {
+    const registry = createCodeUsageGeneratorRegistry();
+    const document =
+      'payload' in pageProps
+        ? (pageProps.payload.bundled as OpenApiRecord)
+        : {};
+    for (const [id, generator] of codeUsages.map()) {
+      registry.add(id, {
+        ...generator,
+        generate: (data, context) =>
+          generator.generate(
+            withOpenApiRequestAuth(data, operation ?? {}, document),
+            context,
+          ),
+      });
+    }
+    return createOpenAPIPage({
+      ...openApiPageOptions,
+      codeUsages: registry,
+      generateCodeSamples: getGeneratedCodeSampleOverrides,
+    });
+  }, [pageProps, operation]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useMeasuredDocsBody(containerRef);
