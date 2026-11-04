@@ -832,7 +832,13 @@ function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
                 ))}
               </ChoiceTabs>
             ) : examples.length === 0 ? (
-              empty
+              !tab.mediaType && tab.response.description ? (
+                <div className="px-4 py-5 text-fd-muted-foreground text-sm">
+                  {renderOpenApiMarkdown(tab.response.description)}
+                </div>
+              ) : (
+                empty
+              )
             ) : examples.length === 1 ? (
               renderExample(examples[0])
             ) : (

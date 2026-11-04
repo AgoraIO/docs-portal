@@ -22,7 +22,7 @@ describe('fumadocs source loader', () => {
       if (!page) throw new Error('Missing Chinese release notes');
 
       const markdown = await getLLMText(page);
-      expect(markdown).toContain(`### ${version} [#${id}]`);
+      expect(markdown).toContain(`## ${version} [#${id}]`);
       expect(markdown).toContain('该版本');
     },
   );
@@ -41,7 +41,7 @@ describe('fumadocs source loader', () => {
       if (!page) throw new Error('Missing Chinese RTC release notes');
 
       const markdown = await getPlatformLLMText(page, platform);
-      expect(markdown).toContain(`### v4.7.0 [#${id}]`);
+      expect(markdown).toContain(`## v4.7.0 [#${id}]`);
       expect(markdown).toContain('声网高级美颜 2.1');
       expect(markdown).not.toContain('title="v2.5.1"');
       expect(markdown).not.toContain('_PlatformPanel');

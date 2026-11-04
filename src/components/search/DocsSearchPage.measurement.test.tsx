@@ -86,6 +86,13 @@ it('starts a fresh search for the same-query retry after a process/account reset
     />,
   );
   await screen.findByRole('button', { name: '重新搜索' });
+  // The button commits before the visibility effect records the failure.
+  // Reset only after the first journey has emitted its failure event.
+  await waitFor(() =>
+    expect(
+      events.filter((event) => event.name === 'docs_search_failed'),
+    ).toHaveLength(1),
+  );
   measurement.reset();
   fireEvent.click(screen.getByRole('button', { name: '重新搜索' }));
   await waitFor(() =>

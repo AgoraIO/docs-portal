@@ -160,34 +160,25 @@ describe('openapi source loader', () => {
     expect(ncsIp.path).toBe('/v2/ncs/ip');
   });
 
-  it('loads documented Cloud Recording error fields and an authentication failure example', async () => {
+  it('preserves description-only non-200 responses for all Chinese Cloud Recording endpoints', async () => {
     if (!cloudRecordingLane) {
       throw new Error('Missing cloud-recording-rest OpenAPI lane');
     }
-    const operation = await getOpenApiOperation(
-      cloudRecordingLane,
-      'start-cloud-recording',
-      'zh-CN',
-    );
-    const errorResponse = operation.responses['非 200'];
-    const json = errorResponse.content?.['application/json'];
+    const operations = await getOpenApiOperations(cloudRecordingLane, 'zh-CN');
+    const responses = operations
+      .map((operation) => operation.responses['非 200'])
+      .filter(Boolean);
 
-    expect(errorResponse.description).toContain('响应状态码');
-    expect(json?.schema).toMatchObject({
-      type: 'object',
-      properties: {
-        message: { type: 'string' },
-        code: { type: 'integer' },
-        reason: { type: 'string' },
-      },
-    });
-    expect(json?.schema).not.toHaveProperty('required');
-    expect(json?.examples?.['authentication-error']?.value).toEqual({
-      message: 'Invalid authentication credentials',
-    });
+    expect(responses).toHaveLength(6);
+    for (const response of responses) {
+      expect(response).toEqual({
+        description:
+          '如果 HTTP 状态码不为 `200`，请参考[响应状态码](/zh-CN/realtime-media/cloud-recording/reference/response-code)排查问题。',
+      });
+    }
   });
 
-  it('loads documented error bodies for every Chinese RTC channel-management operation', async () => {
+  it('preserves legacy description-only errors for every Chinese RTC channel-management operation', async () => {
     const chineseRtcLane = OPENAPI_LANES.find(
       (item) => item.id === 'rtc-rest-zh-cn',
     );
@@ -198,17 +189,9 @@ describe('openapi source loader', () => {
 
     expect(operations).toHaveLength(9);
     for (const operation of operations) {
-      const json = operation.responses['非 200']?.content?.['application/json'];
-      expect(json?.schema, operation.operationId).toMatchObject({
-        type: 'object',
-        properties: {
-          message: { type: 'string' },
-          reason: { type: 'string' },
-        },
-      });
-      expect(json?.schema).not.toHaveProperty('required');
-      expect(json?.examples?.['invalid-app-id']?.value).toEqual({
-        message: 'invalid appid',
+      expect(operation.responses['非 200'], operation.operationId).toEqual({
+        description:
+          '如果状态码不为 200，则请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/rtc/reference/response-code)排查问题。',
       });
     }
   });

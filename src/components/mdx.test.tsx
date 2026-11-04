@@ -22,6 +22,7 @@ import type {
   ComponentType,
   ReactNode,
 } from 'react';
+import { renderToString } from 'react-dom/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DOCS_HASH_TARGET_EVENT } from '@/lib/docs-hash';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
@@ -816,6 +817,134 @@ describe('common MDX registry', () => {
     expect(screen.getByText('Example source')).toBeVisible();
   });
 
+  it.each(['single', 'multiple'] as const)(
+    'keeps closed release histories hidden without beforematch support (%s)',
+    (type) => {
+      const components = getMDXComponents();
+      const Accordions = components.Accordions as AccordionsComponent;
+      const Accordion = components.Accordion as AccordionComponent;
+      const content = (
+        <MDXAccordionProvider>
+          <Accordions type={type} defaultValue="new">
+            <Accordion title="Latest" headingLevel={2} value="new">
+              Latest release
+            </Accordion>
+            <Accordion title="Older" headingLevel={2} value="old">
+              Historical identifier
+            </Accordion>
+          </Accordions>
+        </MDXAccordionProvider>
+      );
+      const style = document.createElement('style');
+      style.textContent = 'docs-accordion-body.block { display: block; }';
+      document.head.append(style);
+      const server = document.createElement('div');
+      try {
+        server.innerHTML = renderToString(content);
+        document.body.append(server);
+        const closed = server.querySelectorAll('docs-accordion-body')[1];
+        expect(getComputedStyle(closed).display).toBe('none');
+        server.remove();
+
+        render(content);
+        const body = screen
+          .getByText('Historical identifier')
+          .closest('docs-accordion-body') as HTMLElement;
+        const trigger = screen.getByRole('button', { name: 'Older' });
+        expect('onbeforematch' in body).toBe(false);
+        expect(trigger).toHaveAttribute('aria-expanded', 'false');
+        expect(getComputedStyle(body).display).toBe('none');
+        fireEvent.click(trigger);
+        expect(trigger).toHaveAttribute('aria-expanded', 'true');
+        expect(getComputedStyle(body).display).toBe('block');
+        fireEvent.click(trigger);
+        expect(trigger).toHaveAttribute('aria-expanded', 'false');
+        expect(getComputedStyle(body).display).toBe('none');
+      } finally {
+        server.remove();
+        style.remove();
+      }
+    },
+  );
+
+  it.each(['single', 'multiple'] as const)(
+    'reveals a browser-find match through the %s version history state',
+    async (type) => {
+      const original = Object.getOwnPropertyDescriptor(
+        HTMLElement.prototype,
+        'onbeforematch',
+      );
+      Object.defineProperty(HTMLElement.prototype, 'onbeforematch', {
+        configurable: true,
+        value: null,
+      });
+      const style = document.createElement('style');
+      style.textContent = 'docs-accordion-body.block { display: block; }';
+      document.head.append(style);
+      try {
+        const components = getMDXComponents();
+        const Accordions = components.Accordions as AccordionsComponent;
+        const Accordion = components.Accordion as AccordionComponent;
+        const content = (
+          <MDXAccordionProvider>
+            <Accordions type={type} defaultValue="new">
+              <Accordion title="Latest" id="new" headingLevel={2} value="new">
+                Latest release
+              </Accordion>
+              <Accordion title="Older" id="old" headingLevel={2} value="old">
+                Historical identifier
+              </Accordion>
+            </Accordions>
+          </MDXAccordionProvider>
+        );
+        expect(renderToString(content)).toContain('hidden=""');
+        render(content);
+        const older = screen
+          .getByText('Historical identifier')
+          .closest('docs-accordion-body');
+        expect(older).toHaveAttribute('hidden', 'until-found');
+        expect(getComputedStyle(older as HTMLElement).display).toBe('block');
+        fireEvent(
+          older as HTMLElement,
+          new Event('beforematch', { bubbles: true }),
+        );
+        await waitFor(() => {
+          expect(screen.getByRole('button', { name: 'Older' })).toHaveAttribute(
+            'aria-expanded',
+            'true',
+          );
+          expect(older).not.toHaveAttribute('hidden');
+        });
+        expect(screen.getByRole('button', { name: 'Latest' })).toHaveAttribute(
+          'aria-expanded',
+          type === 'multiple' ? 'true' : 'false',
+        );
+        fireEvent.click(screen.getByRole('button', { name: 'Latest' }));
+        if (type === 'multiple') {
+          fireEvent.click(screen.getByRole('button', { name: 'Older' }));
+        }
+        expect(older).toHaveAttribute('hidden', 'until-found');
+        fireEvent(
+          older as HTMLElement,
+          new Event('beforematch', { bubbles: true }),
+        );
+        expect(screen.getByRole('button', { name: 'Older' })).toHaveAttribute(
+          'aria-expanded',
+          'true',
+        );
+      } finally {
+        style.remove();
+        if (original)
+          Object.defineProperty(
+            HTMLElement.prototype,
+            'onbeforematch',
+            original,
+          );
+        else Reflect.deleteProperty(HTMLElement.prototype, 'onbeforematch');
+      }
+    },
+  );
+
   it.each([
     '/zh-CN/realtime-media/rtc/reference/release-notes',
     '/realtime-media/rtc/reference/release-notes/',
@@ -1463,7 +1592,14 @@ describe('common MDX registry', () => {
 
     expect(closedBody).toBeInTheDocument();
     expect(closedContent).toHaveAttribute('data-state', 'closed');
-    expect(closedContent).toHaveClass('data-[state=closed]:hidden');
+    expect(closedBody.closest('docs-accordion-body')).toHaveAttribute(
+      'hidden',
+      '',
+    );
+    expect(
+      getComputedStyle(closedBody.closest('docs-accordion-body') as HTMLElement)
+        .display,
+    ).toBe('none');
   });
 
   it('keeps the clicked version heading in place while switching versions', async () => {

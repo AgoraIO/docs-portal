@@ -2,6 +2,7 @@ import { codeLanguageNames } from '../code/languages';
 import { normalizeCnProductFacets } from './cn-products';
 import { type CnSearchFamily, getCnSearchFamily } from './cn-search-family';
 import { isPublicCnSearchUrl } from './cn-search-urls.mjs';
+import { getSearchSectionIdentity } from './kb-record';
 import type { SearchHit } from './meilisearch-client';
 import type { SearchPageState } from './search-page-state';
 
@@ -108,9 +109,10 @@ export function cleanSearchSnippet(value: string): string {
     .replace(/```[\w+-]*\s*/g, ' ')
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
     .replace(/\[([^\]]*)\]\([^)]*(?:\)|$)/g, '$1')
-    .replace(/<\/?[a-z][^<>]*>/gi, (tag) =>
+    .replace(/<\/?[a-z_][^<>]*>/gi, (tag) =>
       /^<\/?(?:mark|em)>$/i.test(tag) ? tag : '',
     )
+    .replace(/<\/?_[a-z][^<>]*$/gi, '')
     .replace(/(?:\*\*|__|`)/g, '')
     .replace(/\s+/g, ' ')
     .trim();
@@ -157,8 +159,8 @@ export function mergeSearchPageGroups(
           if (
             !previous.sections.some(
               (item) =>
-                getSearchSectionHref(previous.pageUrl, item.url) ===
-                getSearchSectionHref(previous.pageUrl, section.url),
+                getSearchSectionIdentity(item) ===
+                getSearchSectionIdentity(section),
             )
           )
             previous.sections.push(section);
@@ -185,17 +187,18 @@ export function groupSearchSections(
 ): SearchPageGroup[] {
   const groups = new Map<string, SearchPageGroup>();
   for (const hit of hits) {
-    const pageUrl = (
+    const pageUrl = hit.url.split('#')[0];
+    const groupUrl = (
       platformFiltered ? hit.url : (hit.canonicalUrl ?? hit.url)
     ).split('#')[0];
     const groupKey = getSearchPageGroupKey({
-      pageUrl,
+      pageUrl: groupUrl,
       product: hit.product,
       docType: hit.docType,
       version: hit.version,
     });
     const platforms = platformFiltered
-      ? selectedPlatform
+      ? selectedPlatform && hit.platform?.includes(selectedPlatform)
         ? [selectedPlatform]
         : (hit.platform ?? [])
       : (hit.availablePlatforms ?? hit.platform ?? []);
@@ -204,8 +207,7 @@ export function groupSearchSections(
       if (
         !existing.sections.some(
           (section) =>
-            getSearchSectionHref(pageUrl, section.url) ===
-            getSearchSectionHref(pageUrl, hit.url),
+            getSearchSectionIdentity(section) === getSearchSectionIdentity(hit),
         )
       )
         existing.sections.push(hit);
@@ -245,12 +247,4 @@ export function getSearchPageGroupKey(
       group.version ?? '',
     ].join('\u0000')
   );
-}
-
-export function getSearchSectionHref(
-  pageUrl: string,
-  sectionUrl: string,
-): string {
-  const hash = sectionUrl.indexOf('#');
-  return hash >= 0 ? `${pageUrl}${sectionUrl.slice(hash)}` : pageUrl;
 }
