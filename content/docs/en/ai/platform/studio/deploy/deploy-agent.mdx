@@ -1,0 +1,76 @@
+---
+analyticsPageType: task-guide
+title: Publish your agent
+description: Publish your tested Agent Studio agent and make it live.
+---
+
+{/* PLATFORM-NEW: new Agent Studio docs for the Conversational AI Platform. Status: drafted on 2026-11-03 from Agora Console screenshots, pending review. */}
+
+After you test your agent and confirm that it works as expected, publish it. Publishing makes the agent's saved configuration live, and connects any phone numbers you selected.
+
+## Prerequisites
+
+Before you publish, make sure that:
+
+- You have tested your agent and verified that it responds correctly. See [Test your agent](/en/ai/platform/studio/build/test-agent).
+- For an **Inbound** agent, you have imported a phone number. See [Import a number](/en/ai/platform/studio/deploy/import).
+
+## Publish an agent
+
+To publish your agent:
+
+1. In the navigation sidebar, select **Agents**, then select the agent you want to publish.
+2. Select **Deploy agent**. The **Deploy agent** tab opens.
+
+    ![Deploy agent tab for an Inbound agent, with the Phone number, Start from your app, and Retention sections](/temp/agent-studio-preview/deploy-tab-inbound.png)
+
+3. Configure the tab for the agent's deployment type:
+
+    | Deployment type | First section | What to do |
+    |---|---|---|
+    | **Inbound** | **Phone number** | Connect a number. You can't publish an Inbound agent without one. See [Handle inbound calls](/en/ai/platform/studio/deploy/inbound). |
+    | **Outbound** | **Caller ID** | Choose the number to call from. See [Make outbound calls](/en/ai/platform/studio/deploy/outbound). |
+    | **API** | None | No phone number is needed. See [Connect your agent](/en/ai/platform/studio/deploy/connect-agent). |
+
+4. Select **Deploy agent**.
+5. Review the summary, then select **Publish agent**.
+
+    ![Publish dialog](/temp/agent-studio-preview/publish-dialog.png)
+
+The agent's status changes from **Draft** to **Live**, and its overview page opens. See [Agent analytics](/en/ai/platform/studio/observe/analytics).
+
+{/* TODO(screenshot): The Deploy agent tab for an API agent. Confirm that it's the same as Inbound without the Phone number section. */}
+
+{/* TODO(platform-confirm): Can a session start from a Draft agent through the API, and which configuration does it use? The Platform API has no publish route or draft status. The UI uses Deploy, Publish, and Live for one action: ask engineering to pick one verb. */}
+
+## Retention
+
+The **Retention** section controls whether Agora keeps a test session's conversation data. Turn off **Keep transcripts and recordings for 30 days** to discard the data. This setting applies to your next test session, and doesn't change retention for deployed calls.
+
+For API sessions, you set retention when you start each session. See [Choose whether Agora retains conversation data](/en/ai/platform/build/shape-the-conversation/personalize-conversations#choose-whether-agora-retains-conversation-data).
+
+{/* TODO(platform-confirm): Where is retention set for deployed inbound and outbound calls? Does turning this off send `data_policy.retention: none`? If it does, extraction doesn't run, so Data collected stays empty for that test session. Where can a user play or download recordings? */}
+
+## Manage deployed agents
+
+To view your agents, select **Agents** in the navigation sidebar. To search for an agent, enter its name or agent ID.
+
+{/* TODO(screenshot): The Agents list with agents in it, and the header more options menu on an agent. Then list the available actions, such as pause, duplicate, and delete. */}
+
+## Update a deployed agent
+
+To update a live agent:
+
+1. Select the agent, then select **Edit agent**.
+2. Make your changes in the agent editor.
+3. Select **Deploy agent**, then select **Publish agent**.
+
+{/* TODO(platform-confirm): Confirm these steps with a screenshot of Edit agent on a Live agent. Does the live agent keep its current configuration until you publish again? The Platform API says sessions that are already running keep the configuration they started with. */}
+
+## Next steps
+
+After you publish your agent:
+
+- [Connect your agent](/en/ai/platform/studio/deploy/connect-agent): Start your agent from your app.
+- [Set up a campaign](/en/ai/platform/studio/deploy/campaign): Call a list of contacts with your agent.
+- [Agent analytics](/en/ai/platform/studio/observe/analytics): Monitor your agent's sessions.

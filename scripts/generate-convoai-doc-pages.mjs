@@ -4,9 +4,10 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const repoRoot = dirname(dirname(fileURLToPath(import.meta.url)));
-const excludedGuideRoots = new Set([
+// Agent Studio is enrolled in both editions, and its pages pair by matching
+// slugs: ai/studio in Main and ai/platform/studio in Preview.
+const voiceExcludedGuideRoots = new Set([
   'platform',
-  'studio',
   'device-kit',
   'ten-agent',
 ]);
@@ -17,7 +18,7 @@ function readMeta(path) {
 
 // Follow explicit sidebar membership. A deferred file on disk is never enough
 // to enroll a topic. The source tree has optional, absent folder index pages.
-function guidePages(root, relative = '') {
+function guidePages(root, excludedRoots, relative = '') {
   const folder = join(root, relative);
   return readMeta(join(folder, 'meta.json')).pages.flatMap((entry) => {
     if (
@@ -26,7 +27,7 @@ function guidePages(root, relative = '') {
       entry.startsWith('!')
     )
       return [];
-    if (!relative && excludedGuideRoots.has(entry)) return [];
+    if (!relative && excludedRoots.has(entry)) return [];
     if (entry === 'index') {
       return ['md', 'mdx'].some((ext) =>
         existsSync(join(folder, `index.${ext}`)),
@@ -36,7 +37,7 @@ function guidePages(root, relative = '') {
     }
     const path = relative ? `${relative}/${entry}` : entry;
     if (existsSync(join(root, path, 'meta.json')))
-      return guidePages(root, path);
+      return guidePages(root, excludedRoots, path);
     if (
       !['md', 'mdx'].some((ext) => existsSync(join(root, `${path}.${ext}`)))
     ) {
@@ -65,7 +66,7 @@ const apiRoot = join(
 const content = [
   '// Generated from the ConvoAI sidebars. Run: node scripts/generate-convoai-doc-pages.mjs',
   '// Do not enroll deferred files merely because they exist on disk.',
-  `export const CONVOAI_GUIDE_PAGES = ${JSON.stringify({ voice: guidePages(guideRoot), platform: guidePages(join(guideRoot, 'platform')) }, null, 2)} as const;`,
+  `export const CONVOAI_GUIDE_PAGES = ${JSON.stringify({ voice: guidePages(guideRoot, voiceExcludedGuideRoots), platform: guidePages(join(guideRoot, 'platform'), new Set()) }, null, 2)} as const;`,
   `export const CONVOAI_API_PAGES = ${JSON.stringify({ voice: apiPages(apiRoot), platform: apiPages(join(apiRoot, 'platform')) }, null, 2)} as const;`,
   '',
 ].join('\n');

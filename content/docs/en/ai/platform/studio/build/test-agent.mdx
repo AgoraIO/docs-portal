@@ -1,0 +1,99 @@
+---
+analyticsPageType: task-guide
+title: Test your agent
+description: Test Agent Studio agents and troubleshoot configuration issues before you publish them.
+---
+
+{/* PLATFORM-NEW: new Agent Studio docs for the Conversational AI Platform. Status: drafted on 2026-11-03 from Agora Console screenshots, pending review. */}
+
+Use the **Test agent** panel to confirm that your selected models and integrations work together as expected, and to refine your prompts and provider settings before you publish.
+
+## Run a test
+
+To talk to your agent:
+
+1. In the navigation sidebar, select **Agents**, then select the agent you want to test. The **Test agent** panel appears next to the agent editor, and also on the agent's overview page.
+2. If your prompt uses [variables](/en/ai/platform/studio/build/prompt-design#template-variables), enter their values. This previews the values without saving or deploying them.
+3. Select **Start test**, and allow microphone access when prompted.
+
+    ![Test agent panel during a test, with the session ID, transcript, and latency](/temp/agent-studio-preview/test-session.png)
+
+4. Speak to your agent, and confirm that it responds correctly and maintains a conversation without errors.
+5. Select **End test** to stop the session.
+
+:::warning
+Always select **End test** to stop a test. Closing the **Test agent** panel only releases your browser's audio.
+:::
+
+During a test, the panel shows the following:
+
+- **Status**: What the agent is doing, such as **Speaking**.
+- **Session ID**: The ID of this session. Use it to find the session in [Call and session history](/en/ai/platform/studio/observe/call-history).
+- **Transcript**: The conversation so far.
+- **Turn latency**: The latency of the conversation, in milliseconds.
+- **Controls**: Buttons to mute your microphone and show or hide captions.
+
+The panel tests your saved configuration. In the agent editor, your changes save automatically. In [Advanced settings](/en/ai/platform/studio/build/customize-agent#advanced-settings), select **Save** first.
+
+Test sessions appear in your [agent analytics](/en/ai/platform/studio/observe/analytics) with the **App** channel.
+
+{/* TODO(platform-confirm): Do test sessions count toward billed minutes and free minutes? Can analytics filter them out? Is the latency value per turn, and is it end to end? Testing showed 2,917 to 8,474 ms. The transcript also drops the space after punctuation ("Hello!How can I help"). */}
+
+{/* TODO(screenshot): The panel's more options menu, and confirm what the captions icon does. */}
+
+## What to test
+
+During testing, verify the following:
+
+- **ASR accuracy**: Speak clearly and check whether the agent correctly understands your speech. Review the transcript to verify transcription accuracy. If the agent frequently misunderstands you, try a different ASR provider.
+- **LLM responses**: Confirm that the agent responds appropriately to your queries. If responses are off-topic or unclear, refine your system prompt.
+- **TTS quality**: Listen to the agent's voice. If it sounds unnatural or has pronunciation issues, select a different voice or provider.
+- **Conversation flow**: Test multi-turn conversations to ensure that the agent maintains context and handles follow-up questions correctly.
+- **Integrations**: If you added an MCP server or a tool, trigger a conversation that invokes it, and verify that the agent calls it correctly.
+
+## Troubleshooting and debugging
+
+If you encounter connectivity or quality issues, refer to the following troubleshooting guide.
+
+### Connection failures
+
+If you can't connect to the agent:
+
+- Check your internet connection.
+- Refresh the page and try again.
+- If you use your own keys, verify that they're valid.
+
+### Agent doesn't respond
+
+If the agent doesn't respond after you speak:
+
+- Verify that your microphone is on, and that your browser has permission to use it.
+- If you use your own keys, ensure that they're active and have sufficient quota with your providers.
+
+### Poor speech recognition
+
+If the agent frequently misunderstands your speech:
+
+- Speak clearly and reduce background noise.
+- Check that the ASR **Language** setting matches the language you're speaking.
+- Try a different model or provider.
+
+### Out-of-context responses
+
+If the agent provides irrelevant or unexpected responses:
+
+- Review and refine your [system prompt](/en/ai/platform/studio/build/prompt-design).
+- Check that the selected LLM is appropriate for your use case.
+- Verify that your greeting sets the proper context for the conversation.
+
+### Voice quality issues
+
+If the agent's voice sounds distorted or unnatural:
+
+- Check your audio output device.
+- Select a different voice or provider.
+
+## Next steps
+
+- [Publish your agent](/en/ai/platform/studio/deploy/deploy-agent): Make your tested agent live.
+- [Connect your agent](/en/ai/platform/studio/deploy/connect-agent): Start your agent from your app.

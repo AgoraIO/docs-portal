@@ -1,0 +1,47 @@
+---
+analyticsPageType: task-guide
+title: Make outbound calls
+description: Choose the caller ID for an Outbound agent in Agent Studio, and publish the agent to call your contacts.
+---
+
+{/* PLATFORM-NEW: new page with no classic Agent Studio equivalent, which configures the caller ID in the campaign form. Status: drafted on 2026-11-03 from Agora Console screenshots, pending review. */}
+
+An **Outbound** agent calls your contacts from your phone number. Choose the number as the agent's caller ID, publish the agent, and then start a campaign.
+
+## Prerequisites
+
+Before you begin, make sure that you have:
+
+- An **Outbound** agent. To create one, select **Outbound** when you [create an agent](/en/ai/platform/studio/quickstart#create-an-agent).
+- A SIP trunk configured for outbound calling. See [Set up SIP trunk](/en/ai/platform/studio/deploy/sip-trunk#outbound-calling-setup).
+- An imported phone number. See [Import a number](/en/ai/platform/studio/deploy/import).
+
+## Choose a caller ID and publish
+
+To set the number that your agent calls from:
+
+1. In the navigation sidebar, select **Agents**, then select your agent.
+2. Select **Deploy agent**.
+
+    ![Deploy agent tab for an Outbound agent, with the Caller ID, Start from your app, and Retention sections](/temp/agent-studio-preview/deploy-tab-outbound.png)
+
+3. In the **Caller ID** section, choose your number.
+4. Select **Deploy agent**.
+5. Review the summary, then select **Publish agent**.
+
+The agent calls from this number by default. You can choose another number for each campaign.
+
+{/* TODO(screenshot): The Caller ID picker with a number in the project. */}
+
+{/* TODO(platform-confirm): The Deploy agent button is active with no number in the project. Can an Outbound agent be published without a caller ID? Does the caller ID apply to API sessions? The API takes it per session in `transport.from`. */}
+
+## Call your contacts
+
+To call a list of contacts, start a campaign from the agent's overview page. See [Set up a campaign](/en/ai/platform/studio/deploy/campaign).
+
+To place a single call, use the Platform API. See [Make an outbound call](/en/ai/platform/build/phone-calls/outbound-calls-campaigns#make-an-outbound-call).
+
+## Next steps
+
+- [Set up a campaign](/en/ai/platform/studio/deploy/campaign): Call a list of contacts with your agent.
+- [Agent analytics](/en/ai/platform/studio/observe/analytics): Monitor your agent's sessions.

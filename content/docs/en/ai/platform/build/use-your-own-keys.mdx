@@ -8,6 +8,10 @@ description: Bring your own key (BYOK) for ASR, LLM, and TTS. Store your provide
 
 To use your own provider accounts for ASR, LLM, or TTS, bring your own key (BYOK). You store each provider API key in a secret set in your project, and your agent refers to the key by name. The key never appears in the agent's configuration, and the API never returns it.
 
+:::info
+Building your agent in Agent Studio? See [Secrets](/en/ai/platform/studio/build/integrations#secrets).
+:::
+
 ## Understand the tech
 
 A secret set is a named group of keys in your project, such as `support_prod`. Each key holds one secret value, such as an OpenAI API key. The workflow is as follows:

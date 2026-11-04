@@ -1,0 +1,44 @@
+---
+analyticsPageType: task-guide
+title: Connect your agent
+description: Start your Agent Studio agent from your app using the Conversational AI Platform API.
+---
+
+{/* PLATFORM-NEW: new Agent Studio docs for the Conversational AI Platform. Replaces the classic Embed flow. Status: drafted on 2026-11-03 from Agora Console screenshots, pending review. */}
+
+To have your agent talk to people inside your app, start a session from your backend using the Conversational AI Platform API. An **API** agent is designed for this use. The **Start from your app** section of the **Deploy agent** tab gives you what you need to get started.
+
+## Prerequisites
+
+Before you begin, make sure that you have:
+
+- A [published agent](/en/ai/platform/studio/deploy/deploy-agent).
+- An app that joins an RTC channel. See [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent).
+
+## Get your connection details
+
+To get the details your backend needs:
+
+1. In the navigation sidebar, select **Agents**, then select your agent.
+2. Copy the agent ID from the header.
+3. Select **Deploy agent**. In the **Start from your app** section, copy your **App ID**.
+4. Choose how to authenticate your API requests:
+
+    | Method | What you need |
+    |---|---|
+    | **RESTful API: Token** | A token built with your App ID and App Certificate. The token must include the ConvoAI service. To start a session in an RTC channel, it must also include the RTC service. |
+    | **RESTful API: Basic Auth** | Your Customer ID and Customer Secret. |
+
+    For details, see [Authentication](/en/api-reference/api-ref/conversational-ai/platform/authentication).
+
+{/* TODO(platform-confirm): The UI says "Authenticate API requests using an RTC token", but the API reference requires a token with the ConvoAI service. Tokens without it fail. Ask engineering to correct the UI text, and confirm where the two Docs links go. They should open the Platform authentication page. */}
+
+## Start a session
+
+To start a session, send your agent ID with the channel details. For examples in Python, TypeScript, Go, and REST, see [Start a session](/en/ai/platform/get-started/start-stop-agent#start-a-session).
+
+## Next steps
+
+- [Personalize conversations](/en/ai/platform/build/shape-the-conversation/personalize-conversations): Pass variable values for each session.
+- [Platform REST API](/en/api-reference/api-ref/conversational-ai/platform): See the full API reference.
+- [Agent analytics](/en/ai/platform/studio/observe/analytics): Monitor your agent's sessions.

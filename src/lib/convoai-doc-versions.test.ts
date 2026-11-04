@@ -113,13 +113,26 @@ describe('ConvoAI documentation integration', () => {
   });
 
   it.each([
-    '/en/ai/studio',
-    '/en/ai/device-kit',
-    '/en/ai/ten-agent',
-    '/zh-CN/ai',
-  ])('does not claim the shared or independent product %s', (path) => {
-    expect(resolveDocVersion(path)).toBeUndefined();
-  });
+    ['/en/ai/studio', '/en/ai/platform/studio'],
+    ['/en/ai/studio/quickstart', '/en/ai/platform/studio/quickstart'],
+    [
+      '/en/ai/studio/build/customize-agent',
+      '/en/ai/platform/studio/build/customize-agent',
+    ],
+  ])(
+    'switches the Agent Studio page %s to its Preview pair',
+    (main, preview) => {
+      expect(getDocVersionTarget(main, 'v2')?.href).toBe(preview);
+      expect(getDocVersionTarget(preview, 'v1')?.href).toBe(main);
+    },
+  );
+
+  it.each(['/en/ai/device-kit', '/en/ai/ten-agent', '/zh-CN/ai'])(
+    'does not claim the shared or independent product %s',
+    (path) => {
+      expect(resolveDocVersion(path)).toBeUndefined();
+    },
+  );
 
   it('shares real guide/API selection without inventing operation equivalence', () => {
     expect(
@@ -196,7 +209,6 @@ describe('ConvoAI documentation integration', () => {
                 },
               ],
             },
-            { type: 'page', name: 'Studio', url: '/en/ai/studio' },
             { type: 'page', name: 'Device Kit', url: '/en/ai/device-kit' },
           ],
         },
@@ -233,8 +245,8 @@ describe('ConvoAI documentation integration', () => {
         '/en/ai/platform/build/managed-mode',
       ),
     ).toContain('/llms/doc-versions-convoai-guides-v2.txt');
-    expect(withDocVersionMetadata('# Studio\n\nBody', '/en/ai/studio')).toBe(
-      '# Studio\n\nBody',
-    );
+    expect(
+      withDocVersionMetadata('# Device Kit\n\nBody', '/en/ai/device-kit'),
+    ).toBe('# Device Kit\n\nBody');
   });
 });
