@@ -38,7 +38,8 @@ jobs:
       group: cn-search-bundle-${{ github.event.pull_request.number || github.ref }}
       cancel-in-progress: true
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    # Full CN payload, client/SSR, prerender and export exceed 45m on this runner.
+    timeout-minutes: 90
     outputs:
       artifact: cn-search-${{ steps.revision.outputs.sha }}
     steps:
