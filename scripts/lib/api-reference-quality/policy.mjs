@@ -68,12 +68,19 @@ export function classifyDebt(findings, baseline) {
       available.set(key, remaining - 1);
     } else unexpected.push(finding);
   }
+  const retired = baseline.entries.filter(
+    (entry) => available.get(findingKey(entry)) > 0,
+  );
   return {
+    status:
+      unexpected.length || retired.length
+        ? 'FAIL'
+        : known.length
+          ? 'PASS_WITH_DEBT'
+          : 'PASS',
     known,
     unexpected,
-    retired: baseline.entries.filter(
-      (entry) => available.get(findingKey(entry)) > 0,
-    ),
+    retired,
   };
 }
 export function sourceAudit(root = '.') {

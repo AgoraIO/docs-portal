@@ -65,7 +65,11 @@ describe('API reference quality policy', () => {
     );
     expect(result.known).toHaveLength(1);
     expect(result.unexpected).toHaveLength(2);
+    expect(result.status).toBe('FAIL');
     expect(classifyDebt([], baseline).retired).toHaveLength(1);
+    expect(classifyDebt([], baseline).status).toBe('FAIL');
+    expect(classifyDebt([finding], baseline).status).toBe('PASS_WITH_DEBT');
+    expect(classifyDebt([], { entries: [] }).status).toBe('PASS');
   });
   it('accounts for platform variants through canonical payloads, index payloads and OpenAPI outside the API prefix', () => {
     const root = fixture();

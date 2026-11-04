@@ -607,11 +607,6 @@ export async function main() {
       path.join(out, 'source.json'),
       JSON.stringify(
         {
-          status: audit.unexpected.length
-            ? 'FAIL'
-            : audit.known.length
-              ? 'PASS_WITH_DEBT'
-              : 'PASS',
           head: git('rev-parse', 'HEAD'),
           ...audit,
         },
@@ -620,10 +615,12 @@ export async function main() {
       ),
     );
     console.log(
-      `Source QA: ${audit.unexpected.length} new, ${audit.known.length} known duplicate headings`,
+      `Source QA: ${audit.unexpected.length} new, ${audit.known.length} known duplicate headings, ${audit.retired.length} obsolete allowances`,
     );
-    if (audit.unexpected.length)
-      throw new Error(`New source defects: see ${out}/source.json`);
+    if (audit.status === 'FAIL')
+      throw new Error(
+        `New source defects or obsolete debt allowances: see ${out}/source.json`,
+      );
     if (mode === 'source') return;
     await writeFile(
       receiptFile,
