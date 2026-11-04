@@ -3037,7 +3037,7 @@ describe('common MDX registry', () => {
     const tablist = screen.getByRole('tablist');
 
     expect(tablist).toHaveClass('overflow-x-auto');
-    expect(tablist).toHaveClass('bg-fd-card');
+    expect(tablist).toHaveClass('bg-fd-card', 'px-2');
     expect(screen.getByRole('tab', { name: 'TypeScript' })).toHaveClass(
       'text-nowrap',
     );
@@ -3080,7 +3080,7 @@ describe('common MDX registry', () => {
     expect(codeBlock).toHaveTextContent('npm install @agora/sdk');
   });
 
-  it('renders generated code tabs with Fumadocs grouped chrome', () => {
+  it('preserves the original tabs frame around an independent code block', () => {
     const components = getMDXComponents();
     const CodeBlockTabs = components.CodeBlockTabs as TabsComponent;
     const CodeBlockTabsList = components.CodeBlockTabsList as TabsComponent;
@@ -3119,9 +3119,14 @@ describe('common MDX registry', () => {
     expect(screen.getByText('print("hello")').closest('figure')).toHaveClass(
       'bg-fd-card',
     );
+    expect(screen.getByRole('tablist').parentElement).toHaveClass(
+      'border',
+      'rounded-xl',
+      'bg-fd-card',
+    );
     expect(
-      screen.getByText('print("hello")').closest('[role=tabpanel]')?.className,
-    ).toContain('[&>figure]:border-0');
+      screen.getByText('print("hello")').closest('[role=tabpanel]'),
+    ).toHaveClass('p-4', '[&>figure]:rounded-xl', '[&>figure]:border');
     expect(
       screen.getByText('print("hello")').closest('[role=tabpanel]')?.className,
     ).toContain('[&>figure]:m-0');

@@ -6,6 +6,7 @@ import {
 import { applyMdxPreset, defineConfig, defineDocs } from 'fumadocs-mdx/config';
 import remarkDirective from 'remark-directive';
 import { z } from 'zod';
+import { getCodeLanguageLabel } from './src/lib/code/label';
 import {
   codeHighlightOptions,
   codeLanguageAliases,
@@ -81,6 +82,35 @@ export const docs = defineDocs({
       rehypeCodeOptions: {
         ...rehypeCodeDefaultOptions,
         ...codeHighlightOptions,
+        icon: false,
+        parseMetaString(meta, node, tree) {
+          const parsed = rehypeCodeDefaultOptions.parseMetaString?.(
+            meta,
+            node,
+            tree,
+          );
+          const code = node.children[0];
+          const classes =
+            code?.type === 'element' ? code.properties.className : undefined;
+          const languageClass = Array.isArray(classes)
+            ? classes.find(
+                (value) =>
+                  typeof value === 'string' && value.startsWith('language-'),
+              )
+            : undefined;
+          // Read the authored language before an unsupported grammar falls back to text.
+          const language =
+            typeof languageClass === 'string'
+              ? languageClass.slice(9)
+              : undefined;
+          return {
+            ...parsed,
+            title: parsed?.title ?? getCodeLanguageLabel(language),
+            'data-language-label': parsed?.title
+              ? undefined
+              : getCodeLanguageLabel(language),
+          };
+        },
         langs: [
           'bash',
           'cpp',
@@ -89,6 +119,7 @@ export const docs = defineDocs({
           'dart',
           'go',
           'html',
+          'http',
           'java',
           'javascript',
           'json',
