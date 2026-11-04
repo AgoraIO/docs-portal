@@ -889,7 +889,7 @@ public class MyScoringView extends ScoringView {
     expect(migrated).toContain('代码示例：`1<<15`');
   });
 
-  it('marks legacy image sizing for review while keeping a Markdown image', () => {
+  it('preserves legacy image sizing with the approved screenshot component', () => {
     const state = createState();
     const migrated = transformLegacyMdx(
       '<Image src="/img/rtc/audio-quick-start-sequence.svg" alt="实现流程" width="70%"/>',
@@ -897,9 +897,9 @@ public class MyScoringView extends ScoringView {
     );
 
     expect(migrated).toContain(
-      '![实现流程](/img/rtc/audio-quick-start-sequence.svg)',
+      '<DocsImage alt="实现流程" src="/img/rtc/audio-quick-start-sequence.svg" displayWidth="70%" />',
     );
-    expect(state.issues).toContain(
+    expect(state.issues).not.toContain(
       'needs-image-width-review:/img/rtc/audio-quick-start-sequence.svg:70%',
     );
   });
@@ -911,28 +911,31 @@ public class MyScoringView extends ScoringView {
       state,
     );
 
-    expect(migrated).toContain('![云代理](https://web-cdn.example/proxy)');
+    expect(migrated).toContain(
+      '<DocsImage alt="云代理" src="https://web-cdn.example/proxy" displayWidth="80%" />',
+    );
     expect(migrated).not.toContain('<Image');
-    expect(state.issues).toContain(
+    expect(state.issues).not.toContain(
       'needs-image-width-review:https://web-cdn.example/proxy:80%',
     );
   });
 
-  it('moves inline legacy Image components to an aligned list block', () => {
+  it('preserves the inline size and placement of legacy icons', () => {
     const state = createState('docs/rtc/get-started/run-demo.android.mdx');
     const migrated = transformLegacyMdx(
       '3. 在 Android Studio 中，点击 <Image src="https://web-cdn.agora.io/docs-files/1689672727614" width="25" inline/> (**Sync Project with Gradle Files**) 进行 Gradle 同步。',
       state,
     );
 
+    expect(migrated).toContain('3. 在 Android Studio 中，点击 <InlineImage');
     expect(migrated).toContain(
-      '3. 在 Android Studio 中，点击\n\n   ![Sync Project with Gradle Files 图示](https://web-cdn.agora.io/docs-files/1689672727614)\n\n   (**Sync Project with Gradle Files**) 进行 Gradle 同步。',
+      'width={25} /> (**Sync Project with Gradle Files**) 进行 Gradle 同步。',
     );
     expect(migrated).not.toMatch(/^!\[/m);
-    expect(state.issues).toContain(
+    expect(state.issues).not.toContain(
       'needs-image-width-review:https://web-cdn.agora.io/docs-files/1689672727614:25',
     );
-    expect(state.issues).toContain(
+    expect(state.issues).not.toContain(
       'normalized-inline-image-block:https://web-cdn.agora.io/docs-files/1689672727614',
     );
   });
@@ -1184,11 +1187,11 @@ export const TableHeaders = [
     );
     expect(migrated).toContain('<Slot for="resources-markdown-0-1-1">');
     expect(migrated).toContain(
-      '![声动 iOS](https://web-cdn.agora.io/docs-files/1685428598975)',
+      '<DocsImage alt="声动 iOS" src="https://web-cdn.agora.io/docs-files/1685428598975" displayWidth="35%" />',
     );
     expect(migrated).not.toContain('|\n![声动 iOS]');
     expect(state.issues).toContain('normalized-table-slot');
-    expect(state.issues).toContain(
+    expect(state.issues).not.toContain(
       'needs-image-width-review:https://web-cdn.agora.io/docs-files/1685428598975:35%',
     );
     expect(findLegacyResidue(migrated)).toEqual([]);

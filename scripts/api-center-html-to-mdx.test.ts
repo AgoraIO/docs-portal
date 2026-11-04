@@ -30,6 +30,18 @@ async function compileGeneratedMdx(source: string) {
 }
 
 describe('API Center shared HTML to MDX converter', () => {
+  it('preserves explicit source image dimensions after asset localization', async () => {
+    const result = await convertHtmlToMdx({
+      html: '<article><h1>开通服务</h1><img src="/enable.png" alt="功能配置" width="40%" /></article>',
+      sourcePath: 'enable.html',
+      sourceUrl: 'https://example.com/enable',
+      onAsset: async () => '/img/localized.png',
+    });
+    expect(result.body).toContain(
+      '<DocsImage alt="功能配置" src="/img/localized.png" displayWidth="40%" />',
+    );
+    await expect(compileGeneratedMdx(result.body)).resolves.toBeTruthy();
+  });
   it('preserves rowspan occupancy, rich groups, and multi-level headers', async () => {
     const result = await convertHtmlToMdx({
       html: `<article><h1>Options</h1><table><thead>
@@ -64,12 +76,8 @@ describe('API Center shared HTML to MDX converter', () => {
         ],
       ]),
     });
-    expect(result.body).toContain(
-      '<th colSpan={2} scope="colgroup">',
-    );
-    expect(result.body).toContain(
-      '<a id="pub-methods"></a>Public 成员函数',
-    );
+    expect(result.body).toContain('<th colSpan={2} scope="colgroup">');
+    expect(result.body).toContain('<a id="pub-methods"></a>Public 成员函数');
     expect(result.body).not.toContain('player#pub-methods Public');
     expect(result.body).toContain('<a id="pub-methods"></a>');
     expect(result.body).toContain('[getPlaybackSpeed]');

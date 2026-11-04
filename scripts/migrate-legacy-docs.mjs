@@ -5,6 +5,10 @@ import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import { normalizeLegacyCodeHighlights } from './lib/legacy-code-highlights.mjs';
+import {
+  readLegacyImageSizing,
+  renderMigratedImage,
+} from './lib/legacy-image-sizing.mjs';
 import { resolveLegacyProductLabel } from './lib/legacy-product-labels.mjs';
 import {
   layoutMergedTable,
@@ -116,6 +120,8 @@ const LANGUAGE_GROUP_TAB_VALUES = new Set([
   'web',
 ]);
 const ALLOWED_MDX_TAGS = new Set([
+  'DocsImage',
+  'InlineImage',
   'DocsTable',
   'Accordion',
   'Accordions',
@@ -1856,20 +1862,10 @@ function transformImages(value, state) {
   return value.replace(/<Image\b([^>]*?)(?:\/>|>\s*<\/Image>)/g, (_, attrs) => {
     const src = readAttribute(attrs, 'src') ?? '';
     const sourceAlt = readAttribute(attrs, 'alt') ?? '';
-    const width = readAttribute(attrs, 'width');
-    const inline = hasBooleanAttribute(attrs, 'inline');
-
-    if (width) {
-      state.issues.push(`needs-image-width-review:${src}:${width}`);
-    }
-
-    if (inline) {
-      state.issues.push(`normalized-inline-image-block:${src}`);
-      return `![${sourceAlt}](${src})`;
-    }
-
+    const sizing = readLegacyImageSizing(attrs);
     const alt = imageAltText(sourceAlt, src, state);
-    return `\n![${alt}](${src})\n`;
+    const image = renderMigratedImage({ ...sizing, src, alt });
+    return sizing.inline ? image : `\n${image}\n`;
   });
 }
 
@@ -1884,13 +1880,10 @@ function transformRawHtmlImages(value, state) {
 
     state.issues.push('normalized-raw-img');
     const sourceAlt = readAttribute(attrs, 'alt') ?? '';
-    if (hasBooleanAttribute(attrs, 'inline')) {
-      state.issues.push(`normalized-inline-image-block:${src}`);
-      return `![${sourceAlt}](${src})`;
-    }
-
+    const sizing = readLegacyImageSizing(attrs);
     const alt = imageAltText(sourceAlt, src, state);
-    return `\n![${alt}](${src})\n`;
+    const image = renderMigratedImage({ ...sizing, src, alt });
+    return sizing.inline ? image : `\n${image}\n`;
   });
 }
 
@@ -2046,10 +2039,6 @@ function normalizeMarkdownImageBlocks(value) {
     }
   }
   return output.join('\n').replace(/\n{3,}/g, '\n\n');
-}
-
-function hasBooleanAttribute(attrs, name) {
-  return new RegExp(`(?:^|\\s)${escapeRegExp(name)}(?:\\s|=|$)`).test(attrs);
 }
 
 function transformTabs(value) {
