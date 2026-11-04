@@ -6,6 +6,7 @@ import { OpenApiOperationPanels } from './OpenApiOperationPanels';
 function Page({ locale = 'zh-CN' }: { locale?: string }) {
   return (
     <OpenApiOperationPanels
+      overview={<p>Shared overview</p>}
       documentation={<h2 id="parameters-query">查询参数</h2>}
       examples={
         <>
@@ -24,8 +25,11 @@ describe('OpenApiOperationPanels', () => {
     const documentation = screen.getByRole('tab', { name: '接口文档' });
     const examples = screen.getByRole('tab', { name: '请求与响应示例' });
     expect(documentation).toHaveAttribute('aria-selected', 'true');
+    const overview = screen.getByText('Shared overview');
+    expect(overview.closest('[data-openapi-operation-panel]')).toBeNull();
     fireEvent.mouseDown(examples, { button: 0, ctrlKey: false });
     expect(examples).toHaveAttribute('aria-selected', 'true');
+    expect(overview).toBeVisible();
     const input = screen.getByRole('textbox', { name: 'Example value' });
     fireEvent.change(input, { target: { value: 'kept' } });
     fireEvent.mouseDown(documentation, { button: 0, ctrlKey: false });

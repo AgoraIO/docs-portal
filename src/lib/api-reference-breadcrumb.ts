@@ -95,18 +95,13 @@ function getSiblingFallbackByScope(entries: readonly ApiReferenceCardEntry[]) {
         scopedEntries.map((entry) => `${entry.productId}:${entry.platformId}`),
       );
       const productIds = new Set(scopedEntries.map((entry) => entry.productId));
-      const solutionIds = new Set(
-        scopedEntries.map((entry) => entry.solutionId ?? ''),
-      );
       const clientEntries = scopedEntries.filter(
         (entry) => entry.apiType === 'client-api',
       );
       const fallbackEntry =
         ownershipKeys.size === 1
           ? scopedEntries[0]
-          : productIds.size === 1 &&
-              solutionIds.size === 1 &&
-              clientEntries.length === 1
+          : productIds.size === 1 && clientEntries.length === 1
             ? clientEntries[0]
             : undefined;
 

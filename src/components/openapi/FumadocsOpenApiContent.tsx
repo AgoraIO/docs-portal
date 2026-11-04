@@ -12,7 +12,13 @@ import { defaultShikiFactory } from 'fumadocs-core/highlight/shiki/full';
 import { useShikiDynamic } from 'fumadocs-core/highlight/shiki/react';
 import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
 import type { RenderContext } from 'fumadocs-openapi';
-import type { InlineCodeUsageGenerator } from 'fumadocs-openapi/requests/generators';
+import {
+  createCodeUsageGeneratorRegistry,
+  type InlineCodeUsageGenerator,
+} from 'fumadocs-openapi/requests/generators';
+import { curl } from 'fumadocs-openapi/requests/generators/curl';
+import { javascript } from 'fumadocs-openapi/requests/generators/javascript';
+import { python } from 'fumadocs-openapi/requests/generators/python';
 import {
   type CreateOpenAPIPageOptions,
   createOpenAPIPage,
@@ -48,6 +54,7 @@ import * as JsxRuntime from 'react/jsx-runtime';
 import rehypeRaw from 'rehype-raw';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
+import { Callout as OpenApiCallout } from '@/components/Callout';
 import { useMeasuredDocsBody } from '@/components/docs-shell/DocsContentMeasurement';
 import { createDocsTableComponent } from '@/components/mdx';
 import { Badge } from '@/components/ui/badge';
@@ -68,6 +75,10 @@ import {
 } from '@/lib/openapi/anchors';
 import { getOpenApiMethodBadgeClassName } from '@/lib/openapi/method-badge';
 import {
+  getOpenApiQuoteCallout,
+  remarkOpenApiCallouts,
+} from '@/lib/openapi/remark-callouts';
+import {
   buildOpenApiResponseViews,
   type OpenApiResponseHeaderView,
 } from '@/lib/openapi/response-view';
@@ -86,20 +97,20 @@ import {
 const LEGACY_DOC_ORIGIN = 'https://doc.shengwang.cn';
 const LEGACY_DOC_PATH_PATTERN =
   /(]\()(\/(?:api-center|basics|codebox|doc|faq)(?:[^)]*))(\))/g;
-const GENERATED_CODE_SAMPLE_IDS = [
-  'curl',
-  'js',
-  'go',
-  'python',
-  'java',
-  'csharp',
-] as const;
-const removeGeneratedCodeSamples = GENERATED_CODE_SAMPLE_IDS.map((id) => ({
-  id,
-  lang: id,
-  source: false,
-})) satisfies InlineCodeUsageGenerator[];
-const OpenApiCallout = defaultMdxComponents.Callout;
+// Keep fallback clients aligned with the legacy reference instead of inheriting
+// the upstream language list, which can grow across Fumadocs upgrades.
+const codeUsages = createCodeUsageGeneratorRegistry();
+codeUsages.add('curl', curl);
+codeUsages.add('python', { ...python, label: 'Python/Requests' });
+codeUsages.add('js', { ...javascript, label: 'Node.js/Fetch' });
+const removeGeneratedCodeSamples = Array.from(
+  codeUsages.map().keys(),
+  (id) => ({
+    id,
+    lang: id,
+    source: false,
+  }),
+) satisfies InlineCodeUsageGenerator[];
 const OpenApiOperationContext = createContext<OpenApiOperation | undefined>(
   undefined,
 );
@@ -128,7 +139,15 @@ const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   required: '必填',
   properties: '属性',
   'Header Parameters': '请求 Header',
-  Note: '注意',
+  Note: '说明',
+  Info: '提示',
+  Tip: '建议',
+  Success: '成功',
+  Important: '重要',
+  Warning: '警告',
+  Caution: '注意',
+  Danger: '危险',
+  Error: '错误',
   'Path Parameters': '路径参数',
   'Query Parameters': '查询参数',
   'Request Body': '请求 Body',
@@ -191,6 +210,7 @@ const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
 } as const;
 
 const OpenAPIPage = createOpenAPIPage({
+  codeUsages,
   components: {
     CodeBlock: ({ code, lang }) => renderOpenApiCodeBlock(lang, code),
   },
@@ -495,6 +515,17 @@ function OpenApiOperationLayoutWithSource({
   );
 }
 
+function renderOpenApiOperationHeader(header: ReactNode) {
+  // Fumadocs uses a warning callout for a deprecated endpoint without a title.
+  if (
+    isValidElement<ComponentProps<typeof OpenApiCallout>>(header) &&
+    (header.props.type === 'warn' || header.props.type === 'warning')
+  ) {
+    return <OpenApiCallout {...header.props} />;
+  }
+  return header;
+}
+
 function OpenApiOperationLayout({
   method,
   slots,
@@ -507,9 +538,9 @@ function OpenApiOperationLayout({
   return (
     <OpenApiOperationPanels
       locale={locale}
-      documentation={
+      overview={
         <>
-          {slots.header}
+          {renderOpenApiOperationHeader(slots.header)}
           <OpenApiEndpointBar operation={method} />
           <OpenApiDocsSections
             operation={method}
@@ -519,6 +550,10 @@ function OpenApiOperationLayout({
             operation={method}
             position="after-description"
           />
+        </>
+      }
+      documentation={
+        <>
           <OpenApiInlineAuthorizationSection operation={method} />
           {slots.parameters}
           <OpenApiDocsSections operation={method} position="after-parameters" />
@@ -1437,6 +1472,7 @@ function OpenApiDocsCallouts({
   operation?: OpenApiOperation;
   position: 'after-description' | 'after-responses' | 'before-description';
 }) {
+  const locale = useContext(OpenApiLocaleContext);
   const callouts = arrayOfRecords(operation?.['x-docs-callouts']).filter(
     (callout): callout is OpenApiResolvedCalloutItem =>
       typeof callout.markdown === 'string' &&
@@ -1449,19 +1485,27 @@ function OpenApiDocsCallouts({
 
   return (
     <div className={position === 'before-description' ? 'mb-6' : 'mt-6'}>
-      {callouts.map((callout) => (
-        <OpenApiCallout
-          key={`${position}:${getOpenApiCalloutKey(callout)}`}
-          title={callout.title}
-          type={toCalloutType(callout.type)}
-        >
-          <div className="prose-no-margin">
-            {renderOpenApiMarkdown(
-              normalizeOpenApiDescriptionMarkdown(callout.markdown),
-            )}
-          </div>
-        </OpenApiCallout>
-      ))}
+      {callouts.map((callout) => {
+        // Untyped legacy Chinese operation notices keep their caution styling.
+        // Explicit source type/title metadata takes precedence.
+        const legacyNotice =
+          isZhCnLocale(locale) && !callout.type && !callout.title;
+        return (
+          <OpenApiCallout
+            key={`${position}:${getOpenApiCalloutKey(callout)}`}
+            title={
+              legacyNotice ? getOpenApiLabel('Caution', locale) : callout.title
+            }
+            type={toCalloutType(legacyNotice ? 'caution' : callout.type)}
+          >
+            <div className="prose-no-margin">
+              {renderOpenApiMarkdown(
+                normalizeOpenApiDescriptionMarkdown(callout.markdown),
+              )}
+            </div>
+          </OpenApiCallout>
+        );
+      })}
     </div>
   );
 }
@@ -1914,16 +1958,26 @@ function useOpenApiCopyButton(onCopy: () => void | Promise<void>) {
   return [checked, onClick] as const;
 }
 
-function OpenApiMarkdownBlockquote({ children }: { children?: ReactNode }) {
+function OpenApiMarkdownBlockquote({
+  children,
+  'data-callout': marker,
+}: {
+  children?: ReactNode;
+  'data-callout'?: string;
+}) {
   const locale = useContext(OpenApiLocaleContext);
+  const callout = getOpenApiQuoteCallout(marker);
 
-  if (!isZhCnLocale(locale)) {
+  if (!callout && !isZhCnLocale(locale)) {
     return <blockquote>{children}</blockquote>;
   }
 
   return (
     <div className="openapi-markdown-blockquote">
-      <OpenApiCallout title={getOpenApiLabel('Note', locale)} type="info">
+      <OpenApiCallout
+        title={getOpenApiLabel(callout?.title ?? 'Note', locale)}
+        type={callout?.type ?? 'info'}
+      >
         <div className="prose-no-margin">{children}</div>
       </OpenApiCallout>
     </div>
@@ -1967,6 +2021,7 @@ function createOpenApiMarkdownProcessor() {
 
   return remark()
     .use(remarkGfm)
+    .use(remarkOpenApiCallouts)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
     .use(rehypeReact);
@@ -1979,10 +2034,13 @@ function toCalloutType(type: string | undefined) {
     case 'warn':
     case 'warning':
       return 'warning';
+    case 'danger':
     case 'error':
       return 'error';
     case 'idea':
       return 'idea';
+    case 'ok':
+    case 'tip':
     case 'success':
       return 'success';
     default:

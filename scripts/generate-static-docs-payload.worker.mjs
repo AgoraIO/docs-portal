@@ -24,6 +24,10 @@ import {
 import { getContentDocsPrerenderPaths } from '../src/lib/prerender-content-routes.ts';
 import { readPublishedDocVersion } from '../src/lib/published-doc-version.ts';
 import { createStaticDocsRouteSets } from '../src/lib/published-docs-routes.ts';
+import {
+  readPublishedDocsRoutes,
+  writeStaticDocsRouteManifests,
+} from '../src/lib/published-docs-routes.server.ts';
 import { resolveCnSdkPublication } from '../src/lib/search/cn-sdk-publication.server.ts';
 import {
   DOCS_LOCALES,
@@ -172,19 +176,20 @@ export async function generateStaticDocsPayload() {
     generated += 1;
   }
 
-  const { machineReadableRoutes, prerenderRoutes: publishedRoutes } =
+  const { machineReadableRoutes, prerenderRoutes } =
     createStaticDocsRouteSets({
       canonicalPaths: canonicalRoutes,
       canonicalPayloads,
       platformPages,
       versionByCanonicalPath: versionByPageUrl,
     });
-  await writeTextFile(
-    routesManifestPath,
-    `${JSON.stringify(publishedRoutes)}\n`,
-  );
+  await writeStaticDocsRouteManifests({
+    directory: path.dirname(routesManifestPath),
+    machineReadableRoutes,
+    prerenderRoutes,
+  });
 
-  for (const route of publishedRoutes) {
+  for (const route of machineReadableRoutes) {
     const payload = canonicalPayloads.get(route.canonicalPath);
 
     if (!payload) {
@@ -208,7 +213,8 @@ export async function generateStaticDocsPayload() {
 
   const markdownGenerated = await generateStaticMachineReadableDocs({
     platformKeysByPageUrl,
-    publishedRoutes: machineReadableRoutes,
+    // Validate the published file, including what downstream clients consume.
+    publishedRoutes: readPublishedDocsRoutes(routesManifestPath),
   });
   console.log(
     `[static-payload] generated ${markdownGenerated} machine-readable files`,

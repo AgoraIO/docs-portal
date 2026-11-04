@@ -34,6 +34,22 @@ async function compileWithTableSlots(
 }
 
 describe('remarkTableSlots', () => {
+  it('renders a shared rich group in every flattened rowspan cell', async () => {
+    const result = await compileWithTableSlots(`
+| Group | Feature |
+| --- | --- |
+| <Slot name="group" /> | One |
+| <Slot name="group" /> | Two |
+
+<Slot for="group">
+
+- Shared group detail
+
+</Slot>
+`);
+    expect(result.match(/Shared group detail/g)).toHaveLength(2);
+    expect(result).not.toContain('Slot');
+  });
   it('replaces a table cell placeholder with block slot content', async () => {
     const result = await compileWithTableSlots(`
 | Field | Description |

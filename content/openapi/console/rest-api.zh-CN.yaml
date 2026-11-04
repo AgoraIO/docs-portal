@@ -40,7 +40,9 @@ paths:
       servers:
         - url: https://api.sd-rtn.com
       x-docs-callouts:
-        - position: after-description
+        - type: caution
+          title: 注意
+          position: after-description
           markdown: "- 一个账户最多可创建 20 个项目，包括已删除的项目。如果需要创建更多项目，请通过[工单系统](https://ticket.shengwang.cn)申请。\n- 在 2021 年 10 月 1 日前注册的账户最多可创建 10 个项目，包括已删除的项目。如果需要创建更多项目，请通过[工单系统](https://ticket.shengwang.cn)申请。"
     get:
       summary: 获取指定项目信息
@@ -170,7 +172,9 @@ paths:
       servers:
         - url: https://api.sd-rtn.com
       x-docs-callouts:
-        - position: after-description
+        - type: info
+          title: 说明
+          position: after-description
           markdown: "- 如果原来的主要 App 证书泄漏了，你可以使用该方法对主要 App 证书进行重置。\n- 如果该项目的主要 App 证书尚未启用，调用该方法会启用主要 App 证书。"
 components:
   parameters:
