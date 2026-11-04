@@ -25,12 +25,10 @@ import {
   type OpenAPIPageProps,
 } from 'fumadocs-openapi/ui';
 import {
-  CodeBlock,
   CodeBlockTab,
   CodeBlockTabs,
   CodeBlockTabsList,
   CodeBlockTabsTrigger,
-  Pre,
 } from 'fumadocs-ui/components/codeblock';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
@@ -56,6 +54,7 @@ import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
 import { Callout as OpenApiCallout } from '@/components/Callout';
 import { DocsLinkIcon } from '@/components/DocsLinkIcon';
+import { DocsCodeBlock } from '@/components/DocsCodeBlock';
 import { useMeasuredDocsBody } from '@/components/docs-shell/DocsContentMeasurement';
 import { createDocsTableComponent } from '@/components/mdx';
 import { Badge } from '@/components/ui/badge';
@@ -101,7 +100,16 @@ const LEGACY_DOC_PATH_PATTERN =
 // Keep fallback clients aligned with the legacy reference instead of inheriting
 // the upstream language list, which can grow across Fumadocs upgrades.
 const codeUsages = createCodeUsageGeneratorRegistry();
-codeUsages.add('curl', curl);
+codeUsages.add('curl', {
+  ...curl,
+  generate(data, context) {
+    // Keep the upstream escaping, headers and body, but put the URL on its own
+    // continued line even for a GET request without headers or a body.
+    return curl
+      .generate(data, context)
+      .replace(/^curl -X ([A-Z]+) /, 'curl --request $1 \\\n  --url ');
+  },
+});
 codeUsages.add('python', { ...python, label: 'Python/Requests' });
 codeUsages.add('js', { ...javascript, label: 'Node.js/Fetch' });
 const removeGeneratedCodeSamples = Array.from(
@@ -1885,8 +1893,9 @@ function OpenApiMarkdownCodeBlock({
 
   const Actions = codeblock?.Actions;
 
+  // Generated usage tabs need explicit in-tab geometry during SSR and hydration.
   return (
-    <CodeBlock
+    <DocsCodeBlock
       {...props}
       {...codeblock}
       className={cn(
@@ -1907,8 +1916,8 @@ function OpenApiMarkdownCodeBlock({
         );
       }}
     >
-      <Pre>{source === undefined ? children : highlighted}</Pre>
-    </CodeBlock>
+      {source === undefined ? children : highlighted}
+    </DocsCodeBlock>
   );
 }
 

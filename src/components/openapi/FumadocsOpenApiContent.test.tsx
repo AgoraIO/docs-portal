@@ -159,6 +159,61 @@ describe('FumadocsOpenApiContent', () => {
       screen.getByRole('link', { name: 'New-window docs' }),
     ).toHaveAttribute('target', '_blank');
   });
+  it('uses the documentation code-block frame for request and response examples', () => {
+    const $ = load(
+      renderToStaticMarkup(
+        <FumadocsOpenApiContent pageProps={makeSectionHeadingPageProps()} />,
+      ),
+    );
+
+    for (const selector of [
+      '.openapi-request-examples',
+      '.openapi-response-example',
+    ]) {
+      const frame = $(selector).find('figure.shiki').first();
+      expect(frame.attr('data-line-numbers')).toBeDefined();
+      expect(
+        frame.hasClass(
+          selector === '.openapi-request-examples'
+            ? 'bg-fd-secondary'
+            : 'bg-fd-card',
+        ),
+      ).toBe(true);
+      expect(frame.find('.fd-scroll-container[role="region"]')).toHaveLength(1);
+      expect(frame.find('button[aria-label="Copy Text"]')).toHaveLength(1);
+    }
+  });
+
+  it('generates a multiline cURL command for the Chinese host-list endpoint', async () => {
+    const document = yaml.load(
+      await readFile(
+        'content/openapi/rtc/channel-management.zh-CN.yaml',
+        'utf8',
+      ),
+    ) as Document;
+    const $ = load(
+      renderToStaticMarkup(
+        <FumadocsOpenApiContent
+          locale="zh-CN"
+          pageProps={{
+            operations: [
+              {
+                method: 'get',
+                path: '/dev/v1/channel/user/{appid}/{channelName}/hosts_only',
+              },
+            ],
+            payload: { bundled: document },
+          }}
+        />,
+      ),
+    );
+    const command = $('.openapi-request-examples pre code').first().text();
+    expect(command.split('\n')[0]).toBe('curl --request GET \\');
+    expect(command.split('\n')[1]).toMatch(
+      /^ {2}--url ["']https:\/\/[^/]+\/dev\/v1\/channel\/user\/.*\/hosts_only["']$/,
+    );
+  });
+
   it('keeps the turns endpoint and legacy notice in the overview above both panels', async () => {
     const bundled = yaml.load(
       await readFile(
@@ -1505,6 +1560,19 @@ describe('FumadocsOpenApiContent', () => {
         document.querySelector('.openapi-request-examples pre'),
       ).toHaveTextContent('/api/speech-to-text/v1/projects/');
     }
+    const generatedPreview = screen.getByTestId('openapi-code-preview');
+    await waitFor(() =>
+      expect(
+        generatedPreview.querySelector('pre span[style*="--shiki-light"]'),
+      ).toBeInTheDocument(),
+    );
+    expect(
+      generatedPreview.querySelector('.fd-scroll-container'),
+    ).toHaveAttribute('data-openapi-code-viewport', '');
+    expect(generatedPreview.querySelector('figure.shiki')).toHaveClass(
+      'bg-fd-secondary',
+      'shadow-none',
+    );
     const preview = screen.getByTestId('openapi-code-preview');
     await waitFor(() =>
       expect(preview.querySelector('.fd-scroll-container')).toHaveAttribute(

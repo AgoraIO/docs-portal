@@ -4,11 +4,6 @@ import {
   Accordions as FumadocsAccordions,
 } from 'fumadocs-ui/components/accordion';
 import { Card as FumadocsCard } from 'fumadocs-ui/components/card';
-import {
-  type CodeBlockProps,
-  CodeBlock as FumadocsCodeBlock,
-  Pre as FumadocsCodeBlockPre,
-} from 'fumadocs-ui/components/codeblock';
 import { File, Files, Folder } from 'fumadocs-ui/components/files';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import {
@@ -62,6 +57,7 @@ import {
   CalloutContainer as FumadocsCalloutContainer,
 } from '@/components/Callout';
 import { DocsLinkIcon } from '@/components/DocsLinkIcon';
+import { DocsCodeBlock } from '@/components/DocsCodeBlock';
 import {
   Dialog,
   DialogContent,
@@ -1384,7 +1380,7 @@ function Pre({
   ...props
 }: PreProps) {
   return (
-    <FumadocsCodeBlock
+    <DocsCodeBlock
       {...props}
       title={
         languageLabel ? (
@@ -1393,15 +1389,10 @@ function Pre({
           title
         )
       }
-      data-line-numbers
-      className={cn('bg-fd-card shadow-none', className)}
-      viewportProps={{
-        ...props.viewportProps,
-        className: cn('overflow-auto', props.viewportProps?.className),
-      }}
+      className={className}
     >
-      <FumadocsCodeBlockPre>{props.children}</FumadocsCodeBlockPre>
-    </FumadocsCodeBlock>
+      {props.children}
+    </DocsCodeBlock>
   );
 }
 
@@ -1611,7 +1602,7 @@ function CommandBlock({
     });
 
   return (
-    <Pre className={cn('shiki', `language-${language}`)}>
+    <DocsCodeBlock className={cn('shiki', `language-${language}`)}>
       <code className={cn('language-code', `language-${language}`)}>
         {lines.map(({ id, line }) => (
           <span className="line" key={id}>
@@ -1619,7 +1610,7 @@ function CommandBlock({
           </span>
         ))}
       </code>
-    </Pre>
+    </DocsCodeBlock>
   );
 }
 
@@ -2584,7 +2575,7 @@ export function getMDXComponents(
     CodeBlockTabs,
     CodeBlockTabsList,
     CodeBlockTab,
-    pre: Pre,
+    pre: DocsCodeBlock,
     ApiReturns,
     ApiReturnType,
     ApiSignature,
