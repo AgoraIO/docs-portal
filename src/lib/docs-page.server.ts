@@ -1106,8 +1106,13 @@ export async function loadDocsSearchIndex(
   );
   if (supportedLocale === 'zh-CN') {
     for (const url of searchNavigation.keys()) {
-      if (!resolveCnSdkPublication(url).searchable)
+      const [, , tab, ...slugSegments] = url.split('/');
+      if (
+        !resolveCnSdkPublication(url).searchable ||
+        resolveApiReferenceRedirect(supportedLocale, tab, slugSegments)
+      ) {
         searchNavigation.delete(url);
+      }
     }
   }
   const pages = await Promise.all(
