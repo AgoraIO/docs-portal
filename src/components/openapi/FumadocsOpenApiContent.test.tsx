@@ -166,7 +166,7 @@ describe('FumadocsOpenApiContent', () => {
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole('button', { name: 'Expand all' }),
-    ).not.toBeInTheDocument();
+    ).toBeInTheDocument();
     expect(
       screen.queryByRole('button', { name: 'Collapse all' }),
     ).not.toBeInTheDocument();
@@ -940,7 +940,7 @@ describe('FumadocsOpenApiContent', () => {
       within(propertiesRow).getByRole('button', {
         name: 'Collapse properties properties',
       }),
-    ).not.toContainElement(
+    ).toContainElement(
       within(propertiesRow).getByText('object', { exact: true }),
     );
     expect(
