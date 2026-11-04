@@ -37,8 +37,8 @@ export async function queryCnSearch(
   signal?: AbortSignal,
 ): Promise<CnSearchPageResponse> {
   const filter = ['locale = "zh-CN"', 'hidden = false', 'status = "published"'];
-  // Filter before pagination so other platform copies cannot consume result slots.
-  if (!state.platform) filter.push('isDefaultPlatform = true');
+  // The index deduplicates equivalent sections before pagination. Every platform
+  // must remain searchable here, including content absent on the default one.
   for (const field of ['product', 'platform', 'tab'] as const) {
     if (state[field]) {
       const value = JSON.stringify(state[field]);
@@ -57,6 +57,7 @@ export async function queryCnSearch(
   const familyFilter = (family: CnSearchFamily) => `searchFamily = "${family}"`;
   const makeQuery = (family?: CnSearchFamily) => ({
     q: query,
+    matchingStrategy: 'all',
     filter: [...filter, ...(family ? [familyFilter(family)] : [])].join(
       ' AND ',
     ),

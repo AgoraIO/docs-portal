@@ -40,6 +40,54 @@ const hit = {
 afterEach(() => vi.restoreAllMocks());
 
 describe('full CN search adapter', () => {
+  it('finds a non-default platform chapter without a platform filter', async () => {
+    const webOnly = {
+      ...hit,
+      canonicalUrl: '/realtime-media/rtc/guide',
+      url: '/realtime-media/rtc/guide/web#receive',
+      isDefaultPlatform: false,
+    };
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async (_url, options) => {
+      const body = JSON.parse(options?.body as string);
+      const hits = body.filter.includes('isDefaultPlatform = true')
+        ? []
+        : [webOnly];
+      return Response.json({
+        hits,
+        totalHits: hits.length,
+        totalPages: 1,
+        page: 1,
+      });
+    });
+    const result = await queryCnSearch(
+      config,
+      parseSearchPageState({ q: 'enableAutoReceive', type: 'docs' }),
+    );
+    expect(result.totalHits).toBe(1);
+    expect(result.groups[0].sections[0].url).toBe(webOnly.url);
+    expect(result.groups[0].pageUrl).toBe('/realtime-media/rtc/guide/web');
+  });
+
+  it('keeps different platform content with the same heading and fragment', () => {
+    const canonicalUrl = '/realtime-media/rtc/guide';
+    const groups = groupSearchSections([
+      {
+        ...hit,
+        canonicalUrl,
+        url: `${canonicalUrl}/android#setup`,
+        content: 'Gradle 配置。',
+      },
+      {
+        ...hit,
+        canonicalUrl,
+        url: `${canonicalUrl}/web#setup`,
+        content: 'npm 配置。',
+      },
+    ]);
+    expect(groups).toHaveLength(1);
+    expect(groups[0].sections).toHaveLength(2);
+  });
+
   it('returns a product-document preview before API matches from the legacy-style overview', async () => {
     const guide = {
       ...hit,
@@ -169,7 +217,7 @@ describe('full CN search adapter', () => {
   });
 
   it.each([undefined, 'ios'])(
-    'filters platform copies before engine pagination (platform=%s)',
+    'restricts platforms only when explicitly selected (platform=%s)',
     async (platform) => {
       const request = vi
         .spyOn(globalThis, 'fetch')
@@ -185,7 +233,7 @@ describe('full CN search adapter', () => {
         expect(body.filter).toContain('platform = "ios"');
         expect(body.filter).not.toContain('isDefaultPlatform');
       } else {
-        expect(body.filter).toContain('isDefaultPlatform = true');
+        expect(body.filter).not.toContain('isDefaultPlatform');
       }
     },
   );
@@ -211,7 +259,7 @@ describe('full CN search adapter', () => {
 
     expect(groups).toHaveLength(1);
     expect(groups[0]).toMatchObject({
-      pageUrl: '/zh-CN/api-reference/conversational-ai/api',
+      pageUrl: hit.url.replace('/web/', '/android/').split('#')[0],
       platform: ['android', 'ios', 'web'],
     });
   });

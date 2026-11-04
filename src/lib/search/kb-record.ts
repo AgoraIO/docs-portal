@@ -23,6 +23,38 @@ export type SearchSection = {
   aliases?: string[];
 };
 
+// Platform copies are equivalent only when their document, hierarchy, content,
+// and publication metadata agree. A shared fragment alone is not an identity.
+export function getSearchSectionIdentity(
+  record: Pick<
+    SearchSection,
+    | 'url'
+    | 'canonicalUrl'
+    | 'pageTitle'
+    | 'sectionTitle'
+    | 'headingPath'
+    | 'content'
+    | 'locale'
+    | 'product'
+    | 'products'
+    | 'version'
+    | 'docType'
+  >,
+) {
+  return JSON.stringify([
+    record.canonicalUrl ?? record.url.split('#')[0],
+    record.pageTitle,
+    record.sectionTitle,
+    record.headingPath,
+    record.content,
+    record.locale,
+    record.product,
+    [...(record.products ?? [])].sort(),
+    record.version,
+    record.docType,
+  ]);
+}
+
 const supportedAudiences = new Set<SearchSection['audience'][number]>([
   'developer',
   'customer-support',

@@ -150,9 +150,7 @@ describe('CN search public URL migration', () => {
       );
       expect(result.groups).toHaveLength(1);
       expect(result.groups[0].pageUrl).toBe(
-        platform
-          ? '/realtime-media/rtc/build/token-authentication/ios'
-          : '/realtime-media/rtc/build/token-authentication',
+        '/realtime-media/rtc/build/token-authentication/ios',
       );
       expect(result.groups[0].sections[0].url).toBe(url);
     },

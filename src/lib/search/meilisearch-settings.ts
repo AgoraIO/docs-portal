@@ -3,6 +3,7 @@ import { cnSearchSynonyms, cnTechnicalWords } from './cn-search-strategy';
 export function buildMeilisearchSettings() {
   return {
     pagination: { maxTotalHits: 10000 },
+    distinctAttribute: 'distinctKey',
     searchableAttributes: ['sectionTitle', 'aliases', 'pageTitle', 'content'],
     filterableAttributes: [
       'locale',
@@ -56,6 +57,7 @@ export function buildPublishedCnSearchSettings() {
       'groupNameSplit',
       'aliases',
       'pageTitle',
+      'headingPath',
       'content',
     ],
     sortableAttributes: ['entrySeq', 'productSeq', 'platformSeq', 'typeSeq'],
