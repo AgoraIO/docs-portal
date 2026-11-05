@@ -440,7 +440,9 @@ describe('published REST alternative schemas', () => {
         fireEvent.mouseDown(tab, { button: 0, ctrlKey: false });
         expect(tab).toHaveAttribute('aria-selected', 'true');
         const panels =
-          choice?.querySelectorAll(':scope > [role="tabpanel"]') ?? [];
+          choice
+            ?.querySelector('[data-openapi-choice-panels]')
+            ?.querySelectorAll(':scope > [role="tabpanel"]') ?? [];
         expect(
           Array.from(panels).filter((panel) => !panel.hasAttribute('hidden')),
         ).toHaveLength(1);

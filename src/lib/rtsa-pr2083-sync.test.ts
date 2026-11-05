@@ -372,10 +372,12 @@ describe('RTSA #2083 frozen source delta', () => {
       const body = readFileSync(resolve(process.cwd(), delta.target), 'utf8');
       // Keep the frozen migration evidence, while accepting the later repair
       // that removes Doxygen's hidden anti-spam spans from visible link text.
-      const expected = delta.after.replaceAll(
-        'sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn',
-        '[sales@shengwang.cn](mailto:sales@shengwang.cn)',
-      );
+      const expected = delta.after
+        .replaceAll(
+          'sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn',
+          '[sales@shengwang.cn](mailto:sales@shengwang.cn)',
+        )
+        .replaceAll('232-1', '2³² - 1');
       expect(body.includes(expected), `${delta.source}: ${expected}`).toBe(
         true,
       );

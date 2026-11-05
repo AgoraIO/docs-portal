@@ -219,3 +219,9 @@
 修复将所有场景面板放在共同的普通块容器中，父级只保留页签与正文容器之间的一段间距，继续保留 until-found/beforematch 行为。同一共享组件的其他场景页签同步生效，未修改文档内容。两种屏宽双向切换正文偏移均为 0 px，正文与页签底部距离均为 8 px；键盘切换、展开后的场景切换、beforematch 自动切换也通过浏览器核验。
 
 验证：3 个相关测试文件共 106 项通过，types:check、定向 Biome、git diff --check 通过。本轮布局回归脚本和前后数据保存在忽略的 .agent/artifacts/converter-position/；它测真实浏览器坐标，happy-dom 单元测试不用于证明几何位置正确。
+
+## 2026-11-05：全站幂次格式检查
+
+用户将幂次格式修复范围扩展到 RESTful 以外。扫描 `content/docs/zh-CN/**` 与 `content/openapi/**`，找到并修正中文文档 24 处 `2^n` 公式及 43 处被压扁为 `232-1` 的 32 位范围，共 67 处、38 个文件。API UID/有符号整数范围统一为可直接显示的 Unicode 上标，例如 `2³² - 1`；代码形式的指数示例写为 `2 ** attempt`，避免与 JavaScript 异或符号混淆。已有 Unicode/HTML 上标保留。版本号、SDK SemVer 与不表示固定整数幂的内容不修改。
+
+范围涵盖 RTC Android/iOS/macOS/Flutter/C++/C#/Electron/React Native/Unity/Unreal/小程序/Web 等 API 页面、RTC Server Java VAD、RTSA、云端及本地录制、音频审核、在线 KTV 和 REST 对话式 AI。英文 TEN Agent 类型范围表中的 14 处公式已单独提交 PR [#1382](https://github.com/AgoraIO/docs-portal/pull/1382)，基线为 `main`。中文剩余页面无 `232 - 1` 或固定数字指数 caret 形式的匹配。API Center 生成 MDX 的所有权 manifest 随内容哈希同步。

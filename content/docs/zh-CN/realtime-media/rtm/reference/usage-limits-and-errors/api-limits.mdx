@@ -345,7 +345,7 @@ Item 数量不设限，但整组 Metadata 和单个 Item 各受 16 KB 约束，�
 send(msg):
   result = rtm.publish(channel, msg)
   if result.error == RATE_LIMITED:
-    delay = min(baseDelay * 2^attempt, maxDelay)  // 100 ms 到 2 s
+    delay = min(baseDelay * 2 ** attempt, maxDelay)  // 100 ms 到 2 s
     wait(delay)
     attempt += 1
     if attempt < maxAttempts:

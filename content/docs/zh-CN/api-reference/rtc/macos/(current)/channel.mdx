@@ -348,7 +348,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 <a id="uid-2"></a>
 <Parameter name="uid">
 
-用户 ID。该参数用于标识频道内进行实时音视频互动的用户。你需要自行设置并管理用户 ID，确保同一频道内每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2^32-1。如果未指定用户 ID（或设置为 0），SDK 会自动分配一个随机用户 ID，并通过 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调返回。你必须记录并维护该返回的用户 ID，SDK 不会保存。
+用户 ID。该参数用于标识频道内进行实时音视频互动的用户。你需要自行设置并管理用户 ID，确保同一频道内每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2³²-1。如果未指定用户 ID（或设置为 0），SDK 会自动分配一个随机用户 ID，并通过 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调返回。你必须记录并维护该返回的用户 ID，SDK 不会保存。
 
 </Parameter>
 <a id="joinsuccessblock"></a>
@@ -458,7 +458,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 <a id="uid-3"></a>
 <Parameter name="uid">
 
-用户 ID。该参数用于标识频道内进行实时音视频互动的用户。你需要自行设置并管理用户 ID，确保同一频道内每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2^32-1。如果未指定用户 ID（或设置为 0），SDK 会自动分配一个随机用户 ID，并通过 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调返回。你必须记录并维护该返回的用户 ID，SDK 不会保存。
+用户 ID。该参数用于标识频道内进行实时音视频互动的用户。你需要自行设置并管理用户 ID，确保同一频道内每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2³²-1。如果未指定用户 ID（或设置为 0），SDK 会自动分配一个随机用户 ID，并通过 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调返回。你必须记录并维护该返回的用户 ID，SDK 不会保存。
 
 </Parameter>
 <a id="mediaoptions"></a>
@@ -1337,7 +1337,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 <a id="uid-4"></a>
 <Parameter name="uid">
 
-用户 ID。该参数用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 ID，并确保同一频道中的每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2^32 - 1。如果未指定用户 ID（或设置为 0），SDK 会分配一个随机用户 ID，并在 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回。你的应用必须记录并维护返回的用户 ID，SDK 不会保存该信息。
+用户 ID。该参数用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 ID，并确保同一频道中的每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2³² - 1。如果未指定用户 ID（或设置为 0），SDK 会分配一个随机用户 ID，并在 [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回。你的应用必须记录并维护返回的用户 ID，SDK 不会保存该信息。
 
 </Parameter>
 </ParameterList>

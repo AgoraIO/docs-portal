@@ -358,7 +358,7 @@ export function OpenApiSchemaTree({
             </TabsList>
             {/* until-found panels still participate in layout. Keep them out of
                 the tabs flex gap so every choice starts at the same position. */}
-            <div className="min-w-0">
+            <div className="min-w-0" data-openapi-choice-panels="">
               {choice.options.map((option) => (
                 <ChoicePanel
                   active={selected === option.value}
