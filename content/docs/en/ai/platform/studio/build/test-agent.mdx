@@ -28,14 +28,14 @@ Always select **End test** to stop a test. Closing the **Test agent** panel only
 During a test, the panel shows the following:
 
 - **Status**: What the agent is doing, such as **Speaking**.
-- **Session ID**: The ID of this session. Use it to find the session in [Call and session history](/en/ai/platform/studio/observe/call-history).
+- **Session ID**: The ID of this session. Use it to find the session in [Agent Analytics](/en/ai/platform/studio/observe/agent-analytics).
 - **Transcript**: The conversation so far.
 - **Turn latency**: The latency of the conversation, in milliseconds.
 - **Controls**: Buttons to mute your microphone and show or hide captions.
 
 The panel tests your saved configuration. In the agent editor, your changes save automatically. In [Advanced settings](/en/ai/platform/studio/build/customize-agent#advanced-settings), select **Save** first.
 
-Test sessions appear in your [agent analytics](/en/ai/platform/studio/observe/analytics) with the **App** channel.
+Test sessions appear on the agent's [overview page](/en/ai/platform/studio/observe/agent-overview) with the **App** channel.
 
 {/* TODO(platform-confirm): Do test sessions count toward billed minutes and free minutes? Can analytics filter them out? Is the latency value per turn, and is it end to end? Testing showed 2,917 to 8,474 ms. The transcript also drops the space after punctuation ("Hello!How can I help"). */}
 
@@ -50,6 +50,12 @@ During testing, verify the following:
 - **TTS quality**: Listen to the agent's voice. If it sounds unnatural or has pronunciation issues, select a different voice or provider.
 - **Conversation flow**: Test multi-turn conversations to ensure that the agent maintains context and handles follow-up questions correctly.
 - **Integrations**: If you added an MCP server or a tool, trigger a conversation that invokes it, and verify that the agent calls it correctly.
+
+## Data retention
+
+For an Inbound or Outbound agent, the **Retention** section of the **Deploy agent** tab controls whether Agora keeps a test session's conversation data. Turn off **Keep transcripts and recordings for 30 days** to discard the data. This setting applies to your next test session, and doesn't change retention for deployed calls.
+
+For API sessions, you set retention when you start each session. See [Choose whether Agora retains conversation data](/en/ai/platform/build/shape-the-conversation/personalize-conversations#choose-whether-agora-retains-conversation-data).
 
 ## Troubleshooting and debugging
 
@@ -95,5 +101,7 @@ If the agent's voice sounds distorted or unnatural:
 
 ## Next steps
 
-- [Deploy your agent](/en/ai/platform/studio/deploy/deploy-agent): Make your tested agent live.
+- [Deploy an inbound agent](/en/ai/platform/studio/deploy/deploy-inbound): Answer calls to your phone number.
+- [Deploy an outbound agent](/en/ai/platform/studio/deploy/deploy-outbound): Call your contacts from your phone number.
+- [Deploy an API agent](/en/ai/platform/studio/quickstart#deploy-the-agent): Start sessions from your app.
 - [Connect your agent](/en/ai/platform/studio/deploy/connect-agent): Start your agent from your app.

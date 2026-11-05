@@ -17,6 +17,12 @@ function guideTopics(paths: readonly string[]) {
       'personalize-conversations',
     'studio/build/integrations': 'studio-mcp-servers',
     'studio/build/mcp-servers': 'studio-mcp-servers',
+    'studio/deploy/inbound': 'studio-deploy-inbound',
+    'studio/deploy/deploy-inbound': 'studio-deploy-inbound',
+    'studio/observe/analytics': 'studio-agent-overview',
+    'studio/observe/agent-overview': 'studio-agent-overview',
+    'studio/observe/call-history': 'studio-agent-analytics',
+    'studio/observe/agent-analytics': 'studio-agent-analytics',
   };
   return Object.fromEntries(
     paths.map((path) => [aliases[path] ?? (path || 'overview'), path]),

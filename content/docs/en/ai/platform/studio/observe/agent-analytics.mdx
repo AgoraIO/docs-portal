@@ -1,0 +1,56 @@
+---
+analyticsPageType: task-guide
+title: Agent Analytics
+description: Find and review the calls and sessions across your project in Agent Studio.
+---
+
+{/* PLATFORM-NEW: new Agent Studio docs for the Conversational AI Platform. Status: drafted on 2026-11-03 from Agora Console screenshots, pending review. */}
+
+The **Agent Analytics** page lists the sessions across all agents in your project. Use it to find a session, replay it, and export the results. For an agent's metrics and charts, see [Agent overview](/en/ai/platform/studio/observe/agent-overview).
+
+## View the history
+
+To view the history:
+
+1. In the navigation sidebar, select **Agent Analytics**.
+2. Select one of the following tabs:
+
+    - **Call history**: Lists every phone session in the project.
+    - **Session history**: Lists every session in the project.
+
+    ![Call history tab with filters for agent and campaign](/temp/agent-studio-preview/analytics-call-history.png)
+
+    ![Session history tab with filters for agent, campaign, and channel](/temp/agent-studio-preview/analytics-session-history.png)
+
+You can also open these tabs from an agent's overview page. Select **Session history** or **Call history** at the top of the [**Sessions** table](/en/ai/platform/studio/observe/agent-overview#sessions).
+
+## Find a session
+
+To find a session, do any of the following:
+
+- Search by **Exact session ID**.
+- Filter by **Agent** or **Campaign**. On the **Session history** tab, you can also filter by **Channel**.
+- Select a period: **24 hours**, **7 days**, or **30 days**.
+
+To download the results, select **Export CSV**. To replay a session, open it from the table.
+
+{/* TODO(screenshot): A session opened from the table. Then document the replay, including where to find the transcript and recording. Add call status definitions if the Call history tab shows them. */}
+
+## Table columns
+
+The tables show the following columns:
+
+- **Started**: The date and time the session started.
+- **Caller** or **User**: The person in the session. The **Call history** tab shows **Caller**, and the **Session history** tab shows **User**.
+- **Agent**: The agent that handled the session.
+- **Channel**: How the session connected. For example, **App**.
+- **Type**: The type of session.
+- **Campaign**: The associated campaign, for outbound calls.
+- **Duration**: The length of the session.
+- **Data points**: The values extracted from the session. The **Call history** tab shows this column. See [Analysis](/en/ai/platform/studio/build/customize-agent#analysis).
+
+{/* TODO(platform-confirm): Confirm what Caller, User, Type, and Data points show for phone sessions. These fields were empty in test sessions. */}
+
+## See also
+
+- [Agent overview](/en/ai/platform/studio/observe/agent-overview): View performance metrics and charts for an agent.

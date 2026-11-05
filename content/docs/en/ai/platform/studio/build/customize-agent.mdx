@@ -19,13 +19,11 @@ In the agent editor, you can configure the following:
 To open the editor, in the navigation sidebar, select **Agents**, then do one of the following:
 
 - **Create an agent**: Select **Create agent**, enter a name, choose a deployment type, and select **Create agent**. For a walkthrough, see [Create your first agent](/en/ai/platform/studio/quickstart).
-- **Edit an agent**: Select an agent in the list. If the agent is live, select **Edit agent**.
+- **Edit an agent**: Select an agent in the list. To find an agent, search for its name or agent ID. If the agent is live, select **Edit agent**.
 
 The header shows the agent ID, the deployment type, and the status. The editor saves your changes to the draft automatically. To try your changes before you deploy them, use the [**Test agent** panel](/en/ai/platform/studio/build/test-agent).
 
-{/* TODO(platform-confirm): On a Live agent, do edits stay in a draft until you publish again, while the live configuration keeps serving calls? */}
-
-{/* TODO(screenshot): Edit agent on a Live agent. */}
+{/* TODO(screenshot): The Agents list with agents in it, and the header more options menu on an agent. Then list the available actions, such as pause, duplicate, and delete. */}
 
 ## System prompt
 
@@ -107,10 +105,10 @@ To add a value, under **Data collection**, select **Add data point**, then fill 
 
 ![Add data point panel with the List type selected](/temp/agent-studio-preview/data-point-list-type.png)
 
-To review what you collect, see [Agent analytics](/en/ai/platform/studio/observe/analytics#data-collected).
+To review what you collect, see [Agent overview](/en/ai/platform/studio/observe/agent-overview#data-collected).
 
 :::note
-Extraction doesn't run for a session if Agora doesn't retain its conversation data. See [Data retention](/en/ai/platform/studio/deploy/deploy-agent#data-retention).
+Extraction doesn't run for a session if Agora doesn't retain its conversation data. See [Data retention](/en/ai/platform/studio/build/test-agent#data-retention).
 :::
 
 {/* TODO(platform-confirm): The API also has `float`, `date`, and `datetime`. Are they coming to Agent Studio? Confirm that Number maps to `int` and List to `str` with `options`. The UI doesn't show the API limits: up to 50 data points for each agent, up to 2,000 characters of criteria, and up to 100 allowed values. Confirm that they apply. */}
@@ -233,7 +231,7 @@ These settings control how sessions end. They apply to new sessions that you sta
 
 ![Call settings](/temp/agent-studio-preview/advanced-call.png)
 
-To set call limits for an inbound number, see [Handle inbound calls](/en/ai/platform/studio/deploy/inbound).
+To set call limits for an inbound number, see [Deploy an inbound agent](/en/ai/platform/studio/deploy/deploy-inbound).
 
 {/* TODO(platform-confirm): Max session length recommends 3,600 s, but the API default for `max_duration_ms` is 5 minutes. Does Agent Studio send 3,600 explicitly? The description of End the session once everyone leaves doesn't match its label: confirm what it does. */}
 
@@ -249,9 +247,21 @@ For a credential header, use a complete `$secrets.<set>.<key>` reference with **
 
 {/* TODO(platform-confirm): With Bring your own key on, the endpoint hint still says "Bring your own key to enter an endpoint". Can you enter a custom endpoint with Use your own endpoint? */}
 
+## Update a live agent
+
+To update a live agent:
+
+1. Select the agent, then select **Edit agent**.
+2. Make your changes in the agent editor.
+3. Select **Deploy agent**, then follow the steps for the agent's deployment type: [Inbound](/en/ai/platform/studio/deploy/deploy-inbound), [Outbound](/en/ai/platform/studio/deploy/deploy-outbound), or [API](/en/ai/platform/studio/quickstart#deploy-the-agent).
+
+{/* TODO(platform-confirm): Confirm these steps with a screenshot of Edit agent on a Live agent. Does the live agent keep its current configuration until you publish again? The Platform API says sessions that are already running keep the configuration they started with. */}
+
 ## Next steps
 
 - [Manage secrets](/en/ai/platform/studio/build/secrets): Store your provider API keys.
 - [MCP servers](/en/ai/platform/studio/build/mcp-servers): Let your agent call tools from an MCP server.
 - [Test your agent](/en/ai/platform/studio/build/test-agent): Learn more about testing features and troubleshooting agent behavior.
-- [Deploy your agent](/en/ai/platform/studio/deploy/deploy-agent): Make your agent live.
+- [Deploy an inbound agent](/en/ai/platform/studio/deploy/deploy-inbound): Answer calls to your phone number.
+- [Deploy an outbound agent](/en/ai/platform/studio/deploy/deploy-outbound): Call your contacts from your phone number.
+- [Deploy an API agent](/en/ai/platform/studio/quickstart#deploy-the-agent): Start sessions from your app.

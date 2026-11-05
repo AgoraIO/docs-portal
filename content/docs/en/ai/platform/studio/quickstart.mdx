@@ -1,12 +1,12 @@
 ---
 analyticsPageType: task-guide
 title: Create your first agent
-description: Create and test your first AI voice agent in Agent Studio in minutes.
+description: Create, test, and deploy your first AI voice agent in Agent Studio in minutes.
 ---
 
 {/* PLATFORM-NEW: new Agent Studio docs for the Conversational AI Platform. Status: drafted on 2026-11-03 from Agora Console screenshots, pending review. */}
 
-This page guides you through creating and testing your first AI voice agent in the Agent Studio Preview. In less than 10 minutes, you have a working agent that you can speak to in the browser. No telephony setup is required.
+This page guides you through creating, testing, and deploying your first AI voice agent in the Agent Studio Preview. In less than 10 minutes, you have a working agent that you can speak to in the browser. No telephony setup is required.
 
 ## Create an agent
 
@@ -68,11 +68,23 @@ Always select **End test** to stop a test. Closing the **Test agent** panel only
 
 For guidance on what to test and how to troubleshoot issues, see [Test your agent](/en/ai/platform/studio/build/test-agent).
 
+## Deploy the agent
+
+To make your API agent live:
+
+1. Select **Deploy agent**. A confirmation dialog opens.
+2. Read the message, then select **Publish agent**.
+
+    ![Publish dialog](/temp/agent-studio-preview/publish-dialog.png)
+
+The agent's status changes from **Draft** to **Live**, and its overview page opens.
+
 ## Next steps
 
-You now have a working voice agent. From here you can:
+You now have a live voice agent. From here you can:
 
 - [Customize your agent](/en/ai/platform/studio/build/customize-agent): Configure models, prompts, and advanced settings for your use case.
-- [Manage secrets](/en/ai/platform/studio/build/secrets): Store your provider API keys.
-- [MCP servers](/en/ai/platform/studio/build/mcp-servers): Let your agent call tools from an MCP server.
-- [Deploy your agent](/en/ai/platform/studio/deploy/deploy-agent): Make your agent live.
+- [Bring your own key](/en/ai/platform/studio/build/customize-agent#bring-your-own-key): Use your own provider API keys and access more vendors.
+- [Connect your agent](/en/ai/platform/studio/deploy/connect-agent): Start a session from your app.
+- [Deploy an inbound agent](/en/ai/platform/studio/deploy/deploy-inbound): Create an agent that answers calls to your phone number.
+- [Deploy an outbound agent](/en/ai/platform/studio/deploy/deploy-outbound): Create an agent that calls your contacts.

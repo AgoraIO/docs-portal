@@ -33,17 +33,17 @@ In the navigation sidebar, you manage your project's agents and the resources th
 
 - **Agents**: Create agents, and open them to configure, deploy, and monitor them.
 - **Webhooks**: Receive event notifications for your project.
-- **Agent Analytics**: View analytics across your agents. See [Agent analytics](/en/ai/platform/studio/observe/analytics#agent-analytics-page).
+- **Agent Analytics**: Review call and session history across your agents. See [Agent Analytics](/en/ai/platform/studio/observe/agent-analytics).
 - **Secrets**: Store your provider API keys. See [Manage secrets](/en/ai/platform/studio/build/secrets).
-- **Phone Numbers**: Import the numbers that your agents use. See [Import a number](/en/ai/platform/studio/deploy/import).
+- **Phone Numbers**: Import the numbers that your agents use. See [Import a phone number](/en/ai/platform/studio/deploy/import).
 
 {/* TODO(screenshot): The Webhooks page. Then confirm its description and link to a guide. The Platform webhooks page is hidden from the sidebar. */}
 
 When you open an agent, you can:
 
 - Define the system prompt, greeting, models, and behavior, and add MCP servers and tools in **Edit agent**. See [Customize your agent](/en/ai/platform/studio/build/customize-agent).
-- Connect a phone number or get your app's connection details, then deploy the agent in **Deploy agent**. See [Deploy your agent](/en/ai/platform/studio/deploy/deploy-agent).
-- Monitor sessions and review what the agent collects on its overview page. For an Outbound agent, you also start campaigns on this page. See [Agent analytics](/en/ai/platform/studio/observe/analytics).
+- Deploy the agent. The steps depend on the agent's deployment type: [Inbound](/en/ai/platform/studio/deploy/deploy-inbound), [Outbound](/en/ai/platform/studio/deploy/deploy-outbound), or [API](/en/ai/platform/studio/quickstart#deploy-the-agent).
+- Monitor sessions and review what the agent collects on its overview page. For an Outbound agent, you also start campaigns on this page. See [Agent overview](/en/ai/platform/studio/observe/agent-overview).
 - Talk to the agent in the **Test agent** panel, from the editor or the overview page. See [Test your agent](/en/ai/platform/studio/build/test-agent).
 
 ## How it works
@@ -68,7 +68,7 @@ Agents are the primary objects you configure. When you create an agent, you choo
 
 You configure the agent's system prompt, voice and models, integrations, analysis, and advanced settings in the agent editor. See [Customize your agent](/en/ai/platform/studio/build/customize-agent).
 
-An agent stays in **Draft** status while you edit it. Your changes save automatically. When you're ready, you deploy the agent, and its status changes to **Live**. See [Deploy your agent](/en/ai/platform/studio/deploy/deploy-agent).
+An agent stays in **Draft** status while you edit it. Your changes save automatically. When you're ready, you deploy the agent, and its status changes to **Live**.
 
 ### Secrets
 
@@ -76,7 +76,7 @@ Secrets protect your credentials. A secret set stores your provider API keys, an
 
 ### Phone numbers
 
-Import phone numbers from your SIP trunk provider. A SIP trunk provider, such as Twilio, is a carrier that connects your phone numbers to the public phone network over the internet. Connect a number to an Inbound agent to answer calls, or use it as the caller ID for an Outbound agent. See [Import a number](/en/ai/platform/studio/deploy/import).
+Import phone numbers from your SIP trunk provider. A SIP trunk provider, such as Twilio, is a carrier that connects your phone numbers to the public phone network over the internet. Connect a number to an Inbound agent to answer calls, or use it as the caller ID for an Outbound agent. See [Import a phone number](/en/ai/platform/studio/deploy/import).
 
 ### Campaigns
 

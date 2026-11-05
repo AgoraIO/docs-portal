@@ -123,6 +123,18 @@ describe('ConvoAI documentation integration', () => {
       '/en/ai/studio/build/integrations',
       '/en/ai/platform/studio/build/mcp-servers',
     ],
+    [
+      '/en/ai/studio/deploy/inbound',
+      '/en/ai/platform/studio/deploy/deploy-inbound',
+    ],
+    [
+      '/en/ai/studio/observe/analytics',
+      '/en/ai/platform/studio/observe/agent-overview',
+    ],
+    [
+      '/en/ai/studio/observe/call-history',
+      '/en/ai/platform/studio/observe/agent-analytics',
+    ],
   ])(
     'switches the Agent Studio page %s to its Preview pair',
     (main, preview) => {

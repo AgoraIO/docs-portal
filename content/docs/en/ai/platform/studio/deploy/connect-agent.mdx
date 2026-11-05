@@ -6,13 +6,13 @@ description: Start your agent in Agent Studio from your app using the Conversati
 
 {/* PLATFORM-NEW: new Agent Studio docs for the Conversational AI Platform. Replaces the classic Embed flow. Status: drafted on 2026-11-03 from Agora Console screenshots, pending review. */}
 
-To have your agent talk to people inside your app, start a session from your backend using the Conversational AI Platform API. An **API** agent is designed for this use.
+To connect your app users to a Conversational AI Platform agent, use the [Agora RTC SDK](/en/realtime-media/rtc/get-started-sdk) to join an RTC channel, then start a session from your backend using the Platform API or SDKs.
 
 ## Prerequisites
 
 Before you begin, make sure that you have:
 
-- A [deployed agent](/en/ai/platform/studio/deploy/deploy-agent).
+- A deployed **API** agent. See [Deploy the agent](/en/ai/platform/studio/quickstart#deploy-the-agent).
 - An app that joins an RTC channel. See [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent).
 
 ## Get your connection details
@@ -33,6 +33,8 @@ To get the details your backend needs:
 
 {/* TODO(platform-confirm): An API agent has no Deploy agent tab, before or after deployment, so it doesn't show the Start from your app section. Inbound and Outbound agents do show it. Should API agents show the App ID and authentication details? Should this page describe where Inbound and Outbound agents find them? Confirm that an API agent's header shows the agent ID. */}
 
+{/* TODO(platform-confirm): Can a session start from a Draft agent through the API, and which configuration does it use? The Platform API has no publish route or draft status. The UI uses Deploy, Publish, and Live for one action: ask engineering to pick one verb. */}
+
 {/* TODO(platform-confirm): The Start from your app section says "Authenticate API requests using an RTC token", but the API reference requires a token with the ConvoAI service. Tokens without it fail. Ask engineering to correct the UI text, and confirm where the two Docs links go. They should open the Platform authentication page. */}
 
 ## Start a session
@@ -43,4 +45,4 @@ To start a session, send your agent ID with the channel details. For examples in
 
 - [Personalize conversations](/en/ai/platform/build/shape-the-conversation/personalize-conversations): Pass variable values for each session.
 - [Platform REST API](/en/api-reference/api-ref/conversational-ai/platform): See the full API reference.
-- [Agent analytics](/en/ai/platform/studio/observe/analytics): Monitor your agent's sessions.
+- [Agent overview](/en/ai/platform/studio/observe/agent-overview): Monitor your agent's sessions.
