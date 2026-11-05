@@ -84,6 +84,7 @@ import {
 } from '@/lib/openapi/request-examples';
 import {
   buildOpenApiResponseViews,
+  getOpenApiResponseStatusLabel,
   type OpenApiResponseHeaderView,
 } from '@/lib/openapi/response-view';
 import { resolveLocalOpenApiReference } from '@/lib/openapi/schema-tree';
@@ -818,6 +819,9 @@ function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
   const { doc } = useOpenAPI();
   const resolve = doc.resolve;
   const locale = useContext(OpenApiLocaleContext);
+  const operation = useContext(OpenApiOperationContext);
+  // Use all declared statuses, including responses without examples or content.
+  const statusCodes = Object.keys(operation?.responses ?? {});
   // Keep the values used by Fumadocs' ordinary Tabs so shared status selection
   // survives switching to the same code-tab frame as request examples.
   const tabValue = (code: string) => code.toLowerCase().replace(/\s/, '-');
@@ -855,7 +859,7 @@ function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
       <CodeBlockTabsList>
         {tabs.map(({ code }) => (
           <CodeBlockTabsTrigger key={code} value={tabValue(code)}>
-            {code}
+            {getOpenApiResponseStatusLabel(code, statusCodes, locale)}
           </CodeBlockTabsTrigger>
         ))}
       </CodeBlockTabsList>
@@ -1211,6 +1215,7 @@ function OpenApiResponseBody({ operation }: { operation?: OpenApiOperation }) {
   );
   return (
     <OpenApiResponses
+      locale={locale}
       labels={{
         mediaTypeForResponse: (status) =>
           isZhCnLocale(locale)
