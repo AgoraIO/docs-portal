@@ -8,16 +8,28 @@ description: "了解如何在 RTC 服务端 SDK 中区域访问限制，包括�
 
 例如你指定了北美为访问区域，假设有两位用户分别从北美和中国连接声网服务器：
 
-| 指定访问区域 | App 用户所在区域 | SDK 实际访问区域 | 连接后的用户体验 |
-| --- | --- | --- | --- |
-| 北美 | 北美 | 北美 | 正常 |
-| 北美 | 中国 | 北美 | <Slot name="set-region-markdown-0-2-3" /> |
-
-<Slot for="set-region-markdown-0-2-3">
-
-可能受到较大影响。由于指定区域与 app 用户所在区域之间存在跨区域公共互联网，公共互联网网络质量较差会导致音视频体验受到影响。如果指定区域的服务器都不可用，SDK 会直接报错。
-
-</Slot>
+<DocsTable>
+<thead>
+<tr>
+<th scope="col">指定访问区域</th>
+<th scope="col">App 用户所在区域</th>
+<th scope="col">SDK 实际访问区域</th>
+<th scope="col">连接后的用户体验</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td rowSpan={2}>北美</td>
+<td>北美</td>
+<td rowSpan={2}>北美</td>
+<td>正常</td>
+</tr>
+<tr>
+<td>中国</td>
+<td>可能受到较大影响。由于指定区域与 app 用户所在区域之间存在跨区域公共互联网，公共互联网网络质量较差会导致音视频体验受到影响。如果指定区域的服务器都不可用，SDK 会直接报错。</td>
+</tr>
+</tbody>
+</DocsTable>
 
 :::info[信息]
 - 如果指定区域的服务器都不可用，SDK 会直接报错。
