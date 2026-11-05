@@ -42,6 +42,39 @@ async function renderMarkdown(markdown: string, defaults = false) {
 }
 
 describe('shared code highlighting', () => {
+  it.each([
+    ['ruby', 'Ruby'],
+    ['http', 'HTTP'],
+    ['js', 'JavaScript'],
+    ['cpp', 'C++'],
+    ['objectivec', 'Objective-C'],
+    ['text', 'Text'],
+    ['plaintext', 'Text'],
+    ['txt', 'Text'],
+  ])('labels %s fences without changing the code', async (language, label) => {
+    const { html } = await renderMarkdown(`\`\`\`${language}\nexample\n\`\`\``);
+    const $ = load(html);
+    expect($('figcaption').text()).toBe(label);
+    expect($('figcaption .docs-code-language').text()).toBe(label);
+    expect($('figure > div:first-child > div > svg')).toHaveLength(0);
+    expect($('pre').text()).toBe('example');
+    expect($('button[aria-label="Copy Text"]')).toHaveLength(1);
+  });
+
+  it('keeps the language label inside SDK code tabs', async () => {
+    const { html } = await renderMarkdown(
+      '```ruby tab="视频 SDK"\npod "ShengwangRtcEngine_iOS"\n```\n\n```ruby tab="音频 SDK"\npod "ShengwangAudio_iOS"\n```',
+    );
+    const $ = load(html);
+    expect($('[role="tab"]').first().text()).toBe('视频 SDK');
+    expect($('[role="tabpanel"] figcaption').first().text()).toBe('Ruby');
+  });
+
+  it('does not invent a language for unmarked fences', async () => {
+    const { html } = await renderMarkdown('```\nexample\n```');
+    expect(load(html)('figcaption')).toHaveLength(0);
+  });
+
   it.each(['ruby', 'python'])(
     'consumes hash highlight controls in %s without changing executable lines',
     async (language) => {
@@ -126,6 +159,7 @@ EOF`;
     expect($('.line.highlighted.diff.remove')).toHaveLength(1);
     expect($('.line.diff.add')).toHaveLength(1);
     expect($('figcaption').text()).toBe('client.ts');
+    expect($('figcaption .docs-code-language')).toHaveLength(0);
     expect($('pre span[style*="--shiki-light"]')).not.toHaveLength(0);
   });
 

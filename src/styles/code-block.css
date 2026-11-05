@@ -11,6 +11,28 @@
   opacity: 1;
 }
 
+/* Language badges follow the active theme; filenames keep the normal caption. */
+.docs-code-language {
+  display: inline-block;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  background: var(--accent-brand-soft);
+  color: var(--color-fd-primary);
+  font-size: 12px;
+  line-height: 18px;
+  vertical-align: middle;
+}
+
+/* Keep normal MDX tabs unchanged; restore the single code block's own frame.
+   This also covers legacy <Tab> shorthand without affecting OpenAPI tabs. */
+[data-mdx-tabs-root] > [role="tabpanel"] > figure.shiki:only-child {
+  margin: 0;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: var(--radius-xl);
+}
+
 :root .prose :where(:not(pre) > code):not(:where(.not-prose, .not-prose *)),
 :root .openapi-markdown :where(:not(pre) > code) {
   box-decoration-break: clone;
