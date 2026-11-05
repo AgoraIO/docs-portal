@@ -592,13 +592,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-10-30T11:35:13.000Z',
   'content/docs/en/ai/platform/build/meta.json': '2026-10-30T11:35:13.000Z',
   'content/docs/en/ai/platform/build/phone-calls/import-phone-numbers.mdx':
-    '2026-11-04T07:37:31.000Z',
+    '2026-11-05T09:01:06.000Z',
   'content/docs/en/ai/platform/build/phone-calls/meta.json':
     '2026-10-30T11:35:13.000Z',
   'content/docs/en/ai/platform/build/phone-calls/outbound-calls-campaigns.mdx':
     '2026-11-04T07:37:31.000Z',
   'content/docs/en/ai/platform/build/phone-calls/route-inbound-calls.mdx':
-    '2026-11-04T07:37:31.000Z',
+    '2026-11-05T09:01:06.000Z',
   'content/docs/en/ai/platform/build/send-multimodal-messages.mdx':
     '2026-10-30T11:35:13.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/asr-keywords.mdx':
@@ -742,7 +742,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/studio/build/custom-tools.mdx':
     '2026-11-05T05:06:58.000Z',
   'content/docs/en/ai/platform/studio/build/customize-agent.mdx':
-    '2026-11-05T05:06:58.000Z',
+    '2026-11-05T09:01:06.000Z',
   'content/docs/en/ai/platform/studio/build/integrations.mdx':
     '2026-11-05T05:06:58.000Z',
   'content/docs/en/ai/platform/studio/build/mcp-servers.mdx':
@@ -756,33 +756,41 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/studio/build/supported-vendors.mdx':
     '2026-11-05T05:06:58.000Z',
   'content/docs/en/ai/platform/studio/build/test-agent.mdx':
-    '2026-11-05T05:06:58.000Z',
+    '2026-11-05T09:01:06.000Z',
   'content/docs/en/ai/platform/studio/deploy/campaign.mdx':
-    '2026-11-05T05:06:58.000Z',
+    '2026-11-05T09:01:06.000Z',
   'content/docs/en/ai/platform/studio/deploy/connect-agent.mdx':
-    '2026-11-05T05:06:58.000Z',
+    '2026-11-05T09:01:06.000Z',
   'content/docs/en/ai/platform/studio/deploy/deploy-agent.mdx':
-    '2026-11-05T05:06:58.000Z',
+    '2026-11-05T09:01:06.000Z',
+  'content/docs/en/ai/platform/studio/deploy/deploy-inbound.mdx':
+    '2026-11-05T09:01:06.000Z',
+  'content/docs/en/ai/platform/studio/deploy/deploy-outbound.mdx':
+    '2026-11-05T09:01:06.000Z',
   'content/docs/en/ai/platform/studio/deploy/import.mdx':
-    '2026-11-05T05:06:58.000Z',
+    '2026-11-05T09:01:06.000Z',
   'content/docs/en/ai/platform/studio/deploy/inbound.mdx':
     '2026-11-05T05:06:58.000Z',
   'content/docs/en/ai/platform/studio/deploy/meta.json':
-    '2026-11-04T07:37:31.000Z',
+    '2026-11-05T09:01:06.000Z',
   'content/docs/en/ai/platform/studio/deploy/outbound.mdx':
     '2026-11-05T05:06:58.000Z',
   'content/docs/en/ai/platform/studio/deploy/sip-trunk.mdx':
-    '2026-11-05T05:06:58.000Z',
-  'content/docs/en/ai/platform/studio/index.mdx': '2026-11-05T05:06:58.000Z',
+    '2026-11-05T09:01:06.000Z',
+  'content/docs/en/ai/platform/studio/index.mdx': '2026-11-05T09:01:06.000Z',
   'content/docs/en/ai/platform/studio/meta.json': '2026-11-04T07:37:31.000Z',
+  'content/docs/en/ai/platform/studio/observe/agent-analytics.mdx':
+    '2026-11-05T09:01:06.000Z',
+  'content/docs/en/ai/platform/studio/observe/agent-overview.mdx':
+    '2026-11-05T09:01:06.000Z',
   'content/docs/en/ai/platform/studio/observe/analytics.mdx':
     '2026-11-05T05:06:58.000Z',
   'content/docs/en/ai/platform/studio/observe/call-history.mdx':
-    '2026-11-05T05:06:58.000Z',
+    '2026-11-05T09:01:06.000Z',
   'content/docs/en/ai/platform/studio/observe/meta.json':
-    '2026-11-04T07:37:31.000Z',
+    '2026-11-05T09:01:06.000Z',
   'content/docs/en/ai/platform/studio/quickstart.mdx':
-    '2026-11-05T05:06:58.000Z',
+    '2026-11-05T09:01:06.000Z',
   'content/docs/en/ai/pricing.md': '2026-07-02T09:19:20.000Z',
   'content/docs/en/ai/product-overview.md': '2026-05-18T10:29:54.000Z',
   'content/docs/en/ai/production-checklist.md': '2026-05-19T10:33:06.000Z',
