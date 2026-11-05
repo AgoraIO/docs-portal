@@ -167,7 +167,7 @@ type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
 };
 type CalloutProps = ComponentProps<typeof FumadocsCallout>;
 type CalloutContainerProps = ComponentProps<typeof FumadocsCalloutContainer>;
-type PreProps = CodeBlockProps;
+type PreProps = CodeBlockProps & { 'data-language-label'?: string };
 type ParameterListVariant = 'cards' | 'table';
 type ParameterListProps = ComponentProps<'div'> & {
   nullable?: boolean;
@@ -1377,10 +1377,22 @@ function CodeBlockTabs({
   );
 }
 
-function Pre({ className, ...props }: PreProps) {
+function Pre({
+  className,
+  title,
+  'data-language-label': languageLabel,
+  ...props
+}: PreProps) {
   return (
     <FumadocsCodeBlock
       {...props}
+      title={
+        languageLabel ? (
+          <span className="docs-code-language">{languageLabel}</span>
+        ) : (
+          title
+        )
+      }
       data-line-numbers
       className={cn('bg-fd-card shadow-none', className)}
       viewportProps={{
@@ -1566,7 +1578,7 @@ function CodeBlockTab({
   return (
     <FumadocsCodeBlockTab
       className={cn(
-        '[&>figure]:m-0 [&>figure]:rounded-none [&>figure]:border-0 [&>figure]:bg-fd-card [&>figure]:shadow-none',
+        'p-4 [&>figure]:m-0 [&>figure]:rounded-xl [&>figure]:border [&>figure]:bg-fd-card [&>figure]:shadow-none',
         className,
       )}
       forceMount
