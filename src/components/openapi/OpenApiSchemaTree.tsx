@@ -356,42 +356,47 @@ export function OpenApiSchemaTree({
                 </TabsTrigger>
               ))}
             </TabsList>
-            {choice.options.map((option) => (
-              <ChoicePanel
-                active={selected === option.value}
-                key={option.value}
-                value={option.value}
-                onBeforeMatch={() => {
-                  const member = members.find(
-                    (candidate) =>
-                      candidate.choices?.[choiceDepth]?.value === option.value,
-                  );
-                  if (member) revealNode(member.id, false, choice.id);
-                }}
-              >
-                {option.schema &&
-                !members.some((member) => member.schema === option.schema) ? (
-                  <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
-                    {option.schema.description}
-                    <OpenApiSchemaMetadata
-                      items={renderRemainingInfoTags({
-                        ...node,
-                        schema: option.schema,
-                      })}
-                    />
-                  </div>
-                ) : null}
-                {renderNodes(
-                  members.filter(
-                    (member) =>
-                      member.choices?.[choiceDepth]?.value === option.value,
-                  ),
-                  seen,
-                  choiceDepth + 1,
-                  active && selected === option.value,
-                )}
-              </ChoicePanel>
-            ))}
+            {/* until-found panels still participate in layout. Keep them out of
+                the tabs flex gap so every choice starts at the same position. */}
+            <div className="min-w-0">
+              {choice.options.map((option) => (
+                <ChoicePanel
+                  active={selected === option.value}
+                  key={option.value}
+                  value={option.value}
+                  onBeforeMatch={() => {
+                    const member = members.find(
+                      (candidate) =>
+                        candidate.choices?.[choiceDepth]?.value ===
+                        option.value,
+                    );
+                    if (member) revealNode(member.id, false, choice.id);
+                  }}
+                >
+                  {option.schema &&
+                  !members.some((member) => member.schema === option.schema) ? (
+                    <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
+                      {option.schema.description}
+                      <OpenApiSchemaMetadata
+                        items={renderRemainingInfoTags({
+                          ...node,
+                          schema: option.schema,
+                        })}
+                      />
+                    </div>
+                  ) : null}
+                  {renderNodes(
+                    members.filter(
+                      (member) =>
+                        member.choices?.[choiceDepth]?.value === option.value,
+                    ),
+                    seen,
+                    choiceDepth + 1,
+                    active && selected === option.value,
+                  )}
+                </ChoicePanel>
+              ))}
+            </div>
           </StableChoiceTabs>,
         ];
       }

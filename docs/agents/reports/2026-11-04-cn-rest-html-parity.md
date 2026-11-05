@@ -211,3 +211,11 @@
 - 旧站线上 media-pull 页面已展开代码并提取证据；未声称对 126 个旧站线上页面逐页截图比对。
 - PPT info.description 的历史概述改写属于概览组织，未纳入本次接口示例修复；不把它误判为已恢复全文。
 - 原始 JSON、脚本、渲染样本与基线保存在忽略的 `.agent/rest-parity/`；截图保存在忽略的 `.agent/artifacts/rest-parity/`。报告记录覆盖及结论，不提交原始临时 QA 载荷。
+
+## 2026-11-05：Converter 切换后的正文起点
+
+用户复核发现，之前只测页签位置没有覆盖正文位置。创建 Converter 的转码/不转码页签固定，但正文与页签底部的距离分别为 8 px / 16 px；975 px 和 390 px 均可复现。隐藏面板使用 hidden=until-found，仍参与父级 flex 的 gap 排列，第二场景前多出一段 8 px 间距。
+
+修复将所有场景面板放在共同的普通块容器中，父级只保留页签与正文容器之间的一段间距，继续保留 until-found/beforematch 行为。同一共享组件的其他场景页签同步生效，未修改文档内容。两种屏宽双向切换正文偏移均为 0 px，正文与页签底部距离均为 8 px；键盘切换、展开后的场景切换、beforematch 自动切换也通过浏览器核验。
+
+验证：3 个相关测试文件共 106 项通过，types:check、定向 Biome、git diff --check 通过。本轮布局回归脚本和前后数据保存在忽略的 .agent/artifacts/converter-position/；它测真实浏览器坐标，happy-dom 单元测试不用于证明几何位置正确。
