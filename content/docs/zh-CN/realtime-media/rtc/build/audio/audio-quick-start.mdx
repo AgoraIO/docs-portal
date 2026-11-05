@@ -1762,19 +1762,24 @@ startBasicCall();
     - 加入和离开频道按钮
 
     你可以参考下列步骤来创建用户界面。
-**创建用户界面步骤**
+
+<Accordions type="multiple">
+<Accordion title="创建用户界面步骤">
 
 1. 在右侧菜单栏将项目切换为资源视图，然后打开 `.Dialog` 文件，此时你的界面如下图所示：
 
-<DocsImage alt="ui" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-quickstart-ui1.png" displayWidth="70%" />
+   <DocsImage alt="ui" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-quickstart-ui1.png" displayWidth="70%" />
 
-    2. 添加输入频道名称的输入框。在**视图 > 工具箱**中，选择添加 **Static Text** 控件，在**属性**中将**描述文字**改为**频道名**。然后再添加一个 **Edit Control** 控件作为输入框，在**属性 > 杂项**中，将该控件的 ID 设为 **IDC_EDIT_CHANNEL**。
+2. 添加输入频道名称的输入框。在**视图 > 工具箱**中，选择添加 **Static Text** 控件，在**属性**中将**描述文字**改为**频道名**。然后再添加一个 **Edit Control** 控件作为输入框，在**属性 > 杂项**中，将该控件的 ID 设为 **IDC_EDIT_CHANNEL**。
 
-    3. 添加加入和离开频道按钮。在**视图 > 工具箱**中，选择添加两个 **Button** 控件，在**属性 > 杂项**中，将控件的 ID 分设为 **ID_BTN_JOIN** 和 **ID_BTN_LEAVE**，将**描述文字**分别设为**加入**、**离开**。
+3. 添加加入和离开频道按钮。在**视图 > 工具箱**中，选择添加两个 **Button** 控件，在**属性 > 杂项**中，将控件的 ID 分设为 **ID_BTN_JOIN** 和 **ID_BTN_LEAVE**，将**描述文字**分别设为**加入**、**离开**。
 
-       此时的用户界面如下图所示：
+   此时的用户界面如下图所示：
 
-<DocsImage alt="ui" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-audio-quickstart.png" displayWidth="70%" />
+   <DocsImage alt="ui" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-audio-quickstart.png" displayWidth="70%" />
+
+</Accordion>
+</Accordions>
 
 
     ## 实现步骤
@@ -2340,7 +2345,8 @@ LRESULT CAgoraQuickStartDlg::OnEIDUserOffline(WPARAM wParam, LPARAM lParam) {
     在 `APP_ID` 和 `Token` 字段中传入你在控制台获取到的 App ID 和临时 Token。
     :::
 
-**实现纯语音互动示例代码**
+<Accordions type="multiple">
+<Accordion title="实现纯语音互动示例代码">
 
 ```csharp
 using System;
@@ -2470,6 +2476,9 @@ namespace WindowsFormsApp2
     }
 }
 ```
+
+</Accordion>
+</Accordions>
 
 
     ### 导入声网相关的类
@@ -3698,16 +3707,16 @@ rtcEngine.release();
 
 1. 创建结束通话按钮
 
-   a. 在你的 Unity 项目中，右击 **Sample Scene**，选择 **Game Object** > **UI** > **Button**。此时你可以在场景画布中看到你刚刚创建的按钮。
+   1. 在你的 Unity 项目中，右击 **Sample Scene**，选择 **Game Object** > **UI** > **Button**。此时你可以在场景画布中看到你刚刚创建的按钮。
 
-   b. 在 **Inspector** 面板中，将 **Button** 重命名为 **Leave**，并调整按钮的位置，例如：
+   2. 在 **Inspector** 面板中，将 **Button** 重命名为 **Leave**，并调整按钮的位置，例如：
 
-   - Pos X：`- 350`
-   - Pos Y：`- 172`
+      - Pos X：`- 350`
+      - Pos Y：`- 172`
 
-   c. 选中 **Leave** 按钮的 **Text** 控件，在 **Inspector** 面板中将 **Text** 的文本内容修改为 **Leave**。
+   3. 选中 **Leave** 按钮的 **Text** 控件，在 **Inspector** 面板中将 **Text** 的文本内容修改为 **Leave**。
 
-   d. 重复上述步骤再创建一个 **Join** 按钮来加入语音互动。
+   4. 重复上述步骤再创建一个 **Join** 按钮来加入语音互动。
 
 2. 保存上述步骤的更改。
 
@@ -5574,7 +5583,8 @@ public class UnrealLearning : ModuleRules
 
 4. 添加系统所需权限
 
-**Android**
+<Accordions type="multiple">
+<Accordion title="Android">
 
 如果目标平台为 Android，则添加 AndroidPermission 库并获取设备及网络权限：
 
@@ -5631,7 +5641,11 @@ void UAgoraWidget::NativeConstruct()
 }
 ```
 
-**iOS & macOS**
+</Accordion>
+</Accordions>
+
+<Accordions type="multiple">
+<Accordion title="iOS & macOS">
 
 1. 如果目标平台为 iOS/macOS，请参考[如何为 Unreal Engine 项目添加实时互动所需的权限？](/zh-CN/reference/faq/integration/unreal_permissions)
 
@@ -5653,6 +5667,9 @@ void UAgoraWidget::NativeConstruct()
         }
     }
     ```
+
+</Accordion>
+</Accordions>
 
 5. 关联 C++ 类和 Widget
 

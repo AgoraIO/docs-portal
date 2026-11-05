@@ -1757,6 +1757,23 @@ export async function convertHtmlToMdx({
       ],
     };
   }
+  // Doxygen inserts hidden anti-spam text and sometimes a scripted href.
+  // Recover only a complete visible email address; never evaluate onclick.
+  article.find('a').each((_, node) => {
+    const link = $(node);
+    if (!link.text().includes('.nosp@m.')) return;
+    const visible = link.clone();
+    visible.find('.obfuscator').remove();
+    visible
+      .find('[style]')
+      .filter((_, child) =>
+        /display\s*:\s*none\b/i.test($(child).attr('style') ?? ''),
+      )
+      .remove();
+    const email = visible.text().trim();
+    if (!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email)) return;
+    link.text(email).attr('href', `mailto:${email}`).removeAttr('onclick');
+  });
   const state = createState({
     sourceUrl,
     sourcePath,

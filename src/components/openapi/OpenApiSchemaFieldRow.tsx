@@ -51,7 +51,7 @@ export function OpenApiSchemaFieldRow({
     node.name === '[key: string]' && Boolean(node.variant);
   const displayName = isSyntheticVariant ? node.variant : node.name;
   const displayType =
-    node.schema.type === 'primitive'
+    node.schema.type === 'primitive' || node.schema.type === 'array'
       ? node.schema.typeName
       : node.schema.aliasName;
   const fieldIdentity = (
