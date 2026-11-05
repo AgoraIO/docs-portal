@@ -119,6 +119,10 @@ describe('ConvoAI documentation integration', () => {
       '/en/ai/studio/build/customize-agent',
       '/en/ai/platform/studio/build/customize-agent',
     ],
+    [
+      '/en/ai/studio/build/integrations',
+      '/en/ai/platform/studio/build/mcp-servers',
+    ],
   ])(
     'switches the Agent Studio page %s to its Preview pair',
     (main, preview) => {

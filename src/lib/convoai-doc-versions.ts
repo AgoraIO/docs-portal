@@ -15,6 +15,8 @@ function guideTopics(paths: readonly string[]) {
       'personalize-conversations',
     'build/shape-the-conversation/personalize-conversations':
       'personalize-conversations',
+    'studio/build/integrations': 'studio-mcp-servers',
+    'studio/build/mcp-servers': 'studio-mcp-servers',
   };
   return Object.fromEntries(
     paths.map((path) => [aliases[path] ?? (path || 'overview'), path]),

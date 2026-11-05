@@ -1,7 +1,7 @@
 ---
 analyticsPageType: task-guide
 title: Customize your agent
-description: Customize your agent using the configuration options in the Agent Studio agent editor.
+description: Customize your agent using the configuration options in the Agent Studio editor.
 ---
 
 {/* PLATFORM-NEW: new Agent Studio docs for the Conversational AI Platform. Status: drafted on 2026-11-03 from Agora Console screenshots, pending review. */}
@@ -21,7 +21,7 @@ To open the editor, in the navigation sidebar, select **Agents**, then do one of
 - **Create an agent**: Select **Create agent**, enter a name, choose a deployment type, and select **Create agent**. For a walkthrough, see [Create your first agent](/en/ai/platform/studio/quickstart).
 - **Edit an agent**: Select an agent in the list. If the agent is live, select **Edit agent**.
 
-The header shows the agent ID, the deployment type, and the status. The editor saves your changes to the draft automatically. To try your changes before you publish them, use the [**Test agent** panel](/en/ai/platform/studio/build/test-agent).
+The header shows the agent ID, the deployment type, and the status. The editor saves your changes to the draft automatically. To try your changes before you deploy them, use the [**Test agent** panel](/en/ai/platform/studio/build/test-agent).
 
 {/* TODO(platform-confirm): On a Live agent, do edits stay in a draft until you publish again, while the live configuration keeps serving calls? */}
 
@@ -68,7 +68,7 @@ By default, Agora provides the key for each model, and the model dropdowns show 
 
 1. Select a provider.
 2. Choose a model from the list. For ASR and LLM, you can also enter a provider model ID. Agent Studio doesn't validate the ID. Verify it with **Start test**.
-3. For **Key**, select **Pick a saved secret**, or create a new secret. See [Secrets](/en/ai/platform/studio/build/integrations#secrets).
+3. For **Key**, select **Pick a saved secret**, or create a new secret. See [Manage secrets](/en/ai/platform/studio/build/secrets).
 4. Select **Save**.
 
 ![Speech recognition settings with Bring your own key on and the provider list open](/temp/agent-studio-preview/byok-providers.png)
@@ -81,7 +81,7 @@ For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own
 
 Use this section to connect your agent to external services. Select **Add**, then select one of the following:
 
-- **MCP server**: Lets your agent call tools from an MCP server. See [MCP servers](/en/ai/platform/studio/build/integrations#mcp-servers).
+- **MCP server**: Lets your agent call tools from an MCP server. See [MCP servers](/en/ai/platform/studio/build/mcp-servers).
 - **Tool**: Lets your agent call your own HTTP endpoint. See [Custom tools](/en/ai/platform/studio/build/custom-tools).
 
 ![Add menu with the MCP server and Tool options](/temp/agent-studio-preview/integrations-add.png)
@@ -110,7 +110,7 @@ To add a value, under **Data collection**, select **Add data point**, then fill 
 To review what you collect, see [Agent analytics](/en/ai/platform/studio/observe/analytics#data-collected).
 
 :::note
-Extraction doesn't run for a session if Agora doesn't retain its conversation data. See [Retention](/en/ai/platform/studio/deploy/deploy-agent#retention).
+Extraction doesn't run for a session if Agora doesn't retain its conversation data. See [Data retention](/en/ai/platform/studio/deploy/deploy-agent#data-retention).
 :::
 
 {/* TODO(platform-confirm): The API also has `float`, `date`, and `datetime`. Are they coming to Agent Studio? Confirm that Number maps to `int` and List to `str` with `options`. The UI doesn't show the API limits: up to 50 data points for each agent, up to 2,000 characters of criteria, and up to 100 allowed values. Confirm that they apply. */}
@@ -251,6 +251,7 @@ For a credential header, use a complete `$secrets.<set>.<key>` reference with **
 
 ## Next steps
 
-- [Manage integrations](/en/ai/platform/studio/build/integrations): Manage secrets, MCP servers, and tools.
+- [Manage secrets](/en/ai/platform/studio/build/secrets): Store your provider API keys.
+- [MCP servers](/en/ai/platform/studio/build/mcp-servers): Let your agent call tools from an MCP server.
 - [Test your agent](/en/ai/platform/studio/build/test-agent): Learn more about testing features and troubleshooting agent behavior.
-- [Publish your agent](/en/ai/platform/studio/deploy/deploy-agent): Make your agent live.
+- [Deploy your agent](/en/ai/platform/studio/deploy/deploy-agent): Make your agent live.

@@ -1,51 +1,49 @@
 ---
 analyticsPageType: task-guide
-title: Publish your agent
-description: Publish your tested Agent Studio agent and make it live.
+title: Deploy your agent
+description: Deploy your tested agent in Agent Studio and make it live.
 ---
 
 {/* PLATFORM-NEW: new Agent Studio docs for the Conversational AI Platform. Status: drafted on 2026-11-03 from Agora Console screenshots, pending review. */}
 
-After you test your agent and confirm that it works as expected, publish it. Publishing makes the agent's saved configuration live, and connects any phone numbers you selected.
+After you test your agent and confirm that it works as expected, deploy it. Deploying makes the agent's saved configuration live, and connects any phone numbers you selected.
 
 ## Prerequisites
 
-Before you publish, make sure that:
+Before you deploy, make sure that:
 
 - You have tested your agent and verified that it responds correctly. See [Test your agent](/en/ai/platform/studio/build/test-agent).
-- For an **Inbound** agent, you have imported a phone number. See [Import a number](/en/ai/platform/studio/deploy/import).
+- For an **Inbound** or **Outbound** agent, you have set up a SIP trunk and imported a phone number. See [Set up SIP trunk](/en/ai/platform/studio/deploy/sip-trunk) and [Import a number](/en/ai/platform/studio/deploy/import). An **API** agent doesn't need either.
 
-## Publish an agent
+## Deploy an agent
 
-To publish your agent:
+To deploy your agent:
 
-1. In the navigation sidebar, select **Agents**, then select the agent you want to publish.
-2. Select **Deploy agent**. The **Deploy agent** tab opens.
+1. In the navigation sidebar, select **Agents**, then select the agent you want to deploy.
+2. Select **Deploy agent**.
+3. Complete the step for the agent's deployment type:
+
+    | Deployment type | What to do |
+    |---|---|
+    | **Inbound** | The **Deploy agent** tab opens. In the **Phone number** section, connect a number, then select **Deploy agent**. You can't deploy an Inbound agent without a number. See [Handle inbound calls](/en/ai/platform/studio/deploy/inbound). |
+    | **Outbound** | The **Deploy agent** tab opens. In the **Caller ID** section, choose the number to call from, then select **Deploy agent**. See [Make outbound calls](/en/ai/platform/studio/deploy/outbound). |
+    | **API** | No configuration is required. A confirmation dialog opens. |
+
+    The following image shows the **Deploy agent** tab for an Inbound agent:
 
     ![Deploy agent tab for an Inbound agent, with the Phone number, Start from your app, and Retention sections](/temp/agent-studio-preview/deploy-tab-inbound.png)
 
-3. Configure the tab for the agent's deployment type:
-
-    | Deployment type | First section | What to do |
-    |---|---|---|
-    | **Inbound** | **Phone number** | Connect a number. You can't publish an Inbound agent without one. See [Handle inbound calls](/en/ai/platform/studio/deploy/inbound). |
-    | **Outbound** | **Caller ID** | Choose the number to call from. See [Make outbound calls](/en/ai/platform/studio/deploy/outbound). |
-    | **API** | None | No phone number is needed. See [Connect your agent](/en/ai/platform/studio/deploy/connect-agent). |
-
-4. Select **Deploy agent**.
-5. Review the summary, then select **Publish agent**.
+4. Read the message in the dialog, then select **Publish agent**.
 
     ![Publish dialog](/temp/agent-studio-preview/publish-dialog.png)
 
 The agent's status changes from **Draft** to **Live**, and its overview page opens. See [Agent analytics](/en/ai/platform/studio/observe/analytics).
 
-{/* TODO(screenshot): The Deploy agent tab for an API agent. Confirm that it's the same as Inbound without the Phone number section. */}
-
 {/* TODO(platform-confirm): Can a session start from a Draft agent through the API, and which configuration does it use? The Platform API has no publish route or draft status. The UI uses Deploy, Publish, and Live for one action: ask engineering to pick one verb. */}
 
-## Retention
+## Data retention
 
-The **Retention** section controls whether Agora keeps a test session's conversation data. Turn off **Keep transcripts and recordings for 30 days** to discard the data. This setting applies to your next test session, and doesn't change retention for deployed calls.
+For an Inbound or Outbound agent, the **Retention** section of the **Deploy agent** tab controls whether Agora keeps a test session's conversation data. Turn off **Keep transcripts and recordings for 30 days** to discard the data. This setting applies to your next test session, and doesn't change retention for deployed calls.
 
 For API sessions, you set retention when you start each session. See [Choose whether Agora retains conversation data](/en/ai/platform/build/shape-the-conversation/personalize-conversations#choose-whether-agora-retains-conversation-data).
 
@@ -69,8 +67,6 @@ To update a live agent:
 
 ## Next steps
 
-After you publish your agent:
-
-- [Connect your agent](/en/ai/platform/studio/deploy/connect-agent): Start your agent from your app.
-- [Set up a campaign](/en/ai/platform/studio/deploy/campaign): Call a list of contacts with your agent.
+- [Set up a campaign](/en/ai/platform/studio/deploy/campaign): Call a list of contacts with an **Outbound** agent.
+- [Connect your agent](/en/ai/platform/studio/deploy/connect-agent): Start an **API** agent from your app.
 - [Agent analytics](/en/ai/platform/studio/observe/analytics): Monitor your agent's sessions.

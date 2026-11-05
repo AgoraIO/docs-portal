@@ -1,16 +1,12 @@
 ---
 analyticsPageType: task-guide
 title: Custom tools
-description: Let your Agent Studio agent call your own HTTP endpoints during a conversation.
+description: Let your agent in Agent Studio call your own HTTP endpoints during a conversation.
 ---
 
-{/* PLATFORM-NEW: new Agent Studio docs for the Conversational AI Platform. Status: drafted on 2026-11-03. The Tool panel wasn't available when this was written: the limits on this page come from the Platform API reference. */}
+{/* PLATFORM-NEW: new Agent Studio docs for the Conversational AI Platform. Status: drafted on 2026-11-03 from Agora Console screenshots, pending review. The limits on this page come from the Platform API reference. */}
 
-Custom tools let your agent call your own HTTP endpoints during a conversation. Use them when you already have an HTTP API and want your agent to call it directly. If you already expose tools through MCP, use an [MCP server](/en/ai/platform/studio/build/integrations#mcp-servers) instead.
-
-## Prerequisites
-
-You need an API that's reachable over HTTPS.
+Custom tools let your agent call your own HTTP endpoints during a conversation. Use them when you already have an HTTP API and want your agent to call it directly. If you already expose tools through MCP, use an [MCP server](/en/ai/platform/studio/build/mcp-servers) instead.
 
 ## Add a tool to an agent
 
@@ -18,27 +14,28 @@ To add a tool:
 
 1. In the agent editor, go to the **Integrations** section.
 2. Select **Add**, then select **Tool**.
-3. Configure the tool.
+3. Fill in the following fields:
 
-{/* TODO(screenshot): The Tool panel. Then replace step 3 with its fields and confirm that they match the following section. */}
+    - **Name**: The tool name shown to the model. It starts with a letter and contains only letters and digits, up to 64 characters.
+    - **Description**: What the tool does, up to 1,024 characters. The model uses it to decide when to call the tool.
+    - **Method**: `POST` (default) or `GET`.
+    - **URL**: The HTTPS URL of your endpoint, up to 2,048 characters.
+    - **Parameters**: A JSON Schema that describes the tool's arguments. See [Define the parameters](#define-the-parameters).
+    - **Body**: Additional fields to include in the request body, as JSON.
+    - **Headers**: The HTTP headers to send, up to 32. Enter one `Name: value` per line. To authenticate with your API, use a runtime template. The **API key** field isn't available yet.
+    - **Timeout**: The request timeout, from 1,000 to 100,000 ms. The default is 10,000 ms.
+
+4. Select **Save**.
+
+![Add a tool panel with the Name, Description, Method, URL, Parameters, Body, API key, Headers, and Timeout fields](/temp/agent-studio-preview/tool-panel.png)
 
 After you add the tool, the LLM can call it during test sessions and production conversations.
 
-## Tool settings
+{/* TODO(platform-confirm): What is a "runtime template" in the Headers field, and what's its format? The panel says "Save here updates your working copy. Use Start test to preview it, and Save changes on the agent to persist it", but the editor autosaves and has no Save changes button. Confirm how a tool is saved. Confirm that the API limits apply in this panel, and how Body combines with the arguments that the LLM passes. */}
 
-A tool tells the LLM when to call it and which request to send:
+## Define the parameters
 
-| Setting | Description |
-|---|---|
-| Name | The tool name shown to the model. It starts with a letter and contains only letters and digits, up to 64 characters. |
-| Description | What the tool does, up to 1,024 characters. The model uses it to decide when to call the tool. |
-| Parameters | A JSON Schema that describes the tool's arguments. |
-| Method | `GET` or `POST`. |
-| URL | The HTTPS URL of your endpoint, up to 2,048 characters. |
-| Headers | HTTP headers to send, up to 32. They are write-only. |
-| Timeout | The request timeout, from 1,000 to 100,000 ms. The default is 10,000 ms. |
-
-For example, the following parameters define a tool that looks up an order:
+The **Parameters** field tells the LLM which arguments to pass when it calls the tool. For example, the following parameters define a tool that looks up an order:
 
 ```json
 {
@@ -71,6 +68,6 @@ The following table lists common issues with custom tools:
 
 ## Next steps
 
-- [Manage integrations](/en/ai/platform/studio/build/integrations): Manage secrets and MCP servers.
+- [MCP servers](/en/ai/platform/studio/build/mcp-servers): Let your agent call tools from an MCP server.
 - [Customize your agent](/en/ai/platform/studio/build/customize-agent): Configure your agent in the editor.
 - [Test your agent](/en/ai/platform/studio/build/test-agent): Verify tool calling end to end.
