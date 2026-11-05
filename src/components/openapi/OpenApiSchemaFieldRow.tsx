@@ -63,7 +63,9 @@ export function OpenApiSchemaFieldRow({
       >
         {displayName}
       </code>
-      {!isSyntheticVariant && displayType !== displayName ? (
+      {!isSyntheticVariant &&
+      node.schema.typeSpecified !== false &&
+      displayType !== displayName ? (
         <span className="min-w-0 break-words font-mono text-sm text-muted-foreground [overflow-wrap:anywhere]">
           {displayType}
         </span>
