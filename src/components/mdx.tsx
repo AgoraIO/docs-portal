@@ -170,6 +170,7 @@ type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
 };
 type CalloutProps = ComponentProps<typeof FumadocsCallout>;
 type CalloutContainerProps = ComponentProps<typeof FumadocsCalloutContainer>;
+type PreProps = ComponentProps<typeof Pre>;
 type TabValueElement = ReactElement<{
   children?: ReactNode;
   value?: unknown;
@@ -1454,9 +1455,11 @@ function CodeBlockTab({
 function CommandBlock({
   code,
   language = 'bash',
+  locale,
 }: {
   code: string;
   language?: string;
+  locale?: string;
 }) {
   const lineKeys = new Map<string, number>();
   const lines = code
@@ -1473,7 +1476,10 @@ function CommandBlock({
     });
 
   return (
-    <Pre className={cn('shiki', `language-${language}`)}>
+    <Pre
+      className={cn('shiki', `language-${language}`)}
+      locale={locale}
+    >
       <code className={cn('language-code', `language-${language}`)}>
         {lines.map(({ id, line }) => (
           <span className="line" key={id}>
@@ -1775,11 +1781,35 @@ function ZoomableImage({
   );
 }
 
+// Module-level component types keep local wrapping state when the page remeasures.
+const localizedCodeComponents = {
+  en: {
+    pre: (props: PreProps) => <Pre {...props} locale="en" />,
+    CommandBlock: (props: ComponentProps<typeof CommandBlock>) => (
+      <CommandBlock {...props} locale="en" />
+    ),
+  },
+  'zh-CN': {
+    pre: (props: PreProps) => <Pre {...props} locale="zh-CN" />,
+    CommandBlock: (props: ComponentProps<typeof CommandBlock>) => (
+      <CommandBlock {...props} locale="zh-CN" />
+    ),
+  },
+};
+
+function getCodeComponents(locale?: string) {
+  const normalizedLocale = normalizeLocale(locale);
+  return normalizedLocale
+    ? localizedCodeComponents[normalizedLocale]
+    : { pre: Pre, CommandBlock };
+}
+
 export function getMDXComponents(
   components?: MDXComponents,
   context?: MDXContext,
 ) {
   const DocsTable = createDocsTableComponent(context?.locale);
+  const codeComponents = getCodeComponents(context?.locale);
   return {
     ...defaultMdxComponents,
     Callout: DocsCallout,
@@ -1799,7 +1829,7 @@ export function getMDXComponents(
     Card: createDocsCard(context?.contentPath),
     Cards,
     RepositoryCardTitle,
-    CommandBlock,
+    CommandBlock: codeComponents.CommandBlock,
     Tabs,
     Tab: FumadocsTab,
     TabsContent,
@@ -1808,7 +1838,7 @@ export function getMDXComponents(
     CodeBlockTabs,
     CodeBlockTabsList,
     CodeBlockTab,
-    pre: Pre,
+    pre: codeComponents.pre,
     ApiReturns,
     ApiReturnType,
     ApiSignature,

@@ -1929,6 +1929,7 @@ function OpenApiMarkdownCodeBlock({
 }) {
   const contextSource = useContext(OpenApiCodeSourceContext);
   const isRequestCode = useContext(OpenApiRequestCodeContext);
+  const locale = useContext(OpenApiLocaleContext);
   const childProps = isValidElement(children)
     ? (children.props as { className?: string; children?: ReactNode })
     : undefined;
@@ -1942,30 +1943,20 @@ function OpenApiMarkdownCodeBlock({
       ? childProps.children
       : undefined);
 
-  const Actions = codeblock?.Actions;
-
   // Generated usage tabs need explicit in-tab geometry during SSR and hydration.
   return (
     <DocsCodeBlock
       {...props}
       data-code-language={language}
       {...codeblock}
+      locale={locale}
+      copyButton={<OpenApiCodeCopyButton />}
       className={cn(
         props.className,
         codeblock?.className,
         'shadow-none',
         isRequestCode && 'my-0 -mx-px -mb-px rounded-none last:rounded-b-xl',
       )}
-      Actions={(actions) => {
-        const children = actions.children && <OpenApiCodeCopyButton />;
-        return Actions ? (
-          <Actions {...actions}>{children}</Actions>
-        ) : (
-          <div className={cn('empty:hidden', actions.className)}>
-            {children}
-          </div>
-        );
-      }}
     >
       {source === undefined ? (
         children

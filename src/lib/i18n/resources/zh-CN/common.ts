@@ -60,6 +60,8 @@ const zhCnCommon = {
     previous: '上一页',
     copyPage: '复制页面',
     copyLink: '复制链接',
+    wrapCode: '自动换行',
+    unwrapCode: '取消自动换行',
     copyPageMoreActions: '复制页面更多操作',
     viewAsMarkdown: '查看 Markdown',
     openInDeepSeek: '打开 DeepSeek',

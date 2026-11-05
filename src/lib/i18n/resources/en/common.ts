@@ -61,6 +61,8 @@ const enCommon = {
     previous: 'Previous',
     copyPage: 'Copy Page',
     copyLink: 'Copy Link',
+    wrapCode: 'Wrap code',
+    unwrapCode: 'Unwrap code',
     copyPageMoreActions: 'Copy Page more actions',
     viewAsMarkdown: 'View as Markdown',
     openInChatGpt: 'Open in ChatGPT',
