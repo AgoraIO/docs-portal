@@ -98,10 +98,28 @@ description: "了解声网实时互动场景中的资源隔离、频道隔离、
 
 例如你指定了北美为访问区域，假设有两位用户分别从北美和中国连接声网服务器：
 
-| 指定的访问区域 | App 用户所在区域 | SDK 实际访问的区域 | 连接后的用户体验 |
-| --- | --- | --- | --- |
-| 北美 | 北美 | 北美 | 正常¹ |
-| 北美 | 中国 | 北美 | 可能受到较大影响² |
+<DocsTable>
+<thead>
+<tr>
+<th scope="col">指定的访问区域</th>
+<th scope="col">App 用户所在区域</th>
+<th scope="col">SDK 实际访问的区域</th>
+<th scope="col">连接后的用户体验</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td rowSpan={2}>北美</td>
+<td>北美</td>
+<td rowSpan={2}>北美</td>
+<td>正常¹</td>
+</tr>
+<tr>
+<td>中国</td>
+<td>可能受到较大影响²</td>
+</tr>
+</tbody>
+</DocsTable>
 
 :::note
 - ¹ 如果指定区域的服务器都不可用，SDK 会直接报错。
