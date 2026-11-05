@@ -843,7 +843,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/ten-agent/architecture/tts-implementation-modes.mdx':
     '2026-06-26T15:57:54.000Z',
   'content/docs/en/ai/ten-agent/architecture/type-system.mdx':
-    '2026-06-26T15:57:54.000Z',
+    '2026-11-05T03:05:54.000Z',
   'content/docs/en/ai/ten-agent/core-concepts.mdx': '2026-08-11T15:10:41.000Z',
   'content/docs/en/ai/ten-agent/develop/build-ten-applications.mdx':
     '2026-06-26T15:57:54.000Z',
@@ -3578,7 +3578,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/introduction/security-privacy.md':
     '2026-05-21T06:46:59.000Z',
   'content/docs/en/introduction/security-privacy.mdx':
-    '2026-08-19T13:16:31.000Z',
+    '2026-11-05T09:47:14.000Z',
   'content/docs/en/introduction/speech-to-text.md': '2026-05-21T09:41:55.000Z',
   'content/docs/en/introduction/speech-to-text.mdx': '2026-06-01T06:30:44.000Z',
   'content/docs/en/introduction/start-with-ai.md': '2026-05-20T08:41:55.000Z',
@@ -3658,7 +3658,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/agora-analytics/reference/restful-authentication.md':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/agora-analytics/reference/security.md':
-    '2026-09-04T12:16:57.000Z',
+    '2026-11-05T09:47:14.000Z',
   'content/docs/en/realtime-media/agora-analytics/reference/supported-platforms.md':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/audio-modality.md':
@@ -4222,7 +4222,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/reference/restful-authentication.mdx':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/security.mdx':
-    '2026-09-04T12:16:57.000Z',
+    '2026-11-05T09:47:14.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/status-page.mdx':
     '2026-06-30T07:00:49.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/stream-mode.mdx':
@@ -5163,7 +5163,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/iot/reference/resources.mdx':
     '2026-09-02T10:19:38.000Z',
   'content/docs/en/realtime-media/iot/reference/security.md':
-    '2026-09-04T12:16:57.000Z',
+    '2026-11-05T09:47:14.000Z',
   'content/docs/en/realtime-media/iot/reference/supported-platforms.mdx':
     '2026-09-02T10:19:38.000Z',
   'content/docs/en/realtime-media/marketplace.md': '2026-05-14T11:07:52.000Z',
@@ -5306,7 +5306,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/marketplace/reference/release-notes.mdx':
     '2026-09-30T12:47:37.000Z',
   'content/docs/en/realtime-media/marketplace/reference/security.mdx':
-    '2026-09-04T12:16:57.000Z',
+    '2026-11-05T09:47:14.000Z',
   'content/docs/en/realtime-media/marketplace/reference/supported-platforms.mdx':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/marketplace/supported-platforms.mdx':
@@ -5440,7 +5440,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/media-push/reference/restful-type-definition.mdx':
     '2026-06-24T11:35:29.000Z',
   'content/docs/en/realtime-media/media-push/reference/security.md':
-    '2026-09-04T12:16:57.000Z',
+    '2026-11-05T09:47:14.000Z',
   'content/docs/en/realtime-media/media-push/reference/sei-information.md':
     '2026-08-11T15:10:41.000Z',
   'content/docs/en/realtime-media/media-push/reference/set-vertical-layout.md':
@@ -5735,7 +5735,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc-server-sdk/reference/release-notes.mdx':
     '2026-09-28T07:48:11.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/security.md':
-    '2026-09-04T12:16:57.000Z',
+    '2026-11-05T09:47:14.000Z',
   'content/docs/en/realtime-media/rtc.md': '2026-05-14T11:07:52.000Z',
   'content/docs/en/realtime-media/rtc/android/audio/audio-effects-and-mixing.md':
     '2026-06-13T10:37:20.000Z',
@@ -6106,13 +6106,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc/reference/release-notes.md':
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/release-notes.mdx':
-    '2026-10-30T08:16:33.000Z',
+    '2026-11-02T06:20:26.000Z',
   'content/docs/en/realtime-media/rtc/reference/rest-api.md':
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/sdk-downloads.md':
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/security.mdx':
-    '2026-09-04T12:16:57.000Z',
+    '2026-11-05T09:47:14.000Z',
   'content/docs/en/realtime-media/rtc/reference/service-limits.mdx':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/rtc/reference/status-page.mdx':
@@ -6412,7 +6412,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-06-22T08:39:26.000Z',
   'content/docs/en/realtime-media/rtm/rest-api/meta.json':
     '2026-06-22T08:39:26.000Z',
-  'content/docs/en/realtime-media/rtm/security.md': '2026-09-04T12:16:57.000Z',
+  'content/docs/en/realtime-media/rtm/security.md': '2026-11-05T09:47:14.000Z',
   'content/docs/en/realtime-media/rtmp-gateway.md': '2026-05-14T11:07:52.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/build/enable-adaptive-bitrate.md':
     '2026-06-24T07:15:37.000Z',
@@ -6511,7 +6511,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtmp-gateway/reference/restful-authentication.mdx':
     '2026-06-16T07:46:15.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/reference/security.md':
-    '2026-09-04T12:16:57.000Z',
+    '2026-11-05T09:47:14.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/reference/srt-streaming.md':
     '2026-07-21T03:37:31.000Z',
   'content/docs/en/realtime-media/rtsa.md': '2026-05-14T11:07:52.000Z',
@@ -6565,7 +6565,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/speech-to-text/build/process-transcription-data/meta.json':
     '2026-06-26T08:54:16.000Z',
   'content/docs/en/realtime-media/speech-to-text/build/process-transcription-data/parse-data.mdx':
-    '2026-08-10T15:28:51.000Z',
+    '2026-11-02T06:08:41.000Z',
   'content/docs/en/realtime-media/speech-to-text/build/process-transcription-data/record-captions.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/speech-to-text/build/record-captions.md':
@@ -6615,7 +6615,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/speech-to-text/get-started/meta.json':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/speech-to-text/get-started/quickstart.md':
-    '2026-09-09T06:31:33.000Z',
+    '2026-11-02T06:08:41.000Z',
   'content/docs/en/realtime-media/speech-to-text/get-started/skills.mdx':
     '2026-06-14T08:17:36.000Z',
   'content/docs/en/realtime-media/speech-to-text/index.md':
@@ -6687,7 +6687,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/speech-to-text/reference/restful-authentication.mdx':
     '2026-06-14T08:17:36.000Z',
   'content/docs/en/realtime-media/speech-to-text/reference/security.md':
-    '2026-09-04T12:16:57.000Z',
+    '2026-11-05T09:47:14.000Z',
   'content/docs/en/realtime-media/speech-to-text/reference/supported-languages.md':
     '2026-06-17T10:39:05.000Z',
   'content/docs/en/realtime-media/transcoding.md': '2026-05-14T11:07:52.000Z',
