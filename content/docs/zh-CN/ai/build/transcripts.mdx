@@ -98,10 +98,10 @@ implementation 'io.agora.agents:agora-agent-client-toolkit:2.10.0'
 
 #### 源码集成
 
-从组件仓库的 `conversational-ai` 模块获取源码。集成时保留 `io.agora.conversational.api` 包路径，并参照该模块配置依赖。你可以前往[组件结构](#组件结构)了解各个文件作用。
+将 `convoaiApi` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
 
 <Cards>
-  <Card title="Android 组件源码" href="https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-kotlin/tree/main/conversational-ai/src/main/java/io/agora/conversational/api" />
+  <Card title="convoaiApi" href="https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-kotlin/tree/main/conversational-ai/src/main/java/io/agora/conversational/api" />
 </Cards>
 
 </TabsContent>
@@ -116,7 +116,7 @@ implementation 'io.agora.agents:agora-agent-client-toolkit:2.10.0'
 <TabsList aria-label="iOS 组件集成方式">
   <TabsTrigger value="cocoapods">CocoaPods</TabsTrigger>
   <TabsTrigger value="swiftpm">Swift Package Manager</TabsTrigger>
-  <TabsTrigger value="source">历史源码参考</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
 </TabsList>
 
 <TabsContent value="cocoapods">
@@ -145,12 +145,12 @@ https://github.com/AgoraIO/agent-client-toolkit-swift.git
 
 <TabsContent value="source">
 
-#### 历史源码参考
+#### 源码集成
 
-以下目录为历史源码，仅供阅读参考，不应直接用于当前组件的集成。请采用上方的 CocoaPods 或 Swift Package Manager 集成方式。
+将 `ConversationalAIAPI` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
 
 <Cards>
-  <Card title="iOS 历史源码" href="https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/v2.2.0/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/ConversationalAIAPI" />
+  <Card title="ConversationalAIAPI" href="https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/ConversationalAIAPI" />
 </Cards>
 
 </TabsContent>
@@ -194,7 +194,7 @@ https://github.com/AgoraIO/agent-client-toolkit-swift.git
 将 `conversational-ai-api` 文件拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
 
 <Cards>
-  <Card title="conversational-ai-api" href="https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/main/Web/Scenes/VoiceAgent/src/conversational-ai-api" />
+  <Card title="conversational-ai-api" href="https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-ts" />
 </Cards>
 
 </TabsContent>
@@ -594,9 +594,10 @@ conversationalAIAPI.destroy()
 - `IConversationalAIAPI.kt` — API 接口及相关数据结构和枚举
 - `ConversationalAIAPIImpl.kt` — ConversationalAI API 主要实现逻辑
 - `ConversationalAIUtils.kt` — 工具函数与事件回调管理
-- `transcript/` — 字幕模块
-    - `TranscriptController.kt` — 字幕控制器
-    - `MessageParser.kt` — 消息解析器
+- `subRender/`
+    - `v3/` — 字幕部分模块
+        - `TranscriptionController.kt` — 字幕控制器
+        - `MessageParser.kt` — 消息解析器
 
 </TabsContent>
 

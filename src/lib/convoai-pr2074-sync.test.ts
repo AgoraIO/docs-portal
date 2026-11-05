@@ -201,7 +201,8 @@ describe('ConvoAI source PR 2074 expanded shared content', () => {
         '#### Maven',
         'io.agora.agents:agora-agent-client-toolkit:2.10.0',
         '#### 源码集成',
-        'io.agora.conversational.api',
+        '将 `convoaiApi` 文件夹拷贝到你的项目中',
+        'title="convoaiApi"',
         'agent-client-toolkit-kotlin/tree/main/',
       ],
     ],
@@ -212,10 +213,10 @@ describe('ConvoAI source PR 2074 expanded shared content', () => {
         "pod 'agent-client-toolkit-swift', '2.10.0'",
         '#### Swift Package Manager',
         'tag `2.10.0`',
-        '#### 历史源码参考',
-        '以下目录为历史源码',
-        '不应直接用于当前组件的集成',
-        'Conversational-AI-Demo/tree/v2.2.0/',
+        '#### 源码集成',
+        '将 `ConversationalAIAPI` 文件夹拷贝到你的项目中',
+        'title="ConversationalAIAPI"',
+        'Conversational-AI-Demo/tree/main/',
       ],
     ],
     [
@@ -226,10 +227,11 @@ describe('ConvoAI source PR 2074 expanded shared content', () => {
         'agora-agent-client-toolkit-react@2.10.0',
         '#### 源码集成',
         'conversational-ai-api',
+        'https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-ts',
       ],
     ],
   ] as const)(
-    'keeps package versions and verified source references for transcripts %s',
+    'keeps package versions and source integration instructions for transcripts %s',
     (platform, required) => {
       const installation = between(
         read(`${aiRoot}/build/transcripts.mdx`),
