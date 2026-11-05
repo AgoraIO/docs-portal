@@ -24,6 +24,7 @@ import {
   type OpenAPIPageProps,
 } from 'fumadocs-openapi/ui';
 import {
+  type CodeBlockProps,
   CodeBlockTab,
   CodeBlockTabs,
   CodeBlockTabsList,
@@ -51,8 +52,8 @@ import rehypeRaw from 'rehype-raw';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
 import { Callout as OpenApiCallout } from '@/components/Callout';
-import { DocsLinkIcon } from '@/components/DocsLinkIcon';
 import { DocsCodeBlock } from '@/components/DocsCodeBlock';
+import { DocsLinkIcon } from '@/components/DocsLinkIcon';
 import { useMeasuredDocsBody } from '@/components/docs-shell/DocsContentMeasurement';
 import { createDocsTableComponent } from '@/components/mdx';
 import { Badge } from '@/components/ui/badge';
@@ -218,59 +219,72 @@ const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
   'Value in(schema UI)': '可选值',
 } as const;
 
+const openApiPageComponents: OpenAPIComponents = {
+  CodeBlock: ({ code, lang, codeblock }) =>
+    renderOpenApiCodeBlock(lang, code, codeblock),
+  Heading: OpenApiGeneratedHeading,
+  Markdown: OpenApiGeneratedMarkdown,
+  SchemaUI: OpenApiGeneratedSchemaUI,
+};
+
+function OpenApiGeneratedHeading({
+  depth,
+  ...props
+}: ComponentProps<OpenAPIComponents['Heading']>) {
+  const locale = useContext(OpenApiLocaleContext);
+  const label = isZhCnLocale(locale)
+    ? ZH_CN_OPENAPI_GENERATED_HEADING_LABELS[props.id]
+    : undefined;
+  return renderOpenApiHeading(
+    { ...props, children: label ?? props.children },
+    depth,
+  );
+}
+
+function OpenApiGeneratedMarkdown({
+  md,
+}: ComponentProps<OpenAPIComponents['Markdown']>) {
+  return renderOpenApiMarkdown(md);
+}
+
+function OpenApiGeneratedSchemaUI(
+  options: ComponentProps<OpenAPIComponents['SchemaUI']>,
+) {
+  const { doc } = useOpenAPI();
+  const schemaOptions = options as typeof options & {
+    client: ComponentProps<OpenAPIComponents['SchemaUI']>['client'];
+    legacyAnchorPrefix?: string;
+    showExample?: boolean;
+  };
+
+  return (
+    <OpenApiSchema
+      client={schemaOptions.client}
+      document={doc.bundled}
+      legacyAnchorPrefix={schemaOptions.legacyAnchorPrefix}
+      readOnly={schemaOptions.readOnly}
+      renderCodeblock={({ code, lang }) => renderOpenApiCodeBlock(lang, code)}
+      renderExtraDescription={(schema) => {
+        const record = getRecord(schema);
+        const callouts = record ? getOpenApiDocsCallouts(record) : [];
+        return callouts.length > 0 ? (
+          <OpenApiInlineCallouts callouts={callouts} />
+        ) : null;
+      }}
+      renderMarkdown={(markdown) =>
+        renderOpenApiMarkdown(normalizeOpenApiDescriptionMarkdown(markdown))
+      }
+      root={schemaOptions.root}
+      showExample={schemaOptions.showExample ?? true}
+      writeOnly={schemaOptions.writeOnly}
+    />
+  );
+}
+
 function createDocsOpenApiPage(requestCodeUsages: typeof codeUsages) {
   return createOpenAPIPage({
     codeUsages: requestCodeUsages,
-    components: {
-      CodeBlock: ({ code, lang, codeblock }) =>
-        renderOpenApiCodeBlock(lang, code, codeblock),
-      Heading: ({ depth, ...props }) => {
-        const locale = useContext(OpenApiLocaleContext);
-        const label = isZhCnLocale(locale)
-          ? ZH_CN_OPENAPI_GENERATED_HEADING_LABELS[props.id]
-          : undefined;
-        return renderOpenApiHeading(
-          { ...props, children: label ?? props.children },
-          depth,
-        );
-      },
-      Markdown: ({ md }) => renderOpenApiMarkdown(md),
-      SchemaUI: (options) => {
-        const { doc } = useOpenAPI();
-        const schemaOptions = options as typeof options & {
-          client: ComponentProps<OpenAPIComponents['SchemaUI']>['client'];
-          legacyAnchorPrefix?: string;
-          showExample?: boolean;
-        };
-
-        return (
-          <OpenApiSchema
-            client={schemaOptions.client}
-            document={doc.bundled}
-            legacyAnchorPrefix={schemaOptions.legacyAnchorPrefix}
-            readOnly={schemaOptions.readOnly}
-            renderCodeblock={({ code, lang }) =>
-              renderOpenApiCodeBlock(lang, code)
-            }
-            renderExtraDescription={(schema) => {
-              const record = getRecord(schema);
-              const callouts = record ? getOpenApiDocsCallouts(record) : [];
-              return callouts.length > 0 ? (
-                <OpenApiInlineCallouts callouts={callouts} />
-              ) : null;
-            }}
-            renderMarkdown={(markdown) =>
-              renderOpenApiMarkdown(
-                normalizeOpenApiDescriptionMarkdown(markdown),
-              )
-            }
-            root={schemaOptions.root}
-            showExample={schemaOptions.showExample ?? true}
-            writeOnly={schemaOptions.writeOnly}
-          />
-        );
-      },
-    },
+    components: openApiPageComponents,
     content: {
       renderResponseTabs: (options) => <OpenApiResponseExamples {...options} />,
       renderAPIExampleLayout: (slots) => (
@@ -1892,7 +1906,7 @@ function renderOpenApiMarkdown(markdown: string): ReactNode {
 function renderOpenApiCodeBlock(
   lang: string,
   source: string,
-  codeblock?: Omit<ComponentProps<typeof CodeBlock>, 'children'>,
+  codeblock?: CodeBlockProps,
 ) {
   return (
     <OpenApiCodeSourceContext.Provider key={source} value={source}>
@@ -1908,7 +1922,7 @@ function OpenApiMarkdownCodeBlock({
   codeblock,
   ...props
 }: ComponentProps<'pre'> & {
-  codeblock?: Omit<ComponentProps<typeof CodeBlock>, 'children'>;
+  codeblock?: CodeBlockProps;
 }) {
   const contextSource = useContext(OpenApiCodeSourceContext);
   const isRequestCode = useContext(OpenApiRequestCodeContext);

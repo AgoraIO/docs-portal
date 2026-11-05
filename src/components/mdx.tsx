@@ -56,8 +56,8 @@ import {
   Callout as FumadocsCallout,
   CalloutContainer as FumadocsCalloutContainer,
 } from '@/components/Callout';
-import { DocsLinkIcon } from '@/components/DocsLinkIcon';
 import { DocsCodeBlock } from '@/components/DocsCodeBlock';
+import { DocsLinkIcon } from '@/components/DocsLinkIcon';
 import {
   Dialog,
   DialogContent,
