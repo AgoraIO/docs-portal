@@ -16,13 +16,29 @@ To view the history:
 2. Select one of the following tabs:
 
     - **Call history**: Lists every phone session in the project.
+
+        ![Call history tab with filters for agent and campaign](/temp/agent-studio-preview/analytics-call-history.png)
+
     - **Session history**: Lists every session in the project.
 
-    ![Call history tab with filters for agent and campaign](/temp/agent-studio-preview/analytics-call-history.png)
-
-    ![Session history tab with filters for agent, campaign, and channel](/temp/agent-studio-preview/analytics-session-history.png)
+        ![Session history tab with filters for agent, campaign, and channel](/temp/agent-studio-preview/analytics-session-history.png)
 
 You can also open these tabs from an agent's overview page. Select **Session history** or **Call history** at the top of the [**Sessions** table](/en/ai/platform/studio/observe/agent-overview#sessions).
+
+## Session information
+
+Each row shows the following information:
+
+- **Started**: The date and time the session started.
+- **Caller**/**User**: The person in the session.
+- **Agent**: The agent that handled the session.
+- **Channel**: How the session connected. For example, **App**.
+- **Type**: The type of session.
+- **Campaign**: The associated campaign, for outbound calls.
+- **Duration**: The length of the session.
+- **Data points**: For calls only, the values extracted from the call. See [Analysis](/en/ai/platform/studio/build/customize-agent#analysis).
+
+{/* TODO(platform-confirm): Confirm what Caller, User, Type, and Data points show for phone sessions. These fields were empty in test sessions. */}
 
 ## Find a session
 
@@ -35,21 +51,6 @@ To find a session, do any of the following:
 To download the results, select **Export CSV**. To replay a session, open it from the table.
 
 {/* TODO(screenshot): A session opened from the table. Then document the replay, including where to find the transcript and recording. Add call status definitions if the Call history tab shows them. */}
-
-## Table columns
-
-The tables show the following columns:
-
-- **Started**: The date and time the session started.
-- **Caller** or **User**: The person in the session. The **Call history** tab shows **Caller**, and the **Session history** tab shows **User**.
-- **Agent**: The agent that handled the session.
-- **Channel**: How the session connected. For example, **App**.
-- **Type**: The type of session.
-- **Campaign**: The associated campaign, for outbound calls.
-- **Duration**: The length of the session.
-- **Data points**: The values extracted from the session. The **Call history** tab shows this column. See [Analysis](/en/ai/platform/studio/build/customize-agent#analysis).
-
-{/* TODO(platform-confirm): Confirm what Caller, User, Type, and Data points show for phone sessions. These fields were empty in test sessions. */}
 
 ## See also
 
