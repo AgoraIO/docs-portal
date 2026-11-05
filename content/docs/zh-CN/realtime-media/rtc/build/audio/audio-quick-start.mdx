@@ -685,9 +685,11 @@ protected void onCreate(Bundle savedInstanceState) {
     在项目导航栏中打开 `info.plist` 文件，编辑[属性列表](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6)，添加实时互动所需的录音权限。
 
     :::info[信息]
+
     - 下表中列出的权限为必需权限；如果不添加所列权限，你将无法使用麦克风进行实时纯语音互动。
-        - 如果你的项目中需要添加第三方插件或库，且该插件或库的签名与项目的签名不一致，你还需勾选 **Hardened Runtime** > **Runtime Exceptions** 中的 **Disable Library Validation**。
-        - 更多注意事项，可以参考 [Preparing Your App for Distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution)。
+    - 如果你的项目中需要添加第三方插件或库，且该插件或库的签名与项目的签名不一致，你还需勾选 **Hardened Runtime** > **Runtime Exceptions** 中的 **Disable Library Validation**。
+    - 更多注意事项，可以参考 [Preparing Your App for Distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution)。
+
     :::
 
     | Key | Type | Value |
@@ -2255,8 +2257,10 @@ LRESULT CAgoraQuickStartDlg::OnEIDUserOffline(WPARAM wParam, LPARAM lParam) {
     如果你不再需要互动，调用 `release` 方法释放引擎资源。
 
     :::warning[注意]
+
     - 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#创建并初始化-irtcengine)。
-        - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
+    - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
+
     :::
 
     ```cpp

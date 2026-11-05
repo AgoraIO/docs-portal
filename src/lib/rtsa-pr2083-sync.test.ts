@@ -354,11 +354,12 @@ describe('RTSA #2083 frozen source delta', () => {
       const body = readFileSync(resolve(process.cwd(), file.path), 'utf8');
       // The aPaaS cleanup moved the mislabeled RTSA Linux package into an
       // explicit history section, and platform query links now use published
-      // paths; keep the original migration evidence intact.
+      // paths. RTSA Java retirement later removed its historical notice;
+      // preserve the original migration evidence and freeze the active C page.
       const expectedHash =
         file.path ===
         'content/docs/zh-CN/realtime-media/rtsa/reference/downloads.mdx'
-          ? 'bb2a2ddede13ee1b59f2b51b8145e5bfef578ea3303027369cdf2cdedaa0f8b3'
+          ? '1d75be4cc0b8cdc01532bc4a35f05732f21df338c43b488980f9a4830f9c36b6'
           : file.sha256;
       expect(createHash('sha256').update(body).digest('hex'), file.path).toBe(
         expectedHash,

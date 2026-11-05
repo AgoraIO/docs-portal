@@ -55,6 +55,7 @@ import rehypeRaw from 'rehype-raw';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
 import { Callout as OpenApiCallout } from '@/components/Callout';
+import { DocsLinkIcon } from '@/components/DocsLinkIcon';
 import { useMeasuredDocsBody } from '@/components/docs-shell/DocsContentMeasurement';
 import { createDocsTableComponent } from '@/components/mdx';
 import { Badge } from '@/components/ui/badge';
@@ -2029,12 +2030,22 @@ function OpenApiMarkdownTable(props: ComponentProps<'table'>) {
   return <Table {...props} />;
 }
 
-function OpenApiMarkdownAnchor({ href, ...props }: ComponentProps<'a'>) {
+function OpenApiMarkdownAnchor({
+  href,
+  children,
+  ...props
+}: ComponentProps<'a'>) {
   const contentPath = useContext(OpenApiContentPathContext);
   const normalized =
     typeof href === 'string' ? normalizeDocsHref(href, { contentPath }) : null;
 
-  return <a {...props} href={normalized?.href ?? href} />;
+  const normalizedHref = normalized?.href ?? href;
+  return (
+    <a {...props} href={normalizedHref}>
+      {children}
+      <DocsLinkIcon href={normalizedHref} target={props.target} />
+    </a>
+  );
 }
 
 function createOpenApiMarkdownProcessor() {
