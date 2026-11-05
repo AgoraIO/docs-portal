@@ -257,6 +257,10 @@ describe('FumadocsOpenApiContent', () => {
         <FumadocsOpenApiContent pageProps={makeSectionHeadingPageProps()} />,
       ),
     );
+    const responseSection = $('.openapi-response-example');
+    expect(responseSection.hasClass('border-t-0')).toBe(true);
+    expect(responseSection.hasClass('pt-3')).toBe(true);
+
     for (const selector of [
       '.openapi-request-examples',
       '.openapi-response-example',
@@ -281,13 +285,7 @@ describe('FumadocsOpenApiContent', () => {
     ]) {
       const frame = $(selector).find('figure.shiki').first();
       expect(frame.attr('data-line-numbers')).toBeDefined();
-      expect(
-        frame.hasClass(
-          selector === '.openapi-request-examples'
-            ? 'bg-fd-secondary'
-            : 'bg-fd-card',
-        ),
-      ).toBe(true);
+      expect(frame.hasClass('bg-fd-card')).toBe(true);
       expect(frame.find('.fd-scroll-container[role="region"]')).toHaveLength(1);
       expect(frame.find('button[aria-label="Copy Text"]')).toHaveLength(1);
     }
@@ -1653,6 +1651,26 @@ describe('FumadocsOpenApiContent', () => {
     const requestExamples = selector.closest(
       '.openapi-request-examples',
     ) as HTMLElement;
+    await waitFor(() =>
+      expect(
+        requestExamples.querySelector('pre span[style*="--shiki-light"]'),
+      ).toBeInTheDocument(),
+    );
+    const highlightFrames: number[] = [];
+    const observer = new MutationObserver(() => {
+      const pre = requestExamples.querySelector('pre');
+      const text = pre?.textContent ?? '';
+      if (text.includes('requests.request') || text.includes('fetch(')) {
+        highlightFrames.push(
+          pre?.querySelectorAll('span[style*="--shiki-light"]').length ?? 0,
+        );
+      }
+    });
+    observer.observe(requestExamples, {
+      characterData: true,
+      childList: true,
+      subtree: true,
+    });
     fireEvent.click(selector);
     expect(
       screen.getAllByRole('option').map((option) => option.textContent?.trim()),
@@ -1679,6 +1697,9 @@ describe('FumadocsOpenApiContent', () => {
         document.querySelector('.openapi-request-examples pre'),
       ).toHaveTextContent('/api/speech-to-text/v1/projects/');
     }
+    observer.disconnect();
+    expect(highlightFrames.length).toBeGreaterThan(0);
+    expect(highlightFrames).not.toContain(0);
     const generatedPreview = screen.getByTestId('openapi-code-preview');
     await waitFor(() =>
       expect(
@@ -1689,7 +1710,7 @@ describe('FumadocsOpenApiContent', () => {
       generatedPreview.querySelector('.fd-scroll-container'),
     ).toHaveAttribute('data-openapi-code-viewport', '');
     expect(generatedPreview.querySelector('figure.shiki')).toHaveClass(
-      'bg-fd-secondary',
+      'bg-fd-card',
       'shadow-none',
     );
     const preview = screen.getByTestId('openapi-code-preview');

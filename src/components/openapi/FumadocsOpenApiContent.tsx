@@ -756,7 +756,7 @@ function OpenApiRightExamplesLayout({
         </OpenApiRequestCodeContext.Provider>
       </OpenApiRightSection>
       <OpenApiRightSection
-        className="openapi-response-example"
+        className="openapi-response-example border-t-0"
         title={getOpenApiLabel('Response example', locale)}
       >
         {slots.responseTabs}
@@ -1909,7 +1909,7 @@ function renderOpenApiCodeBlock(
   codeblock?: CodeBlockProps,
 ) {
   return (
-    <OpenApiCodeSourceContext.Provider key={source} value={source}>
+    <OpenApiCodeSourceContext.Provider value={source}>
       <OpenApiMarkdownCodeBlock codeblock={codeblock}>
         <code className={`language-${lang}`}>{source}</code>
       </OpenApiMarkdownCodeBlock>
@@ -1964,8 +1964,7 @@ function OpenApiMarkdownCodeBlock({
         props.className,
         codeblock?.className,
         'shadow-none',
-        isRequestCode &&
-          'my-0 -mx-px -mb-px rounded-none bg-fd-secondary last:rounded-b-xl',
+        isRequestCode && 'my-0 -mx-px -mb-px rounded-none last:rounded-b-xl',
       )}
       Actions={(actions) => {
         const children = actions.children && <OpenApiCodeCopyButton />;

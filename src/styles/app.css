@@ -1114,7 +1114,10 @@
 
   .openapi-operation {
     --fd-docs-row-1: -0.5rem;
-    --openapi-examples-sticky-top: var(--docs-shell-header-offset, 48px);
+    --openapi-examples-sticky-top: calc(
+      var(--docs-shell-header-offset, 48px) +
+      1rem
+    );
     container-type: inline-size;
     width: min(100%, 1120px);
   }
@@ -2080,6 +2083,17 @@ article[lang="zh-CN"] .docs-body .group\/heading > a {
 
 .docs-callout > div:last-child > div :where(li + li) {
   margin-block-start: 0.25rem;
+}
+
+/* Keep REST parameter groups aligned with the unframed schema field trees. */
+.openapi-operation-layout
+  [class~="rounded-xl"][class~="border"][class~="bg-fd-card"][class~="px-3"]:has(
+    > .openapi-schema-parameter-fields
+  ) {
+  border: 0;
+  border-radius: 0;
+  padding-inline: 0;
+  background-color: transparent;
 }
 
 @media (min-width: 640px) {

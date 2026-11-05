@@ -220,6 +220,16 @@
 
 验证：3 个相关测试文件共 106 项通过，types:check、定向 Biome、git diff --check 通过。本轮布局回归脚本和前后数据保存在忽略的 .agent/artifacts/converter-position/；它测真实浏览器坐标，happy-dom 单元测试不用于证明几何位置正确。
 
+## 2026-11-05：响应状态切换和代码框底色
+
+用户指出 API 请求/响应示例代码框底色与产品文档代码框不一致。浏览器计算样式确认：请求框使用 `bg-fd-secondary`（`rgb(244,242,236)`），响应框使用共享 DocsCodeBlock 的 `bg-fd-card`（`rgb(254,252,248)`）。移除请求框覆盖后，两者背景相同；Fumadocs DOM 测试更新为锁定此契约。Path/Header/Query 参数来自 Fumadocs 参数列表并按组包卡片；Body/响应字段使用展开式 Schema tree；授权说明是独立的文本段。它们是不同信息层级的布局组件，不是漏了同一类卡片。
+
+同一页面 `query-user-list` 切换 `200`/`非 200` 时，左侧响应面板高度从约 414 px 缩到 58 px；右侧示例栏使用 sticky，受到示例栏锚定容器底部限制，因此上移 244 px。页面 `scrollY` 保持不变，右侧状态页签也没有联动。OpenApiOperationPanels 现在记录文档栏达到的最大高度，并在宽屏时为示例栏保留该网格最小高度，避免左侧面板变短把 sticky rail 向上挤；移动端单栏布局不使用该约束。
+
+验证：保存在 `.agent/artifacts/status-switch-shift/check-position.py` 的真实浏览器检查先以 3/3 次移动 244 px 失败，修复后在 1280×720 下双向切换 3/3 次位移为 0 px、滚动位移为 0。另在 200/非200 两种状态截图检查；Fumadocs request/response 代码框测试 73 项、OpenAPI layout 4 项、4 文件相关测试 208 项及类型检查通过。测试结果与截图留在忽略的 `.agent/artifacts/openapi-ui/`。
+
+布局分类核对针对 RESTful 共享 renderer，而非只看单页：Path/Header/Query/Cookie 参数区由 Fumadocs `parameterNode` 统一放在卡片内；请求/响应 Body 由 `OpenApiSchemaTree` 展示为带行分隔符的嵌套字段；中文鉴权说明由 `OpenApiInlineAuthorizationSection` 展示为文本段落，英文鉴权概览展示安全方案标签。它们属于不同语义组件，所以卡片边框有别；本次只统一请求、响应与产品文档代码框的底色，不把卡片套入嵌套字段树。
+
 ## 2026-11-05：全站幂次格式检查
 
 用户将幂次格式修复范围扩展到 RESTful 以外。扫描 `content/docs/zh-CN/**` 与 `content/openapi/**`，找到并修正中文文档 24 处 `2^n` 公式及 43 处被压扁为 `232-1` 的 32 位范围，共 67 处、38 个文件。API UID/有符号整数范围统一为可直接显示的 Unicode 上标，例如 `2³² - 1`；代码形式的指数示例写为 `2 ** attempt`，避免与 JavaScript 异或符号混淆。已有 Unicode/HTML 上标保留。版本号、SDK SemVer 与不表示固定整数幂的内容不修改。
