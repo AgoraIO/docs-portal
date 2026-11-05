@@ -17,6 +17,7 @@ import {
 import {
   getDefaultOpenApiMediaType,
   getDefaultOpenApiResponseStatus,
+  getOpenApiResponseStatusLabel,
   type OpenApiResponseHeaderView,
   type OpenApiResponseView,
 } from '@/lib/openapi/response-view';
@@ -32,6 +33,7 @@ export type OpenApiResponseLabels = {
 
 export function OpenApiResponses({
   labels,
+  locale,
   renderDescription,
   renderHeaders,
   renderSchema,
@@ -39,6 +41,7 @@ export function OpenApiResponses({
   sectionId,
 }: {
   labels: OpenApiResponseLabels;
+  locale?: string;
   renderDescription: (markdown: string) => ReactNode;
   renderHeaders: (
     headers: OpenApiResponseHeaderView[],
@@ -57,6 +60,7 @@ export function OpenApiResponses({
   sectionId: string;
 }) {
   const defaultStatus = getDefaultOpenApiResponseStatus(responses);
+  const statusCodes = responses.map((response) => response.statusCode);
   const [selectedStatus, setSelectedStatus] = useState(defaultStatus);
   const [hashRevision, setHashRevision] = useState(0);
   const [selectedMediaTypes, setSelectedMediaTypes] = useState<
@@ -132,7 +136,11 @@ export function OpenApiResponses({
                   key={response.statusCode}
                   value={encodeURIComponent(response.statusCode)}
                 >
-                  {response.statusCode}
+                  {getOpenApiResponseStatusLabel(
+                    response.statusCode,
+                    statusCodes,
+                    locale,
+                  )}
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -173,7 +181,13 @@ export function OpenApiResponses({
                         {response.mediaTypes.length > 1 ? (
                           <div className="mb-3">
                             <label className="sr-only" htmlFor={mediaSelectId}>
-                              {labels.mediaTypeForResponse(response.statusCode)}
+                              {labels.mediaTypeForResponse(
+                                getOpenApiResponseStatusLabel(
+                                  response.statusCode,
+                                  statusCodes,
+                                  locale,
+                                ),
+                              )}
                             </label>
                             <select
                               className="h-9 rounded-md border border-fd-border bg-fd-secondary px-2 text-sm"

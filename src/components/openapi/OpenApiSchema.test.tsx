@@ -16,7 +16,7 @@ import {
   flattenOpenApiSchemaView,
 } from '@/lib/openapi/schema-view';
 import {
-  appendOpenApiSchemaAllowedValues,
+  appendOpenApiSchemaSourceMetadata,
   buildOpenApiSchemaFindTargets,
   decodeOpenApiSchemaPath,
   encodeOpenApiSchemaPath,
@@ -82,6 +82,61 @@ function getRenderedSchemaText(text: string) {
 }
 
 describe('OpenApiSchema', () => {
+  it('omits absent type metadata while retaining declared types, boolean schemas and an authored unknown alias', () => {
+    const root = {
+      type: 'object',
+      required: ['undocumented'],
+      properties: {
+        undocumented: { description: 'No type was documented.' },
+        typed: { type: 'string' },
+        anyValue: true,
+        named: {
+          type: 'object',
+          title: 'unknown',
+          properties: { value: { type: 'integer' } },
+        },
+      },
+    };
+    const { container } = render(
+      <OpenApiSchema
+        client={{ as: 'body', name: 'body' }}
+        root={root}
+        renderCodeblock={({ code }) => <pre>{code}</pre>}
+        renderMarkdown={(markdown) => <p>{markdown}</p>}
+      />,
+    );
+    const row = (name: string) =>
+      Array.from(container.querySelectorAll('.openapi-schema-field-row')).find(
+        (field) => field.querySelector('code')?.textContent === name,
+      ) as HTMLElement;
+    expect(
+      within(row('undocumented')).queryByText('unknown', { exact: true }),
+    ).not.toBeInTheDocument();
+    expect(
+      within(row('undocumented')).getByText('Required'),
+    ).toBeInTheDocument();
+    expect(
+      within(row('undocumented')).getByText('No type was documented.'),
+    ).toBeInTheDocument();
+    expect(
+      within(row('undocumented')).getByRole('button', {
+        name: 'Copy link to undocumented',
+      }),
+    ).toBeInTheDocument();
+    expect(within(row('typed')).getByText('string')).toBeInTheDocument();
+    expect(within(row('anyValue')).getByText('any')).toBeInTheDocument();
+    const never = generateSchemaUI({
+      root: false,
+      renderMarkdown: (value) => value,
+      renderCodeblock: ({ code }) => <pre>{code}</pre>,
+    });
+    appendOpenApiSchemaSourceMetadata(never, false, {});
+    expect(never.refs[never.$root].typeName).toBe('never');
+    expect(never.refs[never.$root]).not.toHaveProperty('typeSpecified', false);
+    expect(within(row('named')).getByText('unknown')).toBeInTheDocument();
+    expect(root.properties.undocumented).not.toHaveProperty('type');
+  });
+
   it('does not render a custom filter for a request schema', () => {
     renderSchema();
 
@@ -725,7 +780,7 @@ describe('OpenApiSchema', () => {
           type: 'object',
         },
       });
-      appendOpenApiSchemaAllowedValues(generated, root, {
+      appendOpenApiSchemaSourceMetadata(generated, root, {
         readOnly: true,
         writeOnly: true,
       });

@@ -151,13 +151,13 @@ describe('OpenApiResponses', () => {
   it('defaults to the first 2xx response and switches to one status at a time', () => {
     renderResponses([view('default'), view('200')]);
 
-    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'false');
+    expect(getResponseTab('Non-200')).toHaveAttribute('aria-selected', 'false');
     expect(getResponseTab('200')).toHaveAttribute('aria-selected', 'true');
 
-    fireEvent.mouseDown(getResponseTab('default'));
+    fireEvent.mouseDown(getResponseTab('Non-200'));
 
     expect(screen.getAllByText('Schema: application/json')).toHaveLength(1);
-    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
+    expect(getResponseTab('Non-200')).toHaveAttribute('aria-selected', 'true');
     expect(getResponseTab('200')).toHaveAttribute('aria-selected', 'false');
   });
 
@@ -201,7 +201,7 @@ describe('OpenApiResponses', () => {
 
   it('opens the first response without a 2xx and handles no responses', () => {
     const { rerender } = renderResponses([view('default'), view('404')]);
-    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
+    expect(getResponseTab('Non-404')).toHaveAttribute('aria-selected', 'true');
 
     rerender(
       <OpenApiResponses
@@ -356,10 +356,10 @@ describe('OpenApiResponses', () => {
     const removeEventListener = vi.spyOn(window, 'removeEventListener');
     window.location.hash = 'responses-default-detail';
     const { unmount } = renderResponses([view('default'), view('200')]);
-    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
+    expect(getResponseTab('Non-200')).toHaveAttribute('aria-selected', 'true');
     window.location.hash = 'response-headers-default-x-request-id';
     fireEvent(window, new HashChangeEvent('hashchange'));
-    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
+    expect(getResponseTab('Non-200')).toHaveAttribute('aria-selected', 'true');
     unmount();
     expect(removeEventListener).toHaveBeenCalledWith(
       'hashchange',
@@ -373,7 +373,7 @@ describe('OpenApiResponses', () => {
     renderResponses([view('default'), view('200')]);
 
     expect(getResponseTab('200')).toHaveAttribute('aria-selected', 'false');
-    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
+    expect(getResponseTab('Non-200')).toHaveAttribute('aria-selected', 'true');
   });
 
   it('restores a copied response schema hash with its status and media type', () => {
@@ -414,7 +414,7 @@ describe('OpenApiResponses', () => {
   it('preserves user state for the same response identity and resets it for a new identity', () => {
     const responses = [view('default'), view('200')];
     const { rerender } = renderResponses(responses);
-    fireEvent.mouseDown(getResponseTab('default'));
+    fireEvent.mouseDown(getResponseTab('Non-200'));
     rerender(
       <OpenApiResponses
         labels={ENGLISH_RESPONSE_LABELS}
@@ -425,7 +425,7 @@ describe('OpenApiResponses', () => {
         sectionId="test-responses"
       />,
     );
-    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
+    expect(getResponseTab('Non-200')).toHaveAttribute('aria-selected', 'true');
     rerender(
       <OpenApiResponses
         labels={ENGLISH_RESPONSE_LABELS}
@@ -453,7 +453,7 @@ describe('OpenApiResponses', () => {
 
   it('keeps inactive tab panels hidden with an accessible relationship', () => {
     renderResponses([view('default'), view('200')]);
-    const trigger = getResponseTab('default');
+    const trigger = getResponseTab('Non-200');
     const panel = document.getElementById(
       trigger.getAttribute('aria-controls') ?? '',
     );
@@ -547,7 +547,7 @@ describe('OpenApiResponses', () => {
     );
 
     const panel = document.getElementById(
-      getResponseTab('default').getAttribute('aria-controls') ?? '',
+      getResponseTab('Non-200').getAttribute('aria-controls') ?? '',
     );
     expect(panel).not.toHaveAttribute('hidden');
     const target = document.getElementById(

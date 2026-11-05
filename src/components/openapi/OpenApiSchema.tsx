@@ -128,7 +128,7 @@ export function OpenApiSchema({
       );
     }
 
-    appendOpenApiSchemaAllowedValues(
+    appendOpenApiSchemaSourceMetadata(
       generated,
       normalizedRoot,
       { readOnly, writeOnly },
@@ -717,7 +717,7 @@ export function decodeOpenApiSchemaPath(
   return { fieldName, parentPath };
 }
 
-export function appendOpenApiSchemaAllowedValues(
+export function appendOpenApiSchemaSourceMetadata(
   generated: SchemaUIGeneratedData,
   root: unknown,
   options: { readOnly?: boolean; writeOnly?: boolean },
@@ -737,6 +737,17 @@ export function appendOpenApiSchemaAllowedValues(
     const rawRecord = isRecord(resolvedRawSchema)
       ? resolvedRawSchema
       : undefined;
+    // Metadata-only schemas retain the parameter without inventing a type label.
+    // Boolean schemas and authored type/constraint/reference expressions keep their labels.
+    if (
+      schema.type === 'primitive' &&
+      rawRecord &&
+      !['type', '$ref', 'enum', 'const', 'allOf', 'anyOf', 'oneOf', 'not'].some(
+        (key) => rawRecord[key] !== undefined,
+      )
+    ) {
+      schema.typeSpecified = false;
+    }
     if (rawRecord && Array.isArray(rawRecord.enum)) {
       schema.allowedValues = rawRecord.enum;
     }
