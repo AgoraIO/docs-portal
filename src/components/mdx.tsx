@@ -4,6 +4,7 @@ import {
   Accordions as FumadocsAccordions,
 } from 'fumadocs-ui/components/accordion';
 import { Card as FumadocsCard } from 'fumadocs-ui/components/card';
+import type { CodeBlockProps } from 'fumadocs-ui/components/codeblock';
 import { File, Files, Folder } from 'fumadocs-ui/components/files';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import {
@@ -2613,7 +2614,7 @@ export function getMDXComponents(
     CodeBlockTabs,
     CodeBlockTabsList,
     CodeBlockTab,
-    pre: DocsCodeBlock,
+    pre: Pre,
     ApiReturns,
     ApiReturnType,
     ApiSignature,

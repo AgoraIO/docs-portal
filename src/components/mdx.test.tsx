@@ -83,6 +83,7 @@ type CodeBlockPreComponent = ComponentType<{
   children: ReactNode;
   className?: string;
   title?: string;
+  'data-language-label'?: string;
   'data-line-numbers'?: boolean;
   'data-line-numbers-start'?: number | string;
 }>;
@@ -3127,19 +3128,19 @@ describe('common MDX registry', () => {
     expect(components.pre).toBeDefined();
   });
 
-  it('renders fenced code with Fumadocs copy chrome', () => {
+  it('renders fenced code with shared chrome and its explicit language label', () => {
     const components = getMDXComponents();
     const Pre = components.pre as CodeBlockPreComponent;
 
     render(
-      <Pre className="language-bash" title="Install">
+      <Pre className="language-bash" title="Install" data-language-label="Bash">
         <code>
           <span className="line">npm install @agora/sdk</span>
         </code>
       </Pre>,
     );
 
-    const figure = screen.getByText('Install').closest('figure');
+    const figure = screen.getByText('Bash').closest('figure');
 
     expect(figure).not.toBeNull();
     const codeBlock = figure as HTMLElement;
@@ -3147,7 +3148,8 @@ describe('common MDX registry', () => {
     expect(codeBlock).toHaveClass('bg-fd-card');
     expect(codeBlock).toHaveClass('shadow-none');
     expect(codeBlock).toHaveAttribute('data-line-numbers', 'true');
-    expect(within(codeBlock).getByText('Install')).toBeInTheDocument();
+    expect(within(codeBlock).getByText('Bash')).toBeInTheDocument();
+    expect(within(codeBlock).queryByText('Install')).not.toBeInTheDocument();
     expect(
       within(codeBlock).getByRole('button', { name: 'Copy Text' }),
     ).toBeInTheDocument();
