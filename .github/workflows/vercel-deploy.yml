@@ -198,11 +198,11 @@ jobs:
       - name: Check API quality policy and prepare build evidence
         if: steps.preview-context.outputs.should_deploy == 'true'
         env:
-          VITE_DOCS_REGION: ${{ inputs.docs_region || steps.preview-context.outputs.docs_region || 'global' }}
+          DOCS_QA_REGION: ${{ inputs.docs_region || steps.preview-context.outputs.docs_region || 'global' }}
         run: |
           bun run test:api-quality
           bun run test scripts/cn-link-browser.test.ts
-          bun run qa:api prepare --region "$VITE_DOCS_REGION"
+          bun run qa:api prepare --region "$DOCS_QA_REGION"
 
       - name: Pull Vercel preview environment
         if: steps.preview-context.outputs.should_deploy == 'true'
