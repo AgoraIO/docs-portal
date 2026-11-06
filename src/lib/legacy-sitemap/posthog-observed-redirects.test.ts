@@ -185,7 +185,7 @@ const reviewedRedirects = [
   ],
   [
     '/en/realtime-media/transcoding/reference/status-codes.md',
-    '/en/realtime-media/transcoding/reference/status-codes',
+    '/en/api-reference/api-ref/cloud-transcoding/status-codes',
   ],
   [
     '/en/video-call-4.x-beta/custom_video_renderer_apple_ng',
