@@ -11,7 +11,7 @@ Use HTTP status codes together with the `reason` and `detail` fields in error re
 | --- | --- | --- |
 | `200` | OK | The request was successful. |
 | `400` | Invalid request parameters | Check the `detail` field for specific information. |
-| `401` | Authentication failed | Check the `Authorization` header, credentials, or token and retry. |
+| `401` | Authentication failed | If you use token authentication, check that the token starts with `007` and was generated with your App ID and App Certificate. If you use Basic HTTP authentication, check the `Authorization` header and credentials. |
 | `403` | Unauthorized access | Resolve account or billing issues, or contact technical support to activate the service. |
 | `404` | Agent not found or has exited | Check whether the agent started successfully or has already stopped. |
 | `409` | Agent conflict | Use the task information returned by the server to continue, or retry with a different agent name. |

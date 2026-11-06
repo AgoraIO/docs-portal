@@ -31,7 +31,7 @@ agent = (
     .with_tts(...)  # configure your TTS vendor
     .with_avatar(AnamAvatar(
         api_key='your-anam-key',
-        persona_id='<anam_persona_id>',
+        avatar_id='<anam_avatar_id>',
     ))
 )
 ```
@@ -50,7 +50,7 @@ const agent = new Agent({ client })
   .withTts(/* configure your TTS vendor */)
   .withAvatar(new AnamAvatar({
     apiKey: 'your-anam-key',
-    personaId: '<anam_persona_id>',
+    avatarId: '<anam_avatar_id>',
   }));
 ```
 
@@ -70,8 +70,8 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
   WithTts(/* configure your TTS vendor */).
   WithAvatar(
     vendors.NewAnamAvatar(vendors.AnamAvatarOptions{
-        APIKey:    "your-anam-key",
-        PersonaID: "<anam_persona_id>",
+        APIKey:   "your-anam-key",
+        AvatarID: "<anam_avatar_id>",
     }),
 )
 ```
@@ -125,6 +125,108 @@ Use the following `avatar` configuration in your request:
   <Parameter name="video_encoding" type="string" defaultValue="H264" possibleValues="H264, AV1" required={false}>
     The video encoding format.
   </Parameter>
+  <Parameter name="avatar_model" type="string" required={false}>
+    The Anam avatar model. For example, `cara-4` for Cara 4. If not set, Anam selects the model based on `avatar_id`.
+  </Parameter>
+  <Parameter name="video_width" type="number" required={false}>
+    The output video width in pixels. Set together with `video_height`. For supported resolutions, see [Portrait video](#portrait-video).
+  </Parameter>
+  <Parameter name="video_height" type="number" required={false}>
+    The output video height in pixels. Set together with `video_width`. For supported resolutions, see [Portrait video](#portrait-video).
+  </Parameter>
 </ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to Anam without validation. For a full list of supported options, refer to the [Anam documentation](https://docs.anam.ai/).
+:::
+
+### Portrait video
+
+For mobile apps, configure portrait video as follows:
+
+1. Set `avatar_model` to `cara-4`.
+1. Set `video_width` and `video_height` to a portrait resolution, such as 768 x 1152.
+
+The following resolutions are supported:
+
+| Resolution (width x height) | Orientation | Model |
+| --- | --- | --- |
+| 720 x 480 | Landscape | Cara 3 |
+| 1152 x 768 | Landscape | Cara 4 |
+| 768 x 1152 | Portrait | Cara 4 |
+
+Set `video_width` and `video_height` together, or omit both to use the default resolution of the avatar model.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+AnamAvatar(
+    api_key='your-anam-key',
+    avatar_id='<anam_avatar_id>',
+    avatar_model='cara-4',
+    video_width=768,
+    video_height=1152,
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+new AnamAvatar({
+  apiKey: 'your-anam-key',
+  avatarId: '<anam_avatar_id>',
+  avatarModel: 'cara-4',
+  videoWidth: 768,
+  videoHeight: 1152,
+});
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+width, height := 768, 1152
+
+vendors.NewAnamAvatar(vendors.AnamAvatarOptions{
+    APIKey:      "your-anam-key",
+    AvatarID:    "<anam_avatar_id>",
+    AvatarModel: "cara-4",
+    VideoWidth:  &width,
+    VideoHeight: &height,
+})
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```json
+"avatar": {
+  "vendor": "anam",
+  "enable": true,
+  "params": {
+    "api_key": "<anam_key>",
+    "avatar_id": "<anam_avatar_id>",
+    "agora_uid": "<avatar_rtc_uid>",
+    "agora_token": "<avatar_rtc_token>",
+    "avatar_model": "cara-4",
+    "video_width": 768,
+    "video_height": 1152
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
 
 This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.

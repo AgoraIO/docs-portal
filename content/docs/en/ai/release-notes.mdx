@@ -9,6 +9,84 @@ This document tracks notable changes and improvements to the Conversational AI E
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="v2.14" id="v214" headingLevel={3} value="v214">
+
+Released on November 6, 2026.
+
+#### New features
+
+Included in this release:
+
+- **ConvoAI token service**
+
+  Tokens can include a dedicated ConvoAI service for REST API authentication. Use the same token for REST authentication and for the agent's channel access. For details, see [RESTful authentication](/en/api-reference/api-ref/conversational-ai/authentication#token-authentication).
+
+- **Managed mode for Fish Audio and Cartesia TTS**
+
+  You can use [Fish Audio](models/tts/fish-audio) and [Cartesia](models/tts/cartesia) TTS with Agora-managed credentials, so you don't need your own API key for these providers. Available in the Agora Agents SDKs and the RESTful API. For details, see [Use managed mode](build/managed-mode).
+
+#### Improvements
+
+This release includes the following enhancements.
+
+- **More complete turn latency metrics**
+
+  This release fixes an issue where performance metrics could be missing for some turns when the agent processes several turns concurrently. To view the end-to-end and per-stage latency of each turn, see [Query conversation turn information](/en/api-reference/api-ref/conversational-ai/turns).
+
+- **Playback duration for interrupted turns**
+
+  Turn data for an interrupted turn now records how much of the agent's reply audio actually played before the interruption, and how much was scheduled to play. Use this data to analyze how far the agent got before users interrupted it. It's available from [Query conversation turn information](/en/api-reference/api-ref/conversational-ai/turns) and the [112 turns finished](/en/ai/reference/event-types#112-turns-finished) event. Playback duration for turns that end normally is unchanged.
+
+#### API changes
+
+This release introduces the following changes for managed mode and interrupted-turn playback data.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+- [`CartesiaTTS`](/en/ai/models/tts/cartesia) and [`FishAudioTTS`](/en/ai/models/tts/fish-audio): New `credential_mode` option. To use Agora-managed credentials, set `credential_mode='managed'` and omit the API key.
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+- [`CartesiaTTS`](/en/ai/models/tts/cartesia) and [`FishAudioTTS`](/en/ai/models/tts/fish-audio): New `credentialMode` option. To use Agora-managed credentials, set `credentialMode: CredentialMode.Managed` and omit the API key.
+
+</TabsContent>
+
+<TabsContent value="go">
+
+- [`CartesiaTTSOptions`](/en/ai/models/tts/cartesia) and [`FishAudioTTSOptions`](/en/ai/models/tts/fish-audio): New `CredentialMode` field. To use Agora-managed credentials, set `CredentialMode: agentkit.CredentialModeManaged` and omit the API key.
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+- Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
+
+  - **Updated parameters**
+
+    - [`tts.credential_mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-credential-mode): Now accepts `"managed"` when `tts.vendor` is `fishaudio` or `cartesia`. In managed mode, `tts.params.api_key` is not required. For supported models, see [Use managed mode](/en/ai/build/managed-mode#tts).
+
+- Changes to [**Query conversation turn information**](/en/api-reference/api-ref/conversational-ai/turns) and the [**112 turns finished**](/en/ai/reference/event-types#112-turns-finished) event
+
+  - **New fields** in `turns[].end.metadata` when `end.type` is `interrupted`
+
+    - `playback_duration_ms`: The PCM audio actually played before the interruption, in milliseconds.
+    - `intended_playback_duration_ms`: The total PCM audio the engine received and scheduled to play for the turn, in milliseconds.
+
+</TabsContent>
+</Tabs>
+
+</Accordion>
+
 <Accordion title="v2.13" id="v213" headingLevel={3} value="v213">
 
 Released on September 25, 2026.
@@ -305,15 +383,19 @@ Included in this release:
 
 #### Improvements
 
-This release includes the following enhancement.
+This release includes the following enhancements.
 
 - **Improved stability for long audio replies**
 
   This release improves resource protection and error-recovery logic for long streaming audio replies, reducing the likelihood of an abnormal disconnect or failed recovery. As a result, service stability improves for long replies and free-form conversation scenarios.
 
+- **Cara 4 model and portrait video for Anam avatars**
+
+  Anam avatars support the Cara 4 model and custom output resolutions, including portrait video for mobile apps. For details, see [Portrait video](models/avatar/anam#portrait-video).
+
 #### API changes
 
-This release introduces the following changes for ASR keywords and the new TTS and MLLM providers.
+This release introduces the following changes for ASR keywords, the new TTS and MLLM providers, and Anam avatars.
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -354,6 +436,7 @@ This release introduces the following changes for ASR keywords and the new TTS a
   - **New parameters**
 
     - [`asr.keywords`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-asr-keywords): ASR keywords used to improve recognition accuracy for specific terms. Only available when `asr.vendor` is not set or `ares`.
+    - [`avatar.params`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-avatar-params) fields for Anam: `avatar_model` selects the avatar model, such as `cara-4`, and `video_width` and `video_height` set the output resolution. See [Anam](/en/ai/models/avatar/anam#portrait-video).
 
   - **Updated parameters**
 
