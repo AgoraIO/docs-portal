@@ -1,0 +1,63 @@
+---
+title: "SRT streaming"
+description: "Use the SRT protocol to push streams into Media Gateway."
+---
+
+
+This guide explains how to push streams to Media Gateway using the SRT protocol.
+
+## Understand the tech
+
+SRT (Secure Reliable Transport) is an open-source protocol developed by Haivision and promoted by the SRT Alliance. It provides secure, high-quality, low-latency video streaming. Compared to RTMP, SRT performs better for live streaming over unstable network connections.
+
+When using the SRT protocol to push streams to Media Gateway, the following codecs are supported:
+
+- **Video**: H.264, H.265
+- **Audio**: AAC, OPUS
+
+## Configure with OBS
+
+Set up SRT streaming in OBS Studio by configuring the server and streaming key settings.
+
+1. In the **Server** field, enter your streaming domain name in the following format:
+
+   ```text
+   srt://{streaming_domain_name}:6001
+   ```
+
+![Server settings](https://assets-docs.agora.io/images/media-gateway/srt-server-setting.png)
+
+You can use the Agora unified domain name or bind your own domain name.
+
+- To use the unified domain name, use `srtlive-rtcpush-prod-{region}.agoramdn.com`. Replace `{region}` with your actual region. Supported regions are:
+  - `na`: North America
+  - `eu`: Europe
+  - `ap`: Asia, except Mainland China
+  - `cn`: Mainland China
+- To use your own domain name, contact Agora [technical support](mailto:support@agora.io) for configuration before use.
+
+2. In the **Stream Key** field, enter the streaming key. To obtain a key, see [Get streaming key](../../quickstart#get-streaming-key).
+
+    :::note
+    When using a custom domain name, you must add domain parameters to your streaming key using the format:
+
+    `{streaming_code}?h={streaming_domain_name}`
+
+    This is required because the SRT protocol does not transmit domain name information to the server by default.
+    :::
+
+## Configure with FFmpeg
+
+Use [`ffmpeg`](https://ffmpeg.org/) to push SRT streams directly from the command line.
+
+- Use the Agora unified domain name:
+
+```text
+ffmpeg -re -i input.mp4 -c copy -f mpegts 'srt://srtlive-rtcpush-prod-{region}.agoramdn.com:6001?streamid={streamkey}'
+```
+
+- Use a custom domain name:
+
+```text
+ffmpeg -re -i input.mp4 -c copy -f mpegts 'srt://example.com:6001?streamid=#!::r={streamkey},h=example.com'
+```

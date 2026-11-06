@@ -22,7 +22,14 @@ import {
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/cn';
+import {
+  getDocVersionCatalogPages,
+  getDocVersionCatalogScope,
+} from '@/lib/doc-version-navigation';
+import type { DocVersionScope } from '@/lib/doc-versions';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
+import { DocVersionSelector } from './DocVersionControls';
+import { useDocVersionSelections } from './useDocVersionSelections';
 
 type SidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 type SidebarSectionNode = Extract<DocsSidebarNode, { type: 'section' }>;
@@ -37,10 +44,10 @@ const sidebarSectionTitleClassName =
   'block min-w-0 flex-1 break-words leading-5 whitespace-normal';
 
 const sidebarSubButtonClassName =
-  'relative min-h-[28px] h-auto items-center overflow-visible rounded-[7px] px-3 py-1 text-[12.75px] text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
+  'relative min-h-[28px] h-auto items-center overflow-visible rounded-[7px] px-3 py-1 text-[12.75px] text-[color:var(--ink-3)] before:absolute before:left-1 before:inset-y-1.5 before:w-0.5 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
 
 const sidebarPageButtonClassName =
-  'relative min-h-[28px] h-auto items-center overflow-visible rounded-[7px] px-3 py-1 text-[13px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
+  'relative min-h-[28px] h-auto items-center overflow-visible rounded-[7px] px-3 py-1 text-[13px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:inset-y-1.5 before:w-0.5 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
 
 const openApiSidebarButtonClassName =
   'h-auto min-h-[28px] items-center overflow-visible py-1';
@@ -96,6 +103,16 @@ function SidebarNodeRenderer({
   onSelectPath: () => void;
 }) {
   if (node.type === 'section') {
+    const scope = getDocVersionCatalogScope(activePath, node.id);
+    if (scope)
+      return (
+        <VersionedCatalogSection
+          activePath={activePath}
+          node={node}
+          scope={scope}
+          onSelectPath={onSelectPath}
+        />
+      );
     return (
       <SidebarSection
         activePath={activePath}
@@ -119,14 +136,46 @@ function SidebarNodeRenderer({
   );
 }
 
-function SidebarSection({
+function VersionedCatalogSection({
   activePath,
   node,
+  scope,
   onSelectPath,
 }: {
   activePath: string;
   node: RenderableSidebarSectionNode;
+  scope: DocVersionScope;
   onSelectPath: () => void;
+}) {
+  const selections = useDocVersionSelections(activePath);
+  return (
+    <SidebarSection
+      activePath={activePath}
+      node={{
+        ...node,
+        collapsible: false,
+        children: getDocVersionCatalogPages(
+          node.children,
+          scope,
+          selections[scope.id],
+        ),
+      }}
+      onSelectPath={onSelectPath}
+      versionScopeId={scope.id}
+    />
+  );
+}
+
+function SidebarSection({
+  activePath,
+  node,
+  onSelectPath,
+  versionScopeId,
+}: {
+  activePath: string;
+  node: RenderableSidebarSectionNode;
+  onSelectPath: () => void;
+  versionScopeId?: string;
 }) {
   const hasActiveChild = node.children.some((child) =>
     isNodeActive(child, activePath),
@@ -179,6 +228,14 @@ function SidebarSection({
             {node.title.replaceAll('-', ' ')}
           </span>
         </SidebarGroupLabel>
+        {versionScopeId ? (
+          <DocVersionSelector
+            activePath={activePath}
+            scopeId={versionScopeId}
+            className="mx-2 mb-3"
+            onSelectPath={onSelectPath}
+          />
+        ) : null}
         {leadingChildren.map((child) => (
           <SidebarNodeRenderer
             activePath={activePath}

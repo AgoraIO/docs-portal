@@ -38,21 +38,23 @@ export function DocsSidebarHeaderBlock({
         className,
       )}
     >
-      <Link
-        className={cn(
-          'flex items-center gap-2 rounded-[7px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]',
-          mode === 'desktop'
-            ? 'mb-2 px-2 py-1.5 text-[13px]'
-            : 'mb-1 px-0 py-1 text-sm text-muted-foreground hover:bg-transparent',
-        )}
-        onClick={onSelectPath}
-        params={{}}
-        search={{}}
-        to={header.backHref}
-      >
-        <ChevronLeftIcon className="size-4" />
-        <span className="min-w-0 truncate">{header.backLabel}</span>
-      </Link>
+      {header.backHref && header.backLabel ? (
+        <Link
+          className={cn(
+            'flex items-center gap-2 rounded-[7px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]',
+            mode === 'desktop'
+              ? 'mb-2 px-2 py-1.5 text-[13px]'
+              : 'mb-1 px-0 py-1 text-sm text-muted-foreground hover:bg-transparent',
+          )}
+          onClick={onSelectPath}
+          params={{}}
+          search={{}}
+          to={header.backHref}
+        >
+          <ChevronLeftIcon className="size-4" />
+          <span className="min-w-0 truncate">{header.backLabel}</span>
+        </Link>
+      ) : null}
       <div
         className={cn(
           'min-w-0 font-semibold text-[color:var(--ink-1)]',

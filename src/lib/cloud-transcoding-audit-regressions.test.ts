@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 const orderedListTargets = [
   'content/docs/en/realtime-media/transcoding/build/availability.md',
-  'content/docs/en/realtime-media/transcoding/build/manage-agora-account.md',
+  'content/docs/en/realtime-media/transcoding/sdk-quickstart.md',
   'content/docs/en/realtime-media/transcoding/build/receive-ncs-events.md',
 ];
 

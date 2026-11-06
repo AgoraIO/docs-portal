@@ -55,6 +55,7 @@ import {
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBody } from './DocsContentBody';
 import { DocsSearchLandingEngagement } from './DocsSearchLandingEngagement';
+import { DocVersionNotice } from './DocVersionControls';
 import { DocsCopyMenu } from './docs-copy-menu';
 import { getDocsSourceLinks } from './docs-source-links';
 
@@ -335,6 +336,7 @@ export function DocsContent({
           />
         ) : null}
       </header>
+      {activePath ? <DocVersionNotice activePath={activePath} /> : null}
       {isOpenApiBody ? (
         <div data-static-docs-body onClickCapture={handleArticleBodyLinkClick}>
           <FumadocsOpenApiContent
@@ -1119,12 +1121,15 @@ function getVisibleArticleHeadingItems(): TOCItemType[] {
     .filter((heading) => heading.id && !isHiddenFromToc(heading))
     .map((heading) => {
       const headingDepth = Number(heading.tagName.slice(1));
+      // Fumadocs renders the heading label and copy-button announcement as siblings.
+      const headingLabel =
+        heading.querySelector(':scope > a[data-card]') ?? heading;
 
       return {
         depth: heading.hasAttribute('data-accordion-value')
           ? Math.min(headingDepth + 1, 4)
           : headingDepth,
-        title: heading.textContent?.trim() ?? '',
+        title: headingLabel.textContent?.trim() ?? '',
         url: `#${heading.id}`,
       };
     })

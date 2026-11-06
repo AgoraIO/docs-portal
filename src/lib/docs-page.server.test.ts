@@ -1588,6 +1588,62 @@ describe('loadDocsPagePayload', () => {
     mockedGetNodeMeta.mockReturnValue(undefined);
   });
 
+  it.each([
+    ['/en/ai/build/managed-mode', '/en/ai', '/en/ai/platform'],
+    ['/en/ai/platform/build/managed-mode', '/en/ai/platform', '/en/ai'],
+  ])(
+    'scopes the actual AI payload sidebar for %s',
+    async (url, current, other) => {
+      const voice = '/en/ai';
+      const platform = '/en/ai/platform';
+      const item = (url: string) => ({ type: 'page' as const, name: url, url });
+      const tree: Root = {
+        name: 'Docs',
+        children: [
+          {
+            type: 'folder',
+            name: 'AI',
+            index: item(voice),
+            children: [
+              item(`${voice}/build/managed-mode`),
+              item(`${voice}/studio`),
+              item(`${voice}/device-kit`),
+              {
+                type: 'folder',
+                name: 'Conversational AI Platform (Preview)',
+                index: item(platform),
+                children: [item(`${platform}/build/managed-mode`)],
+              },
+            ],
+          },
+        ],
+      };
+      const page = { ...createPage(), url, slugs: url.split('/').slice(2) };
+      mockedGetPage.mockReturnValue(page);
+      mockedGetPages.mockReturnValue([page]);
+      mockedGetPageTree.mockReturnValue(tree);
+      const payload = await loadDocsPagePayload(
+        'en',
+        'ai',
+        url.split('/').slice(3),
+      );
+      if (!payload || 'redirectUrl' in payload)
+        throw new Error('expected AI payload');
+      expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
+        current === voice
+          ? [
+              current,
+              `${current}/build/managed-mode`,
+              `${voice}/studio`,
+              `${voice}/device-kit`,
+            ]
+          : [current, `${current}/build/managed-mode`],
+      );
+      expect(flattenSidebarPageUrls(payload.sidebar)).not.toContain(other);
+      expect(payload.sidebarHeader?.backHref).toBeUndefined();
+    },
+  );
+
   it('falls back to generating TOC from processed markdown', async () => {
     await expect(
       loadDocsPagePayload('en', 'introduction', ['about-agora']),
@@ -2116,7 +2172,6 @@ Web body
 
     expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
       expect.arrayContaining([
-        '/en/api-reference',
         '/en/api-reference/api-ref/conversational-ai',
         '/en/api-reference/api-ref/conversational-ai/authentication',
         '/en/api-reference/api-ref/conversational-ai/join',
@@ -2136,6 +2191,9 @@ Web body
         (url) => url === '/en/api-reference/api-ref/conversational-ai/join',
       ),
     ).toHaveLength(1);
+    expect(flattenSidebarPageUrls(payload.sidebar)).not.toContain(
+      '/en/api-reference',
+    );
     expect(payload.navigation).toEqual({
       next: {
         title: 'Stop a conversational AI agent',

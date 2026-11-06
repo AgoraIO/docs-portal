@@ -2,7 +2,8 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { normalizeDocsHref } from './docs-link-normalize';
-import { source } from './source.server';
+import { createPublishedDocsRoutes } from './published-docs-routes';
+import { getPagePlatformKeys, source } from './source.server';
 
 const contentRoot = path.join(process.cwd(), 'content', 'docs');
 
@@ -50,8 +51,12 @@ function extractDocHrefs(markdown: string) {
 }
 
 describe('docs journeys', () => {
-  it('keeps internal links under /en/ai pointed at existing docs routes', () => {
-    const validRoutes = new Set(source.getPages('en').map((page) => page.url));
+  it('keeps internal links under /en/ai pointed at existing docs routes', async () => {
+    const pages = new Map(
+      source.getPages('en').map((page) => [page.url, page]),
+    );
+    const validRoutes = new Set(pages.keys());
+    const checkedPlatformPages = new Set<string>();
     const aiDocsRoot = path.join(contentRoot, 'en', 'ai');
     const markdownFiles = listMarkdownFiles(aiDocsRoot);
     const failures: Array<{
@@ -75,6 +80,23 @@ describe('docs journeys', () => {
         }
 
         const route = normalized.href.split(/[?#]/, 1)[0];
+
+        const parent = pages.get(route.slice(0, route.lastIndexOf('/')));
+        if (
+          !validRoutes.has(route) &&
+          parent &&
+          !checkedPlatformPages.has(parent.url)
+        ) {
+          checkedPlatformPages.add(parent.url);
+          for (const published of createPublishedDocsRoutes({
+            canonicalPaths: [parent.url],
+            platformPages: [
+              { url: parent.url, platforms: await getPagePlatformKeys(parent) },
+            ],
+          })) {
+            validRoutes.add(published.url);
+          }
+        }
 
         if (!validRoutes.has(route)) {
           failures.push({
@@ -115,7 +137,7 @@ describe('docs journeys', () => {
 
     expect(intro).toContain('## Build a Voice Agent');
     expect(intro).toMatch(
-      /title="Explore Voice Agents"[\s\S]*?href="\/en\/ai"[\s\S]*?title="Build a Voice Agent App"[\s\S]*?href="\/en\/ai\/get-started\/quickstart"/,
+      /title="Explore Voice Agents"[\s\S]*?href="\/en\/ai\/documentation-versions"[\s\S]*?title="Build a Voice Agent App"[\s\S]*?href="\/en\/ai\/get-started\/quickstart"/,
     );
   });
 

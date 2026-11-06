@@ -1,0 +1,290 @@
+---
+title: Interrupt the agent mid-response
+description: Choose how users can interrupt the agent by speaking, and interrupt it from your server.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/build/shape-the-conversation/interrupt-agent.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-26, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+
+When the agent is speaking or thinking, a user may want to cut in to start a new round of conversation. The Platform supports two kinds of interruption:
+
+- **Voice interruption**: The user starts speaking, and the agent stops its response. You choose which speech can interrupt the agent, or turn interruption off.
+- **Manual interruption**: Your server stops the agent with a REST API request, for example when the user taps a button in your app.
+
+{/* TODO(platform-docs): The Voice Agent page also covers interrupting from the client with the Conversational AI client toolkit. That needs client-channel delivery, which the launch contract defers. Add it back when it's available. */}
+
+## Choose how users interrupt the agent
+
+By default, any user speech interrupts the agent. To change this, set the agent's interruption mode when you create or update an agent. For a complete example, see [Create an agent](/en/ai/platform/get-started/start-stop-agent#create-an-agent). The SDK examples on this page start from the `agent` builder in that example.
+
+The interruption mode is one of the following:
+
+| Mode | Behavior |
+|---|---|
+| `start_of_speech` | Any user speech interrupts the agent. This is the default. |
+| `keywords` | Only the phrases in `keywords` interrupt the agent. Other speech doesn't. |
+| `off` | The user can't interrupt the agent. `when_off` sets what happens to the user's speech. |
+
+### Interrupt only on keywords
+
+Use `keywords` mode when background speech or short acknowledgments, such as "uh-huh", shouldn't stop the agent. Pass up to 128 phrases.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+keyword_agent = agent.with_interruption(
+    {
+        "mode": "keywords",
+        "keywords_config": {"trigger_keywords": ["stop", "wait", "hold on"]},
+    }
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+const keywordAgent = agent.withInterruption({
+  mode: 'keywords',
+  keywords_config: { trigger_keywords: ['stop', 'wait', 'hold on'] },
+});
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+The Go examples on this page also import the SDK's root package as `Agora "github.com/AgoraIO/agora-agents-go/v2"`.
+
+```go
+keywordAgent := agent.WithInterruption(&agentkit.InterruptionConfig{
+	Mode: agentkit.InterruptionModeKeywords.Ptr(),
+	KeywordsConfig: &Agora.StartAgentsRequestPropertiesInterruptionKeywordsConfig{
+		TriggerKeywords: []string{"stop", "wait", "hold on"},
+	},
+})
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+In the agent's `pipeline`, set `turn_detection.interruption`:
+
+```json
+"pipeline": {
+  "turn_detection": {
+    "interruption": {
+      "mode": "keywords",
+      "keywords": ["stop", "wait", "hold on"]
+    }
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Turn interruption off
+
+Use `off` mode when the agent must finish what it's saying, for example when it reads out a legal disclaimer. Set `when_off` to choose what happens to speech that arrives while the agent speaks or thinks:
+
+- `append`: The agent responds to the speech after its current reply. This is the default.
+- `ignore`: The agent discards the speech.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+To turn interruption off, set `enable` to `False`, and set the strategy for the user's speech in `disabled_config`:
+
+```python
+quiet_agent = agent.with_interruption(
+    {
+        "enable": False,
+        "disabled_config": {"strategy": "ignore"},
+    }
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+To turn interruption off, set `enable` to `false`, and set the strategy for the user's speech in `disabled_config`:
+
+```ts
+const quietAgent = agent.withInterruption({
+  enable: false,
+  disabled_config: { strategy: 'ignore' },
+});
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+To turn interruption off, set `Enable` to `false`, and set the strategy for the user's speech in `DisabledConfig`:
+
+```go
+quietAgent := agent.WithInterruption(&agentkit.InterruptionConfig{
+	Enable: Agora.Bool(false),
+	DisabledConfig: &Agora.StartAgentsRequestPropertiesInterruptionDisabledConfig{
+		Strategy: agentkit.InterruptionDisabledStrategyIgnore.Ptr(),
+	},
+})
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```json
+"pipeline": {
+  "turn_detection": {
+    "interruption": {
+      "mode": "off",
+      "when_off": "ignore"
+    }
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+## Tune when speech counts as an interruption
+
+In `start_of_speech` mode, the start-of-speech settings control how quickly user speech interrupts the agent. Choose one of the following detection types:
+
+- `semantic`: Detects a meaningful start of speech. This is the default.
+- `vad`: Uses voice activity detection (VAD) on the audio signal.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+Set the detection type in `start_of_speech.mode`, and the durations in `vad_config`:
+
+```python
+vad_agent = agent.with_turn_detection(
+    {
+        "config": {
+            "speech_threshold": 0.5,
+            "start_of_speech": {
+                "mode": "vad",
+                "vad_config": {
+                    "speaking_interrupt_duration_ms": 320,
+                    "interrupt_duration_ms": 160,
+                    "prefix_padding_ms": 800,
+                },
+            },
+        }
+    }
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+Set the detection type in `start_of_speech.mode`, and the durations in `vad_config`:
+
+```ts
+const vadAgent = agent.withTurnDetection({
+  config: {
+    speech_threshold: 0.5,
+    start_of_speech: {
+      mode: 'vad',
+      vad_config: {
+        speaking_interrupt_duration_ms: 320,
+        interrupt_duration_ms: 160,
+        prefix_padding_ms: 800,
+      },
+    },
+  },
+});
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+Set the detection type in `StartOfSpeech.Mode`, and the durations in `VadConfig`:
+
+```go
+vadAgent := agent.WithTurnDetection(&agentkit.TurnDetectionConfig{
+	Config: &agentkit.TurnDetectionNestedConfig{
+		SpeechThreshold: Agora.Float64(0.5),
+		StartOfSpeech: &agentkit.StartOfSpeechConfig{
+			Mode: Agora.StartAgentsRequestPropertiesTurnDetectionConfigStartOfSpeechModeVad,
+			VadConfig: &agentkit.StartOfSpeechVadConfig{
+				SpeakingInterruptDurationMs: Agora.Int(320),
+				InterruptDurationMs:         Agora.Int(160),
+				PrefixPaddingMs:             Agora.Int(800),
+			},
+		},
+	},
+})
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```json
+"pipeline": {
+  "turn_detection": {
+    "speech_threshold": 0.5,
+    "start_of_speech": {
+      "type": "vad",
+      "speaking_interrupt_duration_ms": 320,
+      "interrupt_duration_ms": 160,
+      "prefix_padding_ms": 800
+    }
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+| Field | Description |
+|---|---|
+| `speaking_interrupt_duration_ms` | How long in milliseconds the user must speak to interrupt the agent while it's speaking. The default is `160`. Increase it to make the agent harder to interrupt. Applies to `semantic` and `vad`. With `vad`, the range is 120 to 1,200. |
+| `interrupt_duration_ms` | Speech shorter than this, in milliseconds, is ignored. The range is 120 to 1,200, and the default is `160`. Applies to `vad`. |
+| `prefix_padding_ms` | How many milliseconds of audio to keep from before the detected start of speech. This keeps the beginning of the speech from being clipped. The range is 0 to 5,000, and the default is `800`. Applies to `vad`. |
+| `speech_threshold` | The speech detection threshold, between `0` and `1`. Lower values detect speech more easily, and higher values ignore weak speech. The default is `0.5`. Set it in `turn_detection`, not in `start_of_speech`. |
+
+{/* PLATFORM-DEFERRED: The Interrupt the agent API (and Speak and Inject context) is deferred beyond the Oct 29 Preview, so the "Interrupt the agent from your server" section is removed. Restore it from the Voice Agent page when the session actions ship. */}
+
+## Reference
+
+For more information, see the following pages:
+
+- [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent)
+
+### API reference
+
+- [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent)
+- [Update an agent](/en/api-reference/api-ref/conversational-ai/platform/update-agent)
