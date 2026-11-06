@@ -8,6 +8,7 @@ on:
       - 'scripts/**'
       - 'patches/**'
       - 'docs/api-reference-quality.md'
+      - 'docs/agents/markdown-authoring-standard.md'
       - 'AGENTS.md'
       - '.github/**'
       - 'package.json'
@@ -39,7 +40,7 @@ jobs:
           node-version: 26.13.0
       - run: bun install --frozen-lockfile
       - name: Test the quality checker
-        run: bun run test scripts/api-reference-quality.test.ts
+        run: bun run test:api-quality
       - name: Reject new source defects in either locale
         run: bun run qa:api source --region global --out .agent/artifacts/api-reference-quality/source
       - name: Retain source findings

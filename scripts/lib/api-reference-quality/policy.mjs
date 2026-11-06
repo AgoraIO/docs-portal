@@ -2,8 +2,13 @@ import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import { load } from 'js-yaml';
+import remarkGfm from 'remark-gfm';
+import remarkMdx from 'remark-mdx';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
+import { normalizeApiPrototypeLanguages } from '../api-center/code-language.mjs';
+import { planTypeDocStructure } from '../api-center/typedoc-structure.mjs';
 
 export const digest = (value) =>
   createHash('sha256').update(value).digest('hex');
@@ -84,6 +89,18 @@ export function classifyDebt(findings, baseline) {
     retired,
   };
 }
+export function prototypeLanguageFindings(file, text) {
+  return normalizeApiPrototypeLanguages(text).changes.map((change) => ({
+    file,
+    rule: 'api-prototype-language',
+    title: change.anchor,
+    depth: 0,
+    line: change.line,
+    actual: change.from,
+    expected: change.to,
+  }));
+}
+
 export function sourceAudit(root = '.') {
   const files = git(
     'ls-files',
@@ -98,12 +115,90 @@ export function sourceAudit(root = '.') {
     .filter((file) => /\.mdx?$/.test(file));
   const findings = files.flatMap((file) => {
     const text = readFileSync(path.join(root, file), 'utf8');
-    return referenceSource(file, text) ? duplicateHeadings(file, text) : [];
+    return referenceSource(file, text)
+      ? [
+          ...duplicateHeadings(file, text),
+          ...prototypeLanguageFindings(file, text),
+          ...generatedStructureFindings(file, text),
+        ]
+      : [];
   });
   return classifyDebt(
     findings,
     readJson(path.join(root, 'scripts/api-reference-quality-debt.json')),
   );
+}
+
+const generatedParser = unified()
+  .use(remarkParse)
+  .use(remarkGfm)
+  .use(remarkMdx);
+
+export function generatedStructureFindings(file, source) {
+  const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
+  const generator = frontmatter && load(frontmatter[1])?._migration?.generator;
+  if (generator === 'typedoc')
+    return planTypeDocStructure(source).map(({ rule, title, line }) => ({
+      file,
+      rule,
+      title,
+      line,
+      depth: 0,
+    }));
+  if (generator !== 'doxygen') return [];
+  const findings = [];
+  const lineOffset = frontmatter[0].split('\n').length - 1;
+  const add = (rule, title, node) =>
+    findings.push({
+      file,
+      rule,
+      title,
+      depth: 0,
+      line: lineOffset + node.position.start.line,
+    });
+  const blank = (node) =>
+    (node.type === 'text' && !node.value.trim()) ||
+    (node.type === 'paragraph' && node.children.every(blank));
+  const destination = (node) =>
+    node.attributes?.some((attribute) =>
+      ['id', 'name'].includes(attribute.name),
+    );
+  function visit(node) {
+    if (
+      node.type === 'tableRow' &&
+      node.children.every((cell) =>
+        cell.children.every(
+          (child) => child.type === 'text' && !child.value.trim(),
+        ),
+      )
+    )
+      add('empty-generated-table-row', 'Empty generated table row', node);
+    if (node.name === 'tr' && !destination(node)) {
+      const cells = node.children.filter((child) => !blank(child));
+      if (
+        cells.length &&
+        cells.every(
+          (cell) =>
+            ['td', 'th'].includes(cell.name) &&
+            !destination(cell) &&
+            cell.children.every(blank),
+        )
+      )
+        add('empty-generated-table-row', 'Empty generated table row', node);
+    }
+    if (
+      (node.type === 'paragraph' || ['td', 'th', 'p'].includes(node.name)) &&
+      node.children[0]?.type === 'text'
+    ) {
+      const leaked = node.children[0].value.match(
+        /^\s*\/(?:zh-CN|en)\/api-reference\/[^\s#]+#[^\s]+/,
+      );
+      if (leaked) add('leaked-generated-anchor', leaked[0], node);
+    }
+    for (const child of node.children ?? []) visit(child);
+  }
+  visit(generatedParser.parse(source.slice(frontmatter[0].length)));
+  return findings;
 }
 export function sourceFingerprint() {
   const files = git(
@@ -237,3 +332,39 @@ export const matrix = [
   { name: 'phone', width: 391, height: 844 },
   { name: 'compact', width: 320, height: 568 },
 ];
+
+// Compare across pages as well: imported declarations often have no ordinary
+// code example on the same page. Missing reference evidence cannot pass.
+export function sharedCodeFrameFindings(results) {
+  const references = new Map();
+  const key = (state) => `${state.viewport}/${state.theme}`;
+  const styleKey = (frame) =>
+    ['backgroundColor', 'borderRadius', 'borderWidth', 'fontFamily', 'fontSize']
+      .map((property) => frame[property])
+      .join('\0');
+  for (const result of results)
+    for (const state of result.states) {
+      const group = references.get(key(state)) ?? new Set();
+      for (const frame of state.codeFrames?.ordinary ?? [])
+        group.add(styleKey(frame));
+      if (group.size) references.set(key(state), group);
+    }
+  const findings = [];
+  for (const [resultIndex, result] of results.entries())
+    for (const [stateIndex, state] of result.states.entries()) {
+      for (const frame of state.codeFrames?.signatures ?? []) {
+        if (!references.get(key(state))?.has(styleKey(frame)))
+          findings.push({
+            resultIndex,
+            stateIndex,
+            rule: 'inconsistent-code-frame',
+            text: result.url,
+            actual: frame,
+            reason: references.has(key(state))
+              ? 'No matching ordinary code frame'
+              : 'No ordinary code-frame reference collected for this viewport/theme',
+          });
+      }
+    }
+  return findings;
+}

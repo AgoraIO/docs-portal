@@ -185,7 +185,7 @@ jobs:
         env:
           VITE_DOCS_REGION: global
         run: |
-          bun run test scripts/api-reference-quality.test.ts
+          bun run test:api-quality
           bun run qa:api prepare --region "$VITE_DOCS_REGION"
 
       - name: Pull Vercel preview environment

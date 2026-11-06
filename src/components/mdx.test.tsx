@@ -243,7 +243,7 @@ describe('common MDX registry', () => {
     const defaults = defaultMdxComponents as Record<string, unknown>;
 
     expect(components.img).not.toBe(defaults.img);
-    expect(components.table).toBe(defaults.table);
+    expect(components.table).not.toBe(defaults.table);
     expect(components.Card).not.toBe(defaults.Card);
     expect(components.Cards).toBe(defaults.Cards);
     expect(components.Callout).toBe(defaults.Callout);
@@ -1146,7 +1146,10 @@ describe('common MDX registry', () => {
     expect(screen.getByText('Possible values')).toBeVisible();
     expect(screen.getByText('provider-specific object')).toBeVisible();
     expect(screen.getByText('metadata.request_id')).toBeVisible();
-    expect(screen.getAllByText('nullable')).toHaveLength(2);
+    expect(screen.getAllByText('nullable')).toHaveLength(1);
+    expect(
+      screen.getByText('metadata.request_id').closest('li'),
+    ).toHaveTextContent('| null');
     expect(screen.getByText('Optional request identifier.')).toBeVisible();
   });
 
@@ -2118,7 +2121,7 @@ describe('common MDX registry', () => {
     );
     expect(
       screen.getByText('print("hello")').closest('[role=tabpanel]')?.className,
-    ).toContain('[&>figure]:border-0');
+    ).toContain('[&>figure]:border');
     expect(
       screen.getByText('print("hello")').closest('[role=tabpanel]')?.className,
     ).toContain('[&>figure]:m-0');

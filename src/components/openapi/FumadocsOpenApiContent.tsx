@@ -33,6 +33,7 @@ import {
 import * as JsxRuntime from 'react/jsx-runtime';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
+import { HighlightedCode } from '@/components/mdx/HighlightedCode';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/cn';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
@@ -40,7 +41,6 @@ import {
   buildUniqueOpenApiAnchorIds,
   slugOpenApiAnchorSegment,
 } from '@/lib/openapi/anchors';
-import { highlightOpenApiCode } from '@/lib/openapi/code-highlight';
 import {
   buildOpenApiResponseViews,
   type OpenApiResponseHeaderView,
@@ -1740,17 +1740,24 @@ function OpenApiMarkdownCodeBlock({
   children,
   ...props
 }: ComponentProps<'pre'>) {
-  const source = useContext(OpenApiCodeSourceContext);
-  const childClassName = isValidElement(children)
-    ? (children.props as { className?: string }).className
+  const contextSource = useContext(OpenApiCodeSourceContext);
+  const childProps = isValidElement(children)
+    ? (children.props as { className?: string; children?: ReactNode })
     : undefined;
+  const source =
+    contextSource ??
+    (typeof childProps?.children === 'string'
+      ? childProps.children
+      : undefined);
   const language =
     getCodeBlockLanguage(props.className) ??
-    getCodeBlockLanguage(childClassName);
+    getCodeBlockLanguage(childProps?.className) ??
+    'text';
 
   return (
     <CodeBlock
       {...props}
+      data-code-language={language}
       Actions={
         source === undefined
           ? undefined
@@ -1762,9 +1769,15 @@ function OpenApiMarkdownCodeBlock({
       }
     >
       <Pre>
-        {source === undefined || language === undefined
-          ? children
-          : highlightOpenApiCode({ language, source })}
+        {source === undefined ? (
+          children
+        ) : (
+          <HighlightedCode
+            key={`${language}:${source}`}
+            source={source}
+            language={language}
+          />
+        )}
       </Pre>
     </CodeBlock>
   );

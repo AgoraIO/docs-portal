@@ -747,9 +747,13 @@ describe('FumadocsOpenApiContent', () => {
     expect(examplesScope.getByRole('tabpanel')).toHaveTextContent(
       'curl --request POST https://example.com/join',
     );
-    expect(
-      examplesScope.getByRole('tabpanel').querySelector('.token-command'),
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        examplesScope
+          .getByRole('tabpanel')
+          .querySelector('span[style*="shiki"]'),
+      ).toBeInTheDocument(),
+    );
     const preview = examplesScope.getByTestId('openapi-code-preview');
     expect(
       within(preview)

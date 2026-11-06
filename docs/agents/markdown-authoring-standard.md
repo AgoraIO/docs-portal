@@ -4,6 +4,10 @@ This is the minimum syntax contract for authoring and migrating docs under
 `content/docs/{en,zh-CN}`. Keep it small and copyable. Prefer standard Markdown
 first; use MDX only for the repo-approved primitives listed here.
 
+For API reference content and migrations, also follow the
+[API reference quality contract](../api-reference-quality.md). It owns shared
+renderer choices, source fidelity, cross-locale changes and release acceptance.
+
 ## Core Rules
 
 - Put a blank line before and after every block element: headings, lists,
@@ -15,8 +19,8 @@ first; use MDX only for the repo-approved primitives listed here.
   lists, raw `<img>` tags, custom tab components, or platform filters.
 - Escape literal `<`, `>`, `{`, and `}` outside code spans or code fences when
   they are text, not MDX syntax.
-- Use a code language listed in `source.config.ts`. If no better language
-  exists, use `text` for plain output.
+- Declare the source language on code fences. Shared grammars and aliases are
+  configured in `src/lib/code/languages.ts`; use `text` for plain output.
 
 ## Callouts
 
@@ -324,11 +328,44 @@ Use GFM tables only for simple, inline cell content.
 
 Rules:
 
-- Do not put lists, callouts, code fences, images, or raw HTML lists inside a
-  table cell.
-- If a cell needs block content, move that content below the table under a
-  heading or list item.
+- Do not put lists, callouts, code fences, images, or raw HTML lists directly
+  inside a GFM table cell.
+- If a GFM cell needs block content, move that content below the table under a
+  heading or list item, or use the approved table `Slot` pattern when preserving
+  the tabular shape matters.
+- For table slots, put `<Slot name="..." />` alone in the table cell, then put
+  the matching `<Slot for="...">...</Slot>` block immediately after the table.
+- Put totals or other prose after all of the table's Slot definitions; text
+  between the table and those definitions prevents rich cells from rendering.
 - Keep table rows single-line whenever possible.
+- Preserve merged cells with the approved native MDX `DocsTable` primitive,
+  which uses the same accessible scroll container as GFM tables. Use native
+  `thead`, `tbody`, `tr`, `th` and `td` elements with explicit `rowSpan` and
+  `colSpan` positive integers. Keep multiple header rows inside `thead`.
+- Preserve the source's merge boundaries, including group labels, shared
+  allowances and aggregate totals. Do not repeat their text to simulate a merge,
+  and do not automatically merge independent cells just because values match.
+- For dense numeric comparisons, use `<DocsTable compact>` to fit columns to
+  the content width and wrap headings and formulas. It keeps a 40rem minimum
+  width so narrow screens can scroll without breaking numeric values apart.
+- Inside a `DocsTable` cell, write inline Markdown directly. For lists, code
+  blocks or multiple paragraphs, put blank lines after the opening cell tag and
+  before its closing tag. Rich content belongs directly in its owning cell;
+  the GFM `Slot` placeholder pattern is unnecessary there.
+- Escape literal pipes as `\|`, including inside inline code. Every body row
+  must have the same number of cells as its header.
+
+```mdx
+<DocsTable>
+<thead>
+<tr><th>Option</th><th>Key</th></tr>
+</thead>
+<tbody>
+<tr><td rowSpan={2}>`beauty_effect_option`</td><td>`enable`</td></tr>
+<tr><td>`smoothness`</td></tr>
+</tbody>
+</DocsTable>
+```
 
 ## Agent Checklist
 
