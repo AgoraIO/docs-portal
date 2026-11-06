@@ -1,5 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { compile } from '@mdx-js/mdx';
+import { remarkHeading } from 'fumadocs-core/mdx-plugins';
 import type { Folder, Root } from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
 import { type DocsMeta, docsMetaSchema } from './docs-meta-schema';
@@ -149,11 +151,24 @@ describe('RTC PR #2094 frozen source delta', () => {
       for (const name of [
         'class-ivideoeffectobject',
         'rtc-api-overview',
-        'rtc-interface-class',
+        ...(platform === 'android' ? [] : ['rtc-interface-class']),
       ]) {
         expect(read(file(platform, name))).toContain(
           '#api_ivideoeffectobject_setvideoeffectstringparam',
         );
+      }
+      if (platform === 'android') {
+        const compatibilityEntry = section(
+          read(file(platform, 'rtc-interface-class')),
+          '<a id="class_ivideoeffectobject"></a>',
+          '<a id="class_ivideoencodedframeobserver"></a>',
+        );
+        expect(compatibilityEntry).toContain('<a id="ivideoeffectobject"></a>');
+        expect(compatibilityEntry).toContain(
+          `/rtc/${platform}/class-ivideoeffectobject`,
+        );
+        expect(compatibilityEntry).not.toMatch(/^## /m);
+        expect(compatibilityEntry).not.toContain('#api_ivideoeffectobject_');
       }
       expect(read(file(platform, 'rtc-api-data-type'))).toContain(
         `/rtc/${platform}/class-ivideoeffectobject`,
@@ -240,6 +255,38 @@ describe('RTC PR #2094 frozen source delta', () => {
     expect(text).not.toContain('name="metadataSize"');
     expect(text).toContain('<a id="metadatabuffer"></a>');
     expect(text).toContain('<a id="metadatasize"></a>');
+  });
+
+  it('keeps Android related-reference hashes attached to their original classes', async () => {
+    const source = read(file('android', 'rtc-interface-class'));
+    const compiled = await compile(source.replace(/^---[\s\S]*?---\s*/, ''), {
+      remarkPlugins: [remarkHeading],
+    });
+    const toc = compiled.data.toc as Array<{
+      title: string;
+      url: string;
+      depth: number;
+    }>;
+    const classes = [
+      'IVideoEncodedFrameObserver',
+      'IVideoFrameObserver',
+      'Player',
+      'PlayerConfig',
+      'PlayerGetStatsCallback',
+      'PlayerObserver',
+      'Rte',
+      'PlayerInfo',
+    ];
+    for (const [index, name] of classes.entries()) {
+      const heading = toc.findIndex((entry) => entry.title === name);
+      expect(heading).toBeGreaterThanOrEqual(0);
+      expect(toc[heading + 1]).toMatchObject({
+        title: '相关参考',
+        url: `#相关参考-${26 + index}`,
+        depth: 3,
+      });
+    }
+    expect(source).toContain('<a id="相关参考-25"></a>');
   });
 
   it('keeps every preexisting stable class hash', () => {
