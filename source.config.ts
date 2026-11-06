@@ -106,6 +106,7 @@ export const docs = defineDocs({
               : undefined;
           return {
             ...parsed,
+            'data-code-language': language,
             title: parsed?.title ?? getCodeLanguageLabel(language),
             'data-language-label': parsed?.title
               ? undefined

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_registermediametadataobserver__prototype"></a>
 
-```text
+```ts
 abstract registerMediaMetadataObserver(
     observer: IMetadataObserver,
     type: MetadataType
@@ -76,7 +76,7 @@ metadata 类型。目前仅支持 `VideoMetadata`。详见 [MetadataType](/zh-CN
 
 <a id="api_irtcengine_sendmetadata__prototype"></a>
 
-```text
+```ts
 abstract sendMetaData(metadata: Metadata, sourceType: VideoSourceType): number;
 ```
 
@@ -128,7 +128,7 @@ abstract sendMetaData(metadata: Metadata, sourceType: VideoSourceType): number;
 
 <a id="api_irtcengine_setmaxmetadatasize__prototype"></a>
 
-```text
+```ts
 abstract setMaxMetadataSize(size: number): number;
 ```
 
@@ -170,7 +170,7 @@ abstract setMaxMetadataSize(size: number): number;
 
 <a id="api_irtcengine_unregistermediametadataobserver__prototype"></a>
 
-```text
+```ts
 abstract unregisterMediaMetadataObserver(
     observer: IMetadataObserver,
     type: MetadataType
@@ -219,7 +219,7 @@ metadata 类型。目前仅支持 `VideoMetadata`。详见 [MetadataType](/zh-CN
 
 <a id="callback_imetadataobserver_onmetadatareceived__prototype"></a>
 
-```text
+```ts
 onMetadataReceived?(metadata: Metadata): void;
 ```
 

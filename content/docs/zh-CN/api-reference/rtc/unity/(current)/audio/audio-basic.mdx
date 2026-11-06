@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_adjustplaybacksignalvolume__prototype"></a>
 
-```text
+```csharp
 public abstract int AdjustPlaybackSignalVolume(int volume);
 ```
 
@@ -73,7 +73,7 @@ public abstract int AdjustPlaybackSignalVolume(int volume);
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume__prototype"></a>
 
-```text
+```csharp
 public abstract int AdjustUserPlaybackSignalVolume(uint uid, int volume);
 ```
 
@@ -131,7 +131,7 @@ public abstract int AdjustUserPlaybackSignalVolume(uint uid, int volume);
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex__prototype"></a>
 
-```text
+```csharp
 public abstract int AdjustUserPlaybackSignalVolumeEx(uint uid, int volume, RtcConnection connection);
 ```
 
@@ -195,7 +195,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="api_irtcengine_disableaudio__prototype"></a>
 
-```text
+```csharp
 public abstract int DisableAudio();
 ```
 
@@ -240,7 +240,7 @@ public abstract int DisableAudio();
 
 <a id="api_irtcengine_enableaudio__prototype"></a>
 
-```text
+```csharp
 public abstract int EnableAudio();
 ```
 
@@ -287,7 +287,7 @@ public abstract int EnableAudio();
 
 <a id="api_irtcengine_enableaudiovolumeindication__prototype"></a>
 
-```text
+```csharp
 public abstract int EnableAudioVolumeIndication(int interval, int smooth, bool reportVad);
 ```
 
@@ -357,7 +357,7 @@ public abstract int EnableAudioVolumeIndication(int interval, int smooth, bool r
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex__prototype"></a>
 
-```text
+```csharp
 public abstract int EnableAudioVolumeIndicationEx(int interval, int smooth, bool reportVad, RtcConnection connection);
 ```
 
@@ -433,7 +433,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="api_irtcengine_setaudioprofile__prototype"></a>
 
-```text
+```csharp
 public abstract int SetAudioProfile(AUDIO_PROFILE_TYPE profile, AUDIO_SCENARIO_TYPE scenario);
 ```
 
@@ -502,7 +502,7 @@ public abstract int SetAudioProfile(AUDIO_PROFILE_TYPE profile, AUDIO_SCENARIO_T
 
 <a id="api_irtcengine_setaudioprofile2__prototype"></a>
 
-```text
+```csharp
 public abstract int SetAudioProfile(AUDIO_PROFILE_TYPE profile);
 ```
 
@@ -543,7 +543,7 @@ public abstract int SetAudioProfile(AUDIO_PROFILE_TYPE profile);
 
 <a id="api_irtcengine_setaudioscenario__prototype"></a>
 
-```text
+```csharp
 public abstract int SetAudioScenario(AUDIO_SCENARIO_TYPE scenario);
 ```
 
@@ -600,7 +600,7 @@ public abstract int SetAudioScenario(AUDIO_SCENARIO_TYPE scenario);
 
 <a id="api_irtcengine_setaudiosessionoperationrestriction__prototype"></a>
 
-```text
+```csharp
 public abstract int SetAudioSessionOperationRestriction(AUDIO_SESSION_OPERATION_RESTRICTION restriction);
 ```
 
@@ -650,7 +650,7 @@ SDK 对 Audio Session 的操作权限，详见 [AUDIO_SESSION_OPERATION_RESTRICT
 
 <a id="callback_irtcengineeventhandler_onactivespeaker__prototype"></a>
 
-```text
+```csharp
 public virtual void OnActiveSpeaker(RtcConnection connection, uint uid) { }
 ```
 
@@ -695,7 +695,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onaudioquality__prototype"></a>
 
-```text
+```csharp
 public virtual void OnAudioQuality(RtcConnection connection, uint remoteUid, int quality, UInt16 delay, UInt16 lost) {}
 ```
 
@@ -760,7 +760,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication__prototype"></a>
 
-```text
+```csharp
 public virtual void OnAudioVolumeIndication(RtcConnection connection, AudioVolumeInfo[] speakers, uint speakerNumber, int totalVolume) {}
 ```
 
@@ -824,7 +824,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__prototype"></a>
 
-```text
+```csharp
 public virtual void OnFirstLocalAudioFramePublished(RtcConnection connection, int elapsed) {}
 ```
 
@@ -870,7 +870,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__prototype"></a>
 
-```text
+```csharp
 public virtual void OnFirstRemoteAudioDecoded(RtcConnection connection, uint uid, int elapsed) { }
 ```
 
@@ -931,7 +931,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__prototype"></a>
 
-```text
+```csharp
 public virtual void OnFirstRemoteAudioFrame(RtcConnection connection, uint userId, int elapsed) { }
 ```
 
@@ -982,7 +982,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__prototype"></a>
 
-```text
+```csharp
 public virtual void OnLocalAudioStateChanged(RtcConnection connection, LOCAL_AUDIO_STREAM_STATE state, LOCAL_AUDIO_STREAM_REASON reason)
 ```
 
@@ -1033,7 +1033,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats__prototype"></a>
 
-```text
+```csharp
 public virtual void OnLocalAudioStats(RtcConnection connection, LocalAudioStats stats) {}
 ```
 
@@ -1074,7 +1074,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__prototype"></a>
 
-```text
+```csharp
 public virtual void OnRemoteAudioStateChanged(RtcConnection connection, uint remoteUid, REMOTE_AUDIO_STATE state, REMOTE_AUDIO_STATE_REASON reason, int elapsed) {}
 ```
 
@@ -1137,7 +1137,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats__prototype"></a>
 
-```text
+```csharp
 public virtual void OnRemoteAudioStats(RtcConnection connection, RemoteAudioStats stats) {}
 ```
 
@@ -1178,7 +1178,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__prototype"></a>
 
-```text
+```csharp
 public virtual void OnRemoteAudioTransportStats(RtcConnection connection, uint remoteUid, UInt16 delay, UInt16 lost, UInt16 rxKBitRate) {}
 ```
 
@@ -1239,7 +1239,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio__prototype"></a>
 
-```text
+```csharp
 public virtual void OnUserMuteAudio(RtcConnection connection, uint remoteUid, bool muted) { }
 ```
 

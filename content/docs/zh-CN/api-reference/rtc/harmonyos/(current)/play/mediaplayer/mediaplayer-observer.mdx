@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_imediaplayer_registerplayersourceobserver__prototype"></a>
 
-```text
+```ts
 public abstract registerPlayerObserver(playerObserver:IMediaPlayerObserver);
 ```
 
@@ -69,7 +69,7 @@ public abstract registerPlayerObserver(playerObserver:IMediaPlayerObserver);
 
 <a id="api_imediaplayer_unregisterplayersourceobserver__prototype"></a>
 
-```text
+```ts
 public abstract unRegisterPlayerObserver();
 ```
 
@@ -103,7 +103,7 @@ public abstract unRegisterPlayerObserver();
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication__prototype"></a>
 
-```text
+```ts
 onAudioVolumeIndication?:(volume:number) => void
 ```
 
@@ -140,7 +140,7 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 <a id="callback_imediaplayersourceobserver_onmetadata__prototype"></a>
 
-```text
+```ts
 onMetaData?:(type:Constants.MediaPlayerMetadataType,data:ArrayBuffer) => void
 ```
 
@@ -183,7 +183,7 @@ onMetaData?:(type:Constants.MediaPlayerMetadataType,data:ArrayBuffer) => void
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__prototype"></a>
 
-```text
+```ts
 onPlayBufferUpdated?:(playCachedBuffer:number) => void
 ```
 
@@ -223,7 +223,7 @@ onPlayBufferUpdated?:(playCachedBuffer:number) => void
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__prototype"></a>
 
-```text
+```ts
 onPlayerEvent?:(eventCode:Constants.MediaPlayerEvent,elapsedTime:number,message:string) => void
 ```
 
@@ -272,7 +272,7 @@ onPlayerEvent?:(eventCode:Constants.MediaPlayerEvent,elapsedTime:number,message:
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__prototype"></a>
 
-```text
+```ts
 onPlayerInfoUpdated?:(info:PlayerUpdatedInfo) => void
 ```
 
@@ -309,7 +309,7 @@ onPlayerInfoUpdated?:(info:PlayerUpdatedInfo) => void
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__prototype"></a>
 
-```text
+```ts
 onPlayerStateChanged?:(state:Constants.MediaPlayerState,reason:Constants.MediaPlayerReason) => void
 ```
 
@@ -352,7 +352,7 @@ onPlayerStateChanged?:(state:Constants.MediaPlayerState,reason:Constants.MediaPl
 
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__prototype"></a>
 
-```text
+```ts
 onPlayerSrcInfoChanged?:(from:SrcInfo,to:SrcInfo) => void
 ```
 
@@ -389,7 +389,7 @@ onPlayerSrcInfoChanged?:(from:SrcInfo,to:SrcInfo) => void
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__prototype"></a>
 
-```text
+```ts
 onPositionChanged?:(positionMs:number,timestampMs:number) => void
 ```
 
@@ -432,7 +432,7 @@ onPositionChanged?:(positionMs:number,timestampMs:number) => void
 
 <a id="callback_imediaplayersourceobserver_onpreloadevent__prototype"></a>
 
-```text
+```ts
 onPreloadEvent?:(src:string,event:Constants.MediaPlayerPreloadEvent) => void
 ```
 

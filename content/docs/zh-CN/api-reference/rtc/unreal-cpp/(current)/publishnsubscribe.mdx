@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_enabledualstreammode__prototype"></a>
 
-```text
+```cpp
 virtual int enableDualStreamMode(bool enabled) = 0;
 ```
 
@@ -87,7 +87,7 @@ virtual int enableDualStreamMode(bool enabled) = 0;
 
 <a id="api_irtcengine_enabledualstreammode3__prototype"></a>
 
-```text
+```cpp
 virtual int enableDualStreamMode(bool enabled, const SimulcastStreamConfig& streamConfig) = 0;
 ```
 
@@ -171,7 +171,7 @@ virtual int enableDualStreamMode(bool enabled, const SimulcastStreamConfig& stre
 
 <a id="api_irtcengineex_enabledualstreammodeex__prototype"></a>
 
-```text
+```cpp
 virtual int enableDualStreamModeEx(bool enabled, const SimulcastStreamConfig& streamConfig,
                                        const RtcConnection& connection) = 0;
 ```
@@ -250,7 +250,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_muteallremoteaudiostreams__prototype"></a>
 
-```text
+```cpp
 virtual int muteAllRemoteAudioStreams(bool mute) = 0;
 ```
 
@@ -317,7 +317,7 @@ SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修�
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__prototype"></a>
 
-```text
+```cpp
 virtual int muteAllRemoteAudioStreamsEx(bool mute, const RtcConnection& connection) = 0;
 ```
 
@@ -381,7 +381,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_muteallremotevideostreams__prototype"></a>
 
-```text
+```cpp
 virtual int muteAllRemoteVideoStreams(bool mute) = 0;
 ```
 
@@ -448,7 +448,7 @@ SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修�
 
 <a id="api_irtcengineex_muteallremotevideostreamsex__prototype"></a>
 
-```text
+```cpp
 virtual int muteAllRemoteVideoStreamsEx(bool mute, const RtcConnection& connection) = 0;
 ```
 
@@ -501,7 +501,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_mutelocalaudiostream__prototype"></a>
 
-```text
+```cpp
 virtual int muteLocalAudioStream(bool mute) = 0;
 ```
 
@@ -564,7 +564,7 @@ virtual int muteLocalAudioStream(bool mute) = 0;
 
 <a id="api_irtcengineex_mutelocalaudiostreamex__prototype"></a>
 
-```text
+```cpp
 virtual int muteLocalAudioStreamEx(bool mute, const RtcConnection& connection) = 0;
 ```
 
@@ -621,7 +621,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_mutelocalvideostream__prototype"></a>
 
-```text
+```cpp
 virtual int muteLocalVideoStream(bool mute) = 0;
 ```
 
@@ -686,7 +686,7 @@ virtual int muteLocalVideoStream(bool mute) = 0;
 
 <a id="api_irtcengineex_mutelocalvideostreamex__prototype"></a>
 
-```text
+```cpp
 virtual int muteLocalVideoStreamEx(bool mute, const RtcConnection& connection) = 0;
 ```
 
@@ -745,7 +745,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_muteremoteaudiostream__prototype"></a>
 
-```text
+```cpp
 virtual int muteRemoteAudioStream(uid_t uid, bool mute) = 0;
 ```
 
@@ -812,7 +812,7 @@ virtual int muteRemoteAudioStream(uid_t uid, bool mute) = 0;
 
 <a id="api_irtcengineex_muteremoteaudiostreamex__prototype"></a>
 
-```text
+```cpp
 virtual int muteRemoteAudioStreamEx(uid_t uid, bool mute, const RtcConnection& connection) = 0;
 ```
 
@@ -873,7 +873,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_muteremotevideostream__prototype"></a>
 
-```text
+```cpp
 virtual int muteRemoteVideoStream(uid_t userId, bool mute) = 0;
 ```
 
@@ -940,7 +940,7 @@ virtual int muteRemoteVideoStream(uid_t userId, bool mute) = 0;
 
 <a id="api_irtcengineex_muteremotevideostreamex__prototype"></a>
 
-```text
+```cpp
 virtual int muteRemoteVideoStreamEx(uid_t uid, bool mute, const RtcConnection& connection) = 0;
 ```
 
@@ -999,7 +999,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_setdualstreammode__prototype"></a>
 
-```text
+```cpp
 virtual int setDualStreamMode(SIMULCAST_STREAM_MODE mode) = 0;
 ```
 
@@ -1058,7 +1058,7 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 
 <a id="api_irtcengine_setdualstreammode2__prototype"></a>
 
-```text
+```cpp
 virtual int setDualStreamMode(SIMULCAST_STREAM_MODE mode,
                                  const SimulcastStreamConfig& streamConfig) = 0;
 ```
@@ -1130,7 +1130,7 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 
 <a id="api_irtcengineex_setdualstreammodeex__prototype"></a>
 
-```text
+```cpp
 virtual int setDualStreamModeEx(SIMULCAST_STREAM_MODE mode,
                                    const SimulcastStreamConfig& streamConfig,
                                    const RtcConnection& connection) = 0;
@@ -1207,7 +1207,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype__prototype"></a>
 
-```text
+```cpp
 virtual int setRemoteDefaultVideoStreamType(VIDEO_STREAM_TYPE streamType) = 0;
 ```
 
@@ -1267,7 +1267,7 @@ virtual int setRemoteDefaultVideoStreamType(VIDEO_STREAM_TYPE streamType) = 0;
 
 <a id="api_irtcengine_setremotevideostreamtype__prototype"></a>
 
-```text
+```cpp
 virtual int setRemoteVideoStreamType(uid_t uid, VIDEO_STREAM_TYPE streamType) = 0;
 ```
 
@@ -1336,7 +1336,7 @@ virtual int setRemoteVideoStreamType(uid_t uid, VIDEO_STREAM_TYPE streamType) = 
 
 <a id="api_irtcengineex_setremotevideostreamtypeex__prototype"></a>
 
-```text
+```cpp
 virtual int setRemoteVideoStreamTypeEx(uid_t uid, VIDEO_STREAM_TYPE streamType, const RtcConnection& connection) = 0;
 ```
 
@@ -1407,7 +1407,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_setremotevideosubscriptionoptions__prototype"></a>
 
-```text
+```cpp
 virtual int setRemoteVideoSubscriptionOptions(uid_t uid, const VideoSubscriptionOptions &options) = 0;
 ```
 
@@ -1463,7 +1463,7 @@ virtual int setRemoteVideoSubscriptionOptions(uid_t uid, const VideoSubscription
 
 <a id="api_irtcengineex_setremotevideosubscriptionoptionsex__prototype"></a>
 
-```text
+```cpp
 virtual int setRemoteVideoSubscriptionOptionsEx(uid_t uid, const VideoSubscriptionOptions& options, const RtcConnection& connection) = 0;
 ```
 
@@ -1519,7 +1519,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_setsubscribeaudioallowlist__prototype"></a>
 
-```text
+```cpp
 virtual int setSubscribeAudioAllowlist(uid_t* uidList, int uidNumber) = 0;
 ```
 
@@ -1580,7 +1580,7 @@ virtual int setSubscribeAudioAllowlist(uid_t* uidList, int uidNumber) = 0;
 
 <a id="api_irtcengineex_setsubscribeaudioallowlistex__prototype"></a>
 
-```text
+```cpp
 virtual int setSubscribeAudioAllowlistEx(uid_t* uidList, int uidNumber, const RtcConnection& connection) = 0;
 ```
 
@@ -1647,7 +1647,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_setsubscribeaudioblocklist__prototype"></a>
 
-```text
+```cpp
 virtual int setSubscribeAudioBlocklist(uid_t* uidList, int uidNumber) = 0;
 ```
 
@@ -1711,7 +1711,7 @@ virtual int setSubscribeAudioBlocklist(uid_t* uidList, int uidNumber) = 0;
 
 <a id="api_irtcengineex_setsubscribeaudioblocklistex__prototype"></a>
 
-```text
+```cpp
 virtual int setSubscribeAudioBlocklistEx(uid_t* uidList, int uidNumber, const RtcConnection& connection) = 0;
 ```
 
@@ -1781,7 +1781,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_setsubscribevideoallowlist__prototype"></a>
 
-```text
+```cpp
 virtual int setSubscribeVideoAllowlist(uid_t* uidList, int uidNumber) = 0;
 ```
 
@@ -1842,7 +1842,7 @@ virtual int setSubscribeVideoAllowlist(uid_t* uidList, int uidNumber) = 0;
 
 <a id="api_irtcengineex_setsubscribevideoallowlistex__prototype"></a>
 
-```text
+```cpp
 virtual int setSubscribeVideoAllowlistEx(uid_t* uidList, int uidNumber, const RtcConnection& connection) = 0;
 ```
 
@@ -1909,7 +1909,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_setsubscribevideoblocklist__prototype"></a>
 
-```text
+```cpp
 virtual int setSubscribeVideoBlocklist(uid_t* uidList, int uidNumber) = 0;
 ```
 
@@ -1971,7 +1971,7 @@ virtual int setSubscribeVideoBlocklist(uid_t* uidList, int uidNumber) = 0;
 
 <a id="api_irtcengineex_setsubscribevideoblocklistex__prototype"></a>
 
-```text
+```cpp
 virtual int setSubscribeVideoBlocklistEx(uid_t* uidList, int uidNumber, const RtcConnection& connection) = 0;
 ```
 
@@ -2039,7 +2039,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="callback_irtcengineeventhandler_onaudiopublishstatechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onAudioPublishStateChanged(const char* channel,
      STREAM_PUBLISH_STATE oldState,
      STREAM_PUBLISH_STATE newState,
@@ -2096,7 +2096,7 @@ virtual void onAudioPublishStateChanged(const char* channel,
 
 <a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onAudioSubscribeStateChanged(const char* channel,
      uid_t uid,
      STREAM_SUBSCRIBE_STATE oldState,
@@ -2161,7 +2161,7 @@ virtual void onAudioSubscribeStateChanged(const char* channel,
 
 <a id="callback_irtcengineeventhandler_onvideosubscribestatechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onVideoSubscribeStateChanged(const char* channel,
      uid_t uid,
      STREAM_SUBSCRIBE_STATE oldState,

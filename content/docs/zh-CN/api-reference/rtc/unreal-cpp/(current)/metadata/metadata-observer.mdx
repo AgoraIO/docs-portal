@@ -21,7 +21,7 @@ _migration:
 
 <a id="callback_imetadataobserver_getmaxmetadatasize__prototype"></a>
 
-```text
+```cpp
 virtual int getMaxMetadataSize() { return DEFAULT_METADATA_SIZE_IN_BYTE; }
 ```
 
@@ -51,7 +51,7 @@ virtual int getMaxMetadataSize() { return DEFAULT_METADATA_SIZE_IN_BYTE; }
 
 <a id="api_irtcengine_registermediametadataobserver__prototype"></a>
 
-```text
+```cpp
 virtual int registerMediaMetadataObserver(IMetadataObserver *observer, IMetadataObserver::METADATA_TYPE type) = 0;
 ```
 
@@ -107,7 +107,7 @@ metadata 类型。目前仅支持 VIDEO_METADATA。详见 [METADATA_TYPE](/zh-CN
 
 <a id="api_irtcengine_unregistermediametadataobserver__prototype"></a>
 
-```text
+```cpp
 virtual int unregisterMediaMetadataObserver(IMetadataObserver* observer, IMetadataObserver::METADATA_TYPE type) = 0;
 ```
 
@@ -151,7 +151,7 @@ metadata 类型。目前仅支持 VIDEO_METADATA。详见 [METADATA_TYPE](/zh-CN
 
 <a id="callback_imetadataobserver_onmetadatareceived__prototype"></a>
 
-```text
+```cpp
 virtual void onMetadataReceived(const Metadata &metadata) = 0;
 ```
 
@@ -182,7 +182,7 @@ virtual void onMetadataReceived(const Metadata &metadata) = 0;
 
 <a id="callback_imetadataobserver_onreadytosendmetadata__prototype"></a>
 
-```text
+```cpp
 virtual bool onReadyToSendMetadata(Metadata &metadata, VIDEO_SOURCE_TYPE source_type) = 0;
 ```
 

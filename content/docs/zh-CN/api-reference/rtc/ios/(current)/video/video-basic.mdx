@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_disablevideo__prototype"></a>
 
-```text
+```objc
 - (int)disableVideo NS_SWIFT_NAME(disableVideo());
 ```
 
@@ -74,7 +74,7 @@ _migration:
 
 <a id="api_irtcengine_enablelocalvideo__prototype"></a>
 
-```text
+```objc
 - (int)enableLocalVideo:(BOOL)enabled NS_SWIFT_NAME(enableLocalVideo(_:));
 ```
 
@@ -126,7 +126,7 @@ _migration:
 
 <a id="api_irtcengine_enablevideo__prototype"></a>
 
-```text
+```objc
 - (int)enableVideo NS_SWIFT_NAME(enableVideo());
 ```
 
@@ -183,7 +183,7 @@ _migration:
 
 <a id="api_irtcengine_setvideoencoderconfiguration__prototype"></a>
 
-```text
+```objc
 - (int)setVideoEncoderConfiguration:(AgoraVideoEncoderConfiguration * _Nonnull)config NS_SWIFT_NAME(setVideoEncoderConfiguration(_:));
 ```
 
@@ -238,7 +238,7 @@ _migration:
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex__prototype"></a>
 
-```text
+```objc
 - (int)setVideoEncoderConfigurationEx:(AgoraVideoEncoderConfiguration* _Nonnull)config
                            connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(setVideoEncoderConfigurationEx(_:connection:));
 ```
@@ -303,7 +303,7 @@ _migration:
 
 <a id="api_irtcengine_setvideoprofile2__prototype"></a>
 
-```text
+```objc
 - (int)setVideoResolution:(CGSize)size andFrameRate:(NSInteger)frameRate bitrate:(NSInteger)bitrate NS_SWIFT_NAME(setVideoResolution(_:andFrameRate:bitrate:)) __deprecated_msg("use setVideoEncoderConfiguration: instead.");
 ```
 
@@ -373,7 +373,7 @@ _migration:
 
 <a id="api_irtcengine_setvideoscenario__prototype"></a>
 
-```text
+```objc
 - (int)setVideoScenario:(AgoraApplicationScenarioType)scenarioType  NS_SWIFT_NAME(setVideoScenario(_:));
 ```
 
@@ -461,7 +461,7 @@ _migration:
 
 <a id="api_irtcengine_startpreview__prototype"></a>
 
-```text
+```objc
 - (int)startPreview NS_SWIFT_NAME(startPreview());
 ```
 
@@ -503,7 +503,7 @@ _migration:
 
 <a id="api_irtcengine_startpreview2__prototype"></a>
 
-```text
+```objc
 - (int)startPreview: (AgoraVideoSourceType)sourceType NS_SWIFT_NAME(startPreview(_:));
 ```
 
@@ -558,7 +558,7 @@ _migration:
 
 <a id="api_irtcengine_stoppreview__prototype"></a>
 
-```text
+```objc
 - (int)stopPreview NS_SWIFT_NAME(stopPreview());
 ```
 
@@ -585,7 +585,7 @@ _migration:
 
 <a id="api_irtcengine_stoppreview2__prototype"></a>
 
-```text
+```objc
 - (int)stopPreview: (AgoraVideoSourceType)sourceType NS_SWIFT_NAME(stopPreview(_:));
 ```
 
@@ -631,7 +631,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine firstLocalVideoFrameWithSize:(CGSize)size elapsed:(NSInteger)elapsed sourceType:(AgoraVideoSourceType)sourceType NS_SWIFT_NAME(rtcEngine(_:firstLocalVideoFrameWith:elapsed:sourceType:));
 ```
 
@@ -688,7 +688,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine firstLocalVideoFramePublishedWithElapsed:(NSInteger)elapsed sourceType:(AgoraVideoSourceType)sourceType NS_SWIFT_NAME(rtcEngine(_:firstLocalVideoFramePublishedWithElapsed:sourceType:));
 ```
 
@@ -744,7 +744,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine firstRemoteVideoDecodedOfUid:(NSUInteger)uid size:(CGSize)size elapsed:(NSInteger)elapsed NS_SWIFT_NAME(rtcEngine(_:firstRemoteVideoDecodedOfUid:size:elapsed:)) __deprecated_msg("use rtcEngine:remoteVideoStateChangedOfUid:state:reason: instead.");
 ```
 
@@ -810,7 +810,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine firstRemoteVideoFrameOfUid:(NSUInteger)uid size:(CGSize)size elapsed:(NSInteger)elapsed NS_SWIFT_NAME(rtcEngine(_:firstRemoteVideoFrameOfUid:size:elapsed:));
 ```
 
@@ -871,7 +871,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine localVideoStateChangedOfState:(AgoraVideoLocalState)state reason:(AgoraLocalVideoStreamReason)reason sourceType:(AgoraVideoSourceType)sourceType NS_SWIFT_NAME(rtcEngine(_:localVideoStateChangedOf:reason:sourceType:));
 ```
 
@@ -939,7 +939,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onlocalvideostats__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine localVideoStats:(AgoraRtcLocalVideoStats * _Nonnull)stats sourceType:(AgoraVideoSourceType)sourceType NS_SWIFT_NAME(rtcEngine(_:localVideoStats:sourceType:));
 ```
 
@@ -990,7 +990,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state reason:(AgoraVideoRemoteReason)reason elapsed:(NSInteger)elapsed NS_SWIFT_NAME(rtcEngine(_:remoteVideoStateChangedOfUid:state:reason:elapsed:));
 ```
 
@@ -1057,7 +1057,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onremotevideostats__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine remoteVideoStats:(AgoraRtcRemoteVideoStats * _Nonnull)stats NS_SWIFT_NAME(rtcEngine(_:remoteVideoStats:));
 ```
 
@@ -1102,7 +1102,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onremotevideotransportstats__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine videoTransportStatsOfUid:(NSUInteger)uid delay:(NSUInteger)delay lost:(NSUInteger)lost rxKBitRate:(NSUInteger)rxKBitRate NS_SWIFT_NAME(rtcEngine(_:videoTransportStatsOfUid:delay:lost:rxKBitRate:)) __deprecated_msg("use rtcEngine:remoteVideoStats: instead");
 ```
 
@@ -1171,7 +1171,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didLocalVideoEnabled:(BOOL)enabled byUid:(NSUInteger)uid NS_SWIFT_NAME(rtcEngine(_:didLocalVideoEnabled:byUid:)) __deprecated_msg("use rtcEngine:remoteVideoStateChangedOfUid:state:reason: instead.");
 ```
 
@@ -1233,7 +1233,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onuserenablevideo__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didVideoEnabled:(BOOL)enabled byUid:(NSUInteger)uid NS_SWIFT_NAME(rtcEngine(_:didVideoEnabled:byUid:));
 ```
 
@@ -1287,7 +1287,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onusermutevideo__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didVideoMuted:(BOOL)muted byUid:(NSUInteger)uid NS_SWIFT_NAME(rtcEngine(_:didVideoMuted:byUid:));
 ```
 
@@ -1347,7 +1347,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onvideopublishstatechanged__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine didVideoPublishStateChange:(NSString * _Nonnull)channelId
          sourceType:(AgoraVideoSourceType)sourceType
            oldState:(AgoraStreamPublishState)oldState
@@ -1422,7 +1422,7 @@ elapseSinceLastState:(int)elapseSinceLastState NS_SWIFT_NAME(rtcEngine(_:didVide
 
 <a id="callback_irtcengineeventhandler_onvideosizechanged__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine videoSizeChangedOfSourceType:(AgoraVideoSourceType)sourceType uid:(NSUInteger)uid size:(CGSize)size rotation:(NSInteger)rotation NS_SWIFT_NAME(rtcEngine(_:videoSizeChangedOf:uid:size:rotation:));
 ```
 
@@ -1487,7 +1487,7 @@ elapseSinceLastState:(int)elapseSinceLastState NS_SWIFT_NAME(rtcEngine(_:didVide
 
 <a id="callback_irtcengineeventhandler_onvideostopped__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngineVideoDidStop:(AgoraRtcEngineKit * _Nonnull)engine NS_SWIFT_NAME(rtcEngineVideoDidStop(_:)) __deprecated_msg("Use rtcEngine:localVideoStateChangedOfState:reason:sourceType: instead");
 ```
 

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_createagorartcengine__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintPure, Category = "Agora|IRtcEngine")
 	static UAgoraBPuRtcEngine* GetAgoraRtcEngine();
 ```
@@ -52,7 +52,7 @@ UFUNCTION(BlueprintPure, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_initialize__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int Initialize(const FRtcEngineContext& context);
 ```
@@ -115,7 +115,7 @@ SDK 只支持每个 App 创建一个 IRtcEngine 实例。
 
 <a id="api_irtcengine_geteventhandler__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintPure, Category = "Agora|IRtcEngine")
 void GetEventHandler(EAgoraBPuEventHandlerType& HandlerType, UAgoraBPuIRtcEngineEventHandler*& EventHandler, UAgoraBPuIRtcEngineEventHandlerEx* & EventHandlerEx);
 ```
@@ -174,7 +174,7 @@ void GetEventHandler(EAgoraBPuEventHandlerType& HandlerType, UAgoraBPuIRtcEngine
 
 <a id="api_irtcengine_addblueprintcallbackexecutor__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|Event")
 void AddBlueprintCallbackExecutor(UAgoraBPuIRtcEngineEventHandlerCBExecutor* Executor);
 ```
@@ -218,7 +218,7 @@ void AddBlueprintCallbackExecutor(UAgoraBPuIRtcEngineEventHandlerCBExecutor* Exe
 
 <a id="api_irtcengineex_addblueprintcallbackexecutorex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|Event")
 void AddBlueprintCallbackExecutorEx(UAgoraBPuIRtcEngineEventHandlerExCBExecutor* Executor);
 ```
@@ -262,7 +262,7 @@ void AddBlueprintCallbackExecutorEx(UAgoraBPuIRtcEngineEventHandlerExCBExecutor*
 
 <a id="api_irtcengine_clearalleventhandlercbexecutors__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 void ClearAllEventHandlerCBExecutors();
 ```
@@ -293,7 +293,7 @@ void ClearAllEventHandlerCBExecutors();
 
 <a id="api_irtcengine_release__prototype"></a>
 
-```text
+```cpp
 static void Release(bool sync = false);
 ```
 

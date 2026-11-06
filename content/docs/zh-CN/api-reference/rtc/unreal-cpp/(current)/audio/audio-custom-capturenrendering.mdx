@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_adjustcustomaudioplayoutvolume__prototype"></a>
 
-```text
+```cpp
 virtual int adjustCustomAudioPlayoutVolume(track_id_t trackId, int volume) = 0;
 ```
 
@@ -77,7 +77,7 @@ virtual int adjustCustomAudioPlayoutVolume(track_id_t trackId, int volume) = 0;
 
 <a id="api_irtcengine_adjustcustomaudiopublishvolume__prototype"></a>
 
-```text
+```cpp
 virtual int adjustCustomAudioPublishVolume(track_id_t trackId, int volume) = 0;
 ```
 
@@ -131,7 +131,7 @@ virtual int adjustCustomAudioPublishVolume(track_id_t trackId, int volume) = 0;
 
 <a id="api_imediaengine_createcustomaudiotrack__prototype"></a>
 
-```text
+```cpp
 virtual rtc::track_id_t createCustomAudioTrack(rtc::AUDIO_TRACK_TYPE trackType, const rtc::AudioTrackConfig& config) = 0;
 ```
 
@@ -193,7 +193,7 @@ virtual rtc::track_id_t createCustomAudioTrack(rtc::AUDIO_TRACK_TYPE trackType, 
 
 <a id="api_imediaengine_destroycustomaudiotrack__prototype"></a>
 
-```text
+```cpp
 virtual int destroyCustomAudioTrack(rtc::track_id_t trackId) = 0;
 ```
 
@@ -235,7 +235,7 @@ virtual int destroyCustomAudioTrack(rtc::track_id_t trackId) = 0;
 
 <a id="api_irtcengine_enablecustomaudiolocalplayback__prototype"></a>
 
-```text
+```cpp
 virtual int enableCustomAudioLocalPlayback(track_id_t trackId, bool enabled) = 0;
 ```
 
@@ -294,7 +294,7 @@ virtual int enableCustomAudioLocalPlayback(track_id_t trackId, bool enabled) = 0
 
 <a id="api_imediaengine_setexternalaudiosource2__prototype"></a>
 
-```text
+```cpp
 virtual int setExternalAudioSource(bool enabled,
                                    int sampleRate,
                                    int channels,
@@ -391,7 +391,7 @@ virtual int setExternalAudioSource(bool enabled,
 
 <a id="api_imediaengine_pullaudioframe__prototype"></a>
 
-```text
+```cpp
 virtual int pullAudioFrame(IAudioFrameObserver::AudioFrame* frame) = 0;
 ```
 
@@ -452,7 +452,7 @@ virtual int pullAudioFrame(IAudioFrameObserver::AudioFrame* frame) = 0;
 
 <a id="api_imediaengine_pushaudioframe0__prototype"></a>
 
-```text
+```cpp
 virtual int pushAudioFrame(IAudioFrameObserver::AudioFrame* frame, rtc::track_id_t trackId = 0) = 0;
 ```
 
@@ -515,7 +515,7 @@ virtual int pushAudioFrame(IAudioFrameObserver::AudioFrame* frame, rtc::track_id
 
 <a id="api_imediaengine_setexternalaudiosink__prototype"></a>
 
-```text
+```cpp
 virtual int setExternalAudioSink(bool enabled, int sampleRate, int channels) = 0;
 ```
 

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_getuserinfobyuid__prototype"></a>
 
-```text
+```csharp
 public abstract int GetUserInfoByUid(uint uid, ref UserInfo userInfo);
 ```
 
@@ -84,7 +84,7 @@ public abstract int GetUserInfoByUid(uint uid, ref UserInfo userInfo);
 
 <a id="api_irtcengine_getuserinfobyuseraccount__prototype"></a>
 
-```text
+```csharp
 public abstract int GetUserInfoByUserAccount(string userAccount, ref UserInfo userInfo);
 ```
 
@@ -149,7 +149,7 @@ public abstract int GetUserInfoByUserAccount(string userAccount, ref UserInfo us
 
 <a id="api_irtcengine_joinchannel1__prototype"></a>
 
-```text
+```csharp
 public abstract int JoinChannel(string token, string channelId, string info = "", uint uid = 0);
 ```
 
@@ -255,7 +255,7 @@ public abstract int JoinChannel(string token, string channelId, string info = ""
 
 <a id="api_irtcengine_joinchannel2__prototype"></a>
 
-```text
+```csharp
 public abstract int JoinChannel(string token, string channelId, uint uid,
                                 ChannelMediaOptions options);
 ```
@@ -362,7 +362,7 @@ public abstract int JoinChannel(string token, string channelId, uint uid,
 
 <a id="api_irtcengineex_joinchannelex__prototype"></a>
 
-```text
+```csharp
 public abstract int JoinChannelEx(string token, RtcConnection connection, ChannelMediaOptions options);
 ```
 
@@ -461,7 +461,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="api_irtcengine_joinchannelwithuseraccount1__prototype"></a>
 
-```text
+```csharp
 public abstract int JoinChannelWithUserAccount(string token, string channelId, string userAccount);
 ```
 
@@ -555,7 +555,7 @@ public abstract int JoinChannelWithUserAccount(string token, string channelId, s
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__prototype"></a>
 
-```text
+```csharp
 public abstract int JoinChannelWithUserAccount(string token, string channelId, string userAccount,
             ChannelMediaOptions options);
 ```
@@ -656,7 +656,7 @@ public abstract int JoinChannelWithUserAccount(string token, string channelId, s
 
 <a id="api_irtcengine_leavechannel__prototype"></a>
 
-```text
+```csharp
 public abstract int LeaveChannel();
 ```
 
@@ -727,7 +727,7 @@ public abstract int LeaveChannel();
 
 <a id="api_irtcengine_leavechannel2__prototype"></a>
 
-```text
+```csharp
 public abstract int LeaveChannel(LeaveChannelOptions options);
 ```
 
@@ -790,7 +790,7 @@ public abstract int LeaveChannel(LeaveChannelOptions options);
 
 <a id="api_irtcengineex_leavechannelex__prototype"></a>
 
-```text
+```csharp
 public abstract int LeaveChannelEx(RtcConnection connection);
 ```
 
@@ -863,7 +863,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="api_irtcengineex_leavechannelex2__prototype"></a>
 
-```text
+```csharp
 public abstract int LeaveChannelEx(RtcConnection connection, LeaveChannelOptions options);
 ```
 
@@ -946,7 +946,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="api_irtcengine_preloadchannel__prototype"></a>
 
-```text
+```csharp
 public abstract int PreloadChannel(string token, string channelId, uint uid);
 ```
 
@@ -1031,7 +1031,7 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 
 <a id="api_irtcengine_preloadchannelwithuseraccount__prototype"></a>
 
-```text
+```csharp
 public abstract int PreloadChannel(string token, string channelId, string userAccount);
 ```
 
@@ -1123,7 +1123,7 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 
 <a id="api_irtcengine_registerlocaluseraccount__prototype"></a>
 
-```text
+```csharp
 public abstract int RegisterLocalUserAccount(string appId, string userAccount);
 ```
 
@@ -1194,7 +1194,7 @@ public abstract int RegisterLocalUserAccount(string appId, string userAccount);
 
 <a id="api_irtcengine_renewtoken__prototype"></a>
 
-```text
+```csharp
 public abstract int RenewToken(string token);
 ```
 
@@ -1252,7 +1252,7 @@ public abstract int RenewToken(string token);
 
 <a id="api_irtcengine_setchannelprofile__prototype"></a>
 
-```text
+```csharp
 public abstract int SetChannelProfile(CHANNEL_PROFILE_TYPE profile);
 ```
 
@@ -1311,7 +1311,7 @@ public abstract int SetChannelProfile(CHANNEL_PROFILE_TYPE profile);
 
 <a id="api_irtcengine_setclientrole1__prototype"></a>
 
-```text
+```csharp
 public abstract int SetClientRole(CLIENT_ROLE_TYPE role);
 ```
 
@@ -1384,7 +1384,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 <a id="api_irtcengine_setclientrole2__prototype"></a>
 
-```text
+```csharp
 public abstract int SetClientRole(CLIENT_ROLE_TYPE role, ClientRoleOptions options);
 ```
 
@@ -1467,7 +1467,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 <a id="api_irtcengine_updatechannelmediaoptions__prototype"></a>
 
-```text
+```csharp
 public abstract int UpdateChannelMediaOptions(ChannelMediaOptions options);
 ```
 
@@ -1511,7 +1511,7 @@ public abstract int UpdateChannelMediaOptions(ChannelMediaOptions options);
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex__prototype"></a>
 
-```text
+```csharp
 public abstract int UpdateChannelMediaOptionsEx(ChannelMediaOptions options, RtcConnection connection);
 ```
 
@@ -1561,7 +1561,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="api_irtcengine_updatepreloadchanneltoken__prototype"></a>
 
-```text
+```csharp
 public abstract int UpdatePreloadChannelToken(string token);
 ```
 
@@ -1612,7 +1612,7 @@ public abstract int UpdatePreloadChannelToken(string token);
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged__prototype"></a>
 
-```text
+```csharp
 public virtual void OnClientRoleChanged(RtcConnection connection, CLIENT_ROLE_TYPE oldRole, CLIENT_ROLE_TYPE newRole, ClientRoleOptions newRoleOptions) { }
 ```
 
@@ -1676,7 +1676,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed__prototype"></a>
 
-```text
+```csharp
 public virtual void OnClientRoleChangeFailed(RtcConnection connection, CLIENT_ROLE_CHANGE_FAILED_REASON reason, CLIENT_ROLE_TYPE currentRole) { }
 ```
 
@@ -1729,7 +1729,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onerror__prototype"></a>
 
-```text
+```csharp
 public virtual void OnError(int err, string msg) { }
 ```
 
@@ -1770,7 +1770,7 @@ public virtual void OnError(int err, string msg) { }
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess__prototype"></a>
 
-```text
+```csharp
 public virtual void OnJoinChannelSuccess(RtcConnection connection, int elapsed) {}
 ```
 
@@ -1817,7 +1817,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onleavechannel__prototype"></a>
 
-```text
+```csharp
 public virtual void OnLeaveChannel(RtcConnection connection, RtcStats stats) {}
 ```
 
@@ -1864,7 +1864,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered__prototype"></a>
 
-```text
+```csharp
 public virtual void OnLocalUserRegistered(uint uid, string userAccount) {}
 ```
 
@@ -1905,7 +1905,7 @@ public virtual void OnLocalUserRegistered(uint uid, string userAccount) {}
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__prototype"></a>
 
-```text
+```csharp
 public virtual void OnRejoinChannelSuccess(RtcConnection connection, int elapsed) {}
 ```
 
@@ -1950,7 +1950,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onrenewtokenresult__prototype"></a>
 
-```text
+```csharp
 public virtual void OnRenewTokenResult(RtcConnection connection, string token, RENEW_TOKEN_ERROR_CODE code)
 ```
 
@@ -1995,7 +1995,7 @@ Token 已过期回调。
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__prototype"></a>
 
-```text
+```csharp
 public virtual void OnRequestToken(RtcConnection connection) {}
 ```
 
@@ -2037,7 +2037,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onrtcstats__prototype"></a>
 
-```text
+```csharp
 public virtual void OnRtcStats(RtcConnection connection, RtcStats stats) {}
 ```
 
@@ -2082,7 +2082,7 @@ Token 即将在 30s 内过期回调。
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__prototype"></a>
 
-```text
+```csharp
 public virtual void OnTokenPrivilegeWillExpire(RtcConnection connection, string token) {}
 ```
 
@@ -2135,7 +2135,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onuserinfoupdated__prototype"></a>
 
-```text
+```csharp
 public virtual void OnUserInfoUpdated(uint uid, UserInfo info)
 ```
 
@@ -2176,7 +2176,7 @@ public virtual void OnUserInfoUpdated(uint uid, UserInfo info)
 
 <a id="callback_irtcengineeventhandler_onuserjoined__prototype"></a>
 
-```text
+```csharp
 public virtual void OnUserJoined(RtcConnection connection, uint remoteUid, int elapsed) {}
 ```
 
@@ -2234,7 +2234,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onuseroffline__prototype"></a>
 
-```text
+```csharp
 public virtual void OnUserOffline(RtcConnection connection, uint remoteUid, USER_OFFLINE_REASON_TYPE reason) {}
 ```
 

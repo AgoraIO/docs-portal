@@ -22,7 +22,7 @@ _migration:
 
 <a id="api_irtcengine_enableencryption__prototype"></a>
 
-```text
+```ts
 public abstract enableEncryption(enabled: boolean, config: EncryptionConfig): number;
 ```
 
@@ -96,7 +96,7 @@ public abstract enableEncryption(enabled: boolean, config: EncryptionConfig): nu
 
 <a id="api_irtcengineex_enableencryptionex__prototype"></a>
 
-```text
+```ts
 public abstract enableEncryptionEx(enabled:boolean,config:EncryptionConfig,connection:RtcConnection):number;
 ```
 
@@ -168,7 +168,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 
 <a id="api_irtcengine_getcallid__prototype"></a>
 
-```text
+```ts
 public abstract getCallId(): string;
 ```
 
@@ -221,7 +221,7 @@ public abstract getCallId(): string;
 
 <a id="api_irtcengineex_getcallidex__prototype"></a>
 
-```text
+```ts
 public abstract  getCallIdEx(connection:RtcConnection):string;
 ```
 
@@ -270,7 +270,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 
 <a id="api_irtcengine_getcurrentmonotonictimeinms__prototype"></a>
 
-```text
+```ts
 public abstract getCurrentMonotonicTimeInMs(): number;
 ```
 
@@ -313,7 +313,7 @@ Monotonic Time 是指一个单调递增的时间序列，它的值会随着时�
 
 <a id="api_irtcengine_geterrordescription__prototype"></a>
 
-```text
+```ts
 public static getErrorDescription(error: number): string {
   return RtcEngineImpl.getErrorDescriptionInternal(error);
 }
@@ -352,7 +352,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_getnativehandle__prototype"></a>
 
-```text
+```ts
 public abstract getNativeHandle():bigint;
 ```
 
@@ -382,7 +382,7 @@ SDK 引擎的 Native 句柄。
 
 <a id="api_irtcengine_getntpwalltimeinms__prototype"></a>
 
-```text
+```ts
 public abstract getNtpWallTimeInMs():bigint;
 ```
 
@@ -408,7 +408,7 @@ public abstract getNtpWallTimeInMs():bigint;
 
 <a id="api_irtcengine_getversion__prototype"></a>
 
-```text
+```ts
 public static getSdkVersion(): string {
   return RtcEngineImpl.getRtcSdkVersion();
 }
@@ -438,7 +438,7 @@ SDK 的 JSON 配置信息，用于提供技术预览或特别定制功能。
 
 <a id="api_irtcengine_setparameters__prototype"></a>
 
-```text
+```ts
 public abstract setParameters(parameters: string): number;
 ```
 
@@ -476,7 +476,7 @@ JSON 字符串形式的参数。
 
 <a id="api_irtcengine_setremotesubscribefallbackoption__prototype"></a>
 
-```text
+```ts
 public abstract setRemoteSubscribeFallbackOption(option:Constants.StreamFallbackOptions):number;
 ```
 
@@ -526,7 +526,7 @@ public abstract setRemoteSubscribeFallbackOption(option:Constants.StreamFallback
 
 <a id="api_irtcengine_startlastmileprobetest__prototype"></a>
 
-```text
+```ts
 public abstract startLastmileProbeTest(config: LastmileProbeConfig): number;
 ```
 
@@ -589,7 +589,7 @@ Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference
 
 <a id="api_irtcengine_stoplastmileprobetest__prototype"></a>
 
-```text
+```ts
 public abstract stopLastmileProbeTest(): number;
 ```
 
@@ -614,7 +614,7 @@ public abstract stopLastmileProbeTest(): number;
 
 <a id="callback_irtcengineeventhandler_onconnectionlost__prototype"></a>
 
-```text
+```ts
 onConnectionLost?:() => void;
 ```
 
@@ -638,7 +638,7 @@ SDK 在调用 joinChannelWithOptions 后，无论是否加入成功，只要 10 
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged__prototype"></a>
 
-```text
+```ts
 onConnectionStateChanged ? : ( state: Constants.ConnectionState, reason: Constants.ConnectionChangedReason ) => void
 ```
 
@@ -685,7 +685,7 @@ onConnectionStateChanged ? : ( state: Constants.ConnectionState, reason: Constan
 
 <a id="callback_irtcengineeventhandler_onencryptionerror__prototype"></a>
 
-```text
+```ts
 onEncryptionError?:(errorType:Constants.EncryptionError) => void;
 ```
 
@@ -722,7 +722,7 @@ onEncryptionError?:(errorType:Constants.EncryptionError) => void;
 
 <a id="callback_irtcengineeventhandler_onlastmileproberesult__prototype"></a>
 
-```text
+```ts
 onLastmileProbeResult? : (result:LastmileProbeResult) => void;
 ```
 
@@ -759,7 +759,7 @@ onLastmileProbeResult? : (result:LastmileProbeResult) => void;
 
 <a id="callback_irtcengineeventhandler_onlastmilequality__prototype"></a>
 
-```text
+```ts
 onLastmileQuality? : (quality:Constants.QualityType) => void;
 ```
 
@@ -798,7 +798,7 @@ Last mile 网络质量。详见 [NetworkQuality](/zh-CN/api-reference/rtc/harmon
 
 <a id="callback_irtcengineeventhandler_onnetworkquality__prototype"></a>
 
-```text
+```ts
 onNetworkQuality? : (uid: number, txQuality: Constants.NetworkQuality, rxQuality: Constants.NetworkQuality) => void;
 ```
 
@@ -859,7 +859,7 @@ onNetworkQuality? : (uid: number, txQuality: Constants.NetworkQuality, rxQuality
 
 <a id="callback_irtcengineeventhandler_onpermissionerror__prototype"></a>
 
-```text
+```ts
 onPermissionError?:(permission:Constants.PermissionType) => void;
 ```
 

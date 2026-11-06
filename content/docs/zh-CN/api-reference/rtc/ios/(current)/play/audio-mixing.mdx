@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume__prototype"></a>
 
-```text
+```objc
 - (int)adjustAudioMixingPlayoutVolume:(NSInteger)volume NS_SWIFT_NAME(adjustAudioMixingPlayoutVolume(_:));
 ```
 
@@ -69,7 +69,7 @@ _migration:
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume__prototype"></a>
 
-```text
+```objc
 - (int)adjustAudioMixingPublishVolume:(NSInteger)volume NS_SWIFT_NAME(adjustAudioMixingPublishVolume(_:));
 ```
 
@@ -117,7 +117,7 @@ _migration:
 
 <a id="api_irtcengine_adjustaudiomixingvolume__prototype"></a>
 
-```text
+```objc
 - (int)adjustAudioMixingVolume:(NSInteger)volume NS_SWIFT_NAME(adjustAudioMixingVolume(_:));
 ```
 
@@ -169,7 +169,7 @@ _migration:
 
 <a id="api_irtcengine_getaudiomixingcurrentposition__prototype"></a>
 
-```text
+```objc
 - (int)getAudioMixingCurrentPosition NS_SWIFT_NAME(getAudioMixingCurrentPosition());
 ```
 
@@ -205,7 +205,7 @@ _migration:
 
 <a id="api_irtcengine_getaudiomixingduration__prototype"></a>
 
-```text
+```objc
 - (int)getAudioMixingDuration NS_SWIFT_NAME(getAudioMixingDuration());
 ```
 
@@ -238,7 +238,7 @@ _migration:
 
 <a id="api_irtcengine_getaudiomixingplayoutvolume__prototype"></a>
 
-```text
+```objc
 - (int)getAudioMixingPlayoutVolume NS_SWIFT_NAME(getAudioMixingPlayoutVolume());
 ```
 
@@ -273,7 +273,7 @@ _migration:
 
 <a id="api_irtcengine_getaudiomixingpublishvolume__prototype"></a>
 
-```text
+```objc
 - (int)getAudioMixingPublishVolume NS_SWIFT_NAME(getAudioMixingPublishVolume());
 ```
 
@@ -306,7 +306,7 @@ _migration:
 
 <a id="api_irtcengine_getaudiotrackcount__prototype"></a>
 
-```text
+```objc
 - (int)getAudioTrackCount NS_SWIFT_NAME(getAudioTrackCount());
 ```
 
@@ -337,7 +337,7 @@ _migration:
 
 <a id="api_irtcengine_pauseaudiomixing__prototype"></a>
 
-```text
+```objc
 - (int)pauseAudioMixing NS_SWIFT_NAME(pauseAudioMixing());
 ```
 
@@ -372,7 +372,7 @@ _migration:
 
 <a id="api_irtcengine_resumeaudiomixing__prototype"></a>
 
-```text
+```objc
 - (int)resumeAudioMixing NS_SWIFT_NAME(resumeAudioMixing());
 ```
 
@@ -407,7 +407,7 @@ _migration:
 
 <a id="api_irtcengine_selectaudiotrack__prototype"></a>
 
-```text
+```objc
 - (int)selectAudioTrack:(NSInteger)index NS_SWIFT_NAME(selectAudioTrack(_:));
 ```
 
@@ -456,7 +456,7 @@ _migration:
 
 <a id="api_imediaplayer_selectmultiaudiotrack__prototype"></a>
 
-```text
+```objc
 - (int)selectMultiAudioTrack:(NSInteger)playoutTrackIndex publishTrackIndex:(NSInteger)publishTrackIndex NS_SWIFT_NAME(selectMultiAudioTrack(_:publishTrackIndex:));
 ```
 
@@ -510,7 +510,7 @@ _migration:
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__prototype"></a>
 
-```text
+```objc
 - (int)setAudioMixingDualMonoMode:(AgoraAudioMixingDualMonoMode)mode NS_SWIFT_NAME(setAudioMixingDualMonoMode(_:));
 ```
 
@@ -574,7 +574,7 @@ _migration:
 
 <a id="api_irtcengine_setaudiomixingpitch__prototype"></a>
 
-```text
+```objc
 - (int)setAudioMixingPitch:(NSInteger)pitch NS_SWIFT_NAME(setAudioMixingPitch(_:));
 ```
 
@@ -622,7 +622,7 @@ _migration:
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed__prototype"></a>
 
-```text
+```objc
 - (int)setAudioMixingPlaybackSpeed:(NSInteger)speed NS_SWIFT_NAME(setAudioMixingPlaybackSpeed(_:));
 ```
 
@@ -668,7 +668,7 @@ _migration:
 
 <a id="api_irtcengine_setaudiomixingposition__prototype"></a>
 
-```text
+```objc
 - (int)setAudioMixingPosition:(NSInteger)pos NS_SWIFT_NAME(setAudioMixingPosition(_:));
 ```
 
@@ -716,7 +716,7 @@ _migration:
 
 <a id="api_irtcengine_startaudiomixing__prototype"></a>
 
-```text
+```objc
 - (int)startAudioMixing:(NSString *  _Nonnull)filePath
                loopback:(BOOL)loopback
                   cycle:(NSInteger)cycle NS_SWIFT_NAME(startAudioMixing(_:loopback:cycle:));
@@ -801,7 +801,7 @@ _migration:
 
 <a id="api_irtcengine_startaudiomixing2__prototype"></a>
 
-```text
+```objc
 - (int)startAudioMixing:(NSString *  _Nonnull)filePath
                loopback:(BOOL)loopback
                   cycle:(NSInteger)cycle
@@ -899,7 +899,7 @@ _migration:
 
 <a id="api_irtcengine_stopaudiomixing__prototype"></a>
 
-```text
+```objc
 - (int)stopAudioMixing NS_SWIFT_NAME(stopAudioMixing());
 ```
 
@@ -934,7 +934,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onaudiomixingfinished__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngineLocalAudioMixingDidFinish:(AgoraRtcEngineKit * _Nonnull)engine NS_SWIFT_NAME(rtcEngineLocalAudioMixingDidFinish(_:)) __deprecated_msg("Use rtcEngine:audioMixingStateChanged:reasonCode: instead");
 ```
 
@@ -981,7 +981,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine audioMixingPositionChanged:(NSInteger)position NS_SWIFT_NAME(rtcEngine(_:audioMixingPositionChanged:));
 ```
 
@@ -1028,7 +1028,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onaudiomixingstatechanged__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine audioMixingStateChanged:(AgoraAudioMixingStateType)state
                                                                     reasonCode:(AgoraAudioMixingReasonCode)reasonCode NS_SWIFT_NAME(rtcEngine(_:audioMixingStateChanged:reasonCode:));
 ```

@@ -2,6 +2,7 @@ import {
   type ApiReferenceCardEntry,
   zhCNApiReferenceCards,
 } from './api-reference-cards-data.zh-cn';
+import { getApiReferenceProductSectionId } from './api-reference-navigation';
 import { isSamePathOrDescendant } from './docs-routing';
 import type { DocsBreadcrumbItem } from './docs-tree';
 
@@ -31,6 +32,7 @@ export function resolveZhCnApiReferenceBreadcrumb({
     },
     {
       title: entry.product,
+      url: `${ZH_CN_API_REFERENCE_INDEX_URL}?product=${encodeURIComponent(entry.productId)}#${getApiReferenceProductSectionId(entry.productId)}`,
     },
     {
       title: entry.platform,

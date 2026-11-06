@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_adjustplaybacksignalvolume__prototype"></a>
 
-```text
+```objc
 - (int)adjustPlaybackSignalVolume:(NSInteger)volume NS_SWIFT_NAME(adjustPlaybackSignalVolume(_:));
 ```
 
@@ -73,7 +73,7 @@ _migration:
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume__prototype"></a>
 
-```text
+```objc
 - (int)adjustUserPlaybackSignalVolume:(NSUInteger)uid volume:(int)volume NS_SWIFT_NAME(adjustUserPlaybackSignalVolume(_:volume:));
 ```
 
@@ -131,7 +131,7 @@ _migration:
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex__prototype"></a>
 
-```text
+```objc
 - (int)adjustUserPlaybackSignalVolumeEx:(NSUInteger)uid
                               volume:(NSInteger)volume
                           connection:(AgoraRtcConnection* _Nonnull)connection;
@@ -203,7 +203,7 @@ _migration:
 
 <a id="api_irtcengine_disableaudio__prototype"></a>
 
-```text
+```objc
 - (int)disableAudio NS_SWIFT_NAME(disableAudio());
 ```
 
@@ -248,7 +248,7 @@ _migration:
 
 <a id="api_irtcengine_enableaudio__prototype"></a>
 
-```text
+```objc
 - (int)enableAudio NS_SWIFT_NAME(enableAudio());
 ```
 
@@ -295,7 +295,7 @@ _migration:
 
 <a id="api_irtcengine_enableaudiovolumeindication__prototype"></a>
 
-```text
+```objc
 - (int)enableAudioVolumeIndication:(NSInteger)interval
                             smooth:(NSInteger)smooth
                          reportVad:(BOOL)reportVad NS_SWIFT_NAME(enableAudioVolumeIndication(_:smooth:reportVad:));
@@ -363,7 +363,7 @@ _migration:
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex__prototype"></a>
 
-```text
+```objc
 - (int)enableAudioVolumeIndicationEx:(NSInteger)interval
                               smooth:(NSInteger)smooth
                            reportVad:(BOOL)reportVad
@@ -450,7 +450,7 @@ _migration:
 
 <a id="api_irtcengine_setaudioprofile__prototype"></a>
 
-```text
+```objc
 - (int)setAudioProfile:(AgoraAudioProfile)profile scenario:(AgoraAudioScenario)scenario NS_SWIFT_NAME(setAudioProfile(_:scenario:)) __deprecated_msg("use setAudioProfile: instead.");
 ```
 
@@ -520,7 +520,7 @@ _migration:
 
 <a id="api_irtcengine_setaudioprofile2__prototype"></a>
 
-```text
+```objc
 - (int)setAudioProfile:(AgoraAudioProfile)profile NS_SWIFT_NAME(setAudioProfile(_:));
 ```
 
@@ -574,7 +574,7 @@ _migration:
 
 <a id="api_irtcengine_setaudioscenario__prototype"></a>
 
-```text
+```objc
 - (int)setAudioScenario:(AgoraAudioScenario)scenario NS_SWIFT_NAME(setAudioScenario(_:));
 ```
 
@@ -632,7 +632,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onactivespeaker__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine activeSpeaker:(NSUInteger)speakerUid NS_SWIFT_NAME(rtcEngine(_:activeSpeaker:));
 ```
 
@@ -682,7 +682,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onaudioquality__prototype"></a>
 
-```text
+```objc
 - (void)audioQualityBlock:(void(^ _Nullable)(NSUInteger uid, AgoraNetworkQuality quality, NSUInteger delay, NSUInteger lost))audioQualityBlock NS_SWIFT_NAME(audioQualityBlock(_:)) __deprecated_msg("use delegate instead.");
 ```
 
@@ -726,7 +726,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine reportAudioVolumeIndicationOfSpeakers:(NSArray<AgoraRtcAudioVolumeInfo *> * _Nonnull)speakers totalVolume:(NSInteger)totalVolume NS_SWIFT_NAME(rtcEngine(_:reportAudioVolumeIndicationOfSpeakers:totalVolume:));
 ```
 
@@ -786,7 +786,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine firstLocalAudioFramePublished:(NSInteger)elapsed NS_SWIFT_NAME(rtcEngine(_:firstLocalAudioFramePublished:));
 ```
 
@@ -838,7 +838,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit* _Nonnull)engine firstRemoteAudioFrameDecodedOfUid:(NSUInteger)uid elapsed:(NSInteger)elapsed NS_SWIFT_NAME(rtcEngine(_:firstRemoteAudioFrameDecodedOfUid:elapsed:)) __deprecated_msg("use rtcEngine:remoteAudioStateChangedOfUid:state:reason:elapsed: instead.");
 ```
 
@@ -895,7 +895,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine firstRemoteAudioFrameOfUid:(NSUInteger)uid elapsed:(NSInteger)elapsed NS_SWIFT_NAME(rtcEngine(_:firstRemoteAudioFrameOfUid:elapsed:));
 ```
 
@@ -946,7 +946,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine localAudioStateChanged:(AgoraAudioLocalState)state reason:(AgoraAudioLocalReason)reason NS_SWIFT_NAME(rtcEngine(_:localAudioStateChanged:reason:));
 ```
 
@@ -1003,7 +1003,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine localAudioStats:(AgoraRtcLocalAudioStats * _Nonnull)stats NS_SWIFT_NAME(rtcEngine(_:localAudioStats:));
 ```
 
@@ -1048,7 +1048,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine remoteAudioStateChangedOfUid:(NSUInteger)uid state:(AgoraAudioRemoteState)state reason:(AgoraAudioRemoteReason)reason elapsed:(NSInteger)elapsed NS_SWIFT_NAME(rtcEngine(_:remoteAudioStateChangedOfUid:state:reason:elapsed:));
 ```
 
@@ -1117,7 +1117,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine remoteAudioStats:(AgoraRtcRemoteAudioStats * _Nonnull)stats NS_SWIFT_NAME(rtcEngine(_:remoteAudioStats:));
 ```
 
@@ -1164,7 +1164,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine audioTransportStatsOfUid:(NSUInteger)uid delay:(NSUInteger)delay lost:(NSUInteger)lost rxKBitRate:(NSUInteger)rxKBitRate NS_SWIFT_NAME(rtcEngine(_:audioTransportStatsOfUid:delay:lost:rxKBitRate:)) __deprecated_msg("use rtcEngine:remoteAudioStats: instead");
 ```
 
@@ -1233,7 +1233,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didAudioMuted:(BOOL)muted byUid:(NSUInteger)uid NS_SWIFT_NAME(rtcEngine(_:didAudioMuted:byUid:));
 ```
 

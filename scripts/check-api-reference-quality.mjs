@@ -14,6 +14,7 @@ import {
   localeFor,
   matrix,
   readJson,
+  sharedCodeFrameFindings,
   sourceAudit,
   sourceFingerprint,
 } from './lib/api-reference-quality/policy.mjs';
@@ -146,6 +147,12 @@ async function settle(chrome, sid) {
     sid,
     `new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))`,
   );
+  for (let n = 0; n < 200; n++) {
+    const pending = await chrome.evaluate(sid, `!![...document.querySelectorAll('[data-syntax-pending]')].find(e => e.checkVisibility())`);
+    if (!pending) return;
+    await pause(25);
+  }
+  throw new Error('Runtime syntax highlighting did not finish');
 }
 async function nativeToggle(chrome, sid) {
   const target = await chrome.evaluate(
@@ -284,7 +291,7 @@ async function browserAudit({
     expectedPages: selected.map((row) => row.url),
     results: [],
     limitations:
-      'Geometry and field click/Enter checks; semantic correctness, visual judgement, touch, bulk controls, code tabs, and navigation require recorded human acceptance.',
+      'Layout, declared-language syntax, shared renderer styles and field click/Enter checks; semantic correctness, visual judgement, touch, bulk controls, code tabs, and navigation require recorded human acceptance.',
   };
   const save = () =>
     writeFile(path.join(out, 'browser.json'), JSON.stringify(report, null, 2));
@@ -508,6 +515,10 @@ async function browserAudit({
       source: sourceFingerprint(),
       build: (await buildIdentity(root, region)).hash,
     });
+    const sharedFrameFindings = sharedCodeFrameFindings(report.results);
+    for (const { resultIndex, stateIndex, ...issue } of sharedFrameFindings)
+      report.results[resultIndex].states[stateIndex].issues.push(issue);
+    report.sharedCodeFrames = { findings: sharedFrameFindings.length };
     report.status =
       report.results.length === selected.length &&
       report.results.every(

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_imediaengine_registeraudioframeobserver__prototype"></a>
 
-```text
+```ts
 abstract registerAudioFrameObserver(observer: IAudioFrameObserver): number;
 ```
 
@@ -69,7 +69,7 @@ abstract registerAudioFrameObserver(observer: IAudioFrameObserver): number;
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__prototype"></a>
 
-```text
+```ts
 abstract setEarMonitoringAudioFrameParameters(
     sampleRate: number,
     channel: number,
@@ -144,7 +144,7 @@ abstract setEarMonitoringAudioFrameParameters(
 
 <a id="api_irtcengine_setmixedaudioframeparameters__prototype"></a>
 
-```text
+```ts
 abstract setMixedAudioFrameParameters(
     sampleRate: number,
     channel: number,
@@ -211,7 +211,7 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__prototype"></a>
 
-```text
+```ts
 abstract setPlaybackAudioFrameBeforeMixingParameters(
     sampleRate: number,
     channel: number
@@ -278,7 +278,7 @@ SDK 会根据该采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__prototype"></a>
 
-```text
+```ts
 abstract setPlaybackAudioFrameParameters(
     sampleRate: number,
     channel: number,
@@ -352,7 +352,7 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__prototype"></a>
 
-```text
+```ts
 abstract setRecordingAudioFrameParameters(
     sampleRate: number,
     channel: number,
@@ -426,7 +426,7 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 
 <a id="api_imediaengine_unregisteraudioframeobserver_imediaengine__prototype"></a>
 
-```text
+```ts
 abstract unregisterAudioFrameObserver(observer: IAudioFrameObserver): number;
 ```
 
@@ -466,7 +466,7 @@ abstract unregisterAudioFrameObserver(observer: IAudioFrameObserver): number;
 
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe__prototype"></a>
 
-```text
+```ts
 onEarMonitoringAudioFrame?(audioFrame: AudioFrame): void;
 ```
 
@@ -501,7 +501,7 @@ onEarMonitoringAudioFrame?(audioFrame: AudioFrame): void;
 
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe__prototype"></a>
 
-```text
+```ts
 onMixedAudioFrame?(channelId: string, audioFrame: AudioFrame): void;
 ```
 
@@ -542,7 +542,7 @@ onMixedAudioFrame?(channelId: string, audioFrame: AudioFrame): void;
 
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe__prototype"></a>
 
-```text
+```ts
 onPlaybackAudioFrame?(channelId: string, audioFrame: AudioFrame): void;
 ```
 
@@ -583,7 +583,7 @@ onPlaybackAudioFrame?(channelId: string, audioFrame: AudioFrame): void;
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__prototype"></a>
 
-```text
+```ts
 onPlaybackAudioFrameBeforeMixing?(
     channelId: string,
     uid: number,
@@ -636,7 +636,7 @@ onPlaybackAudioFrameBeforeMixing?(
 
 <a id="callback_iaudioframeobserverbase_onrecordaudioframe__prototype"></a>
 
-```text
+```ts
 onRecordAudioFrame?(channelId: string, audioFrame: AudioFrame): void;
 ```
 

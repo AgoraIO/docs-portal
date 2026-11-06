@@ -24,7 +24,7 @@ _migration:
 
 <a id="api_irtcengine_complain__prototype"></a>
 
-```text
+```dart
 Future<void> complain({required String callId, required String description});
 ```
 
@@ -71,7 +71,7 @@ Future<void> complain({required String callId, required String description});
 
 <a id="api_irtcengine_enableencryption__prototype"></a>
 
-```text
+```dart
 Future<void> enableEncryption(
     {required bool enabled, required EncryptionConfig config});
 ```
@@ -141,7 +141,7 @@ Future<void> enableEncryption(
 
 <a id="api_irtcengineex_enableencryptionex__prototype"></a>
 
-```text
+```dart
 Future<void> enableEncryptionEx(
     {required RtcConnection connection,
     required bool enabled,
@@ -219,7 +219,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="api_irtcengine_enablewebsdkinteroperability__prototype"></a>
 
-```text
+```dart
 Future<void> enableWebSdkInteroperability(bool enabled);
 ```
 
@@ -270,7 +270,7 @@ Future<void> enableWebSdkInteroperability(bool enabled);
 
 <a id="api_rtcengineext_getassetabsolutepath__prototype"></a>
 
-```text
+```dart
 Future<String?> getAssetAbsolutePath(String assetPath)
 ```
 
@@ -309,7 +309,7 @@ Asset 的实际路径。
 
 <a id="api_irtcengine_getcallid__prototype"></a>
 
-```text
+```dart
 Future<String> getCallId();
 ```
 
@@ -343,7 +343,7 @@ Future<String> getCallId();
 
 <a id="api_irtcengineex_getcallidex__prototype"></a>
 
-```text
+```dart
 Future<String> getCallIdEx(RtcConnection connection);
 ```
 
@@ -384,7 +384,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="api_irtcengine_getconnectionstate__prototype"></a>
 
-```text
+```dart
 Future<ConnectionStateType> getConnectionState();
 ```
 
@@ -416,7 +416,7 @@ Future<ConnectionStateType> getConnectionState();
 
 <a id="api_irtcengineex_getconnectionstateex__prototype"></a>
 
-```text
+```dart
 Future<ConnectionStateType> getConnectionStateEx(RtcConnection connection);
 ```
 
@@ -461,7 +461,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="api_irtcengine_getcurrentmonotonictimeinms__prototype"></a>
 
-```text
+```dart
 Future<int> getCurrentMonotonicTimeInMs();
 ```
 
@@ -497,7 +497,7 @@ Monotonic Time 是指一个单调递增的时间序列，它的值会随着时�
 
 <a id="api_irtcengine_geterrordescription__prototype"></a>
 
-```text
+```dart
 Future<String> getErrorDescription(int code);
 ```
 
@@ -536,7 +536,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_getnativehandle__prototype"></a>
 
-```text
+```dart
 Future<int> getNativeHandle();
 ```
 
@@ -564,7 +564,7 @@ SDK 引擎的 Native 句柄。
 
 <a id="api_irtcengine_getnetworktype__prototype"></a>
 
-```text
+```dart
 Future<int> getNetworkType();
 ```
 
@@ -607,7 +607,7 @@ Future<int> getNetworkType();
 
 <a id="api_irtcengine_getntpwalltimeinms__prototype"></a>
 
-```text
+```dart
 Future<int> getNtpWallTimeInMs();
 ```
 
@@ -635,7 +635,7 @@ Future<int> getNtpWallTimeInMs();
 
 <a id="api_irtcengine_getversion__prototype"></a>
 
-```text
+```dart
 Future<SDKBuildInfo> getVersion();
 ```
 
@@ -661,7 +661,7 @@ Future<SDKBuildInfo> getVersion();
 
 <a id="api_irtcengine_isfeatureavailableondevice__prototype"></a>
 
-```text
+```dart
 Future<bool> isFeatureAvailableOnDevice(FeatureType type);
 ```
 
@@ -709,7 +709,7 @@ Future<bool> isFeatureAvailableOnDevice(FeatureType type);
 
 <a id="api_irtcengine_querydevicescore__prototype"></a>
 
-```text
+```dart
 Future<int> queryDeviceScore();
 ```
 
@@ -743,7 +743,7 @@ Future<int> queryDeviceScore();
 
 <a id="api_irtcengine_rate__prototype"></a>
 
-```text
+```dart
 Future<void> rate(
     {required String callId,
     required int rating,
@@ -801,7 +801,7 @@ Future<void> rate(
 
 <a id="api_irtcengine_sendcustomreportmessage__prototype"></a>
 
-```text
+```dart
 Future<void> sendCustomReportMessage(
     {required String id,
     required String category,
@@ -828,7 +828,7 @@ Future<void> sendCustomReportMessage(
 
 <a id="api_irtcengineex_sendcustomreportmessageex__prototype"></a>
 
-```text
+```dart
 Future<void> sendCustomReportMessageEx(
       {required String id,
       required String category,
@@ -856,7 +856,7 @@ Future<void> sendCustomReportMessageEx(
 
 <a id="api_irtcengine_setavsyncsource__prototype"></a>
 
-```text
+```dart
 Future<void> setAVSyncSource({required String channelId, required int uid});
 ```
 
@@ -907,7 +907,7 @@ Future<void> setAVSyncSource({required String channelId, required int uid});
 
 <a id="api_irtcengine_setcloudproxy__prototype"></a>
 
-```text
+```dart
 Future<void> setCloudProxy(CloudProxyType proxyType);
 ```
 
@@ -960,7 +960,7 @@ Future<void> setCloudProxy(CloudProxyType proxyType);
 
 <a id="api_irtcengine_setlocalaccesspoint__prototype"></a>
 
-```text
+```dart
 Future<void> setLocalAccessPoint(LocalAccessPointConfiguration config);
 ```
 
@@ -1011,7 +1011,7 @@ Local Access Point 配置。详见 LocalAccessPointConfiguration。
 
 <a id="api_irtcengine_setlogfile__prototype"></a>
 
-```text
+```dart
 Future<void> setLogFile(String filePath);
 ```
 
@@ -1068,7 +1068,7 @@ Future<void> setLogFile(String filePath);
 
 <a id="api_irtcengine_setlogfilesize__prototype"></a>
 
-```text
+```dart
 Future<void> setLogFileSize(int fileSizeInKBytes);
 ```
 
@@ -1132,7 +1132,7 @@ Future<void> setLogFileSize(int fileSizeInKBytes);
 
 <a id="api_irtcengine_setlogfilter__prototype"></a>
 
-```text
+```dart
 Future<void> setLogFilter(LogFilterType filter);
 ```
 
@@ -1181,7 +1181,7 @@ Future<void> setLogFilter(LogFilterType filter);
 
 <a id="api_irtcengine_setloglevel__prototype"></a>
 
-```text
+```dart
 Future<void> setLogLevel(LogLevel level);
 ```
 
@@ -1228,7 +1228,7 @@ SDK 的 JSON 配置信息，用于提供技术预览或特别定制功能。
 
 <a id="api_irtcengine_setparameters__prototype"></a>
 
-```text
+```dart
 Future<void> setParameters(String parameters);
 ```
 
@@ -1267,7 +1267,7 @@ JSON 字符串形式的参数。
 
 <a id="api_irtcengine_setremotesubscribefallbackoption__prototype"></a>
 
-```text
+```dart
 Future<void> setRemoteSubscribeFallbackOption(StreamFallbackOptions option);
 ```
 
@@ -1311,7 +1311,7 @@ Future<void> setRemoteSubscribeFallbackOption(StreamFallbackOptions option);
 
 <a id="api_irtcengine_startechotest3__prototype"></a>
 
-```text
+```dart
 Future<void> startEchoTest(EchoTestConfiguration config);
 ```
 
@@ -1368,7 +1368,7 @@ Future<void> startEchoTest(EchoTestConfiguration config);
 
 <a id="api_irtcengine_startlastmileprobetest__prototype"></a>
 
-```text
+```dart
 Future<void> startLastmileProbeTest(LastmileProbeConfig config);
 ```
 
@@ -1424,7 +1424,7 @@ Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference
 
 <a id="api_irtcengine_stopechotest__prototype"></a>
 
-```text
+```dart
 Future<void> stopEchoTest();
 ```
 
@@ -1452,7 +1452,7 @@ Future<void> stopEchoTest();
 
 <a id="api_irtcengine_stoplastmileprobetest__prototype"></a>
 
-```text
+```dart
 Future<void> stopLastmileProbeTest();
 ```
 
@@ -1478,7 +1478,7 @@ Future<void> stopLastmileProbeTest();
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection)? onConnectionBanned;
 ```
 
@@ -1517,7 +1517,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection)? onConnectionInterrupted;
 ```
 
@@ -1563,7 +1563,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onconnectionlost__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection)? onConnectionLost;
 ```
 
@@ -1598,7 +1598,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, ConnectionStateType state,
       ConnectionChangedReasonType reason)? onConnectionStateChanged;
 ```
@@ -1646,7 +1646,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onencryptionerror__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, EncryptionErrorType errorType)?
       onEncryptionError;
 ```
@@ -1688,7 +1688,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onlastmileproberesult__prototype"></a>
 
-```text
+```dart
 final void Function(LastmileProbeResult result)? onLastmileProbeResult;
 ```
 
@@ -1723,7 +1723,7 @@ final void Function(LastmileProbeResult result)? onLastmileProbeResult;
 
 <a id="callback_irtcengineeventhandler_onlastmilequality__prototype"></a>
 
-```text
+```dart
 final void Function(QualityType quality)? onLastmileQuality;
 ```
 
@@ -1759,7 +1759,7 @@ Last mile 网络质量。详见 [QualityType](/zh-CN/api-reference/rtc/flutter/e
 
 <a id="callback_irtcengineeventhandler_onmultipathstats__prototype"></a>
 
-```text
+```dart
   final void Function(RtcConnection connection, MultipathStats stats)?
       onMultipathStats;
 ```
@@ -1803,7 +1803,7 @@ Last mile 网络质量。详见 [QualityType](/zh-CN/api-reference/rtc/flutter/e
 
 <a id="callback_irtcengineeventhandler_onnetworkquality__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int remoteUid,
       QualityType txQuality, QualityType rxQuality)? onNetworkQuality;
 ```
@@ -1863,7 +1863,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onnetworktypechanged__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, NetworkType type)?
       onNetworkTypeChanged;
 ```
@@ -1905,7 +1905,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onpermissionerror__prototype"></a>
 
-```text
+```dart
 final void Function(PermissionType permissionType)? onPermissionError;
 ```
 
@@ -1940,7 +1940,7 @@ final void Function(PermissionType permissionType)? onPermissionError;
 
 <a id="callback_irtcengineeventhandler_onpermissiongranted__prototype"></a>
 
-```text
+```dart
   final void Function(PermissionType permissionType)?
       onPermissionGranted;
 ```
@@ -1974,7 +1974,7 @@ final void Function(PermissionType permissionType)? onPermissionError;
 
 <a id="callback_irtcengineeventhandler_onproxyconnected__prototype"></a>
 
-```text
+```dart
 final void Function(String channel, int uid, ProxyType proxyType,
       String localProxyIp, int elapsed)? onProxyConnected;
 ```
@@ -2028,7 +2028,7 @@ final void Function(String channel, int uid, ProxyType proxyType,
 
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__prototype"></a>
 
-```text
+```dart
 final void Function(int uid, bool isFallbackOrRecover)?
       onRemoteSubscribeFallbackToAudioOnly;
 ```
@@ -2078,7 +2078,7 @@ final void Function(int uid, bool isFallbackOrRecover)?
 
 <a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__prototype"></a>
 
-```text
+```dart
 final void Function(UplinkNetworkInfo info)? onUplinkNetworkInfoUpdated;
 ```
 

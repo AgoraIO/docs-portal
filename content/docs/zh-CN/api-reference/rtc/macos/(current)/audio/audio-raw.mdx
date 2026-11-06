@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_iaudioframeobserver_getearmonitoringaudioparams__prototype"></a>
 
-```text
+```objc
 - (AgoraAudioParams* _Nonnull)getEarMonitoringAudioParams NS_SWIFT_NAME(getEarMonitoringAudioParams());
 ```
 
@@ -53,7 +53,7 @@ _migration:
 
 <a id="api_iaudioframeobserver_getmixedaudioparams__prototype"></a>
 
-```text
+```objc
 - (AgoraAudioParams* _Nonnull)getMixedAudioParams NS_SWIFT_NAME(getMixedAudioParams());
 ```
 
@@ -85,7 +85,7 @@ _migration:
 
 <a id="api_iaudioframeobserver_getobservedaudioframeposition__prototype"></a>
 
-```text
+```objc
 - (AgoraAudioFramePosition)getObservedAudioFramePosition NS_SWIFT_NAME(getObservedAudioFramePosition());
 ```
 
@@ -127,7 +127,7 @@ _migration:
 
 <a id="api_iaudioframeobserver_getplaybackaudioparams__prototype"></a>
 
-```text
+```objc
 - (AgoraAudioParams* _Nonnull)getPlaybackAudioParams NS_SWIFT_NAME(getPlaybackAudioParams());
 ```
 
@@ -159,7 +159,7 @@ _migration:
 
 <a id="api_iaudioframeobserver_getrecordaudioparams__prototype"></a>
 
-```text
+```objc
 - (AgoraAudioParams* _Nonnull)getRecordAudioParams NS_SWIFT_NAME(getRecordAudioParams());
 ```
 
@@ -191,7 +191,7 @@ _migration:
 
 <a id="api_irtcengine_registeraudioframeobserver__prototype"></a>
 
-```text
+```objc
 - (BOOL)setAudioFrameDelegate:(id<AgoraAudioFrameDelegate> _Nullable)delegate NS_SWIFT_NAME(setAudioFrameDelegate(_:));
 ```
 
@@ -239,7 +239,7 @@ _migration:
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__prototype"></a>
 
-```text
+```objc
 - (int)setEarMonitoringAudioFrameParametersWithSampleRate:(NSInteger)sampleRate
                                                   channel:(NSInteger)channel
                                                      mode:(AgoraAudioRawFrameOperationMode)mode
@@ -312,7 +312,7 @@ _migration:
 
 <a id="api_irtcengine_setmixedaudioframeparameters__prototype"></a>
 
-```text
+```objc
 - (int)setMixedAudioFrameParametersWithSampleRate:(NSInteger)sampleRate
                                           channel:(NSInteger)channel
                                    samplesPerCall:(NSInteger)samplesPerCall NS_SWIFT_NAME(setMixedAudioFrameParametersWithSampleRate(_:channel:samplesPerCall:));
@@ -377,7 +377,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__prototype"></a>
 
-```text
+```objc
 - (int)setPlaybackAudioFrameBeforeMixingParametersWithSampleRate:(NSInteger)sampleRate
                                                          channel:(NSInteger)channel NS_SWIFT_NAME(setPlaybackAudioFrameBeforeMixingParametersWithSampleRate(_:channel:));
 ```
@@ -435,7 +435,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__prototype"></a>
 
-```text
+```objc
 - (int)setPlaybackAudioFrameBeforeMixingParametersWithSampleRate:(NSInteger)sampleRate
                                                          channel:(NSInteger)channel
                                                   samplesPerCall:(NSInteger)samplesPerCall NS_SWIFT_NAME(setPlaybackAudioFrameBeforeMixingParametersWithSampleRate(_:channel:samplesPerCall:));
@@ -494,7 +494,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__prototype"></a>
 
-```text
+```objc
 - (int)setPlaybackAudioFrameParametersWithSampleRate:(NSInteger)sampleRate
                                               channel:(NSInteger)channel
                                                  mode:(AgoraAudioRawFrameOperationMode)mode
@@ -572,7 +572,7 @@ SDK 会根据采样间隔触发 `onPlaybackAudioFrame:` 回调。
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__prototype"></a>
 
-```text
+```objc
 - (int)setRecordingAudioFrameParametersWithSampleRate:(NSInteger)sampleRate
                                               channel:(NSInteger)channel
                                                  mode:(AgoraAudioRawFrameOperationMode)mode
@@ -644,7 +644,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 <a id="callback_iaudioframeobserver_onearmonitoringaudioframe__prototype"></a>
 
-```text
+```objc
 - (BOOL)onEarMonitoringAudioFrame:(AgoraAudioFrame* _Nonnull)frame NS_SWIFT_NAME(onEarMonitoringAudioFrame(_:));
 ```
 
@@ -701,7 +701,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 <a id="callback_iaudioframeobserver_onmixedaudioframe__prototype"></a>
 
-```text
+```objc
 - (BOOL)onMixedAudioFrame:(AgoraAudioFrame* _Nonnull)frame channelId:(NSString * _Nonnull)channelId  NS_SWIFT_NAME(onMixedAudioFrame(_:channelId:));
 ```
 
@@ -764,7 +764,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframe__prototype"></a>
 
-```text
+```objc
 - (BOOL)onPlaybackAudioFrame:(AgoraAudioFrame* _Nonnull)frame channelId:(NSString * _Nonnull)channelId  NS_SWIFT_NAME(onPlaybackAudioFrame(_:channelId:));
 ```
 
@@ -825,7 +825,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__prototype"></a>
 
-```text
+```objc
 - (BOOL)onPlaybackAudioFrameBeforeMixing:(AgoraAudioFrame* _Nonnull)frame channelId:(NSString * _Nonnull)channelId uid:(NSUInteger)uid  NS_SWIFT_NAME(onPlaybackAudioFrame(beforeMixing:channelId:uid:));
 ```
 
@@ -877,7 +877,7 @@ SDK 会根据你设置的 `samplesPerCall`、`sampleRate` 和 `channel` 参数�
 
 <a id="callback_iaudioframeobserver_onrecordaudioframe__prototype"></a>
 
-```text
+```objc
 - (BOOL)onRecordAudioFrame:(AgoraAudioFrame* _Nonnull)frame channelId:(NSString * _Nonnull)channelId  NS_SWIFT_NAME(onRecordAudioFrame(_:channelId:));
 ```
 

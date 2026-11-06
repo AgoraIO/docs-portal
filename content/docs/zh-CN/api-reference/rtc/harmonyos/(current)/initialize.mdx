@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_create__prototype"></a>
 
-```text
+```ts
 public static createEngine(context: Context, appID: string, handler: IRtcEngineEventHandler): RtcEngine {
     let config = new RtcEngineConfig();
     config.mContext = context;
@@ -88,7 +88,7 @@ RtcEngine 类的所有接口函数，如无特殊说明，都是异步调用，�
 
 <a id="api_irtcengine_initialize__prototype"></a>
 
-```text
+```ts
 public static create(config: RtcEngineConfig): RtcEngine {
     return RtcEngineImpl.createEngineImpl(config);
   }
@@ -141,7 +141,7 @@ SDK 只支持每个 App 创建一个 RtcEngine 实例。
 
 <a id="api_irtcengine_release__prototype"></a>
 
-```text
+```ts
 public static destroy(): Promise<void> {
     return RtcEngineImpl.destroyEngine();
   };

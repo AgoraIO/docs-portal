@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_iscreencapturesourcelist_getcount_iscreencapturesourcelist__prototype"></a>
 
-```text
+```cpp
 virtual unsigned int getCount() = 0;
 ```
 
@@ -51,7 +51,7 @@ virtual unsigned int getCount() = 0;
 
 <a id="api_irtcengine_getscreencapturesources__prototype"></a>
 
-```text
+```cpp
 virtual IScreenCaptureSourceList* getScreenCaptureSources(const SIZE& thumbSize, const SIZE& iconSize, const bool includeScreen) = 0;
 ```
 
@@ -112,7 +112,7 @@ virtual IScreenCaptureSourceList* getScreenCaptureSources(const SIZE& thumbSize,
 
 <a id="api_iscreencapturesourcelist_getsourceinfo_iscreencapturesourcelist__prototype"></a>
 
-```text
+```cpp
 virtual ScreenCaptureSourceInfo getSourceInfo(unsigned int index) = 0;
 ```
 
@@ -157,7 +157,7 @@ virtual ScreenCaptureSourceInfo getSourceInfo(unsigned int index) = 0;
 
 <a id="api_irtcengine_queryscreencapturecapability__prototype"></a>
 
-```text
+```cpp
 virtual int queryScreenCaptureCapability() = 0;
 ```
 
@@ -200,7 +200,7 @@ virtual int queryScreenCaptureCapability() = 0;
 
 <a id="api_iscreencapturesourcelist_release_iscreencapturesourcelist__prototype"></a>
 
-```text
+```cpp
 virtual void release() = 0;
 ```
 
@@ -226,7 +226,7 @@ virtual void release() = 0;
 
 <a id="api_irtcengine_setexternalmediaprojection__prototype"></a>
 
-```text
+```cpp
 virtual int setExternalMediaProjection(void* mediaProjection) = 0;
 ```
 
@@ -289,7 +289,7 @@ virtual int setExternalMediaProjection(void* mediaProjection) = 0;
 
 <a id="api_irtcengine_setscreencapturecontenthint__prototype"></a>
 
-```text
+```cpp
 virtual int setScreenCaptureContentHint(VIDEO_CONTENT_HINT contentHint) = 0;
 ```
 
@@ -338,7 +338,7 @@ virtual int setScreenCaptureContentHint(VIDEO_CONTENT_HINT contentHint) = 0;
 
 <a id="api_irtcengine_setscreencapturescenario__prototype"></a>
 
-```text
+```cpp
 virtual int setScreenCaptureScenario(SCREEN_SCENARIO_TYPE screenScenario) = 0;
 ```
 
@@ -384,7 +384,7 @@ virtual int setScreenCaptureScenario(SCREEN_SCENARIO_TYPE screenScenario) = 0;
 
 <a id="api_irtcengine_startscreencapture__prototype"></a>
 
-```text
+```cpp
 virtual int startScreenCapture(const ScreenCaptureParameters2& captureParams) = 0;
 ```
 
@@ -459,7 +459,7 @@ virtual int startScreenCapture(const ScreenCaptureParameters2& captureParams) = 
 
 <a id="api_irtcengine_startscreencapture2__prototype"></a>
 
-```text
+```cpp
 virtual int startScreenCapture(VIDEO_SOURCE_TYPE sourceType, const ScreenCaptureConfiguration& config) = 0;
 ```
 
@@ -538,7 +538,7 @@ virtual int startScreenCapture(VIDEO_SOURCE_TYPE sourceType, const ScreenCapture
 
 <a id="api_irtcengine_startscreencapturebydisplayid__prototype"></a>
 
-```text
+```cpp
 virtual int startScreenCaptureByDisplayId(int64_t displayId, const Rectangle& regionRect, const ScreenCaptureParameters& captureParams) = 0;
 ```
 
@@ -616,7 +616,7 @@ virtual int startScreenCaptureByDisplayId(int64_t displayId, const Rectangle& re
 
 <a id="api_irtcengine_startscreencapturebyscreenrect__prototype"></a>
 
-```text
+```cpp
 virtual int startScreenCaptureByScreenRect(const Rectangle& screenRect, const Rectangle& regionRect, const ScreenCaptureParameters& captureParams) __deprecated = 0;
 ```
 
@@ -686,7 +686,7 @@ virtual int startScreenCaptureByScreenRect(const Rectangle& screenRect, const Re
 
 <a id="api_irtcengine_startscreencapturebywindowid__prototype"></a>
 
-```text
+```cpp
 virtual int startScreenCaptureByWindowId(int64_t windowId, const Rectangle& regionRect, const ScreenCaptureParameters& captureParams) = 0;
 ```
 
@@ -798,7 +798,7 @@ virtual int startScreenCaptureByWindowId(int64_t windowId, const Rectangle& regi
 
 <a id="api_irtcengine_stopscreencapture__prototype"></a>
 
-```text
+```cpp
 virtual int stopScreenCapture() = 0;
 ```
 
@@ -842,7 +842,7 @@ virtual int stopScreenCapture() = 0;
 
 <a id="api_irtcengine_stopscreencapture2__prototype"></a>
 
-```text
+```cpp
 virtual int stopScreenCapture(VIDEO_SOURCE_TYPE sourceType) = 0;
 ```
 
@@ -894,7 +894,7 @@ virtual int stopScreenCapture(VIDEO_SOURCE_TYPE sourceType) = 0;
 
 <a id="api_irtcengine_updatescreencapture__prototype"></a>
 
-```text
+```cpp
 virtual int updateScreenCapture(const ScreenCaptureParameters2& captureParams) = 0;
 ```
 
@@ -949,7 +949,7 @@ virtual int updateScreenCapture(const ScreenCaptureParameters2& captureParams) =
 
 <a id="api_irtcengine_updatescreencaptureparameters__prototype"></a>
 
-```text
+```cpp
 virtual int updateScreenCaptureParameters(const ScreenCaptureParameters& captureParams) = 0;
 ```
 
@@ -996,7 +996,7 @@ virtual int updateScreenCaptureParameters(const ScreenCaptureParameters& capture
 
 <a id="api_irtcengine_updatescreencaptureregion1__prototype"></a>
 
-```text
+```cpp
 virtual int updateScreenCaptureRegion(const Rectangle& regionRect) = 0;
 ```
 

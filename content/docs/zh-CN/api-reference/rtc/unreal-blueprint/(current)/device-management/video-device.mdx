@@ -22,7 +22,7 @@ _migration:
 
 <a id="api_irtcengine_enablemulticamera__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int EnableMultiCamera(bool enabled, const FCameraCapturerConfiguration& config);
 ```
@@ -106,7 +106,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_ivideodevicemanager_enumeratevideodevices__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IVideoDeviceManager")
 	UVideoDeviceCollection* EnumerateVideoDevices();
 ```
@@ -142,7 +142,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IVideoDeviceManager")
 
 <a id="api_irtcengine_getcameramaxzoomfactor__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	float GetCameraMaxZoomFactor();
 ```
@@ -178,7 +178,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_ivideodevicemanager_getcapability__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IVideoDeviceManager")
 	int GetCapability(const FString & deviceIdUTF8, int deviceCapabilityNumber, FVideoFormat& capability);
 ```
@@ -239,7 +239,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IVideoDeviceManager")
 
 <a id="api_ivideodevicecollection_getcount__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintPure, Category = "Agora|IVideoDeviceCollection")
 int GetCount();
 ```
@@ -264,7 +264,7 @@ int GetCount();
 
 <a id="api_ivideodevicecollection_getdevice__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IVideoDeviceCollection")
 int GetDevice(int index, FString& deviceName, FString& deviceId);
 ```
@@ -315,7 +315,7 @@ int GetDevice(int index, FString& deviceName, FString& deviceId);
 
 <a id="api_irtcengine_getvideodevicemanager__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintPure, Category = "Agora|IVideoDeviceManager")
 	static UAgoraBPuVideoDeviceManager* GetAgoraVideoDeviceManager();
 ```
@@ -336,7 +336,7 @@ UFUNCTION(BlueprintPure, Category = "Agora|IVideoDeviceManager")
 
 <a id="api_irtcengine_iscameraautoexposurefacemodesupported__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	bool IsCameraAutoExposureFaceModeSupported();
 ```
@@ -373,7 +373,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_iscameraautofocusfacemodesupported__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	bool IsCameraAutoFocusFaceModeSupported();
 ```
@@ -410,7 +410,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_iscameraexposurepositionsupported__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	bool IsCameraExposurePositionSupported();
 ```
@@ -447,7 +447,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_iscameraexposuresupported__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	bool IsCameraExposureSupported();
 ```
@@ -486,7 +486,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_iscamerafacedetectsupported__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	bool IsCameraFaceDetectSupported();
 ```
@@ -523,7 +523,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_iscamerafocussupported__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	bool IsCameraFocusSupported();
 ```
@@ -560,7 +560,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_iscameratorchsupported__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	bool IsCameraTorchSupported();
 ```
@@ -599,7 +599,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_iscamerazoomsupported__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	bool IsCameraZoomSupported();
 ```
@@ -643,7 +643,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_ivideodevicemanager_numberofcapabilities__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IVideoDeviceManager")
 	int NumberOfCapabilities(const FString & deviceIdUTF8);
 ```
@@ -694,7 +694,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IVideoDeviceManager")
 
 <a id="api_irtcengine_querycamerafocallengthcapability__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int QueryCameraFocalLengthCapability(const TArray<FFocalLengthInfo> & focalLengthInfos);
 ```
@@ -746,7 +746,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_querycodeccapability__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int QueryCodecCapability(TArray<FCodecCapInfo> & codecInfo, int QuerySize = 10);
 ```
@@ -801,7 +801,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_ivideodevicecollection_release__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IVideoDeviceCollection")
 void Release();
 ```
@@ -820,7 +820,7 @@ void Release();
 
 <a id="api_ivideodevicemanager_release__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IVideoDeviceManager")
 void Release();
 ```
@@ -847,7 +847,7 @@ void Release();
 
 <a id="api_irtcengine_setcameraautoexposurefacemodeenabled__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetCameraAutoExposureFaceModeEnabled(bool enabled);
 ```
@@ -900,7 +900,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetCameraAutoFocusFaceModeEnabled(bool enabled);
 ```
@@ -962,7 +962,7 @@ SDK 默认在 Android 平台关闭人脸自动对焦，在 iOS 平台开启人�
 
 <a id="api_irtcengine_setcameracapturerconfiguration__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetCameraCapturerConfiguration(const FCameraCapturerConfiguration& config);
 ```
@@ -1021,7 +1021,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setcameradeviceorientation__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetCameraDeviceOrientation(EVIDEO_SOURCE_TYPE type, FENUMWRAP_VIDEO_ORIENTATION orientation);
 ```
@@ -1083,7 +1083,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setcameraexposurefactor__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetCameraExposureFactor(float factor);
 ```
@@ -1139,7 +1139,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setcameraexposureposition__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetCameraExposurePosition(float positionXinView, float positionYinView);
 ```
@@ -1196,7 +1196,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetCameraFocusPositionInPreview(float positionX, float positionY);
 ```
@@ -1253,7 +1253,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setcameratorchon__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetCameraTorchOn(bool isOn);
 ```
@@ -1306,7 +1306,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setcamerazoomfactor__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetCameraZoomFactor(float factor);
 ```
@@ -1358,7 +1358,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_ivideodevicecollection_setdevice__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IVideoDeviceCollection")
 	int SetDevice(FString& deviceIdUTF8);
 ```
@@ -1397,7 +1397,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IVideoDeviceCollection")
 
 <a id="api_irtcengine_switchcamera__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SwitchCamera();
 ```
@@ -1445,7 +1445,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="callback_irtcengineeventhandler_oncameraexposureareachanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnCameraExposureAreaChanged(int x, int y, int width, int height);
 ```
@@ -1505,7 +1505,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_oncamerafocusareachanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnCameraFocusAreaChanged(int x, int y, int width, int height);
 ```
@@ -1563,7 +1563,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_oncameraready__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnCameraReady();
 ```
@@ -1596,7 +1596,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onvideodevicestatechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnVideoDeviceStateChanged(const FString& deviceId, int deviceType, int deviceState);
 ```

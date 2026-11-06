@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_iaudiodevicemanager_enumerateplaybackdevices__prototype"></a>
 
-```text
+```cpp
 virtual IAudioDeviceCollection *enumeratePlaybackDevices() = 0;
 ```
 
@@ -54,7 +54,7 @@ virtual IAudioDeviceCollection *enumeratePlaybackDevices() = 0;
 
 <a id="api_iaudiodevicemanager_enumeraterecordingdevices__prototype"></a>
 
-```text
+```cpp
 virtual IAudioDeviceCollection *enumerateRecordingDevices() = 0;
 ```
 
@@ -87,7 +87,7 @@ virtual IAudioDeviceCollection *enumerateRecordingDevices() = 0;
 
 <a id="api_iaudiodevicemanager_followsystemloopbackdevice__prototype"></a>
 
-```text
+```cpp
 virtual int followSystemLoopbackDevice(bool enable) = 0;
 ```
 
@@ -132,7 +132,7 @@ virtual int followSystemLoopbackDevice(bool enable) = 0;
 
 <a id="api_iaudiodevicemanager_followsystemplaybackdevice__prototype"></a>
 
-```text
+```cpp
 virtual int followSystemPlaybackDevice(bool enable) = 0;
 ```
 
@@ -179,7 +179,7 @@ virtual int followSystemPlaybackDevice(bool enable) = 0;
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice__prototype"></a>
 
-```text
+```cpp
 virtual int followSystemRecordingDevice(bool enable) = 0;
 ```
 
@@ -226,7 +226,7 @@ virtual int followSystemRecordingDevice(bool enable) = 0;
 
 <a id="api_iaudiodevicecollection_getapplicationvolume__prototype"></a>
 
-```text
+```cpp
 virtual int getApplicationVolume(int &volume) = 0;
 ```
 
@@ -266,7 +266,7 @@ virtual int getApplicationVolume(int &volume) = 0;
 
 <a id="api_irtcengine_getaudiodeviceinfo__prototype"></a>
 
-```text
+```cpp
 virtual int getAudioDeviceInfo(DeviceInfo& deviceInfo) = 0;
 ```
 
@@ -315,7 +315,7 @@ virtual int getAudioDeviceInfo(DeviceInfo& deviceInfo) = 0;
 
 <a id="api_iaudiodevicecollection_getcount_iaudiodevicecollection__prototype"></a>
 
-```text
+```cpp
 virtual int getCount() = 0;
 ```
 
@@ -343,7 +343,7 @@ virtual int getCount() = 0;
 
 <a id="api_iaudiodevicecollection_getdefaultdevice2_iaudiodevicecollection__prototype"></a>
 
-```text
+```cpp
 virtual int getDefaultDevice(char deviceName[MAX_DEVICE_ID_LENGTH], char deviceTypeName[MAX_DEVICE_ID_LENGTH], char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -397,7 +397,7 @@ virtual int getDefaultDevice(char deviceName[MAX_DEVICE_ID_LENGTH], char deviceT
 
 <a id="api_iaudiodevicecollection_getdefaultdevice_iaudiodevicecollection__prototype"></a>
 
-```text
+```cpp
 virtual int getDefaultDevice(char deviceName[MAX_DEVICE_ID_LENGTH], char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -446,7 +446,7 @@ virtual int getDefaultDevice(char deviceName[MAX_DEVICE_ID_LENGTH], char deviceI
 
 <a id="api_iaudiodevicecollection_getdevice2_iaudiodevicecollection__prototype"></a>
 
-```text
+```cpp
 virtual int getDevice(int index, char deviceName[MAX_DEVICE_ID_LENGTH], char deviceTypeName[MAX_DEVICE_ID_LENGTH], char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -508,7 +508,7 @@ virtual int getDevice(int index, char deviceName[MAX_DEVICE_ID_LENGTH], char dev
 
 <a id="api_iaudiodevicecollection_getdevice_iaudiodevicecollection__prototype"></a>
 
-```text
+```cpp
 virtual int getDevice(int index, char deviceName[MAX_DEVICE_ID_LENGTH], char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -560,7 +560,7 @@ virtual int getDevice(int index, char deviceName[MAX_DEVICE_ID_LENGTH], char dev
 
 <a id="api_iaudiodevicemanager_getloopbackdevice__prototype"></a>
 
-```text
+```cpp
 virtual int getLoopbackDevice(char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -602,7 +602,7 @@ virtual int getLoopbackDevice(char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 <a id="api_iaudiodevicemanager_getplaybackdevice__prototype"></a>
 
-```text
+```cpp
 virtual int getPlaybackDevice(char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -646,7 +646,7 @@ virtual int getPlaybackDevice(char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo__prototype"></a>
 
-```text
+```cpp
 virtual int getPlaybackDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char deviceName[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -696,7 +696,7 @@ virtual int getPlaybackDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char devi
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo2__prototype"></a>
 
-```text
+```cpp
 virtual int getPlaybackDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char deviceName[MAX_DEVICE_ID_LENGTH], char deviceTypeName[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -750,7 +750,7 @@ virtual int getPlaybackDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char devi
 
 <a id="api_iaudiodevicemanager_getplaybackdevicemute__prototype"></a>
 
-```text
+```cpp
 virtual int getPlaybackDeviceMute(bool *mute) = 0;
 ```
 
@@ -793,7 +793,7 @@ virtual int getPlaybackDeviceMute(bool *mute) = 0;
 
 <a id="api_iaudiodevicemanager_getplaybackdevicevolume__prototype"></a>
 
-```text
+```cpp
 virtual int getPlaybackDeviceVolume(int *volume) = 0;
 ```
 
@@ -833,7 +833,7 @@ virtual int getPlaybackDeviceVolume(int *volume) = 0;
 
 <a id="api_iaudiodevicemanager_getrecordingdevice__prototype"></a>
 
-```text
+```cpp
 virtual int getRecordingDevice(char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -877,7 +877,7 @@ virtual int getRecordingDevice(char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo__prototype"></a>
 
-```text
+```cpp
 virtual int getRecordingDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char deviceName[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -927,7 +927,7 @@ virtual int getRecordingDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char dev
 
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo2__prototype"></a>
 
-```text
+```cpp
 virtual int getRecordingDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char deviceName[MAX_DEVICE_ID_LENGTH], char deviceTypeName[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -981,7 +981,7 @@ virtual int getRecordingDeviceInfo(char deviceId[MAX_DEVICE_ID_LENGTH], char dev
 
 <a id="api_iaudiodevicemanager_getrecordingdevicemute__prototype"></a>
 
-```text
+```cpp
 virtual int getRecordingDeviceMute(bool *mute) = 0;
 ```
 
@@ -1024,7 +1024,7 @@ virtual int getRecordingDeviceMute(bool *mute) = 0;
 
 <a id="api_iaudiodevicemanager_getrecordingdevicevolume__prototype"></a>
 
-```text
+```cpp
 virtual int getRecordingDeviceVolume(int *volume) = 0;
 ```
 
@@ -1068,7 +1068,7 @@ virtual int getRecordingDeviceVolume(int *volume) = 0;
 
 <a id="api_iaudiodevicecollection_isapplicationmute__prototype"></a>
 
-```text
+```cpp
 virtual int isApplicationMute(bool &mute) = 0;
 ```
 
@@ -1111,7 +1111,7 @@ virtual int isApplicationMute(bool &mute) = 0;
 
 <a id="api_iaudiodevicecollection_release_iaudiodevicecollection__prototype"></a>
 
-```text
+```cpp
 virtual void release() = 0;
 ```
 
@@ -1131,7 +1131,7 @@ virtual void release() = 0;
 
 <a id="api_iaudiodevicemanager_release_iaudiodevicemanager__prototype"></a>
 
-```text
+```cpp
 virtual void release() = 0;
 ```
 
@@ -1151,7 +1151,7 @@ virtual void release() = 0;
 
 <a id="api_iaudiodevicecollection_setapplicationmute__prototype"></a>
 
-```text
+```cpp
 virtual int setApplicationMute(bool mute) = 0;
 ```
 
@@ -1194,7 +1194,7 @@ virtual int setApplicationMute(bool mute) = 0;
 
 <a id="api_iaudiodevicecollection_setapplicationvolume__prototype"></a>
 
-```text
+```cpp
 virtual int setApplicationVolume(int volume) = 0;
 ```
 
@@ -1234,7 +1234,7 @@ virtual int setApplicationVolume(int volume) = 0;
 
 <a id="api_iaudiodevicecollection_setdevice_iaudiodevicecollection__prototype"></a>
 
-```text
+```cpp
 virtual int setDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -1285,7 +1285,7 @@ virtual int setDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 <a id="api_iaudiodevicemanager_setloopbackdevice__prototype"></a>
 
-```text
+```cpp
 virtual int setLoopbackDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -1342,7 +1342,7 @@ SDK 默认使用当前播放设备作为声卡采集设备。如果你希望指�
 
 <a id="api_iaudiodevicemanager_setplaybackdevice__prototype"></a>
 
-```text
+```cpp
 virtual int setPlaybackDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -1392,7 +1392,7 @@ virtual int setPlaybackDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 <a id="api_iaudiodevicemanager_setplaybackdevicemute__prototype"></a>
 
-```text
+```cpp
 virtual int setPlaybackDeviceMute(bool mute) = 0;
 ```
 
@@ -1435,7 +1435,7 @@ virtual int setPlaybackDeviceMute(bool mute) = 0;
 
 <a id="api_iaudiodevicemanager_setplaybackdevicevolume__prototype"></a>
 
-```text
+```cpp
 virtual int setPlaybackDeviceVolume(int volume) = 0;
 ```
 
@@ -1479,7 +1479,7 @@ virtual int setPlaybackDeviceVolume(int volume) = 0;
 
 <a id="api_iaudiodevicemanager_setrecordingdevice__prototype"></a>
 
-```text
+```cpp
 virtual int setRecordingDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -1525,7 +1525,7 @@ virtual int setRecordingDevice(const char deviceId[MAX_DEVICE_ID_LENGTH]) = 0;
 
 <a id="api_iaudiodevicemanager_setrecordingdevicemute__prototype"></a>
 
-```text
+```cpp
 virtual int setRecordingDeviceMute(bool mute) = 0;
 ```
 
@@ -1568,7 +1568,7 @@ virtual int setRecordingDeviceMute(bool mute) = 0;
 
 <a id="api_iaudiodevicemanager_setrecordingdevicevolume__prototype"></a>
 
-```text
+```cpp
 virtual int setRecordingDeviceVolume(int volume) = 0;
 ```
 
@@ -1610,7 +1610,7 @@ virtual int setRecordingDeviceVolume(int volume) = 0;
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__prototype"></a>
 
-```text
+```cpp
 virtual int startAudioDeviceLoopbackTest(int indicationInterval) = 0;
 ```
 
@@ -1662,7 +1662,7 @@ SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest_iaudiodevicemanager__prototype"></a>
 
-```text
+```cpp
 virtual int startPlaybackDeviceTest(const char *testAudioFilePath) = 0;
 ```
 
@@ -1708,7 +1708,7 @@ virtual int startPlaybackDeviceTest(const char *testAudioFilePath) = 0;
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest_iaudiodevicemanager__prototype"></a>
 
-```text
+```cpp
 virtual int startRecordingDeviceTest(int indicationInterval) = 0;
 ```
 
@@ -1756,7 +1756,7 @@ virtual int startRecordingDeviceTest(int indicationInterval) = 0;
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest__prototype"></a>
 
-```text
+```cpp
 virtual int stopAudioDeviceLoopbackTest() = 0;
 ```
 
@@ -1787,7 +1787,7 @@ virtual int stopAudioDeviceLoopbackTest() = 0;
 
 <a id="api_iaudiodevicemanager_stopplaybackdevicetest_iaudiodevicemanager__prototype"></a>
 
-```text
+```cpp
 virtual int stopPlaybackDeviceTest() = 0;
 ```
 
@@ -1820,7 +1820,7 @@ virtual int stopPlaybackDeviceTest() = 0;
 
 <a id="api_iaudiodevicemanager_stoprecordingdevicetest_iaudiodevicemanager__prototype"></a>
 
-```text
+```cpp
 virtual int stopRecordingDeviceTest() = 0;
 ```
 
@@ -1853,7 +1853,7 @@ virtual int stopRecordingDeviceTest() = 0;
 
 <a id="callback_irtcengineeventhandler_onaudiodevicestatechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onAudioDeviceStateChanged(const char* deviceId, int deviceType, int deviceState)
 ```
 
@@ -1904,7 +1904,7 @@ virtual void onAudioDeviceStateChanged(const char* deviceId, int deviceType, int
 
 <a id="callback_irtcengineeventhandler_onaudiodevicevolumechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onAudioDeviceVolumeChanged(MEDIA_DEVICE_TYPE deviceType, int volume, bool muted)
 ```
 

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_imusiccontentcenter_createmusicplayer__prototype"></a>
 
-```text
+```cpp
 virtual agora_refptr<IMusicPlayer> createMusicPlayer() = 0;
 ```
 
@@ -50,7 +50,7 @@ virtual agora_refptr<IMusicPlayer> createMusicPlayer() = 0;
 
 <a id="api_imusiccontentcenter_destroymusicplayer__prototype"></a>
 
-```text
+```cpp
 virtual int destroyMusicPlayer(agora_refptr<IMusicPlayer> music_player) = 0;
 ```
 
@@ -98,7 +98,7 @@ virtual int destroyMusicPlayer(agora_refptr<IMusicPlayer> music_player) = 0;
 
 <a id="api_musicchartcollection_get__prototype"></a>
 
-```text
+```cpp
 virtual MusicChartInfo* get(int index) = 0;
 ```
 
@@ -138,7 +138,7 @@ virtual MusicChartInfo* get(int index) = 0;
 
 <a id="api_imusiccontentcenter_getcaches__prototype"></a>
 
-```text
+```cpp
 virtual int getCaches(MusicCacheInfo *cacheInfo, int32_t* cacheInfoSize) = 0;
 ```
 
@@ -189,7 +189,7 @@ virtual int getCaches(MusicCacheInfo *cacheInfo, int32_t* cacheInfoSize) = 0;
 
 <a id="api_musicchartcollection_getcount_musicchartcollection__prototype"></a>
 
-```text
+```cpp
 virtual int getCount() = 0;
 ```
 
@@ -215,7 +215,7 @@ virtual int getCount() = 0;
 
 <a id="api_musiccollection_getcount_musiccollection__prototype"></a>
 
-```text
+```cpp
 virtual int getCount() = 0;
 ```
 
@@ -241,7 +241,7 @@ virtual int getCount() = 0;
 
 <a id="api_imusiccontentcenter_getinternalsongcode__prototype"></a>
 
-```text
+```cpp
 virtual int getInternalSongCode(int64_t songCode, const char* jsonOption, int64_t& internalSongCode) = 0;
 ```
 
@@ -298,7 +298,7 @@ virtual int getInternalSongCode(int64_t songCode, const char* jsonOption, int64_
 
 <a id="api_imusiccontentcenter_getlyric__prototype"></a>
 
-```text
+```cpp
 virtual int getLyric(agora::util::AString& requestId, int64_t songCode, int32_t lyricType = 0) = 0;
 ```
 
@@ -359,7 +359,7 @@ virtual int getLyric(agora::util::AString& requestId, int64_t songCode, int32_t 
 
 <a id="api_musiccollection_getmusic_musiccollection__prototype"></a>
 
-```text
+```cpp
 virtual Music* getMusic(int32_t index) = 0;
 ```
 
@@ -399,7 +399,7 @@ virtual Music* getMusic(int32_t index) = 0;
 
 <a id="api_imusiccontentcenter_getmusiccharts__prototype"></a>
 
-```text
+```cpp
 virtual int getMusicCharts(agora::util::AString& requestId) = 0;
 ```
 
@@ -445,7 +445,7 @@ virtual int getMusicCharts(agora::util::AString& requestId) = 0;
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__prototype"></a>
 
-```text
+```cpp
 virtual int getMusicCollectionByMusicChartId(agora::util::AString& requestId, int32_t musicChartId, int32_t page, int32_t pageSize, const char* jsonOption = nullptr) = 0;
 ```
 
@@ -525,7 +525,7 @@ virtual int getMusicCollectionByMusicChartId(agora::util::AString& requestId, in
 
 <a id="api_musiccollection_getpage_musiccollection__prototype"></a>
 
-```text
+```cpp
 virtual int getPage() = 0;
 ```
 
@@ -551,7 +551,7 @@ virtual int getPage() = 0;
 
 <a id="api_musiccollection_getpagesize_musiccollection__prototype"></a>
 
-```text
+```cpp
 virtual int getPageSize() = 0;
 ```
 
@@ -577,7 +577,7 @@ virtual int getPageSize() = 0;
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__prototype"></a>
 
-```text
+```cpp
 virtual int getSongSimpleInfo(agora::util::AString& requestId, int64_t songCode) = 0;
 ```
 
@@ -631,7 +631,7 @@ virtual int getSongSimpleInfo(agora::util::AString& requestId, int64_t songCode)
 
 <a id="api_musiccollection_gettotal_musiccollection__prototype"></a>
 
-```text
+```cpp
 virtual int getTotal() = 0;
 ```
 
@@ -657,7 +657,7 @@ virtual int getTotal() = 0;
 
 <a id="api_imusiccontentcenter_initialize_imusiccontentcenter__prototype"></a>
 
-```text
+```cpp
 virtual int initialize(const MusicContentCenterConfiguration & configuration) = 0;
 ```
 
@@ -699,7 +699,7 @@ virtual int initialize(const MusicContentCenterConfiguration & configuration) = 
 
 <a id="api_imusiccontentcenter_ispreloaded__prototype"></a>
 
-```text
+```cpp
 virtual int isPreloaded(int64_t songCode) = 0;
 ```
 
@@ -741,7 +741,7 @@ virtual int isPreloaded(int64_t songCode) = 0;
 
 <a id="api_imusicplayer_open_imusicplayer__prototype"></a>
 
-```text
+```cpp
 virtual int open(int64_t songCode, int64_t startPos = 0) = 0;
 ```
 
@@ -800,7 +800,7 @@ virtual int open(int64_t songCode, int64_t startPos = 0) = 0;
 
 <a id="api_imusiccontentcenter_preload__prototype"></a>
 
-```text
+```cpp
 virtual int preload(int64_t songCode, const char* jsonOption) __deprecated = 0;
 ```
 
@@ -866,7 +866,7 @@ virtual int preload(int64_t songCode, const char* jsonOption) __deprecated = 0;
 
 <a id="api_imusiccontentcenter_preload2__prototype"></a>
 
-```text
+```cpp
 virtual int preload(agora::util::AString& requestId, int64_t songCode) = 0;
 ```
 
@@ -918,7 +918,7 @@ virtual int preload(agora::util::AString& requestId, int64_t songCode) = 0;
 
 <a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__prototype"></a>
 
-```text
+```cpp
 virtual int registerEventHandler(IMusicContentCenterEventHandler* eventHandler) = 0;
 ```
 
@@ -958,7 +958,7 @@ virtual int registerEventHandler(IMusicContentCenterEventHandler* eventHandler) 
 
 <a id="api_imusiccontentcenter_release_imusiccontentcenter__prototype"></a>
 
-```text
+```cpp
 virtual void release() = 0;
 ```
 
@@ -980,7 +980,7 @@ virtual void release() = 0;
 
 <a id="api_imusiccontentcenter_removecache__prototype"></a>
 
-```text
+```cpp
 virtual int removeCache(int64_t songCode) = 0;
 ```
 
@@ -1026,7 +1026,7 @@ virtual int removeCache(int64_t songCode) = 0;
 
 <a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__prototype"></a>
 
-```text
+```cpp
 virtual int renewToken(const char* token) = 0;
 ```
 
@@ -1068,7 +1068,7 @@ virtual int renewToken(const char* token) = 0;
 
 <a id="api_imusiccontentcenter_searchmusic__prototype"></a>
 
-```text
+```cpp
 virtual int searchMusic(agora::util::AString& requestId, const char* keyWord, int32_t page, int32_t pageSize, const char* jsonOption = nullptr) = 0;
 ```
 
@@ -1149,7 +1149,7 @@ virtual int searchMusic(agora::util::AString& requestId, const char* keyWord, in
 
 <a id="api_imusicplayer_setplaymode__prototype"></a>
 
-```text
+```cpp
 virtual int setPlayMode(MusicPlayMode mode) = 0;
 ```
 
@@ -1209,7 +1209,7 @@ virtual int setPlayMode(MusicPlayMode mode) = 0;
 
 <a id="api_imusiccontentcenter_unregistereventhandler_imusiccontentcenter__prototype"></a>
 
-```text
+```cpp
 virtual int unregisterEventHandler() = 0;
 ```
 
@@ -1236,7 +1236,7 @@ virtual int unregisterEventHandler() = 0;
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult__prototype"></a>
 
-```text
+```cpp
 virtual void onLyricResult(const char* requestId, int64_t songCode, const char* lyricUrl, MusicContentCenterStateReason reason) = 0;
 ```
 
@@ -1289,7 +1289,7 @@ virtual void onLyricResult(const char* requestId, int64_t songCode, const char* 
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__prototype"></a>
 
-```text
+```cpp
 virtual void onMusicChartsResult(const char* requestId, agora_refptr<MusicChartCollection> result, MusicContentCenterStateReason reason) = 0;
 ```
 
@@ -1336,7 +1336,7 @@ virtual void onMusicChartsResult(const char* requestId, agora_refptr<MusicChartC
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__prototype"></a>
 
-```text
+```cpp
 virtual void onMusicCollectionResult(const char* requestId, agora_refptr<MusicCollection> result, MusicContentCenterStateReason reason) = 0;
 ```
 
@@ -1389,7 +1389,7 @@ virtual void onMusicCollectionResult(const char* requestId, agora_refptr<MusicCo
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__prototype"></a>
 
-```text
+```cpp
 virtual void onPreLoadEvent(const char* requestId, int64_t songCode, int percent, const char* lyricUrl, PreloadState state, MusicContentCenterStateReason reason) = 0;
 ```
 
@@ -1454,7 +1454,7 @@ virtual void onPreLoadEvent(const char* requestId, int64_t songCode, int percent
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__prototype"></a>
 
-```text
+```cpp
 virtual void onSongSimpleInfoResult(const char* requestId, int64_t songCode, const char* simpleInfo, MusicContentCenterStateReason reason) = 0;
 ```
 

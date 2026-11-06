@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_imusiccontentcenter_createmusicplayer__prototype"></a>
 
-```text
+```ts
 abstract createMusicPlayer(): IMusicPlayer;
 ```
 
@@ -50,7 +50,7 @@ abstract createMusicPlayer(): IMusicPlayer;
 
 <a id="api_imusiccontentcenter_destroymusicplayer__prototype"></a>
 
-```text
+```ts
 abstract destroyMusicPlayer(musicPlayer: IMusicPlayer): number;
 ```
 
@@ -98,7 +98,7 @@ abstract destroyMusicPlayer(musicPlayer: IMusicPlayer): number;
 
 <a id="api_musicchartcollection_get__prototype"></a>
 
-```text
+```ts
 abstract get(index: number): MusicChartInfo;
 ```
 
@@ -137,7 +137,7 @@ abstract get(index: number): MusicChartInfo;
 
 <a id="api_imusiccontentcenter_getcaches__prototype"></a>
 
-```text
+```ts
 abstract getCaches(): { cacheInfo: MusicCacheInfo[]; cacheInfoSize: number };
 ```
 
@@ -169,7 +169,7 @@ abstract getCaches(): { cacheInfo: MusicCacheInfo[]; cacheInfoSize: number };
 
 <a id="api_musicchartcollection_getcount_musicchartcollection__prototype"></a>
 
-```text
+```ts
 abstract getCount(): number;
 ```
 
@@ -195,7 +195,7 @@ abstract getCount(): number;
 
 <a id="api_musiccollection_getcount_musiccollection__prototype"></a>
 
-```text
+```ts
 abstract getCount(): number;
 ```
 
@@ -221,7 +221,7 @@ abstract getCount(): number;
 
 <a id="api_imusiccontentcenter_getinternalsongcode__prototype"></a>
 
-```text
+```ts
 abstract getInternalSongCode(songCode: number, jsonOption: string): number;
 ```
 
@@ -280,7 +280,7 @@ abstract getInternalSongCode(songCode: number, jsonOption: string): number;
 
 <a id="api_imusiccontentcenter_getlyric__prototype"></a>
 
-```text
+```ts
 abstract getLyric(songCode: number, lyricType?: number): string;
 ```
 
@@ -330,7 +330,7 @@ abstract getLyric(songCode: number, lyricType?: number): string;
 
 <a id="api_musiccollection_getmusic_musiccollection__prototype"></a>
 
-```text
+```ts
 abstract getMusic(index: number): Music;
 ```
 
@@ -369,7 +369,7 @@ abstract getMusic(index: number): Music;
 
 <a id="api_imusiccontentcenter_getmusiccharts__prototype"></a>
 
-```text
+```ts
 abstract getMusicCharts(): string;
 ```
 
@@ -397,7 +397,7 @@ abstract getMusicCharts(): string;
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__prototype"></a>
 
-```text
+```ts
 abstract getMusicCollectionByMusicChartId(
     musicChartId: number,
     page: number,
@@ -471,7 +471,7 @@ abstract getMusicCollectionByMusicChartId(
 
 <a id="api_irtcengine_getmusiccontentcenter__prototype"></a>
 
-```text
+```ts
 abstract getMusicContentCenter(): IMusicContentCenter;
 ```
 
@@ -497,7 +497,7 @@ abstract getMusicContentCenter(): IMusicContentCenter;
 
 <a id="api_musiccollection_getpage_musiccollection__prototype"></a>
 
-```text
+```ts
 abstract getPage(): number;
 ```
 
@@ -523,7 +523,7 @@ abstract getPage(): number;
 
 <a id="api_musiccollection_getpagesize_musiccollection__prototype"></a>
 
-```text
+```ts
 virtual int getPageSize() = 0;
 ```
 
@@ -549,7 +549,7 @@ SDK 实际返回的音乐资源数量。
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__prototype"></a>
 
-```text
+```ts
 abstract getSongSimpleInfo(songCode: number): string;
 ```
 
@@ -591,7 +591,7 @@ abstract getSongSimpleInfo(songCode: number): string;
 
 <a id="api_musiccollection_gettotal_musiccollection__prototype"></a>
 
-```text
+```ts
 abstract getTotal(): number;
 ```
 
@@ -617,7 +617,7 @@ abstract getTotal(): number;
 
 <a id="api_imusiccontentcenter_initialize_imusiccontentcenter__prototype"></a>
 
-```text
+```ts
 abstract initialize(configuration: MusicContentCenterConfiguration): number;
 ```
 
@@ -659,7 +659,7 @@ abstract initialize(configuration: MusicContentCenterConfiguration): number;
 
 <a id="api_imusiccontentcenter_ispreloaded__prototype"></a>
 
-```text
+```ts
 abstract isPreloaded(songCode: number): number;
 ```
 
@@ -701,7 +701,7 @@ abstract isPreloaded(songCode: number): number;
 
 <a id="api_imusicplayer_open_imusicplayer__prototype"></a>
 
-```text
+```ts
 abstract openWithSongCode(songCode: number, startPos?: number): number;
 ```
 
@@ -754,7 +754,7 @@ abstract openWithSongCode(songCode: number, startPos?: number): number;
 
 <a id="api_imusiccontentcenter_preload2__prototype"></a>
 
-```text
+```ts
 abstract preload(songCode: number): string;
 ```
 
@@ -800,7 +800,7 @@ abstract preload(songCode: number): string;
 
 <a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__prototype"></a>
 
-```text
+```ts
 abstract registerEventHandler(
     eventHandler: IMusicContentCenterEventHandler
   ): number;
@@ -842,7 +842,7 @@ abstract registerEventHandler(
 
 <a id="api_imusiccontentcenter_release_imusiccontentcenter__prototype"></a>
 
-```text
+```ts
 abstract release(): void;
 ```
 
@@ -864,7 +864,7 @@ abstract release(): void;
 
 <a id="api_imusiccontentcenter_removecache__prototype"></a>
 
-```text
+```ts
 abstract removeCache(songCode: number): number;
 ```
 
@@ -906,7 +906,7 @@ abstract removeCache(songCode: number): number;
 
 <a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__prototype"></a>
 
-```text
+```ts
 abstract renewToken(token: string): number;
 ```
 
@@ -948,7 +948,7 @@ abstract renewToken(token: string): number;
 
 <a id="api_imusiccontentcenter_searchmusic__prototype"></a>
 
-```text
+```ts
 abstract searchMusic(
     requestId: string,
     keyWord: string,
@@ -1030,7 +1030,7 @@ abstract searchMusic(
 
 <a id="api_imusicplayer_setplaymode__prototype"></a>
 
-```text
+```ts
 abstract setPlayMode(mode: MusicPlayMode): number;
 ```
 
@@ -1090,7 +1090,7 @@ abstract setPlayMode(mode: MusicPlayMode): number;
 
 <a id="api_imusiccontentcenter_unregistereventhandler_imusiccontentcenter__prototype"></a>
 
-```text
+```ts
 abstract unregisterEventHandler(): number;
 ```
 
@@ -1117,7 +1117,7 @@ abstract unregisterEventHandler(): number;
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult__prototype"></a>
 
-```text
+```ts
 onLyricResult?(
     requestId: string,
     songCode: number,
@@ -1169,7 +1169,7 @@ onLyricResult?(
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__prototype"></a>
 
-```text
+```ts
 onMusicChartsResult?(
     requestId: string,
     result: MusicChartInfo[],
@@ -1220,7 +1220,7 @@ onMusicChartsResult?(
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__prototype"></a>
 
-```text
+```ts
 onMusicCollectionResult?(
     requestId: string,
     result: MusicCollection,
@@ -1271,7 +1271,7 @@ onMusicCollectionResult?(
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__prototype"></a>
 
-```text
+```ts
 onPreLoadEvent?(
     requestId: string,
     songCode: number,
@@ -1337,7 +1337,7 @@ onPreLoadEvent?(
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__prototype"></a>
 
-```text
+```ts
 onSongSimpleInfoResult?(
     requestId: string,
     songCode: number,

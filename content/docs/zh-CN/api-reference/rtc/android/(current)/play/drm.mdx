@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_imusiccontentcenter_createmusicplayer__prototype"></a>
 
-```text
+```java
 public abstract IAgoraMusicPlayer createMusicPlayer();
 ```
 
@@ -50,7 +50,7 @@ public abstract IAgoraMusicPlayer createMusicPlayer();
 
 <a id="api_imusiccontentcenter_destroy_imusiccontentcenter__prototype"></a>
 
-```text
+```java
 public static synchronized void destroy()
 ```
 
@@ -72,7 +72,7 @@ public static synchronized void destroy()
 
 <a id="api_imusicplayer_destroy_imusicplayer__prototype"></a>
 
-```text
+```java
 @Deprecated @Override int destroy();
 ```
 
@@ -105,7 +105,7 @@ public static synchronized void destroy()
 
 <a id="api_imusiccontentcenter_destroymusicplayer__prototype"></a>
 
-```text
+```java
 public abstract int destroyMusicPlayer(IAgoraMusicPlayer player);
 ```
 
@@ -153,7 +153,7 @@ public abstract int destroyMusicPlayer(IAgoraMusicPlayer player);
 
 <a id="api_imusiccontentcenter_getcaches__prototype"></a>
 
-```text
+```java
 public abstract MusicCacheInfo[] getCaches();
 ```
 
@@ -182,7 +182,7 @@ public abstract MusicCacheInfo[] getCaches();
 
 <a id="api_imusiccontentcenter_getinternalsongcode__prototype"></a>
 
-```text
+```java
 public abstract long getInternalSongCode(long songCode, String jsonOption);
 ```
 
@@ -237,7 +237,7 @@ public abstract long getInternalSongCode(long songCode, String jsonOption);
 
 <a id="api_imusiccontentcenter_getlyric__prototype"></a>
 
-```text
+```java
 public abstract String getLyric(long songCode, int lyricType);
 ```
 
@@ -292,7 +292,7 @@ public abstract String getLyric(long songCode, int lyricType);
 
 <a id="api_imusiccontentcenter_getmusiccharts__prototype"></a>
 
-```text
+```java
 public abstract String getMusicCharts();
 ```
 
@@ -327,7 +327,7 @@ public abstract String getMusicCharts();
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__prototype"></a>
 
-```text
+```java
 public String getMusicCollectionByMusicChartId(int musicChartId, int page, int pageSize)
 ```
 
@@ -385,7 +385,7 @@ public String getMusicCollectionByMusicChartId(int musicChartId, int page, int p
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid2__prototype"></a>
 
-```text
+```java
 public abstract String getMusicCollectionByMusicChartId(int musicChartId, int page, int pageSize, String jsonOption);
 ```
 
@@ -462,7 +462,7 @@ public abstract String getMusicCollectionByMusicChartId(int musicChartId, int pa
 
 <a id="api_imusicplayer_getplaysrc__prototype"></a>
 
-```text
+```java
 @Override String getPlaySrc();
 ```
 
@@ -494,7 +494,7 @@ public abstract String getMusicCollectionByMusicChartId(int musicChartId, int pa
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__prototype"></a>
 
-```text
+```java
 public abstract String getSongSimpleInfo(long songCode);
 ```
 
@@ -540,7 +540,7 @@ public abstract String getSongSimpleInfo(long songCode);
 
 <a id="api_imusiccontentcenter_initialize_imusiccontentcenter__prototype"></a>
 
-```text
+```java
 public abstract int initialize(MusicContentCenterConfiguration configuration);
 ```
 
@@ -582,7 +582,7 @@ public abstract int initialize(MusicContentCenterConfiguration configuration);
 
 <a id="api_imusiccontentcenter_ispreloaded__prototype"></a>
 
-```text
+```java
 public abstract int isPreloaded(long songCode);
 ```
 
@@ -624,7 +624,7 @@ public abstract int isPreloaded(long songCode);
 
 <a id="api_imusicplayer_open2_imusicplayer__prototype"></a>
 
-```text
+```java
 int open(String url, long startPos)
 ```
 
@@ -682,7 +682,7 @@ int open(String url, long startPos)
 
 <a id="api_imusicplayer_open_imusicplayer__prototype"></a>
 
-```text
+```java
 int open(long songCode, long startPos);
 ```
 
@@ -742,7 +742,7 @@ int open(long songCode, long startPos);
 
 <a id="api_imusiccontentcenter_preload__prototype"></a>
 
-```text
+```java
 public abstract int preload(long songCode, String jsonOption)
 ```
 
@@ -808,7 +808,7 @@ public abstract int preload(long songCode, String jsonOption)
 
 <a id="api_imusiccontentcenter_preload2__prototype"></a>
 
-```text
+```java
 public abstract String preload(long songCode);
 ```
 
@@ -854,7 +854,7 @@ public abstract String preload(long songCode);
 
 <a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__prototype"></a>
 
-```text
+```java
 public abstract int registerEventHandler(IMusicContentCenterEventHandler eventHandler);
 ```
 
@@ -894,7 +894,7 @@ public abstract int registerEventHandler(IMusicContentCenterEventHandler eventHa
 
 <a id="api_imusiccontentcenter_removecache__prototype"></a>
 
-```text
+```java
 public abstract int removeCache(long songCode);
 ```
 
@@ -940,7 +940,7 @@ public abstract int removeCache(long songCode);
 
 <a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__prototype"></a>
 
-```text
+```java
 public abstract int renewToken(String token);
 ```
 
@@ -982,7 +982,7 @@ public abstract int renewToken(String token);
 
 <a id="api_imusiccontentcenter_searchmusic__prototype"></a>
 
-```text
+```java
 public String searchMusic(String keyword, int page, int pageSize)
 ```
 
@@ -1036,7 +1036,7 @@ public String searchMusic(String keyword, int page, int pageSize)
 
 <a id="api_imusiccontentcenter_searchmusic2__prototype"></a>
 
-```text
+```java
 public abstract String searchMusic(String keyword, int page, int pageSize, String jsonOption);
 ```
 
@@ -1109,7 +1109,7 @@ public abstract String searchMusic(String keyword, int page, int pageSize, Strin
 
 <a id="api_imusicplayer_setplaymode__prototype"></a>
 
-```text
+```java
 int setPlayMode(MusicPlayMode mode);
 ```
 
@@ -1169,7 +1169,7 @@ int setPlayMode(MusicPlayMode mode);
 
 <a id="api_imusicplayer_stop_imusicplayer__prototype"></a>
 
-```text
+```java
 @Override int stop();
 ```
 
@@ -1196,7 +1196,7 @@ int setPlayMode(MusicPlayMode mode);
 
 <a id="api_imusiccontentcenter_unregistereventhandler_imusiccontentcenter__prototype"></a>
 
-```text
+```java
 public abstract int unregisterEventHandler();
 ```
 
@@ -1223,7 +1223,7 @@ public abstract int unregisterEventHandler();
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult__prototype"></a>
 
-```text
+```java
 @CalledByNative void onLyricResult(String requestId, long songCode, String lyricUrl, int reason);
 ```
 
@@ -1295,7 +1295,7 @@ public abstract int unregisterEventHandler();
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__prototype"></a>
 
-```text
+```java
 @CalledByNative void onMusicChartsResult(String requestId, MusicChartInfo[] list, int reason);
 ```
 
@@ -1361,7 +1361,7 @@ public abstract int unregisterEventHandler();
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__prototype"></a>
 
-```text
+```java
 void onMusicCollectionResult(String requestId, int page, int pageSize, int total, Music[] list, int reason)
 ```
 
@@ -1439,7 +1439,7 @@ void onMusicCollectionResult(String requestId, int page, int pageSize, int total
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__prototype"></a>
 
-```text
+```java
 void onPreLoadEvent(String requestId, long songCode, int percent, String lyricUrl, int state, int reason)
 ```
 
@@ -1527,7 +1527,7 @@ void onPreLoadEvent(String requestId, long songCode, int percent, String lyricUr
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__prototype"></a>
 
-```text
+```java
 void onSongSimpleInfoResult(String requestId, long songCode, String simpleInfo, int reason);
 ```
 

@@ -24,7 +24,7 @@ _migration:
 
 <a id="api_irtcengine_disablevideo__prototype"></a>
 
-```text
+```cpp
 virtual int disableVideo() = 0;
 ```
 
@@ -80,7 +80,7 @@ virtual int disableVideo() = 0;
 
 <a id="api_irtcengine_enablelocalvideo__prototype"></a>
 
-```text
+```cpp
 virtual int enableLocalVideo(bool enabled) = 0;
 ```
 
@@ -142,7 +142,7 @@ virtual int enableLocalVideo(bool enabled) = 0;
 
 <a id="api_irtcengine_enablevideo__prototype"></a>
 
-```text
+```cpp
 virtual int enableVideo() = 0;
 ```
 
@@ -199,7 +199,7 @@ virtual int enableVideo() = 0;
 
 <a id="api_irtcengine_setvideoencoderconfiguration__prototype"></a>
 
-```text
+```cpp
 virtual int setVideoEncoderConfiguration(const VideoEncoderConfiguration& config) = 0;
 ```
 
@@ -256,7 +256,7 @@ virtual int setVideoEncoderConfiguration(const VideoEncoderConfiguration& config
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex__prototype"></a>
 
-```text
+```cpp
 virtual int setVideoEncoderConfigurationEx(const VideoEncoderConfiguration& config, const RtcConnection& connection) = 0;
 ```
 
@@ -318,7 +318,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_setvideoscenario__prototype"></a>
 
-```text
+```cpp
 virtual int setVideoScenario(VIDEO_APPLICATION_SCENARIO_TYPE scenarioType) = 0;
 ```
 
@@ -404,7 +404,7 @@ APPLICATION_SCENARIO_LIVESHOW (3) 适用于秀场直播场景。针对该场景�
 
 <a id="api_irtcengine_startpreview__prototype"></a>
 
-```text
+```cpp
 virtual int startPreview() = 0;
 ```
 
@@ -446,7 +446,7 @@ virtual int startPreview() = 0;
 
 <a id="api_irtcengine_startpreview2__prototype"></a>
 
-```text
+```cpp
 virtual int startPreview(VIDEO_SOURCE_TYPE sourceType) = 0;
 ```
 
@@ -501,7 +501,7 @@ virtual int startPreview(VIDEO_SOURCE_TYPE sourceType) = 0;
 
 <a id="api_irtcengine_stoppreview__prototype"></a>
 
-```text
+```cpp
 virtual int stopPreview() = 0;
 ```
 
@@ -546,7 +546,7 @@ virtual int stopPreview() = 0;
 
 <a id="api_irtcengine_stoppreview2__prototype"></a>
 
-```text
+```cpp
 virtual int stopPreview(VIDEO_SOURCE_TYPE sourceType) = 0;
 ```
 
@@ -604,7 +604,7 @@ virtual int stopPreview(VIDEO_SOURCE_TYPE sourceType) = 0;
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__prototype"></a>
 
-```text
+```cpp
 virtual void onFirstLocalVideoFrame(VIDEO_SOURCE_TYPE source, int width, int height, int elapsed) {
     (void)source;
     (void)width;
@@ -667,7 +667,7 @@ virtual void onFirstLocalVideoFrame(VIDEO_SOURCE_TYPE source, int width, int hei
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__prototype"></a>
 
-```text
+```cpp
   virtual void onFirstLocalVideoFramePublished(VIDEO_SOURCE_TYPE source, int elapsed) {
     (void)source;
     (void)elapsed;
@@ -718,7 +718,7 @@ SDK 会在以下三种时机触发该回调：
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__prototype"></a>
 
-```text
+```cpp
 virtual void onFirstRemoteVideoDecoded(uid_t uid,
     int width,
     int height,
@@ -790,7 +790,7 @@ SDK 会在以下时机触发该回调：
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe__prototype"></a>
 
-```text
+```cpp
 virtual void onFirstRemoteVideoFrame(uid_t userId, int width, int height, int elapsed) {
                     (void)userId;
                     (void)width;
@@ -852,7 +852,7 @@ virtual void onFirstRemoteVideoFrame(uid_t userId, int width, int height, int el
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged__prototype"></a>
 
-```text
+```cpp
   virtual void onLocalVideoStateChanged(VIDEO_SOURCE_TYPE source, LOCAL_VIDEO_STREAM_STATE state, LOCAL_VIDEO_STREAM_REASON reason) {
     (void)source;
     (void)state;
@@ -930,7 +930,7 @@ virtual void onFirstRemoteVideoFrame(uid_t userId, int width, int height, int el
 
 <a id="callback_irtcengineeventhandler_onlocalvideostats__prototype"></a>
 
-```text
+```cpp
 virtual void onLocalVideoStats(VIDEO_SOURCE_TYPE source, const LocalVideoStats& stats) {
     (void)source;
     (void)stats;
@@ -978,7 +978,7 @@ virtual void onLocalVideoStats(VIDEO_SOURCE_TYPE source, const LocalVideoStats& 
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onRemoteVideoStateChanged(uid_t uid,
      REMOTE_VIDEO_STATE state,
      REMOTE_VIDEO_STATE_REASON reason,
@@ -1045,7 +1045,7 @@ virtual void onRemoteVideoStateChanged(uid_t uid,
 
 <a id="callback_irtcengineeventhandler_onremotevideostats__prototype"></a>
 
-```text
+```cpp
 virtual void onRemoteVideoStats(const RemoteVideoStats& stats) {
     (void)stats;
     }
@@ -1086,7 +1086,7 @@ virtual void onRemoteVideoStats(const RemoteVideoStats& stats) {
 
 <a id="callback_irtcengineeventhandler_onremotevideotransportstats__prototype"></a>
 
-```text
+```cpp
 virtual void onRemoteVideoTransportStats(uid_t uid,
      unsigned short delay,
      unsigned short lost,
@@ -1161,7 +1161,7 @@ virtual void onRemoteVideoTransportStats(uid_t uid,
 
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo__prototype"></a>
 
-```text
+```cpp
 virtual void onUserEnableLocalVideo(uid_t uid, bool enabled) {
     (void)uid;
     (void)enabled;
@@ -1221,7 +1221,7 @@ virtual void onUserEnableLocalVideo(uid_t uid, bool enabled) {
 
 <a id="callback_irtcengineeventhandler_onuserenablevideo__prototype"></a>
 
-```text
+```cpp
 virtual void onUserEnableVideo(uid_t uid, bool enabled) {
     (void)uid;
     (void)enabled;
@@ -1272,7 +1272,7 @@ virtual void onUserEnableVideo(uid_t uid, bool enabled) {
 
 <a id="callback_irtcengineeventhandler_onusermutevideo__prototype"></a>
 
-```text
+```cpp
 virtual void onUserMuteVideo(uid_t uid, bool muted) {
     (void)uid;
     (void)muted;
@@ -1325,7 +1325,7 @@ virtual void onUserMuteVideo(uid_t uid, bool muted) {
 
 <a id="callback_irtcengineeventhandler_onvideopublishstatechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onVideoPublishStateChanged(VIDEO_SOURCE_TYPE source, const char* channel, STREAM_PUBLISH_STATE oldState, STREAM_PUBLISH_STATE newState, int elapseSinceLastState) {
     (void)source;
     (void)channel;
@@ -1388,7 +1388,7 @@ virtual void onVideoPublishStateChanged(VIDEO_SOURCE_TYPE source, const char* ch
 
 <a id="callback_irtcengineeventhandler_onvideosizechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onVideoSizeChanged(VIDEO_SOURCE_TYPE sourceType, uid_t uid, int width, int height, int rotation) {
     (void)uid;
     (void)width;
@@ -1452,7 +1452,7 @@ virtual void onVideoSizeChanged(VIDEO_SOURCE_TYPE sourceType, uid_t uid, int wid
 
 <a id="callback_irtcengineeventhandler_onvideostopped__prototype"></a>
 
-```text
+```cpp
 virtual void onVideoStopped()
 ```
 

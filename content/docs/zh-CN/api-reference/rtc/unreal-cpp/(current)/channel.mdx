@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_getuserinfobyuid__prototype"></a>
 
-```text
+```cpp
 virtual int getUserInfoByUid(uid_t uid, rtc::UserInfo* userInfo, const char* channelId = NULL, const char* localUserAccount = NULL) = 0;
 ```
 
@@ -111,7 +111,7 @@ virtual int getUserInfoByUid(uid_t uid, rtc::UserInfo* userInfo, const char* cha
 
 <a id="api_irtcengine_getuserinfobyuseraccount__prototype"></a>
 
-```text
+```cpp
 virtual int getUserInfoByUserAccount(const char* userAccount, rtc::UserInfo* userInfo, const char* channelId = NULL, const char* localUserAccount = NULL) = 0;
 ```
 
@@ -199,7 +199,7 @@ virtual int getUserInfoByUserAccount(const char* userAccount, rtc::UserInfo* use
 
 <a id="api_irtcengine_joinchannel__prototype"></a>
 
-```text
+```cpp
 virtual int joinChannel(const char* token, const char* channelId, const char* info,
                         uid_t uid) = 0;
 ```
@@ -310,7 +310,7 @@ virtual int joinChannel(const char* token, const char* channelId, const char* in
 
 <a id="api_irtcengine_joinchannel2__prototype"></a>
 
-```text
+```cpp
 virtual int joinChannel(const char* token, const char* channelId, uid_t uid,
                           const ChannelMediaOptions& options) = 0;
 ```
@@ -421,7 +421,7 @@ virtual int joinChannel(const char* token, const char* channelId, uid_t uid,
 
 <a id="api_irtcengineex_joinchannelex__prototype"></a>
 
-```text
+```cpp
 virtual int joinChannelEx(const char* token, const RtcConnection& connection,
                               const ChannelMediaOptions& options,
                               IRtcEngineEventHandler* eventHandler) = 0;
@@ -532,7 +532,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_joinchannelwithuseraccount__prototype"></a>
 
-```text
+```cpp
 virtual int joinChannelWithUserAccount(const char* token,
     const char* channelId,
     const char* userAccount) = 0;
@@ -646,7 +646,7 @@ virtual int joinChannelWithUserAccount(const char* token,
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__prototype"></a>
 
-```text
+```cpp
 virtual int joinChannelWithUserAccount(const char* token,
                 const char* channelId,
                 const char* userAccount,
@@ -771,7 +771,7 @@ virtual int joinChannelWithUserAccount(const char* token,
 
 <a id="api_irtcengine_joinchannelwithuseraccountex__prototype"></a>
 
-```text
+```cpp
 virtual int joinChannelWithUserAccountEx(const char* token, const char* channelId,
                                          const char* userAccount, const ChannelMediaOptions& options,
                                          IRtcEngineEventHandler* eventHandler) = 0;
@@ -901,7 +901,7 @@ virtual int joinChannelWithUserAccountEx(const char* token, const char* channelI
 
 <a id="api_irtcengine_leavechannel__prototype"></a>
 
-```text
+```cpp
 virtual int leaveChannel() = 0;
 ```
 
@@ -966,7 +966,7 @@ virtual int leaveChannel() = 0;
 
 <a id="api_irtcengine_leavechannel2__prototype"></a>
 
-```text
+```cpp
 virtual int leaveChannel(const LeaveChannelOptions& options) = 0;
 ```
 
@@ -1037,7 +1037,7 @@ virtual int leaveChannel(const LeaveChannelOptions& options) = 0;
 
 <a id="api_irtcengineex_leavechannelex__prototype"></a>
 
-```text
+```cpp
 virtual int leaveChannelEx(const RtcConnection& connection) = 0;
 ```
 
@@ -1115,7 +1115,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengineex_leavechannelex2__prototype"></a>
 
-```text
+```cpp
 virtual int leaveChannelEx(const RtcConnection& connection, const LeaveChannelOptions& options) = 0;
 ```
 
@@ -1203,7 +1203,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_preloadchannel__prototype"></a>
 
-```text
+```cpp
  virtual int preloadChannel(const char* token, const char* channelId, uid_t uid) = 0;
 ```
 
@@ -1306,7 +1306,7 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 
 <a id="api_irtcengine_preloadchannelwithuseraccount__prototype"></a>
 
-```text
+```cpp
 virtual int preloadChannelWithUserAccount(const char* token, const char* channelId, const char* userAccount) = 0;
 ```
 
@@ -1416,7 +1416,7 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 
 <a id="api_irtcengine_registerlocaluseraccount__prototype"></a>
 
-```text
+```cpp
 virtual int registerLocalUserAccount(const char* appId, const char* userAccount) = 0;
 ```
 
@@ -1494,7 +1494,7 @@ virtual int registerLocalUserAccount(const char* appId, const char* userAccount)
 
 <a id="api_irtcengine_renewtoken__prototype"></a>
 
-```text
+```cpp
 virtual int renewToken(const char* token) = 0;
 ```
 
@@ -1559,7 +1559,7 @@ virtual int renewToken(const char* token) = 0;
 
 <a id="api_irtcengine_setchannelprofile__prototype"></a>
 
-```text
+```cpp
 virtual int setChannelProfile(CHANNEL_PROFILE_TYPE profile) = 0;
 ```
 
@@ -1624,7 +1624,7 @@ virtual int setChannelProfile(CHANNEL_PROFILE_TYPE profile) = 0;
 
 <a id="api_irtcengine_setclientrole__prototype"></a>
 
-```text
+```cpp
 virtual int setClientRole(CLIENT_ROLE_TYPE role) = 0;
 ```
 
@@ -1707,7 +1707,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 <a id="api_irtcengine_setclientrole2__prototype"></a>
 
-```text
+```cpp
 virtual int setClientRole(CLIENT_ROLE_TYPE role, const ClientRoleOptions& options) = 0;
 ```
 
@@ -1803,7 +1803,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 <a id="api_irtcengine_updatechannelmediaoptions__prototype"></a>
 
-```text
+```cpp
 virtual int updateChannelMediaOptions(const ChannelMediaOptions& options) = 0;
 ```
 
@@ -1845,7 +1845,7 @@ virtual int updateChannelMediaOptions(const ChannelMediaOptions& options) = 0;
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex__prototype"></a>
 
-```text
+```cpp
 virtual int updateChannelMediaOptionsEx(const ChannelMediaOptions& options, const RtcConnection& connection) = 0;
 ```
 
@@ -1893,7 +1893,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_updatepreloadchanneltoken__prototype"></a>
 
-```text
+```cpp
 virtual int updatePreloadChannelToken(const char* token) = 0;
 ```
 
@@ -1946,7 +1946,7 @@ virtual int updatePreloadChannelToken(const char* token) = 0;
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onClientRoleChanged(CLIENT_ROLE_TYPE oldRole, CLIENT_ROLE_TYPE newRole, const ClientRoleOptions& newRoleOptions) {
     (void)oldRole;
     (void)newRole;
@@ -2010,7 +2010,7 @@ virtual void onClientRoleChanged(CLIENT_ROLE_TYPE oldRole, CLIENT_ROLE_TYPE newR
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed__prototype"></a>
 
-```text
+```cpp
 virtual void onClientRoleChangeFailed(CLIENT_ROLE_CHANGE_FAILED_REASON reason, CLIENT_ROLE_TYPE currentRole) {
    (void)reason;
    (void)currentRole;
@@ -2066,7 +2066,7 @@ virtual void onClientRoleChangeFailed(CLIENT_ROLE_CHANGE_FAILED_REASON reason, C
 
 <a id="callback_irtcengineeventhandler_onerror__prototype"></a>
 
-```text
+```cpp
 virtual void onError(int err, const char* msg) {
     (void)err;
     (void)msg;
@@ -2114,7 +2114,7 @@ virtual void onError(int err, const char* msg) {
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess__prototype"></a>
 
-```text
+```cpp
 virtual void onJoinChannelSuccess(const char* channel,
      uid_t uid,
      int elapsed) {
@@ -2183,7 +2183,7 @@ virtual void onJoinChannelSuccess(const char* channel,
 
 <a id="callback_irtcengineeventhandler_onleavechannel__prototype"></a>
 
-```text
+```cpp
 virtual void onLeaveChannel(const RtcStats& stats) {
     (void)stats;
     }
@@ -2232,7 +2232,7 @@ virtual void onLeaveChannel(const RtcStats& stats) {
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered__prototype"></a>
 
-```text
+```cpp
 virtual void onLocalUserRegistered(uid_t uid, const char* userAccount) {
      (void)uid;
      (void)userAccount;
@@ -2278,7 +2278,7 @@ virtual void onLocalUserRegistered(uid_t uid, const char* userAccount) {
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__prototype"></a>
 
-```text
+```cpp
 virtual void onRejoinChannelSuccess(const char* channel, uid_t uid, int elapsed) {
      (void)channel;
      (void)uid;
@@ -2341,7 +2341,7 @@ Token 已过期回调。
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__prototype"></a>
 
-```text
+```cpp
 virtual void onRequestToken()
 ```
 
@@ -2385,7 +2385,7 @@ virtual void onRequestToken()
 
 <a id="callback_irtcengineeventhandler_onrtcstats__prototype"></a>
 
-```text
+```cpp
 virtual void onRtcStats(const RtcStats& stats) {
     (void)stats;
     }
@@ -2432,7 +2432,7 @@ Token 即将在 30s 内过期回调。
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__prototype"></a>
 
-```text
+```cpp
 virtual void onTokenPrivilegeWillExpire(const char* token) {
     (void)token;
     }
@@ -2489,7 +2489,7 @@ virtual void onTokenPrivilegeWillExpire(const char* token) {
 
 <a id="callback_irtcengineeventhandler_onuserinfoupdated__prototype"></a>
 
-```text
+```cpp
 virtual void onUserInfoUpdated(uid_t uid, const UserInfo& info) {
      (void)uid;
      (void)info;
@@ -2535,7 +2535,7 @@ virtual void onUserInfoUpdated(uid_t uid, const UserInfo& info) {
 
 <a id="callback_irtcengineeventhandler_onuserjoined__prototype"></a>
 
-```text
+```cpp
 virtual void onUserJoined(uid_t uid, int elapsed) {
     (void)uid;
     (void)elapsed;
@@ -2604,7 +2604,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="callback_irtcengineeventhandler_onuseroffline__prototype"></a>
 
-```text
+```cpp
 virtual void onUserOffline(uid_t uid, USER_OFFLINE_REASON_TYPE reason) {
     (void)uid;
     (void)reason;

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_imediaplayer_registeraudioframeobserver1_imediaplayer__prototype"></a>
 
-```text
+```cpp
 virtual int registerAudioFrameObserver(media::IAudioPcmFrameSink* observer) = 0;
 ```
 
@@ -65,7 +65,7 @@ virtual int registerAudioFrameObserver(media::IAudioPcmFrameSink* observer) = 0;
 
 <a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer__prototype"></a>
 
-```text
+```cpp
 virtual int registerAudioFrameObserver(media::IAudioPcmFrameSink* observer, RAW_AUDIO_FRAME_OP_MODE_TYPE mode) = 0;
 ```
 
@@ -111,7 +111,7 @@ virtual int registerAudioFrameObserver(media::IAudioPcmFrameSink* observer, RAW_
 
 <a id="api_imediaplayer_registerplayersourceobserver__prototype"></a>
 
-```text
+```cpp
 virtual int registerPlayerSourceObserver(IMediaPlayerSourceObserver* observer) = 0;
 ```
 
@@ -159,7 +159,7 @@ virtual int registerPlayerSourceObserver(IMediaPlayerSourceObserver* observer) =
 
 <a id="api_imediaplayer_registervideoframeobserver_imediaplayer__prototype"></a>
 
-```text
+```cpp
 virtual int registerVideoFrameObserver(media::base::IVideoFrameObserver* observer) = 0;
 ```
 
@@ -201,7 +201,7 @@ virtual int registerVideoFrameObserver(media::base::IVideoFrameObserver* observe
 
 <a id="api_imediaplayer_unregisteraudioframeobserver_imediaplayer__prototype"></a>
 
-```text
+```cpp
 virtual int unregisterAudioFrameObserver(media::IAudioPcmFrameSink* observer) = 0;
 ```
 
@@ -241,7 +241,7 @@ virtual int unregisterAudioFrameObserver(media::IAudioPcmFrameSink* observer) = 
 
 <a id="api_imediaplayer_unregisterplayersourceobserver__prototype"></a>
 
-```text
+```cpp
 virtual int unregisterPlayerSourceObserver(IMediaPlayerSourceObserver* observer) = 0;
 ```
 
@@ -281,7 +281,7 @@ virtual int unregisterPlayerSourceObserver(IMediaPlayerSourceObserver* observer)
 
 <a id="api_imediaplayer_unregistervideoframeobserver_imediaplayer__prototype"></a>
 
-```text
+```cpp
 virtual int unregisterVideoFrameObserver(agora::media::base::IVideoFrameObserver* observer) = 0;
 ```
 
@@ -321,7 +321,7 @@ virtual int unregisterVideoFrameObserver(agora::media::base::IVideoFrameObserver
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver__prototype"></a>
 
-```text
+```cpp
 virtual void onAudioVolumeIndication(int volume) = 0;
 ```
 
@@ -356,7 +356,7 @@ virtual void onAudioVolumeIndication(int volume) = 0;
 
 <a id="callback_iaudiopcmframesink_onframe_iaudiopcmframesink__prototype"></a>
 
-```text
+```cpp
 virtual void onFrame(agora::media::base::AudioPcmFrame* frame) = 0;
 ```
 
@@ -397,7 +397,7 @@ virtual void onFrame(agora::media::base::AudioPcmFrame* frame) = 0;
 
 <a id="callback_imediaplayersourceobserver_onmetadata__prototype"></a>
 
-```text
+```cpp
 virtual void onMetaData(const void* data, int length) = 0;
 ```
 
@@ -438,7 +438,7 @@ virtual void onMetaData(const void* data, int length) = 0;
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__prototype"></a>
 
-```text
+```cpp
 virtual void onPlayBufferUpdated(int64_t playCachedBuffer) = 0;
 ```
 
@@ -482,7 +482,7 @@ virtual void onPlayBufferUpdated(int64_t playCachedBuffer) = 0;
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__prototype"></a>
 
-```text
+```cpp
 virtual void onPlayerEvent(media::base::MEDIA_PLAYER_EVENT eventCode, int64_t elapsedTime, const char* message) = 0;
 ```
 
@@ -529,7 +529,7 @@ virtual void onPlayerEvent(media::base::MEDIA_PLAYER_EVENT eventCode, int64_t el
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__prototype"></a>
 
-```text
+```cpp
 virtual void onPlayerInfoUpdated(const media::base::PlayerUpdatedInfo& info) = 0;
 ```
 
@@ -564,7 +564,7 @@ virtual void onPlayerInfoUpdated(const media::base::PlayerUpdatedInfo& info) = 0
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onPlayerSourceStateChanged(media::base::MEDIA_PLAYER_STATE state, media::base::MEDIA_PLAYER_REASON reason) = 0;
 ```
 
@@ -605,7 +605,7 @@ virtual void onPlayerSourceStateChanged(media::base::MEDIA_PLAYER_STATE state, m
 
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__prototype"></a>
 
-```text
+```cpp
 virtual void onPlayerSrcInfoChanged(const media::base::SrcInfo& from, const media::base::SrcInfo& to) = 0;
 ```
 
@@ -644,7 +644,7 @@ virtual void onPlayerSrcInfoChanged(const media::base::SrcInfo& from, const medi
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__prototype"></a>
 
-```text
+```cpp
 virtual void onPositionChanged(int64_t positionMs, int64_t timestampMs) = 0;
 ```
 
@@ -689,7 +689,7 @@ virtual void onPositionChanged(int64_t positionMs, int64_t timestampMs) = 0;
 
 <a id="callback_imediaplayersourceobserver_onpreloadevent__prototype"></a>
 
-```text
+```cpp
 virtual void onPreloadEvent(const char* src, media::base::PLAYER_PRELOAD_EVENT event) = 0;
 ```
 
@@ -728,7 +728,7 @@ SDK 读取媒体资源数据时触发的回调。
 
 <a id="callback_imediaplayercustomdataprovider_onreaddata__prototype"></a>
 
-```text
+```cpp
 virtual int onReadData(unsigned char *buffer, int bufferSize) = 0;
 ```
 

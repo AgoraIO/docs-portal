@@ -21,7 +21,7 @@ _migration:
 
 <a id="callback_ivideoframeobserver_getmirrorapplied__prototype"></a>
 
-```text
+```cpp
 virtual bool getMirrorApplied() { return false; }
 ```
 
@@ -64,7 +64,7 @@ virtual bool getMirrorApplied() { return false; }
 
 <a id="callback_ivideoframeobserver_getobservedframeposition__prototype"></a>
 
-```text
+```cpp
 virtual uint32_t getObservedFramePosition() {
                 return base::POSITION_POST_CAPTURER | base::POSITION_PRE_RENDERER;
                 }
@@ -109,7 +109,7 @@ virtual uint32_t getObservedFramePosition() {
 
 <a id="callback_ivideoframeobserver_getrotationapplied__prototype"></a>
 
-```text
+```cpp
 virtual bool getRotationApplied() { return false; }
 ```
 
@@ -153,7 +153,7 @@ virtual bool getRotationApplied() { return false; }
 
 <a id="callback_ivideoframeobserver_getvideoformatpreference__prototype"></a>
 
-```text
+```cpp
 virtual VIDEO_PIXEL_FORMAT getVideoFormatPreference() { return VIDEO_PIXEL_DEFAULT; }
 ```
 
@@ -194,7 +194,7 @@ virtual VIDEO_PIXEL_FORMAT getVideoFormatPreference() { return VIDEO_PIXEL_DEFAU
 
 <a id="callback_ivideoframeobserver_getvideoframeprocessmode__prototype"></a>
 
-```text
+```cpp
 virtual VIDEO_FRAME_PROCESS_MODE getVideoFrameProcessMode() {
   return PROCESS_MODE_READ_ONLY;
 }
@@ -226,7 +226,7 @@ virtual VIDEO_FRAME_PROCESS_MODE getVideoFrameProcessMode() {
 
 <a id="api_imediaengine_registervideoframeobserver__prototype"></a>
 
-```text
+```cpp
 virtual int registerVideoFrameObserver(IVideoFrameObserver* observer) = 0;
 ```
 
@@ -291,7 +291,7 @@ virtual int registerVideoFrameObserver(IVideoFrameObserver* observer) = 0;
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe__prototype"></a>
 
-```text
+```cpp
 virtual bool onCaptureVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, VideoFrame& videoFrame) = 0;
 ```
 
@@ -378,7 +378,7 @@ virtual bool onCaptureVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Video
 
 <a id="callback_ivideoframeobserver_onframe__prototype"></a>
 
-```text
+```cpp
 virtual void onFrame(const VideoFrame* frame) = 0;
 ```
 
@@ -415,7 +415,7 @@ virtual void onFrame(const VideoFrame* frame) = 0;
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe__prototype"></a>
 
-```text
+```cpp
 virtual bool onPreEncodeVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, VideoFrame& videoFrame) = 0;
 ```
 
@@ -491,7 +491,7 @@ virtual bool onPreEncodeVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, Vid
 
 <a id="callback_ivideoframeobserver_onrendervideoframe__prototype"></a>
 
-```text
+```cpp
 virtual bool onRenderVideoFrame(const char* channelId, rtc::uid_t remoteUid, VideoFrame& videoFrame) = 0;
 ```
 

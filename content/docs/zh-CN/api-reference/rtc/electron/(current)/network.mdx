@@ -26,7 +26,7 @@ _migration:
 
 <a id="api_irtcengine_complain__prototype"></a>
 
-```text
+```ts
 abstract complain(callId: string, description: string): number;
 ```
 
@@ -78,7 +78,7 @@ abstract complain(callId: string, description: string): number;
 
 <a id="api_irtcengine_enableencryption__prototype"></a>
 
-```text
+```ts
 abstract enableEncryption(enabled: boolean, config: EncryptionConfig): number;
 ```
 
@@ -152,7 +152,7 @@ abstract enableEncryption(enabled: boolean, config: EncryptionConfig): number;
 
 <a id="api_irtcengineex_enableencryptionex__prototype"></a>
 
-```text
+```ts
 abstract enableEncryptionEx(
     connection: RtcConnection,
     enabled: boolean,
@@ -232,7 +232,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="api_irtcengine_enablewebsdkinteroperability__prototype"></a>
 
-```text
+```ts
 abstract enableWebSdkInteroperability(enabled: boolean): number;
 ```
 
@@ -284,7 +284,7 @@ abstract enableWebSdkInteroperability(enabled: boolean): number;
 
 <a id="api_irtcengine_getcallid__prototype"></a>
 
-```text
+```ts
 abstract getCallId(): string;
 ```
 
@@ -319,7 +319,7 @@ abstract getCallId(): string;
 
 <a id="api_irtcengineex_getcallidex__prototype"></a>
 
-```text
+```ts
 abstract getCallIdEx(connection: RtcConnection): string;
 ```
 
@@ -360,7 +360,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="api_irtcengine_getconnectionstate__prototype"></a>
 
-```text
+```ts
 abstract getConnectionState(): ConnectionStateType;
 ```
 
@@ -392,7 +392,7 @@ abstract getConnectionState(): ConnectionStateType;
 
 <a id="api_irtcengineex_getconnectionstateex__prototype"></a>
 
-```text
+```ts
 abstract getConnectionStateEx(connection: RtcConnection): ConnectionStateType;
 ```
 
@@ -437,7 +437,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="api_irtcengine_getcurrentmonotonictimeinms__prototype"></a>
 
-```text
+```ts
 abstract getCurrentMonotonicTimeInMs(): number;
 ```
 
@@ -473,7 +473,7 @@ Monotonic Time 是指一个单调递增的时间序列，它的值会随着时�
 
 <a id="api_irtcengine_geterrordescription__prototype"></a>
 
-```text
+```ts
 abstract getErrorDescription(code: number): string;
 ```
 
@@ -512,7 +512,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_getnativehandle__prototype"></a>
 
-```text
+```ts
 abstract getNativeHandle(): number;
 ```
 
@@ -540,7 +540,7 @@ SDK 引擎的 Native 句柄。
 
 <a id="api_irtcengine_getnetworktype__prototype"></a>
 
-```text
+```ts
 abstract getNetworkType(): number;
 ```
 
@@ -583,7 +583,7 @@ abstract getNetworkType(): number;
 
 <a id="api_irtcengine_getntpwalltimeinms__prototype"></a>
 
-```text
+```ts
 abstract getNtpWallTimeInMs(): number;
 ```
 
@@ -611,7 +611,7 @@ abstract getNtpWallTimeInMs(): number;
 
 <a id="api_irtcengine_getversion__prototype"></a>
 
-```text
+```ts
 abstract getVersion(): SDKBuildInfo;
 ```
 
@@ -637,7 +637,7 @@ abstract getVersion(): SDKBuildInfo;
 
 <a id="api_irtcengine_isfeatureavailableondevice__prototype"></a>
 
-```text
+```ts
 abstract isFeatureAvailableOnDevice(type: FeatureType): boolean;
 ```
 
@@ -685,7 +685,7 @@ abstract isFeatureAvailableOnDevice(type: FeatureType): boolean;
 
 <a id="api_irtcengine_querydevicescore__prototype"></a>
 
-```text
+```ts
 abstract queryDeviceScore(): number;
 ```
 
@@ -718,7 +718,7 @@ abstract queryDeviceScore(): number;
 
 <a id="api_irtcengine_rate__prototype"></a>
 
-```text
+```ts
 abstract rate(callId: string, rating: number, description: string): number;
 ```
 
@@ -777,7 +777,7 @@ abstract rate(callId: string, rating: number, description: string): number;
 
 <a id="api_irtcengine_sendcustomreportmessage__prototype"></a>
 
-```text
+```ts
 abstract sendCustomReportMessage(
     id: string,
     category: string,
@@ -805,7 +805,7 @@ abstract sendCustomReportMessage(
 
 <a id="api_irtcengineex_sendcustomreportmessageex__prototype"></a>
 
-```text
+```ts
 abstract sendCustomReportMessageEx(
     id: string,
     category: string,
@@ -834,7 +834,7 @@ abstract sendCustomReportMessageEx(
 
 <a id="api_irtcengine_setavsyncsource__prototype"></a>
 
-```text
+```ts
 abstract setAVSyncSource(channelId: string, uid: number): number;
 ```
 
@@ -886,7 +886,7 @@ abstract setAVSyncSource(channelId: string, uid: number): number;
 
 <a id="api_irtcengine_setcloudproxy__prototype"></a>
 
-```text
+```ts
 abstract setCloudProxy(proxyType: CloudProxyType): number;
 ```
 
@@ -943,7 +943,7 @@ abstract setCloudProxy(proxyType: CloudProxyType): number;
 
 <a id="api_irtcengine_setlocalaccesspoint__prototype"></a>
 
-```text
+```ts
 abstract setLocalAccessPoint(config: LocalAccessPointConfiguration): number;
 ```
 
@@ -995,7 +995,7 @@ Local Access Point 配置。详见 LocalAccessPointConfiguration。
 
 <a id="api_irtcengine_setlogfile__prototype"></a>
 
-```text
+```ts
 abstract setLogFile(filePath: string): number;
 ```
 
@@ -1053,7 +1053,7 @@ abstract setLogFile(filePath: string): number;
 
 <a id="api_irtcengine_setlogfilesize__prototype"></a>
 
-```text
+```ts
 abstract setLogFileSize(fileSizeInKBytes: number): number;
 ```
 
@@ -1118,7 +1118,7 @@ abstract setLogFileSize(fileSizeInKBytes: number): number;
 
 <a id="api_irtcengine_setlogfilter__prototype"></a>
 
-```text
+```ts
 abstract setLogFilter(filter: LogFilterType): number;
 ```
 
@@ -1168,7 +1168,7 @@ abstract setLogFilter(filter: LogFilterType): number;
 
 <a id="api_irtcengine_setloglevel__prototype"></a>
 
-```text
+```ts
 abstract setLogLevel(level: LogLevel): number;
 ```
 
@@ -1216,7 +1216,7 @@ SDK 的 JSON 配置信息，用于提供技术预览或特别定制功能。
 
 <a id="api_irtcengine_setparameters__prototype"></a>
 
-```text
+```ts
 abstract setParameters(parameters: string): number;
 ```
 
@@ -1256,7 +1256,7 @@ JSON 字符串形式的参数。
 
 <a id="api_irtcengine_setremotesubscribefallbackoption__prototype"></a>
 
-```text
+```ts
 abstract setRemoteSubscribeFallbackOption(
     option: StreamFallbackOptions
   ): number;
@@ -1301,7 +1301,7 @@ abstract setRemoteSubscribeFallbackOption(
 
 <a id="api_irtcengine_startechotest3__prototype"></a>
 
-```text
+```ts
 abstract startEchoTest(config: EchoTestConfiguration): number;
 ```
 
@@ -1358,7 +1358,7 @@ abstract startEchoTest(config: EchoTestConfiguration): number;
 
 <a id="api_irtcengine_startlastmileprobetest__prototype"></a>
 
-```text
+```ts
 abstract startLastmileProbeTest(config: LastmileProbeConfig): number;
 ```
 
@@ -1415,7 +1415,7 @@ Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference
 
 <a id="api_irtcengine_stopechotest__prototype"></a>
 
-```text
+```ts
 abstract stopEchoTest(): number;
 ```
 
@@ -1446,7 +1446,7 @@ abstract stopEchoTest(): number;
 
 <a id="api_irtcengine_stoplastmileprobetest__prototype"></a>
 
-```text
+```ts
 abstract stopLastmileProbeTest(): number;
 ```
 
@@ -1473,7 +1473,7 @@ abstract stopLastmileProbeTest(): number;
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned__prototype"></a>
 
-```text
+```ts
 onConnectionBanned?(connection: RtcConnection): void;
 ```
 
@@ -1512,7 +1512,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted__prototype"></a>
 
-```text
+```ts
 onConnectionInterrupted?(connection: RtcConnection): void;
 ```
 
@@ -1558,7 +1558,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onconnectionlost__prototype"></a>
 
-```text
+```ts
 onConnectionLost?(connection: RtcConnection): void;
 ```
 
@@ -1593,7 +1593,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged__prototype"></a>
 
-```text
+```ts
 onConnectionStateChanged?(
     connection: RtcConnection,
     state: ConnectionStateType,
@@ -1644,7 +1644,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onencryptionerror__prototype"></a>
 
-```text
+```ts
 onEncryptionError?(
     connection: RtcConnection,
     errorType: EncryptionErrorType
@@ -1688,7 +1688,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onlastmileproberesult__prototype"></a>
 
-```text
+```ts
 onLastmileProbeResult?(result: LastmileProbeResult): void;
 ```
 
@@ -1723,7 +1723,7 @@ onLastmileProbeResult?(result: LastmileProbeResult): void;
 
 <a id="callback_irtcengineeventhandler_onlastmilequality__prototype"></a>
 
-```text
+```ts
 onLastmileQuality?(quality: QualityType): void;
 ```
 
@@ -1759,7 +1759,7 @@ Last mile 网络质量。详见 [QualityType](/zh-CN/api-reference/rtc/electron/
 
 <a id="callback_irtcengineeventhandler_onmultipathstats__prototype"></a>
 
-```text
+```ts
 onMultipathStats?(connection: RtcConnection, stats: MultipathStats): void;
 ```
 
@@ -1802,7 +1802,7 @@ onMultipathStats?(connection: RtcConnection, stats: MultipathStats): void;
 
 <a id="callback_irtcengineeventhandler_onnetworkquality__prototype"></a>
 
-```text
+```ts
 onNetworkQuality?(
     connection: RtcConnection,
     remoteUid: number,
@@ -1866,7 +1866,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onnetworktypechanged__prototype"></a>
 
-```text
+```ts
 onNetworkTypeChanged?(connection: RtcConnection, type: NetworkType): void;
 ```
 
@@ -1907,7 +1907,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onpermissionerror__prototype"></a>
 
-```text
+```ts
 onPermissionError?(permissionType: PermissionType): void;
 ```
 
@@ -1942,7 +1942,7 @@ onPermissionError?(permissionType: PermissionType): void;
 
 <a id="callback_irtcengineeventhandler_onproxyconnected__prototype"></a>
 
-```text
+```ts
 onProxyConnected?(
     channel: string,
     uid: number,
@@ -2007,7 +2007,7 @@ onProxyConnected?(
 
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__prototype"></a>
 
-```text
+```ts
 onRemoteSubscribeFallbackToAudioOnly?(
     uid: number,
     isFallbackOrRecover: boolean
@@ -2059,7 +2059,7 @@ onRemoteSubscribeFallbackToAudioOnly?(
 
 <a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__prototype"></a>
 
-```text
+```ts
 onUplinkNetworkInfoUpdated?(info: UplinkNetworkInfo): void;
 ```
 

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_adjustplaybacksignalvolume__prototype"></a>
 
-```text
+```java
 public abstract int adjustPlaybackSignalVolume(int volume);
 ```
 
@@ -73,7 +73,7 @@ public abstract int adjustPlaybackSignalVolume(int volume);
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume__prototype"></a>
 
-```text
+```java
 public abstract int adjustUserPlaybackSignalVolume(int uid, int volume);
 ```
 
@@ -131,7 +131,7 @@ public abstract int adjustUserPlaybackSignalVolume(int uid, int volume);
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex__prototype"></a>
 
-```text
+```java
 public abstract int adjustUserPlaybackSignalVolumeEx(int uid, int volume, RtcConnection connection);
 ```
 
@@ -201,7 +201,7 @@ public abstract int adjustUserPlaybackSignalVolumeEx(int uid, int volume, RtcCon
 
 <a id="api_irtcengine_disableaudio__prototype"></a>
 
-```text
+```java
 public abstract int disableAudio();
 ```
 
@@ -245,7 +245,7 @@ public abstract int disableAudio();
 
 <a id="api_irtcengine_enableaudio__prototype"></a>
 
-```text
+```java
 public abstract int enableAudio();
 ```
 
@@ -292,7 +292,7 @@ public abstract int enableAudio();
 
 <a id="api_irtcengine_enableaudiovolumeindication__prototype"></a>
 
-```text
+```java
 public abstract int enableAudioVolumeIndication(int interval, int smooth, boolean reportVad);
 ```
 
@@ -362,7 +362,7 @@ public abstract int enableAudioVolumeIndication(int interval, int smooth, boolea
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex__prototype"></a>
 
-```text
+```java
 public abstract int enableAudioVolumeIndicationEx(int interval, int smooth, boolean reportVad, RtcConnection connection);
 ```
 
@@ -446,7 +446,7 @@ public abstract int enableAudioVolumeIndicationEx(int interval, int smooth, bool
 
 <a id="api_irtcengine_setaudioprofile__prototype"></a>
 
-```text
+```java
 public abstract int setAudioProfile(int profile, int scenario);
 ```
 
@@ -527,7 +527,7 @@ public abstract int setAudioProfile(int profile, int scenario);
 
 <a id="api_irtcengine_setaudioprofile2__prototype"></a>
 
-```text
+```java
 public abstract int setAudioProfile(int profile);
 ```
 
@@ -591,7 +591,7 @@ public abstract int setAudioProfile(int profile);
 
 <a id="api_irtcengine_setaudioscenario__prototype"></a>
 
-```text
+```java
 public abstract int setAudioScenario(int scenario);
 ```
 
@@ -650,7 +650,7 @@ public abstract int setAudioScenario(int scenario);
 
 <a id="callback_irtcengineeventhandler_onactivespeaker__prototype"></a>
 
-```text
+```java
 public void onActiveSpeaker(int uid)
 ```
 
@@ -694,7 +694,7 @@ public void onActiveSpeaker(int uid)
 
 <a id="callback_irtcengineeventhandler_onaudioquality__prototype"></a>
 
-```text
+```java
 public void onAudioQuality(int uid, int quality, short delay, short lost)
 ```
 
@@ -762,7 +762,7 @@ public void onAudioQuality(int uid, int quality, short delay, short lost)
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication__prototype"></a>
 
-```text
+```java
 public void onAudioVolumeIndication(AudioVolumeInfo[] speakers, int totalVolume)
 ```
 
@@ -814,7 +814,7 @@ public void onAudioVolumeIndication(AudioVolumeInfo[] speakers, int totalVolume)
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__prototype"></a>
 
-```text
+```java
 public void onFirstLocalAudioFramePublished(int elapsed)
 ```
 
@@ -860,7 +860,7 @@ public void onFirstLocalAudioFramePublished(int elapsed)
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__prototype"></a>
 
-```text
+```java
 public void onFirstRemoteAudioDecoded(int uid, int elapsed)
 ```
 
@@ -914,7 +914,7 @@ public void onFirstRemoteAudioDecoded(int uid, int elapsed)
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__prototype"></a>
 
-```text
+```java
 public void onFirstRemoteAudioFrame(int uid, int elapsed) {}
 ```
 
@@ -965,7 +965,7 @@ public void onFirstRemoteAudioFrame(int uid, int elapsed) {}
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__prototype"></a>
 
-```text
+```java
 public void onLocalAudioStateChanged(int state, int reason)
 ```
 
@@ -1029,7 +1029,7 @@ public void onLocalAudioStateChanged(int state, int reason)
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats__prototype"></a>
 
-```text
+```java
 public void onLocalAudioStats(LocalAudioStats stats) {}
 ```
 
@@ -1070,7 +1070,7 @@ public void onLocalAudioStats(LocalAudioStats stats) {}
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__prototype"></a>
 
-```text
+```java
 public void onRemoteAudioStateChanged(int uid, int state, int reason, int elapsed)
 ```
 
@@ -1148,7 +1148,7 @@ public void onRemoteAudioStateChanged(int uid, int state, int reason, int elapse
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats__prototype"></a>
 
-```text
+```java
 public void onRemoteAudioStats(RemoteAudioStats stats) {}
 ```
 
@@ -1183,7 +1183,7 @@ public void onRemoteAudioStats(RemoteAudioStats stats) {}
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__prototype"></a>
 
-```text
+```java
 public void onRemoteAudioTransportStats(int uid, int delay, int lost, int rxKBitRate)
 ```
 
@@ -1248,7 +1248,7 @@ public void onRemoteAudioTransportStats(int uid, int delay, int lost, int rxKBit
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio__prototype"></a>
 
-```text
+```java
 public void onUserMuteAudio(int uid, boolean muted)
 ```
 

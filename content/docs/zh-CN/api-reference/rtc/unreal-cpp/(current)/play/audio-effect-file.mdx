@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_geteffectcurrentposition__prototype"></a>
 
-```text
+```cpp
 virtual int getEffectCurrentPosition(int soundId) = 0;
 ```
 
@@ -67,7 +67,7 @@ virtual int getEffectCurrentPosition(int soundId) = 0;
 
 <a id="api_irtcengine_geteffectduration__prototype"></a>
 
-```text
+```cpp
 virtual int getEffectDuration(const char* filePath) = 0;
 ```
 
@@ -116,7 +116,7 @@ virtual int getEffectDuration(const char* filePath) = 0;
 
 <a id="api_irtcengine_geteffectsvolume__prototype"></a>
 
-```text
+```cpp
 virtual int getEffectsVolume() = 0;
 ```
 
@@ -151,7 +151,7 @@ virtual int getEffectsVolume() = 0;
 
 <a id="api_irtcengine_getvolumeofeffect__prototype"></a>
 
-```text
+```cpp
 virtual int getVolumeOfEffect(int soundId) = 0;
 ```
 
@@ -191,7 +191,7 @@ virtual int getVolumeOfEffect(int soundId) = 0;
 
 <a id="api_irtcengine_pausealleffects__prototype"></a>
 
-```text
+```cpp
 virtual int pauseAllEffects() = 0;
 ```
 
@@ -216,7 +216,7 @@ virtual int pauseAllEffects() = 0;
 
 <a id="api_irtcengine_pauseeffect__prototype"></a>
 
-```text
+```cpp
 virtual int pauseEffect(int soundId) = 0;
 ```
 
@@ -254,7 +254,7 @@ virtual int pauseEffect(int soundId) = 0;
 
 <a id="api_irtcengine_playalleffects__prototype"></a>
 
-```text
+```cpp
 virtual int playAllEffects(int loopCount, double pitch, double pan, int gain, bool publish = false) = 0;
 ```
 
@@ -336,7 +336,7 @@ virtual int playAllEffects(int loopCount, double pitch, double pan, int gain, bo
 
 <a id="api_irtcengine_playeffect3__prototype"></a>
 
-```text
+```cpp
 virtual int playEffect(int soundId,
     const char* filePath,
     int loopCount,
@@ -465,7 +465,7 @@ virtual int playEffect(int soundId,
 
 <a id="api_irtcengine_preloadeffect__prototype"></a>
 
-```text
+```cpp
 virtual int preloadEffect(int soundId, const char* filePath, int startPos = 0) = 0;
 ```
 
@@ -532,7 +532,7 @@ virtual int preloadEffect(int soundId, const char* filePath, int startPos = 0) =
 
 <a id="api_irtcengine_resumealleffects__prototype"></a>
 
-```text
+```cpp
 virtual int resumeAllEffects() = 0;
 ```
 
@@ -573,7 +573,7 @@ virtual int resumeAllEffects() = 0;
 
 <a id="api_irtcengine_resumeeffect__prototype"></a>
 
-```text
+```cpp
 virtual int resumeEffect(int soundId) = 0;
 ```
 
@@ -611,7 +611,7 @@ virtual int resumeEffect(int soundId) = 0;
 
 <a id="api_irtcengine_seteffectposition__prototype"></a>
 
-```text
+```cpp
 virtual int setEffectPosition(int soundId, int pos) = 0;
 ```
 
@@ -665,7 +665,7 @@ virtual int setEffectPosition(int soundId, int pos) = 0;
 
 <a id="api_irtcengine_seteffectsvolume__prototype"></a>
 
-```text
+```cpp
 virtual int setEffectsVolume(int volume) = 0;
 ```
 
@@ -717,7 +717,7 @@ virtual int setEffectsVolume(int volume) = 0;
 
 <a id="api_irtcengine_setvolumeofeffect__prototype"></a>
 
-```text
+```cpp
 virtual int setVolumeOfEffect(int soundId, int volume) = 0;
 ```
 
@@ -775,7 +775,7 @@ virtual int setVolumeOfEffect(int soundId, int volume) = 0;
 
 <a id="api_irtcengine_stopalleffects__prototype"></a>
 
-```text
+```cpp
 virtual int stopAllEffects() = 0;
 ```
 
@@ -816,7 +816,7 @@ virtual int stopAllEffects() = 0;
 
 <a id="api_irtcengine_stopeffect__prototype"></a>
 
-```text
+```cpp
 virtual int stopEffect(int soundId) = 0;
 ```
 
@@ -870,7 +870,7 @@ virtual int stopEffect(int soundId) = 0;
 
 <a id="api_irtcengine_unloadalleffects__prototype"></a>
 
-```text
+```cpp
 virtual int unloadAllEffects() = 0;
 ```
 
@@ -895,7 +895,7 @@ virtual int unloadAllEffects() = 0;
 
 <a id="api_irtcengine_unloadeffect__prototype"></a>
 
-```text
+```cpp
 virtual int unloadEffect(int soundId) = 0;
 ```
 
@@ -949,7 +949,7 @@ virtual int unloadEffect(int soundId) = 0;
 
 <a id="callback_irtcengineeventhandler_onaudioeffectfinished__prototype"></a>
 
-```text
+```cpp
 virtual void onAudioEffectFinished(int soundId) {
     }
 ```

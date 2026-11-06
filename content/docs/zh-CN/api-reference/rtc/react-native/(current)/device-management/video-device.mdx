@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_enablemulticamera__prototype"></a>
 
-```text
+```ts
 abstract enableMultiCamera(
     enabled: boolean,
     config: CameraCapturerConfiguration
@@ -99,7 +99,7 @@ abstract enableMultiCamera(
 
 <a id="api_irtcengine_getcameramaxzoomfactor__prototype"></a>
 
-```text
+```ts
 abstract getCameraMaxZoomFactor(): number;
 ```
 
@@ -131,7 +131,7 @@ abstract getCameraMaxZoomFactor(): number;
 
 <a id="api_irtcengine_getvideodevicemanager__prototype"></a>
 
-```text
+```ts
 abstract getVideoDeviceManager(): IVideoDeviceManager;
 ```
 
@@ -157,7 +157,7 @@ abstract getVideoDeviceManager(): IVideoDeviceManager;
 
 <a id="api_irtcengine_iscameraautoexposurefacemodesupported__prototype"></a>
 
-```text
+```ts
 abstract isCameraAutoExposureFaceModeSupported(): boolean;
 ```
 
@@ -184,7 +184,7 @@ abstract isCameraAutoExposureFaceModeSupported(): boolean;
 
 <a id="api_irtcengine_iscameraautofocusfacemodesupported__prototype"></a>
 
-```text
+```ts
 abstract isCameraAutoFocusFaceModeSupported(): boolean;
 ```
 
@@ -217,7 +217,7 @@ abstract isCameraAutoFocusFaceModeSupported(): boolean;
 
 <a id="api_irtcengine_iscameraexposurepositionsupported__prototype"></a>
 
-```text
+```ts
 abstract isCameraExposurePositionSupported(): boolean;
 ```
 
@@ -250,7 +250,7 @@ abstract isCameraExposurePositionSupported(): boolean;
 
 <a id="api_irtcengine_iscameraexposuresupported__prototype"></a>
 
-```text
+```ts
 abstract isCameraExposureSupported(): boolean;
 ```
 
@@ -285,7 +285,7 @@ abstract isCameraExposureSupported(): boolean;
 
 <a id="api_irtcengine_iscamerafacedetectsupported__prototype"></a>
 
-```text
+```ts
 abstract isCameraFaceDetectSupported(): boolean;
 ```
 
@@ -319,7 +319,7 @@ abstract isCameraFaceDetectSupported(): boolean;
 
 <a id="api_irtcengine_iscamerafocussupported__prototype"></a>
 
-```text
+```ts
 abstract isCameraFocusSupported(): boolean;
 ```
 
@@ -352,7 +352,7 @@ abstract isCameraFocusSupported(): boolean;
 
 <a id="api_irtcengine_iscameratorchsupported__prototype"></a>
 
-```text
+```ts
 abstract isCameraTorchSupported(): boolean;
 ```
 
@@ -387,7 +387,7 @@ abstract isCameraTorchSupported(): boolean;
 
 <a id="api_irtcengine_iscamerazoomsupported__prototype"></a>
 
-```text
+```ts
 abstract isCameraZoomSupported(): boolean;
 ```
 
@@ -420,7 +420,7 @@ abstract isCameraZoomSupported(): boolean;
 
 <a id="api_irtcengine_querycamerafocallengthcapability__prototype"></a>
 
-```text
+```ts
 abstract queryCameraFocalLengthCapability(): {
     focalLengthInfos: FocalLengthInfo[];
     size: number;
@@ -454,7 +454,7 @@ abstract queryCameraFocalLengthCapability(): {
 
 <a id="api_irtcengine_querycodeccapability__prototype"></a>
 
-```text
+```ts
 abstract queryCodecCapability(): { codecInfo: CodecCapInfo[]; size: number };
 ```
 
@@ -484,7 +484,7 @@ abstract queryCodecCapability(): { codecInfo: CodecCapInfo[]; size: number };
 
 <a id="api_irtcengine_setcameraautoexposurefacemodeenabled__prototype"></a>
 
-```text
+```ts
 abstract setCameraAutoExposureFaceModeEnabled(enabled: boolean): number;
 ```
 
@@ -527,7 +527,7 @@ abstract setCameraAutoExposureFaceModeEnabled(enabled: boolean): number;
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled__prototype"></a>
 
-```text
+```ts
 abstract setCameraAutoFocusFaceModeEnabled(enabled: boolean): number;
 ```
 
@@ -578,7 +578,7 @@ SDK 默认在 Android 平台关闭人脸自动对焦，在 iOS 平台开启人�
 
 <a id="api_irtcengine_setcameracapturerconfiguration__prototype"></a>
 
-```text
+```ts
 abstract setCameraCapturerConfiguration(
     config: CameraCapturerConfiguration
   ): number;
@@ -635,7 +635,7 @@ abstract setCameraCapturerConfiguration(
 
 <a id="api_irtcengine_setcameradeviceorientation__prototype"></a>
 
-```text
+```ts
 abstract setCameraDeviceOrientation(
     type: VideoSourceType,
     orientation: VideoOrientation
@@ -685,7 +685,7 @@ abstract setCameraDeviceOrientation(
 
 <a id="api_irtcengine_setcameraexposurefactor__prototype"></a>
 
-```text
+```ts
 abstract setCameraExposureFactor(factor: number): number;
 ```
 
@@ -736,7 +736,7 @@ abstract setCameraExposureFactor(factor: number): number;
 
 <a id="api_irtcengine_setcameraexposureposition__prototype"></a>
 
-```text
+```ts
 abstract setCameraExposurePosition(
     positionXinView: number,
     positionYinView: number
@@ -792,7 +792,7 @@ abstract setCameraExposurePosition(
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__prototype"></a>
 
-```text
+```ts
 abstract setCameraFocusPositionInPreview(
     positionX: number,
     positionY: number
@@ -848,7 +848,7 @@ abstract setCameraFocusPositionInPreview(
 
 <a id="api_irtcengine_setcameratorchon__prototype"></a>
 
-```text
+```ts
 abstract setCameraTorchOn(isOn: boolean): number;
 ```
 
@@ -897,7 +897,7 @@ abstract setCameraTorchOn(isOn: boolean): number;
 
 <a id="api_irtcengine_setcamerazoomfactor__prototype"></a>
 
-```text
+```ts
 abstract setCameraZoomFactor(factor: number): number;
 ```
 
@@ -945,7 +945,7 @@ abstract setCameraZoomFactor(factor: number): number;
 
 <a id="api_irtcengine_switchcamera__prototype"></a>
 
-```text
+```ts
 abstract switchCamera(): number;
 ```
 
@@ -984,7 +984,7 @@ abstract switchCamera(): number;
 
 <a id="callback_irtcengineeventhandler_oncameraexposureareachanged__prototype"></a>
 
-```text
+```ts
 onCameraExposureAreaChanged?(
     x: number,
     y: number,
@@ -1046,7 +1046,7 @@ onCameraExposureAreaChanged?(
 
 <a id="callback_irtcengineeventhandler_oncamerafocusareachanged__prototype"></a>
 
-```text
+```ts
 onCameraFocusAreaChanged?(
     x: number,
     y: number,
@@ -1108,7 +1108,7 @@ onCameraFocusAreaChanged?(
 
 <a id="callback_irtcengineeventhandler_oncameraready__prototype"></a>
 
-```text
+```ts
 onCameraReady?(): void;
 ```
 

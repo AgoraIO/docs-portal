@@ -1,7 +1,7 @@
 /* Apply the same code typography to compiled MDX and OpenAPI examples.
    :lang(zh) also matches nested Shiki tokens, so set their font explicitly. */
 :root figure.shiki pre,
-:root figure.shiki pre :where(code, span) {
+:root figure.shiki pre :where(code, code *) {
   font-family: var(--font-mono);
   font-variant-ligatures: none;
 }

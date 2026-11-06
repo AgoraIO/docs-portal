@@ -51,7 +51,7 @@ _migration:
 
 <a id="api_irtcengine_createdatastream2__prototype"></a>
 
-```text
+```dart
 Future<int> createDataStream(DataStreamConfig config);
 ```
 
@@ -102,7 +102,7 @@ Future<int> createDataStream(DataStreamConfig config);
 
 <a id="api_irtcengineex_createdatastreamex2__prototype"></a>
 
-```text
+```dart
 Future<int> createDataStreamEx(
       {required DataStreamConfig config, required RtcConnection connection});
 ```
@@ -160,7 +160,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="api_irtcengine_sendstreammessage__prototype"></a>
 
-```text
+```dart
 Future<void> sendStreamMessage(
     {required int streamId, required Uint8List data, required int length});
 ```
@@ -227,7 +227,7 @@ SDK 对该方法的实现进行了如下限制：
 
 <a id="api_irtcengineex_sendstreammessageex__prototype"></a>
 
-```text
+```dart
 Future<void> sendStreamMessageEx(
       {required int streamId,
       required Uint8List data,
@@ -304,7 +304,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onstreammessage__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int remoteUid, int streamId,
       Uint8List data, int length, int sentTs)? onStreamMessage;
 ```
@@ -374,7 +374,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int remoteUid, int streamId,
       ErrorCodeType code, int missed, int cached)? onStreamMessageError;
 ```

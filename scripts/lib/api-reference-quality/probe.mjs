@@ -26,6 +26,22 @@ export function inspectReference() {
     if (visible(link) && link.scrollWidth > link.clientWidth + 2)
       add('toc-overflow', link);
   }
+  for (const type of document.querySelectorAll('[data-api-return-type]')) {
+    if (visible(type) && type.scrollWidth > type.clientWidth + 2)
+      add('overflowing-api-type', type);
+  }
+  for (const list of document.querySelectorAll(
+    '[data-parameter-list][data-parameter-nested="true"]',
+  )) {
+    if (
+      visible(list) &&
+      (list.tagName !== 'UL' ||
+        [...list.querySelectorAll('[data-parameter-item]')].some(
+          (item) => item.tagName !== 'LI',
+        ))
+    )
+      add('nonstandard-nested-parameters', list);
+  }
   for (const button of document.querySelectorAll(
     '[data-openapi-field-toggle], .openapi-schema-toolbar button',
   )) {
@@ -35,7 +51,7 @@ export function inspectReference() {
       add('small-schema-target', button, { width, height });
   }
   for (const list of document.querySelectorAll(
-    '[data-parameter-description] ul:not([data-parameter-possible-values]), [data-parameter-description] ol, [data-api-return-description] ul, [data-api-return-description] ol',
+    '[data-parameter-description] ul:not([data-parameter-possible-values]), [data-parameter-description] ol, [data-api-return-description] ul, [data-api-return-description] ol, [data-parameter-nested]',
   )) {
     const style = getComputedStyle(list);
     if (
@@ -91,6 +107,84 @@ export function inspectReference() {
     )
       add('tab-frame-leak', tabs);
   }
+  for (const block of document.querySelectorAll(
+    'article [data-code-language]',
+  )) {
+    const language = block.getAttribute('data-code-language');
+    if (!visible(block) || !language || /^(text|plaintext|txt)$/.test(language))
+      continue;
+    const code = block.querySelector('pre code');
+    if (code?.textContent.trim() && !code.querySelector('span[style*="shiki"]'))
+      add('missing-syntax-highlight', block, { language });
+    if (code) {
+      const tokens = [...code.querySelectorAll('span[style*="shiki"]')].filter(
+        (token) => token.textContent.trim(),
+      );
+      const variable = document.documentElement.classList.contains('dark')
+        ? '--shiki-dark'
+        : '--shiki-light';
+      const authoredColors = new Set(
+        tokens
+          .map((token) => token.style.getPropertyValue(variable))
+          .filter(Boolean),
+      );
+      const renderedColors = new Set(
+        tokens.map((token) => getComputedStyle(token).color),
+      );
+      if (authoredColors.size > 1 && renderedColors.size === 1)
+        add('flattened-syntax-highlight', block, { language });
+    }
+  }
+  const ordinaryCode = [
+    ...document.querySelectorAll(
+      'article figure.shiki:not([data-api-signature])',
+    ),
+  ].find(visible);
+  for (const signature of document.querySelectorAll(
+    'article [data-api-signature]',
+  )) {
+    if (!visible(signature)) continue;
+    if (
+      !signature.matches('figure.shiki') ||
+      !signature.querySelector('pre code > .line')
+    ) {
+      add('nonstandard-api-signature', signature);
+      continue;
+    }
+    if (ordinaryCode) {
+      const actual = getComputedStyle(signature),
+        expected = getComputedStyle(ordinaryCode);
+      if (
+        ['backgroundColor', 'borderTopLeftRadius', 'borderTopWidth'].some(
+          (property) => actual[property] !== expected[property],
+        )
+      )
+        add('inconsistent-code-frame', signature);
+    }
+  }
+  for (const code of document.querySelectorAll(
+    'article figure.shiki pre code',
+  )) {
+    if (!visible(code)) continue;
+    const font = getComputedStyle(code).fontFamily;
+    for (const inline of code.querySelectorAll('a, em, strong')) {
+      if (getComputedStyle(inline).fontFamily !== font) {
+        add('inconsistent-code-typography', inline);
+        break;
+      }
+    }
+  }
+  for (const parameters of document.querySelectorAll(
+    'article [data-parameter-list]:not([data-parameter-nested]), article [data-api-returns]',
+  )) {
+    if (
+      visible(parameters) &&
+      !parameters.querySelector(
+        ':scope > .docs-table-container > section > table',
+      )
+    )
+      add('nonstandard-api-table', parameters);
+  }
   for (const image of document.querySelectorAll('article img')) {
     const src = image.currentSrc || image.src;
     if (
@@ -102,8 +196,33 @@ export function inspectReference() {
     if (visible(image) && image.complete && !image.naturalWidth)
       add('broken-image', image, { src });
   }
+  const frameStyles = (selector) => {
+    const unique = new Map();
+    for (const frame of document.querySelectorAll(selector)) {
+      if (!visible(frame)) continue;
+      const style = getComputedStyle(frame),
+        pre = frame.querySelector('pre');
+      if (!pre) continue;
+      const text = getComputedStyle(pre);
+      const value = {
+        backgroundColor: style.backgroundColor,
+        borderRadius: style.borderTopLeftRadius,
+        borderWidth: style.borderTopWidth,
+        fontFamily: text.fontFamily,
+        fontSize: text.fontSize,
+      };
+      unique.set(JSON.stringify(value), value);
+    }
+    return [...unique.values()];
+  };
   return {
     issues,
+    codeFrames: {
+      ordinary: frameStyles(
+        'article figure.shiki[data-code-language]:not([data-api-signature])',
+      ),
+      signatures: frameStyles('article figure[data-api-signature]'),
+    },
     actualViewport: {
       width: innerWidth,
       height: innerHeight,
@@ -135,6 +254,14 @@ export const canaryHtml = `<!doctype html><html><body><article>
 <div style="border-radius:12px;overflow:visible"><div role="tablist" style="background:red">Tabs</div></div>
 <table style="table-layout:fixed;width:20px"><tr><td style="width:20px;line-height:20px">A long description that has been squeezed into a very narrow table column and is no longer readable as continuous prose.</td></tr></table>
 <aside><nav><a style="display:block;width:20px;overflow:hidden">A clipped table of contents link</a></nav></aside>
+<figure class="shiki" data-code-language="cpp"><pre><code>int callback();</code></pre></figure>
+<figure data-code-language="cpp"><pre><code><span style="--shiki-light:red;--shiki-dark:red;color:black">int</span><span style="--shiki-light:blue;--shiki-dark:blue;color:black">callback</span></code></pre></figure>
+<div data-api-signature>Unshared signature frame</div>
+<figure class="shiki" data-api-signature style="background:red;border-radius:24px"><pre><code><span class="line">void callback();</span></code></pre></figure>
+<figure class="shiki"><pre><code style="font-family:monospace"><span class="line"><a href="#type" style="font-family:serif">Inconsistent type font</a></span></code></pre></figure>
+<section data-parameter-list><div>Unshared parameter grid</div></section>
+<div data-parameter-list data-parameter-nested="true"><div data-parameter-item>Unshared nested card</div></div>
+<div data-api-return-type style="width:100px;white-space:pre">Promise&lt;VeryLongVideoTrackInterface,VeryLongAudioTrackInterface&gt;</div>
 </article></body></html>`;
 export const canaryRules = [
   'page-overflow',
@@ -144,4 +271,12 @@ export const canaryRules = [
   'tab-frame-leak',
   'squeezed-table-prose',
   'toc-overflow',
+  'missing-syntax-highlight',
+  'flattened-syntax-highlight',
+  'nonstandard-api-signature',
+  'inconsistent-code-frame',
+  'nonstandard-api-table',
+  'inconsistent-code-typography',
+  'overflowing-api-type',
+  'nonstandard-nested-parameters',
 ];
