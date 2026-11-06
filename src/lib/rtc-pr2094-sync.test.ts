@@ -148,27 +148,30 @@ describe('RTC PR #2094 frozen source delta', () => {
       expect(read(file(platform, 'class-ivideoeffectobject'))).not.toContain(
         'unresolved-related-link',
       );
-      for (const name of [
-        'class-ivideoeffectobject',
-        'rtc-api-overview',
-        ...(platform === 'android' ? [] : ['rtc-interface-class']),
-      ]) {
+      for (const name of ['class-ivideoeffectobject', 'rtc-api-overview']) {
         expect(read(file(platform, name))).toContain(
           '#api_ivideoeffectobject_setvideoeffectstringparam',
         );
       }
-      if (platform === 'android') {
-        const index = read(file(platform, 'rtc-interface-class'));
-        expect(index).not.toContain('IVideoEffectObject');
-        expect(index).not.toContain('ivideoeffectobject');
-        for (const source of [
-          file(platform, 'rtc-api-overview'),
-          'content/docs/zh-CN/realtime-media/rtc/reference/release-notes.mdx',
-        ]) {
-          expect(read(source)).not.toContain(
-            '/android/rtc-interface-class#class_ivideoeffectobject',
+      const index = read(file(platform, 'rtc-interface-class'));
+      expect(index).not.toMatch(
+        /IVideoEffectObject|AgoraVideoEffectObject|ivideoeffectobject/,
+      );
+      for (const source of [
+        file(platform, 'rtc-api-overview'),
+        'content/docs/zh-CN/realtime-media/rtc/reference/release-notes.mdx',
+      ]) {
+        expect(read(source)).not.toContain(
+          `/${platform}/rtc-interface-class#class_ivideoeffectobject`,
+        );
+        if (
+          source.endsWith('/release-notes.mdx') ||
+          platform === 'android' ||
+          platform === 'cpp-all-platforms'
+        ) {
+          expect(read(source)).toContain(
+            `/${platform}/class-ivideoeffectobject`,
           );
-          expect(read(source)).toContain('/android/class-ivideoeffectobject');
         }
       }
       expect(read(file(platform, 'rtc-api-data-type'))).toContain(
@@ -258,51 +261,91 @@ describe('RTC PR #2094 frozen source delta', () => {
     expect(text).toContain('<a id="metadatasize"></a>');
   });
 
-  it('keeps Android related-reference hashes attached to their original classes', async () => {
-    const source = read(file('android', 'rtc-interface-class'));
-    const compiled = await compile(source.replace(/^---[\s\S]*?---\s*/, ''), {
-      remarkPlugins: [remarkHeading],
-    });
-    const toc = compiled.data.toc as Array<{
-      title: string;
-      url: string;
-      depth: number;
-    }>;
-    const classes = [
-      'IVideoEncodedFrameObserver',
-      'IVideoFrameObserver',
-      'Player',
-      'PlayerConfig',
-      'PlayerGetStatsCallback',
-      'PlayerObserver',
-      'Rte',
-      'PlayerInfo',
-    ];
-    for (const [index, name] of classes.entries()) {
-      const heading = toc.findIndex((entry) => entry.title === name);
-      expect(heading).toBeGreaterThanOrEqual(0);
-      expect(toc[heading + 1]).toMatchObject({
-        title: '相关参考',
-        url: `#相关参考-${26 + index}`,
-        depth: 3,
+  it.each(
+    Object.entries({
+      android: [
+        ['IVideoEncodedFrameObserver', '#相关参考-26'],
+        ['IVideoFrameObserver', '#相关参考-27'],
+        ['Player', '#相关参考-28'],
+        ['PlayerConfig', '#相关参考-29'],
+        ['PlayerGetStatsCallback', '#相关参考-30'],
+        ['PlayerObserver', '#相关参考-31'],
+        ['Rte', '#相关参考-32'],
+        ['PlayerInfo', '#相关参考-33'],
+      ],
+      'cpp-all-platforms': [
+        ['IVideoEncodedFrameObserver', '#相关参考-29'],
+        ['IVideoFrameObserver', '#相关参考-30'],
+        ['MusicChartCollection', '#相关参考-31'],
+        ['Player', '#相关参考-32'],
+        ['PlayerConfig', '#相关参考-33'],
+        ['PlayerObserver', '#相关参考-34'],
+        ['Rte', '#相关参考-35'],
+        ['PlayerInfo', '#相关参考-36'],
+      ],
+      ios: [
+        ['AgoraEncodedVideoFrameDelegate', '#相关参考-24'],
+        ['AgoraVideoFrameDelegate', '#相关参考-25'],
+        ['AgoraRtePlayer', '#相关参考-26'],
+        ['AgoraRtePlayerConfig', '#相关参考-27'],
+        ['AgoraRtePlayerObserver', '#相关参考-28'],
+        ['AgoraRte', '#相关参考-29'],
+      ],
+      macos: [
+        ['AgoraEncodedVideoFrameDelegate', '#相关参考-21'],
+        ['AgoraVideoFrameDelegate', '#相关参考-22'],
+        ['AgoraRtePlayer', '#相关参考-23'],
+        ['AgoraRtePlayerConfig', '#相关参考-24'],
+        ['AgoraRtePlayerObserver', '#相关参考-25'],
+        ['AgoraRte', '#相关参考-26'],
+      ],
+    }),
+  )(
+    '%s keeps related-reference hashes attached to their original classes',
+    async (platform, headings) => {
+      const source = read(file(platform, 'rtc-interface-class'));
+      const compiled = await compile(source.replace(/^---[\s\S]*?---\s*/, ''), {
+        remarkPlugins: [remarkHeading],
       });
-    }
-    expect(source).not.toContain('<a id="相关参考-25"></a>');
-  });
+      const toc = compiled.data.toc as Array<{
+        title: string;
+        url: string;
+        depth: number;
+      }>;
+      for (const [name, url] of headings) {
+        const heading = toc.findIndex((entry) => entry.title === name);
+        expect(heading).toBeGreaterThanOrEqual(0);
+        expect(toc[heading + 1]).toMatchObject({
+          title: '相关参考',
+          url,
+          depth: 3,
+        });
+      }
+    },
+  );
 
-  it('keeps preexisting class hashes except the retired Android video effect section', () => {
+  it('keeps preexisting class hashes except the retired video effect sections', () => {
     for (const item of report.inventory.filter((item) =>
       item.target_path?.endsWith('/rtc-interface-class.mdx'),
     )) {
       const text = read(item.target_path as string);
-      const retiredIds =
-        item.target_path === file('android', 'rtc-interface-class')
-          ? [
-              'class_ivideoeffectobject',
-              'class_ivideoeffectobject__detailed_desc',
-              'ariaid-title28',
-            ]
-          : [];
+      const platform = platforms.find(
+        (platform) =>
+          item.target_path === file(platform, 'rtc-interface-class'),
+      );
+      const retiredTitleIds: Record<string, string> = {
+        android: 'ariaid-title28',
+        'cpp-all-platforms': 'ariaid-title32',
+        ios: 'ariaid-title27',
+        macos: 'ariaid-title24',
+      };
+      const retiredIds = platform
+        ? [
+            'class_ivideoeffectobject',
+            'class_ivideoeffectobject__detailed_desc',
+            retiredTitleIds[platform],
+          ]
+        : [];
       for (const id of item.target_old_ids) {
         if (retiredIds.includes(id)) {
           expect(text).not.toContain(`<a id="${id}"></a>`);
