@@ -80,7 +80,7 @@ Server Gateway SDK API reference for Python.
   | [`unregister_video_frame_observer`](#unregister_video_frame_observer) | Destroys the [`IVideoFrameObserver`](#ivideoframeobserver) object. |
   | [`get_rtc_connection`](#get_rtc_connection) | Gets the `RtcConnection` object. |
   | [`release`](#local-user-release) | Releases all resources of the `LocalUser` object. |
-  | [`send_audio_metadata`](#send_audio_metadata) | Sends the audio metadata. |
+  | [`send_audio_meta_data`](#send_audio_meta_data) | Sends the audio metadata. |
 
 - `LocalUserObserver`
 
@@ -763,14 +763,15 @@ Connection state change reason:
 Occurs when a data stream message error occurs. This callback indicates that the local user has not received the stream message sent by the remote user using the [`send_stream_message`](#send_stream_message) method.
 
 ```python
-def on_stream_message_error(self, user_id: str, stream_id: int, code: int, missed: int, cached: int)
+def on_stream_message_error(self, agora_rtc_conn, user_id_str, stream_id, code, missed, cached)
 ```
 
 #### Parameters
 
 | Parameter        | Description  |
 |-------------|----------|
-| `user_id`   | The user ID that sends the message.              |
+| `agora_rtc_conn`   | The RTC connection object. See [`RtcConnection`](#rtcconnection).              |
+| `user_id_str`   | The user ID that sends the message.              |
 | `stream_id` | The stream ID of the received message.         |
 | `code`      | The code of the error that has occurred.                |
 | `missed`    | The number of lost messages.                     |
@@ -1025,14 +1026,25 @@ def set_playback_audio_frame_before_mixing_parameters(self, channels, sample_rat
 Registers the audio frame observer. You must implement the [`IAudioFrameObserver`](#iaudioframeobserver) class and register the callback based on your needs.
 
 ```python
-def register_audio_frame_observer(self, observer:IAudioFrameObserver)
+def register_audio_frame_observer(self, observer: IAudioFrameObserver, enable_vad: int, vad_configure)
 ```
 
 #### Parameters
 
-| Parameter | Description |
-|---------------|----------------------------------------------------------------------|
-| `observer` | [`IAudioFrameObserver`](#iaudioframeobserver) class. |
+**`observer`**
+
+[`IAudioFrameObserver`](#iaudioframeobserver) class.
+
+**`enable_vad`**
+
+Whether to enable the built-in voice activity detection (VAD):
+
+- `0`: Disable VAD.
+- `1`: Enable VAD. The SDK returns the VAD results in the [`on_playback_audio_frame_before_mixing`](#on_playback_audio_frame_before_mixing) callback.
+
+**`vad_configure`**
+
+The VAD configuration, an `AudioVadConfigV2` object. The SDK uses this parameter only when `enable_vad` is `1`.
 
 #### Returns
 
@@ -1213,7 +1225,7 @@ def register_video_frame_observer(self, agora_video_frame_observer2:IVideoFrameO
 Destroys the [`IVideoFrameObserver`](#ivideoframeobserver) object.
 
 ```python
-def unregister_video_frame_observer(self, agora_video_frame_observer2)
+def unregister_video_frame_observer(self)
 ```
 
 #### Returns
@@ -1241,7 +1253,7 @@ Releases all resources of the `LocalUser` object.
 def release(self)
 ```
 
-### `send_audio_metadata`
+### `send_audio_meta_data`
 
 ```python
 def send_audio_meta_data(self, data)
@@ -1253,7 +1265,7 @@ Sends the audio metadata.
 v2.2.3.
 :::
 
-A successful call of thie method triggers the [`on_audio_metadata_received`](#on_audio_meta_data_received) callback on the remote end. The remote user can get the audio metadata in this callback.
+A successful call of this method triggers the [`on_audio_metadata_received`](#on_audio_meta_data_received) callback on the remote end. The remote user can get the audio metadata in this callback.
 
 #### Parameters
 
@@ -1349,7 +1361,7 @@ def on_audio_meta_data_received(self, agora_local_user, user_id, data):
 
 Occurs when the remote audio metadata is received.
 
-This callback indicates that the local user has received the audio metadata sent by the remote user using the [`send_audio_metadata`](#send_audio_metadata) method.
+This callback indicates that the local user has received the audio metadata sent by the remote user using the [`send_audio_meta_data`](#send_audio_meta_data) method.
 
 #### Parameters
 
@@ -1592,10 +1604,10 @@ The `AudioEncodedFrameSender` Class.
 
 ### `send_encoded_audio_frame`
 
-Sets the path and size of the SDK log file.
+Sends an encoded audio frame to the audio track.
 
 ```python
-def send_encoded_audio_frame(self, buffer_ptr:int, buffer_size:int, frame:EncodedAudioFrame)
+def send_encoded_audio_frame(self, buffer_ptr: int, buffer_size: int, frame_info: EncodedAudioFrameInfo)
 ```
 
 #### Parameters
@@ -1604,7 +1616,7 @@ def send_encoded_audio_frame(self, buffer_ptr:int, buffer_size:int, frame:Encode
 |------------------|----------------------------------------------------------------------|
 | `buffer_ptr`   | The encoded audio data to send.                                               |
 | `buffer_size` | The size of the data (bytes).   |
-| `frame` | The audio frame information, see [`EncodedAudioFrame`](#encodedaudioframe).   |
+| `frame_info` | The audio frame information. See [`EncodedAudioFrameInfo`](#encodedaudioframeinfo).   |
 
 #### Returns
 
@@ -1620,17 +1632,40 @@ The `IAudioFrameObserver` class.
 Gets the data before the playback audio is mixed.
 
 ```python
-def on_playback_audio_frame_before_mixing(self, agora_local_user, channelId, uid, frame:AudioFrame)
+def on_playback_audio_frame_before_mixing(self, agora_local_user, channelId, uid, frame: AudioFrame, vad_result_state: int, vad_result_bytearray: bytearray)
 ```
 
 #### Parameters
 
-| Parameter | Description |
-|---------------|----------------------------------------------------------------------|
-| `agora_local_user`        | The `LocalUserObserver` class.    |
-| `channelId` | The channel name.             |
-| `uid` | The remote user ID.             |
-| `frame`| The audio raw data. See [`AudioFrame`](#audioframe)         |
+**`agora_local_user`**
+
+The `LocalUserObserver` class.
+
+**`channelId`**
+
+The channel name.
+
+**`uid`**
+
+The remote user ID.
+
+**`frame`**
+
+The audio raw data. See [`AudioFrame`](#audioframe).
+
+**`vad_result_state`**
+
+The VAD state. Valid only when you enable VAD in [`register_audio_frame_observer`](#register_audio_frame_observer):
+
+- &lt; `0`: VAD is not enabled.
+- `0`: Not speaking.
+- `1`: Started speaking.
+- `2`: Speaking.
+- `3`: Stopped speaking.
+
+**`vad_result_bytearray`**
+
+The audio data processed by VAD. When VAD is enabled, use this data instead of `frame` for downstream processing, such as speech recognition.
 
 #### Returns
 
@@ -1876,7 +1911,7 @@ class AudioSubscriptionOptions:
 |`number_of_channels`|Number of audio channels.|
 |`sample_rate_hz`|Audio sampling rate (Hz).|
 
-#### `EncodedAudioFrame`
+#### `EncodedAudioFrameInfo`
 
 The encoded audio data.
 
