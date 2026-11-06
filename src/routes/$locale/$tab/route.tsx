@@ -54,6 +54,7 @@ function DocsTabLayout() {
     sidebarHeader,
     tabs,
     toc,
+    tocMaxDepth,
   } = payload;
 
   return (
@@ -73,6 +74,7 @@ function DocsTabLayout() {
       sidebarHeader={sidebarHeader}
       tabs={tabs}
       toc={toc}
+      tocMaxDepth={tocMaxDepth}
     >
       <Outlet />
     </DocsShell>

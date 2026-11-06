@@ -166,7 +166,7 @@ describe('FumadocsOpenApiContent', () => {
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole('button', { name: 'Expand all' }),
-    ).not.toBeInTheDocument();
+    ).toBeInTheDocument();
     expect(
       screen.queryByRole('button', { name: 'Collapse all' }),
     ).not.toBeInTheDocument();
@@ -747,9 +747,13 @@ describe('FumadocsOpenApiContent', () => {
     expect(examplesScope.getByRole('tabpanel')).toHaveTextContent(
       'curl --request POST https://example.com/join',
     );
-    expect(
-      examplesScope.getByRole('tabpanel').querySelector('.token-command'),
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        examplesScope
+          .getByRole('tabpanel')
+          .querySelector('span[style*="shiki"]'),
+      ).toBeInTheDocument(),
+    );
     const preview = examplesScope.getByTestId('openapi-code-preview');
     expect(
       within(preview)
@@ -940,7 +944,7 @@ describe('FumadocsOpenApiContent', () => {
       within(propertiesRow).getByRole('button', {
         name: 'Collapse properties properties',
       }),
-    ).not.toContainElement(
+    ).toContainElement(
       within(propertiesRow).getByText('object', { exact: true }),
     );
     expect(

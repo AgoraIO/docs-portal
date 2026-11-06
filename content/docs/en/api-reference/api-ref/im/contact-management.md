@@ -9,6 +9,8 @@ This page shows how to call the Chat RESTful APIs to create and manage contacts.
 
 Before calling the following methods, make sure you understand the call frequency limit as described in [Limitations](./limitations).
 
+<a id="param"></a>
+
 ## Common parameters
 
 The following table lists common request and response parameters of the Chat RESTful APIs:
@@ -577,6 +579,8 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppT
     "applicationName": "XXXX"
 }
 ```
+
+<a id="code"></a>
 
 ## Status codes
 

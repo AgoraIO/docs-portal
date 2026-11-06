@@ -8,7 +8,7 @@ The screenshot-management feature is implemented by Interactive Whiteboard. You 
 Before calling the REST API for screenshot management, ensure that:
 
 - You have created a third-party cloud storage account and a storage space under that account. Agora supports only [Amazon Simple Storage Service (Amazon S3)](https://aws.amazon.com/s3/?nc1=h_ls) now.
-- You have enabled the screenshot feature and configured storage settings in Agora Console. See [Enable whitebaord server-side features](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard.md#enable-whiteboard-server-side-features).
+- You have enabled the screenshot feature and configured storage settings in Agora Console. See [Enable whitebaord server-side features](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard#enable-whiteboard-server-side-features).
 
 ## Screenshot a scene
 
@@ -29,7 +29,7 @@ Pass in the following parameters in the request header:
 
 | Parameter | Data type | Required/Optional | Description    |
 | :-------- | :-------- | :---------------- |:---------------|
-| `token`   | string    | Required          | An SDK token or room token with the `writer` or `admin` role. To get an SDK token, you can:- Get a test-purpose SDK token from Agora Console. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard.md#get-security-credentials-for-your-whiteboard-project).<br />- Call the REST API. See [Generate a room token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest.md#generate-a-room-token-post).<br />- Use code samples. See [Generate a token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx).<br />To get a room token, you can:- Call the REST API. See [Generate a room token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest.md#generate-a-room-token-post).<br />- Use code samples. See [Generate a token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx).<br /> |
+| `token`   | string    | Required          | An SDK token or room token with the `writer` or `admin` role. To get an SDK token, you can:- Get a test-purpose SDK token from Agora Console. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard#get-security-credentials-for-your-whiteboard-project).<br />- Call the REST API. See [Generate a room token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest#generate-a-room-token-post).<br />- Use code samples. See [Generate a token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server).<br />To get a room token, you can:- Call the REST API. See [Generate a room token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest#generate-a-room-token-post).<br />- Use code samples. See [Generate a token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server).<br /> |
 | `region`  | string    | Required          | Specifies a data center to process the request: - `us-sv`: Silicon Valley, US, which provides services to North America and South America.<br />- `sg`: Singapore, which provides services to Singapore, East Asia, and Southeast Asia.<br />- `in-mum`: Mumbai, India, which provides services to India.<br />- `eu`: Frankfurt, Europe, which provides services to Europe.<br />- `cn-hz`: Hangzhou, China, which provides services to the areas not covered by other data centers.<br /> |
 
 ### Request path
@@ -65,7 +65,7 @@ token: NETLESSSDK_YWs9xxxxxxzA5ZGM2MjRi
 
 ### HTTP response
 
-For details about all possible response status codes, see the [status code table](overview#status-codes).
+For details about all possible response status codes, see the [status code table](/en/api-reference/api-ref/whiteboard#status-codes).
 
 If the status code is `201`, the request is successful. The response returns the status code and corresponding parameters.
 
@@ -112,7 +112,7 @@ Pass in the following parameters in the request header:
 
 | Parameter | Data type | Required/Optional | Description  |
 |------- | :---------------- |:---------------|----|
-| `token`   | string    | Required          | An SDK token or room token with the `writer` or `admin` role. To get an SDK token, you can:- Get a test-purpose SDK token from Agora Console. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard.md#get-security-credentials-for-your-whiteboard-project).<br />- Call the REST API. See [Generate an SDK token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest.md).<br />- Use code samples. See [Generate a token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx).<br />To get a room token, you can:- Call the REST API. See [Generate a room token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest.md#generate-a-room-token-post).<br />- Use code samples. See [Generate a token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx).<br /> |
+| `token`   | string    | Required          | An SDK token or room token with the `writer` or `admin` role. To get an SDK token, you can:- Get a test-purpose SDK token from Agora Console. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard#get-security-credentials-for-your-whiteboard-project).<br />- Call the REST API. See [Generate an SDK token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest).<br />- Use code samples. See [Generate a token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server).<br />To get a room token, you can:- Call the REST API. See [Generate a room token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest#generate-a-room-token-post).<br />- Use code samples. See [Generate a token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server).<br /> |
 | `region`  | string    | Required          | Specifies a data center to process the request: - `us-sv`: Silicon Valley, US, which provides services to North America and South America.<br />- `sg`: Singapore, which provides services to Singapore, East Asia, and Southeast Asia.<br />- `in-mum`: Mumbai, India, which provides services to India.<br />- `eu`: Frankfurt, Europe, which provides services to Europe.<br />- `cn-hz`: Hangzhou, China, which provides services to the areas not covered by other data centers.<br />         |
 
 ### Request path
@@ -149,7 +149,7 @@ Content-Type: application/json
 
 ### HTTP response
 
-For details about all possible response status codes, see the [status code table](overview#status-codes).
+For details about all possible response status codes, see the [status code table](/en/api-reference/api-ref/whiteboard#status-codes).
 
 If the status code is `201`, the request is successful. The response returns the status code and corresponding parameters.
 

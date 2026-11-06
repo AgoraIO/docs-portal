@@ -38,6 +38,7 @@ import {
 } from '@/lib/docs-last-updated';
 import type { DocsLayoutMode } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
+import { filterDocsToc, getDocsHeadingTitle } from '@/lib/docs-toc';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
 import {
   type AppLocale,
@@ -96,6 +97,7 @@ export function DocsContent({
   slug,
   title,
   toc,
+  tocMaxDepth,
 }: {
   activePath?: string;
   activeTab?: string;
@@ -114,6 +116,7 @@ export function DocsContent({
   slug?: string;
   title?: string;
   toc: TOCItemType[];
+  tocMaxDepth?: number;
 }) {
   const { i18n } = useTranslation('common');
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
@@ -307,7 +310,7 @@ export function DocsContent({
               )}
             </p>
             {description ? (
-              <p className="mt-3 max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)]">
+              <p className="mt-3 max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)] [overflow-wrap:anywhere]">
                 {description}
               </p>
             ) : null}
@@ -405,6 +408,7 @@ export function DocsContent({
           locale={currentLocale}
           sourceLinks={sourceLinks}
           toc={toc}
+          tocMaxDepth={tocMaxDepth}
           variant="mobile"
         />
       )}
@@ -762,12 +766,14 @@ export function DocsTableOfContents({
   locale = DEFAULT_LOCALE,
   sourceLinks = null,
   toc,
+  tocMaxDepth,
   variant = 'rail',
 }: {
   className?: string;
   locale?: AppLocale | string;
   sourceLinks?: ReturnType<typeof getDocsSourceLinks>;
   toc: TOCItemType[];
+  tocMaxDepth?: number;
   variant?: 'mobile' | 'rail';
 }) {
   const { i18n } = useTranslation('common');
@@ -777,17 +783,19 @@ export function DocsTableOfContents({
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const items = useMemo(() => {
     if (derivedItems.length === 0) {
-      return toc.filter((item) => typeof item.title === 'string');
+      return filterDocsToc(toc, tocMaxDepth).filter(
+        (item) => typeof item.title === 'string',
+      );
     }
 
     const sourceByUrl = new Map(toc.map((item) => [item.url, item]));
 
     // Rendered headings define the reading order, including versions missing
     // from the payload TOC and platform headings with different generated IDs.
-    return derivedItems
+    return filterDocsToc(derivedItems, tocMaxDepth)
       .map((item) => sourceByUrl.get(item.url) ?? item)
       .filter((item) => typeof item.title === 'string');
-  }, [derivedItems, toc]);
+  }, [derivedItems, toc, tocMaxDepth]);
   const [primaryActiveUrl, setPrimaryActiveUrl] = useState(
     () => items[0]?.url ?? '',
   );
@@ -961,7 +969,7 @@ export function DocsTableOfContents({
           />
         </button>
       ) : (
-        <div className="px-3 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
+        <div className="px-3 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-3)] uppercase">
           {t('docs.toc')}
         </div>
       )}
@@ -1062,9 +1070,9 @@ function TocLinks({
           <a
             aria-current={isPrimary ? 'location' : undefined}
             className={cn(
-              'leading-5 transition-colors hover:bg-[color:var(--docs-soft-fill)]',
+              'min-w-0 [overflow-wrap:anywhere] leading-5 transition-colors hover:bg-[color:var(--docs-soft-fill)]',
               variant === 'rail'
-                ? '-ml-px rounded-r-md border-l-2 border-transparent px-3 py-1.5 text-[12.5px] text-[color:var(--ink-4)] hover:text-[color:var(--ink-2)]'
+                ? '-ml-px rounded-r-md border-l-2 border-transparent px-3 py-1.5 text-[12.5px] text-[color:var(--ink-3)] hover:text-[color:var(--ink-2)]'
                 : 'rounded-md px-2 py-2 text-sm text-[color:var(--ink-3)] hover:text-[color:var(--ink-1)]',
               isVisible &&
                 variant === 'rail' &&
@@ -1121,15 +1129,12 @@ function getVisibleArticleHeadingItems(): TOCItemType[] {
     .filter((heading) => heading.id && !isHiddenFromToc(heading))
     .map((heading) => {
       const headingDepth = Number(heading.tagName.slice(1));
-      // Fumadocs renders the heading label and copy-button announcement as siblings.
-      const headingLabel =
-        heading.querySelector(':scope > a[data-card]') ?? heading;
 
       return {
         depth: heading.hasAttribute('data-accordion-value')
           ? Math.min(headingDepth + 1, 4)
           : headingDepth,
-        title: headingLabel.textContent?.trim() ?? '',
+        title: getDocsHeadingTitle(heading),
         url: `#${heading.id}`,
       };
     })

@@ -8,6 +8,8 @@ This page shows how to use the Agora Chat RESTful API to implement reaction in y
 
 Before calling the following methods, make sure you understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](./limitations#call-limit-of-server-sides).
 
+<a id="param"></a>
+
 ## Common parameters
 
 The following table lists common request and response parameters of the Chat RESTful APIs:
@@ -52,6 +54,8 @@ Authorization: Bearer ${YourAppToken}
 ```
 
 In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
+
+<a id="create"></a>
 
 ## Create/Add a reaction
 

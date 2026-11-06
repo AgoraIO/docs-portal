@@ -1,5 +1,5 @@
 import SwaggerParser from '@apidevtools/swagger-parser';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import type { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
 import { type AppLocale, DEFAULT_LOCALE } from '../i18n/i18n-config';
 import { type OpenApiJsonValue, toOpenApiJsonValue } from './json';

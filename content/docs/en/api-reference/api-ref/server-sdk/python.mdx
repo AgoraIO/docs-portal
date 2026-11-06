@@ -213,6 +213,8 @@ Agent(
 | `rtc` | `Optional[RtcConfig]` | `None` | RTC media encryption |
 | `filler_words` | `Optional[FillerWordsConfig]` | `None` | Filler words played while waiting for the LLM response |
 
+<a id="builder-methods-1"></a>
+
 ### Builder methods
 
 All builder methods return a **new** `Agent` instance. The original is never modified.
@@ -721,6 +723,8 @@ Use with [`with_llm()`](#with_llmvendor).
 `greeting_configs` accepts either a dict or `LlmGreetingConfigs`. In v2.7, `greeting_configs.interruptable=False` makes the greeting uninterruptible; `True` follows the global `interruption` settings.
 :::
 
+<a id="openai-1"></a>
+
 #### OpenAI
 
 ```python
@@ -755,6 +759,8 @@ llm = OpenAI(
 | `vendor` | `str` | No | `None` | Vendor override |
 | `mcp_servers` | `List[Dict]` | No | `None` | MCP server connections |
 | `tools` | `List[Dict[str, Any]]` | No | `None` | Synchronous custom tool definitions the LLM can call. Accepts dictionaries or `LlmToolConfig` objects. Requires `with_tools(True)` |
+
+<a id="azureopenai-1"></a>
 
 #### AzureOpenAI
 
@@ -793,6 +799,8 @@ llm = AzureOpenAI(
 | `mcp_servers` | `List[Dict]` | No | `None` | MCP server connections |
 | `tools` | `List[Dict[str, Any]]` | No | `None` | Synchronous custom tool definitions the LLM can call. Accepts dictionaries or `LlmToolConfig` objects. Requires `with_tools(True)` |
 
+<a id="anthropic-1"></a>
+
 #### Anthropic
 
 ```python
@@ -828,6 +836,8 @@ llm = Anthropic(
 | `vendor` | `str` | No | `None` | Vendor override |
 | `mcp_servers` | `List[Dict]` | No | `None` | MCP server connections |
 | `tools` | `List[Dict[str, Any]]` | No | `None` | Synchronous custom tool definitions the LLM can call. Accepts dictionaries or `LlmToolConfig` objects. Requires `with_tools(True)` |
+
+<a id="gemini-1"></a>
 
 #### Gemini
 

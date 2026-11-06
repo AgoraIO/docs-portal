@@ -3,7 +3,7 @@ import path from 'node:path';
 import { structure } from 'fumadocs-core/mdx-plugins';
 import { replaceSource } from 'fumadocs-core/mdx-plugins/stringifier';
 import type { DocumentRecord } from 'fumadocs-core/search/algolia';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import type { Root } from 'mdast';
 import remarkDirective from 'remark-directive';
 import remarkMdx from 'remark-mdx';

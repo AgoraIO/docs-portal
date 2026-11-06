@@ -98,7 +98,9 @@ export function OpenApiSchema({
   const generated = useMemo(() => {
     const generated = generateSchemaUI({
       readOnly,
-      renderCodeblock,
+      renderCodeblock: (options) => (
+        <div data-openapi-schema-code-value="">{renderCodeblock(options)}</div>
+      ),
       renderMarkdown,
       root: removeOpenApiSchemaEnums(normalizedRoot) as ParsedSchema,
       showExample,
@@ -464,6 +466,14 @@ function getSchemaMetadataItem(
     ? {
         key: `info-${index}`,
         label: node.props.label,
+        display:
+          isValidElement<{ 'data-openapi-schema-code-value'?: string }>(
+            node.props.children,
+          ) &&
+          node.props.children.props['data-openapi-schema-code-value'] !==
+            undefined
+            ? 'block'
+            : undefined,
         value: node.props.children,
       }
     : null;
@@ -496,11 +506,14 @@ function getOpenApiSchemaLabels(
   return {
     allowedValues: translate('Allowed values', 'Allowed values'),
     collapse: translate('Collapse', 'Collapse'),
+    collapseAll: translate('Collapse all', 'Collapse all'),
     copiedLink: translate('Copied link to', 'Copied link to'),
     copyLink: translate('Copy link to', 'Copy link to'),
     default: translate('Default', 'Default'),
     deprecated: translate('Deprecated', 'Deprecated'),
     expand: translate('Expand', 'Expand'),
+    expandAll: translate('Expand all', 'Expand all'),
+    fields: translate('Fields', 'Fields'),
     properties: translate('properties', 'properties'),
     range: translate('Range', 'Range'),
     required: translate('Required', 'Required'),

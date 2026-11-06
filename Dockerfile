@@ -1,13 +1,14 @@
 # syntax=docker/dockerfile:1
 # check=skip=SecretsUsedInArgOrEnv
 
-FROM node:22-bookworm AS dependencies
+FROM node:26.13.0-bookworm AS dependencies
 
 WORKDIR /app
 
-RUN npm install -g bun@1.3.12
+RUN npm install -g bun@1.4.4
 
 COPY package.json bun.lock ./
+COPY patches ./patches
 RUN bun install --frozen-lockfile --ignore-scripts
 
 FROM dependencies AS builder
@@ -39,7 +40,7 @@ ENV NODE_OPTIONS=--max-old-space-size=${NODE_MAX_OLD_SPACE_SIZE}
 
 RUN bun run postinstall && bun run build
 
-FROM nginx:1.28-alpine AS runtime
+FROM nginx:1.30.6-alpine AS runtime
 
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist/client /usr/share/nginx/html

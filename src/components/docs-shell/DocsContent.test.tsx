@@ -1448,6 +1448,37 @@ describe('DocsContent', () => {
 });
 
 describe('DocsTableOfContents', () => {
+  it('keeps the depth limit after deriving rendered and newly added headings', async () => {
+    const fixture = (extra: boolean) => (
+      <AppProviders>
+        <article>
+          <h3 id="member">Member</h3>
+          <h4 id="detail">Declared In</h4>
+          {extra ? <h4 id="new-detail">New detail</h4> : null}
+        </article>
+        <DocsTableOfContents
+          toc={[{ depth: 3, title: 'Member', url: '#member' }]}
+          tocMaxDepth={3}
+        />
+      </AppProviders>
+    );
+    const { rerender } = render(fixture(false));
+    await waitFor(() =>
+      expect(screen.getByRole('link', { name: 'Member' })).toBeInTheDocument(),
+    );
+    rerender(fixture(true));
+    await waitFor(() => {
+      expect(
+        screen.queryByRole('link', { name: 'Declared In' }),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('link', { name: 'New detail' }),
+      ).not.toBeInTheDocument();
+    });
+    expect(document.getElementById('detail')).toBeInTheDocument();
+    expect(document.getElementById('new-detail')).toBeInTheDocument();
+  });
+
   it('does not highlight a closed accordion heading', async () => {
     render(
       <AppProviders>

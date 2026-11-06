@@ -5,7 +5,7 @@ import {
   type OpenAPIPageData,
   openapiPlugin,
 } from 'fumadocs-openapi/server';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import type { AppLocale } from '../i18n/i18n-config';
 import {
   getOpenApiLaneLocales,

@@ -1,4 +1,5 @@
 ---
+tocMaxDepth: 2
 title: "Manage chat rooms"
 description: "Shows how to manage chat rooms by calling Agora Chat RESTful APIs."
 ---
@@ -6,6 +7,8 @@ description: "Shows how to manage chat rooms by calling Agora Chat RESTful APIs.
 This page shows how to manage chat rooms by calling Chat RESTful APIs, including adding, deleting, modifying, and retrieving chat rooms.
 
 Before calling the following methods, ensure that you understand the frequency limit of calling Chat RESTful API calls described in [Limitations](../limitations#call-limit-of-server-sides).
+
+<a id="param"></a>
 
 ## Common parameters 
 
@@ -131,6 +134,8 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
     }
 }
 ```
+
+<a id="getall"></a>
 
 ## Retrieving basic information of all chat rooms
 Retrieves the basic information of all chat rooms under the app by page.
@@ -647,6 +652,8 @@ curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H
   "applicationName": "testapp"
 }
 ```
+
+<a id="code"></a>
 
 ## Status codes
 

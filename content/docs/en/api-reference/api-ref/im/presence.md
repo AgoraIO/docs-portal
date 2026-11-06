@@ -9,6 +9,8 @@ This page shows how to use the Chat RESTful APIs to implement presence in your p
 - You understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](./limitations#call-limit-of-server-sides).
 - You have activated the presence feature in [Agora Console](https://console.agora.io/).
 
+<a id="param"></a>
+
 ## Common parameters 
 
 | Parameter | Type | Description | Required |

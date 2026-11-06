@@ -97,36 +97,34 @@ export function OpenApiSchemaFieldRow({
           data-openapi-field-leading={expandable ? 'expandable' : 'leaf'}
         >
           {expandable ? (
-            <>
+            <Button
+              aria-expanded={expanded}
+              aria-label={`${expanded ? labels.collapse : labels.expand} ${node.name} ${labels.properties}`}
+              className="h-auto min-h-11 min-w-0 w-full cursor-pointer justify-start gap-1.5 whitespace-normal px-0 py-1 text-left hover:bg-muted/50"
+              data-openapi-field-toggle=""
+              onClick={() => onExpandedChange(!expanded)}
+              type="button"
+              variant="ghost"
+            >
               <span
                 className="flex size-3 shrink-0 items-center justify-center"
                 data-openapi-field-gutter
               >
-                <Button
-                  aria-expanded={expanded}
-                  aria-label={`${expanded ? labels.collapse : labels.expand} ${node.name} ${labels.properties}`}
-                  className="size-3 shrink-0 p-0 hover:bg-transparent"
-                  onClick={() => onExpandedChange(!expanded)}
-                  size="sm"
-                  type="button"
-                  variant="ghost"
-                >
-                  <ChevronRight
-                    aria-hidden="true"
-                    className={cn(
-                      'size-3 transition-transform',
-                      expanded && 'rotate-90',
-                    )}
-                  />
-                </Button>
+                <ChevronRight
+                  aria-hidden="true"
+                  className={cn(
+                    'size-3 transition-transform',
+                    expanded && 'rotate-90',
+                  )}
+                />
               </span>
               <span className="openapi-schema-field-content flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
                 {fieldIdentity}
                 {fieldStatuses}
               </span>
-            </>
+            </Button>
           ) : (
-            <div className="flex min-w-0 items-center gap-1.5">
+            <div className="flex min-h-11 min-w-0 items-center gap-1.5">
               <span
                 aria-hidden="true"
                 className="flex size-3 shrink-0 items-center justify-center"

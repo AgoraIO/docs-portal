@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { Button } from '@/components/ui/button';
 import type {
   OpenApiSchemaPathItem,
   OpenApiSchemaViewNode,
@@ -34,6 +35,13 @@ function getInitialExpandedIds(nodes: OpenApiSchemaViewNode[]) {
       )
       .map((node) => node.id),
   );
+}
+
+function getExpandableNodeIds(nodes: OpenApiSchemaViewNode[]): string[] {
+  return nodes.flatMap((node) => [
+    ...(node.children.length > 0 ? [node.id] : []),
+    ...getExpandableNodeIds(node.children),
+  ]);
 }
 
 export function getOpenApiSchemaTreeIdentity(nodes: OpenApiSchemaViewNode[]) {
@@ -79,7 +87,11 @@ function getOpenApiSchemaIdentity(schema: OpenApiSchemaViewNode['schema']) {
   return base;
 }
 
-export type OpenApiSchemaTreeLabels = OpenApiSchemaFieldRowLabels & {};
+export type OpenApiSchemaTreeLabels = OpenApiSchemaFieldRowLabels & {
+  collapseAll: string;
+  expandAll: string;
+  fields?: string;
+};
 
 export type OpenApiSchemaRevealTarget = {
   fieldName: string;
@@ -122,6 +134,10 @@ export function OpenApiSchemaTree({
   const copyRequestRef = useRef(0);
   const lastRevealTarget = useRef<string | undefined>(undefined);
   const treeRef = useRef<HTMLDivElement>(null);
+  const expandableNodeIds = useMemo(() => getExpandableNodeIds(nodes), [nodes]);
+  const allExpanded =
+    expandableNodeIds.length > 0 &&
+    expandableNodeIds.every((nodeId) => expandedIds.has(nodeId));
 
   latestNodesRef.current = nodes;
   const schemaIdentity = useMemo(
@@ -346,6 +362,17 @@ export function OpenApiSchemaTree({
     }, 1000);
   }
 
+  function handleToggleAll() {
+    setExpandedIds((current) => {
+      if (allExpanded) {
+        const next = new Set(current);
+        for (const nodeId of expandableNodeIds) next.delete(nodeId);
+        return next;
+      }
+      return new Set([...current, ...expandableNodeIds]);
+    });
+  }
+
   return (
     <div
       className="openapi-schema-tree"
@@ -354,6 +381,22 @@ export function OpenApiSchemaTree({
       id={stableDomId(rootId, rootId)}
       ref={treeRef}
     >
+      {expandableNodeIds.length > 0 ? (
+        <div className="openapi-schema-toolbar mb-1 flex flex-wrap items-center justify-between gap-x-3 border-fd-border border-b">
+          <span className="text-fd-muted-foreground text-sm">
+            {labels.fields ?? labels.properties}
+          </span>
+          <Button
+            aria-label={allExpanded ? labels.collapseAll : labels.expandAll}
+            className="h-auto min-h-11 cursor-pointer px-2 text-xs font-normal text-muted-foreground hover:text-foreground"
+            onClick={handleToggleAll}
+            type="button"
+            variant="ghost"
+          >
+            {allExpanded ? labels.collapseAll : labels.expandAll}
+          </Button>
+        </div>
+      ) : null}
       <div data-openapi-schema-fields="">{renderNodes(nodes)}</div>
     </div>
   );

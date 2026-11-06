@@ -4,7 +4,11 @@ import { llms } from 'fumadocs-core/source';
 import { toDocsMarkdown } from '../src/lib/mdx/to-markdown.ts';
 import { withAgentDocsDirective } from '../src/lib/agent-docs-directive.ts';
 import { getDocVersionBulkExports } from '../src/lib/doc-version-exports.server.ts';
-import { withDocVersionMetadata } from '../src/lib/doc-versions.ts';
+import {
+  DOC_VERSION_SCOPES,
+  getDocVersionTarget,
+  withDocVersionMetadata,
+} from '../src/lib/doc-versions.ts';
 import {
   loadDocsPagePayload,
   loadDocsSearchIndex,
@@ -172,9 +176,20 @@ export async function generateStaticDocsPayload() {
       canonicalPayloads,
       platformPages,
     });
+  const defaultVersionTargets = new Map(
+    DOC_VERSION_SCOPES.map(({ entryUrl, defaultVersion }) => [
+      entryUrl,
+      getDocVersionTarget(entryUrl, defaultVersion)?.href,
+    ]),
+  );
   await writeTextFile(
     routesManifestPath,
-    `${JSON.stringify(publishedRoutes)}\n`,
+    `${JSON.stringify(
+      publishedRoutes.map((route) => ({
+        ...route,
+        defaultVersionTarget: defaultVersionTargets.get(route.url),
+      })),
+    )}\n`,
   );
 
   for (const route of publishedRoutes) {

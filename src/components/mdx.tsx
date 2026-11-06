@@ -5,11 +5,6 @@ import {
   Accordions as FumadocsAccordions,
 } from 'fumadocs-ui/components/accordion';
 import { Card as FumadocsCard } from 'fumadocs-ui/components/card';
-import {
-  type CodeBlockProps,
-  CodeBlock as FumadocsCodeBlock,
-  Pre as FumadocsCodeBlockPre,
-} from 'fumadocs-ui/components/codeblock';
 import { File, Files, Folder } from 'fumadocs-ui/components/files';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import {
@@ -72,7 +67,17 @@ import {
   normalizeDocsHref,
 } from '@/lib/docs-link-normalize';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
+import {
+  ApiReturns,
+  ApiReturnType,
+  ApiSignature,
+  Parameter,
+  ParameterList,
+  ParameterType,
+} from './mdx/ApiReference';
+import { DocsCodeBlock as Pre } from './DocsCodeBlock';
 import { DocsHeading } from './mdx/DocsHeading';
+import { DocsTable } from './mdx/DocsTable';
 import { PlanCards, PricingCards } from './mdx/PlanCards';
 import {
   PlatformInline,
@@ -90,7 +95,6 @@ type MDXContext = {
 const IM_PRICING_DETAILS_CONTENT_PATH =
   'en/realtime-media/im/reference/pricing-plan-details.md';
 const FumadocsAnchor = defaultMdxComponents.a;
-const FumadocsTable = defaultMdxComponents.table;
 const FumadocsCodeBlockTab = defaultMdxComponents.CodeBlockTab;
 const FumadocsCodeBlockTabs = defaultMdxComponents.CodeBlockTabs;
 const FumadocsCodeBlockTabsList = defaultMdxComponents.CodeBlockTabsList;
@@ -138,23 +142,6 @@ type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
   groupId?: string;
   onValueChange?: (value: string) => void;
   value?: string;
-};
-type PreProps = CodeBlockProps;
-type ParameterListProps = ComponentProps<'div'> & {
-  nullable?: boolean;
-  optional?: boolean;
-  required?: boolean;
-  title?: ReactNode;
-};
-type ParameterProps = ComponentProps<'div'> & {
-  children?: ReactNode;
-  defaultValue?: ReactNode;
-  name?: ReactNode;
-  nullable?: boolean;
-  optional?: boolean;
-  possibleValues?: ReactNode;
-  required?: boolean;
-  type?: ReactNode;
 };
 type TabValueElement = ReactElement<{
   children?: ReactNode;
@@ -318,15 +305,19 @@ function hasSevenColumnHeader(children: ReactNode) {
 
 function createDocsTableComponent(contentPath?: string) {
   const isPricingDetailsPage = contentPath === IM_PRICING_DETAILS_CONTENT_PATH;
-
-  return function DocsTable({ className, ...props }: ComponentProps<'table'>) {
-    const isDensePricingTable =
-      isPricingDetailsPage && hasSevenColumnHeader(props.children);
-
+  return function LocalizedDocsTable({
+    className,
+    ...props
+  }: ComponentProps<typeof DocsTable>) {
     return (
-      <FumadocsTable
+      <DocsTable
         {...props}
-        className={cn(className, isDensePricingTable && 'im-pricing-api-table')}
+        className={cn(
+          className,
+          isPricingDetailsPage &&
+            hasSevenColumnHeader(props.children) &&
+            'im-pricing-api-table',
+        )}
       />
     );
   };
@@ -554,6 +545,7 @@ function Tabs({
   return (
     <MdxTabLabelsContext value={labels}>
       <ControlledFumadocsTabs
+        data-mdx-tabs-root=""
         {...props}
         className={cn('bg-fd-card', className)}
         defaultValue={defaultValue}
@@ -983,7 +975,7 @@ function CodeBlockTabs({
   return (
     <FumadocsCodeBlockTabs
       {...props}
-      className={cn('bg-fd-card', className)}
+      className={cn('overflow-hidden bg-fd-card', className)}
       defaultValue={defaultValue}
       groupId={groupId}
       onValueChange={setSafeValue}
@@ -993,27 +985,6 @@ function CodeBlockTabs({
         {children}
       </CodeBlockTabsValueContext>
     </FumadocsCodeBlockTabs>
-  );
-}
-
-function Pre({ className, ...props }: PreProps) {
-  return (
-    <FumadocsCodeBlock
-      {...props}
-      data-line-numbers
-      className={cn('bg-fd-card shadow-none', className)}
-      viewportProps={{
-        ...props.viewportProps,
-        className: cn(
-          'overflow-x-hidden overflow-y-auto',
-          props.viewportProps?.className,
-        ),
-      }}
-    >
-      <FumadocsCodeBlockPre className="w-full max-w-full min-w-0 whitespace-pre-wrap [overflow-wrap:anywhere] break-words">
-        {props.children}
-      </FumadocsCodeBlockPre>
-    </FumadocsCodeBlock>
   );
 }
 
@@ -1082,7 +1053,7 @@ function CodeBlockTab({
   return (
     <FumadocsCodeBlockTab
       className={cn(
-        '[&>figure]:m-0 [&>figure]:rounded-none [&>figure]:border-0 [&>figure]:bg-fd-card [&>figure]:shadow-none',
+        'p-4 [&>figure]:m-0 [&>figure]:rounded-xl [&>figure]:border [&>figure]:bg-fd-card [&>figure]:shadow-none',
         className,
       )}
       forceMount
@@ -1125,268 +1096,6 @@ function CommandBlock({
       </code>
     </Pre>
   );
-}
-
-function ParameterList({
-  children,
-  className,
-  nullable,
-  optional,
-  required,
-  title,
-  ...props
-}: ParameterListProps) {
-  const requiredState = getRequiredState({ optional, required });
-
-  return (
-    <section
-      className={cn(
-        'not-prose my-6 overflow-hidden rounded-lg border border-fd-border bg-fd-card text-sm shadow-sm',
-        className,
-      )}
-      data-parameter-list=""
-      {...props}
-    >
-      {title || requiredState || nullable ? (
-        <div className="flex flex-wrap items-center gap-2 border-fd-border border-b bg-fd-muted/35 px-4 py-3 font-semibold text-fd-foreground">
-          {title ? <span>{title}</span> : null}
-          <ParameterBadges requiredState={requiredState} nullable={nullable} />
-        </div>
-      ) : null}
-      <div className="divide-y divide-fd-border">{children}</div>
-    </section>
-  );
-}
-
-function ParameterBadges({
-  nullable,
-  requiredState,
-}: {
-  nullable?: boolean;
-  requiredState: 'required' | 'optional' | null;
-}) {
-  if (!requiredState && !nullable) {
-    return null;
-  }
-
-  return (
-    <span className="flex flex-wrap gap-1.5">
-      {requiredState ? (
-        <span
-          className={cn(
-            'rounded border px-1.5 py-0.5 text-[0.68rem] font-medium',
-            requiredState === 'required'
-              ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300'
-              : 'border-fd-border bg-fd-muted/60 text-fd-muted-foreground',
-          )}
-        >
-          {requiredState}
-        </span>
-      ) : null}
-      {nullable ? (
-        <span className="rounded border border-fd-border bg-fd-muted/60 px-1.5 py-0.5 text-[0.68rem] font-medium text-fd-muted-foreground">
-          nullable
-        </span>
-      ) : null}
-    </span>
-  );
-}
-
-function Parameter({
-  children,
-  className,
-  defaultValue,
-  name,
-  nullable,
-  optional,
-  possibleValues,
-  required,
-  type,
-  ...props
-}: ParameterProps) {
-  const requiredState = getRequiredState({ optional, required });
-  const childNodes = Children.toArray(children);
-  const descriptionChildren = childNodes.filter(
-    (child) => !isNestedParameterBlock(child) && !isBlankTextNode(child),
-  );
-  const nestedParameters = childNodes.filter(isNestedParameterBlock);
-  const parameterLabel = getPlainTextLabel(name);
-
-  return (
-    <div
-      className={cn('group/parameter', className)}
-      data-parameter-item=""
-      {...props}
-    >
-      <div
-        className="grid gap-3 px-4 py-4 sm:grid-cols-[minmax(0,16rem)_1fr]"
-        data-parameter-main=""
-      >
-        <div className="min-w-0 space-y-2">
-          <div className="flex min-w-0 flex-wrap items-center gap-2">
-            {name ? (
-              <code className="rounded bg-fd-muted px-1.5 py-0.5 font-mono text-[0.82rem] text-fd-foreground">
-                {name}
-              </code>
-            ) : null}
-            {type ? (
-              <span className="rounded border border-fd-border bg-fd-background px-1.5 py-0.5 font-mono text-[0.75rem] text-fd-muted-foreground">
-                {type}
-              </span>
-            ) : null}
-          </div>
-          <ParameterBadges requiredState={requiredState} nullable={nullable} />
-        </div>
-        <div
-          className="min-w-0 space-y-3 text-fd-muted-foreground [&>:first-child]:mt-0 [&>:last-child]:mb-0 [&_ol]:list-decimal [&_ol]:space-y-1 [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5"
-          data-parameter-description=""
-        >
-          {defaultValue || possibleValues ? (
-            <dl className="space-y-2 text-xs">
-              {defaultValue ? (
-                <div className="grid gap-1.5 sm:grid-cols-[max-content_minmax(0,1fr)]">
-                  <dt className="font-medium text-fd-foreground">
-                    Default value
-                  </dt>
-                  <dd className="min-w-0 break-words font-mono">
-                    {defaultValue}
-                  </dd>
-                </div>
-              ) : null}
-              {possibleValues ? (
-                <div className="grid gap-1.5 sm:grid-cols-[max-content_minmax(0,1fr)]">
-                  <dt className="font-medium text-fd-foreground">
-                    Possible values
-                  </dt>
-                  <dd className="min-w-0">
-                    {renderPossibleValues(possibleValues, parameterLabel)}
-                  </dd>
-                </div>
-              ) : null}
-            </dl>
-          ) : null}
-          {descriptionChildren}
-        </div>
-      </div>
-      {nestedParameters.length > 0 ? (
-        <section
-          aria-label={
-            parameterLabel
-              ? `Nested parameters for ${parameterLabel}`
-              : 'Nested parameters'
-          }
-          className="border-fd-border/70 border-t bg-fd-muted/20 px-4 pb-4 pt-3"
-          data-parameter-children=""
-        >
-          <div className="border-fd-border/80 border-l pl-3 sm:ml-4 sm:pl-4">
-            <div className="overflow-hidden rounded-md border border-fd-border bg-fd-background/80 shadow-sm">
-              <div className="divide-y divide-fd-border">
-                {nestedParameters}
-              </div>
-            </div>
-          </div>
-        </section>
-      ) : null}
-    </div>
-  );
-}
-
-function renderPossibleValues(
-  possibleValues: ReactNode,
-  parameterLabel?: string,
-) {
-  const ariaLabel = parameterLabel
-    ? `Possible values for ${parameterLabel}`
-    : 'Possible values';
-
-  if (typeof possibleValues === 'string') {
-    const values = getPossibleValueItems(possibleValues);
-
-    if (values.length > 0) {
-      return (
-        <ul
-          aria-label={ariaLabel}
-          className="m-0 flex min-w-0 list-none flex-wrap gap-1.5 p-0"
-          data-parameter-possible-values=""
-        >
-          {values.map((value) => (
-            <li key={value}>
-              <code className="rounded border border-fd-border bg-fd-muted/60 px-1.5 py-0.5 font-mono text-[0.72rem] text-fd-foreground">
-                {value}
-              </code>
-            </li>
-          ))}
-        </ul>
-      );
-    }
-  }
-
-  return (
-    <span className="break-words font-mono" data-parameter-possible-values="">
-      {possibleValues}
-    </span>
-  );
-}
-
-function getPossibleValueItems(possibleValues: string) {
-  const trimmed = possibleValues.trim();
-
-  if (isBracketedPossibleValue(trimmed)) {
-    return [trimmed];
-  }
-
-  return trimmed
-    .split(',')
-    .map((value) => value.trim())
-    .filter(Boolean);
-}
-
-function isBracketedPossibleValue(value: string) {
-  return (
-    (value.startsWith('[') && value.endsWith(']')) ||
-    (value.startsWith('(') && value.endsWith(')'))
-  );
-}
-
-function isNestedParameterBlock(
-  child: ReactNode,
-): child is ReactElement<ParameterProps | ParameterListProps> {
-  return (
-    isValidElement(child) &&
-    (child.type === Parameter || child.type === ParameterList)
-  );
-}
-
-function isBlankTextNode(child: ReactNode) {
-  return typeof child === 'string' && child.trim().length === 0;
-}
-
-function getPlainTextLabel(value: ReactNode) {
-  if (typeof value === 'string' || typeof value === 'number') {
-    return String(value);
-  }
-
-  return undefined;
-}
-
-export { Parameter, ParameterList };
-
-function getRequiredState({
-  optional,
-  required,
-}: {
-  optional?: boolean;
-  required?: boolean;
-}) {
-  if (required) {
-    return 'required';
-  }
-
-  if (optional || required === false) {
-    return 'optional';
-  }
-
-  return null;
 }
 
 function createDocsAnchor(contentPath?: string) {
@@ -1504,9 +1213,21 @@ function isDocsRouteHref(href: string) {
   );
 }
 
-function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
+function ZoomableImage({
+  alt = '',
+  src,
+  referrerPolicy = 'no-referrer',
+  ...props
+}: ComponentProps<'img'>) {
   if (typeof src !== 'string' || src.length === 0) {
-    return <FumadocsImage alt={alt} src={src} {...props} />;
+    return (
+      <FumadocsImage
+        alt={alt}
+        src={src}
+        referrerPolicy={referrerPolicy}
+        {...props}
+      />
+    );
   }
 
   const title = alt || 'Documentation image';
@@ -1519,7 +1240,12 @@ function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
           className="block cursor-zoom-in"
           type="button"
         >
-          <FumadocsImage alt={alt} src={src} {...props} />
+          <FumadocsImage
+            alt={alt}
+            src={src}
+            referrerPolicy={referrerPolicy}
+            {...props}
+          />
         </button>
       </DialogTrigger>
       <DialogContent className="max-h-[calc(100vh-2rem)] w-fit max-w-[calc(100vw-2rem)] justify-items-center border-0 bg-transparent p-0 shadow-none sm:max-w-[calc(100vw-2rem)]">
@@ -1531,6 +1257,7 @@ function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
           alt={alt}
           className="max-h-[calc(100vh-4rem)] max-w-[calc(100vw-4rem)] rounded-md object-contain shadow-2xl"
           src={src}
+          referrerPolicy={referrerPolicy}
         />
       </DialogContent>
     </Dialog>
@@ -1546,10 +1273,8 @@ export function getMDXComponents(
 
   return {
     ...defaultMdxComponents,
-    table:
-      context?.contentPath === IM_PRICING_DETAILS_CONTENT_PATH
-        ? createDocsTableComponent(context.contentPath)
-        : defaultMdxComponents.table,
+    table: createDocsTableComponent(context?.contentPath),
+    DocsTable: createDocsTableComponent(context?.contentPath),
     img: ZoomableImage,
     h2: (props) => <TabAwareHeading as="h2" {...props} />,
     h3: (props) => <TabAwareHeading as="h3" {...props} />,
@@ -1569,6 +1294,10 @@ export function getMDXComponents(
     CodeBlockTabsList,
     CodeBlockTab,
     pre: Pre,
+    ApiSignature,
+    ApiReturns,
+    ApiReturnType,
+    ParameterType,
     ParameterList,
     Parameter,
     Accordion,
@@ -1596,3 +1325,12 @@ export const useMDXComponents = getMDXComponents;
 declare global {
   type MDXProvidedComponents = ReturnType<typeof getMDXComponents>;
 }
+
+export {
+  ApiReturns,
+  ApiReturnType,
+  ApiSignature,
+  Parameter,
+  ParameterList,
+  ParameterType,
+};

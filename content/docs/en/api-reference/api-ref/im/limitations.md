@@ -92,6 +92,8 @@ This feature has the following limitations:
 
 * The Agora Chat server stores up to 100 conversations per end user.
 
+<a id="call-limit-of-server-sides"></a>
+
 ### RESTful API Call limit of server-side
 
 The RESTful API call frequency limit of each method varies. For details about each method, see [**Chat RESTful API Reference**](/en/api-reference/api-ref/im).

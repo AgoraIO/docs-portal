@@ -9,6 +9,8 @@ This page shows how to call Chat RESTful APIs to manage user attributes, includi
 
 Before calling the following methods, make sure you understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](./limitations#call-limit-of-server-sides).
 
+<a id="param"></a>
+
 ## Common parameters
 
 The following table lists common request and response parameters of the Chat RESTful APIs:

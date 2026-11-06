@@ -27,7 +27,7 @@ jobs:
     environment: private-docs-publish
     steps:
       - name: Checkout workflow source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
           path: workflow-source
@@ -52,7 +52,7 @@ jobs:
           echo "source_sha=$source_sha" >> "$GITHUB_OUTPUT"
 
       - name: Checkout private release
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
           path: private-source
@@ -61,7 +61,7 @@ jobs:
           token: ${{ github.token }}
 
       - name: Checkout public main
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
           path: public-target

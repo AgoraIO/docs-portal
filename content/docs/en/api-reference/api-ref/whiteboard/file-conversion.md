@@ -3,7 +3,7 @@ title: "File conversion"
 description: "Start and query Interactive Whiteboard file-conversion tasks through the REST API."
 ---
 
-Interactive Whiteboard supports file conversion from PPT, PPTX, DOC, DOCX, and PDF files into static images, as well as from PPT/PPTX files into dynamic HTML web pages. The generated images and web pages can be presented on the whiteboard. See [File Conversion Overview](/en/realtime-media/whiteboard/build/display-files-and-manage-scenes/file-conversion-overview.md).
+Interactive Whiteboard supports file conversion from PPT, PPTX, DOC, DOCX, and PDF files into static images, as well as from PPT/PPTX files into dynamic HTML web pages. The generated images and web pages can be presented on the whiteboard. See [File Conversion Overview](/en/realtime-media/whiteboard/build/display-files-and-manage-scenes/file-conversion-overview).
 
 :::info
 This page applies to the new version of file conversion. For the main differences between the old and new versions, see [Version comparison](/en/realtime-media/whiteboard/build/display-files-and-manage-scenes/file-conversion-overview#version-comparison). If you use the old file conversion, see [Old File Conversion RESTful API Reference](file-conversion-deprecated.mdx).
@@ -13,7 +13,7 @@ This page applies to the new version of file conversion. For the main difference
 
 Before calling the RESTful API for file conversion, ensure that you have:
 
-- You have enabled **Docs to Picture** or **Docs to Web** and configured storage settings in [Agora Console](https://console.agora.io/). See [Enable server-side supporting features](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard.md#enable-whiteboard-server-side-features).
+- You have enabled **Docs to Picture** or **Docs to Web** and configured storage settings in [Agora Console](https://console.agora.io/). See [Enable server-side supporting features](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard#enable-whiteboard-server-side-features).
 - You have generated a URL address for the file you want to convert, and the address is publicly accessible.
 
 ## Start file conversion
@@ -31,7 +31,7 @@ Pass in the following parameters in the request header:
 
 | Parameter | Category | Required/Optional | Description       |
 | :------- | :-------- | :---------------- |:------------------|
-| `token` | string | Required | A `writer` or `admin` SDK token. You can obtain a token using one of the following methods:- Get an SDK token for testing purposes from Agora Console. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard.md#get-security-credentials-for-your-whiteboard-project).<br />- Call the RESTful API. See [Generate an SDK token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest.md#generate-an-sdk-token-post).<br />- Write code on your app server. See Generate a [token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx).<br /> |
+| `token` | string | Required | A `writer` or `admin` SDK token. You can obtain a token using one of the following methods:- Get an SDK token for testing purposes from Agora Console. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard#get-security-credentials-for-your-whiteboard-project).<br />- Call the RESTful API. See [Generate an SDK token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest#generate-an-sdk-token-post).<br />- Write code on your app server. See Generate a [token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server).<br /> |
 | `region` | string | Required | Specifies a data center to process the request: - `us-sv`: Silicon Valley, US, which provides services to North America and South America.<br />- `sg`: Singapore, which provides services to Singapore, East Asia, and Southeast Asia.<br />- `in-mum`: Mumbai, India, which provides services to India.<br />- `cn-hz`: Hangzhou, China, which provides services to the areas not covered by other data centers.<br />- `eu`: Frankfurt, Europe, which provides services to Europe.<br />   |
 
 ### Request Body
@@ -88,7 +88,7 @@ curl --request POST \
 
 ### HTTP response
 
-For the details of all the possible response status codes, see the [status code table](overview#status-codes).
+For the details of all the possible response status codes, see the [status code table](/en/api-reference/api-ref/whiteboard#status-codes).
 
 If the status code is `201`, the request is successful. The response returns the status code and corresponding parameters.
 
@@ -126,7 +126,7 @@ Pass in the following parameters in the request header:
 
 | Parameter | Category | Required/Optional | Description  |
 |:----------| :------- | :---------------- |:--------|
-| `token`   | string   | Required          | The Task token. You can obtain a token using one of the following methods:- Call the RESTful API. See [Generate a task token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest.md#generate-a-task-token-post).<br />- Write code on your app server. See [Generate a token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx).<br />                  |
+| `token`   | string   | Required          | The Task token. You can obtain a token using one of the following methods:- Call the RESTful API. See [Generate a task token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest#generate-a-task-token-post).<br />- Write code on your app server. See [Generate a token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server).<br />                  |
 | `region`  | string   | Required          | Specifies a data center to process the request: - `us-sv`: Silicon Valley, US, which provides services to North America and South America.<br />- `sg`: Singapore, which provides services to Singapore, East Asia, and Southeast Asia.<br />- `in-mum`: Mumbai, India, which provides services to India.<br />- `eu`: Frankfurt, Europe, which provides services to Europe.<br />- `cn-hz`: Hangzhou, China, which provides services to the areas not covered by other data centers.<br /> |
 
 ### Request Path
@@ -148,7 +148,7 @@ curl --request GET \
 
 ### HTTP response
 
-For the details of all the possible response status codes, see the [status code table](overview#status-codes).
+For the details of all the possible response status codes, see the [status code table](/en/api-reference/api-ref/whiteboard#status-codes).
 
 If the status code is `200`, the request is successful. The response returns the status code and corresponding parameters.
 
@@ -272,7 +272,7 @@ Pass in the following parameters in the request header:
 
 | Parameter | Category | Required/Optional | Description               |
 |:----------| :----- | :------- |:-----------|
-| `token`   | string | Required | A `writer` or `admin` SDK token. You can obtain a token using one of the following methods:- Get an SDK token for testing purposes from Agora Console. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard.md#get-security-credentials-for-your-whiteboard-project).<br />- Call the RESTful API. See [Generate an SDK token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest.md#generate-an-sdk-token-post).<br />- Write code on your app server. See Generate a [token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx).<br /> |
+| `token`   | string | Required | A `writer` or `admin` SDK token. You can obtain a token using one of the following methods:- Get an SDK token for testing purposes from Agora Console. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard#get-security-credentials-for-your-whiteboard-project).<br />- Call the RESTful API. See [Generate an SDK token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest#generate-an-sdk-token-post).<br />- Write code on your app server. See Generate a [token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server).<br /> |
 | `region`  | string | Required | Specifies a data center to process the request: - `us-sv`: Silicon Valley, US, which provides services to North America and South America.<br />- `sg`: Singapore, which provides services to Singapore, East Asia, and Southeast Asia.<br />- `in-mum`: Mumbai, India, which provides services to India.<br />- `cn-hz`: Hangzhou, China, which provides services to the areas not covered by other data centers.<br />- `eu`: Frankfurt, Europe, which provides services to Europe.<br />              |
 
 ### Request example
@@ -286,7 +286,7 @@ curl --request GET \
 
 ### HTTP response
 
-For the details of all the possible response status codes, see the [status code table](overview#status-codes).
+For the details of all the possible response status codes, see the [status code table](/en/api-reference/api-ref/whiteboard#status-codes).
 
 If the status code is `200`, the request is successful. The response returns the status code and corresponding parameters.
 
@@ -329,7 +329,7 @@ Pass in the following parameters in the request header:
 
 | Parameter | Category | Required/Optional | Description  |
 | :-------- | :------- | :---------------- |:--------|
-| `token`   | string   | Required          | An SDK token. You can obtain a token using one of the following methods:- Call the RESTful API. See [Generate an SDK token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest.md#generate-an-sdk-token-post).<br />- Write code on your app server. See [Generate a token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx).<br />                    |
+| `token`   | string   | Required          | An SDK token. You can obtain a token using one of the following methods:- Call the RESTful API. See [Generate an SDK token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest#generate-an-sdk-token-post).<br />- Write code on your app server. See [Generate a token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server).<br />                    |
 | `region`  | string   | Required          | Specifies a data center to process the request: - `us-sv`: Silicon Valley, US, which provides services to North America and South America.<br />- `sg`: Singapore, which provides services to Singapore, East Asia, and Southeast Asia.<br />- `in-mum`: Mumbai, India, which provides services to India.<br />- `eu`: Frankfurt, Europe, which provides services to Europe.<br />- `cn-hz`: Hangzhou, China, which provides services to the areas not covered by other data centers.<br /> |
 
 ### Request Path
@@ -352,7 +352,7 @@ token: NETLESSSDK_YWsxxxxxM2MjRi
 
 ### HTTP response
 
-For the details of all the possible response status codes, see the [status code table](overview#status-codes).
+For the details of all the possible response status codes, see the [status code table](/en/api-reference/api-ref/whiteboard#status-codes).
 
 If the status code is `200`, the request is successful. The response returns the status code and corresponding parameters.
 
@@ -389,7 +389,7 @@ Pass in the following parameters in the request header:
 
 | Parameter | Category | Required/Optional | Description  |
 | :-------- | :------- | :---------------- |:-------------|
-| `token` | string | Required | A `writer` or `admin` SDK token. You can obtain a token using one of the following methods:<br />- Get an SDK token for testing purposes from Agora Console. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard.md#get-security-credentials-for-your-whiteboard-project).<br />- Call the RESTful API. See [Generate an SDK token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest.md#generate-an-sdk-token-post).<br />- Write code on your app server. See Generate a [token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx).<br /> |
+| `token` | string | Required | A `writer` or `admin` SDK token. You can obtain a token using one of the following methods:<br />- Get an SDK token for testing purposes from Agora Console. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard#get-security-credentials-for-your-whiteboard-project).<br />- Call the RESTful API. See [Generate an SDK token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest#generate-an-sdk-token-post).<br />- Write code on your app server. See Generate a [token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server).<br /> |
 | `region` | string | Required | Specifies a data center to process the request: - `us-sv`: Silicon Valley, US, which provides services to North America and South America.<br />- `sg`: Singapore, which provides services to Singapore, East Asia, and Southeast Asia.<br />- `in-mum`: Mumbai, India, which provides services to India.<br />- `eu`: Frankfurt, Europe, which provides services to Europe.<br />- `cn-hz`: Hangzhou, China, which provides services to the areas not covered by other data centers.<br />              |
 
 ### Request Body
@@ -424,7 +424,7 @@ token: NETLESSSDK_YWs9QxxxxxxMjRi
 
 ### HTTP response
 
-For the details of all the possible response status codes, see the [status code table](overview#status-codes).
+For the details of all the possible response status codes, see the [status code table](/en/api-reference/api-ref/whiteboard#status-codes).
 
 If the status code is `200`, the request is successful. The response returns the status code and corresponding parameters.
 
@@ -456,7 +456,7 @@ The Webhook callback could be repeated multiple times. To ensure that the app se
 
 ### HTTP response
 
-For the details of all the possible response status codes, see the [status code table](overview#status-codes).
+For the details of all the possible response status codes, see the [status code table](/en/api-reference/api-ref/whiteboard#status-codes).
 
 If the status code is `200`, the request is successful. The response returns the status code and corresponding parameters.
 

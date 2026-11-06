@@ -43,6 +43,12 @@ const enCommon = {
     tabsLabel: 'Tabs',
     sectionPickerLabel: 'Section',
     pagesLabel: 'Pages',
+    apiReturnType: 'Return type',
+    apiParameterName: 'Parameter',
+    apiParameterDescription: 'Description',
+    tableOverflowLabel: 'Horizontally scrollable table',
+    tableOverflowDescription:
+      'The table extends beyond the current width. Scroll horizontally to view more columns.',
     toc: 'On this page',
     tocEmpty: 'No headings on this page.',
     lastUpdated: 'Updated',

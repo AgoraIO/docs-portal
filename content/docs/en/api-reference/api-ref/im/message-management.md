@@ -1,4 +1,5 @@
 ---
+tocMaxDepth: 2
 title: "Message management"
 description: "Agora Chat RESTful APIs for messages, files, and message history."
 ---
@@ -7,9 +8,13 @@ This page shows how to call Chat RESTful APIs to send different types of message
 
 Before calling the following methods, make sure you understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](./limitations#call-limit-of-server-sides).
 
+<a id="param"></a>
+
 ## Common parameters
 
 The following table lists common request and response parameters of the Chat RESTful APIs:
+
+<a id="request"></a>
 
 ### Request parameters
 
@@ -56,6 +61,8 @@ Authorization: Bearer ${YourAppToken}
 ```
 
 In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
+
+<a id="sendmessage"></a>
 
 ## Send a message
 
@@ -1253,6 +1260,8 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 }
 ```
 
+<a id="upload"></a>
+
 ## Upload a file
 
 This method enables you to upload images, audios, videos, or other types of files. For images and videos that have thumbnails, note the following:
@@ -1358,6 +1367,8 @@ curl -X POST 'https://XXXX/app-id/XXXX/chatfiles' -H 'Authorization: Bearer ' -H
     "applicationName": "XXXX"
 }
 ```
+
+<a id="download"></a>
 
 ## Download a file
 
@@ -1470,7 +1481,7 @@ This method retrieves historical messages sent and received by the user.
 
 - For each request, you can retrieve all the historical messages sent and received within one hour from the specified time.
 - Messages cannot be retrieved in real time. For example, at 9 a.m., you can retrieve messages that are sent or received at 8 a.m.
-- The default storage time of historical messages differs by plan version. For details, see [package details](./pricing-plan-details).
+- The default storage time of historical messages differs by plan version. For details, see [package details](/en/realtime-media/im/reference/pricing-plan-details).
 
 For each App Key, the call frequency limit of this method is 10 per minute.
 

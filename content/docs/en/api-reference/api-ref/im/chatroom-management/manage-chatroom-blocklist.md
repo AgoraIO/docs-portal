@@ -7,6 +7,8 @@ A chat room blocklist refers to a list of users that can neither see nor receive
 
 This page shows how to manage a chat room blocklist by calling the Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../limitations).
 
+<a id="param"></a>
+
 ## Common parameters 
 
 The following table lists common request and response parameters of the Chat RESTful APIs:
@@ -432,6 +434,8 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer YWMt7Coyj
   "applicationName": "XXXX"
 }
 ```
+
+<a id="code"></a>
 
 ## Status codes
 

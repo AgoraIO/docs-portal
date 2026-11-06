@@ -21,6 +21,7 @@ import {
 } from './docs-nav-scope';
 import { getSourceSlugs } from './docs-routing';
 import { getSearchEntryMetadata, type SearchEntry } from './docs-search';
+import { filterDocsToc, resolveDocsTocMaxDepth } from './docs-toc';
 import {
   type DocsSidebarNode,
   type DocsSidebarSectionNode,
@@ -363,11 +364,17 @@ export async function loadDocsPagePayload(
   const structuredPlatformTabs = extractStructuredPlatformTabs(processedText);
   const defaultStructuredPlatform = structuredPlatformTabs?.defaultPlatform;
   const artifactPlatform = requestedPlatform ?? defaultStructuredPlatform;
-  const toc = isOpenApiPage
+  const unboundedToc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
     : await resolvePageToc(page, processedText, artifactPlatform);
   // Only generated OpenAPI operation pages need the wide layout. Hand-written
   // pages inside an OpenAPI lane keep the docs layout and its TOC.
+  const tocMaxDepth = resolveDocsTocMaxDepth(
+    page.data,
+    tab === OPENAPI_TAB,
+    unboundedToc,
+  );
+  const toc = filterDocsToc(unboundedToc, tocMaxDepth);
   const layoutMode: DocsLayoutMode = isOpenApiPage ? 'openapi' : 'docs';
   const sidebar = await getDocsSidebarNodes({
     activePath: page.url,
@@ -527,6 +534,7 @@ export async function loadDocsPagePayload(
     tabs: getTabSummaries(pageTree),
     title: page.data.title,
     toc,
+    ...(tocMaxDepth === undefined ? {} : { tocMaxDepth }),
   };
 }
 

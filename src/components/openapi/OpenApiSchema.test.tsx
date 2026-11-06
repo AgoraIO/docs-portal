@@ -86,7 +86,9 @@ describe('OpenApiSchema', () => {
     renderSchema();
 
     expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
-    expect(screen.queryByRole('button', { name: 'Expand all' })).toBeNull();
+    expect(
+      screen.queryByRole('button', { name: 'Expand all' }),
+    ).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Collapse all' })).toBeNull();
     expect(screen.getByText('name')).toBeVisible();
   });
@@ -288,8 +290,8 @@ describe('OpenApiSchema', () => {
     expect(
       within(row as HTMLElement)
         .getByText(/"mode": "managed"/)
-        .closest('.openapi-schema-metadata-value'),
-    ).toBeInTheDocument();
+        .closest('.openapi-schema-metadata-row'),
+    ).toHaveAttribute('data-display', 'block');
   });
 
   it('uses the shared metadata structure for primitive root schemas', () => {
@@ -828,7 +830,7 @@ describe('OpenApiSchema', () => {
     ).toBeTruthy();
     expect(nameRow.querySelector('.openapi-schema-field-leading')).toBeTruthy();
     expect(
-      configRow.querySelector('[data-openapi-field-gutter] button'),
+      configRow.querySelector('button [data-openapi-field-gutter]'),
     ).toBeInTheDocument();
     expect(
       nameRow.querySelector('[data-openapi-field-gutter] button'),

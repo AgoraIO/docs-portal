@@ -1103,7 +1103,7 @@ This section summarizes the basic considerations for using the Media Push RESTfu
 - Agora does not support performing both transcoding and non-transcoding live streaming in the same Converter. To use a different streaming mode, create a new Converter and configure it accordingly.
 - In non-transcoding mode, the Converter can only forward video streams with RTMP, not transcode video streams. To ensure that CDN audiences can watch the video, use video codec formats that comply with the RTMP standard protocol, such as H.264 or H.265. If the video codec format at the streaming end is VP8, use the Converter's transcoding mode.
 
-For more integration recommendations, see [Integration Best Practices](./integration-best-practices).
+For more integration recommendations, see [Integration Best Practices](/en/realtime-media/media-push/build/integration-best-practices).
 
 ## Commonly used video profile
 

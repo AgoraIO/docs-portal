@@ -7,6 +7,8 @@ A group allow list refers to a list of group members that can send group message
 
 This page shows how to manage a group allow list using the Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../limitations#call-limit-of-server-sides).
 
+<a id="param"></a>
+
 ## Common parameters
 
 The following table lists common request and response parameters of the Chat RESTful APIs:

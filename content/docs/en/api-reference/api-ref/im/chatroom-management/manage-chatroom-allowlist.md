@@ -7,6 +7,8 @@ A chat room allow list refers to a list of chat room members that can send messa
 
 This page shows how to manage a chat room allow list using the Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../limitations).
 
+<a id="param"></a>
+
 ## Common parameters
 
 The following table lists common request and response parameters of the Chat RESTful APIs:

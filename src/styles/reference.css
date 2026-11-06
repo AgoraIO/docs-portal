@@ -1,0 +1,233 @@
+/* Muted document metadata must remain readable in both theme palettes. */
+article {
+  --ink-4: var(--ink-3);
+}
+
+/* Long API tokens also occur in prose links and parameter descriptions. */
+.prose,
+[data-parameter-description],
+.openapi-operation .openapi-markdown {
+  overflow-wrap: anywhere;
+}
+
+/* Document titles also contain unbroken SDK identifiers. */
+article :where(h1) {
+  overflow-wrap: anywhere;
+}
+
+/* Fumadocs headings pair a link with a fixed-size anchor button. Let the
+   link shrink and wrap long API identifiers inside the available line. */
+.prose :where(.group\/heading > a) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Keep multi-column tables readable on narrow screens. The existing scroll
+   wrapper exposes the remaining columns without squeezing prose into a strip. */
+.prose
+  table:not(.im-pricing-api-table):has(tr > :nth-child(3)):not(
+    :where(.not-prose, .not-prose *)
+  ),
+.openapi-operation
+  .openapi-markdown
+  table:not(.im-pricing-api-table):has(tr > :nth-child(3)) {
+  min-width: 42rem;
+}
+
+/* A code example's intrinsic width must not consume the prose columns.
+   Fumadocs keeps the code's own horizontal scroll container. */
+.prose
+  table:not(.im-pricing-api-table):not(:where(.not-prose, .not-prose *))
+  td
+  figure.shiki,
+.openapi-operation
+  .openapi-markdown
+  table:not(.im-pricing-api-table)
+  td
+  figure.shiki {
+  contain: inline-size;
+  min-inline-size: 24ch;
+}
+
+/* Long column labels can wrap at spaces rather than reserve a whole line.
+   Keep words intact and let the cells determine the table's natural widths. */
+.prose
+  table:not(.im-pricing-api-table):not(:where(.not-prose, .not-prose *))
+  th {
+  white-space: normal;
+  overflow-wrap: normal;
+}
+
+/* Share the existing OpenAPI Markdown table treatment across site regions. */
+:where(html)
+  .openapi-operation
+  .openapi-markdown
+  :where(.prose-no-margin.overflow-auto > table) {
+  display: table;
+  width: 100%;
+  max-width: none;
+  min-width: 100%;
+  overflow: visible;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid
+    var(--docs-openapi-table-border, var(--docs-prose-table-border));
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  box-shadow: var(--docs-shadow-sm);
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(thead) {
+  background: var(
+    --docs-openapi-table-head-bg,
+    var(--docs-prose-table-head-bg)
+  );
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(th, td) {
+  min-width: 6ch;
+  border-bottom: 1px solid
+    var(--docs-openapi-table-border, var(--docs-prose-table-border));
+  padding: 0.625rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(th) {
+  color: var(--docs-text-primary);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.45;
+  white-space: normal;
+  overflow-wrap: normal;
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(td) {
+  color: var(--ink-2);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+:where(html)
+  .openapi-operation
+  .openapi-markdown
+  :where(th:first-child, td:first-child) {
+  min-width: 12ch;
+  white-space: normal;
+}
+
+:where(html)
+  .openapi-operation
+  .openapi-markdown
+  :where(tbody tr:last-child td) {
+  border-bottom: 0;
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(td > :first-child) {
+  margin-top: 0;
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(td > :last-child) {
+  margin-bottom: 0;
+}
+
+:where(html)
+  .openapi-operation
+  .openapi-markdown
+  :where(tbody tr:nth-child(even)) {
+  background: var(--docs-openapi-table-row-bg);
+}
+
+/* OpenAPI descriptions sit outside prose. Apply the same inline-token
+   wrapping contract as MDX without changing preformatted code blocks. */
+.openapi-operation .openapi-markdown :where(a, :not(pre) > code) {
+  overflow-wrap: anywhere;
+}
+
+/* Parameter cards are outside prose too. Keep names and type badges inside
+   their column while preserving code-block scrolling. */
+[data-parameter-main] :where(:not(pre) > code, span.font-mono) {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+/* Preserve ordinary words in table cells. Explicit inline code and links can
+   still wrap identifiers; the table's existing wrapper handles wider columns. */
+.prose :where(td):not(:where(.not-prose, .not-prose *)),
+.openapi-operation .openapi-markdown :where(td) {
+  overflow-wrap: break-word;
+}
+
+/* Give plain-text cells a readable floor too. Rich descriptions and longer
+   identifiers contribute their own intrinsic widths to the native layout. */
+.prose
+  table:not(.im-pricing-api-table):not(:where(.not-prose, .not-prose *))
+  td,
+.openapi-operation .openapi-markdown table:not(.im-pricing-api-table) td {
+  min-width: 14ch;
+}
+
+/* Preserve intrinsic word widths for linked API names and inline declarations.
+   The prose code default can otherwise shrink a whole column to a few letters.
+   Wider tables use their existing scroll wrapper. */
+.prose
+  table:not(.im-pricing-api-table)
+  :where(td a, td code):not(:where(pre code, .not-prose, .not-prose *)),
+.openapi-operation
+  .openapi-markdown
+  table:not(.im-pricing-api-table)
+  :where(td a, td code):not(:where(pre code)) {
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+/* API descriptions contain normal Markdown inside not-prose cards. Keep
+   list semantics in parameters and returns, excluding the value badge list. */
+:is([data-parameter-description], [data-api-return-description])
+  :where(ul, ol):not([data-parameter-possible-values]) {
+  margin-block: 0.75rem;
+  padding-inline-start: 1.4rem;
+}
+
+:is([data-parameter-description], [data-api-return-description])
+  :where(ul):not([data-parameter-possible-values]) {
+  list-style-type: disc;
+}
+
+:is([data-parameter-description], [data-api-return-description])
+  :where(ul ul):not([data-parameter-possible-values]) {
+  list-style-type: circle;
+}
+
+:is([data-parameter-description], [data-api-return-description]) :where(ol) {
+  list-style-type: decimal;
+}
+
+:is([data-parameter-description], [data-api-return-description]) :where(ol ol) {
+  list-style-type: lower-alpha;
+}
+
+:is([data-parameter-description], [data-api-return-description])
+  :where(ul:not([data-parameter-possible-values]), ol)
+  > li {
+  margin-block: 0.35rem;
+  padding-inline-start: 0.2rem;
+}
+
+/* Reserve a readable measure for rich prose beside intrinsic API identifiers,
+   including callouts after their icon and padding. Let the wrapper scroll
+   instead of squeezing paragraphs and lists into a narrow strip. */
+.prose
+  table:not(.im-pricing-api-table):not(:where(.not-prose, .not-prose *))
+  td
+  :where(p, ul, ol, .prose-no-margin),
+.openapi-operation
+  .openapi-markdown
+  table:not(.im-pricing-api-table)
+  td
+  :where(p, ul, ol, .prose-no-margin) {
+  min-inline-size: 24ch;
+}
