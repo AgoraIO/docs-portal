@@ -1174,7 +1174,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/server-gateway/meta.json':
     '2026-11-06T03:20:47.000Z',
   'content/docs/en/api-reference/api-ref/server-gateway/python.mdx':
-    '2026-11-06T03:20:47.000Z',
+    '2026-11-06T06:51:06.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/documentation-versions.mdx':
     '2026-10-30T11:35:13.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/go.mdx':

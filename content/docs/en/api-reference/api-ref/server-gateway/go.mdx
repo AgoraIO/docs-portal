@@ -71,7 +71,7 @@ Server Gateway SDK API reference for Go.
   | [`RegisterVideoFrameObserver`](#registervideoframeobserver) | Registers a [`VideoFrameObserver`](#videoframeobserver) object. |
   | [`UnregisterVideoFrameObserver`](#unregistervideoframeobserver) | Destroys the [`VideoFrameObserver`](#videoframeobserver) object. |
   | [`GetRtcConnection`](#getrtcconnection) | Gets the `RtcConnection` object. |
-  | [`SendAudioMetadata`](#sendaudiometadata) | Sends the audio metadata. |
+  | [`SendAudioMetaData`](#sendaudiometadata) | Sends the audio metadata. |
 
 - `LocalUserObserver`
 
@@ -80,7 +80,7 @@ Server Gateway SDK API reference for Go.
   | [`OnUserAudioTrackStateChanged`](#onuseraudiotrackstatechanged) | Occurs when the state of a remote audio track changes. |
   | [`OnStreamMessage`](#onstreammessage) | Occurs when a data stream message is received. |
   | [`OnUserInfoUpdated`](#onuserinfoupdated) | Occurs when user media information is updated. |
-  | [`OnAudioMetadataReceived`](#onaudiometadatareceived) | Occurs when the remote audio metadata is received. |
+  | [`OnAudioMetaDataReceived`](#onaudiometadatareceived) | Occurs when the remote audio metadata is received. |
 
 - `LocalAudioTrack`
 
@@ -606,7 +606,7 @@ func (conn *RtcConnection) Release() {
 ### EnableEncryption
 
 ```go
-func (conn *RtcConnection) EnableEncryption(enable int, config *EncryptionConfig);
+func (conn *RtcConnection) EnableEncryption(enable int, config *EncryptionConfig) int
 ```
 
 Enables encryption.
@@ -863,6 +863,25 @@ OnError func(con *RtcConnection, err int, msg string)
 | `con`   | RTC connection object. See [`RtcConnection`](#rtcconnection) for details.              |
 | `err` | Error code.         |
 | `msg`      | Error description.                |
+
+### `OnEncryptionError`
+
+```go
+OnEncryptionError func(con *RtcConnection, err int)
+```
+
+Occurs when encryption errors occur.
+
+:::info[Since]
+v2.2.3.
+:::
+
+#### Parameters
+
+| Parameter | Description |
+| --- | --- |
+| `con` | [`RtcConnection`](#rtcconnection) object. |
+| `err` | Error code. |
 
 ## LocalUser
 
@@ -1143,16 +1162,27 @@ func (localUser *LocalUser) SetPlaybackAudioFrameBeforeMixingParameters(channels
 Registers the audio frame observer. You must implement the [`AudioFrameObserver`](#audioframeobserver) class and register the callbacks as needed.
 
 ```go
-func (localUser *LocalUser) RegisterAudioFrameObserver(observer *AudioFrameObserver) int {
-    return localUser.connection.registerAudioFrameObserver(observer)
+func (localUser *LocalUser) RegisterAudioFrameObserver(observer *AudioFrameObserver, enableVad int, vadConfigure *AudioVadConfigV2) int {
+    return localUser.connection.registerAudioFrameObserver(observer, enableVad, vadConfigure)
 }
 ```
 
 #### Parameters
 
-| Parameter | Description |
-|---------------|----------------------------------------------------------------------|
-| `observer` | An instance of the `AudioFrameObserver` class. |
+**`observer`**
+
+An instance of the `AudioFrameObserver` class.
+
+**`enableVad`**
+
+Whether to enable the built-in voice activity detection (VAD):
+
+- `0`: Disable VAD.
+- `1`: Enable VAD. The SDK returns the VAD results in the [`OnPlaybackAudioFrameBeforeMixing`](#onplaybackaudioframebeforemixing) callback.
+
+**`vadConfigure`**
+
+The VAD configuration, an `AudioVadConfigV2` object. The SDK uses this parameter only when `enableVad` is `1`.
 
 #### Returns
 
@@ -1380,13 +1410,10 @@ func (localUser *LocalUser) GetRtcConnection() *RtcConnection {
 - `RtcConnection` object, if the method call succeeds.
 - `nil`, if the method call fails.
 
-### `SendAudioMetadata`
+### `SendAudioMetaData`
 
 ```go
-func (localUser *LocalUser) SendAudioMetaData(metaData []byte) int {
-	if localUser.cLocalUser == nil {
-		return -1
-	}
+func (localUser *LocalUser) SendAudioMetaData(metaData []byte) int
 ```
 
 Sends the audio metadata.
@@ -1395,7 +1422,7 @@ Sends the audio metadata.
 v2.2.3.
 :::
 
-A successful call triggers the [`OnAudioMetadataReceived`](#onaudiometadatareceived) callback on the remote end. The remote user can get the audio metadata in this callback.
+A successful call triggers the [`OnAudioMetaDataReceived`](#onaudiometadatareceived) callback on the remote end. The remote user can get the audio metadata in this callback.
 
 #### Parameters
 
@@ -1465,15 +1492,15 @@ OnUserInfoUpdated func(localUser *LocalUser, uid string, userMediaInfo int, val 
 |`userMediaInfo`|User media information. See [`UserMediaInfo`](#usermediainfo) for details.|
 |`val`| Whether the user has stopped sending streams. - `0`: Not stopped. - `1`: Stopped.|
 
-### `OnAudioMetadataReceived`
+### `OnAudioMetaDataReceived`
 
 ```go
-OnAudioMetadataReceived func(localUser *LocalUser, uid string, metadata []byte)
+OnAudioMetaDataReceived func(localUser *LocalUser, uid string, metaData []byte)
 ```
 
 Occurs when the remote audio metadata is received.
 
-This callback indicates that the local user has received the audio metadata sent by the remote user using the [`SendAudioMetadata`](#sendaudiometadata) method.
+This callback indicates that the local user has received the audio metadata sent by the remote user using the [`SendAudioMetaData`](#sendaudiometadata) method.
 
 :::info[Since]
 v2.2.3.
@@ -1485,7 +1512,7 @@ v2.2.3.
 |---------------|----------------------------------------------------------------------|
 | `localUser` | [`LocalUser`](#localuser) class. |
 | `uid` | The UID of the remote user. |
-| `metadata` | The audio metadata. |
+| `metaData` | The audio metadata. |
 
 ## LocalAudioTrack
 
@@ -1971,17 +1998,40 @@ The `AudioFrameObserver` class.
 Obtains the audio data before mixing for playback.
 
 ```go
-OnPlaybackAudioFrameBeforeMixing  func(localUser *LocalUser, channelId string, uid string, frame *AudioFrame) bool
+OnPlaybackAudioFrameBeforeMixing func(localUser *LocalUser, channelId string, uid string, frame *AudioFrame, vadResultStat VadState, vadResultFrame *AudioFrame) bool
 ```
 
 #### Parameters
 
-| Parameter        | Description                                                                 |
-|------------------|-----------------------------------------------------------------------------|
-| `localUser`      | [`LocalUser`](#localuser) class.                                           |
-| `channelId`      | Channel name.                                                               |
-| `uid`            | User ID of the remote user.                                                 |
-| `frame`          | Raw audio data. See [`AudioFrame`](#audioframe) for details.   |
+**`localUser`**
+
+[`LocalUser`](#localuser) class.
+
+**`channelId`**
+
+Channel name.
+
+**`uid`**
+
+User ID of the remote user.
+
+**`frame`**
+
+Raw audio data. See [`AudioFrame`](#audioframe) for details.
+
+**`vadResultStat`**
+
+The VAD state. Valid only when you enable VAD in [`RegisterAudioFrameObserver`](#registeraudioframeobserver):
+
+- `-1` (`VadStateInvalid`): VAD is not enabled.
+- `0` (`VadStateNoSpeeking`): Not speaking.
+- `1` (`VadStateStartSpeeking`): Started speaking.
+- `2` (`VadStateSpeeking`): Speaking.
+- `3` (`VadStateStopSpeeking`): Stopped speaking.
+
+**`vadResultFrame`**
+
+The audio data processed by VAD. When VAD is enabled, use this data instead of `frame` for downstream processing, such as speech recognition.
 
 #### Returns
 
@@ -2077,25 +2127,6 @@ Whether to accept the encoded video frame:
 - `true`: Accept.
 - `false`: Do not accept.
 
-### OnEncryptionError
-
-```go
-OnEncryptionError func(con *RtcConnection, err int);
-```
-
-Occurs when encryption errors occur.
-
-:::info[Since]
-v2.2.3.
-:::
-
-#### Parameters
-
-| Parameter | Description |
-| --- | --- |
-| `con` | [`RtcConnection`](#rtcconnection) object. |
-| `err` | Error code. |
-
 ## VideoFrameSender
 
 The `VideoFrameSender` class.
@@ -2167,7 +2198,7 @@ func (sender *VideoFrameSender) SendVideoFrame(frame *ExternalVideoFrame) int {
 
 The `VideoFrameObserver` class.
 
-#### `OnFrame`
+### `OnFrame`
 
 Triggered when a video frame is received.
 
