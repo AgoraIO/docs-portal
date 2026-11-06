@@ -104,13 +104,13 @@ describe('RTC PR #2094 frozen source delta', () => {
   }
 
   it.each(['ios', 'macos'])(
-    '%s preserves removed error hashes outside current enum',
+    '%s omits historical definitions removed from the current source',
     (platform) => {
       const text = read(file(platform, 'enum-errorcodetype'));
-      const current = section(text, '<ParameterList>', '</ParameterList>');
+      expect(text).not.toContain('旧定义引用');
       for (const name of ['Refused', 'NoPermission', 'Abort']) {
-        expect(current).not.toContain(`name="AgoraErrorCode${name}"`);
-        expect(text).toContain(
+        expect(text).not.toContain(`AgoraErrorCode${name}`);
+        expect(text).not.toContain(
           `<a id="agoraerrorcode${name.toLowerCase()}"></a>`,
         );
       }
@@ -122,6 +122,16 @@ describe('RTC PR #2094 frozen source delta', () => {
       expect(delta?.added).toHaveLength(27);
       expect(delta?.removed).toHaveLength(3);
       expect(delta?.changed).toHaveLength(37);
+    },
+  );
+
+  it.each(['ios', 'macos'])(
+    '%s uses the current source face-shape description',
+    (platform) => {
+      const text = read(file(platform, 'enum-faceshapearea'));
+      expect(text.match(/^description: (.+)$/m)?.[1]).toBe(
+        '选择需要调整的特定面部区域。',
+      );
     },
   );
 
