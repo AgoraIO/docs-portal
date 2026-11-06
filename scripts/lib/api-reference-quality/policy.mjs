@@ -261,15 +261,21 @@ export function inventory(root, region) {
     payloads.set(route.canonicalPath, value);
     return value;
   };
+  const redirectTarget = (route) =>
+    load(route).payload.redirectUrl ?? route.defaultVersionTarget;
   const destination = (route) => {
     const seen = new Set();
     let current = route,
       expectedPath = route.url;
-    while (load(current).payload.redirectUrl) {
+    for (
+      let target = redirectTarget(current);
+      target;
+      target = redirectTarget(current)
+    ) {
       if (seen.has(current.url))
         throw new Error(`Cyclic published redirect: ${route.url}`);
       seen.add(current.url);
-      expectedPath = load(current).payload.redirectUrl;
+      expectedPath = target;
       if (!expectedPath.startsWith('/') || expectedPath.startsWith('//'))
         throw new Error(
           `External redirect requires a dedicated entrance audit: ${route.url}`,
@@ -300,7 +306,7 @@ export function inventory(root, region) {
         : '';
     if (
       !referencePath(route.url) &&
-      !referencePath(payload.redirectUrl ?? '') &&
+      !referencePath(redirectTarget(route) ?? '') &&
       !registered.has(route.url) &&
       payload.body?.kind !== 'openapi' &&
       !referenceSource(source ?? '', text)
@@ -314,7 +320,7 @@ export function inventory(root, region) {
       canonicalPath: route.canonicalPath,
       platform: route.platform ?? null,
       source,
-      kind: payload.redirectUrl ? 'redirect' : payload.body?.kind,
+      kind: redirectTarget(route) ? 'redirect' : payload.body?.kind,
       expectedPath: destination(route),
       htmlHash: digest(readFileSync(htmlFile)),
       payloadHash: digest(readFileSync(payloadFile)),

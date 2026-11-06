@@ -290,8 +290,8 @@ describe('OpenApiSchema', () => {
     expect(
       within(row as HTMLElement)
         .getByText(/"mode": "managed"/)
-        .closest('.openapi-schema-metadata-value'),
-    ).toBeInTheDocument();
+        .closest('.openapi-schema-metadata-row'),
+    ).toHaveAttribute('data-display', 'block');
   });
 
   it('uses the shared metadata structure for primitive root schemas', () => {

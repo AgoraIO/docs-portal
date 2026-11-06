@@ -98,7 +98,9 @@ export function OpenApiSchema({
   const generated = useMemo(() => {
     const generated = generateSchemaUI({
       readOnly,
-      renderCodeblock,
+      renderCodeblock: (options) => (
+        <div data-openapi-schema-code-value="">{renderCodeblock(options)}</div>
+      ),
       renderMarkdown,
       root: removeOpenApiSchemaEnums(normalizedRoot) as ParsedSchema,
       showExample,
@@ -464,6 +466,14 @@ function getSchemaMetadataItem(
     ? {
         key: `info-${index}`,
         label: node.props.label,
+        display:
+          isValidElement<{ 'data-openapi-schema-code-value'?: string }>(
+            node.props.children,
+          ) &&
+          node.props.children.props['data-openapi-schema-code-value'] !==
+            undefined
+            ? 'block'
+            : undefined,
         value: node.props.children,
       }
     : null;
