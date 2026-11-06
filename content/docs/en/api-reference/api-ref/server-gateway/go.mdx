@@ -71,7 +71,7 @@ Server Gateway SDK API reference for Go.
   | [`RegisterVideoFrameObserver`](#registervideoframeobserver) | Registers a [`VideoFrameObserver`](#videoframeobserver) object. |
   | [`UnregisterVideoFrameObserver`](#unregistervideoframeobserver) | Destroys the [`VideoFrameObserver`](#videoframeobserver) object. |
   | [`GetRtcConnection`](#getrtcconnection) | Gets the `RtcConnection` object. |
-  | [`SendAudioMetadata`](#sendaudiometadata) | Sends the audio metadata. |
+  | [`SendAudioMetaData`](#sendaudiometadata) | Sends the audio metadata. |
 
 - `LocalUserObserver`
 
@@ -80,7 +80,7 @@ Server Gateway SDK API reference for Go.
   | [`OnUserAudioTrackStateChanged`](#onuseraudiotrackstatechanged) | Occurs when the state of a remote audio track changes. |
   | [`OnStreamMessage`](#onstreammessage) | Occurs when a data stream message is received. |
   | [`OnUserInfoUpdated`](#onuserinfoupdated) | Occurs when user media information is updated. |
-  | [`OnAudioMetadataReceived`](#onaudiometadatareceived) | Occurs when the remote audio metadata is received. |
+  | [`OnAudioMetaDataReceived`](#onaudiometadatareceived) | Occurs when the remote audio metadata is received. |
 
 - `LocalAudioTrack`
 
@@ -168,37 +168,7 @@ The `agoraservice` package serves as the entry point for the SDK, allowing you t
 Initialize the `agoraservice` package:
 
 ```go
-func Initialize(cfg *AgoraServiceConfig) int {
-    if agoraService.inited {
-        return 0
-    }
-    if agoraService.service == nil {
-        agoraService.service = C.agora_service_create()
-        if agoraService.service == nil {
-            return -1
-        }
-    }
-
-    ccfg := CAgoraServiceConfig(cfg)
-    defer FreeCAgoraServiceConfig(ccfg)
-
-    ret := int(C.agora_service_initialize(agoraService.service, ccfg))
-    if ret != 0 {
-        return ret
-    }
-
-    if cfg.LogPath != "" {
-        logPath := C.CString(cfg.LogPath)
-        defer C.free(unsafe.Pointer(logPath))
-        logSize := 512 * 1024
-        if cfg.LogSize > 0 {
-            logSize = cfg.LogSize
-        }
-        C.agora_service_set_log_file(agoraService.service, logPath, C.uint(logSize))
-    }
-    agoraService.inited = true
-    return 0
-}
+func Initialize(cfg *AgoraServiceConfig) int
 ```
 
 #### Parameters
@@ -217,20 +187,7 @@ func Initialize(cfg *AgoraServiceConfig) int {
 Release the resources occupied by the `agoraservice` package:
 
 ```go
-func Release() int {
-    if !agoraService.inited {
-        return 0
-    }
-    if agoraService.service != nil {
-        ret := int(C.agora_service_release(agoraService.service))
-        if ret != 0 {
-            return ret
-        }
-        agoraService.service = nil
-    }
-    agoraService.inited = false
-    return 0
-}
+func Release() int
 ```
 
 ## RtcConnection
@@ -242,32 +199,7 @@ The `RtcConnection` class is used to manage the connection between the SDK and t
 Creates an RTC connection object.
 
 ```go
-func NewRtcConnection(cfg *RtcConnectionConfig) *RtcConnection {
-    cCfg := CRtcConnectionConfig(cfg)
-    defer FreeCRtcConnectionConfig(cCfg)
-
-    ret := &RtcConnection{
-        cConnection: C.agora_rtc_conn_create(agoraService.service, cCfg),
-        handler:                     nil,
-        localUserObserver:           nil,
-        audioObserver:               nil,
-        videoObserver:               nil,
-        remoteVideoRWMutex:          &sync.RWMutex{},
-        remoteEncodedVideoReceivers: make(map[*VideoEncodedImageReceiver]*videoEncodedImageReceiverInner),
-    }
-    ret.localUser = &LocalUser{
-        connection: ret,
-        cLocalUser: C.agora_rtc_conn_get_local_user(ret.cConnection),
-    }
-    ret.parameter = &AgoraParameter{
-        cParameter: C.agora_rtc_conn_get_agora_parameter(ret.cConnection),
-    }
-    agoraService.connectionRWMutex.Lock()
-    agoraService.consByCCon[ret.cConnection] = ret
-    agoraService.consByCLocalUser[ret.localUser.cLocalUser] = ret
-    agoraService.connectionRWMutex.Unlock()
-    return ret
-}
+func NewRtcConnection(cfg *RtcConnectionConfig) *RtcConnection
 ```
 
 #### Parameters
@@ -286,22 +218,7 @@ func NewRtcConnection(cfg *RtcConnectionConfig) *RtcConnection {
 Connects to the RTC channel.
 
 ```go
-func (conn *RtcConnection) Connect(token string, channel string, uid string) int {
-    if conn.cConnection == nil {
-        return -1
-    }
-    conn.connInfo.ChannelId = channel
-    conn.connInfo.LocalUserId = uid
-    uidInt, _ := strconv.Atoi(uid)
-    conn.connInfo.InternalUid = uint(uidInt)
-    cChannel := C.CString(channel)
-    cToken := C.CString(token)
-    cUid := C.CString(uid)
-    defer C.free(unsafe.Pointer(cChannel))
-    defer C.free(unsafe.Pointer(cToken))
-    defer C.free(unsafe.Pointer(cUid))
-    return int(C.agora_rtc_conn_connect(conn.cConnection, cToken, cChannel, cUid))
-}
+func (conn *RtcConnection) Connect(token string, channel string, uid string) int
 ```
 
 When the method succeeds, the connection state changes from `true` to `2`.
@@ -328,12 +245,7 @@ Depending on whether the connection is successful, the connection state will cha
 Disconnects from the RTC channel. When the SDK disconnects from the channel, the connection state changes to `true`. You can also be notified through the [`OnDisconnected`](#ondisconnected) callback.
 
 ```go
-func (conn *RtcConnection) Disconnect() int {
-    if conn.cConnection == nil {
-        return -1
-    }
-    return int(C.agora_rtc_conn_disconnect(conn.cConnection))
-}
+func (conn *RtcConnection) Disconnect() int
 ```
 
 #### Returns
@@ -346,14 +258,7 @@ func (conn *RtcConnection) Disconnect() int {
 Renews the Token. The Token will expire after a certain period. When you receive the [`OnTokenPrivilegeWillExpire`](#ontokenprivilegewillexpire) callback, you must generate a new token from your server and use this method to update the token. Otherwise, the SDK will disconnect from the channel.
 
 ```go
-func (conn *RtcConnection) RenewToken(token string) int {
-    if conn.cConnection == nil {
-        return -1
-    }
-    cToken := C.CString(token)
-    defer C.free(unsafe.Pointer(cToken))
-    return int(C.agora_rtc_conn_renew_token(conn.cConnection, cToken))
-}
+func (conn *RtcConnection) RenewToken(token string) int
 ```
 
 #### Parameters
@@ -372,17 +277,7 @@ func (conn *RtcConnection) RenewToken(token string) int {
 Registers an RTC connection observer.
 
 ```go
-func (conn *RtcConnection) RegisterObserver(handler *RtcConnectionObserver) int {
-    if conn.cConnection == nil || handler == nil {
-        return -1
-    }
-    conn.handler = handler
-    if conn.cHandler == nil {
-        conn.cHandler = CRtcConnectionObserver()
-        C.agora_rtc_conn_register_observer(conn.cConnection, conn.cHandler)
-    }
-    return 0
-}
+func (conn *RtcConnection) RegisterObserver(handler *RtcConnectionObserver) int
 ```
 
 #### Parameters
@@ -401,10 +296,7 @@ func (conn *RtcConnection) RegisterObserver(handler *RtcConnectionObserver) int 
 Unregisters the RTC connection observer.
 
 ```go
-func (conn *RtcConnection) UnregisterObserver() int {
-    conn.handler = nil
-    return 0
-}
+func (conn *RtcConnection) UnregisterObserver() int
 ```
 
 #### Returns
@@ -417,15 +309,7 @@ func (conn *RtcConnection) UnregisterObserver() int {
 Creates a data stream.
 
 ```go
-func (conn *RtcConnection) CreateDataStream(reliable bool, ordered bool) (int, int) {
-    if conn.cConnection == nil {
-        return -1, -1
-    }
-
-    cStreamId := C.int(-1)
-    ret := int(C.agora_rtc_conn_create_data_stream(conn.cConnection, &cStreamId, CIntFromBool(reliable), CIntFromBool(ordered)))
-    return int(cStreamId), ret
-}
+func (conn *RtcConnection) CreateDataStream(reliable bool, ordered bool) (int, int)
 ```
 
 Each user can create up to 5 data streams per channel.
@@ -454,14 +338,7 @@ Each user can create up to 5 data streams per channel.
 Sends a data stream message.
 
 ```go
-func (conn *RtcConnection) SendStreamMessage(streamId int, msg []byte) int {
-    if conn.cConnection == nil {
-        return -1
-    }
-    cMsg := C.CBytes(msg)
-    defer C.free(cMsg)
-    return int(C.agora_rtc_conn_send_stream_message(conn.cConnection, C.int(streamId), (*C.char)(cMsg), C.uint32_t(len(msg))))
-}
+func (conn *RtcConnection) SendStreamMessage(streamId int, msg []byte) int
 ```
 
 This method sends a data stream message to all users in the channel. The SDK imposes the following restrictions on this method:
@@ -496,9 +373,7 @@ Upon successfully calling this method, the remote end will trigger the [`OnStrea
 Get `AgoraParameter` object.
 
 ```go
-func (conn *RtcConnection) GetAgoraParameter() *AgoraParameter {
-    return conn.parameter
-}
+func (conn *RtcConnection) GetAgoraParameter() *AgoraParameter
 ```
 
 #### Returns
@@ -511,9 +386,7 @@ func (conn *RtcConnection) GetAgoraParameter() *AgoraParameter {
 Get `LocalUser` Object. Each connection corresponds to only one local user.
 
 ```go
-func (conn *RtcConnection) GetLocalUser() *LocalUser {
-    return conn.localUser
-}
+func (conn *RtcConnection) GetLocalUser() *LocalUser
 ```
 
 #### Returns
@@ -526,93 +399,19 @@ func (conn *RtcConnection) GetLocalUser() *LocalUser {
 Releases the RTC connection.
 
 ```go
-func (conn *RtcConnection) Release() {
-    if conn.cConnection == nil {
-        return
-    }
-    agoraService.connectionRWMutex.Lock()
-    delete(agoraService.consByCCon, conn.cConnection)
-    delete(agoraService.consByCLocalUser, conn.localUser.cLocalUser)
-    if conn.cVideoObserver != nil {
-        delete(agoraService.consByCVideoObserver, conn.cVideoObserver)
-    }
-    agoraService.connectionRWMutex.Unlock()
-
-    encodedVideoReceiversInners := make([]*videoEncodedImageReceiverInner, 0, 10)
-    conn.remoteVideoRWMutex.RLock()
-    for _, receiverInner := range conn.remoteEncodedVideoReceivers {
-        encodedVideoReceiversInners = append(encodedVideoReceiversInners, receiverInner)
-    }
-    conn.remoteVideoRWMutex.RUnlock()
-    agoraService.remoteVideoRWMutex.Lock()
-    for _, receiverInner := range encodedVideoReceiversInners {
-        delete(agoraService.remoteEncodedVideoReceivers, receiverInner.cReceiver)
-    }
-    agoraService.remoteVideoRWMutex.Unlock()
-
-    localUser := conn.localUser
-    if conn.cAudioObserver != nil {
-        C.agora_local_user_unregister_audio_frame_observer(localUser.cLocalUser)
-    }
-    if conn.cVideoObserver != nil {
-        C.agora_local_user_unregister_video_frame_observer(localUser.cLocalUser, conn.cVideoObserver)
-    }
-    if conn.cLocalUserObserver != nil {
-        C.agora_local_user_unregister_observer(localUser.cLocalUser)
-    }
-    if conn.cHandler != nil {
-        C.agora_rtc_conn_unregister_observer(conn.cConnection)
-    }
-    C.agora_rtc_conn_destroy(conn.cConnection)
-
-    conn.remoteVideoRWMutex.Lock()
-    conn.remoteEncodedVideoReceivers = make(map[*VideoEncodedImageReceiver]*videoEncodedImageReceiverInner)
-    conn.remoteVideoRWMutex.Unlock()
-
-    for _, receiverInner := range encodedVideoReceiversInners {
-        receiverInner.release()
-    }
-    encodedVideoReceiversInners = nil
-
-    conn.cConnection = nil
-    if conn.cAudioObserver != nil {
-        FreeCAudioFrameObserver(conn.cAudioObserver)
-        conn.cAudioObserver = nil
-    }
-    if conn.cVideoObserver != nil {
-        FreeCVideoFrameObserver(conn.cVideoObserver)
-        conn.cVideoObserver = nil
-    }
-    if conn.cLocalUserObserver != nil {
-        FreeCLocalUserObserver(conn.cLocalUserObserver)
-        conn.cLocalUserObserver = nil
-    }
-    if conn.cHandler != nil {
-        FreeCRtcConnectionObserver(conn.cHandler)
-        conn.cHandler = nil
-    }
-    conn.parameter = nil
-    conn.localUser = nil
-    localUser.connection = nil
-    localUser.cLocalUser = nil
-    localUser = nil
-    conn.handler = nil
-    conn.localUserObserver = nil
-    conn.audioObserver = nil
-    conn.videoObserver = nil
-}
+func (conn *RtcConnection) Release()
 ```
 
 ### EnableEncryption
 
 ```go
-func (conn *RtcConnection) EnableEncryption(enable int, config *EncryptionConfig);
+func (conn *RtcConnection) EnableEncryption(enable int, config *EncryptionConfig) int
 ```
 
 Enables encryption.
 
 :::info[Since]
-v2.2.3.
+v2.2.4.
 :::
 
 This method needs to be called before [`Connect`](#connect). You need to set the encryption mode and encryption configuration in this method.
@@ -864,6 +663,25 @@ OnError func(con *RtcConnection, err int, msg string)
 | `err` | Error code.         |
 | `msg`      | Error description.                |
 
+### `OnEncryptionError`
+
+```go
+OnEncryptionError func(con *RtcConnection, err int)
+```
+
+Occurs when encryption errors occur.
+
+:::info[Since]
+v2.2.4.
+:::
+
+#### Parameters
+
+| Parameter | Description |
+| --- | --- |
+| `con` | [`RtcConnection`](#rtcconnection) object. |
+| `err` | Error code. |
+
 ## LocalUser
 
 The `LocalUser` class defines the behavior and state of the local user. Each RTC connection has its own user. You can get the local user through [`GetLocalUser`](#getlocaluser). Each user has two roles: broadcaster (can send and receive audio and video streams) and audience (can only receive audio and video streams).
@@ -873,13 +691,7 @@ The `LocalUser` class defines the behavior and state of the local user. Each RTC
 Sets the user role. You can call this method before or after the user connects to the channel.
 
 ```go
-func (localUser *LocalUser) SetUserRole(role int) int {
-    if localUser.cLocalUser == nil {
-        return -1
-    }
-    C.agora_local_user_set_user_role(localUser.cLocalUser, C.int(role))
-    return 0
-}
+func (localUser *LocalUser) SetUserRole(role int) int
 ```
 
 :::warning[Note]
@@ -902,17 +714,7 @@ If the `role` set in the `token` parameter of [`Connect`](#connect) is different
 Sets audio encoding. The SDK will apply the configuration to all sent audio tracks.
 
 ```go
-func (localUser *LocalUser) SetAudioEncoderConfiguration(config *AudioEncoderConfiguration) int {
-    if localUser.cLocalUser == nil {
-        return -1
-    }
-    cConfig := C.struct__audio_encoder_config{}
-    cConfig.audio_profile = C.int(AudioProfileDefault)
-    if config != nil {
-        cConfig.audio_profile = C.int(config.AudioProfile)
-    }
-    return int(C.agora_local_user_set_audio_encoder_config(localUser.cLocalUser, &cConfig))
-}
+func (localUser *LocalUser) SetAudioEncoderConfiguration(config *AudioEncoderConfiguration) int
 ```
 
 #### Parameters
@@ -931,12 +733,7 @@ func (localUser *LocalUser) SetAudioEncoderConfiguration(config *AudioEncoderCon
 Sends the local audio track to the channel. By default, all published audio tracks are mixed.
 
 ```go
-func (localUser *LocalUser) PublishAudio(track *LocalAudioTrack) int {
-    if localUser.cLocalUser == nil {
-        return -1
-    }
-    return int(C.agora_local_user_publish_audio(localUser.cLocalUser, track.cTrack))
-}
+func (localUser *LocalUser) PublishAudio(track *LocalAudioTrack) int
 ```
 
 #### Parameters
@@ -956,12 +753,7 @@ func (localUser *LocalUser) PublishAudio(track *LocalAudioTrack) int {
 Stops sending the local audio track to the channel.
 
 ```go
-func (localUser *LocalUser) UnpublishAudio(track *LocalAudioTrack) int {
-    if localUser.cLocalUser == nil {
-        return -1
-    }
-    return int(C.agora_local_user_unpublish_audio(localUser.cLocalUser, track.cTrack))
-}
+func (localUser *LocalUser) UnpublishAudio(track *LocalAudioTrack) int
 ```
 
 #### Parameters
@@ -980,12 +772,7 @@ func (localUser *LocalUser) UnpublishAudio(track *LocalAudioTrack) int {
 Sends the local video track to the channel.
 
 ```go
-func (localUser *LocalUser) PublishVideo(track *LocalVideoTrack) int {
-    if localUser.cLocalUser == nil {
-        return -1
-    }
-    return int(C.agora_local_user_publish_video(localUser.cLocalUser, track.cTrack))
-}
+func (localUser *LocalUser) PublishVideo(track *LocalVideoTrack) int
 ```
 
 #### Parameters
@@ -1004,12 +791,7 @@ func (localUser *LocalUser) PublishVideo(track *LocalVideoTrack) int {
 Stops sending the local video track to the channel.
 
 ```go
-func (localUser *LocalUser) UnpublishVideo(track *LocalVideoTrack) int {
-    if localUser.cLocalUser == nil {
-        return -1
-    }
-    return int(C.agora_local_user_unpublish_video(localUser.cLocalUser, track.cTrack))
-}
+func (localUser *LocalUser) UnpublishVideo(track *LocalVideoTrack) int
 ```
 
 #### Parameters
@@ -1028,14 +810,7 @@ func (localUser *LocalUser) UnpublishVideo(track *LocalVideoTrack) int {
 Subscribes to the audio stream sent by a specific remote user in the channel.
 
 ```go
-func (localUser *LocalUser) SubscribeAudio(uid string) int {
-    if localUser.cLocalUser == nil {
-        return -1
-    }
-    cUid := C.CString(uid)
-    defer C.free(unsafe.Pointer(cUid))
-    return int(C.agora_local_user_subscribe_audio(localUser.cLocalUser, cUid))
-}
+func (localUser *LocalUser) SubscribeAudio(uid string) int
 ```
 
 #### Parameters
@@ -1055,12 +830,7 @@ func (localUser *LocalUser) SubscribeAudio(uid string) int {
 Subscribes to the audio streams sent by all remote users in the channel. This method will automatically subscribe to the audio streams of users who join the channel later.
 
 ```go
-func (localUser *LocalUser) SubscribeAllAudio() int {
-    if localUser.cLocalUser == nil {
-        return -1
-    }
-    return int(C.agora_local_user_subscribe_all_audio(localUser.cLocalUser))
-}
+func (localUser *LocalUser) SubscribeAllAudio() int
 ```
 
 #### Returns
@@ -1073,14 +843,7 @@ func (localUser *LocalUser) SubscribeAllAudio() int {
 Stops subscribing to the audio stream sent by a specific remote user in the channel.
 
 ```go
-func (localUser *LocalUser) UnsubscribeAudio(uid string) int {
-    if localUser.cLocalUser == nil {
-        return -1
-    }
-    cUid := C.CString(uid)
-    defer C.free(unsafe.Pointer(cUid))
-    return int(C.agora_local_user_unsubscribe_audio(localUser.cLocalUser, cUid))
-}
+func (localUser *LocalUser) UnsubscribeAudio(uid string) int
 ```
 
 #### Parameters
@@ -1100,12 +863,7 @@ func (localUser *LocalUser) UnsubscribeAudio(uid string) int {
 Stops subscribing to the audio streams sent by all remote users in the channel. This method will automatically unsubscribe from the audio streams of users who join the channel later. You must call [`SubscribeAudio`](#subscribeaudio) or [`SubscribeAllAudio`](#subscribeallaudio) to resume subscribing to audio.
 
 ```go
-func (localUser *LocalUser) UnsubscribeAllAudio() int {
-    if localUser.cLocalUser == nil {
-        return -1
-    }
-    return int(C.agora_local_user_unsubscribe_all_audio(localUser.cLocalUser))
-}
+func (localUser *LocalUser) UnsubscribeAllAudio() int
 ```
 
 #### Returns
@@ -1118,12 +876,7 @@ func (localUser *LocalUser) UnsubscribeAllAudio() int {
 Sets the playback audio format. This method sets the format of the data for the [`OnPlaybackAudioFrameBeforeMixing`](#onplaybackaudioframebeforemixing) callback.
 
 ```go
-func (localUser *LocalUser) SetPlaybackAudioFrameBeforeMixingParameters(channels int, sampleRate int) int {
-    if localUser.cLocalUser == nil {
-        return -1
-    }
-    return int(C.agora_local_user_set_playback_audio_frame_before_mixing_parameters(localUser.cLocalUser, C.uint(channels), C.uint(sampleRate)))
-}
+func (localUser *LocalUser) SetPlaybackAudioFrameBeforeMixingParameters(channels int, sampleRate int) int
 ```
 
 #### Parameters
@@ -1143,16 +896,25 @@ func (localUser *LocalUser) SetPlaybackAudioFrameBeforeMixingParameters(channels
 Registers the audio frame observer. You must implement the [`AudioFrameObserver`](#audioframeobserver) class and register the callbacks as needed.
 
 ```go
-func (localUser *LocalUser) RegisterAudioFrameObserver(observer *AudioFrameObserver) int {
-    return localUser.connection.registerAudioFrameObserver(observer)
-}
+func (localUser *LocalUser) RegisterAudioFrameObserver(observer *AudioFrameObserver, enableVad int, vadConfigure *AudioVadConfigV2) int
 ```
 
 #### Parameters
 
-| Parameter | Description |
-|---------------|----------------------------------------------------------------------|
-| `observer` | An instance of the `AudioFrameObserver` class. |
+**`observer`**
+
+An instance of the `AudioFrameObserver` class.
+
+**`enableVad`**
+
+Whether to enable the built-in voice activity detection (VAD):
+
+- `0`: Disable VAD.
+- `1`: Enable VAD. The SDK returns the VAD results in the [`OnPlaybackAudioFrameBeforeMixing`](#onplaybackaudioframebeforemixing) callback.
+
+**`vadConfigure`**
+
+The VAD configuration, an `AudioVadConfigV2` object. The SDK uses this parameter only when `enableVad` is `1`.
 
 #### Returns
 
@@ -1164,9 +926,7 @@ func (localUser *LocalUser) RegisterAudioFrameObserver(observer *AudioFrameObser
 Destroys the [`AudioFrameObserver`](#audioframeobserver) object.
 
 ```go
-func (localUser *LocalUser) UnregisterAudioFrameObserver() int {
-    return localUser.connection.unregisterAudioFrameObserver()
-}
+func (localUser *LocalUser) UnregisterAudioFrameObserver() int
 ```
 
 #### Returns
@@ -1179,25 +939,7 @@ func (localUser *LocalUser) UnregisterAudioFrameObserver() int {
 Subscribes to the video stream sent by a specified remote user in the channel.
 
 ```go
-func (localUser *LocalUser) SubscribeVideo(uid string, options *VideoSubscriptionOptions) int {
-    if localUser.cLocalUser == nil {
-        return -1
-    }
-    cUid := C.CString(uid)
-    defer C.free(unsafe.Pointer(cUid))
-    cOptions := C.video_subscription_options{}
-    po := &cOptions
-    if options != nil {
-        cOptions._type = C.int(options.StreamType)
-        cOptions.encoded_frame_only = C.int(0)
-        if options.EncodedFrameOnly {
-            cOptions.encoded_frame_only = C.int(1)
-        }
-    } else {
-        po = nil
-    }
-    return int(C.agora_local_user_subscribe_video(localUser.cLocalUser, cUid, po))
-}
+func (localUser *LocalUser) SubscribeVideo(uid string, options *VideoSubscriptionOptions) int
 ```
 
 #### Parameters
@@ -1218,23 +960,7 @@ func (localUser *LocalUser) SubscribeVideo(uid string, options *VideoSubscriptio
 Subscribes to the video streams sent by all remote users in the channel. This method automatically subscribes to the video streams of users who join the channel later.
 
 ```go
-func (localUser *LocalUser) SubscribeAllVideo(options *VideoSubscriptionOptions) int {
-    if localUser.cLocalUser == nil {
-        return -1
-    }
-    cOptions := C.video_subscription_options{}
-    po := &cOptions
-    if options != nil {
-        cOptions._type = C.int(options.StreamType)
-        cOptions.encoded_frame_only = C.int(0)
-        if options.EncodedFrameOnly {
-            cOptions.encoded_frame_only = C.int(1)
-        }
-    } else {
-        po = nil
-    }
-    return int(C.agora_local_user_subscribe_all_video(localUser.cLocalUser, po))
-}
+func (localUser *LocalUser) SubscribeAllVideo(options *VideoSubscriptionOptions) int
 ```
 
 #### Parameters
@@ -1253,14 +979,7 @@ func (localUser *LocalUser) SubscribeAllVideo(options *VideoSubscriptionOptions)
 Stops subscribing to the video stream sent by a specified remote user in the channel.
 
 ```go
-func (localUser *LocalUser) UnsubscribeVideo(uid string) int {
-    if localUser.cLocalUser == nil {
-        return -1
-    }
-    cUid := C.CString(uid)
-    defer C.free(unsafe.Pointer(cUid))
-    return int(C.agora_local_user_unsubscribe_video(localUser.cLocalUser, cUid))
-}
+func (localUser *LocalUser) UnsubscribeVideo(uid string) int
 ```
 
 #### Parameters
@@ -1280,12 +999,7 @@ func (localUser *LocalUser) UnsubscribeVideo(uid string) int {
 Stops subscribing to the video streams sent by all remote users in the channel. This method automatically unsubscribes from the video streams of users who join the channel later. You must call [`SubscribeVideo`](#subscribevideo) or [`SubscribeAllVideo`](#subscribeallvideo) to resume the subscription.
 
 ```go
-func (localUser *LocalUser) UnsubscribeAllVideo() int {
-    if localUser.cLocalUser == nil {
-        return -1
-    }
-    return int(C.agora_local_user_unsubscribe_all_video(localUser.cLocalUser))
-}
+func (localUser *LocalUser) UnsubscribeAllVideo() int
 ```
 
 #### Returns
@@ -1298,9 +1012,7 @@ func (localUser *LocalUser) UnsubscribeAllVideo() int {
 Registers a local user observer.
 
 ```go
-func (localUser *LocalUser) RegisterLocalUserObserver(observer *LocalUserObserver) int {
-    return localUser.connection.registerLocalUserObserver(observer)
-}
+func (localUser *LocalUser) RegisterLocalUserObserver(observer *LocalUserObserver) int
 ```
 
 #### Parameters
@@ -1319,9 +1031,7 @@ func (localUser *LocalUser) RegisterLocalUserObserver(observer *LocalUserObserve
 Destroys the local user observer.
 
 ```go
-func (localUser *LocalUser) UnregisterLocalUserObserver() int {
-    return localUser.connection.unregisterLocalUserObserver()
-}
+func (localUser *LocalUser) UnregisterLocalUserObserver() int
 ```
 
 #### Returns
@@ -1334,9 +1044,7 @@ func (localUser *LocalUser) UnregisterLocalUserObserver() int {
 Registers a [`VideoFrameObserver`](#videoframeobserver) object.
 
 ```go
-func (localUser *LocalUser) RegisterVideoFrameObserver(observer *VideoFrameObserver) int {
-    return localUser.connection.registerVideoFrameObserver(observer)
-}
+func (localUser *LocalUser) RegisterVideoFrameObserver(observer *VideoFrameObserver) int
 ```
 
 #### Parameters
@@ -1355,9 +1063,7 @@ func (localUser *LocalUser) RegisterVideoFrameObserver(observer *VideoFrameObser
 Destroys the [`VideoFrameObserver`](#videoframeobserver) object.
 
 ```go
-func (localUser *LocalUser) UnregisterVideoFrameObserver() int {
-    return localUser.connection.unregisterVideoFrameObserver()
-}
+func (localUser *LocalUser) UnregisterVideoFrameObserver() int
 ```
 
 #### Returns
@@ -1370,9 +1076,7 @@ func (localUser *LocalUser) UnregisterVideoFrameObserver() int {
 Gets the `RtcConnection` object.
 
 ```go
-func (localUser *LocalUser) GetRtcConnection() *RtcConnection {
-    return localUser.connection
-}
+func (localUser *LocalUser) GetRtcConnection() *RtcConnection
 ```
 
 #### Returns
@@ -1380,22 +1084,19 @@ func (localUser *LocalUser) GetRtcConnection() *RtcConnection {
 - `RtcConnection` object, if the method call succeeds.
 - `nil`, if the method call fails.
 
-### `SendAudioMetadata`
+### `SendAudioMetaData`
 
 ```go
-func (localUser *LocalUser) SendAudioMetaData(metaData []byte) int {
-	if localUser.cLocalUser == nil {
-		return -1
-	}
+func (localUser *LocalUser) SendAudioMetaData(metaData []byte) int
 ```
 
 Sends the audio metadata.
 
 :::info[Since]
-v2.2.3.
+v2.2.0.
 :::
 
-A successful call triggers the [`OnAudioMetadataReceived`](#onaudiometadatareceived) callback on the remote end. The remote user can get the audio metadata in this callback.
+A successful call triggers the [`OnAudioMetaDataReceived`](#onaudiometadatareceived) callback on the remote end. The remote user can get the audio metadata in this callback.
 
 #### Parameters
 
@@ -1465,18 +1166,18 @@ OnUserInfoUpdated func(localUser *LocalUser, uid string, userMediaInfo int, val 
 |`userMediaInfo`|User media information. See [`UserMediaInfo`](#usermediainfo) for details.|
 |`val`| Whether the user has stopped sending streams. - `0`: Not stopped. - `1`: Stopped.|
 
-### `OnAudioMetadataReceived`
+### `OnAudioMetaDataReceived`
 
 ```go
-OnAudioMetadataReceived func(localUser *LocalUser, uid string, metadata []byte)
+OnAudioMetaDataReceived func(localUser *LocalUser, uid string, metaData []byte)
 ```
 
 Occurs when the remote audio metadata is received.
 
-This callback indicates that the local user has received the audio metadata sent by the remote user using the [`SendAudioMetadata`](#sendaudiometadata) method.
+This callback indicates that the local user has received the audio metadata sent by the remote user using the [`SendAudioMetaData`](#sendaudiometadata) method.
 
 :::info[Since]
-v2.2.3.
+v2.2.0.
 :::
 
 #### Parameters
@@ -1485,7 +1186,7 @@ v2.2.3.
 |---------------|----------------------------------------------------------------------|
 | `localUser` | [`LocalUser`](#localuser) class. |
 | `uid` | The UID of the remote user. |
-| `metadata` | The audio metadata. |
+| `metaData` | The audio metadata. |
 
 ## LocalAudioTrack
 
@@ -1496,15 +1197,7 @@ The `LocalAudioTrack` class is the base class for local audio tracks.
 Creates a custom PCM data track.
 
 ```go
-func NewCustomAudioTrackPcm(pcmSender *AudioPcmDataSender) *LocalAudioTrack {
-    cTrack := C.agora_service_create_custom_audio_track_pcm(agoraService.service, pcmSender.cSender)
-    if cTrack == nil {
-        return nil
-    }
-    return &LocalAudioTrack{
-        cTrack: cTrack,
-    }
-}
+func NewCustomAudioTrackPcm(pcmSender *AudioPcmDataSender) *LocalAudioTrack
 ```
 
 #### Parameters
@@ -1523,15 +1216,7 @@ func NewCustomAudioTrackPcm(pcmSender *AudioPcmDataSender) *LocalAudioTrack {
 Creates a custom encoded data track.
 
 ```go
-func NewCustomAudioTrackEncoded(encodedAudioSender *AudioEncodedFrameSender, mixMode AudioTrackMixingState) *LocalAudioTrack {
-    cTrack := C.agora_service_create_custom_audio_track_encoded(agoraService.service, encodedAudioSender.cSender, C.int(mixMode))
-    if cTrack == nil {
-        return nil
-    }
-    return &LocalAudioTrack{
-        cTrack: cTrack,
-    }
-}
+func NewCustomAudioTrackEncoded(encodedAudioSender *AudioEncodedFrameSender, mixMode AudioTrackMixingState) *LocalAudioTrack
 ```
 
 #### Parameters
@@ -1584,12 +1269,7 @@ func (track *LocalAudioTrack) AdjustPublishVolume(volume int) int
 Sets the maximum capacity of the audio send buffer.
 
 ```go
-func (track *LocalAudioTrack) SetMaxBufferedAudioFrameNumber(frameNum int) {
-    if track.cTrack == nil {
-        return
-    }
-    C.agora_local_audio_track_set_max_bufferd_frame_number(track.cTrack, C.int(frameNum))
-}
+func (track *LocalAudioTrack) SetMaxBufferedAudioFrameNumber(frameNum int)
 ```
 
 In applications like AI interaction, the frequency of sending audio frames from the sender may be irregular. For example, sometimes 1 frame is sent every 20 ms, and sometimes 3 frames are sent every 20 ms. If the SDK sends data to the Agora server based on the actual sending frequency, the receiver may experience stuttering or frame drops. To optimize audio transmission performance, the SDK sets an audio send buffer. Regardless of the actual frequency of sending audio frames, the SDK stores the data in the audio send buffer. Once the data in the audio send buffer reaches the minimum duration allowed to be sent, the SDK starts sending data to the receiver at a rate of 10 ms per frame.
@@ -1611,12 +1291,7 @@ This method should be called before the [`PublishAudio`](#publishaudio) method.
 Clears the current audio send buffer.
 
 ```go
-func (track *LocalAudioTrack) ClearSenderBuffer() int {
-    if track.cTrack == nil {
-        return -1
-    }
-    return int(C.agora_local_audio_track_clear_sender_buffer(track.cTrack))
-}
+func (track *LocalAudioTrack) ClearSenderBuffer() int
 ```
 
 If you no longer need the data in the current audio send buffer, you can call this method to clear the buffer. For example, if a user asks an AI a question and the AI is transmitting audio to the user through the SDK, the SDK's audio send buffer continuously has data in and out. When the user interrupts the AI's response and asks another question, you can call this method to let the SDK clear the current unsent buffered data to quickly buffer the AI's response to the new topic.
@@ -1631,13 +1306,7 @@ If you no longer need the data in the current audio send buffer, you can call th
 Sets the minimum duration of data allowed to be sent in the audio send buffer.
 
 ```go
-func (track *LocalAudioTrack) SetSendDelayMs(delayMs int) int {
-    if track.cTrack == nil {
-        return -1
-    }
-    C.agora_local_audio_track_set_send_delay_ms(track.cTrack, C.int(delayMs))
-    return 0
-}
+func (track *LocalAudioTrack) SetSendDelayMs(delayMs int) int
 ```
 
 The SDK's default minimum duration of data allowed to be sent is 160 ms. This means the SDK will wait until the audio send buffer is filled with 160 ms of data before sending it to the receiver, which has the following effects:
@@ -1670,15 +1339,7 @@ The `LocalVideoTrack` class provides basic methods for local video tracks. You c
 Creates a local video track object with a video source that sends YUV format video data. This track object can be used to send YUV format video data.
 
 ```go
-func NewCustomVideoTrackFrame(videoSender *VideoFrameSender) *LocalVideoTrack {
-    cTrack := C.agora_service_create_custom_video_track_frame(agoraService.service, videoSender.cSender)
-    if cTrack == nil {
-        return nil
-    }
-    return &LocalVideoTrack{
-        cTrack: cTrack,
-    }
-}
+func NewCustomVideoTrackFrame(videoSender *VideoFrameSender) *LocalVideoTrack
 ```
 
 #### Parameters
@@ -1697,24 +1358,7 @@ func NewCustomVideoTrackFrame(videoSender *VideoFrameSender) *LocalVideoTrack {
 Creates a local video track object with a video source that sends encoded video data. This track object can be used to send encoded video data, such as H.264 or VP8 format encoded data.
 
 ```go
-func NewCustomVideoTrackEncoded(videoSender *VideoEncodedImageSender, senderOptions *VideoEncodedImageSenderOptions) *LocalVideoTrack {
-    cSenderOptions := C.sender_options{}
-    cptrSenderOptions := &cSenderOptions
-    if senderOptions != nil {
-        cSenderOptions.cc_mode = C.int(senderOptions.CcMode)
-        cSenderOptions.codec_type = C.int(senderOptions.CodecType)
-        cSenderOptions.target_bitrate = C.int(senderOptions.TargetBitrate)
-    } else {
-        cptrSenderOptions = nil
-    }
-    cTrack := C.agora_service_create_custom_video_track_encoded(agoraService.service, videoSender.cSender, cptrSenderOptions)
-    if cTrack == nil {
-        return nil
-    }
-    return &LocalVideoTrack{
-        cTrack: cTrack,
-    }
-}
+func NewCustomVideoTrackEncoded(videoSender *VideoEncodedImageSender, senderOptions *VideoEncodedImageSenderOptions) *LocalVideoTrack
 ```
 
 #### Parameters
@@ -1734,16 +1378,7 @@ func NewCustomVideoTrackEncoded(videoSender *VideoEncodedImageSender, senderOpti
 Enables or disables the local video track. After the local video track is enabled, the SDK can capture, process, and encode local video.
 
 ```go
-func (track *LocalVideoTrack) SetEnabled(enable bool) {
-    if track.cTrack == nil {
-        return
-    }
-    cEnable := 0
-    if enable {
-        cEnable = 1
-    }
-    C.agora_local_video_track_set_enabled(track.cTrack, C.int(cEnable))
-}
+func (track *LocalVideoTrack) SetEnabled(enable bool)
 ```
 
 #### Parameters
@@ -1757,19 +1392,7 @@ func (track *LocalVideoTrack) SetEnabled(enable bool) {
 Sets the video encoding properties.
 
 ```go
-func (track *LocalVideoTrack) SetVideoEncoderConfiguration(cfg *VideoEncoderConfiguration) int {
-    cCfg := C.struct__video_encoder_config{}
-    C.memset(unsafe.Pointer(&cCfg), 0, C.sizeof_struct__video_encoder_config)
-    cCfg.codec_type = C.int(cfg.CodecType)
-    cCfg.dimensions.width = C.int(cfg.Width)
-    cCfg.dimensions.height = C.int(cfg.Height)
-    cCfg.frame_rate = C.int(cfg.Framerate)
-    cCfg.bitrate = C.int(cfg.Bitrate * 1000)
-    cCfg.min_bitrate = C.int(cfg.MinBitrate * 1000)
-    cCfg.orientation_mode = C.int(cfg.OrientationMode)
-    cCfg.degradation_preference = C.int(cfg.DegradePreference)
-    return int(C.agora_local_video_track_set_video_encoder_config(track.cTrack, &cCfg))
-}
+func (track *LocalVideoTrack) SetVideoEncoderConfiguration(cfg *VideoEncoderConfiguration) int
 ```
 
 #### Parameters
@@ -1792,16 +1415,7 @@ The `MediaNodeFactory` class.
 Creates a media node factory object.
 
 ```go
-func NewMediaNodeFactory() *MediaNodeFactory {
-    factory := C.agora_service_create_media_node_factory(agoraService.service)
-    if factory == nil {
-        return nil
-    }
-    return &MediaNodeFactory{
-        cFactory: factory,
-    }
-}
-
+func NewMediaNodeFactory() *MediaNodeFactory
 ```
 
 #### Returns
@@ -1814,13 +1428,7 @@ func NewMediaNodeFactory() *MediaNodeFactory {
 Releases the `MediaNodeFactory` object.
 
 ```go
-func (factory *MediaNodeFactory) Release() {
-    if factory.cFactory == nil {
-        return
-    }
-    C.agora_media_node_factory_destroy(factory.cFactory)
-    factory.cFactory = nil
-}
+func (factory *MediaNodeFactory) Release()
 ```
 
 ## AudioEncodedFrameSender
@@ -1832,15 +1440,7 @@ The `AudioEncodedFrameSender` class.
 Creates an encoded audio data sending module. This method creates an `AudioEncodedFrameSender` object, which can be used in the [`NewCustomAudioTrackEncoded`](#newcustomaudiotrackencoded) method.
 
 ```go
-func (mediaNodeFactory *MediaNodeFactory) NewAudioEncodedFrameSender() *AudioEncodedFrameSender {
-    sender := C.agora_media_node_factory_create_audio_encoded_frame_sender(mediaNodeFactory.cFactory)
-    if sender == nil {
-        return nil
-    }
-    return &AudioEncodedFrameSender{
-        cSender: sender,
-    }
-}
+func (mediaNodeFactory *MediaNodeFactory) NewAudioEncodedFrameSender() *AudioEncodedFrameSender
 ```
 
 #### Returns
@@ -1853,22 +1453,7 @@ func (mediaNodeFactory *MediaNodeFactory) NewAudioEncodedFrameSender() *AudioEnc
 Sends the encoded audio frame to the local audio track.
 
 ```go
-func (sender *AudioEncodedFrameSender) SendEncodedAudioFrame(payload []byte, frameInfo *EncodedAudioFrameInfo) int {
-    cData := C.CBytes(payload)
-    defer C.free(cData)
-    cFrameInfo := &C.struct__encoded_audio_frame_info{
-        speech:              CIntFromBool(frameInfo.Speech),
-        codec:               C.int(frameInfo.Codec),
-        sample_rate_hz:      C.int(frameInfo.SampleRateHz),
-        samples_per_channel: C.int(frameInfo.SamplesPerChannel),
-        send_even_if_empty:  CIntFromBool(frameInfo.SendEvenIfEmpty),
-        number_of_channels:  C.int(frameInfo.NumberOfChannels),
-    }
-
-    return int(C.agora_audio_encoded_frame_sender_send(
-        sender.cSender, (*C.uint8_t)(cData),
-        C.uint32_t(len(payload)), cFrameInfo))
-}
+func (sender *AudioEncodedFrameSender) SendEncodedAudioFrame(payload []byte, frameInfo *EncodedAudioFrameInfo) int
 ```
 
 #### Parameters
@@ -1888,13 +1473,7 @@ func (sender *AudioEncodedFrameSender) SendEncodedAudioFrame(payload []byte, fra
 Releases the `AudioEncodedFrameSender` object.
 
 ```go
-func (sender *AudioEncodedFrameSender) Release() {
-    if sender.cSender == nil {
-        return
-    }
-    C.agora_audio_encoded_frame_sender_destroy(sender.cSender)
-    sender.cSender = nil
-}
+func (sender *AudioEncodedFrameSender) Release()
 ```
 
 ## AudioPcmDataSender
@@ -1906,15 +1485,7 @@ The `AudioPcmDataSender` class.
 Creates a PCM data sender module. This method creates an `AudioPcmDataSender` object, which can be used in the [`NewCustomAudioTrackPcm`](#newcustomaudiotrackpcm) method.
 
 ```go
-func (mediaNodeFactory *MediaNodeFactory) NewAudioPcmDataSender() *AudioPcmDataSender {
-    sender := C.agora_media_node_factory_create_audio_pcm_data_sender(mediaNodeFactory.cFactory)
-    if sender == nil {
-        return nil
-    }
-    return &AudioPcmDataSender{
-        cSender: sender,
-    }
-}
+func (mediaNodeFactory *MediaNodeFactory) NewAudioPcmDataSender() *AudioPcmDataSender
 ```
 
 #### Returns
@@ -1927,14 +1498,7 @@ func (mediaNodeFactory *MediaNodeFactory) NewAudioPcmDataSender() *AudioPcmDataS
 Sends PCM format audio data to the local audio track.
 
 ```go
-func (sender *AudioPcmDataSender) SendAudioPcmData(frame *AudioFrame) int {
-    cData := C.CBytes(frame.Buffer)
-    defer C.free(cData)
-    return int(C.agora_audio_pcm_data_sender_send(sender.cSender, cData,
-        C.uint(frame.RenderTimeMs), C.uint(frame.SamplesPerChannel),
-        C.uint(frame.BytesPerSample), C.uint(frame.Channels),
-        C.uint(frame.SamplesPerSec)))
-}
+func (sender *AudioPcmDataSender) SendAudioPcmData(frame *AudioFrame) int
 ```
 
 #### Parameters
@@ -1953,13 +1517,7 @@ func (sender *AudioPcmDataSender) SendAudioPcmData(frame *AudioFrame) int {
 Releases the `AudioPcmDataSender` object.
 
 ```go
-func (sender *AudioPcmDataSender) Release() {
-    if sender.cSender == nil {
-        return
-    }
-    C.agora_audio_pcm_data_sender_destroy(sender.cSender)
-    sender.cSender = nil
-}
+func (sender *AudioPcmDataSender) Release()
 ```
 
 ## AudioFrameObserver
@@ -1971,17 +1529,40 @@ The `AudioFrameObserver` class.
 Obtains the audio data before mixing for playback.
 
 ```go
-OnPlaybackAudioFrameBeforeMixing  func(localUser *LocalUser, channelId string, uid string, frame *AudioFrame) bool
+OnPlaybackAudioFrameBeforeMixing func(localUser *LocalUser, channelId string, uid string, frame *AudioFrame, vadResultStat VadState, vadResultFrame *AudioFrame) bool
 ```
 
 #### Parameters
 
-| Parameter        | Description                                                                 |
-|------------------|-----------------------------------------------------------------------------|
-| `localUser`      | [`LocalUser`](#localuser) class.                                           |
-| `channelId`      | Channel name.                                                               |
-| `uid`            | User ID of the remote user.                                                 |
-| `frame`          | Raw audio data. See [`AudioFrame`](#audioframe) for details.   |
+**`localUser`**
+
+[`LocalUser`](#localuser) class.
+
+**`channelId`**
+
+Channel name.
+
+**`uid`**
+
+User ID of the remote user.
+
+**`frame`**
+
+Raw audio data. See [`AudioFrame`](#audioframe) for details.
+
+**`vadResultStat`**
+
+The VAD state. Valid only when you enable VAD in [`RegisterAudioFrameObserver`](#registeraudioframeobserver):
+
+- `-1` (`VadStateInvalid`): VAD is not enabled.
+- `0` (`VadStateNoSpeeking`): Not speaking.
+- `1` (`VadStateStartSpeeking`): Started speaking.
+- `2` (`VadStateSpeeking`): Speaking.
+- `3` (`VadStateStopSpeeking`): Stopped speaking.
+
+**`vadResultFrame`**
+
+The audio data processed by VAD. When VAD is enabled, use this data instead of `frame` for downstream processing, such as speech recognition.
 
 #### Returns
 
@@ -1997,15 +1578,7 @@ The `VideoEncodedImageSender` class.
 Creates a video encoded data sender module. This method creates a `VideoEncodedImageSender` object, which can be used in the [`NewCustomVideoTrackEncoded`](#newcustomvideotrackencoded) method.
 
 ```go
-func (mediaNodeFactory *MediaNodeFactory) NewVideoEncodedImageSender() *VideoEncodedImageSender {
-    sender := C.agora_media_node_factory_create_video_encoded_image_sender(mediaNodeFactory.cFactory)
-    if sender == nil {
-        return nil
-    }
-    return &VideoEncodedImageSender{
-        cSender: sender,
-    }
-}
+func (mediaNodeFactory *MediaNodeFactory) NewVideoEncodedImageSender() *VideoEncodedImageSender
 ```
 
 #### Returns
@@ -2018,24 +1591,7 @@ func (mediaNodeFactory *MediaNodeFactory) NewVideoEncodedImageSender() *VideoEnc
 Sends an encoded video frame to the video track.
 
 ```go
-func (sender *VideoEncodedImageSender) SendEncodedVideoImage(payload []byte, frameInfo *EncodedVideoFrameInfo) int {
-    cData := C.CBytes(payload)
-    defer C.free(cData)
-    cFrameInfo := &C.struct__encoded_video_frame_info{
-        codec_type:        C.int(frameInfo.CodecType),
-        width:             C.int(frameInfo.Width),
-        height:            C.int(frameInfo.Height),
-        frames_per_second: C.int(frameInfo.FramesPerSecond),
-        frame_type:        C.int(frameInfo.FrameType),
-        rotation:          C.int(frameInfo.Rotation),
-        track_id:          C.int(frameInfo.TrackId),
-        capture_time_ms:   C.int64_t(frameInfo.CaptureTimeMs),
-        decode_time_ms:    C.int64_t(frameInfo.DecodeTimeMs),
-        uid:               C.uint(frameInfo.Uid),
-        stream_type:       C.int(frameInfo.StreamType),
-    }
-    return int(C.agora_video_encoded_image_sender_send(sender.cSender, (*C.uint8_t)(cData), C.uint32_t(len(payload)), cFrameInfo))
-}
+func (sender *VideoEncodedImageSender) SendEncodedVideoImage(payload []byte, frameInfo *EncodedVideoFrameInfo) int
 ```
 
 #### Parameters
@@ -2077,25 +1633,6 @@ Whether to accept the encoded video frame:
 - `true`: Accept.
 - `false`: Do not accept.
 
-### OnEncryptionError
-
-```go
-OnEncryptionError func(con *RtcConnection, err int);
-```
-
-Occurs when encryption errors occur.
-
-:::info[Since]
-v2.2.3.
-:::
-
-#### Parameters
-
-| Parameter | Description |
-| --- | --- |
-| `con` | [`RtcConnection`](#rtcconnection) object. |
-| `err` | Error code. |
-
 ## VideoFrameSender
 
 The `VideoFrameSender` class.
@@ -2105,15 +1642,7 @@ The `VideoFrameSender` class.
 Creates a raw video data sender module. This method creates a `VideoFrameSender` object, which can be used in the [`NewCustomVideoTrackFrame`](#newcustomvideotrackframe) method.
 
 ```go
-func (mediaNodeFactory *MediaNodeFactory) NewVideoFrameSender() *VideoFrameSender {
-    sender := C.agora_media_node_factory_create_video_frame_sender(mediaNodeFactory.cFactory)
-    if sender == nil {
-        return nil
-    }
-    return &VideoFrameSender{
-        cSender: sender,
-    }
-}
+func (mediaNodeFactory *MediaNodeFactory) NewVideoFrameSender() *VideoFrameSender
 ```
 
 #### Returns
@@ -2126,30 +1655,7 @@ func (mediaNodeFactory *MediaNodeFactory) NewVideoFrameSender() *VideoFrameSende
 Sends a YUV format video frame to the video track.
 
 ```go
-func (sender *VideoFrameSender) SendVideoFrame(frame *ExternalVideoFrame) int {
-    cData := C.CBytes(frame.Buffer)
-    defer C.free(cData)
-    cFrame := C.struct__external_video_frame{}
-    C.memset(unsafe.Pointer(&cFrame), 0, C.sizeof_struct__external_video_frame)
-    cFrame._type = C.int(frame.Type)
-    cFrame.format = C.int(frame.Format)
-    cFrame.buffer = cData
-    cFrame.stride = C.int(frame.Stride)
-    cFrame.height = C.int(frame.Height)
-    cFrame.crop_left = C.int(frame.CropLeft)
-    cFrame.crop_top = C.int(frame.CropTop)
-    cFrame.crop_right = C.int(frame.CropRight)
-    cFrame.crop_bottom = C.int(frame.CropBottom)
-    cFrame.rotation = C.int(frame.Rotation)
-    cFrame.timestamp = C.longlong(frame.Timestamp)
-    if frame.MetadataBuffer != nil {
-        metadata := C.CBytes(frame.MetadataBuffer)
-        defer C.free(metadata)
-        cFrame.metadata_buffer = (*C.uint8_t)(metadata)
-        cFrame.metadata_size = C.int(len(frame.MetadataBuffer))
-    }
-    return int(C.agora_video_frame_sender_send(sender.cSender, &cFrame))
-}
+func (sender *VideoFrameSender) SendVideoFrame(frame *ExternalVideoFrame) int
 ```
 
 #### Parameters
@@ -2167,7 +1673,7 @@ func (sender *VideoFrameSender) SendVideoFrame(frame *ExternalVideoFrame) int {
 
 The `VideoFrameObserver` class.
 
-#### `OnFrame`
+### `OnFrame`
 
 Triggered when a video frame is received.
 
@@ -2204,6 +1710,8 @@ type AgoraServiceConfig struct {
     LogPath              string
     LogSize              int
     DomainLimit          int
+    ShouldCallbackWhenMuted int
+    EnableSteroEncodeMode   int
 }
 ```
 
@@ -2254,6 +1762,20 @@ Whether to enable domain limit:
 -  `1`: Yes. Only connects to domains that are parsed by DNS
 -  `0`: (Default) No. There is no limit when connecting to domains
 
+**`ShouldCallbackWhenMuted`**
+
+Whether the SDK still triggers the [`OnPlaybackAudioFrameBeforeMixing`](#onplaybackaudioframebeforemixing) callback after a remote user mutes their audio:
+
+- `0`: (Default) No. The SDK stops triggering the callback when the remote user mutes their audio.
+- Greater than `0`: Yes. The SDK keeps triggering the callback when the remote user mutes their audio.
+
+**`EnableSteroEncodeMode`**
+
+Whether to enable stereo encoding mode:
+
+- `0`: (Default) No.
+- Greater than `0`: Yes. Each connection uses the `AudioScenarioGameStreaming` audio scenario and the `AudioProfileMusicHighQualityStereo` audio profile, with echo cancellation, noise suppression, and automatic gain control disabled. The encoding bitrate is 32 Kbps.
+
 #### `AudioEncoderConfiguration`
 
 Audio encoding settings.
@@ -2282,6 +1804,11 @@ type AudioFrame struct {
     Buffer            []byte
     RenderTimeMs      int64
     AvsyncType        int
+    FarFieldFlag      int
+    Rms               int
+    VoiceProb         int
+    MusicProb         int
+    Pitch             int
 }
 ```
 
@@ -2295,6 +1822,11 @@ type AudioFrame struct {
 | `Buffer` | PCM audio data to be sent. |
 | `RenderTimeMs` | Timestamp (in milliseconds) when the audio data was collected. |
 | `AvsyncType` | Audio-video synchronization type. |
+| `FarFieldFlag` | The far-field flag of the audio frame. Only used in audio frame observer callbacks. |
+| `Rms` | The root mean square (RMS) of the audio frame. Only used in audio frame observer callbacks. |
+| `VoiceProb` | The probability that the audio frame contains voice. Only used in audio frame observer callbacks. |
+| `MusicProb` | The probability that the audio frame contains music. Only used in audio frame observer callbacks. |
+| `Pitch` | The pitch of the audio frame. Only used in audio frame observer callbacks. |
 
 #### `EncodedAudioFrameInfo`
 
@@ -2463,19 +1995,19 @@ This parameter is only applicable to video data in Texture format. - When using 
 
 **`EGLType`**
 
-This parameter is only applicable to video data in Texture format. Specifies the Texture ID of the video frame.
+This parameter is only applicable to video data in Texture format. Specifies the EGL context type.
 
 **`TextureID`**
 
-This parameter is only applicable to video data in Texture format. It is an input 4x4 transformation matrix, typically an identity matrix.
+This parameter is only applicable to video data in Texture format. Specifies the Texture ID of the video frame.
 
 **`Matrix`**
 
-This parameter is only applicable to video data in Texture format. Indicates the data buffer of MetaData, default is `nil`.
+This parameter is only applicable to video data in Texture format. It is an input 4x4 transformation matrix, typically an identity matrix.
 
 **`MetadataBuffer`**
 
-This parameter is only applicable to video data in Texture format. Indicates the size of MetaData, default is `0`.
+The metadata buffer of the video frame. The default value is `nil`.
 
 **`AlphaBuffer`**
 
@@ -2544,6 +2076,7 @@ type RtcConnectionInfo struct {
     ChannelId string
     State int
     LocalUserId string
+    InternalUid uint
 }
 ```
 
@@ -2553,6 +2086,7 @@ type RtcConnectionInfo struct {
 |`ChannelId`|RTC channel ID. If you have not called the [`connect`](#connect) method, this parameter returns `nil`.|
 |`State`|Connection state: - `1`: Network connection disconnected. - `2`: Establishing network connection. - `3`: Network connected. - `4`: Re-establishing network connection. - `5`: Network connection failed.|
 |`LocalUserId`|Local user ID.|
+|`InternalUid`|For internal use only.|
 
 #### `VideoEncodedImageSenderOptions`
 
@@ -2584,8 +2118,10 @@ type VideoEncoderConfiguration struct {
     Framerate          int
     Bitrate            int
     MinBitrate         int
-    OrientationMode    VideoOrientation
-    DegradePreference  int
+    OrientationMode    OrientationMode
+    DegradePreference  DegradationPreference
+    MirrorMode         VideoMirrorModeType
+    EncodeAlpha        bool
 }
 ```
 
@@ -2597,8 +2133,10 @@ type VideoEncoderConfiguration struct {
 |`Framerate`|Frame rate of the video encoding (fps), default is 15.|
 |`Bitrate`|Video encoding bitrate in Kbps.|
 |`MinBitrate`|Minimum encoding bitrate in Kbps. The SDK automatically adjusts the video encoding bitrate based on network conditions. Setting this parameter higher than the default value can force the video encoder to output higher quality images, but may cause packet loss and affect video playback smoothness under poor network conditions, resulting in stuttering. Therefore, unless there is a special requirement for image quality, it is recommended not to modify this parameter. **Note**: This parameter is only applicable in live broadcast scenarios.|
-|`OrientationMode`|Video encoding orientation mode. See [`VideoOrientation`](#videoorientation).|
-|`DegradePreference`|Video encoding degrade preference when bandwidth is limited: - `0`: (Default) When bandwidth is limited, prioritize reducing video frame rate while maintaining video quality. This degrade preference is suitable for use-cases where image quality is prioritized. - `1`: When bandwidth is limited, prioritize reducing video quality while maintaining video frame rate. This degrade preference is suitable for use-cases where smoothness is prioritized and quality reduction is acceptable. - `2`: When bandwidth is limited, reduce both video frame rate and video quality. The reduction in `2` is less than in `0` and `1`, suitable for use-cases with limited smoothness and quality. - `3`: When bandwidth is limited, prioritize reducing video frame rate.|
+|`OrientationMode`|Video encoding orientation mode: - `0` (`OrientationModeAdaptive`): (Default) The output video follows the orientation of the captured video. The receiver rotates the video based on the rotation information it receives. - `1` (`OrientationModeFixedLandscape`): The SDK always outputs landscape video. If the captured video is in portrait mode, the video encoder crops it. - `2` (`OrientationModeFixedPortrait`): The SDK always outputs portrait video. If the captured video is in landscape mode, the video encoder crops it.|
+|`DegradePreference`|Video encoding degrade preference when bandwidth is limited: - `0` (`DegradeMaintainQuality`): (Default) When bandwidth is limited, prioritize reducing video frame rate while maintaining video quality. This degrade preference is suitable for use-cases where image quality is prioritized. - `1` (`DegradeMaintainFramerate`): When bandwidth is limited, prioritize reducing video quality while maintaining video frame rate. This degrade preference is suitable for use-cases where smoothness is prioritized and quality reduction is acceptable. - `2` (`DegradeMaintainBalanced`): When bandwidth is limited, reduce both video frame rate and video quality. The reduction in `2` is less than in `0` and `1`, suitable for use-cases with limited smoothness and quality. - `3` (`DegradeMaintainResolution`): When bandwidth is limited, reduce the video frame rate to maintain resolution. - `100` (`DegradeDisabled`): Disable video quality control adjustment.|
+|`MirrorMode`|Whether to enable mirror mode when encoding video. - `0` (`VideoMirrorModeAuto`): (Default) The SDK determines the mirror mode. - `1` (`VideoMirrorModeEnabled`): Enable mirror mode. The SDK mirrors the video frame before encoding. - `2` (`VideoMirrorModeDisabled`): Disable mirror mode.|
+|`EncodeAlpha`|Whether to encode and send the alpha data to the remote user when the video frame contains alpha data. - `true`: Encode and send the alpha data. - `false`: (Default) Do not encode or send the alpha data.|
 
 #### `VideoFrame`
 
@@ -2618,6 +2156,12 @@ type VideoFrame struct {
     Rotation        VideoOrientation
     RenderTimeMs    int64
     AVSyncType      int
+    MetadataBuffer  []byte
+    SharedContext   unsafe.Pointer
+    TextureID       int
+    Matrix          [16]float32
+    AlphaBuffer     []byte
+    AlphaMode       int
 }
 ```
 
@@ -2635,6 +2179,12 @@ type VideoFrame struct {
 |`Rotation`|Clockwise rotation angle of the frame before rendering the video. See [`VideoOrientation`](#videoorientation).|
 |`RenderTimeMs`|Timestamp of the external audio frame. This parameter is required. You can use this timestamp to restore the order of audio frames; in use-cases with video (including those using external video sources), this parameter helps achieve audio-video synchronization.|
 |`AVSyncType`|Reserved parameter.|
+|`MetadataBuffer`|The metadata buffer of the video frame.|
+|`SharedContext`|The EGL context. Only applicable to Texture format video data.|
+|`TextureID`|The Texture ID of the video frame. Only applicable to Texture format video data.|
+|`Matrix`|The input 4x4 transformation matrix. Only applicable to Texture format video data.|
+|`AlphaBuffer`|The alpha channel data of the video frame. The data matches the size of the video frame.|
+|`AlphaMode`|The relative position between `AlphaBuffer` and the frame. - `0`: (Default) Normal frame. - `1`: `AlphaBuffer` is above the frame. - `2`: `AlphaBuffer` is below the frame. - `3`: `AlphaBuffer` is on the left of the frame. - `4`: `AlphaBuffer` is on the right of the frame.|
 
 #### `VideoSubscriptionOptions`
 

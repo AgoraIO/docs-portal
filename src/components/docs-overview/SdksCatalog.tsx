@@ -28,6 +28,19 @@ const platformGroups = [
 ] as const;
 
 const PLATFORM_ORDER = platformGroups.flatMap((group) => group.platformIds);
+// Product card order. Products not listed keep their first-seen order after these.
+const PRODUCT_ORDER = [
+  'agents',
+  'voice',
+  'video',
+  'signaling',
+  'chat',
+  'iot',
+  'whiteboard',
+  'fastboard',
+  'on-premise-recording',
+  'server-gateway',
+];
 const SDKS_CATALOG_PATH = '/en/api-reference/sdks';
 
 const productFilters = {
@@ -111,6 +124,11 @@ function platformRank(platformId: string) {
   return index === -1 ? PLATFORM_ORDER.length : index;
 }
 
+function productRank(productId: string) {
+  const index = PRODUCT_ORDER.indexOf(productId);
+  return index === -1 ? PRODUCT_ORDER.length : index;
+}
+
 type ProductPlatformEntry = {
   platformId: string;
   platformLabel: string;
@@ -148,6 +166,8 @@ function buildProductGroups(): ProductGroup[] {
       }
     }
   }
+
+  order.sort((a, b) => productRank(a) - productRank(b));
 
   return order.map((productId) => {
     const platforms = (entriesByProductId.get(productId) ?? [])

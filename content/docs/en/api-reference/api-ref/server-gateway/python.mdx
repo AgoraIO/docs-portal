@@ -80,7 +80,7 @@ Server Gateway SDK API reference for Python.
   | [`unregister_video_frame_observer`](#unregister_video_frame_observer) | Destroys the [`IVideoFrameObserver`](#ivideoframeobserver) object. |
   | [`get_rtc_connection`](#get_rtc_connection) | Gets the `RtcConnection` object. |
   | [`release`](#local-user-release) | Releases all resources of the `LocalUser` object. |
-  | [`send_audio_metadata`](#send_audio_metadata) | Sends the audio metadata. |
+  | [`send_audio_meta_data`](#send_audio_meta_data) | Sends the audio metadata. |
 
 - `LocalUserObserver`
 
@@ -546,7 +546,7 @@ def enable_encryption(self, enabled: int, config: EncryptionConfig)
 Enables encryption.
 
 :::info[Since]
-v2.2.3.
+v2.2.2.
 :::
 
 This method needs to be called before [`connect`](#connect). You need to set the encryption mode and encryption configuration in this method.
@@ -763,14 +763,15 @@ Connection state change reason:
 Occurs when a data stream message error occurs. This callback indicates that the local user has not received the stream message sent by the remote user using the [`send_stream_message`](#send_stream_message) method.
 
 ```python
-def on_stream_message_error(self, user_id: str, stream_id: int, code: int, missed: int, cached: int)
+def on_stream_message_error(self, agora_rtc_conn, user_id_str, stream_id, code, missed, cached)
 ```
 
 #### Parameters
 
 | Parameter        | Description  |
 |-------------|----------|
-| `user_id`   | The user ID that sends the message.              |
+| `agora_rtc_conn`   | The RTC connection object. See [`RtcConnection`](#rtcconnection).              |
+| `user_id_str`   | The user ID that sends the message.              |
 | `stream_id` | The stream ID of the received message.         |
 | `code`      | The code of the error that has occurred.                |
 | `missed`    | The number of lost messages.                     |
@@ -801,7 +802,7 @@ def on_encryption_error(self, agora_rtc_conn, error_type)
 Occurs when encryption errors occur.
 
 :::info[Since]
-v2.2.3.
+v2.2.2.
 :::
 
 #### Parameters
@@ -1025,14 +1026,25 @@ def set_playback_audio_frame_before_mixing_parameters(self, channels, sample_rat
 Registers the audio frame observer. You must implement the [`IAudioFrameObserver`](#iaudioframeobserver) class and register the callback based on your needs.
 
 ```python
-def register_audio_frame_observer(self, observer:IAudioFrameObserver)
+def register_audio_frame_observer(self, observer: IAudioFrameObserver, enable_vad: int, vad_configure)
 ```
 
 #### Parameters
 
-| Parameter | Description |
-|---------------|----------------------------------------------------------------------|
-| `observer` | [`IAudioFrameObserver`](#iaudioframeobserver) class. |
+**`observer`**
+
+[`IAudioFrameObserver`](#iaudioframeobserver) class.
+
+**`enable_vad`**
+
+Whether to enable the built-in voice activity detection (VAD):
+
+- `0`: Disable VAD.
+- `1`: Enable VAD. The SDK returns the VAD results in the [`on_playback_audio_frame_before_mixing`](#on_playback_audio_frame_before_mixing) callback.
+
+**`vad_configure`**
+
+The VAD configuration, an `AudioVadConfigV2` object. The SDK uses this parameter only when `enable_vad` is `1`.
 
 #### Returns
 
@@ -1213,7 +1225,7 @@ def register_video_frame_observer(self, agora_video_frame_observer2:IVideoFrameO
 Destroys the [`IVideoFrameObserver`](#ivideoframeobserver) object.
 
 ```python
-def unregister_video_frame_observer(self, agora_video_frame_observer2)
+def unregister_video_frame_observer(self)
 ```
 
 #### Returns
@@ -1241,7 +1253,7 @@ Releases all resources of the `LocalUser` object.
 def release(self)
 ```
 
-### `send_audio_metadata`
+### `send_audio_meta_data`
 
 ```python
 def send_audio_meta_data(self, data)
@@ -1250,10 +1262,10 @@ def send_audio_meta_data(self, data)
 Sends the audio metadata.
 
 :::info[Since]
-v2.2.3.
+v2.2.0.
 :::
 
-A successful call of thie method triggers the [`on_audio_metadata_received`](#on_audio_meta_data_received) callback on the remote end. The remote user can get the audio metadata in this callback.
+A successful call of this method triggers the [`on_audio_metadata_received`](#on_audio_meta_data_received) callback on the remote end. The remote user can get the audio metadata in this callback.
 
 #### Parameters
 
@@ -1349,7 +1361,7 @@ def on_audio_meta_data_received(self, agora_local_user, user_id, data):
 
 Occurs when the remote audio metadata is received.
 
-This callback indicates that the local user has received the audio metadata sent by the remote user using the [`send_audio_metadata`](#send_audio_metadata) method.
+This callback indicates that the local user has received the audio metadata sent by the remote user using the [`send_audio_meta_data`](#send_audio_meta_data) method.
 
 #### Parameters
 
@@ -1592,10 +1604,10 @@ The `AudioEncodedFrameSender` Class.
 
 ### `send_encoded_audio_frame`
 
-Sets the path and size of the SDK log file.
+Sends an encoded audio frame to the audio track.
 
 ```python
-def send_encoded_audio_frame(self, buffer_ptr:int, buffer_size:int, frame:EncodedAudioFrame)
+def send_encoded_audio_frame(self, buffer_ptr: int, buffer_size: int, frame_info: EncodedAudioFrameInfo)
 ```
 
 #### Parameters
@@ -1604,7 +1616,7 @@ def send_encoded_audio_frame(self, buffer_ptr:int, buffer_size:int, frame:Encode
 |------------------|----------------------------------------------------------------------|
 | `buffer_ptr`   | The encoded audio data to send.                                               |
 | `buffer_size` | The size of the data (bytes).   |
-| `frame` | The audio frame information, see [`EncodedAudioFrame`](#encodedaudioframe).   |
+| `frame_info` | The audio frame information. See [`EncodedAudioFrameInfo`](#encodedaudioframeinfo).   |
 
 #### Returns
 
@@ -1620,17 +1632,40 @@ The `IAudioFrameObserver` class.
 Gets the data before the playback audio is mixed.
 
 ```python
-def on_playback_audio_frame_before_mixing(self, agora_local_user, channelId, uid, frame:AudioFrame)
+def on_playback_audio_frame_before_mixing(self, agora_local_user, channelId, uid, frame: AudioFrame, vad_result_state: int, vad_result_bytearray: bytearray)
 ```
 
 #### Parameters
 
-| Parameter | Description |
-|---------------|----------------------------------------------------------------------|
-| `agora_local_user`        | The `LocalUserObserver` class.    |
-| `channelId` | The channel name.             |
-| `uid` | The remote user ID.             |
-| `frame`| The audio raw data. See [`AudioFrame`](#audioframe)         |
+**`agora_local_user`**
+
+The `LocalUserObserver` class.
+
+**`channelId`**
+
+The channel name.
+
+**`uid`**
+
+The remote user ID.
+
+**`frame`**
+
+The audio raw data. See [`AudioFrame`](#audioframe).
+
+**`vad_result_state`**
+
+The VAD state. Valid only when you enable VAD in [`register_audio_frame_observer`](#register_audio_frame_observer):
+
+- &lt; `0`: VAD is not enabled.
+- `0`: Not speaking.
+- `1`: Started speaking.
+- `2`: Speaking.
+- `3`: Stopped speaking.
+
+**`vad_result_bytearray`**
+
+The audio data processed by VAD. When VAD is enabled, use this data instead of `frame` for downstream processing, such as speech recognition.
 
 #### Returns
 
@@ -1756,6 +1791,7 @@ class AgoraServiceConfig:
     audio_scenario: AudioScenarioType = AudioScenarioType.AUDIO_SCENARIO_CHORUS
     use_string_uid: int = 0
     domain_limit: int = 0
+    should_callbck_when_muted: int = 0
 ```
 
 **`log_path`**
@@ -1812,6 +1848,13 @@ Whether to enable domain limit:
 - `1`: Yes. Only connects to domains that are parsed by DNS.
 - `0`: (Default) No. There is no limit when connecting to domains.
 
+**`should_callbck_when_muted`**
+
+Whether the SDK still triggers the [`on_playback_audio_frame_before_mixing`](#on_playback_audio_frame_before_mixing) callback after a remote user mutes their audio:
+
+- `0`: (Default) No. The SDK stops triggering the callback when the remote user mutes their audio.
+- Greater than `0`: Yes. The SDK keeps triggering the callback when the remote user mutes their audio.
+
 #### `AudioEncoderConfiguration`
 
 Audio encoder configuration.
@@ -1841,6 +1884,11 @@ class AudioFrame:
     buffer: bytearray
     render_time_ms: int
     avsync_type: int
+    far_field_flag: int
+    rms: int
+    voice_prob: int
+    music_prob: int
+    pitch: int
 ```
 
 | Parameter | Description |
@@ -1853,6 +1901,11 @@ class AudioFrame:
 | `buffer` | Audio data buffer (if stereo, data is interleaved). The buffer size is calculated as `buffer = samples × channels × bytes_per_sample`. |
 | `render_time_ms` | Render timestamp of the external audio frame. You can use this timestamp to restore the order of audio frames; in scenarios with video (including those using external video sources), this parameter can be used to achieve audio-video synchronization. |
 | `avsync_type` | Reserved parameter. |
+| `far_field_flag` | The far-field flag of the audio frame. Only used in audio frame observer callbacks. |
+| `rms` | The root mean square (RMS) of the audio frame. Only used in audio frame observer callbacks. |
+| `voice_prob` | The probability that the audio frame contains voice. Only used in audio frame observer callbacks. |
+| `music_prob` | The probability that the audio frame contains music. Only used in audio frame observer callbacks. |
+| `pitch` | The pitch of the audio frame. Only used in audio frame observer callbacks. |
 
 #### `AudioSubscriptionOptions`
 
@@ -1876,7 +1929,7 @@ class AudioSubscriptionOptions:
 |`number_of_channels`|Number of audio channels.|
 |`sample_rate_hz`|Audio sampling rate (Hz).|
 
-#### `EncodedAudioFrame`
+#### `EncodedAudioFrameInfo`
 
 The encoded audio data.
 
@@ -1991,7 +2044,7 @@ class ExternalVideoFrame:
     egl_type: int = 0
     texture_id: int = 0
     matrix: list = field(default_factory=list)
-    metadata: str = ""
+    metadata: bytearray = None
     alpha_buffer: bytearray = None
     fill_alpha_buffer: int = 0
     alpha_mode: int = 0
@@ -2048,19 +2101,19 @@ This parameter is only applicable to Texture format video data. - When using the
 
 **`egl_type`**
 
-This parameter is only applicable to Texture format video data. Refers to the Texture ID of the video frame.
+This parameter is only applicable to Texture format video data. Refers to the EGL context type.
 
 **`texture_id`**
 
-This parameter is only applicable to Texture format video data. Refers to an input 4x4 transformation matrix, typically an identity matrix.
+This parameter is only applicable to Texture format video data. Refers to the Texture ID of the video frame.
 
 **`matrix`**
 
-This parameter is only applicable to Texture format video data. Refers to the data buffer of MetaData, with a default value of `None`.
+This parameter is only applicable to Texture format video data. Refers to an input 4x4 transformation matrix, typically an identity matrix.
 
 **`metadata`**
 
-This parameter is only applicable to Texture format video data. Refers to the size of MetaData, with a default value of `0`.
+The metadata buffer of the video frame. The default value is `None`.
 
 **`alpha_buffer`**
 
@@ -2094,11 +2147,11 @@ PCM audio data.
 ```python
 @dataclass(kw_only=True)
 class PcmAudioFrame:
-    data: bytearray
-    samples_per_channel: int
-    bytes_per_sample: int
-    number_of_channels: int
-    sample_rate: int
+    data: bytearray = None
+    samples_per_channel: int = 0
+    bytes_per_sample: int = 0
+    number_of_channels: int = 0
+    sample_rate: int = 0
     timestamp: int = 0
 ```
 
@@ -2124,7 +2177,7 @@ class RTCConnConfig:
     max_send_bitrate: int = 0
     min_port: int = 0
     max_port: int = 0
-    audio_subs_options: 'AudioSubscriptionOptions' = AudioSubscriptionOptions()
+    audio_subs_options: 'AudioSubscriptionOptions' = field(default_factory=AudioSubscriptionOptions)
     client_role_type: ClientRoleType = ClientRoleType.CLIENT_ROLE_BROADCASTER
     channel_profile: ChannelProfileType = ChannelProfileType.CHANNEL_PROFILE_LIVE_BROADCASTING
     audio_recv_media_packet: int = 0
@@ -2157,6 +2210,7 @@ class RTCConnInfo():
     channel_id: str
     state: int
     local_user_id: str
+    internal_uid: int
 ```
 
 |Parameter|Description|
@@ -2165,6 +2219,7 @@ class RTCConnInfo():
 |`channel_id`|RTC channel ID. If you have not called the [`connect`](#connect) method, this parameter returns `None`.|
 |`state`|Connection state: - `1`: Network connection disconnected. - `2`: Establishing network connection. - `3`: Network connected. - `4`: Re-establishing network connection. - `5`: Network connection failed.|
 |`local_user_id`|Local user ID.|
+|`internal_uid`|For internal use only.|
 
 #### `SenderOptions`
 
@@ -2215,6 +2270,7 @@ class VideoEncoderConfiguration:
     orientation_mode: int = 0
     degradation_preference: int = 0
     mirror_mode: int = 0
+    encode_alpha: int = 0
 ```
 
 |Parameter|Description|
@@ -2227,6 +2283,7 @@ class VideoEncoderConfiguration:
 |`orientation_mode`|Orientation mode of the video encoding: - `0`: (Default) In this mode, the SDK outputs the video orientation consistent with the captured video. The receiver will rotate the video based on the received video rotation information. This mode is suitable for scenarios where the receiver can adjust the video orientation. If the captured video is in landscape mode, the output video will also be in landscape mode. If the captured video is in portrait mode, the output video will also be in portrait mode. - `1`: In this mode, the SDK outputs the video in landscape mode. If the captured video is in portrait mode, the video encoder will crop it. This mode is suitable for scenarios where the receiver cannot adjust the video orientation, such as direct push to CDN. - `2`: In this mode, the SDK outputs the video in portrait mode. If the captured video is in landscape mode, the video encoder will crop it. This mode is suitable for scenarios where the receiver cannot adjust the video orientation, such as direct push to CDN.|
 |`degradation_preference`|Video encoding degradation preference when bandwidth is limited: - `0`: (Default) When bandwidth is limited, the video encoding prioritizes reducing the frame rate while maintaining video quality. This degradation preference is suitable for scenarios where image quality is prioritized. - `1`: When bandwidth is limited, the video encoding prioritizes reducing video quality while maintaining the frame rate. This degradation preference is suitable for scenarios where smoothness is prioritized and quality reduction is acceptable. - `2`: When bandwidth is limited, the video encoding reduces both frame rate and video quality. The reduction in `2` is less than in `0` and `1`, suitable for scenarios with limited smoothness and quality. - `3`: When bandwidth is limited, the video encoding prioritizes reducing the frame rate.|
 |`mirror_mode`| Whether to enable mirror mode when sending encoded video, only affecting the video seen by the remote user. - `0`: (Default) The mirror mode is determined by the SDK. - `1`: Enable mirror mode. - `2`: Disable mirror mode.|
+|`encode_alpha`|Whether to encode and send the alpha data to the remote user when the video frame contains alpha data. - `0`: (Default) Do not encode or send the alpha data. - `1`: Encode and send the alpha data.|
 
 #### `VideoFrame`
 
@@ -2247,6 +2304,12 @@ class VideoFrame():
     rotation: int = 0
     render_time_ms: int = 0
     avsync_type: int = 0
+    metadata: bytearray = None
+    shared_context: str = None
+    texture_id: int = 0
+    matrix: list = None
+    alpha_buffer: bytearray = None
+    alpha_mode: int = 0
 ```
 
 |Parameter|Description|
@@ -2263,6 +2326,12 @@ class VideoFrame():
 |`rotation`|Clockwise rotation angle of the frame before rendering the video. Currently supports 0 degrees, 90 degrees, 180 degrees, and 270 degrees.|
 |`render_time_ms`|Timestamp of the external audio frame. This parameter is mandatory. You can use this timestamp to restore the order of audio frames; in scenarios with video (including those using external video sources), this parameter can help achieve audio-video synchronization.|
 |`avsync_type`|Reserved parameter.|
+|`metadata`|The metadata buffer of the video frame.|
+|`shared_context`|The EGL context. Only applicable to Texture format video data.|
+|`texture_id`|The Texture ID of the video frame. Only applicable to Texture format video data.|
+|`matrix`|The input 4x4 transformation matrix. Only applicable to Texture format video data.|
+|`alpha_buffer`|The alpha channel data of the video frame. The data matches the size of the video frame.|
+|`alpha_mode`|The relative position between `alpha_buffer` and the frame. - `0`: (Default) Normal frame. - `1`: `alpha_buffer` is above the frame. - `2`: `alpha_buffer` is below the frame. - `3`: `alpha_buffer` is on the left of the frame. - `4`: `alpha_buffer` is on the right of the frame.|
 
 #### `VideoSubscriptionOptions`
 
