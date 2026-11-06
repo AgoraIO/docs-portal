@@ -73,6 +73,22 @@ Add `https://mcp.agora.io` to your MCP client and use `http` or `Streamable HTTP
 </TabsContent>
 </Tabs>
 
+## Check the available tools
+
+The server supports searches across Agora product guides and SDK API references.
+Some tools also expose filter discovery.
+
+Your MCP client retrieves the tool catalog through `tools/list`.
+Use the returned names, descriptions, and input schemas when selecting tools and preparing arguments.
+Supply every required field using the declared types. Tool availability and parameter types can change with the server.
+
+Include the product, platform, and task in each search.
+Open returned documentation URLs when search excerpts do not contain the full answer.
+For a guide on `docs.agora.io`, append `.md` to read its Markdown content.
+
+If a tool is unavailable, refresh the tool list before selecting another tool.
+If MCP is unavailable or returns no useful content, use the fallback resources below.
+
 ## Start with a prompt
 
 Install the server in your coding tool, then ask your assistant to search Agora docs before it writes code. Include the Agora product, the target platform, and the task type in the same prompt.

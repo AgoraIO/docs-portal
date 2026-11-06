@@ -1,0 +1,147 @@
+---
+title: Gemini
+description: >
+ Use Gemini for speech recognition (ASR) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/gemini.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+
+Google Gemini provides real-time streaming transcription. Use it as the ASR model in a cascading pipeline with any supported LLM and TTS vendor.
+
+## Sample configuration
+
+The following example shows how to configure Gemini as the agent's ASR when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+
+Gemini supports BYOK only. It isn't available in managed mode. Store your Gemini API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, GeminiSTT, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(
+        GeminiSTT(
+            api_key=secret_ref("support_prod", "gemini"),
+            model="gemini-3.5-transcribe-live",
+            language="en-US",
+            sample_rate=16000,
+            word_timestamp=True,
+        )
+    )
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, GeminiSTT, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(
+    new GeminiSTT({
+      apiKey: secretRef('support_prod', 'gemini'),
+      model: 'gemini-3.5-transcribe-live',
+      language: 'en-US',
+      sampleRate: 16000,
+      wordTimestamp: true,
+    }),
+  )
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+wordTimestamp := true
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).
+	WithStt(vendors.NewGeminiSTT(vendors.GeminiSTTOptions{
+		APIKey:        agentkit.SecretRef("support_prod", "gemini"),
+		Model:         "gemini-3.5-transcribe-live",
+		Language:      "en-US",
+		SampleRate:    16000,
+		WordTimestamp: &wordTimestamp,
+	})).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts( /* configure your TTS vendor */ )
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Gemini API key in a secret set. In the following example, the key is stored as `gemini` in the `support_prod` set:
+
+```json
+"asr": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.gemini"
+    }
+  },
+  "vendor": "gemini",
+  "model": "gemini-3.5-transcribe-live",
+  "language": "en-US",
+  "params": {
+    "sample_rate": 16000,
+    "word_timestamp": true
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): SDK tabs tested in pre-release testing on 2026-10-28. All three SDKs saved the BYOK example with the model, sample rate, and word timestamps. TypeScript and Python also set the block-level `language` to `en-US` (their default interaction language) instead of the vendor's language, while Go leaves it unset (SDK bug list #31). */}
+
+## Key parameters
+
+The `asr` block takes the following fields. In the SDKs, `GeminiSTT` sets them from its options, and passes any other Gemini parameters from its additional parameters option to `params`.
+
+<ParameterList title="asr" required={true}>
+ <Parameter name="vendor" type="string" required={true}>
+ Set to `gemini`.
+ </Parameter>
+ <Parameter name="credential" type="object" required={true}>
+ How the agent authenticates with Gemini. Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Google Gemini API key. You can generate an API key in [Google AI Studio](https://aistudio.google.com/apikey).
+ </Parameter>
+ <Parameter name="model" type="string" required={true}>
+ The Gemini transcription model identifier. Set to `gemini-3.5-transcribe-live` to use Gemini 3.5 Transcribe Live.
+ </Parameter>
+ <Parameter name="language" type="string" required={true}>
+  The BCP-47 language tag identifying the primary language used for agent interaction, for example, `en-US`.
+ </Parameter>
+ <Parameter name="params" type="object" required={false}>
+  <Parameter name="sample_rate" type="integer" required={false}>
+   The audio sample rate in Hz. For example, `16000`.
+  </Parameter>
+  <Parameter name="word_timestamp" type="boolean" required={false}>
+   Whether to include word-level timestamps in the transcription results.
+  </Parameter>
+ </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Gemini without validation. For a full list of supported options, refer to the [Google Gemini API documentation](https://ai.google.dev/api/live).
+:::

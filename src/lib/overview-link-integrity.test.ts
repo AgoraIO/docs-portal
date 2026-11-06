@@ -183,12 +183,7 @@ describe('overview entry links', () => {
     expect(
       extractSolutionCardTitlesByHeading('en/realtime-media/overview.mdx'),
     ).toMatchObject({
-      'Build live interaction': [
-        'Interactive Live Streaming',
-        'Broadcast Streaming',
-        'Video Calling',
-        'Voice Calling',
-      ],
+      'Build live interaction': ['Realtime Communication'],
       'Extend live interaction': [
         'Signaling',
         'Chat',

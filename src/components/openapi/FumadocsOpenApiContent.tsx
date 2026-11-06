@@ -1773,8 +1773,7 @@ function OpenApiMarkdownCodeBlock({
           children
         ) : (
           <HighlightedCode
-            key={`${language}:${source}`}
-            source={source}
+              source={source}
             language={language}
           />
         )}

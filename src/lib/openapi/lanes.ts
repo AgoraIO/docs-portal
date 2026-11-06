@@ -531,6 +531,250 @@ export const OPENAPI_LANES = [
       },
     },
   },
+  {
+    id: 'convoai-platform',
+    locales: ['en'],
+    parentUrl: {
+      en: '/en/api-reference/api-ref/conversational-ai/platform',
+      'zh-CN': '/zh-CN/api-reference/api-ref/conversational-ai/platform',
+    },
+    publicSourceUrl: {
+      en: '/openapi/conversational-ai/rest-api-platform.en.yaml',
+      'zh-CN': '/openapi/conversational-ai/rest-api-platform.en.yaml',
+    },
+    routePrefix: 'api-reference/api-ref/conversational-ai/platform',
+    sourcePath: {
+      en: 'content/openapi/conversational-ai/rest-api-platform.en.yaml',
+      'zh-CN': 'content/openapi/conversational-ai/rest-api-platform.en.yaml',
+    },
+    tab: 'api-reference',
+    operations: {
+      'create-agent': {
+        routeLeaf: 'create-agent',
+        title: {
+          en: 'Create an agent',
+          'zh-CN': 'Create an agent',
+        },
+      },
+      'list-agents': {
+        routeLeaf: 'list-agents',
+        title: {
+          en: 'List agents',
+          'zh-CN': 'List agents',
+        },
+      },
+      'retrieve-agent': {
+        routeLeaf: 'retrieve-agent',
+        title: {
+          en: 'Retrieve an agent',
+          'zh-CN': 'Retrieve an agent',
+        },
+      },
+      'update-agent': {
+        routeLeaf: 'update-agent',
+        title: {
+          en: 'Update an agent',
+          'zh-CN': 'Update an agent',
+        },
+      },
+      'delete-agent': {
+        routeLeaf: 'delete-agent',
+        title: {
+          en: 'Delete an agent',
+          'zh-CN': 'Delete an agent',
+        },
+      },
+      'start-session': {
+        routeLeaf: 'start-session',
+        title: {
+          en: 'Start a session',
+          'zh-CN': 'Start a session',
+        },
+      },
+      'list-sessions': {
+        routeLeaf: 'list-sessions',
+        title: {
+          en: 'List sessions',
+          'zh-CN': 'List sessions',
+        },
+      },
+      'start-ephemeral-session': {
+        routeLeaf: 'start-ephemeral-session',
+        title: {
+          en: 'Start an ephemeral session',
+          'zh-CN': 'Start an ephemeral session',
+        },
+      },
+      'retrieve-session': {
+        routeLeaf: 'retrieve-session',
+        title: {
+          en: 'Retrieve a session',
+          'zh-CN': 'Retrieve a session',
+        },
+      },
+      'update-session': {
+        routeLeaf: 'update-session',
+        title: {
+          en: 'Update a session',
+          'zh-CN': 'Update a session',
+        },
+      },
+      'stop-session': {
+        routeLeaf: 'stop-session',
+        title: {
+          en: 'Stop a session',
+          'zh-CN': 'Stop a session',
+        },
+      },
+      'create-secret-set': {
+        routeLeaf: 'create-secret-set',
+        title: {
+          en: 'Create a secret set',
+          'zh-CN': 'Create a secret set',
+        },
+      },
+      'list-secret-sets': {
+        routeLeaf: 'list-secret-sets',
+        title: {
+          en: 'List secret sets',
+          'zh-CN': 'List secret sets',
+        },
+      },
+      'retrieve-secret-set': {
+        routeLeaf: 'retrieve-secret-set',
+        title: {
+          en: 'Retrieve a secret set',
+          'zh-CN': 'Retrieve a secret set',
+        },
+      },
+      'update-secret-set': {
+        routeLeaf: 'update-secret-set',
+        title: {
+          en: 'Update a secret set',
+          'zh-CN': 'Update a secret set',
+        },
+      },
+      'replace-secret-set': {
+        routeLeaf: 'replace-secret-set',
+        title: {
+          en: 'Replace a secret set',
+          'zh-CN': 'Replace a secret set',
+        },
+      },
+      'delete-secret-set': {
+        routeLeaf: 'delete-secret-set',
+        title: {
+          en: 'Delete a secret set',
+          'zh-CN': 'Delete a secret set',
+        },
+      },
+      'set-secret-key': {
+        routeLeaf: 'set-secret-key',
+        title: {
+          en: 'Set a secret key',
+          'zh-CN': 'Set a secret key',
+        },
+      },
+      'delete-secret-key': {
+        routeLeaf: 'delete-secret-key',
+        title: {
+          en: 'Delete a secret key',
+          'zh-CN': 'Delete a secret key',
+        },
+      },
+      'create-number': {
+        routeLeaf: 'create-number',
+        title: {
+          en: 'Create a phone number',
+          'zh-CN': 'Create a phone number',
+        },
+      },
+      'list-numbers': {
+        routeLeaf: 'list-numbers',
+        title: {
+          en: 'List phone numbers',
+          'zh-CN': 'List phone numbers',
+        },
+      },
+      'retrieve-number': {
+        routeLeaf: 'retrieve-number',
+        title: {
+          en: 'Retrieve a phone number',
+          'zh-CN': 'Retrieve a phone number',
+        },
+      },
+      'update-number': {
+        routeLeaf: 'update-number',
+        title: {
+          en: 'Update a phone number',
+          'zh-CN': 'Update a phone number',
+        },
+      },
+      'delete-number': {
+        routeLeaf: 'delete-number',
+        title: {
+          en: 'Delete a phone number',
+          'zh-CN': 'Delete a phone number',
+        },
+      },
+      'create-campaign': {
+        routeLeaf: 'create-campaign',
+        title: {
+          en: 'Create a campaign',
+          'zh-CN': 'Create a campaign',
+        },
+      },
+      'list-campaigns': {
+        routeLeaf: 'list-campaigns',
+        title: {
+          en: 'List campaigns',
+          'zh-CN': 'List campaigns',
+        },
+      },
+      'retrieve-campaign': {
+        routeLeaf: 'retrieve-campaign',
+        title: {
+          en: 'Retrieve a campaign',
+          'zh-CN': 'Retrieve a campaign',
+        },
+      },
+      'update-campaign': {
+        routeLeaf: 'update-campaign',
+        title: {
+          en: 'Update a campaign',
+          'zh-CN': 'Update a campaign',
+        },
+      },
+      'delete-campaign': {
+        routeLeaf: 'delete-campaign',
+        title: {
+          en: 'Delete a campaign',
+          'zh-CN': 'Delete a campaign',
+        },
+      },
+      'pause-campaign': {
+        routeLeaf: 'pause-campaign',
+        title: {
+          en: 'Pause a campaign',
+          'zh-CN': 'Pause a campaign',
+        },
+      },
+      'resume-campaign': {
+        routeLeaf: 'resume-campaign',
+        title: {
+          en: 'Resume a campaign',
+          'zh-CN': 'Resume a campaign',
+        },
+      },
+      'cancel-campaign': {
+        routeLeaf: 'cancel-campaign',
+        title: {
+          en: 'Cancel a campaign',
+          'zh-CN': 'Cancel a campaign',
+        },
+      },
+    },
+  },
 ] as const satisfies OpenApiLane[];
 
 export type OpenApiLaneId = (typeof OPENAPI_LANES)[number]['id'];
@@ -577,7 +821,9 @@ export function resolveOpenApiEndpointRoute(
   tab: string,
   slugSegments: string[],
 ) {
-  for (const lane of getOpenApiLanes()) {
+  for (const lane of [...getOpenApiLanes()].sort(
+    (a, b) => b.routePrefix.length - a.routePrefix.length,
+  )) {
     if (lane.tab !== tab || !getOpenApiLaneLocales(lane).includes(locale)) {
       continue;
     }
@@ -619,7 +865,9 @@ export function resolveOpenApiLaneRoute(
   tab: string,
   slugSegments: string[],
 ) {
-  for (const lane of getOpenApiLanes()) {
+  for (const lane of [...getOpenApiLanes()].sort(
+    (a, b) => b.routePrefix.length - a.routePrefix.length,
+  )) {
     if (lane.tab !== tab || !getOpenApiLaneLocales(lane).includes(locale)) {
       continue;
     }

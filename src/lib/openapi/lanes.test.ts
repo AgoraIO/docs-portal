@@ -72,6 +72,11 @@ describe('openapi lanes', () => {
         routePrefix: 'api-reference/api-ref/speech-to-text',
         tab: 'api-reference',
       }),
+      expect.objectContaining({
+        id: 'convoai-platform',
+        routePrefix: 'api-reference/api-ref/conversational-ai/platform',
+        tab: 'api-reference',
+      }),
     ]);
   });
 
@@ -102,6 +107,33 @@ describe('openapi lanes', () => {
       routeLeaf: 'join',
       url: '/en/api-reference/api-ref/conversational-ai/join',
     });
+  });
+
+  it('resolves a nested Platform lane ahead of its parent lane', () => {
+    const platformSlug = [
+      'api-ref',
+      'conversational-ai',
+      'platform',
+      'start-session',
+    ];
+
+    expect(
+      resolveOpenApiEndpointRoute('en', 'api-reference', platformSlug),
+    ).toMatchObject({
+      lane: expect.objectContaining({ id: 'convoai-platform' }),
+      operationId: 'start-session',
+      url: '/en/api-reference/api-ref/conversational-ai/platform/start-session',
+    });
+    expect(
+      resolveOpenApiLaneRoute('en', 'api-reference', platformSlug)?.id,
+    ).toBe('convoai-platform');
+    expect(
+      resolveOpenApiLaneRoute('en', 'api-reference', [
+        'api-ref',
+        'conversational-ai',
+        'join',
+      ])?.id,
+    ).toBe('convoai');
   });
 
   it('derives operation order and static paths from lane operations', () => {
@@ -140,7 +172,13 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/api-ref/speech-to-text/join',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(87);
+    expect(getOpenApiPrerenderPaths()).not.toContain(
+      '/en/api-reference/versioning-demo/v1/widgets',
+    );
+    expect(getOpenApiPrerenderPaths()).not.toContain(
+      '/en/api-reference/versioning-demo/v2/list-widgets',
+    );
+    expect(getOpenApiPrerenderPaths()).toHaveLength(119);
   });
 
   it('resolves RTC REST endpoint routes in the api-reference tab', () => {

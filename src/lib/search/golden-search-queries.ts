@@ -119,7 +119,7 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     query: 'signaling quickstart',
     expectedIntent: 'task',
     expectedKind: 'guide',
-    expectedTitle: 'Signaling Quickstart',
+    expectedTitle: 'Quickstart',
     expectedUrl: '/en/realtime-media/rtm/quickstart',
   },
   {

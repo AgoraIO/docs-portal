@@ -3,6 +3,7 @@ import {
   isMachineReadableLocale,
   MACHINE_READABLE_LOCALE,
 } from '@/lib/machine-readable-docs';
+import { withDocVersionMetadata } from '../doc-versions';
 import {
   getOpenApiEndpointUrl,
   getOpenApiLaneLocales,
@@ -159,7 +160,7 @@ export function serializeOpenApiOperationMarkdown({
   }
   appendOperationDocsFragments(lines, operation, 'after-response-example');
 
-  return `${lines.join('\n').trim()}\n`;
+  return withDocVersionMetadata(`${lines.join('\n').trim()}\n`, url);
 }
 
 export async function getOpenApiMarkdownPages() {

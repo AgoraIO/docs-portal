@@ -1969,3 +1969,34 @@
   )::before {
   content: none;
 }
+
+.doc-version-callout {
+  margin: 0;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  border-color: color-mix(in srgb, var(--docs-info) 19%, var(--line));
+  background: color-mix(in srgb, var(--docs-info) 6%, var(--bg-card));
+  box-shadow: none;
+}
+
+.doc-version-callout > div[role="none"] {
+  display: none;
+}
+
+.doc-version-callout > div:last-child {
+  gap: 4px;
+}
+
+.doc-version-callout > div:last-child > p {
+  color: var(--ink-1);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+}
+
+.doc-version-callout > div:last-child > div {
+  color: var(--ink-3);
+  font-size: 13px;
+  line-height: 20px;
+}

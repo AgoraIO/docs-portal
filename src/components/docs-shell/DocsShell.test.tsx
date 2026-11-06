@@ -177,7 +177,7 @@ function renderDocsShell(
   );
   const docsRoute = createRoute({
     getParentRoute: () => rootRoute,
-    path: '/$locale/$tab/$slug',
+    path: '/$locale/$tab/$',
     component: shellComponent,
   });
   const docsIndexRoute = createRoute({
@@ -479,6 +479,54 @@ describe('DocsShell', () => {
     ).toBeInTheDocument();
   });
 
+  it('keeps documentation preview controls out of the global navigation', async () => {
+    renderDocsShell({
+      activePath: '/en/api-reference/api-ref/conversational-ai/authentication',
+      activeTab: 'api-reference',
+    });
+    const strip = await screen.findByTestId('docs-tabs-strip');
+    expect(
+      within(strip).queryByRole('button', { name: /^Documentation:/ }),
+    ).not.toBeInTheDocument();
+    expect(
+      within(screen.getByTestId('docs-sidebar')).getByRole('button', {
+        name: 'Documentation: Main',
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it('switches ordinary documentation from the collapsed mobile sidebar and closes it after selection', async () => {
+    const currentPath = '/en/ai/platform/get-started/start-stop-agent';
+    const { router } = renderDocsShell(
+      { activePath: currentPath, activeTab: 'ai' },
+      currentPath,
+    );
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Open navigation' }),
+    );
+    const dialog = await screen.findByRole('dialog');
+    const selector = within(dialog).getByRole('button', {
+      name: 'Documentation: Preview',
+    });
+    expect(
+      within(dialog).getByText('Documentation version'),
+    ).toBeInTheDocument();
+    fireEvent.keyDown(selector, { key: 'ArrowDown' });
+    const previous = await screen.findByRole('menuitem', {
+      name: 'Main',
+    });
+    expect(previous).toHaveAttribute('href', '/en/ai/build/start-stop-agent');
+    fireEvent.click(previous);
+    await waitFor(() =>
+      expect(router.state.location.pathname).toBe(
+        '/en/ai/build/start-stop-agent',
+      ),
+    );
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+    );
+  });
+
   it('renders a separate desktop header row and docs tabs strip', async () => {
     renderDocsShell();
 
@@ -564,7 +612,7 @@ describe('DocsShell', () => {
       'dark:hover:bg-[color:var(--docs-soft-fill)]',
     );
     expect(tabsIntroductionLink).toHaveAttribute('href', '/en/introduction');
-    expect(tabsAiLink).toHaveAttribute('href', '/en/ai');
+    expect(tabsAiLink).toHaveAttribute('href', '/en/ai/documentation-versions');
     expect(tabsIntroductionLink.className).toContain('after:!bottom-[-3px]');
     expect(tabsIntroductionLink.className).toContain('after:h-0.5');
 

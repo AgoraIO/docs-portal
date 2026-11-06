@@ -417,9 +417,9 @@ const PRODUCT_SPECIFIC_TARGETS = {
   'open-ai-integration': {
     'get-started/manage-agora-account':
       '/en/ai/reference/openai-realtime-integration',
-    'get-started/mcp': '/en/ai/get-started/mcp-integrate',
+    'get-started/mcp': '/en/introduction/agora-mcp',
     'get-started/quickstart': '/en/ai/reference/openai-realtime-integration',
-    'get-started/skills': '/en/ai/get-started/skills-integrate',
+    'get-started/skills': '/en/introduction/agora-skills',
     'overview/core-concepts': '/en/ai/reference/openai-realtime-integration',
     'overview/product-overview': '/en/ai/reference/openai-realtime-integration',
     'reference/error-codes': '/en/ai/reference/openai-realtime-integration',
@@ -935,6 +935,27 @@ function leafTarget(info, candidates) {
 }
 
 function curatedTarget(info, routeSet) {
+  const sharedGuide = {
+    mcp: 'agora-mcp',
+    'mcp-integrate': 'agora-mcp',
+    skills: 'agora-skills',
+    'skills-integrate': 'agora-skills',
+  }[info.leaf];
+  if (
+    sharedGuide &&
+    PRODUCT_MAPPINGS[info.product] &&
+    routeSet.has(`/en/introduction/${sharedGuide}`)
+  ) {
+    return {
+      target: `/en/introduction/${sharedGuide}`,
+      type: 'semantic-page-match',
+      confidence: 'high',
+      evidence: [
+        `English product ${sharedGuide === 'agora-mcp' ? 'MCP' : 'Skills'} guides are consolidated into Introduction / ${sharedGuide === 'agora-mcp' ? 'Agora MCP' : 'Agora Skills'}`,
+      ],
+    };
+  }
+
   const platformTarget = platformTargetFor(info);
   const productTarget =
     PRODUCT_SPECIFIC_TARGETS[info.product]?.[info.rest.join('/')];

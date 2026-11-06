@@ -1,0 +1,144 @@
+---
+title: Rime
+description: >
+ Use Rime for text-to-speech (TTS) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/rime.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+
+Rime provides high-quality text-to-speech (TTS) with low latency, supporting multiple speakers and models.
+
+## Sample configuration
+
+The following example shows how to configure Rime as the agent's TTS when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+
+Rime supports BYOK only. It isn't available in managed mode. Store your Rime API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, RimeTTS, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your ASR vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(
+        RimeTTS(
+            key=secret_ref("support_prod", "rime"),
+            base_url="wss://users.rime.ai/ws2",
+            speaker="cove",
+            model_id="mistv2",
+        )
+    )
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, RimeTTS, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(
+    new RimeTTS({
+      key: secretRef('support_prod', 'rime'),
+      baseUrl: 'wss://users.rime.ai/ws2',
+      speaker: 'cove',
+      modelId: 'mistv2',
+    }),
+  );
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).
+	WithStt( /* configure your ASR vendor */ ).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts(vendors.NewRimeTTS(vendors.RimeTTSOptions{
+		Key:     agentkit.SecretRef("support_prod", "rime"),
+		BaseURL: "wss://users.rime.ai/ws2",
+		Speaker: "cove",
+		ModelID: "mistv2",
+	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Rime API key in a secret set. In the following example, the key is stored as `rime` in the `support_prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.rime"
+    }
+  },
+  "vendor": "rime",
+  "url": "wss://users.rime.ai/ws2",
+  "params": {
+    "speaker": "cove",
+    "modelId": "mistv2"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): In pre-release testing (2026-10-28), the Python, TypeScript, and Go BYOK examples saved as written. The SDKs move the endpoint to the block `url`, and the API accepted it there. */}
+
+{/* TODO(platform-confirm): The Voice Agent API takes Rime's endpoint in `params.base_url`. This page moves it to the block `url`, following the contract's mapping table. Confirm that the Platform accepts it there. */}
+
+## Key parameters
+
+The `tts` block takes the following fields. In the SDKs, the Rime TTS class sets them from its options.
+
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `rime`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Rime API key.
+  </Parameter>
+  <Parameter name="url" type="string" required={false}>
+    The WebSocket URL for the Rime streaming API, for example `wss://users.rime.ai/ws2`.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="speaker" type="string" required={true}>
+      The speaker voice to use for TTS output, for example `cove`.
+    </Parameter>
+    <Parameter name="modelId" type="string" required={true}>
+      The Rime TTS model to use, for example `mistv2`. Different models provide different voice qualities and capabilities.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Rime without validation. For a full list of supported options, refer to the Rime documentation for [Arcana](https://docs.rime.ai/api-reference/arcana/streaming-pcm) and [Mist v2](https://docs.rime.ai/api-reference/endpoint/streaming-pcm).
+:::
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

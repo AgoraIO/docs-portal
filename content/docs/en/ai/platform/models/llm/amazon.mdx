@@ -1,0 +1,159 @@
+---
+title: Amazon Bedrock
+description: >
+  Use Amazon Bedrock as the LLM in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/amazon.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+
+Amazon Bedrock provides access to a variety of foundation models (FMs) from leading AI providers through a fully managed AWS service.
+
+## Sample configuration
+
+The following example shows how to configure Amazon Bedrock as the agent's LLM when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+
+Amazon Bedrock supports BYOK only. It isn't available in managed mode. Store your Bedrock credentials in a secret set, and refer to them from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+The SDK authenticates with an AWS access key ID and secret access key instead of a Bedrock API key. Store both in a secret set, and pass a reference to each:
+
+```python
+from agora_agent import Agent, AmazonBedrock, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your ASR vendor
+    .with_llm(
+        AmazonBedrock(
+            access_key=secret_ref("support_prod", "aws_access_key_id"),
+            secret_key=secret_ref("support_prod", "aws_secret_access_key"),
+            region="us-east-1",
+            model="us.anthropic.claude-sonnet-4-20250514-v1:0",
+            system_messages=[
+                {"role": "system", "content": "You are a friendly support agent for Acme. Keep your answers short."}
+            ],
+        )
+    )
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+The SDK authenticates with an AWS access key ID and secret access key instead of a Bedrock API key. Store both in a secret set, and pass a reference to each:
+
+```ts
+import { Agent, AmazonBedrock, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(
+    new AmazonBedrock({
+      accessKey: secretRef('support_prod', 'aws_access_key_id'),
+      secretKey: secretRef('support_prod', 'aws_secret_access_key'),
+      region: 'us-east-1',
+      model: 'us.anthropic.claude-sonnet-4-20250514-v1:0',
+      systemMessages: [
+        { role: 'system', content: 'You are a friendly support agent for Acme. Keep your answers short.' },
+      ],
+    }),
+  )
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+The SDK authenticates with an AWS access key ID and secret access key instead of a Bedrock API key. Store both in a secret set, and pass a reference to each:
+
+```go
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).
+	WithStt( /* configure your ASR vendor */ ).
+	WithLlm(vendors.NewAmazonBedrock(vendors.AmazonBedrockOptions{
+		AccessKey: agentkit.SecretRef("support_prod", "aws_access_key_id"),
+		SecretKey: agentkit.SecretRef("support_prod", "aws_secret_access_key"),
+		Region:    "us-east-1",
+		Model:     "us.anthropic.claude-sonnet-4-20250514-v1:0",
+		SystemMessages: []map[string]interface{}{
+			{"role": "system", "content": "You are a friendly support agent for Acme. Keep your answers short."},
+		},
+	})).
+	WithTts( /* configure your TTS vendor */ )
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Bedrock API key. To use an AWS access key pair instead, set `credential.fields.access_key` and `credential.fields.secret_key`. Your AWS region isn't secret. Pass it in `params`. In the following example, the key is stored as `bedrock` in the `support_prod` set:
+
+```json
+"llm": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.bedrock"
+    }
+  },
+  "vendor": "amazon",
+  "style": "bedrock",
+  "model": "us.anthropic.claude-sonnet-4-20250514-v1:0",
+  "url": "https://bedrock-runtime.us-east-1.amazonaws.com/model/us.anthropic.claude-sonnet-4-20250514-v1:0/converse-stream",
+  "params": {
+    "region": "us-east-1"
+  }
+}
+```
+
+Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): In pre-release testing (2026-10-28), `vendor: "bedrock"` was rejected ("Provider vendor is not supported"), and `vendor: "amazon"` was accepted with either a Bedrock API key in `fields.api_key` or the SDKs' `access_key` and `secret_key` pair. Confirm the shipped vendor value and credential, and whether `url` is required. The Voice Agent API also accepts an AWS access key ID and secret access key pair (`access_key` and `secret_key`) instead of a Bedrock API key. Confirm how the Platform accepts that pair (for example, two `$secrets` references) before documenting it. Also confirm that `region` belongs in `params`. */}
+
+{/* TODO(platform-confirm): SDK tabs tested in pre-release testing (2026-10-28). The SDK examples saved as written in all three SDKs, but they differ from the REST example: the SDKs authenticate with an AWS access key ID and secret access key (`credential.fields.access_key` and `secret_key`) and set `vendor` to `amazon`, while the REST example uses a Bedrock API key and `vendor: "bedrock"`. Setting `vendor` to `bedrock` with the key pair fails locally in Python (`UnsupportedFieldError`). Confirm with engineering which credential and vendor value the Platform supports for Bedrock, then align the REST example and the SDKs (SDK bug list #27). */}
+
+## Key parameters
+
+The `llm` block takes the following fields. In the SDKs, the LLM class sets them from its options.
+
+<ParameterList title="llm">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `amazon`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Bedrock API key, or set `fields.access_key` and `fields.secret_key` to references to an AWS access key pair.
+  </Parameter>
+  <Parameter name="style" type="string" required={true}>
+    The API style to use. Set to `bedrock` for Amazon Bedrock models.
+  </Parameter>
+  <Parameter name="model" type="string" required={true}>
+    The Bedrock model ID, for example `us.anthropic.claude-sonnet-4-20250514-v1:0`.
+  </Parameter>
+  <Parameter name="url" type="string" required={true}>
+    The Amazon Bedrock runtime endpoint for the target region and model. See [Amazon Bedrock endpoints and quotas](https://docs.aws.amazon.com/general/latest/gr/bedrock.html#bedrock_region) for the correct endpoint format.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="region" type="string" required={true}>
+      The AWS region hosting the Bedrock model, for example, `us-east-1` or `us-west-2`. See [Supported Regions and models](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html) for available regions.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+For complete `llm` block options, see [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). For advanced configuration options, model capabilities, and detailed parameter descriptions, see the [Amazon Bedrock documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html).

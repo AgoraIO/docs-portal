@@ -56,6 +56,7 @@ import {
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBody } from './DocsContentBody';
 import { DocsSearchLandingEngagement } from './DocsSearchLandingEngagement';
+import { DocVersionNotice } from './DocVersionControls';
 import { DocsCopyMenu } from './docs-copy-menu';
 import { getDocsSourceLinks } from './docs-source-links';
 
@@ -338,6 +339,7 @@ export function DocsContent({
           />
         ) : null}
       </header>
+      {activePath ? <DocVersionNotice activePath={activePath} /> : null}
       {isOpenApiBody ? (
         <div data-static-docs-body onClickCapture={handleArticleBodyLinkClick}>
           <FumadocsOpenApiContent

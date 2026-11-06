@@ -75,7 +75,7 @@ import {
   ParameterList,
   ParameterType,
 } from './mdx/ApiReference';
-import { Pre } from './mdx/CodeBlock';
+import { DocsCodeBlock as Pre } from './DocsCodeBlock';
 import { DocsHeading } from './mdx/DocsHeading';
 import { DocsTable } from './mdx/DocsTable';
 import { PlanCards, PricingCards } from './mdx/PlanCards';
@@ -85,6 +85,7 @@ import {
   PlatformStructured,
 } from './mdx/PlatformContent';
 import { PlatformPanel, PlatformTabsGroup } from './mdx/PlatformTabsGroup';
+import { RepositoryCardTitle } from './mdx/RepositoryCardTitle';
 import { RTCMinutesCalculator } from './mdx/RTCMinutesCalculator';
 
 type MDXContext = {
@@ -1306,6 +1307,7 @@ export function getMDXComponents(
     Folder,
     Step,
     Steps,
+    RepositoryCardTitle,
     RTCMinutesCalculator,
     PlanCards: DocsPlanCards,
     PricingCards: DocsPricingCards,

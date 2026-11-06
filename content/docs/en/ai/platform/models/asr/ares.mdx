@@ -1,0 +1,111 @@
+---
+title: ARES
+description: >
+ Use ARES for speech recognition (ASR) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/ares.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+
+Adaptive Recognition Engine for Speech (ARES) provides built-in real-time speech-to-text, offering seamless integration with low latency and reliable performance for conversational AI applications.
+
+## Sample configuration
+
+The following example shows how to configure ARES as the agent's ASR when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+
+ARES is available in managed mode only. Agora provides ARES, and you don't need a provider account or API key. For details, see [Use managed mode](/en/ai/platform/build/managed-mode).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, AresSTT
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(AresSTT(keywords=["Agora", "Conversational AI", "RTC"]))
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, AresSTT } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(new AresSTT({ keywords: ['Agora', 'Conversational AI', 'RTC'] }))
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).
+	WithStt(vendors.NewAresSTT(vendors.AresSTTOptions{
+		Keywords: []string{"Agora", "Conversational AI", "RTC"},
+	})).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts( /* configure your TTS vendor */ )
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `managed` in the `asr` block:
+
+```json
+"asr": {
+  "credential": { "mode": "managed" },
+  "vendor": "ares",
+  "language": "en-US",
+  "params": {
+    "keywords": ["Agora", "Conversational AI", "RTC"]
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): In pre-release testing (2026-10-27), a managed ARES block with `params.keywords` was accepted when creating an agent. Confirm that ARES works in sessions, and that `keywords` is applied. */}
+
+{/* TODO(platform-confirm): SDK tabs tested in pre-release testing (2026-10-29) against the SDK preview commits TypeScript 4900f4c, Python ed4466c, and Go 362ce9a. All three saved as written, sent `params.keywords`, and set `language` to `en-US` by default, matching the REST example (SDK bug list #15 and #33, fixed). */}
+
+## Key parameters
+
+The `asr` block takes the following fields. In the SDKs, `AresSTT` sets them from its options, and passes any other ARES parameters from its additional parameters option to `params`.
+
+<ParameterList title="asr" required={true}>
+ <Parameter name="vendor" type="string" required={true}>
+ Set to `ares`.
+ </Parameter>
+ <Parameter name="credential" type="object" required={true}>
+ How the agent authenticates with ARES. Set `mode` to `managed`.
+ </Parameter>
+ <Parameter name="language" type="string" required={true}>
+  The BCP-47 language tag identifying the primary language used for agent interaction.
+  See [Supported languages](/en/realtime-media/speech-to-text/reference/supported-languages#real-time-transcription) for the complete list.
+ </Parameter>
+ <Parameter name="params" type="object" required={false}>
+  <Parameter name="keywords" type="array[string]" required={false}>
+  Keywords used to improve ASR recognition accuracy for specific terms, such as brand names, product names, or industry jargon. Supports up to 128 keywords. See [Configure ASR keywords](/en/ai/platform/build/shape-the-conversation/asr-keywords) for details.
+  </Parameter>
+ </Parameter>
+</ParameterList>
