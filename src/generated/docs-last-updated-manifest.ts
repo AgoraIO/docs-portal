@@ -5717,7 +5717,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc-server-sdk/quickstart.md':
     '2026-07-10T09:23:02.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/quickstart.mdx':
-    '2026-11-06T08:01:01.000Z',
+    '2026-11-06T09:54:07.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/billing-policies.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/billing-policies.mdx':
