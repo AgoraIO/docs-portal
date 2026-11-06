@@ -29,7 +29,7 @@ agent = (
     .with_stt(...)  # configure your STT vendor
     .with_llm(...)  # configure your LLM vendor
     .with_tts(CartesiaTTS(
-        api_key='your-cartesia-key',
+        api_key='your-cartesia-key',  # omit api_key and set credential_mode='managed' to use Agora-managed mode
         model_id='sonic-2',
         voice_id='<voice_id>',
     ))
@@ -48,7 +48,7 @@ const agent = new Agent({ client })
   .withStt(/* configure your STT vendor */)
   .withLlm(/* configure your LLM vendor */)
   .withTts(new CartesiaTTS({
-    apiKey: 'your-cartesia-key',
+    apiKey: 'your-cartesia-key', // omit apiKey and set credentialMode: CredentialMode.Managed to use Agora-managed mode
     modelId: 'sonic-2',
     voiceId: '<voice_id>',
   }));
@@ -69,7 +69,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
   WithLlm(/* configure your LLM vendor */).
   WithTts(
     vendors.NewCartesiaTTS(vendors.CartesiaTTSOptions{
-        APIKey:  "your-cartesia-key",
+        APIKey:  "your-cartesia-key", // omit APIKey and set CredentialMode: agentkit.CredentialModeManaged to use Agora-managed mode
         ModelID: "sonic-2",
         VoiceID: "<voice_id>",
     }),
@@ -80,39 +80,64 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 
 <TabsContent value="rest-api">
 
-Use the following `tts` configuration in your request:
+- **Managed mode**
 
-```json
-"tts": {
-  "vendor": "cartesia",
-  "params": {
-    "api_key": "<your_cartesia_key>",
-    "model_id": "sonic-2",
-    "base_url": "wss://api.cartesia.ai",
-    "voice": {
+  To use Cartesia TTS with Agora-managed credentials, set `credential_mode` to `"managed"` in the `tts` block. When using managed mode, `params.api_key` is not required. Set `params.model_id` to `sonic-3.5` or `sonic-3.6`. You can still configure settings such as `voice`, `output_format`, and `language`. For more information, see [Use managed mode](/en/ai/build/managed-mode).
+
+  ```json
+  "tts": {
+    "credential_mode": "managed",
+    "vendor": "cartesia",
+    "params": {
+      "model_id": "sonic-3.6",
+      "voice": {
         "mode": "id",
         "id": "<voice_id>"
-    },
-    "output_format": {
+      },
+      "output_format": {
         "container": "raw",
         "sample_rate": 16000
-    },
-    "language": "en"
+      },
+      "language": "en"
+    }
   }
-}
-```
+  ```
+
+- **BYOK**
+
+  ```json
+  "tts": {
+    "vendor": "cartesia",
+    "params": {
+      "api_key": "<your_cartesia_key>",
+      "model_id": "sonic-2",
+      "base_url": "wss://api.cartesia.ai",
+      "voice": {
+        "mode": "id",
+        "id": "<voice_id>"
+      },
+      "output_format": {
+        "container": "raw",
+        "sample_rate": 16000
+      },
+      "language": "en"
+    }
+  }
+  ```
 
 </TabsContent>
 </Tabs>
 
 ### Key parameters
 
+The following parameters are required when using your own API key (BYOK). When using managed mode, `api_key` is not required. For more information, see [Use managed mode](/en/ai/build/managed-mode).
+
 <ParameterList title="params" required={true}>
-  <Parameter name="api_key" type="string" required={true}>
-    The Cartesia API key used to authenticate requests. Get your API key from the [Cartesia Console](https://play.cartesia.ai/sign-up).
+  <Parameter name="api_key" type="string" required={false}>
+    The Cartesia API key used to authenticate requests. Required when using your own API key (BYOK). Get your API key from the [Cartesia Console](https://play.cartesia.ai/sign-up).
   </Parameter>
   <Parameter name="model_id" type="string" required={true}>
-    The identifier of the TTS model to use. For example, `sonic-2`.
+    The identifier of the TTS model to use. For example, `sonic-2`. For managed mode, use `sonic-3.5` or `sonic-3.6`.
   </Parameter>
   <Parameter name="base_url" type="string" required={false}>
     The WebSocket URL for the Cartesia streaming API. For example, `wss://api.cartesia.ai`.

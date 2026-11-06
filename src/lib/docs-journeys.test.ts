@@ -205,7 +205,6 @@ describe('docs journeys', () => {
         'custom-information',
         'short-term-memory',
         'interrupt-agent',
-        'prepare-responses',
         'filler-words',
         'asr-keywords',
       ],

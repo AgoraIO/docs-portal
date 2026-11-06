@@ -17,17 +17,13 @@ Released on October 23, 2026.
 
 Included in this release:
 
-- **Prepare responses early**
-
-  The agent can send the LLM request before the user finishes speaking. When the final transcript matches the text used for the early request, the agent uses the early response, which shortens the time the user waits for a reply. Available in the RESTful API. For details, see [Prepare responses early](build/shape-the-conversation/prepare-responses).
-
-- **Cloud 3A for IoT devices**
-
-  For devices that connect using the IoT SDK, Conversational AI Engine can run acoustic echo cancellation, noise suppression, and gain control in the cloud. This helps the agent hear the user instead of its own echo. Available in the RESTful API. For details, see [Remove echo and noise on IoT devices](best-practices/cloud-3a).
-
 - **ConvoAI token service**
 
   Tokens can include a dedicated ConvoAI service for REST API authentication. Use the same token for REST authentication and for the agent's channel access. For details, see [RESTful authentication](/en/api-reference/api-ref/conversational-ai/authentication#token-authentication).
+
+- **Managed mode for Fish Audio and Cartesia TTS**
+
+  You can use [Fish Audio](models/tts/fish-audio) and [Cartesia](models/tts/cartesia) TTS with Agora-managed credentials, so you don't need your own API key for these providers. Available in the Agora Agents SDKs and the RESTful API. For details, see [Use managed mode](build/managed-mode).
 
 #### Improvements
 
@@ -43,17 +39,41 @@ This release includes the following enhancements.
 
 #### API changes
 
-This release introduces the following changes for early responses, cloud 3A, and interrupted-turn playback data. These changes are available in the RESTful API only.
+This release introduces the following changes for managed mode and interrupted-turn playback data.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+- [`CartesiaTTS`](/en/ai/models/tts/cartesia) and [`FishAudioTTS`](/en/ai/models/tts/fish-audio): New `credential_mode` option. Set it to `'managed'` to use Agora-managed credentials, and omit `api_key` (Cartesia) or `key` (Fish Audio).
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+- [`CartesiaTTS`](/en/ai/models/tts/cartesia) and [`FishAudioTTS`](/en/ai/models/tts/fish-audio): New `credentialMode` option. Set it to `CredentialMode.Managed` to use Agora-managed credentials, and omit `apiKey` (Cartesia) or `key` (Fish Audio).
+
+</TabsContent>
+
+<TabsContent value="go">
+
+- [`CartesiaTTSOptions`](/en/ai/models/tts/cartesia) and [`FishAudioTTSOptions`](/en/ai/models/tts/fish-audio): New `CredentialMode` field. Set it to `agentkit.CredentialModeManaged` to use Agora-managed credentials, and omit `APIKey` (Cartesia) or `Key` (Fish Audio).
+
+</TabsContent>
+
+<TabsContent value="rest-api">
 
 - Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
 
-  - **New parameters**
+  - **Updated parameters**
 
-    - [`parameters.eager_llm_response`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-parameters-eager-llm-response): Whether to start the LLM request before the user finishes speaking. Defaults to `false`.
-    - [`parameters.turn_detector.prefetch.trigger_by`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-parameters-turn-detector-prefetch-trigger-by): What triggers the early LLM request: `asr_auto`, `eager_eos`, or both. Defaults to `["asr_auto"]`.
-    - [`parameters.output_audio_codec`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-parameters-output-audio-codec): The codec for the agent's downlink audio. Set to `G722` for cloud 3A.
-    - [`parameters.audio3a_downstream`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-parameters-audio3a-downstream): Cloud 3A settings for AEC, ANS, and AGC.
-    - [`parameters.rtc.subscribe_audio_num_of_channels`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-parameters-rtc-subscribe-audio-num-of-channels): The number of uplink audio channels the agent subscribes to from the device. Set to `2` for cloud 3A.
+    - [`tts.credential_mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-credential-mode): Now accepts `"managed"` when `tts.vendor` is `fishaudio` or `cartesia`. In managed mode, `tts.params.api_key` is not required. For supported models, see [Use managed mode](/en/ai/build/managed-mode#tts).
 
 - Changes to [**Query conversation turn information**](/en/api-reference/api-ref/conversational-ai/turns) and the [**112 turns finished**](/en/ai/reference/event-types#112-turns-finished) event
 
@@ -61,6 +81,9 @@ This release introduces the following changes for early responses, cloud 3A, and
 
     - `playback_duration_ms`: The PCM audio actually played before the interruption, in milliseconds.
     - `intended_playback_duration_ms`: The total PCM audio the engine received and scheduled to play for the turn, in milliseconds.
+
+</TabsContent>
+</Tabs>
 
 </Accordion>
 
