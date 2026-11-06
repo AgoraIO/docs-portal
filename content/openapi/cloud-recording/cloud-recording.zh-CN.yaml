@@ -724,7 +724,7 @@ components:
     Authorization:
       name: Authorization
       in: header
-      description: 'HTTP 基本认证凭证。将客户 ID 和客户密钥以 `客户ID:客户密钥` 的格式拼接并进行 Base64 编码，再填入 `Basic <credentials>` 中的占位值。详见[实现 HTTP 基本认证](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth)。'
+      description: '声网云端录制 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的 `Authorization` 字段中。详见[实现 HTTP 基本认证](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth)。'
       required: true
       example: 'Basic <credentials>'
       schema:
