@@ -3230,25 +3230,25 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '4.4.30-server-gateway-sdk-linux-cpp',
-            label: 'Version 4.4.30',
+            label: 'Version 4.4.30 for x86_64',
             downloadLink:
               'https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.4.30-20241024_101940-398537.tgz',
           },
           {
             id: '4.2.32-server-gateway-sdk-linux-cpp',
-            label: 'Version 4.2.32',
+            label: 'Version 4.2.32 for x86_64',
             downloadLink:
               'https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.2.32-20240814_113547-328017.tgz',
           },
           {
             id: '4.2.30-server-gateway-sdk-linux-cpp',
-            label: 'Version 4.2.30',
+            label: 'Version 4.2.30 for x86_64',
             downloadLink:
               'https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.2.30-20240202_172130-292462.tgz',
           },
           {
             id: '3.8.2-server-gateway-sdk-linux-cpp',
-            label: 'Version 3.8.2',
+            label: 'Version 3.8.2 for x86_64',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora-RTC-x86_64-linux-gnu-v3.8.202.20-20220627_152601-214165.tgz',
           },
@@ -3334,7 +3334,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         versions: [
           {
             id: '4.4.32-server-gateway-sdk-linux-java',
-            label: 'Version 4.4.32 (Latest)',
+            label: 'Version 4.4.32 for x86_64 (Latest)',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora-Linux-Java-SDK-v4.4.32-x86_64-675656-ccd9be501d-20250526_180235.zip',
             packageManager:
@@ -3342,7 +3342,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '4.4.30-server-gateway-sdk-linux-java',
-            label: 'Version 4.4.30',
+            label: 'Version 4.4.30 for x86_64',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora-Linux-Java-SDK-v4.4.30-x86_64-398537-0440223121-20241024_121033.jar',
             packageManager:
@@ -3350,7 +3350,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '3.7.2-server-gateway-sdk-linux-java',
-            label: 'Version 3.7.2',
+            label: 'Version 3.7.2 for x86_64',
             packageManager:
               'https://mvnrepository.com/artifact/io.agora.rtc/linux-sdk',
           },

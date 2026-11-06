@@ -5699,7 +5699,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc-server-sdk/build/set-up-your-project/compile-run-sample-project.md':
     '2026-07-10T09:23:02.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/set-up-your-project/compile-run-sample-project.mdx':
-    '2026-11-06T07:39:01.000Z',
+    '2026-11-06T08:01:01.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/set-up-your-project/meta.json':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/stringuid.md':
@@ -5717,7 +5717,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc-server-sdk/quickstart.md':
     '2026-07-10T09:23:02.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/quickstart.mdx':
-    '2026-11-06T07:39:01.000Z',
+    '2026-11-06T08:01:01.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/billing-policies.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/billing-policies.mdx':
@@ -5737,7 +5737,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc-server-sdk/reference/release-notes.md':
     '2026-07-07T09:11:58.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/release-notes.mdx':
-    '2026-11-06T07:39:00.000Z',
+    '2026-11-06T08:06:50.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/security.md':
     '2026-11-05T12:43:25.000Z',
   'content/docs/en/realtime-media/rtc.md': '2026-05-14T11:07:52.000Z',
