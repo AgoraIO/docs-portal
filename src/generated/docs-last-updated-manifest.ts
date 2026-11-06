@@ -1168,13 +1168,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/rtmp-gateway/restful-authentication.mdx':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/api-reference/api-ref/server-gateway/go.mdx':
-    '2026-11-06T06:52:36.000Z',
+    '2026-11-06T07:39:00.000Z',
   'content/docs/en/api-reference/api-ref/server-gateway/index.md':
     '2026-06-22T08:39:26.000Z',
   'content/docs/en/api-reference/api-ref/server-gateway/meta.json':
     '2026-11-06T03:20:47.000Z',
   'content/docs/en/api-reference/api-ref/server-gateway/python.mdx':
-    '2026-11-06T06:51:06.000Z',
+    '2026-11-06T07:39:00.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/documentation-versions.mdx':
     '2026-10-30T11:35:13.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/go.mdx':
@@ -5699,7 +5699,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc-server-sdk/build/set-up-your-project/compile-run-sample-project.md':
     '2026-07-10T09:23:02.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/set-up-your-project/compile-run-sample-project.mdx':
-    '2026-09-10T10:36:08.000Z',
+    '2026-11-06T07:39:01.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/set-up-your-project/meta.json':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/stringuid.md':
@@ -5709,7 +5709,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc-server-sdk/index.md':
     '2026-06-18T10:41:14.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/index.mdx':
-    '2026-08-07T06:52:10.000Z',
+    '2026-11-06T07:39:00.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/meta.json':
     '2026-07-03T14:28:36.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/product-overview.md':
@@ -5717,13 +5717,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc-server-sdk/quickstart.md':
     '2026-07-10T09:23:02.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/quickstart.mdx':
-    '2026-08-07T06:52:10.000Z',
+    '2026-11-06T07:39:01.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/billing-policies.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/billing-policies.mdx':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/downloads.md':
-    '2026-06-29T06:35:22.000Z',
+    '2026-11-06T07:39:00.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/glossary.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/meta.json':
@@ -5737,7 +5737,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc-server-sdk/reference/release-notes.md':
     '2026-07-07T09:11:58.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/release-notes.mdx':
-    '2026-09-28T07:48:11.000Z',
+    '2026-11-06T07:39:00.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/security.md':
     '2026-11-05T12:43:25.000Z',
   'content/docs/en/realtime-media/rtc.md': '2026-05-14T11:07:52.000Z',
