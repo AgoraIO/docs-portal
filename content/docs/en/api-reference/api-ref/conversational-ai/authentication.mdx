@@ -5,7 +5,7 @@ description: Set up RESTful authentication for Conversational AI REST API reques
 
 Conversational AI REST API requests require authentication. Use one of the following methods:
 
-- **[Token authentication](#token-authentication) (recommended)**: Generate a token with your App ID and App Certificate, and set `Authorization: agora token=<your_token>`.
+- **[Token authentication](#token-authentication) (recommended)**: Generate a token with your App ID and App Certificate, and set `Authorization: agora token="<your_token>"`.
 - **[Basic HTTP authentication](#basic-http-authentication)**: Generate a Base64-encoded credential from your customer ID and customer secret, and set `Authorization: Basic <base64_credentials>`.
 
 :::info
@@ -17,7 +17,7 @@ Implement authentication on the server to mitigate the risk of data leakage.
 Token authentication uses a token generated on your server with your App ID and App Certificate. To authenticate with a token, include the `Authorization` header in each request:
 
 ```text
-Authorization: agora token=<your_token>
+Authorization: agora token="<your_token>"
 ```
 
 ### Prerequisites
@@ -114,7 +114,7 @@ const options = {
   path: `/api/conversational-ai-agent/v2/projects/${appId}/join`,
   method: 'POST',
   headers: {
-    Authorization: 'agora token=' + token,
+    Authorization: `agora token="${token}"`,
     'Content-Type': 'application/json',
     'Content-Length': Buffer.byteLength(data),
   },
@@ -195,7 +195,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	req.Header.Set("Authorization", "agora token="+token)
+	req.Header.Set("Authorization", `agora token="`+token+`"`)
 	req.Header.Set("Content-Type", "application/json")
 
 	res, err := http.DefaultClient.Do(req)
@@ -253,7 +253,7 @@ request = urllib.request.Request(
     data=data,
     method="POST",
     headers={
-        "Authorization": "agora token=" + token,
+        "Authorization": f'agora token="{token}"',
         "Content-Type": "application/json",
     },
 )
@@ -314,7 +314,7 @@ const options = {
   path: `/api/conversational-ai-agent/v2/projects/${appId}/join`,
   method: 'POST',
   headers: {
-    Authorization: 'agora token=' + token,
+    Authorization: `agora token="${token}"`,
     'Content-Type': 'application/json',
   },
 };
@@ -359,7 +359,11 @@ The privilege lifetime must not exceed the token lifetime. To set the RTC role o
 The following example starts an agent using a token with the ConvoAI, RTC, and RTM services, such as one from [`ConvoAITokenBuilder.buildToken`](#using-the-token-builder-library). It uses the same token in the `Authorization` header and in `properties.token`, and enables RTM. The example uses [managed mode](/en/ai/build/managed-mode) for ASR, LLM, and TTS, so it doesn't need provider API keys.
 
 ```bash
-curl --request POST   --url https://api.agora.io/api/conversational-ai-agent/v2/projects/<your_app_id>/join   --header 'Authorization: agora token=<your_token>'   --header 'Content-Type: application/json'   --data '{
+curl --request POST \
+  --url https://api.agora.io/api/conversational-ai-agent/v2/projects/<your_app_id>/join \
+  --header 'Authorization: agora token="<your_token>"' \
+  --header 'Content-Type: application/json' \
+  --data '{
     "name": "my-agent",
     "properties": {
       "channel": "<your_channel_name>",

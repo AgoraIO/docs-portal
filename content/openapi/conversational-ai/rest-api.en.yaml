@@ -23,7 +23,7 @@ components:
       name: Authorization
       description: >-
         Recommended. Use a token generated with your App ID and App Certificate, in the format
-        `agora token=<your_token>`. See [RESTful
+        `agora token="<your_token>"`. See [RESTful
         authentication](/en/api-reference/api-ref/conversational-ai/authentication#token-authentication).
   parameters:
     Authorization:
@@ -33,7 +33,7 @@ components:
       schema:
         type: string
       description: >-
-        Authentication credential. Use `agora token=<your_token>` for token authentication
+        Authentication credential. Use `agora token="<your_token>"` for token authentication
         (recommended) or `Basic <base64_credentials>` for Basic HTTP authentication.
   schemas:
     ErrorResponse:
@@ -244,7 +244,7 @@ paths:
                 curl -X POST
                 'https://api.agora.io/api/conversational-ai-agent/v2/projects/<your_app_id>/join' \
                   -H 'Content-Type: application/json' \
-                  -H 'Authorization: agora token=<your_token>' \
+                  -H 'Authorization: agora token="<your_token>"' \
                   -d '{
                     "name": "<unique_agent_name>",
                     "pipeline_id": "<your_pipeline_id>",
@@ -271,7 +271,7 @@ paths:
 
                 headers = {
                     "Content-Type": "application/json",
-                    "Authorization": "agora token=<your_token>"
+                    "Authorization": "agora token=\"<your_token>\""
                 }
 
 
@@ -301,7 +301,7 @@ paths:
 
                 const headers = {
                   "Content-Type": "application/json",
-                  "Authorization": "agora token=<your_token>"
+                  "Authorization": 'agora token="<your_token>"'
                 };
 
 
