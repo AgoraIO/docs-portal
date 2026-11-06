@@ -345,7 +345,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
    该版本对美颜功能进行了彻底重构和升级，不仅拓展了美颜功能，提升了美颜效果和性能，还解决了美颜参数配置复杂、集成成本高、美颜资源依赖网络易失效等痛点。主要改进包括：
 
    - **新增美颜功能**：新增白牙、去法令纹、去黑眼圈、亮眼等美肤功能；美妆特效新增卧蚕和面部高光；美型功能从 11 个增加到 29 个。
-   - **API 大幅简化**：将过去版本中的基础美颜、美型、美妆、滤镜功能整合为 `BEAUTY`、`STYLE_MAKEUP`、`FILTER` 三个核心节点 (node)，通过 [`IVideoEffectObject`](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoeffectobject) 统一管理生命周期和参数设置，减少频繁 API 调用带来的性能负担。
+   - **API 大幅简化**：将过去版本中的基础美颜、美型、美妆、滤镜功能整合为 `BEAUTY`、`STYLE_MAKEUP`、`FILTER` 三个核心节点 (node)，通过 [`IVideoEffectObject`](/zh-CN/api-reference/rtc/android/class-ivideoeffectobject) 统一管理生命周期和参数设置，减少频繁 API 调用带来的性能负担。
    - **预设模板开箱即用**：提供多套预设风格模板（如“自然美颜”、“学姐妆”、“冷白滤镜”），大幅简化集成流程，无需手动调试数十项参数。
    - **美颜参数动态控制**：该版本新增实时获取美颜参数的能力，开发者可通过 key-value 方式动态读取或修改任意细粒度参数（如磨皮强度、口红类型）。同时支持：调用预设模板快速启用风格效果、保存主播自定义参数配置、随时重置参数至默认状态，极大提升了业务层状态同步的灵活性和开发效率。
    - **美颜资源外置**：该版本通过美颜资源外置化设计，将所有美颜资源（特效、滤镜、妆容）均打包为本地 bundle 文件，彻底消除因网络下载失败导致美颜失效的风险。
@@ -2375,7 +2375,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
    该版本对美颜功能进行了彻底重构和升级，不仅拓展了美颜功能，提升了美颜效果和性能，还解决了美颜参数配置复杂、集成成本高、美颜资源依赖网络易失效等痛点。主要改进包括：
 
-   - **API 大幅简化**：将过去版本中的基础美颜、美型、美妆、滤镜功能整合为 `AgoraVideoEffectNodeBeauty`、`AgoraVideoEffectNodeStyleMakeup`、`AgoraVideoEffectNodeFilter` 三个核心节点 (node)，通过 [`AgoraVideoEffectObject`](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ivideoeffectobject) 统一管理生命周期和参数设置，减少频繁 API 调用带来的性能负担。
+   - **API 大幅简化**：将过去版本中的基础美颜、美型、美妆、滤镜功能整合为 `AgoraVideoEffectNodeBeauty`、`AgoraVideoEffectNodeStyleMakeup`、`AgoraVideoEffectNodeFilter` 三个核心节点 (node)，通过 [`AgoraVideoEffectObject`](/zh-CN/api-reference/rtc/ios/class-ivideoeffectobject) 统一管理生命周期和参数设置，减少频繁 API 调用带来的性能负担。
    - **预设模板开箱即用**：提供多套预设风格模板（如“自然美颜”、“学姐妆”、“冷白滤镜”），大幅简化集成流程，无需手动调试数十项参数。
    - **美颜参数动态控制**：该版本新增实时获取美颜参数的能力，开发者可通过 key-value 方式动态读取或修改任意细粒度参数（如磨皮强度、口红类型）。同时支持：调用预设模板快速启用风格效果、保存主播自定义参数配置、随时重置参数至默认状态，极大提升了业务层状态同步的灵活性和开发效率。
    - **美颜资源外置**：该版本通过美颜资源外置化设计，将所有美颜资源（特效、滤镜、妆容）均打包为本地 bundle 文件，彻底消除因网络下载失败导致美颜失效的风险。
@@ -4290,7 +4290,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
    该版本对美颜功能进行了彻底重构和升级，不仅拓展了美颜功能，提升了美颜效果和性能，还解决了美颜参数配置复杂、集成成本高、美颜资源依赖网络易失效等痛点。主要改进包括：
 
-   - **API 大幅简化**：将过去版本中的基础美颜、美型、美妆、滤镜功能整合为 `AgoraVideoEffectNodeBeauty`、`AgoraVideoEffectNodeStyleMakeup`、`AgoraVideoEffectNodeFilter` 三个核心节点 (node)，通过 [`AgoraVideoEffectObject`](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoeffectobject) 统一管理生命周期和参数设置，减少频繁 API 调用带来的性能负担。
+   - **API 大幅简化**：将过去版本中的基础美颜、美型、美妆、滤镜功能整合为 `AgoraVideoEffectNodeBeauty`、`AgoraVideoEffectNodeStyleMakeup`、`AgoraVideoEffectNodeFilter` 三个核心节点 (node)，通过 [`AgoraVideoEffectObject`](/zh-CN/api-reference/rtc/macos/class-ivideoeffectobject) 统一管理生命周期和参数设置，减少频繁 API 调用带来的性能负担。
    - **预设模板开箱即用**：提供多套预设风格模板（如“自然美颜”、“学姐妆”、“冷白滤镜”），大幅简化集成流程，无需手动调试数十项参数。
    - **美颜参数动态控制**：该版本新增实时获取美颜参数的能力，开发者可通过 key-value 方式动态读取或修改任意细粒度参数（如磨皮强度、口红类型）。同时支持：调用预设模板快速启用风格效果、保存主播自定义参数配置、随时重置参数至默认状态，极大提升了业务层状态同步的灵活性和开发效率。
    - **美颜资源外置**：该版本通过美颜资源外置化设计，将所有美颜资源（特效、滤镜、妆容）均打包为本地 bundle 文件，彻底消除因网络下载失败导致美颜失效的风险。
@@ -8074,7 +8074,7 @@ v4.0.0 修复了以下问题：
    该版本对美颜功能进行了彻底重构和升级，不仅拓展了美颜功能，提升了美颜效果和性能，还解决了美颜参数配置复杂、集成成本高、美颜资源依赖网络易失效等痛点。主要改进包括：
 
    - **新增美颜功能**：新增白牙、去法令纹、去黑眼圈、亮眼等美肤功能；美妆特效新增卧蚕和面部高光；美型功能从 11 个增加到 29 个。
-   - **API 大幅简化**：将过去版本中的基础美颜、美型、美妆、滤镜功能整合为 `BEAUTY`、`STYLE_MAKEUP`、`FILTER` 三个核心节点 (node)，通过 [`IVideoEffectObject`](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoeffectobject) 统一管理生命周期和参数设置，减少频繁 API 调用带来的性能负担。
+   - **API 大幅简化**：将过去版本中的基础美颜、美型、美妆、滤镜功能整合为 `BEAUTY`、`STYLE_MAKEUP`、`FILTER` 三个核心节点 (node)，通过 [`IVideoEffectObject`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-ivideoeffectobject) 统一管理生命周期和参数设置，减少频繁 API 调用带来的性能负担。
    - **预设模板开箱即用**：提供多套预设风格模板（如“自然美颜”、“学姐妆”、“冷白滤镜”），大幅简化集成流程，无需手动调试数十项参数。
    - **美颜参数动态控制**：该版本新增实时获取美颜参数的能力，开发者可通过 key-value 方式动态读取或修改任意细粒度参数（如磨皮强度、口红类型）。同时支持：调用预设模板快速启用风格效果、保存主播自定义参数配置、随时重置参数至默认状态，极大提升了业务层状态同步的灵活性和开发效率。
    - **美颜资源外置**：该版本通过美颜资源外置化设计，将所有美颜资源（特效、滤镜、妆容）均打包为本地 bundle 文件，彻底消除因网络下载失败导致美颜失效的风险。
