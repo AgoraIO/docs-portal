@@ -61,33 +61,35 @@ function tableSection(source: string, title: string, endMarker: string) {
 }
 
 describe('server gateway audit regressions', () => {
-  it('keeps account-management procedures in continuous ordered lists', async () => {
-    const source = readFileSync(
-      resolve(
-        process.cwd(),
-        'content/docs/en/realtime-media/rtc-server-sdk/build/manage-agora-account.md',
-      ),
-      'utf8',
-    );
-    const compiled = String(await compile(source, { jsx: true }));
-
-    expectMarkersInSameOrderedList(compiled, [
-      'signup page',
-      'Fill in the required fields',
-      'verification code',
-    ]);
-    expectMarkersInSameOrderedList(compiled, [
-      'Create New',
-      'Secured mode: APP ID + Token',
-      'configure_project',
-      'Submit',
-    ]);
-    expectMarkersInSameOrderedList(compiled, [
-      'token builder',
-      'details of your project',
-      'Token Builder',
-      'Copy the token',
-    ]);
+  it('keeps shared Console procedures in continuous ordered lists', async () => {
+    const cases = [
+      {
+        file: 'your-first-project.mdx',
+        markers: [
+          'Projects',
+          'Create project',
+          'Project Name',
+          'Create Project',
+        ],
+      },
+      {
+        file: 'generate-tokens.mdx',
+        markers: [
+          'Manage credentials',
+          'Generate Temp Token',
+          'RTC UID',
+          'Copy the generated token',
+        ],
+      },
+    ];
+    for (const { file, markers } of cases) {
+      const source = readFileSync(
+        resolve(process.cwd(), 'content/includes/en/shared/console', file),
+        'utf8',
+      );
+      const compiled = String(await compile(source, { jsx: true }));
+      expectMarkersInSameOrderedList(compiled, markers);
+    }
   });
 
   it('keeps the security data-classification table rectangular', () => {

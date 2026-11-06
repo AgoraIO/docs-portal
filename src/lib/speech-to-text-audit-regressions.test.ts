@@ -6,7 +6,6 @@ const orderedListTargets = [
   'content/docs/en/realtime-media/speech-to-text/get-started/quickstart.md',
   'content/docs/en/realtime-media/speech-to-text/build/process-transcription-data/record-captions.md',
   'content/docs/en/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service.md',
-  'content/docs/en/realtime-media/speech-to-text/reference/manage-agora-account.mdx',
 ];
 
 function readContent(path: string) {

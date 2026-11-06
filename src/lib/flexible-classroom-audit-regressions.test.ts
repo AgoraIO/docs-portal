@@ -6,7 +6,6 @@ const orderedListTargets = [
   'content/docs/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-ui-scene-sdk.mdx',
   'content/docs/en/realtime-media/flexible-classroom/build/enable-teaching-features/record-a-class.mdx',
   'content/docs/en/realtime-media/flexible-classroom/build/enable-teaching-features/supply-course-materials.mdx',
-  'content/docs/en/realtime-media/flexible-classroom/build/manage-agora-account.mdx',
   'content/docs/en/realtime-media/flexible-classroom/build/set-up-your-account-and-authentication/authentication-workflow.mdx',
   'content/docs/en/realtime-media/flexible-classroom/build/set-up-your-account-and-authentication/enable-flexible-classroom.mdx',
   'content/docs/en/realtime-media/flexible-classroom/quickstart.mdx',
