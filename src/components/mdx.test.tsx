@@ -238,7 +238,7 @@ describe('common MDX registry', () => {
     });
   });
 
-  it('uses Fumadocs MDX defaults except for repo-specific interactive components', () => {
+  it('uses Fumadocs MDX defaults except for repo-specific components', () => {
     const components = getMDXComponents() as Record<string, unknown>;
     const defaults = defaultMdxComponents as Record<string, unknown>;
 
@@ -246,7 +246,8 @@ describe('common MDX registry', () => {
     expect(components.table).toBe(defaults.table);
     expect(components.Card).not.toBe(defaults.Card);
     expect(components.Cards).toBe(defaults.Cards);
-    expect(components.Callout).toBe(defaults.Callout);
+    expect(components.Callout).not.toBe(defaults.Callout);
+    expect(components.CalloutContainer).not.toBe(defaults.CalloutContainer);
 
     expect(components.a).not.toBe(defaults.a);
     expect(components.CommandBlock).toBeDefined();
