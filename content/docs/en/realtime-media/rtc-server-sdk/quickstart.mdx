@@ -63,7 +63,7 @@ See [Account](/en/introduction/account) to learn how to get your Agora App ID an
 
 ## Get the SDK
 
-[Download](/en/api-reference/sdks?product=server-gateway&platform=linux) the latest x86-64 SDK package and decompress the file. If you need the SDK build for other architectures, [submit a ticket](https://agora-ticket.agora.io/) to technical support.
+[Download](/en/api-reference/sdks?product=server-gateway&platform=linux-cpp) the latest SDK package for your CPU architecture, x86-64 or arm64 (aarch64), and decompress the file. If you need the SDK for another architecture, [submit a ticket](https://agora-ticket.agora.io/) to technical support.
 
 </PlatformStructured>
 
@@ -140,8 +140,8 @@ mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -Darchety
     <dependencies>
         <dependency>
         <groupId>io.agora.rtc</groupId>
-        <artifactId>linux-sdk</artifactId>
-        <version>3.7.200.21</version>
+        <artifactId>linux-java-sdk</artifactId>
+        <version>4.4.32</version>
         </dependency>
     </dependencies>
 
@@ -182,7 +182,7 @@ mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -Darchety
     ```
 
 :::info
-Refer to [mvnrepository](https://mvnrepository.com/artifact/io.agora.rtc/linux-sdk) for other integration methods, such as Gradle.
+Refer to [mvnrepository](https://mvnrepository.com/artifact/io.agora.rtc/linux-java-sdk) for other integration methods, such as Gradle.
 :::
 
 </PlatformStructured>
@@ -229,10 +229,10 @@ See [Account](/en/introduction/account) to learn how to get your Agora App ID an
 
 ## Download and install the SDK
 
-Run the following command to get the latest SDK.
+Run the following command to install SDK v2.2.4.
 
 ```bash
-pip install agora_python_server_sdk
+pip install agora_python_server_sdk==2.2.4
 ```
 
 </PlatformStructured>
@@ -278,10 +278,10 @@ See [Account](/en/introduction/account) to learn how to get your Agora App ID an
 
 ## Get the SDK
 
-Run the following command to get the latest SDK.
+Run the following command to get SDK v2.2.8.
 
 ```bash
-git clone https://github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK.git go_rtc_sdk
+git clone -b release/2.2.8 https://github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK.git go_rtc_sdk
 ```
 
 ## Compile the sample project
@@ -302,7 +302,7 @@ In the project’s `go.mod` or builds file, add the following lines to include t
 ```bash
 # Replace /path/to/go_rtc_sdk with the actual path of the SDK you downloaded in Step 1
 replace github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK/v2 => /path/to/go_rtc_sdk
-# Replace version_number with the actual SDK version number, which you can find in the release notes, e.g., v2.1.0
+# Replace version_number with the actual SDK version number, which you can find in the release notes, e.g., v2.2.8
 require github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK/v2 version_number
 ```
 

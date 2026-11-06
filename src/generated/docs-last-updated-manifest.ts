@@ -1109,7 +1109,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-08-14T11:03:51.000Z',
   'content/docs/en/api-reference/api-ref/im/user-system-registration.md':
     '2026-08-14T11:03:51.000Z',
-  'content/docs/en/api-reference/api-ref/index.mdx': '2026-11-06T03:20:47.000Z',
+  'content/docs/en/api-reference/api-ref/index.mdx': '2026-11-06T06:52:36.000Z',
   'content/docs/en/api-reference/api-ref/iot-channel-management-rest-api.md':
     '2026-06-25T09:57:31.000Z',
   'content/docs/en/api-reference/api-ref/media-pull/index.md':
@@ -1168,7 +1168,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/rtmp-gateway/restful-authentication.mdx':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/api-reference/api-ref/server-gateway/go.mdx':
-    '2026-11-06T03:20:47.000Z',
+    '2026-11-06T06:52:36.000Z',
   'content/docs/en/api-reference/api-ref/server-gateway/index.md':
     '2026-06-22T08:39:26.000Z',
   'content/docs/en/api-reference/api-ref/server-gateway/meta.json':
