@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_imusiccontentcenter_createmusicplayer__prototype"></a>
 
-```text
+```objc
 - (id<AgoraMusicPlayerProtocol> _Nullable)createMusicPlayerWithDelegate:(id<AgoraRtcMediaPlayerDelegate> _Nullable)delegate NS_SWIFT_NAME(createMusicPlayer(delegate:));
 ```
 
@@ -63,7 +63,7 @@ _migration:
 
 <a id="api_imusiccontentcenter_destroy_imusiccontentcenter__prototype"></a>
 
-```text
+```objc
 + (void)destroy;
 ```
 
@@ -85,7 +85,7 @@ _migration:
 
 <a id="api_imusiccontentcenter_destroymusicplayer__prototype"></a>
 
-```text
+```objc
 - (NSInteger)destroyMusicPlayer:(id<AgoraMusicPlayerProtocol>)musicPlayer;
 ```
 
@@ -133,7 +133,7 @@ _migration:
 
 <a id="api_imusiccontentcenter_enablemainqueuedispatch_imusiccontentcenter__prototype"></a>
 
-```text
+```objc
 - (void)enableMainQueueDispatch:(BOOL)enabled;
 ```
 
@@ -169,7 +169,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_getcaches__prototype"></a>
 
-```text
+```objc
 - (NSArray *)getCaches NS_SWIFT_NAME(getCaches());
 ```
 
@@ -198,7 +198,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_getinternalsongcode__prototype"></a>
 
-```text
+```objc
 - (NSInteger)getInternalSongCode:(NSInteger)songCode jsonOption:(NSString * _Nullable)jsonOption  NS_SWIFT_NAME(getInternalSongCode(songCode:jsonOption:));
 ```
 
@@ -260,7 +260,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_getlyric__prototype"></a>
 
-```text
+```objc
 - (NSString *)getLyricWithSongCode:(NSInteger)songCode lyricType:(NSInteger)lyricType NS_SWIFT_NAME(getLyric(songCode:lyricType:));
 ```
 
@@ -317,7 +317,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_getmusiccharts__prototype"></a>
 
-```text
+```objc
 - (NSString *)getMusicCharts;
 ```
 
@@ -351,7 +351,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__prototype"></a>
 
-```text
+```objc
 - (NSString *)getMusicCollectionWithMusicChartId:(NSInteger)musicChartId page:(NSInteger)page pageSize:(NSInteger)pageSize jsonOption:(NSString * _Nullable)jsonOption NS_SWIFT_NAME(getMusicCollection(musicChartId:page:pageSize:jsonOption:));
 ```
 
@@ -423,7 +423,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__prototype"></a>
 
-```text
+```objc
 - (NSString *)getSongSimpleInfoWithSongCode:(NSInteger)songCode NS_SWIFT_NAME(getSongSimpleInfo(songCode:));
 ```
 
@@ -468,7 +468,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_initialize_imusiccontentcenter__prototype"></a>
 
-```text
+```objc
 + (instancetype _Nullable)sharedContentCenterWithConfig:(AgoraMusicContentCenterConfig *)config NS_SWIFT_NAME(sharedContentCenter(config:));
 ```
 
@@ -510,7 +510,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_ispreloaded__prototype"></a>
 
-```text
+```objc
 - (NSInteger)isPreloadedWithSongCode:(NSInteger)songCode NS_SWIFT_NAME(isPreloaded(songCode:));
 ```
 
@@ -552,7 +552,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusicplayer_open_imusicplayer__prototype"></a>
 
-```text
+```objc
 - (NSInteger)openMediaWithSongCode:(NSInteger)songCode startPos:(NSInteger)startPos NS_SWIFT_NAME(openMedia(songCode:startPos:));
 ```
 
@@ -606,7 +606,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_preload__prototype"></a>
 
-```text
+```objc
 - (NSInteger)preloadWithSongCode:(NSInteger)songCode jsonOption:(NSString* _Nullable)jsonOption NS_SWIFT_NAME(preload(songCode:jsonOption:))  __attribute__((deprecated("Use preload(songCode:) instead.")));
 ```
 
@@ -678,7 +678,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_preload2__prototype"></a>
 
-```text
+```objc
 - (NSString *)preloadWithSongCode:(NSInteger)songCode NS_SWIFT_NAME(preload(songCode:));
 ```
 
@@ -730,7 +730,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__prototype"></a>
 
-```text
+```objc
 - (NSInteger)registerEventDelegate:(id<AgoraMusicContentCenterEventDelegate> _Nullable)eventDelegate;
 ```
 
@@ -770,7 +770,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_removecache__prototype"></a>
 
-```text
+```objc
 - (NSInteger)removeCacheWithSongCode:(NSInteger)songCode NS_SWIFT_NAME(removeCache(songCode:));
 ```
 
@@ -816,7 +816,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__prototype"></a>
 
-```text
+```objc
 - (NSInteger)renewToken:(NSString * _Nonnull)token;
 ```
 
@@ -858,7 +858,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusiccontentcenter_searchmusic__prototype"></a>
 
-```text
+```objc
 - (NSString *)searchMusicWithKeyWord:(NSString *)keyWord page:(NSInteger)page pageSize:(NSInteger)pageSize jsonOption:(NSString * _Nullable)jsonOption NS_SWIFT_NAME(searchMusic(keyWord:page:pageSize:jsonOption:));
 ```
 
@@ -932,7 +932,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="api_imusicplayer_setplaymode__prototype"></a>
 
-```text
+```objc
 - (NSInteger)setPlayMode:(AgoraMusicPlayMode)mode NS_SWIFT_NAME(setPlayMode(mode:));
 ```
 
@@ -992,7 +992,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult__prototype"></a>
 
-```text
+```objc
 - (void)onLyricResult:(NSString*)requestId songCode:(NSInteger)songCode lyricUrl:(NSString* _Nullable)lyricUrl reason:(AgoraMusicContentCenterStateReason)reason;
 ```
 
@@ -1051,7 +1051,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__prototype"></a>
 
-```text
+```objc
 - (void)onMusicChartsResult:(NSString *)requestId result:(NSArray<AgoraMusicChartInfo*> *)result reason:(AgoraMusicContentCenterStateReason)reason;
 ```
 
@@ -1104,7 +1104,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__prototype"></a>
 
-```text
+```objc
 - (void)onMusicCollectionResult:(NSString *)requestId result:(AgoraMusicCollection *)result reason:(AgoraMusicContentCenterStateReason)reason;
 ```
 
@@ -1157,7 +1157,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__prototype"></a>
 
-```text
+```objc
 - (void)onPreLoadEvent:(NSString*)requestId songCode:(NSInteger)songCode percent:(NSInteger)percent lyricUrl:(NSString * _Nullable)lyricUrl state:(AgoraMusicContentCenterPreloadState)state reason:(AgoraMusicContentCenterStateReason)reason;
 ```
 
@@ -1228,7 +1228,7 @@ NO：（默认）不将回调方法派发到主线程。
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__prototype"></a>
 
-```text
+```objc
 - (void)onSongSimpleInfoResult:(NSString*)requestId songCode:(NSInteger)songCode simpleInfo:(NSString* _Nullable)simpleInfo reason:(AgoraMusicContentCenterStateReason)reason;
 ```
 

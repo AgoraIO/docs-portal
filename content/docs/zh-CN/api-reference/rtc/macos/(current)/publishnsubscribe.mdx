@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_enabledualstreammode__prototype"></a>
 
-```text
+```objc
 - (int)enableDualStreamMode:(BOOL)enabled NS_SWIFT_NAME(enableDualStreamMode(_:)) __deprecated_msg("use setDualStreamMode: instead.");
 ```
 
@@ -85,7 +85,7 @@ _migration:
 
 <a id="api_irtcengine_enabledualstreammode3__prototype"></a>
 
-```text
+```objc
 - (int)enableDualStreamMode:(BOOL)enabled
                streamConfig:(AgoraSimulcastStreamConfig* _Nonnull)streamConfig NS_SWIFT_NAME(enableDualStreamMode(_:streamConfig:)) __deprecated_msg("use setDualStreamMode: instead.");
 ```
@@ -156,7 +156,7 @@ _migration:
 
 <a id="api_irtcengineex_enabledualstreammodeex__prototype"></a>
 
-```text
+```objc
 - (int)enableDualStreamModeEx:(BOOL)enabled
                  streamConfig:(AgoraSimulcastStreamConfig*)streamConfig
                    connection:(AgoraRtcConnection* _Nonnull)connection NS_SWIFT_NAME(enableDualStreamModeEx(_:streamConfig:connection:)) __deprecated_msg("use setDualStreamModeEx: instead.");
@@ -240,7 +240,7 @@ _migration:
 
 <a id="api_irtcengine_muteallremoteaudiostreams__prototype"></a>
 
-```text
+```objc
 - (int)muteAllRemoteAudioStreams:(BOOL)mute NS_SWIFT_NAME(muteAllRemoteAudioStreams(_:));
 ```
 
@@ -295,7 +295,7 @@ _migration:
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__prototype"></a>
 
-```text
+```objc
 - (int)muteAllRemoteAudioStreamsEx:(BOOL)mute
                         connection:(AgoraRtcConnection * _Nonnull)connection  NS_SWIFT_NAME(muteAllRemoteAudioStreamsEx(_:connection:));
 ```
@@ -360,7 +360,7 @@ _migration:
 
 <a id="api_irtcengine_muteallremotevideostreams__prototype"></a>
 
-```text
+```objc
 - (int)muteAllRemoteVideoStreams:(BOOL)mute NS_SWIFT_NAME(muteAllRemoteVideoStreams(_:));
 ```
 
@@ -415,7 +415,7 @@ _migration:
 
 <a id="api_irtcengineex_muteallremotevideostreamsex__prototype"></a>
 
-```text
+```objc
 - (int)muteAllRemoteVideoStreamsEx:(BOOL)mute
                         connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(muteAllRemoteVideoStreamsEx(_:connection:));
 ```
@@ -473,7 +473,7 @@ _migration:
 
 <a id="api_irtcengine_mutelocalaudiostream__prototype"></a>
 
-```text
+```objc
 - (int)muteLocalAudioStream:(BOOL)mute NS_SWIFT_NAME(muteLocalAudioStream(_:));
 ```
 
@@ -530,7 +530,7 @@ _migration:
 
 <a id="api_irtcengineex_mutelocalaudiostreamex__prototype"></a>
 
-```text
+```objc
 - (int)muteLocalAudioStreamEx:(BOOL)mute connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(muteLocalAudioStreamEx(_:connection:));
 ```
 
@@ -591,7 +591,7 @@ _migration:
 
 <a id="api_irtcengine_mutelocalvideostream__prototype"></a>
 
-```text
+```objc
 - (int)muteLocalVideoStream:(BOOL)mute NS_SWIFT_NAME(muteLocalVideoStream(_:));
 ```
 
@@ -644,7 +644,7 @@ _migration:
 
 <a id="api_irtcengineex_mutelocalvideostreamex__prototype"></a>
 
-```text
+```objc
 - (int)muteLocalVideoStreamEx:(BOOL)mute connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(muteLocalVideoStreamEx(_:connection:));
 ```
 
@@ -709,7 +709,7 @@ _migration:
 
 <a id="api_irtcengine_muteremoteaudiostream__prototype"></a>
 
-```text
+```objc
 - (int)muteRemoteAudioStream:(NSUInteger)uid mute:(BOOL)mute NS_SWIFT_NAME(muteRemoteAudioStream(_:mute:));
 ```
 
@@ -770,7 +770,7 @@ _migration:
 
 <a id="api_irtcengineex_muteremoteaudiostreamex__prototype"></a>
 
-```text
+```objc
 - (int)muteRemoteAudioStreamEx:(NSUInteger)uid
                           mute:(BOOL)mute
                     connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(muteRemoteAudioStreamEx(_:mute:connection:));
@@ -835,7 +835,7 @@ _migration:
 
 <a id="api_irtcengine_muteremotevideostream__prototype"></a>
 
-```text
+```objc
 - (int)muteRemoteVideoStream:(NSUInteger)uid
                         mute:(BOOL)mute NS_SWIFT_NAME(muteRemoteVideoStream(_:mute:));
 ```
@@ -895,7 +895,7 @@ _migration:
 
 <a id="api_irtcengineex_muteremotevideostreamex__prototype"></a>
 
-```text
+```objc
 - (int)muteRemoteVideoStreamEx:(NSUInteger)uid
                           mute:(BOOL)mute
                     connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(muteRemoteVideoStreamEx(_:mute:connection:));
@@ -960,7 +960,7 @@ _migration:
 
 <a id="api_irtcengine_setdualstreammode__prototype"></a>
 
-```text
+```objc
 - (int)setDualStreamMode:(AgoraSimulcastStreamMode)mode NS_SWIFT_NAME(setDualStreamMode(_:));
 ```
 
@@ -1013,7 +1013,7 @@ SDK 默认在发送端开启视频小流自适应模式（`AgoraAutoSimulcastStr
 
 <a id="api_irtcengine_setdualstreammode2__prototype"></a>
 
-```text
+```objc
 - (int)setDualStreamMode:(AgoraSimulcastStreamMode)mode
             streamConfig:(AgoraSimulcastStreamConfig* _Nonnull)streamConfig NS_SWIFT_NAME(setDualStreamMode(_:streamConfig:));
 ```
@@ -1080,7 +1080,7 @@ SDK 默认在发送端开启视频小流的自适应模式（`AgoraAutoSimulcast
 
 <a id="api_irtcengineex_setdualstreammodeex__prototype"></a>
 
-```text
+```objc
 - (int)setDualStreamModeEx:(AgoraSimulcastStreamMode)mode
               streamConfig:(AgoraSimulcastStreamConfig*)streamConfig
                 connection:(AgoraRtcConnection* _Nonnull)connection NS_SWIFT_NAME(setDualStreamModeEx(_:streamConfig:connection:));
@@ -1157,7 +1157,7 @@ SDK 默认在发送端开启视频小流的自适应模式（`AgoraAutoSimulcast
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype__prototype"></a>
 
-```text
+```objc
 - (int)setRemoteDefaultVideoStreamType:(AgoraVideoStreamType)streamType NS_SWIFT_NAME(setRemoteDefaultVideoStreamType(_:));
 ```
 
@@ -1215,7 +1215,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 <a id="api_irtcengine_setremotevideostreamtype__prototype"></a>
 
-```text
+```objc
 - (int)setRemoteVideoStream:(NSUInteger)uid
                        type:(AgoraVideoStreamType)streamType NS_SWIFT_NAME(setRemoteVideoStream(_:type:));
 ```
@@ -1277,7 +1277,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 <a id="api_irtcengineex_setremotevideostreamtypeex__prototype"></a>
 
-```text
+```objc
 - (int)setRemoteVideoStreamEx:(NSUInteger)uid
                          type:(AgoraVideoStreamType)streamType
                    connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(setRemoteVideoStreamEx(_:type:connection:));
@@ -1349,7 +1349,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 <a id="api_irtcengine_setremotevideosubscriptionoptions__prototype"></a>
 
-```text
+```objc
 - (int)setRemoteVideoSubscriptionOptions:(NSUInteger)uid
                                  options:(AgoraVideoSubscriptionOptions* _Nonnull)options NS_SWIFT_NAME(setRemoteVideoSubscriptionOptions(_:options:));
 ```
@@ -1404,7 +1404,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 <a id="api_irtcengineex_setremotevideosubscriptionoptionsex__prototype"></a>
 
-```text
+```objc
 - (int)setRemoteVideoSubscriptionOptionsEx:(NSUInteger)uid
                                    options:(AgoraVideoSubscriptionOptions* _Nonnull)options
                                 connection:(AgoraRtcConnection* _Nonnull)connection NS_SWIFT_NAME(setRemoteVideoSubscriptionOptionsEx(_:options:connection:));
@@ -1466,7 +1466,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 <a id="api_irtcengine_setsubscribeaudioallowlist__prototype"></a>
 
-```text
+```objc
 - (int)setSubscribeAudioAllowlist:(NSArray <NSNumber *> *_Nonnull)allowlist NS_SWIFT_NAME(setSubscribeAudioAllowlist(_:));
 ```
 
@@ -1517,7 +1517,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 <a id="api_irtcengineex_setsubscribeaudioallowlistex__prototype"></a>
 
-```text
+```objc
 - (int)setSubscribeAudioAllowlistEx:(NSArray <NSNumber *> *_Nonnull)allowlist connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(setSubscribeAudioAllowlistEx(_:connection:));
 ```
 
@@ -1580,7 +1580,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 <a id="api_irtcengine_setsubscribeaudioblocklist__prototype"></a>
 
-```text
+```objc
 - (int)setSubscribeAudioBlocklist:(NSArray <NSNumber *> *_Nonnull)blocklist NS_SWIFT_NAME(setSubscribeAudioBlocklist(_:));
 ```
 
@@ -1632,7 +1632,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 <a id="api_irtcengineex_setsubscribeaudioblocklistex__prototype"></a>
 
-```text
+```objc
 - (int)setSubscribeAudioBlocklistEx:(NSArray <NSNumber *> *_Nonnull)blocklist connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(setSubscribeAudioBlocklistEx(_:connection:));
 ```
 
@@ -1696,7 +1696,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 <a id="api_irtcengine_setsubscribevideoallowlist__prototype"></a>
 
-```text
+```objc
 - (int)setSubscribeVideoAllowlist:(NSArray <NSNumber *> *_Nonnull)allowlist NS_SWIFT_NAME(setSubscribeVideoAllowlist(_:));
 ```
 
@@ -1747,7 +1747,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 <a id="api_irtcengineex_setsubscribevideoallowlistex__prototype"></a>
 
-```text
+```objc
 - (int)setSubscribeVideoAllowlistEx:(NSArray <NSNumber *> *_Nonnull)allowlist connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(setSubscribeVideoAllowlistEx(_:connection:));
 ```
 
@@ -1810,7 +1810,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 <a id="api_irtcengine_setsubscribevideoblocklist__prototype"></a>
 
-```text
+```objc
 - (int)setSubscribeVideoBlocklist:(NSArray <NSNumber *> *_Nonnull)blocklist NS_SWIFT_NAME(setSubscribeVideoBlocklist(_:));
 ```
 
@@ -1862,7 +1862,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 <a id="api_irtcengineex_setsubscribevideoblocklistex__prototype"></a>
 
-```text
+```objc
 - (int)setSubscribeVideoBlocklistEx:(NSArray <NSNumber *> *_Nonnull)blocklist connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(setSubscribeVideoBlocklistEx(_:connection:));
 ```
 
@@ -1926,7 +1926,7 @@ SDK 会根据视频窗口的大小动态调整对应视频流的尺寸，以节�
 
 <a id="callback_irtcengineeventhandler_onaudiopublishstatechanged__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine didAudioPublishStateChange:(NSString * _Nonnull)channelId
            oldState:(AgoraStreamPublishState)oldState
            newState:(AgoraStreamPublishState)newState
@@ -1994,7 +1994,7 @@ elapseSinceLastState:(int)elapseSinceLastState NS_SWIFT_NAME(rtcEngine(_:didAudi
 
 <a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine didAudioSubscribeStateChange:(NSString * _Nonnull)channelId
                 uid:(unsigned int)uid
            oldState:(AgoraStreamSubscribeState)oldState
@@ -2063,7 +2063,7 @@ elapseSinceLastState:(int)elapseSinceLastState NS_SWIFT_NAME(rtcEngine(_:didAudi
 
 <a id="callback_irtcengineeventhandler_onvideosubscribestatechanged__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine didVideoSubscribeStateChange:(NSString * _Nonnull)channelId
                 uid:(unsigned int)uid
            oldState:(AgoraStreamSubscribeState)oldState

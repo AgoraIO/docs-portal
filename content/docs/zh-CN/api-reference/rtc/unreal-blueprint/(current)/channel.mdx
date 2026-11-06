@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_getuserinfobyuid__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int GetUserInfoByUid(int64 uid, FUserInfo& userInfo);
 ```
@@ -112,7 +112,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_getuserinfobyuseraccount__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int GetUserInfoByUserAccount(const FString& userAccount, FUserInfo& userInfo);
 ```
@@ -201,7 +201,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_joinchannel__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int JoinChannel(const FString & token, const FString& channelId, int64 uid);
 ```
@@ -308,7 +308,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_joinchannel2__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int JoinChannelWithOptions(const FString& token, const FString& channelId, int64 uid, const FChannelMediaOptions& options);
 ```
@@ -419,7 +419,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_joinchannelex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int JoinChannelEx(const FString& token, const FRtcConnection& connection, const FChannelMediaOptions& options);
 ```
@@ -529,7 +529,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int JoinChannelWithUserAccount(const FString& token, const FString& channelId, const FString& userAccount, const FChannelMediaOptions& options);
 ```
@@ -652,7 +652,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_joinchannelwithuseraccountex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int JoinChannelWithUserAccountEx(const FString& token, const FString& channelId, const FString& userAccount, const FChannelMediaOptions& options);
 ```
@@ -781,7 +781,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_leavechannel__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int LeaveChannel();
 ```
@@ -845,7 +845,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_leavechannel2__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int LeaveChannelWithOptions(const FLeaveChannelOptions& options);
 ```
@@ -917,7 +917,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_leavechannelex2__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int LeaveChannelEx(const FRtcConnection& connection, const FLeaveChannelOptions& options);
 ```
@@ -1006,7 +1006,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_preloadchannel__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int PreloadChannel(const FString & token, const FString & channelId, int64 uid);
 ```
@@ -1110,7 +1110,7 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 
 <a id="api_irtcengine_preloadchannelwithuseraccount__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int PreloadChannelWithUserAccount(const FString& token, const FString& channelId, const FString& userAccount);
 ```
@@ -1221,7 +1221,7 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 
 <a id="api_irtcengine_registerlocaluseraccount__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int RegisterLocalUserAccount(const FString& appId, const FString& userAccount);
 ```
@@ -1300,7 +1300,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_renewtoken__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int RenewToken(const FString & token);
 ```
@@ -1366,7 +1366,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setchannelprofile__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetChannelProfile(ECHANNEL_PROFILE_TYPE profile);
 ```
@@ -1430,7 +1430,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setclientrole2__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetClientRole(FClientRoleOptions options, ECLIENT_ROLE_TYPE clientroletype = ECLIENT_ROLE_TYPE::CLIENT_ROLE_BROADCASTER);
 ```
@@ -1525,7 +1525,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 <a id="api_irtcengine_updatechannelmediaoptions__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int UpdateChannelMediaOptions(const FChannelMediaOptions& options);
 ```
@@ -1568,7 +1568,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int UpdateChannelMediaOptionsEx(const FChannelMediaOptions& options, const FRtcConnection& connection);
 ```
@@ -1617,7 +1617,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_updatepreloadchanneltoken__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int UpdatePreloadChannelToken(const FString& token);
 ```
@@ -1671,7 +1671,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnClientRoleChanged(ECLIENT_ROLE_TYPE oldRole, ECLIENT_ROLE_TYPE newRole, const FClientRoleOptions& newRoleOptions);
 ```
@@ -1732,7 +1732,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnClientRoleChangeFailed(ECLIENT_ROLE_CHANGE_FAILED_REASON reason, ECLIENT_ROLE_TYPE currentRole);
 ```
@@ -1786,7 +1786,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onerror__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnError(int error, const FString& msg);
 ```
@@ -1908,7 +1908,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnJoinChannelSuccess(const FString& Channel, int64 Uid, int Elapsed);
 ```
@@ -1972,7 +1972,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onleavechannel__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnLeaveChannel(const FRtcStats& stats);
 ```
@@ -2020,7 +2020,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnLocalUserRegistered(int64 uid, const FString& userAccount);
 ```
@@ -2064,7 +2064,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnRejoinChannelSuccess(const FString& channel, int64 uid, int elapsed);
 ```
@@ -2124,7 +2124,7 @@ Token 已过期回调。
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnRequestToken();
 ```
@@ -2169,7 +2169,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onrtcstats__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnRtcStats(const FRtcStats& stats);
 ```
@@ -2215,7 +2215,7 @@ Token 即将在 30s 内过期回调。
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnTokenPrivilegeWillExpire(const FString& token);
 ```
@@ -2271,7 +2271,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onuserinfoupdated__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnUserInfoUpdated(int64 uid, const FUserInfo& info);
 ```
@@ -2315,7 +2315,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onuserjoined__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnUserJoined(int64 uid, int elapsed);
 ```
@@ -2382,7 +2382,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="callback_irtcengineeventhandler_onuseroffline__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnUserOffline(int64 uid, EUSER_OFFLINE_REASON_TYPE reason);
 ```

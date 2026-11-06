@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_getlocalspatialaudioengine__prototype"></a>
 
-```text
+```csharp
 public abstract ILocalSpatialAudioEngine GetLocalSpatialAudioEngine();
 ```
 
@@ -49,7 +49,7 @@ public abstract ILocalSpatialAudioEngine GetLocalSpatialAudioEngine();
 
 <a id="api_ilocalspatialaudioengine_initialize__prototype"></a>
 
-```text
+```csharp
 public abstract int Initialize();
 ```
 
@@ -85,7 +85,7 @@ public abstract int Initialize();
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams__prototype"></a>
 
-```text
+```csharp
 public abstract int MuteAllRemoteAudioStreams(bool mute);
 ```
 
@@ -136,7 +136,7 @@ public abstract int MuteAllRemoteAudioStreams(bool mute);
 
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream__prototype"></a>
 
-```text
+```csharp
 public abstract int MuteLocalAudioStream(bool mute);
 ```
 
@@ -186,7 +186,7 @@ public abstract int MuteLocalAudioStream(bool mute);
 
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream__prototype"></a>
 
-```text
+```csharp
 public abstract int MuteRemoteAudioStream(uint uid, bool mute);
 ```
 
@@ -240,7 +240,7 @@ public abstract int MuteRemoteAudioStream(uint uid, bool mute);
 
 <a id="api_ilocalspatialaudioengine_updateremoteposition__prototype"></a>
 
-```text
+```csharp
 public abstract int UpdateRemotePosition(uint uid, RemoteVoicePositionInfo posInfo);
 ```
 
@@ -294,7 +294,7 @@ public abstract int UpdateRemotePosition(uint uid, RemoteVoicePositionInfo posIn
 
 <a id="api_ibasespatialaudioengine_updateselfposition__prototype"></a>
 
-```text
+```csharp
 public abstract int UpdateSelfPosition(float[] position, float[] axisForward, float[] axisRight, float[] axisUp);
 ```
 
@@ -354,7 +354,7 @@ public abstract int UpdateSelfPosition(float[] position, float[] axisForward, fl
 
 <a id="api_ilocalspatialaudioengine_clearremotepositions__prototype"></a>
 
-```text
+```csharp
 public abstract int ClearRemotePositions();
 ```
 
@@ -387,7 +387,7 @@ public abstract int ClearRemotePositions();
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition__prototype"></a>
 
-```text
+```csharp
 public abstract int RemoveRemotePosition(uint uid);
 ```
 
@@ -433,7 +433,7 @@ public abstract int RemoveRemotePosition(uint uid);
 
 <a id="api_ilocalspatialaudioengine_release__prototype"></a>
 
-```text
+```csharp
 public abstract void Dispose();
 ```
 
@@ -459,7 +459,7 @@ public abstract void Dispose();
 
 <a id="api_ibasespatialaudioengine_setaudiorecvrange__prototype"></a>
 
-```text
+```csharp
 public abstract int SetAudioRecvRange(float range);
 ```
 
@@ -499,7 +499,7 @@ public abstract int SetAudioRecvRange(float range);
 
 <a id="api_ibasespatialaudioengine_setdistanceunit__prototype"></a>
 
-```text
+```csharp
 public abstract int SetDistanceUnit(float unit);
 ```
 
@@ -541,7 +541,7 @@ public abstract int SetDistanceUnit(float unit);
 
 <a id="api_irtcengine_setheadphoneeqparameters__prototype"></a>
 
-```text
+```csharp
 public abstract int SetHeadphoneEQParameters(int lowGain, int highGain);
 ```
 
@@ -593,7 +593,7 @@ public abstract int SetHeadphoneEQParameters(int lowGain, int highGain);
 
 <a id="api_irtcengine_setheadphoneeqpreset__prototype"></a>
 
-```text
+```csharp
 public abstract int SetHeadphoneEQPreset(HEADPHONE_EQUALIZER_PRESET preset);
 ```
 
@@ -643,7 +643,7 @@ public abstract int SetHeadphoneEQPreset(HEADPHONE_EQUALIZER_PRESET preset);
 
 <a id="api_ibasespatialaudioengine_setmaxaudiorecvcount__prototype"></a>
 
-```text
+```csharp
 public abstract int SetMaxAudioRecvCount(int maxCount);
 ```
 
@@ -683,7 +683,7 @@ public abstract int SetMaxAudioRecvCount(int maxCount);
 
 <a id="api_ibasespatialaudioengine_setplayerattenuation__prototype"></a>
 
-```text
+```csharp
 public abstract int SetPlayerAttenuation(int playerId, double attenuation, bool forceSet);
 ```
 
@@ -746,7 +746,7 @@ public abstract int SetPlayerAttenuation(int playerId, double attenuation, bool 
 
 <a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__prototype"></a>
 
-```text
+```csharp
 public abstract int SetRemoteAudioAttenuation(uint uid, double attenuation, bool forceSet);
 ```
 
@@ -807,7 +807,7 @@ public abstract int SetRemoteAudioAttenuation(uint uid, double attenuation, bool
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams__prototype"></a>
 
-```text
+```csharp
 public abstract int SetRemoteUserSpatialAudioParams(uint uid, SpatialAudioParams param);
 ```
 
@@ -857,7 +857,7 @@ public abstract int SetRemoteUserSpatialAudioParams(uint uid, SpatialAudioParams
 
 <a id="api_imediaplayer_setspatialaudioparams__prototype"></a>
 
-```text
+```csharp
 public abstract int SetSpatialAudioParams(SpatialAudioParams spatial_audio_params);
 ```
 
@@ -903,7 +903,7 @@ public abstract int SetSpatialAudioParams(SpatialAudioParams spatial_audio_param
 
 <a id="api_ibasespatialaudioengine_setzones__prototype"></a>
 
-```text
+```csharp
 public abstract int SetZones(SpatialAudioZone[] zones, uint zoneCount);
 ```
 
@@ -961,7 +961,7 @@ public abstract int SetZones(SpatialAudioZone[] zones, uint zoneCount);
 
 <a id="api_ibasespatialaudioengine_updateplayerpositioninfo__prototype"></a>
 
-```text
+```csharp
 public abstract int UpdatePlayerPositionInfo(int playerId, RemoteVoicePositionInfo positionInfo);
 ```
 
@@ -1017,7 +1017,7 @@ public abstract int UpdatePlayerPositionInfo(int playerId, RemoteVoicePositionIn
 
 <a id="api_irtcengine_enablespatialaudio__prototype"></a>
 
-```text
+```csharp
 public abstract int EnableSpatialAudio(bool enabled);
 ```
 

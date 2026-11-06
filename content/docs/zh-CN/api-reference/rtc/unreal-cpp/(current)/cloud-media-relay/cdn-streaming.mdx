@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_setdirectcdnstreamingaudioconfiguration__prototype"></a>
 
-```text
+```cpp
 virtual int setDirectCdnStreamingAudioConfiguration(AUDIO_PROFILE_TYPE profile) = 0;
 ```
 
@@ -65,7 +65,7 @@ virtual int setDirectCdnStreamingAudioConfiguration(AUDIO_PROFILE_TYPE profile) 
 
 <a id="api_irtcengine_setdirectcdnstreamingvideoconfiguration__prototype"></a>
 
-```text
+```cpp
 virtual
             int setDirectCdnStreamingVideoConfiguration(const VideoEncoderConfiguration& config)
             = 0;
@@ -117,7 +117,7 @@ virtual
 
 <a id="api_irtcengine_startdirectcdnstreaming__prototype"></a>
 
-```text
+```cpp
 virtual int startDirectCdnStreaming(IDirectCdnStreamingEventHandler* eventHandler,
             const char* publishUrl, const DirectCdnStreamingMediaOptions& options) = 0;
 ```
@@ -191,7 +191,7 @@ CDN 推流 URL。
 
 <a id="api_irtcengine_stopdirectcdnstreaming__prototype"></a>
 
-```text
+```cpp
 virtual int stopDirectCdnStreaming() = 0;
 ```
 
@@ -216,7 +216,7 @@ CDN 推流状态改变回调。
 
 <a id="callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onDirectCdnStreamingStateChanged(DIRECT_CDN_STREAMING_STATE state, DIRECT_CDN_STREAMING_REASON reason, const char* message)  {
   (void)state;
   (void)reason;
@@ -269,7 +269,7 @@ CDN 推流统计数据回调。
 
 <a id="callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats__prototype"></a>
 
-```text
+```cpp
 virtual void onDirectCdnStreamingStats(const DirectCdnStreamStats& stats)  {
   (void)stats;
 };

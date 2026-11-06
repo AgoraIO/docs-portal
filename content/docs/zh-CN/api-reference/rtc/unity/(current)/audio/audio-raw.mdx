@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_imediaengine_registeraudioframeobserver__prototype"></a>
 
-```text
+```csharp
 public abstract int RegisterAudioFrameObserver(IAudioFrameObserver audioFrameObserver, AUDIO_FRAME_POSITION position, OBSERVER_MODE mode = OBSERVER_MODE.INTPTR);
 ```
 
@@ -87,7 +87,7 @@ public abstract int RegisterAudioFrameObserver(IAudioFrameObserver audioFrameObs
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__prototype"></a>
 
-```text
+```csharp
 public abstract int SetEarMonitoringAudioFrameParameters(int sampleRate, int channel, RAW_AUDIO_FRAME_OP_MODE_TYPE mode, int samplesPerCall);
 ```
 
@@ -157,7 +157,7 @@ public abstract int SetEarMonitoringAudioFrameParameters(int sampleRate, int cha
 
 <a id="api_irtcengine_setmixedaudioframeparameters__prototype"></a>
 
-```text
+```csharp
 public abstract int SetMixedAudioFrameParameters(int sampleRate, int channel, int samplesPerCall);
 ```
 
@@ -220,7 +220,7 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__prototype"></a>
 
-```text
+```csharp
 public abstract int SetPlaybackAudioFrameBeforeMixingParameters(int sampleRate, int channel);
 ```
 
@@ -277,7 +277,7 @@ SDK 会根据该采样间隔触发 [OnPlaybackAudioFrameBeforeMixing](/zh-CN/api
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__prototype"></a>
 
-```text
+```csharp
 public abstract int SetPlaybackAudioFrameBeforeMixingParameters(int sampleRate, int channel, int samplesPerCall);
 ```
 
@@ -340,7 +340,7 @@ SDK 会根据该采样间隔触发 [OnPlaybackAudioFrameBeforeMixing](/zh-CN/api
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__prototype"></a>
 
-```text
+```csharp
 public abstract int SetPlaybackAudioFrameParameters(int sampleRate, int channel,
             RAW_AUDIO_FRAME_OP_MODE_TYPE mode, int samplesPerCall);
 ```
@@ -410,7 +410,7 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__prototype"></a>
 
-```text
+```csharp
 public abstract int SetRecordingAudioFrameParameters(int sampleRate, int channel, RAW_AUDIO_FRAME_OP_MODE_TYPE mode, int samplesPerCall);
 ```
 
@@ -479,7 +479,7 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 
 <a id="api_irtcengine_unregisteraudioframeobserver__prototype"></a>
 
-```text
+```csharp
 public abstract int UnRegisterAudioFrameObserver();
 ```
 
@@ -506,7 +506,7 @@ public abstract int UnRegisterAudioFrameObserver();
 
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe__prototype"></a>
 
-```text
+```csharp
 public virtual bool OnEarMonitoringAudioFrame(AudioFrame audioFrame)
         {
             return true;
@@ -550,7 +550,7 @@ public virtual bool OnEarMonitoringAudioFrame(AudioFrame audioFrame)
 
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe__prototype"></a>
 
-```text
+```csharp
 public virtual bool OnMixedAudioFrame(string channelId, AudioFrame audio_frame)
         {
             return true;
@@ -600,7 +600,7 @@ public virtual bool OnMixedAudioFrame(string channelId, AudioFrame audio_frame)
 
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe__prototype"></a>
 
-```text
+```csharp
 public virtual bool OnPlaybackAudioFrame(string channelId, AudioFrame audio_frame)
         {
             return true;
@@ -650,7 +650,7 @@ public virtual bool OnPlaybackAudioFrame(string channelId, AudioFrame audio_fram
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__prototype"></a>
 
-```text
+```csharp
 public virtual bool OnPlaybackAudioFrameBeforeMixing(string channel_id,
                                                         uint uid,
                                                         AudioFrame audio_frame)
@@ -706,7 +706,7 @@ public virtual bool OnPlaybackAudioFrameBeforeMixing(string channel_id,
 
 <a id="callback_iaudioframeobserverbase_onrecordaudioframe__prototype"></a>
 
-```text
+```csharp
 public virtual bool OnRecordAudioFrame(string channelId, AudioFrame audioFrame)
         {
             return true;

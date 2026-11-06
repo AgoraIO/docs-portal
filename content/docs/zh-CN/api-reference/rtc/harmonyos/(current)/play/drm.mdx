@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_imusiccontentcenter_createmusicplayer__prototype"></a>
 
-```text
+```ts
 public abstract createMusicPlayer():IAgoraMusicPlayer
 ```
 
@@ -93,7 +93,7 @@ public abstract createMusicPlayer():IAgoraMusicPlayer
 
 <a id="api_imusiccontentcenter_destroy__prototype"></a>
 
-```text
+```ts
 public static destroy():void
 {
   RtcNapi.destroyMusicContentCenter()
@@ -120,7 +120,7 @@ public static destroy():void
 
 <a id="api_imusiccontentcenter_getcaches__prototype"></a>
 
-```text
+```ts
 public abstract getCaches():MusicCacheInfo[]
 ```
 
@@ -153,7 +153,7 @@ public abstract getCaches():MusicCacheInfo[]
 
 <a id="api_imusiccontentcenter_getinternalsongcode__prototype"></a>
 
-```text
+```ts
 public abstract getInternalSongCode(songCode:bigint,jsonOption:string):bigint
 ```
 
@@ -227,7 +227,7 @@ v4.2.2
 
 <a id="api_imusiccontentcenter_getlyric__prototype"></a>
 
-```text
+```ts
 public abstract getLyric(songCode:bigint,lyricType:number):string
 ```
 
@@ -277,7 +277,7 @@ public abstract getLyric(songCode:bigint,lyricType:number):string
 
 <a id="api_imusiccontentcenter_getmusiccharts__prototype"></a>
 
-```text
+```ts
 public abstract getMusicCharts():string
 ```
 
@@ -305,7 +305,7 @@ public abstract getMusicCharts():string
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid2__prototype"></a>
 
-```text
+```ts
 public abstract getMusicCollectionByMusicChartId(musicChartId:number,page:number,pageSize:number,jsonOption?:string):string
 ```
 
@@ -389,7 +389,7 @@ public abstract getMusicCollectionByMusicChartId(musicChartId:number,page:number
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__prototype"></a>
 
-```text
+```ts
 public abstract getSongSimpleInfo(songCode:bigint):string
 ```
 
@@ -432,7 +432,7 @@ public abstract getSongSimpleInfo(songCode:bigint):string
 
 <a id="api_imusiccontentcenter_initialize__prototype"></a>
 
-```text
+```ts
 public abstract initialize(configuration:MusicContentCenterConfiguration):number
 ```
 
@@ -473,7 +473,7 @@ IAgoraMusicContentCenter 的设置，详见 [MusicContentCenterConfiguration](/z
 
 <a id="api_imusiccontentcenter_ispreloaded__prototype"></a>
 
-```text
+```ts
 public abstract isPreloaded(songCode:bigint):number
 ```
 
@@ -517,7 +517,7 @@ public abstract isPreloaded(songCode:bigint):number
 
 <a id="api_imusicontentcenter_preload2__prototype"></a>
 
-```text
+```ts
 public abstract preload(songCode:bigint):string
 ```
 
@@ -564,7 +564,7 @@ public abstract preload(songCode:bigint):string
 
 <a id="api_imusiccontentcenter_registereventhandler__prototype"></a>
 
-```text
+```ts
 public abstract registerEventHandler(eventHandler:IMusicContentCenterEventHandler):number
 ```
 
@@ -599,7 +599,7 @@ public abstract registerEventHandler(eventHandler:IMusicContentCenterEventHandle
 
 <a id="api_imusiccontentcenter_release__prototype"></a>
 
-```text
+```ts
 public abstract release(): void;
 ```
 
@@ -623,7 +623,7 @@ public abstract release(): void;
 
 <a id="api_imusiccontentcenter_removecache__prototype"></a>
 
-```text
+```ts
 public abstract removeCache(songCode:bigint):number
 ```
 
@@ -671,7 +671,7 @@ public abstract removeCache(songCode:bigint):number
 
 <a id="api_imusiccontentcenter_renewtoken__prototype"></a>
 
-```text
+```ts
 public abstract renewToken(token:string):number
 ```
 
@@ -715,7 +715,7 @@ public abstract renewToken(token:string):number
 
 <a id="api_imusiccontentcenter_searchmusic2__prototype"></a>
 
-```text
+```ts
 public abstract searchMusic(keyword:string,page:number,pageSize:number,jsonOption?:string):string
 ```
 
@@ -799,7 +799,7 @@ public abstract searchMusic(keyword:string,page:number,pageSize:number,jsonOptio
 
 <a id="api_imusicplayer_setplaymode__prototype"></a>
 
-```text
+```ts
 abstract setPlayMode(mode:Constants.MusicPlayMode):number
 ```
 
@@ -865,7 +865,7 @@ abstract setPlayMode(mode:Constants.MusicPlayMode):number
 
 <a id="api_imusiccontentcenter_unregistereventhandler__prototype"></a>
 
-```text
+```ts
 public abstract unregisterEventHandler():number
 ```
 
@@ -894,7 +894,7 @@ public abstract unregisterEventHandler():number
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult__prototype"></a>
 
-```text
+```ts
 onLyricResult?:(requestId:string,songCode:bigint,lyricUrl:string,reason:Constants.MusicContentCenterStateReason) => void
 ```
 
@@ -939,7 +939,7 @@ onLyricResult?:(requestId:string,songCode:bigint,lyricUrl:string,reason:Constant
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__prototype"></a>
 
-```text
+```ts
 onMusicChartsResult?:(requestId:string,list:MusicChartInfo[],reason:Constants.MusicContentCenterStateReason) => void
 ```
 
@@ -984,7 +984,7 @@ onMusicChartsResult?:(requestId:string,list:MusicChartInfo[],reason:Constants.Mu
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__prototype"></a>
 
-```text
+```ts
 onMusicCollectionResult?:(requestId:string,page:number,pageSize:number,total:number,list:Music[],reason:Constants.MusicContentCenterStateReason) => void
 ```
 
@@ -1047,7 +1047,7 @@ onMusicCollectionResult?:(requestId:string,page:number,pageSize:number,total:num
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent__prototype"></a>
 
-```text
+```ts
 onPreLoadEvent?:(requestId:string,songCode:bigint,percent:number,lyricUrl:string,state:number,reason:Constants.MusicContentCenterStateReason) => void
 ```
 
@@ -1108,7 +1108,7 @@ onPreLoadEvent?:(requestId:string,songCode:bigint,percent:number,lyricUrl:string
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__prototype"></a>
 
-```text
+```ts
 onSongSimpleInfoResult?:(requestId:string,songCode:bigint,simpleInfo:string,reason:Constants.MusicContentCenterStateReason) => void
 ```
 

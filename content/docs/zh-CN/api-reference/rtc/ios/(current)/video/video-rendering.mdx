@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_enableinstantmediarendering__prototype"></a>
 
-```text
+```objc
 - (int)enableInstantMediaRendering NS_SWIFT_NAME(enableInstantMediaRendering());
 ```
 
@@ -72,7 +72,7 @@ _migration:
 
 <a id="api_irtcengine_setlocalrendermode1__prototype"></a>
 
-```text
+```objc
 - (int)setLocalRenderMode:(NSUInteger)uid
                      mode:(AgoraVideoRenderMode)mode NS_SWIFT_NAME(setLocalRenderMode(_:mode:)) __deprecated;
 ```
@@ -127,7 +127,7 @@ _migration:
 
 <a id="api_irtcengine_setlocalrendermode2__prototype"></a>
 
-```text
+```objc
 - (int)setLocalRenderMode:(AgoraVideoRenderMode)mode
                    mirror:(AgoraVideoMirrorMode)mirror NS_SWIFT_NAME(setLocalRenderMode(_:mirror:));
 ```
@@ -189,7 +189,7 @@ _migration:
 
 <a id="api_irtcengine_setlocalrendertargetfps__prototype"></a>
 
-```text
+```objc
 - (int)setLocalRenderTargetFps:(AgoraVideoSourceType)sourceType
                                targetFps:(int)targetFps;
 ```
@@ -250,7 +250,7 @@ _migration:
 
 <a id="api_irtcengine_setlocalvideomirrormode__prototype"></a>
 
-```text
+```objc
 - (int)setLocalVideoMirrorMode:(AgoraVideoMirrorMode)mode NS_SWIFT_NAME(setLocalVideoMirrorMode(_:)) __deprecated;
 ```
 
@@ -296,7 +296,7 @@ _migration:
 
 <a id="api_irtcengine_setremoterendermode2__prototype"></a>
 
-```text
+```objc
 - (int)setRemoteRenderMode:(NSUInteger)uid
                       mode:(AgoraVideoRenderMode)mode
                     mirror:(AgoraVideoMirrorMode)mirror NS_SWIFT_NAME(setRemoteRenderMode(_:mode:mirror:));
@@ -359,7 +359,7 @@ _migration:
 
 <a id="api_irtcengineex_setremoterendermodeex__prototype"></a>
 
-```text
+```objc
 - (int)setRemoteRenderModeEx:(NSUInteger)uid
                         mode:(AgoraVideoRenderMode)mode
                       mirror:(AgoraVideoMirrorMode)mirror
@@ -435,7 +435,7 @@ _migration:
 
 <a id="api_irtcengine_setremoterendertargetfps__prototype"></a>
 
-```text
+```objc
 - (int)setRemoteRenderTargetFps:(int)targetFps;
 ```
 
@@ -489,7 +489,7 @@ _migration:
 
 <a id="api_imediaplayer_setrendermode__prototype"></a>
 
-```text
+```objc
 - (int)setRenderMode:(AgoraMediaPlayerRenderMode)mode NS_SWIFT_NAME(setRenderMode(_:));
 ```
 
@@ -529,7 +529,7 @@ _migration:
 
 <a id="api_irtcengine_setuplocalvideo__prototype"></a>
 
-```text
+```objc
 - (int)setupLocalVideo:(AgoraRtcVideoCanvas * _Nullable)local NS_SWIFT_NAME(setupLocalVideo(_:));
 ```
 
@@ -589,7 +589,7 @@ _migration:
 
 <a id="api_irtcengine_setupremotevideo__prototype"></a>
 
-```text
+```objc
 - (int)setupRemoteVideo:(AgoraRtcVideoCanvas * _Nonnull)remote NS_SWIFT_NAME(setupRemoteVideo(_:));
 ```
 
@@ -642,7 +642,7 @@ _migration:
 
 <a id="api_irtcengineex_setupremotevideoex__prototype"></a>
 
-```text
+```objc
 - (int)setupRemoteVideoEx:(AgoraRtcVideoCanvas* _Nonnull)remote
                connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(setupRemoteVideoEx(_:connection:));
 ```
@@ -707,7 +707,7 @@ _migration:
 
 <a id="api_irtcengine_startmediarenderingtracing__prototype"></a>
 
-```text
+```objc
 - (int)startMediaRenderingTracing NS_SWIFT_NAME(startMediaRenderingTracing());
 ```
 
@@ -755,7 +755,7 @@ _migration:
 
 <a id="api_irtcengineex_startmediarenderingtracingex__prototype"></a>
 
-```text
+```objc
 - (int)startMediaRenderingTracingEx:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(startMediaRenderingTracingEx(_:));
 ```
 
@@ -814,7 +814,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didTranscodedStreamLayoutInfoUpdatedWithUserId:(NSUInteger)uid videoLayoutInfo:(AgoraVideoLayoutInfo* _Nonnull)videoLayoutInfo NS_SWIFT_NAME(rtcEngine(_:didTranscodedStreamLayoutInfoUpdatedWithUserId:videoLayoutInfo:));
 ```
 
@@ -867,7 +867,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine videoRenderingTracingResultOfUid:(NSUInteger)uid currentEvent:(AgoraMediaTraceEvent)currentEvent tracingInfo:(AgoraVideoRenderingTracingInfo * _Nonnull)tracingInfo NS_SWIFT_NAME(rtcEngine(_:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:));
 ```
 

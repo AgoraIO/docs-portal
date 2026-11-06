@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_configrhythmplayer__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int ConfigRhythmPlayer(const FAgoraRhythmPlayerConfig& config);
 ```
@@ -84,7 +84,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_startrhythmplayer__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StartRhythmPlayer(const FString& sound1, const FString& sound2, const FAgoraRhythmPlayerConfig& config);
 ```
@@ -166,7 +166,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_stoprhythmplayer__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StopRhythmPlayer();
 ```
@@ -202,7 +202,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnRhythmPlayerStateChanged(FENUMWRAP_RHYTHM_PLAYER_STATE_TYPE state, FENUMWRAP_RHYTHM_PLAYER_REASON reason);
 ```

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_enableinstantmediarendering__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int EnableInstantMediaRendering();
 ```
@@ -73,7 +73,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setlocalrendermode2__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetLocalRenderMode(ERENDER_MODE_TYPE renderMode, EVIDEO_MIRROR_MODE_TYPE mirrorMode = EVIDEO_MIRROR_MODE_TYPE::VIDEO_MIRROR_MODE_AUTO);
 ```
@@ -145,7 +145,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setlocalrendertargetfps__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetLocalRenderTargetFps(EUABT_VIDEO_SOURCE_TYPE sourceType, int targetFps);
 ```
@@ -214,7 +214,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setlocalvideomirrormode__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetLocalVideoMirrorMode(EVIDEO_MIRROR_MODE_TYPE mirrorMode);
 ```
@@ -269,7 +269,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setremoterendermode2__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetRemoteRenderMode(int64 uid, ERENDER_MODE_TYPE renderMode, EVIDEO_MIRROR_MODE_TYPE mirrorMode);
 ```
@@ -337,7 +337,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_setremoterendermodeex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetRemoteRenderModeEx(int64 uid, ERENDER_MODE_TYPE renderMode, EVIDEO_MIRROR_MODE_TYPE mirrorMode, const FRtcConnection& connection);
 ```
@@ -415,7 +415,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_setremoterendertargetfps__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetRemoteRenderTargetFps(int targetFps);
 ```
@@ -478,7 +478,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_imediaplayer_setrendermode__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 	int SetRenderMode(ERENDER_MODE_TYPE renderMode);
 ```
@@ -517,7 +517,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IMediaPlayer")
 
 <a id="api_irtcengine_setuplocalvideo__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetupLocalVideo(const FVideoCanvas& canvas);
 ```
@@ -588,7 +588,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setupremotevideo__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetupRemoteVideo(const FVideoCanvas& canvas);
 ```
@@ -646,7 +646,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_setupremotevideoex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetupRemoteVideoEx(const FVideoCanvas& canvas, const FRtcConnection& connection);
 ```
@@ -712,7 +712,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_startmediarenderingtracing__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StartMediaRenderingTracing();
 ```
@@ -763,7 +763,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_startmediarenderingtracingex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StartMediaRenderingTracingEx(const FRtcConnection& connection);
 ```
@@ -821,7 +821,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnTranscodedStreamLayoutInfo(int64 uid, int width, int height, int layoutCount, const TArray<FVideoLayout>& layoutlist);
 ```
@@ -889,7 +889,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnVideoRenderingTracingResult(int64 uid, EMEDIA_TRACE_EVENT currentEvent, const FVideoRenderingTracingInfo& tracingInfo);
 ```

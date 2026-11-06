@@ -14,25 +14,43 @@ _migration:
 
 <a id="bitratemax"></a>
 
-### Optional bitrateMax
+<a id="optional-bitratemax"></a>
+
+### bitrateMax
+
+<ApiSignature labels="Optional">
 
 bitrateMax: number
+
+</ApiSignature>
 
 指定发送这个视频轨道时的最大码率，单位为 Kbps。
 
 <a id="bitratemin"></a>
 
-### Optional bitrateMin
+<a id="optional-bitratemin"></a>
+
+### bitrateMin
+
+<ApiSignature labels="Optional">
 
 bitrateMin: number
+
+</ApiSignature>
 
 指定发送这个视频轨道时的最小码率，单位为 Kbps。
 
 <a id="framerate"></a>
 
-### Optional frameRate
+<a id="optional-framerate"></a>
+
+### frameRate
+
+<ApiSignature labels="Optional">
 
 frameRate: number|[ConstrainLong](/zh-CN/api-reference/rtc/web/interfaces/constrainlong)
+
+</ApiSignature>
 
 :::info[自从]
 *4.17.1*
@@ -46,9 +64,15 @@ frameRate: number|[ConstrainLong](/zh-CN/api-reference/rtc/web/interfaces/constr
 
 <a id="height"></a>
 
-### Optional height
+<a id="optional-height"></a>
+
+### height
+
+<ApiSignature labels="Optional">
 
 height: number|[ConstrainLong](/zh-CN/api-reference/rtc/web/interfaces/constrainlong)
+
+</ApiSignature>
 
 :::info[自从]
 *4.17.1*
@@ -64,15 +88,25 @@ height: number|[ConstrainLong](/zh-CN/api-reference/rtc/web/interfaces/constrain
 
 ### mediaStreamTrack
 
+<ApiSignature>
+
 mediaStreamTrack: MediaStreamTrack
+
+</ApiSignature>
 
 这里填写您自己维护的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象
 
 <a id="optimizationmode"></a>
 
-### Optional optimizationMode
+<a id="optional-optimizationmode"></a>
+
+### optimizationMode
+
+<ApiSignature labels="Optional">
 
 optimizationMode: [OptimizationMode](/zh-CN/api-reference/rtc/web/globals#optimizationmode)
+
+</ApiSignature>
 
 :::info[自从]
 *4.2.0*
@@ -82,7 +116,9 @@ optimizationMode: [OptimizationMode](/zh-CN/api-reference/rtc/web/globals#optimi
 
 你可以在视频通话、视频直播或屏幕共享过程中调用此方法动态调整视频的传输优化模式。例如你想要把屏幕共享内容从演示文稿切换为视频时，你可以将传输优化模式从 `"detail"` 切换为 `"motion"`，确保视频画面在网络波动时不会出现卡顿。
 
-> 注意事项：该方法只支持 Chrome 浏览器。
+:::note[注意事项]
+该方法只支持 Chrome 浏览器。
+:::
 
 #### param
 
@@ -103,9 +139,15 @@ optimizationMode: [OptimizationMode](/zh-CN/api-reference/rtc/web/globals#optimi
 
 <a id="width"></a>
 
-### Optional width
+<a id="optional-width"></a>
+
+### width
+
+<ApiSignature labels="Optional">
 
 width: number|[ConstrainLong](/zh-CN/api-reference/rtc/web/interfaces/constrainlong)
+
+</ApiSignature>
 
 :::info[自从]
 *4.17.1*

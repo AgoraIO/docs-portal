@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_imediaplayer_registeraudioframeobserver1_imediaplayer__prototype"></a>
 
-```text
+```csharp
 public abstract int RegisterAudioFrameObserver(IAudioPcmFrameSink observer);
 ```
 
@@ -63,7 +63,7 @@ public abstract int RegisterAudioFrameObserver(IAudioPcmFrameSink observer);
 
 <a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer__prototype"></a>
 
-```text
+```csharp
 public abstract int RegisterAudioFrameObserver(IAudioPcmFrameSink observer, RAW_AUDIO_FRAME_OP_MODE_TYPE mode);
 ```
 
@@ -109,7 +109,7 @@ public abstract int RegisterAudioFrameObserver(IAudioPcmFrameSink observer, RAW_
 
 <a id="api_imediaplayer_unregisteraudioframeobserver_imediaplayer__prototype"></a>
 
-```text
+```csharp
 public abstract int UnregisterAudioFrameObserver();
 ```
 
@@ -136,7 +136,7 @@ public abstract int UnregisterAudioFrameObserver();
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver__prototype"></a>
 
-```text
+```csharp
 public virtual void OnAudioVolumeIndication(int volume) {}
 ```
 
@@ -171,7 +171,7 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 <a id="callback_iaudiopcmframesink_onframe_iaudiopcmframesink__prototype"></a>
 
-```text
+```csharp
 public virtual bool OnFrame(AudioPcmFrame frame)
         {
             return true;
@@ -215,7 +215,7 @@ public virtual bool OnFrame(AudioPcmFrame frame)
 
 <a id="callback_imediaplayersourceobserver_onmetadata__prototype"></a>
 
-```text
+```csharp
 public virtual void OnMetaData(byte[] data, int length) { }
 ```
 
@@ -256,7 +256,7 @@ public virtual void OnMetaData(byte[] data, int length) { }
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__prototype"></a>
 
-```text
+```csharp
 public virtual void OnPlayBufferUpdated(Int64 playCachedBuffer) { }
 ```
 
@@ -294,7 +294,7 @@ public virtual void OnPlayBufferUpdated(Int64 playCachedBuffer) { }
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__prototype"></a>
 
-```text
+```csharp
 public virtual void OnPlayerEvent(MEDIA_PLAYER_EVENT eventCode, Int64 elapsedTime, string message) { }
 ```
 
@@ -341,7 +341,7 @@ public virtual void OnPlayerEvent(MEDIA_PLAYER_EVENT eventCode, Int64 elapsedTim
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__prototype"></a>
 
-```text
+```csharp
 public virtual void OnPlayerInfoUpdated(PlayerUpdatedInfo info) { }
 ```
 
@@ -376,7 +376,7 @@ public virtual void OnPlayerInfoUpdated(PlayerUpdatedInfo info) { }
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__prototype"></a>
 
-```text
+```csharp
 public virtual void OnPlayerSourceStateChanged(MEDIA_PLAYER_STATE state, MEDIA_PLAYER_REASON reason)
 ```
 
@@ -417,7 +417,7 @@ public virtual void OnPlayerSourceStateChanged(MEDIA_PLAYER_STATE state, MEDIA_P
 
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__prototype"></a>
 
-```text
+```csharp
 public virtual void OnPlayerSrcInfoChanged(SrcInfo from, SrcInfo to) {}
 ```
 
@@ -456,7 +456,7 @@ public virtual void OnPlayerSrcInfoChanged(SrcInfo from, SrcInfo to) {}
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__prototype"></a>
 
-```text
+```csharp
 public virtual void OnPositionChanged(long positionMs, long timestampMs)
 ```
 
@@ -501,7 +501,7 @@ public virtual void OnPositionChanged(long positionMs, long timestampMs)
 
 <a id="callback_imediaplayersourceobserver_onpreloadevent__prototype"></a>
 
-```text
+```csharp
 public virtual void OnPreloadEvent(string src, PLAYER_PRELOAD_EVENT @event) { }
 ```
 
@@ -540,7 +540,7 @@ public virtual void OnPreloadEvent(string src, PLAYER_PRELOAD_EVENT @event) { }
 
 <a id="callback_imediaplayercustomdataprovider_onreaddata__prototype"></a>
 
-```text
+```csharp
 public virtual int OnReadData(IntPtr bufferPtr, int bufferSize)
         {
             return 0;

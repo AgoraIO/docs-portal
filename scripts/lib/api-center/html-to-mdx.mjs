@@ -6,6 +6,7 @@ import {
 } from '../legacy-image-sizing.mjs';
 import { layoutMergedTable, renderMergedTable } from '../merged-table.mjs';
 import { normalizeTableGrid } from '../table-grid.mjs';
+import { apiPrototypeLanguage } from './code-language.mjs';
 import { rewriteLegacyBodyLinks } from './legacy-links.mjs';
 import {
   createWarning,
@@ -16,6 +17,7 @@ import {
   renderStableAnchor,
   rewriteLegacyHref,
 } from './migration-framework.mjs';
+import { typedocNotice } from './typedoc-structure.mjs';
 
 export const API_CENTER_GENERATOR_CONVERSION_OPTIONS = Object.freeze({
   appledoc: {
@@ -176,10 +178,15 @@ function calloutType(element) {
   return null;
 }
 
-function languageFromCode(element) {
-  const classes = String(element.attr('class') ?? '').split(/\s+/);
-  const marker = classes.find((name) => /^(?:lang|language)-/.test(name));
-  return marker?.replace(/^(?:lang|language)-/, '') || 'text';
+function languageFromCode(element, state) {
+  for (const candidate of [element, element.parent()]) {
+    const classes = String(candidate.attr('class') ?? '').split(/\s+/);
+    const marker = classes.find((name) => /^(?:lang|language)-/.test(name));
+    if (marker) return marker.replace(/^(?:lang|language)-/, '');
+  }
+  return element.closest('[id$="__prototype"]').length
+    ? (apiPrototypeLanguage(state.sourcePath) ?? 'text')
+    : 'text';
 }
 
 function selectArticle($) {
@@ -1185,7 +1192,21 @@ async function renderUnwrappedListItems($, element, state) {
 }
 
 async function renderTable($, table, state) {
-  const rows = table.find('> thead > tr, > tbody > tr, > tr').toArray();
+  const rows = table
+    .find('> thead > tr, > tbody > tr, > tr')
+    .toArray()
+    .filter((row) => {
+      // Doxygen inserts empty decoration rows between members, not API records.
+      const cells = $(row).children('td, th');
+      return !(
+        table.hasClass('memberdecls') &&
+        cells.length === 1 &&
+        cells.first().hasClass('memSeparator') &&
+        !cleanText($(row).text()) &&
+        !$(row).attr('id') &&
+        !$(row).find('[id], a[name], a[href], img').length
+      );
+    });
   if (rows.length === 0) return '';
   const values = [];
   const definitions = [];
@@ -1264,6 +1285,16 @@ async function renderTable($, table, state) {
     .join('\n\n');
 }
 
+async function renderCalloutChildren($, element, state) {
+  const previous = state.calloutDepth ?? 0;
+  state.calloutDepth = previous + 1;
+  try {
+    return await renderChildren($, element, state);
+  } finally {
+    state.calloutDepth = previous;
+  }
+}
+
 async function renderDefinitionList($, list, state) {
   const blocks = [];
   const listIsSince = classNames(list).has('since');
@@ -1293,7 +1324,10 @@ async function renderDefinitionList($, list, state) {
         listIsSince ||
         (listIsTypeDocCommentTags && isSinceDefinitionTerm(renderedTerm));
     } else {
-      const body = await renderChildren($, $(child), state);
+      const body =
+        term && (listIsDeprecated || termIsSince || listIsDoxygenNote)
+          ? await renderCalloutChildren($, $(child), state)
+          : await renderChildren($, $(child), state);
       if (term) {
         if (listIsDeprecated) {
           const title = termPlainText || term;
@@ -1480,6 +1514,31 @@ async function renderBlockNode($, node, state) {
   const element = $(node);
   const name = elementName(node);
   const anchor = anchorFor(element);
+  if (name === 'div' && element.hasClass('tsd-signature')) {
+    const labels = element
+      .parent()
+      .children('h3, h4')
+      .find('.tsd-flag')
+      .toArray()
+      .map((flag) => cleanText($(flag).text()))
+      .filter(Boolean);
+    const signature = normalizeGeneratedSignature(
+      await renderTypeDocInlineNodes($, element.contents().toArray(), state),
+    );
+    if (signature) {
+      state.structuredApiMembers.typedoc.signatures += 1;
+      return [
+        anchor,
+        renderRichMdxComponent(
+          'ApiSignature',
+          signature,
+          parameterAttribute('labels', labels.join(' ')),
+        ),
+      ]
+        .filter(Boolean)
+        .join('\n\n');
+    }
+  }
   if (name === 'nav') {
     const isRelatedLinks =
       element.hasClass('related-links') || element.find('.relinfo').length > 0;
@@ -1526,7 +1585,7 @@ async function renderBlockNode($, node, state) {
       .first();
     const title = cleanText(titleNode.text());
     if (titleNode.length > 0) titleNode.remove();
-    const body = await renderChildren($, element, state);
+    const body = await renderCalloutChildren($, element, state);
     return [anchor, renderCallout({ type: detectedCallout, title, body })]
       .filter(Boolean)
       .join('\n\n');
@@ -1567,6 +1626,20 @@ async function renderBlockNode($, node, state) {
   }
   if (/^h[1-6]$/.test(name)) {
     const level = Number(name.slice(1));
+    let modifierAlias = '';
+    let headingElement = element;
+    if (
+      element.find('.tsd-flag').length &&
+      element.parent().children('div.tsd-signature').length
+    ) {
+      const oldId = getTableOfContents(
+        `${'#'.repeat(level)} ${cleanText(element.text())}`,
+      )[0]?.url.slice(1);
+      headingElement = element.clone();
+      headingElement.find('.tsd-flag').remove();
+      if (oldId && oldId !== element.attr('id'))
+        modifierAlias = renderStableAnchor(oldId);
+    }
     const nestedAnchors = element
       .find('a[id], a[name]')
       .toArray()
@@ -1575,11 +1648,16 @@ async function renderBlockNode($, node, state) {
     const title = cleanText(
       stripHeadingLinks(
         (
-          await renderInlineNodes($, element.contents().toArray(), state)
+          await renderInlineNodes($, headingElement.contents().toArray(), state)
         ).replace(/<a id=(?:"[^"]*"|'[^']*')><\/a>/g, ''),
       ),
     );
-    return [anchor, ...nestedAnchors, `${'#'.repeat(level)} ${title}`]
+    return [
+      anchor,
+      modifierAlias,
+      ...nestedAnchors,
+      `${'#'.repeat(level)} ${title}`,
+    ]
       .filter(Boolean)
       .join('\n\n');
   }
@@ -1602,7 +1680,7 @@ async function renderBlockNode($, node, state) {
         rawText: true,
       }),
     );
-    return [anchor, renderCodeFence(source, languageFromCode(element))]
+    return [anchor, renderCodeFence(source, languageFromCode(element, state))]
       .filter(Boolean)
       .join('\n\n');
   }
@@ -1618,7 +1696,13 @@ async function renderBlockNode($, node, state) {
       );
       return anchor;
     }
-    return [anchor, renderCodeFence(source, languageFromCode(code))]
+    return [
+      anchor,
+      renderCodeFence(
+        source,
+        languageFromCode(code.length ? code : element, state),
+      ),
+    ]
       .filter(Boolean)
       .join('\n\n');
   }
@@ -1667,7 +1751,22 @@ async function renderBlockNode($, node, state) {
       .join('\n\n');
   }
   if (name === 'blockquote') {
-    const content = await renderChildren($, element, state);
+    const labeled =
+      element.parents('blockquote').length === 0 &&
+      typedocNotice(cleanText(element.text()));
+    const content = labeled
+      ? await renderCalloutChildren($, element, state)
+      : await renderChildren($, element, state);
+    const notice = labeled && typedocNotice(content);
+    if (notice)
+      return [
+        anchor,
+        state.calloutDepth
+          ? `**${notice.title}${notice.separator}**\n\n${notice.body}`
+          : renderCallout(notice),
+      ]
+        .filter(Boolean)
+        .join('\n\n');
     const quote = content
       .split('\n')
       .map((line) => `> ${line}`.trimEnd())

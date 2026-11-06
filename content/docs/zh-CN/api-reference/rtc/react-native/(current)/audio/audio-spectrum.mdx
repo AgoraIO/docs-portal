@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_disableaudiospectrummonitor__prototype"></a>
 
-```text
+```ts
 abstract disableAudioSpectrumMonitor(): number;
 ```
 
@@ -54,7 +54,7 @@ abstract disableAudioSpectrumMonitor(): number;
 
 <a id="api_irtcengine_enableaudiospectrummonitor__prototype"></a>
 
-```text
+```ts
 abstract enableAudioSpectrumMonitor(intervalInMS?: number): number;
 ```
 
@@ -102,7 +102,7 @@ SDK 触发 [onLocalAudioSpectrum](/zh-CN/api-reference/rtc/react-native/audio/au
 
 <a id="api_irtcengine_registeraudiospectrumobserver__prototype"></a>
 
-```text
+```ts
 abstract registerAudioSpectrumObserver(
     observer: IAudioSpectrumObserver
   ): number;
@@ -149,7 +149,7 @@ abstract registerAudioSpectrumObserver(
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver__prototype"></a>
 
-```text
+```ts
 abstract unregisterAudioSpectrumObserver(
     observer: IAudioSpectrumObserver
   ): number;
@@ -184,7 +184,7 @@ abstract unregisterAudioSpectrumObserver(
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__prototype"></a>
 
-```text
+```ts
 onLocalAudioSpectrum?(data: AudioSpectrumData): void;
 ```
 
@@ -219,7 +219,7 @@ onLocalAudioSpectrum?(data: AudioSpectrumData): void;
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__prototype"></a>
 
-```text
+```ts
 onRemoteAudioSpectrum?(
     spectrums: UserAudioSpectrumInfo[],
     spectrumNumber: number

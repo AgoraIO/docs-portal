@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_startrtmpstreamwithouttranscoding__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StartRtmpStreamWithoutTranscoding(const FString& url);
 ```
@@ -82,7 +82,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StartRtmpStreamWithoutTranscodingEx(const FString& url, const FRtcConnection& connection);
 ```
@@ -149,7 +149,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_startrtmpstreamwithtranscoding__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StartRtmpStreamWithTranscoding(const FString& url, const FLiveTranscoding& transcoding);
 ```
@@ -220,7 +220,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_startrtmpstreamwithtranscodingex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StartRtmpStreamWithTranscodingEx(const FString& url, const FLiveTranscoding& transcoding, const FRtcConnection& connection);
 ```
@@ -296,7 +296,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_stoprtmpstream__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StopRtmpStream(const FString& url);
 ```
@@ -345,7 +345,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_stoprtmpstreamex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StopRtmpStreamEx(const FString& url, const FRtcConnection& connection);
 ```
@@ -394,7 +394,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_updatertmptranscoding__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int UpdateRtmpTranscoding(const FLiveTranscoding& transcoding);
 ```
@@ -441,7 +441,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_updatertmptranscodingex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int UpdateRtmpTranscodingEx(const FLiveTranscoding& transcoding, const FRtcConnection& connection);
 ```
@@ -494,7 +494,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="callback_irtcengineeventhandler_onrtmpstreamingevent__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnRtmpStreamingEvent(const FString& url, ERTMP_STREAMING_EVENT eventCode);
 ```
@@ -532,7 +532,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnRtmpStreamingStateChanged(const FString& url, ERTMP_STREAM_PUBLISH_STATE state, ERTMP_STREAM_PUBLISH_REASON reason);
 ```
@@ -582,7 +582,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_ontranscodingupdated__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnTranscodingUpdated();
 ```

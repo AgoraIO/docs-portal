@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume__prototype"></a>
 
-```text
+```cpp
 virtual int adjustAudioMixingPlayoutVolume(int volume) = 0;
 ```
 
@@ -67,7 +67,7 @@ virtual int adjustAudioMixingPlayoutVolume(int volume) = 0;
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume__prototype"></a>
 
-```text
+```cpp
 virtual int adjustAudioMixingPublishVolume(int volume) = 0;
 ```
 
@@ -113,7 +113,7 @@ virtual int adjustAudioMixingPublishVolume(int volume) = 0;
 
 <a id="api_irtcengine_adjustaudiomixingvolume__prototype"></a>
 
-```text
+```cpp
 virtual int adjustAudioMixingVolume(int volume) = 0;
 ```
 
@@ -163,7 +163,7 @@ virtual int adjustAudioMixingVolume(int volume) = 0;
 
 <a id="api_irtcengine_getaudiomixingcurrentposition__prototype"></a>
 
-```text
+```cpp
 virtual int getAudioMixingCurrentPosition() = 0;
 ```
 
@@ -197,7 +197,7 @@ virtual int getAudioMixingCurrentPosition() = 0;
 
 <a id="api_irtcengine_getaudiomixingduration__prototype"></a>
 
-```text
+```cpp
 virtual int getAudioMixingDuration() = 0;
 ```
 
@@ -230,7 +230,7 @@ virtual int getAudioMixingDuration() = 0;
 
 <a id="api_irtcengine_getaudiomixingplayoutvolume__prototype"></a>
 
-```text
+```cpp
 virtual int getAudioMixingPlayoutVolume() = 0;
 ```
 
@@ -265,7 +265,7 @@ virtual int getAudioMixingPlayoutVolume() = 0;
 
 <a id="api_irtcengine_getaudiomixingpublishvolume__prototype"></a>
 
-```text
+```cpp
 virtual int getAudioMixingPublishVolume() = 0;
 ```
 
@@ -296,7 +296,7 @@ virtual int getAudioMixingPublishVolume() = 0;
 
 <a id="api_irtcengine_getaudiotrackcount__prototype"></a>
 
-```text
+```cpp
 virtual int getAudioTrackCount() = 0;
 ```
 
@@ -327,7 +327,7 @@ virtual int getAudioTrackCount() = 0;
 
 <a id="api_irtcengine_pauseaudiomixing__prototype"></a>
 
-```text
+```cpp
 virtual int pauseAudioMixing() = 0;
 ```
 
@@ -362,7 +362,7 @@ virtual int pauseAudioMixing() = 0;
 
 <a id="api_irtcengine_resumeaudiomixing__prototype"></a>
 
-```text
+```cpp
 virtual int resumeAudioMixing() = 0;
 ```
 
@@ -397,7 +397,7 @@ virtual int resumeAudioMixing() = 0;
 
 <a id="api_irtcengine_selectaudiotrack__prototype"></a>
 
-```text
+```cpp
 virtual int selectAudioTrack(int index) = 0;
 ```
 
@@ -446,7 +446,7 @@ virtual int selectAudioTrack(int index) = 0;
 
 <a id="api_imediaplayer_selectmultiaudiotrack__prototype"></a>
 
-```text
+```cpp
 virtual int selectMultiAudioTrack(int playoutTrackIndex, int publishTrackIndex) = 0;
 ```
 
@@ -500,7 +500,7 @@ virtual int selectMultiAudioTrack(int playoutTrackIndex, int publishTrackIndex) 
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__prototype"></a>
 
-```text
+```cpp
 virtual int setAudioMixingDualMonoMode(media::AUDIO_MIXING_DUAL_MONO_MODE mode) = 0;
 ```
 
@@ -561,7 +561,7 @@ virtual int setAudioMixingDualMonoMode(media::AUDIO_MIXING_DUAL_MONO_MODE mode) 
 
 <a id="api_irtcengine_setaudiomixingpitch__prototype"></a>
 
-```text
+```cpp
 virtual int setAudioMixingPitch(int pitch) = 0;
 ```
 
@@ -609,7 +609,7 @@ virtual int setAudioMixingPitch(int pitch) = 0;
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed__prototype"></a>
 
-```text
+```cpp
 virtual int setAudioMixingPlaybackSpeed(int speed) = 0;
 ```
 
@@ -655,7 +655,7 @@ virtual int setAudioMixingPlaybackSpeed(int speed) = 0;
 
 <a id="api_irtcengine_setaudiomixingposition__prototype"></a>
 
-```text
+```cpp
 virtual int setAudioMixingPosition(int pos /*in ms*/) = 0;
 ```
 
@@ -703,7 +703,7 @@ virtual int setAudioMixingPosition(int pos /*in ms*/) = 0;
 
 <a id="api_irtcengine_startaudiomixing__prototype"></a>
 
-```text
+```cpp
 virtual int startAudioMixing(const char* filePath, bool loopback, int cycle) = 0;
 ```
 
@@ -805,7 +805,7 @@ virtual int startAudioMixing(const char* filePath, bool loopback, int cycle) = 0
 
 <a id="api_irtcengine_startaudiomixing2__prototype"></a>
 
-```text
+```cpp
 virtual int startAudioMixing(const char* filePath, bool loopback, int cycle, int startPos) = 0;
 ```
 
@@ -906,7 +906,7 @@ virtual int startAudioMixing(const char* filePath, bool loopback, int cycle, int
 
 <a id="api_irtcengine_stopaudiomixing__prototype"></a>
 
-```text
+```cpp
 virtual int stopAudioMixing() = 0;
 ```
 
@@ -941,7 +941,7 @@ virtual int stopAudioMixing() = 0;
 
 <a id="callback_irtcengineeventhandler_onaudiomixingfinished__prototype"></a>
 
-```text
+```cpp
 virtual void onAudioMixingFinished() __deprecated {}
 ```
 
@@ -975,7 +975,7 @@ virtual void onAudioMixingFinished() __deprecated {}
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__prototype"></a>
 
-```text
+```cpp
 virtual void onAudioMixingPositionChanged(int64_t position) {}
 ```
 
@@ -1017,7 +1017,7 @@ virtual void onAudioMixingPositionChanged(int64_t position) {}
 
 <a id="callback_irtcengineeventhandler_onaudiomixingstatechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onAudioMixingStateChanged(AUDIO_MIXING_STATE_TYPE state, AUDIO_MIXING_REASON_TYPE reason)
 ```
 

@@ -22,7 +22,7 @@ _migration:
 
 <a id="api_irtcengine_complain__prototype"></a>
 
-```text
+```csharp
 public abstract int Complain(string callId, string description);
 ```
 
@@ -76,7 +76,7 @@ public abstract int Complain(string callId, string description);
 
 <a id="api_irtcengine_enableencryption__prototype"></a>
 
-```text
+```csharp
 public abstract int EnableEncryption(bool enabled, EncryptionConfig config);
 ```
 
@@ -150,7 +150,7 @@ public abstract int EnableEncryption(bool enabled, EncryptionConfig config);
 
 <a id="api_irtcengine_enablewebsdkinteroperability__prototype"></a>
 
-```text
+```csharp
 public abstract int EnableWebSdkInteroperability(bool enabled);
 ```
 
@@ -205,7 +205,7 @@ public abstract int EnableWebSdkInteroperability(bool enabled);
 
 <a id="api_irtcengine_getcallid__prototype"></a>
 
-```text
+```csharp
 public abstract int GetCallId(ref string callId);
 ```
 
@@ -261,7 +261,7 @@ public abstract int GetCallId(ref string callId);
 
 <a id="api_irtcengine_getconnectionstate__prototype"></a>
 
-```text
+```csharp
 public abstract CONNECTION_STATE_TYPE GetConnectionState();
 ```
 
@@ -299,7 +299,7 @@ public abstract CONNECTION_STATE_TYPE GetConnectionState();
 
 <a id="api_irtcengineex_getconnectionstateex__prototype"></a>
 
-```text
+```csharp
 public abstract CONNECTION_STATE_TYPE GetConnectionStateEx(RtcConnection connection);
 ```
 
@@ -350,7 +350,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="api_irtcengine_getcurrentmonotonictimeinms__prototype"></a>
 
-```text
+```csharp
 public abstract long GetCurrentMonotonicTimeInMs();
 ```
 
@@ -393,7 +393,7 @@ Monotonic Time 是指一个单调递增的时间序列，它的值会随着时�
 
 <a id="api_irtcengine_geterrordescription__prototype"></a>
 
-```text
+```csharp
 public abstract string GetErrorDescription(int code);
 ```
 
@@ -430,7 +430,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_getnativehandle__prototype"></a>
 
-```text
+```csharp
 public abstract int GetNativeHandler(ref IntPtr nativeHandler);
 ```
 
@@ -470,7 +470,7 @@ public abstract int GetNativeHandler(ref IntPtr nativeHandler);
 
 <a id="api_irtcengine_getnetworktype__prototype"></a>
 
-```text
+```csharp
 public abstract int GetNetworkType();
 ```
 
@@ -515,7 +515,7 @@ public abstract int GetNetworkType();
 
 <a id="api_irtcengine_getntpwalltimeinms__prototype"></a>
 
-```text
+```csharp
 public abstract UInt64 GetNtpWallTimeInMs();
 ```
 
@@ -545,7 +545,7 @@ public abstract UInt64 GetNtpWallTimeInMs();
 
 <a id="api_irtcengine_getversion__prototype"></a>
 
-```text
+```csharp
 public abstract string GetVersion(ref int build);
 ```
 
@@ -582,7 +582,7 @@ public abstract string GetVersion(ref int build);
 
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__prototype"></a>
 
-```text
+```csharp
 public virtual void OnRemoteSubscribeFallbackToAudioOnly(uint uid, bool isFallbackOrRecover)
 ```
 
@@ -633,7 +633,7 @@ public virtual void OnRemoteSubscribeFallbackToAudioOnly(uint uid, bool isFallba
 
 <a id="api_irtcengine_rate__prototype"></a>
 
-```text
+```csharp
 public abstract int Rate(string callId, int rating, string description);
 ```
 
@@ -694,7 +694,7 @@ public abstract int Rate(string callId, int rating, string description);
 
 <a id="api_irtcengine_sendcustomreportmessage__prototype"></a>
 
-```text
+```csharp
 public abstract int SendCustomReportMessage(string id, string category, string @event, string label, int value);
 ```
 
@@ -720,7 +720,7 @@ public abstract int SendCustomReportMessage(string id, string category, string @
 
 <a id="api_irtcengineex_sendcustomreportmessageex__prototype"></a>
 
-```text
+```csharp
 public abstract int SendCustomReportMessageEx(string id, string category, string @event, string label, int value, RtcConnection connection);
 ```
 
@@ -744,7 +744,7 @@ public abstract int SendCustomReportMessageEx(string id, string category, string
 
 <a id="api_irtcengine_setavsyncsource__prototype"></a>
 
-```text
+```csharp
 public abstract int SetAVSyncSource(string channelId, uint uid);
 ```
 
@@ -798,7 +798,7 @@ public abstract int SetAVSyncSource(string channelId, uint uid);
 
 <a id="api_irtcengine_setcloudproxy__prototype"></a>
 
-```text
+```csharp
 public abstract int SetCloudProxy(CLOUD_PROXY_TYPE proxyType);
 ```
 
@@ -861,7 +861,7 @@ public abstract int SetCloudProxy(CLOUD_PROXY_TYPE proxyType);
 
 <a id="api_irtcengine_setlocalaccesspoint__prototype"></a>
 
-```text
+```csharp
 public abstract int SetLocalAccessPoint(LocalAccessPointConfiguration config);
 ```
 
@@ -911,7 +911,7 @@ Local Access Point 配置。详见 [LocalAccessPointConfiguration](/zh-CN/api-re
 
 <a id="api_irtcengine_setlogfile__prototype"></a>
 
-```text
+```csharp
 public abstract int SetLogFile(string filePath);
 ```
 
@@ -971,7 +971,7 @@ App 必须保证指定的目录存在而且可写。
 
 <a id="api_irtcengine_setlogfilesize__prototype"></a>
 
-```text
+```csharp
 public abstract int SetLogFileSize(uint fileSizeInKBytes);
 ```
 
@@ -1044,7 +1044,7 @@ public abstract int SetLogFileSize(uint fileSizeInKBytes);
 
 <a id="api_irtcengine_setlogfilter__prototype"></a>
 
-```text
+```csharp
 public abstract int SetLogFilter(uint filter);
 ```
 
@@ -1092,7 +1092,7 @@ public abstract int SetLogFilter(uint filter);
 
 <a id="api_irtcengine_setloglevel__prototype"></a>
 
-```text
+```csharp
 public abstract int SetLogLevel(LOG_LEVEL level);
 ```
 
@@ -1140,7 +1140,7 @@ SDK 的 JSON 配置信息，用于提供技术预览或特别定制功能。
 
 <a id="api_irtcengine_setparameters__prototype"></a>
 
-```text
+```csharp
 public abstract int SetParameters(string key, object value);
 ```
 
@@ -1186,7 +1186,7 @@ JSON 字符串形式的参数。
 
 <a id="api_iagoraparameter_setparameters__prototype"></a>
 
-```text
+```csharp
 public abstract int SetParameters(string parameters);
 ```
 
@@ -1228,7 +1228,7 @@ JSON 字符串形式的参数。
 
 <a id="api_irtcengine_startechotest3__prototype"></a>
 
-```text
+```csharp
 public abstract int StartEchoTest(EchoTestConfiguration config);
 ```
 
@@ -1288,7 +1288,7 @@ public abstract int StartEchoTest(EchoTestConfiguration config);
 
 <a id="api_irtcengine_startlastmileprobetest__prototype"></a>
 
-```text
+```csharp
 public abstract int StartLastmileProbeTest(LastmileProbeConfig config);
 ```
 
@@ -1351,7 +1351,7 @@ Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference
 
 <a id="api_irtcengine_stopechotest__prototype"></a>
 
-```text
+```csharp
 public abstract int StopEchoTest();
 ```
 
@@ -1382,7 +1382,7 @@ public abstract int StopEchoTest();
 
 <a id="api_irtcengine_stoplastmileprobetest__prototype"></a>
 
-```text
+```csharp
 public abstract int StopLastmileProbeTest();
 ```
 
@@ -1407,7 +1407,7 @@ public abstract int StopLastmileProbeTest();
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned__prototype"></a>
 
-```text
+```csharp
 public virtual void OnConnectionBanned(RtcConnection connection) {}
 ```
 
@@ -1448,7 +1448,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted__prototype"></a>
 
-```text
+```csharp
 public virtual void OnConnectionInterrupted(RtcConnection connection) {}
 ```
 
@@ -1496,7 +1496,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="callback_irtcengineeventhandler_onconnectionlost__prototype"></a>
 
-```text
+```csharp
 public virtual void OnConnectionLost(RtcConnection connection) {}
 ```
 
@@ -1533,7 +1533,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged__prototype"></a>
 
-```text
+```csharp
 public virtual void OnConnectionStateChanged(RtcConnection connection, CONNECTION_STATE_TYPE state, CONNECTION_CHANGED_REASON_TYPE reason) {}
 ```
 
@@ -1586,7 +1586,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="callback_irtcengineeventhandler_onencryptionerror__prototype"></a>
 
-```text
+```csharp
 public virtual void OnEncryptionError(RtcConnection connection, ENCRYPTION_ERROR_TYPE errorType) {}
 ```
 
@@ -1629,7 +1629,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="callback_irtcengineeventhandler_onlastmileproberesult__prototype"></a>
 
-```text
+```csharp
 public virtual void OnLastmileProbeResult(LastmileProbeResult result)
 ```
 
@@ -1666,7 +1666,7 @@ public virtual void OnLastmileProbeResult(LastmileProbeResult result)
 
 <a id="callback_irtcengineeventhandler_onlastmilequality__prototype"></a>
 
-```text
+```csharp
 public virtual void OnLastmileQuality(int quality)
 ```
 
@@ -1705,7 +1705,7 @@ Last mile 网络质量。详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/csharp-w
 
 <a id="callback_irtcengineeventhandler_onnetworkquality__prototype"></a>
 
-```text
+```csharp
 public virtual void OnNetworkQuality(RtcConnection connection, uint remoteUid, int txQuality, int rxQuality) {}
 ```
 
@@ -1772,7 +1772,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="callback_irtcengineeventhandler_onnetworktypechanged__prototype"></a>
 
-```text
+```csharp
 public virtual void OnNetworkTypeChanged(RtcConnection connection, NETWORK_TYPE type) {}
 ```
 
@@ -1817,7 +1817,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windo
 
 <a id="callback_irtcengineeventhandler_onpermissionerror__prototype"></a>
 
-```text
+```csharp
 public virtual void OnPermissionError(PERMISSION_TYPE permissionType) {}
 ```
 
@@ -1854,7 +1854,7 @@ public virtual void OnPermissionError(PERMISSION_TYPE permissionType) {}
 
 <a id="callback_irtcengineeventhandler_onproxyconnected__prototype"></a>
 
-```text
+```csharp
 public virtual void OnProxyConnected(string channel, uint uid, PROXY_TYPE proxyType, string localProxyIp, int elapsed)
 ```
 
@@ -1915,7 +1915,7 @@ public virtual void OnProxyConnected(string channel, uint uid, PROXY_TYPE proxyT
 
 <a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__prototype"></a>
 
-```text
+```csharp
 public virtual void OnUplinkNetworkInfoUpdated(UplinkNetworkInfo info) {}
 ```
 

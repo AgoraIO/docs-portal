@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_imediaplayer_addlistener_imediaplayer__prototype"></a>
 
-```text
+```ts
 addListener?<EventType extends keyof IMediaPlayerEvent>(
       eventType: EventType,
       listener: IMediaPlayerEvent[EventType]
@@ -70,7 +70,7 @@ engine.addListener('onPlayerSourceStateChanged', onPlayerSourceStateChanged);
 
 <a id="api_irtcengine_createmediaplayer__prototype"></a>
 
-```text
+```ts
 abstract createMediaPlayer(): IMediaPlayer;
 ```
 
@@ -118,7 +118,7 @@ abstract createMediaPlayer(): IMediaPlayer;
 
 <a id="api_irtcengine_destroymediaplayer__prototype"></a>
 
-```text
+```ts
 abstract destroyMediaPlayer(mediaPlayer: IMediaPlayer): number;
 ```
 
@@ -158,7 +158,7 @@ abstract destroyMediaPlayer(mediaPlayer: IMediaPlayer): number;
 
 <a id="api_imediaplayercachemanager_getmediaplayercachemanager__prototype"></a>
 
-```text
+```ts
 export function getMediaPlayerCacheManager(): IMediaPlayerCacheManager {
   return new IMediaPlayerCacheManagerImpl();
 }
@@ -198,7 +198,7 @@ export function getMediaPlayerCacheManager(): IMediaPlayerCacheManager {
 
 <a id="api_imediaplayer_removealllisteners_imediaplayer__prototype"></a>
 
-```text
+```ts
 removeAllListeners?<EventType extends keyof IMediaPlayerEvent>(
       eventType?: EventType
     ): void;
@@ -233,7 +233,7 @@ removeAllListeners?<EventType extends keyof IMediaPlayerEvent>(
 
 <a id="api_imediaplayer_removelistener_imediaplayer__prototype"></a>
 
-```text
+```ts
 removeListener?<EventType extends keyof IMediaPlayerEvent>(
       eventType: EventType,
       listener: IMediaPlayerEvent[EventType]

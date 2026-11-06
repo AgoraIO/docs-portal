@@ -1962,7 +1962,10 @@ describe('common MDX registry', () => {
     expect(screen.getByText('Possible values')).toBeVisible();
     expect(screen.getByText('provider-specific object')).toBeVisible();
     expect(screen.getByText('metadata.request_id')).toBeVisible();
-    expect(screen.getAllByText('nullable')).toHaveLength(2);
+    expect(screen.getAllByText('nullable')).toHaveLength(1);
+    expect(
+      screen.getByText('metadata.request_id').closest('li'),
+    ).toHaveTextContent('| null');
     expect(screen.getByText('Optional request identifier.')).toBeVisible();
   });
 
@@ -3598,8 +3601,8 @@ describe('common MDX registry', () => {
       </ParameterList>,
     );
 
-    expect(screen.getAllByText('参数名')).toHaveLength(1);
-    expect(screen.getAllByText('描述')).toHaveLength(1);
+    expect(screen.getAllByText('Parameter')).toHaveLength(1);
+    expect(screen.getAllByText('Description')).toHaveLength(1);
 
     const callback = screen
       .getByText('具体的事件详情。')

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_adjustplaybacksignalvolume__prototype"></a>
 
-```text
+```dart
 Future<void> adjustPlaybackSignalVolume(int volume);
 ```
 
@@ -72,7 +72,7 @@ Future<void> adjustPlaybackSignalVolume(int volume);
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume__prototype"></a>
 
-```text
+```dart
 Future<void> adjustUserPlaybackSignalVolume(
     {required int uid, required int volume});
 ```
@@ -130,7 +130,7 @@ Future<void> adjustUserPlaybackSignalVolume(
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex__prototype"></a>
 
-```text
+```dart
 Future<void> adjustUserPlaybackSignalVolumeEx(
       {required int uid,
       required int volume,
@@ -196,7 +196,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="api_irtcengine_disableaudio__prototype"></a>
 
-```text
+```dart
 Future<void> disableAudio();
 ```
 
@@ -240,7 +240,7 @@ Future<void> disableAudio();
 
 <a id="api_irtcengine_enableaudio__prototype"></a>
 
-```text
+```dart
 Future<void> enableAudio();
 ```
 
@@ -286,7 +286,7 @@ Future<void> enableAudio();
 
 <a id="api_irtcengine_enableaudiovolumeindication__prototype"></a>
 
-```text
+```dart
 Future<void> enableAudioVolumeIndication(
     {required int interval, required int smooth, required bool reportVad});
 ```
@@ -356,7 +356,7 @@ Future<void> enableAudioVolumeIndication(
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex__prototype"></a>
 
-```text
+```dart
 Future<void> enableAudioVolumeIndicationEx(
       {required int interval,
       required int smooth,
@@ -439,7 +439,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="api_irtcengine_setaudioprofile__prototype"></a>
 
-```text
+```dart
 Future<void> setAudioProfile(
     {required AudioProfileType profile,
     AudioScenarioType scenario = AudioScenarioType.audioScenarioDefault});
@@ -503,7 +503,7 @@ Future<void> setAudioProfile(
 
 <a id="api_irtcengine_setaudioscenario__prototype"></a>
 
-```text
+```dart
 Future<void> setAudioScenario(AudioScenarioType scenario);
 ```
 
@@ -559,7 +559,7 @@ Future<void> setAudioScenario(AudioScenarioType scenario);
 
 <a id="api_irtcengine_setaudiosessionoperationrestriction__prototype"></a>
 
-```text
+```dart
 Future<void> setAudioSessionOperationRestriction(
       AudioSessionOperationRestriction restriction);
 ```
@@ -609,7 +609,7 @@ SDK 对 Audio Session 的操作权限，详见 [AudioSessionOperationRestriction
 
 <a id="callback_irtcengineeventhandler_onactivespeaker__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int uid)? onActiveSpeaker;
 ```
 
@@ -654,7 +654,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onaudioquality__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int remoteUid,
       QualityType quality, int delay, int lost)? onAudioQuality;
 ```
@@ -720,7 +720,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, List<AudioVolumeInfo> speakers,
       int speakerNumber, int totalVolume)? onAudioVolumeIndication;
 ```
@@ -785,7 +785,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int elapsed)?
       onFirstLocalAudioFramePublished;
 ```
@@ -831,7 +831,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int uid, int elapsed)?
       onFirstRemoteAudioDecoded;
 ```
@@ -893,7 +893,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int userId, int elapsed)?
       onFirstRemoteAudioFrame;
 ```
@@ -945,7 +945,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, LocalAudioStreamState state,
     LocalAudioStreamReason reason)? onLocalAudioStateChanged;
 ```
@@ -997,7 +997,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, LocalAudioStats stats)?
       onLocalAudioStats;
 ```
@@ -1039,7 +1039,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__prototype"></a>
 
-```text
+```dart
 final void Function(
       RtcConnection connection,
       int remoteUid,
@@ -1107,7 +1107,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, RemoteAudioStats stats)?
       onRemoteAudioStats;
 ```
@@ -1149,7 +1149,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int remoteUid, int delay,
       int lost, int rxKBitRate)? onRemoteAudioTransportStats;
 ```
@@ -1211,7 +1211,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int remoteUid, bool muted)?
       onUserMuteAudio;
 ```

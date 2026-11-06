@@ -835,8 +835,9 @@ describe('app prose CSS regressions', () => {
   });
 
   it('defines dark code block tokens for prose and OpenAPI Markdown', () => {
-    const darkProse = getRuleBody(`.dark .prose,
-      .dark .openapi-markdown`);
+    const darkProse = getRuleBodyContaining('.dark .prose');
+    expect(darkProse.rule.selector).toContain('.dark .openapi-operation');
+    expect(darkProse.rule.selector).toContain('.dark .openapi-markdown');
 
     expect(darkProse.rule.nodes).toContainEqual(
       expect.objectContaining({

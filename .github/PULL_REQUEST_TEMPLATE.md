@@ -29,7 +29,8 @@
 <!-- For API content, generators, shared rendering/styles or dependency changes, follow docs/api-reference-quality.md. Otherwise delete this section. -->
 
 - Candidate commit and base:
-- Regions / preview URLs:
+- Change class (content/shared rendering/QA only), affected regions / preview URLs:
+- Shared-file comparison: companion commit/source identity, result and report location (or regional-only reason):
 - Automated scope, selected pages, completed/expected states, report location:
 - Independent reviewer, manual case IDs, viewports/themes, browser versions:
 - Content owner decision and original feedback outcomes:

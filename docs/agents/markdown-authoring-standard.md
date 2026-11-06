@@ -4,6 +4,10 @@ This is the minimum syntax contract for authoring and migrating docs under
 `content/docs/{en,zh-CN}`. Keep it small and copyable. Prefer standard Markdown
 first; use MDX only for the repo-approved primitives listed here.
 
+For API reference content and migrations, also follow the
+[API reference quality contract](../api-reference-quality.md). It owns shared
+renderer choices, source fidelity, cross-locale changes and release acceptance.
+
 ## Core Rules
 
 - Put a blank line before and after every block element: headings, lists,
@@ -15,8 +19,8 @@ first; use MDX only for the repo-approved primitives listed here.
   lists, raw `<img>` tags, custom tab components, or platform filters.
 - Escape literal `<`, `>`, `{`, and `}` outside code spans or code fences when
   they are text, not MDX syntax.
-- Use a code language listed in `source.config.ts`. If no better language
-  exists, use `text` for plain output.
+- Declare the source language on code fences. Shared grammars and aliases are
+  configured in `src/lib/code/languages.ts`; use `text` for plain output.
 
 ## Repository Cards
 

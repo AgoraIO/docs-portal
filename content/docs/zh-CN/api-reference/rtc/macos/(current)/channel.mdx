@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_delegate__prototype"></a>
 
-```text
+```objc
 @property(nonatomic, weak) id<AgoraRtcEngineDelegate> _Nullable delegate;
 ```
 
@@ -43,7 +43,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 <a id="api_irtcengine_getuserinfobyuid__prototype"></a>
 
-```text
+```objc
 - (AgoraUserInfo* _Nullable)getUserInfoByUid:(NSUInteger)uid withError:(AgoraErrorCode* _Nullable)error NS_SWIFT_NAME(getUserInfo(byUid:withError:));
 ```
 
@@ -97,7 +97,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 <a id="api_irtcengineex_getuserinfobyuidex__prototype"></a>
 
-```text
+```objc
 - (AgoraUserInfo* _Nullable)getUserInfoByUidEx:(NSUInteger)uid
                                     connection:(AgoraRtcConnection * _Nonnull)connection
                                      withError:(AgoraErrorCode* _Nullable)error NS_SWIFT_NAME(getUserInfo(byUidEx:connection:withError:));
@@ -159,7 +159,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 <a id="api_irtcengine_getuserinfobyuseraccount__prototype"></a>
 
-```text
+```objc
 - (AgoraUserInfo* _Nullable)getUserInfoByUserAccount:(NSString* _Nonnull)userAccount withError:(AgoraErrorCode* _Nullable)error NS_SWIFT_NAME(getUserInfo(byUserAccount:withError:));
 ```
 
@@ -213,7 +213,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 <a id="api_irtcengineex_getuserinfobyuseraccountex__prototype"></a>
 
-```text
+```objc
 - (AgoraUserInfo* _Nullable)getUserInfoByUserAccountEx:(NSString* _Nonnull)userAccount
                                             connection:(AgoraRtcConnection * _Nonnull)connection
                                              withError:(AgoraErrorCode* _Nullable)error NS_SWIFT_NAME(getUserInfo(byUserAccountEx:connection:withError:));
@@ -276,7 +276,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 <a id="api_irtcengine_joinchannel1__prototype"></a>
 
-```text
+```objc
 - (int)joinChannelByToken:(NSString * _Nullable)token
                 channelId:(NSString * _Nonnull)channelId
                      info:(NSString * _Nullable)info
@@ -388,7 +388,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 <a id="api_irtcengine_joinchannel2__prototype"></a>
 
-```text
+```objc
 - (int)joinChannelByToken:(NSString * _Nullable)token
                 channelId:(NSString * _Nonnull)channelId
                       uid:(NSUInteger)uid
@@ -504,7 +504,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 <a id="api_irtcengineex_joinchannelex__prototype"></a>
 
-```text
+```objc
 - (int)joinChannelExByToken:(NSString* _Nullable)token
                  connection:(AgoraRtcConnection * _Nonnull)connection
                    delegate:(id<AgoraRtcEngineDelegate> _Nullable)delegate
@@ -619,7 +619,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 <a id="api_irtcengine_joinchannelwithuseraccount1__prototype"></a>
 
-```text
+```objc
 - (int)joinChannelByToken:(NSString * _Nullable)token
                 channelId:(NSString * _Nonnull)channelId
               userAccount:(NSString * _Nonnull)userAccount
@@ -732,7 +732,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__prototype"></a>
 
-```text
+```objc
 - (int)joinChannelByToken:(NSString * _Nullable)token
                 channelId:(NSString * _Nonnull)channelId
               userAccount:(NSString * _Nonnull)userAccount
@@ -853,7 +853,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 <a id="api_irtcengineex_joinchannelwithuseraccountex__prototype"></a>
 
-```text
+```objc
 - (int)joinChannelExByToken:(NSString* _Nullable)token
                   channelId:(NSString* _Nonnull)channelId
                 userAccount:(NSString* _Nonnull)userAccount
@@ -986,7 +986,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 <a id="api_irtcengine_leavechannel__prototype"></a>
 
-```text
+```objc
 - (int)leaveChannel:(void(^ _Nullable)(AgoraChannelStats * _Nonnull stat))leaveChannelBlock NS_SWIFT_NAME(leaveChannel(_:));
 ```
 
@@ -1054,7 +1054,7 @@ SDK 通过 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface
 
 <a id="api_irtcengine_leavechannel2__prototype"></a>
 
-```text
+```objc
 - (int)leaveChannel:(AgoraLeaveChannelOptions * _Nonnull)options
 leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannelBlock NS_SWIFT_NAME(leaveChannel(_:leaveChannelBlock:));
 ```
@@ -1122,7 +1122,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="api_irtcengineex_leavechannelex__prototype"></a>
 
-```text
+```objc
 - (int)leaveChannelEx:(AgoraRtcConnection * _Nonnull)connection
     leaveChannelBlock:(void(^ _Nullable)(AgoraChannelStats* _Nonnull stat))leaveChannelBlock NS_SWIFT_NAME(leaveChannelEx(_:leaveChannelBlock:));
 ```
@@ -1199,7 +1199,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="api_irtcengineex_leavechannelex2__prototype"></a>
 
-```text
+```objc
 - (int)leaveChannelEx:(AgoraRtcConnection * _Nonnull)connection
               options:(AgoraLeaveChannelOptions * _Nonnull)options
     leaveChannelBlock:(void(^ _Nullable)(AgoraChannelStats* _Nonnull stat))leaveChannelBlock;
@@ -1278,7 +1278,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="api_irtcengine_preloadchannel__prototype"></a>
 
-```text
+```objc
 - (int)preloadChannelByToken:(NSString * _Nullable)token
                    channelId:(NSString * _Nonnull)channelId
                          uid:(NSUInteger)uid NS_SWIFT_NAME(preloadChannel(byToken:channelId:uid:));
@@ -1366,7 +1366,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="api_irtcengine_preloadchannelwithuseraccount__prototype"></a>
 
-```text
+```objc
 - (int)preloadChannelByTokenWithUserAccount:(NSString * _Nullable)token
                    channelId:(NSString * _Nonnull)channelId
                  userAccount:(NSString * _Nonnull)userAccount NS_SWIFT_NAME(preloadChannelWithUserAccount(byToken:channelId:userAccount:));
@@ -1458,7 +1458,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="api_irtcengine_registerlocaluseraccount__prototype"></a>
 
-```text
+```objc
 - (int)registerLocalUserAccount:(NSString* _Nonnull)userAccount appId:(NSString* _Nonnull)appId  NS_SWIFT_NAME(registerLocalUserAccount(_:appId:));
 ```
 
@@ -1532,7 +1532,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="api_irtcengine_renewtoken__prototype"></a>
 
-```text
+```objc
 - (int)renewToken:(NSString * _Nonnull)token NS_SWIFT_NAME(renewToken(_:));
 ```
 
@@ -1585,7 +1585,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="api_irtcengine_setchannelprofile__prototype"></a>
 
-```text
+```objc
 - (int)setChannelProfile:(AgoraChannelProfile)profile NS_SWIFT_NAME(setChannelProfile(_:));
 ```
 
@@ -1643,7 +1643,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="api_irtcengine_setclientrole1__prototype"></a>
 
-```text
+```objc
 - (int)setClientRole:(AgoraClientRole)role NS_SWIFT_NAME(setClientRole(_:));
 ```
 
@@ -1712,7 +1712,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="api_irtcengine_setclientrole2__prototype"></a>
 
-```text
+```objc
 - (int)setClientRole:(AgoraClientRole)role options:(AgoraClientRoleOptions * _Nullable)options NS_SWIFT_NAME(setClientRole(_:options:));
 ```
 
@@ -1799,7 +1799,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="api_irtcengine_updatechannelmediaoptions__prototype"></a>
 
-```text
+```objc
 - (int)updateChannelWithMediaOptions:(AgoraRtcChannelMediaOptions* _Nonnull)mediaOptions NS_SWIFT_NAME(updateChannel(with:));
 ```
 
@@ -1845,7 +1845,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex__prototype"></a>
 
-```text
+```objc
 - (int)updateChannelExWithMediaOptions:(AgoraRtcChannelMediaOptions* _Nonnull)mediaOptions
                             connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(updateChannelEx(with:connection:));
 ```
@@ -1902,7 +1902,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="api_irtcengine_updatepreloadchanneltoken__prototype"></a>
 
-```text
+```objc
 - (int)updatePreloadChannelToken:(NSString * _Nonnull)token NS_SWIFT_NAME(updatePreloadChannelToken(_:));
 ```
 
@@ -1953,7 +1953,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didClientRoleChanged:(AgoraClientRole)oldRole newRole:(AgoraClientRole)newRole newRoleOptions:(AgoraClientRoleOptions * _Nullable)newRoleOptions NS_SWIFT_NAME(rtcEngine(_:didClientRoleChanged:newRole:newRoleOptions:));
 ```
 
@@ -2017,7 +2017,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didClientRoleChangeFailed:(AgoraClientRoleChangeFailedReason)reason currentRole:(AgoraClientRole)currentRole NS_SWIFT_NAME(rtcEngine(_:didClientRoleChangeFailed:currentRole:));
 ```
 
@@ -2062,7 +2062,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="callback_irtcengineeventhandler_onerror__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didOccurError:(AgoraErrorCode)errorCode NS_SWIFT_NAME(rtcEngine(_:didOccurError:));
 ```
 
@@ -2109,7 +2109,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didJoinChannel:(NSString * _Nonnull)channel withUid:(NSUInteger)uid elapsed:(NSInteger)elapsed NS_SWIFT_NAME(rtcEngine(_:didJoinChannel:withUid:elapsed:));
 ```
 
@@ -2168,7 +2168,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="callback_irtcengineeventhandler_onleavechannel__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didLeaveChannelWithStats:(AgoraChannelStats * _Nonnull)stats NS_SWIFT_NAME(rtcEngine(_:didLeaveChannelWith:));
 ```
 
@@ -2215,7 +2215,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didLocalUserRegisteredWithUserId:(NSUInteger)uid userAccount:(NSString * _Nonnull)userAccount NS_SWIFT_NAME(rtcEngine(_:didLocalUserRegisteredWithUserId:userAccount:));
 ```
 
@@ -2268,7 +2268,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didRejoinChannel:(NSString * _Nonnull)channel withUid:(NSUInteger)uid elapsed:(NSInteger)elapsed NS_SWIFT_NAME(rtcEngine(_:didRejoinChannel:withUid:elapsed:));
 ```
 
@@ -2325,7 +2325,7 @@ leaveChannelBlock:(void (^ _Nullable)(AgoraChannelStats * _Nonnull))leaveChannel
 
 <a id="callback_irtcengineeventhandler_onrenewtokenresult__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine renewTokenResult:(NSString *_Nonnull)token code:(AgoraRenewTokenErrorCode)code NS_SWIFT_NAME(rtcEngine(_:renewTokenResult:code:));
 ```
 
@@ -2380,7 +2380,7 @@ Token。
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngineRequestToken:(AgoraRtcEngineKit * _Nonnull)engine NS_SWIFT_NAME(rtcEngineRequestToken(_:));
 ```
 
@@ -2429,7 +2429,7 @@ Token。
 
 <a id="callback_irtcengineeventhandler_onrtcstats__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine reportRtcStats:(AgoraChannelStats * _Nonnull)stats NS_SWIFT_NAME(rtcEngine(_:reportRtcStats:));
 ```
 
@@ -2474,7 +2474,7 @@ Token。
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine tokenPrivilegeWillExpire:(NSString *_Nonnull)token NS_SWIFT_NAME(rtcEngine(_:tokenPrivilegeWillExpire:));
 ```
 
@@ -2529,7 +2529,7 @@ SDK 会在 Token 过期前 30 秒触发该回调，提醒应用更新 Token。
 
 <a id="callback_irtcengineeventhandler_onuserinfoupdated__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didUserInfoUpdatedWithUserId:(NSUInteger)uid userInfo:(AgoraUserInfo* _Nonnull)userInfo NS_SWIFT_NAME(rtcEngine(_:didUserInfoUpdatedWithUserId:userInfo:));
 ```
 
@@ -2582,7 +2582,7 @@ SDK 会在 Token 过期前 30 秒触发该回调，提醒应用更新 Token。
 
 <a id="callback_irtcengineeventhandler_onuserjoined__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didJoinedOfUid:(NSUInteger)uid elapsed:(NSInteger)elapsed NS_SWIFT_NAME(rtcEngine(_:didJoinedOfUid:elapsed:));
 ```
 
@@ -2640,7 +2640,7 @@ SDK 会在 Token 过期前 30 秒触发该回调，提醒应用更新 Token。
 
 <a id="callback_irtcengineeventhandler_onuseroffline__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didOfflineOfUid:(NSUInteger)uid reason:(AgoraUserOfflineReason)reason NS_SWIFT_NAME(rtcEngine(_:didOfflineOfUid:reason:));
 ```
 

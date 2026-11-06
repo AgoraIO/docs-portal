@@ -22,7 +22,7 @@ _migration:
 
 <a id="api_irtcengine_complain__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int Complain(const FString& callId, const FString& description);
 ```
@@ -77,7 +77,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_enableencryption__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int EnableEncryption(bool enabled, const FEncryptionConfig& config);
 ```
@@ -152,7 +152,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_enableencryptionex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int EnableEncryptionEx(const FRtcConnection& connection, bool enabled, const FEncryptionConfig& config);
 ```
@@ -229,7 +229,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_enablewebsdkinteroperability__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int EnableWebSdkInteroperability(bool enabled);
 ```
@@ -285,7 +285,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_getcallid__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int GetCallId(FString& callId);
 ```
@@ -342,7 +342,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_getcallidex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int GetCallIdEx( FString & callId, const FRtcConnection& connection);
 ```
@@ -401,7 +401,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_getconnectionstate__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	ECONNECTION_STATE_TYPE GetConnectionState();
 ```
@@ -440,7 +440,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_getconnectionstateex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	ECONNECTION_STATE_TYPE GetConnectionStateEx(const FRtcConnection& connection);
 ```
@@ -492,7 +492,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_geterrordescription__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	FString GetErrorDescription(int code);
 ```
@@ -530,7 +530,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_getnetworktype__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int GetNetworkType();
 ```
@@ -576,7 +576,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_getntpwalltimeinms__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	FString GetNtpWallTimeInMs();
 ```
@@ -607,7 +607,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_getversion__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	FString GetVersion();
 ```
@@ -645,7 +645,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_isfeatureavailableondevice__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	bool IsFeatureAvailableOnDevice(EFeatureType type);
 ```
@@ -696,7 +696,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnRemoteSubscribeFallbackToAudioOnly(int64 uid, bool isFallbackOrRecover);
 ```
@@ -748,7 +748,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="api_irtcengine_querydevicescore__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int QueryDeviceScore();
 ```
@@ -783,7 +783,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_rate__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int Rate(const FString& callId, int rating, const FString& description);
 ```
@@ -845,7 +845,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_sendcustomreportmessage__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SendCustomReportMessage(const FString& id, const FString& category, const FString& event, const FString& label, int value);
 ```
@@ -872,7 +872,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_sendcustomreportmessageex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SendCustomReportMessageEx(const FString& id, const FString& category, const FString& event, const FString& label, int value, const FRtcConnection& connection);
 ```
@@ -897,7 +897,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setavsyncsource__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetAVSyncSource(const FString& channelId, int64 uid);
 ```
@@ -952,7 +952,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setcloudproxy__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetCloudProxy(ECLOUD_PROXY_TYPE proxyType);
 ```
@@ -1016,7 +1016,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setlocalaccesspoint__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetLocalAccessPoint(const FLocalAccessPointConfiguration& config);
 ```
@@ -1067,7 +1067,7 @@ Local Access Point 配置。详见 [FLocalAccessPointConfiguration](/zh-CN/api-r
 
 <a id="api_irtcengine_setlogfile__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetLogFile(const FString& filePath);
 ```
@@ -1128,7 +1128,7 @@ App 必须保证指定的目录存在而且可写。
 
 <a id="api_irtcengine_setlogfilesize__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetLogFileSize(int fileSizeInKBytes);
 ```
@@ -1202,7 +1202,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setlogfilter__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetLogFilter(int filter);
 ```
@@ -1263,7 +1263,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setloglevel__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetLogLevel(ELOG_LEVEL level);
 ```
@@ -1312,7 +1312,7 @@ SDK 的 JSON 配置信息，用于提供技术预览或特别定制功能。
 
 <a id="api_irtcengine_setparameters__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetParameters(const FString& parameters);
 ```
@@ -1357,7 +1357,7 @@ JSON 字符串形式的参数。
 
 <a id="api_irtcengine_setremotesubscribefallbackoption__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetRemoteSubscribeFallbackOption(ESTREAM_FALLBACK_OPTIONS option);
 ```
@@ -1408,7 +1408,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_startechotest3__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StartEchoTest(const FEchoTestConfiguration& config);
 ```
@@ -1469,7 +1469,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_startlastmileprobetest__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StartLastmileProbeTest(const FLastmileProbeConfig& config);
 ```
@@ -1533,7 +1533,7 @@ Last mile 网络探测配置，详见 [FLastmileProbeConfig](/zh-CN/api-referenc
 
 <a id="api_irtcengine_stopechotest__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StopEchoTest();
 ```
@@ -1565,7 +1565,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_stoplastmileprobetest__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StopLastmileProbeTest();
 ```
@@ -1591,7 +1591,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnConnectionBanned();
 ```
@@ -1620,7 +1620,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnConnectionInterrupted();
 ```
@@ -1656,7 +1656,7 @@ SDK 在和服务器建立连接后，失去了网络连接超过 4 秒，会触�
 
 <a id="callback_irtcengineeventhandler_onconnectionlost__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnConnectionLost();
 ```
@@ -1681,7 +1681,7 @@ SDK 在调用 JoinChannelWithOptions 后，无论是否加入成功，只要 10 
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnConnectionStateChanged(ECONNECTION_STATE_TYPE state, ECONNECTION_CHANGED_REASON_TYPE reason);
 ```
@@ -1729,7 +1729,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onencryptionerror__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnEncryptionError(EENCRYPTION_ERROR_TYPE errorType);
 ```
@@ -1767,7 +1767,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onlastmileproberesult__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnLastmileProbeResult(const FLastmileProbeResult& result);
 ```
@@ -1805,7 +1805,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onlastmilequality__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnLastmileQuality(int quality);
 ```
@@ -1854,7 +1854,7 @@ Last mile 网络质量。
 
 <a id="callback_irtcengineeventhandler_onnetworkquality__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnNetworkQuality(int64 uid, int txQuality, int rxQuality);
 ```
@@ -1934,7 +1934,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onnetworktypechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnNetworkTypeChanged(FENUMWRAP_NETWORK_TYPE type);
 ```
@@ -1974,7 +1974,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onpermissionerror__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnPermissionError(EPERMISSION_TYPE permissionType);
 ```
@@ -2012,7 +2012,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onproxyconnected__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnProxyConnected(const FString& channel, int64 uid, EPROXY_TYPE proxyType, const FString& localProxyIp, int elapsed);
 ```
@@ -2074,7 +2074,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnUplinkNetworkInfoUpdated(const FUplinkNetworkInfo& info);
 ```

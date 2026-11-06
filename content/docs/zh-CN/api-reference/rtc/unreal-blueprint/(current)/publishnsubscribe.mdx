@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_enabledualstreammode3__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int EnableDualStreamMode(bool enabled, const FSimulcastStreamConfig& streamConfig);
 ```
@@ -106,7 +106,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_enabledualstreammodeex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int EnableDualStreamModeEx(bool enabled, const FSimulcastStreamConfig& streamConfig, const FRtcConnection& connection);
 ```
@@ -185,7 +185,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_muteallremoteaudiostreams__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteAllRemoteAudioStreams(bool mute);
 ```
@@ -253,7 +253,7 @@ SDK 默认在加入频道时订阅所有远端用户的音频流，如果要修�
 
 <a id="api_irtcengineex_muteallremoteaudiostreamsex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteAllRemoteAudioStreamsEx(bool mute, const FRtcConnection& connection);
 ```
@@ -318,7 +318,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_muteallremotevideostreams__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteAllRemoteVideoStreams(bool mute);
 ```
@@ -386,7 +386,7 @@ SDK 默认在加入频道时订阅所有远端用户的视频流，如果要修�
 
 <a id="api_irtcengineex_muteallremotevideostreamsex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteAllRemoteVideoStreamsEx(bool mute, const FRtcConnection& connection);
 ```
@@ -440,7 +440,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_mutelocalaudiostream__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteLocalAudioStream(bool mute);
 ```
@@ -504,7 +504,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_mutelocalaudiostreamex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteLocalAudioStreamEx(bool mute, const FRtcConnection& connection);
 ```
@@ -562,7 +562,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_mutelocalvideostream__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteLocalVideoStream(bool mute);
 ```
@@ -628,7 +628,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_mutelocalvideostreamex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteLocalVideoStreamEx(bool mute, const FRtcConnection& connection);
 ```
@@ -688,7 +688,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_muteremoteaudiostream__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteRemoteAudioStream(int64 uid, bool mute);
 ```
@@ -756,7 +756,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_muteremoteaudiostreamex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteRemoteAudioStreamEx(int64 uid, bool mute, const FRtcConnection& connection);
 ```
@@ -818,7 +818,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_muteremotevideostream__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteRemoteVideoStream(int64 uid, bool mute);
 ```
@@ -886,7 +886,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_muteremotevideostreamex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int MuteRemoteVideoStreamEx(int64 uid, bool mute, const FRtcConnection& connection);
 ```
@@ -946,7 +946,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_setdualstreammode2__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetDualStreamMode(FENUMWRAP_SIMULCAST_STREAM_MODE mode, const FSimulcastStreamConfig& streamConfig);
 ```
@@ -1016,7 +1016,7 @@ SDK 默认在发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM)，即�
 
 <a id="api_irtcengineex_setdualstreammodeex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetDualStreamModeEx(FENUMWRAP_SIMULCAST_STREAM_MODE mode, const FSimulcastStreamConfig& streamConfig, const FRtcConnection& connection);
 ```
@@ -1092,7 +1092,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_setremotedefaultvideostreamtype__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetRemoteDefaultVideoStreamType(EVIDEO_STREAM_TYPE streamType);
 ```
@@ -1153,7 +1153,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setremotevideostreamtype__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetRemoteVideoStreamType(int64 uid, EVIDEO_STREAM_TYPE streamType);
 ```
@@ -1223,7 +1223,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_setremotevideostreamtypeex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetRemoteVideoStreamTypeEx(int64 uid, EVIDEO_STREAM_TYPE streamType, const FRtcConnection& connection);
 ```
@@ -1295,7 +1295,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_setsubscribeaudioallowlist__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetSubscribeAudioAllowlist(TArray<int64> uidList, int uidNumber);
 ```
@@ -1357,7 +1357,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_setsubscribeaudioallowlistex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetSubscribeAudioAllowlistEx(TArray<int64> uidList, int uidNumber, const FRtcConnection& connection);
 ```
@@ -1425,7 +1425,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_setsubscribeaudioblocklist__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetSubscribeAudioBlocklist(TArray<int64> uidList, int uidNumber);
 ```
@@ -1490,7 +1490,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_setsubscribeaudioblocklistex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetSubscribeAudioBlocklistEx(TArray<int64> uidList, int uidNumber, const FRtcConnection& connection);
 ```
@@ -1561,7 +1561,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_setsubscribevideoallowlist__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetSubscribeVideoAllowlist(TArray<int64> uidList, int uidNumber);
 ```
@@ -1623,7 +1623,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_setsubscribevideoallowlistex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetSubscribeVideoAllowlistEx(TArray<int64> uidList, int uidNumber, const FRtcConnection& connection);
 ```
@@ -1691,7 +1691,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_setsubscribevideoblocklist__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetSubscribeVideoBlocklist(TArray<int64> uidList, int uidNumber);
 ```
@@ -1754,7 +1754,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_setsubscribevideoblocklistex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetSubscribeVideoBlocklistEx(TArray<int64> uidList, int uidNumber, const FRtcConnection& connection);
 ```
@@ -1823,7 +1823,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="callback_irtcengineeventhandler_onaudiopublishstatechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnAudioPublishStateChanged(const FString& channel, ESTREAM_PUBLISH_STATE oldState, ESTREAM_PUBLISH_STATE newState, int elapseSinceLastState);
 ```
@@ -1873,7 +1873,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onaudiosubscribestatechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnAudioSubscribeStateChanged(const FString& channel, int64 uid, ESTREAM_SUBSCRIBE_STATE oldState, ESTREAM_SUBSCRIBE_STATE newState, int elapseSinceLastState);
 ```
@@ -1929,7 +1929,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onvideosubscribestatechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnVideoSubscribeStateChanged(const FString& channel, int64 uid, ESTREAM_SUBSCRIBE_STATE oldState, ESTREAM_SUBSCRIBE_STATE newState, int elapseSinceLastState);
 ```

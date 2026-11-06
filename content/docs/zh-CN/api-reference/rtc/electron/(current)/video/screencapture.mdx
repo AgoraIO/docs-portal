@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_getscreencapturesources__prototype"></a>
 
-```text
+```ts
 abstract getScreenCaptureSources(
     thumbSize: Size,
     iconSize: Size,
@@ -81,7 +81,7 @@ abstract getScreenCaptureSources(
 
 <a id="api_irtcengine_setscreencapturecontenthint__prototype"></a>
 
-```text
+```ts
 abstract setScreenCaptureContentHint(contentHint: VideoContentHint): number;
 ```
 
@@ -130,7 +130,7 @@ SDK 会根据不同的内容类型，使用不同的算法对共享效果进行�
 
 <a id="api_irtcengine_setscreencapturescenario__prototype"></a>
 
-```text
+```ts
 abstract setScreenCaptureScenario(screenScenario: ScreenScenarioType): number;
 ```
 
@@ -176,7 +176,7 @@ abstract setScreenCaptureScenario(screenScenario: ScreenScenarioType): number;
 
 <a id="api_irtcengine_startscreencapture2__prototype"></a>
 
-```text
+```ts
 abstract startScreenCaptureBySourceType(
     sourceType: VideoSourceType,
     config: ScreenCaptureConfiguration
@@ -256,7 +256,7 @@ SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别�
 
 <a id="api_irtcengine_startscreencapturebydisplayid__prototype"></a>
 
-```text
+```ts
 abstract startScreenCaptureByDisplayId(
     displayId: number,
     regionRect: Rectangle,
@@ -340,7 +340,7 @@ abstract startScreenCaptureByDisplayId(
 
 <a id="api_irtcengine_startscreencapturebyscreenrect__prototype"></a>
 
-```text
+```ts
 abstract startScreenCaptureByScreenRect(
     screenRect: Rectangle,
     regionRect: Rectangle,
@@ -415,7 +415,7 @@ abstract startScreenCaptureByScreenRect(
 
 <a id="api_irtcengine_startscreencapturebywindowid__prototype"></a>
 
-```text
+```ts
 abstract startScreenCaptureByWindowId(
     windowId: any,
     regionRect: Rectangle,
@@ -528,7 +528,7 @@ SDK 的窗口共享功能依赖于 WGC（Windows Graphics Capture）或 GDI（Gr
 
 <a id="api_irtcengine_stopscreencapture__prototype"></a>
 
-```text
+```ts
 abstract stopScreenCapture(): number;
 ```
 
@@ -567,7 +567,7 @@ abstract stopScreenCapture(): number;
 
 <a id="api_irtcengine_stopscreencapture2__prototype"></a>
 
-```text
+```ts
 abstract stopScreenCaptureBySourceType(sourceType: VideoSourceType): number;
 ```
 
@@ -619,7 +619,7 @@ abstract stopScreenCaptureBySourceType(sourceType: VideoSourceType): number;
 
 <a id="api_irtcengine_updatescreencaptureparameters__prototype"></a>
 
-```text
+```ts
 abstract updateScreenCaptureParameters(
     captureParams: ScreenCaptureParameters
   ): number;
@@ -674,7 +674,7 @@ abstract updateScreenCaptureParameters(
 
 <a id="api_irtcengine_updatescreencaptureregion1__prototype"></a>
 
-```text
+```ts
 abstract updateScreenCaptureRegion(regionRect: Rectangle): number;
 ```
 

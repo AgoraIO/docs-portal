@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_getmediaplayersourceobserver__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintPure, Category = "Agora|IRtcEngine")
 UAgoraBPuIMediaPlayerSourceObserver* GetMediaPlayerSourceObserver();
 ```
@@ -58,7 +58,7 @@ UAgoraBPuIMediaPlayerSourceObserver* GetMediaPlayerSourceObserver();
 
 <a id="api_imediaplayer_addblueprintcallbackexecutor__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|Event")
 void AddBlueprintCallbackExecutor(UAgoraBPuIMediaPlayerSourceObserverCBExecutor* Executor);
 ```
@@ -102,7 +102,7 @@ void AddBlueprintCallbackExecutor(UAgoraBPuIMediaPlayerSourceObserverCBExecutor*
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 void OnAudioVolumeIndication(int volume);
 ```
@@ -140,7 +140,7 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 <a id="callback_imediaplayersourceobserver_onmetadata__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnMetaData(const FString& Data);
 ```
@@ -184,7 +184,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnPlayBufferUpdated(int64 playCachedBuffer);
 ```
@@ -225,7 +225,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnPlayerEvent(EMEDIA_PLAYER_EVENT eventCode, int64 elapsedTime, const FString& message);
 ```
@@ -275,7 +275,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnPlayerInfoUpdated(const FPlayerUpdatedInfo& info);
 ```
@@ -313,7 +313,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnPlayerSourceStateChanged(EMEDIA_PLAYER_STATE state, FENUMWRAP_MEDIA_PLAYER_REASON ec);
 ```
@@ -357,7 +357,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnPlayerSrcInfoChanged(const FSrcInfo& from, const FSrcInfo& to);
 ```
@@ -395,7 +395,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnPositionChanged(int64 position_ms, int64 timestampMs);
 ```
@@ -439,7 +439,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_imediaplayersourceobserver_onpreloadevent__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnPreloadEvent(const FString& src, EPLAYER_PRELOAD_EVENT event);
 ```

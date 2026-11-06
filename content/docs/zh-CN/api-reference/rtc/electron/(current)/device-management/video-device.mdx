@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_ivideodevicemanager_enumeratevideodevices__prototype"></a>
 
-```text
+```ts
 abstract enumerateVideoDevices(): VideoDeviceInfo[];
 ```
 
@@ -48,7 +48,7 @@ abstract enumerateVideoDevices(): VideoDeviceInfo[];
 
 <a id="api_ivideodevicemanager_getcapability__prototype"></a>
 
-```text
+```ts
 abstract getCapability(
     deviceIdUTF8: string,
     deviceCapabilityNumber: number
@@ -98,7 +98,7 @@ abstract getCapability(
 
 <a id="api_ivideodevicemanager_getdevice_ivideodevicemanager__prototype"></a>
 
-```text
+```ts
 abstract getDevice(): string;
 ```
 
@@ -124,7 +124,7 @@ abstract getDevice(): string;
 
 <a id="api_irtcengine_getvideodevicemanager__prototype"></a>
 
-```text
+```ts
 abstract getVideoDeviceManager(): IVideoDeviceManager;
 ```
 
@@ -150,7 +150,7 @@ abstract getVideoDeviceManager(): IVideoDeviceManager;
 
 <a id="api_ivideodevicemanager_numberofcapabilities__prototype"></a>
 
-```text
+```ts
 abstract numberOfCapabilities(deviceIdUTF8: string): number;
 ```
 
@@ -193,7 +193,7 @@ abstract numberOfCapabilities(deviceIdUTF8: string): number;
 
 <a id="api_irtcengine_querycodeccapability__prototype"></a>
 
-```text
+```ts
 abstract queryCodecCapability(): { codecInfo: CodecCapInfo[]; size: number };
 ```
 
@@ -223,7 +223,7 @@ abstract queryCodecCapability(): { codecInfo: CodecCapInfo[]; size: number };
 
 <a id="api_irtcengine_setcameracapturerconfiguration__prototype"></a>
 
-```text
+```ts
 abstract setCameraCapturerConfiguration(
     config: CameraCapturerConfiguration
   ): number;
@@ -270,7 +270,7 @@ abstract setCameraCapturerConfiguration(
 
 <a id="api_irtcengine_setcameradeviceorientation__prototype"></a>
 
-```text
+```ts
 abstract setCameraDeviceOrientation(
     type: VideoSourceType,
     orientation: VideoOrientation
@@ -321,7 +321,7 @@ abstract setCameraDeviceOrientation(
 
 <a id="api_ivideodevicemanager_setdevice_ivideodevicemanager__prototype"></a>
 
-```text
+```ts
 abstract setDevice(deviceIdUTF8: string): number;
 ```
 
@@ -368,7 +368,7 @@ abstract setDevice(deviceIdUTF8: string): number;
 
 <a id="callback_irtcengineeventhandler_oncameraready__prototype"></a>
 
-```text
+```ts
 onCameraReady?(): void;
 ```
 
@@ -396,7 +396,7 @@ onCameraReady?(): void;
 
 <a id="callback_irtcengineeventhandler_onvideodevicestatechanged__prototype"></a>
 
-```text
+```ts
 onVideoDeviceStateChanged?(
     deviceId: string,
     deviceType: MediaDeviceType,

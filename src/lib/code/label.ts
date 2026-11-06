@@ -1,6 +1,7 @@
 import { codeLanguageAliases } from './languages';
 
 const labels: Record<string, string> = {
+  arkts: 'ArkTS',
   bash: 'Bash',
   c: 'C',
   cpp: 'C++',

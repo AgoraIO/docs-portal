@@ -43,6 +43,7 @@ async function renderMarkdown(markdown: string, defaults = false) {
 
 describe('shared code highlighting', () => {
   it.each([
+    ['arkts', 'ArkTS'],
     ['ruby', 'Ruby'],
     ['http', 'HTTP'],
     ['js', 'JavaScript'],
@@ -58,7 +59,9 @@ describe('shared code highlighting', () => {
     expect($('figcaption .docs-code-language').text()).toBe(label);
     expect($('figure > div:first-child > div > svg')).toHaveLength(0);
     expect($('pre').text()).toBe('example');
-    expect($('button[aria-label="Copy Text"]')).toHaveLength(1);
+    expect(
+      $('button').filter((_, node) => $(node).text() === 'Copy Text'),
+    ).toHaveLength(1);
   });
 
   it('keeps the language label inside SDK code tabs', async () => {
@@ -206,4 +209,49 @@ EOF`;
     expect(after.markdown).toContain('const value = "<value>&";');
     expect(after.markdown).not.toMatch(/<figure|<button|shiki/);
   });
+});
+
+it('publishes the authored grammar and real dual-theme syntax tokens', async () => {
+  const source = 'virtual int callback(const Config& config);';
+  const { html } = await renderMarkdown(['```cpp', source, '```'].join('\n'));
+  const $ = load(html);
+  expect($('figure').attr('data-code-language')).toBe('cpp');
+  expect($('pre').text()).toBe(source);
+  const styles = $('pre span[style*="shiki"]')
+    .map((_, node) => $(node).attr('style'))
+    .get();
+  expect(new Set(styles).size).toBeGreaterThan(1);
+  expect(
+    styles.every(
+      (style) =>
+        style.includes('--shiki-light') && style.includes('--shiki-dark'),
+    ),
+  ).toBe(true);
+});
+
+it('keeps linked MDX signatures in one native code line with code typography', async () => {
+  const { html } = await renderMarkdown(
+    `<ApiSignature labels="pure virtual">\n\nvirtual bool getStatistics(\n[RemoteVideoTrackStats](#stats)\n&\n*stats*\n)\n\n</ApiSignature>`,
+  );
+  const $ = load(html);
+  const figure = $('[data-api-signature]');
+  expect(figure.attr('data-line-numbers')).toBeUndefined();
+  expect(figure.find('pre code > .line')).toHaveLength(1);
+  expect(figure.find('pre code > .line a').attr('href')).toBe('#stats');
+  expect(figure.find('pre code > .line em').text()).toBe('stats');
+  expect(figure.find('pre code p')).toHaveLength(0);
+  expect(figure.find('pre code').text()).toBe(
+    'virtual bool getStatistics( RemoteVideoTrackStats & stats )',
+  );
+});
+
+it('highlights ArkTS declarations with the bundled TypeScript grammar while retaining their language', async () => {
+  const source =
+    'public getSrcChannelMediaInfo(): ChannelMediaInfo {\n  return this.srcInfo;\n}';
+  const { html } = await renderMarkdown(['```arkts', source, '```'].join('\n'));
+  const $ = load(html);
+  expect($('figure').attr('data-code-language')).toBe('arkts');
+  expect($('figcaption').text()).toBe('ArkTS');
+  expect($('pre code').text()).toBe(source);
+  expect($('pre span[style*="--shiki-light"]').length).toBeGreaterThan(1);
 });

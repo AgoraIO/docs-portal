@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_getuserinfobyuid__prototype"></a>
 
-```text
+```java
 public abstract int getUserInfoByUid(int uid, UserInfo userInfo);
 ```
 
@@ -75,7 +75,7 @@ public abstract int getUserInfoByUid(int uid, UserInfo userInfo);
 
 <a id="api_irtcengineex_getuserinfobyuidex__prototype"></a>
 
-```text
+```java
 public abstract int getUserInfoByUidEx(int uid, UserInfo userInfo, RtcConnection connection);
 ```
 
@@ -135,7 +135,7 @@ public abstract int getUserInfoByUidEx(int uid, UserInfo userInfo, RtcConnection
 
 <a id="api_irtcengine_getuserinfobyuseraccount__prototype"></a>
 
-```text
+```java
 public abstract int getUserInfoByUserAccount(String userAccount, UserInfo userInfo);
 ```
 
@@ -183,7 +183,7 @@ public abstract int getUserInfoByUserAccount(String userAccount, UserInfo userIn
 
 <a id="api_irtcengineex_getuserinfobyuseraccountex__prototype"></a>
 
-```text
+```java
 public abstract int getUserInfoByUserAccountEx(String userAccount, UserInfo userInfo, RtcConnection connection);
 ```
 
@@ -245,7 +245,7 @@ public abstract int getUserInfoByUserAccountEx(String userAccount, UserInfo user
 
 <a id="api_irtcengine_joinchannel1__prototype"></a>
 
-```text
+```java
 public abstract int joinChannel(String token, String channelId, String optionalInfo, int uid);
 ```
 
@@ -351,7 +351,7 @@ public abstract int joinChannel(String token, String channelId, String optionalI
 
 <a id="api_irtcengine_joinchannel2__prototype"></a>
 
-```text
+```java
 public abstract int joinChannel(String token, String channelId, int uid, ChannelMediaOptions options);
 ```
 
@@ -457,7 +457,7 @@ public abstract int joinChannel(String token, String channelId, int uid, Channel
 
 <a id="api_irtcengineex_joinchannelex__prototype"></a>
 
-```text
+```java
 public abstract int joinChannelEx(String token, RtcConnection connection, ChannelMediaOptions options, IRtcEngineEventHandler eventHandler);
 ```
 
@@ -563,7 +563,7 @@ public abstract int joinChannelEx(String token, RtcConnection connection, Channe
 
 <a id="api_irtcengine_joinchannelwithuseraccount1__prototype"></a>
 
-```text
+```java
 public abstract int joinChannelWithUserAccount(String token, String channelName, String userAccount);
 ```
 
@@ -667,7 +667,7 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__prototype"></a>
 
-```text
+```java
 public abstract int joinChannelWithUserAccount(String token, String channelName, String userAccount, ChannelMediaOptions options);
 ```
 
@@ -780,7 +780,7 @@ public abstract int joinChannelWithUserAccount(String token, String channelName,
 
 <a id="api_irtcengineex_joinchannelwithuseraccountex__prototype"></a>
 
-```text
+```java
 public abstract int joinChannelWithUserAccountEx(String token, String channelId, String userAccount, ChannelMediaOptions options, IRtcEngineEventHandler eventHandler);
 ```
 
@@ -903,7 +903,7 @@ public abstract int joinChannelWithUserAccountEx(String token, String channelId,
 
 <a id="api_irtcengine_leavechannel__prototype"></a>
 
-```text
+```java
 public abstract int leaveChannel();
 ```
 
@@ -959,7 +959,7 @@ public abstract int leaveChannel();
 
 <a id="api_irtcengine_leavechannel2__prototype"></a>
 
-```text
+```java
 public abstract int leaveChannel(LeaveChannelOptions options);
 ```
 
@@ -1020,7 +1020,7 @@ public abstract int leaveChannel(LeaveChannelOptions options);
 
 <a id="api_irtcengineex_leavechannelex__prototype"></a>
 
-```text
+```java
 public abstract int leaveChannelEx(RtcConnection connection);
 ```
 
@@ -1091,7 +1091,7 @@ public abstract int leaveChannelEx(RtcConnection connection);
 
 <a id="api_irtcengineex_leavechannelex2__prototype"></a>
 
-```text
+```java
 public abstract int leaveChannelEx(RtcConnection connection, LeaveChannelOptions options);
 ```
 
@@ -1176,7 +1176,7 @@ public abstract int leaveChannelEx(RtcConnection connection, LeaveChannelOptions
 
 <a id="api_irtcengine_preloadchannel__prototype"></a>
 
-```text
+```java
 public abstract int preloadChannel(String token, String channelName, int optionalUid);
 ```
 
@@ -1253,7 +1253,7 @@ public abstract int preloadChannel(String token, String channelName, int optiona
 
 <a id="api_irtcengine_preloadchannelwithuseraccount__prototype"></a>
 
-```text
+```java
 public abstract int preloadChannelWithUserAccount(String token, String channelName, String userAccount);
 ```
 
@@ -1343,7 +1343,7 @@ public abstract int preloadChannelWithUserAccount(String token, String channelNa
 
 <a id="api_irtcengine_registerlocaluseraccount__prototype"></a>
 
-```text
+```java
 public abstract int registerLocalUserAccount(String appId, String userAccount);
 ```
 
@@ -1406,7 +1406,7 @@ public abstract int registerLocalUserAccount(String appId, String userAccount);
 
 <a id="api_irtcengine_renewtoken__prototype"></a>
 
-```text
+```java
 public abstract int renewToken(String token);
 ```
 
@@ -1458,7 +1458,7 @@ public abstract int renewToken(String token);
 
 <a id="api_irtcengine_setchannelprofile__prototype"></a>
 
-```text
+```java
 public abstract int setChannelProfile(int profile);
 ```
 
@@ -1522,7 +1522,7 @@ SDK 会根据不同的频道场景采用不同的优化策略，例如在直播�
 
 <a id="api_irtcengine_setclientrole1__prototype"></a>
 
-```text
+```java
 public abstract int setClientRole(int role);
 ```
 
@@ -1600,7 +1600,7 @@ public abstract int setClientRole(int role);
 
 <a id="api_irtcengine_setclientrole2__prototype"></a>
 
-```text
+```java
 public abstract int setClientRole(int role, ClientRoleOptions options);
 ```
 
@@ -1687,7 +1687,7 @@ public abstract int setClientRole(int role, ClientRoleOptions options);
 
 <a id="api_irtcengine_updatechannelmediaoptions__prototype"></a>
 
-```text
+```java
 public abstract int updateChannelMediaOptions(ChannelMediaOptions options);
 ```
 
@@ -1731,7 +1731,7 @@ public abstract int updateChannelMediaOptions(ChannelMediaOptions options);
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex__prototype"></a>
 
-```text
+```java
 public abstract int updateChannelMediaOptionsEx(ChannelMediaOptions options, RtcConnection connection);
 ```
 
@@ -1787,7 +1787,7 @@ public abstract int updateChannelMediaOptionsEx(ChannelMediaOptions options, Rtc
 
 <a id="api_irtcengine_updatepreloadchanneltoken__prototype"></a>
 
-```text
+```java
 public abstract int updatePreloadChannelToken(String token);
 ```
 
@@ -1838,7 +1838,7 @@ public abstract int updatePreloadChannelToken(String token);
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged__prototype"></a>
 
-```text
+```java
 public void onClientRoleChanged(int oldRole, int newRole, ClientRoleOptions newRoleOptions)
 ```
 
@@ -1902,7 +1902,7 @@ public void onClientRoleChanged(int oldRole, int newRole, ClientRoleOptions newR
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed__prototype"></a>
 
-```text
+```java
 public void onClientRoleChangeFailed(int reason, int currentRole)
 ```
 
@@ -1961,7 +1961,7 @@ SDK 运行期间发生错误时触发的回调。
 
 <a id="callback_irtcengineeventhandler_onerror__prototype"></a>
 
-```text
+```java
 public void onError(int err)
 ```
 
@@ -2002,7 +2002,7 @@ public void onError(int err)
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess__prototype"></a>
 
-```text
+```java
 public void onJoinChannelSuccess(String channel, int uid, int elapsed)
 ```
 
@@ -2053,7 +2053,7 @@ public void onJoinChannelSuccess(String channel, int uid, int elapsed)
 
 <a id="callback_irtcengineeventhandler_onleavechannel__prototype"></a>
 
-```text
+```java
 public void onLeaveChannel(RtcStats stats) {}
 ```
 
@@ -2092,7 +2092,7 @@ public void onLeaveChannel(RtcStats stats) {}
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered__prototype"></a>
 
-```text
+```java
 public void onLocalUserRegistered(int uid, String userAccount)
 ```
 
@@ -2143,7 +2143,7 @@ public void onLocalUserRegistered(int uid, String userAccount)
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__prototype"></a>
 
-```text
+```java
 public void onRejoinChannelSuccess(String channel, int uid, int elapsed)
 ```
 
@@ -2196,7 +2196,7 @@ public void onRejoinChannelSuccess(String channel, int uid, int elapsed)
 
 <a id="callback_irtcengineeventhandler_onrenewtokenresult__prototype"></a>
 
-```text
+```java
 public void onRenewTokenResult(String token, Constants.RenewTokenErrorCode code)
 ```
 
@@ -2247,7 +2247,7 @@ Token 过期回调。
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__prototype"></a>
 
-```text
+```java
 public void onRequestToken() {}
 ```
 
@@ -2283,7 +2283,7 @@ public void onRequestToken() {}
 
 <a id="callback_irtcengineeventhandler_onrtcstats__prototype"></a>
 
-```text
+```java
 public void onRtcStats(RtcStats stats) {}
 ```
 
@@ -2322,7 +2322,7 @@ Token 即将在 30 秒后过期时触发的回调。
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__prototype"></a>
 
-```text
+```java
 public void onTokenPrivilegeWillExpire(String token)
 ```
 
@@ -2369,7 +2369,7 @@ public void onTokenPrivilegeWillExpire(String token)
 
 <a id="callback_irtcengineeventhandler_onuserinfoupdated__prototype"></a>
 
-```text
+```java
 public void onUserInfoUpdated(int uid, UserInfo userInfo) {}
 ```
 
@@ -2420,7 +2420,7 @@ public void onUserInfoUpdated(int uid, UserInfo userInfo) {}
 
 <a id="callback_irtcengineeventhandler_onuserjoined__prototype"></a>
 
-```text
+```java
 public void onUserJoined(int uid, int elapsed)
 ```
 
@@ -2471,7 +2471,7 @@ public void onUserJoined(int uid, int elapsed)
 
 <a id="callback_irtcengineeventhandler_onuseroffline__prototype"></a>
 
-```text
+```java
 public void onUserOffline(int uid, int reason)
 ```
 

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_getuserinfobyuid__prototype"></a>
 
-```text
+```dart
 Future<UserInfo> getUserInfoByUid(int uid);
 ```
 
@@ -75,7 +75,7 @@ Future<UserInfo> getUserInfoByUid(int uid);
 
 <a id="api_irtcengine_getuserinfobyuseraccount__prototype"></a>
 
-```text
+```dart
 Future<UserInfo> getUserInfoByUserAccount(String userAccount);
 ```
 
@@ -129,7 +129,7 @@ Future<UserInfo> getUserInfoByUserAccount(String userAccount);
 
 <a id="api_irtcengine_joinchannel2__prototype"></a>
 
-```text
+```dart
 Future<void> joinChannel(
       {required String token,
       required String channelId,
@@ -240,7 +240,7 @@ Future<void> joinChannel(
 
 <a id="api_irtcengineex_joinchannelex__prototype"></a>
 
-```text
+```dart
 Future<void> joinChannelEx(
     {required String token,
     required RtcConnection connection,
@@ -343,7 +343,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__prototype"></a>
 
-```text
+```dart
 Future<void> joinChannelWithUserAccount(
     {required String token,
     required String channelId,
@@ -448,7 +448,7 @@ Future<void> joinChannelWithUserAccount(
 
 <a id="api_irtcengine_joinchannelwithuseraccountex__prototype"></a>
 
-```text
+```dart
 Future<void> joinChannelWithUserAccountEx(
     {required String token,
     required String channelId,
@@ -553,7 +553,7 @@ Future<void> joinChannelWithUserAccountEx(
 
 <a id="api_irtcengine_leavechannel2__prototype"></a>
 
-```text
+```dart
 Future<void> leaveChannel({LeaveChannelOptions? options});
 ```
 
@@ -615,7 +615,7 @@ Future<void> leaveChannel({LeaveChannelOptions? options});
 
 <a id="api_irtcengineex_leavechannelex2__prototype"></a>
 
-```text
+```dart
 Future<void> leaveChannelEx(
       {required RtcConnection connection, LeaveChannelOptions? options});
 ```
@@ -698,7 +698,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="api_irtcengine_preloadchannel__prototype"></a>
 
-```text
+```dart
 Future<void> preloadChannel(
       {required String token, required String channelId, required int uid});
 ```
@@ -785,7 +785,7 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 
 <a id="api_irtcengine_preloadchannelwithuseraccount__prototype"></a>
 
-```text
+```dart
 Future<void> preloadChannelWithUserAccount(
       {required String token,
       required String channelId,
@@ -881,7 +881,7 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 
 <a id="api_irtcengine_registerlocaluseraccount__prototype"></a>
 
-```text
+```dart
 Future<void> registerLocalUserAccount(
     {required String appId, required String userAccount});
 ```
@@ -952,7 +952,7 @@ Future<void> registerLocalUserAccount(
 
 <a id="api_irtcengine_renewtoken__prototype"></a>
 
-```text
+```dart
 Future<void> renewToken(String token);
 ```
 
@@ -1002,7 +1002,7 @@ Future<void> renewToken(String token);
 
 <a id="api_irtcengine_setchannelprofile__prototype"></a>
 
-```text
+```dart
 Future<void> setChannelProfile(ChannelProfileType profile);
 ```
 
@@ -1058,7 +1058,7 @@ Future<void> setChannelProfile(ChannelProfileType profile);
 
 <a id="api_irtcengine_setclientrole2__prototype"></a>
 
-```text
+```dart
 Future<void> setClientRole(
     {required ClientRoleType role, ClientRoleOptions? options});
 ```
@@ -1134,7 +1134,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 <a id="api_irtcengine_updatechannelmediaoptions__prototype"></a>
 
-```text
+```dart
 Future<void> updateChannelMediaOptions(ChannelMediaOptions options);
 ```
 
@@ -1173,7 +1173,7 @@ Future<void> updateChannelMediaOptions(ChannelMediaOptions options);
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex__prototype"></a>
 
-```text
+```dart
 Future<void> updateChannelMediaOptionsEx(
     {required ChannelMediaOptions options,
     required RtcConnection connection});
@@ -1220,7 +1220,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="api_irtcengine_updatepreloadchanneltoken__prototype"></a>
 
-```text
+```dart
 Future<void> updatePreloadChannelToken(String token);
 ```
 
@@ -1267,7 +1267,7 @@ Future<void> updatePreloadChannelToken(String token);
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged__prototype"></a>
 
-```text
+```dart
 final void Function(
       RtcConnection connection,
       ClientRoleType oldRole,
@@ -1335,7 +1335,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed__prototype"></a>
 
-```text
+```dart
 final void Function(
             RtcConnection connection,
             ClientRoleChangeFailedReason reason,
@@ -1391,7 +1391,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onerror__prototype"></a>
 
-```text
+```dart
 final void Function(ErrorCodeType err, String msg)? onError;
 ```
 
@@ -1432,7 +1432,7 @@ final void Function(ErrorCodeType err, String msg)? onError;
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int elapsed)?
       onJoinChannelSuccess;
 ```
@@ -1480,7 +1480,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onleavechannel__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, RtcStats stats)? onLeaveChannel;
 ```
 
@@ -1527,7 +1527,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered__prototype"></a>
 
-```text
+```dart
 final void Function(int uid, String userAccount)? onLocalUserRegistered;
 ```
 
@@ -1568,7 +1568,7 @@ final void Function(int uid, String userAccount)? onLocalUserRegistered;
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int elapsed)?
       onRejoinChannelSuccess;
 ```
@@ -1608,7 +1608,7 @@ final void Function(RtcConnection connection, int elapsed)?
 
 <a id="callback_irtcengineeventhandler_onrenewtokenresult__prototype"></a>
 
-```text
+```dart
   final void Function(
           RtcConnection connection, String token, RenewTokenErrorCode code)?
       onRenewTokenResult;
@@ -1655,7 +1655,7 @@ Token 已过期回调。
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection)? onRequestToken;
 ```
 
@@ -1697,7 +1697,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onrtcstats__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, RtcStats stats)? onRtcStats;
 ```
 
@@ -1742,7 +1742,7 @@ Token 即将在 30s 内过期回调。
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, String token)?
       onTokenPrivilegeWillExpire;
 ```
@@ -1790,7 +1790,7 @@ final void Function(RtcConnection connection, String token)?
 
 <a id="callback_irtcengineeventhandler_onuserinfoupdated__prototype"></a>
 
-```text
+```dart
 final void Function(int uid, UserInfo info)? onUserInfoUpdated;
 ```
 
@@ -1831,7 +1831,7 @@ final void Function(int uid, UserInfo info)? onUserInfoUpdated;
 
 <a id="callback_irtcengineeventhandler_onuserjoined__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int remoteUid, int elapsed)?
       onUserJoined;
 ```
@@ -1890,7 +1890,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onuseroffline__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int remoteUid,
       UserOfflineReasonType reason)? onUserOffline;
 ```

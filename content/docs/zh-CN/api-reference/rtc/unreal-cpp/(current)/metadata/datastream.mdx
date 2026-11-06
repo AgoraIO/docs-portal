@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_createdatastream__prototype"></a>
 
-```text
+```cpp
 virtual int createDataStream(int* streamId, bool reliable, bool ordered) = 0;
 ```
 
@@ -105,7 +105,7 @@ virtual int createDataStream(int* streamId, bool reliable, bool ordered) = 0;
 
 <a id="api_irtcengineex_createdatastreamex__prototype"></a>
 
-```text
+```cpp
 virtual int createDataStreamEx(int* streamId, bool reliable, bool ordered, const RtcConnection& connection) = 0;
 ```
 
@@ -199,7 +199,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_createdatastream2__prototype"></a>
 
-```text
+```cpp
 virtual int createDataStream(int* streamId, DataStreamConfig& config) = 0;
 ```
 
@@ -259,7 +259,7 @@ virtual int createDataStream(int* streamId, DataStreamConfig& config) = 0;
 
 <a id="api_irtcengineex_createdatastreamex2__prototype"></a>
 
-```text
+```cpp
 virtual int createDataStreamEx(int* streamId, DataStreamConfig& config, const RtcConnection& connection) = 0;
 ```
 
@@ -325,7 +325,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_sendstreammessage__prototype"></a>
 
-```text
+```cpp
 virtual int sendStreamMessage(int streamId,
      const char* data,
      size_t length) = 0;
@@ -401,7 +401,7 @@ SDK 对该方法的实现进行了如下限制：
 
 <a id="api_irtcengineex_sendstreammessageex__prototype"></a>
 
-```text
+```cpp
 virtual int sendStreamMessageEx(int streamId, const char* data, size_t length, const RtcConnection& connection) = 0;
 ```
 
@@ -477,7 +477,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="callback_irtcengineeventhandler_onstreammessage__prototype"></a>
 
-```text
+```cpp
 virtual void onStreamMessage(uid_t userId, int streamId, const char* data, size_t length, uint64_t sentTs) {
                     (void)userId;
                     (void)streamId;
@@ -544,7 +544,7 @@ virtual void onStreamMessage(uid_t userId, int streamId, const char* data, size_
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__prototype"></a>
 
-```text
+```cpp
 virtual void onStreamMessageError(uid_t userId, int streamId, int code, int missed, int cached) {
                 (void)userId;
                 (void)streamId;

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_createdatastream2__prototype"></a>
 
-```text
+```ts
 abstract createDataStream(config: DataStreamConfig): number;
 ```
 
@@ -71,7 +71,7 @@ abstract createDataStream(config: DataStreamConfig): number;
 
 <a id="api_irtcengineex_createdatastreamex2__prototype"></a>
 
-```text
+```ts
 abstract createDataStreamEx(
     config: DataStreamConfig,
     connection: RtcConnection
@@ -130,7 +130,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="api_irtcengine_sendstreammessage__prototype"></a>
 
-```text
+```ts
 abstract sendStreamMessage(streamId: number, data: Uint8Array, length: number): number;
 ```
 
@@ -197,7 +197,7 @@ SDK 对该方法的实现进行了如下限制：
 
 <a id="api_irtcengineex_sendstreammessageex__prototype"></a>
 
-```text
+```ts
 abstract sendStreamMessageEx(streamId: number, data: Uint8Array, length: number, connection: RtcConnection): number;
 ```
 
@@ -270,7 +270,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onstreammessage__prototype"></a>
 
-```text
+```ts
 onStreamMessage?(
     connection: RtcConnection,
     remoteUid: number,
@@ -342,7 +342,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__prototype"></a>
 
-```text
+```ts
 onStreamMessageError?(
     connection: RtcConnection,
     remoteUid: number,

@@ -22,13 +22,6 @@ article :where(h1) {
   overflow-wrap: anywhere;
 }
 
-/* Signatures can contain Markdown paragraphs and type links. Keep their code
-   face explicit so locale typography cannot override the inherited monospace. */
-[data-api-signature] > :last-child,
-[data-api-signature] > :last-child :where(*) {
-  font-family: var(--font-mono);
-}
-
 /* Keep multi-column tables readable on narrow screens. The existing scroll
    wrapper exposes the remaining columns without squeezing prose into a strip. */
 .prose

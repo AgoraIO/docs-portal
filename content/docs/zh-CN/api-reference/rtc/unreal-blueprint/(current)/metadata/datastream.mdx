@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_createdatastream2__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int CreateDataStream(int& streamId, const FDataStreamConfig& config);
 ```
@@ -80,7 +80,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_createdatastreamex2__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int CreateDataStreamEx(int& streamId, const FDataStreamConfig& config, const FRtcConnection& connection);
 ```
@@ -145,7 +145,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_sendstreammessage__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SendStreamMessage(int streamId, const FString& data);
 ```
@@ -220,7 +220,7 @@ SDK 对该方法的实现进行了如下限制：
 
 <a id="api_irtcengineex_sendstreammessageex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SendStreamMessageEx(int streamId, const FString& data, const  FRtcConnection& connection);
 ```
@@ -297,7 +297,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="callback_irtcengineeventhandler_onstreammessage__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnStreamMessage(int64 uid, int streamId, const FString& data, int length, int64 sentTs);
 ```
@@ -359,7 +359,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnStreamMessageError(int64 uid, int streamId, int code, int missed, int cached);
 ```

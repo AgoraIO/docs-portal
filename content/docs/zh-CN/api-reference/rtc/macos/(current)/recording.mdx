@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_createmediarecorder__prototype"></a>
 
-```text
+```objc
 - (AgoraMediaRecorder * _Nullable)createMediaRecorder:(AgoraRecorderStreamInfo * _Nonnull)info NS_SWIFT_NAME(createMediaRecorder(withInfo:));
 ```
 
@@ -65,7 +65,7 @@ _migration:
 
 <a id="api_irtcengine_destroymediarecorder__prototype"></a>
 
-```text
+```objc
 - (int)destroyMediaRecorder:(AgoraMediaRecorder * _Nullable)mediaRecorder;
 ```
 
@@ -107,7 +107,7 @@ _migration:
 
 <a id="api_imediarecorder_enablemainqueuedispatch_imediarecorder__prototype"></a>
 
-```text
+```objc
 - (int)enableMainQueueDispatch:(BOOL)enabled NS_SWIFT_NAME(enableMainQueueDispatch(_:));
 ```
 
@@ -152,7 +152,7 @@ _migration:
 
 <a id="api_imediarecorder_setmediarecorderobserver__prototype"></a>
 
-```text
+```objc
 - (int)setMediaRecorderDelegate:(id<AgoraMediaRecorderDelegate> _Nullable)delegate;
 ```
 
@@ -200,7 +200,7 @@ _migration:
 
 <a id="api_irtcengine_startaudiorecording1__prototype"></a>
 
-```text
+```objc
 - (int)startAudioRecording:(NSString * _Nonnull)filePath
                    quality:(AgoraAudioRecordingQuality)quality NS_SWIFT_NAME(startAudioRecording(_:quality:));
 ```
@@ -260,7 +260,7 @@ _migration:
 
 <a id="api_irtcengine_startaudiorecording3__prototype"></a>
 
-```text
+```objc
 - (int)startAudioRecordingWithConfig:(AgoraAudioRecordingConfiguration * _Nonnull)config NS_SWIFT_NAME(startAudioRecording(withConfig:));
 ```
 
@@ -313,7 +313,7 @@ _migration:
 
 <a id="api_imediarecorder_startrecording__prototype"></a>
 
-```text
+```objc
 - (int)startRecording:(AgoraMediaRecorderConfiguration* _Nonnull)config NS_SWIFT_NAME(startRecording(_:));
 ```
 
@@ -386,7 +386,7 @@ _migration:
 
 <a id="api_irtcengine_stopaudiorecording__prototype"></a>
 
-```text
+```objc
 - (int)stopAudioRecording NS_SWIFT_NAME(stopAudioRecording());
 ```
 
@@ -413,7 +413,7 @@ _migration:
 
 <a id="api_imediarecorder_stoprecording__prototype"></a>
 
-```text
+```objc
 - (int)stopRecording NS_SWIFT_NAME(stopRecording());
 ```
 
@@ -450,7 +450,7 @@ _migration:
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated__prototype"></a>
 
-```text
+```objc
 - (void)mediaRecorder:(AgoraMediaRecorder* _Nonnull)recorder informationDidUpdated:(NSString * _Nonnull)channelId uid:(NSUInteger)uid info:(AgoraMediaRecorderInfo* _Nonnull)info;
 ```
 
@@ -513,7 +513,7 @@ _migration:
 
 <a id="callback_imediarecorderobserver_onrecorderstatechanged__prototype"></a>
 
-```text
+```objc
 - (void)mediaRecorder:(AgoraMediaRecorder* _Nonnull)recorder stateDidChanged:(NSString * _Nonnull)channelId uid:(NSUInteger)uid state:(AgoraMediaRecorderState)state reason:(AgoraMediaRecorderReasonCode)reason;
 ```
 

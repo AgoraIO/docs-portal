@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_enablemulticamera__prototype"></a>
 
-```text
+```cpp
 virtual int enableMultiCamera(bool enabled, const CameraCapturerConfiguration& config) = 0;
 ```
 
@@ -96,7 +96,7 @@ virtual int enableMultiCamera(bool enabled, const CameraCapturerConfiguration& c
 
 <a id="api_ivideodevicemanager_enumeratevideodevices__prototype"></a>
 
-```text
+```cpp
 virtual IVideoDeviceCollection* enumerateVideoDevices() = 0;
 ```
 
@@ -129,7 +129,7 @@ virtual IVideoDeviceCollection* enumerateVideoDevices() = 0;
 
 <a id="api_irtcengine_getcameramaxzoomfactor__prototype"></a>
 
-```text
+```cpp
 virtual float getCameraMaxZoomFactor() = 0;
 ```
 
@@ -159,7 +159,7 @@ virtual float getCameraMaxZoomFactor() = 0;
 
 <a id="api_ivideodevicemanager_getcapability__prototype"></a>
 
-```text
+```cpp
 virtual int getCapability(const char* deviceIdUTF8, const uint32_t deviceCapabilityNumber, VideoFormat& capability) = 0;
 ```
 
@@ -217,7 +217,7 @@ virtual int getCapability(const char* deviceIdUTF8, const uint32_t deviceCapabil
 
 <a id="api_ivideodevicecollection_getcount_ivideodevicecollection__prototype"></a>
 
-```text
+```cpp
 virtual int getCount() = 0;
 ```
 
@@ -243,7 +243,7 @@ virtual int getCount() = 0;
 
 <a id="api_ivideodevicecollection_getdevice_ivideodevicecollection__prototype"></a>
 
-```text
+```cpp
 virtual int getDevice(int index, char deviceNameUTF8[MAX_DEVICE_ID_LENGTH], char deviceIdUTF8[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -295,7 +295,7 @@ virtual int getDevice(int index, char deviceNameUTF8[MAX_DEVICE_ID_LENGTH], char
 
 <a id="api_ivideodevicemanager_getdevice_ivideodevicemanager__prototype"></a>
 
-```text
+```cpp
 virtual int getDevice(char deviceIdUTF8[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -339,7 +339,7 @@ virtual int getDevice(char deviceIdUTF8[MAX_DEVICE_ID_LENGTH]) = 0;
 
 <a id="api_irtcengine_iscameraautoexposurefacemodesupported__prototype"></a>
 
-```text
+```cpp
 virtual bool isCameraAutoExposureFaceModeSupported() = 0;
 ```
 
@@ -370,7 +370,7 @@ false：设备不支持自动曝光功能。
 
 <a id="api_irtcengine_iscameraautofocusfacemodesupported__prototype"></a>
 
-```text
+```cpp
 virtual bool isCameraAutoFocusFaceModeSupported() = 0;
 ```
 
@@ -401,7 +401,7 @@ false：设备不支持人脸自动对焦功能。
 
 <a id="api_irtcengine_iscameraexposurepositionsupported__prototype"></a>
 
-```text
+```cpp
 virtual bool isCameraExposurePositionSupported() = 0;
 ```
 
@@ -436,7 +436,7 @@ virtual bool isCameraExposurePositionSupported() = 0;
 
 <a id="api_irtcengine_iscameraexposuresupported__prototype"></a>
 
-```text
+```cpp
 virtual bool isCameraExposureSupported() = 0;
 ```
 
@@ -476,7 +476,7 @@ virtual bool isCameraExposureSupported() = 0;
 
 <a id="api_irtcengine_iscamerafacedetectsupported__prototype"></a>
 
-```text
+```cpp
 virtual bool isCameraFaceDetectSupported() = 0;
 ```
 
@@ -507,7 +507,7 @@ false：设备摄像头不支持人脸检测。
 
 <a id="api_irtcengine_iscamerafocussupported__prototype"></a>
 
-```text
+```cpp
 virtual bool isCameraFocusSupported() = 0;
 ```
 
@@ -538,7 +538,7 @@ virtual bool isCameraFocusSupported() = 0;
 
 <a id="api_irtcengine_iscameratorchsupported__prototype"></a>
 
-```text
+```cpp
 virtual bool isCameraTorchSupported() = 0;
 ```
 
@@ -569,7 +569,7 @@ virtual bool isCameraTorchSupported() = 0;
 
 <a id="api_irtcengine_iscamerazoomsupported__prototype"></a>
 
-```text
+```cpp
 virtual bool isCameraZoomSupported() = 0;
 ```
 
@@ -606,7 +606,7 @@ false：设备不支持摄像头变焦。
 
 <a id="api_ivideodevicemanager_numberofcapabilities__prototype"></a>
 
-```text
+```cpp
 virtual int numberOfCapabilities(const char* deviceIdUTF8) = 0;
 ```
 
@@ -652,7 +652,7 @@ virtual int numberOfCapabilities(const char* deviceIdUTF8) = 0;
 
 <a id="api_irtcengine_querycamerafocallengthcapability__prototype"></a>
 
-```text
+```cpp
 virtual int queryCameraFocalLengthCapability(agora::rtc::FocalLengthInfo* focalLengthInfos, int& size) = 0;
 ```
 
@@ -704,7 +704,7 @@ virtual int queryCameraFocalLengthCapability(agora::rtc::FocalLengthInfo* focalL
 
 <a id="api_irtcengine_querycodeccapability__prototype"></a>
 
-```text
+```cpp
 virtual int queryCodecCapability(CodecCapInfo* codecInfo, int& size) = 0;
 ```
 
@@ -750,7 +750,7 @@ virtual int queryCodecCapability(CodecCapInfo* codecInfo, int& size) = 0;
 
 <a id="api_ivideodevicecollection_release_ivideodevicecollection__prototype"></a>
 
-```text
+```cpp
 virtual void release() = 0;
 ```
 
@@ -770,7 +770,7 @@ virtual void release() = 0;
 
 <a id="api_ivideodevicemanager_release_ivideodevicemanager__prototype"></a>
 
-```text
+```cpp
 virtual void release() = 0;
 ```
 
@@ -794,7 +794,7 @@ virtual void release() = 0;
 
 <a id="api_irtcengine_setcameraautoexposurefacemodeenabled__prototype"></a>
 
-```text
+```cpp
 virtual int setCameraAutoExposureFaceModeEnabled(bool enabled) = 0;
 ```
 
@@ -841,7 +841,7 @@ virtual int setCameraAutoExposureFaceModeEnabled(bool enabled) = 0;
 
 <a id="api_irtcengine_setcameraautofocusfacemodeenabled__prototype"></a>
 
-```text
+```cpp
 virtual int setCameraAutoFocusFaceModeEnabled(bool enabled) = 0;
 ```
 
@@ -896,7 +896,7 @@ virtual int setCameraAutoFocusFaceModeEnabled(bool enabled) = 0;
 
 <a id="api_irtcengine_setcameracapturerconfiguration__prototype"></a>
 
-```text
+```cpp
 virtual int setCameraCapturerConfiguration(const CameraCapturerConfiguration& config) = 0;
 ```
 
@@ -952,7 +952,7 @@ virtual int setCameraCapturerConfiguration(const CameraCapturerConfiguration& co
 
 <a id="api_irtcengine_setcameradeviceorientation__prototype"></a>
 
-```text
+```cpp
 virtual int setCameraDeviceOrientation(VIDEO_SOURCE_TYPE type, VIDEO_ORIENTATION orientation) = 0;
 ```
 
@@ -1002,7 +1002,7 @@ virtual int setCameraDeviceOrientation(VIDEO_SOURCE_TYPE type, VIDEO_ORIENTATION
 
 <a id="api_irtcengine_setcameraexposurefactor__prototype"></a>
 
-```text
+```cpp
 virtual int setCameraExposureFactor(float factor) = 0;
 ```
 
@@ -1062,7 +1062,7 @@ virtual int setCameraExposureFactor(float factor) = 0;
 
 <a id="api_irtcengine_setcameraexposureposition__prototype"></a>
 
-```text
+```cpp
 virtual int setCameraExposurePosition(float positionXinView, float positionYinView) = 0;
 ```
 
@@ -1126,7 +1126,7 @@ virtual int setCameraExposurePosition(float positionXinView, float positionYinVi
 
 <a id="api_irtcengine_setcamerafocuspositioninpreview__prototype"></a>
 
-```text
+```cpp
 virtual int setCameraFocusPositionInPreview(float positionX, float positionY) = 0;
 ```
 
@@ -1184,7 +1184,7 @@ virtual int setCameraFocusPositionInPreview(float positionX, float positionY) = 
 
 <a id="api_irtcengine_setcameratorchon__prototype"></a>
 
-```text
+```cpp
 virtual int setCameraTorchOn(bool isOn) = 0;
 ```
 
@@ -1231,7 +1231,7 @@ virtual int setCameraTorchOn(bool isOn) = 0;
 
 <a id="api_irtcengine_setcamerazoomfactor__prototype"></a>
 
-```text
+```cpp
 virtual int setCameraZoomFactor(float factor) = 0;
 ```
 
@@ -1284,7 +1284,7 @@ virtual int setCameraZoomFactor(float factor) = 0;
 
 <a id="api_ivideodevicecollection_setdevice__prototype"></a>
 
-```text
+```cpp
 virtual int setDevice(const char deviceIdUTF8[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -1324,7 +1324,7 @@ virtual int setDevice(const char deviceIdUTF8[MAX_DEVICE_ID_LENGTH]) = 0;
 
 <a id="api_ivideodevicemanager_setdevice_ivideodevicemanager__prototype"></a>
 
-```text
+```cpp
 virtual int setDevice(const char deviceIdUTF8[MAX_DEVICE_ID_LENGTH]) = 0;
 ```
 
@@ -1364,7 +1364,7 @@ virtual int setDevice(const char deviceIdUTF8[MAX_DEVICE_ID_LENGTH]) = 0;
 
 <a id="api_irtcengine_switchcamera__prototype"></a>
 
-```text
+```cpp
 virtual int switchCamera() = 0;
 ```
 
@@ -1406,7 +1406,7 @@ virtual int switchCamera() = 0;
 
 <a id="callback_irtcengineeventhandler_oncameraexposureareachanged__prototype"></a>
 
-```text
+```cpp
 virtual void onCameraExposureAreaChanged(int x, int y, int width, int height)
 ```
 
@@ -1463,7 +1463,7 @@ virtual void onCameraExposureAreaChanged(int x, int y, int width, int height)
 
 <a id="callback_irtcengineeventhandler_oncamerafocusareachanged__prototype"></a>
 
-```text
+```cpp
 virtual void onCameraFocusAreaChanged(int x, int y, int width, int height)
 ```
 
@@ -1518,7 +1518,7 @@ virtual void onCameraFocusAreaChanged(int x, int y, int width, int height)
 
 <a id="callback_irtcengineeventhandler_oncameraready__prototype"></a>
 
-```text
+```cpp
 virtual void onCameraReady() __deprecated {}
 ```
 
@@ -1544,7 +1544,7 @@ virtual void onCameraReady() __deprecated {}
 
 <a id="callback_irtcengineeventhandler_onvideodevicestatechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onVideoDeviceStateChanged(const char* deviceId, int deviceType, int deviceState)
 ```
 

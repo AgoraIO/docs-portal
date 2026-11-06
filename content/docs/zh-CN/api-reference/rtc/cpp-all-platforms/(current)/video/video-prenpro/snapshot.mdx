@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_enablecontentinspect__prototype"></a>
 
-```text
+```cpp
 virtual int enableContentInspect(bool enabled, const media::ContentInspectConfig &config) = 0;
 ```
 
@@ -85,7 +85,7 @@ virtual int enableContentInspect(bool enabled, const media::ContentInspectConfig
 
 <a id="api_irtcengineex_enablecontentinspectex__prototype"></a>
 
-```text
+```cpp
 virtual int enableContentInspectEx(bool enabled, const media::ContentInspectConfig &config, const RtcConnection& connection) = 0;
 ```
 
@@ -158,7 +158,7 @@ virtual int enableContentInspectEx(bool enabled, const media::ContentInspectConf
 
 <a id="api_irtcengine_takesnapshot__prototype"></a>
 
-```text
+```cpp
 virtual int takeSnapshot(uid_t uid, const char* filePath) = 0;
 ```
 
@@ -234,7 +234,7 @@ virtual int takeSnapshot(uid_t uid, const char* filePath) = 0;
 
 <a id="api_irtcengine_takesnapshot2__prototype"></a>
 
-```text
+```cpp
 virtual int takeSnapshot(uid_t uid, const media::SnapshotConfig& config) = 0;
 ```
 
@@ -299,7 +299,7 @@ virtual int takeSnapshot(uid_t uid, const media::SnapshotConfig& config) = 0;
 
 <a id="api_irtcengineex_takesnapshotex__prototype"></a>
 
-```text
+```cpp
 virtual int takeSnapshotEx(const RtcConnection& connection, uid_t uid, const char* filePath) = 0;
 ```
 
@@ -380,7 +380,7 @@ virtual int takeSnapshotEx(const RtcConnection& connection, uid_t uid, const cha
 
 <a id="api_irtcengineex_takesnapshotex2__prototype"></a>
 
-```text
+```cpp
 virtual int takeSnapshotEx(const RtcConnection& connection, uid_t uid, const media::SnapshotConfig& config) = 0;
 ```
 
@@ -463,7 +463,7 @@ virtual int takeSnapshotEx(const RtcConnection& connection, uid_t uid, const med
 
 <a id="callback_irtcengineeventhandler_onsnapshottaken__prototype"></a>
 
-```text
+```cpp
 virtual void onSnapshotTaken(uid_t uid, const char* filePath, int width, int height, int errCode)
 ```
 

@@ -56,7 +56,7 @@ _migration:
 
 <a id="api_irtcengine_createdatastream1__prototype"></a>
 
-```text
+```csharp
 public abstract int CreateDataStream(ref int streamId, bool reliable, bool ordered);
 ```
 
@@ -137,7 +137,7 @@ public abstract int CreateDataStream(ref int streamId, bool reliable, bool order
 
 <a id="api_irtcengine_createdatastream2__prototype"></a>
 
-```text
+```csharp
 public abstract int CreateDataStream(ref int streamId, DataStreamConfig config);
 ```
 
@@ -196,7 +196,7 @@ public abstract int CreateDataStream(ref int streamId, DataStreamConfig config);
 
 <a id="api_irtcengineex_createdatastreamex1__prototype"></a>
 
-```text
+```csharp
 public abstract int CreateDataStreamEx(ref int streamId, bool reliable, bool ordered, RtcConnection connection);
 ```
 
@@ -288,7 +288,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="api_irtcengineex_createdatastreamex2__prototype"></a>
 
-```text
+```csharp
 public abstract int CreateDataStreamEx(ref int streamId, DataStreamConfig config, RtcConnection connection);
 ```
 
@@ -353,7 +353,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="api_irtcengine_sendstreammessage__prototype"></a>
 
-```text
+```csharp
 public abstract int SendStreamMessage(int streamId, byte[] data, uint length);
 ```
 
@@ -420,7 +420,7 @@ SDK 对该方法的实现进行了如下限制：
 
 <a id="api_irtcengineex_sendstreammessageex__prototype"></a>
 
-```text
+```csharp
 public abstract int SendStreamMessageEx(int streamId, byte[] data, uint length, RtcConnection connection);
 ```
 
@@ -494,7 +494,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onstreammessage__prototype"></a>
 
-```text
+```csharp
 public virtual void OnStreamMessage(RtcConnection connection, uint remoteUid, int streamId, byte[] data, ulong length, ulong sentTs) { }
 ```
 
@@ -563,7 +563,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__prototype"></a>
 
-```text
+```csharp
 public virtual void OnStreamMessageError(RtcConnection connection, uint remoteUid, int streamId, int code, int missed, int cached) {}
 ```
 

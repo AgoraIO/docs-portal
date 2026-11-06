@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_getuserinfobyuid__prototype"></a>
 
-```text
+```ts
 abstract getUserInfoByUid(uid: number): UserInfo;
 ```
 
@@ -75,7 +75,7 @@ abstract getUserInfoByUid(uid: number): UserInfo;
 
 <a id="api_irtcengine_getuserinfobyuseraccount__prototype"></a>
 
-```text
+```ts
 abstract getUserInfoByUserAccount(userAccount: string): UserInfo;
 ```
 
@@ -129,7 +129,7 @@ abstract getUserInfoByUserAccount(userAccount: string): UserInfo;
 
 <a id="api_irtcengine_joinchannel2__prototype"></a>
 
-```text
+```ts
 abstract joinChannel(
     token: string,
     channelId: string,
@@ -240,7 +240,7 @@ abstract joinChannel(
 
 <a id="api_irtcengineex_joinchannelex__prototype"></a>
 
-```text
+```ts
 abstract joinChannelEx(
     token: string,
     connection: RtcConnection,
@@ -343,7 +343,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__prototype"></a>
 
-```text
+```ts
 abstract joinChannelWithUserAccount(
     token: string,
     channelId: string,
@@ -448,7 +448,7 @@ abstract joinChannelWithUserAccount(
 
 <a id="api_irtcengine_joinchannelwithuseraccountex__prototype"></a>
 
-```text
+```ts
 abstract joinChannelWithUserAccountEx(
     token: string,
     channelId: string,
@@ -553,7 +553,7 @@ abstract joinChannelWithUserAccountEx(
 
 <a id="api_irtcengine_leavechannel2__prototype"></a>
 
-```text
+```ts
 abstract leaveChannel(options?: LeaveChannelOptions): number;
 ```
 
@@ -616,7 +616,7 @@ abstract leaveChannel(options?: LeaveChannelOptions): number;
 
 <a id="api_irtcengineex_leavechannelex2__prototype"></a>
 
-```text
+```ts
 abstract leaveChannelEx(
     connection: RtcConnection,
     options?: LeaveChannelOptions
@@ -702,7 +702,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="api_irtcengine_preloadchannel__prototype"></a>
 
-```text
+```ts
 abstract preloadChannel(
     token: string,
     channelId: string,
@@ -791,7 +791,7 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 
 <a id="api_irtcengine_preloadchannelwithuseraccount__prototype"></a>
 
-```text
+```ts
 abstract preloadChannelWithUserAccount(
     token: string,
     channelId: string,
@@ -887,7 +887,7 @@ Token 过期后，根据预加载频道的数量，你可以通过不同方式�
 
 <a id="api_irtcengine_registerlocaluseraccount__prototype"></a>
 
-```text
+```ts
 abstract registerLocalUserAccount(appId: string, userAccount: string): number;
 ```
 
@@ -958,7 +958,7 @@ abstract registerLocalUserAccount(appId: string, userAccount: string): number;
 
 <a id="api_irtcengine_renewtoken__prototype"></a>
 
-```text
+```ts
 abstract renewToken(token: string): number;
 ```
 
@@ -1017,7 +1017,7 @@ abstract renewToken(token: string): number;
 
 <a id="api_irtcengine_setchannelprofile__prototype"></a>
 
-```text
+```ts
 abstract setChannelProfile(profile: ChannelProfileType): number;
 ```
 
@@ -1072,7 +1072,7 @@ abstract setChannelProfile(profile: ChannelProfileType): number;
 
 <a id="api_irtcengine_setclientrole2__prototype"></a>
 
-```text
+```ts
 abstract setClientRole(
     role: ClientRoleType,
     options?: ClientRoleOptions
@@ -1156,7 +1156,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 <a id="api_irtcengine_updatechannelmediaoptions__prototype"></a>
 
-```text
+```ts
 abstract updateChannelMediaOptions(options: ChannelMediaOptions): number;
 ```
 
@@ -1200,7 +1200,7 @@ abstract updateChannelMediaOptions(options: ChannelMediaOptions): number;
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex__prototype"></a>
 
-```text
+```ts
 abstract updateChannelMediaOptionsEx(
     options: ChannelMediaOptions,
     connection: RtcConnection
@@ -1253,7 +1253,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="api_irtcengine_updatepreloadchanneltoken__prototype"></a>
 
-```text
+```ts
 abstract updatePreloadChannelToken(token: string): number;
 ```
 
@@ -1304,7 +1304,7 @@ abstract updatePreloadChannelToken(token: string): number;
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged__prototype"></a>
 
-```text
+```ts
 onClientRoleChanged?(
     connection: RtcConnection,
     oldRole: ClientRoleType,
@@ -1373,7 +1373,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed__prototype"></a>
 
-```text
+```ts
 onClientRoleChangeFailed?(
     connection: RtcConnection,
     reason: ClientRoleChangeFailedReason,
@@ -1430,7 +1430,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onerror__prototype"></a>
 
-```text
+```ts
 onError?(err: ErrorCodeType, msg: string): void;
 ```
 
@@ -1471,7 +1471,7 @@ onError?(err: ErrorCodeType, msg: string): void;
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess__prototype"></a>
 
-```text
+```ts
 onJoinChannelSuccess?(connection: RtcConnection, elapsed: number): void;
 ```
 
@@ -1518,7 +1518,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onleavechannel__prototype"></a>
 
-```text
+```ts
 onLeaveChannel?(connection: RtcConnection, stats: RtcStats): void;
 ```
 
@@ -1565,7 +1565,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered__prototype"></a>
 
-```text
+```ts
 onLocalUserRegistered?(uid: number, userAccount: string): void;
 ```
 
@@ -1606,7 +1606,7 @@ onLocalUserRegistered?(uid: number, userAccount: string): void;
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__prototype"></a>
 
-```text
+```ts
 onRejoinChannelSuccess?(connection: RtcConnection, elapsed: number): void;
 ```
 
@@ -1657,7 +1657,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onrenewtokenresult__prototype"></a>
 
-```text
+```ts
 onRenewTokenResult?(connection: RtcConnection, token: string, code: RenewTokenErrorCode): void;
 ```
 
@@ -1702,7 +1702,7 @@ Token 已过期回调。
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__prototype"></a>
 
-```text
+```ts
 onRequestToken?(connection: RtcConnection): void;
 ```
 
@@ -1744,7 +1744,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onrtcstats__prototype"></a>
 
-```text
+```ts
 onRtcStats?(connection: RtcConnection, stats: RtcStats): void;
 ```
 
@@ -1789,7 +1789,7 @@ Token 即将在 30s 内过期回调。
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__prototype"></a>
 
-```text
+```ts
 onTokenPrivilegeWillExpire?(connection: RtcConnection, token: string): void;
 ```
 
@@ -1842,7 +1842,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onuserinfoupdated__prototype"></a>
 
-```text
+```ts
 onUserInfoUpdated?(uid: number, info: UserInfo): void;
 ```
 
@@ -1883,7 +1883,7 @@ onUserInfoUpdated?(uid: number, info: UserInfo): void;
 
 <a id="callback_irtcengineeventhandler_onuserjoined__prototype"></a>
 
-```text
+```ts
 onUserJoined?(
     connection: RtcConnection,
     remoteUid: number,
@@ -1945,7 +1945,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onuseroffline__prototype"></a>
 
-```text
+```ts
 onUserOffline?(
     connection: RtcConnection,
     remoteUid: number,

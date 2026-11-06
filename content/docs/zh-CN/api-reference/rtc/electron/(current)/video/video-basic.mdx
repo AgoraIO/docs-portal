@@ -26,7 +26,7 @@ _migration:
 
 <a id="api_irtcengine_disablevideo__prototype"></a>
 
-```text
+```ts
 abstract disableVideo(): number;
 ```
 
@@ -82,7 +82,7 @@ abstract disableVideo(): number;
 
 <a id="api_irtcengine_enablelocalvideo__prototype"></a>
 
-```text
+```ts
 abstract enableLocalVideo(enabled: boolean): number;
 ```
 
@@ -137,7 +137,7 @@ abstract enableLocalVideo(enabled: boolean): number;
 
 <a id="api_irtcengine_enablevideo__prototype"></a>
 
-```text
+```ts
 abstract enableVideo(): number;
 ```
 
@@ -194,7 +194,7 @@ abstract enableVideo(): number;
 
 <a id="api_irtcengine_setvideoencoderconfiguration__prototype"></a>
 
-```text
+```ts
 abstract setVideoEncoderConfiguration(
     config: VideoEncoderConfiguration
   ): number;
@@ -250,7 +250,7 @@ abstract setVideoEncoderConfiguration(
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex__prototype"></a>
 
-```text
+```ts
 abstract setVideoEncoderConfigurationEx(
     config: VideoEncoderConfiguration,
     connection: RtcConnection
@@ -311,7 +311,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="api_irtcengine_setvideoscenario__prototype"></a>
 
-```text
+```ts
 abstract setVideoScenario(scenarioType: VideoApplicationScenarioType): number;
 ```
 
@@ -383,7 +383,7 @@ abstract setVideoScenario(scenarioType: VideoApplicationScenarioType): number;
 
 <a id="api_irtcengine_startpreview__prototype"></a>
 
-```text
+```ts
 abstract startPreviewWithoutSourceType(): number;
 ```
 
@@ -425,7 +425,7 @@ abstract startPreviewWithoutSourceType(): number;
 
 <a id="api_irtcengine_startpreview2__prototype"></a>
 
-```text
+```ts
 abstract startPreview(sourceType?: VideoSourceType): number;
 ```
 
@@ -480,7 +480,7 @@ abstract startPreview(sourceType?: VideoSourceType): number;
 
 <a id="api_irtcengine_stoppreview2__prototype"></a>
 
-```text
+```ts
 abstract stopPreview(sourceType?: VideoSourceType): number;
 ```
 
@@ -532,7 +532,7 @@ abstract stopPreview(sourceType?: VideoSourceType): number;
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__prototype"></a>
 
-```text
+```ts
 onFirstLocalVideoFrame?(
     source: VideoSourceType,
     width: number,
@@ -590,7 +590,7 @@ onFirstLocalVideoFrame?(
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__prototype"></a>
 
-```text
+```ts
 onFirstLocalVideoFramePublished?(
     connection: RtcConnection,
     elapsed: number
@@ -638,7 +638,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__prototype"></a>
 
-```text
+```ts
 onFirstRemoteVideoDecoded?(
     connection: RtcConnection,
     remoteUid: number,
@@ -710,7 +710,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe__prototype"></a>
 
-```text
+```ts
 onFirstRemoteVideoFrame?(
     connection: RtcConnection,
     remoteUid: number,
@@ -777,7 +777,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged__prototype"></a>
 
-```text
+```ts
 onLocalVideoStateChanged?(
     source: VideoSourceType,
     state: LocalVideoStreamState,
@@ -845,7 +845,7 @@ onLocalVideoStateChanged?(
 
 <a id="callback_irtcengineeventhandler_onlocalvideostats__prototype"></a>
 
-```text
+```ts
 onLocalVideoStats?(connection: RtcConnection, stats: LocalVideoStats): void;
 ```
 
@@ -886,7 +886,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged__prototype"></a>
 
-```text
+```ts
 onRemoteVideoStateChanged?(
     connection: RtcConnection,
     remoteUid: number,
@@ -953,7 +953,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onremotevideostats__prototype"></a>
 
-```text
+```ts
 onRemoteVideoStats?(connection: RtcConnection, stats: RemoteVideoStats): void;
 ```
 
@@ -994,7 +994,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onremotevideotransportstats__prototype"></a>
 
-```text
+```ts
 onRemoteVideoTransportStats?(
     connection: RtcConnection,
     remoteUid: number,
@@ -1066,7 +1066,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo__prototype"></a>
 
-```text
+```ts
 onUserEnableLocalVideo?(
     connection: RtcConnection,
     remoteUid: number,
@@ -1129,7 +1129,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onuserenablevideo__prototype"></a>
 
-```text
+```ts
 onUserEnableVideo?(
     connection: RtcConnection,
     remoteUid: number,
@@ -1182,7 +1182,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onusermutevideo__prototype"></a>
 
-```text
+```ts
 onUserMuteVideo?(
     connection: RtcConnection,
     remoteUid: number,
@@ -1240,7 +1240,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onvideopublishstatechanged__prototype"></a>
 
-```text
+```ts
 onVideoPublishStateChanged?(
     source: VideoSourceType,
     channel: string,
@@ -1303,7 +1303,7 @@ onVideoPublishStateChanged?(
 
 <a id="callback_irtcengineeventhandler_onvideosizechanged__prototype"></a>
 
-```text
+```ts
 onVideoSizeChanged?(
     connection: RtcConnection,
     sourceType: VideoSourceType,
@@ -1373,7 +1373,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onvideostopped__prototype"></a>
 
-```text
+```ts
 onVideoStopped?(): void;
 ```
 

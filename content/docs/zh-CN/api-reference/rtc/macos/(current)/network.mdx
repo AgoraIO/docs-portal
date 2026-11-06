@@ -24,7 +24,7 @@ _migration:
 
 <a id="api_irtcengine_complain__prototype"></a>
 
-```text
+```objc
 - (int)complain:(NSString * _Nonnull)callId
     description:(NSString * _Nullable)description NS_SWIFT_NAME(complain(_:description:));
 ```
@@ -77,7 +77,7 @@ _migration:
 
 <a id="api_irtcengine_enableencryption__prototype"></a>
 
-```text
+```objc
 - (int)enableEncryption:(BOOL)enabled encryptionConfig:(AgoraEncryptionConfig * _Nonnull)config NS_SWIFT_NAME(enableEncryption(_:encryptionConfig:));
 ```
 
@@ -151,7 +151,7 @@ _migration:
 
 <a id="api_irtcengineex_enableencryptionex__prototype"></a>
 
-```text
+```objc
 - (int)enableEncryptionEx:(BOOL)enabled encryptionConfig:(AgoraEncryptionConfig *_Nonnull)config connection:(AgoraRtcConnection* _Nonnull)connection NS_SWIFT_NAME(enableEncryptionEx(_:encryptionConfig:connection:));
 ```
 
@@ -227,7 +227,7 @@ _migration:
 
 <a id="api_irtcengine_enablemainqueuedispatch__prototype"></a>
 
-```text
+```objc
 - (int)enableMainQueueDispatch:(BOOL)enabled NS_SWIFT_NAME(enableMainQueueDispatch(_:));
 ```
 
@@ -270,7 +270,7 @@ NO：不将回调方法派发到主线程。
 
 <a id="api_irtcengine_enablewebsdkinteroperability__prototype"></a>
 
-```text
+```objc
 - (int)enableWebSdkInteroperability:(BOOL)enabled NS_SWIFT_NAME(enableWebSdkInteroperability(_:)) __deprecated;
 ```
 
@@ -321,7 +321,7 @@ NO：不将回调方法派发到主线程。
 
 <a id="api_irtcengine_getcallid__prototype"></a>
 
-```text
+```objc
 - (NSString * _Nullable)getCallId NS_SWIFT_NAME(getCallId());
 ```
 
@@ -356,7 +356,7 @@ NO：不将回调方法派发到主线程。
 
 <a id="api_irtcengineex_getcallidex__prototype"></a>
 
-```text
+```objc
 - (NSString * _Nullable)getCallIdEx:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(getCallIdEx(_:));
 ```
 
@@ -410,7 +410,7 @@ NO：不将回调方法派发到主线程。
 
 <a id="api_irtcengine_getconnectionstate__prototype"></a>
 
-```text
+```objc
 - (AgoraConnectionState)getConnectionState NS_SWIFT_NAME(getConnectionState());
 ```
 
@@ -442,7 +442,7 @@ NO：不将回调方法派发到主线程。
 
 <a id="api_irtcengineex_getconnectionstateex__prototype"></a>
 
-```text
+```objc
 - (AgoraConnectionState)getConnectionStateEx:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(getConnectionStateEx(_:));
 ```
 
@@ -493,7 +493,7 @@ NO：不将回调方法派发到主线程。
 
 <a id="api_irtcengine_getcurrentmonotonictimeinms__prototype"></a>
 
-```text
+```objc
 - (int64_t)getCurrentMonotonicTimeInMs NS_SWIFT_NAME(getCurrentMonotonicTimeInMs());
 ```
 
@@ -528,7 +528,7 @@ NO：不将回调方法派发到主线程。
 
 <a id="api_irtcengine_geterrordescription__prototype"></a>
 
-```text
+```objc
 + (NSString* _Nonnull)getErrorDescription:(NSInteger)error NS_SWIFT_NAME(getErrorDescription(_:));
 ```
 
@@ -569,7 +569,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_getnativehandle__prototype"></a>
 
-```text
+```objc
 - (void * _Nullable)getNativeHandle NS_SWIFT_NAME(getNativeHandle());
 ```
 
@@ -597,7 +597,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_getnetworktype__prototype"></a>
 
-```text
+```objc
 - (int)getNetworkType NS_SWIFT_NAME(getNetworkType());
 ```
 
@@ -640,7 +640,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_getntpwalltimeinms__prototype"></a>
 
-```text
+```objc
 - (uint64_t)getNtpWallTimeInMs;
 ```
 
@@ -668,7 +668,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_getversion__prototype"></a>
 
-```text
+```objc
 + (NSString * _Nonnull)getSdkVersion NS_SWIFT_NAME(getSdkVersion());
 ```
 
@@ -694,7 +694,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_isfeatureavailableondevice__prototype"></a>
 
-```text
+```objc
 - (BOOL)isFeatureAvailableOnDevice:(AgoraFeatureType)type;
 ```
 
@@ -740,7 +740,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_querydevicescore__prototype"></a>
 
-```text
+```objc
 - (int)queryDeviceScore NS_SWIFT_NAME(queryDeviceScore());
 ```
 
@@ -769,7 +769,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_rate__prototype"></a>
 
-```text
+```objc
 - (int)rate:(NSString * _Nonnull)callId
      rating:(NSInteger)rating
  description:(NSString * _Nullable)description NS_SWIFT_NAME(rate(_:rating:description:));
@@ -830,7 +830,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_sendcustomreportmessage__prototype"></a>
 
-```text
+```objc
 - (int)sendCustomReportMessage:(NSString * _Nullable)messageId
                       category:(NSString * _Nullable)category
                          event:(NSString * _Nullable)event
@@ -900,7 +900,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengineex_sendcustomreportmessageex__prototype"></a>
 
-```text
+```objc
 - (int)sendCustomReportMessageEx:(NSString * _Nullable)messageId
                         category:(NSString * _Nullable)category
                            event:(NSString * _Nullable)event
@@ -983,7 +983,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_setavsyncsource__prototype"></a>
 
-```text
+```objc
 - (int)setAVSyncSource:(NSString* _Nonnull)channelId uid:(NSUInteger)uid NS_SWIFT_NAME(setAVSyncSource(_:uid:));
 ```
 
@@ -1035,7 +1035,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_setcloudproxy__prototype"></a>
 
-```text
+```objc
 - (int)setCloudProxy:(AgoraCloudProxyType)proxyType  NS_SWIFT_NAME(setCloudProxy(_:));
 ```
 
@@ -1095,7 +1095,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_setlocalaccesspoint__prototype"></a>
 
-```text
+```objc
 - (int)setLocalAccessPoint:(AgoraLocalAccessPointConfiguration* _Nonnull)config NS_SWIFT_NAME(setLocalAccessPoint(withConfig:));
 ```
 
@@ -1147,7 +1147,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_setlogfile__prototype"></a>
 
-```text
+```objc
 - (int)setLogFile:(NSString * _Nonnull)filePath NS_SWIFT_NAME(setLogFile(_:));
 ```
 
@@ -1205,7 +1205,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_setlogfilesize__prototype"></a>
 
-```text
+```objc
 - (int)setLogFileSize:(NSUInteger)fileSizeInKBytes NS_SWIFT_NAME(setLogFileSize(_:));
 ```
 
@@ -1270,7 +1270,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_setlogfilter__prototype"></a>
 
-```text
+```objc
 - (int)setLogFilter:(NSUInteger)filter NS_SWIFT_NAME(setLogFilter(_:));
 ```
 
@@ -1318,7 +1318,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_setloglevel__prototype"></a>
 
-```text
+```objc
 - (int)setLogLevel:(AgoraLogLevel)level NS_SWIFT_NAME(setLogLevel(_:));
 ```
 
@@ -1366,7 +1366,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_setparameters__prototype"></a>
 
-```text
+```objc
 - (int)setParameters:(NSString * _Nonnull)options NS_SWIFT_NAME(setParameters(_:));
 ```
 
@@ -1406,7 +1406,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_setremotesubscribefallbackoption__prototype"></a>
 
-```text
+```objc
 - (int)setRemoteSubscribeFallbackOption:(AgoraStreamFallbackOptions)option NS_SWIFT_NAME(setRemoteSubscribeFallbackOption(_:));
 ```
 
@@ -1454,7 +1454,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_startechotest3__prototype"></a>
 
-```text
+```objc
 - (int)startEchoTestWithConfig:(AgoraEchoTestConfiguration* _Nonnull)config NS_SWIFT_NAME(startEchoTest(withConfig:));
 ```
 
@@ -1510,7 +1510,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_startlastmileprobetest__prototype"></a>
 
-```text
+```objc
 - (int)startLastmileProbeTest:(AgoraLastmileProbeConfig *_Nullable)config NS_SWIFT_NAME(startLastmileProbeTest(_:));
 ```
 
@@ -1556,7 +1556,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 <a id="api_irtcengine_stopechotest__prototype"></a>
 
-```text
+```objc
 - (int)stopEchoTest NS_SWIFT_NAME(stopEchoTest());
 ```
 
@@ -1587,7 +1587,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 <a id="api_irtcengine_stoplastmileprobetest__prototype"></a>
 
-```text
+```objc
 - (int)stopLastmileProbeTest NS_SWIFT_NAME(stopLastmileProbeTest());
 ```
 
@@ -1614,7 +1614,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngineConnectionDidBanned:(AgoraRtcEngineKit * _Nonnull)engine NS_SWIFT_NAME(rtcEngineConnectionDidBanned(_:));
 ```
 
@@ -1661,7 +1661,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngineConnectionDidInterrupted:(AgoraRtcEngineKit * _Nonnull)engine NS_SWIFT_NAME(rtcEngineConnectionDidInterrupted(_:));
 ```
 
@@ -1713,7 +1713,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 <a id="callback_irtcengineeventhandler_onconnectionlost__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngineConnectionDidLost:(AgoraRtcEngineKit * _Nonnull)engine NS_SWIFT_NAME(rtcEngineConnectionDidLost(_:));
 ```
 
@@ -1754,7 +1754,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit* _Nonnull)engine connectionChangedToState:(AgoraConnectionState)state reason:(AgoraConnectionChangedReason)reason NS_SWIFT_NAME(rtcEngine(_:connectionChangedTo:reason:));
 ```
 
@@ -1807,7 +1807,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 <a id="callback_irtcengineeventhandler_onencryptionerror__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didOccurEncryptionError:(AgoraEncryptionErrorType)errorType NS_SWIFT_NAME(rtcEngine(_:didOccur:));
 ```
 
@@ -1854,7 +1854,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 <a id="callback_irtcengineeventhandler_onlastmileproberesult__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine lastmileProbeTestResult:(AgoraLastmileProbeResult * _Nonnull)result NS_SWIFT_NAME(rtcEngine(_:lastmileProbeTest:));
 ```
 
@@ -1901,7 +1901,7 @@ Last mile 网络探测测试的配置。详见 [AgoraLastmileProbeConfig](/zh-CN
 
 <a id="callback_irtcengineeventhandler_onlastmilequality__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine lastmileQuality:(AgoraNetworkQuality)quality NS_SWIFT_NAME(rtcEngine(_:lastmileQuality:));
 ```
 
@@ -1948,7 +1948,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/m
 
 <a id="callback_irtcengineeventhandler_onmultipathstats__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine multiPathStats:(AgoraMultipathStats * _Nonnull)stats NS_SWIFT_NAME(rtcEngine(_:multiPathStats:));
 ```
 
@@ -1997,7 +1997,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/m
 
 <a id="callback_irtcengineeventhandler_onnetworkquality__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine networkQuality:(NSUInteger)uid txQuality:(AgoraNetworkQuality)txQuality rxQuality:(AgoraNetworkQuality)rxQuality NS_SWIFT_NAME(rtcEngine(_:networkQuality:txQuality:rxQuality:));
 ```
 
@@ -2060,7 +2060,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/m
 
 <a id="callback_irtcengineeventhandler_onnetworktypechanged__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine networkTypeChanged:(AgoraNetworkType)type NS_SWIFT_NAME(rtcEngine(_:networkTypeChanged:));
 ```
 
@@ -2101,7 +2101,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/m
 
 <a id="callback_irtcengineeventhandler_onpermissionerror__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine permissionError:(AgoraPermissionType)type NS_SWIFT_NAME(rtcEngine(_:permissionError:));
 ```
 
@@ -2146,7 +2146,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/m
 
 <a id="callback_irtcengineeventhandler_onproxyconnected__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit* _Nonnull)engine didProxyConnected:(NSString* _Nonnull)channel withUid:(NSUInteger)uid proxyType:(AgoraProxyType)proxyType localProxyIp:(NSString* _Nonnull)localProxyIp elapsed:(NSInteger)elapsed NS_SWIFT_NAME(rtcEngine(_:didProxyConnected:withUid:proxyType:localProxyIp:elapsed:));
 ```
 
@@ -2217,7 +2217,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/m
 
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didRemoteSubscribeFallbackToAudioOnly:(BOOL)isFallbackOrRecover byUid:(NSUInteger)uid NS_SWIFT_NAME(rtcEngine(_:didRemoteSubscribeFallbackToAudioOnly:byUid:));
 ```
 
@@ -2278,7 +2278,7 @@ Last-mile 网络质量，详见 [AgoraNetworkQuality](/zh-CN/api-reference/rtc/m
 
 <a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine uplinkNetworkInfoUpdate:(AgoraUplinkNetworkInfo *_Nonnull)networkInfo NS_SWIFT_NAME(rtcEngine(_:uplinkNetworkInfoUpdate:));
 ```
 

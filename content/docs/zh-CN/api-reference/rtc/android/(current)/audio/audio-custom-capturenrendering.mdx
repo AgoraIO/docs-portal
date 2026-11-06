@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_adjustcustomaudioplayoutvolume__prototype"></a>
 
-```text
+```java
 public abstract int adjustCustomAudioPlayoutVolume(int trackId, int volume);
 ```
 
@@ -76,7 +76,7 @@ public abstract int adjustCustomAudioPlayoutVolume(int trackId, int volume);
 
 <a id="api_irtcengine_adjustcustomaudiopublishvolume__prototype"></a>
 
-```text
+```java
 public abstract int adjustCustomAudioPublishVolume(int trackId, int volume);
 ```
 
@@ -131,7 +131,7 @@ public abstract int adjustCustomAudioPublishVolume(int trackId, int volume);
 
 <a id="api_irtcengine_createcustomaudiotrack__prototype"></a>
 
-```text
+```java
 public abstract int createCustomAudioTrack(Constants.AudioTrackType trackType, AudioTrackConfig config)
 ```
 
@@ -191,7 +191,7 @@ public abstract int createCustomAudioTrack(Constants.AudioTrackType trackType, A
 
 <a id="api_irtcengine_destroycustomaudiotrack__prototype"></a>
 
-```text
+```java
 public abstract int destroyCustomAudioTrack(int trackId);
 ```
 
@@ -231,7 +231,7 @@ public abstract int destroyCustomAudioTrack(int trackId);
 
 <a id="api_irtcengine_enablecustomaudiolocalplayback__prototype"></a>
 
-```text
+```java
 public abstract int enableCustomAudioLocalPlayback(int trackId, boolean enabled);
 ```
 
@@ -286,7 +286,7 @@ public abstract int enableCustomAudioLocalPlayback(int trackId, boolean enabled)
 
 <a id="api_irtcengine_pullaudioframe__prototype"></a>
 
-```text
+```java
 public abstract int pullPlaybackAudioFrame(byte[] data, int lengthInByte);
 ```
 
@@ -349,7 +349,7 @@ public abstract int pullPlaybackAudioFrame(byte[] data, int lengthInByte);
 
 <a id="api_irtcengine_pullaudioframe2__prototype"></a>
 
-```text
+```java
 public abstract int pullPlaybackAudioFrame(ByteBuffer data, int lengthInByte);
 ```
 
@@ -409,7 +409,7 @@ public abstract int pullPlaybackAudioFrame(ByteBuffer data, int lengthInByte);
 
 <a id="api_irtcengine_pushaudioframe2__prototype"></a>
 
-```text
+```java
 public abstract int pushExternalAudioFrame(byte[] data, long timestamp, int sampleRate, int channels, Constants.BytesPerSample bytesPerSample, int trackId);
 ```
 
@@ -502,7 +502,7 @@ public abstract int pushExternalAudioFrame(byte[] data, long timestamp, int samp
 
 <a id="api_irtcengine_setexternalaudiosink__prototype"></a>
 
-```text
+```java
 public abstract int setExternalAudioSink(boolean enabled, int sampleRate, int channels);
 ```
 
@@ -583,7 +583,7 @@ public abstract int setExternalAudioSink(boolean enabled, int sampleRate, int ch
 
 <a id="api_irtcengine_setexternalaudiosource__prototype"></a>
 
-```text
+```java
 public abstract int setExternalAudioSource(boolean enabled, int sampleRate, int channels);
 ```
 
@@ -655,7 +655,7 @@ public abstract int setExternalAudioSource(boolean enabled, int sampleRate, int 
 
 <a id="api_irtcengine_setexternalaudiosource2__prototype"></a>
 
-```text
+```java
 public abstract int setExternalAudioSource(boolean enabled, int sampleRate, int channels, boolean localPlayback, boolean publish);
 ```
 

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_addhandler__prototype"></a>
 
-```text
+```csharp
 public abstract int InitEventHandler(IRtcEngineEventHandler engineEventHandler);
 ```
 
@@ -63,7 +63,7 @@ public abstract int InitEventHandler(IRtcEngineEventHandler engineEventHandler);
 
 <a id="api_createagorartcengine__prototype"></a>
 
-```text
+```csharp
 public static IRtcEngine CreateAgoraRtcEngine()
         {
             return instance ?? (instance = new RtcEngine(IntPtr.Zero));
@@ -96,7 +96,7 @@ IRtcEngine 对象。
 
 <a id="api_createagorartcengineex__prototype"></a>
 
-```text
+```csharp
 public static IRtcEngineEx CreateAgoraRtcEngineEx()
         {
             return (IRtcEngineEx)(instance ?? (instance = new RtcEngine(IntPtr.Zero)));
@@ -125,7 +125,7 @@ IRtcEngineEx 对象。
 
 <a id="api_irtcengine_initialize__prototype"></a>
 
-```text
+```csharp
 public abstract int Initialize(RtcEngineContext context);
 ```
 
@@ -185,7 +185,7 @@ SDK 只支持每个 App 创建一个 IRtcEngine 实例。
 
 <a id="api_irtcengine_release__prototype"></a>
 
-```text
+```csharp
 public abstract void Dispose(bool sync = false);
 ```
 

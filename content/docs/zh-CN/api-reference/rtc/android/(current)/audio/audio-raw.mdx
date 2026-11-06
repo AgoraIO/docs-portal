@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_iaudioframeobserver_getearmonitoringaudioparams__prototype"></a>
 
-```text
+```java
 @CalledByNative public abstract AudioParams getEarMonitoringAudioParams();
 ```
 
@@ -53,7 +53,7 @@ _migration:
 
 <a id="api_iaudioframeobserver_getmixedaudioparams__prototype"></a>
 
-```text
+```java
 @CalledByNative public abstract AudioParams getMixedAudioParams();
 ```
 
@@ -85,7 +85,7 @@ _migration:
 
 <a id="api_iaudioframeobserver_getobservedaudioframeposition__prototype"></a>
 
-```text
+```java
 @CalledByNative public abstract int getObservedAudioFramePosition();
 ```
 
@@ -127,7 +127,7 @@ _migration:
 
 <a id="api_iaudioframeobserver_getplaybackaudioparams__prototype"></a>
 
-```text
+```java
 public abstract AudioParams getPlaybackAudioParams()
 ```
 
@@ -159,7 +159,7 @@ public abstract AudioParams getPlaybackAudioParams()
 
 <a id="api_iaudioframeobserver_getrecordaudioparams__prototype"></a>
 
-```text
+```java
 @CalledByNative public abstract AudioParams getRecordAudioParams();
 ```
 
@@ -191,7 +191,7 @@ public abstract AudioParams getPlaybackAudioParams()
 
 <a id="api_irtcengine_registeraudioframeobserver__prototype"></a>
 
-```text
+```java
 public abstract int registerAudioFrameObserver(IAudioFrameObserver observer);
 ```
 
@@ -245,7 +245,7 @@ public abstract int registerAudioFrameObserver(IAudioFrameObserver observer);
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__prototype"></a>
 
-```text
+```java
 public abstract int setEarMonitoringAudioFrameParameters(int sampleRate, int channel, int mode, int samplesPerCall);
 ```
 
@@ -318,7 +318,7 @@ public abstract int setEarMonitoringAudioFrameParameters(int sampleRate, int cha
 
 <a id="api_irtcengine_setmixedaudioframeparameters__prototype"></a>
 
-```text
+```java
 public abstract int setMixedAudioFrameParameters(int sampleRate, int channel, int samplesPerCall);
 ```
 
@@ -383,7 +383,7 @@ SDK 会根据采样间隔触发 [onMixedAudioFrame](/zh-CN/api-reference/rtc/and
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__prototype"></a>
 
-```text
+```java
 public abstract int setPlaybackAudioFrameBeforeMixingParameters(int sampleRate, int channel);
 ```
 
@@ -452,7 +452,7 @@ SDK 会根据采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-re
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__prototype"></a>
 
-```text
+```java
 public abstract int setPlaybackAudioFrameBeforeMixingParameters(int sampleRate, int channel, int samplesPerCall);
 ```
 
@@ -517,7 +517,7 @@ public abstract int setPlaybackAudioFrameBeforeMixingParameters(int sampleRate, 
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__prototype"></a>
 
-```text
+```java
 public abstract int setPlaybackAudioFrameParameters(int sampleRate, int channel, int mode, int samplesPerCall);
 ```
 
@@ -595,7 +595,7 @@ SDK 会根据 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算采样�
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__prototype"></a>
 
-```text
+```java
 public abstract int setRecordingAudioFrameParameters(int sampleRate, int channel, int mode, int samplesPerCall);
 ```
 
@@ -667,7 +667,7 @@ SDK 会根据 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算采样�
 
 <a id="callback_iaudioframeobserver_onearmonitoringaudioframe__prototype"></a>
 
-```text
+```java
 public abstract boolean onEarMonitoringAudioFrame(int type, int samplesPerChannel, int bytesPerSample, int channels, int samplesPerSec, ByteBuffer buffer, long renderTimeMs, int avsync_type);
 ```
 
@@ -761,7 +761,7 @@ public abstract boolean onEarMonitoringAudioFrame(int type, int samplesPerChanne
 
 <a id="callback_iaudioframeobserver_onmixedaudioframe__prototype"></a>
 
-```text
+```java
 public abstract boolean onMixedAudioFrame(String channelId, int type, int samplesPerChannel, int bytesPerSample, int channels, int samplesPerSec, ByteBuffer buffer, long renderTimeMs, int avsync_type);
 ```
 
@@ -861,7 +861,7 @@ public abstract boolean onMixedAudioFrame(String channelId, int type, int sample
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframe__prototype"></a>
 
-```text
+```java
 public abstract boolean onPlaybackAudioFrame(String channelId, int type, int samplesPerChannel, int bytesPerSample, int channels, int samplesPerSec, ByteBuffer buffer, long renderTimeMs, int avsync_type);
 ```
 
@@ -961,7 +961,7 @@ public abstract boolean onPlaybackAudioFrame(String channelId, int type, int sam
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__prototype"></a>
 
-```text
+```java
 public abstract boolean onPlaybackAudioFrameBeforeMixing(String channelId, int uid, int type, int samplesPerChannel, int bytesPerSample, int channels, int samplesPerSec, ByteBuffer buffer, long renderTimeMs, int avsync_type, int rtpTimestamp, long presentationMs);
 ```
 
@@ -1076,7 +1076,7 @@ RTP 时间戳。
 
 <a id="callback_iaudioframeobserver_onrecordaudioframe__prototype"></a>
 
-```text
+```java
 public abstract boolean onRecordAudioFrame(String channelId, int type, int samplesPerChannel, int bytesPerSample, int channels, int samplesPerSec, ByteBuffer buffer, long renderTimeMs, int avsync_type);
 ```
 

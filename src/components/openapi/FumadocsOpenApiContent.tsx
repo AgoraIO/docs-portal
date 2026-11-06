@@ -8,8 +8,6 @@ import {
 } from '@fumadocs/api-docs/components/accordion';
 import type { ParsedSchema } from '@fumadocs/api-docs/schema';
 import { sample } from '@fumadocs/api-docs/schema/sample';
-import { defaultShikiFactory } from 'fumadocs-core/highlight/shiki/full';
-import { useShikiDynamic } from 'fumadocs-core/highlight/shiki/react';
 import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
 import { type OpenAPIComponents, useOpenAPI } from 'fumadocs-openapi';
 import {
@@ -58,6 +56,7 @@ import { Callout as OpenApiCallout } from '@/components/Callout';
 import { DocsLinkIcon } from '@/components/DocsLinkIcon';
 import { useMeasuredDocsBody } from '@/components/docs-shell/DocsContentMeasurement';
 import { createDocsTableComponent } from '@/components/mdx';
+import { HighlightedCode } from '@/components/mdx/HighlightedCode';
 import { Badge } from '@/components/ui/badge';
 import {
   TabsContent as ChoiceContent,
@@ -66,7 +65,6 @@ import {
   TabsTrigger as ChoiceTrigger,
 } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
-import { codeHighlightOptions, codeLanguageAliases } from '@/lib/code/options';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
 import { normalizeDocsHref } from '@/lib/docs-link-normalize';
 import {
@@ -1868,26 +1866,13 @@ function OpenApiMarkdownCodeBlock({
     (typeof childProps?.children === 'string'
       ? childProps.children
       : undefined);
-  const highlighted = useShikiDynamic(
-    () => defaultShikiFactory.getOrInit(),
-    source ?? '',
-    {
-      ...codeHighlightOptions,
-      lang: codeLanguageAliases[language] ?? language,
-      defaultColor: false,
-      components: { pre: ({ children }) => <>{children}</> },
-      // Preserve every newline in server HTML and before hydration. The default
-      // DynamicCodeBlock placeholder joins line spans without text separators.
-      defaultValue: <code>{source}</code>,
-    },
-    [source, language],
-  );
 
   const Actions = codeblock?.Actions;
 
   return (
     <CodeBlock
       {...props}
+      data-code-language={language}
       {...codeblock}
       className={cn(
         props.className,
@@ -1907,7 +1892,17 @@ function OpenApiMarkdownCodeBlock({
         );
       }}
     >
-      <Pre>{source === undefined ? children : highlighted}</Pre>
+      <Pre>
+        {source === undefined ? (
+          children
+        ) : (
+          <HighlightedCode
+            key={`${language}:${source}`}
+            source={source}
+            language={language}
+          />
+        )}
+      </Pre>
     </CodeBlock>
   );
 }

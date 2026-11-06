@@ -128,7 +128,11 @@ void
 
 ### enabled
 
+<ApiSignature>
+
 enabled: boolean
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[enabled](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#enabled)
 
@@ -138,7 +142,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 ### isPlaying
 
+<ApiSignature>
+
 isPlaying: boolean
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[isPlaying](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#isplaying)
 
@@ -151,7 +159,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 ### muted
 
+<ApiSignature>
+
 muted: boolean
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[muted](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#muted)
 
@@ -161,7 +173,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 ### processorDestination
 
+<ApiSignature>
+
 processorDestination: IBaseProcessor
+
+</ApiSignature>
 
 :::info[自从]
 *4.10.0*
@@ -173,7 +189,11 @@ processorDestination: IBaseProcessor
 
 ### trackMediaType
 
+<ApiSignature>
+
 trackMediaType: "audio"|"video"
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[trackMediaType](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#trackmediatype)
 
@@ -864,16 +884,16 @@ replaceTrack(track: MediaStreamTrack, stopOldTrack: boolean): Promise&lt;void&gt
 
 新的视频轨道可以通过 [ILocalVideoTrack.getMediaStreamTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack#getmediastreamtrack) 或者 `mediaStream.getVideoTracks` 方法获取。你可以选择是否停止被替换的视频轨道。
 
-> 注意事项：
->
-> - 支持 Chrome 65+，Safari 以及最新版 Firefox 浏览器。
-> - 部分移动设备上该方法可能不生效。
-> - 建议在相同类型、相同编码配置的视频轨道之间进行替换，原因如下：
->
->   - 如果视频轨道类型不同，例如用 `ScreenVideoTrack` 对象替换 `CameraVideoTrack` 对象，由于 `CameraVideoTrack` 默认开启镜像（详见 [VideoPlayerConfig.mirror](/zh-CN/api-reference/rtc/web/interfaces/videoplayerconfig#mirror)），会导致画面发生镜像翻转。
->   - 如果编码配置（`encoderConfig`）不同，可能导致实际发送的分辨率或帧率不准。
-> - 订阅端无法知悉视频轨道被替换。
-> - 如果需要切换媒体输入设备，推荐使用 [ICameraVideoTrack.setDevice](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#setdevice) 方法。
+:::note[注意事项]
+- 支持 Chrome 65+，Safari 以及最新版 Firefox 浏览器。
+- 部分移动设备上该方法可能不生效。
+- 建议在相同类型、相同编码配置的视频轨道之间进行替换，原因如下：
+
+  - 如果视频轨道类型不同，例如用 `ScreenVideoTrack` 对象替换 `CameraVideoTrack` 对象，由于 `CameraVideoTrack` 默认开启镜像（详见 [VideoPlayerConfig.mirror](/zh-CN/api-reference/rtc/web/interfaces/videoplayerconfig#mirror)），会导致画面发生镜像翻转。
+  - 如果编码配置（`encoderConfig`）不同，可能导致实际发送的分辨率或帧率不准。
+- 订阅端无法知悉视频轨道被替换。
+- 如果需要切换媒体输入设备，推荐使用 [ICameraVideoTrack.setDevice](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#setdevice) 方法。
+:::
 
 **示例代码**
 
@@ -1087,7 +1107,9 @@ setOptimizationMode(mode: [OptimizationMode](/zh-CN/api-reference/rtc/web/global
 
 你可以在视频通话、视频直播或屏幕共享过程中调用此方法动态调整视频的传输优化模式。例如你想要把屏幕共享内容从演示文稿切换为视频时，你可以将传输优化模式从 `"detail"` 切换为 `"motion"`，确保视频画面在网络波动时不会出现卡顿。
 
-> 注意事项：该方法只支持 Chrome 浏览器。
+:::note[注意事项]
+该方法只支持 Chrome 浏览器。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="mode" required>

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume__prototype"></a>
 
-```text
+```ts
 public abstract adjustUserPlaybackSignalVolume(uid:number,volume:number):number;
 ```
 
@@ -87,7 +87,7 @@ public abstract adjustUserPlaybackSignalVolume(uid:number,volume:number):number;
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex__prototype"></a>
 
-```text
+```ts
 public abstract adjustUserPlaybackSignalVolumeEx(uid:number,volume:number,connection:RtcConnection):number;
 ```
 
@@ -157,7 +157,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 
 <a id="api_irtcengine_disableaudio__prototype"></a>
 
-```text
+```ts
 public abstract disableAudio(): number;
 ```
 
@@ -203,7 +203,7 @@ public abstract disableAudio(): number;
 
 <a id="api_irtcengine_enableaudio__prototype"></a>
 
-```text
+```ts
 public abstract enableAudio(): number;
 ```
 
@@ -252,7 +252,7 @@ public abstract enableAudio(): number;
 
 <a id="api_irtcengine_enableaudiovolumeindication__prototype"></a>
 
-```text
+```ts
 public abstract enableAudioVolumeIndication(interval: number, smooth: number, reportVad: boolean): number;
 ```
 
@@ -328,7 +328,7 @@ public abstract enableAudioVolumeIndication(interval: number, smooth: number, re
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex__prototype"></a>
 
-```text
+```ts
 public abstract enableAudioVolumeIndicationEx(interval:number,smooth:number,reportVad:boolean,connection:RtcConnection):number;
 ```
 
@@ -410,7 +410,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 
 <a id="api_irtcengine_setaudioprofile2__prototype"></a>
 
-```text
+```ts
 public abstract setAudioProfile(profile: Constants.AudioProfileType): number;
 ```
 
@@ -470,7 +470,7 @@ public abstract setAudioProfile(profile: Constants.AudioProfileType): number;
 
 <a id="api_irtcengine_setaudioscenario__prototype"></a>
 
-```text
+```ts
 public abstract setAudioScenario(scenario: Constants.AudioScenarioType): number;
 ```
 
@@ -527,7 +527,7 @@ public abstract setAudioScenario(scenario: Constants.AudioScenarioType): number;
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication__prototype"></a>
 
-```text
+```ts
 onAudioVolumeIndication?:( speakers:Array<AudioVolumeInfo>,  totalVolume:number) => void
 ```
 
@@ -581,7 +581,7 @@ onAudioVolumeIndication?:( speakers:Array<AudioVolumeInfo>,  totalVolume:number)
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__prototype"></a>
 
-```text
+```ts
 onLocalAudioStateChanged?:(state:Constants.LocalAudioStreamState,error:Constants.LocalAudioStreamReason) => void
 ```
 
@@ -633,7 +633,7 @@ onLocalAudioStateChanged?:(state:Constants.LocalAudioStreamState,error:Constants
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats__prototype"></a>
 
-```text
+```ts
 onLocalAudioStats?:( stats:LocalAudioStats) =>void;
 ```
 
@@ -672,7 +672,7 @@ SDK 每 2 秒触发该回调一次。
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__prototype"></a>
 
-```text
+```ts
 onRemoteAudioStateChanged ? : (uid:number, state: Constants.RemoteAudioStreamState, reason: Constants.RemoteAudioStreamReason, elapsed:number) => void
 ```
 
@@ -735,7 +735,7 @@ onRemoteAudioStateChanged ? : (uid:number, state: Constants.RemoteAudioStreamSta
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats__prototype"></a>
 
-```text
+```ts
 onRemoteAudioStats?:(stats:RemoteAudioStats) => void;
 ```
 
@@ -774,7 +774,7 @@ onRemoteAudioStats?:(stats:RemoteAudioStats) => void;
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio__prototype"></a>
 
-```text
+```ts
 onUserMuteAudio?:(uid:number,muted:boolean) =>void;
 ```
 
