@@ -331,7 +331,7 @@ This release adds the following new features:
 
 #### Audio metadata support
 
-This version adds the ability to send and receive audio metadata. In use-cases where you need to send auxiliary audio information, such as playback progress, call the `send_audio_metadata` method to transmit metadata. Remote users receive this information through the `on_audio_metadata_received` callback.
+This version adds the ability to send and receive audio metadata. In use-cases where you need to send auxiliary audio information, such as playback progress, call the `send_audio_meta_data` method to transmit metadata. Remote users receive this information through the `on_audio_meta_data_received` callback.
 
 #### Enhanced external video source support
 
@@ -392,6 +392,22 @@ This document tracks important changes and improvements to the Server Gateway.
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="v2.2.8" id="v228" headingLevel={2} value="v228">
+
+
+Released on June 7, 2025.
+
+### Fixed issues
+
+This release fixes an issue where the custom encoding bitrate did not take effect when `EnableSteroEncodeMode` in `AgoraServiceConfig` is enabled.
+
+### Improvements
+
+This release updates the macOS SDK to v4.4.32.
+
+
+</Accordion>
+
 <Accordion title="v2.2.4" id="v224-1" headingLevel={2} value="v224-1">
 
 
@@ -403,7 +419,7 @@ This release adds the following new features:
 
 #### Audio metadata support
 
-This version adds the ability to send and receive audio metadata. In use-cases where you need to send auxiliary audio information, such as playback progress, call the `SendAudioMetadata` method. Remote users receive the information through the `OnAudioMetadataReceived` callback.
+This version adds the ability to send and receive audio metadata. In use-cases where you need to send auxiliary audio information, such as playback progress, call the `SendAudioMetaData` method. Remote users receive the information through the `OnAudioMetaDataReceived` callback.
 
 #### Enhanced external video capabilities
 

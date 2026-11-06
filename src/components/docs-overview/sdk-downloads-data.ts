@@ -55,6 +55,27 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
         ],
       },
+      {
+        id: 'server-gateway-sdk-python',
+        label: 'Server Gateway SDK',
+        info: 'Compatible with: Voice Calling, Video Calling, or Interactive Live Streaming',
+        versions: [
+          {
+            id: '2.2.4-server-gateway-sdk-python',
+            label: 'Version 2.2.4 (Latest)',
+            downloadLink:
+              'https://github.com/AgoraIO-Extensions/Agora-Python-Server-SDK/tree/release/2.2.4',
+            packageManager:
+              'https://pypi.org/project/agora-python-server-sdk/2.2.4/',
+          },
+          {
+            id: '2.1.0-server-gateway-sdk-python',
+            label: 'Version 2.1.0',
+            downloadLink:
+              'https://github.com/AgoraIO-Extensions/Agora-Python-Server-SDK/tree/release/2.1.0',
+          },
+        ],
+      },
     ],
   },
   {
@@ -71,6 +92,31 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             label: 'Version 2.3.1 (Latest)',
             packageManager:
               'https://pkg.go.dev/github.com/AgoraIO/agora-agents-go/v2@v2.3.1',
+          },
+        ],
+      },
+      {
+        id: 'server-gateway-sdk-go',
+        label: 'Server Gateway SDK',
+        info: 'Compatible with: Voice Calling, Video Calling, or Interactive Live Streaming',
+        versions: [
+          {
+            id: '2.2.8-server-gateway-sdk-go',
+            label: 'Version 2.2.8 (Latest)',
+            downloadLink:
+              'https://github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK/tree/release/2.2.8',
+          },
+          {
+            id: '2.2.4-server-gateway-sdk-go',
+            label: 'Version 2.2.4',
+            downloadLink:
+              'https://github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK/tree/release/2.2.4',
+          },
+          {
+            id: '2.1.0-server-gateway-sdk-go',
+            label: 'Version 2.1.0',
+            downloadLink:
+              'https://github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK/tree/release/2.1.0',
           },
         ],
       },
@@ -3159,97 +3205,55 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
         ],
       },
-      {
-        id: 'server-gateway-sdk-linux',
-        label: 'Server Gateway SDK',
-        info: 'Compatible with: Voice Calling, Video Calling, or Interactive Live Streaming',
-        versions: [
-          {
-            id: 'java-server-gateway-sdk-linux',
-            label: 'Version 4.4.32 for Java (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora-Linux-Java-SDK-v4.4.32-x86_64-675656-ccd9be501d-20250526_180235.zip',
-          },
-          {
-            id: 'cpp-server-gateway-sdk-linux-arm',
-            label: 'Version 4.4.32 aarch64 for C++ (Latest)',
-            downloadLink:
-              'https://download.agora.io/rtsasdk/release/Agora-RTC-aarch64-linux-gnu-v4.4.32-20250425_150503-675674.tgz',
-          },
-          {
-            id: 'cpp-server-gateway-sdk-linux',
-            label: 'Version 4.4.32 x86_64 for C++ (Latest)',
-            downloadLink:
-              'https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.4.32-20250425_144419-675648.tgz',
-          },
-          {
-            id: 'go-server-gateway-sdk-linux',
-            label: 'Version 2.2.8 for Go (Latest)',
-            downloadLink:
-              'https://github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK/tree/release/2.2.8',
-          },
-          {
-            id: 'python-server-gateway-sdk-linux',
-            label: 'Version 2.2.4 for Python (Latest)',
-            downloadLink:
-              'https://github.com/AgoraIO-Extensions/Agora-Python-Server-SDK/tree/release/2.2.4',
-            packageManager: 'https://pypi.org/project/agora-python-server-sdk/',
-          },
-          {
-            id: 'java-server-gateway-sdk-linux',
-            label: 'Version 4.4.30 for Java',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora-Linux-Java-SDK-v4.4.30-x86_64-398537-0440223121-20241024_121033.jar',
-          },
-          {
-            id: 'go-server-gateway-sdk-linux',
-            label: 'Version 2.1.0 for Go',
-            downloadLink: '../en/server-gateway/reference/download?platform=go',
-          },
-          {
-            id: 'python-server-gateway-sdk-linux',
-            label: 'Version 2.1.0 for Python',
-            downloadLink:
-              '../en/server-gateway/reference/download?platform=python',
-          },
-          {
-            id: 'cpp-server-gateway-sdk-linux',
-            label: 'Version 4.4.30 for C++',
-            downloadLink:
-              'https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.4.30-20241024_101940-398537.tgz',
-          },
-          {
-            id: 'cpp-server-gateway-sdk-linux',
-            label: 'Version 4.2.32 for C++',
-            downloadLink:
-              'https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.2.32-20240814_113547-328017.tgz',
-          },
-          {
-            id: 'cpp-server-gateway-sdk-linux',
-            label: 'Version 4.2.30 for C++',
-            downloadLink:
-              'https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.2.30-20240202_172130-292462.tgz',
-          },
-          {
-            id: 'cpp-server-gateway-sdk-linux',
-            label: 'Version 3.8.2 for C++',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora-RTC-x86_64-linux-gnu-v3.8.202.20-20220627_152601-214165.tgz',
-          },
-          {
-            id: 'java-server-gateway-sdk-linux',
-            label: 'Version 3.7.2 for Java',
-            packageManager:
-              'https://mvnrepository.com/artifact/io.agora.rtc/linux-sdk',
-          },
-        ],
-      },
     ],
   },
   {
     id: 'linux-cpp',
     label: 'Linux C++',
     core: [
+      {
+        id: 'server-gateway-sdk-linux-cpp',
+        label: 'Server Gateway SDK',
+        info: 'Compatible with: Voice Calling, Video Calling, or Interactive Live Streaming',
+        versions: [
+          {
+            id: '4.4.32-server-gateway-sdk-linux-cpp-x86_64',
+            label: 'Version 4.4.32 for x86_64 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.4.32-20250425_144419-675648.tgz',
+          },
+          {
+            id: '4.4.32-server-gateway-sdk-linux-cpp-aarch64',
+            label: 'Version 4.4.32 for aarch64 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTC-aarch64-linux-gnu-v4.4.32-20250425_150503-675674.tgz',
+          },
+          {
+            id: '4.4.30-server-gateway-sdk-linux-cpp',
+            label: 'Version 4.4.30 for x86_64',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.4.30-20241024_101940-398537.tgz',
+          },
+          {
+            id: '4.2.32-server-gateway-sdk-linux-cpp',
+            label: 'Version 4.2.32 for x86_64',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.2.32-20240814_113547-328017.tgz',
+          },
+          {
+            id: '4.2.30-server-gateway-sdk-linux-cpp',
+            label: 'Version 4.2.30 for x86_64',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.2.30-20240202_172130-292462.tgz',
+          },
+          {
+            id: '3.8.2-server-gateway-sdk-linux-cpp',
+            label: 'Version 3.8.2 for x86_64',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora-RTC-x86_64-linux-gnu-v3.8.202.20-20220627_152601-214165.tgz',
+          },
+        ],
+      },
       {
         id: 'rtm-sdk-linux-cpp',
         label: 'Signaling SDK',
@@ -3323,6 +3327,35 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
     id: 'linux-java',
     label: 'Linux Java',
     core: [
+      {
+        id: 'server-gateway-sdk-linux-java',
+        label: 'Server Gateway SDK',
+        info: 'Compatible with: Voice Calling, Video Calling, or Interactive Live Streaming',
+        versions: [
+          {
+            id: '4.4.32-server-gateway-sdk-linux-java',
+            label: 'Version 4.4.32 for x86_64 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora-Linux-Java-SDK-v4.4.32-x86_64-675656-ccd9be501d-20250526_180235.zip',
+            packageManager:
+              'https://central.sonatype.com/artifact/io.agora.rtc/linux-java-sdk/4.4.32',
+          },
+          {
+            id: '4.4.30-server-gateway-sdk-linux-java',
+            label: 'Version 4.4.30 for x86_64',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora-Linux-Java-SDK-v4.4.30-x86_64-398537-0440223121-20241024_121033.jar',
+            packageManager:
+              'https://central.sonatype.com/artifact/io.agora.rtc/linux-java-sdk/4.4.30',
+          },
+          {
+            id: '3.7.2-server-gateway-sdk-linux-java',
+            label: 'Version 3.7.2 for x86_64',
+            packageManager:
+              'https://mvnrepository.com/artifact/io.agora.rtc/linux-sdk',
+          },
+        ],
+      },
       {
         id: 'rtm-sdk-linux-java',
         label: 'Signaling SDK',
