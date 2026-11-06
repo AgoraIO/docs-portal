@@ -383,15 +383,19 @@ Included in this release:
 
 #### Improvements
 
-This release includes the following enhancement.
+This release includes the following enhancements.
 
 - **Improved stability for long audio replies**
 
   This release improves resource protection and error-recovery logic for long streaming audio replies, reducing the likelihood of an abnormal disconnect or failed recovery. As a result, service stability improves for long replies and free-form conversation scenarios.
 
+- **Cara 4 model and portrait video for Anam avatars**
+
+  Anam avatars support the Cara 4 model and custom output resolutions, including portrait video for mobile apps. For details, see [Portrait video](models/avatar/anam#portrait-video).
+
 #### API changes
 
-This release introduces the following changes for ASR keywords and the new TTS and MLLM providers.
+This release introduces the following changes for ASR keywords, the new TTS and MLLM providers, and Anam avatars.
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -432,6 +436,7 @@ This release introduces the following changes for ASR keywords and the new TTS a
   - **New parameters**
 
     - [`asr.keywords`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-asr-keywords): ASR keywords used to improve recognition accuracy for specific terms. Only available when `asr.vendor` is not set or `ares`.
+    - [`avatar.params`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-avatar-params) fields for Anam: `avatar_model` selects the avatar model, such as `cara-4`, and `video_width` and `video_height` set the output resolution. See [Anam](/en/ai/models/avatar/anam#portrait-video).
 
   - **Updated parameters**
 
