@@ -323,7 +323,7 @@ virtual int joinChannel(const char* token, const char* channelId, const char* in
 <a id="uid-2"></a>
 <Parameter name="uid">
 
-用户 ID。用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 ID，并确保同一频道中的每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2^32 - 1。如果未指定用户 ID（或设置为 0），SDK 会自动分配一个随机用户 ID，并在 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回。你的应用程序必须记录并维护返回的用户 ID，SDK 不会保存。
+用户 ID。用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 ID，并确保同一频道中的每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2³² - 1。如果未指定用户 ID（或设置为 0），SDK 会自动分配一个随机用户 ID，并在 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回。你的应用程序必须记录并维护返回的用户 ID，SDK 不会保存。
 
 </Parameter>
 </ParameterList>
@@ -423,7 +423,7 @@ virtual int joinChannel(const char* token, const char* channelId, uid_t uid, con
 <a id="uid-3"></a>
 <Parameter name="uid">
 
-用户 ID。用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2^32-1。如果未指定用户 ID（或设置为 0），SDK 会自动分配一个随机用户 ID，并在 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回。你的应用程序必须记录并维护返回的用户 ID。
+用户 ID。用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2³²-1。如果未指定用户 ID（或设置为 0），SDK 会自动分配一个随机用户 ID，并在 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回。你的应用程序必须记录并维护返回的用户 ID。
 
 </Parameter>
 <a id="options"></a>
@@ -1234,7 +1234,7 @@ virtual int preloadChannel(const char* token, const char* channelId, uid_t uid) 
 <a id="uid-4"></a>
 <Parameter name="uid">
 
-用户 ID，用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 ID，并确保同一频道中的每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2^32 - 1。如果未指定用户 ID（或设置为 0），SDK 会分配一个随机用户 ID，并在 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回。你的应用必须记录并维护返回的用户 ID，SDK 不会保存。
+用户 ID，用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 ID，并确保同一频道中的每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2³² - 1。如果未指定用户 ID（或设置为 0），SDK 会分配一个随机用户 ID，并在 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回。你的应用必须记录并维护返回的用户 ID，SDK 不会保存。
 
 </Parameter>
 </ParameterList>

@@ -4,14 +4,16 @@ import {
   Pre as FumadocsCodeBlockPre,
 } from 'fumadocs-ui/components/codeblock';
 import { cn } from '@/lib/cn';
-export type PreProps = CodeBlockProps & { 'data-language-label'?: string };
+export type DocsCodeBlockProps = CodeBlockProps & {
+  'data-language-label'?: string;
+};
 
-export function Pre({
+export function DocsCodeBlock({
   className,
   title,
   'data-language-label': languageLabel,
   ...props
-}: PreProps) {
+}: DocsCodeBlockProps) {
   return (
     <FumadocsCodeBlock
       {...props}

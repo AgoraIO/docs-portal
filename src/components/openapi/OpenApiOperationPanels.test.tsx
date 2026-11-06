@@ -1,5 +1,11 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 import { DOCS_HASH_TARGET_EVENT } from '@/lib/docs-hash';
 import { OpenApiOperationPanels } from './OpenApiOperationPanels';
 
@@ -36,6 +42,75 @@ describe('OpenApiOperationPanels', () => {
     fireEvent.mouseDown(examples, { button: 0, ctrlKey: false });
     expect(screen.getByRole('textbox', { name: 'Example value' })).toBe(input);
     expect(input).toHaveValue('kept');
+  });
+
+  it('keeps the examples rail height when a response status shortens documentation', async () => {
+    let documentationHeight = 480;
+    const originalGetBoundingClientRect =
+      HTMLElement.prototype.getBoundingClientRect;
+    const getBoundingClientRect = vi
+      .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
+      .mockImplementation(function (this: HTMLElement) {
+        if (
+          this.getAttribute('data-openapi-operation-panel') === 'documentation'
+        ) {
+          return {
+            x: 0,
+            y: 0,
+            width: 800,
+            height: documentationHeight,
+            top: 0,
+            left: 0,
+            right: 800,
+            bottom: documentationHeight,
+            toJSON: () => ({}),
+          } as DOMRect;
+        }
+        return originalGetBoundingClientRect.call(this);
+      });
+    const renderDocumentation = (summary: string) => (
+      <div data-openapi-responses>
+        <button type="button" role="tab">
+          非 200
+        </button>
+        <div>{summary}</div>
+      </div>
+    );
+    const examplesContent = <p>Response examples</p>;
+    const { container, rerender } = render(
+      <OpenApiOperationPanels
+        documentation={renderDocumentation('Long success schema')}
+        examples={examplesContent}
+        locale="zh-CN"
+      />,
+    );
+    const examples = container.querySelector(
+      '[data-openapi-operation-panel="examples"]',
+    ) as HTMLElement;
+
+    await waitFor(() => {
+      expect(
+        examples.style.getPropertyValue('--openapi-examples-min-height'),
+      ).toBe('480px');
+    });
+    fireEvent.mouseDown(screen.getByRole('tab', { name: '非 200' }), {
+      button: 0,
+      ctrlKey: false,
+    });
+    documentationHeight = 120;
+    rerender(
+      <OpenApiOperationPanels
+        documentation={renderDocumentation('Short error note')}
+        examples={examplesContent}
+        locale="zh-CN"
+      />,
+    );
+
+    expect(await screen.findByText('Short error note')).toBeVisible();
+    expect(
+      examples.style.getPropertyValue('--openapi-examples-min-height'),
+    ).toBe('480px');
+    getBoundingClientRect.mockRestore();
   });
 
   it('reveals the panel containing a heading requested by the docs navigation', () => {

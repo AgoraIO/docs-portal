@@ -238,7 +238,7 @@ curl --location --request POST 'https://api.agora.io/v1/apps/{appid}/cloud_recor
 | --- | --- | --- | --- |
 | `appid` | String | 你的[声网 App ID](/zh-CN/realtime-media/content-moderation/enable-service#获取-app-id)。必须使用待审核的频道所对应的 App ID。 | 路径参数 |
 | `cname` | String | 待审核的频道名。 | Body 参数 |
-| `uid` | String | 标识音频审核服务（相当于频道内一个不发流的客户端）的用户 ID，例如 `"527841"`。取值范围为 `[1, 2^32 - 1]`，不可设置为 `0`，不能与当前频道内的任何用户 ID 重复，且频道内所有用户均需使用整型用户 ID。 | Body 参数 |
+| `uid` | String | 标识音频审核服务（相当于频道内一个不发流的客户端）的用户 ID，例如 `"527841"`。取值范围为 `[1, 2³² - 1]`，不可设置为 `0`，不能与当前频道内的任何用户 ID 重复，且频道内所有用户均需使用整型用户 ID。 | Body 参数 |
 
 ##### 公共响应参数
 
@@ -357,7 +357,7 @@ POST https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/acquire HTTPS/1.
     -   `0`：（默认）48 kHz 采样率，音乐编码，单声道，编码码率约 48 Kbps
     -   `1`：48 kHz 采样率，音乐编码，单声道，编码码率约 128 Kbps
     -   `2`：48 kHz 采样率，音乐编码，双声道，编码码率约 192 Kbps
--   `maxIdleTime`：（选填）Number 类型，最长空闲频道时间。默认值为 30 秒，该值需大于等于 5，且小于等于 (232-1)。如果频道内无用户的状态持续超过该时间，审核服务会自动退出。
+-   `maxIdleTime`：（选填）Number 类型，最长空闲频道时间。默认值为 30 秒，该值需大于等于 5，且小于等于 (2³² - 1)。如果频道内无用户的状态持续超过该时间，审核服务会自动退出。
     -   通信场景下，如果频道内有用户，但用户没有发流，不算作无用户状态。
     -   直播场景下，如果频道内有观众但无主播，一旦无主播的状态超过 `maxIdleTime`，审核服务会自动退出。
 -   `subscribeAudioUids`：（选填）JSONArray 类型，由 UID 组成的数组，指定订阅哪几个 UID 的音频流。数组长度不得超过 32，不推荐使用空数组。

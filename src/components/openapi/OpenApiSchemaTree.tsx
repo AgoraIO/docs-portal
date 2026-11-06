@@ -1,8 +1,10 @@
 import {
+  type ComponentProps,
   createElement,
   type ReactNode,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -328,7 +330,7 @@ export function OpenApiSchemaTree({
           (candidate) => candidate.choices?.[choiceDepth]?.id === choice.id,
         );
         return [
-          <Tabs
+          <StableChoiceTabs
             className="openapi-schema-choice min-w-0 max-w-full"
             key={choice.id}
             value={selected}
@@ -354,43 +356,48 @@ export function OpenApiSchemaTree({
                 </TabsTrigger>
               ))}
             </TabsList>
-            {choice.options.map((option) => (
-              <ChoicePanel
-                active={selected === option.value}
-                key={option.value}
-                value={option.value}
-                onBeforeMatch={() => {
-                  const member = members.find(
-                    (candidate) =>
-                      candidate.choices?.[choiceDepth]?.value === option.value,
-                  );
-                  if (member) revealNode(member.id, false, choice.id);
-                }}
-              >
-                {option.schema &&
-                !members.some((member) => member.schema === option.schema) ? (
-                  <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
-                    {option.schema.description}
-                    <OpenApiSchemaMetadata
-                      items={renderRemainingInfoTags({
-                        ...node,
-                        schema: option.schema,
-                      })}
-                    />
-                  </div>
-                ) : null}
-                {renderNodes(
-                  members.filter(
-                    (member) =>
-                      member.choices?.[choiceDepth]?.value === option.value,
-                  ),
-                  seen,
-                  choiceDepth + 1,
-                  active && selected === option.value,
-                )}
-              </ChoicePanel>
-            ))}
-          </Tabs>,
+            {/* until-found panels still participate in layout. Keep them out of
+                the tabs flex gap so every choice starts at the same position. */}
+            <div className="min-w-0" data-openapi-choice-panels="">
+              {choice.options.map((option) => (
+                <ChoicePanel
+                  active={selected === option.value}
+                  key={option.value}
+                  value={option.value}
+                  onBeforeMatch={() => {
+                    const member = members.find(
+                      (candidate) =>
+                        candidate.choices?.[choiceDepth]?.value ===
+                        option.value,
+                    );
+                    if (member) revealNode(member.id, false, choice.id);
+                  }}
+                >
+                  {option.schema &&
+                  !members.some((member) => member.schema === option.schema) ? (
+                    <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
+                      {option.schema.description}
+                      <OpenApiSchemaMetadata
+                        items={renderRemainingInfoTags({
+                          ...node,
+                          schema: option.schema,
+                        })}
+                      />
+                    </div>
+                  ) : null}
+                  {renderNodes(
+                    members.filter(
+                      (member) =>
+                        member.choices?.[choiceDepth]?.value === option.value,
+                    ),
+                    seen,
+                    choiceDepth + 1,
+                    active && selected === option.value,
+                  )}
+                </ChoicePanel>
+              ))}
+            </div>
+          </StableChoiceTabs>,
         ];
       }
       if (seen.has(node.id)) return [];
@@ -546,6 +553,111 @@ export function OpenApiSchemaTree({
       ) : null}
       <div data-openapi-schema-fields="">{renderNodes(nodes)}</div>
     </div>
+  );
+}
+
+function StableChoiceTabs({ value, ...props }: ComponentProps<typeof Tabs>) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const anchorRef = useRef<{
+    list: HTMLElement;
+    owner: HTMLElement | null;
+    top: number;
+    value: typeof value;
+    timer: number;
+  } | null>(null);
+
+  function capture(target: EventTarget | null) {
+    const tab =
+      target instanceof Element
+        ? target.closest<HTMLElement>('[role="tab"]')
+        : null;
+    if (
+      !tab ||
+      tab.closest('.openapi-schema-choice') !== rootRef.current ||
+      anchorRef.current
+    )
+      return;
+    const list = tab.closest<HTMLElement>('[role="tablist"]');
+    if (!list) return;
+    let owner = list.parentElement;
+    while (
+      owner &&
+      owner !== document.body &&
+      owner !== document.documentElement
+    ) {
+      const style = getComputedStyle(owner);
+      if (
+        /(auto|scroll|overlay)/.test(style.overflowY || style.overflow) &&
+        owner.scrollHeight > owner.clientHeight
+      )
+        break;
+      owner = owner.parentElement;
+    }
+    const anchor = {
+      list,
+      owner:
+        owner === document.body || owner === document.documentElement
+          ? null
+          : owner,
+      top: list.getBoundingClientRect().top,
+      value,
+      timer: 0,
+    };
+    anchorRef.current = anchor;
+    // Only compensate the initiating interaction, not later hash or find-in-page navigation.
+    anchor.timer = window.setTimeout(() => {
+      if (anchorRef.current === anchor) anchorRef.current = null;
+    }, 0);
+  }
+
+  useLayoutEffect(() => {
+    const anchor = anchorRef.current;
+    anchorRef.current = null;
+    if (!anchor) return;
+    window.clearTimeout(anchor.timer);
+    if (anchor.value === value || !anchor.list.isConnected) return;
+    const delta = anchor.list.getBoundingClientRect().top - anchor.top;
+    if (Math.abs(delta) < 1) return;
+    if (anchor.owner)
+      anchor.owner.scrollTo({
+        top: anchor.owner.scrollTop + delta,
+        behavior: 'instant',
+      });
+    else window.scrollTo({ top: window.scrollY + delta, behavior: 'instant' });
+  }, [value]);
+
+  useEffect(
+    () => () => {
+      if (anchorRef.current) window.clearTimeout(anchorRef.current.timer);
+    },
+    [],
+  );
+
+  return (
+    <Tabs
+      {...props}
+      ref={rootRef}
+      value={value}
+      onMouseDownCapture={(event) => {
+        props.onMouseDownCapture?.(event);
+        if (!event.defaultPrevented && event.button === 0)
+          capture(event.target);
+      }}
+      onKeyDownCapture={(event) => {
+        props.onKeyDownCapture?.(event);
+        if (
+          !event.defaultPrevented &&
+          ['ArrowLeft', 'ArrowRight', 'Home', 'End', 'Enter', ' '].includes(
+            event.key,
+          )
+        )
+          capture(event.target);
+      }}
+      onFocusCapture={(event) => {
+        props.onFocusCapture?.(event);
+        if (!event.defaultPrevented) capture(event.target);
+      }}
+    />
   );
 }
 

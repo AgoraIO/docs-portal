@@ -13,7 +13,10 @@ import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/cn';
 import { normalizeLocale } from '@/lib/i18n/i18n-config';
 import { resources } from '@/lib/i18n/resources';
-import { Pre, type PreProps } from './CodeBlock';
+import {
+  DocsCodeBlock as Pre,
+  type DocsCodeBlockProps as PreProps,
+} from '../DocsCodeBlock';
 import { DocsTable } from './DocsTable';
 
 type ParameterListVariant = 'cards' | 'table';

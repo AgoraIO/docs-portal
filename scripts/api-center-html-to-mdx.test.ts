@@ -30,6 +30,25 @@ async function compileGeneratedMdx(source: string) {
 }
 
 describe('API Center shared HTML to MDX converter', () => {
+  it.each([
+    'href="mai\' + \'lto:sales@shengwang.cn"',
+    'href="#" onclick="location.href=\'mailto:sales@shengwang.cn\'; return false;"',
+  ])(
+    'decodes visible Doxygen email text without executing link scripts: %s',
+    async (attributes) => {
+      const result = await convertHtmlToMdx({
+        html: `<article><h1>License</h1><p>联系 <a ${attributes}>sales<span class="obfuscator">.nosp@m.</span>@she<span style="display: none;">.nosp@m.</span>ngwang.cn</a> 续费。</p></article>`,
+        sourcePath: 'license.html',
+        sourceUrl: 'https://example.com/license',
+      });
+      expect(result.body).toContain(
+        '[sales@shengwang.cn](mailto:sales@shengwang.cn)',
+      );
+      expect(result.body).not.toContain('nosp@m');
+      expect(result.body).not.toContain('onclick');
+    },
+  );
+
   it('preserves explicit source image dimensions after asset localization', async () => {
     const result = await convertHtmlToMdx({
       html: '<article><h1>开通服务</h1><img src="/enable.png" alt="功能配置" width="40%" /></article>',

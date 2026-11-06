@@ -56,6 +56,7 @@ import {
   Callout as FumadocsCallout,
   CalloutContainer as FumadocsCalloutContainer,
 } from '@/components/Callout';
+import { DocsCodeBlock as Pre } from '@/components/DocsCodeBlock';
 import { DocsLinkIcon } from '@/components/DocsLinkIcon';
 import {
   Dialog,
@@ -86,7 +87,6 @@ import {
   ParameterList,
   ParameterType,
 } from './mdx/ApiReference';
-import { Pre } from './mdx/CodeBlock';
 import { DocsHeading } from './mdx/DocsHeading';
 import { DocsTable } from './mdx/DocsTable';
 import { PlanCards, PricingCards } from './mdx/PlanCards';

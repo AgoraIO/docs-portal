@@ -725,6 +725,11 @@ paths:
                   message:
                     type: string
                     description: 请求失败的具体原因。
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    message: 请求失败的具体原因。
       operationId: get-region-version-projects-appId-rtls-ingress-online-streams-sid
       security:
       - Basic Auth: []
@@ -753,6 +758,11 @@ paths:
                   status:
                     type: string
                     description: 请求状态，值为 `success`。
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    status: 请求状态，值为 `success`。
           headers:
             X-Request-ID:
               schema:
@@ -877,6 +887,12 @@ paths:
                   message:
                     type: string
                     description: 失败的具体原因。
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    status: 本次请求状态，值为 `"fail"` 或者 `"error"`。
+                    message: 失败的具体原因。
       operationId: post-region-version-projects-appId-rtls-ingress-online-streams-sid-mute
       description: 对当前在推流执行 mute 或 unmute 操作。
       security:
@@ -960,6 +976,14 @@ paths:
                                 primaryIP:
                                   type: string
                                   description: 声网消息通知服务器的 IP 地址。
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    data:
+                      service:
+                        hosts:
+                          - primaryIP: 声网消息通知服务器的 IP 地址。
       servers:
       - url: https://api.sd-rtn.com/
       security:
@@ -1215,7 +1239,7 @@ components:
             uid:
               type: string
               description: |-
-                RTMP 网关在声网频道内的主播用户 UID，可以为数字 ID 或[字符串 ID](/zh-CN/reference/faq/integration/string_uid)。如果为数字 ID，取值范围为 1 到 2^32 - 1（即 4294967295，大于此数值则会被识别为字符串）；如果为字符串 ID，不能超过 255 字节。支持以下字符集（共 89 个字符）：
+                RTMP 网关在声网频道内的主播用户 UID，可以为数字 ID 或[字符串 ID](/zh-CN/reference/faq/integration/string_uid)。如果为数字 ID，取值范围为 1 到 2<sup>32</sup>-1（即 4294967295，大于此数值则会被识别为字符串）；如果为字符串 ID，不能超过 255 字节。支持以下字符集（共 89 个字符）：
                 - 所有小写英文字母（a-z）
                 - 所有大写英文字母（A-Z）
                 - 数字 0-9

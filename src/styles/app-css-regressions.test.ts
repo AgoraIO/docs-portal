@@ -1029,9 +1029,15 @@ describe('app prose CSS regressions', () => {
       '.openapi-examples-rail',
       '40rem',
     );
+    const operation = getRuleBodyOutsideContainer('.openapi-operation');
     const anchorInDesktop = getRuleBodyContainingInContainer(
       '[data-openapi-operation-panel="examples"]',
       '40rem',
+    );
+    expectDeclaration(
+      operation.rule,
+      '--openapi-examples-sticky-top',
+      'calc(var(--docs-shell-header-offset, 48px) + 1rem)',
     );
     expectDeclaration(rail.rule, 'position', 'sticky');
     expectDeclaration(anchorInDesktop.rule, 'align-self', 'stretch');

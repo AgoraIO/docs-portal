@@ -228,13 +228,13 @@ paths:
                           idleTimeout: 300
                           audioInputs:
                           - rtc:
-                              rtcChannel: your-channel-name
-                              rtcUid: your-uid-1
-                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                              rtcChannel: "<your channel name>"
+                              rtcUid: "<your uid1>"
+                              rtcToken: "<cloudTranscoder_robot_token, generated with uid 0>"
                           - rtc:
-                              rtcChannel: your-channel-name
-                              rtcUid: your-uid-2
-                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                              rtcChannel: "<your channel name>"
+                              rtcUid: "<your uid2>"
+                              rtcToken: "<cloudTranscoder_robot_token, generated with uid 0>"
                           canvas:
                             width: 960
                             height: 480
@@ -251,9 +251,9 @@ paths:
                               zOrder: 50
                           videoInputs:
                           - rtc:
-                              rtcChannel: your-channel-name
-                              rtcUid: your-uid-1
-                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                              rtcChannel: "<your channel name>"
+                              rtcUid: "<your uid1>"
+                              rtcToken: "<cloudTranscoder_robot_token, generated with uid 0>"
                             placeholderImageUrl: https://example.jpg
                             region:
                               x: 0
@@ -262,9 +262,9 @@ paths:
                               height: 360
                               zOrder: 2
                           - rtc:
-                              rtcChannel: your-channel-name
-                              rtcUid: your-uid-2
-                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                              rtcChannel: "<your channel name>"
+                              rtcUid: "<your uid2>"
+                              rtcToken: "<cloudTranscoder_robot_token, generated with uid 0>"
                             placeholderImageUrl: https://example.jpg
                             region:
                               x: 320
@@ -274,9 +274,9 @@ paths:
                               zOrder: 2
                           outputs:
                           - rtc:
-                              rtcChannel: your-channel-name
-                              rtcUid: your-uid
-                              rtcToken: cloudTranscoder-robot-token-follow-rtcUid
+                              rtcChannel: "<your channel name>"
+                              rtcUid: "<your uid>"
+                              rtcToken: "<cloudTranscoder_robot_token,follow rtcUid>"
                             audioOption:
                               profileType: AUDIO_PROFILE_MUSIC_STANDARD
                             videoOption:
@@ -303,14 +303,14 @@ paths:
                           idleTimeout: 300
                           audioInputs:
                           - rtc:
-                              rtcChannel: your-channel-name
-                              rtcUid: your-uid
-                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                              rtcChannel: "<your channel name>"
+                              rtcUid: "<your uid>"
+                              rtcToken: "<cloudTranscoder_robot_token, generated with uid 0>"
                           videoInputs:
                           - rtc:
-                              rtcChannel: your-channel-name
-                              rtcUid: your-uid
-                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                              rtcChannel: "<your channel name>"
+                              rtcUid: "<your uid>"
+                              rtcToken: "<cloudTranscoder_robot_token, generated with uid 0>"
                           outputs:
                           - audioOption:
                               profileType: AUDIO_PROFILE_MUSIC_STANDARD
@@ -327,19 +327,19 @@ paths:
                           idleTimeout: 300
                           audioInputs:
                           - rtc:
-                              rtcChannel: your-channel-name
-                              rtcUid: your-uid-1
-                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                              rtcChannel: "<your channel name>"
+                              rtcUid: "<your uid1>"
+                              rtcToken: "<cloudTranscoder_robot_token, generated with uid 0>"
                           - rtc:
-                              rtcChannel: your-channel-name
-                              rtcUid: your-uid-2
+                              rtcChannel: "<your channel name>"
+                              rtcUid: "<your uid2>"
                               rtcToken: cloudTranscoder_robot_token, generated with
                                 uid 0>
                           videoInputs:
                           - rtc:
-                              rtcChannel: your-channel-name
-                              rtcUid: your-uid-1
-                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                              rtcChannel: "<your channel name>"
+                              rtcUid: "<your uid1>"
+                              rtcToken: "<cloudTranscoder_robot_token, generated with uid 0>"
                             region:
                               x: 0
                               y: 0
@@ -348,8 +348,8 @@ paths:
                               zOrder: 2
                           - rtc:
                               rtcChannel: your channel name>
-                              rtcUid: your-uid-2
-                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                              rtcUid: "<your uid2>"
+                              rtcToken: "<cloudTranscoder_robot_token, generated with uid 0>"
                             region:
                               x: 0
                               y: 240
@@ -1056,6 +1056,11 @@ components:
             properties:
               message:
                 $ref: '#/components/schemas/message'
+          examples:
+            schema:
+              summary: 示例
+              value:
+                message: 描述请求失败的原因。
       headers:
         X-Request-ID:
           schema:
@@ -1073,6 +1078,14 @@ components:
             properties:
               status:
                 $ref: '#/components/schemas/abr-status'
+          examples:
+            schema:
+              summary: 示例
+              value:
+                status: |
+                  本次请求的状态：
+                  - `success`：请求成功。
+                  - `error`：请求失败。
     abr-failure:
       description: 如果状态码不为 200，表示请求失败。请根据响应状态码和 `message` 字段进行排查。
       content:
@@ -1084,6 +1097,15 @@ components:
                 $ref: '#/components/schemas/abr-status'
               message:
                 $ref: '#/components/schemas/message'
+          examples:
+            schema:
+              summary: 示例
+              value:
+                status: |
+                  本次请求的状态：
+                  - `success`：请求成功。
+                  - `error`：请求失败。
+                message: 描述请求失败的原因。
     abr-query-success:
       description: 如果状态码为 200，则请求成功。
       content:
@@ -1116,6 +1138,23 @@ components:
                               $ref: '#/components/schemas/abr-height-r'
                             fps:
                               $ref: '#/components/schemas/abr-fps-r'
+          examples:
+            schema:
+              summary: 示例
+              value:
+                status: |
+                  本次请求的状态：
+                  - `success`：请求成功。
+                  - `error`：请求失败。
+                data:
+                  enabled: true
+                  codecs:
+                    - id: 转码模板的 ID。
+                      enabled: true
+                      video:
+                        width: 0
+                        height: 0
+                        fps: 0
     abr-query-failure:
       description: 如果状态码不为 200，表示请求失败。请根据响应状态码和 `message` 字段进行排查。
       content:
@@ -1150,6 +1189,24 @@ components:
                               $ref: '#/components/schemas/abr-fps-r'
               message:
                 $ref: '#/components/schemas/message'
+          examples:
+            schema:
+              summary: 示例
+              value:
+                status: |
+                  本次请求的状态：
+                  - `success`：请求成功。
+                  - `error`：请求失败。
+                data:
+                  enabled: true
+                  codecs:
+                    - id: 转码模板的 ID。
+                      enabled: true
+                      video:
+                        width: 0
+                        height: 0
+                        fps: 0
+                message: 描述请求失败的原因。
   schemas:
     instanceId:
       type: string

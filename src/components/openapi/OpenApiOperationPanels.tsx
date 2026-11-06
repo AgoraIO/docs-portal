@@ -1,4 +1,12 @@
-import { type ReactNode, useEffect, useRef, useState } from 'react';
+import {
+  type CSSProperties,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   DOCS_HASH_TARGET_EVENT,
@@ -17,9 +25,38 @@ export function OpenApiOperationPanels({
   overview?: ReactNode;
 }) {
   const [view, setView] = useState('documentation');
+  const [examplesMinHeight, setExamplesMinHeight] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
   const navigationRef = useRef<HTMLDivElement>(null);
+  const documentationRef = useRef<HTMLDivElement>(null);
   const chinese = locale?.startsWith('zh');
+
+  const rememberDocumentationHeight = useCallback(() => {
+    const height =
+      documentationRef.current?.getBoundingClientRect().height ?? 0;
+    if (height > 0) {
+      setExamplesMinHeight((current) => Math.max(current, Math.ceil(height)));
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    const documentation = documentationRef.current;
+    if (!documentation) return;
+
+    rememberDocumentationHeight();
+    const observer = new ResizeObserver(rememberDocumentationHeight);
+    observer.observe(documentation);
+    return () => observer.disconnect();
+  }, [rememberDocumentationHeight]);
+
+  function preserveHeightBeforeResponseSwitch(target: EventTarget | null) {
+    if (
+      target instanceof Element &&
+      target.closest('[data-openapi-responses] [role="tab"]')
+    ) {
+      rememberDocumentationHeight();
+    }
+  }
 
   const changeView = (value: string) => {
     setView(value);
@@ -58,6 +95,17 @@ export function OpenApiOperationPanels({
   return (
     <Tabs
       className="openapi-operation-layout grid scroll-mt-[calc(var(--docs-shell-header-offset,48px)+1rem)] grid-cols-1 gap-6 @min-[40rem]:grid-cols-2 @min-[40rem]:items-start @min-[56rem]:grid-cols-[minmax(0,1fr)_400px]"
+      onMouseDownCapture={(event) =>
+        preserveHeightBeforeResponseSwitch(event.target)
+      }
+      onKeyDownCapture={(event) => {
+        if (
+          ['ArrowLeft', 'ArrowRight', 'Home', 'End', 'Enter', ' '].includes(
+            event.key,
+          )
+        )
+          preserveHeightBeforeResponseSwitch(event.target);
+      }}
       onValueChange={changeView}
       ref={rootRef}
       value={view}
@@ -86,14 +134,20 @@ export function OpenApiOperationPanels({
         className="min-w-0 @max-[40rem]:data-[state=inactive]:hidden"
         data-openapi-operation-panel="documentation"
         forceMount
+        ref={documentationRef}
         value="documentation"
       >
         {documentation}
       </TabsContent>
       <TabsContent
-        className="min-w-0 @max-[40rem]:data-[state=inactive]:hidden [&>.openapi-examples-rail-anchor]:h-full"
+        className="min-w-0 @max-[40rem]:data-[state=inactive]:hidden @min-[40rem]:min-h-[var(--openapi-examples-min-height)] [&>.openapi-examples-rail-anchor]:h-full"
         data-openapi-operation-panel="examples"
         forceMount
+        style={
+          {
+            '--openapi-examples-min-height': `${examplesMinHeight}px`,
+          } as CSSProperties
+        }
         value="examples"
       >
         {examples}

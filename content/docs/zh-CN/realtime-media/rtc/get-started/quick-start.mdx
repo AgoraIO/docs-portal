@@ -2611,22 +2611,27 @@ npm run start:dev
     - 加入和离开频道按钮
 
     你可以参考下列步骤来创建用户界面。
-**创建用户界面步骤**
+
+<Accordions type="multiple">
+<Accordion title="创建用户界面步骤">
 
 1. 在右侧菜单栏将项目切换为资源视图，然后打开 `.Dialog` 文件，此时你的界面如下图所示：
 
-<DocsImage alt="ui" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-quickstart-ui1.png" displayWidth="70%" />
+   <DocsImage alt="ui" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-quickstart-ui1.png" displayWidth="70%" />
 
-    2. 添加展示远端视频的视图框。在**视图 > 工具箱**中，选择添加 **Picture Control** 控件，在**属性 > 杂项**中，将该控件的 ID 设为 **IDC_STATIC_REMOTE**，如下图所示：
+2. 添加展示远端视频的视图框。在**视图 > 工具箱**中，选择添加 **Picture Control** 控件，在**属性 > 杂项**中，将该控件的 ID 设为 **IDC_STATIC_REMOTE**，如下图所示：
 
-<DocsImage alt="remote users" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-quickstart-remote.png" displayWidth="70%" />
+   <DocsImage alt="remote users" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-quickstart-remote.png" displayWidth="70%" />
 
-    3. 添加展示本地视频的视图框。在**视图 > 工具箱**中，选择添加 **Picture Control** 控件，在**属性 > 杂项**中，将该控件的 ID 设为 **IDC_STATIC_LOCAL**。
-    4. 添加输入频道名称的输入框。在**视图 > 工具箱**中，选择添加 **Static Text** 控件，在**属性**中将**描述文字**改为**频道名**。然后再添加一个 **Edit Control** 控件作为输入框，在**属性 > 杂项**中，将该控件的 ID 设为 **IDC_EDIT_CHANNEL**。
-    5. 添加加入和离开频道按钮。在**视图 > 工具箱**中，选择添加两个 **Button** 控件，在**属性 > 杂项**中，将控件的 ID 分设为 **ID_BTN_JOIN** 和 **ID_BTN_LEAVE**，将**描述文字**分别设为**加入**、**离开**。
-    此时的用户界面如下图所示：
+3. 添加展示本地视频的视图框。在**视图 > 工具箱**中，选择添加 **Picture Control** 控件，在**属性 > 杂项**中，将该控件的 ID 设为 **IDC_STATIC_LOCAL**。
+4. 添加输入频道名称的输入框。在**视图 > 工具箱**中，选择添加 **Static Text** 控件，在**属性**中将**描述文字**改为**频道名**。然后再添加一个 **Edit Control** 控件作为输入框，在**属性 > 杂项**中，将该控件的 ID 设为 **IDC_EDIT_CHANNEL**。
+5. 添加加入和离开频道按钮。在**视图 > 工具箱**中，选择添加两个 **Button** 控件，在**属性 > 杂项**中，将控件的 ID 分设为 **ID_BTN_JOIN** 和 **ID_BTN_LEAVE**，将**描述文字**分别设为**加入**、**离开**。
+   此时的用户界面如下图所示：
 
-<DocsImage alt="ui" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-quickstart-ui2.png" displayWidth="70%" />
+   <DocsImage alt="ui" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-quickstart-ui2.png" displayWidth="70%" />
+
+</Accordion>
+</Accordions>
 
 
     ## 实现步骤
@@ -3238,7 +3243,8 @@ LRESULT CAgoraQuickStartDlg::OnEIDUserOffline(WPARAM wParam, LPARAM lParam) {
     在 `APP_ID` 和 `Token` 字段中传入你在控制台获取到的 App ID 和临时 Token。
     :::
 
-**实现音视频互动示例代码**
+<Accordions type="multiple">
+<Accordion title="实现音视频互动示例代码">
 
 ```csharp
 using System;
@@ -3427,6 +3433,9 @@ namespace WindowsFormsApp2
     }
 }
 ```
+
+</Accordion>
+</Accordions>
 
 
     ### 导入声网相关的类
@@ -5376,32 +5385,32 @@ rtcEngine.release();
 
 1. 创建加入/离开频道按钮。
 
-   a. 在你的 Unity 项目中，右击 **Sample Scene**，选择 **Game Object** > **UI** > **Button**。此时你可以在场景画布中看到你刚刚创建的按钮。
+   1. 在你的 Unity 项目中，右击 **Sample Scene**，选择 **Game Object** > **UI** > **Button**。此时你可以在场景画布中看到你刚刚创建的按钮。
 
-   b. 在右侧的 **Inspector** 面板中，将 **Button** 重命名为 **Leave**。选中 **Button** 按钮的 **Text** 控件，将 **Text** 的文本内容修改为 **Leave**，并调整按钮的位置，例如：
+   2. 在右侧的 **Inspector** 面板中，将 **Button** 重命名为 **Leave**。选中 **Button** 按钮的 **Text** 控件，将 **Text** 的文本内容修改为 **Leave**，并调整按钮的位置，例如：
 
-   - **Pos X**：`- 350`
-   - **Pos Y**：`- 172`
+      - **Pos X**：`- 350`
+      - **Pos Y**：`- 172`
 
-   c. 重复上述步骤来创建一个 **Join** 按钮。
+   3. 重复上述步骤来创建一个 **Join** 按钮。
 
 2. 创建本地及远端视图窗口。
 
-   a. 右击 **Canvas**，选择 **UI** > **Raw Image**。
+   1. 右击 **Canvas**，选择 **UI** > **Raw Image**。
 
-   b. 创建本地视图窗口。在右侧的 **Inspector** 面板中，将 **Raw Image** 重命名为 **LocalView**，并调整在画布中位置，例如：
+   2. 创建本地视图窗口。在右侧的 **Inspector** 面板中，将 **Raw Image** 重命名为 **LocalView**，并调整在画布中位置，例如：
 
-   - **Pos X**：`-250`
-   - **Pos Y**：`0`
-   - **Width**：`250`
-   - **Height**：`250`
+      - **Pos X**：`-250`
+      - **Pos Y**：`0`
+      - **Width**：`250`
+      - **Height**：`250`
 
-   c. 重复上述步骤创建远端视图窗口，将其命名为 **RemoteView**，并调整在画布中的位置，例如：
+   3. 重复上述步骤创建远端视图窗口，将其命名为 **RemoteView**，并调整在画布中的位置，例如：
 
-   - **Pos X**：`250`
-   - **Pos Y**：`0`
-   - **Width**：`250`
-   - **Height**：`250`
+      - **Pos X**：`250`
+      - **Pos Y**：`0`
+      - **Width**：`250`
+      - **Height**：`250`
 
 3. 保存上述步骤的更改。
 
@@ -7713,7 +7722,8 @@ public class UnrealLearning : ModuleRules
 
 4. 添加系统所需权限
 
-**Android**
+<Accordions type="multiple">
+<Accordion title="Android">
 
 如果目标平台为 Android，则添加 AndroidPermission 库并获取设备及网络权限：
 
@@ -7771,8 +7781,12 @@ void UAgoraWidget::NativeConstruct()
 }
 ```
 
+</Accordion>
+</Accordions>
 
-**iOS & macOS**
+
+<Accordions type="multiple">
+<Accordion title="iOS & macOS">
 
 1. 如果目标平台为 iOS/macOS，请参考[如何为 Unreal Engine 项目添加实时互动所需的权限？](/zh-CN/reference/faq/integration/unreal_permissions)
 
@@ -7794,6 +7808,9 @@ void UAgoraWidget::NativeConstruct()
         }
     }
     ```
+
+</Accordion>
+</Accordions>
 
 
 3. 关联 C++ 类和 Widget

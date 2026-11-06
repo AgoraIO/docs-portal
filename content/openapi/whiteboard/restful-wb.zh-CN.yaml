@@ -198,6 +198,17 @@ paths:
                     $ref: '#/components/schemas/createAt'
                   limit:
                     $ref: '#/components/schemas/R-limit'
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    uuid: "房间的 UUID，即房间的全局唯一标识符。     "
+                    teamUUID: "互动白板控制台账号的唯一标识符。     "
+                    appUUID: 互动白板项目的唯一标识符。
+                    isRecord: true
+                    isBan: true
+                    createdAt: "创建房间的 UTC 时间。   "
+                    limit: null
       servers:
       - url: https://api.netless.link
         description: ''
@@ -237,6 +248,17 @@ paths:
                     $ref: '#/components/schemas/createAt'
                   limit:
                     $ref: '#/components/schemas/R-limit'
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    uuid: "房间的 UUID，即房间的全局唯一标识符。     "
+                    teamUUID: "互动白板控制台账号的唯一标识符。     "
+                    appUUID: 互动白板项目的唯一标识符。
+                    isRecord: true
+                    isBan: true
+                    createdAt: "创建房间的 UTC 时间。   "
+                    limit: null
       servers:
       - url: https://api.netless.link
         description: ''
@@ -352,6 +374,17 @@ paths:
                     isBan: true
                     createdAt: '2020-12-20T14:02:54.846Z'
                     limit: 0
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    uuid: "房间的 UUID，即房间的全局唯一标识符。     "
+                    teamUUID: "互动白板控制台账号的唯一标识符。     "
+                    appUUID: 互动白板项目的唯一标识符。
+                    isRecord: true
+                    isBan: true
+                    createdAt: "创建房间的 UTC 时间。   "
+                    limit: null
       servers:
       - url: https://api.netless.link
         description: ''
@@ -910,6 +943,12 @@ paths:
                       - `true`：取消成功。
 
                       - `false`：取消失败。
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    taskId: 转换任务的 UUID，即转换任务的唯一标识符。
+                    success: true
       servers:
       - url: https://api.netless.link
         description: ''

@@ -489,9 +489,18 @@ components:
     region-create:
       name: region
       in: path
-      description: '云端播放器的区域。声网支持分区域创建云端播放器，目前支持以下区域：
+      description: |-
+        云端播放器的区域。声网支持分区域创建云端播放器，目前支持以下区域：
 
-        - `cn`：中国大陆。- `ap`：除中国大陆以外的亚洲区域。- `na`：北美。- `eu`：欧洲。**注意**：请确保设置的 `region` 与你的媒体流源站在同一个区域，且 `region` 值为小写。'
+        - `cn`：中国大陆。
+
+        - `ap`：除中国大陆以外的亚洲区域。
+
+        - `na`：北美。
+
+        - `eu`：欧洲。
+
+        **注意**：请确保设置的 `region` 与你的媒体流源站在同一个区域，且 `region` 值为小写。
       required: true
       schema:
         type: string
@@ -595,9 +604,11 @@ components:
       type: number
       title: uid
       description: |-
-        云端播放器在声网频道内的用户 UID。取值范围为 0 到（2 的 32 次方-1）。取值 0 时，声网服务器自动为 player 分配一个 UID。
+        云端播放器在声网频道内的用户 UID。取值范围为 0 到（2<sup>32</sup>-1）。取值 0 时，声网服务器自动为 player 分配一个 UID。
+
         > [!CAUTION]
-        > - `uid` 和 `account` 字段二选一必填。如果不设置用户名（UID 或 Account），该云端播放器不能创建，声网服务器会返回 `400(Bad Request)` 的状态码。请确保该值与频道内其他用户、云端播放器的 UID 都不同，否则影响播放质量。> - 如果你需要在同一个频道内有多个云端播放器，请确保每个云端播放器的用户名（UID 或 Account）都是唯一的。
+        > - `uid` 和 `account` 字段二选一必填。如果不设置用户名（UID 或 Account），该云端播放器不能创建，声网服务器会返回 `400(Bad Request)` 的状态码。请确保该值与频道内其他用户、云端播放器的 UID 都不同，否则影响播放质量。
+        > - 如果你需要在同一个频道内有多个云端播放器，请确保每个云端播放器的用户名（UID 或 Account）都是唯一的。
       x-stoplight:
         id: zoe1m2qgzp0ed
     account:
@@ -869,7 +880,29 @@ components:
     enable:
       type: boolean
       title: enable
-      description: "设置是否通过 Data stream 展示点播流总时长：\n- `true`：展示。\n- `false`：（默认）不展示。\n\n如果通过 Data stream 展示点播流总时长，发出的 Data stream 需要使用 Protobuf 解析，而不能用 ASCII 码直接解析。\n\nProtobuf（全称 [Protocol Buffers](https://protobuf.dev/)）是由 Google 开发的一种高效的、跨语言的序列化数据格式。Protobuf 解析步骤如下：\n\n1. 将如下代码保存到一个 proto 文件中，例如 `PlayerMessage.proto`：\n\n    ```json\n    syntax = \"proto3\";\n\n    message PositionData {\n      int32 duration = 1;\n      int32 position = 2;\n      int32 uid = 3;\n    }\n    ```\n\n2. 使用 protoc 生成源代码\n3. 对接收到的数据进行反序列化"
+      description: |-
+        设置是否通过 Data stream 展示点播流总时长：
+        - `true`：展示。
+        - `false`：（默认）不展示。
+
+        如果通过 Data stream 展示点播流总时长，发出的 Data stream 需要使用 Protobuf 解析，而不能用 ASCII 码直接解析。
+
+        Protobuf（全称 [Protocol Buffers](https://protobuf.dev/)）是由 Google 开发的一种高效的、跨语言的序列化数据格式。Protobuf 解析步骤如下：
+
+        1. 将如下代码保存到一个 proto 文件中，例如 `PlayerMessage.proto`：
+
+            ```proto
+            syntax = "proto3";
+
+            message PositionData {
+              int32 duration = 1;
+              int32 position = 2;
+              int32 uid = 3;
+            }
+            ```
+
+        2. 使用 protoc 生成源代码
+        3. 对接收到的数据进行反序列化
       default: false
       x-stoplight:
         id: ty90l2ntrtwf2
