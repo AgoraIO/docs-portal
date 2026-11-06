@@ -158,17 +158,18 @@ describe('RTC PR #2094 frozen source delta', () => {
         );
       }
       if (platform === 'android') {
-        const compatibilityEntry = section(
-          read(file(platform, 'rtc-interface-class')),
-          '<a id="class_ivideoeffectobject"></a>',
-          '<a id="class_ivideoencodedframeobserver"></a>',
-        );
-        expect(compatibilityEntry).toContain('<a id="ivideoeffectobject"></a>');
-        expect(compatibilityEntry).toContain(
-          `/rtc/${platform}/class-ivideoeffectobject`,
-        );
-        expect(compatibilityEntry).not.toMatch(/^## /m);
-        expect(compatibilityEntry).not.toContain('#api_ivideoeffectobject_');
+        const index = read(file(platform, 'rtc-interface-class'));
+        expect(index).not.toContain('IVideoEffectObject');
+        expect(index).not.toContain('ivideoeffectobject');
+        for (const source of [
+          file(platform, 'rtc-api-overview'),
+          'content/docs/zh-CN/realtime-media/rtc/reference/release-notes.mdx',
+        ]) {
+          expect(read(source)).not.toContain(
+            '/android/rtc-interface-class#class_ivideoeffectobject',
+          );
+          expect(read(source)).toContain('/android/class-ivideoeffectobject');
+        }
       }
       expect(read(file(platform, 'rtc-api-data-type'))).toContain(
         `/rtc/${platform}/class-ivideoeffectobject`,
@@ -286,16 +287,29 @@ describe('RTC PR #2094 frozen source delta', () => {
         depth: 3,
       });
     }
-    expect(source).toContain('<a id="相关参考-25"></a>');
+    expect(source).not.toContain('<a id="相关参考-25"></a>');
   });
 
-  it('keeps every preexisting stable class hash', () => {
+  it('keeps preexisting class hashes except the retired Android video effect section', () => {
     for (const item of report.inventory.filter((item) =>
       item.target_path?.endsWith('/rtc-interface-class.mdx'),
     )) {
       const text = read(item.target_path as string);
-      for (const id of item.target_old_ids)
-        expect(text).toContain(`<a id="${id}"></a>`);
+      const retiredIds =
+        item.target_path === file('android', 'rtc-interface-class')
+          ? [
+              'class_ivideoeffectobject',
+              'class_ivideoeffectobject__detailed_desc',
+              'ariaid-title28',
+            ]
+          : [];
+      for (const id of item.target_old_ids) {
+        if (retiredIds.includes(id)) {
+          expect(text).not.toContain(`<a id="${id}"></a>`);
+        } else {
+          expect(text).toContain(`<a id="${id}"></a>`);
+        }
+      }
     }
   });
 
