@@ -4,9 +4,8 @@ export type InstallCommand = { tool: string; command: string };
 
 /**
  * Derive a copyable install command from a version's package-registry URL.
- * The version is pinned only when the URL itself carries it (Maven, pub, unpkg);
- * npmjs / Swift Package Index / pypi URLs have no version, so those are
- * unpinned. Unknown hosts (github release pages, easemob, etc.) and a missing
+ * The version is pinned only when the URL itself carries it (Maven, pub, unpkg,
+ * versioned npmjs and pypi URLs); URLs without a version are unpinned. Unknown hosts (github release pages, easemob, etc.) and a missing
  * URL return null, which the UI renders as a download-only product.
  */
 export function deriveInstallCommand(
@@ -88,9 +87,10 @@ export function deriveInstallCommand(
       return null;
     }
     case 'pypi.org': {
-      // /project/<name>/
+      // /project/<name>[/<version>]/
       if (segments[0] === 'project' && segments[1]) {
-        return { tool: 'pip', command: `pip install ${segments[1]}` };
+        const pinned = segments[2] ? `==${segments[2]}` : '';
+        return { tool: 'pip', command: `pip install ${segments[1]}${pinned}` };
       }
       return null;
     }
