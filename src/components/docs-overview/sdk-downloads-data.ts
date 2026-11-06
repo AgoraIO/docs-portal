@@ -3217,14 +3217,26 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'Compatible with: Voice Calling, Video Calling, or Interactive Live Streaming',
         versions: [
           {
+            id: '4.4.33-server-gateway-sdk-linux-cpp-x86_64',
+            label: 'Version 4.4.33 for x86_64 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Linux_x64_rel.v4.4.33_28664_SERVER_20260921_1453_ubuntu14_04_5_1307703_external.zip',
+          },
+          {
+            id: '4.4.33-server-gateway-sdk-linux-cpp-aarch64',
+            label: 'Version 4.4.33 for aarch64 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Linux_aarch64-linux-gnu_v4.4.33_20260921_172649_1307883.zip',
+          },
+          {
             id: '4.4.32-server-gateway-sdk-linux-cpp-x86_64',
-            label: 'Version 4.4.32 for x86_64 (Latest)',
+            label: 'Version 4.4.32 for x86_64',
             downloadLink:
               'https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.4.32-20250425_144419-675648.tgz',
           },
           {
             id: '4.4.32-server-gateway-sdk-linux-cpp-aarch64',
-            label: 'Version 4.4.32 for aarch64 (Latest)',
+            label: 'Version 4.4.32 for aarch64',
             downloadLink:
               'https://download.agora.io/rtsasdk/release/Agora-RTC-aarch64-linux-gnu-v4.4.32-20250425_150503-675674.tgz',
           },

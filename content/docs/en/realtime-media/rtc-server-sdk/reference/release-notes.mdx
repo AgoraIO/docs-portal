@@ -9,6 +9,53 @@ This document tracks important changes and improvements to the Server Gateway.
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="v4.4.33" id="v4433" headingLevel={2} value="v4433">
+
+
+Released on November 9, 2026.
+
+### Compatibility changes
+
+This release removes the `connectionIp` field from [`TConnectionInfo`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/structagora_1_1rtc_1_1_t_connection_info.html). If your app reads this field, update your code before you upgrade.
+
+### New features
+
+This release adds the following features.
+
+#### Video metadata
+
+You can now send and receive metadata with video. To use this feature, implement [`IMetadataObserver`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/classagora_1_1rtc_1_1_i_metadata_observer.html) and register it with [`ILocalVideoTrack::registerVideoMetadataObserver`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/classagora_1_1rtc_1_1_i_local_video_track.html#a551cacb9f56b75ffd2b4bdf9db721eb4). The observer provides the following callbacks:
+
+- [`getMaxMetadataSize`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/classagora_1_1rtc_1_1_i_metadata_observer.html#aa1d7b729f373d985a5bbdd855c4e85d5): Returns the maximum metadata buffer size. The default is 512 bytes and the maximum is 1024 bytes.
+- [`onReadyToSendMetadata`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/classagora_1_1rtc_1_1_i_metadata_observer.html#afc9b177f803cc0f0bb18b36c51be84f0): Fills in the metadata and its size when the SDK is ready to send it.
+- [`onMetadataReceived`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/classagora_1_1rtc_1_1_i_metadata_observer.html#a890f087351519bdeba5f17e824158d03): Receives metadata from a remote user.
+
+When you no longer need the observer, call [`unregisterVideoMetadataObserver`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/classagora_1_1rtc_1_1_i_local_video_track.html#a46680142338456fb129a1e7fe9ac0aba). Both registration methods have default implementations that return `0`. For more information, see [Send and receive video metadata](/en/realtime-media/rtc-server-sdk/build/build-core-media-features/video-metadata).
+
+#### Initialization parameters
+
+`AgoraServiceConfiguration` adds the [`parameters`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/structagora_1_1base_1_1_agora_service_configuration.html#af1554e9a7042aba783dd366740341bfd) field, which accepts SDK parameters as a JSON string at initialization. Use it for technical preview features or special customizations, with guidance from technical support.
+
+The API reference now also documents the existing [`configDir`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/structagora_1_1base_1_1_agora_service_configuration.html#a77320f26cea585d9795b45496483ca9a) and [`dataDir`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/structagora_1_1base_1_1_agora_service_configuration.html#a3c772897c7f42b84d3b061f0c571cc59) fields, which set the configuration file directory and the data file directory. All three fields default to `NULL`. When `configDir` or `dataDir` is `NULL`, the SDK uses its default directory.
+
+#### NTP timestamp
+
+The new [`IAgoraService::getNtpWallTimeInMs`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/classagora_1_1base_1_1_i_agora_service.html#a96496d23dd3aac1eae15e630fa714f37) method returns the current NTP time as a Unix timestamp in milliseconds. If the NTP service is unavailable, the method returns `0`.
+
+### Fixed issues
+
+This release fixes the following issues:
+
+- The SDK could crash when a token contained an unknown service type.
+- When a connection was destroyed immediately after it was created, the server might not promptly detect that the user left.
+- String user IDs could not be used when content encryption was enabled.
+- Concurrent access by the audio IO thread and the playout thread could crash the SDK.
+- Audio and video were out of sync when using string user IDs.
+- Noise could occur in stereo audio under poor network conditions.
+
+
+</Accordion>
+
 <Accordion title="v4.4.32" id="v4432" headingLevel={2} value="v4432">
 
 
