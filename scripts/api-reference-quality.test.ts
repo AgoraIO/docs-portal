@@ -144,6 +144,32 @@ describe('API reference quality policy', () => {
       /Missing published redirect target/,
     );
   });
+  it('audits version entries against the published default destination', () => {
+    const root = fixture();
+    const entry = '/en/api-reference/edition';
+    const target = '/en/api-reference/v1';
+    const routes = [
+      { url: entry, canonicalPath: entry, defaultVersionTarget: target },
+      { url: target, canonicalPath: target },
+    ];
+    put(root, '__static/docs-routes.json', routes);
+    for (const url of [entry, target]) {
+      put(root, `__static/docs${url}.json`, { body: { kind: 'mdx' } });
+      put(
+        root,
+        `${url.slice(1)}/index.html`,
+        '<article>Documentation</article>',
+      );
+    }
+    expect(inventory(root, 'global')[0]).toMatchObject({
+      kind: 'redirect',
+      expectedPath: target,
+    });
+    put(root, '__static/docs-routes.json', routes.slice(0, 1));
+    expect(() => inventory(root, 'global')).toThrow(
+      /Missing published redirect target/,
+    );
+  });
   it('refuses a vanished acceptance case rather than silently dropping it', () => {
     const cases = [{ urls: { cn: ['/zh-CN/api-reference/missing#member'] } }];
     expect(() => selectRows([], cases, 'all', 'cn')).toThrow(
