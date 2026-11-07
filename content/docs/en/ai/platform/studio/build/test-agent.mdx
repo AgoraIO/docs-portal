@@ -13,7 +13,7 @@ Use the **Test agent** panel to confirm that your selected models and integratio
 To talk to your agent:
 
 1. In the navigation sidebar, select **Agents**, then select the agent you want to test. The **Test agent** panel appears next to the agent editor, and also on the agent's overview page.
-2. If your prompt uses [variables](/en/ai/platform/studio/build/prompt-design#template-variables), enter their values. This previews the values without saving or deploying them.
+2. If your prompt uses [variables](/en/ai/platform/studio/build/prompt-design#template-variables), select **Variables**, then enter a value for each variable. The agent uses these values only in the test, and doesn't save or deploy them.
 3. Select **Start test**, and allow microphone access when prompted.
 
     ![Test agent panel during a test, with the session ID, transcript, and latency](/temp/agent-studio-preview/test-session.png)
@@ -31,16 +31,15 @@ During a test, the panel shows the following:
 - **Session ID**: The ID of this session. Use it to find the session in [Agent Analytics](/en/ai/platform/studio/observe/agent-analytics).
 - **Transcript**: The conversation so far.
 - **Turn latency**: The latency of the conversation, in milliseconds.
-- **Controls**: Buttons to mute your microphone and show or hide captions.
+- **Controls**: Buttons to mute your microphone and show or hide the transcript.
+
+To choose the microphone and speaker for tests, select **⋮** at the bottom of the panel. Then choose them under **Device preferences**.
 
 The panel tests your saved configuration. In the agent editor, your changes save automatically. In [Advanced settings](/en/ai/platform/studio/build/customize-agent#advanced-settings), select **Save** first.
 
 Test sessions appear on the agent's [overview page](/en/ai/platform/studio/observe/agent-overview) with the **App** channel.
 
 {/* TODO(platform-confirm): Do test sessions count toward billed minutes and free minutes? Can analytics filter them out? Is the latency value per turn, and is it end to end? Testing showed 2,917 to 8,474 ms. The transcript also drops the space after punctuation ("Hello!How can I help"). */}
-
-{/* TODO(screenshot): The panel's more options menu, and confirm what the captions icon does. */}
-
 ## What to test
 
 During testing, verify the following:

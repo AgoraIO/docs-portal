@@ -23,7 +23,7 @@ To open the editor, in the navigation sidebar, select **Agents**, then do one of
 
 The header shows the agent ID, the deployment type, and the status. The editor saves your changes to the draft automatically. To try your changes before you deploy them, use the [**Test agent** panel](/en/ai/platform/studio/build/test-agent).
 
-{/* TODO(screenshot): The Agents list with agents in it, and the header more options menu on an agent. Then list the available actions, such as pause, duplicate, and delete. */}
+To duplicate or delete an agent, select **...** in the agent's header.
 
 ## System prompt
 
@@ -141,7 +141,7 @@ These settings control how the agent decides when the caller starts and stops sp
 
 The custom settings are as follows:
 
-- **Callers can interrupt**: Whether the caller's speech can stop the agent mid-sentence. To interrupt only when the caller says specific words, turn on **Interrupt on keywords only**, and enter the words in **Keywords**.
+- **Callers can interrupt**: Whether the caller's speech can stop the agent mid-sentence. To interrupt only when the caller says specific words, turn on **Interrupt on keywords only**, and enter the words in **Keywords**, separated by commas.
 - **Speech threshold**: The sensitivity of speech detection, from 0 to 1. Lower values hear quieter speech, and higher values ignore more noise. The default is 0.5.
 - **Start of speech**: How the agent detects that the caller started speaking:
 
@@ -165,7 +165,7 @@ Manual turn detection requires signaling from your client, which isn't available
 
 ![Turn detection settings](/temp/agent-studio-preview/advanced-turn-detection.png)
 
-{/* TODO(platform-confirm): The API reference says manual turn detection "needs client signaling, which isn't available yet", but Agent Studio offers Manual without a warning. Does it work? Should Agent Studio hide it? Also confirm the Keywords format (one per line, or comma-separated) and limits. */}
+{/* TODO(platform-confirm): The API reference says manual turn detection "needs client signaling, which isn't available yet", but Agent Studio offers Manual without a warning. Does it work? Should Agent Studio hide it? */}
 
 For details, see [Interrupt the agent mid-response](/en/ai/platform/build/shape-the-conversation/interrupt-agent).
 
@@ -205,8 +205,6 @@ Turn on this setting to have the agent check in after the caller is silent. It o
     - **Ask the model**: In **The prompt the model gets**, enter an instruction for the LLM. The agent speaks the response.
 
 ![Silence and filler words settings](/temp/agent-studio-preview/advanced-silence-filler.png)
-
-{/* TODO(platform-confirm): The hint says "Recommended 6 s", but the field defaults to 3. Which value is the default? */}
 
 ### Filler words
 
@@ -252,10 +250,11 @@ For a credential header, use a complete `$secrets.<set>.<key>` reference with **
 To update a live agent:
 
 1. Select the agent, then select **Edit agent**.
-2. Make your changes in the agent editor.
-3. Select **Deploy agent**, then follow the steps for the agent's deployment type: [Inbound](/en/ai/platform/studio/deploy/deploy-inbound), [Outbound](/en/ai/platform/studio/deploy/deploy-outbound), or [API](/en/ai/platform/studio/quickstart#deploy-the-agent).
+2. Make your changes in the agent editor. The live agent keeps its current configuration until you deploy your changes.
+3. Select **Deploy agent**. For an Inbound or Outbound agent, check the **Deploy agent** tab, then select the button at the bottom of the tab. The button is **Apply deployment** for an Inbound agent, and **Deploy agent** for an Outbound agent.
+4. In the confirmation dialog, select **Deploy changes**.
 
-{/* TODO(platform-confirm): Confirm these steps with a screenshot of Edit agent on a Live agent. Does the live agent keep its current configuration until you publish again? The Platform API says sessions that are already running keep the configuration they started with. */}
+Sessions that start after you deploy use your changes.
 
 ## Next steps
 

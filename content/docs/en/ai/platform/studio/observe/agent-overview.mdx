@@ -23,14 +23,12 @@ The overview page displays the following:
 - **Sessions**: The number of sessions in the selected period.
 - **Avg duration**: The average length of a session.
 - **Billed minutes**: The minutes billed for the agent's sessions.
-- **Sessions by channel**: The number of sessions for each channel, by day. Test sessions and app sessions use the **App** channel.
+- **Sessions by channel**: The number of sessions for each channel, by day. Test sessions and app sessions use the **App** channel, and calls use the **Phone** channel.
 - **Why sessions ended**: The breakdown of the reasons that ended sessions.
 - **Session length**: The distribution of session lengths.
 - **Busiest call hours**: The times of day with the most calls.
 
-{/* TODO(platform-confirm): Avg duration, Why sessions ended, and Session length stayed empty after a test session ended ("0 of 1 sessions have a duration"). Is this a delay, or a bug? */}
-
-{/* TODO(screenshot): The charts with data, and the other values of the channel. */}
+{/* TODO(platform-confirm): Avg duration, Billed minutes, Why sessions ended, Session length, and Busiest call hours stay empty. On 2026-11-07, four API sessions (21 to 61 seconds, three idle timeouts and one stop request) showed "0 of 4 sessions have a duration", although the API returned start_ts and stop_ts for each. Is this a bug? Does Busiest call hours count only phone calls? */}
 
 ### Data collected
 

@@ -30,15 +30,15 @@ You can also open these tabs from an agent's overview page. Select **Session his
 Each row shows the following information:
 
 - **Started**: The date and time the session started.
-- **Caller**/**User**: The person in the session.
+- **Caller**/**User**: For a call, the other person's phone number.
 - **Agent**: The agent that handled the session.
-- **Channel**: How the session connected. For example, **App**.
-- **Type**: The type of session.
+- **Channel**: How the session connected: **App** or **Phone**.
+- **Type**: For a call, its direction, such as **Outbound**.
 - **Campaign**: The associated campaign, for outbound calls.
 - **Duration**: The length of the session.
 - **Data points**: For calls only, the values extracted from the call. See [Analysis](/en/ai/platform/studio/build/customize-agent#analysis).
 
-{/* TODO(platform-confirm): Confirm what Caller, User, Type, and Data points show for phone sessions. These fields were empty in test sessions. */}
+{/* TODO(platform-confirm): Confirm what Data points shows for a call. */}
 
 ## Find a session
 
@@ -48,9 +48,22 @@ To find a session, do any of the following:
 - Filter by **Agent** or **Campaign**. On the **Session history** tab, you can also filter by **Channel**.
 - Select a period: **24 hours**, **7 days**, or **30 days**.
 
-To download the results, select **Export CSV**. To replay a session, open it from the table.
+To download the results, select **Export CSV**.
 
-{/* TODO(screenshot): A session opened from the table. Then document the replay, including where to find the transcript and recording. Add call status definitions if the Call history tab shows them. */}
+## Session details
+
+To open a session, select it in the table. The session page shows the following:
+
+- **Summary**: The status and details of the session. **Latency** shows the median (p50) and 95th percentile (p95) turn latency.
+- **Replay**: Plays back the session, when a recording is available.
+- **Transcript**: What the user and the agent said.
+- **Data collection**: The values that the agent extracted. See [Analysis](/en/ai/platform/studio/build/customize-agent#analysis).
+- **Events**: The events in the session, with their time, level, and message. For example, a `turn.finished` event reports how long a turn took.
+- **Latency**: A chart of each turn's ASR, LLM, and TTS latency, marked with the p50 and p95 values. The section also shows the average latency for ASR, LLM, TTS, and end to end.
+
+A section appears only when the session has data for it. For example, a session without a recording has no **Replay** section.
+
+{/* TODO(platform-confirm): List the session statuses and end reasons, such as Failed and NO_ANSWER. */}
 
 ## See also
 
