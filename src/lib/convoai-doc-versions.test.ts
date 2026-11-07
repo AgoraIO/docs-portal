@@ -50,6 +50,10 @@ describe('ConvoAI documentation integration', () => {
       'build/shape-the-conversation/personalize-conversations',
     ],
     ['reference/event-types', 'reference/event-types'],
+    [
+      'build/handle-runtime-events/webhooks',
+      'build/handle-runtime-events/webhooks',
+    ],
     ['release-notes', 'release-notes'],
   ])('switches the real topic %s in both directions', (voice, platform) => {
     expect(getDocVersionTarget(`/en/ai/${voice}`, 'v2')).toEqual({
@@ -79,7 +83,6 @@ describe('ConvoAI documentation integration', () => {
     'build/handle-runtime-events/get-runtime-events',
     'build/handle-runtime-events/monitor-agent-runtime',
     'build/handle-runtime-events/retrieve-session-history',
-    'build/handle-runtime-events/webhooks',
     'build/tools/custom-tools',
     'build/tools/mcp-tools',
     'models/tts/gemini',

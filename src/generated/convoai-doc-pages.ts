@@ -124,6 +124,7 @@ export const CONVOAI_GUIDE_PAGES = {
     'build/phone-calls/import-phone-numbers',
     'build/phone-calls/route-inbound-calls',
     'build/phone-calls/outbound-calls-campaigns',
+    'build/handle-runtime-events/webhooks',
     'best-practices/audio-setup',
     'best-practices/record-agent-conversation',
     'models/asr/amazon',
