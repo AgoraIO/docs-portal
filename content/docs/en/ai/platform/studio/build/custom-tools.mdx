@@ -1,0 +1,73 @@
+---
+analyticsPageType: task-guide
+title: Custom tools
+description: Let your agent in Agent Studio call your own HTTP endpoints during a conversation.
+---
+
+{/* PLATFORM-NEW: new Agent Studio docs for the Conversational AI Platform. Status: drafted on 2026-11-03 from Agora Console screenshots, pending review. The limits on this page come from the Platform API reference. */}
+
+Custom tools let your agent call your own HTTP endpoints during a conversation. Use them when you already have an HTTP API and want your agent to call it directly. If you already expose tools through MCP, use an [MCP server](/en/ai/platform/studio/build/mcp-servers) instead.
+
+## Add a tool to an agent
+
+To add a tool:
+
+1. In the agent editor, go to the **Integrations** section.
+2. Select **Add**, then select **Tool**.
+3. Fill in the following fields:
+
+    - **Name**: The tool name shown to the model. It starts with a letter and contains only letters and digits, up to 64 characters.
+    - **Description**: What the tool does, up to 1,024 characters. The model uses it to decide when to call the tool.
+    - **Method**: `POST` (default) or `GET`.
+    - **URL**: The HTTPS URL of your endpoint, up to 2,048 characters.
+    - **Parameters**: A JSON Schema that describes the tool's arguments. See [Define the parameters](#define-the-parameters).
+    - **Body**: Additional fields to include in the request body, as JSON.
+    - **Headers**: The HTTP headers to send, up to 32. Enter one `Name: value` per line. To authenticate with your API, use a runtime template. The **API key** field isn't available yet.
+    - **Timeout**: The request timeout, from 1,000 to 100,000 ms. The default is 10,000 ms.
+
+4. Select **Save**.
+
+![Add a tool panel with the Name, Description, Method, URL, Parameters, Body, API key, Headers, and Timeout fields](/temp/agent-studio-preview/tool-panel.png)
+
+After you add the tool, the LLM can call it during test sessions and production conversations.
+
+{/* TODO(platform-confirm): What is a "runtime template" in the Headers field, and what's its format? The panel says "Save here updates your working copy. Use Start test to preview it, and Save changes on the agent to persist it", but the editor autosaves and has no Save changes button. Confirm how a tool is saved. Confirm that the API limits apply in this panel, and how Body combines with the arguments that the LLM passes. */}
+
+## Define the parameters
+
+The **Parameters** field tells the LLM which arguments to pass when it calls the tool. For example, the following parameters define a tool that looks up an order:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "order_id": { "type": "string" },
+    "include_history": { "type": "boolean" }
+  },
+  "required": ["order_id"]
+}
+```
+
+## Prompting tips
+
+Put usage guidance in your system prompt. For example:
+
+```text
+Use lookup_order when the user asks about order status. Always confirm the order ID before calling the tool.
+```
+
+## Troubleshooting
+
+The following table lists common issues with custom tools:
+
+| Issue | Solution |
+|---|---|
+| The tool doesn't save | Check the JSON Schema and the tool name format. |
+| Your API rejects the request | Check the headers, the request body, and the parameters. |
+| The agent never calls the tool | Make the tool's intent clear in its description and in the system prompt. |
+
+## Next steps
+
+- [MCP servers](/en/ai/platform/studio/build/mcp-servers): Let your agent call tools from an MCP server.
+- [Customize your agent](/en/ai/platform/studio/build/customize-agent): Configure your agent in the editor.
+- [Test your agent](/en/ai/platform/studio/build/test-agent): Verify tool calling end to end.

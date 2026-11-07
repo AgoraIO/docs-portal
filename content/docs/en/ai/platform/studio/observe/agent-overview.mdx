@@ -1,0 +1,51 @@
+---
+analyticsPageType: task-guide
+title: Agent overview
+description: View performance metrics, charts, and sessions on an agent's overview page in Agent Studio.
+---
+
+{/* PLATFORM-NEW: new Agent Studio docs for the Conversational AI Platform. Status: drafted on 2026-11-03 from Agora Console screenshots, pending review. */}
+
+Each agent has an overview page that helps you monitor, debug, and optimize it with performance metrics and a list of its sessions.
+
+## View an agent's overview
+
+To open the overview page, go to **Agents** in the navigation sidebar, then select a live agent. From the agent editor, select **Back to overview**.
+
+![Agent overview page with performance metrics and the Test agent panel](/temp/agent-studio-preview/overview.png)
+
+You can set the data period to **7 days**, **14 days**, **30 days**, or **Custom**.
+
+## Metrics and charts
+
+The overview page displays the following:
+
+- **Sessions**: The number of sessions in the selected period.
+- **Avg duration**: The average length of a session.
+- **Billed minutes**: The minutes billed for the agent's sessions.
+- **Sessions by channel**: The number of sessions for each channel, by day. Test sessions and app sessions use the **App** channel, and calls use the **Phone** channel.
+- **Why sessions ended**: The breakdown of the reasons that ended sessions.
+- **Session length**: The distribution of session lengths.
+- **Busiest call hours**: The times of day with the most calls.
+
+{/* TODO(platform-confirm): Avg duration, Billed minutes, Why sessions ended, Session length, and Busiest call hours stay empty. On 2026-11-07, four API sessions (21 to 61 seconds, three idle timeouts and one stop request) showed "0 of 4 sessions have a duration", although the API returned start_ts and stop_ts for each. Is this a bug? Does Busiest call hours count only phone calls? */}
+
+### Data collected
+
+The **Data collected** chart shows the values that the agent extracts from its sessions. To choose what to extract, see [Analysis](/en/ai/platform/studio/build/customize-agent#analysis).
+
+{/* TODO(screenshot): The Data collected chart with data, and the Data points value in the Sessions table, then describe them. Engineering to confirm that this is where extracted values appear. The API reference says the Preview API doesn't return them. */}
+
+## Sessions
+
+The **Sessions** table lists the agent's sessions.
+
+![Sessions table with the session history and call history links](/temp/agent-studio-preview/overview-sessions.png)
+
+To find a session, filter by **Channel**, or search by **Exact session ID**. To download the table, select **Export CSV**.
+
+For a description of the columns, see [Session information](/en/ai/platform/studio/observe/agent-analytics#session-information).
+
+## Next steps
+
+- [Agent Analytics](/en/ai/platform/studio/observe/agent-analytics): Find and review sessions across your project.

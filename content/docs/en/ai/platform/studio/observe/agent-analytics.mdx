@@ -1,0 +1,70 @@
+---
+analyticsPageType: task-guide
+title: Agent Analytics
+description: Find and review the calls and sessions across your project in Agent Studio.
+---
+
+{/* PLATFORM-NEW: new Agent Studio docs for the Conversational AI Platform. Status: drafted on 2026-11-03 from Agora Console screenshots, pending review. */}
+
+The **Agent Analytics** page lists the sessions across all agents in your project. Use it to find a session, replay it, and export the results. For an agent's metrics and charts, see [Agent overview](/en/ai/platform/studio/observe/agent-overview).
+
+## View the history
+
+To view the history:
+
+1. In the navigation sidebar, select **Agent Analytics**.
+2. Select one of the following tabs:
+
+    - **Call history**: Lists every phone session in the project.
+
+        ![Call history tab with filters for agent and campaign](/temp/agent-studio-preview/analytics-call-history.png)
+
+    - **Session history**: Lists every session in the project.
+
+        ![Session history tab with filters for agent, campaign, and channel](/temp/agent-studio-preview/analytics-session-history.png)
+
+You can also open these tabs from an agent's overview page. Select **Session history** or **Call history** at the top of the [**Sessions** table](/en/ai/platform/studio/observe/agent-overview#sessions).
+
+## Session information
+
+Each row shows the following information:
+
+- **Started**: The date and time the session started.
+- **Caller**/**User**: For a call, the other person's phone number.
+- **Agent**: The agent that handled the session.
+- **Channel**: How the session connected: **App** or **Phone**.
+- **Type**: For a call, its direction, such as **Outbound**.
+- **Campaign**: The associated campaign, for outbound calls.
+- **Duration**: The length of the session.
+- **Data points**: For calls only, the values extracted from the call. See [Analysis](/en/ai/platform/studio/build/customize-agent#analysis).
+
+{/* TODO(platform-confirm): Confirm what Data points shows for a call. */}
+
+## Find a session
+
+To find a session, do any of the following:
+
+- Search by **Exact session ID**.
+- Filter by **Agent** or **Campaign**. On the **Session history** tab, you can also filter by **Channel**.
+- Select a period: **24 hours**, **7 days**, or **30 days**.
+
+To download the results, select **Export CSV**.
+
+## Session details
+
+To open a session, select it in the table. The session page shows the following:
+
+- **Summary**: The status and details of the session. **Latency** shows the median (p50) and 95th percentile (p95) turn latency.
+- **Replay**: Plays back the session, when a recording is available.
+- **Transcript**: What the user and the agent said.
+- **Data collection**: The values that the agent extracted. See [Analysis](/en/ai/platform/studio/build/customize-agent#analysis).
+- **Events**: The events in the session, with their time, level, and message. For example, a `turn.finished` event reports how long a turn took.
+- **Latency**: A chart of each turn's ASR, LLM, and TTS latency, marked with the p50 and p95 values. The section also shows the average latency for ASR, LLM, TTS, and end to end.
+
+A section appears only when the session has data for it. For example, a session without a recording has no **Replay** section.
+
+{/* TODO(platform-confirm): List the session statuses and end reasons, such as Failed and NO_ANSWER. */}
+
+## See also
+
+- [Agent overview](/en/ai/platform/studio/observe/agent-overview): View performance metrics and charts for an agent.

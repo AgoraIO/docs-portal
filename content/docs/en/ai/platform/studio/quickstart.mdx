@@ -1,0 +1,90 @@
+---
+analyticsPageType: task-guide
+title: Create your first agent
+description: Create, test, and deploy your first AI voice agent in Agent Studio in minutes.
+---
+
+{/* PLATFORM-NEW: new Agent Studio docs for the Conversational AI Platform. Status: drafted on 2026-11-03 from Agora Console screenshots, pending review. */}
+
+This page guides you through creating, testing, and deploying your first AI voice agent in the Agent Studio Preview. In less than 10 minutes, you have a working agent that you can speak to in the browser. No telephony setup is required.
+
+## Create an agent
+
+To create your first agent:
+
+1. [Open the Agent Studio Preview](/en/ai/platform/studio#open-the-agent-studio-preview).
+2. Select your project from the project selector at the top of the page. The agent uses this project's credentials to connect to Agora, and Agora bills the usage to this project.
+3. In the navigation sidebar, select **Agents**.
+
+    ![Agents page with the Inbound, Outbound, and API options](/temp/agent-studio-preview/agents-empty.png)
+
+4. Select **Create agent**.
+
+    ![Create agent panel with a name and three deployment types](/temp/agent-studio-preview/create-agent-panel.png)
+
+5. Enter a name for your agent, or keep the generated name.
+6. Under **Deployment type**, select **API**.
+7. Select **Create agent**.
+
+    The agent editor opens with a default system prompt and pre-configured models.
+
+    ![Agent editor with the Test agent panel](/temp/agent-studio-preview/agent-editor.png)
+
+## Configure your agent
+
+The agent editor is a single page with a list of sections. For the quickstart, you only need to review the **System prompt** and **Voice & models** sections. Your changes save automatically.
+
+### Review the prompt
+
+The **System prompt** section contains the base instructions that shape how your agent thinks, speaks, and escalates. To start from a prompt for a common use case, select one from the **Template** menu.
+
+To review what the agent says first, select **Edit greeting and failure message**:
+
+- **Greeting**: The first message the agent speaks when the conversation starts. For example, `Hello! How can I help you today?`
+- **Failure message**: The message the agent speaks when the LLM fails to produce a response.
+
+### Review selected models
+
+Models determine which ASR, LLM, and TTS services your agent uses to process speech, generate responses, and synthesize voice output.
+
+In the **Voice & models** section, review the selected models. Use the default values to create your first agent.
+
+The default models are provided by Agora, which means you don't need an API key from each vendor. For details, see [Pricing](/en/ai/platform/reference/pricing). To use your own API key or a vendor that Agora doesn't provide, see [Bring your own key](/en/ai/platform/studio/build/customize-agent#bring-your-own-key).
+
+## Test the agent
+
+To talk to your agent:
+
+1. In the **Test agent** panel, select **Start test**.
+2. Allow microphone access when prompted.
+3. Speak to the agent to verify that it responds correctly.
+4. Select **End test** to stop the session.
+
+:::warning
+Always select **End test** to stop a test. Closing the **Test agent** panel only releases your browser's audio.
+:::
+
+{/* TODO(platform-confirm): If the panel is closed without End test, does the session keep running and consume minutes? When does it end? */}
+
+For guidance on what to test and how to troubleshoot issues, see [Test your agent](/en/ai/platform/studio/build/test-agent).
+
+## Deploy the agent
+
+To make your API agent live:
+
+1. Select **Deploy agent**. A confirmation dialog opens.
+2. Read the message, then select **Publish agent**.
+
+    ![Publish dialog](/temp/agent-studio-preview/publish-dialog.png)
+
+The agent's status changes from **Draft** to **Live**, and its overview page opens.
+
+## Next steps
+
+You now have a live voice agent. From here you can:
+
+- [Customize your agent](/en/ai/platform/studio/build/customize-agent): Configure models, prompts, and advanced settings for your use case.
+- [Bring your own key](/en/ai/platform/studio/build/customize-agent#bring-your-own-key): Use your own provider API keys and access more vendors.
+- [Connect your agent](/en/ai/platform/studio/deploy/connect-agent): Start a session from your app.
+- [Deploy an inbound agent](/en/ai/platform/studio/deploy/deploy-inbound): Create an agent that answers calls to your phone number.
+- [Deploy an outbound agent](/en/ai/platform/studio/deploy/deploy-outbound): Create an agent that calls your contacts.
