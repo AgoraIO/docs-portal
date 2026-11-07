@@ -587,10 +587,10 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/build/handle-runtime-events/retrieve-session-history.mdx':
     '2026-10-30T11:35:13.000Z',
   'content/docs/en/ai/platform/build/handle-runtime-events/webhooks.mdx':
-    '2026-10-30T11:35:13.000Z',
+    '2026-11-07T13:41:41.000Z',
   'content/docs/en/ai/platform/build/managed-mode.mdx':
     '2026-10-30T11:35:13.000Z',
-  'content/docs/en/ai/platform/build/meta.json': '2026-10-30T11:35:13.000Z',
+  'content/docs/en/ai/platform/build/meta.json': '2026-11-07T13:41:41.000Z',
   'content/docs/en/ai/platform/build/phone-calls/import-phone-numbers.mdx':
     '2026-11-05T09:01:06.000Z',
   'content/docs/en/ai/platform/build/phone-calls/meta.json':
@@ -735,7 +735,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-10-30T11:35:13.000Z',
   'content/docs/en/ai/platform/models/tts/xai.mdx': '2026-10-30T11:35:13.000Z',
   'content/docs/en/ai/platform/reference/event-types.mdx':
-    '2026-10-30T11:35:13.000Z',
+    '2026-11-07T13:41:41.000Z',
   'content/docs/en/ai/platform/reference/pricing.mdx':
     '2026-10-30T11:35:13.000Z',
   'content/docs/en/ai/platform/release-notes.mdx': '2026-10-30T11:35:13.000Z',
@@ -777,7 +777,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-11-05T05:06:58.000Z',
   'content/docs/en/ai/platform/studio/deploy/sip-trunk.mdx':
     '2026-11-07T12:33:56.000Z',
-  'content/docs/en/ai/platform/studio/index.mdx': '2026-11-07T12:33:56.000Z',
+  'content/docs/en/ai/platform/studio/index.mdx': '2026-11-07T13:41:41.000Z',
   'content/docs/en/ai/platform/studio/meta.json': '2026-11-04T07:37:31.000Z',
   'content/docs/en/ai/platform/studio/observe/agent-analytics.mdx':
     '2026-11-07T12:33:56.000Z',
