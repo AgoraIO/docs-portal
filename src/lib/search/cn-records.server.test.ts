@@ -9,6 +9,41 @@ const url = '/zh-CN/api-reference/rtc/web/4.6.0/api';
 const route = { url, canonicalPath: url, markdownPath: `${url}.md` };
 const page = { url, title: 'RTC API', objectType: 'docs' as const };
 describe('published CN index export', () => {
+  it('keeps the maintained description as the entry for a page rendered entirely by components', () => {
+    const url = '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/cpp';
+    const [entry] = extractPublishedCnSections(
+      { url, canonicalPath: url, markdownPath: `${url}.md` },
+      {
+        url,
+        title: '下载',
+        description: '获取 SDK 的下载链接、版本信息和示例项目。',
+      },
+      '# 下载\n\n## 下载 SDK [#sdk]\n\n<ProductSdkDownloads\n product="server-gateway"\n platform="linux"\n versionIdPrefixes={["server-gateway-cpp"]}\n/>',
+    );
+    expect(entry).toMatchObject({
+      url,
+      sectionTitle: '下载',
+      content: '获取 SDK 的下载链接、版本信息和示例项目。',
+      summary: '获取 SDK 的下载链接、版本信息和示例项目。',
+    });
+  });
+  it('excludes multiline component props and callout markers from prose without losing content or section offsets', () => {
+    const records = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n正文说明。\n\n<OverviewActions actions={[\n\n{ label: "开始", href: "/start" },\n\n]} />\n\n:::info[信息]\n实际提示。\n:::\n\n## Next [#next]\n\n后续步骤。\n\n```js\nclient.joinChannel();\n```',
+    );
+    expect(records[0].summary).toContain('正文说明。');
+    expect(records[0].summary).toContain('实际提示。');
+    expect(records[0].summary).not.toMatch(
+      /OverviewActions|label|href|:::|\[信息\]/,
+    );
+    expect(records[1]).toMatchObject({
+      url: `${url}#next`,
+      summary: '后续步骤。',
+    });
+    expect(records[1].content).toContain('client.joinChannel()');
+  });
   it('keeps each release as the ancestor of its indexed subsections', async () => {
     const url = '/zh-CN/ai/release-notes';
     const markdown = addAccordionHeadingsToTocText(`# 发版说明
@@ -493,6 +528,14 @@ enableAutoReceive 配置。
       '# RTM\n\n## 示例\n\n```ts\njoin();\n```',
     );
     expect(code.every((record) => record.url.includes('#'))).toBe(true);
+    const componentExample = extractPublishedCnSections(
+      route,
+      page,
+      '# RTM\n\n## 示例\n\n```tsx\n<Card title="Example" />\n```',
+    );
+    expect(componentExample.every((record) => record.url.includes('#'))).toBe(
+      true,
+    );
   });
   it('indexes a maintained page description when the body starts with a section', () => {
     const url = '/zh-CN/realtime-media/rtm';

@@ -38,6 +38,33 @@ const hit = {
   hidden: false,
 };
 afterEach(() => vi.restoreAllMocks());
+it('removes serialized authoring syntax while retaining prose and search highlights', () => {
+  expect(
+    cleanSearchSnippet(
+      '云端<mark>录制</mark>说明。 <OverviewActions actions={[ { label: "开始", href: "/start" } ]} /> 后续步骤。',
+    ),
+  ).toBe('云端<mark>录制</mark>说明。 后续步骤。');
+  expect(
+    cleanSearchSnippet(
+      '云端录制说明。 <OverviewActions actions={[ { label: "开始"',
+    ),
+  ).toBe('云端录制说明。');
+  expect(
+    cleanSearchSnippet(
+      ':::info[自从]\n从 v4.5 开始支持降噪。\n:::\n:::note\n注意权限。',
+    ),
+  ).toBe('从 v4.5 开始支持降噪。 注意权限。');
+  expect(
+    cleanSearchSnippet(
+      '问题说明 video-enhancement-markdown-2-1-0 details 正文 audio-html-3-1 details 结束。',
+    ),
+  ).toBe('问题说明 正文 结束。');
+  expect(
+    cleanSearchSnippet(
+      '观众事件 audience-event-markdown-0-1-3 detailschannelName<mark>uid</mark>platformts',
+    ),
+  ).toBe('观众事件 channelName<mark>uid</mark>platformts');
+});
 it('keeps a language-specific SDK entry variant and its concrete landing URL', async () => {
   const request = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
     Response.json({

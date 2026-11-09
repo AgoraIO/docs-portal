@@ -91,6 +91,7 @@ export function buildPublishedCnSearchSettings() {
     ],
     filterableAttributes: [
       'languageEntryTerms',
+      'aliases',
       ...base.filterableAttributes.flatMap((field) =>
         field === 'product' ? [field, 'products'] : [field],
       ),

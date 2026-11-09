@@ -17,6 +17,30 @@ const section: SearchSection = {
   hidden: false,
 };
 describe('CN guide heading relevance', () => {
+  it.each([
+    'SDK 的代码被混淆时需保留这些类。',
+    '启用字段混淆时，保留 autoShape 属性。',
+    'R8/ProGuard 缩减和混淆的配置方法。',
+    'SDK 代码经过 uglify-js 混淆后的语义变化。',
+  ])(
+    'indexes code obfuscation context without rewriting prose: %s',
+    (content) => {
+      expect(
+        buildCnSearchDocument({ ...section, aliases: ['existing'], content }),
+      ).toMatchObject({ aliases: ['existing', '代码混淆'], content });
+    },
+  );
+
+  it.each([
+    'bps 不要和 kbps 及 Bps 混淆。',
+    '以下代码生成 Chat Token，不要和 RTC Token 混淆。',
+    '避免混淆 Mute 状态和发布状态。',
+  ])('does not label ordinary confusion as code obfuscation: %s', (content) => {
+    expect(
+      buildCnSearchDocument({ ...section, content }).aliases,
+    ).toBeUndefined();
+  });
+
   it('does not promote upgrade instructions as a first-time SDK entry', () => {
     expect(
       buildCnSearchDocument({

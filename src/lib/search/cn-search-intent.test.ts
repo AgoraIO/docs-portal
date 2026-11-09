@@ -5,6 +5,23 @@ import {
 } from './cn-search-intent';
 
 describe('Chinese search query intent', () => {
+  it.each([
+    ['混淆', '代码混淆', undefined],
+    [' 混淆 ', '代码混淆', undefined],
+    ['混淆 Android', '代码混淆', 'android'],
+    ['bps 混淆', 'bps 混淆', undefined],
+    ['RTC Token 混淆', 'RTC Token 混淆', undefined],
+    ['云录制', '云端录制', undefined],
+    ['云录制 Web', '云端录制', 'web'],
+    ['云录制常见问题', '云录制常见问题', undefined],
+    ['云容器部署录制 SDK', '云容器部署录制 SDK', undefined],
+  ])(
+    'resolves bare topic %s without overriding explicit intent',
+    (q, query, platform) => {
+      expect(resolveCnSearchQuery(q)).toEqual({ query, platform });
+    },
+  );
+
   it('chooses the family with the more direct language SDK entry', () => {
     const entries = [
       { family: 'docs' as const, title: '实现 HTTP 基本认证' },

@@ -74,6 +74,7 @@ const platformAliases: Record<string, string> = {
 };
 
 export const cnSearchSynonyms: Record<string, string[]> = {
+  simulcast: ['双流模式'],
   发布消息: ['发送消息'],
   云录制: ['云端录制'],
   云端合流: ['云端转码'],
@@ -86,6 +87,8 @@ export const cnSearchSynonyms: Record<string, string[]> = {
   开启: ['开始', '开通', '启用'],
 };
 export const cnTechnicalWords = [
+  'simulcast',
+  '混淆',
   '日志',
   '静音',
   '水印',
@@ -108,6 +111,10 @@ export const cnTechnicalWords = [
   '开始',
   '开通',
 ];
+
+// RTM is a product query whose prefix also names the unrelated RTMP protocol.
+// Other acronyms keep prefix discovery (e.g. RTC can find RtcConnection).
+export const cnExactProductAcronyms = ['rtm'];
 
 function sequence(
   value: string | undefined,
@@ -165,6 +172,22 @@ export function buildCnSearchDocument(record: SearchSection) {
   const versionAliases = record.headingPath
     .map((heading) => heading.replace(/\bv(?=\d+\.\d)/gi, ''))
     .filter((heading, index) => heading !== record.headingPath[index]);
+  // Code obfuscation can be described without the contiguous phrase 代码混淆.
+  // Require local technical evidence, rather than a page URL or an incidental
+  // mention of code elsewhere in a chapter about confusing tokens/units.
+  const obfuscationContext = `${record.sectionTitle}\n${record.content}`;
+  const codeObfuscation =
+    /(?:代码|字段|属性名|类名|变量名|方法名|标识符)(?:被|的)?混淆/.test(
+      obfuscationContext,
+    ) ||
+    /\b(?:R8|ProGuard|uglify(?:-js)?)\b[^\n。]{0,80}混淆|混淆[^\n。]{0,80}\b(?:R8|ProGuard|uglify(?:-js)?)\b/i.test(
+      obfuscationContext,
+    );
+  const aliases = [
+    ...(record.aliases ?? []),
+    ...versionAliases,
+    ...(codeObfuscation ? ['代码混淆'] : []),
+  ];
   const guideHeading =
     getCnSearchFamily({ pageUrl: publicUrl, docType: record.docType }) ===
       'docs' &&
@@ -204,11 +227,7 @@ export function buildCnSearchDocument(record: SearchSection) {
       : [];
   return {
     ...record,
-    ...(versionAliases.length
-      ? {
-          aliases: [...new Set([...(record.aliases ?? []), ...versionAliases])],
-        }
-      : {}),
+    ...(aliases.length ? { aliases: [...new Set(aliases)] } : {}),
     languageEntryTerms,
     languageEntryRank: languageEntryTerms.length ? languageEntryRank : 1000,
     languageTerms: getCnSearchLanguageTerms(
