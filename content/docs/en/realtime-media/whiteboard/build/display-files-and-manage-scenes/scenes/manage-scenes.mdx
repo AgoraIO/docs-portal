@@ -15,15 +15,15 @@ The Whiteboard SDK provides the following methods in the `Room` interface for ma
 
 | Methods             | Description                                                  |
 | :------------------ | :----------------------------------------------------------- |
-| [`SceneState`](/en/api-reference/whiteboard/web)        | Gets the information of the currently displayed scene.       |
-| [`entireScenes`](/en/api-reference/whiteboard/web)    | Gets the information of all scenes in the current room.      |
-| [`scenePathType`](/en/api-reference/whiteboard/web)  | Gets the type of the scene path.                             |
-| [`putScenes`](/en/api-reference/whiteboard/web)          | Inserts multiple scenes under the specified scene directory. |
-| [`setScenePath`](/en/api-reference/whiteboard/web)    | Switches to the specified scene.                             |
-| [`setSceneIndex`](/en/api-reference/whiteboard/web)  | Switches to the specified scene under the current scene directory. |
-| [`moveScene`](/en/api-reference/whiteboard/web)          | Moves or renames a scene.                                    |
-| [`removeScenes`](/en/api-reference/whiteboard/web)    | Deletes a scene or a scene directory.                        |
-| [`cleanCurrentScene`](/en/api-reference/whiteboard/web) | Clears all contents on the current scene.                    |
+| [`SceneState`](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/globals.html#scenestate)        | Gets the information of the currently displayed scene.       |
+| [`entireScenes`](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/interfaces/room.html#entirescenes)    | Gets the information of all scenes in the current room.      |
+| [`scenePathType`](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/interfaces/room.html#scenepathtype)  | Gets the type of the scene path.                             |
+| [`putScenes`](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/interfaces/room.html#putscenes)          | Inserts multiple scenes under the specified scene directory. |
+| [`setScenePath`](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/interfaces/room.html#setscenepath)    | Switches to the specified scene.                             |
+| [`setSceneIndex`](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/interfaces/room.html#setsceneindex)  | Switches to the specified scene under the current scene directory. |
+| [`moveScene`](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/interfaces/room.html#movescene)          | Moves or renames a scene.                                    |
+| [`removeScenes`](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/interfaces/room.html#removescenes)    | Deletes a scene or a scene directory.                        |
+| [`cleanCurrentScene`](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/interfaces/room.html#cleancurrentscene) | Clears all contents on the current scene.                    |
 
 ## Prerequisites
 
@@ -81,7 +81,7 @@ When calling `putScenes`, you need to pass in the following parameters:
 - `scenes`: An array of scenes. A single scene contains the following fields:
 
   - `name`: Name of the scene.
-  - `ppt`: (Optional) The image or web page to be displayed in the scene. Each scene can display only one image or web page. You can also use [`PptDescription`](/en/api-reference/whiteboard/web).
+  - `ppt`: (Optional) The image or web page to be displayed in the scene. Each scene can display only one image or web page. You can also use [`PptDescription`](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/globals.html#pptdescription).
 
 - `index`: (Optional) The index number of the first scene to be inserted in the scene directory. The index numbers of subsequent scenes increase sequentially. The index number of a scene starts from 0.
 

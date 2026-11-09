@@ -1,7 +1,10 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { llms } from 'fumadocs-core/source';
+import { toDocsMarkdown } from '../src/lib/mdx/to-markdown.ts';
 import { withAgentDocsDirective } from '../src/lib/agent-docs-directive.ts';
+import { getDocVersionBulkExports } from '../src/lib/doc-version-exports.server.ts';
+import { withDocVersionMetadata } from '../src/lib/doc-versions.ts';
 import {
   loadDocsPagePayload,
   loadDocsSearchIndex,
@@ -280,6 +283,11 @@ async function generateStaticMachineReadableDocs({
     generated += 1;
   }
 
+  for (const file of await getDocVersionBulkExports()) {
+    await writePublicRouteFile(file.path, file.content);
+    generated += 1;
+  }
+
   const fullText = await Promise.all(pages.map(getStaticLLMText));
   await writeTextFile(
     path.join(markdownOutputRoot, 'llms-full.txt'),
@@ -381,9 +389,10 @@ async function getStaticLLMText(page) {
   try {
     return await getLLMText(page);
   } catch {
-    return `# ${page.data.title ?? page.url} (${page.url})
+    const markdown = toDocsMarkdown(`# ${page.data.title ?? page.url} (${page.url})
 
-${await readSourceMarkdown(page.path)}`;
+${await readSourceMarkdown(page.path)}`);
+    return withDocVersionMetadata(markdown, page.url);
   }
 }
 
@@ -412,9 +421,10 @@ async function buildRawPlatformLLMText(page, platform) {
     return null;
   }
 
-  return `# ${page.data.title ?? page.url} (${page.url}/${platform})
+  const markdown = toDocsMarkdown(`# ${page.data.title ?? page.url} (${page.url}/${platform})
 
-${body}`;
+${body}`);
+  return withDocVersionMetadata(markdown, page.url);
 }
 
 function getRawPagePlatformKeys(page) {

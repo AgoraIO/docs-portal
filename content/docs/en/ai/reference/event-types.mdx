@@ -696,7 +696,16 @@ The `payload` contains the following fields:
         The type of event that ended the turn.
       </Parameter>
       <Parameter name="metadata" type="object">
-        Additional context about the turn end event.
+        Additional context about the turn end event. Included fields depend on the value of the `type` field.
+        <Parameter name="playback_duration_ms" type="integer">
+          The audio playback duration in milliseconds. Included when `type` is `ok` or `interrupted`. For an interrupted turn, this is the PCM audio actually played before the interruption, and it doesn't exceed `intended_playback_duration_ms`.
+        </Parameter>
+        <Parameter name="intended_playback_duration_ms" type="integer">
+          The total duration in milliseconds of PCM audio the engine received and scheduled to play for the turn, including queued audio that hadn't played yet. Included only when `type` is `interrupted`.
+        </Parameter>
+        <Parameter name="caused_by" type="string">
+          The cause of the turn ending. Included when `type` is `interrupted` or `ignored`. For possible values, see [Query conversation turn information](/en/api-reference/api-ref/conversational-ai/turns).
+        </Parameter>
       </Parameter>
     </Parameter>
     <Parameter name="metrics" type="object">
@@ -769,6 +778,20 @@ The `payload` contains the following fields:
       }
     }
   ]
+}
+```
+
+The following example shows the `end` object of an interrupted turn:
+
+```json
+{
+  "end_at": 1774579822412,
+  "type": "interrupted",
+  "metadata": {
+    "caused_by": "api_interrupt",
+    "playback_duration_ms": 1200,
+    "intended_playback_duration_ms": 2400
+  }
 }
 ```
 

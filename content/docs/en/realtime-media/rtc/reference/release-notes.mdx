@@ -44,6 +44,12 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 
 Released on September 30, 2026.
 
+:::info
+
+This version of the SDK uses v1.3.16 of the `libaosl.so` library.
+
+:::
+
 #### New features
 
 Included in this release:
@@ -104,6 +110,12 @@ This release fixes the following issues:
 
 Released on September 2, 2026.
 
+:::info
+
+This version of the SDK uses v1.3.5 of the `libaosl.so` library.
+
+:::
+
 #### New features
 
 Included in this release:
@@ -138,6 +150,12 @@ This release fixes the following issues:
 
 Released on February 12, 2026.
 
+:::info
+
+This version of the SDK uses v1.3.5 of the `libaosl.so` library.
+
+:::
+
 #### Issues fixed
 
 This release fixes the following issues:
@@ -152,6 +170,12 @@ This release fixes the following issues:
 
 
 Released on January 19, 2026.
+
+:::info
+
+This version of the SDK uses v1.3.5 of the `libaosl.so` library.
+
+:::
 
 #### New features
 
@@ -2039,6 +2063,12 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 
 Released on September 30, 2026.
 
+:::info
+
+This version of the SDK uses v1.3.16 of the `aosl.xcframework` library.
+
+:::
+
 #### New features
 
 Included in this release:
@@ -2100,6 +2130,12 @@ This release fixes the following issues:
 
 Released on September 2, 2026.
 
+:::info
+
+This version of the SDK uses v1.3.5 of the `aosl.xcframework` library.
+
+:::
+
 #### Important upgrade notice
 
 This release includes the following change:
@@ -2129,6 +2165,12 @@ This release fixes the following issues:
 
 
 Released on January 19, 2026.
+
+:::info
+
+This version of the SDK uses v1.3.5 of the `aosl.xcframework` library.
+
+:::
 
 #### New features
 
@@ -4375,6 +4417,12 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 
 Released on September 30, 2026.
 
+:::info
+
+This version of the SDK uses v1.3.16 of the `aosl.xcframework` library.
+
+:::
+
 #### New features
 
 Included in this release:
@@ -4422,6 +4470,12 @@ This release fixes the following issues:
 
 
 Released on January 19, 2026.
+
+:::info
+
+This version of the SDK uses v1.3.5 of the `aosl.xcframework` library.
+
+:::
 
 #### New features
 
@@ -8649,6 +8703,12 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 
 Released on September 30, 2026.
 
+:::info
+
+This version of the SDK uses v1.3.16 of the `libaosl.dll` library.
+
+:::
+
 #### New features
 
 Included in this release:
@@ -8701,6 +8761,12 @@ This release fixes the following issues:
 
 
 Released on January 19, 2026.
+
+:::info
+
+This version of the SDK uses v1.3.5 of the `libaosl.dll` library.
+
+:::
 
 #### New features
 
@@ -8824,11 +8890,6 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
    - `WLACC_MESSAGE_REASON`
    - `WLACC_SUGGEST_ACTION`
    - `enableWirelessAccelerate`
-
-- **Behavior changes in dual-stream mode**
-
-    - Before v4.6.0: When the sender enabled adaptive stream mode (`AUTO_SIMULCAST_STREAM`), the low stream was not sent proactively. The sender only started sending the low stream after receiving a request from a host-role receiver calling `setRemoteVideoStreamType`.
-    - Starting from v4.6.0: When the sender enables adaptive low-stream mode (`AUTO_SIMULCAST_STREAM`), the SDK automatically decides whether to send or stop sending streams based on the downlink network quality of subscribing users. If you set `mode` to another sending mode or explicitly configure the width, height, bitrate, or frame rate, this adaptive behavior is disabled.
 
 - **Changes to int UID and string UID mapping**
 
@@ -10607,10 +10668,6 @@ This release introduces the following compatibility changes:
 
     Due to the beauty effect refactoring in this release, calling `setExtensionProperty` to enable the makeup feature is no longer supported starting from v4.6.2. Use the `STYLE_MAKEUP` node instead.
 
-- **Behavior changes in dual-stream mode**
-
-    Before v4.6.2, when the sender enabled adaptive low-stream mode (`AutoSimulcastStream`), the low stream was not sent proactively. The sender only started sending the low stream after receiving a request from a host-role receiver calling `setRemoteVideoStreamType`. Starting from v4.6.2, when the sender enables adaptive low-stream mode, the SDK automatically decides whether to send or stop sending the low stream based on the downlink network quality of subscribing users. If you set `mode` to another sending mode or explicitly configure the width, height, bitrate, or frame rate of the low stream, this adaptive behavior is disabled.
-
 - **New domains required for domain whitelist**
 
     If you upgrade from a previous version and use the domain whitelist feature (`domainLimit` in `RtcEngineConfig` set to `true`), add the following domains to the whitelist to ensure uninterrupted communication:
@@ -12293,10 +12350,6 @@ This release introduces the following compatibility changes:
 - **Changes to makeup feature implementation**
 
     Due to the beauty effect refactoring in this release, calling `setExtensionProperty` to enable the makeup feature is no longer supported starting from v4.6.2. Use the `STYLE_MAKEUP` node instead.
-
-- **Behavior changes in dual-stream mode**
-
-    Before v4.6.2, when the sender enabled adaptive low-stream mode (`autoSimulcastStream`), the low stream was not sent proactively. The sender only started sending the low stream after receiving a request from a host-role receiver calling `setRemoteVideoStreamType`. Starting from v4.6.2, when the sender enables adaptive low-stream mode, the SDK automatically decides whether to send or stop sending the low stream based on the downlink network quality of subscribing users. If you set `mode` to another sending mode or explicitly configure the width, height, bitrate, or frame rate of the low stream, this adaptive behavior is disabled.
 
 - **New domains required for domain whitelist**
 
@@ -14358,10 +14411,6 @@ This release introduces the following compatibility changes:
 
     Due to the beauty effect refactoring in this release, calling `setExtensionProperty` to enable the makeup feature is no longer supported starting from v4.6.2. Use the `STYLE_MAKEUP` node instead.
 
-- **Behavior changes in dual-stream mode**
-
-    Before v4.6.2, when the sender enabled adaptive low-stream mode (`AutoSimulcastStream`), the low stream was not sent proactively. The sender only started sending the low stream after receiving a request from a host-role receiver calling `setRemoteVideoStreamType`. Starting from v4.6.2, when the sender enables adaptive low-stream mode, the SDK automatically decides whether to send or stop sending the low stream based on the downlink network quality of subscribing users. If you set `mode` to another sending mode or explicitly configure the width, height, bitrate, or frame rate of the low stream, this adaptive behavior is disabled.
-
 - **New domains required for domain whitelist**
 
     If you upgrade from a previous version and use the domain whitelist feature (`domainLimit` in `RtcEngineConfig` set to `true`), add the following domains to ensure uninterrupted communication:
@@ -16151,10 +16200,6 @@ This release introduces the following compatibility changes:
 - **Changes to makeup feature implementation**
 
     Due to the beauty effect refactoring in this release, calling `SetExtensionProperty` to enable the makeup feature is no longer supported starting from v4.6.2. Use the `STYLE_MAKEUP` node instead.
-
-- **Behavior changes in dual-stream mode**
-
-    Before v4.6.2, when the sender enabled adaptive low-stream mode (`AUTO_SIMULCAST_STREAM`), the low stream was not sent proactively. The sender only started sending the low stream after receiving a request from a host-role receiver calling `SetRemoteVideoStreamType`. Starting from v4.6.2, when the sender enables adaptive low-stream mode, the SDK automatically decides whether to send or stop sending the low stream based on the downlink network quality of subscribing users. If you set `mode` to another sending mode or explicitly configure the width, height, bitrate, or frame rate of the low stream, this adaptive behavior is disabled.
 
 - **New domains required for domain whitelist**
 
@@ -18329,9 +18374,9 @@ v4.4.0 was released on August 29, 2024.
 
    To meet Apple's safety compliance requirements for app publication, the SDK now includes a privacy manifest file, `PrivacyInfo.xcprivacy`, detailing the SDK's API calls that access or use user data, along with a description of the types of data collected.
 
-    :::info[Note]
-If you need to publish an app with SDK versions prior to v4.4.0 to the Apple App Store, add the `PrivacyInfo.xcprivacy` file to your Xcode project.
-    :::
+   :::info[Note]
+   If you need to publish an app with SDK versions prior to v4.4.0 to the Apple App Store, add the `PrivacyInfo.xcprivacy` file to your Xcode project.
+   :::
 
 
 1. **Multi-camera capture (Android)**
@@ -18658,9 +18703,9 @@ This version simplifies the way methods are called and callbacks are implemented
 
    To meet Apple's safety compliance requirements for app publication, the SDK now includes a privacy manifest file, `PrivacyInfo.xcprivacy`, detailing the SDK's API calls that access or use user data, along with a description of the types of data collected.
 
-    :::info[Note]
-If you need to publish an app with SDK versions prior to v4.4.0 to the Apple App Store, add the `PrivacyInfo.xcprivacy` file to your Xcode project.
-    :::
+   :::info[Note]
+   If you need to publish an app with SDK versions prior to v4.4.0 to the Apple App Store, add the `PrivacyInfo.xcprivacy` file to your Xcode project.
+   :::
 
 
 1. **Multi-camera capture (Android)**

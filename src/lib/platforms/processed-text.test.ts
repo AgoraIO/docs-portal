@@ -9,6 +9,17 @@ import {
 } from './processed-text';
 
 describe('canonical platform toc text', () => {
+  it('removes generated heading IDs without changing fenced examples', () => {
+    const markdown = buildCanonicalPlatformLLMText({
+      pageTitle: 'Example',
+      pageUrl: '/en/example',
+      processedText:
+        '## Install [#install]\n\n```mdx\n## Example [#example]\n```',
+    });
+    expect(markdown).toContain('## Install\n');
+    expect(markdown).toContain('```mdx\n## Example [#example]\n```');
+  });
+
   it('keeps shared content and only canonical structured-platform headings', () => {
     const processedText = `
 # Page title

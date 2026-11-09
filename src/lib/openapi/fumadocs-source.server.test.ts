@@ -3,6 +3,7 @@ import {
   createLocalizedOpenApiSource,
   getOpenApiLoaderPlugin,
 } from './fumadocs-source.server';
+import { OPENAPI_LANES } from './lanes';
 
 describe('fumadocs openapi source', () => {
   it('generates localized operation pages with existing route leaves', async () => {
@@ -42,7 +43,16 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/speech-to-text/join.mdx',
     );
-    expect(pagePaths).toHaveLength(91);
+    expect(pagePaths).not.toContain(
+      'en/api-reference/versioning-demo/v1/widgets.mdx',
+    );
+    expect(pagePaths).not.toContain(
+      'en/api-reference/versioning-demo/v2/list-widgets.mdx',
+    );
+    expect(pagePaths).toContain(
+      'en/api-reference/api-ref/conversational-ai/platform/create-agent.mdx',
+    );
+    expect(pagePaths).toHaveLength(119);
   });
 
   it('uses locale-specific document IDs in client page props', async () => {
@@ -66,9 +76,73 @@ describe('fumadocs openapi source', () => {
         path: '/v2/projects/{appid}/join',
       },
     ]);
-    expect(props.payload.bundled.info?.title).toBe(
+    expect(props.payload.bundled?.info?.title).toBe(
       'Conversational AI RESTful API',
     );
+  });
+
+  it('preserves authentication links for every REST OpenAPI lane', async () => {
+    const source = await createLocalizedOpenApiSource();
+    const expectedAuthLinks = {
+      convoai: {
+        tokenAuth:
+          '/en/api-reference/api-ref/conversational-ai/authentication#token-authentication',
+        basicAuth:
+          '/en/api-reference/api-ref/conversational-ai/authentication#basic-http-authentication',
+      },
+      'rtc-rest': {
+        basicAuth:
+          '/en/api-reference/api-ref/rtc/authentication#authorization-header',
+      },
+      'signaling-rest': {
+        basicAuth:
+          '/en/api-reference/api-ref/signaling/authentication#implement-basic-http-authentication',
+      },
+      'cloud-recording-rest': {
+        basicAuth:
+          '/en/api-reference/api-ref/cloud-recording/authentication#implement-basic-http-authentication',
+      },
+      'cloud-transcoding-rest': {
+        basicAuth:
+          '/en/api-reference/api-ref/cloud-transcoding/authentication#implement-basic-http-authentication',
+      },
+      'media-gateway-rest': {
+        basicAuth:
+          '/en/api-reference/api-ref/rtmp-gateway/authentication#http-basic-authentication',
+        hmacAuth:
+          '/en/api-reference/api-ref/rtmp-gateway/authentication#http-hmac-authentication',
+      },
+      'speech-to-text-rest': {
+        BasicAuth:
+          '/en/api-reference/api-ref/speech-to-text/authentication#recommended-pattern',
+      },
+      'convoai-platform': {
+        basicAuth:
+          '/en/api-reference/api-ref/conversational-ai/platform/authentication#basic-http-authentication',
+        tokenAuth:
+          '/en/api-reference/api-ref/conversational-ai/platform/authentication#token-authentication',
+      },
+    } as const;
+
+    for (const lane of OPENAPI_LANES) {
+      const firstOperation = Object.values(lane.operations)[0];
+      const page = source.files.find(
+        (file) =>
+          file.type === 'page' &&
+          file.path ===
+            `en/${lane.routePrefix}/${firstOperation.routeLeaf}.mdx`,
+      );
+
+      expect(page?.type).toBe('page');
+      if (page?.type !== 'page') {
+        throw new Error(`Missing OpenAPI page for lane "${lane.id}"`);
+      }
+
+      const props = await page.data.getOpenAPIPageProps();
+      expect(
+        (props.payload.bundled as Record<string, unknown>)['x-docs-auth-links'],
+      ).toEqual(expectedAuthLinks[lane.id as keyof typeof expectedAuthLinks]);
+    }
   });
 
   it('keeps Cloud Recording legacy-visible prose in generated endpoint payloads', async () => {
@@ -86,15 +160,15 @@ describe('fumadocs openapi source', () => {
 
     const props = await acquirePage.data.getOpenAPIPageProps();
     const acquireOperation =
-      props.payload.bundled.paths?.['/v1/apps/{appid}/cloud_recording/acquire']
+      props.payload.bundled?.paths?.['/v1/apps/{appid}/cloud_recording/acquire']
         ?.post;
     const acquireRecord = acquireOperation as Record<string, unknown>;
     const updateLayoutOperation =
-      props.payload.bundled.paths?.[
+      props.payload.bundled?.paths?.[
         '/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/updateLayout'
       ]?.post;
     const updateLayoutRecord = updateLayoutOperation as Record<string, unknown>;
-    const schemas = props.payload.bundled.components?.schemas as
+    const schemas = props.payload.bundled?.components?.schemas as
       | Record<string, Record<string, unknown>>
       | undefined;
 
@@ -148,9 +222,7 @@ describe('fumadocs openapi source', () => {
       ]),
     );
     expect(updateLayoutRecord['x-docs-callouts']).toBeUndefined();
-    expect(
-      schemas?.['updateLayout-clientRequest']?.properties,
-    ).toMatchObject({
+    expect(schemas?.['updateLayout-clientRequest']?.properties).toMatchObject({
       maxResolutionUid: expect.objectContaining({
         description: expect.stringContaining('from 1 to (2³²−1)'),
       }),
@@ -212,8 +284,19 @@ describe('fumadocs openapi source', () => {
         file.path.startsWith('en/api-reference/api-ref/'),
     );
     const overloaded: string[] = [];
+    // Match "call this endpoint"-style instructions, not "call" as a noun such
+    // as "phone call", which Platform telephony summaries legitimately use.
     const proceduralPattern =
-      /\b(if|only|required|must|cannot|valid|invalid|success|failed|error|returns?|before|after|wait|call|use this endpoint|use this method)\b/i;
+      /\b(if|only|required|must|cannot|valid|invalid|success|failed|error|returns?|before|after|wait|call (this|the|that) (endpoint|api|method|operation)|use this endpoint|use this method)\b/i;
+
+    expect(
+      proceduralPattern.test('Call this endpoint to stop the agent.'),
+    ).toBe(true);
+    expect(
+      proceduralPattern.test(
+        'Starts a session in an RTC channel or a phone call.',
+      ),
+    ).toBe(false);
 
     for (const page of englishPages) {
       if (page.type !== 'page') {
@@ -222,7 +305,7 @@ describe('fumadocs openapi source', () => {
 
       const props = await page.data.getOpenAPIPageProps();
       for (const operation of props.operations ?? []) {
-        const pathItem = props.payload.bundled.paths?.[operation.path];
+        const pathItem = props.payload.bundled?.paths?.[operation.path];
         const method = operation.method.toLowerCase();
         const operationObject = pathItem?.[method as keyof typeof pathItem] as
           | { description?: unknown; operationId?: unknown }
@@ -267,7 +350,8 @@ describe('fumadocs openapi source', () => {
         'zh-CN/api-reference/api-ref/speech-to-text/leave.mdx',
         {
           description: '停止实时转录翻译任务并离开频道。',
-          prose: '开始实时转录翻译后，你可以调用 `leave` 方法离开频道，停止转写。',
+          prose:
+            '开始实时转录翻译后，你可以调用 `leave` 方法离开频道，停止转写。',
         },
       ],
       [
@@ -304,10 +388,10 @@ describe('fumadocs openapi source', () => {
         throw new Error(`Missing operation payload for ${pagePath}`);
       }
 
-      const pathItem = props.payload.bundled.paths?.[operation.path];
+      const pathItem = props.payload.bundled?.paths?.[operation.path];
       const method = operation.method.toLowerCase();
       const operationObject = pathItem?.[method as keyof typeof pathItem] as
-        | { description?: unknown; ['x-docs-sections']?: unknown }
+        | { description?: unknown; 'x-docs-sections'?: unknown }
         | undefined;
 
       expect(
@@ -352,10 +436,10 @@ describe('fumadocs openapi source', () => {
 
       const props = await page.data.getOpenAPIPageProps();
       for (const operation of props.operations ?? []) {
-        const pathItem = props.payload.bundled.paths?.[operation.path];
+        const pathItem = props.payload.bundled?.paths?.[operation.path];
         const method = operation.method.toLowerCase();
         const operationObject = pathItem?.[method as keyof typeof pathItem] as
-          | { ['x-docs-sections']?: unknown; operationId?: unknown }
+          | { 'x-docs-sections'?: unknown; operationId?: unknown }
           | undefined;
         const sections = Array.isArray(operationObject?.['x-docs-sections'])
           ? operationObject['x-docs-sections']

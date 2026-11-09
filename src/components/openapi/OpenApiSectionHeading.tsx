@@ -1,6 +1,6 @@
-import { Heading } from 'fumadocs-ui/components/heading';
 import type { ComponentProps, ReactNode } from 'react';
 import { cn } from '@/lib/cn';
+import { DocsHeading as Heading } from '../mdx/DocsHeading';
 
 export const OPENAPI_SECTION_HEADING_CLASS =
   'openapi-section-heading font-semibold text-2xl leading-7';

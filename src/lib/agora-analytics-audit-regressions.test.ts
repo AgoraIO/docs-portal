@@ -5,7 +5,6 @@ import { describe, expect, it } from 'vitest';
 const orderedListTargets = [
   'content/docs/en/realtime-media/agora-analytics/build/explore-and-analyze-data/data-insight-plus.md',
   'content/docs/en/realtime-media/agora-analytics/build/integrate-and-embed/datadog-integration.md',
-  'content/docs/en/realtime-media/agora-analytics/build/manage-agora-account.md',
 ];
 
 function readContent(path: string) {

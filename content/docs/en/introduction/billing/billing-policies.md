@@ -94,21 +94,26 @@ Agora provides each account with 10,000 free minutes per month and deducts them 
 - Broadcast Streaming audio minutes
 - Voice call, video call, and Interactive Live Streaming audio minutes
 - On-premise recording audio minutes
+- Server Gateway audio minutes
 - Cloud Proxy audio minutes
 - Broadcast Streaming HD video minutes
 - Voice call, video call, and Interactive Live Streaming HD video minutes
 - On-premise recording HD video minutes
+- Server Gateway HD video minutes
 - Cloud Proxy HD video minutes
 - Broadcast Streaming Full HD* video minutes
 - Voice call, video call, and Interactive Live Streaming Full HD* video minutes
 - On-premise recording Full HD* video minutes
+- Server Gateway Full HD* video minutes
 - Cloud Proxy Full HD* video minutes
 - Broadcast Streaming 2K video minutes
 - Voice call, video call, and Interactive Live Streaming 2K video minutes
 - On-premise recording 2K video minutes
+- Server Gateway 2K video minutes
 - Broadcast Streaming 2K+ video minutes
 - Voice call, video call, Interactive Live Streaming 2K+ video minutes
 - On-premise recording 2K+ video minutes
+- Server Gateway 2K+ video minutes
 - Cloud proxy 2K+ video minutes
 
 \* HD+ minutes are also included in the shared 10,000 free minutes.

@@ -1,5 +1,6 @@
 import type { Folder, Item, Node, Root } from 'fumadocs-core/page-tree';
 import type { ReactNode } from 'react';
+import { resolveDocVersion } from './doc-versions';
 import type { DocsMeta, DocsNavScopeVersion } from './docs-meta-schema';
 import {
   type DocsSidebarNode,
@@ -18,8 +19,8 @@ export type DocsSidebarHeaderVersion = {
 };
 
 export type DocsSidebarHeader = {
-  backHref: string;
-  backLabel: string;
+  backHref?: string;
+  backLabel?: string;
   title: string;
   versionSwitcher?: {
     currentId: string;
@@ -70,6 +71,77 @@ export function resolveDocsNavScope({
   const tabNode = findTabFolder(root, tab);
   if (!tabNode) {
     return null;
+  }
+
+  const documentVersion = resolveDocVersion(activePath);
+  if (documentVersion) {
+    const { scope, version } = documentVersion;
+    const findVersionRoot = (node: Folder): Folder | undefined => {
+      if (getFolderHref(node) === version.rootUrl) return node;
+      for (const child of node.children) {
+        if (child.type !== 'folder') continue;
+        const match = findVersionRoot(child);
+        if (match) return match;
+      }
+      return undefined;
+    };
+    const versionRoot = findVersionRoot(tabNode);
+    if (versionRoot) {
+      // Legacy ConvoAI roots contain Platform and independent products. Keep
+      // only this edition's pages plus explicitly shared articles in its tree.
+      const filterVersionNode = (node: Node): Node | undefined => {
+        const ownsUrl = (url: string) => {
+          const owner = resolveDocVersion(url);
+          return (
+            ((owner?.scope.preferenceKey ?? owner?.scope.id) ===
+              (scope.preferenceKey ?? scope.id) &&
+              owner?.version.id === version.id) ||
+            version.navigationUrls?.includes(url) ||
+            scope.sharedUrls?.includes(url)
+          );
+        };
+        if (node.type === 'page') return ownsUrl(node.url) ? node : undefined;
+        if (node.type !== 'folder') return node;
+        const folderVersion = resolveDocVersion(getFolderHref(node));
+        if (
+          folderVersion?.scope.id === scope.id &&
+          folderVersion.version.id !== version.id
+        )
+          return undefined;
+        const children = node.children.flatMap((child) => {
+          const filtered = filterVersionNode(child);
+          return filtered ? [filtered] : [];
+        });
+        const { index, ...folder } = node;
+        const visibleIndex = index && ownsUrl(index.url) ? index : undefined;
+        if (
+          !visibleIndex &&
+          !children.some((child) => child.type !== 'separator')
+        )
+          return undefined;
+        return {
+          ...folder,
+          ...(visibleIndex ? { index: visibleIndex } : {}),
+          children,
+        };
+      };
+      const sidebarRoot = version.restrictToMappedPages
+        ? (filterVersionNode(versionRoot) as Folder)
+        : versionRoot;
+      return {
+        header: {
+          ...(!version.restrictToMappedPages
+            ? {
+                backHref: scope.entryUrl.split('/').slice(0, 3).join('/'),
+                backLabel: normalizeLabel(tabNode.name, tab),
+              }
+            : {}),
+          title: scope.label,
+        },
+        scope: { meta: getNodeMeta(versionRoot) ?? {}, node: versionRoot },
+        sidebarRoot,
+      };
+    }
   }
 
   const ancestors = findFolderAncestorsByUrl(tabNode, activePath);

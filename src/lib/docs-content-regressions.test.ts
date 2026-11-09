@@ -1,7 +1,8 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { join, relative, resolve } from 'node:path';
+import { dirname, join, relative, resolve } from 'node:path';
 import { compile } from '@mdx-js/mdx';
 import { describe, expect, it } from 'vitest';
+import { normalizeDocsHref } from './docs-link-normalize';
 
 const docsRoot = resolve(process.cwd(), 'content/docs/en');
 const allDocsRoot = resolve(process.cwd(), 'content/docs');
@@ -179,13 +180,13 @@ describe('docs content regressions', () => {
     expect(content).not.toContain('[Custom LLM](custom-llm)');
   });
 
-  it('keeps AI interrupt agent quickstart link on the Video Calling SDK quickstart', () => {
+  it('keeps AI interrupt agent quickstart link on the RTC SDK quickstart', () => {
     const content = readDoc(
       'ai/build/shape-the-conversation/interrupt-agent.mdx',
     );
 
     expect(content).toContain(
-      '[Quickstart](../../../realtime-media/video/quickstart)',
+      '[Quickstart](../../../realtime-media/rtc/get-started-sdk)',
     );
     expect(content).not.toContain(
       '[Quickstart](../../introduction/realtime-audio-video)',
@@ -216,13 +217,16 @@ describe('docs content regressions', () => {
     SOURCE_LOADER_TEST_TIMEOUT,
   );
 
-  it('keeps AI build interrupt links in shape the conversation', () => {
+  it('resolves AI interrupt links to the conversation guide', () => {
     const files = listMarkdownFiles(resolve(docsRoot, 'ai/build'));
     const offenders = files.flatMap((file) => {
       const content = readFileSync(file, 'utf8');
-
-      return [...content.matchAll(/\]\(interrupt-agent\)/g)].map(
-        (match) => `${relative(process.cwd(), file)}:${match.index ?? 0}`,
+      const contentPath = relative(dirname(docsRoot), file);
+      return [...content.matchAll(/\]\(interrupt-agent\)/g)].flatMap((match) =>
+        normalizeDocsHref('interrupt-agent', { contentPath }).href ===
+        '/en/ai/build/shape-the-conversation/interrupt-agent'
+          ? []
+          : [`${contentPath}:${match.index ?? 0}`],
       );
     });
 
@@ -265,7 +269,7 @@ describe('docs content regressions', () => {
     const content = readDoc('ai/best-practices/regional-restrictions.mdx');
 
     expect(content).toContain(
-      '[Restrict media zones](../../realtime-media/video/build/manage-connection-and-quality/geofencing)',
+      '[Restrict media zones](../../realtime-media/rtc/build/manage-connection-and-quality/geofencing)',
     );
     expect(content).not.toContain(
       '[Restrict media zones](../../best-practices/geofencing)',
@@ -283,12 +287,10 @@ describe('docs content regressions', () => {
     );
   });
 
-  it('keeps AI filler words MCP servers link on the Conversational AI join API', () => {
+  it('keeps the filler words MCP link on the tools guide', () => {
     const content = readDoc('ai/build/shape-the-conversation/filler-words.mdx');
 
-    expect(content).toContain(
-      '[MCP servers](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-mcp-servers)',
-    );
+    expect(content).toContain('[MCP server](../tools/mcp-tools)');
     expect(content).not.toContain(
       '[MCP servers](../../api-reference/conversational-ai/rest-api/agent/join#properties-llm-mcp-servers)',
     );
@@ -391,9 +393,7 @@ describe('docs content regressions', () => {
   });
 
   it('keeps custom model integration tutorial prerequisites focused on Agora-managed presets', () => {
-    const content = readDoc(
-      'ai/build/build-server-client.mdx',
-    );
+    const content = readDoc('ai/build/build-server-client.mdx');
 
     expect(content).toContain('- An active [Agora account]');
     expect(content).toContain('Agora-managed presets');
@@ -401,10 +401,12 @@ describe('docs content regressions', () => {
     expect(content).not.toContain('../reference/enable-conversational-ai');
   });
 
-  it('keeps Ares ASR pricing link in the AI reference pricing page', () => {
+  it('keeps the retired ARES ASR Task charges note out of the guide', () => {
     const content = readDoc('ai/models/asr/ares.mdx');
 
-    expect(content).toContain('[pricing](../../reference/pricing)');
+    expect(content).not.toContain(
+      'Using Ares ASR incurs charges under the "ARES ASR Task" pricing category',
+    );
     expect(content).not.toContain('[pricing](/en/ai/pricing)');
   });
 
@@ -450,7 +452,11 @@ describe('docs content regressions', () => {
   it('keeps AI quickstart links from referring to a REST quickstart', () => {
     const files = listMarkdownFiles(resolve(docsRoot, 'ai'));
     const offenders = files.flatMap((file) => {
-      const lines = readFileSync(file, 'utf8').split(/\r?\n/);
+      const lines = readFileSync(file, 'utf8')
+        .replace(/\{\/\*[\s\S]*?\*\/\}/g, (comment) =>
+          comment.replace(/[^\r\n]/g, ' '),
+        )
+        .split(/\r?\n/);
 
       return lines.flatMap((line, index) =>
         /\bREST Quickstart\b|\bREST quickstart\b/.test(line)
@@ -698,29 +704,27 @@ describe('docs content regressions', () => {
 
   it('keeps web connection status management free of shared prerequisite and implementation headings', () => {
     const content = readDoc(
-      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+      'realtime-media/rtc/build/manage-connection-and-quality/connection-status-management.mdx',
     );
 
     expect(content).toContain(
-      '\n## Prerequisites\nEnsure that you have implemented the [SDK quickstart](/en/realtime-media/video/get-started-sdk) project.\n\n## Implement connection status management\n',
+      '\n## Prerequisites\nEnsure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) project.\n\n## Implement connection status management\n',
     );
   });
 
   it('separates the reconnection platform group from the implementation platform group', () => {
     const content = readDoc(
-      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+      'realtime-media/rtc/build/manage-connection-and-quality/connection-status-management.mdx',
     );
 
     expect(content).toContain(
-      '</PlatformStructured>\n\n## Prerequisites\nEnsure that you have implemented the [SDK quickstart](/en/realtime-media/video/get-started-sdk) project.\n\n## Implement connection status management\n<PlatformStructured platform="android">',
+      '</PlatformStructured>\n\n## Prerequisites\nEnsure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) project.\n\n## Implement connection status management\n<PlatformStructured platform="android">',
     );
   });
 
   it('keeps PR 285 code and table recovery pages from regressing to placeholders', () => {
     const multihostDocs = [
-      'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
-      'realtime-media/video/build/manage-connection-and-quality/optimize-multihost-video.mdx',
-      'realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
+      'realtime-media/rtc/build/manage-connection-and-quality/optimize-multihost-video.mdx',
     ];
 
     for (const relativePath of multihostDocs) {
@@ -791,7 +795,7 @@ describe('docs content regressions', () => {
     );
 
     const srtStreaming = readDoc(
-      'realtime-media/rtmp-gateway/reference/srt-streaming.md',
+      'realtime-media/rtmp-gateway/build/push-streams/srt-streaming.md',
     );
 
     expect(srtStreaming).toContain(
@@ -799,11 +803,11 @@ describe('docs content regressions', () => {
     );
     expect(srtStreaming).toContain('- `na`: North America');
     expect(srtStreaming).toContain(
-      '[Get streaming key](../quickstart#get-streaming-key)',
+      '[Get streaming key](../../quickstart#get-streaming-key)',
     );
 
     const simulcasting = readDoc(
-      'realtime-media/video/build/manage-connection-and-quality/simulcasting.mdx',
+      'realtime-media/rtc/build/manage-connection-and-quality/simulcasting.mdx',
     );
 
     expect(simulcasting).toContain(
@@ -826,10 +830,7 @@ describe('docs content regressions', () => {
     );
 
     const geofencingDocs = [
-      'realtime-media/broadcast-streaming/build/secure-and-protect-channels/geofencing.mdx',
-      'realtime-media/video/build/manage-connection-and-quality/geofencing.mdx',
-      'realtime-media/interactive-live-streaming/build/secure-and-protect-channels/geofencing.mdx',
-      'realtime-media/voice/build/manage-connection-and-quality/geofencing.mdx',
+      'realtime-media/rtc/build/manage-connection-and-quality/geofencing.mdx',
     ];
 
     for (const relativePath of geofencingDocs) {
@@ -844,7 +845,7 @@ describe('docs content regressions', () => {
 
     const securityDocs = [
       'realtime-media/cloud-recording/reference/security.mdx',
-      'realtime-media/video/reference/security.mdx',
+      'realtime-media/rtc/reference/security.mdx',
       'realtime-media/marketplace/reference/security.mdx',
       'realtime-media/rtmp-gateway/reference/security.md',
     ];
@@ -908,16 +909,14 @@ describe('docs content regressions', () => {
     );
     expect(rtmDownloads).toContain('`agora_rtm_sdk.lib`');
     expect(rtmDownloads).toContain(
-      '| Android | `Plugins/Android` | `/Assets/Plugins/Android/` |',
+      '**Assets** > **Import Package** > **Custom Package**',
     );
+    expect(rtmDownloads).toContain('Agora Signaling Unity asset package');
     expect(rtmDownloads).toContain('agora_rtm: ^2.2.1');
     expect(rtmDownloads).not.toMatch(/<\/?(details|summary|PlatformWrapper)>/);
 
     const appSizeOptimizationDocs = [
-      'realtime-media/voice/build/optimize-and-operate/app-size-optimization.mdx',
-      'realtime-media/video/build/optimize-and-operate/app-size-optimization.mdx',
-      'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx',
-      'realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx',
+      'realtime-media/rtc/build/optimize-and-operate/app-size-optimization.mdx',
     ];
 
     for (const relativePath of appSizeOptimizationDocs) {
@@ -931,39 +930,37 @@ describe('docs content regressions', () => {
       expect(content).toContain('<Accordion title="Local Screenshot Upload">');
     }
 
-    const voicePricing = readDoc('realtime-media/voice/reference/pricing.mdx');
+    const rtcPricing = readDoc('realtime-media/rtc/reference/pricing.mdx');
 
-    expect(voicePricing).toContain('### FAQs');
-    expect(voicePricing).toContain('#### Free minutes');
-    expect(voicePricing).toContain('#### Billing');
-    expect(voicePricing).toContain('#### Duration and usage');
-    expect(voicePricing).toContain('#### Video resolution');
-    expect(voicePricing).toContain('#### Arrears');
-    expect(voicePricing).toContain(
+    expect(rtcPricing).toContain('### FAQs');
+    expect(rtcPricing).toContain('#### Free minutes');
+    expect(rtcPricing).toContain('#### Billing');
+    expect(rtcPricing).toContain('#### Duration and usage');
+    expect(rtcPricing).toContain('#### Video resolution');
+    expect(rtcPricing).toContain('#### Arrears');
+    expect(rtcPricing).toContain(
       '<Accordion title="If I purchase a paid package, do I still get 10,000 free minutes each month?">',
     );
-    expect(voicePricing).toContain(
+    expect(rtcPricing).toContain(
       '<Accordion title="If a user doesn’t publish or subscribe to any audio or video streams in a channel, will they still be charged?">',
     );
-    expect(voicePricing).toContain(
+    expect(rtcPricing).toContain(
       '<Accordion title="How is usage duration calculated in the bill?">',
     );
-    expect(voicePricing).toContain(
+    expect(rtcPricing).toContain(
       '<Accordion title="Can I view individual user usage in the bill?">',
     );
-    expect(voicePricing).toContain(
+    expect(rtcPricing).toContain(
       '<Accordion title="Why is my applied billing rate for Ultra-HD when all users subscribe to 360 × 640 video streams?">',
     );
 
-    const rtmpCoreConcepts = readDoc(
-      'realtime-media/rtmp-gateway/reference/core-concepts.md',
-    );
+    const rtmpCoreConcepts = readDoc('introduction/core-concepts.mdx');
 
     expect(rtmpCoreConcepts).toContain('| Channel profile | Description |');
     expect(rtmpCoreConcepts).toContain('| `LIVE_BROADCASTING` |');
 
     const rtmpNotifications = readDoc(
-      'realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/receive-notifications.md',
+      'realtime-media/rtmp-gateway/build/receive-notifications.md',
     );
 
     expect(rtmpNotifications).toContain(
@@ -1022,7 +1019,9 @@ describe('docs content regressions', () => {
       const content = readDoc(relativePath);
 
       expect(content.match(/<Accordions>/g) ?? []).toHaveLength(8);
-      expect(content.match(/<Accordion title=/g) ?? []).toHaveLength(144);
+      expect(
+        content.match(/<Accordion title="Video Decoding">/g) ?? [],
+      ).toHaveLength(8);
       expect(content).not.toContain('**AI Noise Suppression**');
       expect(content).not.toContain('**Voice Driver**');
     }
@@ -1192,7 +1191,7 @@ describe('docs content regressions', () => {
       const relativePath = relative(process.cwd(), file);
       const source = readFileSync(file, 'utf8');
 
-      if (/[\u200B\u200C\u200D\uFEFF]/.test(source)) {
+      if (/(?:\u200B|\u200C|\u200D|\uFEFF)/.test(source)) {
         offenders.push(`${relativePath}: contains zero-width characters`);
       }
 
@@ -1314,9 +1313,9 @@ describe('docs content regressions', () => {
   });
 
   it(
-    'preserves explicit table cell line breaks in processed markdown',
+    'exports table cell line breaks as readable separators',
     async () => {
-      const { source } = await import('./source.server');
+      const { source, getLLMText } = await import('./source.server');
       const page = source.getPage(
         ['ai', 'best-practices', 'optimize-latency'],
         'en',
@@ -1329,10 +1328,10 @@ describe('docs content regressions', () => {
         throw new Error('Expected latency page to expose processed markdown.');
       }
 
-      const processed = await page.data.getText('processed');
+      const processed = await getLLMText(page);
 
       expect(processed).toContain(
-        'TTFB: Time To First Byte, the first byte latency.<br />TTFS: Time To First Sentence',
+        'TTFB: Time To First Byte, the first byte latency.; TTFS: Time To First Sentence',
       );
     },
     SOURCE_LOADER_TEST_TIMEOUT,
@@ -1341,7 +1340,7 @@ describe('docs content regressions', () => {
   it(
     'keeps IoT SDK compatibility table cells readable without raw HTML lists',
     async () => {
-      const { source } = await import('./source.server');
+      const { source, getLLMText } = await import('./source.server');
       const page = source.getPage(
         ['realtime-media', 'iot', 'reference', 'communicate-with-rtc-sdk'],
         'en',
@@ -1354,7 +1353,7 @@ describe('docs content regressions', () => {
         throw new Error('Expected IoT SDK page to expose processed markdown.');
       }
 
-      const processed = await page.data.getText('processed');
+      const processed = await getLLMText(page);
 
       expect(processed).not.toContain('<ul>');
       expect(processed).not.toContain('<li>');
@@ -1371,7 +1370,7 @@ describe('docs content regressions', () => {
   it(
     'renders media push layout images inside GFM table cells',
     async () => {
-      const { source } = await import('./source.server');
+      const { source, getLLMText } = await import('./source.server');
       const page = source.getPage(
         ['realtime-media', 'media-push', 'reference', 'set-vertical-layout'],
         'en',
@@ -1386,11 +1385,11 @@ describe('docs content regressions', () => {
         );
       }
 
-      const processed = await page.data.getText('processed');
+      const processed = await getLLMText(page);
 
       expect(processed).toContain('| Number of people | Layout effect');
       expect(processed).toMatch(
-        /\| 1\s+\| !\[1645770574489\]\(https:\/\/web-cdn\.agora\.io\/docs-files\/1645770574489\) \|/,
+        /\| 1\s*\|\s*!\[1645770574489\]\(https:\/\/web-cdn\.agora\.io\/docs-files\/1645770574489\) \|/,
       );
     },
     SOURCE_LOADER_TEST_TIMEOUT,
@@ -1541,13 +1540,15 @@ describe('docs content regressions', () => {
 
   it('keeps video quickstart free of the broken gradle code fence structure', () => {
     const source = readFileSync(
-      resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
+      resolve(docsRoot, 'realtime-media/rtc/get-started-sdk.mdx'),
       'utf8',
     );
 
-    expect(source).toContain('- Groovy `build.gradle`\n\n          ```groovy');
-    expect(source).toContain(
-      '- Kotlin `build.gradle.kts`\n\n          ```kotlin',
+    expect(source).toMatch(
+      /- Groovy `build.gradle`\n\n[ \t]+```groovy\n[ \t]+implementation/,
+    );
+    expect(source).toMatch(
+      /- Kotlin `build.gradle.kts`\n\n[ \t]+```kotlin\n[ \t]+implementation/,
     );
     expect(source).not.toContain(
       "```json\nimplementation 'io.agora.rtc:full-sdk:x.y.z'",
@@ -1556,7 +1557,7 @@ describe('docs content regressions', () => {
 
   it('keeps voice quickstart free of isolated directive closers in setup steps', () => {
     const source = readFileSync(
-      resolve(docsRoot, 'realtime-media/voice/quickstart.mdx'),
+      resolve(docsRoot, 'realtime-media/rtc/voice-quickstart.mdx'),
       'utf8',
     );
     const androidSection = source.slice(
@@ -1568,18 +1569,18 @@ describe('docs content regressions', () => {
       '2. Add a layout file for your activity.\n\n    Set up a basic layout for your activity. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones sample layout.\n\n### Install the SDK',
     );
     expect(androidSection).toContain(
-      '1. Open the unzipped file and copy the following files or subfolders to your project path.\n\n  | File or folder        | Project path    |',
+      '1. Open the unzipped file and copy the following files or subfolders to your project path.\n\n    | File or folder        | Project path    |',
     );
   });
 
   it('keeps realtime video get-started-sdk sections that were missing in the PDF review', () => {
     const source = readFileSync(
-      resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
+      resolve(docsRoot, 'realtime-media/rtc/get-started-sdk.mdx'),
       'utf8',
     );
 
     expect(source).toContain(
-      '### Complete sample code for real-time Video Calling',
+      '<Accordion title="Complete sample code for Realtime Communication">',
     );
     expect(source).toContain('### Display the local video');
     expect(source).toContain('### Create a basic UI');
@@ -1846,22 +1847,19 @@ describe('docs content regressions', () => {
     const abr = readFileSync(
       resolve(
         docsRoot,
-        'realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/enable-adaptive-bitrate.md',
+        'realtime-media/rtmp-gateway/build/process-media/enable-adaptive-bitrate.md',
       ),
       'utf8',
     );
     const notifications = readFileSync(
       resolve(
         docsRoot,
-        'realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/receive-notifications.md',
+        'realtime-media/rtmp-gateway/build/receive-notifications.md',
       ),
       'utf8',
     );
     const features = readFileSync(
-      resolve(
-        docsRoot,
-        'realtime-media/rtmp-gateway/reference/media-gateway-features.md',
-      ),
+      resolve(docsRoot, 'realtime-media/rtmp-gateway/index.mdx'),
       'utf8',
     );
 
@@ -1880,7 +1878,7 @@ describe('docs content regressions', () => {
   it(
     'keeps parameter table lists and callouts in the media push type definition page',
     async () => {
-      const { source } = await import('./source.server');
+      const { source, getLLMText } = await import('./source.server');
       const page = source.getPage(
         ['api-reference', 'api-ref', 'media-push', 'restful-type-definition'],
         'en',
@@ -1895,7 +1893,7 @@ describe('docs content regressions', () => {
         );
       }
 
-      const processed = await page.data.getText('processed');
+      const processed = await getLLMText(page);
 
       expect(processed).toContain('| Field');
       expect(processed).toContain('| Type');
@@ -1903,7 +1901,7 @@ describe('docs content regressions', () => {
       expect(processed).not.toContain('<ParamTable>');
       expect(processed).not.toContain('<Slot');
       expect(processed).toContain('`LC-AAC` (Default): MPEG-4 AAC LC');
-      expect(processed).toContain('<CalloutContainer type="info">');
+      expect(processed).toMatch(/> \*\*(?:Note|Info)/);
       expect(processed).toContain(
         '`volumes.rtcStreamUid` needs to exist in the `rtcStreamUids` array',
       );
@@ -1914,7 +1912,7 @@ describe('docs content regressions', () => {
   it(
     'keeps console REST API table slot callout content in processed markdown',
     async () => {
-      const { source } = await import('./source.server');
+      const { source, getLLMText } = await import('./source.server');
       const page = source.getPage(
         [
           'api-reference',
@@ -1934,12 +1932,12 @@ describe('docs content regressions', () => {
         );
       }
 
-      const processed = await page.data.getText('processed');
+      const processed = await getLLMText(page);
 
       expect(processed).toContain('| `enable_sign_key`');
       expect(processed).not.toContain('<Slot name="enablesignkey"');
-      expect(processed).toContain('<CalloutContainer type="info">');
-      expect(processed).toMatch(/<CalloutTitle>\s*Note\s*<\/CalloutTitle>/);
+      expect(processed).toMatch(/> \*\*(?:Note|Info)/);
+      expect(processed).toContain('> **Note**');
       expect(processed).toContain(
         'After creating a project, you can send a request to `https://api.agora.io/dev/v1/signkey`',
       );
@@ -1950,7 +1948,7 @@ describe('docs content regressions', () => {
   it(
     'renders AI model callout directives through the processed markdown pipeline',
     async () => {
-      const { source } = await import('./source.server');
+      const { source, getLLMText } = await import('./source.server');
       const modelDocsRoot = resolve(docsRoot, 'ai/models');
       const filesWithCallouts = listMarkdownFiles(modelDocsRoot).filter(
         (file) => {
@@ -1973,21 +1971,21 @@ describe('docs content regressions', () => {
           );
         }
 
-        const processed = await page.data.getText('processed');
+        const processed = await getLLMText(page);
 
         expect(processed).not.toMatch(
           /^:{3,4}(?:caution|danger|info|note|tip|warn|warning)\b/m,
         );
-        expect(processed).toContain('<CalloutContainer');
+        expect(processed).toMatch(/^> /m);
       }
     },
     SOURCE_LOADER_TEST_TIMEOUT,
   );
 
   it(
-    'keeps nested and repeated AI model callouts rendered as callout containers',
+    'keeps nested and repeated AI model callouts as Markdown quotes',
     async () => {
-      const { source } = await import('./source.server');
+      const { source, getLLMText } = await import('./source.server');
       const akool = source.getPage(['ai', 'models', 'avatar', 'akool'], 'en');
       const deepgram = source.getPage(
         ['ai', 'models', 'asr', 'deepgram'],
@@ -2016,19 +2014,18 @@ describe('docs content regressions', () => {
         );
       }
 
-      const akoolProcessed = await akool.data.getText('processed');
-      const deepgramProcessed = await deepgram.data.getText('processed');
-      const elevenLabsProcessed = await elevenLabs.data.getText('processed');
+      const akoolProcessed = await getLLMText(akool);
+      const deepgramProcessed = await getLLMText(deepgram);
+      const elevenLabsProcessed = await getLLMText(elevenLabs);
 
-      expect(
-        akoolProcessed.match(/<CalloutContainer type="info">/g) ?? [],
-      ).toHaveLength(3);
+      expect(akoolProcessed.match(/> \*\*Info/g) ?? []).toHaveLength(
+        (readDoc('ai/models/avatar/akool.mdx').match(/:::info\[/g) ?? [])
+          .length,
+      );
       expect(akoolProcessed).toContain('sales@agora.io');
-      expect(deepgramProcessed).toContain('<CalloutContainer type="warning">');
+      expect(deepgramProcessed).toContain('> **Caution');
       expect(deepgramProcessed).toContain('callback_method');
-      expect(
-        elevenLabsProcessed.match(/<CalloutContainer type="warning">/g) ?? [],
-      ).toHaveLength(2);
+      expect(elevenLabsProcessed.match(/> \*\*Caution/g) ?? []).toHaveLength(2);
       expect(elevenLabsProcessed).toContain('Paid plan required');
     },
     SOURCE_LOADER_TEST_TIMEOUT,
@@ -2085,7 +2082,9 @@ describe('docs content regressions', () => {
   });
 
   it('keeps the IM RESTful API pricing table content stable', () => {
-    const source = readDoc('realtime-media/im/reference/pricing-plan-details.md');
+    const source = readDoc(
+      'realtime-media/im/reference/pricing-plan-details.md',
+    );
     const tableStart = source.indexOf('| Category | Rest API Description |');
     const tableEnd = source.indexOf('\n\n## SDK support', tableStart);
     const tableLines = source

@@ -7,6 +7,47 @@ vi.mock('algoliasearch/lite', () => ({
 }));
 
 describe('createAlgoliaDocsClient', () => {
+  it.each([false, true])(
+    'keeps both documentation releases searchable (rankingV2=%s)',
+    async (rankingV2) => {
+      const searchForHits = vi.fn().mockResolvedValue({
+        results: [
+          {
+            hits: [
+              {
+                objectID: 'old',
+                title: 'Widget',
+                url: '/en/api-reference/versioning-demo/v1/widgets',
+              },
+              {
+                objectID: 'new',
+                title: 'Widget',
+                url: '/en/api-reference/versioning-demo/v2/list-widgets',
+              },
+            ],
+          },
+        ],
+      });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+      const client = createAlgoliaDocsClient({
+        appId: 'test',
+        indexName: 'docs',
+        locale: 'en',
+        searchApiKey: 'test',
+        rankingV2,
+      });
+      const results = await client.search('widget');
+      expect(searchForHits.mock.calls[0][0].requests[0].filters).toBe(
+        'locale:en',
+      );
+      expect(results.map((result) => result.url)).toEqual(
+        expect.arrayContaining([
+          '/en/api-reference/versioning-demo/v1/widgets',
+          '/en/api-reference/versioning-demo/v2/list-widgets',
+        ]),
+      );
+    },
+  );
   it('searches SDK API references alongside docs and normalizes their hierarchy', async () => {
     const searchForHits = vi.fn().mockResolvedValue({
       results: [

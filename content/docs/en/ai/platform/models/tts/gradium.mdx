@@ -1,0 +1,150 @@
+---
+title: Gradium
+description: >
+ Use Gradium for text-to-speech (TTS) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/gradium.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+
+Gradium provides enterprise-grade AI voice generation with text-to-speech (TTS) models.
+
+## Sample configuration
+
+The following example shows how to configure Gradium as the agent's TTS when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+
+Gradium supports BYOK only. It isn't available in managed mode. Store your Gradium API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, GradiumTTS, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your ASR vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(
+        GradiumTTS(
+            api_key=secret_ref("support_prod", "gradium"),
+            url="wss://api.gradium.ai/api/speech/tts",
+            model_name="default",
+            voice_id="<your_gradium_voice_id>",
+            sample_rate=16000,
+        )
+    )
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, GradiumTTS, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(
+    new GradiumTTS({
+      apiKey: secretRef('support_prod', 'gradium'),
+      url: 'wss://api.gradium.ai/api/speech/tts',
+      modelName: 'default',
+      voiceId: '<your_gradium_voice_id>',
+      sampleRate: 16000,
+    }),
+  );
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// client is your configured Agora client
+sampleRate := vendors.SampleRate16kHz
+agent := agentkit.NewAgent(client).
+	WithStt( /* configure your ASR vendor */ ).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts(vendors.NewGradiumTTS(vendors.GradiumTTSOptions{
+		APIKey:     agentkit.SecretRef("support_prod", "gradium"),
+		URL:        "wss://api.gradium.ai/api/speech/tts",
+		ModelName:  "default",
+		VoiceID:    "<your_gradium_voice_id>",
+		SampleRate: &sampleRate,
+	}))
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Gradium API key. In the following example, the key is stored as `gradium` in the `support_prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "fields": {
+      "api_key": "$secrets.support_prod.gradium"
+    }
+  },
+  "vendor": "gradium",
+  "url": "wss://api.gradium.ai/api/speech/tts",
+  "params": {
+    "model_name": "default",
+    "voice_id": "<your_gradium_voice_id>",
+    "sample_rate": 16000
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): In pre-release testing (2026-10-28), the Python, TypeScript, and Go examples saved as written, and the stored `tts` block matched the REST example. The SDKs send the endpoint option as the block's `url`. */}
+
+## Key parameters
+
+The `tts` block takes the following fields. In the SDKs, `GradiumTTS` sets them from its options.
+
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `gradium`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Gradium API key.
+  </Parameter>
+  <Parameter name="url" type="string" required={false}>
+    The WebSocket endpoint for streaming TTS output. For example, `wss://api.gradium.ai/api/speech/tts`.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="model_name" type="string" required={false}>
+      The TTS model to use. For example, `default`.
+    </Parameter>
+    <Parameter name="voice_id" type="string" required={false}>
+      The voice identifier to use.
+    </Parameter>
+    <Parameter name="sample_rate" type="number" required={false}>
+      The audio sample rate in Hz. For example, `16000`.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Gradium without validation. For a full list of supported options, refer to the [Gradium documentation](https://docs.gradium.ai/guides/text-to-speech).
+:::
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

@@ -74,7 +74,7 @@ describe('search attribution storage', () => {
   });
 
   it('does not throw when session storage is unavailable', () => {
-    const storagePrototype = Object.getPrototypeOf(window.sessionStorage);
+    const storagePrototype = window.sessionStorage;
     vi.spyOn(storagePrototype, 'setItem').mockImplementation(() => {
       throw new Error('blocked');
     });

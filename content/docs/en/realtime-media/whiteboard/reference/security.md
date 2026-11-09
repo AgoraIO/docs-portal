@@ -50,7 +50,7 @@ Interactive Whiteboard has implemented network geofencing in each server-side RE
 Refer to the following API references for more information:
 
 - [RESTful APIs](/en/api-reference/api-ref/whiteboard)
-- [Web SDK APIs](/en/api-reference/whiteboard/web)
+- [Web SDK APIs](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/index.html)
 - [Android SDK APIs](/en/api-reference/whiteboard/android)
 - [iOS SDK APIs](/en/api-reference/whiteboard/ios)
 

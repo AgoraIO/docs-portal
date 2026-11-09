@@ -16,6 +16,10 @@ export const SEARCH_RANKING_V2_ENABLED =
   import.meta.env.VITE_SEARCH_RANKING_V2 === 'true';
 
 export function getAlgoliaSearchConfig(region: DocsRegion = DOCS_REGION) {
+  // Preview content is not in the published Algolia index. Search this build's
+  // bundled pages so unreleased editions can be reviewed without reindexing live docs.
+  if (import.meta.env.VITE_DEPLOY_ENVIRONMENT === 'preview') return null;
+
   const appId = import.meta.env.VITE_ALGOLIA_APP_ID;
   const searchApiKey = import.meta.env.VITE_ALGOLIA_SEARCH_API_KEY;
   const hasAlgoliaConfig = Boolean(appId && searchApiKey);

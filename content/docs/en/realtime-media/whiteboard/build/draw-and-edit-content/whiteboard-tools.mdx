@@ -14,7 +14,7 @@ This page describes using whiteboard tools in the following ways:
 
 ## Understand the tech
 
-The Whiteboard SDK provides the [`setMemberState`](/en/api-reference/whiteboard/web) method for setting the whiteboard tools used in the current whiteboard room. By modifying the [`MemberState`](/en/api-reference/whiteboard/web) properties of the current room, you can switch tools, select shapes, and change the font size, stroke width, and color.
+The Whiteboard SDK provides the [`setMemberState`](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/interfaces/room.html#setmemberstate) method for setting the whiteboard tools used in the current whiteboard room. By modifying the [`MemberState`](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/globals.html#memberstate) properties of the current room, you can switch tools, select shapes, and change the font size, stroke width, and color.
 
 The `MemberState` type contains the following properties:
 
@@ -27,7 +27,7 @@ The `MemberState` type contains the following properties:
     - `laserPointer`: Laser pointer
     - `pencil`: Pencil
     - `rectangle`: Rectangle
-    - `selector`: Selector. If you set the `floatBar` property in [`JoinRoomParams`](/en/api-reference/whiteboard/web) as `true`, when the user uses the `selector` tool, a floating bar that provides more text editing options displays.
+    - `selector`: Selector. If you set the `floatBar` property in [`JoinRoomParams`](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/globals.html#joinroomparams) as `true`, when the user uses the `selector` tool, a floating bar that provides more text editing options displays.
     - `shape`: Shape. When setting `currentApplianceName` as `shape`, you can set `shapeType` to choose a shape; if you do not set `shapeType`, the SDK uses `triangle` by default.
     - `straight`: Straight line
     - `text`: Text. If you set the `floatBar` property in `JoinRoomParams` as `true`, when the user uses the `text` tool, a floating bar that provides more text editing options displays.
@@ -166,13 +166,13 @@ In addition to the basic editing tools listed in the [Understand the tech](#tech
 
 | Methods                                                                                                     | Description                                                  |
 |:------------------------------------------------------------------------------------------------------------| :----------------------------------------------------------- |
-| [copy](/en/api-reference/whiteboard/web)                               | Copies the selected content.                                 |
-| [paste](/en/api-reference/whiteboard/web)                             | Pastes the copied content.                                   |
-| [duplicate](/en/api-reference/whiteboard/web)                     | Duplicates the selected content.                             |
-| [delete](/en/api-reference/whiteboard/web)                           | Deletes the selected content.                                |
-| [redo](/en/api-reference/whiteboard/web)                               | Redoes an undone action.                                     |
-| [undo](/en/api-reference/whiteboard/web)                               | Undoes an action.                                            |
-| [disableeraseimage](/en/api-reference/whiteboard/web)     | Disables the eraser from erasing images on the whiteboard.   |
-| [disabledeviceinputs](/en/api-reference/whiteboard/web) | Disables the whiteboard from responding to users' operations. |
+| [copy](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/interfaces/room.html#copy)                               | Copies the selected content.                                 |
+| [paste](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/interfaces/room.html#paste)                             | Pastes the copied content.                                   |
+| [duplicate](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/interfaces/room.html#duplicate)                     | Duplicates the selected content.                             |
+| [delete](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/interfaces/room.html#delete)                           | Deletes the selected content.                                |
+| [redo](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/interfaces/room.html#redo)                               | Redoes an undone action.                                     |
+| [undo](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/interfaces/room.html#undo)                               | Undoes an action.                                            |
+| [disableeraseimage](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/interfaces/room.html#disableeraseimage)     | Disables the eraser from erasing images on the whiteboard.   |
+| [disabledeviceinputs](https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/interfaces/room.html#disabledeviceinputs) | Disables the whiteboard from responding to users' operations. |
 
 These methods, which are also members of the `Room` interface, also do not have user interfaces provided by the SDK. You can implement these functions by designing a UI and calling the corresponding methods according to your business needs.
