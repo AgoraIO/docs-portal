@@ -1331,8 +1331,6 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/solutions/iot-apaas/reference/release-notes',
   'solutions/iot-apaas/overview/tech-architecture':
     '/zh-CN/solutions/iot-apaas/reference/tech-architecture',
-  'solutions/iot-apaas/resources':
-    '/zh-CN/solutions/iot-apaas/reference/downloads',
   'solutions/iot-apaas/restful': '/zh-CN/solutions/iot-apaas/reference/restful',
   'solutions/meeting/api/create-room':
     '/zh-CN/api-reference/meeting/restful/api/create-room',
