@@ -1,5 +1,6 @@
 const EN_MCP_GUIDE_PATHS = new Set([
   'ai/get-started/mcp-integrate',
+  'ai/platform/get-started/mcp-integrate',
   'ai/device-kit/get-started/mcp',
   'realtime-media/on-premise-recording/mcp',
   'realtime-media/broadcast-streaming/mcp',
@@ -17,6 +18,7 @@ const EN_MCP_GUIDE_PATHS = new Set([
 
 const EN_SKILLS_GUIDE_PATHS = new Set([
   'ai/get-started/skills-integrate',
+  'ai/platform/get-started/skills-integrate',
   'ai/device-kit/get-started/skills',
   'realtime-media/on-premise-recording/skills',
   'realtime-media/broadcast-streaming/skills',
