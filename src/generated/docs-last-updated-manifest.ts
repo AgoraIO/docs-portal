@@ -746,7 +746,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/broadcast-streaming/snapshot-moderation/standard.mdx':
     '2026-06-29T07:50:31.000Z',
   'content/docs/en/api-reference/api-ref/broadcast-streaming/standard-recording/configuration.mdx':
-    '2026-06-29T07:50:31.000Z',
+    '2026-10-30T10:42:46.000Z',
   'content/docs/en/api-reference/api-ref/broadcast-streaming/standard-recording/entry-point.mdx':
     '2026-06-29T07:50:31.000Z',
   'content/docs/en/api-reference/api-ref/broadcast-streaming/standard-recording/live-stream.mdx':
@@ -772,7 +772,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/broadcast-streaming/watermarks.mdx':
     '2026-06-29T07:50:31.000Z',
   'content/docs/en/api-reference/api-ref/cloud-recording/api-callback-service.mdx':
-    '2026-10-16T06:41:36.000Z',
+    '2026-11-09T05:31:23.000Z',
   'content/docs/en/api-reference/api-ref/cloud-recording/authentication.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/api-reference/api-ref/cloud-recording/authentication.mdx':
@@ -864,7 +864,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/im/chatroom-management/manage-chatroom-mutelist.md':
     '2026-08-14T11:03:51.000Z',
   'content/docs/en/api-reference/api-ref/im/chatroom-management/manage-chatrooms.md':
-    '2026-08-14T11:03:51.000Z',
+    '2026-10-30T10:42:46.000Z',
   'content/docs/en/api-reference/api-ref/im/chatroom-management/meta.json':
     '2026-06-25T09:57:31.000Z',
   'content/docs/en/api-reference/api-ref/im/contact-management.md':
@@ -906,18 +906,18 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/im/user-attributes-management.md':
     '2026-08-14T11:03:51.000Z',
   'content/docs/en/api-reference/api-ref/im/user-system-registration.md':
-    '2026-08-14T11:03:51.000Z',
+    '2026-10-30T10:42:46.000Z',
   'content/docs/en/api-reference/api-ref/index.mdx': '2026-09-30T12:47:37.000Z',
   'content/docs/en/api-reference/api-ref/iot-channel-management-rest-api.md':
     '2026-06-25T09:57:31.000Z',
   'content/docs/en/api-reference/api-ref/media-pull/index.md':
-    '2026-08-11T15:10:41.000Z',
+    '2026-10-30T10:42:46.000Z',
   'content/docs/en/api-reference/api-ref/media-pull/meta.json':
     '2026-06-25T09:57:31.000Z',
   'content/docs/en/api-reference/api-ref/media-pull/restful-authentication.mdx':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/api-reference/api-ref/media-push/index.md':
-    '2026-08-11T15:10:41.000Z',
+    '2026-10-30T10:42:46.000Z',
   'content/docs/en/api-reference/api-ref/media-push/meta.json':
     '2026-06-25T09:57:31.000Z',
   'content/docs/en/api-reference/api-ref/media-push/restful-authentication.mdx':
@@ -1042,7 +1042,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/speech-to-text/restful-authentication.mdx':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/api-reference/api-ref/uikit-sdk.mdx':
-    '2026-07-31T02:34:43.000Z',
+    '2026-10-30T10:42:46.000Z',
   'content/docs/en/api-reference/api-ref/video-sdk/index.md':
     '2026-06-23T03:55:27.000Z',
   'content/docs/en/api-reference/api-ref/video/api-sunset.md':
@@ -3432,7 +3432,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/agora-analytics/reference/call-search-terms.md':
     '2026-08-11T15:10:41.000Z',
   'content/docs/en/realtime-media/agora-analytics/reference/core-concepts.md':
-    '2026-08-10T15:28:51.000Z',
+    '2026-10-30T10:42:46.000Z',
   'content/docs/en/realtime-media/agora-analytics/reference/downloads.md':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/agora-analytics/reference/firewall.md':
@@ -3904,7 +3904,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/build/handle-events/meta.json':
     '2026-06-26T08:54:16.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx':
-    '2026-10-16T06:41:36.000Z',
+    '2026-11-09T05:31:23.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/individual-mode.mdx':
     '2026-06-25T09:57:31.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/individual-nontranscoding.mdx':
@@ -3928,13 +3928,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/convert-format.mdx':
     '2026-07-02T14:12:17.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/manage-files.mdx':
-    '2026-10-16T06:41:36.000Z',
+    '2026-11-09T05:31:23.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/merge-files.mdx':
     '2026-09-17T04:34:39.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/meta.json':
     '2026-06-26T08:54:16.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/online-play.mdx':
-    '2026-10-16T06:41:36.000Z',
+    '2026-11-09T05:31:23.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/playback.mdx':
     '2026-06-29T07:50:31.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/receive-notifications.mdx':
@@ -3944,7 +3944,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/build/screen-capture.mdx':
     '2026-06-26T06:37:16.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/set-up-authentication/authentication-workflow.mdx':
-    '2026-08-11T15:10:41.000Z',
+    '2026-10-30T10:42:46.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/set-up-authentication/integrate-token-generation.mdx':
     '2026-08-11T15:10:41.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/set-up-authentication/meta.json':
@@ -3952,13 +3952,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/build/start-a-recording/composite-mode.mdx':
     '2026-10-16T06:41:36.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode.mdx':
-    '2026-10-16T06:41:36.000Z',
+    '2026-11-09T05:31:23.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding.mdx':
     '2026-09-09T06:31:33.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/start-a-recording/meta.json':
     '2026-10-16T06:41:36.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/start-a-recording/screen-capture.mdx':
-    '2026-10-16T06:41:36.000Z',
+    '2026-11-09T05:31:23.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/start-a-recording/webpage-mode.mdx':
     '2026-10-16T06:41:36.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/subscription.mdx':
@@ -4006,7 +4006,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/reference/region-vendor.mdx':
     '2026-06-24T09:22:50.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/release-notes.mdx':
-    '2026-10-16T06:41:36.000Z',
+    '2026-11-09T05:31:23.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/rest-api-overview.mdx':
     '2026-06-22T06:39:47.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/restful-api.mdx':
@@ -4507,7 +4507,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/im/reference/access-token-2.md':
     '2026-06-22T06:39:47.000Z',
   'content/docs/en/realtime-media/im/reference/billing-policies.md':
-    '2026-10-14T12:21:14.000Z',
+    '2026-10-30T10:42:46.000Z',
   'content/docs/en/realtime-media/im/reference/callbacks-events.md':
     '2026-06-11T15:24:47.000Z',
   'content/docs/en/realtime-media/im/reference/comparison-chat-signalling.md':
@@ -4553,7 +4553,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/im/reference/pricing-plan-details.md':
     '2026-07-14T06:23:10.000Z',
   'content/docs/en/realtime-media/im/reference/pricing.md':
-    '2026-08-10T15:28:51.000Z',
+    '2026-10-30T10:42:46.000Z',
   'content/docs/en/realtime-media/im/reference/release-notes.md':
     '2026-06-29T13:18:27.000Z',
   'content/docs/en/realtime-media/im/reference/release-notes.mdx':
@@ -4947,7 +4947,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/iot/reference/communicate-with-rtc-sdk.md':
     '2026-09-02T10:19:38.000Z',
   'content/docs/en/realtime-media/iot/reference/core-concepts.md':
-    '2026-09-02T10:19:38.000Z',
+    '2026-10-30T10:42:46.000Z',
   'content/docs/en/realtime-media/iot/reference/error-codes.mdx':
     '2026-09-02T10:19:38.000Z',
   'content/docs/en/realtime-media/iot/reference/firewall.md':
@@ -5002,7 +5002,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/marketplace/build/add-video-and-ar-effects/metakit.mdx':
     '2026-09-30T12:47:37.000Z',
   'content/docs/en/realtime-media/marketplace/build/add-video-and-ar-effects/virtual-background.mdx':
-    '2026-09-10T06:46:02.000Z',
+    '2026-10-30T10:42:46.000Z',
   'content/docs/en/realtime-media/marketplace/build/ains.mdx':
     '2026-06-25T09:57:31.000Z',
   'content/docs/en/realtime-media/marketplace/build/audio-filter.mdx':
@@ -5224,7 +5224,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/media-push/overview/pricing.md':
     '2026-06-12T08:03:40.000Z',
   'content/docs/en/realtime-media/media-push/reference/billing-policies.md':
-    '2026-10-14T12:21:14.000Z',
+    '2026-10-30T10:42:46.000Z',
   'content/docs/en/realtime-media/media-push/reference/glossary.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/media-push/reference/meta.json':
@@ -5670,7 +5670,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc/build/apply-video-effects/video-compositor.mdx':
     '2026-09-10T10:36:08.000Z',
   'content/docs/en/realtime-media/rtc/build/apply-video-effects/virtual-background.mdx':
-    '2026-09-10T06:46:02.000Z',
+    '2026-10-30T10:42:46.000Z',
   'content/docs/en/realtime-media/rtc/build/apply-video-effects/watermark.mdx':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/rtc/build/authenticate-users/authentication-workflow.mdx':
@@ -6128,7 +6128,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/console-overview.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/rtm/core-concepts.md':
-    '2026-08-10T15:28:51.000Z',
+    '2026-10-30T10:42:46.000Z',
   'content/docs/en/realtime-media/rtm/enable-signaling.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/rtm/get-started/authentication-workflow.md':
@@ -6419,7 +6419,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/speech-to-text/reference/common-errors.md':
     '2026-06-29T13:18:27.000Z',
   'content/docs/en/realtime-media/speech-to-text/reference/core-concepts.md':
-    '2026-08-10T15:28:51.000Z',
+    '2026-10-30T10:42:46.000Z',
   'content/docs/en/realtime-media/speech-to-text/reference/firewall.md':
     '2026-08-21T06:13:24.000Z',
   'content/docs/en/realtime-media/speech-to-text/reference/glossary.md':
@@ -11695,7 +11695,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/openapi/channel-management/query-channel-information.en.yaml':
     '2026-06-28T06:41:08.000Z',
   'content/openapi/cloud-recording/cloud-recording.en.yaml':
-    '2026-10-16T06:41:36.000Z',
+    '2026-11-09T05:31:23.000Z',
   'content/openapi/cloud-transcoding/cloud-transcoding.en.yaml':
     '2026-07-03T04:07:10.000Z',
   'content/openapi/cloud-transcoding/openapi.meta.json':
