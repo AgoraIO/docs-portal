@@ -41,6 +41,9 @@ export function resolveMovedDocsRedirect(
   const path = [tab, ...slugSegments].join('/');
   const suffix = path.endsWith('.md') ? '.md' : '';
   const guidePath = path.replace(/\.md$/, '');
+  if (guidePath === 'realtime-media/iot/reference/communicate-with-rtc-sdk') {
+    return `/en/realtime-media/iot/build/send-messages/interoperate-with-rtc-sdk${suffix}`;
+  }
   if (EN_MCP_GUIDE_PATHS.has(guidePath)) {
     return `/en/introduction/agora-mcp${suffix}`;
   }
