@@ -20,6 +20,10 @@ import {
   toCnPublicSearchUrl,
 } from './cn-search-urls.mjs';
 import { assertValidSearchSection, type SearchSection } from './kb-record';
+import {
+  stripSearchComponentTags,
+  stripSearchProseMarkers,
+} from './search-prose';
 
 function getRouteMetadata(route: PublishedDocsRoute) {
   const card = zhCNApiReferenceCards.all.find(
@@ -334,17 +338,20 @@ export function extractPublishedCnSections(
   // HTML tab blocks can be split at blank lines before remark sees their closing
   // fences. Remove the whole code container before parsing prose, retaining
   // offsets so summaries still belong to the original document sections.
-  const proseMarkdown = markdown.replace(
-    /<(CodeBlockTabs|CodeBlockTab|CodeBlockTabsContent)\b[^>]*>[\s\S]*?<\/\1\s*>/gi,
-    (block) => block.replace(/[^\r\n]/g, ' '),
+  const proseMarkdown = stripSearchComponentTags(
+    markdown.replace(
+      /<(CodeBlockTabs|CodeBlockTab|CodeBlockTabsContent)\b[^>]*>[\s\S]*?<\/\1\s*>/gi,
+      (block) => block.replace(/[^\r\n]/g, ' '),
+    ),
+    true,
   );
   const proseNodes = unified()
     .use(remarkParse)
     .parse(proseMarkdown)
     .children.map((node) => ({
       start: node.position?.start.offset ?? 0,
-      introduction: proseText(node),
-      summary: proseText(node, true),
+      introduction: stripSearchProseMarkers(proseText(node)),
+      summary: stripSearchProseMarkers(proseText(node, true)),
     }));
   const slugger = new GithubSlugger();
   const [, tab] = route.canonicalPath.split('/').filter(Boolean);
@@ -413,14 +420,29 @@ export function extractPublishedCnSections(
     .map((node) => node.introduction)
     .map((value) => value.trim())
     .find((value) => value && !value.startsWith('For AI agents:'));
+  let hasComponentContent = false;
+  if (!firstProse && page.description?.trim()) {
+    // Data-driven components (for example SDK downloads) render useful content
+    // without Markdown prose. JSX array props may be parsed as text by remark;
+    // code and inlineCode values are deliberately excluded from this check.
+    visit(tree, (node) => {
+      if (
+        (node.type === 'html' || node.type === 'text') &&
+        /<[A-Z_][\w.-]*(?=[\s/>]|$)/.test(node.value)
+      )
+        hasComponentContent = true;
+    });
+  }
   // API reference chapters keep their symbol entries; guide pages also need a
   // title entry when their maintained body begins directly with a section.
-  const pageIntroduction = firstProse
-    ? page.description?.trim() ||
-      (!toCnPublicSearchUrl(route.url).startsWith('/api-reference/')
-        ? firstProse.slice(0, 700)
-        : '')
-    : '';
+  const pageIntroduction =
+    firstProse || hasComponentContent
+      ? page.description?.trim() ||
+        (firstProse &&
+        !toCnPublicSearchUrl(route.url).startsWith('/api-reference/')
+          ? firstProse.slice(0, 700)
+          : '')
+      : '';
   const hierarchy: { level: number; title: string }[] = [];
   let current = {
     title: page.title,

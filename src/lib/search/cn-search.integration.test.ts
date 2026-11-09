@@ -58,6 +58,123 @@ describe.skipIf(!host)('CN search against Meilisearch', () => {
       })),
     ).flat();
     records.push(
+      ...[
+        [
+          'rtm-entry',
+          '/realtime-media/rtm',
+          '实时消息 RTM 概览',
+          'RTM 实时消息。',
+        ],
+        [
+          'rtmp-entry',
+          '/realtime-media/rtmp-gateway',
+          'RTMP 网关概览',
+          'RTMP 推流。',
+        ],
+        [
+          'rtc-connection',
+          `${base}/android#rtc-connection`,
+          'RtcConnection',
+          '管理频道连接。',
+        ],
+        [
+          'obfuscation',
+          `${base}/android#obfuscation`,
+          '防止代码混淆',
+          '配置 ProGuard 混淆规则。',
+        ],
+        [
+          'proguard',
+          '/realtime-media/rtc/reference/release-notes/android#proguard',
+          'R8/ProGuard 混淆规则配置优化',
+          '如果开启 R8/ProGuard 缩减和混淆，需要配置保留规则。',
+        ],
+        [
+          'field-obfuscation',
+          `${base}/harmonyos#fields`,
+          '关闭与状态记录',
+          '启用字段混淆时，保留 autoShape 和 strokeType 这两个名称。',
+        ],
+        [
+          'uglify',
+          '/realtime-media/whiteboard/reference/release-notes/web#uglify',
+          '问题修复',
+          'SDK 代码经过 uglify-js 混淆后的语义可能和之前不一样。',
+        ],
+        [
+          'sdk-obfuscation',
+          `${base}/android#project`,
+          '创建项目',
+          `${'在 Android Studio 创建项目并导入最新 SDK。'.repeat(25)}在 proguard-rules.pro 添加规则，防止 SDK 的代码被混淆。`,
+        ],
+        [
+          'unit-confusion',
+          `${base}/c#bitrate`,
+          '开发注意事项',
+          'bps 不要和 kbps 及 Bps 混淆。',
+        ],
+        [
+          'token-confusion',
+          `${base}/ios#token`,
+          '登录即时通讯',
+          '以下代码生成 Chat Token，不要和 RTC Token 混淆。',
+        ],
+        [
+          'cloud-recording',
+          '/realtime-media/cloud-recording',
+          '云端录制概览',
+          '云端录制产品介绍。',
+        ],
+        [
+          'cloud-recording-start',
+          '/realtime-media/cloud-recording/get-started/start',
+          '快速开始云端录制',
+          '开通云端录制并启动服务。',
+        ],
+        [
+          'container-recording',
+          '/realtime-media/local-server-recording/build/container',
+          '使用云容器部署录制 SDK',
+          '在云容器部署本地录制 SDK。',
+        ],
+        [
+          'classroom-recording',
+          '/solutions/chatroom/reference/integration#recording',
+          '云录制常见问题',
+          '课堂配置问题请参考云端录制文档。',
+        ],
+        ['mixing', `${base}/android#mixing`, '混音', '调节混音音量。'],
+        [
+          'simulator',
+          `${base}/ios#simulator`,
+          'Simulator 排查',
+          '在 Simulator 中检查 CocoaPods 配置。',
+        ],
+        [
+          'dualstream',
+          `${base}/web#dualstream`,
+          '双流模式',
+          '双流模式同时发送大流和小流。',
+        ],
+        [
+          'simulcast-list',
+          '/realtime-media/rtc/reference/release-notes/electron#added',
+          '新增',
+          '4.6.0 新增 SimulcastStreamMode，扩展 AUTO_SIMULCAST_STREAM 双流支持。',
+        ],
+      ].map(([id, url, title, content]) => ({
+        ...section,
+        ...(id === 'rtmp-entry'
+          ? { product: 'rtmp-gateway', products: ['rtmp-gateway'] }
+          : {}),
+        id,
+        url,
+        canonicalUrl: url.split('#')[0],
+        pageTitle: title,
+        sectionTitle: title,
+        headingPath: [title],
+        content,
+      })),
       ...['android', 'web'].map((platform) => ({
         ...section,
         id: `${platform}-setup`,
@@ -148,6 +265,105 @@ enableLegacyAudio 修复。
       config,
       parseSearchPageState({ q, type: 'docs', page, platform }),
     );
+
+  it('keeps complete product acronyms separate and does not confuse obfuscation with mixing', async () => {
+    expect((await search('rtm')).groups.map((group) => group.pageUrl)).toEqual([
+      '/realtime-media/rtm',
+    ]);
+    expect((await search('rtmp')).groups.map((group) => group.pageUrl)).toEqual(
+      ['/realtime-media/rtmp-gateway'],
+    );
+    expect(
+      (await search('混淆')).groups
+        .flatMap((group) => group.sections)
+        .map((hit) => hit.sectionTitle),
+    ).toContain('防止代码混淆');
+    expect((await search('simulcast')).groups[0].sections[0].sectionTitle).toBe(
+      '双流模式',
+    );
+    expect(
+      (await search('simulcast')).groups
+        .flatMap((group) => group.sections)
+        .map((hit) => hit.sectionTitle),
+    ).not.toContain('Simulator 排查');
+  });
+
+  it('keeps mixed-case RTM exact when product filters leave no guide matches', async () => {
+    for (const q of ['RTM', 'rTm', 'rtM']) {
+      for (const type of ['all', 'docs']) {
+        const result = await queryCnSearch(
+          config,
+          parseSearchPageState({ q, type, product: 'rtmp-gateway', page: 1 }),
+        );
+        expect(result.totalHits, `${q}/${type}`).toBe(0);
+        expect(result.groups, `${q}/${type}`).toEqual([]);
+      }
+    }
+  });
+
+  it('separates bare code obfuscation from ordinary confusion without losing technical contexts', async () => {
+    const hits = (await search('混淆')).groups.flatMap(
+      (group) => group.sections,
+    );
+    const titles = hits.map((hit) => hit.sectionTitle);
+    expect(titles).toEqual(
+      expect.arrayContaining([
+        '防止代码混淆',
+        'R8/ProGuard 混淆规则配置优化',
+        '关闭与状态记录',
+        '问题修复',
+        '创建项目',
+      ]),
+    );
+    expect(titles).not.toContain('开发注意事项');
+    expect(titles).not.toContain('登录即时通讯');
+    expect(titles).not.toContain('混音');
+    const setup = hits.find((hit) => hit.sectionTitle === '创建项目');
+    expect(
+      setup?.highlights.content.some(
+        (part) => part.highlighted && part.text.includes('混淆'),
+      ),
+    ).toBe(true);
+    expect((await search('bps 混淆')).groups[0].sections[0].sectionTitle).toBe(
+      '开发注意事项',
+    );
+    expect(
+      (await search('RTC Token 混淆')).groups[0].sections[0].sectionTitle,
+    ).toBe('登录即时通讯');
+  });
+
+  it('uses the canonical cloud recording intent while retaining explicit container searches', async () => {
+    const urls = (await search('云录制')).groups.map((group) => group.pageUrl);
+    expect(urls.slice(0, 2)).toEqual([
+      '/realtime-media/cloud-recording',
+      '/realtime-media/cloud-recording/get-started/start',
+    ]);
+    expect(
+      (await search('云录制 Web')).groups.map((group) => group.pageUrl),
+    ).toEqual(
+      (await search('云端录制 Web')).groups.map((group) => group.pageUrl),
+    );
+    expect((await search('云容器部署录制 SDK')).groups[0].pageUrl).toBe(
+      '/realtime-media/local-server-recording/build/container',
+    );
+  });
+
+  it('retains incomplete acronym discovery and explicit release-version intent', async () => {
+    expect(
+      (await search('RTC')).groups
+        .flatMap((group) => group.sections)
+        .map((hit) => hit.sectionTitle),
+    ).toContain('RtcConnection');
+    expect((await search('rt')).groups.map((group) => group.pageUrl)).toEqual(
+      expect.arrayContaining([
+        '/realtime-media/rtm',
+        '/realtime-media/rtmp-gateway',
+      ]),
+    );
+    expect((await search('simulcast 4.6.0')).groups[0].pageUrl).toBe(
+      '/realtime-media/rtc/reference/release-notes/electron',
+    );
+  });
 
   it('includes non-default platform content in full and quick-search overview queries', async () => {
     const full = await search('enableBrowserAudio');

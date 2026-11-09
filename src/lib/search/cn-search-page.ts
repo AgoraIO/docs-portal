@@ -5,6 +5,10 @@ import { isPublicCnSearchUrl } from './cn-search-urls.mjs';
 import { getSearchSectionIdentity } from './kb-record';
 import type { SearchHit } from './meilisearch-client';
 import type { SearchPageState } from './search-page-state';
+import {
+  stripSearchComponentTags,
+  stripSearchProseMarkers,
+} from './search-prose';
 
 export { isPublicCnSearchUrl } from './cn-search-urls.mjs';
 
@@ -97,11 +101,13 @@ export async function loadCnSearchCatalog(signal?: AbortSignal) {
   return result.facets;
 }
 
-// The current demo index contains Markdown source. Keep highlight tags while
-// removing authoring syntax from the cropped, text-only search preview.
+// Keep highlight tags while removing authoring syntax from cropped previews,
+// including older snapshots whose summaries still contain serialized MDX.
 // Meilisearch may prepend its crop marker directly to an opening fence.
 export function cleanSearchSnippet(value: string): string {
-  return stripCroppedFenceHeader(value)
+  return stripSearchProseMarkers(
+    stripSearchComponentTags(stripCroppedFenceHeader(value)),
+  )
     .replace(/\bOpenAPI:\s*\/openapi\/\S*/gi, '')
     .replace(/\|?\s*:?-{3,}:?\s*(?=\||$)/gm, ' ')
     .replace(/(^|\s)\|(?=\s|$)/gm, '$1')

@@ -22,6 +22,7 @@ import {
   isPublicCnSearchUrl,
   type SearchFacets,
 } from './cn-search-page';
+import { cnExactProductAcronyms } from './cn-search-strategy';
 import {
   getCnSearchLanguageTerms,
   getCnSearchNavigationLanguage,
@@ -83,11 +84,22 @@ export async function queryCnSearch(
     }
   }
   const query = intent.query;
+  const codeObfuscation = query === '代码混淆';
+  // The derived alias identifies the technical meaning. Search the original
+  // word within those sections so snippets also locate 代码被混淆 / 字段混淆.
+  if (codeObfuscation) filter.push('aliases = "代码混淆"');
   const identifier = getCnGuideIdentifier(query);
+  const acronym = cnExactProductAcronyms.includes(query.toLowerCase());
   const overview = state.type === 'all' && query.length > 0;
   const familyFilter = (family: CnSearchFamily) => `searchFamily = "${family}"`;
   const makeQuery = (family?: CnSearchFamily) => ({
-    q: family === 'docs' && identifier ? `"${identifier}"` : query,
+    q: codeObfuscation
+      ? '混淆'
+      : acronym
+        ? `"${query}"`
+        : family === 'docs' && identifier
+          ? `"${identifier}"`
+          : query,
     matchingStrategy: 'all',
     filter: [...filter, ...(family ? [familyFilter(family)] : [])].join(
       ' AND ',
@@ -150,7 +162,12 @@ export async function queryCnSearch(
     : state.type === 'docs'
       ? 0
       : -1;
-  if (identifier && docsIndex >= 0 && responses[docsIndex].totalHits === 0) {
+  if (
+    identifier &&
+    !acronym &&
+    docsIndex >= 0 &&
+    responses[docsIndex].totalHits === 0
+  ) {
     const fallback = await fetch(
       `${host}/indexes/${encodeURIComponent(config.indexUid)}/search`,
       {

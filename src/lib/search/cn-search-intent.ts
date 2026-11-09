@@ -33,8 +33,17 @@ const platformPhrases = Object.entries(platformRegistry)
   )
   .sort((a, b) => b.pattern.source.length - a.pattern.source.length);
 
+// Resolve bare domain terms only. Explicit qualifiers retain their meaning
+// (e.g. "bps 混淆" or "云录制常见问题"). The UI keeps the original input.
+const bareTopicQueries = new Map([
+  ['混淆', '代码混淆'],
+  ['云录制', '云端录制'],
+]);
+const normalizeTopicQuery = (query: string) =>
+  bareTopicQueries.get(query.trim()) ?? query;
+
 export function resolveCnSearchQuery(query: string, platform?: string) {
-  query = normalizeCnSearchLanguageTerms(query);
+  query = normalizeTopicQuery(normalizeCnSearchLanguageTerms(query));
   let remaining = query;
   const platforms = new Set<string>();
   for (const phrase of platformPhrases) {
@@ -50,7 +59,7 @@ export function resolveCnSearchQuery(query: string, platform?: string) {
   remaining = remaining.replace(/\s+/g, ' ').trim();
   // A platform name on its own is still a search term, not a request for its entire catalog.
   return remaining
-    ? { query: remaining, platform: platform ?? inferred }
+    ? { query: normalizeTopicQuery(remaining), platform: platform ?? inferred }
     : { query, platform };
 }
 
