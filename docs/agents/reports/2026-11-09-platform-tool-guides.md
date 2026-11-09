@@ -18,3 +18,18 @@
 中文误收录的 8 页由独立分支 `codex/exclude-unpublished-cn` 处理；未将两个地区的内容分支互相合并。中文 API 公共文件比较仍存在英文基线缺少质量工具/合同等既有差异，本次未修改共享渲染器，不宣称完成双区域生产浏览器全量验收。
 
 改动尚未部署、未刷新远端搜索索引，原飞书反馈文档未修改。日志及 HTTP 证据保留在忽略的 `.agent/artifacts/unpublished-pages/`。
+
+
+## 提 PR 前补充：IoT 互通指南旧地址
+
+英文分支已基于最新 `origin/main`（`fbd61c6bb`）重放原提交。确认 #1008 已将互通指南移至 `realtime-media/iot/build/send-messages/interoperate-with-rtc-sdk`；此处修复旧地址跳转，不恢复旧正文。
+
+- 对旧门户地址和旧站 underscore 地址的 HTML、`.md` 共 4 个入口配置 301，直接指向现行指南。
+- 同步 legacy runtime 两条平台规则、static/bulk 规则及生成器，保留查询参数，避免跳到旧 404 地址。
+- 现行正文只增加 4 个历史小节锚点别名；不改 SDK 签名、参数、平台范围或认证示例。
+- 兼容性回归使用现行路径，继续断言兼容格式和平台；允许 GFM 序列化产生的单元格填充空格。
+- MCP/Skills/IoT 定向 39 项通过，类型检查、生成产物校验、涉及 TS 文件的 Biome 和 diff whitespace 通过。
+- 最新全套：1967 通过、11 失败。与此前未修改基线的 12 项失败比较，无新增失败，旧兼容性页面路径断言已修复；其他 11 项仍是原内容/链接债务。
+- 独立 reviewer 再次只读复核无新缺陷，并独立通过 5 项 IoT 跳转测试。
+
+中文对应 PR 为 #1404，目标 `codex/cn-newdoc-html-api-migration`；本英文 PR 目标 `main`。两单均保留 Draft，生产构建和部署后验收未完成。
