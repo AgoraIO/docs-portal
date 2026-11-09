@@ -184,7 +184,6 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
     'supported-platforms',
   ],
   'solutions/iot-apaas/reference/meta.json': [
-    'downloads',
     'restful',
     'supported-platforms',
     'tech-architecture',
@@ -263,6 +262,8 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
 };
 
 const intentionallyChangedReferencePages = new Set([
+  // The legacy _resources page was never published.
+  'solutions/iot-apaas/reference/meta.json',
   'reference/meta.json',
   'realtime-media/fusion-cdn/reference/meta.json',
   'realtime-media/media-pull/reference/meta.json',

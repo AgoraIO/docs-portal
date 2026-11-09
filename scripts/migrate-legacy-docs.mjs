@@ -5,6 +5,7 @@ import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import { normalizeLegacyCodeHighlights } from './lib/legacy-code-highlights.mjs';
+import { isUnpublishedLegacySource } from './lib/legacy-publication.mjs';
 import {
   readLegacyImageSizing,
   renderMigratedImage,
@@ -289,6 +290,9 @@ export async function migrateLegacyPage({
   sourceRoot,
   targetPath,
 }) {
+  if (isUnpublishedLegacySource(sourcePath)) {
+    throw new Error(`Source was not published by the legacy site: ${sourcePath}`);
+  }
   const absoluteSourcePath = path.join(sourceRoot, sourcePath);
   const raw = await fs.readFile(absoluteSourcePath, 'utf8');
   const inferredContext = inferContextFromSourcePath(sourcePath);
@@ -387,6 +391,7 @@ export function getOutputPlatformsForSourcePath({ pathMap, sourcePath }) {
 }
 
 export function getOutputTargetsForSourcePath({ pathMap, sourcePath }) {
+  if (isUnpublishedLegacySource(sourcePath)) return [];
   const entry = pathMap.get(sourcePath);
   if (entry?.isRedirectContent === false) {
     return [];

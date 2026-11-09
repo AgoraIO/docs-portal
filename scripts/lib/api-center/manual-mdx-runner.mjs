@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import * as yaml from 'js-yaml';
+import { isUnpublishedLegacySource } from '../legacy-publication.mjs';
 import {
   loadComponentMap,
   loadPathMap,
@@ -358,6 +359,7 @@ export async function runManualMdxMigration({
     (page) =>
       !page.aliasOf &&
       page.sourceResolution?.type === 'manual-mdx' &&
+      !isUnpublishedLegacySource(page.sourceResolution.sourcePath ?? '') &&
       (!scope || page.sourceResolution.route?.scopeKey === scope),
   );
   const pending = [];
