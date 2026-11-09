@@ -44,7 +44,7 @@ To set what the agent says when a conversation starts or the LLM fails, select *
 
 ![Panel with the Greeting, Delay, and Failure message fields](/temp/agent-studio-preview/greeting-failure-panel.png)
 
-{/* TODO(platform-confirm): The panel says "Save here updates your working copy. Use Start test to preview it, and Save changes on the agent to persist it", but the editor autosaves and has no Save changes button. Confirm how these fields are saved. The API's greeting `on` setting (`each_join` or `first_join`) isn't shown in the panel: which value does Agent Studio use? */}
+{/* TODO(platform-confirm): The panel says "Save here updates your working copy. Use Start test to preview it, and Save changes on the agent to persist it", but the editor autosaves and has no Save changes button. Confirm how these fields are saved. */}
 
 ## Voice & models
 
@@ -139,7 +139,7 @@ These settings control how the agent decides when the caller starts and stops sp
 
 The custom settings are as follows:
 
-- **Callers can interrupt**: Whether the caller's speech can stop the agent mid-sentence. To interrupt only when the caller says specific words, turn on **Interrupt on keywords only**, and enter the words in **Keywords**, separated by commas.
+- **Callers can interrupt**: Whether the caller's speech can stop the agent mid-sentence. To interrupt only when the caller says specific words, turn on **Interrupt on keywords only**, and enter the words in **Keywords**.
 - **Speech threshold**: The sensitivity of speech detection, from 0 to 1. Lower values hear quieter speech, and higher values ignore more noise. The default is 0.5.
 - **Start of speech**: How the agent detects that the caller started speaking:
 
