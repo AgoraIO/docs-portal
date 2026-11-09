@@ -1109,7 +1109,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-08-14T11:03:51.000Z',
   'content/docs/en/api-reference/api-ref/im/user-system-registration.md':
     '2026-08-14T11:03:51.000Z',
-  'content/docs/en/api-reference/api-ref/index.mdx': '2026-11-06T10:21:45.000Z',
+  'content/docs/en/api-reference/api-ref/index.mdx': '2026-11-06T12:42:29.000Z',
   'content/docs/en/api-reference/api-ref/iot-channel-management-rest-api.md':
     '2026-06-25T09:57:31.000Z',
   'content/docs/en/api-reference/api-ref/media-pull/index.md':
@@ -5655,7 +5655,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc-server-sdk.md':
     '2026-05-14T11:07:52.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/build-core-media-features/meta.json':
-    '2026-06-26T09:28:42.000Z',
+    '2026-11-06T12:42:29.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/build-core-media-features/send-receive-media-streams.md':
     '2026-07-31T02:34:43.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/build-core-media-features/send-receive-media-streams.mdx':
@@ -5664,6 +5664,8 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-07-31T02:34:43.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/build-core-media-features/stringuid.mdx':
     '2026-08-07T06:52:10.000Z',
+  'content/docs/en/realtime-media/rtc-server-sdk/build/build-core-media-features/video-metadata.mdx':
+    '2026-11-06T12:42:29.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/build-core-media-features/video-mixing.md':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/cloud-proxy.md':
@@ -5699,7 +5701,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc-server-sdk/build/set-up-your-project/compile-run-sample-project.md':
     '2026-07-10T09:23:02.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/set-up-your-project/compile-run-sample-project.mdx':
-    '2026-11-06T10:21:45.000Z',
+    '2026-11-06T12:42:29.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/set-up-your-project/meta.json':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/stringuid.md':
@@ -5709,7 +5711,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc-server-sdk/index.md':
     '2026-06-18T10:41:14.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/index.mdx':
-    '2026-11-06T10:21:45.000Z',
+    '2026-11-06T12:42:29.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/meta.json':
     '2026-07-03T14:28:36.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/product-overview.md':
@@ -5737,7 +5739,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc-server-sdk/reference/release-notes.md':
     '2026-07-07T09:11:58.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/release-notes.mdx':
-    '2026-11-06T10:21:45.000Z',
+    '2026-11-06T12:42:29.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/security.md':
     '2026-11-05T12:43:25.000Z',
   'content/docs/en/realtime-media/rtc.md': '2026-05-14T11:07:52.000Z',
