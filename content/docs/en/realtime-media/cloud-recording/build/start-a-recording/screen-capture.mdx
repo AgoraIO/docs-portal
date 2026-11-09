@@ -64,7 +64,7 @@ To capture screenshots, you need to configure the following parameters in `clien
 
 Configures the time interval between two successive screenshots and the file format of the screenshots. `snapshotConfig` includes the following fields:
 
-- `captureInterval`: (Optional) Integer. The time interval (in seconds) between two successive screenshots. captureInterval should be within the range [1, 3600]. The default value is `10`.
+- `captureInterval`: (Optional) Integer. The time interval (in seconds) between two successive screenshots. captureInterval should be within the range [1, 3600]. The default value is `10`. Screenshots are generated only on video keyframes. The actual interval between screenshots can be longer than the value you set.
 
 - `fileType`: JSONArray. File format of the screenshots. fileType can only take ["jpg"], setting screenshots to the JPG format.
 

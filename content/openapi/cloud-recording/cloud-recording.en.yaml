@@ -1771,9 +1771,11 @@ components:
         captureInterval:
           type: integer
           default: 10
-          minimum: 5
+          minimum: 1
           maximum: 3600
-          description: Screenshot capture interval in seconds.
+          description: >-
+            Screenshot capture interval in seconds. Screenshots are generated only on video
+            keyframes. The actual interval between screenshots can be longer than the value you set.
         fileType:
           type: array
           description: Screenshot file format. Currently only `jpg` is supported.
@@ -2360,6 +2362,12 @@ components:
             - `"backuped"`: All files have been uploaded, but at least one TS file was uploaded to
             Agora backup cloud. The Agora server will automatically continue uploading to the
             designated third-party cloud storage.
+
+            - `"stranded"`: Added in individual recording v2. Some recording files have not yet
+            been uploaded to the specified third-party cloud storage. The recording service keeps
+            retrying the upload automatically until it succeeds, and the files are not lost. Treat
+            the recording as not fully uploaded, and wait until the upload completes before you play
+            or process files that depend on the complete recording.
 
             - `"unknown"`: Unknown status.
         fileList:
