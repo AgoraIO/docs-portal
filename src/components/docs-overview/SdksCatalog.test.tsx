@@ -160,6 +160,77 @@ describe('SdksCatalog', () => {
     ).toHaveLength(0);
   });
 
+  it('keeps recording downloads separate by language when switching architectures', () => {
+    render(<SdksCatalog />);
+
+    const card = within(
+      screen.getByRole('article', { name: 'Agora On-Premise Recording SDK' }),
+    );
+    expect(card.getAllByRole('tab').map((tab) => tab.textContent)).toEqual([
+      'Linux C++',
+      'Linux Java',
+    ]);
+    const select = card.getByRole('combobox');
+    expect(within(select).getAllByRole('option')).toHaveLength(2);
+    expect(card.getByRole('link', { name: /download sdk/i })).toHaveAttribute(
+      'href',
+      expect.stringContaining('Agora-RTC-x86_64-linux-gnu-v4.4.151-'),
+    );
+
+    fireEvent.change(select, { target: { value: '1' } });
+    expect(card.getByRole('link', { name: /download sdk/i })).toHaveAttribute(
+      'href',
+      expect.stringContaining('Agora-RTC-aarch64-linux-gnu-v4.4.151-'),
+    );
+
+    fireEvent.click(card.getByRole('tab', { name: 'Linux Java' }));
+    expect(select).toHaveValue('0');
+    expect(within(select).getAllByRole('option')).toHaveLength(2);
+    expect(card.getByRole('link', { name: /download sdk/i })).toHaveAttribute(
+      'href',
+      expect.stringContaining(
+        'Agora-Linux-Recording-Java-SDK-v4.4.151.1-x86_64-',
+      ),
+    );
+
+    fireEvent.change(select, { target: { value: '1' } });
+    expect(card.getByRole('link', { name: /download sdk/i })).toHaveAttribute(
+      'href',
+      expect.stringContaining(
+        'Agora-Linux-Recording-Java-SDK-v4.4.151-aarch64-',
+      ),
+    );
+
+    fireEvent.click(card.getByRole('tab', { name: 'Linux C++' }));
+    expect(select).toHaveValue('0');
+    expect(card.getByRole('link', { name: /download sdk/i })).toHaveAttribute(
+      'href',
+      expect.stringContaining('Agora-RTC-x86_64-linux-gnu-v4.4.151-'),
+    );
+  });
+
+  it.each([
+    ['linux-cpp', 'Linux C++'],
+    ['linux-java', 'Linux Java'],
+  ])('preselects %s for recording download links', (platformId, label) => {
+    window.history.replaceState(
+      null,
+      '',
+      `/en/api-reference/sdks?product=on-premise-recording&platform=${platformId}`,
+    );
+
+    render(<SdksCatalog />);
+
+    const card = screen.getByRole('article', {
+      name: 'Agora On-Premise Recording SDK',
+    });
+    expect(within(card).getByRole('tab', { name: label })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    expect(screen.getAllByRole('article')).toHaveLength(1);
+  });
+
   it('lists the Agora Agents SDK with TypeScript, Python, and Go tabs', () => {
     render(<SdksCatalog />);
 
