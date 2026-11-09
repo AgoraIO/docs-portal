@@ -742,7 +742,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/studio/build/custom-tools.mdx':
     '2026-11-09T11:09:04.000Z',
   'content/docs/en/ai/platform/studio/build/customize-agent.mdx':
-    '2026-11-09T11:09:04.000Z',
+    '2026-11-09T13:39:19.000Z',
   'content/docs/en/ai/platform/studio/build/integrations.mdx':
     '2026-11-05T05:06:58.000Z',
   'content/docs/en/ai/platform/studio/build/mcp-servers.mdx':
@@ -750,7 +750,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/studio/build/meta.json':
     '2026-11-05T05:06:58.000Z',
   'content/docs/en/ai/platform/studio/build/prompt-design.mdx':
-    '2026-11-09T11:09:04.000Z',
+    '2026-11-09T13:39:19.000Z',
   'content/docs/en/ai/platform/studio/build/secrets.mdx':
     '2026-11-09T11:09:04.000Z',
   'content/docs/en/ai/platform/studio/build/supported-vendors.mdx':
@@ -764,7 +764,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/studio/deploy/deploy-agent.mdx':
     '2026-11-05T09:01:06.000Z',
   'content/docs/en/ai/platform/studio/deploy/deploy-inbound.mdx':
-    '2026-11-09T11:09:04.000Z',
+    '2026-11-09T13:39:19.000Z',
   'content/docs/en/ai/platform/studio/deploy/deploy-outbound.mdx':
     '2026-11-09T11:09:04.000Z',
   'content/docs/en/ai/platform/studio/deploy/import.mdx':
@@ -777,7 +777,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-11-05T05:06:58.000Z',
   'content/docs/en/ai/platform/studio/deploy/sip-trunk.mdx':
     '2026-11-09T11:09:04.000Z',
-  'content/docs/en/ai/platform/studio/index.mdx': '2026-11-09T11:09:04.000Z',
+  'content/docs/en/ai/platform/studio/index.mdx': '2026-11-09T13:39:19.000Z',
   'content/docs/en/ai/platform/studio/meta.json': '2026-11-04T07:37:31.000Z',
   'content/docs/en/ai/platform/studio/observe/agent-analytics.mdx':
     '2026-11-09T11:09:04.000Z',
