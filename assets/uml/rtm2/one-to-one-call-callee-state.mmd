@@ -1,0 +1,51 @@
+%% 保留原文状态、编号及流转条件；使用 ELK 正交连线区分主流程与终态分支。
+%%{init: {
+  "theme": "base",
+  "fontFamily": "Arial, PingFang SC, Microsoft YaHei, sans-serif",
+  "themeVariables": {
+    "fontSize": "22px",
+    "lineColor": "#61758a",
+    "edgeLabelBackground": "#ffffff"
+  },
+  "flowchart": {
+    "defaultRenderer": "elk",
+    "curve": "linear",
+    "htmlLabels": true,
+    "padding": 8
+  },
+  "elk": {
+    "mergeEdges": false,
+    "nodePlacementStrategy": "NETWORK_SIMPLEX"
+  }
+}}%%
+flowchart TB
+    CalleeIdle["等待邀请<br/>IDLE(10)"]
+    CalleeReceived["来电中<br/>INVITATION_RECEIVED(11)"]
+    CalleeWaitingAck["等待确认<br/>ACCEPT_SENT_TO_CALLER(12)"]
+    CalleeAccepted["已接受<br/>ACCEPTED(13)"]
+    CalleeRefused["已拒绝<br/>REFUSED(14)"]
+    CalleeCanceled["主叫已取消<br/>CANCELED_BY_CALLER(15)"]
+    CalleeFailure["失败<br/>FAILURE(16)"]
+    Start((" "))
+    Start --> CalleeIdle
+    CalleeIdle -->|"收到邀请"| CalleeReceived
+    CalleeReceived -->|"接听发送中<br/>/ 发送失败<br/>/ 重复邀请"| CalleeReceived
+    CalleeReceived -->|"接听发送成功"| CalleeWaitingAck
+    CalleeReceived -->|"refuse"| CalleeRefused
+    CalleeReceived -->|"收到取消"| CalleeCanceled
+    CalleeReceived -->|"来电超时 / 销毁"| CalleeFailure
+    CalleeWaitingAck -->|"收到确认"| CalleeAccepted
+    CalleeWaitingAck -->|"收到取消"| CalleeCanceled
+    CalleeWaitingAck -->|"确认超时 / 销毁"| CalleeFailure
+    classDef active fill:#eff6ff,stroke:#6897c4,color:#183b61;
+    classDef accepted fill:#effaf3,stroke:#6ca782,color:#24573b;
+    classDef ended fill:#f5f7fa,stroke:#9aa9bb,color:#405267;
+    classDef failure fill:#fff4f2,stroke:#ca8a80,color:#8a3c33;
+    classDef start fill:#61758a,stroke:#61758a;
+    class CalleeIdle,CalleeReceived,CalleeWaitingAck active;
+    class CalleeAccepted accepted;
+    class CalleeRefused,CalleeCanceled ended;
+    class CalleeFailure failure;
+    class Start start;
+    linkStyle 0,1,3,7 stroke:#3279b7,stroke-width:2px;
+    linkStyle 2 stroke-dasharray:4 3;

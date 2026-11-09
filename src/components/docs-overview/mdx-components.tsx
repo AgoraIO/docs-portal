@@ -16,6 +16,7 @@ import {
   Code2Icon,
   CpuIcon,
   CuboidIcon,
+  ExternalLinkIcon,
   FilmIcon,
   Globe2Icon,
   GraduationCapIcon,
@@ -713,23 +714,39 @@ function OverviewImageCard({
   description,
   href,
   imageAlt,
+  imageAspectRatio,
   imageSrc,
+  layout = 'vertical',
+  newTabLabel = 'Open in a new tab',
   title,
 }: {
   compact?: boolean;
   description: string;
   href?: string;
   imageAlt: string;
+  imageAspectRatio?: number;
   imageSrc: string;
+  layout?: 'vertical' | 'horizontal';
+  newTabLabel?: string;
   title: string;
 }) {
+  const horizontal = layout === 'horizontal';
+  const cardClasses = cn(
+    'not-prose overflow-hidden docs-card-surface',
+    horizontal
+      ? 'mb-4 grid w-full grid-cols-[6rem_minmax(0,1fr)] items-center gap-4 p-4 sm:w-1/2'
+      : 'block',
+    href && 'group docs-card-interactive',
+  );
   const content = (
     <>
       <div
         className={cn(
-          'overflow-hidden border-b border-border bg-muted/40',
+          'overflow-hidden bg-muted/40',
+          horizontal ? 'rounded-md' : 'border-b border-border',
           compact ? 'aspect-[16/8]' : 'aspect-[16/10]',
         )}
+        style={imageAspectRatio ? { aspectRatio: imageAspectRatio } : undefined}
       >
         <img
           alt={imageAlt}
@@ -742,8 +759,29 @@ function OverviewImageCard({
           src={imageSrc}
         />
       </div>
-      <div className={cn(compact ? 'p-4' : 'p-5')}>
-        <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
+      <div className={cn('min-w-0', !horizontal && (compact ? 'p-4' : 'p-5'))}>
+        <div
+          className={cn(
+            'flex items-center',
+            horizontal ? 'gap-2' : 'justify-between gap-3',
+          )}
+        >
+          <h3 className="m-0 text-base font-semibold text-foreground">
+            {title}
+          </h3>
+          {href && isExternalHref(href) ? (
+            <span
+              className="shrink-0 text-muted-foreground"
+              title={newTabLabel}
+            >
+              <ExternalLinkIcon
+                aria-label={newTabLabel}
+                className="size-4"
+                role="img"
+              />
+            </span>
+          ) : null}
+        </div>
         <p
           className={cn(
             'mt-2 text-sm text-muted-foreground',
@@ -757,15 +795,15 @@ function OverviewImageCard({
   );
 
   if (!href) {
-    return (
-      <section className="overflow-hidden docs-card-surface">{content}</section>
-    );
+    return <section className={cardClasses}>{content}</section>;
   }
 
   return (
     <a
-      className="group overflow-hidden docs-card-surface docs-card-interactive"
+      className={cardClasses}
       href={href}
+      rel={isExternalHref(href) ? 'noopener noreferrer' : undefined}
+      target={isExternalHref(href) ? '_blank' : undefined}
     >
       {content}
     </a>
@@ -1209,6 +1247,7 @@ export function DemoGallery({
   clearFiltersLabel,
   emptyMessage,
   items,
+  newTabLabel = 'Open in a new tab',
   platformFilterLabel,
   platformLabel,
   productFilterLabel,
@@ -1225,6 +1264,7 @@ export function DemoGallery({
   clearFiltersLabel: string;
   emptyMessage: string;
   items: DemoCatalogItem[];
+  newTabLabel?: string;
   platformFilterLabel: string;
   platformLabel: string;
   productFilterLabel: string;
@@ -1379,6 +1419,10 @@ export function DemoGallery({
               className="group relative overflow-hidden docs-card-surface docs-card-interactive"
               href={item.href}
               key={item.href}
+              rel={
+                isExternalHref(item.href) ? 'noopener noreferrer' : undefined
+              }
+              target={isExternalHref(item.href) ? '_blank' : undefined}
             >
               <div className="aspect-[7/4] overflow-hidden border-border border-b bg-muted">
                 <img
@@ -1389,8 +1433,22 @@ export function DemoGallery({
                   src={item.imageSrc}
                 />
               </div>
-              <span className="absolute top-3 right-3 flex size-8 items-center justify-center rounded-full bg-background/90 text-muted-foreground shadow-sm ring-1 ring-border backdrop-blur transition-colors group-hover:text-foreground">
-                <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
+              <span
+                className="absolute top-3 right-3 flex size-8 items-center justify-center rounded-full bg-background/90 text-muted-foreground shadow-sm ring-1 ring-border backdrop-blur transition-colors group-hover:text-foreground"
+                title={isExternalHref(item.href) ? newTabLabel : undefined}
+              >
+                {isExternalHref(item.href) ? (
+                  <ExternalLinkIcon
+                    aria-label={newTabLabel}
+                    className="size-4"
+                    role="img"
+                  />
+                ) : (
+                  <ArrowRightIcon
+                    aria-hidden="true"
+                    className="size-4 transition-transform group-hover:translate-x-0.5"
+                  />
+                )}
               </span>
               <div className="p-5">
                 <h2 className="m-0 text-base font-semibold text-foreground">

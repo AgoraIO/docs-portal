@@ -92,9 +92,11 @@ type OverviewImageCardGridComponent = ComponentType<{
 }>;
 type OverviewImageCardComponent = ComponentType<{
   compact?: boolean;
+  newTabLabel?: string;
   description: string;
   href?: string;
   imageAlt: string;
+  imageAspectRatio?: number;
   imageSrc: string;
   title: string;
 }>;
@@ -167,6 +169,7 @@ type DemoGalleryComponent = ComponentType<{
   allTagsLabel: string;
   clearFiltersLabel: string;
   emptyMessage: string;
+  newTabLabel?: string;
   items: Array<{
     description: string;
     href: string;
@@ -677,6 +680,35 @@ describe('overview MDX components', () => {
     ).toBeVisible();
   });
 
+  it('opens linked overview images in a new tab without a zoom button', () => {
+    const components = getOverviewMDXComponents();
+    const OverviewImageCard =
+      components.OverviewImageCard as OverviewImageCardComponent;
+    render(
+      <OverviewImageCard
+        description="在浏览器中体验语聊房和呼叫邀请。"
+        href="https://rtm-demo.shengwang.cn?utm_source=docs&utm_medium=rtm_overview"
+        imageAlt="RTM 在线体验"
+        imageAspectRatio={1.75}
+        imageSrc="/img/rtm2/online-demo.jpg"
+        title="先在线体验 RTM"
+        newTabLabel="在新标签页打开"
+      />,
+    );
+    const link = screen.getByRole('link', { name: /先在线体验 RTM/ });
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(
+      within(link).getByRole('img', { name: '在新标签页打开' }),
+    ).toBeVisible();
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    expect(within(link).getByAltText('RTM 在线体验')).toBeVisible();
+    expect(within(link).queryByRole('button')).not.toBeInTheDocument();
+    expect(link).toHaveClass('block', 'not-prose');
+    expect(within(link).getByAltText('RTM 在线体验').parentElement).toHaveStyle(
+      { aspectRatio: '1.75' },
+    );
+  });
+
   it('renders overview image cards as non-clickable showcases', () => {
     const components = getOverviewMDXComponents();
     const OverviewImageCardGrid =
@@ -855,6 +887,112 @@ describe('overview MDX components', () => {
       '/zh-CN/reference/demo/shengdong-entertainment',
     );
     expect(screen.getByText('2 个 Demo')).toBeVisible();
+    expect(screen.getAllByText('产品：')[0]).toHaveClass(
+      'shrink-0',
+      'whitespace-nowrap',
+    );
+
+    fireEvent.change(screen.getByRole('combobox', { name: '平台' }), {
+      target: { value: 'Web' },
+    });
+
+    expect(
+      screen.queryByRole('link', { name: /声动互娱/ }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: /实时消息 RTM Web Demo/ }),
+    ).toBeVisible();
+    expect(screen.getByText('1 个 Demo')).toBeVisible();
+  });
+
+  it('opens online demos in a new tab and retains product and scenario filters', () => {
+    const components = getOverviewMDXComponents();
+    const DemoGallery = components.DemoGallery as DemoGalleryComponent;
+
+    render(
+      <DemoGallery
+        newTabLabel="在新标签页打开"
+        allPlatformsLabel="全部平台"
+        allProductsLabel="全部产品"
+        allTagsLabel="全部标签"
+        clearFiltersLabel="清除筛选"
+        emptyMessage="没有符合条件的 Demo。"
+        items={[
+          {
+            description: '泛娱乐全场景体验。',
+            href: '/zh-CN/reference/demo/shengdong-entertainment',
+            imageAlt: '声动互娱 Demo 封面',
+            imageSrc:
+              'https://assets-docs.agora.io/images/demo/shengdong-entertainment-cover.jpg',
+            platforms: ['iOS', 'Android'],
+            products: ['实时互动 RTC'],
+            releaseDate: '2023-12-27',
+            tags: ['语聊房'],
+            title: '声动互娱',
+            version: '4.6.0',
+          },
+          {
+            description: '多框架 Web 前端 Demo 合集。',
+            href: 'https://rtm-demo.shengwang.cn?utm_source=docs&utm_medium=demo_list',
+            imageAlt: '实时消息 RTM Web Demo 封面',
+            imageSrc:
+              'https://assets-docs.agora.io/images/demo/rtm-web-demo-cover.png',
+            platforms: ['Web'],
+            products: ['实时消息 RTM'],
+            releaseDate: '2026-04-10',
+            tags: ['在线体验', '语聊房', '1V1 呼叫邀请'],
+            title: '实时消息 RTM Web Demo',
+            version: '2.2.3',
+          },
+        ]}
+        platformFilterLabel="平台"
+        platformLabel="平台"
+        productFilterLabel="产品与 SDK"
+        productLabel="产品"
+        releaseDateLabel="发布时间"
+        resultCountLabel="个 Demo"
+        searchPlaceholder="搜索 Demo"
+        tagFilterLabel="标签"
+        versionLabel="版本"
+      />,
+    );
+
+    expect(screen.getByAltText('声动互娱 Demo 封面')).toHaveAttribute(
+      'src',
+      'https://assets-docs.agora.io/images/demo/shengdong-entertainment-cover.jpg',
+    );
+    expect(screen.getByAltText('声动互娱 Demo 封面')).toHaveAttribute(
+      'referrerpolicy',
+      'no-referrer',
+    );
+    expect(screen.getByRole('link', { name: /声动互娱/ })).toHaveAttribute(
+      'href',
+      '/zh-CN/reference/demo/shengdong-entertainment',
+    );
+    const internalLink = screen.getByRole('link', { name: /声动互娱/ });
+    expect(internalLink).not.toHaveAttribute('target');
+    const onlineLink = screen.getByRole('link', {
+      name: /实时消息 RTM Web Demo/,
+    });
+    expect(onlineLink).toHaveAttribute('target', '_blank');
+    expect(onlineLink).toHaveAttribute('rel', 'noopener noreferrer');
+    expect(
+      within(onlineLink).getByRole('img', { name: '在新标签页打开' }),
+    ).toBeVisible();
+    expect(within(onlineLink).getByTitle('在新标签页打开')).toBeVisible();
+    expect(
+      within(internalLink).queryByRole('img', { name: '在新标签页打开' }),
+    ).not.toBeInTheDocument();
+    fireEvent.change(screen.getByRole('combobox', { name: '产品与 SDK' }), {
+      target: { value: '实时消息 RTM' },
+    });
+    fireEvent.change(screen.getByRole('combobox', { name: '标签' }), {
+      target: { value: '1V1 呼叫邀请' },
+    });
+    expect(onlineLink).toBeVisible();
+    expect(
+      screen.queryByRole('link', { name: /声动互娱/ }),
+    ).not.toBeInTheDocument();
     expect(screen.getAllByText('产品：')[0]).toHaveClass(
       'shrink-0',
       'whitespace-nowrap',
