@@ -1,0 +1,466 @@
+---
+title: 1V1 呼叫邀请场景 RTM 最佳实践
+titlePlatforms: [web]
+---
+
+<Cards>
+  <Card title={<span className="inline-flex items-center gap-2 align-middle"><InlineImage alt="Web" src="https://web-cdn.agora.io/docs-portal/img/platforms/web.svg" width={20} height={20} />在线体验本场景</span>} href="https://rtm-demo.shengwang.cn/social/one-to-one-call?utm_source=docs&utm_medium=scenario_doc" external />
+  <Card title={<RepositoryCardTitle provider="github">查看 Demo 源码</RepositoryCardTitle>} href="https://github.com/AgoraIO-Community/RTM-Demo/tree/master/src/scenes/one-to-one-call" external />
+</Cards>
+
+## 场景介绍
+
+一对一呼叫中，主叫希望找到指定用户并发起通话；被叫需要先看到来电，再决定接听或拒绝。双方尚未进入同一个音视频频道时，先由 RTM 传递邀请信令，再由 RTC 建立音视频连接。
+
+一次完整的呼叫按以下顺序执行：
+
+1. 双方登录 RTM，安装呼叫邀请模块，等待或发起呼叫。
+2. 主叫向指定用户发送邀请，被叫展示来电。
+3. 被叫接听，主叫确认；各端确认邀请已接受后，开始连接 RTC。
+4. RTC 媒体建立后，界面进入通话状态。
+5. 用户静音、恢复或挂断；结束后释放媒体资源，下一次呼叫创建新邀请。
+
+被叫拒绝、主叫在等待期间取消，都是正常业务分支，双方不进入 RTC。无人应答、网络异常或媒体未建立时，则按相应截止时间结束等待并提示原因。
+
+Demo 使用双页面演示语音通话，邀请设计也可用于视频呼叫。页面上的“呼叫 ID”是用户的 RTM 用户 ID；每次邀请另有唯一的 `callId`，用于关联本次信令与媒体。
+
+| 能力 | 负责 | 不负责 |
+| --- | --- | --- |
+| RTM | 呼叫、接听、拒绝、取消等点对点信令，消息发布结果和本端连接状态 | 音视频传输、媒体通话状态 |
+| RTC | 加入频道、音视频传输、感知目标用户加入与离开 | 呼叫邀请信令 |
+
+### 接入分层
+
+呼叫功能由三层组成。你可以复用 Demo 的邀请模块，在 App 层完成业务和媒体接入：
+
+| 层                            | 是什么                                               | 负责                                                                                       |
+| ----------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| RTM SDK                       | 声网提供的实时消息 SDK                               | 点对点消息投递与发布结果、明确的离线错误、本端连接状态与自动重连                             |
+| 呼叫邀请模块（`invitation/`） | Demo 中基于 RTM 点对点消息实现的代码，可直接复制使用 | 定义呼叫信令协议，维护两端的呼叫状态，处理各阶段超时与邀请重试，记录失败原因               |
+| App                           | 你的业务代码                                         | 安装与销毁模块、按状态渲染界面、按失败原因提示用户、邀请接受后加入 RTC、媒体等待截止、占线策略 |
+
+> 呼叫邀请模块不是 RTM SDK 的接口，而是一份参考实现。你可以直接使用它，也可以参照它的信令协议和状态设计自行实现。
+
+### 术语
+
+| 术语                 | 含义                                                                     |
+| -------------------- | ------------------------------------------------------------------------ |
+| 主叫 / 被叫          | 发起呼叫的一方 / 接收呼叫的一方，即 Caller / Callee                      |
+| 邀请                 | 一次呼叫在 RTM 侧的过程，从发起到出现结果为止。每次呼叫有唯一的 `callId` |
+| 接听消息（accepted） | 被叫点击接听后发给主叫的消息                                             |
+| 确认消息（ACK）      | 主叫收到接听消息后回给被叫的消息，被叫据此确认邀请已接受                       |
+| 终态                 | 邀请的最终结果：已接受、已拒绝、已取消或失败。进入终态后状态不再变化     |
+
+### 核心规则
+
+1. **将呼叫邀请模块安装在 App 已登录的唯一 RTM client 上**。登出前先销毁模块，重新登录后重新安装。
+2. **App 自己的点对点消息监听必须忽略 `CALL_KIT_` 系列 `customType`**。
+3. **以模块的状态驱动界面**。
+4. **分别管理邀请和媒体状态**。邀请接受后建立 RTC，并设置媒体等待截止；本 Demo 协议通过离开 RTC 频道结束通话。
+5. **按失败原因提示用户**。不在 App 层叠加自动重试。
+
+## 1. 为什么 1V1 呼叫需要 RTM
+
+呼叫发生在音视频通道建立之前，RTC 无法承担这一阶段的工作：
+
+- 发起呼叫时，被叫还不在任何 RTC 频道中，无法通过 RTC 通知对方"有来电"；
+- 振铃、接听、拒绝、取消、无人应答都是业务动作，RTC 没有对应接口；
+- 主叫需要区分"对方不在线""网络异常""对方没应答"并给出不同提示，RTC 无法提供这些信息；
+- 两端需要先确认"这次呼叫已被接受"，再各自加入频道，否则会出现一方已入会、另一方仍在振铃的情况。
+
+因此呼叫需要一条独立于音视频的实时信令通道。如果用 WebSocket 或业务服务端转发自建这条通道，需要同时解决长连接维持与断线重连、按用户路由点对点消息、判断对方是否在线、确认消息是否送达，以及海量连接下的容量与可用性保障。RTM 直接提供这些能力：
+
+| RTM 提供的能力                     | 在呼叫中的效果                                                           |
+| ---------------------------------- | ------------------------------------------------------------------------ |
+| `USER` 点对点消息                  | 呼叫、接听、拒绝、取消、确认五种信令都通过它在两个用户之间直接传递       |
+| `USER` 消息发布结果 | 模块在 INVITE 发布成功后进入 `RECEIVED_BY_CALLEE`，等待对方响应；不代表对方已看到来电 |
+| 发送错误码 `-11033`（对方不在线）  | 主叫能明确提示"对方不在线"（`PEER_OFFLINE`）                             |
+| `linkState` 连接状态               | 结合 SDK 错误与失败时连接状态归因，避免把普通发送失败误判为对方离线        |
+| 长连接与自动重连                   | 网络短暂波动时连接自动恢复                                               |
+
+## 2. 设计原则
+
+本节内容与平台无关。
+
+### 2.1 复用 App 已登录的 RTM client
+
+呼叫邀请模块安装在 App 已有的 RTM client 上，不创建新 client，也不负责登录和登出：
+
+- 传给模块的 `userId` 必须与 RTM 登录时使用的 UID 一致；
+- 在 `login()` 成功后安装模块，同一 client 不重复安装；
+- **登出前先销毁模块，重新登录后重新安装**。模块的 `dispose()` 只解绑自身监听、停止所属邀请，不登出 client，也不移除 App 的其他监听。
+
+<DocsImage alt="1V1 呼叫邀请模块的安装、销毁与重新登录流程" src="/img/rtm2/one-to-one-call-module-lifecycle.svg" displayWidth="100%" />
+
+### 2.2 隔离邀请信令与 App 自有消息
+
+邀请信令使用 `USER` Channel 点对点发送，设置 `storeInHistory: false`，无需房间订阅；通过以下 `customType` 标识：
+
+| `customType`                            | 方向        | 含义     |
+| --------------------------------------- | ----------- | -------- |
+| `CALL_KIT_INVITE`                       | 主叫 → 被叫 | 发起呼叫 |
+| `CALL_KIT_ACCEPT`（`type: "accepted"`） | 被叫 → 主叫 | 被叫接听 |
+| `CALL_KIT_ACCEPT`（`type: "ack"`）      | 主叫 → 被叫 | 主叫确认 |
+| `CALL_KIT_REFUSE`                       | 被叫 → 主叫 | 被叫拒绝 |
+| `CALL_KIT_CANCEL`                       | 主叫 → 被叫 | 主叫取消 |
+
+SDK 会把收到的每条消息同时分发给模块和 App 自己注册的 `message` 监听。模块只处理上述 `customType`，**App 的监听则需要主动跳过它们**（代码见 [3.3 过滤 App 自有消息](#33-过滤-app-自有消息)）。App 自己的点对点业务消息请使用独立的 `customType`。
+
+每条邀请信令都可以携带 `extra` 字段，即 App 自定义字符串，模块原样透传。当前 Demo 用它传递昵称；RTC 频道由双方用相同的 `callId` 派生（见 [3.6 接通后进入 RTC 与挂断](#36-接通后进入-rtc-与挂断)）。
+
+### 2.3 以状态驱动界面
+
+模块在两端各维护一份邀请状态，并在状态变化时回调。App 只需把状态映射到界面：
+
+| 端   | 状态                                         | 界面                             | 可用操作   |
+| ---- | -------------------------------------------- | -------------------------------- | ---------- |
+| 主叫 | `SENT_TO_CALLEE`                             | 正在呼叫…                        | 取消       |
+| 主叫 | `RECEIVED_BY_CALLEE`                         | 正在呼叫…                        | 取消       |
+| 主叫 | `ACCEPTED_BY_CALLEE`                         | 接通中，开始加入 RTC             | 挂断       |
+| 主叫 | `REFUSED_BY_CALLEE` / `CANCELED` / `FAILURE` | 显示结果后关闭呼叫界面（见 [2.6 按失败原因提示用户](#26-按失败原因提示用户)） | —          |
+| 被叫 | `INVITATION_RECEIVED`                        | 来电界面                         | 接听、拒绝 |
+| 被叫 | `ACCEPT_SENT_TO_CALLER`                      | 接通中                           | —          |
+| 被叫 | `ACCEPTED`                                   | 开始加入 RTC                     | 挂断       |
+| 被叫 | `REFUSED` / `CANCELED_BY_CALLER` / `FAILURE` | 显示结果后关闭来电界面（见 [2.6 按失败原因提示用户](#26-按失败原因提示用户)） | —          |
+
+`RECEIVED_BY_CALLEE` 由 INVITE 的 `publish()` 成功触发，不代表被叫页面已显示来电或用户已看到提示，因此界面仍显示“正在呼叫”。拒绝、取消先提交本地终态，再通知对方；通知失败不回滚本地结果。
+
+完整的状态定义与流转见 [附录：邀请状态与流转](#附录邀请状态与流转)。
+
+### 2.4 接受即邀请结束，通话交给 RTC
+
+主叫进入 `ACCEPTED_BY_CALLEE`、被叫进入 `ACCEPTED` 后，邀请就结束了。之后的通话完全由 RTC 负责：两端各自加入同一个 RTC 频道；**挂断只需离开 RTC 频道**，对方感知到你离开后结束通话，不需要发送 RTM 消息。
+
+**接受不等于接通**。以下两种情况都会出现"一方在等待、另一方不会进来"：
+
+| 场景                          | 主叫               | 被叫                               | 结果         |
+| ----------------------------- | ------------------ | ---------------------------------- | ------------ |
+| 被叫网络差，没收到确认消息    | 已接受，已加入 RTC | 等待确认超时，邀请失败，不加入 RTC | 双方无法通话 |
+| 被叫收到确认，但加入 RTC 失败 | 已接受，已加入 RTC | 已接受，RTC 加入失败               | 双方无法通话 |
+
+因此 **App 必须设置媒体等待截止**：开始建立 RTC 时计时，未在截止时间内建立媒体就结束本次通话并提示用户。Demo 默认使用 15 秒，代码见 [3.6 接通后进入 RTC 与挂断](#36-接通后进入-rtc-与挂断)。
+
+### 2.5 超时与重试：用默认值，按需调整
+
+模块为邀请的每个等待阶段都设置了截止时间，并会在 INVITE 发送失败时自动重试。以下默认值即 Demo 的建议配置：
+
+| 配置项                     | 默认值 | 含义                                                 |
+| -------------------------- | ------ | ---------------------------------------------------- |
+| `sendTimeoutMs`            | 30000  | 主叫发送邀请的总时长上限，包含重试                   |
+| `maxRetries`               | 2      | 邀请发送失败后的重试次数（首次 + 2 次重试，共 3 次） |
+| `retryIntervalMs`          | 2000   | 两次重试之间的间隔                                   |
+| `callerInvitationExpireMs` | 30000  | INVITE 发布成功后，主叫等待对方接听或拒绝的时长             |
+| `calleeInvitationExpireMs` | 30000  | 被叫首次消费 INVITE 后，处理来电与等待 ACK 的总时长     |
+
+主叫从 INVITE 发布成功起计时，被叫从首次消费 INVITE 起计时，两端不保证同时到期。重试不延长发送总截止；重复 INVITE、再次接听或进入等待 ACK 状态也不延长被叫原截止。
+
+### 2.6 按失败原因提示用户
+
+邀请结束时，回调中的 `state` 表示结果，失败时 `reason` 表示原因。建议按下表给出提示。
+
+**主叫**
+
+| 结果                | `reason`                                                                      | 建议处理                     |
+| ------------------- | ----------------------------------------------------------------------------- | ---------------------------- |
+| `REFUSED_BY_CALLEE` | —                                                                             | 对方已拒绝                   |
+| `CANCELED`          | —                                                                             | 已取消                       |
+| `FAILURE`           | `PEER_OFFLINE`                                                                | 对方不在线                   |
+| `FAILURE`           | `LOCAL_NETWORK_ERROR` / `PUBLISH_TIMEOUT` / `PUBLISH_FAILED` / `SEND_TIMEOUT` | 网络异常，可提供"重新呼叫"   |
+| `FAILURE`           | `PEER_NO_RESPONSE`                                                            | 对方无应答，可提供"再次呼叫" |
+| `FAILURE`           | `STOPPED`                                                                     | 无需提示                     |
+
+**被叫**
+
+| 结果                 | `reason`              | 建议处理                   |
+| -------------------- | --------------------- | -------------------------- |
+| `CANCELED_BY_CALLER` | —                     | 对方已取消，可记为未接来电 |
+| `FAILURE`            | `INVITATION_EXPIRE`   | 来电超时，可记为未接来电   |
+| `FAILURE`            | `ACCEPT_ACK_TIMEOUT`  | 接通失败                   |
+| `FAILURE`            | `LOCAL_NETWORK_ERROR` | 网络异常                   |
+| `FAILURE`            | `STOPPED`             | 无需提示                   |
+
+排查问题时，回调中的 `trigger`（触发条件）、`sdkError`（SDK 原始错误）和 `linkStateAtFailure`（失败时的网络状态）可以帮助定位原因。
+
+### 2.7 多来电与占线
+
+模块允许同时存在多个来电，每个来电独立计时、独立处理，**不会自动拒绝其他来电**。占线策略由 App 决定。
+
+Demo 同一时间只保留一路通话。通话中收到新来电时，来电继续计时，用户可以拒绝；通话结束后，仍在有效期内的来电可以接听。
+
+## 3. 实现指南
+
+以下代码基于 RTM Web SDK 2.3.0 和 Demo 的 `invitation/` 模块。基础接入见 [实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start/web)，凭证准备见 [部署 Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation) 和 [客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication/web)。
+
+本节直接使用 `Invitation`，创建后返回可调用 `start/accept/refuse/cancel` 的 `CallInvitation`。Demo 工程中的 `CallRtm` 则返回只读 `RtmInvitation`，操作需调用其按 `callId` 提供的业务方法，不能混用两种接法。
+
+### 3.1 最小接入示例
+
+将 Demo 中的 `invitation/` 目录复制到 App 工程，以下代码展示登录、安装模块、发起呼叫和处理来电的流程。
+
+```ts
+import AgoraRTM from "agora-rtm";
+import {
+  Invitation,
+  CallerInvitationState as CallerState,
+  CalleeInvitationState as CalleeState,
+  type CallInvitation,
+} from "./invitation";
+
+// 1. 登录 RTM，并注册 App 自有消息监听（见 3.3）
+const rtmClient = new AgoraRTM.RTM(appId, userId);
+rtmClient.addEventListener("message", onAppMessage);
+await rtmClient.login({ token: rtmToken });
+
+// 2. 安装呼叫邀请模块
+const invitations = new Invitation(rtmClient, {
+  userId,
+
+  // 主叫：根据状态更新呼叫界面
+  onCallerStateChanged: (snapshot) => {
+    switch (snapshot.state) {
+      case CallerState.SENT_TO_CALLEE:
+      case CallerState.RECEIVED_BY_CALLEE:
+        showCalling(snapshot);
+        break;
+      case CallerState.ACCEPTED_BY_CALLEE:
+        startCall(`CALL_KIT_RTC_${snapshot.callId}`); // App 按 callId 建立媒体，见 3.6
+        break;
+      default:
+        if (snapshot.ended) showCallerResult(snapshot); // 按 2.6 提示
+    }
+  },
+
+  // 被叫：根据状态更新来电界面
+  onCalleeStateChanged: (snapshot) => {
+    if (snapshot.state === CalleeState.ACCEPTED) {
+      startCall(`CALL_KIT_RTC_${snapshot.callId}`); // 与主叫按同一 callId 派生 RTC 频道
+    } else if (snapshot.ended) {
+      showCalleeResult(snapshot); // 按 2.6 提示
+    }
+  },
+
+  // 被叫：待处理来电列表，用于渲染来电界面
+  onIncomingInvitationsChanged: (items) => renderIncoming(items),
+});
+
+// 3. 主叫发起呼叫
+function call(calleeUid: string) {
+  const invitation = invitations.createOutgoingInvitation(
+    calleeUid,
+    JSON.stringify({ nickname }),
+  );
+  void invitation.start().catch(console.error);
+  return invitation; // 用于取消：invitation.cancel()
+}
+
+// 4. 被叫在来电界面点击接听或拒绝
+// incoming 来自 onIncomingInvitationsChanged 返回的列表
+const onAcceptClick = (incoming: CallInvitation) => incoming.accept().catch(console.error);
+const onRefuseClick = (incoming: CallInvitation) => incoming.refuse().catch(console.error);
+
+// 5. 登出前销毁模块
+async function logout() {
+  await invitations.dispose();
+  await rtmClient.logout();
+}
+```
+
+`startCall()` 的实现见 [3.6 接通后进入 RTC 与挂断](#36-接通后进入-rtc-与挂断)。
+
+### 3.2 安装与配置
+
+在 RTM 登录成功后安装模块。不传配置项时使用 [2.5 超时与重试](#25-超时与重试用默认值按需调整) 中的默认值；需要调整时，在 [3.1 最小接入示例](#31-最小接入示例) 的安装位置传入以下配置：
+
+```ts
+const invitations = new Invitation(rtmClient, {
+  userId, // 必须与 RTM 登录 UID 一致
+  invitationOptions: {
+    sendTimeoutMs: 30000,
+    maxRetries: 2,
+    retryIntervalMs: 2000,
+    callerInvitationExpireMs: 30000,
+    calleeInvitationExpireMs: 30000,
+  },
+  onCallerStateChanged,
+  onCalleeStateChanged,
+  onIncomingInvitationsChanged,
+});
+```
+
+状态回调作为一整个对象，包含邀请的完整信息：
+
+| 字段                    | 含义                                           |
+| ----------------------- | ---------------------------------------------- |
+| `callId`                | 本次呼叫的唯一 ID，两端相同                    |
+| `state`                 | 当前邀请状态                                   |
+| `ended`                 | 邀请是否已结束                                 |
+| `reason`                | 失败原因，仅失败时有值                         |
+| `extra` / `remoteExtra` | 本端发出的 / 对方传来的自定义字符串            |
+| `startTs` / `endTs`     | 当前阶段的开始时间和截止时间，可用于显示倒计时 |
+| `publishing`            | 是否正在发布 INVITE 或接听响应，可用于禁用按钮 |
+
+### 3.3 过滤 App 自有消息
+
+如果 App 还会收发其他点对点消息，在自己的 `message` 监听中跳过邀请信令。以下 `handleAppMessage` 由 App 实现；与 [3.1 最小接入示例](#31-最小接入示例) 合用时，在注册监听前初始化 `CALL_KIT_TYPES`：
+
+```ts
+import type { RTMEvents } from "agora-rtm";
+
+const CALL_KIT_TYPES = new Set([
+  "CALL_KIT_INVITE",
+  "CALL_KIT_ACCEPT",
+  "CALL_KIT_REFUSE",
+  "CALL_KIT_CANCEL",
+]);
+
+function onAppMessage(event: RTMEvents.MessageEvent) {
+  if (event.channelType === "USER" && CALL_KIT_TYPES.has(event.customType)) {
+    return; // 交给呼叫邀请模块处理
+  }
+  handleAppMessage(event);
+}
+```
+
+### 3.4 主叫：发起与取消
+
+<DocsImage alt="主叫邀请、被叫接听、主叫确认与加入 RTC 的时序" src="/img/rtm2/one-to-one-call-invitation-flow.svg" displayWidth="80%" />
+
+- 每次呼叫调用 `createOutgoingInvitation()` 创建新邀请；
+- 在 `extra` 中放入昵称等 App 自定义信息，模块不解析其业务含义；
+- 等待期间用户点击取消时调用 `invitation.cancel()` 并处理 Promise 异常；本地取消结果不因通知失败而回滚。
+
+### 3.5 被叫：接听与拒绝
+
+通过 `onIncomingInvitationsChanged` 获取当前全部待处理来电，据此渲染来电界面。等待 ACK 时仍保留在列表中，进入终态后自动移除对应项。
+
+- 用户点击接听时调用 `incoming.accept()`，点击拒绝时调用 `incoming.refuse()`；
+- `publishing` 为 `true` 时禁用接听和拒绝按钮；对每条来电用 `incoming.subscribe()` 观察变化，再读 `getSnapshot()`，不能仅依赖状态枚举回调刷新按钮；
+- 接听发送失败且邀请仍有效时，来电保持、按钮恢复可用，用户可以在原截止内再次操作；进入 `ACCEPT_SENT_TO_CALLER` 后不可重复接听或本地拒绝；
+- 可用 `endTs` 显示剩余振铃时间：`Math.max(0, endTs - Date.now())`。页面恢复时调用 `invitations.checkDeadlines()`，不重新开启完整等待窗口。列表项卸载时退订快照监听。
+
+### 3.6 接通后进入 RTC 与挂断
+
+进入接受状态后，由 App 加入 RTC，并设置媒体建立的绝对截止时间（Demo 默认 15 秒）。本地加入成功且确认目标用户已发布音频后，取消媒体等待截止。超时、建立失败或用户挂断时，幂等清理本次媒体会话；邀请保持原有接受终态。
+
+```ts
+const MEDIA_TIMEOUT_MS = 15000; // App 层配置，Demo 默认 15 秒
+let mediaTimer;
+const handleUserPublished = (user, mediaType) => {
+  // 若 user 为目标用户
+  if (mediaType === "audio") {
+    clearTimeout(mediaTimer);
+  }
+  // 否则 ignore
+};
+const handleUserLeft = (user) => {
+  // 若 user 为目标用户
+  endCall("通话已结束");
+  // 否则 ignore
+};
+async function startCall(rtcChannel: string) {
+  mediaTimer = setTimeout(() => endCall("对方未接通"), MEDIA_TIMEOUT_MS);
+  rtcClient.on("user-published", handleUserPublished);
+  rtcClient.on("user-left", handleUserLeft);
+
+  try {
+    const rtcToken = await fetchRtcToken(rtcChannel);
+    await rtcClient.join(rtcAppId, rtcChannel, rtcToken, rtcUid);
+    // 发布本地音频轨道……
+  } catch (err) {
+    clearTimeout(mediaTimer);
+    endCall("通话建立失败");
+  }
+}
+
+async function endCall(message: string) {
+  clearTimeout(mediaTimer);
+  mediaTimer = undefined;
+  // 清理音频轨道...
+  rtcClient.off("user-published", handleUserPublished);
+  rtcClient.off("user-left", handleUserLeft);
+  await rtcClient.leave();
+  showToast(message);
+  backToIdle();
+}
+```
+
+挂断时调用 `endCall("通话已结束")` 即可。
+
+## 4. 常见错误
+
+**App 的点对点消息监听没有过滤邀请信令**
+
+邀请信令会同时到达 App 自己的监听，被当作普通消息解析或展示。在 App 监听中忽略 `CALL_KIT_` 系列 `customType`。
+
+**为呼叫邀请单独创建或登录一个 RTM client**
+
+同一用户维护多条连接，状态难以一致。模块应安装在 App 已登录的唯一 client 上。
+
+**销毁模块后没有重新安装**
+
+App 调用 dispose() 后，模块已解绑自身的事件监听。重新登录后需要创建新的模块实例，才能继续接收来电。
+
+**把邀请取消接口用于已接通的通话**
+
+本 Demo 协议中，邀请接受后由 App 离开 RTC 频道挂断，不再调用邀请的取消接口。
+
+**把"已接受"当作"已接通"**
+
+确认消息可能丢失，RTC 可能加入失败。开始建立媒体时设置等待截止，媒体就绪后再进入通话状态。
+
+**对所有失败自动重拨，或在 App 层叠加重试**
+
+对方不在线时重拨仍会失败，无应答时重拨会打扰对方；模块已自动重试，叠加只会延长等待。
+
+## 5. 上线检查清单
+
+- 呼叫邀请模块安装在已登录的唯一 RTM client 上，`userId` 与登录 UID 一致
+- 登出前销毁模块，重新登录后重新安装
+- App 自有的点对点消息监听忽略 `CALL_KIT_` 系列 `customType`
+- 界面按 [2.3 状态映射](#23-以状态驱动界面) 渲染，通过快照订阅刷新 `publishing` 并禁用接听、拒绝按钮
+- 超时与重试配置已按业务确认，App 层未叠加重试
+- 主叫和被叫都按 [2.6 失败原因](#26-按失败原因提示用户) 给出提示
+- 进入 RTC 时设置媒体等待截止，目标用户的媒体就绪后取消
+- 按本 Demo 协议离开 RTC 频道挂断，不改写邀请接受终态
+- 已定义占线策略
+
+## 附录：邀请状态与流转
+
+本附录供需要深入了解模块行为或自行实现邀请逻辑的开发者参考。
+
+### 主叫状态
+
+| 状态                    | 含义                                           |
+| ----------------------- | ---------------------------------------------- |
+| `IDLE(0)`               | 已创建，尚未开始                               |
+| `SENT_TO_CALLEE(1)`     | 正在发送邀请，包括失败后的重试                 |
+| `RECEIVED_BY_CALLEE(2)` | INVITE 发布成功，等待接听或拒绝                 |
+| `ACCEPTED_BY_CALLEE(3)` | 被叫已接听（终态）                             |
+| `REFUSED_BY_CALLEE(4)`  | 被叫已拒绝（终态）                             |
+| `CANCELED(5)`           | 主叫已取消（终态）                             |
+| `FAILURE(6)`            | 发送失败、等待超时、连接失败或模块销毁（终态） |
+
+<DocsImage alt="1V1 呼叫邀请的主叫状态流转" src="/img/rtm2/one-to-one-call-caller-state.svg" displayWidth="80%" />
+
+### 被叫状态
+
+| 状态                        | 含义                                             |
+| --------------------------- | ------------------------------------------------ |
+| `IDLE(10)`                  | 已创建，尚未处理邀请                             |
+| `INVITATION_RECEIVED(11)`   | 来电中，等待用户操作；接听消息发送中也保持此状态 |
+| `ACCEPT_SENT_TO_CALLER(12)` | 接听消息发布成功，等待确认                     |
+| `ACCEPTED(13)`              | 已收到确认（终态）                               |
+| `REFUSED(14)`               | 被叫已拒绝（终态）                               |
+| `CANCELED_BY_CALLER(15)`    | 主叫已取消（终态）                               |
+| `FAILURE(16)`               | 来电超时、确认超时、连接失败或模块销毁（终态）   |
+
+<DocsImage alt="1V1 呼叫邀请的被叫状态流转" src="/img/rtm2/one-to-one-call-callee-state.svg" displayWidth="80%" />
+
+### 模块的消息校验规则
+
+模块收到邀请信令后，以下任一条件不满足即忽略该消息，不影响其他邀请：
+
+1. 消息格式合法，字段完整；
+2. `callId` 对应已有的邀请（首次收到的合法邀请会新建被叫邀请）；
+3. 消息发送者与该邀请的对方 UID 一致；
+4. 当前状态允许处理该消息，且未过截止时间。

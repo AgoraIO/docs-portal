@@ -1,0 +1,341 @@
+---
+title: 语聊房场景 RTM 最佳实践
+titlePlatforms: [web]
+---
+
+<Cards>
+  <Card title={<span className="inline-flex items-center gap-2 align-middle"><InlineImage alt="Web" src="https://web-cdn.agora.io/docs-portal/img/platforms/web.svg" width={20} height={20} />在线体验本场景</span>} href="https://rtm-demo.shengwang.cn/social/voice-room?utm_source=docs&utm_medium=scenario_doc" external />
+  <Card title={<RepositoryCardTitle provider="github">查看 Demo 源码</RepositoryCardTitle>} href="https://github.com/AgoraIO-Community/RTM-Demo/tree/master/src/scenes/voice-room" external />
+</Cards>
+
+## 场景介绍
+
+语聊房中，房主创建房间、管理公告和麦位，听众进入房间收听音频，也可以申请上麦、聊天或发送互动。所有成员需要看到一致的麦位归属，并能区分主动闭麦、被房主静音和麦克风异常。
+
+本文按一轮完整的使用流程介绍实现方式：
+
+1. 用户取得身份和访问凭证，建立 RTM 会话。
+2. 房主创建房间，听众加入同一房间；各端同步公告、麦位和在线成员，并加入 RTC 收听音频。
+3. 听众申请上麦，房主审批并更新麦位；听众确认自己获得麦位后发布音频。
+4. 在麦成员开闭麦，房主执行麦控，各端同步成员状态。
+5. 成员发送公屏消息、礼物或爱心，接收端校验后展示。
+6. 用户下麦、离房或切换房间；再次进入时恢复当前状态。
+
+**麦位归属与音频发布结果分别维护。** 成员在麦位上但没有声音，可能是主动闭麦、强制静音、采集失败或发布失败，不能仅凭 RTC 音频流判断其是否已下麦。
+
+### 职责分工
+
+| 能力 | 负责                                                 | 不负责                                     |
+| ---- | ---------------------------------------------------- | ------------------------------------------ |
+| RTC  | 麦克风采集、音频发布与订阅、实时音频传输             | 麦位归属、房间公告、互动消息、成员业务状态 |
+| RTM  | 房间状态、成员在线状态、麦位协同、文本互动、业务事件 | 音频数据传输                               |
+
+### 核心规则
+
+集成 RTM 时，遵循以下五条核心规则：
+
+1. **一个用户身份只创建一个 RTM client**，生命周期跟随 App 会话或语聊模块；进出房间不重复创建、不重复登录。
+2. **一个语聊房对应一个 RTM Channel**，以稳定、唯一的 `roomId` 作为 Channel Name；进房即订阅，离房即退订。
+3. **按数据特性选能力**：需要被后来者恢复的房间状态放 Channel Storage，随成员在线而存在的临时状态放 Presence State，只处理一次的动作用 Message。
+4. **订阅成功 ≠ 房间状态就绪，链路恢复 ≠ 业务可恢复**，两组状态分别建模。
+5. **所有业务消息带统一信封**，消费前校验版本、房间、目标、有效期和消息 ID。
+
+一次完整的上麦按以下顺序执行，麦位归属由 RTM 确认，RTC 发布结果不反向改变麦位：
+
+```text
+RTM 确认麦位归属 → RTC 发布音频 → 发布失败时保留麦位 → 区分采集故障与发布故障
+```
+
+只有确认本地采集异常时，才通过 Presence 同步 `microphoneError`；采集正常但发布失败应单独提示，避免将网络发布故障显示为麦克风故障。
+
+## 1. 为什么语聊房需要 RTM
+
+RTM 在语聊房中主要解决三类业务问题：
+
+- **表达业务状态。** RTC 音频流本身无法区分不在麦位、主动闭麦、采集异常或发布失败，麦位和成员状态需要独立同步。
+- **恢复当前房间。** 新加入或重连的用户需要直接获取完整麦位表、公告和在线成员，不能依赖过去的动作消息。
+- **协同互动动作。** 申请上麦、邀请上麦、公屏聊天、礼物和点赞通过实时消息完成。
+
+这些需求对应以下能力：
+
+| RTM 能力        | 在语聊房中的用途                                       |
+| --------------- | ------------------------------------------------------ |
+| Message         | 上麦协同、公屏消息、礼物、点赞等业务动作               |
+| Presence        | 在线成员列表及其临时状态（闭麦、麦克风异常）           |
+| Channel Storage | 麦位表、公告等房间权威状态，供新成员和重连成员直接读取 |
+| Lock            | 多个角色可修改麦位时的写入互斥                         |
+
+## 2. 设计原则
+
+本节内容与平台无关。
+
+:::note[Demo 与生产接入]
+Demo 的浏览器房间目录、昵称和准入逻辑用于演示，不构成服务端鉴权。生产环境应由业务服务端维护用户身份、房间目录、成员准入和权限，并提供 Token 服务。部署步骤见 [部署 Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
+
+:::
+
+### 2.1 RTM client 与会话同生命周期
+
+一个 RTM 用户身份只维护一个 client。client 可在 App 初始化时创建，**是否立即登录取决于语聊在 App 中的定位**：
+
+- 语聊是核心功能：App 取得用户身份后即登录，App 退出或用户身份失效时登出；
+- 语聊是附加功能：进入语聊模块时登录，退出整个模块时登出，避免闲置连接占用资源。
+
+![语聊房 RTM client 的创建、登录、进出房与登出流程](/img/rtm2/voice-room-client-lifecycle.svg)
+
+无论采用哪种生命周期，都要遵守：
+
+- **所有事件监听在 `login()` 之前注册，且只注册一次**。否则可能收不到首次连接状态或登录期间到达的事件。
+- **进出房间只对应 `subscribe` / `unsubscribe`**。切房是先退订旧频道、再订阅新频道，不重建 client、不重复登录。
+- **网络重连期间继续使用当前 client**，等待 SDK 自动重连和随后的全量事件，不手动重登、不盲目重订阅。
+- **App 层持有 SDK 原始事件，按当前房间分发**。切房时更换房间事件处理器，避免旧房间迟到的事件更新新房间页面。
+
+### 2.2 一个房间对应一个 Channel
+
+以业务 `roomId` 作为 RTM Channel Name，`roomId` 在当前 App ID 下唯一且稳定：
+
+| 语聊房 | RTM Channel Name    |
+| ------ | ------------------- |
+| 房间 A | `voice-room-a8f31c` |
+| 房间 B | `voice-room-c27d90` |
+
+同一房间的房主与听众订阅同一 Channel，不同房间订阅不同 Channel。**不要让多个房间共用一个 Channel 再靠消息字段区分**：各房间会互相收到 Presence、Storage 和 Message，既浪费消息量，也容易误处理他房数据。
+
+语聊房需要同时接收消息、Presence 和 Metadata。先在声网控制台的 **实时消息 RTM > 功能配置** 中确认已开启 Presence 和 Storage，再在订阅时设置 `withMessage`、`withPresence` 和 `withMetadata`。如果多个角色需要通过 Lock 协同写入，还需在控制台开启 Lock，并设置 `withLock`；只有单一角色写麦位时无需开启。控制台操作见 [开通 RTM 服务](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#3-开通-rtm-服务)。
+
+**切房原则**：先完整离开旧房间（停止新写入 → 等待关键写入结束 → 退出 RTC → 退订频道 → 清理本地状态与事件处理器），再进入新房间。用户连续切房时，客户端必须能识别并忽略旧房间迟到的异步结果，并对迟到成功的旧频道订阅补做一次退订。实现方式见 [3.4 切换与离开房间](#34-切换与离开房间)。
+
+### 2.3 按数据特性选择 Storage、Presence、Message
+
+根据数据的**有效期**和**接收范围**选择能力：
+
+| RTM 能力          | 适合的数据               | 语聊房示例                   | 新成员是否需要获得         |
+| ----------------- | ------------------------ | ---------------------------- | -------------------------- |
+| Channel Storage   | 房间当前的权威状态       | 公告、完整麦位表             | 是                         |
+| Presence State    | 与在线成员绑定的临时状态 | 自主闭麦、麦克风异常         | 是，仅在成员在频道期间有效 |
+| `USER` Message    | 只发给一个人的瞬时动作   | 申请上麦、邀请上麦、拒绝邀请 | 否                         |
+| `MESSAGE` Message | 发给房间所有人的瞬时动作 | 公屏消息、礼物、点赞         | 否                         |
+
+**Channel Storage：保存当前结果**
+
+后加入或重连的成员仍需读取的数据写入 Channel Storage。麦位表不能靠"某人刚刚上麦"的消息累加得出，因为晚加入者收不到之前的消息。
+
+- 麦位由房主单点写入，避免多端并发修改；若有多个角色可管理麦位，配合 [RTM Lock](/zh-CN/api-reference/rtm/web/lock) 使用。
+- Storage 的 `SNAPSHOT` 和 `UPDATE` 事件都携带完整的频道 Metadata。收到 `storage` 事件后，直接以最新快照替换本地房间状态；需要提示"某用户上麦"时，比较前后快照中对应麦位的 `userId` 是否从 `null` 变为具体用户即可。
+
+**Presence State：保存在线临时状态**
+
+Presence State 保存用户自己在频道期间有效的状态。每次只写入发生变化的字段；成员下麦后删除只在麦位上有意义的字段。收到 Presence `SNAPSHOT` 时全量替换在线成员列表，收到加入、离开或状态变化事件时增量更新。
+
+用户离开频道后，其 Presence State 会同时从 RTM 服务端删除，因此不要用 Presence State 保存长期用户资料；长期资料使用 [User Storage](/zh-CN/api-reference/rtm/web/storage#setusermetadata)。
+
+**Message：传递瞬时动作**
+
+Message 用于发生后只处理一次的动作。只发给一个参与者的动作使用 `USER` Channel；房间内所有成员都要接收的互动使用当前房间的 `MESSAGE` Channel。
+
+> `publish()` 的成功语义取决于 Channel Type：
+>
+> - 使用 `USER` Channel 发送点对点消息时，`publish()` 成功表示目标用户已经收到消息，但不代表目标用户已经完成对应的业务处理。
+> - 使用 `MESSAGE` Channel 发送频道消息时，`publish()` 成功表示消息已经发送到 RTM 服务端。服务端随后向频道内其他成员推送消息；其他成员能否收到，取决于其与 RTM 服务端的连接状态和网络质量。
+
+因此，**申请上麦等点对点动作不能以发送成功视为流程完成**：审批后的麦位归属必须写入 Channel Storage，各端最终以 Storage 中的完整麦位表为准。
+
+### 2.4 区分"频道已订阅"与"房间状态已就绪"
+
+`subscribe()` 完成只表示 SDK 的订阅调用已结束，不表示首个 Presence 或 Storage 快照已到达。客户端需要分别维护两个状态：
+
+- **频道已订阅**：`subscribe()` 成功，可以结束"正在加入"提示、开始 RTC 入房；
+- **房间状态已就绪**：当前房间的完整 Storage 快照已到达，依赖麦位或公告的操作才可开放。
+
+不要把等待首个快照合并进订阅的 Promise 中。
+
+### 2.5 重连：链路恢复与业务恢复分开判断
+
+网络中断后，把房间界面置为"恢复中"并禁用依赖实时状态的操作。连接恢复后不重建 client、不重复 `login()`、不主动重复 `subscribe()`，继续处理 SDK 随后下发的全量事件，并分三步判断恢复程度：
+
+| 信号                          | 含义                     | 可恢复的操作           |
+| ----------------------------- | ------------------------ | ---------------------- |
+| `linkState` 恢复为已连接      | RTM 链路已恢复           | 无（继续等待状态事件） |
+| 收到当前房间完整 Storage 状态 | 麦位、公告已刷新         | 依赖麦位与公告的操作   |
+| 收到 Presence 快照            | 在线成员及临时状态已刷新 | 依赖成员列表的操作     |
+
+`linkState` 恢复后不要立即开放全部操作。
+
+### 2.6 消息协议必须可校验
+
+RTM Message 支持文本和二进制两种格式。无论使用哪种，业务层都应定义统一的消息信封，标识协议版本、房间、目标用户、有效期和消息 ID。本文示例使用 JSON 文本便于跨端调试；使用 Protobuf 等二进制协议时应包含含义相同的字段。
+
+收到消息后按以下顺序校验，任一项不通过即丢弃：
+
+1. 内容为合法格式，字段和类型完整；
+2. `schemaVersion` 为当前客户端支持的版本；
+3. 信封中的 `roomId` 属于当前房间；对于 `MESSAGE` 事件，`channelName` 应为该房间 ID；对于 `USER` 事件，`channelName` 应为本端 RTM 用户 ID；
+4. 点对点消息的 `targetUserId` 是当前用户；
+5. 当前时间早于 `expiresAt`；
+6. `messageId` 未处理过。
+
+通过 TTL 丢弃已失效的上麦邀请或申请；用有容量上限的集合保存近期已处理的 `messageId`，避免重复执行，也避免长期运行后内存持续增长。
+
+## 3. 实现指南
+
+以下代码基于 RTM Web SDK 2.3.0，展示关键调用片段。开始前可参考 [实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start/web) 完成基础接入，并按 [部署 Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation) 准备凭证服务。事件名、参数结构和 Token 更新方式以实际接入的 SDK 版本为准。
+
+### 3.1 创建 client 并注册事件
+
+`appId`、`userId` 由业务提供；下列 `onLinkState`、`onMessage` 等为 App 自己实现的事件处理函数。
+
+```ts
+import AgoraRTM from "agora-rtm";
+
+const client = new AgoraRTM.RTM(appId, userId);
+
+// 全部事件在 login() 之前注册，且只注册一次
+client.addEventListener("linkState", onLinkState);
+client.addEventListener("message", onMessage);
+client.addEventListener("presence", onPresence);
+client.addEventListener("storage", onStorage);
+client.addEventListener("token", onToken);
+```
+
+### 3.2 登录
+
+按 [2.1 RTM client 与会话同生命周期](#21-rtm-client-与会话同生命周期) 确定的生命周期调用 `login()`。同一会话内只登录一次；若有并发调用，复用同一个登录 Promise，登录失败后清除以便重试。
+
+```ts
+await client.login({ token });
+```
+
+### 3.3 进入房间
+
+<DocsImage alt="语聊房订阅频道、加入 RTC 与接收房间状态快照的时序" src="/img/rtm2/voice-room-join-room.svg" displayWidth="80%" />
+
+```ts
+await client.subscribe(roomId, {
+  withMessage: true,
+  withPresence: true,
+  withMetadata: true,
+  withLock: false, // 多角色管理麦位时改为 true 并配合 Lock 使用
+});
+```
+
+在权威房间状态到达前（见 [2.4 区分频道已订阅与房间状态已就绪](#24-区分频道已订阅与房间状态已就绪)），禁用依赖麦位或公告的操作。
+
+### 3.4 切换与离开房间
+
+离开房间：停止新的状态写入 → 等待已发起的关键写入结束 → 退出 RTC → `unsubscribe(roomId)` → 清理本地房间状态与事件处理器。用户仍在会话或语聊模块内时保留已登录的 client。
+
+切换房间即"离开旧房间 → 进入新房间"。为每次入房生成递增的 `generation`（或使用 `AbortController`），每个异步步骤返回后先检查该次入房是否仍然有效，再更新 UI：
+
+```ts
+const generation = ++this.generation;
+await client.subscribe(roomId, options);
+if (generation !== this.generation) {
+  // 切房流程串行编排：旧订阅清理完毕后再启动新订阅。
+  // 订阅期间用户已切房：补退订，忽略本次结果
+  await client.unsubscribe(roomId).catch(() => undefined);
+  return;
+}
+```
+
+### 3.5 写入房间状态
+
+麦位表写入 Channel Storage，可选择整表作为一个 key（写入简单，整表竞争），或每个麦位一个 key（按麦位竞争，便于配合 Lock）。以下 JSON 仅展示业务数据组织方式；当前 Demo 使用 `seats` key 保存完整麦位对象，客户端按约定结构消费。
+
+```json
+{
+  "seats": [
+    { "seatId": "seat-1", "userId": "user-a" },
+    { "seatId": "seat-2", "userId": null }
+  ]
+}
+```
+
+```json
+{ "seat-1": { "userId": "user-a" }, "seat-2": { "userId": null } }
+```
+
+成员上麦后的临时状态写入 Presence State，只更新变化的字段：
+
+```ts
+await client.presence.setState(roomId, "MESSAGE", { muted: "true" });
+```
+
+听众下麦后，使用 `presence.removeState(roomId, "MESSAGE", { states: ["muted", "microphoneError"] })` 清理仅在麦位上有效的字段。
+
+### 3.6 发送与消费消息
+
+统一信封示例：
+
+```ts
+interface VoiceRoomEnvelope<T extends Record<string, unknown>> {
+  schemaVersion: 1;
+  messageId: string;
+  type: string;
+  roomId: string;
+  targetUserId?: string;
+  sentAt: number;
+  expiresAt: number;
+  payload: T;
+}
+```
+
+`onMessage` 中按 [2.6 消息协议必须可校验](#26-消息协议必须可校验) 的六步校验后再交给业务处理。
+
+### 3.7 退出
+
+语聊是核心功能时，仅在 App 销毁、用户退出账号或 RTM 身份变化时移除监听并调用 `logout()`；语聊是附加功能时，退出整个语聊模块时执行。**单纯离开一个房间不要 `logout()`。**
+
+### 3.8 封装建议
+
+将 SDK client 封装在应用级 RTM 会话对象中，房间业务通过进入房间、申请上麦、更新麦位和发送消息等方法调用它，避免协议规则散落在多个 UI 组件中。
+
+当前 Demo 使用 `AppRtmSession` 管理会话，`HostRoomRtm` / `AudienceRoomRtm` 封装角色操作，`SingleRoomClient` 消费房间状态并协调 RTC。这些都是 Demo 类，不是 SDK 接口。参考 [会话封装](https://github.com/AgoraIO-Community/RTM-Demo/blob/a79b0bd17aa503214aac7b33e5426dd13b19356a/src/scenes/voice-room/app-rtm.ts) 和 [房间业务实现](https://github.com/AgoraIO-Community/RTM-Demo/blob/a79b0bd17aa503214aac7b33e5426dd13b19356a/src/scenes/voice-room/event-driven-single-room-client.ts)。
+
+## 4. 常见错误
+
+**每次进房都创建并登录一个 RTM client**
+
+重复注册监听、重复维护连接状态，快速切房时留下旧实例。一个会话只登录一个 client，房间逻辑只负责订阅与退订。
+
+**多个房间共用一个 Channel，再靠消息字段过滤**
+
+各房间互相收到彼此的 Presence、Storage 和 Message，浪费消息量且容易误处理。每个语聊房使用独立 Channel。
+
+**用 Message 保存最终房间状态**
+
+后加入的成员收不到之前的 Message。公告、麦位表等当前状态必须写入 Channel Storage，Message 只传递动作。
+
+**用 Storage 保存高频临时状态**
+
+自主闭麦、麦克风异常只在成员在线期间有效，应写入 Presence State。写进 Storage 会增加无意义的状态合并和并发写入。
+
+**把 `subscribe()` 完成当作房间状态已就绪**
+
+订阅成功与首个快照到达是两个阶段。收到 Storage 快照前，依赖麦位或公告的按钮保持不可用。
+
+**链路恢复后立即开放全部操作**
+
+连接恢复不代表麦位、公告和成员状态已更新。等待当前房间的完整状态事件到达后再恢复相关操作。
+
+**收到消息后直接执行**
+
+未经校验的消息可能已过期、属于其他房间或被重复投递。版本、房间、目标、TTL 和 `messageId` 全部通过后才交给业务处理。
+
+## 5. 上线检查清单
+
+- 一个 App 会话或语聊模块会话中，同一 RTM 身份只创建一个 client
+- 所有 SDK 事件都在 `login()` 前注册，且只注册一次
+- 每个语聊房都有唯一、稳定的 Channel Name
+- 进房使用 `subscribe(roomId)`，离房使用 `unsubscribe(roomId)`
+- 离开或切换房间不触发 `logout()`
+- 核心功能在 App 退出或用户身份结束时 `logout()`；附加功能在退出语聊模块时 `logout()`
+- Channel Storage 只保存需要被恢复的房间当前状态
+- Presence State 只保存在线成员的临时状态
+- 单人动作使用 `USER` Message，房间广播使用 `MESSAGE` Message
+- 最终麦位状态以 Storage 为准，不从 Message 历史推导
+- "频道已订阅"与"房间状态已就绪"分别建模
+- 重连后等待全量状态事件，不重建 client、不盲目重复订阅
+- 消息包含版本、唯一 ID、房间、时间和过期时间，并在消费前校验
+- 快速切房时使用 generation 或取消标记忽略迟到结果
+- RTC 失败不会自动回滚已确认的 RTM 房间状态，仅采集异常同步麦克风错误
+- 目录、准入、权限和 Token 已接入业务服务
