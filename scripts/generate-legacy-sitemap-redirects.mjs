@@ -322,7 +322,7 @@ const PRODUCT_SPECIFIC_TARGETS = {
     'get-started/mcp': '/en/realtime-media/iot/product-overview',
     'get-started/skills': '/en/realtime-media/iot/product-overview',
     'reference/communicate_with_rtc_sdk':
-      '/en/realtime-media/iot/reference/communicate-with-rtc-sdk',
+      '/en/realtime-media/iot/build/send-messages/interoperate-with-rtc-sdk',
     'reference/restful-authentication':
       '/en/realtime-media/iot/build/set-up-authentication-and-security/authentication-workflow',
   },

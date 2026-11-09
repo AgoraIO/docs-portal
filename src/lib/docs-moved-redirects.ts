@@ -1,5 +1,6 @@
 const EN_MCP_GUIDE_PATHS = new Set([
   'ai/get-started/mcp-integrate',
+  'ai/platform/get-started/mcp-integrate',
   'ai/device-kit/get-started/mcp',
   'realtime-media/on-premise-recording/mcp',
   'realtime-media/broadcast-streaming/mcp',
@@ -17,6 +18,7 @@ const EN_MCP_GUIDE_PATHS = new Set([
 
 const EN_SKILLS_GUIDE_PATHS = new Set([
   'ai/get-started/skills-integrate',
+  'ai/platform/get-started/skills-integrate',
   'ai/device-kit/get-started/skills',
   'realtime-media/on-premise-recording/skills',
   'realtime-media/broadcast-streaming/skills',
@@ -41,6 +43,12 @@ export function resolveMovedDocsRedirect(
   const path = [tab, ...slugSegments].join('/');
   const suffix = path.endsWith('.md') ? '.md' : '';
   const guidePath = path.replace(/\.md$/, '');
+  if (
+    guidePath === 'realtime-media/iot/reference/communicate-with-rtc-sdk' ||
+    guidePath === 'iot/reference/communicate_with_rtc_sdk'
+  ) {
+    return `/en/realtime-media/iot/build/send-messages/interoperate-with-rtc-sdk${suffix}`;
+  }
   if (EN_MCP_GUIDE_PATHS.has(guidePath)) {
     return `/en/introduction/agora-mcp${suffix}`;
   }

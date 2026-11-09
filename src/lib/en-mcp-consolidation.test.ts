@@ -10,6 +10,7 @@ import { loadDocsPagePayload } from './docs-page.server';
 import { isMachineReadableLocale } from './machine-readable-docs';
 
 const oldPaths = [
+  'ai/platform/get-started/mcp-integrate',
   'ai/get-started/mcp-integrate',
   'ai/device-kit/get-started/mcp',
   'realtime-media/on-premise-recording/mcp',

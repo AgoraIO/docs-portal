@@ -10,6 +10,7 @@ import { loadDocsPagePayload } from './docs-page.server';
 import { isMachineReadableLocale } from './machine-readable-docs';
 
 const oldPaths = [
+  'ai/platform/get-started/skills-integrate',
   'ai/get-started/skills-integrate',
   'ai/device-kit/get-started/skills',
   'realtime-media/on-premise-recording/skills',
