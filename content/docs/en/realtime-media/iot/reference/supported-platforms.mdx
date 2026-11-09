@@ -9,11 +9,11 @@ This section lists the platforms and products you use to develop apps that inter
 
   | Target Platform | Operating system version | IDE version |
   | --- | --- | --- |
-  | Linux | See the Linux requirements below. | - |
+  | Linux | <Slot name="iot-linux-requirements" /> | - |
   | HarmonyOS | ARM: armv7a-harmony-eabi. | - |
   | LiteOS | ARM: arm-liteos-eabi, LiteOS 2.0 or higher. | - |
 
-  Linux requirements:
+  <Slot for="iot-linux-requirements">
 
   - x86_64: gcc 2.6.35 or higher.
   - ARM:
@@ -28,6 +28,8 @@ This section lists the platforms and products you use to develop apps that inter
     - arm-linux-uclibceabihf 4.8.x or higher
 
   - MIPS: mips-linux-uclibceabihf 4.7.x or higher.
+
+  </Slot>
 
 For a full list of downloadable SDK packages by architecture, C library, and float ABI, see [Resources](/en/realtime-media/iot/reference/resources).
 
