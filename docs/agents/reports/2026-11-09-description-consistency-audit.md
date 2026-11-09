@@ -1,10 +1,10 @@
-# 页面摘要与正文一致性排查
+# 英文页面摘要与正文一致性初轮排查
 
 日期：2026-11-09。审查快照：`99883a156cfa207dffb480cd5c769a5dd7591771`，分支 `codex/media-push-pull-description`。
 
-本轮基于仓库源文件确认另有 **10 个英文页面存在摘要主题、作用对象、接入方式或能力范围错配**；中文另有 **2 个枚举、4 个文件的声道/频道术语错误**。原先 Media Push/Pull 两页已经在 PR #1400 修正，不计入新增数。
+本轮基于仓库源文件确认另有 **10 个英文页面存在摘要主题、作用对象、接入方式或能力范围错配**。原先 Media Push/Pull 两页已经在 PR #1400 修正，不计入新增数。
 
-以下排查记录保留审查快照中的原文和行号；用户确认后的修复与验证见文末。此次修复将随 PR #1400 交付。
+以下排查记录保留审查快照中的原文和行号；用户确认后的修复与验证见文末。此次修复随 PR #1400 交付。用户随后明确仅保留英文范围；完整的英文导航逐页复核见 [后续报告](2026-11-09-navigation-description-audit.md)。
 
 ## 范围与方法
 
@@ -14,19 +14,12 @@
 | 英文 AI | 241 | 241 |
 | 英文 API reference | 286 | 149 |
 | 英文 Introduction | 26 | 25 |
-| 中文 API reference | 535 | 535 |
-| 中文 AI | 112 | 112 |
-| 中文 Realtime & Media | 22 | 22 |
-| 中文 Introduction | 24 | 24 |
-| 中文 Solutions | 15 | 15 |
-| 中文 Best Practices | 12 | 12 |
-| 合计 | **1736** | **1595** |
+| 合计 | **1016** | **875** |
 
 - 使用 YAML 解析器读取全部 frontmatter，包含 `>` 折行摘要；逐域对照标题、摘要、正文导语和章节。
 - 用跨主题重复摘要、产品名称、推拉流/导入导出/发送接收/加密解密等动作辅助筛查，对候选项回到具体正文、代码和同产品文档核实。
-- 中文 RTC API 的 `(current)` 和 `4.6.0` 中有 253 对文件逐字节相同，同源问题按两份文件记录。
-- 141 页没有可对照的非空摘要，不计为一致性通过。116 个中文摘要仅为“RTC Android API 参考迁移页。”，没有具体功能断言，也不能证明正文/API 正确。
-- 范围是 `content/docs/{en,zh-CN}/**/*.{md,mdx}` 的内容一致性；未覆盖其他文件类型、OpenAPI 动态生成端点或外部 API 参考站点，未逐页验收线上部署与实际 API 行为。
+- 141 页没有可对照的非空摘要，不计为一致性通过。
+- 范围是 `content/docs/en/**/*.{md,mdx}` 的内容一致性；未覆盖其他文件类型、OpenAPI 动态生成端点或外部 API 参考站点，未逐页验收线上部署与实际 API 行为。
 - 自动筛查只能提供候选，以下确认项均补充了源文件证据；“本轮未发现”不表示对全部产品契约作了完整认证。
 
 ## 可按摘要修正的 9 个英文页面
@@ -121,19 +114,6 @@
 - 按当前仓库契约，摘要建议：`Choose how users can interrupt the agent by speaking.`；正文开头也应移除或明确限制服务端中断承诺。
 - **先核实当前产品状态。** 本轮确认的是仓库内的矛盾，没有验证服务端截至审查日期是否已经发布该能力。如果已经发布，应统一恢复支持说明与使用文档；若仍延期，则同步收窄摘要和正文。
 
-## 中文术语错误：2 个枚举、4 个文件
-
-以下文件第 3 行摘要均为 `频道模式。`，正文实际解释左右声道和混合声道，不涉及 RTC 频道。
-
-| 文件 | 正文依据 | 建议摘要 |
-| --- | --- | --- |
-| [current AudioDualMonoMode](../../../content/docs/zh-CN/api-reference/rtc/android/(current)/class-and-enum/enums/enum-audiodualmonomode.mdx) | 第 11–23 行：原始、左、右、混合声道模式 | `音频的声道模式。` |
-| [4.6.0 AudioDualMonoMode](../../../content/docs/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-audiodualmonomode.mdx) | 与 current 内容一致 | `音频的声道模式。` |
-| [current AudioMixingDualMonoMode](../../../content/docs/zh-CN/api-reference/rtc/android/(current)/class-and-enum/enums/enum-audiomixingdualmonomode.mdx) | 第 13–23 行：左、右、混合声道模式 | `混音音频的声道模式。` |
-| [4.6.0 AudioMixingDualMonoMode](../../../content/docs/zh-CN/api-reference/rtc/android/4.6.0/class-and-enum/enums/enum-audiomixingdualmonomode.mdx) | 与 current 内容一致 | `混音音频的声道模式。` |
-
-中文 [推流](../../../content/docs/zh-CN/realtime-media/media-push/index.md) 与 [拉流](../../../content/docs/zh-CN/realtime-media/media-pull/index.md) 的摘要和正文方向均正确。本轮没有确认其他中文产品互换或流向相反问题。
-
 ## 附加风险，不计入上述确认数
 
 - **Broadcast Streaming API 总览疑似整页内容归属错位。** [总览](../../../content/docs/en/api-reference/api-ref/broadcast-streaming/index.mdx)第 3 行摘要与第 6–8 行正文都讲 RTC Channel Management，后续使用 `/dev/v1/channel/`；同目录 [meta.json](../../../content/docs/en/api-reference/api-ref/broadcast-streaming/meta.json) 和 [entry-points.mdx](../../../content/docs/en/api-reference/api-ref/broadcast-streaming/entry-points.mdx) 却属于 Broadcast Streaming/Media Broadcast。需要核对迁移来源与正确产品归属，不能只修改摘要。
@@ -142,28 +122,27 @@
 
 ## 验证与交付边界
 
-- 全量 frontmatter 用 PyYAML 成功解析，覆盖计数为 1736 文件、1595 个非空摘要。
+- 全量 frontmatter 用 PyYAML 成功解析，覆盖计数为 1016 文件、875 个非空摘要。
 - 对确认问题核对了原摘要与正文行号；重复摘要问题另外对照了被复制主题的源文件。
 - 上述排查阶段只审计源文件，没有运行应用测试、完整构建或对外服务调用；后续修复的验证结果见下节。
-- 9 个英文页面可作独立的摘要纠正；4 个中文文件可作独立的术语纠正。Platform 中断页和整页产品归属问题需要更高层内容依据，避免仅改摘要掩盖正文矛盾。
+- 9 个英文页面可作独立的摘要纠正。Platform 中断页和整页产品归属问题需要更高层内容依据，避免仅改摘要掩盖正文矛盾。
 
 ## 修复与验证记录（2026-11-09）
 
-用户确认后，已按上述建议修正全部 10 个英文页面和 4 个中文文件。
+用户确认后，已按上述建议修正全部 10 个英文页面。先前附带的中文文件修改已按最新范围要求撤回。
 
-- 9 个英文页面和 4 个中文文件仅变更 `description`，标题与正文逐字节保持不变。
+- 9 个英文页面仅变更 `description`，标题与正文逐字节保持不变。
 - Platform 中断页移除了摘要和导语中的服务端手动中断承诺，改为说明语音中断；保留已有配置示例及延期维护说明。
 - Platform 的处理依据是本仓库当前内容契约：[总览](../../../content/docs/en/ai/platform/index.mdx)中的延期说明，以及 [Platform OpenAPI](../../../content/openapi/conversational-ai/rest-api-platform.en.yaml) 的 `Interruption`、`StartOfSpeechInterruption`、`KeywordsInterruption`、`OffInterruption` schema。OpenAPI 提供语音触发中断配置，没有独立的服务端 Interrupt endpoint。本次不改变 API 支持范围，也不宣称已验证真实服务端的发布状态。
 - Broadcast Streaming 整页归属及 Platform 延期复制页的发布边界保持为待核实项，不按摘要纠错直接重写整页。
 
 验证结果：
 
-- 精确替换检查通过：13 个文件仅改摘要；Platform 页除摘要与导语外的内容保持不变。
-- 两个中文枚举在 `(current)` 和 `4.6.0` 中仍各自逐字节一致。
+- 英文精确替换检查通过：9 个文件仅改摘要；Platform 页除摘要与导语外的内容保持不变。
 - `bun run types:check` 通过。
 - `bun run test --reporter=json --outputFile=.agent/artifacts/description-fix-tests.json`：1971 项中 1957 通过、14 失败。
 - 在 `git archive HEAD` 导出的未修改快照中复跑 11 个失败测试文件：127 通过、14 失败。失败的测试名称与修复后的完整测试结果逐项一致，没有新增失败。基线快照共享安装的依赖，但源码不包含本轮修复。
 - `git diff --check` 通过。
-- 使用本地开发服务器及浏览器抽查了 Chat HTTP 状态码页、Platform 中断页、中文 AudioDualMonoMode 页的可见摘要和 meta description；中断页不再显示旧的服务端手动中断承诺。中文页使用 `VITE_DOCS_REGION=cn` 及本地 `SITE_URL`、`VITE_SITE_URL` 配置。截图保存在忽略目录 `.agent/artifacts/`。
+- 使用本地开发服务器及浏览器抽查了 Chat HTTP 状态码页、Platform 中断页的可见摘要和 meta description；中断页不再显示旧的服务端手动中断承诺。截图保存在忽略目录 `.agent/artifacts/`。
 
 未运行完整生产构建或对外服务行为验证。
