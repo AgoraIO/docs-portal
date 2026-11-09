@@ -50,6 +50,10 @@ describe('ConvoAI documentation integration', () => {
       'build/shape-the-conversation/personalize-conversations',
     ],
     ['reference/event-types', 'reference/event-types'],
+    [
+      'build/handle-runtime-events/webhooks',
+      'build/handle-runtime-events/webhooks',
+    ],
     ['release-notes', 'release-notes'],
   ])('switches the real topic %s in both directions', (voice, platform) => {
     expect(getDocVersionTarget(`/en/ai/${voice}`, 'v2')).toEqual({
@@ -79,7 +83,6 @@ describe('ConvoAI documentation integration', () => {
     'build/handle-runtime-events/get-runtime-events',
     'build/handle-runtime-events/monitor-agent-runtime',
     'build/handle-runtime-events/retrieve-session-history',
-    'build/handle-runtime-events/webhooks',
     'build/tools/custom-tools',
     'build/tools/mcp-tools',
     'models/tts/gemini',
@@ -113,13 +116,42 @@ describe('ConvoAI documentation integration', () => {
   });
 
   it.each([
-    '/en/ai/studio',
-    '/en/ai/device-kit',
-    '/en/ai/ten-agent',
-    '/zh-CN/ai',
-  ])('does not claim the shared or independent product %s', (path) => {
-    expect(resolveDocVersion(path)).toBeUndefined();
-  });
+    ['/en/ai/studio', '/en/ai/platform/studio'],
+    ['/en/ai/studio/quickstart', '/en/ai/platform/studio/quickstart'],
+    [
+      '/en/ai/studio/build/customize-agent',
+      '/en/ai/platform/studio/build/customize-agent',
+    ],
+    [
+      '/en/ai/studio/build/integrations',
+      '/en/ai/platform/studio/build/mcp-servers',
+    ],
+    [
+      '/en/ai/studio/deploy/inbound',
+      '/en/ai/platform/studio/deploy/deploy-inbound',
+    ],
+    [
+      '/en/ai/studio/observe/analytics',
+      '/en/ai/platform/studio/observe/agent-overview',
+    ],
+    [
+      '/en/ai/studio/observe/call-history',
+      '/en/ai/platform/studio/observe/agent-analytics',
+    ],
+  ])(
+    'switches the Agent Studio page %s to its Preview pair',
+    (main, preview) => {
+      expect(getDocVersionTarget(main, 'v2')?.href).toBe(preview);
+      expect(getDocVersionTarget(preview, 'v1')?.href).toBe(main);
+    },
+  );
+
+  it.each(['/en/ai/device-kit', '/en/ai/ten-agent', '/zh-CN/ai'])(
+    'does not claim the shared or independent product %s',
+    (path) => {
+      expect(resolveDocVersion(path)).toBeUndefined();
+    },
+  );
 
   it('shares real guide/API selection without inventing operation equivalence', () => {
     expect(
@@ -196,7 +228,6 @@ describe('ConvoAI documentation integration', () => {
                 },
               ],
             },
-            { type: 'page', name: 'Studio', url: '/en/ai/studio' },
             { type: 'page', name: 'Device Kit', url: '/en/ai/device-kit' },
           ],
         },
@@ -233,8 +264,8 @@ describe('ConvoAI documentation integration', () => {
         '/en/ai/platform/build/managed-mode',
       ),
     ).toContain('/llms/doc-versions-convoai-guides-v2.txt');
-    expect(withDocVersionMetadata('# Studio\n\nBody', '/en/ai/studio')).toBe(
-      '# Studio\n\nBody',
-    );
+    expect(
+      withDocVersionMetadata('# Device Kit\n\nBody', '/en/ai/device-kit'),
+    ).toBe('# Device Kit\n\nBody');
   });
 });

@@ -1,0 +1,61 @@
+---
+analyticsPageType: task-guide
+title: Import a phone number
+description: Import phone numbers from your SIP trunk for inbound and outbound calls in Agent Studio.
+---
+
+Import phone numbers to use for inbound and outbound calls with your agents. Importing a number doesn't purchase one. You import a number that your carrier assigned to you, with its SIP trunk settings.
+
+## Prerequisites
+
+Before you begin, make sure that you have:
+
+- A SIP trunk. See [Set up a SIP trunk](/en/ai/platform/studio/deploy/sip-trunk).
+- A phone number configured in your SIP trunk.
+- Your SIP trunk's host, protocol, and credentials.
+
+## Add the number to your project
+
+To import a phone number from your SIP trunk:
+
+1. In the navigation sidebar, select **Phone Numbers**.
+
+    ![Phone Numbers page](/temp/agent-studio-preview/phone-numbers.png)
+
+2. Select **Import phone number**.
+
+    ![Panel for adding a number from your SIP trunk](/temp/agent-studio-preview/import-number-panel.png)
+
+3. Fill in the following information:
+
+    - **Phone number**: The phone number, in E.164 format. For example, `+14155550100`.
+    - **Description**: A description to help you identify this number. Optional.
+    - **SIP host**: Your SIP trunk's hostname, without a scheme or port. For example, `sip.carrier.com`.
+    - **SIP protocol**: The protocol for SIP communication. Choose **TLS** if Secure Trunking is turned on in your SIP trunk. Otherwise, choose **TCP** or **UDP**.
+    - **SIP port**: The SIP signaling port.
+    - **Username** and **Password**: Your SIP trunk credentials. You can't use a secret for the password in the Preview.
+    - **Allowed IPs**: The addresses allowed to send inbound SIP traffic to this number. Enter IPv4 addresses or IPv4 CIDR ranges, separated by commas or new lines. IPv6 addresses and hostnames aren't supported.
+
+    :::warning
+    Set **Allowed IPs** to your carrier's signaling addresses. If you enter `*`, inbound SIP traffic is accepted from any address.
+    :::
+
+4. Select **Import number**.
+
+The number is now in your project, but it isn't connected to an agent. For inbound calls, the number connects when you [deploy an inbound agent](/en/ai/platform/studio/deploy/deploy-inbound) that uses it.
+
+{/* TODO(platform-confirm): The Phone number placeholder has no plus sign or country code (4155552671), but the API requires E.164. Does Agent Studio add a country code, reject the number, or save it as typed? */}
+
+{/* TODO(platform-confirm): The API allows inbound SIP traffic from any address if you omit `allowed_ips`, and doesn't mention `*`. What happens when Allowed IPs is blank? Does the default SIP port change with the protocol, as it does in the API (5061 for TLS, 5060 for TCP and UDP)? What does Refresh numbers do? */}
+
+## Manage imported numbers
+
+To find a number, select **Phone Numbers** in the navigation sidebar. The table shows each number's description and SIP details.
+
+To edit or delete a number, select **...** in its row, then select **Edit** or **Delete**.
+
+## Next steps
+
+- [Deploy an inbound agent](/en/ai/platform/studio/deploy/deploy-inbound): Connect a number to an agent to answer calls.
+- [Deploy an outbound agent](/en/ai/platform/studio/deploy/deploy-outbound): Use a number as the caller ID for your agent.
+- [Set up a campaign](/en/ai/platform/studio/deploy/campaign): Call a list of contacts from your number.

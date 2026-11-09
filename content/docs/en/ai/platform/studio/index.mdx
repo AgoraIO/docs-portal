@@ -1,0 +1,85 @@
+---
+analyticsPageType: navigation-landing
+title: Agent Studio overview
+description: Build, deploy, and monitor Conversational AI Platform agents in Agora Console without writing integration code.
+---
+
+Agent Studio is a visual workspace in Agora Console for building and operating Conversational AI Platform agents. You configure agent behavior, connect phone numbers, and monitor sessions from a single interface, without writing integration code.
+
+Agent Studio abstracts the underlying AI stack. You choose your ASR, LLM, and TTS models, and Agent Studio handles the orchestration between them. You focus on what your agent should say and do.
+
+:::info
+Agent Studio for the Conversational AI Platform is in Preview. During the Preview, agent sessions run in North America (US). Geofencing isn't supported.
+:::
+
+{/* TODO(platform-confirm): Confirm that the Platform's Preview region and geofencing limits apply to sessions started from Agent Studio. */}
+
+## Open the Agent Studio Preview
+
+To open the Agent Studio Preview:
+
+1. Log in to [Agora Console](https://console.agora.io).
+2. In the navigation sidebar, select **Try the Preview**. You can also select **Build it in Preview** on the **Agents** page.
+
+A banner at the top of the page shows that you're in the Preview. To return to the classic Agent Studio, select **Switch back** in the banner. For the classic docs, see [Agent Studio overview](/en/ai/studio).
+
+{/* TODO(platform-confirm): Do agents created in the classic Agent Studio appear in the Preview, and the other way around? Does a project have to opt in, and does switching back affect agents that are live in the Preview? */}
+
+## How it's organized
+
+In the navigation sidebar, you manage your project's agents and the resources they share:
+
+- **Agents**: Create agents, and open them to configure, deploy, and monitor them.
+- **Webhooks**: Receive event callbacks for your project, such as session state changes and transcripts. See [Set up webhooks](/en/ai/platform/build/handle-runtime-events/webhooks).
+- **Agent Analytics**: Review call and session history across your agents. See [Agent Analytics](/en/ai/platform/studio/observe/agent-analytics).
+- **Secrets**: Store your provider API keys. See [Manage secrets](/en/ai/platform/studio/build/secrets).
+- **Phone Numbers**: Import the numbers that your agents use. See [Import a phone number](/en/ai/platform/studio/deploy/import).
+
+When you open an agent, you can:
+
+- Define the system prompt, greeting, models, and behavior, and add MCP servers and tools in **Edit agent**. See [Customize your agent](/en/ai/platform/studio/build/customize-agent).
+- Deploy the agent. The steps depend on the agent's deployment type: [Inbound](/en/ai/platform/studio/deploy/deploy-inbound), [Outbound](/en/ai/platform/studio/deploy/deploy-outbound), or [API](/en/ai/platform/studio/quickstart#deploy-the-agent).
+- Monitor sessions and review what the agent collects on its overview page. For an Outbound agent, you also start campaigns on this page. See [Agent overview](/en/ai/platform/studio/observe/agent-overview).
+- Talk to the agent in the **Test agent** panel, from the editor or the overview page. See [Test your agent](/en/ai/platform/studio/build/test-agent).
+
+## How it works
+
+Agent Studio runs your agents on the Conversational AI Platform. You can create the following types of agents:
+
+- **API**: Talks to people inside your app. The agent joins an RTC channel with your users, and you start it from your app or backend.
+- **Inbound**: Answers calls to your imported phone number. The Platform receives the call from your carrier through your SIP trunk, runs the conversation through your configured models, and delivers the agent's response to the caller.
+- **Outbound**: Calls your contacts from your imported phone number. The Platform places the call through your SIP trunk, and handles the conversation in the same way as an inbound call.
+
+Each agent has an agent ID that you can use with the Platform API. For details, see [Connect your agent](/en/ai/platform/studio/deploy/connect-agent).
+
+## Key concepts
+
+The following concepts apply across Agent Studio.
+
+### Agents
+
+Agents are the primary objects you configure. When you create an agent, you choose its deployment type: [API, Inbound, or Outbound](#how-it-works).
+
+You configure the agent's system prompt, voice and models, integrations, analysis, and advanced settings in the agent editor. See [Customize your agent](/en/ai/platform/studio/build/customize-agent).
+
+An agent stays in **Draft** status while you edit it. Your changes save automatically. When you're ready, you deploy the agent, and its status changes to **Live**.
+
+### Secrets
+
+Secrets protect your credentials. A secret set stores your provider API keys, and an agent refers to each key by name. The key never appears in the agent's configuration, and you can't view its value after you save it. See [Manage secrets](/en/ai/platform/studio/build/secrets).
+
+### Phone numbers
+
+Import phone numbers from your SIP trunk provider. A SIP trunk provider, such as Twilio, is a carrier that connects your phone numbers to the public phone network over the internet. Connect a number to an Inbound agent to answer calls, or use it as the caller ID for an Outbound agent. See [Import a phone number](/en/ai/platform/studio/deploy/import).
+
+### Campaigns
+
+To call a list of contacts with an Outbound agent, start a campaign and upload a contact list. See [Set up a campaign](/en/ai/platform/studio/deploy/campaign).
+
+## Who should use this
+
+Agent Studio is designed for developers and technical users who want to build and operate voice agents without managing the underlying AI infrastructure. If you need capabilities beyond what Agent Studio exposes, you can use the [Platform SDKs](/en/api-reference/api-ref/server-sdk/platform/python) or the [Platform REST API](/en/api-reference/api-ref/conversational-ai/platform).
+
+## Next steps
+
+To get started, follow the [quickstart](/en/ai/platform/studio/quickstart), which walks you through creating and testing your first agent.

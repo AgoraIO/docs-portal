@@ -1,0 +1,101 @@
+---
+analyticsPageType: task-guide
+title: Prompt design
+description: Best practices and patterns for writing effective system prompts for voice agents in Agent Studio.
+---
+
+The system prompt defines who your agent is and how it behaves. A well-structured prompt produces consistent, predictable responses.
+
+## Prompt templates
+
+Prompt templates are ready-made system prompts that you can customize for your agent. For common use cases, such as appointment booking or order support, select a template from the **Template** menu in the agent editor. Then replace the variables and adapt the instructions to your business.
+
+{/* TODO(platform-confirm): Does selecting a template replace an existing prompt without warning? */}
+
+## Prompt structure
+
+A clear structure helps the LLM understand its role, goals, and constraints. The templates use the following sections, which also work as a starting point for your own prompt:
+
+```text
+# Role
+You are the appointment reminder assistant for {{business_name}}.
+
+# Goals
+1. Confirm whether the customer will attend their appointment.
+2. If they can't attend, offer to move it.
+
+# Style
+Warm, calm, and brief. Ask one question at a time.
+
+# Rules
+- Never guess a time or a policy. Say you will check.
+- Read back every date and time before you end the call.
+```
+
+### Role
+
+Define who the agent is and what situation it's operating in. Include the business name, the agent's purpose, and any relevant background the LLM needs to handle the conversation correctly. Use [template variables](#template-variables) to personalize this section for each caller.
+
+### Goals
+
+List the specific tasks the agent should accomplish during the call. Keep goals concrete and ordered by priority. The LLM attempts to complete them in order unless the conversation takes a different path.
+
+### Style
+
+Define how the agent should communicate. For voice agents, shorter and clearer responses work better than long explanations.
+
+### Rules
+
+List what the agent must always or never do. Specify how the agent should handle edge cases such as unclear input, silence, or frustrated callers.
+
+## Template variables
+
+Template variables personalize a conversation with values you provide at the start of each session. To add a variable, type `{{` in the prompt. For example, a prompt for a clinic reminder agent might use the following:
+
+```text
+You are an appointment reminder assistant for {{clinic_name}}.
+The patient's name is {{patient_name}} and their appointment is on {{appointment_date}}.
+```
+
+A variable name starts with a lowercase letter and contains up to 64 lowercase letters, numbers, or underscores.
+
+You can use variables in the system prompt, the greeting, and the failure message.
+
+### Pass variable values
+
+How you pass values depends on how the session starts:
+
+- **Test sessions**: In the **Test agent** panel, select **Variables**, then enter the values. See [Run a test](/en/ai/platform/studio/build/test-agent#run-a-test).
+- **Campaigns**: Add a column for each variable to your contact list. See [Contact list format](/en/ai/platform/studio/deploy/campaign#contact-list-format).
+- **API sessions**: Pass the values when you start the session. See [Personalize conversations](/en/ai/platform/build/shape-the-conversation/personalize-conversations).
+
+{/* TODO(platform-confirm): Where do variable values come from for inbound calls in Agent Studio? What happens on an inbound call if a required value is missing? An API session without one fails with `400 MissingRequiredField`. */}
+
+## Tips for voice agents
+
+Voice agents have different constraints than text-based chatbots. Keep the following in mind when writing prompts:
+
+- **Keep responses short**: Callers lose attention quickly. Instruct the agent to keep responses to one or two sentences where possible.
+- **Avoid lists and formatting**: The TTS model reads text aloud. Bullet points, headers, and Markdown formatting produce unnatural speech.
+- **Handle silence explicitly**: Instruct the agent what to do if the caller doesn't respond. You can also use the [Silence](/en/ai/platform/studio/build/customize-agent#silence) setting.
+- **Define a clear exit condition**: Specify when and how the agent should end the call. For example, `End the call politely once the appointment outcome is confirmed.`
+- **Test with real scenarios**: Write two or three realistic conversation scenarios before testing. This helps you identify gaps in your prompt before they appear in production.
+
+## Iterate on prompts
+
+Make small changes and test after each one. Changing multiple things at once makes it difficult to identify what caused a change in behavior.
+
+To iterate on a prompt:
+
+1. Edit the system prompt or greeting.
+2. Start a test session in the agent editor.
+3. Simulate two or three conversation scenarios.
+4. Review the transcript for unexpected responses.
+5. Refine and repeat.
+
+For details on the test interface, see [Test your agent](/en/ai/platform/studio/build/test-agent).
+
+## Next steps
+
+- [Customize your agent](/en/ai/platform/studio/build/customize-agent): Configure ASR, LLM, and TTS settings in the agent editor.
+- [Test your agent](/en/ai/platform/studio/build/test-agent): Test and troubleshoot your agent before you deploy it.

@@ -1,0 +1,48 @@
+---
+analyticsPageType: task-guide
+title: Deploy an inbound agent
+description: Connect a phone number to an Inbound agent in Agent Studio and deploy it to answer calls.
+---
+
+An **Inbound** agent answers calls to your phone number. After you connect a number and deploy the agent, calls to the number are automatically routed to the agent.
+
+## Prerequisites
+
+Before you begin, make sure that you have:
+
+- An **Inbound** agent that you have configured and tested. To create one, select **Inbound** when you [create an agent](/en/ai/platform/studio/quickstart#create-an-agent). To configure and test it, see [Customize your agent](/en/ai/platform/studio/build/customize-agent) and [Test your agent](/en/ai/platform/studio/build/test-agent).
+- A SIP trunk configured for inbound calling. See [Set up a SIP trunk](/en/ai/platform/studio/deploy/sip-trunk#inbound-calling-setup).
+- A phone number from your SIP trunk. You can [import it](/en/ai/platform/studio/deploy/import) first, or add it when you connect it to the agent.
+
+## Connect a number and deploy
+
+To connect a number and deploy the agent:
+
+1. In the navigation sidebar, select **Agents**, then select your **Inbound** agent.
+2. Select **Deploy agent**. The **Deploy agent** tab opens.
+
+    ![Deploy agent tab for an Inbound agent, with the Phone number, Start from your app, and Retention sections](/temp/agent-studio-preview/deploy-tab-inbound.png)
+
+3. In the **Phone number** section, select **Connect**. You can't deploy an Inbound agent without a number.
+4. In the **Add a phone number** panel, choose a number in this project, or add a new number from your SIP trunk. To add a number, see [Import a phone number](/en/ai/platform/studio/deploy/import#add-the-number-to-your-project).
+
+5. Select **Deploy agent**.
+6. Review the summary, then select **Publish agent**.
+
+    ![Publish dialog that lists the phone number to connect](/temp/agent-studio-preview/publish-dialog-number.png)
+
+The agent's status changes from **Draft** to **Live**, and its overview page opens. Agora deploys the agent, then connects the number. If the number fails to connect, the agent stays live and you can retry the connection separately.
+
+To answer calls on more than one number, select **Add another phone number** in the **Phone number** section.
+
+{/* TODO(platform-confirm): Where are call limits set for inbound calls? The Advanced settings Call section says they are managed here, but the Add a phone number panel has no call limits. The API's inbound `call_policy` has `max_call_duration_seconds`, `max_silence_duration_ms`, and `end_call`. */}
+
+{/* TODO(platform-confirm): "Bind/update" suggests that publishing can replace an existing connection. If the number already answers for another agent, does publishing move it without warning? What does a failed connection look like, and where do you retry it? */}
+
+{/* TODO(platform-confirm): Where do variable values come from for inbound calls? */}
+
+## Next steps
+
+- [Agent Analytics](/en/ai/platform/studio/observe/agent-analytics): Review transcripts and outcomes for inbound calls.
+- [Agent overview](/en/ai/platform/studio/observe/agent-overview): Monitor inbound call performance.
+- [Route inbound calls to an agent](/en/ai/platform/build/phone-calls/route-inbound-calls): Route calls using the Platform API.

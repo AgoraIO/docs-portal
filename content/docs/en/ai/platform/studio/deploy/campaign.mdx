@@ -1,0 +1,99 @@
+---
+analyticsPageType: task-guide
+title: Set up a campaign
+description: Call a list of contacts with an Outbound agent in Agent Studio.
+---
+
+Campaigns enable your **Outbound** agents to make calls to a list of contacts. Use campaigns for sales outreach, customer follow-ups, appointment reminders, surveys, and other automated calling scenarios.
+
+## Plan your campaign
+
+Before you create a campaign, consider the following:
+
+- **What is your goal?** Define the purpose of your campaign, such as appointment confirmations, payment reminders, or a customer satisfaction survey. This determines the [prompt template](/en/ai/platform/studio/build/prompt-design#prompt-templates) you should use.
+- **Who are you calling?** Only call contacts who have given consent to be contacted. This includes existing customers with opt-in consent, leads who requested information, or users who have an existing relationship with your business.
+- **When should you call?** Call during business hours in your customer's time zone. Avoid meal times, and respect do-not-call hour restrictions in your region.
+
+## How campaigns work
+
+A campaign uses an agent to call each contact in a list from the number you choose as the caller ID. Each call is a separate session. The campaign calls each contact once. Automatic retries aren't available in the Preview.
+
+You can include [template variables](/en/ai/platform/studio/build/prompt-design#template-variables) in your contact list. The agent uses their values in its system prompt and greeting.
+
+## Prerequisites
+
+Before you begin, make sure that you have:
+
+- An imported phone number to use as the caller ID. See [Import a phone number](/en/ai/platform/studio/deploy/import).
+- A deployed **Outbound** agent. See [Deploy an outbound agent](/en/ai/platform/studio/deploy/deploy-outbound).
+- A contact list in CSV format. See [Contact list format](#contact-list-format).
+
+## Start a campaign
+
+To start a campaign:
+
+1. In the navigation sidebar, select **Agents**, then select your **Outbound** agent. The agent's overview page opens.
+2. Select **Start a campaign**.
+
+    ![Start a campaign form](/temp/agent-studio-preview/campaign-form.png)
+
+3. Configure the campaign:
+
+    - **Campaign name**: A name to identify this campaign.
+    - **Campaign caller ID**: The number to call from.
+    - **Launch**: Select **Launch now** to start calling right away, or **Schedule** to choose when calls start.
+    - **Data collection**: The values that the agent extracts from each call. To change them, see [Analysis](/en/ai/platform/studio/build/customize-agent#analysis).
+
+4. Optional: To change how the campaign dials and ends calls, select **Advanced settings**. See [Advanced settings](#advanced-settings).
+5. Under **Contact list**, select **Upload**, and choose your CSV file.
+6. Under **Rows**, check the contacts, then start the campaign.
+
+The form saves your draft automatically. To remove it, select **Discard draft**.
+
+:::warning[Compliance]
+Outbound calling is subject to legal requirements that vary by region. In the United States, the Telephone Consumer Protection Act (TCPA) requires written consent for marketing calls. Always identify your business name and provide a callback number. Honor do-not-call requests immediately, and respect calling hour restrictions (8 AM to 9 PM in the recipient's time zone). Consult your legal team before running large outbound campaigns.
+:::
+
+If a row is invalid, the form shows an error with the row number and the rule it breaks.
+
+## Advanced settings
+
+The **Advanced settings** panel controls how the campaign dials and how its calls end, such as the ring time, the maximum call length, and when to hang up. The settings apply only to this campaign. Note the following settings:
+
+- **Let the agent finish**: When a call is stopped, the agent finishes its sentence first.
+- **Calls at once** and **Calls per second**: Limit how many calls the campaign places at the same time, and how many it starts each second.
+- **Keep transcripts and recordings for 30 days**: Turn it off to discard the conversation data of the campaign's calls.
+
+## Contact list format
+
+Your contact list must be a CSV file with the following columns:
+
+- `phone_number` (required): The number to call, such as `+14155550100`. Use up to 30 digits with an optional leading `+`, or a SIP username. Don't include spaces or SIP addresses.
+- A column for each variable that your agent uses. Each column name is a variable name in your prompts.
+
+The following is an example of a contact list for appointment confirmation:
+
+```text
+phone_number,customer_name,appointment_time
++14155550100,John Doe,2026-11-15 10:00 AM
++14155550101,Jane Smith,2026-11-15 11:00 AM
+```
+
+In this example, the agent can use `{{customer_name}}` and `{{appointment_time}}` in its system prompt and greeting.
+
+A campaign can have up to 50,000 contacts. You can't change the contacts after you create the campaign. A phone number that appears more than once is called once for each entry.
+
+{/* TODO(platform-confirm): The form confirms only the phone_number column. Confirm the variable columns, whether there's a template to download, the file size limit, and that the API limits on this section (from Create a campaign) apply to a CSV upload. */}
+
+## Manage campaigns
+
+To follow a campaign's sessions, use the **Campaign** column in the agent's **Sessions** table. See [Agent overview](/en/ai/platform/studio/observe/agent-overview#sessions).
+
+{/* TODO(screenshot): A running campaign and its controls. Then document how to view progress and how to pause, resume, or cancel it in Agent Studio. The API has these statuses: scheduled, running, paused, completed, canceled, failed. */}
+
+To monitor and control a campaign using the API, see [Monitor and control a campaign](/en/ai/platform/build/phone-calls/outbound-calls-campaigns#monitor-and-control-a-campaign).
+
+## Next steps
+
+- [Agent overview](/en/ai/platform/studio/observe/agent-overview): View performance metrics for your agent.
+- [Agent Analytics](/en/ai/platform/studio/observe/agent-analytics): Review individual sessions and outcomes.
