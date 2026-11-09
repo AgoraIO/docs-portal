@@ -102,6 +102,17 @@ describe('deriveInstallCommand', () => {
     ).toEqual({ tool: 'pip', command: 'pip install agora-python-server-sdk' });
   });
 
+  it('pins the pip command to the version in a versioned pypi URL', () => {
+    expect(
+      deriveInstallCommand(
+        v('https://pypi.org/project/agora-python-server-sdk/2.2.4/'),
+      ),
+    ).toEqual({
+      tool: 'pip',
+      command: 'pip install agora-python-server-sdk==2.2.4',
+    });
+  });
+
   it('derives a Go command from a versioned pkg.go.dev URL', () => {
     expect(
       deriveInstallCommand(

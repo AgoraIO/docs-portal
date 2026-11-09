@@ -21,7 +21,10 @@ components:
       type: apiKey
       in: header
       name: Authorization
-      description: Use an RTC token in the format `agora token=<your_token>`.
+      description: >-
+        Recommended. Use a token generated with your App ID and App Certificate, in the format
+        `agora token="<your_token>"`. See [RESTful
+        authentication](/en/api-reference/api-ref/conversational-ai/authentication#token-authentication).
   parameters:
     Authorization:
       name: Authorization
@@ -30,8 +33,8 @@ components:
       schema:
         type: string
       description: >-
-        Authentication credential. Use `agora token=<your_token>` for token authentication or `Basic
-        <base64_credentials>` for Basic HTTP authentication.
+        Authentication credential. Use `agora token="<your_token>"` for token authentication
+        (recommended) or `Basic <base64_credentials>` for Basic HTTP authentication.
   schemas:
     ErrorResponse:
       type: object
@@ -241,7 +244,7 @@ paths:
                 curl -X POST
                 'https://api.agora.io/api/conversational-ai-agent/v2/projects/<your_app_id>/join' \
                   -H 'Content-Type: application/json' \
-                  -H 'Authorization: agora token=<your_token>' \
+                  -H 'Authorization: agora token="<your_token>"' \
                   -d '{
                     "name": "<unique_agent_name>",
                     "pipeline_id": "<your_pipeline_id>",
@@ -268,7 +271,7 @@ paths:
 
                 headers = {
                     "Content-Type": "application/json",
-                    "Authorization": "agora token=<your_token>"
+                    "Authorization": "agora token=\"<your_token>\""
                 }
 
 
@@ -298,7 +301,7 @@ paths:
 
                 const headers = {
                   "Content-Type": "application/json",
-                  "Authorization": "agora token=<your_token>"
+                  "Authorization": 'agora token="<your_token>"'
                 };
 
 
@@ -5730,8 +5733,17 @@ paths:
                                 playback_duration_ms:
                                   type: integer
                                   description: >-
-                                    The audio playback duration in milliseconds. Included only when
-                                    `type` is `ok`.
+                                    The audio playback duration in milliseconds. Included when
+                                    `type` is `ok` or `interrupted`. For an interrupted turn, this
+                                    is the PCM audio actually played before the interruption, and it
+                                    doesn't exceed `intended_playback_duration_ms`.
+                                intended_playback_duration_ms:
+                                  type: integer
+                                  description: >-
+                                    The total duration in milliseconds of PCM audio the engine
+                                    received and scheduled to play for the turn, including queued
+                                    audio that hadn't played yet. Included only when `type` is
+                                    `interrupted`.
                                 caused_by:
                                   type: string
                                   description: >-
@@ -5879,6 +5891,8 @@ paths:
                       metadata:
                         caused_by: api_interrupt
                         transport: rtm
+                        playback_duration_ms: 1200
+                        intended_playback_duration_ms: 2400
                     metrics:
                       e2e_latency_ms: 337
                       segmented_latency_ms:

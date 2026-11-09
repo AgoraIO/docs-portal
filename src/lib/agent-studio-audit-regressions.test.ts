@@ -3,15 +3,15 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const orderedListTargets = [
-  'content/docs/en/ai/studio/build/integrations.md',
-  'content/docs/en/ai/studio/build/test-agent.md',
+  'content/docs/en/ai/studio/build/integrations.mdx',
+  'content/docs/en/ai/studio/build/test-agent.mdx',
   'content/docs/en/ai/studio/deploy/campaign.mdx',
-  'content/docs/en/ai/studio/deploy/deploy-agent.md',
-  'content/docs/en/ai/studio/deploy/import.md',
-  'content/docs/en/ai/studio/deploy/inbound.md',
+  'content/docs/en/ai/studio/deploy/deploy-agent.mdx',
+  'content/docs/en/ai/studio/deploy/import.mdx',
+  'content/docs/en/ai/studio/deploy/inbound.mdx',
   'content/docs/en/ai/studio/deploy/sip-trunk.mdx',
-  'content/docs/en/ai/studio/observe/analytics.md',
-  'content/docs/en/ai/studio/observe/call-history.md',
+  'content/docs/en/ai/studio/observe/analytics.mdx',
+  'content/docs/en/ai/studio/observe/call-history.mdx',
   'content/docs/en/ai/studio/quickstart.md',
 ];
 

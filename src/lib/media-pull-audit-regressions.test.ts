@@ -4,7 +4,6 @@ import { describe, expect, it } from 'vitest';
 
 const orderedListTargets = [
   'content/docs/en/realtime-media/media-pull/build/integration-best-practices.md',
-  'content/docs/en/realtime-media/media-pull/build/manage-agora-account.mdx',
   'content/docs/en/realtime-media/media-pull/build/receive-notifications.md',
   'content/docs/en/realtime-media/media-pull/get-started/enable-media-pull.mdx',
 ];

@@ -29,7 +29,7 @@ agent = (
     .with_stt(...)  # configure your STT vendor
     .with_llm(...)  # configure your LLM vendor
     .with_tts(FishAudioTTS(
-        key='your-fishaudio-key',
+        key='your-fishaudio-key',  # omit key and set credential_mode='managed' to use Agora-managed mode
         reference_id='<voice_model_id>',
         backend='speech-1.5',
     ))
@@ -48,7 +48,7 @@ const agent = new Agent({ client })
   .withStt(/* configure your STT vendor */)
   .withLlm(/* configure your LLM vendor */)
   .withTts(new FishAudioTTS({
-    key: 'your-fishaudio-key',
+    key: 'your-fishaudio-key', // omit key and set credentialMode: CredentialMode.Managed to use Agora-managed mode
     referenceId: '<voice_model_id>',
     backend: 'speech-1.5',
   }));
@@ -69,7 +69,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
   WithLlm(/* configure your LLM vendor */).
   WithTts(
     vendors.NewFishAudioTTS(vendors.FishAudioTTSOptions{
-        Key:         "your-fishaudio-key",
+        Key:         "your-fishaudio-key", // omit Key and set CredentialMode: agentkit.CredentialModeManaged to use Agora-managed mode
         ReferenceID: "<voice_model_id>",
         Backend:     "speech-1.5",
     }),
@@ -80,33 +80,50 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 
 <TabsContent value="rest-api">
 
-Use the following `tts` configuration in your request:
+- **Managed mode**
 
-```json
-"tts": {
-  "vendor": "fishaudio",
-  "params": {
-    "api_key": "<fishaudio_key>",
-    "reference_id": "<voice_model_id>",
-    "backend": "speech-1.5"
+  To use Fish Audio TTS with Agora-managed credentials, set `credential_mode` to `"managed"` in the `tts` block. When using managed mode, `params.api_key` is not required. Set `params.backend` to `s2.1-pro`. For more information, see [Use managed mode](/en/ai/build/managed-mode).
+
+  ```json
+  "tts": {
+    "credential_mode": "managed",
+    "vendor": "fishaudio",
+    "params": {
+      "reference_id": "<voice_model_id>",
+      "backend": "s2.1-pro"
+    }
   }
-}
-```
+  ```
+
+- **BYOK**
+
+  ```json
+  "tts": {
+    "vendor": "fishaudio",
+    "params": {
+      "api_key": "<fishaudio_key>",
+      "reference_id": "<voice_model_id>",
+      "backend": "speech-1.5"
+    }
+  }
+  ```
 
 </TabsContent>
 </Tabs>
 
 ### Key parameters
 
+The following parameters are required when using your own API key (BYOK). When using managed mode, `api_key` is not required. For more information, see [Use managed mode](/en/ai/build/managed-mode).
+
 <ParameterList title="params" required={true}>
-  <Parameter name="api_key" type="string" required={true}>
-    The Fish Audio API key used to authenticate requests. You must provide a valid key for the service to function.
+  <Parameter name="api_key" type="string" required={false}>
+    The Fish Audio API key used to authenticate requests. Required when using your own API key (BYOK).
   </Parameter>
   <Parameter name="reference_id" type="string" required={true}>
     The identifier of the voice model to use for speech synthesis.
   </Parameter>
   <Parameter name="backend" type="string" required={true}>
-    The backend model version to use. For example, `speech-1.5`.
+    The backend model version to use. For example, `speech-1.5`. For managed mode, use `s2.1-pro`.
   </Parameter>
 </ParameterList>
 
