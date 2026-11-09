@@ -370,7 +370,7 @@ You can subscribe to the following Cloud Recording events from Agora Console:
 | [30](#uploader_started) | `uploader_started` | 2 (uploader module)           | The upload service starts.                                                                                                    |
 | [31](#uploaded) | `uploaded` | 2 (uploader module)           | All the recorded files are uploaded to the specified third-party cloud storage.                                               |
 | [32](#backuped) | `backuped` | 2 (uploader module)           | All the recorded files are uploaded, but at least one file is uploaded to Agora Cloud Backup.                                 |
-| [33](#uploading_progress) | `uploading_progress` | 2 (uploader module)           | The progress of uploading the recorded files to the cloud storage.                                                            |
+| [33](#uploading_progress) | `uploading_progress` | 2 (uploader module)           | The progress of uploading the recorded files to the cloud storage. Not sent in individual recording.                         |
 | [40](#recorder_started) | `recorder_started` | 1 (recorder module)           | The recording starts.                                                                                                         |
 | [41](#recorder_leave) | `recorder_leave` | 1 (recorder module)           | The recording exits.                                                                                                          |
 | [42](#recorder_slice_start) | `recorder_slice_start` | 1 (recorder module)           | The recording service syncs the information of the recorded files.                                                            |
@@ -397,9 +397,9 @@ You can subscribe to the following Cloud Recording events from Agora Console:
 - `uid`: String. The user ID of the recording client.
 - `sid`: String. The recording ID. The unique identifier of each recording.
 - `serviceScene`: String. The recording scene or stage:
-  - `"rtc_record"`: Real-time recording. In individual recording, only legacy individual recording uses this value.
-  - `"rtsc/raw-recording"`: Individual recording.
-  - `"rtc_snapshot"`: Screenshot capture.
+  - `"rtsc/raw-recording"`: Individual recording. Callbacks from the cloud recording service, the recorder module, and the uploader module all use this value, including screenshot event 45.
+  - `"rtc_record"`: Real-time recording other than individual recording, such as composite recording and legacy individual recording.
+  - `"rtc_snapshot"`: Screenshot capture in legacy individual recording. Screenshot callbacks in individual recording use `"rtsc/raw-recording"`.
   - `"web_record"`: Web page recording.
 - `sequence`: Number. The serial number of the notifications, starting from 0. You can use this parameter to identify notifications that are random, lost, or resent.
 - `sendts`: Number. The time (UTC) when the event happens. Unix timestamp in ms.
@@ -601,6 +601,10 @@ The relevant fields of each Agora Cloud Recording callback event are listed belo
 
 #### backuped
 
+:::info
+Individual recording adds the `stranded` upload status, which means that some recorded files have not yet been uploaded to your third-party cloud storage. The recording service keeps retrying the upload automatically until it succeeds, and the files are not lost. After you stop the recording, check `serverResponse.uploadingStatus` in the [`stop`](/en/api-reference/api-ref/cloud-recording#stop) response. If it is `stranded`, wait until the upload completes before you play or process files that depend on the complete recording.
+:::
+
 `eventType` 32 indicates that all the recorded files are uploaded, but at least one of them is uploaded to Agora Cloud Backup. Agora Cloud Backup automatically uploads the files to the specified third-party cloud storage. `details` includes the following fields:
 
 - `msgName`: String. The message name, `backuped`.
@@ -706,6 +710,12 @@ The relevant fields of each Agora Cloud Recording callback event are listed belo
 
 #### uploading_progress
 
+:::warning
+Individual recording does not send event 33 and does not report upload progress every minute. If you migrate from legacy individual recording, remove any dependency on this event. After the recording stops, use `serverResponse.uploadingStatus` in the [`stop`](/en/api-reference/api-ref/cloud-recording#stop) response to check the upload status, and handle the `stranded` status.
+:::
+
+The following description applies to legacy individual recording and the other recording modes.
+
 `eventType` 33 indicates the current upload progress. The Agora server notifies you of the upload progress once every minute after the recording starts. `details` includes the following fields:
 
 - `msgName`: String. The message name, `uploading_progress`.
@@ -774,6 +784,8 @@ eventType 43 indicates that the state of the audio stream has changed, and `deta
 - `UtcMs`: Number. The UTC time (ms) when the state of the video stream changes.
 
 #### recorder_snapshot_file
+
+In individual recording, `payload.serviceScene` in screenshot callbacks is `"rtsc/raw-recording"`, not `"rtc_snapshot"` as in legacy individual recording. The event number is still 45.
 
 `eventType` 45 indicates that the screenshot is captured successfully and uploaded to the third-party cloud storage. The `details` includes the following fields:
 

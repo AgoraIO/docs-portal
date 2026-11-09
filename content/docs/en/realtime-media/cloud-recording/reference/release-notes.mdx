@@ -15,13 +15,11 @@ This page provides the release notes for:
 - [Cloud Recording](#cloud-recording)
 - [Notifications](#notifications)
 
-<a id="cloud-recording" />
-
 ## Cloud Recording
 
 <Accordions type="multiple" openFirst>
 
-<Accordion title="2026.10.16" id="20261008" headingLevel={3} value="20261008">
+<Accordion title="2026.11.09" id="20261109" headingLevel={3} value="20261109">
 
 #### Compatibility changes
 
@@ -31,8 +29,9 @@ The individual recording API is upgraded to v2. To migrate from legacy individua
 - HLS output is now a single M3U8 file that combines audio and video. Update your player, file parsing logic, and downstream processing accordingly.
 - v2 supports MP4 and MP3 output. To generate MP4 files, specify `mp4` in `avFileType`. For audio-only recording, specify `mp3`.
 - Remove `extensionServiceConfig` from your requests. Otherwise, the request is rejected.
-- If you use the Notifications service, update `serviceScene` from `rtc_record` to `rtsc/raw-recording`.
-- Add a branch to handle the new `stranded` value of `uploadingStatus`.
+- If you use the Notifications service, note that callbacks from the cloud recording service, the recorder module, the uploader module, and screenshots all set `payload.serviceScene` to `rtsc/raw-recording`. Update any logic that identifies callbacks by `rtc_record` or `rtc_snapshot`. For details, see [Fields in payload](/en/realtime-media/cloud-recording/build/handle-events/receive-notifications#fields-in-payload).
+- Individual recording no longer sends event 33 (`uploading_progress`) with upload progress every minute. Remove any dependency on this event. For details, see [uploading_progress](/en/realtime-media/cloud-recording/build/handle-events/receive-notifications#uploading_progress).
+- Add a branch to handle the new `stranded` value of `uploadingStatus`. This status means that some recorded files have not yet been uploaded to your third-party cloud storage. The recording service keeps retrying the upload automatically until it succeeds. Treat the recording as not fully uploaded, not as lost or complete.
 
 For details, see [Individual recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode) and [Manage recorded files](/en/realtime-media/cloud-recording/build/process-recorded-files/manage-files).
 
@@ -627,13 +626,14 @@ This is the first release of Agora Cloud Recording with the following functions:
 - Third-party cloud storage. Agora Cloud Recording supports Amazon S3, and Alibaba Cloud.
 - Provides C++ and Java SDK packages.
 
-<a id="notifications" />
-
 
 </Accordion>
 </Accordions>
 
 ## Notifications
+
+This section lists the changes to the Notifications service for Cloud Recording.
+
 ### 2022.10
 
 * After you enable Notifications, your server receives the events that you subscribe to in the form of HTTPS requests.

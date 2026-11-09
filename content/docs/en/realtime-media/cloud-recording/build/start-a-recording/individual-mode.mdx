@@ -13,7 +13,7 @@ Agora Cloud Recording supports three recording modes:
 In individual recording mode, the audio and video of each user ID in a channel are recorded in separate files.
 
 :::info
-If you use legacy individual recording, where the `mode` path parameter in the request URL is `individual`, see [Legacy individual recording](/en/realtime-media/cloud-recording/v1/individual-mode).
+If you use legacy individual recording, where the `mode` path parameter in the request URL is `individual`, see [Legacy individual recording](/en/realtime-media/cloud-recording/v1/individual-mode). To move to the current version, see [Migrate from legacy individual recording](#migrate-from-legacy-individual-recording).
 :::
 
 ## Prerequisites
@@ -205,7 +205,7 @@ If the request succeeds, the response is similar to the following:
 The `uploadingStatus` field indicates the upload status of the recorded files:
 
 - `uploaded`: The recorded files have been uploaded to the third-party cloud storage.
-- `stranded`: Added in individual recording v2. Add a branch in your business logic for this status, and use notifications or query results to find the files that were not uploaded.
+- `stranded`: Added in individual recording v2. Some recorded files have not yet been uploaded to your third-party cloud storage. The recording service keeps retrying the upload automatically until it succeeds, and the files are not lost. Treat the recording as not fully uploaded, and wait until the upload completes before you play or process files that depend on the complete recording.
 
 ## Generate MP4 files directly
 
@@ -252,6 +252,17 @@ If the sender disables the video track during the recording, the recording effec
 |:-------|:--------------------------------|:------------------|
 | Native | Call [`muteLocalVideoStream`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_mutelocalvideostream) or [`disableVideo`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_disablevideo) | Displays the last frame on the user screen in this slice and does not continue to generate video slices. |
 | Web SDK 4.x | Call [`setEnabled`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocaltrack.html#setenabled) | Displays the last frame on the user screen in this slice and does not continue to generate video slices. |
+
+## Migrate from legacy individual recording
+
+To migrate from legacy individual recording, update how your app processes the [recorded files](/en/realtime-media/cloud-recording/build/process-recorded-files/manage-files#individual-recording), and make the following changes:
+
+- In the request URLs of `start`, `update`, `query`, and `stop`, change `mode/individual` to `mode/raw`.
+- Remove `recordingConfig.streamMode`. The current version does not support `standard`, `default`, or `original`.
+- Remove `clientRequest.extensionServiceConfig`. Requests that contain this field are rejected.
+- If you use [notifications](/en/realtime-media/cloud-recording/build/handle-events/receive-notifications), identify individual recording callbacks by the `payload.serviceScene` value `rtsc/raw-recording` instead of `rtc_record` or `rtc_snapshot`. Otherwise, your app might ignore these callbacks.
+- Remove any dependency on event 33 (`uploading_progress`). Individual recording does not send this event.
+- Handle the `stranded` value of `uploadingStatus` in the `stop` response. For details, see [Stop recording](#stop-recording).
 
 ## FAQs
 

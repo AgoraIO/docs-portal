@@ -20,6 +20,15 @@ info:
 
     Use `Content-Type: application/json` for requests with bodies. Request and response bodies are
     JSON.
+
+
+    ## Notifications
+
+
+    In individual recording (`mode` set to `raw`), `payload.serviceScene` in notification callbacks
+    is `rtsc/raw-recording`, not `rtc_record` as in legacy individual recording. Update your callback
+    logic when you migrate, or your app might ignore these callbacks. See [Receive
+    notifications](/en/realtime-media/cloud-recording/build/handle-events/receive-notifications#fields-in-payload).
 servers:
   - url: https://api.sd-rtn.com
     description: Cloud Recording REST API host.
@@ -327,6 +336,12 @@ paths:
           position: after-description
           title: Note
           type: info
+        - markdown: >-
+            Individual recording (`mode` set to `raw`) does not support
+            `clientRequest.extensionServiceConfig`. Requests that contain this field are rejected.
+          position: after-description
+          title: Note
+          type: warning
       parameters:
         - $ref: "#/components/parameters/Content-Type"
         - $ref: "#/components/parameters/appid"
@@ -1779,7 +1794,10 @@ components:
         must also be set.
     extensionServiceConfig:
       type: object
-      description: Configuration for extended services. Only applicable in web page recording mode.
+      description: >-
+        Configuration for extended services. Only applicable in web page recording mode. Individual
+        recording (`mode` set to `raw`) does not support this field, and requests that contain it are
+        rejected.
       required:
         - extensionServices
       properties:
@@ -2299,9 +2317,11 @@ components:
             Agora backup cloud. The Agora server will automatically continue uploading to the
             designated third-party cloud storage.
 
-            - `"stranded"`: Added in individual recording v2. Some recording files have not
-            been uploaded to the specified third-party cloud storage. Handle this status in your
-            business logic.
+            - `"stranded"`: Added in individual recording v2. Some recording files have not yet
+            been uploaded to the specified third-party cloud storage. The recording service keeps
+            retrying the upload automatically until it succeeds, and the files are not lost. Treat
+            the recording as not fully uploaded, and wait until the upload completes before you play
+            or process files that depend on the complete recording.
 
             - `"unknown"`: Unknown status.
         fileListMode:

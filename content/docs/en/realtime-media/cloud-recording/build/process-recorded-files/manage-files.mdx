@@ -53,6 +53,13 @@ MP4 files are not supported.
 
 #### Audio-only source streams
 
+Audio-only individual recording uses AAC encoding by default and generates HLS files with the following names:
+
+- HLS M3U8 file: `<sid>_<cname>__uid_s_<uid>__uid_e_aac.m3u8`
+- HLS TS slice file: `<sid>_<cname>__uid_s_<uid>__uid_e_<utc>_aac.ts`
+
+If you set `recordingFileConfig.avFileType` to `["hls","mp3"]` to generate MP3 files, the files have the following names:
+
 - HLS M3U8 file: `<sid>_<cname>__uid_s_<uid>__uid_e_mp3.m3u8`
 - HLS TS slice file: `<sid>_<cname>__uid_s_<uid>__uid_e_<utc>_mp3.ts`
 - MP3 file: `<sid>_<cname>__uid_s_<uid>__uid_e_<index>_mp3.mp3`
@@ -121,6 +128,8 @@ To generate an MP4 file, add `mp4` to `avFileType`.
 ## Recorded files in abnormal conditions
 
 ### Upload to cloud storage failed
+
+In individual recording, if `serverResponse.uploadingStatus` in the [`stop`](/en/api-reference/api-ref/cloud-recording#stop) response is `stranded`, some recorded files have not yet been uploaded to your third-party cloud storage. The recording service keeps retrying the upload automatically until it succeeds, and the files are not lost. Wait until the upload completes before you play or process files that depend on the complete recording.
 
 If Agora Cloud Recording fails to upload the recorded files to the third-party cloud storage, it transfers the files to the third-party cloud storage from the Agora Cloud Backup. In order not to overwrite the latest files, the transferred M3U8 file is appended with `_<tick>_<index>.m3u8`, where:
 
@@ -219,7 +228,7 @@ If you face compatibility issues in some M3U8 players due to the missing comma a
 
 ### Sample M3U8 file for audio
 
-The following sample M3U8 file indexes the audio slices of one user ID in individual recording:
+The following sample M3U8 file indexes the audio slices of one user ID in individual recording. It uses the default AAC encoding, and its TS slice file names end with `_aac.ts`. If you generate MP3 files, the TS slice file names end with `_mp3.ts`.
 
 ```text
 #EXTM3U
