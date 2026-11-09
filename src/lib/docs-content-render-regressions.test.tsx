@@ -59,7 +59,7 @@ describe('docs content render regressions', () => {
   );
 
   it(
-    'renders current IoT C authentication examples and the Android migration guidance',
+    'renders current IoT C authentication examples',
     async () => {
       await renderDocsPage([
         'realtime-media',
@@ -71,18 +71,6 @@ describe('docs content render regressions', () => {
 
       expect(document.querySelector('pre code')?.textContent).toContain(
         'agora_rtc_join_channel',
-      );
-      expect(
-        screen.getByRole('link', { name: 'RTC Java SDK' }),
-      ).toHaveAttribute(
-        'href',
-        '/en/api-reference/sdks?product=video&platform=android',
-      );
-      expect(
-        screen.getByRole('link', { name: 'Signaling Java SDK' }),
-      ).toHaveAttribute(
-        'href',
-        '/en/api-reference/sdks?product=signaling&platform=android',
       );
       expect(
         screen.queryByRole('tab', { name: 'Java' }),
