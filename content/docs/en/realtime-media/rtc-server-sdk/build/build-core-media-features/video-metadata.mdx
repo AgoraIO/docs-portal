@@ -1,0 +1,92 @@
+---
+title: "Send and receive video metadata"
+description: "Send and receive custom data with the video stream in Server Gateway."
+---
+
+<PlatformStructured platform="linux-cpp">
+
+With Server Gateway, you can attach metadata to the video stream you send and receive the metadata that remote users send with their video. Use video metadata when you need to deliver information related to the video stream. This page shows you how to send and receive video metadata.
+
+## Prerequisites
+
+Before you start, make sure that you have:
+
+- Server Gateway Linux C++ SDK v4.4.33 or later.
+- A project that creates and publishes a local video track. For more information, see [Send and receive media streams](/en/realtime-media/rtc-server-sdk/build/build-core-media-features/send-receive-media-streams).
+
+## Implementation
+
+Take the following steps to send and receive video metadata:
+
+1. Implement [`agora::rtc::IMetadataObserver`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/classagora_1_1rtc_1_1_i_metadata_observer.html) and override the following callbacks:
+
+    - [`getMaxMetadataSize`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/classagora_1_1rtc_1_1_i_metadata_observer.html#aa1d7b729f373d985a5bbdd855c4e85d5): Returns the maximum metadata buffer size in bytes. The default is 512 and the maximum is 1024. Override this callback only to change the default.
+    - [`onReadyToSendMetadata`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/classagora_1_1rtc_1_1_i_metadata_observer.html#afc9b177f803cc0f0bb18b36c51be84f0): Write the data to send to `metadata.buffer`, set `metadata.size`, and return `true`. The SDK provides the buffer. Make sure the data doesn't exceed the size that `getMaxMetadataSize` returns. To skip metadata for this callback, return `false`. Returning `false` doesn't stop video transmission.
+    - [`onMetadataReceived`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/classagora_1_1rtc_1_1_i_metadata_observer.html#a890f087351519bdeba5f17e824158d03): Read the metadata that a remote user sends. The buffer is valid only during the callback. To use the data after the callback returns, copy the buffer contents.
+
+    ```cpp
+    #include <cstring>
+    #include <memory>
+    #include <string>
+
+    #include "NGIAgoraVideoTrack.h"
+
+    class SampleMetadataObserver : public agora::rtc::IMetadataObserver {
+     public:
+      int getMaxMetadataSize() override { return DEFAULT_METADATA_SIZE_IN_BYTE; }
+
+      bool onReadyToSendMetadata(Metadata& metadata,
+                                 agora::rtc::VIDEO_SOURCE_TYPE source_type) override {
+        const std::string payload = "your-metadata";
+        if (payload.size() > static_cast<size_t>(getMaxMetadataSize())) {
+          return false;  // Skip metadata for this callback. Video still sends.
+        }
+        memcpy(metadata.buffer, payload.data(), payload.size());
+        metadata.size = static_cast<unsigned int>(payload.size());
+        return true;
+      }
+
+      void onMetadataReceived(const Metadata& metadata) override {
+        // Copy the data. The buffer is valid only during this callback.
+        std::string received(reinterpret_cast<const char*>(metadata.buffer),
+                             metadata.size);
+        // Process received, metadata.uid, and metadata.timeStampMs.
+      }
+    };
+    ```
+
+1. After you create the local video track, call [`registerVideoMetadataObserver`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/classagora_1_1rtc_1_1_i_local_video_track.html#a551cacb9f56b75ffd2b4bdf9db721eb4) on the track to register the observer. Then enable and publish the track.
+
+    ```cpp
+    auto metadataObserver = std::make_unique<SampleMetadataObserver>();
+    customVideoTrack->registerVideoMetadataObserver(metadataObserver.get()); // [!code highlight]
+    customVideoTrack->setEnabled(true);
+    connection->getLocalUser()->publishVideo(customVideoTrack);
+    ```
+
+1. When you no longer need the observer, call [`unregisterVideoMetadataObserver`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/classagora_1_1rtc_1_1_i_local_video_track.html#a46680142338456fb129a1e7fe9ac0aba), then release the observer object.
+
+    ```cpp
+    customVideoTrack->unregisterVideoMetadataObserver(metadataObserver.get()); // [!code highlight]
+    metadataObserver.reset();
+    ```
+
+## Reference
+
+This section describes the metadata structure.
+
+### Metadata fields
+
+[`IMetadataObserver::Metadata`](https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/structagora_1_1rtc_1_1_i_metadata_observer_1_1_metadata.html) contains the following fields:
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `channelId` | `const char*` | The channel name. |
+| `uid` | `unsigned int` | The user ID of the remote user who sends the metadata. The sender doesn't need to set this field. |
+| `size` | `unsigned int` | The metadata size in bytes. |
+| `buffer` | `unsigned char*` | The metadata buffer. When sending, write the data to this buffer. When receiving, read the data from this buffer. |
+| `timeStampMs` | `long long` | The timestamp when the metadata is sent, in milliseconds. |
+
+The `source_type` parameter of `onReadyToSendMetadata` is the video source type, of type `VIDEO_SOURCE_TYPE`.
+
+</PlatformStructured>
