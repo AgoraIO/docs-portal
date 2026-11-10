@@ -1,5 +1,5 @@
-import { isKnownPlatform } from '../platforms/registry';
 import { type CnSearchQuery, queryCnSearch } from './cn-search.server';
+import { isCnSearchPlatform } from './cn-search-platforms';
 import type { MeilisearchClientConfig } from './meilisearch-client';
 import { parseSearchPageState } from './search-page-state';
 
@@ -42,7 +42,7 @@ export function parseSearchApiQuery(params: URLSearchParams): CnSearchQuery {
       !['all', 'docs', 'api', 'faq', 'openapi'].includes(input.type)) ||
     (input.product !== undefined && !identifier.test(input.product)) ||
     (input.tab !== undefined && !identifier.test(input.tab)) ||
-    (input.platform !== undefined && !isKnownPlatform(input.platform)) ||
+    (input.platform !== undefined && !isCnSearchPlatform(input.platform)) ||
     (input.version !== undefined && !/^[\w.-]{1,80}$/.test(input.version))
   )
     throw new Error('Invalid search parameters');
