@@ -48,10 +48,10 @@ You also need:
 Install the SDK preview in your project's virtual environment. You need Python 3.8 or later. Specify the version, because the default `agora-agents` release doesn't support the Platform API.
 
 ```bash
-pip install agora-agents==3.0.0a3
+pip install agora-agents==3.0.0a4
 ```
 
-{/* Verified on 2026-10-30: agora-agents 3.0.0a3 is published on PyPI (Git tag v3.0.0-alpha.3). A fresh install of the published package ran the client setup, agent and session examples, and Basic authentication in pre-release testing. */}
+{/* Verified on 2026-11-10: agora-agents 3.0.0a4 is published on PyPI (Git tag v3.0.0-alpha.4). A fresh install ran the client setup, agent and session examples, Basic authentication, the token functions, and the error classes against the Platform API. */}
 
 Create a client with your App ID and App Certificate. The SDK uses them to generate a token for each request. The Python examples on this page use this `client`:
 
@@ -74,10 +74,10 @@ Install the SDK preview in your project. You need Node.js 18 or later. Specify t
 
 ```bash
 cd <your_project_folder>
-npm install agora-agents@3.0.0-alpha.3
+npm install agora-agents@3.0.0-alpha.4
 ```
 
-{/* Verified on 2026-10-30: agora-agents 3.0.0-alpha.3 is published on npm (Git tag v3.0.0-alpha.3). A fresh install of the published package ran the client setup, agent and session examples, and Basic authentication in pre-release testing. */}
+{/* Verified on 2026-11-10: agora-agents 3.0.0-alpha.4 is published on npm (Git tag v3.0.0-alpha.4). A fresh install ran the client setup, agent and session examples, Basic authentication, the token functions, and the error classes against the Platform API. */}
 
 Create a client with your App ID and App Certificate. The SDK uses them to generate a token for each request. The TypeScript examples on this page use this `client`:
 
@@ -95,15 +95,15 @@ const client = new AgoraClient({
 
 <TabsContent value="go">
 
-Add the SDK to your Go module. You need Go 1.21 or later.
+Add the SDK preview to your Go module. You need Go 1.21 or later.
 
 ```bash
 cd <your_project_folder>
-go get github.com/AgoraIO/agora-agents-go/v2@v2.14.0-alpha.3
+go get github.com/AgoraIO/agora-agents-go/v2@v2.13.1-0.20261106151340-2d48a391639b
 go mod tidy
 ```
 
-{/* TODO(platform-confirm): Pinned to v2.14.0-alpha.3 ahead of its publication, which the SDK team confirmed for the launch. The code was tested on 2026-10-30 from the Go preview branch (c6d81a2): the client setup, agent and session examples, and Basic authentication work. After publication, verify that this install command works. */}
+{/* TODO(platform-confirm): Pinned to the pseudo-version of commit 2d48a39 on the Go preview branch (feat/v3-api-preview), which the SDK changelog names v2.14.0-alpha.4. The SDK team doesn't tag Go previews, because a tag would affect the live v2 tags. Verified on 2026-11-10: a fresh `go get` ran the client setup, agent and session examples, Basic authentication, the token functions, and the error types against the Platform API. Replace the pin when a tagged release is available. */}
 
 Create a client with your App ID and App Certificate. The SDK uses them to generate a token for each request. The Go examples on this page use this `client` and `ctx`, and these imports:
 
@@ -138,7 +138,7 @@ Get REST API credentials for the Platform. For details, see [Authentication](/en
 
 {/* Verified in pre-release testing: Basic auth (2026-10-27) and ConvoAI token auth (2026-10-28) both work. A quoted or unquoted token header and a token with or without a channel scope were all accepted. The REST examples on this page use Basic auth. The SDK examples use token auth; the alpha.3 SDK previews also support Basic auth. */}
 
-{/* TODO(platform-confirm): The SDK examples on this page need the alpha.3 SDK previews: TypeScript 3.0.0-alpha.3, Python 3.0.0a3, and Go v2.14.0-alpha.3. Earlier previews can't call the Platform API, because their tokens lack the ConvoAI service. */}
+{/* The SDK examples on this page need the alpha.3 SDK previews or later: TypeScript 3.0.0-alpha.3, Python 3.0.0a3, and Go v2.14.0-alpha.3. Earlier previews can't call the Platform API, because their tokens lack the ConvoAI service. */}
 
 ## Create an agent
 

@@ -5,7 +5,7 @@ description: API reference for the Conversational AI Platform (Preview) features
 
 {/* PLATFORM-NEW: new page for the Platform SDK reference. Status: drafted on 2026-10-28 from the agora-agents-python preview branch (feat/v3-api-preview, commit 8edae82) and its docs/reference/v3.md, pending review. Signatures were checked against the SDK source; the examples on the Platform guide pages were run in pre-release testing. */}
 
-{/* Verified on 2026-10-30: agora-agents 3.0.0a3 is published on PyPI (Git tag v3.0.0-alpha.3). A fresh install of the published package ran the client setup, agent and session examples, and Basic authentication in pre-release testing. */}
+{/* Verified on 2026-11-10: agora-agents 3.0.0a4 is published on PyPI (Git tag v3.0.0-alpha.4). A fresh install ran the client setup, agent and session examples, Basic authentication, the token functions, and the error classes against the Platform API. */}
 
 The `agora-agents` Python SDK supports the Conversational AI Platform (Preview) alongside the Voice Agent API. This page covers the Platform features: saved agents, Platform sessions, secret sets, phone numbers, campaigns, and the low-level `client.v3` namespace.
 
@@ -13,10 +13,10 @@ The vendor classes, such as `OpenAI` and `DeepgramSTT`, and the builder methods,
 
 ## Install
 
-Platform support is in the SDK preview, version 3.0.0a3. You need Python 3.8 or later. Install the SDK in your project's virtual environment, and specify the version, because the default `agora-agents` release doesn't support the Platform API:
+Platform support is in the SDK preview, version 3.0.0a4. You need Python 3.8 or later. Install the SDK in your project's virtual environment, and specify the version, because the default `agora-agents` release doesn't support the Platform API:
 
 ```bash
-pip install agora-agents==3.0.0a3
+pip install agora-agents==3.0.0a4
 ```
 
 The package imports as `agora_agent`. Import the classes you use, for example:
@@ -148,6 +148,42 @@ secret_ref(secret_set: str, key: str) -> SecretRef
 
 Returns the reference `$secrets.<set>.<key>` for a key in a [secret set](/en/ai/platform/build/use-your-own-keys). It validates both names locally and makes no request. Each name contains 1 to 64 letters, digits, and underscores.
 
+## Tokens
+
+The SDK builds AccessToken2 tokens from your App ID and App Certificate. Generate tokens on your server, and never send your App Certificate to a client.
+
+```python
+generate_client_token(app_id, app_certificate, channel_name, uid, token_expire=86400, privilege_expire=0) -> str
+```
+
+Builds an RTC and RTM token for your app's client, for example in a token route that your front end calls. The token lets the user join the RTC channel and log in to Signaling, which carries the agent's transcripts and state. It doesn't include the ConvoAI service and can't authenticate Platform requests. Import it from `agora_agent`.
+
+```python
+generate_convo_ai_token(app_id, app_certificate, channel_name, uid, token_expire=86400, privilege_expire=0) -> str
+```
+
+Builds an RTC, RTM, and ConvoAI token. Use it as a token you pass in `auth_token`, or as an agent's RTC token. Import it from `agora_agent.agentkit`.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `app_id` | `str` | Your Agora App ID. |
+| `app_certificate` | `str` | Your App Certificate. |
+| `channel_name` | `str` | The RTC channel. |
+| `uid` | `int` or `str` | The UID. `generate_client_token()` also accepts a string user account. The UID is also the Signaling user ID and can't be `0` or empty. `generate_convo_ai_token()` takes a numeric UID. |
+| `token_expire` | `int` | Seconds until the token expires. The default is `86400`. |
+| `privilege_expire` | `int` | Seconds until the RTC privileges expire. `0`, the default, means the same as `token_expire`. |
+
+```python
+from agora_agent import generate_client_token
+
+token = generate_client_token(
+    app_id=os.environ["AGORA_APP_ID"],
+    app_certificate=os.environ["AGORA_APP_CERTIFICATE"],
+    channel_name=channel,
+    uid=user_uid,
+)
+```
+
 ## SavedAgent
 
 A handle to an agent saved on the Platform. With `AsyncAgora`, the handle is `AsyncSavedAgent`, and its methods are awaitable.
@@ -176,7 +212,7 @@ A handle is a snapshot. If another process changes the agent, load it again with
 | Parameter | Type | Description |
 |---|---|---|
 | `channel` | `str` | Required. The RTC channel. |
-| `token` | `str` | The RTC token for the agent's UID. The SDK doesn't generate it for Platform sessions. |
+| `token` | `str` | The RTC token for the agent's UID. If you omit it, the SDK generates one with your App Certificate. Pass it when the client has no App Certificate. |
 | `agent_uid` | `str` | The agent's UID in the channel. Omit it, or pass `"0"`, to have the Platform assign one. |
 | `remote_uids` | `list[str]` | Required. The UID of the user the agent talks to. Pass exactly one. |
 | `values` | `dict` | Values for the agent's variables. |
@@ -293,12 +329,32 @@ The SDK can retry `GET` requests. It never retries writes. To retry a session st
 
 ## Errors
 
-Import the following errors from `agora_agent`, except `ApiError`.
+Every error from `client.v3` and from the saved agent, session, and number methods is an `AgoraV3Error`, in one of the following categories. Import the errors from `agora_agent`.
 
 | Error | Raised when |
 |---|---|
-| `ApiError` | The Platform returns an error. It has `status_code`, `headers`, and `body`, which usually has `reason` and `detail`. Import it from `agora_agent.core.api_error`. For the reasons, see [Status codes](/en/api-reference/api-ref/conversational-ai/platform/status-codes). |
-| `PreconditionFailedError` | A conditional write fails with `412`. Subclass of `ApiError`. |
-| `UnsupportedFieldError` | The builder has settings with no Platform equivalent. `fields` lists them. Raised before any request. |
-| `SecretRefNotSupportedError` | A secret reference is used on the Voice Agent API. |
-| `NumberNotFoundError` | `assign_number()` or `unassign_number()` can't find the number in the project. |
+| `V3ValidationError` | The SDK rejects the input before it sends a request. Also a `ValueError`. |
+| `V3ConfigurationError` | The client setup is invalid, for example the base URL, headers, or credentials. Also a `ValueError`. |
+| `V3ConnectionError` | The request can't complete, for example because of a network failure. Also a `ConnectionError`. The original exception is `error.__cause__`. |
+| `V3TimeoutError` | The request times out. Subclass of `V3ConnectionError`, and also a `TimeoutError`. |
+| `V3ApiError` | The Platform returns an error, or a successful response that the SDK can't use. It has `status_code`, `headers`, `body`, `reason`, `detail`, and `request_id`. For a successful response, `violation` describes the problem. Also an `ApiError`. For the reasons, see [Status codes](/en/api-reference/api-ref/conversational-ai/platform/status-codes). |
+
+The following errors are more specific:
+
+| Error | Raised when |
+|---|---|
+| `PreconditionFailedError` | A conditional write fails with `412`. Subclass of `V3ApiError`. |
+| `UnsupportedFieldError` | The builder has settings with no Platform equivalent. `fields` lists them. Subclass of `V3ValidationError`. |
+| `SecretRefNotSupportedError` | A secret reference is used on the Voice Agent API. Subclass of `V3ValidationError`. |
+| `NumberNotFoundError` | `assign_number()` or `unassign_number()` can't find the number in the project. Subclass of `V3ValidationError`. |
+
+```python
+from agora_agent import V3ApiError, V3ConnectionError
+
+try:
+    session.start()
+except V3ApiError as error:
+    print(error.status_code, error.reason, error.request_id)
+except V3ConnectionError as error:
+    print("Request failed:", error)
+```

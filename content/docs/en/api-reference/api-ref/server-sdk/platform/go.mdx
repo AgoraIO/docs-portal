@@ -5,7 +5,7 @@ description: API reference for the Conversational AI Platform (Preview) features
 
 {/* PLATFORM-NEW: new page for the Platform SDK reference. Status: drafted on 2026-10-28 from the agora-agents-go preview branch (feat/v3-api-preview, commit 72032cd) and its docs/guides/v3-preview.md, pending review. Signatures were checked against the SDK source; the examples on the Platform guide pages were run in pre-release testing. */}
 
-{/* TODO(platform-confirm): Pinned to v2.14.0-alpha.3 ahead of its publication, which the SDK team confirmed for the launch. The code was tested on 2026-10-30 from the Go preview branch (c6d81a2): the client setup, agent and session examples, and Basic authentication work. After publication, verify that this install command works. */}
+{/* TODO(platform-confirm): Pinned to the pseudo-version of commit 2d48a39 on the Go preview branch (feat/v3-api-preview), which the SDK changelog names v2.14.0-alpha.4. The SDK team doesn't tag Go previews, because a tag would affect the live v2 tags. Verified on 2026-11-10: a fresh `go get` ran the client setup, agent and session examples, Basic authentication, the token functions, and the error types against the Platform API. Replace the pin when a tagged release is available. */}
 
 The `github.com/AgoraIO/agora-agents-go/v2` Go SDK supports the Conversational AI Platform (Preview) alongside the Voice Agent API. This page covers the Platform features: saved agents, Platform sessions, secret sets, phone numbers, campaigns, and the low-level `client.V3` client.
 
@@ -13,10 +13,10 @@ The vendor constructors, such as `vendors.NewOpenAI()` and `vendors.NewDeepgramS
 
 ## Install
 
-Platform support is in the SDK preview, version v2.14.0-alpha.3. You need Go 1.21 or later. Add the SDK to your Go module:
+Platform support is in the SDK preview, version v2.14.0-alpha.4. You need Go 1.21 or later. The preview isn't tagged. Add it to your Go module as follows:
 
 ```bash
-go get github.com/AgoraIO/agora-agents-go/v2@v2.14.0-alpha.3
+go get github.com/AgoraIO/agora-agents-go/v2@v2.13.1-0.20261106151340-2d48a391639b
 go mod tidy
 ```
 
@@ -147,6 +147,45 @@ func SecretRef(set, key string) string
 
 Returns the reference `$secrets.<set>.<key>` for a key in a [secret set](/en/ai/platform/build/use-your-own-keys). It validates both names locally, makes no request, and panics on an invalid name. Each name contains 1 to 64 letters, digits, and underscores.
 
+## Tokens
+
+The SDK builds AccessToken2 tokens from your App ID and App Certificate. Generate tokens on your server, and never send your App Certificate to a client.
+
+```go
+func GenerateClientToken(opts agentkit.GenerateClientTokenOptions) (string, error)
+```
+
+Builds an RTC and RTM token for your app's client, for example in a token route that your front end calls. The token lets the user join the RTC channel and log in to Signaling, which carries the agent's transcripts and state. It doesn't include the ConvoAI service and can't authenticate Platform requests.
+
+```go
+func GenerateConvoAIToken(opts agentkit.GenerateConvoAITokenOptions) (string, error)
+```
+
+Builds an RTC, RTM, and ConvoAI token. Use it as the `Token` client field, or as an agent's RTC token.
+
+Both functions take the following fields:
+
+| Field | Type | Description |
+|---|---|---|
+| `AppID` | `string` | Required. Your Agora App ID. |
+| `AppCertificate` | `string` | Required. Your App Certificate. |
+| `ChannelName` | `string` | Required. The RTC channel. |
+| `UID` | `string` or `int` | Required. In `GenerateClientTokenOptions`, a `string`: the numeric UID in string form, such as `"100"`, or a user account. In `GenerateConvoAITokenOptions`, an `int`. The UID is also the Signaling user ID and can't be `0` or empty. |
+| `TokenExpire` | `int` | Seconds until the token expires. The default is `86400`. |
+| `PrivilegeExpire` | `int` | Seconds until the RTC privileges expire. `0`, the default, means the same as `TokenExpire`. |
+
+```go
+token, err := agentkit.GenerateClientToken(agentkit.GenerateClientTokenOptions{
+	AppID:          os.Getenv("AGORA_APP_ID"),
+	AppCertificate: os.Getenv("AGORA_APP_CERTIFICATE"),
+	ChannelName:    channel,
+	UID:            userUID,
+})
+if err != nil {
+	log.Fatal(err)
+}
+```
+
 ## SavedAgent
 
 A handle to an agent saved on the Platform.
@@ -174,7 +213,7 @@ A handle is a snapshot. If another process changes the agent, load it again with
 | Field | Type | Description |
 |---|---|---|
 | `Channel` | `string` | Required. The RTC channel. |
-| `Token` | `string` | The RTC token for the agent's UID. The SDK doesn't generate it for Platform sessions. |
+| `Token` | `string` | The RTC token for the agent's UID. If you omit it, the SDK generates one with your App Certificate. Pass it when the client has no App Certificate. |
 | `AgentUID` | `string` | The agent's UID in the channel. Omit it to have the Platform assign one. |
 | `RemoteUIDs` | `[]string` | Required. The UID of the user the agent talks to. Pass exactly one. |
 | `Values` | `map[string]any` | Values for the agent's variables. |
@@ -308,12 +347,37 @@ The SDK makes one attempt for every write. To retry a session start safely, pass
 
 ## Errors
 
+Every error from the `v3` package and from the AgentKit methods that call the Platform implements `v3.Error`, in one of the following categories. Match a category with `errors.Is` and its sentinel. To read the details, use `errors.As` with the error type.
+
+| Sentinel | Error type | Returned when |
+|---|---|---|
+| `v3.ErrValidation` | `*v3.ValidationError` | The SDK rejects the input before it sends a request. |
+| `v3.ErrConfiguration` | `*v3.ConfigurationError` | The client is misconfigured, for example the base URL, the App ID, or the credentials. |
+| `v3.ErrConnection` | `*v3.ConnectionError` | The request can't complete, for example because of a network failure or a canceled context. It unwraps to the `net` or `context` error. |
+| `v3.ErrTimeout` | `*v3.ConnectionError` | The request times out, or the context deadline expires. Also matches `v3.ErrConnection`. |
+| `v3.ErrAPI` | `*v3.APIError` | The Platform returns an error, or a successful response that the SDK can't use. `*v3.APIError` has `StatusCode`, `Header`, `Body`, `ParsedBody`, `Reason`, `Detail`, and `RequestID`. For the reasons, see [Status codes](/en/api-reference/api-ref/conversational-ai/platform/status-codes). |
+| `v3.ErrPreconditionFailed` | `*v3.PreconditionFailedError` | A conditional write fails with `412`. Also matches `v3.ErrAPI`. |
+
+The following AgentKit errors are more specific. Match them with `errors.Is`.
+
 | Error | Returned when |
 |---|---|
-| `*core.APIError` | The Platform returns an error. It has `StatusCode` and the response body, which usually has `reason` and `detail`. Import `github.com/AgoraIO/agora-agents-go/v2/core`, and match it with `errors.As`. For the reasons, see [Status codes](/en/api-reference/api-ref/conversational-ai/platform/status-codes). |
-| `*v3.PreconditionFailedError` | A conditional write fails with `412`. Match it with `errors.As`. |
-| `agentkit.ErrPreconditionFailed` | `savedAgent.Update()` fails with `412`. Match it with `errors.Is`. |
-| `agentkit.ErrUnsupportedField` | The builder has settings with no Platform equivalent. Returned before any request. |
-| `agentkit.ErrSecretRefNotSupported` | A secret reference is used on the Voice Agent API. |
-| `agentkit.ErrNumberNotFound` | `AssignNumber()` or `UnassignNumber()` can't find the number in the project. |
-| `agentkit.ErrUnsupportedSessionOperation` | A session method isn't available on Platform sessions. |
+| `agentkit.ErrPreconditionFailed` | `savedAgent.Update()` fails with `412`. |
+| `agentkit.ErrUnsupportedField` | The builder has settings with no Platform equivalent. Also matches `v3.ErrValidation`. |
+| `agentkit.ErrSecretRefNotSupported` | A secret reference is used on the Voice Agent API. Also matches `v3.ErrValidation`. |
+| `agentkit.ErrNumberNotFound` | `AssignNumber()` or `UnassignNumber()` can't find the number in the project. Also matches `v3.ErrValidation`. |
+| `agentkit.ErrUnsupportedSessionOperation` | A session method isn't available on Platform sessions. Also matches `v3.ErrValidation`. |
+
+```go
+if _, err := session.Start(ctx); err != nil {
+	var apiErr *v3.APIError
+	switch {
+	case errors.As(err, &apiErr):
+		log.Printf("%d %s (request ID %s)", apiErr.StatusCode, apiErr.Reason, apiErr.RequestID)
+	case errors.Is(err, v3.ErrConnection):
+		log.Printf("request failed: %v", err)
+	default:
+		log.Fatal(err)
+	}
+}
+```
