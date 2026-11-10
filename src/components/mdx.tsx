@@ -77,6 +77,7 @@ import {
   type NormalizedDocsHref,
   normalizeDocsHref,
 } from '@/lib/docs-link-normalize';
+import { normalizeLocale } from '@/lib/i18n/i18n-config';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import { buildPlatformPathname } from '@/lib/platforms/route';
 import {
@@ -1476,10 +1477,7 @@ function CommandBlock({
     });
 
   return (
-    <Pre
-      className={cn('shiki', `language-${language}`)}
-      locale={locale}
-    >
+    <Pre className={cn('shiki', `language-${language}`)} locale={locale}>
       <code className={cn('language-code', `language-${language}`)}>
         {lines.map(({ id, line }) => (
           <span className="line" key={id}>

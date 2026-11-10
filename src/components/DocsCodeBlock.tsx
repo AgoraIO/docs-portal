@@ -31,7 +31,9 @@ export function DocsCodeBlock({
 
   const blockTitle = languageLabel ? (
     <span className="docs-code-language">{languageLabel}</span>
-  ) : title;
+  ) : (
+    title
+  );
 
   return (
     <FumadocsCodeBlock

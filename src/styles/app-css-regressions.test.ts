@@ -7,7 +7,11 @@ const appCss = readFileSync(
   resolve(process.cwd(), 'src/styles/app.css'),
   'utf8',
 );
-const appCssRoot = postcss.parse(appCss);
+const metadataCss = readFileSync(
+  resolve(process.cwd(), 'src/styles/openapi-schema-metadata.css'),
+  'utf8',
+);
+const appCssRoot = postcss.parse(`${appCss}\n${metadataCss}`);
 
 function normalizeSelector(selector: string) {
   return selector.replace(/\s+/g, ' ').trim();
