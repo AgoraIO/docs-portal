@@ -14,6 +14,8 @@ import {
   getCnSearchPlatformLabel,
   getCnSearchSdkLabel,
 } from '@/lib/search/cn-search-context';
+import { getCnSearchFamily } from '@/lib/search/cn-search-family';
+import { resolveCnSearchQuery } from '@/lib/search/cn-search-intent';
 import {
   getSearchPageGroupKey,
   type SearchPageGroup,
@@ -46,10 +48,12 @@ export function SearchResultList({
   productLabel,
   onSelectResult,
   rankOffset = 0,
+  query = '',
 }: {
   groups: SearchPageGroup[];
   productLabel: (product?: string) => string;
   rankOffset?: number;
+  query?: string;
   onSelectResult?: (
     event: MouseEvent<HTMLAnchorElement>,
     path: string,
@@ -69,7 +73,23 @@ export function SearchResultList({
           const groupKey = getSearchPageGroupKey(group);
           const firstHref = first.url;
           const hasSectionTitle = first.sectionTitle !== group.title;
-          const titleHref = hasSectionTitle ? group.pageUrl : firstHref;
+          const identifier = resolveCnSearchQuery(query)
+            .query.trim()
+            .replace(/\(\)$/, '');
+          const memberMatch =
+            getCnSearchFamily(group) === 'api' &&
+            /^[A-Za-z_][A-Za-z\d_]*$/.test(identifier) &&
+            first.sectionTitle
+              .replace(/<\/?(?:mark|em)>/gi, '')
+              .replace(/\s*\[\d+\/\d+\]$/, '')
+              .replace(/\(\)$/, '')
+              .trim()
+              .toLowerCase() === identifier.toLowerCase();
+          const titleHref = memberMatch
+            ? firstHref
+            : hasSectionTitle
+              ? group.pageUrl
+              : firstHref;
           const ancestors = first.headingPath
             .slice(0, -1)
             .filter((heading) => heading !== group.title)
@@ -139,6 +159,7 @@ export function SearchResultList({
                         event,
                         titleHref,
                         groupIndex + 1 + rankOffset,
+                        ...(memberMatch ? ([1] as const) : []),
                       )
                     }
                     onAuxClick={(event) =>
@@ -146,6 +167,7 @@ export function SearchResultList({
                         event,
                         titleHref,
                         groupIndex + 1 + rankOffset,
+                        ...(memberMatch ? ([1] as const) : []),
                       )
                     }
                   >
@@ -155,6 +177,28 @@ export function SearchResultList({
                       className="size-4 shrink-0"
                     />
                   </a>
+                  {memberMatch && firstHref !== group.pageUrl && (
+                    <a
+                      className="search-page-section"
+                      href={group.pageUrl}
+                      onClick={(event) =>
+                        onSelectResult?.(
+                          event,
+                          group.pageUrl,
+                          groupIndex + 1 + rankOffset,
+                        )
+                      }
+                      onAuxClick={(event) =>
+                        onSelectResult?.(
+                          event,
+                          group.pageUrl,
+                          groupIndex + 1 + rankOffset,
+                        )
+                      }
+                    >
+                      查看整页
+                    </a>
+                  )}
                   {hasSectionTitle && (
                     <a
                       className="search-page-section search-page-result-link"

@@ -10,14 +10,21 @@ export type SearchPageState = {
   version?: string;
   type: 'all' | CnSearchFamily;
   page: number;
+  loaded?: number;
 };
 
 export const SEARCH_PAGE_SIZE = 20;
+// Bound initial restoration work. Direct page links retain their old meaning;
+// an expanded range is at most twenty pages, then the UI starts a new range.
+export const SEARCH_MAX_LOADED_PAGES = 20;
 
 export function parseSearchPageState(
   input: Record<string, unknown>,
 ): SearchPageState {
   const page = Number(input.page);
+  const firstPage =
+    Number.isSafeInteger(page) && page > 0 ? Math.min(page, 500) : 1;
+  const loaded = Number(input.loaded);
   const product = readIdentifier(input.product);
   return {
     q: typeof input.q === 'string' ? input.q.trim().slice(0, 500) : '',
@@ -43,7 +50,16 @@ export function parseSearchPageState(
         : input.type === 'api' || input.type === 'openapi'
           ? 'api'
           : 'all',
-    page: Number.isSafeInteger(page) && page > 0 ? Math.min(page, 500) : 1,
+    page: firstPage,
+    ...(Number.isSafeInteger(loaded) && loaded > firstPage
+      ? {
+          loaded: Math.min(
+            loaded,
+            firstPage + SEARCH_MAX_LOADED_PAGES - 1,
+            500,
+          ),
+        }
+      : {}),
   };
 }
 
@@ -65,6 +81,7 @@ export function buildSearchPageHref(
   if (state.version) params.set('version', state.version);
   if (state.type !== 'all') params.set('type', state.type);
   if (state.page > 1) params.set('page', String(state.page));
+  if (state.loaded) params.set('loaded', String(state.loaded));
   return `/${locale}/search${params.size ? `?${params}` : ''}`;
 }
 

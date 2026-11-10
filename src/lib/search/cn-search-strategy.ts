@@ -157,6 +157,11 @@ export function buildCnSearchDocument(record: SearchSection) {
       : products[0];
   const pageEntry =
     !record.url.includes('#') && record.sectionTitle === record.pageTitle;
+  // Use maintained tutorial routes, not a list of favored result URLs. Setup,
+  // release notes and demo downloads are not complete first-use tutorials.
+  const quickStart =
+    /\/get-started\//.test(publicUrl) &&
+    /^(?:实现|使用|开始|集成|加入|构建|快速|跑通)/.test(record.pageTitle);
   const productEntry =
     /^\/(?:realtime-media|solutions|api-reference\/api-ref)\/[^/]+$/.test(
       publicUrl,
@@ -187,6 +192,8 @@ export function buildCnSearchDocument(record: SearchSection) {
     ...(record.aliases ?? []),
     ...versionAliases,
     ...(codeObfuscation ? ['代码混淆'] : []),
+    ...(quickStart && pageEntry ? ['快速开始', '快速入门', '接入教程'] : []),
+    ...(record.sectionTitle.includes('收发消息') ? ['发送消息'] : []),
   ];
   const guideHeading =
     getCnSearchFamily({ pageUrl: publicUrl, docType: record.docType }) ===
@@ -227,6 +234,7 @@ export function buildCnSearchDocument(record: SearchSection) {
       : [];
   return {
     ...record,
+    taskKinds: quickStart && pageEntry ? ['quick-start'] : [],
     ...(aliases.length ? { aliases: [...new Set(aliases)] } : {}),
     languageEntryTerms,
     languageEntryRank: languageEntryTerms.length ? languageEntryRank : 1000,
@@ -241,7 +249,15 @@ export function buildCnSearchDocument(record: SearchSection) {
     product,
     products,
     ...(guideHeading ? { guideHeading: record.sectionTitle } : {}),
-    ...(pageEntry ? { entryTitle: [...entryAliases, entryTitle] } : {}),
+    ...(pageEntry
+      ? {
+          entryTitle: [
+            ...entryAliases,
+            ...(quickStart ? ['快速开始'] : []),
+            entryTitle,
+          ],
+        }
+      : {}),
     // Match maintained product names before similarly named event/reference pages.
     // Separate complete acronyms so RTM and the RTMP prefix share equal word positions.
     ...(pageEntry && productEntry

@@ -38,6 +38,14 @@ const hit = {
   hidden: false,
 };
 afterEach(() => vi.restoreAllMocks());
+it('removes serialized Slot markers while retaining normal identifiers and prose', () => {
+  expect(cleanSearchSnippet('高可靠性 table-list-cn-07 details 低延迟')).toBe(
+    '高可靠性 低延迟',
+  );
+  expect(cleanSearchSnippet('table-list-cn-07 是配置标识')).toBe(
+    'table-list-cn-07 是配置标识',
+  );
+});
 it('removes serialized authoring syntax while retaining prose and search highlights', () => {
   expect(
     cleanSearchSnippet(

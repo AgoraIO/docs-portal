@@ -18,6 +18,48 @@ const section: SearchSection = {
 };
 describe('CN guide heading relevance', () => {
   it.each([
+    [
+      '/realtime-media/local-server-recording/get-started/start-recording',
+      '开始录制音视频',
+    ],
+    ['/solutions/voip-call/get-started/start-video-call', '实现和小程序互通'],
+    [
+      '/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb',
+      '加入白板房间',
+    ],
+  ])(
+    'recognizes first-use tutorials whose slug is not quick-start: %s',
+    (url, title) => {
+      expect(
+        buildCnSearchDocument({
+          ...section,
+          url,
+          canonicalUrl: url,
+          pageTitle: title,
+          sectionTitle: title,
+        }).taskKinds,
+      ).toContain('quick-start');
+    },
+  );
+  it('indexes a maintained get-started tutorial as a quick start, without promoting setup or demos', () => {
+    const tutorial = {
+      ...section,
+      url: '/ai/get-started/quick-start',
+      product: 'conversational-ai',
+      pageTitle: '使用 RESTful API 实现对话式 AI 引擎',
+      sectionTitle: '使用 RESTful API 实现对话式 AI 引擎',
+    };
+    expect(buildCnSearchDocument(tutorial).aliases).toContain('快速开始');
+    expect(
+      buildCnSearchDocument({
+        ...tutorial,
+        url: '/ai/get-started/enable-service',
+        pageTitle: '开通服务',
+        sectionTitle: '开通服务',
+      }).aliases ?? [],
+    ).not.toContain('快速开始');
+  });
+  it.each([
     'SDK 的代码被混淆时需保留这些类。',
     '启用字段混淆时，保留 autoShape 属性。',
     'R8/ProGuard 缩减和混淆的配置方法。',

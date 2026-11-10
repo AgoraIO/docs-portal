@@ -38,6 +38,44 @@ const group: SearchPageGroup = {
 };
 
 describe('SearchResultList', () => {
+  it.each([
+    'onTokenPrivilegeWillExpire',
+    'login',
+    'initialize',
+    'destroy',
+    'Initialize',
+  ])(
+    'makes the exact API member %s the primary destination, while keeping a page entrance',
+    (symbol) => {
+      const apiGroup = {
+        ...group,
+        pageUrl: '/api-reference/rtc/android/channel',
+        title: '频道相关',
+        sections: [
+          {
+            ...group.sections[0],
+            url: `/api-reference/rtc/android/channel#${symbol.toLowerCase()}`,
+            sectionTitle: symbol,
+          },
+        ],
+      };
+      render(
+        <SearchResultList
+          groups={[apiGroup]}
+          productLabel={() => '实时互动'}
+          query={symbol}
+        />,
+      );
+      expect(screen.getByRole('link', { name: '频道相关' })).toHaveAttribute(
+        'href',
+        apiGroup.sections[0].url,
+      );
+      expect(screen.getByRole('link', { name: '查看整页' })).toHaveAttribute(
+        'href',
+        apiGroup.pageUrl,
+      );
+    },
+  );
   it('reports the visible global rank after an earlier result family', () => {
     const onSelectResult = vi.fn((event: { preventDefault(): void }) =>
       event.preventDefault(),

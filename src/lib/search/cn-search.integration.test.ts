@@ -237,6 +237,60 @@ enableLegacyAudio 修复。
           '<h2 id="android">Android</h2><h2 id="v32">v3.2</h2><h3 id="feature">新增特性</h3><h4 id="receive">自动接收</h4><h2 id="v31">v3.1</h2><h3 id="fixes">问题修复</h3>',
       })),
     );
+
+    records.push(
+      ...['android', 'ios', 'web', 'unity', 'windows', 'flutter'].map(
+        (platform) => ({
+          ...section,
+          id: `start-${platform}`,
+          url: `/realtime-media/rtc/get-started/quick-start/${platform}`,
+          canonicalUrl: '/realtime-media/rtc/get-started/quick-start',
+          platform: [platform],
+          pageTitle: '实现音视频互动',
+          sectionTitle: '实现音视频互动',
+          headingPath: ['实现音视频互动'],
+          content: `使用 ${platform} 首次通话。`,
+        }),
+      ),
+      ...[
+        [
+          'ai-start',
+          '/ai/get-started/quick-start',
+          'conversational-ai',
+          '使用 RESTful API 实现对话式 AI 引擎',
+        ],
+        [
+          'local-start',
+          '/realtime-media/local-server-recording/get-started/start-recording',
+          'local-server-recording',
+          '开始录制音视频',
+        ],
+        ['rtm-login', '/realtime-media/rtm/build/login', 'rtm', '登录服务'],
+        [
+          'rtm-send',
+          '/realtime-media/rtm/build/send-message',
+          'rtm',
+          '发送消息',
+        ],
+        [
+          'faq-silent',
+          '/reference/faq/audio/no-audio',
+          'rtc',
+          '如何处理无声问题？',
+        ],
+      ].map(([id, url, product, title]) => ({
+        ...section,
+        id,
+        url,
+        canonicalUrl: url,
+        product,
+        products: [product],
+        pageTitle: title,
+        sectionTitle: title,
+        headingPath: [title],
+        content: title,
+      })),
+    );
     const receipt = await prepareSearchIndex({
       client: createSearchIndexClient({ host, writeKey: key }),
       indexUid: 'docs_search_integration',
@@ -266,6 +320,68 @@ enableLegacyAudio 修复。
       parseSearchPageState({ q, type: 'docs', page, platform }),
     );
 
+  it('finds product actions phrased as questions without ignoring conflicting filters or unknown conditions', async () => {
+    for (const q of ['RTM 怎么登录', '怎么登录 RTM', '实时消息如何登录？']) {
+      const result = await queryCnSearch(config, parseSearchPageState({ q }));
+      expect(result.groups[0]?.pageUrl).toBe('/realtime-media/rtm/build/login');
+    }
+    const conflict = await queryCnSearch(
+      config,
+      parseSearchPageState({ q: 'RTM 怎么登录', product: 'rtc' }),
+    );
+    expect(conflict.groups.some((group) => group.product === 'rtm')).toBe(
+      false,
+    );
+    expect((await search('RTM 怎么登录不存在的服务器987')).groups).toHaveLength(
+      0,
+    );
+  });
+
+  it('keeps a silent-call question aligned with its troubleshooting FAQ', async () => {
+    const result = await queryCnSearch(
+      config,
+      parseSearchPageState({ q: '加入频道后没有声音该怎么办' }),
+    );
+    expect(result.groups[0]?.pageUrl).toBe('/reference/faq/audio/no-audio');
+    expect(
+      (await search('加入频道后无声但只在未知设备987上发生怎么办')).groups,
+    ).toHaveLength(0);
+  });
+
+  it('finds maintained first-use tutorials and deduplicates their platform variants before paging', async () => {
+    const result = await queryCnSearch(
+      config,
+      parseSearchPageState({ q: '快速开始' }),
+    );
+    expect(result.groups.map((g) => g.title)).toEqual(
+      expect.arrayContaining([
+        '实现音视频互动',
+        '使用 RESTful API 实现对话式 AI 引擎',
+        '开始录制音视频',
+      ]),
+    );
+    expect(
+      result.groups.filter((g) => g.title === '实现音视频互动'),
+    ).toHaveLength(1);
+    expect((await search('对话式 AI 快速开始')).groups[0].product).toBe(
+      'conversational-ai',
+    );
+    expect((await search('本地服务端录制 快速开始')).groups[0].product).toBe(
+      'local-server-recording',
+    );
+  });
+  it('resolves product actions and bounded Chinese troubleshooting without loosening unknown terms', async () => {
+    expect((await search('实时消息 登录')).groups[0].title).toBe('登录服务');
+    expect((await search('实时消息 发送消息')).groups[0].title).toBe(
+      '发送消息',
+    );
+    const result = await queryCnSearch(
+      config,
+      parseSearchPageState({ q: '加入频道后听不到对方声音怎么办' }),
+    );
+    expect(result.groups[0].pageUrl).toBe('/reference/faq/audio/no-audio');
+    expect((await search('外星通话无声未知故障怎么办')).groups).toEqual([]);
+  });
   it('keeps complete product acronyms separate and does not confuse obfuscation with mixing', async () => {
     expect((await search('rtm')).groups.map((group) => group.pageUrl)).toEqual([
       '/realtime-media/rtm',

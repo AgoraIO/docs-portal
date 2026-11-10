@@ -73,8 +73,11 @@ function SearchRoute() {
                 ...previous,
                 ...patch,
                 page: patch.page ?? 1,
+                loaded: 'loaded' in patch ? patch.loaded : undefined,
               }),
-            resetScroll: patch.page !== undefined && patch.q === undefined,
+            resetScroll: patch.loaded
+              ? false
+              : patch.page !== undefined && patch.q === undefined,
           });
         }}
       />
