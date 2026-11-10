@@ -44,6 +44,10 @@ In IoT SDK, `H.264` video data is sent and received by default.
 
 To send and receive `JPEG` video data, when calling the `agora_rtc_send_video_data` method, set `video_frame_info_t.data_type` to `VIDEO_DATA_TYPE_GENERIC_JPEG`.
 
+<a id="set-up-rtc-sdk-for-nativethird-party-frameworks"></a>
+
+<a id="set-up-video-sdk-for-nativethird-party-frameworks"></a>
+
 ## Set up RTC SDK for Native/third-party frameworks and RTC Server SDK
 
 **Audio**
@@ -131,6 +135,8 @@ To send and receive `JPEG` video data, use the following methods:
 | Server Python | `connection.get_agora_parameter.set_parameters("{\"engine.video.codec_type\": \"20\"}");` |
 | Server Go | `connection.GetAgoraParameter.SetParameters("{\"engine.video.codec_type\": \"20\"}");` |
 
+<a id="set-up-video-sdk-for-web"></a>
+
 ## Set up RTC SDK for Web
 
 **Audio**
@@ -150,6 +156,8 @@ Only the Web SDK version 4.9.0 or higher supports setting the audio encoding for
 **Video**
 
 In Web SDK (v4.x), `VP8` video data is sent and received by default. You call `createClient` to set the video data format to `"h264"`.
+
+<a id="set-up-video-sdk-for-embedded-systems"></a>
 
 ## Set up RTC SDK for embedded systems
 

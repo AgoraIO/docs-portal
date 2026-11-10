@@ -1,6 +1,6 @@
 ---
 title: "Chat and Signaling comparison"
-description: "Links to the manual downloads for this product, and explanations on how to install them."
+description: "Compare Agora Chat and Signaling to choose the right service for your use case."
 ---
 
 The choice between Chat and Signaling requires a comprehensive evaluation according to your business demands and subsequent extensions.

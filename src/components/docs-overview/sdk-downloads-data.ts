@@ -3173,39 +3173,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         ],
       },
     ],
-    addOns: [
-      {
-        id: 'on-premise-recording-sdk-linux',
-        label: 'Agora On-Premise Recording SDK',
-        info: 'Compatible with: Voice Calling, Video Calling, or Interactive Live Streaming',
-        versions: [
-          {
-            id: 'c++-x86_64',
-            label: 'x86_64 Version 4.4.151 for C++ (Latest)',
-            downloadLink:
-              'https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.4.151-20250919_101833-891308.tgz',
-          },
-          {
-            id: 'c++-arm-x64',
-            label: 'arm64 Version 4.4.151 for C++ (Latest)',
-            downloadLink:
-              'https://download.agora.io/rtsasdk/release/Agora-RTC-aarch64-linux-gnu-v4.4.151-20250919_102817-891319.tgz',
-          },
-          {
-            id: 'java-x86_64',
-            label: 'x86_64 Version 4.4.151 for Java (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora-Linux-Recording-Java-SDK-v4.4.151.1-x86_64-891308-28c706d74a-20250919_142050.zip',
-          },
-          {
-            id: 'java-arm-x64',
-            label: 'arm64 Version 4.4.151 for Java (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora-Linux-Recording-Java-SDK-v4.4.151-aarch64-891319-952e64402b-20250919_140753.zip',
-          },
-        ],
-      },
-    ],
   },
   {
     id: 'linux-cpp',
@@ -3334,6 +3301,27 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         ],
       },
     ],
+    addOns: [
+      {
+        id: 'on-premise-recording-sdk-linux-cpp',
+        label: 'Agora On-Premise Recording SDK',
+        info: 'Compatible with: Voice Calling, Video Calling, or Interactive Live Streaming',
+        versions: [
+          {
+            id: 'c++-x86_64',
+            label: 'Version 4.4.151 for x86_64 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.4.151-20250919_101833-891308.tgz',
+          },
+          {
+            id: 'c++-arm-x64',
+            label: 'Version 4.4.151 for arm64 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTC-aarch64-linux-gnu-v4.4.151-20250919_102817-891319.tgz',
+          },
+        ],
+      },
+    ],
   },
   {
     id: 'linux-java',
@@ -3380,6 +3368,27 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
               'https://download.agora.io/rtm2/release/Agora_RTM_JAVA_SDK_for_Linux_aarch64_v2.3.0.zip',
             packageManager:
               'https://central.sonatype.com/artifact/io.agora/rtm-java-aarch64/2.3.0',
+          },
+        ],
+      },
+    ],
+    addOns: [
+      {
+        id: 'on-premise-recording-sdk-linux-java',
+        label: 'Agora On-Premise Recording SDK',
+        info: 'Compatible with: Voice Calling, Video Calling, or Interactive Live Streaming',
+        versions: [
+          {
+            id: 'java-x86_64',
+            label: 'Version 4.4.151 for x86_64 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora-Linux-Recording-Java-SDK-v4.4.151.1-x86_64-891308-28c706d74a-20250919_142050.zip',
+          },
+          {
+            id: 'java-arm-x64',
+            label: 'Version 4.4.151 for arm64 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora-Linux-Recording-Java-SDK-v4.4.151-aarch64-891319-952e64402b-20250919_140753.zip',
           },
         ],
       },

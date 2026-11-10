@@ -1,6 +1,6 @@
 ---
 title: "HTTP status codes"
-description: "Describes the security best practices recommended by Agora Chat."
+description: "Understand common HTTP status codes returned by the Agora Chat RESTful API and how to troubleshoot errors."
 ---
 
 This page describes the frequently returned HTTP status codes for the Chat RESTful API.
