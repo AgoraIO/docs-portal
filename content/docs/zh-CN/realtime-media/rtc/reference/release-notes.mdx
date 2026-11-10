@@ -8008,11 +8008,6 @@ v4.0.0 修复了以下问题：
 
    受美颜重构的影响，自 v4.6.0 起，不再支持调用 [`setExtensionProperty`](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#api_irtcengine_setextensionproperty) 启用美妆功能，改用 `STYLE_MAKEUP` 节点实现。
 
-#### 双流模式行为变更
-
-   - v4.6.0 之前：发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM) 时，不会主动发送小流，仅当主播身份的接收端调用 [`setRemoteVideoStreamType`](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起小流申请后，发送端收到申请才会开始发送小流。
-   - v4.6.0 及之后版本：发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM) 时，会根据订阅端用户的下行网络质量，自动决定发送或停止发送小流。若将 **mode** 设置为其他发送模式或显式配置了小流的宽、高、码率或帧率，则此自适应功能失效。
-
 #### 新增域名白名单
 
 如果你由之前的版本升级到 v4.6.0 且使用了域名白名单功能（`RtcEngineConfig` 下的 `domainLimit` 为 `true`），请在白名单中添加以下域名，以确保互通顺畅：
@@ -10578,11 +10573,6 @@ https://miniapp-4.agoraio.cn
 
 受该版本美颜重构的影响，自 v4.6.2 起，不再支持调用 [`setExtensionProperty`](/zh-CN/api-reference/rtc/electron/extension#api_irtcengine_setextensionproperty) 启用美妆功能，改用 `STYLE_MAKEUP` 节点实现。
 
-#### 双流模式行为变更
-
-- v4.6.2 之前：发送端开启小流自适应模式 (AutoSimulcastStream) 时，不会主动发送小流，仅当主播身份的接收端调用 [`setRemoteVideoStreamType`](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起小流申请后，发送端收到申请才会开始发送小流。
-- v4.6.2 及之后版本：发送端开启小流自适应模式 (AutoSimulcastStream) 时，会根据订阅端用户的下行网络质量，自动决定发送或停止发送小流。若将 **mode** 设置为其他发送模式或显式配置了小流的宽、高、码率或帧率，则此自适应功能失效。
-
 #### 新增域名白名单
 
 如果你由之前的版本升级到 v4.6.2 且使用了域名白名单功能（`RtcEngineConfig` 下的 `domainLimit` 为 `true`），请在白名单中添加以下域名，以确保互通顺畅：
@@ -12342,11 +12332,6 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 #### 美妆功能实现变更
 
 受该版本美颜重构的影响，自 v4.6.2 起，不再支持调用 [`SetExtensionProperty`](/zh-CN/api-reference/rtc/unity/extension#api_irtcengine_setextensionproperty) 启用美妆功能，改用 `STYLE_MAKEUP` 节点实现。
-
-#### 双流模式行为变更
-
-- v4.6.2 之前：发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM) 时，不会主动发送小流，仅当主播身份的接收端调用 [`SetRemoteVideoStreamType`](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起小流申请后，发送端收到申请才会开始发送小流。
-- v4.6.2 及之后版本：发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM) 时，会根据订阅端用户的下行网络质量，自动决定发送或停止发送小流。若将 **mode** 设置为其他发送模式或显式配置了小流的宽、高、码率或帧率，则此自适应功能失效。
 
 #### 新增域名白名单
 
@@ -14510,11 +14495,6 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 
 受该版本美颜重构的影响，自 v4.6.2 起，不再支持调用 [`setExtensionProperty`](/zh-CN/api-reference/rtc/flutter/extension#api_irtcengine_setextensionproperty) 启用美妆功能，改用 `STYLE_MAKEUP` 节点实现。
 
-#### 双流模式行为变更
-
-- v4.6.2 之前：发送端开启小流自适应模式 (autoSimulcastStream) 时，不会主动发送小流，仅当主播身份的接收端调用 [`setRemoteVideoStreamType`](/zh-CN/api-reference/rtc/flutter/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起小流申请后，发送端收到申请才会开始发送小流。
-- v4.6.2 及之后版本：发送端开启小流自适应模式 (autoSimulcastStream) 时，会根据订阅端用户的下行网络质量，自动决定发送或停止发送小流。若将 **mode** 设置为其他发送模式或显式配置了小流的宽、高、码率或帧率，则此自适应功能失效。
-
 #### 新增域名白名单
 
 如果你由之前的版本升级到 v4.6.2 且使用了域名白名单功能（`RtcEngineConfig` 下的 `domainLimit` 为 `true`），请在白名单中添加以下域名，以确保互通顺畅：
@@ -16622,11 +16602,6 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 #### 美妆功能实现变更
 
 受该版本美颜重构的影响，自 v4.6.2 起，不再支持调用 [`setExtensionProperty`](/zh-CN/api-reference/rtc/react-native/extension#api_irtcengine_setextensionproperty) 启用美妆功能，改用 `STYLE_MAKEUP` 节点实现。
-
-#### 双流模式行为变更
-
-- v4.6.2 之前：发送端开启小流自适应模式 (AutoSimulcastStream) 时，不会主动发送小流，仅当主播身份的接收端调用 [`setRemoteVideoStreamType`](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起小流申请后，发送端收到申请才会开始发送小流。
-- v4.6.2 及之后版本：发送端开启小流自适应模式 (AutoSimulcastStream) 时，会根据订阅端用户的下行网络质量，自动决定发送或停止发送小流。若将 **mode** 设置为其他发送模式或显式配置了小流的宽、高、码率或帧率，则此自适应功能失效。
 
 #### 新增域名白名单
 

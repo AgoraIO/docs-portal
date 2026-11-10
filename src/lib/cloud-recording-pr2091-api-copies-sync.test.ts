@@ -83,11 +83,14 @@ describe('Cloud Recording PR 2091 canonical guide fidelity', () => {
     },
   );
 
-  it('uses raw start/stop and removes streamMode from the API individual guide', () => {
+  it('uses raw start/stop and removes streamMode from requests with migration guidance', () => {
     const body = apiDoc(0).body;
     expect(body).toContain('/mode/raw/start');
     expect(body).toContain('/mode/raw/stop');
-    expect(body).not.toContain('streamMode');
+    expect(body).not.toMatch(/["']streamMode["']\s*:/);
+    expect(body).toContain(
+      '删除 `recordingConfig.streamMode`。v2 不再支持 `standard`、`default` 和 `original`。',
+    );
     const configuration = section(
       body,
       '#### 请求示例',
