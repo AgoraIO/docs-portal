@@ -1,5 +1,7 @@
 # 中文旧站增量同步（2026-11-10）
 
+PR：[docs-portal #1407](https://github.com/AgoraIO/docs-portal/pull/1407)，目标为中文建设分支；草稿待审，不是生产发版。
+
 ## 固定范围与状态
 
 旧站 `AgoraIO/shengwang-doc-source/master` 从 `72dd878e3703f154f26d9fb1bf5274b465a6c2cb`（0.0.537）同步至固定终点 `b5f0771fd840b2e6c45b28357c206bbe94129767`（0.0.542）。逐项核对 18 个 first-parent 提交、13 个内容 PR、569 个净变化源文件，不按 PR 编号推断顺序。
@@ -12,19 +14,19 @@
 
 | 源 PR | 新站处置 |
 | --- | --- |
-| #2134 | Media Pull 帧率、码率的输出视频参考链接指向新站已有参考页。 |
-| #2133 | introduction 已完整覆盖四篇 AI 工具正文；216 个代理、110 个旧侧栏沿用集中入口及隐藏/退役产品决定，不复制产品正文。 |
-| #2136 | 补齐 12 平台视频源枚举屏幕采集说明，保留原锚点、链接。 |
-| #2139 | 保留 Legacy 独立版本范围；33 个 C++ Legacy 页用同一静态 Fumadocs include 标明 1.x–3.x、不适用 4.x并链接当前 API；未复制旧渲染器或扩张到 Java。 |
-| #2135 | 仅移除 RTM 小程序平台不支持的 Stream Channel 内容。 |
-| #2140 | 恢复 Android 网络重连、C++/macOS 屏幕目录、HarmonyOS LogConfig 源修正。 |
-| #2143 | 删除五平台已禁用双流行为说明，保留版本折叠、原锚点及其他正文。 |
-| #2132 | RTC Server C++ 4.4.33：完整 Metadata API、配置/NTP、索引、版本与归档；新指南、示例目录、发版和两架构下载入口；Java 保持 4.4.32。 |
-| #2144 | 六份 KTV 计费副本补副歌规则；内容审核移除源已撤销的验签检查项。 |
-| #2145 | 同步 AI 快启鉴权措辞及两条删除，保留其余 Token/示例和链接。 |
-| #2138 | 六篇云录制指南和 OpenAPI：raw 迁移、serviceScene、stranded、移除事件 33、截图模式、AAC/MP3 命名。 |
-| #2150 | 使用最终源，不恢复已删除的 connectionIp 发版说明。 |
-| #2151 | 补违规音频复核步骤和两张原始脱敏截图，使用正确列表结构及新站服务开通链接。 |
+| [#2134](https://github.com/AgoraIO/shengwang-doc-source/pull/2134) | Media Pull 帧率、码率的输出视频参考链接指向新站已有参考页。 |
+| [#2133](https://github.com/AgoraIO/shengwang-doc-source/pull/2133) | introduction 已完整覆盖四篇 AI 工具正文；216 个代理、110 个旧侧栏沿用集中入口及隐藏/退役产品决定，不复制产品正文。 |
+| [#2136](https://github.com/AgoraIO/shengwang-doc-source/pull/2136) | 补齐 12 平台视频源枚举屏幕采集说明，保留原锚点、链接。 |
+| [#2139](https://github.com/AgoraIO/shengwang-doc-source/pull/2139) | 保留 Legacy 独立版本范围；33 个 C++ Legacy 页用同一静态 Fumadocs include 标明 1.x–3.x、不适用 4.x并链接当前 API；未复制旧渲染器或扩张到 Java。 |
+| [#2135](https://github.com/AgoraIO/shengwang-doc-source/pull/2135) | 仅移除 RTM 小程序平台不支持的 Stream Channel 内容。 |
+| [#2140](https://github.com/AgoraIO/shengwang-doc-source/pull/2140) | 恢复 Android 网络重连、C++/macOS 屏幕目录、HarmonyOS LogConfig 源修正。 |
+| [#2143](https://github.com/AgoraIO/shengwang-doc-source/pull/2143) | 删除五平台已禁用双流行为说明，保留版本折叠、原锚点及其他正文。 |
+| [#2132](https://github.com/AgoraIO/shengwang-doc-source/pull/2132) | RTC Server C++ 4.4.33：完整 Metadata API、配置/NTP、索引、版本与归档；新指南、示例目录、发版和两架构下载入口；Java 保持 4.4.32。 |
+| [#2144](https://github.com/AgoraIO/shengwang-doc-source/pull/2144) | 六份 KTV 计费副本补副歌规则；内容审核移除源已撤销的验签检查项。 |
+| [#2145](https://github.com/AgoraIO/shengwang-doc-source/pull/2145) | 同步 AI 快启鉴权措辞及两条删除，保留其余 Token/示例和链接。 |
+| [#2138](https://github.com/AgoraIO/shengwang-doc-source/pull/2138) | 六篇云录制指南和 OpenAPI：raw 迁移、serviceScene、stranded、移除事件 33、截图模式、AAC/MP3 命名。 |
+| [#2150](https://github.com/AgoraIO/shengwang-doc-source/pull/2150) | 使用最终源，不恢复已删除的 connectionIp 发版说明。 |
+| [#2151](https://github.com/AgoraIO/shengwang-doc-source/pull/2151) | 补违规音频复核步骤和两张原始脱敏截图，使用正确列表结构及新站服务开通链接。 |
 
 ## 保留与排除
 

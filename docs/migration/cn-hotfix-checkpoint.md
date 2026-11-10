@@ -7,7 +7,7 @@ Last updated: 2026-11-10
 - Target branch: `codex/cn-newdoc-html-api-migration`, fixed at `86876707fc1865cfee4e447e2b2c183c650f8b00` for this increment.
 - Previous batch [#1338](https://github.com/AgoraIO/docs-portal/pull/1338) was confirmed merged on 2026-10-30 at `3110fcacf2ccb5ad5ce55743109f428506496637`. Its source head `72dd878e3703f154f26d9fb1bf5274b465a6c2cb` (0.0.537) is now the effective comparison baseline.
 - This batch compares that source head with fixed source `b5f0771fd840b2e6c45b28357c206bbe94129767` (0.0.542): 18 first-parent commits, 13 content PRs, 569 net changed source files.
-- Working branch: `codex/cn-master-hotfix-20261110`. Machine record: [`cn-master-sync-20261110.json`](./cn-master-sync-20261110.json). Per-source decisions: [`cn-master-sync-20261110-ledger.json`](./cn-master-sync-20261110-ledger.json).
+- Target PR: [#1407](https://github.com/AgoraIO/docs-portal/pull/1407), draft pending review. Implementation commit: `4b1691717d2818900d7feea0f2c71cb8daf01e40`. Working branch: `codex/cn-master-hotfix-20261110`. Machine record: [`cn-master-sync-20261110.json`](./cn-master-sync-20261110.json). Per-source decisions: [`cn-master-sync-20261110-ledger.json`](./cn-master-sync-20261110-ledger.json).
 - The new source head is **pending target merge**, not an effective source baseline or evidence of deployment. Continue from 0.0.537 until the new target PR actually merges; after that merge the next comparison starts after the fixed 0.0.542 head.
 - Preserve existing target-only work and hidden/retired navigation decisions. Carry forward the previous batch's dynamic configuration image upload, HarmonyOS 0.2.11 date discrepancy, and historical FastLogger link follow-ups; the new batch does not implicitly resolve them.
 
