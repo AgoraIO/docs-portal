@@ -118,7 +118,7 @@ Set `credential.mode` to `byok`, and set `credential.fields.access_key_id` and `
 
 {/* TODO(platform-confirm): AWS needs two credentials, an access key ID and a secret access key. In pre-release testing (2026-10-28), the API accepted both keys in `credential.fields` (`access_key_id`, `secret_access_key`) and required `params.language_code`. Confirm this is the shipped form. */}
 
-{/* TODO(platform-confirm): SDK tabs tested in pre-release testing on 2026-10-28. All three SDKs saved the BYOK example. The SDKs send both AWS keys as credential fields, so the access key ID must also be a secret reference (stored as `amazon_access_key_id` in the example). The SDKs send the language as `params.language_code`. TypeScript and Python also set the block-level `language` to `en-US` (their default interaction language) instead of the vendor's language, while Go leaves it unset (SDK bug list #31). */}
+{/* TODO(platform-confirm): The SDK examples don't set the block-level `language` for this vendor; they send the language only as `params.language_code`. The REST example also sets the block-level `language` to `en-US`. Confirm whether the block-level `language` is needed. */}
 
 ## Key parameters
 

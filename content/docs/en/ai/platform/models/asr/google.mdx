@@ -112,11 +112,7 @@ Set `credential.mode` to `byok` and `credential.fields.adc_credentials_string` t
 </TabsContent>
 </Tabs>
 
-{/* TODO(platform-confirm): The pre-release API requires `params.language` for this vendor. The SDK examples need the alpha.3 SDK previews, which keep `params.language` (SDK bug list #34). Tested on 2026-10-30 from the preview branches: all three SDK examples saved with `params.language`. */}
-
 {/* TODO(platform-confirm): Google authenticates with a service account credentials JSON string (Voice Agent `params.adc_credentials_string`), not an API key. Confirm that the Platform takes it in `credential.fields.adc_credentials_string` as a secret reference, or give the correct format. */}
-
-{/* TODO(platform-confirm): SDK tabs tested in pre-release testing on 2026-10-28. All three SDKs saved the BYOK example. The SDKs send the service account credentials as the `adc_credentials_string` credential field. TypeScript and Python also set the block-level `language` to `en-US` (their default interaction language) instead of the vendor's language, while Go leaves it unset (SDK bug list #31). */}
 
 ## Key parameters
 

@@ -125,8 +125,6 @@ Set the system prompt and the greeting with the agent's `instructions` and `gree
 
 {/* TODO(platform-confirm): Confirm the `vendor` value for xAI Grok (`xai` is assumed, as in the Voice Agent API), and whether `url` is required. */}
 
-{/* TODO(platform-confirm): SDK tabs tested in pre-release testing (2026-10-28). BYOK saved as written in all three SDKs. Python and TypeScript have no xAI class and use `OpenAI` with `vendor: "xai"`; Go has `NewXaiLLM`, which sets the vendor. The SDKs store `style: "openai"`, which the REST example omits. */}
-
 ## Key parameters
 
 The `llm` block takes the following fields. In the SDKs, the LLM class sets them from its options. In Python and TypeScript, use the OpenAI-compatible `OpenAI` class with the vendor set to `xai`. In Go, use `NewXaiLLM`, which sets the vendor for you.

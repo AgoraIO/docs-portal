@@ -281,8 +281,6 @@ generatedFillerAgent := agent.WithFillerWords(&agentkit.FillerWordsConfig{
 
 The `enable` and `trigger` fields work the same way as for static filler words.
 
-{/* TODO(platform-confirm): The SDK examples use the Voice Agent field shapes the SDKs accept (`fixed_time_config`, `static_config`, `generated_config.prompt`), and the SDKs convert them to the Platform fields (SDK bug list #18). All SDK examples on this page were saved and checked in pre-release testing on 2026-10-28. */}
-
 {/* TODO(platform-confirm): In pre-release testing (2026-10-27), generated mode was rejected with a managed LLM ("Generated fillers require a cascaded OpenAI, Groq or XAI BYOK LLM") and accepted with a BYOK OpenAI LLM. Adding `phrases` alongside `instructions` was rejected (`InvalidRequestBody`). Confirm where the static fallback phrases come from in generated mode, and whether the Voice Agent API's `context_message_limit` and `history_character_limit` are supported. */}
 
 ## Best practices
