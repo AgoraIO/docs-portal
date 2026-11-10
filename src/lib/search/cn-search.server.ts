@@ -23,6 +23,7 @@ import {
   isPublicCnSearchUrl,
   type SearchFacets,
 } from './cn-search-page';
+import { getCnSearchPlatformAliases } from './cn-search-platforms';
 import { cnExactProductAcronyms } from './cn-search-strategy';
 import {
   getCnSearchLanguageTerms,
@@ -73,13 +74,27 @@ export async function queryCnSearch(
       const value = JSON.stringify(selected);
       if (field === 'product') filter.push(buildProductFilter(selected));
       else if (field === 'platform') {
-        const exact = ['restful', 'restful-api'].includes(selected)
-          ? 'platform = "restful" OR platform = "restful-api"'
-          : `platform = ${value}`;
+        let exact = getCnSearchPlatformAliases(selected)
+          .map((alias) => `platform = ${JSON.stringify(alias)}`)
+          .join(' OR ');
+        const categoryProducts =
+          selected === 'general'
+            ? ['console']
+            : selected === 'iot'
+              ? [
+                  'voip-call',
+                  'teleoperation',
+                  'smart-camera',
+                  'smart-doorbell',
+                  'smart-watch',
+                ]
+              : undefined;
+        if (categoryProducts)
+          exact += ` OR ${categoryProducts.map(buildProductFilter).join(' OR ')}`;
         // A language-qualified SDK search needs explicit applicability. Other
         // searches retain shared setup/billing guides until their metadata is audited.
         filter.push(
-          languageQuery
+          languageQuery || categoryProducts
             ? navigationLanguage &&
               ((selected === 'csharp' && navigationLanguage === 'csharp') ||
                 (selected === 'cpp' && navigationLanguage === 'cplusplus'))

@@ -1,6 +1,9 @@
-import { isKnownPlatform } from '@/lib/platforms/registry';
 import { normalizeCnProduct } from './cn-products';
 import type { CnSearchFamily } from './cn-search-family';
+import {
+  isCnSearchPlatform,
+  normalizeCnSearchPlatform,
+} from './cn-search-platforms';
 import type { DocsSearchScope } from './search-provider';
 
 export type SearchPageState = {
@@ -36,10 +39,8 @@ export function parseSearchPageState(
         ? normalizeCnProduct(product)
         : undefined,
     platform:
-      typeof input.platform === 'string' && isKnownPlatform(input.platform)
-        ? input.platform === 'restful-api'
-          ? 'restful'
-          : input.platform
+      typeof input.platform === 'string' && isCnSearchPlatform(input.platform)
+        ? normalizeCnSearchPlatform(input.platform)
         : undefined,
     // Retain the field for old callers/links, but current-site search always
     // uses the publication policy rather than a user-selected SDK version.

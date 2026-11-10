@@ -866,7 +866,7 @@ describe('full CN search adapter', () => {
       page: 2,
       hitsPerPage: 20,
       filter:
-        'locale = "zh-CN" AND hidden = false AND status = "published" AND (product = "conversational-ai" OR products = "conversational-ai") AND (platform = "web" OR platform NOT EXISTS OR platform IS EMPTY) AND searchFamily = "docs"',
+        'locale = "zh-CN" AND hidden = false AND status = "published" AND (product = "conversational-ai" OR products = "conversational-ai") AND (platform = "web" OR platform = "javascript" OR platform NOT EXISTS OR platform IS EMPTY) AND searchFamily = "docs"',
     });
     expect(result.groups).toHaveLength(1);
     expect(
@@ -915,3 +915,57 @@ describe('full CN search adapter', () => {
       expect(isPublicCnSearchUrl(url)).toBe(false);
   });
 });
+
+it.each([
+  ['unreal', 'unreal-cpp'],
+  ['blueprint', 'unreal-blueprint'],
+  ['mini-program', 'mini-program-beta'],
+  ['web', 'javascript'],
+  ['cpp', 'server-cpp'],
+  ['java', 'server-java'],
+])('searches both %s and its published alias %s', async (platform, alias) => {
+  const request = vi
+    .spyOn(globalThis, 'fetch')
+    .mockResolvedValue(
+      Response.json({ hits: [], totalHits: 0, totalPages: 0, page: 1 }),
+    );
+  await queryCnSearch(
+    config,
+    parseSearchPageState({ q: 'Token', platform, type: 'docs' }),
+  );
+  const body = JSON.parse(request.mock.calls[0][1]?.body as string);
+  expect(body.filter).toContain(
+    `platform = "${platform}" OR platform = "${alias}"`,
+  );
+});
+
+it.each([
+  ['general', ['console']],
+  [
+    'iot',
+    [
+      'voip-call',
+      'teleoperation',
+      'smart-camera',
+      'smart-doorbell',
+      'smart-watch',
+    ],
+  ],
+] as const)(
+  'maps the legacy %s category to currently published products',
+  async (platform, products) => {
+    const request = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValue(
+        Response.json({ hits: [], totalHits: 0, totalPages: 0, page: 1 }),
+      );
+    await queryCnSearch(
+      config,
+      parseSearchPageState({ q: 'Token', platform, type: 'docs' }),
+    );
+    const body = JSON.parse(request.mock.calls[0][1]?.body as string);
+    for (const product of products)
+      expect(body.filter).toContain(`products = "${product}"`);
+    expect(body.filter).not.toContain('platform NOT EXISTS');
+  },
+);

@@ -65,6 +65,7 @@ import {
   loadCnSearchCatalog,
   type SearchFacets,
 } from '@/lib/search/cn-search-page';
+import type { CnSearchPlatform } from '@/lib/search/cn-search-platforms';
 import {
   CN_SEARCH_SESSION_CHANGED,
   type CnSearchSession,
@@ -124,7 +125,7 @@ export function DocsSearchDialog({
   const returnFocusRef = useRef<HTMLElement | null>(null);
   const navigatingRef = useRef(false);
   const [draftSearch, setDraftSearch] = useState('');
-  const [platformFilter, setPlatformFilter] = useState<PlatformKey | null>(
+  const [platformFilter, setPlatformFilter] = useState<CnSearchPlatform | null>(
     null,
   );
   // Selected scope id (e.g. `product:video`), or null for all products.
@@ -454,7 +455,7 @@ export function DocsSearchDialog({
         options: platformOptions.map((platform) => ({
           label: isCn
             ? getCnSearchPlatformLabel(platform)
-            : getPlatformLabel(platform, searchLocale),
+            : getPlatformLabel(platform as PlatformKey, searchLocale),
           value: platform,
         })),
       },
@@ -827,7 +828,7 @@ export function DocsSearchDialog({
                 manualSelection.current = false;
                 setActiveValue(null);
                 inputAt.current = Date.now();
-                setPlatformFilter(next as PlatformKey | null);
+                setPlatformFilter(next as CnSearchPlatform | null);
               }}
               searchPlaceholder={t('docs.searchFilterPlatforms')}
               value={platformFilter}

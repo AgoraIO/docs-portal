@@ -96,3 +96,21 @@ describe('search page URL state', () => {
     ).toBeUndefined();
   });
 });
+
+it.each([
+  ['unreal-cpp', 'unreal'],
+  ['unreal-blueprint', 'blueprint'],
+  ['mini-program-beta', 'mini-program'],
+  ['javascript', 'web'],
+  ['server-cpp', 'cpp'],
+  ['server-java', 'java'],
+])('restores old %s filter links as %s', (platform, canonical) => {
+  expect(parseSearchPageState({ platform }).platform).toBe(canonical);
+  expect(buildSearchPageHref('zh-CN', { platform })).toBe(
+    `/zh-CN/search?platform=${canonical}`,
+  );
+});
+
+it.each(['general', 'iot'])('accepts legacy %s platform links', (platform) => {
+  expect(parseSearchPageState({ platform }).platform).toBe(platform);
+});

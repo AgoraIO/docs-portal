@@ -1,6 +1,7 @@
 import { platformRegistry } from '../platforms/registry';
 import { getCnSearchProductGroups } from './cn-product-labels';
 import { type CnSearchFamily, cnSearchFamilies } from './cn-search-family';
+import { normalizeCnSearchPlatform } from './cn-search-platforms';
 import {
   getCnSearchNavigationLanguage,
   normalizeCnSearchLanguageTerms,
@@ -26,7 +27,7 @@ const platformPhrases = Object.entries(platformRegistry)
     [...new Set([id, entry.label.en, entry.label['zh-CN']])].map((phrase) => {
       const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       return {
-        platform: id === 'javascript' ? 'web' : id,
+        platform: normalizeCnSearchPlatform(id),
         pattern: new RegExp(`(^|\\s)${escaped}(?=$|\\s)`, 'gi'),
         questionPattern: new RegExp(
           `(^|\\s|如何|怎么|怎样)在\\s*${escaped}\\s*(?:平台|端)?上(?=$|\\s|[\\u3400-\\u9fff])`,
@@ -159,6 +160,7 @@ export function resolveCnSearchTask(query: string, selectedProduct?: string) {
 }
 
 export function resolveCnSearchQuery(query: string, platform?: string) {
+  if (platform) platform = normalizeCnSearchPlatform(platform);
   const original = normalizeCnSearchLanguageTerms(query);
   query = normalizeTopicQuery(original);
   let remaining = query;

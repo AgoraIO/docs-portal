@@ -1,8 +1,12 @@
-import { isKnownPlatform, type PlatformKey } from '../platforms/registry';
+import {
+  type CnSearchPlatform,
+  isCnSearchPlatform,
+  normalizeCnSearchPlatform,
+} from './cn-search-platforms';
 
 export type CnSearchSession = {
   query: string;
-  platform: PlatformKey | null;
+  platform: CnSearchPlatform | null;
   scope: string | null;
 };
 
@@ -30,7 +34,7 @@ function readSessions(): SavedSession[] {
           item.query.length <= 500 &&
           (item.platform === null ||
             (typeof item.platform === 'string' &&
-              isKnownPlatform(item.platform))) &&
+              isCnSearchPlatform(item.platform))) &&
           (item.scope === null ||
             (typeof item.scope === 'string' && item.scope.length <= 200)) &&
           typeof item.savedAt === 'number' &&
@@ -49,7 +53,9 @@ export function readCnSearchSession(path: string): CnSearchSession | undefined {
   return item
     ? {
         query: item.query,
-        platform: item.platform === 'restful-api' ? 'restful' : item.platform,
+        platform: item.platform
+          ? normalizeCnSearchPlatform(item.platform)
+          : null,
         scope: item.scope,
       }
     : undefined;

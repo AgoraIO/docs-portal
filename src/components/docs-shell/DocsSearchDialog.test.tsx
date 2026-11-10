@@ -1180,10 +1180,17 @@ describe('DocsSearchDialog', () => {
     render(<RouterProvider router={router} />);
     fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
     fireEvent.click(await screen.findByRole('combobox', { name: '全部平台' }));
-    for (const name of ['小程序', 'C++', 'C#', 'Java', 'Swift']) {
+    for (const name of [
+      '控制台',
+      '小程序',
+      '服务端 C++',
+      'C#',
+      '服务端 Java',
+      '智能硬件',
+    ]) {
       expect(await screen.findByRole('option', { name })).toBeInTheDocument();
     }
-    fireEvent.click(screen.getByRole('option', { name: 'C++' }));
+    fireEvent.click(screen.getByRole('option', { name: '服务端 C++' }));
     const input = await screen.findByPlaceholderText('搜索文档、API、指南...');
     fireEvent.input(input, { target: { value: 'Token' } });
     fireEvent.keyDown(document, { key: 'Escape' });
