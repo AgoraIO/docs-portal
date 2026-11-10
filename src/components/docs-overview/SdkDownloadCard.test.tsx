@@ -6,7 +6,7 @@ describe('SDK download actions', () => {
   it.each([undefined, 'https://example.com/sdk.zip'])(
     'keeps one acquisition action without secondary registry links (downloadLink=%s)',
     (downloadLink) => {
-      render(
+      const { container } = render(
         <SdkDownloadCard
           iconSrc="/icon.svg"
           title="SDK"
@@ -17,6 +17,10 @@ describe('SDK download actions', () => {
             packageManager: 'https://www.npmjs.com/package/example',
           }}
         />,
+      );
+      expect(container.querySelector('img')).toHaveAttribute(
+        'referrerpolicy',
+        'no-referrer',
       );
       expect(screen.getAllByRole('link')).toHaveLength(1);
       expect(
