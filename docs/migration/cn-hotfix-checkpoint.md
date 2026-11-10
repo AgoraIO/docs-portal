@@ -1,20 +1,29 @@
 # CN Hotfix Migration Checkpoint
 
-Last updated: 2026-10-29
+Last updated: 2026-11-10
 
-## Latest handoff (2026-10-28)
+## Current batch (2026-11-10)
+
+- Target branch: `codex/cn-newdoc-html-api-migration`, fixed at `86876707fc1865cfee4e447e2b2c183c650f8b00` for this increment.
+- Previous batch [#1338](https://github.com/AgoraIO/docs-portal/pull/1338) was confirmed merged on 2026-10-30 at `3110fcacf2ccb5ad5ce55743109f428506496637`. Its source head `72dd878e3703f154f26d9fb1bf5274b465a6c2cb` (0.0.537) is now the effective comparison baseline.
+- This batch compares that source head with fixed source `b5f0771fd840b2e6c45b28357c206bbe94129767` (0.0.542): 18 first-parent commits, 13 content PRs, 569 net changed source files.
+- Target PR: [#1407](https://github.com/AgoraIO/docs-portal/pull/1407), draft pending review. Implementation commit: `4b1691717d2818900d7feea0f2c71cb8daf01e40`. Working branch: `codex/cn-master-hotfix-20261110`. Machine record: [`cn-master-sync-20261110.json`](./cn-master-sync-20261110.json). Per-source decisions: [`cn-master-sync-20261110-ledger.json`](./cn-master-sync-20261110-ledger.json).
+- The new source head is **pending target merge**, not an effective source baseline or evidence of deployment. Continue from 0.0.537 until the new target PR actually merges; after that merge the next comparison starts after the fixed 0.0.542 head.
+- Preserve existing target-only work and hidden/retired navigation decisions. Carry forward the previous batch's dynamic configuration image upload, HarmonyOS 0.2.11 date discrepancy, and historical FastLogger link follow-ups; the new batch does not implicitly resolve them.
+
+## Previous handoff (2026-10-28; merged 2026-10-30)
 
 - Target branch: `codex/cn-newdoc-html-api-migration`.
 - Last confirmed merged incremental batch: [#1291](https://github.com/AgoraIO/docs-portal/pull/1291), squash merge `6b9a602e83a9a1bcd112c0856fe77e32aa7ff369` on 2026-10-26.
 - Effective source baseline: `427a27358efd3f2eeb1b9dc6e841e828b9a53366` (0.0.535).
-- Current pending batch: [`cn-master-sync-20261028.json`](./cn-master-sync-20261028.json), source `427a27358..72dd878e3` (Whiteboard/Fastboard #2121, historical API entries #2131, releases 0.0.536/0.0.537), initial fixed target `3bb8afbf2a2b5dff6ec52ba39f6fd7fb7b95ba9e`; subsequently integrated target #1313 at `d3baceb3717b8cf0491ae87e2fcaf04a7caf81b1`.
-- Pending PR: [#1338](https://github.com/AgoraIO/docs-portal/pull/1338), working branch `codex/cn-whiteboard-hotfix-20261028`. The JSON checkpoint records final verification state; do not treat the pending source head as effective until that PR merges.
+- Completed batch: [`cn-master-sync-20261028.json`](./cn-master-sync-20261028.json), source `427a27358..72dd878e3` (Whiteboard/Fastboard #2121, historical API entries #2131, releases 0.0.536/0.0.537), initial fixed target `3bb8afbf2a2b5dff6ec52ba39f6fd7fb7b95ba9e`; subsequently integrated target #1313 at `d3baceb3717b8cf0491ae87e2fcaf04a7caf81b1`.
+- Merged PR: [#1338](https://github.com/AgoraIO/docs-portal/pull/1338), working branch `codex/cn-whiteboard-hotfix-20261028`. Merged 2026-10-30 as `3110fcacf2ccb5ad5ce55743109f428506496637`; the old batch JSON retains its implementation-time verification snapshot.
 - 2026-10-29 follow-up: user chose a compact HarmonyOS sidebar based on actual public exports after confirming the old site incorrectly reused Android links. All 92 API bodies are retained. Target #1326/#1334 through `837c5f58f` is integrated; current checks and earlier production-build evidence are separately scoped in the batch JSON.
 - Additional 2026-10-29 cross-product sidebar review: [report](../agents/reports/2026-10-29-cn-api-sidebar-parity.md) covers 50 dedicated API entries plus the current catalog classification. It corrects 32 navigation configurations without changing MDX bodies or advancing the source baseline.
 - All 1270 source files and four source commits are recorded in [`cn-master-sync-20261028-ledger.json`](./cn-master-sync-20261028-ledger.json). Image upload and source-issue follow-ups remain explicit.
 - The two earlier AI deferrals were restored by target #1324 with hidden navigation entries. Their present-but-hidden state has been checked and preserved; they are not missing public guides in this batch.
 
-After the pending batch merges, the next source comparison may start at `72dd878e3703f154f26d9fb1bf5274b465a6c2cb`, carrying its image-host and source-consistency follow-ups.
+The 2026-11-10 batch above starts at `72dd878e3703f154f26d9fb1bf5274b465a6c2cb`, carrying its image-host and source-consistency follow-ups.
 
 ## Previous handoff (2026-10-23; superseded)
 

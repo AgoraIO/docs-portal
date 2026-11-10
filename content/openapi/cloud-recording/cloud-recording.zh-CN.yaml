@@ -18,6 +18,9 @@ info:
 
     为方便你监听云端录制的状态，声网提供[消息通知服务](/zh-CN/realtime-media/cloud-recording/build/monitor-events/enable-ncs)。开通该服务后，你可以通过 Webhook 接收[云端录制相关事件](/zh-CN/realtime-media/cloud-recording/reference/ncs-events)。
 
+    > [!CAUTION]
+    > 新单流录制（`mode=raw`）的回调中，`payload.serviceScene` 为 `rtsc/raw-recording`，不再是旧版单流录制的 `rtc_record`。迁移时需要同步更新回调处理逻辑，避免忽略新单流录制的回调。
+
     因为声网会动态调整消息通知服务器的 IP 地址，为不影响你接收事件，你需要[定期查询 IP 地址](/zh-CN/api-reference/api-ref/cloud-recording/get-ncs-ip)并更新防火墙白名单配置。
   contact: {}
   license:
@@ -104,6 +107,10 @@ paths:
 
             通过 [`acquire`](acquire) 方法获取云端录制资源后，调用 `start` 方法开始云端录制。
       x-docs-callouts:
+        - type: caution
+          title: 注意
+          position: after-description
+          markdown: 新单流录制（`mode=raw`）不支持 `clientRequest.extensionServiceConfig`。请求中包含该字段会被接口拒绝，迁移时需要删除该字段。
         - type: caution
           title: 注意
           position: after-description
@@ -676,7 +683,7 @@ paths:
                               当前录制上传的状态：
                               - `"uploaded"`：本次录制的文件已经全部上传至指定的第三方云存储。
                               - `"backuped"`：本次录制的文件已经全部上传完成，但是至少有一个 TS 文件上传到了声网备份云。声网服务器会自动将这部分文件继续上传至指定的第三方云存储。
-                              - `"stranded"`：v2 新增状态。部分录制文件未上传至指定的第三方云存储，需要结合业务逻辑进行处理。
+                              - `"stranded"`：v2 新增状态。部分录制文件尚未上传至指定的第三方云存储，录制服务会继续自动重试上传，直至上传成功。该状态不表示文件丢失，业务侧应将其视为“上传未完成”，等待文件上传完成后再进行依赖完整录制文件的播放或处理。
                               - `"unknown"`：未知状态。
                           serviceName: |-
                             服务类型：
@@ -1355,7 +1362,11 @@ components:
       type: object
       description: |-
         扩展服务配置项。
-        <p><b>注意：</b>仅需在<b>页面录制</b>模式下设置。</p>
+
+        > [!CAUTION]
+        > 仅需在**页面录制**模式下设置。
+        >
+        > 新单流录制（`mode=raw`）不支持该字段。请求中包含 `extensionServiceConfig` 会被接口拒绝，需要删除该字段。
       properties:
         errorHandlePolicy:
           type: string
@@ -2175,7 +2186,7 @@ components:
         当前录制上传的状态：
         - `"uploaded"`：本次录制的文件已经全部上传至指定的第三方云存储。
         - `"backuped"`：本次录制的文件已经全部上传完成，但是至少有一个 TS 文件上传到了声网备份云。声网服务器会自动将这部分文件继续上传至指定的第三方云存储。
-        - `"stranded"`：v2 新增状态。部分录制文件未上传至指定的第三方云存储，需要结合业务逻辑进行处理。
+        - `"stranded"`：v2 新增状态。部分录制文件尚未上传至指定的第三方云存储，录制服务会继续自动重试上传，直至上传成功。该状态不表示文件丢失，业务侧应将其视为“上传未完成”，等待文件上传完成后再进行依赖完整录制文件的播放或处理。
         - `"unknown"`：未知状态。
       x-stoplight:
         id: gqi1s9iqnhn9l

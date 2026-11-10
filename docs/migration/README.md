@@ -16,6 +16,7 @@ The migration workflow is mapping-table driven:
 | --- | --- |
 | `work-plan.md` | First file to read when taking over migration work. It contains the current phase plan, status vocabulary, handoff checklist, and latest execution counts. |
 | `cn-hotfix-checkpoint.md` | Incremental CN hotfix handoff record: latest source merge checkpoint, target PR, completed scope, exclusions, and where the next batch starts. |
+| `cn-master-sync-20261110.md` / `.json` / `-ledger.json` | Fixed 0.0.537 → 0.0.542 CN increment: content decisions, source and target hashes, verification and pending merge state. |
 | `path-map.csv` | Source of truth for source path, target path, redirect status, migration progress, audit progress, and audit result. |
 | `migration-ledger.csv` | Inventory-level migration ledger generated from the source audit. It is synchronized from `path-map.csv` where rows can be matched, but execution progress is still owned by `path-map.csv`. |
 | `migration-audit-summary.md` | Snapshot of the initial source audit and major unresolved decision groups. |

@@ -31,6 +31,17 @@ const { apiHistoricalAdditions: whiteboardAdditions } = JSON.parse(
     placement: 'prepend' | 'append';
   }[];
 };
+const { apiHistoricalAdditions: serverSdkAdditions } = JSON.parse(
+  readFileSync('docs/migration/cn-master-sync-20261110.json', 'utf8'),
+) as {
+  apiHistoricalAdditions: {
+    directory: string;
+    label: string;
+    href: string;
+    placement: 'prepend' | 'append';
+  }[];
+};
+const positionedAdditions = [...serverSdkAdditions, ...whiteboardAdditions];
 const { overrides } = JSON.parse(
   readFileSync(
     'docs/migration/api-reference-archive-url-overrides-20261020.json',
@@ -148,7 +159,7 @@ describe('Chinese API Reference historical archives', () => {
         versions.slice(1).map(({ label, href }) => ({ label, href })),
       ).toEqual(
         [
-          ...whiteboardAdditions
+          ...positionedAdditions
             .filter(
               (entry) =>
                 entry.directory === directory && entry.placement === 'prepend',
@@ -158,7 +169,7 @@ describe('Chinese API Reference historical archives', () => {
             .filter((entry) => entry.directory === directory)
             .map(({ label, href }) => ({ label, href })),
           ...history,
-          ...whiteboardAdditions
+          ...positionedAdditions
             .filter(
               (entry) =>
                 entry.directory === directory && entry.placement === 'append',

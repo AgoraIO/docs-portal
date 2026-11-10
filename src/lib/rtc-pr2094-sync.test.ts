@@ -366,7 +366,7 @@ describe('RTC PR #2094 frozen source delta', () => {
     }
   });
 
-  it('keeps connection-state recovery removal and independent validation list scoped', () => {
+  it('keeps connection-state recovery per join API and Token validation scoped to its reason', () => {
     const text = read(file('android', 'network'));
     const parameters = section(
       text,
@@ -379,11 +379,57 @@ describe('RTC PR #2094 frozen source delta', () => {
       '</Parameter>',
     );
     expect(state).toContain(
-      '`CONNECTION_STATE_FAILED` (5)：SDK 连接声网边缘服务器失败。',
+      '`CONNECTION_STATE_FAILED` (5)：SDK 无法连接声网边缘服务器或加入频道，并停止重连。',
     );
-    expect(state).not.toContain('leaveChannel');
-    expect(parameters).toContain('\n请确保：\n\n- 项目启用 App Certificate');
-    expect(parameters).not.toContain('  - 请确保：');
+    expect(state).toContain(
+      '用户被服务端踢出、Token 失效或鉴权失败时，回调报告的 `reason` 可能不同，但进入该状态后的恢复流程一致：',
+    );
+    const recoverySteps = state.match(/^ {2}- .* 场景：.*$/gm) ?? [];
+    expect(recoverySteps).toHaveLength(2);
+    expect(recoverySteps[0]).toContain(
+      '`joinChannel` 场景：先调用 `leaveChannel`，等待 ',
+    );
+    expect(recoverySteps[0]).toContain(
+      '回调报告 `CONNECTION_STATE_DISCONNECTED` (1)，再使用有效的新 Token 调用 `joinChannel`。',
+    );
+    expect(recoverySteps[0]).toContain(
+      '如果未先离开频道，`joinChannel` 会返回 -17（`ERR_JOIN_CHANNEL_REJECTED`）。',
+    );
+    expect(recoverySteps[1]).toContain(
+      '[joinChannelEx](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex) 场景：针对对应的 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection) 调用 `leaveChannelEx`，等待该连接的 ',
+    );
+    expect(recoverySteps[1]).toContain(
+      '回调报告 `CONNECTION_STATE_DISCONNECTED` (1)，再使用有效的新 Token 调用 [joinChannelEx](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex)。',
+    );
+    expect(recoverySteps[1]).toContain(
+      '如需只清理该连接，请使用 `leaveChannelEx`；调用 `leaveChannel` 会离开当前加入的所有频道。',
+    );
+    for (const step of recoverySteps) {
+      expect(step).toContain(
+        '[onConnectionStateChanged](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionstatechanged)',
+      );
+    }
+    const reason = section(
+      parameters,
+      '<Parameter name="reason">',
+      '</Parameter>',
+    );
+    const invalidToken = section(
+      reason,
+      '- `CONNECTION_CHANGED_INVALID_TOKEN` (8)：',
+      '\n- `CONNECTION_CHANGED_TOKEN_EXPIRED` (9)：',
+    );
+    expect(invalidToken).toContain(
+      [
+        '  - 请确保：',
+        '',
+        '    - 项目启用 App Certificate 时，加入频道必须传入 Token。',
+        '    - 生成 Token 时指定的用户 ID 与加入频道时使用的用户 ID 一致。',
+        '    - 使用的 Token 与生成的 Token 一致。',
+      ].join('\n'),
+    );
+    expect(state).not.toContain('请确保：');
+    expect(reason).not.toContain('\n请确保：');
   });
 
   it.each(['cpp-all-platforms', 'ios', 'macos'])(

@@ -1,0 +1,37 @@
+---
+title: 发送和接收视频 Metadata
+titlePlatforms: [cpp]
+---
+
+自 v4.4.33 起，RTC 服务端 SDK 支持随视频发送和接收 Metadata，适用于需要传递视频附属信息的场景。
+
+## 实现流程
+
+1. 实现 [`agora::rtc::IMetadataObserver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer)，重写以下回调：
+
+   - [`getMaxMetadataSize`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer#aa1d7b729f373d985a5bbdd855c4e85d5)：返回 Metadata 最大缓冲区大小，单位为字节。默认值为 512，最大为 1024。
+   - [`onReadyToSendMetadata`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer#afc9b177f803cc0f0bb18b36c51be84f0)：将要发送的数据写入 `metadata.buffer`，设置 `metadata.size`，并返回 `true`。本帧不需要发送 Metadata 时返回 `false`。
+   - [`onMetadataReceived`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer#a890f087351519bdeba5f17e824158d03)：读取远端用户发送的 Metadata。
+2. 创建本地视频轨道后，调用该轨道的 [`registerVideoMetadataObserver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track#a551cacb9f56b75ffd2b4bdf9db721eb4) 注册观测器，并按照[发送和接收媒体流](/zh-CN/realtime-media/rtc-server-sdk/build/send-receive)的流程发布视频轨道。
+3. 在 [`onReadyToSendMetadata`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer#afc9b177f803cc0f0bb18b36c51be84f0) 中提供要发送的数据。Metadata 的大小不得超过 [`getMaxMetadataSize`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer#aa1d7b729f373d985a5bbdd855c4e85d5) 返回的值。
+4. 不再需要监听时，调用 [`unregisterVideoMetadataObserver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track#a46680142338456fb129a1e7fe9ac0aba) 注销观测器，再释放观测器对象。
+
+## Metadata 字段
+
+[`IMetadataObserver::Metadata`](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-i-metadata-observer-1-1-metadata) 包含以下字段：
+
+| 字段 | 说明 |
+| --- | --- |
+| `channelId` | 频道名。 |
+| `uid` | 发送 Metadata 的远端用户 ID。发送方无需设置。 |
+| `size` | Metadata 数据大小，单位为字节。 |
+| `buffer` | Metadata 数据缓冲区地址。发送时向缓冲区写入数据；接收时从缓冲区读取数据。 |
+| `timeStampMs` | Metadata 发送时间戳，单位为毫秒。 |
+
+[`onReadyToSendMetadata`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer#afc9b177f803cc0f0bb18b36c51be84f0) 的 `source_type` 参数表示视频源类型，类型为 `VIDEO_SOURCE_TYPE`。
+
+## 注意事项
+
+- 视频 Metadata 随视频传输，使用前需要开启视频并发布视频轨道。
+- 发送回调中的 `metadata.buffer` 由 SDK 提供。确保写入的数据长度不超过配置的最大大小。
+- 在回调执行期间处理接收到的数据。如果需要在回调结束后使用数据，请复制缓冲区内容。

@@ -27,8 +27,9 @@ title: "发版说明"
 - HLS 输出改为音视频合并的一个 M3U8 文件。你需要同步调整播放器、文件解析逻辑和下游处理流程。
 - v2 支持输出 MP4 和 MP3。需要在 `avFileType` 中指定 `mp4`；音频场景可直接指定 `mp3`。
 - 删除请求中的 `extensionServiceConfig`，否则接口会拒绝请求。
-- 如果使用消息通知服务，将 `serviceScene` 从 `rtc_record` 更新为 `rtsc/raw-recording`。
-- 处理 `uploadingStatus` 时新增 `stranded` 状态分支。
+- 如果使用消息通知服务，新单流录制的录制服务、录制模块、上传模块及截图回调的 `payload.serviceScene` 均为 `rtsc/raw-recording`。需要将原来按 `rtc_record` 或 `rtc_snapshot` 识别回调的逻辑更新为按新值识别。详见[回调事件概览](/zh-CN/realtime-media/cloud-recording/reference/ncs-events#payload-字段说明)。
+- 新单流录制已移除事件 `33`（`uploading_progress`），不再按分钟推送上传进度。迁移时需要移除对该事件的依赖，详见[上传模块事件](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/uploading#33)。
+- 处理 `uploadingStatus` 时新增 `stranded` 状态分支。该状态表示部分录制文件尚未上传至指定的第三方云存储，录制服务会继续自动重试上传，直至上传成功。业务侧应将其视为“上传未完成”，而不是文件丢失或上传完成。详见[上传状态说明](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/uploading#32)。
 
 详见[实现单流录制](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual)和[录制文件介绍](/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/introduce-recorded-files)。
 

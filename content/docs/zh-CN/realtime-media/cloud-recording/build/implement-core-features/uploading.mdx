@@ -12,8 +12,8 @@ description: "了解如何在云端录制中监听上传模块 Webhook 事件，
 | ------------- |  ------------------------------------------------------------ |
 | [`30`](#30)     |  上传服务已启动                                               |
 | [`31`](#31)     |  所有录制文件已上传至指定的第三方云存储                       |
-| [`32`](#32)     |  所有录制文件已经全部上传完成，但至少有一片上传到声网备份云 |
-| [`33`](#33)     |  录制文件上传到第三方云存储的进度                             |
+| [`32`](#32)     |  录制文件上传到声网备份云；新单流录制的 `stranded` 上传状态处理见下文 |
+| [`33`](#33)     |  录制文件上传到第三方云存储的进度；新单流录制（`mode=raw`）已移除此事件 |
 | [`45`](#45)     | 云端截图成功                                        |
 
 <a id="30"></a>
@@ -143,6 +143,12 @@ description: "了解如何在云端录制中监听上传模块 Webhook 事件，
 <a id="32"></a>
 ## 32 backuped
 
+:::caution[新单流录制的上传状态]
+新单流录制（`mode=raw`）新增 `stranded` 上传状态，表示部分录制文件尚未上传至指定的第三方云存储。录制服务会继续自动重试上传，直至上传成功；该状态不表示文件丢失。停止录制后，请检查 [`stop`](/zh-CN/api-reference/api-ref/cloud-recording/stop) 响应中的 `serverResponse.uploadingStatus`。如果为 `stranded`，业务侧应保留“上传未完成”状态，等待文件上传完成后再进行依赖完整录制文件的播放或处理。
+:::
+
+以下为 `backuped` 回调的含义、字段和示例。
+
 `eventType` 为 `32` 表示所有录制文件已经全部上传完成，但至少有一片上传到声网备份云，声网备份云会自动将这部分文件上传到指定的第三方云存储。 `details` 中包含以下字段：
 
 - `msgName`：String 类型，消息名称，即 `backuped`。
@@ -260,6 +266,12 @@ description: "了解如何在云端录制中监听上传模块 Webhook 事件，
 <a id="33"></a>
 ## 33 uploading_progress
 
+:::caution[新单流录制不支持此事件]
+新单流录制（`mode=raw`）已移除事件 `33`（`uploading_progress`），不会按分钟推送上传进度。迁移时，请移除对该事件的依赖。录制结束后，可通过 [`stop`](/zh-CN/api-reference/api-ref/cloud-recording/stop) 响应中的 `serverResponse.uploadingStatus` 判断上传状态，并处理 `stranded` 状态。
+:::
+
+以下说明适用于仍支持该事件的旧版及其他录制模式。
+
 `eventType` 为 `33` 表示当前上传的进度，录制开始后每分钟会通知一次。 `details` 中包含以下字段：
 
 - `msgName`：String 类型，消息名称，即 `uploading_progress`。
@@ -267,6 +279,8 @@ description: "了解如何在云端录制中监听上传模块 Webhook 事件，
 
 <a id="45"></a>
 ## 45 recorder_snapshot_file
+
+新单流录制（`mode=raw`）的截图回调中，`payload.serviceScene` 为 `"rtsc/raw-recording"`，不再使用旧版截图的 `"rtc_snapshot"`。事件编号仍为 `45`。
 
 `eventType` 为 `45` 表示云端截图成功并上传至第三方云存储，`details` 中包含以下字段：
 

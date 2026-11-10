@@ -53,7 +53,7 @@ description: "了解如何在云端录制中云端截图，包括适用场景、
 
 ### 2. 开始截图
 
-在调用 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法时，你需要将路径参数 `mode` 设为 `individual`。
+在调用 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法时，你需要将路径参数 `mode` 设为 `raw`。仅截图或同时进行录制和截图时均使用该模式。
 
 云端截图需要设置的 `clientRequest` 字段还包括：
 
@@ -179,7 +179,7 @@ description: "了解如何在云端录制中云端截图，包括适用场景、
 
 在进行云端截图时，需要注意以下字段的设置。如设置错误，会收到报错，导致截图失败。
 
-- 请求 URL 中的 `mode` 参数必须设为 `individual`。
+- 请求 URL 中的 `mode` 参数必须设为 `raw`。
 - `streamTypes` 必须设置为 `1` 或 `2`。
 - 如果设置了 `subscribeAudioUid`，则必须同时设置 `subscribeVideoUids`。
 

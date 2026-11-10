@@ -42,7 +42,6 @@ description: 查看内容审核在接入、透传字段设计、回调联调和�
 
 联调审核回调时，应至少检查以下内容：
 
-- 已按审核厂商文档完成验签。
 - 审核结果已成功回调到你的 webhook 或业务回调地址。
 - 回调中包含 `signature`、`callbackData` 和 `secretId` 等基础字段。
 - `callbackData.antispam` 中包含 `taskId`、`dataId`、`status`、`suggestion` 和 `labels` 等关键审核结果字段。
@@ -55,6 +54,19 @@ description: 查看内容审核在接入、透传字段设计、回调联调和�
 - 回调已成功到达 `callbackUrl` 指定的业务地址。
 - 回调中的 `dataId`、`roomNo`、`callback` 或 `extension` 可以准确对应你的房间、用户和业务记录。
 - 回调服务已做好幂等处理，避免重复通知导致重复处罚。
+
+## 如何查询审核违规音频内容？
+
+如需复核音频审核检测到的违规内容，可使用网易易盾子账号登录控制台，查询对应的音频断句。
+
+1. 使用子账号登录[网易易盾控制台](https://shengwangai.cms.dun.163.com/login)。账号获取方式详见[登录网易易盾后台](/zh-CN/realtime-media/content-moderation/enable-service#登录网易易盾后台)。
+2. 在左侧菜单选择**内容查询 \> 音频查询**，找到需要复核的音频记录，单击**查看断句**。
+
+   ![网易易盾控制台音频查询页面的查看断句入口](/img/content-moderation/yidun-audio-query.png)
+
+3. 在断句列表中找到需要复核的内容，单击对应的**断句时间戳**，即可复核该片段的音频内容。
+
+   ![网易易盾控制台断句列表中的断句时间戳入口](/img/content-moderation/yidun-audio-segments.png)
 
 ## 常见问题排查顺序
 

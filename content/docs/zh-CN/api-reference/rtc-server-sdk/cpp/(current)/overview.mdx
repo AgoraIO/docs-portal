@@ -35,6 +35,7 @@ _migration:
 | [createCustomVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service#a5cbbb4b5bebe8a90953389bb249a2d4d)2 | 创建本地视频轨道对象，包含一个发送编码视频数据的视频源。 |
 | [createMixedVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service#ac209846c760933cc343d3e056c1a0f81) | 创建本地视频轨道对象，包含一个合图器。 |
 | [getAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service#a1c707744b5e4f06467219a25ecaeccb7) | 获取 SDK 全局的 `IAgoraParameter` 对象。 |
+| [getNtpWallTimeInMs](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service#a96496d23dd3aac1eae15e630fa714f37) | 获取当前 NTP 时间戳（毫秒）。 |
 
 <a id="rtcconnection"></a>
 
@@ -83,6 +84,16 @@ _migration:
 | [onChangeRoleFailure](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#aeaeead0ee0314b89e3bd5158c4d41648) | 本地用户角色切换失败时触发。 |
 | [onUserNetworkQuality](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#adbeb932227fa99295d70bced528114c1) | 通话中每个用户的网络上下行 last mile 质量报告回调。 |
 | [onError](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a4d98ce7536aa49f929c4763fe9525c06) | 发生错误回调。 |
+
+<a id="metadataobserver"></a>
+
+## IMetadataObserver
+
+| 回调 | 描述 |
+| --- | --- |
+| [getMaxMetadataSize](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer#aa1d7b729f373d985a5bbdd855c4e85d5) | 设置 Metadata 最大缓冲区大小。 |
+| [onReadyToSendMetadata](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer#afc9b177f803cc0f0bb18b36c51be84f0) | SDK 准备发送 Metadata 时触发。 |
+| [onMetadataReceived](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer#a890f087351519bdeba5f17e824158d03) | 收到远端 Metadata 时触发。 |
 
 <a id="localuser"></a>
 
@@ -183,6 +194,8 @@ _migration:
 | [setEnabled](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track#a9f297ef1b10e76ee54bb9102059e8ab8) | 开启或关闭本地视频轨道。 |
 | [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track#a0c5423ecd9dcde4fda0ac56d329f456d) | 设置视频编码属性。 |
 | [getState](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track#a36640f215f62a7fa34ba9cae81497468) | 获取本地视频流状态。 |
+| [registerVideoMetadataObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track#a551cacb9f56b75ffd2b4bdf9db721eb4) | 注册视频 Metadata 观测器。 |
+| [unregisterVideoMetadataObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track#a46680142338456fb129a1e7fe9ac0aba) | 注销视频 Metadata 观测器。 |
 
 <a id="remotevideotrack"></a>
 

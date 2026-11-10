@@ -62,22 +62,34 @@ sudo yum groupinstall X11
 
 声网在 RTC 服务端 SDK 下载包中提供了可运行的示例项目。
 
-联系 sales@shengwang.cn 获取最新 SDK 下载地址。下载 SDK 并解压缩。
+前往[下载](/zh-CN/realtime-media/rtc-server-sdk/reference/downloads)页面获取 C++ SDK 下载地址，下载 SDK 并解压缩。
 
 ## 编译示例项目
 
-以 x86_64 平台的 SDK 为例，运行以下命令构建示例项目：
+根据 CPU 架构，选择以下命令进入解压后的示例项目目录：
+
+- x86-64：
+
+  ```shell
+  cd Agora_Native_SDK_for_Linux_SERVER/rtc/example
+  ```
+
+- arm64：
+
+  ```shell
+  cd Agora_Native_SDK_for_Linux_SERVER/example
+  ```
+
+然后运行以下命令构建示例项目：
 
 ```shell
-# 切换到示例项目目录
-cd agora_rtc_sdk/example
 # 构建示例项目
 ./build.sh
 # 同步项目所需的音视频数据
 cd out
 ../sync-data.sh
 # 将 SDK 中的库导出到 LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=../../agora_sdk:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=../../sdk:$LD_LIBRARY_PATH
 ```
 
 ## 跑通服务端发流示例项目
