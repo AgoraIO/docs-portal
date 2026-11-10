@@ -23,6 +23,10 @@ import {
   getOpenApiSchemaFieldAnchorAliases,
 } from '@/lib/openapi/anchors';
 import {
+  hasOpenApiSchemaTypeExpression,
+  normalizeOpenApiSchema,
+} from '@/lib/openapi/normalize-schema';
+import {
   buildOpenApiSchemaView,
   flattenOpenApiSchemaView,
   getOpenApiSchemaArrayParentPath,
@@ -101,13 +105,7 @@ export function OpenApiSchema({
   const normalized = useMemo(() => {
     const booleanSources = new WeakMap<object, boolean>();
     return {
-      root: normalizeOpenApiSchema(
-        root,
-        new WeakMap(),
-        document,
-        new Set(),
-        booleanSources,
-      ),
+      root: normalizeOpenApiSchema(root, { document, booleanSources }),
       booleanSources,
     };
   }, [document, root]);
@@ -1456,122 +1454,6 @@ function appendOpenApiSchemaExtraDescriptions(
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-function hasOpenApiSchemaTypeExpression(schema: Record<string, unknown>) {
-  return [
-    'type',
-    '$ref',
-    'enum',
-    'const',
-    'allOf',
-    'anyOf',
-    'oneOf',
-    'not',
-  ].some((key) => schema[key] !== undefined);
-}
-
-function normalizeOpenApiSchema(
-  value: unknown,
-  seen = new WeakMap<object, unknown>(),
-  document?: unknown,
-  resolvingRefs = new Set<string>(),
-  booleanSources = new WeakMap<object, boolean>(),
-): unknown {
-  if (Array.isArray(value)) {
-    const existing = seen.get(value);
-    if (existing) return existing;
-    const output: unknown[] = [];
-    seen.set(value, output);
-    output.push(
-      ...value.map((item) =>
-        normalizeOpenApiSchema(
-          item,
-          seen,
-          document,
-          resolvingRefs,
-          booleanSources,
-        ),
-      ),
-    );
-    return output;
-  }
-  if (!isRecord(value)) return value;
-
-  if (typeof value.$ref === 'string') {
-    const target =
-      getLocalOpenApiSchemaRefTarget(value.$ref, document) ??
-      (value as { '$ref-value'?: unknown })['$ref-value'];
-    if (target !== undefined && !resolvingRefs.has(value.$ref)) {
-      const nextResolvingRefs = new Set(resolvingRefs).add(value.$ref);
-      const resolved = normalizeOpenApiSchema(
-        target,
-        seen,
-        document,
-        nextResolvingRefs,
-        booleanSources,
-      );
-      const siblings = Object.entries(value).filter(
-        ([key]) => key !== '$ref' && key !== '$ref-value',
-      );
-      if (typeof resolved === 'boolean' && siblings.length === 0) {
-        seen.set(value, resolved);
-        return resolved;
-      }
-      const output: Record<string, unknown> = isRecord(resolved)
-        ? { ...resolved }
-        : {};
-      seen.set(value, output);
-      for (const [key, item] of siblings) {
-        output[key] = normalizeOpenApiSchema(
-          item,
-          seen,
-          document,
-          resolvingRefs,
-          booleanSources,
-        );
-      }
-      const sourceBoolean =
-        typeof resolved === 'boolean'
-          ? resolved
-          : isRecord(resolved)
-            ? booleanSources.get(resolved)
-            : undefined;
-      if (sourceBoolean === false) {
-        // An annotated false schema still rejects every value, regardless of siblings.
-        output.not = true;
-        booleanSources.set(output, false);
-      } else if (
-        sourceBoolean === true &&
-        !hasOpenApiSchemaTypeExpression(output)
-      ) {
-        // Keep explicit any semantics for annotation-only references, without inventing a type.
-        booleanSources.set(output, true);
-      }
-      return output;
-    }
-  }
-
-  const existing = seen.get(value);
-  if (existing) return existing;
-  const output: Record<string, unknown> = {};
-  seen.set(value, output);
-  for (const [key, item] of Object.entries(value)) {
-    output[key] = normalizeOpenApiSchema(
-      item,
-      seen,
-      document,
-      resolvingRefs,
-      booleanSources,
-    );
-  }
-  if (value.example !== undefined && value.examples === undefined) {
-    output.examples = [value.example];
-  }
-  if (value.nullable === true && typeof value.type === 'string') {
-    output.type = [value.type, 'null'];
-  }
-  return output;
 }
 
 function resolveLocalOpenApiSchemaReference(
