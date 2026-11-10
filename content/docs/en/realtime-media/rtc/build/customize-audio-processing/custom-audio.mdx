@@ -851,6 +851,41 @@ async function createAndPublishCustomAudioTrack(client) {
 
 To implement custom audio processing, use the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) to obtain the `MediaStreamTrack`.
 
+### Multiopus multichannel audio
+
+Web SDK v4.24.10 or later supports sending and receiving audio with 4, 6, or 8 channels through Multiopus. Set `multiopus` to `true` when creating both the sending and receiving clients. Multichannel audio processing requires browser support for `MediaStreamTrackProcessor` and `MediaStreamTrackGenerator`.
+
+Pass a `MediaStreamTrack` that already contains the required channels to `createCustomAudioTrack`, and set `channelCount` to match. The option does not add channels to the input audio.
+
+```javascript
+const client = AgoraRTC.createClient({
+  mode: "rtc",
+  codec: "vp8",
+  multiopus: true,
+});
+// multichannelMediaStreamTrack is supplied by your custom audio source.
+const track = AgoraRTC.createCustomAudioTrack({
+  mediaStreamTrack: multichannelMediaStreamTrack,
+  channelCount: 4,
+});
+// Join the channel before publishing the track.
+await client.join(appId, channel, token, uid);
+await client.publish(track);
+```
+
+On local and subscribed remote audio tracks, use `selectChannels` to select channels by their zero-based indices:
+
+- `"surround"` (default): Preserve the original channel count and positions, and silence unselected channels.
+- `"stereo"`: Mix selected channels into stereo, with even indices on the left and odd indices on the right.
+- `"mono"`: Mix selected channels into a single channel.
+
+```javascript
+track.selectChannels([0, 1], "stereo");
+const levels = track.getVolumeLevels();
+```
+
+`getVolumeLevels` measures each original channel before selection and mixing. If you pass a list of channel indices, the returned array keeps those original indices and leaves unqueried positions empty. Before audio data is available, the array or its positions can be empty. Without multichannel processing, `selectChannels` leaves the track unchanged and `getVolumeLevels` returns an array containing the single `getVolumeLevel()` result.
+
 ## Reference
 
 This section explains how to implement different sound effects and audio mixing in your app, covering essential steps and code snippets.
