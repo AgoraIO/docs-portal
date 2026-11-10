@@ -1,6 +1,6 @@
 ---
 title: "Limitations"
-description: "Explains how your bill for using Agora Chat is calculated."
+description: "Review Agora Chat usage limits for users, messages, groups, chat rooms, and server-side API calls."
 ---
 
 This page introduces the usage limits of Chat, including limits to the user, the message, the group, the chatroom and the call limit of the server APIs.

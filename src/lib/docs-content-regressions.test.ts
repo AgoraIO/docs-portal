@@ -1342,7 +1342,13 @@ describe('docs content regressions', () => {
     async () => {
       const { source, getLLMText } = await import('./source.server');
       const page = source.getPage(
-        ['realtime-media', 'iot', 'reference', 'communicate-with-rtc-sdk'],
+        [
+          'realtime-media',
+          'iot',
+          'build',
+          'send-messages',
+          'interoperate-with-rtc-sdk',
+        ],
         'en',
       );
 
@@ -1358,10 +1364,10 @@ describe('docs content regressions', () => {
       expect(processed).not.toContain('<ul>');
       expect(processed).not.toContain('<li>');
       expect(processed).toContain(
-        'Native/third-party frameworks: Android, iOS/macOS, Windows, Electron, Unity, Flutter, React Native',
+        'Native/third-party frameworks (Android, iOS/macOS, Windows, Electron, Unity, Flutter, React Native) and Server SDK',
       );
-      expect(processed).toContain(
-        'Audio: G722, G711, Opus, AAC; Video: H.264, JPEG',
+      expect(processed).toMatch(
+        /\|\s*G722, G711, Opus, AAC\s*\|\s*H\.264, JPEG\s*\|/,
       );
     },
     SOURCE_LOADER_TEST_TIMEOUT,

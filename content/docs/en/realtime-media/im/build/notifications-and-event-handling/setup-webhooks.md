@@ -1,6 +1,6 @@
 ---
 title: "Receive webhook notifications"
-description: "Shows how to use the Agora Chat SDK to implement SetupWebhook management."
+description: "Configure Agora Chat webhook rules in Agora Console and handle pre-delivery and post-delivery callbacks on your server."
 ---
 
 Chat supports HTTP callbacks (webhooks) for synchronization of messages on your own server or moderation of message content. After you set up HTTP callbacks for your Chat app, the Chat server sends notifications in the form of HTTP POST requests to your app server when specified events occur. According to whether the message delivery is intervened, the callbacks are divided in two categories:

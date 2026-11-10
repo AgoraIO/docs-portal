@@ -37,22 +37,47 @@ async function renderDocsPage(slugs: string[], locale: AppLocale = 'en') {
 
 describe('docs content render regressions', () => {
   it(
-    'renders IoT authentication code tabs as interactive MDX components',
+    'keeps historical compatibility-guide section anchors after the move',
     async () => {
       await renderDocsPage([
         'realtime-media',
         'iot',
         'build',
-        'set-up-authentication-and-security',
+        'send-messages',
+        'interoperate-with-rtc-sdk',
+      ]);
+      for (const id of [
+        'set-up-rtc-sdk-for-nativethird-party-frameworks',
+        'set-up-video-sdk-for-nativethird-party-frameworks',
+        'set-up-video-sdk-for-web',
+        'set-up-video-sdk-for-embedded-systems',
+      ]) {
+        expect(document.getElementById(id), id).toBeInTheDocument();
+      }
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
+
+  it(
+    'renders current IoT C authentication examples',
+    async () => {
+      await renderDocsPage([
+        'realtime-media',
+        'iot',
+        'build',
+        'authenticate-and-secure-channels',
         'authentication-workflow',
       ]);
 
+      expect(document.querySelector('pre code')?.textContent).toContain(
+        'agora_rtc_join_channel',
+      );
       expect(
-        screen.getAllByRole('tab', { name: 'Java' }).length,
-      ).toBeGreaterThan(0);
+        screen.queryByRole('tab', { name: 'Java' }),
+      ).not.toBeInTheDocument();
       expect(
-        screen.getAllByRole('tab', { name: 'Kotlin' }).length,
-      ).toBeGreaterThan(0);
+        screen.queryByRole('tab', { name: 'Kotlin' }),
+      ).not.toBeInTheDocument();
     },
     SOURCE_LOADER_TEST_TIMEOUT,
   );
