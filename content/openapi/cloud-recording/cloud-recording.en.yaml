@@ -20,6 +20,15 @@ info:
 
     Use `Content-Type: application/json` for requests with bodies. Request and response bodies are
     JSON.
+
+
+    ## Notifications
+
+
+    In individual recording (`mode` set to `raw`), `payload.serviceScene` in notification callbacks
+    is `rtsc/raw-recording`, not `rtc_record` as in legacy individual recording. Update your callback
+    logic when you migrate, or your app might ignore these callbacks. See [Receive
+    notifications](/en/realtime-media/cloud-recording/build/handle-events/receive-notifications#fields-in-payload).
 servers:
   - url: https://api.sd-rtn.com
     description: Cloud Recording REST API host.
@@ -214,7 +223,6 @@ paths:
                   "recordingConfig": {
                     "channelType": 1,
                     "streamTypes": 2,
-                    "streamMode": "default",
                     "videoStreamType": 0,
                     "maxIdleTime": 30,
                     "subscribeAudioUids": ["123", "456"],
@@ -222,7 +230,7 @@ paths:
                     "subscribeUidGroup": 0
                   },
                   "recordingFileConfig": {
-                    "avFileType": ["hls"]
+                    "avFileType": ["hls", "mp4"]
                   },
                   "storageConfig": {
                     "vendor": 2,
@@ -253,7 +261,6 @@ paths:
                       "recordingConfig": {
                           "channelType": 1,
                           "streamTypes": 2,
-                          "streamMode": "default",
                           "videoStreamType": 0,
                           "maxIdleTime": 30,
                           "subscribeAudioUids": ["123", "456"],
@@ -261,7 +268,7 @@ paths:
                           "subscribeUidGroup": 0
                       },
                       "recordingFileConfig": {
-                          "avFileType": ["hls"]
+                          "avFileType": ["hls", "mp4"]
                       },
                       "storageConfig": {
                           "vendor": 2,
@@ -296,7 +303,6 @@ paths:
                   recordingConfig: {
                     channelType: 1,
                     streamTypes: 2,
-                    streamMode: "default",
                     videoStreamType: 0,
                     maxIdleTime: 30,
                     subscribeAudioUids: ["123", "456"],
@@ -304,7 +310,7 @@ paths:
                     subscribeUidGroup: 0
                   },
                   recordingFileConfig: {
-                    avFileType: ["hls"]
+                    avFileType: ["hls", "mp4"]
                   },
                   storageConfig: {
                     vendor: 2,
@@ -332,6 +338,12 @@ paths:
           position: after-description
           title: Note
           type: info
+        - markdown: >-
+            Individual recording (`mode` set to `raw`) does not support
+            `clientRequest.extensionServiceConfig`. Requests that contain this field are rejected.
+          position: after-description
+          title: Note
+          type: warning
       parameters:
         - $ref: "#/components/parameters/Content-Type"
         - $ref: "#/components/parameters/appid"
@@ -350,7 +362,6 @@ paths:
                 recordingConfig:
                   channelType: 1
                   streamTypes: 2
-                  streamMode: default
                   videoStreamType: 0
                   maxIdleTime: 30
                   subscribeAudioUids:
@@ -363,6 +374,7 @@ paths:
                 recordingFileConfig:
                   avFileType:
                     - hls
+                    - mp4
                 storageConfig:
                   vendor: 2
                   region: 3
@@ -1192,12 +1204,12 @@ components:
       schema:
         type: string
         enum:
-          - individual
+          - raw
           - mix
           - web
       description: |-
         The recording mode:
-        - `individual`: Individual recording mode.
+        - `raw`: Individual recording mode.
         - `mix`: Composite recording mode.
         - `web`: Web page recording mode.
   responses:
@@ -1550,22 +1562,6 @@ components:
             - `5`: 33–49 UIDs.
 
              For example, if `subscribeVideoUids` is `["100","101","102"]` and `subscribeAudioUids` is `["101","102","103"]`, the subscriber count is 4.
-        streamMode:
-          type: string
-          default: default
-          description: >-
-            Output mode of the media stream. Only applicable in individual recording mode. See Media
-            streaming output modes.
-
-            - `"default"`: Audio transcoding generates separate M3U8 audio and video index files.
-
-            - `"standard"`: Generates separate M3U8 audio and video index files, plus a merged
-            audio-and-video index file. If VP8 encoding is used on the Web client, a merged MPD file
-            is generated instead.
-
-            - `"original"`: Original encoding mode for individual non-transcoding audio recording.
-            Only takes effect when `streamTypes` is `0`. No transcoding occurs; generates an M3U8
-            audio index file.
         audioProfile:
           type: integer
           default: 0
@@ -1749,23 +1745,25 @@ components:
           default:
             - hls
           description: |-
-            The type of recorded video files:
-            - `"hls"`: M3U8 and TS files.
+            The type of recorded files:
+            - `"hls"`: M3U8 and TS files in HLS format. In individual recording mode, audio and video are output to the same M3U8 file.
             - `"mp4"`: MP4 files.
+            - `"mp3"`: MP3 files. Only applicable to audio-only recording in individual recording mode.
 
-             In individual recording mode (non-screenshot-only), use the default value. In composite recording and web page recording modes, set to `["hls","mp4"]` to generate MP4 files. Setting to `["mp4"]` alone causes an error. In composite recording mode, a new MP4 file is created when the current file exceeds ~2 hours or ~2 GB. In web page recording mode, a new MP4 file is created when the current file exceeds `maxVideoDuration`.
+             In individual recording mode (non-screenshot-only), HLS files are output by default. To generate MP4 files, set `avFileType` to `["hls","mp4"]`. For audio-only recording in individual recording mode, set `avFileType` to `["hls","mp3"]` to output MP3 files directly. In composite recording and web page recording modes, set to `["hls","mp4"]` to generate MP4 files. Setting to `["mp4"]` alone causes an error. In composite recording mode, a new MP4 file is created when the current file exceeds ~3 hours or ~2 GB. In web page recording mode, a new MP4 file is created when the current file exceeds `maxVideoDuration` (180 minutes by default) or ~2 GB.
           items:
             type: string
             enum:
               - hls
               - mp4
+              - mp3
       x-docs-callouts:
         - type: info
           title: Note
           markdown: >
             Cannot be set when taking screenshots only. Required in all other cases including
-            individual recording (without transcoding, with transcoding, or simultaneous recording
-            and screenshots), composite recording, and web page recording.
+            individual recording (recording only, or simultaneous recording and screenshots),
+            composite recording, and web page recording.
       description: Configuration for recorded files.
     snapshotConfig:
       type: object
@@ -1775,9 +1773,11 @@ components:
         captureInterval:
           type: integer
           default: 10
-          minimum: 5
+          minimum: 1
           maximum: 3600
-          description: Screenshot capture interval in seconds.
+          description: >-
+            Screenshot capture interval in seconds. Screenshots are generated only on video
+            keyframes. The actual interval between screenshots can be longer than the value you set.
         fileType:
           type: array
           description: Screenshot file format. Currently only `jpg` is supported.
@@ -1786,7 +1786,7 @@ components:
             enum:
               - jpg
       description: >-
-        Screenshot capture settings. Only applicable in individual recording mode.
+        Screenshot capture settings. Only applicable in individual recording mode (`raw`).
 
         - Screenshots can be taken separately or simultaneously with recording. See Capture
         screenshots.
@@ -1798,7 +1798,10 @@ components:
         must also be set.
     extensionServiceConfig:
       type: object
-      description: Configuration for extended services. Only applicable in web page recording mode.
+      description: >-
+        Configuration for extended services. Only applicable in web page recording mode. Individual
+        recording (`mode` set to `raw`) does not support this field, and requests that contain it are
+        rejected.
       required:
         - extensionServices
       properties:
@@ -1883,7 +1886,7 @@ components:
           description: Whether to enable mobile web mode.
         maxVideoDuration:
           type: integer
-          default: 120
+          default: 180
           minimum: 30
           maximum: 240
           description: >-
@@ -2318,6 +2321,12 @@ components:
             Agora backup cloud. The Agora server will automatically continue uploading to the
             designated third-party cloud storage.
 
+            - `"stranded"`: Added in individual recording v2. Some recording files have not yet
+            been uploaded to the specified third-party cloud storage. The recording service keeps
+            retrying the upload automatically until it succeeds, and the files are not lost. Treat
+            the recording as not fully uploaded, and wait until the upload completes before you play
+            or process files that depend on the complete recording.
+
             - `"unknown"`: Unknown status.
         fileListMode:
           type: string
@@ -2355,6 +2364,12 @@ components:
             - `"backuped"`: All files have been uploaded, but at least one TS file was uploaded to
             Agora backup cloud. The Agora server will automatically continue uploading to the
             designated third-party cloud storage.
+
+            - `"stranded"`: Added in individual recording v2. Some recording files have not yet
+            been uploaded to the specified third-party cloud storage. The recording service keeps
+            retrying the upload automatically until it succeeds, and the files are not lost. Treat
+            the recording as not fully uploaded, and wait until the upload completes before you play
+            or process files that depend on the complete recording.
 
             - `"unknown"`: Unknown status.
         fileList:

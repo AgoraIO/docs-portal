@@ -85,7 +85,6 @@ After account suspension, none of your projects can access Agora services. To 
 
 2. Purchase a [pre-paid monthly package](/en/introduction/billing/subscription-packages) or [top-up package](/en/introduction/billing/subscription-packages#top-up-package). This option is highly recommended.
 
-<a id="agoras-free-of-charge-policy-for-the-first-10000-minutes"></a>
 ## Free-of-charge policy
 
 :::info

@@ -139,8 +139,6 @@ The `FastRoomOptions` class contains the following properties:
 - `containerSizeRatio`: Float. In the local display window, the aspect ratio of the content is `0.56` by default, which is `9:16`.
 - `userPayload`: User information displayed by the user's cursor, including the user's nickname and avatar. See [`FastUserPayload`](#fastuserpayload) for details.
 
-<a id="fastregion" />
-
 ### FastRegion
 
 Data center, containing the following enumeration values:
@@ -679,8 +677,6 @@ Style the whiteboard user interface.
 
 - `style`: The style of the whiteboard user interface. See [FastStyle](#faststyle) for details.
 
-<a id="faststyle" />
-
 ### FastStyle
 
 Whiteboard user interface style.
@@ -769,8 +765,6 @@ Set resources related to whiteboard color.
 **Parameters**
 
 - `fastResource`: Whiteboard color-related resources. See [FastResource](#fastresource) for details.
-
-<a id="fastresource" />
 
 ### FastResource
 
@@ -1024,8 +1018,6 @@ Set the position of the toolbar on the whiteboard.
   - `Gravity.LEFT`: left.
   - `Gravity.RIGHT`: Right.
 
-<a id="settoolboxexpand" />
-
 ### setToolboxExpand
 
 ```java
@@ -1180,8 +1172,6 @@ public init(appIdentifier: String,
 - `region`: data center. See [`Region`](#region) for details.
 - `userUID`: String. The user's UID, that is, the user's unique identifier, in string format, cannot exceed 1024 bytes. Please ensure that each user in the same room has a unique UID.
 - `userPayload`: User information displayed by the user's cursor, including the user's nickname and avatar. See [`FastUserPayload`](#fastuserpayload-ios) for details.
-
-<a id="region" />
 
 #### Region
 
@@ -2210,8 +2200,6 @@ export interface UI {
 
 - `destroy`: Removes the UI.
 
-<a id="mountprops" />
-
 ### MountProps
 
 ```typescript
@@ -2337,8 +2325,6 @@ export interface ToolbarConfig {
 
 - `colors`: (Optional) Color[]. The colors of UI components. See [`Color`](#color).
 
-<a id="camera" />
-
 ### Camera
 
 `Camera` has the following parameters:
@@ -2346,8 +2332,6 @@ export interface ToolbarConfig {
 - `centerX`: Number. The X coordinate of the center of the HTML element in the whiteboard coordinate system (taking the center of the HTML element as the origin). The default value is 0.
 - `centerY`: Number. The Y coordinate of the center of the HTML element in the whiteboard coordinate system (taking the center of the HTML element as the origin). The default value is 0.
 - `scale`: Number. The scale factor of the view. The default value is 1, which means the scale factor is 100%.
-
-<a id="rectangle" />
 
 ### Rectangle
 
@@ -2387,8 +2371,6 @@ export interface ToolbarConfig {
 - `Rhombus = "rhombus"`: Rhombus.
 - `Pentagram = "pentagram"`: Pentagram.
 - `SpeechBalloon = "speechBalloon"`: Speech balloon.
-
-<a id="color" />
 
 ### Color
 
@@ -2463,8 +2445,6 @@ export interface InsertDocsDynamic {
 - `taskId`: String. The UUID of the file conversion task. You can get `uuid` from the response body when the [Start file conversion API](/en/api-reference/api-ref/whiteboard/file-conversion#start-file-conversion) call succeeds.
 - `title`: (Optional) String. The title of the sub-window.
 - `url`: String. The path where you store the converted file. For example, `"https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/dynamicConvert"`.
-
-<a id="appintoolbar" />
 
 ### AppInToolbar
 

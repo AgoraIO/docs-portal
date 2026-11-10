@@ -1,0 +1,7 @@
+---
+title: "Why can't I call the Cloud Recording RESTful API from a browser?"
+---
+
+To call the Cloud Recording RESTful API from a web page, the browser must send a cross-origin request. Under the CORS specification, the browser first sends an `OPTIONS` request to check whether the server allows cross-origin requests, and only then sends the actual `POST` request. The Cloud Recording RESTful API does not support the `OPTIONS` method, so you cannot call it from a browser.
+
+To use the Cloud Recording RESTful API, send the requests from your app server instead.
