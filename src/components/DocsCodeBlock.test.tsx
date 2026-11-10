@@ -6,7 +6,7 @@ import {
   within,
 } from '@testing-library/react';
 import { createInstance } from 'i18next';
-import type { ComponentType, ReactNode } from 'react';
+import { type ComponentType, type ReactNode, useState } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { describe, expect, it, vi } from 'vitest';
 import enCommon from '@/lib/i18n/resources/en/common';
@@ -22,6 +22,29 @@ async function renderBlocks(children: ReactNode, locale = 'en') {
     defaultNS: 'common',
   });
   return render(<I18nextProvider i18n={instance}>{children}</I18nextProvider>);
+}
+
+function LanguageSelectorExample() {
+  const [language, setLanguage] = useState('curl');
+  return (
+    <DocsCodeBlock
+      Actions={({ children }) => (
+        <div>
+          <select
+            aria-label="Language"
+            value={language}
+            onChange={(event) => setLanguage(event.target.value)}
+          >
+            <option value="curl">cURL</option>
+            <option value="js">JavaScript</option>
+          </select>
+          {children}
+        </div>
+      )}
+    >
+      <code>{language}</code>
+    </DocsCodeBlock>
+  );
 }
 
 describe('DocsCodeBlock', () => {
@@ -115,6 +138,21 @@ describe('DocsCodeBlock', () => {
     expect(
       screen.getByRole('button', { name: 'Custom copy' }),
     ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Unwrap code' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+  });
+
+  it('retains a custom language selector and wrapping state when its action callback changes', async () => {
+    await renderBlocks(<LanguageSelectorExample />);
+    fireEvent.click(screen.getByRole('button', { name: 'Wrap code' }));
+    const selector = screen.getByRole('combobox', { name: 'Language' });
+    selector.focus();
+    fireEvent.change(selector, { target: { value: 'js' } });
+    expect(screen.getByRole('combobox', { name: 'Language' })).toBe(selector);
+    expect(selector).toHaveFocus();
+    expect(selector).toHaveValue('js');
     expect(screen.getByRole('button', { name: 'Unwrap code' })).toHaveAttribute(
       'aria-pressed',
       'true',

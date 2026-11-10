@@ -76,9 +76,10 @@ export function DocsCodeBlock({
           </>
         );
         return Actions ? (
-          <Actions className={cn('flex items-center gap-1', className)}>
-            {controls}
-          </Actions>
+          Actions({
+            className: cn('flex items-center gap-1', className),
+            children: controls,
+          })
         ) : (
           <div className={cn('flex items-center gap-1', className)}>
             {controls}
