@@ -74,6 +74,7 @@ import {
 } from '@/lib/search/cn-search-page';
 import {
   parseSearchPageState,
+  SEARCH_MAX_LOADED_PAGES,
   type SearchPageState,
 } from '@/lib/search/search-page-state';
 
@@ -171,17 +172,26 @@ function DocsSearchPageContent({
     });
   }, [data, status]);
   const stateKey = JSON.stringify(state);
-  const [progress, setProgress] = useState({ key: stateKey, page: state.page });
+  const [progress, setProgress] = useState({
+    key: stateKey,
+    page: state.loaded ?? state.page,
+  });
   if (progress.key !== stateKey) {
-    setProgress({ key: stateKey, page: state.page });
+    setProgress({ key: stateKey, page: state.loaded ?? state.page });
   }
-  const currentPage = progress.key === stateKey ? progress.page : state.page;
+  const currentPage =
+    progress.key === stateKey ? progress.page : (state.loaded ?? state.page);
   const loadedPages = useRef<{
     key: string;
     pages: Map<number, CnSearchPageResponse>;
   }>({ key: '', pages: new Map() });
+  const appliedRetry = useRef(0);
   const request = useMemo(
-    () => ({ state: { ...state, page: currentPage }, retry }),
+    () => ({
+      state: { ...state, page: currentPage },
+      startPage: state.page,
+      retry,
+    }),
     [state, currentPage, retry],
   );
   useEffect(() => setDraft(state.q), [state.q]);
@@ -197,7 +207,7 @@ function DocsSearchPageContent({
 
   useEffect(() => {
     const controller = new AbortController();
-    const { page: _page, ...criteria } = request.state;
+    const { page: _page, loaded: _loaded, ...criteria } = request.state;
     const key = JSON.stringify(criteria);
     if (loadedPages.current.key !== key) {
       loadedPages.current = { key, pages: new Map() };
@@ -223,24 +233,47 @@ function DocsSearchPageContent({
         }),
       };
     const snapshot = measurement ? logicalSearch.current?.snapshot : undefined;
-    const requestId = snapshot ? crypto.randomUUID() : undefined;
-    const requestStarted = Date.now();
-    const headers = (purpose: string) =>
-      snapshot
-        ? {
-            'X-Docs-Search-Id': snapshot.searchId,
-            'X-Docs-Request-Id':
-              purpose === 'results' ? (requestId ?? '') : crypto.randomUUID(),
-            'X-Docs-Request-Purpose': purpose,
-          }
-        : undefined;
+    let requestId: string | undefined;
+    const restoreStarted = Date.now();
     setStatus('loading');
-    searchCnDocsPage(request.state, controller.signal, headers('results'))
+    if (appliedRetry.current !== request.retry) {
+      loadedPages.current.pages.delete(request.state.page);
+      appliedRetry.current = request.retry;
+    }
+    const restoreRange = async () => {
+      // Sequential, abortable and cached; a reload cannot issue an unbounded
+      // fan-out, and a failed intermediate page is retried before continuing.
+      let result: CnSearchPageResponse | undefined;
+      for (let page = request.startPage; page <= request.state.page; page++) {
+        result = loadedPages.current.pages.get(page);
+        if (!result) {
+          requestId = snapshot ? crypto.randomUUID() : undefined;
+          result = await searchCnDocsPage(
+            { ...request.state, page },
+            controller.signal,
+            snapshot
+              ? {
+                  'X-Docs-Search-Id': snapshot.searchId,
+                  'X-Docs-Request-Id': requestId ?? '',
+                  'X-Docs-Request-Purpose': 'results',
+                }
+              : undefined,
+          );
+          if (controller.signal.aborted) return;
+          loadedPages.current.pages.set(page, result);
+        }
+        if (page >= result.totalPages) break;
+      }
+      return result;
+    };
+    restoreRange()
       .then((result) => {
+        if (!result) return;
         if (controller.signal.aborted) return;
-        loadedPages.current.pages.set(request.state.page, result);
         const pages = [...loadedPages.current.pages.entries()]
-          .filter(([page]) => page <= request.state.page)
+          .filter(
+            ([page]) => page >= request.startPage && page <= request.state.page,
+          )
           .sort(([a], [b]) => a - b);
         const accepted = {
           ...result,
@@ -257,7 +290,7 @@ function DocsSearchPageContent({
               page: request.state.page,
               totalHits: result.totalHits,
               requestId,
-              started: request.state.page > 1 ? requestStarted : undefined,
+              started: request.state.page > 1 ? restoreStarted : undefined,
             }),
           );
         setData(accepted);
@@ -359,6 +392,7 @@ function DocsSearchPageContent({
     if (!data) return null;
     return (
       <SearchResultList
+        query={state.q}
         groups={groups}
         rankOffset={rankOffset}
         productLabel={productLabel}
@@ -628,12 +662,34 @@ function DocsSearchPageContent({
                     currentPage < data.totalPages && (
                       <Button
                         disabled={status === 'loading'}
-                        onClick={() =>
-                          setProgress({ key: stateKey, page: currentPage + 1 })
-                        }
+                        onClick={() => {
+                          if (
+                            currentPage - state.page + 1 >=
+                            SEARCH_MAX_LOADED_PAGES
+                          ) {
+                            onChange({
+                              page: currentPage + 1,
+                              loaded: undefined,
+                            });
+                          } else {
+                            setProgress({
+                              key: stateKey,
+                              page: currentPage + 1,
+                            });
+                            onChange({
+                              page: state.page,
+                              loaded: currentPage + 1,
+                            });
+                          }
+                        }}
                         variant="outline"
                       >
-                        {status === 'loading' ? '正在加载…' : '加载更多'}
+                        {status === 'loading'
+                          ? '正在加载…'
+                          : currentPage - state.page + 1 >=
+                              SEARCH_MAX_LOADED_PAGES
+                            ? '下一组结果'
+                            : '加载更多'}
                       </Button>
                     )
                   )}

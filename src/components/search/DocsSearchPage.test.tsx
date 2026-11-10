@@ -32,6 +32,18 @@ const empty: CnSearchPageResponse = {
   facets: {},
 };
 
+function ClearQueryHarness() {
+  const [state, setState] = useState(
+    parseSearchPageState({ q: 'Token', product: 'rtc' }),
+  );
+  return (
+    <DocsSearchPage
+      state={state}
+      onChange={(patch) => setState((previous) => ({ ...previous, ...patch }))}
+    />
+  );
+}
+
 describe('DocsSearchPage', () => {
   it('hydrates the static empty-query HTML with a real query and selected filters without replacing the tree', async () => {
     vi.mocked(searchCnDocsPage).mockResolvedValue(empty);
@@ -445,20 +457,7 @@ describe('DocsSearchPage', () => {
   });
 
   it('clears the submitted query and returns to the start state while keeping filters', async () => {
-    function Harness() {
-      const [state, setState] = useState(
-        parseSearchPageState({ q: 'Token', product: 'rtc' }),
-      );
-      return (
-        <DocsSearchPage
-          state={state}
-          onChange={(patch) =>
-            setState((previous) => ({ ...previous, ...patch }))
-          }
-        />
-      );
-    }
-    render(<Harness />);
+    render(<ClearQueryHarness />);
     await screen.findByText('没有找到匹配的文档');
     fireEvent.click(screen.getByRole('button', { name: '清空关键词' }));
     expect(
@@ -717,5 +716,37 @@ describe('DocsSearchPage', () => {
     expect(view.container.querySelector('img')).toBeNull();
     expect(view.container.querySelector('mark')).toHaveTextContent('Token');
     expect(view.container).toHaveTextContent('<img src=x onerror=alert(1)>');
+  });
+  it('restores every page in a shared expanded range without changing a direct page link', async () => {
+    const template = { ...empty, totalHits: 3, totalPages: 3 };
+    vi.mocked(searchCnDocsPage).mockImplementation(async (state) => ({
+      ...template,
+      page: state.page,
+      groups: [],
+    }));
+    const view = render(
+      <DocsSearchPage
+        state={parseSearchPageState({ q: '恢复', page: 1, loaded: 3 })}
+        onChange={vi.fn()}
+      />,
+    );
+    await waitFor(() =>
+      expect(
+        vi.mocked(searchCnDocsPage).mock.calls.map(([state]) => state.page),
+      ).toEqual([1, 2, 3]),
+    );
+    vi.mocked(searchCnDocsPage).mockClear();
+    view.unmount();
+    render(
+      <DocsSearchPage
+        state={parseSearchPageState({ q: '恢复', page: 3 })}
+        onChange={vi.fn()}
+      />,
+    );
+    await waitFor(() =>
+      expect(
+        vi.mocked(searchCnDocsPage).mock.calls.map(([state]) => state.page),
+      ).toEqual([3]),
+    );
   });
 });

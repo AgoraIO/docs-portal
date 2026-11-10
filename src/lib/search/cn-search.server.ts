@@ -14,6 +14,7 @@ import {
   getCnGuideIdentifier,
   getCnSearchFamilyOrder,
   resolveCnSearchQuery,
+  resolveCnSearchTask,
 } from './cn-search-intent';
 import {
   type CnSearchPageResponse,
@@ -55,13 +56,19 @@ export async function queryCnSearch(
     state.platform,
   );
   const platform = intent.platform;
+  const task = resolveCnSearchTask(intent.query, state.product);
   const languageQuery = getCnSearchLanguageTerms(state.q).length > 0;
   const navigationLanguage = getCnSearchNavigationLanguage(state.q);
   const filter = ['locale = "zh-CN"', 'hidden = false', 'status = "published"'];
   // The index deduplicates equivalent sections before pagination. Every platform
   // must remain searchable here, including content absent on the default one.
   for (const field of ['product', 'platform', 'tab'] as const) {
-    const selected = field === 'platform' ? platform : state[field];
+    const selected =
+      field === 'platform'
+        ? platform
+        : field === 'product'
+          ? task.product
+          : state[field];
     if (selected) {
       const value = JSON.stringify(selected);
       if (field === 'product') filter.push(buildProductFilter(selected));
@@ -83,7 +90,7 @@ export async function queryCnSearch(
       } else filter.push(`${field} = ${value}`);
     }
   }
-  const query = intent.query;
+  const query = task.query;
   const codeObfuscation = query === '代码混淆';
   // The derived alias identifies the technical meaning. Search the original
   // word within those sections so snippets also locate 代码被混淆 / 字段混淆.
@@ -93,6 +100,9 @@ export async function queryCnSearch(
   const overview = state.type === 'all' && query.length > 0;
   const familyFilter = (family: CnSearchFamily) => `searchFamily = "${family}"`;
   const makeQuery = (family?: CnSearchFamily) => ({
+    ...(task.quickStart && family === 'docs'
+      ? { distinct: 'canonicalUrl' }
+      : {}),
     q: codeObfuscation
       ? '混淆'
       : acronym
@@ -101,9 +111,13 @@ export async function queryCnSearch(
           ? `"${identifier}"`
           : query,
     matchingStrategy: 'all',
-    filter: [...filter, ...(family ? [familyFilter(family)] : [])].join(
-      ' AND ',
-    ),
+    filter: [
+      ...filter,
+      ...(family ? [familyFilter(family)] : []),
+      ...(task.quickStart && family === 'docs'
+        ? ['taskKinds = "quick-start"']
+        : []),
+    ].join(' AND '),
     page: state.page,
     hitsPerPage: overview ? 5 : SEARCH_PAGE_SIZE,
     facets: ['products', 'platform', 'version', 'docType'],

@@ -6,6 +6,18 @@ import {
 } from './search-page-state';
 
 describe('search page URL state', () => {
+  it('round trips an expanded range separately from direct page links and bounds restoration', () => {
+    const state = parseSearchPageState({ q: 'Token', page: 2, loaded: 4 });
+    expect(state).toMatchObject({ page: 2, loaded: 4 });
+    expect(buildSearchPageHref('zh-CN', state)).toContain('loaded=4');
+    expect(parseSearchPageState({ page: 2, loaded: 9999 })).toMatchObject({
+      page: 2,
+      loaded: 21,
+    });
+    expect(parseSearchPageState({ page: 2, loaded: 1 })).not.toHaveProperty(
+      'loaded',
+    );
+  });
   it('uses one server platform and ignores obsolete version filters', () => {
     expect(
       parseSearchPageState({

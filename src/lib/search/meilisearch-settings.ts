@@ -90,6 +90,8 @@ export function buildPublishedCnSearchSettings() {
       'platformSeq:asc',
     ],
     filterableAttributes: [
+      'taskKinds',
+      'canonicalUrl',
       'languageEntryTerms',
       'aliases',
       ...base.filterableAttributes.flatMap((field) =>
