@@ -161,20 +161,15 @@ The call policy sets limits and behavior for inbound calls:
 
 <TabsContent value="python">
 
-`assign_number()` sets only the duration limits. To set `end_call`, update the number with the low-level API, and pass its current ETag:
+Pass the full policy, including `end_call`, in `call_policy`:
 
 ```python
-current = client.v3.numbers.with_raw_response.get(number_id="92e68758-3d3a-4f27-8b93-3fd8d834467c")
-client.v3.numbers.update(
-    number_id="92e68758-3d3a-4f27-8b93-3fd8d834467c",
-    if_match=current.etag,
-    inbound={
-        "agent": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
-        "call_policy": {
-            "max_call_duration_seconds": 1800,
-            "max_silence_duration_ms": 60000,
-            "end_call": {"on_user_request": True},
-        },
+saved_agent.assign_number(
+    "92e68758-3d3a-4f27-8b93-3fd8d834467c",
+    call_policy={
+        "max_call_duration_seconds": 1800,
+        "max_silence_duration_ms": 60000,
+        "end_call": {"on_user_request": True},
     },
 )
 ```
@@ -183,20 +178,14 @@ client.v3.numbers.update(
 
 <TabsContent value="typescript">
 
-`assignNumber()` sets only the duration limits. To set `end_call`, update the number with the low-level API, and pass its current ETag:
+Pass the full policy, including `end_call`, in `callPolicy`:
 
 ```ts
-const { rawResponse } = await client.v3.numbers.get({ id: '92e68758-3d3a-4f27-8b93-3fd8d834467c' }).withRawResponse();
-await client.v3.numbers.update({
-  id: '92e68758-3d3a-4f27-8b93-3fd8d834467c',
-  ifMatch: rawResponse.headers.get('etag') ?? '',
-  inbound: {
-    agent: '3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10',
-    call_policy: {
-      max_call_duration_seconds: 1800,
-      max_silence_duration_ms: 60000,
-      end_call: { on_user_request: true },
-    },
+await savedAgent.assignNumber('92e68758-3d3a-4f27-8b93-3fd8d834467c', {
+  callPolicy: {
+    max_call_duration_seconds: 1800,
+    max_silence_duration_ms: 60000,
+    end_call: { on_user_request: true },
   },
 });
 ```
@@ -205,25 +194,15 @@ await client.v3.numbers.update({
 
 <TabsContent value="go">
 
-`AssignNumber()` sets only the duration limits. To set `end_call`, update the number with the low-level API, and pass its current ETag. This example also imports `github.com/AgoraIO/agora-agents-go/v2/v3`.
+Pass the full policy, including `EndCall`, in `CallPolicy`:
 
 ```go
-callPolicy := map[string]any{
-	"max_call_duration_seconds": 1800,
-	"max_silence_duration_ms":   60000,
-	"end_call": map[string]any{
-		"on_user_request": true,
-	},
-}
-
-current, err := client.V3.Numbers.Get(ctx, "92e68758-3d3a-4f27-8b93-3fd8d834467c")
-if err != nil {
-	log.Fatal(err)
-}
-_, err = client.V3.Numbers.Update(ctx, "92e68758-3d3a-4f27-8b93-3fd8d834467c", current.ETag, v3.NumberPatch{
-	"inbound": map[string]any{
-		"agent":       "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
-		"call_policy": callPolicy,
+maxCallDuration, maxSilence := 1800, 60000
+_, err = savedAgent.AssignNumber(ctx, "92e68758-3d3a-4f27-8b93-3fd8d834467c", agentkit.AssignNumberOptions{
+	CallPolicy: &agentkit.InboundCallPolicy{
+		MaxCallDurationSeconds: &maxCallDuration,
+		MaxSilenceDurationMS:   &maxSilence,
+		EndCall:                &agentkit.InboundEndCallPolicy{OnUserRequest: true},
 	},
 })
 if err != nil {
@@ -260,6 +239,8 @@ Set `call_policy` in the number's `inbound` object:
 | `end_call` | The conditions under which the agent can end the call itself. Each condition is off unless you set it to `true`. `on_user_request`: the caller clearly says goodbye or asks to hang up. `on_voicemail`: the call reaches voicemail. `on_ai_assistant`: an AI assistant or another automated system answers. |
 
 If you omit a limit, it doesn't apply.
+
+{/* TODO(platform-confirm): The Go `AssignNumber()` example fails in the Go preview (v2.14.0-alpha.4): `agentkit.InboundEndCallPolicy` always sends `on_conversation_complete` and `on_fax`, which the API rejects with `400 InvalidRequestBody` (SDK bug list #37, reported to the SDK team). Retest it when the SDK is fixed. */}
 
 {/* TODO(platform-confirm): In pre-release testing (2026-10-27), inbound `end_call` was accepted, `transfer` returned `400 NotImplemented` ("Transfer policy is not supported"), and `inbound.agent` without `call_policy` returned `400 MissingRequiredField`. The launch contract lists `transfer`. Add it back when it's supported. */}
 

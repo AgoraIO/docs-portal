@@ -193,9 +193,10 @@ A handle to an agent saved on the Platform. With `AsyncAgora`, the handle is `As
 | `raw` | The `client.v3.agents` resource. |
 | `SavedAgent.get(client, agent_id)` | Class method. Loads a saved agent. |
 | `create_session(...)` | Creates a session that runs this agent. Returns an [`AgentSession`](#agentsession). See [Session parameters](#session-parameters). |
+| `call(*, from_number, to, call_policy=None, ...)` | Creates a phone session that runs this agent. `from_number` is the ID of your number to call from, and `to` is the number to call, in E.164 format. `call_policy` sets the [call limits and behavior](/en/ai/platform/build/phone-calls/outbound-calls-campaigns#set-call-limits-and-behavior). It also takes session parameters such as `values` and `labels`, but not the RTC ones. Returns an [`AgentSession`](#agentsession). Call `start()` to place the call. |
 | `update(config, *, name=None)` | Saves a revised `Agent` to this agent ID, and keeps its name unless you pass `name`. The `Agent` must use the same client. Returns a new `SavedAgent`. |
 | `delete()` | Deletes the agent. |
-| `assign_number(number, *, max_call_duration_seconds=None, max_silence_duration_ms=None)` | Routes inbound calls on a phone number to this agent. `number` is an E.164 string, a number ID, or a number dictionary. Returns the updated number. |
+| `assign_number(number, *, max_call_duration_seconds=None, max_silence_duration_ms=None, call_policy=None)` | Routes inbound calls on a phone number to this agent. `number` is an E.164 string, a number ID, or a number dictionary. `call_policy` is the full [inbound call policy](/en/ai/platform/build/phone-calls/route-inbound-calls#set-limits-and-behavior-for-inbound-calls), including `end_call`. The duration parameters take precedence over the same fields in it. Returns the updated number. |
 | `unassign_number(number)` | Removes this agent from a number's inbound routing. |
 | `list_numbers()` | Returns the numbers assigned to this agent. Scans all project numbers. |
 

@@ -187,9 +187,10 @@ A handle to an agent saved on the Platform.
 | `raw` | The `client.v3.agents` resource. |
 | `SavedAgent.get(client, agentId)` | Static. Loads a saved agent. Returns `Promise<SavedAgent>`. |
 | `createSession(options)` | Creates a session that runs this agent. Returns an [`AgentSession`](#agentsession). See [Session options](#session-options). |
+| `call(options)` | Creates a phone session that runs this agent. `from` is the ID of your number to call from, `to` is the number to call, in E.164 format, and `callPolicy` sets the [call limits and behavior](/en/ai/platform/build/phone-calls/outbound-calls-campaigns#set-call-limits-and-behavior). It also takes session options such as `values` and `labels`, but not the RTC ones. Returns an [`AgentSession`](#agentsession). Call `start()` to place the call. |
 | `update(config, options?)` | Saves a revised `Agent` to this agent ID, and keeps its name unless you pass `{ name }`. The `Agent` must use the same client. Returns `Promise<SavedAgent>`. |
 | `delete()` | Deletes the agent. |
-| `assignNumber(number, options?)` | Routes inbound calls on a phone number to this agent. `number` is an E.164 string, a number ID, or a number object. Options: `maxCallDurationSeconds`, `maxSilenceDurationMs`. Returns the updated number. |
+| `assignNumber(number, options?)` | Routes inbound calls on a phone number to this agent. `number` is an E.164 string, a number ID, or a number object. Options: `maxCallDurationSeconds`, `maxSilenceDurationMs`, and `callPolicy`, the full [inbound call policy](/en/ai/platform/build/phone-calls/route-inbound-calls#set-limits-and-behavior-for-inbound-calls), including `end_call`. The duration options take precedence over the same fields in `callPolicy`. Returns the updated number. |
 | `unassignNumber(number)` | Removes this agent from a number's inbound routing. |
 | `listNumbers()` | Returns the numbers assigned to this agent. Scans all project numbers. |
 

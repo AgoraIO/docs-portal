@@ -196,9 +196,10 @@ A handle to an agent saved on the Platform.
 | `Raw` | The `client.V3.Agents` client. |
 | `agentkit.GetSavedAgent(ctx, client, id)` | Loads a saved agent. Returns `(*SavedAgent, error)`. |
 | `CreateSession(opts)` | Creates a session that runs this agent. Returns an [`*AgentSession`](#agentsession). See [Session options](#session-options). |
+| `Call(opts)` | Creates a phone session that runs this agent. `opts` is an `agentkit.CallOptions`: `From` is the ID of your number to call from, `To` is the number to call, in E.164 format, and `CallPolicy` sets the [call limits and behavior](/en/ai/platform/build/phone-calls/outbound-calls-campaigns#set-call-limits-and-behavior). Set session options such as `Values` in its embedded `CreateSessionOptions`, but not the RTC ones. Returns an [`*AgentSession`](#agentsession). Call `Start(ctx)` to place the call. |
 | `Update(ctx, config)` | Saves a revised `*Agent` to this agent ID, and keeps its name. The `*Agent` must use the same client. Returns `(*SavedAgent, error)`. |
 | `Delete(ctx)` | Deletes the agent. |
-| `AssignNumber(ctx, number, opts)` | Routes inbound calls on a phone number to this agent. `number` is a number ID, an E.164 string, or a `v3.Number`. `opts` is an `agentkit.AssignNumberOptions` with `MaxCallDurationSeconds` and `MaxSilenceDurationMs` (both `*int`). Returns `(*v3.Number, error)`. |
+| `AssignNumber(ctx, number, opts)` | Routes inbound calls on a phone number to this agent. `number` is a number ID, an E.164 string, or a `v3.Number`. `opts` is an `agentkit.AssignNumberOptions` with `MaxCallDurationSeconds` and `MaxSilenceDurationMs` (both `*int`), and `CallPolicy`, the full [inbound call policy](/en/ai/platform/build/phone-calls/route-inbound-calls#set-limits-and-behavior-for-inbound-calls) as an `*agentkit.InboundCallPolicy`, including `EndCall`. The duration fields take precedence over the same fields in `CallPolicy`. Returns `(*v3.Number, error)`. |
 | `UnassignNumber(ctx, number)` | Removes this agent from a number's inbound routing. |
 | `ListNumbers(ctx)` | Returns the numbers assigned to this agent. Scans all project numbers. |
 

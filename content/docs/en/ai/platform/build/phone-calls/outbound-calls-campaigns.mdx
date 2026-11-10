@@ -35,76 +35,79 @@ Start a session with telephony transport. Set the number to call from, by its ID
 
 <TabsContent value="python">
 
-The SDK's session helpers start RTC sessions only. To place a call, use the low-level `client.v3.sessions.start()`:
+Load the agent and call `call()`. Set `from_number` to your number's ID:
 
 ```python
-session = client.v3.sessions.start(
-    agent_id="3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
+from agora_agent import SavedAgent
+
+saved_agent = SavedAgent.get(client, "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10")
+session = saved_agent.call(
+    from_number="92e68758-3d3a-4f27-8b93-3fd8d834467c",
+    to="+14155550123",
     values={"customer_name": "Ada"},
-    transport={
-        "type": "telephony",
-        "from": "92e68758-3d3a-4f27-8b93-3fd8d834467c",
-        "to": "+14155550123",
-        "call_policy": {
-            "max_ring_duration_ms": 30000,
-            "max_call_duration_seconds": 600,
-            "end_call": {"on_voicemail": True},
-        },
+    call_policy={
+        "max_ring_duration_ms": 30000,
+        "max_call_duration_seconds": 600,
+        "end_call": {"on_voicemail": True},
     },
 )
-print(session["agent_session_id"])  # The agent_session_id
+session_id = session.start()
+print(session_id)  # The agent_session_id
 ```
 
 </TabsContent>
 
 <TabsContent value="typescript">
 
-The SDK's session helpers start RTC sessions only. To place a call, use the low-level `client.v3.sessions.start()`:
+Load the agent and call `call()`. Set `from` to your number's ID:
 
 ```ts
-const session = await client.v3.sessions.start({
-  agent_id: '3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10',
+import { SavedAgent } from 'agora-agents';
+
+const savedAgent = await SavedAgent.get(client, '3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10');
+const session = savedAgent.call({
+  from: '92e68758-3d3a-4f27-8b93-3fd8d834467c',
+  to: '+14155550123',
   values: { customer_name: 'Ada' },
-  transport: {
-    type: 'telephony',
-    from: '92e68758-3d3a-4f27-8b93-3fd8d834467c',
-    to: '+14155550123',
-    call_policy: {
-      max_ring_duration_ms: 30000,
-      max_call_duration_seconds: 600,
-      end_call: { on_voicemail: true },
-    },
+  callPolicy: {
+    max_ring_duration_ms: 30000,
+    max_call_duration_seconds: 600,
+    end_call: { on_voicemail: true },
   },
 });
-console.log(session.agent_session_id); // The agent_session_id
+const sessionId = await session.start();
+console.log(sessionId); // The agent_session_id
 ```
 
 </TabsContent>
 
 <TabsContent value="go">
 
-The SDK's session helpers start RTC sessions only. To place a call, use the low-level `client.V3.Sessions.Start()`: This example also imports `github.com/AgoraIO/agora-agents-go/v2/v3`.
+Load the agent and call `Call()`. Set `From` to your number's ID:
 
 ```go
-maxRing, maxCall := 30000, 600
-session, err := client.V3.Sessions.Start(ctx, v3.SessionStartRequest{
-	AgentID: "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
-	Values:  map[string]any{"customer_name": "Ada"},
-	Transport: v3.SessionTransport{
-		Type: "telephony",
-		From: "92e68758-3d3a-4f27-8b93-3fd8d834467c",
-		To:   "+14155550123",
-		CallPolicy: &v3.CampaignCallPolicy{
-			MaxRingDurationMS:      &maxRing,
-			MaxCallDurationSeconds: &maxCall,
-			EndCall:                &v3.CampaignEndCallPolicy{OnVoicemail: true},
-		},
-	},
-})
+savedAgent, err := agentkit.GetSavedAgent(ctx, client, "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10")
 if err != nil {
 	log.Fatal(err)
 }
-fmt.Println(session.Body.AgentSessionID) // The agent_session_id
+maxRing, maxCall := 30000, 600
+session := savedAgent.Call(agentkit.CallOptions{
+	From: "92e68758-3d3a-4f27-8b93-3fd8d834467c",
+	To:   "+14155550123",
+	CreateSessionOptions: agentkit.CreateSessionOptions{
+		Values: map[string]any{"customer_name": "Ada"},
+	},
+	CallPolicy: &agentkit.CallPolicy{
+		MaxRingDurationMS:      &maxRing,
+		MaxCallDurationSeconds: &maxCall,
+		EndCall:                &agentkit.EndCallPolicy{OnVoicemail: true},
+	},
+})
+sessionID, err := session.Start(ctx)
+if err != nil {
+	log.Fatal(err)
+}
+fmt.Println(sessionID) // The agent_session_id
 ```
 
 </TabsContent>
@@ -144,7 +147,7 @@ curl --request POST \
 
 The response contains the session ID and its status, as for an RTC session. A session status of `RUNNING` doesn't mean that the call was answered. To end the call, [stop the session](/en/ai/platform/get-started/start-stop-agent#stop-the-session).
 
-{/* TODO(platform-confirm): `end_call.on_voicemail` replaces the `call_policy.voicemail` object, and `on_conversation_complete` is removed. Both depend on the backend end-call changes. The SDK types predate `on_voicemail`, so verify the Python, TypeScript, and Go examples after the SDKs are regenerated. Also confirm how developers can tell whether a call was answered (for example a telephony notification event), and add it here. */}
+{/* TODO(platform-confirm): Confirm how developers can tell whether a call was answered (for example a telephony notification event), and add it here. */}
 
 ### Set call limits and behavior
 
