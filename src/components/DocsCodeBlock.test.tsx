@@ -151,19 +151,26 @@ describe('DocsCodeBlock', () => {
     const components = getMDXComponents(undefined, { locale: 'zh-CN' });
     const Pre = components.pre as ComponentType<{ children: ReactNode }>;
     const Command = components.CommandBlock as ComponentType<{ code: string }>;
+    const Signature = components.ApiSignature as ComponentType<{
+      children: ReactNode;
+    }>;
     await renderBlocks(
       <>
         <Pre>
           <code>Localized fence</code>
         </Pre>
         <Command code="bun install" />
+        <Signature>function run(): void</Signature>
       </>,
       'en',
     );
-    expect(screen.getAllByRole('button', { name: '自动换行' })).toHaveLength(2);
+    expect(screen.getAllByRole('button', { name: '自动换行' })).toHaveLength(3);
     expect(getMDXComponents(undefined, { locale: 'zh-CN' }).pre).toBe(Pre);
     expect(getMDXComponents(undefined, { locale: 'zh-CN' }).CommandBlock).toBe(
       Command,
+    );
+    expect(getMDXComponents(undefined, { locale: 'zh-CN' }).ApiSignature).toBe(
+      Signature,
     );
     fireEvent.click(screen.getAllByRole('button', { name: '自动换行' })[0]);
     expect(

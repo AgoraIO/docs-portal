@@ -1786,11 +1786,17 @@ const localizedCodeComponents = {
     CommandBlock: (props: ComponentProps<typeof CommandBlock>) => (
       <CommandBlock {...props} locale="en" />
     ),
+    ApiSignature: (props: ComponentProps<typeof ApiSignature>) => (
+      <ApiSignature {...props} locale="en" />
+    ),
   },
   'zh-CN': {
     pre: (props: PreProps) => <Pre {...props} locale="zh-CN" />,
     CommandBlock: (props: ComponentProps<typeof CommandBlock>) => (
       <CommandBlock {...props} locale="zh-CN" />
+    ),
+    ApiSignature: (props: ComponentProps<typeof ApiSignature>) => (
+      <ApiSignature {...props} locale="zh-CN" />
     ),
   },
 };
@@ -1799,7 +1805,7 @@ function getCodeComponents(locale?: string) {
   const normalizedLocale = normalizeLocale(locale);
   return normalizedLocale
     ? localizedCodeComponents[normalizedLocale]
-    : { pre: Pre, CommandBlock };
+    : { pre: Pre, CommandBlock, ApiSignature };
 }
 
 export function getMDXComponents(
@@ -1839,7 +1845,7 @@ export function getMDXComponents(
     pre: codeComponents.pre,
     ApiReturns,
     ApiReturnType,
-    ApiSignature,
+    ApiSignature: codeComponents.ApiSignature,
     ParameterList,
     Parameter,
     ParameterType,
