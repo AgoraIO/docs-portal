@@ -34,6 +34,7 @@ agent = (
         AssemblyAISTT(
             api_key=secret_ref("support_prod", "assemblyai"),
             language="en-US",
+            ws_url="wss://streaming.assemblyai.com/v3/ws",
         )
     )
     .with_llm(...)  # configure your LLM vendor
@@ -54,6 +55,7 @@ const agent = new Agent({ client })
     new AssemblyAISTT({
       apiKey: secretRef('support_prod', 'assemblyai'),
       language: 'en-US',
+      ws_url: 'wss://streaming.assemblyai.com/v3/ws',
     }),
   )
   .withLlm(/* configure your LLM vendor */)
@@ -70,6 +72,7 @@ agent := agentkit.NewAgent(client).
 	WithStt(vendors.NewAssemblyAISTT(vendors.AssemblyAISTTOptions{
 		APIKey:   agentkit.SecretRef("support_prod", "assemblyai"),
 		Language: "en-US",
+		WsURL:    "wss://streaming.assemblyai.com/v3/ws",
 	})).
 	WithLlm( /* configure your LLM vendor */ ).
 	WithTts( /* configure your TTS vendor */ )
@@ -100,10 +103,6 @@ Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference t
 
 </TabsContent>
 </Tabs>
-
-{/* TODO(platform-confirm): The pre-release API requires `params.language` for this vendor. The SDK examples need the alpha.3 SDK previews, which keep `params.language` (SDK bug list #34). Tested on 2026-10-30 from the preview branches: all three SDK examples saved with `params.language`. */}
-
-{/* TODO(platform-confirm): SDK tabs tested in pre-release testing on 2026-10-28. All three SDKs saved the BYOK example. The SDK examples omit the endpoint: the SDKs' `ws_url` option is sent as `params.ws_url`, not as the block-level `url` (SDK bug list #32). TypeScript and Python also set the block-level `language` to `en-US` (their default interaction language) instead of the vendor's language, while Go leaves it unset (SDK bug list #31). */}
 
 ## Key parameters
 

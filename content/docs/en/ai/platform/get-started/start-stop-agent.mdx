@@ -51,8 +51,6 @@ Install the SDK preview in your project's virtual environment. You need Python 3
 pip install agora-agents==3.0.0a4
 ```
 
-{/* Verified on 2026-11-10: agora-agents 3.0.0a4 is published on PyPI (Git tag v3.0.0-alpha.4). A fresh install ran the client setup, agent and session examples, Basic authentication, the token functions, and the error classes against the Platform API. */}
-
 Create a client with your App ID and App Certificate. The SDK uses them to generate a token for each request. The Python examples on this page use this `client`:
 
 ```python
@@ -76,8 +74,6 @@ Install the SDK preview in your project. You need Node.js 18 or later. Specify t
 cd <your_project_folder>
 npm install agora-agents@3.0.0-alpha.4
 ```
-
-{/* Verified on 2026-11-10: agora-agents 3.0.0-alpha.4 is published on npm (Git tag v3.0.0-alpha.4). A fresh install ran the client setup, agent and session examples, Basic authentication, the token functions, and the error classes against the Platform API. */}
 
 Create a client with your App ID and App Certificate. The SDK uses them to generate a token for each request. The TypeScript examples on this page use this `client`:
 
@@ -103,7 +99,7 @@ go get github.com/AgoraIO/agora-agents-go/v2@v2.13.1-0.20261106151340-2d48a39163
 go mod tidy
 ```
 
-{/* TODO(platform-confirm): Pinned to the pseudo-version of commit 2d48a39 on the Go preview branch (feat/v3-api-preview), which the SDK changelog names v2.14.0-alpha.4. The SDK team doesn't tag Go previews, because a tag would affect the live v2 tags. Verified on 2026-11-10: a fresh `go get` ran the client setup, agent and session examples, Basic authentication, the token functions, and the error types against the Platform API. Replace the pin when a tagged release is available. */}
+{/* TODO(platform-confirm): Pinned to the pseudo-version of commit 2d48a39 on the Go preview branch (feat/v3-api-preview), which the SDK changelog names v2.14.0-alpha.4. The SDK team doesn't tag Go previews, because a tag would affect the live v2 tags. Replace the pin when a tagged release is available. */}
 
 Create a client with your App ID and App Certificate. The SDK uses them to generate a token for each request. The Go examples on this page use this `client` and `ctx`, and these imports:
 
@@ -135,10 +131,6 @@ Get REST API credentials for the Platform. For details, see [Authentication](/en
 
 </TabsContent>
 </Tabs>
-
-{/* Verified in pre-release testing: Basic auth (2026-10-27) and ConvoAI token auth (2026-10-28) both work. A quoted or unquoted token header and a token with or without a channel scope were all accepted. The REST examples on this page use Basic auth. The SDK examples use token auth; the alpha.3 SDK previews also support Basic auth. */}
-
-{/* The SDK examples on this page need the alpha.3 SDK previews or later: TypeScript 3.0.0-alpha.3, Python 3.0.0a3, and Go v2.14.0-alpha.3. Earlier previews can't call the Platform API, because their tokens lack the ConvoAI service. */}
 
 ## Create an agent
 
@@ -321,8 +313,6 @@ If the request is successful, the response contains the agent ID and the saved c
 
 </TabsContent>
 </Tabs>
-
-{/* TODO(platform-confirm): In pre-release testing (2026-10-29) with the SDK preview commits TypeScript 4900f4c, Python ed4466c, and Go 362ce9a, the SDKs send `vendor: "openai"` for the managed OpenAI LLM (SDK bug list #1, fixed), and agent creation saved as written in all three SDKs. Session starts couldn't be tested: the pre-release API refused every session start for the test project on 2026-10-29 (`403 InvalidPermission` with token auth, `401` with Basic auth). The SDKs don't send `Idempotency-Key` when they create an agent, which matches the contract. */}
 
 Store the agent ID. You use it to start every session that runs this agent.
 
@@ -636,7 +626,7 @@ To try a configuration before you save it, start an ephemeral session. You pass 
 
 <TabsContent value="python">
 
-Call `create_session()` on an `Agent` instead of a saved agent. The SDK starts an ephemeral session when you set a Platform session option, such as `max_duration` in seconds.
+Call `create_ephemeral_session()` on an `Agent` instead of saving it. It takes the same parameters as `create_session()`.
 
 ```python
 from agora_agent import Agent, DeepgramSTT, OpenAI, OpenAITTS
@@ -657,12 +647,11 @@ test_agent = (
     .with_tts(OpenAITTS(model="tts-1", voice="alloy"))
 )
 
-session = test_agent.create_session(
+session = test_agent.create_ephemeral_session(
     channel="<your_channel_name>",
     token="<your_rtc_token>",
     agent_uid="1002",
     remote_uids=["1001"],
-    max_duration=600,
 )
 session_id = session.start()
 ```
@@ -671,7 +660,7 @@ session_id = session.start()
 
 <TabsContent value="typescript">
 
-Call `createSession()` on an `Agent` instead of a saved agent. The SDK starts an ephemeral session when you set a Platform session option, such as `maxDuration` in seconds.
+Call `createEphemeralSession()` on an `Agent` instead of saving it. It takes the same options as `createSession()`.
 
 ```ts
 import { Agent, DeepgramSTT, OpenAI, OpenAITTS } from 'agora-agents';
@@ -690,12 +679,11 @@ const testAgent = new Agent({ client })
   )
   .withTts(new OpenAITTS({ model: 'tts-1', voice: 'alloy' }));
 
-const session = testAgent.createSession({
+const session = testAgent.createEphemeralSession({
   channel: '<your_channel_name>',
   token: '<your_rtc_token>',
   agentUid: '1002',
   remoteUids: ['1001'],
-  maxDuration: 600,
 });
 const sessionId = await session.start();
 ```
@@ -704,7 +692,7 @@ const sessionId = await session.start();
 
 <TabsContent value="go">
 
-Call `CreateSession()` on an `Agent` instead of a saved agent. The SDK starts an ephemeral session when you set a Platform session option, such as `MaxDuration` in seconds.
+Call `CreateEphemeralSession()` on an `Agent` instead of saving it. It takes the same options as `CreateSession()`.
 
 ```go
 testAgent := agentkit.NewAgent(client).
@@ -719,13 +707,11 @@ testAgent := agentkit.NewAgent(client).
 	})).
 	WithTts(vendors.NewOpenAITTS(vendors.OpenAITTSOptions{Model: "tts-1", Voice: "alloy"}))
 
-maxDuration := 600
-session := testAgent.CreateSession(agentkit.CreateSessionOptions{
-	Channel:     "<your_channel_name>",
-	Token:       "<your_rtc_token>",
-	AgentUID:    "1002",
-	RemoteUIDs:  []string{"1001"},
-	MaxDuration: &maxDuration,
+session := testAgent.CreateEphemeralSession(agentkit.CreateSessionOptions{
+	Channel:    "<your_channel_name>",
+	Token:      "<your_rtc_token>",
+	AgentUID:   "1002",
+	RemoteUIDs: []string{"1001"},
 })
 sessionID, err := session.Start(ctx)
 if err != nil {
@@ -779,7 +765,7 @@ The response has the same format as Start a session.
 </TabsContent>
 </Tabs>
 
-{/* TODO(platform-confirm): None of the SDKs has an explicit ephemeral option. Without a secret reference, a variable, or a Platform session option such as max duration, values, or data policy, `Agent.createSession()` (and its Python and Go equivalents) uses the Voice Agent API instead. In TypeScript, `idleTimeout` alone doesn't select the Platform. All three SDKs ran this example in pre-release testing on 2026-10-28 with `lifecycle.max_duration_ms: 600000`. Retrieving a session right after stopping it intermittently returned `404 TaskNotFound` before `STOPPED` appeared (2 of 6 runs). */}
+{/* TODO(platform-confirm): In pre-release testing (2026-10-28), retrieving a session right after stopping it intermittently returned `404 TaskNotFound` before `STOPPED` appeared (2 of 6 runs). Confirm whether this is expected. */}
 
 Check and stop an ephemeral session the same way as any other session.
 

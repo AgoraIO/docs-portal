@@ -5,8 +5,6 @@ description: API reference for the Conversational AI Platform (Preview) features
 
 {/* PLATFORM-NEW: new page for the Platform SDK reference. Status: drafted on 2026-10-28 from the agora-agents-ts preview branch (feat/v3-api-preview, commit 739feba) and its docs/reference/v3.md, pending review. Signatures were checked against the SDK source; the examples on the Platform guide pages were run in pre-release testing. */}
 
-{/* Verified on 2026-11-10: agora-agents 3.0.0-alpha.4 is published on npm (Git tag v3.0.0-alpha.4). A fresh install ran the client setup, agent and session examples, Basic authentication, the token functions, and the error classes against the Platform API. */}
-
 The `agora-agents` TypeScript SDK supports the Conversational AI Platform (Preview) alongside the Voice Agent API. This page covers the Platform features: saved agents, Platform sessions, secret sets, phone numbers, campaigns, and the low-level `client.v3` namespace.
 
 The vendor classes, such as `OpenAI` and `DeepgramSTT`, and the builder methods, such as `withLlm()`, are shared with the Voice Agent API. For those, see the [TypeScript SDK reference for Voice Agents](/en/api-reference/api-ref/server-sdk/typescript).
@@ -119,10 +117,10 @@ Saves the configuration and returns a [`SavedAgent`](#savedagent). Without `agen
 ### Start a session without saving
 
 ```ts
-createSession(options: SessionOptions): AgentSession
+createEphemeralSession(options: SessionOptions): AgentSession
 ```
 
-Creates a session from the builder without saving it. The SDK starts an [ephemeral session](/en/ai/platform/get-started/start-stop-agent#test-a-configuration-without-saving-an-agent) on the Platform when the configuration has a secret reference or a variable, or when you set a Platform session option such as `maxDuration`, `values`, `labels`, or `dataPolicy`. Otherwise, it uses the Voice Agent API. For the options, see [Session options](#session-options).
+Creates an [ephemeral session](/en/ai/platform/get-started/start-stop-agent#test-a-configuration-without-saving-an-agent) on the Platform from the builder, without saving it. It takes the same options as `createSession()`. See [Session options](#session-options).
 
 ### How the builder maps to the Platform
 
@@ -130,8 +128,6 @@ Creates a session from the builder without saving it. The SDK starts an [ephemer
 - **Instructions and messages**: The LLM's system messages become the agent's `instructions`. Its other messages become `messages`. `greetingMessage` and `greetingConfigs` become the agent's `greeting`.
 - **Pipeline**: Only cascaded ASR, LLM, and TTS pipelines are supported. An MLLM configuration can't be saved or used in a Platform session.
 - **Unsupported fields**: Builder settings without a Platform equivalent, such as SAL, advanced features, labels, RTC settings, and pipeline IDs, make `save()` throw an `UnsupportedFieldError` that lists them.
-
-{/* TODO(platform-confirm): SDK bug list #1 and #15 are fixed in the SDK preview commits of 2026-10-29. #18: interruption, turn detection, and filler word options take the Voice Agent field shapes. */}
 
 ## Secret references
 
@@ -201,7 +197,7 @@ A handle is a snapshot. If another process changes the agent, load it again with
 
 ## Session options
 
-`savedAgent.createSession()` and `agent.createSession()` accept the following options for Platform sessions:
+`savedAgent.createSession()`, `agent.createSession()`, and `agent.createEphemeralSession()` accept the following options for Platform sessions:
 
 | Option | Type | Description |
 |---|---|---|

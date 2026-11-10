@@ -5,7 +5,7 @@ description: API reference for the Conversational AI Platform (Preview) features
 
 {/* PLATFORM-NEW: new page for the Platform SDK reference. Status: drafted on 2026-10-28 from the agora-agents-go preview branch (feat/v3-api-preview, commit 72032cd) and its docs/guides/v3-preview.md, pending review. Signatures were checked against the SDK source; the examples on the Platform guide pages were run in pre-release testing. */}
 
-{/* TODO(platform-confirm): Pinned to the pseudo-version of commit 2d48a39 on the Go preview branch (feat/v3-api-preview), which the SDK changelog names v2.14.0-alpha.4. The SDK team doesn't tag Go previews, because a tag would affect the live v2 tags. Verified on 2026-11-10: a fresh `go get` ran the client setup, agent and session examples, Basic authentication, the token functions, and the error types against the Platform API. Replace the pin when a tagged release is available. */}
+{/* TODO(platform-confirm): Pinned to the pseudo-version of commit 2d48a39 on the Go preview branch (feat/v3-api-preview), which the SDK changelog names v2.14.0-alpha.4. The SDK team doesn't tag Go previews, because a tag would affect the live v2 tags. Replace the pin when a tagged release is available. */}
 
 The `github.com/AgoraIO/agora-agents-go/v2` Go SDK supports the Conversational AI Platform (Preview) alongside the Voice Agent API. This page covers the Platform features: saved agents, Platform sessions, secret sets, phone numbers, campaigns, and the low-level `client.V3` client.
 
@@ -124,10 +124,10 @@ Saves the configuration and returns a [`*SavedAgent`](#savedagent). `opts` is an
 ### Start a session without saving
 
 ```go
-func (a *Agent) CreateSession(opts CreateSessionOptions) *AgentSession
+func (a *Agent) CreateEphemeralSession(opts CreateSessionOptions) *AgentSession
 ```
 
-Creates a session from the builder without saving it. The SDK starts an [ephemeral session](/en/ai/platform/get-started/start-stop-agent#test-a-configuration-without-saving-an-agent) on the Platform when the configuration has a secret reference or a variable, or when you set a Platform session option such as `MaxDuration`, `Values`, `Labels`, or `DataPolicy`. Otherwise, it uses the Voice Agent API. For the options, see [Session options](#session-options).
+Creates an [ephemeral session](/en/ai/platform/get-started/start-stop-agent#test-a-configuration-without-saving-an-agent) on the Platform from the builder, without saving it. It takes the same options as `CreateSession()`. See [Session options](#session-options).
 
 ### How the builder maps to the Platform
 
@@ -136,8 +136,6 @@ Creates a session from the builder without saving it. The SDK starts an [ephemer
 - **Pipeline**: Only cascaded ASR, LLM, and TTS pipelines are supported. An MLLM configuration can't be saved or used in a Platform session.
 - **Unsupported fields**: Builder settings without a Platform equivalent, such as SAL, advanced features, labels, RTC settings, and pipeline IDs, make `Save()` return an error that wraps `agentkit.ErrUnsupportedField` and lists them.
 - **Generated types**: Interruption, turn detection, and filler word settings use generated types from the root package. Where `agentkit` has a shorter alias, such as `agentkit.FillerWordsContent` or `agentkit.InterruptionModeKeywords`, use it.
-
-{/* TODO(platform-confirm): SDK bug list #1 and #15 are fixed in the SDK preview commits of 2026-10-29. #18: interruption, turn detection, and filler word options take the Voice Agent field shapes, by design. The `agentkit` aliases and pointer helpers that #18 asked for are in v2.14.0-alpha.3. */}
 
 ## Secret references
 
@@ -208,7 +206,7 @@ A handle is a snapshot. If another process changes the agent, load it again with
 
 ## Session options
 
-`savedAgent.CreateSession()` and `agent.CreateSession()` take an `agentkit.CreateSessionOptions`. The following fields apply to Platform sessions:
+`savedAgent.CreateSession()`, `agent.CreateSession()`, and `agent.CreateEphemeralSession()` take an `agentkit.CreateSessionOptions`. The following fields apply to Platform sessions:
 
 | Field | Type | Description |
 |---|---|---|
