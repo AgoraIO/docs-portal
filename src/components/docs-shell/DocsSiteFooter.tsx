@@ -18,7 +18,7 @@ export function DocsSiteFooter({
   const docsFooterContent = getDocsFooterContent(locale);
   const isChinese = locale === 'zh-CN';
   const textLinkClassName = isChinese
-    ? 'inline-flex min-h-11 items-center gap-2 rounded-sm text-[color:var(--ink-2)] underline-offset-4 transition-colors hover:text-[color:var(--ink-1)] hover:underline focus-visible:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ink-3)] lg:min-h-7'
+    ? 'group inline-flex min-h-11 items-center gap-2 rounded-sm text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--docs-footer-link-hover)] focus-visible:text-[color:var(--docs-footer-link-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--docs-footer-link-hover)] active:text-[color:var(--docs-footer-link-hover)] lg:min-h-7'
     : undefined;
   const quietLinkClassName = isChinese
     ? cn(textLinkClassName, 'text-[color:var(--ink-3)]')
@@ -65,17 +65,19 @@ export function DocsSiteFooter({
                     className={textLinkClassName}
                     href={`tel:${docsFooterContent.contact.phone.replace(/[^\d+]/g, '')}`}
                   >
-                    <PhoneIcon
-                      aria-hidden="true"
-                      className="size-3.5 text-[color:var(--ink-3)]"
-                    />
+                    <PhoneIcon aria-hidden="true" className="size-3.5" />
                     {docsFooterContent.contact.phone}
                   </a>
                 ) : (
                   docsFooterContent.contact.phone
                 )}
               </p>
-              <p className="text-sm leading-6 text-[color:var(--ink-3)]">
+              <p
+                className={cn(
+                  'text-sm leading-6 text-[color:var(--ink-3)]',
+                  isChinese && 'font-medium text-[color:var(--ink-1)]',
+                )}
+              >
                 {docsFooterContent.contact.address.map((line) => (
                   <span className="block" key={line}>
                     {line}
@@ -112,7 +114,6 @@ export function DocsSiteFooter({
                         className={cn(
                           'text-sm text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)]',
                           textLinkClassName,
-                          isChinese && 'group',
                         )}
                         href={link.href}
                         rel="noopener noreferrer"
@@ -122,7 +123,7 @@ export function DocsSiteFooter({
                         {isChinese ? (
                           <ArrowUpRightIcon
                             aria-hidden="true"
-                            className="size-3 shrink-0 text-[color:var(--ink-4)] transition-colors group-hover:text-[color:var(--ink-2)] group-focus-visible:text-[color:var(--ink-2)]"
+                            className="size-3 shrink-0 text-[color:var(--ink-4)] transition-colors group-hover:text-[color:var(--docs-footer-link-hover)] group-focus-visible:text-[color:var(--docs-footer-link-hover)] group-active:text-[color:var(--docs-footer-link-hover)]"
                           />
                         ) : null}
                       </a>
@@ -182,6 +183,9 @@ export function DocsSiteFooter({
                       className={cn(
                         'transition-colors hover:text-[color:var(--ink-2)]',
                         quietLinkClassName,
+                        isChinese &&
+                          link.label === docsFooterContent.contact.address[0] &&
+                          'font-medium text-[color:var(--ink-1)]',
                       )}
                       href={link.href}
                       rel="noopener noreferrer"
