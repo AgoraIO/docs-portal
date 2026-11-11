@@ -1,4 +1,4 @@
-import { ArrowUpRightIcon, PhoneIcon } from 'lucide-react';
+import { PhoneIcon } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { getDocsFooterContent } from '@/lib/footer-content';
 import { DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
@@ -17,8 +17,12 @@ export function DocsSiteFooter({
 }) {
   const docsFooterContent = getDocsFooterContent(locale);
   const isChinese = locale === 'zh-CN';
+  const headingClassName = cn(
+    'text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--ink-1)]',
+    isChinese && 'text-base',
+  );
   const textLinkClassName = isChinese
-    ? 'group inline-flex min-h-11 items-center gap-2 rounded-sm text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--docs-footer-link-hover)] focus-visible:text-[color:var(--docs-footer-link-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--docs-footer-link-hover)] active:text-[color:var(--docs-footer-link-hover)] lg:min-h-7'
+    ? 'inline-flex min-h-11 items-center gap-2 rounded-sm text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--docs-footer-link-hover)] focus-visible:text-[color:var(--docs-footer-link-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--docs-footer-link-hover)] active:text-[color:var(--docs-footer-link-hover)] lg:min-h-7'
     : undefined;
   const quietLinkClassName = isChinese
     ? cn(textLinkClassName, 'text-[color:var(--ink-3)]')
@@ -56,7 +60,7 @@ export function DocsSiteFooter({
                 isChinese && 'col-span-2 gap-1 sm:col-span-1',
               )}
             >
-              <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--ink-1)]">
+              <h2 className={headingClassName}>
                 {docsFooterContent.contact.title}
               </h2>
               <p className="text-sm font-medium text-[color:var(--ink-2)]">
@@ -96,9 +100,7 @@ export function DocsSiteFooter({
                 )}
                 key={group.title}
               >
-                <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--ink-1)]">
-                  {group.title}
-                </h2>
+                <h2 className={headingClassName}>{group.title}</h2>
                 <ul
                   className={cn(
                     'flex flex-col gap-2',
@@ -120,12 +122,6 @@ export function DocsSiteFooter({
                         target="_blank"
                       >
                         {link.label}
-                        {isChinese ? (
-                          <ArrowUpRightIcon
-                            aria-hidden="true"
-                            className="size-3 shrink-0 text-[color:var(--ink-4)] transition-colors group-hover:text-[color:var(--docs-footer-link-hover)] group-focus-visible:text-[color:var(--docs-footer-link-hover)] group-active:text-[color:var(--docs-footer-link-hover)]"
-                          />
-                        ) : null}
                       </a>
                     </li>
                   ))}
