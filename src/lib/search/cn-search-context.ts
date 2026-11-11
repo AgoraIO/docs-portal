@@ -1,6 +1,12 @@
 import { resolveZhCnApiReferenceEntry } from '../api-reference-breadcrumb';
 import { isSamePathOrDescendant } from '../docs-routing';
-import { type PlatformKey, platformRegistry } from '../platforms/registry';
+import { platformRegistry } from '../platforms/registry';
+import {
+  type CnSearchPlatform,
+  cnSearchPlatformOptions,
+  isCnSearchPlatform,
+  normalizeCnSearchPlatform,
+} from './cn-search-platforms';
 import { toCnContentSearchUrl } from './cn-search-urls.mjs';
 
 // This nested publication is maintained as a versionOverride of the React SDK.
@@ -25,26 +31,31 @@ export function getCnSearchSdkLabel(url: string): string | undefined {
 }
 
 export function getCnSearchPlatforms(
-  available?: Record<string, number>,
+  _available?: Record<string, number>,
   selected?: string | null,
-): PlatformKey[] {
-  const registered = Object.keys(platformRegistry) as PlatformKey[];
-  const published = available && Object.keys(available).length > 0;
-  return registered
-    .filter(
-      (platform) =>
-        platform !== 'restful-api' &&
-        (!published ||
-          platform in available ||
-          platform === selected ||
-          (platform === 'restful' && 'restful-api' in available)),
-    )
-    .sort((a, b) => platformRegistry[a].order - platformRegistry[b].order);
+): CnSearchPlatform[] {
+  // The legacy catalog is fixed; availability from one publication must not
+  // change its labels, ordering, or remove choices during loading.
+  const canonical = selected ? normalizeCnSearchPlatform(selected) : undefined;
+  const options: CnSearchPlatform[] = cnSearchPlatformOptions.map(
+    ({ value }) => value,
+  );
+  if (
+    canonical &&
+    isCnSearchPlatform(canonical) &&
+    !options.includes(canonical)
+  )
+    options.push(canonical);
+  return options;
 }
 
 export function getCnSearchPlatformLabel(platform: string) {
-  if (platform === 'restful' || platform === 'restful-api') return '服务端';
+  platform = normalizeCnSearchPlatform(platform);
+  const option = cnSearchPlatformOptions.find(
+    ({ value }) => value === platform,
+  );
+  if (option) return option.label;
   return platform in platformRegistry
-    ? platformRegistry[platform as PlatformKey].label['zh-CN']
+    ? platformRegistry[platform as keyof typeof platformRegistry].label['zh-CN']
     : platform;
 }

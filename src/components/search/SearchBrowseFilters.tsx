@@ -19,17 +19,13 @@ import {
   getCnSearchProductGroups,
 } from '@/lib/search/cn-product-labels';
 import { getCnSearchPlatformLabel } from '@/lib/search/cn-search-context';
+import {
+  cnSearchPlatformOptions,
+  normalizeCnSearchPlatform,
+} from '@/lib/search/cn-search-platforms';
 import type { SearchPageState } from '@/lib/search/search-page-state';
 
-const COLLAPSED_PLATFORMS = 6;
-const leadingPlatforms = [
-  'android',
-  'ios',
-  'macos',
-  'web',
-  'windows',
-  'harmonyos',
-];
+const COLLAPSED_PLATFORMS = 7;
 
 export function SearchBrowseFilters({
   state,
@@ -45,17 +41,25 @@ export function SearchBrowseFilters({
   const groups = getCnSearchProductGroups(state.product, productScopes);
   const [expanded, setExpanded] = useState(false);
   const listId = useId();
+  const selected = state.platform
+    ? normalizeCnSearchPlatform(state.platform)
+    : undefined;
+  const canonicalPlatforms = platforms.map(normalizeCnSearchPlatform);
+  const requested = new Set([
+    ...canonicalPlatforms,
+    ...(selected ? [selected] : []),
+  ]);
+  const ordered = cnSearchPlatformOptions.map(({ value }) => value);
   const available = [
-    ...new Set([
-      ...leadingPlatforms.filter((platform) => platforms.includes(platform)),
-      ...platforms,
-      ...(state.platform ? [state.platform] : []),
-    ]),
+    ...ordered.filter((platform) => requested.has(platform)),
+    ...[...requested].filter(
+      (platform) => !ordered.some((value) => value === platform),
+    ),
   ];
   const leading = available.slice(0, COLLAPSED_PLATFORMS);
   const visible = expanded
     ? available
-    : [...new Set([...leading, ...(state.platform ? [state.platform] : [])])];
+    : [...new Set([...leading, ...(selected ? [selected] : [])])];
 
   return (
     <div className="search-page-browse-filters">
@@ -142,7 +146,7 @@ export function SearchBrowseFilters({
           }}
           spacing={1}
           type="single"
-          value={state.platform ?? 'all'}
+          value={selected ?? 'all'}
           variant="outline"
         >
           <ToggleGroupItem value="all">全部平台</ToggleGroupItem>

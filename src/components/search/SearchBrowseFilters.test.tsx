@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { SearchBrowseFilters } from './SearchBrowseFilters';
 
 const platforms = [
+  'general',
   'web',
   'android',
   'ios',
@@ -121,4 +122,60 @@ describe('SearchBrowseFilters', () => {
       version: undefined,
     });
   });
+});
+
+it('shows one option per platform and restores a selected alias', () => {
+  const onChange = vi.fn();
+  render(
+    <SearchBrowseFilters
+      state={{ platform: 'unreal-cpp' }}
+      platforms={[
+        'unreal',
+        'unreal-cpp',
+        'blueprint',
+        'unreal-blueprint',
+        'mini-program',
+        'mini-program-beta',
+        'web',
+        'javascript',
+      ]}
+      onChange={onChange}
+    />,
+  );
+  const expand = screen.queryByRole('button', { name: '展开' });
+  if (expand) fireEvent.click(expand);
+  expect(screen.getAllByRole('radio', { name: 'Unreal (C++)' })).toHaveLength(
+    1,
+  );
+  expect(screen.getByRole('radio', { name: 'Unreal (C++)' })).toHaveAttribute(
+    'aria-checked',
+    'true',
+  );
+  expect(screen.getAllByRole('radio')).toHaveLength(5);
+  fireEvent.click(screen.getByRole('radio', { name: 'Unreal (Blueprint)' }));
+  expect(onChange).toHaveBeenCalledWith({
+    platform: 'blueprint',
+    version: undefined,
+  });
+});
+
+it('groups server and client language options and restores a server selection', () => {
+  render(
+    <SearchBrowseFilters
+      state={{ platform: 'server-cpp' }}
+      platforms={['cpp', 'server-cpp', 'java', 'server-java', 'restful']}
+      onChange={vi.fn()}
+    />,
+  );
+  expect(screen.getAllByRole('radio')).toHaveLength(4);
+  expect(screen.getByRole('radio', { name: '服务端 C++' })).toHaveAttribute(
+    'aria-checked',
+    'true',
+  );
+  expect(
+    screen.getByRole('radio', { name: '服务端 Java' }),
+  ).toBeInTheDocument();
+  expect(screen.getByRole('radio', { name: '服务端' })).toBeInTheDocument();
+  expect(screen.queryByRole('radio', { name: 'C++' })).toBeNull();
+  expect(screen.queryByRole('radio', { name: 'Java' })).toBeNull();
 });

@@ -147,7 +147,7 @@ describe('SearchResultList', () => {
     );
     expect(screen.getByText('Android')).toBeInTheDocument();
     expect(screen.getByText('iOS')).toBeInTheDocument();
-    expect(screen.getByText('Web')).toBeInTheDocument();
+    expect(screen.getByText('JavaScript')).toBeInTheDocument();
   });
 
   it('links platform-filtered results to the selected platform URL', () => {

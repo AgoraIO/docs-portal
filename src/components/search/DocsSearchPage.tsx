@@ -51,7 +51,6 @@ import {
 } from '@/lib/analytics/measurement';
 import { observeVisible } from '@/lib/analytics/visibility';
 import type { ProductScope } from '@/lib/docs-tree';
-import { isKnownPlatform } from '@/lib/platforms/registry';
 import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
 import {
   getCnProductLabel,
@@ -72,6 +71,7 @@ import {
   type SearchPageGroup,
   searchCnDocsPage,
 } from '@/lib/search/cn-search-page';
+import { isCnSearchPlatform } from '@/lib/search/cn-search-platforms';
 import {
   parseSearchPageState,
   SEARCH_MAX_LOADED_PAGES,
@@ -320,10 +320,7 @@ function DocsSearchPageContent({
     if (filterOpen) setFilterDraft((previous) => ({ ...previous, ...patch }));
     else onChange(patch);
   };
-  const platforms = getCnSearchPlatforms(
-    catalog.platform,
-    controlsState.platform,
-  );
+  const platforms = getCnSearchPlatforms(undefined, controlsState.platform);
   const productGroups = getCnSearchProductGroups(
     controlsState.product,
     productScopes,
@@ -556,7 +553,7 @@ function DocsSearchPageContent({
                       ? productLabel(state.product)
                       : field === 'platform' &&
                           state.platform &&
-                          isKnownPlatform(state.platform)
+                          isCnSearchPlatform(state.platform)
                         ? getCnSearchPlatformLabel(state.platform)
                         : state[field]}
                     <XIcon data-icon="inline-end" />
