@@ -19,7 +19,7 @@ export function DocsSiteFooter({
   const isChinese = locale === 'zh-CN';
   const headingClassName = cn(
     'text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--ink-1)]',
-    isChinese && 'text-base',
+    isChinese && 'text-base tracking-[0.04em]',
   );
   const textLinkClassName = isChinese
     ? 'inline-flex min-h-11 items-center gap-2 rounded-sm text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--docs-footer-link-hover)] focus-visible:text-[color:var(--docs-footer-link-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--docs-footer-link-hover)] active:text-[color:var(--docs-footer-link-hover)] lg:min-h-7'
@@ -79,7 +79,7 @@ export function DocsSiteFooter({
               <p
                 className={cn(
                   'text-sm leading-6 text-[color:var(--ink-3)]',
-                  isChinese && 'font-medium text-[color:var(--ink-1)]',
+                  isChinese && 'font-normal text-[color:var(--ink-1)]',
                 )}
               >
                 {docsFooterContent.contact.address.map((line) => (
@@ -131,12 +131,22 @@ export function DocsSiteFooter({
           </div>
         </div>
 
-        <div className="flex flex-col gap-5 px-5 text-[color:var(--ink-4)] sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center gap-3 text-center">
+        <div
+          className={cn(
+            'flex flex-col gap-5 px-5 text-[color:var(--ink-4)] sm:px-6 lg:px-8',
+            isChinese && 'gap-3 text-[color:var(--ink-3)]',
+          )}
+        >
+          <div
+            className={cn(
+              'flex flex-col items-center gap-3 text-center',
+              isChinese && 'gap-1',
+            )}
+          >
             <ul
               className={cn(
                 'flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs sm:text-sm lg:justify-start',
-                isChinese && 'gap-y-0',
+                isChinese && 'gap-y-0 text-[13px] sm:text-[13px]',
               )}
             >
               {docsFooterContent.legalLinks.map((link) => (
@@ -160,13 +170,16 @@ export function DocsSiteFooter({
               <ul
                 className={cn(
                   'flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs sm:text-sm lg:justify-start',
-                  isChinese && 'gap-y-0',
+                  isChinese && 'gap-y-0 text-[13px] sm:text-[13px]',
                 )}
               >
                 {docsFooterContent.certification ? (
                   <li>
                     <span
-                      className="font-semibold text-[color:var(--ink-3)]"
+                      className={cn(
+                        'font-semibold text-[color:var(--ink-3)]',
+                        isChinese && 'font-normal',
+                      )}
                       title={docsFooterContent.certification.title}
                     >
                       {docsFooterContent.certification.label}
@@ -181,7 +194,7 @@ export function DocsSiteFooter({
                         quietLinkClassName,
                         isChinese &&
                           link.label === docsFooterContent.contact.address[0] &&
-                          'font-medium text-[color:var(--ink-1)]',
+                          'font-normal text-[color:var(--ink-1)]',
                       )}
                       href={link.href}
                       rel="noopener noreferrer"
@@ -195,7 +208,12 @@ export function DocsSiteFooter({
             ) : null}
           </div>
 
-          <div className="flex flex-col items-center justify-center gap-3 text-center text-sm sm:flex-row sm:gap-4">
+          <div
+            className={cn(
+              'flex flex-col items-center justify-center gap-3 text-center text-sm sm:flex-row sm:gap-4',
+              isChinese && 'text-[13px]',
+            )}
+          >
             <SiteLogoMark alt={docsFooterContent.logoAlt} locale={locale} />
             <span>{docsFooterContent.copyright}</span>
             <span aria-hidden="true" className="hidden sm:inline">
