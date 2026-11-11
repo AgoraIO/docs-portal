@@ -19,7 +19,7 @@ export function DocsSiteFooter({
   const isChinese = locale === 'zh-CN';
   const headingClassName = cn(
     'text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--ink-1)]',
-    isChinese && 'text-base tracking-[0.04em]',
+    isChinese && 'mb-3 text-base tracking-[0.04em]',
   );
   const textLinkClassName = isChinese
     ? 'inline-flex min-h-11 items-center gap-2 rounded-sm text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--docs-footer-link-hover)] focus-visible:text-[color:var(--docs-footer-link-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--docs-footer-link-hover)] active:text-[color:var(--docs-footer-link-hover)] lg:min-h-7'
@@ -42,22 +42,29 @@ export function DocsSiteFooter({
         className={cn(
           'mx-auto flex w-full flex-col gap-7 px-4 sm:px-6',
           contentClassName,
+          isChinese && 'gap-6',
         )}
         data-testid="docs-site-footer-content"
       >
-        <div className="flex flex-col gap-8 rounded-lg bg-[color:var(--surface-muted)] px-5 py-6 sm:px-6 lg:px-8">
+        <div
+          className={cn(
+            'flex flex-col gap-8 rounded-lg bg-[color:var(--surface-muted)] px-5 py-6 sm:px-6 lg:px-8',
+            isChinese && 'rounded-xl lg:py-8',
+          )}
+        >
           <FooterSocialLinks content={docsFooterContent} />
 
           <div
             className={cn(
               'grid grid-cols-1 gap-7 text-center sm:grid-cols-2 sm:text-left lg:grid-cols-4',
-              isChinese && 'grid-cols-2 gap-x-8 text-left',
+              isChinese &&
+                'grid-cols-2 gap-x-8 text-left lg:grid-cols-[minmax(0,1.2fr)_repeat(3,minmax(0,1fr))] lg:gap-x-12',
             )}
           >
             <div
               className={cn(
                 'flex flex-col gap-3',
-                isChinese && 'col-span-2 gap-1 sm:col-span-1',
+                isChinese && 'col-span-2 gap-0 sm:col-span-1',
               )}
             >
               <h2 className={headingClassName}>
@@ -79,7 +86,7 @@ export function DocsSiteFooter({
               <p
                 className={cn(
                   'text-sm leading-6 text-[color:var(--ink-3)]',
-                  isChinese && 'font-normal text-[color:var(--ink-1)]',
+                  isChinese && 'mt-2 font-normal text-[color:var(--ink-1)]',
                 )}
               >
                 {docsFooterContent.contact.address.map((line) => (
@@ -95,7 +102,7 @@ export function DocsSiteFooter({
                 aria-label={group.title}
                 className={cn(
                   'flex flex-col gap-3',
-                  isChinese && 'gap-1',
+                  isChinese && 'gap-0',
                   isChinese && index === 2 && 'col-span-2 sm:col-span-1',
                 )}
                 key={group.title}
@@ -134,19 +141,21 @@ export function DocsSiteFooter({
         <div
           className={cn(
             'flex flex-col gap-5 px-5 text-[color:var(--ink-4)] sm:px-6 lg:px-8',
-            isChinese && 'gap-3 text-[color:var(--ink-3)]',
+            isChinese &&
+              'grid gap-2 text-[color:var(--ink-3)] lg:grid-cols-[minmax(0,1fr)_auto]',
           )}
         >
           <div
             className={cn(
               'flex flex-col items-center gap-3 text-center',
-              isChinese && 'gap-1',
+              isChinese && 'contents',
             )}
           >
             <ul
               className={cn(
                 'flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs sm:text-sm lg:justify-start',
-                isChinese && 'gap-y-0 text-[13px] sm:text-[13px]',
+                isChinese &&
+                  'order-2 grid grid-cols-[max-content_max-content] justify-start gap-x-5 gap-y-0 text-[13px] sm:flex sm:text-[13px] lg:justify-end',
               )}
             >
               {docsFooterContent.legalLinks.map((link) => (
@@ -170,7 +179,8 @@ export function DocsSiteFooter({
               <ul
                 className={cn(
                   'flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs sm:text-sm lg:justify-start',
-                  isChinese && 'gap-y-0 text-[13px] sm:text-[13px]',
+                  isChinese &&
+                    'order-3 col-span-full justify-start gap-x-5 gap-y-0 text-[13px] sm:text-[13px]',
                 )}
               >
                 {docsFooterContent.certification ? (
@@ -192,9 +202,6 @@ export function DocsSiteFooter({
                       className={cn(
                         'transition-colors hover:text-[color:var(--ink-2)]',
                         quietLinkClassName,
-                        isChinese &&
-                          link.label === docsFooterContent.contact.address[0] &&
-                          'font-normal text-[color:var(--ink-1)]',
                       )}
                       href={link.href}
                       rel="noopener noreferrer"
@@ -211,15 +218,24 @@ export function DocsSiteFooter({
           <div
             className={cn(
               'flex flex-col items-center justify-center gap-3 text-center text-sm sm:flex-row sm:gap-4',
-              isChinese && 'text-[13px]',
+              isChinese &&
+                'order-1 flex-row justify-start gap-3 text-left text-[13px] sm:gap-3',
             )}
           >
             <SiteLogoMark alt={docsFooterContent.logoAlt} locale={locale} />
-            <span>{docsFooterContent.copyright}</span>
-            <span aria-hidden="true" className="hidden sm:inline">
-              |
-            </span>
-            <span>{docsFooterContent.rights}</span>
+            {isChinese ? (
+              <span className="min-w-0 leading-5">
+                {docsFooterContent.copyright} · {docsFooterContent.rights}
+              </span>
+            ) : (
+              <>
+                <span>{docsFooterContent.copyright}</span>
+                <span aria-hidden="true" className="hidden sm:inline">
+                  |
+                </span>
+                <span>{docsFooterContent.rights}</span>
+              </>
+            )}
           </div>
         </div>
       </div>
