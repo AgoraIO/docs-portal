@@ -478,8 +478,7 @@ paths:
                         }
                     },
                     "jitterBuffer": {
-                        "size": 500,
-                        "maxSize": 800
+                        "size": 500
                     }
                 }
             }'
@@ -521,7 +520,6 @@ paths:
                     profile: 3
                 jitterBuffer:
                   size: 500
-                  maxSize: 800
       responses:
         "200":
           description: The request succeeded and created or reset the template.
@@ -1383,21 +1381,16 @@ components:
           description: Audio encoding bitrate in Kbps. If omitted, the value is determined by `profile`.
     jitter-buffer:
       type: object
-      description: Network jitter buffer. Takes effect only when video transcoding is enabled.
+      description: >-
+        Network jitter buffer. This setting takes effect once configured, regardless of whether
+        transcoding is enabled.
       properties:
         size:
           type: integer
-          default: 500
+          default: 0
           description: >-
             Maximum buffer length in ms. Media Gateway adds this value to the end-to-end delay to
             reduce lag caused by network jitter.
-        maxSize:
-          type: integer
-          default: 1000
-          description: >-
-            Maximum buffer length in ms. This value must be greater than `jitterBuffer.size`. When
-            the jitter buffer exceeds this value, Media Gateway enables acceleration until it
-            returns to `jitterBuffer.size`.
     global-template-request:
       type: object
       required:
