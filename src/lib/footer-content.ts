@@ -286,32 +286,7 @@ const zhCnDocsFooterContent = {
     },
   ],
   rights: '保留所有权利',
-  socialLinks: [
-    {
-      href: 'https://twitter.com/AgoraIO',
-      label: 'Twitter',
-    },
-    {
-      href: 'https://www.linkedin.com/company/agora-lab-inc/',
-      label: 'LinkedIn',
-    },
-    {
-      href: 'https://www.facebook.com/AgoraIO',
-      label: 'Facebook',
-    },
-    {
-      href: 'https://agoraio.slack.com/',
-      label: 'Slack',
-    },
-    {
-      href: 'https://www.youtube.com/channel/UCjPZukasIgWoB4HBHga5CGA',
-      label: 'YouTube',
-    },
-    {
-      href: 'https://medium.com/agora-io',
-      label: 'Medium',
-    },
-  ],
+  socialLinks: [],
 } as const satisfies DocsFooterContent;
 
 export function getDocsFooterContent(locale: string): DocsFooterContent {
