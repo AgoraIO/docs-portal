@@ -15,6 +15,10 @@ export function DocsSiteFooter({
   style?: React.CSSProperties;
 }) {
   const docsFooterContent = getDocsFooterContent(locale);
+  const textLinkClassName =
+    locale === 'zh-CN'
+      ? 'inline-flex min-h-11 items-center rounded-sm text-[color:var(--ink-2)] underline decoration-[color:var(--ink-4)] decoration-1 underline-offset-[3px] transition-colors hover:text-[color:var(--ink-1)] hover:decoration-current focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 lg:min-h-6'
+      : undefined;
 
   return (
     <section
@@ -42,7 +46,16 @@ export function DocsSiteFooter({
                 {docsFooterContent.contact.title}
               </h2>
               <p className="text-sm font-medium text-[color:var(--ink-2)]">
-                {docsFooterContent.contact.phone}
+                {locale === 'zh-CN' ? (
+                  <a
+                    className={textLinkClassName}
+                    href={`tel:${docsFooterContent.contact.phone.replace(/[^\d+]/g, '')}`}
+                  >
+                    {docsFooterContent.contact.phone}
+                  </a>
+                ) : (
+                  docsFooterContent.contact.phone
+                )}
               </p>
               <p className="text-sm leading-6 text-[color:var(--ink-3)]">
                 {docsFooterContent.contact.address.map((line) => (
@@ -66,7 +79,10 @@ export function DocsSiteFooter({
                   {group.links.map((link) => (
                     <li key={link.label}>
                       <a
-                        className="text-sm text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)]"
+                        className={cn(
+                          'text-sm text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)]',
+                          textLinkClassName,
+                        )}
                         href={link.href}
                         rel="noopener noreferrer"
                         target="_blank"
@@ -87,7 +103,10 @@ export function DocsSiteFooter({
               {docsFooterContent.legalLinks.map((link) => (
                 <li key={link.label}>
                   <a
-                    className="transition-colors hover:text-[color:var(--ink-2)]"
+                    className={cn(
+                      'transition-colors hover:text-[color:var(--ink-2)]',
+                      textLinkClassName,
+                    )}
                     href={link.href}
                     rel={link.href === '#' ? undefined : 'noopener noreferrer'}
                     target={link.href === '#' ? undefined : '_blank'}
@@ -113,7 +132,10 @@ export function DocsSiteFooter({
                 {docsFooterContent.regulatoryLinks.map((link) => (
                   <li key={link.label}>
                     <a
-                      className="transition-colors hover:text-[color:var(--ink-2)]"
+                      className={cn(
+                        'transition-colors hover:text-[color:var(--ink-2)]',
+                        textLinkClassName,
+                      )}
                       href={link.href}
                       rel="noopener noreferrer"
                       target="_blank"
