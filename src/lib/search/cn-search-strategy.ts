@@ -1,3 +1,4 @@
+import { normalizeCnApiSymbol } from './cn-api-symbol';
 import {
   isExcludedCnProduct,
   normalizeCnProduct,
@@ -138,8 +139,52 @@ export function splitApiName(value: string) {
     .trim();
 }
 
+function getGuideUsageSymbols(
+  content: string,
+  apiSymbols: ReadonlySet<string>,
+) {
+  const symbols = new Set<string>();
+  for (const match of content.matchAll(/[A-Za-z_$][\w$]*/g)) {
+    const symbol = match[0].toLowerCase();
+    if (!apiSymbols.has(symbol)) continue;
+    const prefix = content.slice(Math.max(0, match.index - 48), match.index);
+    const suffix = content.slice(match.index + match[0].length);
+    // A bare mention in a quota table or a warning is not a usage tutorial.
+    const negative =
+      /(?:无法|不能|不可|不要|不应|避免|未能|不支持)[^。；;，,\n]{0,32}$/.test(
+        prefix,
+      );
+    const instruction =
+      /(?:调用|使用|通过|执行|设置|配置|传入|传递|触发)[^。；;，,\n]{0,32}$/.test(
+        prefix,
+      );
+    const code = /^\s*(?:\(|:|=)/.test(suffix);
+    const explanation = /^\s*(?:方法|接口|函数|参数|属性|回调)/.test(suffix);
+    if (!negative && (instruction || code || explanation)) symbols.add(symbol);
+  }
+  return [...symbols];
+}
+
 /** 每次准备快照重新生成检索字段，避免依赖旧索引里手工补上的数据。 */
-export function buildCnSearchDocument(record: SearchSection) {
+export function buildCnSearchDocuments(records: SearchSection[]) {
+  const symbols = new Set(
+    records.flatMap((record) => {
+      if (
+        getCnSearchFamily({ pageUrl: record.url, docType: record.docType }) !==
+        'api'
+      )
+        return [];
+      const symbol = normalizeCnApiSymbol(record.sectionTitle);
+      return symbol ? [symbol] : [];
+    }),
+  );
+  return records.map((record) => buildCnSearchDocument(record, symbols));
+}
+
+export function buildCnSearchDocument(
+  record: SearchSection,
+  apiSymbols: ReadonlySet<string> = new Set(),
+) {
   const publicUrl = toCnPublicSearchUrl(record.url);
   const api = publicUrl.startsWith('/api-reference/');
   const sourceProducts = record.products?.length
@@ -206,6 +251,20 @@ export function buildCnSearchDocument(record: SearchSection) {
     pageUrl: publicUrl,
     docType: record.docType,
   });
+  const reference = record.headingPath.some((title) =>
+    /参考|相关(?:链接|接口|API)|\breferences?\b|\brelated\s+(?:apis?|links?)\b|前提条件|准备开发环境/i.test(
+      title,
+    ),
+  );
+  const usageSymbols =
+    family === 'docs' &&
+    !reference &&
+    !/\/release-notes(?:\/|#|$)/.test(publicUrl)
+      ? getGuideUsageSymbols(record.content, apiSymbols)
+      : [];
+  const example = record.headingPath.some((title) =>
+    /示例|示范|\b(?:examples?|samples?|demo)\b/i.test(title),
+  );
   const languageEntryRank =
     family === 'faq' ||
     /\/release-notes(?:\/|#|$)/.test(publicUrl) ||
@@ -235,6 +294,11 @@ export function buildCnSearchDocument(record: SearchSection) {
   return {
     ...record,
     taskKinds: quickStart && pageEntry ? ['quick-start'] : [],
+    ...(usageSymbols.length
+      ? example
+        ? { guideExampleSymbols: usageSymbols }
+        : { guideUsageSymbols: usageSymbols }
+      : {}),
     ...(aliases.length ? { aliases: [...new Set(aliases)] } : {}),
     languageEntryTerms,
     languageEntryRank: languageEntryTerms.length ? languageEntryRank : 1000,
