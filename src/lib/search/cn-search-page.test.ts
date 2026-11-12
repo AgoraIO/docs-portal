@@ -46,6 +46,54 @@ it('removes serialized Slot markers while retaining normal identifiers and prose
     'table-list-cn-07 是配置标识',
   );
 });
+it('removes code presentation directives and their comment prefix without removing code', () => {
+  expect(
+    cleanSearchSnippet(
+      'curl --request POST \\ # [!code highlight:2]\n--url https://example.com',
+    ),
+  ).toBe('curl --request POST \\ --url https://example.com');
+  expect(
+    cleanSearchSnippet(
+      'renewToken(); // [!code focus]\njoinChannel(); // [!code ++]\nleaveChannel(); // [!code --]',
+    ),
+  ).toBe('renewToken(); joinChannel(); leaveChannel();');
+  expect(cleanSearchSnippet('颜色格式为 # 加 6 位数字；# 普通注释')).toBe(
+    '颜色格式为 # 加 6 位数字；# 普通注释',
+  );
+});
+it('cleans generated API table markers and nested Markdown links without losing identifiers', () => {
+  expect(
+    cleanSearchSnippet(
+      '字段 api-center-table-0 details 描述 api-center-table-12 details 结束',
+    ),
+  ).toBe('字段 描述 结束');
+  expect(cleanSearchSnippet('api-center-table-0 是标识')).toBe(
+    'api-center-table-0 是标识',
+  );
+  expect(
+    cleanSearchSnippet(
+      '参考 [<mark>putScenes</mark>(Scene[])](/api/room#method)，![示意图](/image(a).png)',
+    ),
+  ).toBe('参考 <mark>putScenes</mark>(Scene[])，示意图');
+  expect(
+    cleanSearchSnippet(
+      'setScenePath[1/2][putScenes(String, Scene[], int)](/reference/room#method) 返回值',
+    ),
+  ).toBe('setScenePath[1/2]putScenes(String, Scene[], int) 返回值');
+  expect(
+    cleanSearchSnippet(
+      '参考 [joinChannel](/api/method(a(b)))，再调用 renewToken。',
+    ),
+  ).toBe('参考 joinChannel，再调用 renewToken。');
+  expect(
+    cleanSearchSnippet('参考 [putScenes(Scene[])](/api/room#cropped'),
+  ).toBe('参考 putScenes(Scene[])');
+  expect(
+    cleanSearchSnippet(
+      '类型 AgentOptions&lt;TArea&gt;，文件 &quot;config&quot;。',
+    ),
+  ).toBe('类型 AgentOptions<TArea>，文件 "config"。');
+});
 it('removes serialized authoring syntax while retaining prose and search highlights', () => {
   expect(
     cleanSearchSnippet(

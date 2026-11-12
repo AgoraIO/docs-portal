@@ -37,7 +37,11 @@ export function stripSearchProseMarkers(value: string) {
     .replace(/:{3,}(?:[a-z][\w-]*(?:\[[^\]\r\n]*\])?)?/gi, ' ')
     .replace(/\[!(?:NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/gi, ' ')
     .replace(
-      /\b(?:[\w-]+-(?:markdown|html)(?:-\d+){1,}|table-list-(?:cn|en)-\d+)\s+details/gi,
+      /(?:(?:\/\/|#)[ \t]*)?\[!code[ \t]+(?:highlight|focus|word|error|warning|--|\+\+)(?::[^\]\r\n]*)?\]/g,
+      ' ',
+    )
+    .replace(
+      /\b(?:[\w-]+-(?:markdown|html)(?:-\d+){1,}|table-list-(?:cn|en)-\d+|api-center-table-\d+)\s+details/gi,
       ' ',
     );
 }

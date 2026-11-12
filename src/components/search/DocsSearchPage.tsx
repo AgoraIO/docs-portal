@@ -713,8 +713,8 @@ function DocsSearchPageContent({
         </section>
       ) : (
         <section aria-label="开始搜索" className="search-page-start">
-          <h2>从一个关键词开始</h2>
-          <p>输入功能名称、API 方法或错误码，也可以试试：</p>
+          <h2>搜索文档</h2>
+          <p>输入关键词，或选择下方示例。</p>
           <div className="search-page-examples">
             {examples.map((example) => (
               <Button

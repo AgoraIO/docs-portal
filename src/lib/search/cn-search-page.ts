@@ -105,8 +105,10 @@ export async function loadCnSearchCatalog(signal?: AbortSignal) {
 // including older snapshots whose summaries still contain serialized MDX.
 // Meilisearch may prepend its crop marker directly to an opening fence.
 export function cleanSearchSnippet(value: string): string {
-  return stripSearchProseMarkers(
-    stripSearchComponentTags(stripCroppedFenceHeader(value)),
+  return stripSnippetLinks(
+    stripSearchProseMarkers(
+      stripSearchComponentTags(stripCroppedFenceHeader(value)),
+    ),
   )
     .replace(/\bOpenAPI:\s*\/openapi\/\S*/gi, '')
     .replace(/\|?\s*:?-{3,}:?\s*(?=\||$)/gm, ' ')
@@ -114,14 +116,61 @@ export function cleanSearchSnippet(value: string): string {
     .replace(/(^|\n)([ \t]*(?:…[ \t]*)?)(?:`{3,}|~{3,})[^\r\n]*/g, '$1$2')
     .replace(/```[\w+-]*\s*/g, ' ')
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
-    .replace(/\[([^\]]*)\]\([^)]*(?:\)|$)/g, '$1')
     .replace(/<\/?[a-z_][^<>]*>/gi, (tag) =>
       /^<\/?(?:mark|em)>$/i.test(tag) ? tag : '',
     )
     .replace(/<\/?_[a-z][^<>]*$/gi, '')
     .replace(/(?:\*\*|__|`)/g, '')
+    .replace(/&(lt|gt|amp|quot|apos|nbsp|#160);/g, (_, entity: string) => {
+      const entities: Record<string, string> = {
+        lt: '<',
+        gt: '>',
+        amp: '&',
+        quot: '"',
+        apos: "'",
+        nbsp: ' ',
+        '#160': ' ',
+      };
+      return entities[entity];
+    })
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+// API signatures contain nested [] and links can contain parentheses. A single
+// regex leaves source URLs behind; cropped destinations may also end mid-link.
+function stripSnippetLinks(value: string): string {
+  let output = '';
+  let cursor = 0;
+  while (cursor < value.length) {
+    if (value[cursor] !== '[') {
+      output += value[cursor++];
+      continue;
+    }
+    let end = cursor + 1;
+    let depth = 1;
+    for (; end < value.length && depth > 0; end++) {
+      if (value[end] === '\\') end++;
+      else if (value[end] === '[') depth++;
+      else if (value[end] === ']') depth--;
+    }
+    if (depth || value[end] !== '(') {
+      output += value[cursor++];
+      continue;
+    }
+    const label = value.slice(cursor + 1, end - 1);
+    depth = 1;
+    end++;
+    for (; end < value.length && depth > 0; end++) {
+      if (value[end] === '\\') end++;
+      else if (value[end] === '(') depth++;
+      else if (value[end] === ')') depth--;
+    }
+    if (value[cursor - 1] === '!') output = output.slice(0, -1);
+    output += label;
+    cursor = end;
+  }
+  return output;
 }
 
 function stripCroppedFenceHeader(value: string): string {
