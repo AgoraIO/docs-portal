@@ -61,6 +61,42 @@ it('removes code presentation directives and their comment prefix without removi
     '颜色格式为 # 加 6 位数字；# 普通注释',
   );
 });
+it.each([
+  'renewToken(); // [!code <mark>highlight</mark>:2]',
+  'renewToken(); // [!<mark>code</mark> highlight:2]',
+  'renewToken(); # [!co<mark>de</mark> high<mark>light</mark>:2]',
+  'renewToken(); // [!<em>code</em> <em>focus</em>]',
+  'renewToken(); // <mark>[!code highlight:2]</mark>',
+  'renewToken(); // [!code <mark>warning:2</mark>]',
+])('removes highlighted presentation directives from %s', (input) => {
+  expect(cleanSearchSnippet(input)).toBe('renewToken();');
+});
+it('keeps normal highlights and unknown annotations when removing highlighted directives', () => {
+  expect(
+    cleanSearchSnippet(
+      '<mark>renewToken</mark>(); // [!<mark>code</mark> highlight:2] 后续 <mark>代码</mark>说明 [!<mark>custom</mark> notice]',
+    ),
+  ).toBe(
+    '<mark>renewToken</mark>(); 后续 <mark>代码</mark>说明 [!<mark>custom</mark> notice]',
+  );
+  expect(
+    cleanSearchSnippet('<mark>正文 // [!code</mark> highlight:2] 后续'),
+  ).toBe('<mark>正文 </mark> 后续');
+});
+it('removes legacy highlight comments while preserving code, URLs and ordinary comments', () => {
+  expect(
+    cleanSearchSnippet(
+      '// <mark>highlight</mark>-start\n"audioOptions": {}\n// highlight-end\n// highlight-next-line\nrenewToken();',
+    ),
+  ).toBe('"audioOptions": {} renewToken();');
+  expect(
+    cleanSearchSnippet(
+      'https://highlight-start/path // <mark>highlight</mark> 说明 highlightColor // highlight-start-example',
+    ),
+  ).toBe(
+    'https://highlight-start/path // <mark>highlight</mark> 说明 highlightColor // highlight-start-example',
+  );
+});
 it('cleans generated API table markers and nested Markdown links without losing identifiers', () => {
   expect(
     cleanSearchSnippet(

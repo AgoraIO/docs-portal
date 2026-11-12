@@ -37,9 +37,22 @@ export function stripSearchProseMarkers(value: string) {
     .replace(/:{3,}(?:[a-z][\w-]*(?:\[[^\]\r\n]*\])?)?/gi, ' ')
     .replace(/\[!(?:NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/gi, ' ')
     .replace(
-      /(?:(?:\/\/|#)[ \t]*)?\[!code[ \t]+(?:highlight|focus|word|error|warning|--|\+\+)(?::[^\]\r\n]*)?\]/g,
-      ' ',
+      /(?:(?:\/\/|#)(?:[ \t]|<\/?(?:mark|em)>)*?)?\[![^\]\r\n]*\]|(?<![\w:/])\/\/[ \t]*(?:<\/?(?:mark|em)>|[\w-])+/gi,
+      (candidate) => {
+        const plain = candidate.replace(/<\/?(?:mark|em)>/gi, '');
+        const codeDirective =
+          /^(?:(?:\/\/|#)[ \t]*)?\[!code[ \t]+(?:highlight|focus|word|error|warning|--|\+\+)(?::[^\]\r\n]*)?\]$/.test(
+            plain,
+          );
+        const legacyDirective =
+          /^\/\/[ \t]*highlight-(?:start|end|next-line)$/.test(plain);
+        if (!codeDirective && !legacyDirective) return candidate;
+        // Keep tag boundaries when a highlight spans the removed directive
+        // and real prose. Empty highlights are discarded below.
+        return `${candidate.match(/<\/?(?:mark|em)>/gi)?.join('') ?? ''} `;
+      },
     )
+    .replace(/<(mark|em)>\s*<\/\1>/gi, '')
     .replace(
       /\b(?:[\w-]+-(?:markdown|html)(?:-\d+){1,}|table-list-(?:cn|en)-\d+|api-center-table-\d+)\s+details/gi,
       ' ',
