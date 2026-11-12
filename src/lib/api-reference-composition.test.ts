@@ -59,21 +59,21 @@ describe('api reference composition', () => {
     expect(API_REFERENCE_OVERVIEW).not.toContain('Media Player Kit');
   });
 
-  it('uses RTC Voice Only names within the Realtime Communication API reference group', () => {
-    const realtimeCommunicationGroup = API_REFERENCE_OVERVIEW.match(
-      /"Realtime Communication": \{([\s\S]*?)\n {4}\},/,
+  it('uses RTC Voice Only names within the RTC API reference group', () => {
+    const rtcGroup = API_REFERENCE_OVERVIEW.match(
+      /"RTC": \{([\s\S]*?)\n {4}\},/,
     )?.[1];
 
-    expect(realtimeCommunicationGroup).toContain(
+    expect(rtcGroup).toContain(
       'description: "This product uses the RTC SDK and RTC (Voice Only) SDK."',
     );
-    expect(realtimeCommunicationGroup).toContain('icon: "rtc"');
-    expect(realtimeCommunicationGroup).not.toContain('icon: "video-calling"');
+    expect(rtcGroup).toContain('icon: "rtc"');
+    expect(rtcGroup).not.toContain('icon: "video-calling"');
     expect(API_REFERENCE_OVERVIEW).toContain(
-      'description: "RTC (Voice Only) SDK for Android API reference with current and previous major-version coverage.",\n      product: "Realtime Communication",\n      sdk: "RTC (Voice Only) SDK",\n      stack: "Android",\n      title: "RTC (Voice Only) SDK for Android",',
+      'description: "RTC (Voice Only) SDK for Android API reference with current and previous major-version coverage.",\n      product: "RTC",\n      sdk: "RTC (Voice Only) SDK",\n      stack: "Android",\n      title: "RTC (Voice Only) SDK for Android",',
     );
     expect(API_REFERENCE_OVERVIEW).toContain(
-      'description: "RTC (Voice Only) SDK for iOS API reference with current and previous major-version coverage.",\n      product: "Realtime Communication",\n      sdk: "RTC (Voice Only) SDK",\n      stack: "iOS",\n      title: "RTC (Voice Only) SDK for iOS",',
+      'description: "RTC (Voice Only) SDK for iOS API reference with current and previous major-version coverage.",\n      product: "RTC",\n      sdk: "RTC (Voice Only) SDK",\n      stack: "iOS",\n      title: "RTC (Voice Only) SDK for iOS",',
     );
     expect(API_REFERENCE_OVERVIEW).not.toContain('sdk: "Voice SDK"');
   });
