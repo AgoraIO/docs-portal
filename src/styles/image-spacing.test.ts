@@ -43,6 +43,9 @@ describe('documentation image spacing', () => {
     const desktop = rule(':where(');
     expect(declaration(desktop, 'margin-block')).toBe('1rem 1.5rem');
     expect(desktop.selector).toContain('table *');
+    expect(desktop.selector).toContain(
+      'p:has(> [data-docs-image], > a > [data-docs-image])',
+    );
     expect(
       declaration(rule(':where(', '(max-width: 767px)'), 'margin-bottom'),
     ).toBe('1rem');
@@ -51,6 +54,7 @@ describe('documentation image spacing', () => {
     const inner = rule('.prose [data-docs-image] > img');
     expect(declaration(inner, 'margin-block')).toBe('0');
     expect(inner.selector).toContain('p > a:only-child > [data-docs-image]');
+    expect(inner.selector).toContain('[data-docs-image]:only-of-type');
     expect(
       declaration(
         rule(':is(p, ul, ol):not(p:has([data-docs-image])):has('),
