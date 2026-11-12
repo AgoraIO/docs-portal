@@ -83,6 +83,11 @@ For Main/Preview documentation across guides, REST and SDK references, see
 configuration, saved selections and shared links. Real ConvoAI groups use
 `convoai`. Test-only registrations are kept outside published content.
 
+For unpublished documentation, use the private mirror and follow the
+[private preview quickstart](docs/agents/private-docs-release-workflow.md#author-workflow).
+It covers repository access, `releases/**` branches, Draft PRs, and protected
+Vercel preview links.
+
 For docs-owned screenshots and other static assets, upload to S3 with
 `bun run assets:upload`. Follow the security and bucket-prefix rules in
 [docs/agents/static-asset-upload.md](docs/agents/static-asset-upload.md).
