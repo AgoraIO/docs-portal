@@ -183,7 +183,7 @@ describe('overview entry links', () => {
     expect(
       extractSolutionCardTitlesByHeading('en/realtime-media/overview.mdx'),
     ).toMatchObject({
-      'Build live interaction': ['Realtime Communication'],
+      'Build live interaction': ['RTC'],
       'Extend live interaction': [
         'Signaling',
         'Chat',
@@ -193,7 +193,7 @@ describe('overview entry links', () => {
     });
   });
 
-  it('uses current product names in Realtime Communication entry cards', () => {
+  it('uses current product names in RTC entry cards', () => {
     const description =
       'Voice calls, video calls, interactive live streaming, and broadcast streaming sessions.';
 
@@ -210,7 +210,8 @@ describe('overview entry links', () => {
 
   it('uses product-specific titles for product overview pages', () => {
     const expectedTitles = {
-      'en/realtime-media/overview.mdx': 'RTC overview',
+      'en/realtime-media/overview.mdx': 'Real-Time Communications overview',
+      'en/realtime-media/rtc/index.mdx': 'RTC overview',
       'en/realtime-media/cloud-recording/index.mdx': 'Cloud Recording overview',
       'en/realtime-media/im/index.mdx': 'Chat overview',
       'en/realtime-media/marketplace/index.mdx':
@@ -278,6 +279,7 @@ describe('overview entry links', () => {
   it('uses product-specific sidebar titles for overview entries', () => {
     const expectedSidebarTitles = {
       'en/ai/meta.json': 'Voice Agent overview',
+      'en/realtime-media/rtc/meta.json': 'RTC overview',
       'en/api-reference/meta.json': 'Reference overview',
       'en/realtime-media/cloud-recording/meta.json': 'Cloud Recording overview',
       'en/realtime-media/im/meta.json': 'Chat overview',

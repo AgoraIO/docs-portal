@@ -1088,7 +1088,7 @@ describe('docs content regressions', () => {
           slugs: ['ai'],
         },
         {
-          expectedTitle: 'RTC overview',
+          expectedTitle: 'Real-Time Communications overview',
           slugs: ['realtime-media', 'overview'],
         },
         {
