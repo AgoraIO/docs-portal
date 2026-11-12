@@ -508,6 +508,7 @@ function PlatformLabel({ entry }: { entry: ApiReferenceCardEntry }) {
             isMonochromePlatformIcon(iconSrc) && 'dark:invert',
           )}
           loading="lazy"
+          referrerPolicy="no-referrer"
           src={iconSrc}
         />
       </span>

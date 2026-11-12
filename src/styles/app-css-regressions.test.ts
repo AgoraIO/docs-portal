@@ -7,7 +7,11 @@ const appCss = readFileSync(
   resolve(process.cwd(), 'src/styles/app.css'),
   'utf8',
 );
-const appCssRoot = postcss.parse(appCss);
+const metadataCss = readFileSync(
+  resolve(process.cwd(), 'src/styles/openapi-schema-metadata.css'),
+  'utf8',
+);
+const appCssRoot = postcss.parse(`${appCss}\n${metadataCss}`);
 
 function normalizeSelector(selector: string) {
   return selector.replace(/\s+/g, ' ').trim();
@@ -308,8 +312,8 @@ describe('app prose CSS regressions', () => {
     expectDeclaration(metadata, 'min-width', '0');
     expectDeclaration(row, 'display', 'inline-flex');
     expectDeclaration(row, 'max-width', '100%');
-    expectDeclaration(label, 'font-weight', '700');
-    expectDeclaration(label, 'color', 'var(--foreground)');
+    expectDeclaration(label, 'font-weight', '500');
+    expectDeclaration(label, 'color', 'var(--muted-foreground)');
     expectDeclaration(value, 'display', 'inline-flex');
     expectDeclaration(value, 'min-width', '0');
     expectDeclaration(value, 'overflow-wrap', 'anywhere');

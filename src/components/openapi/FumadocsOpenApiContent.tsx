@@ -82,6 +82,7 @@ import {
 } from '@/lib/openapi/request-examples';
 import {
   buildOpenApiResponseViews,
+  getOpenApiResponseStatusLabel,
   type OpenApiResponseHeaderView,
 } from '@/lib/openapi/response-view';
 import { resolveLocalOpenApiReference } from '@/lib/openapi/schema-tree';
@@ -816,6 +817,9 @@ function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
   const { doc } = useOpenAPI();
   const resolve = doc.resolve;
   const locale = useContext(OpenApiLocaleContext);
+  const operation = useContext(OpenApiOperationContext);
+  // Use all declared statuses, including responses without examples or content.
+  const statusCodes = Object.keys(operation?.responses ?? {});
   // Keep the values used by Fumadocs' ordinary Tabs so shared status selection
   // survives switching to the same code-tab frame as request examples.
   const tabValue = (code: string) => code.toLowerCase().replace(/\s/, '-');
@@ -853,7 +857,7 @@ function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
       <CodeBlockTabsList>
         {tabs.map(({ code }) => (
           <CodeBlockTabsTrigger key={code} value={tabValue(code)}>
-            {code}
+            {getOpenApiResponseStatusLabel(code, statusCodes, locale)}
           </CodeBlockTabsTrigger>
         ))}
       </CodeBlockTabsList>
@@ -1209,6 +1213,7 @@ function OpenApiResponseBody({ operation }: { operation?: OpenApiOperation }) {
   );
   return (
     <OpenApiResponses
+      locale={locale}
       labels={{
         mediaTypeForResponse: (status) =>
           isZhCnLocale(locale)
@@ -1924,6 +1929,7 @@ function OpenApiMarkdownCodeBlock({
 }) {
   const contextSource = useContext(OpenApiCodeSourceContext);
   const isRequestCode = useContext(OpenApiRequestCodeContext);
+  const locale = useContext(OpenApiLocaleContext);
   const childProps = isValidElement(children)
     ? (children.props as { className?: string; children?: ReactNode })
     : undefined;
@@ -1937,30 +1943,20 @@ function OpenApiMarkdownCodeBlock({
       ? childProps.children
       : undefined);
 
-  const Actions = codeblock?.Actions;
-
   // Generated usage tabs need explicit in-tab geometry during SSR and hydration.
   return (
     <DocsCodeBlock
       {...props}
       data-code-language={language}
       {...codeblock}
+      locale={locale}
+      copyButton={<OpenApiCodeCopyButton />}
       className={cn(
         props.className,
         codeblock?.className,
         'shadow-none',
         isRequestCode && 'my-0 -mx-px -mb-px rounded-none last:rounded-b-xl',
       )}
-      Actions={(actions) => {
-        const children = actions.children && <OpenApiCodeCopyButton />;
-        return Actions ? (
-          <Actions {...actions}>{children}</Actions>
-        ) : (
-          <div className={cn('empty:hidden', actions.className)}>
-            {children}
-          </div>
-        );
-      }}
     >
       {source === undefined ? (
         children

@@ -735,8 +735,13 @@ describe('ApiReferenceCards', () => {
     expect(missing).toEqual([]);
   });
 
-  it('uses platform icons uploaded from the legacy API Center assets', () => {
-    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+  it('uses hosted platform icons without sending the page Referer', () => {
+    const { container } = render(
+      <ApiReferenceCards locale="zh-CN" type="all" />,
+    );
+    for (const icon of container.querySelectorAll('img')) {
+      expect(icon).toHaveAttribute('referrerpolicy', 'no-referrer');
+    }
 
     expect(
       within(

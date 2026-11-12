@@ -5,6 +5,7 @@
 @import "./reference.css";
 @import "./search.css";
 @import "./code-block.css";
+@import "./openapi-schema-metadata.css";
 
 :root {
   --color-fd-background: var(--background);
@@ -1162,69 +1163,6 @@
 
   .openapi-schema-field-details {
     padding-inline-start: 1.125rem;
-  }
-
-  .openapi-schema-metadata {
-    display: flex;
-    min-width: 0;
-    flex-direction: column;
-    gap: 0.375rem;
-    margin-top: 0.5rem;
-  }
-
-  .openapi-schema-metadata-row {
-    display: inline-flex;
-    min-width: 0;
-    max-width: 100%;
-    flex-wrap: wrap;
-    align-items: baseline;
-  }
-
-  .openapi-schema-metadata-label {
-    color: var(--foreground);
-    font-weight: 700;
-  }
-
-  .openapi-schema-metadata-row[data-display="block"] {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.375rem;
-  }
-
-  [data-openapi-schema-code-value] {
-    min-width: 0;
-    max-width: 100%;
-  }
-
-  [data-openapi-schema-code-value] figure {
-    margin-block: 0;
-  }
-
-  .openapi-schema-metadata-value {
-    display: inline-flex;
-    min-width: 0;
-    max-width: 100%;
-    overflow-wrap: anywhere;
-  }
-
-  .openapi-schema-value-container {
-    display: inline-flex;
-    min-width: 0;
-    max-width: 100%;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-    align-items: center;
-    padding: 0.25rem 0.5rem;
-    border: 1px solid var(--line);
-    border-radius: 0.375rem;
-    background: var(--bg-sunken);
-    color: var(--docs-schema-value);
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    font-weight: 400;
-    line-height: 1.2;
-    overflow-wrap: anywhere;
   }
 
   .openapi-schema-children {

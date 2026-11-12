@@ -23,6 +23,10 @@ import {
   getOpenApiSchemaFieldAnchorAliases,
 } from '@/lib/openapi/anchors';
 import {
+  hasOpenApiSchemaTypeExpression,
+  normalizeOpenApiSchema,
+} from '@/lib/openapi/normalize-schema';
+import {
   buildOpenApiSchemaView,
   flattenOpenApiSchemaView,
   getOpenApiSchemaArrayParentPath,
@@ -98,10 +102,14 @@ export function OpenApiSchema({
     [legacyAnchorPrefix, rootId],
   );
   const [navigationKey, setNavigationKey] = useState(0);
-  const normalizedRoot = useMemo(
-    () => normalizeOpenApiSchema(root, new WeakMap(), document),
-    [document, root],
-  );
+  const normalized = useMemo(() => {
+    const booleanSources = new WeakMap<object, boolean>();
+    return {
+      root: normalizeOpenApiSchema(root, { document, booleanSources }),
+      booleanSources,
+    };
+  }, [document, root]);
+  const normalizedRoot = normalized.root;
   const generated = useMemo(() => {
     const generated = generateSchemaUI({
       readOnly,
@@ -128,10 +136,10 @@ export function OpenApiSchema({
       );
     }
 
-    appendOpenApiSchemaAllowedValues(
+    appendOpenApiSchemaSourceMetadata(
       generated,
       normalizedRoot,
-      { readOnly, writeOnly },
+      { readOnly, writeOnly, booleanSources: normalized.booleanSources },
       document,
     );
     return appendOpenApiSchemaExtraDescriptions(
@@ -147,6 +155,7 @@ export function OpenApiSchema({
     renderExtraDescription,
     renderMarkdown,
     normalizedRoot,
+    normalized,
     document,
     showExample,
     translations,
@@ -257,7 +266,7 @@ export function OpenApiSchema({
     (node) => node.choices?.length,
   );
 
-  if (root === false || (rootIsBodyTree && schemaView.length === 0)) {
+  if (normalizedRoot === false || (rootIsBodyTree && schemaView.length === 0)) {
     return emptyFallback ?? null;
   }
 
@@ -717,10 +726,14 @@ export function decodeOpenApiSchemaPath(
   return { fieldName, parentPath };
 }
 
-export function appendOpenApiSchemaAllowedValues(
+export function appendOpenApiSchemaSourceMetadata(
   generated: SchemaUIGeneratedData,
   root: unknown,
-  options: { readOnly?: boolean; writeOnly?: boolean },
+  options: {
+    readOnly?: boolean;
+    writeOnly?: boolean;
+    booleanSources?: WeakMap<object, boolean>;
+  },
   document?: unknown,
 ) {
   visit(generated.$root, root, new Set());
@@ -737,6 +750,26 @@ export function appendOpenApiSchemaAllowedValues(
     const rawRecord = isRecord(resolvedRawSchema)
       ? resolvedRawSchema
       : undefined;
+    const sourceBoolean = rawRecord && options.booleanSources?.get(rawRecord);
+    if (sourceBoolean !== undefined) {
+      const typeName = sourceBoolean ? 'any' : 'never';
+      Object.assign(schema, {
+        type: 'primitive',
+        typeName,
+        aliasName: typeName,
+        typeSpecified: true,
+      });
+    }
+    // Metadata-only schemas retain the parameter without inventing a type label.
+    // Boolean schemas and authored type/constraint/reference expressions keep their labels.
+    if (
+      schema.type === 'primitive' &&
+      rawRecord &&
+      sourceBoolean === undefined &&
+      !hasOpenApiSchemaTypeExpression(rawRecord)
+    ) {
+      schema.typeSpecified = false;
+    }
     if (rawRecord && Array.isArray(rawRecord.enum)) {
       schema.allowedValues = rawRecord.enum;
     }
@@ -1421,71 +1454,6 @@ function appendOpenApiSchemaExtraDescriptions(
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-function normalizeOpenApiSchema(
-  value: unknown,
-  seen = new WeakMap<object, unknown>(),
-  document?: unknown,
-  resolvingRefs = new Set<string>(),
-) {
-  if (Array.isArray(value)) {
-    const existing = seen.get(value);
-    if (existing) return existing;
-    const output: unknown[] = [];
-    seen.set(value, output);
-    output.push(
-      ...value.map((item) =>
-        normalizeOpenApiSchema(item, seen, document, resolvingRefs),
-      ),
-    );
-    return output;
-  }
-  if (!isRecord(value)) return value;
-
-  if (typeof value.$ref === 'string') {
-    const target =
-      getLocalOpenApiSchemaRefTarget(value.$ref, document) ??
-      (value as { '$ref-value'?: unknown })['$ref-value'];
-    if (target !== undefined && !resolvingRefs.has(value.$ref)) {
-      const nextResolvingRefs = new Set(resolvingRefs).add(value.$ref);
-      const resolved = normalizeOpenApiSchema(
-        target,
-        seen,
-        document,
-        nextResolvingRefs,
-      );
-      const output: Record<string, unknown> = isRecord(resolved)
-        ? { ...resolved }
-        : {};
-      seen.set(value, output);
-      for (const [key, item] of Object.entries(value)) {
-        if (key === '$ref' || key === '$ref-value') continue;
-        output[key] = normalizeOpenApiSchema(
-          item,
-          seen,
-          document,
-          resolvingRefs,
-        );
-      }
-      return output;
-    }
-  }
-
-  const existing = seen.get(value);
-  if (existing) return existing;
-  const output: Record<string, unknown> = {};
-  seen.set(value, output);
-  for (const [key, item] of Object.entries(value)) {
-    output[key] = normalizeOpenApiSchema(item, seen, document, resolvingRefs);
-  }
-  if (value.example !== undefined && value.examples === undefined) {
-    output.examples = [value.example];
-  }
-  if (value.nullable === true && typeof value.type === 'string') {
-    output.type = [value.type, 'null'];
-  }
-  return output;
 }
 
 function resolveLocalOpenApiSchemaReference(

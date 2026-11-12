@@ -16,7 +16,7 @@ import {
   flattenOpenApiSchemaView,
 } from '@/lib/openapi/schema-view';
 import {
-  appendOpenApiSchemaAllowedValues,
+  appendOpenApiSchemaSourceMetadata,
   buildOpenApiSchemaFindTargets,
   decodeOpenApiSchemaPath,
   encodeOpenApiSchemaPath,
@@ -82,6 +82,161 @@ function getRenderedSchemaText(text: string) {
 }
 
 describe('OpenApiSchema', () => {
+  it.each([
+    {
+      name: 'local true',
+      root: { $ref: '#/components/schemas/Any' },
+      identity: ['fieldany'],
+    },
+    {
+      name: 'lazy true',
+      root: { $ref: '#/Any', '$ref-value': true },
+      identity: ['fieldany'],
+    },
+    {
+      name: 'local false',
+      root: { $ref: '#/components/schemas/Never' },
+      identity: [],
+    },
+    {
+      name: 'lazy false',
+      root: { $ref: '#/Never', '$ref-value': false },
+      identity: [],
+    },
+    {
+      name: 'annotated true',
+      root: {
+        $ref: '#/components/schemas/Any',
+        description: 'Keep this guidance.',
+      },
+      identity: ['fieldany'],
+      guidance: 'Keep this guidance.',
+    },
+    {
+      name: 'annotated false',
+      root: {
+        $ref: '#/components/schemas/Never',
+        description: 'Keep this guidance.',
+      },
+      identity: ['fieldnever'],
+      guidance: 'Keep this guidance.',
+    },
+    {
+      name: 'true with type sibling',
+      root: {
+        $ref: '#/components/schemas/Any',
+        type: 'string',
+        description: 'Keep this guidance.',
+      },
+      identity: ['fieldstring'],
+      guidance: 'Keep this guidance.',
+    },
+    {
+      name: 'false with type sibling',
+      root: {
+        $ref: '#/components/schemas/Never',
+        type: 'string',
+        description: 'Keep this guidance.',
+      },
+      identity: ['fieldnever'],
+      guidance: 'Keep this guidance.',
+    },
+    {
+      name: 'annotated reference chain',
+      root: { $ref: '#/components/schemas/AnnotatedAny' },
+      identity: ['fieldany'],
+      guidance: 'Inherited guidance.',
+    },
+  ])(
+    'preserves boolean schema semantics for $name',
+    ({ root, identity, guidance }) => {
+      const { container } = render(
+        <OpenApiSchema
+          client={{ as: 'property', name: 'field' }}
+          document={{
+            components: {
+              schemas: {
+                Any: true,
+                Never: false,
+                AnnotatedAny: {
+                  $ref: '#/components/schemas/Any',
+                  description: 'Inherited guidance.',
+                },
+              },
+            },
+          }}
+          root={root}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+        />,
+      );
+      expect(
+        Array.from(
+          container.querySelectorAll('.openapi-schema-field-content'),
+        ).map((row) => row.textContent),
+      ).toEqual(identity);
+      if (guidance)
+        expect(
+          container.querySelector('.openapi-schema-field-description'),
+        ).toHaveTextContent(guidance);
+    },
+  );
+
+  it('omits absent type metadata while retaining declared types, boolean schemas and an authored unknown alias', () => {
+    const root = {
+      type: 'object',
+      required: ['undocumented'],
+      properties: {
+        undocumented: { description: 'No type was documented.' },
+        typed: { type: 'string' },
+        anyValue: true,
+        named: {
+          type: 'object',
+          title: 'unknown',
+          properties: { value: { type: 'integer' } },
+        },
+      },
+    };
+    const { container } = render(
+      <OpenApiSchema
+        client={{ as: 'body', name: 'body' }}
+        root={root}
+        renderCodeblock={({ code }) => <pre>{code}</pre>}
+        renderMarkdown={(markdown) => <p>{markdown}</p>}
+      />,
+    );
+    const row = (name: string) =>
+      Array.from(container.querySelectorAll('.openapi-schema-field-row')).find(
+        (field) => field.querySelector('code')?.textContent === name,
+      ) as HTMLElement;
+    expect(
+      within(row('undocumented')).queryByText('unknown', { exact: true }),
+    ).not.toBeInTheDocument();
+    expect(
+      within(row('undocumented')).getByText('Required'),
+    ).toBeInTheDocument();
+    expect(
+      within(row('undocumented')).getByText('No type was documented.'),
+    ).toBeInTheDocument();
+    expect(
+      within(row('undocumented')).getByRole('button', {
+        name: 'Copy link to undocumented',
+      }),
+    ).toBeInTheDocument();
+    expect(within(row('typed')).getByText('string')).toBeInTheDocument();
+    expect(within(row('anyValue')).getByText('any')).toBeInTheDocument();
+    const never = generateSchemaUI({
+      root: false,
+      renderMarkdown: (value) => value,
+      renderCodeblock: ({ code }) => <pre>{code}</pre>,
+    });
+    appendOpenApiSchemaSourceMetadata(never, false, {});
+    expect(never.refs[never.$root].typeName).toBe('never');
+    expect(never.refs[never.$root]).not.toHaveProperty('typeSpecified', false);
+    expect(within(row('named')).getByText('unknown')).toBeInTheDocument();
+    expect(root.properties.undocumented).not.toHaveProperty('type');
+  });
+
   it('does not render a custom filter for a request schema', () => {
     renderSchema();
 
@@ -725,7 +880,7 @@ describe('OpenApiSchema', () => {
           type: 'object',
         },
       });
-      appendOpenApiSchemaAllowedValues(generated, root, {
+      appendOpenApiSchemaSourceMetadata(generated, root, {
         readOnly: true,
         writeOnly: true,
       });

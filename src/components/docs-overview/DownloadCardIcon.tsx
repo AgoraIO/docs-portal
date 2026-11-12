@@ -19,6 +19,7 @@ export function DownloadCardIcon({ src }: { src?: string }) {
             isMonochromePlatformIcon(src) && 'dark:invert',
           )}
           loading="lazy"
+          referrerPolicy="no-referrer"
           onError={() => setFailedSrc(src)}
           src={src}
         />

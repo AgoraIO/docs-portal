@@ -11,6 +11,7 @@ export type OpenApiSchemaPathItem = {
 
 export type OpenApiSchemaData = SchemaData & {
   allowedValues?: unknown[];
+  typeSpecified?: boolean;
 };
 
 export type OpenApiSchemaChoice = {

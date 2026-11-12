@@ -415,6 +415,34 @@ describe('FumadocsOpenApiContent', () => {
     }
   });
 
+  it('preserves the authored non-200 response label in the speech-to-text body and examples', async () => {
+    const document = yaml.load(
+      await readFile('content/openapi/speech-to-text/v7.zh-CN.yaml', 'utf8'),
+    ) as Document;
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/api/speech-to-text/v1/projects/{appid}/join',
+            },
+          ],
+          payload: { bundled: document },
+        }}
+      />,
+    );
+
+    expect(getResponseTab('非 200')).toBeInTheDocument();
+    const examples = globalThis.document.querySelector(
+      '.openapi-response-example',
+    ) as HTMLElement;
+    expect(
+      within(examples).getByRole('tab', { name: '非 200' }),
+    ).toBeInTheDocument();
+  });
+
   it('preserves legacy RTC error guidance without added fields or examples', async () => {
     const document = yaml.load(
       await readFile(
@@ -879,6 +907,11 @@ describe('FumadocsOpenApiContent', () => {
       '.openapi-schema-parameter-fields',
     );
     expect(fields).toHaveLength(4);
+    for (const field of fields) {
+      expect(
+        within(field as HTMLElement).queryByText('unknown', { exact: true }),
+      ).not.toBeInTheDocument();
+    }
     expect(container).toHaveTextContent('Inherited project parameter.');
     expect(container).toHaveTextContent('Referenced pagination cursor.');
     expect(container).toHaveTextContent('next-cursor');
@@ -886,6 +919,46 @@ describe('FumadocsOpenApiContent', () => {
     expect(container).toHaveTextContent('Session identifier.');
     expect(project).not.toHaveProperty('schema');
     expect(cursor).not.toHaveProperty('schema');
+  });
+
+  it('does not invent type labels for untyped RTC user-status parameters', async () => {
+    const source = yaml.load(
+      await readFile(
+        'content/openapi/rtc/channel-management.zh-CN.yaml',
+        'utf8',
+      ),
+    ) as Document;
+    const { container } = render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'get',
+              path: '/dev/v1/channel/user/property/{appid}/{uid}/{channelName}',
+            },
+          ],
+          payload: { bundled: source },
+        }}
+      />,
+    );
+    const rows = Array.from(
+      container.querySelectorAll(
+        '.openapi-schema-parameter-fields .openapi-schema-field-row',
+      ),
+    );
+    expect(rows.map((row) => row.querySelector('code')?.textContent)).toEqual([
+      'appid',
+      'uid',
+      'channelName',
+    ]);
+    for (const row of rows) {
+      expect(
+        within(row as HTMLElement).queryByText('unknown', { exact: true }),
+      ).not.toBeInTheDocument();
+      expect(within(row as HTMLElement).getByText('必填')).toBeInTheDocument();
+    }
+    expect(container).toHaveTextContent('请确保使用整型用户 ID');
   });
 
   it('preserves the schema-less appid parameter in the published RTC channel-list source', async () => {
@@ -1429,7 +1502,10 @@ describe('FumadocsOpenApiContent', () => {
       screen.queryByRole('heading', { name: 'Response schema' }),
     ).not.toBeInTheDocument();
     expect(getResponseTab('200')).toHaveAttribute('aria-selected', 'true');
-    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'false');
+    expect(getResponseTab('Other responses')).toHaveAttribute(
+      'aria-selected',
+      'false',
+    );
     expect(
       document.getElementById('response-headers-200-x-request-id'),
     ).toBeInTheDocument();
@@ -1494,7 +1570,7 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
+    expect(getResponseTab('Non-200')).toHaveAttribute('aria-selected', 'true');
     await waitFor(() => {
       expect(screen.getAllByText('id').length).toBeGreaterThan(0);
       const url = new URL(window.location.href);
@@ -1535,7 +1611,7 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
+    expect(getResponseTab('Non-200')).toHaveAttribute('aria-selected', 'true');
     expect(
       document.getElementById('response-headers-default-x-request-id'),
     ).toBeInTheDocument();
@@ -1568,12 +1644,12 @@ describe('FumadocsOpenApiContent', () => {
       <FumadocsOpenApiContent pageProps={pageProps} />,
     );
 
-    fireEvent.mouseDown(getResponseTab('default'));
-    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
+    fireEvent.mouseDown(getResponseTab('Non-200'));
+    expect(getResponseTab('Non-200')).toHaveAttribute('aria-selected', 'true');
 
     rerender(<FumadocsOpenApiContent pageProps={pageProps} />);
 
-    expect(getResponseTab('default')).toHaveAttribute('aria-selected', 'true');
+    expect(getResponseTab('Non-200')).toHaveAttribute('aria-selected', 'true');
 
     const nextPageProps = {
       operations: pageProps.operations,
@@ -1764,7 +1840,9 @@ describe('FumadocsOpenApiContent', () => {
           .children()
           .first()
           .find('[role="tab"]')
-          .map((_, tab) => $(tab).text())
+          .map((_, tab) =>
+            decodeURIComponent($(tab).attr('id')?.split('-trigger-')[1] ?? ''),
+          )
           .get(),
         file.path,
       ).toEqual(Object.keys(operation.responses as Record<string, unknown>));
