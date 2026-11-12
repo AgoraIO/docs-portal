@@ -1794,9 +1794,10 @@ async function renderBlockNode($, node, state) {
     const labeled =
       element.parents('blockquote').length === 0 &&
       typedocNotice(cleanText(element.text()));
-    const content = labeled
-      ? await renderCalloutChildren($, element, state)
-      : await renderChildren($, element, state);
+    const content =
+      labeled || state.blockquoteCallout
+        ? await renderCalloutChildren($, element, state)
+        : await renderChildren($, element, state);
     const notice = labeled && typedocNotice(content);
     if (notice)
       return [
@@ -1808,12 +1809,11 @@ async function renderBlockNode($, node, state) {
         .filter(Boolean)
         .join('\n\n');
     if (state.blockquoteCallout) {
-      const body = await renderCalloutChildren($, element, state);
       return [
         anchor,
         state.calloutDepth
-          ? body
-          : renderCallout({ ...state.blockquoteCallout, body }),
+          ? content
+          : renderCallout({ ...state.blockquoteCallout, body: content }),
       ]
         .filter(Boolean)
         .join('\n\n');
