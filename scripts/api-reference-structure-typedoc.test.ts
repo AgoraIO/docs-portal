@@ -82,3 +82,13 @@ it('reuses a deprecated comment-tag notice for nested notes', async () => {
   expect(result.body).toContain('**Note:**\n\nKeep this condition.');
   expect(result.body.match(/^:::\w/gm)).toHaveLength(1);
 });
+
+it('keeps explicit note labels consistent between repair and a fresh legacy import', async () => {
+  const result = await convertHtmlToMdx({
+    html: '<div class="col-content"><blockquote><p>Note: Keep this condition.</p></blockquote></div>',
+    sourcePath: 'html-docs/rtc/Web/interfaces/client.html',
+    sourceUrl: 'https://example.com/api/client',
+    ...API_CENTER_GENERATOR_CONVERSION_OPTIONS.typedoc,
+  });
+  expect(result.body).toContain(':::note[Note]\nKeep this condition.\n:::');
+});

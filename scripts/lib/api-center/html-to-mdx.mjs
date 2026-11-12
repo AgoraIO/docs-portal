@@ -1791,17 +1791,6 @@ async function renderBlockNode($, node, state) {
       .join('\n\n');
   }
   if (name === 'blockquote') {
-    if (state.blockquoteCallout) {
-      const body = await renderCalloutChildren($, element, state);
-      return [
-        anchor,
-        state.calloutDepth
-          ? body
-          : renderCallout({ ...state.blockquoteCallout, body }),
-      ]
-        .filter(Boolean)
-        .join('\n\n');
-    }
     const labeled =
       element.parents('blockquote').length === 0 &&
       typedocNotice(cleanText(element.text()));
@@ -1818,6 +1807,17 @@ async function renderBlockNode($, node, state) {
       ]
         .filter(Boolean)
         .join('\n\n');
+    if (state.blockquoteCallout) {
+      const body = await renderCalloutChildren($, element, state);
+      return [
+        anchor,
+        state.calloutDepth
+          ? body
+          : renderCallout({ ...state.blockquoteCallout, body }),
+      ]
+        .filter(Boolean)
+        .join('\n\n');
+    }
     const quote = content
       .split('\n')
       .map((line) => `> ${line}`.trimEnd())
