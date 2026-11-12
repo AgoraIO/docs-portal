@@ -1,0 +1,153 @@
+---
+title: Soniox
+description: >
+ Integrate Soniox TTS with the Conversational AI Engine.
+---
+
+Soniox provides real-time streaming text-to-speech (TTS) with a choice of voices across many languages.
+
+### Sample configuration
+
+The following examples show how to configure Soniox TTS when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import SonioxTTS
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(SonioxTTS(
+        api_key='your-soniox-key',
+        model='tts-rt-v2',
+        voice='Adrian',
+        language='en',
+        sample_rate=24000,
+        speed=1.0,
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, SonioxTTS } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(new SonioxTTS({
+    apiKey: 'your-soniox-key',
+    model: 'tts-rt-v2',
+    voice: 'Adrian',
+    language: 'en',
+    sampleRate: 24000,
+    speed: 1.0,
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+sampleRate := vendors.SampleRate24kHz
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(
+    vendors.NewSonioxTTS(vendors.SonioxTTSOptions{
+        APIKey:     "your-soniox-key",
+        Model:      "tts-rt-v2",
+        Voice:      "Adrian",
+        Language:   "en",
+        SampleRate: &sampleRate,
+        Speed:      Agora.Float64(1.0),
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `tts` configuration in your request. Only `api_key` is required:
+
+```json
+"tts": {
+  "vendor": "soniox",
+  "params": {
+    "api_key": "<soniox_api_key>",
+    "base_url": "wss://tts-rt.soniox.com/tts-websocket",
+    "model": "tts-rt-v2",
+    "voice": "Adrian",
+    "language": "en",
+    "sample_rate": 24000,
+    "speed": 1.0
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+    The Soniox API key used to authenticate requests.
+  </Parameter>
+  <Parameter name="base_url" type="string" required={false}>
+    The Soniox WebSocket endpoint for streaming speech synthesis. For example, `wss://tts-rt.soniox.com/tts-websocket`.
+  </Parameter>
+  <Parameter name="model" type="string" required={false}>
+    The Soniox TTS model to use. For example, `tts-rt-v2`.
+  </Parameter>
+  <Parameter name="voice" type="string" required={false}>
+    The name of the Soniox voice to use. For example, `Adrian`. To see the available voices, check the Soniox Console.
+  </Parameter>
+  <Parameter name="language" type="string" required={false}>
+    The two-letter ISO language code for speech synthesis. For example, `en`.
+  </Parameter>
+  <Parameter name="sample_rate" type="integer" required={false}>
+    The output audio sample rate in Hz. For example, `24000`.
+  </Parameter>
+  <Parameter name="speed" type="number" required={false}>
+    The speech rate multiplier, from `0.7` to `1.3`. `1.0` is the normal speed.
+  </Parameter>
+  <Parameter name="reduce_silence" type="boolean" required={false}>
+    Whether to shorten the pauses between words. Only models that support silence reduction accept this parameter.
+  </Parameter>
+  <Parameter name="return_timestamps" type="boolean" required={false}>
+    Whether Soniox returns character-level timestamps for the synthesized speech.
+  </Parameter>
+  <Parameter name="client_reference_id" type="string" required={false}>
+    An identifier of your choice that Soniox records with the request in its usage logs.
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Soniox documentation](https://docs.soniox.com/tts).
+:::
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
