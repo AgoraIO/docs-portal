@@ -42,6 +42,32 @@ function hash(value: string) {
   return createHash('sha256').update(value).digest('hex');
 }
 
+function transportFailure(error: unknown) {
+  const failure = error as {
+    name?: string;
+    code?: string | number;
+    cause?: { code?: string };
+  } | null;
+  const code = failure?.cause?.code ?? failure?.code;
+  return {
+    name: failure?.name ?? 'Error',
+    code,
+    transient:
+      failure?.name === 'TimeoutError' ||
+      [
+        'ECONNRESET',
+        'ETIMEDOUT',
+        'EPIPE',
+        'ECONNREFUSED',
+        'EAI_AGAIN',
+        'UND_ERR_SOCKET',
+        'UND_ERR_CONNECT_TIMEOUT',
+        'UND_ERR_HEADERS_TIMEOUT',
+        'UND_ERR_BODY_TIMEOUT',
+      ].includes(String(code)),
+  };
+}
+
 export function createSearchIndexClient({
   host,
   writeKey,
@@ -63,21 +89,64 @@ export function createSearchIndexClient({
     throw new Error('Invalid Meilisearch job configuration');
   const base = host.replace(/\/$/, '');
   const request = async (path: string, method = 'GET', body?: unknown) => {
-    const response = await fetch(`${base}${path}`, {
-      method,
-      signal: AbortSignal.timeout(30_000),
-      headers: {
-        Authorization: `Bearer ${path.startsWith('/tasks/') ? (taskKey ?? writeKey) : writeKey}`,
-        'Content-Type': 'application/json',
-      },
-      ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
-    });
-    if (response.status === 404) return null;
-    if (!response.ok)
-      throw new Error(
-        `Meilisearch job request failed (HTTP ${response.status})`,
-      );
-    return response.json();
+    // Document IDs and the serialized batch stay identical if an accepted write
+    // loses its acknowledgement. Never repeat index creation or index swaps.
+    const retrySafe =
+      method === 'GET' ||
+      (method === 'POST' && /^\/indexes\/[^/]+\/documents$/.test(path));
+    const maxAttempts = retrySafe ? 3 : 1;
+    const payload = body === undefined ? undefined : JSON.stringify(body);
+    const payloadBytes = payload === undefined ? 0 : Buffer.byteLength(payload);
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      const started = Date.now();
+      let status: number | undefined;
+      try {
+        const response = await fetch(`${base}${path}`, {
+          method,
+          signal: AbortSignal.timeout(30_000),
+          headers: {
+            Authorization: `Bearer ${path.startsWith('/tasks/') ? (taskKey ?? writeKey) : writeKey}`,
+            'Content-Type': 'application/json',
+          },
+          ...(payload !== undefined ? { body: payload } : {}),
+        });
+        status = response.status;
+        if (status === 404) return null;
+        if (!response.ok)
+          throw new Error(`Meilisearch job request failed (HTTP ${status})`);
+        return await response.json();
+      } catch (error) {
+        const failure = transportFailure(error);
+        const details = {
+          method,
+          path,
+          attempt,
+          elapsedMs: Date.now() - started,
+          payloadBytes,
+          error: failure.name,
+          code: failure.code,
+          status,
+        };
+        if (!failure.transient || attempt === maxAttempts) {
+          console.error(
+            `[search-index] Request failed ${JSON.stringify(details)}`,
+          );
+          const reason =
+            status !== undefined && (status < 200 || status >= 300)
+              ? `HTTP ${status}`
+              : failure.name;
+          throw new Error(
+            `Meilisearch ${method} ${path} failed after ${attempt} attempts (${reason})`,
+            { cause: error },
+          );
+        }
+        console.warn(
+          `[search-index] Retrying transport failure ${JSON.stringify(details)}`,
+        );
+        await delay(250 * 2 ** (attempt - 1));
+      }
+    }
+    throw new Error('Meilisearch request attempts exhausted');
   };
   const task = async (
     path: string,
