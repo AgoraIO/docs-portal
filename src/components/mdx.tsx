@@ -1747,6 +1747,7 @@ function ZoomableImage({
         <button
           aria-label={`Zoom image: ${title}`}
           className="block cursor-zoom-in"
+          data-docs-image=""
           style={
             displayWidth === undefined
               ? undefined

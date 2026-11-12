@@ -587,6 +587,7 @@ describe('common MDX registry', () => {
       name: 'Zoom image: 在线 K 歌房界面',
     });
     expect(trigger).toHaveStyle({ width: '40%' });
+    expect(trigger).toHaveAttribute('data-docs-image');
     expect(thumbnail).toHaveAttribute('referrerpolicy', 'no-referrer');
     fireEvent.click(trigger);
     const dialog = await screen.findByRole('dialog');
@@ -595,6 +596,7 @@ describe('common MDX registry', () => {
     });
     expect(preview).toHaveAttribute('referrerpolicy', 'no-referrer');
     expect(preview.style.width).toBe('');
+    expect(preview.closest('[data-docs-image]')).toBeNull();
   });
 
   it('routes normalized relative docs links through TanStack Router', async () => {
