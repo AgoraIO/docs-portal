@@ -211,3 +211,80 @@ describe('published Chinese REST parameter coverage', () => {
     30_000,
   );
 });
+
+it('retains untyped referenced and inherited parameters without inventing a type or mutating the source', () => {
+  const document = {
+    openapi: '3.1.0',
+    info: { title: 'Legacy parameters', version: '1' },
+    components: {
+      parameters: {
+        id: {
+          name: 'id',
+          in: 'path',
+          required: true,
+          description: '旧参数说明，详见[获取 ID](/guide)。',
+        },
+      },
+    },
+    paths: {
+      '/legacy/{id}': {
+        parameters: [
+          {
+            name: 'trace',
+            in: 'header',
+            schema: null,
+            description: '继承的跟踪参数说明。',
+          },
+        ],
+        get: {
+          operationId: 'legacy',
+          parameters: [
+            { $ref: '#/components/parameters/id' },
+            {
+              name: 'limit',
+              in: 'query',
+              description: '分页大小。',
+              schema: { type: 'integer', default: 20 },
+            },
+          ],
+          responses: { '200': { description: 'OK' } },
+        },
+      },
+    },
+  };
+  const original = structuredClone(document);
+  const $ = load(
+    renderToStaticMarkup(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [{ method: 'get', path: '/legacy/{id}' }],
+          payload: { bundled: document as unknown as Document },
+        }}
+      />,
+    ),
+  );
+  const field = (name: string) =>
+    $('.openapi-schema-parameter-fields').filter(
+      (_, element) => $(element).find('code').first().text() === name,
+    );
+  for (const name of ['id', 'trace', 'limit']) {
+    expect(field(name).length, name).toBe(1);
+  }
+  expect(
+    compact(field('id').find('.openapi-schema-field-content').first().text()),
+  ).toBe('id必填');
+  expect(
+    compact(
+      field('trace').find('.openapi-schema-field-content').first().text(),
+    ),
+  ).toBe('trace');
+  expect(field('id').text()).toContain('旧参数说明');
+  expect(field('id').find('a[href="/guide"]').text()).toBe('获取 ID');
+  expect(field('trace').text()).toContain('继承的跟踪参数说明');
+  expect(field('limit').find('.openapi-schema-field-content').text()).toContain(
+    'integer',
+  );
+  expect(field('limit').text()).toContain('20');
+  expect(document).toEqual(original);
+});
