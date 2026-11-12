@@ -1,0 +1,40 @@
+/* Fumadocs prose margins belong to the image block, not both its img and
+   surrounding paragraphs. Markdown wraps images in p; DocsImage is a block. */
+.prose
+  :where(
+    [data-docs-image],
+    p:has(> [data-docs-image], > a > [data-docs-image])
+  ):not(:where(table *)) {
+  margin-block: 1rem 1.5rem;
+}
+
+@media (max-width: 767px) {
+  .prose
+    :where(
+      [data-docs-image],
+      p:has(> [data-docs-image], > a > [data-docs-image])
+    ):not(:where(table *)) {
+    margin-bottom: 1rem;
+  }
+}
+
+.prose [data-docs-image] > img,
+.prose p > [data-docs-image]:only-child,
+.prose p > a:only-child > [data-docs-image]:only-of-type {
+  margin-block: 0;
+}
+
+.prose
+  :is(p, ul, ol):not(p:has([data-docs-image])):has(
+    + [data-docs-image],
+    + p > [data-docs-image],
+    + p > a > [data-docs-image]
+  ) {
+  margin-bottom: 0;
+}
+
+.prose
+  :is([data-docs-image], p:has(> [data-docs-image], > a > [data-docs-image]))
+  + :is(p, ul, ol):not(p:has([data-docs-image])) {
+  margin-top: 0;
+}

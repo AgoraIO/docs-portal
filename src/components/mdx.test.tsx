@@ -355,11 +355,11 @@ describe('common MDX registry', () => {
       />,
     );
 
-    fireEvent.click(
-      screen.getByRole('button', {
-        name: 'Zoom image: Product Architecture',
-      }),
-    );
+    const trigger = screen.getByRole('button', {
+      name: 'Zoom image: Product Architecture',
+    });
+    expect(trigger).toHaveAttribute('data-docs-image');
+    fireEvent.click(trigger);
 
     const dialog = await screen.findByRole('dialog');
 
@@ -373,6 +373,7 @@ describe('common MDX registry', () => {
       'src',
       'https://assets-docs.agora.io/images/product.png',
     );
+    expect(previewImage.closest('[data-docs-image]')).toBeNull();
     expect(dialog).toHaveClass('w-fit');
     expect(dialog).not.toHaveClass('w-full');
     expect(dialog).toHaveClass('justify-items-center');
