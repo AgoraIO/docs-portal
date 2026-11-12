@@ -128,7 +128,13 @@ export function createSearchIndexClient({
           status,
         };
         if (!failure.transient || attempt === maxAttempts) {
-          const reason = status ? `HTTP ${status}` : failure.name;
+          console.error(
+            `[search-index] Request failed ${JSON.stringify(details)}`,
+          );
+          const reason =
+            status !== undefined && (status < 200 || status >= 300)
+              ? `HTTP ${status}`
+              : failure.name;
           throw new Error(
             `Meilisearch ${method} ${path} failed after ${attempt} attempts (${reason})`,
             { cause: error },

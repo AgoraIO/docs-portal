@@ -38,6 +38,7 @@ function deadline() {
   // Exercise a real HTTP timeout without waiting for the production 30 seconds.
   vi.spyOn(AbortSignal, 'timeout').mockImplementation(() => realTimeout(200));
   vi.spyOn(console, 'warn').mockImplementation(() => {});
+  return vi.spyOn(console, 'error').mockImplementation(() => {});
 }
 
 function json(response: ServerResponse, value: unknown, status = 200) {
@@ -109,31 +110,120 @@ it.each(['headers', 'body'])(
   },
 );
 
-it('stops repeated transport failures and reports the method and path without credentials', async () => {
-  deadline();
-  let requests = 0;
-  await withServer(
-    () => {
-      requests++;
-    },
-    async (host) => {
-      const client = createSearchIndexClient({
-        host,
-        writeKey: 'private-test-key',
-      });
-      let failure: unknown;
-      try {
-        await client.count('docs_test');
-      } catch (error) {
-        failure = error;
-      }
-      expect(requests).toBe(3);
-      expect(String(failure)).toContain('GET /indexes/docs_test/stats');
-      expect(String(failure)).toContain('3 attempts');
-      expect(String(failure)).not.toContain('private-test-key');
-    },
-  );
-});
+it.each(['headers', 'body'])(
+  'preserves terminal transport diagnostics after repeated %s timeouts',
+  async (phase) => {
+    const terminal = deadline();
+    let requests = 0;
+    await withServer(
+      (_request, response) => {
+        requests++;
+        if (phase === 'body') {
+          response.writeHead(200, { 'content-type': 'application/json' });
+          response.write('{"numberOfDocuments":');
+        }
+      },
+      async (host) => {
+        const client = createSearchIndexClient({
+          host,
+          writeKey: 'private-test-key',
+        });
+        let failure: unknown;
+        try {
+          await client.count('docs_test');
+        } catch (error) {
+          failure = error;
+        }
+        expect(requests).toBe(3);
+        expect(String(failure)).toContain('GET /indexes/docs_test/stats');
+        expect(String(failure)).toContain('3 attempts');
+        expect(String(failure)).toContain('TimeoutError');
+        expect(String(failure)).not.toContain('HTTP 200');
+        expect(failure).toMatchObject({
+          cause: { name: 'TimeoutError', code: 23 },
+        });
+        expect(terminal).toHaveBeenCalledOnce();
+        const log = String(terminal.mock.calls[0][0]);
+        expect(log).toMatch(/^\[search-index\] Request failed /);
+        const details = JSON.parse(log.slice(log.indexOf('{')));
+        expect(details).toMatchObject({
+          method: 'GET',
+          path: '/indexes/docs_test/stats',
+          attempt: 3,
+          payloadBytes: 0,
+          error: 'TimeoutError',
+          code: 23,
+        });
+        expect(details.elapsedMs).toBeGreaterThanOrEqual(100);
+        if (phase === 'body') expect(details.status).toBe(200);
+        else expect(details).not.toHaveProperty('status');
+        expect(`${String(failure)} ${log}`).not.toContain('private-test-key');
+      },
+    );
+  },
+);
+
+it.each(['swap', 'create', 'settings'] as const)(
+  'records terminal diagnostics without retrying an accepted %s mutation whose response body times out',
+  async (operation) => {
+    const terminal = deadline();
+    let mutations = 0;
+    let payload = '';
+    await withServer(
+      async (request, response) => {
+        for await (const chunk of request) payload += chunk;
+        mutations++;
+        response.writeHead(202, { 'content-type': 'application/json' });
+        response.write('{"taskUid":');
+      },
+      async (host) => {
+        const client = createSearchIndexClient({
+          host,
+          writeKey: 'private-test-key',
+        });
+        const request =
+          operation === 'swap'
+            ? client.swap('live', 'staged')
+            : operation === 'create'
+              ? client.createIndex('staged')
+              : client.settings('staged');
+        let failure: unknown;
+        try {
+          await request;
+        } catch (error) {
+          failure = error;
+        }
+        expect(mutations).toBe(1);
+        expect(vi.mocked(console.warn)).not.toHaveBeenCalled();
+        expect(String(failure)).toContain('TimeoutError');
+        expect(String(failure)).not.toContain('HTTP 202');
+        expect(failure).toMatchObject({
+          cause: { name: 'TimeoutError', code: 23 },
+        });
+        expect(terminal).toHaveBeenCalledOnce();
+        const log = String(terminal.mock.calls[0][0]);
+        const details = JSON.parse(log.slice(log.indexOf('{')));
+        expect(details).toMatchObject({
+          method: operation === 'settings' ? 'PATCH' : 'POST',
+          path:
+            operation === 'swap'
+              ? '/swap-indexes'
+              : operation === 'create'
+                ? '/indexes'
+                : '/indexes/staged/settings',
+          attempt: 1,
+          payloadBytes: Buffer.byteLength(payload),
+          error: 'TimeoutError',
+          code: 23,
+          status: 202,
+        });
+        expect(details.elapsedMs).toBeGreaterThanOrEqual(100);
+        expect(details.payloadBytes).toBeGreaterThan(0);
+        expect(`${String(failure)} ${log}`).not.toContain('private-test-key');
+      },
+    );
+  },
+);
 
 it.each(['swap', 'create'] as const)(
   'does not repeat an ambiguous %s mutation after a timeout',
@@ -164,6 +254,7 @@ it.each(['swap', 'create'] as const)(
 );
 
 it('fails authorization errors immediately without retrying', async () => {
+  vi.spyOn(console, 'error').mockImplementation(() => {});
   let requests = 0;
   await withServer(
     (_request, response) => {
