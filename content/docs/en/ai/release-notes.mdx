@@ -9,6 +9,61 @@ This document tracks notable changes and improvements to the Conversational AI E
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="v2.15" id="v215" headingLevel={3} value="v215">
+
+Released on November 13, 2026.
+
+#### New features
+
+Included in this release:
+
+- **New TTS provider**
+
+  - [Soniox](models/tts/soniox)
+
+#### API changes
+
+This release introduces the following changes for the new Soniox provider.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+- [`SonioxTTS`](/en/api-reference/api-ref/server-sdk/python#tts-vendors): New TTS vendor class for Soniox.
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+- [`SonioxTTS`](/en/api-reference/api-ref/server-sdk/typescript#tts-vendors): New TTS vendor class for Soniox.
+
+</TabsContent>
+
+<TabsContent value="go">
+
+- [`NewSonioxTTS`](/en/api-reference/api-ref/server-sdk/go#tts-vendors): New TTS vendor class for Soniox.
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+- Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
+
+  - **Updated parameters**
+
+    - [`tts.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-vendor) value `soniox`: Use Soniox as the TTS provider. See [Soniox](/en/ai/models/tts/soniox).
+
+</TabsContent>
+</Tabs>
+
+</Accordion>
+
 <Accordion title="v2.14" id="v214" headingLevel={3} value="v214">
 
 Released on November 6, 2026.
