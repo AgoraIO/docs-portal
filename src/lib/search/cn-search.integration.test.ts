@@ -58,6 +58,21 @@ describe.skipIf(!host)('CN search against Meilisearch', () => {
       })),
     ).flat();
     records.push(
+      ...['content', 'summary'].map((field) => ({
+        ...section,
+        id: `highlighted-directive-${field}`,
+        url: `${base}/${field}/android#example`,
+        canonicalUrl: `${base}/${field}`,
+        pageTitle: `Directive ${field}`,
+        content:
+          '// highlight-start\nrenewToken(); // [!code highlight:2]\n// highlight-end\n正常 code highlight 说明。',
+        ...(field === 'summary'
+          ? {
+              summary:
+                '// highlight-start\nrenewToken(); // [!code highlight:2]\n// highlight-end\n正常 code highlight 说明。',
+            }
+          : {}),
+      })),
       ...[
         [
           'rtm-entry',
@@ -319,6 +334,49 @@ enableLegacyAudio 修复。
       config,
       parseSearchPageState({ q, type: 'docs', page, platform }),
     );
+
+  it.each(['code', 'highlight'])(
+    'cleans engine-highlighted directives from legacy summaries and content fallbacks (%s)',
+    async (q) => {
+      const response = await fetch(
+        `${config.host}/indexes/${config.indexUid}/search`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${key}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            q,
+            limit: 100,
+            attributesToHighlight: ['content', 'summary'],
+            highlightPreTag: '<mark>',
+            highlightPostTag: '</mark>',
+          }),
+        },
+      );
+      expect(response.ok).toBe(true);
+      const raw = await response.json();
+      const result = await search(q);
+      for (const field of ['content', 'summary']) {
+        const id = `highlighted-directive-${field}`;
+        const engineHit = raw.hits.find(
+          (hit: { sourceId: string }) => hit.sourceId === id,
+        );
+        expect(engineHit?._formatted[field]).toContain('[!');
+        expect(engineHit?._formatted[field]).toContain(`<mark>${q}</mark>`);
+        const actual = result.groups
+          .flatMap((group) => group.sections)
+          .find((hit) => hit.sourceId === id);
+        expect(
+          actual?.highlights?.content.map((part) => part.text).join(''),
+        ).toBe('renewToken(); 正常 code highlight 说明。');
+        expect(
+          actual?.highlights?.content.filter((part) => part.highlighted),
+        ).toEqual([{ text: q, highlighted: true }]);
+      }
+    },
+  );
 
   it('finds product actions phrased as questions without ignoring conflicting filters or unknown conditions', async () => {
     for (const q of ['RTM 怎么登录', '怎么登录 RTM', '实时消息如何登录？']) {

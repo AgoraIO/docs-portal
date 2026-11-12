@@ -17,6 +17,7 @@ export type HighlightSegment = {
 };
 
 export type SearchHit = {
+  defaultPlatform?: string;
   languageEntryTerms?: string[];
   languageEntryRank?: number;
   id: string;
@@ -45,6 +46,7 @@ export type SearchHit = {
 };
 
 type MeilisearchHit = {
+  defaultPlatform?: string;
   languageEntryTerms?: string[];
   languageEntryRank?: number;
   id: string;
@@ -193,6 +195,7 @@ export function mapSearchHit(
 
 export function normalizeMeilisearchHit(hit: MeilisearchHit): SearchHit {
   return {
+    defaultPlatform: hit.defaultPlatform,
     languageEntryTerms: hit.languageEntryTerms,
     languageEntryRank: hit.languageEntryRank,
     id: hit.id,

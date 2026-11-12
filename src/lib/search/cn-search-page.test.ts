@@ -46,6 +46,90 @@ it('removes serialized Slot markers while retaining normal identifiers and prose
     'table-list-cn-07 是配置标识',
   );
 });
+it('removes code presentation directives and their comment prefix without removing code', () => {
+  expect(
+    cleanSearchSnippet(
+      'curl --request POST \\ # [!code highlight:2]\n--url https://example.com',
+    ),
+  ).toBe('curl --request POST \\ --url https://example.com');
+  expect(
+    cleanSearchSnippet(
+      'renewToken(); // [!code focus]\njoinChannel(); // [!code ++]\nleaveChannel(); // [!code --]',
+    ),
+  ).toBe('renewToken(); joinChannel(); leaveChannel();');
+  expect(cleanSearchSnippet('颜色格式为 # 加 6 位数字；# 普通注释')).toBe(
+    '颜色格式为 # 加 6 位数字；# 普通注释',
+  );
+});
+it.each([
+  'renewToken(); // [!code <mark>highlight</mark>:2]',
+  'renewToken(); // [!<mark>code</mark> highlight:2]',
+  'renewToken(); # [!co<mark>de</mark> high<mark>light</mark>:2]',
+  'renewToken(); // [!<em>code</em> <em>focus</em>]',
+  'renewToken(); // <mark>[!code highlight:2]</mark>',
+  'renewToken(); // [!code <mark>warning:2</mark>]',
+])('removes highlighted presentation directives from %s', (input) => {
+  expect(cleanSearchSnippet(input)).toBe('renewToken();');
+});
+it('keeps normal highlights and unknown annotations when removing highlighted directives', () => {
+  expect(
+    cleanSearchSnippet(
+      '<mark>renewToken</mark>(); // [!<mark>code</mark> highlight:2] 后续 <mark>代码</mark>说明 [!<mark>custom</mark> notice]',
+    ),
+  ).toBe(
+    '<mark>renewToken</mark>(); 后续 <mark>代码</mark>说明 [!<mark>custom</mark> notice]',
+  );
+  expect(
+    cleanSearchSnippet('<mark>正文 // [!code</mark> highlight:2] 后续'),
+  ).toBe('<mark>正文 </mark> 后续');
+});
+it('removes legacy highlight comments while preserving code, URLs and ordinary comments', () => {
+  expect(
+    cleanSearchSnippet(
+      '// <mark>highlight</mark>-start\n"audioOptions": {}\n// highlight-end\n// highlight-next-line\nrenewToken();',
+    ),
+  ).toBe('"audioOptions": {} renewToken();');
+  expect(
+    cleanSearchSnippet(
+      'https://highlight-start/path // <mark>highlight</mark> 说明 highlightColor // highlight-start-example',
+    ),
+  ).toBe(
+    'https://highlight-start/path // <mark>highlight</mark> 说明 highlightColor // highlight-start-example',
+  );
+});
+it('cleans generated API table markers and nested Markdown links without losing identifiers', () => {
+  expect(
+    cleanSearchSnippet(
+      '字段 api-center-table-0 details 描述 api-center-table-12 details 结束',
+    ),
+  ).toBe('字段 描述 结束');
+  expect(cleanSearchSnippet('api-center-table-0 是标识')).toBe(
+    'api-center-table-0 是标识',
+  );
+  expect(
+    cleanSearchSnippet(
+      '参考 [<mark>putScenes</mark>(Scene[])](/api/room#method)，![示意图](/image(a).png)',
+    ),
+  ).toBe('参考 <mark>putScenes</mark>(Scene[])，示意图');
+  expect(
+    cleanSearchSnippet(
+      'setScenePath[1/2][putScenes(String, Scene[], int)](/reference/room#method) 返回值',
+    ),
+  ).toBe('setScenePath[1/2]putScenes(String, Scene[], int) 返回值');
+  expect(
+    cleanSearchSnippet(
+      '参考 [joinChannel](/api/method(a(b)))，再调用 renewToken。',
+    ),
+  ).toBe('参考 joinChannel，再调用 renewToken。');
+  expect(
+    cleanSearchSnippet('参考 [putScenes(Scene[])](/api/room#cropped'),
+  ).toBe('参考 putScenes(Scene[])');
+  expect(
+    cleanSearchSnippet(
+      '类型 AgentOptions&lt;TArea&gt;，文件 &quot;config&quot;。',
+    ),
+  ).toBe('类型 AgentOptions<TArea>，文件 "config"。');
+});
 it('removes serialized authoring syntax while retaining prose and search highlights', () => {
   expect(
     cleanSearchSnippet(

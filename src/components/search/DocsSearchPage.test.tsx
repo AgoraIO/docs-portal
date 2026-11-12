@@ -461,7 +461,7 @@ describe('DocsSearchPage', () => {
     await screen.findByText('没有找到匹配的文档');
     fireEvent.click(screen.getByRole('button', { name: '清空关键词' }));
     expect(
-      await screen.findByRole('heading', { name: '从一个关键词开始' }),
+      await screen.findByRole('heading', { name: '搜索文档' }),
     ).toBeInTheDocument();
     expect(screen.getByRole('searchbox')).toHaveValue('');
     expect(screen.queryByText('没有找到匹配的文档')).not.toBeInTheDocument();
