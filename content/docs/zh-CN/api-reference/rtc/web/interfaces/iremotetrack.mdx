@@ -256,10 +256,12 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 该方法目前主要用于视频流的[端到端加密（Beta）](/zh-CN/realtime-media/rtc/build/security-and-auth/e2e-encryption)。
 
-> 如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例：
->
-> - 本地轨道：[ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_transceiver_updated)
-> - 远端轨道：[IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack#event_transceiver_updated_2)
+:::caution[注意]
+如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例：
+
+- 本地轨道：[ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_transceiver_updated)
+- 远端轨道：[IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack#event_transceiver_updated_2)
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="type" optional>
@@ -299,9 +301,11 @@ getStats(): [RemoteAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/remo
 
 获取远端轨道相关信息。
 
-#### deprecated
+<a id="deprecated"></a>
 
+:::warning[deprecated]
 自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getRemoteVideoStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getremotevideostats) 和 [AgoraRTCClient.getRemoteAudioStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getremoteaudiostats)。
+:::
 
 <ApiReturns>
 

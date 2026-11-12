@@ -149,7 +149,9 @@ getCurrentFrameData(): ImageData
 
 获取当前渲染的视频帧数据。
 
-> 只有在播放后才能调用此方法，如果没有调用 [play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotevideotrack#play) 则返回空数据。
+**注意：**
+
+只有在播放后才能调用此方法，如果没有调用 [play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotevideotrack#play) 则返回空数据。
 :::
 
 <ApiReturns>
@@ -238,10 +240,12 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 该方法目前主要用于视频流的[端到端加密（Beta）](/zh-CN/realtime-media/rtc/build/security-and-auth/e2e-encryption)。
 
-> 如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例：
->
-> - 本地轨道：[ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_transceiver_updated)
-> - 远端轨道：[IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_transceiver_updated_2)
+:::caution[注意]
+如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例：
+
+- 本地轨道：[ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_transceiver_updated)
+- 远端轨道：[IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_transceiver_updated_2)
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="type" optional>

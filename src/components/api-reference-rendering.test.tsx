@@ -6,6 +6,7 @@ import {
   within,
 } from '@testing-library/react';
 import { createInstance } from 'i18next';
+import { createElement } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { describe, expect, it, vi } from 'vitest';
 import { resources } from '@/lib/i18n/resources';
@@ -18,6 +19,70 @@ import {
   ParameterList,
   ParameterType,
 } from './mdx';
+
+it.each(['void', 'Promise<void>', 'boolean'])(
+  'shows the return type %s without an empty description table',
+  (type) => {
+    const { container } = render(
+      <ApiReturns>
+        <ApiReturnType>
+          <p>{type}</p>
+        </ApiReturnType>
+        {'\n  '}
+        {createElement('a', { id: 'return-anchor' })}
+      </ApiReturns>,
+    );
+    expect(container.querySelector('[data-api-returns]')).toHaveTextContent(
+      type,
+    );
+    expect(container.querySelector('table')).toBeNull();
+    expect(container.querySelector('[data-api-return-description]')).toBeNull();
+    expect(container.querySelector('#return-anchor')).toBeInTheDocument();
+  },
+);
+
+it('keeps historical parameter anchors in their row without adding empty prose blocks', () => {
+  const { container } = render(
+    <ParameterList>
+      {createElement('a', { id: 'watermarkurl' })}
+      <Parameter name="watermarkUrl">
+        <p>Path to the image.</p>
+      </Parameter>
+      <Parameter name="options">
+        {createElement('a', { id: 'options' })}
+        <p>Image options.</p>
+      </Parameter>
+    </ParameterList>,
+  );
+  for (const id of ['watermarkurl', 'options']) {
+    const anchor = container.querySelector(`#${id}`);
+    expect(anchor?.closest('[data-parameter-item]')).toBeInTheDocument();
+    expect(anchor?.closest('[data-parameter-description]')).toBeNull();
+  }
+  const descriptions = container.querySelectorAll(
+    '[data-parameter-description]',
+  );
+  expect(
+    [...descriptions].map((node) => node.firstElementChild?.tagName),
+  ).toEqual(['P', 'P']);
+});
+
+it('preserves description-only returns and empty return destinations', () => {
+  const { container } = render(
+    <>
+      <ApiReturns>
+        <p>The operation completes asynchronously.</p>
+      </ApiReturns>
+      <ApiReturns>{createElement('a', { id: 'empty-return' })}</ApiReturns>
+    </>,
+  );
+  expect(container.querySelectorAll('table')).toHaveLength(1);
+  expect(container.querySelectorAll('th')).toHaveLength(1);
+  expect(
+    container.querySelector('[data-api-return-description]'),
+  ).toHaveTextContent('The operation completes asynchronously.');
+  expect(container.querySelector('#empty-return')).toBeInTheDocument();
+});
 
 it('keeps a long return type as linked text in the native table without changing its value', () => {
   render(

@@ -180,10 +180,12 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 该方法目前主要用于视频流的[端到端加密（Beta）](/zh-CN/realtime-media/rtc/build/security-and-auth/e2e-encryption)。
 
-> 如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例：
->
-> - 本地轨道：[ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_transceiver_updated)
-> - 远端轨道：[IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_transceiver_updated_2)
+:::caution[注意]
+如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例：
+
+- 本地轨道：[ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_transceiver_updated)
+- 远端轨道：[IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_transceiver_updated_2)
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="type" optional>
@@ -552,7 +554,9 @@ Overrides [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/il
 
 播放远端音频轨道。
 
-> 播放音频时 SDK 不会创建任何 DOM 元素，所以无需像视频一样提供 DOM 元素。
+:::caution[注意]
+播放音频时 SDK 不会创建任何 DOM 元素，所以无需像视频一样提供 DOM 元素。
+:::
 
 <ApiReturns>
 
@@ -610,7 +614,9 @@ setAudioFrameCallback(audioFrameCallback: null | function, frameSize?: number): 
 
 设置成功后，SDK 会不断地将远端音频轨道的音频帧以 [AudioBuffer](https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer) 的形式通过回调返回。
 
-> 你可以通过 `frameSize` 来设置每次回调中音频帧的大小。该设置也会影响回调的间隔，`frameSize` 越大，每次回调的音频数据越多，回调间隔越长。
+:::caution[注意]
+你可以通过 `frameSize` 来设置每次回调中音频帧的大小。该设置也会影响回调的间隔，`frameSize` 越大，每次回调的音频数据越多，回调间隔越长。
+:::
 
 ```javascript
 track.setAudioFrameCallback((buffer) => {
@@ -664,7 +670,9 @@ setPlaybackDevice(deviceId: string): Promise&lt;void&gt;
 
 设置音频播放设备，比如扬声器。
 
-> 该方法只支持桌面端的 Chrome 和 Edge 浏览器，其他浏览器调用将会抛出 `NOT_SUPPORTED` 错误。
+**注意：**
+
+该方法只支持桌面端的 Chrome 和 Edge 浏览器，其他浏览器调用将会抛出 `NOT_SUPPORTED` 错误。
 :::
 
 <ParameterList title="Parameters">

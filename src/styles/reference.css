@@ -15,6 +15,20 @@ article :where(h1) {
   overflow-wrap: anywhere;
 }
 
+/* Member declarations retain the ordinary heading hierarchy and a visible
+   boundary when a page contains many consecutive API members. */
+.prose :is(h2, h3, h4):has(+ [data-api-signature]) {
+  margin-block-start: 2.5rem;
+  border-block-start: 1px solid var(--color-fd-border);
+  padding-block-start: 1.5rem;
+}
+
+/* A body row's accessible heading shares its surface with the description.
+   The table head and row striping continue to use the native table palette. */
+.prose table :where(tbody th[scope="row"]) {
+  background: transparent;
+}
+
 /* Fumadocs headings pair a link with a fixed-size anchor button. Let the
    link shrink and wrap long API identifiers inside the available line. */
 .prose :where(.group\/heading > a) {

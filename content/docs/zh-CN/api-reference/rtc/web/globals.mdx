@@ -375,7 +375,9 @@ SDK_CODEC: keyof typeof VideoCodec
   - macOS/Windows 端 Firefox 浏览器
   - Windows 端 Edge 浏览器
 
-> 如果使用 H.265 编码，请确保参与互通的 Native SDK 版本为 v4.6.0 以上，否则 Native 端会收不到 H265 的流。
+:::caution[注意]
+如果使用 H.265 编码，请确保参与互通的 Native SDK 版本为 v4.6.0 以上，否则 Native 端会收不到 H265 的流。
+:::
 
 <a id="sdk_mode"></a>
 
@@ -447,7 +449,9 @@ ScreenAudioTrackInitConfig: object
 - `false`：(默认) 允许本地页面声音采集。
   详见 [restrictOwnAudio](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackSupportedConstraints/restrictOwnAudio)。
 
-> 该参数仅支持 Chrome 141 及以上、Edge 141 及以上和 Opera 125 及以上。
+:::caution[注意]
+该参数仅支持 Chrome 141 及以上、Edge 141 及以上和 Opera 125 及以上。
+:::
 
 </Parameter>
 <Parameter name="suppressLocalAudioPlayback" type="boolean" optional>
@@ -463,7 +467,9 @@ ScreenAudioTrackInitConfig: object
 
 详见 [suppressLocalAudioPlayback](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackSupportedConstraints/suppressLocalAudioPlayback)。
 
-> 该参数仅支持 Chrome 109 及以上、Edge 109 及以上和 Opera 95 及以上。
+:::caution[注意]
+该参数仅支持 Chrome 109 及以上、Edge 109 及以上和 Opera 95 及以上。
+:::
 
 </Parameter>
 </ParameterList>
@@ -508,7 +514,9 @@ SDK 预设的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interface
 | "4k_2" | 3840 × 2160 | 30 |
 | "4k_3" | 3840 × 2160 | 15 |
 
-> ① `"720p_auto"` 仅推荐在 Safari 上设置，用于确保能够动态调整编码分辨率，详见[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+:::caution[注意]
+① `"720p_auto"` 仅推荐在 Safari 上设置，用于确保能够动态调整编码分辨率，详见[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+:::
 
 <a id="screensourcetype"></a>
 

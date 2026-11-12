@@ -35,6 +35,7 @@ export const API_CENTER_GENERATOR_CONVERSION_OPTIONS = Object.freeze({
   typedoc: {
     rootSelector: '.col-content',
     titleSelector: '.tsd-page-title h1',
+    blockquoteCallout: { type: 'caution', title: '注意' },
   },
 });
 
@@ -148,12 +149,22 @@ function calloutType(element) {
     [...classNames(element)].map((className) => className.toLowerCase()),
   );
   const hasClass = (...names) => names.some((name) => classes.has(name));
+  const themeType = [...classes]
+    .map(
+      (name) =>
+        name.match(
+          /^theme-admonition-(note|info|tip|caution|warning|danger|error)$/,
+        )?.[1],
+    )
+    .find(Boolean);
+  if (themeType) return themeType === 'danger' ? 'error' : themeType;
   const hasCalloutClass = (...kinds) =>
     [...classes].some((name) => {
       return kinds.some(
         (kind) =>
           name === kind ||
           name === `alert-${kind}` ||
+          name === `alert--${kind}` ||
           name === `admonition-${kind}` ||
           name === `callout-${kind}` ||
           name === `${kind}-callout`,
@@ -1325,7 +1336,12 @@ async function renderDefinitionList($, list, state) {
         (listIsTypeDocCommentTags && isSinceDefinitionTerm(renderedTerm));
     } else {
       const body =
-        term && (listIsDeprecated || termIsSince || listIsDoxygenNote)
+        term &&
+        (listIsDeprecated ||
+          termIsSince ||
+          listIsDoxygenNote ||
+          (listIsTypeDocCommentTags &&
+            termPlainText.toLowerCase() === 'deprecated'))
           ? await renderCalloutChildren($, $(child), state)
           : await renderChildren($, $(child), state);
       if (term) {
@@ -1344,7 +1360,12 @@ async function renderDefinitionList($, list, state) {
           blocks.push(`#### ${title} [!toc]\n\n${body}`);
         } else if (listIsTypeDocCommentTags && !termHasLink) {
           // A comment tag describes its member; it is not another API member.
-          blocks.push(`#### ${term}\n\n${body}`);
+          if (termPlainText.toLowerCase() === 'deprecated') {
+            blocks.push(
+              renderStableAnchor(definitionHeadingSlug(termPlainText, state)),
+              renderCallout({ type: 'warning', title: term, body }),
+            );
+          } else blocks.push(`#### ${term}\n\n${body}`);
         } else {
           blocks.push(
             `${termHasLink ? `**${term}**` : `### ${term}`}\n\n${body}`,
@@ -1580,12 +1601,31 @@ async function renderBlockNode($, node, state) {
   }
   const detectedCallout = calloutType(element);
   if (detectedCallout && ['aside', 'div', 'section'].includes(name)) {
-    const titleNode = element
+    let titleNode = element
       .find('> .admonition-heading, > .title, > strong:first-child')
       .first();
+    const contentNode = element
+      .find('[class]')
+      .filter((_, node) =>
+        [...classNames($(node))].some((name) =>
+          /^admonitionContent(?:_|$)/.test(name),
+        ),
+      )
+      .first();
+    const header = element.children().first();
+    if (
+      contentNode.length &&
+      !header.is(contentNode) &&
+      !header.find(contentNode).length
+    )
+      titleNode = header;
     const title = cleanText(titleNode.text());
-    if (titleNode.length > 0) titleNode.remove();
-    const body = await renderCalloutChildren($, element, state);
+    if (!contentNode.length && titleNode.length > 0) titleNode.remove();
+    const body = await renderCalloutChildren(
+      $,
+      contentNode.length ? contentNode : element,
+      state,
+    );
     return [anchor, renderCallout({ type: detectedCallout, title, body })]
       .filter(Boolean)
       .join('\n\n');
@@ -1751,6 +1791,17 @@ async function renderBlockNode($, node, state) {
       .join('\n\n');
   }
   if (name === 'blockquote') {
+    if (state.blockquoteCallout) {
+      const body = await renderCalloutChildren($, element, state);
+      return [
+        anchor,
+        state.calloutDepth
+          ? body
+          : renderCallout({ ...state.blockquoteCallout, body }),
+      ]
+        .filter(Boolean)
+        .join('\n\n');
+    }
     const labeled =
       element.parents('blockquote').length === 0 &&
       typedocNotice(cleanText(element.text()));
@@ -1820,6 +1871,7 @@ async function renderBlockNode($, node, state) {
  * @param {string} [options.rootSelector]
  * @param {string} [options.titleSelector]
  * @param {string} [options.conversionProfile]
+ * @param {{type: string, title: string}} [options.blockquoteCallout]
  */
 export async function convertHtmlToMdx({
   html,
@@ -1831,6 +1883,7 @@ export async function convertHtmlToMdx({
   rootSelector,
   titleSelector,
   conversionProfile,
+  blockquoteCallout,
 }) {
   const { $, article, titleNode, descriptionNode, title, description } =
     loadHtmlPage({
@@ -1880,6 +1933,7 @@ export async function convertHtmlToMdx({
     fragmentMap,
     onAsset,
     conversionProfile,
+    blockquoteCallout,
   });
   state.pageTitle = title;
   const fragments = [];

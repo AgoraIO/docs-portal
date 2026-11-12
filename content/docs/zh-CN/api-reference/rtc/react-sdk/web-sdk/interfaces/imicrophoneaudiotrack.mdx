@@ -238,10 +238,12 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 该方法目前主要用于视频流的[端到端加密（Beta）](/zh-CN/realtime-media/rtc/build/security-and-auth/e2e-encryption)。
 
-> 如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例：
->
-> - 本地轨道：[ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_transceiver_updated)
-> - 远端轨道：[IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_transceiver_updated_2)
+:::caution[注意]
+如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例：
+
+- 本地轨道：[ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_transceiver_updated)
+- 远端轨道：[IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_transceiver_updated_2)
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="type" optional>
@@ -285,9 +287,11 @@ Overrides [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/il
 
 获取本地音频轨道的质量相关信息。
 
-#### deprecated
+<a id="deprecated"></a>
 
+:::warning[deprecated]
 自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalaudiostats)。
+:::
 
 <ApiReturns>
 
@@ -622,7 +626,9 @@ Overrides [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/il
 
 播放本地音频轨道。
 
-> 播放音频时 SDK 不会创建任何 DOM 元素，所以无需像视频一样提供 DOM 元素。
+:::caution[注意]
+播放音频时 SDK 不会创建任何 DOM 元素，所以无需像视频一样提供 DOM 元素。
+:::
 
 <ApiReturns>
 
@@ -682,7 +688,9 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 设置成功后，SDK 会不断地将本地音频轨道的音频帧以 [AudioBuffer](https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer) 的形式通过回调返回。
 
-> 你可以通过 `frameSize` 来设置每次回调中音频帧的大小。该设置也会影响回调的间隔，`frameSize` 越大，每次回调的音频数据越多，回调间隔越长。
+:::caution[注意]
+你可以通过 `frameSize` 来设置每次回调中音频帧的大小。该设置也会影响回调的间隔，`frameSize` 越大，每次回调的音频数据越多，回调间隔越长。
+:::
 
 ```javascript
 track.setAudioFrameCallback((buffer) => {
@@ -733,7 +741,9 @@ setDevice(deviceId: string): Promise&lt;void&gt;
 
 设置负责采集音频数据的麦克风设备。
 
-> 在发布前和发布后均可调用此方法。
+:::caution[注意]
+在发布前和发布后均可调用此方法。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="deviceId" type="string" required>
@@ -772,9 +782,11 @@ Overrides [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/i
 
 轨道禁用后，播放和发布都将被停止。
 
-> - 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_track_ended) 事件。
-> - 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 事件。
-> - `setEnabled` 和 `setMuted` 不能同时调用。
+**注意：**
+
+- 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_track_ended) 事件。
+- 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 事件。
+- `setEnabled` 和 `setMuted` 不能同时调用。
 :::
 
 <ParameterList title="Parameters">
@@ -817,8 +829,10 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 如果该轨道已发布，调用 `setMuted(true)` 后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_unpublished) 事件。再调用 `setMuted(false)` 后，远端会触发 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 事件。
 
-> - 与 [setEnabled](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/imicrophoneaudiotrack#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](/zh-CN/reference/faq/integration/set_enabled_set_muted)。
-> - `setEnabled` 和 `setMuted` 不能同时调用。
+**注意：**
+
+- 与 [setEnabled](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/imicrophoneaudiotrack#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](/zh-CN/reference/faq/integration/set_enabled_set_muted)。
+- `setEnabled` 和 `setMuted` 不能同时调用。
 :::
 
 <ParameterList title="Parameters">

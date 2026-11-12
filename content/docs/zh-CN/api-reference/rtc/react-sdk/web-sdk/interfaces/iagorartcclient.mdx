@@ -675,13 +675,15 @@ join-fallback-to-proxy(proxyServer: string): void
 
 </ApiSignature>
 
-#### deprecated
+<a id="deprecated"></a>
 
+:::warning[deprecated]
 自 4.19.0 起废弃。SDK 不再使用代理保障连通性，因此不会再触发该回调。
 
 SDK 自动切换至 TCP/TLS 443 回调。
 
 自 v4.11.0 起，如果调用 [join](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#join) 后 SDK 直接连接 SD-RTN™ 失败，SDK 会自动切换到 TCP/TLS 443 通道，从而保障 SDK 的连通性。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="proxyServer" type="string" required>
@@ -876,7 +878,9 @@ network-quality(stats: [NetworkQuality](/zh-CN/api-reference/rtc/react-sdk/web-s
 
 用户加入频道后，SDK 会每 2 秒触发一次该回调，报告本地用户当前的上行和下行网络质量。
 
-> 我们推荐使用此回调来展示你的网络状态。
+:::caution[注意]
+我们推荐使用此回调来展示你的网络状态。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="stats" required>
@@ -1175,7 +1179,9 @@ user-info-updated(uid: [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#
 
 在大部分情况下，你只需要监听 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 和 [user-unpublished](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_unpublished) 就可以完成订阅、取消订阅、展示远端用户是否打开了摄像头和麦克风等工作，无需特别关注实际用户状态的变化，SDK 会自动处理用户状态变化。
 
-> 即使用户状态表示该用户的音视频流是活跃的，不一定意味着该用户可订阅。是否可订阅的唯一标志是收到 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 事件。
+:::caution[注意]
+即使用户状态表示该用户的音视频流是活跃的，不一定意味着该用户可订阅。是否可订阅的唯一标志是收到 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 事件。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="uid" required>
@@ -1269,7 +1275,9 @@ user-left(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk
 - 超时掉线：在 20 秒内，用户没有收到对方的任何数据包，则判定为对方掉线。在网络较差的情况下，有可能会误报。
 - 用户角色从主播变为观众。
 
-> 在直播场景中，只有角色为主播的用户会触发该回调。
+:::caution[注意]
+在直播场景中，只有角色为主播的用户会触发该回调。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="user" required>
@@ -1318,7 +1326,9 @@ user-published(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/we
 
 你可以在该回调中订阅并播放远端用户的音视频轨道。详见 [subscribe](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#subscribe) 和 [RemoteTrack.play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#play)。
 
-> 如果用户加入频道时频道内已经有其他用户的音视频轨道，也会收到该回调报告已经存在的远端轨道。
+:::caution[注意]
+如果用户加入频道时频道内已经有其他用户的音视频轨道，也会收到该回调报告已经存在的远端轨道。
+:::
 
 ```javascript
 client.on("user-published", async (user, mediaType) => {
@@ -1767,7 +1777,9 @@ Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interf
 订阅的异步操作完成后，返回远端轨道对象，该对象也会在 [user.audioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser#audiotrack) 和 [user.videoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser#videotrack) 上更新，
  之后直接调用 [audioTrack.play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#play) 或 [videoTrack.play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotevideotrack#play) 就可以播放了。
 
-> 如果指定要订阅的音视频轨道不存在会抛出 `TRACK_IS_NOT_PUBLISHED` 错误。
+:::caution[注意]
+如果指定要订阅的音视频轨道不存在会抛出 `TRACK_IS_NOT_PUBLISHED` 错误。
+:::
 
 </ApiReturns>
 
@@ -1823,7 +1835,9 @@ Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interf
 订阅的异步操作完成后，返回远端轨道对象，该对象也会在 [user.audioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser#audiotrack) 和 [user.videoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser#videotrack) 上更新，
  之后直接调用 [audioTrack.play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#play) 或 [videoTrack.play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotevideotrack#play) 就可以播放了。
 
-> 如果指定要订阅的音视频轨道不存在会抛出 `TRACK_IS_NOT_PUBLISHED` 错误。
+:::caution[注意]
+如果指定要订阅的音视频轨道不存在会抛出 `TRACK_IS_NOT_PUBLISHED` 错误。
+:::
 
 </ApiReturns>
 
@@ -1881,7 +1895,9 @@ Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/
 订阅的异步操作完成后，返回远端轨道对象，该对象也会在 [user.audioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser#audiotrack) 和 [user.videoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser#videotrack) 上更新，
  之后直接调用 [audioTrack.play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#play) 或 [videoTrack.play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotevideotrack#play) 就可以播放了。
 
-> 如果指定要订阅的音视频轨道不存在会抛出 `TRACK_IS_NOT_PUBLISHED` 错误。
+:::caution[注意]
+如果指定要订阅的音视频轨道不存在会抛出 `TRACK_IS_NOT_PUBLISHED` 错误。
+:::
 
 </ApiReturns>
 
@@ -2243,8 +2259,10 @@ setRemoteDefaultVideoStreamType(streamType: [RemoteStreamType](/zh-CN/api-refere
 
 如果远端用户开启了双流模式，本地用户调用 `subscribe` 后会直接订阅本方法中 `streamType` 参数所指定的流类型。如不设置，默认订阅大流。
 
-> - 建议在加入频道前调用 `setRemoteDefaultVideoStreamType`。
-> - 如果你调用了 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setremotevideostreamtype) 指定某个用户的流类型，则以该调用为准。
+:::caution[注意]
+- 建议在加入频道前调用 `setRemoteDefaultVideoStreamType`。
+- 如果你调用了 [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setremotevideostreamtype) 指定某个用户的流类型，则以该调用为准。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="streamType" required>
@@ -2284,11 +2302,13 @@ setRemoteVideoStreamType(uid: [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/g
 
 如果远端用户开启了双流模式，该用户会发送两路视频流（一路大流和一路小流）。你可以通过 `setRemoteVideoStreamType` 在接收端选择订阅该用户的大流还是小流。如不设置，默认订阅大流。
 
-> - 该方法只可在发送端通过 [enableDualStream](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#enabledualstream) 开启双流模式的情况下使用。
-> - 若该方法和 [setStreamFallbackOption](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setstreamfallbackoption) 同时被调用，用户实际订阅的视频流取决于不同的设置。主要包括以下两种情况：
->
->   - [setStreamFallbackOption](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setstreamfallbackoption) 的参数设置为 `0` (DISABLE)时，订阅的视频流类型将由 `setRemoteVideoStreamType` 的设置决定。
->   - [setStreamFallbackOption](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setstreamfallbackoption) 的参数设置为 `1` (VIDEO_STREAM_LOW) 或 `2` (VIDEO_STREAM_HIGH)，则订阅的视频流类型会先按照 `setRemoteVideoStreamType`设置，但会根据网络状况进行动态调整。 例如，将 `setRemoteVideoStreamType` 参数设置为 `0`（订阅大流），但网络状况较差，SDK 将按照 `setStreamFallbackOption` 的设置进行弱网回退操作。
+:::caution[注意]
+- 该方法只可在发送端通过 [enableDualStream](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#enabledualstream) 开启双流模式的情况下使用。
+- 若该方法和 [setStreamFallbackOption](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setstreamfallbackoption) 同时被调用，用户实际订阅的视频流取决于不同的设置。主要包括以下两种情况：
+
+  - [setStreamFallbackOption](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setstreamfallbackoption) 的参数设置为 `0` (DISABLE)时，订阅的视频流类型将由 `setRemoteVideoStreamType` 的设置决定。
+  - [setStreamFallbackOption](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setstreamfallbackoption) 的参数设置为 `1` (VIDEO_STREAM_LOW) 或 `2` (VIDEO_STREAM_HIGH)，则订阅的视频流类型会先按照 `setRemoteVideoStreamType`设置，但会根据网络状况进行动态调整。 例如，将 `setRemoteVideoStreamType` 参数设置为 `0`（订阅大流），但网络状况较差，SDK 将按照 `setStreamFallbackOption` 的设置进行弱网回退操作。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="uid" required>
@@ -2342,8 +2362,10 @@ setStreamFallbackOption(uid: [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/gl
 当订阅流从视频大流回退为视频小流或从视频小流恢复为视频大流时，本地会触发
  [AgoraRTCClient.on("stream-type-changed")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_stream_type_changed) 回调。当订阅流回退为音频流或从音频流恢复为音视频流时，本地会触发 [AgoraRTCClient.on("stream-fallback")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_stream_fallback) 回调。
 
-> - 该方法仅在远端用户调用 [enableDualStream](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#enabledualstream) 开启双流模式后生效。
-> - 远端用户开启双流模式后，如果本地没有调用过 `setStreamFallbackOption`，默认的回退策略将生效，即在弱网环境下 SDK 会自动订阅远端用户的视频小流（[RemoteStreamFallbackType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/remotestreamfallbacktype) 为 `1`）。
+:::caution[注意]
+- 该方法仅在远端用户调用 [enableDualStream](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#enabledualstream) 开启双流模式后生效。
+- 远端用户开启双流模式后，如果本地没有调用过 `setStreamFallbackOption`，默认的回退策略将生效，即在弱网环境下 SDK 会自动订阅远端用户的视频小流（[RemoteStreamFallbackType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/remotestreamfallbacktype) 为 `1`）。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="uid" required>
@@ -2396,7 +2418,9 @@ setLiveTranscoding(config: [LiveStreamingTranscodingConfig](/zh-CN/api-reference
 
 该方法用于旁路推流的视图布局及音频设置等。
 
-> 使用前请确保已[开通旁路推流](/zh-CN/realtime-media/media-push)。
+:::caution[注意]
+使用前请确保已[开通旁路推流](/zh-CN/realtime-media/media-push)。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="config" required>
@@ -2543,7 +2567,9 @@ enableAudioVolumeIndicator(): void
 
 启用音量提示后，无论频道中有没有人说话，SDK 都会每两秒触发 [AgoraRTCClient.on("volume-indicator")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_volume_indicator) 回调。
 
-> 如果本地用户离开频道后再加入频道，你需要重新调用 `enableAudioVolumeIndicator`。
+:::caution[注意]
+如果本地用户离开频道后再加入频道，你需要重新调用 `enableAudioVolumeIndicator`。
+:::
 
 ```javascript
 client.enableAudioVolumeIndicator();
@@ -2579,7 +2605,9 @@ enableContentInspect(inspectConfig: [InspectConfiguration](/zh-CN/api-reference/
 开启视频截图上传后，SDK 会根据你在 [InspectConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/inspectconfiguration) 中设置的类型和频率，对本地用户发送的视频进行截图并上传。
  截图完成后，声网服务器会以 HTTPS 请求的形式，向你的服务器发送回调通知，并将所有截图发送至你指定的第三方云存储。具体步骤详见[视频截图上传](/zh-CN/realtime-media/rtc/build/video/content-inspect)。
 
-> SDK 目前支持的最高截图频率为 1000 毫秒/次。
+:::caution[注意]
+SDK 目前支持的最高截图频率为 1000 毫秒/次。
+:::
 
 ```javascript
 client.enableContentInspect({
@@ -3704,9 +3732,11 @@ on(event: "join-fallback-to-proxy", listener: typeof event_join_fallback_to_prox
 
 Overrides EventEmitter.on
 
-#### deprecated
+<a id="deprecated-1"></a>
 
+:::warning[deprecated]
 自 4.19.0 起废弃。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="event" type="&quot;join-fallback-to-proxy&quot;" required>
@@ -4145,7 +4175,9 @@ sendCustomReportMessage(reports: [EventCustomReportParams](/zh-CN/api-reference/
 
 自定义事件上报，用于将自定义的数据格式上报到声网的数据中心。
 
-> - 目前支持 5s 内最多上报 20 条事件。
+:::caution[注意]
+- 目前支持 5s 内最多上报 20 条事件。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="reports" required>
@@ -4346,10 +4378,12 @@ setImageModeration(enabled: true, config: [ImageModerationConfiguration](/zh-CN/
 
 调用该方法后，SDK 会触发 [image-moderation-connection-state-change](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_image_moderation_connection_state_change) 回调，并且对本地用户发送的视频进行截图、发送给第三方服务商进行审核。
 
-> - 调用该方法前，请确保满足以下要求：
->
->   - 已经开通第三方视频审核服务。
->   - 本地用户已加入频道，本地视频轨道已经发布并且处于启用状态。
+:::caution[注意]
+- 调用该方法前，请确保满足以下要求：
+
+  - 已经开通第三方视频审核服务。
+  - 本地用户已加入频道，本地视频轨道已经发布并且处于启用状态。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="enabled" type="true" required>
