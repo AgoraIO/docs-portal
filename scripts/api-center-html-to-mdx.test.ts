@@ -1006,7 +1006,10 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).toContain(
       ':::info[自从]\n*4.17.1*\n\nTypeDoc details.\n:::',
     );
-    expect(result.body).toContain('#### deprecated\n\nUse the replacement.');
+    expect(result.body).toContain(
+      ':::warning[deprecated]\nUse the replacement.\n:::',
+    );
+    expect(result.body).toContain('<a id="deprecated"></a>');
     expect(result.body).toContain(
       '<ApiReturnType>\n\n[Replacement](/zh-CN/api-reference/rtc/electron/replacement)\n\n</ApiReturnType>',
     );

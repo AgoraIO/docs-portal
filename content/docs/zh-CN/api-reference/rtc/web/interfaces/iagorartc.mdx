@@ -276,8 +276,9 @@ onAudioAutoplayFailed: function
 
 音频轨道自动播放失败回调。
 
-#### deprecated
+<a id="deprecated"></a>
 
+:::warning[deprecated]
 自 4.6.0 起废弃，请改用 [onAutoplayFailed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onautoplayfailed)。
 
 该回调在音频轨道自动播放失败的时候触发。如果短时间内有多个音频轨道对象都调用了 `play`，SDK 会触发多次 `onAudioAutoplayFailed`。
@@ -289,7 +290,9 @@ onAudioAutoplayFailed: function
 - 如果不希望收到 `onAudioAutoplayFailed` 回调，就确保在调用 `RemoteAudioTrack.play` 和 `LocalAudioTrack.play` 之前用户已经和页面发生了点击交互。
 - 如果无法保证在调用 `RemoteAudioTrack.play` 和 `LocalAudioTrack.play` 之前用户已经和页面发生点击交互，就监听 `onAudioAutoplayFailed` 回调，通过回调在页面上显示一个按钮引导用户点击。
 
-> 无论使用何种方案，只要浏览器启用了自动播放策略，都需要用户至少触发一次点击交互操作才能播放音频。随着用户使用某个页面的次数变多，浏览器会在这个页面上默认关闭自动播放策略，此时不需要任何交互也可以播放音频了，但是我们无法通过 JavaScript 去感知浏览器这个行为。
+**注意：**
+
+无论使用何种方案，只要浏览器启用了自动播放策略，都需要用户至少触发一次点击交互操作才能播放音频。随着用户使用某个页面的次数变多，浏览器会在这个页面上默认关闭自动播放策略，此时不需要任何交互也可以播放音频了，但是我们无法通过 JavaScript 去感知浏览器这个行为。
 
 下面的示例代码演示了当检测到自动播放失败后的处理：在页面上动态显示一个按钮让用户点击。
 
@@ -309,7 +312,10 @@ onAudioAutoplayFailed: function
 };
 ```
 
-> 需要注意的是，短时间内可能会有多个音频轨道对象都调用了 `play`，此时会触发多次 `onAudioAutoplayFailed`。示例代码中通过 `isAudioAutoplayFailed` 这个对象防止创建重复的按钮对象。
+**注意：**
+
+需要注意的是，短时间内可能会有多个音频轨道对象都调用了 `play`，此时会触发多次 `onAudioAutoplayFailed`。示例代码中通过 `isAudioAutoplayFailed` 这个对象防止创建重复的按钮对象。
+:::
 
 #### Type declaration
 
@@ -357,7 +363,9 @@ SDK 在音频或视频轨道自动播放失败时触发该回调。
 - 如果不希望收到 `onAutoplayFailed` 回调，就确保在调用 `RemoteTrack.play` 和 `LocalTrack.play` 之前用户已经和页面发生了点击交互。
 - 如果无法保证在调用 `RemoteTrack.play` 和 `LocalTrack.play` 之前用户已经和页面发生点击交互，就监听 `onAutoplayFailed` 回调，通过回调在页面上显示一个按钮引导用户点击。
 
-> 无论使用何种方案，只要浏览器启用了自动播放策略，都需要用户至少触发一次点击交互操作才能播放音频或视频。随着用户使用某个页面的次数变多，浏览器会在这个页面上默认关闭自动播放策略，此时不需要任何交互也可以播放音频和视频了，但是我们无法通过 JavaScript 去感知浏览器这个行为。
+:::caution[注意]
+无论使用何种方案，只要浏览器启用了自动播放策略，都需要用户至少触发一次点击交互操作才能播放音频或视频。随着用户使用某个页面的次数变多，浏览器会在这个页面上默认关闭自动播放策略，此时不需要任何交互也可以播放音频和视频了，但是我们无法通过 JavaScript 去感知浏览器这个行为。
+:::
 
 下面的示例代码演示了当检测到自动播放失败后的处理：在页面上动态显示一个按钮让用户点击。
 
@@ -371,7 +379,9 @@ SDK 在音频或视频轨道自动播放失败时触发该回调。
   document.body.append(btn);
 ```
 
-> 由于自动播放失败后在用户通过手势点击恢复播放之前，`onAutoplayFailed` 只会触发一次，因此在业务代码中不需要像 `onAudioAutoplayFailed` 回调一样维护 `isAutoplayFailed` 状态。
+:::caution[注意]
+由于自动播放失败后在用户通过手势点击恢复播放之前，`onAutoplayFailed` 只会触发一次，因此在业务代码中不需要像 `onAudioAutoplayFailed` 回调一样维护 `isAutoplayFailed` 状态。
+:::
 
 #### Type declaration
 
@@ -811,7 +821,9 @@ createCustomVideoTrack(config: [CustomVideoTrackInitConfig](/zh-CN/api-reference
 
 自定义视频轨道的配置，详见 [CustomVideoTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/customvideotrackinitconfig)。
 
-> 自 v4.17.1 起，自定义视频轨道配置 [config](/zh-CN/api-reference/rtc/web/interfaces/customvideotrackinitconfig) 除了支持设置码率，还支持设置分辨率和帧率。
+:::caution[注意]
+自 v4.17.1 起，自定义视频轨道配置 [config](/zh-CN/api-reference/rtc/web/interfaces/customvideotrackinitconfig) 除了支持设置码率，还支持设置分辨率和帧率。
+:::
 
 </Parameter>
 </ParameterList>
@@ -840,10 +852,12 @@ createMicrophoneAndCameraTracks(audioConfig?: [MicrophoneAudioTrackInitConfig](/
 
 通过麦克风采集的音频创建一个音频轨道，同时通过摄像头采集的视频创建一个视频轨道。
 
-> 调用该方法和分别调用 [createMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createmicrophoneaudiotrack) 以及 [createCameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcameravideotrack) 的区别是：
->
-> - 调用该方法会同时要求麦克风和摄像头的授权，用户只需授权一次。
-> - 分别创建音频轨道和视频轨道需要用户分别对麦克风和摄像头进行授权，也就是说用户需要授权两次。
+:::caution[注意]
+调用该方法和分别调用 [createMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createmicrophoneaudiotrack) 以及 [createCameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcameravideotrack) 的区别是：
+
+- 调用该方法会同时要求麦克风和摄像头的授权，用户只需授权一次。
+- 分别创建音频轨道和视频轨道需要用户分别对麦克风和摄像头进行授权，也就是说用户需要授权两次。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="audioConfig" optional>
@@ -1081,13 +1095,15 @@ createScreenVideoTrack(config: [ScreenVideoTrackInitConfig](/zh-CN/api-reference
 - `auto`: 根据浏览器是否支持决定是否分享音频。
 - [ScreenAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/globals#screenaudiotrackinitconfig): 自定义音频共享的初始化配置，包含 3A 处理参数 (`AEC`、`AGC`、`ANS`) 和本地音频播放及采集设置。
 
-  > - 该功能仅适用于支持 Web SDK 的浏览器桌面端，不支持移动端。具体支持列表详见[浏览器兼容性和已知问题](/zh-CN/realtime-media/rtc/reference/browser-compatibility)。
-  > - 关于各操作系统平台的浏览器版本及功能支持的补充说明如下：
-  >
-  >   - 在 macOS 平台上，Chrome 74 及以上版本支持音视频共享，仅支持在共享 Chrome 标签页时分享音频。Firefox 和 Safari 14 及以上版本支持窗口和屏幕共享，不支持分享音频。
-  >   - 在 Windows 平台上，Chrome 74 及以上版本和 Edge 支持在共享屏幕和浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。Firefox 支持窗口和屏幕共享，不支持分享音频。
-  >   - 在 ChromeOS 平台上，Chrome 支持在共享屏幕和共享浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。
-  > - 设置了 `withAudio` 为 `enable` 后，还需要在屏幕共享的弹出框上，勾选**分享音频**才能真正生效。
+  :::caution[注意]
+  - 该功能仅适用于支持 Web SDK 的浏览器桌面端，不支持移动端。具体支持列表详见[浏览器兼容性和已知问题](/zh-CN/realtime-media/rtc/reference/browser-compatibility)。
+  - 关于各操作系统平台的浏览器版本及功能支持的补充说明如下：
+
+    - 在 macOS 平台上，Chrome 74 及以上版本支持音视频共享，仅支持在共享 Chrome 标签页时分享音频。Firefox 和 Safari 14 及以上版本支持窗口和屏幕共享，不支持分享音频。
+    - 在 Windows 平台上，Chrome 74 及以上版本和 Edge 支持在共享屏幕和浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。Firefox 支持窗口和屏幕共享，不支持分享音频。
+    - 在 ChromeOS 平台上，Chrome 支持在共享屏幕和共享浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。
+  - 设置了 `withAudio` 为 `enable` 后，还需要在屏幕共享的弹出框上，勾选**分享音频**才能真正生效。
+  :::
 
 </Parameter>
 </ParameterList>
@@ -1149,7 +1165,9 @@ enableLogUpload(): void
 
 日志上传功能默认为关闭状态，如果你需要开启此功能，请确保在所有方法之前调用本方法。
 
-> 如果没有成功加入频道，则服务器上无法查看日志信息。
+:::caution[注意]
+如果没有成功加入频道，则服务器上无法查看日志信息。
+:::
 
 <ApiReturns>
 
@@ -1217,7 +1235,9 @@ getCameras(skipPermissionCheck?: boolean): Promise&lt;MediaDeviceInfo[]&gt;
 
 调用成功后 SDK 会通过 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 对象返回可用的视频输入设备。
 
-> 调用本方法会暂时打开摄像头以触发浏览器的媒体设备权限申请。在 Chrome 67+，Firefox 70+ 以及 Safari 12+ 等浏览器上没有媒体设备权限时，无法准确获取到设备信息。
+:::caution[注意]
+调用本方法会暂时打开摄像头以触发浏览器的媒体设备权限申请。在 Chrome 67+，Firefox 70+ 以及 Safari 12+ 等浏览器上没有媒体设备权限时，无法准确获取到设备信息。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="skipPermissionCheck" type="boolean" optional>
@@ -1301,7 +1321,9 @@ getElectronScreenSources(type?: [ScreenSourceType](/zh-CN/api-reference/rtc/web/
 
 调用成功后 SDK 会返回一组 [ElectronDesktopCapturerSource](/zh-CN/api-reference/rtc/web/interfaces/electrondesktopcapturersource) 对象。
 
-> 如果你的 Electron 运行环境开启了 contextIsolation 配置，调用此方法会报错。你需要自己使用 contextBridge.exposeInMainWorld 来获取视频源 id。
+:::caution[注意]
+如果你的 Electron 运行环境开启了 contextIsolation 配置，调用此方法会报错。你需要自己使用 contextBridge.exposeInMainWorld 来获取视频源 id。
+:::
 
 ```text
 // preload.js
@@ -1365,7 +1387,9 @@ getMicrophones(skipPermissionCheck?: boolean): Promise&lt;MediaDeviceInfo[]&gt;
 
 调用成功后 SDK 会通过 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 对象返回可用的音频输入设备。
 
-> 调用本方法会暂时打开麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+，Firefox 70+ 以及 Safari 12+ 等浏览器上没有媒体设备权限时，无法准确获取到设备信息。
+:::caution[注意]
+调用本方法会暂时打开麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+，Firefox 70+ 以及 Safari 12+ 等浏览器上没有媒体设备权限时，无法准确获取到设备信息。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="skipPermissionCheck" type="boolean" optional>
@@ -1406,8 +1430,10 @@ getPlaybackDevices(skipPermissionCheck?: boolean): Promise&lt;MediaDeviceInfo[]&
 
 调用成功后 SDK 会通过 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 对象返回可用的音频播放设备。
 
-> - Chrome、Firefox、Edge 浏览器上支持该方法。Safari 支持情况如下：macOS 上的 Safari 18.4 及以上版本支持该方法；iOS 上的 Safari 26 及以上版本支持该方法。
-> - 调用本方法会暂时打开麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+ 和 Firefox 70+ 浏览器上，没有媒体设备权限时无法获取到准确的设备信息。
+:::caution[注意]
+- Chrome、Firefox、Edge 浏览器上支持该方法。Safari 支持情况如下：macOS 上的 Safari 18.4 及以上版本支持该方法；iOS 上的 Safari 26 及以上版本支持该方法。
+- 调用本方法会暂时打开麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+ 和 Firefox 70+ 浏览器上，没有媒体设备权限时无法获取到准确的设备信息。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="skipPermissionCheck" type="boolean" optional>
@@ -2004,10 +2030,12 @@ preload(appid: string, channel: string, token: string | null, uid?: [UID](/zh-CN
 
 如果当前频道已经成功预加载，观众加入、离开频道后如需再次加入该频道，只要预加载时传入的 Token 仍在有效期内，则无需重新预加载。
 
-> - 预加载的有效时间只有两分钟。
-> - 为了保护页面性能，此方法采取一次性尽力而为的策略，无法保证一定成功。但预加载失败不会影响观众正常加入频道，也不会增加加入频道的耗时。
-> - 系统最多缓存 10 条最新的不同预加载数据。
-> - 目前此方法不支持通过 proxy 代理进行转发。
+:::caution[注意]
+- 预加载的有效时间只有两分钟。
+- 为了保护页面性能，此方法采取一次性尽力而为的策略，无法保证一定成功。但预加载失败不会影响观众正常加入频道，也不会增加加入频道的耗时。
+- 系统最多缓存 10 条最新的不同预加载数据。
+- 目前此方法不支持通过 proxy 代理进行转发。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="appid" type="string" required>

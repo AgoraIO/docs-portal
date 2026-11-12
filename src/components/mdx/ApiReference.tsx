@@ -10,6 +10,7 @@ import {
   useContext,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/cn';
 import { normalizeLocale } from '@/lib/i18n/i18n-config';
 import { resources } from '@/lib/i18n/resources';
@@ -399,8 +400,10 @@ function Parameter({
     (child) =>
       !isNestedParameterBlock(child) &&
       !isParameterTypeBlock(child) &&
+      !isDestinationAnchor(child) &&
       !isBlankTextNode(child),
   );
+  const anchors = childNodes.filter(isDestinationAnchor);
   const nestedParameters = childNodes.filter(isNestedParameterBlock);
   const richType = childNodes.find(isParameterTypeBlock);
   const parameterLabel = getPlainTextLabel(name);
@@ -415,6 +418,7 @@ function Parameter({
         data-parameter-variant={variant}
         {...props}
       >
+        {anchors}
         <ParameterIdentity
           compact
           direction={direction}
@@ -452,6 +456,7 @@ function Parameter({
         {...props}
       >
         <th scope="row" data-table-column="0">
+          {anchors}
           <ParameterIdentity
             compact
             direction={direction}
@@ -499,6 +504,7 @@ function Parameter({
         )}
         data-parameter-main=""
       >
+        {anchors}
         <ParameterIdentity
           direction={direction}
           name={name}
@@ -570,15 +576,22 @@ function ApiSignature({
       data-line-numbers={false}
       title={
         labelItems.length ? (
-          <span className="flex flex-wrap gap-3 font-mono text-fd-muted-foreground">
+          <div className="flex flex-wrap gap-2">
             {labelItems.map((label) => (
-              <span key={label}>{label}</span>
+              <Badge
+                className="rounded-md px-2 py-0.5 font-medium text-xs normal-case tracking-normal"
+                data-api-modifier=""
+                key={label}
+                variant="outline"
+              >
+                {label}
+              </Badge>
             ))}
-          </span>
+          </div>
         ) : undefined
       }
     >
-      <code>
+      <code className="[&_a]:text-fd-primary [&_a]:underline [&_a]:underline-offset-4">
         <span className="line">{inlineMdxContent(children)}</span>
       </code>
     </Pre>
@@ -600,6 +613,24 @@ function ApiReturns({
   const { i18n } = useTranslation('common');
   const copy = resources[normalizeLocale(i18n.language) ?? 'en'].common.docs;
   if (isTableParameterReturn) return null;
+  const hasDescription = description.some(
+    (child) => !isDestinationAnchor(child),
+  );
+  if (!returnType && !hasDescription) return <>{description}</>;
+  if (!hasDescription) {
+    return (
+      <section
+        className={cn('my-4 space-y-2', className)}
+        data-api-returns=""
+        data-api-return-layout="type"
+        {...props}
+      >
+        <p className="font-semibold">{title}</p>
+        {description}
+        {returnType}
+      </section>
+    );
+  }
   return (
     <section className={className} data-api-returns="" {...props}>
       <DocsTable>
@@ -720,6 +751,16 @@ function isApiReturnTypeBlock(
 
 function isBlankTextNode(child: ReactNode) {
   return typeof child === 'string' && child.trim().length === 0;
+}
+
+function isDestinationAnchor(child: ReactNode) {
+  return (
+    isValidElement<ComponentProps<'a'> & { name?: string }>(child) &&
+    child.type === 'a' &&
+    Boolean(child.props.id || child.props.name) &&
+    !child.props.href &&
+    Children.toArray(child.props.children).every(isBlankTextNode)
+  );
 }
 
 function getPlainTextLabel(value: ReactNode) {

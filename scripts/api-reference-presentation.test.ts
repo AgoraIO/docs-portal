@@ -15,6 +15,52 @@ const inspect = (html: string) => {
   return inspectReference().issues.map((issue: { rule: string }) => issue.rule);
 };
 
+it('rejects empty return descriptions and keeps informative type-only returns', () => {
+  expect(
+    inspect(
+      '<section data-api-returns><table><tbody><tr><td data-api-return-type>void</td><td data-api-return-description></td></tr></tbody></table></section>',
+    ),
+  ).toContain('empty-api-return-description');
+  document.body.innerHTML = '<article><h1>Reference</h1></article>';
+  expect(
+    inspect(
+      '<section data-api-returns data-api-return-layout="type"><p>Returns</p><div data-api-return-type>Promise&lt;void&gt;</div></section>',
+    ),
+  ).not.toContain('nonstandard-api-table');
+});
+
+it('rejects a type-only return marker that hides a rich description', () => {
+  expect(
+    inspect(
+      '<section data-api-returns data-api-return-layout="type"><div data-api-return-description>Keep this contract.</div></section>',
+    ),
+  ).toContain('invalid-api-return-layout');
+});
+
+it('detects signature links that look identical to the surrounding code', () => {
+  expect(
+    inspect(
+      '<figure class="shiki" data-api-signature><pre><code style="color:black"><span class="line">open(<a href="#type" style="color:black;text-decoration:none;font-family:inherit">Options</a>)</span></code></pre></figure>',
+    ),
+  ).toContain('indistinguishable-api-type-link');
+});
+
+it('detects destination anchors that add leading space to parameter descriptions', () => {
+  expect(
+    inspect(
+      '<div data-parameter-description><a id="old-parameter"></a><p style="margin-top:19px">Path to the image.</p></div>',
+    ),
+  ).toContain('parameter-anchor-spacing');
+});
+
+it('detects parameter row headings with a different surface from their descriptions', () => {
+  expect(
+    inspect(
+      '<section data-parameter-list><table><tbody><tr><th scope="row" style="background:beige">uid</th><td style="background:white">User identifier.</td></tr></tbody></table></section>',
+    ),
+  ).toContain('inconsistent-parameter-row-surface');
+});
+
 describe('API presentation regression detection', () => {
   it('rejects nested parameter cards and accepts native lists inside the parent table', () => {
     expect(

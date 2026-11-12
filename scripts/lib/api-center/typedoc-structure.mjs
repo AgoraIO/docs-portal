@@ -25,6 +25,65 @@ const text = (node) =>
     ? node.value
     : (node.children ?? []).map(text).join('');
 
+const calloutNames = new Set([
+  'note',
+  'info',
+  'tip',
+  'caution',
+  'warning',
+  'error',
+  'success',
+]);
+
+// A comment tag already supplies a notice frame. Preserve nested notice content
+// and its label without creating another frame inside it.
+function flattenCallouts(markdown) {
+  const edits = [];
+  function visit(node) {
+    if (node.type === 'containerDirective' && calloutNames.has(node.name)) {
+      const label = node.children.find((child) => child.data?.directiveLabel);
+      const children = node.children.filter(
+        (child) => !child.data?.directiveLabel,
+      );
+      const body = children.length
+        ? flattenCallouts(
+            markdown.slice(
+              children[0].position.start.offset,
+              children.at(-1).position.end.offset,
+            ),
+          )
+        : '';
+      edits.push({
+        start: node.position.start.offset,
+        end: node.position.end.offset,
+        replacement: [label && `**${text(label)}**`, body]
+          .filter(Boolean)
+          .join('\n\n'),
+      });
+      return;
+    }
+    for (const child of node.children ?? []) visit(child);
+  }
+  visit(parser.parse(markdown));
+  for (const edit of edits.reverse())
+    markdown =
+      markdown.slice(0, edit.start) +
+      edit.replacement +
+      markdown.slice(edit.end);
+  return markdown;
+}
+
+function isDestinationAnchor(node) {
+  return (
+    node.name === 'a' &&
+    !node.children?.length &&
+    node.attributes?.some((attribute) =>
+      ['id', 'name'].includes(attribute.name),
+    ) &&
+    !node.attributes?.some((attribute) => attribute.name === 'href')
+  );
+}
+
 // These are explicit source labels, not severity inferred from the notice body.
 export function typedocNotice(markdown) {
   const match = markdown.match(
@@ -48,8 +107,13 @@ export function typedocNotice(markdown) {
 // Read-only, provenance-scoped edits. The caller chooses whether to apply them.
 export function planTypeDocStructure(source) {
   const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
-  if (!frontmatter || load(frontmatter[1])?._migration?.generator !== 'typedoc')
-    return [];
+  const migration = frontmatter && load(frontmatter[1])?._migration;
+  if (migration?.generator !== 'typedoc') return [];
+  // The legacy API parser explicitly mapped HTML TypeDoc quotations to
+  // caution notices. Apply that source contract only to its migrated lane.
+  const legacyNotices =
+    migration.type === 'generated-html' &&
+    migration.sourcePath?.startsWith('html-docs/');
   const offset = frontmatter[0].length;
   const lineOffset = frontmatter[0].split('\n').length - 1;
   const body = source.slice(offset);
@@ -79,7 +143,9 @@ export function planTypeDocStructure(source) {
   function visit(parent, group, inCallout = false) {
     const nestedInCallout = inCallout || parent.type === 'containerDirective';
     const nodes = parent.children ?? [];
+    let consumedThrough = -1;
     for (const [index, node] of nodes.entries()) {
+      if (index <= consumedThrough) continue;
       if (node.type === 'heading' && node.depth === 2)
         group = text(node).trim();
       if (node.type === 'blockquote') {
@@ -96,7 +162,16 @@ export function planTypeDocStructure(source) {
             return relative.replace(/^> ?/, '');
           })
           .join('\n');
-        const notice = typedocNotice(unquoted);
+        const notice =
+          typedocNotice(unquoted) ??
+          (legacyNotices
+            ? {
+                type: 'caution',
+                title: '注意',
+                separator: '：',
+                body: unquoted,
+              }
+            : null);
         if (notice) {
           const markdown = nestedInCallout
             ? `**${notice.title}${notice.separator}**\n\n${notice.body}`
@@ -113,6 +188,45 @@ export function planTypeDocStructure(source) {
           );
         }
         continue;
+      }
+      if (
+        legacyNotices &&
+        node.type === 'heading' &&
+        node.depth >= 3 &&
+        text(node).trim().toLowerCase() === 'deprecated'
+      ) {
+        let end = index + 1;
+        while (
+          end < nodes.length &&
+          nodes[end].type !== 'heading' &&
+          !['ApiSignature', 'ParameterList', 'ApiReturns'].includes(
+            nodes[end].name,
+          )
+        )
+          end++;
+        while (end > index + 1 && isDestinationAnchor(nodes[end - 1])) end--;
+        if (end > index + 1) {
+          const [, stop] = range(nodes[end - 1]);
+          const content = flattenCallouts(
+            source.slice(range(nodes[index + 1])[0], stop).trim(),
+          );
+          const id = getTableOfContents(body.slice(0, node.position.end.offset))
+            .at(-1)
+            ?.url.slice(1);
+          const alias =
+            id && !source.includes(`<a id="${id}">`)
+              ? `<a id=${JSON.stringify(id)}></a>\n\n`
+              : '';
+          add(
+            'unstructured-typedoc-deprecation',
+            text(node),
+            node,
+            nodes[end - 1],
+            `${alias}:::warning[${text(node)}]\n${content}\n:::`,
+          );
+          consumedThrough = end - 1;
+          continue;
+        }
       }
       const signature = nodes[index + 1];
       if (

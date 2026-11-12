@@ -113,8 +113,10 @@ monitorTypeSurfaces: "exclude"|"include"
 
 详见 [monitorTypeSurfaces](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia#monitortypesurfaces)。
 
-> - 该参数仅支持 Chrome 119 及以上。
-> - 如果将 `monitorTypeSurface` 设为 `exclude`，则无法将 `displaySurface` 设为 `monitor`，否则会报错。
+:::caution[注意]
+- 该参数仅支持 Chrome 119 及以上。
+- 如果将 `monitorTypeSurface` 设为 `exclude`，则无法将 `displaySurface` 设为 `monitor`，否则会报错。
+:::
 
 <a id="optimizationmode"></a>
 
@@ -194,11 +196,13 @@ screenSourceType: [ScreenSourceType](/zh-CN/api-reference/rtc/web/globals#screen
 
 </ApiSignature>
 
-#### deprecated
+<a id="deprecated"></a>
 
+:::warning[deprecated]
 自 v4.17.1 起废弃，请改用 [displaySurface](/zh-CN/api-reference/rtc/web/interfaces/screenvideotrackinitconfig#displaysurface)。
 
 屏幕共享源的类型。
+:::
 
 <a id="selfbrowsersurface"></a>
 

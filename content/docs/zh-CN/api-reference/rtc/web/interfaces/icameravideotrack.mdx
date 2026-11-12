@@ -215,7 +215,9 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icame
 
 获取当前渲染的视频帧数据。
 
-> 只有在播放后才能调用此方法，如果没有调用 [play](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#play) 则返回空数据。
+:::caution[注意]
+只有在播放后才能调用此方法，如果没有调用 [play](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#play) 则返回空数据。
+:::
 
 <ApiReturns>
 
@@ -303,10 +305,12 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 该方法目前主要用于视频流的[端到端加密（Beta）](/zh-CN/realtime-media/rtc/build/security-and-auth/e2e-encryption)。
 
-> 如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例：
->
-> - 本地轨道：[ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_transceiver_updated)
-> - 远端轨道：[IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack#event_transceiver_updated_2)
+:::caution[注意]
+如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例：
+
+- 本地轨道：[ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_transceiver_updated)
+- 远端轨道：[IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack#event_transceiver_updated_2)
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="type" optional>
@@ -350,9 +354,11 @@ Overrides [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack).[ge
 
 获取本地视频轨道的相关信息。
 
-#### deprecated
+<a id="deprecated"></a>
 
+:::warning[deprecated]
 自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getlocalaudiostats)。
+:::
 
 <ApiReturns>
 
@@ -916,7 +922,9 @@ setDevice(deviceId: string | [RequiredOnlyOneOf](/zh-CN/api-reference/rtc/web/gl
 
 设置负责采集视频数据的摄像头设备。
 
-> 在发布前和发布后均可调用此方法。
+:::caution[注意]
+在发布前和发布后均可调用此方法。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="deviceId" required>
@@ -968,9 +976,11 @@ Overrides [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuf
 
 轨道禁用后，播放和发布都将被停止。
 
-> - 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_track_ended) 事件。
-> - 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published) 事件。
-> - `setEnabled` 和 `setMuted` 不能同时调用。
+:::caution[注意]
+- 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_track_ended) 事件。
+- 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published) 事件。
+- `setEnabled` 和 `setMuted` 不能同时调用。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="enabled" type="boolean" required>
@@ -1051,8 +1061,10 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 如果该轨道已发布，调用 `setMuted(true)` 后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_unpublished) 事件。再调用 `setMuted(false)` 后，远端会触发 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published) 事件。
 
-> - 与 [setEnabled](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](/zh-CN/reference/faq/integration/set_enabled_set_muted)。
-> - `setEnabled` 和 `setMuted` 不能同时调用。
+:::caution[注意]
+- 与 [setEnabled](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](/zh-CN/reference/faq/integration/set_enabled_set_muted)。
+- `setEnabled` 和 `setMuted` 不能同时调用。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="muted" type="boolean" required>
