@@ -40,20 +40,24 @@ describe('addNoindexRoute', () => {
 });
 
 describe('applyPreviewNoindex', () => {
-  it('rewrites vercel.json and robots.txt in place', async () => {
+  it('rewrites vercel.base.json and robots.txt, then regenerates', async () => {
     const root = await mkdtemp(path.join(os.tmpdir(), 'preview-noindex-'));
     tempDirs.push(root);
     await mkdir(path.join(root, 'public'));
     await writeFile(
-      path.join(root, 'vercel.json'),
+      path.join(root, 'vercel.base.json'),
       JSON.stringify({ outputDirectory: 'dist/client', routes: [] }),
     );
     await writeFile(path.join(root, 'public', 'robots.txt'), 'Allow: /\n');
 
-    applyPreviewNoindex(root);
+    const regenerated: string[] = [];
+    applyPreviewNoindex(root, {
+      regenerate: (dir: string) => regenerated.push(dir),
+    });
 
+    expect(regenerated).toEqual([root]);
     const config = JSON.parse(
-      await readFile(path.join(root, 'vercel.json'), 'utf8'),
+      await readFile(path.join(root, 'vercel.base.json'), 'utf8'),
     );
     expect(config.outputDirectory).toBe('dist/client');
     expect(config.routes[0]).toEqual(NOINDEX_ROUTE);

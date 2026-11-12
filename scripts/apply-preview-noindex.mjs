@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 // Blocks search engine indexing on preview deployments.
 // Run in CI before `vercel build` for preview builds only. Never run it for
-// production: it rewrites vercel.json and public/robots.txt in place.
+// production: it rewrites vercel.base.json, vercel.json, and
+// public/robots.txt in place.
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -18,7 +20,7 @@ export const NOINDEX_ROUTE = {
 
 // vercel.json uses `routes`, which Vercel does not allow alongside a
 // top-level `headers` key. A leading `continue` route adds the header to
-// every response, including redirects, without changing routing.
+// every response it matches without changing routing.
 export function addNoindexRoute(config) {
   const routes = Array.isArray(config.routes) ? config.routes : [];
   const alreadyApplied = routes.some(
@@ -32,18 +34,33 @@ export function addNoindexRoute(config) {
   return { ...config, routes: [NOINDEX_ROUTE, ...routes] };
 }
 
-export function applyPreviewNoindex(repoRoot) {
-  const vercelPath = path.join(repoRoot, 'vercel.json');
+// The build checks that vercel.json matches what
+// generate-legacy-redirect-artifacts.mjs produces from vercel.base.json, so
+// the route goes into vercel.base.json and vercel.json is regenerated.
+export function applyPreviewNoindex(
+  repoRoot,
+  { regenerate = defaultRegenerate } = {},
+) {
+  const basePath = path.join(repoRoot, 'vercel.base.json');
   const robotsPath = path.join(repoRoot, 'public', 'robots.txt');
 
-  const config = JSON.parse(fs.readFileSync(vercelPath, 'utf8'));
+  const baseConfig = JSON.parse(fs.readFileSync(basePath, 'utf8'));
   fs.writeFileSync(
-    vercelPath,
-    `${JSON.stringify(addNoindexRoute(config), null, 2)}\n`,
+    basePath,
+    `${JSON.stringify(addNoindexRoute(baseConfig), null, 2)}\n`,
   );
+  regenerate(repoRoot);
   fs.writeFileSync(robotsPath, PREVIEW_ROBOTS_TXT);
 
-  return { vercelPath, robotsPath };
+  return { basePath, robotsPath };
+}
+
+function defaultRegenerate(repoRoot) {
+  execFileSync(
+    process.execPath,
+    [path.join(repoRoot, 'scripts', 'generate-legacy-redirect-artifacts.mjs')],
+    { cwd: repoRoot, stdio: 'inherit' },
+  );
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
@@ -51,7 +68,8 @@ if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
     path.dirname(fileURLToPath(import.meta.url)),
     '..',
   );
-  const { vercelPath, robotsPath } = applyPreviewNoindex(repoRoot);
-  console.log(`added X-Robots-Tag noindex route to ${vercelPath}`);
+  const { basePath, robotsPath } = applyPreviewNoindex(repoRoot);
+  console.log(`added X-Robots-Tag noindex route to ${basePath}`);
+  console.log('regenerated vercel.json');
   console.log(`wrote disallow-all ${robotsPath}`);
 }
