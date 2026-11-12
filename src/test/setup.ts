@@ -1,4 +1,8 @@
 import '@testing-library/jest-dom/vitest';
+import { MotionGlobalConfig } from 'motion/react';
+
+// Component assertions test final states; browser QA covers real animations.
+MotionGlobalConfig.skipAnimations = true;
 
 if (typeof window !== 'undefined' && !window.matchMedia) {
   Object.defineProperty(window, 'matchMedia', {

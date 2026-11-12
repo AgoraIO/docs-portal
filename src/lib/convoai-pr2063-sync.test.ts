@@ -30,13 +30,13 @@ describe('ConvoAI source PR 2063 TypeScript ASR keywords sync', () => {
 
   it('documents the optional keywords array in the parameter table', () => {
     expect(loadFengmingSTTSection()).toMatch(
-      /\|\s*`keywords`\s*\|\s*`string\[\]`\s*\|\s*No\s*\|\s*热词列表，用于提升 ASR 识别准确率\s*\|/,
+      /\|\s*`keywords`\s*\|\s*`string\[\]`\s*\|\s*否\s*\|\s*热词列表，用于提升 ASR 识别准确率\s*\|/,
     );
   });
 
   it('documents optional additional Fengming parameters merged into asr.params', () => {
     expect(loadFengmingSTTSection()).toMatch(
-      /\|\s*`additionalParams`\s*\|\s*`Record<string, unknown>`\s*\|\s*No\s*\|\s*附加 Fengming 参数，合并进 `asr\.params`\s*\|/,
+      /\|\s*`additionalParams`\s*\|\s*`Record<string, unknown>`\s*\|\s*否\s*\|\s*附加 Fengming 参数，合并进 `asr\.params`\s*\|/,
     );
   });
 
@@ -65,7 +65,7 @@ describe('ConvoAI source PR 2063 Python ASR keywords sync', () => {
 
   it('documents optional keywords in the FengmingSTT table', () => {
     expect(loadPythonSection('FengmingSTT')).toMatch(
-      /\|\s*`keywords`\s*\|\s*`List\[str\]`\s*\|\s*No\s*\|\s*`None`\s*\|\s*热词列表，用于提升 ASR 识别准确率\s*\|/,
+      /\|\s*`keywords`\s*\|\s*`List\[str\]`\s*\|\s*否\s*\|\s*`None`\s*\|\s*热词列表，用于提升 ASR 识别准确率\s*\|/,
     );
   });
 

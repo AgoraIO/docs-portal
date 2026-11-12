@@ -12,7 +12,7 @@ _migration:
 
 <a id="class_channelmediarelayconfiguration__prototype"></a>
 
-```text
+```objc
 __attribute__((visibility("default"))) @interface AgoraChannelMediaRelayConfiguration: NSObject
 @property (strong, nonatomic, readonly) NSDictionary<NSString *, AgoraChannelMediaRelayInfo *> *_Nullable destinationInfos;
 @property (strong, nonatomic) AgoraChannelMediaRelayInfo *_Nonnull sourceInfo;
@@ -38,7 +38,7 @@ __attribute__((visibility("default"))) @interface AgoraChannelMediaRelayConfigur
 
   - 如果未启用 App 证书，将该参数设置为 nil，表示 SDK 使用 App ID。
   - 如果启用了 App 证书，必须使用基于 `channelName` 和 `uid` 生成的 Token。
-- `uid`：用于标识目标频道中转发流的唯一用户 ID，取值范围为 0 到 (2^32 - 1)。为避免用户 ID 冲突，该 ID 必须与目标频道中其他用户的 ID 不同。默认值为 0，表示 SDK 自动生成随机 UID。
+- `uid`：用于标识目标频道中转发流的唯一用户 ID，取值范围为 0 到 (2³² - 1)。为避免用户 ID 冲突，该 ID 必须与目标频道中其他用户的 ID 不同。默认值为 0，表示 SDK 自动生成随机 UID。
 
 详见 [AgoraChannelMediaRelayInfo](/zh-CN/api-reference/rtc/ios/class-channelmediainfo)。
 

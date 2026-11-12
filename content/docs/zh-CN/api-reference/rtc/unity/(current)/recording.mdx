@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_createmediarecorder__prototype"></a>
 
-```text
+```csharp
 public abstract IMediaRecorder CreateMediaRecorder(RecorderStreamInfo info);
 ```
 
@@ -64,7 +64,7 @@ public abstract IMediaRecorder CreateMediaRecorder(RecorderStreamInfo info);
 
 <a id="api_irtcengine_destroymediarecorder__prototype"></a>
 
-```text
+```csharp
 public abstract int DestroyMediaRecorder(IMediaRecorder mediaRecorder);
 ```
 
@@ -106,7 +106,7 @@ public abstract int DestroyMediaRecorder(IMediaRecorder mediaRecorder);
 
 <a id="api_imediarecorder_setmediarecorderobserver__prototype"></a>
 
-```text
+```csharp
 public abstract int SetMediaRecorderObserver(IMediaRecorderObserver callback);
 ```
 
@@ -152,7 +152,7 @@ public abstract int SetMediaRecorderObserver(IMediaRecorderObserver callback);
 
 <a id="api_irtcengine_startaudiorecording1__prototype"></a>
 
-```text
+```csharp
 public abstract int StartAudioRecording(string filePath, AUDIO_RECORDING_QUALITY_TYPE quality);
 ```
 
@@ -213,7 +213,7 @@ SDK 支持通话过程中在客户端进行录音。该方法录制频道内所�
 
 <a id="api_irtcengine_startaudiorecording2__prototype"></a>
 
-```text
+```csharp
 public abstract int StartAudioRecording(string filePath, int sampleRate, AUDIO_RECORDING_QUALITY_TYPE quality);
 ```
 
@@ -287,7 +287,7 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
 <a id="api_irtcengine_startaudiorecording3__prototype"></a>
 
-```text
+```csharp
 public abstract int StartAudioRecording(AudioRecordingConfiguration config);
 ```
 
@@ -340,7 +340,7 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
 <a id="api_imediarecorder_startrecording__prototype"></a>
 
-```text
+```csharp
 public abstract int StartRecording(MediaRecorderConfiguration config);
 ```
 
@@ -409,7 +409,7 @@ public abstract int StartRecording(MediaRecorderConfiguration config);
 
 <a id="api_irtcengine_stopaudiorecording__prototype"></a>
 
-```text
+```csharp
 public abstract int StopAudioRecording();
 ```
 
@@ -436,7 +436,7 @@ public abstract int StopAudioRecording();
 
 <a id="api_imediarecorder_stoprecording__prototype"></a>
 
-```text
+```csharp
 public abstract int StopRecording();
 ```
 
@@ -469,7 +469,7 @@ public abstract int StopRecording();
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated__prototype"></a>
 
-```text
+```csharp
 public virtual void OnRecorderInfoUpdated(string channelId, uint uid, RecorderInfo info) {}
 ```
 
@@ -516,7 +516,7 @@ public virtual void OnRecorderInfoUpdated(string channelId, uint uid, RecorderIn
 
 <a id="callback_imediarecorderobserver_onrecorderstatechanged__prototype"></a>
 
-```text
+```csharp
 public virtual void OnRecorderStateChanged(string channelId, uint uid, RecorderState state, RecorderReasonCode reason)
 ```
 

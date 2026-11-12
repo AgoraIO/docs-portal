@@ -84,7 +84,11 @@ void
 
 ### currentState
 
+<ApiSignature>
+
 currentState: [AudioSourceState](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#audiosourcestate)
+
+</ApiSignature>
 
 当前音频数据源的处理状态（开始/暂停/停止）。
 
@@ -92,7 +96,11 @@ currentState: [AudioSourceState](/zh-CN/api-reference/rtc/react-sdk/web-sdk/glob
 
 ### duration
 
+<ApiSignature>
+
 duration: number
+
+</ApiSignature>
 
 音频总时长，单位为秒。
 
@@ -100,7 +108,11 @@ duration: number
 
 ### enabled
 
+<ApiSignature>
+
 enabled: boolean
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[enabled](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#enabled)
 
@@ -110,7 +122,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 ### isPlaying
 
+<ApiSignature>
+
 isPlaying: boolean
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[isPlaying](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#isplaying)
 
@@ -123,7 +139,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 ### muted
 
+<ApiSignature>
+
 muted: boolean
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[muted](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#muted)
 
@@ -133,7 +153,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 ### playbackSpeed
 
+<ApiSignature>
+
 playbackSpeed: number
+
+</ApiSignature>
 
 :::info[自从]
 *4.18.0*
@@ -149,7 +173,11 @@ playbackSpeed: number
 
 ### processorDestination
 
+<ApiSignature>
+
 processorDestination: IAudioProcessor
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[processorDestination](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#processordestination)
 
@@ -163,7 +191,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 ### source
 
+<ApiSignature>
+
 source: string|File|AudioBuffer|null
+
+</ApiSignature>
 
 创建时指定的 [source](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/buffersourceaudiotrackinitconfig#source) 值。
 
@@ -171,7 +203,11 @@ source: string|File|AudioBuffer|null
 
 ### trackMediaType
 
+<ApiSignature>
+
 trackMediaType: "audio"|"video"
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[trackMediaType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#trackmediatype)
 
@@ -353,7 +389,7 @@ Overrides [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/il
 
 获取本地音频轨道的质量相关信息。
 
-### deprecated
+#### deprecated
 
 自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalaudiostats)。
 
@@ -490,15 +526,11 @@ void
 
 ### on
 
+#### on [1/2]
+
 <ApiSignature>
 
 on(event: "source-state-change", listener: typeof event_source_state_change): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: string, listener: Function): void
 
 </ApiSignature>
 
@@ -526,6 +558,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [2/2]
+
+<ApiSignature>
+
+on(event: string, listener: Function): void
+
+</ApiSignature>
 
 Overrides [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack#on)
 
@@ -964,9 +1004,9 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 :::info[自从]
 *4.1.0*
 
-> 注意事项：
->
-> - 自 v4.7.0 起，该方法不再生效。请改用 [IRemoteAudioTrack.setPlaybackDevice](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#setplaybackdevice)。
+**注意事项：**
+
+- 自 v4.7.0 起，该方法不再生效。请改用 [IRemoteAudioTrack.setPlaybackDevice](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#setplaybackdevice)。
 
 设置本地播放远端音频流的设备（扬声器）。
 :::

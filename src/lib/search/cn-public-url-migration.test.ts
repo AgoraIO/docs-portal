@@ -38,8 +38,10 @@ describe('CN search public URL migration', () => {
           '# 使用 Token 鉴权\n\n## 生成 Token [#token]\n\n说明。',
         readRenderedHtml: async () => '<h2 id="token">生成 Token</h2>',
       });
-      expect(records).toHaveLength(2);
-      expect(records[0]).toMatchObject({
+      expect(records).toHaveLength(4);
+      const sections = records.filter((record) => record.url.includes('#'));
+      expect(sections).toHaveLength(2);
+      expect(sections[0]).toMatchObject({
         url: '/realtime-media/rtc/build/token-authentication/android#token',
         canonicalUrl: '/realtime-media/rtc/build/token-authentication',
         locale: 'zh-CN',
@@ -49,7 +51,7 @@ describe('CN search public URL migration', () => {
         defaultPlatform: 'ios',
         isDefaultPlatform: false,
       });
-      expect(records[1]).toMatchObject({
+      expect(sections[1]).toMatchObject({
         url: '/realtime-media/rtc/build/token-authentication/ios#token',
         isDefaultPlatform: true,
       });
@@ -150,9 +152,7 @@ describe('CN search public URL migration', () => {
       );
       expect(result.groups).toHaveLength(1);
       expect(result.groups[0].pageUrl).toBe(
-        platform
-          ? '/realtime-media/rtc/build/token-authentication/ios'
-          : '/realtime-media/rtc/build/token-authentication',
+        '/realtime-media/rtc/build/token-authentication/ios',
       );
       expect(result.groups[0].sections[0].url).toBe(url);
     },

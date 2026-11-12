@@ -17,7 +17,11 @@ import {
   API_REFERENCE_CAPABILITY_GROUPS,
   getApiReferenceProductSectionId,
 } from '@/lib/api-reference-navigation';
-import { getPlatformIconSrc } from './platform-icon-src';
+import { cn } from '@/lib/cn';
+import {
+  getPlatformIconSrc,
+  isMonochromePlatformIcon,
+} from './platform-icon-src';
 
 type ApiReferenceCardsLocale = 'zh-CN';
 type ApiReferenceTypeFilter = 'all' | 'client' | 'restful' | 'server';
@@ -499,8 +503,12 @@ function PlatformLabel({ entry }: { entry: ApiReferenceCardEntry }) {
         <img
           alt=""
           aria-hidden
-          className="size-7"
+          className={cn(
+            'size-7',
+            isMonochromePlatformIcon(iconSrc) && 'dark:invert',
+          )}
           loading="lazy"
+          referrerPolicy="no-referrer"
           src={iconSrc}
         />
       </span>

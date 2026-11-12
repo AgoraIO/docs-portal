@@ -209,10 +209,6 @@ const zhCnDocsFooterContent = {
       label: '安全合规',
     },
   ],
-  certification: {
-    label: '962110',
-    title: '网络社会征信网认证',
-  },
   logoAlt: '声网',
   navGroups: [
     {
@@ -224,10 +220,6 @@ const zhCnDocsFooterContent = {
         {
           href: 'https://www.shengwang.cn/usecase/',
           label: '客户案例',
-        },
-        {
-          href: 'https://doc.shengwang.cn/',
-          label: '文档中心',
         },
       ],
       title: '产品与方案',
@@ -241,10 +233,6 @@ const zhCnDocsFooterContent = {
         {
           href: 'https://www.shengwang.cn/news/',
           label: '新闻中心',
-        },
-        {
-          href: 'https://www.shengwang.cn/compliance/',
-          label: '安全合规',
         },
         {
           href: 'https://app.mokahr.com/apply/agora/6334#/',
@@ -280,38 +268,9 @@ const zhCnDocsFooterContent = {
       href: 'https://beian.miit.gov.cn/',
       label: '沪ICP备2024090791号-1',
     },
-    {
-      href: 'https://www.shengwang.cn/',
-      label: '上海声网科技有限公司',
-    },
   ],
   rights: '保留所有权利',
-  socialLinks: [
-    {
-      href: 'https://twitter.com/AgoraIO',
-      label: 'Twitter',
-    },
-    {
-      href: 'https://www.linkedin.com/company/agora-lab-inc/',
-      label: 'LinkedIn',
-    },
-    {
-      href: 'https://www.facebook.com/AgoraIO',
-      label: 'Facebook',
-    },
-    {
-      href: 'https://agoraio.slack.com/',
-      label: 'Slack',
-    },
-    {
-      href: 'https://www.youtube.com/channel/UCjPZukasIgWoB4HBHga5CGA',
-      label: 'YouTube',
-    },
-    {
-      href: 'https://medium.com/agora-io',
-      label: 'Medium',
-    },
-  ],
+  socialLinks: [],
 } as const satisfies DocsFooterContent;
 
 export function getDocsFooterContent(locale: string): DocsFooterContent {

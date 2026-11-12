@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_imediarecorder_addlistener_imediarecorder__prototype"></a>
 
-```text
+```ts
 addListener?<EventType extends keyof IMediaRecorderEvent>(
       eventType: EventType,
       listener: IMediaRecorderEvent[EventType]
@@ -70,7 +70,7 @@ engine.addListener('onRecorderStateChanged', onRecorderStateChanged);
 
 <a id="api_irtcengine_createmediarecorder__prototype"></a>
 
-```text
+```ts
 abstract createMediaRecorder(info: RecorderStreamInfo): IMediaRecorder;
 ```
 
@@ -113,7 +113,7 @@ abstract createMediaRecorder(info: RecorderStreamInfo): IMediaRecorder;
 
 <a id="api_irtcengine_destroymediarecorder__prototype"></a>
 
-```text
+```ts
 abstract destroyMediaRecorder(mediaRecorder: IMediaRecorder): number;
 ```
 
@@ -155,7 +155,7 @@ abstract destroyMediaRecorder(mediaRecorder: IMediaRecorder): number;
 
 <a id="api_imediarecorder_removealllisteners_imediarecorder__prototype"></a>
 
-```text
+```ts
 removeAllListeners?<EventType extends keyof IMediaRecorderEvent>(
       eventType?: EventType
     ): void;
@@ -190,7 +190,7 @@ removeAllListeners?<EventType extends keyof IMediaRecorderEvent>(
 
 <a id="api_imediarecorder_removelistener_imediarecorder__prototype"></a>
 
-```text
+```ts
 removeListener?<EventType extends keyof IMediaRecorderEvent>(
       eventType: EventType,
       listener: IMediaRecorderEvent[EventType]
@@ -238,7 +238,7 @@ engine.removeListener('onRecorderStateChanged', onRecorderStateChanged);
 
 <a id="api_imediarecorder_setmediarecorderobserver__prototype"></a>
 
-```text
+```ts
 abstract setMediaRecorderObserver(callback: IMediaRecorderObserver): number;
 ```
 
@@ -284,7 +284,7 @@ abstract setMediaRecorderObserver(callback: IMediaRecorderObserver): number;
 
 <a id="api_irtcengine_startaudiorecording3__prototype"></a>
 
-```text
+```ts
 abstract startAudioRecording(config: AudioRecordingConfiguration): number;
 ```
 
@@ -337,7 +337,7 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
 <a id="api_imediarecorder_startrecording__prototype"></a>
 
-```text
+```ts
 abstract startRecording(config: MediaRecorderConfiguration): number;
 ```
 
@@ -406,7 +406,7 @@ abstract startRecording(config: MediaRecorderConfiguration): number;
 
 <a id="api_irtcengine_stopaudiorecording__prototype"></a>
 
-```text
+```ts
 abstract stopAudioRecording(): number;
 ```
 
@@ -433,7 +433,7 @@ abstract stopAudioRecording(): number;
 
 <a id="api_imediarecorder_stoprecording__prototype"></a>
 
-```text
+```ts
 abstract stopRecording(): number;
 ```
 
@@ -466,7 +466,7 @@ abstract stopRecording(): number;
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated__prototype"></a>
 
-```text
+```ts
 onRecorderInfoUpdated?(
     channelId: string,
     uid: number,
@@ -517,7 +517,7 @@ onRecorderInfoUpdated?(
 
 <a id="callback_imediarecorderobserver_onrecorderstatechanged__prototype"></a>
 
-```text
+```ts
 onRecorderStateChanged?(
     channelId: string,
     uid: number,

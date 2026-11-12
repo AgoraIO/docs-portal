@@ -3512,17 +3512,31 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
             releaseDate: '2025 年 5 月 28 日',
           },
           {
-            id: '4.4.32-server-gateway-cpp-linux-x86-64',
+            id: '4.4.33-server-gateway-cpp-linux-x86-64',
             latestVariant: true,
-            label: '版本 4.4.32 C++ x86-64（最新）',
+            label: '版本 4.4.33 C++ x86-64（最新）',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Linux_x64_rel.v4.4.33_28664_SERVER_20260921_1453_ubuntu14_04_5_1307703_external.zip',
+            releaseDate: '2026 年 11 月 03 日',
+          },
+          {
+            id: '4.4.32-server-gateway-cpp-linux-x86-64',
+            label: '版本 4.4.32 C++ x86-64',
             downloadLink:
               'https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.4.32-20250425_144419-675648.tgz',
             releaseDate: '2025 年 4 月 28 日',
           },
           {
-            id: '4.4.32-server-gateway-cpp-linux-arm64',
+            id: '4.4.33-server-gateway-cpp-linux-arm64',
             latestVariant: true,
-            label: '版本 4.4.32 C++ arm64（最新）',
+            label: '版本 4.4.33 C++ arm64（最新）',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Linux_aarch64-linux-gnu_v4.4.33_20260921_172649_1307883.zip',
+            releaseDate: '2026 年 11 月 03 日',
+          },
+          {
+            id: '4.4.32-server-gateway-cpp-linux-arm64',
+            label: '版本 4.4.32 C++ arm64',
             downloadLink:
               'https://download.agora.io/rtsasdk/release/Agora-RTC-aarch64-linux-gnu-v4.4.32-20250425_150503-675674.tgz',
             releaseDate: '2025 年 4 月 28 日',
@@ -3535,13 +3549,13 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: 'cpp-server-gateway-sdk-linux-arm',
-            label: '版本 4.4.32 aarch64 for C++ （最新）',
+            label: '版本 4.4.32 aarch64 for C++',
             downloadLink:
               'https://download.agora.io/rtsasdk/release/Agora-RTC-aarch64-linux-gnu-v4.4.32-20250425_150503-675674.tgz',
           },
           {
             id: 'cpp-server-gateway-sdk-linux',
-            label: '版本 4.4.32 x86_64 for C++ （最新）',
+            label: '版本 4.4.32 x86_64 for C++',
             downloadLink:
               'https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.4.32-20250425_144419-675648.tgz',
           },

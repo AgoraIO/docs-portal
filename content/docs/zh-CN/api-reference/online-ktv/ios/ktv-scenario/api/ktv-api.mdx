@@ -1,4 +1,5 @@
 ---
+tocMaxDepth: 3
 title: K 歌房场景化 Swift API
 _migration:
   type: manual-mdx
@@ -270,7 +271,7 @@ func loadMusic(songCode: Int, config: KTVSongConfiguration, onMusicLoadStateList
 
 #### 参数
 
-- `songCode`: 歌曲编号，用于标识一个音乐资源。你可以通过 `searchMusic[1/2]` 或 `searchMusic[2/2]` 获取需要加载的歌曲编号，也可以通过 RESTful API 来获取[曲库所有歌曲列表](/zh-CN/api-reference/online-ktv/ios/ktv-scenario/api/music-content-center#获取曲库所有歌曲列表)或[增量歌曲列表](/zh-CN/api-reference/online-ktv/ios/ktv-scenario/api/music-content-center#获取增量歌曲列表)。
+- `songCode`: 歌曲编号，用于标识一个音乐资源。你可以通过 `searchMusic[1/2]` 或 `searchMusic[2/2]` 获取需要加载的歌曲编号，也可以通过 RESTful API 来获取[曲库所有歌曲列表](/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center#获取曲库所有歌曲列表)或[增量歌曲列表](/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center#获取增量歌曲列表)。
 - `config`: 加载配置。详见 [`KTVSongConfiguration`](#KTVSongConfiguration)。
 - `onMusicLoadStateListener`: 歌曲加载状态，详见 [`IMusicLoadStateListener`](#IMusicLoadStateListener)。
 
@@ -341,7 +342,7 @@ func startSing(songCode: Int, startPos: Int)
 
 #### 参数
 
-- `songCode`：歌曲编号，用于标识一个音乐资源。你可以通过 `searchMusic[1/2]` 或 `searchMusic[2/2]` 获取需要加载的歌曲编号，也可以通过 RESTful API 来获取[曲库所有歌曲列表](/zh-CN/api-reference/online-ktv/ios/ktv-scenario/api/music-content-center#获取曲库所有歌曲列表)或[增量歌曲列表](/zh-CN/api-reference/online-ktv/ios/ktv-scenario/api/music-content-center#获取增量歌曲列表)。
+- `songCode`：歌曲编号，用于标识一个音乐资源。你可以通过 `searchMusic[1/2]` 或 `searchMusic[2/2]` 获取需要加载的歌曲编号，也可以通过 RESTful API 来获取[曲库所有歌曲列表](/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center#获取曲库所有歌曲列表)或[增量歌曲列表](/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center#获取增量歌曲列表)。
 - `startPos`：起始播放位置，单位为毫秒。
 
 <a id="startsing2"></a>
@@ -819,7 +820,7 @@ K 歌的场景：
 
 - `channelName`：频道名。
 
-- `localUid`：本地用户的 ID。频道内的每个用户 ID 都必须是唯一，需是 32 位无符号整数，建议取值范围为 [1,232-1]。
+- `localUid`：本地用户的 ID。频道内的每个用户 ID 都必须是唯一，需是 32 位无符号整数，建议取值范围为 [1,2³² - 1]。
 
 - `chorusChannelName`: 合唱子频道的名称。在合唱场景下，领唱需要加入两个频道，主频道用户发布人声和播放器的混流，加入合唱子频道发布麦克风采集的音频流，伴唱需要加入合唱子频道来同步领唱的人声。在独唱场景下，该参数可以为空。
 
@@ -892,7 +893,7 @@ open class KTVSongConfiguration: NSObject {
 
 - `channelName`：听众频道的频道名。
 
-- `localUid`：本地用户的 ID。频道内的每个用户 ID 都必须是唯一，需是 32 位无符号整数，建议取值范围为 [1,232-1]。
+- `localUid`：本地用户的 ID。频道内的每个用户 ID 都必须是唯一，需是 32 位无符号整数，建议取值范围为 [1,2³² - 1]。
 
 - `chorusChannelName`：演唱频道的频道名。领唱和伴唱需要加入该频道发布人声、音乐流。
 - `chorusChannelToken`：加入演唱频道的 Token。

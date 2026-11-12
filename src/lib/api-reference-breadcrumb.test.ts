@@ -15,6 +15,7 @@ describe('resolveZhCnApiReferenceBreadcrumb', () => {
       },
       {
         title: '实时互动 RTC',
+        url: '/zh-CN/api-reference/api?product=rtc#api-reference-product-rtc',
       },
       {
         title: 'Android',
@@ -40,6 +41,7 @@ describe('resolveZhCnApiReferenceBreadcrumb', () => {
       },
       {
         title: '云端录制',
+        url: '/zh-CN/api-reference/api?product=cloud-recording#api-reference-product-cloud-recording',
       },
       {
         title: 'RESTful API',
@@ -60,6 +62,7 @@ describe('resolveZhCnApiReferenceBreadcrumb', () => {
       },
       {
         title: '云端录制',
+        url: '/zh-CN/api-reference/api?product=cloud-recording#api-reference-product-cloud-recording',
       },
       {
         title: 'RESTful API',
@@ -85,6 +88,7 @@ describe('resolveZhCnApiReferenceBreadcrumb', () => {
       },
       {
         title: '实时消息 RTM',
+        url: '/zh-CN/api-reference/api?product=rtm#api-reference-product-rtm',
       },
       {
         title: 'RESTful API',
@@ -110,6 +114,7 @@ describe('resolveZhCnApiReferenceBreadcrumb', () => {
       },
       {
         title: '在线 K 歌房',
+        url: '/zh-CN/api-reference/api?product=online-ktv#api-reference-product-online-ktv',
       },
       {
         title: 'Android',
@@ -134,6 +139,7 @@ describe('resolveZhCnApiReferenceBreadcrumb', () => {
       },
       {
         title: '在线 K 歌房',
+        url: '/zh-CN/api-reference/api?product=online-ktv#api-reference-product-online-ktv',
       },
       {
         title: 'Android',

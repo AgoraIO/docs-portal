@@ -30,6 +30,58 @@ async function compileGeneratedMdx(source: string) {
 }
 
 describe('API Center shared HTML to MDX converter', () => {
+  it.each([
+    'href="mai\' + \'lto:sales@shengwang.cn"',
+    'href="#" onclick="location.href=\'mailto:sales@shengwang.cn\'; return false;"',
+  ])(
+    'decodes visible Doxygen email text without executing link scripts: %s',
+    async (attributes) => {
+      const result = await convertHtmlToMdx({
+        html: `<article><h1>License</h1><p>联系 <a ${attributes}>sales<span class="obfuscator">.nosp@m.</span>@she<span style="display: none;">.nosp@m.</span>ngwang.cn</a> 续费。</p></article>`,
+        sourcePath: 'license.html',
+        sourceUrl: 'https://example.com/license',
+      });
+      expect(result.body).toContain(
+        '[sales@shengwang.cn](mailto:sales@shengwang.cn)',
+      );
+      expect(result.body).not.toContain('nosp@m');
+      expect(result.body).not.toContain('onclick');
+    },
+  );
+
+  it('preserves explicit source image dimensions after asset localization', async () => {
+    const result = await convertHtmlToMdx({
+      html: '<article><h1>开通服务</h1><img src="/enable.png" alt="功能配置" width="40%" /></article>',
+      sourcePath: 'enable.html',
+      sourceUrl: 'https://example.com/enable',
+      onAsset: async () => '/img/localized.png',
+    });
+    expect(result.body).toContain(
+      '<DocsImage alt="功能配置" src="/img/localized.png" displayWidth="40%" />',
+    );
+    await expect(compileGeneratedMdx(result.body)).resolves.toBeTruthy();
+  });
+  it('preserves rowspan occupancy, rich groups, and multi-level headers', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Options</h1><table><thead>
+      <tr><td rowspan="2">Option</td><td colspan="2">Setting</td></tr>
+      <tr><td>Key</td><td>Type</td></tr></thead><tbody>
+      <tr><td rowspan="2"><p>Beauty <a href="https://example.com">guide</a></p></td><td>enable</td><td>bool</td></tr>
+      <tr><td>strength</td><td>float</td></tr></tbody></table></article>`,
+      sourcePath: 'options.html',
+      sourceUrl: 'https://example.com/options',
+    });
+    expect(result.body).toContain('<DocsTable>');
+    expect(result.body).toContain('<th rowSpan={2} scope="col">Option</th>');
+    expect(result.body).toContain(
+      '<th colSpan={2} scope="colgroup">Setting</th>',
+    );
+    expect(result.body).toContain(
+      '<td rowSpan={2}>Beauty [guide](https://example.com/)</td>',
+    );
+    expect(result.body.match(/Beauty /g)).toHaveLength(1);
+    expect(result.body).not.toContain('<Slot');
+  });
   it('keeps an empty Doxygen section anchor out of the member table label', async () => {
     const result = await convertHtmlToMdx({
       html: '<div class="contents"><div class="textblock"><table class="memberdecls"><tr class="heading"><td colspan="2"><h2 class="groupheader"><a href="#pub-methods" id="pub-methods"></a>Public 成员函数</h2></td></tr><tr><td>double</td><td><a href="#speed">getPlaybackSpeed</a> ()</td></tr></table><h3><a id="init" href="#init"></a>SDK 初始化</h3></div></div>',
@@ -43,9 +95,8 @@ describe('API Center shared HTML to MDX converter', () => {
         ],
       ]),
     });
-    expect(result.body).toContain(
-      '| <a id="pub-methods"></a>Public 成员函数 |',
-    );
+    expect(result.body).toContain('<th colSpan={2} scope="colgroup">');
+    expect(result.body).toContain('<a id="pub-methods"></a>Public 成员函数');
     expect(result.body).not.toContain('player#pub-methods Public');
     expect(result.body).toContain('<a id="pub-methods"></a>');
     expect(result.body).toContain('[getPlaybackSpeed]');
@@ -620,6 +671,73 @@ describe('API Center shared HTML to MDX converter', () => {
     );
   });
 
+  it('keeps each TypeDoc overload with its own description, parameters and return', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Client</h1><h3 id="run">run</h3>
+        <ul class="tsd-signatures"><li>run(mode: "audio"): Audio</li><li>run(mode: "video"): Video</li></ul>
+        <ul class="tsd-descriptions">
+          <li class="tsd-description"><p>Audio description.</p><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>mode: "audio"</h5><p>Audio input.</p></li></ul><h4 class="tsd-returns-title">Returns Audio</h4><p>Audio output.</p></li>
+          <li class="tsd-description"><p>Video description.</p><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>mode: "video"</h5><p>Video input.</p></li></ul><h4 class="tsd-returns-title">Returns Video</h4><p>Video output.</p></li>
+        </ul></article>`,
+      sourceUrl: 'https://example.com/client.html',
+      sourcePath: 'client.html',
+    });
+    const first = result.body
+      .split('#### run [1/2]')[1]
+      ?.split('#### run [2/2]')[0];
+    const second = result.body.split('#### run [2/2]')[1];
+    expect(first).toContain('run(mode: "audio"): Audio');
+    expect(first).toContain('Audio description.');
+    expect(first).toContain('Audio input.');
+    expect(first).toContain('Audio output.');
+    expect(first).not.toContain('Video');
+    expect(second).toContain('run(mode: "video"): Video');
+    expect(second).toContain('Video description.');
+    expect(second).toContain('Video input.');
+    expect(second).toContain('Video output.');
+    expect(second).not.toContain('Audio');
+    expect(result.body.match(/<ApiSignature>/g)).toHaveLength(2);
+    expect(result.body.match(/<ApiReturns>/g)).toHaveLength(2);
+    expect(result.body).toContain('<a id="run"></a>');
+    await expect(compileGeneratedMdx(result.body)).resolves.toBeDefined();
+  });
+
+  it('labels paired TypeDoc accessors from their own signatures', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Config</h1><h3 id="host">host</h3>
+        <ul class="tsd-signatures"><li>get host(): string</li><li>set host(value: string): void</li></ul>
+        <ul class="tsd-descriptions"><li class="tsd-description"><p>Reads the host.</p></li><li class="tsd-description"><p>Sets the host.</p></li></ul></article>`,
+      sourceUrl: 'https://example.com/config.html',
+      sourcePath: 'config.html',
+    });
+    expect(result.body).toContain('#### get host [1/2]');
+    expect(result.body).toContain('#### set host [2/2]');
+    expect(result.body).not.toContain('#### get host [2/2]');
+    const setter = result.body.split('#### set host [2/2]')[1];
+    expect(setter).toContain('set host(value: string): void');
+    expect(setter).toContain('Sets the host.');
+    expect(setter).not.toContain('Reads the host.');
+    expect(result.body).toContain('<a id="host"></a>');
+    await expect(compileGeneratedMdx(result.body)).resolves.toBeDefined();
+  });
+
+  it('flags ambiguous TypeDoc overloads without guessing a description pairing', async () => {
+    const result = await convertHtmlToMdx({
+      html: '<article><h1>Client</h1><ul class="tsd-signatures"><li>run(): Audio</li><li>run(): Video</li></ul><ul class="tsd-descriptions"><li class="tsd-description"><p>Shared description.</p></li></ul></article>',
+      sourceUrl: 'https://example.com/client.html',
+      sourcePath: 'client.html',
+    });
+    expect(result.warnings).toContainEqual(
+      expect.objectContaining({
+        code: 'unsupported-html-structure',
+        message: expect.stringContaining('counts differ'),
+      }),
+    );
+    expect(result.body.match(/<ApiSignature>/g)).toHaveLength(2);
+    expect(result.body).toContain('Shared description.');
+    expect(result.body).not.toContain('[1/2]');
+  });
+
   it('renders Oxygen parameter definition lists as structured MDX fields', async () => {
     const result = await convertHtmlToMdx({
       html: `<article><h1>Channel relay</h1><section id="set-destination__parameters"><h2>参数</h2>
@@ -836,6 +954,32 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(compiled).not.toContain('_components.ul');
   });
 
+  it('nests TypeDoc comment tags below member headings without changing ordinary definitions', async () => {
+    const result = await convertHtmlToMdx({
+      html: `<article><h1>Client</h1>
+        <section class="tsd-member"><h3>connect</h3>
+          <dl class="tsd-comment-tags">
+            <dt>note</dt><dd>Keep the token valid.</dd>
+            <dt>compatibility</dt><dd>Available on all supported clients.</dd>
+          </dl>
+        </section>
+        <dl><dt>Service</dt><dd>A normal API definition.</dd></dl>
+      </article>`,
+      sourceUrl: 'https://doc.shengwang.cn/api-ref/rtc/web/classes/client',
+      sourcePath: 'html-docs/rtc/Web/classes/Client.html',
+    });
+
+    expect(result.body).toContain('### connect');
+    expect(result.body).toContain('#### note\n\nKeep the token valid.');
+    expect(result.body).toContain(
+      '#### compatibility\n\nAvailable on all supported clients.',
+    );
+    expect(result.body).toContain('### Service\n\nA normal API definition.');
+    expect(await compileGeneratedMdx(result.body)).toContain(
+      'Keep the token valid.',
+    );
+  });
+
   it('renders Oxygen, Doxygen, and TypeDoc since definitions as info callouts', async () => {
     const result = await convertHtmlToMdx({
       html: `<article><h1>API</h1>
@@ -862,7 +1006,7 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).toContain(
       ':::info[自从]\n*4.17.1*\n\nTypeDoc details.\n:::',
     );
-    expect(result.body).toContain('### deprecated\n\nUse the replacement.');
+    expect(result.body).toContain('#### deprecated\n\nUse the replacement.');
     expect(result.body).toContain(
       '<ApiReturnType>\n\n[Replacement](/zh-CN/api-reference/rtc/electron/replacement)\n\n</ApiReturnType>',
     );
@@ -1161,11 +1305,12 @@ describe('API Center shared HTML to MDX converter', () => {
       sourcePath: 'page.html',
     });
 
-    expect(result.body).toContain('| Enum value |  |');
     expect(result.body).toContain(
-      '| READY | <Slot name="api-center-table-0" /> |',
+      '<th colSpan={2} scope="colgroup">Enum value</th>',
     );
-    expect(result.body).toContain('<Slot for="api-center-table-0">');
+    expect(result.body).toContain('<td>READY</td>');
+    expect(result.body).toContain('<td>Ready description.</td>');
+    expect(result.body).not.toContain('<Slot');
   });
 
   it('preserves explicit fragment anchors inside table cells', async () => {

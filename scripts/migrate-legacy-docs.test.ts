@@ -889,7 +889,7 @@ public class MyScoringView extends ScoringView {
     expect(migrated).toContain('代码示例：`1<<15`');
   });
 
-  it('marks legacy image sizing for review while keeping a Markdown image', () => {
+  it('preserves legacy image sizing with the approved screenshot component', () => {
     const state = createState();
     const migrated = transformLegacyMdx(
       '<Image src="/img/rtc/audio-quick-start-sequence.svg" alt="实现流程" width="70%"/>',
@@ -897,9 +897,9 @@ public class MyScoringView extends ScoringView {
     );
 
     expect(migrated).toContain(
-      '![实现流程](/img/rtc/audio-quick-start-sequence.svg)',
+      '<DocsImage alt="实现流程" src="/img/rtc/audio-quick-start-sequence.svg" displayWidth="70%" />',
     );
-    expect(state.issues).toContain(
+    expect(state.issues).not.toContain(
       'needs-image-width-review:/img/rtc/audio-quick-start-sequence.svg:70%',
     );
   });
@@ -911,28 +911,31 @@ public class MyScoringView extends ScoringView {
       state,
     );
 
-    expect(migrated).toContain('![云代理](https://web-cdn.example/proxy)');
+    expect(migrated).toContain(
+      '<DocsImage alt="云代理" src="https://web-cdn.example/proxy" displayWidth="80%" />',
+    );
     expect(migrated).not.toContain('<Image');
-    expect(state.issues).toContain(
+    expect(state.issues).not.toContain(
       'needs-image-width-review:https://web-cdn.example/proxy:80%',
     );
   });
 
-  it('moves inline legacy Image components to an aligned list block', () => {
+  it('preserves the inline size and placement of legacy icons', () => {
     const state = createState('docs/rtc/get-started/run-demo.android.mdx');
     const migrated = transformLegacyMdx(
       '3. 在 Android Studio 中，点击 <Image src="https://web-cdn.agora.io/docs-files/1689672727614" width="25" inline/> (**Sync Project with Gradle Files**) 进行 Gradle 同步。',
       state,
     );
 
+    expect(migrated).toContain('3. 在 Android Studio 中，点击 <InlineImage');
     expect(migrated).toContain(
-      '3. 在 Android Studio 中，点击\n\n   ![Sync Project with Gradle Files 图示](https://web-cdn.agora.io/docs-files/1689672727614)\n\n   (**Sync Project with Gradle Files**) 进行 Gradle 同步。',
+      'width={25} /> (**Sync Project with Gradle Files**) 进行 Gradle 同步。',
     );
     expect(migrated).not.toMatch(/^!\[/m);
-    expect(state.issues).toContain(
+    expect(state.issues).not.toContain(
       'needs-image-width-review:https://web-cdn.agora.io/docs-files/1689672727614:25',
     );
-    expect(state.issues).toContain(
+    expect(state.issues).not.toContain(
       'normalized-inline-image-block:https://web-cdn.agora.io/docs-files/1689672727614',
     );
   });
@@ -1184,11 +1187,11 @@ export const TableHeaders = [
     );
     expect(migrated).toContain('<Slot for="resources-markdown-0-1-1">');
     expect(migrated).toContain(
-      '![声动 iOS](https://web-cdn.agora.io/docs-files/1685428598975)',
+      '<DocsImage alt="声动 iOS" src="https://web-cdn.agora.io/docs-files/1685428598975" displayWidth="35%" />',
     );
     expect(migrated).not.toContain('|\n![声动 iOS]');
     expect(state.issues).toContain('normalized-table-slot');
-    expect(state.issues).toContain(
+    expect(state.issues).not.toContain(
       'needs-image-width-review:https://web-cdn.agora.io/docs-files/1685428598975:35%',
     );
     expect(findLegacyResidue(migrated)).toEqual([]);
@@ -1651,7 +1654,7 @@ export const FaceCapture = [
     expect(findLegacyResidue(migrated)).toEqual([]);
   });
 
-  it('expands HTML table row and column spans without synthetic headers', () => {
+  it('preserves HTML table row and column spans as native merged cells', () => {
     const state = createState('docs/analytics/overview/billing.mdx');
     const migrated = transformLegacyMdx(
       `<table>
@@ -1688,17 +1691,41 @@ export const FaceCapture = [
       state,
     );
 
-    expect(migrated).toContain(
-      '| 子功能 | 子功能 | 免费版 | 专业版 | 旗舰版 |',
-    );
-    expect(migrated).toContain('| 控制台访问 |  | ✔ | ✔ | ✔ |');
-    expect(migrated).toContain(
-      '| Plus 独占功能 | 多维度交叉分析 | ✘ | ✔ | ✔ |',
-    );
-    expect(migrated).toContain('|  | 对比分析 | ✘ | ✔ | ✔ |');
+    expect(migrated).toContain('<DocsTable>');
+    expect(migrated).toContain('<th colSpan={2} scope="colgroup">子功能</th>');
+    expect(migrated).toContain('<td colSpan={2}>控制台访问</td>');
+    expect(migrated).toContain('<td rowSpan={2}>Plus 独占功能</td>');
+    expect(migrated.match(/Plus 独占功能/g)).toHaveLength(1);
+    expect(migrated).toContain('<td>对比分析</td>');
     expect(migrated).not.toContain('Column 5');
     expect(state.issues).toContain('normalized-html-table');
     expect(state.issues).toContain('normalized-table-span');
+  });
+
+  it('does not double-escape a literal pipe when reprocessing Markdown tables', () => {
+    const state = createState();
+    const source =
+      '| Name | Description |\n| --- | --- |\n| channel | `appname\\|channelname` |';
+    const migrated = transformLegacyMdx(source, state);
+    expect(migrated).toContain('`appname\\|channelname`');
+    expect(migrated).not.toContain('appname\\\\|channelname');
+  });
+
+  it('keeps nested custom row groups aligned with their keys and values', () => {
+    const state = createState();
+    state.tableHeaders.set('columns', ['option', 'part', 'key', 'type']);
+    const migrated = transformLegacyMdx(
+      `<Table header={columns}>
+    <Tr><Td row={3}>makeup</Td><Td row={2}>lip</Td><Td>enable</Td><Td>bool</Td></Tr>
+    <Tr><Td>strength</Td><Td>float</Td></Tr>
+    <Tr><Td>brow</Td><Td>enable</Td><Td>bool</Td></Tr></Table>`,
+      state,
+    );
+    expect(migrated).toContain('<td rowSpan={3}>makeup</td>');
+    expect(migrated).toContain('<td rowSpan={2}>lip</td>');
+    expect(migrated.match(/>makeup</g)).toHaveLength(1);
+    expect(migrated).toContain('<td>strength</td>');
+    expect(migrated).toContain('<td>brow</td>');
   });
 
   it('uses exported TableHeader labels for legacy Table components', () => {
@@ -1718,6 +1745,35 @@ export const FaceCapture = [
     expect(migrated).toContain('| `uid` | 用户 ID。 |');
     expect(state.issues).toContain('normalized-table-header:TableHeaderabc');
     expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
+  it('keeps nested exported header rows instead of flattening their widths', async () => {
+    const sourceRoot = await mkdtemp(
+      path.join(os.tmpdir(), 'merged-table-headers-'),
+    );
+    await writeFile(
+      path.join(sourceRoot, 'page.mdx'),
+      `export const columns = [
+  [{ label: '日期', row: 2 }, { label: '用量', col: 2 }],
+  [{ label: '音频' }, { label: '视频' }]
+];
+<Table header={columns}>
+<Tr><Td>Monday</Td><Td>1</Td><Td>2</Td></Tr>
+</Table>`,
+    );
+    const result = await migrateLegacyPage({
+      sourceRoot,
+      sourcePath: 'page.mdx',
+      pathMap: new Map(),
+      targetPath: 'page.mdx',
+    });
+    expect(result.content).toContain('<th rowSpan={2} scope="col">日期</th>');
+    expect(result.content).toContain(
+      '<th colSpan={2} scope="colgroup">用量</th>',
+    );
+    expect(result.content.match(/<tr>/g)).toHaveLength(3);
+    expect(result.content.match(/>日期</g)).toHaveLength(1);
+    expect(result.issues).not.toContain('unknown-legacy-component:DocsTable');
   });
 
   it('preserves blank exported TableHeader column spans without synthetic labels', () => {
@@ -1750,10 +1806,12 @@ export const FaceCapture = [
       state,
     );
 
-    expect(migrated).toContain('|  |  | Fastboard SDK | Whiteboard SDK |');
-    expect(migrated).toContain('| 产品定位 |  | 支持 | 不支持 |');
-    expect(migrated).toContain('| 产品边界 | UI | 支持 | 不支持 |');
-    expect(migrated).toContain('|  | 插件 | 支持 | 不支持 |');
+    expect(migrated).toContain('<th scope="col">Fastboard SDK</th>');
+    expect(migrated).toContain('<td colSpan={2}>产品定位</td>');
+    expect(migrated).toContain('<td rowSpan={2}>产品边界</td>');
+    expect(migrated.match(/>产品边界</g)).toHaveLength(1);
+    expect(migrated).toContain('<td>UI</td>');
+    expect(migrated).toContain('<td>插件</td>');
     expect(migrated).not.toContain('Column');
     expect(findLegacyResidue(migrated)).toEqual([]);
   });

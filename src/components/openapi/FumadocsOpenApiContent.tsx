@@ -1,21 +1,32 @@
 import { TranslationProvider } from '@fuma-translate/react';
-import { defaultShikiFactory } from 'fumadocs-core/highlight/shiki/full';
-import { useShikiDynamic } from 'fumadocs-core/highlight/shiki/react';
+import {
+  AccordionContent,
+  AccordionHeader,
+  AccordionItem,
+  Accordions,
+  AccordionTrigger,
+} from '@fumadocs/api-docs/components/accordion';
+import type { ParsedSchema } from '@fumadocs/api-docs/schema';
+import { sample } from '@fumadocs/api-docs/schema/sample';
 import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
-import type { RenderContext } from 'fumadocs-openapi';
-import type { InlineCodeUsageGenerator } from 'fumadocs-openapi/requests/generators';
+import { type OpenAPIComponents, useOpenAPI } from 'fumadocs-openapi';
+import {
+  createCodeUsageGeneratorRegistry,
+  type InlineCodeUsageGenerator,
+} from 'fumadocs-openapi/requests/generators';
+import { javascript } from 'fumadocs-openapi/requests/generators/javascript';
+import { python } from 'fumadocs-openapi/requests/generators/python';
 import {
   type CreateOpenAPIPageOptions,
   createOpenAPIPage,
   type OpenAPIPageProps,
 } from 'fumadocs-openapi/ui';
 import {
-  CodeBlock,
+  type CodeBlockProps,
   CodeBlockTab,
   CodeBlockTabs,
   CodeBlockTabsList,
   CodeBlockTabsTrigger,
-  Pre,
 } from 'fumadocs-ui/components/codeblock';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime';
@@ -38,11 +49,20 @@ import * as JsxRuntime from 'react/jsx-runtime';
 import rehypeRaw from 'rehype-raw';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
+import { Callout as OpenApiCallout } from '@/components/Callout';
+import { DocsCodeBlock } from '@/components/DocsCodeBlock';
+import { DocsLinkIcon } from '@/components/DocsLinkIcon';
 import { useMeasuredDocsBody } from '@/components/docs-shell/DocsContentMeasurement';
 import { createDocsTableComponent } from '@/components/mdx';
+import { HighlightedCode } from '@/components/mdx/HighlightedCode';
 import { Badge } from '@/components/ui/badge';
+import {
+  TabsContent as ChoiceContent,
+  TabsList as ChoiceList,
+  Tabs as ChoiceTabs,
+  TabsTrigger as ChoiceTrigger,
+} from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
-import { codeHighlightOptions, codeLanguageAliases } from '@/lib/code/options';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
 import { normalizeDocsHref } from '@/lib/docs-link-normalize';
 import {
@@ -52,12 +72,23 @@ import {
 } from '@/lib/openapi/anchors';
 import { getOpenApiMethodBadgeClassName } from '@/lib/openapi/method-badge';
 import {
+  getOpenApiQuoteCallout,
+  remarkOpenApiCallouts,
+} from '@/lib/openapi/remark-callouts';
+import {
+  buildRequestExampleContext,
+  completeRequestExample,
+  documentationCurl,
+} from '@/lib/openapi/request-examples';
+import {
   buildOpenApiResponseViews,
+  getOpenApiResponseStatusLabel,
   type OpenApiResponseHeaderView,
 } from '@/lib/openapi/response-view';
 import { resolveLocalOpenApiReference } from '@/lib/openapi/schema-tree';
 import { OpenApiCodePreview } from './OpenApiCodePreview';
 import { OpenApiExamplesRail } from './OpenApiExamplesRail';
+import { OpenApiOperationPanels } from './OpenApiOperationPanels';
 import { OpenApiResponseHeaderRow } from './OpenApiResponseHeaderRow';
 import { OpenApiResponses } from './OpenApiResponses';
 import { OpenApiSchema } from './OpenApiSchema';
@@ -69,20 +100,20 @@ import {
 const LEGACY_DOC_ORIGIN = 'https://doc.shengwang.cn';
 const LEGACY_DOC_PATH_PATTERN =
   /(]\()(\/(?:api-center|basics|codebox|doc|faq)(?:[^)]*))(\))/g;
-const GENERATED_CODE_SAMPLE_IDS = [
-  'curl',
-  'js',
-  'go',
-  'python',
-  'java',
-  'csharp',
-] as const;
-const removeGeneratedCodeSamples = GENERATED_CODE_SAMPLE_IDS.map((id) => ({
-  id,
-  lang: id,
-  source: false,
-})) satisfies InlineCodeUsageGenerator[];
-const OpenApiCallout = defaultMdxComponents.Callout;
+// Keep fallback clients aligned with the legacy reference instead of inheriting
+// the upstream language list, which can grow across Fumadocs upgrades.
+const codeUsages = createCodeUsageGeneratorRegistry();
+codeUsages.add('curl', documentationCurl);
+codeUsages.add('python', { ...python, label: 'Python/Requests' });
+codeUsages.add('js', { ...javascript, label: 'Node.js/Fetch' });
+const removeGeneratedCodeSamples = Array.from(
+  codeUsages.map().keys(),
+  (id) => ({
+    id,
+    lang: id,
+    source: false,
+  }),
+) satisfies InlineCodeUsageGenerator[];
 const OpenApiOperationContext = createContext<OpenApiOperation | undefined>(
   undefined,
 );
@@ -95,12 +126,12 @@ const OpenApiCodeSourceContext = createContext<string | undefined>(undefined);
 const OpenApiRequestCodeContext = createContext(false);
 const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   Authorization: '鉴权',
-  'Collapse all': '收起所有字段',
+  'Collapse all': '全部收起',
   Collapse: '折叠',
   'Copied endpoint URL': '已复制接口 URL',
   'Copied Text': '已复制文本',
   'Cookie Parameters': 'Cookie 参数',
-  'Expand all': '展开所有字段',
+  'Expand all': '全部展开',
   Expand: '展开',
   'Copy link to': '复制链接到',
   'Copy endpoint URL': '复制接口 URL',
@@ -111,7 +142,15 @@ const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   required: '必填',
   properties: '属性',
   'Header Parameters': '请求 Header',
-  Note: '注意',
+  Note: '说明',
+  Info: '提示',
+  Tip: '建议',
+  Success: '成功',
+  Important: '重要',
+  Warning: '警告',
+  Caution: '注意',
+  Danger: '危险',
+  Error: '错误',
   'Path Parameters': '路径参数',
   'Query Parameters': '查询参数',
   'Request Body': '请求 Body',
@@ -119,6 +158,7 @@ const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   'Request example scenario': '请求示例场景',
   'Request examples': '请求示例',
   'Response Body': '响应 Body',
+  Responses: '响应',
   'Response Body schema fields': '响应 Body 字段',
   'Response Headers': '响应 Header',
   'Response example': '响应示例',
@@ -135,18 +175,24 @@ const ZH_CN_OPENAPI_GENERATED_HEADING_LABELS: Record<string, string> = {
   'parameters-path': '路径参数',
   'parameters-query': '查询参数',
   'request-body': '请求 Body',
-  'response-body': '响应 Body',
+  'response-body': '响应',
 };
 const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
+  'Code language(operation page)': '代码语言',
+  'Example request(operation page)': '请求示例场景',
+  'Response status(operation page)': '响应状态',
+  'Copy Anchor Link(heading anchor)(aria-label)': '复制锚点链接',
+  'Copied Anchor Link(heading anchor)(aria-label)': '已复制锚点链接',
   'Allowed values(schema UI)': '可选值',
   'Cookie Parameters': 'Cookie 参数',
-  'Collapse all(schema UI)': '收起所有字段',
+  'Collapse all(schema UI)': '全部收起',
   'Copied link to(schema UI)': '已复制字段链接到',
   'Copy link to(schema UI)': '复制字段链接到',
   'Default(schema UI)': '默认值',
   'Deprecated(schema UI)': '已废弃',
   'Example(schema UI)': '示例',
-  'Expand all(schema UI)': '展开所有字段',
+  'Expand all(schema UI)': '全部展开',
+  'Fields(schema UI)': '字段',
   'JSON example(schema UI)': 'JSON 示例',
   'Filter Properties(schema UI)': '筛选属性',
   'Format(schema UI)': '格式',
@@ -172,80 +218,106 @@ const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
   'Value in(schema UI)': '可选值',
 } as const;
 
-const OpenAPIPage = createOpenAPIPage({
-  components: {
-    CodeBlock: ({ code, lang }) => renderOpenApiCodeBlock(lang, code),
-  },
-  content: {
-    renderAPIExampleLayout: (slots) => (
-      <OpenApiRightExamplesLayout
-        slots={{
-          ...slots,
-          usageTabs: (
-            <OpenApiCodeSampleUsageTabs defaultUsageTabs={slots.usageTabs} />
-          ),
-        }}
-      />
-    ),
-    renderOperationLayout: (
-      slots,
-      { ctx, method: operationMethod, operation },
-    ) => (
-      <OpenApiOperationLayoutWithSource
-        method={
-          {
-            ...(operation as OpenApiOperation),
-            method: operationMethod,
-            __documentSecurity: ctx.schema.dereferenced.security,
-            __document: ctx.schema.dereferenced as OpenApiRecord,
-          } as OpenApiOperation
-        }
-        slots={slots}
-      />
-    ),
-  },
-  generateTypeScriptDefinitions: () => undefined,
-  generateCodeSamples: getGeneratedCodeSampleOverrides,
-  playground: {
-    enabled: false,
-  },
-  renderHeading: renderOpenApiHeading,
-  renderMarkdown: renderOpenApiMarkdown,
-  schemaUI: {
-    render: (options, ctx) => {
-      const schemaOptions = options as typeof options & {
-        client: ComponentProps<RenderContext['SchemaUI']>['client'];
-        legacyAnchorPrefix?: string;
-        showExample?: boolean;
-      };
+const openApiPageComponents: OpenAPIComponents = {
+  CodeBlock: ({ code, lang, codeblock }) =>
+    renderOpenApiCodeBlock(lang, code, codeblock),
+  Heading: OpenApiGeneratedHeading,
+  Markdown: OpenApiGeneratedMarkdown,
+  SchemaUI: OpenApiGeneratedSchemaUI,
+};
 
-      return (
-        <OpenApiSchema
-          client={schemaOptions.client}
-          document={ctx.schema.bundled}
-          legacyAnchorPrefix={schemaOptions.legacyAnchorPrefix}
-          readOnly={schemaOptions.readOnly}
-          renderCodeblock={({ code, lang }) =>
-            renderOpenApiCodeBlock(lang, code)
-          }
-          renderExtraDescription={(schema) => {
-            const record = getRecord(schema);
-            const callouts = record ? getOpenApiDocsCallouts(record) : [];
-            return callouts.length > 0 ? (
-              <OpenApiInlineCallouts callouts={callouts} />
-            ) : null;
+function OpenApiGeneratedHeading({
+  depth,
+  ...props
+}: ComponentProps<OpenAPIComponents['Heading']>) {
+  const locale = useContext(OpenApiLocaleContext);
+  const label = isZhCnLocale(locale)
+    ? ZH_CN_OPENAPI_GENERATED_HEADING_LABELS[props.id]
+    : undefined;
+  return renderOpenApiHeading(
+    { ...props, children: label ?? props.children },
+    depth,
+  );
+}
+
+function OpenApiGeneratedMarkdown({
+  md,
+}: ComponentProps<OpenAPIComponents['Markdown']>) {
+  return renderOpenApiMarkdown(md);
+}
+
+function OpenApiGeneratedSchemaUI(
+  options: ComponentProps<OpenAPIComponents['SchemaUI']>,
+) {
+  const { doc } = useOpenAPI();
+  const schemaOptions = options as typeof options & {
+    client: ComponentProps<OpenAPIComponents['SchemaUI']>['client'];
+    legacyAnchorPrefix?: string;
+    showExample?: boolean;
+  };
+
+  return (
+    <OpenApiSchema
+      client={schemaOptions.client}
+      document={doc.bundled}
+      legacyAnchorPrefix={schemaOptions.legacyAnchorPrefix}
+      readOnly={schemaOptions.readOnly}
+      renderCodeblock={({ code, lang }) => renderOpenApiCodeBlock(lang, code)}
+      renderExtraDescription={(schema) => {
+        const record = getRecord(schema);
+        const callouts = record ? getOpenApiDocsCallouts(record) : [];
+        return callouts.length > 0 ? (
+          <OpenApiInlineCallouts callouts={callouts} />
+        ) : null;
+      }}
+      renderMarkdown={(markdown) =>
+        renderOpenApiMarkdown(normalizeOpenApiDescriptionMarkdown(markdown))
+      }
+      root={schemaOptions.root}
+      showExample={schemaOptions.showExample ?? true}
+      writeOnly={schemaOptions.writeOnly}
+    />
+  );
+}
+
+function createDocsOpenApiPage(requestCodeUsages: typeof codeUsages) {
+  return createOpenAPIPage({
+    codeUsages: requestCodeUsages,
+    components: openApiPageComponents,
+    content: {
+      renderResponseTabs: (options) => <OpenApiResponseExamples {...options} />,
+      renderAPIExampleLayout: (slots) => (
+        <OpenApiRightExamplesLayout
+          slots={{
+            ...slots,
+            usageTabs: (
+              <OpenApiCodeSampleUsageTabs defaultUsageTabs={slots.usageTabs} />
+            ),
           }}
-          renderMarkdown={(markdown) =>
-            renderOpenApiMarkdown(normalizeOpenApiDescriptionMarkdown(markdown))
-          }
-          root={schemaOptions.root}
-          showExample={schemaOptions.showExample ?? true}
-          writeOnly={schemaOptions.writeOnly}
         />
-      );
+      ),
+      renderOperationLayout: (
+        slots,
+        { method: operationMethod, operation },
+      ) => (
+        <OpenApiOperationLayoutWithSource
+          method={
+            {
+              ...(operation as OpenApiOperation),
+              method: operationMethod,
+            } as OpenApiOperation
+          }
+          slots={slots}
+        />
+      ),
     },
-  },
-});
+    generateTypeScriptDefinitions: () => undefined,
+    generateCodeSamples: getGeneratedCodeSampleOverrides,
+    playground: {
+      enabled: false,
+    },
+  });
+}
 
 type GenerateCodeSamplesOptions = Parameters<
   NonNullable<CreateOpenAPIPageOptions['generateCodeSamples']>
@@ -273,6 +345,31 @@ export function FumadocsOpenApiContent({
     () => adaptOpenApiParameterSchemaExtensions(pageProps),
     [pageProps],
   );
+  const OpenAPIPage = useMemo(() => {
+    const sourceOperation = getCurrentOperation(pageProps);
+    const registry = createCodeUsageGeneratorRegistry(codeUsages);
+    const document = sourceOperation?.__document;
+    if (sourceOperation && document) {
+      const pathItem =
+        getRecord(getRecord(document.paths)?.[sourceOperation.__path ?? '']) ??
+        {};
+      const context = buildRequestExampleContext(
+        document,
+        pathItem,
+        sourceOperation,
+        pageProps.operations?.[0]?.method ?? 'get',
+        isZhCnLocale(locale),
+      );
+      for (const [id, generator] of codeUsages.map()) {
+        registry.add(id, {
+          ...generator,
+          generate: (data, options) =>
+            generator.generate(completeRequestExample(data, context), options),
+        });
+      }
+    }
+    return createDocsOpenApiPage(registry);
+  }, [pageProps, locale]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useMeasuredDocsBody(containerRef);
@@ -308,6 +405,7 @@ function adaptOpenApiParameterSchemaExtensions(
 ): OpenAPIPageProps {
   if (!('payload' in pageProps)) return pageProps;
   const document = pageProps.payload.bundled;
+  if (!document) return pageProps;
   const paths = getRecord(document.paths);
   const components = getRecord(document.components);
   const componentParameters = getRecord(components?.parameters);
@@ -369,12 +467,10 @@ function adaptOpenApiPathItemParameters(value: unknown) {
 
 function adaptOpenApiParameterSchema(value: unknown) {
   if (!isRecord(value) || isReferenceObject(value)) return value;
-  // Legacy parameters can have a name and prose without declaring a schema.
+  // Older sources omit the schema on otherwise documented parameters.
+  // Keep an unconstrained schema so the renderer retains the name and prose.
   const schema =
-    getRecord(value.schema) ??
-    (value.schema == null
-      ? { 'x-docs-parameter-schema-missing': true }
-      : undefined);
+    getRecord(value.schema) ?? (value.schema == null ? {} : undefined);
   if (!schema) return value;
   const callouts = value['x-docs-callouts'];
   const example = value.example ?? getFirstExample(value.examples);
@@ -467,13 +563,32 @@ function OpenApiOperationLayoutWithSource({
   slots: OpenApiOperationLayoutSlots;
 }) {
   const sourceOperation = useContext(OpenApiSourceOperationContext);
+  const { doc } = useOpenAPI();
 
   return (
     <OpenApiOperationLayout
-      method={mergeOpenApiOperationExtensions(method, sourceOperation)}
+      method={mergeOpenApiOperationExtensions(
+        {
+          ...method,
+          __documentSecurity: doc.dereferenced.security,
+          __document: doc.dereferenced as OpenApiRecord,
+        },
+        sourceOperation,
+      )}
       slots={slots}
     />
   );
+}
+
+function renderOpenApiOperationHeader(header: ReactNode) {
+  // Fumadocs uses a warning callout for a deprecated endpoint without a title.
+  if (
+    isValidElement<ComponentProps<typeof OpenApiCallout>>(header) &&
+    (header.props.type === 'warn' || header.props.type === 'warning')
+  ) {
+    return <OpenApiCallout {...header.props} />;
+  }
+  return header;
 }
 
 function OpenApiOperationLayout({
@@ -483,40 +598,57 @@ function OpenApiOperationLayout({
   method: OpenApiOperation;
   slots: OpenApiOperationLayoutSlots;
 }) {
+  const locale = useContext(OpenApiLocaleContext);
+
   return (
-    <div className="openapi-operation-layout gap-6">
-      <div className="min-w-0 flex-1">
-        {slots.header}
-        <OpenApiEndpointBar operation={method} />
-        <OpenApiDocsSections operation={method} position="after-description" />
-        <OpenApiDocsCallouts operation={method} position="after-description" />
-        <OpenApiInlineAuthorizationSection operation={method} />
-        {slots.parameters}
-        <OpenApiDocsSections operation={method} position="after-parameters" />
-        {slots.body}
-        <OpenApiDocsSections
-          operation={method}
-          position="before-response-body"
-        />
-        <OpenApiResponseBody operation={method} />
-        <OpenApiDocsSections
-          operation={method}
-          position="after-response-body"
-        />
-        <OpenApiDocsCallouts operation={method} position="after-responses" />
-        <OpenApiDocsSections
-          operation={method}
-          position="after-response-example"
-        />
-        {slots.callbacks}
-      </div>
-      <OpenApiExamplesRail>
-        <OpenApiAuthorizationSection operation={method} />
-        <OpenApiOperationContext.Provider value={method}>
-          {slots.apiExample}
-        </OpenApiOperationContext.Provider>
-      </OpenApiExamplesRail>
-    </div>
+    <OpenApiOperationPanels
+      locale={locale}
+      overview={
+        <>
+          {renderOpenApiOperationHeader(slots.header)}
+          <OpenApiEndpointBar operation={method} />
+          <OpenApiDocsSections
+            operation={method}
+            position="after-description"
+          />
+          <OpenApiDocsCallouts
+            operation={method}
+            position="after-description"
+          />
+        </>
+      }
+      documentation={
+        <>
+          <OpenApiInlineAuthorizationSection operation={method} />
+          {slots.parameters}
+          <OpenApiDocsSections operation={method} position="after-parameters" />
+          {slots.body}
+          <OpenApiDocsSections
+            operation={method}
+            position="before-response-body"
+          />
+          <OpenApiResponseBody operation={method} />
+          <OpenApiDocsSections
+            operation={method}
+            position="after-response-body"
+          />
+          <OpenApiDocsCallouts operation={method} position="after-responses" />
+          <OpenApiDocsSections
+            operation={method}
+            position="after-response-example"
+          />
+          {slots.callbacks}
+        </>
+      }
+      examples={
+        <OpenApiExamplesRail>
+          <OpenApiAuthorizationSection operation={method} />
+          <OpenApiOperationContext.Provider value={method}>
+            {slots.apiExample}
+          </OpenApiOperationContext.Provider>
+        </OpenApiExamplesRail>
+      }
+    />
   );
 }
 
@@ -623,12 +755,184 @@ function OpenApiRightExamplesLayout({
         </OpenApiRequestCodeContext.Provider>
       </OpenApiRightSection>
       <OpenApiRightSection
-        className="openapi-response-example"
+        className="openapi-response-example border-t-0"
         title={getOpenApiLabel('Response example', locale)}
       >
         {slots.responseTabs}
       </OpenApiRightSection>
     </div>
+  );
+}
+
+type OpenApiResponseExamplesProps = Parameters<
+  NonNullable<
+    NonNullable<CreateOpenAPIPageOptions['content']>['renderResponseTabs']
+  >
+>[0];
+
+type OpenApiResponseExample = NonNullable<
+  OpenApiResponseExamplesProps['tabs'][number]['examples']
+>[number];
+
+function getOpenApiResponseSchemaExamples(
+  tab: OpenApiResponseExamplesProps['tabs'][number],
+  resolve: ReturnType<typeof useOpenAPI>['doc']['resolve'],
+  locale?: string,
+): OpenApiResponseExample[] | undefined {
+  const media = getRecord(
+    resolve(tab.mediaType ? tab.response.content?.[tab.mediaType] : undefined),
+  );
+  if (
+    media?.['x-docs-schema-examples'] === true &&
+    (tab.examples?.length ?? 0) > 1
+  ) {
+    return tab.examples;
+  }
+  // Authored examples take precedence over generated samples, including empty example maps.
+  if (!media || 'examples' in media || 'example' in media) return undefined;
+  const schema = getRecord(resolve(media.schema));
+  if (!schema) return undefined;
+  const kind = Array.isArray(schema.oneOf) ? 'oneOf' : 'anyOf';
+  const branches = schema[kind];
+  if (!Array.isArray(branches) || branches.length < 2) return undefined;
+  return branches.map((branch, index) => {
+    const resolved = getRecord(resolve(branch));
+    return {
+      label:
+        typeof resolved?.title === 'string'
+          ? resolved.title
+          : `${isZhCnLocale(locale) ? '示例' : 'Example'} ${index + 1}`,
+      description:
+        typeof resolved?.description === 'string'
+          ? resolved.description
+          : undefined,
+      // Keep common parent fields while selecting just this alternative. Nested refs
+      // retain Fumadocs' lazy proxy so its sampler can resolve them safely.
+      sample: sample({ ...schema, [kind]: [branch] } as ParsedSchema),
+    };
+  });
+}
+
+function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
+  const { doc } = useOpenAPI();
+  const resolve = doc.resolve;
+  const locale = useContext(OpenApiLocaleContext);
+  const operation = useContext(OpenApiOperationContext);
+  // Use all declared statuses, including responses without examples or content.
+  const statusCodes = Object.keys(operation?.responses ?? {});
+  // Keep the values used by Fumadocs' ordinary Tabs so shared status selection
+  // survives switching to the same code-tab frame as request examples.
+  const tabValue = (code: string) => code.toLowerCase().replace(/\s/, '-');
+  const empty = (
+    <p
+      className="m-0 px-4 py-5 text-fd-muted-foreground text-sm"
+      data-openapi-response-example-empty=""
+    >
+      {isZhCnLocale(locale)
+        ? '未提供响应示例。'
+        : 'No response example provided.'}
+    </p>
+  );
+  function renderExample(
+    example: NonNullable<
+      OpenApiResponseExamplesProps['tabs'][number]['examples']
+    >[number],
+  ) {
+    const code = JSON.stringify(example.sample, null, 2);
+    return (
+      <>
+        {example.description
+          ? renderOpenApiMarkdown(example.description)
+          : null}
+        {code === undefined ? empty : renderOpenApiCodeBlock('json', code)}
+      </>
+    );
+  }
+  return (
+    <CodeBlockTabs
+      className="openapi-response-code-tabs my-0"
+      defaultValue={tabs[0] ? tabValue(tabs[0].code) : undefined}
+      groupId="fumadocs_openapi_responses"
+    >
+      <CodeBlockTabsList>
+        {tabs.map(({ code }) => (
+          <CodeBlockTabsTrigger key={code} value={tabValue(code)}>
+            {getOpenApiResponseStatusLabel(code, statusCodes, locale)}
+          </CodeBlockTabsTrigger>
+        ))}
+      </CodeBlockTabsList>
+      {tabs.map((tab) => {
+        const { code, examples = [] } = tab;
+        const alternatives = getOpenApiResponseSchemaExamples(
+          tab,
+          resolve,
+          locale,
+        );
+        return (
+          <CodeBlockTab key={code} value={tabValue(code)}>
+            {alternatives ? (
+              <ChoiceTabs
+                className="openapi-response-schema-examples min-w-0"
+                defaultValue="0"
+              >
+                <ChoiceList
+                  aria-label={
+                    isZhCnLocale(locale)
+                      ? '响应示例场景'
+                      : 'Response example scenario'
+                  }
+                  className="mx-3 mt-3 min-h-11 max-w-[calc(100%-1.5rem)] flex-wrap justify-start group-data-[orientation=horizontal]/tabs:h-auto"
+                >
+                  {alternatives.map((example, index) => (
+                    <ChoiceTrigger
+                      className="min-h-11 h-auto whitespace-normal"
+                      key={String(index)}
+                      value={String(index)}
+                    >
+                      {example.label}
+                    </ChoiceTrigger>
+                  ))}
+                </ChoiceList>
+                {alternatives.map((example, index) => (
+                  <ChoiceContent key={String(index)} value={String(index)}>
+                    {renderExample(example)}
+                  </ChoiceContent>
+                ))}
+              </ChoiceTabs>
+            ) : examples.length === 0 ? (
+              isZhCnLocale(locale) &&
+              !tab.response.content &&
+              tab.response.description ? (
+                <div
+                  className="px-4 py-3.5"
+                  data-openapi-response-description=""
+                >
+                  {renderOpenApiMarkdown(tab.response.description)}
+                </div>
+              ) : (
+                empty
+              )
+            ) : examples.length === 1 ? (
+              renderExample(examples[0])
+            ) : (
+              <Accordions className="pt-2" defaultValue="0" type="single">
+                {examples.map((example, index) => (
+                  // biome-ignore lint/suspicious/noArrayIndexKey: Fumadocs supplies an immutable ordered example list without IDs.
+                  <AccordionItem key={index} value={String(index)}>
+                    <AccordionHeader>
+                      <AccordionTrigger>{example.label}</AccordionTrigger>
+                    </AccordionHeader>
+                    <AccordionContent className="prose-no-margin">
+                      {renderExample(example)}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordions>
+            )}
+          </CodeBlockTab>
+        );
+      })}
+    </CodeBlockTabs>
   );
 }
 
@@ -882,7 +1186,7 @@ function getCurrentOperation(
 
   const operation = pageProps.operations?.at(0);
   const pathItem = operation
-    ? getRecord(pageProps.payload.bundled.paths)?.[operation.path]
+    ? getRecord(pageProps.payload.bundled?.paths)?.[operation.path]
     : undefined;
 
   if (!operation || !isRecord(pathItem)) {
@@ -909,13 +1213,14 @@ function OpenApiResponseBody({ operation }: { operation?: OpenApiOperation }) {
   );
   return (
     <OpenApiResponses
+      locale={locale}
       labels={{
-        emptyResponseBody: getOpenApiLabel('Empty response body', locale),
         mediaTypeForResponse: (status) =>
           isZhCnLocale(locale)
             ? `${status} 响应的媒体类型`
             : `Media type for ${status} response`,
         responseBody: getOpenApiLabel('Response Body', locale),
+        responses: getOpenApiLabel('Responses', locale),
         schemaHasNoFields: getOpenApiLabel('Schema has no fields', locale),
         schemaNotProvided: getOpenApiLabel('Schema not provided', locale),
       }}
@@ -1261,6 +1566,7 @@ function OpenApiDocsCallouts({
   operation?: OpenApiOperation;
   position: 'after-description' | 'after-responses' | 'before-description';
 }) {
+  const locale = useContext(OpenApiLocaleContext);
   const callouts = arrayOfRecords(operation?.['x-docs-callouts']).filter(
     (callout): callout is OpenApiResolvedCalloutItem =>
       typeof callout.markdown === 'string' &&
@@ -1273,19 +1579,27 @@ function OpenApiDocsCallouts({
 
   return (
     <div className={position === 'before-description' ? 'mb-6' : 'mt-6'}>
-      {callouts.map((callout) => (
-        <OpenApiCallout
-          key={`${position}:${getOpenApiCalloutKey(callout)}`}
-          title={callout.title}
-          type={toCalloutType(callout.type)}
-        >
-          <div className="prose-no-margin">
-            {renderOpenApiMarkdown(
-              normalizeOpenApiDescriptionMarkdown(callout.markdown),
-            )}
-          </div>
-        </OpenApiCallout>
-      ))}
+      {callouts.map((callout) => {
+        // Untyped legacy Chinese operation notices keep their caution styling.
+        // Explicit source type/title metadata takes precedence.
+        const legacyNotice =
+          isZhCnLocale(locale) && !callout.type && !callout.title;
+        return (
+          <OpenApiCallout
+            key={`${position}:${getOpenApiCalloutKey(callout)}`}
+            title={
+              legacyNotice ? getOpenApiLabel('Caution', locale) : callout.title
+            }
+            type={toCalloutType(legacyNotice ? 'caution' : callout.type)}
+          >
+            <div className="prose-no-margin">
+              {renderOpenApiMarkdown(
+                normalizeOpenApiDescriptionMarkdown(callout.markdown),
+              )}
+            </div>
+          </OpenApiCallout>
+        );
+      })}
     </div>
   );
 }
@@ -1592,20 +1906,30 @@ function renderOpenApiMarkdown(markdown: string): ReactNode {
   return <div className="openapi-markdown prose-no-margin">{content}</div>;
 }
 
-function renderOpenApiCodeBlock(lang: string, source: string) {
+function renderOpenApiCodeBlock(
+  lang: string,
+  source: string,
+  codeblock?: CodeBlockProps,
+) {
   return (
-    <OpenApiCodeSourceContext.Provider key={source} value={source}>
-      {renderOpenApiMarkdown(`\`\`\`${lang}\n${source}\n\`\`\``)}
+    <OpenApiCodeSourceContext.Provider value={source}>
+      <OpenApiMarkdownCodeBlock codeblock={codeblock}>
+        <code className={`language-${lang}`}>{source}</code>
+      </OpenApiMarkdownCodeBlock>
     </OpenApiCodeSourceContext.Provider>
   );
 }
 
 function OpenApiMarkdownCodeBlock({
   children,
+  codeblock,
   ...props
-}: ComponentProps<'pre'>) {
+}: ComponentProps<'pre'> & {
+  codeblock?: CodeBlockProps;
+}) {
   const contextSource = useContext(OpenApiCodeSourceContext);
   const isRequestCode = useContext(OpenApiRequestCodeContext);
+  const locale = useContext(OpenApiLocaleContext);
   const childProps = isValidElement(children)
     ? (children.props as { className?: string; children?: ReactNode })
     : undefined;
@@ -1618,38 +1942,28 @@ function OpenApiMarkdownCodeBlock({
     (typeof childProps?.children === 'string'
       ? childProps.children
       : undefined);
-  const highlighted = useShikiDynamic(
-    () => defaultShikiFactory.getOrInit(),
-    source ?? '',
-    {
-      ...codeHighlightOptions,
-      lang: codeLanguageAliases[language] ?? language,
-      defaultColor: false,
-      components: { pre: ({ children }) => <>{children}</> },
-      // Preserve every newline in server HTML and before hydration. The default
-      // DynamicCodeBlock placeholder joins line spans without text separators.
-      defaultValue: <code>{source}</code>,
-    },
-    [source, language],
-  );
 
+  // Generated usage tabs need explicit in-tab geometry during SSR and hydration.
   return (
-    <CodeBlock
+    <DocsCodeBlock
       {...props}
+      data-code-language={language}
+      {...codeblock}
+      locale={locale}
+      copyButton={<OpenApiCodeCopyButton />}
       className={cn(
         props.className,
+        codeblock?.className,
         'shadow-none',
-        isRequestCode &&
-          'my-0 -mx-px -mb-px rounded-none bg-fd-secondary last:rounded-b-xl',
-      )}
-      Actions={({ className, children }) => (
-        <div className={cn('empty:hidden', className)}>
-          {children && <OpenApiCodeCopyButton />}
-        </div>
+        isRequestCode && 'my-0 -mx-px -mb-px rounded-none last:rounded-b-xl',
       )}
     >
-      <Pre>{source === undefined ? children : highlighted}</Pre>
-    </CodeBlock>
+      {source === undefined ? (
+        children
+      ) : (
+        <HighlightedCode source={source} language={language} />
+      )}
+    </DocsCodeBlock>
   );
 }
 
@@ -1738,16 +2052,26 @@ function useOpenApiCopyButton(onCopy: () => void | Promise<void>) {
   return [checked, onClick] as const;
 }
 
-function OpenApiMarkdownBlockquote({ children }: { children?: ReactNode }) {
+function OpenApiMarkdownBlockquote({
+  children,
+  'data-callout': marker,
+}: {
+  children?: ReactNode;
+  'data-callout'?: string;
+}) {
   const locale = useContext(OpenApiLocaleContext);
+  const callout = getOpenApiQuoteCallout(marker);
 
-  if (!isZhCnLocale(locale)) {
+  if (!callout && !isZhCnLocale(locale)) {
     return <blockquote>{children}</blockquote>;
   }
 
   return (
     <div className="openapi-markdown-blockquote">
-      <OpenApiCallout title={getOpenApiLabel('Note', locale)} type="info">
+      <OpenApiCallout
+        title={getOpenApiLabel(callout?.title ?? 'Note', locale)}
+        type={callout?.type ?? 'info'}
+      >
         <div className="prose-no-margin">{children}</div>
       </OpenApiCallout>
     </div>
@@ -1761,12 +2085,22 @@ function OpenApiMarkdownTable(props: ComponentProps<'table'>) {
   return <Table {...props} />;
 }
 
-function OpenApiMarkdownAnchor({ href, ...props }: ComponentProps<'a'>) {
+function OpenApiMarkdownAnchor({
+  href,
+  children,
+  ...props
+}: ComponentProps<'a'>) {
   const contentPath = useContext(OpenApiContentPathContext);
   const normalized =
     typeof href === 'string' ? normalizeDocsHref(href, { contentPath }) : null;
 
-  return <a {...props} href={normalized?.href ?? href} />;
+  const normalizedHref = normalized?.href ?? href;
+  return (
+    <a {...props} href={normalizedHref}>
+      {children}
+      <DocsLinkIcon href={normalizedHref} target={props.target} />
+    </a>
+  );
 }
 
 function createOpenApiMarkdownProcessor() {
@@ -1791,6 +2125,7 @@ function createOpenApiMarkdownProcessor() {
 
   return remark()
     .use(remarkGfm)
+    .use(remarkOpenApiCallouts)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
     .use(rehypeReact);
@@ -1803,10 +2138,13 @@ function toCalloutType(type: string | undefined) {
     case 'warn':
     case 'warning':
       return 'warning';
+    case 'danger':
     case 'error':
       return 'error';
     case 'idea':
       return 'idea';
+    case 'ok':
+    case 'tip':
     case 'success':
       return 'success';
     default:

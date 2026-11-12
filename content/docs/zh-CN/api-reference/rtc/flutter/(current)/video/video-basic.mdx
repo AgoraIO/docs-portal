@@ -26,7 +26,7 @@ _migration:
 
 <a id="api_irtcengine_disablevideo__prototype"></a>
 
-```text
+```dart
 Future<void> disableVideo();
 ```
 
@@ -81,7 +81,7 @@ Future<void> disableVideo();
 
 <a id="api_irtcengine_enablelocalvideo__prototype"></a>
 
-```text
+```dart
 Future<void> enableLocalVideo(bool enabled);
 ```
 
@@ -135,7 +135,7 @@ Future<void> enableLocalVideo(bool enabled);
 
 <a id="api_irtcengine_enablevideo__prototype"></a>
 
-```text
+```dart
 Future<void> enableVideo();
 ```
 
@@ -191,7 +191,7 @@ Future<void> enableVideo();
 
 <a id="api_irtcengine_setvideoencoderconfiguration__prototype"></a>
 
-```text
+```dart
 Future<void> setVideoEncoderConfiguration(VideoEncoderConfiguration config);
 ```
 
@@ -244,7 +244,7 @@ Future<void> setVideoEncoderConfiguration(VideoEncoderConfiguration config);
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex__prototype"></a>
 
-```text
+```dart
 Future<void> setVideoEncoderConfigurationEx(
       {required VideoEncoderConfiguration config,
       required RtcConnection connection});
@@ -303,7 +303,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="api_irtcengine_setvideoscenario__prototype"></a>
 
-```text
+```dart
 Future<void> setVideoScenario(VideoApplicationScenarioType scenarioType);
 ```
 
@@ -345,7 +345,7 @@ Future<void> setVideoScenario(VideoApplicationScenarioType scenarioType);
     - 视频帧率：15 fps
     - 码率：500 Kbps
 
-`applicationScenario1v1` (2) 适用于[视频 1v1 通话](/zh-CN/api-reference/private-room/android/rtm/overview/product-overview)场景。针对该场景低延迟、高画质的体验要求，SDK 进行了策略调优，提升了画质、首帧出图、中低端机延迟及弱网流畅度等性能表现。`applicationScenarioLiveshow` (3) 适用于秀场直播场景。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_enableinstantmediarendering)，同时会默认开启 B 帧来确保较高的图像质量、提高传输效率。此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
+`applicationScenario1v1` (2) 适用于[视频 1v1 通话](/zh-CN/solutions/one-to-one-live/rtm)场景。针对该场景低延迟、高画质的体验要求，SDK 进行了策略调优，提升了画质、首帧出图、中低端机延迟及弱网流畅度等性能表现。`applicationScenarioLiveshow` (3) 适用于秀场直播场景。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/flutter/video/video-rendering#api_irtcengine_enableinstantmediarendering)，同时会默认开启 B 帧来确保较高的图像质量、提高传输效率。此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
 
 </Parameter>
 </ParameterList>
@@ -370,7 +370,7 @@ Future<void> setVideoScenario(VideoApplicationScenarioType scenarioType);
 
 <a id="api_irtcengine_startpreview__prototype"></a>
 
-```text
+```dart
 Future<void> startPreviewWithoutSourceType();
 ```
 
@@ -411,7 +411,7 @@ Future<void> startPreviewWithoutSourceType();
 
 <a id="api_irtcengine_startpreview2__prototype"></a>
 
-```text
+```dart
 Future<void> startPreview(
             {VideoSourceType sourceType = VideoSourceType.videoSourceCameraPrimary});
 ```
@@ -466,7 +466,7 @@ Future<void> startPreview(
 
 <a id="api_irtcengine_stoppreview2__prototype"></a>
 
-```text
+```dart
 Future<void> stopPreview(
     {VideoSourceType sourceType = VideoSourceType.videoSourceCameraPrimary});
 ```
@@ -520,7 +520,7 @@ Future<void> stopPreview(
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__prototype"></a>
 
-```text
+```dart
 final void Function(
           VideoSourceType source, int width, int height, int elapsed)?
       onFirstLocalVideoFrame;
@@ -575,7 +575,7 @@ final void Function(
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int elapsed)?
       onFirstLocalVideoFramePublished;
 ```
@@ -621,7 +621,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int remoteUid, int width,
       int height, int elapsed)? onFirstRemoteVideoDecoded;
 ```
@@ -688,7 +688,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int remoteUid, int width,
       int height, int elapsed)? onFirstRemoteVideoFrame;
 ```
@@ -750,7 +750,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onlocalvideoevent__prototype"></a>
 
-```text
+```dart
   final void Function(VideoSourceType source, LocalVideoEventType event)?
       onLocalVideoEvent;
 ```
@@ -803,7 +803,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged__prototype"></a>
 
-```text
+```dart
 final void Function(VideoSourceType source, LocalVideoStreamState state,
     LocalVideoStreamReason reason)? onLocalVideoStateChanged;;
 ```
@@ -870,7 +870,7 @@ final void Function(VideoSourceType source, LocalVideoStreamState state,
 
 <a id="callback_irtcengineeventhandler_onlocalvideostats__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, LocalVideoStats stats)?
       onLocalVideoStats;
 ```
@@ -912,7 +912,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged__prototype"></a>
 
-```text
+```dart
 final void Function(
       RtcConnection connection,
       int remoteUid,
@@ -978,7 +978,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onremotevideostats__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, RemoteVideoStats stats)?
       onRemoteVideoStats;
 ```
@@ -1020,7 +1020,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onremotevideotransportstats__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int remoteUid, int delay,
       int lost, int rxKBitRate)? onRemoteVideoTransportStats;
 ```
@@ -1087,7 +1087,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int remoteUid, bool enabled)?
       onUserEnableLocalVideo;
 ```
@@ -1147,7 +1147,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onuserenablevideo__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int remoteUid, bool enabled)?
       onUserEnableVideo;
 ```
@@ -1197,7 +1197,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onusermutevideo__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, int remoteUid, bool muted)?
       onUserMuteVideo;
 ```
@@ -1252,7 +1252,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onvideopublishstatechanged__prototype"></a>
 
-```text
+```dart
 final void Function(
       VideoSourceType source,
       String channel,
@@ -1314,7 +1314,7 @@ final void Function(
 
 <a id="callback_irtcengineeventhandler_onvideosizechanged__prototype"></a>
 
-```text
+```dart
 final void Function(RtcConnection connection, VideoSourceType sourceType,
       int uid, int width, int height, int rotation)? onVideoSizeChanged;
 ```
@@ -1382,7 +1382,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/clas
 
 <a id="callback_irtcengineeventhandler_onvideostopped__prototype"></a>
 
-```text
+```dart
 final void Function()? onVideoStopped;
 ```
 

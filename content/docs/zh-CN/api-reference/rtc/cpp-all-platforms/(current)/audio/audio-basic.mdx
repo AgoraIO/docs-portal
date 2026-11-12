@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_adjustplaybacksignalvolume__prototype"></a>
 
-```text
+```cpp
 virtual int adjustPlaybackSignalVolume(int volume) = 0;
 ```
 
@@ -73,7 +73,7 @@ virtual int adjustPlaybackSignalVolume(int volume) = 0;
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume__prototype"></a>
 
-```text
+```cpp
 virtual int adjustUserPlaybackSignalVolume(uid_t uid, int volume) = 0;
 ```
 
@@ -131,7 +131,7 @@ virtual int adjustUserPlaybackSignalVolume(uid_t uid, int volume) = 0;
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex__prototype"></a>
 
-```text
+```cpp
 virtual int adjustUserPlaybackSignalVolumeEx(uid_t uid, int volume, const RtcConnection& connection) = 0;
 ```
 
@@ -201,7 +201,7 @@ virtual int adjustUserPlaybackSignalVolumeEx(uid_t uid, int volume, const RtcCon
 
 <a id="api_irtcengine_disableaudio__prototype"></a>
 
-```text
+```cpp
 virtual int disableAudio() = 0;
 ```
 
@@ -244,7 +244,7 @@ virtual int disableAudio() = 0;
 
 <a id="api_irtcengine_enableaudio__prototype"></a>
 
-```text
+```cpp
 virtual int enableAudio() = 0;
 ```
 
@@ -290,7 +290,7 @@ virtual int enableAudio() = 0;
 
 <a id="api_irtcengine_enableaudiovolumeindication__prototype"></a>
 
-```text
+```cpp
 virtual int enableAudioVolumeIndication(int interval, int smooth, bool reportVad) = 0;
 ```
 
@@ -362,7 +362,7 @@ virtual int enableAudioVolumeIndication(int interval, int smooth, bool reportVad
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex__prototype"></a>
 
-```text
+```cpp
 virtual int enableAudioVolumeIndicationEx(int interval, int smooth, bool reportVad, const RtcConnection& connection) = 0;
 ```
 
@@ -446,7 +446,7 @@ virtual int enableAudioVolumeIndicationEx(int interval, int smooth, bool reportV
 
 <a id="api_irtcengine_setaudioprofile__prototype"></a>
 
-```text
+```cpp
 virtual int setAudioProfile(AUDIO_PROFILE_TYPE profile, AUDIO_SCENARIO_TYPE scenario) __deprecated = 0;
 ```
 
@@ -508,7 +508,7 @@ virtual int setAudioProfile(AUDIO_PROFILE_TYPE profile, AUDIO_SCENARIO_TYPE scen
 
 <a id="api_irtcengine_setaudioprofile2__prototype"></a>
 
-```text
+```cpp
 virtual int setAudioProfile(AUDIO_PROFILE_TYPE profile) = 0;
 ```
 
@@ -560,7 +560,7 @@ virtual int setAudioProfile(AUDIO_PROFILE_TYPE profile) = 0;
 
 <a id="api_irtcengine_setaudioscenario__prototype"></a>
 
-```text
+```cpp
 virtual int setAudioScenario(AUDIO_SCENARIO_TYPE scenario) = 0;
 ```
 
@@ -616,7 +616,7 @@ virtual int setAudioScenario(AUDIO_SCENARIO_TYPE scenario) = 0;
 
 <a id="api_irtcengine_setaudiosessionoperationrestriction__prototype"></a>
 
-```text
+```cpp
 virtual int setAudioSessionOperationRestriction(AUDIO_SESSION_OPERATION_RESTRICTION restriction) = 0;
 ```
 
@@ -665,7 +665,7 @@ SDK 对音频会话的操作权限。该参数为位掩码格式，每一位对�
 
 <a id="callback_irtcengineeventhandler_onactivespeaker__prototype"></a>
 
-```text
+```cpp
 virtual void onActiveSpeaker(uid_t uid)
 ```
 
@@ -703,7 +703,7 @@ virtual void onActiveSpeaker(uid_t uid)
 
 <a id="callback_irtcengineeventhandler_onaudioquality__prototype"></a>
 
-```text
+```cpp
 virtual void onAudioQuality(uid_t uid, int quality, unsigned short delay, unsigned short lost) __deprecated
 ```
 
@@ -762,7 +762,7 @@ SDK 每两秒触发一次该回调，用于报告每个正在发送音频流的�
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication__prototype"></a>
 
-```text
+```cpp
 virtual void onAudioVolumeIndication(const AudioVolumeInfo* speakers, unsigned int speakerNumber, int totalVolume)
 ```
 
@@ -825,7 +825,7 @@ virtual void onAudioVolumeIndication(const AudioVolumeInfo* speakers, unsigned i
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__prototype"></a>
 
-```text
+```cpp
 virtual void onFirstLocalAudioFramePublished(int elapsed)
 ```
 
@@ -869,7 +869,7 @@ virtual void onFirstLocalAudioFramePublished(int elapsed)
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__prototype"></a>
 
-```text
+```cpp
 virtual void onFirstRemoteAudioDecoded(uid_t uid, int elapsed) __deprecated
 ```
 
@@ -920,7 +920,7 @@ virtual void onFirstRemoteAudioDecoded(uid_t uid, int elapsed) __deprecated
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__prototype"></a>
 
-```text
+```cpp
 virtual void onFirstRemoteAudioFrame(uid_t uid, int elapsed) __deprecated
 ```
 
@@ -965,7 +965,7 @@ virtual void onFirstRemoteAudioFrame(uid_t uid, int elapsed) __deprecated
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onLocalAudioStateChanged(LOCAL_AUDIO_STREAM_STATE state, LOCAL_AUDIO_STREAM_REASON reason)
 ```
 
@@ -1010,7 +1010,7 @@ virtual void onLocalAudioStateChanged(LOCAL_AUDIO_STREAM_STATE state, LOCAL_AUDI
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats__prototype"></a>
 
-```text
+```cpp
 virtual void onLocalAudioStats(const LocalAudioStats& stats)
 ```
 
@@ -1049,7 +1049,7 @@ SDK 每两秒触发一次该回调。
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onRemoteAudioStateChanged(uid_t uid, REMOTE_AUDIO_STATE state, REMOTE_AUDIO_STATE_REASON reason, int elapsed)
 ```
 
@@ -1110,7 +1110,7 @@ virtual void onRemoteAudioStateChanged(uid_t uid, REMOTE_AUDIO_STATE state, REMO
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats__prototype"></a>
 
-```text
+```cpp
 virtual void onRemoteAudioStats(const RemoteAudioStats& stats)
 ```
 
@@ -1145,7 +1145,7 @@ virtual void onRemoteAudioStats(const RemoteAudioStats& stats)
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__prototype"></a>
 
-```text
+```cpp
 virtual void onRemoteAudioTransportStats(uid_t uid, unsigned short delay, unsigned short lost, unsigned short rxKBitRate) __deprecated
 ```
 
@@ -1210,7 +1210,7 @@ virtual void onRemoteAudioTransportStats(uid_t uid, unsigned short delay, unsign
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio__prototype"></a>
 
-```text
+```cpp
 virtual void onUserMuteAudio(uid_t uid, bool muted)
 ```
 

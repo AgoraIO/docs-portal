@@ -145,13 +145,12 @@ describe('Chinese download page release constraints', () => {
     }
   });
 
-  it('offers RTSA C cards and directs retired Java users to the sunset notice', () => {
+  it('offers RTSA C cards without retired Java SDK sections', () => {
     const page = readDoc('realtime-media/rtsa/reference/downloads.mdx');
     expect(page).toContain(
       '<ProductSdkDownloads product="rtsa" platform="c" />',
     );
-    expect(page).toContain('/zh-CN/realtime-media/rtsa/reference/sunset');
-    expect(page).toContain('不再提供 SDK 下载');
+    expect(page).not.toMatch(/Java|\/rtsa\/reference\/sunset/);
     expect(page).not.toMatch(/JRmRdRc|\| 平台 \|/);
   });
 });

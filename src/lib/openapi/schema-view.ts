@@ -11,11 +11,20 @@ export type OpenApiSchemaPathItem = {
 
 export type OpenApiSchemaData = SchemaData & {
   allowedValues?: unknown[];
+  typeSpecified?: boolean;
+};
+
+export type OpenApiSchemaChoice = {
+  id: string;
+  options: { value: string; name: string; schema?: OpenApiSchemaData }[];
+  value: string;
 };
 
 export type OpenApiSchemaViewNode = {
   $type: string;
+  branchContainer?: boolean;
   children: OpenApiSchemaViewNode[];
+  choices?: OpenApiSchemaChoice[];
   depth: number;
   detailsCollapsible?: boolean;
   id: string;
@@ -146,7 +155,7 @@ export function buildOpenApiSchemaView(
     }
 
     if (schema.type === 'and' || schema.type === 'or') {
-      return schema.items.flatMap((item): OpenApiSchemaViewNode[] => {
+      return schema.items.flatMap((item, index): OpenApiSchemaViewNode[] => {
         const current = parentPath.at(-1);
         if (!current) return [];
 
@@ -162,7 +171,7 @@ export function buildOpenApiSchemaView(
         const groupBranch =
           schema.type === 'or' &&
           (branchSchema?.type === 'object' || branchSchema?.type === 'array');
-        const children = childrenFor(
+        let children = childrenFor(
           branchSchema,
           nextParentPath,
           fieldPath,
@@ -171,18 +180,16 @@ export function buildOpenApiSchemaView(
           item.$type,
         );
 
-        if (
-          groupBranch ||
-          (children.length === 0 && branchSchema?.type === 'object')
-        ) {
+        if (groupBranch || (children.length === 0 && branchSchema)) {
           const branchNodePath = [
             ...nextParentPath,
             { $ref: item.$type, name: item.name },
           ];
 
-          return [
+          children = [
             {
               $type: item.$type,
+              branchContainer: groupBranch,
               children,
               depth,
               detailsCollapsible:
@@ -199,7 +206,28 @@ export function buildOpenApiSchemaView(
           ];
         }
 
-        return children.map((node) => ({ ...node, variant: item.name }));
+        return children.map((node) => ({
+          ...node,
+          ...(schema.type === 'or' && schema.items.length > 1
+            ? {
+                choices: [
+                  {
+                    id: `${encodeOpenApiSchemaNodeId(parentPath)}:${activeRef}`,
+                    options: schema.items.map((option, optionIndex) => ({
+                      value: String(optionIndex),
+                      name: option.name,
+                      schema: generated.refs[option.$type] as
+                        | OpenApiSchemaData
+                        | undefined,
+                    })),
+                    value: String(index),
+                  },
+                  ...(node.choices ?? []),
+                ],
+              }
+            : {}),
+          variant: item.name,
+        }));
       });
     }
 

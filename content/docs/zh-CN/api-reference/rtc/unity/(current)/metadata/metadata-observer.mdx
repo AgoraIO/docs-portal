@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_registermediametadataobserver__prototype"></a>
 
-```text
+```csharp
 public abstract int RegisterMediaMetadataObserver(IMetadataObserver observer, METADATA_TYPE type);
 ```
 
@@ -73,7 +73,7 @@ metadata 类型。目前仅支持 `VIDEO_METADATA`。详见 [METADATA_TYPE](/zh-
 
 <a id="api_irtcengine_sendmetadata__prototype"></a>
 
-```text
+```csharp
 public abstract int SendMetadata(Metadata metadata, VIDEO_SOURCE_TYPE source_type);
 ```
 
@@ -125,7 +125,7 @@ public abstract int SendMetadata(Metadata metadata, VIDEO_SOURCE_TYPE source_typ
 
 <a id="api_irtcengine_setmaxmetadatasize__prototype"></a>
 
-```text
+```csharp
 public abstract int SetMaxMetadataSize(int size);
 ```
 
@@ -167,7 +167,7 @@ public abstract int SetMaxMetadataSize(int size);
 
 <a id="api_irtcengine_unregistermediametadataobserver__prototype"></a>
 
-```text
+```csharp
 public abstract int UnregisterMediaMetadataObserver();
 ```
 
@@ -194,7 +194,7 @@ public abstract int UnregisterMediaMetadataObserver();
 
 <a id="callback_imetadataobserver_onmetadatareceived__prototype"></a>
 
-```text
+```csharp
 public virtual void OnMetadataReceived(Metadata metadata)
         {
 
@@ -230,7 +230,7 @@ public virtual void OnMetadataReceived(Metadata metadata)
 
 <a id="callback_imetadataobserver_onreadytosendmetadata__prototype"></a>
 
-```text
+```csharp
 public virtual bool OnReadyToSendMetadata(ref Metadata metadata, VIDEO_SOURCE_TYPE source_type)
         {
             return false;

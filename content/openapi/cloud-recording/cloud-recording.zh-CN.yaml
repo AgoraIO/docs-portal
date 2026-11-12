@@ -13,9 +13,13 @@ info:
        - `updateLayout`：更新合流布局。
     - `stop`：录制完成后，调用 `stop` 离开频道，停止录制。
 
+    > [!CAUTION]
     > 云端录制不支持在一路录制中完成多个任务。例如，如果你需要同时对某个频道进行单流录制和合流录制，那么需要起两路录制。即，使用两个不同的 `uid` 分别调用 `acquire`，获取两个 `resourceId`，再分别调用 `start` 启动两路录制任务。两路录制均会产生费用。
 
     为方便你监听云端录制的状态，声网提供[消息通知服务](/zh-CN/realtime-media/cloud-recording/build/monitor-events/enable-ncs)。开通该服务后，你可以通过 Webhook 接收[云端录制相关事件](/zh-CN/realtime-media/cloud-recording/reference/ncs-events)。
+
+    > [!CAUTION]
+    > 新单流录制（`mode=raw`）的回调中，`payload.serviceScene` 为 `rtsc/raw-recording`，不再是旧版单流录制的 `rtc_record`。迁移时需要同步更新回调处理逻辑，避免忽略新单流录制的回调。
 
     因为声网会动态调整消息通知服务器的 IP 地址，为不影响你接收事件，你需要[定期查询 IP 地址](/zh-CN/api-reference/api-ref/cloud-recording/get-ncs-ip)并更新防火墙白名单配置。
   contact: {}
@@ -35,7 +39,9 @@ paths:
 
             在开始云端录制之前，你需要调用 `acquire` 方法获取一个 Resource ID。一个 Resource ID 只能用于一次云端录制服务。
       x-docs-callouts:
-        - position: after-description
+        - type: caution
+          title: 注意
+          position: after-description
           markdown: |-
             - `acquire` 和 `start` 的请求需配对调用。
             - 在每次 `acquire` 请求获取到 Resource ID 后的 2 秒内立即发起对应的 [`start`](start) 请求。批量获取 Resource ID 后进行批量 `start` 请求可能导致请求失败。如请求失败，请再次调用 `acquire` 获得一个新的 Resource ID，并用该 Resource ID 再次调用 `start` 方法。
@@ -75,6 +81,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/acquire-response'
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    cname: 录制的频道名。
+                    uid: 字符串内容为云端录制服务在 RTC 频道内使用的 UID，用于标识频道内的录制服务。
+                    resourceId: 云端录制资源 Resource ID。使用这个 Resource ID 可以开始一段云端录制。这个 Resource ID 的有效期为 5 分钟，超时需要重新请求。
         非 200:
           $ref: '#/components/responses/not-200'
       servers:
@@ -94,7 +107,13 @@ paths:
 
             通过 [`acquire`](acquire) 方法获取云端录制资源后，调用 `start` 方法开始云端录制。
       x-docs-callouts:
-        - position: after-description
+        - type: caution
+          title: 注意
+          position: after-description
+          markdown: 新单流录制（`mode=raw`）不支持 `clientRequest.extensionServiceConfig`。请求中包含该字段会被接口拒绝，迁移时需要删除该字段。
+        - type: caution
+          title: 注意
+          position: after-description
           markdown: 发起 `start` 请求后，你还需要依据[保障录制成功启动](/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/recording-status#monitor_status)检查录制服务是否已经成功启动。
       operationId: start-cloud-recording
       parameters:
@@ -337,6 +356,14 @@ paths:
                   sid:
                     type: string
                     description: 录制 ID。成功开始云端录制后，你会得到一个 Sid （录制 ID）。该 ID 是一次录制周期的唯一标识。
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    cname: 录制的频道名。
+                    uid: 字符串内容为云端录制服务在 RTC 频道内使用的 UID，用于标识频道内的录制服务。
+                    resourceId: 云端录制资源 Resource ID。使用这个 Resource ID 可以开始一段云端录制。这个 Resource ID 的有效期为 5 分钟，超时需要重新请求。
+                    sid: 录制 ID。成功开始云端录制后，你会得到一个 Sid （录制 ID）。该 ID 是一次录制周期的唯一标识。
         非 200:
           $ref: '#/components/responses/not-200'
       servers:
@@ -359,7 +386,9 @@ paths:
             - 对单流录制和合流录制，更新订阅名单。
             - 对页面录制，设置暂停/恢复页面录制，或更新页面录制转推到 CDN 的推流地址（URL）。
       x-docs-callouts:
-        - position: after-description
+        - type: caution
+          title: 注意
+          position: after-description
           markdown: |-
             - `update` 请求仅在会话内有效。如果录制启动错误，或录制已结束，调用 `update` 将返回 `404`。
             - 如果需要连续调用 `update` 方法更新录制设置，请在收到上一次 `update` 响应后再进行调用，否则可能导致请求结果与预期不一致。
@@ -423,6 +452,14 @@ paths:
                   sid:
                     type: string
                     description: 录制 ID。标识每次录制周期。
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    cname: 录制的频道名。
+                    uid: 字符串内容为云端录制服务在 RTC 频道内使用的 UID，用于标识频道内的录制服务。
+                    resourceId: 云端录制使用的 Resource ID。
+                    sid: 录制 ID。标识每次录制周期。
         非 200:
           $ref: '#/components/responses/not-200'
       servers:
@@ -444,7 +481,9 @@ paths:
 
             每次调用该方法都会覆盖原来的布局设置。例如，在开始录制时设置了 `backgroundColor` 为 `"#FF0000"`（红色），如果调用 `updateLayout` 方法更新合流布局时如果不再设置 `backgroundColor` 字段，背景色就会变为黑色（默认值）。
       x-docs-callouts:
-        - position: after-description
+        - type: caution
+          title: 注意
+          position: after-description
           markdown: |-
             - `updateLayout` 请求仅在会话内有效。如果录制启动错误，或录制已结束，调用 `updateLayout` 将返回 `404`。
             - 如果需要连续调用 `updateLayout` 方法更新合流布局，请在收到上一次 `updateLayout` 响应后再进行调用，否则可能导致请求结果与预期不一致。
@@ -507,6 +546,14 @@ paths:
                   sid:
                     type: string
                     description: 录制 ID。标识一次录制周期。
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    cname: 录制的频道名。
+                    uid: 字符串内容为云端录制服务在 RTC 频道内使用的 UID，用于标识频道内的录制服务。
+                    resourceId: 云端录制使用的 Resource ID。
+                    sid: 录制 ID。标识一次录制周期。
         非 200:
           $ref: '#/components/responses/not-200'
       servers:
@@ -526,7 +573,9 @@ paths:
 
             开始录制后，你可以调用 `query` 方法查询录制状态。
       x-docs-callouts:
-        - position: after-description
+        - type: caution
+          title: 注意
+          position: after-description
           markdown: '`query` 请求仅在会话内有效。如果录制启动错误，或录制已结束，调用 `query` 将返回 `404`。'
       operationId: query-cloud-recording
       parameters:
@@ -543,6 +592,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/query-response'
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    resourceId: 云端录制使用的 Resource ID。
+                    sid: 录制 ID。
+                    serverResponse:
+                      status: 0
+                      extensionServiceState:
+                        - payload:
+                            fileList:
+                              - filename: 录制产生的 M3U8 文件和 MP4 文件的文件名。
+                                sliceStartTime: 0
+                            onhold: true
+                            state: |-
+                              将订阅内容上传至扩展服务的状态：
+                              - `"init"`：服务正在初始化。
+                              - `"inProgress"`：服务启动完成，正在进行中。
+                              - `"exit"`：服务退出。
+                          serviceName: |-
+                            扩展服务的名称：
+                            - `web_recorder_service`：代表扩展服务为**页面录制**。
+                            - `rtmp_publish_service`：代表扩展服务为**转推页面录制到 CDN**。
+                    cname: 录制的频道名。
+                    uid: 字符串内容为云端录制服务在 RTC 频道内使用的 UID，用于标识频道内的录制服务。
         非 200:
           $ref: '#/components/responses/not-200'
       servers:
@@ -562,7 +636,9 @@ paths:
 
             开始录制后，你可以调用 `stop` 方法离开频道，停止录制。录制停止后如需再次录制，必须再调用 `acquire` 方法请求一个新的 Resource ID。
       x-docs-callouts:
-        - position: after-description
+        - type: caution
+          title: 注意
+          position: after-description
           markdown: |-
             - `stop` 请求仅在会话内有效。如果录制启动错误，或录制已结束，调用 `stop` 将返回 `404`。
             - 非页面录制模式下，当频道空闲（无用户）超过预设时间（默认为 30 秒） 后，云端录制也会自动退出频道，停止录制。
@@ -594,6 +670,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/stop-response'
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    resourceId: 云端录制使用的 Resource ID。
+                    sid: 录制 ID。标识一次录制周期。
+                    serverResponse:
+                      extensionServiceState:
+                        - playload:
+                            uploadingStatus: |-
+                              当前录制上传的状态：
+                              - `"uploaded"`：本次录制的文件已经全部上传至指定的第三方云存储。
+                              - `"backuped"`：本次录制的文件已经全部上传完成，但是至少有一个 TS 文件上传到了声网备份云。声网服务器会自动将这部分文件继续上传至指定的第三方云存储。
+                              - `"stranded"`：v2 新增状态。部分录制文件尚未上传至指定的第三方云存储，录制服务会继续自动重试上传，直至上传成功。该状态不表示文件丢失，业务侧应将其视为“上传未完成”，等待文件上传完成后再进行依赖完整录制文件的播放或处理。
+                              - `"unknown"`：未知状态。
+                          serviceName: |-
+                            服务类型：
+                            - `"upload_service"`：上传服务。
+                            - `"web_recorder_service"`：页面录制服务。
+                    cname: 录制的频道名。
+                    uid: 字符串内容为云端录制服务在 RTC 频道内使用的 UID，用于标识频道内的录制服务。
         非 200:
           $ref: '#/components/responses/not-200'
       servers:
@@ -613,7 +710,9 @@ paths:
 
             开通消息通知服务后，声网消息通知服务可以将云端录制业务中的发生的一些事件以 HTTPS 请求的方式通知到你的服务器。声网会动态调整消息通知服务器的 IP 地址，周期为 24 小时。你可以通过本方法查询 IP 地址。查询后，你需要将 IP 地址（或 IP 地址列表）添加到白名单中。
       x-docs-callouts:
-        - position: after-description
+        - type: caution
+          title: 注意
+          position: after-description
           markdown: 我们强烈推荐你至少每 24 小时进行一次查询，并自动更新防火墙配置，否则可能会影响你接收通知。
       operationId: get-ncs-ip
       parameters:
@@ -632,7 +731,7 @@ components:
     Authorization:
       name: Authorization
       in: header
-      description: 'HTTP 基本认证凭证。将客户 ID 和客户密钥以 `客户ID:客户密钥` 的格式拼接并进行 Base64 编码，再填入 `Basic <credentials>` 中的占位值。详见[实现 HTTP 基本认证](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth)。'
+      description: '声网云端录制 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的 `Authorization` 字段中。详见[实现 HTTP 基本认证](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth)。'
       required: true
       example: 'Basic <credentials>'
       schema:
@@ -786,6 +885,7 @@ components:
     client-request:
       description: |
         设置该字段后，可以提升可用性并优化负载均衡。
+        > [!CAUTION]
         > 如果填写该字段，则必须确保 `startParameter` object 和后续 `start` 请求中填写的 `clientRequest` object 完全一致，且取值合法，否则 `start` 请求会收到报错。
       type: object
       title: object
@@ -841,6 +941,7 @@ components:
           type: number
           description: |-
             第三方云存储指定的地区信息。
+            > [!CAUTION]
             > 为确保录制文件上传的成功率和实时性，第三方云存储的 `region` 与你发起请求的应用服务器必须在同一个区域中。例如：你发起请求的 App 服务器在中国大陆地区，则第三方云存储需要设置为中国大陆区域内。详见[第三方存储地区说明](/zh-CN/realtime-media/cloud-recording/reference/api-reference)。
         bucket:
           type: string
@@ -855,11 +956,13 @@ components:
           type: string
           description: |
             第三方云存储的临时安全令牌。该令牌由云服务商的安全令牌服务 (Security Token Service, STS) 临时颁发，用于授予第三方云存储资源的有限访问权限。
+            > [!NOTE]
             >- 目前支持的云服务商仅包括，`1`：Amazon S3，`2`：阿里云，`3`：腾讯云。
         stsExpiration:
           type: number
           description: |
             用于标记 `stsToken` 的过期时间戳，POSIX 时间，单位为秒。
+            > [!CAUTION]
             >- 为避免时间戳溢出问题，建议使用 Uint64 存储。
             >- 建议在申请 `stsToken` 时设置尽可能长的有效期，最短有效期需不少于 4 小时，并需要在过期前调用 `update` 方法更新 `stsToken` 的值
             >- 如录制任务持续时间超过 1 小时，需每 60 分钟重新申请 `stsToken`，并调用 `update` 更新 `storageConfig` 中的相关参数。
@@ -904,6 +1007,7 @@ components:
             频道场景。
             - `0`：通信场景。
             - `1`：直播场景。
+            > [!CAUTION]
             > 频道场景必须与声网 RTC SDK 的设置一致，否则可能导致问题。
           default: 0
         decryptionMode:
@@ -967,6 +1071,7 @@ components:
             - `3`：13 到 17 个 UID。
             - `4`：18 到 32 个 UID。
             - `5`：33 到 49 个 UID。
+            > [!CAUTION]
             > - 仅需在**单流录制**模式下设置，且单流录制模式下必填。
             > - 举例来说，如果 `subscribeVideoUids` 为 `["100","101","102"]`，`subscribeAudioUids` 为 `["101","102","103"]`，则订阅人数为 4 人。
         audioProfile:
@@ -976,6 +1081,7 @@ components:
             - `0`：48 kHz 采样率，音乐编码，单声道，编码码率约 48 Kbps。
             - `1`：48 kHz 采样率，音乐编码，单声道，编码码率约 128 Kbps。
             - `2`：48 kHz 采样率，音乐编码，双声道，编码码率约 192 Kbps。
+            > [!NOTE]
             > 仅需在**合流录制**模式下设置。
           default: 0
         transcodingConfig:
@@ -1215,6 +1321,7 @@ components:
             - `"hls"`：HLS 格式的 M3U8 和 TS 文件。单流录制时，音频和视频输出到同一个 M3U8 文件。
             - `"mp4"`：MP4 文件。
             - `"mp3"`：MP3 文件，仅适用于单流录制且仅录制音频的场景。
+            > [!CAUTION]
             > - **单流录制**模式下，且**非仅截图**情况，默认输出 HLS 文件；如果需要生成 MP4 文件，需将 `avFileType` 设置为 `["hls","mp4"]`。
             > - 单流录制且仅录制音频时，将 `avFileType` 设置为 `["hls","mp3"]` 可直接输出 MP3 文件。
             > - **合流录制**和**页面录制**模式下，如果你需要生成 MP4 文件，那么设为 `["hls","mp4"]`。仅设为 `["mp4"]` 会收到报错。设置后，录制文件行为如下：
@@ -1255,7 +1362,11 @@ components:
       type: object
       description: |-
         扩展服务配置项。
-        <p><b>注意：</b>仅需在<b>页面录制</b>模式下设置。</p>
+
+        > [!CAUTION]
+        > 仅需在**页面录制**模式下设置。
+        >
+        > 新单流录制（`mode=raw`）不支持该字段。请求中包含 `extensionServiceConfig` 会被接口拒绝，需要删除该字段。
       properties:
         errorHandlePolicy:
           type: string
@@ -1327,6 +1438,7 @@ components:
               type: number
               description: |-
                 页面录制的最大时长，单位为小时。超出该值后页面录制会自动停止。
+                > [!TIP]
                 > 建议取值不超过你在 `acquire` 方法中设置的 `resourceExpiredHour` 的值。
                 <p><b>计费相关</b>：页面录制停止前会持续计费，因此请根据实际业务情况设置合理的值或主动停止页面录制。</p>
               minimum: 1
@@ -1352,7 +1464,7 @@ components:
               default: false
             maxVideoDuration:
               type: number
-              description: 页面录制生成的 MP4 切片文件的最大时长，单位为分钟。页面录制过程中，录制服务会在当前 MP4 文件时长超过 `maxVideoDuration`（默认 180 分钟）或文件大小超过约 2 GB 时创建一个新的 MP4 切片文件。
+              description: 页面录制生成的 MP4 切片文件的最大时长，单位为分钟。页面录制过程中，录制服务会在当前 MP4 文件时长超过约 `maxVideoDuration` 左右时创建一个新的 MP4 切片文件。
               minimum: 30
               maximum: 240
               default: 180
@@ -1448,6 +1560,7 @@ components:
                 - `"mp3"`：延时混音时的默认格式。MP3 格式。
                 - `"m4a"`：M4A 格式。
                 - `"aac"`：AAC 格式。
+                > [!CAUTION]
                 > 延时转码暂时只能设为 MP4 格式。
         audio:
           type: object
@@ -1699,11 +1812,13 @@ components:
           type: string
           description: |
             第三方云存储的临时安全令牌。该令牌由云服务商的安全令牌服务 (Security Token Service, STS) 临时颁发，用于授予第三方云存储资源的有限访问权限。
+            > [!NOTE]
             >- 目前支持的云服务商仅包括，`1`：Amazon S3，`2`：阿里云，`3`：腾讯云。
         stsExpiration:
           type: number
           description: |
             用于标记 `stsToken` 的过期时间戳，POSIX 时间，单位为秒。
+            > [!CAUTION]
             >- 为避免时间戳溢出问题，建议使用 Uint64 存储。
             >- 建议在申请 `stsToken` 时设置尽可能长的有效期，最短有效期需不少于 4 小时，并需要在过期前调用 `update` 方法更新 `stsToken` 的值。
             >- 如录制任务持续时间超过 1 小时，需每 60 分钟重新申请 `stsToken`，并调用 `update` 更新 `storageConfig` 中的相关参数。
@@ -2071,7 +2186,7 @@ components:
         当前录制上传的状态：
         - `"uploaded"`：本次录制的文件已经全部上传至指定的第三方云存储。
         - `"backuped"`：本次录制的文件已经全部上传完成，但是至少有一个 TS 文件上传到了声网备份云。声网服务器会自动将这部分文件继续上传至指定的第三方云存储。
-        - `"stranded"`：v2 新增状态。部分录制文件未上传至指定的第三方云存储，需要结合业务逻辑进行处理。
+        - `"stranded"`：v2 新增状态。部分录制文件尚未上传至指定的第三方云存储，录制服务会继续自动重试上传，直至上传成功。该状态不表示文件丢失，业务侧应将其视为“上传未完成”，等待文件上传完成后再进行依赖完整录制文件的播放或处理。
         - `"unknown"`：未知状态。
       x-stoplight:
         id: gqi1s9iqnhn9l

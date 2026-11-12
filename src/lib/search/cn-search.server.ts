@@ -5,7 +5,17 @@ import {
   normalizeCnProductFacets,
   normalizeCnProductList,
 } from './cn-products';
-import { type CnSearchFamily, cnSearchFamilies } from './cn-search-family';
+import {
+  type CnSearchFamily,
+  cnSearchFamilies,
+  getCnSearchFamily,
+} from './cn-search-family';
+import {
+  getCnGuideIdentifier,
+  getCnSearchFamilyOrder,
+  resolveCnSearchQuery,
+  resolveCnSearchTask,
+} from './cn-search-intent';
 import {
   type CnSearchPageResponse,
   cleanSearchSnippet,
@@ -13,6 +23,12 @@ import {
   isPublicCnSearchUrl,
   type SearchFacets,
 } from './cn-search-page';
+import { getCnSearchPlatformAliases } from './cn-search-platforms';
+import { cnExactProductAcronyms } from './cn-search-strategy';
+import {
+  getCnSearchLanguageTerms,
+  getCnSearchNavigationLanguage,
+} from './cn-search-terms';
 import {
   type MeilisearchClientConfig,
   normalizeMeilisearchHit,
@@ -36,38 +52,96 @@ export async function queryCnSearch(
   state: CnSearchQuery,
   signal?: AbortSignal,
 ): Promise<CnSearchPageResponse> {
+  const intent = resolveCnSearchQuery(
+    normalizeMeilisearchQuery(state.q),
+    state.platform,
+  );
+  const platform = intent.platform;
+  const task = resolveCnSearchTask(intent.query, state.product);
+  const languageQuery = getCnSearchLanguageTerms(state.q).length > 0;
+  const navigationLanguage = getCnSearchNavigationLanguage(state.q);
   const filter = ['locale = "zh-CN"', 'hidden = false', 'status = "published"'];
-  // Filter before pagination so other platform copies cannot consume result slots.
-  if (!state.platform) filter.push('isDefaultPlatform = true');
+  // The index deduplicates equivalent sections before pagination. Every platform
+  // must remain searchable here, including content absent on the default one.
   for (const field of ['product', 'platform', 'tab'] as const) {
-    if (state[field]) {
-      const value = JSON.stringify(state[field]);
-      filter.push(
-        field === 'product'
-          ? buildProductFilter(state[field])
-          : field === 'platform' &&
-              ['restful', 'restful-api'].includes(state[field])
-            ? '(platform = "restful" OR platform = "restful-api")'
-            : `${field} = ${value}`,
-      );
+    const selected =
+      field === 'platform'
+        ? platform
+        : field === 'product'
+          ? task.product
+          : state[field];
+    if (selected) {
+      const value = JSON.stringify(selected);
+      if (field === 'product') filter.push(buildProductFilter(selected));
+      else if (field === 'platform') {
+        let exact = getCnSearchPlatformAliases(selected)
+          .map((alias) => `platform = ${JSON.stringify(alias)}`)
+          .join(' OR ');
+        const categoryProducts =
+          selected === 'general'
+            ? ['console']
+            : selected === 'iot'
+              ? [
+                  'voip-call',
+                  'teleoperation',
+                  'smart-camera',
+                  'smart-doorbell',
+                  'smart-watch',
+                ]
+              : undefined;
+        if (categoryProducts)
+          exact += ` OR ${categoryProducts.map(buildProductFilter).join(' OR ')}`;
+        // A language-qualified SDK search needs explicit applicability. Other
+        // searches retain shared setup/billing guides until their metadata is audited.
+        filter.push(
+          languageQuery || categoryProducts
+            ? navigationLanguage &&
+              ((selected === 'csharp' && navigationLanguage === 'csharp') ||
+                (selected === 'cpp' && navigationLanguage === 'cplusplus'))
+              ? `(${exact} OR languageEntryTerms = ${JSON.stringify(navigationLanguage)})`
+              : `(${exact})`
+            : `(${exact} OR platform NOT EXISTS OR platform IS EMPTY)`,
+        );
+      } else filter.push(`${field} = ${value}`);
     }
   }
-  const query = normalizeMeilisearchQuery(state.q);
+  const query = task.query;
+  const codeObfuscation = query === '代码混淆';
+  // The derived alias identifies the technical meaning. Search the original
+  // word within those sections so snippets also locate 代码被混淆 / 字段混淆.
+  if (codeObfuscation) filter.push('aliases = "代码混淆"');
+  const identifier = getCnGuideIdentifier(query);
+  const acronym = cnExactProductAcronyms.includes(query.toLowerCase());
   const overview = state.type === 'all' && query.length > 0;
   const familyFilter = (family: CnSearchFamily) => `searchFamily = "${family}"`;
   const makeQuery = (family?: CnSearchFamily) => ({
-    q: query,
-    filter: [...filter, ...(family ? [familyFilter(family)] : [])].join(
-      ' AND ',
-    ),
+    ...(task.quickStart && family === 'docs'
+      ? { distinct: 'canonicalUrl' }
+      : {}),
+    q: codeObfuscation
+      ? '混淆'
+      : acronym
+        ? `"${query}"`
+        : family === 'docs' && identifier
+          ? `"${identifier}"`
+          : query,
+    matchingStrategy: 'all',
+    filter: [
+      ...filter,
+      ...(family ? [familyFilter(family)] : []),
+      ...(task.quickStart && family === 'docs'
+        ? ['taskKinds = "quick-start"']
+        : []),
+    ].join(' AND '),
     page: state.page,
     hitsPerPage: overview ? 5 : SEARCH_PAGE_SIZE,
     facets: ['products', 'platform', 'version', 'docType'],
-    attributesToHighlight: ['sectionTitle', 'content'],
+    attributesToHighlight: ['sectionTitle', 'content', 'summary'],
     highlightPreTag: '<mark>',
     highlightPostTag: '</mark>',
-    attributesToCrop: ['content'],
+    attributesToCrop: ['content', 'summary'],
     cropLength: 65,
+    ...(navigationLanguage ? { sort: ['languageEntryRank:asc'] } : {}),
   });
   const host = config.host.replace(/\/$/, '');
   const response = await fetch(
@@ -110,6 +184,43 @@ export async function queryCnSearch(
     )
   )
     throw new Error('Invalid search response');
+  // A complete symbol (audioScenario) is more specific than a longer helper
+  // name (AudioScenarioAPI). Keep prefix discovery if no guide has that symbol.
+  const docsIndex = overview
+    ? cnSearchFamilies.indexOf('docs')
+    : state.type === 'docs'
+      ? 0
+      : -1;
+  if (
+    identifier &&
+    !acronym &&
+    docsIndex >= 0 &&
+    responses[docsIndex].totalHits === 0
+  ) {
+    const fallback = await fetch(
+      `${host}/indexes/${encodeURIComponent(config.indexUid)}/search`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${config.searchOnlyKey}`,
+          'Content-Type': 'application/json',
+        },
+        signal,
+        body: JSON.stringify({ ...makeQuery('docs'), q: query }),
+      },
+    );
+    if (!fallback.ok)
+      throw new Error(`Search unavailable (HTTP ${fallback.status})`);
+    const item: EngineResponse = await fallback.json();
+    if (
+      !Array.isArray(item?.hits) ||
+      !Number.isSafeInteger(item.totalHits) ||
+      !Number.isSafeInteger(item.totalPages) ||
+      !Number.isSafeInteger(item.page)
+    )
+      throw new Error('Invalid search response');
+    responses[docsIndex] = item;
+  }
   const facetDistribution: SearchFacets = {};
   for (const item of responses) {
     for (const [field, values] of Object.entries(
@@ -143,7 +254,11 @@ export async function queryCnSearch(
         ...hit,
         _formatted: {
           ...hit._formatted,
-          content: cleanSearchSnippet(hit._formatted?.content ?? hit.content),
+          content: cleanSearchSnippet(
+            hit.summary?.trim()
+              ? (hit._formatted?.summary ?? hit.summary)
+              : (hit._formatted?.content ?? hit.content),
+          ),
         },
       }),
     );
@@ -168,11 +283,27 @@ export async function queryCnSearch(
         ]),
       )
     : {};
+  const familyOrder = getCnSearchFamilyOrder(
+    query,
+    normalizedHits.map((hit) => ({
+      family: getCnSearchFamily({ pageUrl: hit.url, docType: hit.docType }),
+      title: hit.sectionTitle,
+      languageEntryTerms: hit.languageEntryTerms,
+      languageEntryRank: hit.languageEntryRank,
+    })),
+  );
+  const groups = groupSearchSections(normalizedHits, {
+    platformFiltered: Boolean(platform) || Boolean(navigationLanguage),
+    selectedPlatform: platform,
+  });
+  if (overview)
+    groups.sort(
+      (a, b) =>
+        familyOrder.indexOf(getCnSearchFamily(a)) -
+        familyOrder.indexOf(getCnSearchFamily(b)),
+    );
   return {
-    groups: groupSearchSections(normalizedHits, {
-      platformFiltered: Boolean(state.platform),
-      selectedPlatform: state.platform,
-    }),
+    groups,
     totalHits: result.totalHits,
     totalPages: Math.min(result.totalPages, 500),
     page: result.page,

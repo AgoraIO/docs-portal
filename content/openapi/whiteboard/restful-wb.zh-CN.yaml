@@ -9,6 +9,7 @@ info:
 
     所有 HTTP 请求 Header 的 Content-Type 类型为 `application/json`。所有请求和响应内容的格式均为 JSON。所有的请求 URL 和请求 Body 内容都是区分大小写的。
 
+    > [!CAUTION]
     > 互动白板服务器会对部分请求格式做兼容，但是无法保证完全兼容。当请求参数填写正确，但请求仍然失败时，请确认请求格式是否正确。
 
     ## 主要功能
@@ -33,6 +34,7 @@ info:
       - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#开启互动白板配套服务)。
       - 已为待转换的文档生成一个公网可访问的 URL 地址。
 
+    > [!CAUTION]
     > 本文仅适用于新版文档转换服务。新版本和旧版本的差异详见[文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)。如果使用旧版文档转换服务，请查看[旧版文档转换服务 API 参考](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion) 。
 
     ## 响应状态码
@@ -196,6 +198,17 @@ paths:
                     $ref: '#/components/schemas/createAt'
                   limit:
                     $ref: '#/components/schemas/R-limit'
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    uuid: "房间的 UUID，即房间的全局唯一标识符。     "
+                    teamUUID: "互动白板控制台账号的唯一标识符。     "
+                    appUUID: 互动白板项目的唯一标识符。
+                    isRecord: true
+                    isBan: true
+                    createdAt: "创建房间的 UTC 时间。   "
+                    limit: null
       servers:
       - url: https://api.netless.link
         description: ''
@@ -235,6 +248,17 @@ paths:
                     $ref: '#/components/schemas/createAt'
                   limit:
                     $ref: '#/components/schemas/R-limit'
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    uuid: "房间的 UUID，即房间的全局唯一标识符。     "
+                    teamUUID: "互动白板控制台账号的唯一标识符。     "
+                    appUUID: 互动白板项目的唯一标识符。
+                    isRecord: true
+                    isBan: true
+                    createdAt: "创建房间的 UTC 时间。   "
+                    limit: null
       servers:
       - url: https://api.netless.link
         description: ''
@@ -350,6 +374,17 @@ paths:
                     isBan: true
                     createdAt: '2020-12-20T14:02:54.846Z'
                     limit: 0
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    uuid: "房间的 UUID，即房间的全局唯一标识符。     "
+                    teamUUID: "互动白板控制台账号的唯一标识符。     "
+                    appUUID: 互动白板项目的唯一标识符。
+                    isRecord: true
+                    isBan: true
+                    createdAt: "创建房间的 UTC 时间。   "
+                    limit: null
       servers:
       - url: https://api.netless.link
         description: ''
@@ -540,7 +575,9 @@ paths:
       - url: https://api.netless.link
         description: ''
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: 后端截图相关 API 已废弃，请改用前端截图 API：[`screenshotToCanvasAsync`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#screenshottocanvasasync)。
   /v5/rooms/{uuid}/screenshot-list:
     post:
@@ -606,7 +643,9 @@ paths:
       - url: https://api.netless.link
         description: ''
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: 后端截图相关 API 已废弃，请改用前端截图 API：[`screenshotToCanvasAsync`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#screenshottocanvasasync)。
   /v5/projector/tasks:
     post:
@@ -701,7 +740,9 @@ paths:
         description: ''
       x-extension-1: null
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: |-
           调用文档转换 API 前，请确保：
 
@@ -751,7 +792,9 @@ paths:
       - url: https://api.netless.link
         description: ''
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: |-
           调用文档转换 API 前，请确保：
 
@@ -862,7 +905,9 @@ paths:
       - url: https://api.netless.link
         description: ''
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: |-
           调用文档转换 API 前，请确保：
 
@@ -898,11 +943,19 @@ paths:
                       - `true`：取消成功。
 
                       - `false`：取消失败。
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    taskId: 转换任务的 UUID，即转换任务的唯一标识符。
+                    success: true
       servers:
       - url: https://api.netless.link
         description: ''
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: |-
           调用文档转换 API 前，请确保：
 
@@ -966,7 +1019,9 @@ paths:
       - url: https://api.netless.link
         description: ''
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: |-
           调用文档转换 API 前，请确保：
 
@@ -1008,6 +1063,7 @@ paths:
 
                     - `false`：（默认）不生成资源包。
 
+                    > [!NOTE]
                     > 该参数仅在 `type` 设为 `static` 时生效。当 `type` 设为 `dynamic` 时，声网服务端会自动生成 `{uuid}.zip` 资源包。
                 canvasVersion:
                   type: boolean
@@ -1022,6 +1078,7 @@ paths:
                     该选项适用于除源文档包含复杂动画效果外的几乎所有情况，且转换速度快。但是，当源文档包含复杂动画时（例如，切页动画），转换为 DOM 元素后，部分动画效果可能无法被渲染，且渲染时可能出现卡顿。
                      未设置 `canvasVersion` 参数或设置 `canvasVersion` 为 `false` 后，仅可以使用 Whiteboard SDK 渲染并展示转换后的文档。使用 Fastboard SDK 将无法读取转换结果。
 
+                    > [!NOTE]
                     > 该参数仅在 `type` 设为 `dynamic` 时生效。
               required:
               - resource
@@ -1431,6 +1488,7 @@ components:
           description: |-
             图片的 URL。
 
+            > [!CAUTION]
             > 请确保你的浏览器可以访问并支持展示该图片，否则，该图片可能无法显示在白板场景中。
         width:
           type: number
@@ -1444,6 +1502,7 @@ components:
       description: |-
         场景组的地址。
 
+        > [!NOTE]
         > 如果传入的场景组地址已经存在，则在已有的场景组下插入指定的新场景；如果传入的场景组地址不存在，则自动新建一个场景组并在该场景组下插入指定的新场景。
     scenePath:
       type: string
@@ -1555,6 +1614,7 @@ components:
       description: |-
         Webhook 回调地址，一般为 app 服务端地址，用于接收服务端发送的转换任务进度等信息。传入该参数即可激活 Webhook 回调，接收来自服务端的文档转换进度和运行状态信息。Webhook 配置方式和签名验证详见[接收文档转换 Webhook 事件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/conversion-webhook)。
 
+        > [!CAUTION]
         > Webhook 回调有一定概率重复回调，为保证 app 服务端在接到相同响应时的处理方式保持一致，需要做好幂等处理。
       examples:
       - https://example.com/agoracallback
@@ -1581,6 +1641,7 @@ components:
         - `4`：输出图片使用的最大颜色数量限制为 64。
         该参数仅在 `type` 设为 `dynamic` 时生效。
 
+        > [!NOTE]
         > 通常，在保证画质不受明显影响的前提下，输出图片的体积最高可以压缩至原图的 10%。压缩图片体积可在弱网环境下改善转换后 PPT 的首次加载时间。
       default: 0
     uuid-convert:

@@ -96,6 +96,38 @@ function manualPage({
 }
 
 describe('API Center manual MDX runner', () => {
+  it('keeps screenshot sizing when copying a legacy local asset', async () => {
+    const { oldRoot, repoRoot } = await createFixture();
+    const sourcePath = 'docs/cloud-recording/size.mdx';
+    const targetPath =
+      'content/docs/zh-CN/api-reference/cloud-recording/size.mdx';
+    await writeLegacyPage(
+      oldRoot,
+      sourcePath,
+      '---\ntitle: 图片尺寸\n---\n\n<Image src="/img/enable.png" alt="开通服务" width="40%" />\n',
+    );
+    await fs.mkdir(path.join(oldRoot, 'static/img'), { recursive: true });
+    await fs.writeFile(
+      path.join(oldRoot, 'static/img/enable.png'),
+      'image-fixture',
+    );
+    await writeManifest(repoRoot, [
+      manualPage({
+        platform: 'restful',
+        requestedUrl:
+          'https://doc.shengwang.cn/doc/cloud-recording/restful/size',
+        sourcePath,
+        targetPath,
+      }),
+    ]);
+    await runManualMdxMigration({ repoRoot, oldRoot });
+    const output = await fs.readFile(path.join(repoRoot, targetPath), 'utf8');
+    expect(output).toContain('<DocsImage alt="开通服务"');
+    expect(output).toContain('src="/img/api-center-generated/');
+    expect(output).toContain('displayWidth="40%"');
+    expect(output).not.toContain('src="/img/enable.png"');
+  });
+
   it('substitutes runtime product and platform labels from the API Center source inventory', async () => {
     const { oldRoot, repoRoot } = await createFixture();
     const sourcePath = 'docs/cloud-recording/get-started/enable-service.mdx';

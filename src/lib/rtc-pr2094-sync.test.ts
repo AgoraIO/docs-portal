@@ -1,5 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { compile } from '@mdx-js/mdx';
+import { remarkHeading } from 'fumadocs-core/mdx-plugins';
 import type { Folder, Root } from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
 import { type DocsMeta, docsMetaSchema } from './docs-meta-schema';
@@ -102,13 +104,13 @@ describe('RTC PR #2094 frozen source delta', () => {
   }
 
   it.each(['ios', 'macos'])(
-    '%s preserves removed error hashes outside current enum',
+    '%s omits historical definitions removed from the current source',
     (platform) => {
       const text = read(file(platform, 'enum-errorcodetype'));
-      const current = section(text, '<ParameterList>', '</ParameterList>');
+      expect(text).not.toContain('旧定义引用');
       for (const name of ['Refused', 'NoPermission', 'Abort']) {
-        expect(current).not.toContain(`name="AgoraErrorCode${name}"`);
-        expect(text).toContain(
+        expect(text).not.toContain(`AgoraErrorCode${name}`);
+        expect(text).not.toContain(
           `<a id="agoraerrorcode${name.toLowerCase()}"></a>`,
         );
       }
@@ -120,6 +122,16 @@ describe('RTC PR #2094 frozen source delta', () => {
       expect(delta?.added).toHaveLength(27);
       expect(delta?.removed).toHaveLength(3);
       expect(delta?.changed).toHaveLength(37);
+    },
+  );
+
+  it.each(['ios', 'macos'])(
+    '%s uses the current source face-shape description',
+    (platform) => {
+      const text = read(file(platform, 'enum-faceshapearea'));
+      expect(text.match(/^description: (.+)$/m)?.[1]).toBe(
+        '选择需要调整的特定面部区域。',
+      );
     },
   );
 
@@ -146,14 +158,31 @@ describe('RTC PR #2094 frozen source delta', () => {
       expect(read(file(platform, 'class-ivideoeffectobject'))).not.toContain(
         'unresolved-related-link',
       );
-      for (const name of [
-        'class-ivideoeffectobject',
-        'rtc-api-overview',
-        'rtc-interface-class',
-      ]) {
+      for (const name of ['class-ivideoeffectobject', 'rtc-api-overview']) {
         expect(read(file(platform, name))).toContain(
           '#api_ivideoeffectobject_setvideoeffectstringparam',
         );
+      }
+      const index = read(file(platform, 'rtc-interface-class'));
+      expect(index).not.toMatch(
+        /IVideoEffectObject|AgoraVideoEffectObject|ivideoeffectobject/,
+      );
+      for (const source of [
+        file(platform, 'rtc-api-overview'),
+        'content/docs/zh-CN/realtime-media/rtc/reference/release-notes.mdx',
+      ]) {
+        expect(read(source)).not.toContain(
+          `/${platform}/rtc-interface-class#class_ivideoeffectobject`,
+        );
+        if (
+          source.endsWith('/release-notes.mdx') ||
+          platform === 'android' ||
+          platform === 'cpp-all-platforms'
+        ) {
+          expect(read(source)).toContain(
+            `/${platform}/class-ivideoeffectobject`,
+          );
+        }
       }
       expect(read(file(platform, 'rtc-api-data-type'))).toContain(
         `/rtc/${platform}/class-ivideoeffectobject`,
@@ -242,17 +271,102 @@ describe('RTC PR #2094 frozen source delta', () => {
     expect(text).toContain('<a id="metadatasize"></a>');
   });
 
-  it('keeps every preexisting stable class hash', () => {
+  it.each(
+    Object.entries({
+      android: [
+        ['IVideoEncodedFrameObserver', '#相关参考-26'],
+        ['IVideoFrameObserver', '#相关参考-27'],
+        ['Player', '#相关参考-28'],
+        ['PlayerConfig', '#相关参考-29'],
+        ['PlayerGetStatsCallback', '#相关参考-30'],
+        ['PlayerObserver', '#相关参考-31'],
+        ['Rte', '#相关参考-32'],
+        ['PlayerInfo', '#相关参考-33'],
+      ],
+      'cpp-all-platforms': [
+        ['IVideoEncodedFrameObserver', '#相关参考-29'],
+        ['IVideoFrameObserver', '#相关参考-30'],
+        ['MusicChartCollection', '#相关参考-31'],
+        ['Player', '#相关参考-32'],
+        ['PlayerConfig', '#相关参考-33'],
+        ['PlayerObserver', '#相关参考-34'],
+        ['Rte', '#相关参考-35'],
+        ['PlayerInfo', '#相关参考-36'],
+      ],
+      ios: [
+        ['AgoraEncodedVideoFrameDelegate', '#相关参考-24'],
+        ['AgoraVideoFrameDelegate', '#相关参考-25'],
+        ['AgoraRtePlayer', '#相关参考-26'],
+        ['AgoraRtePlayerConfig', '#相关参考-27'],
+        ['AgoraRtePlayerObserver', '#相关参考-28'],
+        ['AgoraRte', '#相关参考-29'],
+      ],
+      macos: [
+        ['AgoraEncodedVideoFrameDelegate', '#相关参考-21'],
+        ['AgoraVideoFrameDelegate', '#相关参考-22'],
+        ['AgoraRtePlayer', '#相关参考-23'],
+        ['AgoraRtePlayerConfig', '#相关参考-24'],
+        ['AgoraRtePlayerObserver', '#相关参考-25'],
+        ['AgoraRte', '#相关参考-26'],
+      ],
+    }),
+  )(
+    '%s keeps related-reference hashes attached to their original classes',
+    async (platform, headings) => {
+      const source = read(file(platform, 'rtc-interface-class'));
+      const compiled = await compile(source.replace(/^---[\s\S]*?---\s*/, ''), {
+        remarkPlugins: [remarkHeading],
+      });
+      const toc = compiled.data.toc as Array<{
+        title: string;
+        url: string;
+        depth: number;
+      }>;
+      for (const [name, url] of headings) {
+        const heading = toc.findIndex((entry) => entry.title === name);
+        expect(heading).toBeGreaterThanOrEqual(0);
+        expect(toc[heading + 1]).toMatchObject({
+          title: '相关参考',
+          url,
+          depth: 3,
+        });
+      }
+    },
+  );
+
+  it('keeps preexisting class hashes except the retired video effect sections', () => {
     for (const item of report.inventory.filter((item) =>
       item.target_path?.endsWith('/rtc-interface-class.mdx'),
     )) {
       const text = read(item.target_path as string);
-      for (const id of item.target_old_ids)
-        expect(text).toContain(`<a id="${id}"></a>`);
+      const platform = platforms.find(
+        (platform) =>
+          item.target_path === file(platform, 'rtc-interface-class'),
+      );
+      const retiredTitleIds: Record<string, string> = {
+        android: 'ariaid-title28',
+        'cpp-all-platforms': 'ariaid-title32',
+        ios: 'ariaid-title27',
+        macos: 'ariaid-title24',
+      };
+      const retiredIds = platform
+        ? [
+            'class_ivideoeffectobject',
+            'class_ivideoeffectobject__detailed_desc',
+            retiredTitleIds[platform],
+          ]
+        : [];
+      for (const id of item.target_old_ids) {
+        if (retiredIds.includes(id)) {
+          expect(text).not.toContain(`<a id="${id}"></a>`);
+        } else {
+          expect(text).toContain(`<a id="${id}"></a>`);
+        }
+      }
     }
   });
 
-  it('keeps connection-state recovery removal and independent validation list scoped', () => {
+  it('keeps connection-state recovery per join API and Token validation scoped to its reason', () => {
     const text = read(file('android', 'network'));
     const parameters = section(
       text,
@@ -265,11 +379,57 @@ describe('RTC PR #2094 frozen source delta', () => {
       '</Parameter>',
     );
     expect(state).toContain(
-      '`CONNECTION_STATE_FAILED` (5)：SDK 连接声网边缘服务器失败。',
+      '`CONNECTION_STATE_FAILED` (5)：SDK 无法连接声网边缘服务器或加入频道，并停止重连。',
     );
-    expect(state).not.toContain('leaveChannel');
-    expect(parameters).toContain('\n请确保：\n\n- 项目启用 App Certificate');
-    expect(parameters).not.toContain('  - 请确保：');
+    expect(state).toContain(
+      '用户被服务端踢出、Token 失效或鉴权失败时，回调报告的 `reason` 可能不同，但进入该状态后的恢复流程一致：',
+    );
+    const recoverySteps = state.match(/^ {2}- .* 场景：.*$/gm) ?? [];
+    expect(recoverySteps).toHaveLength(2);
+    expect(recoverySteps[0]).toContain(
+      '`joinChannel` 场景：先调用 `leaveChannel`，等待 ',
+    );
+    expect(recoverySteps[0]).toContain(
+      '回调报告 `CONNECTION_STATE_DISCONNECTED` (1)，再使用有效的新 Token 调用 `joinChannel`。',
+    );
+    expect(recoverySteps[0]).toContain(
+      '如果未先离开频道，`joinChannel` 会返回 -17（`ERR_JOIN_CHANNEL_REJECTED`）。',
+    );
+    expect(recoverySteps[1]).toContain(
+      '[joinChannelEx](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex) 场景：针对对应的 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection) 调用 `leaveChannelEx`，等待该连接的 ',
+    );
+    expect(recoverySteps[1]).toContain(
+      '回调报告 `CONNECTION_STATE_DISCONNECTED` (1)，再使用有效的新 Token 调用 [joinChannelEx](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex)。',
+    );
+    expect(recoverySteps[1]).toContain(
+      '如需只清理该连接，请使用 `leaveChannelEx`；调用 `leaveChannel` 会离开当前加入的所有频道。',
+    );
+    for (const step of recoverySteps) {
+      expect(step).toContain(
+        '[onConnectionStateChanged](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionstatechanged)',
+      );
+    }
+    const reason = section(
+      parameters,
+      '<Parameter name="reason">',
+      '</Parameter>',
+    );
+    const invalidToken = section(
+      reason,
+      '- `CONNECTION_CHANGED_INVALID_TOKEN` (8)：',
+      '\n- `CONNECTION_CHANGED_TOKEN_EXPIRED` (9)：',
+    );
+    expect(invalidToken).toContain(
+      [
+        '  - 请确保：',
+        '',
+        '    - 项目启用 App Certificate 时，加入频道必须传入 Token。',
+        '    - 生成 Token 时指定的用户 ID 与加入频道时使用的用户 ID 一致。',
+        '    - 使用的 Token 与生成的 Token 一致。',
+      ].join('\n'),
+    );
+    expect(state).not.toContain('请确保：');
+    expect(reason).not.toContain('\n请确保：');
   });
 
   it.each(['cpp-all-platforms', 'ios', 'macos'])(

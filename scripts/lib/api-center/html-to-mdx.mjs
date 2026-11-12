@@ -1,5 +1,12 @@
 import * as cheerio from 'cheerio';
 import { getTableOfContents } from 'fumadocs-core/content/toc';
+import {
+  readLegacyImageSizing,
+  renderMigratedImage,
+} from '../legacy-image-sizing.mjs';
+import { layoutMergedTable, renderMergedTable } from '../merged-table.mjs';
+import { normalizeTableGrid } from '../table-grid.mjs';
+import { apiPrototypeLanguage } from './code-language.mjs';
 import { rewriteLegacyBodyLinks } from './legacy-links.mjs';
 import {
   createWarning,
@@ -10,6 +17,7 @@ import {
   renderStableAnchor,
   rewriteLegacyHref,
 } from './migration-framework.mjs';
+import { typedocNotice } from './typedoc-structure.mjs';
 
 export const API_CENTER_GENERATOR_CONVERSION_OPTIONS = Object.freeze({
   appledoc: {
@@ -170,10 +178,15 @@ function calloutType(element) {
   return null;
 }
 
-function languageFromCode(element) {
-  const classes = String(element.attr('class') ?? '').split(/\s+/);
-  const marker = classes.find((name) => /^(?:lang|language)-/.test(name));
-  return marker?.replace(/^(?:lang|language)-/, '') || 'text';
+function languageFromCode(element, state) {
+  for (const candidate of [element, element.parent()]) {
+    const classes = String(candidate.attr('class') ?? '').split(/\s+/);
+    const marker = classes.find((name) => /^(?:lang|language)-/.test(name));
+    if (marker) return marker.replace(/^(?:lang|language)-/, '');
+  }
+  return element.closest('[id$="__prototype"]').length
+    ? (apiPrototypeLanguage(state.sourcePath) ?? 'text')
+    : 'text';
 }
 
 function selectArticle($) {
@@ -1050,6 +1063,18 @@ async function renderImage($, element, state, fallbackAlt = '') {
       ),
     );
   }
+  const sizing = readLegacyImageSizing(
+    ['width', 'height']
+      .filter((name) => element.attr(name))
+      .map((name) => `${name}=${JSON.stringify(element.attr(name))}`)
+      .join(' '),
+  );
+  const render = (src) =>
+    renderMigratedImage({
+      ...sizing,
+      src,
+      alt: sizing.width || sizing.height ? alt : escapeMdxText(alt),
+    });
   if (!state.onAsset) {
     state.warnings.push(
       createWarning(
@@ -1057,7 +1082,7 @@ async function renderImage($, element, state, fallbackAlt = '') {
         `No asset handler is configured for ${source}.`,
       ),
     );
-    return `![${escapeMdxText(alt)}](${source})`;
+    return render(source);
   }
   try {
     const target = await state.onAsset({
@@ -1067,12 +1092,12 @@ async function renderImage($, element, state, fallbackAlt = '') {
       sourcePath: state.sourcePath,
     });
     state.assets.push({ source, target });
-    return `![${escapeMdxText(alt)}](${target})`;
+    return render(target);
   } catch (error) {
     state.warnings.push(
       createWarning('asset-missing', `${source}: ${error.message}`),
     );
-    return `![${escapeMdxText(alt)}](${source})`;
+    return render(source);
   }
 }
 
@@ -1167,55 +1192,107 @@ async function renderUnwrappedListItems($, element, state) {
 }
 
 async function renderTable($, table, state) {
-  const rows = table.find('> thead > tr, > tbody > tr, > tr').toArray();
+  const rows = table
+    .find('> thead > tr, > tbody > tr, > tr')
+    .toArray()
+    .filter((row) => {
+      // Doxygen inserts empty decoration rows between members, not API records.
+      const cells = $(row).children('td, th');
+      return !(
+        table.hasClass('memberdecls') &&
+        cells.length === 1 &&
+        cells.first().hasClass('memSeparator') &&
+        !cleanText($(row).text()) &&
+        !$(row).attr('id') &&
+        !$(row).find('[id], a[name], a[href], img').length
+      );
+    });
   if (rows.length === 0) return '';
   const values = [];
   const definitions = [];
-  let width = 0;
+  const firstHeaderSpan = Math.max(
+    1,
+    ...$(rows[0])
+      .children('th')
+      .toArray()
+      .map((cell) => Number.parseInt($(cell).attr('rowspan') ?? '1', 10) || 1),
+  );
   for (const [rowIndex, row] of rows.entries()) {
     const cells = $(row).children('th, td').toArray();
     const renderedCells = [];
     for (const cell of cells) {
       const element = $(cell);
-      const span = Math.max(
-        1,
-        Number.parseInt(element.attr('colspan') ?? '1', 10) || 1,
-      );
+      const metadata = {
+        kind:
+          element.is('th') ||
+          $(row).parent().is('thead') ||
+          rowIndex < firstHeaderSpan
+            ? 'h'
+            : 'd',
+        colspan: Number.parseInt(element.attr('colspan') ?? '1', 10) || 1,
+        rowspan: Number.parseInt(element.attr('rowspan') ?? '1', 10) || 1,
+      };
       const rich =
         rowIndex > 0 &&
+        metadata.kind !== 'h' &&
         element.find(
           'table, ul, ol, pre, blockquote, img, div, section, p, dl, figure, [id], a[name]',
         ).length > 0;
       if (!rich) {
-        renderedCells.push(
-          cleanText(
+        renderedCells.push({
+          ...metadata,
+          raw: cleanText(
             await renderInlineNodes($, element.contents().toArray(), state),
           ),
-        );
-        renderedCells.push(...Array.from({ length: span - 1 }, () => ''));
+        });
         continue;
       }
       const body = await renderChildren($, element, state);
       if (!body) {
-        renderedCells.push('');
+        renderedCells.push({ ...metadata, raw: '' });
         continue;
       }
       const slotName = `api-center-table-${state.tableSlotCounter++}`;
-      renderedCells.push(`<Slot name="${slotName}" />`);
-      renderedCells.push(...Array.from({ length: span - 1 }, () => ''));
+      renderedCells.push({
+        ...metadata,
+        raw: `<Slot name="${slotName}" />`,
+        nativeRaw: body,
+      });
       definitions.push(`<Slot for="${slotName}">\n\n${body}\n\n</Slot>`);
     }
-    width = Math.max(width, renderedCells.length);
     values.push(renderedCells);
   }
-  const normalized = values.map((row) => [
-    ...row,
-    ...Array.from({ length: width - row.length }, () => ''),
-  ]);
-  const headerRow = normalized.shift();
-  return [renderSimpleTable(headerRow, normalized), ...definitions]
+  const layout = layoutMergedTable(values);
+  if (layout.hasSpans || layout.headerCount > 1) {
+    return renderMergedTable(
+      values.map((row) =>
+        row.map((cell) => ({
+          ...cell,
+          raw: cell.nativeRaw ?? cell.raw,
+        })),
+      ),
+    );
+  }
+  const { header, bodyRows } = normalizeTableGrid(values);
+  return [
+    renderSimpleTable(
+      header.map((cell) => cell.raw),
+      bodyRows.map((row) => row.map((cell) => cell.raw)),
+    ),
+    ...definitions,
+  ]
     .filter(Boolean)
     .join('\n\n');
+}
+
+async function renderCalloutChildren($, element, state) {
+  const previous = state.calloutDepth ?? 0;
+  state.calloutDepth = previous + 1;
+  try {
+    return await renderChildren($, element, state);
+  } finally {
+    state.calloutDepth = previous;
+  }
 }
 
 async function renderDefinitionList($, list, state) {
@@ -1247,7 +1324,10 @@ async function renderDefinitionList($, list, state) {
         listIsSince ||
         (listIsTypeDocCommentTags && isSinceDefinitionTerm(renderedTerm));
     } else {
-      const body = await renderChildren($, $(child), state);
+      const body =
+        term && (listIsDeprecated || termIsSince || listIsDoxygenNote)
+          ? await renderCalloutChildren($, $(child), state)
+          : await renderChildren($, $(child), state);
       if (term) {
         if (listIsDeprecated) {
           const title = termPlainText || term;
@@ -1262,6 +1342,9 @@ async function renderDefinitionList($, list, state) {
         } else if (listIsDoxygenParams || listIsDoxygenReturn) {
           const title = listIsDoxygenReturn ? '返回值' : term;
           blocks.push(`#### ${title} [!toc]\n\n${body}`);
+        } else if (listIsTypeDocCommentTags && !termHasLink) {
+          // A comment tag describes its member; it is not another API member.
+          blocks.push(`#### ${term}\n\n${body}`);
         } else {
           blocks.push(
             `${termHasLink ? `**${term}**` : `### ${term}`}\n\n${body}`,
@@ -1306,8 +1389,45 @@ async function renderRelatedLinks($, element, state) {
 async function renderNodeSequence($, nodes, state) {
   const blocks = [];
   let inline = '';
-  for (const child of nodes) {
+  for (let index = 0; index < nodes.length; index += 1) {
+    const child = nodes[index];
     const name = elementName(child);
+    // TypeDoc stores signatures and their descriptions in parallel lists.
+    // Preserve that association in Markdown rather than flattening both lists.
+    if (name === 'ul' && $(child).hasClass('tsd-signatures')) {
+      let next = index + 1;
+      while (nodes[next]?.type === 'text' && !nodes[next].data.trim()) {
+        next += 1;
+      }
+      const descriptions = $(nodes[next]);
+      const signatures = $(child).children('li').toArray();
+      if (signatures.length > 1 && descriptions.hasClass('tsd-descriptions')) {
+        const items = descriptions.children('li').toArray();
+        if (items.length === signatures.length) {
+          if (inline.trim()) blocks.push(inline.trim());
+          inline = '';
+          blocks.push(anchorFor($(child)), anchorFor(descriptions));
+          for (const [overloadIndex, signature] of signatures.entries()) {
+            const memberName =
+              cleanText($(signature).text()).split('(')[0] || 'Call signature';
+            const list = $('<ul></ul>').append($(signature).clone());
+            blocks.push(
+              `#### ${escapeMdxText(memberName)} [${overloadIndex + 1}/${signatures.length}]`,
+              await parseTypeDocSignatures($, list, state),
+              await renderTypeDocDescription($, $(items[overloadIndex]), state),
+            );
+          }
+          index = next;
+          continue;
+        }
+        state.warnings.push(
+          createWarning(
+            'unsupported-html-structure',
+            'TypeDoc overload signature and description counts differ; their source order was preserved for review.',
+          ),
+        );
+      }
+    }
     const isHeadingAnchor =
       name === 'a' && $(child).children('h1, h2, h3, h4, h5, h6').length > 0;
     const isMultilineCode =
@@ -1394,6 +1514,31 @@ async function renderBlockNode($, node, state) {
   const element = $(node);
   const name = elementName(node);
   const anchor = anchorFor(element);
+  if (name === 'div' && element.hasClass('tsd-signature')) {
+    const labels = element
+      .parent()
+      .children('h3, h4')
+      .find('.tsd-flag')
+      .toArray()
+      .map((flag) => cleanText($(flag).text()))
+      .filter(Boolean);
+    const signature = normalizeGeneratedSignature(
+      await renderTypeDocInlineNodes($, element.contents().toArray(), state),
+    );
+    if (signature) {
+      state.structuredApiMembers.typedoc.signatures += 1;
+      return [
+        anchor,
+        renderRichMdxComponent(
+          'ApiSignature',
+          signature,
+          parameterAttribute('labels', labels.join(' ')),
+        ),
+      ]
+        .filter(Boolean)
+        .join('\n\n');
+    }
+  }
   if (name === 'nav') {
     const isRelatedLinks =
       element.hasClass('related-links') || element.find('.relinfo').length > 0;
@@ -1440,7 +1585,7 @@ async function renderBlockNode($, node, state) {
       .first();
     const title = cleanText(titleNode.text());
     if (titleNode.length > 0) titleNode.remove();
-    const body = await renderChildren($, element, state);
+    const body = await renderCalloutChildren($, element, state);
     return [anchor, renderCallout({ type: detectedCallout, title, body })]
       .filter(Boolean)
       .join('\n\n');
@@ -1481,6 +1626,20 @@ async function renderBlockNode($, node, state) {
   }
   if (/^h[1-6]$/.test(name)) {
     const level = Number(name.slice(1));
+    let modifierAlias = '';
+    let headingElement = element;
+    if (
+      element.find('.tsd-flag').length &&
+      element.parent().children('div.tsd-signature').length
+    ) {
+      const oldId = getTableOfContents(
+        `${'#'.repeat(level)} ${cleanText(element.text())}`,
+      )[0]?.url.slice(1);
+      headingElement = element.clone();
+      headingElement.find('.tsd-flag').remove();
+      if (oldId && oldId !== element.attr('id'))
+        modifierAlias = renderStableAnchor(oldId);
+    }
     const nestedAnchors = element
       .find('a[id], a[name]')
       .toArray()
@@ -1489,11 +1648,16 @@ async function renderBlockNode($, node, state) {
     const title = cleanText(
       stripHeadingLinks(
         (
-          await renderInlineNodes($, element.contents().toArray(), state)
+          await renderInlineNodes($, headingElement.contents().toArray(), state)
         ).replace(/<a id=(?:"[^"]*"|'[^']*')><\/a>/g, ''),
       ),
     );
-    return [anchor, ...nestedAnchors, `${'#'.repeat(level)} ${title}`]
+    return [
+      anchor,
+      modifierAlias,
+      ...nestedAnchors,
+      `${'#'.repeat(level)} ${title}`,
+    ]
       .filter(Boolean)
       .join('\n\n');
   }
@@ -1516,7 +1680,7 @@ async function renderBlockNode($, node, state) {
         rawText: true,
       }),
     );
-    return [anchor, renderCodeFence(source, languageFromCode(element))]
+    return [anchor, renderCodeFence(source, languageFromCode(element, state))]
       .filter(Boolean)
       .join('\n\n');
   }
@@ -1532,7 +1696,13 @@ async function renderBlockNode($, node, state) {
       );
       return anchor;
     }
-    return [anchor, renderCodeFence(source, languageFromCode(code))]
+    return [
+      anchor,
+      renderCodeFence(
+        source,
+        languageFromCode(code.length ? code : element, state),
+      ),
+    ]
       .filter(Boolean)
       .join('\n\n');
   }
@@ -1581,7 +1751,22 @@ async function renderBlockNode($, node, state) {
       .join('\n\n');
   }
   if (name === 'blockquote') {
-    const content = await renderChildren($, element, state);
+    const labeled =
+      element.parents('blockquote').length === 0 &&
+      typedocNotice(cleanText(element.text()));
+    const content = labeled
+      ? await renderCalloutChildren($, element, state)
+      : await renderChildren($, element, state);
+    const notice = labeled && typedocNotice(content);
+    if (notice)
+      return [
+        anchor,
+        state.calloutDepth
+          ? `**${notice.title}${notice.separator}**\n\n${notice.body}`
+          : renderCallout(notice),
+      ]
+        .filter(Boolean)
+        .join('\n\n');
     const quote = content
       .split('\n')
       .map((line) => `> ${line}`.trimEnd())
@@ -1671,6 +1856,23 @@ export async function convertHtmlToMdx({
       ],
     };
   }
+  // Doxygen inserts hidden anti-spam text and sometimes a scripted href.
+  // Recover only a complete visible email address; never evaluate onclick.
+  article.find('a').each((_, node) => {
+    const link = $(node);
+    if (!link.text().includes('.nosp@m.')) return;
+    const visible = link.clone();
+    visible.find('.obfuscator').remove();
+    visible
+      .find('[style]')
+      .filter((_, child) =>
+        /display\s*:\s*none\b/i.test($(child).attr('style') ?? ''),
+      )
+      .remove();
+    const email = visible.text().trim();
+    if (!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email)) return;
+    link.text(email).attr('href', `mailto:${email}`).removeAttr('onclick');
+  });
   const state = createState({
     sourceUrl,
     sourcePath,

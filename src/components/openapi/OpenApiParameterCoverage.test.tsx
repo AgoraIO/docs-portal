@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { load } from 'cheerio';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import type { Root, RootContent } from 'mdast';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { remark } from 'remark';
@@ -29,6 +29,34 @@ const lanes = getOpenApiLanes().filter((lane) =>
 );
 const compact = (text: string) => text.replace(/\s+/g, '');
 
+// These legacy tutorial references must survive source edits as well as rendering.
+// Deriving all expectations from the current YAML would miss deleted sentences.
+const requiredAuthGuides: Record<string, Record<string, string>> = {
+  'agora-analytics-rest': {
+    Authorization:
+      '/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth',
+  },
+  'console-rest': {
+    Authorization:
+      '/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth',
+  },
+  'media-pull-rest': {
+    'Basic Auth': '/zh-CN/realtime-media/media-pull/build/http-basic-auth',
+  },
+  'rtc-rest-zh-cn': {
+    'Basic Auth':
+      '/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth',
+  },
+  'cloud-transcoding-rest-zh-cn': {
+    'Basic Auth': '/zh-CN/realtime-media/transcoding/build/http-auth',
+    'API Key':
+      '/zh-CN/realtime-media/transcoding/build/http-auth#实现-http-hmac-鉴权',
+  },
+  'voip-callkit-rest': {
+    'Basic Auth': '/zh-CN/solutions/voip-call/build/http-basic-auth',
+  },
+};
+
 function resolve(document: RecordValue, raw: unknown): RecordValue {
   const value = raw as RecordValue;
   if (typeof value?.$ref !== 'string' || !value.$ref.startsWith('#/'))
@@ -45,7 +73,14 @@ function resolve(document: RecordValue, raw: unknown): RecordValue {
 }
 
 function proseParts(node: Root | RootContent): string[] {
-  if (node.type === 'text' || node.type === 'inlineCode') return [node.value];
+  if (node.type === 'text')
+    return [
+      node.value.replace(
+        /^\[!(?:NOTE|INFO|TIP|SUCCESS|IMPORTANT|WARNING|CAUTION|DANGER|ERROR)\](?:[ \t]*\r?\n|[ \t]*$)/,
+        '',
+      ),
+    ];
+  if (node.type === 'inlineCode') return [node.value];
   if (node.type === 'html') return [load(node.value).text()];
   if ('children' in node) return node.children.flatMap(proseParts);
   return [];
@@ -64,6 +99,20 @@ describe('published Chinese REST parameter coverage', () => {
       const document = yaml.load(
         readFileSync(lane.sourcePath['zh-CN'], 'utf8'),
       ) as RecordValue;
+      const schemes = (document.components as RecordValue)?.securitySchemes as
+        | RecordValue
+        | undefined;
+      for (const [name, href] of Object.entries(
+        requiredAuthGuides[lane.id] ?? {},
+      )) {
+        const scheme = resolve(document, schemes?.[name]);
+        const description =
+          typeof scheme?.description === 'string' ? scheme.description : '';
+        expect(
+          proseLinks(remark().parse(description)),
+          `${lane.id}/security/${name}: required tutorial reference`,
+        ).toContain(href);
+      }
       for (const [path, rawItem] of Object.entries(
         document.paths as RecordValue,
       )) {
@@ -118,8 +167,6 @@ describe('published Chinese REST parameter coverage', () => {
                 expect(text, `${context}: ${part}`).toContain(part);
             }
           }
-          const schemes = (document.components as RecordValue)
-            ?.securitySchemes as RecordValue | undefined;
           const security = (operation.security ??
             document.security ??
             []) as RecordValue[];

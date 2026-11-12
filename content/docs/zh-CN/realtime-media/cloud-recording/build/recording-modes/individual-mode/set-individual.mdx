@@ -9,6 +9,15 @@ title: "实现单流录制"
 本文内容适用于新单流录制。旧版单流录制文档请参阅[旧版实现单流录制](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/legacy-set-individual)。
 :::
 
+## 从旧版单流录制迁移
+
+从旧版单流录制迁移至 v2 时，除调整录制文件处理逻辑外，还需要更新以下配置：
+
+- 将 `start`、`update`、`query` 和 `stop` 请求 URL 中的 `mode/individual` 改为 `mode/raw`。
+- 删除 `recordingConfig.streamMode`。v2 不再支持 `standard`、`default` 和 `original`。
+- 删除请求中的 `clientRequest.extensionServiceConfig`。新单流录制（`mode=raw`）不支持该字段，请求中包含该字段会被接口拒绝。
+- 如果使用[消息通知服务](/zh-CN/realtime-media/cloud-recording/build/monitor-events/enable-ncs)，将回调处理逻辑中对 `payload.serviceScene` 的判断从 `rtc_record` 更新为 `rtsc/raw-recording`，否则可能忽略新单流录制的回调。字段说明见[回调事件概览](/zh-CN/realtime-media/cloud-recording/reference/ncs-events#payload-字段说明)。
+
 ## 前提条件
 
 开始前，请参考[使用 RESTful API 开始云端录制](/zh-CN/realtime-media/cloud-recording/get-started/quick-start)进行一次完整的录制流程体验。
@@ -253,7 +262,7 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<yourappid>/cloud
 `uploadingStatus` 字段表示录制文件上传状态：
 
 - `uploaded`：录制文件已上传至第三方云存储。
-- `stranded`：v2 新增状态。业务逻辑需要针对该状态补充分支处理，并结合消息通知或查询结果处理未完成的文件上传。
+- `stranded`：v2 新增状态，表示部分录制文件尚未上传至指定的第三方云存储。录制服务会继续自动重试上传，直至上传成功；该状态不表示文件丢失。业务侧应将其视为“上传未完成”，等待文件上传完成后再进行依赖完整录制文件的播放或处理。
 
 ## 开发注意事项
 

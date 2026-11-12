@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_ilocalspatialaudioengine_initialize__prototype"></a>
 
-```text
+```cpp
 virtual int initialize(const LocalSpatialAudioConfig& config) = 0;
 ```
 
@@ -71,7 +71,7 @@ ILocalSpatialAudioEngine 的配置。详见 [LocalSpatialAudioConfig](/zh-CN/api
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams__prototype"></a>
 
-```text
+```cpp
 virtual int muteAllRemoteAudioStreams(bool mute) = 0;
 ```
 
@@ -126,7 +126,7 @@ virtual int muteAllRemoteAudioStreams(bool mute) = 0;
 
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream__prototype"></a>
 
-```text
+```cpp
 virtual int muteLocalAudioStream(bool mute) = 0;
 ```
 
@@ -180,7 +180,7 @@ virtual int muteLocalAudioStream(bool mute) = 0;
 
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream__prototype"></a>
 
-```text
+```cpp
 virtual int muteRemoteAudioStream(uid_t uid, bool mute) = 0;
 ```
 
@@ -238,7 +238,7 @@ virtual int muteRemoteAudioStream(uid_t uid, bool mute) = 0;
 
 <a id="api_ilocalspatialaudioengine_updateremoteposition__prototype"></a>
 
-```text
+```cpp
 virtual int updateRemotePosition(uid_t uid, const RemoteVoicePositionInfo &posInfo) = 0;
 ```
 
@@ -292,7 +292,7 @@ virtual int updateRemotePosition(uid_t uid, const RemoteVoicePositionInfo &posIn
 
 <a id="api_ibasespatialaudioengine_updateselfposition__prototype"></a>
 
-```text
+```cpp
 virtual int updateSelfPosition(float position[3], float axisForward[3], float axisRight[3], float axisUp[3]) = 0;
 ```
 
@@ -356,7 +356,7 @@ virtual int updateSelfPosition(float position[3], float axisForward[3], float ax
 
 <a id="api_ibasespatialaudioengine_release__prototype"></a>
 
-```text
+```cpp
 virtual void release() = 0;
 ```
 
@@ -386,7 +386,7 @@ virtual void release() = 0;
 
 <a id="api_ilocalspatialaudioengine_clearremotepositions__prototype"></a>
 
-```text
+```cpp
 virtual int clearRemotePositions() = 0;
 ```
 
@@ -419,7 +419,7 @@ virtual int clearRemotePositions() = 0;
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition__prototype"></a>
 
-```text
+```cpp
 virtual int removeRemotePosition(uid_t uid) = 0;
 ```
 
@@ -465,7 +465,7 @@ virtual int removeRemotePosition(uid_t uid) = 0;
 
 <a id="api_ibasespatialaudioengine_setaudiorecvrange__prototype"></a>
 
-```text
+```cpp
 virtual int setAudioRecvRange(float range) = 0;
 ```
 
@@ -509,7 +509,7 @@ virtual int setAudioRecvRange(float range) = 0;
 
 <a id="api_ibasespatialaudioengine_setdistanceunit__prototype"></a>
 
-```text
+```cpp
 virtual int setDistanceUnit(float unit) = 0;
 ```
 
@@ -555,7 +555,7 @@ virtual int setDistanceUnit(float unit) = 0;
 
 <a id="api_irtcengine_setheadphoneeqparameters__prototype"></a>
 
-```text
+```cpp
 virtual int setHeadphoneEQParameters(int lowGain, int highGain) = 0;
 ```
 
@@ -607,7 +607,7 @@ virtual int setHeadphoneEQParameters(int lowGain, int highGain) = 0;
 
 <a id="api_irtcengine_setheadphoneeqpreset__prototype"></a>
 
-```text
+```cpp
 virtual int setHeadphoneEQPreset(HEADPHONE_EQUALIZER_PRESET preset) = 0;
 ```
 
@@ -657,7 +657,7 @@ virtual int setHeadphoneEQPreset(HEADPHONE_EQUALIZER_PRESET preset) = 0;
 
 <a id="api_ibasespatialaudioengine_setmaxaudiorecvcount__prototype"></a>
 
-```text
+```cpp
 virtual int setMaxAudioRecvCount(int maxCount) = 0;
 ```
 
@@ -701,7 +701,7 @@ virtual int setMaxAudioRecvCount(int maxCount) = 0;
 
 <a id="api_ibasespatialaudioengine_setplayerattenuation__prototype"></a>
 
-```text
+```cpp
 virtual int setPlayerAttenuation(int playerId, double attenuation, bool forceSet) = 0;
 ```
 
@@ -768,7 +768,7 @@ virtual int setPlayerAttenuation(int playerId, double attenuation, bool forceSet
 
 <a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__prototype"></a>
 
-```text
+```cpp
 virtual int setRemoteAudioAttenuation(uid_t uid, double attenuation, bool forceSet) = 0;
 ```
 
@@ -833,7 +833,7 @@ virtual int setRemoteAudioAttenuation(uid_t uid, double attenuation, bool forceS
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams__prototype"></a>
 
-```text
+```cpp
 virtual int setRemoteUserSpatialAudioParams(uid_t uid, const agora::SpatialAudioParams& params) = 0;
 ```
 
@@ -883,7 +883,7 @@ virtual int setRemoteUserSpatialAudioParams(uid_t uid, const agora::SpatialAudio
 
 <a id="api_imediaplayer_setspatialaudioparams__prototype"></a>
 
-```text
+```cpp
 virtual int setSpatialAudioParams(const SpatialAudioParams& params) = 0;
 ```
 
@@ -929,7 +929,7 @@ virtual int setSpatialAudioParams(const SpatialAudioParams& params) = 0;
 
 <a id="api_ibasespatialaudioengine_setzones__prototype"></a>
 
-```text
+```cpp
 virtual int setZones(const SpatialAudioZone *zones, unsigned int zoneCount) = 0;
 ```
 
@@ -991,7 +991,7 @@ virtual int setZones(const SpatialAudioZone *zones, unsigned int zoneCount) = 0;
 
 <a id="api_ibasespatialaudioengine_updateplayerpositioninfo__prototype"></a>
 
-```text
+```cpp
 virtual int updatePlayerPositionInfo(int playerId, const RemoteVoicePositionInfo& positionInfo) = 0;
 ```
 
@@ -1051,7 +1051,7 @@ virtual int updatePlayerPositionInfo(int playerId, const RemoteVoicePositionInfo
 
 <a id="api_irtcengine_enablespatialaudio__prototype"></a>
 
-```text
+```cpp
 virtual int enableSpatialAudio(bool enabled) = 0;
 ```
 

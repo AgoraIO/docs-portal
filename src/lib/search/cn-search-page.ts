@@ -1,8 +1,14 @@
+import { codeLanguageNames } from '../code/languages';
 import { normalizeCnProductFacets } from './cn-products';
 import { type CnSearchFamily, getCnSearchFamily } from './cn-search-family';
 import { isPublicCnSearchUrl } from './cn-search-urls.mjs';
+import { getSearchSectionIdentity } from './kb-record';
 import type { SearchHit } from './meilisearch-client';
 import type { SearchPageState } from './search-page-state';
+import {
+  stripSearchComponentTags,
+  stripSearchProseMarkers,
+} from './search-prose';
 
 export { isPublicCnSearchUrl } from './cn-search-urls.mjs';
 
@@ -95,22 +101,46 @@ export async function loadCnSearchCatalog(signal?: AbortSignal) {
   return result.facets;
 }
 
-// The current demo index contains Markdown source. Keep highlight tags while
-// removing authoring syntax from the cropped, text-only search preview.
+// Keep highlight tags while removing authoring syntax from cropped previews,
+// including older snapshots whose summaries still contain serialized MDX.
+// Meilisearch may prepend its crop marker directly to an opening fence.
 export function cleanSearchSnippet(value: string): string {
-  return value
+  return stripSearchProseMarkers(
+    stripSearchComponentTags(stripCroppedFenceHeader(value)),
+  )
     .replace(/\bOpenAPI:\s*\/openapi\/\S*/gi, '')
     .replace(/\|?\s*:?-{3,}:?\s*(?=\||$)/gm, ' ')
     .replace(/(^|\s)\|(?=\s|$)/gm, '$1')
+    .replace(/(^|\n)([ \t]*(?:…[ \t]*)?)(?:`{3,}|~{3,})[^\r\n]*/g, '$1$2')
     .replace(/```[\w+-]*\s*/g, ' ')
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
     .replace(/\[([^\]]*)\]\([^)]*(?:\)|$)/g, '$1')
-    .replace(/<\/?[a-z][^<>]*>/gi, (tag) =>
+    .replace(/<\/?[a-z_][^<>]*>/gi, (tag) =>
       /^<\/?(?:mark|em)>$/i.test(tag) ? tag : '',
     )
+    .replace(/<\/?_[a-z][^<>]*$/gi, '')
     .replace(/(?:\*\*|__|`)/g, '')
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+function stripCroppedFenceHeader(value: string): string {
+  const firstLine = value.match(/^([ \t]*(?:…|\.{3}))[ \t]*([^\r\n]*)/);
+  if (!firstLine) return value;
+
+  // Only inspect a copy without highlights; the remaining snippet stays intact.
+  const header = firstLine[2].replace(/<\/?(?:mark|em)>/gi, '').trim();
+  if (!/^(?:`{3,}|~{3,})/.test(header)) {
+    const info = header.match(/^(\S+)[ \t]+(.+)$/);
+    if (!info || !codeLanguageNames.has(info[1].toLowerCase())) return value;
+    const remainder = info[2].replace(
+      /\b(?:tab|tabGroup|title)[ \t]*=[ \t]*(?:"[^"]*"|'[^']*')|\blineNumbers\b/g,
+      '',
+    );
+    if (remainder.trim()) return value;
+  }
+
+  return `${firstLine[1]} ${value.slice(firstLine[0].length)}`;
 }
 
 export function mergeSearchPageGroups(
@@ -135,8 +165,8 @@ export function mergeSearchPageGroups(
           if (
             !previous.sections.some(
               (item) =>
-                getSearchSectionHref(previous.pageUrl, item.url) ===
-                getSearchSectionHref(previous.pageUrl, section.url),
+                getSearchSectionIdentity(item) ===
+                getSearchSectionIdentity(section),
             )
           )
             previous.sections.push(section);
@@ -163,17 +193,18 @@ export function groupSearchSections(
 ): SearchPageGroup[] {
   const groups = new Map<string, SearchPageGroup>();
   for (const hit of hits) {
-    const pageUrl = (
+    const pageUrl = hit.url.split('#')[0];
+    const groupUrl = (
       platformFiltered ? hit.url : (hit.canonicalUrl ?? hit.url)
     ).split('#')[0];
     const groupKey = getSearchPageGroupKey({
-      pageUrl,
+      pageUrl: groupUrl,
       product: hit.product,
       docType: hit.docType,
       version: hit.version,
     });
     const platforms = platformFiltered
-      ? selectedPlatform
+      ? selectedPlatform && hit.platform?.includes(selectedPlatform)
         ? [selectedPlatform]
         : (hit.platform ?? [])
       : (hit.availablePlatforms ?? hit.platform ?? []);
@@ -182,8 +213,7 @@ export function groupSearchSections(
       if (
         !existing.sections.some(
           (section) =>
-            getSearchSectionHref(pageUrl, section.url) ===
-            getSearchSectionHref(pageUrl, hit.url),
+            getSearchSectionIdentity(section) === getSearchSectionIdentity(hit),
         )
       )
         existing.sections.push(hit);
@@ -223,12 +253,4 @@ export function getSearchPageGroupKey(
       group.version ?? '',
     ].join('\u0000')
   );
-}
-
-export function getSearchSectionHref(
-  pageUrl: string,
-  sectionUrl: string,
-): string {
-  const hash = sectionUrl.indexOf('#');
-  return hash >= 0 ? `${pageUrl}${sectionUrl.slice(hash)}` : pageUrl;
 }

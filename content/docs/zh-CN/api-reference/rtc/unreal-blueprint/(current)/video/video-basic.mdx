@@ -24,7 +24,7 @@ _migration:
 
 <a id="api_irtcengine_disablevideo__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int DisableVideo();
 ```
@@ -81,7 +81,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_enablelocalvideo__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int EnableLocalVideo(bool enabled);
 ```
@@ -144,7 +144,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_enablevideo__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int EnableVideo();
 ```
@@ -202,7 +202,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setvideoencoderconfiguration__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetVideoEncoderConfiguration(const FVideoEncoderConfiguration& config);
 ```
@@ -259,7 +259,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetVideoEncoderConfigurationEx(const FVideoEncoderConfiguration& config, const FRtcConnection& connection);
 ```
@@ -322,7 +322,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_setvideoscenario__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetVideoScenario(EVIDEO_APPLICATION_SCENARIO_TYPE scenarioType);
 ```
@@ -375,7 +375,7 @@ APPLICATION_SCENARIO_MEETING (1) 适用于会议场景。SDK 会针对该场景�
 
 <a id="api_irtcengine_setvideoscenario__1v1"></a>
 
-APPLICATION_SCENARIO_1V1 (2) 适用于[视频 1v1 通话](/zh-CN/api-reference/private-room/android/rtm/overview/product-overview)场景。针对该场景低延迟、高画质的体验要求，SDK 进行了策略调优，提升了画质、首帧出图、中低端机延迟及弱网流畅度等性能表现。
+APPLICATION_SCENARIO_1V1 (2) 适用于[视频 1v1 通话](/zh-CN/solutions/one-to-one-live/rtm)场景。针对该场景低延迟、高画质的体验要求，SDK 进行了策略调优，提升了画质、首帧出图、中低端机延迟及弱网流畅度等性能表现。
 
 <a id="api_irtcengine_setvideoscenario__liveshow"></a>
 
@@ -409,7 +409,7 @@ APPLICATION_SCENARIO_LIVESHOW (3) 适用于秀场直播场景。针对该场景�
 
 <a id="api_irtcengine_startpreview2__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StartPreview(EVIDEO_SOURCE_TYPE sourceType = EVIDEO_SOURCE_TYPE::VIDEO_SOURCE_CAMERA_PRIMARY);
 ```
@@ -465,7 +465,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_stoppreview2__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StopPreview(EVIDEO_SOURCE_TYPE sourceType = EVIDEO_SOURCE_TYPE::VIDEO_SOURCE_CAMERA_PRIMARY);
 ```
@@ -524,7 +524,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnFirstLocalVideoFrame(EVIDEO_SOURCE_TYPE source, int width, int height, int elapsed);
 ```
@@ -582,7 +582,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnFirstLocalVideoFramePublished(EVIDEO_SOURCE_TYPE source, int elapsed);
 ```
@@ -630,7 +630,7 @@ SDK 会在以下三种时机触发该回调：
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnFirstRemoteVideoDecoded(int64 uid, int width, int height, int elapsed);
 ```
@@ -695,7 +695,7 @@ SDK 会在以下时机触发该回调：
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnFirstRemoteVideoFrame(int64 uid, int width, int height, int elapsed);
 ```
@@ -753,7 +753,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnLocalVideoStateChanged(EVIDEO_SOURCE_TYPE source, ELOCAL_VIDEO_STREAM_STATE state, ELOCAL_VIDEO_STREAM_REASON reason);
 ```
@@ -828,7 +828,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onlocalvideostats__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnLocalVideoStats(EVIDEO_SOURCE_TYPE source, const FLocalVideoStats& stats);
 ```
@@ -874,7 +874,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnRemoteVideoStateChanged(int64 uid, EREMOTE_VIDEO_STATE state, EREMOTE_VIDEO_STATE_REASON reason, int elapsed);
 ```
@@ -934,7 +934,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onremotevideostats__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnRemoteVideoStats(const FRemoteVideoStats& stats);
 ```
@@ -974,7 +974,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onremotevideotransportstats__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnRemoteVideoTransportStats(int64 uid, int delay, int lost, int rxKBitRate);
 ```
@@ -1042,7 +1042,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnUserEnableLocalVideo(int64 uid, bool enabled);
 ```
@@ -1100,7 +1100,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onuserenablevideo__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnUserEnableVideo(int64 uid, bool enabled);
 ```
@@ -1149,7 +1149,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onusermutevideo__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnUserMuteVideo(int64 uid, bool muted);
 ```
@@ -1200,7 +1200,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onvideopublishstatechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnVideoPublishStateChanged(EVIDEO_SOURCE_TYPE source, const FString& channel, ESTREAM_PUBLISH_STATE oldState, ESTREAM_PUBLISH_STATE newState, int elapseSinceLastState);
 ```
@@ -1258,7 +1258,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onvideosizechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnVideoSizeChanged(EVIDEO_SOURCE_TYPE sourceType, int64 uid, int width, int height, int rotation);
 ```
@@ -1318,7 +1318,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onvideostopped__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnVideoStopped();
 ```

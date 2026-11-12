@@ -261,7 +261,7 @@ description: "了解如何快速接入实时互动 RTC，完成环境准备、�
 
 下图展示了使用声网 RTC SDK 实现音视频互动的基本流程：
 
-![实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg)
+<DocsImage alt="实现流程" src="https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg" displayWidth="70%" />
 
 下面列出了一段实现实时互动基本流程的完整代码以供参考。复制以下代码到 `/app/src/main/java/com/example/<projectname>/MainActivity.java` 文件中替换 `package com.example.<projectname>` 后的全部内容，即可快速体验实时互动基础功能。
 
@@ -963,7 +963,7 @@ class ViewController: UIViewController {
 
 下图展示了使用声网 RTC SDK 实现音视频互动的基本流程。
 
-![实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg)
+<DocsImage alt="实现流程" src="https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg" displayWidth="70%" />
 
 下面列出了一段实现实时互动基本流程的完整代码以供参考。复制以下代码到 `ViewController.swift` 文件中替换原有内容即可。
 
@@ -1476,7 +1476,7 @@ class ViewController: NSViewController {
 
 下图展示了使用声网 RTC SDK 实现音视频互动的基本流程。
 
-![实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg)
+<DocsImage alt="实现流程" src="https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg" displayWidth="70%" />
 
 下面列出了一段实现实时互动基本流程的完整代码以供参考。复制以下代码到 `ViewController.swift` 文件中替换原有内容即可。
 
@@ -2018,7 +2018,15 @@ import AgoraRTC from "agora-rtc-sdk-ng"
 
 将以下代码复制到 `index.html` 实现客户端用户界面：
 
-```html tab="互动直播" tabGroup="mode"
+<Tabs defaultValue="live" groupId="mode" persist>
+<TabsList>
+  <TabsTrigger value="live">互动直播</TabsTrigger>
+  <TabsTrigger value="rtc">视频通话</TabsTrigger>
+</TabsList>
+
+<TabsContent value="live">
+
+```html
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -2042,7 +2050,11 @@ import AgoraRTC from "agora-rtc-sdk-ng"
 </html>
 ```
 
-```html tab="视频通话" tabGroup="mode"
+</TabsContent>
+
+<TabsContent value="rtc">
+
+```html
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -2064,6 +2076,9 @@ import AgoraRTC from "agora-rtc-sdk-ng"
     </body>
 </html>
 ```
+
+</TabsContent>
+</Tabs>
 
 ### 4. 复制项目示例代码
 
@@ -2596,22 +2611,27 @@ npm run start:dev
     - 加入和离开频道按钮
 
     你可以参考下列步骤来创建用户界面。
-**创建用户界面步骤**
+
+<Accordions type="multiple">
+<Accordion title="创建用户界面步骤">
 
 1. 在右侧菜单栏将项目切换为资源视图，然后打开 `.Dialog` 文件，此时你的界面如下图所示：
 
-<DocsImage alt="ui" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-quickstart-ui1.png" displayWidth="70%" />
+   <DocsImage alt="ui" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-quickstart-ui1.png" displayWidth="70%" />
 
-    2. 添加展示远端视频的视图框。在**视图 > 工具箱**中，选择添加 **Picture Control** 控件，在**属性 > 杂项**中，将该控件的 ID 设为 **IDC_STATIC_REMOTE**，如下图所示：
+2. 添加展示远端视频的视图框。在**视图 > 工具箱**中，选择添加 **Picture Control** 控件，在**属性 > 杂项**中，将该控件的 ID 设为 **IDC_STATIC_REMOTE**，如下图所示：
 
-<DocsImage alt="remote users" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-quickstart-remote.png" displayWidth="70%" />
+   <DocsImage alt="remote users" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-quickstart-remote.png" displayWidth="70%" />
 
-    3. 添加展示本地视频的视图框。在**视图 > 工具箱**中，选择添加 **Picture Control** 控件，在**属性 > 杂项**中，将该控件的 ID 设为 **IDC_STATIC_LOCAL**。
-    4. 添加输入频道名称的输入框。在**视图 > 工具箱**中，选择添加 **Static Text** 控件，在**属性**中将**描述文字**改为**频道名**。然后再添加一个 **Edit Control** 控件作为输入框，在**属性 > 杂项**中，将该控件的 ID 设为 **IDC_EDIT_CHANNEL**。
-    5. 添加加入和离开频道按钮。在**视图 > 工具箱**中，选择添加两个 **Button** 控件，在**属性 > 杂项**中，将控件的 ID 分设为 **ID_BTN_JOIN** 和 **ID_BTN_LEAVE**，将**描述文字**分别设为**加入**、**离开**。
-    此时的用户界面如下图所示：
+3. 添加展示本地视频的视图框。在**视图 > 工具箱**中，选择添加 **Picture Control** 控件，在**属性 > 杂项**中，将该控件的 ID 设为 **IDC_STATIC_LOCAL**。
+4. 添加输入频道名称的输入框。在**视图 > 工具箱**中，选择添加 **Static Text** 控件，在**属性**中将**描述文字**改为**频道名**。然后再添加一个 **Edit Control** 控件作为输入框，在**属性 > 杂项**中，将该控件的 ID 设为 **IDC_EDIT_CHANNEL**。
+5. 添加加入和离开频道按钮。在**视图 > 工具箱**中，选择添加两个 **Button** 控件，在**属性 > 杂项**中，将控件的 ID 分设为 **ID_BTN_JOIN** 和 **ID_BTN_LEAVE**，将**描述文字**分别设为**加入**、**离开**。
+   此时的用户界面如下图所示：
 
-<DocsImage alt="ui" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-quickstart-ui2.png" displayWidth="70%" />
+   <DocsImage alt="ui" src="https://web-cdn.agora.io/docs-portal/img/rtc/windows-quickstart-ui2.png" displayWidth="70%" />
+
+</Accordion>
+</Accordions>
 
 
     ## 实现步骤
@@ -3223,7 +3243,8 @@ LRESULT CAgoraQuickStartDlg::OnEIDUserOffline(WPARAM wParam, LPARAM lParam) {
     在 `APP_ID` 和 `Token` 字段中传入你在控制台获取到的 App ID 和临时 Token。
     :::
 
-**实现音视频互动示例代码**
+<Accordions type="multiple">
+<Accordion title="实现音视频互动示例代码">
 
 ```csharp
 using System;
@@ -3412,6 +3433,9 @@ namespace WindowsFormsApp2
     }
 }
 ```
+
+</Accordion>
+</Accordions>
 
 
     ### 导入声网相关的类
@@ -3773,7 +3797,7 @@ namespace WindowsFormsApp2
 
 下图展示了使用声网 RTC SDK 实现音视频互动的基本流程：
 
-![实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg)
+<DocsImage alt="实现流程" src="https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg" displayWidth="70%" />
 
 下面列出了一段实现实时互动基本流程的完整代码以供参考。复制以下代码到 `pages/Index.ets` 文件中替换原有内容，即可快速体验实时互动基础功能。
 
@@ -4794,7 +4818,7 @@ client = AgoraRtc.createClient({mode: "live", codec: "h264"});
 
 下图展示了使用声网 RTC SDK 实现音视频互动的基本流程。
 
-![实时互动快速开始流程图](https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg)
+<DocsImage alt="实时互动快速开始流程图" src="https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg" displayWidth="70%" />
 
 下面列出了实现实时音视频互动基本流程的完整代码以供参考，你可以先将 `main.js` 和 `renderer.js` 文件的全部内容分别替换为以下代码，参考[测试项目](#测试项目)中的步骤快速体验实时音视频互动的基础功能，再按照实现流程了解其中的核心 API 调用。
 
@@ -5361,32 +5385,32 @@ rtcEngine.release();
 
 1. 创建加入/离开频道按钮。
 
-   a. 在你的 Unity 项目中，右击 **Sample Scene**，选择 **Game Object** > **UI** > **Button**。此时你可以在场景画布中看到你刚刚创建的按钮。
+   1. 在你的 Unity 项目中，右击 **Sample Scene**，选择 **Game Object** > **UI** > **Button**。此时你可以在场景画布中看到你刚刚创建的按钮。
 
-   b. 在右侧的 **Inspector** 面板中，将 **Button** 重命名为 **Leave**。选中 **Button** 按钮的 **Text** 控件，将 **Text** 的文本内容修改为 **Leave**，并调整按钮的位置，例如：
+   2. 在右侧的 **Inspector** 面板中，将 **Button** 重命名为 **Leave**。选中 **Button** 按钮的 **Text** 控件，将 **Text** 的文本内容修改为 **Leave**，并调整按钮的位置，例如：
 
-   - **Pos X**：`- 350`
-   - **Pos Y**：`- 172`
+      - **Pos X**：`- 350`
+      - **Pos Y**：`- 172`
 
-   c. 重复上述步骤来创建一个 **Join** 按钮。
+   3. 重复上述步骤来创建一个 **Join** 按钮。
 
 2. 创建本地及远端视图窗口。
 
-   a. 右击 **Canvas**，选择 **UI** > **Raw Image**。
+   1. 右击 **Canvas**，选择 **UI** > **Raw Image**。
 
-   b. 创建本地视图窗口。在右侧的 **Inspector** 面板中，将 **Raw Image** 重命名为 **LocalView**，并调整在画布中位置，例如：
+   2. 创建本地视图窗口。在右侧的 **Inspector** 面板中，将 **Raw Image** 重命名为 **LocalView**，并调整在画布中位置，例如：
 
-   - **Pos X**：`-250`
-   - **Pos Y**：`0`
-   - **Width**：`250`
-   - **Height**：`250`
+      - **Pos X**：`-250`
+      - **Pos Y**：`0`
+      - **Width**：`250`
+      - **Height**：`250`
 
-   c. 重复上述步骤创建远端视图窗口，将其命名为 **RemoteView**，并调整在画布中的位置，例如：
+   3. 重复上述步骤创建远端视图窗口，将其命名为 **RemoteView**，并调整在画布中的位置，例如：
 
-   - **Pos X**：`250`
-   - **Pos Y**：`0`
-   - **Width**：`250`
-   - **Height**：`250`
+      - **Pos X**：`250`
+      - **Pos Y**：`0`
+      - **Width**：`250`
+      - **Height**：`250`
 
 3. 保存上述步骤的更改。
 
@@ -5399,7 +5423,7 @@ rtcEngine.release();
 
 下图展示了使用声网 RTC SDK 实现音视频互动的基本流程：
 
-![实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg)
+<DocsImage alt="实现流程" src="https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg" displayWidth="60%" />
 
 :::info[信息]
 在 `_appId`、`_token` 和 `_channelName` 字段中传入你在控制台获取到的 App ID、临时 Token，以及生成临时 Token 时填入的频道名。
@@ -6124,7 +6148,7 @@ Widget build(BuildContext context) {
 
 下图展示了使用声网 RTC SDK 实现音视频互动的基本流程：
 
-![实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg)
+<DocsImage alt="实现流程" src="https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg" displayWidth="70%" />
 
 下面列出了一段实现实时音视频互动基本流程的完整代码以供参考。复制以下代码替换 `/lib/main.dart` 文件的全部内容，即可快速体验实时音视频互动基础功能。
 
@@ -6820,7 +6844,7 @@ const styles = StyleSheet.create({
 
 下图展示了使用声网 RTC SDK 实现音视频互动的基本流程。
 
-![实时互动快速开始流程图](https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg)
+<DocsImage alt="实时互动快速开始流程图" src="https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg" displayWidth="70%" />
 
 下面列出了一段实现实时音视频互动基本流程的完整代码以供参考，你可以先复制完整的示例代码到你的项目中，参考[测试项目](#调试项目)中的步骤快速体验实时音视频互动的基础功能，再按照实现流程了解其中的核心 API 调用。
 
@@ -7464,7 +7488,7 @@ agoraEngineRef.current?.release();
 
 下图展示了使用声网 RTC SDK 实现音视频互动的基本流程：
 
-![实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg)
+<DocsImage alt="实现流程" src="https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg" displayWidth="70%" />
 
 下面列出了实现实时互动基本流程的完整代码以供参考。复制以下代码即可快速体验实时互动基础功能。
 
@@ -7698,7 +7722,8 @@ public class UnrealLearning : ModuleRules
 
 4. 添加系统所需权限
 
-**Android**
+<Accordions type="multiple">
+<Accordion title="Android">
 
 如果目标平台为 Android，则添加 AndroidPermission 库并获取设备及网络权限：
 
@@ -7756,8 +7781,12 @@ void UAgoraWidget::NativeConstruct()
 }
 ```
 
+</Accordion>
+</Accordions>
 
-**iOS & macOS**
+
+<Accordions type="multiple">
+<Accordion title="iOS & macOS">
 
 1. 如果目标平台为 iOS/macOS，请参考[如何为 Unreal Engine 项目添加实时互动所需的权限？](/zh-CN/reference/faq/integration/unreal_permissions)
 
@@ -7779,6 +7808,9 @@ void UAgoraWidget::NativeConstruct()
         }
     }
     ```
+
+</Accordion>
+</Accordions>
 
 
 3. 关联 C++ 类和 Widget

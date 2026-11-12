@@ -1,17 +1,11 @@
-import { execFile } from 'node:child_process';
-import { randomUUID } from 'node:crypto';
-import { mkdtemp, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import path from 'node:path';
-import { promisify } from 'node:util';
-import { decodeSearchQueryText } from '../../../src/lib/search/search-url-state.ts';
 import { getPlatformForUrl } from '../../../src/lib/platforms/query-route.ts';
 import {
   normalizePlatformKey,
   platformRegistry,
 } from '../../../src/lib/platforms/registry.ts';
+import { decodeSearchQueryText } from '../../../src/lib/search/search-url-state.ts';
 
-const execute = promisify(execFile);
+import { createBrowserDriver } from '../browser-driver.mjs';
 
 // Deliberately self-contained: the exact same collector runs in Chromium and tests.
 export function collectDomEvidence() {
@@ -442,59 +436,9 @@ export function collectNavigationEvidence(rawHash = '') {
   };
 }
 
-async function createDriver({
-  executable = process.env.CN_LINK_BROWSER_EXECUTABLE || 'agent-browser',
-  timeoutMs = 15000,
-} = {}) {
-  const directory = await mkdtemp(path.join(tmpdir(), 'cn-link-browser-'));
-  const config = path.join(directory, 'config.json');
-  await writeFile(config, '{}');
-  const session = `cn-link-audit-${randomUUID()}`;
-  // Do not inherit a user's attached browser, persistent profile, or auth state.
-  const env = Object.fromEntries(
-    Object.entries(process.env).filter(
-      ([key]) => !key.startsWith('AGENT_BROWSER_'),
-    ),
-  );
-  env.AGENT_BROWSER_DEFAULT_TIMEOUT = String(timeoutMs);
-  const run = async (...args) => {
-    let stdout, executionError;
-    try {
-      ({ stdout } = await execute(
-        executable,
-        ['--config', config, '--session', session, '--json', ...args],
-        {
-          env,
-          // Native 0.25.4 open waits 25s even with DEFAULT_TIMEOUT set.
-          // Let it return before snapshotting; killing only its client leaves
-          // the daemon busy and blocks evidence for this and the next target.
-          timeout:
-            args[0] === 'open'
-              ? Math.max(28000, timeoutMs + 3000)
-              : timeoutMs + 3000,
-          maxBuffer: 32 * 1024 * 1024,
-        },
-      ));
-    } catch (error) {
-      executionError = error;
-      stdout = error.stdout;
-    }
-    let parsed;
-    try {
-      parsed = JSON.parse(stdout);
-    } catch {
-      throw executionError ?? new Error('invalid-browser-json');
-    }
-    if (parsed.success !== true)
-      throw new Error(
-        typeof parsed.error === 'string'
-          ? parsed.error
-          : JSON.stringify(parsed.error ?? parsed),
-      );
-    if (executionError) throw executionError;
-    return parsed.data;
-  };
-  const evaluate = async (script) => (await run('eval', script)).result;
+async function createDriver(options = {}) {
+  const driver = await createBrowserDriver(options);
+  const { evaluate } = driver;
   const snapshot = () => evaluate(`(${collectDomEvidence.toString()})()`);
   const navigationSnapshot = (rawHash = '') =>
     evaluate(
@@ -514,22 +458,12 @@ async function createDriver({
     return evidence;
   };
   return {
-    run,
-    evaluate,
+    ...driver,
     snapshot,
     navigationSnapshot,
     settle,
     navigationSettle: (rawHash = '') =>
       settle(() => navigationSnapshot(rawHash)),
-    close: async () => {
-      try {
-        await run('close');
-      } catch {
-        /* Still remove our configuration after a launch failure. */
-      } finally {
-        await rm(directory, { recursive: true, force: true });
-      }
-    },
   };
 }
 

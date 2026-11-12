@@ -311,13 +311,12 @@ describe('Chinese documentation platform applicability', () => {
     ).toContain('API 名称均以 C++ 为例');
   });
 
-  it('keeps the historical Java compatibility data visibly retired', () => {
+  it('offers current RTSA platforms without retired Java compatibility data', () => {
     const doc = readDoc(
       'realtime-media/rtsa/reference/supported-platforms.mdx',
     );
-    expect(doc).toContain('已下架的 Java SDK（历史兼容性）');
-    expect(doc).toContain('RTSA Java SDK 已完成下架。历史下架时间点如下：');
-    expect(doc).toContain('2025 年 4 月 30 日（不含）');
-    expect(doc).toContain('/rtsa/reference/sunset');
+    expect(doc).toContain('| Linux |');
+    expect(doc).toContain('| RTOS |');
+    expect(doc).not.toMatch(/Java|Android|HarmonyOS|\/rtsa\/reference\/sunset/);
   });
 });

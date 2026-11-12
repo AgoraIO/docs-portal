@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_iaudioframeobserverbase_getearmonitoringaudioparams_iaudioframeobserverbase__prototype"></a>
 
-```text
+```cpp
 virtual AudioParams getEarMonitoringAudioParams() = 0;
 ```
 
@@ -53,7 +53,7 @@ virtual AudioParams getEarMonitoringAudioParams() = 0;
 
 <a id="api_iaudioframeobserverbase_getmixedaudioparams_iaudioframeobserverbase__prototype"></a>
 
-```text
+```cpp
 virtual AudioParams getMixedAudioParams() = 0;
 ```
 
@@ -85,7 +85,7 @@ virtual AudioParams getMixedAudioParams() = 0;
 
 <a id="api_iaudioframeobserverbase_getobservedaudioframeposition_iaudioframeobserverbase__prototype"></a>
 
-```text
+```cpp
 virtual int getObservedAudioFramePosition() = 0;
 ```
 
@@ -127,7 +127,7 @@ virtual int getObservedAudioFramePosition() = 0;
 
 <a id="api_iaudioframeobserverbase_getplaybackaudioparams_iaudioframeobserverbase__prototype"></a>
 
-```text
+```cpp
 virtual AudioParams getPlaybackAudioParams() = 0;
 ```
 
@@ -159,7 +159,7 @@ virtual AudioParams getPlaybackAudioParams() = 0;
 
 <a id="api_iaudioframeobserverbase_getrecordaudioparams_iaudioframeobserverbase__prototype"></a>
 
-```text
+```cpp
 virtual AudioParams getRecordAudioParams() = 0;
 ```
 
@@ -191,7 +191,7 @@ virtual AudioParams getRecordAudioParams() = 0;
 
 <a id="api_imediaengine_registeraudioframeobserver_imediaengine__prototype"></a>
 
-```text
+```cpp
 virtual int registerAudioFrameObserver(IAudioFrameObserver* observer) = 0;
 ```
 
@@ -239,7 +239,7 @@ virtual int registerAudioFrameObserver(IAudioFrameObserver* observer) = 0;
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__prototype"></a>
 
-```text
+```cpp
 virtual int setEarMonitoringAudioFrameParameters(int sampleRate, int channel, RAW_AUDIO_FRAME_OP_MODE_TYPE mode, int samplesPerCall) = 0;
 ```
 
@@ -309,7 +309,7 @@ virtual int setEarMonitoringAudioFrameParameters(int sampleRate, int channel, RA
 
 <a id="api_irtcengine_setmixedaudioframeparameters__prototype"></a>
 
-```text
+```cpp
 virtual int setMixedAudioFrameParameters(int sampleRate, int channel, int samplesPerCall) = 0;
 ```
 
@@ -372,7 +372,7 @@ virtual int setMixedAudioFrameParameters(int sampleRate, int channel, int sample
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__prototype"></a>
 
-```text
+```cpp
 virtual int setPlaybackAudioFrameBeforeMixingParameters(int sampleRate, int channel) = 0;
 ```
 
@@ -429,7 +429,7 @@ SDK 会根据采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-re
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__prototype"></a>
 
-```text
+```cpp
 virtual int setPlaybackAudioFrameBeforeMixingParameters(int sampleRate, int channel, int samplesPerCall) = 0;
 ```
 
@@ -492,7 +492,7 @@ virtual int setPlaybackAudioFrameBeforeMixingParameters(int sampleRate, int chan
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__prototype"></a>
 
-```text
+```cpp
 virtual int setPlaybackAudioFrameParameters(int sampleRate, int channel, RAW_AUDIO_FRAME_OP_MODE_TYPE mode, int samplesPerCall) = 0;
 ```
 
@@ -567,7 +567,7 @@ SDK 会根据 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算采样�
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__prototype"></a>
 
-```text
+```cpp
 virtual int setRecordingAudioFrameParameters(int sampleRate, int channel, RAW_AUDIO_FRAME_OP_MODE_TYPE mode, int samplesPerCall) = 0;
 ```
 
@@ -636,7 +636,7 @@ virtual int setRecordingAudioFrameParameters(int sampleRate, int channel, RAW_AU
 
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe_iaudioframeobserverbase__prototype"></a>
 
-```text
+```cpp
 virtual bool onEarMonitoringAudioFrame(AudioFrame& audioFrame) = 0;
 ```
 
@@ -685,7 +685,7 @@ virtual bool onEarMonitoringAudioFrame(AudioFrame& audioFrame) = 0;
 
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe_iaudioframeobserverbase__prototype"></a>
 
-```text
+```cpp
 virtual bool onMixedAudioFrame(const char* channelId, AudioFrame& audioFrame) = 0;
 ```
 
@@ -738,7 +738,7 @@ virtual bool onMixedAudioFrame(const char* channelId, AudioFrame& audioFrame) = 
 
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase__prototype"></a>
 
-```text
+```cpp
 virtual bool onPlaybackAudioFrame(const char* channelId, AudioFrame& audioFrame) = 0;
 ```
 
@@ -791,7 +791,7 @@ virtual bool onPlaybackAudioFrame(const char* channelId, AudioFrame& audioFrame)
 
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframebeforemixing_iaudioframeobserverbase__prototype"></a>
 
-```text
+```cpp
 virtual bool onPlaybackAudioFrameBeforeMixing(const char* channelId, base::user_id_t userId, AudioFrame& audioFrame)
 ```
 
@@ -843,7 +843,7 @@ virtual bool onPlaybackAudioFrameBeforeMixing(const char* channelId, base::user_
 
 <a id="callback_iaudioframeobserverbase_onrecordaudioframe_iaudioframeobserverbase__prototype"></a>
 
-```text
+```cpp
 virtual bool onRecordAudioFrame(const char* channelId, AudioFrame& audioFrame) = 0;
 ```
 

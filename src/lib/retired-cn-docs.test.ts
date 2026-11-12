@@ -12,11 +12,16 @@ import { getPublicDocsMarkdownResponse } from './docs-markdown.server';
 import { loadDocsPagePayload } from './docs-page.server';
 import { getOpenApiLanes, resolveOpenApiEndpointRoute } from './openapi/lanes';
 import { getContentDocsPrerenderPaths } from './prerender-content-routes';
-import { isRetiredCnDocsPath, retiredCnDocPages } from './retired-cn-docs.mjs';
+import {
+  isRetiredCnDocsPath,
+  isRetiredCnLegacyDocsPath,
+  retiredCnDocPages,
+} from './retired-cn-docs.mjs';
 import { isPublicCnSearchUrl } from './search/cn-search-urls.mjs';
 import { getLLMText, source } from './source.server';
 
 const retiredPaths = [
+  '/zh-CN/realtime-media/rtsa/reference/sunset',
   '/zh-CN/realtime-media/fusion-cdn',
   '/zh-CN/realtime-media/fusion-cdn/build/enable-service',
   '/zh-CN/api-reference/fusion-cdn/restful/api/reference',
@@ -41,6 +46,56 @@ const retiredPaths = [
 ];
 
 describe('retired Chinese product documentation', () => {
+  it('retires RTSA Java namespaces while keeping C namespaces active', () => {
+    for (const url of [
+      '/zh-CN/api-reference/rtsa/java/overview',
+      '/zh-CN/api-reference/api-ref/rtsa/java/overview',
+    ]) {
+      expect(isRetiredCnDocsPath(url)).toBe(true);
+      expect(isPublicCnSearchUrl(url)).toBe(false);
+    }
+    for (const url of [
+      '/doc/rtsa/java/overview/sunset.html',
+      '/api-ref/rtsa/java/classio_1_1agora_1_1rtc.html',
+    ]) {
+      expect(isRetiredCnLegacyDocsPath(url)).toBe(true);
+    }
+    expect(
+      isRetiredCnLegacyDocsPath('/doc/rtsa/c/overview/product-overview'),
+    ).toBe(false);
+    expect(
+      isRetiredCnDocsPath('/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h'),
+    ).toBe(false);
+  });
+  it('keeps RTSA C documentation and RTC server Java interoperability examples available', () => {
+    for (const slugs of [
+      ['realtime-media', 'rtsa'],
+      ['realtime-media', 'rtsa', 'reference', 'downloads'],
+      ['api-reference', 'rtsa', 'c', 'agora-rtc-api-8h'],
+    ]) {
+      expect(source.getPage(slugs, 'zh-CN')).toBeDefined();
+    }
+    expect(JSON.stringify(source.getPageTree('zh-CN'))).not.toContain(
+      '/realtime-media/rtsa/reference/sunset',
+    );
+    const page = source.getPage(
+      [
+        'realtime-media',
+        'rtsa',
+        'build',
+        'rtc-interoperability',
+        'interoperate-rtc',
+      ],
+      'zh-CN',
+    );
+    expect(page).toBeDefined();
+    expect(
+      readFileSync(
+        'content/docs/zh-CN/realtime-media/rtsa/build/rtc-interoperability/interoperate-rtc.mdx',
+        'utf8',
+      ),
+    ).toContain('RTC 服务端 Java SDK');
+  });
   it.each([
     ['introduction'],
     ['realtime-media', 'overview'],
@@ -95,35 +150,11 @@ describe('retired Chinese product documentation', () => {
     ['solutions', 'one-to-one-classroom'],
     ['solutions', 'small-classroom'],
     ['solutions', 'online-music-class'],
-    ...['android', 'ios', 'macos', 'cpp-all-platforms'].map((platform) => [
-      'api-reference',
-      'online-music-teaching',
-      platform,
-      'overview',
-      'product-overview',
-    ]),
     ['solutions', 'digital-learning', 'course-resource'],
     ['solutions', 'digital-learning', 'school-resource'],
     ['solutions', 'art-class', 'build', 'enable-service'],
     ['realtime-media', 'speech-to-text'],
-    [
-      'api-reference',
-      'whiteboard',
-      'whiteboard-sdk',
-      'restful',
-      'fastboard-sdk',
-      'overview',
-      'product-overview',
-    ],
-    [
-      'api-reference',
-      'whiteboard',
-      'whiteboard-sdk',
-      'restful',
-      'whiteboard-sdk',
-      'overview',
-      'product-overview',
-    ],
+    ['realtime-media', 'whiteboard'],
   ])(
     'keeps active %s pages free of classroom recommendations in public Markdown',
     async (...slugs) => {

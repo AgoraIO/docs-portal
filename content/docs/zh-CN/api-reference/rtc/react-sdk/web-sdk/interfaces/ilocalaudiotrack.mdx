@@ -63,7 +63,11 @@ _migration:
 
 ### enabled
 
+<ApiSignature>
+
 enabled: boolean
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[enabled](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#enabled)
 
@@ -73,7 +77,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 ### isPlaying
 
+<ApiSignature>
+
 isPlaying: boolean
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[isPlaying](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#isplaying)
 
@@ -86,7 +94,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 ### muted
 
+<ApiSignature>
+
 muted: boolean
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[muted](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#muted)
 
@@ -96,7 +108,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 ### processorDestination
 
+<ApiSignature>
+
 processorDestination: IAudioProcessor
+
+</ApiSignature>
 
 :::info[自从]
 *4.10.0*
@@ -108,7 +124,11 @@ processorDestination: IAudioProcessor
 
 ### trackMediaType
 
+<ApiSignature>
+
 trackMediaType: "audio"|"video"
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[trackMediaType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#trackmediatype)
 
@@ -264,7 +284,7 @@ Overrides [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/il
 
 获取本地音频轨道的质量相关信息。
 
-### deprecated
+#### deprecated
 
 自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalaudiostats)。
 
@@ -399,21 +419,11 @@ void
 
 ### on
 
+#### on [1/3]
+
 <ApiSignature>
 
 on(event: "track-updated", listener: typeof event_track_updated): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "track-ended", listener: typeof event_track_ended): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "transceiver-updated", listener: typeof event_transceiver_updated): void
 
 </ApiSignature>
 
@@ -444,6 +454,14 @@ void
 
 </ApiReturns>
 
+#### on [2/3]
+
+<ApiSignature>
+
+on(event: "track-ended", listener: typeof event_track_ended): void
+
+</ApiSignature>
+
 Inherited from [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack#on)
 
 Overrides EventEmitter.on
@@ -470,6 +488,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [3/3]
+
+<ApiSignature>
+
+on(event: "transceiver-updated", listener: typeof event_transceiver_updated): void
+
+</ApiSignature>
 
 Inherited from [ILocalAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalaudiotrack#on)
 
@@ -788,9 +814,9 @@ setPlaybackDevice(deviceId: string): Promise&lt;void&gt;
 :::info[自从]
 *4.1.0*
 
-> 注意事项：
->
-> - 自 v4.7.0 起，该方法不再生效。请改用 [IRemoteAudioTrack.setPlaybackDevice](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#setplaybackdevice)。
+**注意事项：**
+
+- 自 v4.7.0 起，该方法不再生效。请改用 [IRemoteAudioTrack.setPlaybackDevice](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack#setplaybackdevice)。
 
 设置本地播放远端音频流的设备（扬声器）。
 :::

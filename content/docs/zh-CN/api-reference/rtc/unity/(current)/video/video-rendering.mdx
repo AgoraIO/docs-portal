@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_enableinstantmediarendering__prototype"></a>
 
-```text
+```csharp
 public abstract int EnableInstantMediaRendering();
 ```
 
@@ -69,7 +69,7 @@ public abstract int EnableInstantMediaRendering();
 
 <a id="api_videosurface_setenable__prototype"></a>
 
-```text
+```csharp
 public void SetEnable(bool enable)
         {
             Enable = enable;
@@ -108,7 +108,7 @@ public void SetEnable(bool enable)
 
 <a id="api_videosurface_setforuser__prototype"></a>
 
-```text
+```csharp
 public void SetForUser(uint uid = 0, string channelId = "",
             VIDEO_SOURCE_TYPE source_type = VIDEO_SOURCE_TYPE.VIDEO_SOURCE_CAMERA_PRIMARY)
         {
@@ -166,7 +166,7 @@ public void SetForUser(uint uid = 0, string channelId = "",
 
 <a id="api_irtcengine_setlocalrendermode1__prototype"></a>
 
-```text
+```csharp
 public abstract int SetLocalRenderMode(RENDER_MODE_TYPE renderMode);
 ```
 
@@ -214,7 +214,7 @@ public abstract int SetLocalRenderMode(RENDER_MODE_TYPE renderMode);
 
 <a id="api_irtcengine_setlocalrendermode2__prototype"></a>
 
-```text
+```csharp
 public abstract int SetLocalRenderMode(RENDER_MODE_TYPE renderMode, VIDEO_MIRROR_MODE_TYPE mirrorMode);
 ```
 
@@ -274,7 +274,7 @@ public abstract int SetLocalRenderMode(RENDER_MODE_TYPE renderMode, VIDEO_MIRROR
 
 <a id="api_irtcengine_setlocalrendertargetfps__prototype"></a>
 
-```text
+```csharp
 public abstract int SetLocalRenderTargetFps(VIDEO_SOURCE_TYPE sourceType, int targetFps);
 ```
 
@@ -336,7 +336,7 @@ public abstract int SetLocalRenderTargetFps(VIDEO_SOURCE_TYPE sourceType, int ta
 
 <a id="api_irtcengine_setlocalvideodatasourceposition__prototype"></a>
 
-```text
+```csharp
 public abstract int SetLocalVideoDataSourcePosition(VIDEO_MODULE_POSITION position);
 ```
 
@@ -393,7 +393,7 @@ public abstract int SetLocalVideoDataSourcePosition(VIDEO_MODULE_POSITION positi
 
 <a id="api_irtcengine_setlocalvideomirrormode__prototype"></a>
 
-```text
+```csharp
 public abstract int SetLocalVideoMirrorMode(VIDEO_MIRROR_MODE_TYPE mirrorMode);
 ```
 
@@ -439,7 +439,7 @@ public abstract int SetLocalVideoMirrorMode(VIDEO_MIRROR_MODE_TYPE mirrorMode);
 
 <a id="api_irtcengine_setremoterendermode2__prototype"></a>
 
-```text
+```csharp
 public abstract int SetRemoteRenderMode(uint uid, RENDER_MODE_TYPE renderMode, VIDEO_MIRROR_MODE_TYPE mirrorMode);
 ```
 
@@ -499,7 +499,7 @@ public abstract int SetRemoteRenderMode(uint uid, RENDER_MODE_TYPE renderMode, V
 
 <a id="api_irtcengineex_setremoterendermodeex__prototype"></a>
 
-```text
+```csharp
 public abstract int SetRemoteRenderModeEx(uint uid, RENDER_MODE_TYPE renderMode, VIDEO_MIRROR_MODE_TYPE mirrorMode, RtcConnection connection);
 ```
 
@@ -559,7 +559,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="api_irtcengine_setremoterendertargetfps__prototype"></a>
 
-```text
+```csharp
 public abstract int SetRemoteRenderTargetFps(int targetFps);
 ```
 
@@ -615,7 +615,7 @@ public abstract int SetRemoteRenderTargetFps(int targetFps);
 
 <a id="api_imediaplayer_setrendermode__prototype"></a>
 
-```text
+```csharp
 public abstract int SetRenderMode(RENDER_MODE_TYPE renderMode);
 ```
 
@@ -655,7 +655,7 @@ public abstract int SetRenderMode(RENDER_MODE_TYPE renderMode);
 
 <a id="api_irtcengine_setuplocalvideo__prototype"></a>
 
-```text
+```csharp
 public abstract int SetupLocalVideo(VideoCanvas canvas);
 ```
 
@@ -719,7 +719,7 @@ public abstract int SetupLocalVideo(VideoCanvas canvas);
 
 <a id="api_irtcengine_setupremotevideo__prototype"></a>
 
-```text
+```csharp
 public abstract int SetupRemoteVideo(VideoCanvas canvas);
 ```
 
@@ -773,7 +773,7 @@ public abstract int SetupRemoteVideo(VideoCanvas canvas);
 
 <a id="api_irtcengineex_setupremotevideoex__prototype"></a>
 
-```text
+```csharp
 public abstract int SetupRemoteVideoEx(VideoCanvas canvas, RtcConnection connection);
 ```
 
@@ -833,7 +833,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="api_irtcengine_startmediarenderingtracing__prototype"></a>
 
-```text
+```csharp
 public abstract int StartMediaRenderingTracing();
 ```
 
@@ -877,7 +877,7 @@ public abstract int StartMediaRenderingTracing();
 
 <a id="api_irtcengineex_startmediarenderingtracingex__prototype"></a>
 
-```text
+```csharp
 public abstract int StartMediaRenderingTracingEx(RtcConnection connection);
 ```
 
@@ -932,7 +932,7 @@ Texture 的宽高发生改变回调。
 
 <a id="callback_videosurface_ontexturesizemodify__prototype"></a>
 
-```text
+```csharp
 public event OnTextureSizeModifyHandler OnTextureSizeModify;
 ```
 
@@ -954,7 +954,7 @@ public event OnTextureSizeModifyHandler OnTextureSizeModify;
 
 <a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__prototype"></a>
 
-```text
+```csharp
 public virtual void OnTranscodedStreamLayoutInfo(RtcConnection connection, uint uid, int width, int height, int layoutCount, VideoLayout[] layoutlist)
 ```
 
@@ -1023,7 +1023,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unity/class-
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__prototype"></a>
 
-```text
+```csharp
 public virtual void OnVideoRenderingTracingResult(RtcConnection connection, uint uid, MEDIA_TRACE_EVENT currentEvent, VideoRenderingTracingInfo tracingInfo) { }
 ```
 

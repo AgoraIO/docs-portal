@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer__prototype"></a>
 
-```text
+```ts
 abstract registerAudioFrameObserver(
     observer: IAudioPcmFrameSink,
     mode?: RawAudioFrameOpModeType
@@ -70,7 +70,7 @@ abstract registerAudioFrameObserver(
 
 <a id="api_imediaplayer_registerplayersourceobserver__prototype"></a>
 
-```text
+```ts
 abstract registerPlayerSourceObserver(
     observer: IMediaPlayerSourceObserver
   ): number;
@@ -118,7 +118,7 @@ abstract registerPlayerSourceObserver(
 
 <a id="api_imediaplayer_registervideoframeobserver_imediaplayer__prototype"></a>
 
-```text
+```ts
 abstract registerVideoFrameObserver(
     observer: IMediaPlayerVideoFrameObserver
   ): number;
@@ -162,7 +162,7 @@ abstract registerVideoFrameObserver(
 
 <a id="api_imediaplayer_unregisteraudioframeobserver_imediaplayer__prototype"></a>
 
-```text
+```ts
 abstract unregisterAudioFrameObserver(observer: IAudioPcmFrameSink): number;
 ```
 
@@ -202,7 +202,7 @@ abstract unregisterAudioFrameObserver(observer: IAudioPcmFrameSink): number;
 
 <a id="api_imediaplayer_unregisterplayersourceobserver__prototype"></a>
 
-```text
+```ts
 abstract unregisterPlayerSourceObserver(
     observer: IMediaPlayerSourceObserver
   ): number;
@@ -244,7 +244,7 @@ abstract unregisterPlayerSourceObserver(
 
 <a id="api_imediaplayer_unregistervideoframeobserver_imediaplayer__prototype"></a>
 
-```text
+```ts
 abstract unregisterVideoFrameObserver(
     observer: IMediaPlayerVideoFrameObserver
   ): number;
@@ -286,7 +286,7 @@ abstract unregisterVideoFrameObserver(
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver__prototype"></a>
 
-```text
+```ts
 onAudioVolumeIndication?(volume: number): void;
 ```
 
@@ -321,7 +321,7 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 <a id="callback_iaudiopcmframesink_onframe_iaudiopcmframesink__prototype"></a>
 
-```text
+```ts
 onFrame?(frame: AudioPcmFrame): void;
 ```
 
@@ -356,7 +356,7 @@ onFrame?(frame: AudioPcmFrame): void;
 
 <a id="callback_imediaplayersourceobserver_onmetadata__prototype"></a>
 
-```text
+```ts
 onMetaData?(data: Uint8Array, length: number): void;
 ```
 
@@ -397,7 +397,7 @@ onMetaData?(data: Uint8Array, length: number): void;
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__prototype"></a>
 
-```text
+```ts
 onPlayBufferUpdated?(playCachedBuffer: number): void;
 ```
 
@@ -435,7 +435,7 @@ onPlayBufferUpdated?(playCachedBuffer: number): void;
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__prototype"></a>
 
-```text
+```ts
 onPlayerEvent?(
     eventCode: MediaPlayerEvent,
     elapsedTime: number,
@@ -486,7 +486,7 @@ onPlayerEvent?(
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__prototype"></a>
 
-```text
+```ts
 onPlayerInfoUpdated?(info: PlayerUpdatedInfo): void;
 ```
 
@@ -521,7 +521,7 @@ onPlayerInfoUpdated?(info: PlayerUpdatedInfo): void;
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__prototype"></a>
 
-```text
+```ts
 onPlayerSourceStateChanged?(
     state: MediaPlayerState,
     reason: MediaPlayerReason
@@ -565,7 +565,7 @@ onPlayerSourceStateChanged?(
 
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__prototype"></a>
 
-```text
+```ts
 onPlayerSrcInfoChanged?(from: SrcInfo, to: SrcInfo): void;
 ```
 
@@ -604,7 +604,7 @@ onPlayerSrcInfoChanged?(from: SrcInfo, to: SrcInfo): void;
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__prototype"></a>
 
-```text
+```ts
 onPositionChanged?(positionMs: number, timestampMs: number): void;
 ```
 
@@ -649,7 +649,7 @@ onPositionChanged?(positionMs: number, timestampMs: number): void;
 
 <a id="callback_imediaplayersourceobserver_onpreloadevent__prototype"></a>
 
-```text
+```ts
 onPreloadEvent?(src: string, event: PlayerPreloadEvent): void;
 ```
 

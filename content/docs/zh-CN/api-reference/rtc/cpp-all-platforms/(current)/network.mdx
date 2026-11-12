@@ -24,7 +24,7 @@ _migration:
 
 <a id="api_irtcengine_complain__prototype"></a>
 
-```text
+```cpp
 virtual int complain(const char* callId, const char* description) = 0;
 ```
 
@@ -76,7 +76,7 @@ virtual int complain(const char* callId, const char* description) = 0;
 
 <a id="api_irtcengine_enableencryption__prototype"></a>
 
-```text
+```cpp
 virtual int enableEncryption(bool enabled, const EncryptionConfig& config) = 0;
 ```
 
@@ -150,7 +150,7 @@ virtual int enableEncryption(bool enabled, const EncryptionConfig& config) = 0;
 
 <a id="api_irtcengineex_enableencryptionex__prototype"></a>
 
-```text
+```cpp
 virtual int enableEncryptionEx(const RtcConnection& connection, bool enabled, const EncryptionConfig& config) = 0;
 ```
 
@@ -226,7 +226,7 @@ virtual int enableEncryptionEx(const RtcConnection& connection, bool enabled, co
 
 <a id="api_irtcengine_enablewebsdkinteroperability__prototype"></a>
 
-```text
+```cpp
 virtual int enableWebSdkInteroperability(bool enabled) __deprecated = 0;
 ```
 
@@ -277,7 +277,7 @@ virtual int enableWebSdkInteroperability(bool enabled) __deprecated = 0;
 
 <a id="api_irtcengine_getcallid__prototype"></a>
 
-```text
+```cpp
 virtual int getCallId(agora::util::AString& callId) = 0;
 ```
 
@@ -325,7 +325,7 @@ virtual int getCallId(agora::util::AString& callId) = 0;
 
 <a id="api_irtcengineex_getcallidex__prototype"></a>
 
-```text
+```cpp
 virtual int getCallIdEx(agora::util::AString& callId, const RtcConnection& connection) = 0;
 ```
 
@@ -385,7 +385,7 @@ virtual int getCallIdEx(agora::util::AString& callId, const RtcConnection& conne
 
 <a id="api_irtcengine_getconnectionstate__prototype"></a>
 
-```text
+```cpp
 virtual CONNECTION_STATE_TYPE getConnectionState() = 0;
 ```
 
@@ -417,7 +417,7 @@ virtual CONNECTION_STATE_TYPE getConnectionState() = 0;
 
 <a id="api_irtcengineex_getconnectionstateex__prototype"></a>
 
-```text
+```cpp
 virtual CONNECTION_STATE_TYPE getConnectionStateEx(const RtcConnection& connection) = 0;
 ```
 
@@ -468,7 +468,7 @@ virtual CONNECTION_STATE_TYPE getConnectionStateEx(const RtcConnection& connecti
 
 <a id="api_irtcengine_getcurrentmonotonictimeinms__prototype"></a>
 
-```text
+```cpp
 virtual int64_t getCurrentMonotonicTimeInMs() = 0;
 ```
 
@@ -503,7 +503,7 @@ virtual int64_t getCurrentMonotonicTimeInMs() = 0;
 
 <a id="api_irtcengine_geterrordescription__prototype"></a>
 
-```text
+```cpp
 virtual const char* getErrorDescription(int code) = 0;
 ```
 
@@ -543,7 +543,7 @@ SDK 报告的错误码。
 
 <a id="api_irtcengine_getnetworktype__prototype"></a>
 
-```text
+```cpp
 virtual int getNetworkType() = 0;
 ```
 
@@ -584,7 +584,7 @@ virtual int getNetworkType() = 0;
 
 <a id="api_irtcengine_getntpwalltimeinms__prototype"></a>
 
-```text
+```cpp
 virtual uint64_t getNtpWallTimeInMs() = 0;
 ```
 
@@ -612,7 +612,7 @@ virtual uint64_t getNtpWallTimeInMs() = 0;
 
 <a id="api_irtcengine_getversion__prototype"></a>
 
-```text
+```cpp
 virtual const char* getVersion(int* build) = 0;
 ```
 
@@ -652,7 +652,7 @@ virtual const char* getVersion(int* build) = 0;
 
 <a id="api_irtcengine_isfeatureavailableondevice__prototype"></a>
 
-```text
+```cpp
 virtual bool isFeatureAvailableOnDevice(FeatureType type) = 0;
 ```
 
@@ -698,7 +698,7 @@ virtual bool isFeatureAvailableOnDevice(FeatureType type) = 0;
 
 <a id="api_irtcengine_querydevicescore__prototype"></a>
 
-```text
+```cpp
 virtual int queryDeviceScore() = 0;
 ```
 
@@ -727,7 +727,7 @@ virtual int queryDeviceScore() = 0;
 
 <a id="api_irtcengine_queryinterface__prototype"></a>
 
-```text
+```cpp
 virtual int queryInterface(INTERFACE_ID_TYPE iid, void** inter) = 0;
 ```
 
@@ -773,7 +773,7 @@ virtual int queryInterface(INTERFACE_ID_TYPE iid, void** inter) = 0;
 
 <a id="api_irtcengine_rate__prototype"></a>
 
-```text
+```cpp
 virtual int rate(const char* callId, int rating, const char* description) = 0;
 ```
 
@@ -832,7 +832,7 @@ virtual int rate(const char* callId, int rating, const char* description) = 0;
 
 <a id="api_irtcengine_registerpacketobserver__prototype"></a>
 
-```text
+```cpp
 virtual int registerPacketObserver(IPacketObserver* observer) = 0;
 ```
 
@@ -883,7 +883,7 @@ virtual int registerPacketObserver(IPacketObserver* observer) = 0;
 
 <a id="api_irtcengine_sendcustomreportmessage__prototype"></a>
 
-```text
+```cpp
 virtual int sendCustomReportMessage(const char* id, const char* category, const char* event, const char* label, int value) = 0;
 ```
 
@@ -949,7 +949,7 @@ virtual int sendCustomReportMessage(const char* id, const char* category, const 
 
 <a id="api_irtcengineex_sendcustomreportmessageex__prototype"></a>
 
-```text
+```cpp
 virtual int sendCustomReportMessageEx(const char* id, const char* category, const char* event, const char* label, int value, const RtcConnection& connection) = 0;
 ```
 
@@ -1027,7 +1027,7 @@ virtual int sendCustomReportMessageEx(const char* id, const char* category, cons
 
 <a id="api_irtcengine_setavsyncsource__prototype"></a>
 
-```text
+```cpp
 virtual int setAVSyncSource(const char* channelId, uid_t uid) = 0;
 ```
 
@@ -1079,7 +1079,7 @@ virtual int setAVSyncSource(const char* channelId, uid_t uid) = 0;
 
 <a id="api_irtcengine_setcloudproxy__prototype"></a>
 
-```text
+```cpp
 virtual int setCloudProxy(CLOUD_PROXY_TYPE proxyType) = 0;
 ```
 
@@ -1148,7 +1148,7 @@ virtual int setCloudProxy(CLOUD_PROXY_TYPE proxyType) = 0;
 
 <a id="api_irtcengine_setlocalaccesspoint__prototype"></a>
 
-```text
+```cpp
 virtual int setLocalAccessPoint(const LocalAccessPointConfiguration& config) = 0;
 ```
 
@@ -1200,7 +1200,7 @@ virtual int setLocalAccessPoint(const LocalAccessPointConfiguration& config) = 0
 
 <a id="api_irtcengine_setlogfile__prototype"></a>
 
-```text
+```cpp
 virtual int setLogFile(const char* filePath) = 0;
 ```
 
@@ -1258,7 +1258,7 @@ virtual int setLogFile(const char* filePath) = 0;
 
 <a id="api_irtcengine_setlogfilesize__prototype"></a>
 
-```text
+```cpp
 virtual int setLogFileSize(unsigned int fileSizeInKBytes) = 0;
 ```
 
@@ -1323,7 +1323,7 @@ virtual int setLogFileSize(unsigned int fileSizeInKBytes) = 0;
 
 <a id="api_irtcengine_setlogfilter__prototype"></a>
 
-```text
+```cpp
 virtual int setLogFilter(unsigned int filter) = 0;
 ```
 
@@ -1371,7 +1371,7 @@ SDK 的日志输出等级，详见 [LOG_FILTER_TYPE](/zh-CN/api-reference/rtc/cp
 
 <a id="api_irtcengine_setloglevel__prototype"></a>
 
-```text
+```cpp
 virtual int setLogLevel(commons::LOG_LEVEL level) = 0;
 ```
 
@@ -1419,7 +1419,7 @@ virtual int setLogLevel(commons::LOG_LEVEL level) = 0;
 
 <a id="api_irtcengine_setparameters__prototype"></a>
 
-```text
+```cpp
 virtual int setParameters(const char* parameters) = 0;
 ```
 
@@ -1461,7 +1461,7 @@ virtual int setParameters(const char* parameters) = 0;
 
 <a id="api_irtcengine_setremotesubscribefallbackoption__prototype"></a>
 
-```text
+```cpp
 virtual int setRemoteSubscribeFallbackOption(STREAM_FALLBACK_OPTIONS option) = 0;
 ```
 
@@ -1509,7 +1509,7 @@ virtual int setRemoteSubscribeFallbackOption(STREAM_FALLBACK_OPTIONS option) = 0
 
 <a id="api_irtcengine_startechotest3__prototype"></a>
 
-```text
+```cpp
 virtual int startEchoTest(const EchoTestConfiguration& config) = 0;
 ```
 
@@ -1568,7 +1568,7 @@ virtual int startEchoTest(const EchoTestConfiguration& config) = 0;
 
 <a id="api_irtcengine_startlastmileprobetest__prototype"></a>
 
-```text
+```cpp
 virtual int startLastmileProbeTest(const LastmileProbeConfig& config) = 0;
 ```
 
@@ -1614,7 +1614,7 @@ Last-mile 网络探测测试的配置。详见 [LastmileProbeConfig](/zh-CN/api-
 
 <a id="api_irtcengine_stopechotest__prototype"></a>
 
-```text
+```cpp
 virtual int stopEchoTest() = 0;
 ```
 
@@ -1645,7 +1645,7 @@ virtual int stopEchoTest() = 0;
 
 <a id="api_irtcengine_stoplastmileprobetest__prototype"></a>
 
-```text
+```cpp
 virtual int stopLastmileProbeTest() = 0;
 ```
 
@@ -1672,7 +1672,7 @@ virtual int stopLastmileProbeTest() = 0;
 
 <a id="callback_irtcengineeventhandler_onconnectionbanned__prototype"></a>
 
-```text
+```cpp
 virtual void onConnectionBanned() __deprecated {}
 ```
 
@@ -1698,7 +1698,7 @@ virtual void onConnectionBanned() __deprecated {}
 
 <a id="callback_irtcengineeventhandler_onconnectioninterrupted__prototype"></a>
 
-```text
+```cpp
 virtual void onConnectionInterrupted() __deprecated {}
 ```
 
@@ -1741,7 +1741,7 @@ virtual void onConnectionInterrupted() __deprecated {}
 
 <a id="callback_irtcengineeventhandler_onconnectionlost__prototype"></a>
 
-```text
+```cpp
 virtual void onConnectionLost() {}
 ```
 
@@ -1769,7 +1769,7 @@ virtual void onConnectionLost() {}
 
 <a id="callback_irtcengineeventhandler_onconnectionstatechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onConnectionStateChanged(CONNECTION_STATE_TYPE state, CONNECTION_CHANGED_REASON_TYPE reason)
 ```
 
@@ -1810,7 +1810,7 @@ virtual void onConnectionStateChanged(CONNECTION_STATE_TYPE state, CONNECTION_CH
 
 <a id="callback_irtcengineeventhandler_onencryptionerror__prototype"></a>
 
-```text
+```cpp
 virtual void onEncryptionError(ENCRYPTION_ERROR_TYPE errorType)
 ```
 
@@ -1845,7 +1845,7 @@ virtual void onEncryptionError(ENCRYPTION_ERROR_TYPE errorType)
 
 <a id="callback_irtcengineeventhandler_onlastmileproberesult__prototype"></a>
 
-```text
+```cpp
 virtual void onLastmileProbeResult(const LastmileProbeResult& result)
 ```
 
@@ -1880,7 +1880,7 @@ virtual void onLastmileProbeResult(const LastmileProbeResult& result)
 
 <a id="callback_irtcengineeventhandler_onlastmilequality__prototype"></a>
 
-```text
+```cpp
 virtual void onLastmileQuality(int quality) { (void)quality; }
 ```
 
@@ -1915,7 +1915,7 @@ Last-mile 网络质量，详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-
 
 <a id="callback_irtcengineeventhandler_onmultipathstats__prototype"></a>
 
-```text
+```cpp
 virtual void onMultipathStats(const MultipathStats& stats)
 ```
 
@@ -1958,7 +1958,7 @@ virtual void onMultipathStats(const MultipathStats& stats)
 
 <a id="callback_irtcengineeventhandler_onnetworkquality__prototype"></a>
 
-```text
+```cpp
 virtual void onNetworkQuality(uid_t uid, int txQuality, int rxQuality)
 ```
 
@@ -2009,7 +2009,7 @@ virtual void onNetworkQuality(uid_t uid, int txQuality, int rxQuality)
 
 <a id="callback_irtcengineeventhandler_onnetworktypechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onNetworkTypeChanged(NETWORK_TYPE type)
 ```
 
@@ -2044,7 +2044,7 @@ virtual void onNetworkTypeChanged(NETWORK_TYPE type)
 
 <a id="callback_irtcengineeventhandler_onpermissionerror__prototype"></a>
 
-```text
+```cpp
 virtual void onPermissionError(PERMISSION_TYPE permissionType)
 ```
 
@@ -2079,7 +2079,7 @@ virtual void onPermissionError(PERMISSION_TYPE permissionType)
 
 <a id="callback_irtcengineeventhandler_onpermissiongranted__prototype"></a>
 
-```text
+```cpp
 virtual void onPermissionGranted(agora::rtc::PERMISSION_TYPE permissionType) {}
 ```
 
@@ -2112,7 +2112,7 @@ virtual void onPermissionGranted(agora::rtc::PERMISSION_TYPE permissionType) {}
 
 <a id="callback_irtcengineeventhandler_onproxyconnected__prototype"></a>
 
-```text
+```cpp
 virtual void onProxyConnected(const char* channel, uid_t uid, PROXY_TYPE proxyType, const char* localProxyIp, int elapsed)
 ```
 
@@ -2171,7 +2171,7 @@ virtual void onProxyConnected(const char* channel, uid_t uid, PROXY_TYPE proxyTy
 
 <a id="callback_ipacketobserver_onreceiveaudiopacket__prototype"></a>
 
-```text
+```cpp
 virtual bool onReceiveAudioPacket(Packet& packet) = 0;
 ```
 
@@ -2211,7 +2211,7 @@ false：音频包被丢弃。
 
 <a id="callback_ipacketobserver_onreceivevideopacket__prototype"></a>
 
-```text
+```cpp
 virtual bool onReceiveVideoPacket(Packet& packet) = 0;
 ```
 
@@ -2251,7 +2251,7 @@ false：视频数据包被丢弃。
 
 <a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__prototype"></a>
 
-```text
+```cpp
 virtual void onRemoteSubscribeFallbackToAudioOnly(uid_t uid, bool isFallbackOrRecover)
 ```
 
@@ -2302,7 +2302,7 @@ virtual void onRemoteSubscribeFallbackToAudioOnly(uid_t uid, bool isFallbackOrRe
 
 <a id="callback_ipacketobserver_onsendaudiopacket__prototype"></a>
 
-```text
+```cpp
 virtual bool onSendAudioPacket(Packet& packet) = 0;
 ```
 
@@ -2342,7 +2342,7 @@ false：音频包被丢弃。
 
 <a id="callback_ipacketobserver_onsendvideopacket__prototype"></a>
 
-```text
+```cpp
 virtual bool onSendVideoPacket(Packet& packet) = 0;
 ```
 
@@ -2382,7 +2382,7 @@ false：视频数据包被丢弃。
 
 <a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__prototype"></a>
 
-```text
+```cpp
 virtual void onUplinkNetworkInfoUpdated(const UplinkNetworkInfo& info)
 ```
 

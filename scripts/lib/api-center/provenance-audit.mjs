@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { promisify } from 'node:util';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import { resolveExistingApiCenterTarget } from './existing-targets.mjs';
 import {
   API_CENTER_GENERATOR_CONVERSION_OPTIONS,

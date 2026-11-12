@@ -66,8 +66,9 @@ first-frame-decoded(): void
 
 首帧音频或视频解码时触发。
 
-> 注意：
->  该事件只有在本地调用了 [IRemoteTrack.play](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack#play) 后才会触发。
+:::note[注意]
+该事件只有在本地调用了 [IRemoteTrack.play](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack#play) 后才会触发。
+:::
 
 <ApiReturns>
 
@@ -149,7 +150,11 @@ void
 
 ### isPlaying
 
+<ApiSignature>
+
 isPlaying: boolean
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[isPlaying](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#isplaying)
 
@@ -162,7 +167,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 ### trackMediaType
 
+<ApiSignature>
+
 trackMediaType: "audio"|"video"
+
+</ApiSignature>
 
 Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[trackMediaType](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#trackmediatype)
 
@@ -290,7 +299,7 @@ getStats(): [RemoteAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/remo
 
 获取远端轨道相关信息。
 
-### deprecated
+#### deprecated
 
 自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getRemoteVideoStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getremotevideostats) 和 [AgoraRTCClient.getRemoteAudioStats](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getremoteaudiostats)。
 
@@ -397,21 +406,11 @@ void
 
 ### on
 
+#### on [1/3]
+
 <ApiSignature>
 
 on(event: "track-updated", listener: typeof event_track_updated): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "first-frame-decoded", listener: typeof event_first_frame_decoded): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "transceiver-updated", listener: typeof event_transceiver_updated_2): void
 
 </ApiSignature>
 
@@ -440,6 +439,14 @@ void
 
 </ApiReturns>
 
+#### on [2/3]
+
+<ApiSignature>
+
+on(event: "first-frame-decoded", listener: typeof event_first_frame_decoded): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 <ParameterList title="Parameters">
@@ -464,6 +471,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [3/3]
+
+<ApiSignature>
+
+on(event: "transceiver-updated", listener: typeof event_transceiver_updated_2): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 

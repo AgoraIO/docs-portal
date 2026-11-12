@@ -2,8 +2,11 @@
 @import "fumadocs-ui/css/lib/default-colors.css";
 @import "fumadocs-ui/css/preset.css";
 @import "fumadocs-openapi/css/preset.css";
+@import "./reference.css";
 @import "./search.css";
 @import "./code-block.css";
+@import "./openapi-schema-metadata.css";
+@import "./image-spacing.css";
 
 :root {
   --color-fd-background: var(--background);
@@ -202,6 +205,7 @@
     --docs-text-primary: var(--ink-1);
     --docs-text-secondary: var(--ink-2);
     --docs-text-tertiary: var(--ink-3);
+    --docs-footer-link-hover: #006fbe;
     --docs-soft-fill: color-mix(in srgb, var(--ink-1) 3.5%, transparent);
     --line-soft: var(--line);
     --surface-muted: var(--bg-sunken);
@@ -258,6 +262,7 @@
     --docs-text-primary: var(--ink-1);
     --docs-text-secondary: var(--ink-2);
     --docs-text-tertiary: var(--ink-3);
+    --docs-footer-link-hover: #70b9ff;
     --docs-soft-fill: color-mix(in srgb, var(--ink-1) 4.5%, transparent);
     --line-soft: var(--line);
     --surface-muted: var(--bg-sunken);
@@ -405,6 +410,7 @@
   }
 
   .prose,
+  .openapi-operation,
   .openapi-markdown {
     --docs-prose-inline-code-bg: var(--bg-sunken);
     --docs-prose-inline-code-border: var(--line);
@@ -444,6 +450,7 @@
   }
 
   .dark .prose,
+  .dark .openapi-operation,
   .dark .openapi-markdown {
     --docs-prose-inline-code-bg: color-mix(
       in srgb,
@@ -768,7 +775,7 @@
       :where(.not-prose, .not-prose *)
     ) {
     display: table;
-    width: auto;
+    width: 100%;
     max-width: none;
     min-width: 0;
     overflow: visible;
@@ -779,9 +786,9 @@
   }
 
   .prose :where(th, td):not(:where(.not-prose, .not-prose *)) {
-    min-width: 7.5rem;
+    min-width: 6ch;
     border-bottom: 1px solid var(--docs-prose-table-border);
-    padding: 0.85rem 1rem;
+    padding: 0.625rem 0.75rem;
     text-align: left;
     vertical-align: top;
     word-break: normal;
@@ -816,11 +823,14 @@
     :where(th:first-child, td:first-child):not(
       :where(.not-prose, .not-prose *)
     ) {
-    min-width: 9.5rem;
+    min-width: 12ch;
     white-space: normal;
   }
 
-  .prose :where(tbody tr:last-child td):not(:where(.not-prose, .not-prose *)) {
+  .prose
+    :where(tbody tr:last-child :is(th, td)):not(
+      :where(.not-prose, .not-prose *)
+    ) {
     border-bottom: 0;
   }
 
@@ -1113,7 +1123,10 @@
 
   .openapi-operation {
     --fd-docs-row-1: -0.5rem;
-    --openapi-examples-sticky-top: var(--docs-shell-header-offset, 48px);
+    --openapi-examples-sticky-top: calc(
+      var(--docs-shell-header-offset, 48px) +
+      1rem
+    );
     container-type: inline-size;
     width: min(100%, 1120px);
   }
@@ -1129,12 +1142,6 @@
   .openapi-operation h2.openapi-section-heading > a {
     min-width: 0;
     overflow-wrap: anywhere;
-  }
-
-  .openapi-operation-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
   }
 
   .openapi-examples-rail-anchor {
@@ -1161,69 +1168,6 @@
     padding-inline-start: 1.125rem;
   }
 
-  .openapi-schema-metadata {
-    display: flex;
-    min-width: 0;
-    flex-direction: column;
-    gap: 0.375rem;
-    margin-top: 0.5rem;
-  }
-
-  .openapi-schema-metadata-row {
-    display: inline-flex;
-    min-width: 0;
-    max-width: 100%;
-    flex-wrap: wrap;
-    align-items: baseline;
-  }
-
-  .openapi-schema-metadata-label {
-    color: var(--foreground);
-    font-weight: 700;
-  }
-
-  .openapi-schema-metadata-row[data-display="block"] {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.375rem;
-  }
-
-  [data-openapi-schema-code-value] {
-    min-width: 0;
-    max-width: 100%;
-  }
-
-  [data-openapi-schema-code-value] figure {
-    margin-block: 0;
-  }
-
-  .openapi-schema-metadata-value {
-    display: inline-flex;
-    min-width: 0;
-    max-width: 100%;
-    overflow-wrap: anywhere;
-  }
-
-  .openapi-schema-value-container {
-    display: inline-flex;
-    min-width: 0;
-    max-width: 100%;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-    align-items: center;
-    padding: 0.25rem 0.5rem;
-    border: 1px solid var(--line);
-    border-radius: 0.375rem;
-    background: var(--bg-sunken);
-    color: var(--docs-schema-value);
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    font-weight: 400;
-    line-height: 1.2;
-    overflow-wrap: anywhere;
-  }
-
   .openapi-schema-children {
     position: relative;
     margin-inline-start: 16px;
@@ -1240,13 +1184,7 @@
     margin-inline-start: 16px;
   }
 
-  @container (min-width: 56rem) {
-    .openapi-operation-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 400px;
-      align-items: start;
-    }
-
+  @container (min-width: 40rem) {
     .openapi-examples-rail {
       position: sticky;
       top: var(--openapi-examples-sticky-top, 48px);
@@ -1269,7 +1207,7 @@
       scrollbar-width: thin;
     }
 
-    .openapi-examples-rail-anchor {
+    [data-openapi-operation-panel="examples"] {
       align-self: stretch;
     }
   }
@@ -1432,6 +1370,9 @@
   }
 
   .openapi-operation .openapi-markdown :where(code):not(:where(pre code)) {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
     border: 1px solid var(--line);
     border-radius: 0.3125rem;
     background: var(--bg-sunken);
@@ -1478,19 +1419,6 @@
       content: "";
     }
   }
-}
-
-/* The response tabs provide the single code frame. These rules must override
-   Fumadocs' layered padding and figure utilities. */
-.openapi-response-example [role="tabpanel"] {
-  padding: 0;
-}
-
-.openapi-response-example figure {
-  margin: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
 }
 
 /* These OpenAPI code rules intentionally remain unlayered so they win over
@@ -1549,7 +1477,7 @@
   background: transparent;
 }
 
-@container (max-width: 55.999rem) {
+@container (max-width: 39.999rem) {
   .openapi-code-preview [data-openapi-code-viewport] {
     /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */
     max-block-size: min(50dvh, 24rem) !important;
@@ -1573,6 +1501,20 @@
   list-style: lower-roman;
 }
 
+/* Markdown loose lists wrap item text in paragraphs. Keep item spacing equal
+   to tight lists in both the document body and nested prose containers. */
+:where(html)
+  .prose
+  :where(li > p:first-child):not(:where(.not-prose, .not-prose *)) {
+  margin-top: 0;
+}
+
+:where(html)
+  .prose
+  :where(li > p:last-child):not(:where(.not-prose, .not-prose *)) {
+  margin-bottom: 0;
+}
+
 /* Fumadocs ships unlayered prose table styles with `overflow: hidden`.
    Keep this unlayered override after the base layer so unwrapped/raw tables
    retain their own horizontal scrolling fallback. */
@@ -1590,85 +1532,10 @@
     :where(.not-prose, .not-prose *)
   ) {
   display: table;
-  width: auto;
+  width: 100%;
   max-width: none;
   min-width: 0;
   overflow: visible;
-}
-
-:where(html)
-  .openapi-operation
-  .openapi-markdown
-  :where(.prose-no-margin.overflow-auto > table) {
-  display: table;
-  width: auto;
-  max-width: none;
-  min-width: 100%;
-  overflow: visible;
-  border-collapse: separate;
-  border-spacing: 0;
-  border: 1px solid var(--docs-openapi-table-border);
-  border-radius: var(--radius);
-  background: var(--bg-card);
-  box-shadow: var(--docs-shadow-sm);
-}
-
-:where(html) .openapi-operation .openapi-markdown :where(thead) {
-  background: var(--docs-openapi-table-head-bg);
-}
-
-:where(html) .openapi-operation .openapi-markdown :where(th, td) {
-  min-width: 7.5rem;
-  border-bottom: 1px solid var(--docs-openapi-table-border);
-  padding: 0.85rem 1rem;
-  text-align: left;
-  vertical-align: top;
-  word-break: normal;
-  overflow-wrap: break-word;
-}
-
-:where(html) .openapi-operation .openapi-markdown :where(th) {
-  color: var(--docs-text-primary);
-  font-size: 0.92rem;
-  font-weight: 600;
-  line-height: 1.45;
-  white-space: nowrap;
-}
-
-:where(html) .openapi-operation .openapi-markdown :where(td) {
-  color: var(--ink-2);
-  font-size: 0.95rem;
-  line-height: 1.7;
-}
-
-:where(html)
-  .openapi-operation
-  .openapi-markdown
-  :where(th:first-child, td:first-child) {
-  min-width: 9.5rem;
-  white-space: normal;
-}
-
-:where(html)
-  .openapi-operation
-  .openapi-markdown
-  :where(tbody tr:last-child td) {
-  border-bottom: 0;
-}
-
-:where(html) .openapi-operation .openapi-markdown :where(td > :first-child) {
-  margin-top: 0;
-}
-
-:where(html) .openapi-operation .openapi-markdown :where(td > :last-child) {
-  margin-bottom: 0;
-}
-
-:where(html)
-  .openapi-operation
-  .openapi-markdown
-  :where(tbody tr:nth-child(even)) {
-  background: var(--docs-openapi-table-row-bg);
 }
 
 @media (max-width: 767px) {
@@ -1730,6 +1597,11 @@
   color: var(--foreground);
   -webkit-text-decoration-color: var(--foreground);
   text-decoration-color: var(--foreground);
+}
+
+/* Linked screenshots retain their image-only presentation. */
+.prose a:has(img) > .docs-external-link-icon {
+  display: none;
 }
 
 /* Fumadocs prose/table/code styles are emitted outside Tailwind layers.
@@ -2070,4 +1942,109 @@
   margin-top: 1.25rem;
   padding-top: 0;
   border-top: 0;
+}
+
+/* Chinese API names can exceed a narrow article column. Keep titles and
+   prose readable while tables and code retain their own scroll containers. */
+article[lang="zh-CN"] > header h1,
+article[lang="zh-CN"]
+  .docs-body
+  :where(p, li):not(:where(.not-prose, .not-prose *, table *)) {
+  overflow-wrap: anywhere;
+}
+
+/* Shrink heading text beside Fumadocs' fixed-size copy button. These follow
+   Fumadocs' unlayered typography rules so the fix also applies after build. */
+article[lang="zh-CN"] .docs-body .group\/heading > a {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* The request-body title shares a flex row with its media type. Let that row
+   own the spacing, instead of adding its margin to the heading's margin. */
+.openapi-operation div.flex:has(> .openapi-section-heading[id="request-body"]) {
+  margin-block: 2.25rem 1rem;
+}
+
+.openapi-operation
+  div.flex:has(> .openapi-section-heading[id="request-body"])
+  > .openapi-section-heading[id="request-body"] {
+  margin-block: 0;
+}
+
+.docs-callout {
+  margin-block: 1.5rem;
+  gap: 12px;
+  padding: 1rem;
+  border-radius: 8px;
+  border-color: color-mix(in srgb, var(--callout-color) 19%, var(--line));
+  background: color-mix(in srgb, var(--callout-color) 6%, var(--bg-card));
+  box-shadow: none;
+}
+
+.docs-callout > div[role="none"] {
+  display: none;
+}
+
+.docs-callout > svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 4px;
+  margin-inline-end: 0;
+  fill: none;
+  color: var(--callout-color);
+}
+
+.docs-callout > div:last-child {
+  gap: 0.5rem;
+}
+
+.docs-callout > div:last-child > p {
+  color: var(--ink-1);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.docs-callout > div:last-child > div {
+  color: var(--ink-3);
+  font-size: 1rem;
+  line-height: 1.625;
+}
+
+.docs-callout > div:last-child > div :where(p, ul, ol, li, .openapi-markdown) {
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.docs-callout > div:last-child > div :where(p, ul, ol, li) {
+  margin-block: 0;
+}
+
+.docs-callout > div:last-child > div :where(p, ul, ol) + :where(p, ul, ol) {
+  margin-block-start: 0.75rem;
+}
+
+.docs-callout > div:last-child > div :where(li + li) {
+  margin-block-start: 0.25rem;
+}
+
+/* Keep REST parameter groups aligned with the unframed schema field trees. */
+.openapi-operation-layout
+  [class~="rounded-xl"][class~="border"][class~="bg-fd-card"][class~="px-3"]:has(
+    > .openapi-schema-parameter-fields
+  ) {
+  border: 0;
+  border-radius: 0;
+  padding-inline: 0;
+  background-color: transparent;
+}
+
+@media (min-width: 640px) {
+  .docs-callout > div:last-child > div {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
 }

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_adjustcustomaudioplayoutvolume__prototype"></a>
 
-```text
+```objc
 - (int)adjustCustomAudioPlayoutVolume:(NSInteger)trackId volume:(NSInteger)volume NS_SWIFT_NAME(adjustCustomAudioPlayoutVolume(_:volume:));
 ```
 
@@ -76,7 +76,7 @@ _migration:
 
 <a id="api_irtcengine_adjustcustomaudiopublishvolume__prototype"></a>
 
-```text
+```objc
 - (int)adjustCustomAudioPublishVolume:(NSInteger)trackId volume:(NSInteger)volume NS_SWIFT_NAME(adjustCustomAudioPublishVolume(_:volume:));
 ```
 
@@ -131,7 +131,7 @@ _migration:
 
 <a id="api_irtcengine_createcustomaudiotrack__prototype"></a>
 
-```text
+```objc
 - (int)createCustomAudioTrack:(AgoraAudioTrackType)trackType
                        config:(AgoraAudioTrackConfig* _Nonnull)config;
 ```
@@ -190,7 +190,7 @@ _migration:
 
 <a id="api_irtcengine_destroycustomaudiotrack__prototype"></a>
 
-```text
+```objc
 - (int)destroyCustomAudioTrack:(NSInteger)trackId;
 ```
 
@@ -230,7 +230,7 @@ _migration:
 
 <a id="api_irtcengine_enablecustomaudiolocalplayback__prototype"></a>
 
-```text
+```objc
 - (int)enableCustomAudioLocalPlayback:(NSInteger)trackId enabled:(BOOL)enabled NS_SWIFT_NAME(enableCustomAudioLocalPlayback(_:enabled:));
 ```
 
@@ -285,7 +285,7 @@ _migration:
 
 <a id="api_irtcengine_pullaudioframe__prototype"></a>
 
-```text
+```objc
 - (BOOL)pullPlaybackAudioFrameRawData:(void * _Nonnull)data
                               lengthInByte:(NSUInteger)lengthInByte NS_SWIFT_NAME(pullPlaybackAudioFrameRawData(_:lengthInByte:));
 ```
@@ -349,7 +349,7 @@ _migration:
 
 <a id="api_irtcengine_pullplaybackaudioframesamplebufferbylengthinbyte__prototype"></a>
 
-```text
+```objc
 - (CMSampleBufferRef _Nullable)pullPlaybackAudioFrameSampleBufferByLengthInByte:(NSUInteger)lengthInByte NS_SWIFT_NAME(pullPlaybackAudioFrameSampleBufferBy(lengthInByte:));
 ```
 
@@ -390,7 +390,7 @@ _migration:
 
 <a id="api_irtcengine_pushaudioframe2__prototype"></a>
 
-```text
+```objc
 - (int)pushExternalAudioFrameRawData:(void* _Nonnull)data
                              samples:(NSInteger)samples
                           sampleRate:(NSInteger)sampleRate
@@ -471,7 +471,7 @@ _migration:
 
 <a id="api_irtcengine_pushexternalaudioframesamplebuffer1__prototype"></a>
 
-```text
+```objc
 - (int)pushExternalAudioFrameSampleBuffer:(CMSampleBufferRef _Nonnull)sampleBuffer NS_SWIFT_NAME(pushExternalAudioFrameSampleBuffer(_:)) __deprecated_msg("use pushExternalAudioFrameSampleBuffer:sampleRate:channels:trackId: instead.");
 ```
 
@@ -517,7 +517,7 @@ _migration:
 
 <a id="api_irtcengine_pushexternalaudioframesamplebuffer2__prototype"></a>
 
-```text
+```objc
 - (int)pushExternalAudioFrameSampleBuffer:(CMSampleBufferRef _Nonnull)sampleBuffer
                                sampleRate:(NSInteger)sampleRate
                                  channels:(NSInteger)channels
@@ -583,7 +583,7 @@ _migration:
 
 <a id="api_irtcengine_setexternalaudiosink__prototype"></a>
 
-```text
+```objc
 - (void)enableExternalAudioSink:(BOOL)enabled
                      sampleRate:(NSUInteger)sampleRate
                        channels:(NSUInteger)channels NS_SWIFT_NAME(enableExternalAudioSink(_:sampleRate:channels:));
@@ -654,7 +654,7 @@ _migration:
 
 <a id="api_irtcengine_setexternalaudiosource__prototype"></a>
 
-```text
+```objc
 - (int)setExternalAudioSource:(BOOL)enabled
                    sampleRate:(NSInteger)sampleRate
                      channels:(NSInteger)channels NS_SWIFT_NAME(setExternalAudioSource(_:sampleRate:channels:)) __deprecated_msg("use createCustomAudioTrack:config: instead.");
@@ -720,7 +720,7 @@ _migration:
 
 <a id="api_irtcengine_setexternalaudiosource2__prototype"></a>
 
-```text
+```objc
 - (int)setExternalAudioSource:(BOOL)enabled
                    sampleRate:(NSInteger)sampleRate
                      channels:(NSInteger)channels

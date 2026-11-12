@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_agorartcmediaplayervideoframedelegate_agorartcmediaplayergetvideopixelformat__prototype"></a>
 
-```text
+```objc
 - (AgoraVideoFormat)AgoraRtcMediaPlayerGetVideoPixelFormat NS_SWIFT_NAME(AgoraRtcMediaPlayerGetVideoPixelFormat());
 ```
 
@@ -49,7 +49,7 @@ _migration:
 
 <a id="api_agorartcmediaplayervideoframedelegate_didreceivepixelbuffer__prototype"></a>
 
-```text
+```objc
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
        didReceivePixelBuffer:(CVPixelBufferRef _Nonnull)pixelBuffer NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didReceivePixelBuffer:));
 ```
@@ -97,7 +97,7 @@ _migration:
 
 <a id="api_agorartcmediaplayervideoframedelegate_didreceivevideoframe__prototype"></a>
 
-```text
+```objc
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
        didReceiveVideoFrame:(AgoraOutputVideoFrame * _Nonnull)videoFrame NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didReceiveVideoFrame:));
 ```
@@ -143,7 +143,7 @@ _migration:
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver__prototype"></a>
 
-```text
+```objc
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
              volumeIndicationDidReceive:(NSInteger)volume NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:volumeIndicationDidReceive:));
 ```
@@ -191,7 +191,7 @@ _migration:
 
 <a id="callback_iaudiopcmframesink_onframe_iaudiopcmframesink__prototype"></a>
 
-```text
+```objc
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
        didReceiveAudioFrame:(AgoraAudioFrame* _Nonnull)audioFrame NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didReceiveAudioFrame:));
 ```
@@ -239,7 +239,7 @@ _migration:
 
 <a id="callback_imediaplayersourceobserver_onmetadata__prototype"></a>
 
-```text
+```objc
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
              didReceiveData:(NSString *_Nullable)data
                      length:(NSInteger)length NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didReceiveData:length:));
@@ -294,7 +294,7 @@ _migration:
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__prototype"></a>
 
-```text
+```objc
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
              didPlayBufferUpdated:(NSInteger)playCachedBuffer NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didPlayBufferUpdated:));
 ```
@@ -343,7 +343,7 @@ _migration:
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__prototype"></a>
 
-```text
+```objc
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
               didOccurEvent:(AgoraMediaPlayerEvent)eventCode
                 elapsedTime:(NSInteger)elapsedTime
@@ -405,7 +405,7 @@ _migration:
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__prototype"></a>
 
-```text
+```objc
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit infoUpdated:(AgoraMediaPlayerUpdatedInfo *_Nonnull)info NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:infoUpdated:));
 ```
 
@@ -452,7 +452,7 @@ _migration:
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__prototype"></a>
 
-```text
+```objc
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
           didChangedToState:(AgoraMediaPlayerState)state
                       reason:(AgoraMediaPlayerReason)reason NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didChangedTo:reason:));
@@ -507,7 +507,7 @@ _migration:
 
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__prototype"></a>
 
-```text
+```objc
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit playerSrcInfoDidChange:(AgoraMediaPlayerSrcInfo *_Nonnull)to from:(AgoraMediaPlayerSrcInfo *_Nonnull)from NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:playerSrcInfoDidChange:from:));
 ```
 
@@ -560,7 +560,7 @@ _migration:
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__prototype"></a>
 
-```text
+```objc
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
        didChangedToPosition:(NSInteger)positionMs
                 atTimestamp:(NSTimeInterval)timestampMs NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didChangedTo:atTimestamp:));
@@ -619,7 +619,7 @@ _migration:
 
 <a id="callback_imediaplayersourceobserver_onpreloadevent__prototype"></a>
 
-```text
+```objc
 - (void)AgoraRtcMediaPlayer:(id<AgoraRtcMediaPlayerProtocol> _Nonnull)playerKit
             didPreloadEvent:(AgoraMediaPlayerPreloadEvent)event NS_SWIFT_NAME(AgoraRtcMediaPlayer(_:didPreloadEvent:));
 ```

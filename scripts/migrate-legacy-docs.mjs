@@ -5,7 +5,18 @@ import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import { normalizeLegacyCodeHighlights } from './lib/legacy-code-highlights.mjs';
+import { isUnpublishedLegacySource } from './lib/legacy-publication.mjs';
+import {
+  readLegacyImageSizing,
+  renderMigratedImage,
+} from './lib/legacy-image-sizing.mjs';
 import { resolveLegacyProductLabel } from './lib/legacy-product-labels.mjs';
+import {
+  layoutMergedTable,
+  parseLegacyTableHeaders,
+  renderMergedTable,
+} from './lib/merged-table.mjs';
+import { normalizeTableGrid } from './lib/table-grid.mjs';
 import {
   isRedirectContentRow,
   readControlTable,
@@ -110,6 +121,9 @@ const LANGUAGE_GROUP_TAB_VALUES = new Set([
   'web',
 ]);
 const ALLOWED_MDX_TAGS = new Set([
+  'DocsImage',
+  'InlineImage',
+  'DocsTable',
   'Accordion',
   'Accordions',
   'Card',
@@ -276,6 +290,9 @@ export async function migrateLegacyPage({
   sourceRoot,
   targetPath,
 }) {
+  if (isUnpublishedLegacySource(sourcePath)) {
+    throw new Error(`Source was not published by the legacy site: ${sourcePath}`);
+  }
   const absoluteSourcePath = path.join(sourceRoot, sourcePath);
   const raw = await fs.readFile(absoluteSourcePath, 'utf8');
   const inferredContext = inferContextFromSourcePath(sourcePath);
@@ -374,6 +391,7 @@ export function getOutputPlatformsForSourcePath({ pathMap, sourcePath }) {
 }
 
 export function getOutputTargetsForSourcePath({ pathMap, sourcePath }) {
+  if (isUnpublishedLegacySource(sourcePath)) return [];
   const entry = pathMap.get(sourcePath);
   if (entry?.isRedirectContent === false) {
     return [];
@@ -695,6 +713,7 @@ function createMigrationState({
     sourceRoot,
     syntaxPatternUsage: new Map(),
     tableHeaders: new Map(),
+    tableHeaderCells: new Map(),
   };
 }
 
@@ -731,6 +750,9 @@ async function expandLegacyFile({
   }
   for (const [name, header] of parseExportedTableHeaders(activeBody)) {
     state.tableHeaders.set(name, header);
+  }
+  for (const [name, cells] of parseLegacyTableHeaders(activeBody)) {
+    state.tableHeaderCells.set(name, cells);
   }
   let body = stripImportExport(activeBody);
 
@@ -948,37 +970,17 @@ function parseExportedLinkLists(content) {
 }
 
 function parseExportedTableHeaders(content) {
-  const tableHeaders = new Map();
-  const exportPattern =
-    /^export\s+const\s+([A-Za-z0-9_]+)\s*=\s*\[([\s\S]*?)^\s*]\s*;?\s*$/gm;
-  let exportMatch = exportPattern.exec(content);
-
-  while (exportMatch) {
-    const labels = [];
-    const itemPattern = /\{([\s\S]*?)}/g;
-    let itemMatch = itemPattern.exec(exportMatch[2]);
-    while (itemMatch) {
-      const label =
-        itemMatch[1].match(/\blabel\s*:\s*['"]([^'"]*)['"]/)?.[1] ?? '';
-      const span = Math.max(
-        1,
-        Number.parseInt(
-          itemMatch[1].match(/\bcol\s*:\s*(\d+)/)?.[1] ?? '1',
-          10,
-        ),
-      );
-      labels.push(label, ...Array.from({ length: span - 1 }, () => ''));
-      itemMatch = itemPattern.exec(exportMatch[2]);
-    }
-
-    if (labels.length > 0) {
-      tableHeaders.set(exportMatch[1], labels);
-    }
-
-    exportMatch = exportPattern.exec(content);
-  }
-
-  return tableHeaders;
+  return new Map(
+    [...parseLegacyTableHeaders(content)].map(([name, rows]) => [
+      name,
+      rows
+        .flat()
+        .flatMap((cell) => [
+          cell.raw,
+          ...Array.from({ length: cell.colspan - 1 }, () => ''),
+        ]),
+    ]),
+  );
 }
 
 export function stripImportExport(content) {
@@ -1865,20 +1867,10 @@ function transformImages(value, state) {
   return value.replace(/<Image\b([^>]*?)(?:\/>|>\s*<\/Image>)/g, (_, attrs) => {
     const src = readAttribute(attrs, 'src') ?? '';
     const sourceAlt = readAttribute(attrs, 'alt') ?? '';
-    const width = readAttribute(attrs, 'width');
-    const inline = hasBooleanAttribute(attrs, 'inline');
-
-    if (width) {
-      state.issues.push(`needs-image-width-review:${src}:${width}`);
-    }
-
-    if (inline) {
-      state.issues.push(`normalized-inline-image-block:${src}`);
-      return `![${sourceAlt}](${src})`;
-    }
-
+    const sizing = readLegacyImageSizing(attrs);
     const alt = imageAltText(sourceAlt, src, state);
-    return `\n![${alt}](${src})\n`;
+    const image = renderMigratedImage({ ...sizing, src, alt });
+    return sizing.inline ? image : `\n${image}\n`;
   });
 }
 
@@ -1893,13 +1885,10 @@ function transformRawHtmlImages(value, state) {
 
     state.issues.push('normalized-raw-img');
     const sourceAlt = readAttribute(attrs, 'alt') ?? '';
-    if (hasBooleanAttribute(attrs, 'inline')) {
-      state.issues.push(`normalized-inline-image-block:${src}`);
-      return `![${sourceAlt}](${src})`;
-    }
-
+    const sizing = readLegacyImageSizing(attrs);
     const alt = imageAltText(sourceAlt, src, state);
-    return `\n![${alt}](${src})\n`;
+    const image = renderMigratedImage({ ...sizing, src, alt });
+    return sizing.inline ? image : `\n${image}\n`;
   });
 }
 
@@ -2055,10 +2044,6 @@ function normalizeMarkdownImageBlocks(value) {
     }
   }
   return output.join('\n').replace(/\n{3,}/g, '\n\n');
-}
-
-function hasBooleanAttribute(attrs, name) {
-  return new RegExp(`(?:^|\\s)${escapeRegExp(name)}(?:\\s|=|$)`).test(attrs);
 }
 
 function transformTabs(value) {
@@ -2648,20 +2633,31 @@ function transformHtmlTables(value, state) {
           ];
 
           return cells.map((cellMatch) => ({
-            colspan: readNumericAttribute(cellMatch[2], 'colspan', 'col'),
-            kind: cellMatch[1].toLowerCase(),
+            colspan: readNumericAttribute(
+              cellMatch[2],
+              'colspan',
+              'colSpan',
+              'col',
+            ),
+            kind:
+              /<thead\b[^>]*>[\s\S]*$/i.test(body.slice(0, rowMatch.index)) &&
+              !/<\/thead>[\s\S]*$/i.test(body.slice(0, rowMatch.index))
+                ? 'h'
+                : cellMatch[1].toLowerCase(),
             raw: cellMatch[3],
-            rowspan: readNumericAttribute(cellMatch[2], 'rowspan', 'row'),
+            rowspan: readNumericAttribute(
+              cellMatch[2],
+              'rowspan',
+              'rowSpan',
+              'row',
+            ),
           }));
         },
       );
       const hasSpans = rawRows.some((row) =>
         row.some((cell) => cell.colspan > 1 || cell.rowspan > 1),
       );
-      const rows = expandHtmlTableSpans(rawRows);
-      const nonEmptyRows = rows.filter((row) => row.length > 0);
-
-      if (nonEmptyRows.length === 0) {
+      if (!rawRows.some((row) => row.length > 0)) {
         return match;
       }
 
@@ -2673,22 +2669,35 @@ function transformHtmlTables(value, state) {
       const configuredHeader = headerName
         ? state.tableHeaders.get(headerName)
         : null;
-      const headerIndex = nonEmptyRows.findIndex((row) =>
-        row.some((cell) => cell.kind === 'h'),
+      const headerCells =
+        state.tableHeaderCells?.get(headerName) ?? configuredHeader;
+      const layout = layoutMergedTable(rawRows, headerCells);
+      if (layout.hasSpans || layout.headerCount > 1) {
+        const normalize = (cell) => ({
+          ...cell,
+          raw: isComplexTableCell(cell.raw)
+            ? normalizeSlotDefinitionContent(cell.raw)
+            : collapseInline(transformInlineHtml(cell.raw)),
+        });
+        if (configuredHeader)
+          state.issues.push(`normalized-table-header:${headerName}`);
+        const normalizedHeaders =
+          headerCells &&
+          (Array.isArray(headerCells[0])
+            ? headerCells.map((row) => row.map(normalize))
+            : headerCells.map((cell) =>
+                typeof cell === 'string' ? cell : normalize(cell),
+              ));
+        tableIndex++;
+        return renderMergedTable(
+          rawRows.map((row) => row.map(normalize)),
+          normalizedHeaders,
+        );
+      }
+      const { header, bodyRows } = normalizeTableGrid(
+        rawRows,
+        configuredHeader,
       );
-      const header = configuredHeader
-        ? configuredHeader.map((label) => ({
-            kind: 'h',
-            raw: label,
-          }))
-        : headerIndex >= 0
-          ? nonEmptyRows[headerIndex]
-          : nonEmptyRows[0];
-      const bodyRows = configuredHeader
-        ? nonEmptyRows
-        : nonEmptyRows.filter((_, index) =>
-            headerIndex >= 0 ? index !== headerIndex : index !== 0,
-          );
 
       if (configuredHeader) {
         state.issues.push(`normalized-table-header:${headerName}`);
@@ -2705,69 +2714,6 @@ function transformHtmlTables(value, state) {
       return rendered;
     },
   );
-}
-
-function expandHtmlTableSpans(rows) {
-  const pendingRowspans = new Map();
-  const expandedRows = [];
-
-  for (const row of rows) {
-    const expanded = [];
-    let columnIndex = 0;
-
-    const fillPending = () => {
-      while (pendingRowspans.has(columnIndex)) {
-        const pending = pendingRowspans.get(columnIndex);
-        expanded[columnIndex] = {
-          kind: pending.kind,
-          raw: '',
-        };
-        pending.remaining -= 1;
-        if (pending.remaining <= 0) {
-          pendingRowspans.delete(columnIndex);
-        }
-        columnIndex += 1;
-      }
-    };
-
-    for (const cell of row) {
-      fillPending();
-
-      for (let offset = 0; offset < cell.colspan; offset += 1) {
-        const targetColumn = columnIndex + offset;
-        expanded[targetColumn] = {
-          kind: cell.kind,
-          raw: offset === 0 || cell.kind === 'h' ? cell.raw : '',
-        };
-
-        if (cell.rowspan > 1) {
-          pendingRowspans.set(targetColumn, {
-            kind: cell.kind,
-            remaining: cell.rowspan - 1,
-          });
-        }
-      }
-
-      columnIndex += cell.colspan;
-    }
-
-    const maxPendingColumn = Math.max(-1, ...pendingRowspans.keys());
-    while (columnIndex <= maxPendingColumn) {
-      if (pendingRowspans.has(columnIndex)) {
-        fillPending();
-      } else {
-        expanded[columnIndex] = {
-          kind: 'd',
-          raw: '',
-        };
-        columnIndex += 1;
-      }
-    }
-
-    expandedRows.push(expanded);
-  }
-
-  return expandedRows;
 }
 
 function transformMarkdownTableSlots(value, state) {
@@ -3130,7 +3076,10 @@ function isComplexTableCell(value = '') {
 }
 
 function normalizeInlineTableCell(value) {
-  return collapseInline(transformInlineHtml(value)).replace(/\|/g, '\\|');
+  return collapseInline(transformInlineHtml(value)).replace(
+    /(\\*)\|/g,
+    (_, slashes) => `${slashes}${slashes.length % 2 ? '' : '\\'}|`,
+  );
 }
 
 function normalizeSlotDefinitionContent(value) {

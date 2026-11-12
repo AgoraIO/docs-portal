@@ -22,6 +22,8 @@ _migration:
       message: No local target route for /cn/Recording/token.
 ---
 
+<include>../../../../../../../includes/zh-CN/api-reference/local-server-recording-legacy-cpp.mdx</include>
+
 <a id="details"></a>
 
 ## 详细描述
@@ -104,7 +106,7 @@ virtual int agora::recording::IRecordingEngine::joinChannel(const char * *channe
 录制使用的 UID。有两种设置方法：
 
 - 设置为 0，系统将自动分配一个 UID；
-- 设置一个唯一的 UID，不能与现在频道内的任何 UID 重复。取值范围：1 到 (232-1)。
+- 设置一个唯一的 UID，不能与现在频道内的任何 UID 重复。取值范围：1 到 (2³² - 1)。
 
 </Parameter>
 <Parameter name="config">

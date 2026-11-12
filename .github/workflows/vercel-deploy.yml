@@ -14,6 +14,10 @@ on:
       - "source.config.ts"
       - "tsconfig.json"
       - "vite.config.ts"
+      - "docs/api-reference-quality.md"
+      - "AGENTS.md"
+      - ".github/PULL_REQUEST_TEMPLATE.md"
+      - ".github/workflows/vercel-deploy.yml"
       - "vercel.json"
       - "vercel.base.json"
       - "vercel-legacy-redirects.json"
@@ -35,6 +39,10 @@ on:
       - "source.config.ts"
       - "tsconfig.json"
       - "vite.config.ts"
+      - "docs/api-reference-quality.md"
+      - "AGENTS.md"
+      - ".github/PULL_REQUEST_TEMPLATE.md"
+      - ".github/workflows/vercel-deploy.yml"
       - "vercel.json"
       - "vercel.base.json"
       - "vercel-legacy-redirects.json"
@@ -90,7 +98,7 @@ jobs:
     steps:
       - name: Resolve preview context
         id: preview-context
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9.0.0
         env:
           PREVIEW_PR_NUMBER: ${{ inputs.pr_number }}
         with:
@@ -99,6 +107,7 @@ jobs:
               const sameRepo = context.payload.pull_request?.head?.repo?.full_name === context.payload.repository?.full_name;
               core.setOutput('should_deploy', sameRepo ? 'true' : 'false');
               core.setOutput('pr_number', sameRepo ? String(context.payload.pull_request.number) : '');
+              core.setOutput('docs_region', context.payload.pull_request.base.ref.startsWith('codex/cn-') ? 'cn' : 'global');
               core.setOutput('reason', sameRepo ? 'same-repo pull request' : 'forked pull request');
               return;
             }
@@ -158,21 +167,21 @@ jobs:
 
       - name: Checkout
         if: steps.preview-context.outputs.should_deploy == 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
 
       - name: Setup Bun
         if: steps.preview-context.outputs.should_deploy == 'true'
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@v2.2.0
         with:
-          bun-version: latest
+          bun-version: 1.4.4
 
       - name: Setup Node.js
         if: steps.preview-context.outputs.should_deploy == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7.1.0
         with:
-          node-version: 24
+          node-version: 26.13.0
 
       - name: Install Vercel CLI
         if: steps.preview-context.outputs.should_deploy == 'true'
@@ -185,6 +194,15 @@ jobs:
       - name: Check zh-CN OpenAPI links
         if: steps.preview-context.outputs.should_deploy == 'true'
         run: bun run docs:links:openapi-zh:baseline
+
+      - name: Check API quality policy and prepare build evidence
+        if: steps.preview-context.outputs.should_deploy == 'true'
+        env:
+          DOCS_QA_REGION: ${{ inputs.docs_region || steps.preview-context.outputs.docs_region || 'global' }}
+        run: |
+          bun run test:api-quality
+          bun run test scripts/cn-link-browser.test.ts
+          bun run qa:api prepare --region "$DOCS_QA_REGION"
 
       - name: Pull Vercel preview environment
         if: steps.preview-context.outputs.should_deploy == 'true'
@@ -213,6 +231,26 @@ jobs:
           test -d .vercel/output/static
           test -f .vercel/output/static/index.html
           test ! -d .vercel/output/functions
+
+      - name: Check API reference quality in Chrome
+        if: steps.preview-context.outputs.should_deploy == 'true'
+        env:
+          VITE_DOCS_REGION: ${{ inputs.docs_region || steps.preview-context.outputs.docs_region || 'global' }}
+        run: |
+          npm install --global agent-browser@0.41.1
+          agent-browser install --with-deps
+          bun run qa:api seal --region "$VITE_DOCS_REGION" --root .vercel/output/static
+          bun run qa:api browser --region "$VITE_DOCS_REGION" --root .vercel/output/static --scope all
+
+      - name: Retain API quality evidence
+        if: always() && steps.preview-context.outputs.should_deploy == 'true'
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: api-reference-quality-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .agent/artifacts/api-reference-quality/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14
 
       - name: Deploy prebuilt output
         if: steps.preview-context.outputs.should_deploy == 'true'
@@ -261,7 +299,7 @@ jobs:
 
       - name: Comment preview URL
         if: steps.preview-context.outputs.should_deploy == 'true' && steps.preview-context.outputs.pr_number != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9.0.0
         env:
           DEPLOY_URL: ${{ steps.vercel-deploy.outputs.url }}
         with:
@@ -318,7 +356,7 @@ jobs:
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
         with:
           ref: ${{ github.event_name == 'workflow_dispatch' && 'release/prod' || github.ref }}
           fetch-depth: 0
@@ -347,14 +385,14 @@ jobs:
           echo "verified=true" >> "$GITHUB_OUTPUT"
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@v2.2.0
         with:
-          bun-version: latest
+          bun-version: 1.4.4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7.1.0
         with:
-          node-version: 24
+          node-version: 26.13.0
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest

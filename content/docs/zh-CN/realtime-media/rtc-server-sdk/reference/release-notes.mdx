@@ -7,6 +7,47 @@ description: "查看 RTC 服务端 SDK 的版本更新、问题修复、行为�
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="4.4.33 版" id="4433-版" headingLevel={2} value="4433-版">
+
+该版本于 2026 年 11 月 03 日发布。
+
+### 新增特性
+
+#### 视频 Metadata
+
+该版本支持随视频发送和接收 Metadata。你可以通过 [`ILocalVideoTrack::registerVideoMetadataObserver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track#a551cacb9f56b75ffd2b4bdf9db721eb4) 注册 [`IMetadataObserver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer)，并通过以下回调设置和接收视频附属信息：
+
+- [`getMaxMetadataSize`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer#aa1d7b729f373d985a5bbdd855c4e85d5)：设置 Metadata 的最大缓冲区大小，默认值为 512 字节，最大为 1024 字节。
+- [`onReadyToSendMetadata`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer#afc9b177f803cc0f0bb18b36c51be84f0)：在 SDK 准备发送 Metadata 时填入数据和大小。
+- [`onMetadataReceived`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer#a890f087351519bdeba5f17e824158d03)：接收远端用户发送的 Metadata。
+
+不再需要监听时，调用 [`unregisterVideoMetadataObserver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track#a46680142338456fb129a1e7fe9ac0aba) 注销观测器。详见[发送和接收视频 Metadata](/zh-CN/realtime-media/rtc-server-sdk/build/video-metadata)。
+
+新增的注册和注销接口均提供默认实现，默认返回 `0`。
+
+#### 服务配置路径和参数入口
+
+[`AgoraServiceConfiguration`](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration) 提供以下配置字段，默认值均为 `NULL`：
+
+- [`configDir`](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration#a77320f26cea585d9795b45496483ca9a)：配置文件目录。为 `NULL` 时，使用 SDK 默认配置目录。
+- [`dataDir`](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration#a3c772897c7f42b84d3b061f0c571cc59)：数据文件目录。为 `NULL` 时，使用 SDK 默认数据目录。
+- [`parameters`](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration#af1554e9a7042aba783dd366740341bfd)：本版本新增，支持在初始化时通过 JSON 字符串配置 SDK，用于技术预览功能或特殊定制。请在技术支持指导下配置。
+
+#### 获取 NTP 时间
+
+该版本新增 [`IAgoraService::getNtpWallTimeInMs`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service#a96496d23dd3aac1eae15e630fa714f37)，用于获取以毫秒为单位的 Unix 时间戳。NTP 服务不可用时，该方法返回 `0`。
+
+### 问题修复
+
+- 修复了 Token 中包含未知 service type 时，有概率导致 SDK 崩溃的问题。
+- 修复了创建连接后立即销毁时，服务端有概率无法及时感知用户退出的问题。
+- 修复了开启内容加密后，无法使用 String 型用户 ID 的问题。
+- 修复了音频 IO 线程和播放线程并发访问有概率导致 SDK 崩溃的问题。
+- 修复了使用 String 型用户 ID 时的音画不同步问题。
+- 修复了音频立体声场景下，弱网环境中有概率出现杂音的问题。
+
+</Accordion>
+
 <Accordion title="4.4.32 版" id="4432-版" headingLevel={2} value="4432-版">
 
 该版本于 2025 年 4 月 28 日发布。

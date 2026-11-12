@@ -7,7 +7,13 @@ import {
   SlidersHorizontalIcon,
   XIcon,
 } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react';
 import { DocsTaskFeedback } from '@/components/docs-shell/DocsTaskFeedback';
 import { SearchBrowseFilters } from '@/components/search/SearchBrowseFilters';
 import { SearchInput } from '@/components/search/SearchInput';
@@ -45,7 +51,6 @@ import {
 } from '@/lib/analytics/measurement';
 import { observeVisible } from '@/lib/analytics/visibility';
 import type { ProductScope } from '@/lib/docs-tree';
-import { isKnownPlatform } from '@/lib/platforms/registry';
 import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
 import {
   getCnProductLabel,
@@ -55,10 +60,8 @@ import {
   getCnSearchPlatformLabel,
   getCnSearchPlatforms,
 } from '@/lib/search/cn-search-context';
-import {
-  cnSearchFamilies,
-  getCnSearchFamily,
-} from '@/lib/search/cn-search-family';
+import { getCnSearchFamily } from '@/lib/search/cn-search-family';
+import { getCnSearchFamilyOrder } from '@/lib/search/cn-search-intent';
 import {
   type CnSearchPageResponse,
   isPublicCnSearchUrl,
@@ -68,12 +71,42 @@ import {
   type SearchPageGroup,
   searchCnDocsPage,
 } from '@/lib/search/cn-search-page';
-import type { SearchPageState } from '@/lib/search/search-page-state';
+import { isCnSearchPlatform } from '@/lib/search/cn-search-platforms';
+import {
+  parseSearchPageState,
+  SEARCH_MAX_LOADED_PAGES,
+  type SearchPageState,
+} from '@/lib/search/search-page-state';
 
 type SearchStatus = 'loading' | 'loaded' | 'error';
 const examples = ['Token', 'manualSOS', '云端录制', '降噪'];
 
-export function DocsSearchPage({
+const subscribeHydration = () => () => {};
+const clientSnapshot = () => true;
+const serverSnapshot = () => false;
+const staticSearchState = parseSearchPageState({});
+
+export function DocsSearchPage(props: {
+  state: SearchPageState;
+  onChange: (patch: Partial<SearchPageState>) => void;
+  productScopes?: ProductScope[];
+}) {
+  // One prerendered HTML file serves every search URL. Hydrate its empty state
+  // first, then apply the actual query/filters without replacing the SSR tree.
+  const hydrated = useSyncExternalStore(
+    subscribeHydration,
+    clientSnapshot,
+    serverSnapshot,
+  );
+  return (
+    <DocsSearchPageContent
+      {...props}
+      state={hydrated ? props.state : staticSearchState}
+    />
+  );
+}
+
+function DocsSearchPageContent({
   state,
   onChange,
   productScopes = [],
@@ -85,6 +118,18 @@ export function DocsSearchPage({
   const [draft, setDraft] = useState(state.q);
   const [status, setStatus] = useState<SearchStatus>('loading');
   const [data, setData] = useState<CnSearchPageResponse | null>(null);
+  const familyOrder = getCnSearchFamilyOrder(
+    state.q,
+    data?.groups.flatMap((group) =>
+      group.sections.map((section) => ({
+        family: getCnSearchFamily(group),
+        title: section.sectionTitle,
+        languageEntryTerms: section.languageEntryTerms,
+        languageEntryRank: section.languageEntryRank,
+      })),
+    ) ?? [],
+    state.platform,
+  );
   const [catalog, setCatalog] = useState<SearchFacets>({});
   const [recent, setRecent] = useState<RecentPage[]>([]);
   const [retry, setRetry] = useState(0);
@@ -127,17 +172,26 @@ export function DocsSearchPage({
     });
   }, [data, status]);
   const stateKey = JSON.stringify(state);
-  const [progress, setProgress] = useState({ key: stateKey, page: state.page });
+  const [progress, setProgress] = useState({
+    key: stateKey,
+    page: state.loaded ?? state.page,
+  });
   if (progress.key !== stateKey) {
-    setProgress({ key: stateKey, page: state.page });
+    setProgress({ key: stateKey, page: state.loaded ?? state.page });
   }
-  const currentPage = progress.key === stateKey ? progress.page : state.page;
+  const currentPage =
+    progress.key === stateKey ? progress.page : (state.loaded ?? state.page);
   const loadedPages = useRef<{
     key: string;
     pages: Map<number, CnSearchPageResponse>;
   }>({ key: '', pages: new Map() });
+  const appliedRetry = useRef(0);
   const request = useMemo(
-    () => ({ state: { ...state, page: currentPage }, retry }),
+    () => ({
+      state: { ...state, page: currentPage },
+      startPage: state.page,
+      retry,
+    }),
     [state, currentPage, retry],
   );
   useEffect(() => setDraft(state.q), [state.q]);
@@ -153,7 +207,7 @@ export function DocsSearchPage({
 
   useEffect(() => {
     const controller = new AbortController();
-    const { page: _page, ...criteria } = request.state;
+    const { page: _page, loaded: _loaded, ...criteria } = request.state;
     const key = JSON.stringify(criteria);
     if (loadedPages.current.key !== key) {
       loadedPages.current = { key, pages: new Map() };
@@ -179,24 +233,47 @@ export function DocsSearchPage({
         }),
       };
     const snapshot = measurement ? logicalSearch.current?.snapshot : undefined;
-    const requestId = snapshot ? crypto.randomUUID() : undefined;
-    const requestStarted = Date.now();
-    const headers = (purpose: string) =>
-      snapshot
-        ? {
-            'X-Docs-Search-Id': snapshot.searchId,
-            'X-Docs-Request-Id':
-              purpose === 'results' ? (requestId ?? '') : crypto.randomUUID(),
-            'X-Docs-Request-Purpose': purpose,
-          }
-        : undefined;
+    let requestId: string | undefined;
+    const restoreStarted = Date.now();
     setStatus('loading');
-    searchCnDocsPage(request.state, controller.signal, headers('results'))
+    if (appliedRetry.current !== request.retry) {
+      loadedPages.current.pages.delete(request.state.page);
+      appliedRetry.current = request.retry;
+    }
+    const restoreRange = async () => {
+      // Sequential, abortable and cached; a reload cannot issue an unbounded
+      // fan-out, and a failed intermediate page is retried before continuing.
+      let result: CnSearchPageResponse | undefined;
+      for (let page = request.startPage; page <= request.state.page; page++) {
+        result = loadedPages.current.pages.get(page);
+        if (!result) {
+          requestId = snapshot ? crypto.randomUUID() : undefined;
+          result = await searchCnDocsPage(
+            { ...request.state, page },
+            controller.signal,
+            snapshot
+              ? {
+                  'X-Docs-Search-Id': snapshot.searchId,
+                  'X-Docs-Request-Id': requestId ?? '',
+                  'X-Docs-Request-Purpose': 'results',
+                }
+              : undefined,
+          );
+          if (controller.signal.aborted) return;
+          loadedPages.current.pages.set(page, result);
+        }
+        if (page >= result.totalPages) break;
+      }
+      return result;
+    };
+    restoreRange()
       .then((result) => {
+        if (!result) return;
         if (controller.signal.aborted) return;
-        loadedPages.current.pages.set(request.state.page, result);
         const pages = [...loadedPages.current.pages.entries()]
-          .filter(([page]) => page <= request.state.page)
+          .filter(
+            ([page]) => page >= request.startPage && page <= request.state.page,
+          )
           .sort(([a], [b]) => a - b);
         const accepted = {
           ...result,
@@ -213,7 +290,7 @@ export function DocsSearchPage({
               page: request.state.page,
               totalHits: result.totalHits,
               requestId,
-              started: request.state.page > 1 ? requestStarted : undefined,
+              started: request.state.page > 1 ? restoreStarted : undefined,
             }),
           );
         setData(accepted);
@@ -243,10 +320,7 @@ export function DocsSearchPage({
     if (filterOpen) setFilterDraft((previous) => ({ ...previous, ...patch }));
     else onChange(patch);
   };
-  const platforms = getCnSearchPlatforms(
-    catalog.platform,
-    controlsState.platform,
-  );
+  const platforms = getCnSearchPlatforms(undefined, controlsState.platform);
   const productGroups = getCnSearchProductGroups(
     controlsState.product,
     productScopes,
@@ -315,6 +389,7 @@ export function DocsSearchPage({
     if (!data) return null;
     return (
       <SearchResultList
+        query={state.q}
         groups={groups}
         rankOffset={rankOffset}
         productLabel={productLabel}
@@ -478,7 +553,7 @@ export function DocsSearchPage({
                       ? productLabel(state.product)
                       : field === 'platform' &&
                           state.platform &&
-                          isKnownPlatform(state.platform)
+                          isCnSearchPlatform(state.platform)
                         ? getCnSearchPlatformLabel(state.platform)
                         : state[field]}
                     <XIcon data-icon="inline-end" />
@@ -532,7 +607,7 @@ export function DocsSearchPage({
             (data.groups.length ? (
               <>
                 {state.type === 'all'
-                  ? cnSearchFamilies.map((family, familyIndex) => {
+                  ? familyOrder.map((family, familyIndex) => {
                       const groups = data.groups.filter(
                         (group) => getCnSearchFamily(group) === family,
                       );
@@ -560,7 +635,7 @@ export function DocsSearchPage({
                           {renderResults(
                             groups,
                             data.groups.filter((group) =>
-                              cnSearchFamilies
+                              familyOrder
                                 .slice(0, familyIndex)
                                 .includes(getCnSearchFamily(group)),
                             ).length,
@@ -584,12 +659,34 @@ export function DocsSearchPage({
                     currentPage < data.totalPages && (
                       <Button
                         disabled={status === 'loading'}
-                        onClick={() =>
-                          setProgress({ key: stateKey, page: currentPage + 1 })
-                        }
+                        onClick={() => {
+                          if (
+                            currentPage - state.page + 1 >=
+                            SEARCH_MAX_LOADED_PAGES
+                          ) {
+                            onChange({
+                              page: currentPage + 1,
+                              loaded: undefined,
+                            });
+                          } else {
+                            setProgress({
+                              key: stateKey,
+                              page: currentPage + 1,
+                            });
+                            onChange({
+                              page: state.page,
+                              loaded: currentPage + 1,
+                            });
+                          }
+                        }}
                         variant="outline"
                       >
-                        {status === 'loading' ? '正在加载…' : '加载更多'}
+                        {status === 'loading'
+                          ? '正在加载…'
+                          : currentPage - state.page + 1 >=
+                              SEARCH_MAX_LOADED_PAGES
+                            ? '下一组结果'
+                            : '加载更多'}
                       </Button>
                     )
                   )}

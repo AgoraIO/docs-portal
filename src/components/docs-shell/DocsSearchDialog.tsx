@@ -58,13 +58,14 @@ import {
 } from '@/lib/search/cn-search-context';
 import {
   type CnSearchFamily,
-  cnSearchFamilies,
   getCnSearchFamily,
 } from '@/lib/search/cn-search-family';
+import { getCnSearchFamilyOrder } from '@/lib/search/cn-search-intent';
 import {
   loadCnSearchCatalog,
   type SearchFacets,
 } from '@/lib/search/cn-search-page';
+import type { CnSearchPlatform } from '@/lib/search/cn-search-platforms';
 import {
   CN_SEARCH_SESSION_CHANGED,
   type CnSearchSession,
@@ -124,7 +125,7 @@ export function DocsSearchDialog({
   const returnFocusRef = useRef<HTMLElement | null>(null);
   const navigatingRef = useRef(false);
   const [draftSearch, setDraftSearch] = useState('');
-  const [platformFilter, setPlatformFilter] = useState<PlatformKey | null>(
+  const [platformFilter, setPlatformFilter] = useState<CnSearchPlatform | null>(
     null,
   );
   // Selected scope id (e.g. `product:video`), or null for all products.
@@ -454,7 +455,7 @@ export function DocsSearchDialog({
         options: platformOptions.map((platform) => ({
           label: isCn
             ? getCnSearchPlatformLabel(platform)
-            : getPlatformLabel(platform, searchLocale),
+            : getPlatformLabel(platform as PlatformKey, searchLocale),
           value: platform,
         })),
       },
@@ -591,7 +592,11 @@ export function DocsSearchDialog({
           searchResultToEntry(result, searchLocale === 'zh-CN', productScopes),
         );
   const resultGroups = isCn
-    ? cnSearchFamilies.map((family) => {
+    ? getCnSearchFamilyOrder(
+        draftSearch,
+        resultEntries,
+        platformFilter ?? undefined,
+      ).map((family) => {
         const entries = resultEntries.filter(
           (entry) => entry.family === family,
         );
@@ -823,7 +828,7 @@ export function DocsSearchDialog({
                 manualSelection.current = false;
                 setActiveValue(null);
                 inputAt.current = Date.now();
-                setPlatformFilter(next as PlatformKey | null);
+                setPlatformFilter(next as CnSearchPlatform | null);
               }}
               searchPlaceholder={t('docs.searchFilterPlatforms')}
               value={platformFilter}
@@ -1103,6 +1108,8 @@ export function DocsSearchDialog({
 }
 
 type RenderedSearchEntry = SearchEntry & {
+  languageEntryTerms?: string[];
+  languageEntryRank?: number;
   family: CnSearchFamily;
   familyTotalHits?: number;
   context: string[];
@@ -1124,6 +1131,8 @@ function searchResultToEntry(
   result: {
     breadcrumbs?: unknown[];
     familyTotalHits?: unknown;
+    languageEntryTerms?: unknown;
+    languageEntryRank?: unknown;
     content: unknown;
     id?: unknown;
     objectType?: unknown;
@@ -1146,6 +1155,11 @@ function searchResultToEntry(
   const sdkLabel = isCn ? getCnSearchSdkLabel(result.url) : undefined;
 
   return {
+    languageEntryTerms: getStringArray(result.languageEntryTerms),
+    languageEntryRank:
+      typeof result.languageEntryRank === 'number'
+        ? result.languageEntryRank
+        : undefined,
     family: getCnSearchFamily({
       pageUrl: result.url,
       docType: objectType === 'openapi' ? 'openapi' : 'docs',

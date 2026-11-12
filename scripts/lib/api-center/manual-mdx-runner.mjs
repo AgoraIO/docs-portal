@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
+import { isUnpublishedLegacySource } from '../legacy-publication.mjs';
 import {
   loadComponentMap,
   loadPathMap,
@@ -236,11 +237,14 @@ async function localizeAssets(body, { oldRoot, run, sourcePath, sourceUrl }) {
   let cursor = 0;
   const matches = [
     ...body.matchAll(/!\[([^\]\n]*)]\(([^)\s]+)(?:\s+"[^"]*")?\)/g),
-  ];
+    ...body.matchAll(
+      /<(?:DocsImage|InlineImage)\b[^>]*?\bsrc="([^"]+)"[^>]*\/>/g,
+    ),
+  ].sort((a, b) => a.index - b.index);
   for (const match of matches) {
     output += body.slice(cursor, match.index);
     cursor = match.index + match[0].length;
-    const source = match[2];
+    const source = match[2] ?? match[1];
     const legacyAsset =
       source.startsWith('/img/') ||
       /^https?:\/\/doc\.shengwang\.cn\/img\//.test(source);
@@ -266,7 +270,10 @@ async function localizeAssets(body, { oldRoot, run, sourcePath, sourceUrl }) {
         sourceUrl,
         type: 'asset',
       });
-      output += `![${match[1]}](/${targetPath.replace(/^public\//, '')})`;
+      output += match[0].replace(
+        source,
+        `/${targetPath.replace(/^public\//, '')}`,
+      );
     } catch {
       warnings.push(
         createWarning(
@@ -352,6 +359,7 @@ export async function runManualMdxMigration({
     (page) =>
       !page.aliasOf &&
       page.sourceResolution?.type === 'manual-mdx' &&
+      !isUnpublishedLegacySource(page.sourceResolution.sourcePath ?? '') &&
       (!scope || page.sourceResolution.route?.scopeKey === scope),
   );
   const pending = [];

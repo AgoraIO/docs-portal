@@ -85,7 +85,19 @@ describe('whiteboard audit regressions', () => {
     const source = readContent(
       'content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/(current)/classcom-1-1herewhite-1-1sdk-1-1-player.mdx',
     );
-    expect(source).toContain('| <a id="pub-methods"></a>Public 成员函数 |');
+    const ast = unified()
+      .use(remarkParse)
+      .use(remarkMdx)
+      .use(remarkGfm)
+      .parse(source.replace(/^---\n[\s\S]*?\n---\n/, ''));
+    const labels: string[] = [];
+    visit(ast, 'mdxJsxFlowElement', (node) => {
+      if (node.name !== 'th') return;
+      visit(node, 'text', (text) => labels.push(text.value.trim()));
+    });
+    expect(labels).toContain('Public 成员函数');
+    expect(labels).toContain('额外继承的成员函数');
+    expect(source).toContain('<a id="pub-methods"></a>');
     expect(source).not.toContain('player#pub-methods Public 成员函数');
     expect(source).not.toContain('player#inherited 额外继承的成员函数');
     const overview = readContent(

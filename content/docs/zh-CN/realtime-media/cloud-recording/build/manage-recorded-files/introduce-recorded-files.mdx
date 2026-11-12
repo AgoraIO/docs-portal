@@ -44,6 +44,13 @@ title: "录制文件介绍"
 
 #### 源流为纯音频时
 
+纯音频单流录制默认使用 AAC 编码，生成的 HLS 文件命名如下：
+
+- HLS M3U8 文件名：`<sid>_<cname>__uid_s_<uid>__uid_e_aac.m3u8`
+- HLS TS 分片文件名：`<sid>_<cname>__uid_s_<uid>__uid_e_<utc>_aac.ts`
+
+如果将 `recordingFileConfig.avFileType` 设置为 `["hls","mp3"]`，配置生成 MP3 文件，则对应的文件命名如下：
+
 - HLS M3U8 文件名：`<sid>_<cname>__uid_s_<uid>__uid_e_mp3.m3u8`
 - HLS TS 分片文件名：`<sid>_<cname>__uid_s_<uid>__uid_e_<utc>_mp3.ts`
 - MP3 文件名：`<sid>_<cname>__uid_s_<uid>__uid_e_<index>_mp3.mp3`
@@ -76,18 +83,18 @@ title: "录制文件介绍"
 
 录制生成文件名中主要包含的字段及其含义如下：
 
-| 字段 | 说明 |  |
-| --- | --- | --- |
-| `<sid>` | 录制任务 ID。 |  |
-| `<cname>` | 频道名。由于文件名不支持特殊字符，`cname` 中的特殊字符在生成文件时会被替换成 `-`。特殊字符包括："!"、 "@"、 "#"、 "$"、 "%"、 "^"、 "&"、 "*"、 "("、 ")"、 "+"、 "_"、 "."、 "="、 "["、 "]"、 "&#123;"、 "&#125;"、 "~"、 " | "、 "、"、 ";"、 ":"、 "?"、 "&lt;"、 "&gt;"。 |
-| `<uid>` | 录制用户 ID。 |  |
-| `<utc>` / `<timestamp>` | <Slot name="introduce-recorded-files-markdown-0-4-1" /> |  |
-| `<index>` | MP4 或 MP3 文件的索引数，`0` 表示生成的第一个文件。对于 MP4 文件，录制服务会在当前文件时长超过约 3 小时或大小超过 2 GB 左右时创建一个新的文件。 |  |
-| `<stream index>` | WebM 流索引。 |  |
-| `<segment index>` | WebM 分片索引。 |  |
-| `<codec>` | 音频或视频编码，例如 `h264`、`h265`、`av1`、`aac`、`mp3`、`vp8`、`vp9`。 |  |
-| `video` | JPG 文件名中的固定字段。 |  |
-| `_init.webm` | DASH WebM 初始化文件的固定后缀。 |  |
+| 字段 | 说明 |
+| --- | --- |
+| `<sid>` | 录制任务 ID。 |
+| `<cname>` | 频道名。由于文件名不支持特殊字符，`cname` 中的特殊字符在生成文件时会被替换成 `-`。特殊字符包括："!"、 "@"、 "#"、 "$"、 "%"、 "^"、 "&"、 "*"、 "("、 ")"、 "+"、 "_"、 "."、 "="、 "["、 "]"、 "&#123;"、 "&#125;"、 "~"、 " \| "、 "、"、 ";"、 ":"、 "?"、 "&lt;"、 "&gt;"。 |
+| `<uid>` | 录制用户 ID。 |
+| `<utc>` / `<timestamp>` | <Slot name="introduce-recorded-files-markdown-0-4-1" /> |
+| `<index>` | MP4 或 MP3 文件的索引数，`0` 表示生成的第一个文件。对于 MP4 文件，录制服务会在当前文件时长超过约 3 小时或大小超过 2 GB 左右时创建一个新的文件。 |
+| `<stream index>` | WebM 流索引。 |
+| `<segment index>` | WebM 分片索引。 |
+| `<codec>` | 音频或视频编码，例如 `h264`、`h265`、`av1`、`aac`、`mp3`、`vp8`、`vp9`。 |
+| `video` | JPG 文件名中的固定字段。 |
+| `_init.webm` | DASH WebM 初始化文件的固定后缀。 |
 
 <Slot for="introduce-recorded-files-markdown-0-4-1">
 
@@ -172,6 +179,8 @@ M3U8 索引文件本身不会切片。音视频媒体文件按切片时长生成
 
 #### 上传云存储失败
 
+新单流录制中，如果 `stop` 响应的 `serverResponse.uploadingStatus` 为 `stranded`，表示部分录制文件尚未上传至指定的第三方云存储。录制服务会继续自动重试上传，直至上传成功；该状态不表示文件丢失。业务侧应等待文件上传完成后，再进行依赖完整录制文件的播放或处理。
+
 如果录制文件上传到你指定的云存储失败，云端录制会将文件通过备份云转存至你指定的云存储。为确保不覆盖最新版本，M3U8 文件名会附上后缀 `_<tick>_<index>`。
 
 - `tick`：与该 M3U8 文件生成时的时间相关。
@@ -225,6 +234,8 @@ sid713476478245_cnameagora__uid_s_123__uid_e_20190920125142485_h264.ts
 :::
 
 #### 音频 M3U8 文件示例
+
+以下示例使用默认 AAC 编码，TS 分片文件名以 `_aac.ts` 结尾。如果配置生成 MP3 文件，TS 分片文件名则以 `_mp3.ts` 结尾。
 
 ```shell
 #EXTM3U

@@ -287,7 +287,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/online-ktv/online-ktv-sdk/api/lyrics-api':
     '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/lyrics-api',
   'realtime-media/online-ktv/online-ktv-sdk/api/music-content-center':
-    '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/music-content-center',
+    '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center',
   'realtime-media/online-ktv/online-ktv-sdk/api/rtc-api':
     '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/rtc-api',
   'realtime-media/online-ktv/online-ktv-sdk/get-started/enable-service':
@@ -1331,8 +1331,6 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/solutions/iot-apaas/reference/release-notes',
   'solutions/iot-apaas/overview/tech-architecture':
     '/zh-CN/solutions/iot-apaas/reference/tech-architecture',
-  'solutions/iot-apaas/resources':
-    '/zh-CN/solutions/iot-apaas/reference/downloads',
   'solutions/iot-apaas/restful': '/zh-CN/solutions/iot-apaas/reference/restful',
   'solutions/meeting/api/create-room':
     '/zh-CN/api-reference/meeting/restful/api/create-room',
@@ -1510,7 +1508,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/online-ktv/online-ktv-sdk/reference/lyrics-api':
     '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/lyrics-api',
   'solutions/online-ktv/online-ktv-sdk/reference/music-content-center':
-    '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/music-content-center',
+    '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center',
   'solutions/online-ktv/online-ktv-sdk/reference/rtc-api':
     '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/rtc-api',
   'solutions/online-music-class/advanced-features/fish-eye':
@@ -1673,7 +1671,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/voip-call/webhook/receive-webhook':
     '/zh-CN/solutions/voip-call/build/receive-webhook',
   'solutions/voip-call/webhook/voip-events':
-    '/zh-CN/api-reference/micro-calling/restful/webhook/voip-events',
+    '/zh-CN/solutions/voip-call/voip-events',
 };
 
 const ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS: Record<string, string> = {

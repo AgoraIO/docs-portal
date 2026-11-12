@@ -1,5 +1,6 @@
 import type { SearchClient } from 'fumadocs-core/search/client';
-import { cnSearchFamilies, getCnSearchFamily } from './cn-search-family';
+import { getCnSearchFamily } from './cn-search-family';
+import { getCnSearchFamilyOrder } from './cn-search-intent';
 import { searchCnDocsPage } from './cn-search-page';
 import { mapSearchHit, normalizeMeilisearchQuery } from './meilisearch-client';
 import { parseSearchPageState } from './search-page-state';
@@ -31,7 +32,19 @@ export function createCnDocsSearchClient({
         undefined,
         requestHeaders?.(),
       );
-      return cnSearchFamilies.flatMap((family) =>
+      const families = getCnSearchFamilyOrder(
+        q,
+        result.groups.flatMap((group) =>
+          group.sections.map((section) => ({
+            family: getCnSearchFamily(group),
+            title: section.sectionTitle,
+            languageEntryTerms: section.languageEntryTerms,
+            languageEntryRank: section.languageEntryRank,
+          })),
+        ),
+        platform,
+      );
+      return families.flatMap((family) =>
         result.groups
           .filter((group) => getCnSearchFamily(group) === family)
           .flatMap((group) => group.sections)

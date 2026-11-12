@@ -735,8 +735,13 @@ describe('ApiReferenceCards', () => {
     expect(missing).toEqual([]);
   });
 
-  it('uses platform icons uploaded from the legacy API Center assets', () => {
-    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+  it('uses hosted platform icons without sending the page Referer', () => {
+    const { container } = render(
+      <ApiReferenceCards locale="zh-CN" type="all" />,
+    );
+    for (const icon of container.querySelectorAll('img')) {
+      expect(icon).toHaveAttribute('referrerpolicy', 'no-referrer');
+    }
 
     expect(
       within(
@@ -744,7 +749,7 @@ describe('ApiReferenceCards', () => {
       ).getByRole('presentation', { hidden: true }),
     ).toHaveAttribute(
       'src',
-      'https://assets-docs.agora.io/images/api-reference/platforms/android.svg',
+      'https://web-cdn.agora.io/docs-portal/img/platforms/android.svg',
     );
     expect(
       within(
@@ -754,7 +759,7 @@ describe('ApiReferenceCards', () => {
       ).getByRole('presentation', { hidden: true }),
     ).toHaveAttribute(
       'src',
-      'https://assets-docs.agora.io/images/api-reference/platforms/restful.svg',
+      'https://web-cdn.agora.io/docs-portal/img/platforms/restful.svg',
     );
     expect(
       within(
@@ -764,7 +769,7 @@ describe('ApiReferenceCards', () => {
       ).getByRole('presentation', { hidden: true }),
     ).toHaveAttribute(
       'src',
-      'https://assets-docs.agora.io/images/api-reference/platforms/c.svg',
+      'https://web-cdn.agora.io/docs-portal/img/platforms/c.svg',
     );
     expect(
       within(
@@ -774,7 +779,7 @@ describe('ApiReferenceCards', () => {
       ).getByRole('presentation', { hidden: true }),
     ).toHaveAttribute(
       'src',
-      'https://doc.shengwang.cn/img/platforms/windows.svg',
+      'https://web-cdn.agora.io/docs-portal/img/platforms/windows.svg',
     );
   });
 
@@ -849,7 +854,7 @@ describe('ApiReferenceCards', () => {
       }),
     ).toHaveAttribute(
       'href',
-      '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/music-content-center',
+      '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center',
     );
   });
 });

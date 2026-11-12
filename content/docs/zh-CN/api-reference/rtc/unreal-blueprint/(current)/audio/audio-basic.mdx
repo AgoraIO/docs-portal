@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int AdjustUserPlaybackSignalVolume(int64 uid, int volume);
 ```
@@ -88,7 +88,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int AdjustUserPlaybackSignalVolumeEx(int64 uid, int volume, const FRtcConnection& connection);
 ```
@@ -159,7 +159,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_disableaudio__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int DisableAudio();
 ```
@@ -207,7 +207,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_enableaudio__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int EnableAudio();
 ```
@@ -257,7 +257,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_enableaudiovolumeindication__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int EnableAudioVolumeIndication(int interval, int smooth, bool reportVad);
 ```
@@ -334,7 +334,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int EnableAudioVolumeIndicationEx(int interval, int smooth, bool reportVad, const FRtcConnection& connection);
 ```
@@ -417,7 +417,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_setaudioprofile__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetAudioProfileAndScenario(EAUDIO_PROFILE_TYPE profile = EAUDIO_PROFILE_TYPE::AUDIO_PROFILE_DEFAULT, EAUDIO_SCENARIO_TYPE scenario = EAUDIO_SCENARIO_TYPE::AUDIO_SCENARIO_DEFAULT);
 ```
@@ -485,7 +485,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setaudioprofile2__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetAudioProfile(EAUDIO_PROFILE_TYPE profile = EAUDIO_PROFILE_TYPE::AUDIO_PROFILE_DEFAULT);
 ```
@@ -535,7 +535,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setaudioscenario__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetAudioScenario(EAUDIO_SCENARIO_TYPE scenario = EAUDIO_SCENARIO_TYPE::AUDIO_SCENARIO_DEFAULT);
 ```
@@ -595,7 +595,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setaudiosessionoperationrestriction__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetAudioSessionOperationRestriction(EAUDIO_SESSION_OPERATION_RESTRICTION restriction);
 ```
@@ -649,7 +649,7 @@ SDK 对 Audio Session 的操作权限，详见 [EAUDIO_SESSION_OPERATION_RESTRIC
 
 <a id="callback_irtcengineeventhandler_onactivespeaker__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnActiveSpeaker(int64 uid);
 ```
@@ -692,7 +692,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onaudioquality__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnAudioQuality(int64 uid, int quality, int delay, int lost);
 ```
@@ -763,7 +763,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 void OnAudioVolumeIndication(const TArray<FAudioVolumeInfo>& speakers, int totalVolume);
 ```
@@ -818,7 +818,7 @@ void OnAudioVolumeIndication(const TArray<FAudioVolumeInfo>& speakers, int total
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnFirstLocalAudioFramePublished(int elapsed);
 ```
@@ -860,7 +860,7 @@ SDK 会在以下时机触发该回调：
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnFirstRemoteAudioDecoded(int64 uid, int elapsed);
 ```
@@ -918,7 +918,7 @@ SDK 会在以下时机触发该回调：
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnFirstRemoteAudioFrame(int64 uid, int elapsed);
 ```
@@ -966,7 +966,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnLocalAudioStateChanged(ELOCAL_AUDIO_STREAM_STATE state, ELOCAL_AUDIO_STREAM_REASON reason);
 ```
@@ -1019,7 +1019,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnLocalAudioStats(const FLocalAudioStats& stats);
 ```
@@ -1059,7 +1059,7 @@ SDK 每 2 秒触发该回调一次。
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnRemoteAudioStateChanged(int64 uid, EREMOTE_AUDIO_STATE state, EREMOTE_AUDIO_STATE_REASON reason, int elapsed);
 ```
@@ -1123,7 +1123,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnRemoteAudioStats(const FRemoteAudioStats& stats);
 ```
@@ -1163,7 +1163,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnRemoteAudioTransportStats(int64 uid, int delay, int lost, int rxKBitRate);
 ```
@@ -1227,7 +1227,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnUserMuteAudio(int64 uid, bool muted);
 ```

@@ -7,9 +7,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 :::caution[注意]
 自 2026 年 9 月 14 日开始，通过 Gradle 自动集成 Android SDK 时，需要额外配置声网 Maven CDN 仓库。具体配置方式请参考[下载 SDK](/zh-CN/realtime-media/rtc/reference/downloads/android#通过-gradle-自动集成-sdk)。
-:::
 
-:::caution[注意]
 通过 Gradle 自动集成并升级至 v4.6.0 及以上版本时，除更新版本号外，还需将包名从 `io.agora.rtc` 修改为 `cn.shengwang.rtc`。
 :::
 
@@ -347,7 +345,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
    该版本对美颜功能进行了彻底重构和升级，不仅拓展了美颜功能，提升了美颜效果和性能，还解决了美颜参数配置复杂、集成成本高、美颜资源依赖网络易失效等痛点。主要改进包括：
 
    - **新增美颜功能**：新增白牙、去法令纹、去黑眼圈、亮眼等美肤功能；美妆特效新增卧蚕和面部高光；美型功能从 11 个增加到 29 个。
-   - **API 大幅简化**：将过去版本中的基础美颜、美型、美妆、滤镜功能整合为 `BEAUTY`、`STYLE_MAKEUP`、`FILTER` 三个核心节点 (node)，通过 [`IVideoEffectObject`](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoeffectobject) 统一管理生命周期和参数设置，减少频繁 API 调用带来的性能负担。
+   - **API 大幅简化**：将过去版本中的基础美颜、美型、美妆、滤镜功能整合为 `BEAUTY`、`STYLE_MAKEUP`、`FILTER` 三个核心节点 (node)，通过 [`IVideoEffectObject`](/zh-CN/api-reference/rtc/android/class-ivideoeffectobject) 统一管理生命周期和参数设置，减少频繁 API 调用带来的性能负担。
    - **预设模板开箱即用**：提供多套预设风格模板（如“自然美颜”、“学姐妆”、“冷白滤镜”），大幅简化集成流程，无需手动调试数十项参数。
    - **美颜参数动态控制**：该版本新增实时获取美颜参数的能力，开发者可通过 key-value 方式动态读取或修改任意细粒度参数（如磨皮强度、口红类型）。同时支持：调用预设模板快速启用风格效果、保存主播自定义参数配置、随时重置参数至默认状态，极大提升了业务层状态同步的灵活性和开发效率。
    - **美颜资源外置**：该版本通过美颜资源外置化设计，将所有美颜资源（特效、滤镜、妆容）均打包为本地 bundle 文件，彻底消除因网络下载失败导致美颜失效的风险。
@@ -2377,7 +2375,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
    该版本对美颜功能进行了彻底重构和升级，不仅拓展了美颜功能，提升了美颜效果和性能，还解决了美颜参数配置复杂、集成成本高、美颜资源依赖网络易失效等痛点。主要改进包括：
 
-   - **API 大幅简化**：将过去版本中的基础美颜、美型、美妆、滤镜功能整合为 `AgoraVideoEffectNodeBeauty`、`AgoraVideoEffectNodeStyleMakeup`、`AgoraVideoEffectNodeFilter` 三个核心节点 (node)，通过 [`AgoraVideoEffectObject`](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ivideoeffectobject) 统一管理生命周期和参数设置，减少频繁 API 调用带来的性能负担。
+   - **API 大幅简化**：将过去版本中的基础美颜、美型、美妆、滤镜功能整合为 `AgoraVideoEffectNodeBeauty`、`AgoraVideoEffectNodeStyleMakeup`、`AgoraVideoEffectNodeFilter` 三个核心节点 (node)，通过 [`AgoraVideoEffectObject`](/zh-CN/api-reference/rtc/ios/class-ivideoeffectobject) 统一管理生命周期和参数设置，减少频繁 API 调用带来的性能负担。
    - **预设模板开箱即用**：提供多套预设风格模板（如“自然美颜”、“学姐妆”、“冷白滤镜”），大幅简化集成流程，无需手动调试数十项参数。
    - **美颜参数动态控制**：该版本新增实时获取美颜参数的能力，开发者可通过 key-value 方式动态读取或修改任意细粒度参数（如磨皮强度、口红类型）。同时支持：调用预设模板快速启用风格效果、保存主播自定义参数配置、随时重置参数至默认状态，极大提升了业务层状态同步的灵活性和开发效率。
    - **美颜资源外置**：该版本通过美颜资源外置化设计，将所有美颜资源（特效、滤镜、妆容）均打包为本地 bundle 文件，彻底消除因网络下载失败导致美颜失效的风险。
@@ -2541,8 +2539,6 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 #### 色彩空间设置
 
    该版本在 [`AgoraOutputVideoFrame`](/zh-CN/api-reference/rtc/ios/class-videoframe) 和 [`AgoraVideoFrame`](/zh-CN/api-reference/rtc/ios/class-externalvideoframe) 中新增了 **colorSpace**，你可以通过该参数设置视频帧的色彩空间属性。默认情况下，色彩空间采用 Full Range 和 BT.709 标准配置，你可以根据自采集或自渲染的需求灵活调整，进一步提升视频处理的定制化能力。
-
-#### 其他
 
 ### 改进
 
@@ -3564,7 +3560,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration:`](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
 
-<div class="note">由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。</div>
+:::note
+由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+:::
 
 #### 设置远端视频流的订阅选项
 
@@ -4076,9 +4074,6 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 <PlatformStructured platform="macos">
 
-### 已知问题和局限性
-
-
 <Accordions type="multiple" openFirst>
 
 <Accordion title="v4.7.0" id="v470-2" headingLevel={2} value="v470-2">
@@ -4295,7 +4290,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
    该版本对美颜功能进行了彻底重构和升级，不仅拓展了美颜功能，提升了美颜效果和性能，还解决了美颜参数配置复杂、集成成本高、美颜资源依赖网络易失效等痛点。主要改进包括：
 
-   - **API 大幅简化**：将过去版本中的基础美颜、美型、美妆、滤镜功能整合为 `AgoraVideoEffectNodeBeauty`、`AgoraVideoEffectNodeStyleMakeup`、`AgoraVideoEffectNodeFilter` 三个核心节点 (node)，通过 [`AgoraVideoEffectObject`](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoeffectobject) 统一管理生命周期和参数设置，减少频繁 API 调用带来的性能负担。
+   - **API 大幅简化**：将过去版本中的基础美颜、美型、美妆、滤镜功能整合为 `AgoraVideoEffectNodeBeauty`、`AgoraVideoEffectNodeStyleMakeup`、`AgoraVideoEffectNodeFilter` 三个核心节点 (node)，通过 [`AgoraVideoEffectObject`](/zh-CN/api-reference/rtc/macos/class-ivideoeffectobject) 统一管理生命周期和参数设置，减少频繁 API 调用带来的性能负担。
    - **预设模板开箱即用**：提供多套预设风格模板（如“自然美颜”、“学姐妆”、“冷白滤镜”），大幅简化集成流程，无需手动调试数十项参数。
    - **美颜参数动态控制**：该版本新增实时获取美颜参数的能力，开发者可通过 key-value 方式动态读取或修改任意细粒度参数（如磨皮强度、口红类型）。同时支持：调用预设模板快速启用风格效果、保存主播自定义参数配置、随时重置参数至默认状态，极大提升了业务层状态同步的灵活性和开发效率。
    - **美颜资源外置**：该版本通过美颜资源外置化设计，将所有美颜资源（特效、滤镜、妆容）均打包为本地 bundle 文件，彻底消除因网络下载失败导致美颜失效的风险。
@@ -8013,11 +8008,6 @@ v4.0.0 修复了以下问题：
 
    受美颜重构的影响，自 v4.6.0 起，不再支持调用 [`setExtensionProperty`](/zh-CN/api-reference/rtc/cpp-all-platforms/extension#api_irtcengine_setextensionproperty) 启用美妆功能，改用 `STYLE_MAKEUP` 节点实现。
 
-#### 双流模式行为变更
-
-   - v4.6.0 之前：发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM) 时，不会主动发送小流，仅当主播身份的接收端调用 [`setRemoteVideoStreamType`](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起小流申请后，发送端收到申请才会开始发送小流。
-   - v4.6.0 及之后版本：发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM) 时，会根据订阅端用户的下行网络质量，自动决定发送或停止发送小流。若将 **mode** 设置为其他发送模式或显式配置了小流的宽、高、码率或帧率，则此自适应功能失效。
-
 #### 新增域名白名单
 
 如果你由之前的版本升级到 v4.6.0 且使用了域名白名单功能（`RtcEngineConfig` 下的 `domainLimit` 为 `true`），请在白名单中添加以下域名，以确保互通顺畅：
@@ -8079,7 +8069,7 @@ v4.0.0 修复了以下问题：
    该版本对美颜功能进行了彻底重构和升级，不仅拓展了美颜功能，提升了美颜效果和性能，还解决了美颜参数配置复杂、集成成本高、美颜资源依赖网络易失效等痛点。主要改进包括：
 
    - **新增美颜功能**：新增白牙、去法令纹、去黑眼圈、亮眼等美肤功能；美妆特效新增卧蚕和面部高光；美型功能从 11 个增加到 29 个。
-   - **API 大幅简化**：将过去版本中的基础美颜、美型、美妆、滤镜功能整合为 `BEAUTY`、`STYLE_MAKEUP`、`FILTER` 三个核心节点 (node)，通过 [`IVideoEffectObject`](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_ivideoeffectobject) 统一管理生命周期和参数设置，减少频繁 API 调用带来的性能负担。
+   - **API 大幅简化**：将过去版本中的基础美颜、美型、美妆、滤镜功能整合为 `BEAUTY`、`STYLE_MAKEUP`、`FILTER` 三个核心节点 (node)，通过 [`IVideoEffectObject`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-ivideoeffectobject) 统一管理生命周期和参数设置，减少频繁 API 调用带来的性能负担。
    - **预设模板开箱即用**：提供多套预设风格模板（如“自然美颜”、“学姐妆”、“冷白滤镜”），大幅简化集成流程，无需手动调试数十项参数。
    - **美颜参数动态控制**：该版本新增实时获取美颜参数的能力，开发者可通过 key-value 方式动态读取或修改任意细粒度参数（如磨皮强度、口红类型）。同时支持：调用预设模板快速启用风格效果、保存主播自定义参数配置、随时重置参数至默认状态，极大提升了业务层状态同步的灵活性和开发效率。
    - **美颜资源外置**：该版本通过美颜资源外置化设计，将所有美颜资源（特效、滤镜、妆容）均打包为本地 bundle 文件，彻底消除因网络下载失败导致美颜失效的风险。
@@ -10531,10 +10521,6 @@ https://miniapp-4.agoraio.cn
 
 <TabsContent value="electron">
 
-### 已知问题和局限性
-
-
-
 <Accordions type="multiple" openFirst>
 
 <Accordion title="v4.6.2" id="v462-5" headingLevel={2} value="v462-5">
@@ -10586,11 +10572,6 @@ https://miniapp-4.agoraio.cn
 #### 美妆功能实现变更
 
 受该版本美颜重构的影响，自 v4.6.2 起，不再支持调用 [`setExtensionProperty`](/zh-CN/api-reference/rtc/electron/extension#api_irtcengine_setextensionproperty) 启用美妆功能，改用 `STYLE_MAKEUP` 节点实现。
-
-#### 双流模式行为变更
-
-- v4.6.2 之前：发送端开启小流自适应模式 (AutoSimulcastStream) 时，不会主动发送小流，仅当主播身份的接收端调用 [`setRemoteVideoStreamType`](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起小流申请后，发送端收到申请才会开始发送小流。
-- v4.6.2 及之后版本：发送端开启小流自适应模式 (AutoSimulcastStream) 时，会根据订阅端用户的下行网络质量，自动决定发送或停止发送小流。若将 **mode** 设置为其他发送模式或显式配置了小流的宽、高、码率或帧率，则此自适应功能失效。
 
 #### 新增域名白名单
 
@@ -11565,7 +11546,9 @@ https://miniapp-4.agoraio.cn
 
  如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration`](/zh-CN/api-reference/rtc/electron/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
 
-<div class="note">由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。</div>
+:::note
+由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+:::
 
 #### 其他兼容性变更
 
@@ -12349,11 +12332,6 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 #### 美妆功能实现变更
 
 受该版本美颜重构的影响，自 v4.6.2 起，不再支持调用 [`SetExtensionProperty`](/zh-CN/api-reference/rtc/unity/extension#api_irtcengine_setextensionproperty) 启用美妆功能，改用 `STYLE_MAKEUP` 节点实现。
-
-#### 双流模式行为变更
-
-- v4.6.2 之前：发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM) 时，不会主动发送小流，仅当主播身份的接收端调用 [`SetRemoteVideoStreamType`](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起小流申请后，发送端收到申请才会开始发送小流。
-- v4.6.2 及之后版本：发送端开启小流自适应模式 (AUTO_SIMULCAST_STREAM) 时，会根据订阅端用户的下行网络质量，自动决定发送或停止发送小流。若将 **mode** 设置为其他发送模式或显式配置了小流的宽、高、码率或帧率，则此自适应功能失效。
 
 #### 新增域名白名单
 
@@ -14517,11 +14495,6 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 
 受该版本美颜重构的影响，自 v4.6.2 起，不再支持调用 [`setExtensionProperty`](/zh-CN/api-reference/rtc/flutter/extension#api_irtcengine_setextensionproperty) 启用美妆功能，改用 `STYLE_MAKEUP` 节点实现。
 
-#### 双流模式行为变更
-
-- v4.6.2 之前：发送端开启小流自适应模式 (autoSimulcastStream) 时，不会主动发送小流，仅当主播身份的接收端调用 [`setRemoteVideoStreamType`](/zh-CN/api-reference/rtc/flutter/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起小流申请后，发送端收到申请才会开始发送小流。
-- v4.6.2 及之后版本：发送端开启小流自适应模式 (autoSimulcastStream) 时，会根据订阅端用户的下行网络质量，自动决定发送或停止发送小流。若将 **mode** 设置为其他发送模式或显式配置了小流的宽、高、码率或帧率，则此自适应功能失效。
-
 #### 新增域名白名单
 
 如果你由之前的版本升级到 v4.6.2 且使用了域名白名单功能（`RtcEngineConfig` 下的 `domainLimit` 为 `true`），请在白名单中添加以下域名，以确保互通顺畅：
@@ -16630,11 +16603,6 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 
 受该版本美颜重构的影响，自 v4.6.2 起，不再支持调用 [`setExtensionProperty`](/zh-CN/api-reference/rtc/react-native/extension#api_irtcengine_setextensionproperty) 启用美妆功能，改用 `STYLE_MAKEUP` 节点实现。
 
-#### 双流模式行为变更
-
-- v4.6.2 之前：发送端开启小流自适应模式 (AutoSimulcastStream) 时，不会主动发送小流，仅当主播身份的接收端调用 [`setRemoteVideoStreamType`](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setremotevideostreamtype) 发起小流申请后，发送端收到申请才会开始发送小流。
-- v4.6.2 及之后版本：发送端开启小流自适应模式 (AutoSimulcastStream) 时，会根据订阅端用户的下行网络质量，自动决定发送或停止发送小流。若将 **mode** 设置为其他发送模式或显式配置了小流的宽、高、码率或帧率，则此自适应功能失效。
-
 #### 新增域名白名单
 
 如果你由之前的版本升级到 v4.6.2 且使用了域名白名单功能（`RtcEngineConfig` 下的 `domainLimit` 为 `true`），请在白名单中添加以下域名，以确保互通顺畅：
@@ -17684,7 +17652,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 
  如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration`](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
 
-<div class="note">由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。</div>
+:::note
+由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+:::
 
 #### 其他兼容性变更
 

@@ -354,11 +354,12 @@ describe('RTSA #2083 frozen source delta', () => {
       const body = readFileSync(resolve(process.cwd(), file.path), 'utf8');
       // The aPaaS cleanup moved the mislabeled RTSA Linux package into an
       // explicit history section, and platform query links now use published
-      // paths; keep the original migration evidence intact.
+      // paths. RTSA Java retirement later removed its historical notice;
+      // preserve the original migration evidence and freeze the active C page.
       const expectedHash =
         file.path ===
         'content/docs/zh-CN/realtime-media/rtsa/reference/downloads.mdx'
-          ? 'bb2a2ddede13ee1b59f2b51b8145e5bfef578ea3303027369cdf2cdedaa0f8b3'
+          ? '1d75be4cc0b8cdc01532bc4a35f05732f21df338c43b488980f9a4830f9c36b6'
           : file.sha256;
       expect(createHash('sha256').update(body).digest('hex'), file.path).toBe(
         expectedHash,
@@ -366,13 +367,20 @@ describe('RTSA #2083 frozen source delta', () => {
     }
   });
 
-  it('preserves every changed source xref and removes malformed JavaScript mail links without guessing an address', () => {
+  it('preserves changed source xrefs and restores the verified visible Doxygen email', () => {
     for (const delta of evidence.sourceInlineLinkDeltas) {
       const body = readFileSync(resolve(process.cwd(), delta.target), 'utf8');
-      expect(
-        body.includes(delta.after),
-        `${delta.source}: ${delta.after}`,
-      ).toBe(true);
+      // Keep the frozen migration evidence, while accepting the later repair
+      // that removes Doxygen's hidden anti-spam spans from visible link text.
+      const expected = delta.after
+        .replaceAll(
+          'sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn',
+          '[sales@shengwang.cn](mailto:sales@shengwang.cn)',
+        )
+        .replaceAll('232-1', '2³² - 1');
+      expect(body.includes(expected), `${delta.source}: ${expected}`).toBe(
+        true,
+      );
       expect(
         body.includes(delta.before),
         `${delta.source}: ${delta.before}`,
@@ -390,10 +398,10 @@ describe('RTSA #2083 frozen source delta', () => {
     );
     const service = read(`${api}structrtc-service-option-t.mdx`);
     expect(service).toContain(
-      '联系 sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn',
+      '联系 [sales@shengwang.cn](mailto:sales@shengwang.cn)',
     );
-    expect(service).not.toContain('[sales.nosp@m.');
-    expect(service).not.toMatch(/mai'|javascript:|mailto:/);
+    expect(service).not.toContain('nosp@m');
+    expect(service).not.toMatch(/mai'|javascript:/);
   });
 
   it('provides a limited conditional cloud proxy declaration and the approved archive entry', () => {

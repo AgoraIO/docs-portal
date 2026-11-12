@@ -55,7 +55,7 @@ RtmLock
 
 ### 接口描述
 
-你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `setLock` 方法进行配置。配置成功后，频道中的所有用户会收到 `SET` 类型的 `onLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `setLock` 方法进行配置。配置成功后，频道中的所有用户会收到 `SET` 类型的 `onLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
 
 ### 接口方法
 
@@ -109,7 +109,7 @@ rtmClient.getLock().setLock("my_channel", RtmChannelType.STREAM, "my_lock", ttl,
 
 ### 接口描述
 
-成功配置 Lock 后，你可以在客户端调用 `acquireLock` 方法获取锁的使用权。成功获取锁后，频道中的其他用户会收到 `ACQUIRED` 类型的 `onLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功配置 Lock 后，你可以在客户端调用 `acquireLock` 方法获取锁的使用权。成功获取锁后，频道中的其他用户会收到 `ACQUIRED` 类型的 `onLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
 
 ### 接口方法
 
@@ -163,7 +163,7 @@ rtmClient.getLock().acquireLock("chat_room", RtmChannelType.STREAM, "my_lock", r
 
 ### 接口描述
 
-当用户不再需要持有某把锁时，用户可以在客户端调用 `releaseLock` 方法主动释放锁。成功释放后，频道中的其他用户会收到 `RELEASED` 类型的 `onLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+当用户不再需要持有某把锁时，用户可以在客户端调用 `releaseLock` 方法主动释放锁。成功释放后，频道中的其他用户会收到 `RELEASED` 类型的 `onLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
 
 此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
 
@@ -216,7 +216,7 @@ rtmClient.getLock().releaseLock("chat_room", RtmChannelType.STREAM, "my_lock", n
 
 ### 接口描述
 
-当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `revokeLock` 收回被占用的锁。成功收回后，频道中的所有用户会收到 `RELEASED` 类型的 `onLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `revokeLock` 收回被占用的锁。成功收回后，频道中的所有用户会收到 `RELEASED` 类型的 `onLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
 
 此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
 
@@ -333,7 +333,7 @@ rtmClient.getLock().getLocks("chat_room", RtmChannelType.STREAM, new ResultCallb
 
 ### 接口描述
 
-如果你不再需要频道中的某把锁，你可以调用 `removeLock` 方法删除该锁。成功删除锁后，频道中的所有用户会收到 `REMOVED` 类型的 `onLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+如果你不再需要频道中的某把锁，你可以调用 `removeLock` 方法删除该锁。成功删除锁后，频道中的所有用户会收到 `REMOVED` 类型的 `onLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
 
 ### 接口方法
 
@@ -396,7 +396,7 @@ RtmLock
 
 ### 接口描述
 
-你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `setLock` 方法进行配置。配置成功后，频道中的所有用户会收到 `lockSet` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `setLock` 方法进行配置。配置成功后，频道中的所有用户会收到 `lockSet` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 ### 接口方法
 
@@ -464,7 +464,7 @@ class RtmStatus {
 
 ### 接口描述
 
-成功配置 Lock 后，你可以在客户端调用 `acquireLock` 方法获取锁的使用权。成功获取锁后，频道中的其他用户会收到 `lockAcquired` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功配置 Lock 后，你可以在客户端调用 `acquireLock` 方法获取锁的使用权。成功获取锁后，频道中的其他用户会收到 `lockAcquired` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 ### 接口方法
 
@@ -533,7 +533,7 @@ class RtmStatus {
 
 ### 接口描述
 
-当用户不再需要持有某把锁时，用户可以在客户端调用 `releaseLock` 方法主动释放锁。成功释放后，频道中的其他用户会收到 `lockReleased` 类型的 `lock` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+当用户不再需要持有某把锁时，用户可以在客户端调用 `releaseLock` 方法主动释放锁。成功释放后，频道中的其他用户会收到 `lockReleased` 类型的 `lock` 事件，详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
 
@@ -599,7 +599,7 @@ class RtmStatus {
 
 ### 接口描述
 
-当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `revokeLock` 收回被占用的锁。成功收回后，频道中的所有用户会收到 `lockReleased` 类型的 `lock` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `revokeLock` 收回被占用的锁。成功收回后，频道中的所有用户会收到 `lockReleased` 类型的 `lock` 事件，详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
 
@@ -729,7 +729,7 @@ class RtmStatus {
 
 ### 接口描述
 
-如果你不再需要频道中的某把锁，你可以调用 `removeLock` 方法删除该锁。成功删除锁后，频道中的所有用户会收到 `lockRemoved` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+如果你不再需要频道中的某把锁，你可以调用 `removeLock` 方法删除该锁。成功删除锁后，频道中的所有用户会收到 `lockRemoved` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 ### 接口方法
 
@@ -807,7 +807,7 @@ IRtmLock
 
 你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `setLock` 方法进行配置。
 
-配置成功后，频道中的所有用户会收到 `LOCK_SET` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+配置成功后，频道中的所有用户会收到 `LOCK_SET` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
 
 ### 接口方法
 
@@ -871,7 +871,7 @@ try {
 
 成功配置 Lock 后，你可以在客户端调用 `acquireLock` 方法获取锁的使用权。
 
-成功获取锁后，频道中的其他用户会收到 `LOCK_ACQUIRED` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功获取锁后，频道中的其他用户会收到 `LOCK_ACQUIRED` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
 
 ### 接口方法
 
@@ -936,7 +936,7 @@ try {
 
 当用户不再需要持有某把锁时，用户可以在客户端调用 `releaseLock` 方法主动释放锁。
 
-成功释放后，频道中的其他用户会收到 `LOCK_RELEASED` 类型的 `lock` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功释放后，频道中的其他用户会收到 `LOCK_RELEASED` 类型的 `lock` 事件，详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
 
 此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
 
@@ -994,7 +994,7 @@ try {
 
 当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `revokeLock` 收回被占用的锁。
 
-成功收回后，频道中的所有用户会收到 `LOCK_RELEASED` 类型的 `lock` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功收回后，频道中的所有用户会收到 `LOCK_RELEASED` 类型的 `lock` 事件，详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
 
 此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
 
@@ -1120,7 +1120,7 @@ try {
 
 如果你不再需要频道中的某把锁，你可以调用 `removeLock` 方法删除该锁。
 
-成功删除锁后，频道中的所有用户会收到 `LOCK_REMOVED` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功删除锁后，频道中的所有用户会收到 `LOCK_REMOVED` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1186,7 +1186,7 @@ AgoraRtmLock
 
 ### 接口描述
 
-你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `setLock` 方法进行配置。配置成功后，频道中的所有用户会收到 `AgoraRtmLockEventTypeLockSet` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `setLock` 方法进行配置。配置成功后，频道中的所有用户会收到 `AgoraRtmLockEventTypeLockSet` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1234,7 +1234,7 @@ long ttl = 30;
 
 ### 接口描述
 
-成功配置 Lock 后，你可以在客户端调用 `acquireLock` 方法获取锁的使用权。成功获取锁后，频道中的其他用户会收到 `AgoraRtmLockEventTypeLockAcquired` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功配置 Lock 后，你可以在客户端调用 `acquireLock` 方法获取锁的使用权。成功获取锁后，频道中的其他用户会收到 `AgoraRtmLockEventTypeLockAcquired` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1282,7 +1282,7 @@ BOOL retry = false;
 
 ### 接口描述
 
-当用户不再需要持有某把锁时，用户可以在客户端调用 `releaseLock` 方法主动释放锁。成功释放后，频道中的其他用户会收到 `AgoraRtmLockEventTypeLockReleased` 类型的 `didReceiveLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+当用户不再需要持有某把锁时，用户可以在客户端调用 `releaseLock` 方法主动释放锁。成功释放后，频道中的其他用户会收到 `AgoraRtmLockEventTypeLockReleased` 类型的 `didReceiveLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 
 此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
 
@@ -1329,7 +1329,7 @@ BOOL retry = false;
 
 ### 接口描述
 
-当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `revokeLock` 收回被占用的锁。成功收回后，频道中的所有用户会收到 `AgoraRtmLockEventTypeLockReleased` 类型的 `didReceiveLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `revokeLock` 收回被占用的锁。成功收回后，频道中的所有用户会收到 `AgoraRtmLockEventTypeLockReleased` 类型的 `didReceiveLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 
 此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
 
@@ -1440,7 +1440,7 @@ BOOL retry = false;
 
 ### 接口描述
 
-如果你不再需要频道中的某把锁，你可以调用 `removeLock` 方法删除该锁。成功删除锁后，频道中的所有用户会收到 `AgoraRtmLockEventTypeLockRemoved` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+如果你不再需要频道中的某把锁，你可以调用 `removeLock` 方法删除该锁。成功删除锁后，频道中的所有用户会收到 `AgoraRtmLockEventTypeLockRemoved` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1495,7 +1495,7 @@ BOOL retry = false;
 
 ### 接口描述
 
-你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `setLock` 方法进行配置。配置成功后，频道中的所有用户会收到 `SET` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `setLock` 方法进行配置。配置成功后，频道中的所有用户会收到 `SET` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1569,7 +1569,7 @@ type ErrorInfo = {
 
 ### 接口描述
 
-成功配置 Lock 后，你可以在客户端调用 `acquireLock` 方法获取锁的使用权。成功获取锁后，频道中的其他用户会收到 `ACQUIRED` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功配置 Lock 后，你可以在客户端调用 `acquireLock` 方法获取锁的使用权。成功获取锁后，频道中的其他用户会收到 `ACQUIRED` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1643,7 +1643,7 @@ type ErrorInfo = {
 
 ### 接口描述
 
-当用户不再需要持有某把锁时，用户可以在客户端调用 `releaseLock` 方法主动释放锁。成功释放后，频道中的其他用户会收到 `RELEASED` 类型的 `lock` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+当用户不再需要持有某把锁时，用户可以在客户端调用 `releaseLock` 方法主动释放锁。成功释放后，频道中的其他用户会收到 `RELEASED` 类型的 `lock` 事件，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
 此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
 
@@ -1710,7 +1710,7 @@ type ErrorInfo = {
 
 ### 接口描述
 
-当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `revokeLock` 收回被占用的锁。成功收回后，频道中的所有用户会收到 `RELEASED` 类型的 `lock` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `revokeLock` 收回被占用的锁。成功收回后，频道中的所有用户会收到 `RELEASED` 类型的 `lock` 事件，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
 此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
 
@@ -1844,7 +1844,7 @@ type ErrorInfo = {
 
 ### 接口描述
 
-如果你不再需要频道中的某把锁，你可以调用 `removeLock` 方法删除该锁。成功删除锁后，频道中的所有用户会收到 `REMOVED` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+如果你不再需要频道中的某把锁，你可以调用 `removeLock` 方法删除该锁。成功删除锁后，频道中的所有用户会收到 `REMOVED` 类型的 `lock` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1921,7 +1921,7 @@ IRtmClient
 
 ### 接口描述
 
-你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `SetLockAsync` 方法进行配置。配置成功后，频道中的所有用户会收到 `SET` 类型的 `OnLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `SetLockAsync` 方法进行配置。配置成功后，频道中的所有用户会收到 `SET` 类型的 `OnLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1989,7 +1989,7 @@ else
 
 ### 接口描述
 
-成功配置 Lock 后，你可以在客户端调用 `AcquireLockAsync` 方法获取锁的使用权。成功获取锁后，频道中的其他用户会收到 `ACQUIRED` 类型的 `OnLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功配置 Lock 后，你可以在客户端调用 `AcquireLockAsync` 方法获取锁的使用权。成功获取锁后，频道中的其他用户会收到 `ACQUIRED` 类型的 `OnLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
 
 ### 接口方法
 
@@ -2057,7 +2057,7 @@ else
 
 ### 接口描述
 
-当用户不再需要持有某把锁时，用户可以在客户端调用 `ReleaseLockAsync` 方法主动释放锁。成功释放后，频道中的其他用户会收到 `RELEASED` 类型的 `OnLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+当用户不再需要持有某把锁时，用户可以在客户端调用 `ReleaseLockAsync` 方法主动释放锁。成功释放后，频道中的其他用户会收到 `RELEASED` 类型的 `OnLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
 
 此时，如果其他用户想要获取该锁，可以在客户端调用 `AcquireLockAsync` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
 
@@ -2125,7 +2125,7 @@ else
 
 ### 接口描述
 
-当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `RevokeLockAsync` 收回被占用的锁。成功收回后，频道中的所有用户会收到 `RELEASED` 类型的 `OnLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `RevokeLockAsync` 收回被占用的锁。成功收回后，频道中的所有用户会收到 `RELEASED` 类型的 `OnLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
 
 此时，如果其他用户想要获取该锁，可以在客户端调用 `AcquireLockAsync` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
 
@@ -2267,7 +2267,7 @@ else
 
 ### 接口描述
 
-如果你不再需要频道中的某把锁，你可以调用 `RemoveLockAsync` 方法删除该锁。成功删除锁后，频道中的所有用户会收到 `REMOVED` 类型的 `OnLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+如果你不再需要频道中的某把锁，你可以调用 `RemoveLockAsync` 方法删除该锁。成功删除锁后，频道中的所有用户会收到 `REMOVED` 类型的 `OnLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
 
 ### 接口方法
 

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_ibasespatialaudioengine_clearremotepositions__prototype"></a>
 
-```text
+```objc
 - (int)clearRemotePositions NS_SWIFT_NAME(clearRemotePositions());
 ```
 
@@ -50,7 +50,7 @@ _migration:
 
 <a id="api_irtcengine_enablespatialaudio__prototype"></a>
 
-```text
+```objc
 - (int)enableSpatialAudio:(BOOL)enabled NS_SWIFT_NAME(enableSpatialAudio(_:));
 ```
 
@@ -101,7 +101,7 @@ _migration:
 
 <a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__prototype"></a>
 
-```text
+```objc
 + (instancetype _Nonnull)sharedLocalSpatialAudioWithConfig:(AgoraLocalSpatialAudioConfig*)config NS_SWIFT_NAME(sharedLocalSpatialAudio(with:));
 ```
 
@@ -147,7 +147,7 @@ _migration:
 
 <a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__prototype"></a>
 
-```text
+```objc
 - (int)muteAllRemoteAudioStreams:(BOOL)mute NS_SWIFT_NAME(muteAllRemoteAudioStreams(_:));
 ```
 
@@ -200,7 +200,7 @@ _migration:
 
 <a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__prototype"></a>
 
-```text
+```objc
 - (int)muteLocalAudioStream:(BOOL)mute NS_SWIFT_NAME(muteLocalAudioStream(_:));
 ```
 
@@ -260,7 +260,7 @@ _migration:
 
 <a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__prototype"></a>
 
-```text
+```objc
 - (int)muteRemoteAudioStream:(NSUInteger)uid mute:(BOOL)mute NS_SWIFT_NAME(muteRemoteAudioStream(_:mute:));
 ```
 
@@ -313,7 +313,7 @@ _migration:
 
 <a id="api_ilocalspatialaudioengine_release_ilocalspatialaudioengine__prototype"></a>
 
-```text
+```objc
 + (void)destroy NS_SWIFT_NAME(destroy());
 ```
 
@@ -339,7 +339,7 @@ _migration:
 
 <a id="api_ilocalspatialaudioengine_removeremoteposition__prototype"></a>
 
-```text
+```objc
 - (int)removeRemotePosition:(NSUInteger)uid NS_SWIFT_NAME(removeRemotePosition(_:));
 ```
 
@@ -381,7 +381,7 @@ _migration:
 
 <a id="api_ibasespatialaudioengine_setaudiorecvrange__prototype"></a>
 
-```text
+```objc
 - (int)setAudioRecvRange:(float)range NS_SWIFT_NAME(setAudioRecvRange(_:));
 ```
 
@@ -423,7 +423,7 @@ _migration:
 
 <a id="api_ibasespatialaudioengine_setdistanceunit__prototype"></a>
 
-```text
+```objc
 - (int)setDistanceUnit:(float)unit NS_SWIFT_NAME(setDistanceUnit(_:));
 ```
 
@@ -465,7 +465,7 @@ _migration:
 
 <a id="api_irtcengine_setheadphoneeqparameters__prototype"></a>
 
-```text
+```objc
 - (int)setHeadphoneEQParameters:(int)lowGain highGain:(int)highGain NS_SWIFT_NAME(setHeadphoneEQParameters(_:highGain:));
 ```
 
@@ -515,7 +515,7 @@ _migration:
 
 <a id="api_irtcengine_setheadphoneeqpreset__prototype"></a>
 
-```text
+```objc
 - (int)setHeadphoneEQPreset:(AgoraHeadphoneEQPreset)preset NS_SWIFT_NAME(setHeadphoneEQPreset(_:));
 ```
 
@@ -563,7 +563,7 @@ _migration:
 
 <a id="api_ibasespatialaudioengine_setmaxaudiorecvcount__prototype"></a>
 
-```text
+```objc
 - (int)setMaxAudioRecvCount:(NSUInteger)maxCount NS_SWIFT_NAME(setMaxAudioRecvCount(_:));
 ```
 
@@ -605,7 +605,7 @@ _migration:
 
 <a id="api_ibasespatialaudioengine_setplayerattenuation__prototype"></a>
 
-```text
+```objc
 - (int)setPlayerAttenuation:(double)attenuation playerId:(NSUInteger)playerId forceSet:(BOOL)forceSet NS_SWIFT_NAME(setPlayerAttenuation(_:playerId:forceSet:));
 ```
 
@@ -668,7 +668,7 @@ _migration:
 
 <a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__prototype"></a>
 
-```text
+```objc
 - (int)setRemoteAudioAttenuation:(double)attenuation uid:(NSUInteger)uid forceSet:(BOOL)forceSet NS_SWIFT_NAME(setRemoteAudioAttenuation(_:uid:forceSet:));
 ```
 
@@ -731,7 +731,7 @@ _migration:
 
 <a id="api_irtcengine_setremoteuserspatialaudioparams__prototype"></a>
 
-```text
+```objc
 - (int)setRemoteUserSpatialAudioParams:(NSUInteger)uid
                                   params:(AgoraSpatialAudioParams* _Nonnull)params NS_SWIFT_NAME(setRemoteUserSpatialAudioParams(_:params:));
 ```
@@ -780,7 +780,7 @@ _migration:
 
 <a id="api_imediaplayer_setspatialaudioparams__prototype"></a>
 
-```text
+```objc
 - (int)setSpatialAudioParams:(AgoraSpatialAudioParams* _Nonnull)params NS_SWIFT_NAME(setSpatialAudioParams(_:));
 ```
 
@@ -822,7 +822,7 @@ _migration:
 
 <a id="api_ibasespatialaudioengine_setzones__prototype"></a>
 
-```text
+```objc
 - (int)setZones:(NSArray<AgoraSpatialAudioZone*> * _Nullable)zones NS_SWIFT_NAME(setZones(_:));
 ```
 
@@ -872,7 +872,7 @@ _migration:
 
 <a id="api_ibasespatialaudioengine_updateplayerpositioninfo__prototype"></a>
 
-```text
+```objc
 - (int)updatePlayerPositionInfo:(NSInteger)playerId positionInfo:(AgoraRemoteVoicePositionInfo* _Nonnull)positionInfo NS_SWIFT_NAME(updatePlayerPositionInfo(_:positionInfo:));
 ```
 
@@ -924,7 +924,7 @@ _migration:
 
 <a id="api_ilocalspatialaudioengine_updateremoteposition__prototype"></a>
 
-```text
+```objc
 - (int)updateRemotePosition:(NSUInteger)uid positionInfo:(AgoraRemoteVoicePositionInfo*)posInfo NS_SWIFT_NAME(updateRemotePosition(_:positionInfo:));
 ```
 
@@ -976,7 +976,7 @@ _migration:
 
 <a id="api_ibasespatialaudioengine_updateselfposition__prototype"></a>
 
-```text
+```objc
 - (int)updateSelfPosition:(simd_float3)position axisForward:(simd_float3)axisForward axisRight:(simd_float3)axisRight axisUp:(simd_float3)axisUp NS_SWIFT_NAME(updateSelfPosition(_:axisForward:axisRight:axisUp:));
 ```
 

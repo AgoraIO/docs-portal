@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_ivideoeffectobject_addorupdatevideoeffect__prototype"></a>
 
-```text
+```cpp
 virtual int addOrUpdateVideoEffect(uint32_t nodeId, const char* templateName) = 0;
 ```
 
@@ -87,7 +87,7 @@ addOrUpdateVideoEffect(VIDEO_EFFECT_NODE_ID::FILTER, "template name");
 
 <a id="api_irtcengine_createvideoeffectobject__prototype"></a>
 
-```text
+```cpp
 virtual agora_refptr<IVideoEffectObject> createVideoEffectObject(const char* bundlePath, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
 ```
 
@@ -137,7 +137,7 @@ virtual agora_refptr<IVideoEffectObject> createVideoEffectObject(const char* bun
 
 <a id="api_irtcengine_destroyvideoeffectobject__prototype"></a>
 
-```text
+```cpp
 virtual int destroyVideoEffectObject(agora_refptr<IVideoEffectObject> videoEffectObject) = 0;
 ```
 
@@ -181,7 +181,7 @@ virtual int destroyVideoEffectObject(agora_refptr<IVideoEffectObject> videoEffec
 
 <a id="api_irtcengine_getfaceshapeareaoptions__prototype"></a>
 
-```text
+```cpp
 virtual int getFaceShapeAreaOptions(agora::rtc::FaceShapeAreaOptions::FACE_SHAPE_AREA shapeArea, FaceShapeAreaOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
 ```
 
@@ -252,7 +252,7 @@ virtual int getFaceShapeAreaOptions(agora::rtc::FaceShapeAreaOptions::FACE_SHAPE
 
 <a id="api_irtcengine_getfaceshapebeautyoptions__prototype"></a>
 
-```text
+```cpp
 virtual int getFaceShapeBeautyOptions(FaceShapeBeautyOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
 ```
 
@@ -317,7 +317,7 @@ virtual int getFaceShapeBeautyOptions(FaceShapeBeautyOptions& options, agora::me
 
 <a id="api_ivideoeffectobject_getvideoeffectboolparam__prototype"></a>
 
-```text
+```cpp
 virtual bool getVideoEffectBoolParam(const char* option, const char* key) = 0;
 ```
 
@@ -367,7 +367,7 @@ virtual bool getVideoEffectBoolParam(const char* option, const char* key) = 0;
 
 <a id="api_ivideoeffectobject_getvideoeffectfloatparam__prototype"></a>
 
-```text
+```cpp
 virtual float getVideoEffectFloatParam(const char* option, const char* key) = 0;
 ```
 
@@ -417,7 +417,7 @@ virtual float getVideoEffectFloatParam(const char* option, const char* key) = 0;
 
 <a id="api_ivideoeffectobject_getvideoeffectintparam__prototype"></a>
 
-```text
+```cpp
 virtual int getVideoEffectIntParam(const char* option, const char* key) = 0;
 ```
 
@@ -467,7 +467,7 @@ virtual int getVideoEffectIntParam(const char* option, const char* key) = 0;
 
 <a id="api_ivideoeffectobject_performvideoeffectaction__prototype"></a>
 
-```text
+```cpp
 virtual int performVideoEffectAction(uint32_t nodeId, VIDEO_EFFECT_ACTION actionId) = 0;
 ```
 
@@ -517,7 +517,7 @@ virtual int performVideoEffectAction(uint32_t nodeId, VIDEO_EFFECT_ACTION action
 
 <a id="api_ivideoeffectobject_removevideoeffect__prototype"></a>
 
-```text
+```cpp
 virtual int removeVideoEffect(uint32_t nodeId) = 0;
 ```
 
@@ -561,7 +561,7 @@ virtual int removeVideoEffect(uint32_t nodeId) = 0;
 
 <a id="api_irtcengine_setbeautyeffectoptions__prototype"></a>
 
-```text
+```cpp
 virtual int setBeautyEffectOptions(bool enabled, const BeautyOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
 ```
 
@@ -636,7 +636,7 @@ virtual int setBeautyEffectOptions(bool enabled, const BeautyOptions& options, a
 
 <a id="api_irtcengine_setcolorenhanceoptions__prototype"></a>
 
-```text
+```cpp
 virtual int setColorEnhanceOptions(bool enabled, const ColorEnhanceOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
 ```
 
@@ -708,7 +708,7 @@ virtual int setColorEnhanceOptions(bool enabled, const ColorEnhanceOptions& opti
 
 <a id="api_irtcengine_setfaceshapeareaoptions__prototype"></a>
 
-```text
+```cpp
 virtual int setFaceShapeAreaOptions(const FaceShapeAreaOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
 ```
 
@@ -782,7 +782,7 @@ virtual int setFaceShapeAreaOptions(const FaceShapeAreaOptions& options, agora::
 
 <a id="api_irtcengine_setfaceshapebeautyoptions__prototype"></a>
 
-```text
+```cpp
 virtual int setFaceShapeBeautyOptions(bool enabled, const FaceShapeBeautyOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
 ```
 
@@ -860,7 +860,7 @@ virtual int setFaceShapeBeautyOptions(bool enabled, const FaceShapeBeautyOptions
 
 <a id="api_irtcengine_setfiltereffectoptions__prototype"></a>
 
-```text
+```cpp
 virtual int setFilterEffectOptions(bool enabled, const FilterEffectOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
 ```
 
@@ -933,7 +933,7 @@ virtual int setFilterEffectOptions(bool enabled, const FilterEffectOptions& opti
 
 <a id="api_irtcengine_setlowlightenhanceoptions__prototype"></a>
 
-```text
+```cpp
 virtual int setLowlightEnhanceOptions(bool enabled, const LowlightEnhanceOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
 ```
 
@@ -1024,7 +1024,7 @@ virtual int setLowlightEnhanceOptions(bool enabled, const LowlightEnhanceOptions
 
 <a id="api_irtcengine_setvideodenoiseroptions__prototype"></a>
 
-```text
+```cpp
 virtual int setVideoDenoiserOptions(bool enabled, const VideoDenoiserOptions& options, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
 ```
 
@@ -1116,7 +1116,7 @@ virtual int setVideoDenoiserOptions(bool enabled, const VideoDenoiserOptions& op
 
 <a id="api_ivideoeffectobject_setvideoeffectboolparam__prototype"></a>
 
-```text
+```cpp
 virtual int setVideoEffectBoolParam(const char* option, const char* key, bool param) = 0;
 ```
 
@@ -1175,7 +1175,7 @@ virtual int setVideoEffectBoolParam(const char* option, const char* key, bool pa
 
 <a id="api_ivideoeffectobject_setvideoeffectfloatparam__prototype"></a>
 
-```text
+```cpp
 virtual int setVideoEffectFloatParam(const char* option, const char* key, float param) = 0;
 ```
 
@@ -1231,7 +1231,7 @@ virtual int setVideoEffectFloatParam(const char* option, const char* key, float 
 
 <a id="api_ivideoeffectobject_setvideoeffectintparam__prototype"></a>
 
-```text
+```cpp
 virtual int setVideoEffectIntParam(const char* option, const char* key, int param) = 0;
 ```
 
@@ -1287,7 +1287,7 @@ virtual int setVideoEffectIntParam(const char* option, const char* key, int para
 
 <a id="api_ivideoeffectobject_setvideoeffectstringparam__prototype"></a>
 
-```text
+```cpp
 virtual int setVideoEffectStringParam(const char* option, const char* key, const char* param) = 0;
 ```
 

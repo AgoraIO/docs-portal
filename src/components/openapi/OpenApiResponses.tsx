@@ -1,4 +1,3 @@
-import { ChevronRight } from 'lucide-react';
 import {
   type Dispatch,
   type MutableRefObject,
@@ -9,7 +8,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { cn } from '@/lib/cn';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
 import {
   buildOpenApiResponseSchemaAnchorId,
@@ -18,14 +17,15 @@ import {
 import {
   getDefaultOpenApiMediaType,
   getDefaultOpenApiResponseStatus,
+  getOpenApiResponseStatusLabel,
   type OpenApiResponseHeaderView,
   type OpenApiResponseView,
 } from '@/lib/openapi/response-view';
 import { OpenApiSectionHeading } from './OpenApiSectionHeading';
 
 export type OpenApiResponseLabels = {
-  emptyResponseBody: string;
   mediaTypeForResponse: (status: string) => string;
+  responses: string;
   responseBody: string;
   schemaHasNoFields: string;
   schemaNotProvided: string;
@@ -33,6 +33,7 @@ export type OpenApiResponseLabels = {
 
 export function OpenApiResponses({
   labels,
+  locale,
   renderDescription,
   renderHeaders,
   renderSchema,
@@ -40,6 +41,7 @@ export function OpenApiResponses({
   sectionId,
 }: {
   labels: OpenApiResponseLabels;
+  locale?: string;
   renderDescription: (markdown: string) => ReactNode;
   renderHeaders: (
     headers: OpenApiResponseHeaderView[],
@@ -58,9 +60,9 @@ export function OpenApiResponses({
   sectionId: string;
 }) {
   const defaultStatus = getDefaultOpenApiResponseStatus(responses);
-  const [expandedStatuses, setExpandedStatuses] = useState(
-    () => new Set(defaultStatus ? [defaultStatus] : []),
-  );
+  const statusCodes = responses.map((response) => response.statusCode);
+  const [selectedStatus, setSelectedStatus] = useState(defaultStatus);
+  const [hashRevision, setHashRevision] = useState(0);
   const [selectedMediaTypes, setSelectedMediaTypes] = useState<
     Map<string, string>
   >(() => getDefaultMediaTypes(responses));
@@ -74,18 +76,19 @@ export function OpenApiResponses({
 
     previousResponses.current = responses;
     const nextDefaultStatus = getDefaultOpenApiResponseStatus(responses);
-    setExpandedStatuses(new Set(nextDefaultStatus ? [nextDefaultStatus] : []));
+    setSelectedStatus(nextDefaultStatus);
     setSelectedMediaTypes(getDefaultMediaTypes(responses));
   }, [responses]);
 
-  useResponseHashExpansion(
+  useResponseHashSelection(
     pendingHashRef,
     responses,
-    setExpandedStatuses,
+    setSelectedStatus,
     setSelectedMediaTypes,
+    setHashRevision,
   );
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: A pending hash must scroll after the matching expansion commits.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Scroll after each hash-driven tab selection commits, including repeated targets in one tab.
   useEffect(() => {
     if (!pendingHashRef.current) return;
 
@@ -97,7 +100,7 @@ export function OpenApiResponses({
       hashScrollFrameRef.current = undefined;
       syncDocsHashTargetFromLocation('auto');
     });
-  }, [expandedStatuses]);
+  }, [hashRevision]);
 
   useEffect(
     () => () => {
@@ -111,103 +114,58 @@ export function OpenApiResponses({
   return (
     <section className="mt-8" data-openapi-responses>
       <OpenApiSectionHeading id={sectionId}>
-        {labels.responseBody}
+        {labels.responses}
       </OpenApiSectionHeading>
-      <div className="border border-fd-border text-fd-card-foreground">
-        {responses.map((response, index) => {
-          const selectedMediaType =
-            selectedMediaTypes.get(response.statusCode) ??
-            getDefaultOpenApiMediaType(response);
-          const selectedMedia = response.mediaTypes.find(
-            (media) => media.mediaType === selectedMediaType,
-          );
-          const isExpanded = expandedStatuses.has(response.statusCode);
-          const statusId = slugOpenApiAnchorSegment(response.statusCode);
-          const triggerId = `${sectionId}-${instanceId}-response-${index}-${statusId}-trigger`;
-          const panelId = `${sectionId}-${instanceId}-response-${index}-${statusId}-panel`;
-          const mediaSelectId = `${sectionId}-${instanceId}-response-${index}-${statusId}-media`;
-          return (
-            <div
-              className={index === 0 ? '' : 'border-fd-border border-t'}
-              key={response.statusCode}
+      {responses.length > 0 ? (
+        <Tabs
+          className="min-w-0 gap-0"
+          onValueChange={(value) =>
+            setSelectedStatus(decodeURIComponent(value))
+          }
+          value={encodeURIComponent(selectedStatus)}
+        >
+          <div className="overflow-x-auto border-b border-fd-border pb-px">
+            <TabsList
+              aria-label={labels.responses}
+              className="min-w-full justify-start px-1 group-data-[orientation=horizontal]/tabs:h-auto"
+              variant="line"
             >
-              <button
-                aria-controls={panelId}
-                aria-expanded={isExpanded}
-                className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left hover:bg-fd-accent/50"
-                id={triggerId}
-                onClick={() =>
-                  setExpandedStatuses((current) => {
-                    const next = new Set(current);
-                    if (next.has(response.statusCode)) {
-                      next.delete(response.statusCode);
-                    } else {
-                      next.add(response.statusCode);
-                    }
-                    return next;
-                  })
-                }
-                type="button"
-              >
-                <span className="flex min-w-0 items-center gap-2">
-                  <code className="font-medium text-fd-foreground text-sm">
-                    {response.statusCode}
-                  </code>
-                  {selectedMediaType ? (
-                    <span className="truncate font-mono text-fd-muted-foreground text-xs">
-                      {selectedMediaType}
-                    </span>
-                  ) : null}
-                </span>
-                <ChevronRight
-                  aria-hidden="true"
-                  className={cn(
-                    'size-4 shrink-0 text-fd-muted-foreground transition-transform',
-                    isExpanded ? 'rotate-90' : null,
+              {responses.map((response) => (
+                <TabsTrigger
+                  className="min-h-11 px-3"
+                  key={response.statusCode}
+                  value={encodeURIComponent(response.statusCode)}
+                >
+                  {getOpenApiResponseStatusLabel(
+                    response.statusCode,
+                    statusCodes,
+                    locale,
                   )}
-                />
-              </button>
-              {/* biome-ignore lint/a11y/useSemanticElements: The explicit region role is part of the accordion panel contract. */}
-              <div
-                aria-labelledby={triggerId}
-                className="border-fd-border border-t px-4 py-4"
-                hidden={!isExpanded}
-                id={panelId}
-                role="region"
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
+          {responses.map((response, index) => {
+            const selectedMediaType =
+              selectedMediaTypes.get(response.statusCode) ??
+              getDefaultOpenApiMediaType(response);
+            const selectedMedia = response.mediaTypes.find(
+              (media) => media.mediaType === selectedMediaType,
+            );
+            const isSelected = selectedStatus === response.statusCode;
+            const statusId = slugOpenApiAnchorSegment(response.statusCode);
+            const mediaSelectId = `${sectionId}-${instanceId}-response-${index}-${statusId}-media`;
+            return (
+              <TabsContent
+                className="min-w-0 py-4"
+                key={response.statusCode}
+                value={encodeURIComponent(response.statusCode)}
               >
-                {isExpanded ? (
+                {isSelected ? (
                   <>
                     {response.description ? (
                       <div className="prose-no-margin text-fd-muted-foreground text-sm">
                         {renderDescription(response.description)}
-                      </div>
-                    ) : null}
-                    {response.mediaTypes.length > 1 ? (
-                      <div className="mt-3">
-                        <label className="sr-only" htmlFor={mediaSelectId}>
-                          {labels.mediaTypeForResponse(response.statusCode)}
-                        </label>
-                        <select
-                          className="h-9 rounded-md border border-fd-border bg-fd-secondary px-2 text-sm"
-                          id={mediaSelectId}
-                          onChange={(event) =>
-                            setSelectedMediaTypes((current) => {
-                              const next = new Map(current);
-                              next.set(response.statusCode, event.target.value);
-                              return next;
-                            })
-                          }
-                          value={selectedMediaType}
-                        >
-                          {response.mediaTypes.map((media) => (
-                            <option
-                              key={media.mediaType}
-                              value={media.mediaType}
-                            >
-                              {media.mediaType}
-                            </option>
-                          ))}
-                        </select>
                       </div>
                     ) : null}
                     {response.headers.length > 0 ? (
@@ -215,21 +173,63 @@ export function OpenApiResponses({
                         {renderHeaders(response.headers, response.statusCode)}
                       </div>
                     ) : null}
-                    <div className="mt-4">
-                      <ResponseSchemaState
-                        labels={labels}
-                        response={response}
-                        selectedMedia={selectedMedia}
-                        renderSchema={renderSchema}
-                      />
-                    </div>
+                    {response.hasContent ? (
+                      <section className="mt-6">
+                        <h3 className="mb-3 font-semibold text-base">
+                          {labels.responseBody}
+                        </h3>
+                        {response.mediaTypes.length > 1 ? (
+                          <div className="mb-3">
+                            <label className="sr-only" htmlFor={mediaSelectId}>
+                              {labels.mediaTypeForResponse(
+                                getOpenApiResponseStatusLabel(
+                                  response.statusCode,
+                                  statusCodes,
+                                  locale,
+                                ),
+                              )}
+                            </label>
+                            <select
+                              className="h-9 rounded-md border border-fd-border bg-fd-secondary px-2 text-sm"
+                              id={mediaSelectId}
+                              onChange={(event) =>
+                                setSelectedMediaTypes((current) => {
+                                  const next = new Map(current);
+                                  next.set(
+                                    response.statusCode,
+                                    event.target.value,
+                                  );
+                                  return next;
+                                })
+                              }
+                              value={selectedMediaType}
+                            >
+                              {response.mediaTypes.map((media) => (
+                                <option
+                                  key={media.mediaType}
+                                  value={media.mediaType}
+                                >
+                                  {media.mediaType}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        ) : null}
+                        <ResponseSchemaState
+                          labels={labels}
+                          response={response}
+                          selectedMedia={selectedMedia}
+                          renderSchema={renderSchema}
+                        />
+                      </section>
+                    ) : null}
                   </>
                 ) : null}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+              </TabsContent>
+            );
+          })}
+        </Tabs>
+      ) : null}
     </section>
   );
 }
@@ -253,7 +253,6 @@ function ResponseSchemaState({
     status: string;
   }) => { hasFields: boolean; node: ReactNode };
 }) {
-  if (!response.hasContent) return <p>{labels.emptyResponseBody}</p>;
   if (response.mediaTypes.length === 0 || !selectedMedia) {
     return <p>{labels.schemaNotProvided}</p>;
   }
@@ -280,11 +279,12 @@ function getDefaultMediaTypes(responses: OpenApiResponseView[]) {
   );
 }
 
-function useResponseHashExpansion(
+function useResponseHashSelection(
   pendingHashRef: MutableRefObject<boolean>,
   responses: OpenApiResponseView[],
-  setExpandedStatuses: Dispatch<SetStateAction<Set<string>>>,
+  setSelectedStatus: Dispatch<SetStateAction<string>>,
   setSelectedMediaTypes: Dispatch<SetStateAction<Map<string, string>>>,
+  setHashRevision: Dispatch<SetStateAction<number>>,
 ) {
   useEffect(() => {
     const expandHashTarget = () => {
@@ -322,13 +322,19 @@ function useResponseHashExpansion(
         });
       }
       pendingHashRef.current = true;
-      setExpandedStatuses((current) => {
-        return new Set([...current, response.statusCode]);
-      });
+      setSelectedStatus(response.statusCode);
+      // A second hash can target another field inside the already selected tab.
+      setHashRevision((revision) => revision + 1);
     };
 
     expandHashTarget();
     window.addEventListener('hashchange', expandHashTarget);
     return () => window.removeEventListener('hashchange', expandHashTarget);
-  }, [pendingHashRef, responses, setExpandedStatuses, setSelectedMediaTypes]);
+  }, [
+    pendingHashRef,
+    responses,
+    setSelectedStatus,
+    setSelectedMediaTypes,
+    setHashRevision,
+  ]);
 }

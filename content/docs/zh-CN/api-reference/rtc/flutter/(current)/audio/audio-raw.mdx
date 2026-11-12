@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_imediaengine_registeraudioframeobserver__prototype"></a>
 
-```text
+```dart
 void registerAudioFrameObserver(AudioFrameObserver observer);
 ```
 
@@ -68,7 +68,7 @@ void registerAudioFrameObserver(AudioFrameObserver observer);
 
 <a id="api_irtcengine_setearmonitoringaudioframeparameters__prototype"></a>
 
-```text
+```dart
 Future<void> setEarMonitoringAudioFrameParameters(
       {required int sampleRate,
       required int channel,
@@ -143,7 +143,7 @@ Future<void> setEarMonitoringAudioFrameParameters(
 
 <a id="api_irtcengine_setmixedaudioframeparameters__prototype"></a>
 
-```text
+```dart
 Future<void> setMixedAudioFrameParameters(
     {required int sampleRate,
     required int channel,
@@ -208,7 +208,7 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 
 <a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__prototype"></a>
 
-```text
+```dart
 Future<void> setPlaybackAudioFrameBeforeMixingParameters(
       {required int sampleRate, required int channel
       {required int sampleRate, required int samplesPerCall});
@@ -272,7 +272,7 @@ SDK 会根据该采样间隔触发 [onPlaybackAudioFrameBeforeMixing](/zh-CN/api
 
 <a id="api_irtcengine_setplaybackaudioframeparameters__prototype"></a>
 
-```text
+```dart
 Future<void> setPlaybackAudioFrameParameters(
     {required int sampleRate,
     required int channel,
@@ -346,7 +346,7 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 
 <a id="api_irtcengine_setrecordingaudioframeparameters__prototype"></a>
 
-```text
+```dart
 Future<void> setRecordingAudioFrameParameters(
     {required int sampleRate,
     required int channel,
@@ -420,7 +420,7 @@ SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参�
 
 <a id="api_imediaengine_unregisteraudioframeobserver_imediaengine__prototype"></a>
 
-```text
+```dart
 void unregisterAudioFrameObserver(AudioFrameObserver observer);
 ```
 
@@ -459,7 +459,7 @@ void unregisterAudioFrameObserver(AudioFrameObserver observer);
 
 <a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe__prototype"></a>
 
-```text
+```dart
 final void Function(AudioFrame audioFrame)? onEarMonitoringAudioFrame;
 ```
 
@@ -500,7 +500,7 @@ final void Function(AudioFrame audioFrame)? onEarMonitoringAudioFrame;
 
 <a id="callback_iaudioframeobserverbase_onmixedaudioframe__prototype"></a>
 
-```text
+```dart
 final void Function(String channelId, AudioFrame audioFrame)?
       onMixedAudioFrame;
 ```
@@ -548,7 +548,7 @@ final void Function(String channelId, AudioFrame audioFrame)?
 
 <a id="callback_iaudioframeobserverbase_onplaybackaudioframe__prototype"></a>
 
-```text
+```dart
 final void Function(String channelId, AudioFrame audioFrame)?
       onPlaybackAudioFrame;
 ```
@@ -596,7 +596,7 @@ final void Function(String channelId, AudioFrame audioFrame)?
 
 <a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__prototype"></a>
 
-```text
+```dart
 final void Function(String channelId, int uid, AudioFrame audioFrame)?
       onPlaybackAudioFrameBeforeMixing;
 ```
@@ -646,7 +646,7 @@ final void Function(String channelId, int uid, AudioFrame audioFrame)?
 
 <a id="callback_iaudioframeobserverbase_onrecordaudioframe__prototype"></a>
 
-```text
+```dart
 final void Function(String channelId, AudioFrame audioFrame)?
       onRecordAudioFrame;
 ```

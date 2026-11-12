@@ -4,39 +4,25 @@ x-stoplight:
 info:
   version: ''
   title: 旁路推流 RESTful API
-  description: >-
-    你可以使用推流 RESTful API 订阅声网频道内的音视频流，将音视频流转码后（或选择不转码），通过标准协议（如 RTMP）推送到 CDN（Content Delivery
-    Network）。这个过程相当于声网通过一个 Converter 将音视频流处理后输出并推到 CDN。你可以通过如下方法控制 Converter：
-
+  description: |-
+    你可以使用推流 RESTful API 订阅声网频道内的音视频流，将音视频流转码后（或选择不转码），通过标准协议（如 RTMP）推送到 CDN（Content Delivery Network）。这个过程相当于声网通过一个 Converter 将音视频流处理后输出并推到 CDN。你可以通过如下方法控制 Converter：
 
     - [Create](/zh-CN/api-reference/api-ref/media-push/create)：创建一个 Converter。
-
     - [Delete](/zh-CN/api-reference/api-ref/media-push/delete)：销毁指定的 Converter。
-
     - [Update](/zh-CN/api-reference/api-ref/media-push/update)：更新指定的 Converter 配置。
-
     - [Get](/zh-CN/api-reference/api-ref/media-push/get)：获取指定 Converter 的推流状态。
-
     - [List](/zh-CN/api-reference/api-ref/media-push/list)：查询一个项目下所有 Converter。
-
     - [List by channel](/zh-CN/api-reference/api-ref/media-push/list-by-channel)：查询一个项目下指定频道内的 Converter。
 
-
+    > [!CAUTION]
     > 请确保声网频道的场景为直播，而非通信，否则旁路推流会失败。
 
-
-    为方便你监听旁路推流的状态，声网提供[消息通知服务](/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/enable-ncs)。开通该服务后，你可以通过
-    Webhook 接收如下事件：
-
+    为方便你监听旁路推流的状态，声网提供[消息通知服务](/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/enable-ncs)。开通该服务后，你可以通过 Webhook 接收如下事件：
 
     - [创建推流成功](/zh-CN/realtime-media/media-push/reference/ncs-events)。
-
     - [推流配置更新](/zh-CN/realtime-media/media-push/reference/ncs-events)。
-
     - [推流状态变化](/zh-CN/realtime-media/media-push/reference/ncs-events)。
-
     - [停止推流成功](/zh-CN/realtime-media/media-push/reference/ncs-events)。
-
 
     因为声网会动态调整消息通知服务器的 IP 地址，为不影响你接收事件，你需要定期[查询 IP 地址](/zh-CN/api-reference/api-ref/media-push/get-ncs-ip)并更新防火墙白名单配置。
 servers:
@@ -128,17 +114,20 @@ paths:
                                       description: |-
                                         画布上各用户的视频画面的配置。
 
+                                        > [!CAUTION]
                                         > 仅需在 `layoutType` 为自定义布局时设置 `layout` 字段。
                                     - $ref: '#/components/schemas/layout-image'
                                       description: |-
                                         画布上视频图片的配置。画布上视频图片可充当水印。
 
+                                        > [!CAUTION]
                                         > 仅需在 `layoutType` 为自定义布局时设置 `layout` 字段。
                                 vertical:
                                   type: object
                                   description: |-
                                     垂直布局的画面配置。
 
+                                    > [!CAUTION]
                                     > 仅需在 `layoutType` 为垂直布局时设置 `vertical` 字段。
                                   properties:
                                     maxResolutionUid:
@@ -377,6 +366,7 @@ paths:
         description: |-
           `Update` 请求可更新**转码**推流和**不转码**推流的 Converter。
 
+          > [!CAUTION]
           > `Update` 不支持更新 Converter 的如下配置：
           > - `name`
           > - `idleTimeOut`
@@ -432,11 +422,13 @@ paths:
                                       description: |-
                                         画布上各用户的视频画面的配置。
 
+                                        > [!CAUTION]
                                         > 仅需在 `layoutType` 为自定义布局时设置 `layout` 字段。
                                     - $ref: '#/components/schemas/layout-image'
                                       description: |-
                                         画布上视频图片的配置。画布上视频图片可充当水印。
 
+                                        > [!CAUTION]
                                         > 仅需在 `layoutType` 为自定义布局时设置 `layout` 字段。
                                 defaultPlaceholderImageUrl:
                                   $ref: '#/components/schemas/default-image'
@@ -614,6 +606,14 @@ paths:
                                 primaryIP:
                                   type: string
                                   description: 声网消息通知服务器的 IP 地址。
+              examples:
+                schema:
+                  summary: 示例
+                  value:
+                    data:
+                      service:
+                        hosts:
+                          - primaryIP: 声网消息通知服务器的 IP 地址。
       servers:
         - url: https://api.sd-rtn.com
       x-stoplight:
@@ -629,7 +629,9 @@ paths:
 
             **用法**：你可以通过本方法查询 IP 地址。查询后，你需要将 IP 地址（或 IP 地址列表）添加到白名单中。
       x-docs-callouts:
-        - position: after-description
+        - type: caution
+          title: 注意
+          position: after-description
           markdown: 我们强烈推荐你至少每 24 小时进行一次查询，并自动更新防火墙配置，否则可能会影响你接收通知。
 components:
   parameters:
@@ -762,6 +764,11 @@ components:
               message:
                 type: string
                 description: 描述请求失败的具体原因。
+          examples:
+            schema:
+              summary: 示例
+              value:
+                message: 描述请求失败的具体原因。
       headers:
         X-Request-ID:
           schema:
@@ -784,6 +791,11 @@ components:
               message:
                 type: string
                 description: 描述请求失败的具体原因。
+          examples:
+            schema:
+              summary: 示例
+              value:
+                message: 描述请求失败的具体原因。
       headers:
         X-Request-ID:
           schema:
@@ -802,6 +814,11 @@ components:
               reason:
                 type: string
                 description: 描述请求失败的具体原因。
+          examples:
+            schema:
+              summary: 示例
+              value:
+                reason: 描述请求失败的具体原因。
       headers:
         X-Request-ID:
           schema:
@@ -834,6 +851,34 @@ components:
                     $ref: '#/components/schemas/converter-state'
               fields:
                 $ref: '#/components/schemas/response-fields'
+          examples:
+            schema:
+              summary: 示例
+              value:
+                converter:
+                  id: Converter 的 ID，是声网服务器生成的一个 UUID（通用唯一识别码），标识一个已创建的 Converter。
+                  createTs: 创建 Converter 时的 Unix 时间戳（秒）。
+                  updateTs: 最近一次更新 Converter 配置时的 Unix 时间戳（秒）。
+                  state: |-
+                    Converter 的运行状态：
+                    - `"connecting"`: 正在连接声网推流服务器和 CDN 服务器。
+                    - `"running"`: 正在进行推流。
+                    - `"failed"`: 推流失败。
+                fields: |-
+                  JSON 编码方式的字段掩码，详见[谷歌 protobuf FieldMask 文档](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask)。用于描述返回的 `converter` object 中包含的字段集合。<p>
+                  示例：
+                  ```json
+                  {
+                      "converter": {
+                        "id": "4c014467d647bb87b60b719f6fa57686",
+                        "createTs": 1591786766,
+                        "updateTs": 1591788746,
+                        "state": "running"
+                      },
+                      "fields": "id,createTs,updateTs,state"
+                  }
+                  ```
+                  在本示例中，`fields` 描述返回的 `converter` object 中包含 `id`、`createTs`、`updateTs`、`state` 字段。
       headers:
         X-Request-ID:
           schema:
@@ -887,6 +932,29 @@ components:
                           $ref: '#/components/schemas/idle-r'
                         state:
                           $ref: '#/components/schemas/converter-state'
+          examples:
+            schema:
+              summary: 示例
+              value:
+                success: true
+                data:
+                  total_count: 0
+                  cursor: 0
+                  members:
+                    - rtcChannel: 声网频道名称，即 Converter 处理的流所属频道的名称。
+                      status: 当前请求状态。
+                      converterName: Converter 的名称。
+                      updateTs: 最近一次更新 Converter 配置时的 Unix 时间戳（秒）。
+                      appId: 声网为每个开发者提供的 App ID。一个 App ID 是一个项目的唯一标识。
+                      rtmpUrl: CDN 推流地址。
+                      converterId: Converter 的 ID，是声网服务器生成的一个 UUID（通用唯一识别码），标识一个已创建的 Converter。
+                      create: 创建 Converter 时的 Unix 时间戳（秒）。
+                      idleTimeout: Converter 处于空闲状态的最大时长（秒）。空闲指 Converter 处理的音视频流所对应的所有用户均已离开频道。当 Converter 处于空闲状态时长大于 `idleTimeout`，Converter 自动销毁，推流停止。
+                      state: |-
+                        Converter 的运行状态：
+                        - `"connecting"`: 正在连接声网推流服务器和 CDN 服务器。
+                        - `"running"`: 正在进行推流。
+                        - `"failed"`: 推流失败。
       headers:
         X-Request-ID:
           schema:
@@ -1046,6 +1114,85 @@ components:
                         $ref: '#/components/schemas/idle-r'
                       jitterBufferSizeMs:
                         $ref: '#/components/schemas/jitter-r'
+          examples:
+            转码推流:
+              summary: 转码推流
+              value:
+                converter:
+                  name: Converter 的名称。
+                  transcodeOptions:
+                    rtcChannel: 声网频道名称，即 Converter 处理的流所属频道的名称。
+                    audioOptions:
+                      rtcStreamUids:
+                        - 0
+                      codecProfile: LC-AAC
+                      sampleRate: 48000
+                      bitrate: 0
+                      audioChannels: 1
+                      volumes:
+                        - rtcStreamUid: 0
+                          volume: 0
+                    videoOptions:
+                      canvas:
+                        width: 0
+                        height: 0
+                        color: 0
+                      layoutType: 0
+                      layout:
+                        - rtcStreamUid: 0
+                          region:
+                            xPos: 0
+                            yPos: 0
+                            zIndex: 0
+                            width: 0
+                            height: 0
+                          fillMode: fill
+                          placeholderImageUrl: 用户画面的背景图 URL 地址。支持 JPG、PNG 和 GIF 格式的图片。当频道内用户停止发布视频流，如果设置了该字段，用户的视频画面将切换为该背景图，否则会显示为画布背景色。
+                          alpha: 1
+                      vertical:
+                        maxResolutionUid: 0
+                        fillMode: fill
+                        refreshIntervalSec: 3
+                      defaultPlaceholderImageUrl: |-
+                        默认的用户画面背景图 URL 地址。支持 JPG、PNG 和 GIF 格式的图片。当频道内用户停止发布视频流时，背景图的行为如下：
+                        - 如果设置了该字段，用户的视频画面将切换为该背景图。
+                        - 如果未设置该字段，用户的视频画面先显示为该用户视频最后一帧，布局刷新后显示为画布背景色。
+                      bitrate: 0
+                      frameRate: 0
+                      gop: 0
+                      codec: H.264
+                      codecProfile: |-
+                        输出视频的编码规格。支持如下值：
+                        - `"high"`: High 级别的视频编码规格，一般用于广播及视频碟片存储，高清电视。
+                        - `"baseline"`: Baseline 级别的视频编码规格，一般用于低阶或需要额外容错的应用，比如视频通话、手机视频等。
+                        - `"main"`: Main 级别的视频编码规格，一般用于主流消费类电子产品，如 mp4、便携的视频播放器、PSP 和 iPad 等。
+                        **注意**：如果 `codec` 为 H.265，那么该字段默认值且唯一支持取值为 `"main"`。如果 `codec` 为 H.264，那么该字段默认值为 `"high"`。
+                      seiOptions:
+                        source:
+                          metadata: false
+                          datastream: false
+                          customized:
+                            prefixForAgoraSei: 自定义 SEI 信息的 payload 前缀。长度必须在 32 个字符以内。默认为空。
+                            payload: |-
+                              自定义 SEI 信息的 payload。长度必须在 4096 个字符以内。默认为空。<p>
+                              自定义 SEI 信息会被转换为[声网 SEI 规范](/zh-CN/reference/faq/quality/sei)的 SEI 信息。此处设置的 payload 会被转换至声网 SEI 规范中定义的 `app_data` 中。
+                        sink:
+                          type: 100
+                  rtmpUrl: CDN 推流地址。
+                  idleTimeout: Converter 处于空闲状态的最大时长（秒）。空闲指 Converter 处理的音视频流所对应的所有用户均已离开频道。当 Converter 处于空闲状态时长大于 `idleTimeout`，Converter 自动销毁，推流停止。
+                  jitterBufferSizeMs: 0
+            不转码推流:
+              summary: 不转码推流
+              value:
+                converter:
+                  name: Converter 的名称。
+                  rawOptions:
+                    rtcChannel: 声网频道名称，即 Converter 处理的流所属频道的名称。
+                    rtcStreamUid: 0
+                  rtmpUrl: CDN 推流地址。
+                  idleTimeout: Converter 处于空闲状态的最大时长（秒）。空闲指 Converter 处理的音视频流所对应的所有用户均已离开频道。当 Converter 处于空闲状态时长大于 `idleTimeout`，Converter 自动销毁，推流停止。
+                  jitterBufferSizeMs: 0
+          x-docs-schema-examples: true
       headers:
         X-Request-ID:
           schema:
@@ -1061,24 +1208,16 @@ components:
     name:
       type: string
       title: name
-      description: >-
+      description: |-
         Converter 的名字。长度必须在 64 个字符以内，支持的字符集范围如下：
-
         - 所有小写英文字母（a-z）
-
         - 所有大写英文字母（A-Z）
-
         - 数字 0-9
-
         - "-", "_"
-
+        > [!CAUTION]
         > - 不传值时该字段为空。
-
         > - 同一时间，一个项目下不允许出现重名的 Converter，否则在尝试创建同名的 Converter 时会收到响应状态码 `409(Conflict)`。
-
-        > - 为避免重复创建多个 Converter 重复推流，请使用 `name` 字段管理指定项目下的 Converter。声网推荐你以“频道名（`rtcChannel`）”和
-        “Converter 特性”组合来给 `name` 赋值。如 `show68_horizontal` 和 `show68_vertical`，分别代表在频道 `show68`
-        中创建的用户画面为水平布局和和垂直布局的 Converter。
+        > - 为避免重复创建多个 Converter 重复推流，请使用 `name` 字段管理指定项目下的 Converter。声网推荐你以“频道名（`rtcChannel`）”和 “Converter 特性”组合来给 `name` 赋值。如 `show68_horizontal` 和 `show68_vertical`，分别代表在频道 `show68` 中创建的用户画面为水平布局和和垂直布局的 Converter。
       x-stoplight:
         id: nlgoexfpnjdru
     rtcChannel:

@@ -10,6 +10,9 @@ export const retiredCnProductIds = [
 ];
 
 export const retiredCnDocDirectories = [
+  'zh-CN/realtime-media/rtsa/overview/sunset',
+  'zh-CN/api-reference/rtsa/java',
+  'zh-CN/api-reference/api-ref/rtsa/java',
   'zh-CN/realtime-media/fusion-cdn',
   'zh-CN/api-reference/fusion-cdn',
   'zh-CN/api-reference/api-ref/fusion-cdn',
@@ -21,6 +24,7 @@ export const retiredCnDocDirectories = [
 ];
 
 export const retiredCnDocPages = [
+  'zh-CN/realtime-media/rtsa/reference/sunset',
   'zh-CN/realtime-media/usage-analytics/build/view-live-data',
   'zh-CN/introduction/security/sdk-compliance/flexible-classroom-sdk',
   'zh-CN/introduction/security/sdk-compliance/flexible-classroom-sdk-third-party',
@@ -49,6 +53,8 @@ export const retiredCnDocPaths = [
 // Old Shengwang namespaces stay retired even when their migration mapping
 // points to a shared introduction page (for example MCP or Skills).
 const retiredCnLegacyDirectories = [
+  'doc/rtsa/java',
+  'api-ref/rtsa/java',
   'doc/fusion-cdn',
   'api-ref/fusion-cdn',
   'doc/flexible-classroom',

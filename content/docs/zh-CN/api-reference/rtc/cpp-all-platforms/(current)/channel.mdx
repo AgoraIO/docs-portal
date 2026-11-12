@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_getuserinfobyuid__prototype"></a>
 
-```text
+```cpp
 virtual int getUserInfoByUid(uid_t uid, rtc::UserInfo* userInfo) = 0;
 ```
 
@@ -75,7 +75,7 @@ virtual int getUserInfoByUid(uid_t uid, rtc::UserInfo* userInfo) = 0;
 
 <a id="api_irtcengineex_getuserinfobyuidex__prototype"></a>
 
-```text
+```cpp
 virtual int getUserInfoByUidEx(uid_t uid, rtc::UserInfo* userInfo, const RtcConnection& connection) = 0;
 ```
 
@@ -135,7 +135,7 @@ virtual int getUserInfoByUidEx(uid_t uid, rtc::UserInfo* userInfo, const RtcConn
 
 <a id="api_irtcengine_getuserinfobyuseraccount__prototype"></a>
 
-```text
+```cpp
 virtual int getUserInfoByUserAccount(const char* userAccount, rtc::UserInfo* userInfo) = 0;
 ```
 
@@ -189,7 +189,7 @@ virtual int getUserInfoByUserAccount(const char* userAccount, rtc::UserInfo* use
 
 <a id="api_irtcengineex_getuserinfobyuseraccountex__prototype"></a>
 
-```text
+```cpp
 virtual int getUserInfoByUserAccountEx(const char* userAccount, rtc::UserInfo* userInfo, const RtcConnection& connection) = 0;
 ```
 
@@ -251,7 +251,7 @@ virtual int getUserInfoByUserAccountEx(const char* userAccount, rtc::UserInfo* u
 
 <a id="api_irtcengine_joinchannel1__prototype"></a>
 
-```text
+```cpp
 virtual int joinChannel(const char* token, const char* channelId, const char* info, uid_t uid) = 0;
 ```
 
@@ -323,7 +323,7 @@ virtual int joinChannel(const char* token, const char* channelId, const char* in
 <a id="uid-2"></a>
 <Parameter name="uid">
 
-用户 ID。用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 ID，并确保同一频道中的每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2^32 - 1。如果未指定用户 ID（或设置为 0），SDK 会自动分配一个随机用户 ID，并在 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回。你的应用程序必须记录并维护返回的用户 ID，SDK 不会保存。
+用户 ID。用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 ID，并确保同一频道中的每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2³² - 1。如果未指定用户 ID（或设置为 0），SDK 会自动分配一个随机用户 ID，并在 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回。你的应用程序必须记录并维护返回的用户 ID，SDK 不会保存。
 
 </Parameter>
 </ParameterList>
@@ -357,7 +357,7 @@ virtual int joinChannel(const char* token, const char* channelId, const char* in
 
 <a id="api_irtcengine_joinchannel2__prototype"></a>
 
-```text
+```cpp
 virtual int joinChannel(const char* token, const char* channelId, uid_t uid, const ChannelMediaOptions& options) = 0;
 ```
 
@@ -423,7 +423,7 @@ virtual int joinChannel(const char* token, const char* channelId, uid_t uid, con
 <a id="uid-3"></a>
 <Parameter name="uid">
 
-用户 ID。用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2^32-1。如果未指定用户 ID（或设置为 0），SDK 会自动分配一个随机用户 ID，并在 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回。你的应用程序必须记录并维护返回的用户 ID。
+用户 ID。用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2³²-1。如果未指定用户 ID（或设置为 0），SDK 会自动分配一个随机用户 ID，并在 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回。你的应用程序必须记录并维护返回的用户 ID。
 
 </Parameter>
 <a id="options"></a>
@@ -463,7 +463,7 @@ virtual int joinChannel(const char* token, const char* channelId, uid_t uid, con
 
 <a id="api_irtcengineex_joinchannelex__prototype"></a>
 
-```text
+```cpp
 virtual int joinChannelEx(const char* token, const RtcConnection& connection, const ChannelMediaOptions& options, IRtcEngineEventHandler* eventHandler) = 0;
 ```
 
@@ -568,7 +568,7 @@ virtual int joinChannelEx(const char* token, const RtcConnection& connection, co
 
 <a id="api_irtcengine_joinchannelwithuseraccount1__prototype"></a>
 
-```text
+```cpp
 virtual int joinChannelWithUserAccount(const char* token, const char* channelId, const char* userAccount) = 0;
 ```
 
@@ -674,7 +674,7 @@ virtual int joinChannelWithUserAccount(const char* token, const char* channelId,
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__prototype"></a>
 
-```text
+```cpp
 virtual int joinChannelWithUserAccount(const char* token, const char* channelId, const char* userAccount, const ChannelMediaOptions& options) = 0;
 ```
 
@@ -787,7 +787,7 @@ virtual int joinChannelWithUserAccount(const char* token, const char* channelId,
 
 <a id="api_irtcengine_joinchannelwithuseraccountex_irtcengine__prototype"></a>
 
-```text
+```cpp
 virtual int joinChannelWithUserAccountEx(const char* token, const char* channelId, const char* userAccount, const ChannelMediaOptions& options, IRtcEngineEventHandler* eventHandler) = 0;
 ```
 
@@ -911,7 +911,7 @@ virtual int joinChannelWithUserAccountEx(const char* token, const char* channelI
 
 <a id="api_irtcengine_leavechannel__prototype"></a>
 
-```text
+```cpp
 virtual int leaveChannel() = 0;
 ```
 
@@ -967,7 +967,7 @@ virtual int leaveChannel() = 0;
 
 <a id="api_irtcengine_leavechannel2__prototype"></a>
 
-```text
+```cpp
 virtual int leaveChannel(const LeaveChannelOptions& options) = 0;
 ```
 
@@ -1028,7 +1028,7 @@ virtual int leaveChannel(const LeaveChannelOptions& options) = 0;
 
 <a id="api_irtcengineex_leavechannelex__prototype"></a>
 
-```text
+```cpp
 virtual int leaveChannelEx(const RtcConnection& connection) = 0;
 ```
 
@@ -1095,7 +1095,7 @@ virtual int leaveChannelEx(const RtcConnection& connection) = 0;
 
 <a id="api_irtcengineex_leavechannelex2__prototype"></a>
 
-```text
+```cpp
 virtual int leaveChannelEx(const RtcConnection& connection, const LeaveChannelOptions& options) = 0;
 ```
 
@@ -1180,7 +1180,7 @@ virtual int leaveChannelEx(const RtcConnection& connection, const LeaveChannelOp
 
 <a id="api_irtcengine_preloadchannel__prototype"></a>
 
-```text
+```cpp
 virtual int preloadChannel(const char* token, const char* channelId, uid_t uid) = 0;
 ```
 
@@ -1234,7 +1234,7 @@ virtual int preloadChannel(const char* token, const char* channelId, uid_t uid) 
 <a id="uid-4"></a>
 <Parameter name="uid">
 
-用户 ID，用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 ID，并确保同一频道中的每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2^32 - 1。如果未指定用户 ID（或设置为 0），SDK 会分配一个随机用户 ID，并在 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回。你的应用必须记录并维护返回的用户 ID，SDK 不会保存。
+用户 ID，用于标识频道中的用户以进行实时音视频互动。你需要自行设置和管理用户 ID，并确保同一频道中的每个用户 ID 唯一。该参数为 32 位无符号整数，取值范围为 1 到 2³² - 1。如果未指定用户 ID（或设置为 0），SDK 会分配一个随机用户 ID，并在 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中返回。你的应用必须记录并维护返回的用户 ID，SDK 不会保存。
 
 </Parameter>
 </ParameterList>
@@ -1263,7 +1263,7 @@ virtual int preloadChannel(const char* token, const char* channelId, uid_t uid) 
 
 <a id="api_irtcengine_preloadchannelwithuseraccount__prototype"></a>
 
-```text
+```cpp
 virtual int preloadChannelWithUserAccount(const char* token, const char* channelId, const char* userAccount) = 0;
 ```
 
@@ -1353,7 +1353,7 @@ virtual int preloadChannelWithUserAccount(const char* token, const char* channel
 
 <a id="api_irtcengine_registerlocaluseraccount__prototype"></a>
 
-```text
+```cpp
 virtual int registerLocalUserAccount(const char* appId, const char* userAccount) = 0;
 ```
 
@@ -1418,7 +1418,7 @@ virtual int registerLocalUserAccount(const char* appId, const char* userAccount)
 
 <a id="api_irtcengine_renewtoken__prototype"></a>
 
-```text
+```cpp
 virtual int renewToken(const char* token) = 0;
 ```
 
@@ -1470,7 +1470,7 @@ virtual int renewToken(const char* token) = 0;
 
 <a id="api_irtcengine_setchannelprofile__prototype"></a>
 
-```text
+```cpp
 virtual int setChannelProfile(CHANNEL_PROFILE_TYPE profile) = 0;
 ```
 
@@ -1529,7 +1529,7 @@ SDK 会根据不同的频道场景采用不同的优化策略。例如，在直�
 
 <a id="api_irtcengine_setclientrole1__prototype"></a>
 
-```text
+```cpp
 virtual int setClientRole(CLIENT_ROLE_TYPE role) = 0;
 ```
 
@@ -1604,7 +1604,7 @@ virtual int setClientRole(CLIENT_ROLE_TYPE role) = 0;
 
 <a id="api_irtcengine_setclientrole2__prototype"></a>
 
-```text
+```cpp
 virtual int setClientRole(CLIENT_ROLE_TYPE role, const ClientRoleOptions& options) = 0;
 ```
 
@@ -1688,7 +1688,7 @@ virtual int setClientRole(CLIENT_ROLE_TYPE role, const ClientRoleOptions& option
 
 <a id="api_irtcengine_updatechannelmediaoptions__prototype"></a>
 
-```text
+```cpp
 virtual int updateChannelMediaOptions(const ChannelMediaOptions& options) = 0;
 ```
 
@@ -1732,7 +1732,7 @@ virtual int updateChannelMediaOptions(const ChannelMediaOptions& options) = 0;
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex__prototype"></a>
 
-```text
+```cpp
 virtual int updateChannelMediaOptionsEx(const ChannelMediaOptions& options, const RtcConnection& connection) = 0;
 ```
 
@@ -1788,7 +1788,7 @@ virtual int updateChannelMediaOptionsEx(const ChannelMediaOptions& options, cons
 
 <a id="api_irtcengine_updatepreloadchanneltoken__prototype"></a>
 
-```text
+```cpp
 virtual int updatePreloadChannelToken(const char* token) = 0;
 ```
 
@@ -1839,7 +1839,7 @@ virtual int updatePreloadChannelToken(const char* token) = 0;
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onClientRoleChanged(CLIENT_ROLE_TYPE oldRole, CLIENT_ROLE_TYPE newRole, const ClientRoleOptions& newRoleOptions)
 ```
 
@@ -1901,7 +1901,7 @@ virtual void onClientRoleChanged(CLIENT_ROLE_TYPE oldRole, CLIENT_ROLE_TYPE newR
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed__prototype"></a>
 
-```text
+```cpp
 virtual void onClientRoleChangeFailed(CLIENT_ROLE_CHANGE_FAILED_REASON reason, CLIENT_ROLE_TYPE currentRole)
 ```
 
@@ -1948,7 +1948,7 @@ virtual void onClientRoleChangeFailed(CLIENT_ROLE_CHANGE_FAILED_REASON reason, C
 
 <a id="callback_irtcengineeventhandler_onerror__prototype"></a>
 
-```text
+```cpp
 virtual void onError(int err, const char* msg)
 ```
 
@@ -1989,7 +1989,7 @@ virtual void onError(int err, const char* msg)
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess__prototype"></a>
 
-```text
+```cpp
 virtual void onJoinChannelSuccess(const char* channel, uid_t uid, int elapsed)
 ```
 
@@ -2040,7 +2040,7 @@ virtual void onJoinChannelSuccess(const char* channel, uid_t uid, int elapsed)
 
 <a id="callback_irtcengineeventhandler_onleavechannel__prototype"></a>
 
-```text
+```cpp
 virtual void onLeaveChannel(const RtcStats& stats)
 ```
 
@@ -2081,7 +2081,7 @@ virtual void onLeaveChannel(const RtcStats& stats)
 
 <a id="callback_irtcengineeventhandler_onlocaluserregistered__prototype"></a>
 
-```text
+```cpp
 virtual void onLocalUserRegistered(uid_t uid, const char* userAccount)
 ```
 
@@ -2122,7 +2122,7 @@ virtual void onLocalUserRegistered(uid_t uid, const char* userAccount)
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__prototype"></a>
 
-```text
+```cpp
 virtual void onRejoinChannelSuccess(const char* channel, uid_t uid, int elapsed)
 ```
 
@@ -2175,7 +2175,7 @@ virtual void onRejoinChannelSuccess(const char* channel, uid_t uid, int elapsed)
 
 <a id="callback_irtcengineeventhandler_onrenewtokenresult__prototype"></a>
 
-```text
+```cpp
 virtual void onRenewTokenResult(const char* token, RENEW_TOKEN_ERROR_CODE code)
 ```
 
@@ -2220,7 +2220,7 @@ Token 过期时触发的回调。
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__prototype"></a>
 
-```text
+```cpp
 virtual void onRequestToken() {}
 ```
 
@@ -2256,7 +2256,7 @@ virtual void onRequestToken() {}
 
 <a id="callback_irtcengineeventhandler_onrtcstats__prototype"></a>
 
-```text
+```cpp
 virtual void onRtcStats(const RtcStats& stats)
 ```
 
@@ -2295,7 +2295,7 @@ Token 即将在 30 秒后过期时触发的回调。
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__prototype"></a>
 
-```text
+```cpp
 virtual void onTokenPrivilegeWillExpire(const char* token)
 ```
 
@@ -2342,7 +2342,7 @@ SDK 会在 Token 过期前 30 秒触发该回调，提醒你更新 Token。
 
 <a id="callback_irtcengineeventhandler_onuserinfoupdated__prototype"></a>
 
-```text
+```cpp
 virtual void onUserInfoUpdated(uid_t uid, const UserInfo& info)
 ```
 
@@ -2383,7 +2383,7 @@ virtual void onUserInfoUpdated(uid_t uid, const UserInfo& info)
 
 <a id="callback_irtcengineeventhandler_onuserjoined__prototype"></a>
 
-```text
+```cpp
 virtual void onUserJoined(uid_t uid, int elapsed)
 ```
 
@@ -2435,7 +2435,7 @@ SDK 在以下任一情况下触发该回调：
 
 <a id="callback_irtcengineeventhandler_onuseroffline__prototype"></a>
 
-```text
+```cpp
 virtual void onUserOffline(uid_t uid, USER_OFFLINE_REASON_TYPE reason)
 ```
 

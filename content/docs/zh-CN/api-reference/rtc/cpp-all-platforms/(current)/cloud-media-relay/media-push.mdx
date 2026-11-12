@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_startrtmpstreamwithouttranscoding__prototype"></a>
 
-```text
+```cpp
 virtual int startRtmpStreamWithoutTranscoding(const char* url) = 0;
 ```
 
@@ -86,7 +86,7 @@ virtual int startRtmpStreamWithoutTranscoding(const char* url) = 0;
 
 <a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__prototype"></a>
 
-```text
+```cpp
 virtual int startRtmpStreamWithoutTranscodingEx(const char* url, const RtcConnection& connection) = 0;
 ```
 
@@ -159,7 +159,7 @@ virtual int startRtmpStreamWithoutTranscodingEx(const char* url, const RtcConnec
 
 <a id="api_irtcengine_startrtmpstreamwithtranscoding__prototype"></a>
 
-```text
+```cpp
 virtual int startRtmpStreamWithTranscoding(const char* url, const LiveTranscoding& transcoding) = 0;
 ```
 
@@ -220,7 +220,7 @@ virtual int startRtmpStreamWithTranscoding(const char* url, const LiveTranscodin
 
 <a id="api_irtcengineex_startrtmpstreamwithtranscodingex__prototype"></a>
 
-```text
+```cpp
 virtual int startRtmpStreamWithTranscodingEx(const char* url, const LiveTranscoding& transcoding, const RtcConnection& connection) = 0;
 ```
 
@@ -294,7 +294,7 @@ virtual int startRtmpStreamWithTranscodingEx(const char* url, const LiveTranscod
 
 <a id="api_irtcengine_stoprtmpstream__prototype"></a>
 
-```text
+```cpp
 virtual int stopRtmpStream(const char* url) = 0;
 ```
 
@@ -347,7 +347,7 @@ virtual int stopRtmpStream(const char* url) = 0;
 
 <a id="api_irtcengineex_stoprtmpstreamex__prototype"></a>
 
-```text
+```cpp
 virtual int stopRtmpStreamEx(const char* url, const RtcConnection& connection) = 0;
 ```
 
@@ -408,7 +408,7 @@ virtual int stopRtmpStreamEx(const char* url, const RtcConnection& connection) =
 
 <a id="api_irtcengine_updatertmptranscoding__prototype"></a>
 
-```text
+```cpp
 virtual int updateRtmpTranscoding(const LiveTranscoding& transcoding) = 0;
 ```
 
@@ -451,7 +451,7 @@ virtual int updateRtmpTranscoding(const LiveTranscoding& transcoding) = 0;
 
 <a id="api_irtcengineex_updatertmptranscodingex__prototype"></a>
 
-```text
+```cpp
 virtual int updateRtmpTranscodingEx(const LiveTranscoding& transcoding, const RtcConnection& connection) = 0;
 ```
 
@@ -506,7 +506,7 @@ virtual int updateRtmpTranscodingEx(const LiveTranscoding& transcoding, const Rt
 
 <a id="callback_irtcengineeventhandler_onrtmpstreamingevent__prototype"></a>
 
-```text
+```cpp
 virtual void onRtmpStreamingEvent(const char* url, RTMP_STREAMING_EVENT eventCode)
 ```
 
@@ -545,7 +545,7 @@ virtual void onRtmpStreamingEvent(const char* url, RTMP_STREAMING_EVENT eventCod
 
 <a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onRtmpStreamingStateChanged(const char* url, RTMP_STREAM_PUBLISH_STATE state, RTMP_STREAM_PUBLISH_REASON reason)
 ```
 
@@ -592,7 +592,7 @@ virtual void onRtmpStreamingStateChanged(const char* url, RTMP_STREAM_PUBLISH_ST
 
 <a id="callback_irtcengineeventhandler_ontranscodingupdated__prototype"></a>
 
-```text
+```cpp
 virtual void onTranscodingUpdated() {}
 ```
 

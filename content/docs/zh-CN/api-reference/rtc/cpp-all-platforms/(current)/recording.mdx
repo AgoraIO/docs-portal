@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_createmediarecorder__prototype"></a>
 
-```text
+```cpp
 virtual agora_refptr<IMediaRecorder> createMediaRecorder(const RecorderStreamInfo& info) = 0;
 ```
 
@@ -63,7 +63,7 @@ virtual agora_refptr<IMediaRecorder> createMediaRecorder(const RecorderStreamInf
 
 <a id="api_irtcengine_destroymediarecorder__prototype"></a>
 
-```text
+```cpp
 virtual int destroyMediaRecorder(agora_refptr<IMediaRecorder> mediaRecorder) = 0;
 ```
 
@@ -105,7 +105,7 @@ virtual int destroyMediaRecorder(agora_refptr<IMediaRecorder> mediaRecorder) = 0
 
 <a id="api_imediarecorder_setmediarecorderobserver__prototype"></a>
 
-```text
+```cpp
 virtual int setMediaRecorderObserver(media::IMediaRecorderObserver* callback) = 0;
 ```
 
@@ -155,7 +155,7 @@ virtual int setMediaRecorderObserver(media::IMediaRecorderObserver* callback) = 
 
 <a id="api_irtcengine_startaudiorecording1__prototype"></a>
 
-```text
+```cpp
 virtual int startAudioRecording(const char* filePath, AUDIO_RECORDING_QUALITY_TYPE quality) = 0;
 ```
 
@@ -217,7 +217,7 @@ virtual int startAudioRecording(const char* filePath, AUDIO_RECORDING_QUALITY_TY
 
 <a id="api_irtcengine_startaudiorecording2__prototype"></a>
 
-```text
+```cpp
 virtual int startAudioRecording(const char* filePath, int sampleRate, AUDIO_RECORDING_QUALITY_TYPE quality) = 0;
 ```
 
@@ -291,7 +291,7 @@ virtual int startAudioRecording(const char* filePath, int sampleRate, AUDIO_RECO
 
 <a id="api_irtcengine_startaudiorecording3__prototype"></a>
 
-```text
+```cpp
 virtual int startAudioRecording(const AudioRecordingConfiguration& config) = 0;
 ```
 
@@ -344,7 +344,7 @@ virtual int startAudioRecording(const AudioRecordingConfiguration& config) = 0;
 
 <a id="api_imediarecorder_startrecording__prototype"></a>
 
-```text
+```cpp
 virtual int startRecording(const media::MediaRecorderConfiguration& config) = 0;
 ```
 
@@ -422,7 +422,7 @@ virtual int startRecording(const media::MediaRecorderConfiguration& config) = 0;
 
 <a id="api_irtcengine_stopaudiorecording__prototype"></a>
 
-```text
+```cpp
 virtual int stopAudioRecording() = 0;
 ```
 
@@ -449,7 +449,7 @@ virtual int stopAudioRecording() = 0;
 
 <a id="api_imediarecorder_stoprecording__prototype"></a>
 
-```text
+```cpp
 virtual int stopRecording() = 0;
 ```
 
@@ -486,7 +486,7 @@ virtual int stopRecording() = 0;
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated__prototype"></a>
 
-```text
+```cpp
 virtual void onRecorderInfoUpdated(const char* channelId, rtc::uid_t uid, const RecorderInfo& info) = 0;
 ```
 
@@ -543,7 +543,7 @@ virtual void onRecorderInfoUpdated(const char* channelId, rtc::uid_t uid, const 
 
 <a id="callback_imediarecorderobserver_onrecorderstatechanged__prototype"></a>
 
-```text
+```cpp
 virtual void onRecorderStateChanged(const char* channelId, rtc::uid_t uid, RecorderState state, RecorderReasonCode reason) = 0;
 ```
 

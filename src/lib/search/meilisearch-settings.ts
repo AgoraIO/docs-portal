@@ -3,6 +3,7 @@ import { cnSearchSynonyms, cnTechnicalWords } from './cn-search-strategy';
 export function buildMeilisearchSettings() {
   return {
     pagination: { maxTotalHits: 10000 },
+    distinctAttribute: 'distinctKey',
     searchableAttributes: ['sectionTitle', 'aliases', 'pageTitle', 'content'],
     filterableAttributes: [
       'locale',
@@ -25,6 +26,7 @@ export function buildMeilisearchSettings() {
       'pageTitle',
       'sectionTitle',
       'content',
+      'summary',
       'headingPath',
       'locale',
       'product',
@@ -50,17 +52,32 @@ export function buildPublishedCnSearchSettings() {
   return {
     ...base,
     searchableAttributes: [
+      'languageEntryTerms',
+      'productCode',
+      'productTitle',
       'entryTitle',
+      'guideHeading',
       'sectionTitle',
       'nameSplit',
       'groupNameSplit',
       'aliases',
+      'languageTerms',
       'pageTitle',
+      'headingPath',
       'content',
     ],
-    sortableAttributes: ['entrySeq', 'productSeq', 'platformSeq', 'typeSeq'],
+    sortableAttributes: [
+      'languageEntryRank',
+      'entrySeq',
+      'productSeq',
+      'platformSeq',
+      'typeSeq',
+    ],
     synonyms: cnSearchSynonyms,
-    typoTolerance: { disableOnWords: cnTechnicalWords },
+    dictionary: cnTechnicalWords,
+    typoTolerance: {
+      disableOnWords: [...cnTechnicalWords, 'csharp', 'cplusplus'],
+    },
     rankingRules: [
       'words',
       'typo',
@@ -72,11 +89,21 @@ export function buildPublishedCnSearchSettings() {
       'productSeq:asc',
       'platformSeq:asc',
     ],
-    filterableAttributes: base.filterableAttributes.flatMap((field) =>
-      field === 'product' ? [field, 'products'] : [field],
-    ),
-    displayedAttributes: base.displayedAttributes.flatMap((field) =>
-      field === 'product' ? [field, 'products'] : [field],
-    ),
+    filterableAttributes: [
+      'taskKinds',
+      'canonicalUrl',
+      'languageEntryTerms',
+      'aliases',
+      ...base.filterableAttributes.flatMap((field) =>
+        field === 'product' ? [field, 'products'] : [field],
+      ),
+    ],
+    displayedAttributes: [
+      'languageEntryTerms',
+      'languageEntryRank',
+      ...base.displayedAttributes.flatMap((field) =>
+        field === 'product' ? [field, 'products'] : [field],
+      ),
+    ],
   };
 }

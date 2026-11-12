@@ -4,32 +4,24 @@ x-stoplight:
 info:
   version: ''
   title: API 概述
-  description: '输入一路在线媒体流至声网频道内播放相当于创建了一个云端播放器（cloud player）。用户可以通过 RESTful API 控制云端播放器，实现对该媒体流的控制：
-
+  description: |-
+    输入一路在线媒体流至声网频道内播放相当于创建了一个云端播放器（cloud player）。用户可以通过 RESTful API 控制云端播放器，实现对该媒体流的控制：
 
     - [`Create`](/zh-CN/api-reference/api-ref/media-pull/create)：在项目中创建一个云端播放器。
-
     - [`Update`](/zh-CN/api-reference/api-ref/media-pull/update)：更新指定的云端播放器。
-
     - [`List`](/zh-CN/api-reference/api-ref/media-pull/list)：分页列出该项目中所有云端播放器。
-
     - [`Delete`](/zh-CN/api-reference/api-ref/media-pull/delete)：在项目中销毁一个云端播放器。
 
-
+    > [!CAUTION]
     > 请确保声网频道的场景为直播，而非通信，否则输入媒体流会失败。
-
 
     为方便你监听云端播放器的状态，声网提供[消息通知服务](/zh-CN/realtime-media/media-pull/build/enable-event-notification)。开通该服务后，你可以通过 Webhook 接收如下事件：
 
-
     - [云端播放器创建成功](/zh-CN/realtime-media/media-pull/reference/ncs-events)。
-
     - [云端播放器运行状态改变](/zh-CN/realtime-media/media-pull/reference/ncs-events)。
-
     - [云端播放器销毁成功](/zh-CN/realtime-media/media-pull/reference/ncs-events)。
 
-
-    因为声网会动态调整消息通知服务器的 IP 地址，为不影响你接收事件，你需要定期[查询 IP 地址](/zh-CN/api-reference/api-ref/media-pull/get-ncs-ip)并更新防火墙白名单配置。'
+    因为声网会动态调整消息通知服务器的 IP 地址，为不影响你接收事件，你需要定期[查询 IP 地址](/zh-CN/api-reference/api-ref/media-pull/get-ncs-ip)并更新防火墙白名单配置。
   contact:
     name: 声网技术支持
     url: https://ticket.shengwang.cn/
@@ -165,7 +157,9 @@ paths:
       - position: after-description
         markdown: '`Create` 方法用于在项目中创建一个云端播放器。'
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: 为确保请求成功，请不要将必填字段设为空，例如 `null` 或 `""`。
   /{region}/v1/projects/{appId}/cloud-player/players/{playerid}:
     patch:
@@ -289,7 +283,9 @@ paths:
                     $ref: '#/components/schemas/totalSize-r'
                   players:
                     type: array
-                    description: '> 个别 `player` 可能暂时只包含 `id`，`name`，`createTs` 三个字段，你的程序需要能够处理这种情况。'
+                    description: |-
+                      > [!CAUTION]
+                      > 个别 `player` 可能暂时只包含 `id`，`name`，`createTs` 三个字段，你的程序需要能够处理这种情况。
                     items:
                       type: object
                       properties:
@@ -367,7 +363,9 @@ paths:
       - position: after-description
         markdown: '`List` 方法用于分页列出该项目中所有云端播放器。'
       x-docs-callouts:
-      - position: after-description
+      - type: caution
+        title: 注意
+        position: after-description
         markdown: '- 使用 `Create` 或 `Delete` 方法创建或销毁云端播放器，且响应状态码为 `504 Gateway Timeout` 时，为防止产生不受管理的云端播放器，声网建议你通过 `List` 方法查询该云端播放器的真实状况。
 
           - 使用 `Create` 方法创建云端播放器并收到请求成功的响应报文后，如需调用 `List` 方法查询云端播放器，建议你等待约 10 秒再使用 `List`，以防出现查询不到任何信息的情况。'
@@ -396,7 +394,9 @@ paths:
       - position: after-description
         markdown: '`Delete` 方法用于在项目中销毁一个云端播放器。'
       x-docs-callouts:
-      - position: after-description
+      - type: info
+        title: 说明
+        position: after-description
         markdown: 通过 `Delete` 销毁一个已经销毁过的云端播放器时，响应状态码也为 2XX。
   /v1/ncs/ip:
     get:
@@ -449,7 +449,9 @@ paths:
 
           你可以通过本方法查询 IP 地址。查询后，你需要将 IP 地址或 IP 地址列表添加到白名单中。'
       x-docs-callouts:
-      - position: after-description
+      - type: tip
+        title: 建议
+        position: after-description
         markdown: 我们强烈推荐你至少每 24 小时进行一次查询，并自动更新防火墙白名单。
 components:
   parameters:
@@ -487,9 +489,18 @@ components:
     region-create:
       name: region
       in: path
-      description: '云端播放器的区域。声网支持分区域创建云端播放器，目前支持以下区域：
+      description: |-
+        云端播放器的区域。声网支持分区域创建云端播放器，目前支持以下区域：
 
-        - `cn`：中国大陆。- `ap`：除中国大陆以外的亚洲区域。- `na`：北美。- `eu`：欧洲。**注意**：请确保设置的 `region` 与你的媒体流源站在同一个区域，且 `region` 值为小写。'
+        - `cn`：中国大陆。
+
+        - `ap`：除中国大陆以外的亚洲区域。
+
+        - `na`：北美。
+
+        - `eu`：欧洲。
+
+        **注意**：请确保设置的 `region` 与你的媒体流源站在同一个区域，且 `region` 值为小写。
       required: true
       schema:
         type: string
@@ -592,29 +603,27 @@ components:
     uid:
       type: number
       title: uid
-      description: '云端播放器在声网频道内的用户 UID。取值范围为 0 到（2 的 32 次方-1）。取值 0 时，声网服务器自动为 player 分配一个 UID。
+      description: |-
+        云端播放器在声网频道内的用户 UID。取值范围为 0 到（2<sup>32</sup>-1）。取值 0 时，声网服务器自动为 player 分配一个 UID。
 
-        > - `uid` 和 `account` 字段二选一必填。如果不设置用户名（UID 或 Account），该云端播放器不能创建，声网服务器会返回 `400(Bad Request)` 的状态码。请确保该值与频道内其他用户、云端播放器的 UID 都不同，否则影响播放质量。> - 如果你需要在同一个频道内有多个云端播放器，请确保每个云端播放器的用户名（UID 或 Account）都是唯一的。'
+        > [!CAUTION]
+        > - `uid` 和 `account` 字段二选一必填。如果不设置用户名（UID 或 Account），该云端播放器不能创建，声网服务器会返回 `400(Bad Request)` 的状态码。请确保该值与频道内其他用户、云端播放器的 UID 都不同，否则影响播放质量。
+        > - 如果你需要在同一个频道内有多个云端播放器，请确保每个云端播放器的用户名（UID 或 Account）都是唯一的。
       x-stoplight:
         id: zoe1m2qgzp0ed
     account:
       type: string
       title: account
-      description: '云端播放器在声网频道内的用户 Account。使用该字段前请先阅读[如何使用 String 型用户名](/zh-CN/reference/faq/integration/string_uid)。该字段不能超过 255 字节，也不能为空字符串。支持的字符集范围（共 89 个字符）如下：
-
+      description: |-
+        云端播放器在声网频道内的用户 Account。使用该字段前请先阅读[如何使用 String 型用户名](/zh-CN/reference/faq/integration/string_uid)。该字段不能超过 255 字节，也不能为空字符串。支持的字符集范围（共 89 个字符）如下：
         - 所有小写英文字母（a-z）
-
         - 所有大写英文字母（A-Z）
-
         - 数字 0-9
-
         - 空格
-
         - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "\|", "~", ","
-
+        > [!CAUTION]
         > - `uid` 和 `account` 字段二选一必填。如果不设置用户名（UID 或 Account），该云端播放器不能创建，声网服务器会返回 `400(Bad Request)` 的状态码。请确保该值与频道内其他用户、云端播放器的 UID 都不同，否则影响播放质量。
-
-        > - 如果你需要在同一个频道内有多个云端播放器，请确保每个云端播放器的用户名（UID 或 Account）都是唯一的。'
+        > - 如果你需要在同一个频道内有多个云端播放器，请确保每个云端播放器的用户名（UID 或 Account）都是唯一的。
       x-stoplight:
         id: vgfcnx7eu4mlc
     token:
@@ -632,21 +641,16 @@ components:
     name:
       type: string
       title: name
-      description: '云端播放器的名字。长度必须在 64 个字符以内，支持的字符集范围为：
-
+      description: |-
+        云端播放器的名字。长度必须在 64 个字符以内，支持的字符集范围为：
         - 所有小写英文字母（a-z）
-
         - 所有大写英文字母（A-Z）
-
         - 数字 0-9
-
         - "-", "_"
-
+        > [!CAUTION]
         > - 不传值时，`name` 为空。同一时间，一个项目下可以有多个 `name` 为空的云端播放器。
-
         > - 同一时间，一个项目下不允许出现重名的云端播放器，用户尝试创建同名的云端播放器时会收到响应状态码 `409(Conflict)`。
-
-        > - 如果你需要在同一个频道内仅有一个云端播放器，请你务必使用 `name` 字段。'
+        > - 如果你需要在同一个频道内仅有一个云端播放器，请你务必使用 `name` 字段。
       maxLength: 64
       x-stoplight:
         id: 2df59cjxak1sl
@@ -732,7 +736,7 @@ components:
     frameRate:
       type: number
       title: frameRate
-      description: 输出视频的编码帧率 (fps)。详见[输出视频参考表](/zh-CN/realtime-media/rtc/build/video/video-profile#分辨率帧率和码率)。
+      description: 输出视频的编码帧率 (fps)。详见[输出视频参考表](/zh-CN/api-reference/media-pull/restful/api/video-profile)。
       minimum: 5
       maximum: 30
       default: 15
@@ -741,7 +745,7 @@ components:
     bitrate:
       type: number
       title: bitrate
-      description: 输出视频的编码码率 (Kbps)。详见[输出视频参考表](/zh-CN/realtime-media/rtc/build/video/video-profile#分辨率帧率和码率)。默认值为标准码率，即声网依据当前频道场景、分辨率、帧率为你设置的最合适的码率。
+      description: 输出视频的编码码率 (Kbps)。详见[输出视频参考表](/zh-CN/api-reference/media-pull/restful/api/video-profile)。默认值为标准码率，即声网依据当前频道场景、分辨率、帧率为你设置的最合适的码率。
       minimum: 1
       maximum: 10000
       default: 标准码率
@@ -876,7 +880,29 @@ components:
     enable:
       type: boolean
       title: enable
-      description: "设置是否通过 Data stream 展示点播流总时长：\n- `true`：展示。\n- `false`：（默认）不展示。\n\n如果通过 Data stream 展示点播流总时长，发出的 Data stream 需要使用 Protobuf 解析，而不能用 ASCII 码直接解析。\n\nProtobuf（全称 [Protocol Buffers](https://protobuf.dev/)）是由 Google 开发的一种高效的、跨语言的序列化数据格式。Protobuf 解析步骤如下：\n\n1. 将如下代码保存到一个 proto 文件中，例如 `PlayerMessage.proto`：\n\n    ```json\n    syntax = \"proto3\";\n\n    message PositionData {\n      int32 duration = 1;\n      int32 position = 2;\n      int32 uid = 3;\n    }\n    ```\n\n2. 使用 protoc 生成源代码\n3. 对接收到的数据进行反序列化"
+      description: |-
+        设置是否通过 Data stream 展示点播流总时长：
+        - `true`：展示。
+        - `false`：（默认）不展示。
+
+        如果通过 Data stream 展示点播流总时长，发出的 Data stream 需要使用 Protobuf 解析，而不能用 ASCII 码直接解析。
+
+        Protobuf（全称 [Protocol Buffers](https://protobuf.dev/)）是由 Google 开发的一种高效的、跨语言的序列化数据格式。Protobuf 解析步骤如下：
+
+        1. 将如下代码保存到一个 proto 文件中，例如 `PlayerMessage.proto`：
+
+            ```proto
+            syntax = "proto3";
+
+            message PositionData {
+              int32 duration = 1;
+              int32 position = 2;
+              int32 uid = 3;
+            }
+            ```
+
+        2. 使用 protoc 生成源代码
+        3. 对接收到的数据进行反序列化
       default: false
       x-stoplight:
         id: ty90l2ntrtwf2
@@ -943,13 +969,12 @@ components:
     isPause:
       type: boolean
       title: isPause
-      description: '是否暂停播放媒体流源文件：
-
+      description: |-
+        是否暂停播放媒体流源文件：
         - `true`：暂停播放媒体流源文件。
-
         - `false`：（默认）播放媒体流源文件。
-
-        > 在暂停状态下，不会触发 `idelTimeout` 倒计时销毁播放器，因此暂停时也会正常计费。如果不再需要输入在线媒体流，可直接调用[销毁云端播放器](/zh-CN/api-reference/api-ref/media-pull/delete)结束播放任务，不要停留在暂停状态，否则会一直产生费用。'
+        > [!CAUTION]
+        > 在暂停状态下，不会触发 `idelTimeout` 倒计时销毁播放器，因此暂停时也会正常计费。如果不再需要输入在线媒体流，可直接调用[销毁云端播放器](/zh-CN/api-reference/api-ref/media-pull/delete)结束播放任务，不要停留在暂停状态，否则会一直产生费用。
       default: false
       x-stoplight:
         id: i67jtefedndnc

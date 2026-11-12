@@ -675,7 +675,7 @@ join-fallback-to-proxy(proxyServer: string): void
 
 </ApiSignature>
 
-### deprecated
+#### deprecated
 
 自 4.19.0 起废弃。SDK 不再使用代理保障连通性，因此不会再触发该回调。
 
@@ -917,13 +917,13 @@ published-user-list(users: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-
 
 如果开启了单频道支持 128 位主播的功能，该回调会在调用 [join](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#join) 时触发，返回当前频道内发布音频和视频轨道的用户。
 
-> 注意事项：
->
-> - 频道内所有用户必须都使用整数型用户 ID（`uid`），`published-user-list` 才会触发。
-> - `published-user-list` 对 [AgoraRTCClient.on("user-joined")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_joined) 和 [AgoraRTCClient.on("user-published")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 有以下影响：
->
->   - 如果监听了 `published-user-list`，已经在 `published-user-list` 中返回的用户不会再通过 `user-joined` 和 `user-published` 重复返回。
->   - 如果没有监听 `published-user-list`，`user-joined` 和 `user-published` 会正常触发。
+**注意事项：**
+
+- 频道内所有用户必须都使用整数型用户 ID（`uid`），`published-user-list` 才会触发。
+- `published-user-list` 对 [AgoraRTCClient.on("user-joined")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_joined) 和 [AgoraRTCClient.on("user-published")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 有以下影响：
+
+  - 如果监听了 `published-user-list`，已经在 `published-user-list` 中返回的用户不会再通过 `user-joined` 和 `user-published` 重复返回。
+  - 如果没有监听 `published-user-list`，`user-joined` 和 `user-published` 会正常触发。
 :::
 
 <ParameterList title="Parameters">
@@ -1471,9 +1471,15 @@ void
 
 <a id="channelname"></a>
 
-### Optional Readonly channelName
+<a id="optional-readonly-channelname"></a>
+
+### channelName
+
+<ApiSignature labels="Optional Readonly">
 
 channelName: string
+
+</ApiSignature>
 
 当前加入的频道名称
 
@@ -1481,17 +1487,29 @@ channelName: string
 
 <a id="connectionstate"></a>
 
-### Readonly connectionState
+<a id="readonly-connectionstate"></a>
+
+### connectionState
+
+<ApiSignature labels="Readonly">
 
 connectionState: [ConnectionState](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#connectionstate)
+
+</ApiSignature>
 
 SDK 和声网服务器的连接状态。
 
 <a id="localtracks"></a>
 
-### Readonly localTracks
+<a id="readonly-localtracks"></a>
+
+### localTracks
+
+<ApiSignature labels="Readonly">
 
 localTracks: [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack)[]
+
+</ApiSignature>
 
 :::info[自从]
 *4.0.0*
@@ -1504,9 +1522,15 @@ localTracks: [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces
 
 <a id="remoteusers"></a>
 
-### Readonly remoteUsers
+<a id="readonly-remoteusers"></a>
+
+### remoteUsers
+
+<ApiSignature labels="Readonly">
 
 remoteUsers: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser)[]
+
+</ApiSignature>
 
 远端用户信息列表，包含频道中各个远端用户的用户 ID 和轨道信息。
 
@@ -1514,9 +1538,15 @@ remoteUsers: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
 
 <a id="uid"></a>
 
-### Optional Readonly uid
+<a id="optional-readonly-uid"></a>
+
+### uid
+
+<ApiSignature labels="Optional Readonly">
 
 uid: [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid)
+
+</ApiSignature>
 
 本地用户的用户 ID。
 
@@ -1578,18 +1608,18 @@ join(appid: string, channel: string, token: string | null, uid?: [UID](/zh-CN/ap
 
 标识用户的 ID。整数或字符串，ASCII 字符，需保证唯一性。如果不指定或设为 `null`，服务器会自动分配一个整数型 uid 并在 Promise 中返回。
 
-- 如果使用整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (232-1)。
+- 如果使用整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (2³² - 1)。
 - 如果使用字符串作为用户 ID，长度不超过 255 个字符。
 
 :::caution
 为保证最佳的用户体验，声网强烈建议你不要使用字符串作为用户 ID。
 :::
 
-> 注意事项：
->
-> - 一个频道内的所有用户必须使用同样类型的 `uid`，即必须都为整数或都为字符串。
-> - 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本互通，请确保 Native SDK 使用 User Account 加入频道。详见[使用 String 型的用户名](/zh-CN/reference/faq/integration/string_uid)。
-> - 为保证水晶球数据的准确性，建议自行指定 `uid` 并保证唯一性。
+:::note[注意事项]
+- 一个频道内的所有用户必须使用同样类型的 `uid`，即必须都为整数或都为字符串。
+- 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本互通，请确保 Native SDK 使用 User Account 加入频道。详见[使用 String 型的用户名](/zh-CN/reference/faq/integration/string_uid)。
+- 为保证水晶球数据的准确性，建议自行指定 `uid` 并保证唯一性。
+:::
 
 </Parameter>
 </ParameterList>
@@ -1654,12 +1684,12 @@ publish(tracks: [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfa
 
 发布音视频轨道之后，远端会触发 [AgoraRTCClient.on("user-published")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 回调。
 
-> 注意事项：
->
-> - 直播场景中，调用该方法前，必须先调用 [setClientRole](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setclientrole) 将用户角色设为主播。
-> - 你可以多次调用该方法添加要发布的轨道。
-> - 一个 `AgoraRTCClient` 对象可以发布多个音频轨道，SDK 会自动混音，将多个音频轨道合并为一个音频轨道。Safari 12 之前的版本不支持发布多个音频轨道。
-> - 一个 `AgoraRTCClient` 对象**只能发布一个视频轨道**。如果你想要更换视频轨道，例如已经发布了一个摄像头视频轨道，想要切换为屏幕共享视频轨道，你必须先取消发布。
+:::note[注意事项]
+- 直播场景中，调用该方法前，必须先调用 [setClientRole](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setclientrole) 将用户角色设为主播。
+- 你可以多次调用该方法添加要发布的轨道。
+- 一个 `AgoraRTCClient` 对象可以发布多个音频轨道，SDK 会自动混音，将多个音频轨道合并为一个音频轨道。Safari 12 之前的版本不支持发布多个音频轨道。
+- 一个 `AgoraRTCClient` 对象**只能发布一个视频轨道**。如果你想要更换视频轨道，例如已经发布了一个摄像头视频轨道，想要切换为屏幕共享视频轨道，你必须先取消发布。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="tracks" required>
@@ -1689,21 +1719,11 @@ Promise&lt;void&gt;
 
 ### subscribe
 
+#### subscribe [1/3]
+
 <ApiSignature>
 
 subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser) | [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid), mediaType: "video"): Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotevideotrack)&gt;
-
-</ApiSignature>
-
-<ApiSignature>
-
-subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser) | [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid), mediaType: "audio"): Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack)&gt;
-
-</ApiSignature>
-
-<ApiSignature>
-
-subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser) | [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid), mediaType: "video" | "audio" | "datachannel", channelId?: number): Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack) | IRemoteDataChannel&gt;
 
 </ApiSignature>
 
@@ -1751,6 +1771,14 @@ Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interf
 
 </ApiReturns>
 
+#### subscribe [2/3]
+
+<ApiSignature>
+
+subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser) | [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid), mediaType: "audio"): Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack)&gt;
+
+</ApiSignature>
+
 订阅远端用户的音视频轨道。
 
 ```javascript
@@ -1758,7 +1786,7 @@ await client.subscribe(user，"audio");
 user.audioTrack.play();
 ```
 
-### category
+#### category
 
 Agora Core
 
@@ -1799,6 +1827,14 @@ Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interf
 
 </ApiReturns>
 
+#### subscribe [3/3]
+
+<ApiSignature>
+
+subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcremoteuser) | [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid), mediaType: "video" | "audio" | "datachannel", channelId?: number): Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack) | IRemoteDataChannel&gt;
+
+</ApiSignature>
+
 订阅远端用户的音视频轨道。
 
 ```javascript
@@ -1806,7 +1842,7 @@ await client.subscribe(user，"audio");
 user.audioTrack.play();
 ```
 
-### category
+#### category
 
 Agora Core
 
@@ -1863,7 +1899,9 @@ unpublish(tracks?: [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/inte
 
 取消发布音视频轨道之后，远端会触发 [AgoraRTCClient.on("user-unpublished")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_unpublished) 回调。
 
-> 注意事项：直播场景中，主播调用 [unpublish](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#unpublish) 取消发布轨道之后，用户角色不会自动切换为观众。如需将用户角色切换为观众，必须调用 [setClientRole](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setclientrole)。
+:::note[注意事项]
+直播场景中，主播调用 [unpublish](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#unpublish) 取消发布轨道之后，用户角色不会自动切换为观众。如需将用户角色切换为观众，必须调用 [setClientRole](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setclientrole)。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="tracks" optional>
@@ -1965,13 +2003,13 @@ startChannelMediaRelay(config: [IChannelMediaRelayConfiguration](/zh-CN/api-refe
 
   - 如果跨频道服务开始向目标频道发送数据包，会触发回调，`code` 为 4.
 
-> 注意事项：
->
-> - 跨频道媒体流转发功能需要联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 开通。
-> - 该功能不支持 String 型 UID。
-> - 请在成功加入频道后调用该方法。
-> - 直播场景下，只有主播可以调用该方法。
-> - 成功调用该方法后，若你想再次调用该方法，必须先调用 [stopChannelMediaRelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#stopchannelmediarelay) 方法退出当前的转发状态。
+:::note[注意事项]
+- 跨频道媒体流转发功能需要联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 开通。
+- 该功能不支持 String 型 UID。
+- 请在成功加入频道后调用该方法。
+- 直播场景下，只有主播可以调用该方法。
+- 成功调用该方法后，若你想再次调用该方法，必须先调用 [stopChannelMediaRelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#stopchannelmediarelay) 方法退出当前的转发状态。
+:::
 
 ```javascript
 client.startChannelMediaRelay(config).then(() => {
@@ -2047,10 +2085,10 @@ updateChannelMediaRelay(config: [IChannelMediaRelayConfiguration](/zh-CN/api-ref
 
 成功开始跨频道转发媒体流后，如果你希望添加或删除媒体流转发的目标频道，可以调用该方法。
 
-> 注意事项：
->
-> - 请在 [startChannelMediaRelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#startchannelmediarelay) 后调用该方法，更新媒体流转发的频道。
-> - 跨频道媒体流转发最多支持 4 个目标频道。
+:::note[注意事项]
+- 请在 [startChannelMediaRelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#startchannelmediarelay) 后调用该方法，更新媒体流转发的频道。
+- 跨频道媒体流转发最多支持 4 个目标频道。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="config" required>
@@ -2119,11 +2157,11 @@ enableDualStream(): Promise&lt;void&gt;
 - 视频大流指高分辨率、高码率的视频流。
 - 视频小流指低分辨率、低码率的视频流。小流的视频属性默认值固定为分辨率（宽 × 高） 160 × 120，码率 50 Kbps，帧率 15 fps。如果你不想要使用默认的小流视频属性，可以调用 [setLowStreamParameter](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setlowstreamparameter) 自定义小流参数，防止因小流码率过高而造成带宽压力。
 
-> 注意事项：
->
-> - 在部分 Android 设备的浏览器上调用 `enableDualStream` 方法开启双流，会出现对端无法切换小流的问题。
-> - Android Chrome 上无法使用 H.264 编码发送大小流。
-> - 在部分使用 Intel 芯片的 Mac 设备的 Safari 浏览器 上，调用 `enableDualStream` 开启 H.264 编码的视频双流模式时，小流与大流分辨率比率低于 1/4 可能会导致系统卡顿。
+:::note[注意事项]
+- 在部分 Android 设备的浏览器上调用 `enableDualStream` 方法开启双流，会出现对端无法切换小流的问题。
+- Android Chrome 上无法使用 H.264 编码发送大小流。
+- 在部分使用 Intel 芯片的 Mac 设备的 Safari 浏览器 上，调用 `enableDualStream` 开启 H.264 编码的视频双流模式时，小流与大流分辨率比率低于 1/4 可能会导致系统卡顿。
+:::
 
 ```javascript
 client.enableDualStream().then(() => {
@@ -2159,13 +2197,13 @@ setLowStreamParameter(streamParameter: [LowStreamParameter](/zh-CN/api-reference
 
 如果你不设置小流的视频属性，SDK 会根据你的视频流属性自动适配小流的视频属性。
 
-> 注意事项：
->
-> - 由于不同的设备和浏览器对于视频参数设置有不同的限制，`setLowStreamParameter` 设置的视频参数可能不会生效：
->
->   - Firefox 上帧率设置不生效，浏览器会把帧率固定在 30 fps。此外，在 Mac Firefox 73+ 上设置帧率实际生效值偏小，且存在分辨率不准确的问题。
->   - Safari 14 至 17.2 上的帧率设置不生效，浏览器会把帧率固定在 15 fps 左右，且小流的分辨率必须与大流的分辨率成比例。此外，在 iOS Safari 上设置 `LowStreamParameter.bitrate`不生效。
->   - 部分浏览器上设置视频分辨率可能不会生效，这种情况下浏览器会自动调整分辨率，计费也将按照实际分辨率计算。
+:::note[注意事项]
+- 由于不同的设备和浏览器对于视频参数设置有不同的限制，`setLowStreamParameter` 设置的视频参数可能不会生效：
+
+  - Firefox 上帧率设置不生效，浏览器会把帧率固定在 30 fps。此外，在 Mac Firefox 73+ 上设置帧率实际生效值偏小，且存在分辨率不准确的问题。
+  - Safari 14 至 17.2 上的帧率设置不生效，浏览器会把帧率固定在 15 fps 左右，且小流的分辨率必须与大流的分辨率成比例。此外，在 iOS Safari 上设置 `LowStreamParameter.bitrate`不生效。
+  - 部分浏览器上设置视频分辨率可能不会生效，这种情况下浏览器会自动调整分辨率，计费也将按照实际分辨率计算。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="streamParameter" required>
@@ -2358,7 +2396,7 @@ setLiveTranscoding(config: [LiveStreamingTranscodingConfig](/zh-CN/api-reference
 
 该方法用于旁路推流的视图布局及音频设置等。
 
-> 使用前请确保已[开通旁路推流](/zh-CN/api-reference/media-push/restful/overview/product-overview)。
+> 使用前请确保已[开通旁路推流](/zh-CN/realtime-media/media-push)。
 
 <ParameterList title="Parameters">
 <Parameter name="config" required>
@@ -2398,9 +2436,9 @@ startLiveStreaming(url: string, transcodingEnabled?: boolean): Promise&lt;void&g
 
 详见推流到 CDN。
 
-> 注意事项：
->
-> - 该方法每次只能增加一路旁路推流地址。
+:::note[注意事项]
+- 该方法每次只能增加一路旁路推流地址。
+:::
 
 ```javascript
 await client.setLiveTranscoding(config);
@@ -2648,7 +2686,9 @@ getLocalVideoStats(): [LocalVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/
 
 获取本地视频相关信息。
 
-> 注意事项：iOS 14.4 及更早版本上无法获取到 `encodeDelay` 字段。
+:::note[注意事项]
+iOS 14.4 及更早版本上无法获取到 `encodeDelay` 字段。
+:::
 
 <ApiReturns>
 
@@ -2699,7 +2739,9 @@ getRemoteAudioStats(): object
 
 获取远端用户的音频相关信息。
 
-> Note: 统计信息需要在订阅远端流后进行计算，可能耗费 0-3 秒时间。你可以循环调用该方法。
+**Note:**
+
+统计信息需要在订阅远端流后进行计算，可能耗费 0-3 秒时间。你可以循环调用该方法。
 :::
 
 <ApiReturns>
@@ -2777,7 +2819,9 @@ getRemoteVideoStats(): object
 
 获取远端用户的视频统计信息。
 
-> Note: 统计信息需要在订阅远端流后进行计算，可能耗费 0-3 秒时间。你可以循环调用该方法。
+**Note:**
+
+统计信息需要在订阅远端流后进行计算，可能耗费 0-3 秒时间。你可以循环调用该方法。
 :::
 
 <ApiReturns>
@@ -2957,171 +3001,11 @@ void
 
 ### on
 
+#### on [1/28]
+
 <ApiSignature>
 
 on(event: "connection-state-change", listener: typeof event_connection_state_change): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "user-joined", listener: typeof event_user_joined): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "user-left", listener: typeof event_user_left): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "user-published", listener: typeof event_user_published): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "user-unpublished", listener: typeof event_user_unpublished): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "user-info-updated", listener: typeof event_user_info_updated): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "media-reconnect-start", listener: typeof event_media_reconnect_start): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "media-reconnect-end", listener: typeof event_media_reconnect_end): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "stream-type-changed", listener: typeof event_stream_type_changed): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "stream-fallback", listener: typeof event_stream_fallback): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "channel-media-relay-state", listener: typeof event_channel_media_relay_state): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "channel-media-relay-event", listener: typeof event_channel_media_relay_event): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "volume-indicator", listener: typeof event_volume_indicator): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "crypt-error", listener: typeof event_crypt_error): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "token-privilege-will-expire", listener: typeof event_token_privilege_will_expire): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "token-privilege-did-expire", listener: typeof event_token_privilege_did_expire): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "network-quality", listener: typeof event_network_quality): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "live-streaming-error", listener: typeof event_live_streaming_error): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "live-streaming-warning", listener: typeof event_live_streaming_warning): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "exception", listener: typeof event_exception): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "is-using-cloud-proxy", listener: typeof event_is_using_cloud_proxy): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "join-fallback-to-proxy", listener: typeof event_join_fallback_to_proxy): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "published-user-list", listener: typeof event_published_user_list): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "content-inspect-connection-state-change", listener: typeof event_content_inspect_connection_state_change): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "content-inspect-error", listener: typeof event_content_inspect_error): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "image-moderation-connection-state-change", listener: typeof event_image_moderation_connection_state_change): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "stream-message", listener: typeof event_stream_message): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: string, listener: Function): void
 
 </ApiSignature>
 
@@ -3150,6 +3034,14 @@ void
 
 </ApiReturns>
 
+#### on [2/28]
+
+<ApiSignature>
+
+on(event: "user-joined", listener: typeof event_user_joined): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 <ParameterList title="Parameters">
@@ -3174,6 +3066,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [3/28]
+
+<ApiSignature>
+
+on(event: "user-left", listener: typeof event_user_left): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3200,6 +3100,14 @@ void
 
 </ApiReturns>
 
+#### on [4/28]
+
+<ApiSignature>
+
+on(event: "user-published", listener: typeof event_user_published): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 <ParameterList title="Parameters">
@@ -3224,6 +3132,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [5/28]
+
+<ApiSignature>
+
+on(event: "user-unpublished", listener: typeof event_user_unpublished): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3250,6 +3166,14 @@ void
 
 </ApiReturns>
 
+#### on [6/28]
+
+<ApiSignature>
+
+on(event: "user-info-updated", listener: typeof event_user_info_updated): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 <ParameterList title="Parameters">
@@ -3274,6 +3198,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [7/28]
+
+<ApiSignature>
+
+on(event: "media-reconnect-start", listener: typeof event_media_reconnect_start): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3300,6 +3232,14 @@ void
 
 </ApiReturns>
 
+#### on [8/28]
+
+<ApiSignature>
+
+on(event: "media-reconnect-end", listener: typeof event_media_reconnect_end): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 <ParameterList title="Parameters">
@@ -3324,6 +3264,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [9/28]
+
+<ApiSignature>
+
+on(event: "stream-type-changed", listener: typeof event_stream_type_changed): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3350,6 +3298,14 @@ void
 
 </ApiReturns>
 
+#### on [10/28]
+
+<ApiSignature>
+
+on(event: "stream-fallback", listener: typeof event_stream_fallback): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 <ParameterList title="Parameters">
@@ -3374,6 +3330,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [11/28]
+
+<ApiSignature>
+
+on(event: "channel-media-relay-state", listener: typeof event_channel_media_relay_state): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3400,6 +3364,14 @@ void
 
 </ApiReturns>
 
+#### on [12/28]
+
+<ApiSignature>
+
+on(event: "channel-media-relay-event", listener: typeof event_channel_media_relay_event): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 <ParameterList title="Parameters">
@@ -3424,6 +3396,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [13/28]
+
+<ApiSignature>
+
+on(event: "volume-indicator", listener: typeof event_volume_indicator): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3450,6 +3430,14 @@ void
 
 </ApiReturns>
 
+#### on [14/28]
+
+<ApiSignature>
+
+on(event: "crypt-error", listener: typeof event_crypt_error): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 <ParameterList title="Parameters">
@@ -3474,6 +3462,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [15/28]
+
+<ApiSignature>
+
+on(event: "token-privilege-will-expire", listener: typeof event_token_privilege_will_expire): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3500,6 +3496,14 @@ void
 
 </ApiReturns>
 
+#### on [16/28]
+
+<ApiSignature>
+
+on(event: "token-privilege-did-expire", listener: typeof event_token_privilege_did_expire): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 <ParameterList title="Parameters">
@@ -3524,6 +3528,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [17/28]
+
+<ApiSignature>
+
+on(event: "network-quality", listener: typeof event_network_quality): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3550,6 +3562,14 @@ void
 
 </ApiReturns>
 
+#### on [18/28]
+
+<ApiSignature>
+
+on(event: "live-streaming-error", listener: typeof event_live_streaming_error): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 <ParameterList title="Parameters">
@@ -3574,6 +3594,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [19/28]
+
+<ApiSignature>
+
+on(event: "live-streaming-warning", listener: typeof event_live_streaming_warning): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3600,6 +3628,14 @@ void
 
 </ApiReturns>
 
+#### on [20/28]
+
+<ApiSignature>
+
+on(event: "exception", listener: typeof event_exception): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 <ParameterList title="Parameters">
@@ -3624,6 +3660,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [21/28]
+
+<ApiSignature>
+
+on(event: "is-using-cloud-proxy", listener: typeof event_is_using_cloud_proxy): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3650,9 +3694,17 @@ void
 
 </ApiReturns>
 
+#### on [22/28]
+
+<ApiSignature>
+
+on(event: "join-fallback-to-proxy", listener: typeof event_join_fallback_to_proxy): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
-### deprecated
+#### deprecated
 
 自 4.19.0 起废弃。
 
@@ -3679,6 +3731,14 @@ void
 
 </ApiReturns>
 
+#### on [23/28]
+
+<ApiSignature>
+
+on(event: "published-user-list", listener: typeof event_published_user_list): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 <ParameterList title="Parameters">
@@ -3703,6 +3763,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [24/28]
+
+<ApiSignature>
+
+on(event: "content-inspect-connection-state-change", listener: typeof event_content_inspect_connection_state_change): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3729,6 +3797,14 @@ void
 
 </ApiReturns>
 
+#### on [25/28]
+
+<ApiSignature>
+
+on(event: "content-inspect-error", listener: typeof event_content_inspect_error): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 <ParameterList title="Parameters">
@@ -3753,6 +3829,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [26/28]
+
+<ApiSignature>
+
+on(event: "image-moderation-connection-state-change", listener: typeof event_image_moderation_connection_state_change): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3781,6 +3865,14 @@ void
 
 </ApiReturns>
 
+#### on [27/28]
+
+<ApiSignature>
+
+on(event: "stream-message", listener: typeof event_stream_message): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 <ParameterList title="Parameters">
@@ -3805,6 +3897,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [28/28]
+
+<ApiSignature>
+
+on(event: string, listener: Function): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -3876,21 +3976,11 @@ void
 
 ### presubscribe
 
+#### presubscribe [1/3]
+
 <ApiSignature>
 
 presubscribe(uid: [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid), mediaType: "audio"): Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack)&gt;
-
-</ApiSignature>
-
-<ApiSignature>
-
-presubscribe(uid: [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid), mediaType: "video"): Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotevideotrack)&gt;
-
-</ApiSignature>
-
-<ApiSignature>
-
-presubscribe(uid: [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid), mediaType: "video" | "audio"): Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack)&gt;
 
 </ApiSignature>
 
@@ -3917,6 +4007,14 @@ Promise&lt;[IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interf
 
 </ApiReturns>
 
+#### presubscribe [2/3]
+
+<ApiSignature>
+
+presubscribe(uid: [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid), mediaType: "video"): Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotevideotrack)&gt;
+
+</ApiSignature>
+
 <ParameterList title="Parameters">
 <Parameter name="uid" required>
 
@@ -3939,6 +4037,14 @@ Promise&lt;[IRemoteVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interf
 </ApiReturnType>
 
 </ApiReturns>
+
+#### presubscribe [3/3]
+
+<ApiSignature>
+
+presubscribe(uid: [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid), mediaType: "video" | "audio"): Promise&lt;[IRemoteTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack)&gt;
+
+</ApiSignature>
 
 <ParameterList title="Parameters">
 <Parameter name="uid" required>
@@ -4090,11 +4196,11 @@ setClientRole(role: [ClientRole](/zh-CN/api-reference/rtc/react-sdk/web-sdk/glob
 - 用户角色 (role) 确定用户在 SDK 层的权限，包含是否可以发送流、是否可以接收流、是否可以推流到 CDN 等。用户角色有 `"host"`（主播）和 `"audience"`（观众）。主播既可发布轨道，也可订阅轨道；观众不能进行 [publish](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#publish) 操作。直播场景中的用户角色默认为观众。如需发布音视频，必须先调用本方法切换角色为主播。
 - 用户角色具体设置包含用户级别 (level)。用户级别确定用户在其权限范围内可以操作和享受到的服务级别。例如对于观众，选择接收低延时还是超低延时的视频流。不同的级别会影响计费。
 
-> 注意事项：
->
-> - 通信场景（[mode](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/clientconfig#mode) 设为 `"rtc"`）无法使用本方法，默认所有用户都是 `"host"` 角色。
-> - 如果在加入频道后调用该方法切换用户角色，远端会触发 [AgoraRTCClient.on("user-joined")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_joined) 或者 [AgoraRTCClient.on("user-left")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_left) 回调。
-> - 如果已经调用了 [publish](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#publish)，想要将用户角色切换为 `"audience"` 时，必须先调用 [unpublish](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#unpublish) 取消发布后再调用本方法，否则会设置失败并抛出异常。
+:::note[注意事项]
+- 通信场景（[mode](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/clientconfig#mode) 设为 `"rtc"`）无法使用本方法，默认所有用户都是 `"host"` 角色。
+- 如果在加入频道后调用该方法切换用户角色，远端会触发 [AgoraRTCClient.on("user-joined")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_joined) 或者 [AgoraRTCClient.on("user-left")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_left) 回调。
+- 如果已经调用了 [publish](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#publish)，想要将用户角色切换为 `"audience"` 时，必须先调用 [unpublish](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#unpublish) 取消发布后再调用本方法，否则会设置失败并抛出异常。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="role" required>
@@ -4147,12 +4253,12 @@ setEncryptionConfig(encryptionMode: [EncryptionMode](/zh-CN/api-reference/rtc/re
 
 如果该方法设置错误，在发布或者订阅时会触发 [AgoraRTCClient.on("crypt-error")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_crypt_error) 回调。
 
-> 注意事项：
->
-> - 同一频道内的所有用户必须设置相同的加密模式、密钥和盐值才能进行互通。
-> - 该方法必须在加入频道前调用，否则加密不生效。
-> - 自 v4.7.0 起，用户离开频道后，SDK 会自动关闭加密。如需重新开启加密，你需要在用户再次加入频道前调用该方法。
-> - 请勿在 CDN 推流场景中使用内置加密功能。
+:::note[注意事项]
+- 同一频道内的所有用户必须设置相同的加密模式、密钥和盐值才能进行互通。
+- 该方法必须在加入频道前调用，否则加密不生效。
+- 自 v4.7.0 起，用户离开频道后，SDK 会自动关闭加密。如需重新开启加密，你需要在用户再次加入频道前调用该方法。
+- 请勿在 CDN 推流场景中使用内置加密功能。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="encryptionMode" required>
@@ -4200,15 +4306,11 @@ void
 
 ### setImageModeration
 
+#### setImageModeration [1/2]
+
 <ApiSignature>
 
 setImageModeration(enabled: false): Promise&lt;void&gt;
-
-</ApiSignature>
-
-<ApiSignature>
-
-setImageModeration(enabled: true, config: [ImageModerationConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/imagemoderationconfiguration)): Promise&lt;void&gt;
 
 </ApiSignature>
 
@@ -4231,6 +4333,14 @@ Promise&lt;void&gt;
 </ApiReturnType>
 
 </ApiReturns>
+
+#### setImageModeration [2/2]
+
+<ApiSignature>
+
+setImageModeration(enabled: true, config: [ImageModerationConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/imagemoderationconfiguration)): Promise&lt;void&gt;
+
+</ApiSignature>
 
 开启和配置第三方视频审核服务。
 
@@ -4288,11 +4398,11 @@ setLocalAccessPointsV2(config: [LocalAccessPointConfig](/zh-CN/api-reference/rtc
 成功部署声网混合云或私有化平台并在内网终端集成 Agora Web SDK 后，你可以调用该方法设置访问节点和相关服务。
  联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 了解和部署声网混合云或声网私有化平台。
 
-> Note:
->
-> - 使用混合云或私有化平台时，不支持开启云代理服务，因此该方法不能与 [startProxyServer](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#startproxyserver) 一起调用。
-> - 成功配置混合云或私有化平台后，SDK 如果直接连接 SD-RTN™ 失败，将不会自动切换到 TCP/TLS 443 通道，即不会再触发 `join-fallback-to-proxy` 回调。
-> - 由于 [Chrome 已知问题](https://bugs.chromium.org/p/chromium/issues/detail?id=1290390)，使用该接口过程中 Chrome 控制台可能会误报错误信息提示，开发者可以忽略。
+**Note:**
+
+- 使用混合云或私有化平台时，不支持开启云代理服务，因此该方法不能与 [startProxyServer](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#startproxyserver) 一起调用。
+- 成功配置混合云或私有化平台后，SDK 如果直接连接 SD-RTN™ 失败，将不会自动切换到 TCP/TLS 443 通道，即不会再触发 `join-fallback-to-proxy` 回调。
+- 由于 [Chrome 已知问题](https://bugs.chromium.org/p/chromium/issues/detail?id=1290390)，使用该接口过程中 Chrome 控制台可能会误报错误信息提示，开发者可以忽略。
 
 ```javascript
 client.setLocalAccessPointsV2({
@@ -4358,10 +4468,10 @@ setProxyServer(proxyServer: string): void
 - `setProxyServer`：自定义代理，可以用于信令传输、日志上传、事件上报等，但不能用于媒体传输。
 - `startProxyServer`：声网提供的云代理服务，可以传输媒体流、信令等，只需简单设置即可使用。详见[使用云代理服务](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)。
 
-> 注意事项：
->
-> - 该方法必须在 [join](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#join) 之前调用。
-> - 在使用 Firefox 浏览器时，跨运营商代理速度会比较慢。声网建议使用同运营商进行代理。如果必须使用跨运营商代理，则避免使用 Firefox 浏览器。
+**注意事项：**
+
+- 该方法必须在 [join](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#join) 之前调用。
+- 在使用 Firefox 浏览器时，跨运营商代理速度会比较慢。声网建议使用同运营商进行代理。如果必须使用跨运营商代理，则避免使用 Firefox 浏览器。
 :::
 
 <ParameterList title="Parameters">
@@ -4406,8 +4516,9 @@ startProxyServer(mode?: number): void
 - `3`: UDP 协议的云代理，即 Force UDP 云代理模式。在该模式下，SDK 始终通过 UDP 协议传输数据。
 - `5`: TCP（加密）协议的云代理，即 Force TCP 云代理模式。在该模式下，SDK 始终通过 TLS 443 传输数据。
 
-> 注意事项：
->  自 v4.15.0 起，`mode` 的默认值为 `3`。
+:::note[注意事项]
+自 v4.15.0 起，`mode` 的默认值为 `3`。
+:::
 
 </Parameter>
 </ParameterList>

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_registeraudiospectrumobserver__prototype"></a>
 
-```text
+```cpp
 virtual int registerAudioSpectrumObserver(agora::media::IAudioSpectrumObserver * observer) = 0;
 ```
 
@@ -73,7 +73,7 @@ virtual int registerAudioSpectrumObserver(agora::media::IAudioSpectrumObserver *
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver__prototype"></a>
 
-```text
+```cpp
 virtual int unregisterAudioSpectrumObserver(agora::media::IAudioSpectrumObserver * observer) = 0;
 ```
 
@@ -123,7 +123,7 @@ virtual int unregisterAudioSpectrumObserver(agora::media::IAudioSpectrumObserver
 
 <a id="api_irtcengine_disableaudiospectrummonitor__prototype"></a>
 
-```text
+```cpp
 virtual int disableAudioSpectrumMonitor() = 0;
 ```
 
@@ -162,7 +162,7 @@ virtual int disableAudioSpectrumMonitor() = 0;
 
 <a id="api_irtcengine_enableaudiospectrummonitor__prototype"></a>
 
-```text
+```cpp
 virtual int enableAudioSpectrumMonitor(int intervalInMS = 100) = 0;
 ```
 
@@ -216,7 +216,7 @@ SDK 触发 [onLocalAudioSpectrum](/zh-CN/api-reference/rtc/unreal-cpp/audio/audi
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__prototype"></a>
 
-```text
+```cpp
 virtual bool onLocalAudioSpectrum(const AudioSpectrumData& data) = 0;
 ```
 
@@ -262,7 +262,7 @@ virtual bool onLocalAudioSpectrum(const AudioSpectrumData& data) = 0;
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__prototype"></a>
 
-```text
+```cpp
 virtual bool onRemoteAudioSpectrum(const UserAudioSpectrumInfo * spectrums, unsigned int spectrumNumber) = 0;
 ```
 

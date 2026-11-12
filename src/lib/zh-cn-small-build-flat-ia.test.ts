@@ -69,6 +69,7 @@ const buildExpectations: BuildExpectation[] = [
       'send-receive',
       'string-uid',
       'mix-video',
+      'video-metadata',
       'encryption',
       'cloud-proxy',
       'set-region',

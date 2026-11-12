@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_adjustplaybacksignalvolume__prototype"></a>
 
-```text
+```ts
 abstract adjustPlaybackSignalVolume(volume: number): number;
 ```
 
@@ -73,7 +73,7 @@ abstract adjustPlaybackSignalVolume(volume: number): number;
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume__prototype"></a>
 
-```text
+```ts
 abstract adjustUserPlaybackSignalVolume(uid: number, volume: number): number;
 ```
 
@@ -131,7 +131,7 @@ abstract adjustUserPlaybackSignalVolume(uid: number, volume: number): number;
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex__prototype"></a>
 
-```text
+```ts
 abstract adjustUserPlaybackSignalVolumeEx(
     uid: number,
     volume: number,
@@ -199,7 +199,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="api_irtcengine_disableaudio__prototype"></a>
 
-```text
+```ts
 abstract disableAudio(): number;
 ```
 
@@ -244,7 +244,7 @@ abstract disableAudio(): number;
 
 <a id="api_irtcengine_enableaudio__prototype"></a>
 
-```text
+```ts
 abstract enableAudio(): number;
 ```
 
@@ -291,7 +291,7 @@ abstract enableAudio(): number;
 
 <a id="api_irtcengine_enableaudiovolumeindication__prototype"></a>
 
-```text
+```ts
 abstract enableAudioVolumeIndication(
     interval: number,
     smooth: number,
@@ -365,7 +365,7 @@ abstract enableAudioVolumeIndication(
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex__prototype"></a>
 
-```text
+```ts
 abstract enableAudioVolumeIndicationEx(
     interval: number,
     smooth: number,
@@ -448,7 +448,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="api_irtcengine_setaudioprofile__prototype"></a>
 
-```text
+```ts
 abstract setAudioProfile(
     profile: AudioProfileType,
     scenario?: AudioScenarioType
@@ -510,7 +510,7 @@ abstract setAudioProfile(
 
 <a id="api_irtcengine_setaudioscenario__prototype"></a>
 
-```text
+```ts
 abstract setAudioScenario(scenario: AudioScenarioType): number;
 ```
 
@@ -563,7 +563,7 @@ abstract setAudioScenario(scenario: AudioScenarioType): number;
 
 <a id="callback_irtcengineeventhandler_onactivespeaker__prototype"></a>
 
-```text
+```ts
 onActiveSpeaker?(connection: RtcConnection, uid: number): void;
 ```
 
@@ -608,7 +608,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onaudioquality__prototype"></a>
 
-```text
+```ts
 onAudioQuality?(
     connection: RtcConnection,
     remoteUid: number,
@@ -679,7 +679,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication__prototype"></a>
 
-```text
+```ts
 onAudioVolumeIndication?(connection: RtcConnection, speakers: AudioVolumeInfo[], speakerNumber: number, totalVolume: number): void;
 ```
 
@@ -743,7 +743,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__prototype"></a>
 
-```text
+```ts
 onFirstLocalAudioFramePublished?(
     connection: RtcConnection,
     elapsed: number
@@ -791,7 +791,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__prototype"></a>
 
-```text
+```ts
 onFirstRemoteAudioDecoded?(
     connection: RtcConnection,
     uid: number,
@@ -856,7 +856,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__prototype"></a>
 
-```text
+```ts
 onFirstRemoteAudioFrame?(
     connection: RtcConnection,
     userId: number,
@@ -911,7 +911,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__prototype"></a>
 
-```text
+```ts
 onLocalAudioStateChanged?(
     connection: RtcConnection,
     state: LocalAudioStreamState,
@@ -966,7 +966,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats__prototype"></a>
 
-```text
+```ts
 onLocalAudioStats?(connection: RtcConnection, stats: LocalAudioStats): void;
 ```
 
@@ -1007,7 +1007,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__prototype"></a>
 
-```text
+```ts
 onRemoteAudioStateChanged?(
     connection: RtcConnection,
     remoteUid: number,
@@ -1076,7 +1076,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats__prototype"></a>
 
-```text
+```ts
 onRemoteAudioStats?(connection: RtcConnection, stats: RemoteAudioStats): void;
 ```
 
@@ -1117,7 +1117,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__prototype"></a>
 
-```text
+```ts
 onRemoteAudioTransportStats?(
     connection: RtcConnection,
     remoteUid: number,
@@ -1184,7 +1184,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/cla
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio__prototype"></a>
 
-```text
+```ts
 onUserMuteAudio?(
     connection: RtcConnection,
     remoteUid: number,

@@ -264,13 +264,19 @@ void
 
 <a id="onaudioautoplayfailed"></a>
 
-### Optional onAudioAutoplayFailed
+<a id="optional-onaudioautoplayfailed"></a>
+
+### onAudioAutoplayFailed
+
+<ApiSignature labels="Optional">
 
 onAudioAutoplayFailed: function
 
+</ApiSignature>
+
 音频轨道自动播放失败回调。
 
-### deprecated
+#### deprecated
 
 自 4.6.0 起废弃，请改用 [onAutoplayFailed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onautoplayfailed)。
 
@@ -325,9 +331,15 @@ void
 
 <a id="onautoplayfailed"></a>
 
-### Optional onAutoplayFailed
+<a id="optional-onautoplayfailed"></a>
+
+### onAutoplayFailed
+
+<ApiSignature labels="Optional">
 
 onAutoplayFailed: function
+
+</ApiSignature>
 
 音频或视频轨道自动播放失败回调。
 
@@ -381,15 +393,23 @@ void
 
 <a id="oncamerachanged"></a>
 
-### Optional onCameraChanged
+<a id="optional-oncamerachanged"></a>
+
+### onCameraChanged
+
+<ApiSignature labels="Optional">
 
 onCameraChanged: function
+
+</ApiSignature>
 
 视频采集设备状态变化回调。
 
 该回调提示有摄像头被添加或移除。
 
-> 注意事项：当该回调提示有设备被添加时，如果该设备是虚拟设备，可能无法采集到音频或视频。
+:::note[注意事项]
+当该回调提示有设备被添加时，如果该设备是虚拟设备，可能无法采集到音频或视频。
+:::
 
 ```javascript
 AgoraRTC.onCameraChanged = (info) => {
@@ -433,15 +453,23 @@ void
 
 <a id="onmicrophonechanged"></a>
 
-### Optional onMicrophoneChanged
+<a id="optional-onmicrophonechanged"></a>
+
+### onMicrophoneChanged
+
+<ApiSignature labels="Optional">
 
 onMicrophoneChanged: function
+
+</ApiSignature>
 
 音频采集设备状态变化回调。
 
 该回调提示有麦克风被添加或移除。
 
-> 注意事项：当该回调提示有设备被添加时，如果该设备是虚拟设备，可能无法采集到音频或视频。
+:::note[注意事项]
+当该回调提示有设备被添加时，如果该设备是虚拟设备，可能无法采集到音频或视频。
+:::
 
 ```javascript
 AgoraRTC.onMicrophoneChanged = (info) => {
@@ -485,9 +513,15 @@ void
 
 <a id="onplaybackdevicechanged"></a>
 
-### Optional onPlaybackDeviceChanged
+<a id="optional-onplaybackdevicechanged"></a>
+
+### onPlaybackDeviceChanged
+
+<ApiSignature labels="Optional">
 
 onPlaybackDeviceChanged: function
+
+</ApiSignature>
 
 :::info[自从]
 *4.1.0*
@@ -539,9 +573,15 @@ void
 
 <a id="onsecuritypolicyviolation"></a>
 
-### Optional onSecurityPolicyViolation
+<a id="optional-onsecuritypolicyviolation"></a>
+
+### onSecurityPolicyViolation
+
+<ApiSignature labels="Optional">
 
 onSecurityPolicyViolation: function
+
+</ApiSignature>
 
 :::info[自从]
 *4.15.0*
@@ -580,7 +620,11 @@ void
 
 ### VERSION
 
+<ApiSignature>
+
 VERSION: string
+
+</ApiSignature>
 
 Agora Web SDK 的版本信息。
 
@@ -878,21 +922,11 @@ Promise&lt;[IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/imicr
 
 ### createScreenVideoTrack
 
+#### createScreenVideoTrack [1/3]
+
 <ApiSignature>
 
 createScreenVideoTrack(config: [ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/screenvideotrackinitconfig), withAudio: "enable"): Promise&lt;[[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack), [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack)]&gt;
-
-</ApiSignature>
-
-<ApiSignature>
-
-createScreenVideoTrack(config: [ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/screenvideotrackinitconfig), withAudio: "disable"): Promise&lt;[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack)&gt;
-
-</ApiSignature>
-
-<ApiSignature>
-
-createScreenVideoTrack(config: [ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/screenvideotrackinitconfig), withAudio?: "enable" | "disable" | "auto" | [ScreenAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/globals#screenaudiotrackinitconfig)): Promise&lt;[[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack), [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack)] | [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack)&gt;
 
 </ApiSignature>
 
@@ -919,15 +953,15 @@ createScreenVideoTrack(config: [ScreenVideoTrackInitConfig](/zh-CN/api-reference
 - `auto`: 根据浏览器是否支持决定是否分享音频。
 - [ScreenAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/globals#screenaudiotrackinitconfig): 自定义音频共享的初始化配置，包含 3A 处理参数 (`AEC`、`AGC`、`ANS`）和本地音频播放设置。
 
-  > 注意事项：
-  >
-  > - 该功能仅适用于支持 Web SDK 的浏览器桌面端，不支持移动端。具体支持列表详见[浏览器兼容性和已知问题](/zh-CN/realtime-media/rtc/reference/browser-compatibility)。
-  > - 关于各操作系统平台的浏览器版本及功能支持的补充说明如下：
-  >
-  >   - 在 macOS 平台上，Chrome 74 及以上版本支持音视频共享，仅支持在共享 Chrome 标签页时分享音频。Firefox 和 Safari 14 及以上版本支持窗口和屏幕共享，不支持分享音频。
-  >   - 在 Windows 平台上，Chrome 74 及以上版本和 Edge 支持在共享屏幕和浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。Firefox 支持窗口和屏幕共享，不支持分享音频。
-  >   - 在 ChromeOS 平台上，Chrome 支持在共享屏幕和共享浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。
-  > - 设置了 `withAudio` 为 `enable` 后，还需要在屏幕共享的弹出框上，勾选**分享音频**才能真正生效。
+  :::note[注意事项]
+  - 该功能仅适用于支持 Web SDK 的浏览器桌面端，不支持移动端。具体支持列表详见[浏览器兼容性和已知问题](/zh-CN/realtime-media/rtc/reference/browser-compatibility)。
+  - 关于各操作系统平台的浏览器版本及功能支持的补充说明如下：
+
+    - 在 macOS 平台上，Chrome 74 及以上版本支持音视频共享，仅支持在共享 Chrome 标签页时分享音频。Firefox 和 Safari 14 及以上版本支持窗口和屏幕共享，不支持分享音频。
+    - 在 Windows 平台上，Chrome 74 及以上版本和 Edge 支持在共享屏幕和浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。Firefox 支持窗口和屏幕共享，不支持分享音频。
+    - 在 ChromeOS 平台上，Chrome 支持在共享屏幕和共享浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。
+  - 设置了 `withAudio` 为 `enable` 后，还需要在屏幕共享的弹出框上，勾选**分享音频**才能真正生效。
+  :::
 
 </Parameter>
 </ParameterList>
@@ -948,6 +982,14 @@ Promise&lt;[[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvid
   - 如果用户没有勾选**分享音频**，只返回屏幕共享视频轨道。
 
 </ApiReturns>
+
+#### createScreenVideoTrack [2/3]
+
+<ApiSignature>
+
+createScreenVideoTrack(config: [ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/screenvideotrackinitconfig), withAudio: "disable"): Promise&lt;[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack)&gt;
+
+</ApiSignature>
 
 创建用于屏幕共享的视频轨道。
 
@@ -972,15 +1014,15 @@ Promise&lt;[[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvid
 - `auto`: 根据浏览器是否支持决定是否分享音频。
 - [ScreenAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/globals#screenaudiotrackinitconfig): 自定义音频共享的初始化配置，包含 3A 处理参数 (`AEC`、`AGC`、`ANS`）和本地音频播放设置。
 
-  > 注意事项：
-  >
-  > - 该功能仅适用于支持 Web SDK 的浏览器桌面端，不支持移动端。具体支持列表详见[浏览器兼容性和已知问题](/zh-CN/realtime-media/rtc/reference/browser-compatibility)。
-  > - 关于各操作系统平台的浏览器版本及功能支持的补充说明如下：
-  >
-  >   - 在 macOS 平台上，Chrome 74 及以上版本支持音视频共享，仅支持在共享 Chrome 标签页时分享音频。Firefox 和 Safari 14 及以上版本支持窗口和屏幕共享，不支持分享音频。
-  >   - 在 Windows 平台上，Chrome 74 及以上版本和 Edge 支持在共享屏幕和浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。Firefox 支持窗口和屏幕共享，不支持分享音频。
-  >   - 在 ChromeOS 平台上，Chrome 支持在共享屏幕和共享浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。
-  > - 设置了 `withAudio` 为 `enable` 后，还需要在屏幕共享的弹出框上，勾选**分享音频**才能真正生效。
+  :::note[注意事项]
+  - 该功能仅适用于支持 Web SDK 的浏览器桌面端，不支持移动端。具体支持列表详见[浏览器兼容性和已知问题](/zh-CN/realtime-media/rtc/reference/browser-compatibility)。
+  - 关于各操作系统平台的浏览器版本及功能支持的补充说明如下：
+
+    - 在 macOS 平台上，Chrome 74 及以上版本支持音视频共享，仅支持在共享 Chrome 标签页时分享音频。Firefox 和 Safari 14 及以上版本支持窗口和屏幕共享，不支持分享音频。
+    - 在 Windows 平台上，Chrome 74 及以上版本和 Edge 支持在共享屏幕和浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。Firefox 支持窗口和屏幕共享，不支持分享音频。
+    - 在 ChromeOS 平台上，Chrome 支持在共享屏幕和共享浏览器标签页时分享音频，不支持在共享应用窗口时分享音频。
+  - 设置了 `withAudio` 为 `enable` 后，还需要在屏幕共享的弹出框上，勾选**分享音频**才能真正生效。
+  :::
 
 </Parameter>
 </ParameterList>
@@ -1001,6 +1043,14 @@ Promise&lt;[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvide
   - 如果用户没有勾选**分享音频**，只返回屏幕共享视频轨道。
 
 </ApiReturns>
+
+#### createScreenVideoTrack [3/3]
+
+<ApiSignature>
+
+createScreenVideoTrack(config: [ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/screenvideotrackinitconfig), withAudio?: "enable" | "disable" | "auto" | [ScreenAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/globals#screenaudiotrackinitconfig)): Promise&lt;[[ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack), [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack)] | [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack)&gt;
+
+</ApiSignature>
 
 创建用于屏幕共享的视频轨道。
 
@@ -1203,10 +1253,10 @@ getDevices(skipPermissionCheck?: boolean): Promise&lt;MediaDeviceInfo[]&gt;
 该方法枚举可用的媒体输入和输出设备，比如麦克风、摄像头、耳机等。
  调用成功后 SDK 会通过 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 对象返回可用的媒体设备。
 
-> 注意事项：
->
-> - 调用本方法会暂时打开摄像头和麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+，Firefox 70+ 以及 Safari 12+ 等浏览器上没有媒体设备权限时，无法准确获取到设备信息。
-> - 即使是对于同一设备，SDK 返回的 [MediaDeviceInfo.deviceId](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId) 也可能会发生变化，例如用户清除 Cookie 后，`deviceId` 就会被重置。因此，声网不建议基于 `deviceId` 开发业务逻辑。
+:::note[注意事项]
+- 调用本方法会暂时打开摄像头和麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+，Firefox 70+ 以及 Safari 12+ 等浏览器上没有媒体设备权限时，无法准确获取到设备信息。
+- 即使是对于同一设备，SDK 返回的 [MediaDeviceInfo.deviceId](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo/deviceId) 也可能会发生变化，例如用户清除 Cookie 后，`deviceId` 就会被重置。因此，声网不建议基于 `deviceId` 开发业务逻辑。
+:::
 
 ```javascript
 getDevices().then(devices => {
@@ -1398,11 +1448,11 @@ SDK 通过检测指定时间范围内音量是否发生变化来判断音频轨�
 
 声网建议通过此方法在开始通话前对音频输入设备进行可用性检测。你可以将麦克风采集到的音频轨道作为参数传入该方法，判断麦克风是否正常运行。
 
-> 注意事项：
->
-> - 极为安静的环境下可能检测失败，所以声网建议你在使用此方法的时候提示用户发出声响。
-> - 当音频轨道被 mute 时，会返回 `false`。
-> - 不建议频繁调用此方法。
+:::note[注意事项]
+- 极为安静的环境下可能检测失败，所以声网建议你在使用此方法的时候提示用户发出声响。
+- 当音频轨道被 mute 时，会返回 `false`。
+- 不建议频繁调用此方法。
+:::
 
 ```javascript
 const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({ microphoneId });
@@ -1492,10 +1542,10 @@ SDK 通过检测指定时间范围内视频图像是否发生变动来判断视�
 
 声网建议通过此方法在开始通话前对视频输入设备进行可用性检测。你可以将摄像头采集到的视频轨道作为参数传入该方法，判断摄像头是否正常运行。
 
-> 注意事项：
->
-> - 当视频轨道被 mute 时，会返回 `false`。
-> - 不建议频繁调用此方法。
+:::note[注意事项]
+- 当视频轨道被 mute 时，会返回 `false`。
+- 不建议频繁调用此方法。
+:::
 
 ```javascript
 const videoTrack = await AgoraRTC.createCameraVideoTrack({ cameraId });
@@ -1608,11 +1658,11 @@ getSupportedCodec(): Promise&lt;object&gt;
 
 调用该方法会返回声网服务与当前浏览器同时支持的编解码格式。目前而言，视频支持 VP8 及 H.264 格式，音频支持 OPUS 格式。
 
-> 注意事项：
->
-> - 该方法支持所有浏览器。对于不支持 WebRTC 或无法识别的浏览器环境，编解码列表返回为空。
-> - 返回的音视频编码为浏览器通过 SDP 声称的编码类型，为参考值。
-> - 目前部分安卓手机 H.264 与其他平台 H.264 存在无法互通或单通问题，对于这部分机型推荐使用 VP8 编码格式。
+:::note[注意事项]
+- 该方法支持所有浏览器。对于不支持 WebRTC 或无法识别的浏览器环境，编解码列表返回为空。
+- 返回的音视频编码为浏览器通过 SDP 声称的编码类型，为参考值。
+- 目前部分安卓手机 H.264 与其他平台 H.264 存在无法互通或单通问题，对于这部分机型推荐使用 VP8 编码格式。
+:::
 
 ```javascript
 AgoraRTC.getSupportedCodec().then(result => {
@@ -1677,39 +1727,11 @@ void
 
 ### on
 
+#### on [1/6]
+
 <ApiSignature>
 
 on(event: "camera-changed", listener: typeof event_camera_changed): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "microphone-changed", listener: typeof event_microphone_changed): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "playback-device-changed", listener: typeof event_playback_device_changed): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "autoplay-failed", listener: typeof event_autoplay_failed): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "security-policy-violation", listener: typeof event_security_policy_violation): void
-
-</ApiSignature>
-
-<ApiSignature>
-
-on(event: "audio-context-state-changed", listener: typeof event_audio_context_state_changed): void
 
 </ApiSignature>
 
@@ -1742,6 +1764,14 @@ void
 
 </ApiReturns>
 
+#### on [2/6]
+
+<ApiSignature>
+
+on(event: "microphone-changed", listener: typeof event_microphone_changed): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 :::info[自从]
@@ -1770,6 +1800,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [3/6]
+
+<ApiSignature>
+
+on(event: "playback-device-changed", listener: typeof event_playback_device_changed): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -1800,6 +1838,14 @@ void
 
 </ApiReturns>
 
+#### on [4/6]
+
+<ApiSignature>
+
+on(event: "autoplay-failed", listener: typeof event_autoplay_failed): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 :::info[自从]
@@ -1829,6 +1875,14 @@ void
 
 </ApiReturns>
 
+#### on [5/6]
+
+<ApiSignature>
+
+on(event: "security-policy-violation", listener: typeof event_security_policy_violation): void
+
+</ApiSignature>
+
 Overrides EventEmitter.on
 
 :::info[自从]
@@ -1857,6 +1911,14 @@ void
 </ApiReturnType>
 
 </ApiReturns>
+
+#### on [6/6]
+
+<ApiSignature>
+
+on(event: "audio-context-state-changed", listener: typeof event_audio_context_state_changed): void
+
+</ApiSignature>
 
 Overrides EventEmitter.on
 
@@ -1983,16 +2045,16 @@ preload(appid: string, channel: string, token: string | null, uid?: [UID](/zh-CN
 
 标识用户的 ID。整数或字符串，ASCII 字符，需保证唯一性。如果不指定或设为 `null`，服务器会自动分配一个整数型 uid。
 
-- 如果使用整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (232-1)。
+- 如果使用整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (2³² - 1)。
 - 如果使用字符串作为用户 ID，长度不超过 255 个字符。
 
 为保证最佳的用户体验，声网强烈建议你不要使用字符串作为用户 ID。
 
-> 注意事项：
->
-> - 一个频道内的所有用户必须使用同样类型的 `uid`，即必须都为整数或都为字符串。
-> - 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本互通，请确保 Native SDK 使用 User Account 加入频道。详见[使用 String 型的用户名](/zh-CN/reference/faq/integration/string_uid)。
-> - 为保证水晶球数据的准确性，建议自行指定 `uid` 并保证唯一性。
+:::note[注意事项]
+- 一个频道内的所有用户必须使用同样类型的 `uid`，即必须都为整数或都为字符串。
+- 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本互通，请确保 Native SDK 使用 User Account 加入频道。详见[使用 String 型的用户名](/zh-CN/reference/faq/integration/string_uid)。
+- 为保证水晶球数据的准确性，建议自行指定 `uid` 并保证唯一性。
+:::
 
 </Parameter>
 </ParameterList>
@@ -2033,7 +2095,9 @@ processExternalMediaAEC(element: HTMLMediaElement): void
 </script>
 ```
 
-> 注意事项：如果本地播放的媒体元素的地址是跨域地址，必须设置 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement) 中的 `crossOrigin` 属性为 `"anonymous"` 以允许跨域媒体被重采集。
+:::note[注意事项]
+如果本地播放的媒体元素的地址是跨域地址，必须设置 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement) 中的 `crossOrigin` 属性为 `"anonymous"` 以允许跨域媒体被重采集。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="element" type="HTMLMediaElement" required>
@@ -2251,16 +2315,16 @@ startLastmileProbeTest(appid: string, channel: string, token: string | null, uid
 
 标识用户的 ID。整数或字符串，ASCII 字符，需保证唯一性。如果不指定或设为 `null`，服务器会自动分配一个整数型 uid。
 
-- 如果使用整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (232-1)。
+- 如果使用整数作为用户 ID，需为 32 位无符号整数。建议设置范围：0 到 (2³² - 1)。
 - 如果使用字符串作为用户 ID，长度不超过 255 个字符。
 
 为保证最佳的用户体验，声网强烈建议你不要使用字符串作为用户 ID。
 
-> 注意事项：
->
-> - 一个频道内的所有用户必须使用同样类型的 `uid`，即必须都为整数或都为字符串。
-> - 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本互通，请确保 Native SDK 使用 User Account 加入频道。详见[使用 String 型的用户名](/zh-CN/reference/faq/integration/string_uid)。
-> - 为保证水晶球数据的准确性，建议自行指定 `uid` 并保证唯一性。
+:::note[注意事项]
+- 一个频道内的所有用户必须使用同样类型的 `uid`，即必须都为整数或都为字符串。
+- 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本互通，请确保 Native SDK 使用 User Account 加入频道。详见[使用 String 型的用户名](/zh-CN/reference/faq/integration/string_uid)。
+- 为保证水晶球数据的准确性，建议自行指定 `uid` 并保证唯一性。
+:::
 
 </Parameter>
 </ParameterList>

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_imusiccontentcenter_createmusicplayer__prototype"></a>
 
-```text
+```csharp
 public abstract IMusicPlayer CreateMusicPlayer();
 ```
 
@@ -50,7 +50,7 @@ public abstract IMusicPlayer CreateMusicPlayer();
 
 <a id="api_imusiccontentcenter_destroymusicplayer__prototype"></a>
 
-```text
+```csharp
 public abstract int DestroyMusicPlayer(IMusicPlayer music_player);
 ```
 
@@ -98,7 +98,7 @@ public abstract int DestroyMusicPlayer(IMusicPlayer music_player);
 
 <a id="api_imusiccontentcenter_getcaches__prototype"></a>
 
-```text
+```csharp
 public abstract int GetCaches(ref MusicCacheInfo[] cacheInfo, ref Int32 cacheInfoSize);
 ```
 
@@ -150,7 +150,7 @@ public abstract int GetCaches(ref MusicCacheInfo[] cacheInfo, ref Int32 cacheInf
 
 <a id="api_imusiccontentcenter_getinternalsongcode__prototype"></a>
 
-```text
+```csharp
 public abstract int GetInternalSongCode(Int64 songCode, string jsonOption, ref Int64 internalSongCode);
 ```
 
@@ -215,7 +215,7 @@ public abstract int GetInternalSongCode(Int64 songCode, string jsonOption, ref I
 
 <a id="api_imusiccontentcenter_getlyric__prototype"></a>
 
-```text
+```csharp
 public abstract int GetLyric(ref string requestId, Int64 songCode, int LyricType = 0);
 ```
 
@@ -272,7 +272,7 @@ public abstract int GetLyric(ref string requestId, Int64 songCode, int LyricType
 
 <a id="api_imusiccontentcenter_getmusiccharts__prototype"></a>
 
-```text
+```csharp
 public abstract int GetMusicCharts(ref string requestId);
 ```
 
@@ -314,7 +314,7 @@ public abstract int GetMusicCharts(ref string requestId);
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__prototype"></a>
 
-```text
+```csharp
 public abstract int GetMusicCollectionByMusicChartId(ref string requestId, int musicChartType, int page, int pageSize, string jsonOption = "");
 ```
 
@@ -390,7 +390,7 @@ public abstract int GetMusicCollectionByMusicChartId(ref string requestId, int m
 
 <a id="api_irtcengine_getmusiccontentcenter__prototype"></a>
 
-```text
+```csharp
 public abstract IMusicContentCenter GetMusicContentCenter();
 ```
 
@@ -416,7 +416,7 @@ public abstract IMusicContentCenter GetMusicContentCenter();
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__prototype"></a>
 
-```text
+```csharp
 public abstract int GetSongSimpleInfo(ref string requestId, Int64 songCode);
 ```
 
@@ -465,7 +465,7 @@ public abstract int GetSongSimpleInfo(ref string requestId, Int64 songCode);
 
 <a id="api_imusiccontentcenter_initialize_imusiccontentcenter__prototype"></a>
 
-```text
+```csharp
 public abstract int Initialize(MusicContentCenterConfiguration configuration);
 ```
 
@@ -507,7 +507,7 @@ public abstract int Initialize(MusicContentCenterConfiguration configuration);
 
 <a id="api_imusiccontentcenter_ispreloaded__prototype"></a>
 
-```text
+```csharp
 public abstract int IsPreloaded(Int64 songCode);
 ```
 
@@ -549,7 +549,7 @@ public abstract int IsPreloaded(Int64 songCode);
 
 <a id="api_imusicplayer_open_imusicplayer__prototype"></a>
 
-```text
+```csharp
 public abstract int Open(Int64 songCode, Int64 startPos);
 ```
 
@@ -602,7 +602,7 @@ public abstract int Open(Int64 songCode, Int64 startPos);
 
 <a id="api_imusiccontentcenter_preload__prototype"></a>
 
-```text
+```csharp
 public abstract int Preload(Int64 songCode, string jsonOption = "");
 ```
 
@@ -670,7 +670,7 @@ public abstract int Preload(Int64 songCode, string jsonOption = "");
 
 <a id="api_imusiccontentcenter_preload2__prototype"></a>
 
-```text
+```csharp
 public abstract int Preload(ref string requestId, Int64 songCode);
 ```
 
@@ -723,7 +723,7 @@ public abstract int Preload(ref string requestId, Int64 songCode);
 
 <a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__prototype"></a>
 
-```text
+```csharp
 public abstract int RegisterEventHandler(IMusicContentCenterEventHandler eventHandler);
 ```
 
@@ -763,7 +763,7 @@ public abstract int RegisterEventHandler(IMusicContentCenterEventHandler eventHa
 
 <a id="api_imusiccontentcenter_removecache__prototype"></a>
 
-```text
+```csharp
 public abstract int RemoveCache(Int64 songCode);
 ```
 
@@ -805,7 +805,7 @@ public abstract int RemoveCache(Int64 songCode);
 
 <a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__prototype"></a>
 
-```text
+```csharp
 public override int RenewToken(string token)
  	 	        {
  	 	            if (_rtcEngineInstance == null || _musicContentCenterImpl == null)
@@ -854,7 +854,7 @@ public override int RenewToken(string token)
 
 <a id="api_imusiccontentcenter_searchmusic__prototype"></a>
 
-```text
+```csharp
 public abstract int SearchMusic(ref string requestId, string keyWord, int page, int pageSize, string jsonOption = "");
 ```
 
@@ -930,7 +930,7 @@ public abstract int SearchMusic(ref string requestId, string keyWord, int page, 
 
 <a id="api_imusicplayer_setplaymode__prototype"></a>
 
-```text
+```csharp
 public abstract int SetPlayMode(MusicPlayMode mode);
 ```
 
@@ -990,7 +990,7 @@ public abstract int SetPlayMode(MusicPlayMode mode);
 
 <a id="api_imusiccontentcenter_unregistereventhandler_imusiccontentcenter__prototype"></a>
 
-```text
+```csharp
 public abstract int UnregisterEventHandler();
 ```
 
@@ -1017,7 +1017,7 @@ public abstract int UnregisterEventHandler();
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult__prototype"></a>
 
-```text
+```csharp
 public abstract void OnLyricResult(string requestId, long songCode, string lyricUrl, MusicContentCenterStateReason reason);
 ```
 
@@ -1070,7 +1070,7 @@ public abstract void OnLyricResult(string requestId, long songCode, string lyric
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__prototype"></a>
 
-```text
+```csharp
 public abstract void OnMusicChartsResult(string requestId, MusicChartInfo[] result, MusicContentCenterStateReason reason);
 ```
 
@@ -1117,7 +1117,7 @@ public abstract void OnMusicChartsResult(string requestId, MusicChartInfo[] resu
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__prototype"></a>
 
-```text
+```csharp
 public abstract void OnMusicCollectionResult(string requestId, MusicCollection result, MusicContentCenterStateReason reason);
 ```
 
@@ -1164,7 +1164,7 @@ public abstract void OnMusicCollectionResult(string requestId, MusicCollection r
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__prototype"></a>
 
-```text
+```csharp
 public abstract void OnPreLoadEvent(string requestId, long songCode, int percent, string lyricUrl, PreloadState state, MusicContentCenterStateReason reason);
 ```
 
@@ -1229,7 +1229,7 @@ public abstract void OnPreLoadEvent(string requestId, long songCode, int percent
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__prototype"></a>
 
-```text
+```csharp
 public abstract void OnSongSimpleInfoResult(string requestId, long songCode, string simpleInfo, MusicContentCenterStateReason reason);
 ```
 

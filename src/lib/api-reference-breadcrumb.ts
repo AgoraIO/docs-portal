@@ -2,6 +2,7 @@ import {
   type ApiReferenceCardEntry,
   zhCNApiReferenceCards,
 } from './api-reference-cards-data.zh-cn';
+import { getApiReferenceProductSectionId } from './api-reference-navigation';
 import { isSamePathOrDescendant } from './docs-routing';
 import type { DocsBreadcrumbItem } from './docs-tree';
 
@@ -31,6 +32,7 @@ export function resolveZhCnApiReferenceBreadcrumb({
     },
     {
       title: entry.product,
+      url: `${ZH_CN_API_REFERENCE_INDEX_URL}?product=${encodeURIComponent(entry.productId)}#${getApiReferenceProductSectionId(entry.productId)}`,
     },
     {
       title: entry.platform,
@@ -95,18 +97,13 @@ function getSiblingFallbackByScope(entries: readonly ApiReferenceCardEntry[]) {
         scopedEntries.map((entry) => `${entry.productId}:${entry.platformId}`),
       );
       const productIds = new Set(scopedEntries.map((entry) => entry.productId));
-      const solutionIds = new Set(
-        scopedEntries.map((entry) => entry.solutionId ?? ''),
-      );
       const clientEntries = scopedEntries.filter(
         (entry) => entry.apiType === 'client-api',
       );
       const fallbackEntry =
         ownershipKeys.size === 1
           ? scopedEntries[0]
-          : productIds.size === 1 &&
-              solutionIds.size === 1 &&
-              clientEntries.length === 1
+          : productIds.size === 1 && clientEntries.length === 1
             ? clientEntries[0]
             : undefined;
 

@@ -493,3 +493,23 @@ virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1ago
 
 - [`IAgoraParameter`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-parameter) 对象：方法调用成功。
 - 空指针：方法调用失败。
+
+<a id="a96496d23dd3aac1eae15e630fa714f37"></a>
+
+### getNtpWallTimeInMs()
+
+<ApiSignature labels="pure virtual">
+
+virtual uint64_t agora::base::IAgoraService::getNtpWallTimeInMs()
+
+</ApiSignature>
+
+获取当前 NTP 时间，返回 Unix 时间戳，单位为毫秒。
+
+:::info[自从]
+4.4.33
+:::
+
+<h4 data-toc-hidden="true" id={"返回值-16"}>返回值</h4>
+
+当前 NTP 时间戳；NTP 时间不可用时返回 `0`。

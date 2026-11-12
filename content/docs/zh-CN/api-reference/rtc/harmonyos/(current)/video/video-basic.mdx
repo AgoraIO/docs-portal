@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_disablevideo__prototype"></a>
 
-```text
+```ts
 public abstract disableVideo(): number;
 ```
 
@@ -77,7 +77,7 @@ public abstract disableVideo(): number;
 
 <a id="api_irtcengine_enablelocalvideo__prototype"></a>
 
-```text
+```ts
 public abstract enableLocalVideo(enabled: boolean): number;
 ```
 
@@ -139,7 +139,7 @@ public abstract enableLocalVideo(enabled: boolean): number;
 
 <a id="api_irtcengine_enablevideo__prototype"></a>
 
-```text
+```ts
 public abstract enableVideo(): number;
 ```
 
@@ -196,7 +196,7 @@ public abstract enableVideo(): number;
 
 <a id="api_irtcengine_setvideoencoderconfiguration__prototype"></a>
 
-```text
+```ts
 public abstract setVideoEncoderConfiguration(configuration: VideoEncoderConfiguration): number;
 ```
 
@@ -252,7 +252,7 @@ public abstract setVideoEncoderConfiguration(configuration: VideoEncoderConfigur
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex__prototype"></a>
 
-```text
+```ts
 public abstract setVideoEncoderConfigurationEx(configuration: VideoEncoderConfiguration, connection: RtcConnection): number;
 ```
 
@@ -314,7 +314,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 
 <a id="api_irtcengine_startpreview2__prototype"></a>
 
-```text
+```ts
 public abstract startPreview(sourceType?: Constants.VideoSourceType): number;
 ```
 
@@ -369,7 +369,7 @@ public abstract startPreview(sourceType?: Constants.VideoSourceType): number;
 
 <a id="api_irtcengine_stoppreview2__prototype"></a>
 
-```text
+```ts
 public abstract stopPreview(sourceType?: Constants.VideoSourceType): number;
 ```
 
@@ -427,7 +427,7 @@ public abstract stopPreview(sourceType?: Constants.VideoSourceType): number;
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__prototype"></a>
 
-```text
+```ts
 onFirstLocalVideoFrame?:(source:Constants.VideoSourceType,width:number,height:number,elapsed:number) =>void;
 ```
 
@@ -484,7 +484,7 @@ onFirstLocalVideoFrame?:(source:Constants.VideoSourceType,width:number,height:nu
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe__prototype"></a>
 
-```text
+```ts
 onFirstRemoteVideoFrame?:(uid:number,width:number,height:number,elapsed:number) =>void;
 ```
 
@@ -541,7 +541,7 @@ onFirstRemoteVideoFrame?:(uid:number,width:number,height:number,elapsed:number) 
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged__prototype"></a>
 
-```text
+```ts
 onLocalVideoStateChanged?:(source: Constants.VideoSourceType, state:Constants.LocalVideoStreamState,reason:Constants.LocalVideoStreamReason) => void
 ```
 
@@ -615,7 +615,7 @@ onLocalVideoStateChanged?:(source: Constants.VideoSourceType, state:Constants.Lo
 
 <a id="callback_irtcengineeventhandler_onlocalvideostats__prototype"></a>
 
-```text
+```ts
 onLocalVideoStats?:(source:Constants.VideoSourceType , stats:LocalVideoStats ) => void;
 ```
 
@@ -660,7 +660,7 @@ onLocalVideoStats?:(source:Constants.VideoSourceType , stats:LocalVideoStats ) =
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged__prototype"></a>
 
-```text
+```ts
 onRemoteVideoStateChanged ? : (uid:number, state: Constants.RemoteVideoStreamState, reason: Constants.RemoteVideoStreamReason, elapsed:number) => void
 ```
 
@@ -719,7 +719,7 @@ onRemoteVideoStateChanged ? : (uid:number, state: Constants.RemoteVideoStreamSta
 
 <a id="callback_irtcengineeventhandler_onremotevideostats__prototype"></a>
 
-```text
+```ts
 onRemoteVideoStats?:(stats:RemoteVideoStats) =>void;
 ```
 
@@ -758,7 +758,7 @@ onRemoteVideoStats?:(stats:RemoteVideoStats) =>void;
 
 <a id="callback_irtcengineeventhandler_onuserenablevideo__prototype"></a>
 
-```text
+```ts
 onUserEnableVideo?:(uid:number, enabled:boolean) => void;
 ```
 
@@ -806,7 +806,7 @@ onUserEnableVideo?:(uid:number, enabled:boolean) => void;
 
 <a id="callback_irtcengineeventhandler_onusermutevideo__prototype"></a>
 
-```text
+```ts
 onUserMuteVideo?:(uid:number,muted:boolean) =>void;
 ```
 
@@ -856,7 +856,7 @@ onUserMuteVideo?:(uid:number,muted:boolean) =>void;
 
 <a id="callback_irtcengineeventhandler_onvideopublishstatechanged__prototype"></a>
 
-```text
+```ts
 onVideoPublishStateChanged?:(source:Constants.VideoSourceType, channel:string, oldState:Constants.StreamPublishState, newState:Constants.StreamPublishState, elapseSinceLastState:number) => void;
 ```
 
@@ -905,7 +905,7 @@ onVideoPublishStateChanged?:(source:Constants.VideoSourceType, channel:string, o
 
 <a id="callback_irtcengineeventhandler_onvideosizechanged__prototype"></a>
 
-```text
+```ts
 onVideoSizeChanged?:(source:Constants.VideoSourceType, uid:number, width:number, height:number, rotation:number) => void
 ```
 

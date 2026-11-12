@@ -26,7 +26,7 @@ _migration:
 
 <a id="api_irtcengine_createdatastream2__prototype"></a>
 
-```text
+```ts
 public abstract createDataStream(config: DataStreamConfig): number;
 ```
 
@@ -78,7 +78,7 @@ public abstract createDataStream(config: DataStreamConfig): number;
 
 <a id="api_irtcengineex_createdatastreamex2__prototype"></a>
 
-```text
+```ts
 public abstract createDataStreamEx(config:DataStreamConfig,connection:RtcConnection):number;
 ```
 
@@ -136,7 +136,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 
 <a id="api_irtcengine_sendstreammessage__prototype"></a>
 
-```text
+```ts
 public abstract sendStreamMessage(streamId: number, message: ArrayBuffer): number;
 ```
 
@@ -205,7 +205,7 @@ SDK 对该方法的实现进行了如下限制：
 
 <a id="callback_irtcengineeventhandler_onstreammessage__prototype"></a>
 
-```text
+```ts
 onStreamMessage?:(uid:number, streamId:number,data:Uint8Array) => void;
 ```
 
@@ -254,7 +254,7 @@ onStreamMessage?:(uid:number, streamId:number,data:Uint8Array) => void;
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__prototype"></a>
 
-```text
+```ts
 onStreamMessageError? : (uid:number,streamId:number,error:number,missed:number,cached:number) => void;
 ```
 

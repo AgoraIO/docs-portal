@@ -1,5 +1,5 @@
 import { randomBytes, randomUUID } from 'node:crypto';
-import { useSession as getCookieSession } from '@tanstack/react-start/server';
+import { type CookieJar, getIronSession, webCookies } from 'iron-session';
 import type { DocsAuthConfig } from './config.server';
 import { readDocsAuthConfig } from './config.server';
 import {
@@ -200,11 +200,10 @@ export function createDocsAuthService(
   const secure = config.docsOrigin.startsWith('https:');
   const prefix = secure ? '__Host-' : '';
   const sessionConfig = (name: string, maxAge: number) => ({
-    name,
+    cookieName: `${name}_v2`,
     password: config.sessionPassword,
-    maxAge,
-    sessionHeader: false as const,
-    cookie: {
+    ttl: maxAge,
+    cookieOptions: {
       httpOnly: true,
       secure,
       sameSite: 'lax' as const,
@@ -212,10 +211,6 @@ export function createDocsAuthService(
       maxAge,
     },
   });
-  const accountSession = () =>
-    getCookieSession<{ session: AuthSession }>(
-      sessionConfig(`${prefix}docs_session`, 7200),
-    );
   const unavailable = () =>
     Response.json(
       { status: 'unknown', error: 'Account service unavailable' },
@@ -287,6 +282,26 @@ export function createDocsAuthService(
   }
 
   async function handle(request: Request): Promise<Response> {
+    const cookieHeaders = new Headers();
+    const response = await handleRequest(
+      request,
+      webCookies(request, cookieHeaders),
+    );
+    for (const cookie of cookieHeaders.getSetCookie()) {
+      response.headers.append('Set-Cookie', cookie);
+    }
+    return response;
+  }
+
+  async function handleRequest(
+    request: Request,
+    cookies: CookieJar,
+  ): Promise<Response> {
+    const accountSession = () =>
+      getIronSession<{ session: AuthSession }>(
+        cookies,
+        sessionConfig(`${prefix}docs_session`, 7200),
+      );
     const url = new URL(request.url);
     if (url.origin !== config.docsOrigin) return failed();
     if (url.pathname === '/api/auth/login' && request.method === 'GET') {
@@ -298,14 +313,16 @@ export function createDocsAuthService(
       }
       const state = randomBytes(32).toString('hex');
       try {
-        const pending = await getCookieSession<{
+        const pending = await getIronSession<{
           state: string;
           transaction: AuthTransaction;
-        }>(sessionConfig(`${prefix}docs_oauth_${state.slice(0, 16)}`, 300));
-        await pending.update({
-          state,
-          transaction: { flow, startedAt: Date.now() },
-        });
+        }>(
+          cookies,
+          sessionConfig(`${prefix}docs_oauth_${state.slice(0, 16)}`, 300),
+        );
+        pending.state = state;
+        pending.transaction = { flow, startedAt: Date.now() };
+        await pending.save();
         const authorize = new URL('/api/v0/oauth/authorize', config.ssoOrigin);
         authorize.search = new URLSearchParams({
           response_type: 'code',
@@ -346,18 +363,21 @@ export function createDocsAuthService(
         !/^[a-f0-9]{32}$/i.test(params.get('loginId') || '')
       )
         return failed();
-      const pending = await getCookieSession<{
+      const pending = await getIronSession<{
         state: string;
         transaction: AuthTransaction;
-      }>(sessionConfig(`${prefix}docs_oauth_${state.slice(0, 16)}`, 300));
-      const transaction = pending.data.transaction;
+      }>(
+        cookies,
+        sessionConfig(`${prefix}docs_oauth_${state.slice(0, 16)}`, 300),
+      );
+      const transaction = pending.transaction;
       if (
-        pending.data.state !== state ||
+        pending.state !== state ||
         !transaction ||
         Date.now() - transaction.startedAt >= 300_000 ||
         transaction.startedAt > Date.now()
       ) {
-        await pending.clear();
+        pending.destroy();
         return failed();
       }
       let stage = 'authorization';
@@ -414,12 +434,12 @@ export function createDocsAuthService(
             },
           ),
         );
-        // Store only the minimal account profile in the framework's sealed cookie.
+        // Store only the minimal account profile in the encrypted session cookie.
         // SSO tokens remain server-side and are discarded after this request.
         stage = 'session';
         const session = await accountSession();
-        await session.clear();
-        await session.update({ session: { user, expiresAt } });
+        session.session = { user, expiresAt };
+        await session.save();
         const targetUrl = new URL(
           cnConsoleTargets[transaction.flow.target],
           config.consoleOrigin,
@@ -443,15 +463,15 @@ export function createDocsAuthService(
         ]);
         return failed(502);
       } finally {
-        await pending.clear();
+        pending.destroy();
       }
     }
     if (url.pathname === '/api/userinfo' && request.method === 'GET') {
       try {
         const session = await accountSession();
-        const account = session.data.session;
+        const account = session.session;
         if (!account || account.expiresAt <= Date.now()) {
-          await session.clear();
+          session.destroy();
           return Response.json(
             { status: 'unauthenticated' },
             { status: 401, headers },
@@ -476,7 +496,7 @@ export function createDocsAuthService(
       )
         return failed(403);
       try {
-        await (await accountSession()).clear();
+        (await accountSession()).destroy();
         return Response.json({ status: 'unauthenticated' }, { headers });
       } catch {
         return unavailable();

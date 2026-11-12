@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_getscreencapturesources__prototype"></a>
 
-```text
+```objc
 - (NSArray<AgoraScreenCaptureSourceInfo*>* _Nullable)getScreenCaptureSourcesWithThumbSize:(NSSize)thumbSize iconSize:(NSSize)iconSize includeScreen:(BOOL)includeScreen NS_SWIFT_NAME(getScreenCaptureSources(withThumbSize:iconSize:includeScreen:));
 ```
 
@@ -78,7 +78,7 @@ _migration:
 
 <a id="api_irtcengine_setscreencapturescenario__prototype"></a>
 
-```text
+```objc
 - (int)setScreenCaptureScenario:(AgoraScreenScenarioType)scenarioType  NS_SWIFT_NAME(setScreenCaptureScenario(_:));
 ```
 
@@ -124,7 +124,7 @@ _migration:
 
 <a id="api_irtcengine_startscreencapture2__prototype"></a>
 
-```text
+```objc
 - (int)startScreenCapture:(AgoraVideoSourceType)sourceType config:(AgoraScreenCaptureConfiguration * _Nullable)config NS_SWIFT_NAME(startScreenCapture(_:config:));
 ```
 
@@ -176,7 +176,7 @@ _migration:
 
 <a id="api_irtcengine_startscreencapturebydisplayid__prototype"></a>
 
-```text
+```objc
 - (int)startScreenCaptureByDisplayId:(UInt32)displayId
                           regionRect:(CGRect)regionRect
                        captureParams:(AgoraScreenCaptureParameters *_Nonnull)captureParams  NS_SWIFT_NAME(startScreenCapture(byDisplayId:regionRect:captureParams:));
@@ -184,7 +184,7 @@ _migration:
 
 <a id="api_irtcengine_startscreencapturebydisplayid__detailed_desc"></a>
 
-采集整个屏幕或部分屏幕区域的视频流。
+采集整个屏幕或部分屏幕区域的视频流。该方法仅创建主屏幕视频轨道。
 
 <a id="api_irtcengine_startscreencapturebydisplayid__scenario"></a>
 
@@ -198,8 +198,8 @@ _migration:
 
 你可以在加入频道前或加入频道后调用此方法，具体区别如下：
 
-- 在加入频道前调用此方法，然后调用 `joinChannelByToken` 加入频道，并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 YES，以开始屏幕共享。
-- 在加入频道后调用此方法，然后调用 [updateChannelWithMediaOptions:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_updatechannelmediaoptions) 并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 YES，以开始屏幕共享。
+- 在加入频道前调用此方法，然后调用 `joinChannelByToken` 加入频道，并将 `publishScreenTrack` 设置为 YES，以开始屏幕共享。
+- 在加入频道后调用此方法，然后调用 [updateChannelWithMediaOptions:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_updatechannelmediaoptions) 并将 `publishScreenTrack` 设置为 YES，以开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapturebydisplayid__parameters"></a>
 
@@ -257,7 +257,7 @@ _migration:
 
 <a id="api_irtcengine_startscreencapturebywindowid__prototype"></a>
 
-```text
+```objc
 - (int)startScreenCaptureByWindowId:(UInt32)windowId
                          regionRect:(CGRect)regionRect
                       captureParams:(AgoraScreenCaptureParameters *_Nonnull)captureParams  NS_SWIFT_NAME(startScreenCapture(byWindowId:regionRect:captureParams:));
@@ -269,6 +269,7 @@ _migration:
 
 :::note
 注： 该方法仅适用于 macOS 和 Windows 平台。
+该方法仅创建主屏幕视频轨道。
 :::
 
 <a id="api_irtcengine_startscreencapturebywindowid__scenario"></a>
@@ -283,8 +284,8 @@ _migration:
 
 你可以在加入频道前或加入频道后调用该方法，具体如下：
 
-- 在加入频道前调用该方法，然后调用 `joinChannelByToken` 加入频道，并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 YES，以开始屏幕共享。
-- 在加入频道后调用该方法，然后调用 [updateChannelWithMediaOptions:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_updatechannelmediaoptions) 并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 YES，以开始屏幕共享。
+- 在加入频道前调用该方法，然后调用 `joinChannelByToken` 加入频道，并将 `publishScreenTrack` 设置为 YES，以开始屏幕共享。
+- 在加入频道后调用该方法，然后调用 [updateChannelWithMediaOptions:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_updatechannelmediaoptions) 并将 `publishScreenTrack` 设置为 YES，以开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapturebywindowid__parameters"></a>
 
@@ -342,7 +343,7 @@ _migration:
 
 <a id="api_irtcengine_stopscreencapture__prototype"></a>
 
-```text
+```objc
 - (int)stopScreenCapture NS_SWIFT_NAME(stopScreenCapture());
 ```
 
@@ -384,7 +385,7 @@ _migration:
 
 <a id="api_irtcengine_stopscreencapture2__prototype"></a>
 
-```text
+```objc
 - (int)stopScreenCapture:(AgoraVideoSourceType)sourceType NS_SWIFT_NAME(stopScreenCapture(_:));
 ```
 
@@ -432,7 +433,7 @@ _migration:
 
 <a id="api_irtcengine_updatescreencaptureparameters__prototype"></a>
 
-```text
+```objc
 - (int)updateScreenCaptureParameters:(AgoraScreenCaptureParameters * _Nonnull)captureParams  NS_SWIFT_NAME(updateScreenCaptureParameters(_:));
 ```
 
@@ -479,7 +480,7 @@ _migration:
 
 <a id="api_irtcengine_updatescreencaptureregion2__prototype"></a>
 
-```text
+```objc
 - (int)updateScreenCaptureRegion:(CGRect)rect  NS_SWIFT_NAME(updateScreenCaptureRegion(_:));
 ```
 

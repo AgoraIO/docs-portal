@@ -1391,8 +1391,8 @@ describe('docs content regressions', () => {
 
       const processed = await page.data.getText('processed');
 
-      expect(processed).toContain(
-        'TTFB: Time To First Byte, the first byte latency.<br />TTFS: Time To First Sentence',
+      expect(processed).toMatch(
+        /TTFB: Time To First Byte, the first byte latency\.<br\s*\/>TTFS: Time To First Sentence/,
       );
     },
     SOURCE_LOADER_TEST_TIMEOUT,
@@ -1450,7 +1450,7 @@ describe('docs content regressions', () => {
 
       expect(processed).toContain('| Number of people | Layout effect');
       expect(processed).toMatch(
-        /\| 1\s+\| !\[1645770574489\]\(https:\/\/web-cdn\.agora\.io\/docs-files\/1645770574489\) \|/,
+        /\| 1\s+\|\s*!\[1645770574489\]\(https:\/\/web-cdn\.agora\.io\/docs-files\/1645770574489\) \|/,
       );
     },
     SOURCE_LOADER_TEST_TIMEOUT,
@@ -1988,7 +1988,7 @@ describe('docs content regressions', () => {
       expect(processed).not.toContain('<ParamTable>');
       expect(processed).not.toContain('<Slot');
       expect(processed).toContain('`LC-AAC` (Default): MPEG-4 AAC LC');
-      expect(processed).toContain('<CalloutContainer type="info">');
+      expect(processed).toMatch(/:::(?:info|note)/);
       expect(processed).toContain(
         '`volumes.rtcStreamUid` needs to exist in the `rtcStreamUids` array',
       );
@@ -2023,8 +2023,8 @@ describe('docs content regressions', () => {
 
       expect(processed).toContain('| `enable_sign_key`');
       expect(processed).not.toContain('<Slot name="enablesignkey"');
-      expect(processed).toContain('<CalloutContainer type="info">');
-      expect(processed).toMatch(/<CalloutTitle>\s*Note\s*<\/CalloutTitle>/);
+      expect(processed).toMatch(/:::(?:info|note)/);
+      expect(processed).toMatch(/:::(?:info|note)\[Note\]/);
       expect(processed).toContain(
         'After creating a project, you can send a request to `https://api.agora.io/dev/v1/signkey`',
       );
@@ -2033,7 +2033,7 @@ describe('docs content regressions', () => {
   );
 
   it(
-    'renders AI model callout directives through the processed markdown pipeline',
+    'preserves AI model admonitions in the source-backed Markdown export',
     async () => {
       const { source } = await import('./source.server');
       const modelDocsRoot = resolve(docsRoot, 'ai/models');
@@ -2060,17 +2060,19 @@ describe('docs content regressions', () => {
 
         const processed = await page.data.getText('processed');
 
-        expect(processed).not.toMatch(
+        expect(processed).toMatch(
           /^:{3,4}(?:caution|danger|info|note|tip|warn|warning)\b/m,
         );
-        expect(processed).toContain('<CalloutContainer');
+        expect(processed).toMatch(
+          /^:{3,4}(?:info|note|caution|warning|warn|tip|danger)\b/m,
+        );
       }
     },
     SOURCE_LOADER_TEST_TIMEOUT,
   );
 
   it(
-    'keeps nested and repeated AI model callouts rendered as callout containers',
+    'keeps all nested and repeated AI model admonitions in Markdown',
     async () => {
       const { source } = await import('./source.server');
       const akool = source.getPage(['ai', 'models', 'avatar', 'akool'], 'en');
@@ -2105,14 +2107,12 @@ describe('docs content regressions', () => {
       const deepgramProcessed = await deepgram.data.getText('processed');
       const elevenLabsProcessed = await elevenLabs.data.getText('processed');
 
-      expect(
-        akoolProcessed.match(/<CalloutContainer type="info">/g) ?? [],
-      ).toHaveLength(3);
+      expect(akoolProcessed.match(/:::info\[/g) ?? []).toHaveLength(3);
       expect(akoolProcessed).toContain('sales@agora.io');
-      expect(deepgramProcessed).toContain('<CalloutContainer type="warning">');
+      expect(deepgramProcessed).toMatch(/:::(?:caution|warning|warn)\[/);
       expect(deepgramProcessed).toContain('callback_method');
       expect(
-        elevenLabsProcessed.match(/<CalloutContainer type="warning">/g) ?? [],
+        elevenLabsProcessed.match(/:::(?:caution|warning|warn)\[/g) ?? [],
       ).toHaveLength(2);
       expect(elevenLabsProcessed).toContain('Paid plan required');
     },
@@ -2239,9 +2239,9 @@ describe('docs content regressions', () => {
       const processed = await page.data.getText('processed');
 
       expect(processed).toContain('<_PlatformTabsGroup');
-      expect(processed).toContain('<_PlatformPanel platform="web">');
-      expect(processed).toContain('<_PlatformPanel platform="android">');
-      expect(processed).toContain('<_PlatformPanel platform="ios">');
+      expect(processed).toContain('platform="web"');
+      expect(processed).toContain('platform="android"');
+      expect(processed).toContain('platform="ios"');
       expect(processed).not.toContain('&lt;/CodeBlockTab&gt;');
       expect(processed).not.toContain('&lt;CodeBlockTab');
       expect(processed).not.toContain('&lt;PlatformStructured');

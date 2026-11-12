@@ -7,7 +7,11 @@ const appCss = readFileSync(
   resolve(process.cwd(), 'src/styles/app.css'),
   'utf8',
 );
-const appCssRoot = postcss.parse(appCss);
+const metadataCss = readFileSync(
+  resolve(process.cwd(), 'src/styles/openapi-schema-metadata.css'),
+  'utf8',
+);
+const appCssRoot = postcss.parse(`${appCss}\n${metadataCss}`);
 
 function normalizeSelector(selector: string) {
   return selector.replace(/\s+/g, ' ').trim();
@@ -308,8 +312,8 @@ describe('app prose CSS regressions', () => {
     expectDeclaration(metadata, 'min-width', '0');
     expectDeclaration(row, 'display', 'inline-flex');
     expectDeclaration(row, 'max-width', '100%');
-    expectDeclaration(label, 'font-weight', '700');
-    expectDeclaration(label, 'color', 'var(--foreground)');
+    expectDeclaration(label, 'font-weight', '500');
+    expectDeclaration(label, 'color', 'var(--muted-foreground)');
     expectDeclaration(value, 'display', 'inline-flex');
     expectDeclaration(value, 'min-width', '0');
     expectDeclaration(value, 'overflow-wrap', 'anywhere');
@@ -435,7 +439,7 @@ describe('app prose CSS regressions', () => {
     );
   });
 
-  it('keeps wrapped prose tables intrinsic while raw tables retain scroll fallback', () => {
+  it('keeps wrapped prose tables fluid with native column sizing while raw tables retain scroll fallback', () => {
     const table = getRuleBody(
       '.prose :where(table):not(:where(.not-prose, .not-prose *))',
     );
@@ -526,7 +530,7 @@ describe('app prose CSS regressions', () => {
     expect(wrappedTable.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'width',
-        value: 'auto',
+        value: '100%',
       }),
     );
     expect(wrappedTable.rule.nodes).toContainEqual(
@@ -568,7 +572,7 @@ describe('app prose CSS regressions', () => {
     expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'width',
-        value: 'auto',
+        value: '100%',
       }),
     );
     expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
@@ -603,7 +607,7 @@ describe('app prose CSS regressions', () => {
     expect(cells.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'min-width',
-        value: '7.5rem',
+        value: '6ch',
       }),
     );
     expect(cells.rule.nodes).toContainEqual(
@@ -627,7 +631,7 @@ describe('app prose CSS regressions', () => {
     expect(firstColumn.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'min-width',
-        value: '9.5rem',
+        value: '12ch',
       }),
     );
     expect(cellFirstChild.rule.nodes).toContainEqual(
@@ -835,8 +839,9 @@ describe('app prose CSS regressions', () => {
   });
 
   it('defines dark code block tokens for prose and OpenAPI Markdown', () => {
-    const darkProse = getRuleBody(`.dark .prose,
-      .dark .openapi-markdown`);
+    const darkProse = getRuleBodyContaining('.dark .prose');
+    expect(darkProse.rule.selector).toContain('.dark .openapi-operation');
+    expect(darkProse.rule.selector).toContain('.dark .openapi-markdown');
 
     expect(darkProse.rule.nodes).toContainEqual(
       expect.objectContaining({
@@ -1002,7 +1007,7 @@ describe('app prose CSS regressions', () => {
     );
     const mobileViewport = getRuleBodyContainingInContainer(
       '[data-openapi-code-viewport]',
-      '55.999rem',
+      '39.999rem',
     );
 
     expect(appCss).not.toContain(
@@ -1023,32 +1028,20 @@ describe('app prose CSS regressions', () => {
     );
   });
 
-  it('defines the independent desktop examples rail layout', () => {
-    const baseLayout = getRuleBodyOutsideContainer('.openapi-operation-layout');
-    const layout = getRuleBodyContainingInContainer(
-      '.openapi-operation-layout',
-      '56rem',
-    );
+  it('keeps the examples rail sticky from tablet widths onward', () => {
     const rail = getRuleBodyContainingInContainer(
       '.openapi-examples-rail',
-      '56rem',
+      '40rem',
     );
+    const operation = getRuleBodyOutsideContainer('.openapi-operation');
     const anchorInDesktop = getRuleBodyContainingInContainer(
-      '.openapi-examples-rail-anchor',
-      '56rem',
+      '[data-openapi-operation-panel="examples"]',
+      '40rem',
     );
-    expectDeclaration(baseLayout.rule, 'display', 'flex');
-    expectDeclaration(baseLayout.rule, 'flex-direction', 'column');
-    expect(baseLayout.rule.nodes).not.toContainEqual(
-      expect.objectContaining({ prop: 'grid-template-columns' }),
-    );
-    expect(layout.rule.parent?.type).toBe('atrule');
-    expect((layout.rule.parent as postcss.AtRule).name).toBe('container');
-    expect((layout.rule.parent as postcss.AtRule).params).toContain('56rem');
     expectDeclaration(
-      layout.rule,
-      'grid-template-columns',
-      'minmax(0, 1fr) 400px',
+      operation.rule,
+      '--openapi-examples-sticky-top',
+      'calc(var(--docs-shell-header-offset, 48px) + 1rem)',
     );
     expectDeclaration(rail.rule, 'position', 'sticky');
     expectDeclaration(anchorInDesktop.rule, 'align-self', 'stretch');

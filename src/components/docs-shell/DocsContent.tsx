@@ -33,6 +33,7 @@ import { isCnPublicDocsPath } from '@/lib/cn-public-routing';
 import {
   findDocsHeadingForHash,
   getActiveDocsScrollContainer,
+  getDocsHashHref,
   scrollDocsHashTargetAfterLayout,
   syncDocsHashTargetFromLocation,
 } from '@/lib/docs-hash';
@@ -42,6 +43,7 @@ import {
 } from '@/lib/docs-last-updated';
 import type { DocsLayoutMode } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
+import { filterDocsToc, getDocsHeadingTitle } from '@/lib/docs-toc';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
 import {
   type AppLocale,
@@ -140,6 +142,7 @@ export function DocsContent({
   title,
   titlePlatforms = [],
   toc,
+  tocMaxDepth,
 }: {
   body?: DocsContentBodyPayload;
   breadcrumb?: DocsBreadcrumbItem[];
@@ -155,6 +158,7 @@ export function DocsContent({
   title?: string;
   titlePlatforms?: PlatformKey[];
   toc: TOCItemType[];
+  tocMaxDepth?: number;
 }) {
   const { i18n } = useTranslation('common');
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
@@ -242,6 +246,7 @@ export function DocsContent({
 
   const article = (
     <article
+      lang={currentLocale}
       data-docs-home={isHomePage ? 'true' : undefined}
       className={cn(
         'flex min-w-0 flex-col',
@@ -350,7 +355,7 @@ export function DocsContent({
                 )}
               </p>
               {description ? (
-                <p className="mt-3 max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)]">
+                <p className="mt-3 max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)] [overflow-wrap:anywhere]">
                   {description}
                 </p>
               ) : null}
@@ -466,6 +471,7 @@ export function DocsContent({
           locale={currentLocale}
           sourceLinks={sourceLinks}
           toc={toc}
+          tocMaxDepth={tocMaxDepth}
           variant="mobile"
         />
       )}
@@ -929,12 +935,14 @@ export function DocsTableOfContents({
   locale = DEFAULT_LOCALE,
   sourceLinks = null,
   toc,
+  tocMaxDepth,
   variant = 'rail',
 }: {
   className?: string;
   locale?: AppLocale | string;
   sourceLinks?: ReturnType<typeof getDocsSourceLinks>;
   toc: TOCItemType[];
+  tocMaxDepth?: number;
   variant?: 'mobile' | 'rail';
 }) {
   const { i18n } = useTranslation('common');
@@ -943,16 +951,18 @@ export function DocsTableOfContents({
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const items = useMemo(() => {
     if (derivedItems.length === 0) {
-      return toc.filter((item) => typeof item.title === 'string');
+      return filterDocsToc(toc, tocMaxDepth).filter(
+        (item) => typeof item.title === 'string',
+      );
     }
 
     const sourceByUrl = new Map(toc.map((item) => [item.url, item]));
 
     // Rendered headings define reading order and the active platform's IDs.
-    return derivedItems
+    return filterDocsToc(derivedItems, tocMaxDepth)
       .map((item) => sourceByUrl.get(item.url) ?? item)
       .filter((item) => typeof item.title === 'string');
-  }, [derivedItems, toc]);
+  }, [derivedItems, toc, tocMaxDepth]);
   const [primaryActiveUrl, setPrimaryActiveUrl] = useState(
     () => items[0]?.url ?? '',
   );
@@ -1125,7 +1135,7 @@ export function DocsTableOfContents({
           />
         </button>
       ) : (
-        <div className="px-3 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
+        <div className="px-3 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-3)] uppercase">
           {t('docs.toc')}
         </div>
       )}
@@ -1178,6 +1188,14 @@ function TocLinks({
   visibleUrls: Set<string>;
 }) {
   const activeRailLinkRef = useRef<HTMLAnchorElement | null>(null);
+  const [shareHrefs, setShareHrefs] = useState<Record<string, string>>({});
+  useEffect(() => {
+    setShareHrefs(
+      Object.fromEntries(
+        items.map((item) => [item.url, getDocsHashHref(item.url)]),
+      ),
+    );
+  }, [items]);
   const scrollActiveLinkIntoView = useCallback(() => {
     if (variant !== 'rail') {
       return;
@@ -1224,9 +1242,9 @@ function TocLinks({
           <a
             aria-current={isPrimary ? 'location' : undefined}
             className={cn(
-              'leading-5 transition-colors hover:bg-[color:var(--docs-soft-fill)]',
+              'min-w-0 [overflow-wrap:anywhere] leading-5 transition-colors hover:bg-[color:var(--docs-soft-fill)]',
               variant === 'rail'
-                ? '-ml-px rounded-r-md border-l-2 border-transparent px-3 py-1.5 text-[12.5px] text-[color:var(--ink-4)] hover:text-[color:var(--ink-2)]'
+                ? '-ml-px rounded-r-md border-l-2 border-transparent px-3 py-1.5 text-[12.5px] text-[color:var(--ink-3)] hover:text-[color:var(--ink-2)]'
                 : 'rounded-md px-2 py-2 text-sm text-[color:var(--ink-3)] hover:text-[color:var(--ink-1)]',
               isVisible &&
                 variant === 'rail' &&
@@ -1242,10 +1260,17 @@ function TocLinks({
             )}
             data-primary={isPrimary ? 'true' : undefined}
             data-visible={isVisible ? 'true' : undefined}
-            href={item.url}
+            href={shareHrefs[item.url] ?? item.url}
             key={item.url}
             onClick={(event) => {
-              if (!item.url.startsWith('#')) {
+              if (
+                !item.url.startsWith('#') ||
+                event.button !== 0 ||
+                event.ctrlKey ||
+                event.metaKey ||
+                event.shiftKey ||
+                event.altKey
+              ) {
                 return;
               }
 
@@ -1282,7 +1307,7 @@ function getVisibleArticleHeadingItems(): TOCItemType[] {
         depth: heading.hasAttribute('data-accordion-value')
           ? Math.min(headingDepth + 1, 4)
           : headingDepth,
-        title: heading.textContent?.trim() ?? '',
+        title: getDocsHeadingTitle(heading),
         url: `#${heading.id}`,
       };
     })

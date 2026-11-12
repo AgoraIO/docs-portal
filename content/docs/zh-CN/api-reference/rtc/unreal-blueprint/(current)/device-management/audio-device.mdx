@@ -22,7 +22,7 @@ _migration:
 
 <a id="api_iaudiodevicemanager_enumerateplaybackdevices__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	UAudioDeviceCollection* EnumeratePlaybackDevices();
 ```
@@ -58,7 +58,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_enumeraterecordingdevices__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	UAudioDeviceCollection* EnumerateRecordingDevices();
 ```
@@ -94,7 +94,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_followsystemloopbackdevice__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int FollowSystemLoopbackDevice(bool enable);
 ```
@@ -140,7 +140,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_followsystemplaybackdevice__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int FollowSystemPlaybackDevice(bool enable);
 ```
@@ -192,7 +192,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int FollowSystemRecordingDevice(bool enable);
 ```
@@ -246,7 +246,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicecollection_getapplicationvolume__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 	int GetApplicationVolume(int & volume);
 ```
@@ -285,7 +285,7 @@ App 当前的音量，取值范围为 [0,255]。
 
 <a id="api_irtcengine_getaudiodeviceinfo__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int GetAudioDeviceInfo(FDeviceInfo& deviceInfo);
 ```
@@ -340,7 +340,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_getaudiodevicemanager__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintPure, Category = "Agora|IAudioDeviceManager")
 	static UAgoraBPuAudioDeviceManager* GetAgoraAudioDeviceManager();
 ```
@@ -361,7 +361,7 @@ UFUNCTION(BlueprintPure, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicecollection_getcount__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintPure, Category = "Agora|IAudioDeviceCollection")
 int GetCount();
 ```
@@ -392,7 +392,7 @@ int GetCount();
 
 <a id="api_iaudiodevicecollection_getdefaultdevice__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 	int GetDefaultDevice(FString& deviceName, FString& deviceId);
 ```
@@ -444,7 +444,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 
 <a id="api_iaudiodevicecollection_getdevice__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 int GetDevice(int index, FString& deviceName, FString& deviceId);
 ```
@@ -503,7 +503,7 @@ int GetDevice(int index, FString& deviceName, FString& deviceId);
 
 <a id="api_iaudiodevicemanager_getloopbackdevice__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetLoopbackDevice(FString & deviceId);
 ```
@@ -544,7 +544,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_getplaybackdevice__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetPlaybackDevice(FString& deviceId);
 ```
@@ -591,7 +591,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo2__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetPlaybackDeviceInfo(FString& deviceId, FString& deviceName, FString& deviceTypeName);
 ```
@@ -648,7 +648,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_getplaybackdevicemute__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetPlaybackDeviceMute(bool& mute);
 ```
@@ -690,7 +690,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_getplaybackdevicevolume__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetPlaybackDeviceVolume(int& volume);
 ```
@@ -725,7 +725,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_getrecordingdevice__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetRecordingDevice(FString& deviceId);
 ```
@@ -772,7 +772,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo2__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetRecordingDeviceInfo(FString& deviceId, FString& deviceName, FString& deviceTypeName);
 ```
@@ -829,7 +829,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_getrecordingdevicemute__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetRecordingDeviceMute(bool& mute);
 ```
@@ -871,7 +871,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_getrecordingdevicevolume__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int GetRecordingDeviceVolume(int& volume);
 ```
@@ -918,7 +918,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicecollection_isapplicationmute__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 	int IsApplicationMute(bool mute);
 ```
@@ -960,7 +960,7 @@ App 当前是否静音：
 
 <a id="api_iaudiodevicecollection_release__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 void Release();
 ```
@@ -979,7 +979,7 @@ void Release();
 
 <a id="api_iaudiodevicemanager_release__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 void Release();
 ```
@@ -998,7 +998,7 @@ void Release();
 
 <a id="api_iaudiodevicecollection_setapplicationmute__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 	int SetApplicationMute(bool mute);
 ```
@@ -1040,7 +1040,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 
 <a id="api_iaudiodevicecollection_setapplicationvolume__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 	int SetApplicationVolume(int volume);
 ```
@@ -1079,7 +1079,7 @@ App 的音量，取值范围为 [0,255]。
 
 <a id="api_iaudiodevicecollection_setdevice__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceCollection")
 int SetDevice(const FString & deviceId);
 ```
@@ -1124,7 +1124,7 @@ int SetDevice(const FString & deviceId);
 
 <a id="api_iaudiodevicemanager_setloopbackdevice__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int SetLoopbackDevice(const FString & deviceId);
 ```
@@ -1181,7 +1181,7 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 
 <a id="api_iaudiodevicemanager_setplaybackdevice__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int SetPlaybackDevice(const FString & deviceId);
 ```
@@ -1230,7 +1230,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_setplaybackdevicemute__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int SetPlaybackDeviceMute(bool mute);
 ```
@@ -1272,7 +1272,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_setplaybackdevicevolume__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int SetPlaybackDeviceVolume(int volume);
 ```
@@ -1319,7 +1319,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_setrecordingdevice__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int SetRecordingDevice(const FString & deviceId);
 ```
@@ -1368,7 +1368,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_setrecordingdevicemute__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int SetRecordingDeviceMute(bool mute);
 ```
@@ -1410,7 +1410,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_setrecordingdevicevolume__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int SetRecordingDeviceVolume(int volume);
 ```
@@ -1455,7 +1455,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int StartAudioDeviceLoopbackTest(int indicationInterval);
 ```
@@ -1510,7 +1510,7 @@ SDK 触发 OnAudioVolumeIndication 回调的时间间隔，单位为毫秒。建
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int StartPlaybackDeviceTest(const FString & testAudioFilePath);
 ```
@@ -1566,7 +1566,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int StartRecordingDeviceTest(int indicationInterval);
 ```
@@ -1619,7 +1619,7 @@ SDK 触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/unreal-blueprint/a
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int StopAudioDeviceLoopbackTest();
 ```
@@ -1658,7 +1658,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_stopplaybackdevicetest__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int StopPlaybackDeviceTest();
 ```
@@ -1694,7 +1694,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="api_iaudiodevicemanager_stoprecordingdevicetest__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 	int StopRecordingDeviceTest();
 ```
@@ -1730,7 +1730,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IAudioDeviceManager")
 
 <a id="callback_irtcengineeventhandler_onaudiodevicestatechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnAudioDeviceStateChanged(const FString& deviceId, int deviceType, int deviceState);
 ```
@@ -1786,7 +1786,7 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onaudiodevicevolumechanged__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnAudioDeviceVolumeChanged(FENUMWRAP_MEDIA_DEVICE_TYPE deviceType, int volume, bool muted);
 ```

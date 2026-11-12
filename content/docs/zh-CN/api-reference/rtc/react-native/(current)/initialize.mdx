@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_addhandler__prototype"></a>
 
-```text
+```ts
 abstract registerEventHandler(eventHandler: IRtcEngineEventHandler): boolean;
 ```
 
@@ -65,7 +65,7 @@ abstract registerEventHandler(eventHandler: IRtcEngineEventHandler): boolean;
 
 <a id="api_irtcengine_addlistener__prototype"></a>
 
-```text
+```ts
 addListener?<EventType extends keyof IRtcEngineEvent>(
       eventType: EventType,
       listener: IRtcEngineEvent[EventType]
@@ -114,7 +114,7 @@ engine.addListener('onJoinChannelSuccess', onJoinChannelSuccess);
 
 <a id="api_irtcengine_createagorartcengine__prototype"></a>
 
-```text
+```ts
 export function createAgoraRtcEngine(): IRtcEngine {
   return instance;
 }
@@ -144,7 +144,7 @@ export function createAgoraRtcEngine(): IRtcEngine {
 
 <a id="api_irtcengine_getmediaengine__prototype"></a>
 
-```text
+```ts
 abstract getMediaEngine(): IMediaEngine;
 ```
 
@@ -174,7 +174,7 @@ abstract getMediaEngine(): IMediaEngine;
 
 <a id="api_irtcengine_initialize__prototype"></a>
 
-```text
+```ts
 abstract initialize(context: RtcEngineContext): number;
 ```
 
@@ -231,7 +231,7 @@ SDK 只支持每个 App 创建一个 [IRtcEngine](/zh-CN/api-reference/rtc/react
 
 <a id="api_irtcengine_release__prototype"></a>
 
-```text
+```ts
 abstract release(sync?: boolean): void;
 ```
 
@@ -277,7 +277,7 @@ abstract release(sync?: boolean): void;
 
 <a id="api_irtcengine_removealllisteners__prototype"></a>
 
-```text
+```ts
 removeAllListeners?<EventType extends keyof IMediaEngineEvent>(
       eventType?: EventType
     ): void;
@@ -312,7 +312,7 @@ removeAllListeners?<EventType extends keyof IMediaEngineEvent>(
 
 <a id="api_irtcengine_removehandler__prototype"></a>
 
-```text
+```ts
 abstract unregisterEventHandler(
                 eventHandler: IRtcEngineEventHandler
               ): boolean;
@@ -356,7 +356,7 @@ abstract unregisterEventHandler(
 
 <a id="api_irtcengine_removelistener__prototype"></a>
 
-```text
+```ts
 removeListener?<EventType extends keyof IRtcEngineEvent>(
       eventType: EventType,
       listener: IRtcEngineEvent[EventType]

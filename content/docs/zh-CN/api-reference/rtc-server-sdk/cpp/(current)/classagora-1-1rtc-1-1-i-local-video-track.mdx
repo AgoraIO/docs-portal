@@ -169,3 +169,64 @@ virtual bool agora::rtc::ILocalVideoTrack::getStatistics([LocalVideoTrackStats](
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
+
+<a id="a551cacb9f56b75ffd2b4bdf9db721eb4"></a>
+
+### registerVideoMetadataObserver()
+
+<ApiSignature labels="inline virtual">
+
+virtual int agora::rtc::ILocalVideoTrack::registerVideoMetadataObserver([IMetadataObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer) * *metadataObserver*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
+
+注册视频 Metadata 观测器，用于发送和接收视频附属信息。
+
+:::info[自从]
+4.4.33
+:::
+
+<ParameterList title="参数">
+<Parameter name="metadataObserver">
+
+Metadata 观测器：IMetadataObserver。
+
+</Parameter>
+<Parameter name="ares">
+
+异步操作引用，默认值为 `AOSL_REF_INVALID`。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
+
+`0`：成功；小于 `0`：失败。
+
+<a id="a46680142338456fb129a1e7fe9ac0aba"></a>
+
+### unregisterVideoMetadataObserver()
+
+<ApiSignature labels="inline virtual">
+
+virtual int agora::rtc::ILocalVideoTrack::unregisterVideoMetadataObserver([IMetadataObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer) * *metadataObserver*)
+
+</ApiSignature>
+
+注销视频 Metadata 观测器。
+
+:::info[自从]
+4.4.33
+:::
+
+<ParameterList title="参数">
+<Parameter name="metadataObserver">
+
+要注销的 Metadata 观测器。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
+
+`0`：成功；小于 `0`：失败。

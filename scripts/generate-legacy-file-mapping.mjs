@@ -1,6 +1,8 @@
 import { existsSync } from 'node:fs';
 import { readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { isUnpublishedLegacySource } from './lib/legacy-publication.mjs';
 
 const repoRoot = process.cwd();
 const legacyRoot = '/Users/yejiayi/Documents/shengwang-doc-source';
@@ -250,19 +252,8 @@ function openApiTarget({ sourcePath, apiMaps }) {
 }
 
 function classifySpecialDocsFile(sourcePath) {
-  const exact = new Map([
-    ['docs/flexible-classroom/_resources.mdx', ['fallback-default/defer', '', '同级已有平台资源页，本轮不生成正式页面']],
-    ['docs/iot-apaas/_resources.mdx', ['mapped', 'content/docs/zh-CN/solutions/iot-apaas/resources.mdx', '特殊资源页映射']],
-    ['docs/meeting/_resources.mdx', ['mapped', 'content/docs/zh-CN/solutions/meeting/resources.mdx', '特殊资源页映射']],
-    ['docs/rtm2/_resources.mdx', ['mapped', 'content/docs/zh-CN/realtime-media/rtm/resources.mdx', '特殊资源页映射']],
-    ['docs/toybox/_resources.mdx', ['mapped', 'content/docs/zh-CN/ai/device-kit/resources.mdx', '特殊资源页映射']],
-    ['docs/rtc/api/_reference.mdx', ['ignore-empty', '', '空文件，不迁移']],
-    ['docs/rtc/basic-features/_token-authentication.mdx', ['fallback-default/defer', '', '同级已有多平台正式稿，本轮不生成正式页面']],
-  ]);
-
-  if (exact.has(sourcePath)) {
-    const [status, target, notes] = exact.get(sourcePath);
-    return { status, target, notes };
+  if (isUnpublishedLegacySource(sourcePath)) {
+    return { status: 'ignore', target: '', notes: '旧站构建跳过下划线文件或目录，不生成页面或重定向' };
   }
 
   const fileName = sourcePath.split('/').at(-1);
@@ -300,7 +291,7 @@ function classifySpecialDocsFile(sourcePath) {
   return null;
 }
 
-function docsTargets({ sourcePath, productMap }) {
+export function docsTargets({ sourcePath, productMap }) {
   const [, product, ...rest] = sourcePath.split('/');
   const productEntry = productMap.get(product);
   const special = classifySpecialDocsFile(sourcePath);
@@ -349,12 +340,21 @@ function docsTargets({ sourcePath, productMap }) {
   });
 }
 
-function apiTargets({ sourcePath, apiMaps }) {
+export function apiTargets({ sourcePath, apiMaps }) {
   const [, product, ...rest] = sourcePath.split('/');
   const productEntry = apiMaps.get(product);
   const parsed = parseFileName(rest.at(-1));
   const platforms = parsed.platforms.length > 0 ? parsed.platforms : [''];
   const fileName = rest.at(-1);
+
+  if (isUnpublishedLegacySource(sourcePath)) {
+    return platforms.map((platform) => ({
+      platform,
+      status: 'ignore',
+      target: '',
+      notes: '旧站构建跳过下划线文件或目录，不生成页面或重定向',
+    }));
+  }
 
   if (
     /(?:^|\/)_en(?:\/|-)/.test(sourcePath) ||
@@ -767,9 +767,10 @@ async function main() {
   console.log(JSON.stringify(summary, null, 2));
 }
 
-const legacyStats = await stat(legacyRoot).catch(() => null);
-if (!legacyStats?.isDirectory()) {
-  throw new Error(`Legacy source root does not exist: ${legacyRoot}`);
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const legacyStats = await stat(legacyRoot).catch(() => null);
+  if (!legacyStats?.isDirectory()) {
+    throw new Error(`Legacy source root does not exist: ${legacyRoot}`);
+  }
+  await main();
 }
-
-await main();

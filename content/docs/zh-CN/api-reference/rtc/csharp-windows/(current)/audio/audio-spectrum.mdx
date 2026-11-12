@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_registeraudiospectrumobserver__prototype"></a>
 
-```text
+```csharp
 public abstract int RegisterAudioSpectrumObserver(IAudioSpectrumObserver observer);
 ```
 
@@ -73,7 +73,7 @@ public abstract int RegisterAudioSpectrumObserver(IAudioSpectrumObserver observe
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver__prototype"></a>
 
-```text
+```csharp
 public abstract int UnregisterAudioSpectrumObserver();
 ```
 
@@ -110,7 +110,7 @@ public abstract int UnregisterAudioSpectrumObserver();
 
 <a id="api_irtcengine_disableaudiospectrummonitor__prototype"></a>
 
-```text
+```csharp
 public abstract int DisableAudioSpectrumMonitor();
 ```
 
@@ -149,7 +149,7 @@ public abstract int DisableAudioSpectrumMonitor();
 
 <a id="api_irtcengine_enableaudiospectrummonitor__prototype"></a>
 
-```text
+```csharp
 public abstract int EnableAudioSpectrumMonitor(int intervalInMS = 100);
 ```
 
@@ -203,7 +203,7 @@ SDK 触发 [OnLocalAudioSpectrum](/zh-CN/api-reference/rtc/csharp-windows/audio/
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__prototype"></a>
 
-```text
+```csharp
 public virtual bool OnLocalAudioSpectrum(AudioSpectrumData data)
         {
             return true;
@@ -252,7 +252,7 @@ public virtual bool OnLocalAudioSpectrum(AudioSpectrumData data)
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__prototype"></a>
 
-```text
+```csharp
 public virtual bool OnRemoteAudioSpectrum(UserAudioSpectrumInfo[] spectrums, uint spectrumNumber)
         {
             return true;

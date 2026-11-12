@@ -32,6 +32,12 @@ function normalizePlatformHeadingLinks(panel: MdxJsxFlowElement) {
       matches.add(id);
       headings.set(key, matches);
     } else if (
+      node.type === 'paragraph' &&
+      node.data?.hName === 'span' &&
+      typeof node.data.hProperties?.id === 'string'
+    ) {
+      ids.add(node.data.hProperties.id);
+    } else if (
       node.type === 'mdxJsxFlowElement' ||
       node.type === 'mdxJsxTextElement'
     ) {
@@ -76,7 +82,36 @@ function visitNodes(node: Nodes, visitor: (node: Nodes) => void) {
 
 function processFlowContainer(container: FlowContainer) {
   for (let index = 0; index < container.children.length; index += 1) {
-    const node = container.children[index];
+    let node = container.children[index];
+
+    // Markdown input discards raw HTML. Preserve only literal, empty ID
+    // anchors as a normal mdast element; leave all other HTML handling alone.
+    const rawAnchor =
+      node.type === 'html'
+        ? node.value
+        : node.type === 'paragraph' &&
+            node.children.every(
+              (child) =>
+                child.type === 'html' ||
+                (child.type === 'text' && !child.value.trim()),
+            )
+          ? node.children
+              .map((child) => ('value' in child ? child.value : ''))
+              .join('')
+          : '';
+    if (rawAnchor) {
+      const id = /^<a\s+(?:id|name)=(["'])([^\s"'&<>]+)\1\s*>\s*<\/a>$/i.exec(
+        rawAnchor.trim(),
+      )?.[2];
+      if (id) {
+        node = {
+          type: 'paragraph',
+          children: [],
+          data: { hName: 'span', hProperties: { id } },
+        };
+        container.children[index] = node;
+      }
+    }
 
     if (node.type === 'mdxJsxFlowElement') {
       processFlowContainer(node);
@@ -165,6 +200,15 @@ function getAnchorRun(children: FlowChild[], startIndex: number) {
 }
 
 function getEmptyAnchorId(node: FlowChild): string | undefined {
+  if (
+    node.type === 'paragraph' &&
+    node.children.length === 0 &&
+    node.data?.hName === 'span' &&
+    typeof node.data.hProperties?.id === 'string'
+  ) {
+    return node.data.hProperties.id;
+  }
+
   if (!isEmptyAnchor(node)) {
     return undefined;
   }

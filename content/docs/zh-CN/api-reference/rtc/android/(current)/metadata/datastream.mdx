@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_createdatastream1__prototype"></a>
 
-```text
+```java
 public abstract int createDataStream(boolean reliable, boolean ordered);
 ```
 
@@ -93,7 +93,7 @@ public abstract int createDataStream(boolean reliable, boolean ordered);
 
 <a id="api_irtcengine_createdatastream2__prototype"></a>
 
-```text
+```java
 public abstract int createDataStream(DataStreamConfig config);
 ```
 
@@ -145,7 +145,7 @@ public abstract int createDataStream(DataStreamConfig config);
 
 <a id="api_irtcengineex_createdatastreamex1__prototype"></a>
 
-```text
+```java
 public abstract int createDataStreamEx(boolean reliable, boolean ordered, RtcConnection connection);
 ```
 
@@ -235,7 +235,7 @@ public abstract int createDataStreamEx(boolean reliable, boolean ordered, RtcCon
 
 <a id="api_irtcengineex_createdatastreamex2__prototype"></a>
 
-```text
+```java
 public abstract int createDataStreamEx(DataStreamConfig config, RtcConnection connection);
 ```
 
@@ -299,7 +299,7 @@ public abstract int createDataStreamEx(DataStreamConfig config, RtcConnection co
 
 <a id="api_irtcengine_sendstreammessage__prototype"></a>
 
-```text
+```java
 public abstract int sendStreamMessage(int streamId, byte[] message);
 ```
 
@@ -364,7 +364,7 @@ public abstract int sendStreamMessage(int streamId, byte[] message);
 
 <a id="api_irtcengineex_sendstreammessageex__prototype"></a>
 
-```text
+```java
 public abstract int sendStreamMessageEx(int streamId, byte[] message, RtcConnection connection);
 ```
 
@@ -441,7 +441,7 @@ public abstract int sendStreamMessageEx(int streamId, byte[] message, RtcConnect
 
 <a id="callback_irtcengineeventhandler_onstreammessage__prototype"></a>
 
-```text
+```java
 public void onStreamMessage(int uid, int streamId, byte[] data)
 ```
 
@@ -496,7 +496,7 @@ public void onStreamMessage(int uid, int streamId, byte[] data)
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__prototype"></a>
 
-```text
+```java
 public void onStreamMessageError(int uid, int streamId, int error, int missed, int cached)
 ```
 

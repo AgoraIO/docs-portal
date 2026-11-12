@@ -43,6 +43,9 @@ const enCommon = {
     sectionPickerLabel: 'Section',
     pagesLabel: 'Pages',
     toggleSectionPages: 'Expand or collapse {{title}} child pages',
+    apiReturnType: 'Return type',
+    apiParameterName: 'Parameter',
+    apiParameterDescription: 'Description',
     tableOverflowLabel: 'Horizontally scrollable table',
     tableOverflowDescription:
       'The table extends beyond the current width. Scroll horizontally to view more columns.',
@@ -58,6 +61,8 @@ const enCommon = {
     previous: 'Previous',
     copyPage: 'Copy Page',
     copyLink: 'Copy Link',
+    wrapCode: 'Wrap code',
+    unwrapCode: 'Unwrap code',
     copyPageMoreActions: 'Copy Page more actions',
     viewAsMarkdown: 'View as Markdown',
     openInChatGpt: 'Open in ChatGPT',

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_startrtmpstreamwithouttranscoding__prototype"></a>
 
-```text
+```objc
 - (int)startRtmpStreamWithoutTranscoding:(NSString* _Nonnull)url NS_SWIFT_NAME(startRtmpStreamWithoutTranscoding(_:));
 ```
 
@@ -82,7 +82,7 @@ _migration:
 
 <a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__prototype"></a>
 
-```text
+```objc
 - (int)startRtmpStreamWithoutTranscodingEx:(NSString* _Nonnull)url
                                 connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(startRtmpStreamWithoutTranscodingEx(_:connection:));
 ```
@@ -156,7 +156,7 @@ _migration:
 
 <a id="api_irtcengine_startrtmpstreamwithtranscoding__prototype"></a>
 
-```text
+```objc
 - (int)startRtmpStreamWithTranscoding:(NSString* _Nonnull)url transcoding:(AgoraLiveTranscoding* _Nullable)transcoding NS_SWIFT_NAME(startRtmpStream(withTranscoding:transcoding:));
 ```
 
@@ -223,7 +223,7 @@ _migration:
 
 <a id="api_irtcengineex_startrtmpstreamwithtranscodingex__prototype"></a>
 
-```text
+```objc
 - (int)startRtmpStreamWithTranscodingEx:(NSString* _Nonnull)url
                             transcoding:(AgoraLiveTranscoding* _Nullable)transcoding
                              connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(startRtmpStreamWithTranscodingEx(_:transcoding:connection:));
@@ -303,7 +303,7 @@ _migration:
 
 <a id="api_irtcengine_stoprtmpstream__prototype"></a>
 
-```text
+```objc
 - (int)stopRtmpStream:(NSString* _Nonnull)url NS_SWIFT_NAME(stopRtmpStream(_:));
 ```
 
@@ -352,7 +352,7 @@ _migration:
 
 <a id="api_irtcengineex_stoprtmpstreamex__prototype"></a>
 
-```text
+```objc
 - (int)stopRtmpStreamEx:(NSString* _Nonnull)url
              connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(stopRtmpStreamEx(_:connection:));
 ```
@@ -414,7 +414,7 @@ _migration:
 
 <a id="api_irtcengine_updatertmptranscoding__prototype"></a>
 
-```text
+```objc
 - (int)updateRtmpTranscoding:(AgoraLiveTranscoding* _Nullable)transcoding NS_SWIFT_NAME(updateRtmpTranscoding(_:));
 ```
 
@@ -457,7 +457,7 @@ _migration:
 
 <a id="api_irtcengineex_updatertmptranscodingex__prototype"></a>
 
-```text
+```objc
 - (int)updateRtmpTranscodingEx:(AgoraLiveTranscoding* _Nullable)transcoding
                     connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(updateRtmpTranscodingEx(_:connection:));
 ```
@@ -513,7 +513,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onrtmpstreamingevent__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit* _Nonnull)engine rtmpStreamingEventWithUrl:(NSString* _Nonnull)url eventCode:(AgoraRtmpStreamingEvent)eventCode NS_SWIFT_NAME(rtcEngine(_:rtmpStreamingEventWithUrl:eventCode:));
 ```
 
@@ -568,7 +568,7 @@ RTMP 或 RTMPS 推流状态发生变化时触发的回调。
 
 <a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit* _Nonnull)engine rtmpStreamingChangedToState:(NSString* _Nonnull)url state:(AgoraRtmpStreamingState)state reason:(AgoraRtmpStreamingReason)reason NS_SWIFT_NAME(rtcEngine(_:rtmpStreamingChangedToState:state:reason:));
 ```
 
@@ -627,7 +627,7 @@ RTMP 或 RTMPS 推流状态，详见 [AgoraRtmpStreamingState](/zh-CN/api-refere
 
 <a id="callback_irtcengineeventhandler_ontranscodingupdated__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngineTranscodingUpdated:(AgoraRtcEngineKit * _Nonnull)engine NS_SWIFT_NAME(rtcEngineTranscodingUpdated(_:));
 ```
 

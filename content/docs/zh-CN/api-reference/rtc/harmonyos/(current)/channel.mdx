@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_getuserinfobyuid__prototype"></a>
 
-```text
+```ts
 public abstract getUserInfoByUid(uid:number,userInfo:UserInfo):number;
 ```
 
@@ -76,7 +76,7 @@ public abstract getUserInfoByUid(uid:number,userInfo:UserInfo):number;
 
 <a id="api_irtcengineex_getuserinfobyuidex__prototype"></a>
 
-```text
+```ts
 public abstract getUserInfoByUidEx(uid:number,userInfo:UserInfo,connection:RtcConnection):number;
 ```
 
@@ -135,7 +135,7 @@ public abstract getUserInfoByUidEx(uid:number,userInfo:UserInfo,connection:RtcCo
 
 <a id="api_irtcengine_getuserinfobyuseraccount__prototype"></a>
 
-```text
+```ts
 public abstract getUserInfoByUserAccount(userAccount:string,userInfo:UserInfo):number;
 ```
 
@@ -188,7 +188,7 @@ public abstract getUserInfoByUserAccount(userAccount:string,userInfo:UserInfo):n
 
 <a id="api_irtcengineex_getuserinfobyuseraccountex__prototype"></a>
 
-```text
+```ts
 public abstract getUserInfoByUserAccountEx(userAccount:string,userInfo:UserInfo,connection:RtcConnection):number;
 ```
 
@@ -247,7 +247,7 @@ public abstract getUserInfoByUserAccountEx(userAccount:string,userInfo:UserInfo,
 
 <a id="api_irtcengine_joinchannel__prototype"></a>
 
-```text
+```ts
 public abstract joinChannel(key: string, channel: string, optionalInfo: string, uid: number): number;
 ```
 
@@ -357,7 +357,7 @@ public abstract joinChannel(key: string, channel: string, optionalInfo: string, 
 
 <a id="api_irtcengine_joinchannel2__prototype"></a>
 
-```text
+```ts
 public abstract joinChannelWithOptions(token: string, channelId: string, uid: number, options: ChannelMediaOptions): number;
 ```
 
@@ -467,7 +467,7 @@ public abstract joinChannelWithOptions(token: string, channelId: string, uid: nu
 
 <a id="api_irtcengineex_joinchannelex__prototype"></a>
 
-```text
+```ts
 public abstract joinChannelEx(token: string, connection: RtcConnection, options: ChannelMediaOptions, eventHandler: IRtcEngineEventHandler): number;
 ```
 
@@ -576,7 +576,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 
 <a id="api_irtcengine_joinchannelwithuseraccount2__prototype"></a>
 
-```text
+```ts
 public abstract joinChannelWithUserAccount(token:string,channelName:string,userAccount:string,options?:ChannelMediaOptions):number;
 ```
 
@@ -692,7 +692,7 @@ public abstract joinChannelWithUserAccount(token:string,channelName:string,userA
 
 <a id="api_irtcengine_joinchannelwithuseraccountex__prototype"></a>
 
-```text
+```ts
 public abstract joinChannelWithUserAccountEx(token:string,channelId:string,userAccount:string,options:ChannelMediaOptions,eventHandler:IRtcEngineEventHandler):number;
 ```
 
@@ -806,7 +806,7 @@ public abstract joinChannelWithUserAccountEx(token:string,channelId:string,userA
 
 <a id="api_irtcengine_leavechannel2__prototype"></a>
 
-```text
+```ts
 public abstract leaveChannel(options?: LeaveChannelOptions): number;
 ```
 
@@ -877,7 +877,7 @@ public abstract leaveChannel(options?: LeaveChannelOptions): number;
 
 <a id="api_irtcengineex_leavechannelex2__prototype"></a>
 
-```text
+```ts
 public abstract leaveChannelEx(connection: RtcConnection, options?:LeaveChannelOptions): number;
 ```
 
@@ -965,7 +965,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 
 <a id="api_irtcengine_preloadchannelwithuseraccount__prototype"></a>
 
-```text
+```ts
 public abstract preloadChannelWithUserAccount(token:string,channelName:string,userAccount:string):number;
 ```
 
@@ -1021,7 +1021,7 @@ public abstract preloadChannelWithUserAccount(token:string,channelName:string,us
 
 <a id="api_irtcengine_registerlocaluseraccount__prototype"></a>
 
-```text
+```ts
 public abstract registerLocalUserAccount(appId:string,userAccount:string):number;
 ```
 
@@ -1091,7 +1091,7 @@ public abstract registerLocalUserAccount(appId:string,userAccount:string):number
 
 <a id="api_irtcengine_renewtoken__prototype"></a>
 
-```text
+```ts
 public abstract renewToken(token: string): number;
 ```
 
@@ -1156,7 +1156,7 @@ public abstract renewToken(token: string): number;
 
 <a id="api_irtcengine_setchannelprofile__prototype"></a>
 
-```text
+```ts
 public abstract setChannelProfile(profile: number): number;
 ```
 
@@ -1230,7 +1230,7 @@ public abstract setChannelProfile(profile: number): number;
 
 <a id="api_irtcengine_setclientrole2__prototype"></a>
 
-```text
+```ts
 public abstract setClientRole(role: number, options?: ClientRoleOptions): number;
 ```
 
@@ -1327,7 +1327,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 <a id="api_irtcengine_updatechannelmediaoptions__prototype"></a>
 
-```text
+```ts
 public abstract updateChannelMediaOptions(options: ChannelMediaOptions): number;
 ```
 
@@ -1369,7 +1369,7 @@ public abstract updateChannelMediaOptions(options: ChannelMediaOptions): number;
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex__prototype"></a>
 
-```text
+```ts
 public abstract updateChannelMediaOptionsEx(options:ChannelMediaOptions,connection:RtcConnection):number;
 ```
 
@@ -1417,7 +1417,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged__prototype"></a>
 
-```text
+```ts
 onClientRoleChanged?:(oldRole:Constants.ClientRole, newRole:Constants.ClientRole, newRoleOptions:ClientRoleOptions) => void;
 ```
 
@@ -1477,7 +1477,7 @@ onClientRoleChanged?:(oldRole:Constants.ClientRole, newRole:Constants.ClientRole
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed__prototype"></a>
 
-```text
+```ts
 onClientRoleChangeFailed?: (reason:number, currentRole:Constants.ClientRole) => void;
 ```
 
@@ -1551,7 +1551,7 @@ onClientRoleChangeFailed?: (reason:number, currentRole:Constants.ClientRole) => 
 
 <a id="callback_irtcengineeventhandler_onerror__prototype"></a>
 
-```text
+```ts
 onError?:(err:Constants.ErrorCode,message:string) => void
 ```
 
@@ -1590,7 +1590,7 @@ onError?:(err:Constants.ErrorCode,message:string) => void
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess__prototype"></a>
 
-```text
+```ts
 onJoinChannelSuccess?:(channel:string, uid:number, elapsed:number) => void;
 ```
 
@@ -1653,7 +1653,7 @@ onJoinChannelSuccess?:(channel:string, uid:number, elapsed:number) => void;
 
 <a id="callback_irtcengineeventhandler_onleavechannel__prototype"></a>
 
-```text
+```ts
 onLeaveChannel?:(stats: RtcStats ) => void;
 ```
 
@@ -1739,7 +1739,7 @@ onLeaveChannel?:(stats: RtcStats ) => void;
 
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__prototype"></a>
 
-```text
+```ts
 onRejoinChannelSuccess?:(channel:string, uid:number, elapsed:number) => void;
 ```
 
@@ -1798,7 +1798,7 @@ Token 已过期回调。
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__prototype"></a>
 
-```text
+```ts
 onRequestToken?:() => void;
 ```
 
@@ -1842,7 +1842,7 @@ onRequestToken?:() => void;
 
 <a id="callback_irtcengineeventhandler_onrtcstats__prototype"></a>
 
-```text
+```ts
 onRtcStats ? : (stats: RtcStats)  => void
 ```
 
@@ -1887,7 +1887,7 @@ Token 即将在 30s 内过期回调。
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__prototype"></a>
 
-```text
+```ts
 onTokenPrivilegeWillExpire?: (token:string) => void;
 ```
 
@@ -1973,7 +1973,7 @@ onTokenPrivilegeWillExpire?: (token:string) => void;
 
 <a id="callback_irtcengineeventhandler_onuserjoined__prototype"></a>
 
-```text
+```ts
 onUserJoined?:(uid:number, elapse:number) => void;
 ```
 
@@ -2033,7 +2033,7 @@ onUserJoined?:(uid:number, elapse:number) => void;
 
 <a id="callback_irtcengineeventhandler_onuseroffline__prototype"></a>
 
-```text
+```ts
 onUserOffline?:(uid:number, reason:number) => void;
 ```
 

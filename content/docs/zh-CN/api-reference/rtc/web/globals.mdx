@@ -114,7 +114,11 @@ _migration:
 
 ### AudioEncoderConfigurationPreset
 
+<ApiSignature>
+
 AudioEncoderConfigurationPreset: keyof typeof AUDIO_ENCODER_CONFIG_SETTINGS
+
+</ApiSignature>
 
 你可以在以下方法中传入预设值来控制本地音频的编码配置：
 
@@ -137,7 +141,11 @@ AudioEncoderConfigurationPreset: keyof typeof AUDIO_ENCODER_CONFIG_SETTINGS
 
 ### AudioSourceState
 
+<ApiSignature>
+
 AudioSourceState: "stopped"|"playing"|"paused"
+
+</ApiSignature>
 
 音频源数据处理状态，通过 [BufferSourceAudioTrack.on("source-state-change")](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#event_source_state_change) 获取。
 
@@ -149,7 +157,11 @@ AudioSourceState: "stopped"|"playing"|"paused"
 
 ### CheckVideoVisibleResult
 
+<ApiSignature>
+
 CheckVideoVisibleResult: CheckVisibleResult
+
+</ApiSignature>
 
 `<video>` 标签的可见状态信息。
 
@@ -174,7 +186,11 @@ CheckVideoVisibleResult: CheckVisibleResult
 
 ### ClientRole
 
+<ApiSignature>
+
 ClientRole: "audience"|"host"
+
+</ApiSignature>
 
 用户角色。
 
@@ -185,7 +201,11 @@ ClientRole: "audience"|"host"
 
 ### ConnectionState
 
+<ApiSignature>
+
 ConnectionState: "DISCONNECTED"|"CONNECTING"|"RECONNECTING"|"CONNECTED"|"DISCONNECTING"
+
+</ApiSignature>
 
 SDK 和声网服务器的连接状态，可以通过 [connectionState](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#connectionstate) 获取。
 
@@ -205,7 +225,11 @@ SDK 和服务器有以下 5 种连接状态:
 
 ### DeviceState
 
+<ApiSignature>
+
 DeviceState: "ACTIVE"|"INACTIVE"
+
+</ApiSignature>
 
 采集设备当前的插拔状态。
 
@@ -216,7 +240,11 @@ DeviceState: "ACTIVE"|"INACTIVE"
 
 ### EncryptionMode
 
+<ApiSignature>
+
 EncryptionMode: "aes-128-xts"|"aes-256-xts"|"aes-128-ecb"|"sm4-128-ecb"|"aes-128-gcm"|"aes-256-gcm"|"aes-128-gcm2"|"aes-256-gcm2"|"none"
+
+</ApiSignature>
 
 加密方案，在调用 [setEncryptionConfig](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setencryptionconfig) 时使用。包含以下几种：
 
@@ -234,7 +262,11 @@ EncryptionMode: "aes-128-xts"|"aes-256-xts"|"aes-128-ecb"|"sm4-128-ecb"|"aes-128
 
 ### LocalAccessPointConfig
 
+<ApiSignature>
+
 LocalAccessPointConfig: object&object
+
+</ApiSignature>
 
 混合云/私有化平台的配置参数。用于 [setLocalAccessPointsV2](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setlocalaccesspointsv2) 方法。
 
@@ -280,7 +312,11 @@ client.setLocalAccessPointsV2({
 
 ### OptimizationMode
 
+<ApiSignature>
+
 OptimizationMode: "motion"|"detail"|"balanced"
+
+</ApiSignature>
 
 视频传输优化模式：
 
@@ -312,7 +348,11 @@ RequiredOnlyOneOf&lt;T, K&gt;: object[K] extends infer O? object: never
 
 ### SDK_CODEC
 
+<ApiSignature>
+
 SDK_CODEC: keyof typeof VideoCodec
+
+</ApiSignature>
 
 浏览器使用的编码格式，有以下选择：
 
@@ -341,7 +381,11 @@ SDK_CODEC: keyof typeof VideoCodec
 
 ### SDK_MODE
 
+<ApiSignature>
+
 SDK_MODE: "live"|"rtc"
+
+</ApiSignature>
 
 频道场景。
 
@@ -356,7 +400,11 @@ Agora Web SDK 需知道 app 的使用场景（例如通信模式或直播模式�
 
 ### ScreenAudioTrackInitConfig
 
+<ApiSignature>
+
 ScreenAudioTrackInitConfig: object
+
+</ApiSignature>
 
 创建屏幕共享音频轨道时的配置参数。当使用 [AgoraRTC.createScreenVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createscreenvideotrack) 创建屏幕共享视频轨道时，可以通过此配置共享音频轨道。
 
@@ -424,7 +472,11 @@ ScreenAudioTrackInitConfig: object
 
 ### ScreenEncoderConfigurationPreset
 
+<ApiSignature>
+
 ScreenEncoderConfigurationPreset: keyof typeof SUPPORT_SCREEN_ENCODER_CONFIG_LIST
+
+</ApiSignature>
 
 SDK 预设的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration) 配置。
 
@@ -462,7 +514,11 @@ SDK 预设的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interface
 
 ### ScreenSourceType
 
+<ApiSignature>
+
 ScreenSourceType: "screen"|"window"|"application"
+
+</ApiSignature>
 
 屏幕共享源的类型。
 
@@ -474,7 +530,11 @@ ScreenSourceType: "screen"|"window"|"application"
 
 ### UID
 
+<ApiSignature>
+
 UID: number|string
+
+</ApiSignature>
 
 用于标识用户的 ID。同一频道中每个用户都具有唯一的 ID，且数据类型相同。
 
@@ -484,7 +544,11 @@ UID: number|string
 
 ### VideoEncoderConfigurationPreset
 
+<ApiSignature>
+
 VideoEncoderConfigurationPreset: keyof typeof SUPPORT_VIDEO_ENCODER_CONFIG_LIST
+
+</ApiSignature>
 
 SDK 预设的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration) 配置。
 

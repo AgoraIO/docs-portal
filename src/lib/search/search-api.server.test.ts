@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { cnSearchPlatformOptions } from './cn-search-platforms';
 import {
   handleHealthRequest,
   handleSearchRequest,
@@ -18,6 +19,85 @@ const request = (query: string) => {
 };
 
 describe('Start search API', () => {
+  it.each(cnSearchPlatformOptions)(
+    'accepts the selectable $label platform through the public handler',
+    async ({ value }) => {
+      vi.stubEnv('MEILI_HOST', 'http://meili.internal:7700');
+      vi.stubEnv('MEILI_INDEX_UID', 'docs_cn');
+      vi.stubEnv('MEILI_SEARCH_API_KEY', 'private-read-key');
+      vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json(empty));
+
+      const response = await handleSearchRequest(
+        request(`q=Token&platform=${value}`),
+      );
+
+      expect(response.status).toBe(200);
+      expect(await response.json()).toMatchObject({ groups: [], totalHits: 0 });
+    },
+  );
+
+  it.each([
+    ['general', 'console', 'all'],
+    ['general', 'console', 'docs'],
+    ['iot', 'smart-doorbell', 'all'],
+    ['iot', 'smart-doorbell', 'docs'],
+  ])(
+    'returns %s category results through API validation and the %s product filter (%s)',
+    async (platform, product, type) => {
+      vi.stubEnv('MEILI_HOST', 'http://meili.internal:7700');
+      vi.stubEnv('MEILI_INDEX_UID', 'docs_cn');
+      vi.stubEnv('MEILI_SEARCH_API_KEY', 'private-read-key');
+      const url =
+        product === 'console'
+          ? '/zh-CN/reference/console/token'
+          : '/zh-CN/solutions/smart-doorbell/token';
+      const match = {
+        ...empty,
+        hits: [
+          {
+            id: product,
+            url,
+            pageTitle: 'Token 配置',
+            sectionTitle: 'Token 配置',
+            content: 'Token 配置说明',
+            headingPath: ['Token 配置'],
+            locale: 'zh-CN',
+            product,
+            products: [product],
+            docType: 'docs',
+            audience: ['developer'],
+            status: 'published',
+            hidden: false,
+          },
+        ],
+        totalHits: 1,
+        totalPages: 1,
+      };
+      const upstream = vi
+        .spyOn(globalThis, 'fetch')
+        .mockResolvedValue(
+          Response.json(
+            type === 'all' ? { results: [match, empty, empty] } : match,
+          ),
+        );
+
+      const response = await handleSearchRequest(
+        request(`q=Token&platform=${platform}&type=${type}`),
+      );
+
+      expect(response.status).toBe(200);
+      const data = await response.json();
+      expect(data.groups).toHaveLength(1);
+      expect(data.groups[0].pageUrl).toBe(url);
+      expect(data.groups[0].sections[0].products).toEqual([product]);
+      const body = JSON.parse(upstream.mock.calls[0][1]?.body as string);
+      for (const query of type === 'all' ? body.queries : [body]) {
+        expect(query.filter).toContain(`products = "${product}"`);
+        expect(query.filter).not.toContain('platform NOT EXISTS');
+      }
+    },
+  );
+
   it('exposes the deployed full revision without changing the health contract', async () => {
     const revision = 'a'.repeat(40);
     const response = handleHealthRequest({ DOCS_RELEASE_REVISION: revision });
@@ -32,6 +112,36 @@ describe('Start search API', () => {
       expect(
         await handleHealthRequest({ DOCS_RELEASE_REVISION: revision }).json(),
       ).toEqual({ status: 'ok' });
+    },
+  );
+
+  it.each([
+    ['api', 'api'],
+    ['faq', 'faq'],
+    ['openapi', 'api'],
+  ])(
+    'accepts the public %s filter and searches the %s family',
+    async (type, family) => {
+      vi.stubEnv('MEILI_HOST', 'http://meili.internal:7700');
+      vi.stubEnv('MEILI_INDEX_UID', 'docs_cn');
+      vi.stubEnv('MEILI_SEARCH_API_KEY', 'private-read-key');
+      const fetchMock = vi
+        .spyOn(globalThis, 'fetch')
+        .mockResolvedValue(Response.json(empty));
+
+      const response = await handleSearchRequest(
+        request(`q=joinChannel&type=${type}`),
+      );
+
+      expect(response.status).toBe(200);
+      expect(await response.json()).toMatchObject({
+        groups: [],
+        totalHits: 0,
+        page: 1,
+      });
+      expect(
+        JSON.parse(fetchMock.mock.calls[0][1]?.body as string).filter,
+      ).toContain(`searchFamily = "${family}"`);
     },
   );
 
@@ -193,7 +303,7 @@ describe('Start search API', () => {
       Authorization: 'Bearer private-read-key',
     });
     expect(JSON.parse(options?.body as string).filter).toBe(
-      'locale = "zh-CN" AND hidden = false AND status = "published" AND isDefaultPlatform = true AND tab = "ai" AND searchFamily = "docs"',
+      'locale = "zh-CN" AND hidden = false AND status = "published" AND tab = "ai" AND searchFamily = "docs"',
     );
     expect(await response.text()).not.toMatch(
       /private-read-key|meili.internal/,

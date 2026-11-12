@@ -4,7 +4,7 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import react from '@vitejs/plugin-react';
 import mdx from 'fumadocs-mdx/vite';
 import { nitro } from 'nitro/vite';
-import { defineConfig } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 import { getOpenApiPrerenderPaths } from './src/lib/openapi/lanes';
 import { createPlatformQueryIndex } from './src/lib/platforms/query-route';
 import { getContentDocsPrerenderPaths } from './src/lib/prerender-content-routes';
@@ -13,7 +13,10 @@ import {
   createDocsPrerenderPaths,
   selectStaticDocsPrerenderPaths,
 } from './src/lib/prerender-pages';
-import { readPublishedDocsRoutes } from './src/lib/published-docs-routes.server';
+import {
+  readDocsPrerenderPaths,
+  readPublishedDocsRoutes,
+} from './src/lib/published-docs-routes.server';
 
 const isTest = process.env.VITEST === 'true';
 const buildTarget = process.env.DOCS_BUILD_TARGET;
@@ -36,7 +39,7 @@ const docsPrerenderPaths =
     ? []
     : isStaticDeployment
       ? [
-          ...publishedDocsRoutes.map((route) => route.url),
+          ...readDocsPrerenderPaths(),
           ...(process.env.VITE_DOCS_REGION === 'cn' ? ['/zh-CN/search'] : []),
         ]
       : createDocsPrerenderPaths({
@@ -71,6 +74,7 @@ export default defineConfig({
     include: ['react', 'react/jsx-runtime', 'react/jsx-dev-runtime'],
   },
   test: {
+    exclude: [...configDefaults.exclude, '.agent/**'],
     environment: 'happy-dom',
     globals: true,
     setupFiles: './src/test/setup.ts',
@@ -95,6 +99,8 @@ export default defineConfig({
               : {}),
             pages: prerenderPages,
             prerender: {
+              // The stream renderer waits for all Suspense content for crawlers.
+              headers: { 'User-Agent': 'DocsPortal Prerender' },
               crawlLinks: false,
               enabled: !isServiceDeployment,
               filter: shouldPrerenderPage,

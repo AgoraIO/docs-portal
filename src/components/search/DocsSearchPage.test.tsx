@@ -6,6 +6,8 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { useState } from 'react';
+import { hydrateRoot } from 'react-dom/client';
+import { renderToString } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { recordRecentPage } from '@/lib/recently-viewed';
 import {
@@ -30,7 +32,119 @@ const empty: CnSearchPageResponse = {
   facets: {},
 };
 
+function ClearQueryHarness() {
+  const [state, setState] = useState(
+    parseSearchPageState({ q: 'Token', product: 'rtc' }),
+  );
+  return (
+    <DocsSearchPage
+      state={state}
+      onChange={(patch) => setState((previous) => ({ ...previous, ...patch }))}
+    />
+  );
+}
+
 describe('DocsSearchPage', () => {
+  it('hydrates the static empty-query HTML with a real query and selected filters without replacing the tree', async () => {
+    vi.mocked(searchCnDocsPage).mockResolvedValue(empty);
+    vi.mocked(loadCnSearchCatalog).mockResolvedValue({});
+    const container = document.createElement('div');
+    document.body.append(container);
+    container.innerHTML = renderToString(
+      <DocsSearchPage state={parseSearchPageState({})} onChange={() => {}} />,
+    );
+    const recoverable: unknown[] = [];
+    let root: ReturnType<typeof hydrateRoot> | undefined;
+    await act(async () => {
+      root = hydrateRoot(
+        container,
+        <DocsSearchPage
+          state={parseSearchPageState({
+            q: 'Token',
+            platform: 'web',
+            type: 'api',
+          })}
+          onChange={() => {}}
+        />,
+        { onRecoverableError: (error) => recoverable.push(error) },
+      );
+    });
+    try {
+      await waitFor(() =>
+        expect(container.querySelector('input')?.value).toBe('Token'),
+      );
+      expect(recoverable).toEqual([]);
+      expect(searchCnDocsPage).toHaveBeenCalledWith(
+        expect.objectContaining({ q: 'Token', platform: 'web', type: 'api' }),
+        expect.any(AbortSignal),
+        undefined,
+      );
+    } finally {
+      await act(async () => root?.unmount());
+      container.remove();
+    }
+  });
+  it.each(['joinChannel', 'joinChannel Android', 'C#'])(
+    'puts exact API definitions first for %s while keeping the document family available',
+    async (query) => {
+      const groups = [
+        { pageUrl: '/realtime-media/rtc/build/join', title: '加入频道' },
+        {
+          pageUrl: '/api-reference/rtc/android/channel',
+          title: query === 'C#' ? 'API 概览' : 'joinChannel',
+        },
+      ].map((page) => ({
+        ...page,
+        product: 'rtc',
+        platform: ['android'],
+        docType: 'docs' as const,
+        sections: [
+          {
+            id: page.pageUrl,
+            sourceId: page.pageUrl,
+            url: page.pageUrl,
+            pageTitle: page.title,
+            sectionTitle: page.title,
+            content: page.title,
+            snippet: page.title,
+            headingPath: [page.title],
+            locale: 'zh-CN',
+            docType: 'docs' as const,
+            audience: ['developer'],
+            status: 'published' as const,
+            hidden: false,
+            ...(query === 'C#' && page.pageUrl.startsWith('/api-reference/')
+              ? { languageEntryTerms: ['csharp'], languageEntryRank: 2 }
+              : {}),
+            highlights: {
+              sectionTitle: [{ text: page.title, highlighted: false }],
+              content: [{ text: page.title, highlighted: false }],
+            },
+          },
+        ],
+      }));
+      vi.mocked(searchCnDocsPage).mockResolvedValue({
+        ...empty,
+        groups,
+        totalHits: 2,
+        totalPages: 1,
+      });
+      render(
+        <DocsSearchPage
+          state={parseSearchPageState({ q: query })}
+          onChange={vi.fn()}
+        />,
+      );
+      await screen.findByRole('link', {
+        name: query === 'C#' ? 'API 概览' : 'joinChannel',
+      });
+      const families = screen
+        .getAllByRole('region')
+        .map((region) => region.getAttribute('aria-label'))
+        .filter((label) => label === '产品文档' || label === 'API 文档');
+      expect(families).toEqual(['API 文档', '产品文档']);
+    },
+  );
   it('shows product documentation before APIs and links to the complete API family', async () => {
     const groups = [
       {
@@ -343,20 +457,7 @@ describe('DocsSearchPage', () => {
   });
 
   it('clears the submitted query and returns to the start state while keeping filters', async () => {
-    function Harness() {
-      const [state, setState] = useState(
-        parseSearchPageState({ q: 'Token', product: 'rtc' }),
-      );
-      return (
-        <DocsSearchPage
-          state={state}
-          onChange={(patch) =>
-            setState((previous) => ({ ...previous, ...patch }))
-          }
-        />
-      );
-    }
-    render(<Harness />);
+    render(<ClearQueryHarness />);
     await screen.findByText('没有找到匹配的文档');
     fireEvent.click(screen.getByRole('button', { name: '清空关键词' }));
     expect(
@@ -615,5 +716,37 @@ describe('DocsSearchPage', () => {
     expect(view.container.querySelector('img')).toBeNull();
     expect(view.container.querySelector('mark')).toHaveTextContent('Token');
     expect(view.container).toHaveTextContent('<img src=x onerror=alert(1)>');
+  });
+  it('restores every page in a shared expanded range without changing a direct page link', async () => {
+    const template = { ...empty, totalHits: 3, totalPages: 3 };
+    vi.mocked(searchCnDocsPage).mockImplementation(async (state) => ({
+      ...template,
+      page: state.page,
+      groups: [],
+    }));
+    const view = render(
+      <DocsSearchPage
+        state={parseSearchPageState({ q: '恢复', page: 1, loaded: 3 })}
+        onChange={vi.fn()}
+      />,
+    );
+    await waitFor(() =>
+      expect(
+        vi.mocked(searchCnDocsPage).mock.calls.map(([state]) => state.page),
+      ).toEqual([1, 2, 3]),
+    );
+    vi.mocked(searchCnDocsPage).mockClear();
+    view.unmount();
+    render(
+      <DocsSearchPage
+        state={parseSearchPageState({ q: '恢复', page: 3 })}
+        onChange={vi.fn()}
+      />,
+    );
+    await waitFor(() =>
+      expect(
+        vi.mocked(searchCnDocsPage).mock.calls.map(([state]) => state.page),
+      ).toEqual([3]),
+    );
   });
 });

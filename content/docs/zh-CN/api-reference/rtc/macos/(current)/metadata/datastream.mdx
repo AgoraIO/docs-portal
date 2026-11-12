@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_createdatastream1__prototype"></a>
 
-```text
+```objc
 - (int)createDataStream:(NSInteger * _Nonnull)streamId
                reliable:(BOOL)reliable
                 ordered:(BOOL)ordered NS_SWIFT_NAME(createDataStream(_:reliable:ordered:));
@@ -95,7 +95,7 @@ _migration:
 
 <a id="api_irtcengine_createdatastream2__prototype"></a>
 
-```text
+```objc
 - (int)createDataStream:(NSInteger * _Nonnull)streamId
                   config:(AgoraDataStreamConfig * _Nonnull)config NS_SWIFT_NAME(createDataStream(_:config:));
 ```
@@ -154,7 +154,7 @@ _migration:
 
 <a id="api_irtcengineex_createdatastreamex1__prototype"></a>
 
-```text
+```objc
 - (int)createDataStreamEx:(NSInteger * _Nonnull)streamId
                  reliable:(BOOL)reliable
                   ordered:(BOOL)ordered
@@ -247,7 +247,7 @@ _migration:
 
 <a id="api_irtcengineex_createdatastreamex2__prototype"></a>
 
-```text
+```objc
 - (int)createDataStreamEx:(NSInteger * _Nonnull)streamId
                    config:(AgoraDataStreamConfig * _Nonnull)config
                connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(createDataStreamEx(_:config:connection:));
@@ -319,7 +319,7 @@ _migration:
 
 <a id="api_irtcengine_sendstreammessage__prototype"></a>
 
-```text
+```objc
 - (int)sendStreamMessage:(NSInteger)streamId
                     data:(NSData * _Nonnull)data NS_SWIFT_NAME(sendStreamMessage(_:data:));
 ```
@@ -378,7 +378,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onstreammessage__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine receiveStreamMessageFromUid:(NSUInteger)uid streamId:(NSInteger)streamId data:(NSData * _Nonnull)data NS_SWIFT_NAME(rtcEngine(_:receiveStreamMessageFromUid:streamId:data:));
 ```
 
@@ -441,7 +441,7 @@ _migration:
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__prototype"></a>
 
-```text
+```objc
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didOccurStreamMessageErrorFromUid:(NSUInteger)uid streamId:(NSInteger)streamId error:(NSInteger)error missed:(NSInteger)missed cached:(NSInteger)cached NS_SWIFT_NAME(rtcEngine(_:didOccurStreamMessageErrorFromUid:streamId:error:missed:cached:));
 ```
 

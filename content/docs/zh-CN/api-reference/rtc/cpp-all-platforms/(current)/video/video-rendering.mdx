@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_enableinstantmediarendering__prototype"></a>
 
-```text
+```cpp
 virtual int enableInstantMediaRendering() = 0;
 ```
 
@@ -72,7 +72,7 @@ virtual int enableInstantMediaRendering() = 0;
 
 <a id="api_irtcengine_setlocalrendermode1__prototype"></a>
 
-```text
+```cpp
 virtual int setLocalRenderMode(media::base::RENDER_MODE_TYPE renderMode) __deprecated = 0;
 ```
 
@@ -127,7 +127,7 @@ virtual int setLocalRenderMode(media::base::RENDER_MODE_TYPE renderMode) __depre
 
 <a id="api_irtcengine_setlocalrendermode2__prototype"></a>
 
-```text
+```cpp
 virtual int setLocalRenderMode(media::base::RENDER_MODE_TYPE renderMode, VIDEO_MIRROR_MODE_TYPE mirrorMode) = 0;
 ```
 
@@ -190,7 +190,7 @@ virtual int setLocalRenderMode(media::base::RENDER_MODE_TYPE renderMode, VIDEO_M
 
 <a id="api_irtcengine_setlocalrendertargetfps__prototype"></a>
 
-```text
+```cpp
 virtual int setLocalRenderTargetFps(VIDEO_SOURCE_TYPE sourceType, int targetFps) = 0;
 ```
 
@@ -252,7 +252,7 @@ virtual int setLocalRenderTargetFps(VIDEO_SOURCE_TYPE sourceType, int targetFps)
 
 <a id="api_irtcengine_setlocalvideomirrormode__prototype"></a>
 
-```text
+```cpp
 virtual int setLocalVideoMirrorMode(VIDEO_MIRROR_MODE_TYPE mirrorMode) __deprecated = 0;
 ```
 
@@ -298,7 +298,7 @@ virtual int setLocalVideoMirrorMode(VIDEO_MIRROR_MODE_TYPE mirrorMode) __depreca
 
 <a id="api_irtcengine_setremoterendermode2__prototype"></a>
 
-```text
+```cpp
 virtual int setRemoteRenderMode(uid_t uid, media::base::RENDER_MODE_TYPE renderMode, VIDEO_MIRROR_MODE_TYPE mirrorMode) = 0;
 ```
 
@@ -359,7 +359,7 @@ virtual int setRemoteRenderMode(uid_t uid, media::base::RENDER_MODE_TYPE renderM
 
 <a id="api_irtcengineex_setremoterendermodeex__prototype"></a>
 
-```text
+```cpp
 virtual int setRemoteRenderModeEx(uid_t uid, media::base::RENDER_MODE_TYPE renderMode, VIDEO_MIRROR_MODE_TYPE mirrorMode, const RtcConnection& connection) = 0;
 ```
 
@@ -432,7 +432,7 @@ virtual int setRemoteRenderModeEx(uid_t uid, media::base::RENDER_MODE_TYPE rende
 
 <a id="api_irtcengine_setremoterendertargetfps__prototype"></a>
 
-```text
+```cpp
 virtual int setRemoteRenderTargetFps(int targetFps) = 0;
 ```
 
@@ -486,7 +486,7 @@ virtual int setRemoteRenderTargetFps(int targetFps) = 0;
 
 <a id="api_imediaplayer_setrendermode__prototype"></a>
 
-```text
+```cpp
 virtual int setRenderMode(media::base::RENDER_MODE_TYPE renderMode) = 0;
 ```
 
@@ -526,7 +526,7 @@ virtual int setRenderMode(media::base::RENDER_MODE_TYPE renderMode) = 0;
 
 <a id="api_irtcengine_setuplocalvideo__prototype"></a>
 
-```text
+```cpp
 virtual int setupLocalVideo(const VideoCanvas& canvas) = 0;
 ```
 
@@ -586,7 +586,7 @@ virtual int setupLocalVideo(const VideoCanvas& canvas) = 0;
 
 <a id="api_irtcengine_setupremotevideo__prototype"></a>
 
-```text
+```cpp
 virtual int setupRemoteVideo(const VideoCanvas& canvas) = 0;
 ```
 
@@ -635,7 +635,7 @@ virtual int setupRemoteVideo(const VideoCanvas& canvas) = 0;
 
 <a id="api_irtcengineex_setupremotevideoex__prototype"></a>
 
-```text
+```cpp
 virtual int setupRemoteVideoEx(const VideoCanvas& canvas, const RtcConnection& connection) = 0;
 ```
 
@@ -699,7 +699,7 @@ virtual int setupRemoteVideoEx(const VideoCanvas& canvas, const RtcConnection& c
 
 <a id="api_irtcengine_startmediarenderingtracing__prototype"></a>
 
-```text
+```cpp
 virtual int startMediaRenderingTracing() = 0;
 ```
 
@@ -747,7 +747,7 @@ virtual int startMediaRenderingTracing() = 0;
 
 <a id="api_irtcengineex_startmediarenderingtracingex__prototype"></a>
 
-```text
+```cpp
 virtual int startMediaRenderingTracingEx(const RtcConnection& connection) = 0;
 ```
 
@@ -806,7 +806,7 @@ virtual int startMediaRenderingTracingEx(const RtcConnection& connection) = 0;
 
 <a id="callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo__prototype"></a>
 
-```text
+```cpp
 virtual void onTranscodedStreamLayoutInfo(uid_t uid, int width, int height, int layoutCount,const VideoLayout* layoutlist)
 ```
 
@@ -875,7 +875,7 @@ virtual void onTranscodedStreamLayoutInfo(uid_t uid, int width, int height, int 
 
 <a id="callback_irtcengineeventhandler_onvideorenderingtracingresult__prototype"></a>
 
-```text
+```cpp
 virtual void onVideoRenderingTracingResult(uid_t uid, MEDIA_TRACE_EVENT currentEvent, VideoRenderingTracingInfo tracingInfo)
 ```
 

@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_iscreencapturesourcelist_getcount__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|ScreenCaptureSourceList")
 int GetCount();
 ```
@@ -54,7 +54,7 @@ int GetCount();
 
 <a id="api_irtcengine_getscreencapturesources__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	UIScreenCaptureSourceList* GetScreenCaptureSources(const FSIZE & thumbSize, const FSIZE & iconSize, bool includeScreen);
 ```
@@ -117,7 +117,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_iscreencapturesourcelist_getsourceinfo__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|ScreenCaptureSourceList")
 	FScreenCaptureSourceInfo GetSourceInfo(int index);
 ```
@@ -165,7 +165,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|ScreenCaptureSourceList")
 
 <a id="api_irtcengine_queryscreencapturecapability__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int QueryScreenCaptureCapability();
 ```
@@ -207,7 +207,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_iscreencapturesourcelist_release__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|ScreenCaptureSourceList")
 void Release();
 ```
@@ -236,7 +236,7 @@ void Release();
 
 <a id="api_irtcengine_setscreencapturecontenthint__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetScreenCaptureContentHint(EVIDEO_CONTENT_HINT contentHint);
 ```
@@ -292,7 +292,7 @@ SDK 会根据不同的内容类型，使用不同的算法对共享效果进行�
 
 <a id="api_irtcengine_setscreencapturescenario__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetScreenCaptureScenario(ESCREEN_SCENARIO_TYPE screenScenario);
 ```
@@ -341,7 +341,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_startscreencapture__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StartScreenCapture(const FScreenCaptureParameters2& captureParams);
 ```
@@ -430,7 +430,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_startscreencapture2__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StartScreenCaptureBySourceType(EVIDEO_SOURCE_TYPE sourceType, const FScreenCaptureConfiguration& config);
 ```
@@ -513,7 +513,7 @@ SDK 支持一系列开启屏幕采集的方法，它们之间存在以下区别�
 
 <a id="api_irtcengine_startscreencapturebydisplayid__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StartScreenCaptureByDisplayId(int64 displayId, const FRectangle& regionRect, const FScreenCaptureParameters& captureParams);
 ```
@@ -608,7 +608,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_startscreencapturebyscreenrect__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StartScreenCaptureByScreenRect(const FRectangle& screenRect, const FRectangle& regionRect, const FScreenCaptureParameters& captureParams) __deprecated;
 ```
@@ -687,7 +687,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_startscreencapturebywindowid__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StartScreenCaptureByWindowId(int64 windowId, const FRectangle& regionRect, const  FScreenCaptureParameters& captureParams);
 ```
@@ -708,32 +708,121 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_startscreencapturebywindowid__table_lvk_tfs_r4b"></a>
 
-| **系统版本** | **软件** | **软件版本** | **是否支持** |
-| --- | --- | --- | --- |
-| win10 | Chrome | 76.0.3809.100 | 否 |
-| Office Word | 18.1903.1152.0 | 是 |  |
-| Office Excel | 否 |  |  |
-| Office PPT | 是 |  |  |
-| WPS Word | 11.1.0.9145 | 是 |  |
-| WPS Excel |  |  |  |
-| WPS PPT |  |  |  |
-| Media Player（系统自带） | 全部 | 是 |  |
-| win8 | Chrome | 全部 | 是 |
-| Office Word | 全部 | 是 |  |
-| Office Excel |  |  |  |
-| Office PPT |  |  |  |
-| WPS Word | 11.1.0.9098 | 是 |  |
-| WPS Excel |  |  |  |
-| WPS PPT |  |  |  |
-| Media Player（系统自带） | 全部 | 是 |  |
-| win7 | Chrome | 73.0.3683.103 | 否 |
-| Office Word | 全部 | 是 |  |
-| Office Excel |  |  |  |
-| Office PPT |  |  |  |
-| WPS Word | 11.1.0.9098 | 否 |  |
-| WPS Excel |  |  |  |
-| WPS PPT | 11.1.0.9098 | 是 |  |
-| Media Player（系统自带） | 全部 | 否 |  |
+<DocsTable>
+<thead>
+<tr>
+<th scope="col">**系统版本**</th>
+<th scope="col">**软件**</th>
+<th scope="col">**软件版本**</th>
+<th scope="col">**是否支持**</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td rowSpan={8}>win10</td>
+<td>Chrome</td>
+<td>76.0.3809.100</td>
+<td>否</td>
+</tr>
+<tr>
+<td>Office Word</td>
+<td rowSpan={3}>18.1903.1152.0</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Office Excel</td>
+<td>否</td>
+</tr>
+<tr>
+<td>Office PPT</td>
+<td>是</td>
+</tr>
+<tr>
+<td>WPS Word</td>
+<td rowSpan={3}>11.1.0.9145</td>
+<td rowSpan={3}>是</td>
+</tr>
+<tr>
+<td>WPS Excel</td>
+</tr>
+<tr>
+<td>WPS PPT</td>
+</tr>
+<tr>
+<td>Media Player（系统自带）</td>
+<td>全部</td>
+<td>是</td>
+</tr>
+<tr>
+<td rowSpan={8}>win8</td>
+<td>Chrome</td>
+<td>全部</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Office Word</td>
+<td rowSpan={3}>全部</td>
+<td rowSpan={3}>是</td>
+</tr>
+<tr>
+<td>Office Excel</td>
+</tr>
+<tr>
+<td>Office PPT</td>
+</tr>
+<tr>
+<td>WPS Word</td>
+<td rowSpan={3}>11.1.0.9098</td>
+<td rowSpan={3}>是</td>
+</tr>
+<tr>
+<td>WPS Excel</td>
+</tr>
+<tr>
+<td>WPS PPT</td>
+</tr>
+<tr>
+<td>Media Player（系统自带）</td>
+<td>全部</td>
+<td>是</td>
+</tr>
+<tr>
+<td rowSpan={8}>win7</td>
+<td>Chrome</td>
+<td>73.0.3683.103</td>
+<td>否</td>
+</tr>
+<tr>
+<td>Office Word</td>
+<td rowSpan={3}>全部</td>
+<td rowSpan={3}>是</td>
+</tr>
+<tr>
+<td>Office Excel</td>
+</tr>
+<tr>
+<td>Office PPT</td>
+</tr>
+<tr>
+<td>WPS Word</td>
+<td rowSpan={2}>11.1.0.9098</td>
+<td rowSpan={2}>否</td>
+</tr>
+<tr>
+<td>WPS Excel</td>
+</tr>
+<tr>
+<td>WPS PPT</td>
+<td>11.1.0.9098</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Media Player（系统自带）</td>
+<td>全部</td>
+<td>否</td>
+</tr>
+</tbody>
+</DocsTable>
 
 <a id="api_irtcengine_startscreencapturebywindowid__scenario"></a>
 
@@ -805,7 +894,7 @@ SDK 的窗口共享功能依赖于 WGC（Windows Graphics Capture）或 GDI（Gr
 
 <a id="api_irtcengine_stopscreencapture__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StopScreenCapture();
 ```
@@ -851,7 +940,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_stopscreencapture2__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int StopScreenCaptureBySourceType(EVIDEO_SOURCE_TYPE sourceType);
 ```
@@ -914,7 +1003,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_updatescreencapture__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int UpdateScreenCapture(const FScreenCaptureParameters2& captureParams);
 ```
@@ -972,7 +1061,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_updatescreencaptureparameters__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int UpdateScreenCaptureParameters(const FScreenCaptureParameters& captureParams);
 ```
@@ -1029,7 +1118,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_updatescreencaptureregion__prototype"></a>
 
-```text
+```cpp
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int UpdateScreenCaptureRegion(const FRectangle& regionRect);
 ```

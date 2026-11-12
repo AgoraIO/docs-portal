@@ -29,6 +29,8 @@ Webhook 是一种基于 HTTP 协议的回调机制，允许服务端主动推送
 
 ## 开通消息通知服务
 
+<a id="用户配置"></a>
+
 使用消息通知服务前，你需要在声网控制台自助开通并填写配置信息。
 
 ### 1. 启用并配置服务
@@ -45,7 +47,8 @@ Webhook 是一种基于 HTTP 协议的回调机制，允许服务端主动推送
    - **订阅事件**：需要订阅的频道事件。详见[频道事件类型](/zh-CN/api-reference/rtc/restful/webhook/events)。如需配置 QPS (每秒请求数) 较高的事件，如实时音视频中观众加入或离开直播频道，请确保你的服务器有足够的处理能力。建议一次选择所有需要订阅的事件，以避免多次配置和健康检查。
    - **IP 白名单**：如果你的消息接收服务器受防火墙限制，请勾选该选项，并按照以下步骤将声网消息通知服务器的 IP 地址全部添加到防火墙白名单。
 
-**获取 IP 地址并添加到防火墙白名单**
+<Accordions type="multiple">
+<Accordion title="获取 IP 地址并添加到防火墙白名单">
 
 如果你的服务器受防火墙限制，你需要调用 RESTful API [查询消息通知服务器 IP](/zh-CN/api-reference/api-ref/rtc/query-ip-address)，将获取到的所有 IP 地址都添加到防火墙白名单。
 
@@ -106,6 +109,8 @@ Webhook 是一种基于 HTTP 协议的回调机制，允许服务端主动推送
  }
  ```
 
+</Accordion>
+</Accordions>
 
 完成功能配置后，声网会对你的配置进行健康检查。
 
@@ -487,4 +492,4 @@ func calcSignatureV1(secret, payload string) string {
 
 ## 更多功能
 
-你可以根据业务需求，将[频道管理 RESTful API](/zh-CN/api-reference/rtc/restful/user-guides/channel-management) 和[消息通知服务](/zh-CN/api-reference/rtc/restful/webhook/receive-webhook)结合使用，实现稳定可靠、实时有效的频道管理和状态同步。
+你可以根据业务需求，将[频道管理 RESTful API](/zh-CN/realtime-media/rtc/build/security-and-auth/channel-management) 和[消息通知服务](/zh-CN/realtime-media/rtc/build/optimize-and-operate/receive_webhook)结合使用，实现稳定可靠、实时有效的频道管理和状态同步。

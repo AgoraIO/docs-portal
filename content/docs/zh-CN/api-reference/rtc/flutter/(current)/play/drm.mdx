@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_imusiccontentcenter_createmusicplayer__prototype"></a>
 
-```text
+```dart
 Future<MusicPlayer> createMusicPlayer();
 ```
 
@@ -50,7 +50,7 @@ Future<MusicPlayer> createMusicPlayer();
 
 <a id="api_imusiccontentcenter_destroymusicplayer__prototype"></a>
 
-```text
+```dart
 Future<void> destroyMusicPlayer(MusicPlayer musicPlayer);
 ```
 
@@ -97,7 +97,7 @@ Future<void> destroyMusicPlayer(MusicPlayer musicPlayer);
 
 <a id="api_musicchartcollection_get__prototype"></a>
 
-```text
+```dart
 Future<MusicChartInfo> get(int index);
 ```
 
@@ -136,7 +136,7 @@ Future<MusicChartInfo> get(int index);
 
 <a id="api_imusiccontentcenter_getcaches__prototype"></a>
 
-```text
+```dart
 Future<List<MusicCacheInfo>> getCaches(int cacheInfoSize);
 ```
 
@@ -179,7 +179,7 @@ Future<List<MusicCacheInfo>> getCaches(int cacheInfoSize);
 
 <a id="api_musicchartcollection_getcount_musicchartcollection__prototype"></a>
 
-```text
+```dart
 Future<int> getCount();
 ```
 
@@ -205,7 +205,7 @@ Future<int> getCount();
 
 <a id="api_musiccollection_getcount_musiccollection__prototype"></a>
 
-```text
+```dart
 int getCount();
 ```
 
@@ -231,7 +231,7 @@ int getCount();
 
 <a id="api_imusiccontentcenter_getinternalsongcode__prototype"></a>
 
-```text
+```dart
 Future<int> getInternalSongCode(
       {required int songCode, required String jsonOption});
 ```
@@ -291,7 +291,7 @@ Future<int> getInternalSongCode(
 
 <a id="api_imusiccontentcenter_getlyric__prototype"></a>
 
-```text
+```dart
 Future<String> getLyric({required int songCode, int lyricType = 0});
 ```
 
@@ -341,7 +341,7 @@ Future<String> getLyric({required int songCode, int lyricType = 0});
 
 <a id="api_musiccollection_getmusic_musiccollection__prototype"></a>
 
-```text
+```dart
 Music getMusic(int index);
 ```
 
@@ -380,7 +380,7 @@ Music getMusic(int index);
 
 <a id="api_imusiccontentcenter_getmusiccharts__prototype"></a>
 
-```text
+```dart
 Future<String> getMusicCharts();
 ```
 
@@ -408,7 +408,7 @@ Future<String> getMusicCharts();
 
 <a id="api_imusiccontentcenter_getmusiccollectionbymusicchartid__prototype"></a>
 
-```text
+```dart
 Future<String> getMusicCollectionByMusicChartId(
       {required int musicChartId,
       required int page,
@@ -481,7 +481,7 @@ Future<String> getMusicCollectionByMusicChartId(
 
 <a id="api_irtcengine_getmusiccontentcenter__prototype"></a>
 
-```text
+```dart
 MusicContentCenter getMusicContentCenter()
 ```
 
@@ -507,7 +507,7 @@ MusicContentCenter getMusicContentCenter()
 
 <a id="api_musiccollection_getpage_musiccollection__prototype"></a>
 
-```text
+```dart
 int getPage();
 ```
 
@@ -533,7 +533,7 @@ int getPage();
 
 <a id="api_musiccollection_getpagesize_musiccollection__prototype"></a>
 
-```text
+```dart
 int getPageSize();
 ```
 
@@ -559,7 +559,7 @@ SDK 实际返回的音乐资源数量。
 
 <a id="api_imusiccontentcenter_getsongsimpleinfo__prototype"></a>
 
-```text
+```dart
 Future<String> getSongSimpleInfo(int songCode);
 ```
 
@@ -601,7 +601,7 @@ Future<String> getSongSimpleInfo(int songCode);
 
 <a id="api_musiccollection_gettotal_musiccollection__prototype"></a>
 
-```text
+```dart
 int getTotal();
 ```
 
@@ -627,7 +627,7 @@ int getTotal();
 
 <a id="api_imusiccontentcenter_initialize_imusiccontentcenter__prototype"></a>
 
-```text
+```dart
 Future<void> initialize(MusicContentCenterConfiguration configuration);
 ```
 
@@ -668,7 +668,7 @@ Future<void> initialize(MusicContentCenterConfiguration configuration);
 
 <a id="api_imusiccontentcenter_ispreloaded__prototype"></a>
 
-```text
+```dart
 Future<bool> isPreloaded(int songCode);
 ```
 
@@ -710,7 +710,7 @@ Future<bool> isPreloaded(int songCode);
 
 <a id="api_imusicplayer_open_imusicplayer__prototype"></a>
 
-```text
+```dart
 Future<void> openWithSongCode({required int songCode, int startPos = 0});
 ```
 
@@ -762,7 +762,7 @@ Future<void> openWithSongCode({required int songCode, int startPos = 0});
 
 <a id="api_imusiccontentcenter_preload2__prototype"></a>
 
-```text
+```dart
 Future<String> preload(int songCode);
 ```
 
@@ -808,7 +808,7 @@ Future<String> preload(int songCode);
 
 <a id="api_imusiccontentcenter_registereventhandler_imusiccontentcenter__prototype"></a>
 
-```text
+```dart
 void registerEventHandler(MusicContentCenterEventHandler eventHandler);
 ```
 
@@ -847,7 +847,7 @@ void registerEventHandler(MusicContentCenterEventHandler eventHandler);
 
 <a id="api_imusiccontentcenter_release_imusiccontentcenter__prototype"></a>
 
-```text
+```dart
 Future<void> release();
 ```
 
@@ -869,7 +869,7 @@ Future<void> release();
 
 <a id="api_imusiccontentcenter_removecache__prototype"></a>
 
-```text
+```dart
 Future<void> removeCache(int songCode);
 ```
 
@@ -912,7 +912,7 @@ Future<void> removeCache(int songCode);
 
 <a id="api_imusiccontentcenter_renewtoken_imusiccontentcenter__prototype"></a>
 
-```text
+```dart
 Future<void> renewToken(String token);
 ```
 
@@ -953,7 +953,7 @@ Future<void> renewToken(String token);
 
 <a id="api_imusiccontentcenter_searchmusic__prototype"></a>
 
-```text
+```dart
 Future<String> searchMusic(
       {required String keyWord,
       required int page,
@@ -1026,7 +1026,7 @@ Future<String> searchMusic(
 
 <a id="api_imusicplayer_setplaymode__prototype"></a>
 
-```text
+```dart
 Future<void> setPlayMode(MusicPlayMode mode);
 ```
 
@@ -1083,7 +1083,7 @@ Future<void> setPlayMode(MusicPlayMode mode);
 
 <a id="api_imusiccontentcenter_unregistereventhandler_imusiccontentcenter__prototype"></a>
 
-```text
+```dart
 void unregisterEventHandler();
 ```
 
@@ -1109,7 +1109,7 @@ void unregisterEventHandler();
 
 <a id="callback_imusiccontentcentereventhandler_onlyricresult__prototype"></a>
 
-```text
+```dart
 final void Function(String requestId, int songCode, String lyricUrl,
     MusicContentCenterStateReason reason)? onLyricResult;
 ```
@@ -1163,7 +1163,7 @@ final void Function(String requestId, int songCode, String lyricUrl,
 
 <a id="callback_imusiccontentcentereventhandler_onmusicchartsresult__prototype"></a>
 
-```text
+```dart
 final void Function(String requestId, List<MusicChartInfo> result,
     MusicContentCenterStateReason reason)? onMusicChartsResult;
 ```
@@ -1211,7 +1211,7 @@ final void Function(String requestId, List<MusicChartInfo> result,
 
 <a id="callback_imusiccontentcentereventhandler_onmusiccollectionresult__prototype"></a>
 
-```text
+```dart
 final void Function(String requestId, MusicCollection result,
     MusicContentCenterStateReason reason)? onMusicCollectionResult;
 ```
@@ -1259,7 +1259,7 @@ final void Function(String requestId, MusicCollection result,
 
 <a id="callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler__prototype"></a>
 
-```text
+```dart
 final void Function(
     String requestId,
     int songCode,
@@ -1330,7 +1330,7 @@ final void Function(
 
 <a id="callback_imusiccontentcentereventhandler_onsongsimpleinforesult__prototype"></a>
 
-```text
+```dart
 final void Function(String requestId, int songCode, String simpleInfo,
     MusicContentCenterStateReason reason)? onSongSimpleInfoResult;
 ```

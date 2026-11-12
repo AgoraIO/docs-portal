@@ -21,7 +21,7 @@ _migration:
 
 <a id="api_irtcengine_enableextension__prototype"></a>
 
-```text
+```cpp
 virtual int enableExtension(const char* provider, const char* extension, const ExtensionInfo& extensionInfo, bool enable = true) = 0;
 ```
 
@@ -88,7 +88,7 @@ virtual int enableExtension(const char* provider, const char* extension, const E
 
 <a id="api_irtcengine_getextensionproperty2__prototype"></a>
 
-```text
+```cpp
 virtual int getExtensionProperty(const char* provider, const char* extension, const ExtensionInfo& extensionInfo, const char* key, char* value, int buf_len) = 0;
 ```
 
@@ -158,7 +158,7 @@ virtual int getExtensionProperty(const char* provider, const char* extension, co
 
 <a id="api_irtcengine_loadextensionprovider__prototype"></a>
 
-```text
+```cpp
 virtual int loadExtensionProvider(const char* path, bool unload_after_use = false) = 0;
 ```
 
@@ -219,7 +219,7 @@ virtual int loadExtensionProvider(const char* path, bool unload_after_use = fals
 
 <a id="api_irtcengine_registerextension__prototype"></a>
 
-```text
+```cpp
 virtual int registerExtension(const char* provider, const char* extension, agora::media::MEDIA_SOURCE_TYPE type = agora::media::UNKNOWN_MEDIA_SOURCE) = 0;
 ```
 
@@ -291,7 +291,7 @@ virtual int registerExtension(const char* provider, const char* extension, agora
 
 <a id="api_irtcengine_setextensionproperty__prototype"></a>
 
-```text
+```cpp
 virtual int setExtensionProperty(const char* provider, const char* extension, const ExtensionInfo& extensionInfo, const char* key, const char* value) = 0;
 ```
 
@@ -355,7 +355,7 @@ virtual int setExtensionProperty(const char* provider, const char* extension, co
 
 <a id="api_irtcengine_setextensionproviderproperty__prototype"></a>
 
-```text
+```cpp
 virtual int setExtensionProviderProperty(const char* provider, const char* key, const char* value) = 0;
 ```
 
@@ -419,7 +419,7 @@ virtual int setExtensionProviderProperty(const char* provider, const char* key, 
 
 <a id="callback_irtcengineeventhandler_onextensionerrorwithcontext__prototype"></a>
 
-```text
+```cpp
 virtual void onExtensionErrorWithContext(const ExtensionContext &context, int error, const char* message)
 ```
 
@@ -466,7 +466,7 @@ virtual void onExtensionErrorWithContext(const ExtensionContext &context, int er
 
 <a id="callback_irtcengineeventhandler_onextensioneventwithcontext__prototype"></a>
 
-```text
+```cpp
 virtual void onExtensionEventWithContext(const ExtensionContext &context, const char* key, const char* value)
 ```
 
@@ -513,7 +513,7 @@ virtual void onExtensionEventWithContext(const ExtensionContext &context, const 
 
 <a id="callback_irtcengineeventhandler_onextensionstartedwithcontext__prototype"></a>
 
-```text
+```cpp
 virtual void onExtensionStartedWithContext(const ExtensionContext &context)
 ```
 
@@ -546,7 +546,7 @@ virtual void onExtensionStartedWithContext(const ExtensionContext &context)
 
 <a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext__prototype"></a>
 
-```text
+```cpp
 virtual void onExtensionStoppedWithContext(const ExtensionContext &context)
 ```
 

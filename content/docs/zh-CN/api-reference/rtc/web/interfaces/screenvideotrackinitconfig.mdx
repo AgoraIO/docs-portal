@@ -20,9 +20,15 @@ _migration:
 
 <a id="displaysurface"></a>
 
-### Optional displaySurface
+<a id="optional-displaysurface"></a>
+
+### displaySurface
+
+<ApiSignature labels="Optional">
 
 displaySurface: "browser"|"window"|"monitor"
+
+</ApiSignature>
 
 :::info[自从]
 *4.17.1*
@@ -32,21 +38,35 @@ displaySurface: "browser"|"window"|"monitor"
 
 ![Properties](https://developer.chrome.com/static/docs/web-platform/screen-sharing-controls/image/screenshot-the-media-pic-64dafc4173b.png)
 
-> 注意事项：该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
+:::note[注意事项]
+该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
+:::
 
 <a id="electronscreensourceid"></a>
 
-### Optional electronScreenSourceId
+<a id="optional-electronscreensourceid"></a>
+
+### electronScreenSourceId
+
+<ApiSignature labels="Optional">
 
 electronScreenSourceId: string
+
+</ApiSignature>
 
 使用 Electron 屏幕共享时，传入 `sourceId`。
 
 <a id="encoderconfig"></a>
 
-### Optional encoderConfig
+<a id="optional-encoderconfig"></a>
+
+### encoderConfig
+
+<ApiSignature labels="Optional">
 
 encoderConfig: [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration)|[ScreenEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#screenencoderconfigurationpreset)
+
+</ApiSignature>
 
 控制屏幕共享视频的编码配置。
 
@@ -58,17 +78,29 @@ encoderConfig: [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfac
 
 <a id="extensionid"></a>
 
-### Optional extensionId
+<a id="optional-extensionid"></a>
+
+### extensionId
+
+<ApiSignature labels="Optional">
 
 extensionId: string
+
+</ApiSignature>
 
 使用 Chrome 浏览器插件进行屏幕共享时，传入插件的 ID。
 
 <a id="monitortypesurfaces"></a>
 
-### Optional monitorTypeSurfaces
+<a id="optional-monitortypesurfaces"></a>
+
+### monitorTypeSurfaces
+
+<ApiSignature labels="Optional">
 
 monitorTypeSurfaces: "exclude"|"include"
+
+</ApiSignature>
 
 :::info[自从]
 *4.24.1*
@@ -86,9 +118,15 @@ monitorTypeSurfaces: "exclude"|"include"
 
 <a id="optimizationmode"></a>
 
-### Optional optimizationMode
+<a id="optional-optimizationmode"></a>
+
+### optimizationMode
+
+<ApiSignature labels="Optional">
 
 optimizationMode: [OptimizationMode](/zh-CN/api-reference/rtc/web/globals#optimizationmode)
+
+</ApiSignature>
 
 :::info[自从]
 *4.2.0*
@@ -98,9 +136,11 @@ optimizationMode: [OptimizationMode](/zh-CN/api-reference/rtc/web/globals#optimi
 
 你可以在视频通话、视频直播或屏幕共享过程中调用此方法动态调整视频的传输优化模式。例如你想要把屏幕共享内容从演示文稿切换为视频时，你可以将传输优化模式从 `"detail"` 切换为 `"motion"`，确保视频画面在网络波动时不会出现卡顿。
 
-> 注意事项：该方法只支持 Chrome 浏览器。
+:::note[注意事项]
+该方法只支持 Chrome 浏览器。
+:::
 
-### param
+#### param
 
 视频传输优化模式：
 
@@ -119,9 +159,15 @@ optimizationMode: [OptimizationMode](/zh-CN/api-reference/rtc/web/globals#optimi
 
 <a id="prefercurrenttab"></a>
 
-### Optional preferCurrentTab
+<a id="optional-prefercurrenttab"></a>
+
+### preferCurrentTab
+
+<ApiSignature labels="Optional">
 
 preferCurrentTab: boolean
+
+</ApiSignature>
 
 :::info[自从]
 *4.23.0*
@@ -132,15 +178,23 @@ preferCurrentTab: boolean
 - `true`: 是。
 - `false`: （默认）否。
 
-> 注意事项: 该属性仅支持 Chrome 94 及以上版本、Opera 80 及以上版本。
+:::note[注意事项]
+该属性仅支持 Chrome 94 及以上版本、Opera 80 及以上版本。
+:::
 
 <a id="screensourcetype"></a>
 
-### Optional screenSourceType
+<a id="optional-screensourcetype"></a>
+
+### screenSourceType
+
+<ApiSignature labels="Optional">
 
 screenSourceType: [ScreenSourceType](/zh-CN/api-reference/rtc/web/globals#screensourcetype)
 
-### deprecated
+</ApiSignature>
+
+#### deprecated
 
 自 v4.17.1 起废弃，请改用 [displaySurface](/zh-CN/api-reference/rtc/web/interfaces/screenvideotrackinitconfig#displaysurface)。
 
@@ -148,9 +202,15 @@ screenSourceType: [ScreenSourceType](/zh-CN/api-reference/rtc/web/globals#screen
 
 <a id="selfbrowsersurface"></a>
 
-### Optional selfBrowserSurface
+<a id="optional-selfbrowsersurface"></a>
+
+### selfBrowserSurface
+
+<ApiSignature labels="Optional">
 
 selfBrowserSurface: "include"|"exclude"
+
+</ApiSignature>
 
 :::info[自从]
 *4.17.1*
@@ -163,16 +223,22 @@ selfBrowserSurface: "include"|"exclude"
 
 详见 [selfBrowserSurface](https://developer.chrome.com/docs/web-platform/screen-sharing-controls/#selfBrowserSurface)。
 
-> 注意事项：
->
-> - Chrome 107 上该属性的默认值为 `"exclude"`，但 SDK 为保证兼容性将默认值改为了 `"include"`，以免用户升级到 Chrome 107 后无法共享当前标签页。
-> - 该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
+:::note[注意事项]
+- Chrome 107 上该属性的默认值为 `"exclude"`，但 SDK 为保证兼容性将默认值改为了 `"include"`，以免用户升级到 Chrome 107 后无法共享当前标签页。
+- 该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
+:::
 
 <a id="surfaceswitching"></a>
 
-### Optional surfaceSwitching
+<a id="optional-surfaceswitching"></a>
+
+### surfaceSwitching
+
+<ApiSignature labels="Optional">
 
 surfaceSwitching: "include"|"exclude"
+
+</ApiSignature>
 
 :::info[自从]
 *4.17.1*
@@ -185,13 +251,21 @@ surfaceSwitching: "include"|"exclude"
 
 详见 [surfaceSwitching](https://developer.chrome.com/docs/web-platform/screen-sharing-controls/#surfaceSwitching)。
 
-> 注意事项：该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
+:::note[注意事项]
+该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
+:::
 
 <a id="systemaudio"></a>
 
-### Optional systemAudio
+<a id="optional-systemaudio"></a>
+
+### systemAudio
+
+<ApiSignature labels="Optional">
 
 systemAudio: "include"|"exclude"
+
+</ApiSignature>
 
 :::info[自从]
 *4.17.1*
@@ -204,13 +278,21 @@ systemAudio: "include"|"exclude"
 
 详见 [systemAudio](https://developer.chrome.com/docs/web-platform/screen-sharing-controls/#systemAudio)。
 
-> 注意事项：该属性仅支持 Windows 设备上的 Chrome 105 及以上版本、Edge 105 及以上版本。
+:::note[注意事项]
+该属性仅支持 Windows 设备上的 Chrome 105 及以上版本、Edge 105 及以上版本。
+:::
 
 <a id="windowaudio"></a>
 
-### Optional windowAudio
+<a id="optional-windowaudio"></a>
+
+### windowAudio
+
+<ApiSignature labels="Optional">
 
 windowAudio: "exclude"|"system"
+
+</ApiSignature>
 
 :::info[自从]
 *4.24.1*

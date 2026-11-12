@@ -4541,6 +4541,7 @@ Web body
       },
       {
         title: '实时消息 RTM',
+        url: '/zh-CN/api-reference/api?product=rtm#api-reference-product-rtm',
       },
       {
         title: 'RESTful API',

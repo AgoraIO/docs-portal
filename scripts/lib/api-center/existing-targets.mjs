@@ -1,3 +1,5 @@
+import { consolidatedLegacyTarget } from './document-consolidation.mjs';
+
 const CONVERSATIONAL_AI_ROOT =
   'content/docs/zh-CN/api-reference/conversational-ai';
 
@@ -62,7 +64,11 @@ function targetForPath(targetPath, targetRoute) {
 }
 
 function publicPlatform(value) {
-  return value === 'javascript' ? 'web' : value;
+  return value === 'javascript'
+    ? 'web'
+    : value === 'rn'
+      ? 'react-native'
+      : value;
 }
 
 function cloudTranscodingSupplement(pathname) {
@@ -198,6 +204,8 @@ export function resolveSupersededApiCenterTarget(value) {
  */
 export function resolveExistingApiCenterTarget(value) {
   const pathname = normalizeLegacyPath(value);
+  const consolidated = consolidatedLegacyTarget(value);
+  if (consolidated) return consolidated;
 
   if (pathname === '/doc/rtc/javascript/error-code') {
     return targetForPath(
@@ -268,15 +276,22 @@ export function resolveExistingApiCenterTarget(value) {
   }
 
   match = pathname.match(
-    /^\/api-ref\/rtm2\/(android|flutter|harmonyos|ios|javascript|unity)\/toc-(channel|configuration|lock|message|presence|storage|token|topic)\/([^/]+)$/i,
+    /^\/api-ref\/rtm2\/(android|flutter|harmonyos|ios|javascript|unity|rn)\/toc-(channel|configuration|lock|message|presence|storage|token|topic)\/([^/]+)$/i,
   );
   if (match) {
     const platform = publicPlatform(match[1].toLowerCase());
     const topic = match[2].toLowerCase();
     const leaf = match[3].toLowerCase();
     if (leaf !== topic) return null;
+    if (
+      platform === 'react-native' &&
+      !['channel', 'configuration'].includes(topic)
+    )
+      return null;
     return targetForPath(
-      `content/docs/zh-CN/api-reference/rtm/toc-${topic}/${leaf}.mdx`,
+      ['channel', 'configuration'].includes(topic)
+        ? `content/docs/zh-CN/api-reference/rtm/${platform}/${leaf}.mdx`
+        : `content/docs/zh-CN/api-reference/rtm/toc-${topic}/${leaf}.mdx`,
       `/zh-CN/api-reference/rtm/${platform}/${leaf}`,
     );
   }

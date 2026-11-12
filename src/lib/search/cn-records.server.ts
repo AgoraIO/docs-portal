@@ -3,6 +3,7 @@ import GithubSlugger from 'github-slugger';
 import type { Root, RootContent } from 'mdast';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
+import { visit } from 'unist-util-visit';
 import { zhCNApiReferenceCards } from '../api-reference-cards-data.zh-cn';
 import type { SearchEntry } from '../docs-search';
 import { isKnownPlatform, platformRegistry } from '../platforms/registry';
@@ -19,6 +20,10 @@ import {
   toCnPublicSearchUrl,
 } from './cn-search-urls.mjs';
 import { assertValidSearchSection, type SearchSection } from './kb-record';
+import {
+  stripSearchComponentTags,
+  stripSearchProseMarkers,
+} from './search-prose';
 
 function getRouteMetadata(route: PublishedDocsRoute) {
   const card = zhCNApiReferenceCards.all.find(
@@ -45,11 +50,183 @@ function getRouteMetadata(route: PublishedDocsRoute) {
         : route.canonicalPath.split('/').find(isKnownPlatform));
   return {
     product: normalizeCnProduct(product),
-    platform,
+    platforms: route.platform
+      ? [route.platform]
+      : [
+          ...new Set(
+            [
+              platform,
+              route.canonicalPath.split('/').find(isKnownPlatform),
+            ].filter((value): value is NonNullable<typeof value> =>
+              Boolean(value),
+            ),
+          ),
+        ],
     version: route.version,
   };
 }
 
+const markdownParser = unified().use(remarkParse);
+// Fumadocs serializes these renderer containers with two spaces per level.
+// Unwrap complete generated blocks, preserving ordinary fenced examples even
+// when an example itself contains component-looking text.
+function normalizeSearchContainers(markdown: string) {
+  if (!/<(?:CodeBlockTabs|CalloutContainer)\b/.test(markdown)) return markdown;
+  const literals: [number, number][] = [];
+  const fencedCode: [number, number][] = [];
+  visit(markdownParser.parse(markdown), (node) => {
+    if (node.type !== 'inlineCode' && node.type !== 'code') return;
+    const start = node.position?.start.offset;
+    const end = node.position?.end.offset;
+    if (start === undefined || end === undefined) return;
+    if (node.type === 'inlineCode') literals.push([start, end]);
+    // AST positions point at the fence even inside blockquotes or list items.
+    // Indented serialized platform content is not a literal fenced example.
+    else if (/^(?:`{3,}|~{3,})/.test(markdown.slice(start)))
+      fencedCode.push([start, end]);
+  });
+  fencedCode.sort(([a], [b]) => a - b);
+  const isLiteral = (offset: number) =>
+    literals.some(([start, end]) => start <= offset && offset < end);
+  const output: string[] = [];
+  let original: string[] = [];
+  let normalized: string[] = [];
+  const stack: { name: string; indent: number }[] = [];
+  let fence = '';
+  let fenceQuoteDepth = 0;
+  let tableFence = false;
+  let offset = 0;
+  let fencedCodeIndex = 0;
+  for (const line of markdown.split('\n')) {
+    const lineOffset = offset;
+    offset += line.length + 1;
+    const indent = line.match(/^[ \t]*/)?.[0].length ?? 0;
+    const contentIndent = stack.length
+      ? stack[stack.length - 1].indent + 2 - stack[0].indent
+      : 0;
+    const content = line.slice(Math.min(indent, contentIndent));
+    while (
+      fencedCodeIndex < fencedCode.length &&
+      fencedCode[fencedCodeIndex][1] <= lineOffset
+    )
+      fencedCodeIndex++;
+    const literal = fencedCode[fencedCodeIndex];
+    if (literal && literal[0] < offset) {
+      // A serialized table-cell closing fence can look like an opening fence
+      // to remark. Let the existing table-fence state own that boundary.
+      if (tableFence) fencedCodeIndex++;
+      else {
+        const active = stack.length > 0;
+        (active ? normalized : output).push(active ? content : line);
+        if (active) original.push(line);
+        continue;
+      }
+    }
+    const marker = line.match(
+      /^[ \t]*(?:(?:>[ \t]?|(?:[-+*]|\d+[.)])[ \t]+)[ \t]*)*(`{3,}|~{3,})([^\r\n]*)$/,
+    );
+    const markerPrefix = marker
+      ? line.slice(0, line.length - marker[1].length - marker[2].length)
+      : '';
+    const quoteDepth = (markerPrefix.match(/>/g) ?? []).length;
+    const hasListMarker = /(?:[-+*]|\d+[.)])[ \t]+/.test(markerPrefix);
+    const tableOpening =
+      !fence && line.match(/^[ \t]*\|[ \t]*(`{3,}|~{3,})([^\r\n]*)$/);
+    const opening =
+      !fence &&
+      !marker &&
+      !tableOpening &&
+      [...line.matchAll(/<(CodeBlockTabs|CalloutContainer)\b/g)].some(
+        (match) => !isLiteral(lineOffset + (match.index ?? 0)),
+      );
+    const active = stack.length > 0 || opening;
+    const tableClosing =
+      tableFence &&
+      line.match(
+        /^[ \t]*(`{3,}|~{3,})[ \t]*\|(?:[ \t]*(`{3,}|~{3,})([^\r\n]*))?[ \t]*$/,
+      );
+    const padding = ' '.repeat(Math.max(0, indent - contentIndent));
+    let renderedTable: string | undefined;
+    if (tableOpening) {
+      renderedTable = `${padding}${tableOpening[1]}${tableOpening[2]}`;
+      fence = tableOpening[1];
+      fenceQuoteDepth = 0;
+      tableFence = true;
+    } else if (
+      tableClosing &&
+      tableClosing[1][0] === fence[0] &&
+      tableClosing[1].length >= fence.length
+    ) {
+      renderedTable = `${padding}${tableClosing[1]}`;
+      if (tableClosing[2])
+        renderedTable += `\n\n${padding}${tableClosing[2]}${tableClosing[3]}`;
+      fence = tableClosing[2] ?? '';
+      tableFence = Boolean(fence);
+    }
+    if (renderedTable !== undefined) {
+      (active ? normalized : output).push(renderedTable);
+      if (active) original.push(line);
+      continue;
+    }
+    if (marker) {
+      const openingFence = !fence;
+      if (!fence) {
+        fence = marker[1];
+        fenceQuoteDepth = quoteDepth;
+      } else if (
+        marker[1][0] === fence[0] &&
+        marker[1].length >= fence.length &&
+        quoteDepth === fenceQuoteDepth &&
+        !hasListMarker &&
+        !marker[2].trim()
+      )
+        fence = '';
+      if (!fence) tableFence = false;
+      const language = marker[2].trim().split(/[ \t]/, 1)[0];
+      const rendered =
+        active && openingFence
+          ? `${markerPrefix.slice(Math.min(indent, contentIndent))}${marker[1]}${language.includes('=') ? '' : language}`
+          : active
+            ? content
+            : line;
+      (active ? normalized : output).push(rendered);
+      if (active) original.push(line);
+      continue;
+    }
+    if (!active) {
+      output.push(line);
+      continue;
+    }
+    original.push(line);
+    if (fence) {
+      normalized.push(content);
+      continue;
+    }
+    normalized.push(
+      content.replace(
+        /<(\/?)(CodeBlockTabs(?:List|Trigger)?|CodeBlockTab|CalloutContainer|CalloutTitle|CalloutDescription)\b(?:[^"'>]|"[^"]*"|'[^']*')*>/g,
+        (tag, closing: string, name: string, tagOffset: number) => {
+          if (
+            isLiteral(lineOffset + Math.min(indent, contentIndent) + tagOffset)
+          )
+            return tag;
+          if (closing) {
+            const index = stack.map((entry) => entry.name).lastIndexOf(name);
+            if (index >= 0) stack.splice(index);
+          } else if (!tag.endsWith('/>')) stack.push({ name, indent });
+          return '';
+        },
+      ),
+    );
+    if (!stack.length) {
+      output.push('', ...normalized, '');
+      original = [];
+      normalized = [];
+    }
+  }
+  // A truncated container must not cause the rest of the source to disappear.
+  return [...output, ...original].join('\n');
+}
 function text(node: Root | RootContent): string {
   if ('value' in node) {
     return node.type === 'html' ? load(node.value).text() : node.value;
@@ -59,6 +236,31 @@ function text(node: Root | RootContent): string {
         .map((child) => text(child))
         .join(node.type === 'paragraph' || node.type === 'heading' ? '' : '\n')
     : '';
+}
+
+function proseText(node: Root | RootContent, keepInlineCode = false): string {
+  if (
+    node.type === 'heading' ||
+    node.type === 'code' ||
+    (node.type === 'inlineCode' && !keepInlineCode)
+  )
+    return '';
+  if (node.type === 'html') {
+    // Generated HTML tab containers can still hold Markdown fences as text.
+    const html = load(
+      node.value.replace(
+        /^[ \t]*(`{3,}|~{3,})[^\r\n]*\r?\n[\s\S]*?^[ \t]*\1[ \t]*$/gm,
+        '',
+      ),
+    );
+    html('pre,code,script,style,CodeBlockTabsTrigger,TabsTrigger').remove();
+    return html.text();
+  }
+  if ('children' in node)
+    return node.children
+      .map((child) => proseText(child, keepInlineCode))
+      .join('');
+  return 'value' in node ? node.value : '';
 }
 
 export function extractPublishedCnSections(
@@ -72,7 +274,8 @@ export function extractPublishedCnSections(
     ...route,
     canonicalPath: toCnContentSearchUrl(route.canonicalPath),
   };
-  let tree = unified().use(remarkParse).parse(markdown);
+  markdown = normalizeSearchContainers(markdown);
+  let tree = markdownParser.parse(markdown);
   // 平台和折叠容器导出后可能保留四空格缩进，remark 会把正文误当代码。
   // 非平台页必须由真实 HTML 标题确认锚点，不能把普通代码示例提升成章节。
   if (route.platform || renderedHeadingIds?.size) {
@@ -129,9 +332,27 @@ export function extractPublishedCnSections(
           value +
           markdown.slice(node.position.end.offset);
       }
-      tree = unified().use(remarkParse).parse(markdown);
+      tree = markdownParser.parse(markdown);
     }
   }
+  // HTML tab blocks can be split at blank lines before remark sees their closing
+  // fences. Remove the whole code container before parsing prose, retaining
+  // offsets so summaries still belong to the original document sections.
+  const proseMarkdown = stripSearchComponentTags(
+    markdown.replace(
+      /<(CodeBlockTabs|CodeBlockTab|CodeBlockTabsContent)\b[^>]*>[\s\S]*?<\/\1\s*>/gi,
+      (block) => block.replace(/[^\r\n]/g, ' '),
+    ),
+    true,
+  );
+  const proseNodes = unified()
+    .use(remarkParse)
+    .parse(proseMarkdown)
+    .children.map((node) => ({
+      start: node.position?.start.offset ?? 0,
+      introduction: stripSearchProseMarkers(proseText(node)),
+      summary: stripSearchProseMarkers(proseText(node, true)),
+    }));
   const slugger = new GithubSlugger();
   const [, tab] = route.canonicalPath.split('/').filter(Boolean);
   const routeMetadata = getRouteMetadata(route);
@@ -163,9 +384,11 @@ export function extractPublishedCnSections(
       ? faq.platform.length
         ? faq.platform
         : undefined
-      : routeMetadata.platform
-        ? [routeMetadata.platform]
-        : undefined,
+      : routeMetadata.platforms.length
+        ? routeMetadata.platforms
+        : page.objectType === 'openapi'
+          ? ['restful']
+          : page.titlePlatforms?.filter(isKnownPlatform),
     docType: page.objectType ?? 'docs',
     audience: ['developer', 'customer-support'],
     status: 'published',
@@ -193,15 +416,47 @@ export function extractPublishedCnSections(
     return [record];
   }
   const records: SearchSection[] = [];
+  const firstProse = proseNodes
+    .map((node) => node.introduction)
+    .map((value) => value.trim())
+    .find((value) => value && !value.startsWith('For AI agents:'));
+  let hasComponentContent = false;
+  if (!firstProse && page.description?.trim()) {
+    // Data-driven components (for example SDK downloads) render useful content
+    // without Markdown prose. JSX array props may be parsed as text by remark;
+    // code and inlineCode values are deliberately excluded from this check.
+    visit(tree, (node) => {
+      if (
+        (node.type === 'html' || node.type === 'text') &&
+        /<[A-Z_][\w.-]*(?=[\s/>]|$)/.test(node.value)
+      )
+        hasComponentContent = true;
+    });
+  }
+  // API reference chapters keep their symbol entries; guide pages also need a
+  // title entry when their maintained body begins directly with a section.
+  const pageIntroduction =
+    firstProse || hasComponentContent
+      ? page.description?.trim() ||
+        (firstProse &&
+        !toCnPublicSearchUrl(route.url).startsWith('/api-reference/')
+          ? firstProse.slice(0, 700)
+          : '')
+      : '';
   const hierarchy: { level: number; title: string }[] = [];
   let current = {
     title: page.title,
     anchor: '',
     path: [page.title],
     parts: [] as string[],
+    start: 0,
   };
-  const flush = () => {
-    const content = current.parts.join('\n').trim();
+  const flush = (end = markdown.length) => {
+    // A maintained description is a real page introduction even when the body
+    // starts at H2. Otherwise product pages lose their title-ranking entry.
+    const content =
+      current.parts.join('\n').trim() ||
+      (!current.anchor ? pageIntroduction : '');
     if (!content) return;
     const record: SearchSection = {
       ...metadata,
@@ -210,6 +465,13 @@ export function extractPublishedCnSections(
       url: `${route.url}${current.anchor ? `#${current.anchor}` : ''}`,
       sectionTitle: current.title,
       content,
+      summary:
+        proseNodes
+          .filter((node) => node.start >= current.start && node.start < end)
+          .map((node) => node.summary)
+          .filter((value) => !value.startsWith('For AI agents:'))
+          .join('\n')
+          .trim() || (!current.anchor ? pageIntroduction : ''),
       headingPath: current.path,
     };
     assertValidSearchSection(record);
@@ -247,7 +509,7 @@ export function extractPublishedCnSections(
     const headingWithId = headingText.match(/^(.*?)\s*\[#(.+)\]$/);
     const title = headingWithId?.[1] ?? headingText;
     if (!title) continue;
-    flush();
+    flush(node.position?.start.offset);
     const automaticAnchor = slugger.slug(title);
     const prefix = markdown.slice(
       Math.max(0, (node.position?.start.offset ?? 0) - 300),
@@ -263,9 +525,11 @@ export function extractPublishedCnSections(
       hierarchy.pop();
     current = {
       title,
-      anchor: explicitAnchor ?? headingWithId?.[2] ?? automaticAnchor,
+      // Published renderer IDs match the TOC; preceding anchors remain aliases.
+      anchor: headingWithId?.[2] ?? explicitAnchor ?? automaticAnchor,
       path: [page.title, ...hierarchy.map((item) => item.title), title],
       parts: [title],
+      start: node.position?.start.offset ?? 0,
     };
     hierarchy.push({ level: node.depth, title });
   }
@@ -284,6 +548,7 @@ export function extractPublishedCnSections(
         ? record
         : existing),
       content,
+      summary: [existing.summary, record.summary].filter(Boolean).join('\n'),
     });
   }
   return [...unique.values()];
