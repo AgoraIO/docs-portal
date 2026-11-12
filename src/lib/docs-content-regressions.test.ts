@@ -1078,21 +1078,25 @@ describe('docs content regressions', () => {
   });
 
   it(
-    'uses specific titles for English top-level overview pages',
+    'uses Overview for English top-level overview pages',
     async () => {
       const { source } = await import('./source.server');
 
       const overviewPages = [
         {
-          expectedTitle: 'Voice Agent overview',
+          expectedTitle: 'Overview',
+          slugs: ['introduction'],
+        },
+        {
+          expectedTitle: 'Overview',
           slugs: ['ai'],
         },
         {
-          expectedTitle: 'Real-Time Communications overview',
+          expectedTitle: 'Overview',
           slugs: ['realtime-media', 'overview'],
         },
         {
-          expectedTitle: 'Reference overview',
+          expectedTitle: 'Overview',
           slugs: ['api-reference'],
         },
       ];
