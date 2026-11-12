@@ -1,3 +1,4 @@
+import { PhoneIcon } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { getDocsFooterContent } from '@/lib/footer-content';
 import { DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
@@ -15,6 +16,17 @@ export function DocsSiteFooter({
   style?: React.CSSProperties;
 }) {
   const docsFooterContent = getDocsFooterContent(locale);
+  const isChinese = locale === 'zh-CN';
+  const headingClassName = cn(
+    'text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--ink-1)]',
+    isChinese && 'mb-3 text-base tracking-[0.04em]',
+  );
+  const textLinkClassName = isChinese
+    ? 'inline-flex min-h-11 items-center gap-2 rounded-sm text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--docs-footer-link-hover)] focus-visible:text-[color:var(--docs-footer-link-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--docs-footer-link-hover)] active:text-[color:var(--docs-footer-link-hover)] lg:min-h-7'
+    : undefined;
+  const quietLinkClassName = isChinese
+    ? cn(textLinkClassName, 'text-[color:var(--ink-3)]')
+    : undefined;
 
   return (
     <section
@@ -30,21 +42,53 @@ export function DocsSiteFooter({
         className={cn(
           'mx-auto flex w-full flex-col gap-7 px-4 sm:px-6',
           contentClassName,
+          isChinese && 'gap-6',
         )}
         data-testid="docs-site-footer-content"
       >
-        <div className="flex flex-col gap-8 rounded-lg bg-[color:var(--surface-muted)] px-5 py-6 sm:px-6 lg:px-8">
+        <div
+          className={cn(
+            'flex flex-col gap-8 rounded-lg bg-[color:var(--surface-muted)] px-5 py-6 sm:px-6 lg:px-8',
+            isChinese && 'rounded-xl lg:py-8',
+          )}
+        >
           <FooterSocialLinks content={docsFooterContent} />
 
-          <div className="grid grid-cols-1 gap-7 text-center sm:grid-cols-2 sm:text-left lg:grid-cols-4">
-            <div className="flex flex-col gap-3">
-              <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--ink-1)]">
+          <div
+            className={cn(
+              'grid grid-cols-1 gap-7 text-center sm:grid-cols-2 sm:text-left lg:grid-cols-4',
+              isChinese &&
+                'grid-cols-2 gap-x-8 text-left lg:grid-cols-[minmax(0,1.2fr)_repeat(3,minmax(0,1fr))] lg:gap-x-12',
+            )}
+          >
+            <div
+              className={cn(
+                'flex flex-col gap-3',
+                isChinese && 'col-span-2 gap-0 sm:col-span-1',
+              )}
+            >
+              <h2 className={headingClassName}>
                 {docsFooterContent.contact.title}
               </h2>
               <p className="text-sm font-medium text-[color:var(--ink-2)]">
-                {docsFooterContent.contact.phone}
+                {isChinese ? (
+                  <a
+                    className={textLinkClassName}
+                    href={`tel:${docsFooterContent.contact.phone.replace(/[^\d+]/g, '')}`}
+                  >
+                    <PhoneIcon aria-hidden="true" className="size-3.5" />
+                    {docsFooterContent.contact.phone}
+                  </a>
+                ) : (
+                  docsFooterContent.contact.phone
+                )}
               </p>
-              <p className="text-sm leading-6 text-[color:var(--ink-3)]">
+              <p
+                className={cn(
+                  'text-sm leading-6 text-[color:var(--ink-3)]',
+                  isChinese && 'mt-2 font-normal text-[color:var(--ink-1)]',
+                )}
+              >
                 {docsFooterContent.contact.address.map((line) => (
                   <span className="block" key={line}>
                     {line}
@@ -53,20 +97,33 @@ export function DocsSiteFooter({
               </p>
             </div>
 
-            {docsFooterContent.navGroups.map((group) => (
+            {docsFooterContent.navGroups.map((group, index) => (
               <nav
                 aria-label={group.title}
-                className="flex flex-col gap-3"
+                className={cn(
+                  'flex flex-col gap-3',
+                  isChinese && 'gap-0',
+                  isChinese && index === 2 && 'col-span-2 sm:col-span-1',
+                )}
                 key={group.title}
               >
-                <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--ink-1)]">
-                  {group.title}
-                </h2>
-                <ul className="flex flex-col gap-2">
+                <h2 className={headingClassName}>{group.title}</h2>
+                <ul
+                  className={cn(
+                    'flex flex-col gap-2',
+                    isChinese && 'gap-0',
+                    isChinese &&
+                      index === 2 &&
+                      'flex-row flex-wrap gap-x-6 sm:flex-col sm:gap-x-0',
+                  )}
+                >
                   {group.links.map((link) => (
                     <li key={link.label}>
                       <a
-                        className="text-sm text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)]"
+                        className={cn(
+                          'text-sm text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)]',
+                          textLinkClassName,
+                        )}
                         href={link.href}
                         rel="noopener noreferrer"
                         target="_blank"
@@ -81,13 +138,33 @@ export function DocsSiteFooter({
           </div>
         </div>
 
-        <div className="flex flex-col gap-5 px-5 text-[color:var(--ink-4)] sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center gap-3 text-center">
-            <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs sm:text-sm lg:justify-start">
+        <div
+          className={cn(
+            'flex flex-col gap-5 px-5 text-[color:var(--ink-4)] sm:px-6 lg:px-8',
+            isChinese &&
+              'grid gap-2 text-[color:var(--ink-3)] lg:grid-cols-[minmax(0,1fr)_auto]',
+          )}
+        >
+          <div
+            className={cn(
+              'flex flex-col items-center gap-3 text-center',
+              isChinese && 'contents',
+            )}
+          >
+            <ul
+              className={cn(
+                'flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs sm:text-sm lg:justify-start',
+                isChinese &&
+                  'order-2 grid grid-cols-[max-content_max-content] justify-start gap-x-5 gap-y-0 text-[13px] sm:flex sm:text-[13px] lg:justify-end',
+              )}
+            >
               {docsFooterContent.legalLinks.map((link) => (
                 <li key={link.label}>
                   <a
-                    className="transition-colors hover:text-[color:var(--ink-2)]"
+                    className={cn(
+                      'transition-colors hover:text-[color:var(--ink-2)]',
+                      quietLinkClassName,
+                    )}
                     href={link.href}
                     rel={link.href === '#' ? undefined : 'noopener noreferrer'}
                     target={link.href === '#' ? undefined : '_blank'}
@@ -99,11 +176,20 @@ export function DocsSiteFooter({
             </ul>
 
             {docsFooterContent.regulatoryLinks ? (
-              <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs sm:text-sm lg:justify-start">
+              <ul
+                className={cn(
+                  'flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs sm:text-sm lg:justify-start',
+                  isChinese &&
+                    'order-3 col-span-full justify-start gap-x-5 gap-y-0 text-[13px] sm:text-[13px]',
+                )}
+              >
                 {docsFooterContent.certification ? (
                   <li>
                     <span
-                      className="font-semibold text-[color:var(--ink-3)]"
+                      className={cn(
+                        'font-semibold text-[color:var(--ink-3)]',
+                        isChinese && 'font-normal',
+                      )}
                       title={docsFooterContent.certification.title}
                     >
                       {docsFooterContent.certification.label}
@@ -113,7 +199,10 @@ export function DocsSiteFooter({
                 {docsFooterContent.regulatoryLinks.map((link) => (
                   <li key={link.label}>
                     <a
-                      className="transition-colors hover:text-[color:var(--ink-2)]"
+                      className={cn(
+                        'transition-colors hover:text-[color:var(--ink-2)]',
+                        quietLinkClassName,
+                      )}
                       href={link.href}
                       rel="noopener noreferrer"
                       target="_blank"
@@ -126,13 +215,27 @@ export function DocsSiteFooter({
             ) : null}
           </div>
 
-          <div className="flex flex-col items-center justify-center gap-3 text-center text-sm sm:flex-row sm:gap-4">
+          <div
+            className={cn(
+              'flex flex-col items-center justify-center gap-3 text-center text-sm sm:flex-row sm:gap-4',
+              isChinese &&
+                'order-1 flex-row justify-start gap-3 text-left text-[13px] sm:gap-3',
+            )}
+          >
             <SiteLogoMark alt={docsFooterContent.logoAlt} locale={locale} />
-            <span>{docsFooterContent.copyright}</span>
-            <span aria-hidden="true" className="hidden sm:inline">
-              |
-            </span>
-            <span>{docsFooterContent.rights}</span>
+            {isChinese ? (
+              <span className="min-w-0 leading-5">
+                {docsFooterContent.copyright} · {docsFooterContent.rights}
+              </span>
+            ) : (
+              <>
+                <span>{docsFooterContent.copyright}</span>
+                <span aria-hidden="true" className="hidden sm:inline">
+                  |
+                </span>
+                <span>{docsFooterContent.rights}</span>
+              </>
+            )}
           </div>
         </div>
       </div>
