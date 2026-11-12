@@ -19,6 +19,8 @@ const enCommon = {
     },
   },
   docs: {
+    unwrapCode: 'Unwrap code',
+    wrapCode: 'Wrap code',
     contentLoading: 'Loading content…',
     search: 'Search docs',
     searchDescription: 'Search tabs and pages in the current docs portal.',

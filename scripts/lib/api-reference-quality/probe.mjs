@@ -30,6 +30,49 @@ export function inspectReference() {
     if (visible(type) && type.scrollWidth > type.clientWidth + 2)
       add('overflowing-api-type', type);
   }
+  for (const section of document.querySelectorAll('[data-api-returns]')) {
+    if (!visible(section)) continue;
+    const type = section.querySelector('[data-api-return-type]');
+    const description = section.querySelector('[data-api-return-description]');
+    if (
+      description &&
+      !description.textContent.trim() &&
+      !description.querySelector('img, video, pre')
+    )
+      add('empty-api-return-description', section);
+    if (
+      section.dataset.apiReturnLayout === 'type' &&
+      (!type?.textContent.trim() ||
+        description ||
+        section.querySelector('table'))
+    )
+      add('invalid-api-return-layout', section);
+  }
+  for (const description of document.querySelectorAll(
+    '[data-parameter-description]',
+  )) {
+    if (!visible(description)) continue;
+    const first = description.firstElementChild;
+    if (
+      first?.matches('a[id], a[name]') &&
+      !first.textContent.trim() &&
+      first.nextElementSibling &&
+      parseFloat(getComputedStyle(first.nextElementSibling).marginTop) > 2
+    )
+      add('parameter-anchor-spacing', description);
+  }
+  for (const heading of document.querySelectorAll(
+    '[data-parameter-list] tbody th[scope="row"]',
+  )) {
+    const description = heading.nextElementSibling;
+    if (
+      visible(heading) &&
+      description &&
+      getComputedStyle(heading).backgroundColor !==
+        getComputedStyle(description).backgroundColor
+    )
+      add('inconsistent-parameter-row-surface', heading);
+  }
   for (const list of document.querySelectorAll(
     '[data-parameter-list][data-parameter-nested="true"]',
   )) {
@@ -144,6 +187,17 @@ export function inspectReference() {
     'article [data-api-signature]',
   )) {
     if (!visible(signature)) continue;
+    const code = signature.querySelector('pre code');
+    for (const link of signature.querySelectorAll('pre code a[href]')) {
+      const style = getComputedStyle(link);
+      if (
+        visible(link) &&
+        code &&
+        style.color === getComputedStyle(code).color &&
+        !style.textDecorationLine.includes('underline')
+      )
+        add('indistinguishable-api-type-link', link);
+    }
     if (
       !signature.matches('figure.shiki') ||
       !signature.querySelector('pre code > .line')
@@ -175,7 +229,7 @@ export function inspectReference() {
     }
   }
   for (const parameters of document.querySelectorAll(
-    'article [data-parameter-list]:not([data-parameter-nested]), article [data-api-returns]',
+    'article [data-parameter-list]:not([data-parameter-nested]), article [data-api-returns]:not([data-api-return-layout="type"])',
   )) {
     if (
       visible(parameters) &&
@@ -262,6 +316,11 @@ export const canaryHtml = `<!doctype html><html><body><article>
 <section data-parameter-list><div>Unshared parameter grid</div></section>
 <div data-parameter-list data-parameter-nested="true"><div data-parameter-item>Unshared nested card</div></div>
 <div data-api-return-type style="width:100px;white-space:pre">Promise&lt;VeryLongVideoTrackInterface,VeryLongAudioTrackInterface&gt;</div>
+<section data-api-returns><table><tbody><tr><td data-api-return-type>void</td><td data-api-return-description></td></tr></tbody></table></section>
+<section data-api-returns data-api-return-layout="type"><div data-api-return-description>Missing return type</div></section>
+<figure class="shiki" data-api-signature><pre><code style="color:black"><span class="line">open(<a href="#type" style="color:black;text-decoration:none;font-family:inherit">Options</a>)</span></code></pre></figure>
+<div data-parameter-description><a id="old-parameter"></a><p style="margin-top:19px">Path to the image.</p></div>
+<section data-parameter-list><table><tbody><tr><th scope="row" style="background:beige">uid</th><td style="background:white">User identifier.</td></tr></tbody></table></section>
 </article></body></html>`;
 export const canaryRules = [
   'page-overflow',
@@ -279,4 +338,9 @@ export const canaryRules = [
   'inconsistent-code-typography',
   'overflowing-api-type',
   'nonstandard-nested-parameters',
+  'empty-api-return-description',
+  'invalid-api-return-layout',
+  'indistinguishable-api-type-link',
+  'parameter-anchor-spacing',
+  'inconsistent-parameter-row-surface',
 ];

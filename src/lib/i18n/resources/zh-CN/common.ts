@@ -19,6 +19,8 @@ const zhCnCommon = {
     },
   },
   docs: {
+    unwrapCode: '取消自动换行',
+    wrapCode: '自动换行',
     contentLoading: '正在加载内容…',
     search: '搜索文档',
     searchDescription: '搜索当前文档门户中的 tabs 和页面。',

@@ -66,7 +66,9 @@ import {
   type NormalizedDocsHref,
   normalizeDocsHref,
 } from '@/lib/docs-link-normalize';
+import { normalizeLocale } from '@/lib/i18n/i18n-config';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
+import { DocsCodeBlock as Pre } from './DocsCodeBlock';
 import {
   ApiReturns,
   ApiReturnType,
@@ -75,7 +77,7 @@ import {
   ParameterList,
   ParameterType,
 } from './mdx/ApiReference';
-import { DocsCodeBlock as Pre } from './DocsCodeBlock';
+
 import { DocsHeading } from './mdx/DocsHeading';
 import { DocsTable } from './mdx/DocsTable';
 import { PlanCards, PricingCards } from './mdx/PlanCards';
@@ -88,8 +90,11 @@ import { PlatformPanel, PlatformTabsGroup } from './mdx/PlatformTabsGroup';
 import { RepositoryCardTitle } from './mdx/RepositoryCardTitle';
 import { RTCMinutesCalculator } from './mdx/RTCMinutesCalculator';
 
+type PreProps = ComponentProps<typeof Pre>;
+
 type MDXContext = {
   contentPath?: string;
+  locale?: string;
 };
 
 const IM_PRICING_DETAILS_CONTENT_PATH =
@@ -1067,9 +1072,11 @@ function CodeBlockTab({
 function CommandBlock({
   code,
   language = 'bash',
+  locale,
 }: {
   code: string;
   language?: string;
+  locale?: string;
 }) {
   const lineKeys = new Map<string, number>();
   const lines = code
@@ -1086,7 +1093,7 @@ function CommandBlock({
     });
 
   return (
-    <Pre className={cn('shiki', `language-${language}`)}>
+    <Pre className={cn('shiki', `language-${language}`)} locale={locale}>
       <code className={cn('language-code', `language-${language}`)}>
         {lines.map(({ id, line }) => (
           <span className="line" key={id}>
@@ -1264,12 +1271,42 @@ function ZoomableImage({
   );
 }
 
+// Module-level component types keep local wrapping state when the page remeasures.
+const localizedCodeComponents = {
+  en: {
+    pre: (props: PreProps) => <Pre {...props} locale="en" />,
+    CommandBlock: (props: ComponentProps<typeof CommandBlock>) => (
+      <CommandBlock {...props} locale="en" />
+    ),
+    ApiSignature: (props: ComponentProps<typeof ApiSignature>) => (
+      <ApiSignature {...props} locale="en" />
+    ),
+  },
+  'zh-CN': {
+    pre: (props: PreProps) => <Pre {...props} locale="zh-CN" />,
+    CommandBlock: (props: ComponentProps<typeof CommandBlock>) => (
+      <CommandBlock {...props} locale="zh-CN" />
+    ),
+    ApiSignature: (props: ComponentProps<typeof ApiSignature>) => (
+      <ApiSignature {...props} locale="zh-CN" />
+    ),
+  },
+};
+
+function getCodeComponents(locale?: string) {
+  const normalizedLocale = normalizeLocale(locale);
+  return normalizedLocale
+    ? localizedCodeComponents[normalizedLocale]
+    : { pre: Pre, CommandBlock, ApiSignature };
+}
+
 export function getMDXComponents(
   components?: MDXComponents,
   context?: MDXContext,
 ) {
   const DocsPlanCards = createPlanCardsComponent(context?.contentPath);
   const DocsPricingCards = createPricingCardsComponent(context?.contentPath);
+  const codeComponents = getCodeComponents(context?.locale);
 
   return {
     ...defaultMdxComponents,
@@ -1284,7 +1321,7 @@ export function getMDXComponents(
     a: createDocsAnchor(context?.contentPath),
     Link: createLegacyDocsLink(context?.contentPath),
     Card: createDocsCard(context?.contentPath),
-    CommandBlock,
+    CommandBlock: codeComponents.CommandBlock,
     Tabs,
     Tab: FumadocsTab,
     TabsContent,
@@ -1293,8 +1330,8 @@ export function getMDXComponents(
     CodeBlockTabs,
     CodeBlockTabsList,
     CodeBlockTab,
-    pre: Pre,
-    ApiSignature,
+    pre: codeComponents.pre,
+    ApiSignature: codeComponents.ApiSignature,
     ApiReturns,
     ApiReturnType,
     ParameterType,

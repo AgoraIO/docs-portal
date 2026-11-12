@@ -55,6 +55,27 @@ describe('generated reference structure', () => {
 
 import { planTypeDocStructure } from './lib/api-center/typedoc-structure.mjs';
 
+it('restores source-defined legacy notices and deprecations with their historical heading targets', () => {
+  const source =
+    '---\n_migration:\n  type: generated-html\n  generator: typedoc\n  sourcePath: html-docs/rtc/Web/interfaces/client.html\n---\n## Events\n\n### first\n\n#### deprecated\n\nAvailable since an earlier release.\n\n<ParameterList />\n\n### second\n\n#### deprecated\n\nUse the current callback.\n\n<ParameterList />\n\n> Preserve this condition.\n';
+  let fixed = source;
+  for (const edit of [...planTypeDocStructure(source)].reverse())
+    fixed =
+      fixed.slice(0, edit.start) + edit.replacement + fixed.slice(edit.end);
+  expect(fixed).toContain('<a id="deprecated"></a>');
+  expect(fixed).toContain('<a id="deprecated-1"></a>');
+  expect(fixed).toContain(
+    ':::warning[deprecated]\nAvailable since an earlier release.\n:::',
+  );
+  expect(fixed).toContain(':::caution[注意]\nPreserve this condition.\n:::');
+  expect(planTypeDocStructure(fixed)).toEqual([]);
+  expect(
+    planTypeDocStructure(
+      source.replace('type: generated-html', 'type: authored'),
+    ).some((edit) => edit.rule === 'unstructured-typedoc-deprecation'),
+  ).toBe(false);
+});
+
 it('plans source-level TypeDoc signatures and notes without changing their values, links or quotations', () => {
   const source = `---\n_migration:\n  generator: typedoc\n---\n## Properties\n\n<a id="channelname"></a>\n\n### Optional Readonly channelName\n\nchannelName: [string](#string)\n\n#### Example\n\nExample: ordinary explanatory text.\n\n> 注意事项：\n>\n> - Keep \`uid\` unique.\n\n> Quoted words from another source.`;
   const edits = planTypeDocStructure(source);
@@ -120,5 +141,19 @@ it('preserves notice list ownership and reuses an enclosing callout', () => {
     false,
   );
   expect(fixed).toContain('**Note:**\n\nBrowser support remains documented.');
+  expect(planTypeDocStructure(fixed)).toEqual([]);
+});
+
+it('keeps deprecation bodies intact without nesting existing notices or moving real links out', () => {
+  const source = `---\n_migration:\n  type: generated-html\n  generator: typedoc\n  sourcePath: html-docs/rtc/Web/interfaces/client.html\n---\n### first\n\n#### deprecated\n\nUse the current callback.\n\n:::note[Compatibility]\nKeep this condition.\n:::\n\n<a href="/more">More information</a>\n\n<a id="next"></a>\n\n### next\n`;
+  let fixed = source;
+  for (const edit of [...planTypeDocStructure(source)].reverse())
+    fixed =
+      fixed.slice(0, edit.start) + edit.replacement + fixed.slice(edit.end);
+  expect(fixed).toContain(
+    ':::warning[deprecated]\nUse the current callback.\n\n**Compatibility**\n\nKeep this condition.\n\n<a href="/more">More information</a>\n:::',
+  );
+  expect(fixed).toContain(':::\n\n<a id="next"></a>\n\n### next');
+  expect(fixed).not.toContain(':::note');
   expect(planTypeDocStructure(fixed)).toEqual([]);
 });
