@@ -11,6 +11,39 @@
   opacity: 1;
 }
 
+@media (max-width: 63.999rem), (pointer: coarse) {
+  :root figure.shiki {
+    --docs-code-actions-padding: 112px;
+  }
+
+  :root figure.shiki button {
+    min-width: 44px;
+    min-height: 44px;
+    opacity: 1;
+  }
+
+  :root figure.shiki > div:has(> figcaption) {
+    min-height: 56px;
+  }
+
+  /* Untitled blocks get a dedicated action strip above their code. */
+  :root
+    figure.shiki:not(:has(figcaption)):not(.openapi-response-header-code)
+    > .fd-scroll-container {
+    padding-top: 64px;
+  }
+
+  [data-openapi-response-toolbar] {
+    height: 56px;
+  }
+  .openapi-response-header-actions {
+    top: 6px;
+  }
+  .openapi-response-actions-space {
+    width: 112px;
+  }
+}
+
 /* Language badges follow the active theme; filenames keep the normal caption. */
 .docs-code-language {
   display: inline-block;

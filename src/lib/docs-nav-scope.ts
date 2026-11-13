@@ -25,6 +25,8 @@ export type DocsSidebarHeaderVersion = {
 export type DocsSidebarHeader = {
   backHref: string;
   backLabel: string;
+  backSearch?: Record<string, string>;
+  backHash?: string;
   productDocsHref?: string;
   title: string;
   versionSwitcher?: {

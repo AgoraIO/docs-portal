@@ -1960,15 +1960,14 @@ article[lang="zh-CN"] .docs-body .group\/heading > a {
   overflow-wrap: anywhere;
 }
 
-/* The request-body title shares a flex row with its media type. Let that row
-   own the spacing, instead of adding its margin to the heading's margin. */
-.openapi-operation div.flex:has(> .openapi-section-heading[id="request-body"]) {
+/* Native parameter/body title rows own section spacing, like standalone titles. */
+.openapi-operation div.flex:has(> .openapi-section-heading) {
   margin-block: 2.25rem 1rem;
 }
 
 .openapi-operation
-  div.flex:has(> .openapi-section-heading[id="request-body"])
-  > .openapi-section-heading[id="request-body"] {
+  div.flex:has(> .openapi-section-heading)
+  > .openapi-section-heading {
   margin-block: 0;
 }
 

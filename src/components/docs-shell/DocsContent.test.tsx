@@ -1065,6 +1065,39 @@ describe('DocsContent', () => {
     ).toBeTruthy();
   });
 
+  it.each(['en', 'zh-CN'] as const)(
+    'shows the selected SDK version in the mobile document header in %s',
+    async (locale) => {
+      renderWithRouter(
+        <DocsContent
+          locale={locale}
+          title="SDK overview"
+          contentPath="en/api-reference/overview.mdx"
+          toc={[]}
+          sidebarHeader={{
+            title: 'SDK',
+            backHref: `/${locale}/api-reference/api`,
+            backLabel: 'API',
+            versionSwitcher: {
+              currentId: 'old',
+              versions: [
+                { id: 'current', label: 'v2.9.0', href: '/current' },
+                { id: 'old', label: 'v1.7.0', href: '/old' },
+              ],
+            },
+          }}
+        />,
+      );
+      expect(
+        await screen.findByTestId('docs-current-version'),
+      ).toHaveTextContent('v1.7.0');
+      expect(screen.getByTestId('docs-current-version')).toHaveAttribute(
+        'aria-label',
+        locale === 'zh-CN' ? '当前版本：v1.7.0' : 'Current version: v1.7.0',
+      );
+    },
+  );
+
   it('renders page-level platform tabs in the content header before MDX body content', async () => {
     renderWithRouter(
       <DocsContent

@@ -165,6 +165,12 @@ export function DocsContent({
   const canCopyMarkdownContent = isPublicMarkdownLocale(currentLocale);
   const t = i18n.getFixedT(currentLocale, 'common');
   const displayTitle = title ?? slug;
+  const currentSdkVersion =
+    sidebarHeader?.versionSwitcher?.presentation !== 'tabs'
+      ? sidebarHeader?.versionSwitcher?.versions.find(
+          (version) => version.id === sidebarHeader.versionSwitcher?.currentId,
+        )
+      : undefined;
   const lastUpdatedMetadata = ensureDocsLastUpdatedMetadata(lastUpdated);
   const sourceTitle = displayTitle ?? t('app.name');
   const currentPageKey = getCurrentDocsPageKey();
@@ -333,6 +339,18 @@ export function DocsContent({
                   locale={currentLocale}
                   platformTabs={platformTabs}
                 />
+                {currentSdkVersion ? (
+                  <span
+                    data-testid="docs-current-version"
+                    role="status"
+                    aria-label={t('docs.currentVersion', {
+                      version: currentSdkVersion.label,
+                    })}
+                    className="inline-flex items-center rounded-md border border-border bg-muted/40 px-2 py-1 text-xs font-medium text-muted-foreground lg:hidden"
+                  >
+                    {currentSdkVersion.label}
+                  </span>
+                ) : null}
               </div>
               <p
                 className="mt-2 inline-flex items-center gap-1.5 text-[13px] leading-5 text-[color:var(--ink-4)]"

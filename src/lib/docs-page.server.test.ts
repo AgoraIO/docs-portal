@@ -4529,8 +4529,8 @@ Web body
       receivePage.url,
     ]);
     expect(payload.sidebarHeader).toEqual({
-      backHref: '/zh-CN/realtime-media/rtm',
-      backLabel: '实时消息 RTM',
+      backHref: '/zh-CN/api-reference/api',
+      backLabel: 'API 参考',
       productDocsHref: '/zh-CN/realtime-media/rtm',
       title: '实时消息 RTM · RESTful API',
     });

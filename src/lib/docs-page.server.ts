@@ -106,8 +106,8 @@ const ZH_CN_RTM_REST_API_PAGE_URL_SET = new Set<string>(
   ZH_CN_RTM_REST_API_PAGE_URLS,
 );
 const ZH_CN_RTM_REST_API_BACK_LINK = {
-  backHref: '/zh-CN/realtime-media/rtm',
-  backLabel: '实时消息 RTM',
+  backHref: '/zh-CN/api-reference/api',
+  backLabel: 'API 参考',
 };
 const ZH_CN_RTM_BUILD_IA_REDIRECT_PREFIXES = [
   '/zh-CN/realtime-media/rtm/build/rtm-initialization/',

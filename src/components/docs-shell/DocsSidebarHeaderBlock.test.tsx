@@ -115,17 +115,24 @@ describe.each(['desktop', 'mobile'] as const)(
         ['3.x', header.versionSwitcher.versions[1].href],
         ['2.x', header.versionSwitcher.versions[2].href],
       ] as const) {
-        const archive = within(menu).getByRole('menuitem', { name: label });
+        const archive = within(menu).getByRole('menuitem', {
+          name: t('docs.openArchivedVersion', { version: label }),
+        });
         expect(archive.tagName).toBe('A');
         expect(archive).not.toHaveAttribute('data-router-link');
         expect(archive).toHaveAttribute('href', href);
         expect(archive).toHaveAttribute('target', '_blank');
         expect(archive).toHaveAttribute('rel', 'noopener noreferrer');
         expect(archive).not.toHaveAttribute('aria-current');
-        expect(archive.querySelector('svg')).toBeNull();
+        expect(archive).toHaveTextContent(t('docs.archiveSite'));
+        expect(archive.querySelector('.lucide-external-link')).not.toBeNull();
       }
 
-      fireEvent.click(within(menu).getByRole('menuitem', { name: '3.x' }));
+      fireEvent.click(
+        within(menu).getByRole('menuitem', {
+          name: t('docs.openArchivedVersion', { version: '3.x' }),
+        }),
+      );
 
       expect(onSelectPath).toHaveBeenCalledTimes(1);
       await waitFor(() => expect(screen.queryByRole('menu')).toBeNull());

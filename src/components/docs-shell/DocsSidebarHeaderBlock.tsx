@@ -1,7 +1,12 @@
 'use client';
 
 import { Link } from '@tanstack/react-router';
-import { CheckIcon, ChevronDownIcon, ChevronLeftIcon } from 'lucide-react';
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ExternalLinkIcon,
+} from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
@@ -53,7 +58,8 @@ export function DocsSidebarHeaderBlock({
         )}
         onClick={onSelectPath}
         params={{}}
-        search={{}}
+        search={header.backSearch ?? {}}
+        hash={header.backHash}
         to={header.backHref}
       >
         <ChevronLeftIcon className="size-4" />
@@ -76,7 +82,7 @@ export function DocsSidebarHeaderBlock({
               aria-label={t('docs.versionSelect')}
               className={cn(
                 'mt-2 h-8 max-w-full justify-between gap-2 rounded-md px-2.5 text-[13px] data-[state=open]:bg-accent data-[state=open]:text-accent-foreground',
-                mode === 'desktop' ? 'mx-2 w-[calc(100%-1rem)]' : 'w-full',
+                mode === 'desktop' ? 'mx-2 w-[calc(100%-1rem)]' : 'h-11 w-full',
               )}
               size="sm"
               variant="outline"
@@ -103,11 +109,20 @@ export function DocsSidebarHeaderBlock({
                 return (
                   <DropdownMenuItem
                     asChild
-                    className="min-h-8 cursor-pointer justify-between rounded-md px-2.5 text-[13px]"
+                    className={cn(
+                      'cursor-pointer justify-between rounded-md px-2.5 text-[13px]',
+                      mode === 'mobile' ? 'min-h-11' : 'min-h-8',
+                    )}
                     key={version.id}
                   >
                     {/^https?:\/\//i.test(version.href) ? (
                       <a
+                        aria-label={t('docs.openArchivedVersion', {
+                          version: version.label,
+                        })}
+                        title={t('docs.openArchivedVersion', {
+                          version: version.label,
+                        })}
                         aria-current={isCurrent ? 'page' : undefined}
                         href={version.href}
                         onClick={onSelectPath}
@@ -115,6 +130,13 @@ export function DocsSidebarHeaderBlock({
                         target="_blank"
                       >
                         {content}
+                        <span
+                          aria-hidden="true"
+                          className="ml-auto inline-flex items-center gap-1 text-xs text-muted-foreground"
+                        >
+                          {t('docs.archiveSite')}
+                          <ExternalLinkIcon className="size-3" />
+                        </span>
                       </a>
                     ) : (
                       <Link

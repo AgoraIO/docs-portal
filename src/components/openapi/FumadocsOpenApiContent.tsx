@@ -816,9 +816,16 @@ function getOpenApiResponseSchemaExamples(
 
 const responseHeaderCodeBlock: CodeBlockProps = {
   // Anchor these controls to the response card, above the code's scroll area.
-  className: 'static',
+  className: 'openapi-response-header-code static',
   Actions: ({ className, children }) => (
-    <div className={cn(className, 'absolute top-2 right-2')}>{children}</div>
+    <div
+      className={cn(
+        className,
+        'openapi-response-header-actions absolute top-2 right-2',
+      )}
+    >
+      {children}
+    </div>
   ),
   viewportProps: {
     style: {
@@ -886,7 +893,10 @@ function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
             </CodeBlockTabsTrigger>
           ))}
         </CodeBlockTabsList>
-        <div aria-hidden="true" className="w-18 shrink-0" />
+        <div
+          aria-hidden="true"
+          className="openapi-response-actions-space w-18 shrink-0"
+        />
       </div>
       {tabs.map((tab) => {
         const { code, examples = [] } = tab;

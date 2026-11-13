@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { type SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import {
   ReferenceFilterSelect,
   ReferenceFilterToggleGroup,
@@ -8,6 +8,10 @@ import {
   type ApiReferenceCardType,
   zhCNApiReferenceCards,
 } from '@/lib/api-reference-cards-data.zh-cn';
+import {
+  createApiCatalogReturn,
+  withApiCatalogReturn,
+} from '@/lib/api-reference-catalog-return';
 import {
   buildApiReferenceFilterOptions,
   getApiReferencePlatformOptions,
@@ -133,6 +137,9 @@ export function ApiReferenceCards({
     <section
       className="not-prose my-8 flex flex-col gap-5"
       data-api-reference-catalog
+      onPointerDownCapture={prepareCatalogReturn}
+      onFocusCapture={prepareCatalogReturn}
+      onClickCapture={prepareCatalogReturn}
     >
       <section aria-label="API 筛选" className="border-border border-b pb-5">
         <div className="flex flex-wrap items-end gap-4">
@@ -483,6 +490,7 @@ function ApiReferenceChip({ entry }: { entry: ApiReferenceCardEntry }) {
 
   return (
     <a
+      data-api-reference-product={entry.productId}
       aria-label={`${entry.product} ${solutionLabel}${entry.platform}${entryLabel}${typeLabel}`}
       className="group inline-flex min-h-12 max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30"
       href={entry.href}
@@ -490,6 +498,23 @@ function ApiReferenceChip({ entry }: { entry: ApiReferenceCardEntry }) {
       <PlatformLabel entry={entry} />
     </a>
   );
+}
+
+function prepareCatalogReturn(event: SyntheticEvent<HTMLElement>) {
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+  const anchor = target.closest<HTMLAnchorElement>(
+    'a[data-api-reference-product]',
+  );
+  if (!anchor || !event.currentTarget.contains(anchor)) return;
+  const href = anchor.getAttribute('href');
+  const product = anchor.dataset.apiReferenceProduct;
+  if (!href || !product) return;
+  const context = createApiCatalogReturn(
+    new URL(window.location.href),
+    product,
+  );
+  if (context) anchor.setAttribute('href', withApiCatalogReturn(href, context));
 }
 
 function PlatformLabel({ entry }: { entry: ApiReferenceCardEntry }) {

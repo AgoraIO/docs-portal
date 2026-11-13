@@ -1,6 +1,6 @@
 'use client';
 
-import { Link } from '@tanstack/react-router';
+import { Link, useLocation } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import {
   ArrowRightIcon,
@@ -63,6 +63,7 @@ import { DocsSiteMenu } from './DocsSiteMenu';
 import { DocsTocRail } from './DocsTocRail';
 import { getDocsSourceLinks } from './docs-source-links';
 import { SiteLogoMark } from './SiteLogoMark';
+import { useApiCatalogReturn } from './useApiCatalogReturn';
 
 const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
   'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]';
@@ -136,7 +137,7 @@ export function DocsShell({
   next,
   productScopes,
   sidebar,
-  sidebarHeader,
+  sidebarHeader: sourceSidebarHeader,
   tabs,
   toc,
   tocMaxDepth,
@@ -163,6 +164,25 @@ export function DocsShell({
 }) {
   const { i18n } = useTranslation('common');
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
+  const location = useLocation();
+  const catalogReturn = useApiCatalogReturn(
+    location.searchStr,
+    activePath,
+    currentLocale === 'zh-CN' && activeTab === 'api-reference',
+  );
+  const catalogUrl = catalogReturn
+    ? new URL(catalogReturn, 'https://docs.invalid')
+    : undefined;
+  const sidebarHeader =
+    sourceSidebarHeader && catalogUrl
+      ? {
+          ...sourceSidebarHeader,
+          backHref: catalogUrl.pathname,
+          backLabel: 'API 参考',
+          backSearch: Object.fromEntries(catalogUrl.searchParams),
+          backHash: catalogUrl.hash.slice(1),
+        }
+      : sourceSidebarHeader;
   const sourceLinks = getDocsSourceLinks(contentPath);
   const t = i18n.getFixedT(currentLocale, 'common');
   const { resolvedTheme, setTheme } = useTheme();

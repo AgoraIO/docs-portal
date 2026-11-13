@@ -51,7 +51,8 @@ export function DocsCodeBlock({
           // Untitled blocks overlay the actions; reserve room for both controls.
           ...(!blockTitle &&
             ({
-              '--padding-right': 'calc(var(--spacing) * 16)',
+              '--padding-right':
+                'var(--docs-code-actions-padding, calc(var(--spacing) * 16))',
             } as CSSProperties)),
           ...props.viewportProps?.style,
         },

@@ -758,6 +758,32 @@ describe('DocsShell', () => {
     ).toHaveTextContent('v4.6.2');
   });
 
+  it('keeps the source catalog filters and product anchor in the sidebar return link', async () => {
+    const source =
+      '/zh-CN/api-reference/api?product=rtc&platform=android&apiType=client#api-reference-product-rtc';
+    renderDocsShell(
+      {
+        activePath: '/zh-CN/api-reference/rtc/android/overview',
+        activeTab: 'api-reference',
+        locale: 'zh-CN',
+        sidebarHeader: {
+          backHref: '/zh-CN/api-reference/api',
+          backLabel: 'API 参考',
+          title: 'RTC Android',
+        },
+      },
+      `/zh-CN/api-reference/detail?apiReturn=${encodeURIComponent(source)}`,
+    );
+    const sidebar = await screen.findByTestId('docs-sidebar');
+    const link = within(sidebar).getByRole('link', { name: 'API 参考' });
+    const url = new URL(link.getAttribute('href') ?? '', 'https://docs.test');
+    expect(url.pathname).toBe('/zh-CN/api-reference/api');
+    expect(url.searchParams.get('product')).toBe('rtc');
+    expect(url.searchParams.get('platform')).toBe('android');
+    expect(url.searchParams.get('apiType')).toBe('client');
+    expect(url.hash).toBe('#api-reference-product-rtc');
+  });
+
   it('renders the ordinary docs action in the mobile sidebar and closes it after navigation', async () => {
     renderDocsShell({
       activePath: '/zh-CN/api-reference/conversational-ai/android/overview',

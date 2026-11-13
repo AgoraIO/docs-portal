@@ -54,6 +54,29 @@ describe('ApiReferenceCards', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('prepares a filtered, shareable catalog return before opening a card', () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/zh-CN/api-reference/api?product=conversational-ai&platform=ios&apiType=client',
+    );
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+    const link = screen.getByRole('link', {
+      name: '对话式 AI 引擎 iOS 客户端 SDK',
+    });
+    fireEvent.focus(link);
+    const target = new URL(
+      link.getAttribute('href') ?? '',
+      'https://docs.test',
+    );
+    const source = new URL(target.searchParams.get('apiReturn') ?? '', target);
+    expect(source.pathname).toBe('/zh-CN/api-reference/api');
+    expect(source.searchParams.get('product')).toBe('conversational-ai');
+    expect(source.searchParams.get('platform')).toBe('ios');
+    expect(source.searchParams.get('apiType')).toBe('client');
+    expect(source.hash).toBe('#api-reference-product-conversational-ai');
+  });
+
   it.each([
     ['android', 'Java', 'android'],
     ['ios', 'Objective-C', 'ios'],

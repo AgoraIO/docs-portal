@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { zhCNApiReferenceCards } from './api-reference-cards-data.zh-cn';
 import { loadDocsPagePayload } from './docs-page.server';
 
 type SidebarNode = {
@@ -61,6 +62,22 @@ async function loadReferencePayload(slugs: string[]) {
 
 // These integration tests load the real MDX/OpenAPI graph under parallel suite load.
 describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
+  it('returns every local API catalog entry to the API catalog', async () => {
+    const hrefs = [
+      ...new Set(zhCNApiReferenceCards.all.map((entry) => entry.href)),
+    ].filter((href) => href.startsWith('/zh-CN/api-reference/'));
+    expect(hrefs.length).toBeGreaterThan(80);
+    for (const href of hrefs) {
+      const url = new URL(href, 'https://docs.test');
+      const payload = await loadApiReferencePayload(
+        url.pathname.split('/').filter(Boolean).slice(2),
+      );
+      expect(payload.sidebarHeader, href).toMatchObject({
+        backHref: '/zh-CN/api-reference/api',
+        backLabel: 'API 参考',
+      });
+    }
+  });
   it.each([
     [['conversational-ai', 'android', 'overview'], '对话式 AI 引擎 · Android'],
     [
