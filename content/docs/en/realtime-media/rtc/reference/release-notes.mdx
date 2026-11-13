@@ -6514,6 +6514,31 @@ The image enhancement algorithm can reduce mobile device performance below accep
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="v4.24.10" id="web-sdk-v4-24-10" headingLevel={3} value="v42410">
+
+This release adds Multiopus multichannel audio support and improves the channel joining and leaving experience.
+
+#### New features
+
+**Multiopus multichannel audio**
+
+The SDK now supports sending and receiving audio with 4, 6, or 8 channels. Use the following options and methods to transmit and process multichannel audio:
+
+- Set `multiopus` to `true` in `createClient` to enable Multiopus.
+- Set `channelCount` in `createCustomAudioTrack` to specify the number of channels in a custom audio track.
+- Call `selectChannels` on local or remote audio tracks to select the channels to use.
+- Call `getVolumeLevels` on local or remote audio tracks to query the volume level of each channel.
+
+#### Improvements
+
+The SDK improves the channel joining process in some scenarios to reduce the time users wait to join a channel.
+
+#### Fixed issues
+
+This release fixes an issue where leaving a channel could be delayed after calling `leave()` in some scenarios.
+
+</Accordion>
+
 <Accordion title="v4.24.8" id="web-sdk-v4-24-8" headingLevel={3} value="v4248">
 
 Released on August 31, 2026.
