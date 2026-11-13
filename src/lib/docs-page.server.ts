@@ -2504,7 +2504,20 @@ async function getApiReferenceSidebarNodes({
     ? restoreRecipesSidebarSections(openApiSidebar)
     : openApiSidebar;
 
-  return markZhCnProductApiReferenceLinks(restoredOpenApiSidebar, locale);
+  const [onlyGroup] = restoredOpenApiSidebar;
+  // A scoped SDK already has its own header above this label-only wrapper.
+  const scopedSidebar =
+    locale === 'zh-CN' &&
+    navScope &&
+    restoredOpenApiSidebar.length === 1 &&
+    onlyGroup.type === 'section' &&
+    onlyGroup.title === 'API 参考' &&
+    onlyGroup.defaultOpen === undefined &&
+    !onlyGroup.url
+      ? onlyGroup.children
+      : restoredOpenApiSidebar;
+
+  return markZhCnProductApiReferenceLinks(scopedSidebar, locale);
 }
 
 function markZhCnProductApiReferenceLinks(
