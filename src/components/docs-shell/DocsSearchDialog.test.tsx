@@ -1175,6 +1175,45 @@ describe('DocsSearchDialog', () => {
     },
   );
 
+  it('retains the complete-response family order when the decisive API match is outside the three-item preview', async () => {
+    const familyOrder = ['api', 'docs', 'faq'];
+    const router = renderCnSearch(
+      vi.fn().mockResolvedValue([
+        ...['helperA', 'helperB', 'helperC'].map((title) => ({
+          id: title,
+          title,
+          content: title,
+          type: 'page',
+          url: `/api-reference/rtc/android/channel#${title}`,
+          familyOrder,
+        })),
+        {
+          id: 'guide',
+          title: '加入频道',
+          content: '加入频道',
+          type: 'page',
+          url: '/realtime-media/rtc/build/join',
+          familyOrder,
+        },
+      ]),
+    );
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('搜索文档、API、指南...'),
+      { target: { value: 'joinChannel' } },
+    );
+    await screen.findByRole('option', { name: /helperA/ });
+    expect(
+      screen.getAllByRole('option').map((item) => item.textContent),
+    ).toEqual([
+      expect.stringContaining('helperA'),
+      expect.stringContaining('helperB'),
+      expect.stringContaining('helperC'),
+      expect.stringContaining('加入频道'),
+    ]);
+  });
+
   it('keeps CN search text and published platform choices when reopening', async () => {
     const router = renderCnSearch(vi.fn().mockResolvedValue([]));
     render(<RouterProvider router={router} />);

@@ -2,7 +2,7 @@
 
 import { useLocation, useNavigate } from '@tanstack/react-router';
 import { useDocsSearch } from 'fumadocs-core/search/client';
-import { ArrowUpRightIcon, BookOpenIcon, SearchIcon } from 'lucide-react';
+import { ArrowUpRightIcon, SearchIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SearchDetailPanel } from '@/components/docs-shell/SearchDetailPanel';
@@ -11,6 +11,7 @@ import {
   SearchFilterDropdown,
 } from '@/components/docs-shell/SearchFilterDropdown';
 import { SearchKeyboardHints } from '@/components/docs-shell/SearchKeyboardHints';
+import { CnSearchResultContent } from '@/components/search/CnSearchResultContent';
 import { Button } from '@/components/ui/button';
 import {
   CommandDialog,
@@ -58,6 +59,8 @@ import {
 } from '@/lib/search/cn-search-context';
 import {
   type CnSearchFamily,
+  cnSearchFamilies,
+  cnSearchFamilyLabels,
   getCnSearchFamily,
 } from '@/lib/search/cn-search-family';
 import { getCnSearchFamilyOrder } from '@/lib/search/cn-search-intent';
@@ -592,22 +595,20 @@ export function DocsSearchDialog({
           searchResultToEntry(result, searchLocale === 'zh-CN', productScopes),
         );
   const resultGroups = isCn
-    ? getCnSearchFamilyOrder(
-        draftSearch,
-        resultEntries,
-        platformFilter ?? undefined,
+    ? (
+        resultEntries[0]?.familyOrder ??
+        getCnSearchFamilyOrder(
+          draftSearch,
+          resultEntries,
+          platformFilter ?? undefined,
+        )
       ).map((family) => {
         const entries = resultEntries.filter(
           (entry) => entry.family === family,
         );
         return {
           family,
-          label:
-            family === 'docs'
-              ? '技术文档'
-              : family === 'api'
-                ? 'API Reference'
-                : 'FAQ',
+          label: cnSearchFamilyLabels[family],
           entries,
           total: entries[0]?.familyTotalHits ?? entries.length,
         };
@@ -1004,38 +1005,28 @@ export function DocsSearchDialog({
                         value={page.id ?? page.url}
                       >
                         {isCn ? (
-                          <BookOpenIcon aria-hidden="true" className="mt-0.5" />
-                        ) : null}
-                        <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-                          {isCn ? (
-                            <>
-                              <HighlightedText
-                                className="font-medium [overflow-wrap:anywhere]"
-                                value={page.title}
-                              />
-                              {page.path.length > 1 ? (
-                                <div className="line-clamp-1 text-xs text-muted-foreground">
-                                  {page.path.slice(0, -1).join(' › ')}
-                                </div>
-                              ) : null}
-                            </>
-                          ) : (
+                          <CnSearchResultContent
+                            title={<HighlightedText value={page.title} />}
+                            path={page.path}
+                            context={page.context.map((item) => ({
+                              key: item,
+                              label: <HighlightedText value={item} />,
+                            }))}
+                            description={
+                              <HighlightedText value={page.description ?? ''} />
+                            }
+                          />
+                        ) : (
+                          <div className="flex min-w-0 flex-1 flex-col gap-1.5">
                             <HighlightedText
                               className="line-clamp-1 font-medium"
                               value={page.title}
                             />
-                          )}
-                          {!isCn && page.path.length > 0 ? (
-                            <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
-                              {page.path.join(' › ')}
-                            </div>
-                          ) : null}
-                          <div
-                            className={cn(
-                              isCn &&
-                                'flex min-w-0 flex-col gap-1 sm:flex-row sm:items-center sm:gap-2',
-                            )}
-                          >
+                            {page.path.length > 0 ? (
+                              <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
+                                {page.path.join(' › ')}
+                              </div>
+                            ) : null}
                             {page.context.length > 0 ? (
                               <div className="flex shrink-0 flex-wrap gap-1">
                                 {page.context.map((item) => (
@@ -1048,14 +1039,8 @@ export function DocsSearchDialog({
                                 ))}
                               </div>
                             ) : null}
-                            {isCn && page.description ? (
-                              <HighlightedText
-                                className="line-clamp-2 min-w-0 text-xs text-muted-foreground [overflow-wrap:anywhere] sm:line-clamp-1"
-                                value={page.description}
-                              />
-                            ) : null}
                           </div>
-                        </div>
+                        )}
                       </CommandItem>
                     );
                   })}
@@ -1112,6 +1097,7 @@ type RenderedSearchEntry = SearchEntry & {
   languageEntryRank?: number;
   family: CnSearchFamily;
   familyTotalHits?: number;
+  familyOrder?: CnSearchFamily[];
   context: string[];
   id?: string;
   path: string[];
@@ -1131,6 +1117,7 @@ function searchResultToEntry(
   result: {
     breadcrumbs?: unknown[];
     familyTotalHits?: unknown;
+    familyOrder?: unknown;
     languageEntryTerms?: unknown;
     languageEntryRank?: unknown;
     content: unknown;
@@ -1153,7 +1140,12 @@ function searchResultToEntry(
   const platforms = getStringArray(result.platform);
   const objectType = getString(result.objectType);
   const sdkLabel = isCn ? getCnSearchSdkLabel(result.url) : undefined;
+  const familyOrder = getStringArray(result.familyOrder);
 
+  const snippet =
+    typeof result.snippet === 'string'
+      ? result.snippet
+      : breadcrumbs?.filter(Boolean).join(' / ');
   return {
     languageEntryTerms: getStringArray(result.languageEntryTerms),
     languageEntryRank:
@@ -1164,6 +1156,14 @@ function searchResultToEntry(
       pageUrl: result.url,
       docType: objectType === 'openapi' ? 'openapi' : 'docs',
     }),
+    familyOrder:
+      familyOrder?.length === cnSearchFamilies.length &&
+      new Set(familyOrder).size === cnSearchFamilies.length &&
+      familyOrder.every((family) =>
+        cnSearchFamilies.some((value) => value === family),
+      )
+        ? (familyOrder as CnSearchFamily[])
+        : undefined,
     familyTotalHits:
       typeof result.familyTotalHits === 'number'
         ? result.familyTotalHits
@@ -1179,11 +1179,7 @@ function searchResultToEntry(
           ? (platforms ?? []).map(getCnSearchPlatformLabel)
           : formatPlatformContext(platforms ?? [])),
     ]),
-    description: truncateSearchSnippet(
-      typeof result.snippet === 'string'
-        ? result.snippet
-        : breadcrumbs?.filter(Boolean).join(' / '),
-    ),
+    description: isCn ? snippet : truncateSearchSnippet(snippet),
     id: getString(result.id),
     path: getStringArray(result.path) ?? [],
     title:

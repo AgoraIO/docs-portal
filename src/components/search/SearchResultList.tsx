@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowUpRightIcon, HashIcon } from 'lucide-react';
+import { HashIcon } from 'lucide-react';
 import {
   AnimatePresence,
   LayoutGroup,
@@ -8,19 +8,14 @@ import {
   useReducedMotion,
 } from 'motion/react';
 import { type MouseEvent, useId, useState } from 'react';
-import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/cn';
 import {
   getCnSearchPlatformLabel,
   getCnSearchSdkLabel,
 } from '@/lib/search/cn-search-context';
-import { getCnSearchFamily } from '@/lib/search/cn-search-family';
-import { resolveCnSearchQuery } from '@/lib/search/cn-search-intent';
-import {
-  getSearchPageGroupKey,
-  type SearchPageGroup,
-} from '@/lib/search/cn-search-page';
+import type { SearchPageGroup } from '@/lib/search/cn-search-page';
+import { getCnSearchResultEntries } from '@/lib/search/cn-search-presentation';
 import type { HighlightSegment } from '@/lib/search/meilisearch-client';
+import { CnSearchResultContent } from './CnSearchResultContent';
 
 export function SearchHighlight({
   segments,
@@ -41,19 +36,19 @@ export function SearchHighlight({
   });
 }
 
-// The moving surface follows Aceternity Card Hover Effect, adapted to document
-// rows. Focus gets the same feedback; navigation remains a normal anchor.
 export function SearchResultList({
   groups,
   productLabel,
   onSelectResult,
   rankOffset = 0,
   query = '',
+  platform,
 }: {
   groups: SearchPageGroup[];
   productLabel: (product?: string) => string;
   rankOffset?: number;
   query?: string;
+  platform?: string;
   onSelectResult?: (
     event: MouseEvent<HTMLAnchorElement>,
     path: string,
@@ -64,222 +59,140 @@ export function SearchResultList({
   const [active, setActive] = useState<string | null>(null);
   const id = useId();
   const reduceMotion = useReducedMotion();
+  const entries = getCnSearchResultEntries(groups, query, platform);
   return (
     <LayoutGroup id={id}>
       <ul className="search-page-results">
-        {groups.map((group, groupIndex) => {
-          const sdkLabel = getCnSearchSdkLabel(group.pageUrl);
-          const first = group.sections[0];
-          const groupKey = getSearchPageGroupKey(group);
-          const firstHref = first.url;
-          const hasSectionTitle = first.sectionTitle !== group.title;
-          const identifier = resolveCnSearchQuery(query)
-            .query.trim()
-            .replace(/\(\)$/, '');
-          const memberMatch =
-            getCnSearchFamily(group) === 'api' &&
-            /^[A-Za-z_][A-Za-z\d_]*$/.test(identifier) &&
-            first.sectionTitle
-              .replace(/<\/?(?:mark|em)>/gi, '')
-              .replace(/\s*\[\d+\/\d+\]$/, '')
-              .replace(/\(\)$/, '')
-              .trim()
-              .toLowerCase() === identifier.toLowerCase();
-          const titleHref = memberMatch
-            ? firstHref
-            : hasSectionTitle
-              ? group.pageUrl
-              : firstHref;
-          const ancestors = first.headingPath
-            .slice(0, -1)
-            .filter((heading) => heading !== group.title)
-            .slice(-2);
-          return (
-            <li
-              className="search-page-result"
-              key={groupKey}
-              onBlur={(event) => {
-                if (!event.currentTarget.contains(event.relatedTarget))
-                  setActive(null);
-              }}
-              onFocus={() => setActive(groupKey)}
-              onMouseEnter={() => setActive(groupKey)}
-              onMouseLeave={() => setActive(null)}
-            >
-              <AnimatePresence>
-                {active === groupKey && (
-                  <motion.div
-                    aria-hidden="true"
-                    animate={{ opacity: 1 }}
-                    className="search-page-result-hover"
-                    exit={{ opacity: 0 }}
-                    initial={{ opacity: 0 }}
-                    layoutId="result-hover"
-                    transition={{ duration: reduceMotion ? 0 : 0.15 }}
-                  />
-                )}
-              </AnimatePresence>
-              <div className="min-w-0">
-                <div className="search-page-result-context">
-                  <div className="search-page-result-path">
-                    {group.product && (
-                      <span>{productLabel(group.product)}</span>
-                    )}
-                    {ancestors.length > 0 && (
-                      <>
-                        {group.product && <span aria-hidden="true">/</span>}
-                        <span>{ancestors.join(' / ')}</span>
-                      </>
-                    )}
-                  </div>
-                  <div className="search-page-result-meta">
-                    {group.docType === 'openapi' && (
-                      <Badge variant="secondary">REST API</Badge>
-                    )}
-                    {sdkLabel ? (
-                      <span>{sdkLabel}</span>
-                    ) : (
-                      [
-                        ...new Set(
-                          group.platform.map(getCnSearchPlatformLabel),
-                        ),
-                      ].map((label) => <span key={label}>{label}</span>)
-                    )}
-                  </div>
-                </div>
-                <div className="search-page-result-heading">
-                  <a
-                    className={cn(
-                      'search-page-result-title',
-                      !hasSectionTitle && 'search-page-result-link',
-                    )}
-                    href={titleHref}
-                    onClick={(event) =>
-                      onSelectResult?.(
-                        event,
-                        titleHref,
-                        groupIndex + 1 + rankOffset,
-                        ...(memberMatch ? ([1] as const) : []),
-                      )
-                    }
-                    onAuxClick={(event) =>
-                      onSelectResult?.(
-                        event,
-                        titleHref,
-                        groupIndex + 1 + rankOffset,
-                        ...(memberMatch ? ([1] as const) : []),
-                      )
-                    }
-                  >
-                    <h2>{group.title}</h2>
-                    <ArrowUpRightIcon
+        {entries.map(
+          ({ key, group, hit, sectionRank, otherSections }, index) => {
+            const sdkLabel = getCnSearchSdkLabel(group.pageUrl);
+            const context = [
+              ...new Set(
+                [
+                  group.product ? productLabel(group.product) : undefined,
+                  ...(sdkLabel
+                    ? [sdkLabel]
+                    : group.platform.map(getCnSearchPlatformLabel)),
+                ].filter((value): value is string => Boolean(value)),
+              ),
+            ];
+            const rank = index + 1 + rankOffset;
+            const pageHref = hit.url.split('#', 1)[0];
+            const primarySectionRank = hit.url.includes('#')
+              ? sectionRank
+              : undefined;
+            function track(
+              event: MouseEvent<HTMLAnchorElement>,
+              href: string,
+              section?: number,
+            ) {
+              onSelectResult?.(
+                event,
+                href,
+                rank,
+                ...(section ? [section] : []),
+              );
+            }
+            return (
+              <li
+                className="search-page-result rounded-lg bg-muted/40"
+                key={key}
+                onBlur={(event) => {
+                  if (!event.currentTarget.contains(event.relatedTarget))
+                    setActive(null);
+                }}
+                onFocus={() => setActive(key)}
+                onMouseEnter={() => setActive(key)}
+                onMouseLeave={() => setActive(null)}
+              >
+                <AnimatePresence>
+                  {active === key && (
+                    <motion.div
                       aria-hidden="true"
-                      className="size-4 shrink-0"
+                      animate={{ opacity: 1 }}
+                      className="search-page-result-hover"
+                      exit={{ opacity: 0 }}
+                      initial={{ opacity: 0 }}
+                      layoutId="result-hover"
+                      transition={{ duration: reduceMotion ? 0 : 0.15 }}
                     />
-                  </a>
-                  {memberMatch && firstHref !== group.pageUrl && (
+                  )}
+                </AnimatePresence>
+                <CnSearchResultContent
+                  title={
                     <a
-                      className="search-page-section"
-                      href={group.pageUrl}
+                      className="search-page-result-title search-page-result-link"
+                      href={hit.url}
                       onClick={(event) =>
-                        onSelectResult?.(
-                          event,
-                          group.pageUrl,
-                          groupIndex + 1 + rankOffset,
-                        )
+                        track(event, hit.url, primarySectionRank)
                       }
                       onAuxClick={(event) =>
-                        onSelectResult?.(
-                          event,
-                          group.pageUrl,
-                          groupIndex + 1 + rankOffset,
-                        )
+                        track(event, hit.url, primarySectionRank)
                       }
+                    >
+                      <SearchHighlight segments={hit.highlights.sectionTitle} />
+                    </a>
+                  }
+                  path={hit.headingPath}
+                  context={context.map((label) => ({ key: label, label }))}
+                  description={
+                    <SearchHighlight segments={hit.highlights.content} />
+                  }
+                >
+                  {hit.url !== pageHref && (
+                    <a
+                      className="search-page-section search-page-page-entrance"
+                      href={pageHref}
+                      onClick={(event) => track(event, pageHref)}
+                      onAuxClick={(event) => track(event, pageHref)}
                     >
                       查看整页
                     </a>
                   )}
-                  {hasSectionTitle && (
-                    <a
-                      className="search-page-section search-page-result-link"
-                      href={firstHref}
-                      onClick={(event) =>
-                        onSelectResult?.(
-                          event,
-                          firstHref,
-                          groupIndex + 1 + rankOffset,
-                          1,
-                        )
-                      }
-                      onAuxClick={(event) =>
-                        onSelectResult?.(
-                          event,
-                          firstHref,
-                          groupIndex + 1 + rankOffset,
-                          1,
-                        )
-                      }
-                    >
-                      <HashIcon
-                        aria-hidden="true"
-                        className="size-3.5 shrink-0"
-                      />
-                      <span>
-                        <SearchHighlight
-                          segments={first.highlights.sectionTitle}
-                        />
-                      </span>
-                    </a>
-                  )}
-                </div>
-                <p className="search-page-snippet">
-                  <SearchHighlight segments={first.highlights.content} />
-                </p>
-                {group.sections.length > 1 && (
-                  <details className="search-page-more-sections">
-                    <summary>另 {group.sections.length - 1} 个命中章节</summary>
-                    <ul>
-                      {group.sections.slice(1).map((section, sectionIndex) => (
-                        <li key={section.url}>
-                          <a
-                            onClick={(event) =>
-                              onSelectResult?.(
-                                event,
-                                section.url,
-                                groupIndex + 1 + rankOffset,
-                                sectionIndex + 2,
-                              )
-                            }
-                            onAuxClick={(event) =>
-                              onSelectResult?.(
-                                event,
-                                section.url,
-                                groupIndex + 1 + rankOffset,
-                                sectionIndex + 2,
-                              )
-                            }
-                            className="search-page-section"
-                            href={section.url}
-                          >
-                            <HashIcon
-                              aria-hidden="true"
-                              className="size-3.5 shrink-0"
-                            />
-                            <span>
-                              <SearchHighlight
-                                segments={section.highlights.sectionTitle}
+                  {otherSections.length > 0 && (
+                    <details className="search-page-more-sections">
+                      <summary>另 {otherSections.length} 个命中章节</summary>
+                      <ul>
+                        {otherSections.map((section) => (
+                          <li key={section.id}>
+                            <a
+                              className="search-page-section"
+                              href={section.url}
+                              onClick={(event) =>
+                                track(
+                                  event,
+                                  section.url,
+                                  group.sections.indexOf(section) + 1,
+                                )
+                              }
+                              onAuxClick={(event) =>
+                                track(
+                                  event,
+                                  section.url,
+                                  group.sections.indexOf(section) + 1,
+                                )
+                              }
+                            >
+                              <HashIcon
+                                aria-hidden="true"
+                                className="size-3.5 shrink-0"
                               />
-                            </span>
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </details>
-                )}
-              </div>
-            </li>
-          );
-        })}
+                              <span>
+                                <SearchHighlight
+                                  segments={section.highlights.sectionTitle}
+                                />
+                              </span>
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  )}
+                </CnSearchResultContent>
+              </li>
+            );
+          },
+        )}
       </ul>
     </LayoutGroup>
   );

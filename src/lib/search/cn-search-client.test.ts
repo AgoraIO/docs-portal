@@ -26,7 +26,7 @@ describe('browser search API transport', () => {
             url: `${paths[family]}#section-${i}`,
             pageTitle: family,
             sectionTitle:
-              family === 'api' && i === 0 ? 'apiMethod' : `${family}-${i}`,
+              family === 'api' && i === 3 ? 'apiMethod' : `${family}-${i}`,
             content: 'summary',
             headingPath: [],
             locale: 'zh-CN',
@@ -47,6 +47,21 @@ describe('browser search API transport', () => {
       );
       const result = await createCnDocsSearchClient({}).search(query);
       expect(result[0].id).toBe(query === 'apiMethod' ? 'api-0' : 'docs-0');
+      // The exact API match is fourth and is omitted from the three-item
+      // preview. Its evidence must still determine both surfaces' group order.
+      expect(
+        result.every(
+          (hit) =>
+            JSON.stringify(
+              (hit as typeof hit & { familyOrder?: unknown }).familyOrder,
+            ) ===
+            JSON.stringify(
+              query === 'apiMethod'
+                ? ['api', 'docs', 'faq']
+                : ['docs', 'api', 'faq'],
+            ),
+        ),
+      ).toBe(true);
       expect(result).toHaveLength(5);
       expect(result.filter((item) => item.id.startsWith('api-'))).toHaveLength(
         3,
