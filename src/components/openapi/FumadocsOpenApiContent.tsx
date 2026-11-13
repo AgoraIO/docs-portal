@@ -1366,13 +1366,18 @@ function OpenApiCodeSampleUsageTabs({
     );
   }
 
-  if (!isValidElement<{ className?: string }>(defaultUsageTabs)) {
+  if (
+    !isValidElement<{ className?: string; title?: ReactNode }>(defaultUsageTabs)
+  ) {
     return defaultUsageTabs;
   }
 
   return cloneElement(defaultUsageTabs, {
+    // Keep the native toolbar row and any real request-scenario selector.
+    title: <></>,
     className: cn(
       'openapi-request-code-tabs my-0',
+      '[&_figcaption:empty]:hidden',
       defaultUsageTabs.props.className,
     ),
   });
@@ -1942,6 +1947,7 @@ function OpenApiMarkdownCodeBlock({
     (typeof childProps?.children === 'string'
       ? childProps.children
       : undefined);
+  const Actions = codeblock?.Actions;
 
   // Only nested blocks inherit Fumadocs' horizontal frame overlap.
   return (
@@ -1949,6 +1955,15 @@ function OpenApiMarkdownCodeBlock({
       {...props}
       data-code-language={language}
       {...codeblock}
+      Actions={
+        isRequestCode && Actions
+          ? ({ className, ...actionProps }) =>
+              Actions({
+                ...actionProps,
+                className: cn(className, 'flex-1 [&>:first-child]:me-auto'),
+              })
+          : Actions
+      }
       locale={locale}
       copyButton={<OpenApiCodeCopyButton />}
       className={cn(
