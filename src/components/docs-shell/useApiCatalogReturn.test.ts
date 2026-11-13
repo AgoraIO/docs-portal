@@ -38,6 +38,29 @@ describe('catalog return within an SDK scope', () => {
     expect(result.current).toBeUndefined();
   });
 
+  it('expires remembered filters when navigating within the same SDK after thirty minutes', () => {
+    let now = 1_000_000;
+    const clock = vi.spyOn(Date, 'now').mockImplementation(() => now);
+    try {
+      const { result, rerender } = renderHook(
+        ({ query, path }) => useApiCatalogReturn(query, path, true),
+        {
+          initialProps: {
+            query: search,
+            path: '/zh-CN/api-reference/rtc/android/overview',
+          },
+        },
+      );
+      rerender({ query: '', path: '/zh-CN/api-reference/rtc/android/engine' });
+      expect(result.current).toBe(href);
+      now += 31 * 60 * 1000;
+      rerender({ query: '', path: '/zh-CN/api-reference/rtc/android/channel' });
+      expect(result.current).toBeUndefined();
+    } finally {
+      clock.mockRestore();
+    }
+  });
+
   it('keeps explicit return navigation usable when storage is unavailable', () => {
     const storage = vi
       .spyOn(Storage.prototype, 'setItem')

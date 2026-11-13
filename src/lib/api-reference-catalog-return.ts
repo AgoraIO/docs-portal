@@ -9,10 +9,17 @@ export function normalizeApiCatalogReturn(href: unknown): string | undefined {
     typeof href !== 'string' ||
     href.length > 1600 ||
     !href.startsWith('/') ||
-    href.startsWith('//')
+    href.startsWith('//') ||
+    href.includes('\\')
   )
     return;
-  const url = new URL(href, 'https://docs.invalid');
+  let url: URL;
+  try {
+    url = new URL(href, 'https://docs.invalid');
+  } catch {
+    return;
+  }
+  if (url.origin !== 'https://docs.invalid') return;
   if (![CATALOG, '/api-reference/api'].includes(url.pathname)) return;
   for (const [key, value] of url.searchParams) {
     if (

@@ -34,6 +34,8 @@ describe('API catalog return context', () => {
     '/api-reference/api?redirect=https://evil.test',
     '/api-reference/api#unexpected',
     '/api-reference/api?apiType=wrong',
+    '/\\[',
+    '/\\%',
   ])('rejects a return value outside the catalog contract: %s', (href) => {
     expect(normalizeApiCatalogReturn(href)).toBeUndefined();
   });

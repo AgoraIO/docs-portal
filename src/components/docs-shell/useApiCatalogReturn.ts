@@ -48,6 +48,11 @@ export function useApiCatalogReturn(
 
   return (
     explicit ??
-    (remembered && remembered.scope === scope ? remembered.href : undefined)
+    (remembered &&
+    remembered.scope === scope &&
+    Date.now() >= remembered.createdAt &&
+    Date.now() - remembered.createdAt < MAX_AGE
+      ? remembered.href
+      : undefined)
   );
 }
