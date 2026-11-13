@@ -1,7 +1,7 @@
 import { Link, useLocation } from '@tanstack/react-router';
-import { Callout } from 'fumadocs-ui/components/callout';
 import { CheckIcon, ChevronDownIcon, InfoIcon } from 'lucide-react';
 import { type MouseEvent, useEffect, useState } from 'react';
+import { Callout } from '@/components/Callout';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/cn';
 import {
   getStoredDocVersionSelections,
   setDocVersionPreference,
@@ -26,6 +27,7 @@ import { useDocVersionSelections } from './useDocVersionSelections';
 type DocVersionProps = { activePath: string };
 type DocVersionSelectorProps = DocVersionProps & {
   className?: string;
+  compact?: boolean;
   onSelectPath?: () => void;
   scopeId?: string;
 };
@@ -52,6 +54,7 @@ function saveSelection(
 export function DocVersionSelector({
   activePath,
   className,
+  compact,
   onSelectPath,
   scopeId,
 }: DocVersionSelectorProps) {
@@ -64,6 +67,7 @@ export function DocVersionSelector({
     <RegisteredDocVersionSelector
       activePath={activePath}
       className={className}
+      compact={compact}
       scope={scope}
       scopeId={scopeId}
       onSelectPath={onSelectPath}
@@ -74,6 +78,7 @@ export function DocVersionSelector({
 function RegisteredDocVersionSelector({
   activePath,
   className,
+  compact,
   scope,
   scopeId,
   onSelectPath,
@@ -99,16 +104,23 @@ function RegisteredDocVersionSelector({
 
   return (
     <div className={className} data-doc-version-selector>
-      <p className="mb-2 text-xs font-medium leading-5 text-muted-foreground">
-        Documentation version
-      </p>
+      {!compact ? (
+        <p className="mb-2 text-xs font-medium leading-5 text-muted-foreground">
+          Documentation version
+        </p>
+      ) : null}
       <DropdownMenu modal={false} open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
           <Button
             aria-label={`Documentation: ${label}`}
-            className="h-11 w-full justify-between gap-3 rounded-md px-3 text-[13px] text-foreground shadow-none data-[state=open]:bg-accent lg:h-10"
+            className={cn(
+              'h-11 justify-between rounded-md text-[13px] text-foreground shadow-none data-[state=open]:bg-accent',
+              compact
+                ? 'w-auto gap-1 px-1.5 lg:h-7'
+                : 'w-full gap-3 px-3 lg:h-10',
+            )}
             size="sm"
-            variant="outline"
+            variant={compact ? 'ghost' : 'outline'}
           >
             <DocVersionBadge version={version} />
             <ChevronDownIcon
@@ -119,7 +131,7 @@ function RegisteredDocVersionSelector({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          align="start"
+          align={compact ? 'end' : 'start'}
           aria-label={`Documentation versions for ${scope.label}`}
           className="w-(--radix-dropdown-menu-trigger-width) min-w-52 rounded-lg p-1"
         >

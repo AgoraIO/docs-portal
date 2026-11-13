@@ -227,15 +227,16 @@ function SidebarSection({
           >
             {node.title.replaceAll('-', ' ')}
           </span>
+          {versionScopeId ? (
+            <DocVersionSelector
+              activePath={activePath}
+              compact
+              scopeId={versionScopeId}
+              className="shrink-0 tracking-normal normal-case"
+              onSelectPath={onSelectPath}
+            />
+          ) : null}
         </SidebarGroupLabel>
-        {versionScopeId ? (
-          <DocVersionSelector
-            activePath={activePath}
-            scopeId={versionScopeId}
-            className="mx-2 mb-3"
-            onSelectPath={onSelectPath}
-          />
-        ) : null}
         {leadingChildren.map((child) => (
           <SidebarNodeRenderer
             activePath={activePath}

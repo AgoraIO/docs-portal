@@ -53,6 +53,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { Callout, CalloutContainer } from '@/components/Callout';
 import {
   Dialog,
   DialogContent,
@@ -1546,6 +1547,8 @@ export function getMDXComponents(
 
   return {
     ...defaultMdxComponents,
+    Callout,
+    CalloutContainer,
     table:
       context?.contentPath === IM_PRICING_DETAILS_CONTENT_PATH
         ? createDocsTableComponent(context.contentPath)

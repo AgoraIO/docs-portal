@@ -522,7 +522,9 @@ PATCH https://api.agora.io/{region}/v1/projects/{appId}/cloud-player/{playerid}?
 - `Authorization`: See [Authentication instructions](./restful-authentication).
 - `X-Request-ID`: UUID (Universally Unique Identifier) to identify this request. After passing in the field, Agora's server returns it in the response header.
 
-<div class="alert info"> Agora recommends using this field. If you do not pass in any value, Agora's server automatically generates a UUID to pass in.</div>
+:::info
+ Agora recommends using this field. If you do not pass in any value, Agora's server automatically generates a UUID to pass in.
+:::
 
 #### Request body
 
