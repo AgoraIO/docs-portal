@@ -2,6 +2,11 @@ import { toCnPublicSearchUrl } from './cn-search-urls.mjs';
 
 export const cnSearchFamilies = ['docs', 'api', 'faq'] as const;
 export type CnSearchFamily = (typeof cnSearchFamilies)[number];
+export const cnSearchFamilyLabels: Record<CnSearchFamily, string> = {
+  docs: '技术文档',
+  api: 'API Reference',
+  faq: 'FAQ',
+};
 
 export function getCnSearchFamily(group: {
   pageUrl: string;

@@ -60,8 +60,10 @@ import {
   getCnSearchPlatformLabel,
   getCnSearchPlatforms,
 } from '@/lib/search/cn-search-context';
-import { getCnSearchFamily } from '@/lib/search/cn-search-family';
-import { getCnSearchFamilyOrder } from '@/lib/search/cn-search-intent';
+import {
+  cnSearchFamilyLabels,
+  getCnSearchFamily,
+} from '@/lib/search/cn-search-family';
 import {
   type CnSearchPageResponse,
   isPublicCnSearchUrl,
@@ -72,6 +74,10 @@ import {
   searchCnDocsPage,
 } from '@/lib/search/cn-search-page';
 import { isCnSearchPlatform } from '@/lib/search/cn-search-platforms';
+import {
+  getCnSearchResponseFamilyOrder,
+  getCnSearchResultEntries,
+} from '@/lib/search/cn-search-presentation';
 import {
   parseSearchPageState,
   SEARCH_MAX_LOADED_PAGES,
@@ -118,16 +124,9 @@ function DocsSearchPageContent({
   const [draft, setDraft] = useState(state.q);
   const [status, setStatus] = useState<SearchStatus>('loading');
   const [data, setData] = useState<CnSearchPageResponse | null>(null);
-  const familyOrder = getCnSearchFamilyOrder(
+  const familyOrder = getCnSearchResponseFamilyOrder(
+    data?.groups ?? [],
     state.q,
-    data?.groups.flatMap((group) =>
-      group.sections.map((section) => ({
-        family: getCnSearchFamily(group),
-        title: section.sectionTitle,
-        languageEntryTerms: section.languageEntryTerms,
-        languageEntryRank: section.languageEntryRank,
-      })),
-    ) ?? [],
     state.platform,
   );
   const [catalog, setCatalog] = useState<SearchFacets>({});
@@ -285,8 +284,12 @@ function DocsSearchPageContent({
           resultSnapshots.current.set(
             accepted,
             measurement.prepareResults(snapshot, {
-              count: accepted.groups.length,
-              unit: 'document',
+              count: getCnSearchResultEntries(
+                accepted.groups,
+                request.state.q,
+                request.state.platform,
+              ).length,
+              unit: 'result',
               page: request.state.page,
               totalHits: result.totalHits,
               requestId,
@@ -390,6 +393,7 @@ function DocsSearchPageContent({
     return (
       <SearchResultList
         query={state.q}
+        platform={state.platform}
         groups={groups}
         rankOffset={rankOffset}
         productLabel={productLabel}
@@ -612,12 +616,7 @@ function DocsSearchPageContent({
                         (group) => getCnSearchFamily(group) === family,
                       );
                       if (!groups.length) return null;
-                      const label =
-                        family === 'docs'
-                          ? '产品文档'
-                          : family === 'api'
-                            ? 'API 文档'
-                            : 'FAQ';
+                      const label = cnSearchFamilyLabels[family];
                       return (
                         <section aria-label={label} key={family}>
                           <div className="flex items-center justify-between border-b py-2">
@@ -634,10 +633,14 @@ function DocsSearchPageContent({
                           </div>
                           {renderResults(
                             groups,
-                            data.groups.filter((group) =>
-                              familyOrder
-                                .slice(0, familyIndex)
-                                .includes(getCnSearchFamily(group)),
+                            getCnSearchResultEntries(
+                              data.groups.filter((group) =>
+                                familyOrder
+                                  .slice(0, familyIndex)
+                                  .includes(getCnSearchFamily(group)),
+                              ),
+                              state.q,
+                              state.platform,
                             ).length,
                           )}
                         </section>
@@ -646,7 +649,15 @@ function DocsSearchPageContent({
                   : renderResults(data.groups)}
                 <div className="search-page-pagination">
                   <span aria-live="polite">
-                    已展示 {data.groups.length} 篇文档
+                    已展示{' '}
+                    {
+                      getCnSearchResultEntries(
+                        data.groups,
+                        state.q,
+                        state.platform,
+                      ).length
+                    }{' '}
+                    条结果
                   </span>
                   {status === 'error' ? (
                     <Button

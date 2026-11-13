@@ -84,7 +84,7 @@ describe('DocsSearchPage', () => {
       container.remove();
     }
   });
-  it.each(['joinChannel', 'joinChannel Android', 'C#'])(
+  it.each(['joinChannel', 'joinChannel Android', '#joinChannel', 'C#'])(
     'puts exact API definitions first for %s while keeping the document family available',
     async (query) => {
       const groups = [
@@ -141,8 +141,8 @@ describe('DocsSearchPage', () => {
       const families = screen
         .getAllByRole('region')
         .map((region) => region.getAttribute('aria-label'))
-        .filter((label) => label === '产品文档' || label === 'API 文档');
-      expect(families).toEqual(['API 文档', '产品文档']);
+        .filter((label) => label === '技术文档' || label === 'API Reference');
+      expect(families).toEqual(['API Reference', '技术文档']);
     },
   );
   it('shows product documentation before APIs and links to the complete API family', async () => {
@@ -204,15 +204,17 @@ describe('DocsSearchPage', () => {
     const sections = screen
       .getAllByRole('region')
       .filter((region) =>
-        ['产品文档', 'API 文档', 'FAQ'].includes(
+        ['技术文档', 'API Reference', 'FAQ'].includes(
           region.getAttribute('aria-label') ?? '',
         ),
       );
     expect(
       sections.map((section) => section.getAttribute('aria-label')),
-    ).toEqual(['产品文档', 'API 文档', 'FAQ']);
+    ).toEqual(['技术文档', 'API Reference', 'FAQ']);
     expect(screen.queryByText('4.7.0')).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: '查看全部API 文档' }));
+    fireEvent.click(
+      screen.getByRole('button', { name: '查看全部API Reference' }),
+    );
     expect(onChange).toHaveBeenCalledWith({ type: 'api', page: 1 });
     fireEvent.click(screen.getByRole('button', { name: '查看全部FAQ' }));
     expect(onChange).toHaveBeenCalledWith({ type: 'faq', page: 1 });
@@ -621,7 +623,7 @@ describe('DocsSearchPage', () => {
         onChange={onChange}
       />,
     );
-    await screen.findByRole('link', { name: 'RTC 指南' });
+    await screen.findByRole('link', { name: 'Token' });
     fireEvent.pointerDown(screen.getByRole('button', { name: '全部产品' }), {
       button: 0,
       ctrlKey: false,
@@ -665,11 +667,11 @@ describe('DocsSearchPage', () => {
       page: 2,
     });
     expect(onChange).not.toHaveBeenCalledWith({ page: 2 });
-    expect(screen.getAllByRole('link', { name: 'RTC 指南' })).toHaveLength(1);
+    expect(screen.getAllByRole('link', { name: 'Token' })).toHaveLength(1);
     fireEvent.click(screen.getByRole('button', { name: '加载失败，重试' }));
     await screen.findByText('另 1 个命中章节');
-    expect(screen.getAllByRole('link', { name: 'RTC 指南' })).toHaveLength(1);
-    expect(screen.getByText('已展示 1 篇文档')).toBeInTheDocument();
+    expect(screen.getAllByRole('link', { name: 'Token' })).toHaveLength(1);
+    expect(screen.getByText('已展示 1 条结果')).toBeInTheDocument();
     expect(
       screen.queryByRole('button', { name: '加载更多' }),
     ).not.toBeInTheDocument();
@@ -682,7 +684,7 @@ describe('DocsSearchPage', () => {
     );
     await screen.findByText('没有找到匹配的文档');
     expect(
-      screen.queryByRole('link', { name: 'RTC 指南' }),
+      screen.queryByRole('link', { name: 'Token' }),
     ).not.toBeInTheDocument();
     expect(vi.mocked(searchCnDocsPage).mock.lastCall?.[0]).toMatchObject({
       q: 'other',

@@ -134,7 +134,9 @@ export async function queryCnSearch(
         : []),
     ].join(' AND '),
     page: state.page,
-    hitsPerPage: overview ? 5 : SEARCH_PAGE_SIZE,
+    // A category preview must use the same candidate window as its full list:
+    // grouping/default-platform selection must not depend on the surface.
+    hitsPerPage: SEARCH_PAGE_SIZE,
     facets: ['products', 'platform', 'version', 'docType'],
     attributesToHighlight: ['sectionTitle', 'content', 'summary'],
     highlightPreTag: '<mark>',
@@ -232,8 +234,13 @@ export async function queryCnSearch(
         merged[value] = (merged[value] ?? 0) + count;
     }
   }
-  const result: EngineResponse = {
-    hits: responses.flatMap((item) => item.hits),
+  const result = {
+    hits: responses.flatMap((item) =>
+      item.hits.map((hit, index) => ({
+        ...hit,
+        resultRank: (item.page - 1) * SEARCH_PAGE_SIZE + index + 1,
+      })),
+    ),
     totalHits: responses.reduce((sum, item) => sum + item.totalHits, 0),
     totalPages: Math.max(...responses.map((item) => item.totalPages)),
     page: state.page,
@@ -249,8 +256,8 @@ export async function queryCnSearch(
         (hit.canonicalUrl === undefined ||
           isPublicCnSearchUrl(hit.canonicalUrl)),
     )
-    .map((hit) =>
-      normalizeMeilisearchHit({
+    .map((hit) => ({
+      ...normalizeMeilisearchHit({
         ...hit,
         _formatted: {
           ...hit._formatted,
@@ -261,7 +268,8 @@ export async function queryCnSearch(
           ),
         },
       }),
-    );
+      resultRank: hit.resultRank,
+    }));
   const normalizedHits = publicHits.flatMap((hit) => {
     const products = normalizeCnProductList(
       hit.products ?? (hit.product ? [hit.product] : []),

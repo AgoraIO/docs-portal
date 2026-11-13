@@ -3,13 +3,14 @@
 import { LayoutGroup, motion, useReducedMotion } from 'motion/react';
 import { useId } from 'react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { cnSearchFamilyLabels } from '@/lib/search/cn-search-family';
 import type { SearchPageState } from '@/lib/search/search-page-state';
 
 const types = [
   { value: 'all', label: '全部文档' },
-  { value: 'docs', label: '产品文档' },
-  { value: 'api', label: 'API 文档' },
-  { value: 'faq', label: 'FAQ' },
+  { value: 'docs', label: cnSearchFamilyLabels.docs },
+  { value: 'api', label: cnSearchFamilyLabels.api },
+  { value: 'faq', label: cnSearchFamilyLabels.faq },
 ] as const;
 
 // Aceternity Animated Tabs' shared-layout indicator, with Radix keyboard behavior.

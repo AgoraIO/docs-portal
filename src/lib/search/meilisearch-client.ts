@@ -17,6 +17,9 @@ export type HighlightSegment = {
 };
 
 export type SearchHit = {
+  // Assigned by our search service before grouping, within the result family.
+  // This is response metadata, not an indexed attribute or a ranking weight.
+  resultRank?: number;
   defaultPlatform?: string;
   languageEntryTerms?: string[];
   languageEntryRank?: number;

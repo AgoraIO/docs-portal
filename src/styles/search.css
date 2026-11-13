@@ -214,18 +214,20 @@
   font-variant-numeric: tabular-nums;
 }
 .search-page-results {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   list-style: none;
-  padding: 0;
+  padding: 8px 0;
 }
 .search-page-result {
   position: relative;
   isolation: isolate;
-  padding: 14px 8px;
-  border-bottom: 1px solid var(--border);
+  padding: 12px 8px;
   overflow-wrap: anywhere;
 }
-/* Stretch the first matching section's native link over the row. Keep the
-   document title and additional-section controls independently interactive. */
+/* Keep the main link native and clickable across the card; secondary links and
+   disclosure controls stay above it and retain their own destinations. */
 .search-page-result-link::after {
   content: "";
   position: absolute;
@@ -237,7 +239,7 @@
   outline: 2px solid var(--ring);
   outline-offset: -2px;
 }
-.search-page-result-title:not(.search-page-result-link),
+.search-page-page-entrance,
 .search-page-more-sections summary,
 .search-page-more-sections a {
   position: relative;
@@ -245,54 +247,14 @@
 }
 .search-page-result-hover {
   position: absolute;
-  inset: 4px 0;
+  inset: 0;
   border-radius: 8px;
-  background: var(--docs-soft-fill);
+  background: var(--accent);
   pointer-events: none;
 }
-.search-page-result-context {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 4px 16px;
-  margin-bottom: 4px;
-  color: var(--muted-foreground);
-  font-size: 12px;
-  line-height: 1.5;
-}
-.search-page-result-path,
-.search-page-result-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 8px;
-}
-.search-page-result-meta {
-  font-variant-numeric: tabular-nums;
-}
-.search-page-result-heading {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 16px;
-}
 .search-page-result-title {
-  display: flex;
-  width: fit-content;
-  max-width: 100%;
-  align-items: center;
-  gap: 8px;
-  color: var(--foreground);
+  color: inherit;
   text-decoration: none;
-}
-.search-page-result-title h2 {
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.5;
-}
-.search-page-result-title:hover {
-  color: var(--docs-info);
 }
 .search-page-section {
   display: inline-flex;
@@ -309,17 +271,6 @@
   color: var(--docs-info);
   text-decoration: underline;
   text-underline-offset: 3px;
-}
-.search-page-snippet {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  max-width: 80%;
-  margin-top: 4px;
-  color: var(--muted-foreground);
-  font-size: 14px;
-  line-height: 1.6;
 }
 .search-page-mark {
   background: transparent;
@@ -444,9 +395,6 @@
   font-size: 14px;
 }
 @media (max-width: 639px) {
-  .search-page-snippet {
-    max-width: 100%;
-  }
   .search-page [data-slot="button"] {
     min-height: 44px;
   }
@@ -497,17 +445,6 @@
     align-items: center;
     gap: 4px;
   }
-  .search-page-result {
-    padding: 12px 0;
-  }
-  .search-page-result-context {
-    justify-content: flex-start;
-    gap: 4px 12px;
-  }
-  .search-page-result-heading {
-    gap: 2px 12px;
-  }
-  .search-page-result-title,
   .search-page-section {
     min-height: 24px;
   }
