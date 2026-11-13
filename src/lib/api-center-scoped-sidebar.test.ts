@@ -61,6 +61,60 @@ async function loadReferencePayload(slugs: string[]) {
 
 // These integration tests load the real MDX/OpenAPI graph under parallel suite load.
 describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
+  it.each([
+    [['conversational-ai', 'android', 'overview'], '对话式 AI 引擎 · Android'],
+    [
+      ['conversational-ai', 'android', 'iconversationalaiapi'],
+      '对话式 AI 引擎 · Android',
+    ],
+    [['conversational-ai', 'agent-go'], '对话式 AI 引擎 · Go'],
+    [['api-ref', 'conversational-ai', 'speak'], '对话式 AI 引擎 · RESTful API'],
+    [['rtc', 'android', 'rtc-api-overview'], '实时互动 RTC · Android'],
+    [['cloud-recording', 'go-api', 'overview.go'], '云端录制 · Go'],
+  ])(
+    'shows the product and platform/language in the %s header',
+    async (route, title) => {
+      const payload = await loadApiReferencePayload(route);
+      expect(payload.sidebarHeader).toMatchObject({
+        backHref: '/zh-CN/api-reference/api',
+        backLabel: 'API 参考',
+        title,
+      });
+      if (route[0] === 'conversational-ai' && route[1] === 'android') {
+        expect(payload.sidebarHeader?.versionSwitcher).toMatchObject({
+          currentId: 'current',
+          versions: expect.arrayContaining([
+            expect.objectContaining({ id: 'current', label: 'v2.9.0' }),
+          ]),
+        });
+      }
+    },
+  );
+
+  it.each(['android', 'ios', 'web'])(
+    'omits the redundant API group label in the Conversational AI %s sidebar',
+    async (platform) => {
+      const payload = await loadApiReferencePayload([
+        'conversational-ai',
+        platform,
+        'overview',
+      ]);
+      expect(payload.sidebar.map((node) => node.title)).not.toContain(
+        'API 参考',
+      );
+      expect(payload.sidebar[0]).toMatchObject({
+        type: 'page',
+        title: 'API 概览',
+        url: `/zh-CN/api-reference/conversational-ai/${platform}/overview`,
+      });
+      expect(payload.sidebarHeader).toMatchObject({
+        backHref: '/zh-CN/api-reference/api',
+        backLabel: 'API 参考',
+        versionSwitcher: { currentId: 'current' },
+      });
+    },
+  );
+
   it.each(['class-background-image-source', 'functions'])(
     'keeps linked HarmonyOS %s inside the SDK scope without expanding the main menu',
     async (page) => {
@@ -71,7 +125,7 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
         page,
       ]);
       expect(payload.sidebarHeader).toMatchObject({
-        title: '互动白板 HarmonyOS',
+        title: '互动白板 · HarmonyOS',
         versionSwitcher: {
           currentId: 'current',
           versions: [{ id: 'current', label: 'v0.2.11' }],
@@ -119,7 +173,6 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
       'configuration',
     ]);
     expect(collectTitles(payload.sidebar as SidebarNode[])).toEqual([
-      'API 参考',
       '初始配置',
       '用户鉴权',
       '频道',
@@ -158,10 +211,7 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
     'keeps the single-page %s SDK label without additional pages or versions',
     async (route, label, hasVersion) => {
       const payload = await loadApiReferencePayload([...route]);
-      expect(collectTitles(payload.sidebar as SidebarNode[])).toEqual([
-        'API 参考',
-        label,
-      ]);
+      expect(collectTitles(payload.sidebar as SidebarNode[])).toEqual([label]);
       expect(payload.navigation.previous).toBeUndefined();
       expect(payload.navigation.next).toBeUndefined();
       if (!hasVersion)
@@ -371,50 +421,92 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
     },
   );
 
-  it.each<[string[], string, string[]?]>([
-    [['conversational-ai', 'agent-go'], 'Go', ['API 参考', 'Go']],
-    [['conversational-ai', 'agent-python'], 'Python', ['API 参考', 'Python']],
+  it.each<[string[], string, string, string[]?]>([
+    [['conversational-ai', 'agent-go'], 'Go', '对话式 AI 引擎', ['Go']],
+    [
+      ['conversational-ai', 'agent-python'],
+      'Python',
+      '对话式 AI 引擎',
+      ['Python'],
+    ],
     [
       ['conversational-ai', 'agent-typescript'],
       'TypeScript',
-      ['API 参考', 'TypeScript'],
+      '对话式 AI 引擎',
+      ['TypeScript'],
     ],
     [
       ['whiteboard', 'fastboard', 'android'],
       'Android',
-      ['API 参考', 'Fastboard SDK'],
+      '互动白板',
+      ['Fastboard SDK'],
     ],
-    [['whiteboard', 'fastboard', 'ios'], 'iOS', ['API 参考', 'Fastboard SDK']],
-    [['whiteboard', 'fastboard', 'web'], 'Web', ['API 参考', 'Fastboard SDK']],
-    [['meeting', 'android'], 'Android', ['API 参考', '会议 SDK API']],
-    [['meeting', 'ios'], 'iOS', ['API 参考', '会议 SDK API']],
-    [['meeting', 'electron'], 'Electron', ['API 参考', '会议 SDK API']],
-    [['private-room', 'android', 'rtm', 'api', 'call-api'], 'Android'],
-    [['private-room', 'ios', 'rtm', 'api', 'call-api'], 'iOS'],
+    [['whiteboard', 'fastboard', 'ios'], 'iOS', '互动白板', ['Fastboard SDK']],
+    [['whiteboard', 'fastboard', 'web'], 'Web', '互动白板', ['Fastboard SDK']],
+    [['meeting', 'android'], 'Android', '灵动会议引擎', ['会议 SDK API']],
+    [['meeting', 'ios'], 'iOS', '灵动会议引擎', ['会议 SDK API']],
+    [['meeting', 'electron'], 'Electron', '灵动会议引擎', ['会议 SDK API']],
+    [
+      ['private-room', 'android', 'rtm', 'api', 'call-api'],
+      'Android',
+      '1v1 私密房',
+    ],
+    [['private-room', 'ios', 'rtm', 'api', 'call-api'], 'iOS', '1v1 私密房'],
     [
       ['private-room', 'android', 'custom-signaling', 'api', 'call-api'],
       'Android',
+      '1v1 私密房',
     ],
-    [['private-room', 'ios', 'custom-signaling', 'api', 'call-api'], 'iOS'],
-    [['online-art-teaching', 'android', 'api', 'correction'], 'Android'],
-    [['online-art-teaching', 'ios', 'api', 'correction'], 'iOS'],
-    [['online-art-teaching', 'macos', 'api', 'correction'], 'macOS'],
+    [
+      ['private-room', 'ios', 'custom-signaling', 'api', 'call-api'],
+      'iOS',
+      '1v1 私密房',
+    ],
+    [
+      ['online-art-teaching', 'android', 'api', 'correction'],
+      'Android',
+      '在线美术教学',
+    ],
+    [
+      ['online-art-teaching', 'ios', 'api', 'correction'],
+      'iOS',
+      '在线美术教学',
+    ],
+    [
+      ['online-art-teaching', 'macos', 'api', 'correction'],
+      'macOS',
+      '在线美术教学',
+    ],
     [
       ['online-art-teaching', 'cpp-all-platforms', 'api', 'correction'],
       'Windows',
+      '在线美术教学',
     ],
-    [['online-music-teaching', 'android', 'api', 'fish-eye'], 'Android'],
-    [['online-music-teaching', 'ios', 'api', 'fish-eye'], 'iOS'],
-    [['online-music-teaching', 'macos', 'api', 'fish-eye'], 'macOS'],
+    [
+      ['online-music-teaching', 'android', 'api', 'fish-eye'],
+      'Android',
+      '在线音乐教学',
+    ],
+    [
+      ['online-music-teaching', 'ios', 'api', 'fish-eye'],
+      'iOS',
+      '在线音乐教学',
+    ],
+    [
+      ['online-music-teaching', 'macos', 'api', 'fish-eye'],
+      'macOS',
+      '在线音乐教学',
+    ],
     [
       ['online-music-teaching', 'cpp-all-platforms', 'api', 'fish-eye'],
       'Windows',
+      '在线音乐教学',
     ],
-    [['teleoperation', 'iot', 'api', 'device'], '设备端'],
-    [['teleoperation', 'iot', 'api', 'operator'], '操控端'],
+    [['teleoperation', 'iot', 'api', 'device'], '设备端', '平行操控'],
+    [['teleoperation', 'iot', 'api', 'operator'], '操控端', '平行操控'],
   ])(
     'uses a focused %s sidebar for a single-document card',
-    async (route, label, expectedSidebar) => {
+    async (route, label, product, expectedSidebar) => {
       const payload = await loadApiReferencePayload(route);
       const titles = collectTitles(payload.sidebar as SidebarNode[]);
 
@@ -422,7 +514,7 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
       expect(payload.sidebarHeader).toMatchObject({
         backHref: '/zh-CN/api-reference/api',
         backLabel: 'API 参考',
-        title: label,
+        title: `${product} · ${label}`,
       });
     },
   );
@@ -436,7 +528,6 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
     const titles = collectTitles(sidebar);
 
     expect(titles).toEqual([
-      'API 参考',
       'API 概览',
       'IConversationalAIAPI 类',
       'IConversationalAIAPIEventHandler 类',
@@ -462,7 +553,7 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
       backLabel: 'API 参考',
-      title: 'RESTful API',
+      title: '对话式 AI 引擎 · RESTful API',
     });
   });
 
@@ -483,7 +574,7 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
       backLabel: 'API 参考',
-      title: 'RESTful API',
+      title: '互动白板 · RESTful API',
     });
   });
 
@@ -500,7 +591,7 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
       backLabel: 'API 参考',
-      title: 'RESTful API',
+      title: '灵动会议引擎 · RESTful API',
     });
   });
 
@@ -519,19 +610,25 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
   });
 
   it.each([
-    [['cloud-recording', 'go-api', 'overview.go'], '云端录制'],
-    [['cloud-recording', 'java-api', 'overview.java'], '云端录制'],
-    [['local-server-recording', 'java', 'api-overview'], '本地服务端录制'],
-    [['local-server-recording', 'cpp', 'api-overview'], '本地服务端录制'],
-  ])('uses the product name for the %s scope title', async (route, title) => {
-    const payload = await loadApiReferencePayload(route);
+    [['cloud-recording', 'go-api', 'overview.go'], '云端录制 · Go'],
+    [['cloud-recording', 'java-api', 'overview.java'], '云端录制 · Java'],
+    [
+      ['local-server-recording', 'java', 'api-overview'],
+      '本地服务端录制 · Java',
+    ],
+    [['local-server-recording', 'cpp', 'api-overview'], '本地服务端录制 · C++'],
+  ])(
+    'uses the product and language for the %s scope title',
+    async (route, title) => {
+      const payload = await loadApiReferencePayload(route);
 
-    expect(payload.sidebarHeader).toMatchObject({
-      backHref: '/zh-CN/api-reference/api',
-      backLabel: 'API 参考',
-      title,
-    });
-  });
+      expect(payload.sidebarHeader).toMatchObject({
+        backHref: '/zh-CN/api-reference/api',
+        backLabel: 'API 参考',
+        title,
+      });
+    },
+  );
 
   it.each([
     ['cpp', 'iagoraservice.cpp'],
@@ -547,7 +644,7 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
       ]);
 
       expect(payload.sidebarHeader).toMatchObject({
-        title: '本地服务端录制',
+        title: `本地服务端录制 · ${platform === 'cpp' ? 'C++' : 'Java'}`,
         versionSwitcher: {
           currentId: 'current',
           versions: [
@@ -632,7 +729,7 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
       expect(payload.sidebarHeader).toMatchObject({
         backHref: '/zh-CN/api-reference/api',
         backLabel: 'API 参考',
-        title: '本地服务端录制',
+        title: `本地服务端录制 · ${route[1] === 'cpp' ? 'C++' : 'Java'}`,
       });
     },
   );
@@ -777,7 +874,7 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
 
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
-      title: '媒体流加速 RTSA C',
+      title: '媒体流加速 RTSA · C',
       versionSwitcher: {
         currentId: 'current',
         versions: expect.arrayContaining([
@@ -856,7 +953,9 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
         backHref: '/zh-CN/api-reference/api',
         backLabel: 'API 参考',
         title:
-          platform === 'android' ? '在线 K 歌房 Android' : '在线 K 歌房 iOS',
+          platform === 'android'
+            ? '在线 K 歌房 · Android'
+            : '在线 K 歌房 · iOS',
       });
     },
   );
