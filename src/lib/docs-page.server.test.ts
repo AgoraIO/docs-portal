@@ -4011,7 +4011,7 @@ Web body
               ],
               index: {
                 $id: 'ai-index',
-                name: 'Voice Agent overview',
+                name: 'Overview',
                 type: 'page',
                 url: '/en/ai',
               },
@@ -4086,7 +4086,7 @@ Web body
       ]),
     );
     expect(payload.sidebar.map((node) => node.title)).toEqual([
-      'Voice Agent overview',
+      'Overview',
       'Voice agent in apps',
       'Agent Studio',
       'Voice agent on dedicated devices',
@@ -4316,7 +4316,7 @@ Web body
     ).toBe(true);
     expect(payload.sidebar[0]).toEqual(
       expect.objectContaining({
-        title: 'Voice Agent overview',
+        title: 'Overview',
         type: 'page',
         url: '/en/ai',
       }),

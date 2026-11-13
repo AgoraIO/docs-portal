@@ -215,14 +215,14 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     query: 'interactive live streaming',
     expectedIntent: 'product',
     expectedKind: 'guide',
-    expectedTitle: 'Realtime Communication Overview',
+    expectedTitle: 'RTC overview',
     expectedUrl: '/en/realtime-media/rtc',
   },
   {
     query: 'broadcast streaming',
     expectedIntent: 'product',
     expectedKind: 'guide',
-    expectedTitle: 'Realtime Communication Overview',
+    expectedTitle: 'RTC overview',
     expectedUrl: '/en/realtime-media/rtc',
   },
   {
