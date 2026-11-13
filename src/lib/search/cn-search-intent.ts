@@ -1,4 +1,5 @@
 import { platformRegistry } from '../platforms/registry';
+import { normalizeCnApiSymbol } from './cn-api-symbol';
 import { getCnSearchProductGroups } from './cn-product-labels';
 import { type CnSearchFamily, cnSearchFamilies } from './cn-search-family';
 import { normalizeCnSearchPlatform } from './cn-search-platforms';
@@ -43,6 +44,7 @@ const platformPhrases = Object.entries(platformRegistry)
 const bareTopicQueries = new Map([
   ['混淆', '代码混淆'],
   ['云录制', '云端录制'],
+  ['令牌', 'Token'],
 ]);
 function normalizeTopicQuery(query: string): string {
   // Remove question grammar, never arbitrary query words. Quoted searches keep
@@ -95,7 +97,7 @@ function normalizeTopicQuery(query: string): string {
   // A trailing “怎么办” alone is not enough evidence to reinterpret an
   // unrecognized description. Retain it rather than creating incidental hits.
   if (question && !start.test(query.trim())) return query;
-  return bareTopicQueries.get(core) ?? (core === '令牌' ? 'Token' : core);
+  return bareTopicQueries.get(core) ?? core;
 }
 
 function normalizeConfigurationTask(query: string, product?: string) {
@@ -222,22 +224,27 @@ export function getCnSearchFamilyOrder(
     return [...cnSearchFamilies].sort((a, b) => rank(a) - rank(b));
   }
   // Preserve guide-first discovery for ordinary words; prioritize a matching code identifier.
-  const identifier = resolveCnSearchQuery(query, platform)
-    .query.trim()
-    .replace(/\(\)$/, '');
+  const identifier = normalizeCnApiSymbol(
+    resolveCnSearchQuery(query, platform).query,
+  );
+  const productTerm = getCnSearchProductGroups().some(({ options }) =>
+    options.some(({ value, label }) =>
+      [value, ...(label.match(/[A-Za-z][A-Za-z\d_-]*/g) ?? [])].some(
+        (term) => term.toLowerCase() === identifier,
+      ),
+    ),
+  );
   if (
-    /^(?:(?=.*[a-z])(?=.*[A-Z])[A-Za-z\d]+|[A-Za-z\d]+(?:_[A-Za-z\d]+)+)$/.test(
-      identifier,
+    identifier &&
+    !productTerm &&
+    // A maintained topic such as Token remains guide discovery even when an
+    // API happens to have a property with that name.
+    ![...bareTopicQueries.values()].some(
+      (topic) => topic.toLowerCase() === identifier,
     ) &&
     matches.some(
       ({ family, title }) =>
-        family === 'api' &&
-        title
-          .replace(/<\/?(?:mark|em)>/gi, '')
-          .replace(/\s*\[\d+\/\d+\]$/, '')
-          .replace(/\(\)$/, '')
-          .trim()
-          .toLowerCase() === identifier.toLowerCase(),
+        family === 'api' && normalizeCnApiSymbol(title) === identifier,
     )
   )
     return ['api', 'docs', 'faq'];

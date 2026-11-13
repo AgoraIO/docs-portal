@@ -217,6 +217,62 @@ describe('Chinese search query intent', () => {
       ]),
     ).toEqual(['api', 'docs', 'faq']);
   });
+  it.each([
+    ['joinChannel', 'joinchannel'],
+    ['renewToken', 'RENEWTOKEN'],
+    ['setClientRole', 'setclientrole()'],
+    ['setClientRole:', 'setclientrole'],
+    ['muteLocalAudioStream', 'MUTELOCALAUDIOSTREAM'],
+    ['audioScenario', 'audioscenario'],
+    ['sendMessage', 'sendmessage'],
+    ['join', 'JOIN'],
+    ['leave', 'leave'],
+    ['create_client', 'CREATE_CLIENT'],
+  ])(
+    'recognizes the actual API symbol %s independently of query casing (%s)',
+    (title, query) => {
+      expect(
+        getCnSearchFamilyOrder(query, [
+          { family: 'docs', title: '使用指南' },
+          { family: 'api', title: `<mark>${title}</mark>[1/2]` },
+        ]),
+      ).toEqual(['api', 'docs', 'faq']);
+    },
+  );
+  it('does not infer an API from English, a prefix or a product name', () => {
+    for (const q of [
+      'channel',
+      'joinchan',
+      'how to joinChannel',
+      'joinChannel token',
+      'RTM',
+    ]) {
+      expect(
+        getCnSearchFamilyOrder(q, [
+          { family: 'api', title: 'joinChannel' },
+          { family: 'api', title: 'RTM' },
+        ]),
+      ).toEqual(['docs', 'api', 'faq']);
+    }
+  });
+
+  it.each(['Token', 'token', '令牌'])(
+    'preserves topic discovery for %s despite an identically named API property',
+    (q) => {
+      expect(
+        getCnSearchFamilyOrder(q, [{ family: 'api', title: 'token' }]),
+      ).toEqual(['docs', 'api', 'faq']);
+    },
+  );
+
+  it.each(['example', 'Parameters', 'Returns', 'Methods'])(
+    'does not mistake a generated reference heading for an API: %s',
+    (title) => {
+      expect(getCnSearchFamilyOrder(title, [{ family: 'api', title }])).toEqual(
+        ['docs', 'api', 'faq'],
+      );
+    },
+  );
 
   it.each(['join_channel', 'AUDIO_SCENARIO'])(
     'recognizes exact identifiers with underscores: %s',

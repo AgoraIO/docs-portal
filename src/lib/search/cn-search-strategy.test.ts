@@ -17,6 +17,79 @@ const section: SearchSection = {
   hidden: false,
 };
 describe('CN guide heading relevance', () => {
+  it('indexes real API mentions in usage and examples above reference lists, independent of the method name', () => {
+    const symbols = new Set([
+      'joinchannel',
+      'renewtoken',
+      'setclientrole',
+      'join',
+    ]);
+    const usage = buildCnSearchDocument(
+      {
+        ...section,
+        content:
+          '调用 joinChannel 加入频道，再调用 renewToken 更新凭据。通过 setClientRole 设置角色。join()',
+      },
+      symbols,
+    );
+    expect(usage).toMatchObject({
+      guideUsageSymbols: ['joinchannel', 'renewtoken', 'setclientrole', 'join'],
+    });
+    const example = buildCnSearchDocument(
+      {
+        ...section,
+        headingPath: ['频道指南', '示例代码'],
+        content: 'joinChannel(); renewToken();',
+      },
+      symbols,
+    );
+    expect(example).toMatchObject({
+      guideExampleSymbols: ['joinchannel', 'renewtoken'],
+    });
+    expect(example).not.toHaveProperty('guideUsageSymbols');
+    for (const headingPath of [
+      ['音强选流', '参考信息', 'API 参考'],
+      ['频道指南', '相关链接'],
+      ['Guide', 'API reference'],
+    ]) {
+      const reference = buildCnSearchDocument(
+        {
+          ...section,
+          headingPath,
+          content: 'joinChannel renewToken setClientRole',
+        },
+        symbols,
+      );
+      expect(reference).not.toHaveProperty('guideUsageSymbols');
+      expect(reference).not.toHaveProperty('guideExampleSymbols');
+    }
+    expect(
+      buildCnSearchDocument(
+        { ...section, content: 'joinChannelEx somethingUnknown' },
+        symbols,
+      ),
+    ).not.toHaveProperty('guideUsageSymbols');
+  });
+  it.each([
+    ['更换证书后，用户将无法通过 renewToken 获取新的 Token。', false],
+    ['更新 Token renewToken 每秒最多 20 次。', false],
+    ['不要调用 renewToken 来绕过鉴权。', false],
+    ['收到回调后，从服务端获取 Token 并调用 renewToken 方法更新。', true],
+    ['engine.renewToken(token);', true],
+  ])(
+    'distinguishes usage instructions from incidental mentions: %s',
+    (content, usage) => {
+      const result = buildCnSearchDocument(
+        {
+          ...section,
+          headingPath: ['客户端鉴权', '开发注意事项', 'Token 过期'],
+          content,
+        },
+        new Set(['renewtoken']),
+      );
+      expect('guideUsageSymbols' in result).toBe(usage);
+    },
+  );
   it.each([
     [
       '/realtime-media/local-server-recording/get-started/start-recording',

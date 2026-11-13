@@ -57,6 +57,8 @@ export function buildPublishedCnSearchSettings() {
       'productTitle',
       'entryTitle',
       'guideHeading',
+      'guideUsageSymbols',
+      'guideExampleSymbols',
       'sectionTitle',
       'nameSplit',
       'groupNameSplit',

@@ -57,6 +57,48 @@ describe.skipIf(!host)('CN search against Meilisearch', () => {
         isDefaultPlatform: platform === 'android',
       })),
     ).flat();
+    for (const name of [
+      'joinChannel',
+      'renewToken',
+      'setClientRole',
+      'audioScenario',
+      'join',
+      'create_client',
+    ]) {
+      records.push({
+        ...section,
+        id: `api-${name}`,
+        url: `/api-reference/rtc/android/channel#${name}`,
+        canonicalUrl: '/api-reference/rtc/android/channel',
+        pageTitle: '频道相关',
+        sectionTitle: `${name}[1/2]`,
+        headingPath: ['频道相关', name],
+        content: `${name} 参数说明`,
+      });
+      for (const role of ['reference', 'usage', 'example']) {
+        const heading =
+          role === 'reference'
+            ? 'API 参考'
+            : role === 'example'
+              ? '示例代码'
+              : '实现步骤';
+        records.push({
+          ...section,
+          id: `${role}-${name}`,
+          url: `${base}/${name}-${role}/android#steps`,
+          canonicalUrl: `${base}/${name}-${role}`,
+          pageTitle: `${name} ${role}`,
+          sectionTitle: heading,
+          headingPath: ['功能指南', heading],
+          content:
+            role === 'reference'
+              ? `${name} ${name} ${name}`
+              : role === 'example'
+                ? `engine.${name}();`
+                : `调用 ${name} 方法完成操作。`,
+        });
+      }
+    }
     records.push(
       ...['content', 'summary'].map((field) => ({
         ...section,
@@ -334,6 +376,35 @@ enableLegacyAudio 修复。
       config,
       parseSearchPageState({ q, type: 'docs', page, platform }),
     );
+
+  it.each([
+    'joinChannel',
+    'renewToken',
+    'setClientRole',
+    'audioScenario',
+    'join',
+    'create_client',
+  ])(
+    'uses actual symbol evidence and guide structure for every casing of %s',
+    async (name) => {
+      for (const q of [name, name.toLowerCase(), name.toUpperCase()]) {
+        const all = await queryCnSearch(config, parseSearchPageState({ q }));
+        expect(all.groups[0]?.pageUrl).toBe(
+          '/api-reference/rtc/android/channel',
+        );
+        const docs = await search(q, 1, 'android');
+        const urls = docs.groups.map((group) => group.pageUrl);
+        const positions = ['usage', 'example', 'reference'].map((role) =>
+          urls.indexOf(`${base}/${name}-${role}/android`),
+        );
+        // Other fixtures can legitimately explain the same API. Compare the
+        // three roles without requiring unrelated real usage to disappear.
+        expect(positions.every((position) => position >= 0)).toBe(true);
+        expect(positions[0]).toBeLessThan(positions[1]);
+        expect(positions[1]).toBeLessThan(positions[2]);
+      }
+    },
+  );
 
   it.each(['code', 'highlight'])(
     'cleans engine-highlighted directives from legacy summaries and content fallbacks (%s)',
