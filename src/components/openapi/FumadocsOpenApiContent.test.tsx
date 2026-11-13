@@ -1773,6 +1773,95 @@ describe('FumadocsOpenApiContent', () => {
     ).toBeInTheDocument();
   });
 
+  it('keeps docked response controls attached to the selected status and hides them for empty responses', async () => {
+    const previousStatus = sessionStorage.getItem('fumadocs_openapi_responses');
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    const clipboard = vi
+      .spyOn(navigator, 'clipboard', 'get')
+      .mockReturnValue({ writeText } as unknown as Clipboard);
+    try {
+      const { container } = render(
+        <FumadocsOpenApiContent
+          locale="en"
+          pageProps={{
+            operations: [{ method: 'get', path: '/responses' }],
+            payload: {
+              bundled: {
+                info: { title: 'Response controls' },
+                openapi: '3.2.0',
+                paths: {
+                  '/responses': {
+                    get: {
+                      responses: {
+                        '200': {
+                          description: 'OK',
+                          content: {
+                            'application/json': { example: { message: 'ok' } },
+                          },
+                        },
+                        '204': { description: 'No content' },
+                        '400': {
+                          description: 'Bad request',
+                          content: {
+                            'application/json': {
+                              example: { message: 'bad-request' },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              } as unknown as Document,
+            },
+          }}
+        />,
+      );
+      const response = container.querySelector(
+        '.openapi-response-example',
+      ) as HTMLElement;
+      fireEvent.mouseDown(within(response).getByRole('tab', { name: '400' }), {
+        button: 0,
+        ctrlKey: false,
+      });
+      await waitFor(() =>
+        expect(response.querySelector('pre')).toHaveTextContent('bad-request'),
+      );
+      fireEvent.click(
+        within(response).getByRole('button', { name: 'Wrap code' }),
+      );
+      expect(response.querySelector('figure')).toHaveAttribute(
+        'data-code-wrap',
+        'true',
+      );
+      fireEvent.click(
+        within(response).getByRole('button', { name: 'Copy Text' }),
+      );
+      await waitFor(() =>
+        expect(writeText).toHaveBeenCalledWith(
+          '{\n  "message": "bad-request"\n}',
+        ),
+      );
+      fireEvent.mouseDown(within(response).getByRole('tab', { name: '204' }), {
+        button: 0,
+        ctrlKey: false,
+      });
+      expect(
+        within(response).getByText('No response example provided.'),
+      ).toBeVisible();
+      expect(
+        within(response).queryByRole('button', { name: /Wrap code|Copy Text/ }),
+      ).toBeNull();
+    } finally {
+      clipboard.mockRestore();
+      if (previousStatus === null) {
+        sessionStorage.removeItem('fumadocs_openapi_responses');
+      } else {
+        sessionStorage.setItem('fumadocs_openapi_responses', previousStatus);
+      }
+    }
+  });
+
   it('limits generated request samples to the three legacy clients', async () => {
     render(
       <FumadocsOpenApiContent

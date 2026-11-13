@@ -33,6 +33,7 @@ import { toJsxRuntime } from 'hast-util-to-jsx-runtime';
 import { Check, Clipboard } from 'lucide-react';
 import {
   type ComponentProps,
+  type CSSProperties,
   cloneElement,
   createContext,
   isValidElement,
@@ -813,6 +814,19 @@ function getOpenApiResponseSchemaExamples(
   });
 }
 
+const responseHeaderCodeBlock: CodeBlockProps = {
+  // Anchor these controls to the response card, above the code's scroll area.
+  className: 'static',
+  Actions: ({ className, children }) => (
+    <div className={cn(className, 'absolute top-2 right-2')}>{children}</div>
+  ),
+  viewportProps: {
+    style: {
+      '--padding-right': 'calc(var(--spacing) * 4)',
+    } as CSSProperties,
+  },
+};
+
 function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
   const { doc } = useOpenAPI();
   const resolve = doc.resolve;
@@ -837,6 +851,7 @@ function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
     example: NonNullable<
       OpenApiResponseExamplesProps['tabs'][number]['examples']
     >[number],
+    dockActions = false,
   ) {
     const code = JSON.stringify(example.sample, null, 2);
     return (
@@ -844,23 +859,35 @@ function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
         {example.description
           ? renderOpenApiMarkdown(example.description)
           : null}
-        {code === undefined ? empty : renderOpenApiCodeBlock('json', code)}
+        {code === undefined
+          ? empty
+          : renderOpenApiCodeBlock(
+              'json',
+              code,
+              dockActions ? responseHeaderCodeBlock : { title: 'JSON' },
+            )}
       </>
     );
   }
   return (
     <CodeBlockTabs
-      className="openapi-response-code-tabs my-0"
+      className="openapi-response-code-tabs relative my-0"
       defaultValue={tabs[0] ? tabValue(tabs[0].code) : undefined}
       groupId="fumadocs_openapi_responses"
     >
-      <CodeBlockTabsList>
-        {tabs.map(({ code }) => (
-          <CodeBlockTabsTrigger key={code} value={tabValue(code)}>
-            {getOpenApiResponseStatusLabel(code, statusCodes, locale)}
-          </CodeBlockTabsTrigger>
-        ))}
-      </CodeBlockTabsList>
+      <div
+        className="flex h-10 items-center border-b"
+        data-openapi-response-toolbar=""
+      >
+        <CodeBlockTabsList className="h-full min-w-0 flex-1 border-b-0">
+          {tabs.map(({ code }) => (
+            <CodeBlockTabsTrigger key={code} value={tabValue(code)}>
+              {getOpenApiResponseStatusLabel(code, statusCodes, locale)}
+            </CodeBlockTabsTrigger>
+          ))}
+        </CodeBlockTabsList>
+        <div aria-hidden="true" className="w-18 shrink-0" />
+      </div>
       {tabs.map((tab) => {
         const { code, examples = [] } = tab;
         const alternatives = getOpenApiResponseSchemaExamples(
@@ -913,7 +940,7 @@ function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
                 empty
               )
             ) : examples.length === 1 ? (
-              renderExample(examples[0])
+              renderExample(examples[0], true)
             ) : (
               <Accordions className="pt-2" defaultValue="0" type="single">
                 {examples.map((example, index) => (
