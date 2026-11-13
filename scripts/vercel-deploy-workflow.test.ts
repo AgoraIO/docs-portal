@@ -109,3 +109,25 @@ describe('Vercel preview deployment workflow', () => {
     expect(replay['continue-on-error']).toBe(true);
   });
 });
+
+describe('Vercel preview search indexing', () => {
+  it('blocks indexing before the preview build', async () => {
+    const steps = await previewSteps();
+    const noindexIndex = stepIndex(steps, 'Block search indexing on preview');
+    const buildIndex = stepIndex(steps, 'Build with Vercel');
+
+    expect(noindexIndex).toBeGreaterThanOrEqual(0);
+    expect(buildIndex).toBeGreaterThan(noindexIndex);
+    expect(steps[noindexIndex].run).toBe(
+      'node scripts/apply-preview-noindex.mjs',
+    );
+  });
+
+  it('never blocks indexing on production', async () => {
+    const steps = await productionSteps();
+
+    expect(
+      steps.some((step) => step.run?.includes('apply-preview-noindex')),
+    ).toBe(false);
+  });
+});
