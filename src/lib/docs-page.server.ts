@@ -4,7 +4,10 @@ import type { Folder, Root } from 'fumadocs-core/page-tree';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import remarkMdx from 'remark-mdx';
-import { resolveZhCnApiReferenceBreadcrumb } from './api-reference-breadcrumb';
+import {
+  resolveZhCnApiReferenceBreadcrumb,
+  resolveZhCnApiReferenceEntry,
+} from './api-reference-breadcrumb';
 import { resolveZhCnApiReferenceProductDocsHref } from './api-reference-product-docs';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
@@ -826,6 +829,11 @@ export async function loadDocsPagePayload(
     !navScope && supportedLocale
       ? resolveFocusedOpenApiLaneSidebarHeader(page.url, supportedLocale, tab)
       : undefined;
+  const resolvedSidebarHeader = sidebarHeader ?? focusedOpenApiLaneHeader;
+  const apiReferenceEntry =
+    locale === 'zh-CN' && tab === OPENAPI_TAB
+      ? resolveZhCnApiReferenceEntry(page.url)
+      : undefined;
   const breadcrumb = getSidebarBreadcrumb(sidebar, page.url);
   const apiReferenceBreadcrumb =
     locale === 'zh-CN' && tab === 'api-reference'
@@ -973,7 +981,13 @@ export async function loadDocsPagePayload(
           ),
     productScopes: getProductScopes(pageTree),
     sidebar,
-    sidebarHeader: sidebarHeader ?? focusedOpenApiLaneHeader,
+    sidebarHeader:
+      resolvedSidebarHeader && apiReferenceEntry
+        ? {
+            ...resolvedSidebarHeader,
+            title: `${apiReferenceEntry.product} · ${apiReferenceEntry.platform}`,
+          }
+        : resolvedSidebarHeader,
     slug: page.slugs.at(-1),
     tabs: getTabSummaries(pageTree),
     title: page.data.title,
