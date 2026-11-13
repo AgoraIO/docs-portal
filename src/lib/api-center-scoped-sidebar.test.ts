@@ -91,6 +91,30 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
     },
   );
 
+  it.each(['android', 'ios', 'web'])(
+    'omits the redundant API group label in the Conversational AI %s sidebar',
+    async (platform) => {
+      const payload = await loadApiReferencePayload([
+        'conversational-ai',
+        platform,
+        'overview',
+      ]);
+      expect(payload.sidebar.map((node) => node.title)).not.toContain(
+        'API 参考',
+      );
+      expect(payload.sidebar[0]).toMatchObject({
+        type: 'page',
+        title: 'API 概览',
+        url: `/zh-CN/api-reference/conversational-ai/${platform}/overview`,
+      });
+      expect(payload.sidebarHeader).toMatchObject({
+        backHref: '/zh-CN/api-reference/api',
+        backLabel: 'API 参考',
+        versionSwitcher: { currentId: 'current' },
+      });
+    },
+  );
+
   it.each(['class-background-image-source', 'functions'])(
     'keeps linked HarmonyOS %s inside the SDK scope without expanding the main menu',
     async (page) => {
@@ -149,7 +173,6 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
       'configuration',
     ]);
     expect(collectTitles(payload.sidebar as SidebarNode[])).toEqual([
-      'API 参考',
       '初始配置',
       '用户鉴权',
       '频道',
@@ -188,10 +211,7 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
     'keeps the single-page %s SDK label without additional pages or versions',
     async (route, label, hasVersion) => {
       const payload = await loadApiReferencePayload([...route]);
-      expect(collectTitles(payload.sidebar as SidebarNode[])).toEqual([
-        'API 参考',
-        label,
-      ]);
+      expect(collectTitles(payload.sidebar as SidebarNode[])).toEqual([label]);
       expect(payload.navigation.previous).toBeUndefined();
       expect(payload.navigation.next).toBeUndefined();
       if (!hasVersion)
@@ -402,55 +422,30 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
   );
 
   it.each<[string[], string, string, string[]?]>([
-    [
-      ['conversational-ai', 'agent-go'],
-      'Go',
-      '对话式 AI 引擎',
-      ['API 参考', 'Go'],
-    ],
+    [['conversational-ai', 'agent-go'], 'Go', '对话式 AI 引擎', ['Go']],
     [
       ['conversational-ai', 'agent-python'],
       'Python',
       '对话式 AI 引擎',
-      ['API 参考', 'Python'],
+      ['Python'],
     ],
     [
       ['conversational-ai', 'agent-typescript'],
       'TypeScript',
       '对话式 AI 引擎',
-      ['API 参考', 'TypeScript'],
+      ['TypeScript'],
     ],
     [
       ['whiteboard', 'fastboard', 'android'],
       'Android',
       '互动白板',
-      ['API 参考', 'Fastboard SDK'],
+      ['Fastboard SDK'],
     ],
-    [
-      ['whiteboard', 'fastboard', 'ios'],
-      'iOS',
-      '互动白板',
-      ['API 参考', 'Fastboard SDK'],
-    ],
-    [
-      ['whiteboard', 'fastboard', 'web'],
-      'Web',
-      '互动白板',
-      ['API 参考', 'Fastboard SDK'],
-    ],
-    [
-      ['meeting', 'android'],
-      'Android',
-      '灵动会议引擎',
-      ['API 参考', '会议 SDK API'],
-    ],
-    [['meeting', 'ios'], 'iOS', '灵动会议引擎', ['API 参考', '会议 SDK API']],
-    [
-      ['meeting', 'electron'],
-      'Electron',
-      '灵动会议引擎',
-      ['API 参考', '会议 SDK API'],
-    ],
+    [['whiteboard', 'fastboard', 'ios'], 'iOS', '互动白板', ['Fastboard SDK']],
+    [['whiteboard', 'fastboard', 'web'], 'Web', '互动白板', ['Fastboard SDK']],
+    [['meeting', 'android'], 'Android', '灵动会议引擎', ['会议 SDK API']],
+    [['meeting', 'ios'], 'iOS', '灵动会议引擎', ['会议 SDK API']],
+    [['meeting', 'electron'], 'Electron', '灵动会议引擎', ['会议 SDK API']],
     [
       ['private-room', 'android', 'rtm', 'api', 'call-api'],
       'Android',
@@ -533,7 +528,6 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
     const titles = collectTitles(sidebar);
 
     expect(titles).toEqual([
-      'API 参考',
       'API 概览',
       'IConversationalAIAPI 类',
       'IConversationalAIAPIEventHandler 类',
