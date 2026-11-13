@@ -1943,7 +1943,7 @@ function OpenApiMarkdownCodeBlock({
       ? childProps.children
       : undefined);
 
-  // Generated usage tabs need explicit in-tab geometry during SSR and hydration.
+  // Only nested blocks inherit Fumadocs' horizontal frame overlap.
   return (
     <DocsCodeBlock
       {...props}
@@ -1955,7 +1955,7 @@ function OpenApiMarkdownCodeBlock({
         props.className,
         codeblock?.className,
         'shadow-none',
-        isRequestCode && 'my-0 -mx-px -mb-px rounded-none last:rounded-b-xl',
+        isRequestCode && 'my-0 -mb-px',
       )}
     >
       {source === undefined ? (
