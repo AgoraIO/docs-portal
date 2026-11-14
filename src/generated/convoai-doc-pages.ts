@@ -71,6 +71,7 @@ export const CONVOAI_GUIDE_PAGES = {
     'models/tts/rime',
     'models/tts/sarvam',
     'models/tts/smallest-ai',
+    'models/tts/soniox',
     'models/tts/typecast',
     'models/tts/xai',
     'models/mllm/azure',
