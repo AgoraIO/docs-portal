@@ -1,14 +1,66 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import type { CategoryConsent } from '../consent/cookie-consent';
+
 const initMock = vi.fn();
 const captureMock = vi.fn();
+const sdkState = { optedOut: false };
+const hasOptedOutMock = vi.fn(() => sdkState.optedOut);
+const optInMock = vi.fn(() => {
+  sdkState.optedOut = false;
+});
+const optOutMock = vi.fn(() => {
+  sdkState.optedOut = true;
+});
+const stopSessionRecordingMock = vi.fn();
 
 vi.mock('posthog-js', () => ({
   default: {
     capture: captureMock,
+    has_opted_out_capturing: hasOptedOutMock,
     init: initMock,
+    opt_in_capturing: optInMock,
+    opt_out_capturing: optOutMock,
+    stopSessionRecording: stopSessionRecordingMock,
   },
 }));
+
+let consent: CategoryConsent;
+
+function setConsent(next: Partial<CategoryConsent>, publish = true) {
+  consent = { ...consent, ...next };
+
+  if (publish) {
+    window.dispatchEvent(new CustomEvent('agora:consent', { detail: consent }));
+  }
+}
+
+// vi.resetModules() gives each test a fresh module, but window listeners from
+// earlier tests' module instances would still react to consent events.
+const consentListeners: EventListenerOrEventListenerObject[] = [];
+const addWindowListener = window.addEventListener.bind(window);
+
+function trackConsentListeners() {
+  vi.spyOn(window, 'addEventListener').mockImplementation(
+    (type: string, listener: EventListenerOrEventListenerObject, options?) => {
+      if (type === 'agora:consent') {
+        consentListeners.push(listener);
+      }
+
+      addWindowListener(type, listener, options);
+    },
+  );
+}
+
+function removeConsentListeners() {
+  for (const listener of consentListeners.splice(0)) {
+    window.removeEventListener('agora:consent', listener);
+  }
+}
+
+function flushPromises() {
+  return new Promise((resolve) => setTimeout(resolve, 0));
+}
 
 describe('PostHog analytics', () => {
   beforeEach(() => {
@@ -17,6 +69,20 @@ describe('PostHog analytics', () => {
     vi.unstubAllEnvs();
     initMock.mockClear();
     captureMock.mockClear();
+    hasOptedOutMock.mockClear();
+    optInMock.mockClear();
+    optOutMock.mockClear();
+    stopSessionRecordingMock.mockClear();
+    sdkState.optedOut = false;
+    trackConsentListeners();
+    // Existing capture tests run with Analytics & Customization granted; the
+    // consent gating block below covers the unknown, denied and GPC states.
+    consent = { advertisement: true, analytics: true, functionality: true };
+    window.AgoraCookieConsent = {
+      getCategoryConsent: () => consent,
+      isGlobalPrivacyControlActive: () => false,
+      isReady: () => consent.analytics !== null,
+    };
     delete document.documentElement.dataset.docsPlatform;
     window.sessionStorage.clear();
     window.history.replaceState(
@@ -28,6 +94,119 @@ describe('PostHog analytics', () => {
 
   afterEach(() => {
     vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+    removeConsentListeners();
+    delete window.AgoraCookieConsent;
+  });
+
+  describe('consent gating', () => {
+    beforeEach(() => {
+      vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+    });
+
+    it('does not load or capture before the consent decision is known', async () => {
+      setConsent({ advertisement: null, analytics: null }, false);
+      const { captureDocsCodeCopied, initializePostHog } = await import(
+        './posthog'
+      );
+
+      initializePostHog();
+      captureDocsCodeCopied({ locale: 'en', source: 'code-block' });
+      await flushPromises();
+
+      expect(initMock).not.toHaveBeenCalled();
+      expect(captureMock).not.toHaveBeenCalled();
+    });
+
+    it('initializes on a later grant and delivers events raised while pending', async () => {
+      setConsent({ advertisement: null, analytics: null }, false);
+      const { captureDocsCodeCopied, initializePostHog } = await import(
+        './posthog'
+      );
+
+      initializePostHog();
+      captureDocsCodeCopied({ locale: 'en', source: 'code-block' });
+      await flushPromises();
+      setConsent({ analytics: true });
+
+      await vi.waitFor(() => {
+        expect(captureMock).toHaveBeenCalledWith(
+          'docs_code_copied',
+          expect.objectContaining({ code_source: 'code-block' }),
+        );
+      });
+      expect(initMock).toHaveBeenCalledTimes(1);
+      expect(optInMock).not.toHaveBeenCalled();
+    });
+
+    it('drops pending events and never loads when Analytics is denied', async () => {
+      setConsent({ advertisement: null, analytics: null }, false);
+      const { captureDocsCodeCopied, initializePostHog } = await import(
+        './posthog'
+      );
+
+      initializePostHog();
+      captureDocsCodeCopied({ locale: 'en', source: 'code-block' });
+      setConsent({ advertisement: false, analytics: false });
+      captureDocsCodeCopied({ locale: 'en', source: 'code-block' });
+      await flushPromises();
+
+      expect(initMock).not.toHaveBeenCalled();
+      expect(captureMock).not.toHaveBeenCalled();
+    });
+
+    it('opts out and stops recording when consent is withdrawn, then opts back in on regrant', async () => {
+      const { captureDocsCodeCopied, initializePostHog } = await import(
+        './posthog'
+      );
+
+      initializePostHog();
+      await vi.waitFor(() => {
+        expect(initMock).toHaveBeenCalledTimes(1);
+      });
+
+      setConsent({ analytics: false });
+      await vi.waitFor(() => {
+        expect(optOutMock).toHaveBeenCalledTimes(1);
+      });
+      expect(stopSessionRecordingMock).toHaveBeenCalledTimes(1);
+
+      captureDocsCodeCopied({ locale: 'en', source: 'code-block' });
+      await flushPromises();
+      expect(captureMock).not.toHaveBeenCalled();
+
+      setConsent({ analytics: true });
+      await vi.waitFor(() => {
+        expect(optInMock).toHaveBeenCalledWith({ captureEventName: false });
+      });
+      expect(initMock).toHaveBeenCalledTimes(1);
+    });
+
+    it('clears an opt-out left by a previous visit once Analytics is granted', async () => {
+      sdkState.optedOut = true;
+      const { initializePostHog } = await import('./posthog');
+
+      initializePostHog();
+
+      await vi.waitFor(() => {
+        expect(optInMock).toHaveBeenCalledWith({ captureEventName: false });
+      });
+    });
+
+    it('does not treat Global Privacy Control as an Analytics grant', async () => {
+      vi.stubGlobal('navigator', {
+        ...window.navigator,
+        globalPrivacyControl: true,
+      });
+      setConsent({ advertisement: null, analytics: null }, false);
+      const { initializePostHog } = await import('./posthog');
+
+      initializePostHog();
+      setConsent({ advertisement: false, analytics: false });
+      await flushPromises();
+
+      expect(initMock).not.toHaveBeenCalled();
+    });
   });
 
   it('does not initialize PostHog without a project key', async () => {
@@ -72,6 +251,7 @@ describe('PostHog analytics', () => {
       disable_session_recording: true,
       mask_all_element_attributes: true,
       mask_all_text: true,
+      opt_out_persistence_by_default: true,
       person_profiles: 'never',
       persistence: 'localStorage+cookie',
       save_campaign_params: false,

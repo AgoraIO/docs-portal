@@ -7,6 +7,7 @@ import {
   initializePostHog,
   queueDocsPageView,
 } from '@/lib/analytics/posthog';
+import { startGoogleTagManagerWhenConsented } from '@/lib/consent/google-tag-manager';
 import { subscribeToLocationChange } from '@/lib/location-change';
 
 const IS_TEST_ENVIRONMENT = import.meta.env.MODE === 'test';
@@ -21,6 +22,7 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
     }
 
     initializePostHog();
+    return startGoogleTagManagerWhenConsented(import.meta.env.VITE_GTM_ID);
   }, []);
 
   useEffect(() => {
