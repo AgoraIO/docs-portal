@@ -43,6 +43,34 @@ function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
   return render(<RouterProvider router={router} />);
 }
 
+function SidebarHarness({ tree }: { tree: DocsSidebarNode[] }) {
+  const [activePath, setActivePath] = useState(
+    '/en/realtime-media/video/overview',
+  );
+
+  return (
+    <>
+      <button
+        onClick={() => setActivePath('/en/realtime-media/rtm/build/presence')}
+        type="button"
+      >
+        Go to presence
+      </button>
+      <button
+        onClick={() => setActivePath('/en/realtime-media/rtm/build/channels')}
+        type="button"
+      >
+        Go to channels
+      </button>
+      <DocsSidebarTree
+        activePath={activePath}
+        nodes={tree}
+        onSelectPath={() => {}}
+      />
+    </>
+  );
+}
+
 describe('DocsSidebarTree', () => {
   it('shows a same-tab navigation arrow for marked internal page links', async () => {
     const demoLink: DocsSidebarNode = {
@@ -1126,37 +1154,7 @@ describe('DocsSidebarTree', () => {
         type: 'section',
       },
     ];
-    function SidebarHarness() {
-      const [activePath, setActivePath] = useState(
-        '/en/realtime-media/video/overview',
-      );
 
-      return (
-        <>
-          <button
-            onClick={() =>
-              setActivePath('/en/realtime-media/rtm/build/presence')
-            }
-            type="button"
-          >
-            Go to presence
-          </button>
-          <button
-            onClick={() =>
-              setActivePath('/en/realtime-media/rtm/build/channels')
-            }
-            type="button"
-          >
-            Go to channels
-          </button>
-          <DocsSidebarTree
-            activePath={activePath}
-            nodes={tree}
-            onSelectPath={() => {}}
-          />
-        </>
-      );
-    }
     const rootRoute = createRootRoute({
       component: () => <Outlet />,
     });
@@ -1166,7 +1164,7 @@ describe('DocsSidebarTree', () => {
       component: () => (
         <AppProviders>
           <SidebarProvider>
-            <SidebarHarness />
+            <SidebarHarness tree={tree} />
           </SidebarProvider>
         </AppProviders>
       ),

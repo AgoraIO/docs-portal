@@ -42,6 +42,37 @@ import {
   PlatformTabsPlacementProvider,
 } from './mdx/PlatformTabsGroup';
 
+describe('MDX component identity', () => {
+  it('reuses contextual component types across renders without mixing paths or locales', () => {
+    const context = {
+      contentPath: 'zh-CN/realtime-media/rtc/index.mdx',
+      locale: 'zh-CN',
+    };
+    const first = getMDXComponents(undefined, context);
+    const second = getMDXComponents({}, { ...context });
+    for (const key of [
+      'table',
+      'h2',
+      'a',
+      'Link',
+      'Card',
+      'PlanCards',
+      'PricingCards',
+    ] as const) {
+      expect(second[key]).toBe(first[key]);
+    }
+    expect(
+      getMDXComponents(undefined, {
+        ...context,
+        contentPath: 'en/ai/index.mdx',
+      }).a,
+    ).not.toBe(first.a);
+    expect(
+      getMDXComponents(undefined, { ...context, locale: 'en' }).table,
+    ).not.toBe(first.table);
+  });
+});
+
 type TabsComponent = ComponentType<{
   children: ReactNode;
   defaultValue?: string;

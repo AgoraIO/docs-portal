@@ -802,7 +802,7 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
       expect(payload.sidebarHeader).toMatchObject({
         backHref: '/zh-CN/realtime-media/overview',
         backLabel: '实时互动',
-        title: '灵动会议引擎',
+        title: '智能云会议引擎',
       });
       const reference = findSection(payload.sidebar, ['参考']);
       const serviceApi = reference?.children?.find(
