@@ -183,6 +183,10 @@ export function inspectReference() {
       'article figure.shiki:not([data-api-signature])',
     ),
   ].find(visible);
+  const codeFrame = (element) =>
+    element.hasAttribute('data-code-tabbed')
+      ? (element.closest('.docs-code-tabs') ?? element)
+      : element;
   for (const signature of document.querySelectorAll(
     'article [data-api-signature]',
   )) {
@@ -207,7 +211,7 @@ export function inspectReference() {
     }
     if (ordinaryCode) {
       const actual = getComputedStyle(signature),
-        expected = getComputedStyle(ordinaryCode);
+        expected = getComputedStyle(codeFrame(ordinaryCode));
       if (
         ['backgroundColor', 'borderTopLeftRadius', 'borderTopWidth'].some(
           (property) => actual[property] !== expected[property],
@@ -254,7 +258,7 @@ export function inspectReference() {
     const unique = new Map();
     for (const frame of document.querySelectorAll(selector)) {
       if (!visible(frame)) continue;
-      const style = getComputedStyle(frame),
+      const style = getComputedStyle(codeFrame(frame)),
         pre = frame.querySelector('pre');
       if (!pre) continue;
       const text = getComputedStyle(pre);
