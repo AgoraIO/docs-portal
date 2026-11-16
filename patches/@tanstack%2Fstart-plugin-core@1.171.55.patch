@@ -1,0 +1,92 @@
+diff --git a/dist/esm/prerender.js b/dist/esm/prerender.js
+index 3dc4e19f221a2ed509bd2c710d5334157bb7ddfd..b99d37ba2fd49ddaeb243c0ff8bf144982fc3267 100644
+--- a/dist/esm/prerender.js
++++ b/dist/esm/prerender.js
+@@ -47,6 +47,7 @@ async function prerender({ startConfig, handler }) {
+ 	async function prerenderPages({ outputDir }) {
+ 		const seen = /* @__PURE__ */ new Set();
+ 		const prerendered = /* @__PURE__ */ new Set();
++		const failures = [];
+ 		const retriesByPath = /* @__PURE__ */ new Map();
+ 		const concurrency = startConfig.prerender?.concurrency ?? os.cpus().length;
+ 		logger.info(`Concurrency: ${concurrency}`);
+@@ -58,11 +59,14 @@ async function prerender({ startConfig, handler }) {
+ 			return Array.from(prerendered);
+ 		}
+ 		await queue.start();
++		if (failures.length) {
++		  throw new AggregateError(failures, `Failed to prerender ${failures.length} page(s): ${failures.map((error) => error.message).join("; ")}`);
++		}
+ 		return Array.from(prerendered);
+-		function addCrawlPageTask(page) {
+-			if (seen.has(page.path)) return;
++		function addCrawlPageTask(page, isRetry = false) {
++			if (seen.has(page.path) && !isRetry) return;
+ 			seen.add(page.path);
+-			if (page.fromCrawl) startConfig.pages.push(page);
++			if (page.fromCrawl && !isRetry) startConfig.pages.push(page);
+ 			if (!(page.prerender?.enabled ?? true)) return;
+ 			if (startConfig.prerender?.filter && !startConfig.prerender.filter(page)) return;
+ 			const prerenderOptions = {
+@@ -114,9 +118,11 @@ async function prerender({ startConfig, handler }) {
+ 						logger.warn(`Encountered error, retrying: ${page.path} in ${retryDelay}ms`);
+ 						await new Promise((resolve) => setTimeout(resolve, retryDelay));
+ 						retriesByPath.set(page.path, retries + 1);
+-						addCrawlPageTask(page);
++						addCrawlPageTask(page, true);
+ 					} else if (prerenderOptions.failOnError ?? true) throw error;
+ 				}
++			}).catch((error) => {
++				failures.push(new Error(`Prerender failed for ${page.path}`, { cause: error }));
+ 			});
+ 		}
+ 	}
+diff --git a/src/prerender.ts b/src/prerender.ts
+index 9510a9ab379923fab8b48a7d0132ab22671fc631..884033416cf73900a829e19e42a88b8f5cb5e740 100644
+--- a/src/prerender.ts
++++ b/src/prerender.ts
+@@ -89,6 +89,7 @@ export async function prerender({
+   async function prerenderPages({ outputDir }: { outputDir: string }) {
+     const seen = new Set<string>()
+     const prerendered = new Set<string>()
++    const failures: Array<Error> = []
+     const retriesByPath = new Map<string, number>()
+     const concurrency = startConfig.prerender?.concurrency ?? os.cpus().length
+     logger.info(`Concurrency: ${concurrency}`)
+@@ -107,15 +108,18 @@ export async function prerender({
+     }
+ 
+     await queue.start()
++    if (failures.length) {
++      throw new AggregateError(failures, `Failed to prerender ${failures.length} page(s): ${failures.map((error) => error.message).join("; ")}`)
++    }
+ 
+     return Array.from(prerendered)
+ 
+-    function addCrawlPageTask(page: Page) {
+-      if (seen.has(page.path)) return
++    function addCrawlPageTask(page: Page, isRetry = false) {
++      if (seen.has(page.path) && !isRetry) return
+ 
+       seen.add(page.path)
+ 
+-      if (page.fromCrawl) {
++      if (page.fromCrawl && !isRetry) {
+         startConfig.pages.push(page)
+       }
+ 
+@@ -233,11 +237,13 @@ export async function prerender({
+             )
+             await new Promise((resolve) => setTimeout(resolve, retryDelay))
+             retriesByPath.set(page.path, retries + 1)
+-            addCrawlPageTask(page)
++            addCrawlPageTask(page, true)
+           } else if (prerenderOptions.failOnError ?? true) {
+             throw error
+           }
+         }
++      }).catch((error) => {
++        failures.push(new Error(`Prerender failed for ${page.path}`, { cause: error }))
+       })
+     }
+   }

@@ -104,6 +104,11 @@ export default defineConfig({
               crawlLinks: false,
               enabled: !isServiceDeployment,
               filter: shouldPrerenderPage,
+              // The pinned Start patch keeps retries in the queue and propagates
+              // exhausted failures. Never publish a build with missing pages.
+              retryCount: 2,
+              retryDelay: 500,
+              failOnError: true,
             },
             ...(isStaticDeployment
               ? {
