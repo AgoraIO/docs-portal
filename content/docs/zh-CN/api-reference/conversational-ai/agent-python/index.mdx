@@ -135,7 +135,7 @@ url = client.get_current_url()
 
 `Agent` 是一个不可变配置对象。每个构建方法都会返回一个新的 `Agent` 实例，原对象不会被修改。建议在应用启动时定义一个 `Agent`，并在每次用户对话时基于它调用 `create_session()`。
 
-在构造时通过 `Agent(client=client, ...)` 绑定 `Agora` 客户端，`create_session()` 和 `create_async_session()` 会复用该客户端，因此后续创建会话时无需再传入客户端。智能体实例名不在 `Agent` 构造函数上设置，而是在 `create_session(name=...)` 时传入。传入 `Area.CN` 的客户端时，SDK 会自动选用 `CNAgent`（仅用于 IDE 提示，SDK 不会强制校验服务商与区域是否匹配）。
+在构造时通过 `Agent(client=client, ...)` 绑定 `Agora` 客户端，`create_session()` 和 `create_async_session()` 会复用该客户端，因此后续创建会话时无需再传入客户端。智能体实例名不在 `Agent` 构造函数上设置，而是在 `create_session(name=...)` 时传入。SDK 会根据客户端的区域配置提供可用服务商的 IDE 提示，但不会强制校验服务商与区域是否匹配。
 
 ```python
 from agora_agent import Agent, Agora, Area
@@ -643,24 +643,24 @@ session.off('started', my_handler)
 
 ## 服务商 [#vendors]
 
-CN 服务商从 `agora_agent.cn` 导入；可在 CN 场景使用的 common/custom 服务商从 `agora_agent` 顶层导入。
+本文介绍的服务商从 `agora_agent.cn` 导入；`CustomLLM`、`GenericTTS` 等通用服务商从 `agora_agent` 顶层导入。
 
 ```python
 from agora_agent import CustomLLM, GenericTTS
 from agora_agent.cn import (
     AliyunLLM, BytedanceLLM, DeepSeekLLM, TencentLLM,
-    MiniMaxTTS, TencentTTS, BytedanceTTS, MicrosoftTTS,
+    MiniMaxTTS, MiniMaxDuplexTTS, TencentTTS, BytedanceTTS, MicrosoftTTS,
     CosyVoiceTTS, BytedanceDuplexTTS, StepFunTTS,
-    FengmingSTT, TencentSTT, MicrosoftSTT,
+    FengmingSTT, StepFunSTT, TencentSTT, MicrosoftSTT,
     SenseTimeAvatar, SpatiusAvatar,
 )
 ```
 
-采用 STT → LLM → TTS 的级联流程。除 `FengmingSTT` 外，本文档中的 CN vendors 均为 BYOK，需要显式提供对应服务商的凭据。
+采用 STT → LLM → TTS 的级联流程。除 `FengmingSTT` 外，本文介绍的服务商均为 BYOK，需要显式提供对应服务商的凭据。
 
 ### LLM 服务商 [#llm-vendors]
 
-与 [`with_llm()`](#withllmvendor) 配合使用。CN 服务商 helper 均复用 OpenAI 兼容协议（`style=openai`），内部设置各自的服务商标识。CN 场景下这些 helper 均为 BYOK，要求传入 `base_url`、`model` 和 `api_key`。
+与 [`with_llm()`](#withllmvendor) 配合使用。服务商 helper 均复用 OpenAI 兼容协议（`style=openai`），内部设置各自的服务商标识。这些 helper 均为 BYOK，要求传入 `base_url`、`model` 和 `api_key`。
 
 :::info[信息]
 `greeting_configs` 可接收 dict 或 `LlmGreetingConfigs`。在 v2.7 中，`greeting_configs.interruptable=False` 表示问候语不可被打断；`True` 则遵循全局 `interruption` 设置。
@@ -674,7 +674,7 @@ from agora_agent.cn import (
 | `TencentLLM` | `tencent` | 腾讯混元 |
 | `CustomLLM` | `custom` | 任意兼容 OpenAI Chat Completions 协议的 LLM |
 
-以上四个 CN 服务商 helper 共用相同的构造参数：
+以上四个服务商 helper 共用相同的构造参数：
 
 ```python
 from agora_agent.cn import AliyunLLM
@@ -763,6 +763,46 @@ from agora_agent.cn import MiniMaxTTS
 | `language_boost` | `str` | 否 | `None` | 语言增强策略 |
 | `additional_params` | `Dict[str, Any]` | 否 | `None` | 附加 MiniMax TTS 参数 |
 | `skip_patterns` | `List[int]` | 否 | `None` | 跳过括号内容的规则配置 |
+
+#### MiniMaxDuplexTTS
+
+MiniMax 双向流式 TTS，输出 `tts.vendor = "minimax_duplex"`。`key`、`model` 和 `voice_id` 必填且不能为空，否则触发 Pydantic 校验错误。该构造函数要求单音色配置，混合音色参数不能替代 `voice_id`。
+
+```python
+from agora_agent.cn import MiniMaxDuplexTTS, StepFunSTT
+
+tts = MiniMaxDuplexTTS(
+    key="<MINIMAX_API_KEY>",
+    model="speech-2.8-turbo",
+    voice_id="female-shaonv",
+)
+stt = StepFunSTT(api_key="<STEPFUN_API_KEY>")
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 说明 |
+|---|---|---|---|---|
+| `key` | `str` | 是 | — | MiniMax API key |
+| `model` | `str` | 是 | — | 模型名称，例如 `speech-2.8-turbo` |
+| `voice_id` | `str` | 是 | — | 音色 ID，例如 `female-shaonv` |
+| `url` | `str` | 否 | `None` | 双向流式 TTS 的 WebSocket 接口地址 |
+| `speed` | `float` | 否 | `None` | 语速，写入 `params.voice_setting.speed` |
+| `vol` | `float` | 否 | `None` | 音量，写入 `params.voice_setting.vol` |
+| `pitch` | `float` | 否 | `None` | 音调，写入 `params.voice_setting.pitch` |
+| `emotion` | `str` | 否 | `None` | 情感风格，写入 `params.voice_setting.emotion` |
+| `latex_read` | `bool` | 否 | `None` | 是否朗读 LaTeX 表达式，写入 `params.voice_setting.latex_read` |
+| `sample_rate` | `int` | 否 | `None` | 输出采样率，单位 Hz，写入 `params.audio_setting.sample_rate` |
+| `audio_format` | `str` | 否 | `None` | 音频格式，写入 `params.audio_setting.format` |
+| `channels` | `int` | 否 | `None` | 声道数，写入 `params.audio_setting.channels` |
+| `pronunciation_dict` | `Dict[str, Any]` | 否 | `None` | 发音词典，可包含 `tone` 列表 |
+| `voice_modify` | `Dict[str, Any]` | 否 | `None` | 音效设置，可包含 `pitch`、`intensity`、`timbre`、`sound_effects` |
+| `language_boost` | `str` | 否 | `None` | 语言增强策略，例如 `Chinese` |
+| `text_normalization_mode` | `str` | 否 | `None` | 文本归一化模式，例如 `basic` |
+| `subtitle_enable` | `bool` | 否 | `None` | 是否启用字幕 |
+| `subtitle_type` | `str` | 否 | `None` | 字幕粒度，例如 `word` |
+| `continuous_sound` | `bool` | 否 | `None` | 是否启用连续音频生成 |
+| `session_id` | `str` | 否 | `None` | MiniMax 供应商会话标识 |
+| `additional_params` | `Dict[str, Any]` | 否 | `None` | 附加供应商参数；已设置的显式字段优先 |
+| `skip_patterns` | `List[int]` | 否 | `None` | 跳过括号内容的规则配置，写入 `tts.skip_patterns` |
 
 #### TencentTTS
 
@@ -929,6 +969,19 @@ from agora_agent.cn import MicrosoftSTT
 | `language` | `str` | 是 | — | 语言代码，例如 `zh-CN` |
 | `phrase_list` | `List[str]` | 否 | `None` | 热词提示 |
 | `additional_params` | `Dict[str, Any]` | 否 | `None` | 附加 Microsoft ASR 参数 |
+
+#### StepFunSTT
+
+阶跃星辰 ASR，输出 `asr.vendor = "stepfun"`。`api_key` 必填且不能为空，否则触发 Pydantic 校验错误。识别语言由智能体的 turn detection 配置决定。
+
+```python
+from agora_agent.cn import StepFunSTT
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 说明 |
+|---|---|---|---|---|
+| `api_key` | `str` | 是 | — | 阶跃星辰 API key，写入 `asr.params.api_key` |
+| `additional_params` | `Dict[str, Any]` | 否 | `None` | 附加 ASR 参数；同名字段由 `api_key` 覆盖 |
 
 ### 数字人服务商 [#avatar-vendors]
 

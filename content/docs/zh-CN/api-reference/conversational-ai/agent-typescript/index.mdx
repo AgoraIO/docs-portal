@@ -148,7 +148,7 @@ new Agent<TTSSampleRate extends number = number>(options?: AgentOptions)
 `instructions`、`greeting`、`failureMessage`、`maxHistory`、`greetingConfigs` 是兼容性字段。新代码应在 LLM 服务商上配置这些值，以匹配核心请求 schema。
 
 :::info[信息]
-`AgentOptions` 支持泛型参数（`AgentOptions&lt;TArea&gt;`）。当客户端使用 `Area.CN` 时，SDK 会据此提示可用的服务商，但不会强制校验服务商与区域是否匹配。
+`AgentOptions` 支持泛型参数（`AgentOptions&lt;TArea&gt;`）。SDK 会根据客户端的区域配置提示可用的服务商，但不会强制校验服务商与区域是否匹配。
 :::
 
 ### 构建方法 [#builder-methods]
@@ -529,9 +529,9 @@ await session.raw.someNewEndpoint({
 ```typescript
 import {
   AliyunLLM, BytedanceLLM, DeepSeekLLM, TencentLLM, CustomLLM,
-  MiniMaxCNTTS, TencentTTS, BytedanceTTS, MicrosoftCNTTS,
+  MiniMaxCNTTS, MiniMaxDuplexTTS, TencentTTS, BytedanceTTS, MicrosoftCNTTS,
   CosyVoiceTTS, BytedanceDuplexTTS, StepFunTTS, GenericTTS,
-  FengmingSTT, TencentSTT, MicrosoftCNSTT,
+  FengmingSTT, StepFunSTT, TencentSTT, MicrosoftCNSTT,
   SensetimeAvatar, SpatiusAvatar,
 } from 'agora-agents';
 ```
@@ -540,7 +540,7 @@ import {
 
 ### LLM 服务商 [#llm-vendors]
 
-与 [`withLlm()`](#withllmvendor) 配合使用。LLM helper 均基于 OpenAI 兼容协议（`style = "openai"`），共享同一套构造参数，区别仅在于内部写入的 `vendor` 标识。CN 场景下这些 helper 均为 BYOK，`url`、`model` 和 `apiKey` 均为必填。
+与 [`withLlm()`](#withllmvendor) 配合使用。LLM helper 均基于 OpenAI 兼容协议（`style = "openai"`），共享同一套构造参数，区别仅在于内部写入的 `vendor` 标识。这些 helper 均为 BYOK，`url`、`model` 和 `apiKey` 均为必填。
 
 | 类 | `vendor` 值 | 服务提供方 |
 |---|---|---|
@@ -610,6 +610,43 @@ new MiniMaxCNTTS(options: MiniMaxCNTTSOptions)
 | `additionalParams` | `Record<string, unknown>` | 否 | 附加 MiniMax TTS 参数 |
 
 `MiniMaxCNVoiceSetting` 字段：`voice_id`（必填）、`speed?`、`vol?`、`pitch?`、`emotion?`、`latex_read?`、`english_normalization?`。`MiniMaxCNTimberWeight` 字段：`voice_id`、`weight`。
+
+#### MiniMaxDuplexTTS
+
+MiniMax 双向流式 TTS，输出 `tts.vendor = "minimax_duplex"`。`key`、`model` 和 `voiceSetting.voice_id` 必填且不能为空，否则构造函数抛出错误。该构造函数要求单音色配置，混合音色参数不能替代 `voiceSetting.voice_id`。
+
+```typescript
+new MiniMaxDuplexTTS(options: MiniMaxDuplexTTSOptions)
+```
+
+```typescript
+import { MiniMaxDuplexTTS, StepFunSTT } from 'agora-agents';
+
+const tts = new MiniMaxDuplexTTS({
+  key: '<MINIMAX_API_KEY>',
+  model: 'speech-2.8-turbo',
+  voiceSetting: { voice_id: 'female-shaonv' },
+});
+const stt = new StepFunSTT({ apiKey: '<STEPFUN_API_KEY>' });
+```
+
+| 配置项 | 类型 | 是否必填 | 说明 |
+|---|---|---|---|
+| `key` | `string` | 是 | MiniMax API key |
+| `model` | `string` | 是 | 模型名称，例如 `speech-2.8-turbo` |
+| `voiceSetting` | `MinimaxDuplexTtsParams.VoiceSetting` | 是 | 音色设置，`voice_id` 必须非空 |
+| `url` | `string` | 否 | 双向流式 TTS 的 WebSocket 接口地址 |
+| `audioSetting` | `MinimaxDuplexTtsParams.AudioSetting` | 否 | 音频设置，写入 `params.audio_setting` |
+| `pronunciationDict` | `MinimaxDuplexTtsParams.PronunciationDict` | 否 | 发音词典，可选字段 `tone?: string[]` |
+| `voiceModify` | `MinimaxDuplexTtsParams.VoiceModify` | 否 | 音效设置，写入 `params.voice_modify` |
+| `languageBoost` | `string` | 否 | 语言增强策略，例如 `Chinese` |
+| `textNormalizationMode` | `string` | 否 | 文本归一化模式，例如 `basic` |
+| `subtitleEnable` | `boolean` | 否 | 是否启用字幕 |
+| `subtitleType` | `string` | 否 | 字幕粒度，例如 `word` |
+| `continuousSound` | `boolean` | 否 | 是否启用连续音频生成 |
+| `sessionId` | `string` | 否 | MiniMax 供应商会话标识 |
+| `skipPatterns` | `number[]` | 否 | 跳过括号内容的规则配置，写入 `tts.skip_patterns` |
+| `additionalParams` | `Record<string, unknown>` | 否 | 附加供应商参数；已设置的显式字段优先 |
 
 #### TencentTTS
 
@@ -781,6 +818,19 @@ new MicrosoftCNSTT(options: MicrosoftCNSTTOptions)
 | `language` | `string` | 是 | 语言代码，例如 `'zh-CN'` |
 | `phraseList` | `string[]` | 否 | 提升识别准确率的短语列表 |
 | `additionalParams` | `Record<string, unknown>` | 否 | 附加服务商参数，合并进 `params` |
+
+#### StepFunSTT
+
+阶跃星辰 ASR，输出 `asr.vendor = "stepfun"`。`apiKey` 必填且不能为空，否则构造函数抛出错误。识别语言由智能体的 turn detection 配置决定。
+
+```typescript
+new StepFunSTT(options: StepFunSTTOptions)
+```
+
+| 配置项 | 类型 | 是否必填 | 说明 |
+|---|---|---|---|
+| `apiKey` | `string` | 是 | 阶跃星辰 API key，写入 `asr.params.api_key` |
+| `additionalParams` | `Record<string, unknown>` | 否 | 附加 ASR 参数；同名字段由 `apiKey` 覆盖 |
 
 ### 数字人服务商 [#avatar-vendors]
 
