@@ -2493,41 +2493,7 @@ async function getApiReferenceSidebarNodes({
     ? restoreRecipesSidebarSections(openApiSidebar)
     : openApiSidebar;
 
-  const currentPage =
-    locale === 'zh-CN' && apiNavScope && 'catalogFallback' in apiNavScope
-      ? source.getPages(locale).find((page) => page.url === activePath)
-      : undefined;
-  const containsCurrentPage = (nodes: DocsSidebarNode[]): boolean =>
-    nodes.some(
-      (node) =>
-        node.url === activePath ||
-        (node.type === 'section' && containsCurrentPage(node.children)),
-    );
-  // Keep authored SDK categories intact, while making an unlisted detail page
-  // visible and selectable even on a direct visit or browser refresh.
-  const visibleSidebar: DocsSidebarNode[] =
-    currentPage && !containsCurrentPage(restoredOpenApiSidebar)
-      ? [
-          {
-            type: 'section',
-            id: 'current-api-reference',
-            title: '当前 API',
-            children: [
-              {
-                type: 'page',
-                id: `current-api-${activePath}`,
-                title:
-                  currentPage.data.title ??
-                  currentPage.slugs.at(-1) ??
-                  activePath,
-                url: activePath,
-              },
-            ],
-          },
-          ...restoredOpenApiSidebar,
-        ]
-      : restoredOpenApiSidebar;
-  return markZhCnProductApiReferenceLinks(visibleSidebar, locale);
+  return markZhCnProductApiReferenceLinks(restoredOpenApiSidebar, locale);
 }
 
 function markZhCnProductApiReferenceLinks(
@@ -4395,9 +4361,7 @@ function getDocsNavScope({
   // Resolve ownership through the catalog's real platform entry, not a guessed
   // folder URL or the reader's navigation history.
   const entry = resolveZhCnApiReferenceEntry(activePath);
-  const fallback =
-    entry && entry.href !== activePath ? resolve(entry.href) : null;
-  return fallback ? { ...fallback, catalogFallback: true } : null;
+  return entry && entry.href !== activePath ? resolve(entry.href) : null;
 }
 
 function getScopedSidebarNodes({

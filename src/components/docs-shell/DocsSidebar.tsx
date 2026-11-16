@@ -51,18 +51,6 @@ export function DocsSidebar({
     scrollToTop();
   }, [resetKey, scrollToTop]);
 
-  const currentApiPath = nodes.some(
-    (node) => node.id === 'current-api-reference',
-  )
-    ? activePath
-    : null;
-  useEffect(() => {
-    if (!currentApiPath) return;
-    // Wait for route scroll restoration and the newly prepended section layout.
-    const frame = window.requestAnimationFrame(scrollToTop);
-    return () => window.cancelAnimationFrame(frame);
-  }, [currentApiPath, scrollToTop]);
-
   return (
     <ShadcnSidebar
       className="hidden overflow-hidden bg-transparent text-[color:var(--ink-3)] lg:sticky lg:top-[var(--docs-shell-header-offset)] lg:flex lg:h-[var(--docs-shell-body-height)] lg:min-h-0 lg:self-start"

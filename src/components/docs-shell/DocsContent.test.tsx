@@ -194,11 +194,8 @@ describe('DocsContent', () => {
     );
     const navigation = within(screen.getByLabelText('Breadcrumb'));
     expect(
-      navigation.getByRole('link', { name: 'ChannelMediaOptions' }),
-    ).toHaveAttribute(
-      'href',
-      '/zh-CN/api-reference/class-channelmediaoptions#prefermultipathtype',
-    );
+      navigation.queryByRole('link', { name: 'ChannelMediaOptions' }),
+    ).not.toBeInTheDocument();
     expect(navigation.getByText('MultipathType')).toHaveAttribute(
       'aria-current',
       'page',

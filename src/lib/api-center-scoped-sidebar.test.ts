@@ -73,15 +73,13 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
       const titles = collectTitles(payload.sidebar as SidebarNode[]);
       expect(titles).toContain('API 概览');
       expect(titles).toContain('音频设备管理');
-      expect(
-        titles.filter((title) => title === 'MEDIA_DEVICE_STATE_TYPE'),
-      ).toHaveLength(1);
-      expect(
-        findNode(payload.sidebar as SidebarNode[], 'MEDIA_DEVICE_STATE_TYPE'),
-      ).toMatchObject({
-        type: 'page',
-        url: `/zh-CN/api-reference/rtc/${platform}/enum-mediadevicestatetype`,
-      });
+      const overview = await loadApiReferencePayload([
+        'rtc',
+        platform,
+        'rtc-api-overview',
+      ]);
+      expect(payload.sidebar).toEqual(overview.sidebar);
+      expect(titles).not.toContain('当前 API');
     },
   );
 
