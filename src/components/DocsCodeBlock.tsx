@@ -5,9 +5,16 @@ import {
 } from 'fumadocs-ui/components/codeblock';
 import { buttonVariants } from 'fumadocs-ui/components/ui/button';
 import { WrapText } from 'lucide-react';
-import { type CSSProperties, type ReactNode, useState } from 'react';
+import {
+  type CSSProperties,
+  type ReactNode,
+  useContext,
+  useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/cn';
+import { getCodeLanguageLabel } from '@/lib/code/label';
+import { CodeBlockTabContext } from './DocsCodeBlockTabs';
 export type DocsCodeBlockProps = CodeBlockProps & {
   'data-language-label'?: string;
   copyButton?: ReactNode;
@@ -23,13 +30,19 @@ export function DocsCodeBlock({
   locale,
   ...props
 }: DocsCodeBlockProps) {
+  const tab = useContext(CodeBlockTabContext);
   const [wrapped, setWrapped] = useState(false);
   const { t } = useTranslation('common', { lng: locale });
   const wrapLabel = wrapped
     ? t('docs.unwrapCode', 'Unwrap code')
     : t('docs.wrapCode', 'Wrap code');
 
-  const blockTitle = languageLabel ? (
+  const repeatsTabLanguage =
+    tab &&
+    typeof tab.label === 'string' &&
+    languageLabel &&
+    getCodeLanguageLabel(tab.label.trim().toLowerCase()) === languageLabel;
+  const blockTitle = repeatsTabLanguage ? undefined : languageLabel ? (
     <span className="docs-code-language">{languageLabel}</span>
   ) : (
     title
@@ -43,6 +56,7 @@ export function DocsCodeBlock({
         props['data-line-numbers'] === false ? undefined : true
       }
       data-code-wrap={wrapped}
+      data-code-tabbed={tab ? '' : undefined}
       className={cn('bg-fd-card shadow-none', className)}
       viewportProps={{
         ...props.viewportProps,
@@ -50,8 +64,13 @@ export function DocsCodeBlock({
         style: {
           // Untitled blocks overlay the actions; reserve room for both controls.
           ...(!blockTitle &&
+            !tab &&
             ({
               '--padding-right': 'calc(var(--spacing) * 16)',
+            } as CSSProperties)),
+          ...(tab &&
+            ({
+              '--padding-right': 'calc(var(--spacing) * 4)',
             } as CSSProperties)),
           ...props.viewportProps?.style,
         },
@@ -77,11 +96,21 @@ export function DocsCodeBlock({
         );
         return Actions ? (
           Actions({
-            className: cn('flex items-center gap-1', className),
+            className: cn(
+              'flex items-center gap-1',
+              className,
+              tab && 'docs-code-tab-actions',
+            ),
             children: controls,
           })
         ) : (
-          <div className={cn('flex items-center gap-1', className)}>
+          <div
+            className={cn(
+              'flex items-center gap-1',
+              className,
+              tab && 'docs-code-tab-actions',
+            )}
+          >
             {controls}
           </div>
         );

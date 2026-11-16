@@ -297,39 +297,39 @@ const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
 调用 `addHandler` 方法，注册并实现字幕转录回调：
 
-<Tabs defaultValue="android" groupId="language" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-</TabsList>
+<CodeBlockTabs defaultValue="android" groupId="language" persist>
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-<TabsContent value="android">
+<CodeBlockTab value="android">
 
 ```kotlin
 api.addHandler(covEventHandler)
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="ios">
+<CodeBlockTab value="ios">
 
 ```swift
 convoAIAPI.addHandler(handler: self)
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="web">
+<CodeBlockTab value="web">
 
 ```typescript
 // 监听转录内容更新，用于实时显示字幕转录内容
 conversationalAIAPI.on(EConversationalAIAPIEvents.TRANSCRIPT_UPDATED, onTextChanged)
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-</Tabs>
+</CodeBlockTabs>
 
 ### 实现字幕数据回调接口
 
@@ -483,14 +483,14 @@ conversationalAIAPI.subscribeMessage(channel_name)
 
 每次智能体会话结束后，你需要取消订阅频道消息，以释放字幕相关资源。
 
-<Tabs defaultValue="android" groupId="language" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-</TabsList>
+<CodeBlockTabs defaultValue="android" groupId="language" persist>
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-<TabsContent value="android">
+<CodeBlockTab value="android">
 
 ```kotlin
 api.unsubscribeMessage("channelName") { error ->
@@ -500,9 +500,9 @@ api.unsubscribeMessage("channelName") { error ->
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="ios">
+<CodeBlockTab value="ios">
 
 ```swift
 /// 取消订阅频道消息
@@ -515,54 +515,54 @@ convoAIAPI.unsubscribeMessage(channelName: channelName) { error in
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="web">
+<CodeBlockTab value="web">
 
 ```typescript
 conversationalAIAPI.unsubscribeMessage(channel_name)
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-</Tabs>
+</CodeBlockTabs>
 
 ### 销毁组件实例
 
 结束 AI 对话场景后或关闭 App 前，你需要销毁组件实例，以释放组件的所有资源。
 
-<Tabs defaultValue="android" groupId="language" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-</TabsList>
+<CodeBlockTabs defaultValue="android" groupId="language" persist>
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-<TabsContent value="android">
+<CodeBlockTab value="android">
 
 ```kotlin
 api.destroy()
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="ios">
+<CodeBlockTab value="ios">
 
 ```swift
 convoAIAPI.destroy()
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="web">
+<CodeBlockTab value="web">
 
 ```typescript
 conversationalAIAPI.destroy()
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-</Tabs>
+</CodeBlockTabs>
 
 ## 参考信息
 

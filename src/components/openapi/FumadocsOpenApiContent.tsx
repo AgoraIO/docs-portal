@@ -51,6 +51,11 @@ import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
 import { Callout as OpenApiCallout } from '@/components/Callout';
 import { DocsCodeBlock } from '@/components/DocsCodeBlock';
+import {
+  DocsCodeBlockTab,
+  DocsCodeBlockTabs,
+  DocsCodeBlockTabsList,
+} from '@/components/DocsCodeBlockTabs';
 import { DocsLinkIcon } from '@/components/DocsLinkIcon';
 import { useMeasuredDocsBody } from '@/components/docs-shell/DocsContentMeasurement';
 import { createDocsTableComponent } from '@/components/mdx';
@@ -1424,24 +1429,24 @@ function OpenApiCodeSampleTabs({
   }
 
   return (
-    <CodeBlockTabs
+    <DocsCodeBlockTabs
       className="openapi-request-code-tabs my-0"
       onValueChange={setSelectedSampleValue}
       value={activeSampleValue}
     >
-      <CodeBlockTabsList>
+      <DocsCodeBlockTabsList>
         {sampleEntries.map(({ sample, value }) => (
           <CodeBlockTabsTrigger key={value} value={value}>
             {sample.label ?? getCodeSampleLanguage(sample.lang)}
           </CodeBlockTabsTrigger>
         ))}
-      </CodeBlockTabsList>
+      </DocsCodeBlockTabsList>
       {sampleEntries.map(({ sample, value }) => (
-        <CodeBlockTab key={value} value={value}>
+        <DocsCodeBlockTab key={value} value={value}>
           {renderCodeBlock(getCodeSampleLanguage(sample.lang), sample.source)}
-        </CodeBlockTab>
+        </DocsCodeBlockTab>
       ))}
-    </CodeBlockTabs>
+    </DocsCodeBlockTabs>
   );
 }
 
@@ -1492,25 +1497,25 @@ function OpenApiCodeSampleGroupSelector({
           </option>
         ))}
       </select>
-      <CodeBlockTabs
+      <DocsCodeBlockTabs
         key={selectedGroup.title}
         className="openapi-request-code-tabs my-0"
         onValueChange={setSelectedSampleValue}
         value={activeSampleValue}
       >
-        <CodeBlockTabsList>
+        <DocsCodeBlockTabsList>
           {sampleEntries.map(({ sample, value }) => (
             <CodeBlockTabsTrigger key={value} value={value}>
               {sample.label ?? getCodeSampleLanguage(sample.lang)}
             </CodeBlockTabsTrigger>
           ))}
-        </CodeBlockTabsList>
+        </DocsCodeBlockTabsList>
         {sampleEntries.map(({ sample, value }) => (
-          <CodeBlockTab key={value} value={value}>
+          <DocsCodeBlockTab key={value} value={value}>
             {renderCodeBlock(getCodeSampleLanguage(sample.lang), sample.source)}
-          </CodeBlockTab>
+          </DocsCodeBlockTab>
         ))}
-      </CodeBlockTabs>
+      </DocsCodeBlockTabs>
     </div>
   );
 }

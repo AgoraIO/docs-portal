@@ -234,13 +234,13 @@ print(signature2) # 6d3320c60b11101395b7fc8f9068748808a0aa1bfa064438e39d1bc2c7d7
 
 <Accordion title="Node.js 示例">
 
-<Tabs defaultValue="1" groupId="signature" persist>
-<TabsList>
-  <TabsTrigger value="1">HMAC/SHA1</TabsTrigger>
-  <TabsTrigger value="256">HMAC/SHA256</TabsTrigger>
-</TabsList>
+<CodeBlockTabs defaultValue="1" groupId="signature" persist>
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="1">HMAC/SHA1</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="256">HMAC/SHA256</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-<TabsContent value="1">
+<CodeBlockTab value="1">
 
 ```javascript
 const crypto = require('crypto')
@@ -251,9 +251,9 @@ const signature = crypto.createHmac('sha1', secret).update(requestBody, 'utf8').
 console.log(signature) // 033c62f40f687675f17f0f41f91a40c71c0f134c
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="256">
+<CodeBlockTab value="256">
 
 ```javascript
 const crypto = require('crypto')
@@ -264,8 +264,8 @@ const signature2 = crypto.createHmac('sha256', secret).update(requestBody, 'utf8
 console.log(signature2) // 6d3320c60b11101395b7fc8f9068748808a0aa1bfa064438e39d1bc2c7d74d99
 ```
 
-</TabsContent>
-</Tabs>
+</CodeBlockTab>
+</CodeBlockTabs>
 
 </Accordion>
 
@@ -378,13 +378,13 @@ public class HmacSha {
 
 <Accordion title="PHP 示例">
 
-<Tabs defaultValue="1" groupId="signature" persist>
-<TabsList>
-  <TabsTrigger value="1">HMAC/SHA1</TabsTrigger>
-  <TabsTrigger value="256">HMAC/SHA256</TabsTrigger>
-</TabsList>
+<CodeBlockTabs defaultValue="1" groupId="signature" persist>
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="1">HMAC/SHA1</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="256">HMAC/SHA256</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-<TabsContent value="1">
+<CodeBlockTab value="1">
 
 ```php
 <?php
@@ -410,9 +410,9 @@ assertEqual($res1, $sha1);
 ?>
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="256">
+<CodeBlockTab value="256">
 
 ```php
 <?php
@@ -438,8 +438,8 @@ assertEqual($res2, $sha256);
 ?>
 ```
 
-</TabsContent>
-</Tabs>
+</CodeBlockTab>
+</CodeBlockTabs>
 
 </Accordion>
 </Accordions>

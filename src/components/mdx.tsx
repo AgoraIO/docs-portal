@@ -57,6 +57,11 @@ import {
   CalloutContainer as FumadocsCalloutContainer,
 } from '@/components/Callout';
 import { DocsCodeBlock as Pre } from '@/components/DocsCodeBlock';
+import {
+  DocsCodeBlockTab as FumadocsCodeBlockTab,
+  DocsCodeBlockTabs as FumadocsCodeBlockTabs,
+  DocsCodeBlockTabsList as FumadocsCodeBlockTabsList,
+} from '@/components/DocsCodeBlockTabs';
 import { DocsLinkIcon } from '@/components/DocsLinkIcon';
 import {
   Dialog,
@@ -114,9 +119,6 @@ const FumadocsAnchor = defaultMdxComponents.a;
 const FumadocsCards = defaultMdxComponents.Cards as ComponentType<
   ComponentProps<'div'>
 >;
-const FumadocsCodeBlockTab = defaultMdxComponents.CodeBlockTab;
-const FumadocsCodeBlockTabs = defaultMdxComponents.CodeBlockTabs;
-const FumadocsCodeBlockTabsList = defaultMdxComponents.CodeBlockTabsList;
 const FumadocsCalloutTitle = defaultMdxComponents.CalloutTitle;
 const FumadocsImage = defaultMdxComponents.img;
 const RouterFumadocsAnchor = createLink(FumadocsAnchor);
@@ -1254,18 +1256,18 @@ function CodeBlockTabs({
   }, [pageState, safeValue, stateKey, value]);
 
   return (
-    <FumadocsCodeBlockTabs
-      {...props}
-      className={cn('overflow-hidden bg-fd-card', className)}
-      defaultValue={defaultValue}
-      groupId={groupId}
-      onValueChange={setSafeValue}
-      value={safeValue}
-    >
-      <CodeBlockTabsValueContext value={safeValue}>
+    <CodeBlockTabsValueContext value={safeValue}>
+      <FumadocsCodeBlockTabs
+        {...props}
+        className={cn('overflow-hidden bg-fd-card', className)}
+        defaultValue={defaultValue}
+        groupId={groupId}
+        onValueChange={setSafeValue}
+        value={safeValue}
+      >
         {children}
-      </CodeBlockTabsValueContext>
-    </FumadocsCodeBlockTabs>
+      </FumadocsCodeBlockTabs>
+    </CodeBlockTabsValueContext>
   );
 }
 
@@ -1441,10 +1443,7 @@ function CodeBlockTab({
 
   return (
     <FumadocsCodeBlockTab
-      className={cn(
-        'p-4 [&>figure]:m-0 [&>figure]:rounded-xl [&>figure]:border [&>figure]:bg-fd-card [&>figure]:shadow-none',
-        className,
-      )}
+      className={cn('p-0', className)}
       forceMount
       hidden={isInactive}
       value={value}

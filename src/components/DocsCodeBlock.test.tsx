@@ -6,7 +6,12 @@ import {
   within,
 } from '@testing-library/react';
 import { createInstance } from 'i18next';
-import { type ComponentType, type ReactNode, useState } from 'react';
+import {
+  type ComponentProps,
+  type ComponentType,
+  type ReactNode,
+  useState,
+} from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { describe, expect, it, vi } from 'vitest';
 import enCommon from '@/lib/i18n/resources/en/common';
@@ -48,6 +53,64 @@ function LanguageSelectorExample() {
 }
 
 describe('DocsCodeBlock', () => {
+  it('uses the language tabs as the caption and copies only the selected sample', async () => {
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' });
+    type TabsProps = {
+      children: ReactNode;
+      defaultValue?: string;
+      value?: string;
+    };
+    const Root = components.CodeBlockTabs as ComponentType<TabsProps>;
+    const List = components.CodeBlockTabsList as ComponentType<TabsProps>;
+    const Trigger = components.CodeBlockTabsTrigger as ComponentType<TabsProps>;
+    const Panel = components.CodeBlockTab as ComponentType<TabsProps>;
+    const Pre = components.pre as ComponentType<
+      ComponentProps<typeof DocsCodeBlock>
+    >;
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    const clipboard = vi.spyOn(navigator, 'clipboard', 'get').mockReturnValue({
+      writeText,
+    } as unknown as Clipboard);
+    try {
+      await renderBlocks(
+        <Root defaultValue="go">
+          <List>
+            <Trigger value="go">Go</Trigger>
+            <Trigger value="python">Python</Trigger>
+          </List>
+          <Panel value="go">
+            <Pre title="Go" data-language-label="Go">
+              <code>{'package main\n\nfunc main() {}'}</code>
+            </Pre>
+          </Panel>
+          <Panel value="python">
+            <Pre title="Python" data-language-label="Python">
+              <code>{'print("hello")'}</code>
+            </Pre>
+          </Panel>
+        </Root>,
+        'zh-CN',
+      );
+      expect(screen.getAllByText('Go')).toHaveLength(1);
+      fireEvent.click(screen.getByRole('button', { name: '自动换行' }));
+      fireEvent.mouseDown(screen.getByRole('tab', { name: 'Python' }), {
+        button: 0,
+        ctrlKey: false,
+      });
+      expect(screen.getAllByText('Python')).toHaveLength(1);
+      expect(screen.getByRole('button', { name: '自动换行' })).toHaveAttribute(
+        'aria-pressed',
+        'false',
+      );
+      fireEvent.click(screen.getByRole('button', { name: 'Copy Text' }));
+      await waitFor(() =>
+        expect(writeText).toHaveBeenCalledWith('print("hello")'),
+      );
+    } finally {
+      clipboard.mockRestore();
+    }
+  });
+
   it.each([
     ['en', 'Wrap code', 'Unwrap code'],
     ['zh-CN', '自动换行', '取消自动换行'],

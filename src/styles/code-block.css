@@ -24,6 +24,27 @@
   vertical-align: middle;
 }
 
+/* The tab row owns the actions; only the code viewport scrolls. */
+:root .docs-code-tabs figure[data-code-tabbed] {
+  position: static;
+  overflow: visible;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+:root .docs-code-tabs .docs-code-tab-actions {
+  position: absolute;
+  inset: 0 0 auto auto;
+  height: 2.75rem;
+  margin: 0;
+  padding-inline: 0.5rem;
+  border-radius: 0;
+  background: var(--color-fd-card);
+  backdrop-filter: none;
+}
+
 /* Keep normal MDX tabs unchanged; restore the single code block's own frame.
    This also covers legacy <Tab> shorthand without affecting OpenAPI tabs. */
 [data-mdx-tabs-root] > [role="tabpanel"] > figure.shiki:only-child {

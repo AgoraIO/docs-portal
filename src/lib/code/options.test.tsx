@@ -73,6 +73,34 @@ describe('shared code highlighting', () => {
     expect($('[role="tabpanel"] figcaption').first().text()).toBe('Ruby');
   });
 
+  it.each([
+    ['go', 'Go'],
+    ['go', 'Golang'],
+    ['javascript', 'Node.js'],
+    ['cs', 'C#'],
+  ])(
+    'does not repeat %s under a %s language tab in the server HTML',
+    async (language, label) => {
+      const { html } = await renderMarkdown(
+        `\`\`\`${language} tab="${label}"\nexample\n\`\`\`\n\n\`\`\`python tab="Python"\nprint("hello")\n\`\`\``,
+      );
+      const $ = load(html);
+      expect($('[role="tab"]').first().text()).toBe(label);
+      expect($('[role="tabpanel"] figcaption')).toHaveLength(0);
+      expect($('[role="tabpanel"] pre').first().text()).toBe('example');
+      expect($('.docs-code-tab-actions')).toHaveLength(2);
+    },
+  );
+
+  it('keeps an explicit filename inside code tabs', async () => {
+    const { html } = await renderMarkdown(
+      '<CodeBlockTabs defaultValue="go">\n<CodeBlockTabsList>\n<CodeBlockTabsTrigger value="go">Go</CodeBlockTabsTrigger>\n</CodeBlockTabsList>\n<CodeBlockTab value="go">\n\n```go title="main.go"\npackage main\n```\n\n</CodeBlockTab>\n</CodeBlockTabs>',
+    );
+    const $ = load(html);
+    expect($('figcaption').text()).toBe('main.go');
+    expect($('pre').text()).toBe('package main');
+  });
+
   it('does not invent a language for unmarked fences', async () => {
     const { html } = await renderMarkdown('```\nexample\n```');
     expect(load(html)('figcaption')).toHaveLength(0);
