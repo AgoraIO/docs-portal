@@ -982,17 +982,20 @@ This section shows you how to implement screen sharing in your Web project.
 
 ### Share documents and presentations
 
-In Web SDK v4.24.10 or later, set `screenScenarioType` to `"Document"` when sharing mostly static content, such as documents, presentations, and spreadsheets. This configuration helps improve text and chart clarity and visual quality recovery after network fluctuations.
+In Web SDK v4.24.10 or later, set [`screenScenarioType`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/screenvideotrackinitconfig.html#screenscenariotype) to `"Document"` when sharing mostly static content, such as documents, presentations, and spreadsheets. This setting makes text and charts clearer and helps video quality recover faster after network fluctuations.
 
 ```javascript
-const screenTrack = await AgoraRTC.createScreenVideoTrack({
-  screenScenarioType: "Document",
-  optimizationMode: "detail",
-});
+const screenTrack = await AgoraRTC.createScreenVideoTrack(
+  {
+    screenScenarioType: "Document",
+    optimizationMode: "detail",
+  },
+  "disable",
+);
 await client.publish(screenTrack);
 ```
 
-Call `publish` after joining the channel. If you omit `screenScenarioType`, the existing screen sharing behavior is preserved.
+Call `publish` after joining the channel. If you omit `screenScenarioType`, the SDK uses the default screen sharing behavior.
 
 ### Chrome browser
 

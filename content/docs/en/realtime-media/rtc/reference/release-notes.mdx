@@ -6522,14 +6522,14 @@ Released on November 16, 2026.
 
 **Multiopus multichannel audio**
 
-The SDK now supports sending and receiving audio with 4, 6, or 8 channels. Use the following options and methods to transmit and process multichannel audio:
+The SDK supports sending and receiving audio with 4, 6, or 8 channels. Use the following options and methods to transmit and process multichannel audio:
 
-- Set `multiopus` to `true` in `createClient` to enable Multiopus.
-- Set `channelCount` in `createCustomAudioTrack` to specify the number of channels in a custom audio track.
-- Call `selectChannels` on local or remote audio tracks to select the channels to use.
-- Call `getVolumeLevels` on local or remote audio tracks to query the volume level of each channel.
+- Set [`multiopus`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/clientconfig.html#multiopus) to `true` in `createClient` to enable Multiopus.
+- Set [`channelCount`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/customaudiotrackinitconfig.html#channelcount) in `createCustomAudioTrack` to specify the number of channels in a custom audio track.
+- Call [`selectChannels`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocalaudiotrack.html#selectchannels) on local or remote audio tracks to select the channels to use.
+- Call [`getVolumeLevels`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocalaudiotrack.html#getvolumelevels) on local or remote audio tracks to query the volume level of each channel.
 
-:::warning[Note]
+:::info[Note]
 Multiopus is supported on Chrome 94 or later. Firefox and Safari are not supported.
 :::
 
