@@ -75,4 +75,13 @@
   .prose-no-margin > :last-child {
     margin-bottom: 0;
   }
+
+  /* Empty legacy anchors before the first section do not create a gap. */
+  .prose
+    :where(h2):not(:where(.not-prose, .not-prose *)):not(
+      :where(:not(a:empty) ~ h2)
+    ) {
+    margin-top: 0;
+    padding-top: 0;
+  }
 }

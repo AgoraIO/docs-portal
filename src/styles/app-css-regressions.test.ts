@@ -11,7 +11,11 @@ const metadataCss = readFileSync(
   resolve(process.cwd(), 'src/styles/openapi-schema-metadata.css'),
   'utf8',
 );
-const appCssRoot = postcss.parse(`${appCss}\n${metadataCss}`);
+const spacingCss = readFileSync(
+  resolve(process.cwd(), 'src/styles/docs-spacing.css'),
+  'utf8',
+);
+const appCssRoot = postcss.parse(`${appCss}\n${metadataCss}\n${spacingCss}`);
 
 function normalizeSelector(selector: string) {
   return selector.replace(/\s+/g, ' ').trim();
@@ -378,6 +382,10 @@ describe('app prose CSS regressions', () => {
     );
     expectDeclaration(leadingHeading.rule, 'margin-top', '0');
     expectDeclaration(leadingHeading.rule, 'padding-top', '0');
+    expect(leadingHeading.rule.parent?.type).toBe('atrule');
+    expect((leadingHeading.rule.parent as postcss.AtRule).params).toBe(
+      'utilities',
+    );
     expectDeclaration(platformLeadingHeading.rule, 'margin-top', '0.75rem');
     expectDeclaration(platformLeadingHeading.rule, 'padding-top', '0');
   });
