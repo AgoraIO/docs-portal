@@ -572,6 +572,7 @@ function ApiSignature({
     <Pre
       {...props}
       className={className}
+      defaultWrapped
       data-api-signature=""
       data-line-numbers={false}
       title={

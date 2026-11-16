@@ -8,6 +8,24 @@ const origin = 'https://docs.example.com';
 const root = '/zh-CN/api-reference/rtc/android';
 
 describe('shareable API reference navigation', () => {
+  it('preserves the source section on the public Chinese route without a locale prefix', () => {
+    const href = appendApiReferenceTrail(
+      '/api-reference/rtc/web/globals#uid',
+      new URL(
+        '/api-reference/rtc/web/interfaces/iagorartcclient#user-info-updated',
+        origin,
+      ),
+      'IAgoraRTCClient',
+    );
+    expect(readApiReferenceTrail(new URL(href, origin))).toEqual([
+      {
+        href: '/api-reference/rtc/web/interfaces/iagorartcclient#user-info-updated',
+        title: 'IAgoraRTCClient',
+      },
+    ]);
+    expect(new URL(href, origin).hash).toBe('#uid');
+  });
+
   it('preserves multiple source pages and anchors without session storage', () => {
     const first = appendApiReferenceTrail(
       `${root}/class-channelmediaoptions`,

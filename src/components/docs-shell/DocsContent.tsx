@@ -189,6 +189,22 @@ export function DocsContent({
     : storedArticleReturnLink?.href === breadcrumb[0]?.url
       ? null
       : storedArticleReturnLink;
+  // Keep the actual entry page alongside the stable product/platform hierarchy.
+  // Preserve its hash and shared trail so returning also restores its context.
+  const navigationBreadcrumb =
+    articleReturnLink &&
+    currentPageKey &&
+    isApiReferencePath(
+      new URL(currentPageKey, window.location.origin).pathname,
+    ) &&
+    breadcrumb.length > 1 &&
+    !breadcrumb.some((item) => item.url === articleReturnLink.href)
+      ? [
+          ...breadcrumb.slice(0, -1),
+          { title: articleReturnLink.title, url: articleReturnLink.href },
+          ...breadcrumb.slice(-1),
+        ]
+      : breadcrumb;
   const sourceLinks = getDocsSourceLinks(contentPath);
   const { bodyRef: articleBodyRef, handleClick: handleArticleBodyLinkClick } =
     useTrackDocsArticleLinkNavigation({ sourceTitle, currentPageKey });
@@ -277,8 +293,8 @@ export function DocsContent({
           {showBreadcrumb ? (
             <nav aria-label="Breadcrumb" className="min-w-0">
               <ol className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-[13px] leading-5 text-[color:var(--ink-4)]">
-                {breadcrumb.map((item, index) => {
-                  const isLast = index === breadcrumb.length - 1;
+                {navigationBreadcrumb.map((item, index) => {
+                  const isLast = index === navigationBreadcrumb.length - 1;
 
                   return (
                     <li
