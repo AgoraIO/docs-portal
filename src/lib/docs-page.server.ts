@@ -4,7 +4,10 @@ import type { Folder, Root } from 'fumadocs-core/page-tree';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import remarkMdx from 'remark-mdx';
-import { resolveZhCnApiReferenceBreadcrumb } from './api-reference-breadcrumb';
+import {
+  resolveZhCnApiReferenceBreadcrumb,
+  resolveZhCnApiReferenceEntry,
+} from './api-reference-breadcrumb';
 import { resolveZhCnApiReferenceProductDocsHref } from './api-reference-product-docs';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
@@ -2490,7 +2493,41 @@ async function getApiReferenceSidebarNodes({
     ? restoreRecipesSidebarSections(openApiSidebar)
     : openApiSidebar;
 
-  return markZhCnProductApiReferenceLinks(restoredOpenApiSidebar, locale);
+  const currentPage =
+    locale === 'zh-CN' && apiNavScope && 'catalogFallback' in apiNavScope
+      ? source.getPages(locale).find((page) => page.url === activePath)
+      : undefined;
+  const containsCurrentPage = (nodes: DocsSidebarNode[]): boolean =>
+    nodes.some(
+      (node) =>
+        node.url === activePath ||
+        (node.type === 'section' && containsCurrentPage(node.children)),
+    );
+  // Keep authored SDK categories intact, while making an unlisted detail page
+  // visible and selectable even on a direct visit or browser refresh.
+  const visibleSidebar: DocsSidebarNode[] =
+    currentPage && !containsCurrentPage(restoredOpenApiSidebar)
+      ? [
+          {
+            type: 'section',
+            id: 'current-api-reference',
+            title: '当前 API',
+            children: [
+              {
+                type: 'page',
+                id: `current-api-${activePath}`,
+                title:
+                  currentPage.data.title ??
+                  currentPage.slugs.at(-1) ??
+                  activePath,
+                url: activePath,
+              },
+            ],
+          },
+          ...restoredOpenApiSidebar,
+        ]
+      : restoredOpenApiSidebar;
+  return markZhCnProductApiReferenceLinks(visibleSidebar, locale);
 }
 
 function markZhCnProductApiReferenceLinks(
@@ -4343,13 +4380,24 @@ function getDocsNavScope({
   source: typeof docsSource;
   tab: string;
 }) {
-  return resolveDocsNavScope({
-    activePath,
-    getNodeMeta: (node) =>
-      getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
-    root: pageTree,
-    tab,
-  });
+  const resolve = (path: string) =>
+    resolveDocsNavScope({
+      activePath: path,
+      getNodeMeta: (node) =>
+        getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+      root: pageTree,
+      tab,
+    });
+  const scope = resolve(activePath);
+  if (scope || locale !== 'zh-CN' || tab !== OPENAPI_TAB) return scope;
+
+  // Type/member pages omitted from meta.pages still belong to their SDK.
+  // Resolve ownership through the catalog's real platform entry, not a guessed
+  // folder URL or the reader's navigation history.
+  const entry = resolveZhCnApiReferenceEntry(activePath);
+  const fallback =
+    entry && entry.href !== activePath ? resolve(entry.href) : null;
+  return fallback ? { ...fallback, catalogFallback: true } : null;
 }
 
 function getScopedSidebarNodes({

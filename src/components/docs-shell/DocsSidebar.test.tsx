@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import { type AnchorHTMLAttributes, createRef, type ReactNode } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SidebarProvider } from '@/components/ui/sidebar';
@@ -243,6 +243,35 @@ describe('DocsSidebar', () => {
     expect(
       within(section).getByRole('link', { name: '体验 Demo' }),
     ).toHaveAttribute('href', '/zh-CN/reference/demo');
+  });
+
+  it('reveals the current API entry after navigation within the same SDK', async () => {
+    useTransientScrollbarMock.mockReturnValue({
+      isScrollbarVisible: false,
+      scrollContainerRef: createRef<HTMLDivElement>(),
+      scrollToTop,
+    });
+    const { rerenderSidebar } = renderDocsSidebar({
+      activePath:
+        '/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device',
+      locale: 'zh-CN',
+      resetKey: 'cpp-current',
+    });
+    scrollToTop.mockClear();
+    rerenderSidebar({
+      activePath:
+        '/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediadevicestatetype',
+      sidebarNodes: [
+        {
+          type: 'section',
+          id: 'current-api-reference',
+          title: '当前 API',
+          children: [],
+        },
+        ...nodes,
+      ],
+    });
+    await waitFor(() => expect(scrollToTop).toHaveBeenCalledTimes(1));
   });
 
   it('resets scroll on initial render and when resetKey changes', () => {

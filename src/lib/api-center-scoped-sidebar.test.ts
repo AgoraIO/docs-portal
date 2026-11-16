@@ -61,6 +61,30 @@ async function loadReferencePayload(slugs: string[]) {
 
 // These integration tests load the real MDX/OpenAPI graph under parallel suite load.
 describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
+  it.each(['cpp-all-platforms', 'unity'])(
+    'retains the %s SDK navigation for a directly opened unlisted enum',
+    async (platform) => {
+      const payload = await loadApiReferencePayload([
+        'rtc',
+        platform,
+        'enum-mediadevicestatetype',
+      ]);
+      expect(payload.sidebarHeader?.versionSwitcher?.currentId).toBe('current');
+      const titles = collectTitles(payload.sidebar as SidebarNode[]);
+      expect(titles).toContain('API 概览');
+      expect(titles).toContain('音频设备管理');
+      expect(
+        titles.filter((title) => title === 'MEDIA_DEVICE_STATE_TYPE'),
+      ).toHaveLength(1);
+      expect(
+        findNode(payload.sidebar as SidebarNode[], 'MEDIA_DEVICE_STATE_TYPE'),
+      ).toMatchObject({
+        type: 'page',
+        url: `/zh-CN/api-reference/rtc/${platform}/enum-mediadevicestatetype`,
+      });
+    },
+  );
+
   it.each(['class-background-image-source', 'functions'])(
     'keeps linked HarmonyOS %s inside the SDK scope without expanding the main menu',
     async (page) => {
