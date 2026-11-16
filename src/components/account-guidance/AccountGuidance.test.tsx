@@ -251,33 +251,50 @@ describe('Chinese SDK account guidance', () => {
     ]);
   });
 
-  it('only lets the user dismiss through an explicit action button', async () => {
-    const { baseElement } = render(
-      <SdksCatalog locale="zh-CN" product="signaling" platform="android" />,
-    );
-    fireEvent.click(screen.getByRole('link', { name: /^下载 .*实时消息 SDK/ }));
-    const dialog = await screen.findByRole('dialog');
-    await waitFor(() => expect(capture).toHaveBeenCalledTimes(2));
-    expect(within(dialog).getAllByRole('button')).toHaveLength(1);
-    const overlay = baseElement.querySelector('[data-slot="dialog-overlay"]');
-    if (!overlay) throw new Error('Expected dialog overlay');
-    fireEvent.pointerDown(overlay);
-    fireEvent.click(overlay);
-    fireEvent.keyDown(dialog, { key: 'Escape' });
-    expect(screen.getByRole('dialog')).toBeVisible();
-    expect(
-      capture.mock.calls.filter(
-        ([event]) => event === 'docs_account_guidance_dismissed',
-      ),
-    ).toHaveLength(0);
-    fireEvent.click(screen.getByRole('button', { name: '稍后再说' }));
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    expect(
-      capture.mock.calls.filter(
-        ([event]) => event === 'docs_account_guidance_dismissed',
-      ),
-    ).toHaveLength(1);
-  });
+  it.each(['outside click', 'Escape', 'later button'])(
+    'dismisses through %s once and keeps subsequent downloads unobstructed',
+    async (method) => {
+      const { baseElement } = render(
+        <SdksCatalog locale="zh-CN" product="signaling" platform="android" />,
+      );
+      fireEvent.click(
+        screen.getByRole('link', { name: /^下载 .*实时消息 SDK/ }),
+      );
+      const dialog = await screen.findByRole('dialog');
+      await waitFor(() => expect(capture).toHaveBeenCalledTimes(2));
+      expect(within(dialog).getAllByRole('button')).toHaveLength(1);
+      const overlay = baseElement.querySelector('[data-slot="dialog-overlay"]');
+      if (!overlay) throw new Error('Expected dialog overlay');
+      fireEvent.click(within(dialog).getByRole('heading'));
+      expect(screen.getByRole('dialog')).toBeVisible();
+      expect(
+        capture.mock.calls.filter(
+          ([event]) => event === 'docs_account_guidance_dismissed',
+        ),
+      ).toHaveLength(0);
+      if (method === 'outside click') {
+        fireEvent.pointerDown(overlay, { pointerType: 'mouse', button: 0 });
+        fireEvent.click(overlay);
+      } else if (method === 'Escape') {
+        fireEvent.keyDown(dialog, { key: 'Escape' });
+      } else {
+        fireEvent.click(screen.getByRole('button', { name: '稍后再说' }));
+      }
+      await waitFor(() =>
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+      );
+      const download = screen.getByRole('link', {
+        name: /^下载 .*实时消息 SDK/,
+      });
+      expect(fireEvent.click(download)).toBe(true);
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      expect(
+        capture.mock.calls.filter(
+          ([event]) => event === 'docs_account_guidance_dismissed',
+        ),
+      ).toHaveLength(1);
+    },
+  );
 
   it('keeps embedded product downloads outside the first catalog slice unchanged', () => {
     window.history.replaceState(
