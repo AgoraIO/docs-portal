@@ -2852,7 +2852,7 @@ describe('DocsTocRail', () => {
     expect(tocRail).toHaveClass(
       'xl:sticky',
       'xl:top-[var(--docs-shell-header-offset)]',
-      'xl:h-[var(--docs-shell-body-height)]',
+      'xl:h-[var(--docs-shell-rail-height,var(--docs-shell-body-height))]',
       'xl:min-h-0',
     );
     expect(tocRail).not.toHaveClass('docs-scrollbar', 'overflow-y-auto');
