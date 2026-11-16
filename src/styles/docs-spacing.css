@@ -1,0 +1,78 @@
+/* One vertical rhythm for guides, generated SDK references and REST prose.
+   Component edges still own their first/last-child and nested-content resets. */
+:root {
+  --docs-space-section: 2.25rem;
+  --docs-space-section-after: 1rem;
+  --docs-space-subsection: 1.5rem;
+  --docs-space-subsection-after: 0.75rem;
+  --docs-space-minor-section: 1.25rem;
+  --docs-space-minor-section-after: 0.5rem;
+  --docs-space-block: 1rem;
+  --docs-space-item: 0.5rem;
+  --docs-space-media-after: 1.5rem;
+}
+
+/* Match the typography utility's layer so the shared rhythm actually applies.
+   Keep component edge resets after these defaults. */
+@layer utilities {
+  .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
+    margin-block: var(--docs-space-section) var(--docs-space-section-after);
+  }
+
+  .prose :where(h3):not(:where(.not-prose, .not-prose *)) {
+    margin-block: var(--docs-space-subsection)
+      var(--docs-space-subsection-after);
+  }
+
+  .prose :where(h4):not(:where(.not-prose, .not-prose *)) {
+    margin-block: var(--docs-space-minor-section)
+      var(--docs-space-minor-section-after);
+  }
+
+  .prose :where(h5, h6):not(:where(.not-prose, .not-prose *)) {
+    margin-block: var(--docs-space-block) var(--docs-space-minor-section-after);
+  }
+
+  .prose :where(p, ul, ol, pre, table):not(:where(.not-prose, .not-prose *)) {
+    margin-block: var(--docs-space-block);
+  }
+
+  .prose
+    :where(li, ul ul, ul ol, ol ul, ol ol):not(
+      :where(.not-prose, .not-prose *)
+    ) {
+    margin-block: var(--docs-space-item);
+  }
+
+  .prose
+    :where(
+      h2 + *,
+      h3 + *,
+      h4 + *,
+      hr + *,
+      td > :first-child,
+      th > :first-child,
+      blockquote > :first-child,
+      .prose > :first-child
+    ):not(:where(.not-prose, .not-prose *)) {
+    margin-top: 0;
+  }
+
+  .prose
+    :where(
+      td > :last-child,
+      th > :last-child,
+      blockquote > :last-child,
+      .prose > :last-child
+    ):not(:where(.not-prose, .not-prose *)) {
+    margin-bottom: 0;
+  }
+
+  .prose-no-margin > :first-child {
+    margin-top: 0;
+  }
+
+  .prose-no-margin > :last-child {
+    margin-bottom: 0;
+  }
+}
