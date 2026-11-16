@@ -855,6 +855,10 @@ To implement custom audio processing, use the [Web Audio API](https://developer.
 
 Web SDK v4.24.10 or later supports sending and receiving audio with 4, 6, or 8 channels through Multiopus. Set `multiopus` to `true` when creating both the sending and receiving clients. Multichannel audio processing requires browser support for `MediaStreamTrackProcessor` and `MediaStreamTrackGenerator`.
 
+:::warning[Note]
+Multiopus is supported on Chrome 94 or later. Firefox and Safari are not supported.
+:::
+
 Pass a `MediaStreamTrack` that already contains the required channels to `createCustomAudioTrack`, and set `channelCount` to match. The option does not add channels to the input audio.
 
 ```javascript
