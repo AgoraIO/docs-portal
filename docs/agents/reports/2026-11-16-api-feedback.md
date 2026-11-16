@@ -24,6 +24,6 @@ Checked against the November 16 staging revision (`9e6f1a68b`) plus this patch, 
 - Focused component, navigation, breadcrumb, and API rendering tests: 117 passed.
 - `bun run types:check`: passed.
 - Biome checks on the seven changed source/test files: passed.
-- Full-suite result is recorded in the pull request.
+- `bun run test --maxWorkers=2`: 367 files passed, 1 skipped; 6,073 tests passed, 23 skipped. The run logged socket reset messages but exited successfully.
 
 This is a local candidate. Staging and production have not been updated by this change.
