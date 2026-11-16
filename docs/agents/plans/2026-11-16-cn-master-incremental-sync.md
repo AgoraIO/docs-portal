@@ -24,7 +24,7 @@
 - [x] 源 #2155：更新 `content/docs/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording.mdx` 的白板示例和配置说明。
 - [x] 创建 `docs/migration/cn-master-sync-20261116.{md,json}` 与 `cn-master-sync-20261116-ledger.json`：逐 PR 记录合并时间、提交、目标映射、实际处置；逐文件记录源前/后和目标哈希；直接提交亦必须分类。
 - [x] 更新 `docs/migration/cn-hotfix-checkpoint.md`：确认上批生效，本批保持待目标合并；携带既有图片上传与源疑义待办。
-- [ ] 验证：源码保真/锚点、operation 集合不变、相关链接、`bun run docs:tables`、`bun run qa:api source --region cn`、`bun run test --maxWorkers=2`、`bun run types:check`、Lint 与中文构建/受影响页阅读。记录实际通过和未完成边界，生成截图仅放 ignored `.agent/artifacts/`。
+- [x] 验证（已执行；手机工具栏 P2 按用户决定另批修复，不记为所有读验全通过）：源码保真/锚点、operation 集合不变、相关链接、`bun run docs:tables`、`bun run qa:api source --region cn`、`bun run test --maxWorkers=2`、`bun run types:check`、Lint 与中文构建/受影响页阅读。记录实际通过和未完成边界，生成截图仅放 ignored `.agent/artifacts/`。
 
 ## 接受边界
 

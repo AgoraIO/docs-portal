@@ -240,7 +240,28 @@
       "testsFailed": 0,
       "seconds": 415.45
     },
-    "build": "running",
+    "build": {
+      "status": "passed",
+      "command": "VITE_DOCS_REGION=cn bun run build",
+      "exitCode": 0,
+      "staticPayloads": 6170,
+      "machineReadableFiles": 7442,
+      "routeHtmlFiles": 7206,
+      "scope": "complete CN production build, client/SSR/prerender/static SEO; no deployment",
+      "contentCodeCommit": "66a351b5fbf98e06deb50e23b2a92e8d0423c515",
+      "warnings": [
+        "existing CSS ::highlight parser warnings",
+        "large output chunks",
+        "plugin timings / extensionless imports / incomplete Git metadata warnings retained"
+      ],
+      "generatedManifest": "build regenerated last-updated metadata; this automatic local output is not part of the content PR and will be restored after verification. API QA source fingerprint excludes generated manifests by contract.",
+      "builtContentCheck": {
+        "status": "passed",
+        "scope": "6 affected canonical production HTML pages; six SDK member IDs unique, v215/forceCanvas/minimax_duplex present",
+        "canonicalStartAgentUrl": "/zh-CN/api-reference/api-ref/conversational-ai/join",
+        "sourceFingerprintUnchangedAfterGeneratedManifestCleanup": true
+      }
+    },
     "links": {
       "affectedDocsFiles": 5,
       "affectedOpenapiFiles": 1,
@@ -249,7 +270,7 @@
       "currentInvalidInternalLinks": 22,
       "newInvalidInternalLinks": 0,
       "openapiInvalidInternalLinks": 0,
-      "knownFindings": "Existing explicit heading ID links; static audit findings match baseline exactly. Browser targets remain to be checked.",
+      "knownFindings": "22 existing static findings match baseline exactly; independent browser reading confirms applicable explicit IDs exist and new release/member navigation works.",
       "wholeRepository": "125256 links / 210 invalid internal links; not a clean all-repository pass",
       "externalNetworkAvailability": "not checked"
     },
@@ -284,10 +305,79 @@
       "sourceExactNewRequestExample": true,
       "newMemberAnchorsUnique": 6
     },
-    "sourceFingerprint": "b5377c6dd16ee58ae2654eb5e428abecfb8ba5698d7b6aa53b338830243910c3"
+    "sourceFingerprint": "b5377c6dd16ee58ae2654eb5e428abecfb8ba5698d7b6aa53b338830243910c3",
+    "browserReading": {
+      "status": "completed-with-unresolved-finding",
+      "preview": "http://127.0.0.1:4316",
+      "previewType": "development, not production build",
+      "reviewer": "independent Codex review agent",
+      "browser": "Headless Chrome 150.0.0.0",
+      "viewports": [
+        {
+          "width": 1440,
+          "height": 1000,
+          "theme": "light"
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "theme": "dark"
+        }
+      ],
+      "pages": [
+        "/zh-CN/ai/release-notes",
+        "/zh-CN/api-reference/conversational-ai/agent-go",
+        "/zh-CN/api-reference/conversational-ai/agent-python",
+        "/zh-CN/api-reference/conversational-ai/agent-typescript",
+        "/zh-CN/api-reference/conversational-ai/rest-api/agent/join",
+        "/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording"
+      ],
+      "passed": [
+        "v2.15 initially expanded; v2.14 TOC/hash expands and scrolls correctly",
+        "six new SDK member links clicked and located",
+        "existing explicit heading IDs present in DOM",
+        "new parameters, code examples, schema selectors and request scenario content complete",
+        "three SDK tables scroll locally to last column on phone",
+        "forceCanvas setting and full rationale readable",
+        "no whole-page horizontal overflow on six pages in both viewports"
+      ],
+      "unverified": [
+        "production preview",
+        "real touch",
+        "Safari",
+        "tablet/landscape",
+        "production font delivery"
+      ],
+      "unresolvedFinding": "P2-openapi-long-example-toolbar (deferred by user to a separate shared-layout batch)",
+      "localEvidence": ".agent/artifacts/hotfix-20261116/review-independent-browser.md"
+    }
   },
   "implementationCommits": {
     "2142": "01cd5b072c15607ed0ce8b1876de949d2ee6b4de",
     "2155": "66a351b5fbf98e06deb50e23b2a92e8d0423c515"
-  }
+  },
+  "targetPr": 1434,
+  "targetPrUrl": "https://github.com/AgoraIO/docs-portal/pull/1434",
+  "targetPrState": "draft-pending-review",
+  "remainingFindings": [
+    {
+      "id": "P2-openapi-long-example-toolbar",
+      "severity": "P2",
+      "status": "deferred-by-user-to-separate-shared-layout-batch",
+      "ownerRole": "portal maintainer",
+      "tracking": "https://github.com/AgoraIO/docs-portal/pull/1434",
+      "url": "/zh-CN/api-reference/conversational-ai/rest-api/agent/join",
+      "trigger": "390x844 dark; select 使用阶跃 StepASR 和 MiniMax 双向流式 TTS in request examples",
+      "observed": "Language selector x355.6–427 and wrap/copy controls to x487 exceed the card right edge x342 and are clipped; code container expands from 300px to 452px. Default scenario fits.",
+      "sourceFidelity": "The added summary equals source head line 1052; do not shorten authoritative source text to hide the renderer defect.",
+      "owningLayer": "shared OpenAPI example toolbar intrinsic sizing; not schema semantics",
+      "releaseImpact": "User explicitly defers the shared-layout repair outside this content-sync batch. Keep the finding visible; this is not production release acceptance.",
+      "scopeDecision": {
+        "date": "2026-11-16",
+        "by": "user",
+        "decision": "先完成内容同步并记录该问题，另批修复共享布局",
+        "releaseAcceptance": false
+      }
+    }
+  ]
 }
