@@ -39,7 +39,7 @@ describe('documentation image spacing', () => {
     );
     expect(app).toContain('@import "./image-spacing.css"');
   });
-  it('uses desktop16/24 and phone16/16 margins, excluding table images', () => {
+  it('uses desktop20/28 and phone20/20 margins, excluding table images', () => {
     const spacing = readFileSync(
       resolve(process.cwd(), 'src/styles/docs-spacing.css'),
       'utf8',
@@ -49,8 +49,8 @@ describe('documentation image spacing', () => {
     tokens.walkDecls((node) => {
       values.set(node.prop, node.value);
     });
-    expect(values.get('--docs-space-block')).toBe('1rem');
-    expect(values.get('--docs-space-media-after')).toBe('1.5rem');
+    expect(values.get('--docs-space-block')).toBe('1.25rem');
+    expect(values.get('--docs-space-media-after')).toBe('1.75rem');
     const desktop = rule(':where(');
     expect(declaration(desktop, 'margin-block')).toBe(
       'var(--docs-space-block) var(--docs-space-media-after)',

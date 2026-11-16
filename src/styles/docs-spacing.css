@@ -1,20 +1,26 @@
 /* One vertical rhythm for guides, generated SDK references and REST prose.
    Component edges still own their first/last-child and nested-content resets. */
 :root {
-  --docs-space-section: 2.25rem;
-  --docs-space-section-after: 1rem;
-  --docs-space-subsection: 1.5rem;
-  --docs-space-subsection-after: 0.75rem;
-  --docs-space-minor-section: 1.25rem;
-  --docs-space-minor-section-after: 0.5rem;
-  --docs-space-block: 1rem;
+  --docs-space-section: 3rem;
+  --docs-space-section-after: 1.25rem;
+  --docs-space-subsection: 2rem;
+  --docs-space-subsection-after: 1rem;
+  --docs-space-minor-section: 1.5rem;
+  --docs-space-minor-section-after: 0.75rem;
+  --docs-space-block: 1.25rem;
   --docs-space-item: 0.5rem;
-  --docs-space-media-after: 1.5rem;
+  --docs-space-media-after: 1.75rem;
 }
 
 /* Match the typography utility's layer so the shared rhythm actually applies.
    Keep component edge resets after these defaults. */
 @layer utilities {
+  /* The article header and resolved body need a deliberate breathing space.
+     Keep this on the body edge so leading heading resets remain intact. */
+  article:not([data-docs-home]) > [data-static-docs-body] {
+    padding-block-start: var(--docs-space-block);
+  }
+
   .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
     margin-block: var(--docs-space-section) var(--docs-space-section-after);
   }
