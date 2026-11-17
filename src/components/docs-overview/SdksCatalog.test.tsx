@@ -37,6 +37,31 @@ function openProductCard(name: string) {
   return card;
 }
 
+function platformOptions(selector: HTMLElement) {
+  if (selector instanceof HTMLSelectElement) {
+    return Array.from(selector.options).map((option) => option.textContent);
+  }
+  fireEvent.keyDown(selector, { key: 'ArrowDown' });
+  const labels = screen
+    .getAllByRole('option')
+    .map((option) => option.textContent);
+  fireEvent.keyDown(screen.getByRole('listbox'), { key: 'Escape' });
+  return labels;
+}
+
+function choosePlatform(selector: HTMLElement, value: string) {
+  if (selector instanceof HTMLSelectElement) {
+    fireEvent.change(selector, { target: { value } });
+    return;
+  }
+  fireEvent.keyDown(selector, { key: 'ArrowDown' });
+  const option = screen
+    .getAllByRole('option')
+    .find((item) => item.dataset.value === value);
+  if (!option) throw new Error(`Missing platform option: ${value}`);
+  fireEvent.click(option);
+}
+
 describe('SdksCatalog', () => {
   it('keeps old macOS RTM catalog links on the current Apple SDK', () => {
     render(<SdksCatalog locale="zh-CN" product="signaling" platform="macos" />);
@@ -114,11 +139,7 @@ describe('SdksCatalog', () => {
     render(<SdksCatalog locale="zh-CN" />);
     const card = openProductCard(name);
     const selector = within(card).getByRole('combobox');
-    expect(
-      within(selector)
-        .getAllByRole('option')
-        .map((option) => option.textContent),
-    ).toEqual(options);
+    expect(platformOptions(selector)).toEqual(options);
   });
 
   it('groups Windows and Linux builds under the one legacy C++ RTM entry', () => {
@@ -151,10 +172,8 @@ describe('SdksCatalog', () => {
       const selector = within(product).getByRole('combobox', {
         name: '实时消息 SDK 语言 / 平台',
       });
-      expect(within(selector).getByRole('option', { name: label })).toHaveValue(
-        id,
-      );
-      fireEvent.change(selector, { target: { value: id } });
+      expect(platformOptions(selector)).toContain(label);
+      choosePlatform(selector, id);
       const card = within(product).getByRole('article', {
         name: `${label} 实时消息 SDK`,
       });
@@ -185,7 +204,7 @@ describe('SdksCatalog', () => {
       name: '媒体流加速 RTSA SDK 编程语言',
     });
     expect(platform).toHaveValue('c');
-    expect(within(platform).getAllByRole('option')).toHaveLength(1);
+    expect(platformOptions(platform)).toEqual(['C']);
     expect(within(product).getAllByRole('article')).toHaveLength(18);
     const links = within(product).getAllByRole('link', { name: /^下载 / });
     expect(links.map((link) => link.getAttribute('href'))).toEqual(
@@ -301,8 +320,11 @@ describe('SdksCatalog', () => {
     const { container } = render(<SdksCatalog locale="zh-CN" />);
 
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
+    expect(
+      container.querySelectorAll('[data-slot="select-trigger"]'),
+    ).toHaveLength(8);
     expect(container.querySelectorAll('select[id$="-platform"]')).toHaveLength(
-      8,
+      0,
     );
     const commandProducts = Array.from(
       container.querySelectorAll('[data-sdk-download-product-id]'),
@@ -429,9 +451,9 @@ describe('SdksCatalog', () => {
     render(<SdksCatalog locale="zh-CN" />);
 
     const videoCard = openProductCard('视频 SDK');
-    fireEvent.change(
+    choosePlatform(
       within(videoCard).getByRole('combobox', { name: '视频 SDK 平台 / 框架' }),
-      { target: { value: 'ios' } },
+      'ios',
     );
 
     expect(
@@ -1244,13 +1266,13 @@ describe('SdksCatalog', () => {
     const serverPlatform = within(serverCard).getByRole('combobox', {
       name: 'RTC 服务端 SDK 编程语言',
     });
-    fireEvent.change(serverPlatform, { target: { value: 'go' } });
+    choosePlatform(serverPlatform, 'go');
     expect(
       within(serverCard).getByRole('article', {
         name: 'Linux RTC 服务端 SDK for Go',
       }),
     ).toBeVisible();
-    fireEvent.change(serverPlatform, { target: { value: 'python' } });
+    choosePlatform(serverPlatform, 'python');
     expect(
       within(serverCard).getByRole('article', {
         name: 'Linux RTC 服务端 SDK for Python',
@@ -1383,18 +1405,7 @@ describe('SdksCatalog', () => {
       name: '互动白板 SDK 平台',
     });
 
-    expect(
-      within(platform).getByRole('option', { name: 'Android' }),
-    ).toBeInTheDocument();
-    expect(
-      within(platform).getByRole('option', { name: 'iOS' }),
-    ).toBeInTheDocument();
-    expect(
-      within(platform).getByRole('option', { name: 'Web' }),
-    ).toBeInTheDocument();
-    expect(
-      within(platform).queryByRole('option', { name: 'macOS' }),
-    ).not.toBeInTheDocument();
+    expect(platformOptions(platform)).toEqual(['Android', 'iOS', 'Web']);
   });
 
   it('copies the four RTC server download-page variants into the platform selector', () => {
@@ -1412,19 +1423,15 @@ describe('SdksCatalog', () => {
     });
 
     expect(platform).toHaveValue('linux-cpp');
-    expect(
-      within(platform)
-        .getAllByRole('option')
-        .map((option) => option.textContent),
-    ).toEqual(['C++', 'Java', 'Python', 'Go']);
-    fireEvent.change(platform, { target: { value: 'linux-java' } });
+    expect(platformOptions(platform)).toEqual(['C++', 'Java', 'Python', 'Go']);
+    choosePlatform(platform, 'linux-java');
     expect(
       within(serverCard).getByRole('article', {
         name: 'Linux RTC 服务端 SDK Java x86-64',
       }),
     ).toBeVisible();
 
-    fireEvent.change(platform, { target: { value: 'linux-cpp' } });
+    choosePlatform(platform, 'linux-cpp');
     expect(within(serverCard).getAllByRole('article')).toHaveLength(2);
     expect(
       within(serverCard).getByRole('link', { name: '更多 ↗' }),
@@ -1449,11 +1456,7 @@ describe('SdksCatalog', () => {
     });
 
     expect(platform).toHaveValue('linux-cpp');
-    expect(
-      within(platform)
-        .getAllByRole('option')
-        .map((option) => option.textContent),
-    ).toEqual(['服务端 C++', '服务端 Java']);
+    expect(platformOptions(platform)).toEqual(['服务端 C++', '服务端 Java']);
     expect(within(recordingCard).getAllByRole('article')).toHaveLength(2);
     expect(
       within(recordingCard).getByRole('link', { name: '更多 ↗' }),

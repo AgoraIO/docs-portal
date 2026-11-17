@@ -4,6 +4,11 @@ import { MotionGlobalConfig } from 'motion/react';
 // Component assertions test final states; browser QA covers real animations.
 MotionGlobalConfig.skipAnimations = true;
 
+// Select scrolls its active option into view; happy-dom has no layout viewport.
+if (typeof Element !== 'undefined' && !Element.prototype.scrollIntoView) {
+  Element.prototype.scrollIntoView = () => {};
+}
+
 if (typeof window !== 'undefined' && !window.matchMedia) {
   Object.defineProperty(window, 'matchMedia', {
     configurable: true,

@@ -13,6 +13,14 @@ import {
   useResourceAccountGuidance,
 } from '@/components/account-guidance/AccountGuidance';
 import { getSdkAccountGuidanceTarget } from '@/components/account-guidance/resource-registry';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { cn } from '@/lib/cn';
 import { retiredCnProductIds } from '@/lib/retired-cn-docs.mjs';
@@ -788,6 +796,46 @@ function ProductCard({
                     </ToggleGroupItem>
                   ))}
                 </ToggleGroup>
+              </div>
+            ) : redesigned ? (
+              <div className="flex w-full min-w-0 flex-col gap-1.5 sm:w-60">
+                <span
+                  className="text-xs font-medium text-muted-foreground"
+                  id={`${titleId}-platform-label`}
+                >
+                  {getZhCNSdkDownloadSelectorLabel(group.productId)}
+                </span>
+                <Select
+                  onValueChange={(value) => {
+                    setPlatformId(value);
+                    setVersionIndex('0');
+                  }}
+                  value={platformId}
+                >
+                  <SelectTrigger
+                    aria-label={copy.platformTabsLabel(
+                      group.label,
+                      group.productId,
+                    )}
+                    id={`${titleId}-platform`}
+                    value={platformId}
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {group.platforms.map((entry) => (
+                        <SelectItem
+                          data-value={entry.platformId}
+                          key={entry.platformId}
+                          value={entry.platformId}
+                        >
+                          {entry.platformSelectLabel ?? entry.platformLabel}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
             ) : (
               <label

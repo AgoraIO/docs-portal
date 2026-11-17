@@ -99,7 +99,7 @@ describe('Chinese SDK account guidance', () => {
     vi.spyOn(document, 'visibilityState', 'get').mockImplementation(() =>
       visible ? 'visible' : 'hidden',
     );
-    render(
+    const { rerender } = render(
       <SdksCatalog locale="zh-CN" product="signaling" platform="android" />,
     );
     fireEvent.click(screen.getByRole('link', { name: /^下载 .*实时消息 SDK/ }));
@@ -107,11 +107,7 @@ describe('Chinese SDK account guidance', () => {
     expect(capture.mock.calls.map(([event]) => event)).toEqual([
       'docs_resource_action_started',
     ]);
-    const platform = screen.getByRole('combobox', {
-      name: '实时消息 SDK 语言 / 平台',
-      hidden: true,
-    });
-    fireEvent.change(platform, { target: { value: 'ios' } });
+    rerender(<SdksCatalog locale="zh-CN" product="signaling" platform="ios" />);
     fireEvent.click(
       screen.getByRole('link', { name: /^下载 .*实时消息 SDK/, hidden: true }),
     );
