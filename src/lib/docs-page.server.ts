@@ -4343,13 +4343,24 @@ function getDocsNavScope({
   source: typeof docsSource;
   tab: string;
 }) {
-  return resolveDocsNavScope({
-    activePath,
-    getNodeMeta: (node) =>
-      getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
-    root: pageTree,
-    tab,
-  });
+  const resolve = (includeSource = false) =>
+    resolveDocsNavScope({
+      activePath,
+      contentPath: includeSource
+        ? source.getPage(
+            activePath.split('/').filter(Boolean).slice(1),
+            locale ?? undefined,
+          )?.path
+        : undefined,
+      getNodePath: (node) =>
+        source.getNodeMeta(node, locale ?? undefined)?.path,
+      getNodeMeta: (node) =>
+        getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+      root: pageTree,
+      tab,
+    });
+  // Keep existing menu/version resolution. Only unlisted API pages need fallback.
+  return resolve() ?? (tab === OPENAPI_TAB ? resolve(true) : null);
 }
 
 function getScopedSidebarNodes({
