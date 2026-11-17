@@ -3,29 +3,152 @@ title: "Presence 基础"
 description: "了解如何在实时消息 RTM 中在线状态基础，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
 
-**Presence** 服务让你具备洞察指定频道中用户状态的能力：
 
+
+<PlatformStructured platform="android">
+
+**Presence** 服务让你具备洞察用户在线状态及频道中用户状态的能力：
+
+- 查询用户在线状态
 - 获取频道内在线用户列表
 - 获取在线用户所在频道列表
 - 动态监控在线用户临时状态变更
 
-<PlatformStructured platform="android">
-
 :::info[前提条件]
-从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和选项才会生效。若未开启，调用 Presence 相关 API 或启用依赖 Presence 的订阅选项会返回错误。
+从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。获取频道在线用户、查询用户所在频道、临时状态及依赖 Presence 的订阅选项需要开启该服务。
+
+`getUserOnlineStatus` 不受此开关限制，也不依赖 Presence Sync Database 就绪；它仍要求调用方的 MESSAGE session 已连接。
 :::
+
+## 查询用户在线状态 [#query-user-online-status]
+
+调用 `getUserOnlineStatus`，可以查询当前 App ID 下指定用户是否存在有效的 RTM 登录连接。查询方和目标用户都无需加入或订阅频道。
+
+选择接口时，请区分以下三个查询维度：
+
+| 需要了解的信息 | 查询接口 | 判断范围 |
+| --- | --- | --- |
+| 频道里有哪些在线用户 | `whoNow` | 指定频道的在线用户列表 |
+| 用户加入或订阅了哪些频道 | `whereNow` | 指定用户的频道列表 |
+| 用户当前是否在线 | `getUserOnlineStatus` | 当前 App ID 下该用户是否在线 |
+
+用户没有加入任何频道，或查询到的频道列表为空，都不能据此判定用户离线。
+
+#### 调用流程
+
+1. 按[应用配置](/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup)初始化 RTM，并完成[登录](/zh-CN/realtime-media/rtm/build/authentication-and-connection/login)。调用方需要 MESSAGE service 可用且 MESSAGE session 已连接。
+2. 获取该客户端的 Presence 实例。无需额外订阅频道或等待 Presence Sync 就绪。
+3. 传入一个精确的目标 User ID。可以传入自己的 User ID；空字符串不是查询自己的快捷方式。
+4. 在成功分支中分别处理 `online=true` 和 `online=false`；在失败分支中处理错误，不将失败当作离线。
+
+以下示例假设客户端已初始化并登录成功，查询目标为 `userB`。查询结果的处理方式见本节末尾的“结果与错误处理”。
+
+```java
+mRtmClient.getPresence().getUserOnlineStatus("userB", new ResultCallback<UserOnlineStatus>() {
+    @Override
+    public void onSuccess(UserOnlineStatus status) {
+        if (status.isOnline()) {
+            System.out.println(status.getUserId() + " 在线");
+        } else {
+            System.out.println(status.getUserId() + " 离线或不存在");
+        }
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        // 按错误码处理参数、连接、限流、超时或取消；不能据此判定目标离线。
+        System.err.println("查询失败：" + errorInfo.toString());
+    }
+});
+```
+
+#### 结果与错误处理
+
+根据以下三种情况处理查询结果：
+
+| 查询结果 | 应用处理 |
+| --- | --- |
+| 成功，`online=true` | 目标用户存在有效的 RTM 登录连接，可以更新为在线状态。 |
+| 成功，`online=false` | 目标用户离线或不存在，按离线结果处理。 |
+| 调用失败 | 无法确定目标的在线状态，请参照[错误码说明](/zh-CN/api-reference/rtm/android/presence#getUserOnlineStatus-errors)处理。 |
 
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
 
+**Presence** 服务让你具备洞察用户在线状态及频道中用户状态的能力：
+
+- 查询用户在线状态
+- 获取频道内在线用户列表
+- 获取在线用户所在频道列表
+- 动态监控在线用户临时状态变更
+
 :::info[前提条件]
-从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和选项才会生效。若未开启，调用 Presence 相关 API 或启用依赖 Presence 的订阅选项会返回错误。
+从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。获取频道在线用户、查询用户所在频道、临时状态及依赖 Presence 的订阅选项需要开启该服务。
+
+`getUserOnlineStatus` 不受此开关限制，也不依赖 Presence Sync Database 就绪；它仍要求调用方的 MESSAGE session 已连接。
 :::
+
+## 查询用户在线状态 [#query-user-online-status-ios]
+
+调用 `getUserOnlineStatus`，可以查询当前 App ID 下指定用户是否存在有效的 RTM 登录连接。查询方和目标用户都无需加入或订阅频道。
+
+选择接口时，请区分以下三个查询维度：
+
+| 需要了解的信息 | 查询接口 | 判断范围 |
+| --- | --- | --- |
+| 频道里有哪些在线用户 | `whoNow` | 指定频道的在线用户列表 |
+| 用户加入或订阅了哪些频道 | `whereNow` | 指定用户的频道列表 |
+| 用户当前是否在线 | `getUserOnlineStatus` | 当前 App ID 下该用户是否在线 |
+
+用户没有加入任何频道，或查询到的频道列表为空，都不能据此判定用户离线。
+
+#### 调用流程
+
+1. 按[应用配置](/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup)初始化 RTM，并完成[登录](/zh-CN/realtime-media/rtm/build/authentication-and-connection/login)。调用方需要 MESSAGE service 可用且 MESSAGE session 已连接。
+2. 获取该客户端的 Presence 实例。无需额外订阅频道或等待 Presence Sync 就绪。
+3. 传入一个精确的目标 User ID。可以传入自己的 User ID；空字符串不是查询自己的快捷方式。
+4. 在成功分支中分别处理 `online=true` 和 `online=false`；在失败分支中处理错误，不将失败当作离线。
+
+以下示例假设客户端已初始化并登录成功，查询目标为 `userB`。查询结果的处理方式见本节末尾的“结果与错误处理”。
+
+```objc
+[[rtm getPresence] getUserOnlineStatus:@"userB"
+    completion:^(AgoraRtmUserOnlineStatus *status, AgoraRtmErrorInfo *errorInfo) {
+        if (errorInfo != nil) {
+            NSLog(@"查询失败，errorCode=%ld", (long)errorInfo.errorCode);
+            return;
+        }
+        if (status == nil) {
+            return; // 没有成功结果时，不推断目标离线。
+        }
+        if (status.online) {
+            NSLog(@"%@ 在线", status.userId);
+        } else {
+            NSLog(@"%@ 离线或不存在", status.userId);
+        }
+    }];
+```
+
+#### 结果与错误处理
+
+根据以下三种情况处理查询结果：
+
+| 查询结果 | 应用处理 |
+| --- | --- |
+| 成功，`online=true` | 目标用户存在有效的 RTM 登录连接，可以更新为在线状态。 |
+| 成功，`online=false` | 目标用户离线或不存在，按离线结果处理。 |
+| 调用失败 | 无法确定目标的在线状态，请参照[错误码说明](/zh-CN/api-reference/rtm/ios/presence#getUserOnlineStatus-errors)处理。 |
 
 </PlatformStructured>
 
 <PlatformStructured platform="web">
+
+**Presence** 服务让你具备洞察指定频道中用户状态的能力：
+
+- 获取频道内在线用户列表
+- 获取在线用户所在频道列表
+- 动态监控在线用户临时状态变更
 
 
 
@@ -33,13 +156,77 @@ description: "了解如何在实时消息 RTM 中在线状态基础，包括适�
 
 <PlatformStructured platform="harmonyos">
 
+**Presence** 服务让你具备洞察用户在线状态及频道中用户状态的能力：
+
+- 查询用户在线状态
+- 获取频道内在线用户列表
+- 获取在线用户所在频道列表
+- 动态监控在线用户临时状态变更
+
 :::info[前提条件]
-从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和选项才会生效。若未开启，调用 Presence 相关 API 或启用依赖 Presence 的订阅选项会返回错误。
+从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。获取频道在线用户、查询用户所在频道、临时状态及依赖 Presence 的订阅选项需要开启该服务。
+
+`getUserOnlineStatus` 不受此开关限制，也不依赖 Presence Sync Database 就绪；它仍要求调用方的 MESSAGE session 已连接。
 :::
+
+## 查询用户在线状态 [#query-user-online-status-harmonyos]
+
+调用 `getUserOnlineStatus`，可以查询当前 App ID 下指定用户是否存在有效的 RTM 登录连接。查询方和目标用户都无需加入或订阅频道。
+
+选择接口时，请区分以下三个查询维度：
+
+| 需要了解的信息 | 查询接口 | 判断范围 |
+| --- | --- | --- |
+| 频道里有哪些在线用户 | `whoNow` | 指定频道的在线用户列表 |
+| 用户加入或订阅了哪些频道 | `whereNow` | 指定用户的频道列表 |
+| 用户当前是否在线 | `getUserOnlineStatus` | 当前 App ID 下该用户是否在线 |
+
+用户没有加入任何频道，或查询到的频道列表为空，都不能据此判定用户离线。
+
+#### 调用流程
+
+1. 按[应用配置](/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup)初始化 RTM，并完成[登录](/zh-CN/realtime-media/rtm/build/authentication-and-connection/login)。调用方需要 MESSAGE service 可用且 MESSAGE session 已连接。
+2. 获取该客户端的 Presence 实例。无需额外订阅频道或等待 Presence Sync 就绪。
+3. 传入一个精确的目标 User ID。可以传入自己的 User ID；空字符串不是查询自己的快捷方式。
+4. 在成功分支中分别处理 `online=true` 和 `online=false`；在失败分支中处理错误，不将失败当作离线。
+
+以下示例假设客户端已初始化并登录成功，查询目标为 `userB`。查询结果的处理方式见本节末尾的“结果与错误处理”。
+
+```typescript
+import { RtmClient, RtmError } from '@shengwang/rtm-full';
+
+async function queryOnlineStatus(rtmClient: RtmClient): Promise<void> {
+  try {
+    const status = await rtmClient.presence.getUserOnlineStatus('userB');
+    console.info(status.online ? '用户在线' : '用户离线或不存在');
+  } catch (error) {
+    const rtmError = error as RtmError;
+    console.error(
+      `查询失败：errorCode=${rtmError.errorCode}, reason=${rtmError.reason}`
+    );
+  }
+}
+```
+
+#### 结果与错误处理
+
+根据以下三种情况处理查询结果：
+
+| 查询结果 | 应用处理 |
+| --- | --- |
+| 成功，`online=true` | 目标用户存在有效的 RTM 登录连接，可以更新为在线状态。 |
+| 成功，`online=false` | 目标用户离线或不存在，按离线结果处理。 |
+| 调用失败 | 无法确定目标的在线状态，请参照[错误码说明](/zh-CN/api-reference/rtm/harmonyos/presence#getUserOnlineStatus-errors)处理。 |
 
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
+
+**Presence** 服务让你具备洞察指定频道中用户状态的能力：
+
+- 获取频道内在线用户列表
+- 获取在线用户所在频道列表
+- 动态监控在线用户临时状态变更
 
 
 
@@ -47,31 +234,192 @@ description: "了解如何在实时消息 RTM 中在线状态基础，包括适�
 
 <PlatformStructured platform="flutter">
 
+**Presence** 服务让你具备洞察指定频道中用户状态的能力：
+
+- 获取频道内在线用户列表
+- 获取在线用户所在频道列表
+- 动态监控在线用户临时状态变更
+
 
 
 </PlatformStructured>
 
 <PlatformStructured platform="cpp">
 
+**Presence** 服务让你具备洞察用户在线状态及频道中用户状态的能力：
+
+- 查询用户在线状态
+- 获取频道内在线用户列表
+- 获取在线用户所在频道列表
+- 动态监控在线用户临时状态变更
+
 :::info[前提条件]
-从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和选项才会生效。若未开启，调用 Presence 相关 API 或启用依赖 Presence 的订阅选项会返回错误。
+从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。获取频道在线用户、查询用户所在频道、临时状态及依赖 Presence 的订阅选项需要开启该服务。
+
+`getUserOnlineStatus` 不受此开关限制，也不依赖 Presence Sync Database 就绪；它仍要求调用方的 MESSAGE session 已连接。
 :::
+
+## 查询用户在线状态 [#query-user-online-status-cpp]
+
+调用 `getUserOnlineStatus`，可以查询当前 App ID 下指定用户是否存在有效的 RTM 登录连接。查询方和目标用户都无需加入或订阅频道。
+
+选择接口时，请区分以下三个查询维度：
+
+| 需要了解的信息 | 查询接口 | 判断范围 |
+| --- | --- | --- |
+| 频道里有哪些在线用户 | `whoNow` | 指定频道的在线用户列表 |
+| 用户加入或订阅了哪些频道 | `whereNow` | 指定用户的频道列表 |
+| 用户当前是否在线 | `getUserOnlineStatus` | 当前 App ID 下该用户是否在线 |
+
+用户没有加入任何频道，或查询到的频道列表为空，都不能据此判定用户离线。
+
+#### 调用流程
+
+1. 按[应用配置](/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup)初始化 RTM，并完成[登录](/zh-CN/realtime-media/rtm/build/authentication-and-connection/login)。调用方需要 MESSAGE service 可用且 MESSAGE session 已连接。
+2. 获取该客户端的 Presence 实例。无需额外订阅频道或等待 Presence Sync 就绪。
+3. 传入一个精确的目标 User ID。可以传入自己的 User ID；空字符串不是查询自己的快捷方式。
+4. 在成功分支中分别处理 `online=true` 和 `online=false`；在失败分支中处理错误，不将失败当作离线。
+
+以下示例假设客户端已初始化并登录成功，查询目标为 `userB`。查询结果的处理方式见本节末尾的“结果与错误处理”。
+
+创建客户端时，将以下处理器实例设置到 `RtmConfig.eventHandler`，并保证处理器在客户端使用期间有效。新回调的 `status` 和 `status->userId` 仅在回调期间有效；需要保存结果或交给其他线程时，应复制字符串和值。
+
+```cpp
+#include <iostream>
+#include <string>
+
+class OnlineStatusHandler : public agora::rtm::IRtmEventHandler {
+public:
+    void onGetUserOnlineStatusResult(
+        const uint64_t requestId,
+        const agora::rtm::UserOnlineStatus* status,
+        agora::rtm::RTM_ERROR_CODE errorCode) override {
+        if (errorCode != agora::rtm::RTM_ERROR_OK) {
+            std::cerr << "查询失败，requestId=" << requestId
+                      << "，errorCode=" << errorCode << std::endl;
+            return;
+        }
+        // 成功时 status 非空。复制字段，不保存 SDK 的裸指针。
+        const std::string userId(status->userId);
+        const bool online = status->online;
+        if (online) {
+            std::cout << userId << " 在线" << std::endl;
+        } else {
+            std::cout << userId << " 离线或不存在" << std::endl;
+        }
+    }
+};
+```
+
+在登录成功后发起查询，通过 `requestId` 关联结果：
+
+```cpp
+uint64_t requestId = 0;
+rtmClient->getPresence()->getUserOnlineStatus("userB", requestId);
+```
+
+#### 结果与错误处理
+
+根据以下三种情况处理查询结果：
+
+| 查询结果 | 应用处理 |
+| --- | --- |
+| 成功，`online=true` | 目标用户存在有效的 RTM 登录连接，可以更新为在线状态。 |
+| 成功，`online=false` | 目标用户离线或不存在，按离线结果处理。 |
+| 调用失败 | 无法确定目标的在线状态，请参照[错误码说明](/zh-CN/api-reference/rtm/cpp/presence#getUserOnlineStatus-errors)处理。 |
 
 </PlatformStructured>
 
 <PlatformStructured platform="swift">
 
+**Presence** 服务让你具备洞察用户在线状态及频道中用户状态的能力：
+
+- 查询用户在线状态
+- 获取频道内在线用户列表
+- 获取在线用户所在频道列表
+- 动态监控在线用户临时状态变更
+
 :::info[前提条件]
-从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和选项才会生效。若未开启，调用 Presence 相关 API 或启用依赖 Presence 的订阅选项会返回错误。
+从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。获取频道在线用户、查询用户所在频道、临时状态及依赖 Presence 的订阅选项需要开启该服务。
+
+`getUserOnlineStatus` 不受此开关限制，也不依赖 Presence Sync Database 就绪；它仍要求调用方的 MESSAGE session 已连接。
 :::
+
+## 查询用户在线状态 [#query-user-online-status-swift]
+
+调用 `getUserOnlineStatus`，可以查询当前 App ID 下指定用户是否存在有效的 RTM 登录连接。查询方和目标用户都无需加入或订阅频道。
+
+选择接口时，请区分以下三个查询维度：
+
+| 需要了解的信息 | 查询接口 | 判断范围 |
+| --- | --- | --- |
+| 频道里有哪些在线用户 | `whoNow` | 指定频道的在线用户列表 |
+| 用户加入或订阅了哪些频道 | `whereNow` | 指定用户的频道列表 |
+| 用户当前是否在线 | `getUserOnlineStatus` | 当前 App ID 下该用户是否在线 |
+
+用户没有加入任何频道，或查询到的频道列表为空，都不能据此判定用户离线。
+
+#### 调用流程
+
+1. 按[应用配置](/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup)初始化 RTM，并完成[登录](/zh-CN/realtime-media/rtm/build/authentication-and-connection/login)。调用方需要 MESSAGE service 可用且 MESSAGE session 已连接。
+2. 获取该客户端的 Presence 实例。无需额外订阅频道或等待 Presence Sync 就绪。
+3. 传入一个精确的目标 User ID。可以传入自己的 User ID；空字符串不是查询自己的快捷方式。
+4. 在成功分支中分别处理 `online=true` 和 `online=false`；在失败分支中处理错误，不将失败当作离线。
+
+以下示例假设客户端已初始化并登录成功，查询目标为 `userB`。查询结果的处理方式见本节末尾的“结果与错误处理”。
+
+```swift
+if let presence = rtm.getPresence() {
+    presence.getUserOnlineStatus(userId: "userB") { status, errorInfo in
+        if let errorInfo = errorInfo {
+            print("查询失败，errorCode=\(errorInfo.errorCode)")
+            return
+        }
+        guard let status = status else {
+            return // 没有成功结果时，不推断目标离线。
+        }
+        if status.online {
+            print("\(status.userId) 在线")
+        } else {
+            print("\(status.userId) 离线或不存在")
+        }
+    }
+}
+```
+
+#### 结果与错误处理
+
+根据以下三种情况处理查询结果：
+
+| 查询结果 | 应用处理 |
+| --- | --- |
+| 成功，`online=true` | 目标用户存在有效的 RTM 登录连接，可以更新为在线状态。 |
+| 成功，`online=false` | 目标用户离线或不存在，按离线结果处理。 |
+| 调用失败 | 无法确定目标的在线状态，请参照[错误码说明](/zh-CN/api-reference/rtm/swift/presence#getUserOnlineStatus-errors)处理。 |
 
 </PlatformStructured>
 
 <PlatformStructured platform="mini-program">
 
+**Presence** 服务让你具备洞察指定频道中用户状态的能力：
+
+- 获取频道内在线用户列表
+- 获取在线用户所在频道列表
+- 动态监控在线用户临时状态变更
+
 
 
 </PlatformStructured>
+
+
+
+
+
+
+
+
+
+
 
 ## 获取频道内在线用户
 

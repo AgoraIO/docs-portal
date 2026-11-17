@@ -5,12 +5,12 @@ import type {
 } from './sdk-downloads-data';
 
 const latestWebRtcSdkVersion: SdkDownloadVersion = {
-  id: '4.24.9',
-  label: '版本 4.24.9（最新）',
+  id: '4.24.10',
+  label: '版本 4.24.10（最新）',
   downloadLink:
-    'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_9_FULL.zip',
-  packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.9',
-  releaseDate: '2026 年 10 月 13 日',
+    'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_10_FULL.zip',
+  packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.10',
+  releaseDate: '2026 年 11 月 16 日',
 };
 
 const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
@@ -535,8 +535,18 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于低延时消息、信令、状态同步和频道管理的 SDK',
         versions: [
           {
+            id: '2.3.1-rtm-sdk-android',
+            label: '版本 2.3.1（最新）',
+            downloadLink:
+              'https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.3.1.zip',
+            md5: '946c421df2b6248ab4b12b3ba6e7addf',
+            packageName:
+              'cn.shengwang.rtm:android-java / cn.shengwang.rtm:android-java-lite',
+            releaseDate: '2026 年 11 月 17 日',
+          },
+          {
             id: '2.3.0-rtm-sdk-android',
-            label: '版本 2.3.0（最新）',
+            label: '版本 2.3.0',
             downloadLink:
               'https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.3.0.zip',
             md5: '7f46400148ee312c1d1bd78f96efca0a',
@@ -1109,7 +1119,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
               'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.7.0_FULL.zip',
             md5: '044dafd641e8d44b9e2583c5481aeaa8',
             packageSize: '31.69 MB',
-            packageName: 'AgoraRtcEngineKit',
+            packageName: 'AgoraRtcKit',
           },
           {
             id: '4.7.0-video-sdk-ios-lite',
@@ -1120,7 +1130,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
             latestVariant: true,
             md5: 'c29b295befc44fe4ab5023e166e93e41',
             packageSize: '14.97 MB',
-            packageName: 'AgoraRtcEngineKit',
+            packageName: 'AgoraRtcKit',
           },
           {
             id: '4.6.2-video-sdk-ios-full',
@@ -1349,8 +1359,17 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于低延时消息、信令、状态同步和频道管理的 SDK',
         versions: [
           {
+            id: '2.3.1-rtm-sdk-ios',
+            label: '版本 2.3.1（最新）',
+            downloadLink:
+              'https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.3.1.zip',
+            md5: 'b8d9b084375c9edfae866c2fd7c0a2ff',
+            packageName: 'ShengWang-Rtm',
+            releaseDate: '2026 年 11 月 17 日',
+          },
+          {
             id: '2.3.0-rtm-sdk-ios',
-            label: '版本 2.3.0（最新）',
+            label: '版本 2.3.0',
             downloadLink:
               'https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.3.0.zip',
             md5: '2f6c0c6ee5fdc5b714848b2106f1ead6',
@@ -2806,8 +2825,17 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于低延时消息、信令、状态同步和频道管理的 SDK',
         versions: [
           {
+            id: '2.3.1-rtm-sdk-windows',
+            label: '版本 2.3.1（最新）',
+            downloadLink:
+              'https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Windows_v2.3.1.zip',
+            md5: 'eea16c715bb69b49708220f70879c19a',
+            packageName: 'libagora_rtm_sdk',
+            releaseDate: '2026 年 11 月 17 日',
+          },
+          {
             id: '2.3.0-rtm-sdk-windows',
-            label: '版本 2.3.0（最新）',
+            label: '版本 2.3.0',
             downloadLink:
               'https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Windows_v2.3.0.zip',
             md5: 'f7376f0ebc759f5d33c3c66102f2ca28',
@@ -3069,7 +3097,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
             releaseDate: '2026 年 9 月 22 日',
             downloadLink:
               'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Mac_v4.7.0_FULL.zip',
-            packageName: 'ShengwangRtcEngine_macOS',
+            packageName: 'AgoraRtcKit',
           },
           {
             id: '4.6.2-video-sdk-macos',
@@ -3629,8 +3657,17 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于 Linux 端低延时消息、信令、状态同步和频道管理的 SDK',
         versions: [
           {
+            id: '2.3.1-rtm-sdk-linux-cpp',
+            label: '版本 2.3.1 C++（最新）',
+            downloadLink:
+              'https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Linux_v2.3.1.zip',
+            md5: '5d981e6268a939bff2e73657e3889bc3',
+            packageName: 'libagora_rtm_sdk',
+            releaseDate: '2026 年 11 月 17 日',
+          },
+          {
             id: '2.3.0-rtm-sdk-linux-cpp',
-            label: '版本 2.3.0 C++（最新）',
+            label: '版本 2.3.0 C++',
             downloadLink:
               'https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Linux_v2.3.0.zip',
             md5: '9a8ee5f8deda76e23eea80f5b3c5a453',
@@ -3844,8 +3881,17 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于低延时消息、信令、状态同步和频道管理的 SDK',
         versions: [
           {
+            id: '2.3.1-rtm-sdk-harmonyos',
+            label: '版本 2.3.1（最新）',
+            downloadLink:
+              'https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.3.1.zip',
+            md5: 'c3bffca9dfb2d8f3b77ed431d7ce687b',
+            packageName: 'AgoraRtmSDK.har',
+            releaseDate: '2026 年 11 月 17 日',
+          },
+          {
             id: '2.3.0-rtm-sdk-harmonyos',
-            label: '版本 2.3.0（最新）',
+            label: '版本 2.3.0',
             downloadLink:
               'https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.3.0.zip',
             md5: '472fcb84b5671a60a50d508c32b5c1f7',

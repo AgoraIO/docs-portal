@@ -784,6 +784,38 @@ void
 
 </ApiReturns>
 
+<a id="removeextension"></a>
+
+### removeExtension
+
+<ApiSignature>
+
+removeExtension(extension: IVideoExtension): boolean
+
+</ApiSignature>
+
+从远端视频轨道移除视频插件。
+
+<ParameterList title="Parameters">
+<Parameter name="extension" type="IVideoExtension" required>
+
+视频插件实例。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+是否成功移除。
+
+</ApiReturns>
+
 <a id="stop"></a>
 
 ### stop
@@ -829,6 +861,51 @@ unpipe(): void
 <ApiReturnType>
 
 void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="useextension"></a>
+
+### useExtension
+
+<ApiSignature>
+
+useExtension&lt;T&gt;(extensionCtor: T, options?: object): InstanceType&lt;T&gt;
+
+</ApiSignature>
+
+使用类构造器在当前视频轨道上创建或复用一个视频插件代理。
+
+<ParameterList title="Type parameters">
+<Parameter name="T" type="VideoExtensionConstructor" />
+</ParameterList>
+
+<ParameterList title="Parameters">
+<Parameter name="extensionCtor" type="T" required>
+
+视频插件类构造器。
+
+</Parameter>
+<Parameter name="options" type="object" optional>
+
+可选的插件初始化参数。
+
+<ParameterList>
+<Parameter name="extensionOptions" type="Record&lt;string,unknown&gt;" optional />
+<Parameter name="moduleURL" type="string" optional />
+<Parameter name="registrationName" type="string" optional />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+InstanceType&lt;T&gt;
 
 </ApiReturnType>
 

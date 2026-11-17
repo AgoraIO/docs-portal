@@ -19,6 +19,7 @@ import { cnSdkDownloadTargets } from './cn-sdk-download-targets';
 import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
 import { getPlatformIconSrc } from './platform-icon-src';
 import { getRtcDownloadCardEntries } from './rtc-download-card-entries';
+import { getRtcIosPackageSizeContent } from './rtc-ios-package-size-content';
 import { SdkDownloadCard } from './SdkDownloadCard';
 import { buildSdkCapabilityGroups } from './sdk-download-capabilities';
 import {
@@ -786,6 +787,23 @@ function ProductCard({
                   iconSrc={getPlatformIconSrc(entry.iconPlatformId)}
                   key={getVersionKey(activePlatform.platformId, entry.version)}
                   onDownload={() => onDownload(entry.version)}
+                  packageNameLabel={
+                    locale === 'zh-CN' &&
+                    ['video', 'voice'].includes(group.productId) &&
+                    ['ios', 'macos'].includes(activePlatform.platformId)
+                      ? '模块名'
+                      : undefined
+                  }
+                  packageSizeContent={
+                    locale === 'zh-CN' &&
+                    activePlatform.platformId === 'ios' &&
+                    (group.productId === 'video' || group.productId === 'voice')
+                      ? getRtcIosPackageSizeContent(
+                          group.productId,
+                          entry.version,
+                        )
+                      : undefined
+                  }
                   title={entry.title}
                   version={entry.version}
                   versionSuffix={entry.versionSuffix}

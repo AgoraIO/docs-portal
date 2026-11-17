@@ -21,6 +21,8 @@ const products: Record<string, string> = {
 const platforms: Record<string, string> = {
   Android: 'android',
   iOS: 'ios',
+  Swift: 'swift',
+  'C++': 'cpp',
   macOS: 'macos',
   JavaScript: 'web',
   Windows: 'windows',
