@@ -13,6 +13,7 @@ import {
   useResourceAccountGuidance,
 } from '@/components/account-guidance/AccountGuidance';
 import { getSdkAccountGuidanceTarget } from '@/components/account-guidance/resource-registry';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { cn } from '@/lib/cn';
 import { retiredCnProductIds } from '@/lib/retired-cn-docs.mjs';
 import { cnSdkDownloadTargets } from './cn-sdk-download-targets';
@@ -751,27 +752,60 @@ function ProductCard({
         </summary>
         <div className="border-border border-t px-4 py-4 sm:pl-16">
           <div className="flex items-end justify-between gap-3">
-            <label
-              className="grid min-w-0 flex-1 gap-1.5 text-sm font-medium text-foreground"
-              htmlFor={`${titleId}-platform`}
-            >
-              {copy.platformTabsLabel(group.label, group.productId)}
-              <select
-                className="min-h-11 w-full rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
-                id={`${titleId}-platform`}
-                onChange={(event) => {
-                  setPlatformId(event.target.value);
-                  setVersionIndex('0');
-                }}
-                value={platformId}
+            {redesigned && group.productId === 'agents' ? (
+              <div className="flex min-w-0 flex-col items-start gap-1.5">
+                <span
+                  className="text-sm font-medium text-muted-foreground"
+                  id={`${titleId}-language`}
+                >
+                  编程语言
+                </span>
+                <ToggleGroup
+                  aria-labelledby={`${titleId}-language`}
+                  className="rounded-lg bg-muted p-1"
+                  onValueChange={(value) => {
+                    if (!value) return;
+                    setPlatformId(value);
+                    setVersionIndex('0');
+                  }}
+                  spacing={1}
+                  type="single"
+                  value={platformId}
+                >
+                  {group.platforms.map((entry) => (
+                    <ToggleGroupItem
+                      className="h-11 min-w-18 rounded-md px-3 font-normal data-[state=on]:bg-background data-[state=on]:font-medium data-[state=on]:shadow-xs sm:h-9"
+                      key={entry.platformId}
+                      value={entry.platformId}
+                    >
+                      {entry.platformSelectLabel ?? entry.platformLabel}
+                    </ToggleGroupItem>
+                  ))}
+                </ToggleGroup>
+              </div>
+            ) : (
+              <label
+                className="grid min-w-0 flex-1 gap-1.5 text-sm font-medium text-foreground"
+                htmlFor={`${titleId}-platform`}
               >
-                {group.platforms.map((entry) => (
-                  <option key={entry.platformId} value={entry.platformId}>
-                    {entry.platformSelectLabel ?? entry.platformLabel}
-                  </option>
-                ))}
-              </select>
-            </label>
+                {copy.platformTabsLabel(group.label, group.productId)}
+                <select
+                  className="min-h-11 w-full rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+                  id={`${titleId}-platform`}
+                  onChange={(event) => {
+                    setPlatformId(event.target.value);
+                    setVersionIndex('0');
+                  }}
+                  value={platformId}
+                >
+                  {group.platforms.map((entry) => (
+                    <option key={entry.platformId} value={entry.platformId}>
+                      {entry.platformSelectLabel ?? entry.platformLabel}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
             {!redesigned ? (
               <span className="shrink-0 pb-2 text-[0.66rem] font-semibold tracking-[0.05em] text-muted-foreground uppercase">
                 {command ? command.tool : ' '}

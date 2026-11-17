@@ -107,7 +107,6 @@ describe('SdksCatalog', () => {
     ],
     ['RTC 服务端 SDK', ['C++', 'Java', 'Python', 'Go']],
     ['本地服务端录制 SDK', ['服务端 C++', '服务端 Java']],
-    ['Agora Agents SDK', ['Go', 'Python', 'TypeScript']],
     ['客户端组件 SDK', ['Android', 'iOS', 'Web']],
     ['媒体流加速 RTSA SDK', ['C']],
     ['智能云会议引擎 SDK', ['Android', 'iOS', 'Electron']],
@@ -300,13 +299,44 @@ describe('SdksCatalog', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('uses a platform select for every product and no platform tablist', () => {
+  it('keeps platform selects for other Chinese products and no platform tablist', () => {
     const { container } = render(<SdksCatalog locale="zh-CN" />);
 
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
     expect(container.querySelectorAll('select[id$="-platform"]')).toHaveLength(
-      11,
+      10,
     );
+  });
+
+  it('switches Chinese Agents install commands using a persistent language selection', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    vi.stubGlobal('navigator', { ...navigator, clipboard: { writeText } });
+    render(<SdksCatalog locale="zh-CN" />);
+    const card = openProductCard('Agora Agents SDK');
+    const group = within(card).getByRole('radiogroup', { name: '编程语言' });
+    expect(within(card).queryByRole('combobox')).not.toBeInTheDocument();
+    expect(
+      within(group)
+        .getAllByRole('radio')
+        .map((item) => item.textContent),
+    ).toEqual(['Go', 'Python', 'TypeScript']);
+
+    for (const [language, command] of [
+      ['Go', 'go get github.com/AgoraIO/agora-agents-go/v2@v2.3.1'],
+      ['Python', 'pip install agora-agents'],
+      ['TypeScript', 'npm i agora-agents@2.3.1'],
+    ]) {
+      const button = within(group).getByRole('radio', { name: language });
+      fireEvent.click(button);
+      expect(button).toHaveAttribute('aria-checked', 'true');
+      expect(within(card).getByText(command)).toBeVisible();
+      fireEvent.click(button);
+      expect(button).toHaveAttribute('aria-checked', 'true');
+      fireEvent.click(
+        within(card).getByRole('button', { name: /复制集成命令|已复制/ }),
+      );
+      await waitFor(() => expect(writeText).toHaveBeenLastCalledWith(command));
+    }
   });
 
   it('does not show an install-tool badge beside Chinese platform selectors', () => {
@@ -592,11 +622,10 @@ describe('SdksCatalog', () => {
     render(<SdksCatalog locale="zh-CN" />);
 
     const agentsCard = openProductCard('Agora Agents SDK');
-    const typescriptPlatform = within(agentsCard).getByRole('combobox', {
-      name: 'Agora Agents SDK 编程语言',
+    const typescriptPlatform = within(agentsCard).getByRole('radio', {
+      name: 'TypeScript',
     });
-
-    fireEvent.change(typescriptPlatform, { target: { value: 'typescript' } });
+    fireEvent.click(typescriptPlatform);
 
     const command = within(agentsCard).getByText('npm i agora-agents@2.3.1');
     const copyButton = within(agentsCard).getByRole('button', {
@@ -645,7 +674,7 @@ describe('SdksCatalog', () => {
       );
     });
     expect(overflowCue).toHaveClass('opacity-0');
-    expect(typescriptPlatform).toHaveClass('min-h-11');
+    expect(typescriptPlatform).toHaveClass('h-11');
     expect(copyButton).toHaveClass('min-h-11', 'min-w-11');
     const packageManager = within(agentsCard).queryByRole('link', {
       name: 'npm',
