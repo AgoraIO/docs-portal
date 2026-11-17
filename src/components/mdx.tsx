@@ -1,6 +1,6 @@
 import { createLink } from '@tanstack/react-router';
-import {
-  type Accordion as FumadocsAccordion,
+import type {
+  Accordion as FumadocsAccordion,
   Accordions as FumadocsAccordions,
 } from 'fumadocs-ui/components/accordion';
 import { Card as FumadocsCard } from 'fumadocs-ui/components/card';
@@ -14,6 +14,7 @@ import {
   TabsTrigger as FumadocsTabsTrigger,
 } from 'fumadocs-ui/components/tabs';
 import {
+  Accordion as FumadocsAccordionRoot,
   AccordionContent as FumadocsAccordionContent,
   AccordionHeader as FumadocsAccordionHeader,
   AccordionItem as FumadocsAccordionItem,
@@ -182,8 +183,10 @@ type TabValueElement = ReactElement<{
 }>;
 
 const ControlledFumadocsTabs = FumadocsTabs as ComponentType<TabsRootProps>;
-const ControlledFumadocsAccordions =
-  FumadocsAccordions as ComponentType<AccordionsRootProps>;
+// This wrapper owns state/hash handling. Use the primitive's stable root ref.
+const ControlledFumadocsAccordions = FumadocsAccordionRoot as ComponentType<
+  AccordionsRootProps & { collapsible?: boolean }
+>;
 
 type ActiveAccordion = {
   rootId: string;
@@ -1092,6 +1095,7 @@ function Accordions({
       </ControlledFumadocsAccordions>
     ) : (
       <ControlledFumadocsAccordions
+        collapsible
         {...props}
         defaultValue={defaultSingleValue}
         onClickCapture={captureVersionScrollAnchor}
