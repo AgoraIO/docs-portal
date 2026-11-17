@@ -107,9 +107,7 @@ describe('SdksCatalog', () => {
     ],
     ['RTC 服务端 SDK', ['C++', 'Java', 'Python', 'Go']],
     ['本地服务端录制 SDK', ['服务端 C++', '服务端 Java']],
-    ['客户端组件 SDK', ['Android', 'iOS', 'Web']],
     ['媒体流加速 RTSA SDK', ['C']],
-    ['智能云会议引擎 SDK', ['Android', 'iOS', 'Electron']],
     ['互动白板 SDK', ['Android', 'iOS', 'Web']],
     ['Fastboard SDK', ['Android', 'iOS', 'Web']],
   ])('matches the legacy entry names and order for %s', (name, options) => {
@@ -304,40 +302,80 @@ describe('SdksCatalog', () => {
 
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
     expect(container.querySelectorAll('select[id$="-platform"]')).toHaveLength(
-      10,
+      8,
     );
-  });
-
-  it('switches Chinese Agents install commands using a persistent language selection', async () => {
-    const writeText = vi.fn().mockResolvedValue(undefined);
-    vi.stubGlobal('navigator', { ...navigator, clipboard: { writeText } });
-    render(<SdksCatalog locale="zh-CN" />);
-    const card = openProductCard('Agora Agents SDK');
-    const group = within(card).getByRole('radiogroup', { name: '编程语言' });
-    expect(within(card).queryByRole('combobox')).not.toBeInTheDocument();
-    expect(
-      within(group)
-        .getAllByRole('radio')
-        .map((item) => item.textContent),
-    ).toEqual(['Go', 'Python', 'TypeScript']);
-
-    for (const [language, command] of [
-      ['Go', 'go get github.com/AgoraIO/agora-agents-go/v2@v2.3.1'],
-      ['Python', 'pip install agora-agents'],
-      ['TypeScript', 'npm i agora-agents@2.3.1'],
-    ]) {
-      const button = within(group).getByRole('radio', { name: language });
-      fireEvent.click(button);
-      expect(button).toHaveAttribute('aria-checked', 'true');
-      expect(within(card).getByText(command)).toBeVisible();
-      fireEvent.click(button);
-      expect(button).toHaveAttribute('aria-checked', 'true');
-      fireEvent.click(
-        within(card).getByRole('button', { name: /复制集成命令|已复制/ }),
-      );
-      await waitFor(() => expect(writeText).toHaveBeenLastCalledWith(command));
+    const commandProducts = Array.from(
+      container.querySelectorAll('[data-sdk-download-product-id]'),
+    ).filter((product) => product.querySelector('code'));
+    expect(commandProducts).toHaveLength(3);
+    for (const product of commandProducts) {
+      expect(product.querySelector('[role="radiogroup"]')).toBeInTheDocument();
+      expect(product.querySelector('select')).not.toBeInTheDocument();
     }
   });
+
+  it.each([
+    [
+      'Agora Agents SDK',
+      '编程语言',
+      [
+        ['Go', 'go get github.com/AgoraIO/agora-agents-go/v2@v2.3.1'],
+        ['Python', 'pip install agora-agents'],
+        ['TypeScript', 'npm i agora-agents@2.3.1'],
+      ],
+    ],
+    [
+      '客户端组件 SDK',
+      '平台',
+      [
+        [
+          'Android',
+          "implementation 'io.agora.agents:agora-agent-client-toolkit:2.9.0'",
+        ],
+        ['iOS', "pod 'agent-client-toolkit-swift', '2.9.0'"],
+        ['Web', 'npm i agora-agent-client-toolkit@2.9.0'],
+      ],
+    ],
+    [
+      '智能云会议引擎 SDK',
+      '平台 / 框架',
+      [
+        ['Android', "implementation 'io.github.agora-apaas:FcrUIScene:3.1.0'"],
+        ['iOS', "pod 'FcrUIScene', '3.1.0'"],
+        ['Electron', 'npm i fcr-ui-scene@3.1.0'],
+      ],
+    ],
+  ] as const)(
+    'switches and copies every install command for %s',
+    async (name, label, commands) => {
+      const writeText = vi.fn().mockResolvedValue(undefined);
+      vi.stubGlobal('navigator', { ...navigator, clipboard: { writeText } });
+      render(<SdksCatalog locale="zh-CN" />);
+      const card = openProductCard(name);
+      const group = within(card).getByRole('radiogroup', { name: label });
+      expect(within(card).queryByRole('combobox')).not.toBeInTheDocument();
+      expect(
+        within(group)
+          .getAllByRole('radio')
+          .map((item) => item.textContent),
+      ).toEqual(commands.map(([language]) => language));
+
+      for (const [language, command] of commands) {
+        const button = within(group).getByRole('radio', { name: language });
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-checked', 'true');
+        expect(within(card).getByText(command)).toBeVisible();
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-checked', 'true');
+        fireEvent.click(
+          within(card).getByRole('button', { name: /复制集成命令|已复制/ }),
+        );
+        await waitFor(() =>
+          expect(writeText).toHaveBeenLastCalledWith(command),
+        );
+      }
+    },
+  );
 
   it('does not show an install-tool badge beside Chinese platform selectors', () => {
     render(<SdksCatalog locale="zh-CN" />);
@@ -425,16 +463,18 @@ describe('SdksCatalog', () => {
       screen.getByRole('article', { name: 'Agora Agents SDK' }),
     ).toBeVisible();
     const clientToolkit = openProductCard('客户端组件 SDK');
-    const platform = within(clientToolkit).getByRole('combobox', {
-      name: '客户端组件 SDK 平台',
+    const platform = within(clientToolkit).getByRole('radiogroup', {
+      name: '平台',
     });
 
-    expect(platform).toHaveValue('android');
     expect(
-      within(platform).getByRole('option', { name: 'iOS' }),
+      within(platform).getByRole('radio', { name: 'Android' }),
+    ).toHaveAttribute('aria-checked', 'true');
+    expect(
+      within(platform).getByRole('radio', { name: 'iOS' }),
     ).toBeInTheDocument();
     expect(
-      within(platform).getByRole('option', { name: 'Web' }),
+      within(platform).getByRole('radio', { name: 'Web' }),
     ).toBeInTheDocument();
     expect(
       within(clientToolkit).getByText(

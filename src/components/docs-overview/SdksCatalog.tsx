@@ -692,6 +692,12 @@ function ProductCard({
       : null;
   const hasEmbeddedDownloadCards =
     Boolean(downloadPageHref) && group.productId !== 'chat';
+  const usesCommandSelector =
+    redesigned &&
+    !hasEmbeddedDownloadCards &&
+    group.platforms.some((entry) =>
+      entry.product.versions.some((version) => deriveInstallCommand(version)),
+    );
   const onDownload = (version: SdkDownloadVersion) => {
     if (locale !== 'zh-CN') return;
     startAccountGuidance({
@@ -752,13 +758,13 @@ function ProductCard({
         </summary>
         <div className="border-border border-t px-4 py-4 sm:pl-16">
           <div className="flex items-end justify-between gap-3">
-            {redesigned && group.productId === 'agents' ? (
+            {usesCommandSelector ? (
               <div className="flex min-w-0 flex-col items-start gap-1.5">
                 <span
                   className="text-sm font-medium text-muted-foreground"
                   id={`${titleId}-language`}
                 >
-                  编程语言
+                  {getZhCNSdkDownloadSelectorLabel(group.productId)}
                 </span>
                 <ToggleGroup
                   aria-labelledby={`${titleId}-language`}
