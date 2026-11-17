@@ -48,6 +48,28 @@ function LanguageSelectorExample() {
 }
 
 describe('DocsCodeBlock', () => {
+  it('wraps API signatures by default while preserving linked types and the toggle', async () => {
+    const { ApiSignature } = getMDXComponents();
+    await renderBlocks(
+      <ApiSignature>
+        <p>
+          user-info-updated(uid:{' '}
+          <a href="/zh-CN/api-reference/rtc/web/globals#uid">UID</a>, msg:
+          "mute-audio" | "mute-video"): void
+        </p>
+      </ApiSignature>,
+      'zh-CN',
+    );
+    const link = screen.getByRole('link', { name: 'UID' });
+    expect(link.closest('pre')).toHaveClass('whitespace-pre-wrap');
+    expect(link).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/rtc/web/globals#uid',
+    );
+    fireEvent.click(screen.getByRole('button', { name: '取消自动换行' }));
+    expect(link.closest('pre')).not.toHaveClass('whitespace-pre-wrap');
+  });
+
   it.each([
     ['en', 'Wrap code', 'Unwrap code'],
     ['zh-CN', '自动换行', '取消自动换行'],
@@ -202,7 +224,10 @@ describe('DocsCodeBlock', () => {
       </>,
       'en',
     );
-    expect(screen.getAllByRole('button', { name: '自动换行' })).toHaveLength(3);
+    expect(screen.getAllByRole('button', { name: '自动换行' })).toHaveLength(2);
+    expect(
+      screen.getByRole('button', { name: '取消自动换行' }),
+    ).toBeInTheDocument();
     expect(getMDXComponents(undefined, { locale: 'zh-CN' }).pre).toBe(Pre);
     expect(getMDXComponents(undefined, { locale: 'zh-CN' }).CommandBlock).toBe(
       Command,
@@ -210,9 +235,9 @@ describe('DocsCodeBlock', () => {
     expect(getMDXComponents(undefined, { locale: 'zh-CN' }).ApiSignature).toBe(
       Signature,
     );
-    fireEvent.click(screen.getAllByRole('button', { name: '自动换行' })[0]);
-    expect(
-      screen.getByRole('button', { name: '取消自动换行' }),
-    ).toHaveAttribute('aria-pressed', 'true');
+    const wrap = screen.getAllByRole('button', { name: '自动换行' })[0];
+    fireEvent.click(wrap);
+    expect(wrap).toHaveAttribute('aria-pressed', 'true');
+    expect(wrap).toHaveAccessibleName('取消自动换行');
   });
 });

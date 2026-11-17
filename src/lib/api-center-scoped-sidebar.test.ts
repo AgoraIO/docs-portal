@@ -61,6 +61,35 @@ async function loadReferencePayload(slugs: string[]) {
 
 // These integration tests load the real MDX/OpenAPI graph under parallel suite load.
 describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
+  it.each([
+    ['cpp-all-platforms', 'enum-mediadevicestatetype', 'C++ API 参考'],
+    ['unity', 'enum-mediadevicestatetype', 'Unity API 参考'],
+    ['web', 'classes/eventemitter', '实时互动 RTC Web'],
+  ])(
+    'shows the existing %s menu without inventing a detail parent',
+    async (sdk, detail, title) => {
+      const payload = await loadApiReferencePayload([
+        'rtc',
+        sdk,
+        ...detail.split('/'),
+      ]);
+      expect(payload.sidebarHeader?.title).toBe(title);
+      expect(payload.sidebar.length).toBeGreaterThan(0);
+      const links = (nodes: typeof payload.sidebar): string[] =>
+        nodes.flatMap((node) => [
+          ...(node.url ? [node.url] : []),
+          ...(node.type === 'section' ? links(node.children) : []),
+        ]);
+      expect(links(payload.sidebar)).not.toContain(payload.activePath);
+      expect(
+        payload.breadcrumb
+          .slice(0, -1)
+          .some((item) => /Struct|Class|Enum/.test(item.title)),
+      ).toBe(false);
+      expect(payload.breadcrumb.at(-1)?.title).toBe(payload.title);
+    },
+  );
+
   it.each(['class-background-image-source', 'functions'])(
     'keeps linked HarmonyOS %s inside the SDK scope without expanding the main menu',
     async (page) => {
