@@ -58,6 +58,7 @@ import {
 } from '@/components/Callout';
 import { DocsCodeBlock as Pre } from '@/components/DocsCodeBlock';
 import {
+  CodeBlockTabContext,
   DocsCodeBlockTab as FumadocsCodeBlockTab,
   DocsCodeBlockTabs as FumadocsCodeBlockTabs,
   DocsCodeBlockTabsList as FumadocsCodeBlockTabsList,
@@ -637,6 +638,58 @@ function useSafeTabValue({
   };
 }
 
+function useTabHashTarget({
+  rootRef,
+  setValue,
+  groupId,
+  persist,
+}: {
+  rootRef: { current: HTMLDivElement | null };
+  setValue: (value: string) => void;
+  groupId?: string;
+  persist?: boolean;
+}) {
+  const revealHashTab = useEffectEvent((url: string) => {
+    const root = rootRef.current;
+    const target = findDocsHeadingForHash(url);
+    if (!root || !target || !root.contains(target)) return;
+    for (
+      let panel: HTMLElement | null = target;
+      panel && panel !== root;
+      panel = panel.parentElement
+    ) {
+      const tabValue =
+        panel.getAttribute('data-mdx-tab-value') ??
+        panel.getAttribute('data-code-tab-value');
+      if (
+        tabValue &&
+        panel.closest('[data-mdx-tabs-root], .docs-code-tabs') === root
+      ) {
+        if (groupId) {
+          sessionStorage.setItem(groupId, tabValue);
+          if (persist) localStorage.setItem(groupId, tabValue);
+        }
+        setValue(tabValue);
+        return;
+      }
+    }
+  });
+  useEffect(() => {
+    const applyCurrentHash = () => revealHashTab(window.location.hash);
+    const handleHashTarget = (event: Event) => {
+      const url = (event as CustomEvent<string>).detail;
+      revealHashTab(typeof url === 'string' ? url : window.location.hash);
+    };
+    applyCurrentHash();
+    window.addEventListener('hashchange', applyCurrentHash);
+    window.addEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    return () => {
+      window.removeEventListener('hashchange', applyCurrentHash);
+      window.removeEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    };
+  }, []);
+}
+
 function Tabs({
   children,
   className,
@@ -684,44 +737,12 @@ function Tabs({
     onFocusCapture,
   });
 
-  const revealHashTab = useEffectEvent((url: string) => {
-    const root = rootRef.current;
-    const target = findDocsHeadingForHash(url);
-    if (!root || !target || !root.contains(target)) return;
-
-    // Fumadocs' literal fragment lookup misses percent-encoded Chinese IDs.
-    // Activate this root's ancestor panel, including when tabs are nested.
-    for (
-      let panel: HTMLElement | null = target;
-      panel && panel !== root;
-      panel = panel.parentElement
-    ) {
-      const tabValue = panel.getAttribute('data-mdx-tab-value');
-      if (tabValue && panel.closest('[data-mdx-tabs-root]') === root) {
-        if (props.groupId) {
-          sessionStorage.setItem(props.groupId, tabValue);
-          if (props.persist) localStorage.setItem(props.groupId, tabValue);
-        }
-        setSafeValue(tabValue);
-        return;
-      }
-    }
+  useTabHashTarget({
+    rootRef,
+    setValue: setSafeValue,
+    groupId: props.groupId,
+    persist: props.persist,
   });
-
-  useEffect(() => {
-    const applyCurrentHash = () => revealHashTab(window.location.hash);
-    const handleHashTarget = (event: Event) => {
-      const url = (event as CustomEvent<string>).detail;
-      revealHashTab(typeof url === 'string' ? url : window.location.hash);
-    };
-    applyCurrentHash();
-    window.addEventListener('hashchange', applyCurrentHash);
-    window.addEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
-    return () => {
-      window.removeEventListener('hashchange', applyCurrentHash);
-      window.removeEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
-    };
-  }, []);
 
   return (
     <MdxTabLabelsContext value={labels}>
@@ -1167,6 +1188,13 @@ function CodeBlockTabs({
     onFocusCapture,
   });
 
+  useTabHashTarget({
+    rootRef,
+    setValue: setSafeValue,
+    groupId,
+    persist: props.persist,
+  });
+
   useEffect(() => {
     if (!(pageState && stateKey && value === undefined && safeValue)) {
       return;
@@ -1210,6 +1238,10 @@ function TabsContent({
   const tabValue = typeof props.value === 'string' ? props.value : undefined;
   const tabLabels = useContext(MdxTabLabelsContext);
   const tabLabel = tabValue ? tabLabels[tabValue] : undefined;
+  const codeTabContext = useMemo(
+    () => ({ label: tabLabel, sharedFrame: false }),
+    [tabLabel],
+  );
 
   return (
     <MdxTabLabelContext value={tabLabel}>
@@ -1222,7 +1254,9 @@ function TabsContent({
         forceMount
         {...props}
       >
-        {children}
+        <CodeBlockTabContext value={codeTabContext}>
+          {children}
+        </CodeBlockTabContext>
       </FumadocsTabsContent>
     </MdxTabLabelContext>
   );
@@ -1375,6 +1409,7 @@ function CodeBlockTab({
   return (
     <FumadocsCodeBlockTab
       className={cn('p-0', className)}
+      data-code-tab-value={value}
       forceMount
       hidden={isInactive}
       value={value}

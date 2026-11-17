@@ -13,7 +13,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/cn';
-import { getCodeLanguageLabel } from '@/lib/code/label';
+import { isSameCodeLanguage } from '@/lib/code/label';
 import { CodeBlockTabContext } from './DocsCodeBlockTabs';
 export type DocsCodeBlockProps = CodeBlockProps & {
   'data-language-label'?: string;
@@ -31,6 +31,7 @@ export function DocsCodeBlock({
   ...props
 }: DocsCodeBlockProps) {
   const tab = useContext(CodeBlockTabContext);
+  const sharedFrame = tab?.sharedFrame === true;
   const [wrapped, setWrapped] = useState(false);
   const { t } = useTranslation('common', { lng: locale });
   const wrapLabel = wrapped
@@ -41,8 +42,7 @@ export function DocsCodeBlock({
     tab &&
     typeof tab.label === 'string' &&
     languageLabel &&
-    getCodeLanguageLabel(tab.label.trim().toLowerCase())?.toLowerCase() ===
-      getCodeLanguageLabel(languageLabel.trim().toLowerCase())?.toLowerCase();
+    isSameCodeLanguage(tab.label, languageLabel);
   const blockTitle = repeatsTabLanguage ? undefined : languageLabel ? (
     <span className="docs-code-language">{languageLabel}</span>
   ) : (
@@ -57,7 +57,7 @@ export function DocsCodeBlock({
         props['data-line-numbers'] === false ? undefined : true
       }
       data-code-wrap={wrapped}
-      data-code-tabbed={tab ? '' : undefined}
+      data-code-tabbed={sharedFrame ? '' : undefined}
       className={cn('bg-fd-card shadow-none', className)}
       viewportProps={{
         ...props.viewportProps,
@@ -65,11 +65,11 @@ export function DocsCodeBlock({
         style: {
           // Untitled blocks overlay the actions; reserve room for both controls.
           ...(!blockTitle &&
-            !tab &&
+            !sharedFrame &&
             ({
               '--padding-right': 'calc(var(--spacing) * 16)',
             } as CSSProperties)),
-          ...(tab &&
+          ...(sharedFrame &&
             ({
               '--padding-right': 'calc(var(--spacing) * 4)',
             } as CSSProperties)),
@@ -100,7 +100,7 @@ export function DocsCodeBlock({
             className: cn(
               'flex items-center gap-1',
               className,
-              tab && 'docs-code-tab-actions',
+              sharedFrame && 'docs-code-tab-actions',
             ),
             children: controls,
           })
@@ -109,7 +109,7 @@ export function DocsCodeBlock({
             className={cn(
               'flex items-center gap-1',
               className,
-              tab && 'docs-code-tab-actions',
+              sharedFrame && 'docs-code-tab-actions',
             )}
           >
             {controls}

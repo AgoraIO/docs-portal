@@ -80,6 +80,9 @@ describe('shared code highlighting', () => {
     ['cs', 'C#'],
     ['objc', 'Objective-C'],
     ['objectivec', 'Objective-C'],
+    ['py', 'Python3'],
+    ['python', 'Python 3'],
+    ['python', 'Python2'],
   ])(
     'does not repeat %s under a %s language tab in the server HTML',
     async (language, label) => {
@@ -101,6 +104,20 @@ describe('shared code highlighting', () => {
     const $ = load(html);
     expect($('figcaption').text()).toBe('main.go');
     expect($('pre').text()).toBe('package main');
+  });
+
+  it('applies the same language-caption rule to mixed-content language tabs', async () => {
+    const { html } = await renderMarkdown(
+      '<Tabs defaultValue="python3">\n<TabsList>\n<TabsTrigger value="python3">Python3</TabsTrigger>\n</TabsList>\n<TabsContent value="python3">\n\nRun this example.\n\n```py\nprint("hello")\n```\n\n</TabsContent>\n</Tabs>',
+    );
+    const $ = load(html);
+    expect($('[role="tab"]').text()).toBe('Python3');
+    expect($('figcaption')).toHaveLength(0);
+    expect($('pre').text()).toBe('print("hello")');
+    expect($('figure[data-code-tabbed]')).toHaveLength(0);
+    expect($('.docs-code-tab-actions')).toHaveLength(0);
+    expect($('figure button')).toHaveLength(2);
+    expect($('[role="tabpanel"]').text()).toContain('Run this example.');
   });
 
   it('highlights env configuration in both themes while retaining its authored language and bytes', async () => {

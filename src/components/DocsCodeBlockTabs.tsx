@@ -18,6 +18,7 @@ import { cn } from '@/lib/cn';
 const TabLabelsContext = createContext<Record<string, ReactNode>>({});
 export const CodeBlockTabContext = createContext<{
   label: ReactNode;
+  sharedFrame: boolean;
 } | null>(null);
 
 function collectLabels(children: ReactNode, labels: Record<string, ReactNode>) {
@@ -73,7 +74,10 @@ export function DocsCodeBlockTab({
   ...props
 }: ComponentProps<typeof CodeBlockTab>) {
   const labels = useContext(TabLabelsContext);
-  const context = useMemo(() => ({ label: labels[value] }), [labels, value]);
+  const context = useMemo(
+    () => ({ label: labels[value], sharedFrame: true }),
+    [labels, value],
+  );
   return (
     <CodeBlockTab {...props} value={value}>
       <CodeBlockTabContext value={context}>{children}</CodeBlockTabContext>
