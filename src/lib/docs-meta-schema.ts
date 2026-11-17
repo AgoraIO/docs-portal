@@ -126,8 +126,6 @@ export const docsNavScopeSchema = z.object({
 });
 
 export const docsMetaSchema = metaSchema.extend({
-  // Explicit ownership for routable details omitted from the visible menu.
-  navigationParents: z.record(z.string(), z.array(z.string())).optional(),
   navScope: docsNavScopeSchema.optional(),
   openApiSidebarFromMeta: z.boolean().optional(),
   pages: z

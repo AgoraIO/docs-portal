@@ -1,3 +1,5 @@
+> **Withdrawn navigation proposal (2026-11-17).** All navigation implementation, metadata declarations, source-trail changes and associated new audit/test code from this PR have been reverted to pre-PR `30b04c44d`. This report preserves historical findings from the withdrawn candidate; its navigation screenshots, results and reproduction commands do not describe the current PR. The independent API signature wrapping change remains. Content/link findings await documentation-team review. No replacement navigation rule has been adopted.
+
 # API navigation ownership scope audit — 2026-11-17
 
 Follow-up: [the exhaustive navigation and entry audit](2026-11-17-api-navigation-full-audit.md) checks every API payload and every ordinary-document navigation response. It identifies unresolved entry gaps, the existing FAQ duplicate and historical-version identity defects; the scope counts below are not a complete navigation acceptance.

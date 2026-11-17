@@ -611,32 +611,8 @@ function MobileSidebar({
     nodes: sidebar,
   });
 
-  const locationRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    void activePath; // Re-reveal the location when navigating inside an open menu.
-    const frame = requestAnimationFrame(() => {
-      const selected = locationRef.current?.querySelector<HTMLElement>(
-        '[aria-current="location"]',
-      );
-      const viewport = locationRef.current?.querySelector<HTMLElement>(
-        '[data-radix-scroll-area-viewport]',
-      );
-      if (!selected || !viewport) return;
-      const item = selected.getBoundingClientRect();
-      const area = viewport.getBoundingClientRect();
-      if (item.bottom > area.bottom || item.top < area.top) {
-        viewport.scrollTop +=
-          item.top - area.top - (area.height - item.height) / 2;
-      }
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [activePath]);
-
   return (
-    <div
-      ref={locationRef}
-      className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden"
-    >
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
       <ScrollArea
         className="min-h-0 min-w-0 flex-1 overflow-hidden px-3 py-4 sm:px-4"
         data-testid="docs-mobile-sidebar-scroll"
@@ -780,7 +756,7 @@ function MobileSidebarNode({
   sectionDisclosureLabel: (title: string) => string;
 }) {
   if (node.type === 'page') {
-    const isActive = node.url === activePath || node.containsActivePage;
+    const isActive = node.url === activePath;
     const content = (
       <>
         {node.method ? (
@@ -811,9 +787,7 @@ function MobileSidebarNode({
     if (node.external) {
       return (
         <a
-          aria-current={
-            node.containsActivePage ? 'location' : isActive ? 'page' : undefined
-          }
+          aria-current={isActive ? 'page' : undefined}
           className={className}
           href={node.href ?? node.url}
           onClick={onSelectPath}
@@ -827,9 +801,7 @@ function MobileSidebarNode({
 
     return (
       <Link
-        aria-current={
-          node.containsActivePage ? 'location' : isActive ? 'page' : undefined
-        }
+        aria-current={isActive ? 'page' : undefined}
         className={className}
         onClick={onSelectPath}
         params={{}}
@@ -926,19 +898,13 @@ function MobileSidebarSectionNode({
   }
 
   if (node.url) {
-    const isActive = node.url === activePath || node.containsActivePage;
+    const isActive = node.url === activePath;
 
     return (
       <div className="flex min-w-0 max-w-full flex-col gap-1">
         <div className="flex min-w-0 items-stretch gap-1">
           <Link
-            aria-current={
-              node.containsActivePage
-                ? 'location'
-                : isActive
-                  ? 'page'
-                  : undefined
-            }
+            aria-current={isActive ? 'page' : undefined}
             className={cn(
               mobilePageLinkClassName,
               'min-h-11 flex-1 items-center',
@@ -1023,7 +989,6 @@ function isMobileSidebarNodeActive(
   node: DocsSidebarNode,
   activePath: string,
 ): boolean {
-  if (node.containsActivePage) return true;
   if (node.type === 'page') {
     return node.url === activePath;
   }

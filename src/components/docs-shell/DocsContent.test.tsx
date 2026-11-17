@@ -168,22 +168,7 @@ describe('DocsContent', () => {
       'ChannelMediaOptions',
     );
     renderWithRouter(
-      <DocsContent
-        locale="zh-CN"
-        title="MultipathType"
-        breadcrumb={[
-          { title: 'API 参考', url: '/zh-CN/api-reference/api' },
-          {
-            title: 'C++',
-            url: '/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-api-overview',
-          },
-          {
-            title: 'MultipathType',
-            url: '/zh-CN/api-reference/enum-multipathtype',
-          },
-        ]}
-        toc={[]}
-      />,
+      <DocsContent locale="zh-CN" title="MultipathType" toc={[]} />,
       href,
     );
     expect(
@@ -191,14 +176,6 @@ describe('DocsContent', () => {
     ).toHaveAttribute(
       'href',
       '/zh-CN/api-reference/class-channelmediaoptions#prefermultipathtype',
-    );
-    const navigation = within(screen.getByLabelText('Breadcrumb'));
-    expect(
-      navigation.queryByRole('link', { name: 'ChannelMediaOptions' }),
-    ).not.toBeInTheDocument();
-    expect(navigation.getByText('MultipathType')).toHaveAttribute(
-      'aria-current',
-      'page',
     );
   });
 

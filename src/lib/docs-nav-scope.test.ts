@@ -193,29 +193,6 @@ function getNodeMeta(node: Folder | Root): DocsMeta | undefined {
 }
 
 describe('docs nav scope', () => {
-  it.each(['current', '4.6.0'])(
-    'keeps unlisted source pages in their actual %s version',
-    (version) => {
-      const paths: Record<string, string> = {
-        'rtc-folder': 'en/api-reference/rtc/meta.json',
-        'android-folder': 'en/api-reference/rtc/android/meta.json',
-        'android-current-folder':
-          'en/api-reference/rtc/android/(current)/meta.json',
-        'android-4-6-0-folder': 'en/api-reference/rtc/android/4.6.0/meta.json',
-      };
-      const scope = resolveDocsNavScope({
-        activePath: '/en/api-reference/rtc/android/unlisted',
-        root: apiReferenceTree,
-        tab: 'api-reference',
-        getNodeMeta,
-        contentPath: `en/api-reference/rtc/android/${version === 'current' ? '(current)' : version}/unlisted.mdx`,
-        getNodePath: (node) => paths[String(node.$id)],
-      });
-      expect(scope?.activeVersion?.id).toBe(version);
-      expect(scope?.scope.node.$id).toBe('android-folder');
-    },
-  );
-
   it.each([false, true])(
     'uses a scope-declared sidebar without exposing the generated index (versioned: %s)',
     (versioned) => {

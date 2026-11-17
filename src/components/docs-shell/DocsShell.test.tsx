@@ -1927,32 +1927,6 @@ describe('DocsShell', () => {
     },
   );
 
-  it('marks the owning index as a location in the mobile menu', async () => {
-    renderDocsShell(
-      {
-        activePath: '/en/api-reference/detail',
-        activeTab: 'api-reference',
-        sidebar: [
-          {
-            id: 'types',
-            title: 'Types',
-            type: 'page',
-            url: '/en/api-reference/types',
-            containsActivePage: true,
-          },
-        ],
-      },
-      '/en/api-reference/detail',
-    );
-    fireEvent.click(
-      await screen.findByRole('button', { name: 'Open navigation' }),
-    );
-    const sheet = await screen.findByRole('dialog');
-    const parent = within(sheet).getByRole('link', { name: 'Types' });
-    expect(parent).toHaveAttribute('aria-current', 'location');
-    expect(parent).toHaveAttribute('href', '/en/api-reference/types');
-  });
-
   it('keeps linked mobile sections navigable and independently expandable', async () => {
     renderDocsShell(
       {

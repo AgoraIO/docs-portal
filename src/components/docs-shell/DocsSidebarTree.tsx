@@ -12,7 +12,6 @@ import {
   type MouseEvent,
   type ReactNode,
   useEffect,
-  useRef,
   useState,
 } from 'react';
 import {
@@ -73,42 +72,6 @@ export function DocsSidebarTree({
   nodes: DocsSidebarNode[];
   onSelectPath: () => void;
 }) {
-  const findLocation = (items: DocsSidebarNode[]): string | undefined => {
-    for (const node of items) {
-      if (node.containsActivePage && node.url) return node.url;
-      if (node.type === 'section') {
-        const match = findLocation(node.children);
-        if (match) return match;
-      }
-    }
-  };
-  const locationPath = findLocation(nodes) ?? activePath;
-  const treeRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (locationPath === activePath) return;
-    const frameId = requestAnimationFrame(() => {
-      const selected = treeRef.current?.querySelector<HTMLElement>(
-        '[data-active="true"]',
-      );
-      if (!selected) return;
-      // Reveal the owning group inside the menu without moving the article.
-      for (
-        let parent = selected.parentElement;
-        parent;
-        parent = parent.parentElement
-      ) {
-        if (!/(auto|scroll)/.test(getComputedStyle(parent).overflowY)) continue;
-        const item = selected.getBoundingClientRect();
-        const frame = parent.getBoundingClientRect();
-        if (item.bottom > frame.bottom || item.top < frame.top) {
-          parent.scrollTop +=
-            item.top - frame.top - (frame.height - item.height) / 2;
-        }
-        break;
-      }
-    });
-    return () => cancelAnimationFrame(frameId);
-  }, [activePath, locationPath]);
   const renderableNodes = normalizeRootSections(
     mergeBestPracticesIntoBuild(
       mergeBuildIntoGettingStarted(mergeSdkQuickstartSection(nodes)),
@@ -116,12 +79,12 @@ export function DocsSidebarTree({
   );
 
   return (
-    <SidebarGroup ref={treeRef}>
+    <SidebarGroup>
       <SidebarGroupContent>
         <SidebarMenu>
           {renderableNodes.map((node) => (
             <SidebarNodeRenderer
-              activePath={locationPath}
+              activePath={activePath}
               key={node.id}
               node={node}
               onSelectPath={onSelectPath}

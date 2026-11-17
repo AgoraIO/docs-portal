@@ -1,3 +1,5 @@
+> **Withdrawn navigation proposal (2026-11-17).** All navigation implementation, metadata declarations, source-trail changes and associated new audit/test code from this PR have been reverted to pre-PR `30b04c44d`. This report preserves historical findings from the withdrawn candidate; its navigation screenshots, results and reproduction commands do not describe the current PR. The independent API signature wrapping change remains. Content/link findings await documentation-team review. No replacement navigation rule has been adopted.
+
 # Historical checkpoint — superseded scope
 
 The 530-page C++/Unity scope below describes the earlier checkpoint. See [the complete SDK scope audit](2026-11-17-api-navigation-scope-audit.md) for the current implementation and impact.

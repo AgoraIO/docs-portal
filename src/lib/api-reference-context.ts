@@ -5,10 +5,7 @@ const MAX_TRAIL_LENGTH = 8;
 const MAX_TRAIL_CHARS = 6000;
 
 export function isApiReferencePath(path: string) {
-  return (
-    path.startsWith('/zh-CN/api-reference/') ||
-    path.startsWith('/api-reference/')
-  );
+  return path.startsWith('/zh-CN/api-reference/');
 }
 
 export function readApiReferenceTrail(url: URL): ApiReferenceLink[] {

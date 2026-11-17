@@ -61,44 +61,6 @@ async function loadReferencePayload(slugs: string[]) {
 
 // These integration tests load the real MDX/OpenAPI graph under parallel suite load.
 describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
-  it.each(['cpp-all-platforms', 'unity'])(
-    'retains the %s SDK navigation for a directly opened unlisted enum',
-    async (platform) => {
-      const payload = await loadApiReferencePayload([
-        'rtc',
-        platform,
-        'enum-mediadevicestatetype',
-      ]);
-      expect(payload.sidebarHeader?.versionSwitcher?.currentId).toBe('current');
-      const titles = collectTitles(payload.sidebar as SidebarNode[]);
-      expect(titles).toContain('API 概览');
-      expect(titles).toContain('音频设备管理');
-      const overview = await loadApiReferencePayload([
-        'rtc',
-        platform,
-        'rtc-api-overview',
-      ]);
-      const stripLocation = (value: unknown) =>
-        JSON.parse(JSON.stringify(value), (key, value) =>
-          key === 'containsActivePage' ? undefined : value,
-        );
-      expect(stripLocation(payload.sidebar)).toEqual(overview.sidebar);
-      expect(JSON.stringify(payload.sidebar)).toContain(
-        '"containsActivePage":true',
-      );
-      expect(payload.breadcrumb.at(-2)?.url).toBe(
-        `/zh-CN/api-reference/rtc/${platform}/rtc-api-data-type`,
-      );
-      const repeated = await loadApiReferencePayload([
-        'rtc',
-        platform,
-        'rtc-api-overview',
-      ]);
-      expect(repeated.sidebar).toEqual(overview.sidebar);
-      expect(titles).not.toContain('当前 API');
-    },
-  );
-
   it.each(['class-background-image-source', 'functions'])(
     'keeps linked HarmonyOS %s inside the SDK scope without expanding the main menu',
     async (page) => {
