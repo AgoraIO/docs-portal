@@ -1084,11 +1084,15 @@ describe('docs content regressions', () => {
 
       const overviewPages = [
         {
+          expectedTitle: 'Agora Documentation',
+          slugs: ['introduction'],
+        },
+        {
           expectedTitle: 'Voice Agent overview',
           slugs: ['ai'],
         },
         {
-          expectedTitle: 'RTC overview',
+          expectedTitle: 'Real-Time Communications overview',
           slugs: ['realtime-media', 'overview'],
         },
         {
