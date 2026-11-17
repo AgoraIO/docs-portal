@@ -1,6 +1,6 @@
 # 中文旧站增量同步（2026-11-17）
 
-已在新工作树 `codex/cn-master-hotfix-20261117` 完成本批内容同步、审查修复和验证。通过工作分支提交 PR 交付，等待目标分支 review 与合并；未上线。
+已在新工作树 `codex/cn-master-hotfix-20261117` 完成本批内容同步、审查修复和验证。目标草稿 PR：[#1443](https://github.com/AgoraIO/docs-portal/pull/1443)，等待目标分支 review 与合并；未上线。
 
 ## 固定基线与范围
 

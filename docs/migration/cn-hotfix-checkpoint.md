@@ -4,7 +4,7 @@ Last updated: 2026-11-17
 
 ## Current batch (2026-11-17; implemented, pending target merge)
 
-- Target branch: `codex/cn-newdoc-html-api-migration@472e0250ff2c4a61bf7a0f10a472628192b33f31`, using the explicitly requested current local HEAD. Managed worktree branch: `codex/cn-master-hotfix-20261117`. Delivered through the working-branch PR; target merge and deployment remain pending.
+- Target branch: `codex/cn-newdoc-html-api-migration@472e0250ff2c4a61bf7a0f10a472628192b33f31`, using the explicitly requested current local HEAD. Managed worktree branch: `codex/cn-master-hotfix-20261117`. Target draft PR: [#1443](https://github.com/AgoraIO/docs-portal/pull/1443); target merge and deployment remain pending.
 - Previous [#1434](https://github.com/AgoraIO/docs-portal/pull/1434) is confirmed merged at `2026-11-16T07:45:02Z` as `9e6f1a68baf96b8517e43d4e9ab4aad7aaa69001`, contained in the selected target. Effective source baseline: `8fd46d74070a18dcb46ef943f6d6768590be9bca` (0.0.544).
 - Fixed endpoint: `b9aa4166a265ad2693ced2ce36ea4a7d5e21e826` (0.0.546). Eight first-parent commits, six content PRs (#2147/#2157/#2152/#2153/#2148/#2159), 153 net changed files: 89 migrated, 1 already present, 63 explicitly excluded.
 - Implementation, independent agent reviews, tests/types/source/table gates and Chinese production build completed. Full scoped results and remaining boundaries: [report](./cn-master-sync-20261117.md), [batch JSON](./cn-master-sync-20261117.json), [all-source ledger](./cn-master-sync-20261117-ledger.json). Lint remains identical to its existing baseline; static link flags are individually classified, not a clean full-repository strict pass.
