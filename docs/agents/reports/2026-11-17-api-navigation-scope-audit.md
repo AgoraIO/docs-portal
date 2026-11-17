@@ -1,5 +1,7 @@
 # API navigation ownership scope audit — 2026-11-17
 
+Follow-up: [the exhaustive navigation and entry audit](2026-11-17-api-navigation-full-audit.md) checks every API payload and every ordinary-document navigation response. It identifies unresolved entry gaps, the existing FAQ duplicate and historical-version identity defects; the scope counts below are not a complete navigation acceptance.
+
 ## Scope and counting
 
 This audit reads both canonical local source trees: 5,517 Chinese and 331 English API-reference pages (5,848 total). The active Chinese catalog contains 96 entries: 86 local and 10 external. External SDK sites do not use this renderer and were not certified by this audit. Source inventory counts are not production traffic or a claim that every legacy source URL is publicly linked.
