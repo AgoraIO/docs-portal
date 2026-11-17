@@ -78,6 +78,8 @@ describe('shared code highlighting', () => {
     ['go', 'Golang'],
     ['javascript', 'Node.js'],
     ['cs', 'C#'],
+    ['objc', 'Objective-C'],
+    ['objectivec', 'Objective-C'],
   ])(
     'does not repeat %s under a %s language tab in the server HTML',
     async (language, label) => {
@@ -99,6 +101,26 @@ describe('shared code highlighting', () => {
     const $ = load(html);
     expect($('figcaption').text()).toBe('main.go');
     expect($('pre').text()).toBe('package main');
+  });
+
+  it('highlights env configuration in both themes while retaining its authored language and bytes', async () => {
+    const source =
+      '# Project settings\nAGORA_APP_ID=<your_app_id>\nAGORA_APP_CERTIFICATE=<your_app_certificate>\nAGORA_CHANNEL=test-channel';
+    const { html } = await renderMarkdown(['```env', source, '```'].join('\n'));
+    const $ = load(html);
+    expect($('figure').attr('data-code-language')).toBe('env');
+    expect($('figcaption').text()).toBe('env');
+    expect($('pre').text()).toBe(source);
+    const tokens = $('pre span[style*="--shiki-light"]');
+    expect(tokens.length).toBeGreaterThan(1);
+    expect(
+      tokens
+        .toArray()
+        .every((node) => $(node).attr('style')?.includes('--shiki-dark')),
+    ).toBe(true);
+    expect(
+      new Set(tokens.map((_, node) => $(node).attr('style')).get()).size,
+    ).toBeGreaterThan(1);
   });
 
   it('does not invent a language for unmarked fences', async () => {

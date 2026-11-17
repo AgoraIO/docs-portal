@@ -41,7 +41,8 @@ export function DocsCodeBlock({
     tab &&
     typeof tab.label === 'string' &&
     languageLabel &&
-    getCodeLanguageLabel(tab.label.trim().toLowerCase()) === languageLabel;
+    getCodeLanguageLabel(tab.label.trim().toLowerCase())?.toLowerCase() ===
+      getCodeLanguageLabel(languageLabel.trim().toLowerCase())?.toLowerCase();
   const blockTitle = repeatsTabLanguage ? undefined : languageLabel ? (
     <span className="docs-code-language">{languageLabel}</span>
   ) : (

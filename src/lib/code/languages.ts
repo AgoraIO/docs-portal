@@ -4,6 +4,7 @@ export const codeLanguageAliases: Record<string, string> = {
   // ArkTS API declarations retain TypeScript syntax; use the bundled grammar.
   arkts: 'typescript',
   curl: 'bash',
+  env: 'dotenv',
   shell: 'bash',
   js: 'javascript',
   node: 'javascript',
