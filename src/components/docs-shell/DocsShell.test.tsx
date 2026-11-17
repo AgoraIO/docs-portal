@@ -674,6 +674,28 @@ describe('DocsShell', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('hides pointer focus on header tabs and restores it when keyboard navigation starts outside the strip', async () => {
+    renderDocsShell();
+    const strip = await screen.findByTestId('docs-tabs-strip');
+    const introTab = within(strip).getByRole('tab', {
+      name: 'Introduction',
+    });
+
+    expect(strip).toHaveAttribute('data-pointer-focus', 'false');
+    fireEvent.pointerDown(introTab, { pointerType: 'mouse' });
+    expect(strip).toHaveAttribute('data-pointer-focus', 'true');
+
+    // Tab can enter from a header action after a pointer interaction that did
+    // not focus the tab (for example, Safari or a cancelled touch).
+    fireEvent.keyDown(document.body, { key: 'Tab' });
+    expect(strip).toHaveAttribute('data-pointer-focus', 'false');
+
+    fireEvent.pointerDown(introTab, { pointerType: 'touch' });
+    expect(strip).toHaveAttribute('data-pointer-focus', 'true');
+    fireEvent.keyDown(introTab, { key: 'ArrowRight' });
+    expect(strip).toHaveAttribute('data-pointer-focus', 'false');
+  });
+
   it('reserves bold width on top tabs so the menu does not shift on activation', async () => {
     renderDocsShell();
 

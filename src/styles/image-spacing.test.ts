@@ -39,16 +39,29 @@ describe('documentation image spacing', () => {
     );
     expect(app).toContain('@import "./image-spacing.css"');
   });
-  it('uses desktop16/24 and phone16/16 margins, excluding table images', () => {
+  it('uses desktop20/28 and phone20/20 margins, excluding table images', () => {
+    const spacing = readFileSync(
+      resolve(process.cwd(), 'src/styles/docs-spacing.css'),
+      'utf8',
+    );
+    const tokens = postcss.parse(spacing);
+    const values = new Map<string, string>();
+    tokens.walkDecls((node) => {
+      values.set(node.prop, node.value);
+    });
+    expect(values.get('--docs-space-block')).toBe('1.25rem');
+    expect(values.get('--docs-space-media-after')).toBe('1.75rem');
     const desktop = rule(':where(');
-    expect(declaration(desktop, 'margin-block')).toBe('1rem 1.5rem');
+    expect(declaration(desktop, 'margin-block')).toBe(
+      'var(--docs-space-block) var(--docs-space-media-after)',
+    );
     expect(desktop.selector).toContain('table *');
     expect(desktop.selector).toContain(
       'p:has(> [data-docs-image], > a > [data-docs-image])',
     );
     expect(
       declaration(rule(':where(', '(max-width: 767px)'), 'margin-bottom'),
-    ).toBe('1rem');
+    ).toBe('var(--docs-space-block)');
   });
   it('removes nested and adjacent prose margins so the image block owns the gap', () => {
     const inner = rule('.prose [data-docs-image] > img');

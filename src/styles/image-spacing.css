@@ -5,7 +5,7 @@
     [data-docs-image],
     p:has(> [data-docs-image], > a > [data-docs-image])
   ):not(:where(table *)) {
-  margin-block: 1rem 1.5rem;
+  margin-block: var(--docs-space-block) var(--docs-space-media-after);
 }
 
 @media (max-width: 767px) {
@@ -14,7 +14,7 @@
       [data-docs-image],
       p:has(> [data-docs-image], > a > [data-docs-image])
     ):not(:where(table *)) {
-    margin-bottom: 1rem;
+    margin-bottom: var(--docs-space-block);
   }
 }
 

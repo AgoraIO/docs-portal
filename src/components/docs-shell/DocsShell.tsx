@@ -167,11 +167,23 @@ export function DocsShell({
   const t = i18n.getFixedT(currentLocale, 'common');
   const { resolvedTheme, setTheme } = useTheme();
   const [hasMounted, setHasMounted] = useState(false);
+  const [isHeaderPointerFocus, setIsHeaderPointerFocus] = useState(false);
   // next-themes cannot know the browser theme during static rendering.
   const isDarkTheme = hasMounted && resolvedTheme === 'dark';
 
   useEffect(() => {
     setHasMounted(true);
+  }, []);
+
+  useEffect(() => {
+    // Radix focuses a tab during mousedown, which can retain :focus-visible
+    // from the previous keyboard focus. Only the header masks that pointer
+    // ring; listen outside the strip too so Tab can restore keyboard focus.
+    const showKeyboardFocus = () => setIsHeaderPointerFocus(false);
+    document.addEventListener('keydown', showKeyboardFocus, true);
+    return () => {
+      document.removeEventListener('keydown', showKeyboardFocus, true);
+    };
   }, []);
   const themeLabel = `${t('controls.theme.label')}: ${
     isDarkTheme ? t('controls.theme.dark') : t('controls.theme.light')
@@ -570,8 +582,10 @@ export function DocsShell({
             </div>
           </div>
           <nav
-            className="hidden border-b border-border bg-background/80 backdrop-blur-xl md:block"
+            className="group/header-tabs hidden border-b border-border bg-background/80 backdrop-blur-xl md:block"
+            data-pointer-focus={isHeaderPointerFocus}
             data-testid="docs-tabs-strip"
+            onPointerDownCapture={() => setIsHeaderPointerFocus(true)}
           >
             <div
               className={cn(
@@ -587,7 +601,7 @@ export function DocsShell({
                   {tabs.map((tab) => (
                     <TabsTrigger asChild key={tab.id} value={tab.id}>
                       <Link
-                        className="group/tab h-10 rounded-none px-3.5 text-[13.5px] font-medium after:!bottom-[-3px]"
+                        className="group/tab h-10 rounded-none px-3.5 text-[13.5px] font-medium after:!bottom-[-3px] group-data-[pointer-focus=true]/header-tabs:focus-visible:border-transparent group-data-[pointer-focus=true]/header-tabs:focus-visible:ring-0 group-data-[pointer-focus=true]/header-tabs:focus-visible:outline-none"
                         params={{}}
                         search={{}}
                         to={tab.url}
