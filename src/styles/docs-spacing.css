@@ -66,6 +66,12 @@
     margin-block: var(--docs-space-block);
   }
 
+  /* Fumadocs standalone fences own their spacing on a not-prose figure.
+     Code-tab figures omit my-4; MDX tab edge resets still take precedence. */
+  .prose figure.shiki.my-4 {
+    margin-block: var(--docs-space-block);
+  }
+
   .prose
     :where(li, ul ul, ul ol, ol ul, ol ol):not(
       :where(.not-prose, .not-prose *)
