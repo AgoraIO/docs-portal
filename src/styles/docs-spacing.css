@@ -12,6 +12,29 @@
   --docs-space-media-after: 1.75rem;
 }
 
+/* The overview already has a grid gap before the documentation column.
+   Its first group owns one compact edge; the nested title adds no second gap. */
+.openapi-operation-layout > [data-openapi-operation-overview] > :last-child,
+.openapi-operation-layout
+  > [data-openapi-operation-overview]
+  > :last-child
+  > :last-child {
+  margin-block-end: 0;
+}
+
+.openapi-operation-layout:has(> [data-openapi-operation-overview])
+  > [data-openapi-operation-panel="documentation"]
+  > :first-child:has(> .openapi-section-heading) {
+  margin-block-start: var(--docs-space-subsection-after);
+}
+
+.openapi-operation-layout:has(> [data-openapi-operation-overview])
+  > [data-openapi-operation-panel="documentation"]
+  > :first-child
+  > .openapi-section-heading {
+  margin-block-start: 0;
+}
+
 /* Match the typography utility's layer so the shared rhythm actually applies.
    Keep component edge resets after these defaults. */
 @layer utilities {
