@@ -164,4 +164,156 @@ describe('OpenAPI request example completion', () => {
     expect(new URL(result.url).searchParams.get('api_key')).toBe('<api-key>');
     expect(result.cookie.session).toEqual({ value: '<api-key>' });
   });
+
+  it('uses legacy Chinese defaults and empty required values instead of schema sampling', () => {
+    const operation = {
+      parameters: [
+        {
+          in: 'query',
+          name: 'state',
+          schema: { default: '2', examples: ['1'] },
+        },
+        { in: 'query', name: 'limit', schema: { default: 20 } },
+        {
+          in: 'query',
+          name: 'appid',
+          required: true,
+          schema: { type: 'string' },
+        },
+        { in: 'query', name: 'metric', required: true },
+        { in: 'query', name: 'optional', example: 'sample' },
+      ],
+    };
+    const generated = {
+      ...data,
+      url: 'https://example.com/items?fields=id&state=1&appid=string&optional=sample',
+    };
+    const before = JSON.stringify({ document, operation, generated });
+    const result = completeRequestExample(
+      generated,
+      buildRequestExampleContext(document, {}, operation, 'get', true),
+    );
+    expect(Object.fromEntries(new URL(result.url).searchParams)).toEqual({
+      fields: 'id',
+      state: '2',
+      limit: '20',
+      appid: '',
+      metric: '',
+    });
+    expect(JSON.stringify({ document, operation, generated })).toBe(before);
+  });
+
+  it('resolves referenced and inherited queries with case-sensitive operation overrides', () => {
+    const source = {
+      components: {
+        parameters: {
+          page: { in: 'query', name: 'page', schema: { default: 1 } },
+          pageSize: { in: 'query', name: 'Page', schema: { default: 50 } },
+        },
+      },
+    };
+    const result = completeRequestExample(
+      { ...data, url: 'https://example.com/items?page=1&Page=10&unused=x' },
+      buildRequestExampleContext(
+        source,
+        { parameters: [{ $ref: '#/components/parameters/page' }] },
+        {
+          parameters: [
+            { in: 'query', name: 'page', schema: { default: 2 } },
+            { $ref: '#/components/parameters/pageSize' },
+            { in: 'query', name: 'unused', schema: { type: 'string' } },
+          ],
+        },
+        'get',
+        true,
+      ),
+    );
+    expect(Object.fromEntries(new URL(result.url).searchParams)).toEqual({
+      page: '2',
+      Page: '50',
+    });
+  });
+
+  it('preserves the legacy truthy-value rule for zero and false without changing schemas', () => {
+    const operation = {
+      parameters: [
+        { in: 'query', name: 'optionalZero', schema: { default: 0 } },
+        { in: 'query', name: 'optionalFalse', schema: { default: false } },
+        {
+          in: 'query',
+          name: 'requiredZero',
+          required: true,
+          schema: { default: 0 },
+        },
+        {
+          in: 'query',
+          name: 'requiredFalse',
+          required: true,
+          schema: { default: false },
+        },
+        {
+          in: 'query',
+          name: 'value',
+          value: 'authored',
+          schema: { default: 'fallback' },
+        },
+      ],
+    };
+    const result = completeRequestExample(
+      {
+        ...data,
+        url: 'https://example.com/items?optionalZero=0&optionalFalse=false',
+      },
+      buildRequestExampleContext({}, {}, operation, 'get', true),
+    );
+    expect(Object.fromEntries(new URL(result.url).searchParams)).toEqual({
+      requiredZero: '',
+      requiredFalse: '',
+      value: 'authored',
+    });
+  });
+
+  it('keeps standard query sampling and query-key authentication outside legacy replacements', () => {
+    const operation = {
+      parameters: [
+        { in: 'query', name: 'state', schema: { default: '2' } },
+        {
+          in: 'query',
+          name: 'api_key',
+          required: true,
+          schema: { default: 'source-default' },
+        },
+      ],
+    };
+    const generated = { ...data, url: 'https://example.com/items?state=1' };
+    expect(
+      completeRequestExample(
+        generated,
+        buildRequestExampleContext({}, {}, operation, 'get'),
+      ).url,
+    ).toBe(generated.url);
+    const source = {
+      security: [{ key: [] }],
+      components: {
+        securitySchemes: {
+          key: { type: 'apiKey', in: 'query', name: 'api_key' },
+        },
+      },
+    };
+    const result = completeRequestExample(
+      { ...generated, url: `${generated.url}&api_key=authored-key` },
+      buildRequestExampleContext(source, {}, operation, 'get', true),
+    );
+    expect(Object.fromEntries(new URL(result.url).searchParams)).toEqual({
+      state: '2',
+      api_key: 'authored-key',
+    });
+    const placeholder = completeRequestExample(
+      generated,
+      buildRequestExampleContext(source, {}, operation, 'get', true),
+    );
+    expect(new URL(placeholder.url).searchParams.get('api_key')).toBe(
+      '<api-key>',
+    );
+  });
 });

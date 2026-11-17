@@ -33,6 +33,7 @@ export type RequestExampleContext = {
   headers: Record<string, string>;
   query: Record<string, string>;
   cookies: Record<string, string>;
+  legacyQuery?: Record<string, string | undefined>;
   omitBody?: boolean;
   urlTemplate?: string;
 };
@@ -49,7 +50,7 @@ export function buildRequestExampleContext(
   pathItem: RecordValue,
   operation: RecordValue,
   method: string,
-  authoredBodyOnly = false,
+  legacyExamples = false,
 ): RequestExampleContext {
   const result: RequestExampleContext = { headers: {}, query: {}, cookies: {} };
   const resolve = (value: unknown) =>
@@ -91,6 +92,7 @@ export function buildRequestExampleContext(
     }
   }
   const parameters = new Map<string, RecordValue>();
+  const queryParameters = new Map<string, RecordValue>();
   for (const value of [
     ...(Array.isArray(pathItem.parameters) ? pathItem.parameters : []),
     ...(Array.isArray(operation.parameters) ? operation.parameters : []),
@@ -98,6 +100,26 @@ export function buildRequestExampleContext(
     const parameter = resolve(value);
     if (parameter?.in === 'header' && typeof parameter.name === 'string')
       parameters.set(parameter.name.toLowerCase(), parameter);
+    if (
+      legacyExamples &&
+      parameter?.in === 'query' &&
+      typeof parameter.name === 'string'
+    )
+      queryParameters.set(parameter.name, parameter);
+  }
+  if (legacyExamples) {
+    result.legacyQuery = {};
+    for (const [name, parameter] of queryParameters) {
+      // Authentication queries retain their own example/placeholder handling.
+      if (Object.hasOwn(result.query, name)) continue;
+      const schema = resolve(parameter.schema);
+      // Match shengwang-doc-source's initHttpSnippet, including its truthy-value
+      // rule. A required parameter without a value is still emitted as name=.
+      result.legacyQuery[name] =
+        parameter.required || parameter.value || schema?.default
+          ? String(parameter.value || schema?.default || '')
+          : undefined;
+    }
   }
   for (const parameter of parameters.values()) {
     const name = String(parameter.name);
@@ -139,7 +161,7 @@ export function buildRequestExampleContext(
     ('example' in media ||
       Object.keys(record(media.examples) ?? {}).length > 0);
   // Legacy Chinese pages only supplied authored bodies, never schema-generated values.
-  result.omitBody = authoredBodyOnly && (method === 'get' || !hasAuthoredBody);
+  result.omitBody = legacyExamples && (method === 'get' || !hasAuthoredBody);
   return result;
 }
 
@@ -167,6 +189,10 @@ export function completeRequestExample(
   const [generatedPath, generatedQuery] = data.url.split('?', 2);
   const path = context.urlTemplate ?? generatedPath;
   const query = new URLSearchParams(generatedQuery);
+  for (const [name, value] of Object.entries(context.legacyQuery ?? {})) {
+    query.delete(name);
+    if (value !== undefined) query.set(name, value);
+  }
   for (const [name, value] of Object.entries(context.query))
     if (!query.has(name)) query.set(name, value);
   return {
