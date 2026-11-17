@@ -1078,25 +1078,25 @@ describe('docs content regressions', () => {
   });
 
   it(
-    'uses Overview for English top-level overview pages',
+    'uses specific titles for English top-level overview pages',
     async () => {
       const { source } = await import('./source.server');
 
       const overviewPages = [
         {
-          expectedTitle: 'Overview',
+          expectedTitle: 'Agora Documentation',
           slugs: ['introduction'],
         },
         {
-          expectedTitle: 'Overview',
+          expectedTitle: 'Voice Agent overview',
           slugs: ['ai'],
         },
         {
-          expectedTitle: 'Overview',
+          expectedTitle: 'Real-Time Communications overview',
           slugs: ['realtime-media', 'overview'],
         },
         {
-          expectedTitle: 'Overview',
+          expectedTitle: 'Reference overview',
           slugs: ['api-reference'],
         },
       ];

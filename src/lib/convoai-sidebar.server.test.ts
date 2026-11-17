@@ -51,7 +51,7 @@ describe('real ConvoAI edition sidebars', () => {
       if (!payload || 'redirectUrl' in payload)
         throw new Error('Expected a Main guide');
       expect(payload.sidebar.map((node) => node.title)).toEqual([
-        'Overview',
+        'Voice Agent overview',
         'Voice agent in apps',
         'Agent Studio',
         'Voice agent on dedicated devices',

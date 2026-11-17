@@ -208,12 +208,13 @@ describe('overview entry links', () => {
     expect(metadata).not.toContain('---[Cpu]Connected Devices---');
   });
 
-  it('uses Overview for tab landing pages and product names for product overviews', () => {
+  it('uses specific titles for tab landing pages and product overviews', () => {
     const expectedTitles = {
-      'en/introduction/index.mdx': 'Overview',
-      'en/ai/index.mdx': 'Overview',
-      'en/realtime-media/overview.mdx': 'Overview',
-      'en/api-reference/index.mdx': 'Overview',
+      'en/introduction/index.mdx': 'Agora Documentation',
+      'en/ai/index.mdx': 'Voice Agent overview',
+      'en/realtime-media/overview.mdx': 'Real-Time Communications overview',
+      'en/realtime-media/index.md': 'Real-Time Communications overview',
+      'en/api-reference/index.mdx': 'Reference overview',
       'en/realtime-media/rtc/index.mdx': 'RTC overview',
       'en/realtime-media/cloud-recording/index.mdx': 'Cloud Recording overview',
       'en/realtime-media/im/index.mdx': 'Chat overview',
@@ -281,9 +282,9 @@ describe('overview entry links', () => {
 
   it('uses product-specific sidebar titles for overview entries', () => {
     const expectedSidebarTitles = {
-      'en/ai/meta.json': 'Overview',
+      'en/ai/meta.json': 'Voice Agent overview',
       'en/realtime-media/rtc/meta.json': 'RTC overview',
-      'en/api-reference/meta.json': 'Overview',
+      'en/api-reference/meta.json': 'Reference overview',
       'en/realtime-media/cloud-recording/meta.json': 'Cloud Recording overview',
       'en/realtime-media/im/meta.json': 'Chat overview',
       'en/realtime-media/marketplace/meta.json':
