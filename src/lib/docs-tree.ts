@@ -40,6 +40,7 @@ export type SidebarEntry =
     };
 
 export type DocsSidebarPageNode = {
+  containsActivePage?: boolean;
   external?: boolean;
   href?: string;
   id: string;
@@ -53,6 +54,7 @@ export type DocsSidebarPageNode = {
 };
 
 export type DocsSidebarSectionNode = {
+  containsActivePage?: boolean;
   children: DocsSidebarNode[];
   collapsible?: boolean;
   // When explicitly `false`, the section starts collapsed even when it (or one of

@@ -1,22 +1,29 @@
-# API navigation and signature feedback
+# API feedback: navigation ownership and signature wrapping
 
-## Final behavior
+## Original feedback and current scope
 
-- Deep Chinese API pages omitted from `meta.pages` resolve their SDK navigation scope through the catalog's existing platform entry. They retain exactly the same authored sidebar and version selector as the SDK overview, including on direct visits.
-- Sidebar contents remain fixed. There is no injected current-page section and no extra sidebar scroll reset.
-- Breadcrumbs describe the fixed product/platform/page hierarchy. Browsing history appears only in the separate return link, never as a breadcrumb ancestor.
-- Source trails recognize both `/api-reference/` and `/zh-CN/api-reference/`. New tabs and copied links retain the source section; the destination anchor remains intact.
-- API signatures wrap initially and retain their type links, copy control, and wrap toggle. Ordinary code examples retain their existing default.
+The source screenshot already contains a return-to-audio-device link. Its red box requests a source link in the breadcrumb; that proposed solution is not adopted. Navigation now distinguishes fixed content ownership from the reader's source page.
 
-## Verification
+The second screenshot clearly shows a long `user-info-updated` signature clipped into a horizontally scrolling line. Signatures now wrap initially, with links, copying and the wrap toggle preserved. The separate phrase about a missing “jump preview” still lacks a reproducible interaction and is not claimed fixed.
 
-- Integration tests compare the entire sidebar of the C++ and Unity enum pages with their SDK overview sidebars, rather than checking only for a few visible labels.
-- A component test verifies that a shared API URL restores the separate return link without injecting that source into the breadcrumb.
-- Browser check: C++ `enum-mediadevicestatetype` displays the fixed C++ v4.7.0 navigation. The audio-device navigation and return trail remain usable. Local screenshot: ignored `.agent/artifacts/api-feedback/sidebar-stable.png`.
-- Prior signature check: `user-info-updated` preserves its arguments and `UID` link; computed white-space is `pre-wrap` and client/scroll widths both measure 690 px.
-- Final focused tests: 162 passed. Types passed. Full-suite result is recorded in the PR.
-- Two existing Biome warnings remain in `docs-page.server.ts`: optional chaining and an unused helper.
+## Ownership contract
 
-The feedback's separate phrase about a missing jump preview does not specify a hover interaction. The Web method/event table of contents and type links were verified; this patch does not add hover previews.
+`meta.json.navigationParents` maps an existing visible parent URL to an explicit list of unlisted detail URLs. The generic resolver is independent of locale, API generator and browsing history. Visible pages keep their original position. Missing parents and conflicting declarations do not select a new parent. Ordinary body links are not runtime ownership evidence.
 
-This is a local candidate. Independent review and release acceptance remain pending; staging and production have not been updated by this change.
+The initial declarations reproduce the maintained Struct/Enum indexes: 271 C++ Struct/Enum and 259 Unity Class/Enum current-version pages. All 530 URLs were checked against the index links and existing files. No historical version, other SDK or ordinary document is opted in by URL pattern. Future imported details need corresponding maintained metadata.
+
+The declared parent supplies the SDK scope, sidebar location and breadcrumb ancestor. Sidebar entries remain unchanged; only the owning entry is highlighted. Its location is revealed inside the sidebar without scrolling the article. Shared cached sidebar arrays are not mutated. The earlier catalog-based fallback was removed.
+
+Existing return-to-source behavior remains independent. Browser verification found `/device-management/audio-device#devicestate` as the return target; clicking it restored that section and selected audio-device in the sidebar. Direct entry and article-link entry show the same enum ownership.
+
+## Verification and limits
+
+- Focused resolver, API sidebar and sidebar component tests: 131 passed.
+- Typecheck passed.
+- Full test run: 6,079 passed, 23 skipped (368 files passed, 1 skipped); confirmed by a second run. The subsequent mobile highlight fix passed all 96 shell/sidebar component tests, including its new regression test.
+- C++ browser check at 1440 × 1000: selected Struct/Enum entry and matching breadcrumb, article scroll remains zero. Unity desktop and 390 × 844 mobile checked separately. Screenshots are local under ignored `.agent/artifacts/api-feedback/ownership-*.png`.
+- Generic resolver tests cover English/non-API paths, undeclared documents, visible pages, different locales/versions, missing and conflicting parents. Existing integration tests exercise other SDKs and reference pages.
+- Shared-file comparison against the English main checkout failed: that checkout lacks the newer quality contract/tooling and contains divergent shared files. Both-region `all` browser acceptance and independent reading are still incomplete. This is a draft candidate, not a release certification.
+- No production or staging deployment was made.
+
+Lint: changed runtime navigation components pass focused Biome checks. Three pre-existing nested test-component diagnostics remain in DocsShell/DocsSidebarTree tests; their definitions are unchanged from the previous head. Existing docs-page/docs-tree warnings also remain.

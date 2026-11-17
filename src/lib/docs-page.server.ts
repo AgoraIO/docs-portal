@@ -4,10 +4,7 @@ import type { Folder, Root } from 'fumadocs-core/page-tree';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import remarkMdx from 'remark-mdx';
-import {
-  resolveZhCnApiReferenceBreadcrumb,
-  resolveZhCnApiReferenceEntry,
-} from './api-reference-breadcrumb';
+import { resolveZhCnApiReferenceBreadcrumb } from './api-reference-breadcrumb';
 import { resolveZhCnApiReferenceProductDocsHref } from './api-reference-product-docs';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
@@ -25,6 +22,7 @@ import {
   getSharedNavScopeSidebarNodes,
   resolveDocsNavScope,
 } from './docs-nav-scope';
+import { resolveNavigationParent } from './docs-navigation-parent';
 import { getSourceSlugs, isSamePathOrDescendant } from './docs-routing';
 import { getSearchEntryMetadata, type SearchEntry } from './docs-search';
 import { parseProductSidebarContext } from './docs-sidebar-context';
@@ -799,8 +797,11 @@ export async function loadDocsPagePayload(
   const toc = filterDocsToc(unboundedToc, tocMaxDepth);
   const layoutMode: DocsLayoutMode =
     isOpenApiPage || openApiLaneRoute !== null ? 'openapi' : 'docs';
-  const sidebar = await getDocsSidebarNodes({
-    activePath: page.url,
+  const navigationParent = resolveNavigationParent(pageTree, page.url, (node) =>
+    getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+  );
+  let sidebar = await getDocsSidebarNodes({
+    activePath: navigationParent?.url ?? page.url,
     locale: supportedLocale,
     pageTree,
     pageUrl: page.url,
@@ -829,7 +830,30 @@ export async function loadDocsPagePayload(
     !navScope && supportedLocale
       ? resolveFocusedOpenApiLaneSidebarHeader(page.url, supportedLocale, tab)
       : undefined;
-  const breadcrumb = getSidebarBreadcrumb(sidebar, page.url);
+  const parentIsVisible = (nodes: DocsSidebarNode[]): boolean =>
+    nodes.some(
+      (node) =>
+        node.url === navigationParent?.url ||
+        (node.type === 'section' && parentIsVisible(node.children)),
+    );
+  const visibleParent =
+    navigationParent && parentIsVisible(sidebar) ? navigationParent : undefined;
+  const markLocation = (nodes: DocsSidebarNode[]): DocsSidebarNode[] =>
+    nodes.map((node) => ({
+      ...node,
+      ...(visibleParent && node.url === visibleParent.url
+        ? { containsActivePage: true }
+        : {}),
+      ...(node.type === 'section'
+        ? { children: markLocation(node.children) }
+        : {}),
+    }));
+  if (visibleParent) sidebar = markLocation(sidebar);
+  const breadcrumb = getSidebarBreadcrumb(
+    sidebar,
+    visibleParent?.url ?? page.url,
+  );
+  if (visibleParent) breadcrumb.push({ title, url: page.url });
   const apiReferenceBreadcrumb =
     locale === 'zh-CN' && tab === 'api-reference'
       ? resolveZhCnApiReferenceBreadcrumb({
@@ -837,6 +861,9 @@ export async function loadDocsPagePayload(
           title,
         })
       : null;
+  if (visibleParent && apiReferenceBreadcrumb) {
+    apiReferenceBreadcrumb.splice(-1, 0, visibleParent);
+  }
   const platformGroup = resolvePlatformGroupDefinition(page, localePages);
   const mdxBody = platformGroup
     ? {
@@ -4354,14 +4381,10 @@ function getDocsNavScope({
       root: pageTree,
       tab,
     });
-  const scope = resolve(activePath);
-  if (scope || locale !== 'zh-CN' || tab !== OPENAPI_TAB) return scope;
-
-  // Type/member pages omitted from meta.pages still belong to their SDK.
-  // Resolve ownership through the catalog's real platform entry, not a guessed
-  // folder URL or the reader's navigation history.
-  const entry = resolveZhCnApiReferenceEntry(activePath);
-  return entry && entry.href !== activePath ? resolve(entry.href) : null;
+  const parent = resolveNavigationParent(pageTree, activePath, (node) =>
+    getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+  );
+  return resolve(parent?.url ?? activePath);
 }
 
 function getScopedSidebarNodes({

@@ -44,6 +44,26 @@ function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
 }
 
 describe('DocsSidebarTree', () => {
+  it('highlights the declared parent without adding the detail to the menu', async () => {
+    renderSidebarTree(
+      [
+        {
+          type: 'page',
+          id: 'types',
+          title: 'Types',
+          url: '/en/sdk/types',
+          containsActivePage: true,
+        },
+      ],
+      '/en/sdk/enum-state',
+    );
+    const parent = await screen.findByRole('link', { name: 'Types' });
+    expect(parent).toHaveAttribute('data-active', 'true');
+    expect(parent).toHaveAttribute('href', '/en/sdk/types');
+    expect(
+      screen.queryByRole('link', { name: 'enum-state' }),
+    ).not.toBeInTheDocument();
+  });
   it('shows a same-tab navigation arrow for marked internal page links', async () => {
     const demoLink: DocsSidebarNode = {
       id: 'introduction-demo-gallery',
