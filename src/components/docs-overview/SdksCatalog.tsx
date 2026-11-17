@@ -788,7 +788,7 @@ function ProductCard({
                 >
                   {group.platforms.map((entry) => (
                     <ToggleGroupItem
-                      className="h-11 min-w-18 rounded-md px-3 font-normal data-[state=on]:bg-background data-[state=on]:font-medium data-[state=on]:shadow-xs sm:h-9"
+                      className="h-11 min-w-11 rounded-md px-2 font-normal data-[state=on]:bg-background data-[state=on]:font-medium data-[state=on]:shadow-xs sm:h-9 sm:min-w-18 sm:px-3"
                       key={entry.platformId}
                       value={entry.platformId}
                     >
