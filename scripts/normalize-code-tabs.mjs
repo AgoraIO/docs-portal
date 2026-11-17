@@ -113,6 +113,7 @@ export function normalizeCodeTabs(source) {
   return { source: output, count: groups.length };
 }
 
+/** @param {string} root @returns {string[]} */
 export function codeTabFiles(root) {
   return readdirSync(root, { withFileTypes: true }).flatMap((entry) => {
     const path = resolve(root, entry.name);
