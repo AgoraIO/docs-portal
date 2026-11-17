@@ -19,6 +19,20 @@ const Item = components.Accordion as ComponentType<{
 }>;
 
 describe('accordion DOM registration', () => {
+  it('keeps standalone examples collapsible', () => {
+    render(
+      <Item title="Example" value="example">
+        Details
+      </Item>,
+    );
+    const trigger = screen.getByRole('button', { name: 'Example' });
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    fireEvent.click(trigger);
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    fireEvent.click(trigger);
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  });
+
   it('allows the caller to disable collapsing a single open item', () => {
     const onValueChange = vi.fn();
     const ref = vi.fn();

@@ -14,10 +14,10 @@ import {
   TabsTrigger as FumadocsTabsTrigger,
 } from 'fumadocs-ui/components/tabs';
 import {
-  Accordion as FumadocsAccordionRoot,
   AccordionContent as FumadocsAccordionContent,
   AccordionHeader as FumadocsAccordionHeader,
   AccordionItem as FumadocsAccordionItem,
+  Accordion as FumadocsAccordionRoot,
   AccordionTrigger as FumadocsAccordionTrigger,
 } from 'fumadocs-ui/components/ui/accordion';
 import { buttonVariants } from 'fumadocs-ui/components/ui/button';
@@ -302,6 +302,7 @@ function Accordion({
   if (!accordionRoot) {
     return (
       <ControlledFumadocsAccordions
+        collapsible
         onValueChange={(next) =>
           setStandaloneValue(typeof next === 'string' ? next : '')
         }
