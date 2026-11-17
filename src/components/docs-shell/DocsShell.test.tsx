@@ -1082,7 +1082,7 @@ describe('DocsShell', () => {
     expect(screen.getByTestId('docs-sidebar')).toHaveClass(
       'lg:sticky',
       'lg:top-[var(--docs-shell-header-offset)]',
-      'lg:h-[var(--docs-shell-body-height)]',
+      'lg:h-[var(--docs-shell-rail-height,var(--docs-shell-body-height))]',
       'overflow-hidden',
     );
     expect(screen.getByTestId('docs-sidebar-scroll')).toHaveClass(
@@ -1105,7 +1105,7 @@ describe('DocsShell', () => {
     expect(tocRail).toHaveClass(
       'xl:sticky',
       'xl:top-[var(--docs-shell-header-offset)]',
-      'xl:h-[var(--docs-shell-body-height)]',
+      'xl:h-[var(--docs-shell-rail-height,var(--docs-shell-body-height))]',
       'xl:min-h-0',
     );
     expect(tocRail).not.toHaveClass('docs-scrollbar', 'overflow-y-auto');
