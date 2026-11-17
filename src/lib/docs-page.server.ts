@@ -4373,9 +4373,17 @@ function getDocsNavScope({
   source: typeof docsSource;
   tab: string;
 }) {
-  const resolve = (path: string) =>
+  const resolve = (path: string, includeSource = false) =>
     resolveDocsNavScope({
       activePath: path,
+      contentPath: includeSource
+        ? source.getPage(
+            path.split('/').filter(Boolean).slice(1),
+            locale ?? undefined,
+          )?.path
+        : undefined,
+      getNodePath: (node) =>
+        source.getNodeMeta(node, locale ?? undefined)?.path,
       getNodeMeta: (node) =>
         getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
       root: pageTree,
@@ -4384,7 +4392,8 @@ function getDocsNavScope({
   const parent = resolveNavigationParent(pageTree, activePath, (node) =>
     getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
   );
-  return resolve(parent?.url ?? activePath);
+  const path = parent?.url ?? activePath;
+  return resolve(path) ?? (tab === OPENAPI_TAB ? resolve(path, true) : null);
 }
 
 function getScopedSidebarNodes({

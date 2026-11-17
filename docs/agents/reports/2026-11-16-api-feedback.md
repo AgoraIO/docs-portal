@@ -1,3 +1,7 @@
+# Historical checkpoint — superseded scope
+
+The 530-page C++/Unity scope below describes the earlier checkpoint. See [the complete SDK scope audit](2026-11-17-api-navigation-scope-audit.md) for the current implementation and impact.
+
 # API feedback: navigation ownership and signature wrapping
 
 ## Original feedback and current scope
