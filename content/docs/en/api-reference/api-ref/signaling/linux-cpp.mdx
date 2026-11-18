@@ -1764,7 +1764,7 @@ The `UserOnlineStatus` data type contains the following properties:
 
 - Before calling this method, log in to Signaling and make sure the connection is established. If you set `serviceType` in `RtmPrivateConfig`, it must include `RTM_SERVICE_TYPE_MESSAGE`.
 - The query works whether Presence is enabled or disabled in Agora Console.
-- The result reflects the user's status when the server responds. If a user disconnects abnormally, the server takes some time to detect that the user is offline. This method doesn't return the user's last online time and doesn't notify you of later status changes.
+- The result is a snapshot of the user's status when the server processes the query. If a user disconnects abnormally, the server takes some time to detect that the user is offline. This method doesn't return the user's last online time and doesn't notify you of later status changes.
 - A failed query doesn't mean the target user is offline. Check `errorCode` in the callback.
 - Calling `logout` cancels pending queries. After you call `release`, the SDK doesn't guarantee that it triggers callbacks for pending queries.
 

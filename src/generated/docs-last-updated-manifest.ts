@@ -1194,7 +1194,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/server-sdk/typescript.mdx':
     '2026-10-09T04:05:18.000Z',
   'content/docs/en/api-reference/api-ref/signaling/android.mdx':
-    '2026-10-14T16:32:09.000Z',
+    '2026-11-18T07:07:55.000Z',
   'content/docs/en/api-reference/api-ref/signaling/authentication.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/api-reference/api-ref/signaling/authentication.mdx':
@@ -1206,13 +1206,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/signaling/index.mdx':
     '2026-06-30T08:35:58.000Z',
   'content/docs/en/api-reference/api-ref/signaling/ios.mdx':
-    '2026-10-14T16:32:09.000Z',
+    '2026-11-18T07:07:55.000Z',
   'content/docs/en/api-reference/api-ref/signaling/linux-cpp.mdx':
-    '2026-10-14T16:32:09.000Z',
+    '2026-11-18T07:07:55.000Z',
   'content/docs/en/api-reference/api-ref/signaling/linux-java.mdx':
     '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/macos.mdx':
-    '2026-10-14T16:32:09.000Z',
+    '2026-11-18T07:07:55.000Z',
   'content/docs/en/api-reference/api-ref/signaling/meta.json':
     '2026-06-30T10:25:06.000Z',
   'content/docs/en/api-reference/api-ref/signaling/react-native.mdx':
@@ -1222,7 +1222,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/signaling/web.mdx':
     '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/windows-cpp.mdx':
-    '2026-10-14T16:32:09.000Z',
+    '2026-11-18T07:07:55.000Z',
   'content/docs/en/api-reference/api-ref/speech-to-text/api-callback-service.mdx':
     '2026-08-05T09:38:07.000Z',
   'content/docs/en/api-reference/api-ref/speech-to-text/authentication.md':
@@ -1538,7 +1538,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/faq/integration/rtm_token_expiration.mdx':
     '2026-06-26T07:30:26.000Z',
   'content/docs/en/api-reference/faq/integration/rtm2_rtc_integration_issue.mdx':
-    '2026-08-11T15:10:41.000Z',
+    '2026-11-18T07:07:55.000Z',
   'content/docs/en/api-reference/faq/integration/set_custom_user_attributes.mdx':
     '2026-06-29T13:18:27.000Z',
   'content/docs/en/api-reference/faq/integration/set_enabled_set_muted.mdx':
@@ -6236,7 +6236,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/presence.md':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx':
-    '2026-09-10T05:40:14.000Z',
+    '2026-11-18T07:07:55.000Z',
   'content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/meta.json':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.md':
@@ -6367,7 +6367,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/product-overview.md':
     '2026-06-18T08:34:22.000Z',
   'content/docs/en/realtime-media/rtm/quickstart.mdx':
-    '2026-09-10T05:40:14.000Z',
+    '2026-11-18T07:07:55.000Z',
   'content/docs/en/realtime-media/rtm/reference/account-settlement.md':
     '2026-07-02T14:12:17.000Z',
   'content/docs/en/realtime-media/rtm/reference/beginners-guide.md':
@@ -6389,7 +6389,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/reference/downloads.md':
     '2026-09-02T04:56:58.000Z',
   'content/docs/en/realtime-media/rtm/reference/downloads.mdx':
-    '2026-09-10T05:40:14.000Z',
+    '2026-11-18T07:07:55.000Z',
   'content/docs/en/realtime-media/rtm/reference/error-codes.md':
     '2026-06-28T06:33:56.000Z',
   'content/docs/en/realtime-media/rtm/reference/firewall.md':
@@ -6399,13 +6399,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/reference/limitations.md':
     '2026-10-14T16:32:09.000Z',
   'content/docs/en/realtime-media/rtm/reference/limitations.mdx':
-    '2026-10-14T16:32:09.000Z',
+    '2026-11-18T07:07:55.000Z',
   'content/docs/en/realtime-media/rtm/reference/meta.json':
     '2026-10-20T06:13:19.000Z',
   'content/docs/en/realtime-media/rtm/reference/migration-guide.md':
     '2026-07-29T04:01:40.000Z',
   'content/docs/en/realtime-media/rtm/reference/migration-guide.mdx':
-    '2026-09-08T13:17:15.000Z',
+    '2026-11-18T07:07:55.000Z',
   'content/docs/en/realtime-media/rtm/reference/placeholder.md':
     '2026-06-18T03:20:29.000Z',
   'content/docs/en/realtime-media/rtm/reference/pricing.md':
@@ -6413,7 +6413,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/reference/release-notes.md':
     '2026-07-02T06:58:41.000Z',
   'content/docs/en/realtime-media/rtm/reference/release-notes.mdx':
-    '2026-10-20T08:13:51.000Z',
+    '2026-11-18T07:07:55.000Z',
   'content/docs/en/realtime-media/rtm/reference/rest-api.md':
     '2026-06-28T06:41:08.000Z',
   'content/docs/en/realtime-media/rtm/reference/security.md':

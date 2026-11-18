@@ -616,9 +616,9 @@ mRtmClient.getPresence().getUserOnlineStatus("userid", object : ResultCallback<U
 When you use `getUserOnlineStatus`, keep the following points in mind:
 
 - Each call queries one user. To query several users, call the method once for each user. The method has a [rate limit](/en/realtime-media/rtm/reference/limitations#operations-with-dedicated-quotas) of 20 calls per second.
-- If the user is offline or doesn't exist, the query succeeds and reports the user as offline. A failed query doesn't mean that the user is offline. Handle it as an error.
+- If the user is offline or doesn't exist, the query succeeds and returns `online=false`. A failed query means that the user's online status can't be determined. To handle the failure, see [Errors](/en/api-reference/api-ref/signaling/android#errors).
 - You must be logged in to Signaling with a connected session. The query works whether Presence is enabled or disabled in Agora Console.
-- The result shows the user's status when the server responds. If a user disconnects abnormally, the server takes some time to detect that the user is offline. The method doesn't return the user's last online time and doesn't notify you of later changes.
+- The result is a snapshot of the user's status when the server processes the query. If a user disconnects abnormally, the server takes some time to detect that the user is offline. The method doesn't return the user's last online time and doesn't notify you of later changes.
 
 ## User status management
 
@@ -1182,9 +1182,9 @@ rtm.getPresence()?.getUserOnlineStatus(userId: "userId") { status, errorInfo in
 When you use `getUserOnlineStatus`, keep the following points in mind:
 
 - Each call queries one user. To query several users, call the method once for each user. The method has a [rate limit](/en/realtime-media/rtm/reference/limitations#operations-with-dedicated-quotas) of 20 calls per second.
-- If the user is offline or doesn't exist, the query succeeds and reports the user as offline. A failed query doesn't mean that the user is offline. Handle it as an error.
+- If the user is offline or doesn't exist, the query succeeds and returns `online=false`. A failed query means that the user's online status can't be determined. To handle the failure, see [Errors](/en/api-reference/api-ref/signaling/ios#errors).
 - You must be logged in to Signaling with a connected session. The query works whether Presence is enabled or disabled in Agora Console.
-- The result shows the user's status when the server responds. If a user disconnects abnormally, the server takes some time to detect that the user is offline. The method doesn't return the user's last online time and doesn't notify you of later changes.
+- The result is a snapshot of the user's status when the server processes the query. If a user disconnects abnormally, the server takes some time to detect that the user is offline. The method doesn't return the user's last online time and doesn't notify you of later changes.
 
 ## User status management
 
@@ -1868,9 +1868,9 @@ rtm.getPresence()?.getUserOnlineStatus(userId: "userId") { status, errorInfo in
 When you use `getUserOnlineStatus`, keep the following points in mind:
 
 - Each call queries one user. To query several users, call the method once for each user. The method has a [rate limit](/en/realtime-media/rtm/reference/limitations#operations-with-dedicated-quotas) of 20 calls per second.
-- If the user is offline or doesn't exist, the query succeeds and reports the user as offline. A failed query doesn't mean that the user is offline. Handle it as an error.
+- If the user is offline or doesn't exist, the query succeeds and returns `online=false`. A failed query means that the user's online status can't be determined. To handle the failure, see [Errors](/en/api-reference/api-ref/signaling/macos#errors).
 - You must be logged in to Signaling with a connected session. The query works whether Presence is enabled or disabled in Agora Console.
-- The result shows the user's status when the server responds. If a user disconnects abnormally, the server takes some time to detect that the user is offline. The method doesn't return the user's last online time and doesn't notify you of later changes.
+- The result is a snapshot of the user's status when the server processes the query. If a user disconnects abnormally, the server takes some time to detect that the user is offline. The method doesn't return the user's last online time and doesn't notify you of later changes.
 
 ## User status management
 
@@ -2829,9 +2829,9 @@ class RtmEventHandler : public IRtmEventHandler {
 When you use `getUserOnlineStatus`, keep the following points in mind:
 
 - Each call queries one user. To query several users, call the method once for each user. The method has a [rate limit](/en/realtime-media/rtm/reference/limitations#operations-with-dedicated-quotas) of 20 calls per second.
-- If the user is offline or doesn't exist, the query succeeds and reports the user as offline. A failed query doesn't mean that the user is offline. Handle it as an error.
+- If the user is offline or doesn't exist, the query succeeds and returns `online=false`. A failed query means that the user's online status can't be determined. To handle the failure, see [Errors](/en/api-reference/api-ref/signaling/windows-cpp#errors).
 - You must be logged in to Signaling with a connected session. The query works whether Presence is enabled or disabled in Agora Console.
-- The result shows the user's status when the server responds. If a user disconnects abnormally, the server takes some time to detect that the user is offline. The method doesn't return the user's last online time and doesn't notify you of later changes.
+- The result is a snapshot of the user's status when the server processes the query. If a user disconnects abnormally, the server takes some time to detect that the user is offline. The method doesn't return the user's last online time and doesn't notify you of later changes.
 
 ## User status management
 
@@ -3248,9 +3248,9 @@ class RtmEventHandler : public IRtmEventHandler {
 When you use `getUserOnlineStatus`, keep the following points in mind:
 
 - Each call queries one user. To query several users, call the method once for each user. The method has a [rate limit](/en/realtime-media/rtm/reference/limitations#operations-with-dedicated-quotas) of 20 calls per second.
-- If the user is offline or doesn't exist, the query succeeds and reports the user as offline. A failed query doesn't mean that the user is offline. Handle it as an error.
+- If the user is offline or doesn't exist, the query succeeds and returns `online=false`. A failed query means that the user's online status can't be determined. To handle the failure, see [Errors](/en/api-reference/api-ref/signaling/linux-cpp#errors).
 - You must be logged in to Signaling with a connected session. The query works whether Presence is enabled or disabled in Agora Console.
-- The result shows the user's status when the server responds. If a user disconnects abnormally, the server takes some time to detect that the user is offline. The method doesn't return the user's last online time and doesn't notify you of later changes.
+- The result is a snapshot of the user's status when the server processes the query. If a user disconnects abnormally, the server takes some time to detect that the user is offline. The method doesn't return the user's last online time and doesn't notify you of later changes.
 
 ## User status management
 

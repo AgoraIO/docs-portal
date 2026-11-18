@@ -42,7 +42,7 @@ Starting with v2.3.1, the Signaling SDK is distributed through the Agora Maven r
 
 **Query user online status**
 
-You can now check whether a user is logged in to Signaling without joining or subscribing to a channel. Each query returns the status of one user at the moment the server responds. An offline or nonexistent user returns a successful result that reports the user as offline. The query works whether Presence is enabled or disabled in Agora Console. For details, see [Query user online status](/en/realtime-media/rtm/build/manage-presence-and-metadata/presence#query-user-online-status).
+You can now check whether a user is logged in to Signaling without joining or subscribing to a channel. Each query returns a one-time snapshot of one user's status. For an offline or nonexistent user, the query succeeds and returns `online=false`. A failed query means that the user's online status can't be determined. To handle the failure, see [Errors](/en/api-reference/api-ref/signaling/android#errors). The query works whether Presence is enabled or disabled in Agora Console. For details, see [Query user online status](/en/realtime-media/rtm/build/manage-presence-and-metadata/presence#query-user-online-status).
 
 #### API changes
 
@@ -526,7 +526,7 @@ Starting with v2.3.1, the Signaling SDK is distributed through the Agora CocoaPo
 
 **Query user online status**
 
-You can now check whether a user is logged in to Signaling without joining or subscribing to a channel. Each query returns the status of one user at the moment the server responds. An offline or nonexistent user returns a successful result that reports the user as offline. The query works whether Presence is enabled or disabled in Agora Console. For details, see [Query user online status](/en/realtime-media/rtm/build/manage-presence-and-metadata/presence#query-user-online-status).
+You can now check whether a user is logged in to Signaling without joining or subscribing to a channel. Each query returns a one-time snapshot of one user's status. For an offline or nonexistent user, the query succeeds and returns `online=false`. A failed query means that the user's online status can't be determined. To handle the failure, see [Errors](/en/api-reference/api-ref/signaling/ios#errors). The query works whether Presence is enabled or disabled in Agora Console. For details, see [Query user online status](/en/realtime-media/rtm/build/manage-presence-and-metadata/presence#query-user-online-status).
 
 #### API changes
 
@@ -1371,7 +1371,7 @@ Starting with v2.3.1, the Signaling SDK is distributed through the Agora CocoaPo
 
 **Query user online status**
 
-You can now check whether a user is logged in to Signaling without joining or subscribing to a channel. Each query returns the status of one user at the moment the server responds. An offline or nonexistent user returns a successful result that reports the user as offline. The query works whether Presence is enabled or disabled in Agora Console. For details, see [Query user online status](/en/realtime-media/rtm/build/manage-presence-and-metadata/presence#query-user-online-status).
+You can now check whether a user is logged in to Signaling without joining or subscribing to a channel. Each query returns a one-time snapshot of one user's status. For an offline or nonexistent user, the query succeeds and returns `online=false`. A failed query means that the user's online status can't be determined. To handle the failure, see [Errors](/en/api-reference/api-ref/signaling/macos#errors). The query works whether Presence is enabled or disabled in Agora Console. For details, see [Query user online status](/en/realtime-media/rtm/build/manage-presence-and-metadata/presence#query-user-online-status).
 
 #### API changes
 
@@ -2701,7 +2701,7 @@ This release adds a pure virtual method to `IRtmPresence` and a callback to `IRt
 
 **Query user online status**
 
-You can now check whether a user is logged in to Signaling without joining or subscribing to a channel. Each query returns the status of one user at the moment the server responds. An offline or nonexistent user returns a successful result that reports the user as offline. The query works whether Presence is enabled or disabled in Agora Console. For details, see [Query user online status](/en/realtime-media/rtm/build/manage-presence-and-metadata/presence#query-user-online-status).
+You can now check whether a user is logged in to Signaling without joining or subscribing to a channel. Each query returns a one-time snapshot of one user's status. For an offline or nonexistent user, the query succeeds and returns `online=false`. A failed query means that the user's online status can't be determined. To handle the failure, see [Errors](/en/api-reference/api-ref/signaling/linux-cpp#errors). The query works whether Presence is enabled or disabled in Agora Console. For details, see [Query user online status](/en/realtime-media/rtm/build/manage-presence-and-metadata/presence#query-user-online-status).
 
 #### API changes
 
@@ -3296,7 +3296,7 @@ This release adds a pure virtual method to `IRtmPresence` and a callback to `IRt
 
 **Query user online status**
 
-You can now check whether a user is logged in to Signaling without joining or subscribing to a channel. Each query returns the status of one user at the moment the server responds. An offline or nonexistent user returns a successful result that reports the user as offline. The query works whether Presence is enabled or disabled in Agora Console. For details, see [Query user online status](/en/realtime-media/rtm/build/manage-presence-and-metadata/presence#query-user-online-status).
+You can now check whether a user is logged in to Signaling without joining or subscribing to a channel. Each query returns a one-time snapshot of one user's status. For an offline or nonexistent user, the query succeeds and returns `online=false`. A failed query means that the user's online status can't be determined. To handle the failure, see [Errors](/en/api-reference/api-ref/signaling/windows-cpp#errors). The query works whether Presence is enabled or disabled in Agora Console. For details, see [Query user online status](/en/realtime-media/rtm/build/manage-presence-and-metadata/presence#query-user-online-status).
 
 #### API changes
 
