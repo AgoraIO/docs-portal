@@ -19,6 +19,7 @@ import {
   toCnContentSearchUrl,
   toCnPublicSearchUrl,
 } from './cn-search-urls.mjs';
+import { getComponentSearchText } from './component-search-text';
 import { assertValidSearchSection, type SearchSection } from './kb-record';
 import {
   stripSearchComponentTags,
@@ -679,11 +680,13 @@ function recoverRenderedComponentText(
   const sources = new Map(
     sections.map((section) => [
       section.id,
-      normalize(
-        (componentSourceById.get(section.id) ?? '').replace(
-          /&(?:#\d+|#x[\da-f]+|[a-z][\da-z]+);/gi,
-          (entity) => load(entity).text(),
-        ),
+      getComponentSearchText(componentSourceById.get(section.id) ?? '').map(
+        (value) =>
+          normalize(
+            value.replace(/&(?:#\d+|#x[\da-f]+|[a-z][\da-z]+);/gi, (entity) =>
+              load(entity).text(),
+            ),
+          ),
       ),
     ]),
   );
@@ -702,7 +705,7 @@ function recoverRenderedComponentText(
       if (
         !text ||
         !section ||
-        !sources.get(section.id)?.includes(text) ||
+        !sources.get(section.id)?.some((value) => value.includes(text)) ||
         content.get(section.id)?.includes(text)
       )
         return;

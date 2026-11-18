@@ -6,6 +6,7 @@ import { parseSearchPageState } from './search-page-state';
 const allowedParams = new Set([
   'q',
   'page',
+  'pageSize',
   'type',
   'product',
   'platform',
@@ -38,6 +39,8 @@ export function parseSearchApiQuery(params: URLSearchParams): CnSearchQuery {
     (input.q?.length ?? 0) > 500 ||
     (input.page !== undefined &&
       (!/^[1-9]\d{0,2}$/.test(input.page) || Number(input.page) > 500)) ||
+    (input.pageSize !== undefined &&
+      (!/^[1-9]\d?$/.test(input.pageSize) || Number(input.pageSize) > 20)) ||
     (input.type !== undefined &&
       !['all', 'docs', 'api', 'faq', 'openapi'].includes(input.type)) ||
     (input.product !== undefined && !identifier.test(input.product)) ||
@@ -46,7 +49,13 @@ export function parseSearchApiQuery(params: URLSearchParams): CnSearchQuery {
     (input.version !== undefined && !/^[\w.-]{1,80}$/.test(input.version))
   )
     throw new Error('Invalid search parameters');
-  return { ...parseSearchPageState(input), tab: input.tab };
+  return {
+    ...parseSearchPageState(input),
+    tab: input.tab,
+    ...(input.pageSize !== undefined
+      ? { pageSize: Number(input.pageSize) }
+      : {}),
+  };
 }
 
 export function readSearchServiceConfig(
