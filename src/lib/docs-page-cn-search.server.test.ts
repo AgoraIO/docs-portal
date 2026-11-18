@@ -106,7 +106,7 @@ describe('CN search component navigation', () => {
     expect(entries).toEqual([
       expect.objectContaining({
         url: '/zh-CN/api-reference/rtc/android/channel',
-        version: '4.7.0',
+        version: '4.7.1',
         content: 'joinChannel [1/2]',
       }),
     ]);

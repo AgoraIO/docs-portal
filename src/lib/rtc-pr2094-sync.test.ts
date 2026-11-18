@@ -471,7 +471,7 @@ describe('RTC PR #2094 frozen source delta', () => {
       ).navScope.versions.find(
         (version: { id: string }) => version.id === 'current',
       ),
-    ).toMatchObject({ label: 'v4.7.0', path: '(current)' });
+    ).toMatchObject({ label: 'v4.7.1', path: '(current)' });
     for (const platform of ['macos', 'cpp-all-platforms']) {
       const text = read(
         `content/docs/zh-CN/api-reference/rtc/${platform}/meta.json`,
@@ -501,8 +501,8 @@ describe('RTC PR #2094 frozen source delta', () => {
         href: `https://doc-archive.shengwang.cn/archive/0.0.519/api-ref/rtc/${platform}/API/rtc_api_overview`,
       };
       const versions = meta.navScope?.versions ?? [];
-      expect(versions[1]).toEqual(archive);
-      expect(raw.navScope.versions[1]).toEqual(archive);
+      expect(versions[2]).toEqual(archive);
+      expect(raw.navScope.versions[2]).toEqual(archive);
       expect(new Set(versions.map((version) => version.id)).size).toBe(
         versions.length,
       );
@@ -520,7 +520,7 @@ describe('RTC PR #2094 frozen source delta', () => {
           path: '4.6.2',
           href: `https://doc-archive.shengwang.cn/archive/0.0.492/api-ref/rtc/${platform}/API/rtc_api_overview`,
         });
-        expect(raw.navScope.versions[2]).toEqual(separatelyOwnedArchive);
+        expect(raw.navScope.versions[3]).toEqual(separatelyOwnedArchive);
       }
       const localVersions =
         platform === 'android'
@@ -540,7 +540,7 @@ describe('RTC PR #2094 frozen source delta', () => {
         title: platform === 'android' ? 'Android API 参考' : 'iOS API 参考',
         navScope: {
           defaultVersion: 'current',
-          versions: [{ id: 'current', label: 'v4.7.0', path: '(current)' }],
+          versions: [{ id: 'current', label: 'v4.7.1', path: '(current)' }],
         },
         pages: platform === 'android' ? ['(current)', '4.6.0'] : ['(current)'],
       });

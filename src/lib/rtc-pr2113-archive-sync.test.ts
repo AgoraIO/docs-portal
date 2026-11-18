@@ -8,11 +8,11 @@ import { resolveDocsNavScope } from './docs-nav-scope';
 const cases = [
   {
     platform: 'android',
-    current: 'v4.7.0',
+    current: 'v4.7.1',
     version: '4.6.2',
     legacy: 'android',
   },
-  { platform: 'ios', current: 'v4.7.0', version: '4.6.2', legacy: 'ios' },
+  { platform: 'ios', current: 'v4.7.1', version: '4.6.2', legacy: 'ios' },
   {
     platform: 'flutter',
     current: 'v6.6.4',
@@ -138,14 +138,20 @@ describe('RTC upstream PR #2113 historical API archive parity', () => {
         // The complete archive inventory extends the original PR's prefix.
         expect(
           meta.navScope?.versions
-            ?.slice(0, testCase.platform === 'android' ? 4 : 3)
+            ?.slice(0, testCase.platform === 'android' ? 5 : 4)
             .map((version) => version.id),
         ).toEqual(
           testCase.platform === 'android'
-            ? ['current', '4.6.4', '4.6.2', '4.6.0']
-            : ['current', '4.6.4', '4.6.2'],
+            ? ['current', '4.7.0', '4.6.4', '4.6.2', '4.6.0']
+            : ['current', '4.7.0', '4.6.4', '4.6.2'],
         );
         expect(meta.navScope?.versions?.[1]).toEqual({
+          id: '4.7.0',
+          label: 'v4.7.0',
+          path: '4.7.0',
+          href: `https://doc-archive.shengwang.cn/archive/0.0.543/api-ref/rtc/${testCase.platform}/API/rtc_api_overview`,
+        });
+        expect(meta.navScope?.versions?.[2]).toEqual({
           id: '4.6.4',
           label: 'v4.6.4',
           path: '4.6.4',

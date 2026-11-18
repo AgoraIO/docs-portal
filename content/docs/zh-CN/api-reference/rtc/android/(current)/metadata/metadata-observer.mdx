@@ -196,6 +196,10 @@ public abstract byte[] onReadyToSendMetadata(long timeStampMs, int sourceType)
 
 <a id="callback_imetadataobserver_onreadytosendmetadata__detailed_desc"></a>
 
+自 v4.7.1 起，该回调支持为本地合图后的视频流提供 Metadata。当 `sourceType` 为 `VIDEO_SOURCE_TRANSCODED` 时，返回需要随合图视频流发送的元数据。
+
+Metadata 由合图后的输出流携带。参与合图的摄像头、屏幕共享等输入源的 Metadata 不会自动合并到输出流中。
+
 :::note
 注： 请确保元数据的大小不超过 [getMaxMetadataSize](/zh-CN/api-reference/rtc/android/metadata/metadata-observer#api_imetadataobserver_getmaxmetadatasize) 回调中设置的值。如果超过该值，SDK 会截除超出部分。
 :::
@@ -220,7 +224,7 @@ public abstract byte[] onReadyToSendMetadata(long timeStampMs, int sourceType)
 <a id="sourcetype"></a>
 <Parameter name="sourceType">
 
-视频数据类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/android/enum-videosourcetype)。
+视频数据类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/android/enum-videosourcetype)。自 v4.7.1 起，本地合图输出流对应的值为 `VIDEO_SOURCE_TRANSCODED`。
 
 </Parameter>
 </ParameterList>
@@ -229,7 +233,7 @@ public abstract byte[] onReadyToSendMetadata(long timeStampMs, int sourceType)
 
 ### 返回值
 
-方法调用成功时，返回希望发送的元数据，格式为字节数组。
+返回希望发送的元数据，格式为字节数组。没有待发送的数据时返回 `null`。
 
 ### 所属接口类
 
