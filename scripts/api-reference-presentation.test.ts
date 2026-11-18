@@ -15,6 +15,22 @@ const inspect = (html: string) => {
   return inspectReference().issues.map((issue: { rule: string }) => issue.rule);
 };
 
+it('detects required-column alignment, width and wrapping regressions', () => {
+  const broken = inspect(
+    '<table><thead><tr><th data-table-column-kind="required" style="min-width:128px;white-space:normal;text-align:right">是否必填</th></tr></thead><tbody><tr><td data-table-column-kind="required" style="min-width:128px;text-align:right">是</td></tr></tbody></table>',
+  );
+  expect(broken).toContain('wrapping-required-header');
+  expect(broken).toContain('misaligned-required-column');
+  expect(broken).toContain('oversized-required-column');
+  document.body.innerHTML = '<article><h1>Reference</h1></article>';
+  const valid = inspect(
+    '<table><thead><tr><th data-table-column-kind="required" style="min-width:64px;white-space:nowrap;text-align:center">Required</th></tr></thead><tbody><tr><td data-table-column-kind="required" style="min-width:64px;text-align:center">Optional for POST</td></tr></tbody></table>',
+  );
+  expect(valid).not.toContain('wrapping-required-header');
+  expect(valid).not.toContain('misaligned-required-column');
+  expect(valid).not.toContain('oversized-required-column');
+});
+
 it('rejects empty return descriptions and keeps informative type-only returns', () => {
   expect(
     inspect(

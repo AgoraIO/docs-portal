@@ -108,6 +108,15 @@ export function inspectReference() {
     if (!visible(cell) || cell.closest('pre')) continue;
     const text = cell.textContent.trim(),
       style = getComputedStyle(cell);
+    if (cell.dataset.tableColumnKind === 'required') {
+      if (style.textAlign !== 'center') add('misaligned-required-column', cell);
+      if (cell.tagName === 'TH' && style.whiteSpace !== 'nowrap')
+        add('wrapping-required-header', cell);
+      const rem =
+        parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+      if (parseFloat(style.minWidth) > rem * 4 + 0.5)
+        add('oversized-required-column', cell);
+    }
     const width =
       cell.clientWidth -
       parseFloat(style.paddingLeft) -
@@ -311,6 +320,7 @@ export const canaryHtml = `<!doctype html><html><body><article>
 <table style="table-layout:fixed;width:20px"><tr><td style="word-break:break-all;width:20px">DELETE</td></tr></table>
 <div style="border-radius:12px;overflow:visible"><div role="tablist" style="background:red">Tabs</div></div>
 <table style="table-layout:fixed;width:20px"><tr><td style="width:20px;line-height:20px">A long description that has been squeezed into a very narrow table column and is no longer readable as continuous prose.</td></tr></table>
+<table><thead><tr><th data-table-column-kind="required" style="min-width:128px;white-space:normal;text-align:right">是否必填</th></tr></thead><tbody><tr><td data-table-column-kind="required" style="min-width:128px;text-align:right">是</td></tr></tbody></table>
 <aside><nav><a style="display:block;width:20px;overflow:hidden">A clipped table of contents link</a></nav></aside>
 <figure class="shiki" data-code-language="cpp"><pre><code>int callback();</code></pre></figure>
 <figure data-code-language="cpp"><pre><code><span style="--shiki-light:red;--shiki-dark:red;color:black">int</span><span style="--shiki-light:blue;--shiki-dark:blue;color:black">callback</span></code></pre></figure>
@@ -333,6 +343,9 @@ export const canaryRules = [
   'split-short-table-word',
   'tab-frame-leak',
   'squeezed-table-prose',
+  'misaligned-required-column',
+  'wrapping-required-header',
+  'oversized-required-column',
   'toc-overflow',
   'missing-syntax-highlight',
   'flattened-syntax-highlight',
