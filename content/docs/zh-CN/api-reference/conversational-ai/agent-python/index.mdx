@@ -651,7 +651,7 @@ from agora_agent.cn import (
     AliyunLLM, BytedanceLLM, DeepSeekLLM, TencentLLM,
     MiniMaxTTS, MiniMaxDuplexTTS, TencentTTS, BytedanceTTS, MicrosoftTTS,
     CosyVoiceTTS, BytedanceDuplexTTS, StepFunTTS,
-    FengmingSTT, StepFunSTT, TencentSTT, MicrosoftSTT,
+    QwenSTT, FengmingSTT, StepFunSTT, TencentSTT, MicrosoftSTT,
     SenseTimeAvatar, SpatiusAvatar,
 )
 ```
@@ -928,6 +928,36 @@ from agora_agent.cn import StepFunTTS
 ### 语音识别服务商 [#stt-vendors]
 
 与 [`with_stt()`](#withsttvendor) 配合使用。
+
+#### QwenSTT
+
+阿里云百炼 Qwen ASR 服务，输出 `asr.vendor = "qwen"`。`QwenSTTOptions` 定义构造字段，`QwenSTT` 继承这些字段并提供 `to_config()`。
+
+```python
+from agora_agent.cn import QwenSTT
+from agora_agent.agentkit.vendors.cn import QwenSTTOptions
+```
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `api_key` | `str` | Yes | — | 非空的 DashScope API key；显式值会覆盖 `additional_params["api_key"]` |
+| `additional_params` | `Dict[str, Any]` | No | `None` | 附加 Qwen ASR 参数，写入 `asr.params`；显式传入的 `False` 和空列表会保留 |
+
+省略 `api_key`、传入空字符串，或在构造函数中传入未声明的字段时，会抛出 Pydantic `ValidationError`。其他 provider 参数应放入 `additional_params`。
+
+识别语言由智能体的 `turn_detection.language` 写入 REST `asr.language`，默认值为 `en-US`。中文识别示例（`client` 为已创建的 client）：
+
+```python
+from agora_agent import Agent
+from agora_agent.cn import QwenSTT
+
+agent = Agent(
+    client=client,
+    turn_detection={"language": "zh-CN"},
+).with_stt(QwenSTT(api_key="your-dashscope-key"))
+```
+
+`QwenSTT` 属于 `CNSTT` 类型联合，并可通过 `CNSTTVendors.qwen` 或 `CN_VENDOR_NAMESPACE.asr["qwen"]` 访问。
 
 #### FengmingSTT
 

@@ -1,0 +1,134 @@
+---
+title: 云端录制 AI 对话
+---
+
+本文介绍如何使用云端录制保存用户与智能体的对话音频，以及录制的配置步骤和使用注意事项。
+
+## 适用范围
+
+对话式 AI 兼容录制模式适用于纯音频单流录制，可分别保存用户和智能体的音频。视频和合流录制不在该模式的适用范围内。
+
+## 配置智能体
+
+### 减少录制文件开头的静音
+
+录制文件开头可能包含智能体尚未开始说话时的静音片段。为减少这类静音，在智能体启动请求中将 `properties.parameters.rtc.publish_audio_auto_publishing` 设置为 `false`：
+
+```json
+{
+  "properties": {
+    "parameters": {
+      "rtc": {
+        "publish_audio_auto_publishing": false
+      }
+    }
+  }
+}
+```
+
+对话式 AI 兼容录制模式需在云端录制的 Start 请求中另行开启，详见[启动云端录制](#启动云端录制)。
+
+### 智能体配置示例
+
+以下是包含上述配置的智能体启动请求体示例：
+
+```json
+{
+    "name": "TestConvoAgent",
+    "properties": {
+        "channel": "{{AccessChannel}}",
+        "token": "{{token}}",
+        "agent_rtc_uid": "0",
+        "remote_rtc_uids": [
+            "*"
+        ],
+        "idle_timeout": 30,
+        "advanced_features": {
+            "enable_bhvs": true
+        },
+        "llm": {
+            "vendor": "aliyun",
+            "url": "https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/compatible-mode/v1/chat/completions",
+            "api_key": "<your_dashscope_api_key>",
+            "system_messages": [
+                {
+                "role": "system",
+                "content": "You are a helpful chatbot."
+                }
+            ],
+            "greeting_message": "您好，有什么可以帮您？",
+            "failure_message": "抱歉，我无法回答这个问题。",
+            "max_history": 32,
+            "params": {
+                "model": "qwen-plus",
+                "max_tokens": 1024,
+                "enable_thinking": false
+            }
+        },
+        "tts": {
+            "vendor": "minimax",
+            "params": {
+                "key": "<your_minimax_api_key>",
+                "model": "speech-2.8-turbo",
+                "voice_setting": {
+                    "voice_id": "female-shaonv",
+                    "speed": 1,
+                    "vol": 1,
+                    "pitch": 0,
+                    "emotion": "happy"
+                },
+                "audio_setting": {
+                    "sample_rate": 16000
+                }
+            }
+        },
+        "turn_detection": {
+            "silence_duration_ms": 640
+        },
+        "parameters": {
+            "enable_dump": true,
+            "enable_error_message": true,
+            "enable_delay": true,
+            "rtc": {
+                "publish_audio_auto_publishing": false
+            }
+        }
+    }
+}
+```
+
+## 启动云端录制
+
+如需完整录制对话，应先启动云端录制，使录制端加入频道并完成订阅，再开始智能体对话。
+
+1. 按照[单流录制流程](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual)获取录制资源 ID，并准备频道名、录制用户 UID、Token 和云存储配置。
+2. 调用 [POST 开启云端录制](/zh-CN/api-reference/api-ref/cloud-recording/start)，将 URL 中的 `mode` 设置为 `raw`，并将 `clientRequest.recordingConfig.streamTypes` 设置为 `0`，选择纯音频单流录制。
+3. 在云端录制启动请求的 `clientRequest.advanceConfig` 中添加以下配置，开启对话式 AI 兼容录制模式。以下为请求体片段：
+
+   ```json
+   {
+     "clientRequest": {
+       "advanceConfig": {
+         "blankAudioVideoDuration": 2147483647,
+         "convoAiCompatibleEnable": true
+       }
+     }
+   }
+   ```
+
+4. 待录制端加入频道并完成订阅后，使用前述配置启动智能体并开始对话。
+
+参数说明
+
+| 字段 | 说明 |
+| --- | --- |
+| `blankAudioVideoDuration` | 配置音视频流均处于静音状态多久后截断录制文件，单位为毫秒。 |
+| `convoAiCompatibleEnable` | 设置为 `true`，开启对话式 AI 兼容录制模式。 |
+
+各参数的详细说明，请参见 [POST 开启云端录制](/zh-CN/api-reference/api-ref/cloud-recording/start) API 参考。
+
+## 使用注意事项
+
+- 如需完整录制对话，应先启动云端录制，待录制端加入频道并完成订阅后，再开始智能体对话。
+- 在对话中途启动录制，或录制服务发生故障、重启后恢复录制时，可能无法完整录下智能体正在播放的语音，或只能录到该段语音的尾部。
+- 录制文件中的语音先后顺序和打断位置，可能与用户实际听到的情况不同。例如，录制中的智能体语音已经停止，但发起打断的用户语音稍后才出现。
