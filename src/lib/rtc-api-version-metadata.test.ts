@@ -3,6 +3,12 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const apiMetaPaths = ['android', 'ios', 'macos', 'cpp-all-platforms'] as const;
+const currentVersions = {
+  android: 'v4.7.1',
+  ios: 'v4.7.1',
+  macos: 'v4.7.0',
+  'cpp-all-platforms': 'v4.7.0',
+} as const;
 
 function readApiMeta(platform: (typeof apiMetaPaths)[number]) {
   const path = resolve(
@@ -17,14 +23,17 @@ function readApiMeta(platform: (typeof apiMetaPaths)[number]) {
 }
 
 describe('RTC Native API version metadata', () => {
-  it.each(apiMetaPaths)('labels %s current as v4.7.0', (platform) => {
-    const meta = readApiMeta(platform);
-    expect(meta.navScope.versions[0]).toEqual({
-      id: 'current',
-      label: 'v4.7.0',
-      path: '(current)',
-    });
-  });
+  it.each(apiMetaPaths)(
+    'labels %s with its current SDK version',
+    (platform) => {
+      const meta = readApiMeta(platform);
+      expect(meta.navScope.versions[0]).toEqual({
+        id: 'current',
+        label: currentVersions[platform],
+        path: '(current)',
+      });
+    },
+  );
 
   it('uses the old-site archive for Android v4.6.0 while retaining its local source', () => {
     const meta = readApiMeta('android');
