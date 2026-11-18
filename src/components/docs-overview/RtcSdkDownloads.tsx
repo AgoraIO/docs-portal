@@ -1,5 +1,6 @@
 import { getPlatformIconSrc } from './platform-icon-src';
 import { getRtcDownloadCardEntries } from './rtc-download-card-entries';
+import { getRtcIosPackageSizeContent } from './rtc-ios-package-size-content';
 import { zhCNRtcSdkDownloadPlatforms } from './rtc-sdk-downloads-data.zh-cn';
 import { SdkDownloadCard } from './SdkDownloadCard';
 import type { SdkDownloadVersion } from './sdk-downloads-data';
@@ -52,15 +53,16 @@ export function RtcSdkDownloads({
                 product,
                 card.version,
               )}
+              packageNameLabel={
+                ['ios', 'macos'].includes(platform) ? '模块名' : undefined
+              }
               version={
-                platform === 'macos'
-                  ? { ...card.version, packageName: undefined }
-                  : platform === 'unity'
-                    ? {
-                        ...card.version,
-                        label: card.version.label.replace(/-build\.\d+/, ''),
-                      }
-                    : card.version
+                platform === 'unity'
+                  ? {
+                      ...card.version,
+                      label: card.version.label.replace(/-build\.\d+/, ''),
+                    }
+                  : card.version
               }
               versionSuffix={card.versionSuffix}
               packageSizeContent={getPackageSizeContent(
@@ -115,7 +117,7 @@ function getPackageSizeContent(
   const prefix = lite
     ? '集成 SDK 后增加的包体积'
     : `集成基础库 (${library}) SDK 后增加的包体积`;
-  if (platform === 'ios') return `${prefix}为 ${version.packageSize}`;
+  if (platform === 'ios') return getRtcIosPackageSizeContent(product, version);
   return (
     <>
       {prefix} (MB) 数据如下：

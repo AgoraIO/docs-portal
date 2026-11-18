@@ -39,10 +39,10 @@ describe('RTC download platform body parity', () => {
         body.match(/Windows C\+\+ SDK 使用 MSVC 编译工具链。/g) ?? [],
       ).toHaveLength(platform === 'windows' ? 1 : 0);
       expect(body.match(/SDK 默认使用 libc\+\+ \(LLVM\)/g) ?? []).toHaveLength(
-        ['windows', 'harmonyos'].includes(platform) ? 0 : 1,
+        ['windows', 'harmonyos', 'ios', 'macos'].includes(platform) ? 0 : 1,
       );
       expect(body.match(/SDK 提供的库是 FAT Image/g) ?? []).toHaveLength(
-        ['windows', 'harmonyos'].includes(platform) ? 0 : 1,
+        ['windows', 'harmonyos', 'ios', 'macos'].includes(platform) ? 0 : 1,
       );
 
       const downloadSection = body
@@ -97,14 +97,14 @@ describe('RTC download platform body parity', () => {
   it('explains the Full, Lite, and optional-library choices in Apple integration examples', () => {
     const ios = readBody('ios');
     expect(ios).toContain('# 集成 Full SDK');
-    expect(ios).toContain('# 选择性集成 Full SDK 中的基础库和指定动态库');
-    expect(ios).toContain('# 集成 Lite SDK');
-    expect(ios).toContain('# 选择性集成音频 SDK 中的基础库和指定动态库');
+    expect(ios).toContain('# 或选择性集成 Full SDK 中的基础库和指定动态库');
+    expect(ios).toContain('# 或集成 Lite SDK');
+    expect(ios).toContain('# 或选择性集成音频 SDK 中的基础库和指定动态库');
     const spm = ios.split('## 通过 SPM 集成 SDK')[1].split('## 下载 SDK')[0];
-    expect(spm).toContain('// 集成 Full SDK');
-    expect(spm).toContain('// 集成 Lite SDK');
+    expect(spm).toContain('**Full SDK**');
+    expect(spm).toContain('**Lite SDK**');
     expect(readBody('macos')).toContain(
-      '# 选择性集成 SDK 中的基础库和指定动态库',
+      '# 或选择性集成 SDK 中的基础库和指定动态库',
     );
   });
 });

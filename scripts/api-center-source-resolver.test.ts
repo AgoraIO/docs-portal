@@ -26,7 +26,19 @@ type SupplementalEduStorePage = {
 };
 
 type ApiCenterManifestPage = {
-  sourceResolution?: { generator?: string };
+  requestedUrl?: string;
+  discoveredFrom?: string;
+  sourceDelta?: {
+    base?: string;
+    head?: string;
+    pullRequest?: number;
+  };
+  sourceResolution?: {
+    generator?: string;
+    sourcePath?: string;
+    targetPath?: string;
+    targetRoute?: string;
+  };
   supplementalGeneratedSource?: SupplementalEduStorePage['supplementalGeneratedSource'];
 };
 
@@ -108,16 +120,19 @@ describe('API Center source resolver', () => {
     ['cpp', 'iagoraservice', 'iagoraservice.cpp'],
     ['cpp', 'iagoramediartcrecorder', 'iagoramediartcrecorder.cpp'],
     ['cpp', 'iagoramediacomponentfactory', 'iagoramediacomponentfactory.cpp'],
-  ])('keeps local recording %s/%s in its platform navigation scope', (platform, legacyLeaf, targetLeaf) => {
-    expect(
-      resolveExistingApiCenterTarget(
-        `https://doc.shengwang.cn/api-ref/recording/${platform}/${legacyLeaf}`,
-      ),
-    ).toEqual({
-      targetPath: `content/docs/zh-CN/api-reference/local-server-recording/${platform}/${targetLeaf}.mdx`,
-      targetRoute: `/zh-CN/api-reference/local-server-recording/${platform}/${targetLeaf}`,
-    });
-  });
+  ])(
+    'keeps local recording %s/%s in its platform navigation scope',
+    (platform, legacyLeaf, targetLeaf) => {
+      expect(
+        resolveExistingApiCenterTarget(
+          `https://doc.shengwang.cn/api-ref/recording/${platform}/${legacyLeaf}`,
+        ),
+      ).toEqual({
+        targetPath: `content/docs/zh-CN/api-reference/local-server-recording/${platform}/${targetLeaf}.mdx`,
+        targetRoute: `/zh-CN/api-reference/local-server-recording/${platform}/${targetLeaf}`,
+      });
+    },
+  );
 
   it('reuses existing Online KTV solution pages instead of duplicating them under API Reference', () => {
     expect(
@@ -444,13 +459,45 @@ describe('API Center source resolver', () => {
         'WidgetStore',
       ]);
     }
-    expect(
-      manifest.pageEvidence.filter(
-        (page) =>
-          page.sourceResolution?.generator === 'typedoc' &&
-          !isSupplementalEduStorePage(page),
+    const otherTypeDocPages = manifest.pageEvidence.filter(
+      (page) =>
+        page.sourceResolution?.generator === 'typedoc' &&
+        !isSupplementalEduStorePage(page),
+    );
+    // The 162 existing pages remain; PR #2152 adds one public RTC interface.
+    expect(otherTypeDocPages).toHaveLength(163);
+    const servicePlugin = otherTypeDocPages.find(
+      (page) =>
+        page.requestedUrl ===
+        'https://doc.shengwang.cn/api-ref/rtc/javascript/interfaces/iagorartcserviceplugin',
+    );
+    const targetPath =
+      'content/docs/zh-CN/api-reference/rtc/web/interfaces/iagorartcserviceplugin.mdx';
+    expect(servicePlugin).toMatchObject({
+      discoveredFrom: 'source-pr-delta',
+      sourceDelta: {
+        base: '8fd46d74070a18dcb46ef943f6d6768590be9bca',
+        head: 'b9aa4166a265ad2693ced2ce36ea4a7d5e21e826',
+        pullRequest: 2152,
+      },
+      sourceResolution: {
+        generator: 'typedoc',
+        sourcePath: 'html-docs/rtc/Web/interfaces/iagorartcserviceplugin.html',
+        targetPath,
+        targetRoute:
+          '/zh-CN/api-reference/rtc/web/interfaces/iagorartcserviceplugin',
+      },
+    });
+    expect(await fs.readFile(path.resolve(targetPath), 'utf8')).toContain(
+      '### createSubmodule',
+    );
+    const rtcNavigation = JSON.parse(
+      await fs.readFile(
+        path.resolve('content/docs/zh-CN/api-reference/rtc/web/meta.json'),
+        'utf8',
       ),
-    ).toHaveLength(162);
+    ) as { pages: string[] };
+    expect(rtcNavigation.pages).toContain('interfaces/iagorartcserviceplugin');
   });
 
   it.each([
@@ -489,12 +536,15 @@ describe('API Center source resolver', () => {
       'content/docs/zh-CN/introduction/security/sdk-compliance/voice-sdk.mdx',
       '/zh-CN/introduction/security/sdk-compliance/voice-sdk',
     ],
-  ])('resolves merged platform source %s to its rendered platform route', (legacyPath, targetPath, targetRoute) => {
-    expect(resolveExistingApiCenterTarget(legacyPath)).toEqual({
-      targetPath,
-      targetRoute,
-    });
-  });
+  ])(
+    'resolves merged platform source %s to its rendered platform route',
+    (legacyPath, targetPath, targetRoute) => {
+      expect(resolveExistingApiCenterTarget(legacyPath)).toEqual({
+        targetPath,
+        targetRoute,
+      });
+    },
+  );
 
   it('parses quoted CSV fields without losing commas', () => {
     expect(

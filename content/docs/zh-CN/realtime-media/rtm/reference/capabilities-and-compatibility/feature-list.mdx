@@ -59,6 +59,7 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
+| 查询用户在线状态 | [`getUserOnlineStatus`](/zh-CN/api-reference/rtm/android/presence#getUserOnlineStatus) |
 | 查询频道在线用户 | [`void whoNow(String channelName, RtmChannelType channelType, PresenceOptions options, ResultCallback<WhoNowResult> resultCallback)`](/zh-CN/api-reference/rtm/android/presence#whonow) |
 | 查询用户所在频道 | [`void whereNow(String userId, ResultCallback<ArrayList<ChannelInfo>> resultCallback)`](/zh-CN/api-reference/rtm/android/presence#wherenow) |
 | 设置用户临时状态 | [`void setState(String channelName, RtmChannelType channelType, Map<String, String> items, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/presence#setstate) |
@@ -151,6 +152,7 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
+| 查询用户在线状态 | [`getUserOnlineStatus`](/zh-CN/api-reference/rtm/ios/presence#getUserOnlineStatus) |
 | 查询频道在线用户 | [`[[rtm getPresence] whoNow:channelType:options:completion]`](/zh-CN/api-reference/rtm/ios/presence#whonow) |
 | 查询用户所在频道 | [`[[rtm getPresence] whereNow:completion]`](/zh-CN/api-reference/rtm/ios/presence#wherenow) |
 | 设置用户临时状态 | [`[[rtm getPresence] setState:channelType:items:completion]`](/zh-CN/api-reference/rtm/ios/presence#setstate) |
@@ -332,6 +334,7 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
+| 查询用户在线状态 | [`getUserOnlineStatus`](/zh-CN/api-reference/rtm/harmonyos/presence#getUserOnlineStatus) |
 | 查询频道在线用户 | [`rtmClient.presence.whoNow(...): Promise<WhoNowResponse>;`](/zh-CN/api-reference/rtm/harmonyos/presence#whonow) |
 | 查询用户所在频道 | [`rtmClient.presence.whereNow(...): Promise<WhereNowResponse>;`](/zh-CN/api-reference/rtm/harmonyos/presence#wherenow) |
 | 设置用户临时状态 | [`rtmClient.presence.setState(...): Promise<SetStateResponse>;`](/zh-CN/api-reference/rtm/harmonyos/presence#setstate) |
@@ -523,6 +526,7 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
+| 查询用户在线状态 | [`getUserOnlineStatus`](/zh-CN/api-reference/rtm/cpp/presence#getUserOnlineStatus) |
 | 查询频道在线用户 | [`void whoNow(const char* channelName, RTM_CHANNEL_TYPE channelType, const PresenceOptions& options, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/presence#whonow) |
 | 查询用户所在频道 | [`void whereNow(const char* userId, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/presence#wherenow) |
 | 设置用户临时状态 | [`void setState(const char* channelName, RTM_CHANNEL_TYPE channelType, const StateItem* items, size_t count, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/presence#setstate) |
@@ -615,6 +619,7 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
+| 查询用户在线状态 | [`getUserOnlineStatus`](/zh-CN/api-reference/rtm/swift/presence#getUserOnlineStatus) |
 | 查询频道在线用户 | [`rtm.getPresence()?.whoNow(channelName: String, channelType: AgoraRtmChannelType, options: AgoraRtmPresenceOptions?, completion completionBlock: AgoraRtmWhoNowBlock? = nil)`](/zh-CN/api-reference/rtm/ios/presence#whonow) |
 | 查询用户所在频道 | [`rtm.getPresence()?.whereNow(userId: String, completion completionBlock: AgoraRtmWhereNowBlock? = nil)`](/zh-CN/api-reference/rtm/ios/presence#wherenow) |
 | 设置用户临时状态 | [`rtm.getPresence()?.setState(channelName: String, channelType: AgoraRtmChannelType, items: [String: String], completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/presence#setstate) |

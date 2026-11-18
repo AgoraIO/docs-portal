@@ -138,6 +138,44 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 ## Methods
 
+<a id="addreferencetrack"></a>
+
+### addReferenceTrack
+
+<ApiSignature>
+
+addReferenceTrack(track: [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack) | [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack)): void
+
+</ApiSignature>
+
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[addReferenceTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#addreferencetrack)
+
+向当前音频扩展链路添加参考音轨。
+
+<ParameterList title="Parameters">
+<Parameter name="track" required>
+
+<ParameterType>
+
+[ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack) | [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack)
+
+</ParameterType>
+
+作为参考输入的本地或远端音频轨道。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
 <a id="close"></a>
 
 ### close
@@ -382,6 +420,47 @@ number
 </ApiReturnType>
 
 音量等级值，范围 [0, 1]，1 代表理论最大音量。通常该值大于 0.6 代表用户在持续说话。
+
+</ApiReturns>
+
+<a id="getvolumelevels"></a>
+
+### getVolumeLevels
+
+<ApiSignature>
+
+getVolumeLevels(channels?: number[]): number[]
+
+</ApiSignature>
+
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[getVolumeLevels](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#getvolumelevels)
+
+获取本地音频轨道各原始声道的音量。
+
+返回的音量基于声道选择和混音前的音频数据。未启用多声道处理时，返回仅包含 [getVolumeLevel](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#getvolumelevel) 结果的数组。
+
+:::info[自从]
+*4.24.10*
+:::
+
+<ParameterList title="Parameters">
+<Parameter name="channels" type="number[]" optional>
+
+需要查询的声道索引，从 `0` 开始。不设置时查询所有声道。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number[]
+
+</ApiReturnType>
+
+音量数组，正常音频的音量范围为 [0, 1]，`0` 表示静音。数组索引对应原始声道索引；
+ 指定 `channels` 时，未查询的声道位置为空。尚未读取到音频数据时，可能返回空数组或空位置。
 
 </ApiReturns>
 
@@ -658,6 +737,130 @@ Inherited from EventEmitter.removeAllListeners
 <Parameter name="event" type="string" optional>
 
 指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removeextension"></a>
+
+### removeExtension
+
+<ApiSignature>
+
+removeExtension(extension: IAudioExtension): boolean
+
+</ApiSignature>
+
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[removeExtension](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#removeextension)
+
+从本地音频轨道移除音频插件。
+
+<ParameterList title="Parameters">
+<Parameter name="extension" type="IAudioExtension" required>
+
+音频插件实例。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+是否成功移除。
+
+</ApiReturns>
+
+<a id="removereferencetrack"></a>
+
+### removeReferenceTrack
+
+<ApiSignature>
+
+removeReferenceTrack(track: [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack) | [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack)): boolean
+
+</ApiSignature>
+
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[removeReferenceTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#removereferencetrack)
+
+从当前音频扩展链路移除参考音轨。
+
+<ParameterList title="Parameters">
+<Parameter name="track" required>
+
+<ParameterType>
+
+[ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack) | [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack)
+
+</ParameterType>
+
+要移除的参考输入轨道。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+是否成功移除。
+
+</ApiReturns>
+
+<a id="selectchannels"></a>
+
+### selectChannels
+
+<ApiSignature>
+
+selectChannels(channels: number[], mode: [AudioRenderMode](/zh-CN/api-reference/rtc/web/globals#audiorendermode)): void
+
+</ApiSignature>
+
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[selectChannels](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#selectchannels)
+
+选择多声道音频轨道中需要使用的声道，并设置渲染模式。
+
+适用于启用 [ClientConfig.multiopus](/zh-CN/api-reference/rtc/web/interfaces/clientconfig#multiopus) 后创建或接收的多声道音频轨道。
+ 未启用多声道处理时，调用本方法不改变轨道。
+
+:::info[自从]
+*4.24.10*
+:::
+
+<ParameterList title="Parameters">
+<Parameter name="channels" type="number[]" required>
+
+需要使用的声道索引，从 `0` 开始，且小于原始声道数。
+
+</Parameter>
+<Parameter name="mode" required>
+
+<ParameterType>
+
+[AudioRenderMode](/zh-CN/api-reference/rtc/web/globals#audiorendermode)
+
+</ParameterType>
+
+渲染模式。传入 `"surround"` 可保留原始声道布局。详见 [AudioRenderMode](/zh-CN/api-reference/rtc/web/globals#audiorendermode)。
 
 </Parameter>
 </ParameterList>
@@ -975,6 +1178,47 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 <ApiReturnType>
 
 void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="useextension"></a>
+
+### useExtension
+
+<ApiSignature>
+
+useExtension&lt;T&gt;(extensionCtor: AudioExtensionConstructor&lt;T&gt;, extensionOptions?: Record&lt;string, unknown&gt;): T
+
+</ApiSignature>
+
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack).[useExtension](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#useextension)
+
+使用类构造器在当前音频轨道上创建或复用一个音频插件实例。
+
+<ParameterList title="Type parameters">
+<Parameter name="T" type="IAudioExtension" />
+</ParameterList>
+
+<ParameterList title="Parameters">
+<Parameter name="extensionCtor" type="AudioExtensionConstructor&lt;T&gt;" required>
+
+音频插件类构造器。
+
+</Parameter>
+<Parameter name="extensionOptions" type="Record&lt;string,unknown&gt;" optional>
+
+可选的插件初始化参数。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+T
 
 </ApiReturnType>
 

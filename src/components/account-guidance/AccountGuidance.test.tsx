@@ -53,7 +53,7 @@ describe('Chinese SDK account guidance', () => {
       });
       expect(download).toHaveAttribute(
         'href',
-        'https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.3.0.zip',
+        'https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.3.1.zip',
       );
       expect(download).toHaveAttribute('target', '_blank');
       expect(fireEvent.click(download)).toBe(true);
@@ -78,7 +78,7 @@ describe('Chinese SDK account guidance', () => {
       expect(params.get('target')).toBe('rtm');
       expect(params.get('resource_id')).toBe('signaling');
       expect(params.get('platform')).toBe('android');
-      expect(params.get('version')).toBe('2.3.0-rtm-sdk-android');
+      expect(params.get('version')).toBe('2.3.1-rtm-sdk-android');
       expect(login).toHaveAttribute('target', '_blank');
       fireEvent.click(login);
       await waitFor(() =>
@@ -127,7 +127,7 @@ describe('Chinese SDK account guidance', () => {
       window.location.origin,
     ).searchParams;
     expect(params.get('platform')).toBe('android');
-    expect(screen.getByText('Android · 版本 2.3.0（最新）')).toBeVisible();
+    expect(screen.getByText('Android · 版本 2.3.1（最新）')).toBeVisible();
     visible = false;
     fireEvent(document, new Event('visibilitychange'));
     visible = true;

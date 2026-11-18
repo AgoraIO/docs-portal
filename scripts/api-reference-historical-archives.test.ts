@@ -41,7 +41,21 @@ const { apiHistoricalAdditions: serverSdkAdditions } = JSON.parse(
     placement: 'prepend' | 'append';
   }[];
 };
-const positionedAdditions = [...serverSdkAdditions, ...whiteboardAdditions];
+const { apiHistoricalAdditions: november17Additions } = JSON.parse(
+  readFileSync('docs/migration/cn-master-sync-20261117.json', 'utf8'),
+) as {
+  apiHistoricalAdditions: {
+    directory: string;
+    label: string;
+    href: string;
+    placement: 'prepend' | 'append';
+  }[];
+};
+const positionedAdditions = [
+  ...november17Additions,
+  ...serverSdkAdditions,
+  ...whiteboardAdditions,
+];
 const { overrides } = JSON.parse(
   readFileSync(
     'docs/migration/api-reference-archive-url-overrides-20261020.json',

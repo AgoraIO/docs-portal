@@ -24,6 +24,38 @@ description: "查看实时消息 RTM 的版本更新、问题修复、行为变�
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="2.3.1 版" id="231-版" headingLevel={2} value="231-版">
+
+发布日期：2026 年 11 月 17 日。
+
+### 升级必看 [#rtm-android-231-升级必看]
+
+#### SDK 引用方式变更 [#rtm-android-231-SDK-引用方式变更]
+
+自 v2.3.1 起，通过 Maven 集成 RTM Java SDK 时，需要在项目的仓库配置中添加 `https://download.shengwang.cn/maven/`，并保留项目已有的 `google()`、`mavenCentral()` 等仓库。SDK 依赖包名不变，使用 `cn.shengwang.rtm:android-java:2.3.1` 集成该版本。具体配置见[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)。
+
+### 新特性 [#rtm-android-231-新特性]
+
+#### 查询用户在线状态 [#rtm-android-231-查询用户在线状态]
+
+新增 [`getUserOnlineStatus`](/zh-CN/api-reference/rtm/android/presence#getUserOnlineStatus)，用于按单个精确 User ID 查询当前 App ID 下的用户是否存在有效的 RTM 登录连接。查询方和目标用户都无需加入或订阅频道。调用方须具有可用的 MESSAGE service 且 MESSAGE session 已连接；该查询不依赖 Presence 服务开关或 Sync Database 就绪。
+
+成功结果包含 `userId` 和 `online`。目标离线或不存在时返回成功结果 `online=false`；调用失败通过对应平台的错误处理机制返回。结果是服务端响应时刻的状态快照，不提供在线状态变更订阅。具体流程见[查询用户在线状态](/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-basic/android#query-user-online-status)。
+
+### 接口变更 [#rtm-android-231-接口变更]
+
+- 新增 [`getUserOnlineStatus`](/zh-CN/api-reference/rtm/android/presence#getUserOnlineStatus) 方法。
+- 新增 [`UserOnlineStatus`](/zh-CN/api-reference/rtm/android/presence#UserOnlineStatus) 结果类型。
+
+### 问题修复 [#rtm-android-231-问题修复]
+
+- 修复多链路交错断连，可能无法完全恢复服务的问题。
+- 修复断网恢复后，对已有频道执行重订阅可能引发崩溃的问题。
+
+</Accordion>
+
+
+
 <Accordion title="2.3.0 版" id="230-版" headingLevel={2} value="230-版">
 
 该版本于 2026 年 7 月 28 日发布。
@@ -905,6 +937,46 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 - 2.2.0 RTM SDK `aosl.xframework` 库版本为 1.0.0.17。
 
 <Accordions type="multiple" openFirst>
+
+<Accordion title="2.3.1 版" id="231-版-ios" headingLevel={2} value="231-版-ios">
+
+发布日期：2026 年 11 月 17 日。
+
+### 升级必看 [#rtm-ios-231-升级必看]
+
+#### SDK 引用方式变更 [#rtm-ios-231-SDK-引用方式变更]
+
+自 v2.3.1 起，通过 CocoaPods 集成 RTM SDK 时，需要在 `Podfile` 中添加 `source 'https://download.shengwang.cn/cocoapods/'`，并保留项目已有的源。SDK 依赖包名仍为 `ShengWang-Rtm`，版本更新为 `2.3.1`。分别通过 `RtmKit` 和 `RtmBasic` 引入 RTM 主库和 aosl 基础库：
+
+```ruby
+pod 'ShengWang-Rtm', '2.3.1', :subspecs => ['RtmKit']
+pod 'ShengWang-Rtm', '2.3.1', :subspecs => ['RtmBasic']
+```
+
+具体配置见[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)。
+
+### 新特性 [#rtm-ios-231-新特性]
+
+#### 查询用户在线状态 [#rtm-ios-231-查询用户在线状态]
+
+新增 [`getUserOnlineStatus`](/zh-CN/api-reference/rtm/ios/presence#getUserOnlineStatus)，用于按单个精确 User ID 查询当前 App ID 下的用户是否存在有效的 RTM 登录连接。查询方和目标用户都无需加入或订阅频道。调用方须具有可用的 MESSAGE service 且 MESSAGE session 已连接；该查询不依赖 Presence 服务开关或 Sync Database 就绪。
+
+成功结果包含 `userId` 和 `online`。目标离线或不存在时返回成功结果 `online=false`；调用失败通过对应平台的错误处理机制返回。结果是服务端响应时刻的状态快照，不提供在线状态变更订阅。具体流程见[查询用户在线状态](/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-basic/ios#query-user-online-status-ios)。
+
+### 接口变更 [#rtm-ios-231-接口变更]
+
+- 新增 [`getUserOnlineStatus`](/zh-CN/api-reference/rtm/ios/presence#getUserOnlineStatus) 方法。
+- 新增 [`AgoraRtmUserOnlineStatus`](/zh-CN/api-reference/rtm/ios/presence#AgoraRtmUserOnlineStatus) 结果类型。
+- 新增 [`AgoraRtmGetUserOnlineStatusBlock`](/zh-CN/api-reference/rtm/ios/presence#AgoraRtmGetUserOnlineStatusBlock) completion 回调类型。
+
+### 问题修复 [#rtm-ios-231-问题修复]
+
+- 修复多链路交错断连，可能无法完全恢复服务的问题。
+- 修复断网恢复后，对已有频道执行重订阅可能引发崩溃的问题。
+
+</Accordion>
+
+
 
 <Accordion title="2.3.0 版" id="230-版-1" headingLevel={2} value="230-版-1">
 
@@ -2473,6 +2545,32 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="2.3.1 版" id="231-版-harmonyos" headingLevel={2} value="231-版-harmonyos">
+
+发布日期：2026 年 11 月 17 日。
+
+### 新特性 [#rtm-harmonyos-231-新特性]
+
+#### 查询用户在线状态 [#rtm-harmonyos-231-查询用户在线状态]
+
+新增 [`getUserOnlineStatus`](/zh-CN/api-reference/rtm/harmonyos/presence#getUserOnlineStatus)，用于按单个精确 User ID 查询当前 App ID 下的用户是否存在有效的 RTM 登录连接。查询方和目标用户都无需加入或订阅频道。调用方须具有可用的 MESSAGE service 且 MESSAGE session 已连接；该查询不依赖 Presence 服务开关或 Sync Database 就绪。
+
+成功结果包含 `userId` 和 `online`。目标离线或不存在时返回成功结果 `online=false`；调用失败通过对应平台的错误处理机制返回。结果是服务端响应时刻的状态快照，不提供在线状态变更订阅。具体流程见[查询用户在线状态](/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-basic/harmonyos#query-user-online-status-harmonyos)。
+
+### 接口变更 [#rtm-harmonyos-231-接口变更]
+
+- 新增 [`getUserOnlineStatus`](/zh-CN/api-reference/rtm/harmonyos/presence#getUserOnlineStatus) 方法。
+- 新增 [`GetUserOnlineStatusResponse`](/zh-CN/api-reference/rtm/harmonyos/presence#GetUserOnlineStatusResponse) 结果类型。
+
+### 问题修复 [#rtm-harmonyos-231-问题修复]
+
+- 修复多链路交错断连，可能无法完全恢复服务的问题。
+- 修复断网恢复后，对已有频道执行重订阅可能引发崩溃的问题。
+
+</Accordion>
+
+
+
 <Accordion title="2.3.0 版" id="230-版-3" headingLevel={2} value="230-版-3">
 
 该版本于 2026 年 7 月 28 日发布。
@@ -3212,6 +3310,41 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="2.3.1 版" id="231-版-cpp" headingLevel={2} value="231-版-cpp">
+
+发布日期：2026 年 11 月 17 日。
+
+### 升级必看 [#rtm-cpp-231-升级必看]
+
+#### 升级时成套更新并重新编译 [#rtm-cpp-231-升级时成套更新并重新编译]
+
+`IRtmPresence` 新增纯虚方法；`IRtmEventHandler` 新增带默认空实现的回调，虚表布局发生变化。请成套升级 SDK 头文件、Native 库及使用的 JNI/NAPI/Objective-C 包装层，并重新编译应用，不应混用不同版本的头文件或二进制。
+
+正常继承 `IRtmEventHandler` 的应用无需强制实现新回调，使用该查询结果时再覆盖此回调；自定义 `IRtmPresence` 实现需要补齐新增纯虚方法。
+
+### 新特性 [#rtm-cpp-231-新特性]
+
+#### 查询用户在线状态 [#rtm-cpp-231-查询用户在线状态]
+
+新增 [`getUserOnlineStatus`](/zh-CN/api-reference/rtm/cpp/presence#getUserOnlineStatus)，用于按单个精确 User ID 查询当前 App ID 下的用户是否存在有效的 RTM 登录连接。查询方和目标用户都无需加入或订阅频道。调用方须具有可用的 MESSAGE service 且 MESSAGE session 已连接；该查询不依赖 Presence 服务开关或 Sync Database 就绪。
+
+成功结果包含 `userId` 和 `online`。目标离线或不存在时返回成功结果 `online=false`；调用失败通过对应平台的错误处理机制返回。结果是服务端响应时刻的状态快照，不提供在线状态变更订阅。具体流程见[查询用户在线状态](/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-basic/cpp#query-user-online-status-cpp)。
+
+### 接口变更 [#rtm-cpp-231-接口变更]
+
+- 新增 [`getUserOnlineStatus`](/zh-CN/api-reference/rtm/cpp/presence#getUserOnlineStatus) 方法。
+- 新增 [`UserOnlineStatus`](/zh-CN/api-reference/rtm/cpp/presence#UserOnlineStatus) 结果类型。
+- 新增 [`IRtmEventHandler::onGetUserOnlineStatusResult`](/zh-CN/api-reference/rtm/cpp/presence#onGetUserOnlineStatusResult) 结果回调。
+
+### 问题修复 [#rtm-cpp-231-问题修复]
+
+- 修复多链路交错断连，可能无法完全恢复服务的问题。
+- 修复断网恢复后，对已有频道执行重订阅可能引发崩溃的问题。
+
+</Accordion>
+
+
+
 <Accordion title="2.3.0 版" id="230-版-4" headingLevel={2} value="230-版-4">
 
 该版本于 2026 年 7 月 28 日发布。
@@ -3787,6 +3920,46 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 - 2.2.2 RTM SDK `aosl.xframework` 库版本为 1.0.11。
 
 <Accordions type="multiple" openFirst>
+
+<Accordion title="2.3.1 版" id="231-版-swift" headingLevel={2} value="231-版-swift">
+
+发布日期：2026 年 11 月 17 日。
+
+### 升级必看 [#rtm-swift-231-升级必看]
+
+#### SDK 引用方式变更 [#rtm-swift-231-SDK-引用方式变更]
+
+自 v2.3.1 起，通过 CocoaPods 集成 RTM SDK 时，需要在 `Podfile` 中添加 `source 'https://download.shengwang.cn/cocoapods/'`，并保留项目已有的源。SDK 依赖包名仍为 `ShengWang-Rtm`，版本更新为 `2.3.1`。分别通过 `RtmKit` 和 `RtmBasic` 引入 RTM 主库和 aosl 基础库：
+
+```ruby
+pod 'ShengWang-Rtm', '2.3.1', :subspecs => ['RtmKit']
+pod 'ShengWang-Rtm', '2.3.1', :subspecs => ['RtmBasic']
+```
+
+具体配置见[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)。
+
+### 新特性 [#rtm-swift-231-新特性]
+
+#### 查询用户在线状态 [#rtm-swift-231-查询用户在线状态]
+
+新增 [`getUserOnlineStatus`](/zh-CN/api-reference/rtm/swift/presence#getUserOnlineStatus)，用于按单个精确 User ID 查询当前 App ID 下的用户是否存在有效的 RTM 登录连接。查询方和目标用户都无需加入或订阅频道。调用方须具有可用的 MESSAGE service 且 MESSAGE session 已连接；该查询不依赖 Presence 服务开关或 Sync Database 就绪。
+
+成功结果包含 `userId` 和 `online`。目标离线或不存在时返回成功结果 `online=false`；调用失败通过对应平台的错误处理机制返回。结果是服务端响应时刻的状态快照，不提供在线状态变更订阅。具体流程见[查询用户在线状态](/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-basic/swift#query-user-online-status-swift)。
+
+### 接口变更 [#rtm-swift-231-接口变更]
+
+- 新增 [`getUserOnlineStatus`](/zh-CN/api-reference/rtm/swift/presence#getUserOnlineStatus) 方法。
+- 新增 [`AgoraRtmUserOnlineStatus`](/zh-CN/api-reference/rtm/swift/presence#AgoraRtmUserOnlineStatus) 结果类型。
+- 新增 [`AgoraRtmGetUserOnlineStatusBlock`](/zh-CN/api-reference/rtm/swift/presence#AgoraRtmGetUserOnlineStatusBlock) completion 回调类型。
+
+### 问题修复 [#rtm-swift-231-问题修复]
+
+- 修复多链路交错断连，可能无法完全恢复服务的问题。
+- 修复断网恢复后，对已有频道执行重订阅可能引发崩溃的问题。
+
+</Accordion>
+
+
 
 <Accordion title="2.3.0 版" id="230-版-5" headingLevel={2} value="230-版-5">
 

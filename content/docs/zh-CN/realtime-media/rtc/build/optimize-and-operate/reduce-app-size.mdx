@@ -900,7 +900,11 @@ SDK 提供了可选的插件动态库，插件的命名以 `extension` 为后缀
 
 ### CocoaPods 集成时删除插件
 
+通过 CocoaPods 集成 iOS/macOS SDK 前，请先在 `Podfile` 顶部配置声网 CocoaPods CDN 源。具体配置方式请参考[下载 SDK](/zh-CN/realtime-media/rtc/reference/downloads/ios#通过-cocoapods-集成-sdk)。
+
 通过 CocoaPods 集成 iOS/macOS SDK 时，你可以在 Podfile 中使用 `subspecs` 字段指定集成你需要的动态库，以排除你不需要使用的插件。动态库与 `subspecs` 字段的对应关系详见 [subspecs 字段](#subspecs-字段)。
+
+以下示例省略了 `Podfile` 顶部的 `source` 配置，使用时请保留对应源的声明。
 
 <Tabs defaultValue="sample1" groupId="operating-systems" persist>
 <TabsList>
@@ -950,7 +954,7 @@ end
 </Tabs>
 
 :::warning[注意]
-填写上述 pod 命令时，请确保你指定版本的 SDK 具有你指定的插件，且插件的 `subspecs` 字段正确，否则 `pod install` 时会报错。例如，填写 `pod 'AgoraRtcEngine_iOS', '4.0.0', :subspecs => ['RtcBasic', 'AgoraRtcAINS']` 时，`pod install` 时会报错。
+填写上述 pod 命令时，请确保你指定版本的 SDK 具有你指定的插件，且插件的 `subspecs` 字段正确，否则 `pod install` 时会报错。例如，填写 `pod 'AgoraRtcEngine_iOS', '4.0.1', :subspecs => ['RtcBasic', 'AgoraRtcAINS']` 时，`pod install` 时会报错。
 :::
 
 ## 参考信息
@@ -1775,7 +1779,11 @@ SDK 提供了可选的插件动态库，插件的命名以 `extension` 为后缀
 
 ### CocoaPods 集成时删除插件
 
+通过 CocoaPods 集成 iOS/macOS SDK 前，请先在 `Podfile` 顶部配置声网 CocoaPods CDN 源。具体配置方式请参考[下载 SDK](/zh-CN/realtime-media/rtc/reference/downloads/macos#通过-cocoapods-集成-sdk)。
+
 通过 CocoaPods 集成 iOS/macOS SDK 时，你可以在 Podfile 中使用 `subspecs` 字段指定集成你需要的动态库，以排除你不需要使用的插件。动态库与 `subspecs` 字段的对应关系详见 [subspecs 字段](#subspecs-字段-1)。
+
+以下示例省略了 `Podfile` 顶部的 `source` 配置，使用时请保留对应源的声明。
 
 <Tabs defaultValue="sample1" groupId="operating-systems" persist>
 <TabsList>
@@ -1825,7 +1833,7 @@ end
 </Tabs>
 
 :::warning[注意]
-填写上述 pod 命令时，请确保你指定版本的 SDK 具有你指定的插件，且插件的 `subspecs` 字段正确，否则 `pod install` 时会报错。例如，填写 `pod 'AgoraRtcEngine_iOS', '4.0.0', :subspecs => ['RtcBasic', 'AgoraRtcAINS']` 时，`pod install` 时会报错。
+填写上述 pod 命令时，请确保你指定版本的 SDK 具有你指定的插件，且插件的 `subspecs` 字段正确，否则 `pod install` 时会报错。例如，填写 `pod 'AgoraRtcEngine_iOS', '4.0.1', :subspecs => ['RtcBasic', 'AgoraRtcAINS']` 时，`pod install` 时会报错。
 :::
 
 ## 参考信息
