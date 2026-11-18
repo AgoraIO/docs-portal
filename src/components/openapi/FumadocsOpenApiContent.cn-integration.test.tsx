@@ -17,7 +17,7 @@ import { I18nextProvider } from 'react-i18next';
 import { describe, expect, it, vi } from 'vitest';
 import { resources } from '@/lib/i18n/resources';
 import { createLocalizedOpenApiSource } from '@/lib/openapi/fumadocs-source.server';
-import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
+import { FumadocsOpenApiContent } from './FumadocsOpenApiContent.zh-cn';
 
 type Document = Extract<
   OpenAPIPageProps,

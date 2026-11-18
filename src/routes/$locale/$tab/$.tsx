@@ -95,18 +95,6 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       });
     }
 
-    const movedRedirect = resolveMovedDocsRedirect(
-      params.locale,
-      params.tab,
-      slugSegments,
-    );
-    if (movedRedirect) {
-      throw redirect({
-        href: preserveRedirectSearch(movedRedirect, location),
-        statusCode: 301,
-      });
-    }
-
     if (shouldUseStaticDocsPayload()) {
       const legacyRedirect = resolveStaticLegacySitemapRedirect(
         `/${[params.locale, params.tab, ...slugSegments].join('/')}`,

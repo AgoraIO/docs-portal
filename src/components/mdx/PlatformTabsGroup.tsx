@@ -110,6 +110,7 @@ export function PlatformTabsPlacementProvider({
 }
 
 export function PlatformPageProvider({
+  locale = DEFAULT_LOCALE,
   canonicalPlatform,
   children,
   defaultPlatform,
@@ -121,9 +122,11 @@ export function PlatformPageProvider({
   defaultPlatform?: PlatformKey;
   initialPlatform?: PlatformKey;
   platforms: string;
+  locale?: AppLocale;
 }) {
   const parsedPlatforms = usePlatformList(platforms);
   const selection = usePlatformSelection({
+    locale,
     canonicalPlatform,
     defaultPlatform,
     initialPlatform,
@@ -241,6 +244,7 @@ export function PlatformTabsGroup({
   const shouldSyncPlatformPath =
     groupMode === 'structured' && resolvedTabsPlacement === 'header';
   const { activePlatform, handlePlatformChange } = usePlatformSelection({
+    locale,
     canonicalPlatform,
     defaultPlatform: resolvedDefaultPlatform,
     initialPlatform: resolvedInitialPlatform,
@@ -354,6 +358,7 @@ export function PlatformHeaderTabs({
 }) {
   const parsedPlatforms = usePlatformList(platforms);
   const { activePlatform, handlePlatformChange } = usePlatformSelection({
+    locale,
     canonicalPlatform,
     defaultPlatform,
     initialPlatform,
@@ -921,6 +926,7 @@ function usePlatformList(platforms: string) {
 }
 
 function usePlatformSelection({
+  locale,
   canonicalPlatform,
   defaultPlatform,
   initialPlatform,
@@ -934,6 +940,7 @@ function usePlatformSelection({
   parsedPlatforms: PlatformKey[];
   deferStoredPreference: boolean;
   syncPath: boolean;
+  locale: AppLocale;
 }) {
   const pageContext = useContext(PlatformPageContext);
   const platformPreferenceRef = useRef<PlatformKey | null | undefined>(
@@ -961,7 +968,7 @@ function usePlatformSelection({
     // Match server HTML on hydration; the page owner applies storage before paint.
     const stored = deferStoredPreference ? null : platformPreferenceRef.current;
 
-    if (stored && parsedPlatforms.includes(stored)) {
+    if (stored && (locale === 'zh-CN' || !defaultPlatform) && parsedPlatforms.includes(stored)) {
       return stored;
     }
 
@@ -1001,6 +1008,7 @@ function usePlatformSelection({
 
     if (
       initialPlatform === undefined &&
+      (locale === 'zh-CN' || !defaultPlatform) &&
       platformPreferenceRef.current &&
       parsedPlatforms.includes(platformPreferenceRef.current) &&
       platformPreferenceRef.current !== localActivePlatform

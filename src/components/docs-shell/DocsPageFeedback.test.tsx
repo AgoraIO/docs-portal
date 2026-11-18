@@ -116,7 +116,7 @@ it('preserves the English feedback form', () => {
     </I18nextProvider>,
   );
   fireEvent.click(screen.getByRole('button', { name: 'Send feedback' }));
-  expect(screen.getByLabelText('Suggestion')).toBeInTheDocument();
+  expect(screen.getByLabelText('Details')).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Open issue' })).toHaveAttribute(
     'href',
     expect.stringContaining(

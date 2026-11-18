@@ -50,7 +50,7 @@ import {
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import { resolveLegacySitemapRedirectPath } from './legacy-sitemap/redirects';
 import { getLegacySolutionsRedirectUrl } from './legacy-solutions-routing';
-import { remarkAccordionHeadings } from './mdx/accordion-toc';
+import { remarkAccordionHeadings, remarkGlobalAccordionHeadings } from './mdx/accordion-toc';
 import {
   findOpenApiLaneByUrl,
   getOpenApiEndpointUrl,
@@ -2068,12 +2068,12 @@ async function resolvePageToc(
       ? buildPlatformTocText(processedText, platform)
       : buildCanonicalPlatformTocText(processedText);
 
-    return normalizeToc(await getMdxAwareTableOfContents(tocText));
+    return normalizeToc(await getMdxAwareTableOfContents(tocText, page.url));
   } catch {
     try {
       return normalizeToc(
         await getMdxAwareTableOfContents(
-          buildCanonicalPlatformTocText(processedText),
+          buildCanonicalPlatformTocText(processedText), page.url,
         ),
       );
     } catch {
@@ -2082,11 +2082,12 @@ async function resolvePageToc(
   }
 }
 
-function getMdxAwareTableOfContents(markdown: string) {
+function getMdxAwareTableOfContents(markdown: string, url: string) {
+  const global = url.startsWith('/en/');
   if (markdown.includes('<Accordion')) {
-    return getTableOfContents(markdown, [remarkMdx, remarkAccordionHeadings]);
+    return getTableOfContents(markdown, [remarkMdx, global ? remarkGlobalAccordionHeadings : remarkAccordionHeadings]);
   }
-  return markdown.includes('<Tabs')
+  return !global && markdown.includes('<Tabs')
     ? getTableOfContents(markdown, [remarkMdx])
     : getTableOfContents(markdown);
 }

@@ -213,6 +213,8 @@ function Accordion({
   value = String(title),
   ...props
 }: AccordionProps) {
+  const { i18n } = useTranslation('common');
+  const chinese = normalizeLocale(i18n.language) === 'zh-CN';
   const accordionRoot = useContext(MdxAccordionRootContext);
   const [standaloneValue, setStandaloneValue] = useState(value);
   const contentRef = useRef<HTMLElement>(null);
@@ -278,10 +280,11 @@ function Accordion({
     <FumadocsAccordionItem value={value} {...props}>
       {header}
       <FumadocsAccordionContent
+        className={!chinese && headingLevel !== undefined ? 'data-[state=closed]:hidden' : undefined}
         data-toc-hidden={headingLevel !== undefined ? 'true' : undefined}
         forceMount={headingLevel !== undefined ? true : undefined}
       >
-        {headingLevel === undefined
+        {headingLevel === undefined || !chinese
           ? body
           : // A custom element preserves the until-found string when enhanced
             // after hydration; SSR stays collapsed without browser assumptions.
@@ -1482,13 +1485,14 @@ function CodeBlockTab({
   value,
   ...props
 }: ComponentProps<typeof FumadocsCodeBlockTab>) {
+  const { i18n } = useTranslation('common');
   const selectedValue = useContext(CodeBlockTabsValueContext);
   const isInactive = selectedValue !== undefined && selectedValue !== value;
 
   return (
     <FumadocsCodeBlockTab
       className={cn(
-        'p-4 [&>figure]:m-0 [&>figure]:rounded-xl [&>figure]:border [&>figure]:bg-fd-card [&>figure]:shadow-none',
+        normalizeLocale(i18n.language) === 'zh-CN' ? 'p-4 [&>figure]:m-0 [&>figure]:rounded-xl [&>figure]:border [&>figure]:bg-fd-card [&>figure]:shadow-none' : '[&>figure]:m-0 [&>figure]:rounded-none [&>figure]:border-0 [&>figure]:bg-fd-card [&>figure]:shadow-none',
         className,
       )}
       forceMount

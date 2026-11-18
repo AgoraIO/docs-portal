@@ -9,7 +9,7 @@ import {
 import { renderToString } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { zhCNRtsaSdkDownloadPlatform } from './rtsa-sdk-downloads-data.zh-cn';
-import { SdksCatalog } from './SdksCatalog';
+import { SdksCatalog } from './SdksCatalog.zh-cn';
 import { zhCNSdkDownloadPlatforms } from './sdk-downloads-data.zh-cn';
 
 beforeEach(() => {

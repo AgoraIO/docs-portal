@@ -1,5 +1,8 @@
+import { DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 import {
   ActivityIcon,
+  ChevronDownIcon,
+  SearchIcon,
   AppleIcon,
   AppWindowIcon,
   ArrowDownToLineIcon,
@@ -157,6 +160,31 @@ const overviewActionContentPaths = new Set([
 ]);
 
 export function getOverviewMDXComponents(contentPath?: string): MDXComponents {
+  if (contentPath ? contentPath.startsWith('en/') : DEFAULT_LOCALE === 'en') {
+    return {
+      CardGrid,
+      FeatureCard: GlobalFeatureCard,
+      FaqLanding,
+      FaqCategory,
+      CapabilityGroupCard: GlobalCapabilityGroupCard,
+      CapabilityGroupGrid,
+      CapabilityMatrix: GlobalCapabilityMatrix,
+      HelpHub: GlobalHelpHub,
+      OverviewImageCard: GlobalOverviewImageCard,
+      OverviewImageCardGrid,
+      OverviewLinkBanner: GlobalOverviewLinkBanner,
+      OverviewSpotlightCard: GlobalOverviewSpotlightCard,
+      OverviewSpotlightGrid,
+      OverviewToolkits,
+      RecipesCatalog: GlobalRecipesCatalog,
+      RecipesGallery: GlobalRecipesGallery,
+      SdksCatalog,
+      SolutionCard: GlobalSolutionCard,
+      SolutionCardGrid: GlobalSolutionCardGrid,
+      ToolkitGroup,
+      ToolkitItem,
+    };
+  }
   const ScopedOverviewActions = overviewActionContentPaths.has(
     contentPath ?? '',
   )
@@ -1506,6 +1534,7 @@ export function DemoGallery({
 }
 
 export function RecipesCatalog({
+  globalCards = false,
   allCategoriesLabel,
   allProductsLabel,
   allSdksLabel,
@@ -1527,6 +1556,7 @@ export function RecipesCatalog({
   stackFilterLabel,
   stackQueryParam,
 }: {
+  globalCards?: boolean;
   allCategoriesLabel: string;
   allProductsLabel: string;
   allSdksLabel?: string;
@@ -1548,6 +1578,8 @@ export function RecipesCatalog({
   stackFilterLabel: string;
   stackQueryParam?: string;
 }) {
+  const CatalogCard = globalCards ? GlobalSolutionCard : SolutionCard;
+  const CatalogGrid = globalCards ? GlobalSolutionCardGrid : SolutionCardGrid;
   const [query, setQuery] = useState('');
   const [activeProduct, setActiveProduct] = useState(allProductsLabel);
   const hasInitializedProductFromQuery = useRef(false);
@@ -1831,7 +1863,7 @@ export function RecipesCatalog({
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                   {group.items.map((item) => (
-                    <SolutionCard
+                    <CatalogCard
                       actions={item.links}
                       description={item.description}
                       href={item.href}
@@ -1859,9 +1891,9 @@ export function RecipesCatalog({
             ))}
           </div>
         ) : (
-          <SolutionCardGrid size="small">
+          <CatalogGrid size="small">
             {filteredItems.map((item) => (
-              <SolutionCard
+              <CatalogCard
                 actions={item.links}
                 description={item.description}
                 href={item.href}
@@ -1884,7 +1916,7 @@ export function RecipesCatalog({
                 tone={item.tone ?? 'blue'}
               />
             ))}
-          </SolutionCardGrid>
+          </CatalogGrid>
         )
       ) : (
         <div className="mt-6 rounded-lg border border-dashed border-border bg-muted/40 p-8 text-center text-sm text-muted-foreground">
@@ -2501,4 +2533,785 @@ function OverviewSpotlightChecklistVisual() {
       ))}
     </div>
   );
+}
+
+function GlobalFeatureCard({
+  children,
+  title,
+}: {
+  children: ReactNode;
+  title: string;
+}) {
+  return (
+    <section className="rounded-lg border border-border bg-card p-5 shadow-sm">
+      <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
+      <div className="mt-2 text-sm leading-6 text-muted-foreground">
+        {children}
+      </div>
+    </section>
+  );
+}
+
+function GlobalCapabilityGroupCard({
+  description,
+  items,
+  title,
+}: {
+  description: string;
+  items: string[];
+  title: string;
+}) {
+  return (
+    <section className="rounded-[24px] border border-border bg-card p-6 shadow-sm">
+      <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
+      <p className="mt-2 text-sm leading-6 text-muted-foreground">
+        {description}
+      </p>
+      <div className="mt-4 flex flex-wrap gap-1.5">
+        {items.map((item) => (
+          <span
+            className="rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground"
+            key={item}
+          >
+            {item}
+          </span>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function GlobalHelpHub({
+  cards,
+  knowledgeBase,
+  topics,
+}: {
+  cards: HelpHubCard[];
+  knowledgeBase: HelpHubLink[];
+  topics: HelpHubLink[];
+}) {
+  return (
+    <section className="not-prose my-8 space-y-5">
+      <div className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
+        <div className="max-w-2xl">
+          <p className="text-sm leading-6 text-muted-foreground">
+            Choose the fastest path for product questions, service health, and
+            community support.
+          </p>
+        </div>
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {cards.map((card) => (
+            <a
+              className="group flex min-h-[11.5rem] flex-col rounded-[22px] border border-border bg-background px-4 py-4 transition-colors hover:border-primary/35 hover:bg-accent/35"
+              href={card.href}
+              key={card.title}
+              rel={
+                isExternalHref(card.href) ? 'noreferrer noopener' : undefined
+              }
+              target={isExternalHref(card.href) ? '_blank' : undefined}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <span className="flex size-7 items-center justify-center rounded-md bg-muted text-foreground">
+                  <HelpHubIcon kind={card.icon} />
+                </span>
+                <ArrowUpRightIcon className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground" />
+              </div>
+              <h4 className="mt-4 text-base font-semibold tracking-[-0.02em] text-foreground">
+                {card.title}
+              </h4>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                {card.description}
+              </p>
+              <span className="mt-auto pt-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-primary">
+                {card.cta}
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1.12fr)_minmax(18rem,0.88fr)]">
+        <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
+          <div className="flex items-center justify-between gap-3">
+            <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Popular Knowledge Base
+            </h4>
+            <span className="hidden text-[11px] uppercase tracking-[0.18em] text-muted-foreground sm:inline">
+              Quick answers
+            </span>
+          </div>
+          <ul className="mt-4 space-y-2">
+            {knowledgeBase.map((item) => (
+              <li key={item.label}>
+                <a
+                  className="group flex items-center justify-between gap-4 rounded-[16px] px-3 py-3 text-sm text-foreground transition-colors hover:bg-accent/45 hover:text-primary"
+                  href={item.href}
+                  rel={
+                    isExternalHref(item.href)
+                      ? 'noreferrer noopener'
+                      : undefined
+                  }
+                  target={isExternalHref(item.href) ? '_blank' : undefined}
+                >
+                  <span className="leading-6">{item.label}</span>
+                  <ArrowUpRightIcon className="size-4 shrink-0 text-muted-foreground opacity-0 transition-all group-hover:text-foreground group-hover:opacity-100" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            Browse By Topic
+          </h4>
+          <div className="mt-4 space-y-2">
+            {topics.map((item) => (
+              <a
+                className="group flex items-center justify-between gap-4 rounded-[16px] border border-border bg-background px-4 py-3.5 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-accent/35 hover:text-primary"
+                href={item.href}
+                key={item.label}
+                rel={
+                  isExternalHref(item.href) ? 'noreferrer noopener' : undefined
+                }
+                target={isExternalHref(item.href) ? '_blank' : undefined}
+              >
+                <span>{item.label}</span>
+                <ArrowRightIcon className="size-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+              </a>
+            ))}
+          </div>
+        </section>
+      </div>
+    </section>
+  );
+}
+
+function GlobalCapabilityMatrix({ rows }: { rows: CapabilityMatrixRow[] }) {
+  return (
+    <section className="not-prose my-8 overflow-hidden rounded-[24px] border border-border bg-card shadow-sm">
+      <div className="grid grid-cols-1 border-b border-border bg-muted/30 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground sm:grid-cols-[220px_minmax(0,1fr)_260px] sm:gap-6 sm:px-6">
+        <span>Capability area</span>
+        <span>What it covers</span>
+        <span>Includes</span>
+      </div>
+      {rows.map((row, index) => (
+        <div
+          className={cn(
+            'grid grid-cols-1 gap-3 px-5 py-4 sm:grid-cols-[220px_minmax(0,1fr)_260px] sm:items-start sm:gap-6 sm:px-6',
+            index > 0 && 'border-t border-border',
+          )}
+          key={row.title}
+        >
+          <h3 className="m-0 text-base font-semibold text-foreground">
+            {row.title}
+          </h3>
+          <p className="m-0 text-sm leading-6 text-muted-foreground">
+            {row.description}
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {row.items.map((item) => (
+              <span
+                className="rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground"
+                key={item}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+function GlobalOverviewImageCard({
+  compact = false,
+  description,
+  href,
+  imageAlt,
+  imageSrc,
+  title,
+}: {
+  compact?: boolean;
+  description: string;
+  href?: string;
+  imageAlt: string;
+  imageSrc: string;
+  title: string;
+}) {
+  const content = (
+    <>
+      <div
+        className={cn(
+          'overflow-hidden border-b border-border bg-muted/40',
+          compact ? 'aspect-[16/8]' : 'aspect-[16/10]',
+        )}
+      >
+        <img
+          alt={imageAlt}
+          className={cn(
+            'size-full object-cover',
+            href &&
+              'transition-transform duration-300 group-hover:scale-[1.02]',
+          )}
+          loading="lazy"
+          src={imageSrc}
+        />
+      </div>
+      <div className={cn(compact ? 'p-4' : 'p-5')}>
+        <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
+        <p
+          className={cn(
+            'mt-2 text-sm text-muted-foreground',
+            compact ? 'leading-5' : 'leading-6',
+          )}
+        >
+          {description}
+        </p>
+      </div>
+    </>
+  );
+
+  if (!href) {
+    return (
+      <section className="overflow-hidden rounded-[24px] border border-border bg-card shadow-sm">
+        {content}
+      </section>
+    );
+  }
+
+  return (
+    <a
+      className="group overflow-hidden rounded-[24px] border border-border bg-card shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35"
+      href={href}
+    >
+      {content}
+    </a>
+  );
+}
+
+function GlobalOverviewLinkBanner({
+  description,
+  href,
+  title,
+}: {
+  description: string;
+  href: string;
+  title: string;
+}) {
+  return (
+    <a
+      className="group not-prose my-6 flex items-center justify-between gap-4 rounded-[24px] border border-border bg-card px-6 py-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35"
+      href={href}
+    >
+      <div className="min-w-0">
+        <h3 className="m-0 text-lg font-semibold tracking-[-0.02em] text-foreground">
+          {title}
+        </h3>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">
+          {description}
+        </p>
+      </div>
+      <ArrowRightIcon className="size-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+    </a>
+  );
+}
+
+function GlobalSolutionCardGrid({
+  children,
+  size = 'large',
+}: {
+  children: ReactNode;
+  size?: 'large' | 'small';
+}) {
+  return (
+    <section
+      className={cn(
+        'not-prose my-8 grid gap-4',
+        size === 'small'
+          ? 'grid-cols-[repeat(auto-fit,minmax(min(100%,19rem),1fr))]'
+          : 'grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))]',
+      )}
+    >
+      {children}
+    </section>
+  );
+}
+
+function GlobalSolutionCard({
+  actions = [],
+  description,
+  href,
+  icon,
+  size = 'large',
+  showDescription = true,
+  tags = [],
+  title,
+  tone = 'blue',
+}: {
+  actions?: RecipeCatalogItemLink[];
+  description: string;
+  href?: string;
+  icon?: SolutionCardIconKind;
+  size?: 'large' | 'small';
+  showDescription?: boolean;
+  tags?: string[];
+  title: string;
+  tone?: SolutionCardTone;
+}) {
+  const cardClasses = cn(
+    'group flex min-h-40 flex-col rounded-lg border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
+    size === 'small' && 'min-h-32 p-4',
+  );
+
+  const content = (
+    <>
+      <div className="flex items-start justify-between gap-3">
+        {icon ? (
+          <span
+            className={cn(
+              'flex size-10 items-center justify-center rounded-lg',
+              getSolutionToneClasses(tone),
+              size === 'small' && 'size-9',
+            )}
+          >
+            <SolutionCardIcon kind={icon} />
+          </span>
+        ) : (
+          <span />
+        )}
+        {href ? (
+          <ArrowRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+        ) : null}
+      </div>
+      <div className="mt-4 flex-1">
+        <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
+        {showDescription && description ? (
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            {description}
+          </p>
+        ) : null}
+      </div>
+      {actions.length > 0 ? (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {actions.map((action) => (
+            <a
+              className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+              href={action.href}
+              key={action.href}
+              rel={
+                action.href.startsWith('http')
+                  ? 'noreferrer noopener'
+                  : undefined
+              }
+              target={action.href.startsWith('http') ? '_blank' : undefined}
+            >
+              <span>{action.label}</span>
+              <ArrowRightIcon className="size-3.5" />
+            </a>
+          ))}
+        </div>
+      ) : null}
+      {tags.length > 0 ? (
+        <div className="mt-4 flex flex-wrap gap-1.5">
+          {tags.map((tag) => (
+            <span
+              className="rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground"
+              key={tag}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      ) : null}
+    </>
+  );
+
+  if (!href || actions.length > 0) {
+    return <section className={cardClasses}>{content}</section>;
+  }
+
+  return (
+    <a className={cardClasses} href={href}>
+      {content}
+    </a>
+  );
+}
+
+function GlobalRecipeGallerySelect({
+  allLabel,
+  label,
+  onChange,
+  options,
+  value,
+}: {
+  allLabel: string;
+  label: string;
+  onChange: (value: string) => void;
+  options: string[];
+  value: string;
+}) {
+  const id = `recipe-filter-${label.toLowerCase().replace(/\s+/g, '-')}`;
+
+  return (
+    <span className="relative shrink-0">
+      <label className="sr-only" htmlFor={id}>
+        {label}
+      </label>
+      <select
+        className="h-9 appearance-none rounded-md border border-border bg-background pr-9 pl-3 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+        id={id}
+        onChange={(event) => onChange(event.target.value)}
+        value={value}
+      >
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option === allLabel ? `${label}: All` : option}
+          </option>
+        ))}
+      </select>
+      <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground" />
+    </span>
+  );
+}
+
+function GlobalRecipesGallery({
+  allCategoriesLabel,
+  allProductsLabel,
+  allStacksLabel,
+  categoryFilterLabel,
+  clearFiltersLabel,
+  emptyMessage,
+  items,
+  productFilterLabel,
+  searchPlaceholder,
+  stackFilterLabel,
+  stackQueryParam,
+}: {
+  allCategoriesLabel: string;
+  allProductsLabel: string;
+  allStacksLabel: string;
+  categoryFilterLabel: string;
+  clearFiltersLabel: string;
+  emptyMessage: string;
+  items: RecipeCatalogItem[];
+  productFilterLabel: string;
+  searchPlaceholder: string;
+  stackFilterLabel: string;
+  stackQueryParam?: string;
+}) {
+  const allLevelsLabel = 'All levels';
+  const [query, setQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState(allCategoriesLabel);
+  const [activeProduct, setActiveProduct] = useState(allProductsLabel);
+  const [activeStack, setActiveStack] = useState(() =>
+    getInitialRecipeStack(items, allStacksLabel, stackQueryParam),
+  );
+  const [activeLevel, setActiveLevel] = useState(allLevelsLabel);
+  const deferredQuery = useDeferredValue(query);
+
+  const categories = useMemo(
+    () => [
+      allCategoriesLabel,
+      ...getUniqueValues(items.map((item) => item.category)),
+    ],
+    [allCategoriesLabel, items],
+  );
+  const products = useMemo(
+    () => [
+      allProductsLabel,
+      ...getUniqueValues(items.map((item) => item.product)),
+    ],
+    [allProductsLabel, items],
+  );
+  const stacks = useMemo(
+    () => [
+      allStacksLabel,
+      ...getUniqueValues(items.map((item) => item.stack).filter(Boolean)),
+    ],
+    [allStacksLabel, items],
+  );
+  const levels = useMemo(
+    () => [allLevelsLabel, ...getUniqueValues(items.map(getRecipeLevel))],
+    [items],
+  );
+
+  const filteredItems = useMemo(() => {
+    const normalizedQuery = normalizeRecipeFilterValue(deferredQuery);
+
+    return items.filter((item) => {
+      if (
+        activeCategory !== allCategoriesLabel &&
+        item.category !== activeCategory
+      ) {
+        return false;
+      }
+      if (
+        activeProduct !== allProductsLabel &&
+        item.product !== activeProduct
+      ) {
+        return false;
+      }
+      if (
+        activeStack !== allStacksLabel &&
+        (item.stack ?? '') !== activeStack
+      ) {
+        return false;
+      }
+      if (
+        activeLevel !== allLevelsLabel &&
+        getRecipeLevel(item) !== activeLevel
+      ) {
+        return false;
+      }
+      if (!normalizedQuery) {
+        return true;
+      }
+
+      const haystack = normalizeRecipeFilterValue(
+        [
+          item.title,
+          item.description,
+          item.product,
+          item.category,
+          item.stack,
+          ...(item.tags ?? []),
+        ]
+          .filter(Boolean)
+          .join(' '),
+      );
+      return haystack.includes(normalizedQuery);
+    });
+  }, [
+    activeCategory,
+    activeLevel,
+    activeProduct,
+    activeStack,
+    allCategoriesLabel,
+    allProductsLabel,
+    allStacksLabel,
+    deferredQuery,
+    items,
+  ]);
+
+  const hasActiveFilters =
+    query.length > 0 ||
+    activeCategory !== allCategoriesLabel ||
+    activeProduct !== allProductsLabel ||
+    activeStack !== allStacksLabel ||
+    activeLevel !== allLevelsLabel;
+
+  const resetFilters = () => {
+    setQuery('');
+    setActiveCategory(allCategoriesLabel);
+    setActiveProduct(allProductsLabel);
+    setActiveStack(allStacksLabel);
+    setActiveLevel(allLevelsLabel);
+  };
+
+  const groupedByCategory = useMemo(
+    () =>
+      categories
+        .filter((value) => value !== allCategoriesLabel)
+        .map((category) => ({
+          category,
+          items: filteredItems.filter((item) => item.category === category),
+        }))
+        .filter((group) => group.items.length > 0),
+    [allCategoriesLabel, categories, filteredItems],
+  );
+
+  return (
+    <section className="not-prose my-8 flex flex-col gap-6">
+      <label className="relative block">
+        <span className="sr-only">{searchPlaceholder}</span>
+        <SearchIcon className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground" />
+        <input
+          className="h-11 w-full rounded-lg border border-input bg-background px-9 text-sm text-foreground shadow-xs outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder={searchPlaceholder}
+          type="search"
+          value={query}
+        />
+      </label>
+
+      <div className="flex flex-col gap-4">
+        <div
+          aria-label={categoryFilterLabel}
+          className="flex flex-wrap gap-1 border-border border-b"
+          role="tablist"
+        >
+          {categories.map((category) => {
+            const active = category === activeCategory;
+            return (
+              <button
+                aria-selected={active}
+                className={cn(
+                  '-mb-px border-b-2 px-3 py-1.5 text-sm transition-colors',
+                  active
+                    ? 'border-primary font-semibold text-foreground'
+                    : 'border-transparent text-muted-foreground hover:text-foreground',
+                )}
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                role="tab"
+                type="button"
+              >
+                {category === allCategoriesLabel ? 'All' : category}
+              </button>
+            );
+          })}
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          {products.length > 2 ? (
+            <GlobalRecipeGallerySelect
+              allLabel={allProductsLabel}
+              label={productFilterLabel}
+              onChange={setActiveProduct}
+              options={products}
+              value={activeProduct}
+            />
+          ) : null}
+          <GlobalRecipeGallerySelect
+            allLabel={allStacksLabel}
+            label={stackFilterLabel}
+            onChange={setActiveStack}
+            options={stacks}
+            value={activeStack}
+          />
+          {levels.length > 1 ? (
+            <GlobalRecipeGallerySelect
+              allLabel={allLevelsLabel}
+              label="Level"
+              onChange={setActiveLevel}
+              options={levels}
+              value={activeLevel}
+            />
+          ) : null}
+          {hasActiveFilters ? (
+            <button
+              className="h-9 rounded-md px-2.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              onClick={resetFilters}
+              type="button"
+            >
+              {clearFiltersLabel}
+            </button>
+          ) : null}
+          <span className="ml-auto text-sm text-muted-foreground">
+            {filteredItems.length} recipes
+          </span>
+        </div>
+      </div>
+
+      {filteredItems.length === 0 ? (
+        <div className="rounded-lg border border-dashed border-border bg-muted/35 p-8 text-center text-sm text-muted-foreground">
+          {emptyMessage}
+        </div>
+      ) : activeCategory === allCategoriesLabel ? (
+        <div className="flex flex-col gap-8">
+          {groupedByCategory.map((group) => (
+            <section className="flex flex-col gap-3" key={group.category}>
+              <div className="flex items-baseline gap-2">
+                <h3 className="m-0 text-base font-semibold text-foreground">
+                  {group.category}
+                </h3>
+                <span className="text-xs font-medium text-muted-foreground">
+                  {group.items.length}
+                </span>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                {group.items.map((item) => (
+                  <GlobalSolutionCard
+                    description={item.description}
+                    href={item.href}
+                    key={recipeKey(item)}
+                    size="small"
+                    tags={recipeTags(item)}
+                    title={item.title}
+                  />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {filteredItems.map((item) => (
+            <GlobalSolutionCard
+              description={item.description}
+              href={item.href}
+              key={recipeKey(item)}
+              size="small"
+              tags={recipeTags(item)}
+              title={item.title}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function GlobalOverviewSpotlightCard({
+  description,
+  href,
+  size = 'large',
+  title,
+  variant = 'platform',
+}: {
+  description?: string;
+  href: string;
+  size?: OverviewSpotlightSize;
+  title: string;
+  variant?: OverviewSpotlightVariant;
+}) {
+  return (
+    <a
+      className={cn(
+        'group overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
+        size === 'small' && 'text-sm',
+      )}
+      href={href}
+    >
+      <div
+        aria-hidden="true"
+        className={cn(
+          'border-b border-border bg-muted/45 p-4',
+          size === 'small' && 'p-3',
+        )}
+      >
+        <div className="mb-3 flex gap-1.5">
+          <span className="size-2 rounded-full bg-muted-foreground/35" />
+          <span className="size-2 rounded-full bg-muted-foreground/25" />
+          <span className="size-2 rounded-full bg-muted-foreground/20" />
+        </div>
+        <div className="min-h-24">
+          {variant === 'platform' ? <OverviewSpotlightPlatformVisual /> : null}
+          {variant === 'code' ? <OverviewSpotlightCodeVisual /> : null}
+          {variant === 'checklist' ? (
+            <OverviewSpotlightChecklistVisual />
+          ) : null}
+        </div>
+      </div>
+      <div className="flex items-start justify-between gap-3 p-4">
+        <div className="min-w-0">
+          <h3 className="m-0 text-base font-semibold text-foreground">
+            {title}
+          </h3>
+          {description ? (
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              {description}
+            </p>
+          ) : null}
+        </div>
+        <ArrowRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+      </div>
+    </a>
+  );
+}
+
+function GlobalRecipesCatalog(props: React.ComponentProps<typeof RecipesCatalog>) {
+  return <RecipesCatalog {...props} globalCards />;
 }

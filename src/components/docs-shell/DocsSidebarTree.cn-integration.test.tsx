@@ -218,7 +218,7 @@ describe('DocsSidebarTree', () => {
       },
     ];
 
-    renderSidebarTree(tree, '/en/introduction');
+    renderSidebarTree(tree, '/zh-CN/introduction');
 
     const link = await screen.findByRole('link', {
       name: 'External Resource',
@@ -233,15 +233,15 @@ describe('DocsSidebarTree', () => {
   it('renders HTTP method badges for OpenAPI endpoint pages', async () => {
     const tree: DocsSidebarNode[] = [
       {
-        id: '/en/api-reference/api-ref/conversational-ai/join',
+        id: '/zh-CN/api-reference/api-ref/conversational-ai/join',
         method: 'POST',
         title: 'Start a conversational AI agent',
         type: 'page',
-        url: '/en/api-reference/api-ref/conversational-ai/join',
+        url: '/zh-CN/api-reference/api-ref/conversational-ai/join',
       },
     ];
 
-    renderSidebarTree(tree, '/en/api-reference/api-ref/conversational-ai/join');
+    renderSidebarTree(tree, '/zh-CN/api-reference/api-ref/conversational-ai/join');
 
     const link = await screen.findByRole('link', {
       name: /Start a conversational AI agent POST/i,
@@ -325,15 +325,15 @@ describe('DocsSidebarTree', () => {
       'Start a conversational AI agent with a very long visible endpoint label';
     const tree: DocsSidebarNode[] = [
       {
-        id: '/en/api-reference/api-ref/conversational-ai/join',
+        id: '/zh-CN/api-reference/api-ref/conversational-ai/join',
         method: 'POST',
         title: longTitle,
         type: 'page',
-        url: '/en/api-reference/api-ref/conversational-ai/join',
+        url: '/zh-CN/api-reference/api-ref/conversational-ai/join',
       },
     ];
 
-    renderSidebarTree(tree, '/en/api-reference/api-ref/conversational-ai/join');
+    renderSidebarTree(tree, '/zh-CN/api-reference/api-ref/conversational-ai/join');
 
     const label = await screen.findByTitle(longTitle);
     const link = screen.getByRole('link', {
@@ -511,25 +511,25 @@ describe('DocsSidebarTree', () => {
       {
         children: [
           {
-            id: '/en/api-reference/faq/integration',
+            id: '/zh-CN/api-reference/faq/integration',
             title: 'Integration',
             type: 'page',
-            url: '/en/api-reference/faq/integration',
+            url: '/zh-CN/api-reference/faq/integration',
           },
         ],
         collapsible: true,
         id: 'folder-faq',
         title: 'FAQ',
         type: 'section',
-        url: '/en/api-reference/faq',
+        url: '/zh-CN/api-reference/faq',
       },
     ];
 
-    renderSidebarTree(tree, '/en/api-reference/other');
+    renderSidebarTree(tree, '/zh-CN/api-reference/other');
 
     expect(await screen.findByRole('link', { name: 'FAQ' })).toHaveAttribute(
       'href',
-      '/en/api-reference/faq',
+      '/zh-CN/api-reference/faq',
     );
     const toggle = await screen.findByRole('button', { name: 'FAQ 子页面' });
     expect(toggle).toHaveAttribute('aria-expanded', 'false');

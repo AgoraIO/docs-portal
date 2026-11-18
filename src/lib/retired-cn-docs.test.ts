@@ -133,7 +133,7 @@ describe('retired Chinese product documentation', () => {
           'marketplace',
           'build',
           'add-video-and-ar-effects',
-          'metakit',
+          'virtual-background',
         ],
         'en',
       ),

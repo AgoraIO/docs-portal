@@ -12,7 +12,7 @@ import type { VFile } from 'vfile';
 import { buildDocPath } from '../docs-routing';
 import { getSearchEntryMetadata } from '../docs-search';
 import type { AppLocale } from '../i18n/i18n-config';
-import { remarkAccordionHeadings } from '../mdx/accordion-toc';
+import { remarkAccordionHeadings, remarkGlobalAccordionHeadings } from '../mdx/accordion-toc';
 import { remarkLiteralDirectives } from '../mdx/remark-literal-directives';
 import {
   getOpenApiEndpointUrl,
@@ -127,7 +127,7 @@ export function buildAlgoliaContentDocsRecords(
     }
 
     const title = page.title ?? route.slugSegments.at(-1) ?? page.url;
-    const { contents, headings } = extractDocSearchContent(page.content);
+    const { contents, headings } = extractDocSearchContent(page.content, route.locale);
     const metadata = getSearchEntryMetadata(page.url, page.content);
 
     if (contents.length === 0 && page.description) {
@@ -241,13 +241,13 @@ export function buildAlgoliaOpenApiRecord({
  * snippets read as prose instead of Markdown/table markup. `code` is kept in
  * the scanned node types so identifiers inside fenced blocks stay searchable.
  */
-export function extractDocSearchContent(markdown: string) {
+export function extractDocSearchContent(markdown: string, locale: AppLocale = 'en') {
   const plugins = markdown.includes('<Accordion')
     ? [
         remarkMdx,
         remarkDirective,
         remarkLiteralDirectives,
-        remarkAccordionHeadings,
+        locale === 'en' ? remarkGlobalAccordionHeadings : remarkAccordionHeadings,
         remarkSearchTableCells,
       ]
     : [remarkDirective, remarkLiteralDirectives, remarkSearchTableCells];

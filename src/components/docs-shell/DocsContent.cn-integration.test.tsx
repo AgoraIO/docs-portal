@@ -930,7 +930,7 @@ describe('DocsTableOfContents', () => {
             </h2>
           </div>
         </article>
-        <DocsTableOfContents
+        <DocsTableOfContents locale="zh-CN"
           toc={[{ depth: 3, title: 'v2.13', url: '#v213' }]}
         />
       </AppProviders>

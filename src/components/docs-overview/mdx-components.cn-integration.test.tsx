@@ -268,7 +268,7 @@ describe('overview MDX components', () => {
   });
 
   it('renders compact resource cards with their destinations and descriptions', () => {
-    const components = getOverviewMDXComponents();
+    const components = getOverviewMDXComponents('zh-CN/introduction/index.mdx');
     const SolutionCardGrid =
       components.SolutionCardGrid as SolutionCardGridComponent;
     const SolutionCard = components.SolutionCard as SolutionCardComponent;
@@ -303,7 +303,7 @@ describe('overview MDX components', () => {
   });
 
   it('places the title beside the icon only when requested', () => {
-    const components = getOverviewMDXComponents();
+    const components = getOverviewMDXComponents('zh-CN/introduction/index.mdx');
     const SolutionCard = components.SolutionCard as SolutionCardComponent;
 
     render(
@@ -358,7 +358,7 @@ describe('overview MDX components', () => {
   });
 
   it('renders compact solution cards as dense title-only links', () => {
-    const components = getOverviewMDXComponents();
+    const components = getOverviewMDXComponents('zh-CN/introduction/index.mdx');
     const SolutionCardGrid =
       components.SolutionCardGrid as SolutionCardGridComponent;
     const SolutionCard = components.SolutionCard as SolutionCardComponent;
@@ -402,7 +402,7 @@ describe('overview MDX components', () => {
   });
 
   it('supports multiple labeled actions that share one target', () => {
-    const components = getOverviewMDXComponents();
+    const components = getOverviewMDXComponents('zh-CN/introduction/index.mdx');
     const SolutionCard = components.SolutionCard as SolutionCardComponent;
     const consoleError = vi
       .spyOn(console, 'error')
@@ -432,7 +432,7 @@ describe('overview MDX components', () => {
   });
 
   it('renders localized help hub copy for Chinese pages', () => {
-    const components = getOverviewMDXComponents();
+    const components = getOverviewMDXComponents('zh-CN/introduction/index.mdx');
     const HelpHub = components.HelpHub as HelpHubComponent;
 
     render(
@@ -477,7 +477,7 @@ describe('overview MDX components', () => {
   });
 
   it('opens linked overview images in a new tab without a zoom button', () => {
-    const components = getOverviewMDXComponents();
+    const components = getOverviewMDXComponents('zh-CN/introduction/index.mdx');
     const OverviewImageCard =
       components.OverviewImageCard as OverviewImageCardComponent;
     render(
@@ -506,7 +506,7 @@ describe('overview MDX components', () => {
   });
 
   it('renders Demo images and filters cards by supported platform', () => {
-    const components = getOverviewMDXComponents();
+    const components = getOverviewMDXComponents('zh-CN/introduction/index.mdx');
     const DemoGallery = components.DemoGallery as DemoGalleryComponent;
 
     render(
@@ -588,7 +588,7 @@ describe('overview MDX components', () => {
   });
 
   it('opens online demos in a new tab and retains product and scenario filters', () => {
-    const components = getOverviewMDXComponents();
+    const components = getOverviewMDXComponents('zh-CN/introduction/index.mdx');
     const DemoGallery = components.DemoGallery as DemoGalleryComponent;
 
     render(
@@ -696,7 +696,7 @@ describe('overview MDX components', () => {
   it('renders the Demo platform switcher and keeps the selected platform in the URL', async () => {
     window.history.replaceState({}, '', '/zh-CN/reference/demo/agora-lab');
 
-    const components = getOverviewMDXComponents();
+    const components = getOverviewMDXComponents('zh-CN/introduction/index.mdx');
     const DemoPlatformTabs =
       components.DemoPlatformTabs as DemoPlatformTabsComponent;
     const DemoPlatform = components.DemoPlatform as DemoPlatformComponent;
@@ -744,7 +744,7 @@ describe('overview MDX components', () => {
         '',
         `/zh-CN/reference/demo/agora-lab#${encodeURIComponent(anchor)}`,
       );
-      const components = getOverviewMDXComponents();
+      const components = getOverviewMDXComponents('zh-CN/introduction/index.mdx');
       const DemoPlatformTabs =
         components.DemoPlatformTabs as DemoPlatformTabsComponent;
       const DemoPlatform = components.DemoPlatform as DemoPlatformComponent;
@@ -795,7 +795,7 @@ describe('overview MDX components', () => {
   );
 
   it('stacks Demo media on small screens and uses one row from sm', () => {
-    const components = getOverviewMDXComponents();
+    const components = getOverviewMDXComponents('zh-CN/introduction/index.mdx');
     const DemoMedia = components.DemoMedia as DemoMediaComponent;
 
     const { container } = render(
@@ -833,7 +833,7 @@ describe('overview MDX components', () => {
   });
 
   it('omits the recipe count when the gallery has no results', () => {
-    const components = getOverviewMDXComponents();
+    const components = getOverviewMDXComponents('zh-CN/introduction/index.mdx');
     const RecipesGallery = components.RecipesGallery as RecipesCatalogComponent;
 
     render(

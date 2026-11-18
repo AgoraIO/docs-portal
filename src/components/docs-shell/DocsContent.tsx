@@ -549,6 +549,7 @@ export function DocsContent({
 
   return (
     <PlatformPageProvider
+      locale={currentLocale}
       canonicalPlatform={platformTabs.canonicalPlatform}
       defaultPlatform={platformTabs.defaultPlatform}
       initialPlatform={platformTabs.initialPlatform}
@@ -1093,7 +1094,7 @@ export function DocsTableOfContents({
         let nextActiveUrl =
           firstActiveHeadingIndex >= 0
             ? (items[firstActiveHeadingIndex]?.url ?? '')
-            : (items[0]?.url ?? '');
+            : (locale === 'zh-CN' ? '' : (items[0]?.url ?? ''));
         const nextVisibleUrls = new Set<string>();
 
         for (const [index, item] of items.entries()) {
