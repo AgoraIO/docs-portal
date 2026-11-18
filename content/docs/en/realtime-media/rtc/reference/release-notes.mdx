@@ -40,6 +40,25 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="v4.7.1" id="v471-android" headingLevel={3} value="v471-android">
+
+Released on November 18, 2026.
+
+#### New features
+
+* **Metadata support for locally transcoded video**
+
+    This release adds support for sending metadata with locally transcoded video streams, allowing you to attach custom application data. For the transcoded output stream, the SDK requests the metadata through the [`onReadyToSendMetadata`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_imetadataobserver.html#callback_imetadataobserver_onreadytosendmetadata) callback with `sourceType` set to `VIDEO_SOURCE_TRANSCODED`.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- The `onEncodedVideoFrameReceived` callback stopped firing after `stopRecording` was called to stop local recording.
+- The app could occasionally crash in certain initialization scenarios when using both the RTC SDK and the Signaling SDK.
+
+</Accordion>
+
 <Accordion title="v4.7.0" id="v470-1" headingLevel={3} value="v470-1">
 
 Released on September 30, 2026.
@@ -2058,6 +2077,26 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 ### Versions
 
 <Accordions type="multiple" openFirst>
+
+<Accordion title="v4.7.1" id="v471-ios" headingLevel={3} value="v471-ios">
+
+Released on November 18, 2026.
+
+#### New features
+
+* **Metadata support for locally transcoded video**
+
+    This release adds support for sending metadata with locally transcoded video streams, allowing you to attach custom application data. For the transcoded output stream, the SDK requests the metadata through the [`readyToSendMetadataAtTimestamp:sourceType:`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoramediametadatadatasource/readytosendmetadata(attimestamp:sourcetype:)) callback with `sourceType` set to `AgoraVideoSourceTypeTransCoded`.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- The `onEncodedVideoFrameReceived:length:info:channelId:uid:` callback stopped firing after `stopRecording` was called to stop local recording.
+- On iPhone 16 series devices running iOS 27.x, system compatibility issues could cause the sending bitrate to exceed the configured bitrate when inputting video data in BGRA format.
+- When debugging an app with Xcode, initializing the RTC engine could occasionally trigger a Main Thread Checker warning.
+
+</Accordion>
 
 <Accordion title="v4.7.0" id="v470-2" headingLevel={3} value="v470-2">
 
