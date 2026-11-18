@@ -25,7 +25,7 @@ export const internationalDocsUrl = 'https://docs.agora.io/en/introduction';
 export const legacyDocsBannerConfig = {
   hrefs: {
     en: 'https://docs-legacy.agora.io/en',
-    'zh-CN': 'https://doc.shengwang.cn/',
+    'zh-CN': 'https://doc-archive.shengwang.cn/archive/0.0.546/',
   },
 };
 
