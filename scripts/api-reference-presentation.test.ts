@@ -31,6 +31,22 @@ it('detects required-column alignment, width and wrapping regressions', () => {
   expect(valid).not.toContain('oversized-required-column');
 });
 
+it('discovers unmarked semantic columns independently of renderer markers', () => {
+  expect(
+    inspect(
+      '<table><thead><tr><th>配置路径</th><th>是否必需</th><th>说明</th></tr></thead><tbody><tr><td>tts.vendor</td><td>是</td><td>供应商。</td></tr></tbody></table>',
+    ),
+  ).toContain('unclassified-required-column');
+});
+
+it('allows a wider conditional requirement column', () => {
+  const rules = inspect(
+    '<table><thead><tr><th>字段</th><th data-table-column-kind="requirement" style="min-width:96px;white-space:nowrap;text-align:center">填写要求</th><th>说明</th></tr></thead><tbody><tr><td>endpoint</td><td data-table-column-kind="requirement" style="min-width:96px;text-align:center">视场景</td><td>服务地址。</td></tr></tbody></table>',
+  );
+  expect(rules).not.toContain('unclassified-required-column');
+  expect(rules).not.toContain('oversized-required-column');
+});
+
 it('rejects empty return descriptions and keeps informative type-only returns', () => {
   expect(
     inspect(

@@ -188,22 +188,45 @@ article :where(h1) {
    Let their content grow naturally while preserving a single-line header. */
 .prose
   table:not(.im-pricing-api-table):not(:where(.not-prose, .not-prose *))
-  :is(th, td)[data-table-column-kind="required"],
+  :is(th, td):is(
+    [data-table-column-kind="required"],
+    [data-table-column-kind="requirement"]
+  ),
 .openapi-operation
   .openapi-markdown
   table:not(.im-pricing-api-table)
-  :is(th, td)[data-table-column-kind="required"] {
-  min-width: 4rem;
+  :is(th, td):is(
+    [data-table-column-kind="required"],
+    [data-table-column-kind="requirement"]
+  ) {
+  min-width: var(--docs-requirement-column-width, 4rem);
   width: 1%;
   text-align: center;
 }
 
-.prose table th[data-table-column-kind="required"],
+.prose
+  table
+  th:is(
+    [data-table-column-kind="required"],
+    [data-table-column-kind="requirement"]
+  ),
 .openapi-operation
   .openapi-markdown
   table
-  th[data-table-column-kind="required"] {
+  th:is(
+    [data-table-column-kind="required"],
+    [data-table-column-kind="requirement"]
+  ) {
   white-space: nowrap;
+}
+
+/* Conditional requirements include short phrases such as 建议填写. */
+.prose table :is(th, td)[data-table-column-kind="requirement"],
+.openapi-operation
+  .openapi-markdown
+  table
+  :is(th, td)[data-table-column-kind="requirement"] {
+  --docs-requirement-column-width: 6rem;
 }
 
 /* Preserve intrinsic word widths for linked API names and inline declarations.

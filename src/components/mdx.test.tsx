@@ -357,6 +357,18 @@ describe('common MDX registry', () => {
     },
     { headers: ['Parameters', 'Type', 'Required', 'Description'], required: 2 },
     { headers: ['Field', 'Optional', 'Description'], required: 1 },
+    { headers: ['配置项', '必填', '描述'], required: 1 },
+    { headers: ['参数名', '类型', '是否必选', '描述'], required: 2 },
+    { headers: ['参数名称', '类型', '是否必选', '说明'], required: 2 },
+    {
+      headers: ['配置路径', '类型', '是否必需', '默认值', '说明'],
+      required: 2,
+    },
+    { headers: ['参数', '必选', '说明'], required: 1 },
+    {
+      headers: ['字段', 'JSON 类型', '必填', '含义与作用', '生效范围与注意'],
+      required: 2,
+    },
   ])(
     'centers only the required column in $headers',
     ({ headers, required }) => {
@@ -402,6 +414,40 @@ describe('common MDX registry', () => {
       }
     },
   );
+
+  it('keeps conditional requirements distinct from short required flags', () => {
+    const Table = getMDXComponents().table as TableComponent;
+    render(
+      <Table>
+        <thead>
+          <tr>
+            <th>字段</th>
+            <th>填写要求</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>endpoint</td>
+            <td>视场景</td>
+            <td>当 vendor 为 11 时必填。</td>
+          </tr>
+          <tr>
+            <td>region</td>
+            <td>建议填写</td>
+            <td>存储服务区域。</td>
+          </tr>
+        </tbody>
+      </Table>,
+    );
+    for (const name of ['填写要求', '视场景', '建议填写']) {
+      expect(screen.getByText(name)).toHaveAttribute(
+        'data-table-column-kind',
+        'requirement',
+      );
+      expect(screen.getByText(name)).toHaveStyle({ textAlign: 'center' });
+    }
+  });
 
   it('preserves numeric alignment outside parameter tables', () => {
     const Table = getMDXComponents().table as TableComponent;

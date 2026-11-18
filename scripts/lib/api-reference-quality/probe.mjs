@@ -104,17 +104,58 @@ export function inspectReference() {
     )
       add('unstyled-description-list', list);
   }
+  // Discover semantic columns from native headers, independently of renderer tags.
+  // A missing renderer classification must not silently escape the gate.
+  for (const table of document.querySelectorAll('article table')) {
+    const head = table.querySelector(':scope > thead');
+    const rows = [
+      ...table.querySelectorAll(':scope > :is(thead, tbody, tfoot) > tr'),
+    ];
+    if (
+      !head ||
+      head.querySelectorAll(':scope > tr').length !== 1 ||
+      table.querySelector(
+        '[colspan]:not([colspan="1"]), [rowspan]:not([rowspan="1"])',
+      )
+    )
+      continue;
+    const headers = [...head.querySelectorAll(':scope > tr > th')];
+    if (
+      headers.length < 3 ||
+      headers.length > 5 ||
+      rows.some((row) => row.children.length !== headers.length)
+    )
+      continue;
+    for (const [column, header] of headers.entries()) {
+      if (
+        !/^(?:(?:是否)?(?:必填|必选|必需|必须|可选|必要)|required|optional|mandatory|填写要求|必填条件|requirements?)[?？]?$/i.test(
+          header.textContent.replace(/\s+/g, ''),
+        )
+      )
+        continue;
+      const expected =
+        header.textContent.trim() === '填写要求' ? 'requirement' : 'required';
+      for (const row of rows) {
+        const cell = row.children[column];
+        if (visible(cell) && cell.dataset.tableColumnKind !== expected)
+          add('unclassified-required-column', cell);
+      }
+    }
+  }
   for (const cell of document.querySelectorAll('article td, article th')) {
     if (!visible(cell) || cell.closest('pre')) continue;
     const text = cell.textContent.trim(),
       style = getComputedStyle(cell);
-    if (cell.dataset.tableColumnKind === 'required') {
+    if (['required', 'requirement'].includes(cell.dataset.tableColumnKind)) {
       if (style.textAlign !== 'center') add('misaligned-required-column', cell);
       if (cell.tagName === 'TH' && style.whiteSpace !== 'nowrap')
         add('wrapping-required-header', cell);
       const rem =
         parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-      if (parseFloat(style.minWidth) > rem * 4 + 0.5)
+      if (
+        parseFloat(style.minWidth) >
+        rem * (cell.dataset.tableColumnKind === 'requirement' ? 6 : 4) + 0.5
+      )
         add('oversized-required-column', cell);
     }
     const width =
@@ -321,6 +362,7 @@ export const canaryHtml = `<!doctype html><html><body><article>
 <div style="border-radius:12px;overflow:visible"><div role="tablist" style="background:red">Tabs</div></div>
 <table style="table-layout:fixed;width:20px"><tr><td style="width:20px;line-height:20px">A long description that has been squeezed into a very narrow table column and is no longer readable as continuous prose.</td></tr></table>
 <table><thead><tr><th data-table-column-kind="required" style="min-width:128px;white-space:normal;text-align:right">是否必填</th></tr></thead><tbody><tr><td data-table-column-kind="required" style="min-width:128px;text-align:right">是</td></tr></tbody></table>
+<table><thead><tr><th>配置路径</th><th>是否必需</th><th>说明</th></tr></thead><tbody><tr><td>tts.vendor</td><td>是</td><td>供应商。</td></tr></tbody></table>
 <aside><nav><a style="display:block;width:20px;overflow:hidden">A clipped table of contents link</a></nav></aside>
 <figure class="shiki" data-code-language="cpp"><pre><code>int callback();</code></pre></figure>
 <figure data-code-language="cpp"><pre><code><span style="--shiki-light:red;--shiki-dark:red;color:black">int</span><span style="--shiki-light:blue;--shiki-dark:blue;color:black">callback</span></code></pre></figure>
@@ -343,6 +385,7 @@ export const canaryRules = [
   'split-short-table-word',
   'tab-frame-leak',
   'squeezed-table-prose',
+  'unclassified-required-column',
   'misaligned-required-column',
   'wrapping-required-header',
   'oversized-required-column',

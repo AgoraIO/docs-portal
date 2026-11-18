@@ -30,7 +30,7 @@ function tableHeaderText(children: ReactNode): string {
 }
 
 type TableCellProps = ComponentProps<'td'> & {
-  'data-table-column-kind'?: 'required';
+  'data-table-column-kind'?: 'required' | 'requirement';
 };
 
 const elements = (value: ReactNode) =>
@@ -74,17 +74,8 @@ function requiredColumnCells(
   headers: string[] | undefined,
 ) {
   if (!headers || headers.length < 3 || headers.length > 5) return children;
-  if (
-    !headers.some((label) =>
-      /^(参数|属性|名称|字段|parameters?|propert(?:y|ies)|names?|fields?)$/.test(
-        label,
-      ),
-    ) ||
-    !headers.some((label) => /^(描述|说明|description)$/.test(label))
-  )
-    return children;
   const required = headers.findIndex((label) =>
-    /^(必填|是否必填|是否必须|可选|是否可选|required|optional|mandatory)$/.test(
+    /^(?:(?:是否)?(?:必填|必选|必需|必须|可选)|required|optional|mandatory|填写要求)$/.test(
       label,
     ),
   );
@@ -120,7 +111,8 @@ function requiredColumnCells(
             if (!isValidElement<TableCellProps>(cell)) return cell;
             if (column++ !== required) return cell;
             return cloneElement(cell, {
-              'data-table-column-kind': 'required',
+              'data-table-column-kind':
+                headers[required] === '填写要求' ? 'requirement' : 'required',
               style: { ...cell.props.style, textAlign: 'center' },
             });
           }),
