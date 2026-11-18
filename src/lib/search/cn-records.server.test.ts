@@ -10,6 +10,74 @@ const route = { url, canonicalPath: url, markdownPath: `${url}.md` };
 const page = { url, title: 'RTC API', objectType: 'docs' as const };
 describe('published CN index export', () => {
   it.each([
+    ['<ApiReferenceCards locale="zh-CN" type="all" />', 'C'],
+    [
+      '<Card href="/internal-config" icon="ticket" style={{ display: "grid" }} />',
+      'internal-config',
+    ],
+    [
+      '<Card href="/internal-config" icon="ticket" style={{ display: "grid" }} />',
+      'grid',
+    ],
+    [
+      '<Card href="/internal-config" icon="ticket" style={{ display: "grid" }} />',
+      'ticket',
+    ],
+  ])(
+    'does not create a search record from JSX configuration %s matching rendered text %s',
+    async (component, rendered) => {
+      const catalogUrl = '/zh-CN/api-reference/api';
+      const records = await exportPublishedCnRecords({
+        routes: [
+          route,
+          {
+            url: catalogUrl,
+            canonicalPath: catalogUrl,
+            markdownPath: `${catalogUrl}.md`,
+          },
+        ],
+        pages: [page, { url: catalogUrl, title: 'API 参考' }],
+        readMarkdown: async (path) =>
+          path === route.markdownPath
+            ? '# RTC API\n\n正常正文。'
+            : `# API 参考\n\n${component}`,
+        readRenderedHtml: async (path) =>
+          path === url
+            ? '<article data-static-docs-body><p>正常正文。</p></article>'
+            : `<article data-static-docs-body><span>${rendered}</span></article>`,
+      });
+      expect(records).toHaveLength(1);
+      expect(records[0].url).toBe('/api-reference/rtc/web/4.6.0/api');
+      expect(records[0].content).toBe('正常正文。');
+    },
+  );
+  it('preserves literal single-letter prose props without indexing matching configuration', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n<HelpHub cards={[{ title: "C", description: `A &amp; B`, href: "/internal-config" }]} />',
+      readRenderedHtml: async () =>
+        '<article data-static-docs-body><h3>C</h3><p>A &amp; B</p><span>internal-config</span></article>',
+    });
+    expect(records).toHaveLength(1);
+    expect(records[0].content.trim()).toBe('C\nA & B');
+    expect(records[0].summary).toBe('C\nA & B');
+  });
+  it('recovers literal prose supplied by a nested JSX title component', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n<Card title={<Label text="显示文本" className="internal-style" />} />',
+      readRenderedHtml: async () =>
+        '<article data-static-docs-body><span>显示文本</span><span>internal-style</span></article>',
+    });
+    expect(records).toHaveLength(1);
+    expect(records[0].content.trim()).toBe('显示文本');
+    expect(records[0].summary).toBe('显示文本');
+  });
+  it.each([
     '<button aria-expanded="false">帮助</button>',
     '帮助<button aria-label="Copy Anchor Link">Copy Anchor Link</button>',
   ])(
