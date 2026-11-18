@@ -6,6 +6,15 @@ import {
 import { OPENAPI_LANES } from './lanes';
 
 describe('fumadocs openapi source', () => {
+  it('limits generated navigation files to the requested search locales', async () => {
+    const { files } = await createLocalizedOpenApiSource(['en']);
+    const paths = files.map((file) => file.path);
+    expect(paths).toContain(
+      'en/api-reference/api-ref/cloud-recording/acquire.mdx',
+    );
+    expect(paths.every((path) => path.startsWith('en/'))).toBe(true);
+  });
+
   it('generates localized operation pages with existing route leaves', async () => {
     const source = await createLocalizedOpenApiSource();
     const pagePaths = source.files

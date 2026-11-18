@@ -91,7 +91,7 @@ const STRUCTURE_CONTENT_TYPES = [
 export async function getAlgoliaDocsRecords(): Promise<AlgoliaDocsRecord[]> {
   const [pages, navigationByLocale] = await Promise.all([
     getContentDocsPages(),
-    getAlgoliaSearchNavigation(),
+    getAlgoliaSearchNavigation(INDEXED_LOCALES),
   ]);
   const [docsRecords, openApiRecords] = await Promise.all([
     buildAlgoliaContentDocsRecords(pages, navigationByLocale),
@@ -104,7 +104,7 @@ export async function getAlgoliaDocsRecords(): Promise<AlgoliaDocsRecord[]> {
 export async function getAlgoliaContentDocsRecords() {
   const [pages, navigationByLocale] = await Promise.all([
     getContentDocsPages(),
-    getAlgoliaSearchNavigation(),
+    getAlgoliaSearchNavigation(INDEXED_LOCALES),
   ]);
 
   return buildAlgoliaContentDocsRecords(pages, navigationByLocale);
