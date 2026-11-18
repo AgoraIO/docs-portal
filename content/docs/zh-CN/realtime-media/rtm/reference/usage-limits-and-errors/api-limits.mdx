@@ -159,6 +159,62 @@ RTM 将客户端 API 按功能分为若干操作类别，每个类别拥有独�
 | 查询锁 | `getLocks` |
 | 获取历史消息 | `getMessages` |
 
+<PlatformStructured platform="web">
+
+</PlatformStructured>
+
+<PlatformStructured platform="android">
+
+| 类别 | 方法 | 配额 / 客户端 |
+| --- | --- | --- |
+| 查询用户在线状态 | `getUserOnlineStatus` | 20 次/秒，独立计数，不与其他 API 共用配额。 |
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+| 类别 | 方法 | 配额 / 客户端 |
+| --- | --- | --- |
+| 查询用户在线状态 | `getUserOnlineStatus` | 20 次/秒，独立计数，不与其他 API 共用配额。 |
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+| 类别 | 方法 | 配额 / 客户端 |
+| --- | --- | --- |
+| 查询用户在线状态 | `getUserOnlineStatus` | 20 次/秒，独立计数，不与其他 API 共用配额。 |
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+| 类别 | 方法 | 配额 / 客户端 |
+| --- | --- | --- |
+| 查询用户在线状态 | `getUserOnlineStatus` | 20 次/秒，独立计数，不与其他 API 共用配额。 |
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+| 类别 | 方法 | 配额 / 客户端 |
+| --- | --- | --- |
+| 查询用户在线状态 | `getUserOnlineStatus` | 20 次/秒，独立计数，不与其他 API 共用配额。 |
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+</PlatformStructured>
+
 ### 4.2 连接与实例
 
 | 限制项 | 数值 | 类型 | 超出后 |
@@ -194,6 +250,77 @@ RTM 将客户端 API 按功能分为若干操作类别，每个类别拥有独�
 | 加入频道前可缓存的临时状态数 | 100 个 | 固定上限 | 加入或订阅后才生效并触发通知。 |
 | `whoNow` 单页人数 | 100 人 | 固定上限 | 通过 `nextPage` 翻页。 |
 | 实时通知最大人数（Announce → Interval 切换阈值） | 默认 50 人，控制台可设 8–128 人 | 默认上限 | 在线人数达到阈值后，事件由实时通知改为周期聚合通知。 |
+
+<PlatformStructured platform="web">
+
+</PlatformStructured>
+
+<PlatformStructured platform="android">
+
+| 限制项 | 数值 | 类型 | 超出后 |
+| --- | --- | --- | --- |
+| `getUserOnlineStatus` 单次查询用户数 | 1 个 | 固定上限 | 不支持批量查询，需要逐个查询。可以查询自己，但必须传入完整的 User ID。 |
+| `getUserOnlineStatus` 响应超时 | 5 秒 | 固定上限 | 返回 `PRESENCE_OPERATION_TIMEOUT`（-13012），SDK 不会自动重试。 |
+
+`getUserOnlineStatus` 的调用条件、参数规则和错误码，见 [API 参考](/zh-CN/api-reference/rtm/android/presence#getUserOnlineStatus)。查询离线或不存在的用户时，接口返回成功结果 `online=false`，不属于调用失败。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+| 限制项 | 数值 | 类型 | 超出后 |
+| --- | --- | --- | --- |
+| `getUserOnlineStatus` 单次查询用户数 | 1 个 | 固定上限 | 不支持批量查询，需要逐个查询。可以查询自己，但必须传入完整的 User ID。 |
+| `getUserOnlineStatus` 响应超时 | 5 秒 | 固定上限 | 返回 `PRESENCE_OPERATION_TIMEOUT`（-13012），SDK 不会自动重试。 |
+
+`getUserOnlineStatus` 的调用条件、参数规则和错误码，见 [API 参考](/zh-CN/api-reference/rtm/ios/presence#getUserOnlineStatus)。查询离线或不存在的用户时，接口返回成功结果 `online=false`，不属于调用失败。
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+| 限制项 | 数值 | 类型 | 超出后 |
+| --- | --- | --- | --- |
+| `getUserOnlineStatus` 单次查询用户数 | 1 个 | 固定上限 | 不支持批量查询，需要逐个查询。可以查询自己，但必须传入完整的 User ID。 |
+| `getUserOnlineStatus` 响应超时 | 5 秒 | 固定上限 | 返回 `PRESENCE_OPERATION_TIMEOUT`（-13012），SDK 不会自动重试。 |
+
+`getUserOnlineStatus` 的调用条件、参数规则和错误码，见 [API 参考](/zh-CN/api-reference/rtm/cpp/presence#getUserOnlineStatus)。查询离线或不存在的用户时，接口返回成功结果 `online=false`，不属于调用失败。
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+| 限制项 | 数值 | 类型 | 超出后 |
+| --- | --- | --- | --- |
+| `getUserOnlineStatus` 单次查询用户数 | 1 个 | 固定上限 | 不支持批量查询，需要逐个查询。可以查询自己，但必须传入完整的 User ID。 |
+| `getUserOnlineStatus` 响应超时 | 5 秒 | 固定上限 | 返回 `PRESENCE_OPERATION_TIMEOUT`（-13012），SDK 不会自动重试。 |
+
+`getUserOnlineStatus` 的调用条件、参数规则和错误码，见 [API 参考](/zh-CN/api-reference/rtm/swift/presence#getUserOnlineStatus)。查询离线或不存在的用户时，接口返回成功结果 `online=false`，不属于调用失败。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+| 限制项 | 数值 | 类型 | 超出后 |
+| --- | --- | --- | --- |
+| `getUserOnlineStatus` 单次查询用户数 | 1 个 | 固定上限 | 不支持批量查询，需要逐个查询。可以查询自己，但必须传入完整的 User ID。 |
+| `getUserOnlineStatus` 响应超时 | 5 秒 | 固定上限 | 返回 `PRESENCE_OPERATION_TIMEOUT`（-13012），SDK 不会自动重试。 |
+
+`getUserOnlineStatus` 的调用条件、参数规则和错误码，见 [API 参考](/zh-CN/api-reference/rtm/harmonyos/presence#getUserOnlineStatus)。查询离线或不存在的用户时，接口返回成功结果 `online=false`，不属于调用失败。
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+</PlatformStructured>
 
 ### 4.5 Storage 规格
 

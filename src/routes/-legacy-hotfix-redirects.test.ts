@@ -5,35 +5,60 @@ import { collectCurrentDocTargets } from '../../scripts/shengwang-redirect-targe
 import reviewed from '../lib/shengwang-guide-redirects.json';
 import { Route as ApiRoute } from './api-ref/$';
 import { Route as DocRoute } from './doc/$';
+import { Route as FaqRoute } from './faq/$';
 
 const csv = readFileSync(
   'docs/agents/reports/2026-11-18-hotfix-new-doc-redirect-audit-missing-301.csv',
   'utf8',
 );
-const sources = [
+const initialSources = [
   ...csv.matchAll(
     /https:\/\/doc\.shengwang\.cn((?:\/doc|\/api-ref)\/[^",\r\n]+)/g,
   ),
 ].map((match) => match[1]);
+const pendingCsv = readFileSync(
+  'docs/agents/reports/2026-11-18-hotfix-new-doc-redirect-audit.csv',
+  'utf8',
+);
+const pendingSources = pendingCsv
+  .split('\n')
+  .filter((line) => line.startsWith('等待 PR #1443 合入,'))
+  .map(
+    (line) =>
+      line.match(
+        /https:\/\/doc\.shengwang\.cn((?:\/doc|\/api-ref|\/faq)\/[^",\r\n]+)/,
+      )?.[1],
+  )
+  .filter((source): source is string => Boolean(source));
+const sources = [...initialSources, ...pendingSources];
 
 describe('published hotfix legacy URLs', () => {
+  it('keeps unknown FAQ URLs unavailable', async () => {
+    const { Route } = await import('./faq/$');
+    const loader = Route.options.loader as (input: unknown) => unknown;
+    expect(() => loader({ params: { _splat: 'unknown' } })).toThrow();
+  });
   it('redirects every audited missing URL to its current content with HTTP 301', async () => {
     const targets = await collectCurrentDocTargets('content/docs/zh-CN');
-    expect(sources).toHaveLength(703);
-    expect(new Set(sources).size).toBe(703);
+    expect(sources).toHaveLength(715);
+    expect(new Set(sources).size).toBe(715);
     const rules = reviewed as Record<string, string>;
     for (const source of sources) {
       const target = rules[source];
       expect(target, source).toBeTruthy();
       expect(targets.has(target), source).toBe(true);
-      const route = source.startsWith('/api-ref/') ? ApiRoute : DocRoute;
+      const route = source.startsWith('/api-ref/')
+        ? ApiRoute
+        : source.startsWith('/faq/')
+          ? FaqRoute
+          : DocRoute;
       const loader = route.options.loader as (input: unknown) => unknown;
       for (const ending of ['', '/']) {
         let caught: unknown;
         try {
           loader({
             params: {
-              _splat: source.replace(/^\/(doc|api-ref)\//, '') + ending,
+              _splat: source.replace(/^\/(doc|api-ref|faq)\//, '') + ending,
             },
           });
         } catch (error) {
@@ -49,6 +74,11 @@ describe('published hotfix legacy URLs', () => {
   });
 
   it.each([
+    [
+      FaqRoute,
+      'general-product-inquiry/rtm2-user-online-status',
+      '/reference/faq/product/rtm2_user_online_status',
+    ],
     [
       DocRoute,
       'rtc-server-sdk/cpp/advanced-features/video-metadata',

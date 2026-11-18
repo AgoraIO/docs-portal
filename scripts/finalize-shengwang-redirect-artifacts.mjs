@@ -70,7 +70,7 @@ const historicalSources = new Set(
 );
 for (const [legacyPath, target] of Object.entries(guideRedirects)) {
   if (
-    !/^\/(?:doc|api-ref)\//.test(legacyPath) ||
+    !/^\/(?:doc|api-ref|faq)\//.test(legacyPath) ||
     !target.startsWith('/') ||
     target.startsWith('//') ||
     legacyPath === target.split(/[?#]/, 1)[0]
@@ -133,7 +133,7 @@ for (const [legacyPath, target] of Object.entries(guideRedirects)) {
   records.push({
     legacyUrl: `https://doc.shengwang.cn${legacyPath}`,
     legacyPath,
-    legacyFamily: legacyPath.startsWith('/api-ref/') ? 'api-ref' : 'doc',
+    legacyFamily: legacyPath.split('/')[1],
     target,
     status: 'candidate',
     confidence: 'high',

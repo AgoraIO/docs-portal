@@ -40,6 +40,8 @@ export const zhCnFaqPlatforms = [
   '全部平台',
   'Android',
   'iOS',
+  'Swift',
+  'C++',
   'macOS',
   'JavaScript',
   'Windows',
@@ -1073,6 +1075,15 @@ const zhCnFaqSourceItems: FaqItem[] = [
     summary:
       '视频卡顿问题一般由网络、设备性能等原因造成。你可以参考以下步骤解决卡顿问题。',
     title: '为什么我的视频会出现卡顿？',
+  },
+  {
+    category: 'general-product-inquiry',
+    href: '/zh-CN/reference/faq/product/rtm2_user_online_status',
+    platforms: ['全部平台', 'Android', 'iOS', 'Swift', 'C++', 'HarmonyOS'],
+    products: ['全部产品', '实时消息'],
+    summary:
+      '按当前 App ID 下的精确 User ID 查询有效 RTM 登录连接，无需加入或订阅频道；查询失败不能当作离线。',
+    title: '如何查询用户在线状态？',
   },
 ];
 

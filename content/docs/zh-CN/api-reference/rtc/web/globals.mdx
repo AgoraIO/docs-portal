@@ -77,6 +77,7 @@ _migration:
 - [IAgoraRTC](/zh-CN/api-reference/rtc/web/interfaces/iagorartc)
 - [IAgoraRTCClient](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient)
 - [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)
+- [IAgoraRTCServicePlugin](/zh-CN/api-reference/rtc/web/interfaces/iagorartcserviceplugin)
 - [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack)
 - [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack)
 - [IChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/web/interfaces/ichannelmediarelayconfiguration)
@@ -136,6 +137,26 @@ AudioEncoderConfigurationPreset: keyof typeof AUDIO_ENCODER_CONFIG_SETTINGS
 | `"standard_stereo"` | 48 kHz 采样率，双声道，编码码率约 64 Kbps |
 | `"high_quality"` | 48 kHz 采样率，单声道， 编码码率约 128 Kbps |
 | `"high_quality_stereo"` | 48 kHz 采样率，双声道，编码码率约 192 Kbps |
+
+<a id="audiorendermode"></a>
+
+### AudioRenderMode
+
+<ApiSignature>
+
+AudioRenderMode: "stereo" | "mono" | "surround"
+
+</ApiSignature>
+
+多声道音频的渲染模式，用于 [ILocalAudioTrack.selectChannels](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#selectchannels) 和 [IRemoteAudioTrack.selectChannels](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack#selectchannels)。
+
+- `"surround"`：保留原始声道数及位置，未选中的声道静音。
+- `"stereo"`：将选中声道混合为立体声，偶数索引混入左声道，奇数索引混入右声道。
+- `"mono"`：将选中声道混合为单声道。
+
+:::info[自从]
+*4.24.10*
+:::
 
 <a id="audiosourcestate"></a>
 
