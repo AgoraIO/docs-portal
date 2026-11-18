@@ -47,6 +47,14 @@ it('allows a wider conditional requirement column', () => {
   expect(rules).not.toContain('oversized-required-column');
 });
 
+it('detects a prose width floor stretching a short data list', () => {
+  expect(
+    inspect(
+      '<table><tbody><tr><td data-table-column-kind="value"><ul style="min-inline-size:240px"><li>SD: 200</li><li>HD: 50</li></ul></td></tr></tbody></table>',
+    ),
+  ).toContain('prose-width-on-value-column');
+});
+
 it('rejects empty return descriptions and keeps informative type-only returns', () => {
   expect(
     inspect(

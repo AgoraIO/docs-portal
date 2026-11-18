@@ -409,7 +409,7 @@ describe('common MDX registry', () => {
       });
       for (const [index, cell] of screen.getAllByRole('cell').entries()) {
         if (index === required) continue;
-        expect(cell).not.toHaveAttribute('data-table-column-kind');
+        expect(cell).not.toHaveAttribute('data-table-column-kind', 'required');
         expect(cell).toHaveStyle({ textAlign: 'right' });
       }
     },
@@ -472,8 +472,9 @@ describe('common MDX registry', () => {
     expect(screen.getByRole('cell', { name: '100.00' })).toHaveStyle({
       textAlign: 'right',
     });
-    expect(screen.getByRole('cell', { name: '100.00' })).not.toHaveAttribute(
+    expect(screen.getByRole('cell', { name: '100.00' })).toHaveAttribute(
       'data-table-column-kind',
+      'value',
     );
   });
 
@@ -503,13 +504,15 @@ describe('common MDX registry', () => {
         </tbody>
       </Table>,
     );
-    expect(container.querySelector('[data-table-column-kind]')).toBeNull();
+    expect(
+      container.querySelector('[data-table-column-kind="required"]'),
+    ).not.toBeNull();
     expect(screen.getByRole('cell', { name: '是' })).toHaveAttribute(
       'rowspan',
       '2',
     );
     expect(screen.getByRole('cell', { name: '是' })).toHaveStyle({
-      textAlign: 'right',
+      textAlign: 'center',
     });
     expect(screen.getByRole('cell', { name: '访问凭据' })).toHaveTextContent(
       '访问凭据',

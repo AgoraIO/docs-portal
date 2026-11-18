@@ -148,10 +148,18 @@ function ParameterList({
             ) : null}
             <thead>
               <tr>
-                <th scope="col" data-table-column="0">
+                <th
+                  scope="col"
+                  data-table-column="0"
+                  data-table-column-kind="name"
+                >
                   {copy.apiParameterName}
                 </th>
-                <th scope="col" data-table-column="1">
+                <th
+                  scope="col"
+                  data-table-column="1"
+                  data-table-column-kind="description"
+                >
                   {copy.apiParameterDescription}
                 </th>
               </tr>
@@ -455,7 +463,7 @@ function Parameter({
         data-parameter-variant={variant}
         {...props}
       >
-        <th scope="row" data-table-column="0">
+        <th scope="row" data-table-column="0" data-table-column-kind="name">
           {anchors}
           <ParameterIdentity
             compact
@@ -468,7 +476,7 @@ function Parameter({
             variant={variant}
           />
         </th>
-        <td data-table-column="1">
+        <td data-table-column="1" data-table-column-kind="description">
           <ParameterDescription
             compact
             defaultValue={defaultValue}
@@ -634,7 +642,9 @@ function ApiReturns({
   }
   return (
     <section className={className} data-api-returns="" {...props}>
-      <DocsTable>
+      <DocsTable
+        columns={returnType ? ['type', 'description'] : ['description']}
+      >
         <caption className="pb-3 text-start font-semibold">{title}</caption>
         <thead>
           <tr>

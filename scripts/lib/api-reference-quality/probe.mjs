@@ -158,6 +158,14 @@ export function inspectReference() {
       )
         add('oversized-required-column', cell);
     }
+    if (cell.dataset.tableColumnKind === 'value') {
+      for (const content of cell.querySelectorAll(
+        ':scope > p, :scope > ul, :scope > ol, :scope > .prose-no-margin',
+      )) {
+        if (parseFloat(getComputedStyle(content).minInlineSize) > 1)
+          add('prose-width-on-value-column', content);
+      }
+    }
     const width =
       cell.clientWidth -
       parseFloat(style.paddingLeft) -
@@ -363,6 +371,7 @@ export const canaryHtml = `<!doctype html><html><body><article>
 <table style="table-layout:fixed;width:20px"><tr><td style="width:20px;line-height:20px">A long description that has been squeezed into a very narrow table column and is no longer readable as continuous prose.</td></tr></table>
 <table><thead><tr><th data-table-column-kind="required" style="min-width:128px;white-space:normal;text-align:right">是否必填</th></tr></thead><tbody><tr><td data-table-column-kind="required" style="min-width:128px;text-align:right">是</td></tr></tbody></table>
 <table><thead><tr><th>配置路径</th><th>是否必需</th><th>说明</th></tr></thead><tbody><tr><td>tts.vendor</td><td>是</td><td>供应商。</td></tr></tbody></table>
+<table><tbody><tr><td data-table-column-kind="value"><ul style="min-inline-size:240px"><li>SD: 200</li></ul></td></tr></tbody></table>
 <aside><nav><a style="display:block;width:20px;overflow:hidden">A clipped table of contents link</a></nav></aside>
 <figure class="shiki" data-code-language="cpp"><pre><code>int callback();</code></pre></figure>
 <figure data-code-language="cpp"><pre><code><span style="--shiki-light:red;--shiki-dark:red;color:black">int</span><span style="--shiki-light:blue;--shiki-dark:blue;color:black">callback</span></code></pre></figure>
@@ -385,6 +394,7 @@ export const canaryRules = [
   'split-short-table-word',
   'tab-frame-leak',
   'squeezed-table-prose',
+  'prose-width-on-value-column',
   'unclassified-required-column',
   'misaligned-required-column',
   'wrapping-required-header',
