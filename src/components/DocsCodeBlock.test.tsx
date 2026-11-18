@@ -6,7 +6,12 @@ import {
   within,
 } from '@testing-library/react';
 import { createInstance } from 'i18next';
-import { type ComponentType, type ReactNode, useState } from 'react';
+import {
+  type ComponentProps,
+  type ComponentType,
+  type ReactNode,
+  useState,
+} from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { describe, expect, it, vi } from 'vitest';
 import enCommon from '@/lib/i18n/resources/en/common';
@@ -48,6 +53,86 @@ function LanguageSelectorExample() {
 }
 
 describe('DocsCodeBlock', () => {
+  it('uses the language tabs as the caption and copies only the selected sample', async () => {
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' });
+    type TabsProps = {
+      children: ReactNode;
+      defaultValue?: string;
+      value?: string;
+    };
+    const Root = components.CodeBlockTabs as ComponentType<TabsProps>;
+    const List = components.CodeBlockTabsList as ComponentType<TabsProps>;
+    const Trigger = components.CodeBlockTabsTrigger as ComponentType<TabsProps>;
+    const Panel = components.CodeBlockTab as ComponentType<TabsProps>;
+    const Pre = components.pre as ComponentType<
+      ComponentProps<typeof DocsCodeBlock>
+    >;
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    const clipboard = vi.spyOn(navigator, 'clipboard', 'get').mockReturnValue({
+      writeText,
+    } as unknown as Clipboard);
+    try {
+      await renderBlocks(
+        <Root defaultValue="go">
+          <List>
+            <Trigger value="go">Go</Trigger>
+            <Trigger value="python">Python</Trigger>
+          </List>
+          <Panel value="go">
+            <Pre title="Go" data-language-label="Go">
+              <code>{'package main\n\nfunc main() {}'}</code>
+            </Pre>
+          </Panel>
+          <Panel value="python">
+            <Pre title="Python" data-language-label="Python">
+              <code>{'print("hello")'}</code>
+            </Pre>
+          </Panel>
+        </Root>,
+        'zh-CN',
+      );
+      expect(screen.getAllByText('Go')).toHaveLength(1);
+      fireEvent.click(screen.getByRole('button', { name: '自动换行' }));
+      fireEvent.mouseDown(screen.getByRole('tab', { name: 'Python' }), {
+        button: 0,
+        ctrlKey: false,
+      });
+      expect(screen.getAllByText('Python')).toHaveLength(1);
+      expect(screen.getByRole('button', { name: '自动换行' })).toHaveAttribute(
+        'aria-pressed',
+        'false',
+      );
+      fireEvent.click(screen.getByRole('button', { name: 'Copy Text' }));
+      await waitFor(() =>
+        expect(writeText).toHaveBeenCalledWith('print("hello")'),
+      );
+    } finally {
+      clipboard.mockRestore();
+    }
+  });
+
+  it('wraps API signatures by default while preserving linked types and the toggle', async () => {
+    const { ApiSignature } = getMDXComponents();
+    await renderBlocks(
+      <ApiSignature>
+        <p>
+          user-info-updated(uid:{' '}
+          <a href="/zh-CN/api-reference/rtc/web/globals#uid">UID</a>, msg:
+          "mute-audio" | "mute-video"): void
+        </p>
+      </ApiSignature>,
+      'zh-CN',
+    );
+    const link = screen.getByRole('link', { name: 'UID' });
+    expect(link.closest('pre')).toHaveClass('whitespace-pre-wrap');
+    expect(link).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/rtc/web/globals#uid',
+    );
+    fireEvent.click(screen.getByRole('button', { name: '取消自动换行' }));
+    expect(link.closest('pre')).not.toHaveClass('whitespace-pre-wrap');
+  });
+
   it.each([
     ['en', 'Wrap code', 'Unwrap code'],
     ['zh-CN', '自动换行', '取消自动换行'],
@@ -202,7 +287,10 @@ describe('DocsCodeBlock', () => {
       </>,
       'en',
     );
-    expect(screen.getAllByRole('button', { name: '自动换行' })).toHaveLength(3);
+    expect(screen.getAllByRole('button', { name: '自动换行' })).toHaveLength(2);
+    expect(
+      screen.getByRole('button', { name: '取消自动换行' }),
+    ).toBeInTheDocument();
     expect(getMDXComponents(undefined, { locale: 'zh-CN' }).pre).toBe(Pre);
     expect(getMDXComponents(undefined, { locale: 'zh-CN' }).CommandBlock).toBe(
       Command,
@@ -210,9 +298,9 @@ describe('DocsCodeBlock', () => {
     expect(getMDXComponents(undefined, { locale: 'zh-CN' }).ApiSignature).toBe(
       Signature,
     );
-    fireEvent.click(screen.getAllByRole('button', { name: '自动换行' })[0]);
-    expect(
-      screen.getByRole('button', { name: '取消自动换行' }),
-    ).toHaveAttribute('aria-pressed', 'true');
+    const wrap = screen.getAllByRole('button', { name: '自动换行' })[0];
+    fireEvent.click(wrap);
+    expect(wrap).toHaveAttribute('aria-pressed', 'true');
+    expect(wrap).toHaveAccessibleName('取消自动换行');
   });
 });

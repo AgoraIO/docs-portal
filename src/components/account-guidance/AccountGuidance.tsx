@@ -280,8 +280,6 @@ export function AccountGuidance({
                   event.preventDefault();
                   loginLink.current?.focus();
                 }}
-                onInteractOutside={(event) => event.preventDefault()}
-                onEscapeKeyDown={(event) => event.preventDefault()}
               >
                 <div className="flex items-center gap-3 bg-muted/60 px-6 py-4 sm:px-8">
                   <DownloadIcon

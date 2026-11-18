@@ -38,7 +38,6 @@ export type FaqDataset = {
     clearFilters: string;
     emptyDescription: string;
     emptyTitle: string;
-    landingDescription: string;
     platformFilter: string;
     productFilter: string;
     questionCount: (count: number) => string;
@@ -61,7 +60,6 @@ export const englishFaqDataset: FaqDataset = {
     clearFilters: 'Clear filters',
     emptyDescription: 'Try another product, platform, or keyword.',
     emptyTitle: 'No FAQs match the current filters.',
-    landingDescription: 'Search every FAQ, or pick a category to browse.',
     platformFilter: 'Platform',
     productFilter: 'Product',
     questionCount: (count) =>
@@ -85,7 +83,6 @@ export const zhCnFaqDataset: FaqDataset = {
     clearFilters: '清除筛选',
     emptyDescription: '请尝试其他产品、平台或关键词。',
     emptyTitle: '没有符合当前筛选条件的常见问题。',
-    landingDescription: '搜索全部常见问题，或选择分类浏览。',
     platformFilter: '平台',
     productFilter: '产品',
     questionCount: (count) => `${count} 个问题`,

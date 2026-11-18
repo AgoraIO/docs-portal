@@ -27,7 +27,7 @@ description: "查看实时消息 RTM 的迁移指南，了解关键概念、参�
 
 ## 集成 SDK
 
-v2 和 v1 的 SDK 包名不同，你需要注意区分。不变的是，二者都支持 CDN 和 Maven Central 两种集成方式。其中，通过 Maven Central 集成 SDK 的区别如下：
+v2 和 v1 的 SDK 包名不同，你需要注意区分。二者都支持 CDN 和 Maven 集成。自 v2.3.1 起，通过 Maven 集成 RTM SDK 时，需要先按[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)中的集成说明添加声网 Maven 仓库 `https://download.shengwang.cn/maven/`，并保留项目已有的仓库。各版本的依赖声明如下：
 
 - v1 的引用方式：
 
@@ -42,13 +42,11 @@ v2 和 v1 的 SDK 包名不同，你需要注意区分。不变的是，二者�
 
 - v2 的引用方式：
 
-    ```java showLineNumbers
-    ...
+    ```groovy lineNumbers
     dependencies {
-        ...
-        // 将 x.y.z 替换为具体的 SDK 版本号，如 2.3.0
+        // 将下方版本号替换为需要的 SDK 版本号，如 2.3.1
         // 对于 2.2.7 及之后版本
-        implementation 'cn.shengwang.rtm:android-java:x.y.z'
+        implementation 'cn.shengwang.rtm:android-java:2.3.1'
         // 对于 2.2.6 及之前版本
         // implementation 'io.agora:agora-rtm:x.y.z'
     }
@@ -648,7 +646,7 @@ RtmConfig rtmConfig = new RtmConfig.Builder(appId, userId)
 
 ## 集成 SDK
 
-v2 和 v1 的 SDK 包名不同，你需要注意区分。不变的是，二者都支持 CDN 和 CocoaPods 两种集成方式。其中，通过 CocoaPods 集成 SDK 的区别如下：
+v2 和 v1 的 SDK 包名不同，你需要注意区分。二者都支持 CDN 和 CocoaPods 集成。自 v2.3.1 起，通过 CocoaPods 集成 RTM SDK 时，需要添加声网源 `https://download.shengwang.cn/cocoapods/`，并保留项目已有的源。各版本的依赖声明如下：
 
 - v1 的引用方式：
 
@@ -663,10 +661,14 @@ v2 和 v1 的 SDK 包名不同，你需要注意区分。不变的是，二者�
 - v2 的引用方式：
 
   ```ruby
+  source 'https://download.shengwang.cn/cocoapods/'
+
   platform :ios, '11.0'
   target 'Your App' do
   # 对于 2.2.8 及之后的版本:
-  pod 'ShengWang-Rtm', '2.3.0', :subspecs => ['RtmKit']
+  # RtmKit 为 RTM 主库，RtmBasic 为 aosl 基础库
+  pod 'ShengWang-Rtm', '2.3.1', :subspecs => ['RtmKit']
+  pod 'ShengWang-Rtm', '2.3.1', :subspecs => ['RtmBasic']
   # 对于 2.2.7 版本:
   # pod 'ShengwangRtm', 'x.y.z'
   # 对于 2.2.6 及之前的版本:

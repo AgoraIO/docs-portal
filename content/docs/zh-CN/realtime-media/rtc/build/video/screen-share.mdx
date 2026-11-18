@@ -1058,6 +1058,20 @@ Web 端屏幕共享，实际上是通过创建一个屏幕共享的视频轨道�
 
 开始前，请确保你已参考[快速开始](/zh-CN/realtime-media/rtc/get-started/quick-start)在你的项目中实现基本的实时音视频功能。
 
+### 文档类屏幕共享
+
+自 v4.24.10 起，共享文档、PPT、表格等以静态内容为主的屏幕时，可以将 `screenScenarioType` 设置为 `"Document"`，提升文字和图表的清晰度，并改善网络波动后的画质恢复体验。
+
+```javascript
+const screenTrack = await AgoraRTC.createScreenVideoTrack({
+  screenScenarioType: "Document",
+  optimizationMode: "detail",
+});
+await client.publish(screenTrack);
+```
+
+调用 `publish` 前需先加入频道。不设置 `screenScenarioType` 时，保留原有屏幕共享行为。
+
 ### Chrome 屏幕共享
 
 Web SDK 支持在 Chrome 58 及以上版本上进行屏幕共享。你可以按照以下步骤进行屏幕共享。

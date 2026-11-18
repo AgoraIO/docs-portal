@@ -13,10 +13,12 @@ const labels: Record<string, string> = {
   curl: 'cURL',
   dart: 'Dart',
   go: 'Go',
+  golang: 'Go',
   html: 'HTML',
   http: 'HTTP',
   java: 'Java',
   javascript: 'JavaScript',
+  'node.js': 'JavaScript',
   json: 'JSON',
   jsx: 'JSX',
   kotlin: 'Kotlin',
@@ -47,4 +49,16 @@ const labels: Record<string, string> = {
 export function getCodeLanguageLabel(language: string | undefined) {
   if (!language) return undefined;
   return labels[language] ?? labels[codeLanguageAliases[language]] ?? language;
+}
+
+/** Versioned Python selectors still identify the Python fence language. */
+export function isSameCodeLanguage(left: string, right: string) {
+  const key = (label: string) =>
+    getCodeLanguageLabel(
+      label
+        .trim()
+        .toLowerCase()
+        .replace(/^python\s*[23]$/, 'python'),
+    )?.toLowerCase();
+  return key(left) === key(right);
 }

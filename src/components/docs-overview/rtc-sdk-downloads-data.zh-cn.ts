@@ -92,7 +92,7 @@ export const zhCNRtcSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
               'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.7.0_FULL.zip',
             md5: '044dafd641e8d44b9e2583c5481aeaa8',
             packageSize: '31.69 MB',
-            packageName: 'AgoraRtcEngineKit',
+            packageName: 'AgoraRtcKit',
           }),
           version('4.7.0-video-sdk-ios-lite', '版本 4.7.0 Lite（最新）', {
             downloadLink:
@@ -100,7 +100,7 @@ export const zhCNRtcSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             latestVariant: true,
             md5: 'c29b295befc44fe4ab5023e166e93e41',
             packageSize: '14.97 MB',
-            packageName: 'AgoraRtcEngineKit',
+            packageName: 'AgoraRtcKit',
           }),
         ],
       },
@@ -118,7 +118,7 @@ export const zhCNRtcSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           version('4.7.0-video-sdk-macos', '版本 4.7.0（最新）', {
             downloadLink:
               'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Mac_v4.7.0_FULL.zip',
-            packageName: 'ShengwangRtcEngine_macOS',
+            packageName: 'AgoraRtcKit',
           }),
         ],
       },

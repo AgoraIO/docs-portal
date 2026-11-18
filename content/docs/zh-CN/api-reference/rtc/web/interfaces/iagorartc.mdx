@@ -1166,7 +1166,7 @@ enableLogUpload(): void
 日志上传功能默认为关闭状态，如果你需要开启此功能，请确保在所有方法之前调用本方法。
 
 :::caution[注意]
-如果没有成功加入频道，则服务器上无法查看日志信息。
+开启日志上传后，SDK 会在调用 `join` 方法 5 秒后开始上传日志，无需等待加入频道成功。
 :::
 
 <ApiReturns>
@@ -1431,7 +1431,7 @@ getPlaybackDevices(skipPermissionCheck?: boolean): Promise&lt;MediaDeviceInfo[]&
 调用成功后 SDK 会通过 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 对象返回可用的音频播放设备。
 
 :::caution[注意]
-- Chrome、Firefox、Edge 浏览器上支持该方法。Safari 支持情况如下：macOS 上的 Safari 18.4 及以上版本支持该方法；iOS 上的 Safari 26 及以上版本支持该方法。
+- Chrome、Firefox、Edge 浏览器上支持该方法。macOS 上的 Safari 18.4 及以上版本、iOS 上的 Safari 26 及以上版本支持该方法。
 - 调用本方法会暂时打开麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+ 和 Firefox 70+ 浏览器上，没有媒体设备权限时无法获取到准确的设备信息。
 :::
 
@@ -2364,5 +2364,50 @@ startLastmileProbeTest(appid: string, channel: string, token: string | null, uid
 Promise&lt;[LastmileProbeResult](/zh-CN/api-reference/rtc/web/interfaces/lastmileproberesult)&gt;
 
 </ApiReturnType>
+
+</ApiReturns>
+
+<a id="use"></a>
+
+### use
+
+<ApiSignature>
+
+use(plugin: [IAgoraRTCServicePlugin](/zh-CN/api-reference/rtc/web/interfaces/iagorartcserviceplugin)): [IAgoraRTC](/zh-CN/api-reference/rtc/web/interfaces/iagorartc)
+
+</ApiSignature>
+
+安装可选 SDK 服务。
+
+ESM 通过 `agora-rtc-sdk-ng/services/*` 引入可选服务后再调用该方法安装。
+
+```javascript
+import { AiAudioModeService } from "agora-rtc-sdk-ng/services/ai-audio-mode";
+AgoraRTC.use(AiAudioModeService);
+```
+
+<ParameterList title="Parameters">
+<Parameter name="plugin" required>
+
+<ParameterType>
+
+[IAgoraRTCServicePlugin](/zh-CN/api-reference/rtc/web/interfaces/iagorartcserviceplugin)
+
+</ParameterType>
+
+需要安装的服务。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[IAgoraRTC](/zh-CN/api-reference/rtc/web/interfaces/iagorartc)
+
+</ApiReturnType>
+
+当前 AgoraRTC 对象。
 
 </ApiReturns>

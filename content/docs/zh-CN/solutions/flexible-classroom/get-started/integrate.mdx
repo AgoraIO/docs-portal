@@ -533,13 +533,13 @@ import <AgoraProctorSDK/AgoraProctorSDK.h>
 
 4. 调用 [`AgoraProctorSDK.launch`](/zh-CN/api-reference/flexible-classroom/ios/api-reference/proctor-sdk#launch) 方法启动监考场景的灵动课堂。示例代码如下：
 
-<Tabs defaultValue="swift" groupId="language" persist>
-<TabsList>
-  <TabsTrigger value="swift">Swift</TabsTrigger>
-  <TabsTrigger value="objc">Objective-C</TabsTrigger>
-</TabsList>
+<CodeBlockTabs defaultValue="swift" groupId="language" persist>
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="swift">Swift</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="objc">Objective-C</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-<TabsContent value="swift">
+<CodeBlockTab value="swift">
 
 ```swift
   let launchConfig = AgoraProctorLaunchConfig(userName: userName,           // 用户名
@@ -560,9 +560,9 @@ let proctor = AgoraProctorSDK(launchConfig,
                   failure: failureBlock)
   ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="objc">
+<CodeBlockTab value="objc">
 
 ```objc
 AgoraProctorLaunchConfig *launchConfig = [[AgoraProctorLaunchConfig alloc] initWithUserName:userName          // 用户名
@@ -583,8 +583,8 @@ AgoraProctorSDK *proctor = [[AgoraProctorSDK alloc] init:launchConfig
           failure:failureBlock];
 ```
 
-</TabsContent>
-</Tabs>
+</CodeBlockTab>
+</CodeBlockTabs>
 
    示例代码中需要传入 `token`。你可以使用[临时 Token](/zh-CN/solutions/flexible-classroom/build/create-classroom/enable#生成临时-token)，也可以参考[使用 Token 鉴权](/zh-CN/solutions/flexible-classroom/build/create-classroom/generate-token)从服务器生成 Token。
 

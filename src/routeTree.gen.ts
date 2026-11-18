@@ -24,6 +24,7 @@ import { Route as ApiOauthRouteImport } from './routes/api/oauth'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
 import { Route as ApiUserinfoRouteImport } from './routes/api/userinfo'
 import { Route as DocSplatRouteImport } from './routes/doc/$'
+import { Route as FaqSplatRouteImport } from './routes/faq/$'
 import { Route as LlmsSplatRouteImport } from './routes/llms/$'
 import { Route as LocaleTabIndexRouteImport } from './routes/$locale/$tab/index'
 import { Route as LocaleTabSplatRouteImport } from './routes/$locale/$tab/$'
@@ -105,6 +106,11 @@ const DocSplatRoute = DocSplatRouteImport.update({
   path: '/doc/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FaqSplatRoute = FaqSplatRouteImport.update({
+  id: '/faq/$',
+  path: '/faq/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LlmsSplatRoute = LlmsSplatRouteImport.update({
   id: '/llms/$',
   path: '/llms/$',
@@ -147,6 +153,7 @@ export interface FileRoutesByFullPath {
   '/api/search': typeof ApiSearchRoute
   '/api/userinfo': typeof ApiUserinfoRoute
   '/doc/$': typeof DocSplatRoute
+  '/faq/$': typeof FaqSplatRoute
   '/llms/$': typeof LlmsSplatRoute
   '/$locale/': typeof LocaleIndexRoute
   '/$locale/$tab/$': typeof LocaleTabSplatRoute
@@ -168,6 +175,7 @@ export interface FileRoutesByTo {
   '/api/search': typeof ApiSearchRoute
   '/api/userinfo': typeof ApiUserinfoRoute
   '/doc/$': typeof DocSplatRoute
+  '/faq/$': typeof FaqSplatRoute
   '/llms/$': typeof LlmsSplatRoute
   '/$locale': typeof LocaleIndexRoute
   '/$locale/$tab/$': typeof LocaleTabSplatRoute
@@ -191,6 +199,7 @@ export interface FileRoutesById {
   '/api/search': typeof ApiSearchRoute
   '/api/userinfo': typeof ApiUserinfoRoute
   '/doc/$': typeof DocSplatRoute
+  '/faq/$': typeof FaqSplatRoute
   '/llms/$': typeof LlmsSplatRoute
   '/$locale/': typeof LocaleIndexRoute
   '/$locale/$tab/$': typeof LocaleTabSplatRoute
@@ -215,6 +224,7 @@ export interface FileRouteTypes {
     | '/api/search'
     | '/api/userinfo'
     | '/doc/$'
+    | '/faq/$'
     | '/llms/$'
     | '/$locale/'
     | '/$locale/$tab/$'
@@ -236,6 +246,7 @@ export interface FileRouteTypes {
     | '/api/search'
     | '/api/userinfo'
     | '/doc/$'
+    | '/faq/$'
     | '/llms/$'
     | '/$locale'
     | '/$locale/$tab/$'
@@ -258,6 +269,7 @@ export interface FileRouteTypes {
     | '/api/search'
     | '/api/userinfo'
     | '/doc/$'
+    | '/faq/$'
     | '/llms/$'
     | '/$locale/'
     | '/$locale/$tab/$'
@@ -281,6 +293,7 @@ export interface RootRouteChildren {
   ApiSearchRoute: typeof ApiSearchRoute
   ApiUserinfoRoute: typeof ApiUserinfoRoute
   DocSplatRoute: typeof DocSplatRoute
+  FaqSplatRoute: typeof FaqSplatRoute
   LlmsSplatRoute: typeof LlmsSplatRoute
   LocaleIndexRoute: typeof LocaleIndexRoute
   Char91__staticChar93DocsSearchSplatRoute: typeof Char91__staticChar93DocsSearchSplatRoute
@@ -394,6 +407,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/faq/$': {
+      id: '/faq/$'
+      path: '/faq/$'
+      fullPath: '/faq/$'
+      preLoaderRoute: typeof FaqSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/llms/$': {
       id: '/llms/$'
       path: '/llms/$'
@@ -461,6 +481,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSearchRoute: ApiSearchRoute,
   ApiUserinfoRoute: ApiUserinfoRoute,
   DocSplatRoute: DocSplatRoute,
+  FaqSplatRoute: FaqSplatRoute,
   LlmsSplatRoute: LlmsSplatRoute,
   LocaleIndexRoute: LocaleIndexRoute,
   Char91__staticChar93DocsSearchSplatRoute:

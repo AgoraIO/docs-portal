@@ -109,7 +109,7 @@ export function DocsTable({
 
   return (
     <div
-      className="docs-table-container relative my-6"
+      className="docs-table-container relative my-[var(--docs-space-block)]"
       data-table-overflow={hasOverflow ? 'true' : 'false'}
       data-table-scroll-end={isAtEnd ? 'true' : 'false'}
     >

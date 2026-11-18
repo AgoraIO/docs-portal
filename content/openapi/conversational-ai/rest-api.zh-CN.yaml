@@ -145,6 +145,7 @@ paths:
                             - `fengming`：（默认）声网凤鸣 ASR。
                             - `tencent`：腾讯 ASR。
                             - `microsoft`：微软 ASR。
+                            - `stepfun`：阶跃星辰 StepASR。
                         keywords:
                           type: array
                           description: |-
@@ -175,6 +176,7 @@ paths:
                           description: |
                             TTS 供应商，支持传入以下值：
                             - `minimax`：Minimax TTS
+                            - `minimax_duplex`：MiniMax 双向流式 TTS
                             - `tencent`：腾讯 TTS
                             - `bytedance`：火山引擎 TTS
                             - `microsoft`：微软 Azure TTS
@@ -182,6 +184,17 @@ paths:
                             - `bytedance_duplex`：火山引擎双向流式 TTS
                             - `stepfun`：(Beta) 阶跃星辰 TTS
                             - `generic_http`：(Beta) 通过 OpenAI TTS 协议接入自研或第三方 TTS 引擎。详见[通过 RESTful API 接入自定义 TTS](/zh-CN/ai/build/custom-model-integration/custom-tts)。
+                        batch:
+                          type: boolean
+                          description: |-
+                            是否由智能体先对文本分句。使用 `minimax_duplex` 时支持以下配置：
+                            - `true`：（默认）由智能体先分句，再发送给 MiniMax。
+                            - `false`：按上游原始文本粒度发送，由 MiniMax 累积文本并分句。
+                        enable_words:
+                          type: boolean
+                          description: |-
+                            是否启用逐字字幕。使用 `minimax_duplex` 且需要逐字字幕时，建议显式设置为 `true`。
+                            当设置为 `true` 时，如果未显式配置 `tts.params.subtitle_enable` 和 `tts.params.subtitle_type`，引擎会自动补齐为 `true` 和 `word`。
                         skip_patterns:
                           type: array
                           description: |
@@ -930,6 +943,38 @@ paths:
                           emotion: happy
                         audio_setting:
                           sample_rate: 16000
+              阶跃 ASR 与 MiniMax 双向流式 TTS:
+                summary: 使用阶跃 StepASR 和 MiniMax 双向流式 TTS
+                value:
+                  name: stepfun_minimax_duplex_agent
+                  properties:
+                    channel: channel_name
+                    token: token
+                    agent_rtc_uid: '123'
+                    remote_rtc_uids:
+                      - '321'
+                    llm:
+                      url: 'https://your-llm-service.example.com/v1/chat/completions'
+                      api_key: your_llm_api_key
+                      system_messages:
+                        - role: system
+                          content: 你是一位友好的语音助手。
+                      params:
+                        model: your_llm_model
+                    asr:
+                      vendor: stepfun
+                      language: zh-CN
+                      params:
+                        api_key: your_stepfun_api_key
+                    tts:
+                      vendor: minimax_duplex
+                      batch: false
+                      enable_words: true
+                      params:
+                        key: your_minimax_api_key
+                        model: speech-2.8-turbo
+                        voice_setting:
+                          voice_id: female-shaonv
               完整配置示例:
                 value:
                   name: full_config_agent
@@ -2191,6 +2236,7 @@ components:
         > 各供应商示例代码中未提及的参数，声网对话式 AI 引擎不保证完全支持。
       oneOf:
         - $ref: '#/components/schemas/tts_minimax'
+        - $ref: '#/components/schemas/tts_minimax_duplex'
         - $ref: '#/components/schemas/tts_tencent'
         - $ref: '#/components/schemas/tts_bytedance'
         - $ref: '#/components/schemas/tts_microsoft'
@@ -2234,6 +2280,27 @@ components:
             "language_boost": "auto"
         }
         ```
+    tts_minimax_duplex:
+      title: MiniMax Duplex
+      type: object
+      additionalProperties: {}
+      description: |-
+        MiniMax 双向流式 TTS。以下为单音色最小配置：
+
+        ```json
+        {
+          "key": "<MINIMAX_API_KEY>",
+          "model": "speech-2.8-turbo",
+          "voice_setting": {
+            "voice_id": "female-shaonv"
+          }
+        }
+        ```
+
+        - `key`：（必需）String。MiniMax API key。
+        - `model`：（必需）String。MiniMax 双向流式 TTS 模型名称，例如 `speech-2.8-turbo`。
+        - `voice_setting.voice_id`：（必需）String。音色 ID，例如 `female-shaonv`。混合音色等其他配置方式详见[MiniMax 官方文档](https://platform.minimaxi.com/docs/api-reference/speech-t2a-websocket-bidi)。
+
     tts_tencent:
       title: Tencent
       type: object
@@ -2508,6 +2575,21 @@ components:
       oneOf:
         - $ref: '#/components/schemas/asr_tencent'
         - $ref: '#/components/schemas/asr_microsoft'
+        - $ref: '#/components/schemas/asr_stepfun'
+    asr_stepfun:
+      title: StepFun
+      type: object
+      additionalProperties: {}
+      description: |-
+        阶跃星辰 StepASR，具体协议详见[阶跃星辰官方文档](https://platform.stepfun.com/docs/zh/api-reference/audio/asr-stream)。以下为示例：
+
+        ```json
+        "params": {
+            "api_key": "<STEPFUN_API_KEY>"
+        }
+        ```
+
+        - `api_key`：（必需）String。阶跃星辰 ASR 服务的 API key。
     asr_tencent:
       title: Tencent
       type: object

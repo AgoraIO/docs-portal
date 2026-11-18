@@ -2,16 +2,93 @@
 title: "Presence"
 ---
 
-Presence 提供监控用户上线、下线及用户历史状态变更通知的能力。通过 Presence 功能，你可以实时获取以下信息：
+Presence 提供用户在线状态查询、频道成员查询，以及临时状态管理和变更通知能力。通过 Presence，你可以获取以下信息：
 
+- 查询当前 App ID 下指定用户的 RTM 在线状态
 - 用户加入或离开指定频道的实时事件通知
 - 自定义临时用户状态及其变更实时事件通知
 - 查询指定用户加入或订阅了哪些频道
 - 查询指定频道有哪些用户加入及其用户临时状态数据
 
 :::info[信息]
-Presence 能力适用于 Message Channel 和 Stream Channel。
+Presence 的频道相关能力适用于 Message Channel 和 Stream Channel。
 :::
+
+
+## getUserOnlineStatus [#getUserOnlineStatus]
+
+### 接口描述 [#getUserOnlineStatus-ios-接口描述]
+
+查询当前 App ID 下指定用户是否存在有效的 RTM 登录连接。每次查询一个 User ID，支持查询自己；查询方和目标用户均无需加入或订阅频道。
+
+### 接口方法 [#getUserOnlineStatus-ios-接口方法]
+
+```objc
+[[rtm getPresence] getUserOnlineStatus:userId completion:completionBlock];
+```
+
+上面展示的是 `AgoraRtmPresence.getUserOnlineStatus:completion:` 的调用形式。
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | `NSString *` | 必填 | - | 目标用户的精确 User ID，须符合 RTM User ID 规则。查询自己时也须传入完整 User ID，空字符串不代表自己。 |
+| `completion` | `AgoraRtmGetUserOnlineStatusBlock` | 接收结果时提供 | - | 成功时返回 `AgoraRtmUserOnlineStatus` 且无错误；失败时返回错误信息。 |
+
+### 注意事项 [#getUserOnlineStatus-ios-注意事项]
+
+- 调用方须具有可用的 MESSAGE service，且 MESSAGE session 已连接。该查询不依赖 Presence 服务开关或 Sync Database 就绪。
+- 结果是服务端响应时刻的状态快照。异常断网后，服务端需要经过失联检测窗口才能判定用户离线。该接口不提供最后在线时间或在线状态变更订阅。
+- `logout` 会取消在途请求；`release` 会清理请求资源，不保证客户端释放后仍会回调。重复或晚到的响应不会使同一请求重复完成。
+
+### 基本用法 [#getUserOnlineStatus-ios-基本用法]
+
+以下示例假设客户端已初始化、登录成功且 session 已连接。
+
+```objc
+[[rtm getPresence] getUserOnlineStatus:@"targetUserId"
+    completion:^(AgoraRtmUserOnlineStatus *status, AgoraRtmErrorInfo *errorInfo) {
+        if (errorInfo != nil) {
+            NSLog(@"Query failed: %@", errorInfo);
+            return;
+        }
+        if (status == nil) {
+            NSLog(@"No usable result");
+            return;
+        }
+        if (status.online) {
+            NSLog(@"%@ is online", status.userId);
+        } else {
+            NSLog(@"%@ is offline or does not exist", status.userId);
+        }
+    }];
+```
+
+使用说明见[查询用户在线状态](/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-basic/ios#query-user-online-status-ios)。
+
+### 错误码 [#getUserOnlineStatus-errors]
+
+| 数值 | 名称 | 触发条件 |
+| --- | --- | --- |
+| `-10006` | `AgoraRtmErrorInvalidUserId` | `userId` 为 `nil`、空字符串或非法 UID。 |
+| `-10025` | `AgoraRtmErrorNotConnected` | 调用方 session 未连接。 |
+| `-10022` | `AgoraRtmErrorServiceNotSupport` | 私有配置的 service 未包含 MESSAGE。 |
+| `-10021` | `AgoraRtmErrorOperationRateExceedLimitation` | 本接口调用频率超过限制。默认每个 `RtmClient` 实例内独立计数，限额为 20 次/秒，不与其他 API 共用配额。 |
+| `-13012` | `AgoraRtmErrorPresenceOperationTimeout` | 5 秒内未收到有效响应，SDK 不做超时重试。 |
+| `-13013` | `AgoraRtmErrorPresenceOperationFailed` | 响应条目数不是 1，或返回的 UID 与请求不匹配。 |
+| `-13015` | `AgoraRtmErrorPresencePendingRequestCancelled` | logout 取消在途请求。 |
+
+## AgoraRtmUserOnlineStatus [#AgoraRtmUserOnlineStatus]
+
+以下字段仅在 completion 回调成功时有效。调用失败时应检查 `errorInfo`，不能据此判定目标用户离线。
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `userId` | `NSString *` | 被查询的 UID。 |
+| `online` | `BOOL` | `true`：存在有效的 RTM 登录连接；`false`：用户离线或不存在。 |
+
+## AgoraRtmGetUserOnlineStatusBlock [#AgoraRtmGetUserOnlineStatusBlock]
+
+`getUserOnlineStatus` 的完成回调。成功时返回非 nil 的 `AgoraRtmUserOnlineStatus`，错误信息为 `nil`；失败时返回错误信息，没有可用结果。读取 `online` 前先检查错误及结果，不得将 nil 结果当作离线结果。
 
 ## whoNow
 

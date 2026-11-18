@@ -53,18 +53,18 @@ description: "了解实时互动 RTC 在不同平台上的 Token 鉴权方式，
 
 示例代码如下：
 
-<Tabs defaultValue="cpp" groupId="token-sample-code" persist>
-<TabsList>
-  <TabsTrigger value="cpp">C++</TabsTrigger>
-  <TabsTrigger value="Golang">Golang</TabsTrigger>
-  <TabsTrigger value="java">Java</TabsTrigger>
-  <TabsTrigger value="js">Node.js</TabsTrigger>
-  <TabsTrigger value="php">PHP</TabsTrigger>
-  <TabsTrigger value="python">Python</TabsTrigger>
-  <TabsTrigger value="python3">Python3</TabsTrigger>
-</TabsList>
+<CodeBlockTabs defaultValue="cpp" groupId="token-sample-code" persist>
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="Golang">Golang</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="js">Node.js</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python3">Python3</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-<TabsContent value="cpp">
+<CodeBlockTab value="cpp">
 
 ```cpp
 #include <cstdlib>
@@ -112,9 +112,9 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="Golang">
+<CodeBlockTab value="Golang">
 
 <a id="sample-code"></a>
 
@@ -158,9 +158,9 @@ func main() {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="java">
+<CodeBlockTab value="java">
 
 ```java
 package io.agora.sample;
@@ -197,9 +197,9 @@ public class RtcTokenBuilder2Sample {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="js">
+<CodeBlockTab value="js">
 
 ```javascript
 const RtcTokenBuilder = require("../src/RtcTokenBuilder2").RtcTokenBuilder;
@@ -232,9 +232,9 @@ const tokenWithUid = RtcTokenBuilder.buildTokenWithUid(appId, appCertificate, ch
 console.log("Token with int uid:", tokenWithUid);
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="php">
+<CodeBlockTab value="php">
 
 ```php
 <?php
@@ -264,9 +264,9 @@ $token = RtcTokenBuilder2::buildTokenWithUid($appId, $appCertificate, $channelNa
 echo 'Token with int uid: ' . $token . PHP_EOL;
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python">
+<CodeBlockTab value="python">
 
 ```py
 import os
@@ -306,9 +306,9 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python3">
+<CodeBlockTab value="python3">
 
 ```py
 import os
@@ -349,8 +349,8 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
-</Tabs>
+</CodeBlockTab>
+</CodeBlockTabs>
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
@@ -525,7 +525,7 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-```go tab="Golang" tabGroup="token-sample-code"
+```go tab="Go" tabGroup="token-sample-code"
 package main
 
 import (
@@ -1030,18 +1030,18 @@ func BuildTokenWithUidAndPrivilege(appId string, appCertificate string, channelN
 
 示例代码如下：
 
-<Tabs defaultValue="cpp" groupId="token-sample-code" persist>
-<TabsList>
-  <TabsTrigger value="cpp">C++</TabsTrigger>
-  <TabsTrigger value="Golang">Golang</TabsTrigger>
-  <TabsTrigger value="java">Java</TabsTrigger>
-  <TabsTrigger value="js">Node.js</TabsTrigger>
-  <TabsTrigger value="php">PHP</TabsTrigger>
-  <TabsTrigger value="python">Python</TabsTrigger>
-  <TabsTrigger value="python3">Python3</TabsTrigger>
-</TabsList>
+<CodeBlockTabs defaultValue="cpp" groupId="token-sample-code" persist>
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="Golang">Golang</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="js">Node.js</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python3">Python3</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-<TabsContent value="cpp">
+<CodeBlockTab value="cpp">
 
 ```cpp
 #include <cstdlib>
@@ -1089,9 +1089,9 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="Golang">
+<CodeBlockTab value="Golang">
 
 <a id="sample-code"></a>
 
@@ -1135,9 +1135,9 @@ func main() {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="java">
+<CodeBlockTab value="java">
 
 ```java
 package io.agora.sample;
@@ -1174,9 +1174,9 @@ public class RtcTokenBuilder2Sample {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="js">
+<CodeBlockTab value="js">
 
 ```javascript
 const RtcTokenBuilder = require("../src/RtcTokenBuilder2").RtcTokenBuilder;
@@ -1209,9 +1209,9 @@ const tokenWithUid = RtcTokenBuilder.buildTokenWithUid(appId, appCertificate, ch
 console.log("Token with int uid:", tokenWithUid);
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="php">
+<CodeBlockTab value="php">
 
 ```php
 <?php
@@ -1241,9 +1241,9 @@ $token = RtcTokenBuilder2::buildTokenWithUid($appId, $appCertificate, $channelNa
 echo 'Token with int uid: ' . $token . PHP_EOL;
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python">
+<CodeBlockTab value="python">
 
 ```py
 import os
@@ -1283,9 +1283,9 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python3">
+<CodeBlockTab value="python3">
 
 ```py
 import os
@@ -1326,8 +1326,8 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
-</Tabs>
+</CodeBlockTab>
+</CodeBlockTabs>
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
@@ -1498,7 +1498,7 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-```go tab="Golang" tabGroup="token-sample-code"
+```go tab="Go" tabGroup="token-sample-code"
 package main
 
 import (
@@ -2003,18 +2003,18 @@ func BuildTokenWithUidAndPrivilege(appId string, appCertificate string, channelN
 
 示例代码如下：
 
-<Tabs defaultValue="cpp" groupId="token-sample-code" persist>
-<TabsList>
-  <TabsTrigger value="cpp">C++</TabsTrigger>
-  <TabsTrigger value="Golang">Golang</TabsTrigger>
-  <TabsTrigger value="java">Java</TabsTrigger>
-  <TabsTrigger value="js">Node.js</TabsTrigger>
-  <TabsTrigger value="php">PHP</TabsTrigger>
-  <TabsTrigger value="python">Python</TabsTrigger>
-  <TabsTrigger value="python3">Python3</TabsTrigger>
-</TabsList>
+<CodeBlockTabs defaultValue="cpp" groupId="token-sample-code" persist>
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="Golang">Golang</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="js">Node.js</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python3">Python3</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-<TabsContent value="cpp">
+<CodeBlockTab value="cpp">
 
 ```cpp
 #include <cstdlib>
@@ -2062,9 +2062,9 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="Golang">
+<CodeBlockTab value="Golang">
 
 <a id="sample-code"></a>
 
@@ -2108,9 +2108,9 @@ func main() {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="java">
+<CodeBlockTab value="java">
 
 ```java
 package io.agora.sample;
@@ -2147,9 +2147,9 @@ public class RtcTokenBuilder2Sample {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="js">
+<CodeBlockTab value="js">
 
 ```javascript
 const RtcTokenBuilder = require("../src/RtcTokenBuilder2").RtcTokenBuilder;
@@ -2182,9 +2182,9 @@ const tokenWithUid = RtcTokenBuilder.buildTokenWithUid(appId, appCertificate, ch
 console.log("Token with int uid:", tokenWithUid);
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="php">
+<CodeBlockTab value="php">
 
 ```php
 <?php
@@ -2214,9 +2214,9 @@ $token = RtcTokenBuilder2::buildTokenWithUid($appId, $appCertificate, $channelNa
 echo 'Token with int uid: ' . $token . PHP_EOL;
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python">
+<CodeBlockTab value="python">
 
 ```py
 import os
@@ -2256,9 +2256,9 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python3">
+<CodeBlockTab value="python3">
 
 ```py
 import os
@@ -2299,8 +2299,8 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
-</Tabs>
+</CodeBlockTab>
+</CodeBlockTabs>
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
@@ -2471,7 +2471,7 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-```go tab="Golang" tabGroup="token-sample-code"
+```go tab="Go" tabGroup="token-sample-code"
 package main
 
 import (
@@ -2976,18 +2976,18 @@ func BuildTokenWithUidAndPrivilege(appId string, appCertificate string, channelN
 
 示例代码如下：
 
-<Tabs defaultValue="cpp" groupId="token-sample-code" persist>
-<TabsList>
-  <TabsTrigger value="cpp">C++</TabsTrigger>
-  <TabsTrigger value="Golang">Golang</TabsTrigger>
-  <TabsTrigger value="java">Java</TabsTrigger>
-  <TabsTrigger value="js">Node.js</TabsTrigger>
-  <TabsTrigger value="php">PHP</TabsTrigger>
-  <TabsTrigger value="python">Python</TabsTrigger>
-  <TabsTrigger value="python3">Python3</TabsTrigger>
-</TabsList>
+<CodeBlockTabs defaultValue="cpp" groupId="token-sample-code" persist>
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="Golang">Golang</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="js">Node.js</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python3">Python3</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-<TabsContent value="cpp">
+<CodeBlockTab value="cpp">
 
 ```cpp
 #include <cstdlib>
@@ -3035,9 +3035,9 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="Golang">
+<CodeBlockTab value="Golang">
 
 <a id="sample-code"></a>
 
@@ -3081,9 +3081,9 @@ func main() {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="java">
+<CodeBlockTab value="java">
 
 ```java
 package io.agora.sample;
@@ -3120,9 +3120,9 @@ public class RtcTokenBuilder2Sample {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="js">
+<CodeBlockTab value="js">
 
 ```javascript
 const RtcTokenBuilder = require("../src/RtcTokenBuilder2").RtcTokenBuilder;
@@ -3155,9 +3155,9 @@ const tokenWithUid = RtcTokenBuilder.buildTokenWithUid(appId, appCertificate, ch
 console.log("Token with int uid:", tokenWithUid);
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="php">
+<CodeBlockTab value="php">
 
 ```php
 <?php
@@ -3187,9 +3187,9 @@ $token = RtcTokenBuilder2::buildTokenWithUid($appId, $appCertificate, $channelNa
 echo 'Token with int uid: ' . $token . PHP_EOL;
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python">
+<CodeBlockTab value="python">
 
 ```py
 import os
@@ -3229,9 +3229,9 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python3">
+<CodeBlockTab value="python3">
 
 ```py
 import os
@@ -3272,8 +3272,8 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
-</Tabs>
+</CodeBlockTab>
+</CodeBlockTabs>
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
@@ -3429,7 +3429,7 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-```go tab="Golang" tabGroup="token-sample-code"
+```go tab="Go" tabGroup="token-sample-code"
 package main
 
 import (
@@ -3931,18 +3931,18 @@ func BuildTokenWithUidAndPrivilege(appId string, appCertificate string, channelN
 
 示例代码如下：
 
-<Tabs defaultValue="cpp" groupId="token-sample-code" persist>
-<TabsList>
-  <TabsTrigger value="cpp">C++</TabsTrigger>
-  <TabsTrigger value="Golang">Golang</TabsTrigger>
-  <TabsTrigger value="java">Java</TabsTrigger>
-  <TabsTrigger value="js">Node.js</TabsTrigger>
-  <TabsTrigger value="php">PHP</TabsTrigger>
-  <TabsTrigger value="python">Python</TabsTrigger>
-  <TabsTrigger value="python3">Python3</TabsTrigger>
-</TabsList>
+<CodeBlockTabs defaultValue="cpp" groupId="token-sample-code" persist>
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="Golang">Golang</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="js">Node.js</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python3">Python3</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-<TabsContent value="cpp">
+<CodeBlockTab value="cpp">
 
 ```cpp
 #include <cstdlib>
@@ -3990,9 +3990,9 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="Golang">
+<CodeBlockTab value="Golang">
 
 <a id="sample-code"></a>
 
@@ -4036,9 +4036,9 @@ func main() {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="java">
+<CodeBlockTab value="java">
 
 ```java
 package io.agora.sample;
@@ -4075,9 +4075,9 @@ public class RtcTokenBuilder2Sample {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="js">
+<CodeBlockTab value="js">
 
 ```javascript
 const RtcTokenBuilder = require("../src/RtcTokenBuilder2").RtcTokenBuilder;
@@ -4110,9 +4110,9 @@ const tokenWithUid = RtcTokenBuilder.buildTokenWithUid(appId, appCertificate, ch
 console.log("Token with int uid:", tokenWithUid);
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="php">
+<CodeBlockTab value="php">
 
 ```php
 <?php
@@ -4142,9 +4142,9 @@ $token = RtcTokenBuilder2::buildTokenWithUid($appId, $appCertificate, $channelNa
 echo 'Token with int uid: ' . $token . PHP_EOL;
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python">
+<CodeBlockTab value="python">
 
 ```py
 import os
@@ -4184,9 +4184,9 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python3">
+<CodeBlockTab value="python3">
 
 ```py
 import os
@@ -4227,8 +4227,8 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
-</Tabs>
+</CodeBlockTab>
+</CodeBlockTabs>
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
@@ -4404,7 +4404,7 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-```go tab="Golang" tabGroup="token-sample-code"
+```go tab="Go" tabGroup="token-sample-code"
 package main
 
 import (
@@ -4910,18 +4910,18 @@ func BuildTokenWithUidAndPrivilege(appId string, appCertificate string, channelN
 
 示例代码如下：
 
-<Tabs defaultValue="cpp" groupId="token-sample-code" persist>
-<TabsList>
-  <TabsTrigger value="cpp">C++</TabsTrigger>
-  <TabsTrigger value="Golang">Golang</TabsTrigger>
-  <TabsTrigger value="java">Java</TabsTrigger>
-  <TabsTrigger value="js">Node.js</TabsTrigger>
-  <TabsTrigger value="php">PHP</TabsTrigger>
-  <TabsTrigger value="python">Python</TabsTrigger>
-  <TabsTrigger value="python3">Python3</TabsTrigger>
-</TabsList>
+<CodeBlockTabs defaultValue="cpp" groupId="token-sample-code" persist>
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="Golang">Golang</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="js">Node.js</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python3">Python3</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-<TabsContent value="cpp">
+<CodeBlockTab value="cpp">
 
 ```cpp
 #include <cstdlib>
@@ -4969,9 +4969,9 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="Golang">
+<CodeBlockTab value="Golang">
 
 <a id="sample-code"></a>
 
@@ -5015,9 +5015,9 @@ func main() {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="java">
+<CodeBlockTab value="java">
 
 ```java
 package io.agora.sample;
@@ -5054,9 +5054,9 @@ public class RtcTokenBuilder2Sample {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="js">
+<CodeBlockTab value="js">
 
 ```javascript
 const RtcTokenBuilder = require("../src/RtcTokenBuilder2").RtcTokenBuilder;
@@ -5089,9 +5089,9 @@ const tokenWithUid = RtcTokenBuilder.buildTokenWithUid(appId, appCertificate, ch
 console.log("Token with int uid:", tokenWithUid);
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="php">
+<CodeBlockTab value="php">
 
 ```php
 <?php
@@ -5121,9 +5121,9 @@ $token = RtcTokenBuilder2::buildTokenWithUid($appId, $appCertificate, $channelNa
 echo 'Token with int uid: ' . $token . PHP_EOL;
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python">
+<CodeBlockTab value="python">
 
 ```py
 import os
@@ -5163,9 +5163,9 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python3">
+<CodeBlockTab value="python3">
 
 ```py
 import os
@@ -5206,8 +5206,8 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
-</Tabs>
+</CodeBlockTab>
+</CodeBlockTabs>
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
@@ -5380,7 +5380,7 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-```go tab="Golang" tabGroup="token-sample-code"
+```go tab="Go" tabGroup="token-sample-code"
 package main
 
 import (
@@ -5871,18 +5871,18 @@ func BuildTokenWithUidAndPrivilege(appId string, appCertificate string, channelN
 
 示例代码如下：
 
-<Tabs defaultValue="cpp" groupId="token-sample-code" persist>
-<TabsList>
-  <TabsTrigger value="cpp">C++</TabsTrigger>
-  <TabsTrigger value="Golang">Golang</TabsTrigger>
-  <TabsTrigger value="java">Java</TabsTrigger>
-  <TabsTrigger value="js">Node.js</TabsTrigger>
-  <TabsTrigger value="php">PHP</TabsTrigger>
-  <TabsTrigger value="python">Python</TabsTrigger>
-  <TabsTrigger value="python3">Python3</TabsTrigger>
-</TabsList>
+<CodeBlockTabs defaultValue="cpp" groupId="token-sample-code" persist>
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="Golang">Golang</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="js">Node.js</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python3">Python3</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-<TabsContent value="cpp">
+<CodeBlockTab value="cpp">
 
 ```cpp
 #include <cstdlib>
@@ -5930,9 +5930,9 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="Golang">
+<CodeBlockTab value="Golang">
 
 <a id="sample-code"></a>
 
@@ -5976,9 +5976,9 @@ func main() {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="java">
+<CodeBlockTab value="java">
 
 ```java
 package io.agora.sample;
@@ -6015,9 +6015,9 @@ public class RtcTokenBuilder2Sample {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="js">
+<CodeBlockTab value="js">
 
 ```javascript
 const RtcTokenBuilder = require("../src/RtcTokenBuilder2").RtcTokenBuilder;
@@ -6050,9 +6050,9 @@ const tokenWithUid = RtcTokenBuilder.buildTokenWithUid(appId, appCertificate, ch
 console.log("Token with int uid:", tokenWithUid);
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="php">
+<CodeBlockTab value="php">
 
 ```php
 <?php
@@ -6082,9 +6082,9 @@ $token = RtcTokenBuilder2::buildTokenWithUid($appId, $appCertificate, $channelNa
 echo 'Token with int uid: ' . $token . PHP_EOL;
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python">
+<CodeBlockTab value="python">
 
 ```py
 import os
@@ -6124,9 +6124,9 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python3">
+<CodeBlockTab value="python3">
 
 ```py
 import os
@@ -6167,8 +6167,8 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
-</Tabs>
+</CodeBlockTab>
+</CodeBlockTabs>
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
@@ -8951,18 +8951,18 @@ static std::string BuildTokenWithUid(
 
 示例代码如下：
 
-<Tabs defaultValue="cpp" groupId="token-sample-code" persist>
-<TabsList>
-  <TabsTrigger value="cpp">C++</TabsTrigger>
-  <TabsTrigger value="Golang">Golang</TabsTrigger>
-  <TabsTrigger value="java">Java</TabsTrigger>
-  <TabsTrigger value="js">Node.js</TabsTrigger>
-  <TabsTrigger value="php">PHP</TabsTrigger>
-  <TabsTrigger value="python">Python</TabsTrigger>
-  <TabsTrigger value="python3">Python3</TabsTrigger>
-</TabsList>
+<CodeBlockTabs defaultValue="cpp" groupId="token-sample-code" persist>
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="Golang">Golang</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="js">Node.js</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python3">Python3</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-<TabsContent value="cpp">
+<CodeBlockTab value="cpp">
 
 ```cpp
 #include <cstdlib>
@@ -9010,9 +9010,9 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="Golang">
+<CodeBlockTab value="Golang">
 
 <a id="sample-code"></a>
 
@@ -9056,9 +9056,9 @@ func main() {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="java">
+<CodeBlockTab value="java">
 
 ```java
 package io.agora.sample;
@@ -9095,9 +9095,9 @@ public class RtcTokenBuilder2Sample {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="js">
+<CodeBlockTab value="js">
 
 ```javascript
 const RtcTokenBuilder = require("../src/RtcTokenBuilder2").RtcTokenBuilder;
@@ -9130,9 +9130,9 @@ const tokenWithUid = RtcTokenBuilder.buildTokenWithUid(appId, appCertificate, ch
 console.log("Token with int uid:", tokenWithUid);
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="php">
+<CodeBlockTab value="php">
 
 ```php
 <?php
@@ -9162,9 +9162,9 @@ $token = RtcTokenBuilder2::buildTokenWithUid($appId, $appCertificate, $channelNa
 echo 'Token with int uid: ' . $token . PHP_EOL;
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python">
+<CodeBlockTab value="python">
 
 ```py
 import os
@@ -9204,9 +9204,9 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python3">
+<CodeBlockTab value="python3">
 
 ```py
 import os
@@ -9247,8 +9247,8 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
-</Tabs>
+</CodeBlockTab>
+</CodeBlockTabs>
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
@@ -9424,7 +9424,7 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-```go tab="Golang" tabGroup="token-sample-code"
+```go tab="Go" tabGroup="token-sample-code"
 package main
 
 import (
@@ -9926,18 +9926,18 @@ func BuildTokenWithUidAndPrivilege(appId string, appCertificate string, channelN
 
 示例代码如下：
 
-<Tabs defaultValue="cpp" groupId="token-sample-code" persist>
-<TabsList>
-  <TabsTrigger value="cpp">C++</TabsTrigger>
-  <TabsTrigger value="Golang">Golang</TabsTrigger>
-  <TabsTrigger value="java">Java</TabsTrigger>
-  <TabsTrigger value="js">Node.js</TabsTrigger>
-  <TabsTrigger value="php">PHP</TabsTrigger>
-  <TabsTrigger value="python">Python</TabsTrigger>
-  <TabsTrigger value="python3">Python3</TabsTrigger>
-</TabsList>
+<CodeBlockTabs defaultValue="cpp" groupId="token-sample-code" persist>
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="Golang">Golang</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="js">Node.js</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python3">Python3</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-<TabsContent value="cpp">
+<CodeBlockTab value="cpp">
 
 ```cpp
 #include <cstdlib>
@@ -9985,9 +9985,9 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="Golang">
+<CodeBlockTab value="Golang">
 
 <a id="sample-code"></a>
 
@@ -10031,9 +10031,9 @@ func main() {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="java">
+<CodeBlockTab value="java">
 
 ```java
 package io.agora.sample;
@@ -10070,9 +10070,9 @@ public class RtcTokenBuilder2Sample {
 }
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="js">
+<CodeBlockTab value="js">
 
 ```javascript
 const RtcTokenBuilder = require("../src/RtcTokenBuilder2").RtcTokenBuilder;
@@ -10105,9 +10105,9 @@ const tokenWithUid = RtcTokenBuilder.buildTokenWithUid(appId, appCertificate, ch
 console.log("Token with int uid:", tokenWithUid);
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="php">
+<CodeBlockTab value="php">
 
 ```php
 <?php
@@ -10137,9 +10137,9 @@ $token = RtcTokenBuilder2::buildTokenWithUid($appId, $appCertificate, $channelNa
 echo 'Token with int uid: ' . $token . PHP_EOL;
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python">
+<CodeBlockTab value="python">
 
 ```py
 import os
@@ -10179,9 +10179,9 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="python3">
+<CodeBlockTab value="python3">
 
 ```py
 import os
@@ -10222,8 +10222,8 @@ if __name__ == "__main__":
     main()
 ```
 
-</TabsContent>
-</Tabs>
+</CodeBlockTab>
+</CodeBlockTabs>
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
@@ -10399,7 +10399,7 @@ int main(int argc, char const *argv[]) {
 }
 ```
 
-```go tab="Golang" tabGroup="token-sample-code"
+```go tab="Go" tabGroup="token-sample-code"
 package main
 
 import (

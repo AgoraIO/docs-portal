@@ -62,6 +62,20 @@ it('detects parameter row headings with a different surface from their descripti
 });
 
 describe('API presentation regression detection', () => {
+  it('compares the outer tab frame with signatures and still detects a different surface', () => {
+    const frame = 'background:white;border:1px solid black;border-radius:12px';
+    expect(
+      inspect(
+        `<div class="docs-code-tabs" style="${frame}"><figure class="shiki" data-code-language="text" data-code-tabbed style="border:0;border-radius:0"><pre><code><span class="line">example</span></code></pre></figure></div><figure class="shiki" data-api-signature style="${frame}"><pre><code><span class="line">run()</span></code></pre></figure>`,
+      ),
+    ).not.toContain('inconsistent-code-frame');
+    expect(inspectReference().codeFrames.ordinary[0].borderRadius).toBe('12px');
+    (
+      document.querySelector('.docs-code-tabs') as HTMLElement
+    ).style.background = 'red';
+    expect(inspect('')).toContain('inconsistent-code-frame');
+  });
+
   it('rejects nested parameter cards and accepts native lists inside the parent table', () => {
     expect(
       inspect(

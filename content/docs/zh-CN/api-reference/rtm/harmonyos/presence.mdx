@@ -2,16 +2,90 @@
 title: "Presence"
 ---
 
-Presence 提供监控用户上线、下线及用户历史状态变更通知的能力。通过 Presence 功能，你可以实时获取以下信息：
+Presence 提供用户在线状态查询、频道成员查询，以及临时状态管理和变更通知能力。通过 Presence，你可以获取以下信息：
 
+- 查询当前 App ID 下指定用户的 RTM 在线状态
 - 用户加入或离开指定频道的实时事件通知
 - 自定义临时用户状态及其变更实时事件通知
 - 查询指定用户加入或订阅了哪些频道
 - 查询指定频道有哪些用户加入及其用户临时状态数据
 
 :::info[信息]
-**Presence** 能力适用于 Message Channel 和 Stream Channel。
+Presence 的频道相关能力适用于 Message Channel 和 Stream Channel。
 :::
+
+
+## getUserOnlineStatus [#getUserOnlineStatus]
+
+### 接口描述 [#getUserOnlineStatus-harmonyos-接口描述]
+
+查询当前 App ID 下指定用户是否存在有效的 RTM 登录连接。每次查询一个 User ID，支持查询自己；查询方和目标用户均无需加入或订阅频道。
+
+### 接口方法 [#getUserOnlineStatus-harmonyos-接口方法]
+
+```typescript
+getUserOnlineStatus(userId: string): Promise<GetUserOnlineStatusResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | `string` | 必填 | - | 目标用户的精确 User ID，须符合 RTM User ID 规则。查询自己时也须传入完整 User ID，空字符串不代表自己。 |
+
+返回 `Promise<GetUserOnlineStatusResponse>`：成功时 resolve 并返回结果，失败时 reject 并抛出 `RtmError`。
+
+### 注意事项 [#getUserOnlineStatus-harmonyos-注意事项]
+
+- 调用方须具有可用的 MESSAGE service，且 MESSAGE session 已连接。该查询不依赖 Presence 服务开关或 Sync Database 就绪。
+- 结果是服务端响应时刻的状态快照。异常断网后，服务端需要经过失联检测窗口才能判定用户离线。该接口不提供最后在线时间或在线状态变更订阅。
+- `logout` 会取消在途请求；`release` 会清理请求资源，不保证客户端释放后仍会回调。重复或晚到的响应不会使同一请求重复完成。
+
+### 基本用法 [#getUserOnlineStatus-harmonyos-基本用法]
+
+以下示例假设客户端已初始化、登录成功且 session 已连接。
+
+```typescript
+try {
+  const status = await rtmClient.presence.getUserOnlineStatus('targetUserId');
+  if (status.online) {
+    console.log(`${status.userId} is online`);
+  } else {
+    console.log(`${status.userId} is offline or does not exist`);
+  }
+} catch (error) {
+  console.error('Query failed:', error);
+}
+```
+
+使用说明见[查询用户在线状态](/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-basic/harmonyos#query-user-online-status-harmonyos)。
+
+### 错误码 [#getUserOnlineStatus-errors]
+
+| 数值 | 名称 | 触发条件 |
+| --- | --- | --- |
+| `-10006` | `INVALID_USER_ID` | `userId` 为空字符串或非法 UID。 参数类型为 `string`，不要传入 `null` 或 `undefined`。 |
+| `-10025` | `NOT_CONNECTED` | 调用方 session 未连接。 |
+| `-10022` | `SERVICE_NOT_SUPPORTED` | 私有配置的 service 未包含 MESSAGE。 |
+| `-10021` | `OPERATION_RATE_EXCEED_LIMITATION` | 本接口调用频率超过限制。默认每个 `RtmClient` 实例内独立计数，限额为 20 次/秒，不与其他 API 共用配额。 |
+| `-13012` | `PRESENCE_OPERATION_TIMEOUT` | 5 秒内未收到有效响应，SDK 不做超时重试。 |
+| `-13013` | `PRESENCE_OPERATION_FAILED` | 响应条目数不是 1，或返回的 UID 与请求不匹配。 |
+| `-13015` | `PRESENCE_PENDING_REQUEST_CANCELLED` | logout 取消在途请求。 |
+
+## GetUserOnlineStatusResponse [#GetUserOnlineStatusResponse]
+
+查询成功时 Promise resolve 并返回以下字段；Promise rejection 表示查询失败，不表示目标用户离线。
+
+```typescript
+interface GetUserOnlineStatusResponse extends BaseResponse {
+  userId: string;
+  online: boolean;
+}
+```
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `userId` | `string` | 被查询的 UID。 |
+| `online` | `boolean` | `true`：存在有效的 RTM 登录连接；`false`：用户离线或不存在。 |
+| `timestamp` | `number` | 继承自 `BaseResponse`，保留字段且固定为 `0`，不是最后在线时间、状态变更时间或查询时间。 |
 
 ## whoNow
 

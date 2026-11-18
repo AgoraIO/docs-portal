@@ -167,16 +167,35 @@ export function DocsShell({
   const t = i18n.getFixedT(currentLocale, 'common');
   const { resolvedTheme, setTheme } = useTheme();
   const [hasMounted, setHasMounted] = useState(false);
+  const [isHeaderPointerFocus, setIsHeaderPointerFocus] = useState(false);
   // next-themes cannot know the browser theme during static rendering.
   const isDarkTheme = hasMounted && resolvedTheme === 'dark';
 
   useEffect(() => {
     setHasMounted(true);
   }, []);
+
+  useEffect(() => {
+    // Radix focuses a tab during mousedown, which can retain :focus-visible
+    // from the previous keyboard focus. Only the header masks that pointer
+    // ring; listen outside the strip too so Tab can restore keyboard focus.
+    const showKeyboardFocus = () => setIsHeaderPointerFocus(false);
+    document.addEventListener('keydown', showKeyboardFocus, true);
+    return () => {
+      document.removeEventListener('keydown', showKeyboardFocus, true);
+    };
+  }, []);
   const themeLabel = `${t('controls.theme.label')}: ${
     isDarkTheme ? t('controls.theme.dark') : t('controls.theme.light')
   }`;
   const headerRef = useRef<HTMLElement | null>(null);
+  const bodyRef = useRef<HTMLDivElement | null>(null);
+  const railScrollPadding = useRef(
+    new WeakMap<
+      HTMLElement,
+      { base: number; extra: number; original: string }
+    >(),
+  );
   const [headerOffset, setHeaderOffset] = useState(0);
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
   const [isLegacyDocsBannerVisible, setIsLegacyDocsBannerVisible] =
@@ -217,6 +236,108 @@ export function DocsShell({
       window.removeEventListener('resize', updateHeaderOffset);
     };
   }, []);
+
+  useLayoutEffect(() => {
+    const body = bodyRef.current;
+    if (!body || layoutMode === 'search') return;
+
+    const releaseScrollPadding = (event: Event) => {
+      const area = event.target;
+      if (!(area instanceof HTMLElement)) return;
+      const padding = railScrollPadding.current.get(area);
+      if (!padding?.extra) return;
+      const extra =
+        area.scrollTop > 0
+          ? Math.max(
+              0,
+              area.scrollTop +
+                area.clientHeight -
+                (area.scrollHeight - padding.extra),
+            )
+          : 0;
+      if (extra >= padding.extra) return;
+      area.style.paddingBottom = extra
+        ? `${padding.base + extra}px`
+        : padding.original;
+      padding.extra = extra;
+    };
+
+    // Keep the rail tops below the header. As the site footer enters the
+    // viewport, shrink the scroll areas instead of pushing their content up.
+    const updateRailHeight = () => {
+      const height = Math.max(
+        0,
+        Math.min(window.innerHeight, body.getBoundingClientRect().bottom) -
+          headerOffset,
+      );
+      const value = `${height}px`;
+      if (body.style.getPropertyValue('--docs-shell-rail-height') === value) {
+        return;
+      }
+
+      const areas = Array.from(
+        body.querySelectorAll<HTMLElement>(
+          '[data-docs-rail-scroll], [data-docs-rail-scroll] [data-radix-scroll-area-viewport]',
+        ),
+      ).flatMap((area) => {
+        const style = window.getComputedStyle(area);
+        if (!area.clientHeight || !/^(auto|scroll)$/.test(style.overflowY)) {
+          return [];
+        }
+        let padding = railScrollPadding.current.get(area);
+        if (!padding) {
+          padding = {
+            base: Number.parseFloat(style.paddingBottom) || 0,
+            extra: 0,
+            original: area.style.paddingBottom,
+          };
+          railScrollPadding.current.set(area, padding);
+        }
+        return [
+          {
+            area,
+            padding,
+            scrollTop: area.scrollTop,
+            contentHeight: area.scrollHeight - padding.extra,
+          },
+        ];
+      });
+
+      body.style.setProperty('--docs-shell-rail-height', value);
+
+      // A taller viewport can clamp scrollTop even though the rail itself
+      // stays fixed. Keep enough space below its content to retain the anchor.
+      for (const { area, padding, scrollTop, contentHeight } of areas) {
+        const extra =
+          scrollTop > 0
+            ? Math.max(0, scrollTop + area.clientHeight - contentHeight)
+            : 0;
+        if (extra !== padding.extra) {
+          area.style.paddingBottom = extra
+            ? `${padding.base + extra}px`
+            : padding.original;
+          padding.extra = extra;
+        }
+        area.scrollTop = scrollTop;
+      }
+    };
+
+    updateRailHeight();
+    const observer =
+      typeof ResizeObserver !== 'undefined'
+        ? new ResizeObserver(updateRailHeight)
+        : null;
+    observer?.observe(body);
+    body.addEventListener('scroll', releaseScrollPadding, true);
+    window.addEventListener('scroll', updateRailHeight, { passive: true });
+    window.addEventListener('resize', updateRailHeight);
+    return () => {
+      observer?.disconnect();
+      body.removeEventListener('scroll', releaseScrollPadding, true);
+      window.removeEventListener('scroll', updateRailHeight);
+      window.removeEventListener('resize', updateRailHeight);
+    };
+  }, [headerOffset, layoutMode]);
 
   const dismissLegacyDocsBanner = () => {
     setIsLegacyDocsBannerVisible(false);
@@ -461,8 +582,10 @@ export function DocsShell({
             </div>
           </div>
           <nav
-            className="hidden border-b border-border bg-background/80 backdrop-blur-xl md:block"
+            className="group/header-tabs hidden border-b border-border bg-background/80 backdrop-blur-xl md:block"
+            data-pointer-focus={isHeaderPointerFocus}
             data-testid="docs-tabs-strip"
+            onPointerDownCapture={() => setIsHeaderPointerFocus(true)}
           >
             <div
               className={cn(
@@ -478,7 +601,7 @@ export function DocsShell({
                   {tabs.map((tab) => (
                     <TabsTrigger asChild key={tab.id} value={tab.id}>
                       <Link
-                        className="group/tab h-10 rounded-none px-3.5 text-[13.5px] font-medium after:!bottom-[-3px]"
+                        className="group/tab h-10 rounded-none px-3.5 text-[13.5px] font-medium after:!bottom-[-3px] group-data-[pointer-focus=true]/header-tabs:focus-visible:border-transparent group-data-[pointer-focus=true]/header-tabs:focus-visible:ring-0 group-data-[pointer-focus=true]/header-tabs:focus-visible:outline-none"
                         params={{}}
                         search={{}}
                         to={tab.url}
@@ -514,11 +637,12 @@ export function DocsShell({
           className={cn(
             isSearchLayout
               ? 'mx-auto w-full min-w-0 flex-1 px-4'
-              : 'mx-auto grid w-full min-w-0 grid-cols-1 px-4 lg:grid-cols-[256px_minmax(0,1fr)] lg:items-start',
+              : 'mx-auto grid w-full min-w-0 grid-cols-1 px-4 lg:min-h-[var(--docs-shell-body-height)] lg:grid-cols-[256px_minmax(0,1fr)] lg:items-start',
             shellWidthClassName,
             !isSearchLayout && desktopGridClassName,
           )}
           data-testid="docs-body-shell"
+          ref={bodyRef}
         >
           {isSearchLayout ? (
             children
