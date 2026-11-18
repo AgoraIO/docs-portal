@@ -9,6 +9,20 @@ const url = '/zh-CN/api-reference/rtc/web/4.6.0/api';
 const route = { url, canonicalPath: url, markdownPath: `${url}.md` };
 const page = { url, title: 'RTC API', objectType: 'docs' as const };
 describe('published CN index export', () => {
+  it('preserves rendered API parameter identities, plan details and SDK versions', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n<Parameter name="uid" type="number" direction="[in]" required /><ApiSignature labels="pure" /><ApiReturns /><PlanCards plans={[{name:"体验套餐",features:["免费试用"],badge:"推荐",accent:"blue"}]} /><ProductSdkDownloads versionIds={["1.8.2-fastboard-android"]} /><DownloadResourceCards items={[{platform:"ios"}]} />',
+      readRenderedHtml: async () =>
+        '<article data-static-docs-body><code>uid</code><span>number</span><span>[in]</span><span>required</span><span>pure</span><p>Returns</p><h3>体验套餐</h3><li>免费试用</li><span>推荐</span><span>1.8.2</span><span>iOS</span><span>blue</span></article>',
+    });
+    expect(records).toHaveLength(1);
+    expect(records[0].content.trim()).toBe(
+      'uid\nnumber\n[in]\nrequired\npure\nReturns\n体验套餐\n免费试用\n推荐\n1.8.2\niOS',
+    );
+  });
   it.each([
     ['<ApiReferenceCards locale="zh-CN" type="all" />', 'C'],
     [
