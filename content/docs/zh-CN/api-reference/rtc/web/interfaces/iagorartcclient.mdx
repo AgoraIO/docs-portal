@@ -2148,11 +2148,11 @@ setRemoteVideoStreamType(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid), s
 
 :::caution[注意]
 - 该方法只可在发送端通过 [enableDualStream](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#enabledualstream) 开启双流模式的情况下使用。
-- 若该方法和 [setStreamFallbackOption](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setstreamfallbackoption) 同时被调用，订阅的视频流类型会先按照 `setRemoteVideoStreamType` 的设置确定，再根据 `setStreamFallbackOption` 设置的回退策略和网络状况进行调整：
+- 对同一远端用户同时使用本方法和 [setStreamFallbackOption](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setstreamfallbackoption) 时，`setRemoteVideoStreamType` 指定期望订阅的视频流类型，SDK 根据 `setStreamFallbackOption` 配置的回退策略和网络状况动态调整实际订阅状态。回退策略如下：
 
   - `0`（`DISABLE`）：禁用回退，订阅的视频流类型由 `setRemoteVideoStreamType` 的设置决定。
   - `1`（`LOW_STREAM`）：网络较差时，自动订阅视频小流。
-  - `2`（`AUDIO_ONLY`）：网络较差时，先尝试订阅视频小流；如果网络环境无法显示视频，则进一步回退到纯音频。设置该策略后，不会立即只接收音频。
+  - `2`（`AUDIO_ONLY`）：网络较差时，先尝试订阅视频小流；如果网络环境无法显示视频，则进一步回退到纯音频。设置该策略表示允许在弱网下回退至纯音频，是否触发回退取决于网络状况。
 :::
 
 <ParameterList title="Parameters">
