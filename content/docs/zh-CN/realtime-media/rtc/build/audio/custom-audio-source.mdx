@@ -541,6 +541,45 @@ navigator.mediaDevices.getUserMedia({ video: false, audio: true })
 
 同样，你也可以利用强大的 [Web Audio API](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Audio_API) 来获取 `MediaStreamTrack`，实现定制化的音频处理。
 
+## Multiopus 多声道音频
+
+自 v4.24.10 起，SDK 支持通过 Multiopus 发送和接收 4、6、8 声道音频。收发两端创建客户端时均需将 `multiopus` 设置为 `true`。多声道音频处理需要浏览器支持 `MediaStreamTrackProcessor` 和 `MediaStreamTrackGenerator`。
+
+:::caution[注意]
+Multiopus 支持 Chrome 94 及以上版本，不支持 Firefox 和 Safari。
+:::
+
+调用 `createCustomAudioTrack` 时，传入已包含相应声道的 `MediaStreamTrack`，并通过 `channelCount` 指定声道数。该配置不会为输入音频创建额外声道。
+
+```javascript
+const client = AgoraRTC.createClient({
+  mode: "rtc",
+  codec: "vp8",
+  multiopus: true,
+});
+// multichannelMediaStreamTrack 由应用的自定义音频源提供。
+const track = AgoraRTC.createCustomAudioTrack({
+  mediaStreamTrack: multichannelMediaStreamTrack,
+  channelCount: 4,
+});
+// 加入频道后再发布音轨。
+await client.join(appId, channel, token, uid);
+await client.publish(track);
+```
+
+本地音轨和订阅后的远端音轨均可调用 `selectChannels` 选择需要使用的声道，声道索引从 `0` 开始。渲染模式包括：
+
+- `"surround"`：保留原始声道数及位置，未选中的声道静音。
+- `"stereo"`：将选中声道混合为立体声，偶数索引混入左声道，奇数索引混入右声道。
+- `"mono"`：将选中声道混合为单声道。
+
+```javascript
+track.selectChannels([0, 1], "stereo");
+const levels = track.getVolumeLevels();
+```
+
+`getVolumeLevels` 查询声道选择和混音前的原始声道音量。传入声道索引列表时，返回数组保留原始声道索引，未查询的位置为空；尚未读取到音频数据时，可能返回空数组或空位置。未启用多声道处理时，`selectChannels` 不改变轨道，`getVolumeLevels` 返回仅包含 `getVolumeLevel()` 结果的数组。
+
 ## API 参考
 
 - [`createCustomAudioTrack`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcustomaudiotrack)

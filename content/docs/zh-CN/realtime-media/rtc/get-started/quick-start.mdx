@@ -836,7 +836,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
 <Tabs defaultValue="cocoapods" groupId="integrate-sdk" persist>
 <TabsList>
-  <TabsTrigger value="cocoapods">通过 Cocoapods 集成</TabsTrigger>
+  <TabsTrigger value="cocoapods">通过 CocoaPods 集成</TabsTrigger>
   <TabsTrigger value="manual">手动集成</TabsTrigger>
   <TabsTrigger value="swift-package">通过 Swift Package Manager 集成</TabsTrigger>
 </TabsList>
@@ -844,24 +844,29 @@ protected void onCreate(Bundle savedInstanceState) {
 <TabsContent value="cocoapods">
 
 1. 在终端里进入项目根目录，并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
-2. 打开 `Podfile` 文件，修改文件为如下内容。注意将 `Your App` 替换为你的 Target 名称。
+2. 打开 `Podfile` 文件，在文件顶部添加声网 CocoaPods CDN 源。请保留项目中已有的源配置；如果项目还依赖公共仓库中的其他 Pod，请同时保留公共源，例如 `source 'https://cdn.cocoapods.org/'`。已有项目保留原来的 SDK 包名、版本号和组件配置，仅补充源配置。
+
+    以下示例将 CocoaPods 官方公共源放在声网源前面。将 `Your App` 替换为你的 Target 名称，将 `x.y.z` 替换为具体的 SDK 版本号，可通过[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)获取版本信息。示例默认集成 v4.6.0 及之后版本的 Full SDK；如需其他版本或 Lite SDK，请注释默认的 `pod` 行，并取消对应行的注释。
+
+    `Podfile` 中的平台版本应与工程的 **iOS Deployment Target** 保持一致，且不低于 SDK 支持的最低版本。
 
     ```ruby
+    source 'https://cdn.cocoapods.org/'
+    source 'https://download.shengwang.cn/cocoapods/'
+
     platform :ios, '9.0'
     target 'Your App' do
         # 对于 4.6.0 及之后的版本
-        # x.y.z 请填写具体的 SDK 版本号，如 4.6.0。可通过发版说明获取最新版本号
         # 集成 Full SDK
         pod 'ShengwangRtcEngine_iOS', 'x.y.z'
-        # 集成 Lite SDK
-        pod 'ShengwangLite_iOS', 'x.y.z',
+        # 或集成 Lite SDK
+        # pod 'ShengwangLite_iOS', 'x.y.z'
 
         # 对于 4.6.0 之前的版本
-        # x.y.z 请填写具体的 SDK 版本号，如 4.0.1。可通过发版说明获取最新版本号
         # 集成 Full SDK
-        pod 'AgoraRtcEngine_iOS', 'x.y.z'
+        # pod 'AgoraRtcEngine_iOS', 'x.y.z'
         # 或集成 Lite SDK
-        pod 'AgoraLite_iOS', 'x.y.z'
+        # pod 'AgoraLite_iOS', 'x.y.z'
     end
     ```
 
@@ -869,7 +874,7 @@ protected void onCreate(Bundle savedInstanceState) {
    Lite SDK 默认无法与 [RTC 小程序 SDK](/zh-CN/realtime-media/rtc) 互通。如果需要，请[联系技术支持](https://ticket.shengwang.cn/)。
    :::
 
-3. 在终端内运行 `pod install` 命令安装声网 SDK。成功安装后，Terminal 中会显示 `Pod installation complete!`。
+3. 在 `Podfile` 所在目录执行 `pod install --repo-update`，安装所需版本的 SDK。如遇安装问题，请参考 [CocoaPods 常见问题](/zh-CN/reference/faq/integration/cocoapods_problems#无法安装最新版-rtc-sdk)。
 
 4. 成功安装后，项目文件夹下会生成一个后缀为 `.xcworkspace` 的文件，通过 Xcode 打开该文件进行后续操作。
 
@@ -882,24 +887,27 @@ protected void onCreate(Bundle savedInstanceState) {
 3. 打开 Xcode，[添加对应动态库](https://help.apple.com/xcode/mac/current/#/dev51a648b07)，确保添加的动态库 **Embed** 属性设置为 **Embed & Sign**。
 
     :::info[信息]
-    声网 SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+    SDK 以 XCFramework 形式提供，支持 arm64 架构的 iOS 真机，以及 arm64、x86_64 架构的模拟器。
     :::
 
 </TabsContent>
 
 <TabsContent value="swift-package">
 
-1. 在 Xcode 中，进入 **File > Swift Packages > Add Package Dependencies...**，粘贴如下 URL：
+1. 在 Xcode 中，进入 **File > Add Package Dependencies...**，根据 SDK 版本输入对应的 HTTPS 仓库地址：
 
     ```text
     // 对于 4.6.0 及之后的版本
-    github:git@github.com:Shengwang-Lab/ShengwangRtcEngine_iOS.git
+    https://github.com/Shengwang-Lab/ShengwangRtcEngine_iOS.git
 
     // 对于 4.6.0 之前的版本
     https://github.com/AgoraIO/AgoraRtcEngine_iOS.git
     ```
 
-2. 在 **Choose Package Options** 中指定你想集成的 SDK 版本。你也可以参考 [Apple 官方文档](https://help.apple.com/xcode/mac/current/#/devb83d64851)进行设置。
+2. 在 **Dependency Rule** 中选择 **Exact Version**，输入需要集成的 SDK 版本（例如 `4.7.0`），然后点击 **Add Package**。
+3. 在产品列表中，为应用的 Target 选择 `RtcBasic` 基础组件，其他组件按功能需要选择，然后完成添加。
+
+   添加完成后，可在工程的 **Package Dependencies** 中确认 SDK 版本。更多设置请参考 [Apple 官方文档](https://help.apple.com/xcode/mac/current/#/devb83d64851)。
 
 </TabsContent>
 </Tabs>
@@ -1382,22 +1390,27 @@ override func viewDidLoad() {
 <TabsContent value="cocoapods">
 
 1. 在终端里进入项目根目录，并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
-2. 打开 `Podfile` 文件，修改文件为如下内容。注意将 `Your App` 替换为你的 Target 名称。
+2. 打开 `Podfile` 文件，在文件顶部添加声网 CocoaPods CDN 源。请保留项目中已有的源配置；如果项目还依赖公共仓库中的其他 Pod，请同时保留公共源，例如 `source 'https://cdn.cocoapods.org/'`。已有项目保留原来的 SDK 包名、版本号和组件配置，仅补充源配置。
+
+    以下示例将 CocoaPods 官方公共源放在声网源前面。将 `Your App` 替换为你的 Target 名称，将 `x.y.z` 替换为具体的 SDK 版本号，可通过[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)获取版本信息。示例默认集成 v4.6.0 及之后版本；如需之前的版本，请注释默认的 `pod` 行，并取消 `AgoraRtcEngine_macOS` 所在行的注释。
+
+    `Podfile` 中的平台版本应与工程的 **macOS Deployment Target** 保持一致，且不低于 SDK 支持的最低版本。
 
     ```ruby
+    source 'https://cdn.cocoapods.org/'
+    source 'https://download.shengwang.cn/cocoapods/'
+
     platform :macos, '10.11'
     target 'Your App' do
       # 对于 4.6.0 及之后的版本
-      # x.y.z 请填写具体的 SDK 版本号，如 4.6.0。可通过发版说明获取最新版本号
       pod 'ShengwangRtcEngine_macOS', 'x.y.z'
       
       # 对于 4.6.0 之前的版本
-      # x.y.z 请填写具体的 SDK 版本号，如 4.0.1。可通过发版说明获取最新版本号
-      pod 'AgoraRtcEngine_macOS', 'x.y.z'
+      # pod 'AgoraRtcEngine_macOS', 'x.y.z'
     end
     ```
 
-3. 在终端内运行 `pod install` 命令安装声网 SDK。成功安装后，Terminal 中会显示 `Pod installation complete!`。
+3. 在 `Podfile` 所在目录执行 `pod install --repo-update`，安装所需版本的 SDK。如遇安装问题，请参考 [CocoaPods 常见问题](/zh-CN/reference/faq/integration/cocoapods_problems#无法安装最新版-rtc-sdk)。
 
 4. 成功安装后，项目文件夹下会生成一个后缀为 `.xcworkspace` 的文件，通过 Xcode 打开该文件进行后续操作。
 
@@ -1410,24 +1423,27 @@ override func viewDidLoad() {
 3. 打开 Xcode，[添加对应动态库](https://help.apple.com/xcode/mac/current/#/dev51a648b07)，确保添加的动态库 **Embed** 属性设置为 **Embed & Sign**。
 
     :::info[信息]
-    声网 SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+    SDK 以 XCFramework 形式提供，支持 arm64 和 x86_64 架构的 Mac。
     :::
 
 </TabsContent>
 
 <TabsContent value="swift-package">
 
-1. 在 Xcode 中，进入 **File > Swift Packages > Add Package Dependencies...**，粘贴如下 URL：
+1. 在 Xcode 中，进入 **File > Add Package Dependencies...**，根据 SDK 版本输入对应的 HTTPS 仓库地址：
 
     ```text
     // 对于 4.6.0 及之后的版本
-    github:git@github.com:Shengwang-Lab/ShengwangRtcEngine_macOS.git
+    https://github.com/Shengwang-Lab/ShengwangRtcEngine_macOS.git
 
     // 对于 4.6.0 之前的版本
     https://github.com/AgoraIO/AgoraRtcEngine_macOS.git
     ```
 
-2. 在 **Choose Package Options** 中指定你想集成的 SDK 版本。你也可以参考 [Apple 官方文档](https://help.apple.com/xcode/mac/current/#/devb83d64851)进行设置。
+2. 在 **Dependency Rule** 中选择 **Exact Version**，输入需要集成的 SDK 版本（例如 `4.7.0`），然后点击 **Add Package**。
+3. 在产品列表中，为应用的 Target 选择 `RtcBasic` 基础组件，其他组件按功能需要选择，然后完成添加。
+
+   添加完成后，可在工程的 **Package Dependencies** 中确认 SDK 版本。更多设置请参考 [Apple 官方文档](https://help.apple.com/xcode/mac/current/#/devb83d64851)。
 
 </TabsContent>
 </Tabs>
@@ -2480,13 +2496,13 @@ npm run start:dev
    - 在项目 HTML 文件中，添加如下代码，使用 CDN 方法获取 SDK：
 
      ```html
-     <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.9.js"></script>
+     <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.10.js"></script>
      ```
 
    - 下载[声网 Web SDK 4.x 版本 SDK 包](/zh-CN/realtime-media/rtc/reference/downloads)至本地，将 SDK 包中的 `.js` 文件保存到项目文件所在的目录下，然后在项目 HTML 文件中添加如下代码：
 
      ```html
-     <script src="./AgoraRTC_N-4.24.9.js"></script>
+     <script src="./AgoraRTC_N-4.24.10.js"></script>
      ```
 
   :::info[信息]

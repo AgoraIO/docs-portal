@@ -10,7 +10,7 @@ describe('ProductSdkDownloads', () => {
       within(card).getByRole('link', { name: '下载 Swift 实时消息 SDK' }),
     ).toHaveAttribute(
       'href',
-      'https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.3.0.zip',
+      'https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.3.1.zip',
     );
     expect(card.querySelector('img')).toHaveAttribute(
       'src',
@@ -26,7 +26,7 @@ describe('ProductSdkDownloads', () => {
         screen.getByRole('link', { name: `下载 ${os} C++ 实时消息 SDK` }),
       ).toHaveAttribute(
         'href',
-        `https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_${os}_v2.3.0.zip`,
+        `https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_${os}_v2.3.1.zip`,
       );
     }
   });
@@ -209,12 +209,12 @@ describe('ProductSdkDownloads', () => {
       name: 'Java 实时消息 SDK',
     });
     expect(card).toHaveClass('bg-background');
-    expect(within(card).getByText('v2.3.0')).toBeVisible();
+    expect(within(card).getByText('v2.3.1')).toBeVisible();
     expect(
       within(card).getByRole('link', { name: '下载 Java 实时消息 SDK' }),
     ).toHaveAttribute(
       'href',
-      'https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.3.0.zip',
+      'https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.3.1.zip',
     );
     expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
     expect(screen.queryByText('历史版本')).not.toBeInTheDocument();

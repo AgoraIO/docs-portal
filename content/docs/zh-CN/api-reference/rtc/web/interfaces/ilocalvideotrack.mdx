@@ -52,7 +52,7 @@ event_beauty_effect_overload:
 
 <ApiSignature>
 
-sei-received(sei: Uint8Array): void
+sei-received(sei: Uint8Array, rtpTimestamp?: number): void
 
 </ApiSignature>
 
@@ -68,6 +68,7 @@ sei-received(sei: Uint8Array): void
 Uint8Array 类型的 SEI 数据
 
 </Parameter>
+<Parameter name="rtpTimestamp" type="number" optional />
 </ParameterList>
 
 <ApiReturns>
@@ -181,6 +182,12 @@ processorDestination: IBaseProcessor
 
 :::info[自从]
 *4.10.0*
+:::
+
+<a id="processordestination-deprecated"></a>
+
+:::warning[deprecated]
+旧版 v1 pipe 模式 API。新插件请使用 `useExtension` 和 `removeExtension`。
 :::
 
 本地视频轨道上当前媒体处理链路的最终节点。
@@ -867,6 +874,38 @@ void
 
 </ApiReturns>
 
+<a id="removeextension"></a>
+
+### removeExtension
+
+<ApiSignature>
+
+removeExtension(extension: IVideoExtension): boolean
+
+</ApiSignature>
+
+从本地视频轨道移除视频插件。
+
+<ParameterList title="Parameters">
+<Parameter name="extension" type="IVideoExtension" required>
+
+视频插件实例。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+是否成功移除。
+
+</ApiReturns>
+
 <a id="replacetrack"></a>
 
 ### replaceTrack
@@ -1196,6 +1235,12 @@ unpipe(): void
 *4.10.0*
 :::
 
+<a id="unpipe-deprecated"></a>
+
+:::warning[deprecated]
+旧版 v1 pipe 模式 API。新插件请使用 `useExtension` 和 `removeExtension`。
+:::
+
 取消本地视频轨道上注入的 `Processor`。
 
 <ApiReturns>
@@ -1203,6 +1248,53 @@ unpipe(): void
 <ApiReturnType>
 
 void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="useextension"></a>
+
+### useExtension
+
+<ApiSignature>
+
+useExtension&lt;T&gt;(extensionCtor: T, options?: object): InstanceType&lt;T&gt;
+
+</ApiSignature>
+
+使用类构造器在当前视频轨道上创建或复用一个视频插件代理。
+
+同一个插件构造器在 destroy 前会始终返回同一个实例代理。
+
+<ParameterList title="Type parameters">
+<Parameter name="T" type="VideoExtensionConstructor" />
+</ParameterList>
+
+<ParameterList title="Parameters">
+<Parameter name="extensionCtor" type="T" required>
+
+视频插件类构造器。
+
+</Parameter>
+<Parameter name="options" type="object" optional>
+
+可选的插件初始化参数。
+
+<ParameterList>
+<Parameter name="extensionOptions" type="Record&lt;string,unknown&gt;" optional />
+<Parameter name="moduleURL" type="string" optional />
+<Parameter name="registrationName" type="string" optional />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+InstanceType&lt;T&gt;
 
 </ApiReturnType>
 
