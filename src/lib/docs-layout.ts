@@ -1,1 +1,1 @@
-export type DocsLayoutMode = 'docs' | 'openapi';
+export type DocsLayoutMode = 'docs' | 'openapi' | 'search';

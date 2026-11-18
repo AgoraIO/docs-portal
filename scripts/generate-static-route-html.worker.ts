@@ -1,6 +1,7 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { PUBLISHED_DOCS_LOCALES } from '../src/lib/site-region';
+import { getSitemapBaseUrl } from '../src/lib/sitemap';
 import { createStaticRouteHtml } from '../src/lib/static-route-html';
 import type { StaticSeoManifestPage } from '../src/lib/static-seo';
 
@@ -48,6 +49,10 @@ export async function generateStaticRouteHtml() {
   }
 
   await fs.writeFile(path.join(distRoot, '404.html'), spaHtml);
+  await fs.writeFile(
+    path.join(distRoot, 'robots.txt'),
+    `User-agent: *\nAllow: /\nSitemap: ${getSitemapBaseUrl()}/sitemap.xml\n`,
+  );
 
   console.log(`[static-seo] generated ${generated} route HTML files`);
 }

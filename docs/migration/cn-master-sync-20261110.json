@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "sourceRepository": "AgoraIO/shengwang-doc-source",
+  "sourceBranch": "master",
+  "targetRepository": "AgoraIO/docs-portal",
+  "targetBranch": "codex/cn-newdoc-html-api-migration",
+  "date": "2026-11-10",
+  "sourceBase": "72dd878e3703f154f26d9fb1bf5274b465a6c2cb",
+  "sourceHead": "b5f0771fd840b2e6c45b28357c206bbe94129767",
+  "sourceRelease": "0.0.542",
+  "previousTargetPr": 1338,
+  "previousTargetMerge": "3110fcacf2ccb5ad5ce55743109f428506496637",
+  "previousTargetMergedAt": "2026-10-30T06:07:55Z",
+  "targetBase": "86876707fc1865cfee4e447e2b2c183c650f8b00",
+  "workingBranch": "codex/cn-master-hotfix-20261110",
+  "status": "implemented-pending-merge",
+  "sourceCommitCount": 18,
+  "sourceContentPrCount": 13,
+  "sourceFileCount": 569,
+  "ledger": "cn-master-sync-20261110-ledger.json",
+  "apiHistoricalAdditions": [
+    {
+      "directory": "rtc-server-sdk/cpp",
+      "label": "v4.4.32",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.539/api-ref/rtc-server-sdk/cpp/overview",
+      "placement": "prepend"
+    }
+  ],
+  "carriedItems": [
+    {
+      "sourcePath": "docs/convoai/best-practice/cloud-3a.mdx",
+      "targetPath": "content/docs/zh-CN/ai/build/harden-and-optimize/cloud-3a.mdx",
+      "status": "already-restored-in-target-kept-hidden",
+      "resolvedByPr": 1324,
+      "navigationEntry": "!cloud-3a",
+      "reason": "The newer target already restored its body and intentionally hides its entry. This batch preserves that state."
+    },
+    {
+      "sourcePath": "docs/convoai/user-guides/prepare-response.mdx",
+      "targetPath": "content/docs/zh-CN/ai/build/shape-the-conversation/prepare-response.mdx",
+      "status": "already-restored-in-target-kept-hidden",
+      "resolvedByPr": 1324,
+      "navigationEntry": "!prepare-response",
+      "reason": "The newer target already restored its body and intentionally hides its entry. This batch preserves that state."
+    }
+  ],
+  "carriedManualFollowUps": [
+    "Upload the one dynamic-config-flow.svg figure to the Chinese image host; replace five local references only after receiving and validating the actual URL.",
+    "Confirm the source HarmonyOS 0.2.11 date: release notes say October 22, while downloads say October 21.",
+    "Fix the historical source FastLogger link: the retained 1.7.2 release note points at an anchor absent from the current Android API."
+  ],
+  "verification": {
+    "baselineTests": {
+      "filesPassed": 362,
+      "filesSkipped": 1,
+      "testsPassed": 5841,
+      "testsSkipped": 11,
+      "testsFailed": 0,
+      "seconds": 202.42,
+      "command": "bun run test --maxWorkers=2"
+    },
+    "typesCheck": "passed after titlePlatforms correction",
+    "tables": {
+      "documents": 7037,
+      "errors": 0
+    },
+    "lint": {
+      "status": "failed-existing-baseline",
+      "errors": 10,
+      "warnings": 22,
+      "infos": 3,
+      "baselineDiagnosticsIdentical": true,
+      "baseline": "86876707fc1865cfee4e447e2b2c183c650f8b00"
+    },
+    "apiSource": {
+      "newDuplicateHeadings": 0,
+      "knownDuplicateHeadingRecords": 2,
+      "obsoleteAllowances": 0,
+      "status": "PASS_WITH_DEBT"
+    },
+    "sourceReviews": {
+      "api": "PASS",
+      "guides": "PASS; titlePlatforms-only metadata follow-up verified separately"
+    },
+    "qualityReviews": {
+      "api": "PASS",
+      "guides": "PASS after titlePlatforms correction",
+      "final": "PASS; independent source/target hash validation"
+    },
+    "fullTests": {
+      "command": "bun run test --maxWorkers=2",
+      "filesPassed": 362,
+      "filesSkipped": 1,
+      "testsPassed": 5841,
+      "testsSkipped": 11,
+      "testsFailed": 0,
+      "seconds": 214.08,
+      "scopeNote": "Before equivalent regex whitespace formatting; focused contract tests rerun after formatting."
+    },
+    "testContractFollowup": {
+      "initialFailures": 6,
+      "files": 4,
+      "focusedPassed": 370,
+      "reason": "new guide navigation, source-declared historical archive and newer source recovery/migration wording replace obsolete expectations"
+    },
+    "cnProductionBuild": "Exact committed-candidate result recorded in target PR acceptance section",
+    "browser": "Exact committed-candidate smoke and affected-page reading recorded in target PR acceptance section",
+    "toolchain": {
+      "node": "25.9.0",
+      "bun": "1.3.9"
+    }
+  },
+  "productionDeployment": "not-requested",
+  "sourceClassification": {
+    "sourceFiles": 569,
+    "sourceCommits": 18,
+    "sourcePrs": 13,
+    "statuses": {
+      "not-required-source-release-counter": 1,
+      "migrated": 48,
+      "not-required-centralized-navigation": 110,
+      "already-covered-centralized": 220,
+      "not-required-hidden-english": 1,
+      "excluded": 187,
+      "asset-local-pending-cn-upload": 2
+    },
+    "targets": 93,
+    "changedTargets": 86
+  },
+  "localValidationHistory": [
+    {
+      "check": "pre-freeze build",
+      "status": "interrupted",
+      "reason": "A regex-format warning was fixed before freezing the final candidate; this partial build is not a pass."
+    }
+  ],
+  "targetPr": 1407,
+  "targetPrUrl": "https://github.com/AgoraIO/docs-portal/pull/1407",
+  "implementationCommit": "4b1691717d2818900d7feea0f2c71cb8daf01e40",
+  "candidateIdentityLocation": "https://github.com/AgoraIO/docs-portal/pull/1407#api-reference-acceptance"
+}

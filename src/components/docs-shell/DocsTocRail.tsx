@@ -11,17 +11,24 @@ export function DocsTocRail({
   locale,
   sourceLinks,
   toc,
+  tocMaxDepth,
 }: {
   locale?: AppLocale | string;
   sourceLinks?: DocsSourceLinks | null;
   toc: TOCItemType[];
+  tocMaxDepth?: number;
 }) {
   const { isScrollbarVisible, scrollContainerRef } =
     useTransientScrollbar<HTMLDivElement>();
 
   return (
     <aside
-      className="hidden w-[220px] shrink-0 bg-transparent xl:sticky xl:top-[var(--docs-shell-header-offset)] xl:block xl:h-[var(--docs-shell-body-height)] xl:min-h-0 xl:self-start"
+      className={cn(
+        'hidden w-[220px] shrink-0 bg-transparent xl:sticky xl:top-[var(--docs-shell-header-offset)] xl:block xl:min-h-0 xl:self-start',
+        locale === 'zh-CN'
+          ? 'xl:h-[var(--docs-shell-rail-height,var(--docs-shell-body-height))]'
+          : 'xl:h-[var(--docs-shell-body-height)]',
+      )}
       data-testid="docs-toc-rail"
     >
       <div
@@ -30,12 +37,14 @@ export function DocsTocRail({
           isScrollbarVisible && 'docs-scrollbar-visible',
         )}
         data-testid="docs-toc-rail-scroll"
+        data-docs-rail-scroll
         ref={scrollContainerRef}
       >
         <DocsTableOfContents
           locale={locale}
           sourceLinks={sourceLinks}
           toc={toc}
+          tocMaxDepth={tocMaxDepth}
         />
       </div>
     </aside>

@@ -1,6 +1,8 @@
 import type { Root } from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
 import {
+  addIntroductionResourceLinks,
+  getPrevNextLinks,
   getProductScopes,
   getSidebarBreadcrumb,
   getSidebarEntries,
@@ -227,6 +229,121 @@ const groupedSidebarTree: Root = {
 };
 
 describe('docs tree helpers', () => {
+  it('adds SDK and Demo shortcuts inside the General References section for Chinese introduction pages', () => {
+    const nodes = [
+      {
+        children: [
+          {
+            id: '/zh-CN/introduction/glossary',
+            title: '术语库',
+            type: 'page' as const,
+            url: '/zh-CN/introduction/glossary',
+          },
+        ],
+        id: 'separator-通用参考',
+        title: '通用参考',
+        type: 'section' as const,
+      },
+    ];
+
+    const result = addIntroductionResourceLinks({
+      activePath: '/zh-CN/introduction/about',
+      locale: 'zh-CN',
+      nodes,
+    });
+    const section = result[0];
+
+    expect(section.type).toBe('section');
+    if (section.type !== 'section') return;
+
+    expect(section.children).toEqual([
+      nodes[0].children[0],
+      {
+        id: 'introduction-sdk-download',
+        showNavigationArrow: true,
+        title: 'SDK 下载',
+        type: 'page',
+        url: '/zh-CN/reference/sdks',
+      },
+      {
+        id: 'introduction-demo-gallery',
+        showNavigationArrow: true,
+        title: '体验 Demo',
+        type: 'page',
+        url: '/zh-CN/reference/demo',
+      },
+    ]);
+
+    expect(
+      addIntroductionResourceLinks({
+        activePath: '/zh-CN/realtime-media/rtc',
+        locale: 'zh-CN',
+        nodes,
+      }),
+    ).toBe(nodes);
+  });
+
+  it('deduplicates repeated URLs in previous and next links', () => {
+    const tree: Root = {
+      children: [
+        {
+          $id: 'sdks',
+          name: 'SDK downloads',
+          type: 'page',
+          url: '/zh-CN/reference/sdks',
+        },
+        {
+          $id: 'demo-link',
+          name: 'Demo',
+          type: 'page',
+          url: '/zh-CN/reference/demo',
+        },
+        {
+          $id: 'demo-folder',
+          children: [
+            {
+              $id: 'demo-child',
+              name: 'Demo child',
+              type: 'page',
+              url: '/zh-CN/reference/demo/example',
+            },
+          ],
+          index: {
+            $id: 'demo-index',
+            name: 'Demo',
+            type: 'page',
+            url: '/zh-CN/reference/demo',
+          },
+          name: 'Demo pages',
+          type: 'folder',
+        },
+      ],
+      name: 'Reference',
+    };
+
+    const deduplicatedExpected = {
+      next: {
+        title: 'Demo child',
+        url: '/zh-CN/reference/demo/example',
+      },
+      previous: {
+        title: 'SDK downloads',
+        url: '/zh-CN/reference/sdks',
+      },
+    };
+
+    expect(getPrevNextLinks(tree, '/zh-CN/reference/demo')).toEqual({
+      next: undefined,
+      previous: {
+        title: 'SDK downloads',
+        url: '/zh-CN/reference/sdks',
+      },
+    });
+    expect(getPrevNextLinks(tree, '/zh-CN/reference/demo', () => true)).toEqual(
+      deduplicatedExpected,
+    );
+  });
+
   it('builds tab summaries from nested root folders', () => {
     expect(getTabSummaries(nestedRootTree)).toEqual([
       {
@@ -242,7 +359,7 @@ describe('docs tree helpers', () => {
     ]);
   });
 
-  it('hides legacy best-practices tabs from the top navigation', () => {
+  it('includes best-practices tabs from root folders', () => {
     const tree: Root = {
       children: [
         {
@@ -287,6 +404,54 @@ describe('docs tree helpers', () => {
         id: 'introduction',
         title: 'Introduction',
         url: '/en/introduction',
+      },
+      {
+        id: 'best-practices',
+        title: 'Best Practices',
+        url: '/en/best-practices',
+      },
+    ]);
+  });
+
+  it('uses the first descendant page for root folders without index pages', () => {
+    const tree: Root = {
+      children: [
+        {
+          $id: 'zh-CN-root',
+          children: [
+            {
+              $id: 'zh-CN-root-tab-1',
+              children: [
+                {
+                  $id: 'zh-CN-rtc-folder',
+                  children: [],
+                  index: {
+                    $id: 'zh-CN-rtc-index',
+                    name: '实时互动 RTC',
+                    type: 'page',
+                    url: '/zh-CN/realtime-media/rtc',
+                  },
+                  name: '实时互动 RTC',
+                  type: 'folder',
+                },
+              ],
+              name: '实时互动',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: '中文',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    expect(getTabSummaries(tree)).toEqual([
+      {
+        id: 'realtime-media',
+        title: '实时互动',
+        url: '/zh-CN/realtime-media/rtc',
       },
     ]);
   });
@@ -591,6 +756,63 @@ describe('docs tree helpers', () => {
     ]);
   });
 
+  it('keeps structural-only groups in the page tree but out of the sidebar', () => {
+    expect(
+      pageTreeNodeToSidebarNodes({
+        $id: 'reference-folder',
+        children: [
+          {
+            $id: 'reference-structural-separator',
+            name: 'Product reference{hidden}',
+            type: 'separator',
+          },
+          {
+            $id: 'reference-structural-page',
+            name: 'RTC implementation root',
+            type: 'page',
+            url: '/en/api-reference/rtc',
+          },
+          {
+            $id: 'reference-visible-separator',
+            name: 'RTC{flat}',
+            type: 'separator',
+          },
+          {
+            $id: 'reference-visible-page',
+            name: 'Android',
+            type: 'page',
+            url: '/en/api-reference/rtc/android',
+          },
+        ],
+        name: 'Reference',
+        type: 'folder',
+      }),
+    ).toEqual([
+      {
+        children: [
+          {
+            children: [
+              {
+                id: '/en/api-reference/rtc/android',
+                title: 'Android',
+                type: 'page',
+                url: '/en/api-reference/rtc/android',
+              },
+            ],
+            collapsible: false,
+            id: 'separator-RTC',
+            title: 'RTC',
+            type: 'section',
+          },
+        ],
+        collapsible: true,
+        id: 'folder-reference-folder',
+        title: 'Reference',
+        type: 'section',
+      },
+    ]);
+  });
+
   it('builds recursive sidebar nodes from nested product folders', () => {
     const productTree: Root = {
       children: [
@@ -743,11 +965,11 @@ describe('docs tree helpers', () => {
               ],
               index: {
                 $id: 'realtime-index',
-                name: '实时与媒体',
+                name: '实时互动',
                 type: 'page',
                 url: '/zh-CN/realtime-media',
               },
-              name: '实时与媒体',
+              name: '实时互动',
               root: true,
               type: 'folder',
             },
@@ -762,7 +984,7 @@ describe('docs tree helpers', () => {
     expect(getTabSummaries(nestedProductTree)).toEqual([
       {
         id: 'realtime-media',
-        title: '实时与媒体',
+        title: '实时互动',
         url: '/zh-CN/realtime-media',
       },
     ]);
@@ -770,7 +992,7 @@ describe('docs tree helpers', () => {
     expect(getSidebarNodes(nestedProductTree, 'realtime-media')).toEqual([
       {
         id: '/zh-CN/realtime-media',
-        title: '实时与媒体',
+        title: '实时互动',
         type: 'page',
         url: '/zh-CN/realtime-media',
       },
@@ -1111,10 +1333,10 @@ describe('docs tree helpers', () => {
           url: '/zh-CN/introduction/recording',
         },
         {
-          id: '/zh-CN/introduction/ppt-transcoding',
+          id: '/zh-CN/realtime-media/ppt-transcoding',
           title: 'PPT 转码',
           type: 'page',
-          url: '/zh-CN/introduction/ppt-transcoding',
+          url: '/zh-CN/realtime-media/ppt-transcoding',
         },
       ]),
     ).toEqual([
@@ -1133,10 +1355,10 @@ describe('docs tree helpers', () => {
             url: '/zh-CN/introduction/recording',
           },
           {
-            id: '/zh-CN/introduction/ppt-transcoding',
+            id: '/zh-CN/realtime-media/ppt-transcoding',
             title: 'PPT 转码',
             type: 'page',
-            url: '/zh-CN/introduction/ppt-transcoding',
+            url: '/zh-CN/realtime-media/ppt-transcoding',
           },
         ],
         collapsible: true,
@@ -1200,6 +1422,56 @@ describe('docs tree helpers', () => {
         id: 'guides',
         title: 'Guides',
         type: 'section',
+      },
+    ]);
+  });
+
+  it('ends a structured sidebar group before following plain pages', () => {
+    expect(
+      mapSidebarEntriesToTree([
+        {
+          id: 'separator-billing',
+          title: '计费说明',
+          type: 'separator',
+        },
+        {
+          id: '/zh-CN/realtime-media/rtc/reference/billing-strategy',
+          title: '计费策略',
+          type: 'page',
+          url: '/zh-CN/realtime-media/rtc/reference/billing-strategy',
+        },
+        {
+          id: 'separator-billing-end',
+          title: '',
+          type: 'separator',
+        },
+        {
+          id: '/zh-CN/realtime-media/rtc/reference/quota',
+          title: '配额限制',
+          type: 'page',
+          url: '/zh-CN/realtime-media/rtc/reference/quota',
+        },
+      ]),
+    ).toEqual([
+      {
+        children: [
+          {
+            id: '/zh-CN/realtime-media/rtc/reference/billing-strategy',
+            title: '计费策略',
+            type: 'page',
+            url: '/zh-CN/realtime-media/rtc/reference/billing-strategy',
+          },
+        ],
+        collapsible: false,
+        id: 'separator-billing',
+        title: '计费说明',
+        type: 'section',
+      },
+      {
+        id: '/zh-CN/realtime-media/rtc/reference/quota',
+        title: '配额限制',
+        type: 'page',
+        url: '/zh-CN/realtime-media/rtc/reference/quota',
       },
     ]);
   });
@@ -1592,6 +1864,31 @@ describe('docs tree helpers', () => {
         title: 'Integration',
         type: 'page',
         url: '/en/api-reference/faq/integration',
+      },
+    ]);
+  });
+
+  it('collapses a localized index-only folder whose title does not match the URL slug into a leaf', () => {
+    expect(
+      pageTreeNodeToSidebarNodes({
+        $id: 'faq-integration-folder',
+        children: [
+          {
+            $id: 'faq-integration-index-child',
+            name: '集成类',
+            type: 'page',
+            url: '/zh-CN/reference/faq/integration',
+          },
+        ],
+        name: '集成类',
+        type: 'folder',
+      }),
+    ).toEqual([
+      {
+        id: '/zh-CN/reference/faq/integration',
+        title: '集成类',
+        type: 'page',
+        url: '/zh-CN/reference/faq/integration',
       },
     ]);
   });

@@ -1,0 +1,1340 @@
+---
+title: "加入白板房间"
+description: "了解如何快速接入互动白板 SDK，完成环境准备、参数配置、示例运行和核心流程验证。"
+---
+<PlatformStructured platform="android">
+
+声网互动白板房间提供丰富的编辑工具，支持展示静态图片、动态 PPT、H5 课件等多种格式的文件，不同终端用户能在白板上实时展示想法，轻松实现多人互动协作。本文介绍如何建立一个简单的项目，使用声网互动白板 SDK 加入房间并实现基础的白板功能。
+
+## 技术原理
+
+下图展示了加入声网互动白板房间的基本流程。
+
+<DocsImage alt="互动白板快速开始流程图" src="https://web-cdn.agora.io/docs-portal/img/whiteboard/quick-start.svg" displayWidth="80%" />
+
+当你的 App 客户端请求加入互动白板房间时：
+
+1. 你的 App 服务端使用 SDK Token 向声网互动白板服务端发起创建房间的请求。
+2. 成功创建房间后，声网互动白板服务端向你的 App 服务端返回新建房间的房间 UUID。
+3. 你的 App 服务端使用房间 UUID 生成 room Token，并将房间 UUID 和 room Token 发送给 App 客户端。
+4. App 客户端使用从声网控制台获取的 AppIdentifier 初始化互动白板 SDK 实例。
+5. App 客户端调用 SDK 的方法并传入房间 UUID 和 room Token 以加入互动白板房间。
+
+## 前提条件
+
+- Android Studio
+- Android SDK API level 21+
+- 有效的声网[开发者账号](/zh-CN/introduction/quickstart)。
+- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
+
+## 创建 Android 项目
+
+使用 Android Studio [创建一个 Android 项目](https://developer.android.google.cn/studio/projects/create-project)。
+
+- 项目名设为 `WhiteBoard`。
+- Package 名设为 `com.example.whiteboard`。
+- Activity 类型选择 **Empty Activity**。
+- **Minimum SDK** 选择 **API 21**。
+
+## 添加权限
+
+在 `AndroidManifest.xml` 文件中添加访问网络权限：
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.whiteboard">
+ 
+    <uses-permission android:name="android.permission.INTERNET" />
+ 
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.WhiteBoard">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+```
+
+## 获取 SDK
+
+打开根目录下的 `build.gradle` 进行以下配置：
+
+```groovy
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        // 添加以下内容
+        maven { url 'https://jitpack.io' }
+        // 对于国内用户，如果 Gradle sync 失败，可以选择国内镜像，例如阿里云 Maven 镜像
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/releases/'}
+    }
+}
+```
+
+然后打开 app 目录下的 `build.gradle` 进行如下配置：
+
+```groovy
+dependencies {
+    // 当前正式版
+    implementation 'com.github.netless-io:whiteboard-android:2.16.134'
+}
+```
+
+> 关于声网互动白板 SDK 的最新版本，详见[发版说明](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/release-notes-wb)。
+
+## 防止代码混淆
+
+在 `proguard-rules.pro` 文件中添加以下语句，防止代码混淆：
+
+```proguard
+# SDK model
+-keep class com.herewhite.** { *; }
+```
+
+## 实现步骤
+
+现在，我们已经将声网互动白板 SDK 集成到项目中了。接下来我们要调用声网互动白板 SDK 提供的核心 API 实现基础的白板功能。
+
+<a id="createroom"></a>
+### 1. 创建房间
+
+在 App 客户端加入互动白板房间前，你需要在 App 服务端调用互动白板服务端 RESTful API 创建一个房间。详见[创建房间（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)。
+
+**请求示例**
+
+你可以使用以下 Node.js 脚本发送请求：
+
+:::info[信息]
+使用 Node.js 发送 HTTP 请求前安装 `request` 模块。你可以运行 `npm install request` 安装。
+:::
+
+```javascript
+var request = require("request");
+var options = {
+  method: "POST",
+  url: "https://api.netless.link/v5/rooms",
+  headers: {
+    "token": "你的 SDK Token",
+    "Content-Type": "application/json",
+    "region": "cn-hz",
+  },
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+如果方法调用成功，声网互动白板服务端将返回新建房间的信息，其中的 `uuid` 是房间的唯一标识，App 客户端加入房间时需要传入该参数。
+
+**响应示例**
+
+```json
+{
+    "uuid": "4a50xxxxxx796b", // 房间的 UUID
+    "teamUUID": "RMmLxxxxxx15aw",
+    "appUUID": "i54xxxxxx1AQ",
+    "isRecord": true,
+    "isBan": false,
+    "createdAt": "2021-01-18T06:56:29.432Z",
+    "limit": 0
+}
+```
+
+<a id="roomtoken"></a>
+### 2. 生成 Room Token
+
+创建房间并获取新建房间的 `uuid` 后，你需要在 App 服务端生成 Room Token 并下发给 App 客户端。当 App 客户端加入房间时，声网互动白板服务端会使用该 Token 对其鉴权。
+
+你可以通过以下方式在 App 服务端生成 Room Token：
+
+- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。（推荐）
+- 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-room-token)。
+
+下面以调用 RESTful API 的方式为例介绍如何生成 Room Token。
+
+**请求示例**
+
+你可以使用以下 Node.js 脚本发送请求：
+
+:::info[信息]
+使用 Node.js 发送 HTTP 请求前安装 `request` 模块。你可以运行 `npm install request` 安装。
+:::
+
+```javascript
+var request = require("request");
+var options = {
+  method: "POST",
+  // 将 <房间的 UUID> 替换成你的房间 UUID
+  url: "https://api.netless.link/v5/tokens/rooms/<房间的 UUID>",
+  headers: {
+    "token": "你的 SDK Token",
+    "Content-Type": "application/json",
+    "region": "cn-hz",
+  },
+  body: JSON.stringify({ lifespan: 3600000, role: "admin" }),
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+如果方法调用成功，声网互动白板服务端将返回生成的 Room Token。
+
+**响应示例**
+
+```javascript
+"NETLESSROOM_YWs9XXXXXXXXXXXZWNhNjk" // Room Token
+```
+
+### 3. 创建 UI
+
+修改 `activity_main.xml` 为如下内容，可以看到整个视图由一个白板页面填充，页面 `com.herewhite.sdk.WhiteboardView` 由互动白板 SDK 实现。
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+ 
+    <com.herewhite.sdk.WhiteboardView
+        android:id="@+id/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" />
+ 
+</LinearLayout>
+```
+
+### 4. 初始化 SDK 并加入房间
+
+编辑 `MainActivity.java`，实现从初始化 SDK 到加入房间的基本操作。你需要传入以下参数：
+
+- `appId`：互动白板项目的 AppIdentifier。详见[获取 AppIdentifier](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
+- `uuid`：房间的 UUID。详见[创建房间](#1-创建房间)。
+- `uid`：用户的唯一标识符，字符串格式，长度不能超过 1024 字节。如果你使用 2.15.0 或之后版本的 SDK，必须传入该参数；如果你使用 2.15.0 之前版本的 SDK，则不需要传入该参数。
+- `roomToken`：用于鉴权的 Room Token。生成该 Room Token 使用的房间 UUID 必须和上面的房间 UUID 一致。详见[生成 Room Token](#2-生成-room-token)。
+- `region`：数据中心，必须和创建房间时设置的数据中心一致。
+
+```java
+package com.example.whiteboard;
+
+import android.os.Bundle;
+import android.util.Log;
+import androidx.appcompat.app.AppCompatActivity;
+import com.herewhite.sdk.Room;
+import com.herewhite.sdk.RoomListener;
+import com.herewhite.sdk.RoomParams;
+import com.herewhite.sdk.WhiteSdk;
+import com.herewhite.sdk.WhiteSdkConfiguration;
+import com.herewhite.sdk.WhiteboardView;
+import com.herewhite.sdk.domain.MemberState;
+import com.herewhite.sdk.domain.Promise;
+import com.herewhite.sdk.domain.Region;
+import com.herewhite.sdk.domain.RoomPhase;
+import com.herewhite.sdk.domain.RoomState;
+import com.herewhite.sdk.domain.SDKError;
+import com.herewhite.sdk.domain.WindowParams;
+
+public class MainActivity extends AppCompatActivity {
+    private WhiteboardView whiteboardView;
+    private WhiteSdk whiteSdk;
+    private Room room;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        whiteboardView = findViewById(R.id.white);
+        WhiteSdkConfiguration config = new WhiteSdkConfiguration("APP_IDENTIFIER", true);
+        config.setRegion(Region.cn);
+        // 同一房间各端一致使用高性能绘制插件。
+        config.setUseMultiViews(true);
+        config.setEnableAppliancePlugin(true);
+        whiteSdk = new WhiteSdk(whiteboardView, this, config);
+        RoomParams params = new RoomParams("ROOM_UUID", "ROOM_TOKEN", "CLIENT_UID");
+        params.setRegion(Region.cn);
+        params.setWritable(true);
+        params.setWindowParams(new WindowParams());
+        RoomListener listener = new RoomListener() {
+            @Override public void onPhaseChanged(RoomPhase phase) { }
+            @Override public void onDisconnectWithError(Exception error) { }
+            @Override public void onKickedWithReason(String reason) { }
+            @Override public void onRoomStateChanged(RoomState modifyState) { }
+            @Override public void onCanUndoStepsUpdate(long canUndoSteps) { }
+            @Override public void onCanRedoStepsUpdate(long canRedoSteps) { }
+            @Override public void onCatchErrorWhenAppendFrame(long userId, Exception error) { }
+        };
+        whiteSdk.joinRoom(params, listener, new Promise<Room>() {
+            @Override public void then(Room joinedRoom) {
+                room = joinedRoom;
+                MemberState state = new MemberState();
+                state.setCurrentApplianceName("pencil");
+                state.setStrokeColor(new int[]{255, 0, 0});
+                room.setMemberState(state);
+            }
+            @Override public void catchEx(SDKError error) {
+                Log.e("Whiteboard", error.getMessage());
+            }
+        });
+    }
+
+    private boolean leaving;
+
+    @Override
+    public void onBackPressed() {
+        if (leaving) return;
+        if (whiteSdk == null) { finish(); return; }
+        leaving = true;
+        whiteSdk.leaveRoom(new Promise<Object>() {
+            @Override public void then(Object completion) {
+                // 仅通知退房完成；不是房间状态快照。
+                room = null;
+                whiteSdk.releaseRoom();
+                finish(); // onDestroy 再销毁 View。
+            }
+            @Override public void catchEx(SDKError error) {
+                leaving = false;
+                Log.e("Whiteboard", "退出失败，请重试", error);
+            }
+        });
+    }
+  
+    @Override
+    protected void onDestroy() {
+        // 正常退出已在 onBackPressed 等待；系统强制销毁不提供异步等待窗口。
+        if (whiteboardView != null) whiteboardView.destroy();
+        super.onDestroy();
+    }
+}
+```
+
+### 5. 接入多窗口
+
+SDK 已通过内嵌 Bridge 集成 Window Manager。创建 `WhiteSdk` 前启用多 View，入房前将窗口配置传给 `RoomParams`；步骤 4 的完整示例已包含这些配置：
+
+```java
+import com.herewhite.sdk.domain.WindowParams;
+
+// 创建 WhiteSdk 前设置。
+config.setUseMultiViews(true);
+// joinRoom 前设置；WindowParams 可进一步配置窗口显示。
+params.setWindowParams(new WindowParams());
+```
+
+入房成功后，SDK 自动在 `WhiteboardView` 内挂载窗口管理器。窗口配置和课件控制见[统一页面控制](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-page-control)。
+
+### 6. 接入动态 PPT
+
+内嵌 Bridge 已注册 app-slide。业务服务端完成动态 PPT 转换后，在入房成功回调中，或其后的业务按钮中，用 `WindowAppParam.createSlideApp` 创建参数，再调用 `room.addApp`：
+
+```java
+import com.herewhite.sdk.domain.WindowAppParam;
+import com.herewhite.sdk.domain.Promise;
+import com.herewhite.sdk.domain.SDKError;
+
+WindowAppParam slide = WindowAppParam.createSlideApp(
+    "CONVERSION_TASK_UUID",
+    "https://convertcdn.netless.link/dynamicConvert",
+    "教学课件.pptx"
+);
+room.addApp(slide, new Promise<String>() {
+    @Override public void then(String appId) {
+        android.util.Log.i("Whiteboard", "动态 PPT 窗口 ID：" + appId);
+    }
+    @Override public void catchEx(SDKError error) {
+        android.util.Log.e("Whiteboard", error.getMessage());
+    }
+});
+```
+
+第一个参数是转换任务 UUID，第二个参数是转换结果的资源地址前缀，末尾不带 `/`，不能填写 PPT 源文件地址。此工厂方法为窗口生成独立场景目录。创建 App 需要可写权限；房间中已存在的课件会同步显示，不要在每次入房时重复插入。返回窗口 ID 不表示课件资源和首帧全部加载完成。更多说明见[展示文件](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/courseware-integration)。
+
+### 7. 开启新教具
+
+创建 `WhiteSdk` 前同时开启多 View 与新教具；步骤 4 的示例已开启：
+
+```java
+config.setUseMultiViews(true);
+config.setEnableAppliancePlugin(true);
+```
+
+SDK 已内嵌 Appliance Plugin 与 Worker 资源，业务继续使用 `room.setMemberState` 等原生 API 切换 Pencil、Selector、Eraser、Shape、Text 等教具，无需额外安装或注册 Web 插件。同一房间各端应一致启用。
+
+入房前可通过 `RoomParams.appliancePluginOptions` 设置教具插件参数。自定义教具、背景图和 Auto Shape 接入见[教具插件介绍与启用](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/overview)。
+
+`WhiteSdkConfiguration` 的初始化开关需在 SDK 创建前设置，入房后不能通过修改此对象启用新教具。SDK 初始化错误通过 `CommonCallback.sdkSetupFail` 处理。
+
+## 编译并运行项目
+
+在 Android Studio 中编译并在模拟器或真机上运行项目。入房成功后可在白板上书写，业务按钮可通过步骤 6 的原生 API 打开动态 PPT。
+
+## 配置远端参数
+
+需要在入房前读取远端参数时，参见[动态配置](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/dynamic-config)。地址在创建 SDK 前设置，本地显式参数优先；读取失败回退本地参数。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+声网互动白板房间提供丰富的编辑工具，支持展示静态图片、动态 PPT、H5 课件等多种格式的文件，不同终端用户能在白板上实时展示想法，轻松实现多人互动协作。
+
+本文介绍如何建立一个简单的项目，使用声网互动白板 SDK 加入房间并实现基础的白板功能。
+
+## 技术原理
+
+下图展示了加入声网互动白板房间的基本流程。
+
+<DocsImage alt="互动白板快速开始流程图" src="https://web-cdn.agora.io/docs-portal/img/whiteboard/quick-start.svg" displayWidth="80%" />
+
+当你的 App 客户端请求加入互动白板房间时：
+
+1. 你的 App 服务端使用 SDK Token 向声网互动白板服务端发起创建房间的请求。
+2. 成功创建房间后，声网互动白板服务端向你的 App 服务端返回新建房间的房间 UUID。
+3. 你的 App 服务端使用房间 UUID 生成 room Token，并将房间 UUID 和 room Token 发送给 App 客户端。
+4. App 客户端使用从声网控制台获取的 AppIdentifier 初始化互动白板 SDK 实例。
+5. App 客户端调用 SDK 的方法并传入房间 UUID 和 room Token 以加入互动白板房间。
+
+## 前提条件
+
+- Xcode 10.10+
+- CocoaPods 接入：iOS 10.0+；SwiftPM 接入：iOS 12.0+
+- CocoaPods [最新版本](https://cocoapods.org/)。
+- 有效的声网[开发者账号](/zh-CN/introduction/quickstart)。
+- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
+
+## 创建项目
+
+参考以下步骤在 Xcode 中创建一个 Single View App。
+
+<Tabs defaultValue="oc" groupId="create-project" persist>
+<TabsList>
+  <TabsTrigger value="oc">创建 Objective-C 项目</TabsTrigger>
+  <TabsTrigger value="swift">创建 Swift 项目</TabsTrigger>
+</TabsList>
+
+<TabsContent value="oc">
+
+创建一个 Objective-C 项目，项目设置如下：
+
+- **Product Name** 设为 `Whiteboard`。
+- **Organization Identifier** 设为 `agora`。
+- **Language** 选择 `Objective-C`。
+
+</TabsContent>
+
+<TabsContent value="swift">
+
+创建一个 Swift 项目，项目设置如下：
+
+- **Product Name** 设为 `Whiteboard`。
+- **Organization Identifier** 设为 `agora`。
+- **Language** 选择 `Swift`。
+- **User Interface** 选择 `Storyboard`。
+
+声网互动白板 SDK 使用 Objective-C 语言开发。要在 Swift 项目中使用 Objective-C 代码，你还需要在项目中创建一个 Objective-C 桥接文件，步骤如下：
+
+- 在项目中添加 `Whiteboard-Bridging_Header.h` 文件。
+- 在 `Whiteboard-Bridging_Header.h` 文件中添加如下行引用 `Whiteboard.h`:
+
+```objc
+#import <Whiteboard/Whiteboard.h>
+```
+
+</TabsContent>
+</Tabs>
+
+## 获取 SDK
+
+1. 在 Terminal 里进入项目所在路径。运行以下命令创建 `Podfile` 文件。项目路径下会出现一个 `Podfile` 文本文件。
+
+    ```shell
+    pod init
+    ```
+
+2. 在生成的 `Podfile` 文件中添加如下内容：
+
+    ```ruby
+    platform :ios, '10.0'
+    target 'Whiteboard' do
+        pod 'Whiteboard', '2.16.147'
+    end
+    ```
+
+3. 运行以下命令安装 SDK：
+
+    ```shell
+    pod install
+    ```
+
+    安装完成后，你可以点击打开项目的 `Whiteboard.xcworkspace` 文件，对项目进行后续编辑。
+
+:::info[信息]
+对于中国大陆用户，如果在执行 `pod install` 命令时由于网络原因失败，可以使用 [TUNA 镜像源](https://mirrors.tuna.tsinghua.edu.cn/help/CocoaPods/)。
+:::
+
+## 实现步骤
+
+现在，我们已经将声网互动白板 SDK 集成到项目中了。接下来我们要调用声网互动白板 SDK 提供的核心 API 实现基础的白板功能。
+
+<a id="createroom"></a>
+### 1. 创建房间
+
+在 App 客户端加入互动白板房间前，你需要在 App 服务端调用互动白板服务端 RESTful API 创建一个房间。详见[创建房间（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)。
+
+**请求示例**
+
+你可以使用以下 Node.js 脚本发送请求：
+
+:::info[信息]
+使用 Node.js 发送 HTTP 请求前安装 `request` 模块。你可以运行 `npm install request` 安装。
+:::
+
+```javascript
+var request = require("request");
+var options = {
+  method: "POST",
+  url: "https://api.netless.link/v5/rooms",
+  headers: {
+    "token": "你的 SDK Token",
+    "Content-Type": "application/json",
+    "region": "cn-hz",
+  },
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+如果方法调用成功，声网互动白板服务端将返回新建房间的信息，其中的 `uuid` 是房间的唯一标识，App 客户端加入房间时需要传入该参数。
+
+**响应示例**
+
+```json
+{
+    "uuid": "4a50xxxxxx796b", // 房间的 UUID
+    "teamUUID": "RMmLxxxxxx15aw",
+    "appUUID": "i54xxxxxx1AQ",
+    "isRecord": true,
+    "isBan": false,
+    "createdAt": "2021-01-18T06:56:29.432Z",
+    "limit": 0
+}
+```
+
+<a id="roomtoken"></a>
+### 2. 生成 Room Token
+
+创建房间并获取新建房间的 `uuid` 后，你需要在 App 服务端生成 Room Token 并下发给 App 客户端。当 App 客户端加入房间时，声网互动白板服务端会使用该 Token 对其鉴权。
+
+你可以通过以下方式在 App 服务端生成 Room Token：
+
+- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。（推荐）
+- 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-room-token)。
+
+下面以调用 RESTful API 的方式为例介绍如何生成 Room Token。
+
+**请求示例**
+
+你可以使用以下 Node.js 脚本发送请求：
+
+:::info[信息]
+使用 Node.js 发送 HTTP 请求前安装 `request` 模块。你可以运行 `npm install request` 安装。
+:::
+
+```javascript
+var request = require("request");
+var options = {
+  method: "POST",
+  // 将 <房间的 UUID> 替换成你的房间 UUID
+  url: "https://api.netless.link/v5/tokens/rooms/<房间的 UUID>",
+  headers: {
+    "token": "你的 SDK Token",
+    "Content-Type": "application/json",
+    "region": "cn-hz",
+  },
+  body: JSON.stringify({ lifespan: 3600000, role: "admin" }),
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+如果方法调用成功，声网互动白板服务端将返回生成的 Room Token。
+
+**响应示例**
+
+```json
+"NETLESSROOM_YWs9XXXXXXXXXXXZWNhNjk" // Room Token
+```
+
+### 3. 创建白板视图
+
+创建 `WhiteBoardView` 并添加到页面，设置合适的显示尺寸。以下完整示例的 `setupViews` 方法负责这一步。
+
+### 4. 初始化 SDK 并加入房间
+
+编辑 `ViewController.m`，实现从添加 View、初始化 SDK 到加入房间的基本操作。你需要传入以下参数：
+
+- `appIdentifier`：互动白板项目的唯一标识符。详见[获取 AppIdentifier](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
+- `uuid`：房间的唯一标识符。详见[创建房间](#1-创建房间-1)。
+- `uid`：用户的唯一标识符，字符串格式，长度不能超过 1024 字节。如果你使用 2.15.0 或之后版本的 SDK，必须传入该参数；如果你使用 2.15.0 之前版本的 SDK，则不需要传入该参数。
+- `roomToken`：用于鉴权的 Room Token。生成该 Room Token 使用的房间 UUID 必须和上面的房间 UUID 一致。详见[生成 Room Token](#2-生成-room-token-1)。
+- `region`：数据中心，必须和创建房间时设置的数据中心一致。
+
+```objc tab="Objective-C"
+// ViewController.m
+//  WhiteBoard
+#import "ViewController.h"
+#import <Whiteboard/Whiteboard.h>
+@interface ViewController ()
+@property(nonatomic, strong) WKWebViewConfiguration *config;
+@property(nonatomic, strong) WhiteBoardView *boardView;
+@property(nonatomic, strong) WhiteSDK *sdk;
+@property(nonatomic, strong) WhiteRoom *room;
+@property(nonatomic, strong) WhiteMemberState *memberState;
+@property(nonatomic, strong) WhiteRoomConfig *roomConfig;
+@property(nonatomic, strong) WhiteSdkConfiguration *sdkConfig;
+@property(nonatomic, weak, nullable) id<WhiteCommonCallbackDelegate> commonDelegate;
+@property(nonatomic, weak, nullable) id<WhiteRoomCallbackDelegate> roomCallbackDelegate;
+@end
+@implementation ViewController
+// 添加 View
+- (void)setupViews
+{
+    self.config = [[WKWebViewConfiguration alloc] init];
+    // // 在此项目中将白板 View 设为全屏
+    self.boardView = [[WhiteBoardView alloc] initWithFrame:(CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, self.view.bounds.size.height)) configuration:(self.config)];
+    [self.view addSubview:(self.boardView)];
+}
+// 初始化 SDK
+- (void)initSDK
+{ // 传入互动白板项目的 AppIdentifier
+    self.sdkConfig = [[WhiteSdkConfiguration alloc] initWithApp:@"Your AppIdentifier"];
+    // 设置数据中心为中国杭州
+    self.sdkConfig.region = WhiteRegionCN;
+    self.sdkConfig.useMultiViews = YES;
+    self.sdkConfig.enableAppliancePlugin = YES;
+    // 初始化 SDK
+    self.sdk = [[WhiteSDK alloc] initWithWhiteBoardView:self.boardView config:self.sdkConfig commonCallbackDelegate:self.commonDelegate];
+}
+// 加入房间
+- (void)joinRoom
+{ // 设置房间 UUID，用户 uid 和 Room Token。如果你使用 2.15.0 之前版本的 SDK，不需要传入 uid:@"用户 uid"。
+    self.roomConfig = [[WhiteRoomConfig alloc] initWithUUID:@"Your UUID" roomToken:@"Your room token" uid:@"用户 uid"];
+    self.roomConfig.region = WhiteRegionCN;
+    self.roomConfig.isWritable = YES;
+    self.roomConfig.windowParams = [WhiteWindowParams new];
+    // 设置白板工具
+    self.memberState = [[WhiteMemberState alloc] init];
+    self.memberState.currentApplianceName = AppliancePencil;
+    self.memberState.strokeColor = @[ @255, @0, @0 ];
+    // 加入房间
+    [self.sdk joinRoomWithConfig:self.roomConfig
+                       callbacks:self.roomCallbackDelegate
+               completionHandler:^(BOOL success, WhiteRoom *_Nonnull room, NSError *_Nonnull error) {
+                 if (success)
+                 {
+                     self.room = room;
+                     [self.room setMemberState:(self.memberState)];
+                     NSLog(@"Successfully joined the room");
+                 }
+                 else
+                 {
+                     NSLog(@"Errors when joining room");
+                 }
+               }];
+}
+// 在 viewDidLoad 方法中依次进行 View 添加，SDK 初始化，加入房间操作
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self setupViews];
+    [self initSDK];
+    [self joinRoom];
+}
+@end
+```
+
+```swift tab="Swift"
+// ViewController.swift
+//  Whiteboard
+import UIKit
+import WebKit
+import Whiteboard
+
+class ViewController: UIViewController {
+  var config: WKWebViewConfiguration?
+  var boardView: WhiteBoardView?
+  var roomConfig: WhiteRoomConfig?
+  var memberState: WhiteMemberState?
+  var room: WhiteRoom?
+  var sdk: WhiteSDK?
+  var sdkConfig: WhiteSdkConfiguration?
+  var commonDelegate: WhiteCommonCallbackDelegate?
+  var roomCallbackDelegate: WhiteRoomCallbackDelegate?
+  // 添加 View
+  func setupViews() {
+    self.config = WKWebViewConfiguration()
+    // 在此项目中将白板 View 设为全屏
+    self.boardView = WhiteBoardView(
+      frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height),
+      configuration: self.config!)
+    self.view.addSubview(self.boardView!)
+  }
+  // 初始化 SDK
+  func initSDK() {  // 传入互动白板项目的 AppIdentifier
+    self.sdkConfig = WhiteSdkConfiguration(app: "APP_IDENTIFIER")
+    // 设置数据中心为中国杭州
+    sdkConfig?.region = WhiteRegionKey.CN
+    sdkConfig?.useMultiViews = true
+    sdkConfig?.enableAppliancePlugin = true
+    // 初始化 SDK
+    self.sdk = WhiteSDK(
+      whiteBoardView: self.boardView!, config: self.sdkConfig!,
+      commonCallbackDelegate: self.commonDelegate)
+  }
+  // 加入房间
+  func joinRoom() {
+    // 设置房间 UUID，用户 uid 和 Room Token。如果你使用 2.15.0 之前版本的 SDK，不需要传入 uid: "用户 uid"。
+    self.roomConfig = WhiteRoomConfig(
+      uuid: "Your uuid", roomToken: "Your room token", uid: "用户 uid")
+    self.roomConfig?.region = WhiteRegionKey.CN
+    self.roomConfig?.isWritable = true
+    self.roomConfig?.windowParams = WhiteWindowParams()
+    // 设置白板工具
+    self.memberState = WhiteMemberState()
+    self.memberState?.currentApplianceName = WhiteApplianceNameKey.AppliancePencil
+    self.memberState?.strokeColor = [255, 0, 0]
+    // 加入房间
+    self.sdk!.joinRoom(
+      with: self.roomConfig!, callbacks: roomCallbackDelegate,
+      completionHandler: { (Success, room, error) in
+        if Success {
+          self.room = room
+          self.room!.setMemberState(self.memberState!)
+          NSLog("Successfully joined the room")
+        } else {
+          NSLog("Errors when joining room")
+        }
+      })
+  }
+  // 在 viewDidLoad 方法中依次进行 View 添加，SDK 初始化，加入房间操作
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    self.setupViews()
+    self.initSDK()
+    self.joinRoom()
+  }
+}
+```
+
+### 5. 接入多窗口
+
+SDK 已通过内嵌 Bridge 集成 Window Manager。创建 `WhiteSDK` 前配置多 View，入房前配置 `WhiteRoomConfig.windowParams`。步骤 4 的完整示例已包含这些配置：
+
+```objc tab="Objective-C"
+// 创建 WhiteSDK 前设置。
+self.sdkConfig.useMultiViews = YES;
+// joinRoomWithConfig 前设置。
+self.roomConfig.windowParams = [WhiteWindowParams new];
+```
+
+```swift tab="Swift"
+// 创建 WhiteSDK 前设置。
+self.sdkConfig?.useMultiViews = true
+// joinRoom 前设置。
+self.roomConfig?.windowParams = WhiteWindowParams()
+```
+
+入房后 SDK 在 `WhiteBoardView` 内挂载窗口管理器。配置和控制方法见[新版 API 与多窗口课件控制](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-page-control)。
+
+### 6. 接入动态 PPT
+
+内嵌 Bridge 已注册 app-slide。在入房成功后或业务“打开课件”按钮中，创建 `WhiteAppParam` 并调用 `WhiteRoom.addApp`：
+
+```objc tab="Objective-C"
+WhiteAppParam *slide = [WhiteAppParam createSlideApp:@"/slides/lesson-1"
+                                            taskId:@"CONVERSION_TASK_UUID"
+                                               url:@"https://convertcdn.netless.link/dynamicConvert"
+                                             title:@"教学课件.pptx"];
+[self.room addApp:slide completionHandler:^(NSString * _Nullable appId) {
+    if (appId.length > 0) {
+        NSLog(@"动态 PPT 窗口 ID：%@", appId);
+    } else {
+        NSLog(@"创建课件窗口未返回有效 ID");
+    }
+}];
+```
+
+```swift tab="Swift"
+let slide = WhiteAppParam.createSlideApp(
+  "/slides/lesson-1",
+  taskId: "CONVERSION_TASK_UUID",
+  url: "https://convertcdn.netless.link/dynamicConvert",
+  title: "教学课件.pptx"
+)
+self.room?.addApp(slide, completionHandler: { appId in
+  if let appId = appId, !appId.isEmpty {
+    print("动态 PPT 窗口 ID：\(appId)")
+  } else {
+    print("创建课件窗口未返回有效 ID")
+  }
+})
+```
+
+业务服务端先完成动态 PPT 转换。`taskId` 是转换任务 UUID，`url` 是资源地址前缀（末尾不带 `/`，不是 PPT 源文件地址）。第一个参数是以 `/` 开头的场景目录，每个 App 使用不同目录。创建 App 需要可写权限，房间内已有课件会同步显示，不要在每次入房时重复插入。返回 ID 不表示所有资源和首帧已加载。转换和展示方式见[展示文件](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/courseware-integration)。
+
+### 7. 开启新教具
+
+创建 SDK 前同时启用多 View 与新教具。步骤 4 的完整示例已开启：
+
+```objc tab="Objective-C"
+self.sdkConfig.useMultiViews = YES;
+self.sdkConfig.enableAppliancePlugin = YES;
+```
+
+```swift tab="Swift"
+self.sdkConfig?.useMultiViews = true
+self.sdkConfig?.enableAppliancePlugin = true
+```
+
+Appliance Plugin 与 Worker 资源已随 SDK 内嵌，继续使用 `WhiteRoom.setMemberState` 等原生方法配置 Pencil、Selector、Eraser、Shape、Text 等教具。同房间各端应一致开启。入房前可通过 `WhiteRoomConfig.appliancePluginOptions` 传入插件参数，接入细节见[教具插件介绍与启用](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/overview)。
+
+这些开关必须在 SDK 初始化前设置；已经入房后修改配置对象不会开启插件。
+
+## 编译并运行项目
+
+在 Xcode 中编译并在模拟器或真机上运行项目。入房成功后可在白板书写，并使用步骤 6 的原生 API 打开动态 PPT。
+
+## 等待退出完成
+
+Whiteboard iOS 2.16.147 可用 `leaveRoomWithCompletionHandler:` 等待所属 Room 退出，完成回调的 NSError 为空表示成功。先处理退出结果，再销毁宿主或继续下一次入房。配置地址和参数优先级见[动态配置](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/dynamic-config)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+声网互动白板房间提供丰富的编辑工具，支持展示静态图片、动态 PPT、H5 课件等多种格式的文件，不同终端用户能在白板上实时展示想法，轻松实现多人互动协作。
+
+本文介绍如何创建 Web 项目、加入白板房间，并接入多窗口、动态 PPT 和新教具。示例采用 npm 与 Vite，使用 TypeScript 编写浏览器端模块。
+
+:::warning[注意]
+由于浏览器的安全策略对除 127.0.0.1 以外的 HTTP 地址作了限制，声网互动白板 SDK 仅支持 HTTPS 协议或者 `http://localhost`（`http://127.0.0.1`） ，请勿使用 HTTP 协议部署你的项目。
+:::
+
+## 技术原理
+
+下图展示了加入声网互动白板房间的基本流程。
+
+<DocsImage alt="互动白板快速开始流程图" src="https://web-cdn.agora.io/docs-portal/img/whiteboard/quick-start.svg" displayWidth="80%" />
+
+当你的 App 客户端请求加入互动白板房间时：
+
+1. 你的 App 服务端使用 SDK Token 向声网互动白板服务端发起创建房间的请求。
+2. 成功创建房间后，声网互动白板服务端向你的 App 服务端返回新建房间的房间 UUID。
+3. 你的 App 服务端使用房间 UUID 生成 room Token，并将房间 UUID 和 room Token 发送给 App 客户端。
+4. App 客户端使用从声网控制台获取的 AppIdentifier 初始化互动白板 SDK 实例。
+5. App 客户端调用 SDK 的方法并传入房间 UUID 和 room Token 以加入互动白板房间。
+
+## 前提条件
+
+- 满足[最低版本要求的浏览器](/zh-CN/realtime-media/whiteboard#如何选择白板-sdk-和-fastboard-sdk)。
+- 有效的声网[开发者账号](/zh-CN/introduction/quickstart)。
+- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
+- [Node.js 及 npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)。
+
+## 创建 Web 项目
+
+在项目目录执行以下命令，初始化 npm 项目并安装开发服务器：
+
+```shell
+npm init -y
+npm install -D vite
+mkdir -p scripts
+```
+
+创建以下目录结构；`public` 中的资源通过站点根路径访问：
+
+```text
+.
+├── index.html
+├── scripts
+│   └── index.ts
+└── public
+```
+
+将以下内容写入 `index.html`。容器必须有明确高度，浏览器模块在容器创建后加载：
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>互动白板</title>
+  </head>
+  <body style="margin: 0;">
+    <div id="whiteboard" style="width: 100%; height: 100vh;"></div>
+    <script type="module" src="/scripts/index.ts"></script>
+  </body>
+</html>
+```
+
+## 获取 SDK
+
+安装本页示例使用的 SDK、窗口管理器、动态 PPT App 和教具插件：
+
+```shell
+npm install white-web-sdk@2.16.59 @netless/window-manager@1.0.25 @netless/app-slide@0.2.108 @netless/appliance-plugin@1.1.45
+```
+
+将步骤 3～7 的 TypeScript 代码依次放入同一个 `scripts/index.ts`。步骤 4～6 定义接入函数和注册 App，步骤 7 调用这些函数完成一次入房和插件初始化。
+
+SDK 版本见[发版说明](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/release-notes-wb)。
+
+## 实现步骤
+
+先由业务服务端创建房间并生成 Room Token，再在浏览器端完成 SDK 初始化和接入。SDK Token 应保存在服务端，客户端只接收 Room Token。
+
+<a id="createroom"></a>
+### 1. 创建房间
+
+在 App 客户端加入互动白板房间前，你需要在 App 服务端调用互动白板服务端 RESTful API 创建一个房间。详见[创建房间（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)。
+
+**请求示例**
+
+你可以使用以下 Node.js 脚本发送请求：
+
+:::tip[提示]
+使用 Node.js 发送 HTTP 请求前安装 `request` 模块。你可以运行 `npm install request` 安装。
+:::
+
+```javascript
+var request = require("request");
+var options = {
+  method: "POST",
+  url: "https://api.netless.link/v5/rooms",
+  headers: {
+    "token": "你的 SDK Token",
+    "Content-Type": "application/json",
+    "region": "cn-hz",
+  },
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+如果方法调用成功，声网互动白板服务端将返回新建房间的信息，其中的 `uuid` 是房间的唯一标识，App 客户端加入房间时需要传入该参数。
+
+**响应示例**
+
+```json
+{
+    "uuid": "4a50xxxxxx796b", // 房间的 UUID
+    "teamUUID": "RMmLxxxxxx15aw",
+    "appUUID": "i54xxxxxx1AQ",
+    "isRecord": true,
+    "isBan": false,
+    "createdAt": "2021-01-18T06:56:29.432Z",
+    "limit": 0
+}
+```
+
+<a id="roomtoken"></a>
+### 2. 生成 Room Token
+
+创建房间并获取新建房间的 `uuid` 后，你需要在 App 服务端生成 Room Token 并下发给 App 客户端。当 App 客户端加入房间时，声网互动白板服务端会使用该 Token 对其鉴权。
+
+你可以通过以下方式在 App 服务端生成 Room Token：
+
+- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。（推荐）
+- 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-room-token)。
+
+下面以调用 RESTful API 的方式为例介绍如何生成 Room Token。
+
+**请求示例**
+
+你可以使用以下 Node.js 脚本发送请求：
+
+:::info[信息]
+使用 Node.js 发送 HTTP 请求前安装 `request` 模块。你可以运行 `npm install request` 安装。
+:::
+
+```javascript
+var request = require("request");
+var options = {
+  method: "POST",
+  // 将 <房间的 UUID> 替换成你的房间 UUID
+  url: "https://api.netless.link/v5/tokens/rooms/<房间的 UUID>",
+  headers: {
+    "token": "你的 SDK Token",
+    "Content-Type": "application/json",
+    "region": "cn-hz",
+  },
+  body: JSON.stringify({ lifespan: 3600000, role: "admin" }),
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+如果方法调用成功，声网互动白板服务端将返回生成的 Room Token。
+
+**响应示例**
+
+```json
+"NETLESSROOM_YWs9XXXXXXXXXXXZWNhNjk" // Room Token
+```
+
+### 3. 创建 WhiteWebSdk 实例
+
+填写项目的 `appIdentifier` 和房间所属数据中心。多窗口使用 `useMobXState=true`：
+
+```typescript
+import { WhiteWebSdk, ApplianceNames, type InvisiblePluginClass, type Room } from 'white-web-sdk';
+
+const whiteWebSdk = new WhiteWebSdk({
+  appIdentifier: 'APP_IDENTIFIER',
+  region: 'cn-hz',
+  useMobXState: true
+});
+```
+
+### 4. 加入房间
+
+准备入房函数，传入步骤 1、2 获取的房间 UUID、Room Token，以及本用户唯一的 `uid`。`region` 必须与创建房间时一致。
+
+`useMultiViews=true` 启用多 View；窗口管理器和教具插件需在入房前通过 `invisiblePlugins` 注册，实际列表在步骤 7 传入。`disableMagixEventDispatchLimit=true` 用于多窗口的事件分发。
+
+```typescript
+async function joinWhiteboard(
+  invisiblePlugins: InvisiblePluginClass<string, any, any>[]
+): Promise<Room> {
+  return await whiteWebSdk.joinRoom({
+    uuid: 'ROOM_UUID',
+    roomToken: 'ROOM_TOKEN',
+    uid: 'CLIENT_UID',
+    region: 'cn-hz',
+    isWritable: true,
+    useMultiViews: true,
+    disableMagixEventDispatchLimit: true,
+    invisiblePlugins
+  });
+}
+```
+
+### 5. 接入多窗口
+
+`WindowManager` 管理主白板与课件窗口。入房成功后调用 `WindowManager.mount`，将界面挂载到页面容器，并引入窗口样式。本示例由 Window Manager 绑定视图，无需再调用 `room.bindHtmlElement`。
+
+```typescript
+import { WindowManager } from '@netless/window-manager';
+import '@netless/window-manager/dist/style.css';
+
+async function mountWindows(room: Room, supportAppliancePlugin = false) {
+  const container = document.getElementById('whiteboard');
+  if (!container) throw new Error('找不到白板容器');
+  return await WindowManager.mount({
+    room,
+    container,
+    cursor: true,
+    supportAppliancePlugin
+  });
+}
+```
+
+同时接入步骤 7 的新教具时，传入 `supportAppliancePlugin=true`。窗口配置和页面控制见[多窗口与课件控制](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-page-control)。
+
+### 6. 接入动态 PPT
+
+安装的 `@netless/app-slide` 用于展示转换后的动态 PPT。**在入房前**调用 `WindowManager.register` 注册 `Slide`，这样新打开和房间中已存在的课件窗口都能加载 App 实现。
+
+```typescript
+import AppSlide from '@netless/app-slide';
+
+WindowManager.register({
+  kind: 'Slide',
+  src: AppSlide
+});
+
+async function openDynamicPpt(manager: WindowManager) {
+  const appId = await manager.addApp({
+    kind: 'Slide',
+    options: {
+      title: '教学课件.pptx',
+      scenePath: '/slides/lesson-1'
+    },
+    attributes: {
+      taskId: 'CONVERSION_TASK_UUID',
+      url: 'https://convertcdn.netless.link/dynamicConvert'
+    }
+  });
+  console.info('动态 PPT 窗口 ID：', appId);
+  return appId;
+}
+```
+
+业务服务端先完成动态 PPT 转换，`taskId` 使用转换任务 UUID，`url` 使用转换结果的资源地址前缀（不是 PPT 源文件地址，末尾不带 `/`）。`scenePath` 必须是以 `/` 开头的场景目录，同一房间内每个 App 使用不同目录。创建 App 需要可写权限；等待窗口挂载后再调用 `addApp`。注册实现是每个客户端的本地准备，`addApp` 创建的是房间内同步的实例，页面刷新或另一用户入房时不要重复插入同一课件。
+
+`addApp` 返回 ID 不表示课件首帧和全部资源已加载。转换、展示与课件操作见[展示文件](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/present-files-wb)。
+
+### 7. 开启新教具
+
+多窗口新教具通过 `ApplianceMultiPlugin` 接入。先准备同一插件版本的两份 Worker：
+
+```shell
+mkdir -p public/appliance-1.1.45
+cp node_modules/@netless/appliance-plugin/dist/fullWorker.js public/appliance-1.1.45/
+cp node_modules/@netless/appliance-plugin/dist/subWorker.js public/appliance-1.1.45/
+```
+
+注册不可见插件并完成入房，挂载支持新教具的窗口管理器，然后调用 `ApplianceMultiPlugin.getInstance` 初始化。以下代码放在步骤 3～6 的代码之后：
+
+```typescript
+import { ApplianceMultiPlugin } from '@netless/appliance-plugin';
+import '@netless/appliance-plugin/dist/style.css';
+
+async function startWhiteboard() {
+  const room = await joinWhiteboard([
+    WindowManager as unknown as InvisiblePluginClass<string, any, any>,
+    ApplianceMultiPlugin
+  ]);
+  const manager = await mountWindows(room, true);
+  const plugin = await ApplianceMultiPlugin.getInstance(manager, {
+    options: {
+      cdn: {
+        fullWorkerUrl: '/appliance-1.1.45/fullWorker.js',
+        subWorkerUrl: '/appliance-1.1.45/subWorker.js'
+      },
+      extras: { useBackgroundThread: true }
+    }
+  });
+
+  // 入房并完成插件初始化后设置初始教具。
+  room.setMemberState({ currentApplianceName: ApplianceNames.pencil });
+  // 在业务“打开课件”按钮中调用 openDynamicPpt(manager)。
+  // 返回实例供业务保存，避免刷新或重新入房时重复 addApp。
+  return { room, manager, plugin };
+}
+
+startWhiteboard().then(({ room, manager, plugin }) => {
+  // 保存实例并绑定业务按钮，例如按钮点击时调用 openDynamicPpt(manager)。
+  console.info('白板与新教具已初始化', room, manager, plugin);
+}).catch(console.error);
+```
+
+Web 通过上述注册、`supportAppliancePlugin` 和实例初始化启用新教具。插件提供 Pencil、Selector、Eraser、Shape、Text 等绘制与编辑能力，业务应用提供教具切换按钮。同一房间各端应一致启用新教具。
+
+Worker 与主线程插件必须来自同一版本，站点需允许 Worker 加载。离开页面时先解除业务事件监听，等待 `plugin.destroy()`，再等待 `manager.destroy()` 和 `room.disconnect()`。教具配置、扩展功能、背景图及事件监听见[教具插件介绍与启用](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/overview)。
+
+## 运行项目
+
+替换 AppIdentifier、房间 UUID、Room Token 和 uid 后，在项目目录启动开发服务器：
+
+```shell
+npx vite --host 127.0.0.1
+```
+
+访问终端显示的本地地址，成功入房后可在主白板书写。需要展示动态 PPT 时，填入已完成转换的任务信息，再通过业务按钮调用 `openDynamicPpt(manager)`。部署时使用 HTTPS。
+
+## 配置远端参数
+
+需要在入房前读取远端参数时，参见[动态配置](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/dynamic-config)。地址在创建 SDK 前设置，本地显式参数优先；读取失败回退本地参数。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+声网 Whiteboard HarmonyOS SDK 提供 ArkUI 白板组件。通过 `WhiteboardOptions` 初始化并加入房间，使用 `WhiteboardController` 操作房间，使用 `WhiteboardCallbacks` 接收事件。
+
+## 前提条件
+
+- DevEco Studio、HarmonyOS Stage 模型工程；本版仓库以 HarmonyOS 5.0.0 / API 12 为兼容基线。
+- 已[开启互动白板服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service)，获取 AppIdentifier。
+- 业务服务端已[创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)，并下发匹配房间和数据中心的 Room Token。
+
+## 获取 SDK
+
+```shell
+ohpm install @shengwang/whiteboard@0.2.11
+```
+
+## 添加权限
+
+在模块 `module.json5` 的 `module` 中添加网络权限：
+
+```json
+{
+  "requestPermissions": [
+    { "name": "ohos.permission.INTERNET" }
+  ]
+}
+```
+
+## 实现步骤
+
+### 1. 创建房间
+
+由业务服务端调用[创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)，保存返回的房间 UUID 和数据中心。
+
+### 2. 生成 Room Token
+
+由业务服务端[生成 Room Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-room-token)，将房间 UUID、Room Token 和用户 uid 下发给客户端。SDK Token 保存在服务端。
+
+### 3. 准备控制器和回调
+
+创建 `WhiteboardController` 和 `WhiteboardCallbacks`，在组件显示前设置回调。`onRoomReady` 表示已成功入房，之后可调用房间与 App 接口。以下完整示例包含这两个对象。
+
+### 4. 创建组件并加入房间
+
+```typescript
+import {
+  Whiteboard, WhiteboardOptions, WhiteboardController,
+  WhiteboardCallbacks, Region, SDKError, WindowParams
+} from '@shengwang/whiteboard';
+
+@Entry
+@Component
+struct WhiteboardPage {
+  private controller: WhiteboardController = new WhiteboardController();
+  private callbacks: WhiteboardCallbacks = new WhiteboardCallbacks();
+  private options: WhiteboardOptions = {
+    appIdentifier: 'APP_IDENTIFIER',
+    roomUuid: 'ROOM_UUID',
+    roomToken: 'ROOM_TOKEN',
+    uid: 'CLIENT_UID',
+    region: Region.CN_HZ,
+    writable: true,
+    useMultiViews: true,
+    windowParams: new WindowParams(),
+    enableAppliancePlugin: true
+  };
+
+  aboutToAppear(): void {
+    this.callbacks.setOnRoomReady(() => {
+      // 已加入房间，可开始使用 controller 操作白板。
+    });
+    this.callbacks.sdkSetupFail = (error: SDKError) => {
+      console.error(error.message);
+      // 业务侧重新创建组件，完成 SDK 初始化和重新入房。
+    };
+    this.callbacks.setOnRoomPhaseChanged((phase) => {
+      console.info(`room phase: ${phase}`);
+    });
+  }
+
+  build() {
+    Column() {
+      Whiteboard({
+        options: this.options,
+        controller: this.controller,
+        callbacks: this.callbacks,
+        webDebug: false
+      }).width('100%').height('100%');
+    }.width('100%').height('100%');
+  }
+}
+```
+
+`appIdentifier`、`roomUuid`、`roomToken`、`uid`、`region` 为必填字段。`region` 必须与创建房间的服务区域一致，`writable` 未传时映射为 true，`useMultiViews/userCursor/enableAppliancePlugin` 未显式提供时允许继承动态配置；未启用动态配置时使用内建默认。
+
+必须把回调对象传给组件的 `callbacks` 参数；本版组件实际使用此参数，不能只填写 `options.callbacks`。组件加载后自动初始化 SDK 并入房，本版没有业务调用的 `joinRoom()` 方法。等待 `onRoomReady` 后再操作房间。
+
+### 5. 接入多窗口
+
+Window Manager 已通过内嵌 Bridge 集成。组件创建前设置 `WhiteboardOptions.useMultiViews=true`，窗口显示参数放在 `windowParams`。步骤 4 的示例已包含这两项：
+
+```typescript
+// 在组件创建前配置，随后通过 Whiteboard 的 options 参数传入。
+this.options.useMultiViews = true;
+const windowParams = new WindowParams();
+windowParams.setContainerSizeRatio(9 / 16);
+this.options.windowParams = windowParams;
+```
+
+组件初始化并入房后自动挂载窗口管理器，业务通过 Controller 调用 App 和页面接口。详细配置见[多窗口与统一课件控制](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-page-control)。
+
+### 6. 接入动态 PPT
+
+内嵌 Bridge 已注册 app-slide。业务服务端完成转换后，在 `onRoomReady` 回调之后，通过 `controller.addApp` 创建动态 PPT 窗口：
+
+```typescript
+import { WindowAppParam } from '@shengwang/whiteboard';
+
+// 放在 WhiteboardPage 的业务方法中；入房成功后由按钮调用。
+async openDynamicPpt(): Promise<void> {
+  const slide: WindowAppParam = {
+    kind: 'Slide',
+    options: {
+      title: '教学课件.pptx',
+      scenePath: '/slides/lesson-1'
+    },
+    attributes: {
+      taskId: 'CONVERSION_TASK_UUID',
+      url: 'https://convertcdn.netless.link/dynamicConvert'
+    }
+  };
+  try {
+    const appId = await this.controller.addApp(slide);
+    console.info(`动态 PPT 窗口 ID：${appId}`);
+  } catch (error) {
+    console.error(`创建课件窗口失败：${error}`);
+  }
+}
+```
+
+`taskId` 使用已完成转换的任务 UUID，`url` 是资源地址前缀（末尾不带 `/`，不是 PPT 源文件地址）。`options.scenePath` 必须是以 `/` 开头的场景目录，同一房间内每个 App 使用不同目录。创建 App 需要可写权限；房间中已存在的课件会同步显示，不要在每次入房时重复插入。返回 ID 不表示课件资源与首帧全部加载完成。课件操作见[新版 API 与多窗口课件控制](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-page-control)。
+
+### 7. 开启新教具
+
+创建组件前同时启用多 View 与教具插件；步骤 4 的示例已开启：
+
+```typescript
+this.options.useMultiViews = true;
+this.options.enableAppliancePlugin = true;
+```
+
+SDK 已内嵌 Appliance Plugin 和 Worker，业务继续使用 Controller 的原生方法设置 Pencil、Selector、Eraser、Shape、Text 等教具，同一房间各端应一致开启。入房前的插件参数放在 `WhiteboardOptions.appliancePluginOptions`，自定义教具、背景图和 Auto Shape 见[教具插件介绍与启用](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/overview)。
+
+上述开关在组件初始化前配置；已入房后修改 options 不用于动态开启插件。
+
+## 离开房间
+
+在组件仍然挂载时调用并等待 `controller.disconnect()`，完成后再隐藏或销毁白板组件。组件消失时会解除 Controller 与 Bridge 的绑定。异步接口应处理 Promise rejection。
+
+## 后续功能
+
+- [白板工具与房间状态](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/use-tools-wb)
+- [多窗口和统一课件控制](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-page-control)
+- [本地日志](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/local-log)
+- [教具插件介绍与启用](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/overview)
+- [背景图加载与恢复](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/background-image-recovery)
+- [客户端 API](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/overview)
+
+0.2.11 没有公开的回放 Player、SyncedStore 或自定义 App 注册入口。业务应依据 Harmony 实际公开接口集成。
+
+## 等待退出完成
+
+调用 `await controller.leaveRoom()` 等待所属房间清理；`disconnect()` 保留为兼容入口并委托相同退出流程。重复退出复用清理结果。退出失败时先处理错误，避免立刻发起下一次入房；组件解绑不能当作房间已经退出的通知。动态配置接入和缺省规则见[动态配置](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/dynamic-config)。
+
+</PlatformStructured>

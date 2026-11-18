@@ -36,6 +36,8 @@ import {
   type AppLocale,
   DEFAULT_LOCALE,
   normalizeLocale,
+  normalizeLocale as normalizeReleaseLocale,
+  DEFAULT_LOCALE as RELEASE_DEFAULT_LOCALE,
 } from '@/lib/i18n/i18n-config';
 import {
   getPlatformLabel,
@@ -47,6 +49,7 @@ import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
 import { createOramaDocsClient } from '@/lib/search/orama-client';
 import { classifySearchIntent } from '@/lib/search/search-intent';
+import { DocsSearchDialog as ChineseDocsSearchDialog } from './DocsSearchDialog.zh-cn';
 import { DocVersionBadge } from './DocVersionBadge';
 
 // Delay before an Algolia query fires after the last keystroke. The skeleton
@@ -73,7 +76,7 @@ type PagesState =
       status: 'error';
     };
 
-export function DocsSearchDialog({
+function GlobalDocsSearchDialog({
   loadPages,
   locale = DEFAULT_LOCALE,
   mode = 'desktop',
@@ -1317,4 +1320,15 @@ function groupProductScopes(scopes: ProductScope[]) {
   }
 
   return groups;
+}
+
+export function DocsSearchDialog(
+  props: Parameters<typeof ChineseDocsSearchDialog>[0],
+) {
+  return normalizeReleaseLocale(props.locale ?? RELEASE_DEFAULT_LOCALE) ===
+    'zh-CN' ? (
+    <ChineseDocsSearchDialog {...props} />
+  ) : (
+    <GlobalDocsSearchDialog {...props} />
+  );
 }

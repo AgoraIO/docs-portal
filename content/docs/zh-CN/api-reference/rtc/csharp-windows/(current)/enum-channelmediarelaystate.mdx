@@ -1,0 +1,42 @@
+---
+title: CHANNEL_MEDIA_RELAY_STATE
+description: 跨频道媒体流转发状态码。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/enum_channelmediarelaystate
+  sourcePath: html-docs/rtc/Csharp/API/enum_channelmediarelaystate.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_channelmediarelaystate__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="relay_state_idle"></a>
+<Parameter name="RELAY_STATE_IDLE">
+
+0: 初始状态。在成功调用 [StopChannelMediaRelay](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#api_irtcengine_stopchannelmediarelay) 停止跨频道媒体流转发后，[OnChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 会回调该状态。
+
+</Parameter>
+<a id="relay_state_connecting"></a>
+<Parameter name="RELAY_STATE_CONNECTING">
+
+1: SDK 尝试跨频道。
+
+</Parameter>
+<a id="relay_state_running"></a>
+<Parameter name="RELAY_STATE_RUNNING">
+
+2: 源频道主播成功加入目标频道。
+
+</Parameter>
+<a id="relay_state_failure"></a>
+<Parameter name="RELAY_STATE_FAILURE">
+
+3: 发生异常，详见 [OnChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/csharp-windows/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 的 code 参数提示的错误信息。
+
+</Parameter>
+</ParameterList>

@@ -1,0 +1,1517 @@
+import { ChevronDownIcon, DownloadIcon } from 'lucide-react';
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react';
+import {
+  AccountGuidance,
+  useResourceAccountGuidance,
+} from '@/components/account-guidance/AccountGuidance';
+import { getSdkAccountGuidanceTarget } from '@/components/account-guidance/resource-registry';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { cn } from '@/lib/cn';
+import { retiredCnProductIds } from '@/lib/retired-cn-docs.mjs';
+import { cnSdkDownloadTargets } from './cn-sdk-download-targets';
+import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
+import { getPlatformIconSrc } from './platform-icon-src';
+import { getRtcDownloadCardEntries } from './rtc-download-card-entries';
+import { getRtcIosPackageSizeContent } from './rtc-ios-package-size-content';
+import { SdkDownloadCard } from './SdkDownloadCard';
+import { buildSdkCapabilityGroups } from './sdk-download-capabilities';
+import {
+  getSdkDownloadProductCatalogId,
+  getSdkDownloadProductGroupRank,
+  getSdkDownloadProductSectionId,
+} from './sdk-download-navigation';
+import { getZhCNSdkDownloadPageHref } from './sdk-download-page-links';
+import {
+  getZhCNSdkDownloadProductCopy,
+  getZhCNSdkDownloadSelectorLabel,
+  ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY,
+} from './sdk-download-products';
+import {
+  type SdkDownloadPlatform,
+  type SdkDownloadProduct,
+  type SdkDownloadVersion,
+  sdkDownloadPlatforms,
+} from './sdk-downloads-data';
+import { zhCNSdkDownloadPlatforms } from './sdk-downloads-data.zh-cn';
+import {
+  deriveInstallCommand,
+  type InstallCommand,
+} from './sdk-install-command';
+
+const platformGroups = [
+  { label: 'Server', platformIds: ['python', 'typescript', 'go'] },
+  {
+    label: 'Mobile',
+    platformIds: [
+      'android',
+      'ios',
+      'harmonyos',
+      'react-native',
+      'flutter',
+      'mini-program',
+    ],
+  },
+  { label: 'Web', platformIds: ['web', 'react-js', 'electron'] },
+  { label: 'Desktop', platformIds: ['windows', 'macos', 'linux'] },
+  { label: 'Game engines', platformIds: ['unity', 'unreal-engine'] },
+] as const;
+
+const PLATFORM_ORDER = platformGroups.flatMap((group) => group.platformIds);
+const ZH_CN_HIDDEN_SDK_PRODUCTS = new Set([
+  'chat',
+  'iot',
+  'mediaplayer-kit',
+  'proctor',
+]);
+const LOCATION_CHANGE_EVENT = 'docs-portal-location-change';
+
+const sdkDownloadDatasets = {
+  en: sdkDownloadPlatforms,
+  'zh-CN': zhCNSdkDownloadPlatforms,
+} as const;
+
+type SdkCatalogLocale = keyof typeof sdkDownloadDatasets;
+
+const catalogCopy = {
+  en: {
+    catalogPath: '/en/api-reference/sdks',
+    copyButton: 'Copy',
+    copiedButton: 'Copied',
+    copyInstallCommand: 'Copy install command',
+    installCommandScrollDescription:
+      'The command extends beyond the current width. Scroll horizontally to view it in full.',
+    installCommandScrollLabel: 'Horizontally scrollable install command',
+    directDownload: 'Direct download',
+    downloadSdk: 'Download SDK',
+    md5: 'MD5',
+    packageManager: 'Package manager ↗',
+    packageName: 'Package',
+    platformTabsLabel: (product: string) => `${product} platform`,
+    releaseDate: 'Release date',
+    showAll: 'Show all SDKs',
+    showing: (label: string) => `Showing SDKs for ${label}`,
+    versionLabel: (product: string) => `${product} version`,
+    states: {
+      latest: 'Latest',
+      legacy: 'Legacy',
+    },
+  },
+  'zh-CN': {
+    catalogPath: '/zh-CN/reference/sdks',
+    copyButton: '复制',
+    copiedButton: '已复制',
+    copyInstallCommand: '复制集成命令',
+    installCommandScrollDescription:
+      '命令超出当前宽度，可横向滚动查看完整内容。',
+    installCommandScrollLabel: '可横向滚动的集成命令',
+    directDownload: '直接下载',
+    downloadSdk: '下载 SDK',
+    md5: 'MD5',
+    packageManager: '包管理器 ↗',
+    packageName: '包名',
+    platformTabsLabel: (product: string, productId: string) =>
+      `${product} ${getZhCNSdkDownloadSelectorLabel(productId)}`,
+    releaseDate: '发布日期',
+    showAll: '查看全部 SDK',
+    showing: (label: string) => `正在显示 ${label}`,
+    versionLabel: (product: string) => `${product} 版本`,
+    states: {
+      latest: '最新',
+      legacy: '旧版',
+    },
+  },
+} as const;
+
+type CatalogCopy = (typeof catalogCopy)[SdkCatalogLocale];
+
+let historyPatchDepth = 0;
+let restoreHistoryMethods: (() => void) | null = null;
+
+const productFilters = {
+  agents: {
+    label: 'Agora Agents SDK',
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY.agents.label,
+    aliases: ['agents', 'agora-agents', 'ai-agents'],
+    productIds: ['agents'],
+  },
+  'client-toolkit': {
+    label: 'Conversational AI Client Toolkit',
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY['client-toolkit'].label,
+    aliases: ['client-toolkit', 'client-component', 'conversational-ai-client'],
+    productIds: ['client-toolkit'],
+  },
+  chat: {
+    label: 'Chat SDK',
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY.chat.label,
+    aliases: ['chat', 'im'],
+    productIds: ['chat'],
+  },
+  'flexible-classroom': {
+    label: 'Flexible Classroom SDK',
+    zhLabel: '灵动课堂 SDK',
+    aliases: ['flexible-classroom', 'classroom'],
+    productIds: ['flexible-classroom'],
+  },
+  'cloud-scene': {
+    label: 'Cloud Scene SDK',
+    zhLabel: '云课堂 SDK',
+    aliases: ['cloud-scene', 'fcruiscene'],
+    productIds: ['cloud-scene'],
+  },
+  proctor: {
+    label: 'Proctor SDK',
+    zhLabel: '灵动监考 SDK',
+    aliases: ['proctor', 'proctor-sdk'],
+    productIds: ['proctor'],
+  },
+  fastboard: {
+    label: 'Interactive Whiteboard Fastboard',
+    zhLabel: 'Fastboard SDK',
+    aliases: ['fastboard'],
+    productIds: ['fastboard'],
+  },
+  iot: {
+    label: 'IoT SDK',
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY.iot.label,
+    aliases: ['iot'],
+    productIds: ['iot'],
+  },
+  'mediaplayer-kit': {
+    label: 'Mediaplayer Kit SDK',
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY['mediaplayer-kit'].label,
+    aliases: ['mediaplayer-kit', 'mediaplayer'],
+    productIds: ['mediaplayer-kit'],
+  },
+  meeting: {
+    label: 'Meeting SDK',
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY.meeting.label,
+    aliases: ['meeting', 'meeting-sdk'],
+    productIds: ['meeting'],
+  },
+  'on-premise-recording': {
+    label: 'Agora On-Premise Recording SDK',
+    zhLabel: '本地服务端录制 SDK',
+    aliases: ['on-premise-recording', 'onpremise-recording', 'recording'],
+    productIds: ['on-premise-recording'],
+  },
+  'server-gateway': {
+    label: 'Server Gateway SDK',
+    zhLabel: 'RTC 服务端 SDK',
+    aliases: ['server-gateway', 'rtc-server-sdk'],
+    productIds: ['server-gateway'],
+  },
+  rtsa: {
+    label: 'RTSA SDK',
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY.rtsa.label,
+    aliases: ['rtsa'],
+    productIds: ['rtsa'],
+  },
+  signaling: {
+    label: 'Signaling SDK',
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY.signaling.label,
+    aliases: ['signaling', 'rtm'],
+    productIds: ['signaling'],
+  },
+  video: {
+    label: 'Video SDK',
+    zhLabel: '视频 SDK',
+    aliases: [
+      'video',
+      'video-calling',
+      'rtc-video',
+      'interactive-live-streaming',
+      'broadcast-streaming',
+      'ils',
+    ],
+    productIds: ['video'],
+  },
+  voice: {
+    label: 'Voice SDK',
+    zhLabel: '语音 SDK',
+    aliases: ['voice', 'voice-calling', 'rtc-voice'],
+    productIds: ['voice'],
+  },
+  whiteboard: {
+    label: 'Whiteboard SDKs',
+    zhLabel: '互动白板 SDK',
+    aliases: ['whiteboard', 'interactive-whiteboard'],
+    productIds: ['fastboard', 'whiteboard'],
+  },
+  'whiteboard-sdk': {
+    label: 'Interactive Whiteboard SDK',
+    zhLabel: '互动白板 SDK',
+    aliases: ['whiteboard-sdk', 'interactive-whiteboard-sdk'],
+    productIds: ['whiteboard'],
+  },
+  rtc: {
+    label: 'RTC SDKs',
+    zhLabel: '实时互动 SDK',
+    aliases: ['rtc', 'real-time-communication', 'real-time-engagement'],
+    productIds: ['voice', 'video'],
+  },
+} as const;
+
+type ProductFilterId = keyof typeof productFilters;
+
+const productAliasToFilter = new Map<string, ProductFilterId>(
+  Object.entries(productFilters).flatMap(([filterId, filter]) =>
+    filter.aliases.map((alias) => [alias, filterId as ProductFilterId]),
+  ),
+);
+function platformRank(platformId: string) {
+  const index = (PLATFORM_ORDER as readonly string[]).indexOf(platformId);
+  if (index !== -1) return index;
+
+  return PLATFORM_ORDER.length;
+}
+
+type ProductPlatformEntry = {
+  iconPlatformId?: string;
+  platformOrder?: number;
+  platformId: string;
+  platformSelectLabel?: string;
+  platformLabel: string;
+  product: SdkDownloadProduct;
+  sourcePlatformId?: string;
+  sourcePlatformIds?: readonly string[];
+  queryAliases?: readonly string[];
+};
+
+type ProductGroup = {
+  info: string;
+  label: string;
+  productId: string;
+  defaultProduct: SdkDownloadProduct;
+  platforms: ProductPlatformEntry[];
+};
+
+function buildProductGroups(
+  platforms: readonly SdkDownloadPlatform[],
+  locale: SdkCatalogLocale,
+): ProductGroup[] {
+  const order: string[] = [];
+  const entriesByProductId = new Map<string, ProductPlatformEntry[]>();
+  const labelsByProductId = new Map<string, string>();
+
+  for (const platform of platforms) {
+    for (const kind of ['core', 'addOns'] as const) {
+      for (const product of platform[kind] ?? []) {
+        const productId = getSdkDownloadProductCatalogId(product);
+        let entries = entriesByProductId.get(productId);
+        if (!entries) {
+          entries = [];
+          entriesByProductId.set(productId, entries);
+          labelsByProductId.set(productId, product.label);
+          order.push(productId);
+        }
+        for (const platformEntry of getProductPlatformEntries(
+          platform,
+          product,
+          productId,
+          locale,
+        )) {
+          const existingEntry = entries.find(
+            (entry) => entry.platformId === platformEntry.platformId,
+          );
+
+          if (existingEntry) {
+            const seenVersionKeys = new Set(
+              existingEntry.product.versions.map((version) =>
+                getVersionKey(platformEntry.platformId, version),
+              ),
+            );
+            const mergedVersions = [...existingEntry.product.versions];
+
+            for (const version of platformEntry.product.versions) {
+              const versionKey = getVersionKey(
+                platformEntry.platformId,
+                version,
+              );
+              if (seenVersionKeys.has(versionKey)) {
+                continue;
+              }
+              mergedVersions.push(version);
+              seenVersionKeys.add(versionKey);
+            }
+
+            existingEntry.product = {
+              ...existingEntry.product,
+              versions: mergedVersions,
+            };
+            continue;
+          }
+
+          entries.push(platformEntry);
+        }
+      }
+    }
+  }
+
+  return order
+    .filter(
+      (productId) =>
+        locale !== 'zh-CN' || !ZH_CN_HIDDEN_SDK_PRODUCTS.has(productId),
+    )
+    .map((productId) => {
+      const platforms = (entriesByProductId.get(productId) ?? [])
+        .slice()
+        .sort(
+          (a, b) =>
+            (a.platformOrder ?? platformRank(a.platformId)) -
+            (b.platformOrder ?? platformRank(b.platformId)),
+        );
+      const localizedCopy =
+        locale === 'zh-CN'
+          ? getZhCNSdkDownloadProductCopy(productId)
+          : undefined;
+
+      return {
+        info: localizedCopy?.info ?? platforms[0].product.info,
+        label:
+          localizedCopy?.label ??
+          labelsByProductId.get(productId) ??
+          platforms[0].product.label,
+        productId,
+        defaultProduct: platforms[0].product,
+        platforms,
+      };
+    })
+    .sort(
+      (a, b) =>
+        getSdkDownloadProductGroupRank(a.productId) -
+        getSdkDownloadProductGroupRank(b.productId),
+    );
+}
+
+function getProductPlatformEntries(
+  platform: SdkDownloadPlatform,
+  product: SdkDownloadProduct,
+  productId: string,
+  locale: SdkCatalogLocale,
+): ProductPlatformEntry[] {
+  const targets =
+    locale === 'zh-CN' ? cnSdkDownloadTargets[productId] : undefined;
+  if (!targets)
+    return [
+      { platformId: platform.id, platformLabel: platform.label, product },
+    ];
+
+  return targets.flatMap((target, index) => {
+    const source = target.sources.find(
+      (entry) => entry.platformId === platform.id,
+    );
+    if (!source) return [];
+    const versions = source.versionPrefix
+      ? product.versions.filter((version) =>
+          version.id.includes(source.versionPrefix ?? ''),
+        )
+      : product.versions;
+    if (!versions.length) return [];
+    return [
+      {
+        platformId: target.id,
+        platformOrder: index,
+        platformLabel:
+          target.sources.length > 1
+            ? target.label
+            : source.versionPrefix
+              ? platform.label
+              : target.label,
+        platformSelectLabel: target.label,
+        iconPlatformId: target.iconPlatformId,
+        sourcePlatformId: platform.id,
+        sourcePlatformIds: target.sources.map((entry) => entry.platformId),
+        queryAliases: target.queryAliases,
+        product: {
+          ...product,
+          versions:
+            target.sources.length > 1
+              ? versions.map((version, index) =>
+                  index === 0
+                    ? { ...version, latestVariant: true as const }
+                    : version,
+                )
+              : versions,
+        },
+      },
+    ];
+  });
+}
+
+export function SdksCatalog({
+  locale = 'en',
+  platform,
+  product,
+  versionIdPrefixes,
+}: {
+  locale?: SdkCatalogLocale;
+  platform?: string;
+  product?: string;
+  versionIdPrefixes?: string[];
+}) {
+  const platforms = sdkDownloadDatasets[locale];
+  const copy = catalogCopy[locale];
+  const productGroups = useMemo(
+    () => buildProductGroups(platforms, locale),
+    [locale, platforms],
+  );
+  const capabilityGroups = useMemo(
+    () => buildSdkCapabilityGroups(platforms),
+    [platforms],
+  );
+  const queryFilters = useSdkCatalogQueryFilters(platforms, {
+    platformId: normalizePlatformFilter(platform, platforms),
+    productId: normalizeProductFilter(product),
+  });
+  const hiddenProductFilter =
+    locale === 'zh-CN' &&
+    queryFilters.productId &&
+    (retiredCnProductIds.includes(queryFilters.productId) ||
+      queryFilters.productId === 'iot');
+  const productFilter =
+    queryFilters.productId && !hiddenProductFilter
+      ? productFilters[queryFilters.productId]
+      : null;
+  const productFilterProductIds = productFilter
+    ? new Set<string>(productFilter.productIds)
+    : null;
+  const visibleProductGroups = productFilter
+    ? productGroups.filter((group) =>
+        productFilterProductIds?.has(group.productId),
+      )
+    : queryFilters.platformId
+      ? productGroups.filter((group) =>
+          group.platforms.some(
+            (entry) =>
+              entry.platformId === queryFilters.platformId ||
+              entry.sourcePlatformId === queryFilters.platformId ||
+              entry.sourcePlatformIds?.includes(
+                queryFilters.platformId ?? '',
+              ) ||
+              entry.queryAliases?.includes(queryFilters.platformId ?? ''),
+          ),
+        )
+      : productGroups;
+  const visibleProductGroupsWithVersionFilter = useMemo(() => {
+    if (!versionIdPrefixes || versionIdPrefixes.length === 0) {
+      return visibleProductGroups;
+    }
+
+    const filteredGroups: ProductGroup[] = [];
+
+    for (const group of visibleProductGroups) {
+      const filteredPlatforms: ProductPlatformEntry[] = [];
+
+      for (const entry of group.platforms) {
+        const filteredVersions = entry.product.versions.filter((version) =>
+          versionIdPrefixes.some((prefix) => version.id.includes(prefix)),
+        );
+
+        if (filteredVersions.length === 0) {
+          continue;
+        }
+
+        filteredPlatforms.push({
+          ...entry,
+          product: {
+            ...entry.product,
+            versions: filteredVersions,
+          },
+        });
+      }
+
+      if (filteredPlatforms.length === 0) {
+        continue;
+      }
+
+      filteredGroups.push({
+        ...group,
+        defaultProduct: filteredPlatforms[0].product,
+        platforms: filteredPlatforms,
+      });
+    }
+
+    return filteredGroups;
+  }, [versionIdPrefixes, visibleProductGroups]);
+  const platformLabel = queryFilters.platformId
+    ? platforms.find((platform) => platform.id === queryFilters.platformId)
+        ?.label
+    : null;
+  const summaryLabel = productFilter
+    ? getProductFilterLabel(productFilter, locale)
+    : platformLabel;
+  const isEmbedded = Boolean(
+    product || platform || (versionIdPrefixes && versionIdPrefixes.length > 0),
+  );
+  const redesigned = locale === 'zh-CN';
+  const usesCapabilityGroups = redesigned && !isEmbedded;
+  const visibleProductGroupsById = new Map(
+    visibleProductGroupsWithVersionFilter.map((group) => [
+      group.productId,
+      group,
+    ]),
+  );
+  const visibleCapabilityGroups = capabilityGroups.flatMap((capability) => {
+    const products = capability.products
+      .map((product) => visibleProductGroupsById.get(product.productId))
+      .filter((group): group is ProductGroup => group !== undefined);
+
+    return products.length ? [{ ...capability, products }] : [];
+  });
+
+  return (
+    <AccountGuidance
+      enabled={
+        locale === 'zh-CN' &&
+        typeof window !== 'undefined' &&
+        ['/zh-CN/reference/sdks', '/reference/sdks'].includes(
+          window.location.pathname.replace(/\/$/, ''),
+        )
+      }
+    >
+      <section
+        className={cn(
+          'not-prose',
+          redesigned && !isEmbedded ? 'm-0' : 'my-8',
+          redesigned ? 'gap-4' : 'gap-3',
+          'flex flex-col',
+        )}
+        data-layout={isEmbedded ? 'embedded' : 'catalog'}
+        data-sdk-download-catalog
+      >
+        {summaryLabel && (!redesigned || !isEmbedded) ? (
+          <div
+            className={cn(
+              'flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3',
+            )}
+          >
+            <p className="m-0 text-sm font-medium text-foreground">
+              {copy.showing(summaryLabel)}
+            </p>
+            <a
+              className="text-sm font-medium text-primary underline-offset-4 hover:underline"
+              href={copy.catalogPath}
+            >
+              {copy.showAll}
+            </a>
+          </div>
+        ) : null}
+        {usesCapabilityGroups
+          ? visibleCapabilityGroups.map((capability) => (
+              <section
+                aria-labelledby={`sdk-capability-${capability.id}`}
+                className="flex flex-col"
+                key={capability.id}
+              >
+                <div className="mb-2 flex items-baseline justify-between gap-3">
+                  <h2
+                    className="m-0 text-lg font-semibold text-foreground"
+                    id={`sdk-capability-${capability.id}`}
+                  >
+                    {capability.label}
+                  </h2>
+                </div>
+                <div className="divide-y divide-border rounded-lg border border-border bg-card">
+                  {capability.products.map((group) => (
+                    <ProductCard
+                      copy={copy}
+                      defaultOpen={Boolean(productFilter)}
+                      group={group}
+                      initialPlatformId={queryFilters.platformId}
+                      key={`${group.productId}-${queryFilters.platformId ?? 'default'}`}
+                      locale={locale}
+                      redesigned={redesigned}
+                    />
+                  ))}
+                </div>
+              </section>
+            ))
+          : visibleProductGroupsWithVersionFilter.map((group) => (
+              <ProductCard
+                copy={copy}
+                group={group}
+                initialPlatformId={queryFilters.platformId}
+                key={`${group.productId}-${queryFilters.platformId ?? 'default'}`}
+                locale={locale}
+                redesigned={redesigned}
+              />
+            ))}
+      </section>
+    </AccountGuidance>
+  );
+}
+
+function ProductCard({
+  copy,
+  defaultOpen,
+  group,
+  initialPlatformId,
+  locale,
+  redesigned,
+}: {
+  copy: CatalogCopy;
+  defaultOpen?: boolean;
+  group: ProductGroup;
+  initialPlatformId: string | null;
+  locale: SdkCatalogLocale;
+  redesigned: boolean;
+}) {
+  const defaultPlatformId = initialPlatformId
+    ? (group.platforms.find(
+        (entry) =>
+          entry.platformId === initialPlatformId ||
+          entry.sourcePlatformId === initialPlatformId ||
+          entry.sourcePlatformIds?.includes(initialPlatformId) ||
+          entry.queryAliases?.includes(initialPlatformId),
+      )?.platformId ?? group.platforms[0].platformId)
+    : group.platforms[0].platformId;
+  const [platformId, setPlatformId] = useState(defaultPlatformId);
+  const [versionIndex, setVersionIndex] = useState('0');
+  const [isOpen, setIsOpen] = useState(defaultOpen ?? false);
+  const startAccountGuidance = useResourceAccountGuidance();
+
+  useEffect(() => {
+    setIsOpen(defaultOpen ?? false);
+  }, [defaultOpen]);
+
+  const activePlatform =
+    group.platforms.find((entry) => entry.platformId === platformId) ??
+    group.platforms[0];
+  const versions = getLatestVersions(activePlatform.product.versions);
+  const activeVersion = versions[Number(versionIndex)] ?? versions[0];
+  const command = activeVersion ? deriveInstallCommand(activeVersion) : null;
+  const downloadPageHref =
+    locale === 'zh-CN'
+      ? getZhCNSdkDownloadPageHref(group.productId, platformId)
+      : null;
+  const hasEmbeddedDownloadCards =
+    Boolean(downloadPageHref) && group.productId !== 'chat';
+  const usesCommandSelector =
+    redesigned &&
+    !hasEmbeddedDownloadCards &&
+    group.platforms.some((entry) =>
+      entry.product.versions.some((version) => deriveInstallCommand(version)),
+    );
+  const onDownload = (version: SdkDownloadVersion) => {
+    if (locale !== 'zh-CN') return;
+    startAccountGuidance({
+      resourceType: 'sdk',
+      resourceId: group.productId,
+      target: getSdkAccountGuidanceTarget(group.productId),
+      label: group.label,
+      platform: activePlatform.platformId,
+      version: version.id,
+    });
+  };
+
+  const titleId = `sdk-${group.defaultProduct.id}-title`;
+  const versionId = `sdk-${group.defaultProduct.id}-version`;
+
+  return (
+    <article
+      aria-label={group.label}
+      className={cn(
+        'scroll-mt-40',
+        !redesigned && 'rounded-xl border border-border p-5',
+      )}
+      data-sdk-download-product-id={group.productId}
+      id={getSdkDownloadProductSectionId(group.productId)}
+    >
+      <details
+        className="group/sdk-download"
+        onToggle={(event) => setIsOpen(event.currentTarget.open)}
+        open={isOpen}
+      >
+        <summary className="flex min-h-16 cursor-pointer list-none items-center gap-3 px-4 py-3 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 [&::-webkit-details-marker]:hidden">
+          <ChevronDownIcon
+            aria-hidden="true"
+            className="size-4 shrink-0 -rotate-90 text-muted-foreground transition-transform group-open/sdk-download:rotate-0 motion-reduce:transition-none"
+          />
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground">
+            <SolutionCardIcon
+              kind={productIconKind(group.productId, group.label)}
+            />
+          </span>
+          <span className="min-w-0">
+            <span className="block text-sm font-semibold text-foreground">
+              {group.label}
+            </span>
+            <span className="block truncate text-xs text-muted-foreground">
+              {group.info}
+            </span>
+          </span>
+          {downloadPageHref && group.productId !== 'chat' ? (
+            <a
+              className="ml-auto shrink-0 text-xs font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              href={downloadPageHref}
+              onClick={(event) => event.stopPropagation()}
+            >
+              更多 ↗
+            </a>
+          ) : null}
+        </summary>
+        <div className="border-border border-t px-4 py-4 sm:pl-16">
+          <div className="flex items-end justify-between gap-3">
+            {usesCommandSelector ? (
+              <div className="flex min-w-0 flex-col items-start gap-1.5">
+                <span
+                  className="text-sm font-medium text-muted-foreground"
+                  id={`${titleId}-language`}
+                >
+                  {getZhCNSdkDownloadSelectorLabel(group.productId)}
+                </span>
+                <ToggleGroup
+                  aria-labelledby={`${titleId}-language`}
+                  className="rounded-lg bg-muted p-1"
+                  onValueChange={(value) => {
+                    if (!value) return;
+                    setPlatformId(value);
+                    setVersionIndex('0');
+                  }}
+                  spacing={1}
+                  type="single"
+                  value={platformId}
+                >
+                  {group.platforms.map((entry) => (
+                    <ToggleGroupItem
+                      className="h-11 min-w-11 rounded-md px-2 font-normal data-[state=on]:bg-background data-[state=on]:font-medium data-[state=on]:shadow-xs sm:h-9 sm:min-w-18 sm:px-3"
+                      key={entry.platformId}
+                      value={entry.platformId}
+                    >
+                      {entry.platformSelectLabel ?? entry.platformLabel}
+                    </ToggleGroupItem>
+                  ))}
+                </ToggleGroup>
+              </div>
+            ) : redesigned ? (
+              <div className="flex w-full min-w-0 flex-col gap-1.5 sm:w-60">
+                <span
+                  className="text-xs font-medium text-muted-foreground"
+                  id={`${titleId}-platform-label`}
+                >
+                  {getZhCNSdkDownloadSelectorLabel(group.productId)}
+                </span>
+                <Select
+                  onValueChange={(value) => {
+                    setPlatformId(value);
+                    setVersionIndex('0');
+                  }}
+                  value={platformId}
+                >
+                  <SelectTrigger
+                    aria-label={copy.platformTabsLabel(
+                      group.label,
+                      group.productId,
+                    )}
+                    id={`${titleId}-platform`}
+                    value={platformId}
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {group.platforms.map((entry) => (
+                        <SelectItem
+                          data-value={entry.platformId}
+                          key={entry.platformId}
+                          value={entry.platformId}
+                        >
+                          {entry.platformSelectLabel ?? entry.platformLabel}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+            ) : (
+              <label
+                className="grid min-w-0 flex-1 gap-1.5 text-sm font-medium text-foreground"
+                htmlFor={`${titleId}-platform`}
+              >
+                {copy.platformTabsLabel(group.label, group.productId)}
+                <select
+                  className="min-h-11 w-full rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+                  id={`${titleId}-platform`}
+                  onChange={(event) => {
+                    setPlatformId(event.target.value);
+                    setVersionIndex('0');
+                  }}
+                  value={platformId}
+                >
+                  {group.platforms.map((entry) => (
+                    <option key={entry.platformId} value={entry.platformId}>
+                      {entry.platformSelectLabel ?? entry.platformLabel}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+            {!redesigned ? (
+              <span className="shrink-0 pb-2 text-[0.66rem] font-semibold tracking-[0.05em] text-muted-foreground uppercase">
+                {command ? command.tool : ' '}
+              </span>
+            ) : null}
+          </div>
+
+          {redesigned && hasEmbeddedDownloadCards ? (
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
+              {getDownloadCardEntries(group, activePlatform).map((entry) => (
+                <SdkDownloadCard
+                  iconSrc={getPlatformIconSrc(entry.iconPlatformId)}
+                  key={getVersionKey(activePlatform.platformId, entry.version)}
+                  onDownload={() => onDownload(entry.version)}
+                  packageNameLabel={
+                    locale === 'zh-CN' &&
+                    ['video', 'voice'].includes(group.productId) &&
+                    ['ios', 'macos'].includes(activePlatform.platformId)
+                      ? '模块名'
+                      : undefined
+                  }
+                  packageSizeContent={
+                    locale === 'zh-CN' &&
+                    activePlatform.platformId === 'ios' &&
+                    (group.productId === 'video' || group.productId === 'voice')
+                      ? getRtcIosPackageSizeContent(
+                          group.productId,
+                          entry.version,
+                        )
+                      : undefined
+                  }
+                  title={entry.title}
+                  version={entry.version}
+                  versionSuffix={entry.versionSuffix}
+                />
+              ))}
+            </div>
+          ) : (
+            <>
+              {!redesigned ? (
+                <div className="mt-4 flex items-center justify-between gap-3">
+                  <span className="sr-only">
+                    {copy.versionLabel(group.label)}
+                  </span>
+                  {versions.length > 1 ? (
+                    <span className="relative ml-auto shrink-0">
+                      <label className="sr-only" htmlFor={versionId}>
+                        {copy.versionLabel(group.label)}
+                      </label>
+                      <select
+                        className="min-h-11 appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+                        id={versionId}
+                        onChange={(event) =>
+                          setVersionIndex(event.target.value)
+                        }
+                        value={versionIndex}
+                      >
+                        {versions.map((version, index) => (
+                          <option
+                            key={getVersionKey(
+                              activePlatform.platformId,
+                              version,
+                            )}
+                            value={String(index)}
+                          >
+                            {getVersionMeta(version, locale).optionLabel}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDownIcon
+                        aria-hidden="true"
+                        className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
+                      />
+                    </span>
+                  ) : activeVersion ? (
+                    <span className="ml-auto shrink-0 text-sm font-medium text-foreground">
+                      {getVersionMeta(activeVersion, locale).optionLabel}
+                    </span>
+                  ) : null}
+                </div>
+              ) : null}
+
+              {activeVersion ? (
+                <InstallArea
+                  command={command}
+                  copy={copy}
+                  redesigned={redesigned}
+                  version={activeVersion}
+                  onDownload={() => onDownload(activeVersion)}
+                />
+              ) : null}
+            </>
+          )}
+        </div>
+      </details>
+    </article>
+  );
+}
+
+function getDownloadCardEntries(
+  group: ProductGroup,
+  platform: ProductPlatformEntry,
+) {
+  if (group.productId === 'video' || group.productId === 'voice') {
+    return getRtcDownloadCardEntries(
+      platform.platformId,
+      platform.platformLabel,
+      group.productId,
+      platform.product,
+    );
+  }
+
+  const versions = getDownloadCardVersions(platform);
+
+  return versions.map((version) => {
+    return {
+      iconPlatformId: platform.iconPlatformId ?? platform.platformId,
+      title:
+        group.productId === 'signaling' && platform.platformId === 'cpp'
+          ? `${version.id.includes('linux') ? 'Linux' : 'Windows'} C++ 实时消息 SDK`
+          : getDownloadCardTitle(group, platform, version),
+      version,
+      versionSuffix: undefined,
+    };
+  });
+}
+
+function getDownloadCardVersions(platform: ProductPlatformEntry) {
+  return getLatestVersions(platform.product.versions);
+}
+
+function getDownloadCardTitle(
+  group: ProductGroup,
+  platform: ProductPlatformEntry,
+  version: SdkDownloadVersion,
+) {
+  if (group.productId === 'video' || group.productId === 'voice') {
+    if (/\bFull\b/i.test(version.label)) {
+      return `${platform.platformLabel} Full`;
+    }
+    if (/\bLite\b/i.test(version.label)) {
+      return `${platform.platformLabel} Lite`;
+    }
+    return `${platform.platformLabel} ${group.productId === 'video' ? '视频' : '音频'} SDK`;
+  }
+
+  const variant = version.label
+    .replace(/^(?:版本|Version)\s+[^\s（(]+/i, '')
+    .replace(/[（(]\s*(?:最新|Latest)\s*[）)]/gi, '')
+    .trim();
+  const detail =
+    group.productId === 'signaling' && variant === 'C++' ? '' : variant;
+  return `${platform.platformLabel} ${group.label}${detail ? ` ${detail}` : ''}`;
+}
+
+function useSdkCatalogQueryFilters(
+  platforms: readonly SdkDownloadPlatform[],
+  defaults: {
+    platformId: string | null;
+    productId: ProductFilterId | null;
+  },
+) {
+  const { platformId, productId } = defaults;
+  const search = useSyncExternalStore(
+    subscribeToLocationSearch,
+    getLocationSearch,
+    getServerLocationSearch,
+  );
+
+  return useMemo(
+    () => readQueryFilters(search, platforms, { platformId, productId }),
+    [search, platforms, platformId, productId],
+  );
+}
+
+function subscribeToLocationSearch(onChange: () => void) {
+  if (typeof window === 'undefined') {
+    return () => {};
+  }
+
+  const restoreHistoryPatch = patchHistoryForLocationChanges();
+  window.addEventListener('popstate', onChange);
+  window.addEventListener(LOCATION_CHANGE_EVENT, onChange);
+
+  return () => {
+    window.removeEventListener('popstate', onChange);
+    window.removeEventListener(LOCATION_CHANGE_EVENT, onChange);
+    restoreHistoryPatch();
+  };
+}
+
+function patchHistoryForLocationChanges() {
+  if (typeof window === 'undefined') {
+    return () => {};
+  }
+
+  historyPatchDepth += 1;
+
+  if (!restoreHistoryMethods) {
+    const originalPushState = window.history.pushState;
+    const originalReplaceState = window.history.replaceState;
+
+    window.history.pushState = function pushState(
+      this: History,
+      data: unknown,
+      unused: string,
+      url?: string | URL | null,
+    ) {
+      const result = originalPushState.call(this, data, unused, url);
+      window.dispatchEvent(new Event(LOCATION_CHANGE_EVENT));
+      return result;
+    } as History['pushState'];
+
+    window.history.replaceState = function replaceState(
+      this: History,
+      data: unknown,
+      unused: string,
+      url?: string | URL | null,
+    ) {
+      const result = originalReplaceState.call(this, data, unused, url);
+      window.dispatchEvent(new Event(LOCATION_CHANGE_EVENT));
+      return result;
+    } as History['replaceState'];
+
+    restoreHistoryMethods = () => {
+      window.history.pushState = originalPushState;
+      window.history.replaceState = originalReplaceState;
+    };
+  }
+
+  return () => {
+    historyPatchDepth -= 1;
+
+    if (historyPatchDepth === 0 && restoreHistoryMethods) {
+      restoreHistoryMethods();
+      restoreHistoryMethods = null;
+    }
+  };
+}
+
+function getLocationSearch() {
+  return typeof window === 'undefined' ? '' : window.location.search;
+}
+
+function getServerLocationSearch() {
+  return '';
+}
+
+function readQueryFilters(
+  search: string,
+  platforms: readonly SdkDownloadPlatform[],
+  defaults: {
+    platformId: string | null;
+    productId: ProductFilterId | null;
+  } = { platformId: null, productId: null },
+) {
+  const params = new URLSearchParams(search);
+  const product = params.get('product')?.trim().toLowerCase() ?? '';
+  const platform = params.get('platform')?.trim().toLowerCase() ?? '';
+  const productId = product
+    ? (productAliasToFilter.get(product) ?? null)
+    : defaults.productId;
+  const platformIds = new Set([
+    ...platforms.map((entry) => entry.id),
+    ...Object.values(cnSdkDownloadTargets)
+      .flat()
+      .map((target) => target.id),
+  ]);
+  const platformId = platform
+    ? platformIds.has(platform)
+      ? platform
+      : null
+    : defaults.platformId && platformIds.has(defaults.platformId)
+      ? defaults.platformId
+      : null;
+
+  return { platformId, productId };
+}
+
+function normalizeProductFilter(product: string | undefined) {
+  const normalized = product?.trim().toLowerCase();
+  return normalized ? (productAliasToFilter.get(normalized) ?? null) : null;
+}
+
+function normalizePlatformFilter(
+  platform: string | undefined,
+  platforms: readonly SdkDownloadPlatform[],
+) {
+  const normalized = platform?.trim().toLowerCase();
+  if (!normalized) {
+    return null;
+  }
+
+  return new Set([
+    ...platforms.map((entry) => entry.id),
+    ...Object.values(cnSdkDownloadTargets)
+      .flat()
+      .map((target) => target.id),
+  ]).has(normalized)
+    ? normalized
+    : null;
+}
+
+function getVersionKey(platformId: string, version: SdkDownloadVersion) {
+  return [
+    platformId,
+    version.id,
+    version.label,
+    version.downloadLink ?? '',
+    version.packageManager ?? '',
+  ].join('|');
+}
+
+function getLatestVersions(versions: readonly SdkDownloadVersion[]) {
+  const [latestVersion, ...otherVersions] = versions;
+
+  if (!latestVersion) {
+    return [];
+  }
+
+  return [
+    latestVersion,
+    ...otherVersions.filter((version) => version.latestVariant),
+  ];
+}
+
+function isLatestVersion(version: SdkDownloadVersion) {
+  return /\(Latest\)|\bLatest\b|（最新）|\(最新\)/i.test(version.label);
+}
+
+function InstallArea({
+  command,
+  copy,
+  onDownload,
+  redesigned,
+  version,
+}: {
+  command: InstallCommand | null;
+  copy: CatalogCopy;
+  onDownload?: () => void;
+  redesigned: boolean;
+  version: SdkDownloadVersion;
+}) {
+  if (command) {
+    return (
+      <div className={cn('mt-3 flex flex-col gap-2', redesigned && 'flex-1')}>
+        <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-card px-3.5 py-2.5">
+          <ScrollableInstallCommand
+            copy={copy}
+            key={command.command}
+            value={command.command}
+          />
+          <CopyButton copy={copy} value={command.command} />
+        </div>
+        <div
+          className={cn(
+            'flex flex-wrap items-center gap-x-4 text-sm text-muted-foreground',
+            redesigned ? 'gap-y-2' : 'gap-y-1',
+          )}
+        >
+          {version.downloadLink ? (
+            <a
+              className={cn(
+                redesigned
+                  ? 'inline-flex items-center gap-2 font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50'
+                  : 'underline underline-offset-2 hover:text-foreground',
+              )}
+              href={version.downloadLink}
+              onClick={onDownload}
+              rel="noreferrer noopener"
+              target="_blank"
+            >
+              {redesigned ? (
+                <DownloadIcon aria-hidden="true" className="size-4" />
+              ) : null}
+              {redesigned ? copy.downloadSdk : copy.directDownload}
+            </a>
+          ) : null}
+          {!redesigned && version.packageManager ? (
+            <a
+              className={cn(
+                'underline underline-offset-2 hover:text-foreground',
+                redesigned && 'inline-flex items-center',
+              )}
+              href={version.packageManager}
+              rel="noreferrer noopener"
+              target="_blank"
+            >
+              {copy.packageManager}
+            </a>
+          ) : null}
+        </div>
+        {!redesigned ? <VersionMetadata copy={copy} version={version} /> : null}
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-3 flex flex-col gap-2">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+        {version.downloadLink ? (
+          <a
+            className={cn(
+              redesigned
+                ? 'inline-flex items-center gap-2 text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50'
+                : 'inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50',
+            )}
+            href={version.downloadLink}
+            onClick={onDownload}
+            rel="noreferrer noopener"
+            target="_blank"
+          >
+            <DownloadIcon className="size-4" />
+            <span>{copy.downloadSdk}</span>
+          </a>
+        ) : null}
+        {version.packageManager && (!redesigned || !version.downloadLink) ? (
+          <a
+            className={cn(
+              'text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground',
+              redesigned && 'inline-flex min-h-11 items-center',
+            )}
+            href={version.packageManager}
+            rel="noreferrer noopener"
+            target="_blank"
+          >
+            {redesigned ? '获取 SDK' : copy.packageManager}
+          </a>
+        ) : null}
+      </div>
+      {!redesigned ? <VersionMetadata copy={copy} version={version} /> : null}
+    </div>
+  );
+}
+
+function ScrollableInstallCommand({
+  copy,
+  value,
+}: {
+  copy: CatalogCopy;
+  value: string;
+}) {
+  const scrollRef = useRef<HTMLElement>(null);
+  const descriptionId = useId();
+  const [hasOverflow, setHasOverflow] = useState(false);
+  const [isAtEnd, setIsAtEnd] = useState(false);
+
+  const updateOverflowState = useCallback(() => {
+    const element = scrollRef.current;
+    if (!element) {
+      return;
+    }
+
+    const overflow = element.scrollWidth > element.clientWidth + 1;
+    setHasOverflow(overflow);
+    setIsAtEnd(
+      !overflow ||
+        element.scrollLeft + element.clientWidth >= element.scrollWidth - 1,
+    );
+  }, []);
+
+  useEffect(() => {
+    const element = scrollRef.current;
+    if (element) {
+      element.scrollLeft = 0;
+    }
+    updateOverflowState();
+    window.addEventListener('resize', updateOverflowState);
+    const resizeObserver =
+      typeof ResizeObserver === 'undefined'
+        ? null
+        : new ResizeObserver(updateOverflowState);
+    if (element) {
+      resizeObserver?.observe(element);
+    }
+
+    return () => {
+      window.removeEventListener('resize', updateOverflowState);
+      resizeObserver?.disconnect();
+    };
+  }, [updateOverflowState]);
+
+  return (
+    <div
+      className="relative min-w-0 flex-1"
+      data-command-overflow={hasOverflow ? 'true' : 'false'}
+      data-command-scroll-end={isAtEnd ? 'true' : 'false'}
+    >
+      <section
+        aria-describedby={hasOverflow ? descriptionId : undefined}
+        aria-label={copy.installCommandScrollLabel}
+        className="min-w-0 overflow-x-auto overscroll-x-contain rounded-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+        onScroll={updateOverflowState}
+        ref={scrollRef}
+        tabIndex={hasOverflow ? 0 : undefined}
+      >
+        <code className="block w-max whitespace-nowrap font-mono text-[0.82rem] text-foreground">
+          {value}
+        </code>
+      </section>
+      <span
+        aria-hidden="true"
+        className={cn(
+          'pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-r from-transparent to-card transition-opacity',
+          hasOverflow && !isAtEnd ? 'opacity-100' : 'opacity-0',
+        )}
+      />
+      <span className="sr-only" id={descriptionId}>
+        {copy.installCommandScrollDescription}
+      </span>
+    </div>
+  );
+}
+
+function VersionMetadata({
+  copy,
+  version,
+}: {
+  copy: CatalogCopy;
+  version: SdkDownloadVersion;
+}) {
+  const items: Array<{ label: string; value: string }> = [];
+
+  if (version.releaseDate) {
+    items.push({ label: copy.releaseDate, value: version.releaseDate });
+  }
+  if (version.packageName) {
+    items.push({ label: copy.packageName, value: version.packageName });
+  }
+  if (version.md5) {
+    items.push({ label: copy.md5, value: version.md5 });
+  }
+
+  if (items.length === 0) {
+    return null;
+  }
+
+  return (
+    <dl className="grid gap-x-4 gap-y-1 text-xs text-muted-foreground sm:grid-cols-2">
+      {items.map((item) => (
+        <div className="min-w-0" key={item.label}>
+          <dt className="inline font-medium text-foreground">{item.label}</dt>
+          <dd className="ml-1 inline break-all">{item.value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+function CopyButton({ copy, value }: { copy: CatalogCopy; value: string }) {
+  const [copied, setCopied] = useState(false);
+
+  return (
+    <button
+      aria-label={copied ? copy.copiedButton : copy.copyInstallCommand}
+      className="min-h-11 min-w-11 shrink-0 rounded-md border border-border bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+      onClick={async () => {
+        await navigator.clipboard.writeText(value);
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 1500);
+      }}
+      type="button"
+    >
+      {copied ? copy.copiedButton : copy.copyButton}
+    </button>
+  );
+}
+
+// Map an SDK product to the same canonical icon the api-reference overview uses
+// (the SolutionCard registry), so product icons stay consistent across pages.
+function productIconKind(
+  productId: string,
+  productLabel: string,
+): SolutionCardIconKind {
+  const normalized = `${productId} ${productLabel}`.toLowerCase();
+
+  if (normalized.includes('agent')) {
+    return 'ai';
+  }
+  if (normalized.includes('voice')) {
+    return 'voice-calling';
+  }
+  if (normalized.includes('video')) {
+    return 'video-calling';
+  }
+  if (normalized.includes('signaling')) {
+    return 'signaling';
+  }
+  if (normalized.includes('chat')) {
+    return 'chat';
+  }
+  if (
+    normalized.includes('classroom') ||
+    normalized.includes('proctor') ||
+    normalized.includes('cloud scene')
+  ) {
+    return 'classroom';
+  }
+  if (normalized.includes('iot')) {
+    return 'iot';
+  }
+  if (normalized.includes('meeting')) {
+    return 'meeting';
+  }
+  if (normalized.includes('whiteboard') || normalized.includes('fastboard')) {
+    return 'whiteboard';
+  }
+  if (normalized.includes('gateway')) {
+    return 'server-sdk';
+  }
+  if (normalized.includes('recording')) {
+    return 'on-premise-recording';
+  }
+  // Media Player Kit and anything else fall back to the overview's "tools" icon.
+  return 'tools';
+}
+
+function getVersionMeta(version: SdkDownloadVersion, locale: SdkCatalogLocale) {
+  const copy = catalogCopy[locale];
+  const compactLabel = version.label.trim().replace(/\s+/g, ' ');
+  const isLatest = isLatestVersion(version);
+  const isLegacy = /\bLegacy\b|旧版/i.test(compactLabel);
+  const states = [
+    isLatest ? copy.states.latest : null,
+    isLegacy ? copy.states.legacy : null,
+  ].filter((state) => state !== null);
+  const normalizedLabel = compactLabel
+    .replace(/^version\s+/i, 'v')
+    .replace(/^版本\s+/i, 'v')
+    .replace(/\s*\(Latest\)/gi, '')
+    .replace(/\s*[（(]最新[）)]/g, '')
+    .trim();
+  const displayLabel =
+    locale === 'zh-CN'
+      ? normalizedLabel
+          .replace(/\bFull\b/gi, '完整版')
+          .replace(/\bLite\b/gi, '轻量版')
+          .replace(/\bfor\s+(?=C\+\+|Java|Go|Python)/gi, '')
+      : normalizedLabel;
+
+  return {
+    optionLabel: states.length
+      ? `${displayLabel} - ${states.join(', ')}`
+      : displayLabel,
+  };
+}
+
+function getProductFilterLabel(
+  filter: (typeof productFilters)[ProductFilterId],
+  locale: SdkCatalogLocale,
+) {
+  return locale === 'zh-CN' ? filter.zhLabel : filter.label;
+}

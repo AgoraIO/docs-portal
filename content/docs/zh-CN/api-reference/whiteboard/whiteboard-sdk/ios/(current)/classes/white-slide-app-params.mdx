@@ -1,0 +1,279 @@
+---
+title: WhiteSlideAppParams Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteSlideAppParams
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteSlideAppParams.html
+  generator: appledoc
+  warnings: []
+---
+
+Whiteboard iOS SDK 2.16.147 公开接口。
+
+@interface WhiteSlideAppParams: WhiteObject
+
+## 成员
+
+- [showRenderError](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params#//api/name/showRenderError)
+- [debug](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params#//api/name/debug)
+- [enableGlobalClick](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params#//api/name/enableGlobalClick)
+- [minFPS](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params#//api/name/minFPS)
+- [maxFPS](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params#//api/name/maxFPS)
+- [resolution](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params#//api/name/resolution)
+- [maxResolutionLevel](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params#//api/name/maxResolutionLevel)
+- [forceCanvas](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params#//api/name/forceCanvas)
+- [bgColor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params#//api/name/bgColor)
+- [invisibleBehavior](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params#//api/name/invisibleBehavior)
+- [resourceMaxRetries](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params#//api/name/resourceMaxRetries)
+- [enableScale](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params#//api/name/enableScale)
+- [syncEventQueuePolicy](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params#//api/name/syncEventQueuePolicy)
+- [navigationButtonMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params#//api/name/navigationButtonMode)
+
+<a id="//api/name/showRenderError"></a>
+
+
+<a id="tasks"></a>
+
+### `showRenderError`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL showRenderError;
+
+</ApiSignature>
+
+```text
+是否显示 Slide 中的错误提示
+
+ - `YES`：显示。
+ - `NO`：不显示 (默认)。
+```
+
+Declared in SDK/WhiteSlideAppParams.h
+
+<a id="//api/name/debug"></a>
+
+### `debug`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL debug;
+
+</ApiSignature>
+
+```text
+是否开启 Debug 模式 (默认 NO)。
+```
+
+Declared in SDK/WhiteSlideAppParams.h
+
+<a id="//api/name/enableGlobalClick"></a>
+
+### `enableGlobalClick`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL enableGlobalClick;
+
+</ApiSignature>
+
+```text
+是否可以通过点击 ppt 画面执行下一步功能 (默认 YES)。
+```
+
+Declared in SDK/WhiteSlideAppParams.h
+
+<a id="//api/name/minFPS"></a>
+
+### `minFPS`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSNumber *minFPS;
+
+</ApiSignature>
+
+```text
+设置最小 fps, 应用会尽量保证实际 fps 高于此值, 此值越小, cpu 开销越小。未设置时由内嵌 Bridge 根据 WebView UA 决定。
+```
+
+Declared in SDK/WhiteSlideAppParams.h
+
+<a id="//api/name/maxFPS"></a>
+
+### `maxFPS`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSNumber *maxFPS;
+
+</ApiSignature>
+
+```text
+设置最大 fps, 应用会保证实际 fps 低于此值, 此值越小, cpu 开销越小。未设置时由内嵌 Bridge 根据 WebView UA 决定。
+```
+
+Declared in SDK/WhiteSlideAppParams.h
+
+<a id="//api/name/resolution"></a>
+
+### `resolution`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSNumber *resolution;
+
+</ApiSignature>
+
+```text
+渲染分辨倍率, 原始 ppt 有自己的像素尺寸，当在 2k 或者 4k 屏幕下，如果按原始 ppt 分辨率显示，画面会比较模糊。可以调整此值，使画面更清晰，同时性能开销也变高。
+ 未设置时由内嵌 Bridge 根据 WebView UA 决定。
+```
+
+Declared in SDK/WhiteSlideAppParams.h
+
+<a id="//api/name/maxResolutionLevel"></a>
+
+### `maxResolutionLevel`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSNumber *maxResolutionLevel;
+
+</ApiSignature>
+
+```text
+Used to set the maximum display resolution. This value not only affects the canvas rendering resolution, but also affects the texture quality.
+ On low-end devices, reducing this value can greatly improve memory usage and image black screen phenomenon.
+
+ [0] 640 * 360
+
+ [1] 960 * 540;
+
+ [2] Normal 1280 * 720; --- default setting for mobile devices.
+
+ [3] HD 1920 * 1080;
+
+ [4] 3K 3200 × 1800, greater than 4 is calculated as 4; --- default setting for PC devices.
+
+ If unset, the embedded Bridge chooses a value based on the WebView user agent.
+```
+
+Declared in SDK/WhiteSlideAppParams.h
+
+<a id="//api/name/forceCanvas"></a>
+
+### `forceCanvas`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL forceCanvas;
+
+</ApiSignature>
+
+```text
+Whether to force the use of 2D rendering, forcing the use of 2D rendering will lose some 3D, filters, and effects. (默认 NO)。
+```
+
+Declared in SDK/WhiteSlideAppParams.h
+
+<a id="//api/name/bgColor"></a>
+
+### `bgColor`
+
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) NSString *bgColor;
+
+</ApiSignature>
+
+```text
+background color for slide animations. ex. "#ff0000" (默认 nil）。
+```
+
+Declared in SDK/WhiteSlideAppParams.h
+
+<a id="//api/name/invisibleBehavior"></a>
+
+### `invisibleBehavior`
+
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) PPTInvisibleBehaviorKey invisibleBehavior;
+
+</ApiSignature>
+
+```text
+Specify the behavior after hiding the slide; Freeze will destroy the slide and replace it with a snapshot, while Pause simply pauses the slide @default: 'frozen'
+```
+
+Declared in SDK/WhiteSlideAppParams.h
+
+<a id="//api/name/resourceMaxRetries"></a>
+
+### `resourceMaxRetries`
+
+<ApiSignature>
+
+@property (nonatomic, strong) NSNumber *resourceMaxRetries;
+
+</ApiSignature>
+
+```text
+设置 Slide 资源加载最大重试次数 (默认 3)。
+```
+
+Declared in SDK/WhiteSlideAppParams.h
+
+<a id="//api/name/enableScale"></a>
+
+### `enableScale`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL enableScale;
+
+</ApiSignature>
+
+```text
+是否允许缩放 Slide 内容 (默认 NO)。
+```
+
+Declared in SDK/WhiteSlideAppParams.h
+
+<a id="//api/name/syncEventQueuePolicy"></a>
+
+### `syncEventQueuePolicy`
+
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) WhiteSlideSyncEventQueuePolicy syncEventQueuePolicy;
+
+</ApiSignature>
+
+fifo（默认）或 latest-pending-render；后者仅合并待执行的渲染页，不中断正在执行的任务。
+
+```text
+Slide 同步事件队列策略。`fifo` 按顺序处理全部事件；`latest-pending-render` 允许交互模式跳过积压的中间页面渲染。未设置时由 Slide 使用 `fifo`。
+```
+
+Declared in SDK/WhiteSlideAppParams.h
+
+<a id="//api/name/navigationButtonMode"></a>
+
+### `navigationButtonMode`
+
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) WhiteSlideNavigationButtonMode navigationButtonMode;
+
+</ApiSignature>
+
+page（默认）按页，step 按动画步骤；控制 Slide 底部按钮。
+
+```text
+Slide 底部前后导航按钮的行为。未设置时由 Slide 使用按页切换。
+```
+
+Declared in SDK/WhiteSlideAppParams.h

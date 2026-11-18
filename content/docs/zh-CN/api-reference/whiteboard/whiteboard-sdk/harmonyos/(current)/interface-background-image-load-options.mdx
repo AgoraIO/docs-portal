@@ -1,0 +1,66 @@
+---
+title: BackgroundImageLoadOptions interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_background_image_load_options
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_background_image_load_options.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+WhiteboardOptions.backgroundImageLoadOptions 的加载重试和超时配置。
+
+可从 @shengwang/whiteboard 直接导入 BackgroundImageLoadOptions。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface BackgroundImageLoadOptions
+```
+
+| [maxRetries](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-background-image-load-options#add13438cf76753815480b3c747bf1d45) | `maxRetries?: number` |
+| --- | --- |
+| [timeoutMs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-background-image-load-options#a6a65e183f864ad6582555a4ce790face) | `timeoutMs?: number` |
+| [retryIntervalMs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-background-image-load-options#a63578ce1f40db667ba209d2a9e443cdd) | `retryIntervalMs?: number` |
+
+## 变量说明
+
+<a id="add13438cf76753815480b3c747bf1d45"></a>
+
+### maxRetries
+
+```text
+maxRetries?: number
+```
+
+背景图片重试次数：-1 表示无限重试，或整数 0~10；默认 3。
+
+<a id="a6a65e183f864ad6582555a4ce790face"></a>
+
+### timeoutMs
+
+```text
+timeoutMs?: number
+```
+
+背景图片单次加载超时，1000~120000 毫秒；默认 15000。
+
+<a id="a63578ce1f40db667ba209d2a9e443cdd"></a>
+
+### retryIntervalMs
+
+```text
+retryIntervalMs?: number
+```
+
+背景图片重试间隔，0~30000 毫秒；默认 1000。

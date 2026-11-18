@@ -1,0 +1,66 @@
+---
+title: VIDEO_CODEC_TYPE
+description: 视频编解码器类型。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/enum_videocodectype
+  sourcePath: html-docs/rtc/Cpp/API/enum_videocodectype.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_videocodectype__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="video_codec_none"></a>
+<Parameter name="VIDEO_CODEC_NONE">
+
+（0）：（默认）未指定的编解码器格式。SDK 会根据当前视频流的分辨率和设备性能自动匹配合适的编解码器格式。
+
+</Parameter>
+<a id="video_codec_vp8"></a>
+<Parameter name="VIDEO_CODEC_VP8">
+
+（1）：标准 VP8 编解码器。
+
+</Parameter>
+<a id="video_codec_h264"></a>
+<Parameter name="VIDEO_CODEC_H264">
+
+（2）：标准 H.264 编解码器。
+
+</Parameter>
+<a id="video_codec_h265"></a>
+<Parameter name="VIDEO_CODEC_H265">
+
+（3）：标准 H.265 编解码器。
+
+</Parameter>
+<a id="video_codec_generic"></a>
+<Parameter name="VIDEO_CODEC_GENERIC">
+
+（6）：通用类型。用于传输原始视频数据，例如加密的视频帧。SDK 会在回调中返回此类型的视频帧，需由用户自行解码和渲染。
+
+</Parameter>
+<a id="video_codec_generic_h264"></a>
+<Parameter name="VIDEO_CODEC_GENERIC_H264">
+
+（7）：通用 H.264 编解码器类型。该类型已废弃。
+
+</Parameter>
+<a id="video_codec_vp9"></a>
+<Parameter name="VIDEO_CODEC_VP9">
+
+（13）：VP9 编解码器。
+
+</Parameter>
+<a id="video_codec_generic_jpeg"></a>
+<Parameter name="VIDEO_CODEC_GENERIC_JPEG">
+
+（20）：通用 JPEG 编解码器。该类型占用的计算资源最少，适用于灵隼物联网云平台设备。
+
+</Parameter>
+</ParameterList>

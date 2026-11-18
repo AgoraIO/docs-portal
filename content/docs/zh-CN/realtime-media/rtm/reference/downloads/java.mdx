@@ -1,0 +1,45 @@
+## 下载 SDK
+
+<ProductSdkDownloads product="signaling" platform="android" />
+
+## 通过 Maven 集成 SDK
+
+1. 自 v2.3.1 起，通过 Maven 集成 RTM SDK 时，需要添加声网 Maven 仓库。在项目根目录的 `settings.gradle` 文件中，向 `dependencyResolutionManagement.repositories` 添加如下配置，并保留项目已有的仓库：
+
+   ```groovy
+   dependencyResolutionManagement {
+       repositories {
+           maven { url = 'https://download.shengwang.cn/maven/' }
+           google()
+           mavenCentral()
+       }
+   }
+   ```
+
+   如果项目未使用 `dependencyResolutionManagement`，则在项目根目录的 `build.gradle` 文件中，向 `allprojects.repositories` 添加声网 Maven 仓库：
+
+   ```groovy
+   allprojects {
+       repositories {
+           maven { url = 'https://download.shengwang.cn/maven/' }
+           google()
+           mavenCentral()
+       }
+   }
+   ```
+
+2. 在 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件中添加如下代码，将 SDK 集成到你的 Android 项目中：
+
+   ```groovy
+   dependencies {
+       // 将下方版本号替换为需要的 SDK 版本号，如 2.3.1
+       // 对于 2.2.7 及之后版本:
+       implementation 'cn.shengwang.rtm:android-java:2.3.1'
+       // 如需 Lite SDK，将上一行替换为（需确保已通过其他声网 SDK 引入对应的 aosl 依赖）：
+       // implementation 'cn.shengwang.rtm:android-java-lite:2.3.1'
+       // 对于 2.2.6 及之前版本:
+       // implementation 'io.agora:agora-rtm:x.y.z'
+   }
+   ```
+
+完整接入步骤见[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start/android)。

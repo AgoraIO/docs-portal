@@ -1,0 +1,20 @@
+export const ZH_CN_MOVED_SOLUTION_PRODUCT_REDIRECTS: Record<string, string> = {
+  'solutions/ppt-transcoding/billing':
+    '/zh-CN/realtime-media/ppt-transcoding/reference/billing',
+  'solutions/ppt-transcoding/convert-ppt':
+    '/zh-CN/realtime-media/ppt-transcoding/reference/convert-ppt',
+  'solutions/ppt-transcoding/get-started/enable-service':
+    '/zh-CN/realtime-media/ppt-transcoding/build/setup-and-access/enable-service',
+  'solutions/ppt-transcoding/product-overview':
+    '/zh-CN/realtime-media/ppt-transcoding',
+  'solutions/ppt-transcoding/response-code':
+    '/zh-CN/realtime-media/ppt-transcoding/reference/response-code',
+  'solutions/ppt-transcoding/slide-api':
+    '/zh-CN/realtime-media/ppt-transcoding/reference/slide-api',
+  'solutions/status-page/overview/product-overview':
+    '/zh-CN/realtime-media/status-page',
+  'solutions/status-page/overview/release-notes':
+    '/zh-CN/realtime-media/status-page/reference/release-notes',
+  'solutions/status-page/user-guide':
+    '/zh-CN/realtime-media/status-page/build/implement-core-features/user-guide',
+};

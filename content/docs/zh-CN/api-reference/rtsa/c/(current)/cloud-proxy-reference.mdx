@@ -1,0 +1,43 @@
+---
+title: 云代理条件编译声明
+description: RTSA C v1.10.1 冻结头文件中受 CONFIG_RTC_PROXY 保护的枚举和函数声明。
+_migration:
+  type: generated-html
+  status: migrated
+  sourcePath: html-docs/rtsa/c/agora__rtc__api_8h_source.html
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtsa/c/agora__rtc__api_8h_source.html
+  generator: doxygen
+  warnings:
+    - code: limited-source-declarations
+      severity: info
+      message: 仅承接固定源 0aeb5cfc24cdc522731efd7ee8b741a5e986da3c 的云代理条件编译声明，不是完整头文件迁移。
+    - code: unavailable-legacy-source-url
+      severity: warning
+      message: 原站源码链接不可达；本页保留固定源的有限声明与行号锚点，不替代完整 API 合同。
+---
+
+本页摘录 RTSA C v1.10.1 冻结头文件中受 `CONFIG_RTC_PROXY` 保护的云代理声明。请以实际集成 SDK 的头文件和构建条件为准；这些声明不表示所有发行包都启用了该能力。
+
+本页不扩展声明之外的返回值、协议行为或 SDK 包支持范围。使用说明见[应对防火墙限制](/zh-CN/realtime-media/rtsa/build/network-and-region-access/cloud-proxy)。
+
+<h2 id="l00960">cloud_proxy_type_e</h2>
+
+```c
+#ifdef CONFIG_RTC_PROXY
+typedef enum {
+  CLOUD_PROXY_NONE = 0,
+  CLOUD_PROXY_UDP = 1,
+  CLOUD_PROXY_TCP = 3,
+  CLOUD_PROXY_TLS = 4,
+  CLOUD_PROXY_AUTO = 100,
+} cloud_proxy_type_e;
+#endif
+```
+
+<h2 id="l01930">agora_rtc_set_cloud_proxy</h2>
+
+```c
+#ifdef CONFIG_RTC_PROXY
+extern __agora_api__ int agora_rtc_set_cloud_proxy(cloud_proxy_type_e type);
+#endif // End CONFIG_RTC_PROXY
+```

@@ -1,0 +1,1610 @@
+---
+title: "Fastboard Web SDK API 参考"
+---
+本页提供 **Fastboard Web 1.1.10** 的 TypeScript API 参考。依赖 Whiteboard Web 2.16.59、Window Manager 1.0.25 和 Appliance Plugin 1.1.45。
+
+<a id="createfastboard"></a>
+## createFastboard
+
+```typescript
+createFastboard<TEventData extends Record<string, any> = any>(options: FastboardOptions): Promise<FastboardApp<TEventData>>;
+```
+
+创建一个白板应用（`FastboardApp`）实例。
+
+**参数**
+
+- `options`：Object。白板配置选项。详见 [`FastboardOptions`](#fastboardoptions)。
+
+**返回**
+
+方法调用成功时返回 `FastboardApp` 对象。
+
+<a id="createui"></a>
+## createUI
+
+```typescript
+function createUI(app?: FastboardApp | null, div?: Element): UI;
+```
+
+创建 Fastboard 内置的一套 UI 组件。
+
+**参数**
+
+- `app`：Object。`FastboardApp` 实例，为 `createFastboard` 方法的返回值。
+- `div`：HTML Element。容纳白板应用的网页元素。
+
+**返回**
+
+方法调用成功时返回 `UI` 组件。详见 [`UI`](#ui)。
+
+<a id="replayfastboard"></a>
+## replayFastboard
+
+```typescript
+replayFastboard<TEventData extends Record<string, any> = any>(options: FastboardReplayOptions): Promise<FastboardPlayer<TEventData>>;
+```
+
+创建一个回放播放器（`FastboardPlayer`）实例。
+
+**参数**
+
+- `options`：Object。回放配置选项。详见 [`FastboardReplayOptions`](#fastboardreplayoptions)。
+
+**返回**
+
+方法调用成功时返回 `FastboardPlayer` 对象。
+
+<a id="createreplayui"></a>
+## createReplayUI
+
+```typescript
+function createReplayUI(player?: FastboardPlayer | null, div?: Element): ReplayUI;
+```
+
+创建内置回放模式的一套 UI 组件。
+
+**参数**
+
+- `player`：`FastboardPlayer` 实例。
+- `div`：HTML Element。容纳白板应用的网页元素。
+
+**返回**
+
+方法调用成功时返回 `ReplayUI` 组件。详见 [`replayUI`](#replayui)。
+
+<a id="dispatchdocsevent"></a>
+## dispatchDocsEvent
+
+```typescript
+function dispatchDocsEvent(fastboard: FastboardApp | WindowManager, event: DocsEvent, options?: DocsEventOptions): Promise<DispatchDocsEventResult>;
+```
+
+统一控制 MainView、DocsViewer、Slide、Presentation。target 省略时跟随焦点，或指定 mainView/appId；page 从 1 开始，scale=1 为适配尺寸。accepted 表示命令接收，拒绝时检查 reason/message；不保证渲染完成。
+
+<a id="mount"></a>
+## mount
+
+```typescript
+mount(app: FastboardApp, div: HTMLDivElement, options?: MountProps): {
+ update(props?: MountProps | undefined): void;
+ destroy(): void;
+};
+```
+
+:::warning[注意]
+自 v0.3.6 起不推荐使用该方法，请改用 [`createUI`](#createui)。
+:::
+
+挂载白板应用到 HTML 元素上。
+
+**参数**
+
+- `app`：Object。`FastboardApp` 实例，为 `createFastboard` 方法的返回值。
+- `div`：HTML Element。容纳白板应用的网页元素。
+- `options`：（可选）Object。白板用户界面（UI）配置选项。详见 [`MountProps`](#mountprops)。
+
+**返回**
+
+方法调用成功时返回如下函数：
+
+- `update`：更新白板的 UI：
+  - `props`：UI 配置选项。详见 [`MountProps`](#mountprops)。
+- `destroy`：卸载白板应用。
+
+<a id="fastboardapp"></a>
+## FastboardApp 类
+
+`FastboardApp` 类提供管理 `FastboardApp` 对象的方法。
+
+**注意**
+
+该类中的方法必须在成功调用 `createFastboard` 创建 `FastboardApp` 对象后调用。
+
+<a id="canoperate"></a>
+### canOperate
+
+```typescript
+get canOperate(): boolean;
+```
+
+获取房间是否可操作。
+
+返回当前房间可写且连接状态为 connected 时的操作状态。
+
+<a id="undo"></a>
+### undo
+
+```typescript
+undo(): void;
+```
+
+撤销上一步操作。
+
+<a id="redo"></a>
+### redo
+
+```typescript
+redo(): void;
+```
+
+重做，即回退撤销操作。
+
+<a id="movecamera"></a>
+### moveCamera
+
+```typescript
+moveCamera(camera: Partial<Camera> & {
+        animationMode?: AnimationMode | undefined;
+    }): void;
+```
+
+调整视角。
+
+**参数**
+
+- `camera`：Object。视角的参数配置，详见 [`Camera`](#camera)。
+
+**示例**
+
+移动视角使网页元素的中心与白板中心正好对齐，且缩放比例为 100%：
+
+```typescript
+app.moveCamera({ centerX: 0, centerY: 0, scale: 1 });
+```
+
+<a id="movecameratocontain"></a>
+### moveCameraToContain
+
+```typescript
+moveCameraToContain(rectangle: Rectangle & {
+        animationMode?: AnimationMode;
+    }): void;
+```
+
+调整视角以完整显示指定的矩形区域。
+
+**参数**
+
+- `rect`：视觉矩形的参数设置，详见 [`Rectangle`](#rectangle)。
+
+<a id="setappliance"></a>
+### setAppliance
+
+```typescript
+setAppliance(appliance: ExtendApplianceNames | Appliance, shape?: ShapeType | ExtendShapeType | Shape): void;
+```
+
+设置当前使用的白板工具。
+
+**参数**
+
+- `appliance`：白板工具名称。详见 [`ApplianceNames`](#appliancenames)。
+- `shape`：图形工具。详见 [`ShapeType`](#shapetype)。当 `appliance` 设为 `shape` 时，可使用该参数设置具体的图形形状。
+
+<a id="setstrokewidth"></a>
+### setStrokeWidth
+
+```typescript
+setStrokeWidth(strokeWidth: number): void;
+```
+
+设置线条的宽度。
+
+**参数**
+
+- `strokeWidth`：Number。线条宽度。
+
+<a id="setstrokecolor"></a>
+### setStrokeColor
+
+```typescript
+setStrokeColor(strokeColor: Color): void;
+```
+
+设置线条的颜色。
+
+**参数**
+
+- `strokeColor`：线条颜色，为 RGB 格式，例如 `[0, 0, 255]` 表示蓝色。详见 [`Color`](#color)。
+
+<a id="settextcolor"></a>
+### setTextColor
+
+```typescript
+setTextColor(textColor: Color): void;
+```
+
+设置字体的颜色。
+
+**参数**
+
+- `textColor`：字体颜色，为 RGB 格式，例如 `[0, 0, 255]` 表示蓝色。详见 [`Color`](#color)。
+
+<a id="toggledottedline"></a>
+### toggleDottedLine
+
+```typescript
+toggleDottedLine(force?: boolean): void;
+```
+
+切换铅笔工具的画线样式。
+
+不传入 `force` 直接调用该方法时，铅笔工具将在画实线和画虚线之间切换。例如，如果当前铅笔工具为画实线，调用 `toggleDottedLine()` 将切换铅笔工具为画虚线；当前为画虚线，调用 `toggleDottedLine()` 将切换为画实线。
+
+**参数**
+
+- `force`：Boolean。（可选）切换绘制线条的样式：
+  - `true`：切换为画虚线。
+  - `false`：切换为画实线。
+
+<a id="setpencilerasersize"></a>
+### setPencilEraserSize
+
+```typescript
+setPencilEraserSize(size: number): void;
+```
+
+设置铅笔橡皮工具的尺寸。
+
+**参数**
+
+- `size`：Number。铅笔橡皮的尺寸，支持传入以下值：
+  - `1`：（默认）小号。
+  - `2`：中号。
+  - `3`：大号。
+
+<a id="settextsize"></a>
+### setTextSize
+
+```typescript
+setTextSize(textSize: number): void;
+```
+
+设置字体的大小。
+
+**参数**
+
+- `textSize`：Number。字体大小。
+
+<a id="insertimage"></a>
+### insertImage
+
+```typescript
+insertImage(url: string, crossOrigin?: boolean | string): Promise<void>;
+```
+
+插入图片。
+
+该方法可以将指定的网络图片插入并展示到当前白板页面上，插入的图片默认置于当前视图的中心。
+
+**参数**
+
+- `url`：String。图片的 URL 地址。请确保 App 客户端能够访问该 URL，否则图片无法正常展示。
+- `crossOrigin`: Boolean。是否对插入的图片启用跨域资源共享 (CORS, Cross-Origin Resource Sharing) ：
+  - `true`：（默认）启用 CORS。
+  - `false`：禁用 CORS。
+
+<a id="insertmedia"></a>
+### insertMedia
+
+```typescript
+insertMedia(title: string, src: string): Promise<string | undefined>;
+```
+
+在白板子窗口中插入并播放音视频。
+
+**参数**
+
+- `title`：窗口标题。
+- `src`：音视频文件的 URL 地址。请确保 app 客户端能够访问该 URL，否则无法正常加载音视频文件。
+
+**返回**
+
+方法调用成功时，返回插入音视频的标识符。
+
+<a id="insertdocs1"></a>
+### insertDocs
+
+```typescript
+insertDocs(
+    filename: string,
+    status: ConversionResponse,
+    options?: InsertDocsOptions
+  ): Promise<string | undefined>;
+insertDocs(
+    filename: string,
+    response: ProjectorResponse,
+    options?: InsertDocsOptions
+  ): Promise<string | undefined>;
+insertDocs(params: InsertDocsParams, options?: InsertDocsOptions): Promise<string | undefined>;
+```
+
+支持转换结果和结构化参数重载；staticRenderer=presentation 创建 Presentation，未设置时静态页使用 DocsViewer。返回 App ID 或 undefined。
+
+<a id="insertdocs2"></a>
+### insertDocs：结构化参数
+
+```typescript
+insertDocs(params: InsertDocsParams, options?: InsertDocsOptions): Promise<string | undefined>;
+```
+
+结构化静态页通过 `InsertDocsStatic` 提交，动态转换结果通过 `InsertDocsDynamic` 提交；返回类型为 `Promise<string | undefined>`。
+
+<a id="insertcodeeditor"></a>
+### insertCodeEditor
+
+```typescript
+insertCodeEditor(): Promise<string | undefined>;
+```
+
+:::warning[注意]
+该方法自 v0.3.6 起废弃，请改用 `fastboard.manager.addApp({ kind: 'Monaco' })` 实现。
+:::
+
+插入代码编辑器。
+
+CodeEditor 是基于 [Monaco Editor](https://github.com/microsoft/monaco-editor) 开发的代码编辑器插件。通过调用 `insertCodeEditor` 方法，你可以快速在白板中集成 CodeEditor 插件，并使用代码编辑、自动补全、调试等功能。
+
+**返回**
+
+方法调用成功时，返回插件的标识符。
+
+<a id="insertcountdown"></a>
+### insertCountdown
+
+```typescript
+insertCountdown(): Promise<string | undefined>;
+```
+
+:::warning[注意]
+该方法自 v0.3.6 起废弃，请改用 `fastboard.manager.addApp({ kind: 'Countdown' })` 实现。
+:::
+
+插入计时器。
+
+Countdown 是声网开发的计时器插件。通过调用 `insertCountdown` 方法，你可以快速在白板中集成 Countdown 插件，并使用该插件设定、暂停、重置倒计时。
+
+**返回**
+
+方法调用成功时，返回插件的标识符。
+
+<a id="insertgeogebra"></a>
+### insertGeoGebra
+
+```typescript
+insertGeoGebra(): Promise<string | undefined>;
+```
+
+:::warning[注意]
+该方法自 v0.3.6 起废弃，请改用 `fastboard.manager.addApp({ kind: 'GeoGebra' })` 实现。
+:::
+
+插入 GeoGebra 数学计算器。
+
+GeoGebra 是基于 [GeoGebra](https://www.geogebra.org/) 开发的数学计算器插件。通过调用 `insertGeoGebra` 方法，你可以快速在白板中集成 GeoGebra 插件并使用该插件的功能。
+
+**注意**
+
+目前 GeoGebra 插件仅作为示例插件集成于 Fastboard SDK 中，如需商用，请自行联系 GeoGebra 申请许可。
+
+**返回**
+
+方法调用成功时，返回插件的标识符。
+
+<a id="removepage"></a>
+### removePage
+
+```typescript
+removePage(index?: number): Promise<boolean>;
+```
+
+删除指定白板页。
+
+**参数**
+
+- `index`：Number。需要删除的主白板页索引，从 0 开始；省略时删除当前页。
+
+**返回**
+
+`true`：调用成功。
+
+`false`：调用失败。
+
+<a id="jumppage"></a>
+### jumpPage
+
+```typescript
+jumpPage(index: number): Promise<boolean>;
+```
+
+跳转至指定页码的白板页。
+
+**参数**
+
+- `index`：Number。期望跳转的主白板页索引，范围为 0～n-1。统一页面命令中的 page 则从 1 开始。
+
+<a id="destroy"></a>
+### destroy
+
+```typescript
+destroy(): Promise<void>;
+```
+
+销毁 Fastboard 实例并退出房间。返回 `Promise<void>`，应等待清理完成。
+
+<a id="focusapp"></a>
+### focusApp
+
+```typescript
+focusApp(appId: string): Promise<boolean>;
+```
+
+可等待的布尔值表示共享 focus、本端 Box 焦点和 zIndex 已提交；不表示 App setup 或首帧完成。
+
+<a id="getpagestate"></a>
+### getPageState
+
+```typescript
+getPageState(options?: PageStateOptions): Promise<UnifiedPageState>;
+```
+
+查询统一页面状态，返回 target、可选 appId、1-based page/pageCount、可选相对 scale。状态 target 为 mainView/DocsViewer/Slide/Presentation。
+
+<a id="applianceplugin"></a>
+### appliancePlugin
+
+```typescript
+readonly appliancePlugin?: AppliancePluginInstance;
+```
+
+启用插件后获取插件实例，通过其 addListener/removeListener 订阅插件 PublicListener。完整事件与 Selector 示例见[公共事件监听与元素查询](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/events-and-query)。
+
+<a id="sdk"></a>
+### sdk
+
+```typescript
+readonly sdk: WhiteWebSdk;
+```
+
+当前 WhiteWebSdk 实例。
+
+<a id="room"></a>
+### room
+
+```typescript
+readonly room: Room;
+```
+
+当前实时 Room 实例。
+
+<a id="manager"></a>
+### manager
+
+```typescript
+readonly manager: WindowManager;
+```
+
+当前多窗口 WindowManager 实例。
+
+<a id="hotkeys"></a>
+### hotKeys
+
+```typescript
+readonly hotKeys: Partial<HotKeys>;
+```
+
+当前快捷键配置。
+
+<a id="syncedstore"></a>
+### syncedStore
+
+```typescript
+readonly syncedStore: SyncedStore<TEventData>;
+```
+
+用于自定义业务数据的同步存储实例。
+
+<a id="appinmainviewplugin"></a>
+### appInMainViewPlugin
+
+```typescript
+readonly appInMainViewPlugin?: AppInMainViewInstance | undefined;
+```
+
+启用主视图插件后可用的实例；未启用时为 undefined。
+
+<a id="bindcontainer"></a>
+### bindContainer
+
+```typescript
+bindContainer(container: HTMLElement): void;
+```
+
+绑定渲染容器。由内置 UI 处理时通常无需再次绑定。
+
+<a id="bindcollector"></a>
+### bindCollector
+
+```typescript
+bindCollector(container: HTMLElement): void;
+```
+
+将窗口收集器绑定到指定 HTML 容器。
+
+<a id="writable"></a>
+### writable
+
+```typescript
+readonly writable: Writable<boolean>;
+```
+
+当前房间可写状态。读取 .value；通过 .set(boolean) 提交可写状态修改。
+
+<a id="phase"></a>
+### phase
+
+```typescript
+readonly phase: Readable<"connecting" | "connected" | "reconnecting" | "disconnecting" | "disconnected">;
+```
+
+连接或播放阶段的可订阅状态；通过 .value 读取，subscribe/reaction 监听。
+
+<a id="boxstate"></a>
+### boxState
+
+```typescript
+readonly boxState: Readable<"normal" | "minimized" | "maximized" | undefined>;
+```
+
+窗口状态：normal、minimized、maximized，尚未初始化时可为 undefined。
+
+<a id="focusedapp"></a>
+### focusedApp
+
+```typescript
+readonly focusedApp: Readable<string | undefined>;
+```
+
+当前焦点 App ID，无焦点 App 时为 undefined。
+
+<a id="canredosteps"></a>
+### canRedoSteps
+
+```typescript
+readonly canRedoSteps: Readable<number>;
+```
+
+当前主白板可重做的步数。
+
+<a id="canundosteps"></a>
+### canUndoSteps
+
+```typescript
+readonly canUndoSteps: Readable<number>;
+```
+
+当前主白板可撤销的步数。
+
+<a id="app-camera"></a>
+### camera
+
+```typescript
+readonly camera: Readable<CameraState>;
+```
+
+主白板相机状态。通过 moveCamera 修改，通过此只读状态读取或订阅。
+
+<a id="memberstate"></a>
+### memberState
+
+```typescript
+readonly memberState: Readable<MemberState>;
+```
+
+当前用户教具状态，包含工具与样式；通过 setAppliance 等方法更新。
+
+<a id="sceneindex"></a>
+### sceneIndex
+
+```typescript
+readonly sceneIndex: Writable<number>;
+```
+
+当前主白板页索引，从 0 开始。通过 .set(index) 切页。
+
+<a id="scenelength"></a>
+### sceneLength
+
+```typescript
+readonly sceneLength: Readable<number>;
+```
+
+主白板总页数。
+
+<a id="appsstatus"></a>
+### appsStatus
+
+```typescript
+readonly appsStatus: Readable<AppsStatus>;
+```
+
+按 App kind 索引的下载状态：idle/loading/failed；失败时可含 reason。
+
+<a id="visibleapps"></a>
+### visibleApps
+
+```typescript
+readonly visibleApps: Readable<Set<string>>;
+```
+
+主视图插件当前可见的 App ID 集合。未开启 appInMainViewPlugin 时为空集合。
+
+<a id="cleancurrentscene"></a>
+### cleanCurrentScene
+
+```typescript
+cleanCurrentScene(): void;
+```
+
+清空当前主白板页的笔迹。调用前确认房间已连接且具有写入权限。
+
+<a id="setmemberstate"></a>
+### setMemberState
+
+```typescript
+setMemberState(state: Partial<ExtendMemberState>): void;
+```
+
+提交当前用户的插件扩展教具状态，参数使用 ExtendMemberState；需先启用插件。只传需要修改的字段。
+
+<a id="prevpage"></a>
+### prevPage
+
+```typescript
+prevPage(): Promise<boolean>;
+```
+
+切换到上一张主白板页，返回是否切换成功；已在第一页时不能继续向前。
+
+<a id="nextpage"></a>
+### nextPage
+
+```typescript
+nextPage(): Promise<boolean>;
+```
+
+切换到下一张主白板页，返回是否切换成功；已在最后一页时不能继续向后。
+
+<a id="addpage"></a>
+### addPage
+
+```typescript
+addPage(params?: AddPageParams): Promise<void>;
+```
+
+在主白板新增页面。params 为 AddPageParams：after 指定相对当前页的插入方向，scene 提供新场景内容；等待 Promise 完成。
+
+<a id="app-dispatchdocsevent"></a>
+### dispatchDocsEvent
+
+```typescript
+dispatchDocsEvent(event: DocsEvent, options?: DocsEventOptions): Promise<DispatchDocsEventResult>;
+```
+
+实例方法 app.dispatchDocsEvent(event, options)，与顶层 dispatchDocsEvent(app, event, options) 区分。返回命令接收结果，需检查 accepted；不表示课件渲染完成。page 从 1 开始。
+
+<a id="appsintoolbar"></a>
+## AppsInToolbar 类
+
+AppsInToolbar 类提供管理工具条上插件按钮的方法。
+
+<a id="push"></a>
+### push
+
+```typescript
+push(...data: AppInToolbar[]): void;
+```
+
+在插件中心的末尾添加插件按钮。
+
+该方法支持一次添加多个新的插件按钮，新添加的插件按钮位于插件中心的最后。
+
+**参数**
+
+- `data`：插件按钮。详见 [`AppInToolbar`](#appintoolbar)。
+
+**示例代码**
+
+```typescript
+// 在插件中心添加一个 YouTube 按钮。点击按钮后，在白板应用中插入 Plyr 播放器并播放指定的视频。
+apps.push({
+    icon: "https://api.iconify.design/logos:youtube-icon.svg?color=currentColor",
+    kind: "Plyr",
+    label: "YouTube",
+    onClick(app) {
+        app.manager.addApp({
+            kind: "Plyr",
+            options: { title: "YouTube" },
+            attributes: {
+                src: "https://www.youtube.com/embed/bTqVqk7FSmY",
+                provider: "youtube",
+            },
+        });
+    },
+});
+```
+
+<a id="insert"></a>
+### insert
+
+```typescript
+insert(data: AppInToolbar, index: number): void;
+```
+
+在指定位置添加一个插件按钮。
+
+该方法支持一次添加一个新的插件按钮，并支持指定添加的位置。
+
+**参数**
+
+- `data`：插件按钮。详见 [`AppInToolbar`](#appintoolbar)。
+- `index`：Number。待添加按钮在插件中心的索引号。取值必须大于等于 0。
+
+<a id="delete"></a>
+### delete
+
+```typescript
+delete(filter: (data: AppInToolbar) => boolean): void;
+```
+
+删除指定的插件按钮。
+
+参数
+
+- `filter`：`filter()` 方法，返回所有需要被删除的按钮组件。你需要在该方法中传入一个回调函数，用于筛选出需要删除的插件按钮。
+  - `data`：插件按钮。详见 [`AppInToolbar`](#appintoolbar)。
+
+<a id="clear"></a>
+### clear
+
+```typescript
+clear(): void;
+```
+
+删除所有插件按钮。
+
+该方法可以删除插件中心的所有按钮，但不能删除白板工具条上的插件中心（**apps**）按钮。如果你需要隐藏白板工具条上的插件按钮，可以通过 `mount` 方法的 `options` 参数将 `config.toolbar.apps.enable` 设为 `false`。
+
+<a id="appintoolbar"></a>
+<a id="appintoolbar"></a>
+## 类型定义
+### AppInToolbar
+
+插件按钮。
+
+```typescript
+interface AppInToolbar {
+    kind: string;
+    icon: string;
+    label: string;
+    onClick: (app: FastboardApp) => void | Promise<unknown>;
+}
+```
+
+`AppInToolbar` 包含如下属性：
+
+- `kind`：String。插件按钮的唯一标识符。可以是任意字符串。
+- `icon`：String。按钮图标的 URL 地址。
+- `label`：String。按钮的标题，即显示在按钮下方的文字。建议长度不超过 12 个英文字符，否则文字会显示不全。
+- `onClick`：点击按钮时触发的回调：
+  - app：`FastboardApp` 对象。
+
+<a id="appliance"></a>
+<a id="appliancenames"></a>
+### ApplianceNames
+
+`ApplianceNames` 包含以下枚举值：
+
+```typescript
+selector = "selector"
+```
+
+选择工具。
+
+```typescript
+clicker = "clicker"
+```
+
+点击工具。目前主要用于点击 HTML5 文件上的内容。
+
+```typescript
+laserPointer = "laserPointer"
+```
+
+激光笔。
+
+```typescript
+pencil = "pencil"
+```
+
+铅笔。
+
+```typescript
+rectangle = "rectangle"
+```
+
+矩形工具。
+
+```typescript
+ellipse = "ellipse"
+```
+
+椭圆工具。
+
+```typescript
+shape = "shape"
+```
+
+图形工具。
+
+```typescript
+eraser = "eraser"
+```
+
+橡皮工具。
+
+```typescript
+text = "text"
+```
+
+文字工具。
+
+```typescript
+straight = "straight"
+```
+
+直线工具。
+
+```typescript
+arrow = "arrow"
+```
+
+箭头工具。
+
+```typescript
+hand = "hand"
+```
+
+抓手工具。
+
+<a id="camera"></a>
+<a id="camera"></a>
+### Camera
+
+`Camera` 接口包含以下属性：
+
+- `centerX`：Number。网页元素的中心在白板坐标系（以网页元素的中心为原点的坐标系）中的 X 轴坐标。默认值为 0。
+- `centerY`：Number。网页元素中心在白板坐标系（以网页元素的中心为原点的坐标系）中的 Y 轴坐标。默认值为 0。
+- `scale`：Number。视角的缩放比例，默认值为 1，即缩放比例为 100%。
+
+<a id="color"></a>
+<a id="color"></a>
+### Color
+
+`Color`：Number[]。颜色，格式为 RGB。例如 `[0, 0, 255]` 代表蓝色。
+
+<a id="docseventoptions"></a>
+## DocsEventOptions
+
+```typescript
+interface DocsEventOptions {
+    target?: string;
+    /** @deprecated 使用 target */
+    appId?: string;
+    page?: number;
+    scale?: number;
+}
+```
+
+`target` 可为 mainView 或 appId；`appId` 为旧兼容字段。page 从 1 开始，scale 是相对适配尺寸倍率。
+
+<a id="fastboardoptions"></a>
+## FastboardOptions
+
+```typescript
+interface FastboardOptions {
+    sdkConfig: Omit<WhiteWebSdkConfiguration, "useMobXState"> & {
+        region: NonNullable<WhiteWebSdkConfiguration["region"]>;
+    };
+    joinRoom: Omit<JoinRoomParams, "useMultiViews" | "disableNewPencil" | "disableMagixEventDispatchLimit"> & {
+        callbacks?: Partial<Omit<RoomCallbacks, "onCanRedoStepsUpdate" | "onCanUndoStepsUpdate">>;
+    };
+    managerConfig?: Omit<MountParams, "room">;
+    netlessApps?: NetlessApp[];
+    enableAppliancePlugin?: AppliancePluginOptions;
+    /** Runtime callbacks/logger/cursor adapter; functions must not be placed in options.extras. */
+    appliancePluginAdaptor?: Omit<ApplianceAdaptor, "options">;
+    enableAppInMainViewPlugin?: true | AppInMainViewOptions;
+}
+```
+
+`enableAppliancePlugin` 为带 cdn/extras 的配置对象，运行时回调使用 `appliancePluginAdaptor.callbacks`。配置与启用示例见[教具插件介绍](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview?platform=web)。
+
+<a id="fastboardreplayoptions"></a>
+### FastboardReplayOptions
+
+```typescript
+interface FastboardReplayOptions {
+    sdkConfig: Omit<WhiteWebSdkConfiguration, "useMobXState"> & {
+        region: NonNullable<WhiteWebSdkConfiguration["region"]>;
+    };
+    replayRoom: Omit<ReplayRoomParams, "useMultiViews"> & {
+        callbacks?: Partial<PlayerCallbacks>;
+    };
+    managerConfig?: Omit<MountParams, "room">;
+    netlessApps?: NetlessApp[];
+    enableAppliancePlugin?: AppliancePluginOptions;
+    appliancePluginAdaptor?: Omit<ApplianceAdaptor, "options">;
+    enableAppInMainViewPlugin?: true | AppInMainViewOptions;
+}
+```
+
+`FastboardReplayOptions` 接口包含以下属性：
+
+- `sdkConfig`: （必需）Object。`WhiteWebSdk` 实例的配置，必须传入以下参数：
+  - `appIdentifier`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
+  - `region`：String。数据中心，必须与[创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)时设置的数据中心一致。取值如下：
+    - `cn-hz`：中国杭州，服务区覆盖其他数据中心未覆盖的地区。
+    - `us-sv`：美国硅谷，服务区覆盖北美洲、南美洲。
+    - `sg`：新加坡，服务区覆盖新加坡、东亚、东南亚。
+    - `in-mum`：印度孟买，服务区覆盖印度。
+    - `eu`：欧洲（法兰克福），服务区覆盖欧洲。
+- `replayRoom`：Object。（必需）加入房间的参数设置，必须传入以下参数：
+  - `room`：String。房间的 UUID，即房间的唯一标识符。详见[创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)请求成功后响应包体中 `uuid` 参数的值。
+  - `roomToken`：String 型。房间的 Room Token，用于加入房间时的用户鉴权。可以通过以下方式获取：
+    - 调用[生成 Room Token ](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-room-token)。
+    - 在 app 服务端用代码生成，详见[在 app 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。
+  - `beginTimestamp`：Number。回放开始时间，单位为毫秒。
+  - `duration`：Number。回放持续时间，单位为毫秒。
+- `managerConfig`: （可选）Object。[WindowManager](https://github.com/netless-io/window-manager/blob/master/docs/api.md#mount) 配置选项。
+- `netlessApps`：（可选）Object。官方内置或自定义的 Fastboard 插件，详见[注册和使用 Fastboard 插件](https://github.com/netless-io/fastboard/blob/main/README-zh.md#%E6%B3%A8%E5%86%8C%E4%B8%8E%E4%BD%BF%E7%94%A8-apps)。
+- `enableAppliancePlugin`: （可选）启用 `appliance-plugin` 插件，详见 [`AppliancePluginOptions`](https://github.com/netless-io/fastboard/blob/main/docs/zh/appliance-plugin.md#%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0)。
+- `enableAppInMainViewPlugin`: （可选）启用 [`@netless/app-in-mainview-plugin`](https://www.npmjs.com/package/@netless/app-in-mainview-plugin) 插件，支持在白板主视图管理[小窗应用](/zh-CN/realtime-media/whiteboard/concepts#小窗应用)：
+  - `true`：采用默认配置启用插件。
+  - `AppInMainViewOptions`：采用自定义配置启用插件，详见 [`AppInMainViewOptions`](https://github.com/netless-io/appInMainView/blob/main/README.zh-cn.md#%E5%88%9D%E5%A7%8B%E5%8C%96%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE)。
+
+<a id="fastboardprops"></a>
+<a id="fastboardprops"></a>
+### FastboardProps
+
+```typescript
+interface FastboardProps {
+  app?: FastboardApp | null;
+  theme?: Theme;
+  language?: Language;
+  /**
+   * Note: updating this option does not take effect when the element was mounted.
+   * Make sure to set this option in `UI.mount(div, { containerRef })`.
+   */
+  containerRef?: (container: HTMLDivElement | null) => void;
+  config?: FastboardUIConfig;
+  /** Whether to forcibly display the toolbar */
+  force_show_toolbar?: boolean;
+  /** Whether to force the display of the redo undo button */
+  force_show_redo_undo?: boolean;
+  /** Whether to force the display of the zoom control button */
+  force_show_zoom_control?: boolean;
+  /** Whether to forcibly display the page control button */
+  force_show_page_control?: boolean;
+}
+```
+
+UI 配置选项，包含以下属性：
+
+- `app`：`FastboardApp` 对象。
+- `theme`：主题，支持的取值如下：
+  - `dark`：深色。
+  - `light`：（默认）浅色。
+- `language`：语言，支持的取值如下：
+  - `en`：（默认）英文。
+  - `zh-CN`：中文。
+- `containerRef`：加入白板房间且成功将白板应用挂载到网页元素时触发的回调：
+  - `container`：容纳白板应用的网页元素。
+- `config`：组件配置。详见 [`FastboardUIConfig`](#fastboarduiconfig)。
+
+<a id="uiconfig"></a>
+<a id="fastboarduiconfig"></a>
+### FastboardUIConfig
+
+白板用户界面上的组件配置。
+
+```typescript
+interface FastboardUIConfig {
+    toolbar?: {
+        enable?: boolean;
+    } & ToolbarConfig;
+    redo_undo?: {
+        enable?: boolean;
+    };
+    zoom_control?: {
+        enable?: boolean;
+    };
+    page_control?: {
+        enable?: boolean;
+    };
+}
+```
+
+`FastboardUIConfig` 接口包含以下属性：
+
+- `toolbar`：（可选）工具条：
+  - `enable`：（可选）是否在白板用户界面上展示工具条：
+    - `true`：（默认）展示。
+    - `false`：不展示。
+  - `ToolbarConfig`：工具条配置项。详见 [`ToolbarConfig`](#toolbarconfig)。
+- `redo_undo`：（可选）重做和撤销按钮：
+  - `enable`：（可选）是否在白板用户界面上展示重做和撤销按钮：
+    - `true`：（默认）展示。
+    - `false`：不展示。
+- `zoom_control`：（可选）缩放控制按钮：
+  - `enable`：（可选）是否在白板用户界面上展示缩放控制按钮：
+    - `true`：（默认）展示。
+    - `false`：不展示。
+- `page_control`：（可选）页面控制按钮：
+  - `enable`：（可选）是否在白板用户界面上展示页面控制按钮：
+    - `true`：（默认）展示。
+    - `false`：不展示。
+
+<a id="toolbarconfig"></a>
+### ToolbarConfig
+
+```typescript
+interface ToolbarConfig {
+    /** @default "left" */
+    placement?: "left" | "right";
+    /** @default ["clicker", "selector", "pencil", "text", "shapes", "eraser", "clear"] */
+    items?: ToolbarItem[];
+    /**
+     * Note: updating this option does not take effect when the element was mounted.
+     * Make sure to set this option in `UI.mount(div, { configs: { toolbar: { collapsed: true } } })`.
+     * @default false
+     */
+    collapsed?: boolean;
+    /** Control the last button which opens apps stock on toolbar. */
+    apps?: {
+        enable?: boolean;
+    };
+    /** 颜色 */
+    colors?: Color[];
+}
+```
+
+`ToolbarConfig` 接口包含以下属性：
+
+- `placement`：（可选）String。工具条的位置，支持的取值如下：
+  - `left`：（默认）左侧。
+  - `right`：右侧。
+- `items`：（可选）String[]。工具条上展示的工具按钮，默认展示所有工具，支持的取值如下：
+  - `clicker`：点击工具。
+  - `selector`：选择工具。
+  - `pencil`：铅笔工具。
+  - `text`：文字工具。
+  - `shapes`：图形工具。
+  - `eraser`：橡皮工具。
+  - `clear`：清空工具。
+  - `hand`：抓手工具
+  - `laserPointer`：激光笔工具。
+- `collapsed`：（可选）Boolean。工具条是否折叠：
+  - `true`：折叠。
+  - `false`：（默认）不折叠。
+- `apps`：（可选）Object。插件中心：
+  - `enable`：（可选）是否在工具条上展示插件中心按钮：
+    - `true`：（默认）展示。
+    - `false`：不展示。
+- `colors`：（可选）Color[]。UI 组件的颜色，详见 [`Color`](#color)。
+
+<a id="docdynamic"></a>
+<a id="insertdocsdynamic"></a>
+### InsertDocsDynamic
+
+```typescript
+interface InsertDocsDynamic {
+    readonly fileType: "pptx";
+    /** Unique string for binding whiteboard view to the doc. Must start with `/`. */
+    readonly scenePath: string;
+    /** Conversion task id, see https://developer.netless.link/server-en/home/server-conversion#get-query-task-conversion-progress. */
+    readonly taskId: string;
+    /** Window title. */
+    readonly title?: string;
+    /** Where the slide resource placed. @default `https://convertcdn.netless.link/dynamicConvert` */
+    readonly url?: string;
+    /** @example [{ name: '1' }, { name: '2' }, { name: '3' }] */
+    readonly scenes?: SceneDefinition[];
+}
+```
+
+`InsertDocsDynamic` 接口包含以下属性：
+
+- `fileType`: String。文档类型，取值为 `"pptx"`，表示动态文档。
+- `scenePath`: String。白板场景路径，建议填 `"/pptx/uuid"`，其中 `uuid` 为文档转换任务的 UUID，即[发起文档转换任务](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion) 请求成功时响应包体中 `uuid` 参数的值。
+- `taskId`: String。文档转换任务的 UUID，即[发起文档转换任务](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion) 请求成功时响应包体中 `uuid` 参数的值。
+- `title`: （可选）String。窗口标题
+- `url`: String。转换后文档的存储路径，例如，`"https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/dynamicConvert“`。
+
+<a id="docstatic"></a>
+<a id="insertdocsstatic"></a>
+### InsertDocsStatic
+
+```typescript
+interface InsertDocsStatic {
+    readonly fileType: "pdf";
+    /** Unique string for binding whiteboard view to the doc. Must start with `/`. */
+    readonly scenePath: string;
+    /** @example [{ name: '1', ppt: { src: 'url/to/ppt/1.png' } }] */
+    readonly scenes: SceneDefinition[];
+    /** Window title. */
+    readonly title?: string;
+}
+```
+
+`InsertDocsStatic` 接口包含以下属性：
+
+- `fileType`：String。文档类型，取值为 `"pdf"`，表示静态文档。
+- `scenePath`: String。白板场景路径，建议填 `"/pdf/uuid"`，其中 `uuid` 为文档转换任务的 UUID，即[发起文档转换任务](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion) 请求成功时响应包体中 `uuid` 参数的值。
+- `scenes`: SceneDefinition[]。白板场景内容，即待展示的文档。由多个 object 组成，每个 object 表示一页文件，必须包含如下参数：
+  - `name`：String。场景名字。
+  - `ppt`：PptDescription。PPT 描述，包含以下属性：
+    - `width`：Number。文件的宽度，单位为像素。
+    - `height`：Number。文件的高度，单位为像素。
+    - `src`：String。该页文件的 URL 地址，即[查询文档转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task) 返回的响应包体中 `images` 字段下 `url` 的值。
+- `title`: （可选）String。窗口标题。
+
+<a id="mountprops"></a>
+<a id="mountprops"></a>
+### MountProps
+
+```typescript
+type MountProps = {
+ app?: FastboardApp | null;
+ theme?: Theme;
+ language?: Language;
+ containerRef?: (container: HTMLDivElement | null) => void;
+ config?: FastboardUIConfig;
+}
+```
+
+UI 配置选项，包含以下属性：
+
+- `app`：`FastboardApp` 对象。
+- `theme`：主题，支持的取值如下：
+  - `dark`：深色。
+  - `light`：（默认）浅色。
+- `language`：语言，支持的取值如下：
+  - `en`：（默认）英文。
+  - `zh-CN`：中文。
+- `containerRef`：加入白板房间且成功将白板应用挂载到网页元素时触发的回调：
+  - `container`：容纳白板应用的网页元素。
+- `config`：组件配置。详见 [`FastboardUIConfig`](#uiconfig)。
+
+<a id="rectangle"></a>
+<a id="rectangle"></a>
+### Rectangle
+
+`Rectangle` 接口包含以下属性：
+
+- `originX`：Number。矩形左上角在白板坐标系（以网页元素的中心为原点的坐标系）中的 X 轴坐标。
+- `originY`：Number。矩形左上角在白板坐标系（以网页元素的中心为原点的坐标系）中的 Y 轴坐标。
+- `width`：矩形的宽度（px）。
+- `height`：矩形的高度（px）。
+
+<a id="replayui"></a>
+### ReplayUI
+
+回放模式的一套 UI 组件。
+
+```typescript
+interface ReplayUI {
+    /** render UI to div */
+    mount(div: Element, props?: ReplayFastboardProps): ReplayUI;
+    /** update UI (theme, language, etc.) */
+    update(props?: ReplayFastboardProps): void;
+    /** remove UI */
+    destroy(): void;
+}
+```
+
+`ReplayUI` 组件包含以下函数：
+
+- `mount`: 挂载白板 UI 到 HTML 元素上。
+  - `div`：HTML Element。容纳白板应用的网页元素。
+  - `props`: Object。UI 配置选项，详见 [`FastboardProps`](#fastboardprops)。
+- `update`: 用于 UI 配置变更后，更新 Fastboard UI。
+  - `props`: Object。UI 配置选项，详见 [`FastboardProps`](#fastboardprops)。
+- `destroy`: 移除 UI。
+
+<a id="shape"></a>
+<a id="shapetype"></a>
+### ShapeType
+
+`ShapeType` 包含以下枚举值：
+
+```typescript
+Triangle = "triangle"
+```
+
+三角形。
+
+```typescript
+Rhombus = "rhombus"
+```
+
+菱形。
+
+```typescript
+Pentagram = "pentagram"
+```
+
+五角星。
+
+```typescript
+SpeechBalloon = "speechBalloon"
+```
+
+对话气泡。
+
+<a id="ui"></a>
+### UI
+
+Fastboard 内置的一套 UI 组件。
+
+```typescript
+interface UI {
+    /** render UI to div */
+    mount(div: Element, props?: FastboardProps): UI;
+    /** update UI (theme, language, etc.) */
+    update(props?: FastboardProps): void;
+    /** remove UI */
+    destroy(): void;
+    /** force show toolbar */
+    forceShowToolbar(): void;
+    /** force hide toolbar */
+    forceHideToolbar(): void;
+    /** recover show toolbar */
+    recoverToolbar(): void;
+    /** force show redo undo */
+    forceShowRedoUndo(): void;
+    /** force hide redo undo */
+    forceHideRedoUndo(): void;
+    /** recover show redo undo */
+    recoverRedoUndo(): void;
+    /** force show zoom control */
+    forceShowZoomControl(): void;
+    /** force hide zoom control */
+    forceHideZoomControl(): void;
+    /** recover show zoom control */
+    recoverZoomControl(): void;
+    /** force show page control */
+    forceShowPageControl(): void;
+    /** force hide page control */
+    forceHidePageControl(): void;
+    /** recover show page control */
+    recoverPageControl(): void;
+}
+```
+
+`UI` 组件包含以下函数：
+
+- `mount`: 挂载白板 UI 到 HTML 元素上。
+  - `div`：HTML Element。容纳白板应用的网页元素。
+  - `props`: Object。UI 配置选项，详见 [`FastboardProps`](#fastboardprops)。
+- `update`: 用于 UI 配置变更后，更新 Fastboard UI。
+  - `props`: Object。UI 配置选项，详见 [`FastboardProps`](#fastboardprops)。
+- `destroy`: 移除 UI。
+<a id="insertdocsoptions"></a>
+## InsertDocsOptions
+
+```typescript
+interface InsertDocsOptions {
+    /** Renderer for static documents. Dynamic documents always use Slide. @default "docsViewer" */
+    readonly staticRenderer?: "docsViewer" | "presentation";
+}
+```
+
+`staticRenderer` 默认为 docsViewer；presentation 创建内置 Presentation。
+
+<a id="unifiedpagestate"></a>
+## UnifiedPageState
+
+```typescript
+export type UnifiedPageState = {
+    target: "mainView" | "DocsViewer" | "Slide" | "Presentation";
+    appId?: string;
+    page: number;
+    pageCount: number;
+    /** MainView/Slide/Presentation actual scale relative to fitted size. */
+    scale?: number;
+};
+```
+
+查询结果用于实际页面观察；命令 accepted 不等于渲染完成。
+
+<a id="fastboardplayer"></a>
+## FastboardPlayer 类
+
+```typescript
+// const player = await replayFastboard(options);
+```
+
+通过 replayFastboard 创建。状态与方法均属于回放实例，时间单位为毫秒。
+
+<a id="player-sdk"></a>
+### sdk
+
+```typescript
+readonly sdk: WhiteWebSdk;
+```
+
+当前 WhiteWebSdk 实例。
+
+<a id="player-player"></a>
+### player
+
+```typescript
+readonly player: Player;
+```
+
+底层回放 Player 实例。
+
+<a id="player-manager"></a>
+### manager
+
+```typescript
+readonly manager: WindowManager;
+```
+
+当前多窗口 WindowManager 实例。
+
+<a id="player-syncedstore"></a>
+### syncedStore
+
+```typescript
+readonly syncedStore: SyncedStore<TEventData>;
+```
+
+用于自定义业务数据的同步存储实例。
+
+<a id="player-applianceplugin"></a>
+### appliancePlugin
+
+```typescript
+readonly appliancePlugin?: AppliancePluginInstance | undefined;
+```
+
+启用教具插件后可用的实例；未启用时为 undefined。
+
+<a id="player-appinmainviewplugin"></a>
+### appInMainViewPlugin
+
+```typescript
+readonly appInMainViewPlugin?: AppInMainViewInstance | undefined;
+```
+
+启用主视图插件后可用的实例；未启用时为 undefined。
+
+<a id="player-destroy"></a>
+### destroy
+
+```typescript
+destroy(): Promise<void>;
+```
+
+异步销毁回放并释放资源，等待 Promise 完成。
+
+<a id="player-bindcontainer"></a>
+### bindContainer
+
+```typescript
+bindContainer(container: HTMLElement): void;
+```
+
+绑定渲染容器。由内置 UI 处理时通常无需再次绑定。
+
+<a id="player-bindcollector"></a>
+### bindCollector
+
+```typescript
+bindCollector(container: HTMLElement): void;
+```
+
+将窗口收集器绑定到指定 HTML 容器。
+
+<a id="player-currenttime"></a>
+### currentTime
+
+```typescript
+readonly currentTime: Writable<number>;
+```
+
+当前播放进度，单位毫秒。通过 .set(timestamp) 定位。
+
+<a id="player-phase"></a>
+### phase
+
+```typescript
+readonly phase: Readable<"waitingFirstFrame" | "playing" | "pause" | "stop" | "ended" | "buffering">;
+```
+
+连接或播放阶段的可订阅状态；通过 .value 读取，subscribe/reaction 监听。
+
+<a id="player-canplay"></a>
+### canplay
+
+```typescript
+readonly canplay: Readable<boolean>;
+```
+
+缓冲完成、可开始播放时变为 true。
+
+<a id="player-playbackrate"></a>
+### playbackRate
+
+```typescript
+readonly playbackRate: Writable<number>;
+```
+
+播放速度，默认 1。可通过 .set(value) 修改。
+
+<a id="player-duration"></a>
+### duration
+
+```typescript
+readonly duration: Readable<number>;
+```
+
+回放总时长，单位毫秒。
+
+<a id="player-state"></a>
+### state
+
+```typescript
+readonly state: Readable<PlayerState>;
+```
+
+当前时间点的白板状态，包含成员等信息。
+
+<a id="player-seek"></a>
+### seek
+
+```typescript
+seek(timestamp: number): Promise<PlayerSeekingResult>;
+```
+
+定位到指定毫秒时间点，异步返回 PlayerSeekingResult。
+
+<a id="player-play"></a>
+### play
+
+```typescript
+play(): void;
+```
+
+开始或继续播放。
+
+<a id="player-pause"></a>
+### pause
+
+```typescript
+pause(): void;
+```
+
+暂停播放。
+
+<a id="player-stop"></a>
+### stop
+
+```typescript
+stop(): void;
+```
+
+停止播放。
+
+<a id="player-setplaybackrate"></a>
+### setPlaybackRate
+
+```typescript
+setPlaybackRate(value: number): void;
+```
+
+设置播放倍速，等价于 playbackRate.set(value)。
+
+<a id="readable-writable"></a>
+## Readable 与 Writable
+
+```typescript
+interface Writable<T> extends Readable<T> {}
+```
+
+状态对象通过 .value 读取；使用订阅返回的函数解除业务监听。Writable 继承 Readable 的全部成员。
+
+<a id="store-value"></a>
+### value
+
+```typescript
+readonly value: T;
+```
+
+同步读取当前值。
+
+<a id="store-subscribe"></a>
+### subscribe
+
+```typescript
+subscribe(this: void, run: Subscriber<T>): Unsubscriber;
+```
+
+订阅后立即回调当前值，随后在变化时回调；返回解除订阅函数。
+
+<a id="store-reaction"></a>
+### reaction
+
+```typescript
+reaction(this: void, run: Subscriber<T>): Unsubscriber;
+```
+
+只监听后续变化，不立即回调当前值；返回解除订阅函数。
+
+<a id="store-dispose"></a>
+### dispose
+
+```typescript
+dispose(value?: T): void;
+```
+
+释放该状态的所有订阅，可先提供一个最终值。通常由状态所有者销毁时调用。
+
+<a id="store-set"></a>
+### set
+
+```typescript
+set(this: void, value: T): void;
+```
+
+写入新值。SDK 状态的写入会触发对应白板操作。
+
+<a id="store-update"></a>
+### update
+
+```typescript
+update(this: void, updater: Updater<T>): void;
+```
+
+将当前值传给 updater，并写入它返回的新值。
+
+```typescript
+const unsubscribe = app.phase.subscribe(phase => console.log(phase));
+app.writable.set(true);
+const index = app.sceneIndex.value;
+// 业务组件卸载时释放自己的监听。
+unsubscribe();
+```

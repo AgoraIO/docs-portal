@@ -43,6 +43,34 @@ function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
   return render(<RouterProvider router={router} />);
 }
 
+function SidebarHarness({ tree }: { tree: DocsSidebarNode[] }) {
+  const [activePath, setActivePath] = useState(
+    '/en/realtime-media/video/overview',
+  );
+
+  return (
+    <>
+      <button
+        onClick={() => setActivePath('/en/realtime-media/rtm/build/presence')}
+        type="button"
+      >
+        Go to presence
+      </button>
+      <button
+        onClick={() => setActivePath('/en/realtime-media/rtm/build/channels')}
+        type="button"
+      >
+        Go to channels
+      </button>
+      <DocsSidebarTree
+        activePath={activePath}
+        nodes={tree}
+        onSelectPath={() => {}}
+      />
+    </>
+  );
+}
+
 describe('DocsSidebarTree', () => {
   it('renders section labels without configured sidebar icons and active page links', async () => {
     const tree: DocsSidebarNode[] = [
@@ -348,7 +376,7 @@ describe('DocsSidebarTree', () => {
                       type: 'page',
                       id: url,
                       url,
-                      fromProduct,
+                      search: { from: fromProduct },
                       title: 'Create an agent',
                       method: 'POST',
                     },
@@ -911,37 +939,7 @@ describe('DocsSidebarTree', () => {
         type: 'section',
       },
     ];
-    function SidebarHarness() {
-      const [activePath, setActivePath] = useState(
-        '/en/realtime-media/video/overview',
-      );
 
-      return (
-        <>
-          <button
-            onClick={() =>
-              setActivePath('/en/realtime-media/rtm/build/presence')
-            }
-            type="button"
-          >
-            Go to presence
-          </button>
-          <button
-            onClick={() =>
-              setActivePath('/en/realtime-media/rtm/build/channels')
-            }
-            type="button"
-          >
-            Go to channels
-          </button>
-          <DocsSidebarTree
-            activePath={activePath}
-            nodes={tree}
-            onSelectPath={() => {}}
-          />
-        </>
-      );
-    }
     const rootRoute = createRootRoute({
       component: () => <Outlet />,
     });
@@ -951,7 +949,7 @@ describe('DocsSidebarTree', () => {
       component: () => (
         <AppProviders>
           <SidebarProvider>
-            <SidebarHarness />
+            <SidebarHarness tree={tree} />
           </SidebarProvider>
         </AppProviders>
       ),

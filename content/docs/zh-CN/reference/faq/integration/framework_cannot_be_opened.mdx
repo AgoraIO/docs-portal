@@ -1,0 +1,19 @@
+---
+title: "编译 Xcode 项目时遇到“无法打开 framework” 的弹窗警告怎么办？"
+---
+## 问题描述
+
+在 macOS 11.6 或更高版本系统上，使用 Xcode 集成实时互动 SDK 时，你可能在项目编译运行时遇到弹窗警告：“macOS 无法打开 ‘\{library_name}.framework’，因为无法验证开发者。”
+
+## 问题原因
+
+声网提供的 macOS 平台的实时互动 SDK 的动态库为 XCFramework。因为 macOS 11.6 或更高版本的系统安全限制，当你使用 Xcode 编译含有 XCFramework 的 SDK 的项目时，均会遇到弹窗警告：“macOS 无法打开 ‘\{library_name}.framework’，因为无法验证开发者。”
+
+## 规避方案
+
+1. 在系统终端中执行命令：`sudo spctl --master-disable`，再在 Xcode 中编译项目。
+2. 当出现现弹窗：“macOS 无法验证 ‘\{library_name}’ 的开发者。您确定要打开它吗？” 时，在该弹窗中点击**取消**。
+3. 打开**系统偏好设置 > 安全性与隐私 > 通用**。界面上会显示提示语：“已阻止使用 ‘\{library_name}’，因为来自身份不明的开发者”。请点击界面左下角的锁按钮并输入系统密码，以更改通用设置，再点击界面提示语右侧的**仍要打开**按钮。
+4. 在 Xcode 中，点击 **Product > Clean Build Folder**，再编译项目。
+
+此时，不再出现弹窗警告。

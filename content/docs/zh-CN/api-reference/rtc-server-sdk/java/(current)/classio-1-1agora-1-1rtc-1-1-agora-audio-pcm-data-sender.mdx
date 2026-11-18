@@ -1,0 +1,152 @@
+---
+title: io.agora.rtc.AgoraAudioPcmDataSender类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_audio_pcm_data_sender
+  sourcePath: html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_audio_pcm_data_sender.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/deprecated.html#_deprecated000001 as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_agora_audio_pcm_data_sender_8java.html as local text.
+---
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+AgoraAudioPcmDataSender 类。
+
+在涉及自定义音频源的场景中，你可以使用该类直接将 PCM 的音频数据发送至音频轨道。 如果音频轨道未启用，则发送的音频数据自动被丢弃。
+
+<a id="doc-constructors"></a>
+
+<a id="header-doc-constructors"></a>
+
+## 构造及析构函数说明
+
+<a id="a2f703736e719e05de4af37238b370aea"></a>
+
+### AgoraAudioPcmDataSender()
+
+<ApiSignature>
+
+io.agora.rtc.AgoraAudioPcmDataSender.AgoraAudioPcmDataSender(long *cptr*)
+
+</ApiSignature>
+
+构造函数。
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="af2cfb644e930726e39789190d29347ca"></a>
+
+### destroy()
+
+<ApiSignature>
+
+synchronized void io.agora.rtc.AgoraAudioPcmDataSender.destroy()
+
+</ApiSignature>
+
+销毁 PCM 音频数据发送器。
+
+<a id="acc86f76c61b53307024b3d768bdc8c13"></a>
+
+### send()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraAudioPcmDataSender.send(byte[] *audio_data*, int *capture_timestamp*, int *samples_per_channel*, int *bytes_per_sample*, int *number_of_channels*, int *sample_rate*)
+
+</ApiSignature>
+
+将 PCM 音频数据发送至本地音频轨道。
+
+<a id="弃用"></a>
+
+:::error[弃用]
+请改用 [sendAudioPcmData](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-pcm-data-sender#a1a109d7059fdffdfebfa9dc476957ab4)。
+:::
+
+<ParameterList title="参数">
+<Parameter name="audio_data">
+
+待发送的 PCM 音频数据。
+
+</Parameter>
+<Parameter name="capture_timestamp">
+
+音频帧的采集时间。
+
+</Parameter>
+<Parameter name="samples_per_channel">
+
+每个声道 10 ms 内的采样点数。
+
+</Parameter>
+<Parameter name="bytes_per_sample">
+
+每个采样点的字节数 (byte)。
+
+</Parameter>
+<Parameter name="number_of_channels">
+
+声道数。
+
+</Parameter>
+<Parameter name="sample_rate">
+
+采样率 (Hz)。最小值为 8000。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- 0: 方法调用成功
+- &lt; 0: 方法调用失败
+
+<a id="a1a109d7059fdffdfebfa9dc476957ab4"></a>
+
+### sendAudioPcmData()
+
+<ApiSignature>
+
+int io.agora.rtc.AgoraAudioPcmDataSender.sendAudioPcmData([AudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-frame) *audioFrame*)
+
+</ApiSignature>
+
+发送 PCM 音频数据至音频轨道。
+
+<ParameterList title="参数">
+<Parameter name="audioFrame">
+
+音频数据：[AudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-frame)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+发送音频数据的结果。
+
+---
+
+该类的文档由以下文件生成:
+
+- AgoraAudioPcmDataSender.java

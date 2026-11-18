@@ -1,0 +1,155 @@
+---
+title: SyncedStore Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/SyncedStore
+  sourcePath: html-docs/whiteboard/iOS/Classes/SyncedStore.html
+  generator: appledoc
+  warnings: []
+---
+
+Whiteboard iOS SDK 2.16.147 公开接口。
+
+@interface SyncedStore: NSObject
+
+## 成员
+
+- [delegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/synced-store#//api/name/delegate)
+- [connectSyncedStoreStorage\:defaultValue\:completionHandler:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/synced-store#//api/name/connectSyncedStoreStorage:defaultValue:completionHandler:)
+- [getStorageState\:completionHandler:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/synced-store#//api/name/getStorageState:completionHandler:)
+- [disconnectStorage:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/synced-store#//api/name/disconnectStorage:)
+- [deleteStorage:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/synced-store#//api/name/deleteStorage:)
+- [resetState:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/synced-store#//api/name/resetState:)
+- [setStorageState\:partialState:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/synced-store#//api/name/setStorageState:partialState:)
+
+<a id="//api/name/delegate"></a>
+
+### `delegate`
+
+<ApiSignature>
+
+@property (weak, nonatomic) id&lt;SyncedStoreUpdateCallBackDelegate&gt; delegate;
+
+</ApiSignature>
+
+```text
+数据变更回调
+```
+
+Declared in Displayer/SyncedStore.h
+
+<a id="//api/name/connectSyncedStoreStorage:defaultValue:completionHandler:"></a>
+
+### `– connectSyncedStoreStorage:defaultValue:completionHandler:`
+
+<ApiSignature>
+
+\- (void)connectSyncedStoreStorage:(NSString *)name defaultValue:(NSDictionary *)defaultValue completionHandler:(void (^) (NSDictionary * _Nullable dict, NSError * _Nullable error))completionHandler;
+
+</ApiSignature>
+
+```text
+创建一个 SyncedStore 连接
+该功能用于白板同步多端自定义状态值，并且可回放
+每一个 name 都代表一个独立的 store, 可以创建多个 store
+
+ @param name 房间内唯一标识
+ @param defaultValue 默认值
+ @param completionHandler 回调，连接成功时返回store值，失败返回error
+```
+
+Declared in Displayer/SyncedStore.h
+
+<a id="//api/name/getStorageState:completionHandler:"></a>
+
+### `– getStorageState:completionHandler:`
+
+<ApiSignature>
+
+\- (void)getStorageState:(NSString *)name completionHandler:(void (^) (NSDictionary * _Nullable dict))completionHandler;
+
+</ApiSignature>
+
+```text
+获取指定 Store 的当前状态
+创建连接成功之后才可以调用本方法获取状态
+
+ @param name 房间内唯一标志
+ @param completionHandler 回调，最新状态
+```
+
+Declared in Displayer/SyncedStore.h
+
+<a id="//api/name/disconnectStorage:"></a>
+
+### `– disconnectStorage:`
+
+<ApiSignature>
+
+\- (void)disconnectStorage:(NSString *)name;
+
+</ApiSignature>
+
+```text
+断开指定 Store 的连接，不会删除 Store 的数据
+
+ @param name 房间内唯一标志
+```
+
+Declared in Displayer/SyncedStore.h
+
+<a id="//api/name/deleteStorage:"></a>
+
+### `– deleteStorage:`
+
+<ApiSignature>
+
+\- (void)deleteStorage:(NSString *)name;
+
+</ApiSignature>
+
+```text
+删除指定 Store 的数据并且断开连接
+
+ @param name 房间内唯一标志
+```
+
+Declared in Displayer/SyncedStore.h
+
+<a id="//api/name/resetState:"></a>
+
+### `– resetState:`
+
+<ApiSignature>
+
+\- (void)resetState:(NSString *)name;
+
+</ApiSignature>
+
+```text
+重置指定 Store 的数据到初始化状态
+
+ @param name 房间内唯一标志
+```
+
+Declared in Displayer/SyncedStore.h
+
+<a id="//api/name/setStorageState:partialState:"></a>
+
+### `– setStorageState:partialState:`
+
+<ApiSignature>
+
+\- (void)setStorageState:(NSString *)name partialState:(NSDictionary *)partialState;
+
+</ApiSignature>
+
+```text
+更新指定 Store 的部分数据
+
+ @param name 房间内唯一标志
+ @param partialState 需要更新的数据
+```
+
+Declared in Displayer/SyncedStore.h

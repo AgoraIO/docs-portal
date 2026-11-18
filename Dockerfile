@@ -1,13 +1,14 @@
 # syntax=docker/dockerfile:1
 # check=skip=SecretsUsedInArgOrEnv
 
-FROM node:22-bookworm AS dependencies
+FROM node:26.13.0-bookworm AS dependencies
 
 WORKDIR /app
 
-RUN npm install -g bun@1.3.12
+RUN npm install -g bun@1.4.4
 
 COPY package.json bun.lock ./
+COPY patches ./patches
 RUN bun install --frozen-lockfile --ignore-scripts
 
 FROM dependencies AS builder
@@ -24,6 +25,9 @@ ARG VITE_ALGOLIA_INDEX_NAME=
 ARG VITE_SEARCH_RANKING_V2=
 ARG VITE_POSTHOG_KEY=
 ARG VITE_POSTHOG_HOST=https://us.i.posthog.com
+ARG VITE_DOCS_MEASUREMENT_ENABLED=false
+ARG VITE_DOCS_ENVIRONMENT=production
+ARG VITE_DOCS_APP_RELEASE=unknown
 # The complete docs build needs a container/build agent with at least 4 GiB RAM.
 ARG NODE_MAX_OLD_SPACE_SIZE=4096
 
@@ -35,11 +39,14 @@ ENV VITE_ALGOLIA_INDEX_NAME=${VITE_ALGOLIA_INDEX_NAME}
 ENV VITE_SEARCH_RANKING_V2=${VITE_SEARCH_RANKING_V2}
 ENV VITE_POSTHOG_KEY=${VITE_POSTHOG_KEY}
 ENV VITE_POSTHOG_HOST=${VITE_POSTHOG_HOST}
+ENV VITE_DOCS_MEASUREMENT_ENABLED=${VITE_DOCS_MEASUREMENT_ENABLED}
+ENV VITE_DOCS_ENVIRONMENT=${VITE_DOCS_ENVIRONMENT}
+ENV VITE_DOCS_APP_RELEASE=${VITE_DOCS_APP_RELEASE}
 ENV NODE_OPTIONS=--max-old-space-size=${NODE_MAX_OLD_SPACE_SIZE}
 
 RUN bun run postinstall && bun run build
 
-FROM nginx:1.28-alpine AS runtime
+FROM nginx:1.30.6-alpine AS runtime
 
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist/client /usr/share/nginx/html

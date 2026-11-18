@@ -1,0 +1,73 @@
+---
+title: io.agora.rtc.IVideoEncodedImageReceiver接口 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/interfaceio_1_1agora_1_1rtc_1_1_i_video_encoded_image_receiver
+  sourcePath: >-
+    html-docs/rtc-server-sdk/java/interfaceio_1_1agora_1_1rtc_1_1_i_video_encoded_image_receiver.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_i_video_encoded_image_receiver_8java.html as local text.
+---
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+IVideoEncodedImageReceiver 类。
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="a5cdf9fc01442f7799c9b8034b808438d"></a>
+
+### onEncodedVideoImageReceived()
+
+<ApiSignature>
+
+int io.agora.rtc.IVideoEncodedImageReceiver.onEncodedVideoImageReceived([AgoraVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-image-receiver) *receiver*, ByteBuffer *buffer*, [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encoded-video-frame-info) *info*)
+
+</ApiSignature>
+
+SDK 每次收到已编码视频帧时触发。
+
+<ParameterList title="参数">
+<Parameter name="receiver">
+
+一个 [AgoraVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-image-receiver) 对象。
+
+</Parameter>
+<Parameter name="buffer">
+
+视频帧缓冲区。
+
+</Parameter>
+<Parameter name="info">
+
+已编码视频帧的信息：[EncodedVideoFrameInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encoded-video-frame-info)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+是否接受已编码视频帧。
+
+- 0：接受已编码视频帧。
+- 1：不接受已编码视频帧。
+
+---
+
+该接口的文档由以下文件生成:
+
+- IVideoEncodedImageReceiver.java

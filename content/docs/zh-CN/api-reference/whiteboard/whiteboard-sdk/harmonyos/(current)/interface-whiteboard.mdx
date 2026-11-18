@@ -1,0 +1,77 @@
+---
+title: Whiteboard struct 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_whiteboard
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_whiteboard.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+ArkUI 白板组件；根据 options 初始化并自动入房，接收 controller 和 callbacks。
+
+可从 @shengwang/whiteboard 直接导入 Whiteboard。作为 ArkUI 组件使用。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export struct Whiteboard
+```
+
+| [options](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-whiteboard#aafce9e14558eae46d06137e58d21dde9) | `options: WhiteboardOptions` |
+| --- | --- |
+| [controller](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-whiteboard#a4d9a2ceab6f0f85d330325966daa3c97) | `controller: WhiteboardController` |
+| [callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-whiteboard#a01512732f22475d39c6e50db76d3d181) | `callbacks: WhiteboardCallbacks` |
+| [webDebug](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-whiteboard#a75171b018f37dde70524737687772ddd) | `webDebug: boolean = true` |
+
+## 变量说明
+
+<a id="aafce9e14558eae46d06137e58d21dde9"></a>
+
+### options
+
+```text
+options: WhiteboardOptions
+```
+
+SDK 初始化和入房配置。
+
+<a id="a4d9a2ceab6f0f85d330325966daa3c97"></a>
+
+### controller
+
+```text
+controller: WhiteboardController
+```
+
+业务操作 Controller；等待 onRoomReady 再调用房间方法。
+
+<a id="a01512732f22475d39c6e50db76d3d181"></a>
+
+### callbacks
+
+```text
+callbacks: WhiteboardCallbacks
+```
+
+实际传给组件的回调对象。组件使用此参数，不能只填写 options.callbacks。
+
+<a id="a75171b018f37dde70524737687772ddd"></a>
+
+### webDebug
+
+```text
+webDebug: boolean = true
+```
+
+ArkWeb 调试开关；正式应用应显式设置 false。

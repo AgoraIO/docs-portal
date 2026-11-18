@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { resolveStaticLegacySitemapRedirect } from './static-redirects';
+import { isRetiredCnDocsPath } from '../retired-cn-docs.mjs';
+import { ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS } from '../zh-cn-product-ia-redirects';
+import {
+  resolveStaticLegacySitemapRedirect,
+  ZH_CN_SMALL_BUILD_FLAT_IA_STATIC_REDIRECT_SOURCES,
+} from './static-redirects';
+import staticRedirects from './static-redirects.json';
 
 describe('static legacy sitemap redirects', () => {
   const legacyHelpFaqRedirects = [
@@ -39,6 +45,52 @@ describe('static legacy sitemap redirects', () => {
       redirectUrl:
         '/en/realtime-media/im/build/secure-access-and-authentication/ip-allowlist',
     });
+  });
+
+  it('marks flattened zh-CN Build routes as permanent redirects', () => {
+    expect(
+      resolveStaticLegacySitemapRedirect(
+        '/zh-CN/realtime-media/meeting/build/setup-and-access/enable-service',
+      ),
+    ).toMatchObject({
+      redirectUrl: '/zh-CN/realtime-media/meeting/build/enable-service',
+      statusCode: 301,
+    });
+  });
+
+  it('marks all maintained flattened zh-CN Build routes as permanent redirects', () => {
+    for (const [path, redirectUrl] of Object.entries(
+      ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS,
+    )) {
+      if (isRetiredCnDocsPath(`/zh-CN/${path}`)) {
+        expect(resolveStaticLegacySitemapRedirect(`/zh-CN/${path}`)).toBeNull();
+        continue;
+      }
+      expect(
+        resolveStaticLegacySitemapRedirect(`/zh-CN/${path}`),
+      ).toMatchObject({
+        redirectUrl,
+        statusCode: 301,
+      });
+    }
+  });
+
+  it('uses exactly the application-layer small Build redirect sources for permanent status', () => {
+    const staticPermanentSources = new Set(
+      (staticRedirects as Array<{ p: string }>).flatMap(({ p }) =>
+        resolveStaticLegacySitemapRedirect(p)?.statusCode === 301 ? [p] : [],
+      ),
+    );
+    const applicationSources = new Set(
+      Object.keys(ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS)
+        .filter((path) => !isRetiredCnDocsPath(`/zh-CN/${path}`))
+        .map((path) => `/zh-CN/${path}`),
+    );
+
+    expect(ZH_CN_SMALL_BUILD_FLAT_IA_STATIC_REDIRECT_SOURCES).toEqual(
+      applicationSources,
+    );
+    expect(staticPermanentSources).toEqual(applicationSources);
   });
 
   it('redirects the legacy Cloud Recording getstarted shortcut to the REST quickstart', () => {

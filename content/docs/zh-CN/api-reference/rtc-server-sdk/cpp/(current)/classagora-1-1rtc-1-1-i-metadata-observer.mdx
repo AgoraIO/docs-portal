@@ -1,0 +1,190 @@
+---
+title: agora::rtc::IMetadataObserver类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_metadata_observer
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_metadata_observer.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+视频 [Metadata](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-i-metadata-observer-1-1-metadata) 观测器。通过 [ILocalVideoTrack::registerVideoMetadataObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track#a551cacb9f56b75ffd2b4bdf9db721eb4) 注册。
+
+## 公开类型
+
+- [Metadata](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-i-metadata-observer-1-1-metadata)：发送或接收的视频 Metadata。
+
+## 成员枚举类型说明
+
+<a id="a50ad8779d161456fc709d947b8c7c544"></a>
+
+### METADATA_TYPE
+
+<ApiSignature>
+
+enum [agora::rtc::IMetadataObserver::METADATA_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer#a50ad8779d161456fc709d947b8c7c544)
+
+</ApiSignature>
+
+[Metadata](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-i-metadata-observer-1-1-metadata) 类型，目前仅支持视频 Metadata。
+
+<DocsTable>
+<thead>
+<tr>
+<th colSpan={2} scope="colgroup">枚举值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<a id="a50ad8779d161456fc709d947b8c7c544aa1aeb6420f7529b37bbbaf289b05dcae"></a>UNKNOWN_METADATA
+
+</td>
+<td>-1：未知类型。</td>
+</tr>
+<tr>
+<td>
+
+<a id="a50ad8779d161456fc709d947b8c7c544ac515f52b415263973aa59effc2fab944"></a>VIDEO_METADATA
+
+</td>
+<td>0：视频 Metadata。</td>
+</tr>
+</tbody>
+</DocsTable>
+
+<a id="aa4297438e6cdde7a9faec3e137dedfe0"></a>
+
+### MAX_METADATA_SIZE_TYPE
+
+<ApiSignature>
+
+enum [agora::rtc::IMetadataObserver::MAX_METADATA_SIZE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-metadata-observer#aa4297438e6cdde7a9faec3e137dedfe0)
+
+</ApiSignature>
+
+[Metadata](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-i-metadata-observer-1-1-metadata) 大小常量，单位为字节。
+
+<DocsTable>
+<thead>
+<tr>
+<th colSpan={2} scope="colgroup">枚举值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+<a id="aa4297438e6cdde7a9faec3e137dedfe0abd7f755653ad898aa853f1dad96dbef8"></a>INVALID_METADATA_SIZE_IN_BYTE
+
+</td>
+<td>-1：无效大小。</td>
+</tr>
+<tr>
+<td>
+
+<a id="aa4297438e6cdde7a9faec3e137dedfe0a546cf62753609b11e9f1eab6eb8bd38b"></a>DEFAULT_METADATA_SIZE_IN_BYTE
+
+</td>
+<td>512：默认大小。</td>
+</tr>
+<tr>
+<td>
+
+<a id="aa4297438e6cdde7a9faec3e137dedfe0a2a5af169256d130dbb98da4a28419ab0"></a>MAX_METADATA_SIZE_IN_BYTE
+
+</td>
+<td>1024：最大大小。</td>
+</tr>
+</tbody>
+</DocsTable>
+
+## 构造及析构函数说明
+
+<a id="a6add1d5f50480ac88f216627c791269c"></a>
+
+### ~IMetadataObserver()
+
+<ApiSignature labels="inline virtual">
+
+virtual agora::rtc::IMetadataObserver::~IMetadataObserver()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="aa1d7b729f373d985a5bbdd855c4e85d5"></a>
+
+### getMaxMetadataSize()
+
+<ApiSignature labels="inline virtual">
+
+virtual int agora::rtc::IMetadataObserver::getMaxMetadataSize()
+
+</ApiSignature>
+
+SDK 请求 [Metadata](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-i-metadata-observer-1-1-metadata) 最大缓冲区大小时触发。
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+最大大小，单位为字节。默认值为 `512`，最大为 `1024`。
+
+<a id="afc9b177f803cc0f0bb18b36c51be84f0"></a>
+
+### onReadyToSendMetadata()
+
+<ApiSignature labels="pure virtual">
+
+virtual bool agora::rtc::IMetadataObserver::onReadyToSendMetadata([Metadata](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-i-metadata-observer-1-1-metadata) & *metadata*, [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac6699b3c40e047af097d877115dde751) *source_type*)
+
+</ApiSignature>
+
+SDK 准备发送 [Metadata](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-i-metadata-observer-1-1-metadata) 时触发。将数据写入 SDK 提供的缓冲区，并设置大小。
+
+:::info[注解]
+[Metadata](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-i-metadata-observer-1-1-metadata) 大小不得超过 getMaxMetadataSize 返回的值。
+:::
+
+<ParameterList title="参数">
+<Parameter name="metadata" direction="[in,out]">
+
+待发送的 Metadata。
+
+</Parameter>
+<Parameter name="source_type">
+
+视频源类型：VIDEO_SOURCE_TYPE。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+`true`：发送 Metadata；`false`：不发送 Metadata。
+
+<a id="a890f087351519bdeba5f17e824158d03"></a>
+
+### onMetadataReceived()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IMetadataObserver::onMetadataReceived(const [Metadata](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-i-metadata-observer-1-1-metadata) & *metadata*)
+
+</ApiSignature>
+
+收到远端用户的视频 [Metadata](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-i-metadata-observer-1-1-metadata) 时触发。
+
+<ParameterList title="参数">
+<Parameter name="metadata">
+
+收到的 Metadata。
+
+</Parameter>
+</ParameterList>

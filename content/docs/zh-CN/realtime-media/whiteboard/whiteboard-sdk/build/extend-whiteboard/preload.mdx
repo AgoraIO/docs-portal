@@ -1,0 +1,368 @@
+---
+title: 预加载
+---
+
+<PlatformStructured platform="android">
+
+适用于 **Whiteboard Android SDK 2.16.134**，使用已公开的 `WhiteboardView`、`WhiteSdk` 和 `joinRoom` 接口。
+
+预加载将白板内嵌页面加载、Bridge 握手和 SDK 初始化提前到候课阶段。用户进入课堂时，复用同一组 View 与 SDK，再提交房间参数。候课阶段不调用 `joinRoom`，不创建房间会话。
+
+## 接入流程
+
+1. 在主线程创建并持有 `WhiteboardView`，放入有实际尺寸的候课容器。
+2. 确定 SDK 配置并创建 `WhiteSdk`，由 SDK 启动初始化。多窗口、教具插件和动态配置地址应在此时配置。
+3. 用户进入课堂时显示原 View，在同一 SDK 上调用 `joinRoom`。
+4. 退出时等待 `leaveRoom` 成功，再决定保留实例或销毁 View。
+
+本例在同一个 Activity 内切换候课和课堂容器。只创建空 WebView、进入课堂时重新创建 View 或重新加载页面，都不能保留这组实例的准备结果。
+
+## 候课阶段：提前创建
+
+以下字段和方法位于业务 Activity 中；容器由业务布局提供。示例使用 `com.herewhite.sdk` 下的 SDK 类型、`com.herewhite.sdk.domain` 下的 `Promise`、`RoomParams`、`Region`、`WindowParams` 和 `SDKError`。
+
+```java
+private WhiteboardView whiteboardView;
+private WhiteSdk whiteSdk;
+private Room room;
+private boolean joining;
+
+private void preload(FrameLayout waitingContainer, String appIdentifier) {
+    if (whiteSdk != null) return;
+
+    whiteboardView = new WhiteboardView(this);
+    waitingContainer.addView(whiteboardView, new FrameLayout.LayoutParams(
+        ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.MATCH_PARENT));
+
+    WhiteSdkConfiguration config = new WhiteSdkConfiguration(appIdentifier, true);
+    config.setRegion(Region.cn);
+    config.setUseMultiViews(true);
+    config.setEnableAppliancePlugin(true);
+    whiteSdk = new WhiteSdk(whiteboardView, this, config);
+    // 此处不入房；可以用候课内容覆盖白板区域。
+}
+```
+
+构造方法返回只表示 Native 对象已创建。当前版本没有可等待的 SDK 预加载完成接口，不要据此显示“白板已就绪”，也不要用固定延时判断完成。用户提前进入课堂时，仍按正常流程调用 `joinRoom`，由入房结果判断是否成功。
+
+## 进入课堂：复用并入房
+
+```java
+private void enterClass(FrameLayout classroomContainer,
+                        String roomUuid, String roomToken, String userId) {
+    if (whiteSdk == null || joining || room != null) return;
+    joining = true;
+
+    ViewGroup parent = (ViewGroup) whiteboardView.getParent();
+    if (parent != null) parent.removeView(whiteboardView);
+    classroomContainer.addView(whiteboardView, new FrameLayout.LayoutParams(
+        ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.MATCH_PARENT));
+
+    RoomParams params = new RoomParams(roomUuid, roomToken, userId);
+    params.setRegion(Region.cn);
+    params.setWritable(true);
+    params.setWindowParams(new WindowParams());
+    whiteSdk.joinRoom(params, new Promise<Room>() {
+        @Override
+        public void then(Room joinedRoom) {
+            joining = false;
+            room = joinedRoom;
+            whiteboardView.post(() -> {
+                if (room == joinedRoom) joinedRoom.refreshViewSize();
+            });
+        }
+
+        @Override
+        public void catchEx(SDKError error) {
+            joining = false;
+            Log.e("Whiteboard", "加入房间失败", error);
+        }
+    });
+}
+```
+
+示例省略房间事件监听；需要监听时使用带 `RoomListener` 的重载，参见[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)。容器尺寸变化后调用 `refreshViewSize`，应等新布局生效。示例没有重新构造 SDK，也没有调用 `loadUrl` 或 `reload`。
+
+## 退出与资源回收
+
+```java
+private void leaveClass() {
+    if (whiteSdk == null || joining || room == null) return;
+    whiteSdk.leaveRoom(new Promise<Object>() {
+        @Override
+        public void then(Object ignored) {
+            room = null;
+            // 退出已确认。可保留同一组实例，之后串行加入下一个房间。
+            // 若最终不用，再从父容器移除 View，调用 destroy() 并清理引用。
+        }
+
+        @Override
+        public void catchEx(SDKError error) {
+            Log.e("Whiteboard", "退出未确认，暂停复用或销毁流程", error);
+        }
+    });
+}
+```
+
+退出等待期间应禁用重复进入和退出操作。页面主动退出时先等待上述回调，再结束 Activity；系统强制销毁无法保证异步退房完成。不要将使用 Activity Context 的 View 放入全局静态池，或在旧 Activity 销毁后交给新 Activity 继续使用。
+
+## 能力边界
+
+预加载不包含房间鉴权、房间状态同步、WindowManager 挂载、课件下载或可见首帧。启用[动态配置](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/dynamic-config)后，远端配置仍在每次入房前读取；SDK 提前创建不代表配置已下载。课件资源策略见[课件按需加载](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/courseware-lazy-loading)。
+
+`prepareWhiteConnection` 是独立的网络接入准备辅助接口，不保留本页所需的 View 与 SDK，不能替代上述流程。收益应分别记录候课初始化、点击进入到入房成功、点击进入到可见首帧，按目标设备实测；完全隐藏、零尺寸和后台 WebView 的调度不能作为完成保证。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+适用于 **Whiteboard iOS SDK 2.16.147**，使用已公开的初始化方法和 `joinRoomWithConfig:callbacks:completionHandler:`。
+
+在候课阶段创建 `WhiteBoardView` 和 `WhiteSDK`，可以提前加载内嵌页面、完成 Bridge 握手并启动 SDK 初始化。用户进入课堂时复用原有对象，再加入业务房间。候课阶段不传入房间凭据、不调用入房方法。
+
+## 候课阶段：创建并持有实例
+
+以下代码位于同一业务 UIViewController 中，两阶段均在主线程执行。业务会话必须同时强持有 View 与 SDK：SDK 对白板 View 的引用为弱引用，只保留 SDK 不足以保证预加载实例存活。
+
+```objc
+@property(nonatomic, strong) WhiteBoardView *board;
+@property(nonatomic, strong) WhiteSDK *sdk;
+@property(nonatomic, strong) WhiteRoom *room;
+@property(nonatomic, assign) BOOL joining;
+```
+
+```objc
+- (void)preloadInContainer:(UIView *)waitingContainer
+            appIdentifier:(NSString *)appIdentifier {
+    if (self.sdk) return;
+
+    WhiteSdkConfiguration *config =
+        [[WhiteSdkConfiguration alloc] initWithApp:appIdentifier];
+    config.region = WhiteRegionCN;
+    config.useMultiViews = YES;
+    config.enableAppliancePlugin = YES;
+
+    self.board = [[WhiteBoardView alloc] init];
+    self.board.frame = waitingContainer.bounds;
+    self.board.autoresizingMask = UIViewAutoresizingFlexibleWidth |
+                                 UIViewAutoresizingFlexibleHeight;
+    [waitingContainer addSubview:self.board];
+    self.sdk = [[WhiteSDK alloc] initWithWhiteBoardView:self.board
+                                              config:config
+                              commonCallbackDelegate:nil];
+    // 不调用 joinRoom；可用候课界面覆盖这个有实际尺寸的 View。
+}
+```
+
+如需公共回调，传入业务实现的 `WhiteCommonCallbackDelegate`，并由会话持有该代理。SDK 的代理引用同样为弱引用。
+
+当前正式版没有公开可等待的 SDK 预加载完成接口。初始化返回、页面加载完成、等待固定秒数，都不能证明本地 SDK 及网络准备全部完成。功能分支新增的 `prepareWithCompletionHandler:`、`prepareWithTimeout:completionHandler:` 尚未发布，不属于本页 2.16.147 示例。
+
+## 进入课堂：复用 View 与 SDK
+
+```objc
+- (void)enterClassInContainer:(UIView *)classroomContainer
+                    roomUuid:(NSString *)roomUuid
+                   roomToken:(NSString *)roomToken
+                         uid:(NSString *)uid {
+    if (!self.sdk || self.joining || self.room) return;
+    self.joining = YES;
+
+    [self.board removeFromSuperview];
+    self.board.frame = classroomContainer.bounds;
+    [classroomContainer addSubview:self.board];
+    [classroomContainer layoutIfNeeded];
+
+    WhiteRoomConfig *roomConfig = [[WhiteRoomConfig alloc]
+        initWithUuid:roomUuid roomToken:roomToken uid:uid];
+    roomConfig.region = WhiteRegionCN;
+    roomConfig.isWritable = YES;
+    roomConfig.windowParams = [WhiteWindowParams new];
+
+    __weak typeof(self) weakSelf = self;
+    [self.sdk joinRoomWithConfig:roomConfig callbacks:nil
+              completionHandler:^(BOOL success, WhiteRoom *room, NSError *error) {
+        __strong typeof(weakSelf) self = weakSelf;
+        if (!self) return;
+        self.joining = NO;
+        if (!success) {
+            NSLog(@"加入房间失败：%@", error);
+            return;
+        }
+        self.room = room;
+        [room refreshViewSize];
+    }];
+}
+```
+
+需要房间事件时传入当前课堂的 `WhiteRoomCallbackDelegate`，参见[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)。候课和课堂也可共用父容器，只切换覆盖内容。跨 UIViewController 时应由独立会话对象持有并转移同一 View 与 SDK，管理代理和旧控制器的释放；仅传递配置并重新创建 View 不会复用预加载结果。
+
+SDK 配置应在候课前确定并保持不变。2.16.147 保存配置对象，候课后再修改可能改变后续初始化参数；不能把新功能分支的不可变配置快照行为当作正式版承诺。
+
+## 退出与复用
+
+```objc
+[self.sdk leaveRoomWithCompletionHandler:^(NSError *error) {
+    if (error) {
+        NSLog(@"退出未确认，停止后续复用或销毁：%@", error);
+        return;
+    }
+    self.room = nil;
+    // 可保留 board / sdk，下一次进入课堂时串行入房。
+    // 最终不用时，再移除 View、清理代理并释放强引用。
+}];
+```
+
+退出过程中禁用重复入房操作。先确认异步退出成功，再执行页面跳转或最终资源释放；不要在发起退出后立即释放 View，也不要仅凭旧 `disconnect` 的无错误参数回调认定关闭成功。
+
+## 能力边界
+
+预加载不表示房间已连接、WindowManager 已挂载、课件已下载或首帧可见。启用[动态配置](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/dynamic-config)后仍在入房时加载远端参数，不能把初始化返回作为动态配置已生效的信号。课件策略见[课件按需加载](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/courseware-lazy-loading)。
+
+`prepareWhiteConnectionForAppId:region:expireSeconds:attachingSuperView:` 创建的是独立临时 View，用于网络接入准备，不能替代本页的同 View、同 SDK 流程。完全离屏、零尺寸、隐藏或后台 WKWebView 的调度与内存开销应在目标设备验证，不承诺固定的入房提速数值。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+从 **Whiteboard HarmonyOS SDK 0.2.12** 起，支持通过 `autoJoin`、`prepare()`、手动 `joinRoom()` 及分离的 SDK/Room 配置类型接入预加载。
+
+预加载让同一个白板 Web 节点在候课阶段完成页面加载、Bridge 握手和本地 SDK 构造，进入课堂时再加入房间。仅创建 `WhiteboardController` 不会加载页面，必须挂载并持续保留实际 `Whiteboard` 组件。
+
+## 配置与调用顺序
+
+1. 用 `WhiteboardSdkOptions` 设置 AppIdentifier、多窗口、教具插件及动态配置地址，不传房间凭据。
+2. 挂载 `Whiteboard`，设置 `autoJoin: false`；默认值为 `true`，旧接入仍会自动入房。
+3. 调用 `controller.prepare()` 等待本地 SDK 准备完成。
+4. 用户进入课堂时传入 `WhiteboardRoomOptions`，调用 `controller.joinRoom()`。
+5. 退出时等待 `controller.leaveRoom()` 成功，再跳转页面或复用同一组件。
+
+## 接入示例
+
+示例把候课和课堂放在同一个页面，切换状态时始终保留原 `Whiteboard` 节点。房间信息为占位值，应由业务服务取得，Room Token 不应写死在客户端。
+
+```ts
+import {
+  Whiteboard, WhiteboardCallbacks, WhiteboardController,
+  WhiteboardSdkOptions, WhiteboardRoomOptions, WindowParams, Region
+} from '@shengwang/whiteboard';
+
+@Entry
+@Component
+struct PreloadPage {
+  private controller: WhiteboardController = new WhiteboardController();
+  private sdkOptions: WhiteboardSdkOptions = {
+    appIdentifier: 'YOUR_APP_IDENTIFIER',
+    useMultiViews: true,
+    enableAppliancePlugin: true
+  };
+  private callbacks: WhiteboardCallbacks = new WhiteboardCallbacks();
+  private disposed: boolean = false;
+  @State prepared: boolean = false;
+  @State joined: boolean = false;
+  @State busy: boolean = false;
+  @State status: string = '正在准备白板';
+
+  aboutToAppear(): void {
+    this.controller.prepare(15000).then(() => {
+      if (this.disposed) return;
+      this.prepared = true;
+      this.status = '白板已准备，等待进入课堂';
+    }).catch((error: Error) => {
+      if (!this.disposed) this.status = error.message;
+    });
+  }
+
+  private async enterClass(): Promise<void> {
+    if (this.disposed || this.busy || this.joined || !this.prepared) return;
+    this.busy = true;
+    this.status = '正在加入房间';
+    const room: WhiteboardRoomOptions = {
+      roomUuid: 'YOUR_ROOM_UUID',
+      roomToken: 'YOUR_ROOM_TOKEN',
+      uid: 'YOUR_USER_ID',
+      region: Region.CN_HZ,
+      writable: true,
+      windowParams: new WindowParams()
+    };
+    try {
+      await this.controller.joinRoom(room);
+      if (!this.disposed) {
+        this.joined = true;
+        this.status = '已进入课堂';
+      }
+    } catch (error) {
+      if (!this.disposed) this.status = (error as Error).message;
+    } finally {
+      this.busy = false;
+    }
+  }
+
+  private async leaveClass(): Promise<void> {
+    if (this.busy || !this.joined) return;
+    this.busy = true;
+    try {
+      await this.controller.leaveRoom();
+      this.joined = false;
+      this.status = '已退出课堂，可保留组件再次入房';
+      // 如需返回上一页，在成功退出后执行路由跳转。
+    } catch (error) {
+      this.status = '退出未确认：' + (error as Error).message;
+    } finally {
+      this.busy = false;
+    }
+  }
+
+  aboutToDisappear(): void {
+    this.disposed = true;
+    this.controller.cancelPreparation();
+    // 此处取消准备等待；已入房时应先通过受控退出流程等待 leaveRoom。
+  }
+
+  build() {
+    Column() {
+      Text(this.status).padding(12)
+      Row() {
+        Button('进入课堂')
+          .enabled(this.prepared && !this.busy && !this.joined)
+          .onClick(() => { this.enterClass(); })
+        Button('退出课堂')
+          .enabled(this.joined && !this.busy)
+          .onClick(() => { this.leaveClass(); })
+      }
+      Whiteboard({
+        options: this.sdkOptions,
+        controller: this.controller,
+        callbacks: this.callbacks,
+        autoJoin: false
+      }).layoutWeight(1)
+    }.width('100%').height('100%')
+  }
+}
+```
+
+`options` 是组件的实际配置字段。不要改写为不存在的 `sdkOptions` 组件参数，也不要在 `if (joined)` 条件中重新创建白板。仅保留 Controller、销毁后重新挂载 Web 节点，不会保留原 document 的预加载结果。
+
+## 准备状态与错误处理
+
+| 接口 | 行为 |
+| --- | --- |
+| prepare(timeoutMs = 15000) | 返回 Promise&lt;PreparationInfo&gt;；单位为毫秒，包含等待组件挂载和 SDK 初始化的时间。可在组件挂载前调用。 |
+| getPreparationInfo() | 返回当前准备信息；未绑定组件时可为 undefined。ready 表示本地 SDK 已构造，setupCount 记录当前 View 的初始化调用次数。 |
+| cancelPreparation() | 取消等待并使准备命中失效，忽略迟到结果；不会退出已加入的房间。 |
+| joinRoom(roomOptions) | 使用本次房间参数入房；同一个实际节点和相同 SDK 配置可复用准备结果。 |
+| leaveRoom() | 等待退出确认；失败时保留错误，暂停复用与销毁流程。 |
+
+准备失败或超时应显示错误并提供显式重试入口，不能仍显示“准备完成”。宿主 Web 节点失效、页面重载或组件卸载后，原准备结果失效；应重新准备并更新业务侧状态。不要在入房或活跃房间期间更换 SDK 配置来抢占当前实例。
+
+SDK 配置和房间参数分别做 JSON 快照。SDK 配置在准备前确定；正式入房时再传本次房间身份。预加载时设置 `autoJoin: false`，无需传入空房间号或占位 Token。
+
+## 完成与性能边界
+
+`prepare()` 成功只证明当前实际 Web 节点中的本地 JS SDK 已构造，没有加入房间。它不代表远端[动态配置](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/dynamic-config)加载、鉴权连接、多窗口挂载、课件下载或首帧可见；这些阶段仍在后续完成。课件资源策略参见[课件按需加载](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/courseware-lazy-loading)。
+
+建议分别记录准备请求、准备完成、点击进入、入房成功和可见首帧。后台、隐藏、跨路由和内存回收场景需另行验证，不能将示例中的准备状态作为固定性能收益保证。
+
+</PlatformStructured>

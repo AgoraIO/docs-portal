@@ -3262,7 +3262,14 @@ describe('FumadocsOpenApiContent', () => {
                         },
                         description:
                           'The request succeeded and returned the created streaming key.',
+                        headers: {
+                          'x-request-id': {
+                            description: 'Request correlation ID.',
+                            schema: { type: 'string' },
+                          },
+                        },
                       },
+                      '204': { description: 'No response content.' },
                       '401': {
                         content: {
                           'application/json': {
@@ -3293,17 +3300,31 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     expect(
-      await screen.findByRole('heading', { name: '响应 Body' }),
+      await screen.findByRole('heading', { name: '响应' }),
     ).toBeInTheDocument();
-    expect(document.querySelector('[data-openapi-responses]')).toBeNull();
+    expect(
+      document.querySelector('[data-openapi-responses]'),
+    ).toBeInTheDocument();
     expect(
       screen.queryByRole('heading', { name: 'Response schema' }),
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole('heading', { name: '响应 Schema' }),
     ).not.toBeInTheDocument();
-    const responseScope = within(document.body);
+    expect(
+      screen.getByRole('heading', { name: '响应 Header' }),
+    ).toBeInTheDocument();
+    expect(
+      document.getElementById('response-headers-200-x-request-id'),
+    ).toBeInTheDocument();
+    const responseScope = within(
+      document.querySelector('[data-openapi-responses]') as HTMLElement,
+    );
 
+    expect(responseScope.getByRole('tab', { name: '200' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
     expect(
       responseScope.getByText(
         'The request succeeded and returned the created streaming key.',
@@ -3340,19 +3361,21 @@ describe('FumadocsOpenApiContent', () => {
         'Unix timestamp, in seconds, when the streaming key was created.',
       ),
     ).toBeInTheDocument();
-    const user = userEvent.setup();
-    await user.click(await screen.findByRole('tab', { name: '401' }));
-    await waitFor(() =>
-      expect(document.body).toHaveTextContent(
-        'A 401 (Unauthorized) response status code means the request is not authorized.',
+    fireEvent.mouseDown(responseScope.getByRole('tab', { name: '401' }));
+    expect(
+      responseScope.queryByText(
+        'The request succeeded and returned the created streaming key.',
       ),
-    );
+    ).not.toBeInTheDocument();
     expect(document.body).toHaveTextContent(
       'A 401 (Unauthorized) response status code means the request is not authorized.',
     );
     expect(
       responseScope.getByText('Description of why the request failed.'),
     ).toBeInTheDocument();
+    fireEvent.mouseDown(responseScope.getByRole('tab', { name: '204' }));
+    expect(screen.getByText('No response content.')).toBeInTheDocument();
+    expect(screen.queryByText('响应 Body 为空')).not.toBeInTheDocument();
   });
 
   it('keeps English response schemas inside the response body accordion', async () => {

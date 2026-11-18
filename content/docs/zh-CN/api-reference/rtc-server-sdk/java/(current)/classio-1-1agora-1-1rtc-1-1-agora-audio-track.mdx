@@ -1,0 +1,122 @@
+---
+title: io.agora.rtc.AgoraAudioTrack类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourcePath: html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_audio_track.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_agora_audio_track_8java.html as local text.
+---
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+AgoraAudioTrack 类。
+
+<a id="doc-constructors"></a>
+
+<a id="header-doc-constructors"></a>
+
+## 构造及析构函数说明
+
+<a id="a2cac8c114877ba449cddf0f7a7d40318"></a>
+
+### AgoraAudioTrack()
+
+<ApiSignature>
+
+io.agora.rtc.AgoraAudioTrack.AgoraAudioTrack(long *cptr*)
+
+</ApiSignature>
+
+构造函数。
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="aa61d6e895c8d51d6c4d8dd026d677964"></a>
+
+### addAudioSink()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraAudioTrack.addAudioSink([AgoraAudioSink](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-sink) *agora_audio_sink*, [AudioSinkWants](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-sink-wants) *wants*)
+
+</ApiSignature>
+
+添加一个音频接收模块，用以接收音频轨道中的 PCM 数据。
+
+<ParameterList title="参数">
+<Parameter name="agora_audio_sink">
+
+音频接收模块。
+
+</Parameter>
+<Parameter name="wants">
+
+音频帧发送至接收模块时，应带有的属性。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- true: 方法调用成功
+- false: 方法调用失败
+
+<a id="ad005b0c3e1d290a6c930b4c35974aa69"></a>
+
+### removeAudioSink()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraAudioTrack.removeAudioSink([AgoraAudioSink](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-sink) *agora_audio_sink*)
+
+</ApiSignature>
+
+移除音频接收模块。
+
+<ParameterList title="参数">
+<Parameter name="agora_audio_sink">
+
+待移除的音频接收模块。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+- true: 方法调用成功
+- false: 放大调用失败
+
+<a id="doc-variable-members"></a>
+
+<a id="header-doc-variable-members"></a>
+
+## 类成员变量说明
+
+<a id="ae0c3775e70db760463623429c30cc244"></a>
+
+### cptr
+
+<ApiSignature labels="private">
+
+long io.agora.rtc.AgoraAudioTrack.cptr
+
+</ApiSignature>
+
+---
+
+该类的文档由以下文件生成:
+
+- AgoraAudioTrack.java

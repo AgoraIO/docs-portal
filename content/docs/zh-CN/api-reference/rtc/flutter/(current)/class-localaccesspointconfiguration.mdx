@@ -1,0 +1,76 @@
+---
+title: "LocalAccessPointConfiguration"
+description: "Local Access Point 配置。"
+---
+<a id="class_localaccesspointconfiguration__prototype"></a>
+
+```dart
+class LocalAccessPointConfiguration {
+  const LocalAccessPointConfiguration(
+      {this.ipList,
+      this.ipListSize,
+      this.domainList,
+      this.domainListSize,
+      this.verifyDomainName,
+      this.mode,
+      this.advancedConfig});
+
+  @JsonKey(name: 'ipList')
+  final List<String>? ipList;
+
+  @JsonKey(name: 'ipListSize')
+  final int? ipListSize;
+
+  @JsonKey(name: 'domainList')
+  final List<String>? domainList;
+
+  @JsonKey(name: 'domainListSize')
+  final int? domainListSize;
+
+  @JsonKey(name: 'verifyDomainName')
+  final String? verifyDomainName;
+
+  @JsonKey(name: 'mode')
+  final LocalProxyMode? mode;
+
+  @JsonKey(name: 'advancedConfig')
+  final AdvancedConfigInfo? advancedConfig;
+
+  factory LocalAccessPointConfiguration.fromJson(Map<String, dynamic> json) =>
+      _$LocalAccessPointConfigurationFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LocalAccessPointConfigurationToJson(this);
+}
+```
+
+<a id="class_localaccesspointconfiguration__parameters"></a>
+
+## 属性
+
+### `ipList`
+
+Local Access Point 的对内 IP 地址列表。ipList 和 domainList 必须至少填一个。
+
+### `ipListSize`
+
+Local Access Point 对内 IP 地址的数量。该参数的值必须和你填入的 IP 地址的数量一致。
+
+### `domainList`
+
+Local Access Point 的域名列表。SDK 会根据你填入的域名解析出 Local Access Point 的 IP 地址。域名解析的超时时间为 10 秒。ipList 和 domainList 必须至少填一个。如果你同时指定 IP 地址和域名，SDK 会将根据域名解析出来的 IP 地址和你指定的 IP 地址合并、去重，然后随机连接一个 IP 来实现负载均衡。
+
+### `domainListSize`
+
+Local Access Point 域名的数量。该参数的值必须和你填入的域名的数量一致。
+
+### `verifyDomainName`
+
+内网证书验证域名。如果传值为空，则用 SDK 默认的证书验证域名 `secure-edge.local`。
+
+### `mode`
+
+连接模式。详见 [LocalProxyMode](/zh-CN/api-reference/rtc/flutter/enum-localproxymode)。
+
+### `advancedConfig`
+
+Local Access Point 的高级选项。详见 [AdvancedConfigInfo](/zh-CN/api-reference/rtc/flutter/class-advancedconfiginfo)。

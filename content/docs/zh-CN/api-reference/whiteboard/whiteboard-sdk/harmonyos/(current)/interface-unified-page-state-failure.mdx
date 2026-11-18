@@ -1,0 +1,77 @@
+---
+title: UnifiedPageStateFailure interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_unified_page_state_failure
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_unified_page_state_failure.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+统一课件命令异步失败事件，status 固定为 failure。
+
+可从 @shengwang/whiteboard 直接导入 UnifiedPageStateFailure。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface UnifiedPageStateFailure extends UnifiedPageState
+```
+
+| [status](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-unified-page-state-failure#a662b4b6b8ed4e3f01cbac0e880d84a15) | `status: "failure"` |
+| --- | --- |
+| [event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-unified-page-state-failure#a122e444a4946752663c4c4597de304b7) | `event: WindowDocsEventType` |
+| [reason](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-unified-page-state-failure#adf1354048aa37cd7ec43604f7e171d7d) | `reason: "commandFailed"` |
+| [message](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-unified-page-state-failure#a3b5443ba5d6a5fa400d2d679c23fc214) | `message?: string` |
+
+## 变量说明
+
+<a id="a662b4b6b8ed4e3f01cbac0e880d84a15"></a>
+
+### status
+
+```text
+status: "failure"
+```
+
+固定为 failure，表示已接收命令在异步执行阶段失败。
+
+<a id="a122e444a4946752663c4c4597de304b7"></a>
+
+### event
+
+```text
+event: WindowDocsEventType
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="adf1354048aa37cd7ec43604f7e171d7d"></a>
+
+### reason
+
+```text
+reason: "commandFailed"
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="a3b5443ba5d6a5fa400d2d679c23fc214"></a>
+
+### message
+
+```text
+message?: string
+```
+
+类型成员，必填性和返回类型以声明为准。

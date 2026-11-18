@@ -1,0 +1,77 @@
+---
+title: WindowAppParam interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_window_app_param
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_window_app_param.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+controller.addApp(...) 的参数结构，用于指定 App 类型、初始化选项和同步属性。
+
+可从 @shengwang/whiteboard 直接导入 WindowAppParam。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface WindowAppParam
+```
+
+| [kind](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-window-app-param#ae1c9c7c0a38c49e06baa4fe5453a7092) | `kind: string` |
+| --- | --- |
+| [options](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-window-app-param#a4142132197510611985998b0ab5bb9e0) | `options?: object` |
+| [attributes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-window-app-param#ae91a0fa6e2e80949651c2fd3d984a0fe) | `attributes?: object` |
+| [originSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-window-app-param#a9e716967aaf5a486fe7e62bd3c3ef878) | `originSize?: WindowOriginSize` |
+
+## 变量说明
+
+<a id="ae1c9c7c0a38c49e06baa4fe5453a7092"></a>
+
+### kind
+
+```text
+kind: string
+```
+
+必填 App 类型名，例如 Slide、DocsViewer、MediaPlayer 或 Presentation。
+
+<a id="a4142132197510611985998b0ab5bb9e0"></a>
+
+### options
+
+```text
+options?: object
+```
+
+可选 App 初始化选项，具体字段由 kind 对应的 App 决定。
+
+<a id="ae91a0fa6e2e80949651c2fd3d984a0fe"></a>
+
+### attributes
+
+```text
+attributes?: object
+```
+
+可选 App 同步属性，具体字段由 kind 对应的 App 决定。
+
+<a id="a9e716967aaf5a486fe7e62bd3c3ef878"></a>
+
+### originSize
+
+```text
+originSize?: WindowOriginSize
+```
+
+正数 width/height 组成的归一化参考尺寸。WindowParams 用于 MainView；WindowAppParam 用于 Slide/Presentation 并写入 attributes.originSize。

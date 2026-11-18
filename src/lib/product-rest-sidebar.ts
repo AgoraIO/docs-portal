@@ -35,7 +35,7 @@ export async function withProductSidebar(
     return nodes.some((node) =>
       node.type === 'section'
         ? ownsPage(node.children)
-        : node.fromProduct === from &&
+        : node.search?.from === from &&
           node.url.split('#', 1)[0] === api.activePath,
     );
   }

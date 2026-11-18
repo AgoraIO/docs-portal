@@ -44,7 +44,7 @@ describe('English product REST menus', () => {
         children.every((n) =>
           n.type === 'section'
             ? n.collapsible
-            : n.fromProduct === path && !n.external,
+            : n.search?.from === path && !n.external,
         ),
       ).toBe(true);
       if (product.productSlug === 'iot')
@@ -82,7 +82,7 @@ describe('English product REST menus', () => {
     expect(links).toHaveLength(1);
     expect(links[0]).toMatchObject({
       method: 'POST',
-      fromProduct: product.activePath,
+      search: { from: product.activePath },
     });
     const fetchProduct = vi.fn(async () => product);
     expect(await withProductSidebar(api, undefined, fetchProduct)).toBe(api);

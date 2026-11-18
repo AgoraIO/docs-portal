@@ -13,6 +13,13 @@ afterEach(() => {
 });
 
 describe('getContentDocsPrerenderPaths', () => {
+  it('publishes the product and RTM API landing routes referenced by docs', () => {
+    const routes = getContentDocsPrerenderPaths();
+
+    expect(routes).toContain('/zh-CN/solutions/one-to-one-live');
+    expect(routes).toContain('/zh-CN/api-reference/rtm/android');
+  });
+
   it('maps content docs files to canonical route paths', () => {
     const root = join(
       import.meta.dirname,

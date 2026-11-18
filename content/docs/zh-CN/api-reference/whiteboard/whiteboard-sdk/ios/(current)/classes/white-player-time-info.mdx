@@ -1,0 +1,92 @@
+---
+title: WhitePlayerTimeInfo Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhitePlayerTimeInfo
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhitePlayerTimeInfo.html
+  generator: appledoc
+  warnings: []
+---
+
+Whiteboard iOS SDK 2.16.147 公开接口。
+
+@interface WhitePlayerTimeInfo: WhiteObject
+
+## 成员
+
+- [scheduleTime](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-time-info#//api/name/scheduleTime)
+- [timeDuration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-time-info#//api/name/timeDuration)
+- [framesCount](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-time-info#//api/name/framesCount)
+- [beginTimestamp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-time-info#//api/name/beginTimestamp)
+
+<a id="//api/name/scheduleTime"></a>
+
+
+<a id="tasks"></a>
+
+### `scheduleTime`
+
+<ApiSignature>
+
+@property (nonatomic, assign, readonly) NSTimeInterval scheduleTime;
+
+</ApiSignature>
+
+```text
+当前的回放进度（秒）。
+```
+
+Declared in Replayer/WhitePlayerTimeInfo.h
+
+<a id="//api/name/timeDuration"></a>
+
+### `timeDuration`
+
+<ApiSignature>
+
+@property (nonatomic, assign, readonly) NSTimeInterval timeDuration;
+
+</ApiSignature>
+
+```text
+回放的总时长（秒）。
+```
+
+Declared in Replayer/WhitePlayerTimeInfo.h
+
+<a id="//api/name/framesCount"></a>
+
+### `framesCount`
+
+<ApiSignature>
+
+@property (nonatomic, assign, readonly) NSInteger framesCount;
+
+</ApiSignature>
+
+```text
+回放的总 frame 数。
+```
+
+Declared in Replayer/WhitePlayerTimeInfo.h
+
+<a id="//api/name/beginTimestamp"></a>
+
+### `beginTimestamp`
+
+<ApiSignature>
+
+@property (nonatomic, assign, readonly) NSTimeInterval beginTimestamp;
+
+</ApiSignature>
+
+```text
+回放的起始时间。
+
+ UTC 时间戳（秒），你需要自行转换为 UTC 时间。
+
+ 例如，如果返回 `1615370614.269`，表示的 UTC 时间为 2021-03-10 18:03:34 GMT+0800。
+```
+
+Declared in Replayer/WhitePlayerTimeInfo.h

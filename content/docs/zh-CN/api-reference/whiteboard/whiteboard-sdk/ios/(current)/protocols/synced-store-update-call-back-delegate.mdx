@@ -1,0 +1,41 @@
+---
+title: SyncedStoreUpdateCallBackDelegate Protocol Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Protocols/SyncedStoreUpdateCallBackDelegate
+  sourcePath: html-docs/whiteboard/iOS/Protocols/SyncedStoreUpdateCallBackDelegate.html
+  generator: appledoc
+  warnings: []
+---
+
+Whiteboard iOS SDK 2.16.147 公开接口。
+
+@protocol SyncedStoreUpdateCallBackDelegate &lt;NSObject&gt;
+
+## 成员
+
+- [syncedStoreDidUpdateStoreName\:partialValue:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/synced-store-update-call-back-delegate#//api/name/syncedStoreDidUpdateStoreName:partialValue:)
+
+<a id="//api/name/syncedStoreDidUpdateStoreName:partialValue:"></a>
+
+### `– syncedStoreDidUpdateStoreName:partialValue:`
+
+<ApiSignature>
+
+\- (void)syncedStoreDidUpdateStoreName:(NSString *)name partialValue:(NSDictionary *)partialValue;
+
+</ApiSignature>
+
+```text
+SyncedStore 数据发生变更的时候该回调会被触发
+
+ @param name 房间内的唯一标识
+ @param partialValue 发生变更的数据
+ 结构为 {"key": {"oldValue": "xxx", "newValue": "xxx"}}
+ 举例 {"name": {"oldValue": "jack", "newValue": "rose"}}
+
+ 注意： 如果只有 oldValue 没有 newValue 。说明该 key 被删除。反之则是新增了一个 key。
+```
+
+Declared in Displayer/SyncedStore.h

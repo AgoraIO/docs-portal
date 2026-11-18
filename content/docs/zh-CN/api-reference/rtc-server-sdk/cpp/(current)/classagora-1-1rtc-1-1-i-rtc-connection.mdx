@@ -1,0 +1,658 @@
+---
+title: agora::rtc::IRtcConnection类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_rtc_connection
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_rtc_connection.html
+  generator: doxygen
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: >-
+        No local target route for
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /cn/Interactive%20Broadcast/token_server.
+---
+
+继承自 agora::RefCountInterface.
+
+<a id="details"></a>
+
+## 详细描述
+
+[`IRtcConnection`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection) 类，用于管理 SDK 与 RTC 频道之间的连接。
+
+连接完成之后，你可以通过 [`ILocalUser`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user) 对象在 RTC 频道中发送和接收媒体流。
+
+连接频道是异步操作，你可以通过 [IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) 对象监听连接状态变化和事件。[`IRtcConnection`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection) 还可以监控频道中的远端用户是否加入或离开频道。
+
+## 构造及析构函数说明
+
+<a id="a693a3656b09680f3e77c12105e28abc0"></a>
+
+### ~IRtcConnection()
+
+<ApiSignature labels="inline protected">
+
+agora::rtc::IRtcConnection::~IRtcConnection()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="a035389095b76329b60b539ca43f24f17"></a>
+
+### connect()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::connect(const char * *token*, const char * *channelId*, [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*)
+
+</ApiSignature>
+
+连接 RTC 频道。
+
+方法成功时，连接状态由 `CONNECTION_STATE_DISCONNECTED(1)` 变更为 `CONNECTION_STATE_CONNECTING(2)`。
+
+根据连接是否成功，连接状态会变更为 `CONNECTION_STATE_CONNECTED(3)` 或 `CONNECTION_STATE_FAILED(5)`。 SDK 会触发 `onConnected` 或 `onDisconnected` 提醒连接状态变更。
+
+<ParameterList title="参数">
+<Parameter name="token">
+
+RTC Token。详见 使用 Token 鉴权 。如果你的项目中未开启 App 证书，则仅需在该参数中填写你声网项目的 App ID。
+
+</Parameter>
+<Parameter name="channelId">
+
+频道名。必须为字符串且长度不超过 64 字节。支持的字符类型包括：
+
+- 全部小写字母： a to z
+- 全部大写字母：A to Z
+- 全部阿拉伯数字： 0 to 9
+- 空格。
+- 标点符号和其他特殊符号： "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "|", "~", ","
+
+</Parameter>
+<Parameter name="userId">
+
+本地用户 ID。长度不超过 64 字节。如果你不设置用户 ID 或设为 NULL，SDK 在 [onConnected](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a1df408778b1886055df47cd7d0ff8e5c) 回调中自动返回一个 user ID。 你必须自行记录并管理此 ID。根据你在 [initialize](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service#a6f1fb6e792c564dee46903cbb3bc35fc) 方法中选择的用户 ID 类型，该参数支持的字符集也不同：
+
+- int 型用户 ID 支持的字符集包括：
+
+  - 10 个数字 0-9
+- String 型用户 ID 支持的字符集包括：
+
+  - 26 个小写英文字母 a-z
+  - 26 个大写英文字母 A-Z
+  - 10 个数字 0-9
+  - 空格
+  - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "|", "~", ","
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+  - -2(ERR_INVALID_ARGUMENT)：参数无效。
+  - -8(ERR_INVALID_STATE): 当前连接状态不是 CONNECTION_STATE_DISCONNECTED(1)。
+
+<a id="aa83ca15b81922af3cb3f5d81221556e4"></a>
+
+### disconnect()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::disconnect()
+
+</ApiSignature>
+
+与 RTC 频道断开连接。
+
+SDK 与频道断开连接时，连接状态变更为 `CONNECTION_STATE_DISCONNECTED(1)`。你还可以通过 [onDisconnected](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#ae62590c268ad2904583dc9c62c337056) 回调得知。
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="aca1f51af680b303f4ddbca3bff23baff"></a>
+
+### startLastmileProbeTest()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::startLastmileProbeTest(const [LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-lastmile-probe-config) & *config*)
+
+</ApiSignature>
+
+开始通话前网络质量探测。
+
+开始通话前网络质量探测，向用户反馈上下行网络的带宽、丢包、网络抖动和往返时延数据。
+
+启用该方法后，SDK 会依次返回如下 2 个回调：
+
+- [onLastmileQuality](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a255ffd92a1b67201f04d018e163118fc): 视网络情况约 2 秒内返回。该回调通过打分反馈上下行网络质量，更贴近用户的主观感受。
+- [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a91037dcd860c1000e31a3d0eecb1889a): 视网络情况约 30 秒内返回。该回调通过具体数据反馈上下行网络质量，更加客观。
+
+  :::info[注解]
+
+  :::
+- 调用该方法后，在收到 [onLastmileQuality](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a255ffd92a1b67201f04d018e163118fc) 和 [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a91037dcd860c1000e31a3d0eecb1889a) 回调之前请不要调用其他方法，否则可能会由于 API 操作过于频繁导致此方法无法执行。
+- 在直播场景中，如果本地用户为主播，请勿加入频道后调用该方法。
+
+<ParameterList title="参数">
+<Parameter name="config">
+
+Last mile 网络探测配置，详见 [LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-lastmile-probe-config) 。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a28a8f2e53b0df3aba62f9387e0fedcdc"></a>
+
+### stopLastmileProbeTest()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::stopLastmileProbeTest()
+
+</ApiSignature>
+
+停止通话前网络质量探测。
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a718d33addd2e49f1932b666ab3551087"></a>
+
+### renewToken()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::renewToken(const char * *token*)
+
+</ApiSignature>
+
+更新 Token。
+
+Token 会在一定时间后过期。
+
+当收到 [onTokenPrivilegeWillExpire](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer#a27ee9184ccaba5855389412846f6949f) 回调时，你必须从服务端生成一个新的 token，并使用该方法更新 Token。否则，SDK 会与频道断开连接。
+
+<ParameterList title="参数">
+<Parameter name="token">
+
+新 Token。
+
+</Parameter>
+</ParameterList>
+
+<a id="ab91ff9124027bdc7a3ce6e77addf8da1"></a>
+
+### getConnectionInfo()
+
+<ApiSignature labels="pure virtual">
+
+virtual [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) agora::rtc::IRtcConnection::getConnectionInfo()
+
+</ApiSignature>
+
+获取连接信息。
+
+<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
+
+- [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) 对象：方法调用成功。
+- 空指针：方法调用失败。
+
+<a id="a1cf54986a330713047da51c1503ec86c"></a>
+
+### getLocalUser()
+
+<ApiSignature labels="pure virtual">
+
+virtual [ILocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user)* agora::rtc::IRtcConnection::getLocalUser()
+
+</ApiSignature>
+
+获取本地用户对象的指针。每个连接仅对应一个本地用户。
+
+<h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
+
+- [ILocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user) 对象：方法调用成功。
+- 空指针：方法调用失败。
+
+<a id="ae1b27f3868e38f5dc434ec572e31de4f"></a>
+
+### getRemoteUsers()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::getRemoteUsers([UserList](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a46a0d0064b7c6713de256d37dc24b9ad) & *users*)
+
+</ApiSignature>
+
+获取频道中全部远端用户的信息。
+
+<ParameterList title="参数">
+<Parameter name="users" direction="[out]">
+
+用户列表： [UserList](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a46a0d0064b7c6713de256d37dc24b9ad) 对象。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="af2c7166f692f2285a0ba060aa6b16739"></a>
+
+### getUserInfo()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::getUserInfo([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, [agora::UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-user-info) & *userInfo*)
+
+</ApiSignature>
+
+获取频道中指定远端用户的信息。
+
+<ParameterList title="参数">
+<Parameter name="userId" direction="[in]">
+
+用户 ID。
+
+</Parameter>
+<Parameter name="userInfo" direction="[out]">
+
+用户信息： [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-user-info) 对象。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="adb1a91a55d1a549d058d347ec5175d60"></a>
+
+### registerObserver()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::registerObserver([IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) * *observer*, void(*)([IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) *) *safeDeleter* = `NULL`)
+
+</ApiSignature>
+
+注册 RTC 连接 observer。你必须先创建 [`IRtcConnection`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection) 对象。
+
+<ParameterList title="参数">
+<Parameter name="observer">
+
+[IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) 对象。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="af2d87e566c2cd918e12d777cdeae37ee"></a>
+
+### unregisterObserver()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::unregisterObserver([IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) * *observer*)
+
+</ApiSignature>
+
+销毁 RTC 连接 observer。
+
+<ParameterList title="参数">
+<Parameter name="observer">
+
+[IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) 对象。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a99362b41a6cdc80ce04a6bb329ef0d9a"></a>
+
+### registerNetworkObserver()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::registerNetworkObserver([INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) * *observer*, void(*)([INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) *) *safeDeleter* = `NULL`)
+
+</ApiSignature>
+
+注册网络状态 observer。
+
+<ParameterList title="参数">
+<Parameter name="observer">
+
+[INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) 对象。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a562653dfda203cd768f89748c7af6022"></a>
+
+### unregisterNetworkObserver()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::unregisterNetworkObserver([INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) * *observer*)
+
+</ApiSignature>
+
+销毁网络状态 observer。
+
+<ParameterList title="参数">
+<Parameter name="observer">
+
+[INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) 对象。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a4cc6181ddb6280c2f37239eef88bbd2f"></a>
+
+### getConnId()
+
+<ApiSignature labels="pure virtual">
+
+virtual [conn_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab669d53cb37e3274112d7fba3eaa27d9) agora::rtc::IRtcConnection::getConnId()
+
+</ApiSignature>
+
+获取连接 ID。
+
+<h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
+
+- 连接 ID： 方法调用成功。
+- 空指针：方法调用失败。
+
+<a id="aa87931e6de4996dc36d57369d6a8a153"></a>
+
+### getTransportStats()
+
+<ApiSignature labels="pure virtual">
+
+virtual [RtcStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-stats) agora::rtc::IRtcConnection::getTransportStats()
+
+</ApiSignature>
+
+获取 RTC 连接的传输状态。
+
+<h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
+
+- [RtcStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-stats)：方法调用成功。
+- 空指针：方法调用失败。
+
+<a id="af6f657c7f744cac441f1a5518b84ce42"></a>
+
+<a id="a44ce079c780ace4b8188d59ad68d96fb"></a>
+
+### getAgoraParameter()
+
+<ApiSignature labels="pure virtual">
+
+virtual [agora::base::IAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-parameter)* agora::rtc::IRtcConnection::getAgoraParameter()
+
+</ApiSignature>
+
+获取某个 Connection 中的 [IAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-parameter) 对象。
+
+通过该方法获取的 `IAgoraParameter` 对象，设置仅对当前 Connection 有效。如需进行全局设置，改用 [IAgoraService::getAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service#a1c707744b5e4f06467219a25ecaeccb7) 方法。
+
+<h4 data-toc-hidden="true" id={"返回值-14"}>返回值</h4>
+
+- `IAgoraParameter` 对象：方法调用成功。
+- 空指针：方法调用失败。
+
+<a id="a53f87120cf152e9a80a64de9f0144ede"></a>
+
+### createDataStream()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::createDataStream(int * *streamId*, bool *reliable*, bool *ordered*, bool *sync*)
+
+</ApiSignature>
+
+创建数据流。
+
+每个用户在每个频道中最多只能创建 5 个数据流。
+
+:::info[注解]
+- 声网不支持你将 `reliable` 设为 `true` 且 `ordered` 设为 `false`。
+- 当需要数据包立刻到达接收端时，不能将 `ordered` 参数设置为 `true`。
+- 设置为与音频同步后，如果数据包的延迟在音频延迟的范围内，SDK 会在播放音频的同时触发与该音频包同步的 [onStreamMessage](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer#a0a0af52ad5ef54b08919df497b738f8b) 回调。 当需要数据包立刻到达接收端时，不能将 `sync` 参数设置为 `true`。声网推荐你仅在需要实现特殊场景，例如歌词同步时，设置为与音频同步。
+:::
+
+<ParameterList title="参数">
+<Parameter name="streamId">
+
+输出参数，数据流 ID。
+
+</Parameter>
+<Parameter name="reliable">
+
+该数据流是否可靠：
+
+- `true`: 接收方 5 秒内会收到发送方所发送的数据。
+- `false`: 接收方不保证收到，就算数据丢失也不会报错。
+
+</Parameter>
+<Parameter name="ordered">
+
+该数据流是否有序：
+
+- `true`: 接收方会按照发送方发送的顺序收到数据包。
+- `false`: 接收方不保证按照发送方发送的顺序收到数据包。
+
+</Parameter>
+<Parameter name="sync">
+
+是否与本地发送的音频流同步：
+
+- `true`: 数据流与音频流同步。
+- `false`: 数据流与音频流不同步。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-15"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a2545d46a802312553e260e1acb45b721"></a>
+
+### sendStreamMessage()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::sendStreamMessage(int *streamId*, const char * *data*, size_t *length*)
+
+</ApiSignature>
+
+发送数据流消息。
+
+该方法发送数据流消息到频道内所有用户。SDK 对该方法的实现进行了如下限制：
+
+- 频道内每秒最多能发送 30 个包，且每个包最大为 1 KB。
+- 每个客户端每秒最多能发送 6 KB 数据。
+- 频道内每人最多能同时有 5 个数据通道。
+
+成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer#a0a0af52ad5ef54b08919df497b738f8b) 回调，远端用户可以在该回调中获取接收到的流消息。
+
+:::info[注解]
+- 请确保在调用该方法前，已调用 [createDataStream](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a53f87120cf152e9a80a64de9f0144ede) 创建了数据通道。
+- 直播场景下，该方法仅适用于主播用户。
+:::
+
+<ParameterList title="参数">
+<Parameter name="streamId">
+
+数据流 ID。可以通过 `createDataStream` 获取。
+
+</Parameter>
+<Parameter name="data">
+
+待发送的数据。
+
+</Parameter>
+<Parameter name="length">
+
+数据长度。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-16"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="af34378df5af2c9e95518d1c8c0167d85"></a>
+
+### enableEncryption()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::enableEncryption(bool *enabled*, const [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encryption-config) & *config*)
+
+</ApiSignature>
+
+开启或关闭内置加密。
+
+在安全要求较高的场景下，声网建议你在加入频道前，调用本方法开启内置加密。
+
+同一频道内所有用户必须使用相同的加密模式和密钥。用户离开频道后，SDK 会自动关闭加密。如需重新开启加密，你需要在用户再次加入频道前调用该方法。
+
+:::info[注解]
+- 如果开启了内置加密，则不能使用直推 CDN 功能。
+:::
+
+<ParameterList title="参数">
+<Parameter name="enabled">
+
+是否开启内置加密：
+
+- true: 开启内置加密。
+- false: 关闭内置加密。
+
+</Parameter>
+<Parameter name="config">
+
+配置内置加密模式和密钥。详见 [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encryption-config) 。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-17"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ab3d10eedee141e857313fdebdc95041d"></a>
+
+### getUserInfoByUserAccount()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::getUserInfoByUserAccount(const char * *userAccount*, [rtc::UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) * *userInfo*)
+
+</ApiSignature>
+
+根据 user account（String 型用户 ID） 获取用户信息。
+
+<ParameterList title="参数">
+<Parameter name="userAccount">
+
+用户的 user account。
+
+</Parameter>
+<Parameter name="userInfo" direction="[in,out]">
+
+[UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) 对象：
+
+- 输入: 一个 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) 对象。
+- 输出: 一个 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) 对象，包含 user account 和 user ID。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-18"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a8f77c8e61a79ce40dda190c333dc8585"></a>
+
+### getUserInfoByUid()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtcConnection::getUserInfoByUid([uid_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab650539cb2bdcf8382d0aa32c6d70aa7) *uid*, [rtc::UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) * *userInfo*)
+
+</ApiSignature>
+
+根据用户 ID 获取用户信息。
+
+<ParameterList title="参数">
+<Parameter name="uid">
+
+用户 ID
+
+</Parameter>
+<Parameter name="userInfo" direction="[in,out]">
+
+[UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) 对象：
+
+- 输入: 一个 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) 对象。
+- 输出: 一个 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-user-info) 对象，包含 user account 和 user ID。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-19"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

@@ -18,6 +18,8 @@ const REPO_ROOT = path.resolve(
 );
 const FIXTURE_PATHS = [
   'scripts/generate-legacy-redirect-artifacts.mjs',
+  'src/lib/retired-cn-docs.mjs',
+  'src/lib/shengwang-guide-redirects.json',
   'src/lib/legacy-sitemap/redirects.json',
   'src/lib/legacy-sitemap/gsc-observed-redirects.json',
   'src/lib/legacy-sitemap/posthog-revalidated-404s.json',
