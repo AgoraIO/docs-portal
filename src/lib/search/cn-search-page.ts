@@ -31,6 +31,9 @@ export type CnSearchPageResponse = {
   page: number;
   facets: SearchFacets;
   familyTotalHits?: Partial<Record<CnSearchFamily, number>>;
+  /** Explicit pageSize requests count document groups, with one best section each. */
+  pageSize?: number;
+  paginationUnit?: 'groups';
 };
 
 export type CnSearchRequest = SearchPageState & { tab?: string };

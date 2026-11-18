@@ -10,6 +10,102 @@ const route = { url, canonicalPath: url, markdownPath: `${url}.md` };
 const page = { url, title: 'RTC API', objectType: 'docs' as const };
 describe('published CN index export', () => {
   it.each([
+    ['<ApiReferenceCards locale="zh-CN" type="all" />', 'C'],
+    [
+      '<Card href="/internal-config" icon="ticket" style={{ display: "grid" }} />',
+      'internal-config',
+    ],
+    [
+      '<Card href="/internal-config" icon="ticket" style={{ display: "grid" }} />',
+      'grid',
+    ],
+    [
+      '<Card href="/internal-config" icon="ticket" style={{ display: "grid" }} />',
+      'ticket',
+    ],
+  ])(
+    'does not create a search record from JSX configuration %s matching rendered text %s',
+    async (component, rendered) => {
+      const catalogUrl = '/zh-CN/api-reference/api';
+      const records = await exportPublishedCnRecords({
+        routes: [
+          route,
+          {
+            url: catalogUrl,
+            canonicalPath: catalogUrl,
+            markdownPath: `${catalogUrl}.md`,
+          },
+        ],
+        pages: [page, { url: catalogUrl, title: 'API 参考' }],
+        readMarkdown: async (path) =>
+          path === route.markdownPath
+            ? '# RTC API\n\n正常正文。'
+            : `# API 参考\n\n${component}`,
+        readRenderedHtml: async (path) =>
+          path === url
+            ? '<article data-static-docs-body><p>正常正文。</p></article>'
+            : `<article data-static-docs-body><span>${rendered}</span></article>`,
+      });
+      expect(records).toHaveLength(1);
+      expect(records[0].url).toBe('/api-reference/rtc/web/4.6.0/api');
+      expect(records[0].content).toBe('正常正文。');
+    },
+  );
+  it('preserves literal single-letter prose props without indexing matching configuration', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n<HelpHub cards={[{ title: "C", description: `A &amp; B`, href: "/internal-config" }]} />',
+      readRenderedHtml: async () =>
+        '<article data-static-docs-body><h3>C</h3><p>A &amp; B</p><span>internal-config</span></article>',
+    });
+    expect(records).toHaveLength(1);
+    expect(records[0].content.trim()).toBe('C\nA & B');
+    expect(records[0].summary).toBe('C\nA & B');
+  });
+  it('recovers literal prose supplied by a nested JSX title component', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n<Card title={<Label text="显示文本" className="internal-style" />} />',
+      readRenderedHtml: async () =>
+        '<article data-static-docs-body><span>显示文本</span><span>internal-style</span></article>',
+    });
+    expect(records).toHaveLength(1);
+    expect(records[0].content.trim()).toBe('显示文本');
+    expect(records[0].summary).toBe('显示文本');
+  });
+  it('retains visible HelpHub call-to-action text without indexing card configuration', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n<HelpHub cards={[{ title: "提交工单", description: "联系技术支持。", cta: "创建工单", href: "/internal-config", icon: "ticket" }]} />',
+      readRenderedHtml: async () =>
+        '<article data-static-docs-body><h3>提交工单</h3><p>联系技术支持。</p><span>创建工单</span><span>internal-config</span><span>ticket</span></article>',
+    });
+    expect(records).toHaveLength(1);
+    expect(records[0].content.trim()).toBe(
+      '提交工单\n联系技术支持。\n创建工单',
+    );
+  });
+  it('retains rendered demo captions and metadata without accepting other component configuration', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n<DemoMedia qrLabel="扫码体验" imageSrc="/image.png" />\n\n<DemoGallery items={[{title: "Demo", platforms: ["iOS", "Android"], products: ["RTC", "RTM"], tags: ["语聊房"], version: "4.6.0", releaseDate: "2023-12-27"}]} />\n\n<Card version="internal-version" platforms={["internal-platform"]} />',
+      readRenderedHtml: async () =>
+        '<article data-static-docs-body><figcaption>扫码体验</figcaption><h3>Demo</h3><dd>iOS、Android</dd><dd>RTC、RTM</dd><span>语聊房</span><dd>4.6.0</dd><dd>2023-12-27</dd><span>internal-version</span><span>internal-platform</span></article>',
+    });
+    expect(records).toHaveLength(1);
+    expect(records[0].content.trim()).toBe(
+      '扫码体验\nDemo\niOS、Android\nRTC、RTM\n语聊房\n4.6.0\n2023-12-27',
+    );
+  });
+  it.each([
     '<button aria-expanded="false">帮助</button>',
     '帮助<button aria-label="Copy Anchor Link">Copy Anchor Link</button>',
   ])(
