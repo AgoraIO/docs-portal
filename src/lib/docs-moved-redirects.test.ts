@@ -6,6 +6,37 @@ import {
 } from './docs-moved-redirects';
 
 describe('resolveMovedDocsRedirect', () => {
+  it('publishes the scenario redirects for both Chinese URL forms', () => {
+    const deployment = JSON.parse(readFileSync('vercel.base.json', 'utf8'));
+    for (const prefix of ['', '/zh-CN']) {
+      expect(deployment.redirects).toContainEqual({
+        source: `${prefix}/realtime-media/rtm/best-practice/:platform(web|android|ios|cpp|swift|harmonyos)/:scenario(voice-room|one-to-one-call)`,
+        destination: `${prefix}/realtime-media/rtm/best-practice/:scenario/:platform`,
+        statusCode: 301,
+      });
+    }
+  });
+
+  it.each(['web', 'android', 'ios', 'cpp', 'swift', 'harmonyos'])(
+    'redirects both old RTM %s scenarios to their merged platform pages',
+    (platform) => {
+      for (const scenario of ['voice-room', 'one-to-one-call']) {
+        const segments = ['rtm', 'best-practice', platform, scenario];
+        expect(
+          resolveMovedDocsRedirect('zh-CN', 'realtime-media', segments),
+        ).toBe(
+          `/zh-CN/realtime-media/rtm/best-practice/${scenario}/${platform}`,
+        );
+        expect(
+          isPermanentMovedDocsRedirect('zh-CN', 'realtime-media', segments),
+        ).toBe(true);
+        expect(
+          resolveMovedDocsRedirect('en', 'realtime-media', segments),
+        ).toBeNull();
+      }
+    },
+  );
+
   it.each([
     'whiteboard/whiteboard-sdk/build/setup-and-access/generate-token',
     'whiteboard/fastboard-sdk/build/setup-and-access/generate-token',

@@ -8,14 +8,28 @@ import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
 import { describe, expect, it } from 'vitest';
-import { processPlatformMarkdown } from '@/test/platform-markdown';
+import {
+  processPlatformMarkdown,
+  selectPlatformMarkdown,
+} from '@/test/platform-markdown';
 import { docsMetaSchema } from './docs-meta-schema';
 import {
   getScopedNavScopeSidebarNodes,
   resolveDocsNavScope,
 } from './docs-nav-scope';
 import { extractStructuredPlatformTabs } from './platforms/processed-text';
+import type { PlatformKey } from './platforms/registry';
 import { createPublishedDocsRoutes } from './published-docs-routes';
+
+function selectScenario(scenario: string, platform: PlatformKey) {
+  return selectPlatformMarkdown(
+    readFileSync(
+      `content/docs/zh-CN/realtime-media/rtm/best-practice/${scenario}.mdx`,
+      'utf8',
+    ),
+    platform,
+  );
+}
 
 const parser = unified().use(remarkParse).use(remarkMdx).use(remarkGfm);
 const routeCache = new Map<string, boolean>();
@@ -42,14 +56,11 @@ function isPublishedRoute(pathname: string) {
 }
 
 describe('published RTM scenario link destinations', () => {
-  it.each(['android', 'ios', 'cpp', 'swift', 'harmonyos'])(
+  it.each(['web', 'android', 'ios', 'cpp', 'swift', 'harmonyos'] as const)(
     'resolves authored links in both %s scenarios through real platform coverage',
     (platform) => {
       for (const scenario of ['voice-room', 'one-to-one-call']) {
-        const source = readFileSync(
-          `content/docs/zh-CN/realtime-media/rtm/best-practice/${platform}/${scenario}.mdx`,
-          'utf8',
-        ).replace(/^---\n[\s\S]*?---\n/, '');
+        const source = selectScenario(scenario, platform);
         const tree = parser.parse(source) as Root;
         const urls: string[] = [];
         visit(tree, 'link', (node) => {
@@ -71,10 +82,7 @@ describe('RTM User Storage fragment destinations', () => {
   it.each(['android', 'ios', 'cpp', 'swift', 'harmonyos'])(
     'targets the rendered setUserMetadata member on %s',
     async (platform) => {
-      const scenario = readFileSync(
-        `content/docs/zh-CN/realtime-media/rtm/best-practice/${platform}/voice-room.mdx`,
-        'utf8',
-      ).replace(/^---\n[\s\S]*?---\n/, '');
+      const scenario = selectScenario('voice-room', platform as PlatformKey);
       const links: string[] = [];
       visit(parser.parse(scenario), 'link', (node) => {
         if (node.url.includes('/storage#')) links.push(node.url);
@@ -106,27 +114,34 @@ describe('RTM User Storage fragment destinations', () => {
   );
 });
 
-describe('RTM scenario sidebar labels', () => {
-  it('distinguishes twelve sidebar entries while retaining page titles and URLs', () => {
+describe('RTM scenario sidebar', () => {
+  it('shows exactly two scenarios with all six platform variants', () => {
     const raw = JSON.parse(
       readFileSync('content/docs/zh-CN/realtime-media/rtm/meta.json', 'utf8'),
     );
     const scenarioGroup = raw.pages.find(
       (page: { title?: string }) => page.title === '场景实践',
     );
-    const labels: Record<string, string> = {
-      web: 'Web',
-      android: 'Android',
-      ios: 'iOS',
-      cpp: 'C++',
-      swift: 'Swift',
-      harmonyos: 'HarmonyOS',
-    };
+    expect(scenarioGroup.pages).toEqual([
+      'best-practice/voice-room',
+      'best-practice/one-to-one-call',
+    ]);
     const pages = (scenarioGroup.pages as string[]).map((path) => {
       const content = readFileSync(
         `content/docs/zh-CN/realtime-media/rtm/${path}.mdx`,
         'utf8',
       );
+      const tabs = extractStructuredPlatformTabs(
+        processPlatformMarkdown(content),
+      );
+      expect(tabs?.platforms).toEqual([
+        'android',
+        'ios',
+        'web',
+        'harmonyos',
+        'cpp',
+        'swift',
+      ]);
       const name = content.match(/^title:\s*(.*)$/m)?.[1];
       const expected = path.endsWith('/voice-room')
         ? '语聊房场景'
@@ -175,7 +190,7 @@ describe('RTM scenario sidebar labels', () => {
     const getNodeMeta = (node: Folder | PageTreeRoot) =>
       node.$id === 'rtm' ? meta : undefined;
     const scope = resolveDocsNavScope({
-      activePath: pages[2].url,
+      activePath: pages[0].url,
       getNodeMeta,
       root,
       tab: 'realtime-media',
@@ -190,13 +205,12 @@ describe('RTM scenario sidebar labels', () => {
     );
     if (group?.type !== 'section')
       throw new Error('Missing scenario sidebar section');
-    expect(group.children).toHaveLength(12);
-    expect(new Set(group.children.map((node) => node.title)).size).toBe(12);
+    expect(group.children).toHaveLength(2);
+    expect(new Set(group.children.map((node) => node.title)).size).toBe(2);
     for (const [index, node] of group.children.entries()) {
       const page = pages[index];
-      const platform = page.url.split('/').at(-2) ?? '';
       expect(node.url).toBe(page.url);
-      expect(node.title).toBe(`${page.name} · ${labels[platform]}`);
+      expect(node.title).toBe(page.name);
     }
   });
 });
