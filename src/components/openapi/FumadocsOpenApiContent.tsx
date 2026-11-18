@@ -980,14 +980,6 @@ function OpenApiEnglishResponses({
   );
   return (
     <OpenApiResponses
-      labels={{
-        mediaTypeForResponse: (status) =>
-          `Media type for ${status} response`,
-        responseBody: getOpenApiLabel('Response Body', 'en'),
-        responses: getOpenApiLabel('Responses', 'en'),
-        schemaHasNoFields: getOpenApiLabel('Schema has no fields', 'en'),
-        schemaNotProvided: getOpenApiLabel('Schema not provided', 'en'),
-      }}
       renderDescription={(markdown) =>
         renderOpenApiMarkdown(normalizeOpenApiDescriptionMarkdown(markdown))
       }

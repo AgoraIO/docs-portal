@@ -832,7 +832,7 @@ export async function loadDocsPagePayload(
     tab,
   });
   const focusedOpenApiLaneHeader =
-    !navScope && supportedLocale
+     !navScope && supportedLocale === 'zh-CN'
       ? resolveFocusedOpenApiLaneSidebarHeader(page.url, supportedLocale, tab)
       : undefined;
   const resolvedSidebarHeader = sidebarHeader ?? focusedOpenApiLaneHeader;
@@ -2158,6 +2158,7 @@ async function getDocsSidebarNodes({
   source: typeof docsSource;
   tab: string;
 }) {
+  if (locale === 'en') return getDocsSidebarNodesGlobal({activePath, locale, pageTree, pageUrl, source, tab});
   const productSidebarPath = getZhCnProductSidebarPath(
     activePath ?? pageUrl,
     tab,
@@ -2290,10 +2291,9 @@ async function getDocsSidebarNodes({
     : sidebarWithSourcePagesOnly;
 
   const sidebarWithRealtimeMediaApiReference =
-    addRealtimeMediaApiReferenceSidebarItems(
-      sidebarWithoutReferenceProductIcons,
-      activePath,
-    );
+    locale === 'zh-CN'
+      ? addRealtimeMediaApiReferenceSidebarItem(sidebarWithoutReferenceProductIcons, activePath)
+      : addRealtimeMediaApiReferenceSidebarItems(sidebarWithoutReferenceProductIcons, activePath);
 
   if (!isOpenApiTab(tab) || !locale) {
     const embeddedSidebar = await embedZhCnServiceApiSidebars(
@@ -4310,6 +4310,7 @@ function resolveDocsSidebarHeader({
   source: typeof docsSource;
   tab: string;
 }) {
+  if (locale === 'en') return resolveDocsSidebarHeaderGlobal({activePath, hidePlatformTabs, locale, navScope, pageTree, source, tab});
   if (
     tab === 'ai' &&
     (usesAiProductSidebar(activePath) ||
@@ -4955,4 +4956,386 @@ function getOpenApiNavigationLink(
     title: lane.operations[operationId].title[locale],
     url: getOpenApiEndpointUrl(lane, locale, operationId),
   };
+}
+
+async function getDocsSidebarNodesGlobal({
+  activePath,
+  locale,
+  pageTree,
+  pageUrl,
+  source,
+  tab,
+}: {
+  activePath?: string;
+  locale: AppLocale | null;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  pageUrl?: string;
+  source: typeof docsSource;
+  tab: string;
+}) {
+  if (tab === 'ai' && usesAiProductSidebar(activePath ?? pageUrl ?? '')) {
+    const aiNodes = getNavScopeSidebarNodes({
+      getNodeMeta: (node) =>
+        getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+      root: pageTree,
+      tab,
+    });
+    const apiReferenceNodes =
+      locale === null
+        ? []
+        : getNavScopeSidebarNodes({
+            getNodeMeta: (node) =>
+              getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+            root: pageTree,
+            tab: OPENAPI_TAB,
+          });
+
+    return buildGlobalAiProductSidebar(
+      aiNodes.filter(
+        (node) =>
+          node.type !== 'section' ||
+          node.title !== 'Conversational AI Platform (Preview)',
+      ),
+      apiReferenceNodes,
+    );
+  }
+
+  if (
+    shouldUseSharedPlatformSidebar(
+      tab,
+      activePath ?? pageUrl,
+      locale,
+      pageTree,
+      source,
+    )
+  ) {
+    return getSharedRtcSidebarNodes({
+      locale,
+      pageTree,
+      source,
+      tab,
+      activePath,
+    });
+  }
+
+  const navScope = activePath
+    ? getDocsNavScope({
+        activePath,
+        locale,
+        pageTree,
+        source,
+        tab,
+      })
+    : null;
+  const sidebar = navScope
+    ? getScopedSidebarNodes({
+        locale,
+        navScope,
+        source,
+      })
+    : getNavScopeSidebarNodes({
+        getNodeMeta: (node) =>
+          getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+        root: pageTree,
+        tab,
+      });
+  const scopedReferenceProductSidebar =
+    Boolean(navScope) && isReferenceProductSidebarPath(activePath ?? pageUrl);
+  const sidebarWithoutReferenceProductIcons = scopedReferenceProductSidebar
+    ? stripSidebarSectionIcons(sidebar)
+    : sidebar;
+
+  const sidebarWithRealtimeMediaApiReference =
+    addRealtimeMediaApiReferenceSidebarItems(
+      sidebarWithoutReferenceProductIcons,
+      activePath,
+    );
+
+  if (!isOpenApiTab(tab) || !locale) {
+    return sidebarWithRealtimeMediaApiReference;
+  }
+
+  const openApiSidebar = await addOpenApiEndpointSidebarItems(
+    sidebarWithRealtimeMediaApiReference,
+    locale,
+    tab,
+    resolveDocVersion(activePath ?? pageUrl ?? '')?.version
+      .restrictToMappedPages
+      ? navScope?.sidebarRoot.index?.url
+      : undefined,
+  );
+
+  if (isRecipesPath(activePath)) {
+    return restoreRecipesSidebarSections(openApiSidebar);
+  }
+
+  return openApiSidebar;
+}
+
+function resolveDocsSidebarHeaderGlobal({
+  activePath,
+  hidePlatformTabs,
+  locale,
+  navScope,
+  pageTree,
+  source,
+  tab,
+}: {
+  activePath: string;
+  hidePlatformTabs?: boolean;
+  locale: AppLocale | string | null;
+  navScope: DocsNavScopeResolution | null;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  source: typeof docsSource;
+  tab: string;
+}) {
+  if (
+    tab === 'ai' &&
+    (usesAiProductSidebar(activePath) ||
+      resolveDocVersion(activePath)?.scope.id === 'convoai-guides')
+  ) {
+    return undefined;
+  }
+
+  if (!navScope) {
+    return undefined;
+  }
+
+  if (hidePlatformTabs) {
+    return {
+      ...navScope.header,
+      versionSwitcher: undefined,
+    };
+  }
+
+  if (!shouldUseSharedPlatformSidebar(tab, activePath)) {
+    return navScope.header;
+  }
+
+  const versionLinks = getNavScopeVersionLinks({
+    activePath,
+    getNodeMeta: (node) =>
+      getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+    root: pageTree,
+    tab,
+  }).filter((link) => isSharedPlatformTabUrl(activePath, link.href));
+
+  if (
+    versionLinks.length === 0 ||
+    !versionLinks.some((link) => link.href === activePath)
+  ) {
+    return {
+      ...navScope.header,
+      versionSwitcher: undefined,
+    };
+  }
+
+  return {
+    ...navScope.header,
+    versionSwitcher: {
+      currentId:
+        versionLinks.find((item) => item.href === activePath)?.id ??
+        navScope.header.versionSwitcher?.currentId ??
+        versionLinks[0].id,
+      presentation: 'tabs' as const,
+      versions: versionLinks,
+    },
+  };
+}
+
+function buildGlobalAiProductSidebar(
+  nodes: DocsSidebarNode[],
+  apiReferenceNodes: DocsSidebarNode[] = [],
+): DocsSidebarNode[] {
+  const aiOverview =
+    findSidebarPageByExactUrlInNodes(nodes, '/en/ai') ??
+    findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai');
+  const conversationalAiQuickstart =
+    findSidebarPageByExactUrlInNodes(nodes, '/en/ai/get-started/quickstart') ??
+    findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai/get-started/quickstart');
+  const conversationalAiReleaseNotes =
+    findSidebarPageByExactUrlInNodes(nodes, '/en/ai/release-notes') ??
+    findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai/release-notes') ??
+    findSidebarPageByExactUrlInNodes(nodes, '/en/ai/reference/release-notes') ??
+    findSidebarPageByExactUrlInNodes(
+      nodes,
+      '/zh-CN/ai/reference/release-notes',
+    );
+  const buildSection = findTopLevelSidebarSection(nodes, ['Build', '构建']);
+  const bestPracticesSection = findTopLevelSidebarSection(nodes, [
+    'Best practices',
+    '最佳实践',
+  ]);
+  const modelsSection = findTopLevelSidebarSection(nodes, ['Models', '模型']);
+  const referenceSection = findTopLevelSidebarSection(nodes, [
+    'Reference',
+    '参考',
+  ]);
+  const deviceKitSection = findTopLevelSidebarSection(nodes, [
+    'Convo AI Device Kit',
+  ]);
+  const _deviceKitTopLevelSection = findTopLevelSidebarSection(nodes, [
+    'Convo AI Device Kit',
+  ]);
+  const agentStudioSection = findTopLevelSidebarSection(nodes, [
+    'Agent Studio',
+  ]);
+
+  if (
+    !aiOverview ||
+    !conversationalAiQuickstart ||
+    !buildSection ||
+    !bestPracticesSection ||
+    !modelsSection ||
+    !referenceSection ||
+    !deviceKitSection
+  ) {
+    return filterSidebarNodes(nodes, (node) => {
+      if (node.type !== 'page') {
+        return true;
+      }
+
+      return !node.url.includes('/ai/choose-your-path/');
+    });
+  }
+
+  const conversationalAiApiReferenceSection = findTopLevelSidebarSection(
+    apiReferenceNodes,
+    ['Conversational AI'],
+  );
+  const _conversationalAiRestApiSection = conversationalAiApiReferenceSection
+    ? (findNestedSidebarSectionByExactUrl(
+        conversationalAiApiReferenceSection,
+        '/en/api-reference/conversational-ai/rest-api',
+      ) ??
+      findNestedSidebarSectionByExactUrl(
+        conversationalAiApiReferenceSection,
+        '/zh-CN/api-reference/conversational-ai/rest-api',
+      ))
+    : null;
+
+  const isZhCn = aiOverview.url.startsWith('/zh-CN/');
+  const aiLocalePrefix = isZhCn ? '/zh-CN' : '/en';
+  const restApiUrl = isZhCn
+    ? `${aiLocalePrefix}/api-reference/conversational-ai/rest-api/authentication`
+    : `${aiLocalePrefix}/api-reference/api-ref/conversational-ai/authentication`;
+
+  const restApiPage = {
+    id: restApiUrl,
+    linked: true,
+    title: isZhCn ? 'REST API' : 'RESTful API',
+    type: 'page',
+    url: restApiUrl,
+  } satisfies DocsSidebarPageNode;
+  const serverSdkTypescriptUrl = isZhCn
+    ? `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/typescript`
+    : `${aiLocalePrefix}/api-reference/api-ref/server-sdk/typescript`;
+  const serverSdkTypescriptPage = {
+    id: serverSdkTypescriptUrl,
+    linked: true,
+    title: isZhCn ? 'Agora Agent SDK' : 'Agora Agent SDK',
+    type: 'page',
+    url: serverSdkTypescriptUrl,
+  } satisfies DocsSidebarPageNode;
+
+  const referenceLeadingChildren = referenceSection.children.filter(
+    (child) =>
+      child.type === 'page' &&
+      (child.url === '/en/ai/reference/event-types' ||
+        child.url === '/zh-CN/ai/reference/event-types'),
+  );
+  const referenceTrailingChildren = referenceSection.children.filter(
+    (child) =>
+      !(
+        child.type === 'page' &&
+        (child.url === '/en/ai/reference/event-types' ||
+          child.url === '/zh-CN/ai/reference/event-types' ||
+          child.url === '/en/ai/reference/restful-api' ||
+          child.url === '/zh-CN/ai/reference/restful-api' ||
+          child.url === '/en/ai/reference/server-sdk' ||
+          child.url === '/en/ai/reference/client-toolkit' ||
+          child.url === '/zh-CN/ai/reference/server-sdk' ||
+          child.url === '/zh-CN/ai/reference/client-toolkit' ||
+          child.url === '/en/ai/release-notes' ||
+          child.url === '/zh-CN/ai/release-notes' ||
+          child.url === '/en/ai/reference/release-notes' ||
+          child.url === '/zh-CN/ai/reference/release-notes')
+      ),
+  );
+
+  const mergedReferenceSection: DocsSidebarSectionNode = {
+    ...stripSidebarSectionMeta(referenceSection),
+    children: [
+      restApiPage,
+      serverSdkTypescriptPage,
+      ...referenceLeadingChildren,
+      ...stripSidebarSectionMetaFromNodes(referenceTrailingChildren),
+    ],
+  };
+
+  const mergedBuildSection: DocsSidebarSectionNode = {
+    ...stripSidebarSectionMeta(buildSection),
+    children: stripSidebarSectionMetaFromNodes([
+      ...buildSection.children,
+      {
+        ...stripSidebarSectionMeta(bestPracticesSection),
+        children: stripSidebarSectionMetaFromNodes(
+          bestPracticesSection.children,
+        ),
+        title:
+          buildSection.title === '构建' ? '优化与加固' : 'Harden and optimize',
+      },
+    ]),
+  };
+
+  return [
+    {
+      ...aiOverview,
+      title: isZhCn ? '概览' : aiOverview.title,
+    },
+    {
+      children: stripSidebarSectionMetaFromNodes([
+        ...(conversationalAiReleaseNotes ? [conversationalAiReleaseNotes] : []),
+        {
+          ...conversationalAiQuickstart,
+          title: isZhCn ? 'Quickstart' : 'Quickstart',
+        },
+        mergedBuildSection,
+        modelsSection,
+        mergedReferenceSection,
+      ]),
+      icon: 'Bot',
+      id: 'ai-product-software-clients',
+      title: isZhCn ? 'Voice Agent in apps' : 'Voice agent in apps',
+      type: 'section',
+    },
+    ...(agentStudioSection
+      ? [
+          {
+            ...stripSidebarSectionMeta(agentStudioSection),
+            children: stripSidebarSectionMetaFromNodes(
+              agentStudioSection.children,
+            ),
+            icon: 'LayoutDashboard',
+            id: 'ai-product-agent-studio',
+            title: 'Agent Studio',
+            type: 'section',
+          } satisfies DocsSidebarSectionNode,
+        ]
+      : []),
+    {
+      ...stripSidebarSectionMeta(deviceKitSection),
+      children: [
+        ...stripSidebarSectionMetaFromNodes(
+          flattenDeviceKitSidebarChildren(deviceKitSection.children),
+        ),
+      ],
+      icon: 'Cpu',
+      id: 'ai-product-dedicated-devices',
+      title: isZhCn
+        ? 'Voice Agent on dedicated devices'
+        : 'Voice agent on dedicated devices',
+      type: 'section',
+    },
+  ];
 }

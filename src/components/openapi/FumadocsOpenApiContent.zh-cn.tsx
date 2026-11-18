@@ -91,7 +91,7 @@ import { OpenApiCodePreview } from './OpenApiCodePreview';
 import { OpenApiExamplesRail } from './OpenApiExamplesRail';
 import { OpenApiOperationPanels } from './OpenApiOperationPanels';
 import { OpenApiResponseHeaderRow } from './OpenApiResponseHeaderRow';
-import { OpenApiResponses } from './OpenApiResponses';
+import { OpenApiResponses } from './OpenApiResponses.zh-cn';
 import { OpenApiSchema } from './OpenApiSchema';
 import {
   OPENAPI_SECTION_HEADING_CLASS,

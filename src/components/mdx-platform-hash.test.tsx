@@ -27,6 +27,7 @@ function Page({
       <PlatformHeaderTabs canonicalPlatform="android" platforms={platforms} />
       <h2 id="shared">Shared heading</h2>
       <PlatformTabsGroup
+        locale="zh-CN"
         canonicalPlatform="android"
         groupMode="structured"
         platforms={platforms}

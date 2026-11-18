@@ -44,6 +44,7 @@ type ControlledTabsProps = React.ComponentProps<typeof Tabs> & {
 };
 
 type PlatformPanelProps = {
+  keepInactiveMounted?: boolean;
   children?: ReactNode;
   platform: PlatformKey;
   activePlatform?: PlatformKey;
@@ -305,6 +306,7 @@ export function PlatformTabsGroup({
 
     return cloneElement(child as ReactElement<PlatformPanelProps>, {
       activePlatform,
+      keepInactiveMounted: locale === 'zh-CN',
     });
   });
 
@@ -1190,19 +1192,22 @@ function syncPlatformPath(platform: PlatformKey) {
 }
 
 export function PlatformPanel({
+  keepInactiveMounted = false,
   activePlatform,
   children,
   platform,
 }: PlatformPanelProps) {
   const isActive = activePlatform === undefined || activePlatform === platform;
 
-  if (!isActive) {
+  if (!isActive && !keepInactiveMounted) {
     return null;
   }
 
   return (
     <section
-      aria-hidden="false"
+      aria-hidden={!isActive}
+      hidden={!isActive}
+      inert={isActive ? undefined : true}
       className="min-w-0 [overflow-wrap:anywhere]"
       data-platform-panel={platform}
     >

@@ -828,6 +828,8 @@ describe('docs route locale guards', () => {
   });
 
   it('serves direct zh-CN .md docs page URLs as markdown', async () => {
+    publishedLocaleOverride.value = true;
+    try {
     const response = (await getGetHandler(DocPageRoute)({
       context: {},
       next: vi.fn(() => {
@@ -850,9 +852,14 @@ describe('docs route locale guards', () => {
     expect(response.headers.get('Content-Type')).toBe(
       'text/markdown; charset=utf-8',
     );
+    } finally {
+      publishedLocaleOverride.value = false;
+    }
   });
 
   it('serves direct zh-CN platform .md docs page URLs as markdown', async () => {
+    publishedLocaleOverride.value = true;
+    try {
     const response = (await getGetHandler(DocPageRoute)({
       context: {},
       next: vi.fn(() => {
@@ -878,6 +885,9 @@ describe('docs route locale guards', () => {
     expect(markdown).toContain(
       '/zh-CN/api-reference/api-ref/uikit-sdk/android',
     );
+    } finally {
+      publishedLocaleOverride.value = false;
+    }
   });
 
 });

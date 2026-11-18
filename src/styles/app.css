@@ -2,12 +2,6 @@
 @import "fumadocs-ui/css/lib/default-colors.css";
 @import "fumadocs-ui/css/preset.css";
 @import "fumadocs-openapi/css/preset.css";
-@import "./reference.css";
-@import "./docs-spacing.css";
-@import "./search.css";
-@import "./code-block.css";
-@import "./openapi-schema-metadata.css";
-@import "./image-spacing.css";
 
 :root {
   --color-fd-background: var(--background);
@@ -206,7 +200,6 @@
     --docs-text-primary: var(--ink-1);
     --docs-text-secondary: var(--ink-2);
     --docs-text-tertiary: var(--ink-3);
-    --docs-footer-link-hover: #006fbe;
     --docs-soft-fill: color-mix(in srgb, var(--ink-1) 3.5%, transparent);
     --line-soft: var(--line);
     --surface-muted: var(--bg-sunken);
@@ -263,7 +256,6 @@
     --docs-text-primary: var(--ink-1);
     --docs-text-secondary: var(--ink-2);
     --docs-text-tertiary: var(--ink-3);
-    --docs-footer-link-hover: #70b9ff;
     --docs-soft-fill: color-mix(in srgb, var(--ink-1) 4.5%, transparent);
     --line-soft: var(--line);
     --surface-muted: var(--bg-sunken);
@@ -408,11 +400,6 @@
 
   .prose {
     max-width: var(--content-max);
-  }
-
-  .prose,
-  .openapi-operation,
-  .openapi-markdown {
     --docs-prose-inline-code-bg: var(--bg-sunken);
     --docs-prose-inline-code-border: var(--line);
     --docs-prose-code-block-bg: #f1efe7;
@@ -450,9 +437,7 @@
     );
   }
 
-  .dark .prose,
-  .dark .openapi-operation,
-  .dark .openapi-markdown {
+  .dark .prose {
     --docs-prose-inline-code-bg: color-mix(
       in srgb,
       var(--bg-elev) 94%,
@@ -498,7 +483,10 @@
   }
 
   .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
-    padding-top: 0;
+    position: relative;
+    margin-top: 3.5rem;
+    margin-bottom: 0.875rem;
+    padding-top: 1.75rem;
     letter-spacing: -0.012em;
     font-size: 1.375rem;
     font-weight: 600;
@@ -544,6 +532,8 @@
   }
 
   .prose :where(h3):not(:where(.not-prose, .not-prose *)) {
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
     letter-spacing: -0.005em;
     font-size: 1rem;
     font-weight: 600;
@@ -557,6 +547,7 @@
   }
 
   .prose :where(ul, ol):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 1rem 1.35rem;
     padding-inline-start: 1.4rem;
   }
 
@@ -578,6 +569,7 @@
 
   .prose :where(li):not(:where(.not-prose, .not-prose *)) {
     padding-inline-start: 0.2rem;
+    margin-block: 0.42rem;
   }
 
   .prose
@@ -737,6 +729,7 @@
     background: var(--docs-prose-code-block-bg);
     color: var(--docs-prose-code-block-color);
     box-shadow: var(--docs-prose-code-block-shadow);
+    margin-block: 1.5rem 1.9rem;
   }
 
   .prose :where(pre .line):not(:where(.not-prose, .not-prose *)) {
@@ -752,6 +745,12 @@
     background: transparent;
     padding: 0;
     color: inherit;
+  }
+
+  figure.shiki.not-prose .line {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .prose :where(pre.shiki):not(:where(.not-prose, .not-prose *)) {
@@ -772,6 +771,7 @@
     width: 100%;
     max-width: 100%;
     min-width: 100%;
+    margin-block: 1.4rem 1.8rem;
     overflow-x: auto;
     overflow-y: hidden;
     border-collapse: separate;
@@ -789,7 +789,7 @@
       :where(.not-prose, .not-prose *)
     ) {
     display: table;
-    width: 100%;
+    width: auto;
     max-width: none;
     min-width: 0;
     overflow: visible;
@@ -800,9 +800,9 @@
   }
 
   .prose :where(th, td):not(:where(.not-prose, .not-prose *)) {
-    min-width: 6ch;
+    min-width: 7.5rem;
     border-bottom: 1px solid var(--docs-prose-table-border);
-    padding: 0.625rem 0.75rem;
+    padding: 0.85rem 1rem;
     text-align: left;
     vertical-align: top;
     word-break: normal;
@@ -837,14 +837,11 @@
     :where(th:first-child, td:first-child):not(
       :where(.not-prose, .not-prose *)
     ) {
-    min-width: 12ch;
+    min-width: 9.5rem;
     white-space: normal;
   }
 
-  .prose
-    :where(tbody tr:last-child :is(th, td)):not(
-      :where(.not-prose, .not-prose *)
-    ) {
+  .prose :where(tbody tr:last-child td):not(:where(.not-prose, .not-prose *)) {
     border-bottom: 0;
   }
 
@@ -941,7 +938,7 @@
 
   .docs-shell-search-trigger {
     height: 36px;
-    width: 100%;
+    width: 320px;
     justify-content: flex-start;
     border-color: var(--line-strong);
     border-radius: 9px;
@@ -1040,73 +1037,28 @@
     color: #a16207;
   }
 
-  .docs-card-surface {
-    border: 1px solid var(--line-strong);
-    border-radius: 0.75rem;
-    background: var(--bg-card);
-    color: var(--ink-1);
-  }
-
-  .docs-card-interactive {
-    transition:
-      border-color 180ms ease-out,
-      background-color 180ms ease-out;
-  }
-
-  .docs-card-interactive:hover {
-    border-color: color-mix(in srgb, var(--ink-1) 24%, transparent);
-    background: color-mix(in srgb, var(--ink-1) 3%, var(--bg-card));
-  }
-
-  .docs-card-interactive:focus-visible {
-    outline: 2px solid var(--ink-3);
-    outline-offset: 3px;
-  }
-
   .docs-card-link {
     position: relative;
     padding-inline-end: 3.25rem;
   }
 
-  .docs-card-arrow {
+  .docs-card-link::after {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    content: "→";
+    color: var(--color-fd-muted-foreground);
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1;
     transition:
-      transform 180ms ease-out,
-      color 180ms ease-out;
+      transform 160ms ease,
+      color 160ms ease;
   }
 
-  .docs-card-link:hover .docs-card-arrow {
-    transform: translateX(3px);
-    color: var(--ink-1);
-  }
-
-  .docs-mdx-card > div:has(> svg) {
-    border: 0;
-    box-shadow: none;
-    color: var(--ink-2);
-  }
-
-  .docs-mdx-card > h3 {
-    font-weight: 600;
-    line-height: 1.5;
-  }
-
-  [data-docs-home] .prose .docs-body > h2 {
-    margin-top: 2rem;
-    padding-top: 0;
-    padding-bottom: 0;
-    border-bottom: 0;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .docs-card-interactive,
-    .docs-card-arrow,
-    .docs-card-surface svg {
-      transition: none;
-    }
-
-    .docs-card-surface:hover svg {
-      transform: none;
-    }
+  .docs-card-link:hover::after {
+    transform: translateX(2px);
+    color: var(--color-fd-card-foreground);
   }
 
   :where(input, textarea, select) {
@@ -1277,8 +1229,7 @@
       scrollbar-width: thin;
     }
 
-    .openapi-examples-rail-anchor,
-    [data-openapi-operation-panel="examples"] {
+    .openapi-examples-rail-anchor {
       align-self: stretch;
     }
   }
@@ -1317,15 +1268,6 @@
   }
 
   .openapi-operation .openapi-markdown {
-    --docs-openapi-table-border: var(--docs-prose-table-border, var(--line));
-    --docs-openapi-table-head-bg: var(
-      --docs-prose-table-head-bg,
-      color-mix(in srgb, var(--bg-muted) 72%, var(--bg-card))
-    );
-    --docs-openapi-table-row-bg: var(
-      --docs-prose-table-row-bg,
-      color-mix(in srgb, var(--bg-muted) 28%, transparent)
-    );
     color: var(--ink-2);
     font-size: 0.9375rem;
     line-height: 1.7;
@@ -1340,6 +1282,8 @@
   }
 
   .openapi-operation .openapi-markdown :where(h2, h3, h4) {
+    margin-top: 1.6rem;
+    margin-bottom: 0.55rem;
     color: var(--ink-1);
     font-weight: 600;
     line-height: 1.35;
@@ -1350,30 +1294,25 @@
   }
 
   .openapi-operation .openapi-markdown :where(h2) {
-    margin-block: var(--docs-space-section) var(--docs-space-section-after);
     font-size: 1.25rem;
   }
 
   .openapi-operation .openapi-markdown :where(h3) {
-    margin-block: var(--docs-space-subsection)
-      var(--docs-space-subsection-after);
     font-size: 1.0625rem;
   }
 
   .openapi-operation .openapi-markdown :where(h4) {
-    margin-block: var(--docs-space-minor-section)
-      var(--docs-space-minor-section-after);
     font-size: 0.975rem;
   }
 
   .openapi-operation .openapi-markdown :where(p) {
-    margin-block: var(--docs-space-block);
+    margin-block: 0.9rem;
     color: inherit;
     line-height: inherit;
   }
 
   .openapi-operation .openapi-markdown :where(ul, ol) {
-    margin-block: var(--docs-space-block);
+    margin-block: 0.9rem 1.1rem;
     padding-inline-start: 1.35rem;
   }
 
@@ -1394,14 +1333,14 @@
   }
 
   .openapi-operation .openapi-markdown :where(li) {
-    margin-block: var(--docs-space-item);
+    margin-block: 0.38rem;
     padding-inline-start: 0.15rem;
     color: inherit;
     line-height: inherit;
   }
 
   .openapi-operation .openapi-markdown :where(ul ul, ul ol, ol ul, ol ol) {
-    margin-block: var(--docs-space-item);
+    margin-block: 0.45rem;
   }
 
   .openapi-operation .openapi-markdown :where(ul > li, ol > li)::marker {
@@ -1444,19 +1383,12 @@
   }
 
   .openapi-operation .openapi-markdown :where(code):not(:where(pre code)) {
-    max-width: 100%;
-    overflow-wrap: anywhere;
-    word-break: break-word;
     border: 1px solid var(--line);
     border-radius: 0.3125rem;
     background: var(--bg-sunken);
     padding: 0.0625rem 0.375rem;
     color: var(--ink-1);
     font-size: 0.86em;
-  }
-
-  .openapi-operation .openapi-markdown :where(.docs-table-container) {
-    margin-block: var(--docs-space-block);
   }
 
   @media (max-width: 48rem) {
@@ -1633,20 +1565,6 @@
   list-style: lower-roman;
 }
 
-/* Markdown loose lists wrap item text in paragraphs. Keep item spacing equal
-   to tight lists in both the document body and nested prose containers. */
-:where(html)
-  .prose
-  :where(li > p:first-child):not(:where(.not-prose, .not-prose *)) {
-  margin-top: 0;
-}
-
-:where(html)
-  .prose
-  :where(li > p:last-child):not(:where(.not-prose, .not-prose *)) {
-  margin-bottom: 0;
-}
-
 /* Fumadocs ships unlayered prose table styles with `overflow: hidden`.
    Keep this unlayered override after the base layer so unwrapped/raw tables
    retain their own horizontal scrolling fallback. */
@@ -1664,7 +1582,7 @@
     :where(.not-prose, .not-prose *)
   ) {
   display: table;
-  width: 100%;
+  width: auto;
   max-width: none;
   min-width: 0;
   overflow: visible;
@@ -1807,11 +1725,6 @@
   text-decoration-color: var(--foreground);
 }
 
-/* Linked screenshots retain their image-only presentation. */
-.prose a:has(img) > .docs-external-link-icon {
-  display: none;
-}
-
 /* Fumadocs prose/table/code styles are emitted outside Tailwind layers.
    Keep these unlayered dark-mode overrides after the imports so rendered
    Markdown tables, code blocks, and inline code get the intended contrast. */
@@ -1950,66 +1863,11 @@
 }
 
 @layer utilities {
-  .prose .docs-body > .docs-console-api-entry + h2 {
-    margin-top: 1.75rem;
-    padding-top: 0;
-  }
-
-  /* Override prose/card utilities only for the teleoperation scenario grid. */
-  .docs-teleoperation-scenarios {
-    margin-block: 1.25rem;
-  }
-
-  .docs-teleoperation-scenarios > [data-card] {
-    border-radius: 0.25rem;
-  }
-
-  .docs-teleoperation-scenarios > [data-card] > h3 {
-    margin-block: 0 1rem;
-    font-size: 1rem;
-  }
-
-  .docs-teleoperation-scenarios > [data-card]:nth-child(1) > h3 {
-    color: var(--docs-success);
-  }
-
-  .docs-teleoperation-scenarios > [data-card]:nth-child(2) > h3 {
-    color: var(--docs-info);
-  }
-
-  .docs-teleoperation-scenarios > [data-card]:nth-child(3) > h3 {
-    color: var(--docs-warning);
-  }
-
-  .docs-teleoperation-scenarios p {
-    margin-block: 0 0.75rem;
-  }
-
-  .docs-teleoperation-scenarios ul {
-    margin-block: 0;
-  }
-
-  .docs-teleoperation-scenarios li {
-    margin-block: 0.25rem;
-  }
-
-  /* Keep hash targets below the sticky shell header, including its banner. */
-  .prose :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)),
-  .docs-body a[id]:not([href]):empty,
-  .docs-body :is(h2, h3, h4)[data-accordion-value],
-  .docs-body section[id]:has([data-accordion-value]) {
-    scroll-margin-top: max(
-      7rem,
-      calc(var(--docs-shell-header-offset, 0px) + 1.5rem)
-    );
-  }
-
   /* The shell header is sticky and its height varies (the legacy docs banner
      adds a row), so anchor targets clear whatever the header currently is.
      Must live in `utilities` to beat the flat 7rem `scroll-m-28` utility
      fumadocs puts on every heading: layer order outranks specificity. */
-  .prose :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)),
-  .openapi-operation .openapi-section-heading {
+  .prose :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
     scroll-margin-top: max(
       7rem,
       calc(var(--docs-shell-header-offset, 0px) + 1.5rem)
@@ -2095,26 +1953,6 @@
    ends, so an exit animation here would trap the dialog in the DOM. Closing is
    left instant (matching the pre-existing behavior) and the enter is what adds
    the polish. */
-/* Filters portal inside the dialog for scroll locking, but must escape its
-   bounds. Constrain the command surface and scroll its result list instead. */
-.docs-search-dialog > [data-slot="command"] {
-  max-height: calc(100dvh - 2rem);
-}
-
-.docs-search-dialog [cmdk-list] {
-  min-height: 0;
-}
-
-.docs-search-dialog > [data-slot="dialog-close"] {
-  top: 2px;
-  right: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-}
-
 .docs-search-dialog[data-state="open"] {
   animation: search-dialog-enter 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -2184,30 +2022,9 @@
   margin-block: 2.25rem 1rem;
 }
 
-/* Chinese API names can exceed a narrow article column. Keep titles and
-   prose readable while tables and code retain their own scroll containers. */
-article[lang="zh-CN"] > header h1,
-article[lang="zh-CN"]
-  .docs-body
-  :where(p, li):not(:where(.not-prose, .not-prose *, table *)) {
-  overflow-wrap: anywhere;
-}
-
-/* Shrink heading text beside Fumadocs' fixed-size copy button. These follow
-   Fumadocs' unlayered typography rules so the fix also applies after build. */
-article[lang="zh-CN"] .docs-body .group\/heading > a {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-/* Native title rows own section spacing; their headings must not add it again. */
-.openapi-operation div.flex:has(> .openapi-section-heading) {
-  margin-block: var(--docs-space-section) var(--docs-space-section-after);
-}
-
 .openapi-operation
-  div.flex:has(> .openapi-section-heading)
-  > .openapi-section-heading {
+  div.flex:has(> .openapi-section-heading[id="request-body"])
+  > .openapi-section-heading[id="request-body"] {
   margin-block: 0;
 }
 
@@ -2268,17 +2085,6 @@ article[lang="zh-CN"] .docs-body .group\/heading > a {
 
 .docs-callout > div:last-child > div :where(li + li) {
   margin-block-start: 0.25rem;
-}
-
-/* Keep REST parameter groups aligned with the unframed schema field trees. */
-.openapi-operation-layout
-  [class~="rounded-xl"][class~="border"][class~="bg-fd-card"][class~="px-3"]:has(
-    > .openapi-schema-parameter-fields
-  ) {
-  border: 0;
-  border-radius: 0;
-  padding-inline: 0;
-  background-color: transparent;
 }
 
 @media (min-width: 640px) {

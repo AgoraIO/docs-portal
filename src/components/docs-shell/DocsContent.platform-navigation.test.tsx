@@ -65,6 +65,7 @@ function FixturePage({
         platforms={platforms}
       />
       <PlatformTabsGroup
+        locale="zh-CN"
         canonicalPlatform="android"
         defaultPlatform="android"
         groupMode="structured"
@@ -162,6 +163,7 @@ it('reveals a hidden platform targeted by a cross-platform fragment while preser
         platforms='["restful-api","go"]'
       />
       <PlatformTabsGroup
+        locale="zh-CN"
         canonicalPlatform="restful-api"
         initialPlatform="go"
         groupMode="structured"

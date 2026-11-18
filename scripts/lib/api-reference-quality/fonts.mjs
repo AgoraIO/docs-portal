@@ -12,9 +12,9 @@ export async function fontFixtures(mode) {
     throw new Error('--fonts must be remote or fixture');
   if (mode === 'remote') return new Map();
   const urls = [
-    ...readFileSync('src/styles/app.css', 'utf8').matchAll(
+    ...['src/styles/app.css', 'src/styles/app.zh-cn.css'].flatMap((file) => [...readFileSync(file, 'utf8').matchAll(
       /url\(["']?(https:\/\/[^\s"')]+\.woff2)["']?\)/g,
-    ),
+    )]),
   ].map((match) => match[1]);
   if (!urls.length)
     throw new Error(

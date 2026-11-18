@@ -4,6 +4,21 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/realtime-media/rtc/build/setup-and-access/enable-service-restful",
+      "destination": "/realtime-media/rtc/build/setup-and-access/enable-service#restful-service",
+      "statusCode": 301
+    },
+    {
+      "source": "/realtime-media/rtc/build/setup-and-access/enable-mini-program",
+      "destination": "/realtime-media/rtc/build/setup-and-access/enable-service#mini-program-service",
+      "statusCode": 301
+    },
+    {
+      "source": "/realtime-media/rtc/build/setup-and-access/enable-service/:platform(android|ios|macos|web|windows|harmonyos|mini-program|electron|unity|flutter|react-native|unreal|blueprint|react)",
+      "destination": "/realtime-media/rtc/build/setup-and-access/enable-service#sdk-service",
+      "statusCode": 301
+    },
+    {
       "source": "/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service-restful",
       "destination": "/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service#restful-service",
       "statusCode": 301
@@ -16,6 +31,21 @@
     {
       "source": "/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service/:platform(android|ios|macos|web|windows|harmonyos|mini-program|electron|unity|flutter|react-native|unreal|blueprint|react)",
       "destination": "/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service#sdk-service",
+      "statusCode": 301
+    },
+    {
+      "source": "/realtime-media/rtc/build/setup-and-access/enable-service/restful",
+      "destination": "/realtime-media/rtc/build/setup-and-access/enable-service#restful-service",
+      "statusCode": 301
+    },
+    {
+      "source": "/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/generate-token/restful",
+      "destination": "/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/generate-token-restful",
+      "statusCode": 301
+    },
+    {
+      "source": "/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token/restful",
+      "destination": "/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token-restful",
       "statusCode": 301
     },
     {
@@ -52,6 +82,41 @@
       "source": "/api-ref/:path((?!(?:fusion-cdn|flexible-classroom)(?:/|\\.(?:html|mdx?)|$)).*)?",
       "destination": "https://doc.shengwang.cn/api-ref/:path*",
       "statusCode": 308
+    },
+    {
+      "source": "/cn",
+      "destination": "/en",
+      "statusCode": 301
+    },
+    {
+      "source": "/basics/security/flexible-classroom-sdk-third-party",
+      "destination": "/zh-CN/introduction/security/sdk-compliance/flexible-classroom-sdk-third-party",
+      "statusCode": 301
+    },
+    {
+      "source": "/basics/security/speech-to-text-third-party",
+      "destination": "/zh-CN/realtime-media/speech-to-text/reference/third-party-services",
+      "statusCode": 301
+    },
+    {
+      "source": "/conversational-ai/models/asr/overview",
+      "destination": "/en/ai/models/asr/deepgram",
+      "statusCode": 301
+    },
+    {
+      "source": "/conversational-ai/models/llm/overview",
+      "destination": "/en/ai/models/llm/openai",
+      "statusCode": 301
+    },
+    {
+      "source": "/conversational-ai/models/mllm/overview",
+      "destination": "/en/ai/models/mllm/openai",
+      "statusCode": 301
+    },
+    {
+      "source": "/conversational-ai/models/tts/overview",
+      "destination": "/en/ai/models/tts/openai",
+      "statusCode": 301
     },
     {
       "source": "/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service",
@@ -729,11 +794,6 @@
       "statusCode": 308
     },
     {
-      "source": "/cn",
-      "destination": "/en",
-      "statusCode": 301
-    },
-    {
       "source": "/en/llms.txt",
       "destination": "/llms.txt",
       "statusCode": 301
@@ -757,26 +817,6 @@
       "source": "/skill.md",
       "destination": "https://raw.githubusercontent.com/AgoraIO/skills/main/skills/agora/SKILL.md",
       "statusCode": 307
-    },
-    {
-      "source": "/conversational-ai/models/asr/overview",
-      "destination": "/en/ai/models/asr/deepgram",
-      "statusCode": 301
-    },
-    {
-      "source": "/conversational-ai/models/llm/overview",
-      "destination": "/en/ai/models/llm/openai",
-      "statusCode": 301
-    },
-    {
-      "source": "/conversational-ai/models/mllm/overview",
-      "destination": "/en/ai/models/mllm/openai",
-      "statusCode": 301
-    },
-    {
-      "source": "/conversational-ai/models/tts/overview",
-      "destination": "/en/ai/models/tts/openai",
-      "statusCode": 301
     },
     {
       "source": "/en/realtime-media/video/reference/console-overview",
@@ -1416,8 +1456,25 @@
       ]
     },
     {
+      "src": "^/.*\\.md/?$",
+      "headers": {
+        "Content-Type": "text/markdown; charset=utf-8"
+      },
+      "continue": true
+    },
+    {
+      "src": "^/(?:llms(?:-full)?\\.txt|llms/.*\\.txt)/?$",
+      "headers": {
+        "Content-Type": "text/plain; charset=utf-8"
+      },
+      "continue": true
+    },
+    {
       "src": "^/en/((?!.*\\.md/?$).+?)/?$",
       "dest": "/en/$1.md",
+      "headers": {
+        "Content-Type": "text/markdown; charset=utf-8"
+      },
       "has": [
         {
           "type": "header",

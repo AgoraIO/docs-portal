@@ -430,7 +430,8 @@ export function DocsShell({
           ) : null}
           <div
             className={cn(
-              'mx-auto flex h-[52px] w-full items-center gap-3 px-4 sm:px-7 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)_minmax(0,1fr)]',
+              'mx-auto flex h-[52px] w-full items-center gap-3 px-4 sm:px-7',
+              currentLocale === 'zh-CN' && 'lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)_minmax(0,1fr)]',
               shellWidthClassName,
             )}
             data-testid="docs-main-header-row"
@@ -527,7 +528,8 @@ export function DocsShell({
                 </Link>
               </div>
             </div>
-            {!isSearchLayout && (
+            {currentLocale === 'en' ? <div className="flex-1" /> : null}
+            {currentLocale === 'zh-CN' && !isSearchLayout && (
               <div
                 className="hidden min-w-0 lg:block"
                 data-testid="docs-desktop-header-search"
@@ -558,7 +560,11 @@ export function DocsShell({
                 className="hidden items-center gap-2 text-muted-foreground lg:flex"
                 data-testid="docs-desktop-header-actions"
               >
-                <DocsSiteMenu locale={currentLocale} />
+                {currentLocale === 'en' && !isSearchLayout ? (
+                  <div className="w-80">
+                    <DocsSearchDialog loadPages={loadPages} locale={currentLocale} mode="desktop" productScopes={productScopes} />
+                  </div>
+                ) : <DocsSiteMenu locale={currentLocale} />}
                 <Button
                   aria-label={themeLabel}
                   aria-pressed={isDarkTheme}

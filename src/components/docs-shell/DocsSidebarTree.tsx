@@ -8,6 +8,8 @@ import {
   ExternalLinkIcon,
 } from 'lucide-react';
 import {
+  createContext,
+  useContext,
   type AnchorHTMLAttributes,
   forwardRef,
   type MouseEvent,
@@ -71,6 +73,8 @@ const sidebarTitleOverrides: Array<[suffix: string, shortTitle: string]> = [
   ],
 ];
 
+const ChineseSidebarContext = createContext(false);
+
 export function DocsSidebarTree({
   activePath,
   nodes,
@@ -87,6 +91,7 @@ export function DocsSidebarTree({
   );
 
   return (
+    <ChineseSidebarContext value={activePath.startsWith('/zh-CN/')}>
     <SidebarGroup>
       <SidebarGroupContent>
         <SidebarMenu>
@@ -101,6 +106,7 @@ export function DocsSidebarTree({
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
+    </ChineseSidebarContext>
   );
 }
 
@@ -937,6 +943,7 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
     },
     ref,
   ) => {
+    const isChineseSidebar = useContext(ChineseSidebarContext);
     function handleClick(event: MouseEvent<HTMLAnchorElement>) {
       onClick?.(event);
 
@@ -968,9 +975,9 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
         onClick={handleClick}
         params={{}}
         ref={ref}
-        rel={linked ? 'noreferrer noopener' : rel}
+        rel={isChineseSidebar && linked ? 'noreferrer noopener' : rel}
         search={search ?? {}}
-        target={linked ? '_blank' : target}
+        target={isChineseSidebar && linked ? '_blank' : target}
         to={url}
       >
         {children}
@@ -998,7 +1005,8 @@ function SidebarPageLabel({
   showNavigationArrow?: boolean;
   title: string;
 }) {
-  if (method) {
+  const isChineseSidebar = useContext(ChineseSidebarContext);
+  if (isChineseSidebar && method) {
     return <DocsSidebarEndpointLabel method={method} title={title} />;
   }
 
@@ -1012,11 +1020,15 @@ function SidebarPageLabel({
       >
         {title}
       </span>
-      {showNavigationArrow ? (
+      {method ? (
+        <span className="ml-auto shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none text-[color:var(--ink-4)]">{method}</span>
+      ) : showNavigationArrow ? (
         <ArrowRightIcon
           aria-hidden="true"
           className="ml-auto size-3.5 shrink-0 text-[color:var(--ink-4)] transition-colors group-hover:text-[color:var(--ink-1)] group-focus-visible:text-[color:var(--ink-1)]"
         />
+      ) : isChineseSidebar && (linked || external) ? (
+        <ExternalLinkIcon aria-hidden="true" className="ml-auto size-4 shrink-0 text-[color:var(--ink-4)]" />
       ) : linked && external ? (
         <>
           <span className="sr-only"> (opens in a new tab)</span>

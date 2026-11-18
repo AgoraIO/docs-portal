@@ -9,7 +9,7 @@ import { act } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { buildOpenApiResponseSchemaAnchorId } from '@/lib/openapi/anchors';
 import type { OpenApiResponseView } from '@/lib/openapi/response-view';
-import { OpenApiResponses } from './OpenApiResponses';
+import { OpenApiResponses } from './OpenApiResponses.zh-cn';
 
 const { syncHashTarget } = vi.hoisted(() => ({ syncHashTarget: vi.fn() }));
 

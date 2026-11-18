@@ -4,7 +4,7 @@ import postcss from 'postcss';
 import { describe, expect, it } from 'vitest';
 
 const appCss = readFileSync(
-  resolve(process.cwd(), 'src/styles/app.css'),
+  resolve(process.cwd(), 'src/styles/app.zh-cn.css'),
   'utf8',
 );
 const metadataCss = readFileSync(

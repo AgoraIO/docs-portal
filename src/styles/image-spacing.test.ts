@@ -34,7 +34,7 @@ function declaration(rule: postcss.Rule, name: string) {
 describe('documentation image spacing', () => {
   it('loads the shared image spacing from the application stylesheet', () => {
     const app = readFileSync(
-      resolve(process.cwd(), 'src/styles/app.css'),
+      resolve(process.cwd(), 'src/styles/app.zh-cn.css'),
       'utf8',
     );
     expect(app).toContain('@import "./image-spacing.css"');

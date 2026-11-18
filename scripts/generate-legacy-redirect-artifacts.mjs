@@ -4,7 +4,6 @@ import { fileURLToPath } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
 import {
   isRetiredCnDocsPath,
-  retiredCnLegacyDocsRoute,
 } from '../src/lib/retired-cn-docs.mjs';
 
 const repoRoot = path.resolve(
@@ -88,7 +87,7 @@ const vercelConfig = {
     [...baseConfig.redirects, ...rtcFolderRedirects.redirects],
     configRedirects,
   ),
-  ...createRoutesConfig(queryRedirectRoutes, [...(baseConfig.routes ?? []), retiredCnLegacyDocsRoute]),
+  ...createRoutesConfig(queryRedirectRoutes, [...(baseConfig.routes ?? [])]),
   ...(baseConfig.rewrites ? { rewrites: baseConfig.rewrites } : {}),
 };
 
@@ -219,7 +218,7 @@ function getBulkRedirectPreserveQueryParams(pathRules) {
 }
 
 function createRedirectsConfig(baseRedirects = [], configRedirects) {
-    // Reviewed guide moves must precede the generic Shengwang old-host fallback.
+  // Reviewed guide moves must precede the generic Shengwang old-host fallback.
   const guideRedirects = Object.entries(shengwangGuideRedirects).map(
     ([source, destination]) => ({ source, destination, statusCode: 301 }),
   );

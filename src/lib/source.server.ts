@@ -262,7 +262,7 @@ ${[parentText, panelText].filter((text) => text.trim()).join('\n\n')}`;
 }
 
 function normalizeAgentMarkdown(markdown: string) {
-  return addAccordionHeadingsToTocText(markdown).replace(
+  return markdown.replace(
     /(\]\()(https?:\/\/(?:\\.|[^\\)])+)(\))/g,
     (_match, opening: string, destination: string, closing: string) =>
       `${opening}${destination.replaceAll('\\(', '%28').replaceAll('\\)', '%29')}${closing}`,
