@@ -123,20 +123,43 @@ export function assertReceipt(receipt, expected) {
     if (receipt[key] !== expected[key])
       throw new Error(`Stale or wrong build receipt: ${key}`);
 }
-async function ready(chrome, sessionId, url, expectedUrl = url) {
-  const result = await chrome.send('Page.navigate', { url }, sessionId);
-  if (result.errorText) throw new Error(result.errorText);
+export async function waitForReferencePage(chrome, sessionId, url, expectedUrl = url) {
+  const redirect = expectedUrl !== url;
+  let navigated = false;
   for (let n = 0; n < 200; n++) {
-    const done = await chrome.evaluate(
-      sessionId,
-      `(() => { const roots = [...document.querySelectorAll('article .docs-body, article .openapi-operation')].filter(e => e.checkVisibility()); return location.href === ${JSON.stringify(expectedUrl)} && document.readyState !== 'loading' && roots.length > 0 && roots.every(e => Object.keys(e).some(k => k.startsWith('__reactProps$'))) && !document.querySelector('[data-testid="docs-content-skeleton"]') && !!getComputedStyle(document.documentElement).getPropertyValue('--font-sans').trim(); })()`,
-    );
-    if (done) {
-      await chrome.evaluate(
+    try {
+      if (!navigated) {
+        const result = await chrome.send('Page.navigate', { url }, sessionId);
+        if (result.errorText) throw new Error(result.errorText);
+        navigated = true;
+      }
+      if (redirect) {
+        // The version entrance replaces its document during hydration. Consult
+        // the main frame before evaluating JavaScript in the destination.
+        const { frameTree } = await chrome.send('Page.getFrameTree', {}, sessionId);
+        const frameUrl = frameTree.frame.url + (frameTree.frame.urlFragment ?? '');
+        if (frameUrl !== expectedUrl) {
+          await pause(100);
+          continue;
+        }
+      }
+      const done = await chrome.evaluate(
         sessionId,
-        `(async () => { await document.fonts.ready; if ([...document.fonts].some(f => f.status === 'error')) throw Error('Document font failed to load'); })()`,
+        `(() => { const roots = [...document.querySelectorAll('article .docs-body, article .openapi-operation')].filter(e => e.checkVisibility()); return location.href === ${JSON.stringify(expectedUrl)} && document.readyState !== 'loading' && roots.length > 0 && roots.every(e => Object.keys(e).some(k => k.startsWith('__reactProps$'))) && !document.querySelector('[data-testid="docs-content-skeleton"]') && !!getComputedStyle(document.documentElement).getPropertyValue('--font-sans').trim(); })()`,
       );
-      return;
+      if (done) {
+        await chrome.evaluate(
+          sessionId,
+          `(async () => { await document.fonts.ready; if ([...document.fonts].some(f => f.status === 'error')) throw Error('Document font failed to load'); })()`,
+        );
+        return;
+      }
+    } catch (error) {
+      // Chrome can replace the execution context between the frame check
+      // and evaluation. Other protocol, page and font errors must propagate.
+      if (!redirect || !String(error).includes('Inspected target navigated or closed')) {
+        throw error;
+      }
     }
     await pause(100);
   }
@@ -415,7 +438,7 @@ async function browserAudit({
               server.origin,
             ).href;
             result.expectedDestination = row.expectedPath;
-            await ready(chrome, sid, url, target);
+            await waitForReferencePage(chrome, sid, url, target);
             const detailed =
               row.acceptanceCase ||
               (await chrome.evaluate(sid, expression)).detailed;
