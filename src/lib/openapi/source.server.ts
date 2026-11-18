@@ -219,7 +219,13 @@ async function loadDereferencedOpenApiDocument(
   lane: OpenApiLane,
   locale: AppLocale,
 ): Promise<OpenApiDocument> {
-  const document = yaml.load(getOpenApiSourceText(lane, locale));
+  const document = yaml.load(getOpenApiSourceText(lane, locale), {
+    // Preserve the timestamp scalar semantics of the published English specifications.
+    schema:
+      locale === 'en'
+        ? yaml.CORE_SCHEMA.withTags(yaml.timestampTag)
+        : yaml.CORE_SCHEMA,
+  });
 
   // The major versions resolve sibling descriptions on $ref differently.
   const parser = locale === 'en' ? GlobalSwaggerParser : SwaggerParser;

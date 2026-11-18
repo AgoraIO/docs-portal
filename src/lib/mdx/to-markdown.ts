@@ -3,14 +3,14 @@ import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
 import { createStringifier } from 'fumadocs-core/mdx-plugins/stringifier';
 import GithubSlugger from 'github-slugger';
 import type { Code, Nodes, PhrasingContent, Root, RootContent } from 'mdast';
+import { gfmToMarkdown } from 'mdast-util-gfm';
+import type { MdxJsxFlowElement, MdxJsxTextElement } from 'mdast-util-mdx-jsx';
 import {
   defaultHandlers,
   type Handle,
   type Options,
   toMarkdown,
 } from 'mdast-util-to-markdown';
-import { gfmToMarkdown } from 'mdast-util-gfm';
-import type { MdxJsxFlowElement, MdxJsxTextElement } from 'mdast-util-mdx-jsx';
 import remarkDirective from 'remark-directive';
 import remarkMdx from 'remark-mdx';
 import remarkParse from 'remark-parse';
