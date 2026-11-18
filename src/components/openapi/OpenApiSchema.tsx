@@ -276,7 +276,10 @@ export function OpenApiSchema({
     (node) => node.choices?.length,
   );
 
-  if (normalizedRoot === false || (rootIsBodyTree && schemaView.length === 0)) {
+  if (
+    !global &&
+    (normalizedRoot === false || (rootIsBodyTree && schemaView.length === 0))
+  ) {
     return emptyFallback ?? null;
   }
 

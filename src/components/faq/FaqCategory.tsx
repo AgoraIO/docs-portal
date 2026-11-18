@@ -103,6 +103,11 @@ export function FaqCategory({
 
   return (
     <section className="not-prose m-0 flex flex-col gap-5">
+      {dataset.locale === 'en' && (
+        <p className="m-0 max-w-2xl text-sm leading-6 text-muted-foreground">
+          {meta.description}
+        </p>
+      )}
       <section
         aria-label={
           dataset.locale === 'zh-CN'

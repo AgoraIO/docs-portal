@@ -33,6 +33,11 @@ export function FaqLanding({ locale }: { locale?: FaqLocale } = {}) {
 
   return (
     <section className="not-prose m-0 flex flex-col gap-5">
+      {dataset.locale === 'en' && (
+        <p className="m-0 max-w-2xl text-sm leading-6 text-muted-foreground">
+          Search every FAQ, or pick a category to browse.
+        </p>
+      )}
       <FaqSearch
         placeholder={dataset.ui.searchAllPlaceholder}
         query={query}
