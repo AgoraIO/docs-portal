@@ -13,6 +13,7 @@ describe('sitemap', () => {
 
     try {
       expect(getSitemapBaseUrl()).toBe('https://docs.agora.io');
+      expect(getSitemapBaseUrl('cn')).toBe('https://docs.agora.io');
     } finally {
       restoreEnvValue('SITE_URL', previousSiteUrl);
       restoreEnvValue('VITE_SITE_URL', previousViteSiteUrl);
@@ -20,7 +21,7 @@ describe('sitemap', () => {
     }
   });
 
-  it('uses the Vite-exposed site URL for cn deployments during hydration', () => {
+  it('uses the Vite-exposed site URL during hydration', () => {
     const previousSiteUrl = process.env.SITE_URL;
     const previousViteSiteUrl = process.env.VITE_SITE_URL;
     const previousPublicSiteUrl = process.env.PUBLIC_SITE_URL;
@@ -30,7 +31,7 @@ describe('sitemap', () => {
     process.env.PUBLIC_SITE_URL = 'https://public-alias.example.com';
 
     try {
-      expect(getSitemapBaseUrl('cn')).toBe('https://vite-alias.example.com');
+      expect(getSitemapBaseUrl()).toBe('https://vite-alias.example.com');
     } finally {
       restoreEnvValue('SITE_URL', previousSiteUrl);
       restoreEnvValue('VITE_SITE_URL', previousViteSiteUrl);

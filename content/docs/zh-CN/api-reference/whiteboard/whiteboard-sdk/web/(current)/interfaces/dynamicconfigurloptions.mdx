@@ -1,0 +1,72 @@
+---
+title: DynamicConfigURLOptions
+description: 动态配置公开声明，可从 white-web-sdk 导入。字段语义见动态配置接入。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/dynamicconfigurloptions
+  sourcePath: html-docs/whiteboard/Web/interfaces/dynamicconfigurloptions.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export interface DynamicConfigURLOptions {
+    readonly url: string;
+    readonly "cn-hz"?: never;
+    readonly "sg"?: never;
+    readonly "us-sv"?: never;
+    readonly "eu"?: never;
+    readonly "in-mum"?: never;
+}
+```
+
+## Properties
+
+<a id="url"></a>
+
+### Readonly url
+
+readonly url: string;
+
+兼容的单 URL 入口，指向当前宿主平台可读取的配置 JSON。推荐新接入改用按 region 映射的入口；两种形式互斥。
+
+<a id="cn-hz"></a>
+
+### Readonly Optional cn-hz
+
+readonly "cn-hz"?: never;
+
+此单 URL 分支禁止同时提供 cn-hz 映射，类型为 never。
+
+<a id="sg"></a>
+
+### Readonly Optional sg
+
+readonly "sg"?: never;
+
+此单 URL 分支禁止同时提供 sg 映射，类型为 never。
+
+<a id="us-sv"></a>
+
+### Readonly Optional us-sv
+
+readonly "us-sv"?: never;
+
+此单 URL 分支禁止同时提供 us-sv 映射，类型为 never。
+
+<a id="eu"></a>
+
+### Readonly Optional eu
+
+readonly "eu"?: never;
+
+此单 URL 分支禁止同时提供 eu 映射，类型为 never。
+
+<a id="in-mum"></a>
+
+### Readonly Optional in-mum
+
+readonly "in-mum"?: never;
+
+此单 URL 分支禁止同时提供 in-mum 映射，类型为 never。

@@ -1,0 +1,65 @@
+---
+title: ConstructRoomParams
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/constructroomparams
+  sourcePath: html-docs/whiteboard/Web/interfaces/constructroomparams.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type ConstructRoomParams = {
+    /**
+     * 设置鼠标光标适配器，参考[《鼠标光标适配器》](/javascript-zh/home/cursor-adapter)。
+     * 设置为 ``false`` 会导致不再显示内部预设光标 (激光笔、橡皮擦等)。
+     */
+    cursorAdapter?: CursorAdapter | false;
+    /**
+     * 是否关闭「自动适配尺寸」功能，默认为 ``false``。
+     * 关闭后，每当白板的 view 的尺寸改变时，必须主动调用 ``room.refreshViewSize()`` 以适配。
+     */
+    disableAutoResize?: boolean;
+    /**
+     * 是否禁止设备主动操作视角，默认是 ``false``。
+     * 禁止后，用户无法使用鼠标滚轮，或在 touch 设备上通过多指手势来改变视角。
+     * 该属性不会影响 ``setCameraBound``、``moveCamera``、``moveCameraToContain`` 方法的使用。
+     */
+    disableCameraTransform?: boolean;
+    /**
+     * 不可见插件列表
+     */
+    invisiblePlugins?: ReadonlyArray<InvisiblePluginClass<string, any, any>>;
+    /**
+     * 默认值为 ``[]``。这是一个装满 ``React.ComponentType`` 类型的数组，用于包装白板的 view。你可以用它对白板的 view 进行自定义包装。
+     */
+    wrappedComponents?: WrappedComponents;
+    /**
+     * 自定义视角边界。设置后，会将视角控制在该属性描述的边界之内。默认值为 ``undefined``。
+     * 若为 ``undefined``，则表明视角没有任何限制。
+     */
+    cameraBound?: CameraBound;
+    /**
+     * 是否隐藏其他人鼠标移动到白板组建上时，显示的高亮框。默认值是 ``false``。
+     * 该属性不会影响自己的高亮框显示。
+     */
+    disableOthersSelectingBox?: boolean;
+    /**
+     * 在 macOS 系统上，是否允许按住 ``command`` 键并滚动来放大缩小白板。
+     * 此选项不影响 ``control`` 滚轮的放大缩小行为。
+     * 默认为 ``false``。
+     */
+    commandWheelToZoom?: boolean;
+    /**
+     * 是否开启多 view 模式
+     */
+    useMultiViews?: boolean;
+    /**
+     * 白板请求 modules 数据的地址，配置后不会请求白板默认地址
+     * @example https://modules.example.com
+     */
+    modulesOrigin?: string;
+};
+```

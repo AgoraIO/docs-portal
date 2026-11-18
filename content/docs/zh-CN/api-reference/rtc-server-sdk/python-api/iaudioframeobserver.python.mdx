@@ -1,0 +1,27 @@
+---
+title: "IAudioFrameObserver 类"
+---
+<span className="index-desc-iaudioframeobserver">`IAudioFrameObserver` 类。</span>
+
+<a id="onplaybackaudioframebeforemixing"></a>
+## on_playback_audio_frame_before_mixing
+
+```python
+def on_playback_audio_frame_before_mixing(self, agora_local_user, channelId, uid, frame:AudioFrame)
+```
+
+<span className="index-desc-onplaybackaudioframebeforemixing">获得播放声音混音前的数据。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `agora_local_user`        | `LocalUserObserver` 类。    |
+| `channelId` | 频道名称。             |
+| `uid` | 远端用户的用户 ID。             |
+| `frame`| 音频原始数据。详见 [`AudioFrame`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#audioframe)         |
+
+#### 返回值
+
+- `0`：音频帧数据无效，数据会被舍弃。
+- `1`：音频帧数据有效，数据会被发送。

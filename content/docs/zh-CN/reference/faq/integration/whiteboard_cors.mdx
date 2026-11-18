@@ -1,0 +1,25 @@
+---
+title: "为什么插入白板的图片或 PPT 资源无法显示？"
+---
+## 问题描述
+
+上传到白板的图片或经过转码后的 PPT 课件等资源无法在白板中正常显示，控制台可能会出现以下报错信息：
+
+```plaintext
+Access to image at 'https://path/to/image.jpg' from origin 'https://example.io' has been blocked by CORS policy: No `Access-Control-Allow-Origin` header is present on the requested resource.
+> load image error: TypeError: Failed to fetch
+```
+
+或插入图片后，执行绘制时出现如下报错：
+
+```plaintext
+InvalidStateError: Failed to execute 'drawImage' on 'CanvasRenderingContext2D': The HTMLImageElement provided is in the 'broken' state.
+```
+
+## 问题原因
+
+以上问题通常与跨域资源共享 ([CORS](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CORS)) 配置有关。由于移动端使用 `file://` 协议访问本地资源，浏览器或 WebView 可能因[同源策略](https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy)默认阻止加载非同源资源，导致资源无法在白板中显示，或者在绘制时出现错误。
+
+## 解决方案
+
+为了解决此问题，建议在储存图片的服务端或 OSS（对象存储服务）上配置 CORS，设置 CORS 头部为 `Access-Control-Allow-Origin: *`，确保在本地加载资源时不会被跨域限制阻挡。

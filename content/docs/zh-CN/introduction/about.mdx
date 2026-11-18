@@ -1,0 +1,110 @@
+---
+title: 声网接入基础
+---
+
+声网提供用于实时语音、视频和 AI 对话的 SDK 与云服务。你可以通过以下两种方式，让用户彼此连接，或让用户与 AI 智能体对话：
+
+- **语音通话、视频通话和互动直播**：使用实时互动 RTC SDK，在用户之间传输实时音视频。
+- **实时语音 AI 对话**：使用对话式 AI 引擎处理对话并生成回复，通过 RTC 在用户与语音智能体之间传输实时音频。
+
+声网 SDK 通过 SD-RTN™ 实时网络传输音视频数据。该网络利用智能路由机制优化传输路径，帮助降低实时互动的传输延迟，并提升复杂网络环境下的传输质量与稳定性。
+
+
+## 接入架构
+
+声网支持人与人互动和人与智能体互动两种场景，不同场景所需的组件和接入方式有所不同。
+
+| **组件** | **人与人互动** | **人与智能体互动** |
+| --- | --- | --- |
+| 客户端应用与 SDK | 提供用户界面和业务逻辑，通过 RTC SDK 采集、发布、订阅和播放实时音视频。 | 提供用户界面和业务逻辑，通过 RTC SDK 与语音智能体交换实时音频。 |
+| 业务服务端 | 根据业务需求生成 Token、管理访问权限。 | 根据业务需求生成 Token，并通过 Agents SDK 或 RESTful API 创建和管理智能体会话。 |
+| RTC 与 [SD-RTN™](/zh-CN/introduction/glossary#sd-rtn)  | 在参与者之间传输实时音视频。 | 在用户与语音智能体之间传输实时音频。 |
+| 对话式 AI 引擎 | 通常不需要。 | 结合配置的模型和工具处理用户输入、生成回复并驱动对话流程。 |
+
+在人与人互动场景中，客户端通过 RTC SDK 加入频道，交换实时音视频。在人与智能体互动场景中，业务服务端通过 Agents SDK 或 RESTful API 管理智能体会话，对话式 AI 引擎驱动智能体对话，RTC 负责用户与智能体之间的实时音频传输。
+
+## 连接方式
+
+### 人与人互动
+
+使用 RTC 时，客户端先从你的后端获取 Token，再使用同一个 App ID 和相同的频道名加入同一个**频道**。频道是用于实时音视频通信的逻辑空间。加入频道后，客户端可以：
+
+* **发布**：发送自己的音频或视频。
+* **订阅**：接收其他人的音频或视频。
+
+在语音通话和视频通话中，参与者通常可以双向交流；在互动直播中，主播主要负责发布音视频，观众主要负责接收音视频。具体行为取决于应用的业务逻辑和频道配置。集成步骤详见[实时互动 RTC 快速开始](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+### 人与智能体互动
+
+你的后端可以使用 Agents SDK 或直接调用 RESTful API 创建和停止智能体会话。对话式 AI 引擎托管在声网云端，会话启动后，引擎会把智能体加入指定的 RTC 频道，并使用你配置的模型和工具生成回复。用户客户端与智能体通过 RTC 交换实时音频。
+
+如果你需要让自己的服务端应用在频道中收发音视频，请使用 RTC 服务端 SDK。
+
+了解模型选项、工具和 App 或设备集成方式，详见[对话式 AI 引擎概览](/zh-CN/ai)。
+
+
+## 接入前准备
+
+使用声网服务前，你需要在[声网控制台](https://console.shengwang.cn/)创建项目，并按所选产品的要求开通服务。以下是 RTC 接入常用的项目标识和鉴权参数：
+
+| 参数 | 含义 | 使用方式 |
+| --- | --- | --- |
+| [App ID](/zh-CN/introduction/glossary#appid) | 项目的唯一标识。 | 初始化 SDK 或调用 API 时传入。 |
+| [App 证书](/zh-CN/introduction/glossary#app-certificate) | 用于生成 Token 的项目密钥。 | 保存在你的服务端，用于生成 Token。 |
+| [Token](/zh-CN/introduction/glossary#token) | 用户使用声网服务时的鉴权凭证。 | 由你的服务端生成，客户端使用服务时传入。 |
+
+生产环境中，请使用服务端生成的 Token，控制台生成的临时 Token 仅用于测试。各服务的鉴权要求不同，请参考各服务的快速开始文档。
+
+## 选择接入路径
+
+如果希望先体验语音智能体，可以使用控制台 Playground；如果准备接入应用，可以借助 AI 编程助手或直接集成 SDK、调用 API。
+
+### 借助 AI 编程助手接入
+
+你可以借助 AI 编程助手，结合声网 Skills、CLI 和 MCP，快速完成项目配置与应用开发，通过 SDK 或 API 接入声网服务。
+
+以下工具可以辅助你的 AI 编程助手完成接入：
+
+| 工具 | 作用 |
+| --- | --- |
+| [声网 Skills](/zh-CN/introduction/skills-integrate) | 为 AI 编程助手提供声网的开发流程和实现指导。 |
+| [声网 CLI](/zh-CN/introduction/agora-cli) | 管理声网项目、启用服务、导出本地环境变量，并检查接入状态。 |
+| [声网 MCP](/zh-CN/introduction/mcp-integrate) | 让 AI 编程助手查询声网文档。 |
+
+### 直接集成 SDK 或调用 API
+
+- **人与人互动**：在客户端集成 [RTC SDK](/zh-CN/realtime-media/rtc/get-started/quick-start)，实现语音通话、视频通话或互动直播。
+- **人与智能体互动**：客户端通过 RTC SDK 与智能体交换实时音频，后端通过 [Agents SDK](/zh-CN/ai/get-started/quick-start-agent) 或 [RESTful API](/zh-CN/ai/get-started/quick-start) 创建和管理智能体会话。
+
+### 在控制台体验语音智能体
+
+声网控制台的 [Playground](https://console.shengwang.cn/product/ConversationAI?tab=Playground) 支持可视化配置和测试语音智能体，适用于对话式 AI 引擎。
+
+
+## 配套产品
+
+以下产品可以在 RTC 的基础上增加应用数据、媒体处理能力或连接外部系统，按需选用即可。
+
+| 类别 | 产品 | 作用 |
+| --- | --- | --- |
+| 应用数据与协作 | [实时消息 RTM](/zh-CN/realtime-media/rtm) | 在音视频之外交换应用消息、在线状态和共享状态。 |
+| | [即时通讯 IM](https://im.shengwang.cn) | 在语音和视频通话之外增加持久化的一对一或群组消息。 |
+| | [互动白板](/zh-CN/realtime-media/whiteboard) | 在参与者通过 RTC 交流时，提供共享画布、绘图和文档协作。 |
+| 媒体处理与分发 | [云端录制](/zh-CN/realtime-media/cloud-recording) | 将 RTC 音视频和语音智能体对话录制到云存储。 |
+| | [旁路推流](/zh-CN/realtime-media/media-push) | 将 RTC 音视频发送到 CDN 或外部直播平台。 |
+| | [云端转码](/zh-CN/realtime-media/transcoding) | 对 RTC 音视频进行合流和转码，并将处理后的流发布回频道。 |
+| | [输入在线媒体流](/zh-CN/realtime-media/media-pull) | 将在线媒体流输入 RTC 频道。 |
+| | [RTMP 网关](/zh-CN/realtime-media/rtmp-gateway) | 将 RTMP 或 SRT 媒体源接入 RTC 频道。 |
+| | [实时转录翻译](/zh-CN/realtime-media/speech-to-text) | 将 RTC 音频转换为实时字幕、转写文本或翻译文本。 |
+| 服务端与运维 | [RTC 服务端 SDK](/zh-CN/realtime-media/rtc-server-sdk) | 让你的服务端应用在频道中发送和接收音视频。 |
+| | [水晶球](/zh-CN/realtime-media/usage-analytics) | 分析通话用量和质量，帮助定位连接和音视频问题。 |
+
+更多产品详见[实时互动 RTC 概览](/zh-CN/realtime-media/rtc)。
+
+
+## 下一步
+
+* [实时互动 RTC 快速开始](/zh-CN/realtime-media/rtc/get-started/quick-start)
+* [对话式 AI 引擎快速开始](/zh-CN/ai/get-started/quick-start-agent)
+* [SDK 下载](/zh-CN/reference/sdks)
+* [API 参考](/zh-CN/api-reference/api)

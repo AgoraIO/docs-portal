@@ -1,0 +1,327 @@
+---
+title: ERROR_CODE_TYPE
+description: 错误代码。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/enum_errorcodetype
+  sourcePath: html-docs/rtc/Csharp/API/enum_errorcodetype.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_errorcodetype__detailed_desc"></a>
+
+### 详情
+
+错误代码意味着 SDK 遇到不可恢复的错误，需要应用程序干预。例如：打开摄像头失败时会返回错误，App 需要提示用户不能使用摄像头。
+
+<a id="enum_errorcodetype__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="err_ok"></a>
+<Parameter name="ERR_OK">
+
+0：没有错误。
+
+</Parameter>
+<a id="err_failed"></a>
+<Parameter name="ERR_FAILED">
+
+1：一般性的错误（没有明确归类的错误原因）。请重新调用方法。
+
+</Parameter>
+<a id="err_invalid_argument"></a>
+<Parameter name="ERR_INVALID_ARGUMENT">
+
+2：方法中设置了无效的参数。例如指定的频道名中含有非法字符。请重新设置参数。
+
+</Parameter>
+<a id="err_not_ready"></a>
+<Parameter name="ERR_NOT_READY">
+
+3：SDK 尚未准备好。可能的原因有：
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 IRtcEngine。
+- 调用方法时用户尚未加入频道。请检查方法的调用逻辑。
+- 调用 [Rate](/zh-CN/api-reference/rtc/csharp-windows/network#api_irtcengine_rate) 或 [Complain](/zh-CN/api-reference/rtc/csharp-windows/network#api_irtcengine_complain) 方法时用户尚未离开频道。请检查方法的调用逻辑。
+- 音频模块未开启。
+- 程序集不完整。
+
+</Parameter>
+<a id="err_not_supported"></a>
+<Parameter name="ERR_NOT_SUPPORTED">
+
+4：IRtcEngine 当前状态不支持该操作。可能的原因有：
+
+- 使用内置加密时，设置的加密模式不正确，或加载外部加密库失败。请检查加密的枚举值是否正确，或重新加载外部加密库。
+
+</Parameter>
+<a id="err_refused"></a>
+<Parameter name="ERR_REFUSED">
+
+5：方法调用被拒绝。可能的原因有：
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 IRtcEngine。
+- 在加入频道时，将频道名设为空字符 `""`。请重新设置频道名。
+- 多频道场景下，在调用 [JoinChannelEx](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengineex_joinchannelex) 方法加入频道时，设置的频道名已存在。请重新设置频道名。
+
+</Parameter>
+<a id="err_buffer_too_small"></a>
+<Parameter name="ERR_BUFFER_TOO_SMALL">
+
+6：缓冲区大小不足以存放返回的数据。
+
+</Parameter>
+<a id="err_not_initialized"></a>
+<Parameter name="ERR_NOT_INITIALIZED">
+
+7：IRtcEngine 尚未初始化就调用方法。请确认在调用该方法前已创建 IRtcEngine 对象并完成初始化。
+
+</Parameter>
+<a id="err_invalid_state"></a>
+<Parameter name="ERR_INVALID_STATE">
+
+8：当前状态无效。
+
+</Parameter>
+<a id="err_no_permission"></a>
+<Parameter name="ERR_NO_PERMISSION">
+
+9：没有操作权限。请检查用户是否授予了 App 音视频设备的使用权限。
+
+</Parameter>
+<a id="err_timedout"></a>
+<Parameter name="ERR_TIMEDOUT">
+
+10： 方法调用超时。有些方法调用需要 SDK 返回结果，如果 SDK 处理事件过长，超过 10 秒没有返回，会出现此错误。
+
+</Parameter>
+<a id="err_join_channel_rejected"></a>
+<Parameter name="ERR_JOIN_CHANNEL_REJECTED">
+
+17：加入频道被拒绝。可能的原因有：
+
+- 用户已经在频道中。建议通过 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/csharp-windows/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。除收到 CONNECTION_STATE_DISCONNECTED(1) 状态外，不要再次调用该方法加入频道。
+- 用户在调用 [StartEchoTest](/zh-CN/api-reference/rtc/csharp-windows/network#api_irtcengine_startechotest3) 进行通话测试后，未调用 [StopEchoTest](/zh-CN/api-reference/rtc/csharp-windows/network#api_irtcengine_stopechotest) 结束当前测试就尝试加入频道。开始通话测试后，需要先调用 StopEchoTest 结束当前测试，再加入频道。
+
+</Parameter>
+<a id="err_leave_channel_rejected"></a>
+<Parameter name="ERR_LEAVE_CHANNEL_REJECTED">
+
+18：离开频道失败。可能的原因有：
+
+- 调用 [LeaveChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_leavechannel2) 前，用户已离开频道。停止调用该方法即可。
+- 用户尚未加入频道，就调用 LeaveChannel [2/2] 退出频道。这种情况下无需额外操作。
+
+</Parameter>
+<a id="err_already_in_use"></a>
+<Parameter name="ERR_ALREADY_IN_USE">
+
+19：资源已被占用，不能重复使用。
+
+</Parameter>
+<a id="err_aborted"></a>
+<Parameter name="ERR_ABORTED">
+
+20：SDK 放弃请求，可能由于请求的次数太多。
+
+</Parameter>
+<a id="err_init_net_engine"></a>
+<Parameter name="ERR_INIT_NET_ENGINE">
+
+21：Windows 下特定的防火墙设置导致 IRtcEngine 初始化失败然后崩溃。
+
+</Parameter>
+<a id="err_resource_limited"></a>
+<Parameter name="ERR_RESOURCE_LIMITED">
+
+22：SDK 分配资源失败，可能由于 App 占用资源过多或系统资源耗尽。
+
+</Parameter>
+<a id="err_invalid_app_id"></a>
+<Parameter name="ERR_INVALID_APP_ID">
+
+101：不是有效的 App ID。请更换有效的 App ID 重新加入频道。
+
+</Parameter>
+<a id="err_invalid_channel_name"></a>
+<Parameter name="ERR_INVALID_CHANNEL_NAME">
+
+102：不是有效的频道名。可能的原因是设置的参数数据类型不正确。请更换有效的频道名重新加入频道。
+
+</Parameter>
+<a id="err_no_server_resources"></a>
+<Parameter name="ERR_NO_SERVER_RESOURCES">
+
+103：无法获取当前区域的服务器资源。请在初始化 IRtcEngine 时尝试指定其他区域。
+
+</Parameter>
+<a id="err_token_expired"></a>
+<Parameter name="ERR_TOKEN_EXPIRED">
+
+109：当前使用的 Token 过期，不再有效。请在服务端申请生成新的 Token，并调用 [RenewToken](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_renewtoken) 更新 Token。
+
+<a id="弃用"></a>
+
+:::error[弃用：]
+该枚举已废弃。请改用 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/csharp-windows/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调中的 CONNECTION_CHANGED_TOKEN_EXPIRED(9)。
+:::
+
+</Parameter>
+<a id="err_invalid_token"></a>
+<Parameter name="ERR_INVALID_TOKEN">
+
+110：Token 无效。一般有以下原因：
+
+- 在控制台中启用了 App 证书，但未使用 App ID + Token 鉴权。当项目启用了 App 证书，就必须使用 Token 鉴权。
+- 生成 Token 时填入的 `uid` 字段，和用户加入频道时填入的 uid 不匹配。
+
+<a id="弃用-1"></a>
+
+:::error[弃用：]
+该枚举已废弃。请改用 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/csharp-windows/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调中的 CONNECTION_CHANGED_INVALID_TOKEN(8)。
+:::
+
+</Parameter>
+<a id="err_connection_interrupted"></a>
+<Parameter name="ERR_CONNECTION_INTERRUPTED">
+
+111：网络连接中断。SDK 在和服务器建立连接后，失去网络连接超过 4 秒。
+
+</Parameter>
+<a id="err_connection_lost"></a>
+<Parameter name="ERR_CONNECTION_LOST">
+
+112：网络连接丢失。网络连接中断，且 SDK 无法在 10 秒内连接服务器。
+
+</Parameter>
+<a id="err_not_in_channel"></a>
+<Parameter name="ERR_NOT_IN_CHANNEL">
+
+113：调用 [SendStreamMessage](/zh-CN/api-reference/rtc/csharp-windows/metadata/datastream#api_irtcengine_sendstreammessage) 方法时用户不在频道内。
+
+</Parameter>
+<a id="err_size_too_large"></a>
+<Parameter name="ERR_SIZE_TOO_LARGE">
+
+114：在调用 SendStreamMessage 时，发送的数据长度大于 1 KB。
+
+</Parameter>
+<a id="err_bitrate_limit"></a>
+<Parameter name="ERR_BITRATE_LIMIT">
+
+115：在调用 SendStreamMessage 时，发送数据的频率超过限制（6 KB/s）。
+
+</Parameter>
+<a id="err_too_many_data_streams"></a>
+<Parameter name="ERR_TOO_MANY_DATA_STREAMS">
+
+116：在调用 [CreateDataStream [2/2]](/zh-CN/api-reference/rtc/csharp-windows/metadata/datastream#api_irtcengine_createdatastream2) 时，创建的数据流超过限制（5 个）。
+
+</Parameter>
+<a id="err_stream_message_timeout"></a>
+<Parameter name="ERR_STREAM_MESSAGE_TIMEOUT">
+
+117：数据流发送超时。
+
+</Parameter>
+<a id="err_set_client_role_not_authorized"></a>
+<Parameter name="ERR_SET_CLIENT_ROLE_NOT_AUTHORIZED">
+
+119：用户切换角色失败，请尝试重新加入频道。
+
+</Parameter>
+<a id="err_decryption_failed"></a>
+<Parameter name="ERR_DECRYPTION_FAILED">
+
+120：媒体流解密失败。可能是用户加入频道时使用了错误的密钥。请检查用户加入频道时填入的密钥，或引导用户尝试重新加入频道。
+
+</Parameter>
+<a id="err_invalid_user_id"></a>
+<Parameter name="ERR_INVALID_USER_ID">
+
+121：该用户 ID 无效。
+
+</Parameter>
+<a id="err_datastream_decryption_failed"></a>
+<Parameter name="ERR_DATASTREAM_DECRYPTION_FAILED">
+
+122：数据流解密失败。可能是用户加入频道时使用了错误的密钥。请检查用户加入频道时填入的密钥，或引导用户尝试重新加入频道。
+
+</Parameter>
+<a id="err_client_is_banned_by_server"></a>
+<Parameter name="ERR_CLIENT_IS_BANNED_BY_SERVER">
+
+123：该用户被服务器禁止。
+
+</Parameter>
+<a id="err_encrypted_stream_not_allowed_publish"></a>
+<Parameter name="ERR_ENCRYPTED_STREAM_NOT_ALLOWED_PUBLISH">
+
+130：SDK 不支持将加密过的流推到 CDN 上。
+
+</Parameter>
+<a id="err_invalid_user_account"></a>
+<Parameter name="ERR_INVALID_USER_ACCOUNT">
+
+134：无效的 user account，可能是因为设置了无效的参数。
+
+</Parameter>
+<a id="err_load_media_engine"></a>
+<Parameter name="ERR_LOAD_MEDIA_ENGINE">
+
+1001：加载媒体引擎失败。
+
+</Parameter>
+<a id="err_adm_general_error"></a>
+<Parameter name="ERR_ADM_GENERAL_ERROR">
+
+1005：音频设备出现错误（未指明何种错误）。请检查音频设备是否被其他应用占用，或者尝试重新进入频道。
+
+</Parameter>
+<a id="err_adm_init_playout"></a>
+<Parameter name="ERR_ADM_INIT_PLAYOUT">
+
+1008：初始化播放设备出错。请检查播放设备是否被其他应用占用，或者尝试重新进入频道。
+
+</Parameter>
+<a id="err_adm_start_playout"></a>
+<Parameter name="ERR_ADM_START_PLAYOUT">
+
+1009：启动播放设备出错。请检查播放设备是否正常。
+
+</Parameter>
+<a id="err_adm_stop_playout"></a>
+<Parameter name="ERR_ADM_STOP_PLAYOUT">
+
+1010：停止播放设备出错。
+
+</Parameter>
+<a id="err_adm_init_recording"></a>
+<Parameter name="ERR_ADM_INIT_RECORDING">
+
+1011：初始化录音设备出错。请检查录音设备是否正常，或者尝试重新进入频道。
+
+</Parameter>
+<a id="err_adm_start_recording"></a>
+<Parameter name="ERR_ADM_START_RECORDING">
+
+1012：启动录音设备出错。请检查录音设备是否正常。
+
+</Parameter>
+<a id="err_adm_stop_recording"></a>
+<Parameter name="ERR_ADM_STOP_RECORDING">
+
+1013：停止录音设备出错。
+
+</Parameter>
+<a id="err_vdm_camera_not_authorized"></a>
+<Parameter name="ERR_VDM_CAMERA_NOT_AUTHORIZED">
+
+1501：没有摄像头使用权限。请检查是否已经打开摄像头权限。
+
+</Parameter>
+</ParameterList>

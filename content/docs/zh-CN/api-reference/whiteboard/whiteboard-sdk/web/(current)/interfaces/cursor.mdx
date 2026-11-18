@@ -1,0 +1,199 @@
+---
+title: Cursor
+description: Whiteboard Web SDK 2.16.59 公开 interface。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/cursor
+  sourcePath: html-docs/whiteboard/Web/interfaces/cursor.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare interface Cursor
+```
+
+## 成员
+
+- [divElement](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#divelement)
+- [memberId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#memberid)
+- [eraserSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#erasersize)
+- [cursorMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#cursormember)
+- [x](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#x)
+- [y](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#y)
+- [width](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#width)
+- [height](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#height)
+- [onCursorMemberChanged](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#oncursormemberchanged)
+- [setReactNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#setreactnode)
+- [setCursorDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#setcursordescription)
+
+## Properties
+
+<a id="divelement"></a>
+
+### divElement
+
+readonly divElement: HTMLDivElement;
+
+````text
+光标的容器，在创建之初为空。
+你可以通过如下代码向容器中添加 HTML 元素，以改变光标的外观。
+
+@example
+```typescript
+const icon = document.createElement("img");
+icon.src = "https://my-resources.com/icon.png";
+cursor.divElement.append(icon);
+```
+````
+
+<a id="memberid"></a>
+
+### memberId
+
+readonly memberId: number;
+
+```text
+光标所属用户的 ID
+```
+
+<a id="erasersize"></a>
+
+### eraserSize
+
+readonly eraserSize: number;
+
+```text
+当教具是铅笔橡皮时，橡皮的尺寸，值为 1~3
+```
+
+<a id="cursormember"></a>
+
+### cursorMember
+
+readonly cursorMember: CursorMember;
+
+```text
+光标所属用户的一些属性封装
+```
+
+<a id="x"></a>
+
+### x
+
+readonly x: number;
+
+```text
+光标指示中心点的 x 坐标（相对于白板左上角）
+```
+
+<a id="y"></a>
+
+### y
+
+readonly y: number;
+
+```text
+光标指示中心点的 y 坐标（相对于白板左上角）
+```
+
+<a id="width"></a>
+
+### width
+
+readonly width: number;
+
+```text
+光标图形的宽度
+```
+
+<a id="height"></a>
+
+### height
+
+readonly height: number;
+
+```text
+光标图形的高度
+```
+
+<a id="oncursormemberchanged"></a>
+
+### onCursorMemberChanged
+
+<ApiSignature>
+
+onCursorMemberChanged: (cursorMember: CursorMember)=&gt;void;
+
+</ApiSignature>
+
+````text
+成员 cursorMember 改变后的回调。可以用如下代码监听。
+@params cursorMember 更新后的
+
+@example
+```typescript
+cursor.onCursorMemberChanged = function(cursorMember) {
+    // cursorMember 改变了
+}
+```
+````
+
+## Methods
+
+<a id="setreactnode"></a>
+
+### setReactNode
+
+<ApiSignature>
+
+setReactNode(reactNode: any): void;
+
+</ApiSignature>
+
+````text
+通过注入 JSX 结构来改变光标的外观。
+@param reactNode 描述光标外观的 JSX
+@example
+```tsx
+cursor.setReactNode(
+    <img src="https://my-resources.com/icon.png"/>
+);
+```
+````
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setcursordescription"></a>
+
+### setCursorDescription
+
+<ApiSignature>
+
+setCursorDescription(description: Partial&lt;CursorDescription&gt;): void;
+
+</ApiSignature>
+
+```text
+中途修改光标的描述
+@param description 光标的描述
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

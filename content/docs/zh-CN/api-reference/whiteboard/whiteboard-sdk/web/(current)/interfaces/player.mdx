@@ -1,0 +1,826 @@
+---
+title: Player
+description: Whiteboard Web SDK 2.16.59 公开 interface。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/player
+  sourcePath: html-docs/whiteboard/Web/interfaces/player.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare interface Player extends Displayer
+```
+
+## 成员
+
+- [roomUUID](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#roomuuid)
+- [slice](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#slice)
+- [isPlayable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#isplayable)
+- [phase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#phase)
+- [state](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#state)
+- [progressTime](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#progresstime)
+- [timeDuration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#timeduration)
+- [framesCount](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#framescount)
+- [beginTimestamp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#begintimestamp)
+- [playbackSpeed](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#playbackspeed)
+- [play](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#play)
+- [pause](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#pause)
+- [stop](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#stop)
+- [seekToProgressTime](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#seektoprogresstime)
+- [setObserverMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player#setobservermode)
+
+## 继承自 Displayer
+
+## Properties
+
+<a id="roomuuid"></a>
+
+### roomUUID
+
+readonly roomUUID: string;
+
+```text
+录像所属的房间 UUID
+```
+
+<a id="slice"></a>
+
+### slice
+
+readonly slice: string;
+
+```text
+当前录像所属的分片唯一识别符
+```
+
+<a id="isplayable"></a>
+
+### isPlayable
+
+readonly isPlayable: boolean;
+
+```text
+当前是否能立即播放（可能会缓冲）
+```
+
+<a id="phase"></a>
+
+### phase
+
+readonly phase: PlayerPhase;
+
+```text
+回放播放器连接的阶段
+```
+
+<a id="state"></a>
+
+### state
+
+readonly state: PlayerState;
+
+```text
+业务状态
+阅读 [《房间与回放的业务状态管理》](/javascript-zh/home/business-state-management) 、[《房间业务状态管理》](/document-zh/home/business-state-management) 以了解更多。
+```
+
+<a id="progresstime"></a>
+
+### progressTime
+
+readonly progressTime: number;
+
+```text
+播放进度（毫秒），录像开始时为 0
+```
+
+<a id="timeduration"></a>
+
+### timeDuration
+
+readonly timeDuration: number;
+
+```text
+录像时长（毫秒）
+```
+
+<a id="framescount"></a>
+
+### framesCount
+
+readonly framesCount: number;
+
+```text
+录像总帧数
+```
+
+<a id="begintimestamp"></a>
+
+### beginTimestamp
+
+readonly beginTimestamp: number;
+
+```text
+录像开始的绝对时间戳（unix 时间，毫秒）
+```
+
+<a id="playbackspeed"></a>
+
+### playbackSpeed
+
+<ApiSignature>
+
+playbackSpeed: number;
+
+</ApiSignature>
+
+```text
+播放速度倍率，取 1.0 表明正常速度播放
+```
+
+<a id="callbacks"></a>
+
+### callbacks
+
+readonly callbacks: Callbacks&lt;CALLBACKS&gt;;
+
+<a id="observerid"></a>
+
+### observerId
+
+readonly observerId: number;
+
+<a id="region"></a>
+
+### region
+
+readonly region: string;
+
+<a id="version"></a>
+
+### version
+
+readonly version: string;
+
+<a id="devicetype"></a>
+
+### deviceType
+
+readonly deviceType: DeviceType;
+
+<a id="screentype"></a>
+
+### screenType
+
+readonly screenType: ScreenType;
+
+<a id="enablewritenow"></a>
+
+### enableWriteNow
+
+readonly enableWriteNow: boolean;
+
+<a id="handtoolkey"></a>
+
+### handToolKey
+
+readonly handToolKey: string | undefined;
+
+<a id="views"></a>
+
+### views
+
+readonly views: Views;
+
+<a id="usemobxstate"></a>
+
+### useMobXState
+
+readonly useMobXState: boolean;
+
+<a id="usemultiviews"></a>
+
+### useMultiViews
+
+readonly useMultiViews: boolean;
+
+<a id="handtoolactive"></a>
+
+### handToolActive
+
+<ApiSignature>
+
+handToolActive: boolean;
+
+</ApiSignature>
+
+<a id="disableothersselectingbox"></a>
+
+### disableOthersSelectingBox
+
+<ApiSignature>
+
+disableOthersSelectingBox: boolean;
+
+</ApiSignature>
+
+<a id="disablecameratransform"></a>
+
+### disableCameraTransform
+
+<ApiSignature>
+
+disableCameraTransform: boolean;
+
+</ApiSignature>
+
+<a id="commandwheeltozoom"></a>
+
+### commandWheelToZoom
+
+<ApiSignature>
+
+commandWheelToZoom: boolean;
+
+</ApiSignature>
+
+## Methods
+
+<a id="play"></a>
+
+### play
+
+<ApiSignature>
+
+play(): void;
+
+</ApiSignature>
+
+```text
+播放
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="pause"></a>
+
+### pause
+
+<ApiSignature>
+
+pause(): void;
+
+</ApiSignature>
+
+```text
+暂停
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="stop"></a>
+
+### stop
+
+<ApiSignature>
+
+stop(): void;
+
+</ApiSignature>
+
+```text
+停止
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="seektoprogresstime"></a>
+
+### seekToProgressTime
+
+<ApiSignature>
+
+seekToProgressTime(progressTime: number): Promise&lt;PlayerSeekingResult&gt;;
+
+</ApiSignature>
+
+```text
+跳转到特定进度
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;PlayerSeekingResult&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setobservermode"></a>
+
+### setObserverMode
+
+<ApiSignature>
+
+setObserverMode(observerMode: ObserverMode): void;
+
+</ApiSignature>
+
+```text
+修改观察模式
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="refreshviewsize"></a>
+
+### refreshViewSize
+
+<ApiSignature>
+
+refreshViewSize(): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setcamerabound"></a>
+
+### setCameraBound
+
+<ApiSignature>
+
+setCameraBound(cameraBound: CameraBound): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="createscenescallback"></a>
+
+### createScenesCallback
+
+<ApiSignature>
+
+createScenesCallback(path: string, callbacks?: Partial&lt;ScenesCallbacks&gt;): ScenesCallbacksNode | null;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+ScenesCallbacksNode | null
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="memberstate"></a>
+
+### memberState
+
+<ApiSignature>
+
+memberState(memberId: number): MemberState;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+MemberState
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="movecamera"></a>
+
+### moveCamera
+
+<ApiSignature>
+
+moveCamera(camera: Partial&lt;Camera&gt; & Readonly&lt;\{ animationMode?: AnimationMode; \}&gt;): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="movecameratocontain"></a>
+
+### moveCameraToContain
+
+<ApiSignature>
+
+moveCameraToContain(rectangle: Rectangle & Readonly&lt;\{ animationMode?: AnimationMode; \}&gt;): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="bindhtmlelement"></a>
+
+### bindHtmlElement
+
+<ApiSignature>
+
+bindHtmlElement(element: HTMLDivElement | null): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getinvisibleplugin"></a>
+
+### getInvisiblePlugin
+
+<ApiSignature>
+
+getInvisiblePlugin&lt;A extends Object, MA extends Object&gt;(kind: string): InvisiblePlugin&lt;A, MA&gt; | null;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+InvisiblePlugin&lt;A, MA&gt; | null
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="converttopointinworld"></a>
+
+### convertToPointInWorld
+
+<ApiSignature>
+
+convertToPointInWorld(point: \{ x: number; y: number; \}): \{ x: number; y: number; \};
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ x: number; y: number; \}
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="scenepreview"></a>
+
+### scenePreview
+
+<ApiSignature>
+
+scenePreview(scenePath: string, div: HTMLElement, width?: number, height?: number, engine?: RenderEngine): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="generatescreenshot"></a>
+
+### generateScreenshot
+
+<ApiSignature>
+
+generateScreenshot(scenePath?: string, width?: number, height?: number): Promise&lt;string&gt;;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;string&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="fillscenesnapshot"></a>
+
+### fillSceneSnapshot
+
+<ApiSignature>
+
+fillSceneSnapshot(scenePath: string, div: HTMLElement, width?: number, height?: number, engine?: RenderEngine): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="screenshottocanvas"></a>
+
+### screenshotToCanvas
+
+<ApiSignature>
+
+screenshotToCanvas(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: Camera, ratio?: number): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="screenshottocanvasasync"></a>
+
+### screenshotToCanvasAsync
+
+<ApiSignature>
+
+screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: Camera, ratio?: number, timeout?: number): Promise&lt;void&gt;;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getboundingrect"></a>
+
+### getBoundingRect
+
+<ApiSignature>
+
+getBoundingRect(scenePath: string): Rectangle;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Rectangle
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="addmagixeventlistener"></a>
+
+### addMagixEventListener
+
+<ApiSignature>
+
+addMagixEventListener(event: string, listener: EventListener, options?: MagixEventListenerOptions): void;
+
+</ApiSignature>
+
+<ApiSignature>
+
+addMagixEventListener(event: string, listener: EventsListener, fireInterval: number): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removemagixeventlistener"></a>
+
+### removeMagixEventListener
+
+<ApiSignature>
+
+removeMagixEventListener(event: string, listener?: EventListener): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="waitmagixevent"></a>
+
+### waitMagixEvent
+
+<ApiSignature>
+
+waitMagixEvent(filter: EventFilter): Promise&lt;Event&gt;;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;Event&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="scaleppttofit"></a>
+
+### scalePptToFit
+
+<ApiSignature>
+
+scalePptToFit(animationMode?: AnimationMode): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="scenepathtype"></a>
+
+### scenePathType
+
+<ApiSignature>
+
+scenePathType(path: string): ScenePathType;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+ScenePathType
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="entirescenes"></a>
+
+### entireScenes
+
+<ApiSignature>
+
+entireScenes(): SceneMap;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+SceneMap
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getscene"></a>
+
+### getScene
+
+<ApiSignature>
+
+getScene(path: string): WhiteScene | undefined;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+WhiteScene | undefined
+
+</ApiReturnType>
+
+</ApiReturns>

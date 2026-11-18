@@ -1,5 +1,6 @@
 import { isNotFound, isRedirect } from '@tanstack/react-router';
 import { describe, expect, it, vi } from 'vitest';
+import { preserveRedirectSearch } from '@/lib/docs-redirect-url';
 import type { DocsPagePayload } from '@/lib/docs-page.server';
 import { shouldUseStaticDocsPayload } from '@/lib/docs-static-manifest';
 
@@ -48,7 +49,6 @@ import {
   Route as DocPageRoute,
   getKnownPlatformSearchParam,
   payloadSupportsPlatform,
-  preserveRedirectSearch,
 } from './$locale/$tab/$';
 import { Route as TabIndexRoute } from './$locale/$tab/index';
 import { Route as LocaleIndexRoute } from './$locale/index';

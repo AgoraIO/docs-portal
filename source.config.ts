@@ -1,3 +1,4 @@
+import { readdirSync } from 'node:fs';
 import {
   rehypeCodeDefaultOptions,
   remarkDirectiveAdmonition,
@@ -6,15 +7,56 @@ import { applyMdxPreset, defineConfig, defineDocs } from 'fumadocs-mdx/config';
 import remarkDirective from 'remark-directive';
 import { z } from 'zod';
 import { DOCS_PAGE_TYPES } from './src/lib/analytics/docs-page-type';
+import { getCodeLanguageLabel } from './src/lib/code/label';
+import {
+  codeHighlightOptions,
+  codeLanguageAliases,
+} from './src/lib/code/options';
 import { createScopedDocsFiles } from './src/lib/docs-dev-scope';
 import { docsMetaSchema } from './src/lib/docs-meta-schema';
 import { directiveCalloutTypes } from './src/lib/mdx/directive-callouts';
+import { remarkLiteralDirectives } from './src/lib/mdx/remark-literal-directives';
+import { remarkMergedTables } from './src/lib/mdx/remark-merged-tables';
+import { remarkNormalizeLegacyHeadingAnchors } from './src/lib/mdx/remark-normalize-legacy-heading-anchors';
+import { remarkOmitMdxComments } from './src/lib/mdx/remark-omit-mdx-comments';
 import { remarkTableSlots } from './src/lib/mdx/remark-table-slots';
 import { remarkPlatformContent } from './src/lib/platforms/remark-platform-content';
+import {
+  isRetiredCnDocsPath,
+  retiredCnDocPaths,
+} from './src/lib/retired-cn-docs.mjs';
 
 const useDynamicDocsRuntime =
   process.env.FUMADOCS_STATIC_PAYLOAD_DYNAMIC === 'true';
 const scopedDocsFiles = createScopedDocsFiles(process.env.DOCS_DEV_SCOPE ?? '');
+const scopedPath = scopedDocsFiles?.docs[0].split('/**/')[0];
+// This Fumadocs version prefixes negative globs with "./" and its collection
+// matcher treats negatives as alternatives. Use positive paths for publication.
+// Split only the directories that contain retired content. Unaffected subtrees
+// keep glob imports so collection matching and fresh builds stay inexpensive.
+function publishedCollectionFiles(
+  directory: string,
+  kind: 'docs' | 'meta',
+): string[] {
+  if (isRetiredCnDocsPath(directory)) return [];
+  const prefix = directory ? `${directory}/` : '';
+  const pattern = kind === 'docs' ? '*.{md,mdx}' : 'meta.{json,yaml}';
+  if (!retiredCnDocPaths.some((path) => path.startsWith(prefix))) {
+    return [`${prefix}**/${pattern}`];
+  }
+
+  return readdirSync(`content/docs/${directory}`, {
+    withFileTypes: true,
+  }).flatMap((entry) => {
+    const file = `${prefix}${entry.name}`;
+    if (entry.isDirectory()) return publishedCollectionFiles(file, kind);
+    const matches =
+      kind === 'docs'
+        ? /\.(md|mdx)$/.test(entry.name)
+        : /^meta\.(json|yaml)$/.test(entry.name);
+    return matches && !isRetiredCnDocsPath(file) ? [file] : [];
+  });
+}
 
 const rawDocSchema = z.object({
   analyticsPageType: z.enum(DOCS_PAGE_TYPES).optional(),
@@ -24,9 +66,12 @@ const rawDocSchema = z.object({
   hidePlatformTabs: z.boolean().optional(),
   hideToc: z.boolean().optional(),
   layout: z.enum(['platform-group']).optional(),
+  tocMaxDepth: z.number().int().min(1).max(6).optional(),
   platforms: z.array(z.string()).optional(),
+  titlePlatforms: z.array(z.string()).optional(),
   defaultPlatform: z.string().optional(),
   _openapi: z.looseObject({}).optional(),
+  _migration: z.object({ generator: z.string().optional() }).optional(),
 });
 
 export const docs = defineDocs({
@@ -34,11 +79,42 @@ export const docs = defineDocs({
   docs: {
     async: true,
     dynamic: useDynamicDocsRuntime,
-    files: scopedDocsFiles?.docs ?? ['**/*.{md,mdx}'],
+    files: publishedCollectionFiles(scopedPath ?? '', 'docs'),
     schema: rawDocSchema,
     mdxOptions: applyMdxPreset({
       rehypeCodeOptions: {
         ...rehypeCodeDefaultOptions,
+        ...codeHighlightOptions,
+        icon: false,
+        parseMetaString(meta, node, tree) {
+          const parsed = rehypeCodeDefaultOptions.parseMetaString?.(
+            meta,
+            node,
+            tree,
+          );
+          const code = node.children[0];
+          const classes =
+            code?.type === 'element' ? code.properties.className : undefined;
+          const languageClass = Array.isArray(classes)
+            ? classes.find(
+                (value) =>
+                  typeof value === 'string' && value.startsWith('language-'),
+              )
+            : undefined;
+          // Read the authored language before an unsupported grammar falls back to text.
+          const language =
+            typeof languageClass === 'string'
+              ? languageClass.slice(9)
+              : undefined;
+          return {
+            ...parsed,
+            'data-code-language': language,
+            title: parsed?.title ?? getCodeLanguageLabel(language),
+            'data-language-label': parsed?.title
+              ? undefined
+              : getCodeLanguageLabel(language),
+          };
+        },
         langs: [
           'bash',
           'cpp',
@@ -47,6 +123,7 @@ export const docs = defineDocs({
           'dart',
           'go',
           'html',
+          'http',
           'java',
           'javascript',
           'json',
@@ -64,16 +141,8 @@ export const docs = defineDocs({
           'xml',
           'yaml',
         ],
-        langAlias: {
-          ...rehypeCodeDefaultOptions.langAlias,
-          curl: 'bash',
-          js: 'javascript',
-          md: 'markdown',
-          objectivec: 'objc',
-          text: 'bash',
-          txt: 'bash',
-        },
-        fallbackLanguage: 'bash',
+        langAlias: codeLanguageAliases,
+        fallbackLanguage: 'text',
         lazy: false,
       },
       remarkImageOptions: {
@@ -86,7 +155,9 @@ export const docs = defineDocs({
         parseMdx: true,
       },
       remarkPlugins: (plugins) => [
+        remarkOmitMdxComments,
         remarkDirective,
+        remarkLiteralDirectives,
         [
           remarkDirectiveAdmonition,
           {
@@ -94,8 +165,10 @@ export const docs = defineDocs({
           },
         ],
         remarkPlatformContent,
+        remarkMergedTables,
         remarkTableSlots,
         ...plugins,
+        remarkNormalizeLegacyHeadingAnchors,
       ],
     }),
     postprocess: {
@@ -103,7 +176,10 @@ export const docs = defineDocs({
     },
   },
   meta: {
-    files: scopedDocsFiles?.meta ?? ['**/meta.{json,yaml}'],
+    files: [
+      ...(scopedDocsFiles?.meta.slice(0, -1) ?? []),
+      ...publishedCollectionFiles(scopedPath ?? '', 'meta'),
+    ],
     schema: docsMetaSchema,
   },
 });

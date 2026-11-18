@@ -11,6 +11,7 @@ import {
 } from '../src/lib/docs-page.server.ts';
 import {
   createMachineReadableDocsIndexes,
+  normalizeMachineReadableDocsArtifactPath,
   validateMachineReadableDocsArtifacts,
 } from '../src/lib/llms-index.ts';
 import {
@@ -27,7 +28,13 @@ import {
   normalizePlatformKey,
 } from '../src/lib/platforms/registry.ts';
 import { getContentDocsPrerenderPaths } from '../src/lib/prerender-content-routes.ts';
+import { readPublishedDocVersion } from '../src/lib/published-doc-version.ts';
 import { createStaticDocsRouteSets } from '../src/lib/published-docs-routes.ts';
+import {
+  readPublishedDocsRoutes,
+  writeStaticDocsRouteManifests,
+} from '../src/lib/published-docs-routes.server.ts';
+import { resolveCnSdkPublication } from '../src/lib/search/cn-sdk-publication.server.ts';
 import {
   DOCS_LOCALES,
   isPublishedDocsPath,
@@ -88,6 +95,16 @@ export async function generateStaticDocsPayload() {
     .sort();
   const canonicalRouteSet = new Set(canonicalRoutes);
   const platformKeysByPageUrl = new Map();
+  const versionByPageUrl = new Map();
+  for (const route of canonicalRoutes) {
+    const version = route.startsWith('/zh-CN/')
+      ? resolveCnSdkPublication(route).version
+      : await readPublishedDocVersion(
+          path.join(repoRoot, 'content', 'docs'),
+          route,
+        );
+    if (version) versionByPageUrl.set(route, version);
+  }
   const platformPages = [];
 
   for (const locale of PUBLISHED_DOCS_LOCALES) {
@@ -98,7 +115,6 @@ export async function generateStaticDocsPayload() {
 
       const platforms = await getStaticPagePlatformKeys(page);
       platformKeysByPageUrl.set(page.url, platforms);
-
       if (platforms.length > 0) {
         platformPages.push({ platforms, url: page.url });
       }
@@ -166,18 +182,20 @@ export async function generateStaticDocsPayload() {
     generated += 1;
   }
 
-  const { machineReadableRoutes, prerenderRoutes: publishedRoutes } =
+  const { machineReadableRoutes, prerenderRoutes } =
     createStaticDocsRouteSets({
       canonicalPaths: canonicalRoutes,
       canonicalPayloads,
       platformPages,
+      versionByCanonicalPath: versionByPageUrl,
     });
-  await writeTextFile(
-    routesManifestPath,
-    `${JSON.stringify(publishedRoutes)}\n`,
-  );
+  await writeStaticDocsRouteManifests({
+    directory: path.dirname(routesManifestPath),
+    machineReadableRoutes,
+    prerenderRoutes,
+  });
 
-  for (const route of publishedRoutes) {
+  for (const route of machineReadableRoutes) {
     const payload = canonicalPayloads.get(route.canonicalPath);
 
     if (!payload) {
@@ -201,7 +219,8 @@ export async function generateStaticDocsPayload() {
 
   const markdownGenerated = await generateStaticMachineReadableDocs({
     platformKeysByPageUrl,
-    publishedRoutes: machineReadableRoutes,
+    // Validate the published file, including what downstream clients consume.
+    publishedRoutes: readPublishedDocsRoutes(routesManifestPath),
   });
   console.log(
     `[static-payload] generated ${markdownGenerated} machine-readable files`,
@@ -512,15 +531,12 @@ function stripFrontmatter(markdown) {
 }
 
 async function writePublicRouteFile(route, content) {
-  const relativePath = route.split('/').filter(Boolean).join('/');
-  await writeTextFile(path.join(markdownOutputRoot, relativePath), content);
+  await writeTextFile(getPublicRouteFilePath(route), content);
 }
 
 async function publicRouteFileExists(route) {
-  const relativePath = route.split('/').filter(Boolean).join('/');
-
   try {
-    await fs.access(path.join(markdownOutputRoot, relativePath));
+    await fs.access(getPublicRouteFilePath(route));
     return true;
   } catch (error) {
     if (error?.code === 'ENOENT') {
@@ -529,6 +545,15 @@ async function publicRouteFileExists(route) {
 
     throw error;
   }
+}
+
+function getPublicRouteFilePath(route) {
+  const relativePath = normalizeMachineReadableDocsArtifactPath(route)
+    .split('/')
+    .filter(Boolean)
+    .join('/');
+
+  return path.join(markdownOutputRoot, relativePath);
 }
 
 async function writeTextFile(filePath, content) {

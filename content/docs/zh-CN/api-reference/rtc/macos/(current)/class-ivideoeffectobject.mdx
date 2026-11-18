@@ -1,0 +1,64 @@
+---
+title: AgoraVideoEffectObject
+description: 用于视频特效操作的协议。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_ivideoeffectobject
+  sourcePath: html-docs/rtc/macOS/API/class_ivideoeffectobject.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_ivideoeffectobject__shortdesc"></a>
+
+用于视频特效操作的协议。
+
+<a id="class_ivideoeffectobject__prototype"></a>
+
+```objectivec
+@protocol AgoraVideoEffectObject <NSObject>
+
+#pragma mark - Enumerations
+
+typedef NS_ENUM(NSUInteger, AgoraVideoEffectNodeId) {
+    AgoraVideoEffectNodeBeauty      = 1 << 0,
+    AgoraVideoEffectNodeStyleMakeup = 1 << 1,
+    AgoraVideoEffectNodeFilter      = 1 << 2,
+    AgoraVideoEffectNodeSticker     = 1 << 3
+};
+
+typedef NS_ENUM(NSInteger, AgoraVideoEffectAction) {
+    AgoraVideoEffectActionSave  = 1,
+    AgoraVideoEffectActionReset = 2
+};
+
+@end
+```
+
+<a id="class_ivideoeffectobject__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.0 版本新增。
+:::
+
+<a id="class_ivideoeffectobject__parameters"></a>
+
+## 属性
+
+### `AgoraVideoEffectNodeSticker`
+
+贴纸特效节点。
+
+### 相关参考
+
+- [addOrUpdateVideoEffectWithNodeId\:templateName\:](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_addorupdatevideoeffect)
+- [getVideoEffectBoolParamWithOption\:key\:](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectboolparam)
+- [getVideoEffectFloatParamWithOption\:key\:](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectfloatparam)
+- [getVideoEffectIntParamWithOption\:key\:](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectintparam)
+- [performVideoEffectActionWithNodeId\:actionId\:](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_performvideoeffectaction)
+- [removeVideoEffectWithNodeId\:](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_removevideoeffect)
+- [setVideoEffectBoolParamWithOption\:key\:boolValue\:](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectboolparam)
+- [setVideoEffectFloatParamWithOption\:key\:floatValue\:](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectfloatparam)
+- [setVideoEffectIntParamWithOption\:key\:intValue\:](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectintparam)
+- [setVideoEffectStringParamWithOption\:key\:stringValue:](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectstringparam)

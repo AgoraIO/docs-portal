@@ -1,0 +1,195 @@
+---
+title: WARN_CODE_TYPE
+description: 警告代码。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/enum_warncodetype
+  sourcePath: html-docs/rtc/Cpp/API/enum_warncodetype.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_warncodetype__shortdesc"></a>
+
+警告代码。
+
+<a id="enum_warncodetype__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<Parameter name="WARN_INVALID_VIEW">
+
+（8）：指定的视图无效。若要使用视频功能，需指定有效的视图。
+
+</Parameter>
+<Parameter name="WARN_INIT_VIDEO">
+
+（16）：初始化视频功能失败，可能由于资源不足。用户无法看到彼此，但仍可进行语音通话。
+
+</Parameter>
+<Parameter name="WARN_PENDING">
+
+（20）：请求处于挂起状态，通常由于某些模块尚未准备就绪，SDK 会延迟处理该请求。
+
+</Parameter>
+<Parameter name="WARN_NO_AVAILABLE_CHANNEL">
+
+（103）：无可用的频道资源，可能是服务器无法分配频道资源。
+
+</Parameter>
+<Parameter name="WARN_LOOKUP_CHANNEL_TIMEOUT">
+
+（104）：查找频道时超时。该警告通常出现在网络状况较差，无法连接服务器时。
+
+</Parameter>
+<Parameter name="WARN_LOOKUP_CHANNEL_REJECTED">
+
+（105）：服务器拒绝查找频道的请求。服务器无法处理该请求或请求非法。
+
+</Parameter>
+<Parameter name="WARN_OPEN_CHANNEL_TIMEOUT">
+
+（106）：打开频道时超时。该警告通常出现在网络状况较差，无法连接服务器时。
+
+</Parameter>
+<Parameter name="WARN_OPEN_CHANNEL_REJECTED">
+
+（107）：服务器拒绝打开频道的请求。服务器无法处理该请求或请求非法。
+
+</Parameter>
+<Parameter name="WARN_SWITCH_LIVE_VIDEO_TIMEOUT">
+
+（111）：切换直播视频时超时。
+
+</Parameter>
+<Parameter name="WARN_SET_CLIENT_ROLE_TIMEOUT">
+
+（118）：设置用户角色时超时。
+
+</Parameter>
+<Parameter name="WARN_OPEN_CHANNEL_INVALID_TICKET">
+
+（121）：用于打开频道的票据无效。
+
+</Parameter>
+<Parameter name="WARN_OPEN_CHANNEL_TRY_NEXT_VOS">
+
+（122）：SDK 正在尝试连接另一个服务器。
+
+</Parameter>
+<Parameter name="WARN_CHANNEL_CONNECTION_UNRECOVERABLE">
+
+（131）：频道连接无法恢复。
+
+</Parameter>
+<Parameter name="WARN_CHANNEL_CONNECTION_IP_CHANGED">
+
+（132）：SDK 连接的 IP 已更改。
+
+</Parameter>
+<Parameter name="WARN_CHANNEL_CONNECTION_PORT_CHANGED">
+
+（133）：SDK 连接的端口已更改。
+
+</Parameter>
+<Parameter name="WARN_CHANNEL_SOCKET_ERROR">
+
+（134）：发生 socket 错误，尝试重新加入频道。
+
+</Parameter>
+<Parameter name="WARN_AUDIO_MIXING_OPEN_ERROR">
+
+（701）：打开用于音频混音的文件时发生错误。
+
+</Parameter>
+<Parameter name="WARN_ADM_RUNTIME_PLAYOUT_WARNING">
+
+（1014）：音频设备模块：播放设备发生异常。
+
+</Parameter>
+<Parameter name="WARN_ADM_RUNTIME_RECORDING_WARNING">
+
+（1016）：音频设备模块：录音设备发生警告。
+
+</Parameter>
+<Parameter name="WARN_ADM_RECORD_AUDIO_SILENCE">
+
+（1019）：音频设备模块：未采集到有效音频数据。
+
+</Parameter>
+<Parameter name="WARN_ADM_PLAYOUT_MALFUNCTION">
+
+（1020）：音频设备模块：播放设备启动失败。
+
+</Parameter>
+<Parameter name="WARN_ADM_RECORD_MALFUNCTION">
+
+（1021）：音频设备模块：录音设备启动失败。
+
+</Parameter>
+<Parameter name="WARN_ADM_RECORD_AUDIO_LOWLEVEL">
+
+（1031）：音频设备模块：录音音量过低。
+
+</Parameter>
+<Parameter name="WARN_ADM_PLAYOUT_AUDIO_LOWLEVEL">
+
+（1032）：音频设备模块：播放音量过低。
+
+</Parameter>
+<Parameter name="WARN_ADM_WINDOWS_NO_DATA_READY_EVENT">
+
+（1040）：音频设备模块：音频驱动异常。你可以尝试以下操作：
+
+- 禁用或重新启用音频设备；
+- 重新启用设备；
+- 更新声卡驱动程序。
+
+</Parameter>
+<Parameter name="WARN_APM_HOWLING">
+
+（1051）：音频设备模块：SDK 检测到啸叫。
+
+</Parameter>
+<Parameter name="WARN_ADM_GLITCH_STATE">
+
+（1052）：音频设备模块：音频设备处于故障状态。
+
+</Parameter>
+<Parameter name="WARN_ADM_IMPROPER_SETTINGS">
+
+（1053）：音频设备模块：设置不正确。
+
+</Parameter>
+<Parameter name="WARN_ADM_POP_STATE">
+
+（1055）：音频设备模块：音频设备处于爆音状态。
+
+</Parameter>
+<Parameter name="WARN_ADM_WIN_CORE_NO_RECORDING_DEVICE">
+
+（1322）：无录音设备。
+
+</Parameter>
+<Parameter name="WARN_ADM_WIN_CORE_NO_PLAYOUT_DEVICE">
+
+（1323）：音频设备模块：无可用的播放设备。你可以尝试插入音频设备。
+
+</Parameter>
+<Parameter name="WARN_ADM_WIN_CORE_IMPROPER_CAPTURE_RELEASE">
+
+（1324）：音频设备模块：采集设备被错误释放。你可以尝试以下操作：
+
+- 禁用或重新启用音频设备；
+- 重新启用音频设备；
+- 更新声卡驱动程序。
+
+</Parameter>
+<Parameter name="WARN_ADM_RECORD_IS_OCCUPIED">
+
+（1033）：音频设备模块：音频采集设备被占用。
+
+</Parameter>
+</ParameterList>

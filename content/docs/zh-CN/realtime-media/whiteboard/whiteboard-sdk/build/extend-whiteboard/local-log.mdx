@@ -1,0 +1,186 @@
+---
+title: 本地日志
+---
+
+<PlatformStructured platform="android">
+
+适用于 **Whiteboard Android SDK 2.16.134**。
+
+Android 已内嵌日志运行时，通过 Native 配置开启，无需业务部署 Web Worker。
+
+## 创建 SDK 前开启
+
+```java
+LoggerOptions logger = new LoggerOptions();
+logger.setLocalLog(new LocalLogOptions().setEnabled(true).setEnabledUpload(true));
+config.setLoggerOptions(logger);
+```
+
+## 状态与按需上报
+
+```java
+// SDK 初始化完成后操作。
+whiteSdk.getLocalLogState(new Promise<JSONObject>() {
+    @Override public void then(JSONObject state) { Log.i("Whiteboard", state.toString()); }
+    @Override public void catchEx(SDKError error) { Log.e("Whiteboard", "状态查询失败", error); }
+});
+whiteSdk.uploadLocalLogs(new Promise<JSONObject>() {
+    @Override public void then(JSONObject result) { Log.i("Whiteboard", result.toString()); }
+    @Override public void catchEx(SDKError error) { Log.e("Whiteboard", "上传失败", error); }
+});
+```
+
+状态查询用于确认运行时是否可用；配置 enabled=true 仍需结合状态确认，不能只据配置判断落盘成功。`collectLocalLogs` 收集导出结果，不等价于上传；`flushLocalLogs` 等待缓冲写入；`uploadLocalLogs` 触发上传，需要等待结果并处理失败。enabledUpload=false 时可以保留本地写入而关闭上传。
+
+```java
+whiteSdk.setCommonCallbacks(new CommonCallback() {
+    @Override public void onLocalLogStateChange(JSONObject state) {
+        Log.i("Whiteboard", state.toString());
+    }
+});
+```
+
+将此方法合并到已有 CommonCallback，保持其他业务回调。
+
+建议在错误反馈流程中按需收集/上传，记录结果并限制重复触发。自定义上传参数和返回字段以[客户端 /api-ref/whiteboard/android/overview](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/overview)为准；不要把不同平台的回调对象当作相同模型解析。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+适用于 **Whiteboard iOS SDK 2.16.147**。
+
+iOS 已内嵌日志运行时，通过 Native 配置开启。
+
+## 创建 SDK 前开启
+
+```objc
+WhiteLocalLogOptions *logs = [WhiteLocalLogOptions new];
+logs.enabled = @YES; logs.enabledUpload = @YES;
+config.localLogOptions = logs;
+```
+
+## 状态与按需上报
+
+```objc
+[sdk getLocalLogStateWithCompletionHandler:^(NSDictionary *result, NSError *error) {
+    NSLog(@"%@ %@", result, error);
+}];
+[sdk uploadLocalLogsWithCompletionHandler:^(NSDictionary *result, NSError *error) {
+    NSLog(@"%@ %@", result, error);
+}];
+```
+
+状态查询用于确认运行时是否可用；配置 enabled=true 仍需结合状态确认，不能只据配置判断落盘成功。`collectLocalLogsWithCompletionHandler:` 收集导出结果，不等价于上传；`flushLocalLogsWithCompletionHandler:` 等待缓冲写入；`uploadLocalLogsWithCompletionHandler:` 触发上传，需要等待结果并处理失败。enabledUpload=false 时可以保留本地写入而关闭上传。
+
+```objc
+// 在创建 WhiteSDK 时传入的 WhiteCommonCallbackDelegate 中实现：
+- (void)localLogStateChange:(NSDictionary *)state {
+    NSLog(@"%@", state);
+}
+```
+
+建议在错误反馈流程中按需收集/上传，记录结果并限制重复触发。自定义上传参数和返回字段以[客户端 /api-ref/whiteboard/ios/overview](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/docs/headers/agora-interactive-whiteboard-objective-c-overview)为准；不要把不同平台的回调对象当作相同模型解析。
+
+iOS 12 及以下版本会强制关闭本地日志写入与上传，以规避 WKWebView Worker IndexedDB 的兼容问题；应读取状态确认可用性。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+适用于 **Whiteboard Web SDK 2.16.59**。
+
+本地日志用于定位白板运行问题。Web 接入需要把日志依赖引入项目；只设置 loggerOptions 并不能补齐日志运行时。
+
+## 安装日志依赖
+
+```shell
+npm install agora-foundation@3.11.1
+```
+
+安装 white-web-sdk 的同时安装上述日志包，确保构建输出包含依赖。SDK 自动探测 `agora-foundation/lib/logger`，通常无需业务另行 import 或直接调用该模块。缺少依赖或 Worker 不可用时会降级，应读取本地日志状态确认。
+
+## 配置 SDK
+
+```typescript
+const sdk = new WhiteWebSdk({
+  appIdentifier, region: "cn-hz",
+  loggerOptions: {
+  localLog: { enabled: true, enabledUpload: true }
+}
+});
+```
+
+Web 默认尝试启用本地日志与上传；设 enabled=false 关闭本地日志，enabledUpload=false 只关闭上传。
+
+## 静态 Worker 资源（按构建环境选择）
+
+若构建工具不能正确发布日志 Worker，可在构建阶段生成并部署与本项目实际 agora-foundation 版本一致的静态 Worker：
+
+```shell
+npm install -D esbuild @babel/core @babel/preset-env
+npx white-web-sdk-sync-foundation-worker --out public/whiteboard/foundation-worker.js --manifest public/whiteboard/foundation-worker.manifest.json --required --target es5
+```
+
+将命令放到业务构建前，随站点发布生成的静态文件。SDK 配置的 `loggerOptions.localLog` 中可设置 `workerUrl: "/whiteboard/foundation-worker.js"`；或在需要自定义 Worker 创建时设置 `createWorker: () => new Worker("/whiteboard/foundation-worker.js")`，后者优先。URL 应按业务的部署前缀、CSP 与资源可访问性调整。
+
+## 状态与按需上报
+
+```typescript
+console.log(sdk.getLocalLogState());
+try {
+  await sdk.flushLocalLogs();
+  const result = await sdk.uploadLocalLogs();
+  console.log(result);
+} catch (error) { console.warn("日志上传失败", error); }
+```
+
+状态查询用于确认运行时是否可用；配置 enabled=true 仍需结合状态确认，不能只据配置判断落盘成功。`collectLocalLogs` 收集导出结果，不等价于上传；`flushLocalLogs` 等待缓冲写入；`uploadLocalLogs` 触发上传，需要等待结果并处理失败。enabledUpload=false 时可以保留本地写入而关闭上传。
+
+```typescript
+const off = sdk.onLocalLogStateChange(state => console.log(state));
+// 页面退出时清理监听：
+off();
+```
+
+建议在错误反馈流程中按需收集/上传，记录结果并限制重复触发。自定义上传参数和返回字段以[客户端 /api-ref/whiteboard/javascript/overview](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/overview)为准；不要把不同平台的回调对象当作相同模型解析。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+适用于 **Whiteboard HarmonyOS SDK 0.2.11**。
+
+HarmonyOS 已内嵌日志运行时，通过 WhiteboardOptions 配置开启。
+
+## 入房前开启
+
+```typescript
+const options: WhiteboardOptions = {
+  appIdentifier: appIdentifier, roomUuid: roomUuid, roomToken: roomToken,
+  uid: uid, region: Region.CN_HZ,
+  localLogOptions: { enabled: true, enabledUpload: true }
+};
+```
+
+## 状态与按需上报
+
+```typescript
+try {
+  console.info(JSON.stringify(await controller.getLocalLogState()));
+  console.info(JSON.stringify(await controller.uploadLocalLogs()));
+} catch (error) { console.warn('本地日志操作失败'); }
+```
+
+状态查询用于确认运行时是否可用；配置 enabled=true 仍需结合状态确认，不能只据配置判断落盘成功。`collectLocalLogs` 收集导出结果，不等价于上传；`flushLocalLogs` 等待缓冲写入；`uploadLocalLogs` 触发上传，需要等待结果并处理失败。enabledUpload=false 时可以保留本地写入而关闭上传。
+
+```typescript
+const callbacks = new WhiteboardCallbacks().setOnLocalLogStateChange(state => {
+  console.info(JSON.stringify(state));
+});
+// 将 callbacks 放入本次 WhiteboardOptions。
+```
+
+建议在错误反馈流程中按需收集/上传，记录结果并限制重复触发。自定义上传参数和返回字段以[客户端 /api-ref/whiteboard/harmonyos/overview](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/overview)为准；不要把不同平台的回调对象当作相同模型解析。
+
+</PlatformStructured>

@@ -1,3 +1,5 @@
+import { DocsCopyMenu as ChineseDocsCopyMenu } from './docs-copy-menu.zh-cn';
+import { DEFAULT_LOCALE as RELEASE_DEFAULT_LOCALE, normalizeLocale as normalizeReleaseLocale } from '@/lib/i18n/i18n-config';
 import {
   BotIcon,
   CheckIcon,
@@ -79,7 +81,7 @@ function buildClaudeUrl(input: {
   return `${CLAUDE_BASE_URL}?q=${encodeURIComponent(buildAiPrompt(input))}`;
 }
 
-export function DocsCopyMenu({
+function GlobalDocsCopyMenu({
   className,
   locale,
   markdownUrl,
@@ -241,3 +243,11 @@ export {
   buildMarkdownDownloadFilename,
   buildMarkdownPageUrl,
 };
+
+export function DocsCopyMenu(props: Parameters<typeof ChineseDocsCopyMenu>[0]) {
+  return normalizeReleaseLocale(props.locale ?? RELEASE_DEFAULT_LOCALE) === 'zh-CN'
+    ? <ChineseDocsCopyMenu {...props} />
+    : <GlobalDocsCopyMenu {...props} />;
+}
+
+export { getMcpConfig, getVsCodeMcpCommand } from './docs-copy-menu.zh-cn';

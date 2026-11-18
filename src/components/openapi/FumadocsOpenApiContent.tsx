@@ -1,3 +1,5 @@
+import { FumadocsOpenApiContent as ChineseFumadocsOpenApiContent } from './FumadocsOpenApiContent.zh-cn';
+import { DEFAULT_LOCALE as RELEASE_DEFAULT_LOCALE, normalizeLocale as normalizeReleaseLocale } from '@/lib/i18n/i18n-config';
 import { TranslationProvider } from '@fuma-translate/react';
 import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
 import { type OpenAPIComponents, useOpenAPI } from 'fumadocs-openapi';
@@ -258,7 +260,7 @@ function getGeneratedCodeSampleOverrides({
   return operation['x-codeSamples']?.length ? removeGeneratedCodeSamples : [];
 }
 
-export function FumadocsOpenApiContent({
+function GlobalFumadocsOpenApiContent({
   className,
   locale,
   pageProps,
@@ -978,6 +980,14 @@ function OpenApiEnglishResponses({
   );
   return (
     <OpenApiResponses
+      labels={{
+        mediaTypeForResponse: (status) =>
+          `Media type for ${status} response`,
+        responseBody: getOpenApiLabel('Response Body', 'en'),
+        responses: getOpenApiLabel('Responses', 'en'),
+        schemaHasNoFields: getOpenApiLabel('Schema has no fields', 'en'),
+        schemaNotProvided: getOpenApiLabel('Schema not provided', 'en'),
+      }}
       renderDescription={(markdown) =>
         renderOpenApiMarkdown(normalizeOpenApiDescriptionMarkdown(markdown))
       }
@@ -1983,4 +1993,10 @@ function resolveLocalReference(document: unknown, value: unknown) {
 
 function isRecord(value: unknown): value is OpenApiRecord {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+export function FumadocsOpenApiContent(props: Parameters<typeof ChineseFumadocsOpenApiContent>[0]) {
+  return normalizeReleaseLocale(props.locale ?? RELEASE_DEFAULT_LOCALE) === 'zh-CN'
+    ? <ChineseFumadocsOpenApiContent {...props} />
+    : <GlobalFumadocsOpenApiContent {...props} />;
 }

@@ -1,0 +1,73 @@
+---
+title: IVideoEncodedFrameObserver类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/class_i_video_encoded_frame_observer
+  sourcePath: html-docs/rtc-server-sdk/cpp/class_i_video_encoded_frame_observer.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+[IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-video-encoded-frame-observer) 类。
+
+## 构造及析构函数说明
+
+<a id="ae79bd4ec48174b54d086479f42541b3e"></a>
+
+### ~IVideoEncodedFrameObserver()
+
+<ApiSignature labels="inline virtual">
+
+virtual IVideoEncodedFrameObserver::~IVideoEncodedFrameObserver()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="a971407047089fceb3dbe5f4c0a127673"></a>
+
+### OnEncodedVideoFrame()
+
+<ApiSignature labels="pure virtual">
+
+virtual bool IVideoEncodedFrameObserver::OnEncodedVideoFrame(rtc::uid_t *uid*, const uint8_t * *imageBuffer*, size_t *length*, const rtc::EncodedVideoFrameInfo & *videoEncodedFrameInfo*)
+
+</ApiSignature>
+
+每次 SDK 收到已编码视频帧时触发。
+
+<ParameterList title="参数">
+<Parameter name="uid">
+
+远端用户的 ID。
+
+</Parameter>
+<Parameter name="imageBuffer">
+
+视频帧缓冲区。
+
+</Parameter>
+<Parameter name="length">
+
+视频帧数据长度。
+
+</Parameter>
+<Parameter name="videoEncodedFrameInfo">
+
+已编码视频帧信息。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+是否接受已编码视频帧。
+
+- true: 接受。
+- false: 不接受。

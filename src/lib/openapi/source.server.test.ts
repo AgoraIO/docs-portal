@@ -2,12 +2,19 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { getOpenApiOperationIds, OPENAPI_LANES } from './lanes';
+import {
+  getOpenApiLaneLocales,
+  getOpenApiOperationIds,
+  OPENAPI_LANES,
+} from './lanes';
 import { getOpenApiOperation, getOpenApiOperations } from './source.server';
 
 describe('openapi source loader', () => {
   const lane = OPENAPI_LANES[0];
   const rtcLane = OPENAPI_LANES.find((item) => item.id === 'rtc-rest');
+  const cloudRecordingLane = OPENAPI_LANES.find(
+    (item) => item.id === 'cloud-recording-rest',
+  );
 
   it('loads lane operations by operationId', async () => {
     const operations = await getOpenApiOperations(lane);
@@ -100,24 +107,132 @@ describe('openapi source loader', () => {
     });
   });
 
-  it.each(
-    OPENAPI_LANES,
-  )('keeps registry operation IDs in sync with YAML for $id', async (openApiLane) => {
-    const operations = await getOpenApiOperations(openApiLane);
-    const fromYaml = operations
-      .map((operation) => operation.operationId)
-      .sort();
-    const fromRegistry = getOpenApiOperationIds(openApiLane).sort();
+  it.each(OPENAPI_LANES)(
+    'keeps registry operation IDs in sync with YAML for $id',
+    async (openApiLane) => {
+      const fromRegistry = getOpenApiOperationIds(openApiLane).sort();
 
-    expect(fromRegistry).toEqual(fromYaml);
-  });
+      for (const locale of getOpenApiLaneLocales(openApiLane)) {
+        const operations = await getOpenApiOperations(openApiLane, locale);
+        const fromYaml = operations
+          .map((operation) => operation.operationId)
+          .sort();
+
+        expect(fromRegistry).toEqual(fromYaml);
+      }
+    },
+  );
 
   it('loads localized operation summaries from locale-specific YAML', async () => {
     const english = await getOpenApiOperation(lane, 'start-agent', 'en');
     const chinese = await getOpenApiOperation(lane, 'start-agent', 'zh-CN');
 
     expect(english.summary).toBe('Start a conversational AI agent');
-    expect(chinese.summary).toBe('Start a conversational AI agent');
+    expect(chinese.summary).toBe('创建对话式智能体');
+    expect(chinese.servers).toEqual([
+      {
+        url: 'https://api.agora.io/cn/api/conversational-ai-agent',
+      },
+    ]);
+  });
+
+  it('loads localized Cloud Recording summaries from the Chinese YAML', async () => {
+    expect(cloudRecordingLane).toBeDefined();
+
+    const english = await getOpenApiOperation(
+      cloudRecordingLane!,
+      'acquire-cloud-recording-resource',
+      'en',
+    );
+    const chinese = await getOpenApiOperation(
+      cloudRecordingLane!,
+      'acquire-cloud-recording-resource',
+      'zh-CN',
+    );
+    const ncsIp = await getOpenApiOperation(
+      cloudRecordingLane!,
+      'get-ncs-ip',
+      'zh-CN',
+    );
+
+    expect(english.summary).toBe('Acquire a resource ID');
+    expect(chinese.summary).toBe('获取云端录制资源');
+    expect(ncsIp.path).toBe('/v2/ncs/ip');
+  });
+
+  it('preserves description-only non-200 responses for all Chinese Cloud Recording endpoints', async () => {
+    if (!cloudRecordingLane) {
+      throw new Error('Missing cloud-recording-rest OpenAPI lane');
+    }
+    const operations = await getOpenApiOperations(cloudRecordingLane, 'zh-CN');
+    const responses = operations
+      .map((operation) => operation.responses['非 200'])
+      .filter(Boolean);
+
+    expect(responses).toHaveLength(6);
+    for (const response of responses) {
+      expect(response).toEqual({
+        description:
+          '如果 HTTP 状态码不为 `200`，请参考[响应状态码](/zh-CN/realtime-media/cloud-recording/reference/response-code)排查问题。',
+      });
+    }
+  });
+
+  it('preserves legacy description-only errors for every Chinese RTC channel-management operation', async () => {
+    const chineseRtcLane = OPENAPI_LANES.find(
+      (item) => item.id === 'rtc-rest-zh-cn',
+    );
+    if (!chineseRtcLane) {
+      throw new Error('Missing rtc-rest-zh-cn OpenAPI lane');
+    }
+    const operations = await getOpenApiOperations(chineseRtcLane, 'zh-CN');
+
+    expect(operations).toHaveLength(9);
+    for (const operation of operations) {
+      expect(operation.responses['非 200'], operation.operationId).toEqual({
+        description:
+          '如果状态码不为 200，则请求失败。你可以参考[响应状态码](/zh-CN/realtime-media/rtc/reference/response-code)排查问题。',
+      });
+    }
+  });
+
+  it('keeps License message errors distinct from CallKit call responses', async () => {
+    const callkitLane = OPENAPI_LANES.find(
+      (item) => item.id === 'voip-callkit-rest',
+    );
+    if (!callkitLane) {
+      throw new Error('Missing voip-callkit-rest OpenAPI lane');
+    }
+    const operations = await getOpenApiOperations(callkitLane, 'zh-CN');
+    const licenseOperationIds = [
+      'activateLicense',
+      'getExpiringLicenses',
+      'renewLicense',
+      'getLicenseRenewals',
+    ];
+    const licenseOperations = operations.filter((operation) =>
+      licenseOperationIds.includes(operation.operationId),
+    );
+
+    expect(licenseOperations).toHaveLength(4);
+    for (const operation of licenseOperations) {
+      const json = operation.responses['非 200']?.content?.['application/json'];
+      expect(json?.schema, operation.operationId).toMatchObject({
+        type: 'object',
+        properties: { message: { type: 'string' } },
+      });
+      expect(json?.schema).not.toHaveProperty('required');
+      expect(json?.schema).not.toHaveProperty('properties.msg');
+      expect(json?.examples).toBeUndefined();
+    }
+    const call = operations.find(
+      (operation) => operation.operationId === 'callMiniApp',
+    );
+    expect(
+      call?.responses['非 200']?.content?.['application/json']?.schema,
+    ).toMatchObject({
+      properties: { msg: { type: 'string' } },
+    });
   });
 
   it('loads OpenAPI data when runtime cwd has no content or public folders', async () => {

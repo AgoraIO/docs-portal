@@ -1,0 +1,783 @@
+{
+  "provenance": {
+    "repository": "AgoraIO/shengwang-doc-source",
+    "commit": "8fd46d74070a18dcb46ef943f6d6768590be9bca",
+    "renderer": "src/components/restful/utils.ts",
+    "rendererSha256": "698e6b0244a20f0b92904a83b33adac87deb3f8447ad97acddf136858f9477ce",
+    "sourceSha256": {
+      "html-docs/analytics/RESTful/restful-aa.yaml": "ae7642e77b1d98d34b50c624ec4d163773790f8679db968f68300c1a8a40faa3",
+      "html-docs/cloud-recording/cloud-recording.yaml": "99abd08caaecba8b8c820f827be890d7ef47744e6f4f6bb998b7575d761f86f3",
+      "html-docs/cloud-transcoder/RESTful/cloud-transcoder.yaml": "0d06dfe81185f78dd27e8a87e360fb0d976c2a7b19587c5eb63083d354ce6ba8",
+      "html-docs/console/RESTful/console.yaml": "dd4cc51c0ea200a27b3e03ef28444f58638208f9ba132737134f3112637f3b7c",
+      "html-docs/conversion-ppt/RESTful/restful-ppt.yaml": "be2522d9f7c17a342d415074e460e3415c1a4cc781cf61e5d6f43652ad618597",
+      "html-docs/convoai/RESTful/convoai.yaml": "232f572c2a51022e5f5784465dd374978c1636b57eadaae4cbb090a5480b7b42",
+      "html-docs/danmaku/RESTful/danmaku.yaml": "985b7609553c9888a7ac188312941eb5f0ec4056ddba14880c965f7ad6d7b446",
+      "html-docs/media-pull/restful/media-pull.yaml": "bc6cc0e3c16883c2bf1e8cdcd67aafd2ef0dc7d73a63f5cb96730cd5631b921b",
+      "html-docs/media-push/restful/media-push.yaml": "1b7698cd272c8e3c1b165940ad2ca3ecbcd91adfd2799429e01918d1d55b3b82",
+      "html-docs/rtc/restful/channel-management.yaml": "a4f6fd966fbfc1c73513f086fbc8d33c208d08c62e771582186579e39f792a21",
+      "html-docs/rtmp-gateway/restful/rtmp-gateway.yaml": "5abcd9de39317b45a9ea64598bd041d667fee591759cf8675b8c3056f1dd7d3f",
+      "html-docs/speech-to-text/RESTful/v7.yaml": "ac163870b1aeed078d2b72e4e5046af26973127b4b88a9117b4fb21e605123d5",
+      "html-docs/voip-callkit/call.yaml": "7158a5b3a98d3d582867c602ea12312b8b96f2bd10a0d0e8f9b85c719cf61431",
+      "html-docs/whiteboard/RESTful/restful-wb.yaml": "ae8357455832d7e94dcfb3515965baf78f60184afadbf4ce7791b52c27ec6566"
+    },
+    "description": "Expected query maps and URL templates captured from legacy sources, independently of the portal generator. URL placeholders are normalized to :name; query values use the legacy renderer rule."
+  },
+  "pages": [
+    {
+      "route": "/api-reference/api-ref/agora-analytics/call-freeze-bucket",
+      "urlTemplate": "https://api.sd-rtn.com/beta/analytics/call/freeze/bucket",
+      "query": {
+        "call_id": "",
+        "start_ts": "",
+        "end_ts": "",
+        "appid": "",
+        "metric": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/agora-analytics/call-list",
+      "urlTemplate": "https://api.sd-rtn.com/beta/analytics/call/lists",
+      "query": {
+        "start_ts": "",
+        "end_ts": "",
+        "appid": "",
+        "page_no": "1",
+        "page_size": "20"
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/agora-analytics/call-metrics",
+      "urlTemplate": "https://api.sd-rtn.com/beta/analytics/call/metrics",
+      "query": {
+        "start_ts": "",
+        "end_ts": "",
+        "appid": "",
+        "call_id": "",
+        "sids": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/agora-analytics/call-sessions",
+      "urlTemplate": "https://api.sd-rtn.com/beta/analytics/call/sessions",
+      "query": {
+        "start_ts": "",
+        "end_ts": "",
+        "call_id": "",
+        "page_no": "1",
+        "page_size": "20",
+        "appid": "",
+        "exclude_server_user": "true"
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/agora-analytics/call-statistics",
+      "urlTemplate": "https://api.sd-rtn.com/beta/analytics/call/statistics",
+      "query": {
+        "call_id": "",
+        "start_ts": "",
+        "end_ts": "",
+        "appid": "",
+        "metric": "",
+        "dimension": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/agora-analytics/call-statistics-time",
+      "urlTemplate": "https://api.sd-rtn.com/beta/analytics/call/statistics/time",
+      "query": {
+        "call_id": "",
+        "start_ts": "",
+        "end_ts": "",
+        "appid": "",
+        "metric": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/agora-analytics/insight-quality-aggregation",
+      "urlTemplate": "https://api.sd-rtn.com/beta/insight/quality/aggregation",
+      "query": {
+        "appid": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/agora-analytics/insight-quality-time",
+      "urlTemplate": "https://api.sd-rtn.com/beta/insight/quality/by_time",
+      "query": {
+        "startTs": "",
+        "endTs": "",
+        "appid": "",
+        "metric": "",
+        "aggregateGranularity": "",
+        "productType": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/agora-analytics/insight-usage-aggregation",
+      "urlTemplate": "https://api.sd-rtn.com/beta/insight/usage/aggregation",
+      "query": {
+        "appid": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/agora-analytics/insight-usage-time",
+      "urlTemplate": "https://api.sd-rtn.com/beta/insight/usage/by_time",
+      "query": {
+        "startTs": "",
+        "endTs": "",
+        "appid": "",
+        "metric": "",
+        "aggregateGranularity": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/agora-analytics/realtime-quality",
+      "urlTemplate": "https://api.sd-rtn.com/beta/realtime/quality/by_time_20sec",
+      "query": {
+        "startTs": "",
+        "endTs": "",
+        "appid": "",
+        "productType": "",
+        "metric": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/agora-analytics/realtime-quality-top20",
+      "urlTemplate": "https://api.sd-rtn.com/beta/realtime/quality/dimension/top20",
+      "query": {
+        "ts": "",
+        "appid": "",
+        "productType": "",
+        "metric": "",
+        "dimension": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/agora-analytics/realtime-usage",
+      "urlTemplate": "https://api.sd-rtn.com/beta/realtime/usage/by_time_20sec",
+      "query": {
+        "startTs": "",
+        "endTs": "",
+        "appid": "",
+        "productType": "",
+        "metric": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/agora-analytics/realtime-usage-top20",
+      "urlTemplate": "https://api.sd-rtn.com/beta/realtime/usage/dimension/top20",
+      "query": {
+        "ts": "",
+        "appid": "",
+        "productType": "",
+        "metric": "",
+        "dimension": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/cloud-recording/acquire",
+      "urlTemplate": "https://api.sd-rtn.com/v1/apps/:appid/cloud_recording/acquire",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/cloud-recording/get-ncs-ip",
+      "urlTemplate": "https://api.sd-rtn.com/v2/ncs/ip",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/cloud-recording/query",
+      "urlTemplate": "https://api.sd-rtn.com/v1/apps/:appid/cloud_recording/resourceid/:resourceid/sid/:sid/mode/:mode/query",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/cloud-recording/start",
+      "urlTemplate": "https://api.sd-rtn.com/v1/apps/:appid/cloud_recording/resourceid/:resourceid/mode/:mode/start",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/cloud-recording/stop",
+      "urlTemplate": "https://api.sd-rtn.com/v1/apps/:appid/cloud_recording/resourceid/:resourceid/sid/:sid/mode/:mode/stop",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/cloud-recording/update",
+      "urlTemplate": "https://api.sd-rtn.com/v1/apps/:appid/cloud_recording/resourceid/:resourceid/sid/:sid/mode/:mode/update",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/cloud-recording/update-layout",
+      "urlTemplate": "https://api.sd-rtn.com/v1/apps/:appid/cloud_recording/resourceid/:resourceid/sid/:sid/mode/:mode/updateLayout",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/cloud-transcoding/acquire",
+      "urlTemplate": "https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/builderTokens",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/cloud-transcoding/create",
+      "urlTemplate": "https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks",
+      "query": {
+        "builderToken": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/cloud-transcoding/destroy",
+      "urlTemplate": "https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks/:taskId",
+      "query": {
+        "builderToken": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/cloud-transcoding/ncs-query-ip",
+      "urlTemplate": "https://api.sd-rtn.com/v1/ncs/ip",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/cloud-transcoding/query",
+      "urlTemplate": "https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks/:taskId",
+      "query": {
+        "builderToken": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/cloud-transcoding/template-create",
+      "urlTemplate": "https://api.sd-rtn.com/v1/projects/:appId/rtls/abr/config/codecs/:codecId",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/cloud-transcoding/template-query",
+      "urlTemplate": "https://api.sd-rtn.com/v1/projects/:appId/rtls/abr/config/codecs",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/cloud-transcoding/update",
+      "urlTemplate": "https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks/:taskId",
+      "query": {
+        "builderToken": "",
+        "sequenceId": "",
+        "updateMask": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/console/create-project",
+      "urlTemplate": "https://api.sd-rtn.com/dev/v1/project",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/console/get-project",
+      "urlTemplate": "https://api.sd-rtn.com/dev/v1/project",
+      "query": {
+        "id": "",
+        "name": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/console/list-projects",
+      "urlTemplate": "https://api.sd-rtn.com/dev/v1/projects",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/console/reset-primary-app-certificate",
+      "urlTemplate": "https://api.sd-rtn.com/dev/v1/reset_signkey",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/console/update-primary-app-certificate",
+      "urlTemplate": "https://api.sd-rtn.com/dev/v1/signkey",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/console/update-project-status",
+      "urlTemplate": "https://api.sd-rtn.com/dev/v1/project_status",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/conversational-ai/history",
+      "urlTemplate": "https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/history",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/conversational-ai/interrupt",
+      "urlTemplate": "https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/interrupt",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/conversational-ai/join",
+      "urlTemplate": "https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/join",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/conversational-ai/leave",
+      "urlTemplate": "https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/leave",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/conversational-ai/list",
+      "urlTemplate": "https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/agents",
+      "query": {
+        "state": "2",
+        "limit": "20"
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/conversational-ai/query",
+      "urlTemplate": "https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/conversational-ai/speak",
+      "urlTemplate": "https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/speak",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/conversational-ai/think",
+      "urlTemplate": "https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/think",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/conversational-ai/turns",
+      "urlTemplate": "https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/turns",
+      "query": {
+        "page_index": "1",
+        "page_size": "50"
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/conversational-ai/update",
+      "urlTemplate": "https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/update",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/danmaku/get-cloud-game-detail",
+      "urlTemplate": "https://:domain/v2/projects/:appid/cloud-bullet-game/api/live-data/games/:gameid",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/danmaku/get-cloud-game-list",
+      "urlTemplate": "https://:domain/v2/projects/:appid/cloud-bullet-game/api/live-data/games",
+      "query": {
+        "page_num": "1",
+        "page_size": "10"
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/danmaku/get-cloud-game-status",
+      "urlTemplate": "https://:domain/v2/projects/:appid/cloud-bullet-game/api/live-data/tasks/:taskid/status",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/danmaku/push-message",
+      "urlTemplate": "https://:domain/v2/projects/:appid/bullet-game/api/live-data/games/:gameid/rooms/$:roomid/msgType/:msg_type:push",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/danmaku/renew-cloud-game-token",
+      "urlTemplate": "https://:domain/v2/projects/:appid/cloud-bullet-game/api/live-data/tasks/:taskid/renew-token",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/danmaku/start-cloud-game",
+      "urlTemplate": "https://:domain/v2/projects/:appid/cloud-bullet-game/api/live-data/games/:gameid/mode/cloud/rooms/:roomid:start",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/danmaku/start-pc-game",
+      "urlTemplate": "https://:domain/v2/projects/:appid/cloud-bullet-game/api/live-data/games/:gameid/mode/pc/rooms/:roomid:start",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/danmaku/stop-cloud-game",
+      "urlTemplate": "https://:domain/v2/projects/:appid/cloud-bullet-game/api/live-data/games/:gameid/mode/cloud/rooms/:roomid:stop",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/danmaku/stop-pc-game",
+      "urlTemplate": "https://:domain/v2/projects/:appid/cloud-bullet-game/api/live-data/games/:gameid/mode/pc/rooms/:roomid:stop",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/media-pull/create",
+      "urlTemplate": "https://api.sd-rtn.com/:region/v1/projects/:appId/cloud-player/players",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/media-pull/delete",
+      "urlTemplate": "https://api.sd-rtn.com/:region/v1/projects/:appId/cloud-player/players/:id",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/media-pull/get-ncs-ip",
+      "urlTemplate": "https://api.sd-rtn.com/v1/ncs/ip",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/media-pull/list",
+      "urlTemplate": "https://api.sd-rtn.com/v1/projects/:appId/cloud-player/players",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/media-pull/update",
+      "urlTemplate": "https://api.sd-rtn.com/:region/v1/projects/:appId/cloud-player/players/:playerid",
+      "query": {
+        "sequence": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/media-push/create",
+      "urlTemplate": "https://api.sd-rtn.com/:region/v1/projects/:appId/rtmp-converters",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/media-push/delete",
+      "urlTemplate": "https://api.sd-rtn.com/:region/v1/projects/:appId/rtmp-converters/:converterId",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/media-push/get",
+      "urlTemplate": "https://api.sd-rtn.com/:region/v1/projects/:appId/rtmp-converters/:converterId",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/media-push/get-ncs-ip",
+      "urlTemplate": "https://api.sd-rtn.com/v1/ncs/ip",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/media-push/list",
+      "urlTemplate": "https://api.sd-rtn.com/v1/projects/:appId/rtmp-converters",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/media-push/list-by-channel",
+      "urlTemplate": "https://api.sd-rtn.com/v1/projects/:appId/channels/:cname/rtmp-converters",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/media-push/update",
+      "urlTemplate": "https://api.sd-rtn.com/:region/v1/projects/:appId/rtmp-converters/:converterId",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/ppt-conversion-service/cancel-task",
+      "urlTemplate": "https://api.netless.link/v5/projector/tasks/:uuid",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/ppt-conversion-service/generate-sdk-token",
+      "urlTemplate": "https://api.netless.link/v5/tokens/teams",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/ppt-conversion-service/generate-task-token",
+      "urlTemplate": "https://api.netless.link/v5/tokens/tasks/:uuid",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/ppt-conversion-service/list-pending-tasks",
+      "urlTemplate": "https://api.netless.link/v5/projector/tasks",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/ppt-conversion-service/query-task",
+      "urlTemplate": "https://api.netless.link/v5/projector/tasks/:uuid",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/ppt-conversion-service/set-task-priority",
+      "urlTemplate": "https://api.netless.link/v5/projector/tasks/:uuid/priority",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/ppt-conversion-service/start-conversion",
+      "urlTemplate": "https://api.netless.link/v5/projector/tasks",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtc/create-ban-rule",
+      "urlTemplate": "https://api.sd-rtn.com/dev/v1/kicking-rule",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtc/delete-ban-rule",
+      "urlTemplate": "https://api.sd-rtn.com/dev/v1/kicking-rule",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtc/get-ban-rule-list",
+      "urlTemplate": "https://api.sd-rtn.com/dev/v1/kicking-rule",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtc/query-channel-list",
+      "urlTemplate": "https://api.sd-rtn.com/dev/v1/channel/:appid",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtc/query-host-list",
+      "urlTemplate": "https://api.sd-rtn.com/dev/v1/channel/user/:appid/:channelName/hosts_only",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtc/query-ip-address",
+      "urlTemplate": "https://api.sd-rtn.com/v2/ncs/ip",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtc/query-user-list",
+      "urlTemplate": "https://api.sd-rtn.com/dev/v1/channel/user/:appid/:channelName",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtc/query-user-status",
+      "urlTemplate": "https://api.sd-rtn.com/dev/v1/channel/user/property/:appid/:uid/:channelName",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtc/update-ban-expiration",
+      "urlTemplate": "https://api.sd-rtn.com/dev/v1/kicking-rule",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtmp-gateway/create-reset-template",
+      "urlTemplate": "https://api.sd-rtn.com/:region/v1/projects/:appId/rtls/ingress/stream-templates/:templateId",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtmp-gateway/create-streaming-key",
+      "urlTemplate": "https://api.sd-rtn.com/:region/v1/projects/:appId/rtls/ingress/streamkeys",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtmp-gateway/delete-streaming-key",
+      "urlTemplate": "https://api.sd-rtn.com/:region/v1/projects/:appId/rtls/ingress/streamkeys/:streamkey",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtmp-gateway/delete-template",
+      "urlTemplate": "https://api.sd-rtn.com/:region/v1/projects/:appId/rtls/ingress/stream-templates/:templateId",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtmp-gateway/force-disconnection",
+      "urlTemplate": "https://api.sd-rtn.com/:region/v1/projects/:appId/rtls/ingress/online-streams/:sid",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtmp-gateway/list-streaming-keys",
+      "urlTemplate": "https://api.sd-rtn.com/:region/v1/projects/:appId/rtls/ingress/streamkeys",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtmp-gateway/mute-streaming",
+      "urlTemplate": "https://api.sd-rtn.com/:region/:version/projects/:appId/rtls/ingress/online-streams/:sid/mute",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtmp-gateway/query-ip-address",
+      "urlTemplate": "https://api.sd-rtn.com/v1/ncs/ip",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtmp-gateway/query-streaming-information",
+      "urlTemplate": "https://api.sd-rtn.com/:region/:version/projects/:appId/rtls/ingress/online-streams/:sid",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtmp-gateway/query-streaming-key",
+      "urlTemplate": "https://api.sd-rtn.com/:region/v1/projects/:appId/rtls/ingress/streamkeys/:streamkey",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtmp-gateway/query-streaming-list",
+      "urlTemplate": "https://api.sd-rtn.com/:region/:version/projects/:appId/rtls/ingress/online-streams",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtmp-gateway/set-global-template",
+      "urlTemplate": "https://api.sd-rtn.com/:region/v1/projects/:appId/rtls/ingress/appconfig",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtmp-gateway/update-streaming-key",
+      "urlTemplate": "https://api.sd-rtn.com/:region/v1/projects/:appId/rtls/ingress/streamkeys/:streamkey",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/rtmp-gateway/update-template",
+      "urlTemplate": "https://api.sd-rtn.com/:region/v1/projects/:appId/rtls/ingress/stream-templates/:templateId",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/speech-to-text/join",
+      "urlTemplate": "https://api.sd-rtn.com/cn/api/speech-to-text/v1/projects/:appid/join",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/speech-to-text/leave",
+      "urlTemplate": "https://api.sd-rtn.com/cn/api/speech-to-text/v1/projects/:appid/agents/:agentId/leave",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/speech-to-text/list",
+      "urlTemplate": "https://api.sd-rtn.com/cn/api/speech-to-text/v1/projects/:appid/agents",
+      "query": {
+        "state": "2",
+        "limit": "20"
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/speech-to-text/query",
+      "urlTemplate": "https://api.sd-rtn.com/cn/api/speech-to-text/v1/projects/:appid/agents/:agentId",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/speech-to-text/update",
+      "urlTemplate": "https://api.sd-rtn.com/cn/api/speech-to-text/v1/projects/:appid/agents/:agentId/update",
+      "query": {
+        "sequenceId": "",
+        "updateMask": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/voip-callkit/activate-license",
+      "urlTemplate": "https://api.sd-rtn.com/dabiz/license/v2/active",
+      "query": {
+        "pid": "",
+        "licenseKey": "",
+        "appid": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/voip-callkit/call-mini-app",
+      "urlTemplate": "https://api.sd-rtn.com/v2/miniapp/:appId/voip/call/miniapp",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/voip-callkit/hangup-mini-app",
+      "urlTemplate": "https://api.sd-rtn.com/v1/miniapp/:appId/voip/call/:modelId/:deviceId",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/voip-callkit/list-expiring-licenses",
+      "urlTemplate": "https://api.sd-rtn.com/dabiz/license/v3/projects/:appId/pids/:pid/expiringLicenses",
+      "query": {
+        "page": "1",
+        "size": "100",
+        "expiringDay": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/voip-callkit/list-license-renewals",
+      "urlTemplate": "https://api.sd-rtn.com/dabiz/license/v3/projects/:appId/renewals",
+      "query": {
+        "page": "1",
+        "size": "100"
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/voip-callkit/renew-license",
+      "urlTemplate": "https://api.sd-rtn.com/dabiz/license/v2/renew",
+      "query": {
+        "appid": "",
+        "license": ""
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/ban-room",
+      "urlTemplate": "https://api.netless.link/v5/rooms/:uuid",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/cancel-file-conversion-task",
+      "urlTemplate": "https://api.netless.link/v5/projector/tasks/:uuid",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/create-room",
+      "urlTemplate": "https://api.netless.link/v5/rooms",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/generate-room-token",
+      "urlTemplate": "https://api.netless.link/v5/tokens/rooms/:uuid",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/generate-sdk-token",
+      "urlTemplate": "https://api.netless.link/v5/tokens/teams",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/generate-task-token",
+      "urlTemplate": "https://api.netless.link/v5/tokens/tasks/:uuid",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/get-file-conversion-task",
+      "urlTemplate": "https://api.netless.link/v5/projector/tasks/:uuid",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/get-legacy-file-conversion-task",
+      "urlTemplate": "https://api.netless.link/v5/services/conversion/tasks/:uuid",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/get-room",
+      "urlTemplate": "https://api.netless.link/v5/rooms/:uuid",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/insert-scenes",
+      "urlTemplate": "https://api.netless.link/v5/rooms/:uuid/scenes",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/list-file-conversion-tasks",
+      "urlTemplate": "https://api.netless.link/v5/projector/tasks",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/list-rooms",
+      "urlTemplate": "https://api.netless.link/v5/rooms",
+      "query": {
+        "limit": "100"
+      }
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/list-scene-paths",
+      "urlTemplate": "https://api.netless.link/v5/rooms/:uuid/scenes",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/screenshot-scene",
+      "urlTemplate": "https://api.netless.link/v5/rooms/:uuid/screenshots",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/screenshot-scene-list",
+      "urlTemplate": "https://api.netless.link/v5/rooms/:uuid/screenshot-list",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/set-file-conversion-task-priority",
+      "urlTemplate": "https://api.netless.link/v5/projector/tasks/:uuid/priority",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/start-file-conversion",
+      "urlTemplate": "https://api.netless.link/v5/projector/tasks",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/start-legacy-file-conversion",
+      "urlTemplate": "https://api.netless.link/v5/services/conversion/tasks",
+      "query": {}
+    },
+    {
+      "route": "/api-reference/api-ref/whiteboard/restful/switch-scene",
+      "urlTemplate": "https://api.netless.link/v5/rooms/:uuid/scene-state",
+      "query": {}
+    }
+  ]
+}

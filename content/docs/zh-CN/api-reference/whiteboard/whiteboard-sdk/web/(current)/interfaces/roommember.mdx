@@ -1,0 +1,32 @@
+---
+title: RoomMember
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/roommember
+  sourcePath: html-docs/whiteboard/Web/interfaces/roommember.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type RoomMember = {
+    /**
+     * 用户 ID
+     */
+    memberId: number;
+    /**
+     * 用户的状态
+     */
+    memberState: MemberState;
+    /**
+     * 当前用户的 session ID
+     */
+    session: string;
+    /**
+     * 当前用户的自定义负载，在该用户调用 ``joinRoom`` 时传入
+     */
+    payload?: UserPayload;
+};
+```

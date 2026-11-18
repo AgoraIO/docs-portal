@@ -6,7 +6,7 @@ import {
   getSourceSlugsFromContentPath,
   isSupportedDocLocale,
 } from './docs-routing';
-import { isMachineReadableLocale } from './machine-readable-docs';
+import { isPublicMarkdownLocale } from './machine-readable-docs';
 import {
   isKnownPlatform,
   normalizePlatformKey,
@@ -14,7 +14,7 @@ import {
 } from './platforms/registry';
 
 const MARKDOWN_RESPONSE_HEADERS = {
-  'Content-Type': 'text/markdown',
+  'Content-Type': 'text/markdown; charset=utf-8',
 };
 
 export async function getPublicDocsMarkdownResponse({
@@ -36,7 +36,7 @@ export async function getPublicDocsMarkdownResponse({
     return null;
   }
 
-  if (!isSupportedDocLocale(locale) || !isMachineReadableLocale(locale)) {
+  if (!isSupportedDocLocale(locale) || !isPublicMarkdownLocale(locale)) {
     throw notFound();
   }
 

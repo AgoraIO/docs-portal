@@ -8,6 +8,7 @@ import {
   checkExternalLinks,
   formatReport,
   getOpenApiRoutePathsForAudit,
+  getZhCnOpenApiSourcePaths,
 } from './audit-doc-links.mjs';
 
 const tempDirs: string[] = [];
@@ -116,6 +117,76 @@ describe('auditDocsLinks', () => {
         }),
       ]),
     );
+  });
+
+  it('validates anchors after indented fenced code blocks', async () => {
+    const docsRoot = await mkdtemp(path.join(os.tmpdir(), 'docs-link-audit-'));
+    tempDirs.push(docsRoot);
+
+    await writeDoc(
+      path.join(docsRoot, 'en', 'guide.mdx'),
+      [
+        '  ```shell',
+        '  npm install',
+        '```',
+        '',
+        '## Target section',
+        '',
+        '```ts',
+        'const ready = true;',
+        '```',
+        '',
+        '[Continue](#target-section)',
+      ].join('\n'),
+    );
+
+    const stats = auditDocsLinks({ docsRoot });
+
+    expect(stats.missingHashLinks).toEqual([]);
+    expect(stats.validHashLinks).toEqual([
+      expect.objectContaining({
+        anchor: 'target-section',
+        href: '#target-section',
+      }),
+    ]);
+  });
+
+  it('validates anchors on docs routes whose names look like assets', async () => {
+    const docsRoot = await mkdtemp(path.join(os.tmpdir(), 'docs-link-audit-'));
+    tempDirs.push(docsRoot);
+
+    await writeDoc(
+      path.join(docsRoot, 'zh-CN', 'guide.mdx'),
+      [
+        '[valid](/zh-CN/api-reference/python-api/client.python#connect)',
+        '[missing](/zh-CN/api-reference/python-api/client.python#missing)',
+      ].join('\n'),
+    );
+    await writeDoc(
+      path.join(
+        docsRoot,
+        'zh-CN',
+        'api-reference',
+        'python-api',
+        'client.python.mdx',
+      ),
+      '<a id="connect"></a>\n## connect\n',
+    );
+
+    const stats = auditDocsLinks({ docsRoot });
+
+    expect(stats.validHashLinks).toEqual([
+      expect.objectContaining({
+        anchor: 'connect',
+        href: '/zh-CN/api-reference/python-api/client.python#connect',
+      }),
+    ]);
+    expect(stats.missingHashLinks).toEqual([
+      expect.objectContaining({
+        anchor: 'missing',
+        href: '/zh-CN/api-reference/python-api/client.python#missing',
+      }),
+    ]);
   });
 
   it('checks root JSX links against known docs and OpenAPI routes', async () => {
@@ -319,6 +390,145 @@ describe('auditDocsLinks', () => {
       ),
     ).toEqual([]);
     expect(stats.externalLinks).toBe(1);
+  });
+
+  it('audits only zh-CN OpenAPI YAML when openApiSourcePaths is provided', async () => {
+    const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'docs-link-audit-'));
+    tempDirs.push(tempRoot);
+    const docsRoot = path.join(tempRoot, 'docs');
+    const openApiRoot = path.join(tempRoot, 'openapi');
+
+    await writeDoc(
+      path.join(
+        docsRoot,
+        'zh-CN',
+        'api-reference',
+        'api-ref',
+        'conversational-ai',
+        'index.mdx',
+      ),
+      '# 对话式 AI API\n',
+    );
+    await writeDoc(path.join(docsRoot, 'zh-CN', 'ai', 'build', 'valid.mdx'));
+    await writeDoc(path.join(docsRoot, 'en', 'ai', 'build', 'valid.mdx'));
+
+    await writeDoc(
+      path.join(openApiRoot, 'conversational-ai', 'rest-api.zh-CN.yaml'),
+      [
+        'openapi: 3.1.0',
+        'info:',
+        '  title: Test API',
+        '  version: 1.0.0',
+        'paths:',
+        '  /v1/test:',
+        '    get:',
+        '      summary: Test',
+        '      description: |',
+        '        See [valid topic](/zh-CN/ai/build/valid).',
+        '        See [missing topic](/zh-CN/ai/build/missing).',
+        '        See [legacy host](https://doc.shengwang.cn/doc/convoai/restful/landing-page).',
+        '        See [protocol-relative legacy host](//doc.shengwang.cn/doc/convoai/restful/protocol-relative).',
+        '        See [Join endpoint](join).',
+      ].join('\n'),
+    );
+    await writeDoc(
+      path.join(openApiRoot, 'conversational-ai', 'rest-api.en.yaml'),
+      [
+        'openapi: 3.1.0',
+        'info:',
+        '  title: Test API',
+        '  version: 1.0.0',
+        'paths:',
+        '  /v1/test:',
+        '    get:',
+        '      summary: Test',
+        '      description: |',
+        '        See [legacy host](https://doc.shengwang.cn/doc/convoai/restful/landing-page).',
+        '        See [missing topic](/en/ai/build/missing).',
+      ].join('\n'),
+    );
+
+    const stats = auditDocsLinks({
+      docsRoot,
+      openApiSourcePaths: ['openapi/conversational-ai/rest-api.zh-CN.yaml'],
+    });
+
+    expect(stats.docsFiles).toBe(0);
+    expect(stats.openapiFiles).toBe(1);
+    expect(stats.legacyShengwangDocHostLinks).toEqual([
+      expect.objectContaining({
+        href: 'https://doc.shengwang.cn/doc/convoai/restful/landing-page',
+        reason: 'legacy-shengwang-doc-host',
+        sourcePath: 'openapi/conversational-ai/rest-api.zh-CN.yaml',
+        target: 'https://doc.shengwang.cn/doc/convoai/restful/landing-page',
+      }),
+      expect.objectContaining({
+        href: '//doc.shengwang.cn/doc/convoai/restful/protocol-relative',
+        reason: 'legacy-shengwang-doc-host',
+        sourcePath: 'openapi/conversational-ai/rest-api.zh-CN.yaml',
+        target: '//doc.shengwang.cn/doc/convoai/restful/protocol-relative',
+      }),
+    ]);
+    expect(stats.invalidInternalLinks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          href: '/zh-CN/ai/build/missing',
+          reason: 'missing-internal-path',
+          sourcePath: 'openapi/conversational-ai/rest-api.zh-CN.yaml',
+        }),
+        expect.objectContaining({
+          href: 'https://doc.shengwang.cn/doc/convoai/restful/landing-page',
+          reason: 'legacy-shengwang-doc-host',
+          sourcePath: 'openapi/conversational-ai/rest-api.zh-CN.yaml',
+        }),
+        expect.objectContaining({
+          href: '//doc.shengwang.cn/doc/convoai/restful/protocol-relative',
+          reason: 'legacy-shengwang-doc-host',
+          sourcePath: 'openapi/conversational-ai/rest-api.zh-CN.yaml',
+        }),
+      ]),
+    );
+    expect(stats.externalLinkCandidates).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          href: '//doc.shengwang.cn/doc/convoai/restful/protocol-relative',
+          sourcePath: 'openapi/conversational-ai/rest-api.zh-CN.yaml',
+        }),
+      ]),
+    );
+    expect(stats.invalidInternalLinks).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          href: '/en/ai/build/missing',
+          sourcePath: 'openapi/conversational-ai/rest-api.en.yaml',
+        }),
+      ]),
+    );
+    expect(stats.relativeMarkdownLinks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          href: 'join',
+          normalizedHref: '/zh-CN/api-reference/api-ref/conversational-ai/join',
+          resolution: 'openapi-route',
+          sourcePath: 'openapi/conversational-ai/rest-api.zh-CN.yaml',
+        }),
+      ]),
+    );
+  });
+
+  it('lists only zh-CN OpenAPI source paths for the focused CLI mode', async () => {
+    const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'docs-link-audit-'));
+    tempDirs.push(tempRoot);
+    const openApiRoot = path.join(tempRoot, 'openapi');
+
+    await writeDoc(path.join(openApiRoot, 'a', 'one.zh-CN.yaml'));
+    await writeDoc(path.join(openApiRoot, 'a', 'one.en.yaml'));
+    await writeDoc(path.join(openApiRoot, 'b', 'two.zh-CN.yml'));
+
+    expect(getZhCnOpenApiSourcePaths(openApiRoot)).toEqual([
+      'openapi/a/one.zh-CN.yaml',
+      'openapi/b/two.zh-CN.yml',
+    ]);
   });
 
   it('reports missing internal paths and missing hash anchors with source, target, and reason', async () => {

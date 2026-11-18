@@ -1,0 +1,636 @@
+---
+title: "使用 Agents SDK 实现对话式 AI 引擎"
+description: "了解如何快速接入对话式 AI 引擎，完成环境准备、参数配置、示例运行和核心流程验证。"
+---
+本文介绍如何使用声网 `Agents SDK` 快速创建一个对话式智能体 (Conversation AI Agent)，并实现与 AI 智能体对话互动。
+
+Agents SDK 采用 `AgentKit` 接入方式。相比直接调用 RESTful API，SDK 可以帮助你完成以下工作：
+
+- 使用客户端对象统一管理声网鉴权和区域路由。
+- 使用 `Agent` 组装智能体的 STT、LLM 和 TTS 配置。
+- 使用 `AgentSession` 启动和停止智能体会话。
+- 在 app credentials 模式下自动生成智能体侧所需的 ConvoAI REST 鉴权和 RTC 入会 Token。
+
+## 前提条件
+
+开始前，请确保：
+
+- 已参考[开通服务](/zh-CN/ai/get-started/enable-service)在声网控制台完成以下步骤：
+  - 为你的项目开通声网对话式 AI 引擎。
+  - 获取 App ID。
+  - 获取 App Certificate。
+  - 为用户侧客户端生成 RTC 临时 Token。
+- 已参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)集成 v4.5.1 及以上版本的实时互动 SDK，并在你的 App 中实现基本的实时音视频功能。
+- 已获取 LLM 供应商的 API key。本文示例使用阿里云百炼兼容 OpenAI 格式的接口，可以参考阿里云百炼[获取 API Key](https://help.aliyun.com/zh/model-studio/get-api-key)。
+- 已获取 TTS 供应商凭据。本文示例使用火山引擎 TTS。可以参考[火山引擎官方文档](https://docs.volcengine.com/docs/6561/196768?lang=zh#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F)获取 `token`、`app_id`、`cluster`。
+
+:::info[信息]
+如果你希望先验证服务端逻辑，也可以使用[实时互动 Web Demo](https://webdemo.agora.io/index.html)作为用户侧客户端加入 RTC 频道，与智能体对话。
+:::
+
+## 创建项目
+
+<Tabs defaultValue="go" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="go">Go</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+创建一个名为 `test-convoai-agent` 的空项目文件夹：
+
+```shell
+mkdir test-convoai-agent
+cd test-convoai-agent
+```
+
+初始化 Go 模块：
+
+```shell
+go mod init test-convoai-agent
+```
+
+在项目路径下创建以下文件：
+
+```text
+test-convoai-agent/
+├── .env
+├── go.mod
+└── main.go
+```
+
+</TabsContent>
+
+<TabsContent value="python">
+
+创建一个名为 `test-convoai-agent` 的空项目文件夹：
+
+```shell
+mkdir test-convoai-agent
+cd test-convoai-agent
+```
+
+创建并激活 Python 虚拟环境：
+
+```shell
+python -m venv .venv
+source .venv/bin/activate
+```
+
+在项目路径下创建以下文件：
+
+```text
+test-convoai-agent/
+├── .env
+├── main.py
+└── requirements.txt
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+创建一个名为 `test-convoai-agent` 的空项目文件夹：
+
+```shell
+mkdir test-convoai-agent
+cd test-convoai-agent
+```
+
+初始化 Node.js 项目：
+
+```shell
+npm init -y
+```
+
+在项目路径下创建以下文件：
+
+```text
+test-convoai-agent/
+├── .env
+├── package.json
+├── src/
+│   └── main.ts
+└── tsconfig.json
+```
+
+</TabsContent>
+</Tabs>
+
+## 安装 SDK
+
+<Tabs defaultValue="go" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="go">Go</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+安装 Go SDK 和本地 `.env` 读取依赖：
+
+```shell
+go get github.com/AgoraIO/agora-agents-go/v2@latest
+go get github.com/joho/godotenv@v1.5.1
+go mod tidy
+```
+
+Go 示例使用 `agentkit/cn` 和 `agentkit/cn/vendors`，该国内版 facade 会自动使用中国大陆区域路由。
+
+</TabsContent>
+
+<TabsContent value="python">
+
+在 `requirements.txt` 中添加如下内容：
+
+```text
+agora-agents
+python-dotenv==1.0.1
+```
+
+安装依赖：
+
+```shell
+pip install -r requirements.txt
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+安装 TypeScript SDK 和运行依赖：
+
+```shell
+npm install agora-agents dotenv@16.4.7
+npm install -D typescript@~5.7.2 tsx @types/node
+```
+
+在 `package.json` 中添加运行脚本：
+
+```json
+{
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/main.ts"
+  }
+}
+```
+
+在 `tsconfig.json` 中添加如下内容：
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts"]
+}
+```
+
+</TabsContent>
+</Tabs>
+
+## 配置环境变量
+
+在 `.env` 中添加如下配置。三种语言示例使用相同的环境变量：
+
+```env
+AGORA_APP_ID=<your_app_id>
+AGORA_APP_CERTIFICATE=<your_app_certificate>
+AGORA_CHANNEL=test-channel
+AGORA_AGENT_UID=2000
+
+ALIYUN_API_KEY=<your_aliyun_api_key>
+
+BYTEDANCE_TTS_TOKEN=<your_bytedance_tts_token>
+BYTEDANCE_TTS_APP_ID=<your_bytedance_tts_app_id>
+BYTEDANCE_TTS_CLUSTER=volcano_tts
+BYTEDANCE_TTS_VOICE_TYPE=BV700_streaming
+
+SESSION_DURATION_SECONDS=60
+```
+
+参数说明如下：
+
+- `AGORA_APP_ID`：你的声网 App ID。
+- `AGORA_APP_CERTIFICATE`：你的声网 App Certificate。SDK 会使用 App ID 和 App Certificate 自动生成智能体侧 ConvoAI REST 鉴权和 RTC 入会 Token。
+- `AGORA_CHANNEL`：智能体要加入的 RTC 频道名。用户侧客户端需要加入同一个频道。
+- `AGORA_AGENT_UID`：智能体在 RTC 频道内使用的 UID。请确保该 UID 与用户侧客户端 UID 不同。
+- `ALIYUN_API_KEY`：阿里云百炼 LLM 所需 API key。获取方式参考阿里云百炼[获取 API Key](https://help.aliyun.com/zh/model-studio/get-api-key)。
+- `BYTEDANCE_TTS_TOKEN`、`BYTEDANCE_TTS_APP_ID`、`BYTEDANCE_TTS_CLUSTER`、`BYTEDANCE_TTS_VOICE_TYPE`：火山引擎 TTS 所需凭据和音色配置。`token`、`app_id`、`cluster` 和音色的获取方式参考[火山引擎官方文档](https://docs.volcengine.com/docs/6561/196768?lang=zh#q1%EF%BC%9A%E5%93%AA%E9%87%8C%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%88%B0%E4%BB%A5%E4%B8%8B%E5%8F%82%E6%95%B0appid%EF%BC%8Ccluster%EF%BC%8Ctoken%EF%BC%8Cauthorization-type%EF%BC%8Csecret-key-%EF%BC%9F)。
+- `SESSION_DURATION_SECONDS`：示例启动后保持会话运行的时间，单位为秒。
+
+:::info[信息]
+本文示例使用默认的凤鸣 STT，不需要额外准备 STT 供应商凭据。
+:::
+
+## 实现智能体
+
+<Tabs defaultValue="go" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="go">Go</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+在 `main.go` 中添加如下代码：
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"os"
+	"strconv"
+	"strings"
+	"time"
+
+	Agora "github.com/AgoraIO/agora-agents-go/v2"
+	agentkit "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn"
+	vendors "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn/vendors"
+	"github.com/joho/godotenv"
+)
+
+func requireEnv(name string) string {
+	value := strings.TrimSpace(os.Getenv(name))
+	if value == "" {
+		log.Fatalf("missing required environment variable: %s", name)
+	}
+	return value
+}
+
+func sessionDuration() time.Duration {
+	raw := strings.TrimSpace(os.Getenv("SESSION_DURATION_SECONDS"))
+	if raw == "" {
+		return 60 * time.Second
+	}
+	value, err := strconv.Atoi(raw)
+	if err != nil || value <= 0 {
+		log.Fatal("SESSION_DURATION_SECONDS must be a positive integer")
+	}
+	return time.Duration(value) * time.Second
+}
+
+func main() {
+	_ = godotenv.Load(".env")
+
+	ctx := context.Background()
+	idleTimeout := 120
+	maxHistory := 10
+
+	channel := requireEnv("AGORA_CHANNEL")
+	agentUID := requireEnv("AGORA_AGENT_UID")
+
+	client := agentkit.NewAgoraClient(agentkit.ClientOptions{
+		AppID:          requireEnv("AGORA_APP_ID"),
+		AppCertificate: requireEnv("AGORA_APP_CERTIFICATE"),
+	})
+
+	agent := agentkit.NewAgent(
+		client,
+		agentkit.WithTurnDetectionConfig(&agentkit.TurnDetectionConfig{
+			Language: Agora.AsrLanguageZhCn.Ptr(),
+		}),
+	).WithStt(
+		vendors.NewFengmingSTT(),
+	).WithLlm(
+		vendors.NewAliyun(vendors.AliyunOptions{
+			APIKey:  requireEnv("ALIYUN_API_KEY"),
+			Model:   "qwen-plus",
+			BaseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+			SystemMessages: []map[string]interface{}{
+				{
+					"role":    "system",
+					"content": "You are a concise and helpful voice assistant.",
+				},
+			},
+			GreetingMessage: "你好！请问有什么可以帮你？",
+			FailureMessage:  "抱歉，请稍等一下。",
+			MaxHistory:      &maxHistory,
+		}),
+	).WithTts(
+		vendors.NewBytedanceTTS(vendors.BytedanceTTSOptions{
+			Token:     requireEnv("BYTEDANCE_TTS_TOKEN"),
+			AppID:     requireEnv("BYTEDANCE_TTS_APP_ID"),
+			Cluster:   requireEnv("BYTEDANCE_TTS_CLUSTER"),
+			VoiceType: requireEnv("BYTEDANCE_TTS_VOICE_TYPE"),
+		}),
+	)
+
+	session := agent.CreateSession(agentkit.CreateSessionOptions{
+		Name:        fmt.Sprintf("conversation-%d", time.Now().UnixMilli()),
+		Channel:     channel,
+		AgentUID:    agentUID,
+		RemoteUIDs:  []string{"*"},
+		IdleTimeout: &idleTimeout,
+	})
+
+	agentSessionID, err := session.Start(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Agent started:", agentSessionID)
+
+	defer func() {
+		if err := session.Stop(ctx); err != nil {
+			log.Printf("failed to stop agent: %v", err)
+		}
+		fmt.Println("Agent stopped.")
+	}()
+
+	time.Sleep(sessionDuration())
+}
+```
+
+</TabsContent>
+
+<TabsContent value="python">
+
+在 `main.py` 中添加如下代码：
+
+```python
+import os
+import time
+
+from dotenv import load_dotenv
+
+from agora_agent import Agent, Agora, Area, AliyunLLM, FengmingSTT
+from agora_agent.agentkit.vendors.cn import BytedanceTTS
+
+def main() -> None:
+    load_dotenv(".env")
+
+    channel = os.environ["AGORA_CHANNEL"]
+    agent_uid = os.environ["AGORA_AGENT_UID"]
+
+    client = Agora(
+        area=Area.CN,
+        app_id=os.environ["AGORA_APP_ID"],
+        app_certificate=os.environ["AGORA_APP_CERTIFICATE"],
+    )
+
+    agent = (
+        Agent(client=client, turn_detection={"language": "zh-CN"})
+        .with_stt(FengmingSTT())
+        .with_llm(
+            AliyunLLM(
+                base_url="https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+                model="qwen-plus",
+                api_key=os.environ["ALIYUN_API_KEY"],
+                system_messages=[
+                    {
+                        "role": "system",
+                        "content": "You are a concise and helpful voice assistant.",
+                    }
+                ],
+                greeting_message="你好！请问有什么可以帮你？",
+                failure_message="抱歉，请稍等一下。",
+                max_history=10,
+            )
+        )
+        .with_tts(
+            BytedanceTTS(
+                token=os.environ["BYTEDANCE_TTS_TOKEN"],
+                app_id=os.environ["BYTEDANCE_TTS_APP_ID"],
+                cluster=os.environ.get("BYTEDANCE_TTS_CLUSTER", "volcano_tts"),
+                voice_type=os.environ.get("BYTEDANCE_TTS_VOICE_TYPE"),
+            )
+        )
+    )
+
+    session = agent.create_session(
+        name=f"conversation-{int(time.time())}",
+        channel=channel,
+        agent_uid=agent_uid,
+        remote_uids=["*"],
+        idle_timeout=120,
+    )
+
+    agent_session_id = session.start()
+    print(f"Agent started: {agent_session_id}")
+
+    try:
+        time.sleep(int(os.environ.get("SESSION_DURATION_SECONDS", "60")))
+    finally:
+        session.stop()
+
+if __name__ == "__main__":
+    main()
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+在 `src/main.ts` 中添加如下代码：
+
+```typescript
+import {
+  Agent,
+  AgoraClient,
+  AliyunLLM,
+  Area,
+  BytedanceTTS,
+  FengmingSTT,
+} from "agora-agents";
+import { config as loadDotenv } from "dotenv";
+
+function requireEnv(name: string): string {
+  const value = process.env[name]?.trim();
+  if (!value) {
+    throw new Error(`missing required environment variable: ${name}`);
+  }
+  return value;
+}
+
+function sessionDurationSeconds(): number {
+  const raw = process.env.SESSION_DURATION_SECONDS?.trim();
+  if (!raw) {
+    return 60;
+  }
+
+  const value = Number.parseInt(raw, 10);
+  if (!Number.isInteger(value) || value <= 0) {
+    throw new Error("SESSION_DURATION_SECONDS must be a positive integer");
+  }
+  return value;
+}
+
+function sleep(seconds: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+}
+
+async function main(): Promise<void> {
+  loadDotenv({ path: ".env" });
+
+  const channel = requireEnv("AGORA_CHANNEL");
+  const agentUid = requireEnv("AGORA_AGENT_UID");
+
+  const client = new AgoraClient({
+    area: Area.CN,
+    appId: requireEnv("AGORA_APP_ID"),
+    appCertificate: requireEnv("AGORA_APP_CERTIFICATE"),
+  });
+
+  const agent = new Agent({
+    client,
+    turnDetection: { language: "zh-CN" },
+  })
+    .withStt(new FengmingSTT())
+    .withLlm(
+      new AliyunLLM({
+        url: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+        model: "qwen-plus",
+        apiKey: requireEnv("ALIYUN_API_KEY"),
+        systemMessages: [
+          {
+            role: "system",
+            content: "You are a concise and helpful voice assistant.",
+          },
+        ],
+        greetingMessage: "你好！请问有什么可以帮你？",
+        failureMessage: "抱歉，请稍等一下。",
+        maxHistory: 10,
+      }),
+    )
+    .withTts(
+      new BytedanceTTS({
+        token: requireEnv("BYTEDANCE_TTS_TOKEN"),
+        appId: requireEnv("BYTEDANCE_TTS_APP_ID"),
+        cluster: requireEnv("BYTEDANCE_TTS_CLUSTER"),
+        voiceType: requireEnv("BYTEDANCE_TTS_VOICE_TYPE"),
+      }),
+    );
+
+  const session = agent.createSession({
+    name: `conversation-${Date.now()}`,
+    channel,
+    agentUid,
+    remoteUids: ["*"],
+    idleTimeout: 120,
+  });
+
+  const agentSessionId = await session.start();
+  console.log("Agent started:", agentSessionId);
+
+  try {
+    await sleep(sessionDurationSeconds());
+  } finally {
+    await session.stop();
+    console.log("Agent stopped.");
+  }
+}
+
+void main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
+```
+
+</TabsContent>
+</Tabs>
+
+## 用户加入 RTC 频道
+
+在运行智能体前，用户侧客户端需要加入同一个 RTC 频道。
+
+- 如果你使用自己的 App，请确保：
+
+  - App ID 与 `.env` 中的 `AGORA_APP_ID` 一致。
+  - 频道名与 `.env` 中的 `AGORA_CHANNEL` 一致。
+  - 用户 UID 与 `.env` 中的 `AGORA_AGENT_UID` 不同。
+  - 用户侧 RTC Token 与频道名和用户 UID 匹配。
+
+- 如果你使用[实时互动 Web Demo](https://webdemo.agora.io/index.html)进行测试，可以按如下方式填写：
+
+  - `App ID`：你的声网 App ID。
+  - `Channel`：`.env` 中的 `AGORA_CHANNEL`，例如 `test-channel`。
+  - `UID`：用户侧 UID，例如 `1000`。不要使用智能体 UID `2000`。
+  - `Token`：为该频道和用户 UID 生成的 RTC Token。
+
+## 启动智能体
+
+在项目路径下执行如下命令：
+
+<Tabs defaultValue="go" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="go">Go</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+```shell
+go run .
+```
+
+</TabsContent>
+
+<TabsContent value="python">
+
+```shell
+python main.py
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```shell
+npm start
+```
+
+</TabsContent>
+
+</Tabs>
+
+运行成功后，终端会输出类似如下日志：
+
+```shell
+Agent started: A42AT87YF83TN67JD67AT44JK76PF45C
+```
+
+确认用户侧客户端已加入同一频道后，直接在 RTC 客户端发言即可开始对话。
+
+当示例运行时间达到 `SESSION_DURATION_SECONDS`，或你在终端按 `Ctrl+C`，程序会调用 `stop()` 或 `Stop()` 停止智能体会话。
+
+## API 参考
+
+<Tabs defaultValue="go" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="go">Go</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+- [对话式 AI 引擎 Go SDK API 参考](/zh-CN/api-reference/conversational-ai/agent-go)
+
+</TabsContent>
+
+<TabsContent value="python">
+
+- [对话式 AI 引擎 Python SDK API 参考](/zh-CN/api-reference/conversational-ai/agent-python)
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+- [对话式 AI 引擎 TypeScript SDK API 参考](/zh-CN/api-reference/conversational-ai/agent-typescript)
+
+</TabsContent>
+</Tabs>

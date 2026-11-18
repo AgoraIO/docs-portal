@@ -1,7 +1,18 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import { useEffect } from 'react';
+import shengwangGuideRedirects from '@/lib/shengwang-guide-redirects.json';
 
 export const Route = createFileRoute('/api-ref/$')({
+  loader: ({ params }) => {
+    const legacyPath = `/api-ref/${params._splat ?? ''}`.replace(/\/+$/, '');
+    const reviewedTarget = (shengwangGuideRedirects as Record<string, string>)[
+      legacyPath
+    ];
+
+    if (reviewedTarget) {
+      throw redirect({ href: reviewedTarget, statusCode: 301 });
+    }
+  },
   component: ApiRefRedirectPage,
 });
 

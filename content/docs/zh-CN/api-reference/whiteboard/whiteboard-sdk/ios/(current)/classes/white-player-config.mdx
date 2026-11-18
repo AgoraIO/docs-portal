@@ -1,0 +1,252 @@
+---
+title: WhitePlayerConfig Class Reference
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhitePlayerConfig
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhitePlayerConfig.html
+  generator: appledoc
+  warnings:
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+---
+
+Whiteboard iOS SDK 2.16.147 公开接口。
+
+@interface WhitePlayerConfig: WhiteObject
+
+## 成员
+
+- [init](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config#//api/name/init)
+- [initWithRoom\:roomToken:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config#//api/name/initWithRoom:roomToken:)
+- [region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config#//api/name/region)
+- [modulesOrigin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config#//api/name/modulesOrigin)
+- [room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config#//api/name/room)
+- [roomToken](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config#//api/name/roomToken)
+- [slice](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config#//api/name/slice)
+- [beginTimestamp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config#//api/name/beginTimestamp)
+- [duration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config#//api/name/duration)
+- [mediaURL](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config#//api/name/mediaURL)
+- [step](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config#//api/name/step)
+- [cameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config#//api/name/cameraBound)
+- [windowParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config#//api/name/windowParams)
+
+<a id="//api/name/init"></a>
+
+### `– init`
+
+<ApiSignature>
+
+\- (instancetype)init NS_UNAVAILABLE;
+
+</ApiSignature>
+
+Declared in Replayer/WhitePlayerConfig.h
+
+<a id="//api/name/initWithRoom:roomToken:"></a>
+
+### `– initWithRoom:roomToken:`
+
+<ApiSignature>
+
+\- (instancetype)initWithRoom:(NSString *)roomUuid roomToken:(NSString *)roomToken;
+
+</ApiSignature>
+
+```text
+设置 Room Token 并初始化 `WhitePlayerConfig` 对象。
+
+ @param roomUuid 房间 UUID，即房间唯一标识符。
+ @param roomToken 用于鉴权的 Room Token。
+ @return 初始化的 `WhitePlayerConfig` 对象
+```
+
+Declared in Replayer/WhitePlayerConfig.h
+
+<a id="//api/name/region"></a>
+
+### `region`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteRegionKey region;
+
+</ApiSignature>
+
+```text
+待回放的互动白板房间所在的数据中心。
+```
+
+Declared in Replayer/WhitePlayerConfig.h
+
+<a id="//api/name/modulesOrigin"></a>
+
+### `modulesOrigin`
+
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) NSString *modulesOrigin;
+
+</ApiSignature>
+
+```text
+白板请求 modules 数据的地址，配置后不会请求白板默认地址
+@example https://modules.example.com
+```
+
+Declared in Replayer/WhitePlayerConfig.h
+
+<a id="//api/name/room"></a>
+
+### `room`
+
+<ApiSignature>
+
+@property (nonatomic, copy) NSString *room;
+
+</ApiSignature>
+
+```text
+房间 UUID，即房间唯一标识符。
+```
+
+Declared in Replayer/WhitePlayerConfig.h
+
+<a id="//api/name/roomToken"></a>
+
+### `roomToken`
+
+<ApiSignature>
+
+@property (nonatomic, copy) NSString *roomToken;
+
+</ApiSignature>
+
+```text
+用于鉴权的 Room Token。
+```
+
+Declared in Replayer/WhitePlayerConfig.h
+
+<a id="//api/name/slice"></a>
+
+### `slice`
+
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) NSString *slice;
+
+</ApiSignature>
+
+Declared in Replayer/WhitePlayerConfig.h
+
+<a id="//api/name/beginTimestamp"></a>
+
+### `beginTimestamp`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSNumber *beginTimestamp;
+
+</ApiSignature>
+
+```text
+白板回放的起始时间。
+
+Unix 时间戳（秒），表示回放的起始 UTC 时间。例如，`1615370614` 表示 2021-03-10 18:03:34 GMT+0800。
+```
+
+Declared in Replayer/WhitePlayerConfig.h
+
+<a id="//api/name/duration"></a>
+
+### `duration`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSNumber *duration;
+
+</ApiSignature>
+
+```text
+白板回放的持续时长（秒）。如果没有设置，回放会从起始时间一直持续到退出房间。
+```
+
+Declared in Replayer/WhitePlayerConfig.h
+
+<a id="//api/name/mediaURL"></a>
+
+### `mediaURL`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSString *mediaURL;
+
+</ApiSignature>
+
+```text
+白板回放的音频地址。
+
+*Note:**
+
+ - 即使传入视频地址，也只会播放音频部分。
+ - 如需显示视频画面，请使用 [WhiteCombinePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-combine-player) 方法。
+```
+
+Declared in Replayer/WhitePlayerConfig.h
+
+<a id="//api/name/step"></a>
+
+### `step`
+
+<ApiSignature>
+
+@property (nonatomic, strong) NSNumber *step;
+
+</ApiSignature>
+
+```text
+SDK 回调播放进度的频率（秒）。默认为 0.5 秒。
+```
+
+Declared in Replayer/WhitePlayerConfig.h
+
+<a id="//api/name/cameraBound"></a>
+
+### `cameraBound`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteCameraBound *cameraBound;
+
+</ApiSignature>
+
+```text
+视角边界，详见 [WhiteCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound)。
+```
+
+Declared in Replayer/WhitePlayerConfig.h
+
+<a id="//api/name/windowParams"></a>
+
+### `windowParams`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteWindowParams *windowParams;
+
+</ApiSignature>
+
+```text
+多窗口用的本地参数，只影响本地客户
+```
+
+Declared in Replayer/WhitePlayerConfig.h

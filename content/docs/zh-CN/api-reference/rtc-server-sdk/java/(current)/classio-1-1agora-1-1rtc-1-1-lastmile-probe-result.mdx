@@ -1,0 +1,216 @@
+---
+title: io.agora.rtc.LastmileProbeResult类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_lastmile_probe_result
+  sourcePath: html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_lastmile_probe_result.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_lastmile_probe_result_8java.html as local text.
+---
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+上下行 Last-mile 质量探测结果。
+
+<a id="doc-constructors"></a>
+
+<a id="header-doc-constructors"></a>
+
+## 构造及析构函数说明
+
+<a id="a1f85639adfea1e2a18bddb99f36e065f"></a>
+
+### LastmileProbeResult() [1/2]
+
+<ApiSignature>
+
+io.agora.rtc.LastmileProbeResult.LastmileProbeResult()
+
+</ApiSignature>
+
+<a id="a99d857f0d9b081cc44cef0d89b80cd53"></a>
+
+### LastmileProbeResult() [2/2]
+
+<ApiSignature>
+
+io.agora.rtc.LastmileProbeResult.LastmileProbeResult(int *state*, [LastmileProbeOneWayResult](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-one-way-result) *uplinkReport*, [LastmileProbeOneWayResult](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-one-way-result) *downlinkReport*, int *rtt*)
+
+</ApiSignature>
+
+构造函数。
+
+<ParameterList title="参数">
+<Parameter name="state">
+
+Last-mile 质量探测结果的状态，有如下几种：
+
+- 1: 表示本次 Last-mile 质量探测是完整的。
+- 2: 表示本次 Last-mile 质量探测未进行带宽预测，因此结果不完整。一个可能的原因是测试资源暂时受限。
+- 3: 未进行 Last-mile 质量探测。一个可能的原因是网络连接中断。
+
+</Parameter>
+<Parameter name="uplinkReport">
+
+上行网络质量报告。
+
+</Parameter>
+<Parameter name="downlinkReport">
+
+下行网络质量报告。
+
+</Parameter>
+<Parameter name="rtt">
+
+往返时延，单位为毫秒。
+
+</Parameter>
+</ParameterList>
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="a3b75f2f0667ea2ebfa967bef07d307d3"></a>
+
+### getDownlinkReport()
+
+<ApiSignature>
+
+[LastmileProbeOneWayResult](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-one-way-result) io.agora.rtc.LastmileProbeResult.getDownlinkReport()
+
+</ApiSignature>
+
+<a id="ac461e367898f99726406d82ae89a8791"></a>
+
+### getRtt()
+
+<ApiSignature>
+
+int io.agora.rtc.LastmileProbeResult.getRtt()
+
+</ApiSignature>
+
+<a id="af50bc3cd8cf181e3a2e84ea2b7061060"></a>
+
+### getState()
+
+<ApiSignature>
+
+int io.agora.rtc.LastmileProbeResult.getState()
+
+</ApiSignature>
+
+<a id="a71a136c8770fd6e98b3f76a9a6768c89"></a>
+
+### getUplinkReport()
+
+<ApiSignature>
+
+[LastmileProbeOneWayResult](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-one-way-result) io.agora.rtc.LastmileProbeResult.getUplinkReport()
+
+</ApiSignature>
+
+<a id="ab0d56299a756033ae8b474b7834bf262"></a>
+
+### setDownlinkReport()
+
+<ApiSignature>
+
+void io.agora.rtc.LastmileProbeResult.setDownlinkReport([LastmileProbeOneWayResult](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-one-way-result) *downlinkReport*)
+
+</ApiSignature>
+
+<a id="aab8077e7f27cf62297d7ad44f43dd36b"></a>
+
+### setRtt()
+
+<ApiSignature>
+
+void io.agora.rtc.LastmileProbeResult.setRtt(int *rtt*)
+
+</ApiSignature>
+
+<a id="a3948e48d2251323cb08507d0c703568a"></a>
+
+### setState()
+
+<ApiSignature>
+
+void io.agora.rtc.LastmileProbeResult.setState(int *state*)
+
+</ApiSignature>
+
+<a id="a9063847d42d03a10a857bbe51abe2b92"></a>
+
+### setUplinkReport()
+
+<ApiSignature>
+
+void io.agora.rtc.LastmileProbeResult.setUplinkReport([LastmileProbeOneWayResult](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-one-way-result) *uplinkReport*)
+
+</ApiSignature>
+
+<a id="doc-variable-members"></a>
+
+<a id="header-doc-variable-members"></a>
+
+## 类成员变量说明
+
+<a id="abb9d1b6222e1eed4e50bb4b9f1a64cca"></a>
+
+### downlinkReport
+
+<ApiSignature labels="private">
+
+[LastmileProbeOneWayResult](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-one-way-result) io.agora.rtc.LastmileProbeResult.downlinkReport
+
+</ApiSignature>
+
+<a id="a875f6d92e4078df5e6b5a1ff87995e59"></a>
+
+### rtt
+
+<ApiSignature labels="private">
+
+int io.agora.rtc.LastmileProbeResult.rtt
+
+</ApiSignature>
+
+<a id="ae71d841fef83aae7af4ae1ebbc8a562f"></a>
+
+### state
+
+<ApiSignature labels="private">
+
+int io.agora.rtc.LastmileProbeResult.state
+
+</ApiSignature>
+
+<a id="aaeecf72b360ba2c4f7ac73bace331458"></a>
+
+### uplinkReport
+
+<ApiSignature labels="private">
+
+[LastmileProbeOneWayResult](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-one-way-result) io.agora.rtc.LastmileProbeResult.uplinkReport
+
+</ApiSignature>
+
+---
+
+该类的文档由以下文件生成:
+
+- LastmileProbeResult.java

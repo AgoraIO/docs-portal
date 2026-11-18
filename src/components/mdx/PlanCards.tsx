@@ -1,5 +1,6 @@
 import { createLink } from '@tanstack/react-router';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
+import { CheckIcon } from 'lucide-react';
 import { Children, isValidElement, type ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import {
@@ -146,7 +147,7 @@ export function PlanCards({
         return (
           <article
             className={cn(
-              'relative flex min-w-0 max-w-full flex-col overflow-hidden rounded-2xl border bg-card/85 p-5 text-card-foreground shadow-[0_18px_60px_-44px_rgba(15,23,42,0.32)] ring-1 ring-transparent transition-colors dark:bg-card/70',
+              'docs-card-surface relative flex min-w-0 max-w-full flex-col overflow-hidden p-5 text-card-foreground transition-colors',
               accentClasses[plan.accent ?? 'blue'],
             )}
             key={planKeys[planIndex]}
@@ -184,7 +185,7 @@ export function PlanCards({
                       aria-hidden="true"
                       className="mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-[var(--plan-accent)]/12 text-xs font-bold text-[var(--plan-accent)] ring-1 ring-[var(--plan-accent)]/25"
                     >
-                      ✓
+                      <CheckIcon className="size-3.5" />
                     </span>
                     <span className="min-w-0 flex-1 break-words text-muted-foreground [overflow-wrap:anywhere]">
                       {feature}

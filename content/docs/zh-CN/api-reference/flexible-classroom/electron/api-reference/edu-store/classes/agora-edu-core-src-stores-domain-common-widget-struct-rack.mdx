@@ -1,0 +1,505 @@
+---
+title: Class Track
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/agora_edu_core_src_stores_domain_common_widget_struct_rack.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Electron/classes/agora_edu_core_src_stores_domain_common_widget_struct_rack.html
+  generator: typedoc
+  warnings: []
+---
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+<ApiSignature>
+
+new Track(context: [TrackContext](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext), _posOnly?: boolean): [Track](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-struct-rack)
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="context" required>
+
+<ParameterType>
+
+[TrackContext](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="_posOnly" type="boolean" optional />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[Track](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-widget-struct-rack)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Accessors
+
+<a id="isCovered"></a>
+
+### isCovered
+
+<ApiSignature>
+
+get isCovered(): boolean
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="needTransition"></a>
+
+### needTransition
+
+<ApiSignature>
+
+get needTransition(): boolean
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="ratioVal"></a>
+
+### ratioVal
+
+<ApiSignature>
+
+get ratioVal(): \{ ratioDimensions: \{ height: number; width: number \}; ratioPosition: \{ x: number; y: number \} \}
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ ratioDimensions: \{ height: number; width: number \}; ratioPosition: \{ x: number; y: number \} \}
+
+</ApiReturnType>
+
+<ParameterList title="Returns &#123; ratioDimensions: &#123; height: number; width: number &#125;; ratioPosition: &#123; x: number; y: number &#125; &#125;">
+<Parameter name="ratioDimensions" type="\&#123; height: number; width: number \&#125;" required>
+
+<ParameterList>
+<Parameter name="height" type="number" required />
+<Parameter name="width" type="number" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="ratioPosition" type="\&#123; x: number; y: number \&#125;" required>
+
+<ParameterList>
+<Parameter name="x" type="number" required />
+<Parameter name="y" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+</ApiReturns>
+
+<a id="realVal"></a>
+
+### realVal
+
+<ApiSignature>
+
+get realVal(): \{ dimensions: \{ height: number; width: number \}; position: \{ x: number; y: number \} \}
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ dimensions: \{ height: number; width: number \}; position: \{ x: number; y: number \} \}
+
+</ApiReturnType>
+
+<ParameterList title="Returns &#123; dimensions: &#123; height: number; width: number &#125;; position: &#123; x: number; y: number &#125; &#125;">
+<Parameter name="dimensions" type="\&#123; height: number; width: number \&#125;" required>
+
+<ParameterList>
+<Parameter name="height" type="number" required />
+<Parameter name="width" type="number" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="position" type="\&#123; x: number; y: number \&#125;" required>
+
+<ParameterList>
+<Parameter name="x" type="number" required />
+<Parameter name="y" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+</ApiReturns>
+
+<a id="trackContext"></a>
+
+### trackContext
+
+<ApiSignature>
+
+get trackContext(): [TrackContext](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext)
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[TrackContext](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="visible"></a>
+
+### visible
+
+<ApiSignature>
+
+get visible(): boolean
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Methods
+
+<a id="reposition"></a>
+
+### reposition
+
+<ApiSignature>
+
+reposition(needTransition?: boolean): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="needTransition" type="boolean" optional />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setRatio"></a>
+
+### setRatio
+
+<ApiSignature>
+
+setRatio(position: [Point](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point), dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), needTransition?: boolean): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="position" required>
+
+<ParameterType>
+
+[Point](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="dimensions" required>
+
+<ParameterType>
+
+[Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="needTransition" type="boolean" optional />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setRatioDimensions"></a>
+
+### setRatioDimensions
+
+<ApiSignature>
+
+setRatioDimensions(ratioDimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), needTransition?: boolean): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="ratioDimensions" required>
+
+<ParameterType>
+
+[Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="needTransition" type="boolean" optional />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setRatioPos"></a>
+
+### setRatioPos
+
+<ApiSignature>
+
+setRatioPos(ratioPos: [Point](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point), needTransition?: boolean): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="ratioPos" required>
+
+<ParameterType>
+
+[Point](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="needTransition" type="boolean" optional />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setReal"></a>
+
+### setReal
+
+<ApiSignature>
+
+setReal(position: [Point](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point), dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), needTransition?: boolean): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="position" required>
+
+<ParameterType>
+
+[Point](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="dimensions" required>
+
+<ParameterType>
+
+[Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="needTransition" type="boolean" optional />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setRealDimensions"></a>
+
+### setRealDimensions
+
+<ApiSignature>
+
+setRealDimensions(dimensions: [Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions), needTransition?: boolean): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="dimensions" required>
+
+<ParameterType>
+
+[Dimensions](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Dimensions)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="needTransition" type="boolean" optional />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setRealPos"></a>
+
+### setRealPos
+
+<ApiSignature>
+
+setRealPos(position: [Point](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point), needTransition?: boolean): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="position" required>
+
+<ParameterType>
+
+[Point](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#Point)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="needTransition" type="boolean" optional />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setVisibility"></a>
+
+### setVisibility
+
+<ApiSignature>
+
+setVisibility(visible: boolean): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="visible" type="boolean" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateContext"></a>
+
+### updateContext
+
+<ApiSignature>
+
+updateContext(context: Partial&lt;[TrackContext](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext)&gt;): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="context" required>
+
+<ParameterType>
+
+Partial & lt; [TrackContext](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-widget-type#TrackContext) & gt;
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

@@ -11,6 +11,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useEffectEvent,
   useId,
   useLayoutEffect,
   useMemo,
@@ -19,7 +20,10 @@ import {
 } from 'react';
 import { captureDocsPlatformChanged } from '@/lib/analytics/posthog';
 import { cn } from '@/lib/cn';
-import { buildDocPath } from '@/lib/docs-routing';
+import {
+  DOCS_HASH_TARGET_EVENT,
+  findDocsHeadingForHash,
+} from '@/lib/docs-hash';
 import { type AppLocale, DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 import {
   getStoredPlatformPreference,
@@ -32,6 +36,7 @@ import {
   isKnownPlatform,
   type PlatformKey,
 } from '@/lib/platforms/registry';
+import { buildPlatformPathname } from '@/lib/platforms/route';
 
 type ControlledTabsProps = React.ComponentProps<typeof Tabs> & {
   onValueChange?: (value: string) => void;
@@ -52,11 +57,19 @@ const PlatformTabsPlacementContext = createContext<{
 }>({
   placement: 'inline',
 });
+const PlatformPageContext = createContext<{
+  activePlatform?: PlatformKey;
+  handlePlatformChange: (
+    value: string,
+    options?: { preserveLocation?: boolean },
+  ) => void;
+} | null>(null);
 const useBrowserLayoutEffect =
   typeof window === 'undefined' ? useEffect : useLayoutEffect;
 const HEADER_TAB_GAP_WIDTH = 24;
 const HEADER_MORE_GAP_WIDTH = 16;
 const HEADER_WIDTH_EPSILON = 0.5;
+const PLATFORM_HASH_TARGET_WAIT_MS = 30_000;
 const HEADER_TAB_BUTTON_CLASS =
   'relative flex h-12 shrink-0 items-center px-0 text-[15px] font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)] after:absolute after:inset-x-0 after:bottom-[-1px] after:h-0.5 after:bg-[color:var(--ink-1)] after:opacity-0 after:transition-opacity';
 const HEADER_MORE_BUTTON_CLASS =
@@ -95,6 +108,103 @@ export function PlatformTabsPlacementProvider({
   );
 }
 
+export function PlatformPageProvider({
+  canonicalPlatform,
+  children,
+  defaultPlatform,
+  initialPlatform,
+  platforms,
+}: {
+  canonicalPlatform: PlatformKey;
+  children?: ReactNode;
+  defaultPlatform?: PlatformKey;
+  initialPlatform?: PlatformKey;
+  platforms: string;
+}) {
+  const parsedPlatforms = usePlatformList(platforms);
+  const selection = usePlatformSelection({
+    canonicalPlatform,
+    defaultPlatform,
+    initialPlatform,
+    parsedPlatforms,
+    deferStoredPreference: true,
+    syncPath: true,
+  });
+  useHashPlatformPreference(initialPlatform, parsedPlatforms);
+
+  return (
+    <PlatformPageContext.Provider value={selection}>
+      {children}
+    </PlatformPageContext.Provider>
+  );
+}
+
+export function usePlatformPageContext() {
+  return useContext(PlatformPageContext);
+}
+
+function useHashPlatformPreference(
+  initialPlatform: PlatformKey | undefined,
+  platforms: PlatformKey[],
+) {
+  useEffect(() => {
+    let observer: MutationObserver | undefined;
+    let timeout: number | undefined;
+    let targetHash = '';
+    const stopWaiting = () => {
+      observer?.disconnect();
+      observer = undefined;
+      window.clearTimeout(timeout);
+      timeout = undefined;
+    };
+    const revealTarget = () => {
+      let target: HTMLElement | null;
+      try {
+        target = findDocsHeadingForHash(targetHash);
+      } catch {
+        stopWaiting();
+        return true;
+      }
+      if (!target) return false;
+      stopWaiting();
+      const platform = target.closest<HTMLElement>('[data-platform-panel]')
+        ?.dataset.platformPanel;
+      if (
+        platform &&
+        isKnownPlatform(platform) &&
+        platforms.includes(platform) &&
+        getStoredPlatformPreference() !== platform
+      ) {
+        setStoredPlatformPreference(platform);
+      }
+      return true;
+    };
+    const requestTarget = (event?: Event) => {
+      stopWaiting();
+      // Preserve an explicit URL platform on arrival, but allow subsequent
+      // fragment navigation to reveal another panel without rewriting the URL.
+      if (initialPlatform && !event) return;
+      const detail = (event as CustomEvent<string> | undefined)?.detail;
+      targetHash = typeof detail === 'string' ? detail : window.location.hash;
+      if (!targetHash || revealTarget()) return;
+      // MDX can arrive after the page shell; stop observing once it does.
+      observer = new MutationObserver(() => {
+        revealTarget();
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+      timeout = window.setTimeout(stopWaiting, PLATFORM_HASH_TARGET_WAIT_MS);
+    };
+    window.addEventListener('hashchange', requestTarget);
+    window.addEventListener(DOCS_HASH_TARGET_EVENT, requestTarget);
+    requestTarget();
+    return () => {
+      stopWaiting();
+      window.removeEventListener('hashchange', requestTarget);
+      window.removeEventListener(DOCS_HASH_TARGET_EVENT, requestTarget);
+    };
+  }, [initialPlatform, platforms]);
+}
+
 export function PlatformTabsGroup({
   canonicalPlatform,
   children,
@@ -118,6 +228,7 @@ export function PlatformTabsGroup({
 }) {
   const parsedPlatforms = usePlatformList(platforms);
   const platformContext = useContext(PlatformTabsPlacementContext);
+  const hasPageContext = useContext(PlatformPageContext) !== null;
   const resolvedInitialPlatform =
     initialPlatform ?? platformContext.initialPlatform;
   const resolvedDefaultPlatform =
@@ -133,6 +244,7 @@ export function PlatformTabsGroup({
     defaultPlatform: resolvedDefaultPlatform,
     initialPlatform: resolvedInitialPlatform,
     parsedPlatforms,
+    deferStoredPreference: false,
     syncPath: shouldSyncPlatformPath,
   });
   const handleTrackedPlatformChange = useTrackedPlatformChange({
@@ -141,6 +253,46 @@ export function PlatformTabsGroup({
     locale,
     source: 'inline',
   });
+
+  const groupRef = useRef<HTMLDivElement>(null);
+  const revealHashPlatform = useEffectEvent((hash: string) => {
+    const heading = findDocsHeadingForHash(hash);
+    const panel = heading?.closest<HTMLElement>('[data-platform-panel]');
+    const platform = panel?.dataset.platformPanel;
+    if (
+      panel?.closest('[data-platform-group]') === groupRef.current &&
+      platform &&
+      platform !== activePlatform &&
+      isKnownPlatform(platform) &&
+      parsedPlatforms.includes(platform)
+    ) {
+      // Deep links select their containing panel without clearing the hash,
+      // unlike an explicit platform-tab click.
+      handlePlatformChange(platform, { preserveLocation: true });
+    }
+  });
+  useEffect(() => {
+    // The page provider owns hash selection, including explicit URL platforms.
+    if (hasPageContext) return;
+    const applyCurrentHash = () => revealHashPlatform(window.location.hash);
+    const handleHashTarget = (event: Event) => {
+      const hash = (event as CustomEvent<string>).detail;
+      revealHashPlatform(
+        typeof hash === 'string' ? hash : window.location.hash,
+      );
+    };
+    applyCurrentHash();
+    const observer = new MutationObserver(applyCurrentHash);
+    if (groupRef.current)
+      observer.observe(groupRef.current, { childList: true, subtree: true });
+    window.addEventListener('hashchange', applyCurrentHash);
+    window.addEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('hashchange', applyCurrentHash);
+      window.removeEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    };
+  }, [hasPageContext]);
 
   if (activePlatform === undefined) {
     return null;
@@ -164,6 +316,7 @@ export function PlatformTabsGroup({
           ? 'flex flex-col gap-4'
           : 'flex flex-col gap-3',
       )}
+      ref={groupRef}
       data-platform-group={groupMode}
       data-platforms={parsedPlatforms.join(' ')}
     >
@@ -203,6 +356,7 @@ export function PlatformHeaderTabs({
     defaultPlatform,
     initialPlatform,
     parsedPlatforms,
+    deferStoredPreference: false,
     syncPath: true,
   });
   const handleTrackedPlatformChange = useTrackedPlatformChange({
@@ -769,79 +923,94 @@ function usePlatformSelection({
   defaultPlatform,
   initialPlatform,
   parsedPlatforms,
+  deferStoredPreference,
   syncPath,
 }: {
   canonicalPlatform: PlatformKey;
   defaultPlatform?: PlatformKey;
   initialPlatform?: PlatformKey;
   parsedPlatforms: PlatformKey[];
+  deferStoredPreference: boolean;
   syncPath: boolean;
 }) {
-  const storedPlatformPreferenceRef = useRef<PlatformKey | null | undefined>(
+  const pageContext = useContext(PlatformPageContext);
+  const platformPreferenceRef = useRef<PlatformKey | null | undefined>(
     undefined,
   );
 
-  if (storedPlatformPreferenceRef.current === undefined) {
+  if (platformPreferenceRef.current === undefined) {
     const stored = getStoredPlatformPreference();
-    storedPlatformPreferenceRef.current =
+    // A page fallback must not erase a preference supported by the next page.
+    platformPreferenceRef.current =
       stored && isKnownPlatform(stored) ? stored : null;
   }
 
-  const [activePlatform, setActivePlatform] = useState<PlatformKey | undefined>(
-    () => {
-      if (initialPlatform && !parsedPlatforms.includes(initialPlatform)) {
-        return undefined;
-      }
+  const [localActivePlatform, setLocalActivePlatform] = useState<
+    PlatformKey | undefined
+  >(() => {
+    if (initialPlatform && !parsedPlatforms.includes(initialPlatform)) {
+      return undefined;
+    }
 
-      if (initialPlatform && parsedPlatforms.includes(initialPlatform)) {
-        return initialPlatform;
-      }
+    if (initialPlatform && parsedPlatforms.includes(initialPlatform)) {
+      return initialPlatform;
+    }
 
-      if (defaultPlatform && parsedPlatforms.includes(defaultPlatform)) {
-        return defaultPlatform;
-      }
+    // Match server HTML on hydration; the page owner applies storage before paint.
+    const stored = deferStoredPreference ? null : platformPreferenceRef.current;
 
-      const stored = storedPlatformPreferenceRef.current;
+    if (stored && parsedPlatforms.includes(stored)) {
+      return stored;
+    }
 
-      if (stored && parsedPlatforms.includes(stored)) {
-        return stored;
-      }
+    if (defaultPlatform && parsedPlatforms.includes(defaultPlatform)) {
+      return defaultPlatform;
+    }
 
-      return getDefaultPlatform(
-        parsedPlatforms,
-        canonicalPlatform,
-        defaultPlatform,
-      );
-    },
-  );
-  const activePlatformRef = useRef(activePlatform);
+    return getDefaultPlatform(
+      parsedPlatforms,
+      canonicalPlatform,
+      defaultPlatform,
+    );
+  });
+  const previousInitialPlatformRef = useRef(initialPlatform);
+  const activePlatform =
+    initialPlatform !== previousInitialPlatformRef.current &&
+    initialPlatform &&
+    parsedPlatforms.includes(initialPlatform)
+      ? initialPlatform
+      : pageContext?.activePlatform &&
+          parsedPlatforms.includes(pageContext.activePlatform)
+        ? pageContext.activePlatform
+        : localActivePlatform;
+  const activePlatformRef = useRef(localActivePlatform);
   const previousDefaultPlatformRef = useRef(defaultPlatform);
 
-  useEffect(() => {
-    const stored = getStoredPlatformPreference();
+  useBrowserLayoutEffect(() => {
+    previousInitialPlatformRef.current = initialPlatform;
+  }, [initialPlatform]);
 
+  useBrowserLayoutEffect(() => {
     if (initialPlatform && !parsedPlatforms.includes(initialPlatform)) {
       activePlatformRef.current = undefined;
-      setActivePlatform(undefined);
+      setLocalActivePlatform(undefined);
       return;
     }
 
     if (
       initialPlatform === undefined &&
-      defaultPlatform === undefined &&
-      stored &&
-      isKnownPlatform(stored) &&
-      parsedPlatforms.includes(stored) &&
-      stored !== activePlatform
+      platformPreferenceRef.current &&
+      parsedPlatforms.includes(platformPreferenceRef.current) &&
+      platformPreferenceRef.current !== localActivePlatform
     ) {
-      activePlatformRef.current = stored;
-      setActivePlatform(stored);
+      activePlatformRef.current = platformPreferenceRef.current;
+      setLocalActivePlatform(platformPreferenceRef.current);
       return;
     }
 
     if (
-      activePlatform === undefined ||
-      !parsedPlatforms.includes(activePlatform)
+      localActivePlatform === undefined ||
+      !parsedPlatforms.includes(localActivePlatform)
     ) {
       const fallbackPlatform = getDefaultPlatform(
         parsedPlatforms,
@@ -850,17 +1019,17 @@ function usePlatformSelection({
       );
 
       activePlatformRef.current = fallbackPlatform;
-      setActivePlatform(fallbackPlatform);
+      setLocalActivePlatform(fallbackPlatform);
     }
   }, [
-    activePlatform,
+    localActivePlatform,
     canonicalPlatform,
     defaultPlatform,
     initialPlatform,
     parsedPlatforms,
   ]);
 
-  useEffect(() => {
+  useBrowserLayoutEffect(() => {
     const previousDefaultPlatform = previousDefaultPlatformRef.current;
     previousDefaultPlatformRef.current = defaultPlatform;
 
@@ -873,25 +1042,38 @@ function usePlatformSelection({
       return;
     }
 
+    if (
+      platformPreferenceRef.current &&
+      parsedPlatforms.includes(platformPreferenceRef.current)
+    ) {
+      activePlatformRef.current = platformPreferenceRef.current;
+      setLocalActivePlatform(platformPreferenceRef.current);
+      return;
+    }
+
     activePlatformRef.current = defaultPlatform;
-    setActivePlatform(defaultPlatform);
+    setLocalActivePlatform(defaultPlatform);
   }, [defaultPlatform, initialPlatform, parsedPlatforms]);
 
   useEffect(() => {
     if (initialPlatform && parsedPlatforms.includes(initialPlatform)) {
       activePlatformRef.current = initialPlatform;
-      storedPlatformPreferenceRef.current = initialPlatform;
-      setActivePlatform(initialPlatform);
+      platformPreferenceRef.current = initialPlatform;
+      setLocalActivePlatform(initialPlatform);
       setStoredPlatformPreference(initialPlatform);
     }
   }, [initialPlatform, parsedPlatforms]);
 
   useEffect(() => {
-    if (activePlatform) {
-      activePlatformRef.current = activePlatform;
-      syncPlatformDataset(activePlatform);
+    if (pageContext) {
+      return;
     }
-  }, [activePlatform]);
+
+    if (localActivePlatform) {
+      activePlatformRef.current = localActivePlatform;
+      syncPlatformDataset(localActivePlatform);
+    }
+  }, [localActivePlatform, pageContext]);
 
   useEffect(() => {
     function handlePreferenceChange(event: Event) {
@@ -901,11 +1083,11 @@ function usePlatformSelection({
           : getStoredPlatformPreference();
 
       if (typeof nextPlatform === 'string' && isKnownPlatform(nextPlatform)) {
-        storedPlatformPreferenceRef.current = nextPlatform;
+        platformPreferenceRef.current = nextPlatform;
 
         if (parsedPlatforms.includes(nextPlatform)) {
           activePlatformRef.current = nextPlatform;
-          setActivePlatform(nextPlatform);
+          setLocalActivePlatform(nextPlatform);
         }
       }
     }
@@ -919,11 +1101,11 @@ function usePlatformSelection({
         typeof event.newValue === 'string' &&
         isKnownPlatform(event.newValue)
       ) {
-        storedPlatformPreferenceRef.current = event.newValue;
+        platformPreferenceRef.current = event.newValue;
 
         if (parsedPlatforms.includes(event.newValue)) {
           activePlatformRef.current = event.newValue;
-          setActivePlatform(event.newValue);
+          setLocalActivePlatform(event.newValue);
         }
       }
     }
@@ -940,22 +1122,30 @@ function usePlatformSelection({
     };
   }, [parsedPlatforms]);
 
-  function handlePlatformChange(value: string) {
+  function handlePlatformChange(
+    value: string,
+    options: { preserveLocation?: boolean } = {},
+  ) {
     if (!isKnownPlatform(value) || !parsedPlatforms.includes(value)) {
+      return;
+    }
+
+    if (pageContext) {
+      pageContext.handlePlatformChange(value, options);
       return;
     }
 
     if (activePlatformRef.current !== value) {
       activePlatformRef.current = value;
-      setActivePlatform(value);
+      setLocalActivePlatform(value);
     }
 
-    if (storedPlatformPreferenceRef.current !== value) {
-      storedPlatformPreferenceRef.current = value;
+    if (platformPreferenceRef.current !== value) {
+      platformPreferenceRef.current = value;
       setStoredPlatformPreference(value);
     }
 
-    if (syncPath) {
+    if (syncPath && !options.preserveLocation) {
       syncPlatformPath(value);
     }
   }
@@ -985,21 +1175,7 @@ function syncPlatformPath(platform: PlatformKey) {
     return;
   }
 
-  const segments = window.location.pathname.split('/').filter(Boolean);
-  const [locale, tab, ...slugSegments] = segments;
-
-  if (!locale || !tab) {
-    return;
-  }
-
-  const pathSlugSegments = slugSegments.filter(Boolean);
-  const currentPlatform = pathSlugSegments.at(-1);
-
-  if (currentPlatform && isKnownPlatform(currentPlatform)) {
-    pathSlugSegments.pop();
-  }
-
-  const nextPath = buildDocPath(locale, tab, [...pathSlugSegments, platform]);
+  const nextPath = buildPlatformPathname(window.location.pathname, platform);
   const searchParams = new URLSearchParams(window.location.search);
   searchParams.delete('platform');
   const nextSearch = searchParams.toString();

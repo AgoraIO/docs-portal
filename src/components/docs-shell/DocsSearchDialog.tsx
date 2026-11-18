@@ -1,5 +1,7 @@
 'use client';
 
+import { DocsSearchDialog as ChineseDocsSearchDialog } from './DocsSearchDialog.zh-cn';
+import { DEFAULT_LOCALE as RELEASE_DEFAULT_LOCALE, normalizeLocale as normalizeReleaseLocale } from '@/lib/i18n/i18n-config';
 import { useNavigate } from '@tanstack/react-router';
 import { useDocsSearch } from 'fumadocs-core/search/client';
 import { SearchIcon } from 'lucide-react';
@@ -73,7 +75,7 @@ type PagesState =
       status: 'error';
     };
 
-export function DocsSearchDialog({
+function GlobalDocsSearchDialog({
   loadPages,
   locale = DEFAULT_LOCALE,
   mode = 'desktop',
@@ -1317,4 +1319,10 @@ function groupProductScopes(scopes: ProductScope[]) {
   }
 
   return groups;
+}
+
+export function DocsSearchDialog(props: Parameters<typeof ChineseDocsSearchDialog>[0]) {
+  return normalizeReleaseLocale(props.locale ?? RELEASE_DEFAULT_LOCALE) === 'zh-CN'
+    ? <ChineseDocsSearchDialog {...props} />
+    : <GlobalDocsSearchDialog {...props} />;
 }

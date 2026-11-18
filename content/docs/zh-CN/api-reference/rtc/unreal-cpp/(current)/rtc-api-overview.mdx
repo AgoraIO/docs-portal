@@ -1,0 +1,807 @@
+---
+title: API 概览
+description: 声网通过全球部署的 SD-RTN™，提供可以灵活搭配的 API 组合，实现质量可靠的实时音视频通信。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/rtc_api_overview
+  sourcePath: html-docs/rtc/Unreal-cpp/API/rtc_api_overview.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="rtc_api_overview__initialize"></a>
+
+## 初始化相关
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [Get](/zh-CN/api-reference/rtc/unreal-cpp/initialize#api_createagorartcengine) | 创建 IRtcEngine 对象。 |
+| [initialize](/zh-CN/api-reference/rtc/unreal-cpp/initialize#api_irtcengine_initialize) | 初始化 IRtcEngine。 |
+| [Release](/zh-CN/api-reference/rtc/unreal-cpp/initialize#api_irtcengine_release) | 销毁 IRtcEngine 对象。 |
+
+<a id="rtc_api_overview__channel"></a>
+
+## 频道相关
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [setChannelProfile](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_setchannelprofile) | 设置频道场景。 |
+| [joinChannel [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel) | 加入频道。 |
+| [joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) | 设置媒体选项并加入频道。 |
+| [joinChannelEx](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_joinchannelex) | 加入频道。 |
+| [updateChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_updatechannelmediaoptions) | 加入频道后更新频道媒体选项。 |
+| [updateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_updatechannelmediaoptionsex) | 加入频道后更新频道媒体选项。 |
+| [leaveChannel [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_leavechannel) | 离开频道。 |
+| [leaveChannelEx [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_leavechannelex) | 离开频道。 |
+| [leaveChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_leavechannel2) | 设置频道选项并离开频道。 |
+| [leaveChannelEx [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_leavechannelex2) | 设置频道选项并离开频道。 |
+| [preloadChannel](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_preloadchannel) | 使用 token、channelId、uid 预加载频道。 |
+| [preloadChannelWithUserAccount](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_preloadchannelwithuseraccount) | 使用 token、channelId、userAccount 预加载频道。 |
+| [updatePreloadChannelToken](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_updatepreloadchanneltoken) | 更新预加载频道的通配 Token。 |
+| [renewToken](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_renewtoken) | 更新 Token。 |
+| [setClientRole [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_setclientrole) | 设置用户角色。 |
+| [setClientRole [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_setclientrole2) | 设置直播场景下的用户角色和观众端延时级别。 |
+| [onJoinChannelSuccess](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) | 成功加入频道回调。 |
+| [onRejoinChannelSuccess](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_onrejoinchannelsuccess) | 成功重新加入频道回调。 |
+| [onClientRoleChanged](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_onclientrolechanged) | 用户角色、观众端延时级别已切换回调。 |
+| [onClientRoleChangeFailed](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_onclientrolechangefailed) | 用户角色切换失败回调。 |
+| [onLeaveChannel](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_onleavechannel) | 离开频道回调。 |
+| [onUserJoined](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_onuserjoined) | 远端用户（通信场景）/主播（直播场景）加入当前频道回调。 |
+| [onUserOffline](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_onuseroffline) | 远端用户（通信场景）/主播（直播场景）离开当前频道回调。 |
+| [onNetworkTypeChanged](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onnetworktypechanged) | 本地网络类型发生改变回调。 |
+| [onUplinkNetworkInfoUpdated](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onuplinknetworkinfoupdated) | 上行网络信息变化回调。 |
+| [onConnectionLost](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onconnectionlost) | 网络连接中断，且 SDK 无法在 10 秒内连接服务器回调。 |
+| [onConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onconnectionstatechanged) | 网络连接状态已改变回调。 |
+| [onRequestToken](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_onrequesttoken) | Token 已过期回调。 |
+| [onTokenPrivilegeWillExpire](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) | Token 即将在 30s 内过期回调。 |
+| [onError](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_onerror) | 发生错误回调。 |
+
+<a id="rtc_api_overview__publishnsubscribe"></a>
+
+## 发布和订阅
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [muteLocalAudioStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalaudiostream) | 取消或恢复发布本地音频流。 |
+| [muteLocalAudioStreamEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_mutelocalaudiostreamex) | 取消或恢复发布本地音频流。 |
+| [muteRemoteAudioStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteremoteaudiostream) | 取消或恢复订阅指定远端用户的音频流。 |
+| [muteRemoteAudioStreamEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_muteremoteaudiostreamex) | 停止/恢复接收指定的音频流。 |
+| [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) | 取消或恢复订阅所有远端用户的音频流。 |
+| [muteAllRemoteAudioStreamsEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_muteallremoteaudiostreamsex) | 取消或恢复订阅所有远端用户的音频流。 |
+| [muteLocalVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalvideostream) | 取消或恢复发布本地视频流。 |
+| [muteLocalVideoStreamEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_mutelocalvideostreamex) | 取消或恢复发布本地视频流。 |
+| [muteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteremotevideostream) | 取消或恢复订阅指定远端用户的视频流。 |
+| [muteRemoteVideoStreamEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_muteremotevideostreamex) | 停止/恢复接收指定的视频流。 |
+| [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteallremotevideostreams) | 取消或恢复订阅所有远端用户的视频流。 |
+| [muteAllRemoteVideoStreamsEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_muteallremotevideostreamsex) | 取消或恢复订阅所有远端用户的视频流。 |
+| [setRemoteVideoSubscriptionOptions](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setremotevideosubscriptionoptions) | 设置远端视频流的订阅选项。 |
+| [setRemoteVideoSubscriptionOptionsEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_setremotevideosubscriptionoptionsex) | 设置远端视频流的订阅选项。 |
+| [setSubscribeAudioBlocklist](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) | 设置音频订阅黑名单。 |
+| [setSubscribeAudioBlocklistEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_setsubscribeaudioblocklistex) | <Slot name="api-center-table-0" /> |
+| [setSubscribeAudioAllowlist](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) | 设置音频订阅白名单。 |
+| [setSubscribeAudioAllowlistEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_setsubscribeaudioallowlistex) | <Slot name="api-center-table-1" /> |
+| [setSubscribeVideoBlocklist](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) | 设置视频订阅黑名单。 |
+| [setSubscribeVideoBlocklistEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_setsubscribevideoblocklistex) | <Slot name="api-center-table-2" /> |
+| [setSubscribeVideoAllowlist](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) | 设置视频订阅白名单。 |
+| [setSubscribeVideoAllowlistEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_setsubscribevideoallowlistex) | <Slot name="api-center-table-3" /> |
+| [setRemoteVideoStreamType](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setremotevideostreamtype) | 设置订阅的视频流类型。 |
+| [setRemoteVideoStreamTypeEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_setremotevideostreamtypeex) | 设置订阅的视频流类型。 |
+| [setRemoteDefaultVideoStreamType](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype) | 设置默认订阅的视频流类型。 |
+| [setDualStreamMode [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setdualstreammode) | 在发送端设置双流模式。 |
+| [setDualStreamMode [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setdualstreammode2) | 在发送端设置双流模式并设置视频小流。 |
+| [setDualStreamModeEx](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengineex_setdualstreammodeex) | 在发送端设置双流模式。 |
+| [onAudioPublishStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged) | 音频发布状态改变回调。 |
+| [onAudioSubscribeStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#callback_irtcengineeventhandler_onaudiosubscribestatechanged) | 音频订阅状态发生改变回调。 |
+| [onVideoSubscribeStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#callback_irtcengineeventhandler_onvideosubscribestatechanged) | 视频订阅状态发生改变回调。 |
+
+<Slot for="api-center-table-0">
+
+设置音频订阅黑名单。
+
+</Slot>
+
+<Slot for="api-center-table-1">
+
+设置音频订阅白名单。
+
+</Slot>
+
+<Slot for="api-center-table-2">
+
+设置视频订阅黑名单。
+
+</Slot>
+
+<Slot for="api-center-table-3">
+
+设置视频订阅白名单。
+
+</Slot>
+
+<a id="rtc_api_overview__audio_basic"></a>
+
+## 音频基础功能
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [adjustUserPlaybackSignalVolume](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_adjustuserplaybacksignalvolume) | 调节本地播放的指定远端用户信号音量。 |
+| [adjustUserPlaybackSignalVolumeEx](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengineex_adjustuserplaybacksignalvolumeex) | 调节本地播放的指定远端用户信号音量。 |
+| [adjustPlaybackSignalVolume](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_adjustplaybacksignalvolume) | 调节本地播放的所有远端用户信号音量。 |
+| [enableAudio](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_enableaudio) | 启用音频模块。 |
+| [disableAudio](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_disableaudio) | 关闭音频模块。 |
+| [enableAudioVolumeIndication](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) | 启用用户音量提示。 |
+| [enableAudioVolumeIndicationEx](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengineex_enableaudiovolumeindicationex) | <Slot name="api-center-table-4" /> |
+| [setAudioProfile [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_setaudioprofile2) | 设置音频编码属性。 |
+| [setAudioScenario](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_setaudioscenario) | 设置音频场景。 |
+| [setAudioSessionOperationRestriction](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_setaudiosessionoperationrestriction) | 设置 SDK 对 Audio Session 的操作权限。 |
+| [onAudioVolumeIndication](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) | 用户音量提示回调。 |
+| [onActiveSpeaker](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onactivespeaker) | 监测到远端最活跃用户回调。 |
+| [onLocalAudioStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) | 本地音频状态发生改变回调。 |
+| [onFirstLocalAudioFramePublished](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onfirstlocalaudioframepublished) | 已发布本地音频首帧回调。 |
+| [onFirstRemoteAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onfirstremoteaudioframe) | 已接收远端音频首帧回调。 |
+| [onUserMuteAudio](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) | 远端用户（通信场景）/主播（直播场景）停止或恢复发送音频流回调。 |
+| [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) | 远端音频流状态发生改变回调。 |
+| [onLocalAudioStats](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostats) | 通话中本地音频流的统计信息回调。 |
+| [onRemoteAudioStats](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats) | 通话中远端音频流的统计信息回调。 |
+| [onReceiveAudioPacket](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_ipacketobserver_onreceiveaudiopacket) | 本地用户收到音频包回调。 |
+| [onSendAudioPacket](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_ipacketobserver_onsendaudiopacket) | 已发送音频包回调。 |
+
+<Slot for="api-center-table-4">
+
+启用用户音量提示。
+
+</Slot>
+
+<a id="rtc_api_overview__audio_capture"></a>
+
+## 音频采集
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [enableLocalAudio](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-capture#api_irtcengine_enablelocalaudio) | 开启或关闭本地音频采集。 |
+| [enableLoopbackRecording](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-capture#api_irtcengine_enableloopbackrecording) | 开启声卡采集。 |
+| [enableLoopbackRecordingEx](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-capture#api_irtcengineex_enableloopbackrecordingex) | 开启声卡采集。 |
+| [adjustRecordingSignalVolume](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-capture#api_irtcengine_adjustrecordingsignalvolume) | 调节音频采集信号音量。 |
+| [adjustLoopbackSignalVolume](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-capture#api_irtcengine_adjustloopbacksignalvolume) | 调节声卡采集信号音量。 |
+| [muteRecordingSignal](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-capture#api_irtcengine_muterecordingsignal) | 是否将录音信号静音。 |
+| [enableInEarMonitoring](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-capture#api_irtcengine_enableinearmonitoring2) | 开启耳返功能。 |
+| [setInEarMonitoringVolume](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-capture#api_irtcengine_setinearmonitoringvolume) | 设置耳返音量。 |
+
+<a id="rtc_api_overview__audio_prenpost"></a>
+
+## 音频前处理和后处理
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [enableVoiceAITuner](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/audio-effect#api_irtcengine_enablevoiceaituner) | 开启或关闭 AI 调音器功能。 |
+| [setAdvancedAudioOptions](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/audio-effect#api_irtcengine_setadvancedaudiooptions) | 设置音频的高级选项。 |
+| [setAINSMode](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/audio-effect#api_irtcengine_setainsmode) | 设置是否开启 AI 降噪功能并设置降噪模式。 |
+| [setLocalVoiceEqualization](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization) | 设置本地语音音效均衡。 |
+| [setLocalVoicePitch](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch) | 设置本地语音音调。 |
+| [setLocalVoiceReverb](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb) | 设置本地音效混响。 |
+| [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) | 设置预设的美声效果。 |
+| [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters) | 设置预设美声效果的参数。 |
+| [setAudioEffectPreset](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) | 设置 SDK 预设的人声音效。 |
+| [setAudioEffectParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) | 设置 SDK 预设人声音效的参数。 |
+| [setVoiceConversionPreset](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) | 设置预设的变声效果。 |
+| [setLocalVoiceFormant](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceformant) | 设置共振峰比率以改变语音的音色。 |
+| [enableSoundPositionIndication](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/sound-position#api_irtcengine_enablesoundpositionindication) | 开启/关闭远端用户的语音立体声。 |
+| [setRemoteVoicePosition](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/sound-position#api_irtcengine_setremotevoiceposition) | 设置远端用户声音的 2D 位置，即水平面位置。 |
+| [setRemoteVoicePositionEx](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/sound-position#api_irtcengineex_setremotevoicepositionex) | 设置远端用户声音的 2D 位置，即水平面位置。 |
+| [initialize](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_initialize) | 初始化 [ILocalSpatialAudioEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ilocalspatialaudioengine)。 |
+| [updateSelfPosition](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateselfposition) | 更新本地用户的空间位置。 |
+| [updateRemotePosition](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) | 更新远端用户的空间位置信息。 |
+| [removeRemotePosition](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_removeremoteposition) | 删除指定远端用户的空间位置信息。 |
+| [clearRemotePositions](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_clearremotepositions) | 删除所有远端用户的空间位置信息。 |
+| [setHeadphoneEQParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/spatial-audio#api_irtcengine_setheadphoneeqparameters) | 设置耳机均衡器的低频和高频参数。 |
+| [setHeadphoneEQPreset](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-prenpost/spatial-audio#api_irtcengine_setheadphoneeqpreset) | 设置预设的耳机均衡效果。 |
+| [startLocalAudioMixer](/zh-CN/api-reference/rtc/unreal-cpp/audio/audiomixer#api_irtcengine_startlocalaudiomixer) | 开启本地音频合流。 |
+| [updateLocalAudioMixerConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/audio/audiomixer#api_irtcengine_updatelocalaudiomixerconfiguration) | 更新本地音频合流的配置。 |
+| [stopLocalAudioMixer](/zh-CN/api-reference/rtc/unreal-cpp/audio/audiomixer#api_irtcengine_stoplocalaudiomixer) | 停止本地音频合流。 |
+
+<a id="rtc_api_overview__audio_raw"></a>
+
+## 原始音频数据
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [registerAudioFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) | 注册音频观测器对象。 |
+| [setEarMonitoringAudioFrameParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) | 设置耳返的音频数据格式。 |
+| [setRecordingAudioFrameParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters) | 设置采集的原始音频数据格式。 |
+| [setPlaybackAudioFrameParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_irtcengine_setplaybackaudioframeparameters) | 设置播放的原始音频数据格式。 |
+| [setMixedAudioFrameParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_irtcengine_setmixedaudioframeparameters) | 设置采集和播放音频混音后的原始音频数据格式。 |
+| [setPlaybackAudioFrameBeforeMixingParameters](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_irtcengine_setplaybackaudioframebeforemixingparameters) | 设置混音前的原始音频播放数据格式。 |
+| [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) | 获得耳返的原始音频数据。 |
+| [onRecordAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) | 获得采集的原始音频数据。 |
+| [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) | 获得播放的原始音频数据。 |
+| [onPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) | 获取所订阅的远端用户混音前的声音。 |
+| [onMixedAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) | 获取采集和播放音频混音后的数据。 |
+| [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_getearmonitoringaudioparams) | 设置 [onEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调数据的格式。 |
+| [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_getobservedaudioframeposition) | 设置音频观测位置。 |
+| [getRecordAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_getrecordaudioparams) | 设置 [onRecordAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调数据的格式。 |
+| [getPlaybackAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_getplaybackaudioparams) | 设置 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调数据的格式。 |
+| [getMixedAudioParams](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_getmixedaudioparams) | 设置 [onMixedAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调数据的格式。 |
+
+<a id="rtc_api_overview__audio_encoded"></a>
+
+## 已编码音频数据
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) | 注册音频编码数据观测器。 |
+| [onRecordAudioEncodedFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-encoded#callback_iaudioencodedframeobserver_onrecordaudioencodedframe) | 获取本地用户的音频编码数据。 |
+| [onPlaybackAudioEncodedFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-encoded#callback_iaudioencodedframeobserver_onplaybackaudioencodedframe) | 获取所有远端用户的音频编码数据。 |
+| [onMixedAudioEncodedFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-encoded#callback_iaudioencodedframeobserver_onmixedaudioencodedframe) | 获取本地和所有远端用户混音后的音频编码数据。 |
+
+<a id="rtc_api_overview__audio_custom_capturenrendering"></a>
+
+## 自定义音频采集和渲染
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [createCustomAudioTrack](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) | 创建一个自定义音频采集轨道。 |
+| [destroyCustomAudioTrack](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_imediaengine_destroycustomaudiotrack) | 销毁指定的音频轨道。 |
+| [setExternalAudioSink](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_imediaengine_setexternalaudiosink) | 设置外部音频渲染。 |
+| [pullAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_imediaengine_pullaudioframe) | 拉取远端音频数据。 |
+| [pushAudioFrame](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_imediaengine_pushaudioframe0) | 推送外部音频帧。 |
+| [adjustCustomAudioPlayoutVolume](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudioplayoutvolume) | 调节自定义音频采集轨道在本地播放的音量。 |
+| [adjustCustomAudioPublishVolume](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudiopublishvolume) | 调节自定义音频采集轨道在远端播放的音量。 |
+| [enableCustomAudioLocalPlayback](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-custom-capturenrendering#api_irtcengine_enablecustomaudiolocalplayback) | 设置是否在本地播放外部音频源。 |
+
+<a id="rtc_api_overview__audio_spectrum"></a>
+
+## 音频频谱
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [registerAudioSpectrumObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) | 注册音频频谱观测器。 |
+| [enableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) | 开启音频频谱监测。 |
+| [disableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-spectrum#api_irtcengine_disableaudiospectrummonitor) | 关闭音频频谱监测。 |
+| [unregisterAudioSpectrumObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-spectrum#api_irtcengine_unregisteraudiospectrumobserver) | 取消注册音频频谱观测器。 |
+| [onLocalAudioSpectrum](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) | 获取本地音频频谱。 |
+| [onRemoteAudioSpectrum](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) | 获取远端音频频谱。 |
+
+<a id="rtc_api_overview__video_basic"></a>
+
+## 视频基础功能
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [enableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablevideo) | 启用视频模块。 |
+| [disableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_disablevideo) | 关闭视频模块。 |
+| [setVideoScenario](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_setvideoscenario) | 设置视频业务场景。 |
+| [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_setvideoencoderconfiguration) | 设置视频编码属性。 |
+| [setVideoEncoderConfigurationEx](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengineex_setvideoencoderconfigurationex) | 设置视频编码属性。 |
+| [startPreview [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_startpreview) | 开启视频预览。 |
+| [stopPreview [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_stoppreview) | 停止视频预览。 |
+| [startPreview [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_startpreview2) | 开启视频预览并指定预览的视频源。 |
+| [stopPreview [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_stoppreview2) | 停止视频预览。 |
+| [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) | 本地视频状态发生改变回调。 |
+| [onLocalVideoStats](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onlocalvideostats) | 本地视频流统计信息回调。 |
+| [onFirstLocalVideoFramePublished](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onfirstlocalvideoframepublished) | 已发布本地视频首帧回调。 |
+| [onVideoPublishStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged) | 视频发布状态改变回调。 |
+| [onVideoSizeChanged](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onvideosizechanged) | 本地或远端视频大小和旋转信息发生改变回调。 |
+| [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) | 远端视频状态发生改变回调。 |
+| [onRemoteVideoStats](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onremotevideostats) | 通话中远端视频流的统计信息回调。 |
+| [onFirstLocalVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onfirstlocalvideoframe) | 已显示本地视频首帧回调。 |
+| [onFirstRemoteVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideoframe) | 渲染器已接收首帧远端视频回调。 |
+| [onFirstRemoteVideoDecoded](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) | 已接收到远端视频并完成解码回调。 |
+| [onUserMuteVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) | 远端用户取消或恢复发布视频流回调。 |
+| [onUserEnableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onuserenablevideo) | 远端用户开/关视频模块回调。 |
+
+<a id="rtc_api_overview__video_capturing"></a>
+
+## 视频采集
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [enableLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablelocalvideo) | 开关本地视频采集。 |
+| [startCameraCapture](/zh-CN/api-reference/rtc/unreal-cpp/video/camera-capture#api_irtcengine_startcameracapture) | 开始通过摄像头采集视频。 |
+| [stopCameraCapture](/zh-CN/api-reference/rtc/unreal-cpp/video/camera-capture#api_irtcengine_stopcameracapture) | 停止通过摄像头采集视频。 |
+| [setCameraStabilizationMode](/zh-CN/api-reference/rtc/unreal-cpp/video/camera-capture#api_irtcengine_setcamerastabilizationmode) | 设置摄像头防抖模式。（仅适用于 iOS） |
+
+<a id="rtc_api_overview__screen_share"></a>
+
+## 屏幕共享
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [getScreenCaptureSources](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_getscreencapturesources) | 获取可共享的屏幕和窗口对象列表。（仅适用于 Windows 和 macOS） |
+| [startScreenCaptureByWindowId](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_startscreencapturebywindowid) | 开始采集指定窗口的视频流。（仅适用于 Windows 和 macOS） |
+| [startScreenCaptureByDisplayId](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_startscreencapturebydisplayid) | 开始采集指定屏幕的视频流。（仅适用于 Windows 和 macOS） |
+| [setScreenCaptureContentHint](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_setscreencapturecontenthint) | 设置屏幕共享内容类型。（仅适用于 Windows 和 macOS） |
+| [updateScreenCaptureRegion](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_updatescreencaptureregion) | 更新屏幕采集的区域。（仅适用于 Windows 和 macOS） |
+| [queryScreenCaptureCapability](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_queryscreencapturecapability) | 查询设备在屏幕共享时支持的最高帧率。（仅适用于 Android 和 iOS） |
+| [setExternalMediaProjection](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_setexternalmediaprojection) | 设置 SDK 外部的 `MediaProjection` 采集屏幕视频流。 |
+| [startScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_startscreencapture) | 开始屏幕采集。（仅适用于 Android 和 iOS） |
+| [startScreenCapture [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_startscreencapture2) | 开始屏幕采集并指定视频源。（仅适用于 Windows 和 macOS） |
+| [updateScreenCapture](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_updatescreencapture) | 更新屏幕采集的参数配置。（仅适用于 Android 和 iOS） |
+| [updateScreenCaptureParameters](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_updatescreencaptureparameters) | 更新屏幕采集的参数配置。（仅适用于 Windows 和 macOS） |
+| [stopScreenCapture [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_stopscreencapture) | 停止屏幕采集。 |
+| [stopScreenCapture [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_stopscreencapture2) | 停止对指定的视频源进行屏幕采集。（仅适用于 Windows 和 macOS） |
+| [getCount](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_iscreencapturesourcelist_getcount) | 获取可共享的窗口和屏幕的个数。（仅适用于 Windows 和 macOS） |
+| [getSourceInfo](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_iscreencapturesourcelist_getsourceinfo) | 获取指定的可共享窗口或屏幕的信息。（仅适用于 Windows 和 macOS） |
+| [release](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_iscreencapturesourcelist_release) | 释放 [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iscreencapturesourcelist)。（仅适用于 Windows 和 macOS） |
+| [setScreenCaptureScenario](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_setscreencapturescenario) | 设置屏幕共享的场景。 |
+
+<a id="rtc_api_overview__video_prenpost"></a>
+
+## 视频前处理和后处理
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [enableContentInspect](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/snapshot#api_irtcengine_enablecontentinspect) | 开启/关闭本地截图上传。 |
+| [takeSnapshot](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) | 对视频截图。 |
+| [takeSnapshot [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/snapshot#api_irtcengine_takesnapshot2) | 在指定观测位置进行视频截图。 |
+| [takeSnapshotEx](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/snapshot#api_irtcengineex_takesnapshotex) | 使用连接 ID 获取视频截图。 |
+| [takeSnapshotEx [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/snapshot#api_irtcengineex_takesnapshotex2) | 使用连接 ID 获取指定观测位置的视频截图。 |
+| [enableVirtualBackground](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/virtualbackground#api_irtcengine_enablevirtualbackground) | 开启/关闭虚拟背景。 |
+| [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/local-transcoder#api_irtcengine_startlocalvideotranscoder) | 开启本地合图。 |
+| [stopLocalVideoTranscoder](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/local-transcoder#api_irtcengine_stoplocalvideotranscoder) | 停止本地合图。 |
+| [updateLocalTranscoderConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration) | 更新本地合图配置。 |
+| [onLocalVideoTranscoderError](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/local-transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror) | 本地合图发生错误回调。 |
+| [enableVideoImageSource](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/image-source#api_irtcengine_enablevideoimagesource) | 设置是否开启垫片推流功能。 |
+| [setBeautyEffectOptions](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/video-enhance-option#api_irtcengine_setbeautyeffectoptions) | 设置美颜效果选项。 |
+| [setColorEnhanceOptions](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/video-enhance-option#api_irtcengine_setcolorenhanceoptions) | 设置色彩增强功能。 |
+| [setLowlightEnhanceOptions](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/video-enhance-option#api_irtcengine_setlowlightenhanceoptions) | 设置暗光增强功能。 |
+| [setVideoDenoiserOptions](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/video-enhance-option#api_irtcengine_setvideodenoiseroptions) | 设置视频降噪功能。 |
+| [setFilterEffectOptions](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/video-enhance-option#api_irtcengine_setfiltereffectoptions) | 设置滤镜效果选项并指定媒体源。 |
+| [setFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions) | 设置美型效果选项并指定媒体源。 |
+| [setFaceShapeAreaOptions](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/video-enhance-option#api_irtcengine_setfaceshapeareaoptions) | 设置美型部位选项并指定媒体源。 |
+| [getFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/video-enhance-option#api_irtcengine_getfaceshapebeautyoptions) | 获取美型效果选项。 |
+| [getFaceShapeAreaOptions](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/video-enhance-option#api_irtcengine_getfaceshapeareaoptions) | 获取美型部位选项。 |
+| [enableFaceDetection](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/face-detection#api_irtcengine_enablefacedetection) | 开启/关闭本地人脸检测。 |
+| [onFacePositionChanged](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/face-detection#callback_irtcengineeventhandler_onfacepositionchanged) | 报告本地人脸检测结果。 |
+| [isCameraCenterStageSupported](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/center-stage#api_irtcengine_iscameracenterstagesupported) | 查询摄像头是否支持人像锁定。(仅适用于 iOS 和 macOS) |
+| [enableCameraCenterStage](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/center-stage#api_irtcengine_enablecameracenterstage) | 开启或关闭人像锁定功能。(仅适用于 iOS 和 macOS) |
+| [onSnapshotTaken](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) | 视频截图结果回调。 |
+| [addVideoWatermark [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/watermark#api_irtcengine_addvideowatermark) | 添加本地视频水印。 |
+| [addVideoWatermark [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/watermark#api_irtcengine_addvideowatermark2) | 添加本地视频水印。 |
+| [addVideoWatermarkEx](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/watermark#api_irtcengineex_addvideowatermarkex) | 添加本地视频水印。 |
+| [clearVideoWatermarks](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/watermark#api_irtcengine_clearvideowatermarks) | 删除已添加的视频水印。 |
+| [clearVideoWatermarkEx](/zh-CN/api-reference/rtc/unreal-cpp/video/video-prenpro/watermark#api_irtcengineex_clearvideowatermarkex) | 删除已添加的视频水印。 |
+
+<a id="rtc_api_overview__video_rendering"></a>
+
+## 视频渲染
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [setRenderMode](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_imediaplayer_setrendermode) | 设置播放器视图的渲染模式。 |
+| [setLocalRenderMode [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setlocalrendermode2) | 更新本地视图显示模式。 |
+| [setRemoteRenderMode](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setremoterendermode2) | 更新远端视图显示模式。 |
+| [setRemoteRenderModeEx](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengineex_setremoterendermodeex) | 设置远端视图显示模式。 |
+| [setLocalRenderTargetFps](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setlocalrendertargetfps) | 设置本地视频渲染的最大帧率。 |
+| [setRemoteRenderTargetFps](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setremoterendertargetfps) | 设置视频在远端渲染的最大帧率。 |
+| [setView](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setview) | 设置播放器渲染视图。 |
+| [setupLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setuplocalvideo) | 初始化本地视图。 |
+| [setupRemoteVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setupremotevideo) | 初始化远端用户视图。 |
+| [setupRemoteVideoEx](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengineex_setupremotevideoex) | 初始化远端用户视图。 |
+| [enableInstantMediaRendering](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_enableinstantmediarendering) | 开启音视频帧加速渲染。 |
+| [startMediaRenderingTracing](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_startmediarenderingtracing) | 开启视频帧渲染数据打点。 |
+| [startMediaRenderingTracingEx](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengineex_startmediarenderingtracingex) | 开启视频帧渲染数据打点。 |
+| [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) | 视频帧渲染事件回调。 |
+
+<a id="rtc_api_overview__raw_video_data"></a>
+
+## 原始视频数据
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [registerVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#api_imediaengine_registervideoframeobserver) | 注册原始视频观测器对象。 |
+| [onCaptureVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) | 获取本地设备采集到的视频数据。 |
+| [onFrame](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_onframe) | 已获取视频帧回调。 |
+| [onPreEncodeVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) | 获取本地视频编码前的视频数据。 |
+| [onRenderVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) | 获取远端发送的视频数据。 |
+| [getObservedFramePosition](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_getobservedframeposition) | 设置视频观测位置。 |
+| [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_getvideoframeprocessmode) | 设置视频处理模式。 |
+| [getMirrorApplied](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_getmirrorapplied) | 设置视频数据镜像。 |
+| [getRotationApplied](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_getrotationapplied) | 设置视频数据旋转。 |
+| [getVideoFormatPreference](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_getvideoformatpreference) | 设置 SDK 输出的原始视频数据格式。 |
+
+<a id="rtc_api_overview__encode_video_data"></a>
+
+## 已编码视频数据
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [registerVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/video/video-encoded#api_imediaengine_registervideoencodedframeobserver) | 为编码后的视频图像注册视频帧接收观测器。 |
+| [onEncodedVideoFrameReceived](/zh-CN/api-reference/rtc/unreal-cpp/video/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) | 报告接收端已收到远端发送的待解码视频帧。 |
+
+<a id="rtc_api_overview__video_custom_capturenrendering"></a>
+
+## 自定义视频采集和渲染
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [createCustomVideoTrack](/zh-CN/api-reference/rtc/unreal-cpp/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) | 创建一个自定义的视频轨道。 |
+| [destroyCustomVideoTrack](/zh-CN/api-reference/rtc/unreal-cpp/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack) | 销毁指定的视频轨道。 |
+| [setExternalVideoSource](/zh-CN/api-reference/rtc/unreal-cpp/video/video-custom-capturenrendering#api_imediaengine_setexternalvideosource) | 设置外部视频源。 |
+| [setExternalRemoteEglContext](/zh-CN/api-reference/rtc/unreal-cpp/video/video-custom-capturenrendering#api_irtcengine_setexternalremoteeglcontext) | 设置远端视频流渲染的 EGL 环境上下文。（仅适用于 Android） |
+| [pushVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video/video-custom-capturenrendering#api_imediaengine_pushvideoframe) | 将外部原始视频帧通过自定义视频轨道发布到频道中。 |
+
+<a id="rtc_api_overview__audio_file_playback"></a>
+
+## 音乐文件播放
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [startAudioMixing [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_startaudiomixing) | 开始播放音乐文件。 |
+| [startAudioMixing [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_startaudiomixing2) | 开始播放音乐文件。 |
+| [stopAudioMixing](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_stopaudiomixing) | 停止播放音乐文件。 |
+| [pauseAudioMixing](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_pauseaudiomixing) | 暂停播放音乐文件。 |
+| [resumeAudioMixing](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_resumeaudiomixing) | 恢复播放音乐文件。 |
+| [adjustAudioMixingVolume](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_adjustaudiomixingvolume) | 调节音乐文件的播放音量。 |
+| [adjustAudioMixingPlayoutVolume](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_adjustaudiomixingplayoutvolume) | 调节音乐文件在本地播放的音量。 |
+| [adjustAudioMixingPublishVolume](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_adjustaudiomixingpublishvolume) | 调节音乐文件远端播放音量。 |
+| [getAudioMixingPlayoutVolume](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_getaudiomixingplayoutvolume) | 获取音乐文件的本地播放音量。 |
+| [getAudioMixingPublishVolume](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_getaudiomixingpublishvolume) | 获取音乐文件的远端播放音量。 |
+| [setAudioMixingPlaybackSpeed](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_setaudiomixingplaybackspeed) | 设置当前音乐文件的播放速度。 |
+| [getAudioMixingDuration](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_getaudiomixingduration) | 获取音乐文件总时长。 |
+| [getAudioMixingCurrentPosition](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_getaudiomixingcurrentposition) | 获取音乐文件的播放进度。 |
+| [setAudioMixingPitch](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_setaudiomixingpitch) | 调整本地播放的音乐文件的音调。 |
+| [setAudioMixingPosition](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_setaudiomixingposition) | 设置音乐文件的播放位置。 |
+| [setAudioMixingDualMonoMode](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_setaudiomixingdualmonomode) | 设置当前音频文件的声道模式。 |
+| [getAudioTrackCount](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_getaudiotrackcount) | 获取当前音乐文件的音轨索引。 |
+| [selectAudioTrack [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_selectaudiotrack) | 指定当前音乐文件的播放音轨。 |
+| [selectMultiAudioTrack](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_imediaplayer_selectmultiaudiotrack) | 选择本地播放和发送至远端的音轨。 |
+| [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) | 音乐文件的播放状态已改变回调。 |
+| [onAudioMixingPositionChanged](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingpositionchanged) | 音乐文件播放进度回调。 |
+
+<a id="rtc_api_overview__audio_effect_playback"></a>
+
+## 音效文件播放
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [getEffectsVolume](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_geteffectsvolume) | 获取音效文件的播放音量。 |
+| [setEffectsVolume](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_seteffectsvolume) | 设置音效文件的播放音量。 |
+| [getVolumeOfEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_getvolumeofeffect) | 获取指定音效文件的播放音量。 |
+| [setVolumeOfEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_setvolumeofeffect) | 设置指定音效文件的播放音量。 |
+| [preloadEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_preloadeffect) | 将音效文件加载至内存。 |
+| [playEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_playeffect3) | 播放指定的本地或在线音效文件。 |
+| [playAllEffects](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_playalleffects) | 播放所有音效文件。 |
+| [pauseEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_pauseeffect) | 暂停音效文件播放。 |
+| [pauseAllEffects](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_pausealleffects) | 暂停所有音效文件播放。 |
+| [resumeEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_resumeeffect) | 恢复播放指定音效文件。 |
+| [resumeAllEffects](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_resumealleffects) | 恢复播放所有音效文件。 |
+| [stopEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_stopeffect) | 停止播放指定音效文件。 |
+| [stopAllEffects](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_stopalleffects) | 停止播放所有音效文件。 |
+| [unloadEffect](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_unloadeffect) | 从内存释放某个预加载的音效文件。 |
+| [unloadAllEffects](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_unloadalleffects) | 从内存释放所有预加载音效文件。 |
+| [getEffectDuration](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_geteffectduration) | 获取指定音效文件总时长。 |
+| [getEffectCurrentPosition](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_geteffectcurrentposition) | 获取指定音效文件的播放进度。 |
+| [setEffectPosition](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#api_irtcengine_seteffectposition) | 设置指定音效文件的播放位置。 |
+| [onAudioEffectFinished](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) | 本地音效文件播放已结束回调。 |
+
+<a id="rtc_api_overview__rhythm_player"></a>
+
+## 虚拟节拍器
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [startRhythmPlayer](/zh-CN/api-reference/rtc/unreal-cpp/play/rhythmplayer#api_irtcengine_startrhythmplayer) | 开启虚拟节拍器。 |
+| [stopRhythmPlayer](/zh-CN/api-reference/rtc/unreal-cpp/play/rhythmplayer#api_irtcengine_stoprhythmplayer) | 关闭虚拟节拍器。 |
+| [configRhythmPlayer](/zh-CN/api-reference/rtc/unreal-cpp/play/rhythmplayer#api_irtcengine_configrhythmplayer) | 配置虚拟节拍器。 |
+| [onRhythmPlayerStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/play/rhythmplayer#callback_irtcengineeventhandler_onrhythmplayerstatechanged) | 虚拟节拍器状态发生改变回调。 |
+
+<a id="rtc_api_overview__media_player"></a>
+
+## 媒体播放器
+
+更多有关媒体播放器的方法，详见[内置媒体播放器](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-initialize#toc_mediaplayer_initialize)。
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [createMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-initialize#api_irtcengine_createmediaplayer) | 创建媒体播放器对象。 |
+| [getMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-initialize#api_getmediaplayercachemanager) | 获取 [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayercachemanager) 实例。 |
+| [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer) | 提供媒体播放器功能的类，支持多实例。 |
+| [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayercachemanager) | 该类提供管理媒体播放器中缓存媒体文件的方法。 |
+| [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayersourceobserver) | 提供媒体播放器的回调。 |
+
+<a id="rtc_api_overview__mpk_cache"></a>
+
+## 媒体播放器缓存
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [enableAutoRemoveCache](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_enableautoremovecache) | 设置是否开启自动清除缓存文件功能。 |
+| [removeAllCaches](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removeallcaches) | 删除媒体播放器中所有已缓存的媒体文件。 |
+| [removeCacheByUri](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removecachebyuri) | 删除指定的已缓存媒体文件。 |
+| [removeOldCache](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removeoldcache) | 删除媒体播放器中近期最少使用的一个缓存媒体文件。 |
+| [setCacheDir](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_setcachedir) | 设置待缓存的媒体文件的储存路径。 |
+| [setMaxCacheFileCount](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_setmaxcachefilecount) | 设置缓存媒体文件数量的上限。 |
+| [setMaxCacheFileSize](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_setmaxcachefilesize) | 设置缓存媒体文件的总缓存大小的上限。 |
+| [getCacheDir](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_getcachedir) | 获取缓存文件的储存路径。 |
+| [getCacheFileCount](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_getcachefilecount) | 获取当前已缓存的媒体文件的总数量。 |
+| [getMaxCacheFileCount](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_getmaxcachefilecount) | 获取所设置的缓存文件数量上限。 |
+| [getMaxCacheFileSize](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_getmaxcachefilesize) | 获取所设置的缓存文件总缓存的上限。 |
+| [onPlayerCacheStats](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-cache#callback_imediaplayersourceobserver_onplayercachestats) | 报告当前缓存中的媒体资源的相关信息。 |
+
+<a id="rtc_api_overview__drm"></a>
+
+## 版权音乐
+
+本组方法仅适用于 Android 和 iOS。
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [initialize](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_initialize) | 初始化 [IMusicContentCenter](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imusiccontentcenter)。 |
+| [release](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_release) | 释放音乐内容中心所占用的所有资源。 |
+| [createMusicPlayer](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_createmusicplayer) | 创建音乐播放器。 |
+| [destroyMusicPlayer](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_destroymusicplayer) | 销毁音乐播放器对象。 |
+| [preload [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusicontentcenter_preload) | 预加载音乐资源。 |
+| [preload [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusicontentcenter_preload2) | 预加载音乐资源。 |
+| [isPreloaded](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_ispreloaded) | 检测音乐资源是否已被预加载。 |
+| [open](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusicplayer_open) | 通过音乐资源编号打开音乐资源。 |
+| [registerEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_registereventhandler) | 注册音乐内容中心回调事件。 |
+| [renewToken](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_renewtoken) | 更新 Token。 |
+| [getCaches](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_getcaches) | 获取已缓存的音乐资源信息。 |
+| [removeCache](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_removecache) | 删除已缓存的音乐资源。 |
+| [getMusicCharts](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_getmusiccharts) | 获取全部音乐榜单。 |
+| [getMusicCollectionWithMusicChartId](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) | 通过音乐榜单的 ID 获取指定榜单的音乐资源列表。 |
+| [searchMusic](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_searchmusic) | 搜索音乐资源。 |
+| [setPlayMode](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusicplayer_setplaymode) | 设置音乐资源的播放模式。 |
+| [renewToken](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_renewtoken) | 更新 Token。 |
+| [getLyric](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_getlyric) | 获取音乐资源的歌词下载地址。 |
+| [getInternalSongCode](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_getinternalsongcode) | 创建音乐资源的副歌片段编号。 |
+| [getSongSimpleInfo](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#api_imusiccontentcenter_getsongsimpleinfo) | 获取某一音乐资源的详细信息。 |
+| [onPreLoadEvent](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent) | 报告预加载音乐资源的事件。 |
+| [onLyricResult](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) | 歌词下载地址回调。 |
+| [onMusicChartsResult](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) | 获取音乐榜单回调。 |
+| [onMusicCollectionResult](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) | 获取音乐资源列表回调。 |
+| [onSongSimpleInfoResult](/zh-CN/api-reference/rtc/unreal-cpp/play/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) | 音乐资源的详细信息回调。 |
+
+<a id="rtc_api_overview__media_recorder"></a>
+
+## 音视频录制
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [createMediaRecorder](/zh-CN/api-reference/rtc/unreal-cpp/recording#api_irtcengine_createmediarecorder) | 创建音视频录制对象。 |
+| [setMediaRecorderObserver](/zh-CN/api-reference/rtc/unreal-cpp/recording#api_imediarecorder_setmediarecorderobserver) | 注册 [IMediaRecorderObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediarecorderobserver) 观测器。 |
+| [startRecording](/zh-CN/api-reference/rtc/unreal-cpp/recording#api_imediarecorder_startrecording) | 开启音视频流录制。 |
+| [stopRecording](/zh-CN/api-reference/rtc/unreal-cpp/recording#api_imediarecorder_stoprecording) | 停止音视频流录制。 |
+| [startAudioRecording [1/3]](/zh-CN/api-reference/rtc/unreal-cpp/recording#api_irtcengine_startaudiorecording) | 开始客户端录音。 |
+| [startAudioRecording [2/3]](/zh-CN/api-reference/rtc/unreal-cpp/recording#api_irtcengine_startaudiorecording2) | 开始客户端录音并设置录音采样率。 |
+| [startAudioRecording [3/3]](/zh-CN/api-reference/rtc/unreal-cpp/recording#api_irtcengine_startaudiorecording3) | 开始客户端录音并进行录音配置。 |
+| [stopAudioRecording](/zh-CN/api-reference/rtc/unreal-cpp/recording#api_irtcengine_stopaudiorecording) | 停止客户端录音。 |
+| [destroyMediaRecorder](/zh-CN/api-reference/rtc/unreal-cpp/recording#api_irtcengine_destroymediarecorder) | 销毁音视频录制对象。 |
+| [onRecorderStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/recording#callback_imediarecorderobserver_onrecorderstatechanged) | 录制状态发生改变回调。 |
+| [onRecorderInfoUpdated](/zh-CN/api-reference/rtc/unreal-cpp/recording#callback_imediarecorderobserver_onrecorderinfoupdated) | 录制信息更新回调。 |
+
+<a id="rtc_api_overview__media_stream_relay_across_channels"></a>
+
+## 跨频道媒体流转发
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [startOrUpdateChannelMediaRelay](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay) | 开始或更新跨频道媒体流转发。 |
+| [startOrUpdateChannelMediaRelayEx](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/channel-media-relay#api_irtcengineex_startorupdatechannelmediarelayex) | 开始或更新跨频道媒体流转发。 |
+| [stopChannelMediaRelay](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/channel-media-relay#api_irtcengine_stopchannelmediarelay) | 停止跨频道媒体流转发。一旦停止，主播会退出所有目标频道。 |
+| [stopChannelMediaRelayEx](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/channel-media-relay#api_irtcengineex_stopchannelmediarelayex) | 停止跨频道媒体流转发。一旦停止，主播会退出所有目标频道。 |
+| [pauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay) | 暂停向所有目标频道转发媒体流。 |
+| [pauseAllChannelMediaRelayEx](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/channel-media-relay#api_irtcengineex_pauseallchannelmediarelayex) | 暂停向所有目标频道转发媒体流。 |
+| [resumeAllChannelMediaRelay](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay) | 恢复向所有目标频道转发媒体流。 |
+| [resumeAllChannelMediaRelayEx](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/channel-media-relay#api_irtcengineex_resumeallchannelmediarelayex) | 恢复向所有目标频道转发媒体流。 |
+| [onChannelMediaRelayStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) | 跨频道媒体流转发状态发生改变回调。 |
+
+<a id="rtc_api_overview__media_push"></a>
+
+## 旁路推流
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [startRtmpStreamWithoutTranscoding](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithouttranscoding) | 开始非转码推流。 |
+| [startRtmpStreamWithoutTranscodingEx](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/media-push#api_irtcengineex_startrtmpstreamwithouttranscodingex) | 开始非转码推流。 |
+| [startRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) | 开始旁路推流并设置转码属性。 |
+| [startRtmpStreamWithTranscodingEx](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/media-push#api_irtcengineex_startrtmpstreamwithtranscodingex) | 开始旁路推流并设置转码属性。 |
+| [updateRtmpTranscoding](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/media-push#api_irtcengine_updatertmptranscoding) | 更新旁路推流转码属性。 |
+| [updateRtmpTranscodingEx](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/media-push#api_irtcengineex_updatertmptranscodingex) | 更新旁路推流转码属性。 |
+| [stopRtmpStream](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) | 结束旁路推流。 |
+| [stopRtmpStreamEx](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/media-push#api_irtcengineex_stoprtmpstreamex) | 结束旁路推流。 |
+| [onRtmpStreamingEvent](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingevent) | 旁路推流事件回调。 |
+| [onRtmpStreamingStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) | 旁路推流状态发生改变回调。 |
+| [onTranscodingUpdated](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/media-push#callback_irtcengineeventhandler_ontranscodingupdated) | 旁路推流转码设置已被更新回调。 |
+
+<a id="rtc_api_overview__direct_cdn"></a>
+
+## 直推 CDN
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [startDirectCdnStreaming](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/cdn-streaming#api_irtcengine_startdirectcdnstreaming) | 设置主播端开始直接向 CDN 推流。 |
+| [stopDirectCdnStreaming](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/cdn-streaming#api_irtcengine_stopdirectcdnstreaming) | 设置主播端停止直接向 CDN 推流。 |
+| [setDirectCdnStreamingAudioConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/cdn-streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration) | 设置主播端直接向 CDN 推流时的音频编码属性。 |
+| [setDirectCdnStreamingVideoConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/cdn-streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration) | 设置主播端直接向 CDN 推流时的视频编码属性。 |
+| [onDirectCdnStreamingStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/cdn-streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged) | CDN 推流状态改变回调。 |
+| [onDirectCdnStreamingStats](/zh-CN/api-reference/rtc/unreal-cpp/cloud-media-relay/cdn-streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats) | CDN 推流统计数据回调。 |
+
+<a id="rtc_api_overview__stream_message"></a>
+
+## 数据流
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [createDataStream [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#api_irtcengine_createdatastream) | 创建数据流。 |
+| [createDataStream [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#api_irtcengine_createdatastream2) | 创建数据流。 |
+| [createDataStreamEx [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#api_irtcengineex_createdatastreamex2) | 创建数据流。 |
+| [sendStreamMessage](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#api_irtcengine_sendstreammessage) | 发送数据流。 |
+| [onStreamMessage](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) | 接收到对方数据流消息的回调。 |
+| [onStreamMessageError](/zh-CN/api-reference/rtc/unreal-cpp/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) | 接收对方数据流消息发生错误的回调。 |
+
+<a id="rtc_api_overview__media_metadata"></a>
+
+## Metadata (SEI)
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [registerMediaMetadataObserver](/zh-CN/api-reference/rtc/unreal-cpp/metadata/metadata-observer#api_irtcengine_registermediametadataobserver) | 注册媒体 metadata 观测器用于接收或发送 metadata。 |
+| [unregisterMediaMetadataObserver](/zh-CN/api-reference/rtc/unreal-cpp/metadata/metadata-observer#api_irtcengine_unregistermediametadataobserver) | 取消注册媒体 metadata 观测器。 |
+| [getMaxMetadataSize](/zh-CN/api-reference/rtc/unreal-cpp/metadata/metadata-observer#callback_imetadataobserver_getmaxmetadatasize) | 请求最大的 metadata 大小。 |
+| [onReadyToSendMetadata](/zh-CN/api-reference/rtc/unreal-cpp/metadata/metadata-observer#callback_imetadataobserver_onreadytosendmetadata) | 发送端已准备好发送 metadata。 |
+| [onMetaData](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onmetadata) | 报告已获取媒体附属信息。 |
+| [onMetadataReceived](/zh-CN/api-reference/rtc/unreal-cpp/metadata/metadata-observer#callback_imetadataobserver_onmetadatareceived) | 接收端已收到 metadata。 |
+
+<a id="rtc_api_overview__audio_route"></a>
+
+## 音频路由
+
+该组方法仅适用于 Android 和 iOS 平台。
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [setDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone) | 设置默认的音频路由。 |
+| [setEnableSpeakerphone](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-route#api_irtcengine_setenablespeakerphone) | 开启或关闭扬声器播放。 |
+| [setRouteInCommunicationMode](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-route#api_irtcengine_setrouteincommunicationmode) | 选择通话音量模式下的音频路由。 |
+| [isSpeakerphoneEnabled](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-route#api_irtcengine_isspeakerphoneenabled) | 检查扬声器状态启用状态。 |
+| [onAudioRoutingChanged](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-route#callback_irtcengineeventhandler_onaudioroutingchanged) | 音频路由已发生变化回调。 |
+
+## 视频设备管理
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [enableMultiCamera](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_enablemulticamera) | 开启或关闭多路摄像头采集。(仅适用于 iOS) |
+| [switchCamera](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_switchcamera) | 切换前置/后置摄像头。(仅适用于 Android 和 iOS) |
+| [setCameraCapturerConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) | 设置摄像头采集配置。 |
+| [isCameraZoomSupported](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_iscamerazoomsupported) | 检测设备是否支持摄像头缩放功能。(仅适用于 Android 和 iOS) |
+| [getCameraMaxZoomFactor](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_getcameramaxzoomfactor) | 获取摄像头支持最大缩放比例。(仅适用于 Android 和 iOS) |
+| [setCameraZoomFactor](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_setcamerazoomfactor) | 设置摄像头缩放比例。(仅适用于 Android 和 iOS) |
+| [isCameraTorchSupported](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_iscameratorchsupported) | 检测设备是否支持闪光灯常开。(仅适用于 Android 和 iOS) |
+| [setCameraTorchOn](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_setcameratorchon) | 设置是否打开闪光灯。(仅适用于 Android 和 iOS) |
+| [isCameraFaceDetectSupported](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_iscamerafacedetectsupported) | 检查设备摄像头是否支持人脸检测。(仅适用于 Android 和 iOS) |
+| [isCameraFocusSupported](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_iscamerafocussupported) | 检测设备是否支持手动对焦功能。(仅适用于 Android 和 iOS) |
+| [isCameraExposureSupported](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_iscameraexposuresupported) | 查询当前摄像头是否支持曝光调节。(仅适用于 Android 和 iOS) |
+| [setCameraExposureFactor](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_setcameraexposurefactor) | 设置当前摄像头的曝光系数。(仅适用于 Android 和 iOS) |
+| [setCameraFocusPositionInPreview](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_setcamerafocuspositioninpreview) | 设置手动对焦位置，并触发对焦。(仅适用于 Android 和 iOS) |
+| [isCameraAutoFocusFaceModeSupported](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_iscameraautofocusfacemodesupported) | 检测设备是否支持人脸对焦功能。(仅适用于 Android 和 iOS) |
+| [setCameraAutoFocusFaceModeEnabled](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_setcameraautofocusfacemodeenabled) | 设置是否开启人脸对焦功能。(仅适用于 Android 和 iOS) |
+| [isCameraExposurePositionSupported](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_iscameraexposurepositionsupported) | 检测设备是否支持手动曝光功能。(仅适用于 Android 和 iOS) |
+| [isCameraAutoExposureFaceModeSupported](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_iscameraautoexposurefacemodesupported) | 检测设备是否支持自动曝光功能。(仅适用于 iOS) |
+| [setCameraExposurePosition](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_setcameraexposureposition) | 设置手动曝光位置。(仅适用于 Android 和 iOS) |
+| [setCameraAutoExposureFaceModeEnabled](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_setcameraautoexposurefacemodeenabled) | 设置是否开启自动曝光功能。(仅适用于 iOS) |
+| [onCameraFocusAreaChanged](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#callback_irtcengineeventhandler_oncamerafocusareachanged) | 相机对焦区域已改变回调。(仅适用于 Android 和 iOS) |
+| [onCameraExposureAreaChanged](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#callback_irtcengineeventhandler_oncameraexposureareachanged) | 摄像头曝光区域已改变回调。(仅适用于 Android 和 iOS) |
+| [queryCameraFocalLengthCapability](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_querycamerafocallengthcapability) | 查询摄像头支持的焦距能力。(仅适用于 Andorid 和 iOS) |
+| [queryCodecCapability](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_querycodeccapability) | 查询 SDK 支持的视频编解码能力。 |
+| [enumerateVideoDevices](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_ivideodevicemanager_enumeratevideodevices) | 获取系统中所有的视频设备列表。(仅适用于 Windows 和 macOS) |
+| [setDevice](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_ivideodevicemanager_setdevice) | 通过设备 ID 指定视频采集设备。(仅适用于 Windows 和 macOS) |
+| [getDevice](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_ivideodevicemanager_getdevice) | 获取当前使用的视频采集设备。(仅适用于 Windows 和 macOS) |
+| [release](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_ivideodevicemanager_release) | 释放 [IVideoDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideodevicemanager) 对象占用的所有资源。(仅适用于 Windows 和 macOS) |
+| [getCapability](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_ivideodevicemanager_getcapability) | 获取视频采集设备在指定的视频格式下的详细视频帧信息。(仅适用于 Windows 和 macOS) |
+| [numberOfCapabilities](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_ivideodevicemanager_numberofcapabilities) | 获取指定视频采集设备支持的视频格式数量。(仅适用于 Windows 和 macOS) |
+| [setCameraDeviceOrientation](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_irtcengine_setcameradeviceorientation) | 设置采集视频的旋转角度。（仅适用于 Windows） |
+| [setDevice](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_ivideodevicecollection_setdevice) | 指定设备。(仅适用于 Windows 和 macOS) |
+| [getDevice](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_ivideodevicecollection_getdevice) | 获取某个被索引的视频采集设备的指定信息。(仅适用于 Windows 和 macOS) |
+| [getCount](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_ivideodevicecollection_getcount) | 获取系统中被索引的视频采集或播放设备的总数。 |
+| [release](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#api_ivideodevicecollection_release) | 释放 [IVideoDeviceCollection](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideodevicecollection) 对象占用的所有资源。 |
+| [onVideoDeviceStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/device-management/video-device#callback_irtcengineeventhandler_onvideodevicestatechanged) | 视频设备变化回调。(仅适用于 Windows 和 macOS) |
+
+<a id="rtc_api_overview__audio_device"></a>
+
+## 音频设备管理
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [startPlaybackDeviceTest](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_startplaybackdevicetest) | 启动音频播放设备测试。 |
+| [stopPlaybackDeviceTest](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_stopplaybackdevicetest) | 停止音频播放设备测试。 |
+| [startRecordingDeviceTest](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_startrecordingdevicetest) | 启动音频采集设备测试。 |
+| [stopRecordingDeviceTest](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_stoprecordingdevicetest) | 停止音频采集设备测试。 |
+| [enumeratePlaybackDevices](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_enumerateplaybackdevices) | 获取系统中所有的播放设备列表。（仅适用于 Windows 和 macOS） |
+| [enumerateRecordingDevices](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_enumeraterecordingdevices) | 获取系统中所有的音频采集设备列表。（仅适用于 Windows 和 macOS） |
+| [followSystemPlaybackDevice](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_followsystemplaybackdevice) | 设置 SDK 使用的音频播放设备跟随系统默认的音频播放设备。（仅适用于 Windows 和 macOS） |
+| [followSystemRecordingDevice](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_followsystemrecordingdevice) | 设置 SDK 使用的音频采集设备跟随系统默认的音频采集设备。（仅适用于 Windows 和 macOS） |
+| [setPlaybackDevice](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_setplaybackdevice) | 指定播放设备。（仅适用于 Windows 和 macOS） |
+| [getPlaybackDevice](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_getplaybackdevice) | 获取当前音频播放设备。（仅适用于 Windows 和 macOS） |
+| [getPlaybackDeviceInfo [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_getplaybackdeviceinfo) | 获取音频播放设备信息。（仅适用于 Windows 和 macOS） |
+| [setLoopbackDevice](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_setloopbackdevice) | 指定声卡采集设备。（仅适用于 Windows 和 macOS） |
+| [getLoopbackDevice](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_getloopbackdevice) | 获取当前的声卡采集设备。（仅适用于 Windows 和 macOS） |
+| [followSystemLoopbackDevice](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_followsystemloopbackdevice) | 设置声卡采集设备是否跟随系统默认的播放设备。（仅适用于 Windows 和 macOS） |
+| [setPlaybackDeviceVolume](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_setplaybackdevicevolume) | 设置播放设备音量。（仅适用于 Windows） |
+| [setRecordingDevice](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_setrecordingdevice) | 指定音频采集设备。（仅适用于 Windows 和 macOS） |
+| [getRecordingDevice](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_getrecordingdevice) | 获取当前音频采集设备。（仅适用于 Windows 和 macOS） |
+| [getRecordingDeviceInfo [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_getrecordingdeviceinfo) | 获取音频采集设备信息。（仅适用于 Windows 和 macOS） |
+| [setRecordingDeviceVolume](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_setrecordingdevicevolume) | 设置音频采集设备音量。（仅适用于 Windows 和 macOS） |
+| [getRecordingDeviceVolume](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_getrecordingdevicevolume) | 获取音频采集设备音量。（仅适用于 Windows） |
+| [setPlaybackDeviceMute](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_setplaybackdevicemute) | 设置播放设备静音。（仅适用于 Windows） |
+| [getPlaybackDeviceMute](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_getplaybackdevicemute) | 获取当前播放设备静音状态。（仅适用于 Windows） |
+| [setRecordingDeviceMute](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_setrecordingdevicemute) | 设置当前音频采集设备静音。（仅适用于 Windows） |
+| [getRecordingDeviceMute](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_getrecordingdevicemute) | 获取当前音频采集设备静音状态。（仅适用于 Windows） |
+| [startAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_startaudiodeviceloopbacktest) | 开始音频设备回路测试。（仅适用于 Windows 和 macOS） |
+| [stopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) | 停止音频设备回路测试。（仅适用于 Windows 和 macOS） |
+| [release](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicemanager_release) | 释放 [IAudioDeviceManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicemanager) 对象占用的所有资源。（仅适用于 Windows） |
+| [setDevice](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicecollection_setdevice) | 指定音频设备。（仅适用于 Windows 和 macOS） |
+| [getDefaultDevice [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicecollection_getdefaultdevice) | 获取系统默认的音频设备。（仅适用于 Windows 和 macOS） |
+| [getDevice [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicecollection_getdevice) | 获取指定 index 的音频设备信息。（仅适用于 Windows 和 macOS） |
+| [getCount](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicecollection_getcount) | 获取播放或音频采集设备数量。（仅适用于 Windows 和 macOS） |
+| [setApplicationVolume](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicecollection_setapplicationvolume) | 设置 App 音量。（仅适用于 Windows 和 macOS） |
+| [getApplicationVolume](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicecollection_getapplicationvolume) | 获取 App 的当前音量。（仅适用于 Windows 和 macOS） |
+| [setApplicationMute](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicecollection_setapplicationmute) | 设置是否将 App 静音。（仅适用于 Windows 和 macOS） |
+| [isApplicationMute](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicecollection_isapplicationmute) | 获取 App 当前的静音状态。（仅适用于 Windows 和 macOS） |
+| [release](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_iaudiodevicecollection_release) | 释放 [IAudioDeviceCollection](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiodevicecollection) 对象占用的所有资源。（仅适用于 Windows 和 macOS） |
+| [onAudioDeviceStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#callback_irtcengineeventhandler_onaudiodevicestatechanged) | 音频设备变化回调。（仅适用于 Windows 和 macOS） |
+| [onAudioDeviceVolumeChanged](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#callback_irtcengineeventhandler_onaudiodevicevolumechanged) | 音频设备或 App 的音量发生改变回调。（仅适用于 Windows 和 macOS） |
+| [getAudioDeviceInfo](/zh-CN/api-reference/rtc/unreal-cpp/device-management/audio-device#api_irtcengine_getaudiodeviceinfo) | 获取音频设备信息。（仅适用于 Android） |
+
+<a id="rtc_api_overview__extension"></a>
+
+## 插件相关
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [loadExtensionProvider](/zh-CN/api-reference/rtc/unreal-cpp/extension#api_irtcengine_loadextensionprovider) | 加载插件。 |
+| [registerExtension](/zh-CN/api-reference/rtc/unreal-cpp/extension#api_irtcengine_registerextension) | 注册插件。 |
+| [enableExtension](/zh-CN/api-reference/rtc/unreal-cpp/extension#api_irtcengine_enableextension) | 启用/禁用插件。 |
+| [getExtensionProperty](/zh-CN/api-reference/rtc/unreal-cpp/extension#api_irtcengine_getextensionproperty2) | 获取插件的详细信息。 |
+| [setExtensionProperty](/zh-CN/api-reference/rtc/unreal-cpp/extension#api_irtcengine_setextensionproperty) | 设置插件的属性。 |
+| [setExtensionProviderProperty](/zh-CN/api-reference/rtc/unreal-cpp/extension#api_irtcengine_setextensionproviderproperty) | 设置插件服务商的属性。 |
+| [onExtensionStartedWithContext](/zh-CN/api-reference/rtc/unreal-cpp/extension#callback_irtcengineeventhandler_onextensionstartedwithcontext) | 插件已启用成功回调。 |
+| [onExtensionStoppedWithContext](/zh-CN/api-reference/rtc/unreal-cpp/extension#callback_irtcengineeventhandler_onextensionstoppedwithcontext) | 插件已禁用回调。 |
+| [onExtensionEventWithContext](/zh-CN/api-reference/rtc/unreal-cpp/extension#callback_irtcengineeventhandler_onextensioneventwithcontext) | 插件事件回调。 |
+| [onExtensionErrorWithContext](/zh-CN/api-reference/rtc/unreal-cpp/extension#callback_irtcengineeventhandler_onextensionerrorwithcontext) | 插件出错回调。 |
+
+<a id="rtc_api_overview__network_and_others"></a>
+
+## 网络及其他
+
+| 方法/回调 | 描述 |
+| --- | --- |
+| [startEchoTest](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_startechotest3) | 开始音视频通话回路测试。 |
+| [stopEchoTest](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_stopechotest) | 停止语音通话回路测试。 |
+| [startLastmileProbeTest](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_startlastmileprobetest) | 开始通话前网络质量探测。 |
+| [stopLastmileProbeTest](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_stoplastmileprobetest) | 停止通话前网络质量探测。 |
+| [onLastmileQuality](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onlastmilequality) | 网络上下行 last mile 质量报告回调。 |
+| [onLastmileProbeResult](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onlastmileproberesult) | 通话前网络上下行 Last mile 质量探测报告回调。 |
+| [getCurrentMonotonicTimeInMs](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_getcurrentmonotonictimeinms) | 获取 SDK 当前的 Monotonic Time。 |
+| [queryDeviceScore](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_querydevicescore) | 查询设备评分等级。 |
+| [setAVSyncSource](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_setavsyncsource) | 设置发流端音画同步。 |
+| [setCloudProxy](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_setcloudproxy) | 设置云代理服务。 |
+| [setLocalAccessPoint](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_setlocalaccesspoint) | 配置与声网私有媒体服务器接入模块的连接。 |
+| [setParameters [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_setparameters) | SDK 的 JSON 配置信息，用于提供技术预览或特别定制功能。 |
+| [getCallId](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_getcallid) | 获取通话 ID。 |
+| [getCallIdEx](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengineex_getcallidex) | 使用连接 ID 获取通话 ID。 |
+| [isFeatureAvailableOnDevice](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_isfeatureavailableondevice) | 查询设备是否支持指定进阶功能。 |
+| [rate](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_rate) | 给通话评分。 |
+| [complain](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_complain) | 投诉通话质量。 |
+| [getConnectionState](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_getconnectionstate) | 获取当前网络连接状态。 |
+| [getConnectionStateEx](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengineex_getconnectionstateex) | 获取当前网络连接状态。 |
+| [getVersion](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_getversion) | 获取 SDK 版本。 |
+| [getErrorDescription](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_geterrordescription) | 获取警告或错误描述。 |
+| [queryInterface](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_queryinterface) | 获取指定接口类的指针。 |
+| [getNetworkType](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_getnetworktype) | 获取本地网络连接类型。 |
+| [getNtpWallTimeInMs](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_getntpwalltimeinms) | 获取当前的 NTP (网络时间协议) 时间。 |
+| [enableEncryption](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_enableencryption) | 开启或关闭内置加密。 |
+| [enableEncryptionEx](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengineex_enableencryptionex) | 开启或关闭内置加密。 |
+| [registerPacketObserver](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_registerpacketobserver) | 注册数据包观测器。 |
+| [sendCustomReportMessage](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_sendcustomreportmessage) | 发送自定义上报消息。 |
+| [sendCustomReportMessageEx](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengineex_sendcustomreportmessageex) | 自定义数据上报和分析服务。 |
+| [setRemoteSubscribeFallbackOption](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_setremotesubscribefallbackoption) | 设置弱网环境下订阅的音视频流回退选项。 |
+| [onReceiveVideoPacket](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_ipacketobserver_onreceivevideopacket) | 本地用户收到视频包回调。 |
+| [onSendVideoPacket](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_ipacketobserver_onsendvideopacket) | 已发送视频包回调。 |
+| [onRemoteSubscribeFallbackToAudioOnly](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly) | 订阅流已回退为音频流或恢复为音视频流回调。 |
+| [onEncryptionError](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onencryptionerror) | 内置加密出错回调。 |
+| [onProxyConnected](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onproxyconnected) | 代理连接状态回调。 |
+| [onNetworkQuality](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onnetworkquality) | 通话中每个用户的网络上下行 last mile 质量报告回调。 |
+| [onRtcStats](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_onrtcstats) | 当前通话相关的统计信息回调。 |
+| [onPermissionError](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onpermissionerror) | 获取设备权限出错回调。 |

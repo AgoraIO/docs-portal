@@ -35,7 +35,7 @@ export function OpenApiResponseHeaderRow({
           </span>
         ) : null}
         <a
-          aria-label={`${copyLinkLabel} ${anchorId}`}
+          aria-label={`${copyLinkLabel} ${name}`}
           className="openapi-field-anchor rounded p-1 text-fd-muted-foreground"
           href={`#${anchorId}`}
         >

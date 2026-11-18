@@ -1,0 +1,85 @@
+---
+title: AbrFallbackLayer
+description: 视频流回退的质量层级。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/enum_rteabrfallbacklayer
+  sourcePath: html-docs/rtc/Android/API/enum_rteabrfallbacklayer.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_rteabrfallbacklayer__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+:::note
+注： 注意事项：
+
+- 如需使用 `LAYER1` 到 `LAYER6`，请[联系技术支持](https://ticket.shengwang.cn/)开启 ABR 功能。开启后，你可以自定义每个层级的分辨率，并选择任意层级作为视频流回退的最低分辨率。当网络状况较差时，SDK 会以该层级为下限，在此范围内根据网络状况动态调整分辨率。
+- 自定义分辨率时，请确保按分辨率从高到低的顺序排列视频质量层级（Layer）。如果分辨率相同，则按帧率从高到低排序。
+:::
+
+<a id="enum_rteabrfallbacklayer__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="disabled"></a>
+<Parameter name="DISABLED">
+
+（0）：不进行音视频流的回退处理，但无法保证音视频流的质量。
+
+</Parameter>
+<a id="low"></a>
+<Parameter name="LOW">
+
+（1）：（默认）回退至视频小流，该层级具有最低分辨率。
+
+</Parameter>
+<a id="audio_only"></a>
+<Parameter name="AUDIO_ONLY">
+
+（2）：优先尝试接收视频小流；若因网络状况差无法显示视频，则回退为仅接收已订阅的远端音频流。
+
+</Parameter>
+<a id="layer1"></a>
+<Parameter name="LAYER1">
+
+（3）：回退至视频质量层级 1，该层级的分辨率和码率仅低于所订阅的最视频大流。
+
+</Parameter>
+<a id="layer2"></a>
+<Parameter name="LAYER2">
+
+（4）：回退至视频质量层级 2，该层级的分辨率仅低于层级 1。
+
+</Parameter>
+<a id="layer3"></a>
+<Parameter name="LAYER3">
+
+（5）：回退至视频质量层级 3，该层级的分辨率略低于层级 2。
+
+</Parameter>
+<a id="layer4"></a>
+<Parameter name="LAYER4">
+
+（6）：回退至视频质量层级 4，该层级的分辨率仅低于层级 3。
+
+</Parameter>
+<a id="layer5"></a>
+<Parameter name="LAYER5">
+
+（7）：回退至视频质量层级 5，该层级的分辨率略低于层级 4。
+
+</Parameter>
+<a id="layer6"></a>
+<Parameter name="LAYER6">
+
+（8）：回退至视频质量层级 6，该层级的分辨率略低于层级 5。
+
+</Parameter>
+</ParameterList>
