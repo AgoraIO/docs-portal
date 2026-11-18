@@ -16,6 +16,11 @@ vi.mock('@tanstack/react-router', async (importOriginal) => {
 
   return {
     ...actual,
+    useLocation: ({
+      select,
+    }: {
+      select: (location: { hash: string }) => string;
+    }) => select({ hash: '' }),
     Link: ({
       children,
       params: _params,
