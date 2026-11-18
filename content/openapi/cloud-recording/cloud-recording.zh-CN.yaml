@@ -1656,6 +1656,7 @@ components:
             - `true`：开启。录制服务使用适配对话式 AI 的录制模式，不使用常规录制的 1 秒抖动缓冲（jitter buffer）。
             - `false`：关闭。
 
+            > [!CAUTION]
             > 该模式仅适用于纯音频单流录制，需将 URL 中的 `mode` 设置为 `raw`，并将 `clientRequest.recordingConfig.streamTypes` 设置为 `0`。在非纯音频模式下设置此参数会导致启动请求报错。
           default: false
     cname:
