@@ -4,6 +4,7 @@ import { parseArgs } from 'node:util';
 import { load } from 'cheerio';
 import type { SearchEntry } from '../../src/lib/docs-search';
 import { getStaticDocsPayloadPath } from '../../src/lib/docs-static-manifest';
+import type { PublishedDocsRoute } from '../../src/lib/published-docs-routes';
 import { exportPublishedCnRecords } from '../../src/lib/search/cn-records.server';
 import {
   toCnContentSearchUrl,
@@ -32,15 +33,21 @@ const publishedUrls = new Set(
     )
     .get(),
 );
+const routes: PublishedDocsRoute[] = (
+  await readJson('docs-routes.json')
+).filter((route: PublishedDocsRoute) =>
+  publishedUrls.has(toCnPublicSearchUrl(route.url)),
+);
+// Platform variants share their canonical page payload and keep separate rendered routes.
+const canonicalUrls = new Set(
+  routes.map((route) => toCnPublicSearchUrl(route.canonicalPath)),
+);
 const records = await exportPublishedCnRecords({
-  routes: (await readJson('docs-routes.json')).filter(
-    (route: { url: string }) =>
-      publishedUrls.has(toCnPublicSearchUrl(route.url)),
-  ),
+  routes,
   pages: await Promise.all(
     (await readJson('docs-search/zh-CN.json'))
       .filter((page: SearchEntry) =>
-        publishedUrls.has(toCnPublicSearchUrl(page.url)),
+        canonicalUrls.has(toCnPublicSearchUrl(page.url)),
       )
       .map(async (page: SearchEntry) => {
         const [locale, tab, ...slugSegments] = toCnContentSearchUrl(page.url)
