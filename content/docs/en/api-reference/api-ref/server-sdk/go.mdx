@@ -1299,6 +1299,31 @@ Panics if `APIKey` is empty.
 
 Voice identifiers are model-specific, so `VoiceID` must belong to the model set in `Model`. For details, see [Smallest AI](/en/ai/models/tts/smallest-ai).
 
+#### `NewSonioxTTS`
+
+```go
+func NewSonioxTTS(opts SonioxTTSOptions) *SonioxTTS
+```
+
+Panics if `APIKey` is empty, or if `Speed` is outside `0.7` to `1.3`.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `APIKey` | `string` | Yes | Soniox API key |
+| `BaseURL` | `string` | No | Streaming TTS WebSocket endpoint |
+| `Model` | `string` | No | TTS model name, for example `"tts-rt-v2"` |
+| `Language` | `string` | No | Two-letter language code for speech synthesis, for example `"en"` |
+| `Voice` | `string` | No | Voice name, for example `"Adrian"` |
+| `SampleRate` | `*SampleRate` | No | Output audio sample rate |
+| `Speed` | `*float64` | No | Speech rate multiplier, from `0.7` to `1.3` |
+| `ReduceSilence` | `*bool` | No | Shorten the pauses between words |
+| `ReturnTimestamps` | `*bool` | No | Return character-level timestamps |
+| `ClientReferenceID` | `string` | No | Identifier recorded in Soniox usage logs |
+| `SkipPatterns` | `[]int` | No | Patterns to skip |
+| `AdditionalParams` | `map[string]interface{}` | No | Additional Soniox parameters |
+
+For details, see [Soniox](/en/ai/models/tts/soniox).
+
 ### STT vendors
 
 Use with [`WithStt()`](#withsttvendor).
