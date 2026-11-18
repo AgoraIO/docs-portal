@@ -87,7 +87,23 @@ describe('published CN index export', () => {
         '<article data-static-docs-body><h3>提交工单</h3><p>联系技术支持。</p><span>创建工单</span><span>internal-config</span><span>ticket</span></article>',
     });
     expect(records).toHaveLength(1);
-    expect(records[0].content.trim()).toBe('提交工单\n联系技术支持。\n创建工单');
+    expect(records[0].content.trim()).toBe(
+      '提交工单\n联系技术支持。\n创建工单',
+    );
+  });
+  it('retains rendered demo captions and metadata without accepting other component configuration', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n<DemoMedia qrLabel="扫码体验" imageSrc="/image.png" />\n\n<DemoGallery items={[{title: "Demo", platforms: ["iOS", "Android"], products: ["RTC", "RTM"], tags: ["语聊房"], version: "4.6.0", releaseDate: "2023-12-27"}]} />\n\n<Card version="internal-version" platforms={["internal-platform"]} />',
+      readRenderedHtml: async () =>
+        '<article data-static-docs-body><figcaption>扫码体验</figcaption><h3>Demo</h3><dd>iOS、Android</dd><dd>RTC、RTM</dd><span>语聊房</span><dd>4.6.0</dd><dd>2023-12-27</dd><span>internal-version</span><span>internal-platform</span></article>',
+    });
+    expect(records).toHaveLength(1);
+    expect(records[0].content.trim()).toBe(
+      '扫码体验\nDemo\niOS、Android\nRTC、RTM\n语聊房\n4.6.0\n2023-12-27',
+    );
   });
   it.each([
     '<button aria-expanded="false">帮助</button>',

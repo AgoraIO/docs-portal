@@ -20,6 +20,14 @@ const proseProps = new Set([
 // executable expressions. HTML visibility is checked separately by the caller.
 export function getComponentSearchText(source: string): string[] {
   const values: string[] = [];
+  let component = '';
+  const isProseProp = (name: string) =>
+    proseProps.has(name) ||
+    (component === 'DemoMedia' && name === 'qrLabel') ||
+    (component === 'DemoGallery' &&
+      ['tags', 'platforms', 'products', 'releaseDate', 'version'].includes(
+        name,
+      ));
   function collect(value: unknown, prose = false): void {
     if (Array.isArray(value)) {
       for (const child of value) collect(child, prose);
@@ -45,7 +53,21 @@ export function getComponentSearchText(source: string): string[] {
         if (node.computed || node.kind !== 'init') break;
         const key = node.key as Record<string, unknown> | undefined;
         const name = key?.type === 'Identifier' ? key.name : key?.value;
-        collect(node.value, typeof name === 'string' && proseProps.has(name));
+        const value = node.value as Record<string, unknown> | undefined;
+        if (
+          component === 'DemoGallery' &&
+          (name === 'platforms' || name === 'products') &&
+          value?.type === 'ArrayExpression' &&
+          Array.isArray(value.elements) &&
+          value.elements.every(
+            (entry) =>
+              entry?.type === 'Literal' && typeof entry.value === 'string',
+          )
+        ) {
+          // These two visible metadata fields render as one joined text node.
+          values.push(value.elements.map((entry) => entry.value).join('、'));
+        } else
+          collect(node.value, typeof name === 'string' && isProseProp(name));
         break;
       }
       case 'JSXElement':
@@ -94,7 +116,8 @@ export function getComponentSearchText(source: string): string[] {
           continue;
         for (const attribute of node.attributes) {
           if (attribute.type !== 'mdxJsxAttribute') continue;
-          const prose = proseProps.has(attribute.name);
+          component = node.name ?? '';
+          const prose = isProseProp(attribute.name);
           if (typeof attribute.value === 'string') {
             if (prose) values.push(attribute.value);
           } else if (attribute.value)
