@@ -9,6 +9,8 @@ const { capture, report } = vi.hoisted(() => ({
   report: vi.fn(),
 }));
 vi.mock('@/lib/analytics/posthog', () => ({
+  captureDocsFeedbackOpened: vi.fn(),
+  captureDocsFeedbackIssueClicked: vi.fn(),
   captureDocsPageFeedback: capture,
   captureDocsFeedbackSubmission: report,
 }));
@@ -109,14 +111,14 @@ it('expands follow-up feedback below the votes without opening a modal', async (
   expect(screen.queryByText('开始新问题')).not.toBeInTheDocument();
 });
 
-it('preserves the English feedback form', () => {
+it('preserves the English feedback form', async () => {
   render(
     <I18nextProvider i18n={i18n}>
       <DocsPageFeedback locale="en" />
     </I18nextProvider>,
   );
   fireEvent.click(screen.getByRole('button', { name: 'Send feedback' }));
-  expect(screen.getByLabelText('Details')).toBeInTheDocument();
+  expect(await screen.findByLabelText('Details')).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Open issue' })).toHaveAttribute(
     'href',
     expect.stringContaining(

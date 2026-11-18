@@ -1,3 +1,4 @@
+import { useGlobalSchemaPresentation } from './GlobalSchemaPresentation';
 import { Link2 } from 'lucide-react';
 import type { ReactNode } from 'react';
 
@@ -18,6 +19,7 @@ export function OpenApiResponseHeaderRow({
   name: string;
   type: string;
 }) {
+  const global = useGlobalSchemaPresentation();
   return (
     <div
       className="openapi-response-header-row scroll-mt-24 border-t border-fd-border py-4 first:border-t-0"
@@ -35,7 +37,7 @@ export function OpenApiResponseHeaderRow({
           </span>
         ) : null}
         <a
-          aria-label={`${copyLinkLabel} ${name}`}
+          aria-label={`${copyLinkLabel} ${global ? anchorId : name}`}
           className="openapi-field-anchor rounded p-1 text-fd-muted-foreground"
           href={`#${anchorId}`}
         >

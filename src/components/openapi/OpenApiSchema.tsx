@@ -1,3 +1,4 @@
+import { useGlobalSchemaPresentation } from './GlobalSchemaPresentation';
 import { useTranslations } from '@fuma-translate/react';
 import { useAnchorId } from '@fumadocs/api-docs/auto-anchor/client';
 import {
@@ -94,6 +95,7 @@ export function OpenApiSchema({
   showExample,
   writeOnly,
 }: OpenApiSchemaProps) {
+  const global = useGlobalSchemaPresentation();
   const translations = useTranslations().translations;
   const fallbackRootId = useAnchorId([client.name]);
   const rootId = client.rootId ?? fallbackRootId;
@@ -113,7 +115,7 @@ export function OpenApiSchema({
   const generated = useMemo(() => {
     const generated = generateSchemaUI({
       readOnly,
-      renderCodeblock: (options) => (
+      renderCodeblock: global ? renderCodeblock : (options) => (
         <div data-openapi-schema-code-value="">{renderCodeblock(options)}</div>
       ),
       renderMarkdown,
@@ -128,7 +130,7 @@ export function OpenApiSchema({
         getOpenApiSchemaLabel(translations, key, key),
       ),
     );
-    for (const schema of Object.values(generated.refs)) {
+    for (const schema of global ? [] : Object.values(generated.refs)) {
       schema.infoTags = schema.infoTags?.filter(
         ({ node }) =>
           !isValidElement<{ label?: string }>(node) ||
@@ -156,6 +158,7 @@ export function OpenApiSchema({
     renderMarkdown,
     normalizedRoot,
     normalized,
+    global,
     document,
     showExample,
     translations,
@@ -277,7 +280,7 @@ export function OpenApiSchema({
     'Example',
   );
   const rootExamples =
-    rootIsBodyTree && !rootHasContainer
+    !global && rootIsBodyTree && !rootHasContainer
       ? rootMetadata.filter((item) => item.label === exampleLabel)
       : [];
 
@@ -293,7 +296,7 @@ export function OpenApiSchema({
       {rootIsBodyTree && !rootHasContainer
         ? renderOpenApiSchemaDetails(
             rootSchema,
-            rootMetadata.filter((item) => item.label !== exampleLabel),
+            global ? rootMetadata : rootMetadata.filter((item) => item.label !== exampleLabel),
           )
         : null}
       {rootIsBodyTree || hasChoices ? (

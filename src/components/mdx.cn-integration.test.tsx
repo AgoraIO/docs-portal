@@ -275,7 +275,7 @@ describe('common MDX registry', () => {
   });
 
   it('uses Fumadocs MDX defaults except for repo-specific interactive components', () => {
-    const components = getMDXComponents() as Record<string, unknown>;
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' }) as Record<string, unknown>;
     const defaults = defaultMdxComponents as Record<string, unknown>;
 
     expect(components.img).not.toBe(defaults.img);
@@ -311,7 +311,7 @@ describe('common MDX registry', () => {
   it.each([false, true])(
     'gives simple parameter tables readable columns without reclassifying merged tables (merged: %s)',
     (merged) => {
-      const Table = getMDXComponents().table as TableComponent;
+      const Table = getMDXComponents(undefined, { locale: 'zh-CN' }).table as TableComponent;
       render(
         <Table>
           <thead>
@@ -417,7 +417,7 @@ describe('common MDX registry', () => {
   });
 
   it('marks SDK compliance callouts for platform download spacing', () => {
-    const components = getMDXComponents();
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' });
     const CalloutContainer =
       components.CalloutContainer as CalloutContainerComponent;
     const CalloutTitle = components.CalloutTitle as CalloutTitleComponent;
@@ -446,7 +446,7 @@ describe('common MDX registry', () => {
   });
 
   it('marks direct SDK compliance callouts for platform download spacing', () => {
-    const components = getMDXComponents();
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' });
     const Callout = components.Callout as CalloutComponent;
 
     render(
@@ -462,7 +462,7 @@ describe('common MDX registry', () => {
   });
 
   it('renders explicitly sized inline icons without a zoom button', () => {
-    const InlineImage = getMDXComponents().InlineImage as ComponentType<
+    const InlineImage = getMDXComponents(undefined, { locale: 'zh-CN' }).InlineImage as ComponentType<
       ComponentProps<'img'>
     >;
 
@@ -487,7 +487,7 @@ describe('common MDX registry', () => {
   });
 
   it('honors legacy inline icon heights without a width constraint', () => {
-    const InlineImage = getMDXComponents().InlineImage as ComponentType<
+    const InlineImage = getMDXComponents(undefined, { locale: 'zh-CN' }).InlineImage as ComponentType<
       ComponentProps<'img'>
     >;
     render(
@@ -504,7 +504,7 @@ describe('common MDX registry', () => {
   });
 
   it('caps a screenshot height without limiting the zoom preview', async () => {
-    const Image = getMDXComponents().DocsImage as ComponentType<
+    const Image = getMDXComponents(undefined, { locale: 'zh-CN' }).DocsImage as ComponentType<
       ComponentProps<'img'> & { displayHeight?: string }
     >;
     render(
@@ -530,7 +530,7 @@ describe('common MDX registry', () => {
   });
 
   it('sizes a documentation screenshot without shrinking the zoom preview', async () => {
-    const Image = getMDXComponents().DocsImage as ComponentType<
+    const Image = getMDXComponents(undefined, { locale: 'zh-CN' }).DocsImage as ComponentType<
       ComponentProps<'img'> & { displayWidth?: string }
     >;
     expect(Image).toBeTypeOf('function');
@@ -561,7 +561,7 @@ describe('common MDX registry', () => {
   });
 
   it('marks external and new-window links while keeping same-window anchors plain', () => {
-    const Anchor = getMDXComponents().a as AnchorComponent;
+    const Anchor = getMDXComponents(undefined, { locale: 'zh-CN' }).a as AnchorComponent;
     render(
       <>
         <Anchor href="//example.com">Web link</Anchor>
@@ -641,7 +641,7 @@ describe('common MDX registry', () => {
   });
 
   it('keeps a nested example accordion independent of the version history', () => {
-    const components = getMDXComponents();
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' });
     const Accordions = components.Accordions as AccordionsComponent;
     const Accordion = components.Accordion as AccordionComponent;
     render(
@@ -674,7 +674,7 @@ describe('common MDX registry', () => {
   it.each(['single', 'multiple'] as const)(
     'keeps closed release histories hidden without beforematch support (%s)',
     (type) => {
-      const components = getMDXComponents();
+      const components = getMDXComponents(undefined, { locale: 'zh-CN' });
       const Accordions = components.Accordions as AccordionsComponent;
       const Accordion = components.Accordion as AccordionComponent;
       const content = (
@@ -736,7 +736,7 @@ describe('common MDX registry', () => {
       style.textContent = 'docs-accordion-body.block { display: block; }';
       document.head.append(style);
       try {
-        const components = getMDXComponents();
+        const components = getMDXComponents(undefined, { locale: 'zh-CN' });
         const Accordions = components.Accordions as AccordionsComponent;
         const Accordion = components.Accordion as AccordionComponent;
         const content = (
@@ -811,12 +811,12 @@ describe('common MDX registry', () => {
       const writeText = vi
         .spyOn(navigator.clipboard, 'writeText')
         .mockResolvedValue(undefined);
-      const components = getMDXComponents();
+      const components = getMDXComponents(undefined, { locale: 'zh-CN' });
       const Accordions = components.Accordions as AccordionsComponent;
       const Accordion = components.Accordion as AccordionComponent;
 
       render(
-        <PlatformPageProvider
+        <PlatformPageProvider locale="zh-CN"
           canonicalPlatform="android"
           platforms='["android","web"]'
         >
@@ -852,12 +852,12 @@ describe('common MDX registry', () => {
     const writeText = vi
       .spyOn(navigator.clipboard, 'writeText')
       .mockResolvedValue(undefined);
-    const components = getMDXComponents();
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' });
     const Accordions = components.Accordions as AccordionsComponent;
     const Accordion = components.Accordion as AccordionComponent;
 
     render(
-      <PlatformPageProvider
+      <PlatformPageProvider locale="zh-CN"
         canonicalPlatform="android"
         initialPlatform="web"
         platforms='["android","web"]'
@@ -888,7 +888,7 @@ describe('common MDX registry', () => {
     const writeText = vi
       .spyOn(navigator.clipboard, 'writeText')
       .mockResolvedValue(undefined);
-    const components = getMDXComponents();
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' });
     const Accordion = components.Accordion as AccordionComponent;
 
     render(
@@ -912,7 +912,7 @@ describe('common MDX registry', () => {
       '',
       '/zh-CN/ai/release-notes#%E9%97%AE%E9%A2%98%E4%BF%AE%E5%A4%8D-1',
     );
-    const components = getMDXComponents();
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' });
     const Accordions = components.Accordions as AccordionsComponent;
     const Accordion = components.Accordion as AccordionComponent;
     render(
@@ -948,7 +948,7 @@ describe('common MDX registry', () => {
         '/zh-CN/realtime-media/rtc/reference/release-notes/electron' +
           (trigger === 'initial' ? url : ''),
       );
-      const components = getMDXComponents();
+      const components = getMDXComponents(undefined, { locale: 'zh-CN' });
       const Tabs = components.Tabs as TabsComponent;
       const TabsList = components.TabsList as ComponentType<{
         children: ReactNode;
@@ -1010,7 +1010,7 @@ describe('common MDX registry', () => {
       configurable: true,
       value: { writeText },
     });
-    const components = getMDXComponents();
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' });
     const Accordion = components.Accordion as AccordionComponent;
     const Panel = components._PlatformPanel as PlatformPanelComponent;
     render(
@@ -1041,7 +1041,7 @@ describe('common MDX registry', () => {
       configurable: true,
       value: { writeText },
     });
-    const components = getMDXComponents();
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' });
     const Heading = components.h3 as HeadingComponent;
     const Panel = components._PlatformPanel as PlatformPanelComponent;
     render(
@@ -1174,7 +1174,7 @@ describe('common MDX registry', () => {
   });
 
   it('renders API signatures and return values as scroll-safe rich blocks', () => {
-    const components = getMDXComponents() as Record<string, unknown>;
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' }) as Record<string, unknown>;
     const Signature = components.ApiSignature as ApiSignatureComponent;
     const Returns = components.ApiReturns as ApiReturnsComponent;
     const ReturnType = components.ApiReturnType as ApiReturnTypeComponent;
@@ -1227,7 +1227,7 @@ describe('common MDX registry', () => {
   it('renders transformed platform groups with persisted preference fallback and hidden inactive panels', () => {
     window.localStorage.setItem('docs-portal:platform:v1', 'ios');
 
-    const components = getMDXComponents() as Record<string, unknown>;
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' }) as Record<string, unknown>;
     const Group = components._PlatformTabsGroup as PlatformGroupComponent;
     const Panel = components._PlatformPanel as PlatformPanelComponent;
 
@@ -1386,11 +1386,11 @@ describe('common MDX registry', () => {
       '/zh-CN/realtime-media/rtc/reference/error-code?from=legacy#%E9%94%99%E8%AF%AF%E7%A0%81';
     window.history.replaceState({}, '', url);
     window.localStorage.setItem('docs-portal:platform:v1', 'android');
-    const components = getMDXComponents() as Record<string, unknown>;
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' }) as Record<string, unknown>;
     const Group = components._PlatformTabsGroup as PlatformGroupComponent;
     const Panel = components._PlatformPanel as PlatformPanelComponent;
     render(
-      <PlatformPageProvider
+      <PlatformPageProvider locale="zh-CN"
         canonicalPlatform="android"
         defaultPlatform="android"
         platforms='["android","ios"]'
@@ -1432,7 +1432,7 @@ describe('common MDX registry', () => {
         '',
         '/zh-CN/realtime-media/rtc/reference/error-code#late-ios',
       );
-      const components = getMDXComponents() as Record<string, unknown>;
+      const components = getMDXComponents(undefined, { locale: 'zh-CN' }) as Record<string, unknown>;
       const Group = components._PlatformTabsGroup as PlatformGroupComponent;
       const Panel = components._PlatformPanel as PlatformPanelComponent;
       const content = (ready: boolean) => (
@@ -1478,7 +1478,7 @@ describe('common MDX registry', () => {
       '/en/realtime-media/rtc/quick-start/integrate-with-ai-tools/ios?platform=ios&example=1#token',
     );
 
-    const components = getMDXComponents() as Record<string, unknown>;
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' }) as Record<string, unknown>;
     const Group = components._PlatformTabsGroup as PlatformGroupComponent;
     const Panel = components._PlatformPanel as PlatformPanelComponent;
 
@@ -1524,7 +1524,7 @@ describe('common MDX registry', () => {
   });
 
   it('renders fenced code with shared chrome and its explicit language label', () => {
-    const components = getMDXComponents();
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' });
     const Pre = components.pre as CodeBlockPreComponent;
 
     render(
@@ -1552,7 +1552,7 @@ describe('common MDX registry', () => {
   });
 
   it('preserves the original tabs frame around an independent code block', () => {
-    const components = getMDXComponents();
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' });
     const CodeBlockTabs = components.CodeBlockTabs as TabsComponent;
     const CodeBlockTabsList = components.CodeBlockTabsList as TabsComponent;
     const CodeBlockTabsTrigger =
@@ -1608,7 +1608,7 @@ describe('common MDX registry', () => {
   });
 
   it('renders table parameter lists with nested fields inside the description cell', () => {
-    const components = getMDXComponents();
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' });
     const ParameterList = components.ParameterList as ParameterListComponent;
     const Parameter = components.Parameter as ParameterComponent;
     const Returns = components.ApiReturns as ApiReturnsComponent;

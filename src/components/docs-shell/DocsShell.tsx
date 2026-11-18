@@ -873,6 +873,7 @@ function MobileSidebar({
             />
             </>)}
           </div>
+          {currentLocale === 'en' && (
           <div className="flex flex-col gap-2 border-t border-border pt-4">
             <div className="flex items-center gap-2">
               <Button
@@ -887,8 +888,10 @@ function MobileSidebar({
               </Button>
             </div>
           </div>
+          )}
         </div>
       </ScrollArea>
+      {currentLocale === 'zh-CN' && (
       <div
         className="flex shrink-0 items-center gap-2 border-t border-border px-3 py-2 text-muted-foreground sm:px-4"
         data-testid="docs-mobile-sidebar-tools"
@@ -906,6 +909,7 @@ function MobileSidebar({
           <span className="sr-only">{themeLabel}</span>
         </Button>
       </div>
+      )}
     </div>
   );
 }

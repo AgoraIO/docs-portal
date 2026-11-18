@@ -1,3 +1,4 @@
+import { useGlobalSchemaPresentation } from './GlobalSchemaPresentation';
 import { Check, ChevronRight, Link2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -46,6 +47,7 @@ export function OpenApiSchemaFieldRow({
   onExpandedChange,
   remainingInfoTags = [],
 }: OpenApiSchemaFieldRowProps) {
+  const global = useGlobalSchemaPresentation();
   const expandable = node.children.length > 0 || detailsCollapsible;
   const isSyntheticVariant =
     node.name === '[key: string]' && Boolean(node.variant);
@@ -111,7 +113,36 @@ export function OpenApiSchemaFieldRow({
           className="openapi-schema-field-leading flex min-w-0 flex-1 flex-wrap items-center gap-x-1.5 gap-y-1"
           data-openapi-field-leading={expandable ? 'expandable' : 'leaf'}
         >
-          {expandable ? (
+          {expandable && global ? (
+            <>
+              <span
+                className="flex size-3 shrink-0 items-center justify-center"
+                data-openapi-field-gutter
+              >
+                <Button
+                  aria-expanded={expanded}
+                  aria-label={`${expanded ? labels.collapse : labels.expand} ${node.name} ${labels.properties}`}
+                  className="size-3 shrink-0 p-0 hover:bg-transparent"
+                  onClick={() => onExpandedChange(!expanded)}
+                  size="sm"
+                  type="button"
+                  variant="ghost"
+                >
+                  <ChevronRight
+                    aria-hidden="true"
+                    className={cn(
+                      'size-3 transition-transform',
+                      expanded && 'rotate-90',
+                    )}
+                  />
+                </Button>
+              </span>
+              <span className="openapi-schema-field-content flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+                {fieldIdentity}
+                {fieldStatuses}
+              </span>
+            </>
+          ) : expandable ? (
             <Button
               aria-expanded={expanded}
               aria-label={`${expanded ? labels.collapse : labels.expand} ${node.name} ${labels.properties}`}

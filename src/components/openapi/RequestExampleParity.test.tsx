@@ -31,6 +31,8 @@ beforeAll(async () => {
 afterEach(cleanup);
 
 function urlFromCode(code: string) {
+  const shellUrl = code.match(/^curl -X [A-Z]+ '([^']+)'/);
+  if (shellUrl) return shellUrl[1];
   const literal = code.match(
     /(?:--url |url = |fetch\()("(?:\\.|[^"\\])*")/,
   )?.[1];

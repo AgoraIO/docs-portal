@@ -46,7 +46,7 @@ function FixturePage({
 }) {
   const platforms = pagePlatforms[name];
   return (
-    <PlatformPageProvider
+    <PlatformPageProvider locale="zh-CN"
       canonicalPlatform="android"
       defaultPlatform="android"
       initialPlatform={initialPlatform}
@@ -152,7 +152,7 @@ it('reveals a hidden platform targeted by a cross-platform fragment while preser
     '/zh-CN/realtime-media/cloud-recording/quick-start',
   );
   render(
-    <PlatformPageProvider
+    <PlatformPageProvider locale="zh-CN"
       canonicalPlatform="restful-api"
       initialPlatform="go"
       platforms='["restful-api","go"]'

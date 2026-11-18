@@ -422,6 +422,7 @@ function SidebarLinkedSection({
 
   return (
     <SidebarMenuItem>
+      {activePath.startsWith('/zh-CN/') ? (
       <div className="relative flex min-w-0 items-stretch">
         <SidebarMenuButton
           asChild
@@ -451,6 +452,24 @@ function SidebarLinkedSection({
           />
         </button>
       </div>
+      ) : (
+      <SidebarMenuButton
+        aria-expanded={isOpen}
+        className={cn(sidebarToggleClassName, 'overflow-visible')}
+        onClick={() => setIsOpen((value) => !value)}
+        type="button"
+      >
+        <span className="flex min-w-0 items-center gap-2">
+          <span className={sidebarSectionTitleClassName}>{title}</span>
+        </span>
+        <ChevronDownIcon
+          className={cn(
+            'size-4 shrink-0 transition-transform',
+            isOpen ? 'rotate-0' : '-rotate-90',
+          )}
+        />
+      </SidebarMenuButton>
+      )}
       {isOpen ? (
         <SidebarMenuSub className={expandedSidebarChildrenClassName}>
           {items.map((child) =>

@@ -164,6 +164,7 @@ type AccordionProps = Omit<
   'children' | 'id' | 'title' | 'value'
 > & {
   children?: ReactNode;
+  chinese?: boolean;
   headingLevel?: AccordionHeadingLevel;
   id?: string;
   title: ReactNode;
@@ -207,14 +208,13 @@ const AccordionPageStateContext = createContext<AccordionPageState | undefined>(
 
 function Accordion({
   children,
+  chinese = false,
   headingLevel,
   id,
   title,
   value = String(title),
   ...props
 }: AccordionProps) {
-  const { i18n } = useTranslation('common');
-  const chinese = normalizeLocale(i18n.language) === 'zh-CN';
   const accordionRoot = useContext(MdxAccordionRootContext);
   const [standaloneValue, setStandaloneValue] = useState(value);
   const contentRef = useRef<HTMLElement>(null);
@@ -360,7 +360,7 @@ function firstVersionValue(children: ReactNode): string | undefined {
       return;
     }
 
-    if (child.type === Accordion) {
+    if ((child.type === Accordion || child.type === ChineseAccordion)) {
       const { headingLevel, title, value } = child.props as AccordionProps;
       if (headingLevel) {
         first = value ?? String(title);
@@ -1481,18 +1481,18 @@ function CodeBlockTabsList({
 }
 
 function CodeBlockTab({
+  chinese = false,
   className,
   value,
   ...props
-}: ComponentProps<typeof FumadocsCodeBlockTab>) {
-  const { i18n } = useTranslation('common');
+}: ComponentProps<typeof FumadocsCodeBlockTab> & {chinese?: boolean}) {
   const selectedValue = useContext(CodeBlockTabsValueContext);
   const isInactive = selectedValue !== undefined && selectedValue !== value;
 
   return (
     <FumadocsCodeBlockTab
       className={cn(
-        normalizeLocale(i18n.language) === 'zh-CN' ? 'p-4 [&>figure]:m-0 [&>figure]:rounded-xl [&>figure]:border [&>figure]:bg-fd-card [&>figure]:shadow-none' : '[&>figure]:m-0 [&>figure]:rounded-none [&>figure]:border-0 [&>figure]:bg-fd-card [&>figure]:shadow-none',
+        chinese ? 'p-4 [&>figure]:m-0 [&>figure]:rounded-xl [&>figure]:border [&>figure]:bg-fd-card [&>figure]:shadow-none' : '[&>figure]:m-0 [&>figure]:rounded-none [&>figure]:border-0 [&>figure]:bg-fd-card [&>figure]:shadow-none',
         className,
       )}
       forceMount
@@ -1859,6 +1859,18 @@ function getCodeComponents(locale?: string) {
     : { pre: Pre, CommandBlock, ApiSignature };
 }
 
+function ChineseAccordion(props: AccordionProps) {
+  return <Accordion {...props} chinese />;
+}
+
+function ChineseCodeBlockTab(props: ComponentProps<typeof CodeBlockTab>) {
+  return <CodeBlockTab {...props} chinese />;
+}
+
+function ChinesePlatformTabsGroup(props: ComponentProps<typeof PlatformTabsGroup>) {
+  return <PlatformTabsGroup {...props} locale="zh-CN" />;
+}
+
 export function getMDXComponents(
   components?: MDXComponents,
   context?: MDXContext,
@@ -1866,7 +1878,7 @@ export function getMDXComponents(
   const locale = normalizeLocale(context?.locale ?? context?.contentPath?.split('/')[0]) ?? DEFAULT_LOCALE;
   const isChinese = locale === 'zh-CN';
   const DocsTable = createDocsTableComponent(locale);
-  const codeComponents = getCodeComponents(context?.locale);
+  const codeComponents = getCodeComponents(locale);
   return {
     ...defaultMdxComponents,
     Callout: DocsCallout,
@@ -1894,7 +1906,7 @@ export function getMDXComponents(
     TabsTrigger: FumadocsTabsTrigger,
     CodeBlockTabs,
     CodeBlockTabsList,
-    CodeBlockTab,
+    CodeBlockTab: isChinese ? ChineseCodeBlockTab : CodeBlockTab,
     pre: codeComponents.pre,
     ApiReturns,
     ApiReturnType,
@@ -1902,7 +1914,7 @@ export function getMDXComponents(
     ParameterList: isChinese ? ParameterList : GlobalParameterList,
     Parameter: isChinese ? Parameter : GlobalParameter,
     ParameterType,
-    Accordion,
+    Accordion: isChinese ? ChineseAccordion : Accordion,
     Accordions,
     File,
     Files,
@@ -1915,7 +1927,7 @@ export function getMDXComponents(
     PlatformInline,
     _PlatformProcessedMarker: PlatformProcessedMarker,
     PlatformStructured,
-    _PlatformTabsGroup: PlatformTabsGroup,
+    _PlatformTabsGroup: isChinese ? ChinesePlatformTabsGroup : PlatformTabsGroup,
     _PlatformPanel: PlatformPanel,
     ...components,
   } satisfies MDXComponents;
@@ -1927,11 +1939,14 @@ declare global {
   type MDXProvidedComponents = ReturnType<typeof getMDXComponents>;
 }
 
+const directParameter = DEFAULT_LOCALE === 'zh-CN' ? Parameter : GlobalParameter;
+const directParameterList = DEFAULT_LOCALE === 'zh-CN' ? ParameterList : GlobalParameterList;
+
 export {
   ApiReturns,
   ApiReturnType,
   ApiSignature,
-  Parameter,
-  ParameterList,
+  directParameter as Parameter,
+  directParameterList as ParameterList,
   ParameterType,
 };

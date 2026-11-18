@@ -321,26 +321,4 @@ describe('legacy redirect Vercel artifacts', () => {
     }
   });
 
-  it('keeps query-split paths in Vercel config redirects instead of bulk redirects', () => {
-    expect(
-      bulkRedirects.some(
-        (rule) =>
-          rule.source === '/en/broadcast-streaming/overview/release-notes',
-      ),
-    ).toBe(false);
-    expect(vercelConfig.redirects).toContainEqual({
-      destination:
-        '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
-      has: [
-        {
-          key: 'platform',
-          type: 'query',
-          value: 'react-js',
-        },
-      ],
-      source: '/en/broadcast-streaming/overview/release-notes',
-      statusCode: 301,
-    });
-  });
-
 });

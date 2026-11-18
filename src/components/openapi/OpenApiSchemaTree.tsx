@@ -1,3 +1,4 @@
+import { useGlobalSchemaPresentation } from './GlobalSchemaPresentation';
 import {
   type ComponentProps,
   createElement,
@@ -143,6 +144,7 @@ export function OpenApiSchemaTree({
   revealTarget,
   rootId,
 }: OpenApiSchemaTreeProps) {
+  const global = useGlobalSchemaPresentation();
   const [expandedIds, setExpandedIds] = useState<Set<string>>(() =>
     getInitialExpandedIds(nodes),
   );
@@ -535,7 +537,7 @@ export function OpenApiSchemaTree({
       id={stableDomId(rootId, rootId)}
       ref={treeRef}
     >
-      {expandableNodeIds.length > 0 ? (
+      {!global && expandableNodeIds.length > 0 ? (
         <div className="openapi-schema-toolbar mb-1 flex flex-wrap items-center justify-between gap-x-3 border-fd-border border-b">
           <span className="text-fd-muted-foreground text-sm">
             {labels.fields ?? labels.properties}

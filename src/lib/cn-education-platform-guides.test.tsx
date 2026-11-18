@@ -17,7 +17,7 @@ describe('Chinese education integration platforms', () => {
         `content/docs/zh-CN/solutions/${product}/get-started/quick-start.mdx`,
         'utf8',
       ).replace(/^---\n[\s\S]*?\n---\n/, '');
-      await renderDocsMdx(source);
+      await renderDocsMdx(source, 'zh-CN');
 
       expect(
         screen.getAllByRole('link', { name: /云信令 SDK 集成指引/ }),

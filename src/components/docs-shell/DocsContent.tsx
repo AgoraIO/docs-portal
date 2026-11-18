@@ -1035,8 +1035,8 @@ export function DocsTableOfContents({
       return next;
     });
     setIsMobileOpen(false);
-    scrollDocsHashTargetAfterLayout(url, { behavior: 'auto' });
-  }, []);
+    scrollDocsHashTargetAfterLayout(url, { behavior: 'auto', locale: currentLocale });
+  }, [currentLocale]);
 
   useEffect(() => {
     let frame = 0;

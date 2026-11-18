@@ -1,3 +1,7 @@
+import {
+  resolveZhCnProductIaRedirect,
+  ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS,
+} from '../zh-cn-product-ia-redirects';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -47,6 +51,14 @@ const manualLegacyUrls = new Set([
   'https://docs.agora.io/en/sdks',
   'https://docs.agora.io/en/solutions/interactive-live-streaming/product-overview',
 ]);
+const currentDocsIaMigrationRedirects = new Map(
+  Object.entries(ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS).map(
+    ([sourcePath, target]) => [
+      `https://docs.agora.io/zh-CN/${sourcePath}`,
+      target,
+    ],
+  ),
+);
 const apiRefRedirectAuditEvidence =
   'API Reference link audit row marked add-301/high in docs/agents/reports/2026-08-03-api-ref-docs-redirect-triage.md';
 
@@ -184,7 +196,11 @@ describe('legacy sitemap compatibility audit', () => {
       (rule) =>
         !sitemapHrefs.has(rule.legacyUrl) &&
         !manualLegacyUrls.has(rule.legacyUrl) &&
-        !rule.evidence.includes(apiRefRedirectAuditEvidence),
+        !rule.evidence.includes(apiRefRedirectAuditEvidence) &&
+        currentDocsIaMigrationRedirects.get(rule.legacyUrl) !== rule.target &&
+        resolveZhCnProductIaRedirect(
+          rule.legacyPath.split('/')[1], rule.legacyPath.split('/')[2], rule.legacyPath.split('/').slice(3)
+        ) !== rule.target,
     );
 
     expect(staleRules).toEqual([]);

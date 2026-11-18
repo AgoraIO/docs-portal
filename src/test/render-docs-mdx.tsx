@@ -11,7 +11,7 @@ import { getMDXComponents, MDXAccordionProvider } from '@/components/mdx';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { docs } from '../../source.config';
 
-export async function renderDocsMdx(source: string) {
+export async function renderDocsMdx(source: string, locale?: string) {
   const configureMdx = docs.docs.mdxOptions;
   if (typeof configureMdx !== 'function') {
     throw new Error('Expected the documentation MDX compiler configuration.');
@@ -25,7 +25,7 @@ export async function renderDocsMdx(source: string) {
     component: () => (
       <AppProviders>
         <MDXAccordionProvider>
-          <Body components={getMDXComponents()} />
+          <Body components={getMDXComponents(undefined, { locale })} />
         </MDXAccordionProvider>
       </AppProviders>
     ),

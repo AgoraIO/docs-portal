@@ -15,10 +15,9 @@ import {
   ApiReturnType,
   ApiSignature,
   getMDXComponents,
-  Parameter,
-  ParameterList,
   ParameterType,
 } from './mdx';
+import { Parameter, ParameterList } from './mdx/ApiReference';
 
 it.each(['void', 'Promise<void>', 'boolean'])(
   'shows the return type %s without an empty description table',
@@ -112,7 +111,7 @@ describe('shared API reference rendering', () => {
   it.each(['cards', 'table'] as const)(
     'uses the ordinary DocsTable primitive for %s parameters',
     (variant) => {
-      const { table: Table } = getMDXComponents();
+      const { table: Table } = getMDXComponents(undefined, { locale: 'zh-CN' });
       const { container } = render(
         <>
           <Table data-testid="ordinary">

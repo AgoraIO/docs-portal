@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   getOpenApiEndpointUrl,
   getOpenApiLanes,
+  getOpenApiLaneLocales,
   getOpenApiOperationIds,
   getOpenApiPrerenderPaths,
   resolveOpenApiEndpointRoute,
@@ -10,17 +11,17 @@ import {
 
 describe('openapi lanes', () => {
   it('describes each YAML lane as one IA mapping record', () => {
-    expect(getOpenApiLanes()).toEqual([
+    expect(getOpenApiLanes().filter(lane => getOpenApiLaneLocales(lane).includes('en'))).toEqual([
       expect.objectContaining({
         id: 'convoai',
         publicSourceUrl: {
           en: '/openapi/conversational-ai/rest-api.en.yaml',
-          'zh-CN': '/openapi/conversational-ai/rest-api.en.yaml',
+          'zh-CN': '/openapi/conversational-ai/rest-api.zh-CN.yaml',
         },
         routePrefix: 'api-reference/api-ref/conversational-ai',
         sourcePath: {
           en: 'content/openapi/conversational-ai/rest-api.en.yaml',
-          'zh-CN': 'content/openapi/conversational-ai/rest-api.en.yaml',
+          'zh-CN': 'content/openapi/conversational-ai/rest-api.zh-CN.yaml',
         },
         tab: 'api-reference',
       }),

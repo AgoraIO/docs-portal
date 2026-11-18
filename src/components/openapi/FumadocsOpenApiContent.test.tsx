@@ -3211,7 +3211,7 @@ describe('FumadocsOpenApiContent', () => {
   it('renders response body schema field descriptions', async () => {
     render(
       <FumadocsOpenApiContent
-        locale="zh-CN"
+        locale="en"
         pageProps={{
           operations: [
             {
@@ -3293,7 +3293,7 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     expect(
-      await screen.findByRole('heading', { name: '响应 Body' }),
+      await screen.findByRole('heading', { name: 'Response Body' }),
     ).toBeInTheDocument();
     expect(document.querySelector('[data-openapi-responses]')).toBeNull();
     expect(

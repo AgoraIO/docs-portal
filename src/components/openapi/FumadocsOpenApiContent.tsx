@@ -1,3 +1,4 @@
+import { GlobalSchemaPresentation } from './GlobalSchemaPresentation';
 import { FumadocsOpenApiContent as ChineseFumadocsOpenApiContent } from './FumadocsOpenApiContent.zh-cn';
 import { DEFAULT_LOCALE as RELEASE_DEFAULT_LOCALE, normalizeLocale as normalizeReleaseLocale } from '@/lib/i18n/i18n-config';
 import { TranslationProvider } from '@fuma-translate/react';
@@ -1990,5 +1991,5 @@ function isRecord(value: unknown): value is OpenApiRecord {
 export function FumadocsOpenApiContent(props: Parameters<typeof ChineseFumadocsOpenApiContent>[0]) {
   return normalizeReleaseLocale(props.locale ?? RELEASE_DEFAULT_LOCALE) === 'zh-CN'
     ? <ChineseFumadocsOpenApiContent {...props} />
-    : <GlobalFumadocsOpenApiContent {...props} />;
+    : <GlobalSchemaPresentation value><GlobalFumadocsOpenApiContent {...props} /></GlobalSchemaPresentation>;
 }

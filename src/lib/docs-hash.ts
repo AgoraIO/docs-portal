@@ -89,6 +89,7 @@ export function scrollDocsHashTarget(
 export function scrollDocsHashTargetAfterLayout(
   url: string,
   options: {
+    locale?: string;
     behavior?: ScrollBehavior;
     updateHistory?: boolean;
   } = {},
@@ -104,6 +105,24 @@ export function scrollDocsHashTargetAfterLayout(
   }
 
   notifyDocsHashTarget(url);
+
+  if (options.locale === 'en' || (options.locale === undefined && window.location.pathname.startsWith('/en/'))) {
+  const didScroll = scrollDocsHashTarget(url, {
+    behavior: options.behavior ?? 'smooth',
+    updateHistory: false,
+  });
+
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      scrollDocsHashTarget(url, {
+        behavior: options.behavior ?? 'smooth',
+        updateHistory: false,
+      });
+    });
+  });
+
+  return didScroll;
+  }
 
   const location = window.location.href;
   const initialHeading = getHeadingForUrl(url);
