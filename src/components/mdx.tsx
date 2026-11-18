@@ -80,7 +80,8 @@ import {
   type NormalizedDocsHref,
   normalizeDocsHref,
 } from '@/lib/docs-link-normalize';
-import { normalizeLocale } from '@/lib/i18n/i18n-config';
+import { DEFAULT_LOCALE, normalizeLocale } from '@/lib/i18n/i18n-config';
+import { Parameter as GlobalParameter, ParameterList as GlobalParameterList } from './mdx/GlobalParameters';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import { buildPlatformPathname } from '@/lib/platforms/route';
 import {
@@ -1858,13 +1859,15 @@ export function getMDXComponents(
   components?: MDXComponents,
   context?: MDXContext,
 ) {
-  const DocsTable = createDocsTableComponent(context?.locale);
+  const locale = normalizeLocale(context?.locale ?? context?.contentPath?.split('/')[0]) ?? DEFAULT_LOCALE;
+  const isChinese = locale === 'zh-CN';
+  const DocsTable = createDocsTableComponent(locale);
   const codeComponents = getCodeComponents(context?.locale);
   return {
     ...defaultMdxComponents,
     Callout: DocsCallout,
     CalloutContainer: DocsCalloutContainer,
-    table: context?.contentPath === IM_PRICING_DETAILS_CONTENT_PATH ? createPricingTableComponent(context.contentPath) : DocsTable,
+    table: context?.contentPath === IM_PRICING_DETAILS_CONTENT_PATH ? createPricingTableComponent(context.contentPath) : isChinese ? DocsTable : defaultMdxComponents.table,
     DocsTable,
     img: ZoomableImage,
     DocsImage: ZoomableImage,
@@ -1877,7 +1880,7 @@ export function getMDXComponents(
     a: createDocsAnchor(context?.contentPath),
     Link: createLegacyDocsLink(context?.contentPath),
     Card: createDocsCard(context?.contentPath),
-    Cards,
+    Cards: isChinese ? Cards : defaultMdxComponents.Cards,
     RepositoryCardTitle,
     CommandBlock: codeComponents.CommandBlock,
     Tabs,
@@ -1892,8 +1895,8 @@ export function getMDXComponents(
     ApiReturns,
     ApiReturnType,
     ApiSignature: codeComponents.ApiSignature,
-    ParameterList,
-    Parameter,
+    ParameterList: isChinese ? ParameterList : GlobalParameterList,
+    Parameter: isChinese ? Parameter : GlobalParameter,
     ParameterType,
     Accordion,
     Accordions,

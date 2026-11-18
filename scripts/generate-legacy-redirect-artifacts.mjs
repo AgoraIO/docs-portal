@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
 import {
   isRetiredCnDocsPath,
+  retiredCnLegacyDocsRoute,
 } from '../src/lib/retired-cn-docs.mjs';
 
 const repoRoot = path.resolve(
@@ -242,7 +243,7 @@ function createRedirectsConfig(baseRedirects = [], configRedirects) {
 }
 
 function createRoutesConfig(queryRedirectRoutes, baseRoutes = []) {
-  const routes = [...queryRedirectRoutes, ...baseRoutes];
+  const routes = [...baseRoutes.filter((route) => route.status === 404), retiredCnLegacyDocsRoute, ...queryRedirectRoutes, ...baseRoutes.filter((route) => route.status !== 404)];
   return routes.length > 0 ? { routes } : {};
 }
 

@@ -4,7 +4,7 @@ export function preserveRedirectSearch(
   location: { hash?: string; searchStr?: string },
   preserveSearch = true,
 ) {
-  if (!preserveSearch) return href;
+  if (!preserveSearch && href.startsWith('/en/')) return href;
   const url = new URL(href, 'https://docs.invalid');
   // An explicit destination component wins, including an empty `?` or `#`.
   const hashIndex = href.indexOf('#');

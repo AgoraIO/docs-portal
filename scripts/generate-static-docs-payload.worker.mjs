@@ -28,7 +28,6 @@ import {
   normalizePlatformKey,
 } from '../src/lib/platforms/registry.ts';
 import { getContentDocsPrerenderPaths } from '../src/lib/prerender-content-routes.ts';
-import { readPublishedDocVersion } from '../src/lib/published-doc-version.ts';
 import { createStaticDocsRouteSets } from '../src/lib/published-docs-routes.ts';
 import {
   readPublishedDocsRoutes,
@@ -97,13 +96,10 @@ export async function generateStaticDocsPayload() {
   const platformKeysByPageUrl = new Map();
   const versionByPageUrl = new Map();
   for (const route of canonicalRoutes) {
-    const version = route.startsWith('/zh-CN/')
-      ? resolveCnSdkPublication(route).version
-      : await readPublishedDocVersion(
-          path.join(repoRoot, 'content', 'docs'),
-          route,
-        );
-    if (version) versionByPageUrl.set(route, version);
+    if (route.startsWith('/zh-CN/')) {
+      const version = resolveCnSdkPublication(route).version;
+      if (version) versionByPageUrl.set(route, version);
+    }
   }
   const platformPages = [];
 
@@ -191,7 +187,7 @@ export async function generateStaticDocsPayload() {
     });
   await writeStaticDocsRouteManifests({
     directory: path.dirname(routesManifestPath),
-    machineReadableRoutes,
+    machineReadableRoutes: MACHINE_READABLE_LOCALE === 'en' ? prerenderRoutes : machineReadableRoutes,
     prerenderRoutes,
   });
 
@@ -220,7 +216,7 @@ export async function generateStaticDocsPayload() {
   const markdownGenerated = await generateStaticMachineReadableDocs({
     platformKeysByPageUrl,
     // Validate the published file, including what downstream clients consume.
-    publishedRoutes: readPublishedDocsRoutes(routesManifestPath),
+    publishedRoutes: MACHINE_READABLE_LOCALE === 'en' ? machineReadableRoutes : readPublishedDocsRoutes(routesManifestPath),
   });
   console.log(
     `[static-payload] generated ${markdownGenerated} machine-readable files`,
@@ -302,7 +298,7 @@ async function generateStaticMachineReadableDocs({
     generated += 1;
   }
 
-  for (const file of await getDocVersionBulkExports()) {
+  for (const file of MACHINE_READABLE_LOCALE === 'en' ? await getDocVersionBulkExports() : []) {
     await writePublicRouteFile(file.path, file.content);
     generated += 1;
   }
@@ -408,10 +404,10 @@ async function getStaticLLMText(page) {
   try {
     return await getLLMText(page);
   } catch {
-    const markdown = toDocsMarkdown(`# ${page.data.title ?? page.url} (${page.url})
+    const markdown = `# ${page.data.title ?? page.url} (${page.url})
 
-${await readSourceMarkdown(page.path)}`);
-    return withDocVersionMetadata(markdown, page.url);
+${await readSourceMarkdown(page.path)}`;
+    return page.url.startsWith('/zh-CN/') ? markdown : withDocVersionMetadata(toDocsMarkdown(markdown), page.url);
   }
 }
 
@@ -440,10 +436,10 @@ async function buildRawPlatformLLMText(page, platform) {
     return null;
   }
 
-  const markdown = toDocsMarkdown(`# ${page.data.title ?? page.url} (${page.url}/${platform})
+  const markdown = `# ${page.data.title ?? page.url} (${page.url}/${platform})
 
-${body}`);
-  return withDocVersionMetadata(markdown, page.url);
+${body}`;
+  return page.url.startsWith('/zh-CN/') ? markdown : withDocVersionMetadata(toDocsMarkdown(markdown), page.url);
 }
 
 function getRawPagePlatformKeys(page) {

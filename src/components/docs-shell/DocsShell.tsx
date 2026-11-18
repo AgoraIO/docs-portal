@@ -373,7 +373,9 @@ export function DocsShell({
   const shellWidthClassName = DOCS_SHELL_MAX_WIDTH_CLASS_NAME;
   const desktopGridClassName = contentFillsWidth
     ? DOCS_FILL_DESKTOP_GRID_CLASS_NAME
-    : DOCS_DESKTOP_GRID_CLASS_NAME;
+    : currentLocale === 'en'
+      ? 'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]'
+      : DOCS_DESKTOP_GRID_CLASS_NAME;
   const docsChromeLocaleLinks = localeLinks.filter((item) =>
     ENABLED_DOCS_CHROME_LOCALES.has(item.locale),
   );

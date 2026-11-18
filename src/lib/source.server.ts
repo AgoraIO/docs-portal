@@ -153,10 +153,8 @@ function resolveCanonicalMarkdownPageUrl(page: InferPageType<typeof source>) {
 }
 
 export async function getLLMText(page: InferPageType<typeof source>) {
-  return withDocVersionMetadata(
-    toDocsMarkdown(await readLLMText(page)),
-    page.url,
-  );
+  const markdown = await readLLMText(page);
+  return page.url.startsWith('/zh-CN/') ? markdown : withDocVersionMetadata(toDocsMarkdown(markdown), page.url);
 }
 
 async function readLLMText(page: InferPageType<typeof source>) {
@@ -194,8 +192,8 @@ export async function getPlatformLLMText(
   platform: PlatformKey,
 ) {
   const markdown = await readPlatformLLMText(page, platform);
-  return markdown === null
-    ? null
+  return markdown === null || page.url.startsWith('/zh-CN/')
+    ? markdown
     : withDocVersionMetadata(toDocsMarkdown(markdown), page.url);
 }
 

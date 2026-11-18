@@ -55,7 +55,7 @@ export function DocsSidebar({
 
   return (
     <ShadcnSidebar
-      className="hidden overflow-hidden bg-transparent text-[color:var(--ink-3)] lg:sticky lg:top-[var(--docs-shell-header-offset)] lg:flex lg:h-[var(--docs-shell-rail-height,var(--docs-shell-body-height))] lg:min-h-0 lg:self-start"
+      className={cn('hidden overflow-hidden bg-transparent text-[color:var(--ink-3)] lg:sticky lg:top-[var(--docs-shell-header-offset)] lg:flex lg:min-h-0 lg:self-start', locale === 'zh-CN' ? 'lg:h-[var(--docs-shell-rail-height,var(--docs-shell-body-height))]' : 'lg:h-[var(--docs-shell-body-height)]')}
       collapsible="none"
       data-testid="docs-sidebar"
       style={
