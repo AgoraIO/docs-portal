@@ -88,13 +88,15 @@ Agora can notify your server of the following Conversational AI events:
 
 | eventType | Description |
 | --- | --- |
-| `101` | Agent joined a channel |
-| `102` | Agent left a channel |
-| `103` | Dialogue history notification |
-| `110` | Agent error |
-| `111` | Agent performance metrics |
-| `201` | Incoming call status change |
-| `202` | Outgoing call status change |
+| [`101`](../../reference/event-types#101-agent-joined) | Agent joined a channel |
+| [`102`](../../reference/event-types#102-agent-left) | Agent left a channel |
+| [`103`](../../reference/event-types#103-agent-history) | Agent history |
+| [`104`](../../reference/event-types#104-agent-expire) | Agent RTC token is about to expire |
+| [`110`](../../reference/event-types#110-agent-error) | Agent error |
+| [`111`](../../reference/event-types#111-agent-metrics) | Agent performance metrics |
+| [`112`](../../reference/event-types#112-turns-finished) | Turns finished after the session ends |
+| [`201`](../../reference/event-types#201-inbound-call-state) | Incoming call status change |
+| [`202`](../../reference/event-types#202-outbound-call-state) | Outgoing call status change |
 
 For payload details, see [Notification event types](../../reference/event-types).
 
