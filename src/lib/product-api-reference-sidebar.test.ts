@@ -640,14 +640,21 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
     ).toBeNull();
   });
 
-  it('keeps the existing English realtime-media RESTful API injection', async () => {
+  it('embeds the English RTC REST endpoints under Reference', async () => {
     const sidebar = await loadSidebar('en', 'realtime-media', ['rtc']);
     const reference = findSection(sidebar, ['Reference']);
 
     expect(reference?.children?.[0]).toMatchObject({
       title: 'RESTful API',
-      type: 'page',
-      url: '/en/api-reference/api-ref/rtc',
+      type: 'section',
+      collapsible: true,
+      children: expect.arrayContaining([
+        expect.objectContaining({
+          url: '/en/api-reference/api-ref/rtc/query-channel-list',
+          method: 'GET',
+          search: { from: '/en/realtime-media/rtc' },
+        }),
+      ]),
     });
   });
 
