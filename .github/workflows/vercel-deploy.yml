@@ -239,6 +239,10 @@ jobs:
           test ! -d .vercel/output/functions
 
       - name: Check API reference quality in Chrome
+        id: api-browser
+        # The Global workflow publishes review previews even when QA reports existing debt.
+        # Surface the failure as a required job outcome after the preview URL is available.
+        continue-on-error: ${{ (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'global' }}
         if: steps.preview-context.outputs.should_deploy == 'true'
         env:
           VITE_DOCS_REGION: ${{ inputs.docs_region || steps.preview-context.outputs.docs_region || 'global' }}
@@ -379,6 +383,10 @@ jobs:
           name: global-search-replay-preview
           path: global-search-replay-preview.json
           if-no-files-found: warn
+
+      - name: Report Global API reference quality failure
+        if: always() && steps.api-browser.outcome == 'failure' && (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'global'
+        run: exit 1
 
   deploy-production:
     name: Deploy Production to Vercel

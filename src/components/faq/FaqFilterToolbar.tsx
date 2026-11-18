@@ -1,6 +1,57 @@
+import { CheckCircle2Icon, ChevronDownIcon } from 'lucide-react';
 import { ReferenceFilterSelect } from '@/components/reference-center/ReferenceFilterControls';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { faqPlatforms, faqProducts } from './faq-data';
+
+function FilterDropdown({
+  label,
+  onSelect,
+  options,
+  value,
+}: {
+  label: string;
+  onSelect: (value: string) => void;
+  options: string[];
+  value: string;
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          className="h-9 justify-between gap-2 px-3 text-sm font-normal"
+          type="button"
+          variant="outline"
+        >
+          <span className="truncate">
+            <span className="text-muted-foreground">{label}:</span> {value}
+          </span>
+          <ChevronDownIcon data-icon="inline-end" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        align="start"
+        className="max-h-80 w-64 overflow-auto"
+      >
+        {options.map((option) => (
+          <DropdownMenuItem
+            className="justify-between"
+            key={option}
+            onSelect={() => onSelect(option)}
+          >
+            {option}
+            {option === value ? <CheckCircle2Icon /> : null}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
 
 function FilterSelect({
   label,
@@ -25,6 +76,7 @@ function FilterSelect({
 
 export function FaqFilterToolbar({
   clearLabel = 'Clear',
+  useDropdown = false,
   hasActiveFilters,
   onClear,
   onPlatformChange,
@@ -37,6 +89,7 @@ export function FaqFilterToolbar({
   products = faqProducts,
 }: {
   clearLabel?: string;
+  useDropdown?: boolean;
   hasActiveFilters: boolean;
   onClear: () => void;
   onPlatformChange: (platform: string) => void;
@@ -48,15 +101,16 @@ export function FaqFilterToolbar({
   productLabel?: string;
   products?: string[];
 }) {
+  const Filter = useDropdown ? FilterDropdown : FilterSelect;
   return (
     <div className="flex flex-wrap items-end gap-3">
-      <FilterSelect
+      <Filter
         label={productLabel}
         onSelect={onProductChange}
         options={products}
         value={product}
       />
-      <FilterSelect
+      <Filter
         label={platformLabel}
         onSelect={onPlatformChange}
         options={platforms}

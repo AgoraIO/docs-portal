@@ -33,7 +33,8 @@ export function FaqCategory({
   category: FaqCategoryId;
   locale?: FaqLocale;
 }) {
-  const dataset = getFaqDataset(locale ?? faqLocaleFromPathname());
+  const language = locale ?? faqLocaleFromPathname();
+  const dataset = getFaqDataset(language);
   const meta =
     dataset.categories.find((entry) => entry.id === category) ??
     dataset.categories[0];
@@ -117,6 +118,7 @@ export function FaqCategory({
         />
         <div className="flex flex-wrap items-end justify-between gap-3">
           <FaqFilterToolbar
+            useDropdown={language === 'en'}
             clearLabel={dataset.ui.clear}
             hasActiveFilters={hasActiveFilters}
             onClear={resetFilters}
