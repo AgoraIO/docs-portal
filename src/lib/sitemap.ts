@@ -9,20 +9,23 @@ const XML_HEADER = '<?xml version="1.0" encoding="UTF-8"?>';
 const URLSET_OPEN =
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 const URLSET_CLOSE = '</urlset>';
-const PUBLIC_DOCS_BASE_URL = 'https://docs.agora.io';
+const PUBLIC_DOCS_BASE_URLS = {
+  global: 'https://docs.agora.io',
+  cn: 'https://docs.shengwang.cn',
+};
 
-export function getSitemapBaseUrl(_region: DocsRegion = DOCS_REGION) {
+export function getSitemapBaseUrl(region: DocsRegion = DOCS_REGION) {
   const viteEnv = (
     import.meta as ImportMeta & {
       env?: Record<string, string | undefined>;
     }
   ).env;
   const baseUrl =
-    process.env.SITE_URL ??
-    viteEnv?.VITE_SITE_URL ??
-    process.env.VITE_SITE_URL ??
-    process.env.PUBLIC_SITE_URL ??
-    PUBLIC_DOCS_BASE_URL;
+    process.env.SITE_URL ||
+    viteEnv?.VITE_SITE_URL ||
+    process.env.VITE_SITE_URL ||
+    process.env.PUBLIC_SITE_URL ||
+    PUBLIC_DOCS_BASE_URLS[region];
 
   return baseUrl.replace(/\/+$/, '').replace(/\/en$/, '');
 }

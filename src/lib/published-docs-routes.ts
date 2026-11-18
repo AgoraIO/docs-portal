@@ -1,3 +1,4 @@
+import { DOC_VERSION_SCOPES, getDocVersionTarget } from './doc-versions';
 import {
   isKnownPlatform,
   normalizePlatformKey,
@@ -9,6 +10,7 @@ export type PublishedDocsRoute = {
   markdownPath: string;
   platform?: PlatformKey;
   defaultPlatform?: PlatformKey;
+  defaultVersionTarget?: string;
   version?: string;
   url: string;
 };
@@ -31,11 +33,20 @@ export function createPublishedDocsRoutes({
 }) {
   const canonicalPathSet = new Set(canonicalPaths);
   const routes = new Map<string, PublishedDocsRoute>();
+  const versionEntries = new Map(
+    DOC_VERSION_SCOPES.map((scope) => [
+      scope.entryUrl,
+      getDocVersionTarget(scope.entryUrl, scope.defaultVersion)?.href,
+    ]),
+  );
 
   for (const canonicalPath of canonicalPathSet) {
     routes.set(canonicalPath, {
       canonicalPath,
       markdownPath: `${canonicalPath}.md`,
+      ...(versionEntries.get(canonicalPath)
+        ? { defaultVersionTarget: versionEntries.get(canonicalPath) }
+        : {}),
       ...(defaultPlatformByCanonicalPath.has(canonicalPath)
         ? { defaultPlatform: defaultPlatformByCanonicalPath.get(canonicalPath) }
         : {}),

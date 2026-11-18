@@ -108,7 +108,7 @@ export function createDocsMdxOptions(region: 'cn' | 'global') {
       parseMdx: true,
     },
     remarkPlugins: (plugins) => [
-      ...(chinese ? [remarkOmitMdxComments] : []),
+      [remarkOmitMdxComments, { chineseFilesOnly: !chinese }],
       remarkDirective,
       ...(chinese ? [remarkLiteralDirectives] : []),
       [
@@ -119,7 +119,7 @@ export function createDocsMdxOptions(region: 'cn' | 'global') {
       ],
       remarkPlatformContent,
       ...(chinese ? [remarkMergedTables] : []),
-      remarkTableSlots,
+      [remarkTableSlots, { exportSlotAnchors: chinese }],
       ...plugins,
       ...(chinese ? [remarkNormalizeLegacyHeadingAnchors] : []),
     ],

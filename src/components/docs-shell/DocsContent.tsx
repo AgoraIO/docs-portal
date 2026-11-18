@@ -379,11 +379,13 @@ export function DocsContent({
                 <h1 className="min-w-0 text-[2rem] leading-[1.12] font-bold tracking-[-0.022em] text-[color:var(--ink-1)] sm:text-[2.375rem]">
                   {displayTitle}
                 </h1>
-                <PlatformTitleBadges
-                  fallbackPlatforms={titlePlatforms}
-                  locale={currentLocale}
-                  platformTabs={platformTabs}
-                />
+                {currentLocale === 'zh-CN' && (
+                  <PlatformTitleBadges
+                    fallbackPlatforms={titlePlatforms}
+                    locale={currentLocale}
+                    platformTabs={platformTabs}
+                  />
+                )}
               </div>
               <p
                 className="mt-2 inline-flex items-center gap-1.5 text-[13px] leading-5 text-[color:var(--ink-4)]"

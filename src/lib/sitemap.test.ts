@@ -12,8 +12,10 @@ describe('sitemap', () => {
     delete process.env.PUBLIC_SITE_URL;
 
     try {
-      expect(getSitemapBaseUrl()).toBe('https://docs.agora.io');
-      expect(getSitemapBaseUrl('cn')).toBe('https://docs.agora.io');
+      expect(getSitemapBaseUrl('global')).toBe('https://docs.agora.io');
+      expect(getSitemapBaseUrl('cn')).toBe('https://docs.shengwang.cn');
+      process.env.SITE_URL = '';
+      expect(getSitemapBaseUrl('cn')).toBe('https://docs.shengwang.cn');
     } finally {
       restoreEnvValue('SITE_URL', previousSiteUrl);
       restoreEnvValue('VITE_SITE_URL', previousViteSiteUrl);
@@ -45,7 +47,7 @@ describe('sitemap', () => {
     process.env.SITE_URL = 'https://docs.agora.io/en/';
 
     try {
-      expect(getSitemapBaseUrl()).toBe('https://docs.agora.io');
+      expect(getSitemapBaseUrl('global')).toBe('https://docs.agora.io');
     } finally {
       restoreEnvValue('SITE_URL', previousSiteUrl);
     }

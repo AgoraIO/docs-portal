@@ -39,6 +39,8 @@ export type OpenApiSchemaViewNode = {
 
 export type OpenApiSchemaViewOptions = {
   includeRootContainer?: boolean;
+  /** English reference pages list union fields inline, the Chinese reference groups their branches. */
+  inlineUnionFields?: boolean;
   rootRequired?: boolean;
 };
 
@@ -97,12 +99,13 @@ export function buildOpenApiSchemaView(
         if (
           !childSchema ||
           isSyntheticAnyProperty(property.name, childSchema) ||
-          isSyntheticScalarMapProperty(
-            property.name,
-            childSchema,
-            parentPath,
-            generated.refs,
-          )
+          (!options.inlineUnionFields &&
+            isSyntheticScalarMapProperty(
+              property.name,
+              childSchema,
+              parentPath,
+              generated.refs,
+            ))
         ) {
           return [];
         }
@@ -168,6 +171,16 @@ export function buildOpenApiSchemaView(
         ];
 
         const branchSchema = generated.refs[item.$type];
+        if (options.inlineUnionFields) {
+          return childrenFor(
+            branchSchema,
+            nextParentPath,
+            fieldPath,
+            depth,
+            nextAncestors,
+            item.$type,
+          ).map((node) => ({ ...node, variant: item.name }));
+        }
         const groupBranch =
           schema.type === 'or' &&
           (branchSchema?.type === 'object' || branchSchema?.type === 'array');

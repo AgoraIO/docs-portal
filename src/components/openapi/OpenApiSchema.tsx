@@ -107,10 +107,12 @@ export function OpenApiSchema({
   const normalized = useMemo(() => {
     const booleanSources = new WeakMap<object, boolean>();
     return {
-      root: normalizeOpenApiSchema(root, { document, booleanSources }),
+      root: global
+        ? normalizeGlobalSchema(root, new WeakMap(), document)
+        : normalizeOpenApiSchema(root, { document, booleanSources }),
       booleanSources,
     };
-  }, [document, root]);
+  }, [document, root, global]);
   const normalizedRoot = normalized.root;
   const generated = useMemo(() => {
     const generated = generateSchemaUI({
@@ -188,9 +190,10 @@ export function OpenApiSchema({
     () =>
       buildOpenApiSchemaView(generated, client.name, {
         includeRootContainer: client.as === 'body',
+        inlineUnionFields: global,
         rootRequired: client.required,
       }),
-    [client.as, client.name, client.required, generated],
+    [client.as, client.name, client.required, generated, global],
   );
   const labels = useMemo(
     () => getOpenApiSchemaLabels(translations),
@@ -1463,6 +1466,71 @@ function appendOpenApiSchemaExtraDescriptions(
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function normalizeGlobalSchema(
+  value: unknown,
+  seen = new WeakMap<object, unknown>(),
+  document?: unknown,
+  resolvingRefs = new Set<string>(),
+) {
+  if (Array.isArray(value)) {
+    const existing = seen.get(value);
+    if (existing) return existing;
+    const output: unknown[] = [];
+    seen.set(value, output);
+    output.push(
+      ...value.map((item) =>
+        normalizeGlobalSchema(item, seen, document, resolvingRefs),
+      ),
+    );
+    return output;
+  }
+  if (!isRecord(value)) return value;
+
+  if (typeof value.$ref === 'string') {
+    const target =
+      getLocalOpenApiSchemaRefTarget(value.$ref, document) ??
+      (value as { '$ref-value'?: unknown })['$ref-value'];
+    if (target !== undefined && !resolvingRefs.has(value.$ref)) {
+      const nextResolvingRefs = new Set(resolvingRefs).add(value.$ref);
+      const resolved = normalizeGlobalSchema(
+        target,
+        seen,
+        document,
+        nextResolvingRefs,
+      );
+      const output: Record<string, unknown> = isRecord(resolved)
+        ? { ...resolved }
+        : {};
+      seen.set(value, output);
+      for (const [key, item] of Object.entries(value)) {
+        if (key === '$ref' || key === '$ref-value') continue;
+        output[key] = normalizeGlobalSchema(
+          item,
+          seen,
+          document,
+          resolvingRefs,
+        );
+      }
+      return output;
+    }
+  }
+
+  const existing = seen.get(value);
+  if (existing) return existing;
+  const output: Record<string, unknown> = {};
+  seen.set(value, output);
+  for (const [key, item] of Object.entries(value)) {
+    output[key] = normalizeGlobalSchema(item, seen, document, resolvingRefs);
+  }
+  if (value.example !== undefined && value.examples === undefined) {
+    output.examples = [value.example];
+  }
+  if (value.nullable === true && typeof value.type === 'string') {
+    output.type = [value.type, 'null'];
+  }
+  return output;
 }
 
 function resolveLocalOpenApiSchemaReference(

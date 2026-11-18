@@ -40,10 +40,14 @@ type ParsedHtmlSlot = {
 
 class UnsupportedRawSlotDefinitionError extends Error {}
 
-export function remarkTableSlots() {
+export function remarkTableSlots({ exportSlotAnchors = true } = {}) {
   return (tree: Root, file: VFile) => {
     validateSlotUsage(tree);
-    processFlowContainer(tree, file, new GithubSlugger());
+    processFlowContainer(
+      tree,
+      exportSlotAnchors ? file : undefined,
+      new GithubSlugger(),
+    );
   };
 }
 
@@ -94,7 +98,7 @@ function validateSlotUsage(tree: Root) {
 
 function processFlowContainer(
   container: FlowContainer,
-  file: VFile,
+  file: VFile | undefined,
   slugger: GithubSlugger,
 ) {
   const nextChildren: typeof container.children = [];
@@ -162,7 +166,7 @@ function processFlowContainer(
     // and bold labels so it does not create headings absent from the visual AST.
     const firstDefinition = container.children[index + 1];
     const lastDefinition = container.children[endIndex - 1];
-    if (firstDefinition.position && lastDefinition.position) {
+    if (file && firstDefinition.position && lastDefinition.position) {
       replaceSource(
         file,
         {
@@ -344,7 +348,7 @@ function hasDefinitionsForEveryPlaceholder(
 function applySlotDefinitions(
   placeholders: SlotPlaceholder[],
   definitions: Map<string, SlotDefinition>,
-  file: VFile,
+  file: VFile | undefined,
   labels: Map<string, { title: string; id: string }>,
 ) {
   for (const placeholder of placeholders) {
@@ -357,7 +361,7 @@ function applySlotDefinitions(
     }
 
     const label = labels.get(placeholder.name);
-    if (label)
+    if (file && label)
       replaceSource(file, placeholder.source, `[${label.title}](#${label.id})`);
     placeholder.cell.children = cloneChildren(definition.children);
     definition.consumed = true;

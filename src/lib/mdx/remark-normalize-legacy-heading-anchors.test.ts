@@ -1,9 +1,8 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { compile } from '@mdx-js/mdx';
 import { remarkHeading } from 'fumadocs-core/mdx-plugins';
 import { describe, expect, it } from 'vitest';
 import { remarkPlatformContent } from '../platforms/remark-platform-content';
+import { createDocsMdxOptions } from './docs-preset';
 import { remarkNormalizeLegacyHeadingAnchors } from './remark-normalize-legacy-heading-anchors';
 
 async function compileWithLegacyHeadingAnchorNormalization(source: string) {
@@ -140,26 +139,24 @@ describe('remarkNormalizeLegacyHeadingAnchors', () => {
     expect(result).toContain('href="#repeat"');
   });
 
-  it('runs once after Fumadocs heading plugins in the content config', () => {
-    const config = readFileSync(
-      resolve(process.cwd(), 'source.config.ts'),
-      'utf8',
-    );
-    const pluginConfig = config.match(
-      /remarkPlugins: \(plugins\) => \[([\s\S]*?)\n {6}\],/,
-    )?.[1];
-
-    expect(pluginConfig).toBeDefined();
+  it('runs once after the heading plugin only in the Chinese preset', async () => {
+    const plugins = async (region: 'cn' | 'global') => {
+      const options = await createDocsMdxOptions(region)('bundler');
+      return (options.remarkPlugins ?? []).map((plugin) =>
+        Array.isArray(plugin) ? plugin[0] : plugin,
+      );
+    };
+    const cn = await plugins('cn');
     expect(
-      pluginConfig?.match(/remarkNormalizeLegacyHeadingAnchors/g),
+      cn.filter((p) => p === remarkNormalizeLegacyHeadingAnchors),
     ).toHaveLength(1);
-    const defaultPluginsIndex = pluginConfig?.indexOf('...plugins');
-    const normalizerIndex = pluginConfig?.indexOf(
-      'remarkNormalizeLegacyHeadingAnchors',
+    expect(cn.indexOf(remarkHeading)).toBeGreaterThanOrEqual(0);
+    expect(cn.indexOf(remarkNormalizeLegacyHeadingAnchors)).toBeGreaterThan(
+      cn.indexOf(remarkHeading),
     );
-    expect(defaultPluginsIndex).toBeDefined();
-    expect(normalizerIndex).toBeDefined();
-    expect(defaultPluginsIndex).toBeLessThan(normalizerIndex ?? -1);
+    expect(await plugins('global')).not.toContain(
+      remarkNormalizeLegacyHeadingAnchors,
+    );
   });
 
   it('keeps a legacy anchor and the generated slug for the same heading', async () => {

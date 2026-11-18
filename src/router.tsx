@@ -19,12 +19,18 @@ const platformQueryIndex: PlatformQueryIndex | undefined = import.meta.env
   .DOCS_PLATFORM_QUERY_INDEX;
 
 export function getRouter() {
-  if (platformQueryIndex) normalizeInitialPlatformLocation(platformQueryIndex);
+  const chinese = DOCS_REGION === 'cn';
+  if (chinese && platformQueryIndex)
+    normalizeInitialPlatformLocation(platformQueryIndex);
   return createTanStackRouter({
     routeTree,
-    parseSearch: parseDocsSearch,
-    stringifySearch: stringifyDocsSearch,
-    rewrite: getCnPublicRouteRewrite(DOCS_REGION, platformQueryIndex),
+    ...(chinese
+      ? {
+          parseSearch: parseDocsSearch,
+          stringifySearch: stringifyDocsSearch,
+          rewrite: getCnPublicRouteRewrite(DOCS_REGION, platformQueryIndex),
+        }
+      : {}),
     defaultPreload: 'intent',
     scrollRestoration: true,
     scrollToTopSelectors: [DOCS_MAIN_SCROLL_RESTORATION_SELECTOR],
