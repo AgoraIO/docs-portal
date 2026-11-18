@@ -59,3 +59,11 @@ Each of the first seven rows contains side-by-side captures. The baseline is on 
 | Copy Markdown | [View](screenshots/en-copy.jpg) | [View](screenshots/cn-copy.jpg) |
 | Dark theme | [View](screenshots/en-theme.jpg) | [View](screenshots/cn-theme.jpg) |
 | MCP setup guide | [View](screenshots/en-mcp-guide.jpg) | [View](screenshots/cn-mcp-guide.jpg) |
+
+## CDN image publication — November 18
+
+Uploaded 16 missing images (2,318,954 bytes) through OSS Browser 2 after checking each target object. All 16 public CDN downloads returned HTTP 200 with the expected image content type and matched the source SHA-256. Reused the existing Android QR image after verifying its SHA-256.
+
+Replaced 48 local image references in 10 Chinese documents. The [completed mapping](cdn-upload-paths.csv) includes the 16 uploads and the reused image. The [download verification](cdn-verification.json) records the 16 uploaded objects.
+
+Validation passed: URL substitutions reverse exactly to the previous document contents, reference counts match the supplied manifest, `bun run types:check`, and `git diff --check`. Final production page rendering remains part of release acceptance.
