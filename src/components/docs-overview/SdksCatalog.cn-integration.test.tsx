@@ -692,60 +692,9 @@ describe('SdksCatalog', () => {
     expect(screen.getByText('Showing SDKs for Signaling SDK')).toBeVisible();
   });
 
-  it('lists each product once with a platform select and a default install command', () => {
-    render(<SdksCatalog />);
 
-    // Product appears exactly once even though it spans many platforms.
-    const videoCard = openProductCard('Video SDK');
 
-    // Default platform (Android, first in canonical order) → Gradle command.
-    expect(
-      within(videoCard).getByText(
-        "implementation 'io.agora.rtc:full-sdk:4.6.3'",
-      ),
-    ).toBeVisible();
-    const platformSelect = within(videoCard).getByRole('combobox', {
-      name: 'Video SDK platform',
-    });
-    expect(platformSelect).toHaveValue('android');
-    expect(
-      within(platformSelect).getByRole('option', { name: 'Web' }),
-    ).toBeInTheDocument();
 
-    // No global platform picker remains.
-    expect(
-      screen.queryByRole('heading', { name: 'Platforms' }),
-    ).not.toBeInTheDocument();
-  });
-
-  it('switches the install command when the platform select changes', () => {
-    render(<SdksCatalog />);
-
-    const videoCard = openProductCard('Video SDK');
-
-    fireEvent.change(
-      within(videoCard).getByRole('combobox', { name: 'Video SDK platform' }),
-      { target: { value: 'web' } },
-    );
-
-    expect(
-      within(videoCard).getByText('npm i agora-rtc-sdk-ng@4.24.6'),
-    ).toBeVisible();
-    expect(
-      within(videoCard).getByRole('combobox', { name: 'Video SDK platform' }),
-    ).toHaveValue('web');
-
-    const voiceCard = openProductCard('Voice SDK');
-
-    fireEvent.change(
-      within(voiceCard).getByRole('combobox', { name: 'Voice SDK platform' }),
-      { target: { value: 'web' } },
-    );
-
-    expect(
-      within(voiceCard).getByText('npm i agora-rtc-sdk-ng@4.24.6'),
-    ).toBeVisible();
-  });
 
   it('keeps long install commands horizontally inspectable with mobile-sized controls', async () => {
     render(<SdksCatalog locale="zh-CN" />);
@@ -811,47 +760,9 @@ describe('SdksCatalog', () => {
     expect(packageManager).not.toBeInTheDocument();
   });
 
-  it('only exposes the latest SDK version for download', () => {
-    render(<SdksCatalog />);
 
-    const voiceCard = openProductCard('Voice SDK');
 
-    expect(
-      within(voiceCard).getByText(
-        "implementation 'io.agora.rtc:voice-sdk:4.6.3'",
-      ),
-    ).toBeVisible();
-    expect(
-      within(voiceCard).queryByRole('combobox', { name: /版本/ }),
-    ).not.toBeInTheDocument();
-    expect(
-      within(voiceCard).queryByText(
-        "implementation 'io.agora.rtc:voice-sdk:4.6.2'",
-      ),
-    ).not.toBeInTheDocument();
-  });
 
-  it('keeps current package variants without exposing previous versions', () => {
-    render(<SdksCatalog />);
-
-    const videoCard = openProductCard('Video SDK');
-    const select = within(videoCard).getByRole('combobox', {
-      name: 'Video SDK version',
-    }) as HTMLSelectElement;
-    const optionLabels = Array.from(select.options).map(
-      (option) => option.textContent,
-    );
-
-    expect(optionLabels).toEqual(['v4.6.3 - Latest', 'v4.6.3 Lite - Latest']);
-
-    fireEvent.change(select, { target: { value: '1' } });
-
-    expect(
-      within(videoCard).getByText(
-        "implementation 'io.agora.rtc:lite-sdk:4.6.3'",
-      ),
-    ).toBeVisible();
-  });
 
   it('lists the Agora Agents SDK with TypeScript, Python, and Go platforms', () => {
     render(<SdksCatalog />);

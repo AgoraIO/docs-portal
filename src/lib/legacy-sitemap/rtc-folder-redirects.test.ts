@@ -36,7 +36,7 @@ describe('retired RTC folder redirects', () => {
   });
 
   it('sends every retired page URL to its expected destination', () => {
-    const matchers = vercelConfig.redirects.filter(rule => !rule.source.startsWith('/doc/')).map(createRedirectMatcher);
+    const matchers = vercelConfig.redirects.filter(rule => rule.source.startsWith('/en/') || rule.source.startsWith('/:')).map(createRedirectMatcher);
     const mismatches = expectations.flatMap(([source, expected]) => {
       const actual = resolveRedirect(matchers, source);
       return actual === expected
@@ -56,7 +56,7 @@ describe('retired RTC folder redirects', () => {
   });
 
   it('leaves similarly named paths alone', () => {
-    const matchers = vercelConfig.redirects.filter(rule => !rule.source.startsWith('/doc/')).map(createRedirectMatcher);
+    const matchers = vercelConfig.redirects.filter(rule => rule.source.startsWith('/en/') || rule.source.startsWith('/:')).map(createRedirectMatcher);
 
     for (const pathname of [
       '/en/realtime-media/videos',

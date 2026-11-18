@@ -52,7 +52,8 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/conversational-ai/platform/create-agent.mdx',
     );
-    expect(pagePaths).toHaveLength(119);
+    expect(pagePaths.filter(path => path.startsWith('en/'))).toHaveLength(86);
+    expect(pagePaths.filter(path => path.startsWith('zh-CN/'))).toHaveLength(126);
   });
 
   it('uses locale-specific document IDs in client page props', async () => {

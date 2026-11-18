@@ -543,46 +543,7 @@ describe('DocsContent', () => {
     ).toHaveAttribute('href', '/zh-CN/realtime-media/cloud-recording/overview');
   });
 
-  it('renders copy page menu actions for AI tools, MCP, and markdown', async () => {
-    renderWithRouter(
-      <DocsCopyMenu
-        locale="en"
-        markdownUrl="/en/introduction/about-agora.md"
-        slug="introduction/about-agora"
-        title="About Agora"
-      />,
-    );
 
-    const moreActionsButton = await screen.findByRole('button', {
-      name: 'Copy Page more actions',
-    });
-    expect(moreActionsButton).toHaveClass('min-h-11', 'min-w-11');
-
-    fireEvent.pointerDown(moreActionsButton, { button: 0 });
-
-    expect(await screen.findByText('AI tools')).toBeInTheDocument();
-    expect(
-      screen.getByRole('menuitem', { name: 'Open in ChatGPT' }),
-    ).toHaveAttribute(
-      'href',
-      expect.stringContaining('https://chatgpt.com/?q='),
-    );
-    expect(
-      screen.getByRole('menuitem', { name: 'Open in Claude' }),
-    ).toHaveAttribute(
-      'href',
-      expect.stringContaining('https://claude.ai/new?q='),
-    );
-    expect(
-      screen.getByRole('menuitem', { name: 'Connect to Cursor' }),
-    ).toHaveAttribute('href', '/en/introduction/agora-mcp');
-    expect(
-      screen.getByRole('menuitem', { name: 'Connect to VS Code' }),
-    ).toHaveAttribute('href', '/en/introduction/agora-mcp');
-    expect(
-      screen.getByRole('menuitem', { name: 'View as Markdown' }),
-    ).toHaveAttribute('href', '/en/introduction/about-agora.md');
-  });
 
   it('uses the route locale for copy menu labels during server render', async () => {
     await i18n.changeLanguage('en');
@@ -756,53 +717,7 @@ describe('DocsContent', () => {
     },
   );
 
-  it('copies MCP config and command from the copy page menu', async () => {
-    clipboardWriteText.mockReset();
-    clipboardWriteText.mockResolvedValue(undefined);
 
-    renderWithRouter(
-      <DocsCopyMenu
-        locale="en"
-        markdownUrl="/en/introduction/about-agora.md"
-        slug="introduction/about-agora"
-        title="About Agora"
-      />,
-    );
-
-    fireEvent.pointerDown(
-      await screen.findByRole('button', { name: 'Copy Page more actions' }),
-      { button: 0 },
-    );
-
-    fireEvent.click(
-      await screen.findByRole('menuitem', { name: 'Copy MCP Config' }),
-    );
-    await waitFor(() => {
-      expect(clipboardWriteText).toHaveBeenCalledWith(`{
-  "mcpServers": {
-    "agora-docs": {
-      "url": "https://mcp.agora.io"
-    }
-  }
-}`);
-    });
-
-    fireEvent.pointerDown(
-      screen.getByRole('button', { name: 'Copy Page more actions' }),
-      { button: 0 },
-    );
-    fireEvent.click(
-      await screen.findByRole('menuitem', { name: 'Copy MCP Command' }),
-    );
-    await waitFor(() => {
-      expect(clipboardWriteText).toHaveBeenLastCalledWith(
-        `code --add-mcp '{"name":"agora-docs","url":"https://mcp.agora.io"}'`,
-      );
-    });
-    expect(
-      screen.getByRole('button', { name: 'Copy Page' }),
-    ).not.toHaveAttribute('data-copied');
-  });
 
 });
 

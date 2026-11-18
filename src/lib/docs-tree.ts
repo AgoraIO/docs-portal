@@ -1102,7 +1102,7 @@ function isExposedFolderIndexChild(child: Item, folderName: ReactNode) {
 
   return (
     lastUrlSegment(child.url) === folderSlug(folderName) ||
-    childTitle === normalizedFolderName
+    (child.url.startsWith('/zh-CN/') && childTitle === normalizedFolderName)
   );
 }
 

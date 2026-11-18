@@ -156,7 +156,7 @@ export function resolveDocsNavScope({
   }
 
   const ancestors = findFolderAncestorsByUrl(tabNode, activePath) ?? [];
-  if (!ancestors.length && contentPath && getNodePath) {
+  if (activePath.startsWith('/zh-CN/') && !ancestors.length && contentPath && getNodePath) {
     const visit = (node: Folder) => {
       const path = getNodePath(node);
       const directory = path?.slice(0, path.lastIndexOf('/') + 1);
@@ -178,7 +178,7 @@ export function resolveDocsNavScope({
 
   const scope =
     scopedAncestors.at(-1) ??
-    findScopeByVersionHref(tabNode, activePath, getNodeMeta);
+    (activePath.startsWith('/zh-CN/') ? findScopeByVersionHref(tabNode, activePath, getNodeMeta) : undefined);
   if (!scope) {
     return null;
   }
@@ -576,7 +576,7 @@ function flattenParentNavScopeSidebarNodes(
       continue;
     }
 
-    for (const node of navScopeParentNodeToSidebarNodes(child, getNodeMeta)) {
+    for (const node of navScopeParentNodeToSidebarNodes(child, getNodeMeta, getFolderHref(folder).startsWith('/zh-CN/'))) {
       if (node.type === 'page' && node.url === indexUrl) {
         continue;
       }
@@ -595,13 +595,14 @@ function flattenParentNavScopeSidebarNodes(
 function navScopeParentNodeToSidebarNodes(
   node: Node,
   getNodeMeta: GetDocsNodeMeta,
+  chinese: boolean,
 ): DocsSidebarNode[] {
   if (node.type === 'separator') {
     return [];
   }
 
   if (node.type === 'page') {
-    return [pageTreePageToSidebarNode(node)];
+    return [pageTreePageToSidebarNode(node, chinese)];
   }
 
   if (node.type !== 'folder') {
@@ -621,9 +622,9 @@ function navScopeParentNodeToSidebarNodes(
     : navScopeNodeToSidebarNodes(node, getNodeMeta);
 }
 
-function pageTreePageToSidebarNode(item: Item): DocsSidebarNode {
+function pageTreePageToSidebarNode(item: Item, chinese: boolean): DocsSidebarNode {
   return {
-    ...(item.external ? { external: true, href: item.url } : {}),
+    ...(chinese && item.external ? { external: true, href: item.url } : {}),
     id: item.url,
     title: normalizeLabel(item.name, item.url),
     type: 'page',
@@ -868,6 +869,7 @@ function pageTreeFolderToParentSidebarNodes(
     for (const sidebarNode of navScopeParentNodeToSidebarNodes(
       child,
       getNodeMeta,
+      getFolderHref(node).startsWith('/zh-CN/'),
     )) {
       if (pendingIndexNode) {
         if (currentSection) {

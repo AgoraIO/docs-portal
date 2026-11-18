@@ -641,7 +641,7 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
   });
 
   it('keeps the existing English realtime-media RESTful API injection', async () => {
-    const sidebar = await loadSidebar('en', 'realtime-media', ['voice']);
+    const sidebar = await loadSidebar('en', 'realtime-media', ['rtc']);
     const reference = findSection(sidebar, ['Reference']);
 
     expect(reference?.children?.[0]).toMatchObject({

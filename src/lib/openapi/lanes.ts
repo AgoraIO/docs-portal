@@ -1854,7 +1854,7 @@ export function getOpenApiEndpointUrl(
 export function getOpenApiPrerenderPaths() {
   return getOpenApiLanes().flatMap((lane) =>
     getOpenApiLaneLocales(lane).flatMap((locale) => [
-      lane.parentUrl[locale],
+      ...(locale === 'zh-CN' ? [lane.parentUrl[locale]] : []),
       ...getOpenApiOperationIds(lane).map((operationId) =>
         getOpenApiEndpointUrl(lane, locale, operationId),
       ),

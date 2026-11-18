@@ -191,7 +191,7 @@ describe('Chinese SDK account guidance', () => {
   it('does not add account guidance to English SDK downloads', async () => {
     window.history.replaceState(null, '', '/en/api-reference/sdks');
     render(<SdksCatalog product="signaling" platform="android" />);
-    const download = screen.getByRole('link', { name: 'Direct download' });
+    const download = within(screen.getByRole('article', {name: 'Signaling SDK'})).getByRole('link', { name: /Direct download|Download SDK/ });
     expect(fireEvent.click(download)).toBe(true);
     expect(download).toHaveAttribute('target', '_blank');
     expect(fetch).not.toHaveBeenCalled();

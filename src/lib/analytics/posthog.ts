@@ -76,9 +76,13 @@ const filterAccountFlowEvent: BeforeSendFn = (event) => {
 
 const filterOutboundEvent: BeforeSendFn = (event) => {
   const filtered = filterAccountFlowEvent(event);
-  return filtered && import.meta.env.VITE_DOCS_REGION === 'cn'
-    ? filterCnMeasurementEvent(filtered)
-    : filtered;
+  if (!filtered) return filtered;
+  if (import.meta.env.VITE_DOCS_REGION === 'cn') return filterCnMeasurementEvent(filtered);
+  if (!filtered.properties) return filtered;
+  return {
+    ...filtered,
+    properties: sanitizeAnalyticsProperties(filtered.properties, filtered.event === 'docs_page_feedback'),
+  };
 };
 
 let currentDocsAccount: DocsAccount | null = null;
@@ -1172,16 +1176,7 @@ function getPostHogClient() {
       posthog.init(key, {
         api_host: import.meta.env.VITE_POSTHOG_HOST || POSTHOG_HOST,
         autocapture: true,
-        before_send: import.meta.env.VITE_DOCS_REGION === 'cn' ? filterOutboundEvent : (event) =>
-          event?.properties
-            ? {
-                ...event,
-                properties: sanitizeAnalyticsProperties(
-                  event.properties,
-                  event.event === 'docs_page_feedback',
-                ),
-              }
-            : event,
+        before_send: filterOutboundEvent,
         capture_pageview: 'history_change',
         defaults: '2026-05-30',
         disable_capture_url_hashes: true,

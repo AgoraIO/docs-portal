@@ -112,7 +112,7 @@ describe('DocsCodeBlock', () => {
   });
 
   it('wraps API signatures by default while preserving linked types and the toggle', async () => {
-    const { ApiSignature } = getMDXComponents();
+    const { ApiSignature } = getMDXComponents(undefined, { locale: 'zh-CN' });
     await renderBlocks(
       <ApiSignature>
         <p>

@@ -494,8 +494,9 @@ describe('DocsShell', () => {
 
     renderDocsShell(
       {
-        activePath: '/en/api-reference/api-ref/cloud-recording/long-endpoint',
+        activePath: '/zh-CN/api-reference/api-ref/cloud-recording/long-endpoint',
         activeTab: 'long-realtime-media',
+        locale: 'zh-CN',
         sidebar: [
           {
             children: [
@@ -504,7 +505,7 @@ describe('DocsShell', () => {
                 method: 'POST',
                 title: longPageTitle,
                 type: 'page',
-                url: '/en/api-reference/api-ref/cloud-recording/long-endpoint',
+                url: '/zh-CN/api-reference/api-ref/cloud-recording/long-endpoint',
               },
             ],
             id: 'long-section',
@@ -516,20 +517,20 @@ describe('DocsShell', () => {
           {
             id: 'long-realtime-media',
             title: longTabTitle,
-            url: '/en/realtime-media',
+            url: '/zh-CN/realtime-media',
           },
           {
             id: 'api-reference',
             title: 'Reference',
-            url: '/en/api-reference',
+            url: '/zh-CN/api-reference',
           },
         ],
       },
-      '/en/api-reference/long-endpoint',
+      '/zh-CN/api-reference/long-endpoint',
     );
 
     fireEvent.click(
-      await screen.findByRole('button', { name: 'Open navigation' }),
+      await screen.findByRole('button', { name: '打开导航' }),
     );
 
     const mobileSheet = await screen.findByRole('dialog');
