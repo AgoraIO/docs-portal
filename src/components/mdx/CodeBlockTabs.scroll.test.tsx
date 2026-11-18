@@ -11,7 +11,7 @@ type TabsProps = {
   persist?: boolean;
   value?: string;
 };
-const components = getMDXComponents(undefined, {locale: 'zh-CN'});
+const components = getMDXComponents(undefined, { locale: 'zh-CN' });
 const Tabs = components.Tabs as ComponentType<TabsProps>;
 const List = components.TabsList as ComponentType<TabsProps>;
 const Trigger = components.TabsTrigger as ComponentType<TabsProps>;

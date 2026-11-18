@@ -5,7 +5,6 @@ import {
 } from './fumadocs-source.server';
 
 describe('fumadocs openapi source', () => {
-
   it('omits empty request bodies from generated whiteboard GET operation payloads', async () => {
     const source = await createLocalizedOpenApiSource();
     const page = source.files.find(
@@ -109,5 +108,4 @@ describe('fumadocs openapi source', () => {
       }
     }
   });
-
 });

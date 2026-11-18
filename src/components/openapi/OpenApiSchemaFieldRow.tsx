@@ -1,9 +1,9 @@
-import { useGlobalSchemaPresentation } from './GlobalSchemaPresentation';
 import { Check, ChevronRight, Link2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
 import type { OpenApiSchemaViewNode } from '@/lib/openapi/schema-view';
+import { useGlobalSchemaPresentation } from './GlobalSchemaPresentation';
 import {
   OpenApiSchemaMetadata,
   type OpenApiSchemaMetadataItem,

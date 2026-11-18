@@ -68,5 +68,4 @@ describe('OpenAPI callout coverage', () => {
     ).toHaveTextContent(/^注意$/);
     expect(callout?.getAttribute('style')).toContain('--color-fd-warning');
   });
-
 });

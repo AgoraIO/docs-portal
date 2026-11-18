@@ -239,7 +239,7 @@ describe('PostHog analytics', () => {
       docs_page_type: 'navigation-landing',
       docs_pathname: '/en/introduction',
       docs_platform: 'web',
-      docs_product: expect.any(String),
+      docs_product: 'introduction',
       docs_tab: 'introduction',
       hash: '#start',
       locale: 'en',
@@ -272,7 +272,10 @@ describe('PostHog analytics', () => {
         $current_url: 'https://docs.example/en/introduction?platform=web#start',
       },
     };
-    expect(initMock.mock.calls[0][1].before_send(pageview)).toEqual({event: '$pageview', properties: {$current_url: 'https://docs.example/en/introduction'}});
+    expect(initMock.mock.calls[0][1].before_send(pageview)).toEqual({
+      event: '$pageview',
+      properties: { $current_url: 'https://docs.example/en/introduction' },
+    });
   });
 
   it('keeps account identity across companies and never offers an identified account as an anonymous merge source', async () => {

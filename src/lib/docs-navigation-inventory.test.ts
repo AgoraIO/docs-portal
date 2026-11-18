@@ -90,9 +90,14 @@ it('audits API ownership across both locale source trees and verifies each recov
         sample.locale === 'zh-CN'
           ? resolveZhCnApiReferenceEntry(sample.url)
           : undefined;
-      expect(page.sidebarHeader?.title).toBe(
-        entry ? `${entry.product} · ${entry.platform}` : sample.title,
-      );
+      if (sample.locale === 'zh-CN') {
+        expect(page.sidebarHeader?.title).toBe(
+          entry ? `${entry.product} · ${entry.platform}` : sample.title,
+        );
+      } else {
+        // Global keeps the published navigation for unlisted reference pages.
+        expect(page.sidebarHeader?.title).toBeUndefined();
+      }
       verified.push({ ...sample, header: page.sidebarHeader?.title });
     }
   }

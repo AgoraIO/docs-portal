@@ -67,26 +67,31 @@ async function main() {
 
 async function loadGitLastUpdatedIndex(incompleteHistory) {
   try {
-    const { stdout } = await execFileAsync(
-      'git',
-      [
-        'log',
-        // The shallow boundary looks like an initial commit containing every
-        // file, but it cannot tell us when those files actually changed.
-        ...(incompleteHistory ? ['--min-parents=1'] : []),
-        `--format=${GIT_LOG_DATE_MARKER}%cI`,
-        '--name-only',
-        '--',
-        ...GIT_METADATA_ROOTS,
-      ],
-      {
-        cwd: process.cwd(),
-        encoding: 'utf8',
-        maxBuffer: 64 * 1024 * 1024,
-      },
-    );
+    // Separate histories let Git simplify merges against each locale's tree.
+    const roots = ['content/docs/en', 'content/docs/zh-CN', 'content/openapi'];
+    const histories = await Promise.all(roots.map(async (root) => {
+      const { stdout } = await execFileAsync(
+        'git',
+        [
+          'log',
+          // The shallow boundary looks like an initial commit containing every
+          // file, but it cannot tell us when those files actually changed.
+          ...(incompleteHistory ? ['--min-parents=1'] : []),
+          `--format=${GIT_LOG_DATE_MARKER}%cI`,
+          '--name-only',
+          '--',
+          root,
+        ],
+        {
+          cwd: process.cwd(),
+          encoding: 'utf8',
+          maxBuffer: 64 * 1024 * 1024,
+        },
+      );
 
-    return parseGitLastUpdatedIndex(stdout);
+      return parseGitLastUpdatedIndex(stdout);
+    }));
+    return new Map(histories.flatMap((history) => [...history]));
   } catch (error) {
     console.warn('[docs-last-updated] failed to read Git history', error);
     return null;

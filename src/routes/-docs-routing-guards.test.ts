@@ -1,7 +1,7 @@
 import { isNotFound, isRedirect } from '@tanstack/react-router';
 import { describe, expect, it, vi } from 'vitest';
-import { preserveRedirectSearch } from '@/lib/docs-redirect-url';
 import type { DocsPagePayload } from '@/lib/docs-page.server';
+import { preserveRedirectSearch } from '@/lib/docs-redirect-url';
 import { shouldUseStaticDocsPayload } from '@/lib/docs-static-manifest';
 
 vi.mock('@/lib/docs-static-manifest', async (importOriginal) => {

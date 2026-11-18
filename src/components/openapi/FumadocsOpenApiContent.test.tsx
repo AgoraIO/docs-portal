@@ -3321,7 +3321,10 @@ describe('FumadocsOpenApiContent', () => {
       document.querySelector('[data-openapi-responses]') as HTMLElement,
     );
 
-    expect(responseScope.getByRole('tab', { name: '200' })).toHaveAttribute('aria-selected', 'true');
+    expect(responseScope.getByRole('tab', { name: '200' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
     expect(
       responseScope.getByText(
         'The request succeeded and returned the created streaming key.',

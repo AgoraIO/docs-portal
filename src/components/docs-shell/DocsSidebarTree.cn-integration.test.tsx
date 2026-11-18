@@ -241,7 +241,10 @@ describe('DocsSidebarTree', () => {
       },
     ];
 
-    renderSidebarTree(tree, '/zh-CN/api-reference/api-ref/conversational-ai/join');
+    renderSidebarTree(
+      tree,
+      '/zh-CN/api-reference/api-ref/conversational-ai/join',
+    );
 
     const link = await screen.findByRole('link', {
       name: /Start a conversational AI agent POST/i,
@@ -333,7 +336,10 @@ describe('DocsSidebarTree', () => {
       },
     ];
 
-    renderSidebarTree(tree, '/zh-CN/api-reference/api-ref/conversational-ai/join');
+    renderSidebarTree(
+      tree,
+      '/zh-CN/api-reference/api-ref/conversational-ai/join',
+    );
 
     const label = await screen.findByTitle(longTitle);
     const link = screen.getByRole('link', {
@@ -549,5 +555,4 @@ describe('DocsSidebarTree', () => {
       'true',
     );
   });
-
 });

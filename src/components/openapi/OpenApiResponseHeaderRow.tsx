@@ -1,6 +1,6 @@
-import { useGlobalSchemaPresentation } from './GlobalSchemaPresentation';
 import { Link2 } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { useGlobalSchemaPresentation } from './GlobalSchemaPresentation';
 
 export function OpenApiResponseHeaderRow({
   anchorId,

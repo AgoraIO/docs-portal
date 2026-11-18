@@ -4,7 +4,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import * as runtime from 'react/jsx-runtime';
 import { describe, expect, it } from 'vitest';
 import { getMDXComponents, MDXAccordionProvider } from '@/components/mdx';
-import { docs } from '../../source.config';
+import { createDocsMdxOptions } from '@/lib/mdx/docs-preset';
 
 const contentPath =
   'content/docs/zh-CN/realtime-media/rtc/get-started/quick-start.mdx';
@@ -16,7 +16,7 @@ async function renderScenarioSteps() {
     web.indexOf('### 3. 实现用户界面'),
     web.indexOf('### 7. 后续步骤'),
   );
-  const configureMdx = docs.docs.mdxOptions;
+  const configureMdx = createDocsMdxOptions('cn');
   if (typeof configureMdx !== 'function') {
     throw new Error('Expected the documentation MDX compiler configuration.');
   }

@@ -389,7 +389,8 @@ export function extractPublishedCnSections(
         : page.objectType === 'openapi'
           ? ['restful']
           : page.titlePlatforms?.filter(isKnownPlatform),
-    docType: page.objectType === 'openapi' ? 'openapi' as const : 'docs' as const,
+    docType:
+      page.objectType === 'openapi' ? ('openapi' as const) : ('docs' as const),
     audience: ['developer', 'customer-support'],
     status: 'published',
     hidden: false,

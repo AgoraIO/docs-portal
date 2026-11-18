@@ -200,7 +200,6 @@ function createPlatformPayload(platforms: string): DocsPagePayload {
 }
 
 describe('docs route locale guards', () => {
-
   it(
     'redirects tab roots without index pages to their first real page',
     async () => {
@@ -830,28 +829,28 @@ describe('docs route locale guards', () => {
   it('serves direct zh-CN .md docs page URLs as markdown', async () => {
     publishedLocaleOverride.value = true;
     try {
-    const response = (await getGetHandler(DocPageRoute)({
-      context: {},
-      next: vi.fn(() => {
-        throw new Error('expected zh-CN .md request to be handled directly');
-      }),
-      params: {
-        _splat: 'mcp-integrate.md',
-        locale: 'zh-CN',
-        tab: 'introduction',
-      },
-      pathname: '/zh-CN/introduction/mcp-integrate.md',
-      request: new Request(
-        'https://docs.example.com/zh-CN/introduction/mcp-integrate.md',
-      ),
-    } as never)) as Response;
+      const response = (await getGetHandler(DocPageRoute)({
+        context: {},
+        next: vi.fn(() => {
+          throw new Error('expected zh-CN .md request to be handled directly');
+        }),
+        params: {
+          _splat: 'mcp-integrate.md',
+          locale: 'zh-CN',
+          tab: 'introduction',
+        },
+        pathname: '/zh-CN/introduction/mcp-integrate.md',
+        request: new Request(
+          'https://docs.example.com/zh-CN/introduction/mcp-integrate.md',
+        ),
+      } as never)) as Response;
 
-    await expect(response.text()).resolves.toContain(
-      '# 声网 MCP (/zh-CN/introduction/mcp-integrate)',
-    );
-    expect(response.headers.get('Content-Type')).toBe(
-      'text/markdown; charset=utf-8',
-    );
+      await expect(response.text()).resolves.toContain(
+        '# 声网 MCP (/zh-CN/introduction/mcp-integrate)',
+      );
+      expect(response.headers.get('Content-Type')).toBe(
+        'text/markdown; charset=utf-8',
+      );
     } finally {
       publishedLocaleOverride.value = false;
     }
@@ -860,36 +859,35 @@ describe('docs route locale guards', () => {
   it('serves direct zh-CN platform .md docs page URLs as markdown', async () => {
     publishedLocaleOverride.value = true;
     try {
-    const response = (await getGetHandler(DocPageRoute)({
-      context: {},
-      next: vi.fn(() => {
-        throw new Error(
-          'expected zh-CN platform .md request to be handled directly',
-        );
-      }),
-      params: {
-        _splat: 'api-ref/uikit-sdk/android.md',
-        locale: 'zh-CN',
-        tab: 'api-reference',
-      },
-      pathname: '/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
-      request: new Request(
-        'https://docs.example.com/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
-      ),
-    } as never)) as Response;
-    const markdown = await response.text();
+      const response = (await getGetHandler(DocPageRoute)({
+        context: {},
+        next: vi.fn(() => {
+          throw new Error(
+            'expected zh-CN platform .md request to be handled directly',
+          );
+        }),
+        params: {
+          _splat: 'api-ref/uikit-sdk/android.md',
+          locale: 'zh-CN',
+          tab: 'api-reference',
+        },
+        pathname: '/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
+        request: new Request(
+          'https://docs.example.com/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
+        ),
+      } as never)) as Response;
+      const markdown = await response.text();
 
-    expect(response.headers.get('Content-Type')).toBe(
-      'text/markdown; charset=utf-8',
-    );
-    expect(markdown).toContain(
-      '/zh-CN/api-reference/api-ref/uikit-sdk/android',
-    );
+      expect(response.headers.get('Content-Type')).toBe(
+        'text/markdown; charset=utf-8',
+      );
+      expect(markdown).toContain(
+        '/zh-CN/api-reference/api-ref/uikit-sdk/android',
+      );
     } finally {
       publishedLocaleOverride.value = false;
     }
   });
-
 });
 
 describe('docs redirect fragments', () => {

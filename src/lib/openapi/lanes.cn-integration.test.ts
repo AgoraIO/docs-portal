@@ -13,7 +13,6 @@ import {
 } from './lanes';
 
 describe('openapi lanes', () => {
-
   it('returns every OpenAPI locale to its reference center', () => {
     expect(getOpenApiReferenceBackLink('en')).toEqual({
       href: '/en/api-reference',
@@ -59,5 +58,4 @@ describe('openapi lanes', () => {
       ]),
     ).toBeNull();
   });
-
 });

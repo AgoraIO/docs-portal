@@ -320,5 +320,4 @@ describe('legacy redirect Vercel artifacts', () => {
       expect(staticRedirects).toContainEqual({ p: source, t: destination });
     }
   });
-
 });

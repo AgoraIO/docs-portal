@@ -61,8 +61,8 @@ import { DocsSearchDialog } from './DocsSearchDialog';
 import { DocsSidebar } from './DocsSidebar';
 import { DocsSidebarEndpointLabel } from './DocsSidebarEndpointLabel';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
-import { DocsSidebarTree } from './DocsSidebarTree';
 import { DocsSidebarProductLink } from './DocsSidebarProductLink';
+import { DocsSidebarTree } from './DocsSidebarTree';
 import { DocsSiteFooter } from './DocsSiteFooter';
 import { DocsSiteMenu } from './DocsSiteMenu';
 import { DocsTocRail } from './DocsTocRail';
@@ -433,7 +433,8 @@ export function DocsShell({
           <div
             className={cn(
               'mx-auto flex h-[52px] w-full items-center gap-3 px-4 sm:px-7',
-              currentLocale === 'zh-CN' && 'lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)_minmax(0,1fr)]',
+              currentLocale === 'zh-CN' &&
+                'lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)_minmax(0,1fr)]',
               shellWidthClassName,
             )}
             data-testid="docs-main-header-row"
@@ -564,9 +565,16 @@ export function DocsShell({
               >
                 {currentLocale === 'en' && !isSearchLayout ? (
                   <div className="w-80">
-                    <DocsSearchDialog loadPages={loadPages} locale={currentLocale} mode="desktop" productScopes={productScopes} />
+                    <DocsSearchDialog
+                      loadPages={loadPages}
+                      locale={currentLocale}
+                      mode="desktop"
+                      productScopes={productScopes}
+                    />
                   </div>
-                ) : <DocsSiteMenu locale={currentLocale} />}
+                ) : (
+                  <DocsSiteMenu locale={currentLocale} />
+                )}
                 <Button
                   aria-label={themeLabel}
                   aria-pressed={isDarkTheme}
@@ -835,80 +843,88 @@ function MobileSidebar({
                 onSelectPath={onSelectPath}
               />
             ) : null}
-            {currentLocale === 'zh-CN' ? (<>
-            <div className="flex min-w-0 flex-col gap-1">
-              {sidebarNodes.map((node) => (
-                <MobileSidebarNode
+            {currentLocale === 'zh-CN' ? (
+              <>
+                <div className="flex min-w-0 flex-col gap-1">
+                  {sidebarNodes.map((node) => (
+                    <MobileSidebarNode
+                      activePath={activePath}
+                      depth={0}
+                      key={node.id}
+                      node={node}
+                      onSelectPath={onSelectPath}
+                      sectionDisclosureLabel={(title) =>
+                        t('docs.toggleSectionPages', { title })
+                      }
+                    />
+                  ))}
+                </div>
+                {sidebarHeader?.productDocsHref ? (
+                  <DocsSidebarProductLink
+                    href={sidebarHeader.productDocsHref}
+                    locale={currentLocale}
+                    mode="mobile"
+                    onSelectPath={onSelectPath}
+                  />
+                ) : null}
+              </>
+            ) : (
+              <>
+                {!hasDocVersionCatalog(sidebar, activePath) ? (
+                  <DocVersionSelector
+                    activePath={activePath}
+                    className="mb-2"
+                    onSelectPath={onSelectPath}
+                  />
+                ) : null}
+                <DocsSidebarTree
                   activePath={activePath}
-                  depth={0}
-                  key={node.id}
-                  node={node}
+                  nodes={sidebar}
                   onSelectPath={onSelectPath}
-                  sectionDisclosureLabel={(title) =>
-                    t('docs.toggleSectionPages', { title })
-                  }
                 />
-              ))}
-            </div>
-            {sidebarHeader?.productDocsHref ? (
-              <DocsSidebarProductLink
-                href={sidebarHeader.productDocsHref}
-                locale={currentLocale}
-                mode="mobile"
-                onSelectPath={onSelectPath}
-              />
-            ) : null}
-            </>) : (<>
-            {!hasDocVersionCatalog(sidebar, activePath) ? (
-              <DocVersionSelector
-                activePath={activePath}
-                className="mb-2"
-                onSelectPath={onSelectPath}
-              />
-            ) : null}
-            <DocsSidebarTree
-              activePath={activePath}
-              nodes={sidebar}
-              onSelectPath={onSelectPath}
-            />
-            </>)}
+              </>
+            )}
           </div>
           {currentLocale === 'en' && (
-          <div className="flex flex-col gap-2 border-t border-border pt-4">
-            <div className="flex items-center gap-2">
-              <Button
-                aria-label={themeLabel}
-                aria-pressed={isDarkTheme}
-                onClick={toggleTheme}
-                size="icon"
-                variant="ghost"
-              >
-                {isDarkTheme ? <SunIcon /> : <MoonIcon />}
-                <span className="sr-only">{themeLabel}</span>
-              </Button>
+            <div className="flex flex-col gap-2 border-t border-border pt-4">
+              <div className="flex items-center gap-2">
+                <Button
+                  aria-label={themeLabel}
+                  aria-pressed={isDarkTheme}
+                  onClick={toggleTheme}
+                  size="icon"
+                  variant="ghost"
+                >
+                  {isDarkTheme ? <SunIcon /> : <MoonIcon />}
+                  <span className="sr-only">{themeLabel}</span>
+                </Button>
+              </div>
             </div>
-          </div>
           )}
         </div>
       </ScrollArea>
       {currentLocale === 'zh-CN' && (
-      <div
-        className="flex shrink-0 items-center gap-2 border-t border-border px-3 py-2 text-muted-foreground sm:px-4"
-        data-testid="docs-mobile-sidebar-tools"
-      >
-        <DocsSiteMenu locale={currentLocale} mobile onNavigate={onSelectPath} />
-        <Button
-          aria-label={themeLabel}
-          aria-pressed={isDarkTheme}
-          className="size-11"
-          onClick={toggleTheme}
-          size="icon"
-          variant="ghost"
+        <div
+          className="flex shrink-0 items-center gap-2 border-t border-border px-3 py-2 text-muted-foreground sm:px-4"
+          data-testid="docs-mobile-sidebar-tools"
         >
-          {isDarkTheme ? <SunIcon /> : <MoonIcon />}
-          <span className="sr-only">{themeLabel}</span>
-        </Button>
-      </div>
+          <DocsSiteMenu
+            locale={currentLocale}
+            mobile
+            onNavigate={onSelectPath}
+          />
+          <Button
+            aria-label={themeLabel}
+            aria-pressed={isDarkTheme}
+            className="size-11"
+            onClick={toggleTheme}
+            size="icon"
+            variant="ghost"
+          >
+            {isDarkTheme ? <SunIcon /> : <MoonIcon />}
+            <span className="sr-only">{themeLabel}</span>
+          </Button>
+        </div>
       )}
     </div>
   );

@@ -1,10 +1,14 @@
-import { useTranslations } from '@fuma-translate/react';
 import { createLink } from '@tanstack/react-router';
 import type {
   Accordion as FumadocsAccordion,
   Accordions as FumadocsAccordions,
 } from 'fumadocs-ui/components/accordion';
 import { Card as FumadocsCard } from 'fumadocs-ui/components/card';
+import {
+  type CodeBlockProps,
+  CodeBlock as FumadocsCodeBlock,
+  Pre as FumadocsCodeBlockPre,
+} from 'fumadocs-ui/components/codeblock';
 import { File, Files, Folder } from 'fumadocs-ui/components/files';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import {
@@ -88,7 +92,6 @@ import {
   normalizeDocsHref,
 } from '@/lib/docs-link-normalize';
 import { DEFAULT_LOCALE, normalizeLocale } from '@/lib/i18n/i18n-config';
-import { Parameter as GlobalParameter, ParameterList as GlobalParameterList } from './mdx/GlobalParameters';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import { buildPlatformPathname } from '@/lib/platforms/route';
 import {
@@ -101,6 +104,10 @@ import {
 } from './mdx/ApiReference';
 import { DocsHeading } from './mdx/DocsHeading';
 import { DocsTable } from './mdx/DocsTable';
+import {
+  Parameter as GlobalParameter,
+  ParameterList as GlobalParameterList,
+} from './mdx/GlobalParameters';
 import { PlanCards, PricingCards } from './mdx/PlanCards';
 import {
   PlatformInline,
@@ -288,7 +295,11 @@ function Accordion({
     <FumadocsAccordionItem value={value} {...props}>
       {header}
       <FumadocsAccordionContent
-        className={!chinese && headingLevel !== undefined ? 'data-[state=closed]:hidden' : undefined}
+        className={
+          !chinese && headingLevel !== undefined
+            ? 'data-[state=closed]:hidden'
+            : undefined
+        }
         data-toc-hidden={headingLevel !== undefined ? 'true' : undefined}
         forceMount={headingLevel !== undefined ? true : undefined}
       >
@@ -369,7 +380,7 @@ function firstVersionValue(children: ReactNode): string | undefined {
       return;
     }
 
-    if ((child.type === Accordion || child.type === ChineseAccordion)) {
+    if (child.type === Accordion || child.type === ChineseAccordion) {
       const { headingLevel, title, value } = child.props as AccordionProps;
       if (headingLevel) {
         first = value ?? String(title);
@@ -1187,7 +1198,9 @@ function CodeBlockTabs({
   value,
   ...props
 }: CodeBlockTabsRootProps) {
-  const Root = chinese ? FumadocsCodeBlockTabs : defaultMdxComponents.CodeBlockTabs;
+  const Root = chinese
+    ? FumadocsCodeBlockTabs
+    : defaultMdxComponents.CodeBlockTabs;
   const rootRef = useRef<HTMLDivElement | null>(null);
   const setRootRef = useCallback(
     (element: HTMLDivElement | null) => {
@@ -1345,7 +1358,9 @@ function TabAwareHeading({
     );
   });
   const labelId = useId();
-  const icon = getReleaseNoteCategoryIcon(contentPath, headingLabel(children));
+  const icon = contentPath?.startsWith('zh-CN/')
+    ? getReleaseNoteCategoryIcon(contentPath, headingLabel(children))
+    : undefined;
   const content = (
     <span id={labelId}>
       {icon && (
@@ -1460,15 +1475,19 @@ function CodeBlockTab({
   className,
   value,
   ...props
-}: ComponentProps<typeof FumadocsCodeBlockTab> & {chinese?: boolean}) {
-  const Panel = chinese ? FumadocsCodeBlockTab : defaultMdxComponents.CodeBlockTab;
+}: ComponentProps<typeof FumadocsCodeBlockTab> & { chinese?: boolean }) {
+  const Panel = chinese
+    ? FumadocsCodeBlockTab
+    : defaultMdxComponents.CodeBlockTab;
   const selectedValue = useContext(CodeBlockTabsValueContext);
   const isInactive = selectedValue !== undefined && selectedValue !== value;
 
   return (
     <Panel
       className={cn(
-        chinese ? 'p-0' : '[&>figure]:m-0 [&>figure]:rounded-none [&>figure]:border-0 [&>figure]:bg-fd-card [&>figure]:shadow-none',
+        chinese
+          ? 'p-0'
+          : '[&>figure]:m-0 [&>figure]:rounded-none [&>figure]:border-0 [&>figure]:bg-fd-card [&>figure]:shadow-none',
         className,
       )}
       data-code-tab-value={chinese ? value : undefined}
@@ -1489,6 +1508,7 @@ function CommandBlock({
   language?: string;
   locale?: string;
 }) {
+  const CodeFrame = locale === 'en' ? GlobalPre : Pre;
   const lineKeys = new Map<string, number>();
   const lines = code
     .replace(/\n$/, '')
@@ -1504,7 +1524,10 @@ function CommandBlock({
     });
 
   return (
-    <Pre className={cn('shiki', `language-${language}`)} locale={locale}>
+    <CodeFrame
+      className={cn('shiki', `language-${language}`)}
+      {...(locale === 'en' ? {} : { locale })}
+    >
       <code className={cn('language-code', `language-${language}`)}>
         {lines.map(({ id, line }) => (
           <span className="line" key={id}>
@@ -1512,7 +1535,7 @@ function CommandBlock({
           </span>
         ))}
       </code>
-    </Pre>
+    </CodeFrame>
   );
 }
 
@@ -1807,10 +1830,31 @@ function ZoomableImage({
   );
 }
 
+function GlobalPre({ className, ...props }: CodeBlockProps) {
+  return (
+    <FumadocsCodeBlock
+      {...props}
+      data-line-numbers
+      className={cn('bg-fd-card shadow-none', className)}
+      viewportProps={{
+        ...props.viewportProps,
+        className: cn(
+          'overflow-x-hidden overflow-y-auto',
+          props.viewportProps?.className,
+        ),
+      }}
+    >
+      <FumadocsCodeBlockPre className="w-full max-w-full min-w-0 whitespace-pre-wrap [overflow-wrap:anywhere] break-words">
+        {props.children}
+      </FumadocsCodeBlockPre>
+    </FumadocsCodeBlock>
+  );
+}
+
 // Module-level component types keep local wrapping state when the page remeasures.
 const localizedCodeComponents = {
   en: {
-    pre: (props: PreProps) => <Pre {...props} locale="en" />,
+    pre: GlobalPre,
     CommandBlock: (props: ComponentProps<typeof CommandBlock>) => (
       <CommandBlock {...props} locale="en" />
     ),
@@ -1844,7 +1888,10 @@ function ChineseCodeBlockTabs(props: CodeBlockTabsRootProps) {
   return <CodeBlockTabs {...props} chinese />;
 }
 
-function GlobalCodeBlockTabsList({className, ...props}: ComponentProps<typeof FumadocsCodeBlockTabsList>) {
+function GlobalCodeBlockTabsList({
+  className,
+  ...props
+}: ComponentProps<typeof FumadocsCodeBlockTabsList>) {
   const List = defaultMdxComponents.CodeBlockTabsList;
   return <List {...props} className={cn('bg-fd-card', className)} />;
 }
@@ -1853,7 +1900,9 @@ function ChineseCodeBlockTab(props: ComponentProps<typeof CodeBlockTab>) {
   return <CodeBlockTab {...props} chinese />;
 }
 
-function ChinesePlatformTabsGroup(props: ComponentProps<typeof PlatformTabsGroup>) {
+function ChinesePlatformTabsGroup(
+  props: ComponentProps<typeof PlatformTabsGroup>,
+) {
   return <PlatformTabsGroup {...props} locale="zh-CN" />;
 }
 
@@ -1861,7 +1910,9 @@ export function getMDXComponents(
   components?: MDXComponents,
   context?: MDXContext,
 ) {
-  const locale = normalizeLocale(context?.locale ?? context?.contentPath?.split('/')[0]) ?? DEFAULT_LOCALE;
+  const locale =
+    normalizeLocale(context?.locale ?? context?.contentPath?.split('/')[0]) ??
+    DEFAULT_LOCALE;
   const isChinese = locale === 'zh-CN';
   const DocsTable = createDocsTableComponent(locale);
   const codeComponents = getCodeComponents(locale);
@@ -1869,7 +1920,12 @@ export function getMDXComponents(
     ...defaultMdxComponents,
     Callout: DocsCallout,
     CalloutContainer: DocsCalloutContainer,
-    table: context?.contentPath === IM_PRICING_DETAILS_CONTENT_PATH ? createPricingTableComponent(context.contentPath) : isChinese ? DocsTable : defaultMdxComponents.table,
+    table:
+      context?.contentPath === IM_PRICING_DETAILS_CONTENT_PATH
+        ? createPricingTableComponent(context.contentPath)
+        : isChinese
+          ? DocsTable
+          : defaultMdxComponents.table,
     DocsTable,
     img: ZoomableImage,
     DocsImage: ZoomableImage,
@@ -1913,7 +1969,9 @@ export function getMDXComponents(
     PlatformInline,
     _PlatformProcessedMarker: PlatformProcessedMarker,
     PlatformStructured,
-    _PlatformTabsGroup: isChinese ? ChinesePlatformTabsGroup : PlatformTabsGroup,
+    _PlatformTabsGroup: isChinese
+      ? ChinesePlatformTabsGroup
+      : PlatformTabsGroup,
     _PlatformPanel: PlatformPanel,
     ...components,
   } satisfies MDXComponents;
@@ -1925,8 +1983,10 @@ declare global {
   type MDXProvidedComponents = ReturnType<typeof getMDXComponents>;
 }
 
-const directParameter = DEFAULT_LOCALE === 'zh-CN' ? Parameter : GlobalParameter;
-const directParameterList = DEFAULT_LOCALE === 'zh-CN' ? ParameterList : GlobalParameterList;
+const directParameter =
+  DEFAULT_LOCALE === 'zh-CN' ? Parameter : GlobalParameter;
+const directParameterList =
+  DEFAULT_LOCALE === 'zh-CN' ? ParameterList : GlobalParameterList;
 
 export {
   ApiReturns,

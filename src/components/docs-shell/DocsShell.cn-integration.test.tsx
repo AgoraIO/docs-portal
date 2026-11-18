@@ -494,7 +494,8 @@ describe('DocsShell', () => {
 
     renderDocsShell(
       {
-        activePath: '/zh-CN/api-reference/api-ref/cloud-recording/long-endpoint',
+        activePath:
+          '/zh-CN/api-reference/api-ref/cloud-recording/long-endpoint',
         activeTab: 'long-realtime-media',
         locale: 'zh-CN',
         sidebar: [
@@ -529,9 +530,7 @@ describe('DocsShell', () => {
       '/zh-CN/api-reference/long-endpoint',
     );
 
-    fireEvent.click(
-      await screen.findByRole('button', { name: '打开导航' }),
-    );
+    fireEvent.click(await screen.findByRole('button', { name: '打开导航' }));
 
     const mobileSheet = await screen.findByRole('dialog');
     const sectionPicker = within(mobileSheet).getByTestId(

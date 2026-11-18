@@ -106,8 +106,8 @@ describe('source config', () => {
   });
 
   it('normalizes legacy heading anchors through the docs MDX pipeline', async () => {
-    const { docs } = await import('../../source.config');
-    const configureMdx = docs.docs.mdxOptions;
+    const { createDocsMdxOptions } = await import('./mdx/docs-preset');
+    const configureMdx = createDocsMdxOptions('cn');
 
     expect(configureMdx).toBeTypeOf('function');
 

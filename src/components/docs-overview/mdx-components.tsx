@@ -1,8 +1,5 @@
-import { DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 import {
   ActivityIcon,
-  ChevronDownIcon,
-  SearchIcon,
   AppleIcon,
   AppWindowIcon,
   ArrowDownToLineIcon,
@@ -15,6 +12,7 @@ import {
   BlocksIcon,
   BotIcon,
   CaptionsIcon,
+  ChevronDownIcon,
   CloudIcon,
   Code2Icon,
   CpuIcon,
@@ -35,6 +33,7 @@ import {
   PresentationIcon,
   RadioIcon,
   RadioTowerIcon,
+  SearchIcon,
   ServerCogIcon,
   SmartphoneChargingIcon,
   SmartphoneIcon,
@@ -71,6 +70,7 @@ import {
   DOCS_HASH_TARGET_EVENT,
   findDocsHeadingForHash,
 } from '@/lib/docs-hash';
+import { DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 
 const SdksCatalog = lazy(() =>
   import('./SdksCatalog').then((module) => ({
@@ -3312,6 +3312,8 @@ function GlobalOverviewSpotlightCard({
   );
 }
 
-function GlobalRecipesCatalog(props: React.ComponentProps<typeof RecipesCatalog>) {
+function GlobalRecipesCatalog(
+  props: React.ComponentProps<typeof RecipesCatalog>,
+) {
   return <RecipesCatalog {...props} globalCards />;
 }

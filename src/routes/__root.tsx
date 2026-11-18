@@ -53,7 +53,10 @@ export const rootHead = {
             sizes: '32x32',
           },
         ]),
-    { rel: 'stylesheet', href: DEFAULT_LOCALE === 'zh-CN' ? chineseCss : globalCss },
+    {
+      rel: 'stylesheet',
+      href: DEFAULT_LOCALE === 'zh-CN' ? chineseCss : globalCss,
+    },
   ],
 };
 
@@ -81,7 +84,8 @@ function RootComponent() {
 }
 
 export function RootDocument({ children }: PropsWithChildren) {
-  const googleTagManagerId = DEFAULT_LOCALE === 'en' ? import.meta.env.VITE_GTM_ID : undefined;
+  const googleTagManagerId =
+    DEFAULT_LOCALE === 'en' ? import.meta.env.VITE_GTM_ID : undefined;
 
   return (
     <html lang={DEFAULT_LOCALE} suppressHydrationWarning>

@@ -1,5 +1,5 @@
-import posthogObservedRedirects from './posthog-observed-redirects.json';
 import { isRetiredCnDocsPath } from '../retired-cn-docs.mjs';
+import posthogObservedRedirects from './posthog-observed-redirects.json';
 import legacySitemapRedirects from './redirects.json';
 
 export type LegacySitemapRuleType =

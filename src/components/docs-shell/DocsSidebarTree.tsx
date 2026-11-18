@@ -8,12 +8,12 @@ import {
   ExternalLinkIcon,
 } from 'lucide-react';
 import {
-  createContext,
-  useContext,
   type AnchorHTMLAttributes,
+  createContext,
   forwardRef,
   type MouseEvent,
   type ReactNode,
+  useContext,
   useEffect,
   useState,
 } from 'react';
@@ -35,9 +35,9 @@ import {
 } from '@/lib/doc-version-navigation';
 import type { DocVersionScope } from '@/lib/doc-versions';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
+import { DocsSidebarEndpointLabel } from './DocsSidebarEndpointLabel';
 import { DocVersionSelector } from './DocVersionControls';
 import { useDocVersionSelections } from './useDocVersionSelections';
-import { DocsSidebarEndpointLabel } from './DocsSidebarEndpointLabel';
 
 type SidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 type SidebarSectionNode = Extract<DocsSidebarNode, { type: 'section' }>;
@@ -92,20 +92,20 @@ export function DocsSidebarTree({
 
   return (
     <ChineseSidebarContext value={activePath.startsWith('/zh-CN/')}>
-    <SidebarGroup>
-      <SidebarGroupContent>
-        <SidebarMenu>
-          {renderableNodes.map((node) => (
-            <SidebarNodeRenderer
-              activePath={activePath}
-              key={node.id}
-              node={node}
-              onSelectPath={onSelectPath}
-            />
-          ))}
-        </SidebarMenu>
-      </SidebarGroupContent>
-    </SidebarGroup>
+      <SidebarGroup>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            {renderableNodes.map((node) => (
+              <SidebarNodeRenderer
+                activePath={activePath}
+                key={node.id}
+                node={node}
+                onSelectPath={onSelectPath}
+              />
+            ))}
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
     </ChineseSidebarContext>
   );
 }
@@ -423,52 +423,55 @@ function SidebarLinkedSection({
   return (
     <SidebarMenuItem>
       {activePath.startsWith('/zh-CN/') ? (
-      <div className="relative flex min-w-0 items-stretch">
-        <SidebarMenuButton
-          asChild
-          className={cn(sidebarToggleClassName, 'flex-1 overflow-visible pr-9')}
-          isActive={url === activePath}
-        >
-          <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
-            <span className="flex min-w-0 items-center gap-2">
-              <span className={sidebarSectionTitleClassName}>
-                {getSidebarDisplayTitle(title, url)}
+        <div className="relative flex min-w-0 items-stretch">
+          <SidebarMenuButton
+            asChild
+            className={cn(
+              sidebarToggleClassName,
+              'flex-1 overflow-visible pr-9',
+            )}
+            isActive={url === activePath}
+          >
+            <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
+              <span className="flex min-w-0 items-center gap-2">
+                <span className={sidebarSectionTitleClassName}>
+                  {getSidebarDisplayTitle(title, url)}
+                </span>
               </span>
-            </span>
-          </Link>
-        </SidebarMenuButton>
-        <button
+            </Link>
+          </SidebarMenuButton>
+          <button
+            aria-expanded={isOpen}
+            aria-label={`${title} 子页面`}
+            className="absolute top-1/2 right-3 flex size-4 -translate-y-1/2 items-center justify-center text-muted-foreground transition-colors hover:text-[color:var(--ink-1)] focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+            onClick={() => setIsOpen((value) => !value)}
+            type="button"
+          >
+            <ChevronDownIcon
+              className={cn(
+                'size-4 shrink-0 transition-transform',
+                isOpen ? 'rotate-0' : '-rotate-90',
+              )}
+            />
+          </button>
+        </div>
+      ) : (
+        <SidebarMenuButton
           aria-expanded={isOpen}
-          aria-label={`${title} 子页面`}
-          className="absolute top-1/2 right-3 flex size-4 -translate-y-1/2 items-center justify-center text-muted-foreground transition-colors hover:text-[color:var(--ink-1)] focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+          className={cn(sidebarToggleClassName, 'overflow-visible')}
           onClick={() => setIsOpen((value) => !value)}
           type="button"
         >
+          <span className="flex min-w-0 items-center gap-2">
+            <span className={sidebarSectionTitleClassName}>{title}</span>
+          </span>
           <ChevronDownIcon
             className={cn(
               'size-4 shrink-0 transition-transform',
               isOpen ? 'rotate-0' : '-rotate-90',
             )}
           />
-        </button>
-      </div>
-      ) : (
-      <SidebarMenuButton
-        aria-expanded={isOpen}
-        className={cn(sidebarToggleClassName, 'overflow-visible')}
-        onClick={() => setIsOpen((value) => !value)}
-        type="button"
-      >
-        <span className="flex min-w-0 items-center gap-2">
-          <span className={sidebarSectionTitleClassName}>{title}</span>
-        </span>
-        <ChevronDownIcon
-          className={cn(
-            'size-4 shrink-0 transition-transform',
-            isOpen ? 'rotate-0' : '-rotate-90',
-          )}
-        />
-      </SidebarMenuButton>
+        </SidebarMenuButton>
       )}
       {isOpen ? (
         <SidebarMenuSub className={expandedSidebarChildrenClassName}>
@@ -1040,14 +1043,19 @@ function SidebarPageLabel({
         {title}
       </span>
       {method ? (
-        <span className="ml-auto shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none text-[color:var(--ink-4)]">{method}</span>
+        <span className="ml-auto shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none text-[color:var(--ink-4)]">
+          {method}
+        </span>
       ) : showNavigationArrow ? (
         <ArrowRightIcon
           aria-hidden="true"
           className="ml-auto size-3.5 shrink-0 text-[color:var(--ink-4)] transition-colors group-hover:text-[color:var(--ink-1)] group-focus-visible:text-[color:var(--ink-1)]"
         />
       ) : isChineseSidebar && (linked || external) ? (
-        <ExternalLinkIcon aria-hidden="true" className="ml-auto size-4 shrink-0 text-[color:var(--ink-4)]" />
+        <ExternalLinkIcon
+          aria-hidden="true"
+          className="ml-auto size-4 shrink-0 text-[color:var(--ink-4)]"
+        />
       ) : linked && external ? (
         <>
           <span className="sr-only"> (opens in a new tab)</span>

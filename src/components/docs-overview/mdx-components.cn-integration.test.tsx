@@ -744,7 +744,9 @@ describe('overview MDX components', () => {
         '',
         `/zh-CN/reference/demo/agora-lab#${encodeURIComponent(anchor)}`,
       );
-      const components = getOverviewMDXComponents('zh-CN/introduction/index.mdx');
+      const components = getOverviewMDXComponents(
+        'zh-CN/introduction/index.mdx',
+      );
       const DemoPlatformTabs =
         components.DemoPlatformTabs as DemoPlatformTabsComponent;
       const DemoPlatform = components.DemoPlatform as DemoPlatformComponent;
@@ -853,5 +855,4 @@ describe('overview MDX components', () => {
 
     expect(screen.queryByText('0 recipes')).not.toBeInTheDocument();
   });
-
 });

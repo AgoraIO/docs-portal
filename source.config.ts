@@ -1,26 +1,10 @@
 import { readdirSync } from 'node:fs';
-import {
-  rehypeCodeDefaultOptions,
-  remarkDirectiveAdmonition,
-} from 'fumadocs-core/mdx-plugins';
-import { applyMdxPreset, defineConfig, defineDocs } from 'fumadocs-mdx/config';
-import remarkDirective from 'remark-directive';
+import { defineConfig, defineDocs } from 'fumadocs-mdx/config';
 import { z } from 'zod';
 import { DOCS_PAGE_TYPES } from './src/lib/analytics/docs-page-type';
-import { getCodeLanguageLabel } from './src/lib/code/label';
-import {
-  codeHighlightOptions,
-  codeLanguageAliases,
-} from './src/lib/code/options';
 import { createScopedDocsFiles } from './src/lib/docs-dev-scope';
 import { docsMetaSchema } from './src/lib/docs-meta-schema';
-import { directiveCalloutTypes } from './src/lib/mdx/directive-callouts';
-import { remarkLiteralDirectives } from './src/lib/mdx/remark-literal-directives';
-import { remarkMergedTables } from './src/lib/mdx/remark-merged-tables';
-import { remarkNormalizeLegacyHeadingAnchors } from './src/lib/mdx/remark-normalize-legacy-heading-anchors';
-import { remarkOmitMdxComments } from './src/lib/mdx/remark-omit-mdx-comments';
-import { remarkTableSlots } from './src/lib/mdx/remark-table-slots';
-import { remarkPlatformContent } from './src/lib/platforms/remark-platform-content';
+import { createDocsMdxOptions } from './src/lib/mdx/docs-preset';
 import {
   isRetiredCnDocsPath,
   retiredCnDocPaths,
@@ -81,97 +65,9 @@ export const docs = defineDocs({
     dynamic: useDynamicDocsRuntime,
     files: publishedCollectionFiles(scopedPath ?? '', 'docs'),
     schema: rawDocSchema,
-    mdxOptions: applyMdxPreset({
-      rehypeCodeOptions: {
-        ...rehypeCodeDefaultOptions,
-        ...codeHighlightOptions,
-        icon: false,
-        parseMetaString(meta, node, tree) {
-          const parsed = rehypeCodeDefaultOptions.parseMetaString?.(
-            meta,
-            node,
-            tree,
-          );
-          const code = node.children[0];
-          const classes =
-            code?.type === 'element' ? code.properties.className : undefined;
-          const languageClass = Array.isArray(classes)
-            ? classes.find(
-                (value) =>
-                  typeof value === 'string' && value.startsWith('language-'),
-              )
-            : undefined;
-          // Read the authored language before an unsupported grammar falls back to text.
-          const language =
-            typeof languageClass === 'string'
-              ? languageClass.slice(9)
-              : undefined;
-          return {
-            ...parsed,
-            'data-code-language': language,
-            title: parsed?.title ?? getCodeLanguageLabel(language),
-            'data-language-label': parsed?.title
-              ? undefined
-              : getCodeLanguageLabel(language),
-          };
-        },
-        langs: [
-          'bash',
-          'cpp',
-          'csharp',
-          'css',
-          'dart',
-          'dotenv',
-          'go',
-          'html',
-          'http',
-          'java',
-          'javascript',
-          'json',
-          'kotlin',
-          'markdown',
-          'objc',
-          'php',
-          'python',
-          'ruby',
-          'sh',
-          'swift',
-          'ts',
-          'tsx',
-          'typescript',
-          'xml',
-          'yaml',
-        ],
-        langAlias: codeLanguageAliases,
-        fallbackLanguage: 'text',
-        lazy: false,
-      },
-      remarkImageOptions: {
-        external: false,
-        onError: 'ignore',
-        useImport: false,
-      },
-      remarkCodeTabOptions: {
-        Tabs: 'CodeBlockTabs',
-        parseMdx: true,
-      },
-      remarkPlugins: (plugins) => [
-        remarkOmitMdxComments,
-        remarkDirective,
-        remarkLiteralDirectives,
-        [
-          remarkDirectiveAdmonition,
-          {
-            types: directiveCalloutTypes,
-          },
-        ],
-        remarkPlatformContent,
-        remarkMergedTables,
-        remarkTableSlots,
-        ...plugins,
-        remarkNormalizeLegacyHeadingAnchors,
-      ],
-    }),
+    mdxOptions: createDocsMdxOptions(
+      process.env.VITE_DOCS_REGION === 'cn' ? 'cn' : 'global',
+    ),
     postprocess: {
       includeProcessedMarkdown: true,
     },

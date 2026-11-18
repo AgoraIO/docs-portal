@@ -1,5 +1,3 @@
-import { DocsCopyMenu as ChineseDocsCopyMenu } from './docs-copy-menu.zh-cn';
-import { DEFAULT_LOCALE as RELEASE_DEFAULT_LOCALE, normalizeLocale as normalizeReleaseLocale } from '@/lib/i18n/i18n-config';
 import {
   BotIcon,
   CheckIcon,
@@ -20,6 +18,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/cn';
+import {
+  normalizeLocale as normalizeReleaseLocale,
+  DEFAULT_LOCALE as RELEASE_DEFAULT_LOCALE,
+} from '@/lib/i18n/i18n-config';
+import { DocsCopyMenu as ChineseDocsCopyMenu } from './docs-copy-menu.zh-cn';
 
 const CHATGPT_BASE_URL = 'https://chatgpt.com/';
 const CLAUDE_BASE_URL = 'https://claude.ai/new';
@@ -245,9 +248,12 @@ export {
 };
 
 export function DocsCopyMenu(props: Parameters<typeof ChineseDocsCopyMenu>[0]) {
-  return normalizeReleaseLocale(props.locale ?? RELEASE_DEFAULT_LOCALE) === 'zh-CN'
-    ? <ChineseDocsCopyMenu {...props} />
-    : <GlobalDocsCopyMenu {...props} />;
+  return normalizeReleaseLocale(props.locale ?? RELEASE_DEFAULT_LOCALE) ===
+    'zh-CN' ? (
+    <ChineseDocsCopyMenu {...props} />
+  ) : (
+    <GlobalDocsCopyMenu {...props} />
+  );
 }
 
 export { getMcpConfig, getVsCodeMcpCommand } from './docs-copy-menu.zh-cn';

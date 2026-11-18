@@ -2341,5 +2341,4 @@ describe('FumadocsOpenApiContent', () => {
     expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
     expect(screen.getByText('agent_id')).toBeVisible();
   });
-
 });

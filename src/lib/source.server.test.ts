@@ -108,7 +108,9 @@ Web instructions only.
         url: `/${locale}/test`,
       } as unknown as Parameters<typeof getPlatformLLMText>[0];
       const markdown = await getPlatformLLMText(page, 'android');
-      expect(markdown).toContain(locale === 'en' ? '**Java**' : "<Tabs items={['Java']}>");
+      expect(markdown).toContain(
+        locale === 'en' ? '**Java**' : "<Tabs items={['Java']}>",
+      );
       expect(markdown).toContain('```java\nif (ready) {\n  connect();\n}\n```');
       expect(markdown).not.toContain('Web instructions only.');
       expect(markdown).not.toContain('_Platform');
@@ -234,7 +236,8 @@ Web instructions only.
     ).resolves.toBe(`# 快速开始 (/zh-CN/test/android)
 
     ## Android 设置 [#android]
-    Android 内容`);
+    Android 内容
+`);
   });
 
   it('links platform-specific Markdown variants from canonical pages', async () => {

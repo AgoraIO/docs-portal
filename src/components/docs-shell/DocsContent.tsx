@@ -70,9 +70,9 @@ import {
 } from '../mdx/PlatformTabsGroup';
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBody } from './DocsContentBody';
+import { DocsMeasurementContext } from './DocsContentMeasurement';
 import { DocsSearchLandingEngagement } from './DocsSearchLandingEngagement';
 import { DocVersionNotice } from './DocVersionControls';
-import { DocsMeasurementContext } from './DocsContentMeasurement';
 import { DocsCopyMenu } from './docs-copy-menu';
 import { getDocsSourceLinks } from './docs-source-links';
 
@@ -1027,16 +1027,22 @@ export function DocsTableOfContents({
     () => new Set(items[0]?.url ? [items[0].url] : []),
   );
 
-  const scrollToHeading = useCallback((url: string) => {
-    setPrimaryActiveUrl(url);
-    setVisibleUrls((current) => {
-      const next = new Set(current);
-      next.add(url);
-      return next;
-    });
-    setIsMobileOpen(false);
-    scrollDocsHashTargetAfterLayout(url, { behavior: 'auto', locale: currentLocale });
-  }, [currentLocale]);
+  const scrollToHeading = useCallback(
+    (url: string) => {
+      setPrimaryActiveUrl(url);
+      setVisibleUrls((current) => {
+        const next = new Set(current);
+        next.add(url);
+        return next;
+      });
+      setIsMobileOpen(false);
+      scrollDocsHashTargetAfterLayout(url, {
+        behavior: 'auto',
+        locale: currentLocale,
+      });
+    },
+    [currentLocale],
+  );
 
   useEffect(() => {
     let frame = 0;
@@ -1094,7 +1100,9 @@ export function DocsTableOfContents({
         let nextActiveUrl =
           firstActiveHeadingIndex >= 0
             ? (items[firstActiveHeadingIndex]?.url ?? '')
-            : (locale === 'zh-CN' ? '' : (items[0]?.url ?? ''));
+            : locale === 'zh-CN'
+              ? ''
+              : (items[0]?.url ?? '');
         const nextVisibleUrls = new Set<string>();
 
         for (const [index, item] of items.entries()) {
@@ -1152,7 +1160,7 @@ export function DocsTableOfContents({
       window.removeEventListener('resize', updateActiveUrl);
       observer.disconnect();
     };
-  }, [items]);
+  }, [items, locale]);
 
   const linkItems =
     items.length > 0 ? (

@@ -3,8 +3,8 @@ import { type InferPageType, loader, multiple } from 'fumadocs-core/source';
 import { withDocVersionMetadata } from './doc-versions';
 import { buildDocPath, parseSourceSlugs } from './docs-routing';
 import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from './i18n/i18n-config';
-import { toDocsMarkdown } from './mdx/to-markdown';
 import { addAccordionHeadingsToTocText } from './mdx/accordion-toc';
+import { toDocsMarkdown } from './mdx/to-markdown';
 import {
   createLocalizedOpenApiSource,
   getOpenApiLoaderPlugin,
@@ -154,7 +154,9 @@ function resolveCanonicalMarkdownPageUrl(page: InferPageType<typeof source>) {
 
 export async function getLLMText(page: InferPageType<typeof source>) {
   const markdown = await readLLMText(page);
-  return page.url.startsWith('/zh-CN/') ? markdown : withDocVersionMetadata(toDocsMarkdown(markdown), page.url);
+  return page.url.startsWith('/zh-CN/')
+    ? markdown
+    : withDocVersionMetadata(toDocsMarkdown(markdown), page.url);
 }
 
 async function readLLMText(page: InferPageType<typeof source>) {

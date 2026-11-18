@@ -5,8 +5,8 @@ import {
   Sidebar as ShadcnSidebar,
   SidebarContent,
 } from '@/components/ui/sidebar';
-import { hasDocVersionCatalog } from '@/lib/doc-version-navigation';
 import { cn } from '@/lib/cn';
+import { hasDocVersionCatalog } from '@/lib/doc-version-navigation';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import {
   addIntroductionResourceLinks,
@@ -55,7 +55,12 @@ export function DocsSidebar({
 
   return (
     <ShadcnSidebar
-      className={cn('hidden overflow-hidden bg-transparent text-[color:var(--ink-3)] lg:sticky lg:top-[var(--docs-shell-header-offset)] lg:flex lg:min-h-0 lg:self-start', locale === 'zh-CN' ? 'lg:h-[var(--docs-shell-rail-height,var(--docs-shell-body-height))]' : 'lg:h-[var(--docs-shell-body-height)]')}
+      className={cn(
+        'hidden overflow-hidden bg-transparent text-[color:var(--ink-3)] lg:sticky lg:top-[var(--docs-shell-header-offset)] lg:flex lg:min-h-0 lg:self-start',
+        locale === 'zh-CN'
+          ? 'lg:h-[var(--docs-shell-rail-height,var(--docs-shell-body-height))]'
+          : 'lg:h-[var(--docs-shell-body-height)]',
+      )}
       collapsible="none"
       data-testid="docs-sidebar"
       style={

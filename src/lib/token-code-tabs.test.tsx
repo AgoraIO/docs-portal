@@ -15,7 +15,7 @@ describe('Chinese Token examples through the production MDX registry', () => {
         /<CodeBlockTabs\b[\s\S]*?<\/CodeBlockTabs>/,
       )?.[0];
       if (!sample) throw new Error('Expected migrated Token example');
-      const { container } = await renderDocsMdx(sample);
+      const { container } = await renderDocsMdx(sample, 'zh-CN');
       expect(container.querySelectorAll('[role="tab"]')).toHaveLength(7);
       expect(container.querySelectorAll('figcaption')).toHaveLength(0);
       expect(container.querySelectorAll('.docs-code-tab-actions')).toHaveLength(

@@ -104,7 +104,8 @@ it('records only the painted platform after restoring a stored preference', asyn
   });
   localStorage.setItem('docs-portal:platform:v1', 'ios');
   render(
-    <PlatformPageProvider locale="zh-CN"
+    <PlatformPageProvider
+      locale="zh-CN"
       canonicalPlatform="android"
       defaultPlatform="android"
       platforms='["android","ios"]'

@@ -24,5 +24,4 @@ describe('docs content regressions', () => {
     }
     await expect(compile(source)).resolves.toBeDefined();
   });
-
 });

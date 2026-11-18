@@ -8,7 +8,6 @@ function readDoc(sourceFile: string) {
 }
 
 describe('overview entry links', () => {
-
   it.each([
     ['zh-CN', 'https://ticket.shengwang.cn/'],
     ['en', 'https://agoraio.zendesk.com/hc/en-us'],
@@ -23,5 +22,4 @@ describe('overview entry links', () => {
       expect(ticketCard).toContain(`href: "${href}"`);
     },
   );
-
 });

@@ -968,7 +968,11 @@ function usePlatformSelection({
     // Match server HTML on hydration; the page owner applies storage before paint.
     const stored = deferStoredPreference ? null : platformPreferenceRef.current;
 
-    if (stored && (locale === 'zh-CN' || !defaultPlatform) && parsedPlatforms.includes(stored)) {
+    if (
+      stored &&
+      (locale === 'zh-CN' || !defaultPlatform) &&
+      parsedPlatforms.includes(stored)
+    ) {
       return stored;
     }
 

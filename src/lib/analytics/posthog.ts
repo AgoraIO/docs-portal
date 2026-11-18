@@ -4,6 +4,7 @@ import { type DocsPageType, inferDocsPageType } from './docs-page-type';
 
 export type { DocsPageType } from './docs-page-type';
 export { DOCS_PAGE_TYPES } from './docs-page-type';
+
 import type { BeforeSendFn } from 'posthog-js';
 import type { AccountFlow, DocsAccount } from '@/lib/auth/contracts';
 import {
@@ -77,11 +78,15 @@ const filterAccountFlowEvent: BeforeSendFn = (event) => {
 const filterOutboundEvent: BeforeSendFn = (event) => {
   const filtered = filterAccountFlowEvent(event);
   if (!filtered) return filtered;
-  if (import.meta.env.VITE_DOCS_REGION === 'cn') return filterCnMeasurementEvent(filtered);
+  if (import.meta.env.VITE_DOCS_REGION === 'cn')
+    return filterCnMeasurementEvent(filtered);
   if (!filtered.properties) return filtered;
   return {
     ...filtered,
-    properties: sanitizeAnalyticsProperties(filtered.properties, filtered.event === 'docs_page_feedback'),
+    properties: sanitizeAnalyticsProperties(
+      filtered.properties,
+      filtered.event === 'docs_page_feedback',
+    ),
   };
 };
 
@@ -1172,21 +1177,25 @@ function getPostHogClient() {
   }
 
   if (!posthogClientPromise) {
-    posthogClientPromise = import('posthog-js').then(({ default: posthog }) => {
-      posthog.init(key, {
-        api_host: import.meta.env.VITE_POSTHOG_HOST || POSTHOG_HOST,
-        autocapture: true,
-        before_send: filterOutboundEvent,
-        capture_pageview: 'history_change',
-        defaults: '2026-05-30',
-        disable_capture_url_hashes: true,
-        disable_session_recording: true,
-        mask_all_element_attributes: true,
-        mask_all_text: true,
-        person_profiles: import.meta.env.VITE_DOCS_REGION === 'cn' ? 'identified_only' : 'never',
-        persistence: 'localStorage+cookie',
-        save_campaign_params: false,
-      });
+    posthogClientPromise = import('posthog-js')
+      .then(({ default: posthog }) => {
+        posthog.init(key, {
+          api_host: import.meta.env.VITE_POSTHOG_HOST || POSTHOG_HOST,
+          autocapture: true,
+          before_send: filterOutboundEvent,
+          capture_pageview: 'history_change',
+          defaults: '2026-05-30',
+          disable_capture_url_hashes: true,
+          disable_session_recording: true,
+          mask_all_element_attributes: true,
+          mask_all_text: true,
+          person_profiles:
+            import.meta.env.VITE_DOCS_REGION === 'cn'
+              ? 'identified_only'
+              : 'never',
+          persistence: 'localStorage+cookie',
+          save_campaign_params: false,
+        });
 
         return posthog;
       })

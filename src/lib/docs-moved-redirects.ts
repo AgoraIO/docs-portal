@@ -242,7 +242,8 @@ export function isPermanentMovedDocsRedirect(
   tab: string,
   slugSegments: string[],
 ) {
-  if (locale === 'en') return resolveEnglishMovedDocsRedirect(locale, tab, slugSegments) !== null;
+  if (locale === 'en')
+    return resolveEnglishMovedDocsRedirect(locale, tab, slugSegments) !== null;
   const root = slugSegments[0];
 
   return (

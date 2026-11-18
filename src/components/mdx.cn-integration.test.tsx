@@ -275,7 +275,9 @@ describe('common MDX registry', () => {
   });
 
   it('uses Fumadocs MDX defaults except for repo-specific interactive components', () => {
-    const components = getMDXComponents(undefined, { locale: 'zh-CN' }) as Record<string, unknown>;
+    const components = getMDXComponents(undefined, {
+      locale: 'zh-CN',
+    }) as Record<string, unknown>;
     const defaults = defaultMdxComponents as Record<string, unknown>;
 
     expect(components.img).not.toBe(defaults.img);
@@ -311,7 +313,8 @@ describe('common MDX registry', () => {
   it.each([false, true])(
     'gives simple parameter tables readable columns without reclassifying merged tables (merged: %s)',
     (merged) => {
-      const Table = getMDXComponents(undefined, { locale: 'zh-CN' }).table as TableComponent;
+      const Table = getMDXComponents(undefined, { locale: 'zh-CN' })
+        .table as TableComponent;
       render(
         <Table>
           <thead>
@@ -462,9 +465,8 @@ describe('common MDX registry', () => {
   });
 
   it('renders explicitly sized inline icons without a zoom button', () => {
-    const InlineImage = getMDXComponents(undefined, { locale: 'zh-CN' }).InlineImage as ComponentType<
-      ComponentProps<'img'>
-    >;
+    const InlineImage = getMDXComponents(undefined, { locale: 'zh-CN' })
+      .InlineImage as ComponentType<ComponentProps<'img'>>;
 
     expect(InlineImage).toBeTypeOf('function');
     render(
@@ -487,9 +489,8 @@ describe('common MDX registry', () => {
   });
 
   it('honors legacy inline icon heights without a width constraint', () => {
-    const InlineImage = getMDXComponents(undefined, { locale: 'zh-CN' }).InlineImage as ComponentType<
-      ComponentProps<'img'>
-    >;
+    const InlineImage = getMDXComponents(undefined, { locale: 'zh-CN' })
+      .InlineImage as ComponentType<ComponentProps<'img'>>;
     render(
       <InlineImage
         alt="开始图标"
@@ -504,7 +505,8 @@ describe('common MDX registry', () => {
   });
 
   it('caps a screenshot height without limiting the zoom preview', async () => {
-    const Image = getMDXComponents(undefined, { locale: 'zh-CN' }).DocsImage as ComponentType<
+    const Image = getMDXComponents(undefined, { locale: 'zh-CN' })
+      .DocsImage as ComponentType<
       ComponentProps<'img'> & { displayHeight?: string }
     >;
     render(
@@ -530,7 +532,8 @@ describe('common MDX registry', () => {
   });
 
   it('sizes a documentation screenshot without shrinking the zoom preview', async () => {
-    const Image = getMDXComponents(undefined, { locale: 'zh-CN' }).DocsImage as ComponentType<
+    const Image = getMDXComponents(undefined, { locale: 'zh-CN' })
+      .DocsImage as ComponentType<
       ComponentProps<'img'> & { displayWidth?: string }
     >;
     expect(Image).toBeTypeOf('function');
@@ -561,7 +564,8 @@ describe('common MDX registry', () => {
   });
 
   it('marks external and new-window links while keeping same-window anchors plain', () => {
-    const Anchor = getMDXComponents(undefined, { locale: 'zh-CN' }).a as AnchorComponent;
+    const Anchor = getMDXComponents(undefined, { locale: 'zh-CN' })
+      .a as AnchorComponent;
     render(
       <>
         <Anchor href="//example.com">Web link</Anchor>
@@ -816,7 +820,8 @@ describe('common MDX registry', () => {
       const Accordion = components.Accordion as AccordionComponent;
 
       render(
-        <PlatformPageProvider locale="zh-CN"
+        <PlatformPageProvider
+          locale="zh-CN"
           canonicalPlatform="android"
           platforms='["android","web"]'
         >
@@ -857,7 +862,8 @@ describe('common MDX registry', () => {
     const Accordion = components.Accordion as AccordionComponent;
 
     render(
-      <PlatformPageProvider locale="zh-CN"
+      <PlatformPageProvider
+        locale="zh-CN"
         canonicalPlatform="android"
         initialPlatform="web"
         platforms='["android","web"]'
@@ -1174,7 +1180,9 @@ describe('common MDX registry', () => {
   });
 
   it('renders API signatures and return values as scroll-safe rich blocks', () => {
-    const components = getMDXComponents(undefined, { locale: 'zh-CN' }) as Record<string, unknown>;
+    const components = getMDXComponents(undefined, {
+      locale: 'zh-CN',
+    }) as Record<string, unknown>;
     const Signature = components.ApiSignature as ApiSignatureComponent;
     const Returns = components.ApiReturns as ApiReturnsComponent;
     const ReturnType = components.ApiReturnType as ApiReturnTypeComponent;
@@ -1227,7 +1235,9 @@ describe('common MDX registry', () => {
   it('renders transformed platform groups with persisted preference fallback and hidden inactive panels', () => {
     window.localStorage.setItem('docs-portal:platform:v1', 'ios');
 
-    const components = getMDXComponents(undefined, { locale: 'zh-CN' }) as Record<string, unknown>;
+    const components = getMDXComponents(undefined, {
+      locale: 'zh-CN',
+    }) as Record<string, unknown>;
     const Group = components._PlatformTabsGroup as PlatformGroupComponent;
     const Panel = components._PlatformPanel as PlatformPanelComponent;
 
@@ -1272,7 +1282,8 @@ describe('common MDX registry', () => {
     window.localStorage.setItem('docs-portal:platform:v1', 'ios');
 
     render(
-      <PlatformHeaderTabs locale="zh-CN"
+      <PlatformHeaderTabs
+        locale="zh-CN"
         canonicalPlatform="web"
         defaultPlatform="android"
         platforms='["android","ios","web","flutter"]'
@@ -1290,7 +1301,8 @@ describe('common MDX registry', () => {
     window.localStorage.setItem('docs-portal:platform:v1', 'ios');
 
     const { rerender } = render(
-      <PlatformHeaderTabs locale="zh-CN"
+      <PlatformHeaderTabs
+        locale="zh-CN"
         canonicalPlatform="web"
         defaultPlatform="android"
         platforms='["android","ios","web"]'
@@ -1303,7 +1315,8 @@ describe('common MDX registry', () => {
     );
 
     rerender(
-      <PlatformHeaderTabs locale="zh-CN"
+      <PlatformHeaderTabs
+        locale="zh-CN"
         canonicalPlatform="web"
         defaultPlatform="web"
         platforms='["android","ios","web"]'
@@ -1320,7 +1333,8 @@ describe('common MDX registry', () => {
     window.localStorage.setItem('docs-portal:platform:v1', 'ios');
 
     render(
-      <PlatformHeaderTabs locale="zh-CN"
+      <PlatformHeaderTabs
+        locale="zh-CN"
         canonicalPlatform="web"
         defaultPlatform="android"
         platforms='["android","web"]'
@@ -1336,7 +1350,8 @@ describe('common MDX registry', () => {
 
   it('ignores unsupported preference events for the current platform group', () => {
     render(
-      <PlatformHeaderTabs locale="zh-CN"
+      <PlatformHeaderTabs
+        locale="zh-CN"
         canonicalPlatform="web"
         defaultPlatform="android"
         platforms='["android","web"]'
@@ -1355,7 +1370,8 @@ describe('common MDX registry', () => {
 
   it('updates the selected tab when the route platform changes', () => {
     const { rerender } = render(
-      <PlatformHeaderTabs locale="zh-CN"
+      <PlatformHeaderTabs
+        locale="zh-CN"
         canonicalPlatform="web"
         initialPlatform="android"
         platforms='["android","ios","web"]'
@@ -1368,7 +1384,8 @@ describe('common MDX registry', () => {
     );
 
     rerender(
-      <PlatformHeaderTabs locale="zh-CN"
+      <PlatformHeaderTabs
+        locale="zh-CN"
         canonicalPlatform="web"
         initialPlatform="ios"
         platforms='["android","ios","web"]'
@@ -1386,11 +1403,14 @@ describe('common MDX registry', () => {
       '/zh-CN/realtime-media/rtc/reference/error-code?from=legacy#%E9%94%99%E8%AF%AF%E7%A0%81';
     window.history.replaceState({}, '', url);
     window.localStorage.setItem('docs-portal:platform:v1', 'android');
-    const components = getMDXComponents(undefined, { locale: 'zh-CN' }) as Record<string, unknown>;
+    const components = getMDXComponents(undefined, {
+      locale: 'zh-CN',
+    }) as Record<string, unknown>;
     const Group = components._PlatformTabsGroup as PlatformGroupComponent;
     const Panel = components._PlatformPanel as PlatformPanelComponent;
     render(
-      <PlatformPageProvider locale="zh-CN"
+      <PlatformPageProvider
+        locale="zh-CN"
         canonicalPlatform="android"
         defaultPlatform="android"
         platforms='["android","ios"]'
@@ -1432,7 +1452,9 @@ describe('common MDX registry', () => {
         '',
         '/zh-CN/realtime-media/rtc/reference/error-code#late-ios',
       );
-      const components = getMDXComponents(undefined, { locale: 'zh-CN' }) as Record<string, unknown>;
+      const components = getMDXComponents(undefined, {
+        locale: 'zh-CN',
+      }) as Record<string, unknown>;
       const Group = components._PlatformTabsGroup as PlatformGroupComponent;
       const Panel = components._PlatformPanel as PlatformPanelComponent;
       const content = (ready: boolean) => (
@@ -1478,13 +1500,16 @@ describe('common MDX registry', () => {
       '/en/realtime-media/rtc/quick-start/integrate-with-ai-tools/ios?platform=ios&example=1#token',
     );
 
-    const components = getMDXComponents(undefined, { locale: 'zh-CN' }) as Record<string, unknown>;
+    const components = getMDXComponents(undefined, {
+      locale: 'zh-CN',
+    }) as Record<string, unknown>;
     const Group = components._PlatformTabsGroup as PlatformGroupComponent;
     const Panel = components._PlatformPanel as PlatformPanelComponent;
 
     render(
       <>
-        <PlatformHeaderTabs locale="zh-CN"
+        <PlatformHeaderTabs
+          locale="zh-CN"
           canonicalPlatform="web"
           initialPlatform="ios"
           platforms='["web","ios","android"]'
@@ -1552,7 +1577,7 @@ describe('common MDX registry', () => {
   });
 
   it('shares one frame between the code tabs and their selected sample', () => {
-    const components = getMDXComponents(undefined, {locale: 'zh-CN'});
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' });
     const CodeBlockTabs = components.CodeBlockTabs as TabsComponent;
     const CodeBlockTabsList = components.CodeBlockTabsList as TabsComponent;
     const CodeBlockTabsTrigger =
@@ -1651,5 +1676,4 @@ describe('common MDX registry', () => {
     expect(description).not.toHaveTextContent('返回值');
     expect(description).not.toHaveTextContent('nested callback void');
   });
-
 });

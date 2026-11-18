@@ -1,7 +1,5 @@
 'use client';
 
-import { DocsPageFeedback as ChineseDocsPageFeedback } from './DocsPageFeedback.zh-cn';
-import { DEFAULT_LOCALE as RELEASE_DEFAULT_LOCALE, normalizeLocale as normalizeReleaseLocale } from '@/lib/i18n/i18n-config';
 import {
   MessageSquareTextIcon,
   ThumbsDownIcon,
@@ -31,7 +29,10 @@ import {
   type AppLocale,
   DEFAULT_LOCALE,
   normalizeLocale,
+  normalizeLocale as normalizeReleaseLocale,
+  DEFAULT_LOCALE as RELEASE_DEFAULT_LOCALE,
 } from '@/lib/i18n/i18n-config';
+import { DocsPageFeedback as ChineseDocsPageFeedback } from './DocsPageFeedback.zh-cn';
 
 type FeedbackKind = 'issue' | 'suggestion' | 'usability';
 
@@ -218,8 +219,13 @@ function buildFeedbackIssueUrl({
   return `${FEEDBACK_ISSUE_URL}?${params.toString()}`;
 }
 
-export function DocsPageFeedback(props: Parameters<typeof ChineseDocsPageFeedback>[0]) {
-  return normalizeReleaseLocale(props.locale ?? RELEASE_DEFAULT_LOCALE) === 'zh-CN'
-    ? <ChineseDocsPageFeedback {...props} />
-    : <GlobalDocsPageFeedback {...props} />;
+export function DocsPageFeedback(
+  props: Parameters<typeof ChineseDocsPageFeedback>[0],
+) {
+  return normalizeReleaseLocale(props.locale ?? RELEASE_DEFAULT_LOCALE) ===
+    'zh-CN' ? (
+    <ChineseDocsPageFeedback {...props} />
+  ) : (
+    <GlobalDocsPageFeedback {...props} />
+  );
 }

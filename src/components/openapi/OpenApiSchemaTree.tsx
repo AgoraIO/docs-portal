@@ -1,4 +1,3 @@
-import { useGlobalSchemaPresentation } from './GlobalSchemaPresentation';
 import {
   type ComponentProps,
   createElement,
@@ -16,6 +15,7 @@ import type {
   OpenApiSchemaPathItem,
   OpenApiSchemaViewNode,
 } from '@/lib/openapi/schema-view';
+import { useGlobalSchemaPresentation } from './GlobalSchemaPresentation';
 import {
   OpenApiSchemaFieldRow,
   type OpenApiSchemaFieldRowLabels,

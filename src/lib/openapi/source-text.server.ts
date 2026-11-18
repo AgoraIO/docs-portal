@@ -8,8 +8,8 @@ import cloudTranscodingRestEnYaml from '../../../content/openapi/cloud-transcodi
 import cloudTranscodingRestZhCnYaml from '../../../content/openapi/cloud-transcoding/cloud-transcoding.zh-CN.yaml?raw';
 import consoleRestZhCnYaml from '../../../content/openapi/console/rest-api.zh-CN.yaml?raw';
 import convoAiRestEnYaml from '../../../content/openapi/conversational-ai/rest-api.en.yaml?raw';
-import convoAiRestPlatformEnYaml from '../../../content/openapi/conversational-ai/rest-api-platform.en.yaml?raw';
 import convoAiRestZhCnYaml from '../../../content/openapi/conversational-ai/rest-api.zh-CN.yaml?raw';
+import convoAiRestPlatformEnYaml from '../../../content/openapi/conversational-ai/rest-api-platform.en.yaml?raw';
 import danmakuRestZhCnYaml from '../../../content/openapi/danmaku/danmaku.zh-CN.yaml?raw';
 import fusionCdnRestZhCnYaml from '../../../content/openapi/fusion-cdn/streaming.zh-CN.yaml?raw';
 import mediaGatewayRestEnYaml from '../../../content/openapi/media-gateway/media-gateway.en.yaml?raw';

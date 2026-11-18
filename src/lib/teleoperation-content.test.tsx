@@ -17,7 +17,9 @@ describe('Chinese teleoperation scenario cards', () => {
       .split('## 开始构建')[0];
     const { default: Body } = await evaluate(scenarios, { ...runtime });
 
-    render(<Body components={getMDXComponents(undefined, { locale: 'zh-CN' })} />);
+    render(
+      <Body components={getMDXComponents(undefined, { locale: 'zh-CN' })} />,
+    );
 
     const names = ['应急接管', '高危作业', '远程服务'];
     const cards = names.map((name) =>

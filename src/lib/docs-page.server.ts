@@ -9,12 +9,12 @@ import {
   type DocsPageType,
   inferDocsPageType,
 } from './analytics/docs-page-type';
-import { resolveDocVersion } from './doc-versions';
 import {
   resolveZhCnApiReferenceBreadcrumb,
   resolveZhCnApiReferenceEntry,
 } from './api-reference-breadcrumb';
 import { resolveZhCnApiReferenceProductDocsHref } from './api-reference-product-docs';
+import { resolveDocVersion } from './doc-versions';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import type { DocsMeta } from './docs-meta-schema';
@@ -50,7 +50,10 @@ import {
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import { resolveLegacySitemapRedirectPath } from './legacy-sitemap/redirects';
 import { getLegacySolutionsRedirectUrl } from './legacy-solutions-routing';
-import { remarkAccordionHeadings, remarkGlobalAccordionHeadings } from './mdx/accordion-toc';
+import {
+  remarkAccordionHeadings,
+  remarkGlobalAccordionHeadings,
+} from './mdx/accordion-toc';
 import {
   findOpenApiLaneByUrl,
   getOpenApiEndpointUrl,
@@ -804,7 +807,10 @@ export async function loadDocsPagePayload(
   const toc = filterDocsToc(unboundedToc, tocMaxDepth);
   // Only generated OpenAPI operation pages need the wide layout. Hand-written
   // pages inside an OpenAPI lane keep the docs layout and its TOC.
-  const layoutMode: DocsLayoutMode = isOpenApiPage || (locale === 'zh-CN' && openApiLaneRoute !== null) ? 'openapi' : 'docs';
+  const layoutMode: DocsLayoutMode =
+    isOpenApiPage || (locale === 'zh-CN' && openApiLaneRoute !== null)
+      ? 'openapi'
+      : 'docs';
   const sidebar = await getDocsSidebarNodes({
     activePath: page.url,
     locale: supportedLocale,
@@ -832,7 +838,7 @@ export async function loadDocsPagePayload(
     tab,
   });
   const focusedOpenApiLaneHeader =
-     !navScope && supportedLocale === 'zh-CN'
+    !navScope && supportedLocale === 'zh-CN'
       ? resolveFocusedOpenApiLaneSidebarHeader(page.url, supportedLocale, tab)
       : undefined;
   const resolvedSidebarHeader = sidebarHeader ?? focusedOpenApiLaneHeader;
@@ -1147,7 +1153,10 @@ export async function loadDocsSearchIndex(
   const { source } = await import('./source.server');
   const localePages = source.getPages(locale);
   const searchNavigation = extendPlatformGroupPanelSearchNavigation(
-    buildDocsSearchNavigation(getCanonicalPageTree(source, supportedLocale), supportedLocale),
+    buildDocsSearchNavigation(
+      getCanonicalPageTree(source, supportedLocale),
+      supportedLocale,
+    ),
     localePages,
   );
   if (supportedLocale === 'zh-CN') {
@@ -2073,7 +2082,8 @@ async function resolvePageToc(
     try {
       return normalizeToc(
         await getMdxAwareTableOfContents(
-          buildCanonicalPlatformTocText(processedText), page.url,
+          buildCanonicalPlatformTocText(processedText),
+          page.url,
         ),
       );
     } catch {
@@ -2085,7 +2095,10 @@ async function resolvePageToc(
 function getMdxAwareTableOfContents(markdown: string, url: string) {
   const global = url.startsWith('/en/');
   if (markdown.includes('<Accordion')) {
-    return getTableOfContents(markdown, [remarkMdx, global ? remarkGlobalAccordionHeadings : remarkAccordionHeadings]);
+    return getTableOfContents(markdown, [
+      remarkMdx,
+      global ? remarkGlobalAccordionHeadings : remarkAccordionHeadings,
+    ]);
   }
   return !global && markdown.includes('<Tabs')
     ? getTableOfContents(markdown, [remarkMdx])
@@ -2159,13 +2172,24 @@ async function getDocsSidebarNodes({
   source: typeof docsSource;
   tab: string;
 }) {
-  if (locale === 'en') return getDocsSidebarNodesGlobal({activePath, locale, pageTree, pageUrl, source, tab});
+  if (locale === 'en')
+    return getDocsSidebarNodesGlobal({
+      activePath,
+      locale,
+      pageTree,
+      pageUrl,
+      source,
+      tab,
+    });
   const productSidebarPath = getZhCnProductSidebarPath(
     activePath ?? pageUrl,
     tab,
   );
 
-  if (tab === 'ai' && (locale === 'zh-CN' || usesAiProductSidebar(activePath ?? pageUrl ?? ''))) {
+  if (
+    tab === 'ai' &&
+    (locale === 'zh-CN' || usesAiProductSidebar(activePath ?? pageUrl ?? ''))
+  ) {
     const aiNodes = getNavScopeSidebarNodes({
       getNodeMeta: (node) =>
         getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
@@ -2183,13 +2207,13 @@ async function getDocsSidebarNodes({
           });
 
     if (locale !== 'zh-CN') {
-    return buildAiProductSidebar(
-      aiNodes.filter(
-        (node) =>
-          node.type !== 'section' ||
-          node.title !== 'Conversational AI Platform (Preview)',
-      ),
-      apiReferenceNodes,
+      return buildAiProductSidebar(
+        aiNodes.filter(
+          (node) =>
+            node.type !== 'section' ||
+            node.title !== 'Conversational AI Platform (Preview)',
+        ),
+        apiReferenceNodes,
       );
     }
     return embedZhCnServiceApiSidebars(
@@ -2293,8 +2317,14 @@ async function getDocsSidebarNodes({
 
   const sidebarWithRealtimeMediaApiReference =
     locale === 'zh-CN'
-      ? addRealtimeMediaApiReferenceSidebarItem(sidebarWithoutReferenceProductIcons, activePath)
-      : addRealtimeMediaApiReferenceSidebarItems(sidebarWithoutReferenceProductIcons, activePath);
+      ? addRealtimeMediaApiReferenceSidebarItem(
+          sidebarWithoutReferenceProductIcons,
+          activePath,
+        )
+      : addRealtimeMediaApiReferenceSidebarItems(
+          sidebarWithoutReferenceProductIcons,
+          activePath,
+        );
 
   if (!isOpenApiTab(tab) || !locale) {
     const embeddedSidebar = await embedZhCnServiceApiSidebars(
@@ -4311,7 +4341,16 @@ function resolveDocsSidebarHeader({
   source: typeof docsSource;
   tab: string;
 }) {
-  if (locale === 'en') return resolveDocsSidebarHeaderGlobal({activePath, hidePlatformTabs, locale, navScope, pageTree, source, tab});
+  if (locale === 'en')
+    return resolveDocsSidebarHeaderGlobal({
+      activePath,
+      hidePlatformTabs,
+      locale,
+      navScope,
+      pageTree,
+      source,
+      tab,
+    });
   if (
     tab === 'ai' &&
     (usesAiProductSidebar(activePath) ||
@@ -4591,7 +4630,10 @@ function getDocsNavScope({
       tab,
     });
   // Keep existing menu/version resolution. Only unlisted API pages need fallback.
-  return resolve() ?? (tab === OPENAPI_TAB ? resolve(true) : null);
+  return (
+    resolve() ??
+    (locale === 'zh-CN' && tab === OPENAPI_TAB ? resolve(true) : null)
+  );
 }
 
 function getScopedSidebarNodes({

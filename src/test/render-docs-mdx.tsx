@@ -9,10 +9,15 @@ import { act, render } from '@testing-library/react';
 import * as runtime from 'react/jsx-runtime';
 import { getMDXComponents, MDXAccordionProvider } from '@/components/mdx';
 import { AppProviders } from '@/components/providers/AppProviders';
-import { docs } from '../../source.config';
+import { createDocsMdxOptions } from '@/lib/mdx/docs-preset';
 
-export async function renderDocsMdx(source: string, locale?: string) {
-  const configureMdx = docs.docs.mdxOptions;
+export async function renderDocsMdx(
+  source: string,
+  locale: 'en' | 'zh-CN' = 'zh-CN',
+) {
+  const configureMdx = createDocsMdxOptions(
+    locale === 'zh-CN' ? 'cn' : 'global',
+  );
   if (typeof configureMdx !== 'function') {
     throw new Error('Expected the documentation MDX compiler configuration.');
   }

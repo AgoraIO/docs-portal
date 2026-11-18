@@ -2447,7 +2447,7 @@ function getRoutePath(contentPath) {
 export function getOpenApiRoutePathsForAudit() {
   return getOpenApiRouteLanesForAudit().flatMap((lane) =>
     lane.locales.flatMap((locale) => [
-      lane.parentUrls[locale],
+      ...(locale === 'zh-CN' ? [lane.parentUrls[locale]] : []),
       ...lane.routeLeaves.map(
         (routeLeaf) => `/${locale}/${lane.routePrefix}/${routeLeaf}`,
       ),

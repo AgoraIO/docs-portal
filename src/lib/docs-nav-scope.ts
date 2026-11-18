@@ -156,7 +156,7 @@ export function resolveDocsNavScope({
   }
 
   const ancestors = findFolderAncestorsByUrl(tabNode, activePath) ?? [];
-  if (activePath.startsWith('/zh-CN/') && !ancestors.length && contentPath && getNodePath) {
+  if (!ancestors.length && contentPath && getNodePath) {
     const visit = (node: Folder) => {
       const path = getNodePath(node);
       const directory = path?.slice(0, path.lastIndexOf('/') + 1);
@@ -178,7 +178,9 @@ export function resolveDocsNavScope({
 
   const scope =
     scopedAncestors.at(-1) ??
-    (activePath.startsWith('/zh-CN/') ? findScopeByVersionHref(tabNode, activePath, getNodeMeta) : undefined);
+    (activePath.startsWith('/zh-CN/')
+      ? findScopeByVersionHref(tabNode, activePath, getNodeMeta)
+      : undefined);
   if (!scope) {
     return null;
   }
@@ -576,7 +578,11 @@ function flattenParentNavScopeSidebarNodes(
       continue;
     }
 
-    for (const node of navScopeParentNodeToSidebarNodes(child, getNodeMeta, getFolderHref(folder).startsWith('/zh-CN/'))) {
+    for (const node of navScopeParentNodeToSidebarNodes(
+      child,
+      getNodeMeta,
+      getFolderHref(folder).startsWith('/zh-CN/'),
+    )) {
       if (node.type === 'page' && node.url === indexUrl) {
         continue;
       }
@@ -622,7 +628,10 @@ function navScopeParentNodeToSidebarNodes(
     : navScopeNodeToSidebarNodes(node, getNodeMeta);
 }
 
-function pageTreePageToSidebarNode(item: Item, chinese: boolean): DocsSidebarNode {
+function pageTreePageToSidebarNode(
+  item: Item,
+  chinese: boolean,
+): DocsSidebarNode {
   return {
     ...(chinese && item.external ? { external: true, href: item.url } : {}),
     id: item.url,

@@ -8,15 +8,13 @@ import * as runtime from 'react/jsx-runtime';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { getMDXComponents } from '@/components/mdx';
+import { createDocsMdxOptions } from '@/lib/mdx/docs-preset';
 import { createStaticRouteHtml } from '@/lib/static-route-html';
-import { docs } from '../../../source.config';
 
 async function renderMarkdown(markdown: string, defaults = false) {
-  if (typeof docs.docs.mdxOptions !== 'function')
-    throw new Error('Expected MDX configuration');
   const preset = defaults
     ? applyMdxPreset({ rehypeCodeOptions: rehypeCodeDefaultOptions })
-    : await docs.docs.mdxOptions('bundler');
+    : await createDocsMdxOptions('cn')('bundler');
   const options =
     typeof preset === 'function' ? await preset('bundler') : preset;
   const compiled = await compile(markdown, {
@@ -32,9 +30,12 @@ async function renderMarkdown(markdown: string, defaults = false) {
   return {
     html: renderToStaticMarkup(
       <Content
-        components={getMDXComponents({
-          a: (props: ComponentProps<'a'>) => <a {...props} />,
-        })}
+        components={getMDXComponents(
+          {
+            a: (props: ComponentProps<'a'>) => <a {...props} />,
+          },
+          { locale: 'zh-CN' },
+        )}
       />,
     ),
     markdown: compiled.data.markdown,

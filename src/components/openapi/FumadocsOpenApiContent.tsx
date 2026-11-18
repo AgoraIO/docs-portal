@@ -1,6 +1,3 @@
-import { GlobalSchemaPresentation } from './GlobalSchemaPresentation';
-import { FumadocsOpenApiContent as ChineseFumadocsOpenApiContent } from './FumadocsOpenApiContent.zh-cn';
-import { DEFAULT_LOCALE as RELEASE_DEFAULT_LOCALE, normalizeLocale as normalizeReleaseLocale } from '@/lib/i18n/i18n-config';
 import { TranslationProvider } from '@fuma-translate/react';
 import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
 import { type OpenAPIComponents, useOpenAPI } from 'fumadocs-openapi';
@@ -41,6 +38,10 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/cn';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
 import {
+  normalizeLocale as normalizeReleaseLocale,
+  DEFAULT_LOCALE as RELEASE_DEFAULT_LOCALE,
+} from '@/lib/i18n/i18n-config';
+import {
   buildUniqueOpenApiAnchorIds,
   slugOpenApiAnchorSegment,
 } from '@/lib/openapi/anchors';
@@ -53,6 +54,8 @@ import {
   buildOpenApiResponseViews,
   type OpenApiResponseHeaderView,
 } from '@/lib/openapi/response-view';
+import { FumadocsOpenApiContent as ChineseFumadocsOpenApiContent } from './FumadocsOpenApiContent.zh-cn';
+import { GlobalSchemaPresentation } from './GlobalSchemaPresentation';
 import { OpenApiCodePreview } from './OpenApiCodePreview';
 import { OpenApiExamplesRail } from './OpenApiExamplesRail';
 import { OpenApiResponseHeaderRow } from './OpenApiResponseHeaderRow';
@@ -1988,8 +1991,15 @@ function isRecord(value: unknown): value is OpenApiRecord {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
-export function FumadocsOpenApiContent(props: Parameters<typeof ChineseFumadocsOpenApiContent>[0]) {
-  return normalizeReleaseLocale(props.locale ?? RELEASE_DEFAULT_LOCALE) === 'zh-CN'
-    ? <ChineseFumadocsOpenApiContent {...props} />
-    : <GlobalSchemaPresentation value><GlobalFumadocsOpenApiContent {...props} /></GlobalSchemaPresentation>;
+export function FumadocsOpenApiContent(
+  props: Parameters<typeof ChineseFumadocsOpenApiContent>[0],
+) {
+  return normalizeReleaseLocale(props.locale ?? RELEASE_DEFAULT_LOCALE) ===
+    'zh-CN' ? (
+    <ChineseFumadocsOpenApiContent {...props} />
+  ) : (
+    <GlobalSchemaPresentation value>
+      <GlobalFumadocsOpenApiContent {...props} />
+    </GlobalSchemaPresentation>
+  );
 }

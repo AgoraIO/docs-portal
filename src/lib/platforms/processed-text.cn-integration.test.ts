@@ -54,5 +54,4 @@ Device body
       platforms: ['android', 'device-c'],
     });
   });
-
 });

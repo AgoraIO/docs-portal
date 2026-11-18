@@ -170,6 +170,9 @@ function resolvePublicPlatformMarkdownRoute({
 
 function markdownResponse(markdown: string, locale: string) {
   return new Response(withAgentDocsDirective(markdown), {
-    headers: { 'Content-Type': locale === 'zh-CN' ? 'text/markdown; charset=utf-8' : 'text/markdown' },
+    headers: {
+      'Content-Type':
+        locale === 'zh-CN' ? 'text/markdown; charset=utf-8' : 'text/markdown',
+    },
   });
 }

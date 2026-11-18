@@ -9,14 +9,14 @@ import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
 import { expect, it } from 'vitest';
-import { docs } from '../../source.config';
+import { createDocsMdxOptions } from '@/lib/mdx/docs-preset';
 
 it('renders cloud recording requests and responses without leaking highlight directives', async () => {
   const source = readFileSync(
     'content/docs/zh-CN/realtime-media/cloud-recording/get-started/quick-start/restful-api.mdx',
     'utf8',
   );
-  const configure = docs.docs.mdxOptions;
+  const configure = createDocsMdxOptions('cn');
   if (typeof configure !== 'function') throw new Error('Expected MDX config');
   const options = await configure('bundler');
   const blocks = [
@@ -66,7 +66,7 @@ it.each(cloudRoots.flatMap(markdownFiles))(
     visit(tree, 'code', (node) => {
       blocks.push(node);
     });
-    const configure = docs.docs.mdxOptions;
+    const configure = createDocsMdxOptions('cn');
     if (typeof configure !== 'function') throw new Error('Expected MDX config');
     const options = await configure('bundler');
     for (const block of blocks) {

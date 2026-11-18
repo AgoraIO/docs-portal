@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   getOpenApiEndpointUrl,
-  getOpenApiLanes,
   getOpenApiLaneLocales,
+  getOpenApiLanes,
   getOpenApiOperationIds,
   getOpenApiPrerenderPaths,
   resolveOpenApiEndpointRoute,
@@ -11,7 +11,11 @@ import {
 
 describe('openapi lanes', () => {
   it('describes each YAML lane as one IA mapping record', () => {
-    expect(getOpenApiLanes().filter(lane => getOpenApiLaneLocales(lane).includes('en'))).toEqual([
+    expect(
+      getOpenApiLanes().filter((lane) =>
+        getOpenApiLaneLocales(lane).includes('en'),
+      ),
+    ).toEqual([
       expect.objectContaining({
         id: 'convoai',
         publicSourceUrl: {
@@ -179,8 +183,12 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).not.toContain(
       '/en/api-reference/versioning-demo/v2/list-widgets',
     );
-    expect(getOpenApiPrerenderPaths().filter(url => url.startsWith('/en/'))).toHaveLength(86);
-    expect(getOpenApiPrerenderPaths().filter(url => url.startsWith('/zh-CN/'))).toHaveLength(140);
+    expect(
+      getOpenApiPrerenderPaths().filter((url) => url.startsWith('/en/')),
+    ).toHaveLength(86);
+    expect(
+      getOpenApiPrerenderPaths().filter((url) => url.startsWith('/zh-CN/')),
+    ).toHaveLength(140);
   });
 
   it('resolves RTC REST endpoint routes in the api-reference tab', () => {

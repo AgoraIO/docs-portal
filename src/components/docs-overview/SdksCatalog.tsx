@@ -1,10 +1,13 @@
-import { SdksCatalog as ChineseSdksCatalog } from './SdksCatalog.zh-cn';
-import { DEFAULT_LOCALE as RELEASE_DEFAULT_LOCALE, normalizeLocale as normalizeReleaseLocale } from '@/lib/i18n/i18n-config';
 import { ChevronDownIcon, DownloadIcon } from 'lucide-react';
 import { useMemo, useState, useSyncExternalStore } from 'react';
 import { cn } from '@/lib/cn';
+import {
+  normalizeLocale as normalizeReleaseLocale,
+  DEFAULT_LOCALE as RELEASE_DEFAULT_LOCALE,
+} from '@/lib/i18n/i18n-config';
 import { subscribeToLocationChange } from '@/lib/location-change';
 import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
+import { SdksCatalog as ChineseSdksCatalog } from './SdksCatalog.zh-cn';
 import {
   type SdkDownloadProduct,
   type SdkDownloadVersion,
@@ -605,7 +608,10 @@ function getVersionMeta(version: SdkDownloadVersion) {
 }
 
 export function SdksCatalog(props: Parameters<typeof ChineseSdksCatalog>[0]) {
-  return normalizeReleaseLocale(props.locale ?? RELEASE_DEFAULT_LOCALE) === 'zh-CN'
-    ? <ChineseSdksCatalog {...props} />
-    : <GlobalSdksCatalog />;
+  return normalizeReleaseLocale(props.locale ?? RELEASE_DEFAULT_LOCALE) ===
+    'zh-CN' ? (
+    <ChineseSdksCatalog {...props} />
+  ) : (
+    <GlobalSdksCatalog />
+  );
 }

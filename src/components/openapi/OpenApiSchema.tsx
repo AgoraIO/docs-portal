@@ -1,4 +1,3 @@
-import { useGlobalSchemaPresentation } from './GlobalSchemaPresentation';
 import { useTranslations } from '@fuma-translate/react';
 import { useAnchorId } from '@fumadocs/api-docs/auto-anchor/client';
 import {
@@ -35,6 +34,7 @@ import {
   type OpenApiSchemaPathItem,
   type OpenApiSchemaViewNode,
 } from '@/lib/openapi/schema-view';
+import { useGlobalSchemaPresentation } from './GlobalSchemaPresentation';
 import {
   OpenApiSchemaFieldRow,
   type OpenApiSchemaFieldRowLabels,
@@ -115,9 +115,13 @@ export function OpenApiSchema({
   const generated = useMemo(() => {
     const generated = generateSchemaUI({
       readOnly,
-      renderCodeblock: global ? renderCodeblock : (options) => (
-        <div data-openapi-schema-code-value="">{renderCodeblock(options)}</div>
-      ),
+      renderCodeblock: global
+        ? renderCodeblock
+        : (options) => (
+            <div data-openapi-schema-code-value="">
+              {renderCodeblock(options)}
+            </div>
+          ),
       renderMarkdown,
       root: removeOpenApiSchemaEnums(normalizedRoot) as ParsedSchema,
       showExample,
@@ -296,7 +300,9 @@ export function OpenApiSchema({
       {rootIsBodyTree && !rootHasContainer
         ? renderOpenApiSchemaDetails(
             rootSchema,
-            global ? rootMetadata : rootMetadata.filter((item) => item.label !== exampleLabel),
+            global
+              ? rootMetadata
+              : rootMetadata.filter((item) => item.label !== exampleLabel),
           )
         : null}
       {rootIsBodyTree || hasChoices ? (

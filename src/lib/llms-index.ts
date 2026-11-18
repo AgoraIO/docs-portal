@@ -170,20 +170,22 @@ export async function validateMachineReadableDocsArtifacts({
       .map((route) => `${normalizedBaseUrl}${route.markdownPath}`),
   );
 
-  const artifactPaths = new Set([
-    ...files.map((file) => file.path),
-    ...sections
-      .flatMap((file) => extractLinkTargets(file.content))
-      .filter(
-        (target) =>
-          isSameOrigin(target, normalizedBaseUrl) &&
-          target.endsWith('-full.txt'),
-      )
-      .map((target) => new URL(target).pathname),
-    ...publishedRoutes
-      .filter((route) => route.url.startsWith(`/${locale}/`))
-      .map((route) => route.markdownPath),
-  ].map(normalizeMachineReadableDocsArtifactPath));
+  const artifactPaths = new Set(
+    [
+      ...files.map((file) => file.path),
+      ...sections
+        .flatMap((file) => extractLinkTargets(file.content))
+        .filter(
+          (target) =>
+            isSameOrigin(target, normalizedBaseUrl) &&
+            target.endsWith('-full.txt'),
+        )
+        .map((target) => new URL(target).pathname),
+      ...publishedRoutes
+        .filter((route) => route.url.startsWith(`/${locale}/`))
+        .map((route) => route.markdownPath),
+    ].map(normalizeMachineReadableDocsArtifactPath),
+  );
 
   for (const path of artifactPaths) {
     if (!(await artifactExists(path))) {
@@ -207,7 +209,8 @@ function createSectionFiles({
 }) {
   const needsNumbering =
     entries.length > 1 &&
-    renderSectionIndex(group.label, entries, locale, group.slug, baseUrl).length > maxCharacters;
+    renderSectionIndex(group.label, entries, locale, group.slug, baseUrl)
+      .length > maxCharacters;
   const chunks: IndexEntry[][] = [];
   let current: IndexEntry[] = [];
 
@@ -219,7 +222,8 @@ function createSectionFiles({
 
     if (
       current.length > 0 &&
-      renderSectionIndex(label, candidate, locale, group.slug, baseUrl).length > maxCharacters
+      renderSectionIndex(label, candidate, locale, group.slug, baseUrl).length >
+        maxCharacters
     ) {
       chunks.push(current);
       current = [entry];
@@ -237,7 +241,13 @@ function createSectionFiles({
     const suffix = needsNumbering ? `-${index + 1}` : '';
     const label = needsNumbering ? `${group.label} ${index + 1}` : group.label;
     const path = `${INDEX_DIRECTORY}/${group.slug}${suffix}.txt`;
-    const content = renderSectionIndex(label, chunk, locale, group.slug, baseUrl);
+    const content = renderSectionIndex(
+      label,
+      chunk,
+      locale,
+      group.slug,
+      baseUrl,
+    );
 
     assertWithinLimit(path, content, maxCharacters);
 

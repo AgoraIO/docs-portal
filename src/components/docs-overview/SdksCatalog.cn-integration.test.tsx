@@ -692,10 +692,6 @@ describe('SdksCatalog', () => {
     expect(screen.getByText('Showing SDKs for Signaling SDK')).toBeVisible();
   });
 
-
-
-
-
   it('keeps long install commands horizontally inspectable with mobile-sized controls', async () => {
     render(<SdksCatalog locale="zh-CN" />);
 
@@ -759,10 +755,6 @@ describe('SdksCatalog', () => {
     });
     expect(packageManager).not.toBeInTheDocument();
   });
-
-
-
-
 
   it('lists the Agora Agents SDK with TypeScript, Python, and Go platforms', () => {
     render(<SdksCatalog />);

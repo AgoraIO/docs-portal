@@ -3,7 +3,7 @@ import type { ComponentType, ReactNode, Ref } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { getMDXComponents } from '../mdx';
 
-const components = getMDXComponents(undefined, {locale: 'zh-CN'});
+const components = getMDXComponents(undefined, { locale: 'zh-CN' });
 const Root = components.Accordions as ComponentType<{
   children: ReactNode;
   ref: Ref<HTMLDivElement>;

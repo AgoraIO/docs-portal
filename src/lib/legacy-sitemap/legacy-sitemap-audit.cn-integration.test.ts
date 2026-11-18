@@ -73,7 +73,6 @@ describe('legacy sitemap compatibility audit', () => {
       );
     }
   });
-
 });
 
 function parseLegacyUrl(href: string): LegacySitemapUrl {

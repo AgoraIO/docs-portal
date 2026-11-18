@@ -543,8 +543,6 @@ describe('DocsContent', () => {
     ).toHaveAttribute('href', '/zh-CN/realtime-media/cloud-recording/overview');
   });
 
-
-
   it('uses the route locale for copy menu labels during server render', async () => {
     await i18n.changeLanguage('en');
 
@@ -716,9 +714,6 @@ describe('DocsContent', () => {
       ).toBeInTheDocument();
     },
   );
-
-
-
 });
 
 describe('DocsTableOfContents', () => {
@@ -845,7 +840,8 @@ describe('DocsTableOfContents', () => {
             </h2>
           </div>
         </article>
-        <DocsTableOfContents locale="zh-CN"
+        <DocsTableOfContents
+          locale="zh-CN"
           toc={[{ depth: 3, title: 'v2.13', url: '#v213' }]}
         />
       </AppProviders>
@@ -863,7 +859,6 @@ describe('DocsTableOfContents', () => {
       expect(link).not.toHaveAttribute('data-visible');
     });
   });
-
 });
 
 describe('DocsPageFeedback placement', () => {
@@ -897,5 +892,4 @@ describe('DocsPageFeedback placement', () => {
       value: 'no',
     });
   });
-
 });
