@@ -74,7 +74,7 @@ describe('SdksCatalog', () => {
       }),
     ).toHaveAttribute(
       'href',
-      'https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.3.0.zip',
+      'https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.3.1.zip',
     );
     expect(within(product).queryByText('v2.2.8')).not.toBeInTheDocument();
   });
@@ -154,7 +154,7 @@ describe('SdksCatalog', () => {
         }),
       ).toHaveAttribute(
         'href',
-        `https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_${os}_v2.3.0.zip`,
+        `https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_${os}_v2.3.1.zip`,
       );
     }
   });
@@ -445,6 +445,73 @@ describe('SdksCatalog', () => {
         "implementation 'cn.shengwang.rtc:full-sdk:4.6.3'",
       ),
     ).not.toBeInTheDocument();
+  });
+
+  it.each([
+    ['ios', 'video', '视频 SDK', true],
+    ['ios', 'voice', '语音 SDK', true],
+    ['macos', 'video', '视频 SDK', true],
+    ['macos', 'voice', '语音 SDK', false],
+  ] as const)(
+    'labels %s %s SDK identifiers as module names in the Chinese catalog',
+    (platform, product, productName, hasModuleName) => {
+      render(
+        <SdksCatalog locale="zh-CN" platform={platform} product={product} />,
+      );
+
+      const productCard = openProductCard(productName);
+      const cards = within(productCard).getAllByRole('article');
+      expect(cards.length).toBeGreaterThan(0);
+      for (const card of cards) {
+        if (hasModuleName) {
+          expect(within(card).getByText('模块名：')).toBeVisible();
+          expect(within(card).getByText('AgoraRtcKit')).toBeVisible();
+        } else {
+          // The source has no module metadata for the separate macOS voice card.
+          expect(within(card).queryByText('模块名：')).not.toBeInTheDocument();
+        }
+        expect(within(card).queryByText('包名：')).not.toBeInTheDocument();
+      }
+    },
+  );
+
+  it.each([
+    [
+      'video',
+      '视频 SDK',
+      'iOS Full',
+      'RtcBasic 基础库参考包体积增量：31.69 MB。Full SDK 实际增量取决于集成的组件和构建配置。',
+    ],
+    ['video', '视频 SDK', 'iOS Lite', '参考包体积增量：14.97 MB'],
+    [
+      'voice',
+      '语音 SDK',
+      'iOS 音频 SDK',
+      'RtcBasic 基础库参考包体积增量：13.15 MB。实际增量取决于集成的组件和构建配置。',
+    ],
+  ] as const)(
+    'preserves the iOS %s package-size qualification on %s %s',
+    (product, productName, cardName, expected) => {
+      render(<SdksCatalog locale="zh-CN" platform="ios" product={product} />);
+
+      const card = within(openProductCard(productName)).getByRole('article', {
+        name: cardName,
+      });
+      expect(within(card).getByText(expected)).toBeVisible();
+      expect(within(card).queryByText('包体积：')).not.toBeInTheDocument();
+    },
+  );
+
+  it('keeps the package-name label for Android RTC SDKs', () => {
+    render(<SdksCatalog locale="zh-CN" platform="android" product="voice" />);
+
+    const productCard = openProductCard('语音 SDK');
+    const card = within(productCard).getByRole('article', {
+      name: 'Android 音频 SDK',
+    });
+    expect(within(card).getByText('包名：')).toBeVisible();
+    expect(within(card).getByText('包体积：')).toBeVisible();
+    expect(within(card).queryByText('模块名：')).not.toBeInTheDocument();
   });
 
   it('updates overview download cards and page links when the platform changes', () => {
@@ -856,7 +923,7 @@ describe('SdksCatalog', () => {
       }),
     ).toHaveAttribute(
       'href',
-      'https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.3.0.zip',
+      'https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.3.1.zip',
     );
   });
 
@@ -883,10 +950,10 @@ describe('SdksCatalog', () => {
       }),
     ).toHaveAttribute(
       'href',
-      'https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Linux_v2.3.0.zip',
+      'https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Linux_v2.3.1.zip',
     );
     expect(
-      within(downloadCard).getByText('9a8ee5f8deda76e23eea80f5b3c5a453'),
+      within(downloadCard).getByText('5d981e6268a939bff2e73657e3889bc3'),
     ).toBeVisible();
   });
 
@@ -1027,12 +1094,12 @@ describe('SdksCatalog', () => {
     const downloadCard = within(voiceCard).getByRole('article', {
       name: 'Web 音频 SDK',
     });
-    expect(within(downloadCard).getByText('v4.24.9')).toBeVisible();
+    expect(within(downloadCard).getByText('v4.24.10')).toBeVisible();
     expect(
       within(downloadCard).getByRole('link', { name: '下载 Web 音频 SDK' }),
     ).toHaveAttribute(
       'href',
-      'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_9_FULL.zip',
+      'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_10_FULL.zip',
     );
     expect(
       within(downloadCard).queryByRole('link', { name: 'npm' }),
@@ -1078,7 +1145,7 @@ describe('SdksCatalog', () => {
   });
 
   it.each([
-    ['web', 'Web 音频 SDK', '2026 年 10 月 13 日'],
+    ['web', 'Web 音频 SDK', '2026 年 11 月 16 日'],
     ['react-js', 'React 音频 SDK', '2025 年 12 月 17 日'],
     ['windows', 'Windows 音频 SDK', '2026 年 1 月 16 日'],
     ['macos', 'macOS 音频 SDK', '2026 年 1 月 16 日'],

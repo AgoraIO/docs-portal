@@ -124,7 +124,9 @@ Error Message: Duplicated files found in module xxx. This may cause unexpected e
 
 #### 指定依赖库版本（适用于 Maven）
 
-如果你使用 Maven Central 集成声网 SDK，你可以修改 `build.gradle` 文件，显式集成最新的 `aosl` 库，确保 `dependencies` 中 `aosl` 库的引入语句排在其他声网 SDK 之前，然后使用 `pickFirst` 来确保引用第一顺位的 `aosl` 组件。
+如果你使用 Maven 集成声网 SDK，你可以修改 `build.gradle` 文件，显式集成最新的 `aosl` 库，确保 `dependencies` 中 `aosl` 库的引入语句排在其他声网 SDK 之前，然后使用 `pickFirst` 来确保引用第一顺位的 `aosl` 组件。
+
+使用 RTM v2.3.1 及以上版本时，请先按[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)中的集成说明添加声网 Maven 仓库 `https://download.shengwang.cn/maven/`，并保留项目已有的仓库。
 
 :::info[信息]
 - 当前 `aosl` 库的最新版本号为 `1.3.5`。
@@ -159,6 +161,8 @@ dependencies {
 
 如果你使用 CocoaPods 集成声网 SDK，可以使用声网提供的脚本自动解决冲突。
 
+使用 RTM v2.3.1 及以上版本时，请先按[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)中的集成说明，在 `Podfile` 中添加声网 CocoaPods 源 `https://download.shengwang.cn/cocoapods/`，并保留项目已有的源。
+
 ##### 脚本工作原理
 
 脚本实际是一个 CocoaPods 命令包装器，对 `install` 和 `update` 命令：自动处理依赖和 framework 冲突，对其他命令（如 `--version`, `trunk` 等）：直接透传，不做处理。
@@ -176,7 +180,7 @@ dependencies {
 #!/bin/bash
 
 # 查找 CocoaPods specs 目录
-SPECS_DIR="$HOME/.cocoapods/repos/trunk"
+SPECS_DIR="$HOME/.cocoapods/repos"
 
 # 存储所有需要恢复的备份文件
 declare -a BACKUP_FILES
@@ -293,7 +297,7 @@ while IFS= read -r line; do
   echo "Processing $POD_NAME version $POD_VERSION..."
 
   # 查找 podspec 文件
-  PODSPEC_PATH=$(find "$SPECS_DIR" -name "${POD_NAME}.podspec.json" 2>/dev/null | grep "/${POD_VERSION}/")
+  PODSPEC_PATH=$(find "$SPECS_DIR" -name "${POD_NAME}.podspec.json" 2>/dev/null | grep "/${POD_VERSION}/" | head -1)
 
   if [ -z "$PODSPEC_PATH" ]; then
     echo "Warning: Cannot find ${POD_NAME} ${POD_VERSION} podspec, skipping..."
@@ -637,7 +641,7 @@ PATH="<代理脚本目录>:$PATH" flutter run
 
 <Tabs defaultValue="android">
 <TabsList>
-  <TabsTrigger value="android">Maven Central</TabsTrigger>
+  <TabsTrigger value="android">Maven</TabsTrigger>
   <TabsTrigger value="ios">CocoaPods</TabsTrigger>
 </TabsList>
 
@@ -646,10 +650,10 @@ PATH="<代理脚本目录>:$PATH" flutter run
 ```groovy
 // ...
 dependencies {
-    // 如果你使用的是 2.2.2 及之后版本的 RTM SDK
-    // 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.7
+    // 如果你使用的是 2.2.7 及之后版本的 RTM SDK
+    // 将下方版本号替换为需要的 SDK 版本号，如 2.3.1
     // 可通过发版说明获取最新版本号
-    implementation 'cn.shengwang.rtm:android-java-lite:2.2.7'
+    implementation 'cn.shengwang.rtm:android-java-lite:2.3.1'
 }
 
 ```
@@ -661,12 +665,14 @@ dependencies {
 <TabsContent value="ios">
 
 ```ruby
+source 'https://download.shengwang.cn/cocoapods/'
+
 platform :ios, '11.0'
 target 'Your App' do
-    # 如果你使用的是 2.2.2 及之后版本的 RTM SDK
-    # 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.7
+    # 如果你使用的是 2.2.8 及之后版本的 RTM SDK
+    # 将下方版本号替换为需要的 SDK 版本号，如 2.3.1
     # 可通过发版说明获取最新版本号
-    pod 'ShengwangRtm', 'x.y.z', :subspecs => ['RtmKit']
+    pod 'ShengWang-Rtm', '2.3.1', :subspecs => ['RtmKit']
 end
 ```
 

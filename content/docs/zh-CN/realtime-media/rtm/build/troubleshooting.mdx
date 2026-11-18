@@ -63,11 +63,11 @@ rtmConfig.logConfig = logConfig;
 | `-10018` | `INSTANCE_ALREADY_RELEASED` | 重复调用 `release` 方法释放 `RtmClient` 实例或重复调用 `release` 释放 `StreamChannel` 实例。 |
 | `-10019` | `INVALID_CHANNEL_TYPE` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2" /> |
 | `-10020` | `INVALID_ENCRYPTION_PARAMETER` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2" /> |
-| `-10021` | `OPERATION_RATE_EXCEED_LIMITATION` | Channel Metadata 或 User Metadata 相关 API 的调用频率超限。请控制调用频率在 10 次/秒之内。 |
+| `-10021` | `OPERATION_RATE_EXCEED_LIMITATION` | API 调用频率超过限制。各 API 的配额见[API 使用限制](/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/api-limits)。 |
 | `-10022` | `SERVICE_NOT_SUPPORTED` | 服务类型不支持。请检查你在 `RtmServiceType` 中设置的服务类型是否正确。该错误码仅适用于私有化部署功能。 |
 | `-10023` | `LOGIN_CANCELED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2" /> |
 | `-10024` | `INVALID_PRIVATE_CONFIG` | 私有化部署参数设置无效。请检查你在 `RtmPrivateConfig` 中设置的服务类型和服务器地址是否有效。 |
-| `-10025` | `NOT_CONNECTED` | 未连接 RTM 服务器。在调用消息订阅、Metadata 或 Lock 模块相关 API 时，如果 RTM 服务未连接，会报这个错误。 |
+| `-10025` | `NOT_CONNECTED` | 未连接 RTM 服务器。请确认服务连接可用后再调用相关 API。 |
 | `-10026` | `RENEW_TOKEN_TIMEOUT` | 更新 Token 超时。 |
 | `-11001` | `CHANNEL_NOT_JOINED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-27-2" /> |
 | `-11002` | `CHANNEL_NOT_SUBSCRIBED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2" /> |
@@ -138,7 +138,7 @@ rtmConfig.logConfig = logConfig;
 | `-13011` | `PRESENCE_USER_NOT_EXIST` | 该用户不存在。 |
 | `-13012` | `PRESENCE_OPERATION_TIMEOUT` | Presence 操作超时。 |
 | `-13013` | `PRESENCE_OPERATION_FAILED` | Presence 操作失败。 |
-| `-13014` | `PRESENCE_INACTIVE` | Presence 服务未开启或当前不可用。请检查声网控制台是否已开启 Presence 服务开关；未开启时，Presence 相关 API 和依赖 Presence 的订阅选项不可用。 |
+| `-13014` | `PRESENCE_INACTIVE` | Presence 服务未开启或当前不可用。请检查声网控制台是否已开启 Presence 服务开关；未开启时，依赖该服务的 Presence API 和订阅选项不可用。 |
 | `-13015` | `PRESENCE_PENDING_REQUEST_CANCELLED` | Presence 待处理请求已取消。调用 Presence 相关 API 后，如果请求完成前被取消，会返回该错误。 |
 | `-13016` | `PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION` | Presence 待处理请求数量超过限制。请等待已有请求完成后重试。 |
 | `-14001` | `LOCK_OPERATION_FAILED` | Lock 操作失败。 |
@@ -370,11 +370,11 @@ rtm_cfg.logConfig = log_cfg;
 | `-10018` | `AgoraRtmErrorInstanceAlreadyReleased` | 重复调用 `destroy` 方法释放 `AgoraRtmClientKit` 实例或重复调用 `destroy` 释放 `AgoraRtmStreamChannel` 实例。 |
 | `-10019` | `AgoraRtmErrorInvalidChannelType` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2" /> |
 | `-10020` | `AgoraRtmErrorInvalidEncryptionParameter` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2" /> |
-| `-10021` | `AgoraRtmErrorOperationRateExceedLimitation` | Channel Metadata 或 User Metadata 相关 API 的调用频率超限。请控制调用频率在 10 次/秒之内。 |
+| `-10021` | `AgoraRtmErrorOperationRateExceedLimitation` | API 调用频率超过限制。各 API 的配额见[API 使用限制](/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/api-limits)。 |
 | `-10022` | `AgoraRtmErrorServiceNotSupport` | 服务类型不支持。请检查你在 `AgoraRtmServiceType` 中设置的服务类型是否正确。该错误码仅适用于私有化部署功能。 |
 | `-10023` | `AgoraRtmErrorLoginCanceled` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2" /> |
 | `-10024` | `AgoraRtmErrorInvalidPrivateConfig` | 私有化部署参数设置无效。请检查你在 `AgoraRtmPrivateConfig` 中设置的服务类型和服务器地址是否有效。 |
-| `-10025` | `AgoraRtmErrorNotConnected` | 未连接 RTM 服务器。在调用消息订阅、Metadata 或 Lock 模块相关 API 时，如果 RTM 服务未连接，会报这个错误。 |
+| `-10025` | `AgoraRtmErrorNotConnected` | 未连接 RTM 服务器。请确认服务连接可用后再调用相关 API。 |
 | `-10026` | `AgoraRtmErrorRenewTokenTimeout` | 更新 Token 超时。 |
 | `-11001` | `AgoraRtmErrorChannelNotJoined` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-27-2" /> |
 | `-11002` | `AgoraRtmErrorChannelNotSubscribed` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2" /> |
@@ -445,7 +445,7 @@ rtm_cfg.logConfig = log_cfg;
 | `-13011` | `AgoraRtmErrorPresenceUserNotExist` | 该用户不存在。 |
 | `-13012` | `AgoraRtmErrorPresenceOperationTimeout` | Presence 操作超时。 |
 | `-13013` | `AgoraRtmErrorPresenceOperationFailed` | Presence 操作失败。 |
-| `-13014` | `AgoraRtmErrorPresenceInactive` | Presence 服务未开启或当前不可用。请检查声网控制台是否已开启 Presence 服务开关；未开启时，Presence 相关 API 和依赖 Presence 的订阅选项不可用。 |
+| `-13014` | `AgoraRtmErrorPresenceInactive` | Presence 服务未开启或当前不可用。请检查声网控制台是否已开启 Presence 服务开关；未开启时，依赖该服务的 Presence API 和订阅选项不可用。 |
 | `-13015` | `AgoraRtmErrorPresencePendingRequestCancelled` | Presence 待处理请求已取消。调用 Presence 相关 API 后，如果请求完成前被取消，会返回该错误。 |
 | `-13016` | `AgoraRtmErrorPresencePendingRequestExceedLimitation` | Presence 待处理请求数量超过限制。请等待已有请求完成后重试。 |
 | `-14001` | `AgoraRtmErrorLockOperationFailed` | Lock 操作失败。 |
@@ -963,7 +963,7 @@ try {
 | `-10002` |  | 用户未登录 RTM 系统、掉线超时或者主动退出登录后调用 API。请先登录 RTM 系统。 |
 | `-10003` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-4-2" /> |
 | `-10005` |  | 无效 Token。检查 Token Provider 是否生成 RTM Token。 |
-| `-10006` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-6-2" /> |
+| `-10006` | `INVALID_USER_ID` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-6-2" /> |
 | `-10007` |  | SDK 初始化失败。请重新调用 `RtmClient` 方法进行初始化。 |
 | `-10008` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-8-2" /> |
 | `-10009` |  | Token 过期失效。你需要调用 `renewToken` 重新获取 Token。 |
@@ -978,11 +978,11 @@ try {
 | `-10018` |  | 重复调用 `release` 方法释放 `RtmClient` 实例或重复调用 `release` 释放 `StreamChannel` 实例。 |
 | `-10019` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2" /> |
 | `-10020` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2" /> |
-| `-10021` |  | Channel Metadata 或 User Metadata 相关 API 的调用频率超限。请控制调用频率在 10 次/秒之内。 |
-| `-10022` |  | 服务类型不支持。请检查你在 `RtmServiceType` 中设置的服务类型是否正确。该错误码仅适用于私有化部署功能。 |
+| `-10021` | `OPERATION_RATE_EXCEED_LIMITATION` | API 调用频率超过限制。各 API 的配额见[API 使用限制](/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/api-limits)。 |
+| `-10022` | `SERVICE_NOT_SUPPORTED` | 服务类型不支持。请检查你在 `RtmServiceType` 中设置的服务类型是否正确。该错误码仅适用于私有化部署功能。 |
 | `-10023` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2" /> |
 | `-10024` |  | 私有化部署参数设置无效。请检查你在 `RtmPrivateConfig` 中设置的服务类型和服务器地址是否有效。 |
-| `-10025` |  | 未连接 RTM 服务器。在调用消息订阅、Metadata 或 Lock 模块相关 API 时，如果 RTM 服务未连接，会报这个错误。 |
+| `-10025` | `NOT_CONNECTED` | 未连接 RTM 服务器。请确认服务连接可用后再调用相关 API。 |
 | `-10026` |  | 更新 Token 超时。 |
 | `-11001` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-27-2" /> |
 | `-11002` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2" /> |
@@ -1051,9 +1051,9 @@ try {
 | `-13009` |  | 状态值长度溢出 |
 | `-13010` |  | 重复的状态键。 |
 | `-13011` |  | 该用户不存在。 |
-| `-13012` |  | Presence 操作超时。 |
-| `-13013` |  | Presence 操作失败。 |
-| `-13014` | `PRESENCE_INACTIVE` | Presence 服务未开启或当前不可用。请检查声网控制台是否已开启 Presence 服务开关；未开启时，Presence 相关 API 和依赖 Presence 的订阅选项不可用。 |
+| `-13012` | `PRESENCE_OPERATION_TIMEOUT` | Presence 操作超时。 |
+| `-13013` | `PRESENCE_OPERATION_FAILED` | Presence 操作失败。 |
+| `-13014` | `PRESENCE_INACTIVE` | Presence 服务未开启或当前不可用。请检查声网控制台是否已开启 Presence 服务开关；未开启时，依赖该服务的 Presence API 和订阅选项不可用。 |
 | `-13015` | `PRESENCE_PENDING_REQUEST_CANCELLED` | Presence 待处理请求已取消。调用 Presence 相关 API 后，如果请求完成前被取消，会返回该错误。 |
 | `-13016` | `PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION` | Presence 待处理请求数量超过限制。请等待已有请求完成后重试。 |
 | `-14001` |  | Lock 操作失败。 |
@@ -1290,7 +1290,7 @@ catch (RTMException e)
 | `-10018` | `INSTANCE_ALREADY_RELEASED` | 重复调用 `Dispose` 方法释放 `IRtmClient` 实例或重复调用 `Dispose` 释放 `IStreamChannel` 实例。 |
 | `-10019` | `INVALID_CHANNEL_TYPE` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2" /> |
 | `-10020` | `INVALID_ENCRYPTION_PARAMETER` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2" /> |
-| `-10021` | `OPERATION_RATE_EXCEED_LIMITATION` | Channel Metadata 或 User Metadata 相关 API 的调用频率超限。请控制调用频率在 10 次/秒之内。 |
+| `-10021` | `OPERATION_RATE_EXCEED_LIMITATION` | API 调用频率超过限制。各 API 的配额见[API 使用限制](/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/api-limits)。 |
 | `-11001` | `CHANNEL_NOT_JOINED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-22-2" /> |
 | `-11002` | `CHANNEL_NOT_SUBSCRIBED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2" /> |
 | `-11003` | `CHANNEL_EXCEED_TOPIC_USER_LIMITATION` | 订阅该 Topic 人数超出限制。 |
@@ -1850,11 +1850,11 @@ if (!rtmClient_ || errorCode != 0) {
 | `-10018` | `RTM_ERROR_INSTANCE_ALREADY_RELEASED` | 重复调用 `release` 方法释放 `IRtmClient` 实例或重复调用 `release` 释放 `IStreamChannel` 实例。 |
 | `-10019` | `RTM_ERROR_INVALID_CHANNEL_TYPE` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2" /> |
 | `-10020` | `RTM_ERROR_INVALID_ENCRYPTION_PARAMETER` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2" /> |
-| `-10021` | `RTM_ERROR_OPERATION_RATE_EXCEED_LIMITATION` | Channel Metadata 或 User Metadata 相关 API 的调用频率超限。请控制调用频率在 10 次/秒之内。 |
+| `-10021` | `RTM_ERROR_OPERATION_RATE_EXCEED_LIMITATION` | API 调用频率超过限制。各 API 的配额见[API 使用限制](/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/api-limits)。 |
 | `-10022` | `RTM_ERROR_SERVICE_NOT_SUPPORTED` | 服务类型不支持。请检查你在 `RTM_SERVICE_TYPE` 中设置的服务类型是否正确。该错误码仅适用于私有化部署功能。 |
 | `-10023` | `RTM_ERROR_LOGIN_CANCELED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2" /> |
 | `-10024` | `RTM_ERROR_INVALID_PRIVATE_CONFIG` | 私有化部署参数设置无效。请检查你在 `RtmPrivateConfig` 中设置的服务类型和服务器地址是否有效。 |
-| `-10025` | `RTM_ERROR_NOT_CONNECTED` | 未连接 RTM 服务器。在调用消息订阅、Metadata 或 Lock 模块相关 API 时，如果 RTM 服务未连接，会报这个错误。 |
+| `-10025` | `RTM_ERROR_NOT_CONNECTED` | 未连接 RTM 服务器。请确认服务连接可用后再调用相关 API。 |
 | `-10026` | `RTM_ERROR_RENEW_TOKEN_TIMEOUT` | 更新 Token 超时。 |
 | `-11001` | `RTM_ERROR_CHANNEL_NOT_JOINED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-27-2" /> |
 | `-11002` | `RTM_ERROR_CHANNEL_NOT_SUBSCRIBED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2" /> |
@@ -1925,7 +1925,7 @@ if (!rtmClient_ || errorCode != 0) {
 | `-13011` | `RTM_ERROR_PRESENCE_USER_NOT_EXIST` | 该用户不存在。 |
 | `-13012` | `RTM_ERROR_PRESENCE_OPERATION_TIMEOUT` | Presence 操作超时。 |
 | `-13013` | `RTM_ERROR_PRESENCE_OPERATION_FAILED` | Presence 操作失败。 |
-| `-13014` | `RTM_ERROR_PRESENCE_INACTIVE` | Presence 服务未开启或当前不可用。请检查声网控制台是否已开启 Presence 服务开关；未开启时，Presence 相关 API 和依赖 Presence 的订阅选项不可用。 |
+| `-13014` | `RTM_ERROR_PRESENCE_INACTIVE` | Presence 服务未开启或当前不可用。请检查声网控制台是否已开启 Presence 服务开关；未开启时，依赖该服务的 Presence API 和订阅选项不可用。 |
 | `-13015` | `RTM_ERROR_PRESENCE_PENDING_REQUEST_CANCELLED` | Presence 待处理请求已取消。调用 Presence 相关 API 后，如果请求完成前被取消，会返回该错误。 |
 | `-13016` | `RTM_ERROR_PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION` | Presence 待处理请求数量超过限制。请等待已有请求完成后重试。 |
 | `-14001` | `RTM_ERROR_LOCK_OPERATION_FAILED` | Lock 操作失败。 |
@@ -2153,11 +2153,11 @@ config.logConfig?.level = .error
 | `-10018` | `instanceAlreadyReleased` | 重复调用 `destroy` 方法释放 `AgoraRtmClientKit` 实例或重复调用 `destroy` 释放 `AgoraRtmStreamChannel` 实例。 |
 | `-10019` | `invalidChannelType` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2" /> |
 | `-10020` | `invalidEncryptionParameter` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2" /> |
-| `-10021` | `operationRateExceedLimitation` | Channel Metadata 或 User Metadata 相关 API 的调用频率超限。请控制调用频率在 10 次/秒之内。 |
+| `-10021` | `operationRateExceedLimitation` | API 调用频率超过限制。各 API 的配额见[API 使用限制](/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/api-limits)。 |
 | `-10022` | `serviceNotSupport` | 服务类型不支持。请检查你在 `AgoraRtmServiceType` 中设置的服务类型是否正确。该错误码仅适用于私有化部署功能。 |
 | `-10023` | `loginCanceled` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2" /> |
 | `-10024` | `invalidPrivateConfig` | 私有化部署参数设置无效。请检查你在 `AgoraRtmPrivateConfig` 中设置的服务类型和服务器地址是否有效。 |
-| `-10025` | `notConnected` | 未连接 RTM 服务器。在调用消息订阅、Metadata 或 Lock 模块相关 API 时，如果 RTM 服务未连接，会报这个错误。 |
+| `-10025` | `notConnected` | 未连接 RTM 服务器。请确认服务连接可用后再调用相关 API。 |
 | `-10026` | `renewTokenTimeout` | 更新 Token 超时。 |
 | `-11001` | `channelNotJoined` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-27-2" /> |
 | `-11002` | `channelNotSubscribed` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2" /> |
@@ -2228,7 +2228,7 @@ config.logConfig?.level = .error
 | `-13011` | `presenceUserNotExist` | 该用户不存在。 |
 | `-13012` | `presenceOperationTimeout` | Presence 操作超时。 |
 | `-13013` | `presenceOperationFailed` | Presence 操作失败。 |
-| `-13014` | `presenceInactive` | Presence 服务未开启或当前不可用。请检查声网控制台是否已开启 Presence 服务开关；未开启时，Presence 相关 API 和依赖 Presence 的订阅选项不可用。 |
+| `-13014` | `presenceInactive` | Presence 服务未开启或当前不可用。请检查声网控制台是否已开启 Presence 服务开关；未开启时，依赖该服务的 Presence API 和订阅选项不可用。 |
 | `-13015` | `presencePendingRequestCancelled` | Presence 待处理请求已取消。调用 Presence 相关 API 后，如果请求完成前被取消，会返回该错误。 |
 | `-13016` | `presencePendingRequestExceedLimitation` | Presence 待处理请求数量超过限制。请等待已有请求完成后重试。 |
 | `-14001` | `lockOperationFailed` | Lock 操作失败。 |

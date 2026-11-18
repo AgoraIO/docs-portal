@@ -24,6 +24,15 @@ const ZH_CN_MERGED_RESTFUL_GUIDE_REDIRECTS = new Map(
   ].map((path) => [`${path}/restful`, `/zh-CN/realtime-media/${path}-restful`]),
 );
 
+const ZH_CN_RTM_SCENARIO_REDIRECTS = new Map(
+  ['web', 'android', 'ios', 'cpp', 'swift', 'harmonyos'].flatMap((platform) =>
+    ['voice-room', 'one-to-one-call'].map((scenario): [string, string] => [
+      `rtm/best-practice/${platform}/${scenario}`,
+      `/zh-CN/realtime-media/rtm/best-practice/${scenario}/${platform}`,
+    ]),
+  ),
+);
+
 const RTC_SERVICE_SETUP_PATH = 'rtc/build/setup-and-access/enable-service';
 const ZH_CN_RTC_SERVICE_SETUP_REDIRECTS = new Map([
   [
@@ -133,6 +142,11 @@ export function resolveMovedDocsRedirect(
   }
 
   if (tab === 'realtime-media') {
+    const rtmScenarioRedirect = ZH_CN_RTM_SCENARIO_REDIRECTS.get(
+      slugSegments.join('/'),
+    );
+    if (rtmScenarioRedirect) return rtmScenarioRedirect;
+
     const rtcServiceSetupRedirect = ZH_CN_RTC_SERVICE_SETUP_REDIRECTS.get(
       slugSegments.join('/'),
     );
@@ -235,7 +249,8 @@ export function isPermanentMovedDocsRedirect(
     locale === 'zh-CN' &&
     ((tab === 'ai' && ZH_CN_AI_GUIDE_REDIRECTS.has(slugSegments.join('/'))) ||
       (tab === 'realtime-media' &&
-        (ZH_CN_RTC_SERVICE_SETUP_REDIRECTS.has(slugSegments.join('/')) ||
+        (ZH_CN_RTM_SCENARIO_REDIRECTS.has(slugSegments.join('/')) ||
+          ZH_CN_RTC_SERVICE_SETUP_REDIRECTS.has(slugSegments.join('/')) ||
           ZH_CN_RTC_EVENTS_REDIRECTS.has(slugSegments.join('/')) ||
           ZH_CN_MERGED_RESTFUL_GUIDE_REDIRECTS.has(slugSegments.join('/')))) ||
       (tab === 'solutions' &&

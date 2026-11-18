@@ -7,6 +7,7 @@ export function SdkDownloadCard({
   iconSrc,
   onDownload,
   packageSizeContent,
+  packageNameLabel = '包名',
   title,
   version,
   versionSuffix,
@@ -14,6 +15,7 @@ export function SdkDownloadCard({
   iconSrc: string;
   onDownload?: () => void;
   packageSizeContent?: ReactNode;
+  packageNameLabel?: string;
   title: string;
   version: SdkDownloadVersion;
   versionSuffix?: string;
@@ -59,7 +61,7 @@ export function SdkDownloadCard({
         <dl className="mt-4 grid gap-2 text-sm text-muted-foreground">
           {version.packageName ? (
             <div className="break-all">
-              <dt className="inline">包名：</dt>
+              <dt className="inline">{packageNameLabel}：</dt>
               <dd className="inline">{version.packageName}</dd>
             </div>
           ) : null}

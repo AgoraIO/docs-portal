@@ -94,12 +94,10 @@ describe('RtcSdkDownloads', () => {
     ).toBeVisible();
     expect(
       within(full).getByText(
-        '集成基础库 (RtcBasic) SDK 后增加的包体积为 31.69 MB',
+        'RtcBasic 基础库参考包体积增量：31.69 MB。Full SDK 实际增量取决于集成的组件和构建配置。',
       ),
     ).toBeVisible();
-    expect(
-      within(lite).getByText('集成 SDK 后增加的包体积为 14.97 MB'),
-    ).toBeVisible();
+    expect(within(lite).getByText('参考包体积增量：14.97 MB')).toBeVisible();
     expect(
       within(full).getByText('发布日期：2026 年 9 月 22 日'),
     ).toBeVisible();
