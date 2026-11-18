@@ -11,6 +11,7 @@ const proseProps = new Set([
   'text',
   'summary',
   'caption',
+  'cta',
   'alt',
   'children',
 ]);
