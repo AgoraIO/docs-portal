@@ -60,9 +60,15 @@ const expectedLinks = [
   ...Object.entries(sdkAndRestProducts).map(([productSlug, restUrl]) => ({
     productSlug,
     restUrl,
+    ...(productSlug === 'iot'
+      ? { restScopeUrl: '/en/api-reference/api-ref/rtc' }
+      : {}),
     sdkUrl: sdkCatalogUrl(productSlug as keyof typeof sdkProductFilters),
   })),
   ...Object.entries(restOnlyProducts).map(([productSlug, restUrl]) => ({
+    ...(productSlug === 'marketplace'
+      ? { restScopeUrl: '/en/api-reference/api-ref/extensions-marketplace' }
+      : {}),
     productSlug,
     restUrl,
   })),

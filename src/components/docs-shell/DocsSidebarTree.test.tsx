@@ -321,6 +321,60 @@ describe('DocsSidebarTree', () => {
     expect(link.querySelector('svg.lucide-chevron-down')).toBeNull();
   });
 
+  it('opens product REST groups in place and links to an endpoint in the same tab', async () => {
+    const fromProduct = '/en/ai/platform';
+    const url =
+      '/en/api-reference/api-ref/conversational-ai/platform/create-agent';
+    renderSidebarTree(
+      [
+        {
+          type: 'section',
+          id: 'reference',
+          title: 'Reference',
+          children: [
+            {
+              type: 'section',
+              id: 'rest',
+              title: 'REST API',
+              collapsible: true,
+              children: [
+                {
+                  type: 'section',
+                  id: 'agents',
+                  title: 'Agents',
+                  collapsible: true,
+                  children: [
+                    {
+                      type: 'page',
+                      id: url,
+                      url,
+                      fromProduct,
+                      title: 'Create an agent',
+                      method: 'POST',
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      fromProduct,
+    );
+    const rest = await screen.findByRole('button', { name: 'REST API' });
+    expect(rest).toHaveAttribute('aria-expanded', 'false');
+    fireEvent.click(rest);
+    const agents = screen.getByRole('button', { name: 'Agents' });
+    expect(agents).toHaveAttribute('aria-expanded', 'false');
+    fireEvent.click(agents);
+    const link = screen.getByRole('link', { name: 'Create an agent POST' });
+    expect(link).toHaveAttribute(
+      'href',
+      url + '?from=' + encodeURIComponent(fromProduct),
+    );
+    expect(link).not.toHaveAttribute('target', '_blank');
+  });
+
   it('renders linked external REST API jumps with an indicator in a new tab', async () => {
     const tree: DocsSidebarNode[] = [
       {

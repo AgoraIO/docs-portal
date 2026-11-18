@@ -1,6 +1,8 @@
 export type RealtimeMediaApiReferenceLinks = {
   productSlug: string;
   restUrl?: string;
+  // A deep entry can share a wider API directory (for example IoT uses RTC).
+  restScopeUrl?: string;
   sdkUrl?: string;
 };
 
@@ -38,6 +40,7 @@ export const realtimeMediaApiReferenceLinks = [
   },
   {
     productSlug: 'iot',
+    restScopeUrl: '/en/api-reference/api-ref/rtc',
     restUrl: '/en/api-reference/api-ref/iot-channel-management-rest-api',
     sdkUrl: sdkCatalogUrl('iot-sdk'),
   },
@@ -71,6 +74,7 @@ export const realtimeMediaApiReferenceLinks = [
   },
   {
     productSlug: 'marketplace',
+    restScopeUrl: '/en/api-reference/api-ref/extensions-marketplace',
     restUrl: '/en/api-reference/api-ref/extensions-marketplace/provisioning',
   },
   {

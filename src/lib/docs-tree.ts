@@ -40,6 +40,7 @@ export type SidebarEntry =
     };
 
 export type DocsSidebarPageNode = {
+  fromProduct?: string;
   external?: boolean;
   href?: string;
   id: string;

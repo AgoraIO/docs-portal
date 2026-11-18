@@ -1,6 +1,6 @@
 'use client';
 
-import { Link } from '@tanstack/react-router';
+import { Link, useLocation } from '@tanstack/react-router';
 import { ArrowUpRightIcon, ChevronDownIcon } from 'lucide-react';
 import {
   type AnchorHTMLAttributes,
@@ -69,6 +69,12 @@ export function DocsSidebarTree({
   nodes: DocsSidebarNode[];
   onSelectPath: () => void;
 }) {
+  const hash = useLocation({ select: (location) => location.hash });
+  const fragmentPath = hash ? activePath + '#' + hash : undefined;
+  const selected =
+    fragmentPath && nodes.some((node) => isNodeActive(node, fragmentPath))
+      ? fragmentPath
+      : activePath;
   const renderableNodes = normalizeRootSections(
     mergeBestPracticesIntoBuild(
       mergeBuildIntoGettingStarted(mergeSdkQuickstartSection(nodes)),
@@ -81,7 +87,7 @@ export function DocsSidebarTree({
         <SidebarMenu>
           {renderableNodes.map((node) => (
             <SidebarNodeRenderer
-              activePath={activePath}
+              activePath={selected}
               key={node.id}
               node={node}
               onSelectPath={onSelectPath}
@@ -126,6 +132,7 @@ function SidebarNodeRenderer({
     <SidebarPageLink
       activePath={activePath}
       external={node.external}
+      fromProduct={node.fromProduct}
       href={node.href}
       linked={node.linked}
       method={node.method}
@@ -315,6 +322,7 @@ function SidebarSection({
                 >
                   <SidebarPageAnchor
                     external={child.external}
+                    fromProduct={child.fromProduct}
                     href={child.href}
                     isActive={child.url === activePath}
                     onSelectPath={onSelectPath}
@@ -427,6 +435,7 @@ function SidebarLinkedSection({
                 >
                   <SidebarPageAnchor
                     external={child.external}
+                    fromProduct={child.fromProduct}
                     href={child.href}
                     isActive={child.url === activePath}
                     onSelectPath={onSelectPath}
@@ -586,6 +595,7 @@ function SidebarNestedSection({
               >
                 <SidebarPageAnchor
                   external={child.external}
+                  fromProduct={child.fromProduct}
                   href={child.href}
                   isActive={child.url === activePath}
                   onSelectPath={onSelectPath}
@@ -752,6 +762,7 @@ function normalizeRootSections(
 function SidebarPageLink({
   activePath,
   external,
+  fromProduct,
   href,
   linked,
   method,
@@ -761,6 +772,7 @@ function SidebarPageLink({
 }: {
   activePath: string;
   external?: boolean;
+  fromProduct?: string;
   href?: string;
   linked?: boolean;
   method?: string;
@@ -780,6 +792,7 @@ function SidebarPageLink({
       >
         <SidebarPageAnchor
           external={external}
+          fromProduct={fromProduct}
           href={href}
           isActive={url === activePath}
           onSelectPath={onSelectPath}
@@ -800,6 +813,7 @@ function SidebarPageLink({
 type SidebarPageAnchorProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   children: ReactNode;
   external?: boolean;
+  fromProduct?: string;
   href?: string;
   isActive?: boolean;
   onSelectPath: () => void;
@@ -811,6 +825,7 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
     {
       children,
       external,
+      fromProduct,
       href,
       isActive,
       onClick,
@@ -846,6 +861,7 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
       );
     }
 
+    const [path, hash] = url.split('#', 2);
     return (
       <Link
         {...props}
@@ -853,8 +869,9 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
         onClick={handleClick}
         params={{}}
         ref={ref}
-        search={{}}
-        to={url}
+        search={fromProduct ? { from: fromProduct } : {}}
+        hash={hash}
+        to={path}
       >
         {children}
       </Link>
