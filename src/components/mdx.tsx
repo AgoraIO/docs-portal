@@ -500,10 +500,20 @@ function DocsCalloutContainer(props: CalloutContainerProps) {
   );
 }
 
+const docsTableComponents = new Map<
+  string | undefined,
+  (props: ComponentProps<typeof DocsTable>) => ReactElement
+>();
+
 export function createDocsTableComponent(locale?: string) {
-  return function LocalizedDocsTable(props: ComponentProps<typeof DocsTable>) {
+  const cached = docsTableComponents.get(locale);
+  if (cached) return cached;
+  // biome-ignore lint/correctness/noComponentHookFactories: Cached by page/locale at module scope; identity is covered by regression tests.
+  function LocalizedDocsTable(props: ComponentProps<typeof DocsTable>) {
     return <DocsTable {...props} locale={locale} />;
-  };
+  }
+  docsTableComponents.set(locale, LocalizedDocsTable);
+  return LocalizedDocsTable;
 }
 
 function hasSdkComplianceCalloutTitle(children: ReactNode): boolean {
@@ -1540,6 +1550,7 @@ function CommandBlock({
 }
 
 function createDocsAnchor(contentPath?: string) {
+  // biome-ignore lint/correctness/noComponentHookFactories: Cached by page/locale at module scope; identity is covered by regression tests.
   function DocsAnchor({
     href,
     children,
@@ -1576,6 +1587,7 @@ function createDocsAnchor(contentPath?: string) {
 function createLegacyDocsLink(contentPath?: string) {
   const DocsAnchor = createDocsAnchor(contentPath);
 
+  // biome-ignore lint/correctness/noComponentHookFactories: Cached by page/locale at module scope; identity is covered by regression tests.
   function LegacyDocsLink({
     to,
     ...props
@@ -1589,6 +1601,7 @@ function createLegacyDocsLink(contentPath?: string) {
 }
 
 function createDocsCard(contentPath?: string) {
+  // biome-ignore lint/correctness/noComponentHookFactories: Cached by page/locale at module scope; identity is covered by regression tests.
   function DocsCard({
     children,
     className,
@@ -1686,6 +1699,7 @@ function Cards({ className, columns, ...props }: DocsCardsProps) {
 }
 
 function createPlanCardsComponent(contentPath?: string) {
+  // biome-ignore lint/correctness/noComponentHookFactories: Cached by page/locale at module scope; identity is covered by regression tests.
   function DocsPlanCards(props: ComponentProps<typeof PlanCards>) {
     return <PlanCards {...props} contentPath={contentPath} />;
   }
@@ -1694,6 +1708,7 @@ function createPlanCardsComponent(contentPath?: string) {
 }
 
 function createPricingCardsComponent(contentPath?: string) {
+  // biome-ignore lint/correctness/noComponentHookFactories: Cached by page/locale at module scope; identity is covered by regression tests.
   function DocsPricingCards(props: ComponentProps<typeof PricingCards>) {
     return <PricingCards {...props} contentPath={contentPath} />;
   }
@@ -1906,10 +1921,7 @@ function ChinesePlatformTabsGroup(
   return <PlatformTabsGroup {...props} locale="zh-CN" />;
 }
 
-export function getMDXComponents(
-  components?: MDXComponents,
-  context?: MDXContext,
-) {
+function buildMDXComponents(context?: MDXContext) {
   const locale =
     normalizeLocale(context?.locale ?? context?.contentPath?.split('/')[0]) ??
     DEFAULT_LOCALE;
@@ -1973,8 +1985,30 @@ export function getMDXComponents(
       ? ChinesePlatformTabsGroup
       : PlatformTabsGroup,
     _PlatformPanel: PlatformPanel,
-    ...components,
   } satisfies MDXComponents;
+}
+
+// Dynamic MDX renderers may request the mapping repeatedly. Component types
+// must stay stable for the same page and locale so child state is not reset.
+const contextualMDXComponents = new Map<
+  string,
+  ReturnType<typeof buildMDXComponents>
+>();
+
+export function getMDXComponents(
+  components?: MDXComponents,
+  context?: MDXContext,
+) {
+  const key = JSON.stringify([
+    context?.contentPath ?? null,
+    context?.locale ?? null,
+  ]);
+  let base = contextualMDXComponents.get(key);
+  if (!base) {
+    base = buildMDXComponents(context);
+    contextualMDXComponents.set(key, base);
+  }
+  return { ...base, ...components };
 }
 
 export const useMDXComponents = getMDXComponents;

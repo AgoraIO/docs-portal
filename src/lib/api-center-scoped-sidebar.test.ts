@@ -476,9 +476,9 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
     ],
     [['whiteboard', 'fastboard', 'ios'], 'iOS', '互动白板', ['Fastboard SDK']],
     [['whiteboard', 'fastboard', 'web'], 'Web', '互动白板', ['Fastboard SDK']],
-    [['meeting', 'android'], 'Android', '灵动会议引擎', ['会议 SDK API']],
-    [['meeting', 'ios'], 'iOS', '灵动会议引擎', ['会议 SDK API']],
-    [['meeting', 'electron'], 'Electron', '灵动会议引擎', ['会议 SDK API']],
+    [['meeting', 'android'], 'Android', '智能云会议引擎', ['会议 SDK API']],
+    [['meeting', 'ios'], 'iOS', '智能云会议引擎', ['会议 SDK API']],
+    [['meeting', 'electron'], 'Electron', '智能云会议引擎', ['会议 SDK API']],
     [
       ['private-room', 'android', 'rtm', 'api', 'call-api'],
       'Android',
@@ -624,7 +624,7 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
       backLabel: 'API 参考',
-      title: '灵动会议引擎 · RESTful API',
+      title: '智能云会议引擎 · RESTful API',
     });
   });
 

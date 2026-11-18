@@ -1,10 +1,24 @@
 // Component props can span blank lines and contain `>` inside expressions.
 // Mask them before parsing prose, keeping offsets aligned with indexed sections.
-export function stripSearchComponentTags(value: string, keepOffsets = false) {
+export function stripSearchComponentTags(
+  value: string,
+  keepOffsets = false,
+  literalRanges: readonly { start: number; end: number }[] = [],
+  onStrip?: (span: { start: number; end: number; source: string }) => void,
+) {
   const tags = /<\/?[A-Z_][\w.-]*(?=[\s/>]|$)/g;
   let output = '';
   let cursor = 0;
   for (let match = tags.exec(value); match; match = tags.exec(value)) {
+    // A component written as a code example is visible, searchable content.
+    // Only protect a tag that starts in code; backticks inside JSX props must
+    // not accidentally restore hidden configuration after it is removed.
+    if (
+      literalRanges.some(
+        ({ start, end }) => match.index >= start && match.index < end,
+      )
+    )
+      continue;
     let quote = '';
     let braces = 0;
     let end = tags.lastIndex;
@@ -23,6 +37,7 @@ export function stripSearchComponentTags(value: string, keepOffsets = false) {
     }
     end = Math.min(end, value.length);
     const removed = value.slice(match.index, end);
+    onStrip?.({ start: match.index, end, source: removed });
     output +=
       value.slice(cursor, match.index) +
       (keepOffsets ? removed.replace(/[^\r\n]/g, ' ') : ' ');

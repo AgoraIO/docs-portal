@@ -9,6 +9,62 @@ const url = '/zh-CN/api-reference/rtc/web/4.6.0/api';
 const route = { url, canonicalPath: url, markdownPath: `${url}.md` };
 const page = { url, title: 'RTC API', objectType: 'docs' as const };
 describe('published CN index export', () => {
+  it.each([
+    '<button aria-expanded="false">帮助</button>',
+    '帮助<button aria-label="Copy Anchor Link">Copy Anchor Link</button>',
+  ])(
+    'resolves legacy anchors without removing accordion title text: %s',
+    async (heading) => {
+      const records = await exportPublishedCnRecords({
+        routes: [route],
+        pages: [page],
+        readMarkdown: async () =>
+          '# RTC API\n\n## 帮助 [#legacy]\n\n实际说明。',
+        readRenderedHtml: async () =>
+          `<article data-static-docs-body><h2 id="actual">${heading}</h2><p>实际说明。</p></article>`,
+      });
+      expect(records[0].url).toBe(`${url.replace('/zh-CN', '')}#actual`);
+      expect(records[0].content).toContain('实际说明。');
+    },
+  );
+  it.each(['help', 'legacy'])(
+    'retains visible props with source heading %s without reindexing configuration or hidden platforms',
+    async (sourceAnchor) => {
+      const records = await exportPublishedCnRecords({
+        routes: [route],
+        pages: [page],
+        readMarkdown: async () =>
+          `# RTC API\n\n## 帮助 [#${sourceAnchor}]\n\n<HelpHub cards={[{ title: "提交工单", description: "A &amp; B", href: "/internal-config", icon: "ticket" }]} />\n\n<Card title={<span>体验 Playground</span>} style={{ display: "grid" }} />\n\n<OverviewActions actions={[{ label: "隐藏配置", href: "/hidden" }]} />\n\n## 下一步 [#next]\n\n继续接入。`,
+        readRenderedHtml: async () =>
+          '<article data-static-docs-body><h1>RTC API</h1><h2 id="help">帮助</h2><div><h3>提交工单</h3><p>A &amp; B</p></div><div>体验 Playground</div><div data-platform-panel="android" hidden>隐藏配置</div><button>ticket</button><h2 id="next">下一步</h2><p>继续接入。</p></article>',
+      });
+      const help = records.find((record) => record.url.endsWith('#help'));
+      expect(help?.content).toContain('提交工单');
+      expect(help?.content).toContain('A & B');
+      expect(help?.content).toContain('体验 Playground');
+      expect(help?.content).not.toMatch(
+        /OverviewActions|HelpHub|href|internal-config|ticket|grid|隐藏配置/,
+      );
+      expect(help?.summary).toContain('提交工单');
+      const next = records.find((record) => record.url.endsWith('#next'));
+      expect(next?.content).not.toContain('提交工单');
+    },
+  );
+  it('recovers a component-only introduction without a description, including reachable ordinary tabs', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n<Card title="可见卡片" />\n\n<Tabs><Tab><Card title="可切换的内容" /></Tab></Tabs>',
+      readRenderedHtml: async () =>
+        '<article data-static-docs-body><div>可见卡片</div><div role="tabpanel" hidden data-state="inactive">可切换的内容</div></article>',
+    });
+    expect(records).toHaveLength(1);
+    expect(records[0].url).toBe('/api-reference/rtc/web/4.6.0/api');
+    expect(records[0].content).toContain('可见卡片');
+    expect(records[0].content).toContain('可切换的内容');
+    expect(records[0].content).not.toMatch(/Card|Tabs|title=/);
+  });
   it('keeps the maintained description as the entry for a page rendered entirely by components', () => {
     const url = '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/cpp';
     const [entry] = extractPublishedCnSections(
@@ -38,11 +94,30 @@ describe('published CN index export', () => {
     expect(records[0].summary).not.toMatch(
       /OverviewActions|label|href|:::|\[信息\]/,
     );
+    expect(records.map((record) => record.content).join('\n')).not.toMatch(
+      /OverviewActions|label|href|\/start/,
+    );
     expect(records[1]).toMatchObject({
       url: `${url}#next`,
       summary: '后续步骤。',
     });
     expect(records[1].content).toContain('client.joinChannel()');
+  });
+  it('retains literal JSX in code examples while removing component configuration from searchable content', () => {
+    const records = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n<OverviewActions actions={[\n{ label: `内部配置`, href: "/internal" },\n]} />\n\n## 示例 [#example]\n\n使用 `joinChannel` 加入频道。\n\n```tsx\n<Example client={client} />\n```\n\n内联代码 `<Button />` 也是示例。\n\n<Card title="配置属性" href="/internal">实际可见的正文</Card>',
+    );
+    const content = records.map((record) => record.content).join('\n');
+    expect(content).not.toMatch(/OverviewActions|内部配置|配置属性|\/internal/);
+    expect(content).toContain('<Example client={client} />');
+    expect(content).toContain('<Button />');
+    expect(content).toContain('joinChannel');
+    expect(content).toContain('实际可见的正文');
+    expect(records.find((record) => record.sectionTitle === '示例')?.url).toBe(
+      `${url}#example`,
+    );
   });
   it('keeps each release as the ancestor of its indexed subsections', async () => {
     const url = '/zh-CN/ai/release-notes';

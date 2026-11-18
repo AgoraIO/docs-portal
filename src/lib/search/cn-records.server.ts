@@ -268,6 +268,7 @@ export function extractPublishedCnSections(
   page: SearchEntry,
   markdown: string,
   renderedHeadingIds?: ReadonlySet<string>,
+  renderedHtml?: ReturnType<typeof load>,
 ): SearchSection[] {
   // Metadata/card/FAQ lookups use content paths, regardless of public routing.
   route = {
@@ -353,6 +354,25 @@ export function extractPublishedCnSections(
       introduction: stripSearchProseMarkers(proseText(node)),
       summary: stripSearchProseMarkers(proseText(node, true)),
     }));
+  // Clean the actual indexed body, not only the display summary. Keep offsets
+  // and literal code so section anchors and API/example recall remain intact.
+  const sourceTree = tree;
+  const literalRanges: { start: number; end: number }[] = [];
+  visit(sourceTree, (node) => {
+    if ((node.type === 'code' || node.type === 'inlineCode') && node.position) {
+      literalRanges.push({
+        start: node.position.start.offset ?? 0,
+        end: node.position.end.offset ?? markdown.length,
+      });
+    }
+  });
+  const removedComponents: { start: number; end: number; source: string }[] =
+    [];
+  tree = markdownParser.parse(
+    stripSearchComponentTags(markdown, true, literalRanges, (span) =>
+      removedComponents.push(span),
+    ),
+  );
   const slugger = new GithubSlugger();
   const [, tab] = route.canonicalPath.split('/').filter(Boolean);
   const routeMetadata = getRouteMetadata(route);
@@ -417,6 +437,7 @@ export function extractPublishedCnSections(
     return [record];
   }
   const records: SearchSection[] = [];
+  const componentSourceById = new Map<string, string>();
   const firstProse = proseNodes
     .map((node) => node.introduction)
     .map((value) => value.trim())
@@ -426,7 +447,7 @@ export function extractPublishedCnSections(
     // Data-driven components (for example SDK downloads) render useful content
     // without Markdown prose. JSX array props may be parsed as text by remark;
     // code and inlineCode values are deliberately excluded from this check.
-    visit(tree, (node) => {
+    visit(sourceTree, (node) => {
       if (
         (node.type === 'html' || node.type === 'text') &&
         /<[A-Z_][\w.-]*(?=[\s/>]|$)/.test(node.value)
@@ -458,7 +479,15 @@ export function extractPublishedCnSections(
     const content =
       current.parts.join('\n').trim() ||
       (!current.anchor ? pageIntroduction : '');
-    if (!content) return;
+    if (
+      !content &&
+      (current.anchor ||
+        !renderedHtml ||
+        !removedComponents.some(
+          (span) => span.start < end && span.end > current.start,
+        ))
+    )
+      return;
     const record: SearchSection = {
       ...metadata,
       audience: [...metadata.audience],
@@ -475,8 +504,17 @@ export function extractPublishedCnSections(
           .trim() || (!current.anchor ? pageIntroduction : ''),
       headingPath: current.path,
     };
-    assertValidSearchSection(record);
+    if (content) assertValidSearchSection(record);
     records.push(record);
+    componentSourceById.set(
+      record.id,
+      [
+        componentSourceById.get(record.id) ?? '',
+        ...removedComponents
+          .filter((span) => span.start < end && span.end > current.start)
+          .map((span) => span.source),
+      ].join('\n'),
+    );
   };
   const isRenderedHeading = (node: RootContent) => {
     if (node.type !== 'heading') return false;
@@ -535,6 +573,8 @@ export function extractPublishedCnSections(
     hierarchy.push({ level: node.depth, title });
   }
   flush();
+  if (renderedHtml)
+    resolveRenderedSearchAnchors(records, renderedHtml, componentSourceById);
   const unique = new Map<string, SearchSection>();
   for (const record of records) {
     const existing = unique.get(record.id);
@@ -552,7 +592,138 @@ export function extractPublishedCnSections(
       summary: [existing.summary, record.summary].filter(Boolean).join('\n'),
     });
   }
-  return [...unique.values()];
+  const sections = [...unique.values()];
+  if (renderedHtml)
+    recoverRenderedComponentText(sections, componentSourceById, renderedHtml);
+  return sections.filter((section) => {
+    if (!section.content.trim()) return false;
+    assertValidSearchSection(section);
+    return true;
+  });
+}
+
+function resolveRenderedSearchAnchors(
+  sections: SearchSection[],
+  $: ReturnType<typeof load>,
+  componentSourceById: Map<string, string>,
+) {
+  const ids = new Set(
+    $('[id]')
+      .map((_, element) => $(element).attr('id'))
+      .get(),
+  );
+  for (const section of sections) {
+    const anchor = section.url.split('#')[1];
+    if (!anchor || ids.has(anchor)) continue;
+    const title = section.sectionTitle.replace(/\s+/g, ' ').trim();
+    const candidates = new Set(
+      $('h1,h2,h3,h4,h5,h6')
+        .toArray()
+        .filter((element) => {
+          const heading = $(element).clone();
+          if (heading.text().replace(/\s+/g, ' ').trim() === title) return true;
+          // Accordion triggers contain the title itself. Only discard auxiliary
+          // heading controls when matching copy-anchor chrome as a fallback.
+          heading.find('button:not([aria-expanded])').remove();
+          return heading.text().replace(/\s+/g, ' ').trim() === title;
+        })
+        .map((element) => $(element).attr('id'))
+        .filter(Boolean),
+    );
+    if (candidates.size !== 1)
+      throw new Error(`Unresolved rendered search anchor: ${section.url}`);
+    const sourceId = section.id;
+    section.url = `${section.url.split('#')[0]}#${[...candidates][0]}`;
+    section.id = `${section.url.split('#')[0]}::heading:${[...candidates][0]}`;
+    if (sourceId !== section.id) {
+      componentSourceById.set(
+        section.id,
+        [componentSourceById.get(section.id), componentSourceById.get(sourceId)]
+          .filter(Boolean)
+          .join('\n'),
+      );
+      componentSourceById.delete(sourceId);
+    }
+  }
+}
+
+type RenderedSearchNode = {
+  type: string;
+  name?: string;
+  data?: string;
+  attribs?: Record<string, string>;
+  children?: RenderedSearchNode[];
+};
+
+// A component may render its title/description from props. Recover only text
+// present in this build's published body and in a removed prop span of
+// the same section. Never evaluate props or index their keys/URLs/styles.
+function recoverRenderedComponentText(
+  sections: SearchSection[],
+  componentSourceById: ReadonlyMap<string, string>,
+  $: ReturnType<typeof load>,
+) {
+  // Ordinary tabs and closed accordions remain searchable; hidden platform
+  // variants belong to another published route and must not supply text here.
+  const body = $('[data-static-docs-body]').first().clone();
+  if (!body.length) return;
+  body
+    .find(
+      'script,style,template,button,[aria-hidden="true"],[role="tablist"],[data-platform-panel][hidden]',
+    )
+    .remove();
+  const normalize = (value: string) => value.replace(/\s+/g, ' ').trim();
+  const records = new Map(
+    sections.map((section) => [section.url.split('#')[1] ?? '', section]),
+  );
+  const sources = new Map(
+    sections.map((section) => [
+      section.id,
+      normalize(
+        (componentSourceById.get(section.id) ?? '').replace(
+          /&(?:#\d+|#x[\da-f]+|[a-z][\da-z]+);/gi,
+          (entity) => load(entity).text(),
+        ),
+      ),
+    ]),
+  );
+  const content = new Map(
+    sections.map((section) => [section.id, normalize(section.content)]),
+  );
+  const extra = new Map<string, { content: string[]; summary: string[] }>();
+  let anchor = '';
+  function walk(node: RenderedSearchNode, prose = true) {
+    const headingId = node.attribs?.id;
+    if (/^h[1-6]$/.test(node.name ?? '') && headingId && records.has(headingId))
+      anchor = headingId;
+    if (node.type === 'text') {
+      const text = normalize(node.data ?? '');
+      const section = records.get(anchor);
+      if (
+        !text ||
+        !section ||
+        !sources.get(section.id)?.includes(text) ||
+        content.get(section.id)?.includes(text)
+      )
+        return;
+      const recovered = extra.get(section.id) ?? { content: [], summary: [] };
+      recovered.content.push(text);
+      if (prose) recovered.summary.push(text);
+      extra.set(section.id, recovered);
+      content.set(section.id, `${content.get(section.id)} ${text}`);
+    }
+    for (const child of node.children ?? [])
+      walk(child, prose && node.name !== 'pre' && node.name !== 'code');
+  }
+  for (const node of body.toArray()) walk(node);
+  for (const section of sections) {
+    const recovered = extra.get(section.id);
+    if (!recovered) continue;
+    section.content = [section.content, ...recovered.content].join('\n');
+    section.summary = [section.summary, ...recovered.summary]
+      .filter(Boolean)
+      .join('\n');
+  }
 }
 
 export async function exportPublishedCnRecords({
@@ -609,33 +780,8 @@ export async function exportPublishedCnRecords({
       page,
       markdown,
       renderedHeadingIds,
+      $,
     );
-    if ($) {
-      const ids = new Set(
-        $('[id]')
-          .map((_, element) => $(element).attr('id'))
-          .get(),
-      );
-      for (const section of sections) {
-        const anchor = section.url.split('#')[1];
-        if (!anchor || ids.has(anchor)) continue;
-        const title = section.sectionTitle.replace(/\s+/g, ' ').trim();
-        const candidates = new Set(
-          $('h1,h2,h3,h4,h5,h6')
-            .toArray()
-            .filter(
-              (element) =>
-                $(element).text().replace(/\s+/g, ' ').trim() === title,
-            )
-            .map((element) => $(element).attr('id'))
-            .filter(Boolean),
-        );
-        if (candidates.size !== 1)
-          throw new Error(`Unresolved rendered search anchor: ${section.url}`);
-        section.url = `${route.url}#${[...candidates][0]}`;
-        section.id = `${route.url}::heading:${[...candidates][0]}`;
-      }
-    }
     // 旧锚点修正后可能与另一记录指向同一章节，统一身份并保留两边正文。
     const byUrl = new Map<string, SearchSection>();
     for (const section of sections) {
