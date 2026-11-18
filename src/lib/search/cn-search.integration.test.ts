@@ -348,6 +348,23 @@ enableLegacyAudio 修复。
         content: title,
       })),
     );
+    records.push(
+      ...Array.from({ length: 11 }, (_, index) =>
+        ['web', 'ios'].flatMap((platform) =>
+          ['one', 'two', 'three'].map((anchor) => ({
+            ...section,
+            id: `group-${index}-${platform}-${anchor}`,
+            url: `/realtime-media/rtc/group-${index}/${platform}#${anchor}`,
+            canonicalUrl: `/realtime-media/rtc/group-${index}`,
+            pageTitle: `Group ${index}`,
+            sectionTitle: `Group pagination ${anchor}`,
+            content: `groupPaginationMarker ${anchor} ${index}`,
+            platform: [platform],
+            isDefaultPlatform: platform === 'web',
+          })),
+        ),
+      ).flat(),
+    );
     const receipt = await prepareSearchIndex({
       client: createSearchIndexClient({ host, writeKey: key }),
       indexUid: 'docs_search_integration',
@@ -649,6 +666,39 @@ enableLegacyAudio 修复。
       ).size,
     ).toBe(25);
     expect((await search('sharedMarker', 1, 'web')).totalHits).toBe(25);
+  });
+
+  it('paginates document groups before returning best sections, without repeating documents', async () => {
+    for (const platform of [undefined, 'web']) {
+      const pages = [];
+      for (const page of [1, 2, 3, 4]) {
+        pages.push(
+          await queryCnSearch(config, {
+            ...parseSearchPageState({
+              q: 'groupPaginationMarker',
+              type: 'all',
+              platform,
+              page,
+            }),
+            pageSize: 5,
+          }),
+        );
+      }
+      expect(pages.map((page) => page.groups.length)).toEqual([5, 5, 1, 0]);
+      expect(pages[0]).toMatchObject({
+        totalHits: 11,
+        totalPages: 3,
+        pageSize: 5,
+        paginationUnit: 'groups',
+      });
+      const groups = pages.flatMap((page) => page.groups);
+      expect(new Set(groups.map((group) => group.groupKey)).size).toBe(11);
+      expect(groups.every((group) => group.sections.length === 1)).toBe(true);
+      if (platform)
+        expect(groups.every((group) => group.pageUrl.endsWith('/web'))).toBe(
+          true,
+        );
+    }
   });
 
   it('preserves same-name platform chapters with different instructions', async () => {

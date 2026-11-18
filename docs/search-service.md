@@ -37,6 +37,10 @@ HOST=0.0.0.0 PORT=3000 bun run start:service
 
 响应使用 `CnSearchPageResponse`：`groups` 按文档聚合章节，`totalHits` 统计去重后的章节，`totalPages`、`page` 与 `facets` 用于分页及筛选。非空查询的 `all` 概览分别查询文档、API、FAQ 各五个章节；单类型每页二十个章节。分页发生在文档聚合之前，因此每页文档数量可以少于二十。响应不缓存；请求会在 10 秒后超时。参数错误返回 400，缺少服务配置返回 503，上游失败返回 502，均不暴露上游错误或凭据。
 
+MCP 等调用方可显式传入可选参数 `pageSize`（整数 1–20），例如 `GET /api/search?q=Token&platform=web&type=all&page=1&pageSize=5`。此时按**文档分组**分页，每组仅返回最相关的一个章节：该示例的 `groups` 最多五组，`totalHits` 统计分组数，`totalPages` 按该大小计算，并返回 `pageSize` 和 `paginationUnit: "groups"`。后续请求保持筛选条件和 `pageSize`，递增 `page`；不通过裁剪已有章节页实现分页。`all` 在所有类别中统一排序，不再按类别分别查询，且不返回 `familyTotalHits`。不传 `pageSize` 的网站请求保持现有章节分页及分类候选窗口不变。分组计数受索引 `maxTotalHits: 10000` 和 API 最多 500 页的既有上限约束。
+
+分组分页要求 Meilisearch 支持查询级 `distinct`（已按 1.12.8 接口实现），且索引包含新版 `canonicalPageGroupKey`、`platformPageGroupKey` 字段与筛选设置。索引准备阶段生成与响应分组身份一致的键：未筛选平台时按 canonical 文档合并；筛选平台或导航语言时保留实际平台页面；产品、文档类型、版本仍区分分组。请先用新代码对完整快照执行 `prepare`，连接临时索引验收分组翻页，再 `promote` 并发布 API，最后发布默认传 `pageSize=5` 的 MCP。旧索引没有这些键，不能只重启 API 或先发布 MCP；API 对上游错误仍返回 502。回滚 MCP 到不传该参数的版本后，才回滚 API/索引。
+
 未选择平台时查询所有平台，选择后只查询该平台。索引准备阶段为文档入口、标题路径、正文及发布元数据相同的章节生成稳定 `distinctKey`，由 Meilisearch 在计数和分页前去重；同名但正文不同的章节分别保留。同一文档仍可命中多个不同章节，所以这不保证每批返回二十篇不同文档。
 
 平台文档的默认值仍来自同次静态构建的 `body.platformTabs.defaultPlatform`，保留 `defaultPlatform`、`isDefaultPlatform` 字段用于发布校验，不再用默认平台缩小搜索范围。结果按 canonical 文档聚合，卡片入口和章节链接保留实际命中平台；跨页加载使用相同的章节身份去重。

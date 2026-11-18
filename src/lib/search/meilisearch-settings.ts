@@ -17,8 +17,12 @@ export function buildMeilisearchSettings() {
       'audience',
       'status',
       'hidden',
+      'canonicalPageGroupKey',
+      'platformPageGroupKey',
     ],
     displayedAttributes: [
+      'canonicalPageGroupKey',
+      'platformPageGroupKey',
       'id',
       'sourceId',
       'canonicalUrl',
