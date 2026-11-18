@@ -247,6 +247,9 @@
 }
 .search-page-result-hover {
   position: absolute;
+  /* The card isolates stacking so this backdrop stays above its base fill,
+     but below normal-flow titles, badges and summaries. */
+  z-index: -1;
   inset: 0;
   border-radius: 8px;
   background: var(--accent);
