@@ -6,9 +6,14 @@ To create a new project:
 
 1. In [Agora Console](https://console.agora.io), expand the **Projects** dropdown at the top of the page.
 2. Select **Create project**.
-    ![Create a new project button](https://assets-docs.agora.io/images/console/create-new-project-button.png)
-3. Enter a **Project Name**. Agora creates the project with a default setup: App ID and token authentication enabled, and Conversational AI with Signaling (RTM) enabled.
 
-    ![Create project dialog](https://assets-docs.agora.io/images/console/create-new-project.png)
+   ![Create a new project button](https://assets-docs.agora.io/images/console/create-new-project-button.png)
+3. Enter a **Project Name**. The default setup uses **App ID + Token**: clients must use a valid token. Conversational AI with Signaling (RTM) is also enabled.
+
+   ![Create project dialog](https://assets-docs.agora.io/images/console/create-new-project.png)
 
 4. Click **Create Project**. You see the new project selected in the **Project** dropdown.
+
+Eligible existing accounts can choose **Testing mode: App ID only** under **Need App ID-only access?**. Anyone with the App ID can join without a token in this mode. Use it only for testing.
+
+For an existing project, check **Authentication mode** in **Project credentials**. Enabling a certificate and requiring tokens are separate settings. See [Projects](/en/introduction/projects#require-app-id--token-for-an-existing-project) before closing App ID-only access.
