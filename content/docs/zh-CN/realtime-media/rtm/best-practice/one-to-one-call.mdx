@@ -91,7 +91,7 @@ Web Demo 使用双页面演示语音通话，邀请设计也可用于视频呼�
 - 在 `login()` 成功后安装模块；
 - **登出前先销毁模块，重新登录后重新安装**。模块的 dispose() 会解绑模块自身的事件监听，因此销毁后需要创建新的模块实例，才能继续接收来电。
 
-<DocsImage alt="1V1 呼叫邀请模块的安装、销毁与重新登录流程" src="/img/rtm2/one-to-one-call-module-lifecycle.svg" displayWidth="100%" />
+<DocsImage alt="1V1 呼叫邀请模块的安装、销毁与重新登录流程" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-module-lifecycle.svg" displayWidth="100%" />
 
 ### 2.2 隔离邀请信令与 App 自有消息
 
@@ -379,7 +379,7 @@ public void onMessageEvent(MessageEvent event) {
 
 ### 3.4 主叫：发起与取消
 
-<DocsImage alt="主叫邀请、被叫接听、主叫确认与加入 RTC 的时序" src="/img/rtm2/one-to-one-call-invitation-flow.svg" displayWidth="80%" />
+<DocsImage alt="主叫邀请、被叫接听、主叫确认与加入 RTC 的时序" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-invitation-flow.svg" displayWidth="80%" />
 
 发起呼叫时进入 `SENT_TO_CALLEE`，并设置发送总截止。发送失败时在截止前按间隔重试，次数耗尽后按 [2.6 按失败原因提示用户](#26-按失败原因提示用户) 判断失败原因。发送成功即进入 `RECEIVED_BY_CALLEE`，开始等待对方响应：
 
@@ -636,7 +636,7 @@ App 调用 dispose() 后，模块已解绑自身的事件监听。重新登录�
 | `CANCELED(5)`           | 主叫已取消（终态）                             |
 | `FAILURE(6)`            | 发送失败、等待超时、网络断开或模块销毁（终态） |
 
-<DocsImage alt="1V1 呼叫邀请的主叫状态流转" src="/img/rtm2/one-to-one-call-caller-state.svg" displayWidth="80%" />
+<DocsImage alt="1V1 呼叫邀请的主叫状态流转" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-caller-state.svg" displayWidth="80%" />
 
 ### 被叫状态
 
@@ -650,7 +650,7 @@ App 调用 dispose() 后，模块已解绑自身的事件监听。重新登录�
 | `CANCELED_BY_CALLER(15)`    | 主叫已取消（终态）                               |
 | `FAILURE(16)`               | 来电超时、确认超时、网络断开或模块销毁（终态）   |
 
-<DocsImage alt="1V1 呼叫邀请的被叫状态流转" src="/img/rtm2/one-to-one-call-callee-state.svg" displayWidth="80%" />
+<DocsImage alt="1V1 呼叫邀请的被叫状态流转" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-callee-state.svg" displayWidth="80%" />
 
 ### 模块的消息校验规则
 
@@ -747,7 +747,7 @@ Web Demo 使用双页面演示语音通话，邀请设计也可用于视频呼�
 - 在 `login()` 成功后安装模块；
 - **登出前先销毁模块，重新登录后重新安装**。模块的 dispose() 会解绑模块自身的事件监听，因此销毁后需要创建新的模块实例，才能继续接收来电。
 
-<DocsImage alt="1V1 呼叫邀请模块的安装、销毁与重新登录流程" src="/img/rtm2/one-to-one-call-module-lifecycle.svg" displayWidth="100%" />
+<DocsImage alt="1V1 呼叫邀请模块的安装、销毁与重新登录流程" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-module-lifecycle.svg" displayWidth="100%" />
 
 ### 2.2 隔离邀请信令与 App 自有消息
 
@@ -1058,7 +1058,7 @@ static NSTimeInterval MonotonicNow(void) {
 
 ### 3.4 主叫：发起与取消
 
-<DocsImage alt="主叫邀请、被叫接听、主叫确认与加入 RTC 的时序" src="/img/rtm2/one-to-one-call-invitation-flow.svg" displayWidth="80%" />
+<DocsImage alt="主叫邀请、被叫接听、主叫确认与加入 RTC 的时序" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-invitation-flow.svg" displayWidth="80%" />
 
 发起呼叫时进入 `SENT_TO_CALLEE`，并设置发送总截止。发送失败时在截止前按间隔重试，次数耗尽后按 [2.6 按失败原因提示用户](#26-按失败原因提示用户) 判断失败原因。发送成功即进入 `RECEIVED_BY_CALLEE`，开始等待对方响应：
 
@@ -1301,7 +1301,7 @@ App 调用 dispose() 后，模块已解绑自身的事件监听。重新登录�
 | `CANCELED(5)`           | 主叫已取消（终态）                             |
 | `FAILURE(6)`            | 发送失败、等待超时、网络断开或模块销毁（终态） |
 
-<DocsImage alt="1V1 呼叫邀请的主叫状态流转" src="/img/rtm2/one-to-one-call-caller-state.svg" displayWidth="80%" />
+<DocsImage alt="1V1 呼叫邀请的主叫状态流转" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-caller-state.svg" displayWidth="80%" />
 
 ### 被叫状态
 
@@ -1315,7 +1315,7 @@ App 调用 dispose() 后，模块已解绑自身的事件监听。重新登录�
 | `CANCELED_BY_CALLER(15)`    | 主叫已取消（终态）                               |
 | `FAILURE(16)`               | 来电超时、确认超时、网络断开或模块销毁（终态）   |
 
-<DocsImage alt="1V1 呼叫邀请的被叫状态流转" src="/img/rtm2/one-to-one-call-callee-state.svg" displayWidth="80%" />
+<DocsImage alt="1V1 呼叫邀请的被叫状态流转" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-callee-state.svg" displayWidth="80%" />
 
 ### 模块的消息校验规则
 
@@ -1412,7 +1412,7 @@ Demo 使用双页面演示语音通话，邀请设计也可用于视频呼叫。
 - 在 `login()` 成功后安装模块，同一 client 不重复安装；
 - **登出前先销毁模块，重新登录后重新安装**。模块的 `dispose()` 只解绑自身监听、停止所属邀请，不登出 client，也不移除 App 的其他监听。
 
-<DocsImage alt="1V1 呼叫邀请模块的安装、销毁与重新登录流程" src="/img/rtm2/one-to-one-call-module-lifecycle.svg" displayWidth="100%" />
+<DocsImage alt="1V1 呼叫邀请模块的安装、销毁与重新登录流程" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-module-lifecycle.svg" displayWidth="100%" />
 
 ### 2.2 隔离邀请信令与 App 自有消息
 
@@ -1645,7 +1645,7 @@ function onAppMessage(event: RTMEvents.MessageEvent) {
 
 ### 3.4 主叫：发起与取消
 
-<DocsImage alt="主叫邀请、被叫接听、主叫确认与加入 RTC 的时序" src="/img/rtm2/one-to-one-call-invitation-flow.svg" displayWidth="80%" />
+<DocsImage alt="主叫邀请、被叫接听、主叫确认与加入 RTC 的时序" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-invitation-flow.svg" displayWidth="80%" />
 
 - 每次呼叫调用 `createOutgoingInvitation()` 创建新邀请；
 - 在 `extra` 中放入昵称等 App 自定义信息，模块不解析其业务含义；
@@ -1762,7 +1762,7 @@ App 调用 dispose() 后，模块已解绑自身的事件监听。重新登录�
 | `CANCELED(5)`           | 主叫已取消（终态）                             |
 | `FAILURE(6)`            | 发送失败、等待超时、连接失败或模块销毁（终态） |
 
-<DocsImage alt="1V1 呼叫邀请的主叫状态流转" src="/img/rtm2/one-to-one-call-caller-state.svg" displayWidth="80%" />
+<DocsImage alt="1V1 呼叫邀请的主叫状态流转" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-caller-state.svg" displayWidth="80%" />
 
 ### 被叫状态
 
@@ -1776,7 +1776,7 @@ App 调用 dispose() 后，模块已解绑自身的事件监听。重新登录�
 | `CANCELED_BY_CALLER(15)`    | 主叫已取消（终态）                               |
 | `FAILURE(16)`               | 来电超时、确认超时、连接失败或模块销毁（终态）   |
 
-<DocsImage alt="1V1 呼叫邀请的被叫状态流转" src="/img/rtm2/one-to-one-call-callee-state.svg" displayWidth="80%" />
+<DocsImage alt="1V1 呼叫邀请的被叫状态流转" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-callee-state.svg" displayWidth="80%" />
 
 ### 模块的消息校验规则
 
@@ -1873,7 +1873,7 @@ Web Demo 使用双页面演示语音通话，邀请设计也可用于视频呼�
 - 在 `login()` 成功后安装模块；
 - **登出前先销毁模块，重新登录后重新安装**。模块的 dispose() 会解绑模块自身的事件监听，因此销毁后需要创建新的模块实例，才能继续接收来电。
 
-<DocsImage alt="1V1 呼叫邀请模块的安装、销毁与重新登录流程" src="/img/rtm2/one-to-one-call-module-lifecycle.svg" displayWidth="100%" />
+<DocsImage alt="1V1 呼叫邀请模块的安装、销毁与重新登录流程" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-module-lifecycle.svg" displayWidth="100%" />
 
 ### 2.2 隔离邀请信令与 App 自有消息
 
@@ -2162,7 +2162,7 @@ function onAppMessage(event: object): void {
 
 ### 3.4 主叫：发起与取消
 
-<DocsImage alt="主叫邀请、被叫接听、主叫确认与加入 RTC 的时序" src="/img/rtm2/one-to-one-call-invitation-flow.svg" displayWidth="80%" />
+<DocsImage alt="主叫邀请、被叫接听、主叫确认与加入 RTC 的时序" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-invitation-flow.svg" displayWidth="80%" />
 
 发起呼叫时进入 `SENT_TO_CALLEE`，并设置发送总截止。发送失败时在截止前按间隔重试，次数耗尽后按 [2.6 按失败原因提示用户](#26-按失败原因提示用户) 判断失败原因。发送成功即进入 `RECEIVED_BY_CALLEE`，开始等待对方响应：
 
@@ -2406,7 +2406,7 @@ App 调用 dispose() 后，模块已解绑自身的事件监听。重新登录�
 | `CANCELED(5)`           | 主叫已取消（终态）                             |
 | `FAILURE(6)`            | 发送失败、等待超时、网络断开或模块销毁（终态） |
 
-<DocsImage alt="1V1 呼叫邀请的主叫状态流转" src="/img/rtm2/one-to-one-call-caller-state.svg" displayWidth="80%" />
+<DocsImage alt="1V1 呼叫邀请的主叫状态流转" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-caller-state.svg" displayWidth="80%" />
 
 ### 被叫状态
 
@@ -2420,7 +2420,7 @@ App 调用 dispose() 后，模块已解绑自身的事件监听。重新登录�
 | `CANCELED_BY_CALLER(15)`    | 主叫已取消（终态）                               |
 | `FAILURE(16)`               | 来电超时、确认超时、网络断开或模块销毁（终态）   |
 
-<DocsImage alt="1V1 呼叫邀请的被叫状态流转" src="/img/rtm2/one-to-one-call-callee-state.svg" displayWidth="80%" />
+<DocsImage alt="1V1 呼叫邀请的被叫状态流转" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-callee-state.svg" displayWidth="80%" />
 
 ### 模块的消息校验规则
 
@@ -2517,7 +2517,7 @@ Web Demo 使用双页面演示语音通话，邀请设计也可用于视频呼�
 - 在 `login()` 成功后安装模块；
 - **登出前先销毁模块，重新登录后重新安装**。模块的 dispose() 会解绑模块自身的事件监听，因此销毁后需要创建新的模块实例，才能继续接收来电。
 
-<DocsImage alt="1V1 呼叫邀请模块的安装、销毁与重新登录流程" src="/img/rtm2/one-to-one-call-module-lifecycle.svg" displayWidth="100%" />
+<DocsImage alt="1V1 呼叫邀请模块的安装、销毁与重新登录流程" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-module-lifecycle.svg" displayWidth="100%" />
 
 ### 2.2 隔离邀请信令与 App 自有消息
 
@@ -2829,7 +2829,7 @@ Invitation* find(const std::string& callId, const std::string& from, bool isCall
 
 ### 3.4 主叫：发起与取消
 
-<DocsImage alt="主叫邀请、被叫接听、主叫确认与加入 RTC 的时序" src="/img/rtm2/one-to-one-call-invitation-flow.svg" displayWidth="80%" />
+<DocsImage alt="主叫邀请、被叫接听、主叫确认与加入 RTC 的时序" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-invitation-flow.svg" displayWidth="80%" />
 
 发起呼叫时进入 `SENT_TO_CALLEE`，并设置发送总截止。发送失败时在截止前按间隔重试，次数耗尽后按 [2.6 按失败原因提示用户](#26-按失败原因提示用户) 判断失败原因。发送成功即进入 `RECEIVED_BY_CALLEE`，开始等待对方响应：
 
@@ -3084,7 +3084,7 @@ App 调用 dispose() 后，模块已解绑自身的事件监听。重新登录�
 | `CANCELED(5)`           | 主叫已取消（终态）                             |
 | `FAILURE(6)`            | 发送失败、等待超时、网络断开或模块销毁（终态） |
 
-<DocsImage alt="1V1 呼叫邀请的主叫状态流转" src="/img/rtm2/one-to-one-call-caller-state.svg" displayWidth="80%" />
+<DocsImage alt="1V1 呼叫邀请的主叫状态流转" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-caller-state.svg" displayWidth="80%" />
 
 ### 被叫状态
 
@@ -3098,7 +3098,7 @@ App 调用 dispose() 后，模块已解绑自身的事件监听。重新登录�
 | `CANCELED_BY_CALLER(15)`    | 主叫已取消（终态）                               |
 | `FAILURE(16)`               | 来电超时、确认超时、网络断开或模块销毁（终态）   |
 
-<DocsImage alt="1V1 呼叫邀请的被叫状态流转" src="/img/rtm2/one-to-one-call-callee-state.svg" displayWidth="80%" />
+<DocsImage alt="1V1 呼叫邀请的被叫状态流转" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-callee-state.svg" displayWidth="80%" />
 
 ### 模块的消息校验规则
 
@@ -3195,7 +3195,7 @@ Web Demo 使用双页面演示语音通话，邀请设计也可用于视频呼�
 - 在 `login()` 成功后安装模块；
 - **登出前先销毁模块，重新登录后重新安装**。模块的 dispose() 会解绑模块自身的事件监听，因此销毁后需要创建新的模块实例，才能继续接收来电。
 
-<DocsImage alt="1V1 呼叫邀请模块的安装、销毁与重新登录流程" src="/img/rtm2/one-to-one-call-module-lifecycle.svg" displayWidth="100%" />
+<DocsImage alt="1V1 呼叫邀请模块的安装、销毁与重新登录流程" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-module-lifecycle.svg" displayWidth="100%" />
 
 ### 2.2 隔离邀请信令与 App 自有消息
 
@@ -3485,7 +3485,7 @@ func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmM
 
 ### 3.4 主叫：发起与取消
 
-<DocsImage alt="主叫邀请、被叫接听、主叫确认与加入 RTC 的时序" src="/img/rtm2/one-to-one-call-invitation-flow.svg" displayWidth="80%" />
+<DocsImage alt="主叫邀请、被叫接听、主叫确认与加入 RTC 的时序" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-invitation-flow.svg" displayWidth="80%" />
 
 发起呼叫时进入 `SENT_TO_CALLEE`，并设置发送总截止。发送失败时在截止前按间隔重试，次数耗尽后按 [2.6 按失败原因提示用户](#26-按失败原因提示用户) 判断失败原因。发送成功即进入 `RECEIVED_BY_CALLEE`，开始等待对方响应：
 
@@ -3726,7 +3726,7 @@ App 调用 dispose() 后，模块已解绑自身的事件监听。重新登录�
 | `CANCELED(5)`           | 主叫已取消（终态）                             |
 | `FAILURE(6)`            | 发送失败、等待超时、网络断开或模块销毁（终态） |
 
-<DocsImage alt="1V1 呼叫邀请的主叫状态流转" src="/img/rtm2/one-to-one-call-caller-state.svg" displayWidth="80%" />
+<DocsImage alt="1V1 呼叫邀请的主叫状态流转" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-caller-state.svg" displayWidth="80%" />
 
 ### 被叫状态
 
@@ -3740,7 +3740,7 @@ App 调用 dispose() 后，模块已解绑自身的事件监听。重新登录�
 | `CANCELED_BY_CALLER(15)`    | 主叫已取消（终态）                               |
 | `FAILURE(16)`               | 来电超时、确认超时、网络断开或模块销毁（终态）   |
 
-<DocsImage alt="1V1 呼叫邀请的被叫状态流转" src="/img/rtm2/one-to-one-call-callee-state.svg" displayWidth="80%" />
+<DocsImage alt="1V1 呼叫邀请的被叫状态流转" src="https://web-cdn.agora.io/docs-portal/img/rtm2/one-to-one-call-callee-state.svg" displayWidth="80%" />
 
 ### 模块的消息校验规则
 
