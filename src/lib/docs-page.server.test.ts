@@ -2509,7 +2509,7 @@ Web body
       backHref: '/zh-CN/api-reference/api',
       backLabel: 'API 参考',
       productDocsHref: '/zh-CN/introduction/quickstart',
-      title: 'RESTful API',
+      title: '控制台 · RESTful API',
     });
   });
 
@@ -4532,7 +4532,7 @@ Web body
       backHref: '/zh-CN/realtime-media/rtm',
       backLabel: '实时消息 RTM',
       productDocsHref: '/zh-CN/realtime-media/rtm',
-      title: '实时消息 RTM',
+      title: '实时消息 RTM · RESTful API',
     });
     expect(payload.breadcrumb).toEqual([
       {

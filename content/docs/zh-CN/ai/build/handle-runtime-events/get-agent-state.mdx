@@ -138,14 +138,14 @@ ConvoAI 会在智能体状态变化时发送 RTM Message。每一条消息只对
 
 ### 监听并解析状态消息
 
-<Tabs defaultValue="android" groupId="language" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-</TabsList>
+<CodeBlockTabs defaultValue="android" groupId="language" persist>
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-<TabsContent value="android">
+<CodeBlockTab value="android">
 
 ```kotlin
 val rtmConfig = RtmConfig()
@@ -174,9 +174,9 @@ mRtmClient = RtmClient.create(rtmConfig)
 
 ````
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="ios">
+<CodeBlockTab value="ios">
 
 ```swift
 func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
@@ -205,9 +205,9 @@ func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmM
 }
 ````
 
-</TabsContent>
+</CodeBlockTab>
 
-<TabsContent value="web">
+<CodeBlockTab value="web">
 
 ```typescript
 rtm.addEventListener("message", (event) => {
@@ -235,8 +235,8 @@ rtm.addEventListener("message", (event) => {
 });
 ```
 
-</TabsContent>
-</Tabs>
+</CodeBlockTab>
+</CodeBlockTabs>
 
 在上述示例中：
 

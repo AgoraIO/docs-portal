@@ -34,7 +34,7 @@ description: "了解如何快速接入实时消息 RTM，完成环境准备、�
 
 <TabsContent value="cdn">
 
-1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.3.0.zip)下载最新版本的 Java SDK。
+1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.3.1.zip)下载最新版本的 Java SDK。
 2. 将 SDK 包内 `sdk` 文件夹中的所有文件拷贝到项目的 `/app/libs` 路径下。
 3. 添加 SDK 引用。在 **Project** 窗口找到 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件并添加如下代码：
 
@@ -80,39 +80,41 @@ description: "了解如何快速接入实时消息 RTM，完成环境准备、�
 
 <TabsContent value="maven">
 
-1. 在 `/Gradle Scripts/build.gradle(Project: <projectname>)` 文件中添加如下代码，添加 Maven Central 依赖：
+1. 自 v2.3.1 起，通过 Maven 集成 RTM SDK 时，需要添加声网 Maven 仓库。在项目根目录的 `settings.gradle` 文件中，向 `dependencyResolutionManagement.repositories` 添加如下配置，并保留项目已有的仓库：
 
-   ```java
-   buildscript {
+   ```groovy
+   dependencyResolutionManagement {
        repositories {
-           // ...
-           mavenCentral()
-       }
-       ...
-   }
-   allprojects {
-       repositories {
-           // ...
+           maven { url = 'https://download.shengwang.cn/maven/' }
+           google()
            mavenCentral()
        }
    }
    ```
 
-   :::info[信息]
-   如果你的 Android 项目设置了 [dependencyResolutionManagement](https://docs.gradle.org/current/userguide/centralizing_repositories.html)，添加 Maven Central 依赖的方式可能存在差异。
-   :::
+   如果项目未使用 `dependencyResolutionManagement`，则在项目根目录的 `build.gradle` 文件中，向 `allprojects.repositories` 添加声网 Maven 仓库：
+
+   ```groovy
+   allprojects {
+       repositories {
+           maven { url = 'https://download.shengwang.cn/maven/' }
+           google()
+           mavenCentral()
+       }
+   }
+   ```
 
 2. 在 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件中添加如下代码，将 SDK 集成到你的 Android 项目中：
 
    ```groovy
-   ...
    dependencies {
-       // 将 x.y.z 替换为具体的 SDK 版本号，如 2.3.0
+       // 将下方版本号替换为需要的 SDK 版本号，如 2.3.1
        // 对于 2.2.7 及之后版本:
-       implementation 'cn.shengwang.rtm:android-java:x.y.z'
+       implementation 'cn.shengwang.rtm:android-java:2.3.1'
+       // 如需 Lite SDK，将上一行替换为（需确保已通过其他声网 SDK 引入对应的 aosl 依赖）：
+       // implementation 'cn.shengwang.rtm:android-java-lite:2.3.1'
        // 对于 2.2.6 及之前版本:
        // implementation 'io.agora:agora-rtm:x.y.z'
-
    }
    ```
 
@@ -908,7 +910,7 @@ mRtmClient.logout(new ResultCallback<Void>() {
 
 <TabsContent value="cdn">
 
-1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.3.0.zip)下载最新版本的 Objective-C SDK。
+1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.3.1.zip)下载最新版本的 Objective-C SDK。
 2. 复制 SDK 包中 `/libs` 路径下所有的 `xcframework` 文件至项目路径下。
 3. 打开 Xcode，进入 **TARGETS > Project Name > General > Frameworks, Libraries, and Embedded Content** 菜单。
 4. 点击 **+ > Add Other… > Add Files** 添加所有的 `xcframework` 文件，并确保添加的动态库 **Embed** 属性设置为 **Embed & Sign**。
@@ -921,13 +923,17 @@ mRtmClient.logout(new ResultCallback<Void>() {
 
 1. 开始前请确保你已安装 Cocoapods，如尚未安装 Cocoapods，参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 安装说明。
 2. 在终端里进入项目根目录，并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
-3. 打开 `Podfile` 文件，修改文件为如下内容。注意将 `Your App` 替换为你的 Target 名称。
+3. 打开 `Podfile` 文件。自 v2.3.1 起，需要添加声网 CocoaPods 源，并保留项目已有的源。将文件修改为如下内容，注意将 `Your App` 替换为你的 Target 名称。
 
    ```ruby
+   source 'https://download.shengwang.cn/cocoapods/'
+
    platform :ios, '11.0'
    target 'Your App' do
       # 对于 2.2.8 及之后版本:
-      pod 'ShengWang-Rtm', '2.3.0', :subspecs => ['RtmKit']
+      # RtmKit 为 RTM 主库，RtmBasic 为 aosl 基础库
+      pod 'ShengWang-Rtm', '2.3.1', :subspecs => ['RtmKit']
+      pod 'ShengWang-Rtm', '2.3.1', :subspecs => ['RtmBasic']
       # 对于 2.2.7 版本:
       # pod 'ShengwangRtm', 'x.y.z'
       # 对于 2.2.6 及之前版本:
@@ -2076,7 +2082,7 @@ try {
 
 ### 1. 获取 SDK
 
-[点击此处](https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.3.0.zip)下载最新版本的 HarmonyOS SDK。
+[点击此处](https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.3.1.zip)下载最新版本的 HarmonyOS SDK。
 
 下载完成后，解压 SDK 包，你将获得一个 `.har` 文件，这是 HarmonyOS 的静态共享包格式。
 
@@ -4560,10 +4566,12 @@ void main() async {
    └── lib
    ```
 
-2. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Windows_v2.3.0.zip)下载最新版本的 C++ SDK 并解压。将 SDK 包中的如下文件复制到项目的对应目录下：
+2. 根据目标操作系统选择 C++ SDK：
 
-- 将 `/rtm/sdk/libagora_rtm_sdk.so` 文件复制到项目的 `lib` 目录下。
-- 将 `/rtm/sdk/high_level_api/include` 路径下的所有 `*.h` 文件复制到项目的 `include` 目录下。
+   - [Linux SDK](https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Linux_v2.3.1.zip)：解压后，将 `/rtm/sdk/libagora_rtm_sdk.so` 复制到项目的 `lib` 目录，将 `/rtm/sdk/high_level_api/include` 下的头文件复制到 `include` 目录。
+   - [Windows SDK](https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Windows_v2.3.1.zip)：参考 [Windows 示例工程](https://github.com/AgoraIO/RTM2/tree/main/Agora-RTM2-QuickStart-Windows-C%2B%2B) 配置头文件、链接库和运行时动态库。Linux 的 `.so` 文件不适用于 Windows。
+
+   升级到 v2.3.1 时，请使用同一版本 SDK 包中的头文件和库，并重新编译应用。`IRtmPresence` 新增纯虚方法，`IRtmEventHandler` 的虚表布局也发生变化，不应混用新旧二进制。使用 JNI、NAPI 或 Objective-C 包装层时，包装层也需与 Native 库成套升级。
 
    :::warning[注意]
    如果你同时集成了 2.2.0 及以上版本的 RTM SDK 和 4.3.0 及以上版本的 RTC SDK，请手动删除更低版本的动态库文件。
@@ -5190,7 +5198,7 @@ int main(int argc, const char * argv[]) {
 
 <TabsContent value="cdn">
 
-1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.3.0.zip)下载最新版本的 Objective-C SDK。
+1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.3.1.zip)下载最新版本的 Objective-C SDK。
 2. 复制 SDK 包中 `/libs` 路径下所有的 `xcframework` 文件至项目路径下。
 3. 打开 Xcode，进入 **TARGETS > Project Name > General > Frameworks, Libraries, and Embedded Content** 菜单。
 4. 点击 **+ > Add Other… > Add Files** 添加所有的 `xcframework` 文件，并确保添加的动态库 **Embed** 属性设置为 **Embed & Sign**。
@@ -5203,13 +5211,17 @@ int main(int argc, const char * argv[]) {
 
 1. 开始前请确保你已安装 Cocoapods，如尚未安装 Cocoapods，参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 安装说明。
 2. 在终端里进入项目根目录，并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
-3. 打开 `Podfile` 文件，修改文件为如下内容。注意将 `Your App` 替换为你的 Target 名称。
+3. 打开 `Podfile` 文件。自 v2.3.1 起，需要添加声网 CocoaPods 源，并保留项目已有的源。将文件修改为如下内容，注意将 `Your App` 替换为你的 Target 名称。
 
    ```ruby
+   source 'https://download.shengwang.cn/cocoapods/'
+
    platform :ios, '11.0'
    target 'Your App' do
       # 对于 2.2.8 及之后版本:
-      pod 'ShengWang-Rtm', '2.3.0', :subspecs => ['RtmKit']
+      # RtmKit 为 RTM 主库，RtmBasic 为 aosl 基础库
+      pod 'ShengWang-Rtm', '2.3.1', :subspecs => ['RtmKit']
+      pod 'ShengWang-Rtm', '2.3.1', :subspecs => ['RtmBasic']
       # 对于 2.2.7 版本:
       # pod 'ShengwangRtm', 'x.y.z'
       # 对于 2.2.6 及之前版本:

@@ -21,6 +21,15 @@ function readJson<T>(fileName: string): T {
   return JSON.parse(readFileSync(path.join(inputRoot, fileName), 'utf8')) as T;
 }
 
+const historicalSources = new Set(
+  readJson<{ records: Array<{ legacyPath: string }> }>(
+    'legacy-url-map-candidate-32883e92e9-2026-10-15.json',
+  ).records.map((row) => row.legacyPath),
+);
+const additionalReviewedEntries = Object.entries(reviewedGuideRedirects).filter(
+  ([source]) => !historicalSources.has(source),
+);
+
 describe('Shengwang redirect artifacts', () => {
   it('publishes the reviewed RTC mini-program tab move without rewriting its snapshot', () => {
     const source = '/doc/rtc/mini-program/get-started/enable-service';
@@ -122,7 +131,9 @@ describe('Shengwang redirect artifacts', () => {
       mappingType: 'same-path-no-redirect',
     });
     expect(search?.notes).toContain('公开路径未变化，由新站直接服务');
-    expect(finalMap.summary.redirect).toBe(7119);
+    expect(finalMap.summary.redirect).toBe(
+      7119 + additionalReviewedEntries.length,
+    );
     expect(finalMap.summary.noRedirect).toBe(2);
   });
 
@@ -170,7 +181,9 @@ describe('Shengwang redirect artifacts', () => {
     expect(finalMap.generatedAt).toBe(candidate.generatedAt);
     expect(finalMap.snapshot).toEqual(candidate.snapshot);
     expect(finalMap.targetUrlTransform).toBe('remove-zh-CN-prefix');
-    expect(finalMap.summary.redirect).toBe(7119);
+    expect(finalMap.summary.redirect).toBe(
+      7119 + additionalReviewedEntries.length,
+    );
     expect(finalMap.summary.noRedirect).toBe(2);
     const expectedRecords = candidate.records.map((record) =>
       isRetiredCnLegacyDocsPath(record.legacyPath) ||
@@ -201,7 +214,20 @@ describe('Shengwang redirect artifacts', () => {
                   : record.target.replace(/^\/zh-CN\//, '/')),
             },
     );
-    expect(finalMap.records).toEqual(expectedRecords);
+    expect(finalMap.records.slice(0, expectedRecords.length)).toEqual(
+      expectedRecords,
+    );
+    expect(finalMap.records.slice(expectedRecords.length)).toEqual(
+      additionalReviewedEntries.map(([legacyPath, target]) =>
+        expect.objectContaining({
+          legacyPath,
+          target,
+          status: 'candidate',
+          mappingType: 'reviewed-hotfix-addition',
+          preserveQuery: true,
+        }),
+      ),
+    );
     expect(originalRedirects).toHaveLength(8216);
     expect(
       finalMap.records.filter((record) => record.status === 'no-redirect'),
@@ -209,20 +235,24 @@ describe('Shengwang redirect artifacts', () => {
     expect(
       finalMap.records.filter((record) => record.status === 'candidate'),
     ).toHaveLength(vercel.length);
-    const expectedRules = new Map(
-      expectedRecords
+    const expectedRules = new Map([
+      ...expectedRecords
         .filter((record) => record.status === 'candidate')
-        .map((record) => [record.legacyPath, record.target]),
-    );
+        .map((record) => [record.legacyPath, record.target] as const),
+      ...additionalReviewedEntries,
+    ]);
     const actualRules = new Map(
       vercel.map((rule) => [rule.source, rule.destination]),
     );
     expect(vercel.every((rule) => rule.statusCode === 301)).toBe(true);
     expect(vercel.some((rule) => rule.source === rule.destination)).toBe(false);
-    expect(vercel).toHaveLength(7119);
-    expect(vercel.every((rule) => rule.preserveQueryParams === false)).toBe(
-      true,
-    );
+    expect(vercel).toHaveLength(7119 + additionalReviewedEntries.length);
+    expect(
+      vercel.every(
+        (rule) =>
+          rule.preserveQueryParams === !historicalSources.has(rule.source),
+      ),
+    ).toBe(true);
     expect(actualRules.size).toBe(vercel.length);
     expect(expectedRules.has('/search')).toBe(false);
     expect(actualRules).toEqual(expectedRules);
@@ -255,7 +285,14 @@ describe('Shengwang redirect artifacts', () => {
         ] as const,
     );
     expect(new Map(nginxRules).size).toBe(nginxRules.length);
-    expect(new Map(nginxRules)).toEqual(expectedRules);
+    expect(new Map(nginxRules)).toEqual(
+      new Map(
+        [...expectedRules].map(([source, target]) => [
+          source,
+          target + (historicalSources.has(source) ? '' : '$is_args$args'),
+        ]),
+      ),
+    );
 
     const csvColumns = [
       'legacyUrl',
@@ -270,7 +307,7 @@ describe('Shengwang redirect artifacts', () => {
       'preserveQuery',
       'notes',
     ];
-    const expectedCsv = `${csvColumns.join(',')}\n${expectedRecords
+    const expectedCsv = `${csvColumns.join(',')}\n${finalMap.records
       .map((record) =>
         csvColumns
           .map((column) => {

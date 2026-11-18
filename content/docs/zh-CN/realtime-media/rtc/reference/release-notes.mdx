@@ -2069,6 +2069,10 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 <PlatformStructured platform="ios">
 
+:::caution[注意]
+通过 CocoaPods 集成 iOS SDK 时，需要在 `Podfile` 顶部配置声网 CocoaPods CDN 源。具体配置方式请参考[下载 SDK](/zh-CN/realtime-media/rtc/reference/downloads/ios#通过-cocoapods-集成-sdk)。
+:::
+
 ### 已知问题和局限性
 
 **AirPods Pro 蓝牙连接问题**
@@ -4074,6 +4078,10 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 <PlatformStructured platform="macos">
 
+:::caution[注意]
+通过 CocoaPods 集成 macOS SDK 时，需要在 `Podfile` 顶部配置声网 CocoaPods CDN 源。具体配置方式请参考[下载 SDK](/zh-CN/realtime-media/rtc/reference/downloads/macos#通过-cocoapods-集成-sdk)。
+:::
+
 <Accordions type="multiple" openFirst>
 
 <Accordion title="v4.7.0" id="v470-2" headingLevel={2} value="v470-2">
@@ -5852,6 +5860,45 @@ Web SDK 4.x 是通过 HTML 网页加载的 JavaScript 和 TypeScript 库。你�
 |           4.0.0-4.0.1           | `publish` 和 `subscribe` 方法不生效。                        |
 
 <Accordions type="multiple" openFirst>
+
+<Accordion title="v4.24.10" id="v42410" headingLevel={2} value="v42410">
+
+该版本于 2026 年 11 月 16 日发布。
+
+### 新增特性 [#web-v42410-features]
+
+#### Multiopus 多声道音频 [#web-v42410-multiopus]
+
+支持 4、6、8 声道音频的发送和接收，满足多声道音频传输及处理需求。应用可通过以下配置和接口使用该功能：
+
+- 将 `createClient` 的 [`multiopus`](/zh-CN/api-reference/rtc/web/interfaces/clientconfig#multiopus) 配置设置为 `true`，启用 Multiopus。
+- 通过 `createCustomAudioTrack` 的 [`channelCount`](/zh-CN/api-reference/rtc/web/interfaces/customaudiotrackinitconfig#channelcount) 配置指定自定义音轨的声道数。
+- 调用本地及远端音轨的 `selectChannels` 方法，选择需要使用的声道。
+- 调用本地及远端音轨的 `getVolumeLevels` 方法，查询各声道的音量。
+
+:::caution[注意]
+Multiopus 支持 Chrome 94 及以上版本，不支持 Firefox 和 Safari。
+:::
+
+### 改进 [#web-v42410-improvements]
+
+优化部分场景下的进频道流程，减少入会等待时间。
+
+### 问题修复 [#web-v42410-fixes]
+
+修复部分场景下调用 `leave()` 后延迟退出频道的问题。
+
+### API 变更 [#web-v42410-api-changes]
+
+#### 新增 [#web-v42410-api-additions]
+
+- `ClientConfig.multiopus`。
+- `CustomAudioTrackInitConfig.channelCount`。
+- `AudioRenderMode`。
+- `ILocalAudioTrack` 和 `IRemoteAudioTrack` 的 `selectChannels`、`getVolumeLevels` 方法。
+
+
+</Accordion>
 
 <Accordion title="v4.24.9" id="v4249" headingLevel={2} value="v4249">
 

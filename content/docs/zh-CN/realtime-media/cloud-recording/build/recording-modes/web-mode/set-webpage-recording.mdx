@@ -330,8 +330,11 @@ description: "了解如何在云端录制中页面录制，包括适用场景、
   autoFPS: false,
   autoResolution: false,
   maxResolutionLevel: 1,
+  forceCanvas: true,
 }
 ```
+
+其中，需将 `forceCanvas` 设置为 `true`，强制使用 2D 渲染。如果未开启该配置，可能导致页面录制时 CPU 占用过高、录制的白板内容与 RTC 音视频进度不一致等问题。
 
 详细设置方法可以参考 [`ISlideRenderOptions`](/zh-CN/realtime-media/ppt-transcoding/get-started/render-ppt#isliderenderoptions)。
 

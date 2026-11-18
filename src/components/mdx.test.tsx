@@ -3192,7 +3192,7 @@ describe('common MDX registry', () => {
     expect(codeBlock).toHaveTextContent('npm install @agora/sdk');
   });
 
-  it('preserves the original tabs frame around an independent code block', () => {
+  it('shares one frame between the code tabs and their selected sample', () => {
     const components = getMDXComponents();
     const CodeBlockTabs = components.CodeBlockTabs as TabsComponent;
     const CodeBlockTabsList = components.CodeBlockTabsList as TabsComponent;
@@ -3231,17 +3231,17 @@ describe('common MDX registry', () => {
     expect(screen.getByText('print("hello")').closest('figure')).toHaveClass(
       'bg-fd-card',
     );
-    expect(screen.getByRole('tablist').parentElement).toHaveClass(
+    expect(screen.getByRole('tablist').closest('.docs-code-tabs')).toHaveClass(
       'border',
       'rounded-xl',
       'bg-fd-card',
     );
     expect(
       screen.getByText('print("hello")').closest('[role=tabpanel]'),
-    ).toHaveClass('p-4', '[&>figure]:rounded-xl', '[&>figure]:border');
+    ).toHaveClass('p-0');
     expect(
-      screen.getByText('print("hello")').closest('[role=tabpanel]')?.className,
-    ).toContain('[&>figure]:m-0');
+      screen.getByText('print("hello")').closest('figure'),
+    ).toHaveAttribute('data-code-tabbed');
     expect(screen.getByText('console.log("hello")')).toBeInTheDocument();
     expect(
       screen.getByText('console.log("hello")').closest('[role=tabpanel]'),

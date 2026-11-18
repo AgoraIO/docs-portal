@@ -131,7 +131,7 @@ export function ApiReferenceCards({
 
   return (
     <section
-      className="not-prose my-8 flex flex-col gap-5"
+      className="not-prose m-0 flex flex-col gap-5"
       data-api-reference-catalog
     >
       <section aria-label="API 筛选" className="border-border border-b pb-5">

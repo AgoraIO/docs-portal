@@ -53,7 +53,7 @@ describe('Chinese SDK account guidance', () => {
       });
       expect(download).toHaveAttribute(
         'href',
-        'https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.3.0.zip',
+        'https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.3.1.zip',
       );
       expect(download).toHaveAttribute('target', '_blank');
       expect(fireEvent.click(download)).toBe(true);
@@ -78,7 +78,7 @@ describe('Chinese SDK account guidance', () => {
       expect(params.get('target')).toBe('rtm');
       expect(params.get('resource_id')).toBe('signaling');
       expect(params.get('platform')).toBe('android');
-      expect(params.get('version')).toBe('2.3.0-rtm-sdk-android');
+      expect(params.get('version')).toBe('2.3.1-rtm-sdk-android');
       expect(login).toHaveAttribute('target', '_blank');
       fireEvent.click(login);
       await waitFor(() =>
@@ -99,7 +99,7 @@ describe('Chinese SDK account guidance', () => {
     vi.spyOn(document, 'visibilityState', 'get').mockImplementation(() =>
       visible ? 'visible' : 'hidden',
     );
-    render(
+    const { rerender } = render(
       <SdksCatalog locale="zh-CN" product="signaling" platform="android" />,
     );
     fireEvent.click(screen.getByRole('link', { name: /^下载 .*实时消息 SDK/ }));
@@ -107,11 +107,7 @@ describe('Chinese SDK account guidance', () => {
     expect(capture.mock.calls.map(([event]) => event)).toEqual([
       'docs_resource_action_started',
     ]);
-    const platform = screen.getByRole('combobox', {
-      name: '实时消息 SDK 语言 / 平台',
-      hidden: true,
-    });
-    fireEvent.change(platform, { target: { value: 'ios' } });
+    rerender(<SdksCatalog locale="zh-CN" product="signaling" platform="ios" />);
     fireEvent.click(
       screen.getByRole('link', { name: /^下载 .*实时消息 SDK/, hidden: true }),
     );
@@ -131,7 +127,7 @@ describe('Chinese SDK account guidance', () => {
       window.location.origin,
     ).searchParams;
     expect(params.get('platform')).toBe('android');
-    expect(screen.getByText('Android · 版本 2.3.0（最新）')).toBeVisible();
+    expect(screen.getByText('Android · 版本 2.3.1（最新）')).toBeVisible();
     visible = false;
     fireEvent(document, new Event('visibilitychange'));
     visible = true;
@@ -251,33 +247,50 @@ describe('Chinese SDK account guidance', () => {
     ]);
   });
 
-  it('only lets the user dismiss through an explicit action button', async () => {
-    const { baseElement } = render(
-      <SdksCatalog locale="zh-CN" product="signaling" platform="android" />,
-    );
-    fireEvent.click(screen.getByRole('link', { name: /^下载 .*实时消息 SDK/ }));
-    const dialog = await screen.findByRole('dialog');
-    await waitFor(() => expect(capture).toHaveBeenCalledTimes(2));
-    expect(within(dialog).getAllByRole('button')).toHaveLength(1);
-    const overlay = baseElement.querySelector('[data-slot="dialog-overlay"]');
-    if (!overlay) throw new Error('Expected dialog overlay');
-    fireEvent.pointerDown(overlay);
-    fireEvent.click(overlay);
-    fireEvent.keyDown(dialog, { key: 'Escape' });
-    expect(screen.getByRole('dialog')).toBeVisible();
-    expect(
-      capture.mock.calls.filter(
-        ([event]) => event === 'docs_account_guidance_dismissed',
-      ),
-    ).toHaveLength(0);
-    fireEvent.click(screen.getByRole('button', { name: '稍后再说' }));
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    expect(
-      capture.mock.calls.filter(
-        ([event]) => event === 'docs_account_guidance_dismissed',
-      ),
-    ).toHaveLength(1);
-  });
+  it.each(['outside click', 'Escape', 'later button'])(
+    'dismisses through %s once and keeps subsequent downloads unobstructed',
+    async (method) => {
+      const { baseElement } = render(
+        <SdksCatalog locale="zh-CN" product="signaling" platform="android" />,
+      );
+      fireEvent.click(
+        screen.getByRole('link', { name: /^下载 .*实时消息 SDK/ }),
+      );
+      const dialog = await screen.findByRole('dialog');
+      await waitFor(() => expect(capture).toHaveBeenCalledTimes(2));
+      expect(within(dialog).getAllByRole('button')).toHaveLength(1);
+      const overlay = baseElement.querySelector('[data-slot="dialog-overlay"]');
+      if (!overlay) throw new Error('Expected dialog overlay');
+      fireEvent.click(within(dialog).getByRole('heading'));
+      expect(screen.getByRole('dialog')).toBeVisible();
+      expect(
+        capture.mock.calls.filter(
+          ([event]) => event === 'docs_account_guidance_dismissed',
+        ),
+      ).toHaveLength(0);
+      if (method === 'outside click') {
+        fireEvent.pointerDown(overlay, { pointerType: 'mouse', button: 0 });
+        fireEvent.click(overlay);
+      } else if (method === 'Escape') {
+        fireEvent.keyDown(dialog, { key: 'Escape' });
+      } else {
+        fireEvent.click(screen.getByRole('button', { name: '稍后再说' }));
+      }
+      await waitFor(() =>
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+      );
+      const download = screen.getByRole('link', {
+        name: /^下载 .*实时消息 SDK/,
+      });
+      expect(fireEvent.click(download)).toBe(true);
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      expect(
+        capture.mock.calls.filter(
+          ([event]) => event === 'docs_account_guidance_dismissed',
+        ),
+      ).toHaveLength(1);
+    },
+  );
 
   it('keeps embedded product downloads outside the first catalog slice unchanged', () => {
     window.history.replaceState(

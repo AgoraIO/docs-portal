@@ -53,7 +53,7 @@ export function DocsSidebar({
 
   return (
     <ShadcnSidebar
-      className="hidden overflow-hidden bg-transparent text-[color:var(--ink-3)] lg:sticky lg:top-[var(--docs-shell-header-offset)] lg:flex lg:h-[var(--docs-shell-body-height)] lg:min-h-0 lg:self-start"
+      className="hidden overflow-hidden bg-transparent text-[color:var(--ink-3)] lg:sticky lg:top-[var(--docs-shell-header-offset)] lg:flex lg:h-[var(--docs-shell-rail-height,var(--docs-shell-body-height))] lg:min-h-0 lg:self-start"
       collapsible="none"
       data-testid="docs-sidebar"
       style={
@@ -70,6 +70,7 @@ export function DocsSidebar({
           !sidebarMode && isScrollbarVisible && 'docs-scrollbar-visible',
         )}
         data-testid="docs-sidebar-scroll"
+        data-docs-rail-scroll
         ref={scrollContainerRef}
       >
         <div

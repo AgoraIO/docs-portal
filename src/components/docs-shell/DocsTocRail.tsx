@@ -23,7 +23,7 @@ export function DocsTocRail({
 
   return (
     <aside
-      className="hidden w-[220px] shrink-0 bg-transparent xl:sticky xl:top-[var(--docs-shell-header-offset)] xl:block xl:h-[var(--docs-shell-body-height)] xl:min-h-0 xl:self-start"
+      className="hidden w-[220px] shrink-0 bg-transparent xl:sticky xl:top-[var(--docs-shell-header-offset)] xl:block xl:h-[var(--docs-shell-rail-height,var(--docs-shell-body-height))] xl:min-h-0 xl:self-start"
       data-testid="docs-toc-rail"
     >
       <div
@@ -32,6 +32,7 @@ export function DocsTocRail({
           isScrollbarVisible && 'docs-scrollbar-visible',
         )}
         data-testid="docs-toc-rail-scroll"
+        data-docs-rail-scroll
         ref={scrollContainerRef}
       >
         <DocsTableOfContents

@@ -32,11 +32,7 @@ export function FaqLanding({ locale }: { locale?: FaqLocale } = {}) {
   }, [dataset, deferredQuery]);
 
   return (
-    <section className="not-prose my-8 flex flex-col gap-6">
-      <p className="m-0 max-w-2xl text-sm leading-6 text-muted-foreground">
-        {dataset.ui.landingDescription}
-      </p>
-
+    <section className="not-prose m-0 flex flex-col gap-5">
       <FaqSearch
         placeholder={dataset.ui.searchAllPlaceholder}
         query={query}

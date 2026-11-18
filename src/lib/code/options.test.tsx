@@ -73,6 +73,73 @@ describe('shared code highlighting', () => {
     expect($('[role="tabpanel"] figcaption').first().text()).toBe('Ruby');
   });
 
+  it.each([
+    ['go', 'Go'],
+    ['go', 'Golang'],
+    ['javascript', 'Node.js'],
+    ['cs', 'C#'],
+    ['objc', 'Objective-C'],
+    ['objectivec', 'Objective-C'],
+    ['py', 'Python3'],
+    ['python', 'Python 3'],
+    ['python', 'Python2'],
+  ])(
+    'does not repeat %s under a %s language tab in the server HTML',
+    async (language, label) => {
+      const { html } = await renderMarkdown(
+        `\`\`\`${language} tab="${label}"\nexample\n\`\`\`\n\n\`\`\`python tab="Python"\nprint("hello")\n\`\`\``,
+      );
+      const $ = load(html);
+      expect($('[role="tab"]').first().text()).toBe(label);
+      expect($('[role="tabpanel"] figcaption')).toHaveLength(0);
+      expect($('[role="tabpanel"] pre').first().text()).toBe('example');
+      expect($('.docs-code-tab-actions')).toHaveLength(2);
+    },
+  );
+
+  it('keeps an explicit filename inside code tabs', async () => {
+    const { html } = await renderMarkdown(
+      '<CodeBlockTabs defaultValue="go">\n<CodeBlockTabsList>\n<CodeBlockTabsTrigger value="go">Go</CodeBlockTabsTrigger>\n</CodeBlockTabsList>\n<CodeBlockTab value="go">\n\n```go title="main.go"\npackage main\n```\n\n</CodeBlockTab>\n</CodeBlockTabs>',
+    );
+    const $ = load(html);
+    expect($('figcaption').text()).toBe('main.go');
+    expect($('pre').text()).toBe('package main');
+  });
+
+  it('applies the same language-caption rule to mixed-content language tabs', async () => {
+    const { html } = await renderMarkdown(
+      '<Tabs defaultValue="python3">\n<TabsList>\n<TabsTrigger value="python3">Python3</TabsTrigger>\n</TabsList>\n<TabsContent value="python3">\n\nRun this example.\n\n```py\nprint("hello")\n```\n\n</TabsContent>\n</Tabs>',
+    );
+    const $ = load(html);
+    expect($('[role="tab"]').text()).toBe('Python3');
+    expect($('figcaption')).toHaveLength(0);
+    expect($('pre').text()).toBe('print("hello")');
+    expect($('figure[data-code-tabbed]')).toHaveLength(0);
+    expect($('.docs-code-tab-actions')).toHaveLength(0);
+    expect($('figure button')).toHaveLength(2);
+    expect($('[role="tabpanel"]').text()).toContain('Run this example.');
+  });
+
+  it('highlights env configuration in both themes while retaining its authored language and bytes', async () => {
+    const source =
+      '# Project settings\nAGORA_APP_ID=<your_app_id>\nAGORA_APP_CERTIFICATE=<your_app_certificate>\nAGORA_CHANNEL=test-channel';
+    const { html } = await renderMarkdown(['```env', source, '```'].join('\n'));
+    const $ = load(html);
+    expect($('figure').attr('data-code-language')).toBe('env');
+    expect($('figcaption').text()).toBe('env');
+    expect($('pre').text()).toBe(source);
+    const tokens = $('pre span[style*="--shiki-light"]');
+    expect(tokens.length).toBeGreaterThan(1);
+    expect(
+      tokens
+        .toArray()
+        .every((node) => $(node).attr('style')?.includes('--shiki-dark')),
+    ).toBe(true);
+    expect(
+      new Set(tokens.map((_, node) => $(node).attr('style')).get()).size,
+    ).toBeGreaterThan(1);
+  });
+
   it('does not invent a language for unmarked fences', async () => {
     const { html } = await renderMarkdown('```\nexample\n```');
     expect(load(html)('figcaption')).toHaveLength(0);

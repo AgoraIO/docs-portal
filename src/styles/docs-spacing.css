@@ -1,0 +1,122 @@
+/* One vertical rhythm for guides, generated SDK references and REST prose.
+   Component edges still own their first/last-child and nested-content resets. */
+:root {
+  --docs-space-section: 3rem;
+  --docs-space-section-after: 1.25rem;
+  --docs-space-subsection: 2rem;
+  --docs-space-subsection-after: 1rem;
+  --docs-space-minor-section: 1.5rem;
+  --docs-space-minor-section-after: 0.75rem;
+  --docs-space-block: 1.25rem;
+  --docs-space-item: 0.5rem;
+  --docs-space-media-after: 1.75rem;
+}
+
+/* The overview already has a grid gap before the documentation column.
+   Its first group owns one compact edge; the nested title adds no second gap. */
+.openapi-operation-layout > [data-openapi-operation-overview] > :last-child,
+.openapi-operation-layout
+  > [data-openapi-operation-overview]
+  > :last-child
+  > :last-child {
+  margin-block-end: 0;
+}
+
+.openapi-operation-layout:has(> [data-openapi-operation-overview])
+  > [data-openapi-operation-panel="documentation"]
+  > :first-child:has(> .openapi-section-heading) {
+  margin-block-start: var(--docs-space-subsection-after);
+}
+
+.openapi-operation-layout:has(> [data-openapi-operation-overview])
+  > [data-openapi-operation-panel="documentation"]
+  > :first-child
+  > .openapi-section-heading {
+  margin-block-start: 0;
+}
+
+/* Match the typography utility's layer so the shared rhythm actually applies.
+   Keep component edge resets after these defaults. */
+@layer utilities {
+  /* The article header and resolved body need a deliberate breathing space.
+     Keep this on the body edge so leading heading resets remain intact. */
+  article:not([data-docs-home]) > [data-static-docs-body] {
+    padding-block-start: var(--docs-space-block);
+  }
+
+  .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
+    margin-block: var(--docs-space-section) var(--docs-space-section-after);
+  }
+
+  .prose :where(h3):not(:where(.not-prose, .not-prose *)) {
+    margin-block: var(--docs-space-subsection)
+      var(--docs-space-subsection-after);
+  }
+
+  .prose :where(h4):not(:where(.not-prose, .not-prose *)) {
+    margin-block: var(--docs-space-minor-section)
+      var(--docs-space-minor-section-after);
+  }
+
+  .prose :where(h5, h6):not(:where(.not-prose, .not-prose *)) {
+    margin-block: var(--docs-space-block) var(--docs-space-minor-section-after);
+  }
+
+  .prose :where(p, ul, ol, pre, table):not(:where(.not-prose, .not-prose *)) {
+    margin-block: var(--docs-space-block);
+  }
+
+  /* Fumadocs standalone fences own their spacing on a not-prose figure.
+     Code-tab figures omit my-4; MDX tab edge resets still take precedence. */
+  .prose figure.shiki.my-4 {
+    margin-block: var(--docs-space-block);
+  }
+
+  .prose
+    :where(li, ul ul, ul ol, ol ul, ol ol):not(
+      :where(.not-prose, .not-prose *)
+    ) {
+    margin-block: var(--docs-space-item);
+  }
+
+  .prose
+    :where(
+      h2 + *,
+      h3 + *,
+      h4 + *,
+      hr + *,
+      td > :first-child,
+      th > :first-child,
+      blockquote > :first-child,
+      .prose > :first-child
+    ):not(:where(.not-prose, .not-prose *)) {
+    margin-top: 0;
+  }
+
+  .prose
+    :where(
+      td > :last-child,
+      th > :last-child,
+      blockquote > :last-child,
+      .prose > :last-child
+    ):not(:where(.not-prose, .not-prose *)) {
+    margin-bottom: 0;
+  }
+
+  .prose-no-margin > :first-child {
+    margin-top: 0;
+  }
+
+  .prose-no-margin > :last-child {
+    margin-bottom: 0;
+  }
+
+  /* Empty legacy anchors before the first section do not create a gap. */
+  .prose
+    :where(h2):not(:where(.not-prose, .not-prose *)):not(
+      :where(:not(a:empty) ~ h2)
+    ) {
+    margin-top: 0;
+    padding-top: 0;
+  }
+}

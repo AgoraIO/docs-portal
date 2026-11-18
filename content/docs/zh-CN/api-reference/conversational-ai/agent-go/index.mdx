@@ -198,7 +198,7 @@ import Agora "github.com/AgoraIO/agora-agents-go/v2"
 
 `Agent` 是一个不可变的配置对象。每个服务商链式配置方法都会返回一个新的 `*Agent`，原对象永远不会被修改。建议在应用启动时定义一个智能体，并在每次用户对话时基于它创建会话。
 
-从 `agentkit/cn` 导入智能体构建器，从 `agentkit/cn/vendors` 导入中国区专用服务商；如需自定义 LLM，从 `agentkit/vendors` 导入通用服务商：
+从 `agentkit/cn` 导入智能体构建器，从 `agentkit/cn/vendors` 导入服务商；如需自定义 LLM，从 `agentkit/vendors` 导入 `CustomLLM`：
 
 ```go
 import (
@@ -255,7 +255,7 @@ agent := agentkit.NewAgent(client,
 
 Vendor 方法调用在 `NewAgent` 返回的 `*Agent` 上。每个方法都会返回一个**新的** `*Agent`，原对象永远不会被修改。
 
-中国区专用服务商从 `agentkit/cn/vendors` 取用；可在 CN 场景复用的 common/custom 服务商从 `agentkit/vendors` 取用。
+本文介绍的服务商从 `agentkit/cn/vendors` 导入；`CustomLLM`、`GenericTTS` 等通用服务商从 `agentkit/vendors` 导入。
 
 #### `WithLlm(vendor)`
 
@@ -522,8 +522,8 @@ func (s *AgentSession) Start(ctx context.Context) (string, error)
 - 状态流转：成功时 `starting` → `running`，失败时进入 `error`
 - 触发事件：成功时 `"started"`，失败时 `"error"`
 - 发起 API 调用前，会校验数字人配置以及数字人/TTS 采样率是否匹配
-- 会校验服务商是否与 `agentkit/cn` 封装接口匹配：只接受中国区专用服务商且不支持 MLLM；不匹配时返回 error
-- CN 场景下各服务商均为 BYOK；请始终显式提供对应服务商的凭据
+- 会校验服务商是否与 `agentkit/cn` 的智能体构建器匹配，不匹配时返回 error；不支持 MLLM
+- 各服务商均为 BYOK；请始终显式提供对应服务商的凭据
 - 先取会话级 `PipelineID`，其次取智能体级值，并作为顶层 `/join.pipeline_id` 发送
 
 ```go
@@ -711,7 +711,7 @@ response, err := session.Raw().List(ctx, &Agora.ListAgentsRequest{
 
 ## 服务商 [#vendors]
 
-中国区专用服务商 constructor 位于 `github.com/AgoraIO/agora-agents-go/v2/agentkit/cn/vendors`；可在 CN 场景复用的 common/custom 服务商 constructor 位于 `github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors`。这些服务商配合 `agentkit/cn` 的 `WithStt()`、`WithLlm()`、`WithTts()`、`WithAvatar()` 链式方法使用。
+本文介绍的服务商构造函数位于 `github.com/AgoraIO/agora-agents-go/v2/agentkit/cn/vendors`；`CustomLLM`、`GenericTTS` 等通用服务商构造函数位于 `github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors`。这些服务商配合 `agentkit/cn` 的 `WithStt()`、`WithLlm()`、`WithTts()`、`WithAvatar()` 链式方法使用。
 
 ```go
 import (
@@ -840,9 +840,22 @@ func NewMicrosoftSTT(opts MicrosoftSTTOptions) *MicrosoftSTT
 | `PhraseList` | `[]string` | 否 | 提升识别准确率的短语列表 |
 | `AdditionalParams` | `map[string]interface{}` | 否 | 附加服务商参数，合并进 `params` |
 
+#### `NewStepFunSTT`
+
+```go
+func NewStepFunSTT(opts StepFunSTTOptions) *StepFunSTT
+```
+
+阶跃星辰 ASR，输出 `asr.vendor = "stepfun"`。如果 `APIKey` 为空，会 panic。识别语言由智能体的 turn detection 配置决定。
+
+| 字段 | 类型 | 是否必填 | 说明 |
+|---|---|---|---|
+| `APIKey` | `string` | 是 | 阶跃星辰 API key，写入 `asr.params.api_key` |
+| `AdditionalParams` | `map[string]interface{}` | 否 | 附加 ASR 参数；同名字段由 `APIKey` 覆盖 |
+
 ### 语音合成服务商 [#tts-vendors]
 
-所有 CN TTS 服务商都支持 `AdditionalParams`（合并进 `params`）和 `SkipPatterns`（跳过的文本模式）。
+本文介绍的 TTS 服务商都支持 `AdditionalParams`（合并进 `params`）和 `SkipPatterns`（跳过的文本模式）。
 
 #### `NewMiniMaxTTS`
 
@@ -865,6 +878,47 @@ MiniMax TTS 要求 `Key` 和 `Model`。此外必须提供 `VoiceSetting.VoiceID`
 | `SkipPatterns` | `[]int` | 否 | 要跳过的模式 |
 
 `MiniMaxVoiceSetting` 字段：`VoiceID string`、`Speed *int`、`Volume *int`（输出为 `vol`）、`Pitch *int`、`Emotion string`、`LatexRead *bool`、`EnglishNormalization *bool`。`MiniMaxTimberWeight` 字段：`VoiceID string`、`Weight int`。
+
+#### `NewMiniMaxDuplexTTS`
+
+```go
+func NewMiniMaxDuplexTTS(opts MiniMaxDuplexTTSOptions) *MiniMaxDuplexTTS
+```
+
+MiniMax 双向流式 TTS，输出 `tts.vendor = "minimax_duplex"`。`Key`、`Model` 和 `VoiceSetting.VoiceID` 必填，否则 panic。该构造函数要求单音色配置，混合音色参数不能替代 `VoiceSetting.VoiceID`。
+
+```go
+import cnvendors "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn/vendors"
+
+tts := cnvendors.NewMiniMaxDuplexTTS(cnvendors.MiniMaxDuplexTTSOptions{
+    Key:   "<MINIMAX_API_KEY>",
+    Model: "speech-2.8-turbo",
+    VoiceSetting: &cnvendors.MiniMaxDuplexVoiceSetting{
+        VoiceID: "female-shaonv",
+    },
+})
+stt := cnvendors.NewStepFunSTT(cnvendors.StepFunSTTOptions{
+    APIKey: "<STEPFUN_API_KEY>",
+})
+```
+
+| 字段 | 类型 | 是否必填 | 说明 |
+|---|---|---|---|
+| `Key` | `string` | 是 | MiniMax API key |
+| `Model` | `string` | 是 | 模型名称，例如 `speech-2.8-turbo` |
+| `VoiceSetting` | `*MiniMaxDuplexVoiceSetting` | 是 | 音色设置，`VoiceID` 必须非空 |
+| `URL` | `string` | 否 | 双向流式 TTS 的 WebSocket 接口地址 |
+| `AudioSetting` | `*MiniMaxDuplexAudioSetting` | 否 | 音频设置，写入 `params.audio_setting` |
+| `PronunciationDict` | `*MiniMaxPronunciationDict` | 否 | 发音词典，`Tone` 为 `[]string` |
+| `VoiceModify` | `*MiniMaxDuplexVoiceModify` | 否 | 音效设置，写入 `params.voice_modify` |
+| `LanguageBoost` | `string` | 否 | 语言增强策略，例如 `Chinese` |
+| `TextNormalizationMode` | `string` | 否 | 文本归一化模式，例如 `basic` |
+| `SubtitleEnable` | `*bool` | 否 | 是否启用字幕 |
+| `SubtitleType` | `string` | 否 | 字幕粒度，例如 `word` |
+| `ContinuousSound` | `*bool` | 否 | 是否启用连续音频生成 |
+| `SessionID` | `string` | 否 | MiniMax 供应商会话标识 |
+| `AdditionalParams` | `map[string]interface{}` | 否 | 附加供应商参数；已设置的显式字段优先 |
+| `SkipPatterns` | `[]int` | 否 | 跳过括号内容的规则配置，写入 `tts.skip_patterns` |
 
 #### `NewTencentTTS`
 
