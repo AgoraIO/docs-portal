@@ -98,7 +98,7 @@ Use the following `asr` configuration in your request:
  ASR provider. Set to `ares` to use Adaptive Recognition Engine for Speech.
  </Parameter>
  <Parameter name="language" type="string" required={true}>
-  The BCP-47 language tag identifying the primary language used for agent interaction.
+  One or more BCP-47 language tags identifying the languages used for agent interaction. To recognize multiple languages, pass the tags as a single comma-separated string, for example, `"en-US,hi-IN,es-MX"`.
   See [Supported languages](/en/realtime-media/speech-to-text/reference/supported-languages#real-time-transcription) for the complete list.
  </Parameter>
  <Parameter name="keywords" type="array[string]" required={false}>
