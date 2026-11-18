@@ -1,0 +1,562 @@
+{
+  "candidate": "54dc682e42d26f5a1d6211188485cf0c717ae409",
+  "main": "0b67002a116bcfb08ac27a783af35c0c51dec7ba",
+  "chineseBranch": "d0d326d6b64665512bff395321cca9c4c0b89ec5",
+  "unitTests": {
+    "main": {
+      "passed": 1991,
+      "failed": 8,
+      "skipped": 0,
+      "failureNames": [
+        "agent studio audit regressions keeps ordered procedures source-numbered after the first step",
+        "cloud transcoding audit regressions keeps ordered procedures source-numbered after the first step",
+        "docs content regressions keeps block-style lists and notes out of GFM table cells",
+        "docs journeys keeps internal links under /en/ai pointed at existing docs routes",
+        "legacy sitemap compatibility audit targets existing new docs portal pages",
+        "media pull audit regressions keeps ordered procedures source-numbered after the first step",
+        "media push audit regressions keeps ordered procedures source-numbered after the first step",
+        "speech-to-text audit regressions keeps ordered procedures source-numbered after the first step"
+      ]
+    },
+    "candidate": {
+      "passed": 7134,
+      "failed": 8,
+      "skipped": 23,
+      "failureNames": [
+        "agent studio audit regressions keeps ordered procedures source-numbered after the first step",
+        "cloud transcoding audit regressions keeps ordered procedures source-numbered after the first step",
+        "docs content regressions keeps block-style lists and notes out of GFM table cells",
+        "docs journeys keeps internal links under /en/ai pointed at existing docs routes",
+        "legacy sitemap compatibility audit targets existing new docs portal pages",
+        "media pull audit regressions keeps ordered procedures source-numbered after the first step",
+        "media push audit regressions keeps ordered procedures source-numbered after the first step",
+        "speech-to-text audit regressions keeps ordered procedures source-numbered after the first step"
+      ]
+    }
+  },
+  "browser": {
+    "englishBaseline": {
+      "status": "FAIL",
+      "code": "67fb3485fd55825f8e7cc2922cfc1eb382c7d031",
+      "pages": 442,
+      "states": 3400,
+      "routeErrors": 2,
+      "findings": {
+        "tab-frame-leak": 156,
+        "page-overflow": 69,
+        "toc-overflow": 217,
+        "nonstandard-api-table": 84
+      }
+    },
+    "englishCandidate": {
+      "status": "FAIL",
+      "code": "54dc682e42d26f5a1d6211188485cf0c717ae409",
+      "pages": 442,
+      "states": 3414,
+      "routeErrors": 0,
+      "findings": {
+        "page-overflow": 69,
+        "nonstandard-api-table": 84
+      }
+    },
+    "newEnglishFindings": [],
+    "chineseCandidate": {
+      "status": "PASS",
+      "code": "54dc682e42d26f5a1d6211188485cf0c717ae409",
+      "pages": 5287,
+      "states": 52174,
+      "routeErrors": 0,
+      "findings": {}
+    }
+  },
+  "sites": {
+    "en": {
+      "html": [
+        2126,
+        2126
+      ],
+      "htmlDiff": {
+        "onlyReference": [],
+        "onlyCandidate": []
+      },
+      "markdown": [
+        2125,
+        2125
+      ],
+      "markdownDiff": {
+        "onlyReference": [],
+        "onlyCandidate": []
+      },
+      "markdownContentChanged": [],
+      "htmlFieldsWithDifferences": {
+        "body": 82,
+        "articleIds": 86
+      },
+      "textDifferencesAfterRemovingWhitespace": [],
+      "missingStaticAnchors": [],
+      "additionalStaticAnchors": 5475,
+      "sitemapEntries": 2114,
+      "sitemapHosts": [
+        "docs.agora.io"
+      ],
+      "sitemapMissing": 0,
+      "sitemapExtra": 0,
+      "robotsSitemap": "Sitemap: https://docs.agora.io/sitemap.xml",
+      "llmsFullLineMultisetEqual": true,
+      "machineOutputHashes": {
+        "robots.txt": "625f9ceb027bbfd2f21d4e26733a4e365caf9544352739577e01da6eade7f9ee",
+        "llms.txt": "d88422e3e6ac4e4177c0f5aae4d85271d0a779c8c3a0972c9460b04158f75402",
+        "llms-full.txt": "1aca17922c68749f58714ec5c42b813ff4fd4c9efac870c0c936938a92485959",
+        "sitemap.xml": "92170cc670a28f4d08756466555b9fcef892e92fab515f5e92f7924e7a113176"
+      },
+      "interactions": [
+        {
+          "id": "copy",
+          "status": "pass",
+          "data": {
+            "characters": 2319,
+            "firstLine": "# Agora Documentation (/en/introduction)"
+          },
+          "image": "final-en-copy.png"
+        },
+        {
+          "id": "theme",
+          "status": "pass",
+          "data": {
+            "theme": "dark"
+          },
+          "image": "final-en-theme.png"
+        },
+        {
+          "id": "faq-filter",
+          "status": "pass",
+          "data": {
+            "items": 17
+          },
+          "image": "final-en-faq-filter.png"
+        },
+        {
+          "id": "mobile-menu",
+          "status": "pass",
+          "data": {
+            "options": 19
+          },
+          "image": "final-en-mobile-menu.png"
+        },
+        {
+          "id": "mcp-guide",
+          "status": "pass",
+          "data": {
+            "title": "Agora MCP",
+            "guideReferencesEndpoint": true,
+            "width": 1425
+          },
+          "image": "final-en-mcp-guide.png"
+        },
+        {
+          "id": "openapi-response",
+          "status": "pass",
+          "data": {
+            "tab": "Python",
+            "active": [
+              "Python"
+            ]
+          },
+          "image": "final-en-openapi-response.png"
+        },
+        {
+          "id": "platform-switch",
+          "status": "pass",
+          "data": {
+            "selected": "android",
+            "path": "/en/realtime-media/rtc/get-started-sdk/android"
+          },
+          "image": "final-en-platform-switch.png"
+        },
+        {
+          "id": "schema-expand",
+          "status": "pass",
+          "data": {
+            "field": "Expand serverResponse properties"
+          },
+          "image": "final-en-schema-expand.png"
+        },
+        {
+          "id": "live-search",
+          "status": "pass",
+          "data": {
+            "query": "RTC",
+            "items": "RTC overviewReal-Time Communications › Build Live Interaction › RTC | Communicate with RTC SDKReal-Time Communications › Connect Devices › IoT SDK › Build › Communicateandroidiosweb+5 | Voice-only quickstartReal-Time Communications › Build Live Interaction › RTCandroidiosweb+7 | Send and receive media streamsReal-Time Communications › Connect External Media › Server Gateway › Build › Build core media featuresweb"
+          },
+          "image": "final-en-live-search.png"
+        }
+      ]
+    },
+    "cn": {
+      "html": [
+        7256,
+        7256
+      ],
+      "htmlDiff": {
+        "onlyReference": [],
+        "onlyCandidate": []
+      },
+      "markdown": [
+        7282,
+        7282
+      ],
+      "markdownDiff": {
+        "onlyReference": [],
+        "onlyCandidate": []
+      },
+      "markdownContentChanged": [],
+      "htmlFieldsWithDifferences": {
+        "canonical": 7254,
+        "ogUrl": 7254,
+        "articleIds": 141
+      },
+      "textDifferencesAfterRemovingWhitespace": [],
+      "missingStaticAnchors": [],
+      "additionalStaticAnchors": 0,
+      "sitemapEntries": 7228,
+      "sitemapHosts": [
+        "docs.shengwang.cn"
+      ],
+      "sitemapMissing": 0,
+      "sitemapExtra": 0,
+      "robotsSitemap": "Sitemap: https://docs.shengwang.cn/sitemap.xml",
+      "llmsFullLineMultisetEqual": true,
+      "machineOutputHashes": {
+        "robots.txt": "fb5af6944627194f755b741c9828a480e8d832aa89390b6e4e08621310dd3c04",
+        "llms.txt": "6aabb8838f8496d6413d4ac2ec6b8bb3467e30eaaff3f1895b4ed2b6ba80a0ae",
+        "llms-full.txt": "84c8180b2a0c901abcd9ffb1d8b8c696617aef3d0a9322891be2e49af8a80ebf",
+        "sitemap.xml": "15d38cd01252d53115633c9c793ed3dddd32a390cda4d559feaf9ae130c060ec"
+      },
+      "interactions": [
+        {
+          "id": "copy",
+          "status": "pass",
+          "data": {
+            "characters": 4499,
+            "firstLine": "# 声网 MCP (/zh-CN/introduction/mcp-integrate)"
+          },
+          "image": "final-cn-copy.png"
+        },
+        {
+          "id": "theme",
+          "status": "pass",
+          "data": {
+            "theme": "dark"
+          },
+          "image": "final-cn-theme.png"
+        },
+        {
+          "id": "faq-filter",
+          "status": "pass",
+          "data": {
+            "options": [
+              "全部产品",
+              "实时互动",
+              "实时消息"
+            ],
+            "selected": "实时互动"
+          },
+          "image": "final-cn-faq-filter.png"
+        },
+        {
+          "id": "mobile-menu",
+          "status": "pass",
+          "data": {
+            "options": 25
+          },
+          "image": "final-cn-mobile-menu.png"
+        },
+        {
+          "id": "mcp-guide",
+          "status": "pass",
+          "data": {
+            "title": "声网 MCP",
+            "guideReferencesEndpoint": true,
+            "width": 1425
+          },
+          "image": "final-cn-mcp-guide.png"
+        },
+        {
+          "id": "openapi-response",
+          "status": "pass",
+          "data": {
+            "tab": "非 200",
+            "active": [
+              "非 200",
+              "200"
+            ]
+          },
+          "image": "final-cn-openapi-response.png"
+        },
+        {
+          "id": "platform-switch",
+          "status": "pass",
+          "data": {
+            "selected": "ios",
+            "path": "/realtime-media/rtc/get-started/quick-start/ios"
+          },
+          "image": "final-cn-platform-switch.png"
+        },
+        {
+          "id": "schema-expand",
+          "status": "pass",
+          "data": {
+            "field": "展开 serverResponse 属性"
+          },
+          "image": "final-cn-schema-expand.png"
+        },
+        {
+          "id": "live-search",
+          "status": "pass",
+          "data": {
+            "query": "RTC",
+            "items": "实时互动 RTC 概览实时互动了解实时互动 RTC 的核心能力、适用场景、接入路径和相关参考资源。 | RTC 服务端 SDK 概览RTC 服务端 SDK… 下图展示了 RTC 服务端 SDK 的几种应用，包括在频道中播放本地文件，直推 CDN，以及与企业呼叫中心互通。服务端 SDK 将 SD‑RTN™ 中的媒体流转换为指定格式，输出给其他模块，并将其他模块的媒体流编码，发送到 SD‑RTN™。 在 RTC 服务端 SDK 和客户端 SDK 互通的场景中，请确保客户端… | RTC SDK API 示例参考文档该开源项目展示声网 RTC SDK 在不同平台上的常用 API 用法，帮助你快速运行示例并参考具体实现。 | rtc_channel_options_t结构体 参考媒体流加速C SDK频道设置选项。"
+          },
+          "image": "final-cn-live-search.png"
+        }
+      ]
+    }
+  },
+  "search": {
+    "coverage": {
+      "records": 59797,
+      "uniqueIds": 59797,
+      "indexedPages": 2744,
+      "docs": 59711,
+      "openapi": 86,
+      "cnRoutes": 7185,
+      "publishedCnRoutes": 7178,
+      "canonicalScopes": 1950,
+      "platformVariantPages": 996,
+      "checkedPages": 2744,
+      "fragments": 57800,
+      "tocAnchors": 22459,
+      "missingPlatformRecords": 4496,
+      "missingVersionRecords": 20759,
+      "exclusions": {
+        "notPublished": 7,
+        "notNavigation": 4215,
+        "canonicalReplacedByVariants": 202,
+        "excludedProducts": 9,
+        "eligibleWithoutRecords": 8
+      },
+      "findings": {
+        "missingHtml": 0,
+        "unknownRoutes": 0,
+        "invalidIndexedAnchors": 0,
+        "brokenTocTargets": 0,
+        "genuineMissingToc": 0,
+        "otherPlatformToc": 0,
+        "platformMetadataMismatch": 0,
+        "wrongPanelAnchors": 0,
+        "duplicateIdsAcrossPanels": 167,
+        "routeVersionMismatch": 0,
+        "excludedProductRecords": 0,
+        "nonSearchableRecords": 0
+      }
+    },
+    "unexpectedEmptyPages": [],
+    "requests": 120,
+    "successful": 120,
+    "zeroResultResponses": 16,
+    "sections": 59797,
+    "indexedDocuments": 59798,
+    "finalRecordExport": {
+      "sameRecordsAsIndexed": true,
+      "sha256": "c9f43e76c16d574db8c099c003952742945010ce460e6b838fafc979a60b3768",
+      "bytes": 81318338,
+      "sections": 59797
+    },
+    "verifiedPublicUrls": 2946
+  },
+  "runtime": {
+    "cn": {
+      "/zh-CN/introduction": {
+        "status": 200,
+        "sha256": "b0b35dcb885a0857cdccae33c006217c7edb26adb4966124057be58e6feab0ee"
+      },
+      "/en/introduction": {
+        "status": 404
+      },
+      "/healthz": {
+        "status": 200,
+        "sha256": "dc51b8c96c2d745df3bd5590d990230a482fd247123599548e0632fdbf97fc22"
+      },
+      "/": {
+        "status": 200,
+        "sha256": "e3f760fd96159888b81e771340fe14dffd5869df3f99a97b207fb489ce1d3c3c"
+      },
+      "/not-a-real-route-cn-release": {
+        "status": 404
+      },
+      "/introduction": {
+        "status": 200,
+        "sha256": "b0b35dcb885a0857cdccae33c006217c7edb26adb4966124057be58e6feab0ee"
+      },
+      "/introduction.md": {
+        "status": 200,
+        "sha256": "f330e2050a91dd5d5ae994dc131963b0716733107a58f5a3ae74239f41bc651e"
+      },
+      "/zh-CN/introduction/": {
+        "status": 200,
+        "sha256": "b0b35dcb885a0857cdccae33c006217c7edb26adb4966124057be58e6feab0ee"
+      },
+      "/zh-CN/introduction.md": {
+        "status": 200,
+        "sha256": "f330e2050a91dd5d5ae994dc131963b0716733107a58f5a3ae74239f41bc651e"
+      },
+      "/en/introduction/": {
+        "status": 404
+      },
+      "/en/introduction.md": {
+        "status": 404
+      },
+      "/sitemap.xml": {
+        "status": 200,
+        "sha256": "15d38cd01252d53115633c9c793ed3dddd32a390cda4d559feaf9ae130c060ec"
+      },
+      "/robots.txt": {
+        "status": 200,
+        "sha256": "fb5af6944627194f755b741c9828a480e8d832aa89390b6e4e08621310dd3c04",
+        "text": "User-agent: *\nAllow: /\nSitemap: https://docs.shengwang.cn/sitemap.xml"
+      },
+      "/llms.txt": {
+        "status": 200,
+        "sha256": "6aabb8838f8496d6413d4ac2ec6b8bb3467e30eaaff3f1895b4ed2b6ba80a0ae"
+      },
+      "/api/health": {
+        "status": 404
+      }
+    },
+    "en": {
+      "/zh-CN/introduction": {
+        "status": 404
+      },
+      "/en/introduction": {
+        "status": 200,
+        "sha256": "7020b26106430a9547e8d4f60401389a35ff31e7175d4df1711093685bdc9a03"
+      },
+      "/healthz": {
+        "status": 200,
+        "sha256": "dc51b8c96c2d745df3bd5590d990230a482fd247123599548e0632fdbf97fc22"
+      },
+      "/": {
+        "status": 200,
+        "sha256": "e6caa4eaffaf89c6cfad48d3d85a71460f7f42a71fd7b33e016cf6144834e411"
+      },
+      "/not-a-real-route-cn-release": {
+        "status": 404
+      },
+      "/introduction": {
+        "status": 404
+      },
+      "/introduction.md": {
+        "status": 404
+      },
+      "/zh-CN/introduction/": {
+        "status": 404
+      },
+      "/zh-CN/introduction.md": {
+        "status": 404
+      },
+      "/en/introduction/": {
+        "status": 200,
+        "sha256": "7020b26106430a9547e8d4f60401389a35ff31e7175d4df1711093685bdc9a03"
+      },
+      "/en/introduction.md": {
+        "status": 200,
+        "sha256": "2695c64de39323d029d834a4c7bccdc0769488a55a4b4dc579ccc026ad37230c"
+      },
+      "/sitemap.xml": {
+        "status": 200,
+        "sha256": "92170cc670a28f4d08756466555b9fcef892e92fab515f5e92f7924e7a113176"
+      },
+      "/robots.txt": {
+        "status": 200,
+        "sha256": "625f9ceb027bbfd2f21d4e26733a4e365caf9544352739577e01da6eade7f9ee",
+        "text": "User-agent: *\nAllow: /\nSitemap: https://docs.agora.io/sitemap.xml"
+      },
+      "/llms.txt": {
+        "status": 200,
+        "sha256": "d88422e3e6ac4e4177c0f5aae4d85271d0a779c8c3a0972c9460b04158f75402"
+      },
+      "/api/health": {
+        "status": 404
+      }
+    },
+    "searchServiceHealth": {
+      "status": "ok",
+      "revision": "54dc682e42d26f5a1d6211188485cf0c717ae409"
+    }
+  },
+  "dockerContext": {
+    "expectedFiles": [
+      "public/robots.txt"
+    ],
+    "actualFiles": [
+      "public/robots.txt"
+    ],
+    "pass": true
+  },
+  "cnLinks": {
+    "reference": [
+      [
+        "/realtime-media/whiteboard/fastboard-sdk/reference/release-notes-fb/android",
+        "/api-reference/whiteboard/fastboard/android#fastlogger",
+        "missing-anchor"
+      ],
+      [
+        "/realtime-media/whiteboard/fastboard-sdk/reference/release-notes-fb/android",
+        "/api-reference/whiteboard/fastboard/android#fastlogger",
+        "missing-anchor"
+      ],
+      [
+        "/realtime-media/whiteboard/fastboard-sdk/reference/release-notes-fb/android",
+        "/api-reference/whiteboard/fastboard/android#fastlogger",
+        "missing-anchor"
+      ],
+      [
+        "/realtime-media/whiteboard/fastboard-sdk/reference/release-notes-fb/android",
+        "/api-reference/whiteboard/fastboard/android#fastlogger",
+        "missing-anchor"
+      ],
+      [
+        "/realtime-media/whiteboard/fastboard-sdk/reference/release-notes-fb/android",
+        "/api-reference/whiteboard/fastboard/android#fastlogger",
+        "missing-anchor"
+      ]
+    ],
+    "candidate": [
+      [
+        "/realtime-media/whiteboard/fastboard-sdk/reference/release-notes-fb/android",
+        "/api-reference/whiteboard/fastboard/android#fastlogger",
+        "missing-anchor"
+      ],
+      [
+        "/realtime-media/whiteboard/fastboard-sdk/reference/release-notes-fb/android",
+        "/api-reference/whiteboard/fastboard/android#fastlogger",
+        "missing-anchor"
+      ],
+      [
+        "/realtime-media/whiteboard/fastboard-sdk/reference/release-notes-fb/android",
+        "/api-reference/whiteboard/fastboard/android#fastlogger",
+        "missing-anchor"
+      ],
+      [
+        "/realtime-media/whiteboard/fastboard-sdk/reference/release-notes-fb/android",
+        "/api-reference/whiteboard/fastboard/android#fastlogger",
+        "missing-anchor"
+      ],
+      [
+        "/realtime-media/whiteboard/fastboard-sdk/reference/release-notes-fb/android",
+        "/api-reference/whiteboard/fastboard/android#fastlogger",
+        "missing-anchor"
+      ]
+    ]
+  }
+}
