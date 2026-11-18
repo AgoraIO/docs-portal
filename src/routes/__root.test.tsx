@@ -22,7 +22,7 @@ describe('RootDocument', () => {
     vi.unstubAllEnvs();
   });
 
-  it('renders the Google Tag Manager loader in head', () => {
+  it('loads Securiti auto-blocking, the consent bridge and the SDK first in head', () => {
     const html = renderToStaticMarkup(
       <RootDocument>
         <main>Docs</main>
@@ -31,28 +31,18 @@ describe('RootDocument', () => {
 
     const head = html.match(/<head>(.*?)<\/head>/s)?.[1] ?? '';
 
-    expect(head).toMatch(
-      /<script>.*googletagmanager\.com\/gtm\.js\?id=.*GTM-TKTWGML.*<\/script>/s,
-    );
+    const scripts = head.match(/<script\b[^>]*><\/script>/g) ?? [];
+
+    // React hoists metadata tags, so assert the script order rather than the
+    // full head: no script may run before Securiti auto-blocking.
+    expect(scripts).toEqual([
+      '<script src="https://cdn-prod.securiti.ai/consent/auto_blocking/b373a629-85bf-440d-824a-a86fc32ae3e9/7ba04bfc-c10b-4f3a-80d5-bf9ed910b46f.js"></script>',
+      '<script src="/js/consent-bridge.js" data-skip-blocking="true"></script>',
+      '<script defer="" src="https://cdn-prod.securiti.ai/consent/cookie-consent-sdk-loader.js" data-tenant-uuid="b373a629-85bf-440d-824a-a86fc32ae3e9" data-domain-uuid="7ba04bfc-c10b-4f3a-80d5-bf9ed910b46f" data-backend-url="https://app.securiti.ai" data-skip-css="false"></script>',
+    ]);
   });
 
-  it('places the Google Tag Manager fallback first in body', () => {
-    const html = renderToStaticMarkup(
-      <RootDocument>
-        <main>Docs</main>
-      </RootDocument>,
-    );
-
-    const body = html.match(/<body[^>]*>(.*?)<\/body>/s)?.[1] ?? '';
-
-    expect(body).toMatch(
-      /^<noscript><iframe src="https:\/\/www\.googletagmanager\.com\/ns\.html\?id=GTM-TKTWGML" title="Google Tag Manager" height="0" width="0" style="display:none;visibility:hidden"><\/iframe><\/noscript><main>Docs<\/main><script data-testid="app-scripts"><\/script>$/,
-    );
-  });
-
-  it('does not load Google Tag Manager when no container is configured', () => {
-    vi.stubEnv('VITE_GTM_ID', '');
-
+  it('does not start Google Tag Manager or any tracker in server-rendered HTML', () => {
     const html = renderToStaticMarkup(
       <RootDocument>
         <main>Docs</main>
@@ -60,6 +50,8 @@ describe('RootDocument', () => {
     );
 
     expect(html).not.toContain('googletagmanager.com');
+    expect(html).not.toContain('posthog');
+    expect(html).not.toContain('reo.dev');
     expect(html).not.toContain('<noscript>');
   });
 });

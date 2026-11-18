@@ -958,8 +958,8 @@ describe('DocsShell', () => {
       within(siteFooter).getByRole('link', { name: 'Privacy Policy' }),
     ).toHaveAttribute('href', 'https://www.agora.io/en/privacy-policy/');
     expect(
-      within(siteFooter).getByRole('link', { name: 'Manage My Cookies' }),
-    ).toHaveAttribute('href', '#');
+      within(siteFooter).getByRole('button', { name: 'Manage My Cookies' }),
+    ).toHaveAttribute('data-cookie-preferences');
     expect(
       within(siteFooter).getByRole('img', { name: 'Agora' }),
     ).toBeInTheDocument();

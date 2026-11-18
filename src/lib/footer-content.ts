@@ -31,7 +31,8 @@ export const docsFooterContent = {
       label: 'Report Abuse of our Terms of Service',
     },
     {
-      href: '#',
+      // Opens the Securiti preference center through public/js/consent-bridge.js.
+      cookiePreferences: true,
       label: 'Manage My Cookies',
     },
   ],

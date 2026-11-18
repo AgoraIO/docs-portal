@@ -97,14 +97,24 @@ export function DocsSiteFooter({
           <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-center text-xs text-[color:var(--ink-4)] sm:text-sm">
             {docsFooterContent.legalLinks.map((link) => (
               <li key={link.label}>
-                <a
-                  className="transition-colors hover:text-[color:var(--ink-2)]"
-                  href={link.href}
-                  rel={link.href === '#' ? undefined : 'noopener noreferrer'}
-                  target={link.href === '#' ? undefined : '_blank'}
-                >
-                  {link.label}
-                </a>
+                {'cookiePreferences' in link ? (
+                  <button
+                    className="cursor-pointer transition-colors hover:text-[color:var(--ink-2)]"
+                    data-cookie-preferences=""
+                    type="button"
+                  >
+                    {link.label}
+                  </button>
+                ) : (
+                  <a
+                    className="transition-colors hover:text-[color:var(--ink-2)]"
+                    href={link.href}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {link.label}
+                  </a>
+                )}
               </li>
             ))}
           </ul>

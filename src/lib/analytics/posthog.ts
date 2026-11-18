@@ -1,3 +1,8 @@
+import {
+  CONSENT_EVENT,
+  getCategoryConsent,
+  subscribeToConsent,
+} from '../consent/cookie-consent';
 import { PLATFORM_DATASET_KEY } from '../platforms/preference';
 import { isKnownPlatform, normalizePlatformKey } from '../platforms/registry';
 import { type DocsPageType, inferDocsPageType } from './docs-page-type';
@@ -17,6 +22,8 @@ const SEARCH_SENSITIVE_QUERY_PATTERN =
   /(?:https?:\/\/|\b(?:token|secret|password|certificate|app[_ -]?id|appid|api[_ -]?key)\s*[:=]|\bpassword\s+is\s+\S+|\b[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}\b|\beyJ[a-z0-9_-]*\.[a-z0-9_-]+\.[a-z0-9_-]+\b|\b[a-f0-9]{24,}\b)/iu;
 
 let posthogClientPromise: Promise<PostHogClient | null> | null = null;
+let consentDecisionPromise: Promise<boolean> | null = null;
+let stopConsentSync: (() => void) | null = null;
 let registeredPageContext: RegisteredDocsPageContext | null = null;
 let capturedPageViewPathname: string | null = null;
 let pendingPageViewPathname: string | null = null;
@@ -66,7 +73,28 @@ type DocsJourneyRecord = {
   tab: string;
 };
 
+// PostHog loads only after the visitor grants Analytics & Customization through Securiti.
+// Until then nothing is initialized, persisted or sent; events raised while the choice is still
+// unknown wait for it and are dropped on denial. Withdrawal opts the SDK out, which also removes
+// its persistence (opt_out_persistence_by_default); the consent bridge expires ph_* cookies.
 export function initializePostHog() {
+  if (typeof window === 'undefined' || stopConsentSync) {
+    return;
+  }
+
+  stopConsentSync = subscribeToConsent(({ analytics }) => {
+    if (analytics === true) {
+      void getPostHogClient();
+      return;
+    }
+
+    void posthogClientPromise?.then((posthog) => {
+      if (posthog && !posthog.has_opted_out_capturing()) {
+        posthog.stopSessionRecording();
+        posthog.opt_out_capturing();
+      }
+    });
+  });
   void getPostHogClient();
 }
 
@@ -907,7 +935,7 @@ function stripUrlQueryAndHash(value: string) {
   return value.slice(0, boundary);
 }
 
-function getPostHogClient() {
+function getPostHogClient(): Promise<PostHogClient | null> {
   if (typeof window === 'undefined') {
     return Promise.resolve(null);
   }
@@ -926,35 +954,86 @@ function getPostHogClient() {
     return Promise.resolve(null);
   }
 
-  if (!posthogClientPromise) {
-    posthogClientPromise = import('posthog-js').then(({ default: posthog }) => {
-      posthog.init(key, {
-        api_host: import.meta.env.VITE_POSTHOG_HOST || POSTHOG_HOST,
-        autocapture: true,
-        before_send: (event) =>
-          event?.properties
-            ? {
-                ...event,
-                properties: sanitizeAnalyticsProperties(
-                  event.properties,
-                  event.event === 'docs_page_feedback',
-                ),
-              }
-            : event,
-        capture_pageview: 'history_change',
-        defaults: '2026-05-30',
-        disable_capture_url_hashes: true,
-        disable_session_recording: true,
-        mask_all_element_attributes: true,
-        mask_all_text: true,
-        person_profiles: 'never',
-        persistence: 'localStorage+cookie',
-        save_campaign_params: false,
-      });
+  const { analytics } = getCategoryConsent();
 
-      return posthog;
+  if (analytics === null) {
+    return waitForConsentDecision().then((granted) =>
+      granted ? getPostHogClient() : null,
+    );
+  }
+
+  if (analytics !== true) {
+    return Promise.resolve(null);
+  }
+
+  posthogClientPromise ??= import('posthog-js').then(({ default: posthog }) => {
+    // Consent can be withdrawn while the SDK chunk is loading.
+    if (getCategoryConsent().analytics !== true) {
+      posthogClientPromise = null;
+      return null;
+    }
+
+    posthog.init(key, {
+      api_host: import.meta.env.VITE_POSTHOG_HOST || POSTHOG_HOST,
+      autocapture: true,
+      before_send: (event) =>
+        event?.properties
+          ? {
+              ...event,
+              properties: sanitizeAnalyticsProperties(
+                event.properties,
+                event.event === 'docs_page_feedback',
+              ),
+            }
+          : event,
+      capture_pageview: 'history_change',
+      defaults: '2026-05-30',
+      disable_capture_url_hashes: true,
+      disable_session_recording: true,
+      mask_all_element_attributes: true,
+      mask_all_text: true,
+      opt_out_persistence_by_default: true,
+      person_profiles: 'never',
+      persistence: 'localStorage+cookie',
+      save_campaign_params: false,
+    });
+
+    return posthog;
+  });
+
+  return posthogClientPromise.then((posthog) => {
+    if (!posthog || getCategoryConsent().analytics !== true) {
+      return null;
+    }
+
+    // Consent is granted here. Clear an opt-out left by an earlier withdrawal, whether in this
+    // tab or on a previous visit (PostHog keeps that marker in localStorage).
+    if (posthog.has_opted_out_capturing()) {
+      posthog.opt_in_capturing({ captureEventName: false });
+    }
+
+    return posthog;
+  });
+}
+
+function waitForConsentDecision() {
+  if (!consentDecisionPromise) {
+    consentDecisionPromise = new Promise<boolean>((resolve) => {
+      const handleConsent = () => {
+        const { analytics } = getCategoryConsent();
+
+        if (analytics === null) {
+          return;
+        }
+
+        window.removeEventListener(CONSENT_EVENT, handleConsent);
+        consentDecisionPromise = null;
+        resolve(analytics === true);
+      };
+
+      window.addEventListener(CONSENT_EVENT, handleConsent);
     });
   }
 
-  return posthogClientPromise;
+  return consentDecisionPromise;
 }

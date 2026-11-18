@@ -6,17 +6,21 @@ import {
 } from '@tanstack/react-router';
 import type { PropsWithChildren } from 'react';
 import { AppProviders } from '@/components/providers/AppProviders';
+import {
+  CONSENT_BRIDGE_PATH,
+  resolveSecuritiConfig,
+  SECURITI_BACKEND_URL,
+  SECURITI_SDK_LOADER_URL,
+  SECURITI_TENANT_UUID,
+} from '@/lib/consent/securiti-config';
 import { DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 import { appDescription, appName } from '@/lib/shared';
 import appCss from '@/styles/app.css?url';
 
-function getGoogleTagManagerScript(containerId: string) {
-  return `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','${containerId}');`;
-}
+// Resolved at module load so a malformed VITE_SECURITI_DOMAIN_UUID fails the prerender build.
+const securiti = resolveSecuritiConfig(
+  import.meta.env.VITE_SECURITI_DOMAIN_UUID,
+);
 
 export const rootHead = {
   meta: [
@@ -76,33 +80,25 @@ function RootComponent() {
 }
 
 export function RootDocument({ children }: PropsWithChildren) {
-  const googleTagManagerId = import.meta.env.VITE_GTM_ID;
-
   return (
     <html lang={DEFAULT_LOCALE} suppressHydrationWarning>
       <head>
-        {googleTagManagerId ? (
-          <script
-            // biome-ignore lint/security/noDangerouslySetInnerHtml: Google Tag Manager requires its bootstrap snippet to run inline.
-            dangerouslySetInnerHTML={{
-              __html: getGoogleTagManagerScript(googleTagManagerId),
-            }}
-          />
-        ) : null}
+        {/* Securiti order matters: auto-blocking first, then the bridge that queues SDK
+            callbacks, then the SDK loader. Optional trackers start from consent (see
+            src/lib/consent). */}
+        <script src={securiti.autoBlockingUrl} />
+        <script src={CONSENT_BRIDGE_PATH} data-skip-blocking="true" />
+        <script
+          defer
+          src={SECURITI_SDK_LOADER_URL}
+          data-tenant-uuid={SECURITI_TENANT_UUID}
+          data-domain-uuid={securiti.domainUuid}
+          data-backend-url={SECURITI_BACKEND_URL}
+          data-skip-css="false"
+        />
         <HeadContent />
       </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
-        {googleTagManagerId ? (
-          <noscript>
-            <iframe
-              src={`https://www.googletagmanager.com/ns.html?id=${googleTagManagerId}`}
-              title="Google Tag Manager"
-              height="0"
-              width="0"
-              style={{ display: 'none', visibility: 'hidden' }}
-            />
-          </noscript>
-        ) : null}
         {children}
         <Scripts />
       </body>
