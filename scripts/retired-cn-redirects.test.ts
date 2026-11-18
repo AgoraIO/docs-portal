@@ -83,8 +83,8 @@ describe('retired Chinese products in legacy redirect delivery', () => {
       ).toBe(false);
     }
     expect(finalMap.summary).toMatchObject({
-      total: 8221,
-      redirect: 7119,
+      total: 8221 + 715,
+      redirect: 7119 + 715,
       noRedirect: 2,
       retired: 1100,
     });
