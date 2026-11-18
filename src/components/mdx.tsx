@@ -1,6 +1,6 @@
 import { createLink } from '@tanstack/react-router';
-import {
-  type Accordion as FumadocsAccordion,
+import type {
+  Accordion as FumadocsAccordion,
   Accordions as FumadocsAccordions,
 } from 'fumadocs-ui/components/accordion';
 import { Card as FumadocsCard } from 'fumadocs-ui/components/card';
@@ -17,6 +17,7 @@ import {
   AccordionContent as FumadocsAccordionContent,
   AccordionHeader as FumadocsAccordionHeader,
   AccordionItem as FumadocsAccordionItem,
+  Accordion as FumadocsAccordionRoot,
   AccordionTrigger as FumadocsAccordionTrigger,
 } from 'fumadocs-ui/components/ui/accordion';
 import { buttonVariants } from 'fumadocs-ui/components/ui/button';
@@ -57,6 +58,12 @@ import {
   CalloutContainer as FumadocsCalloutContainer,
 } from '@/components/Callout';
 import { DocsCodeBlock as Pre } from '@/components/DocsCodeBlock';
+import {
+  CodeBlockTabContext,
+  DocsCodeBlockTab as FumadocsCodeBlockTab,
+  DocsCodeBlockTabs as FumadocsCodeBlockTabs,
+  DocsCodeBlockTabsList as FumadocsCodeBlockTabsList,
+} from '@/components/DocsCodeBlockTabs';
 import { DocsLinkIcon } from '@/components/DocsLinkIcon';
 import {
   Dialog,
@@ -104,6 +111,7 @@ import {
 import { RepositoryCardTitle } from './mdx/RepositoryCardTitle';
 import { RTCMinutesCalculator } from './mdx/RTCMinutesCalculator';
 import { getReleaseNoteCategoryIcon } from './mdx/release-note-category';
+import { useTabScrollAnchor } from './mdx/useTabScrollAnchor';
 
 type MDXContext = {
   contentPath?: string;
@@ -114,9 +122,6 @@ const FumadocsAnchor = defaultMdxComponents.a;
 const FumadocsCards = defaultMdxComponents.Cards as ComponentType<
   ComponentProps<'div'>
 >;
-const FumadocsCodeBlockTab = defaultMdxComponents.CodeBlockTab;
-const FumadocsCodeBlockTabs = defaultMdxComponents.CodeBlockTabs;
-const FumadocsCodeBlockTabsList = defaultMdxComponents.CodeBlockTabsList;
 const FumadocsCalloutTitle = defaultMdxComponents.CalloutTitle;
 const FumadocsImage = defaultMdxComponents.img;
 const RouterFumadocsAnchor = createLink(FumadocsAnchor);
@@ -178,8 +183,10 @@ type TabValueElement = ReactElement<{
 }>;
 
 const ControlledFumadocsTabs = FumadocsTabs as ComponentType<TabsRootProps>;
-const ControlledFumadocsAccordions =
-  FumadocsAccordions as ComponentType<AccordionsRootProps>;
+// This wrapper owns state/hash handling. Use the primitive's stable root ref.
+const ControlledFumadocsAccordions = FumadocsAccordionRoot as ComponentType<
+  AccordionsRootProps & { collapsible?: boolean }
+>;
 
 type ActiveAccordion = {
   rootId: string;
@@ -295,6 +302,7 @@ function Accordion({
   if (!accordionRoot) {
     return (
       <ControlledFumadocsAccordions
+        collapsible
         onValueChange={(next) =>
           setStandaloneValue(typeof next === 'string' ? next : '')
         }
@@ -634,6 +642,58 @@ function useSafeTabValue({
   };
 }
 
+function useTabHashTarget({
+  rootRef,
+  setValue,
+  groupId,
+  persist,
+}: {
+  rootRef: { current: HTMLDivElement | null };
+  setValue: (value: string) => void;
+  groupId?: string;
+  persist?: boolean;
+}) {
+  const revealHashTab = useEffectEvent((url: string) => {
+    const root = rootRef.current;
+    const target = findDocsHeadingForHash(url);
+    if (!root || !target || !root.contains(target)) return;
+    for (
+      let panel: HTMLElement | null = target;
+      panel && panel !== root;
+      panel = panel.parentElement
+    ) {
+      const tabValue =
+        panel.getAttribute('data-mdx-tab-value') ??
+        panel.getAttribute('data-code-tab-value');
+      if (
+        tabValue &&
+        panel.closest('[data-mdx-tabs-root], .docs-code-tabs') === root
+      ) {
+        if (groupId) {
+          sessionStorage.setItem(groupId, tabValue);
+          if (persist) localStorage.setItem(groupId, tabValue);
+        }
+        setValue(tabValue);
+        return;
+      }
+    }
+  });
+  useEffect(() => {
+    const applyCurrentHash = () => revealHashTab(window.location.hash);
+    const handleHashTarget = (event: Event) => {
+      const url = (event as CustomEvent<string>).detail;
+      revealHashTab(typeof url === 'string' ? url : window.location.hash);
+    };
+    applyCurrentHash();
+    window.addEventListener('hashchange', applyCurrentHash);
+    window.addEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    return () => {
+      window.removeEventListener('hashchange', applyCurrentHash);
+      window.removeEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    };
+  }, []);
+}
+
 function Tabs({
   children,
   className,
@@ -648,13 +708,6 @@ function Tabs({
   ...props
 }: TabsRootProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
-  const scrollAnchorRef = useRef<{
-    list: HTMLElement;
-    top: number;
-    owner: HTMLElement | null;
-    expiry: number;
-    value: string | undefined;
-  } | null>(null);
   const setRootRef = useCallback(
     (element: HTMLDivElement | null) => {
       rootRef.current = element;
@@ -679,122 +732,21 @@ function Tabs({
     values,
   });
 
-  function captureScrollAnchor(target: EventTarget | null) {
-    const root = rootRef.current;
-    const tab =
-      target instanceof Element
-        ? target.closest<HTMLElement>('[role="tab"]')
-        : null;
-    if (
-      !props.groupId ||
-      !root ||
-      !tab ||
-      tab.closest('[data-mdx-tabs-root]') !== root ||
-      tab.getAttribute('aria-selected') === 'true' ||
-      scrollAnchorRef.current
-    )
-      return;
-    const list = tab.closest<HTMLElement>('[role="tablist"]');
-    if (!list) return;
-    let owner = list.parentElement;
-    while (
-      owner &&
-      owner !== document.body &&
-      owner !== document.documentElement
-    ) {
-      const style = window.getComputedStyle(owner);
-      if (
-        /(auto|scroll|overlay)/.test(style.overflowY || style.overflow) &&
-        owner.scrollHeight > owner.clientHeight
-      )
-        break;
-      owner = owner.parentElement;
-    }
-    const anchor = {
-      list,
-      top: list.getBoundingClientRect().top,
-      owner:
-        owner === document.body || owner === document.documentElement
-          ? null
-          : owner,
-      expiry: 0,
-      value: safeValue,
-    };
-    scrollAnchorRef.current = anchor;
-    // Only the initiating input's commit may compensate. A later task, storage
-    // update or hash activation must not inherit a stale reading position.
-    anchor.expiry = window.setTimeout(() => {
-      if (scrollAnchorRef.current === anchor) scrollAnchorRef.current = null;
-    }, 0);
-  }
-
-  useLayoutEffect(() => {
-    const anchor = scrollAnchorRef.current;
-    scrollAnchorRef.current = null;
-    if (!anchor) return;
-    window.clearTimeout(anchor.expiry);
-    if (anchor.value === safeValue || !anchor.list.isConnected) return;
-    // Reading layout also lets native scroll anchoring settle. Correct only
-    // the residual displacement, so already-anchored browsers do not jump twice.
-    const delta = anchor.list.getBoundingClientRect().top - anchor.top;
-    if (Math.abs(delta) < 1) return;
-    if (anchor.owner) {
-      anchor.owner.scrollTo({
-        top: anchor.owner.scrollTop + delta,
-        behavior: 'instant',
-      });
-    } else {
-      window.scrollTo({ top: window.scrollY + delta, behavior: 'instant' });
-    }
-  }, [safeValue]);
-
-  useLayoutEffect(
-    () => () => {
-      if (scrollAnchorRef.current)
-        window.clearTimeout(scrollAnchorRef.current.expiry);
-      scrollAnchorRef.current = null;
-    },
-    [],
-  );
-
-  const revealHashTab = useEffectEvent((url: string) => {
-    const root = rootRef.current;
-    const target = findDocsHeadingForHash(url);
-    if (!root || !target || !root.contains(target)) return;
-
-    // Fumadocs' literal fragment lookup misses percent-encoded Chinese IDs.
-    // Activate this root's ancestor panel, including when tabs are nested.
-    for (
-      let panel: HTMLElement | null = target;
-      panel && panel !== root;
-      panel = panel.parentElement
-    ) {
-      const tabValue = panel.getAttribute('data-mdx-tab-value');
-      if (tabValue && panel.closest('[data-mdx-tabs-root]') === root) {
-        if (props.groupId) {
-          sessionStorage.setItem(props.groupId, tabValue);
-          if (props.persist) localStorage.setItem(props.groupId, tabValue);
-        }
-        setSafeValue(tabValue);
-        return;
-      }
-    }
+  const scrollAnchorHandlers = useTabScrollAnchor({
+    enabled: Boolean(props.groupId),
+    rootRef,
+    value: safeValue,
+    onMouseDownCapture,
+    onKeyDownCapture,
+    onFocusCapture,
   });
 
-  useEffect(() => {
-    const applyCurrentHash = () => revealHashTab(window.location.hash);
-    const handleHashTarget = (event: Event) => {
-      const url = (event as CustomEvent<string>).detail;
-      revealHashTab(typeof url === 'string' ? url : window.location.hash);
-    };
-    applyCurrentHash();
-    window.addEventListener('hashchange', applyCurrentHash);
-    window.addEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
-    return () => {
-      window.removeEventListener('hashchange', applyCurrentHash);
-      window.removeEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
-    };
-  }, []);
+  useTabHashTarget({
+    rootRef,
+    setValue: setSafeValue,
+    groupId: props.groupId,
+    persist: props.persist,
+  });
 
   return (
     <MdxTabLabelsContext value={labels}>
@@ -806,23 +758,7 @@ function Tabs({
         defaultValue={defaultValue}
         items={items}
         onValueChange={setSafeValue}
-        onMouseDownCapture={(event) => {
-          onMouseDownCapture?.(event);
-          if (!event.defaultPrevented && event.button === 0 && !event.ctrlKey)
-            captureScrollAnchor(event.target);
-        }}
-        onKeyDownCapture={(event) => {
-          onKeyDownCapture?.(event);
-          if (
-            !event.defaultPrevented &&
-            (event.key === 'Enter' || event.key === ' ')
-          )
-            captureScrollAnchor(event.target);
-        }}
-        onFocusCapture={(event) => {
-          onFocusCapture?.(event);
-          if (!event.defaultPrevented) captureScrollAnchor(event.target);
-        }}
+        {...scrollAnchorHandlers}
         value={safeValue}
       >
         {children}
@@ -1160,6 +1096,7 @@ function Accordions({
       </ControlledFumadocsAccordions>
     ) : (
       <ControlledFumadocsAccordions
+        collapsible
         {...props}
         defaultValue={defaultSingleValue}
         onClickCapture={captureVersionScrollAnchor}
@@ -1197,9 +1134,21 @@ function CodeBlockTabs({
   defaultValue,
   groupId,
   onValueChange,
+  onMouseDownCapture,
+  onKeyDownCapture,
+  onFocusCapture,
+  ref,
   value,
   ...props
 }: CodeBlockTabsRootProps) {
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const setRootRef = useCallback(
+    (element: HTMLDivElement | null) => {
+      rootRef.current = element;
+      assignRef(ref, element);
+    },
+    [ref],
+  );
   const pageState = useContext(AccordionPageStateContext);
   const values = useTabValues({ children });
   const stateKey = useMemo(
@@ -1235,6 +1184,21 @@ function CodeBlockTabs({
     value: value ?? sharedValue,
     values,
   });
+  const scrollAnchorHandlers = useTabScrollAnchor({
+    enabled: true,
+    rootRef,
+    value: safeValue,
+    onMouseDownCapture,
+    onKeyDownCapture,
+    onFocusCapture,
+  });
+
+  useTabHashTarget({
+    rootRef,
+    setValue: setSafeValue,
+    groupId,
+    persist: props.persist,
+  });
 
   useEffect(() => {
     if (!(pageState && stateKey && value === undefined && safeValue)) {
@@ -1254,18 +1218,20 @@ function CodeBlockTabs({
   }, [pageState, safeValue, stateKey, value]);
 
   return (
-    <FumadocsCodeBlockTabs
-      {...props}
-      className={cn('overflow-hidden bg-fd-card', className)}
-      defaultValue={defaultValue}
-      groupId={groupId}
-      onValueChange={setSafeValue}
-      value={safeValue}
-    >
-      <CodeBlockTabsValueContext value={safeValue}>
+    <CodeBlockTabsValueContext value={safeValue}>
+      <FumadocsCodeBlockTabs
+        {...props}
+        ref={setRootRef}
+        {...scrollAnchorHandlers}
+        className={cn('overflow-hidden bg-fd-card', className)}
+        defaultValue={defaultValue}
+        groupId={groupId}
+        onValueChange={setSafeValue}
+        value={safeValue}
+      >
         {children}
-      </CodeBlockTabsValueContext>
-    </FumadocsCodeBlockTabs>
+      </FumadocsCodeBlockTabs>
+    </CodeBlockTabsValueContext>
   );
 }
 
@@ -1277,6 +1243,10 @@ function TabsContent({
   const tabValue = typeof props.value === 'string' ? props.value : undefined;
   const tabLabels = useContext(MdxTabLabelsContext);
   const tabLabel = tabValue ? tabLabels[tabValue] : undefined;
+  const codeTabContext = useMemo(
+    () => ({ label: tabLabel, sharedFrame: false }),
+    [tabLabel],
+  );
 
   return (
     <MdxTabLabelContext value={tabLabel}>
@@ -1289,7 +1259,9 @@ function TabsContent({
         forceMount
         {...props}
       >
-        {children}
+        <CodeBlockTabContext value={codeTabContext}>
+          {children}
+        </CodeBlockTabContext>
       </FumadocsTabsContent>
     </MdxTabLabelContext>
   );
@@ -1441,10 +1413,8 @@ function CodeBlockTab({
 
   return (
     <FumadocsCodeBlockTab
-      className={cn(
-        'p-4 [&>figure]:m-0 [&>figure]:rounded-xl [&>figure]:border [&>figure]:bg-fd-card [&>figure]:shadow-none',
-        className,
-      )}
+      className={cn('p-0', className)}
+      data-code-tab-value={value}
       forceMount
       hidden={isInactive}
       value={value}
