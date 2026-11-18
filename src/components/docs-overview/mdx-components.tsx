@@ -1392,7 +1392,7 @@ export function DemoGallery({
   };
 
   return (
-    <section className="not-prose my-8 flex flex-col gap-6">
+    <section className="not-prose m-0 flex flex-col gap-6">
       <div className="flex flex-col gap-4 border-border border-b pb-5">
         <ReferenceSearchInput
           onChange={setQuery}

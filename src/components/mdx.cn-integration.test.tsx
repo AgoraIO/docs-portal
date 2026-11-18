@@ -1272,7 +1272,7 @@ describe('common MDX registry', () => {
     window.localStorage.setItem('docs-portal:platform:v1', 'ios');
 
     render(
-      <PlatformHeaderTabs
+      <PlatformHeaderTabs locale="zh-CN"
         canonicalPlatform="web"
         defaultPlatform="android"
         platforms='["android","ios","web","flutter"]'
@@ -1290,7 +1290,7 @@ describe('common MDX registry', () => {
     window.localStorage.setItem('docs-portal:platform:v1', 'ios');
 
     const { rerender } = render(
-      <PlatformHeaderTabs
+      <PlatformHeaderTabs locale="zh-CN"
         canonicalPlatform="web"
         defaultPlatform="android"
         platforms='["android","ios","web"]'
@@ -1303,7 +1303,7 @@ describe('common MDX registry', () => {
     );
 
     rerender(
-      <PlatformHeaderTabs
+      <PlatformHeaderTabs locale="zh-CN"
         canonicalPlatform="web"
         defaultPlatform="web"
         platforms='["android","ios","web"]'
@@ -1320,7 +1320,7 @@ describe('common MDX registry', () => {
     window.localStorage.setItem('docs-portal:platform:v1', 'ios');
 
     render(
-      <PlatformHeaderTabs
+      <PlatformHeaderTabs locale="zh-CN"
         canonicalPlatform="web"
         defaultPlatform="android"
         platforms='["android","web"]'
@@ -1336,7 +1336,7 @@ describe('common MDX registry', () => {
 
   it('ignores unsupported preference events for the current platform group', () => {
     render(
-      <PlatformHeaderTabs
+      <PlatformHeaderTabs locale="zh-CN"
         canonicalPlatform="web"
         defaultPlatform="android"
         platforms='["android","web"]'
@@ -1355,7 +1355,7 @@ describe('common MDX registry', () => {
 
   it('updates the selected tab when the route platform changes', () => {
     const { rerender } = render(
-      <PlatformHeaderTabs
+      <PlatformHeaderTabs locale="zh-CN"
         canonicalPlatform="web"
         initialPlatform="android"
         platforms='["android","ios","web"]'
@@ -1368,7 +1368,7 @@ describe('common MDX registry', () => {
     );
 
     rerender(
-      <PlatformHeaderTabs
+      <PlatformHeaderTabs locale="zh-CN"
         canonicalPlatform="web"
         initialPlatform="ios"
         platforms='["android","ios","web"]'
@@ -1484,7 +1484,7 @@ describe('common MDX registry', () => {
 
     render(
       <>
-        <PlatformHeaderTabs
+        <PlatformHeaderTabs locale="zh-CN"
           canonicalPlatform="web"
           initialPlatform="ios"
           platforms='["web","ios","android"]'
@@ -1551,8 +1551,8 @@ describe('common MDX registry', () => {
     expect(codeBlock).toHaveTextContent('npm install @agora/sdk');
   });
 
-  it('preserves the original tabs frame around an independent code block', () => {
-    const components = getMDXComponents(undefined, { locale: 'zh-CN' });
+  it('shares one frame between the code tabs and their selected sample', () => {
+    const components = getMDXComponents(undefined, {locale: 'zh-CN'});
     const CodeBlockTabs = components.CodeBlockTabs as TabsComponent;
     const CodeBlockTabsList = components.CodeBlockTabsList as TabsComponent;
     const CodeBlockTabsTrigger =
@@ -1590,17 +1590,17 @@ describe('common MDX registry', () => {
     expect(screen.getByText('print("hello")').closest('figure')).toHaveClass(
       'bg-fd-card',
     );
-    expect(screen.getByRole('tablist').parentElement).toHaveClass(
+    expect(screen.getByRole('tablist').closest('.docs-code-tabs')).toHaveClass(
       'border',
       'rounded-xl',
       'bg-fd-card',
     );
     expect(
       screen.getByText('print("hello")').closest('[role=tabpanel]'),
-    ).toHaveClass('p-4', '[&>figure]:rounded-xl', '[&>figure]:border');
+    ).toHaveClass('p-0');
     expect(
-      screen.getByText('print("hello")').closest('[role=tabpanel]')?.className,
-    ).toContain('[&>figure]:m-0');
+      screen.getByText('print("hello")').closest('figure'),
+    ).toHaveAttribute('data-code-tabbed');
     expect(screen.getByText('console.log("hello")')).toBeInTheDocument();
     expect(
       screen.getByText('console.log("hello")').closest('[role=tabpanel]'),

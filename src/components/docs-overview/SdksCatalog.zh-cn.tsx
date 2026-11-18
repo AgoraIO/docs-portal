@@ -587,7 +587,8 @@ export function SdksCatalog({
     >
       <section
         className={cn(
-          'not-prose my-8',
+          'not-prose',
+          redesigned && !isEmbedded ? 'm-0' : 'my-8',
           redesigned ? 'gap-4' : 'gap-3',
           'flex flex-col',
         )}

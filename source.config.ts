@@ -121,6 +121,7 @@ export const docs = defineDocs({
           'csharp',
           'css',
           'dart',
+          'dotenv',
           'go',
           'html',
           'http',

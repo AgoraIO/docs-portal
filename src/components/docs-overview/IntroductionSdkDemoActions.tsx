@@ -7,7 +7,7 @@ export function IntroductionSdkDemoActions() {
   return (
     <nav
       aria-label="SDK 与 Demo 快捷入口"
-      className="not-prose flex flex-wrap items-center gap-3"
+      className="not-prose mb-8 flex flex-wrap items-center gap-3"
       data-testid="introduction-sdk-demo-actions"
     >
       <a
