@@ -2,11 +2,12 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { get } from 'node:http';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   assertReceipt,
   selectRows,
   serveBuild,
+  waitForReferencePage,
 } from './check-api-reference-quality.mjs';
 import {
   classifyDebt,
@@ -32,6 +33,58 @@ const put = (root: string, file: string, value: unknown) => {
     typeof value === 'string' ? value : JSON.stringify(value),
   );
 };
+
+describe('browser readiness on version entrances', () => {
+  const entrance = 'https://docs.test/documentation-versions';
+  const destination = 'https://docs.test/current';
+
+  it('waits for the redirected main frame before probing its document', async () => {
+    let frameUrl = entrance;
+    const send = vi.fn(async (method: string) => {
+      if (method === 'Page.navigate') return {};
+      const url = frameUrl;
+      frameUrl = destination;
+      return { frameTree: { frame: { url } } };
+    });
+    const evaluate = vi.fn(async () => {
+      if (frameUrl !== destination) {
+        throw new Error('Inspected target navigated or closed');
+      }
+      return true;
+    });
+    await waitForReferencePage(
+      { send, evaluate },
+      'tab',
+      entrance,
+      destination,
+    );
+    expect(send.mock.calls.map(([method]) => method)).toEqual([
+      'Page.navigate',
+      'Page.getFrameTree',
+      'Page.getFrameTree',
+    ]);
+    expect(evaluate).toHaveBeenCalledTimes(2);
+  });
+
+  it('recovers a replaced execution context and still checks destination fonts', async () => {
+    const send = vi.fn(async () => ({
+      frameTree: { frame: { url: destination } },
+    }));
+    const evaluate = vi
+      .fn()
+      .mockRejectedValueOnce(
+        new Error(
+          '{"code":-32000,"message":"Inspected target navigated or closed"}',
+        ),
+      )
+      .mockResolvedValueOnce(true)
+      .mockRejectedValueOnce(new Error('Document font failed to load'));
+    await expect(
+      waitForReferencePage({ send, evaluate }, 'tab', entrance, destination),
+    ).rejects.toThrow('Document font failed to load');
+    expect(evaluate).toHaveBeenCalledTimes(3);
+  });
+});
 
 describe('API reference quality policy', () => {
   it('finds duplicate member headings even when the generator changed depth, ignoring aliases and code examples', () => {
