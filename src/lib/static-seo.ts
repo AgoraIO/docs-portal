@@ -1,4 +1,6 @@
+import { toCnPublicSearchUrl } from './search/cn-search-urls.mjs';
 import { getAppBranding } from './shared';
+import { DOCS_REGION } from './site-region';
 import { getSitemapBaseUrl } from './sitemap';
 
 export type StaticSeoPage = {
@@ -141,7 +143,9 @@ export function createStaticSeoHead(
       {
         property: 'og:site_name',
         content: getAppBranding(
-          new URL(metadata.canonicalUrl).pathname.split('/')[1],
+          DOCS_REGION === 'cn'
+            ? 'zh-CN'
+            : new URL(metadata.canonicalUrl).pathname.split('/')[1],
         ).name,
       },
       {
@@ -211,9 +215,13 @@ function createStaticSeoMetadata(
   const branding = getAppBranding(normalizePathname(page.url).split('/')[1]);
   const title = normalizeText(page.title) ?? branding.name;
   const description = normalizeText(page.description) ?? branding.description;
-  const canonicalUrl = `${baseUrl}${normalizePathname(page.canonicalPath ?? page.url)}`;
+  const publicPath = (path: string) =>
+    DOCS_REGION === 'cn'
+      ? toCnPublicSearchUrl(normalizePathname(path))
+      : normalizePathname(path);
+  const canonicalUrl = `${baseUrl}${publicPath(page.canonicalPath ?? page.url)}`;
   const markdownUrl = page.markdownPath
-    ? `${baseUrl}${normalizePathname(page.markdownPath)}`
+    ? `${baseUrl}${publicPath(page.markdownPath)}`
     : `${canonicalUrl}.md`;
   const imageUrl = getDocsOgImageUrl(page.url, baseUrl);
 

@@ -1,4 +1,5 @@
 import { MACHINE_READABLE_LOCALE } from './machine-readable-docs';
+import { toCnPublicSearchUrl } from './search/cn-search-urls.mjs';
 import { DOCS_REGION, type DocsRegion } from './site-region';
 
 type SitemapPage = {
@@ -46,7 +47,10 @@ export function getSitemapUrls({
         .filter((url) => url.startsWith(`/${MACHINE_READABLE_LOCALE}/`))
         .filter((url) => !url.endsWith('.md'))
         .filter((url) => !url.includes('/llms.mdx/'))
-        .map((url) => `${baseUrl}${url}`),
+        .map(
+          (url) =>
+            `${baseUrl}${DOCS_REGION === 'cn' ? toCnPublicSearchUrl(url) : url}`,
+        ),
     ),
   ).sort();
 }
