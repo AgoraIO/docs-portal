@@ -53,18 +53,43 @@ description: "了解对话式 AI 引擎中音频模态输出相关内容的适�
 
 音频响应内容 (`audio`) 包含三种类型，均可独立发送至智能体处理：
 
-| `audio` 类型 | 解释 | 来源 | 智能体处理 |
-| --- | --- | --- | --- |
-| 音频数据 (`data`) | 经过 Base64 编码的 PCM 字节流数组 | <Slot name="audio-modality-html-0-1-2" /> | 直接播放音频 |
-| 转录内容 (`transcript`) | 音频对应的完整文字内容 | LLM 生成 | 存入短期记忆（上下文） |
-| 逐字字幕 (`words`) | 含逐字（词）时间戳的字幕内容 | 支持逐字输出的 LLM 生成 | 处理为逐字的实时字幕 |
-
-<Slot for="audio-modality-html-0-1-2">
+<DocsTable columns={['name', 'description', 'description', 'description']}>
+<thead>
+<tr>
+<th scope="col">`audio` 类型</th>
+<th scope="col">解释</th>
+<th scope="col">来源</th>
+<th scope="col">智能体处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>音频数据 (`data`)</td>
+<td>经过 Base64 编码的 PCM 字节流数组</td>
+<td>
 
 - 具备音频处理能力的 LLM 生成
 - 自定义音频处理服务生成
 
-</Slot>
+</td>
+<td>直接播放音频</td>
+</tr>
+<tr>
+<td>转录内容 (`transcript`)</td>
+<td>音频对应的完整文字内容</td>
+<td>LLM 生成</td>
+<td>存入短期记忆（上下文）</td>
+</tr>
+<tr>
+<td>逐字字幕 (`words`)</td>
+<td>含逐字（词）时间戳的字幕内容</td>
+<td>支持逐字输出的 LLM 生成</td>
+<td>处理为逐字的实时字幕</td>
+</tr>
+</tbody>
+</DocsTable>
+
+
 
 具体数据结构如下（流式响应）：
 

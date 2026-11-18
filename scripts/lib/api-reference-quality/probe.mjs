@@ -158,7 +158,7 @@ export function inspectReference() {
       )
         add('oversized-required-column', cell);
     }
-    if (cell.dataset.tableColumnKind === 'value') {
+    if (['value', 'number'].includes(cell.dataset.tableColumnKind)) {
       for (const content of cell.querySelectorAll(
         ':scope > p, :scope > ul, :scope > ol, :scope > .prose-no-margin',
       )) {
@@ -176,26 +176,36 @@ export function inspectReference() {
       cell.clientHeight > parseFloat(style.lineHeight) * 4
     )
       add('squeezed-table-prose', cell, { width });
-    if (
-      !/^(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS|\d+\/(?:second|minute|hour|day|sec|s))$/.test(
+    const literal =
+      /^(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS|\d+\/(?:second|minute|hour|day|sec|s))$/.test(
         text,
-      )
-    )
-      continue;
-    const word = text.includes('/') ? text.split('/')[1] : text;
-    const walker = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT);
-    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-      const start = node.textContent.indexOf(word);
-      if (start < 0) continue;
-      const range = document.createRange();
-      range.setStart(node, start);
-      range.setEnd(node, start + word.length);
-      const lines = new Set(
-        [...range.getClientRects()]
-          .filter((rect) => rect.width && rect.height)
-          .map((rect) => Math.round(rect.y)),
       );
-      if (lines.size > 1) add('split-short-table-word', cell, { word });
+    const numericTokens =
+      cell.dataset.tableColumnKind === 'number'
+        ? [
+            ...text.matchAll(
+              /\b(?:\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d{4,}(?:\.\d+)?|minutes|seconds|Gbps|Mbps|Kbps)\b/g,
+            ),
+          ].map((match) => match[0])
+        : [];
+    const words = literal
+      ? [text.includes('/') ? text.split('/')[1] : text]
+      : numericTokens;
+    for (const word of words) {
+      const walker = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT);
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        const start = node.textContent.indexOf(word);
+        if (start < 0) continue;
+        const range = document.createRange();
+        range.setStart(node, start);
+        range.setEnd(node, start + word.length);
+        const lines = new Set(
+          [...range.getClientRects()]
+            .filter((rect) => rect.width && rect.height)
+            .map((rect) => Math.round(rect.y)),
+        );
+        if (lines.size > 1) add('split-short-table-word', cell, { word });
+      }
     }
   }
   for (const tabs of document.querySelectorAll('article [role="tablist"]')) {

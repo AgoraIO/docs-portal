@@ -84,3 +84,17 @@ it('assigns known roles to composed API parameter rows after they render', async
     'description',
   );
 });
+
+it('keeps unknown headings conservative until their roles are declared', async () => {
+  const { container } = await renderDocsMdx(`<DocsTable>
+<thead><tr><th>Delivery notes</th><th>Price</th></tr></thead>
+<tbody><tr><td>Instructions retain their content measure.</td><td>12,000</td></tr></tbody>
+</DocsTable>`);
+  expect(
+    within(container).getByText('Instructions retain their content measure.'),
+  ).toHaveAttribute('data-table-column-kind', 'content');
+  expect(within(container).getByText('12,000')).toHaveAttribute(
+    'data-table-column-kind',
+    'number',
+  );
+});

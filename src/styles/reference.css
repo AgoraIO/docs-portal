@@ -313,3 +313,64 @@ article :where(h1) {
   > :is(th, td) {
   padding: 0.375rem;
 }
+
+/* Unknown headers retain a conservative content measure. Only declared or
+   recognized value columns opt into short-value sizing. */
+:is(.prose, .openapi-markdown)
+  table
+  :is(th, td)[data-table-column-kind="content"] {
+  min-width: 14ch;
+}
+:is(.prose, .openapi-markdown)
+  td[data-table-column-kind="content"]
+  > :where(p, ul, ol, .prose-no-margin) {
+  min-inline-size: 24ch;
+}
+:is(.prose, .openapi-markdown) td[data-table-column-kind="value"] {
+  overflow-wrap: normal;
+}
+:is(.prose, .openapi-markdown)
+  td[data-table-column-kind="value"]
+  > :where(ul, ol)
+  > li {
+  white-space: nowrap;
+}
+/* Each table's own scroll surface supplies the available inline width. */
+.docs-table-container[data-table-multiple-prose="true"] > section {
+  container-type: inline-size;
+}
+@supports (width: 1cqw) {
+  :is(.prose, .openapi-markdown)
+    .docs-table-container[data-table-multiple-prose="true"]
+    > section
+    > table
+    > :is(thead, tbody, tfoot)
+    > tr
+    > :is(th, td)[data-table-column-kind="description"] {
+    min-width: clamp(
+      14rem,
+      calc(
+        (100cqw - var(--docs-table-other-width, 14ch)) /
+        var(--docs-table-prose-columns, 1)
+      ),
+      24ch
+    );
+  }
+}
+
+:is(.prose, .openapi-markdown)
+  table
+  :is(th, td)[data-table-column-kind="value"] {
+  min-width: 8ch;
+}
+:is(.prose, .openapi-markdown) td[data-table-column-kind="number"],
+:is(.prose, .openapi-markdown) td[data-table-column-kind="number"] > p {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+:is(.prose, .openapi-markdown)
+  td[data-table-column-kind="number"]
+  > :where(ul, ol)
+  > li {
+  white-space: nowrap;
+}

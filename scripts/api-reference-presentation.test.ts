@@ -55,6 +55,30 @@ it('detects a prose width floor stretching a short data list', () => {
   ).toContain('prose-width-on-value-column');
 });
 
+it('detects prose floors on declared numeric columns', () => {
+  expect(
+    inspect(
+      '<table><tbody><tr><td data-table-column-kind="number"><ul style="min-inline-size:240px"><li>SD: 200</li></ul></td></tr></tbody></table>',
+    ),
+  ).toContain('prose-width-on-value-column');
+});
+
+it('detects comma-grouped numeric tokens split across lines', () => {
+  vi.spyOn(document, 'createRange').mockReturnValue({
+    setStart() {},
+    setEnd() {},
+    getClientRects: () => [
+      DOMRect.fromRect({ x: 0, y: 0, width: 40, height: 20 }),
+      DOMRect.fromRect({ x: 0, y: 20, width: 8, height: 20 }),
+    ],
+  } as unknown as Range);
+  expect(
+    inspect(
+      '<table><tbody><tr><td data-table-column-kind="number">12,000</td></tr></tbody></table>',
+    ),
+  ).toContain('split-short-table-word');
+});
+
 it('rejects empty return descriptions and keeps informative type-only returns', () => {
   expect(
     inspect(

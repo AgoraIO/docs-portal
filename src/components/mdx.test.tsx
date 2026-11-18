@@ -474,7 +474,7 @@ describe('common MDX registry', () => {
     });
     expect(screen.getByRole('cell', { name: '100.00' })).toHaveAttribute(
       'data-table-column-kind',
-      'value',
+      'number',
     );
   });
 

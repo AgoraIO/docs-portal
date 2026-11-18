@@ -11,6 +11,8 @@ export type DocsTableColumnKind =
   | 'name'
   | 'type'
   | 'value'
+  | 'content'
+  | 'number'
   | 'description'
   | 'required'
   | 'requirement';
@@ -57,12 +59,24 @@ function headerKind(label: string): DocsTableColumnKind {
   if (/^(类型|数据类型|json\s*类型|type|json\s*type|data\s*type)$/.test(label))
     return 'type';
   if (
-    /^(参数|参数名|参数名称|属性|名称|字段|字段名|api|常用 api|平台|文件|功能|能力|错误码|配置项|配置路径|服务|分组|parameter|parameters|property|properties|name|names|field|fields|key|option|group)$/.test(
+    /^(参数|参数名|参数名称|属性|名称|字段|字段名|api|常用 api|日期|date|平台|文件|功能|能力|错误码|配置项|配置路径|服务|分组|parameter|parameters|property|properties|name|names|field|fields|key|option|group)$/.test(
       label,
     )
   )
     return 'name';
-  return 'value';
+  if (
+    /^(单价|价格|服务费用|费用(?:合计|总和)?|数量|时长用量|用量|price|cost|quantity)(?:[（(][^）)]*[）)])?$/.test(
+      label,
+    )
+  )
+    return 'number';
+  if (
+    /^(值|默认值|单位|分辨率|视频质量层|视频质量等级|value|default(?: value)?|unit|resolution|tier)$/.test(
+      label,
+    )
+  )
+    return 'value';
+  return 'content';
 }
 
 // Read only the native table's own sections. Nested tables plan their columns
@@ -123,13 +137,13 @@ export function prepareTableColumns(
     )
   )
     valid = false;
-  if (!valid || !width) return { children, headers: undefined };
+  if (!width) return { children, headers: undefined, kinds: [] };
   if (declared && declared.length !== width)
     throw new Error(
       `DocsTable columns must describe all ${width} logical columns`,
     );
 
-  const kinds = Array<DocsTableColumnKind>(width).fill('value');
+  const kinds = Array<DocsTableColumnKind>(width).fill('content');
   const head = sections.find((section) => section.node.type === 'thead');
   for (const row of head?.rows ?? [])
     for (const cell of row.positions) {
@@ -141,6 +155,7 @@ export function prepareTableColumns(
         kinds[cell.column + offset] = headerKind(label);
     }
   if (declared) kinds.splice(0, width, ...declared);
+  if (!valid) return { children, headers: undefined, kinds };
   const headers =
     !merged && head?.rows.length === 1
       ? head.rows[0].positions.map(({ node }) =>
@@ -182,5 +197,5 @@ export function prepareTableColumns(
       }),
     });
   });
-  return { children: result, headers };
+  return { children: result, headers, kinds };
 }

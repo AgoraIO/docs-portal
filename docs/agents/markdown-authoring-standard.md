@@ -404,13 +404,15 @@ Rules:
   measure. Known API parameter/return primitives declare their column roles.
 - Use `columns={['name', 'value', 'description']}` on `DocsTable` only when a
   table's headers do not express its column roles. Include every logical column,
-  counting merged cells by their spans. Roles are `name`, `type`, `value`,
+  counting merged cells by their spans. Roles are `name`, `type`, `value`, `number`, `content`,
   `description`, `required` and `requirement`; authored numeric alignment remains.
-- For dense numeric comparisons with many columns, use
-  `<DocsTable layout="fixed" density="compact">`. Fixed layout keeps a 40rem
-  minimum width and wraps headings; compact density reduces padding independently.
-  The legacy `compact` prop still enables both options for compatibility. Use
-  automatic layout for mixed prose and data unless equal column widths are intended.
+- Unknown headers keep the conservative `content` role and prose sizing; they
+  are not assumed to contain short values. Declare roles for ambiguous headings.
+- For dense numeric comparisons, use automatic layout with `density="compact"`
+  and explicit `name`/`number` columns, so dates, grouped numbers and units retain
+  their intrinsic width. Fixed layout is reserved for intentionally equal-width,
+  bounded content; it keeps a 40rem minimum. The legacy `compact` prop still
+  enables fixed layout and compact density for compatibility.
 - Inside a `DocsTable` cell, write inline Markdown directly. For lists, code
   blocks or multiple paragraphs, put blank lines after the opening cell tag and
   before its closing tag. Rich content belongs directly in its owning cell;

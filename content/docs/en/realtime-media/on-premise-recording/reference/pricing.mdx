@@ -97,9 +97,28 @@ On February 4, 2021: Four users join the channel at the same time and have a vid
 
 In this session, the recording service generates only charges for the audio minutes.
 
-| Session                     | Audio | HD video | Full HD video | 2K video | 2K+ video |
-| :-------------------------- | :---- | :------- | :------------ | :------- | :-------- |
-| Usage duration (in seconds) | 6,000 | 0        | 0             | 0        | 0         |
+<DocsTable columns={["name","number","number","number","number","number"]}>
+<thead>
+<tr>
+<th scope="col">Session</th>
+<th scope="col">Audio</th>
+<th scope="col">HD video</th>
+<th scope="col">Full HD video</th>
+<th scope="col">2K video</th>
+<th scope="col">2K+ video</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Usage duration (in seconds)</td>
+<td>6,000</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</DocsTable>
 
 #### Session two
 
@@ -107,9 +126,28 @@ On February 9, 2021: Four users join the channel at the same time and have a vid
 
 In this session, the recording service generates only charges for the audio minutes.
 
-| Session                     | Audio                  | HD video | Full HD video | 2K video | 2K+ video |
-| :-------------------------- | :--------------------- | :------- | :------------ | :------- | :-------- |
-| Usage duration (in seconds) | 6,000 + 6,000 = 12,000 | 0        | 0             | 0        | 0         |
+<DocsTable columns={["name","number","number","number","number","number"]}>
+<thead>
+<tr>
+<th scope="col">Session</th>
+<th scope="col">Audio</th>
+<th scope="col">HD video</th>
+<th scope="col">Full HD video</th>
+<th scope="col">2K video</th>
+<th scope="col">2K+ video</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Usage duration (in seconds)</td>
+<td>6,000 + 6,000 = 12,000</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</DocsTable>
 
 #### Session three
 
@@ -117,9 +155,28 @@ On February 13, 2021: Four users join the channel at the same time and have a vi
 
 In this session, the recording service generates charges for the video minutes. The aggregate video resolution is 4 × (640 × 360) = 921,600, falling into the category of HD.
 
-| Session                     | Audio | HD video | Full HD video | 2K video | 2K+ video |
-| :-------------------------- | :---- | :------- | :------------ | :------- | :-------- |
-| Usage duration (in seconds) | 0     | 3,500    | 0             | 0        | 0         |
+<DocsTable columns={["name","number","number","number","number","number"]}>
+<thead>
+<tr>
+<th scope="col">Session</th>
+<th scope="col">Audio</th>
+<th scope="col">HD video</th>
+<th scope="col">Full HD video</th>
+<th scope="col">2K video</th>
+<th scope="col">2K+ video</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Usage duration (in seconds)</td>
+<td>0</td>
+<td>3,500</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</DocsTable>
 
 #### Session four
 
@@ -131,13 +188,32 @@ In the initial 1,680 seconds, the aggregate resolution is 640 x 360 + 1280 x 720
 
 In the subsequent 520 seconds, the aggregate resolution is 640 x 360 + 1280 x 720 + 960 x 720 + 1920 x 1080 = 3,916,800, falling into the category of 2K+ video.
 
-| Session                     | Audio | HD video | Full HD video | 2K video | 2K+ video |
-| :-------------------------- | :---- | :------- | :------------ | :------- | :-------- |
-| Usage duration (in seconds) | 0     | 0        | 1,680         | 0        | 520       |
+<DocsTable columns={["name","number","number","number","number","number"]}>
+<thead>
+<tr>
+<th scope="col">Session</th>
+<th scope="col">Audio</th>
+<th scope="col">HD video</th>
+<th scope="col">Full HD video</th>
+<th scope="col">2K video</th>
+<th scope="col">2K+ video</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Usage duration (in seconds)</td>
+<td>0</td>
+<td>0</td>
+<td>1,680</td>
+<td>0</td>
+<td>520</td>
+</tr>
+</tbody>
+</DocsTable>
 
 ### Cost calculation
 
-<DocsTable layout="fixed" density="compact">
+<DocsTable density="compact" columns={['name', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number']}>
 <thead>
 <tr>
 <th rowSpan={2} scope="col">Date</th>

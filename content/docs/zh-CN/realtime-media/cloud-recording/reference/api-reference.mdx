@@ -179,11 +179,48 @@ description: "查看云端录制的云端录制存储参数参考，了解关键
 
 调用 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 开启单流录制时，你可以在 `clientRequest` 字段中的 `recordingConfig.streamMode` 字段设置媒体流的输出模式。`streamMode` 的支持取值和各模式对比如下：
 
-| streamMode | 描述 | 生成索引文件 | 生成切片文件 | 视频编码 | 音频编码 | 支持的功能 |
-| --- | --- | --- | --- | --- | --- | --- |
-| `default` | 默认模式 | 每个 UID 生成一个 M3U8 音频索引文件和一个 M3U8 视频索引文件。 | 每个 UID 生成多个 TS 音频切片文件和多个 TS 视频切片文件。如果在 Web 端使用 VP8 编码，则生成多个 TS 音频切片文件和多个 WebM 格式的视频切片文件。 | 不转码 | 转码 | 单流录制、云端截图。 |
-| `standard` | 标准模式 | 每个 UID 生成一个 M3U8 音频索引文件、一个 M3U8 视频索引文件和一个合并的 M3U8 音视频索引文件。如果在 Web 端使用 VP8 编码，则生成一个合并的 MPD 音视频索引文件。 | 每个 UID 生成多个 TS 音频切片文件和多个 TS 视频切片文件。 如果在 Web 端使用 VP8 编码，则生成多个 WebM 格式的音频文件和多个 WebM 格式的视频文件。 | 不转码 | 转码 | 单流录制、云端截图。 |
-| `original` | 原始模式。仅订阅音频时（`streamTypes` 为 `0`）时该字段生效。 | 每个 UID 生成一个 M3U8 音频索引文件。 | 每个 UID 生成多个 TS 音频切片文件。 | 无 | 不转码 | 单流音频不转码录制。 |
+<DocsTable columns={["name","description","description","description","value","value","description"]}>
+<thead>
+<tr>
+<th scope="col">streamMode</th>
+<th scope="col">描述</th>
+<th scope="col">生成索引文件</th>
+<th scope="col">生成切片文件</th>
+<th scope="col">视频编码</th>
+<th scope="col">音频编码</th>
+<th scope="col">支持的功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>`default`</td>
+<td>默认模式</td>
+<td>每个 UID 生成一个 M3U8 音频索引文件和一个 M3U8 视频索引文件。</td>
+<td>每个 UID 生成多个 TS 音频切片文件和多个 TS 视频切片文件。如果在 Web 端使用 VP8 编码，则生成多个 TS 音频切片文件和多个 WebM 格式的视频切片文件。</td>
+<td>不转码</td>
+<td>转码</td>
+<td>单流录制、云端截图。</td>
+</tr>
+<tr>
+<td>`standard`</td>
+<td>标准模式</td>
+<td>每个 UID 生成一个 M3U8 音频索引文件、一个 M3U8 视频索引文件和一个合并的 M3U8 音视频索引文件。如果在 Web 端使用 VP8 编码，则生成一个合并的 MPD 音视频索引文件。</td>
+<td>每个 UID 生成多个 TS 音频切片文件和多个 TS 视频切片文件。 如果在 Web 端使用 VP8 编码，则生成多个 WebM 格式的音频文件和多个 WebM 格式的视频文件。</td>
+<td>不转码</td>
+<td>转码</td>
+<td>单流录制、云端截图。</td>
+</tr>
+<tr>
+<td>`original`</td>
+<td>原始模式。仅订阅音频时（`streamTypes` 为 `0`）时该字段生效。</td>
+<td>每个 UID 生成一个 M3U8 音频索引文件。</td>
+<td>每个 UID 生成多个 TS 音频切片文件。</td>
+<td>无</td>
+<td>不转码</td>
+<td>单流音频不转码录制。</td>
+</tr>
+</tbody>
+</DocsTable>
 
 ## 常用视频属性
 

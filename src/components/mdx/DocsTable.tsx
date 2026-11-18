@@ -1,5 +1,6 @@
 import {
   type ComponentProps,
+  type CSSProperties,
   useCallback,
   useEffect,
   useId,
@@ -34,6 +35,7 @@ export function DocsTable({
   layout = compact ? 'fixed' : 'auto',
   density = compact ? 'compact' : 'normal',
   children,
+  style,
   ...props
 }: ComponentProps<'table'> & {
   compact?: boolean;
@@ -50,6 +52,9 @@ export function DocsTable({
     [children, columns],
   );
   const parameterTable = isSimpleParameterTable(table.headers);
+  const proseColumns = table.kinds.filter(
+    (kind) => kind === 'description',
+  ).length;
   const scrollRef = useRef<HTMLDivElement>(null);
   const descriptionId = useId();
   const [hasOverflow, setHasOverflow] = useState(false);
@@ -89,6 +94,7 @@ export function DocsTable({
   return (
     <div
       className="docs-table-container relative my-[var(--docs-space-block)]"
+      data-table-multiple-prose={proseColumns > 1 ? 'true' : undefined}
       data-table-overflow={hasOverflow ? 'true' : 'false'}
       data-table-scroll-end={isAtEnd ? 'true' : 'false'}
     >
@@ -118,6 +124,13 @@ export function DocsTable({
             layout === 'fixed' && 'w-full! min-w-[40rem]! table-fixed!',
             className,
           )}
+          style={
+            {
+              '--docs-table-prose-columns': Math.max(1, proseColumns),
+              '--docs-table-other-width': `${2 + table.kinds.reduce((total, kind) => total + { name: 12, type: 8, value: 8, number: 6, content: 14, required: 7, requirement: 10, description: 0 }[kind], 0)}ch`,
+              ...style,
+            } as CSSProperties
+          }
           {...props}
         >
           {table.children}

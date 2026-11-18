@@ -59,9 +59,28 @@ description: "了解本地服务端录制的计费方式、计费项、免费额
 
 时长用量统计：该录制服务只产生了音频时长用量。
 
-| 会话        | 音频  | 高清 (HD) 视频 | 全高清 (Full HD) 视频 | 2K 视频 | 2K+ 视频 |
-| :---------- | :---- | :------------- | :-------------------- | :------ | :------- |
-| 用量 （秒） | 6,000 | 0              | 0                     | 0       | 0        |
+<DocsTable columns={["name","number","number","number","number","number"]}>
+<thead>
+<tr>
+<th scope="col">会话</th>
+<th scope="col">音频</th>
+<th scope="col">高清 (HD) 视频</th>
+<th scope="col">全高清 (Full HD) 视频</th>
+<th scope="col">2K 视频</th>
+<th scope="col">2K+ 视频</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用量 （秒）</td>
+<td>6,000</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</DocsTable>
 
 #### 录制二
 
@@ -69,9 +88,28 @@ description: "了解本地服务端录制的计费方式、计费项、免费额
 
 时长用量统计：该录制服务只产生了音频时长用量。
 
-| 会话        | 音频                  | 高清 (HD) 视频 | 全高清 (Full HD) 视频 | 2K 视频 | 2K+ 视频 |
-| :---------- | :-------------------- | :------------- | :-------------------- | :------ | :------- |
-| 用量 （秒） | 6,000 + 6,000= 12,000 | 0              | 0                     | 0       | 0        |
+<DocsTable columns={["name","number","number","number","number","number"]}>
+<thead>
+<tr>
+<th scope="col">会话</th>
+<th scope="col">音频</th>
+<th scope="col">高清 (HD) 视频</th>
+<th scope="col">全高清 (Full HD) 视频</th>
+<th scope="col">2K 视频</th>
+<th scope="col">2K+ 视频</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用量 （秒）</td>
+<td>6,000 + 6,000= 12,000</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</DocsTable>
 
 #### 录制三
 
@@ -79,9 +117,28 @@ description: "了解本地服务端录制的计费方式、计费项、免费额
 
 时长用量统计：该录制服务产生了视频时长用量。录制的视频集合分辨率为 4 × 640 × 360 = 921,600，属于高清 (HD) 视频。
 
-| 会话        | 音频 | 高清 (HD) 视频 | 全高清 (Full HD)视频 | 2K 视频 | 2K+ 视频 |
-| :---------- | :--- | :------------- | :-------------------- | :------ | :------- |
-| 用量 （秒） | 0    | 3,500          | 0                     | 0       | 0        |
+<DocsTable columns={["name","number","number","number","number","number"]}>
+<thead>
+<tr>
+<th scope="col">会话</th>
+<th scope="col">音频</th>
+<th scope="col">高清 (HD) 视频</th>
+<th scope="col">全高清 (Full HD)视频</th>
+<th scope="col">2K 视频</th>
+<th scope="col">2K+ 视频</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用量 （秒）</td>
+<td>0</td>
+<td>3,500</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</DocsTable>
 
 #### 录制四
 
@@ -93,13 +150,32 @@ description: "了解本地服务端录制的计费方式、计费项、免费额
 
 后 520 秒，录制的视频集合分辨率 = 640 × 360 + 1280 × 720 + 960 × 720 + 1920 × 1080 = 3,916,800，属于 2K+ 视频。
 
-| 会话        | 音频 | 高清 (HD) 视频 | 全高清 (Full HD) 视频 | 2K 视频 | 2K+ 视频 |
-| :---------- | :--- | :------------- | :-------------------- | :------ | :------- |
-| 用量 （秒） | 0    | 0              | 1,680                 | 0       | 520      |
+<DocsTable columns={["name","number","number","number","number","number"]}>
+<thead>
+<tr>
+<th scope="col">会话</th>
+<th scope="col">音频</th>
+<th scope="col">高清 (HD) 视频</th>
+<th scope="col">全高清 (Full HD) 视频</th>
+<th scope="col">2K 视频</th>
+<th scope="col">2K+ 视频</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用量 （秒）</td>
+<td>0</td>
+<td>0</td>
+<td>1,680</td>
+<td>0</td>
+<td>520</td>
+</tr>
+</tbody>
+</DocsTable>
 
 ### 费用计算
 
-<DocsTable layout="fixed" density="compact">
+<DocsTable density="compact" columns={['name', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number']}>
 <thead>
 <tr>
 <th rowSpan={2} scope="col">日期</th>
