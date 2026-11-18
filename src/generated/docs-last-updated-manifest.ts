@@ -3616,11 +3616,11 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/agora-analytics/build/integrate-and-embed/datadog-integration.md':
     '2026-10-09T04:28:32.000Z',
   'content/docs/en/realtime-media/agora-analytics/build/integrate-and-embed/embedded.md':
-    '2026-07-27T09:08:03.000Z',
+    '2026-11-18T08:16:29.000Z',
   'content/docs/en/realtime-media/agora-analytics/build/integrate-and-embed/mcp-server.mdx':
-    '2026-11-18T07:57:17.000Z',
+    '2026-11-18T07:57:19.000Z',
   'content/docs/en/realtime-media/agora-analytics/build/integrate-and-embed/meta.json':
-    '2026-11-18T07:57:17.000Z',
+    '2026-11-18T07:57:19.000Z',
   'content/docs/en/realtime-media/agora-analytics/build/integrate-and-embed/new-relic-integration.mdx':
     '2026-10-09T04:28:32.000Z',
   'content/docs/en/realtime-media/agora-analytics/build/manage-agora-account.md':
