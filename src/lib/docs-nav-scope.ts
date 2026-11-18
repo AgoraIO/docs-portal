@@ -64,11 +64,15 @@ type FolderAncestor = {
 
 export function resolveDocsNavScope({
   activePath: requestedActivePath,
+  contentPath,
+  getNodePath,
   getNodeMeta,
   root,
   tab,
 }: {
   activePath: string;
+  contentPath?: string;
+  getNodePath?: (node: Folder) => string | undefined;
   getNodeMeta: GetDocsNodeMeta;
   root: Root;
   tab: string;
@@ -80,6 +84,19 @@ export function resolveDocsNavScope({
   }
 
   const ancestors = findFolderAncestorsByUrl(tabNode, activePath) ?? [];
+  if (!ancestors.length && contentPath && getNodePath) {
+    const visit = (node: Folder) => {
+      const path = getNodePath(node);
+      const directory = path?.slice(0, path.lastIndexOf('/') + 1);
+      if (directory && contentPath.startsWith(directory)) ancestors.push(node);
+      for (const child of node.children)
+        if (child.type === 'folder') visit(child);
+    };
+    visit(tabNode);
+    ancestors.sort(
+      (a, b) => (getNodePath(a)?.length ?? 0) - (getNodePath(b)?.length ?? 0),
+    );
+  }
 
   const scopedAncestors = ancestors
     .map((node) => ({ meta: getNodeMeta(node), node }))
@@ -102,6 +119,8 @@ export function resolveDocsNavScope({
   );
   const activeVersion = resolveActiveVersion({
     activePath,
+    contentPath,
+    getNodePath,
     scope: scope.node,
     versions,
   });
@@ -887,10 +906,14 @@ function getFolderLinkedSectionNode(
 
 function resolveActiveVersion({
   activePath,
+  contentPath,
+  getNodePath,
   scope,
   versions,
 }: {
   activePath: string;
+  contentPath?: string;
+  getNodePath?: (node: Folder) => string | undefined;
   scope: Folder;
   versions?: DocsNavScopeVersion[];
 }) {
@@ -900,15 +923,34 @@ function resolveActiveVersion({
 
   const matches = versions.flatMap((version) => {
     const node = findVersionFolder(scope, version) ?? scope;
-    const matchesVersion = version.href
-      ? isSamePathOrDescendant(activePath, version.href)
-      : nodeContainsUrl(node, activePath);
+    const versionNode = findVersionFolder(scope, version);
+    const sourcePath = versionNode && getNodePath?.(versionNode);
+    const sourceDirectory = sourcePath?.slice(
+      0,
+      sourcePath.lastIndexOf('/') + 1,
+    );
+    const ownsSource = Boolean(
+      contentPath && sourceDirectory && contentPath.startsWith(sourceDirectory),
+    );
+    const matchesVersion =
+      ownsSource ||
+      (version.href
+        ? isSamePathOrDescendant(activePath, version.href)
+        : nodeContainsUrl(node, activePath));
 
     if (!matchesVersion) {
       return [];
     }
 
-    return [{ ...version, node, specificity: version.href?.length ?? 0 }];
+    return [
+      {
+        ...version,
+        node,
+        specificity: ownsSource
+          ? (sourceDirectory?.length ?? 0)
+          : (version.href?.length ?? 0),
+      },
+    ];
   });
 
   return (

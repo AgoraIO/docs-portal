@@ -10,9 +10,12 @@ import {
 } from '@testing-library/react';
 import { load } from 'cheerio';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
+import { createInstance } from 'i18next';
 import * as yaml from 'js-yaml';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { I18nextProvider } from 'react-i18next';
 import { describe, expect, it, vi } from 'vitest';
+import { resources } from '@/lib/i18n/resources';
 import { createLocalizedOpenApiSource } from '@/lib/openapi/fumadocs-source.server';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
 
@@ -1667,6 +1670,196 @@ describe('FumadocsOpenApiContent', () => {
     rerender(<FumadocsOpenApiContent pageProps={nextPageProps} />);
 
     expect(getResponseTab('201')).toHaveAttribute('aria-selected', 'true');
+  });
+
+  it.each(['en', 'zh-CN'])(
+    'omits the duplicate request caption and retains localized toolbar controls in %s',
+    async (locale) => {
+      const i18n = createInstance();
+      await i18n.init({ lng: locale, resources });
+      const { container } = render(
+        <I18nextProvider i18n={i18n}>
+          <FumadocsOpenApiContent
+            locale={locale}
+            pageProps={makeMinimalOpenApiPageProps('get')}
+          />
+        </I18nextProvider>,
+      );
+      const request = container.querySelector(
+        '.openapi-request-examples',
+      ) as HTMLElement;
+      expect(
+        within(request).getByRole('heading', {
+          name: locale === 'zh-CN' ? '请求示例' : 'Request examples',
+        }),
+      ).toBeInTheDocument();
+      expect(request.querySelector('figcaption')?.textContent).toBe('');
+      expect(within(request).queryByText('Example Request')).toBeNull();
+      expect(
+        within(request).getByRole('combobox', {
+          name: locale === 'zh-CN' ? '代码语言' : 'Code language',
+        }),
+      ).toBeInTheDocument();
+      expect(
+        within(request).getByRole('button', {
+          name: locale === 'zh-CN' ? '自动换行' : 'Wrap code',
+        }),
+      ).toBeInTheDocument();
+      expect(
+        within(request).getByRole('button', {
+          name: locale === 'zh-CN' ? '复制文本' : 'Copy Text',
+        }),
+      ).toBeInTheDocument();
+    },
+  );
+
+  it('retains the request-scenario selector when omitting the fallback caption', async () => {
+    const { container } = render(
+      <FumadocsOpenApiContent
+        locale="en"
+        pageProps={{
+          operations: [{ method: 'post', path: '/scenarios' }],
+          payload: {
+            bundled: {
+              info: { title: 'Request scenarios' },
+              openapi: '3.2.0',
+              paths: {
+                '/scenarios': {
+                  post: {
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            type: 'object',
+                            properties: { message: { type: 'string' } },
+                          },
+                          examples: {
+                            first: {
+                              summary: 'First request',
+                              value: { message: 'first-message' },
+                            },
+                            second: {
+                              summary: 'Second request',
+                              value: { message: 'second-message' },
+                            },
+                          },
+                        },
+                      },
+                    },
+                    responses: { '200': { description: 'OK' } },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+    const request = container.querySelector(
+      '.openapi-request-examples',
+    ) as HTMLElement;
+    expect(within(request).queryByText('Example Request')).toBeNull();
+    fireEvent.click(
+      within(request).getByRole('combobox', { name: 'Example request' }),
+    );
+    const option = screen.getByRole('option', { name: 'Second request' });
+    fireEvent.pointerDown(option, { pointerType: 'mouse' });
+    fireEvent.click(option, { detail: 1 });
+    await waitFor(() =>
+      expect(request.querySelector('pre')).toHaveTextContent('second-message'),
+    );
+    expect(
+      within(request).getByRole('combobox', { name: 'Code language' }),
+    ).toBeInTheDocument();
+  });
+
+  it('keeps docked response controls attached to the selected status and hides them for empty responses', async () => {
+    const previousStatus = sessionStorage.getItem('fumadocs_openapi_responses');
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    const clipboard = vi
+      .spyOn(navigator, 'clipboard', 'get')
+      .mockReturnValue({ writeText } as unknown as Clipboard);
+    try {
+      const { container } = render(
+        <FumadocsOpenApiContent
+          locale="en"
+          pageProps={{
+            operations: [{ method: 'get', path: '/responses' }],
+            payload: {
+              bundled: {
+                info: { title: 'Response controls' },
+                openapi: '3.2.0',
+                paths: {
+                  '/responses': {
+                    get: {
+                      responses: {
+                        '200': {
+                          description: 'OK',
+                          content: {
+                            'application/json': { example: { message: 'ok' } },
+                          },
+                        },
+                        '204': { description: 'No content' },
+                        '400': {
+                          description: 'Bad request',
+                          content: {
+                            'application/json': {
+                              example: { message: 'bad-request' },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              } as unknown as Document,
+            },
+          }}
+        />,
+      );
+      const response = container.querySelector(
+        '.openapi-response-example',
+      ) as HTMLElement;
+      fireEvent.mouseDown(within(response).getByRole('tab', { name: '400' }), {
+        button: 0,
+        ctrlKey: false,
+      });
+      await waitFor(() =>
+        expect(response.querySelector('pre')).toHaveTextContent('bad-request'),
+      );
+      fireEvent.click(
+        within(response).getByRole('button', { name: 'Wrap code' }),
+      );
+      expect(response.querySelector('figure')).toHaveAttribute(
+        'data-code-wrap',
+        'true',
+      );
+      fireEvent.click(
+        within(response).getByRole('button', { name: 'Copy Text' }),
+      );
+      await waitFor(() =>
+        expect(writeText).toHaveBeenCalledWith(
+          '{\n  "message": "bad-request"\n}',
+        ),
+      );
+      fireEvent.mouseDown(within(response).getByRole('tab', { name: '204' }), {
+        button: 0,
+        ctrlKey: false,
+      });
+      expect(
+        within(response).getByText('No response example provided.'),
+      ).toBeVisible();
+      expect(
+        within(response).queryByRole('button', { name: /Wrap code|Copy Text/ }),
+      ).toBeNull();
+    } finally {
+      clipboard.mockRestore();
+      if (previousStatus === null) {
+        sessionStorage.removeItem('fumadocs_openapi_responses');
+      } else {
+        sessionStorage.setItem('fumadocs_openapi_responses', previousStatus);
+      }
+    }
   });
 
   it('limits generated request samples to the three legacy clients', async () => {

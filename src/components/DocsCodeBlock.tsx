@@ -18,6 +18,7 @@ import { CodeBlockTabContext } from './DocsCodeBlockTabs';
 export type DocsCodeBlockProps = CodeBlockProps & {
   'data-language-label'?: string;
   copyButton?: ReactNode;
+  defaultWrapped?: boolean;
   locale?: string;
 };
 
@@ -27,12 +28,13 @@ export function DocsCodeBlock({
   'data-language-label': languageLabel,
   Actions,
   copyButton,
+  defaultWrapped = false,
   locale,
   ...props
 }: DocsCodeBlockProps) {
   const tab = useContext(CodeBlockTabContext);
   const sharedFrame = tab?.sharedFrame === true;
-  const [wrapped, setWrapped] = useState(false);
+  const [wrapped, setWrapped] = useState(defaultWrapped);
   const { t } = useTranslation('common', { lng: locale });
   const wrapLabel = wrapped
     ? t('docs.unwrapCode', 'Unwrap code')

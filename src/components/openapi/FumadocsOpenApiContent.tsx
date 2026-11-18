@@ -33,6 +33,7 @@ import { toJsxRuntime } from 'hast-util-to-jsx-runtime';
 import { Check, Clipboard } from 'lucide-react';
 import {
   type ComponentProps,
+  type CSSProperties,
   cloneElement,
   createContext,
   isValidElement,
@@ -818,6 +819,19 @@ function getOpenApiResponseSchemaExamples(
   });
 }
 
+const responseHeaderCodeBlock: CodeBlockProps = {
+  // Anchor these controls to the response card, above the code's scroll area.
+  className: 'static',
+  Actions: ({ className, children }) => (
+    <div className={cn(className, 'absolute top-2 right-2')}>{children}</div>
+  ),
+  viewportProps: {
+    style: {
+      '--padding-right': 'calc(var(--spacing) * 4)',
+    } as CSSProperties,
+  },
+};
+
 function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
   const { doc } = useOpenAPI();
   const resolve = doc.resolve;
@@ -842,6 +856,7 @@ function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
     example: NonNullable<
       OpenApiResponseExamplesProps['tabs'][number]['examples']
     >[number],
+    dockActions = false,
   ) {
     const code = JSON.stringify(example.sample, null, 2);
     return (
@@ -849,23 +864,35 @@ function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
         {example.description
           ? renderOpenApiMarkdown(example.description)
           : null}
-        {code === undefined ? empty : renderOpenApiCodeBlock('json', code)}
+        {code === undefined
+          ? empty
+          : renderOpenApiCodeBlock(
+              'json',
+              code,
+              dockActions ? responseHeaderCodeBlock : { title: 'JSON' },
+            )}
       </>
     );
   }
   return (
     <CodeBlockTabs
-      className="openapi-response-code-tabs my-0"
+      className="openapi-response-code-tabs relative my-0"
       defaultValue={tabs[0] ? tabValue(tabs[0].code) : undefined}
       groupId="fumadocs_openapi_responses"
     >
-      <CodeBlockTabsList>
-        {tabs.map(({ code }) => (
-          <CodeBlockTabsTrigger key={code} value={tabValue(code)}>
-            {getOpenApiResponseStatusLabel(code, statusCodes, locale)}
-          </CodeBlockTabsTrigger>
-        ))}
-      </CodeBlockTabsList>
+      <div
+        className="flex h-10 items-center border-b"
+        data-openapi-response-toolbar=""
+      >
+        <CodeBlockTabsList className="h-full min-w-0 flex-1 border-b-0">
+          {tabs.map(({ code }) => (
+            <CodeBlockTabsTrigger key={code} value={tabValue(code)}>
+              {getOpenApiResponseStatusLabel(code, statusCodes, locale)}
+            </CodeBlockTabsTrigger>
+          ))}
+        </CodeBlockTabsList>
+        <div aria-hidden="true" className="w-18 shrink-0" />
+      </div>
       {tabs.map((tab) => {
         const { code, examples = [] } = tab;
         const alternatives = getOpenApiResponseSchemaExamples(
@@ -918,7 +945,7 @@ function OpenApiResponseExamples({ tabs }: OpenApiResponseExamplesProps) {
                 empty
               )
             ) : examples.length === 1 ? (
-              renderExample(examples[0])
+              renderExample(examples[0], true)
             ) : (
               <Accordions className="pt-2" defaultValue="0" type="single">
                 {examples.map((example, index) => (
@@ -1371,13 +1398,18 @@ function OpenApiCodeSampleUsageTabs({
     );
   }
 
-  if (!isValidElement<{ className?: string }>(defaultUsageTabs)) {
+  if (
+    !isValidElement<{ className?: string; title?: ReactNode }>(defaultUsageTabs)
+  ) {
     return defaultUsageTabs;
   }
 
   return cloneElement(defaultUsageTabs, {
+    // Keep the native toolbar row and any real request-scenario selector.
+    title: <></>,
     className: cn(
       'openapi-request-code-tabs my-0',
+      '[&_figcaption:empty]:hidden',
       defaultUsageTabs.props.className,
     ),
   });
@@ -1947,20 +1979,30 @@ function OpenApiMarkdownCodeBlock({
     (typeof childProps?.children === 'string'
       ? childProps.children
       : undefined);
+  const Actions = codeblock?.Actions;
 
-  // Generated usage tabs need explicit in-tab geometry during SSR and hydration.
+  // Only nested blocks inherit Fumadocs' horizontal frame overlap.
   return (
     <DocsCodeBlock
       {...props}
       data-code-language={language}
       {...codeblock}
+      Actions={
+        isRequestCode && Actions
+          ? ({ className, ...actionProps }) =>
+              Actions({
+                ...actionProps,
+                className: cn(className, 'flex-1 [&>:first-child]:me-auto'),
+              })
+          : Actions
+      }
       locale={locale}
       copyButton={<OpenApiCodeCopyButton />}
       className={cn(
         props.className,
         codeblock?.className,
         'shadow-none',
-        isRequestCode && 'my-0 -mx-px -mb-px rounded-none last:rounded-b-xl',
+        isRequestCode && 'my-0 -mb-px',
       )}
     >
       {source === undefined ? (
