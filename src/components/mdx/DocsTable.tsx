@@ -1,6 +1,7 @@
 import {
   Children,
   type ComponentProps,
+  cloneElement,
   isValidElement,
   type ReactNode,
   useCallback,
@@ -28,48 +29,122 @@ function tableHeaderText(children: ReactNode): string {
     .join('');
 }
 
-function isSimpleParameterTable(children: ReactNode): boolean {
-  const elements = (value: ReactNode) =>
-    Children.toArray(value).filter(isValidElement<ComponentProps<'td'>>);
-  const hasMergedCells = (value: ReactNode): boolean =>
-    elements(value).some(
-      ({ props }) =>
-        (props.colSpan ?? 1) > 1 ||
-        (props.rowSpan ?? 1) > 1 ||
-        hasMergedCells(props.children),
-    );
+type TableCellProps = ComponentProps<'td'> & {
+  'data-table-column-kind'?: 'required';
+};
+
+const elements = (value: ReactNode) =>
+  Children.toArray(value).filter(isValidElement<TableCellProps>);
+
+function hasMergedCells(value: ReactNode): boolean {
+  return elements(value).some(
+    ({ props }) =>
+      (props.colSpan ?? 1) > 1 ||
+      (props.rowSpan ?? 1) > 1 ||
+      hasMergedCells(props.children),
+  );
+}
+
+function simpleTableHeaders(children: ReactNode): string[] | undefined {
+  if (hasMergedCells(children)) return;
   const head = elements(children).find((node) => node.type === 'thead');
   const rows = elements(head?.props.children);
-  if (rows.length !== 1 || rows[0].type !== 'tr') return false;
+  if (rows.length !== 1 || rows[0].type !== 'tr') return;
   const cells = elements(rows[0].props.children);
-  if (cells.length !== 5 || cells.some((node) => node.type !== 'th'))
-    return false;
-  const labels = cells
-    .map((cell) => tableHeaderText(cell.props.children).trim().toLowerCase())
-    .join('|');
+  if (cells.some((node) => node.type !== 'th')) return;
+  return cells.map((cell) =>
+    tableHeaderText(cell.props.children).trim().toLowerCase(),
+  );
+}
+
+function isSimpleParameterTable(headers: string[] | undefined): boolean {
+  const labels = headers?.join('|') ?? '';
   return (
-    !hasMergedCells(children) &&
-    (/^(?:参数|属性|名称)\|类型\|是否必填\|默认值\|(?:描述|说明)$/.test(
+    /^(?:参数|属性|名称)\|类型\|是否必填\|默认值\|(?:描述|说明)$/.test(
       labels,
     ) ||
-      /^(?:parameter|property|name)\|type\|required\|default(?: value)?\|description$/.test(
-        labels,
-      ))
+    /^(?:parameter|property|name)\|type\|required\|default(?: value)?\|description$/.test(
+      labels,
+    )
   );
+}
+
+function requiredColumnCells(
+  children: ReactNode,
+  headers: string[] | undefined,
+) {
+  if (!headers || headers.length < 3 || headers.length > 5) return children;
+  if (
+    !headers.some((label) =>
+      /^(参数|属性|名称|字段|parameters?|propert(?:y|ies)|names?|fields?)$/.test(
+        label,
+      ),
+    ) ||
+    !headers.some((label) => /^(描述|说明|description)$/.test(label))
+  )
+    return children;
+  const required = headers.findIndex((label) =>
+    /^(必填|是否必填|是否必须|可选|是否可选|required|optional|mandatory)$/.test(
+      label,
+    ),
+  );
+  if (required < 0) return children;
+  const sections = elements(children).filter((node) =>
+    ['thead', 'tbody', 'tfoot'].includes(String(node.type)),
+  );
+  // A positional match is safe only for a rectangular, unmerged table.
+  if (
+    sections.some((section) =>
+      elements(section.props.children).some(
+        (row) =>
+          row.type !== 'tr' ||
+          elements(row.props.children).length !== headers.length,
+      ),
+    )
+  )
+    return children;
+
+  return Children.map(children, (section) => {
+    if (
+      !isValidElement<TableCellProps>(section) ||
+      !['thead', 'tbody', 'tfoot'].includes(String(section.type))
+    )
+      return section;
+    return cloneElement(section, {
+      children: Children.map(section.props.children, (row) => {
+        if (!isValidElement<TableCellProps>(row) || row.type !== 'tr')
+          return row;
+        let column = 0;
+        return cloneElement(row, {
+          children: Children.map(row.props.children, (cell) => {
+            if (!isValidElement<TableCellProps>(cell)) return cell;
+            if (column++ !== required) return cell;
+            return cloneElement(cell, {
+              'data-table-column-kind': 'required',
+              style: { ...cell.props.style, textAlign: 'center' },
+            });
+          }),
+        });
+      }),
+    });
+  });
 }
 
 export function DocsTable({
   locale,
   className,
   compact,
+  children,
   ...props
 }: ComponentProps<'table'> & { compact?: boolean; locale?: string }) {
   const { i18n } = useTranslation('common');
   const normalizedLocale = normalizeLocale(locale ?? i18n.language) ?? 'en';
   const copy = resources[normalizedLocale].common.docs;
-  const parameterTable = useMemo(
-    () => isSimpleParameterTable(props.children),
-    [props.children],
+  const headers = useMemo(() => simpleTableHeaders(children), [children]);
+  const parameterTable = isSimpleParameterTable(headers);
+  const tableChildren = useMemo(
+    () => requiredColumnCells(children, headers),
+    [children, headers],
   );
   const scrollRef = useRef<HTMLDivElement>(null);
   const descriptionId = useId();
@@ -136,7 +211,9 @@ export function DocsTable({
             className,
           )}
           {...props}
-        />
+        >
+          {tableChildren}
+        </table>
       </section>
       <span className="sr-only" id={descriptionId}>
         {copy.tableOverflowDescription}

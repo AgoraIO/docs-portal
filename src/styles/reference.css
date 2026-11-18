@@ -184,6 +184,29 @@ article :where(h1) {
   min-width: 14ch;
 }
 
+/* Required flags are short categorical values, rather than prose columns.
+   Let their content grow naturally while preserving a single-line header. */
+.prose
+  table:not(.im-pricing-api-table):not(:where(.not-prose, .not-prose *))
+  :is(th, td)[data-table-column-kind="required"],
+.openapi-operation
+  .openapi-markdown
+  table:not(.im-pricing-api-table)
+  :is(th, td)[data-table-column-kind="required"] {
+  min-width: 4rem;
+  width: 1%;
+  white-space: normal;
+  text-align: center;
+}
+
+.prose table th[data-table-column-kind="required"],
+.openapi-operation
+  .openapi-markdown
+  table
+  th[data-table-column-kind="required"] {
+  white-space: nowrap;
+}
+
 /* Preserve intrinsic word widths for linked API names and inline declarations.
    The prose code default can otherwise shrink a whole column to a few letters.
    Wider tables use their existing scroll wrapper. */
