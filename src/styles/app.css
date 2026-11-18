@@ -1838,6 +1838,11 @@
   box-shadow: var(--docs-shadow-sm);
 }
 
+/* Body row headings share the striped row surface with their descriptions. */
+.prose table :where(tbody th[scope="row"]) {
+  background: transparent;
+}
+
 :where(html.dark) .prose :where(thead):not(:where(.not-prose, .not-prose *)) {
   background: var(--docs-prose-table-head-bg);
 }
