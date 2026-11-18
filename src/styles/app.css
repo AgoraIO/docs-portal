@@ -398,6 +398,17 @@
     mask-image: radial-gradient(circle at top, black, transparent 78%);
   }
 
+  .prose,
+  article :where(h1),
+  .openapi-operation .openapi-markdown {
+    overflow-wrap: anywhere;
+  }
+
+  .prose :where(.group\/heading > a) {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
   .prose {
     max-width: var(--content-max);
     --docs-prose-inline-code-bg: var(--bg-sunken);
@@ -1182,6 +1193,11 @@
     font-weight: 400;
     line-height: 1.2;
     overflow-wrap: anywhere;
+  }
+
+  .openapi-schema-value-container > .openapi-markdown {
+    min-width: 0;
+    max-width: 100%;
   }
 
   .openapi-schema-children {
