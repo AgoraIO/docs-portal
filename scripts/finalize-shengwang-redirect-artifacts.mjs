@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { access, readFile, writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -7,7 +7,10 @@ import {
   isRetiredCnLegacyDocsPath,
   retiredCnLegacyDocsRoute,
 } from '../src/lib/retired-cn-docs.mjs';
-import { toPublicRedirectTarget } from './shengwang-redirect-targets.mjs';
+import {
+  collectCurrentDocTargets,
+  toPublicRedirectTarget,
+} from './shengwang-redirect-targets.mjs';
 
 const repoRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -59,27 +62,28 @@ validateRecords(
 );
 // Reviewed moves may target pages created after the immutable route snapshot.
 // Validate those targets against current source instead of rewriting evidence.
+const currentTargets = await collectCurrentDocTargets(
+  path.join(repoRoot, 'content/docs/zh-CN'),
+);
+const historicalSources = new Set(
+  candidate.records.map((record) => record.legacyPath),
+);
 for (const [legacyPath, target] of Object.entries(guideRedirects)) {
-  if (!candidate.records.some((record) => record.legacyPath === legacyPath)) {
+  if (
+    !/^\/(?:doc|api-ref)\//.test(legacyPath) ||
+    !target.startsWith('/') ||
+    target.startsWith('//') ||
+    legacyPath === target.split(/[?#]/, 1)[0]
+  ) {
     throw new Error(
-      `Reviewed guide redirect has no legacy source: ${legacyPath}`,
+      `Invalid reviewed guide redirect: ${legacyPath} -> ${target}`,
     );
   }
-  const contentPath = path.join(
-    repoRoot,
-    'content/docs/zh-CN',
-    target.split(/[?#]/, 1)[0].slice(1),
-  );
-  // Fumadocs serves both leaf files and directory index pages as documents.
-  await Promise.any(
-    ['.mdx', '.md', '/index.mdx', '/index.md'].map((suffix) =>
-      access(`${contentPath}${suffix}`),
-    ),
-  ).catch(() => {
+  if (!currentTargets.has(target.split(/[?#]/, 1)[0])) {
     throw new Error(
       `Reviewed guide redirect has no current content: ${legacyPath} -> ${target}`,
     );
-  });
+  }
 }
 const records = candidate.records.map((record) => {
   // The historical route snapshot includes products retired since collection.
@@ -115,6 +119,32 @@ const records = candidate.records.map((record) => {
 
   return { ...record, target };
 });
+// Later public URLs are additive evidence, never edits to the original inventory.
+for (const [legacyPath, target] of Object.entries(guideRedirects)) {
+  if (historicalSources.has(legacyPath)) continue;
+  if (
+    isRetiredCnLegacyDocsPath(legacyPath) ||
+    isRetiredCnDocsPath(`/zh-CN${target}`)
+  ) {
+    throw new Error(
+      `Cannot publish a retired reviewed redirect: ${legacyPath}`,
+    );
+  }
+  records.push({
+    legacyUrl: `https://doc.shengwang.cn${legacyPath}`,
+    legacyPath,
+    legacyFamily: legacyPath.startsWith('/api-ref/') ? 'api-ref' : 'doc',
+    target,
+    status: 'candidate',
+    confidence: 'high',
+    mappingType: 'reviewed-hotfix-addition',
+    source: 'src/lib/shengwang-guide-redirects.json',
+    targetExists: true,
+    preserveQuery: true,
+    notes:
+      '旧站已发布的后续 hotfix 新增入口；按当前正文及平台路径补充 301，保留查询参数。',
+  });
+}
 const manualReview = records.filter(
   (record) => record.status === 'manual-review',
 );
@@ -408,9 +438,11 @@ function toNginx(items, retired, targetCommit) {
   }
   for (const item of items) {
     lines.push(`location = ${item.legacyPath} {`);
-    const target = item.target.includes('#')
-      ? JSON.stringify(item.target)
+    const [base, ...fragment] = item.target.split('#');
+    const expanded = item.preserveQuery
+      ? `${base}${base.includes('?') ? '&$args' : '$is_args$args'}${fragment.length ? `#${fragment.join('#')}` : ''}`
       : item.target;
+    const target = expanded.includes('#') ? JSON.stringify(expanded) : expanded;
     lines.push(`  return 301 ${target};`);
     lines.push('}');
     lines.push('');
