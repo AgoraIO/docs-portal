@@ -4144,7 +4144,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/convert-format.mdx':
     '2026-07-02T14:12:17.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/manage-files.mdx':
-    '2026-11-10T05:45:45.000Z',
+    '2026-11-18T05:09:12.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/merge-files.mdx':
     '2026-09-17T04:34:39.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/meta.json':

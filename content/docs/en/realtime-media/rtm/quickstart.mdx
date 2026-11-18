@@ -77,18 +77,34 @@ Signaling 2.x is an enhanced version compared to 1.x with a wide range of new fe
 
 Use either of the following methods to integrate Signaling SDK into your project.
 
-**Using Maven Central**
-1. Open the `settings.gradle` file in the project's root directory and add the Maven Central dependency, if it doesn't already exist:
+**Using Maven**
+1. Add the Agora Maven repository to your project. Starting with v2.3.1, the Signaling SDK is distributed through the Agora Maven repository. Keep your project's existing repositories.
 
-    ```text
-    repositories {
-        mavenCentral()
-    }
-    ```
+    - Groovy: In the `settings.gradle` file in the project's root directory, add the repository under `dependencyResolutionManagement`:
 
-    :::note
-    If your Android project uses [`dependencyResolutionManagement`](https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration), there may be differences in how you add Maven Central dependencies.
-    :::
+        ```groovy
+        dependencyResolutionManagement {
+            repositories {
+                maven { url = 'https://download.agora.io/maven/' }
+                google()
+                mavenCentral()
+            }
+        }
+        ```
+
+    - Kotlin: In the `settings.gradle.kts` file in the project's root directory, add the repository under `dependencyResolutionManagement`:
+
+        ```kotlin
+        dependencyResolutionManagement {
+            repositories {
+                maven { url = uri("https://download.agora.io/maven/") }
+                google()
+                mavenCentral()
+            }
+        }
+        ```
+
+    If your project doesn't use [`dependencyResolutionManagement`](https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration), add the repository under `allprojects.repositories` in the root `build.gradle` file instead.
 
 2. Add the following to the `/Gradle Scripts/build.gradle(Module: <projectname>.app)` file under `dependencies` to integrate the SDK into your Android project:
 
@@ -116,7 +132,7 @@ Use either of the following methods to integrate Signaling SDK into your project
         implementation("io.agora.rtm:rtm-sdk-lite:x.y.z")
         ```
 
-    Replace `x.y.z` with the specific SDK version number, such as `2.2.8`. To get the latest version number, check the [Release notes](/en/realtime-media/rtm/reference/release-notes).
+    Replace `x.y.z` with the specific SDK version number, such as `2.3.1`. To get the latest version number, check the [Release notes](/en/realtime-media/rtm/reference/release-notes).
 
 **Using CDN**
 1. [Download](/en/api-reference/sdks?product=signaling&platform=android) the latest version of Signaling SDK for Android.
@@ -1306,16 +1322,22 @@ Use either of the following methods to integrate Signaling SDK into your project
 1. Open the `Podfile` and modify the content as follows:
 
     ```ruby
+    source 'https://download.agora.io/cocoapods/'
+    source 'https://cdn.cocoapods.org/'
+
     platform :ios, '11.0'
-         target 'Your App' do
-         pod 'AgoraRtm', 'x.y.z'
-       end
+    target 'Your App' do
+      # RtmKit is the Signaling library. RtmBasic is the aosl library.
+      pod 'Agora-Rtm', 'x.y.z', :subspecs => ['RtmKit', 'RtmBasic']
+    end
     ```
 
-    Replace `Your App` with your target name and `x.y.z` with the specific SDK version number, such as 2.2.0. To get the latest version number, check the [Release notes](/en/realtime-media/rtm/reference/release-notes).
+    Replace `Your App` with your target name and `x.y.z` with the specific SDK version number, such as `2.3.1`. To get the latest version number, check the [Release notes](/en/realtime-media/rtm/reference/release-notes).
+
+    Starting with v2.3.1, the Signaling SDK is distributed through the Agora CocoaPods source. If your `Podfile` already declares other sources, keep them. Declaring any `source` replaces the CocoaPods default, so also keep `https://cdn.cocoapods.org/` if your project uses other public pods.
 
     :::warning
-    If you are using an SDK version earlier than `2.2.0`, change the package name to `AgoraRtm_iOS`.
+    The pod name depends on the SDK version. For v2.2.8 and later, use `Agora-Rtm`. For v2.2.0 to v2.2.6, use `AgoraRtm`. For versions earlier than v2.2.0, use `AgoraRtm_iOS`.
     :::
 
 1. Run the `pod install` command in the terminal to install the Signaling SDK. You see the message "Pod installation complete!".

@@ -139,6 +139,7 @@ The following operations have their own quotas:
 | Modify user metadata | `setUserMetadata`, `updateUserMetadata`, `removeUserMetadata` | 20 calls per second | Default limit | These methods share a quota. |
 | Read user metadata | `getUserMetadata` | 20 calls per second | Default limit | Not applicable. |
 | Acquire a lock | `acquireLock` | 10 calls per second | Default limit | Not applicable. |
+| Query user online status | `getUserOnlineStatus` | 20 calls per second | Default limit | Available in the Android, iOS, macOS, Windows, and Linux C++ SDKs v2.3.1 or later. |
 
 #### All other operations
 
@@ -204,6 +205,8 @@ The following limits apply to Presence:
 | Temporary state key length | 32 ASCII characters | Fixed limit | `setState` fails. |
 | Temporary states cached before joining a channel | 100 | Fixed limit | The states take effect, and Signaling sends notifications, after the client joins or subscribes to the channel. |
 | Users per `getOnlineUsers` page | 100 | Fixed limit | Use `nextPage` to get additional pages. |
+| Users per `getUserOnlineStatus` call | 1 | Fixed limit | Batch queries aren't supported. Call the method once for each user. |
+| `getUserOnlineStatus` response timeout | 5 seconds | Fixed limit | The call fails with error code `-13012`. The SDK doesn't retry the query. |
 | Instant notifications before switching to interval mode | 50 by default, with a range of 8 to 128 | Default limit | When the number of online users reaches this threshold, Signaling switches from instant notifications to interval mode. Set this value with **Max number of instant event** in [Agora Console](/en/realtime-media/rtm/enable-signaling#presence-configuration). |
 
 ### Storage specifications

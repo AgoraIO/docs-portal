@@ -523,7 +523,7 @@ Signaling version `2.x` differs from `1.x` in the support of naming character se
 :::
 ## Integrate the SDK
 
-You can integrate the Signaling `2.x` SDK into your app either using a CDN or through Maven Central. The integration methods are as follows:
+You can integrate the Signaling `2.x` SDK into your app either using a CDN or through Maven. Starting with v2.3.1, the Signaling SDK is distributed through the Agora Maven repository. Add `maven { url = 'https://download.agora.io/maven/' }` to your project's repositories and keep your existing repositories. For details, see [Integrate the SDK](/en/realtime-media/rtm/quickstart#integrate-the-sdk). The dependency declarations are as follows:
 
 - For `1.x`:
     ```text
@@ -536,7 +536,7 @@ You can integrate the Signaling `2.x` SDK into your app either using a CDN or th
 - For `2.x`:
     ```text
     dependencies {
-        // Replace x.y.z with the specific SDK version, e.g., 2.3.0
+        // Replace x.y.z with the specific SDK version, e.g., 2.3.1
         implementation 'io.agora.rtm:rtm-sdk:x.y.z'
     }
     ```
@@ -1153,17 +1153,22 @@ Signaling version `2.x` differs from `1.x` in the support of naming character se
 :::
 ## Integrate the SDK
 
-The SDK package names and integration methods for `2.x` and `1.x` remain unchanged. CDN and CocoaPods integration methods are both supported. The `Podfile` content for CocoaPods integration is as follows:
+Both `2.x` and `1.x` support CDN and CocoaPods integration. Starting with v2.3.1, the Signaling SDK is distributed through the Agora CocoaPods source. Add the source to your `Podfile` and keep your existing sources. Declaring any `source` replaces the CocoaPods default, so also keep `https://cdn.cocoapods.org/` if your project uses other public pods. The `Podfile` content for CocoaPods integration is as follows:
 
-```objc
+```ruby
+source 'https://download.agora.io/cocoapods/'
+source 'https://cdn.cocoapods.org/'
+
 platform :ios, '11.0'
 target 'Your App' do
-  # Replace x.y.z with the specific SDK version, such as 2.2.6
-  pod 'AgoraRtm', 'x.y.z'
+  # Replace x.y.z with the specific SDK version, such as 2.3.1
+  # RtmKit is the Signaling library. RtmBasic is the aosl library.
+  pod 'Agora-Rtm', 'x.y.z', :subspecs => ['RtmKit', 'RtmBasic']
 end
 ```
+
 :::warning
-If you are using an SDK version earlier than `2.2.0`, change the package name to `AgoraRtm_iOS`.
+The pod name depends on the SDK version. For v2.2.8 and later, use `Agora-Rtm`. For v2.2.0 to v2.2.6, use `AgoraRtm`. For versions earlier than v2.2.0, use `AgoraRtm_iOS`.
 :::
 ## Initialize an RTM Client instance
 
@@ -1705,17 +1710,22 @@ Signaling version `2.x` differs from `1.x` in the support of naming character se
 :::
 ## Integrate the SDK
 
-The SDK package names and integration methods for `2.x` and `1.x` remain unchanged. CDN and CocoaPods integration methods are both supported. The `Podfile` content for CocoaPods integration is as follows:
+Both `2.x` and `1.x` support CDN and CocoaPods integration. Starting with v2.3.1, the Signaling SDK is distributed through the Agora CocoaPods source. Add the source to your `Podfile` and keep your existing sources. Declaring any `source` replaces the CocoaPods default, so also keep `https://cdn.cocoapods.org/` if your project uses other public pods. The `Podfile` content for CocoaPods integration is as follows:
 
-```objc
-platform :ios, '11.0'
+```ruby
+source 'https://download.agora.io/cocoapods/'
+source 'https://cdn.cocoapods.org/'
+
+platform :osx, '10.10'
 target 'Your App' do
-  # Replace x.y.z with the specific SDK version, such as 2.2.6
-  pod 'AgoraRtm', 'x.y.z'
+  # Replace x.y.z with the specific SDK version, such as 2.3.1
+  # RtmKit is the Signaling library. RtmBasic is the aosl library.
+  pod 'Agora-Rtm', 'x.y.z', :subspecs => ['RtmKit', 'RtmBasic']
 end
 ```
+
 :::warning
-If you are using an SDK version earlier than `2.2.0`, change the package name to `AgoraRtm_iOS`.
+The pod name depends on the SDK version. For v2.2.8 and later, use `Agora-Rtm`. For v2.2.0 to v2.2.6, use `AgoraRtm`. For versions earlier than v2.2.0, use `AgoraRtm_macOS`.
 :::
 ## Initialize an RTM Client instance
 

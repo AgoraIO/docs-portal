@@ -49,14 +49,16 @@ You can find the `aosl` library version for the SDKs in the [RTC SDK](/en/realti
 
 <TabsContent value="android">
 
+For Signaling SDK v2.3.1 or later, first add the Agora Maven repository `https://download.agora.io/maven/` to your project and keep your existing repositories. For details, see [Integrate the SDK](/en/realtime-media/rtm/quickstart#integrate-the-sdk).
+
 - If the Signaling `aosl` version is lower, integrate the `lite` SDK:
 
     ```text
     dependencies {
         // If you are using RTM SDK version 2.2.8 or later
-        // Replace x.y.z with the specific SDK version number, such as 2.2.8
+        // Replace x.y.z with the specific SDK version number, such as 2.3.1
         // You can obtain the latest version number from the release notes.
-        implementation 'io.agora.rtm:rtm-sdk-lite:2.2.8'
+        implementation 'io.agora.rtm:rtm-sdk-lite:x.y.z'
     }
     ```
 
@@ -150,15 +152,20 @@ You can find the `aosl` library version for the SDKs in the [RTC SDK](/en/realti
 
 <TabsContent value="ios">
 
+For Signaling SDK v2.3.1 or later, add the Agora CocoaPods source `https://download.agora.io/cocoapods/` to your `Podfile`. Declaring any `source` replaces the CocoaPods default, so keep `https://cdn.cocoapods.org/` and any other sources your project uses.
+
 - If the Signaling `aosl` version is lower, integrate the `lite` SDK:
 
     ```ruby
+    source 'https://download.agora.io/cocoapods/'
+    source 'https://cdn.cocoapods.org/'
+
     platform :ios, '11.0'
     target 'Your App' do
       # If you are using RTM SDK version 2.2.8 or later
-      # Replace x.y.z with the specific SDK version number, such as 2.2.8
+      # Replace x.y.z with the specific SDK version number, such as 2.3.1
       # You can obtain the latest version number from the release notes.
-      pod 'AgoraRtm', 'x.y.z', :subspecs => ['RtmKit']
+      pod 'Agora-Rtm', 'x.y.z', :subspecs => ['RtmKit']
     end
     ```
 
