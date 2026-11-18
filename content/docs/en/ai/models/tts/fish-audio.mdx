@@ -31,7 +31,7 @@ agent = (
     .with_tts(FishAudioTTS(
         key='your-fishaudio-key',  # omit key and set credential_mode='managed' to use Agora-managed mode
         reference_id='<voice_model_id>',
-        backend='speech-1.5',
+        backend='s2.1-pro',
     ))
 )
 ```
@@ -50,7 +50,7 @@ const agent = new Agent({ client })
   .withTts(new FishAudioTTS({
     key: 'your-fishaudio-key', // omit key and set credentialMode: CredentialMode.Managed to use Agora-managed mode
     referenceId: '<voice_model_id>',
-    backend: 'speech-1.5',
+    backend: 's2.1-pro',
   }));
 ```
 
@@ -71,7 +71,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
     vendors.NewFishAudioTTS(vendors.FishAudioTTSOptions{
         Key:         "your-fishaudio-key", // omit Key and set CredentialMode: agentkit.CredentialModeManaged to use Agora-managed mode
         ReferenceID: "<voice_model_id>",
-        Backend:     "speech-1.5",
+        Backend:     "s2.1-pro",
     }),
 )
 ```
@@ -103,7 +103,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
     "params": {
       "api_key": "<fishaudio_key>",
       "reference_id": "<voice_model_id>",
-      "backend": "speech-1.5"
+      "backend": "s2.1-pro"
     }
   }
   ```
@@ -123,7 +123,7 @@ The following parameters are required when using your own API key (BYOK). When u
     The identifier of the voice model to use for speech synthesis.
   </Parameter>
   <Parameter name="backend" type="string" required={true}>
-    The backend model version to use. For example, `speech-1.5`. For managed mode, use `s2.1-pro`.
+    The backend model version to use. For example, `s2.1-pro`, which is also the model that managed mode supports.
   </Parameter>
 </ParameterList>
 

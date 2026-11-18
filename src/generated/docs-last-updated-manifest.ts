@@ -491,9 +491,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/tts/deepgram.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/tts/deepgram.mdx': '2026-10-09T04:05:18.000Z',
   'content/docs/en/ai/models/tts/elevenlabs.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/models/tts/elevenlabs.mdx': '2026-10-09T04:05:18.000Z',
+  'content/docs/en/ai/models/tts/elevenlabs.mdx': '2026-11-18T15:54:22.000Z',
   'content/docs/en/ai/models/tts/fish-audio.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/models/tts/fish-audio.mdx': '2026-11-06T10:14:44.000Z',
+  'content/docs/en/ai/models/tts/fish-audio.mdx': '2026-11-18T15:54:22.000Z',
   'content/docs/en/ai/models/tts/gemini.mdx': '2026-10-09T04:05:18.000Z',
   'content/docs/en/ai/models/tts/generic-http.mdx': '2026-09-14T09:50:45.000Z',
   'content/docs/en/ai/models/tts/google.md': '2026-05-19T10:33:06.000Z',
@@ -502,7 +502,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/tts/humeai.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/tts/humeai.mdx': '2026-10-09T04:05:18.000Z',
   'content/docs/en/ai/models/tts/index.md': '2026-06-25T08:42:31.000Z',
-  'content/docs/en/ai/models/tts/meta.json': '2026-09-25T12:51:42.000Z',
+  'content/docs/en/ai/models/tts/meta.json': '2026-11-12T05:50:58.000Z',
   'content/docs/en/ai/models/tts/microsoft.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/tts/microsoft.mdx': '2026-10-09T04:05:18.000Z',
   'content/docs/en/ai/models/tts/minimax.md': '2026-05-19T10:33:06.000Z',
@@ -517,6 +517,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/tts/sarvam.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/tts/sarvam.mdx': '2026-10-09T04:05:18.000Z',
   'content/docs/en/ai/models/tts/smallest-ai.mdx': '2026-10-09T04:05:18.000Z',
+  'content/docs/en/ai/models/tts/soniox.mdx': '2026-11-12T05:50:58.000Z',
   'content/docs/en/ai/models/tts/typecast.mdx': '2026-10-09T04:05:18.000Z',
   'content/docs/en/ai/models/tts/xai.mdx': '2026-09-25T12:51:42.000Z',
   'content/docs/en/ai/openai-realtime/get-started/manage-agora-account.md':
@@ -754,7 +755,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/reference/meta.json': '2026-10-30T11:35:13.000Z',
   'content/docs/en/ai/reference/openai-realtime-integration.md':
     '2026-10-29T14:55:14.000Z',
-  'content/docs/en/ai/reference/pricing.mdx': '2026-07-31T07:35:49.000Z',
+  'content/docs/en/ai/reference/pricing.mdx': '2026-11-18T15:54:22.000Z',
   'content/docs/en/ai/reference/release-notes.mdx': '2026-07-30T09:20:29.000Z',
   'content/docs/en/ai/reference/ten-agent/create-asr-extension.mdx':
     '2026-06-30T02:52:09.000Z',
@@ -763,7 +764,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/reference/ten-agent/meta.json':
     '2026-06-30T02:52:09.000Z',
   'content/docs/en/ai/release-notes.md': '2026-06-26T08:32:37.000Z',
-  'content/docs/en/ai/release-notes.mdx': '2026-11-06T10:14:44.000Z',
+  'content/docs/en/ai/release-notes.mdx': '2026-11-12T05:50:58.000Z',
   'content/docs/en/ai/resources.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.mdx': '2026-06-24T07:15:37.000Z',
@@ -1178,7 +1179,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/server-sdk/documentation-versions.mdx':
     '2026-10-30T11:35:13.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/go.mdx':
-    '2026-10-09T04:05:18.000Z',
+    '2026-11-18T15:54:22.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/meta.json':
     '2026-06-28T07:39:07.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/platform/go.mdx':
@@ -1190,9 +1191,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/server-sdk/platform/typescript.mdx':
     '2026-11-10T10:32:56.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/python.mdx':
-    '2026-10-09T04:05:18.000Z',
+    '2026-11-18T15:54:22.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/typescript.mdx':
-    '2026-10-09T04:05:18.000Z',
+    '2026-11-18T15:54:22.000Z',
   'content/docs/en/api-reference/api-ref/signaling/android.mdx':
     '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/authentication.md':
@@ -11950,7 +11951,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/openapi/conversational-ai/rest-api-platform.en.yaml':
     '2026-10-30T11:35:13.000Z',
   'content/openapi/conversational-ai/rest-api.en.yaml':
-    '2026-11-06T10:14:44.000Z',
+    '2026-11-12T05:50:58.000Z',
   'content/openapi/media-gateway/media-gateway.en.yaml':
     '2026-11-11T10:46:51.000Z',
   'content/openapi/media-gateway/openapi.meta.json': '2026-06-25T09:57:31.000Z',

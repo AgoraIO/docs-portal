@@ -36,7 +36,7 @@ agent = (
     .with_llm(...)  # configure your LLM vendor
     .with_tts(ElevenLabsTTS(
         key='your-elevenlabs-key',
-        model_id='eleven_flash_v2_5',
+        model_id='eleven_v4_turbo',
         voice_id='pNInz6obpgDQGcFmaJgB',
         base_url='wss://api.elevenlabs.io/v1',
     ))
@@ -56,7 +56,7 @@ const agent = new Agent({ client })
   .withLlm(/* configure your LLM vendor */)
   .withTts(new ElevenLabsTTS({
     key: 'your-elevenlabs-key',
-    modelId: 'eleven_flash_v2_5',
+    modelId: 'eleven_v4_turbo',
     voiceId: 'pNInz6obpgDQGcFmaJgB',
     baseUrl: 'wss://api.elevenlabs.io/v1',
   }));
@@ -78,7 +78,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
   WithTts(
     vendors.NewElevenLabsTTS(vendors.ElevenLabsTTSOptions{
         Key:     "your-elevenlabs-key",
-        ModelID: "eleven_flash_v2_5",
+        ModelID: "eleven_v4_turbo",
         VoiceID: "pNInz6obpgDQGcFmaJgB",
         BaseURL: "wss://api.elevenlabs.io/v1",
     }),
@@ -97,7 +97,7 @@ Use the following `tts` configuration in your request:
   "params": {
     "base_url": "wss://api.elevenlabs.io/v1",
     "key": "<your_elevenlabs_key>",
-    "model_id": "eleven_flash_v2_5",
+    "model_id": "eleven_v4_turbo",
     "voice_id": "pNInz6obpgDQGcFmaJgB",
     "sample_rate": 24000
   }
@@ -117,7 +117,7 @@ Use the following `tts` configuration in your request:
   The API key used for authentication. Get your API key from the [ElevenLabs Console](https://elevenlabs.io/).
   </Parameter>
   <Parameter name="model_id" type="string" required={true}>
-  Identifier of the model to be used. Popular options include `eleven_flash_v2_5` for speed or `eleven_multilingual_v2` for quality.
+  Identifier of the model to be used. For example, `eleven_v4_turbo`.
   </Parameter>
   <Parameter name="voice_id" type="string" required={true}>
   The identifier for the selected voice for speech synthesis. Browse available voices in the [Voice Library](https://elevenlabs.io/voice-library).
