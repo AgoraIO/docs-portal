@@ -104,10 +104,6 @@ import {
 } from './mdx/ApiReference';
 import { DocsHeading } from './mdx/DocsHeading';
 import { DocsTable } from './mdx/DocsTable';
-import {
-  Parameter as GlobalParameter,
-  ParameterList as GlobalParameterList,
-} from './mdx/GlobalParameters';
 import { PlanCards, PricingCards } from './mdx/PlanCards';
 import {
   PlatformInline,
@@ -1965,8 +1961,8 @@ function buildMDXComponents(context?: MDXContext) {
     ApiReturns,
     ApiReturnType,
     ApiSignature: codeComponents.ApiSignature,
-    ParameterList: isChinese ? ParameterList : GlobalParameterList,
-    Parameter: isChinese ? Parameter : GlobalParameter,
+    ParameterList,
+    Parameter,
     ParameterType,
     Accordion: isChinese ? ChineseAccordion : Accordion,
     Accordions,
@@ -2017,16 +2013,11 @@ declare global {
   type MDXProvidedComponents = ReturnType<typeof getMDXComponents>;
 }
 
-const directParameter =
-  DEFAULT_LOCALE === 'zh-CN' ? Parameter : GlobalParameter;
-const directParameterList =
-  DEFAULT_LOCALE === 'zh-CN' ? ParameterList : GlobalParameterList;
-
 export {
   ApiReturns,
   ApiReturnType,
   ApiSignature,
-  directParameter as Parameter,
-  directParameterList as ParameterList,
+  Parameter,
+  ParameterList,
   ParameterType,
 };
