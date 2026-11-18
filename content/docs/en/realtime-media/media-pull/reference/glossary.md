@@ -9,13 +9,13 @@ description: "Introduces the glossary used by Agora."
 
 Agora Analytics is a site for developers to track and analyze the usage and quality of calls.
 
-### Agora Cloud Backup
-
-Agora Cloud Backup is a backup cloud storage service used in cloud recording. If the recording service cannot upload the recorded files to the specified third-party cloud storage, then the service automatically and temporarily stores them in the backup cloud.
-
 ### Agora Console
 
 Agora Console is a site for developers to manage Agora projects and services.
+
+### Agora Fallback Storage
+
+Agora Fallback Storage is a temporary storage service used in cloud recording. If the recording service cannot upload the recorded files to the specified third-party cloud storage, then the service automatically and temporarily stores them in Agora Fallback Storage.
 
 ### App ID
 

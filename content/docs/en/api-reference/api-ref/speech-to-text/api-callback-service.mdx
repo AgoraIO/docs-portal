@@ -333,7 +333,7 @@ The `payload` JSON object, which is the main body of a notification, includes th
 | `4` | `0` (Real-Time STT service) | The M3U8 playlist file is generated for `.vtt` files. |
 | `30` | `2` (uploader module) | The upload service starts. |
 | `31` | `2` (uploader module) | All the `.vtt` files are uploaded to the specified third-party cloud storage. |
-| `32` | `2` (uploader module) | All the `.vtt` files are uploaded, but at least one file is uploaded to Agora Cloud Backup. |
+| `32` | `2` (uploader module) | All the `.vtt` files are uploaded, but at least one file is uploaded to Agora Fallback Storage. |
 | `33` | `2` (uploader module) | The progress of uploading the `.vtt` files to the cloud storage. |
 
 #### `4 cloud_recording_file_infos`
@@ -448,7 +448,7 @@ The `payload` JSON object, which is the main body of a notification, includes th
 
 #### `32 backuped`
 
-`eventType 32` indicates that all the `.vtt` files are uploaded, but at least one of them is uploaded to Agora Cloud Backup. Agora Cloud Backup automatically uploads the files to the specified third-party cloud storage. `details` includes the following fields:
+`eventType 32` indicates that all the `.vtt` files are uploaded, but at least one of them is uploaded to Agora Fallback Storage. Agora Fallback Storage automatically uploads the files to the specified third-party cloud storage. `details` includes the following fields:
 
 - `msgName`: String. The message name, `backuped`.
 - `status`: Number. The event status. 0 indicates normal status; other values indicate abnormal status.
