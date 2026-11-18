@@ -35,7 +35,10 @@ const routesByUrl = new Map(routes.map(r => [r.url, r]));
 const navigation = await json(path.join(htmlRoot, '__static/docs-search/zh-CN.json'));
 const navigationUrls = new Set(navigation.map(p => toCnPublicSearchUrl(p.url)));
 const canonicalUrls = new Set(routes.map(route => route.canonicalPath));
-const navigationWithoutRoutes = [...navigationUrls].filter(url => !canonicalUrls.has(url));
+// Navigation can target the shared page or an existing rendered platform route.
+// Do not infer publication of hidden sibling routes from a concrete entry.
+const navigationWithoutRoutes = [...navigationUrls].filter(url => !canonicalUrls.has(url) && !routesByUrl.has(url));
+const isNavigated = route => navigationUrls.has(route.url) || navigationUrls.has(route.canonicalPath);
 // 已审查的无正文入口：目录由组件渲染，三个 C# 页面只有空锚点。
 // 新增无记录页面必须单独审查，不能自动当作同类豁免。
 const nonTextPages = new Set([
@@ -61,7 +64,7 @@ const exclusions = { notPublished: [], notNavigation: [], canonicalReplacedByVar
 for (const route of routes) {
   if (pages.has(route.url)) continue;
   const category = !published.has(route.url) ? 'notPublished'
-    : !navigationUrls.has(route.canonicalPath) ? 'notNavigation'
+    : !isNavigated(route) ? 'notNavigation'
     : !route.platform && variantCanonical.has(route.canonicalPath) ? 'canonicalReplacedByVariants'
     : isExcludedCnProduct(getCnSearchPathProduct(route.canonicalPath)) ? 'excludedProducts'
     : 'eligibleWithoutRecords';
@@ -97,7 +100,7 @@ for (const [url, rows] of pages) {
   for (const record of rows) {
     // Retained SDK history may have valid routes/HTML while the same build's
     // publication policy deliberately omits it from the searchable snapshot.
-    if (!navigationUrls.has(route.canonicalPath)) {
+    if (!isNavigated(route)) {
       findings.nonSearchableRecords.push(toCnPublicSearchUrl(record.url));
     }
     const products = record.products ?? (record.product ? [record.product] : []);
