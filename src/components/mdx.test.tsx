@@ -1166,6 +1166,9 @@ describe('common MDX registry', () => {
       </ParameterList>,
     );
 
+    expect(screen.getByRole('table', { name: /params/i })).toContainElement(
+      screen.getByText('metadata.request_id'),
+    );
     expect(screen.getByText('params')).toBeVisible();
     expect(screen.getByText('language')).toBeVisible();
     expect(screen.getAllByText('string')).toHaveLength(3);
@@ -1178,7 +1181,10 @@ describe('common MDX registry', () => {
     expect(screen.getByText('Possible values')).toBeVisible();
     expect(screen.getByText('provider-specific object')).toBeVisible();
     expect(screen.getByText('metadata.request_id')).toBeVisible();
-    expect(screen.getAllByText('nullable')).toHaveLength(2);
+    expect(screen.getByText('nullable')).toBeVisible();
+    expect(
+      screen.getByText('metadata.request_id').closest('li'),
+    ).toHaveTextContent('metadata.request_id: string | null');
     expect(screen.getByText('Optional request identifier.')).toBeVisible();
   });
 

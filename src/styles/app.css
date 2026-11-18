@@ -398,6 +398,17 @@
     mask-image: radial-gradient(circle at top, black, transparent 78%);
   }
 
+  .prose,
+  article :where(h1),
+  .openapi-operation .openapi-markdown {
+    overflow-wrap: anywhere;
+  }
+
+  .prose :where(.group\/heading > a) {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
   .prose {
     max-width: var(--content-max);
     --docs-prose-inline-code-bg: var(--bg-sunken);
@@ -1184,6 +1195,11 @@
     overflow-wrap: anywhere;
   }
 
+  .openapi-schema-value-container > .openapi-markdown {
+    min-width: 0;
+    max-width: 100%;
+  }
+
   .openapi-schema-children {
     position: relative;
     margin-inline-start: 16px;
@@ -1820,6 +1836,11 @@
   border-color: var(--docs-prose-table-border);
   background: var(--bg-card);
   box-shadow: var(--docs-shadow-sm);
+}
+
+/* Body row headings share the striped row surface with their descriptions. */
+.prose table :where(tbody th[scope="row"]) {
+  background: transparent;
 }
 
 :where(html.dark) .prose :where(thead):not(:where(.not-prose, .not-prose *)) {
