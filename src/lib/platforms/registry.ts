@@ -17,6 +17,13 @@ export const platformRegistry = {
     },
     order: 15,
   },
+  typescript: {
+    label: {
+      en: 'TypeScript',
+      'zh-CN': 'TypeScript',
+    },
+    order: 16,
+  },
   android: {
     label: {
       en: 'Android',
@@ -30,6 +37,13 @@ export const platformRegistry = {
       'zh-CN': 'iOS',
     },
     order: 30,
+  },
+  'device-c': {
+    label: {
+      en: 'Device C',
+      'zh-CN': '设备端 C',
+    },
+    order: 35,
   },
   flutter: {
     label: {
@@ -52,12 +66,78 @@ export const platformRegistry = {
     },
     order: 60,
   },
+  harmonyos: {
+    label: {
+      en: 'HarmonyOS',
+      'zh-CN': 'HarmonyOS',
+    },
+    order: 62,
+  },
+  'mini-program': {
+    label: {
+      en: 'Mini Program',
+      'zh-CN': '小程序',
+    },
+    order: 64,
+  },
   cpp: {
     label: {
       en: 'C++',
       'zh-CN': 'C++',
     },
     order: 65,
+  },
+  'objective-c': {
+    label: { en: 'Objective-C', 'zh-CN': 'Objective-C' },
+    order: 66,
+  },
+  'mini-program-beta': {
+    label: { en: 'Mini Program (Beta)', 'zh-CN': '小程序（Beta）' },
+    order: 67,
+  },
+  'server-cpp': {
+    label: { en: 'Server C++', 'zh-CN': '服务端 C++' },
+    order: 68,
+  },
+  'server-java': {
+    label: { en: 'Server Java', 'zh-CN': '服务端 Java' },
+    order: 69,
+  },
+  'unreal-cpp': {
+    label: { en: 'Unreal (C++)', 'zh-CN': 'Unreal C++' },
+    order: 70,
+  },
+  'unreal-blueprint': {
+    label: { en: 'Unreal (Blueprint)', 'zh-CN': 'Unreal (Blueprint)' },
+    order: 71,
+  },
+  csharp: {
+    label: {
+      en: 'C#',
+      'zh-CN': 'C#',
+    },
+    order: 66,
+  },
+  swift: {
+    label: {
+      en: 'Swift',
+      'zh-CN': 'Swift',
+    },
+    order: 67,
+  },
+  c: {
+    label: {
+      en: 'C',
+      'zh-CN': 'C',
+    },
+    order: 68,
+  },
+  java: {
+    label: {
+      en: 'Java',
+      'zh-CN': 'Java',
+    },
+    order: 69,
   },
   macos: {
     label: {
@@ -73,6 +153,13 @@ export const platformRegistry = {
     },
     order: 80,
   },
+  'electron-uos': {
+    label: {
+      en: 'Electron for UOS',
+      'zh-CN': 'Electron for 统信 OS',
+    },
+    order: 85,
+  },
   unity: {
     label: {
       en: 'Unity',
@@ -83,7 +170,7 @@ export const platformRegistry = {
   unreal: {
     label: {
       en: 'Unreal Engine',
-      'zh-CN': 'Unreal Engine',
+      'zh-CN': 'Unreal C++',
     },
     order: 100,
   },
@@ -93,6 +180,13 @@ export const platformRegistry = {
       'zh-CN': 'Unreal Blueprint',
     },
     order: 110,
+  },
+  react: {
+    label: {
+      en: 'React',
+      'zh-CN': 'React',
+    },
+    order: 115,
   },
   python: {
     label: {
@@ -107,6 +201,13 @@ export const platformRegistry = {
       'zh-CN': 'Go',
     },
     order: 122,
+  },
+  nodejs: {
+    label: {
+      en: 'Node.js',
+      'zh-CN': 'Node.js',
+    },
+    order: 123,
   },
   'linux-cpp': {
     label: {
@@ -129,11 +230,27 @@ export const platformRegistry = {
     },
     order: 140,
   },
+  restful: {
+    label: {
+      en: 'RESTful',
+      'zh-CN': 'RESTful',
+    },
+    order: 150,
+  },
+  'restful-api': {
+    label: {
+      en: 'RESTful API',
+      'zh-CN': 'RESTful API',
+    },
+    order: 151,
+  },
 } as const;
 
 export type PlatformKey = keyof typeof platformRegistry;
 
 const platformAliases = {
+  cscrip: 'csharp',
+  cscript: 'csharp',
   'react-js': 'javascript',
 } as const;
 

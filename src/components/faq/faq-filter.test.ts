@@ -59,5 +59,8 @@ describe('faq-filter', () => {
     expect(categoryHref('account-and-billing')).toBe(
       '/en/api-reference/faq/account',
     );
+    expect(categoryHref('account-and-billing', 'zh-CN')).toBe(
+      '/zh-CN/reference/faq/account',
+    );
   });
 });

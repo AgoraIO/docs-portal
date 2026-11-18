@@ -1,0 +1,40 @@
+---
+title: ScenesCallbacksNode
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/scenescallbacksnode
+  sourcePath: html-docs/whiteboard/Web/interfaces/scenescallbacksnode.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type ScenesCallbacksNode = Callbacks<ScenesCallbacks> & {
+    /**
+     * 监听的场景组地址
+     */
+    path: string;
+    /**
+     * 监听的场景组包含的场景名组成的数组
+     */
+    scenes: ReadonlyArray<string>;
+    /**
+     * 监听的场景组包含的场景数
+     */
+    scenesCount: number;
+    /**
+     * 监听的场景组包含的场景组名组成的数组
+     */
+    sceneGroups: ReadonlyArray<string>;
+    /**
+     * 监听的场景组包含的场景组数目
+     */
+    sceneGroupsCount: number;
+    /**
+     * 释放监听器
+     */
+    dispose(): void;
+};
+```

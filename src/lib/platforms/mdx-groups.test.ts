@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
   createPlatformGroup,
-  splitPlatformRuns,
-  type SharedLeaf,
   type PlatformLeaf,
+  type SharedLeaf,
+  splitPlatformRuns,
   validatePlatformGroup,
 } from './mdx-groups';
 

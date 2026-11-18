@@ -1,0 +1,186 @@
+---
+title: io.agora.rtc.EncryptionConfig类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_encryption_config
+  sourcePath: html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_encryption_config.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_encryption_config_8java.html as local text.
+---
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+EncryptionConfig 类。
+
+<a id="doc-constructors"></a>
+
+<a id="header-doc-constructors"></a>
+
+## 构造及析构函数说明
+
+<a id="ae80b9ba12c306f3c5de620c9833c3e64"></a>
+
+### EncryptionConfig() [1/2]
+
+<ApiSignature>
+
+io.agora.rtc.EncryptionConfig.EncryptionConfig()
+
+</ApiSignature>
+
+<a id="a07ea07e93bab13b80678e8e1af33dc98"></a>
+
+### EncryptionConfig() [2/2]
+
+<ApiSignature>
+
+io.agora.rtc.EncryptionConfig.EncryptionConfig(int *encryptionMode*, java.lang.String *encryptionKey*, byte[] *encryptionKdfSalt*)
+
+</ApiSignature>
+
+构造函数。
+
+<ParameterList title="参数">
+<Parameter name="encryptionMode">
+
+加密模式，默认为 ENCRYPTION_MODE_AES_128_GCM2。
+
+- ENCRYPTION_MODE_AES_128_XTS(1)：128-bit AES 加密， XTS 模式。
+- ENCRYPTION_MODE_AES_128_ECB(2)：128-bit AES 加密， ECB 模式。
+- ENCRYPTION_MODE_AES_256_XTS(3)：256-bit AES 加密， XTS 模式。
+- ENCRYPTION_MODE_SM4_128_ECB(4)：128-bit SM4 加密， ECB 模式。
+- ENCRYPTION_MODE_AES_128_GCM(5)：128-bit AES 加密， GCM 模式。
+- ENCRYPTION_MODE_AES_256_GCM(6)：256-bit AES 加密， GCM 模式。
+- ENCRYPTION_MODE_AES_128_GCM2(7)：（默认）128-bit AES 加密， GCM 模式，带 KDF 盐。
+- ENCRYPTION_MODE_AES_256_GCM2(8)：256-bit AES 加密， GCM 模式，带 KDF 盐。
+
+</Parameter>
+<Parameter name="encryptionKey">
+
+内置加密密钥，字符串类型，长度无限制。声网推荐使用 32 字节的密钥。
+
+</Parameter>
+<Parameter name="encryptionKdfSalt">
+
+长度为 32 字节的盐。声网推荐使用 OpenSSL 在你的服务器生成盐，该参数仅在你的加密模式为 AES_128_GCM2 或 AES_256_GCM2 时有效，在此情况下，请确保该参数不为 0。
+
+</Parameter>
+</ParameterList>
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="a3f03b74f270240c2f8fc037cedf86132"></a>
+
+### getEncryptionKdfSalt()
+
+<ApiSignature>
+
+byte[] io.agora.rtc.EncryptionConfig.getEncryptionKdfSalt()
+
+</ApiSignature>
+
+<a id="aa3d497e3bc984c1573b2d75dbb210cf0"></a>
+
+### getEncryptionKey()
+
+<ApiSignature>
+
+java.lang.String io.agora.rtc.EncryptionConfig.getEncryptionKey()
+
+</ApiSignature>
+
+<a id="a740e47c9f79fad9b51b6d8e023c46176"></a>
+
+### getEncryptionMode()
+
+<ApiSignature>
+
+int io.agora.rtc.EncryptionConfig.getEncryptionMode()
+
+</ApiSignature>
+
+<a id="a91fc00b91e163d13917d2943dbe42bf5"></a>
+
+### setEncryptionKdfSalt()
+
+<ApiSignature>
+
+void io.agora.rtc.EncryptionConfig.setEncryptionKdfSalt(byte[] *encryptionKdfSalt*)
+
+</ApiSignature>
+
+<a id="a080749693f328cab6283a268d6e0e543"></a>
+
+### setEncryptionKey()
+
+<ApiSignature>
+
+void io.agora.rtc.EncryptionConfig.setEncryptionKey(java.lang.String *encryptionKey*)
+
+</ApiSignature>
+
+<a id="a012dd22347bfffe386b4f9bfa130cd76"></a>
+
+### setEncryptionMode()
+
+<ApiSignature>
+
+void io.agora.rtc.EncryptionConfig.setEncryptionMode(int *encryptionMode*)
+
+</ApiSignature>
+
+<a id="doc-variable-members"></a>
+
+<a id="header-doc-variable-members"></a>
+
+## 类成员变量说明
+
+<a id="ad86b040fa0a03d09789169e6bc1aea80"></a>
+
+### encryptionKdfSalt
+
+<ApiSignature labels="private">
+
+byte [] io.agora.rtc.EncryptionConfig.encryptionKdfSalt
+
+</ApiSignature>
+
+<a id="acad371a2d17f97fab19f637b3a6f4d2c"></a>
+
+### encryptionKey
+
+<ApiSignature labels="private">
+
+java.lang.String io.agora.rtc.EncryptionConfig.encryptionKey
+
+</ApiSignature>
+
+<a id="a056809cc04ea4e997ab74dfd1aa120ea"></a>
+
+### encryptionMode
+
+<ApiSignature labels="private">
+
+int io.agora.rtc.EncryptionConfig.encryptionMode
+
+</ApiSignature>
+
+---
+
+该类的文档由以下文件生成:
+
+- EncryptionConfig.java

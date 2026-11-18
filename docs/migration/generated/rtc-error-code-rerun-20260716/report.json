@@ -1,0 +1,350 @@
+{
+  "componentMapPath": "/Users/yangyixuan/Documents/GitHub/docs-portal-cn-newdoc-preview-20260716/docs/migration/component-map.yaml",
+  "componentUsage": [
+    {
+      "count": 320,
+      "family": "",
+      "name": "Td",
+      "status": "automated-with-review",
+      "target": "gfm-table-or-slot-table"
+    },
+    {
+      "count": 132,
+      "family": "",
+      "name": "Tr",
+      "status": "automated-with-review",
+      "target": "gfm-table-or-slot-table"
+    },
+    {
+      "count": 16,
+      "family": "",
+      "name": "Table",
+      "status": "automated-with-review",
+      "target": "gfm-table-or-slot-table"
+    },
+    {
+      "count": 6,
+      "family": "",
+      "name": "Admonition",
+      "status": "automated",
+      "target": "directive-callout"
+    }
+  ],
+  "counts": {
+    "needs_review": 4
+  },
+  "falsePositiveUsage": [],
+  "generatedAt": "2026-07-16T10:18:55.468Z",
+  "knownComponentCount": 99,
+  "outDir": "/Users/yangyixuan/Documents/GitHub/docs-portal-cn-newdoc-preview-20260716/docs/migration/generated/rtc-error-code-rerun-20260716",
+  "pathMapPath": "/Users/yangyixuan/Documents/GitHub/docs-portal-cn-newdoc-preview-20260716/docs/migration/path-map.csv",
+  "results": [
+    {
+      "content": "---\ntitle: \"错误码\"\n---\n在调用声网 API 过程中，SDK 可能会返回错误码。当收到错误码时，意味着 SDK 遭遇了不可恢复的错误，需要 App 干预。\n\n本文列出常见错误码的详细含义及其解决方法。对于未给出解决方法的错误码，声网推荐你[联系技术支持](https://docs.agora.io/cn/Agora%20Platform/ticket?platform=All%20Platforms)，我们的技术服务会根据你在实际场景中遇到的问题进行排查。\n\n:::info[信息]\n- SDK 在返回错误码时，可能会返回一个负数。这个负数对应着错误码里的正整数。例如返回 `-2`，则对应错误码里的 `2`。\n  - 本文中出现的 API 名称以 C++ 为准，其他平台的 API 名称可能会有所不同，请查阅对应平台的 API 文档。\n:::\n\n本节所列错误码适用于以下平台的声网 RTC v4.x SDK：\n\n- 原生平台：Android、iOS、macOS、Windows、HarmonyOS NEXT。\n- 第三方框架（即基于原生平台封装的第三方平台）：Electron、Unity、React Native、Flutter、Unreal。\n\n声网 SDK 在运行过程中，可能通过如下方式返回错误码：\n\n- 在方法调用失败的返回值中，返回一个负数，这个负数就对应着错误码的正数。\n- 通过 `onError` 回调报告错误码。\n\n## 通用错误码\n\n| 枚举值 | 说明 |\n| --- | --- |\n| `1` | 一般性的错误（没有明确归类的错误原因）。请重新调用方法。 |\n| `2` | 方法中设置了无效的参数。例如指定的频道名中含有非法字符。请重新设置参数。 |\n| `3` | <Slot name=\"error-code-html-0-3-1\" /> |\n| `4` | <Slot name=\"error-code-html-0-4-1\" /> |\n| `5` | <Slot name=\"error-code-html-0-5-1\" /> |\n| `6` | 缓冲区大小不足以存放返回的数据。 |\n| `7` | `RtcEngine` 尚未初始化就调用方法。请确认在调用该方法前已创建 `RtcEngine` 对象并完成初始化。 |\n| `8` | 当前状态无效。请查看 SDK 回调日志了解具体原因。 |\n| `9` | 没有操作权限。请检查用户是否授予了 App 音视频设备的使用权限。 |\n| `10` | 方法调用超时。有些方法调用需要 SDK 返回结果，如果 SDK 处理事件过长，超过 10 秒没有返回，会出现此错误。 |\n| `17` | <Slot name=\"error-code-html-0-11-1\" /> |\n| `18` | <Slot name=\"error-code-html-0-12-1\" /> |\n| `19` | 资源已被占用，不能重复使用。 |\n| `20` | SDK 放弃请求，可能由于请求的次数太多。 |\n| `21` | Windows 下特定的防火墙设置导致 `RtcEngine` 初始化失败然后崩溃。 |\n| `22` | SDK 分配资源失败，可能由于 App 占用资源过多或系统资源耗尽。 |\n| `101` | 不是有效的 App ID。请更换有效的 App ID 重新加入频道。 |\n| `102` | 不是有效的频道名。可能的原因是设置的参数数据类型不正确。请更换有效的频道名重新加入频道。 |\n| `103` | 无法获取当前区域的服务器资源。请在初始化 `RtcEngine` 时尝试指定其他区域。 |\n| `109` | <Slot name=\"error-code-html-0-20-1\" /> |\n| `110` | <Slot name=\"error-code-html-0-21-1\" /> |\n| `111` | 网络连接中断。SDK 在和服务器建立连接后，失去网络连接超过 4 秒。 |\n| `112` | 网络连接丢失。网络连接中断，且 SDK 无法在 10 秒内连接服务器。 |\n| `119` | 用户切换角色失败，请尝试重新加入频道。 |\n| `120` | 解密失败。可能是用户加入频道时使用了错误的密码。请检查用户加入频道时填入的密码，或引导用户尝试重新加入频道。 |\n| `121` | 该用户 ID 无效。 |\n| `123` | 此用户被服务器禁止。当用户被服务端踢出时会报告这个错误。 |\n| `134` | 用户账号无效，可能是因为设置了无效的参数。 |\n\n<Slot for=\"error-code-html-0-3-1\">\n\nSDK 尚未准备好。一般有以下原因：\n\n      - `RtcEngine` 初始化失败。请重新初始化 `RtcEngine`。\n      - 调用方法时用户尚未加入频道。请检查方法的调用逻辑。\n      - 调用 `rate` 或 `complain` 方法时用户尚未离开频道，请检查方法的调用逻辑。\n      - 音频模块未开启。\n      - 程序集不完整。\n\n</Slot>\n\n<Slot for=\"error-code-html-0-4-1\">\n\n`RtcEngine` 当前状态不支持该操作。一般有以下原因：\n\n        - 使用内置加密时，设置的加密模式不正确。\n        - 加载外部加密库失败。\n      请检查加密的枚举值是否正确，或重新加载外部加密库。\n\n</Slot>\n\n<Slot for=\"error-code-html-0-5-1\">\n\n方法调用被拒绝。一般有以下原因：\n\n        - `RtcEngine` 初始化失败。请重新初始化 `RtcEngine`。\n        - 在加入频道时，将频道名设为空字符 `\"\"`。请重新设置频道名。\n        - 多频道场景下，在调用 `joinChannel` 方法加入频道时，设置的频道名已存在。请重新设置频道名。\n        - 多频道场景下，在调用 `joinChannelEx` 方法加入频道时，设置的频道名已存在。请重新设置频道名。\n\n</Slot>\n\n<Slot for=\"error-code-html-0-11-1\">\n\n加入频道被拒绝。一般有以下原因：\n\n        - 用户已经在频道中。声网推荐通过 `onConnectionStateChanged` 回调判断用户是否在频道中。除非收到 `CONNECTION_STATE_DISCONNECTED`(1) 状态，否则请勿再次调用该方法加入频道。\n        - 用户在调用 `startEchoTest` 进行通话测试时，未调用 `stopEchoTest` 结束当前测试，就尝试加入频道。开始通话测试后，需要先调用 `stopEchoTest` 结束当前测试，再加入频道。\n\n</Slot>\n\n<Slot for=\"error-code-html-0-12-1\">\n\n离开频道失败。一般有以下原因：\n\n        - 用户已离开频道，再次调用退出频道的方法，如 `leaveChannel` 时，会返回此错误。停止调用该方法即可。\n        - 用户尚未加入频道，就调用 `leaveChannel` 等退出频道的方法。这种情况下无需额外操作。\n\n</Slot>\n\n<Slot for=\"error-code-html-0-20-1\">\n\n当前使用的 Token 过期，不再有效。请在服务端申请生成新的 Token，并调用 `renewToken` 更新 Token。\n        :::info[废弃]\n        该错误码已废弃。请改用 `onConnectionStateChanged` 回调中的 `CONNECTION_CHANGED_TOKEN_EXPIRED`(9)。\n        :::\n\n</Slot>\n\n<Slot for=\"error-code-html-0-21-1\">\n\nToken 无效。一般有以下原因：\n\n        - 在声网控制台中启用了 App 证书，但未使用 App ID + Token 鉴权。当项目启用了 App 证书，就必须使用 Token 鉴权。\n        - 生成 Token 时填入的 `uid` 字段，和用户加入频道时填入的 `uid` 不一致。\n\n        :::info[废弃]\n        该错误码已废弃。请改用 `onConnectionStateChanged` 回调中的 `CONNECTION_CHANGED_INVALID_TOKEN`(8)。\n        :::\n\n</Slot>\n\n## 音频相关错误码\n\n| 枚举值 | 说明 |\n| --- | --- |\n| `1005` | 音频设备出现错误（未指明何种错误）。请检查音频设备是否被其他应用占用，或者尝试重新进入频道。 |\n| `1008` | 初始化播放设备出错。请检查播放设备是否被其他应用占用，或者尝试重新进入频道。 |\n| `1009` | 启动播放设备出错。请检查播放设备是否正常。 |\n| `1010` | 停止播放设备出错。 |\n| `1011` | 初始化录音设备出错。请检查录音设备是否正常，或者尝试重新进入频道。 |\n| `1012` | 启动录音设备出错。请检查录音设备是否正常。 |\n| `1013` | 停止录音设备出错。 |\n\n## 数据流相关错误码\n\n| 枚举值 | 说明 |\n| --- | --- |\n| `113` | 调用 `sendStreamMessage` 方法时，用户不在频道内。 |\n| `114` | 调用 `sendStreamMessage` 时，发送的数据长度大于 1024 个字节。 |\n| `115` | 调用 `sendStreamMessage` 时，发送数据的频率超过限制（6 KB/s）。 |\n| `116` | 调用 `createDataStream` 时，创建的数据流超过限制（5 个）。 |\n| `117` | 当发送端调用 `createDataStream`[1/2] 设置 `reliable` 为 `true`，或调用 `createDataStream`[2/2] 设置 `DataStreamConfig.ordered` 为 `true` 时，若接收端在 5 秒内未收到数据，或检测到数据丢失，将在接收端触发 `onStreamMessageError` 回调并返回错误码 `117`。 |\n\n## 其他错误码\n\n| 枚举值 | 说明 |\n| --- | --- |\n| `130` | SDK 不支持将加密过的流推到 CDN 上。 |\n| `1001` | 加载媒体引擎失败。 |\n| `1501` | 没有摄像头使用权限。请检查是否已经打开摄像头权限。 |\n",
+      "componentUsage": [
+        {
+          "count": 86,
+          "family": "",
+          "name": "Td",
+          "status": "automated-with-review",
+          "target": "gfm-table-or-slot-table"
+        },
+        {
+          "count": 43,
+          "family": "",
+          "name": "Tr",
+          "status": "automated-with-review",
+          "target": "gfm-table-or-slot-table"
+        },
+        {
+          "count": 4,
+          "family": "",
+          "name": "Table",
+          "status": "automated-with-review",
+          "target": "gfm-table-or-slot-table"
+        },
+        {
+          "count": 3,
+          "family": "",
+          "name": "Admonition",
+          "status": "automated",
+          "target": "directive-callout"
+        }
+      ],
+      "issues": [
+        "normalized-html-table",
+        "normalized-table-header:tableHeaderWidth",
+        "normalized-table-slot",
+        "normalized-table-header:TableHeader0b37lwwa1m",
+        "normalized-table-header:TableHeadersnf9g824n8",
+        "normalized-table-header:TableHeaderhn9jo4kh6l"
+      ],
+      "platform": "",
+      "sourcePath": "docs/rtc/error-code.mdx",
+      "falsePositiveUsage": [],
+      "referenceReview": {
+        "brokenLinks": [],
+        "images": []
+      },
+      "sharedDependencies": [
+        "docs/shared/rtc/error-code.mdx"
+      ],
+      "status": "needs_review",
+      "syntaxPatternUsage": [
+        {
+          "count": 1,
+          "family": "",
+          "name": "rawHtml",
+          "status": "automated-with-review",
+          "target": "markdown-native-or-slot"
+        },
+        {
+          "count": 1,
+          "family": "",
+          "name": "runtimeVariables",
+          "status": "automated-with-review",
+          "target": "static-evaluate-before-write"
+        },
+        {
+          "count": 1,
+          "family": "",
+          "name": "sharedImports",
+          "status": "automated-with-review",
+          "target": "include-or-static-expand"
+        },
+        {
+          "count": 1,
+          "family": "",
+          "name": "tableHeaderExport",
+          "status": "automated",
+          "target": "gfm-table-header"
+        }
+      ],
+      "targetPath": "content/docs/zh-CN/realtime-media/rtc/reference/error-code.mdx"
+    },
+    {
+      "content": "---\ntitle: \"错误码\"\n---\nSDK 可能以下列方式抛出错误码：\n\n- 对于异步方法，SDK 返回 Promise 来通知异步操作的结果，Promise 被 reject 时 SDK 会抛出相应的错误码。\n- 同步方法调用失败时，SDK 直接抛出错误码。\n- SDK 内部运行过程中，也可能抛出一些网络相关的错误码。\n\n你可参考本文了解这些错误码的详细含义及处理方法。\n\nSDK 的错误码对象 `AgoraRTCError` 继承自浏览器的 [Error 对象](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)。你需要通过 `AgoraRTCError.code` 在控制台上打印出错误码，直接打印 `AgoraRTCError` 对象只能看到错误信息。\n\n## 通用错误码\n\n| 错误码 | 描述 | 处理方法 |\n| --- | --- | --- |\n| `UNEXPECTED_ERROR` | 无法处理的、非预期的错误，通常这个错误会有具体的错误提示。 | 无。 |\n| `UNEXPECTED_RESPONSE` | 服务端返回了非预期的响应。这个错误通常是在网络问题导致客户端与服务端状态不一致时抛出。 | 等待网络稳定后重试该操作。 |\n| `INVALID_PARAMS` | 非法参数。 | 根据具体提示确认操作，并根据文档传入正确的参数。 |\n| `NOT_SUPPORTED` | 浏览器不支持。 | 参考[浏览器支持情况](/zh-CN/realtime-media/rtc/reference/browser-compatibility.javascript)。 |\n| `INVALID_OPERATION` | 非法操作，通常是因为在当前状态不能进行该操作。 | 确认操作的先后顺序，比如发布前请确认已经加入频道。 |\n| `OPERATION_ABORTED` | 操作中止，通常是因为网络质量差或连接断开导致与声网服务器通信失败。 | 通过 [AgoraRTCClient.on(\"user-joined\")](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_joined) 回调确认本地网络状况，并重试该操作。 |\n| `WEB_SECURITY_RESTRICT` | 浏览器安全策略限制。 | 请确保 Web 页面运行在[安全环境](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts)中。 |\n| `NO_ACTIVE_STATUS` | 声网项目未激活或被禁用。 | 请前往声网控制台确认项目状态是否为启用。 |\n\n## 请求相关错误码\n### 网络连接\n\n| 错误码 | 描述 | 处理方法 |\n| --- | --- | --- |\n| `NETWORK_TIMEOUT` | 请求超时，通常是因为网络质量差或连接断开导致与声网服务器通信失败。 | 通过 [AgoraRTCClient.on(\"user-joined\")](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_joined) 回调确认本地网络状况，并重试该操作。 |\n| `NETWORK_RESPONSE_ERROR` | 响应错误，一般是状态码非法。 | 确认操作的参数是否正确，并根据文档传入正确的参数。 |\n| `NETWORK_ERROR` | 无法定位的网络错误。 | 无。 |\n\n### SDK 内部请求\n\n| 错误码 | 描述 | 处理方法 |\n| --- | --- | --- |\n| `WS_ABORT` | 请求声网服务器过程中 WebSocket 断开。 | 监听 [AgoraRTCClient.on(\"connection-state-change\")](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_connection_state_change) 事件，待连接状态变为 `CONNECTED` 后重试。 |\n| `WS_DISCONNECT` | 请求声网服务器前，WebSocket 就已经断开。 | 监听 [AgoraRTCClient.on(\"connection-state-change\")](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_connection_state_change) 事件，待连接状态变为 `CONNECTED` 后重试。 |\n| `WS_ERR` | WebSocket 连接发生错误。 | 检查当前浏览器对 WebSocket 的支持情况。 |\n\n## 设备管理相关错误码\n\n| 错误码 | 描述 | 处理方法 |\n| --- | --- | --- |\n| `ENUMERATE_DEVICES_FAILED` | 枚举本地设备失败，一般是由于浏览器限制。 | 无。 |\n| `DEVICE_NOT_FOUND` | 无法找到指定设备。 | 传入正确的设备 ID。 |\n\n## Track 相关错误码\n\n| 错误码 | 描述 | 处理方法 |\n| --- | --- | --- |\n| `TRACK_IS_DISABLED` | 轨道被禁用，通常因为轨道设置了 [Track.setEnabled(false)](/api-ref/rtc/javascript/interfaces/ilocaltrack#setEnabled)。 | 对该轨道调用 [Track.setEnabled(true)](/api-ref/rtc/javascript/interfaces/ilocaltrack#setEnabled) 后再进行操作。 |\n| `SHARE_AUDIO_NOT_ALLOWED` | 屏幕共享音频时终端用户没有点击分享音频。 | 要求终端用户在弹出的屏幕共享窗口中勾选分享音频。 |\n| `MEDIA_OPTION_INVALID` | 不支持的媒体采集的参数。 | 修改媒体采集参数或使用 SDK 预设的配置。 |\n| `CONSTRAINT_NOT_SATISFIED` | 不支持的媒体采集的参数。 | 修改媒体采集参数或使用 SDK 预设的配置。 |\n| `PERMISSION_DENIED` | 获取媒体设备权限被拒绝。 | 在弹出的获取设备权限窗口中选择允许。 |\n| `NOT_READABLE` | 用户已经授权，但媒体设备无法访问。 | 检查当前采集设备和驱动程序是否出错。 |\n| `FETCH_AUDIO_FILE_FAILED` | 下载在线音频文件失败。 | 填入正确的在线音频地址，并确保可以正常访问。 |\n| `READ_LOCAL_AUDIO_FILE_ERROR` | 读取本地音频文件失败。 | 填入正确的本地音频文件路径。 |\n| `DECODE_AUDIO_FILE_FAILED` | 音频文件解码失败，可能是因为音频文件的编码格式是浏览器 WebAudio 不支持的编码格式。 | 检查浏览器 WebAudio 是否支持音频文件的编码格式。 |\n\n## Client 相关错误码\n### 加入频道\n下表列出加入频道失败时 SDK 抛出的错误码。\n\n| 错误码 | 描述 | 处理方法 |\n| --- | --- | --- |\n| `UID_CONFLICT` | 同一个频道内 UID 重复。 | 使用不同的 UID 进入频道。 |\n| `INVALID_UINT_UID_FROM_STRING_UID` | String UID 分配服务返回了非法的 int UID。 | 使用不同的 UID 进入频道。 |\n| `CAN_NOT_GET_PROXY_SERVER` | 无法获取云代理服务地址。 | 无。 |\n| `CAN_NOT_GET_GATEWAY_SERVER` | 无法获取声网服务器地址。 | 无。 |\n\n### 发布/取消发布\n下表列出发布或取消发布失败时 SDK 抛出的错误码。\n\n| 错误码 | 描述 | 处理方法 |\n| --- | --- | --- |\n| `INVALID_LOCAL_TRACK` | 传入了非法的 LocalTrack。 | 检查传入的 Track，并传入正确的 LocalTrack。 |\n| `CAN_NOT_PUBLISH_MULTIPLE_VIDEO_TRACKS` | 一个 Client 发布多个视频轨道。 | 一个 Client 同一时间只能发布一个视频轨道，如果想发布多个视频轨道请创建多个 Client。 |\n\n### 订阅/取消订阅\n下表列出订阅或取消订阅失败时 SDK 抛出的错误码。\n\n| 错误码 | 描述 | 处理方法 |\n| --- | --- | --- |\n| `INVALID_REMOTE_USER` | 非法的远端用户，可能是远端用户不在频道内或还未发布任何媒体轨道。 | 收到 [AgoraRTCClient.on(\"user-published\")](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_published) 事件后再进行订阅操作。 |\n| `REMOTE_USER_IS_NOT_PUBLISHED` | 远端用户已发布了音频或视频轨道，但不是与你的订阅操作所指定的类型不符。 | 请确保订阅操作传入的轨道类型需要与 [AgoraRTCClient.on(\"user-published\")](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_published) 事件给出的类型一致，或者在订阅前通过 [AgoraRTCRemoteUser.hasVideo](/api-ref/rtc/javascript/interfaces/iagorartcremoteuser#hasvideo) 和 [AgoraRTCRemoteUser.hasAudio](/api-ref/rtc/javascript/interfaces/iagorartcremoteuser#hasaudio) 确认远端用户是否发布了该类型的轨道。 |\n| `ERR_TOO_MANY_BROADCASTERS` | 频道内主播人数超过上限。 | 控制主播人数。例如：仅在用户需要发布音视频轨道的时候调用 [Client.setClientRole](/api-ref/rtc/javascript/interfaces/iagorartcclient#setclientrole)，将用户角色切换为主播。 |\n| `ERR_TOO_MANY_SUBSCRIBERS` | 当前用户订阅的主播人数超过上限。 | 按需订阅主播。 |\n\n## 推流到 CDN\n下表列出推流到 CDN 失败时 SDK 抛出的错误码。\n\n| 错误码 | 描述 | 处理方法 |\n| --- | --- | --- |\n| `LIVE_STREAMING_TASK_CONFLICT` | 推流任务已经存在。 | 先调用 [Client.stopLiveStreaming](/api-ref/rtc/javascript/interfaces/iagorartcclient#stopLiveStreaming) 停止该推流任务再重新进行推流操作。 |\n| `LIVE_STREAMING_INVALID_ARGUMENT` | 推流参数错误。 | 参考 [Client.startLiveStreaming](/api-ref/rtc/javascript/interfaces/iagorartcclient#startLiveStreaming) 的 API 文档检查推流操作的参数。 |\n| `LIVE_STREAMING_INTERNAL_SERVER_ERROR` | 推流服务器内部错误。 | 重新进行推流操作，如果仍然失败，刷新页面重试。 |\n| `LIVE_STREAMING_PUBLISH_STREAM_NOT_AUTHORIZED` | 推流 URL 被占用。 | 检查填入的 URL 是否被占用。 |\n| `LIVE_STREAMING_CDN_ERROR` | 推流的目标 CDN 出现错误导致推流失败。 | 确认目标 CDN 的健康状况。 |\n| `LIVE_STREAMING_INVALID_RAW_STREAM` | 推流超时。 | 确认目标流是否存在。 |\n\n## 跨频道连麦\n下表列出跨频道连麦失败时 SDK 抛出的错误码。\n\n| 错误码 | 描述 |\n| --- | --- |\n| `CROSS_CHANNEL_WAIT_STATUS_ERROR` | 等待 [AgoraRTCClient.on(\"channel-media-relay-state\")](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_channel_media_relay_state) 回调出错。 |\n| `CROSS_CHANNEL_FAILED_JOIN_SRC` | 发起跨频道转发媒体流请求失败。 |\n| `CROSS_CHANNEL_FAILED_JOIN_DEST` | 接受跨频道转发媒体流请求失败。 |\n| `CROSS_CHANNEL_FAILED_PACKET_SENT_TO_DEST` | 服务器接收跨频道转发媒体流失败。 |\n| `CROSS_CHANNEL_SERVER_ERROR_RESPONSE` | 服务器响应出错。 |\n",
+      "componentUsage": [
+        {
+          "count": 133,
+          "family": "",
+          "name": "Td",
+          "status": "automated-with-review",
+          "target": "gfm-table-or-slot-table"
+        },
+        {
+          "count": 46,
+          "family": "",
+          "name": "Tr",
+          "status": "automated-with-review",
+          "target": "gfm-table-or-slot-table"
+        },
+        {
+          "count": 10,
+          "family": "",
+          "name": "Table",
+          "status": "automated-with-review",
+          "target": "gfm-table-or-slot-table"
+        }
+      ],
+      "issues": [
+        "normalized-html-table",
+        "normalized-table-header:TableHeader24cvz65ipq",
+        "normalized-table-header:TableHeader09wm8m6er8",
+        "normalized-table-header:TableHeaderrkz9mhya1q",
+        "normalized-table-header:TableHeaderxb3xa3biys",
+        "normalized-table-header:TableHeadern1t68jgqa9",
+        "normalized-table-header:TableHeader3sr3k79ske",
+        "normalized-table-header:TableHeadercw27gsdgm1",
+        "normalized-table-header:TableHeaderkbk1p7aglx",
+        "normalized-table-header:TableHeaderg6cxztzwco",
+        "normalized-table-header:TableHeadera1b4v4uu5n",
+        "断链:10"
+      ],
+      "platform": "javascript",
+      "sourcePath": "docs/rtc/error-code.javascript.mdx",
+      "falsePositiveUsage": [],
+      "referenceReview": {
+        "brokenLinks": [
+          "/api-ref/rtc/javascript/interfaces/iagorartcclient#setclientrole",
+          "/api-ref/rtc/javascript/interfaces/iagorartcclient#startLiveStreaming",
+          "/api-ref/rtc/javascript/interfaces/iagorartcclient#stopLiveStreaming",
+          "/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_channel_media_relay_state",
+          "/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_connection_state_change",
+          "/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_joined",
+          "/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_published",
+          "/api-ref/rtc/javascript/interfaces/iagorartcremoteuser#hasaudio",
+          "/api-ref/rtc/javascript/interfaces/iagorartcremoteuser#hasvideo",
+          "/api-ref/rtc/javascript/interfaces/ilocaltrack#setEnabled"
+        ],
+        "images": []
+      },
+      "sharedDependencies": [],
+      "status": "needs_review",
+      "syntaxPatternUsage": [
+        {
+          "count": 1,
+          "family": "",
+          "name": "rawHtml",
+          "status": "automated-with-review",
+          "target": "markdown-native-or-slot"
+        },
+        {
+          "count": 1,
+          "family": "",
+          "name": "tableHeaderExport",
+          "status": "automated",
+          "target": "gfm-table-header"
+        }
+      ],
+      "targetPath": "content/docs/zh-CN/realtime-media/rtc/reference/error-code.mdx"
+    },
+    {
+      "content": "---\ntitle: \"错误码\"\n---\n调用声网 RTC 小程序 API 或运行时，SDK 可能会返回一个错误码对象，也可能会返回一个错误码：\n\n- 错误码对象：包含错误码和对报错原因的描述，你可以根据 `reason` 中的描述自行判断发生引起错误的原因，然后进行排查\n- 错误码：该类错误码中没有相应的`reason`，你可以对照错误码参考本文进行排查。\n\n| 错误码 | 报错原因 | 排查方法 |\n| --- | --- | --- |\n| `401` | 请求异常 | 根据 `reason` 描述检查使用是否符合要求；如果报的是 `invalid vendor key`，请开通小程序服务权限，详见[开启小程序服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service#enable)。 |\n| `429` | 请求太频繁 | 根据 `reason` 描述检查使用是否符合要求。 |\n| `430` | <Slot name=\"error-code-mini-program-html-0-3-1\" /> | 根据 `reason` 描述检查使用是否符合要求。 |\n| `431` | <Slot name=\"error-code-mini-program-html-0-4-1\" /> | 根据 `reason` 描述检查使用是否符合要求。 |\n| `432` | 订阅了一个非主播的 `uid` | 根据 `reason` 描述检查使用是否符合要求。 |\n| `433` | <Slot name=\"error-code-mini-program-html-0-6-1\" /> | 根据 `reason` 描述检查使用是否符合要求。 |\n| `434` | <Slot name=\"error-code-mini-program-html-0-7-1\" /> | 根据 `reason` 描述检查使用是否符合要求。 |\n| `500` | 内部错误 | 退出频道并销毁 `client` 对象后，重建 `client` 对象，调用 `rejoin` 方法尝试重连。 |\n| `501` | 服务进程异常失去连接 | 退出频道并销毁 `client` 对象后，重建 `client` 对象，调用 `rejoin` 方法尝试重连。 |\n| `502` | 当前服务器过载 | 退出频道并销毁 `client` 对象后，重建 `client` 对象，调用 `rejoin` 方法尝试重连。 |\n| `503` | 服务进程正常退出 | 无。 |\n| `901` | 未找到服务器 | 检查是否开启小程序的服务权限；也可能是没有配置域名或 `uid` 参数格式不正确；你还可以检查网络；检查传入的 `App ID`、Token 是否有效。 |\n| `903` | 发送消息超时 | 鉴权失败，可能是因为未填入 Token；也可能是因为网络连接状况不理想，请检查网络。 |\n| `904` | websocket 断开 | 退出频道并销毁 `client` 对象后，重建 `client` 对象，调用 `rejoin` 方法尝试重连。 |\n| `905` | websocket 连接失败 | 退出频道并销毁 `client` 对象后，重建 `client` 对象，调用 `rejoin` 方法尝试重连。 |\n\n<Slot for=\"error-code-mini-program-html-0-3-1\">\n\n- 在订阅前尝试 mute 远端流\n        - 在订阅前尝试 unmute 远端流\n        - 请求异常\n\n</Slot>\n\n<Slot for=\"error-code-mini-program-html-0-4-1\">\n\n- `setRole` 传入的参数错误\n        - 加入频道失败\n        - 登录时的 role 传入出错\n        - 加入频道时的 `uid` 传入出错\n        - 重复加入频道，且 `uid` 不匹配\n\n</Slot>\n\n<Slot for=\"error-code-mini-program-html-0-6-1\">\n\n- 观众端无法发布流\n        - 观众端无法取消发布流\n\n</Slot>\n\n<Slot for=\"error-code-mini-program-html-0-7-1\">\n\n- 在加入频道前尝试退出在加入频道前尝试`setRole`发布流时的 `uid` 和加入频道时的 `uid` 不一致\n        - 取消发布流时的 `uid` 和加入频道时的 `uid` 不一致\n        - 更新 URL 时的 `uid` 和加入频道时的 `uid` 不一致\n\n</Slot>\n",
+      "componentUsage": [
+        {
+          "count": 45,
+          "family": "",
+          "name": "Td",
+          "status": "automated-with-review",
+          "target": "gfm-table-or-slot-table"
+        },
+        {
+          "count": 15,
+          "family": "",
+          "name": "Tr",
+          "status": "automated-with-review",
+          "target": "gfm-table-or-slot-table"
+        },
+        {
+          "count": 1,
+          "family": "",
+          "name": "Table",
+          "status": "automated-with-review",
+          "target": "gfm-table-or-slot-table"
+        }
+      ],
+      "issues": [
+        "normalized-html-table",
+        "normalized-table-header:TableHeaderdgethlfze5",
+        "normalized-table-slot"
+      ],
+      "platform": "mini-program",
+      "sourcePath": "docs/rtc/error-code.mini-program.mdx",
+      "falsePositiveUsage": [],
+      "referenceReview": {
+        "brokenLinks": [],
+        "images": []
+      },
+      "sharedDependencies": [],
+      "status": "needs_review",
+      "syntaxPatternUsage": [
+        {
+          "count": 1,
+          "family": "",
+          "name": "tableHeaderExport",
+          "status": "automated",
+          "target": "gfm-table-header"
+        }
+      ],
+      "targetPath": "content/docs/zh-CN/realtime-media/rtc/reference/error-code.mdx"
+    },
+    {
+      "content": "---\ntitle: \"错误码\"\n---\n在调用声网 API 过程中，SDK 可能通过如下方式返回错误码：\n\n- 在方法调用失败的返回值中，返回一个负数，这个负数就对应着错误码的正数。\n- 通过 `onError` 回调报告错误码。\n\n当收到错误码时，意味着 SDK 遭遇了不可恢复的错误，需要 App 干预。\n\n本文列出常见错误码的详细含义及其解决方法。对于未给出解决方法的错误码，声网推荐你[联系技术支持](https://ticket.shengwang.cn)，我们的技术服务会根据你在实际场景中遇到的问题进行排查。\n\n:::info[信息]\n- SDK 在返回错误码时，可能会返回一个负数。这个负数对应着错误码里的正整数。例如返回 `-2`，则对应错误码里的 `2`。\n  - 本文中出现的 API 名称以 C++ 为准，其他平台的 API 名称可能会有所不同，请查阅对应平台的 API 文档。\n:::\n\n| 枚举值 | 说明 |\n| --- | --- |\n| `1` | 一般性的错误（没有明确归类的错误原因）。请重新调用方法。 |\n| `2` | 方法中设置了无效的参数。例如指定的频道名中含有非法字符。请重新设置参数。 |\n| `3` | <Slot name=\"error-code-html-0-3-1\" /> |\n| `4` | <Slot name=\"error-code-html-0-4-1\" /> |\n| `5` | <Slot name=\"error-code-html-0-5-1\" /> |\n| `6` | 缓冲区大小不足以存放返回的数据。 |\n| `7` | `RtcEngine` 尚未初始化就调用方法。请确认在调用该方法前已创建 `RtcEngine` 对象并完成初始化。 |\n| `8` | 当前状态无效。请查看 SDK 回调日志了解具体原因。 |\n| `9` | 没有操作权限。请检查用户是否授予了 App 音视频设备的使用权限。 |\n| `10` | 方法调用超时。有些方法调用需要 SDK 返回结果，如果 SDK 处理事件过长，超过 10 秒没有返回，会出现此错误。 |\n| `17` | <Slot name=\"error-code-html-0-11-1\" /> |\n| `18` | <Slot name=\"error-code-html-0-12-1\" /> |\n| `19` | 资源已被占用，不能重复使用。 |\n| `20` | SDK 放弃请求，可能由于请求的次数太多。 |\n| `21` | Windows 下特定的防火墙设置会导致 `RtcEngine` 初始化失败并崩溃。 |\n| `22` | SDK 分配资源失败，可能由于 App 占用资源过多或系统资源耗尽。 |\n| `101` | 不是有效的 App ID。请更换有效的 App ID 重新加入频道。 |\n| `102` | 不是有效的频道名。可能的原因是设置的参数数据类型不正确。请更换有效的频道名重新加入频道。 |\n| `103` | 无法获取当前区域的服务器资源。请在初始化 `RtcEngine` 时尝试指定其他区域。 |\n| `109` | <Slot name=\"error-code-html-0-20-1\" /> |\n| `110` | <Slot name=\"error-code-html-0-21-1\" /> |\n| `111` | 网络连接中断。SDK 在和服务器建立连接后，失去网络连接超过 4 秒。 |\n| `112` | 网络连接丢失，即网络连接中断，且 SDK 无法在 10 秒内连接服务器。 |\n| `119` | 用户切换角色失败，请尝试重新加入频道。 |\n| `120` | 解密失败。可能是用户加入频道时使用了错误的密码。请检查用户加入频道时填入的密码，或引导用户尝试重新加入频道。 |\n| `121` | 该用户 ID 无效。 |\n| `123` | 此用户被服务器禁止。当用户被服务端踢出时会报告这个错误。 |\n| `134` | 无效的用户账号，可能是因为设置了无效的参数。 |\n\n<Slot for=\"error-code-html-0-3-1\">\n\nSDK 尚未准备好。一般有以下原因：\n\n      - `RtcEngine` 初始化失败。请重新初始化 `RtcEngine`。\n      - 调用方法时用户尚未加入频道。请检查方法的调用逻辑。\n      - 调用 `rate` 或 `complain` 方法时用户尚未离开频道，请检查方法的调用逻辑。\n      - 音频模块未开启。\n      - 程序集不完整。\n\n</Slot>\n\n<Slot for=\"error-code-html-0-4-1\">\n\n`RtcEngine` 当前状态不支持该操作。一般有以下原因：\n\n        - 使用内置加密时，设置的加密模式不正确。\n        - 加载外部加密库失败。\n      请检查加密的枚举值是否正确，或重新加载外部加密库。\n\n</Slot>\n\n<Slot for=\"error-code-html-0-5-1\">\n\n方法调用被拒绝。一般有以下原因：\n\n        - `RtcEngine` 初始化失败。请重新初始化 `RtcEngine`。\n        - 在加入频道时，将频道名设为空字符 `\"\"`。请重新设置频道名。\n        - 多频道场景下，在调用 `joinChannel` 方法加入频道时，设置的频道名已存在。请重新设置频道名。\n        - 多频道场景下，在调用 `joinChannelEx` 方法加入频道时，设置的频道名已存在。请重新设置频道名。\n\n</Slot>\n\n<Slot for=\"error-code-html-0-11-1\">\n\n加入频道被拒绝。一般有以下原因：\n\n        - 用户已经在频道中。声网推荐通过 `onConnectionStateChanged` 回调判断用户是否在频道中。除非收到 `CONNECTION_STATE_DISCONNECTED`(1) 状态，否则请勿再次调用该方法加入频道。\n        - 用户在调用 `startEchoTest` 进行通话测试时，未调用 `stopEchoTest` 结束当前测试，就尝试加入频道。开始通话测试后，需要先调用 `stopEchoTest` 结束当前测试，再加入频道。\n\n</Slot>\n\n<Slot for=\"error-code-html-0-12-1\">\n\n离开频道失败。一般有以下原因：\n\n        - 用户已离开频道，再次调用退出频道的方法，如 `leaveChannel` 时，会返回此错误。停止调用该方法即可。\n        - 用户尚未加入频道，就调用 `leaveChannel` 等退出频道的方法。这种情况下无需额外操作。\n\n</Slot>\n\n<Slot for=\"error-code-html-0-20-1\">\n\n当前使用的 Token 过期，不再有效。请在服务端申请生成新的 Token，并调用 `renewToken` 更新 Token。\n        :::info[废弃]\n        该错误码已废弃。请改用 `onConnectionStateChanged` 回调中的 `CONNECTION_CHANGED_TOKEN_EXPIRED`(9)。\n        :::\n\n</Slot>\n\n<Slot for=\"error-code-html-0-21-1\">\n\nToken 无效。一般有以下原因：\n\n        - 在声网控制台中启用了 App 证书，但未使用 App ID + Token 鉴权。当项目启用了 App 证书，就必须使用 Token 鉴权。\n        - 生成 Token 时填入的 `uid` 字段，和用户加入频道时填入的 `uid` 不一致。\n\n        :::info[废弃]\n        该错误码已废弃。请改用 `onConnectionStateChanged` 回调中的 `CONNECTION_CHANGED_INVALID_TOKEN`(8)。\n        :::\n\n</Slot>\n",
+      "componentUsage": [
+        {
+          "count": 56,
+          "family": "",
+          "name": "Td",
+          "status": "automated-with-review",
+          "target": "gfm-table-or-slot-table"
+        },
+        {
+          "count": 28,
+          "family": "",
+          "name": "Tr",
+          "status": "automated-with-review",
+          "target": "gfm-table-or-slot-table"
+        },
+        {
+          "count": 3,
+          "family": "",
+          "name": "Admonition",
+          "status": "automated",
+          "target": "directive-callout"
+        },
+        {
+          "count": 1,
+          "family": "",
+          "name": "Table",
+          "status": "automated-with-review",
+          "target": "gfm-table-or-slot-table"
+        }
+      ],
+      "issues": [
+        "normalized-html-table",
+        "normalized-table-header:tableHeaderWidth",
+        "normalized-table-slot"
+      ],
+      "platform": "",
+      "sourcePath": "docs/rtc-server-sdk/error-code.mdx",
+      "falsePositiveUsage": [],
+      "referenceReview": {
+        "brokenLinks": [],
+        "images": []
+      },
+      "sharedDependencies": [
+        "docs/shared/rtc-server-sdk/error-code.mdx"
+      ],
+      "status": "needs_review",
+      "syntaxPatternUsage": [
+        {
+          "count": 1,
+          "family": "",
+          "name": "rawHtml",
+          "status": "automated-with-review",
+          "target": "markdown-native-or-slot"
+        },
+        {
+          "count": 1,
+          "family": "",
+          "name": "sharedImports",
+          "status": "automated-with-review",
+          "target": "include-or-static-expand"
+        }
+      ],
+      "targetPath": "content/docs/zh-CN/realtime-media/rtc-server-sdk/reference/error-code.mdx"
+    }
+  ],
+  "sourceRoot": "/Users/yangyixuan/Documents/GitHub/shengwang-doc-source",
+  "syntaxPatternUsage": [
+    {
+      "count": 3,
+      "family": "",
+      "name": "rawHtml",
+      "status": "automated-with-review",
+      "target": "markdown-native-or-slot"
+    },
+    {
+      "count": 3,
+      "family": "",
+      "name": "tableHeaderExport",
+      "status": "automated",
+      "target": "gfm-table-header"
+    },
+    {
+      "count": 2,
+      "family": "",
+      "name": "sharedImports",
+      "status": "automated-with-review",
+      "target": "include-or-static-expand"
+    },
+    {
+      "count": 1,
+      "family": "",
+      "name": "runtimeVariables",
+      "status": "automated-with-review",
+      "target": "static-evaluate-before-write"
+    }
+  ]
+}

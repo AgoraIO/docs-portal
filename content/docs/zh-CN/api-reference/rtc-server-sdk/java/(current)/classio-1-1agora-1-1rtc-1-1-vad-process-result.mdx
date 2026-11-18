@@ -1,0 +1,190 @@
+---
+title: io.agora.rtc.VadProcessResult类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_vad_process_result
+  sourcePath: html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_vad_process_result.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_vad_process_result_8java.html as local text.
+---
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+VadProcessResult 类，包含 VAD 检测结果。
+
+<a id="doc-constructors"></a>
+
+<a id="header-doc-constructors"></a>
+
+## 构造及析构函数说明
+
+<a id="acc5c7ce84637c630084cd3ba9f8fe2a9"></a>
+
+### VadProcessResult()
+
+<ApiSignature>
+
+io.agora.rtc.VadProcessResult.VadProcessResult(byte[] *outFrame*, Constants.VadState *state*)
+
+</ApiSignature>
+
+Constructor for VadProcessResult.
+
+<ParameterList title="参数">
+<Parameter name="outFrame">
+
+The output frame after VAD processing
+
+</Parameter>
+<Parameter name="state">
+
+The state of the VAD process
+
+</Parameter>
+</ParameterList>
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="a33a6520b997c441a2b7210fa517e910a"></a>
+
+### getOutFrame()
+
+<ApiSignature>
+
+byte[] io.agora.rtc.VadProcessResult.getOutFrame()
+
+</ApiSignature>
+
+Gets the output frame.
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+The output frame after VAD processing
+
+<a id="a9ea92e084f6afc2c444050970759cbd7"></a>
+
+### getState()
+
+<ApiSignature>
+
+Constants.VadState io.agora.rtc.VadProcessResult.getState()
+
+</ApiSignature>
+
+Gets the state of the VAD process.
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+The state of the VAD process
+
+<a id="a99d10bd106e7f234a825338582358138"></a>
+
+### setOutFrame()
+
+<ApiSignature>
+
+void io.agora.rtc.VadProcessResult.setOutFrame(byte[] *outFrame*)
+
+</ApiSignature>
+
+Sets the output frame.
+
+<ParameterList title="参数">
+<Parameter name="outFrame">
+
+The output frame after VAD processing
+
+</Parameter>
+</ParameterList>
+
+<a id="a9b8f8ffa7fd3b18cacd98718365d11bf"></a>
+
+### setState()
+
+<ApiSignature>
+
+void io.agora.rtc.VadProcessResult.setState(Constants.VadState *state*)
+
+</ApiSignature>
+
+Sets the state of the VAD process.
+
+<ParameterList title="参数">
+<Parameter name="state">
+
+The state of the VAD process
+
+</Parameter>
+</ParameterList>
+
+<a id="a05c49f529baa7679e2f479c380180983"></a>
+
+### toString()
+
+<ApiSignature>
+
+String io.agora.rtc.VadProcessResult.toString()
+
+</ApiSignature>
+
+Returns a string representation of the VadProcessResult.
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+A string representation of the object
+
+<a id="doc-variable-members"></a>
+
+<a id="header-doc-variable-members"></a>
+
+## 类成员变量说明
+
+<a id="acc0f2bfca806c655e9361ccabffbaf02"></a>
+
+### outFrame
+
+<ApiSignature labels="private">
+
+byte [] io.agora.rtc.VadProcessResult.outFrame
+
+</ApiSignature>
+
+VAD 处理后输出的音频数据。
+
+<a id="ad89f246e8fcc80271faae3db3cb2c435"></a>
+
+### state
+
+<ApiSignature labels="private">
+
+Constants.VadState io.agora.rtc.VadProcessResult.state
+
+</ApiSignature>
+
+VAD 状态结果：
+
+- Unknown(-1)：结果未知
+- NONE_SPEAKING(0)：没有人讲话
+- START_SPEAKING(1)：开始讲话
+- SPEAKING(2)：正在讲话
+- STOP_SPEAKING(3)：停止讲话
+
+---
+
+该类的文档由以下文件生成:
+
+- VadProcessResult.java

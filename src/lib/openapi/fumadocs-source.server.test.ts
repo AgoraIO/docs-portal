@@ -22,7 +22,7 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/rtc/query-channel-list.mdx',
     );
-    expect(pagePaths).not.toContain(
+    expect(pagePaths).toContain(
       'zh-CN/api-reference/api-ref/rtc/query-channel-list.mdx',
     );
     expect(pagePaths).toContain(
@@ -37,7 +37,7 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/rtmp-gateway/create-streaming-key.mdx',
     );
-    expect(pagePaths).not.toContain(
+    expect(pagePaths).toContain(
       'zh-CN/api-reference/api-ref/rtmp-gateway/create-streaming-key.mdx',
     );
     expect(pagePaths).toContain(
@@ -52,7 +52,10 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/conversational-ai/platform/create-agent.mdx',
     );
-    expect(pagePaths).toHaveLength(119);
+    expect(pagePaths.filter((path) => path.startsWith('en/'))).toHaveLength(86);
+    expect(pagePaths.filter((path) => path.startsWith('zh-CN/'))).toHaveLength(
+      126,
+    );
   });
 
   it('uses locale-specific document IDs in client page props', async () => {
@@ -124,7 +127,9 @@ describe('fumadocs openapi source', () => {
       },
     } as const;
 
-    for (const lane of OPENAPI_LANES) {
+    for (const lane of OPENAPI_LANES.filter(
+      (lane) => lane.id in expectedAuthLinks,
+    )) {
       const firstOperation = Object.values(lane.operations)[0];
       const page = source.files.find(
         (file) =>
@@ -359,7 +364,7 @@ describe('fumadocs openapi source', () => {
         {
           description: '更新实时转录翻译任务配置。',
           prose:
-            '通过 [`join`](./join) 方法开始转写任务后，你可以发起 `update` 请求更新转写任务配置。',
+            '通过 [`join`](join) 方法开始转写任务后，你可以发起 `update` 请求更新转写任务配置。',
         },
       ],
       [

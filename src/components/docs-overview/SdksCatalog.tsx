@@ -1,8 +1,13 @@
 import { ChevronDownIcon, DownloadIcon } from 'lucide-react';
 import { useMemo, useState, useSyncExternalStore } from 'react';
 import { cn } from '@/lib/cn';
+import {
+  normalizeLocale as normalizeReleaseLocale,
+  DEFAULT_LOCALE as RELEASE_DEFAULT_LOCALE,
+} from '@/lib/i18n/i18n-config';
 import { subscribeToLocationChange } from '@/lib/location-change';
 import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
+import { SdksCatalog as ChineseSdksCatalog } from './SdksCatalog.zh-cn';
 import {
   type SdkDownloadProduct,
   type SdkDownloadVersion,
@@ -183,7 +188,7 @@ function buildProductGroups(): ProductGroup[] {
   });
 }
 
-export function SdksCatalog() {
+function GlobalSdksCatalog() {
   const productGroups = useMemo(buildProductGroups, []);
   const queryFilters = useSdkCatalogQueryFilters();
   const productFilter = queryFilters.productId
@@ -600,4 +605,13 @@ function getVersionMeta(version: SdkDownloadVersion) {
       ? `${displayLabel} - ${states.join(', ')}`
       : displayLabel,
   };
+}
+
+export function SdksCatalog(props: Parameters<typeof ChineseSdksCatalog>[0]) {
+  return normalizeReleaseLocale(props.locale ?? RELEASE_DEFAULT_LOCALE) ===
+    'zh-CN' ? (
+    <ChineseSdksCatalog {...props} />
+  ) : (
+    <GlobalSdksCatalog />
+  );
 }

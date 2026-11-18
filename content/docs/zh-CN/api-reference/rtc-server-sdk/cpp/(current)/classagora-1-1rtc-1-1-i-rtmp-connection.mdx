@@ -1,0 +1,200 @@
+---
+title: agora::rtc::IRtmpConnection类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_rtmp_connection
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_rtmp_connection.html
+  generator: doxygen
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: >-
+        No local target route for
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html.
+---
+
+继承自 agora::RefCountInterface.
+
+<a id="details"></a>
+
+## 详细描述
+
+[`IRtmpConnection`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection) 类，用于管理 SDK 与 CDN 之间的连接。
+
+连接完成之后，你可以通过 [IRtmpLocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user) 对象在 CDN 中推流。
+
+连接 CDN 是异步操作，你可以通过 [IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) 对象监听连接状态变化和事件。
+
+## 构造及析构函数说明
+
+<a id="a68c9da474e9bf1ca56edae47ef9df79f"></a>
+
+### ~IRtmpConnection()
+
+<ApiSignature labels="inline">
+
+agora::rtc::IRtmpConnection::~IRtmpConnection()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="a5e89428056585b3b0643af03ff197ec4"></a>
+
+### connect()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpConnection::connect(const char * *url*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
+
+连接 CDN。
+
+成功调用该方法后，连接状态由 `STATE_DISCONNECTED(1)` 变更为 `STATE_CONNECTING(2)`。
+
+根据连接是否成功，连接状态会有如下变化：
+
+- 连接成功：连接状态变更为 `STATE_CONNECTED(3)`，SDK 会触发 [onConnected](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer#a4048ee1d38dff83649d33bfef93a30f6) 回调。
+- 连接失败：连接状态变更为 `STATE_FAILED(5)`，SDK 会触发 [onConnectionFailure](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer#a86658e80515ca6a85ebde8c230c71f16) 回调。
+
+<ParameterList title="参数">
+<Parameter name="url">
+
+CDN 推流地址。格式为 RTMP。字符长度不能超过 1024 字节。不支持中文字符等特殊字符。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+  - -2 (`ERR_INVALID_ARGUMENT`): 参数无效。
+  - -8(`ERR_INVALID_STATE`): 当前连接状态不是 `STATE_DISCONNECTED(1)`。
+
+<a id="ac3fcd6d1efd903f1bb75797fb709584e"></a>
+
+### disconnect()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpConnection::disconnect(aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
+
+与 CDN 断开连接。
+
+成功调用该方法后，连接状态变更为 `STATE_DISCONNECTED(1)`，同时 SDK 会触发 [onDisconnected](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer#a676896b8556082f878cb2abfff4f60db) 回调。
+
+<ParameterList title="参数">
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a3bd6ddccf345b4102f0a1d371b13acfd"></a>
+
+### getConnectionInfo()
+
+<ApiSignature labels="pure virtual">
+
+virtual [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) agora::rtc::IRtmpConnection::getConnectionInfo()
+
+</ApiSignature>
+
+获取连接信息。
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+- [RtmpConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-info) 对象：方法调用成功。
+- 空指针：方法调用失败。
+
+<a id="a87b6eedbf3b26da33c0f65135826349b"></a>
+
+### getRtmpLocalUser()
+
+<ApiSignature labels="pure virtual">
+
+virtual [IRtmpLocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user)* agora::rtc::IRtmpConnection::getRtmpLocalUser()
+
+</ApiSignature>
+
+获取本地用户对象的指针。每个连接仅对应一个本地用户。
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+- [IRtmpLocalUser](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-local-user) 对象：方法调用成功。
+- 空指针：方法调用失败。
+
+<a id="aa6eea62bee7f3db6a5e5d1046d8074c6"></a>
+
+### registerObserver()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpConnection::registerObserver([IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) * *observer*, void(*)([IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) *) *safeDeleter* = `NULL`, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
+
+注册 CDN 连接 observer。
+
+你必须先创建 [`IRtmpConnectionObserver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) 对象。
+
+<ParameterList title="参数">
+<Parameter name="observer">
+
+[IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) 对象。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a8ea6ca78a6c994d8af882eaf123d2115"></a>
+
+### unregisterObserver()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRtmpConnection::unregisterObserver([IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) * *observer*)
+
+</ApiSignature>
+
+销毁 CDN 连接 observer。
+
+<ParameterList title="参数">
+<Parameter name="observer">
+
+[IRtmpConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection-observer) 对象。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

@@ -111,16 +111,25 @@ describe('API reference overview links', () => {
 
     const actualTitles = Object.fromEntries(
       Object.entries(expectedTitles).map(([product, _title]) => {
-        const extension = ['im', 'media-pull', 'media-push', 'whiteboard'].includes(
-          product,
-        )
+        const extension = [
+          'im',
+          'media-pull',
+          'media-push',
+          'whiteboard',
+        ].includes(product)
           ? 'md'
           : 'mdx';
 
         return [
           product,
           getFrontmatterTitle(
-            readDoc('en', 'api-reference', 'api-ref', product, `index.${extension}`),
+            readDoc(
+              'en',
+              'api-reference',
+              'api-ref',
+              product,
+              `index.${extension}`,
+            ),
           ),
         ];
       }),

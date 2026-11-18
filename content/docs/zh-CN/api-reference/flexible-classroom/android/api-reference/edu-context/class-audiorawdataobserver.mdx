@@ -1,0 +1,93 @@
+---
+title: "FcrAudioRawDataObserver"
+description: "原始音频数据观察者。"
+---
+<a id="class_audiorawdataobserver"></a>
+
+<a id="api_onaudiorawdatarecorded"></a>
+
+## onAudioRawDataRecord
+
+录制后抛出的音频数据。
+
+<a id="api_onaudiorawdatarecorded__prototype"></a>
+
+```kotlin
+fun onAudioRawDataRecord(data: FcrAudioRawData)
+```
+
+<a id="api_onaudiorawdatarecorded__parameters"></a>
+
+### 参数
+
+#### `data`
+
+音频数据，详见 [FcrAudioRawData](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#class_FcrAudioRawData)。
+
+<a id="api_onaudiorawdatabeforemixed"></a>
+
+## onAudioRawDataBeforeMixed
+
+收到远端多路音频流回调。
+
+<a id="api_onaudiorawdatabeforemixed__prototype"></a>
+
+```kotlin
+fun onAudioRawDataBeforeMixed(data: FcrAudioRawData, streamUuid: String, roomUuid: String)
+```
+
+<a id="api_onaudiorawdatabeforemixed__detailed_desc"></a>
+
+### 详情
+
+#### `Since`
+
+v2.8.30
+
+收到远端多路音频流回调。SDK 会在将多路音频流合为一路音频流前触发该回调，抛出音频数据。
+
+<a id="api_onaudiorawdatabeforemixed__parameters"></a>
+
+### 参数
+
+#### `data`
+
+音频数据。详见 [FcrAudioRawData](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#class_FcrAudioRawData)。
+
+#### `streamUuid`
+
+流 ID。
+
+#### `roomUuid`
+
+房间 ID。
+
+<a id="api_onaudiorawdatamixed"></a>
+
+## onAudioRawDataMixed
+
+音频流已混合回调。
+
+<a id="api_onaudiorawdatamixed__prototype"></a>
+
+```kotlin
+fun onAudioRawDataMixed(data: FcrAudioRawData)
+```
+
+<a id="api_onaudiorawdatamixed__detailed_desc"></a>
+
+### 详情
+
+#### `Since`
+
+v2.8.30
+
+SDK 在所有音频流混合后触发该回调，抛出音频数据。
+
+<a id="api_onaudiorawdatamixed__parameters"></a>
+
+### 参数
+
+#### `data`
+
+音频数据。详见 [FcrAudioRawData](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#class_FcrAudioRawData)。

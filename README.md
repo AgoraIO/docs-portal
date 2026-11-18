@@ -71,6 +71,9 @@ bun run build
 See [docs/development.md](docs/development.md) for script semantics, scoped dev
 rules, and verification guidance.
 
+See [docs/search-service.md](docs/search-service.md) for separate static-site and
+TanStack Start API builds, private Meilisearch configuration, and index release commands.
+
 ## Authoring Docs
 
 Docs content should follow the repo Markdown and MDX contract in

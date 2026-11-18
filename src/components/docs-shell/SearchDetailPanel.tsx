@@ -8,7 +8,8 @@ export type DetailPlacement = 'right' | 'left' | 'strip';
 
 const PANEL_WIDTH = 260;
 const GAP = 14;
-const MIN_SIDE_CLEARANCE = PANEL_WIDTH + GAP;
+const MIN_PANEL_WIDTH = 200;
+const VIEWPORT_MARGIN = 16;
 
 export function SearchDetailPanel({
   activeValue,
@@ -16,6 +17,7 @@ export function SearchDetailPanel({
   open,
   placement: placementOverride,
   renderText,
+  showStrip = true,
   title,
 }: {
   activeValue: string | null;
@@ -24,16 +26,19 @@ export function SearchDetailPanel({
   // Test seam: force a mode instead of measuring the DOM.
   placement?: DetailPlacement;
   renderText: (value: string) => ReactNode;
+  showStrip?: boolean;
   title?: string;
 }) {
   const [placement, setPlacement] = useState<DetailPlacement>(
     placementOverride ?? 'strip',
   );
   const [style, setStyle] = useState<CSSProperties>({});
+  const cardRef = useRef<HTMLDivElement>(null);
   const lastRef = useRef<{
     placement: DetailPlacement;
     left: number;
     top: number;
+    width: number;
   } | null>(null);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: activeValue is intentional — it triggers repositioning when the active result changes
@@ -56,11 +61,19 @@ export function SearchDetailPanel({
 
     function compute() {
       const dr = d.getBoundingClientRect();
+      const rightWidth = Math.min(
+        PANEL_WIDTH,
+        window.innerWidth - dr.right - GAP - VIEWPORT_MARGIN,
+      );
+      const leftWidth = Math.min(PANEL_WIDTH, dr.left - GAP - VIEWPORT_MARGIN);
       let next: DetailPlacement;
-      if (window.innerWidth - dr.right >= MIN_SIDE_CLEARANCE) {
+      let width = PANEL_WIDTH;
+      if (rightWidth >= MIN_PANEL_WIDTH) {
         next = 'right';
-      } else if (dr.left >= MIN_SIDE_CLEARANCE) {
+        width = rightWidth;
+      } else if (leftWidth >= MIN_PANEL_WIDTH) {
         next = 'left';
+        width = leftWidth;
       } else {
         next = 'strip';
       }
@@ -72,11 +85,16 @@ export function SearchDetailPanel({
           '[data-slot="command-item"][aria-selected="true"]',
         );
         const rr = row?.getBoundingClientRect();
-        top = Math.min(
-          Math.max(rr ? rr.top : dr.top, dr.top + 8),
-          Math.max(dr.top + 8, dr.bottom - 96),
+        top = Math.max(
+          VIEWPORT_MARGIN,
+          Math.min(
+            rr?.top ?? dr.top,
+            window.innerHeight -
+              (cardRef.current?.offsetHeight || 96) -
+              VIEWPORT_MARGIN,
+          ),
         );
-        left = next === 'right' ? dr.right + GAP : dr.left - GAP - PANEL_WIDTH;
+        left = next === 'right' ? dr.right + GAP : dr.left - GAP - width;
       }
 
       const prev = lastRef.current;
@@ -84,15 +102,16 @@ export function SearchDetailPanel({
         prev &&
         prev.placement === next &&
         prev.left === left &&
-        prev.top === top
+        prev.top === top &&
+        prev.width === width
       ) {
         return;
       }
-      lastRef.current = { left, placement: next, top };
+      lastRef.current = { left, placement: next, top, width };
 
       setPlacement(next);
       if (next !== 'strip') {
-        setStyle({ left, position: 'fixed', top, width: PANEL_WIDTH });
+        setStyle({ left, position: 'fixed', top, width });
       }
     }
 
@@ -103,9 +122,19 @@ export function SearchDetailPanel({
       window.removeEventListener('resize', compute);
       list?.removeEventListener('scroll', compute);
     };
-  }, [activeValue, open, placementOverride]);
+  }, [
+    activeValue,
+    open,
+    placementOverride,
+    placement,
+    description,
+    style.width,
+  ]);
+
+  if (!open) return null;
 
   if (placement === 'strip') {
+    if (!showStrip) return null;
     // Fixed-height reserved strip, rendered in place (the footer). Blank when
     // there is no description so the dialog stays height-stable in strip mode.
     return (
@@ -134,10 +163,11 @@ export function SearchDetailPanel({
   return createPortal(
     // Keyed on activeValue so the fade/nudge replays when the selection changes.
     <div
-      className="search-detail-enter pointer-events-none fixed z-[60] w-[260px] rounded-xl border border-border bg-popover/95 p-3 shadow-2xl backdrop-blur"
+      className="search-detail-enter pointer-events-none fixed z-[60] max-h-[calc(100dvh-2rem)] w-[260px] overflow-hidden rounded-xl border border-border bg-popover/95 p-3 shadow-2xl backdrop-blur"
       data-mode="beside"
       data-testid="search-active-detail"
       key={activeValue ?? 'first'}
+      ref={cardRef}
       style={style}
     >
       {title ? (

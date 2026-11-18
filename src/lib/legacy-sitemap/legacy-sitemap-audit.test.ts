@@ -2,6 +2,10 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
+  resolveZhCnProductIaRedirect,
+  ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS,
+} from '../zh-cn-product-ia-redirects';
+import {
   legacySitemapRedirectConfig,
   resolveLegacySitemapRedirectPath,
 } from './redirects';
@@ -47,12 +51,21 @@ const manualLegacyUrls = new Set([
   'https://docs.agora.io/en/sdks',
   'https://docs.agora.io/en/solutions/interactive-live-streaming/product-overview',
 ]);
+const currentDocsIaMigrationRedirects = new Map(
+  Object.entries(ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS).map(
+    ([sourcePath, target]) => [
+      `https://docs.agora.io/zh-CN/${sourcePath}`,
+      target,
+    ],
+  ),
+);
 const apiRefRedirectAuditEvidence =
   'API Reference link audit row marked add-301/high in docs/agents/reports/2026-08-03-api-ref-docs-redirect-triage.md';
 
 const reviewedHelpFaqRedirectTargets = [
   {
-    legacyUrl: 'https://docs.agora.io/en/help/integration-issues/recording_mode',
+    legacyUrl:
+      'https://docs.agora.io/en/help/integration-issues/recording_mode',
     target: '/en/api-reference/faq/integration/recording_mode',
   },
   {
@@ -184,7 +197,13 @@ describe('legacy sitemap compatibility audit', () => {
       (rule) =>
         !sitemapHrefs.has(rule.legacyUrl) &&
         !manualLegacyUrls.has(rule.legacyUrl) &&
-        !rule.evidence.includes(apiRefRedirectAuditEvidence),
+        !rule.evidence.includes(apiRefRedirectAuditEvidence) &&
+        currentDocsIaMigrationRedirects.get(rule.legacyUrl) !== rule.target &&
+        resolveZhCnProductIaRedirect(
+          rule.legacyPath.split('/')[1],
+          rule.legacyPath.split('/')[2],
+          rule.legacyPath.split('/').slice(3),
+        ) !== rule.target,
     );
 
     expect(staleRules).toEqual([]);
@@ -293,74 +312,62 @@ const reviewedRedirectTargets = [
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=android',
-    target:
-      '/en/realtime-media/rtc/reference/release-notes/android',
+    target: '/en/realtime-media/rtc/reference/release-notes/android',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=ios',
-    target:
-      '/en/realtime-media/rtc/reference/release-notes/ios',
+    target: '/en/realtime-media/rtc/reference/release-notes/ios',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=macos',
-    target:
-      '/en/realtime-media/rtc/reference/release-notes/macos',
+    target: '/en/realtime-media/rtc/reference/release-notes/macos',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=web',
-    target:
-      '/en/realtime-media/rtc/reference/release-notes/web',
+    target: '/en/realtime-media/rtc/reference/release-notes/web',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=windows',
-    target:
-      '/en/realtime-media/rtc/reference/release-notes/windows',
+    target: '/en/realtime-media/rtc/reference/release-notes/windows',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=electron',
-    target:
-      '/en/realtime-media/rtc/reference/release-notes/electron',
+    target: '/en/realtime-media/rtc/reference/release-notes/electron',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=flutter',
-    target:
-      '/en/realtime-media/rtc/reference/release-notes/flutter',
+    target: '/en/realtime-media/rtc/reference/release-notes/flutter',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=react-native',
-    target:
-      '/en/realtime-media/rtc/reference/release-notes/react-native',
+    target: '/en/realtime-media/rtc/reference/release-notes/react-native',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=react-js',
-    target:
-      '/en/realtime-media/rtc/reference/release-notes/javascript',
+    target: '/en/realtime-media/rtc/reference/release-notes/javascript',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=unity',
-    target:
-      '/en/realtime-media/rtc/reference/release-notes/unity',
+    target: '/en/realtime-media/rtc/reference/release-notes/unity',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=unreal',
-    target:
-      '/en/realtime-media/rtc/reference/release-notes/unreal',
+    target: '/en/realtime-media/rtc/reference/release-notes/unreal',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=blueprint',
-    target:
-      '/en/realtime-media/rtc/reference/release-notes/blueprint',
+    target: '/en/realtime-media/rtc/reference/release-notes/blueprint',
   },
   {
     legacyUrl: 'https://docs.agora.io/en/conversational-ai/develop/presets',

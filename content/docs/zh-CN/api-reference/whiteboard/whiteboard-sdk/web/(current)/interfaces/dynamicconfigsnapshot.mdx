@@ -1,0 +1,45 @@
+---
+title: DynamicConfigSnapshot
+description: 已求值的只读配置快照，供 joinRoom、WindowManager 和插件 extras 消费；不含原始 defaults/webviewVersion 包装。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/dynamicconfigsnapshot
+  sourcePath: html-docs/whiteboard/Web/interfaces/dynamicconfigsnapshot.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export interface DynamicConfigSnapshot {
+    readonly joinRoom?: DynamicConfigObject;
+    readonly windowManager?: DynamicConfigObject;
+    readonly appliancePlugin?: { readonly extras?: DynamicConfigObject };
+}
+```
+
+## Properties
+
+<a id="joinRoom"></a>
+
+### Readonly Optional joinRoom
+
+readonly joinRoom?: DynamicConfigObject;
+
+已根据当前运行时求值的入房参数对象；不含 defaults/webviewVersion 包装。不是房间身份或最终全部本地参数。
+
+<a id="windowManager"></a>
+
+### Readonly Optional windowManager
+
+readonly windowManager?: DynamicConfigObject;
+
+已求值的窗口管理器配置。WindowManager 从 room.dynamicConfig.windowManager 读取，并保留本地显式配置优先级。
+
+<a id="appliancePlugin"></a>
+
+### Readonly Optional appliancePlugin
+
+readonly appliancePlugin?: \{ readonly extras?: DynamicConfigObject \};
+
+已求值的插件配置对象，包含可选 extras: DynamicConfigObject。通过插件接入流程消费；不是插件实例。

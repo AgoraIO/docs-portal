@@ -1,0 +1,41 @@
+---
+title: "MediaNodeFactory 类"
+---
+<span className="index-desc-medianodefactory">`MediaNodeFactory` 类。</span>
+
+<a id="newmedianodefactory"></a>
+## NewMediaNodeFactory
+
+```go
+func NewMediaNodeFactory() *MediaNodeFactory {
+    factory := C.agora_service_create_media_node_factory(agoraService.service)
+    if factory == nil {
+        return nil
+    }
+    return &MediaNodeFactory{
+        cFactory: factory,
+    }
+}
+```
+
+<span className="index-desc-newmedianodefactory">创建一个媒体节点工厂对象。</span>
+
+#### 返回值
+
+- `MediaNodeFactory` 对象：方法调用成功。
+- `nil`: 方法调用失败。
+
+<a id="release"></a>
+## Release
+
+```go
+func (factory *MediaNodeFactory) Release() {
+    if factory.cFactory == nil {
+        return
+    }
+    C.agora_media_node_factory_destroy(factory.cFactory)
+    factory.cFactory = nil
+}
+```
+
+<span className="index-desc-release">释放 `MediaNodeFactory` 对象。</span>

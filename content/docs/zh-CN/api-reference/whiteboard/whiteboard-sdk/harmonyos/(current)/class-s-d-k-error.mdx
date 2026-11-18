@@ -1,0 +1,112 @@
+---
+title: SDKError class 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/class_s_d_k_error
+  sourcePath: html-docs/whiteboard/HarmonyOS/class_s_d_k_error.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+SDK 初始化或接口错误，继承 Error；包含 jsStack 和静态错误解析辅助方法。
+
+可从 @shengwang/whiteboard 直接导入 SDKError。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export class SDKError extends Error
+```
+
+| [jsStack](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-s-d-k-error#af93b6e9ac86094b297a9d7399aec61e3) | `readonly jsStack: string` |
+| --- | --- |
+| [constructor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-s-d-k-error#a2fc8c5d9a105112b1bada65f3f890688) | `constructor(message: string, jsStack: string = "Native Error")` |
+| [parseError](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-s-d-k-error#a1672d5244cb277637c96095076368a0c) | `static parseError(object: SDKErrorPayload) : SDKError` |
+| [promiseError](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-s-d-k-error#a6fca06931cf4bda32f289c40f7bab363) | `static promiseError(str: string) : SDKError \| null` |
+| [promiseErrorFromJson](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-s-d-k-error#ac933f0f67bb4f29bac9b7b9c11151218) | `static promiseErrorFromJson(jsonObject: JsResponse) : SDKError \| null` |
+| [toString](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-s-d-k-error#a7205eefe731302087ef5b566dc09a836) | `toString() : string` |
+| [message](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-s-d-k-error#a6c23aca9b5b1e3817732e9971a104ac0) | `message: string` |
+
+## 变量说明
+
+<a id="af93b6e9ac86094b297a9d7399aec61e3"></a>
+
+### jsStack
+
+```text
+readonly jsStack: string
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="a6c23aca9b5b1e3817732e9971a104ac0"></a>
+
+### message
+
+```text
+message: string
+```
+
+初始化或接口错误原因；继承自 Error.message。
+
+## 函数说明
+
+<a id="a2fc8c5d9a105112b1bada65f3f890688"></a>
+
+### constructor
+
+```text
+constructor(message: string, jsStack: string = "Native Error")
+```
+
+constructor：SDKError 的公开成员。参数和返回类型见下方签名。
+
+<a id="a1672d5244cb277637c96095076368a0c"></a>
+
+### parseError
+
+```text
+static parseError(object: SDKErrorPayload) : SDKError
+```
+
+parseError：SDKError 的公开成员。参数和返回类型见下方签名。
+
+<a id="a6fca06931cf4bda32f289c40f7bab363"></a>
+
+### promiseError
+
+```text
+static promiseError(str: string) : SDKError | null
+```
+
+promiseError：SDKError 的公开成员。参数和返回类型见下方签名。
+
+<a id="ac933f0f67bb4f29bac9b7b9c11151218"></a>
+
+### promiseErrorFromJson
+
+```text
+static promiseErrorFromJson(jsonObject: JsResponse) : SDKError | null
+```
+
+promiseErrorFromJson：SDKError 的公开成员。参数和返回类型见下方签名。
+
+<a id="a7205eefe731302087ef5b566dc09a836"></a>
+
+### toString
+
+```text
+toString() : string
+```
+
+toString：SDKError 的公开成员。参数和返回类型见下方签名。

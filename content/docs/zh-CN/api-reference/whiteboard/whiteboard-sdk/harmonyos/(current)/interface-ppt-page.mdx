@@ -1,0 +1,81 @@
+---
+title: PptPage interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_ppt_page
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_ppt_page.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+场景中的 PPT 背景资源与尺寸。
+
+可从 @shengwang/whiteboard 直接导入 PptPage。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface PptPage
+```
+
+| [src](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-ppt-page#a619e32e79b0b8239f2b7769a1b58923a) | `src: string` |
+| --- | --- |
+| [width](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-ppt-page#adcb45e35a4846387005b5408ed98ba9f) | `width: number` |
+| [height](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-ppt-page#a8bd45d429d1ba7eb8150e2960c447260) | `height: number` |
+| [preview](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-ppt-page#a2465d008f58ce57c2da390dd7c8f9e0f) | `preview?: string` |
+
+## 变量说明
+
+<a id="a619e32e79b0b8239f2b7769a1b58923a"></a>
+
+### src
+
+```text
+src: string
+```
+
+图片的 URL 地址或动态 PPT 页的 URI 地址。
+支持的格式：
+- 图片：URL 地址，可以是通过文档转换功能生成的 URL。
+- 动态 PPT 页：通过文档转换功能生成的 URI 地址。
+
+<a id="adcb45e35a4846387005b5408ed98ba9f"></a>
+
+### width
+
+```text
+width: number
+```
+
+图片或动态 PPT 在白板中的宽度，单位为像素。
+
+<a id="a8bd45d429d1ba7eb8150e2960c447260"></a>
+
+### height
+
+```text
+height: number
+```
+
+图片或动态 PPT 在白板中的高度，单位为像素。
+
+<a id="a2465d008f58ce57c2da390dd7c8f9e0f"></a>
+
+### preview
+
+```text
+preview?: string
+```
+
+图片或动态 PPT 的预览图 URL 地址。
+动态 PPT 的预览图 URL 地址可以通过文档转换任务的查询结果中 `preview` 字段获取。

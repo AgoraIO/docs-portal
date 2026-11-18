@@ -1,0 +1,32 @@
+---
+title: DisplayerState
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/displayerstate
+  sourcePath: html-docs/whiteboard/Web/interfaces/displayerstate.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type DisplayerState = {
+    /**
+     * 房间的公共全局变量。房间里所有人看到的都是同一份。
+     */
+    globalState: GlobalState;
+    /**
+     * 房间的所有可读写用户列表
+     */
+    roomMembers: ReadonlyArray<RoomMember>;
+    /**
+     * 场景状态
+     */
+    sceneState: SceneState;
+    /**
+     * 视角状态
+     */
+    cameraState: CameraState;
+};
+```

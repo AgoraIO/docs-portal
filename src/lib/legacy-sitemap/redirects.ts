@@ -1,3 +1,4 @@
+import { isRetiredCnDocsPath } from '../retired-cn-docs.mjs';
 import posthogObservedRedirects from './posthog-observed-redirects.json';
 import legacySitemapRedirects from './redirects.json';
 
@@ -38,7 +39,9 @@ export function resolveLegacySitemapRedirectPath(
     ...(posthogObservedRedirects as LegacySitemapRedirectRule[]),
   ];
 
-  return (
+  if (isRetiredCnDocsPath(normalizedPath)) return null;
+
+  const rule =
     allRedirectRules.find(
       (rule) =>
         normalizeLegacyPath(rule.legacyPath) === normalizedPath &&
@@ -49,8 +52,8 @@ export function resolveLegacySitemapRedirectPath(
         normalizeLegacyPath(rule.legacyPath) === normalizedPath &&
         !rule.legacySearch,
     ) ??
-    null
-  );
+    null;
+  return rule && !isRetiredCnDocsPath(rule.target) ? rule : null;
 }
 
 function normalizeLegacyPath(path: string) {

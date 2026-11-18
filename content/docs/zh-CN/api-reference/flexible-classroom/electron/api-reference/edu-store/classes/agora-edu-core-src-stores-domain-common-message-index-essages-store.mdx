@@ -1,0 +1,585 @@
+---
+title: Class MessagesStore
+description: MessagesStore 类用于处理各种聊天消息及IM信令控制。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/agora_edu_core_src_stores_domain_common_message_index_essagesStore.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Electron/classes/agora_edu_core_src_stores_domain_common_message_index_essagesStore.html
+  generator: typedoc
+  warnings: []
+---
+
+## Accessors
+
+<a id="chatConvasationMessageId"></a>
+
+### chatConvasationMessageId
+
+<ApiSignature>
+
+get chatConvasationMessageId(): Map&lt;string, [MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)&gt;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Map&lt;string, [MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="chatConvasationUserUuid"></a>
+
+### chatConvasationUserUuid
+
+<ApiSignature>
+
+get chatConvasationUserUuid(): Map&lt;string, [Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)&gt;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Map&lt;string, [Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="chatMuted"></a>
+
+### chatMuted
+
+<ApiSignature>
+
+get chatMuted(): boolean
+
+</ApiSignature>
+
+是否禁止聊天
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="newMessageFlag"></a>
+
+### newMessageFlag
+
+<ApiSignature>
+
+get newMessageFlag(): boolean
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="roomChatConversations"></a>
+
+### roomChatConversations
+
+<ApiSignature>
+
+get roomChatConversations(): [Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)[]
+
+</ApiSignature>
+
+会话列表
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)[]
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="roomChatMessages"></a>
+
+### roomChatMessages
+
+<ApiSignature>
+
+get roomChatMessages(): [MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)[]
+
+</ApiSignature>
+
+历史消息列表
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)[]
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="roomChatMessagesMessageId"></a>
+
+### roomChatMessagesMessageId
+
+<ApiSignature>
+
+get roomChatMessagesMessageId(): Map&lt;string, [MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)&gt;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Map&lt;string, [MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="unreadMessageCount"></a>
+
+### unreadMessageCount
+
+<ApiSignature>
+
+get unreadMessageCount(): number
+
+</ApiSignature>
+
+未读消息数量
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Methods
+
+<a id="addChatMessage"></a>
+
+### addChatMessage
+
+<ApiSignature>
+
+addChatMessage(args: [MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)): void
+
+</ApiSignature>
+
+增加一条消息到消息列表
+
+<ParameterList title="Parameters">
+<Parameter name="args" required>
+
+<ParameterType>
+
+[MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="addConversationChatMessage"></a>
+
+### addConversationChatMessage
+
+<ApiSignature>
+
+addConversationChatMessage(args: [MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item), conversation: [Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="args" required>
+
+<ParameterType>
+
+[MessageItem](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-essage-item)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="conversation" required>
+
+<ParameterType>
+
+[Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="addRoomChatConversation"></a>
+
+### addRoomChatConversation
+
+<ApiSignature>
+
+addRoomChatConversation(conversation: [Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="conversation" required>
+
+<ParameterType>
+
+[Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getConversationHistoryChatMessage"></a>
+
+### getConversationHistoryChatMessage
+
+<ApiSignature>
+
+getConversationHistoryChatMessage(data: \{ nextId: string; sort: number; studentUuid: string \}): Promise&lt;void&gt;
+
+</ApiSignature>
+
+根据学生 ID 获取学生的提问消息
+
+<ParameterList title="Parameters">
+<Parameter name="data" type="\&#123; nextId: string; sort: number; studentUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="nextId" type="string" required />
+<Parameter name="sort" type="number" required />
+<Parameter name="studentUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getConversationList"></a>
+
+### getConversationList
+
+<ApiSignature>
+
+getConversationList(data: \{ nextId: string; sort: number \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+获取 提问列表用户信息
+
+<ParameterList title="Parameters">
+<Parameter name="data" type="\&#123; nextId: string; sort: number \&#125;" required>
+
+<ParameterList>
+<Parameter name="nextId" type="string" required />
+<Parameter name="sort" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getHistoryChatMessage"></a>
+
+### getHistoryChatMessage
+
+<ApiSignature>
+
+getHistoryChatMessage(data: \{ nextId: string; sort: number \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+获取房间历史的聊天消息
+
+<ParameterList title="Parameters">
+<Parameter name="data" type="\&#123; nextId: string; sort: number \&#125;" required>
+
+<ParameterList>
+<Parameter name="nextId" type="string" required />
+<Parameter name="sort" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="incrementUnreadMessageCount"></a>
+
+### incrementUnreadMessageCount
+
+<ApiSignature>
+
+incrementUnreadMessageCount(): void
+
+</ApiSignature>
+
+增加未读消息总数
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="muteChat"></a>
+
+### muteChat
+
+<ApiSignature>
+
+muteChat(): Promise&lt;void&gt;
+
+</ApiSignature>
+
+禁止聊天
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="onDestroy"></a>
+
+### onDestroy
+
+<ApiSignature>
+
+onDestroy(): void
+
+</ApiSignature>
+
+Overrides EduStoreBase.onDestroy
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="onInstall"></a>
+
+### onInstall
+
+<ApiSignature>
+
+onInstall(): void
+
+</ApiSignature>
+
+Overrides EduStoreBase.onInstall
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="resetUnreadMessageCount"></a>
+
+### resetUnreadMessageCount
+
+<ApiSignature>
+
+resetUnreadMessageCount(): void
+
+</ApiSignature>
+
+重置未读消息数
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="sendMessage"></a>
+
+### sendMessage
+
+<ApiSignature>
+
+sendMessage(message: string): Promise&lt;void&gt;
+
+</ApiSignature>
+
+发送消息
+
+<ParameterList title="Parameters">
+<Parameter name="message" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="sendMessageToConversation"></a>
+
+### sendMessageToConversation
+
+<ApiSignature>
+
+sendMessageToConversation(message: string, conversation: [Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)): Promise&lt;void&gt;
+
+</ApiSignature>
+
+发送会话消息
+
+<ParameterList title="Parameters">
+<Parameter name="message" type="string" required />
+<Parameter name="conversation" required>
+
+<ParameterType>
+
+[Conversation](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-message-struct-onversation)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="unmuteChat"></a>
+
+### unmuteChat
+
+<ApiSignature>
+
+unmuteChat(): Promise&lt;void&gt;
+
+</ApiSignature>
+
+解除禁止聊天
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>

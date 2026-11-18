@@ -1,0 +1,66 @@
+---
+title: WindowDocsEventOptions interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_window_docs_event_options
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_window_docs_event_options.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+统一课件命令的目标、页码和缩放参数。
+
+可从 @shengwang/whiteboard 直接导入 WindowDocsEventOptions。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface WindowDocsEventOptions
+```
+
+| [target](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-window-docs-event-options#ad9d4e51a2a6984b0c04e2631f048bed1) | `target?: string` |
+| --- | --- |
+| [page](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-window-docs-event-options#ac05ed0c6b75e6f965d1e2bbc19afdc98) | `page?: number` |
+| [scale](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-window-docs-event-options#a171bf819a2d9aadafb83242fc7cfc3f1) | `scale?: number` |
+
+## 变量说明
+
+<a id="ad9d4e51a2a6984b0c04e2631f048bed1"></a>
+
+### target
+
+```text
+target?: string
+```
+
+命令目标：mainView 或具体 appId。省略时跟随焦点，无 App 焦点时回退 MainView。
+
+<a id="ac05ed0c6b75e6f965d1e2bbc19afdc98"></a>
+
+### page
+
+```text
+page?: number
+```
+
+统一课件与 Slide 页码从 1 开始；不是主白板场景的零基索引。
+
+<a id="a171bf819a2d9aadafb83242fc7cfc3f1"></a>
+
+### scale
+
+```text
+scale?: number
+```
+
+scalePage 命令的相对适配倍率，1 表示适配尺寸；DocsViewer 不支持此命令。

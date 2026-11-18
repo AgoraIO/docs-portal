@@ -5,9 +5,9 @@ import {
 } from './search-provider';
 
 describe('getDocsSearchProvider', () => {
-  it('forces cn to Orama and lets global use Algolia when configured', () => {
-    expect(getDocsSearchProvider('cn', true)).toBe('orama');
-    expect(getDocsSearchProvider('cn', false)).toBe('orama');
+  it('uses Meilisearch for cn and lets global use Algolia when configured', () => {
+    expect(getDocsSearchProvider('cn', true)).toBe('meilisearch');
+    expect(getDocsSearchProvider('cn', false)).toBe('meilisearch');
     expect(getDocsSearchProvider('global', true)).toBe('algolia');
     expect(getDocsSearchProvider('global', false)).toBe('orama');
   });

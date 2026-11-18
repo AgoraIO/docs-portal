@@ -1,0 +1,55 @@
+---
+title: LocalLogOptions interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_local_log_options
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_local_log_options.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+WhiteboardOptions.localLogOptions 的本地日志开关。
+
+可从 @shengwang/whiteboard 直接导入 LocalLogOptions。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface LocalLogOptions
+```
+
+| [enabled](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-local-log-options#a636020672bb63b103f37173747f38b7a) | `enabled?: boolean` |
+| --- | --- |
+| [enabledUpload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-local-log-options#aa0008f8906f9bada3efd1a43e1225986) | `enabledUpload?: boolean` |
+
+## 变量说明
+
+<a id="a636020672bb63b103f37173747f38b7a"></a>
+
+### enabled
+
+```text
+enabled?: boolean
+```
+
+是否开启 WebView 内本地日志。未设置时不启用，需要显式设置为 true。
+
+<a id="aa0008f8906f9bada3efd1a43e1225986"></a>
+
+### enabledUpload
+
+```text
+enabledUpload?: boolean
+```
+
+上传开关；只有 enabled=true 时生效，不影响已经开启的本地日志写入。

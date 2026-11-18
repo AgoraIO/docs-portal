@@ -1,0 +1,29 @@
+---
+title: "IVideoEncodedFrameObserver 类"
+---
+<span className="index-desc-ivideoencodedframeobserver">`IVideoEncodedFrameObserver` 类</span>
+
+<a id="onencodedvideoframe"></a>
+## on_encoded_video_frame
+
+```python
+def on_encoded_video_frame(self, uid, image_buffer, length, video_encoded_frame_info:EncodedVideoFrameInfo)
+```
+
+<span className="index-desc-onencodedvideoframe">每次收到已编码视频帧时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `uid` | 远端用户的用户 ID。             |
+| `image_buffer` | 视频帧缓冲区。             |
+| `length` | 视频帧数据长度。             |
+| `video_encoded_frame_info`| 已编码视频帧信息。详见 [`EncodedVideoFrameInfo`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#encodedvideoframeinfo)         |
+
+#### 返回值
+
+是否接受已编码视频帧：
+
+- `0`: 不接受。
+- `1`: 接受。

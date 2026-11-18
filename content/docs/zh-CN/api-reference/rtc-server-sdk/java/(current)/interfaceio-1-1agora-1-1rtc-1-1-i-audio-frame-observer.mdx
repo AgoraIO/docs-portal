@@ -1,0 +1,185 @@
+---
+title: io.agora.rtc.IAudioFrameObserver接口 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/interfaceio_1_1agora_1_1rtc_1_1_i_audio_frame_observer
+  sourcePath: html-docs/rtc-server-sdk/java/interfaceio_1_1agora_1_1rtc_1_1_i_audio_frame_observer.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_i_audio_frame_observer_8java.html as local text.
+---
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+IAudioFrameObserver 接口。
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="afb91cbee8f830b196dbc462f76f6f773"></a>
+
+### onMixedAudioFrame()
+
+<ApiSignature>
+
+int io.agora.rtc.IAudioFrameObserver.onMixedAudioFrame([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) *agora_local_user*, String *channel_id*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-frame) *frame*)
+
+</ApiSignature>
+
+获取采集和播放声音混音后的数据。
+
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
+
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="channel_id">
+
+频道名。
+
+</Parameter>
+<Parameter name="frame">
+
+音频原始数据。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- 0：音频帧数据有效。
+- 1：音频帧数据无效。
+
+<a id="a133bfa2a853cb29655eb5f0269f8068e"></a>
+
+### onPlaybackAudioFrame()
+
+<ApiSignature>
+
+int io.agora.rtc.IAudioFrameObserver.onPlaybackAudioFrame([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) *agora_local_user*, String *channel_id*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-frame) *frame*)
+
+</ApiSignature>
+
+获得播放的声音。
+
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
+
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="channel_id">
+
+频道名。
+
+</Parameter>
+<Parameter name="frame">
+
+音频原始数据。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+- 0：音频帧数据有效。
+- 1：音频帧数据无效。
+
+<a id="a8a44837f2c54f22fe35aeaaf5d4f50f8"></a>
+
+### onPlaybackAudioFrameBeforeMixing()
+
+<ApiSignature>
+
+int io.agora.rtc.IAudioFrameObserver.onPlaybackAudioFrameBeforeMixing([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) *agoraLocalUser*, String *channelId*, String *userId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-frame) *frame*, [VadProcessResult](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-vad-process-result) *vadResult*)
+
+</ApiSignature>
+
+获得播放声音混音前的数据。
+
+<ParameterList title="参数">
+<Parameter name="agoraLocalUser">
+
+一个本地用户对象：[AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user)。
+
+</Parameter>
+<Parameter name="channelId">
+
+频道名。
+
+</Parameter>
+<Parameter name="userId">
+
+用户 ID。
+
+</Parameter>
+<Parameter name="frame">
+
+音频原始数据：[AudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-frame)。
+
+</Parameter>
+<Parameter name="vadResult">
+
+VAD（语音活动检测）结果：[VadProcessResult](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-vad-process-result)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+- 0：音频帧数据有效。
+- 1：音频帧数据无效。
+
+<a id="a7f3f5bb14bde99ca5b260631e04925ef"></a>
+
+### onRecordAudioFrame()
+
+<ApiSignature>
+
+int io.agora.rtc.IAudioFrameObserver.onRecordAudioFrame([AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) *agora_local_user*, String *channel_id*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-audio-frame) *frame*)
+
+</ApiSignature>
+
+获得录制的声音。
+
+<ParameterList title="参数">
+<Parameter name="agora_local_user">
+
+一个 AgoraLocalUser 对象。
+
+</Parameter>
+<Parameter name="channel_id">
+
+频道名。
+
+</Parameter>
+<Parameter name="frame">
+
+音频原始数据。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+- 0：音频帧数据有效。
+- 1：音频帧数据无效。
+
+---
+
+该接口的文档由以下文件生成:
+
+- IAudioFrameObserver.java

@@ -1,8 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { isRetiredCnDocsPath } from '../retired-cn-docs.mjs';
 import gscObservedRedirects from './gsc-observed-redirects.json';
-import posthogRevalidatedRedirects from './posthog-revalidated-404s.json';
 import posthogObservedRedirects from './posthog-observed-redirects.json';
+import posthogRevalidatedRedirects from './posthog-revalidated-404s.json';
 import redirectsConfig from './redirects.json';
 import staticRedirects from './static-redirects.json';
 
@@ -33,6 +34,7 @@ type VercelRedirect = {
 };
 
 type VercelRoute = {
+  continue?: boolean;
   dest?: string;
   has?: Array<{
     key: string;
@@ -80,10 +82,16 @@ describe('legacy redirect Vercel artifacts', () => {
 
   it('keeps the committed artifacts aligned with the legacy redirect rules', () => {
     expect(staticRedirects).toHaveLength(
-      legacyRules.length +
-        gscObservedRedirects.length +
-        posthogRevalidatedRedirects.length +
-        posthogObservedRedirects.length,
+      [
+        ...legacyRules,
+        ...gscObservedRedirects,
+        ...posthogRevalidatedRedirects,
+        ...posthogObservedRedirects,
+      ].filter(
+        (rule) =>
+          !isRetiredCnDocsPath(rule.legacyPath) &&
+          !isRetiredCnDocsPath(rule.target),
+      ).length,
     );
     expect(vercelConfig.bulkRedirectsPath).toBe('vercel-legacy-redirects.json');
     expect(vercelConfig.rewrites).toBeUndefined();
@@ -123,7 +131,11 @@ describe('legacy redirect Vercel artifacts', () => {
       src: '^/en/((?!.*\\.md/?$).+?)/?$',
     });
 
-    expect(vercelConfig.routes).not.toEqual(
+    expect(
+      vercelConfig.routes?.filter((route) =>
+        route.has?.some((condition) => condition.key === 'Accept'),
+      ),
+    ).not.toEqual(
       expect.arrayContaining([
         expect.objectContaining({ src: expect.stringContaining('zh-CN') }),
       ]),
@@ -464,7 +476,7 @@ function resolveVercelRoute(
         : false,
     );
 
-    if (acceptsRequest) {
+    if (acceptsRequest && !route.continue) {
       return route.dest;
     }
   }

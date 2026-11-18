@@ -1,10 +1,38 @@
+import { isKnownPlatform } from './platforms/registry';
+import { buildPlatformPathname } from './platforms/route';
+
 const DESKTOP_SCROLL_SELECTOR = '[data-testid="docs-main-desktop-scroll"]';
 const DOCS_HEADER_SELECTOR = '[data-testid="docs-shell-header"]';
 const HASH_SCROLL_OFFSET = 24;
 const WINDOW_SCROLL_OFFSET = 96;
 const SCROLLABLE_OVERFLOW_VALUES = new Set(['auto', 'scroll', 'overlay']);
 const STICKY_POSITION_VALUES = new Set(['fixed', 'sticky']);
+const HASH_LAYOUT_TIMEOUT_MS = 30_000;
+const HASH_SCROLL_CANCEL_EVENTS = [
+  'wheel',
+  'touchstart',
+  'pointerdown',
+  'keydown',
+  'pagehide',
+] as const;
+let cancelPendingHashScroll: (() => void) | undefined;
 export const DOCS_HASH_TARGET_EVENT = 'docs-portal:hash-target';
+
+/** Keep a heading's platform explicit when sharing a preference-driven page. */
+export function getDocsHashHref(hash: string) {
+  if (typeof window === 'undefined' || !hash.startsWith('#')) return hash;
+
+  const platform = getHeadingForUrl(hash)
+    ?.closest<HTMLElement>('[data-platform-panel]')
+    ?.getAttribute('data-platform-panel');
+  if (!platform || !isKnownPlatform(platform)) return hash;
+
+  const url = new URL(window.location.href);
+  url.pathname = buildPlatformPathname(url.pathname, platform);
+  url.searchParams.delete('platform');
+  url.hash = hash;
+  return `${url.pathname}${url.search}${url.hash}`;
+}
 
 export function scrollDocsHashTarget(
   url: string,
@@ -55,13 +83,13 @@ export function scrollDocsHashTarget(
 }
 
 /**
- * Scroll after React has committed accordion state changes. Opening one
- * version and closing another can move the target heading, so scrolling in
- * the click handler alone leaves the browser at the old offset.
+ * Wait for lazy content, ancestor tabs and accordion layout to settle before
+ * the final scroll. Stop waiting when the reader takes control or navigates.
  */
 export function scrollDocsHashTargetAfterLayout(
   url: string,
   options: {
+    locale?: string;
     behavior?: ScrollBehavior;
     updateHistory?: boolean;
   } = {},
@@ -70,27 +98,124 @@ export function scrollDocsHashTargetAfterLayout(
     return false;
   }
 
+  cancelPendingHashScroll?.();
+
   if (options.updateHistory !== false) {
     updateHash(url);
   }
 
   notifyDocsHashTarget(url);
 
-  const didScroll = scrollDocsHashTarget(url, {
-    behavior: options.behavior ?? 'smooth',
-    updateHistory: false,
-  });
+  if (
+    options.locale === 'en' ||
+    (options.locale === undefined &&
+      window.location.pathname.startsWith('/en/'))
+  ) {
+    const didScroll = scrollDocsHashTarget(url, {
+      behavior: options.behavior ?? 'smooth',
+      updateHistory: false,
+    });
 
-  window.requestAnimationFrame(() => {
     window.requestAnimationFrame(() => {
-      scrollDocsHashTarget(url, {
-        behavior: options.behavior ?? 'smooth',
-        updateHistory: false,
+      window.requestAnimationFrame(() => {
+        scrollDocsHashTarget(url, {
+          behavior: options.behavior ?? 'smooth',
+          updateHistory: false,
+        });
       });
     });
+
+    return didScroll;
+  }
+
+  const location = window.location.href;
+  const initialHeading = getHeadingForUrl(url);
+  let frame = 0;
+  let timeout = 0;
+  let previousLayout = '';
+  let stableFrames = 0;
+  const observer = new MutationObserver(() => {
+    if (!frame) frame = window.requestAnimationFrame(waitForLayout);
   });
 
-  return didScroll;
+  const cancel = () => {
+    window.cancelAnimationFrame(frame);
+    window.clearTimeout(timeout);
+    observer.disconnect();
+    for (const event of HASH_SCROLL_CANCEL_EVENTS) {
+      window.removeEventListener(event, cancel);
+    }
+    if (cancelPendingHashScroll === cancel) {
+      cancelPendingHashScroll = undefined;
+    }
+  };
+  const waitForLayout = () => {
+    frame = 0;
+    if (window.location.href !== location) {
+      cancel();
+      return;
+    }
+
+    const heading = getHeadingForUrl(url);
+    if (!heading || isHiddenFromDocs(heading)) {
+      previousLayout = '';
+      stableFrames = 0;
+      // Hydration may finish well after the shell mounts. Wake on content
+      // or visibility changes instead of polling while the target is hidden.
+      return;
+    } else {
+      const container = getActiveDocsScrollContainer();
+      const viewport = container ?? document.documentElement;
+      const rect = heading.getBoundingClientRect();
+      const position = container
+        ? rect.top - container.getBoundingClientRect().top + container.scrollTop
+        : rect.top + window.scrollY;
+      // Scroll height matters too: an expanding region can clamp scrolling
+      // even when the subsection already has its final document position.
+      const layout = [
+        position,
+        rect.height,
+        viewport.scrollHeight,
+        viewport.clientHeight,
+        getWindowScrollOffset(),
+      ].join(':');
+      stableFrames = layout === previousLayout ? stableFrames + 1 : 0;
+      previousLayout = layout;
+
+      if (stableFrames >= 2) {
+        cancel();
+        scrollDocsHashTarget(url, {
+          behavior: options.behavior ?? 'smooth',
+          updateHistory: false,
+        });
+        return;
+      }
+    }
+
+    frame = window.requestAnimationFrame(waitForLayout);
+  };
+
+  cancelPendingHashScroll = cancel;
+  observer.observe(document.body, {
+    attributes: true,
+    attributeFilter: [
+      'hidden',
+      'aria-hidden',
+      'inert',
+      'data-state',
+      'id',
+      'name',
+    ],
+    childList: true,
+    subtree: true,
+  });
+  for (const event of HASH_SCROLL_CANCEL_EVENTS) {
+    window.addEventListener(event, cancel, { passive: true });
+  }
+  timeout = window.setTimeout(cancel, HASH_LAYOUT_TIMEOUT_MS);
+  frame = window.requestAnimationFrame(waitForLayout);
+
+  return initialHeading !== null;
 }
 
 export function syncDocsHashTargetFromLocation(
@@ -170,8 +295,13 @@ function getHeadingForUrl(url: string) {
     return null;
   }
 
-  const selector = `#${escapeCssIdentifier(id)}`;
-  const headings = document.querySelectorAll<HTMLElement>(selector);
+  const selector = `[id="${escapeCssIdentifier(id)}"]`;
+  const headings = [
+    ...document.querySelectorAll<HTMLElement>(selector),
+    ...Array.from(document.getElementsByName(id)).filter(
+      (element) => element.tagName === 'A',
+    ),
+  ];
   const visibleHeading = Array.from(headings).find(
     (heading) =>
       !isHiddenFromDocs(heading) && heading.getClientRects().length > 0,
@@ -180,7 +310,20 @@ function getHeadingForUrl(url: string) {
     (heading) => !isHiddenFromDocs(heading),
   );
 
-  return visibleHeading ?? renderedHeading ?? headings[0] ?? null;
+  // A repeated release-note ID may be inside a closed accordion on every
+  // platform. Keep the selected platform before asking the accordion to open.
+  const activePlatformHeading = headings.find((heading) => {
+    const panel = heading.closest<HTMLElement>('[data-platform-panel]');
+    return panel && !isHiddenFromDocs(panel);
+  });
+
+  return (
+    visibleHeading ??
+    renderedHeading ??
+    activePlatformHeading ??
+    headings[0] ??
+    null
+  );
 }
 
 function isHiddenFromDocs(element: HTMLElement) {
@@ -193,6 +336,8 @@ function isHiddenFromDocs(element: HTMLElement) {
       current.hidden ||
       current.getAttribute('aria-hidden') === 'true' ||
       current.hasAttribute('inert') ||
+      (current.getAttribute('role') === 'tabpanel' &&
+        current.getAttribute('data-state') === 'inactive') ||
       (current.getAttribute('role') === 'region' &&
         current.getAttribute('data-state') === 'closed')
     ) {
@@ -212,10 +357,13 @@ function escapeCssIdentifier(value: string) {
 }
 
 function updateHash(url: string) {
+  const href = getDocsHashHref(url);
   window.history.replaceState(
     null,
     '',
-    `${window.location.pathname}${window.location.search}${url}`,
+    href.startsWith('#')
+      ? `${window.location.pathname}${window.location.search}${href}`
+      : href,
   );
 }
 

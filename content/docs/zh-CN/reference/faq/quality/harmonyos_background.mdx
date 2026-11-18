@@ -1,0 +1,116 @@
+---
+title: "为什么部分鸿蒙版本 App 锁屏或切后台音视频采集无效？"
+---
+## 问题现象
+
+鸿蒙 HarmonyOS NEXT 设备锁屏一段时间或 App 在运行过程中切换到后台时，远端音频无声、看不到视频。
+
+## 问题原因
+
+这是由于系统的 App 切换策略导致的。具体来说，当设备返回主界面、锁屏或进行 App 切换时，App 会被退至后台。此时，如果 App 继续活动，可能会导致设备快速耗电和用户界面卡顿等问题。为了解决这些问题，系统对退至后台的 App 进行管理，以降低耗电速度并保障用户体验。
+
+具体管理措施包括：
+
+- **进程挂起**：当 App 退至后台一段时间（由系统定义），或在后台被访问一小段时间（由系统定义）后，系统会挂起该 App 的进程。这意味着系统不再为该应用分配 CPU 资源，同时不再向其发送公共事件。
+- **进程终止**：在资源不足的情况下，系统可能会终止某些 App 的进程，以回收其占用的所有资源。
+- **摄像头访问限制**：退至后台后，系统将限制 App 对摄像头的访问，以进一步降低资源消耗。
+
+## 解决方案
+
+为了保障 App 的正常使用，你可以向系统申请长时任务，使 App 可以在后台长时间运行。
+
+1. 在 `module.json5` 配置文件的 `requestPermissions` 标签中声明 `ohos.permission.KEEP_BACKGROUND_RUNNING` 权限。
+
+    ```json
+    {
+      "module": {
+        // ...
+        "requestPermissions": [
+          {
+            "name": "ohos.permission.KEEP_BACKGROUND_RUNNING",
+            "reason": "$string:reason",
+            "usedScene": {
+              "abilities": [
+                "FormAbility"
+              ],
+              "when": "inuse"
+            }
+          }
+          // ...
+        ]
+      }
+    }
+    ```
+
+2. 在 `module.json5` 配置文件中，为需要使用长时任务的 `UIAbility` 声明相应的长时任务类型。根据实际应用场景，可选择 `audioRecording` 或者 `audioPlayback`。
+
+    ```json
+    "module": {
+      "abilities": [
+        {
+          "backgroundModes": [
+            // 长时任务类型的配置项
+            "audioRecording"
+          ],
+          // ...
+        }
+      ],
+      // ...
+    }
+    ```
+
+3. 在 `pages/Index.ets` 文件中导入模块，在加入频道后申请后台任务，在不需要时取消长时任务。
+
+    ```arkts
+    import { backgroundTaskManager } from '@kit.BackgroundTasksKit';
+    import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';
+    import { window } from '@kit.ArkUI';
+    import { rpc } from '@kit.IPCKit';
+    import { BusinessError } from '@kit.BasicServicesKit';
+    import { wantAgent, WantAgent } from '@kit.AbilityKit';
+
+    // 通过 getContext 方法，来获取 page 所在的 UIAbility 上下文。
+    private context: Context = getContext(this);
+
+    startContinuousTask() {
+      let wantAgentInfo: wantAgent.WantAgentInfo = {
+        // 点击通知后，将要执行的动作列表
+        // 添加需要被拉起 App 的 bundleName 和 abilityName
+        wants: [
+          {
+            bundleName: "com.example.myapplication",
+            abilityName: "com.example.myapplication.MainAbility"
+          }
+        ],
+        // 指定点击通知栏消息后的动作是拉起 ability
+        actionType: wantAgent.OperationType.START_ABILITY,
+        // 使用者自定义的一个私有值
+        requestCode: 0,
+        // 点击通知后，动作执行属性
+        actionFlags: [wantAgent.WantAgentFlags.UPDATE_PRESENT_FLAG]
+      };
+
+      // 通过 wantAgent 模块下 getWantAgent 方法获取 WantAgent 对象
+      wantAgent.getWantAgent(wantAgentInfo).then((wantAgentObj: WantAgent) => {
+        backgroundTaskManager.startBackgroundRunning(this.context,
+          backgroundTaskManager.BackgroundMode.AUDIO_RECORDING, wantAgentObj).then(() => {
+          // 此处执行具体的长时任务逻辑，如放音等。
+          console.info(`Succeeded in operationing startBackgroundRunning.`);
+        }).catch((err: BusinessError) => {
+          console.error(`Failed to operation startBackgroundRunning. Code is ${err.code}, message is ${err.message}`);
+        });
+      });
+    }
+
+    stopContinuousTask() {
+      backgroundTaskManager.stopBackgroundRunning(this.context).then(() => {
+        console.info(`Succeeded in operationing stopBackgroundRunning.`);
+      }).catch((err: BusinessError) => {
+        console.error(`Failed to operation stopBackgroundRunning. Code is ${err.code}, message is ${err.message}`);
+      });
+    }
+    ```
+
+## 相关文档
+
+如需更多信息，请参考官方文档[长时任务](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V5/continuous-task-V5)。

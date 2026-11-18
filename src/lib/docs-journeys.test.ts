@@ -170,14 +170,15 @@ describe('docs journeys', () => {
     const realtimeRtcMeta = JSON.parse(
       readDoc('zh-CN/realtime-media/rtc/meta.json'),
     );
-    expect(realtimeRtcMeta.pages).toEqual(['android', 'macOS']);
+    expect(realtimeRtcMeta.pages).toEqual(
+      expect.arrayContaining(['index', 'get-started', 'build', 'reference']),
+    );
 
-    const androidReferenceMeta = JSON.parse(
-      readDoc('zh-CN/realtime-media/rtc/android/reference/meta.json'),
+    const rtcReferenceMeta = JSON.parse(
+      readDoc('zh-CN/realtime-media/rtc/reference/meta.json'),
     );
-    expect(androidReferenceMeta.pages).toEqual(
-      expect.arrayContaining(['api-reference', 'release-notes']),
-    );
+    expect(realtimeRtcMeta.pages).toContain('reference/release-notes');
+    expect(rtcReferenceMeta.pages).not.toContain('release-notes');
 
     const englishRtcReferenceMeta = JSON.parse(
       readDoc('en/realtime-media/rtc/reference/meta.json'),

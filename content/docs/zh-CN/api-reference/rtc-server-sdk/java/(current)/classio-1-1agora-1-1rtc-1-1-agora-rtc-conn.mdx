@@ -1,0 +1,671 @@
+---
+title: io.agora.rtc.AgoraRtcConn类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_rtc_conn
+  sourcePath: html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_rtc_conn.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/deprecated.html#_deprecated000002 as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_agora_rtc_conn_8java.html as local text.
+---
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+AgoraRtcConn 类，用于管理 SDK 与 RTC 频道之间的连接。
+
+连接完成之后，你可以通过 AgoraLocalUser 对象在 RTC 频道中发送和接收媒体流。
+
+连接频道是异步操作，你可以通过 IRtcConnObserver 对象监听连接状态变化和事件。 AgoraRtcConn 还可以监控频道中的远端用户是否加入或离开频道。
+
+<a id="doc-constructors"></a>
+
+<a id="header-doc-constructors"></a>
+
+## 构造及析构函数说明
+
+<a id="a7789316cddbf2653108e2b6e41c57aa9"></a>
+
+### AgoraRtcConn()
+
+<ApiSignature>
+
+io.agora.rtc.AgoraRtcConn.AgoraRtcConn(long *cptr*)
+
+</ApiSignature>
+
+构造函数。
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="a636c5a1d4a1d9581295628f3ca664ca8"></a>
+
+### connect()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.connect(String *token*, String *chan_id*, String *user_id*)
+
+</ApiSignature>
+
+连接 RTC 频道。
+
+方法成功时，连接状态由 CONNECTION_STATE_DISCONNECTED(1) 变更为 CONNECTION_STATE_CONNECTING(2)。
+
+根据连接是否成功，连接状态会变更为 CONNECTION_STATE_CONNECTED(3) 或 CONNECTION_STATE_FAILED(5)。SDK 会触发 onConnected 或 onDisconnected 提醒连接状态变更。
+
+<ParameterList title="参数">
+<Parameter name="token">
+
+RTC token。
+
+</Parameter>
+<Parameter name="chan_id">
+
+频道名。必须为字符串且长度不超过 64 字节。支持的字符类型包括：
+
+- 全部小写字母： a to z
+- 全部大写字母：A to Z
+- 全部阿拉伯数字：0 to 9
+- 空格
+- 标点符号和其他特殊符号： "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "|", "~", ","
+
+</Parameter>
+<Parameter name="user_id">
+
+本地用户 ID。长度不超过 64 字节。如果你不设置用户 ID 或设为 null， SDK 在 [onConnected](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a4077abc157aa8be3c0060c97f394f48a) 回调中自动返回一个 user ID。你必须自行记录并管理此 ID。根据你在 initialize 方法中选择的用户 ID 类型，该参数支持的字符集也不同：
+
+- int 型用户 ID 支持的字符集包括：
+
+  - 10 个数字 0-9
+- String 型用户 ID 支持的字符集包括：
+
+  - 26 个小写英文字母 a-z
+  - 26 个大写英文字母 A-Z
+  - 10 个数字 0-9
+  - 空格
+  - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " \{", "\}", "|", "~", ","
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a9af79d071be59940c37dd2338fcdb67b"></a>
+
+### createDataStream()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.createDataStream(Out *stream_id*, int *reliable*, int *ordered*)
+
+</ApiSignature>
+
+创建数据流。
+
+每个用户在每个频道中最多只能创建 5 个数据流。
+
+:::info[注解]
+- 声网不支持你将 reliable 设为 1 且 ordered 设为 0。
+- 当需要数据包立刻到达接收端时，不能将 ordered 参数设置为 0。
+:::
+
+<ParameterList title="参数">
+<Parameter name="stream_id">
+
+输出参数，数据流 ID。
+
+</Parameter>
+<Parameter name="reliable">
+
+该数据流是否可靠：
+
+- 0: 接收方 5 秒内会收到发送方所发送的数据。
+- 1: 接收方不保证收到，就算数据丢失也不会报错。
+
+</Parameter>
+<Parameter name="ordered">
+
+该数据流是否有序：
+
+- 0: 接收方会按照发送方发送的顺序收到数据包。
+- 1: 接收方不保证按照发送方发送的顺序收到数据包。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a30227d5310e6771cb8fde8837cd84484"></a>
+
+### destroy()
+
+<ApiSignature>
+
+void io.agora.rtc.AgoraRtcConn.destroy()
+
+</ApiSignature>
+
+析构函数。
+
+<a id="a6b0c448ed433ed57693e5f555c013150"></a>
+
+### destroyConnInfo()
+
+<ApiSignature>
+
+native void io.agora.rtc.AgoraRtcConn.destroyConnInfo([RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) *info*)
+
+</ApiSignature>
+
+<a id="adbb04db5feb85a156d24fa98fb8c853e"></a>
+
+### destroyTransportStats()
+
+<ApiSignature>
+
+native void io.agora.rtc.AgoraRtcConn.destroyTransportStats([RtcStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-stats) *stats*)
+
+</ApiSignature>
+
+<a id="a7ef197e3bb1ba5faa9756b7d59e8acc4"></a>
+
+### destroyUserInfo()
+
+<ApiSignature>
+
+native void io.agora.rtc.AgoraRtcConn.destroyUserInfo([UserInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-user-info) *info*)
+
+</ApiSignature>
+
+<a id="a1f16d5f0070b67c62a063c7879eafd75"></a>
+
+### disconnect()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.disconnect()
+
+</ApiSignature>
+
+与 RTC 频道断开连接。
+
+SDK 与频道断开连接时，连接状态变更为 CONNECTION_STATE_DISCONNECTED(1)。你还可以通过 [onDisconnected](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a356b9549fdb5034082a2847b668648c1) 回调得知。
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a7dcb882f89f79656c7120036922f193d"></a>
+
+### enableEncryption()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.enableEncryption(int *enabled*, [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config) *config*)
+
+</ApiSignature>
+
+开启或关闭内置加密。
+
+在安全要求较高的场景下，声网建议你在加入频道前，调用本方法开启内置加密。
+
+<ParameterList title="参数">
+<Parameter name="enabled">
+
+是否开启内置加密：
+
+- true: 开启内置加密。
+- false: 关闭内置加密。
+
+</Parameter>
+<Parameter name="config">
+
+配置内置加密模式和密钥。详见 [EncryptionConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encryption-config)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a4887841b3c2232730440ad6ca3d74570"></a>
+
+### getAgoraParameter()
+
+<ApiSignature>
+
+native [AgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-parameter) io.agora.rtc.AgoraRtcConn.getAgoraParameter()
+
+</ApiSignature>
+
+获取某个 Connection 中的 [AgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-parameter) 对象。
+
+通过该方法获取的 AgoraParameter 对象，设置仅对当前 Connection 有效。如需进行全局设置，改用 [AgoraService.getAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-service#af776ee9767ecb895b3e7aec2e38d1c0c) 方法。
+
+<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
+
+- AgoraParameter 对象：方法调用成功。
+- null：方法调用失败。
+
+<a id="a82ca6b31b1df392a9bbf95c1d32b9203"></a>
+
+### getConnId()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.getConnId()
+
+</ApiSignature>
+
+获取连接 ID。
+
+<h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
+
+连接 ID。
+
+<a id="a8a503e74e759a2064a3f7837bcef564a"></a>
+
+### getConnInfo()
+
+<ApiSignature>
+
+native [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) io.agora.rtc.AgoraRtcConn.getConnInfo()
+
+</ApiSignature>
+
+获取连接信息。
+
+<h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
+
+一个 [RtcConnInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-conn-info) 对象。
+
+<a id="ab3bc18e6635aa0acece8f782ff7c8a38"></a>
+
+### getLocalUser()
+
+<ApiSignature>
+
+native [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) io.agora.rtc.AgoraRtcConn.getLocalUser()
+
+</ApiSignature>
+
+获取 [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) 对象。
+
+<h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
+
+- [AgoraLocalUser](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user) 对象：方法调用成功。
+- 空指针：方法调用失败。
+
+<a id="a93c9243d6f6f155a526ce60945fd60d9"></a>
+
+### getTransportStats()
+
+<ApiSignature>
+
+native [RtcStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-stats) io.agora.rtc.AgoraRtcConn.getTransportStats()
+
+</ApiSignature>
+
+获取 RTC 连接的传输状态。
+
+<h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
+
+一个 [RtcStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-rtc-stats) 对象。
+
+<a id="ac6e4af5cfe118a7dd6681ca8e6cbdc7f"></a>
+
+### getUserInfo()
+
+<ApiSignature>
+
+native [UserInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-user-info) io.agora.rtc.AgoraRtcConn.getUserInfo(String *user_id*)
+
+</ApiSignature>
+
+获取频道中指定远端用户的信息。
+
+<ParameterList title="参数">
+<Parameter name="user_id">
+
+用户 ID。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
+
+一个 [UserInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-user-info) 对象，其中包含某一指定用户的有关信息。
+
+<a id="a5f43d9c65ce68975f2055ac3e4181e58"></a>
+
+### registerNetworkObserver()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.registerNetworkObserver([INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-network-observer) *observer*)
+
+</ApiSignature>
+
+注册网络状态 observer。
+
+<ParameterList title="参数">
+<Parameter name="observer">
+
+INetworkObserver 对象。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a12845e92047ef8e155645f812915ad60"></a>
+
+### registerObserver()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.registerObserver([IRtcConnObserver](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer) *observer*)
+
+</ApiSignature>
+
+注册 RTC 连接 observer。你必须先创建 IRtcConnection 对象。
+
+<ParameterList title="参数">
+<Parameter name="observer">
+
+IRtcConnObserver 对象。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a7a892b8f954dad6d16b730418e84296b"></a>
+
+### renewToken()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.renewToken(String *token*)
+
+</ApiSignature>
+
+更新 Token。
+
+Token 会在一定时间后过期。 当收到 [onTokenPrivilegeWillExpire](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a2e51cc9d7a69266ed6efdd2709b8bd26) 回调时，你必须从服务端生成一个新的 token，并使用该方法更新 Token。否则，SDK 会与频道断开连接。
+
+<ParameterList title="参数">
+<Parameter name="token">
+
+新 Token。
+
+</Parameter>
+</ParameterList>
+
+<a id="a453af56f9b421e1427e0a0e0f582ddf1"></a>
+
+### sendCustomReportMessage()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.sendCustomReportMessage(String *id*, String *category*, String *event*, String *label*, int *value*)
+
+</ApiSignature>
+
+发送自定义上报消息。
+
+<ParameterList title="参数">
+<Parameter name="id">
+
+自定义事件的 ID。
+
+</Parameter>
+<Parameter name="category">
+
+自定义事件的类型。
+
+</Parameter>
+<Parameter name="event">
+
+需要上报的自定义事件。
+
+</Parameter>
+<Parameter name="label">
+
+自定义事件的标签。
+
+</Parameter>
+<Parameter name="value">
+
+自定义事件的值。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a79f7b350516319c880cba474d98d4844"></a>
+
+### sendStreamMessage() [1/2]
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.sendStreamMessage(int *stream_id*, String *data*, int *length*)
+
+</ApiSignature>
+
+发送数据流消息。
+
+<a id="弃用"></a>
+
+:::error[弃用]
+v4.4.32。请改用 [sendStreamMessage(int streamId, byte[] messageData)](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a1286a74a33789cc9777bf58a04f777c0) 。
+:::
+
+该方法发送数据流消息到频道内所有用户。SDK 对该方法的实现进行了如下限制：
+
+- 频道内每秒最多能发送 30 个包，且每个包最大为 1 KB。
+- 每个客户端每秒最多能发送 6 KB 数据。
+- 频道内每人最多能同时有 5 个数据通道。
+
+成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a24d008cf23fa8d07ff8d1600a14ccc53) 回调，远端用户可以在该回调中获取接收到的流消息。
+
+:::info[注解]
+- 请确保在调用该方法前，已调用 [createDataStream](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a9af79d071be59940c37dd2338fcdb67b) 创建了数据通道。
+- 直播场景下，该方法仅适用于主播用户。
+:::
+
+<ParameterList title="参数">
+<Parameter name="stream_id">
+
+数据流 ID。可以通过 createDataStream 获取。
+
+</Parameter>
+<Parameter name="data">
+
+待发送的数据。
+
+</Parameter>
+<Parameter name="length">
+
+数据长度。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a1286a74a33789cc9777bf58a04f777c0"></a>
+
+### sendStreamMessage() [2/2]
+
+<ApiSignature>
+
+int io.agora.rtc.AgoraRtcConn.sendStreamMessage(int *streamId*, byte[] *messageData*)
+
+</ApiSignature>
+
+发送数据流消息。
+
+该方法发送数据流消息到频道内所有用户。SDK 对该方法的实现进行了如下限制：
+
+- 频道内每秒最多能发送 30 个包，且每个包最大为 1 KB。
+- 每个客户端每秒最多能发送 6 KB 数据。
+- 频道内每人最多能同时有 5 个数据通道。
+
+成功调用该方法后，远端会触发 [onStreamMessage](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a24d008cf23fa8d07ff8d1600a14ccc53) 回调，远端用户可以在该回调中获取接收到的流消息。
+
+:::info[注解]
+- 请确保在调用该方法前，已调用 [createDataStream](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a9af79d071be59940c37dd2338fcdb67b) 创建了数据通道。
+- 直播场景下，该方法仅适用于主播用户。
+:::
+
+<ParameterList title="参数">
+<Parameter name="stream_id">
+
+数据流 ID。可以通过 createDataStream 获取。
+
+</Parameter>
+<Parameter name="messageData">
+
+待发送的数据。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-14"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ac79983e9fbfa370c273e9e3c926f7634"></a>
+
+### startLastmileProbeTest()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.startLastmileProbeTest([LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-config) *config*)
+
+</ApiSignature>
+
+开始通话前网络质量探测。
+
+开始通话前网络质量探测，向用户反馈上下行网络的带宽、丢包、网络抖动和往返时延数据。
+
+启用该方法后，SDK 会依次返回如下 2 个回调：
+
+- [onLastmileQuality](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a879a97e08a9c3ad444a394ec2eca9c4a): 视网络情况约 2 秒内返回。该回调通过打分反馈上下行网络质量，更贴近用户的主观感受。
+- [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#ad174cd3a03ae31bf36b97eab3e82fe12): 视网络情况约 30 秒内返回。该回调通过具体数据反馈上下行网络质量，更加客观。
+
+:::info[注解]
+- 调用该方法后，在收到 [onLastmileQuality](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#a879a97e08a9c3ad444a394ec2eca9c4a) 和 [onLastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-rtc-conn-observer#ad174cd3a03ae31bf36b97eab3e82fe12) 回调之前请不要调用其他方法，否则可能会由于 API 操作过于频繁导致此方法无法执行。
+- 在直播场景中，如果本地用户为主播，请勿加入频道后调用该方法。
+:::
+
+<ParameterList title="参数">
+<Parameter name="config">
+
+Last mile 网络探测配置，详见 See [LastmileProbeConfig](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-lastmile-probe-config)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-15"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ad341b99e60e5040add21907603fcd57f"></a>
+
+### stopLastmileProbeTest()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.stopLastmileProbeTest()
+
+</ApiSignature>
+
+停止通话前网络质量探测。
+
+<h4 data-toc-hidden="true" id={"返回值-16"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a58071bb16af2a10b382c4eb105395630"></a>
+
+### unregisterNetworkObserver()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.unregisterNetworkObserver()
+
+</ApiSignature>
+
+释放 INetworkObserver 对象。
+
+<h4 data-toc-hidden="true" id={"返回值-17"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a484a8c8fb741b8883c998d49d8ace962"></a>
+
+### unregisterObserver()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRtcConn.unregisterObserver()
+
+</ApiSignature>
+
+释放 IRtcConnObserver 对象。
+
+<h4 data-toc-hidden="true" id={"返回值-18"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+---
+
+该类的文档由以下文件生成:
+
+- AgoraRtcConn.java

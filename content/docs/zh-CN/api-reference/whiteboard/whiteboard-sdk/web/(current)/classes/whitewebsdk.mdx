@@ -1,0 +1,382 @@
+---
+title: WhiteWebSdk
+description: Whiteboard Web SDK 2.16.59 公开 class。
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/classes/whitewebsdk
+  sourcePath: html-docs/whiteboard/Web/classes/whitewebsdk.html
+  generator: typedoc
+  warnings:
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+---
+
+```ts
+export declare class WhiteWebSdk
+```
+
+## 成员
+
+- [region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#region)
+- [deviceType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#devicetype)
+- [screenType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#screentype)
+- [renderEngine](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#renderengine)
+- [version](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#version)
+- [constructor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#constructor)
+- [joinRoom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#joinroom)
+- [isPlayable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#isplayable)
+- [replayRoom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#replayroom)
+- [pptConverter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#pptconverter)
+- [getLocalLogState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#getlocallogstate)
+- [onLocalLogStateChange](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#onlocallogstatechange)
+- [collectLocalLogs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#collectlocallogs)
+- [flushLocalLogs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#flushlocallogs)
+- [uploadLocalLogs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#uploadlocallogs)
+
+## Properties
+
+<a id="region"></a>
+
+### region
+
+readonly region: string;
+
+```text
+默认所在区域
+如果在调用 ``joinRoom``、``replayRoom``、``isPlayable`` 时没有指定 ``region``，则以此属性为准。
+```
+
+<a id="devicetype"></a>
+
+### deviceType
+
+readonly deviceType: DeviceType;
+
+```text
+该客户端的设备类型，决定 SDK 如何处理鼠标事件和触碰事件
+```
+
+<a id="screentype"></a>
+
+### screenType
+
+readonly screenType: ScreenType;
+
+```text
+该客户端的屏幕类型，用于调整手势识别参数
+```
+
+<a id="renderengine"></a>
+
+### renderEngine
+
+readonly renderEngine: RenderEngine;
+
+```text
+对画面的渲染模式
+```
+
+<a id="version"></a>
+
+### version
+
+readonly version: string;
+
+```text
+当前 SDK 的版本
+```
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+<ApiSignature>
+
+constructor(params: WhiteWebSdkConfiguration);
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+WhiteWebSdk
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Methods
+
+<a id="joinroom"></a>
+
+### joinRoom
+
+<ApiSignature>
+
+joinRoom(params: JoinRoomParams, callbacks?: Partial&lt;RoomCallbacks&gt;, options?: WhiteLocalLogJoinOptions): Promise&lt;Room&gt;;
+
+</ApiSignature>
+
+````text
+加入一个实时房间
+@param params 加入房间的参数
+@param callbacks 回调函数
+@returns 异步地返回房间
+@throws 如果加入房间失败，则会异步地抛出错误
+
+@example
+```typescript
+const joinRoomParams = {...};
+const roomCallbacks = {...};
+
+whiteWebSdk.joinRoom(joinRoomParams, roomCallbacks)
+           .then(function (room) {
+               // 加入房间成功，拿到 room 对象
+           })
+           .catch(function (error) {
+               // 加入房间失败，拿到 error 对象
+           });
+```
+````
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;Room&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="isplayable"></a>
+
+### isPlayable
+
+<ApiSignature>
+
+isPlayable(params: PlayableCheckingParams): Promise&lt;boolean&gt;;
+
+</ApiSignature>
+
+```text
+判断房间是否可播放
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;boolean&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="replayroom"></a>
+
+### replayRoom
+
+<ApiSignature>
+
+replayRoom(params: ReplayRoomParams, callbacks?: Partial&lt;PlayerCallbacks&gt;): Promise&lt;Player&gt;;
+
+</ApiSignature>
+
+````text
+回放房间录像
+@param params 回放房间录像参数
+@param callbacks 回调函数
+@returns 异步地返回房间
+@throws 如果加入房间失败，则会异步地抛出错误
+
+@example
+```typescript
+const replayRoomParams = {...};
+const replayCallbacks = {...};
+
+whiteWebSdk.replayRoom(replayRoomParams, replayCallbacks)
+           .then(function (player) {
+               // 回放成功，拿到 player 对象
+           })
+           .catch(function (error) {
+               // 回放失败，拿到 error 对象
+           });
+```
+````
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;Player&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="pptconverter"></a>
+
+### pptConverter
+
+<ApiSignature>
+
+pptConverter(roomToken: string): LegacyPPTConverter;
+
+</ApiSignature>
+
+```text
+@deprecated
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+LegacyPPTConverter
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getlocallogstate"></a>
+
+### getLocalLogState
+
+<ApiSignature>
+
+getLocalLogState(): WhiteLocalLogState;
+
+</ApiSignature>
+
+同步读取本地日志状态。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+WhiteLocalLogState
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="onlocallogstatechange"></a>
+
+### onLocalLogStateChange
+
+<ApiSignature>
+
+onLocalLogStateChange(listener: (state: WhiteLocalLogState)=&gt;void): ()=&gt;void;
+
+</ApiSignature>
+
+监听本地日志状态，返回解除订阅函数。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+()=&gt;void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="collectlocallogs"></a>
+
+### collectLocalLogs
+
+<ApiSignature>
+
+collectLocalLogs(): Promise&lt;WhiteLocalLogExportResult&gt;;
+
+</ApiSignature>
+
+收集本地日志；异步返回导出结果。需要先开启本地日志。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;WhiteLocalLogExportResult&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="flushlocallogs"></a>
+
+### flushLocalLogs
+
+<ApiSignature>
+
+flushLocalLogs(): Promise&lt;void&gt;;
+
+</ApiSignature>
+
+将当前本地日志刷新到持久化存储；异步完成。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="uploadlocallogs"></a>
+
+### uploadLocalLogs
+
+<ApiSignature>
+
+uploadLocalLogs(request?: WhiteLocalLogUploadRequest): Promise&lt;WhiteLocalLogUploadResult&gt;;
+
+</ApiSignature>
+
+上传本地日志；日志运行时和上传开关均需可用，enabled/ enabledUpload 未设置为 false 时默认尝试开启。通过返回结果和状态事件观察上传。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;WhiteLocalLogUploadResult&gt;
+
+</ApiReturnType>
+
+</ApiReturns>

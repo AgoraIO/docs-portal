@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, relative, sep } from 'node:path';
 import { isKnownPlatform, normalizePlatformKey } from './platforms/registry';
+import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
 
 const DOCS_ROOT = 'content/docs';
 const DOC_FILE_EXTENSION = /\.(md|mdx)$/;
@@ -18,6 +19,7 @@ export function getContentDocsPrerenderPaths(root = DOCS_ROOT) {
     .filter((filePath) => !platformPanelFiles.has(filePath))
     .map((filePath) => getContentDocRoute(root, filePath))
     .filter((path): path is string => path !== null)
+    .filter((path) => !isRetiredCnDocsPath(path))
     .sort();
 }
 

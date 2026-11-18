@@ -1,0 +1,135 @@
+---
+title: 公共事件监听与元素查询
+titlePlatforms:
+  - web
+---
+
+适用于 **Appliance Plugin 1.1.45**。本页的公共事件特指插件导出的 `PublicListener`，通过 `addListener`/`removeListener` 使用。
+
+## PublicListener
+
+```typescript
+export type PublicListener = {
+  /** 同步页面分屏权限 */
+  syncPageAuth: (viewId: string, syncData: AuthRenderScenesData) => void;
+  /** 同步用户显示权限 */
+  syncRenderUids: (
+    viewId: string,
+    syncData: { render?: _SetTrue; hide?: _SetTrue; clear?: _SetTrue },
+  ) => void;
+  /** 文字改变 */
+  textChange: (
+    workId: string,
+    target: HTMLElement,
+    texts: string[],
+    info: TextEditorInfo,
+  ) => void;
+  /** 工作状态 */
+  workState: (workState: EventWorkState, viewId: string) => void;
+  /** 强制中断 */
+  forceStop: (reason: EForceStopReason, viewId: string) => void;
+  /** 自定义字体加载状态 */
+  fontFaceLoadState: (info: ApplianceFontFaceLoadState) => void;
+  /** 自定义字体加载后的文字重渲染状态 */
+  fontFaceRenderState: (info: ApplianceFontFaceRenderState) => void;
+  /** auto shape 调试信息 */
+  autoShape: (info: AutoShapeDebugInfo) => void;
+  /** 同步数据变化 */
+  syncStorageChange: (storage: ISerializableStorageViewData) => void;
+  /** selector 选中集合变化（仅 selectedIds 变化时触发，不携带中间态） */
+  selectedElementsChange: (payload: SelectedElementsChangeInfo) => void;
+  /** selector 几何变化（只表示最终 geometry 结果） */
+  selectorGeometryChange: (payload: SelectorGeometryChangeInfo) => void;
+  /** selector 拖拽/拉伸/旋转/端点编辑等过程态 */
+  selectorTransformChange: (payload: SelectorTransformChangeInfo) => void;
+  /** 远端 / 被同步端 selector 的同步结果变化（不承诺 phase） */
+  remoteSelectorChange: (payload: RemoteSelectorChangeInfo) => void;
+};
+```
+
+| 事件 | 用途 |
+| --- | --- |
+| workState / forceStop | 当前操作状态、强制中断与 View |
+| textChange | 文字标识、DOM、文本和编辑信息 |
+| syncPageAuth / syncRenderUids | 分屏权限和用户笔迹过滤同步 |
+| syncStorageChange | 插件同步存储变化 |
+| fontFaceLoadState / fontFaceRenderState | 字体加载和文字补绘状态 |
+| autoShape | 单笔识别诊断信息 |
+| selectedElementsChange | 仅选中元素集合变化 |
+| selectorGeometryChange | 最终几何结果变化 |
+| selectorTransformChange | 拖拽、缩放、旋转和端点编辑过程 |
+| remoteSelectorChange | 远端或被同步端的选中结果 |
+
+`onBackgroundImageLoadEvent`、`onInitLoadingChange` 属于 adaptor callbacks，分别在初始化配置中设置，见[背景图加载与恢复](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/background-image-recovery?platform=web)。
+
+## Selector 事件
+
+```typescript
+import type { PublicListener } from '@netless/appliance-plugin';
+const onSelection: PublicListener['selectedElementsChange'] = payload => {
+  console.log(payload.viewId, payload.selectedIds, payload.viewRect);
+};
+const onGeometry: PublicListener['selectorGeometryChange'] = payload => console.log(payload);
+const onTransform: PublicListener['selectorTransformChange'] = payload => console.log(payload);
+const onRemote: PublicListener['remoteSelectorChange'] = payload => console.log(payload);
+plugin.addListener('selectedElementsChange', onSelection);
+plugin.addListener('selectorGeometryChange', onGeometry);
+plugin.addListener('selectorTransformChange', onTransform);
+plugin.addListener('remoteSelectorChange', onRemote);
+
+// 组件卸载时使用原函数引用解除监听。
+plugin.removeListener('selectedElementsChange', onSelection);
+plugin.removeListener('selectorGeometryChange', onGeometry);
+plugin.removeListener('selectorTransformChange', onTransform);
+plugin.removeListener('remoteSelectorChange', onRemote);
+```
+
+`selectedElementsChange` 不携带完整中间态；需要快照时调用 `getSelectedElements(viewId)`。`selectorGeometryChange` 只表示最终几何，`selectorTransformChange` 表示过程。远端事件不承诺与本端完全相同的 phase 序列。
+
+## 元素查询（Version ≥1.1.19）
+
+```typescript
+const exists = plugin.hasElements('/init/1');
+const elements = plugin.getElements('/init/1');
+console.log(exists, elements);
+```
+
+两者均为同步查询。1.1.45 实现要求实时 `Room`、插件 manager 已建立且 `room.isWritable=true`；只读端、回放或未初始化时可能返回 `undefined`。满足条件但没有匹配内容时，`hasElements` 返回 `false`，`getElements` 返回空数组。省略 `scenePath` 时使用当前聚焦场景，可选 filter 的参数为插件 `EToolsKey`。`getElements` 返回元素记录，和 `getSelectedElements` 的选中快照不同。结果反映本端当前已同步数据，不作为资源渲染或服务端事务完成信号。
+
+Fastboard 通过已启用的 `app.appliancePlugin` 使用上述 `addListener` 和 `removeListener`；组件卸载时保留原函数引用解除订阅。
+
+## 字体加载与刷新渲染
+
+```typescript
+loadFontFaces(): Promise<ApplianceFontFaceLoadState>;
+refreshViewRender(viewId: string): Promise<ApplianceRefreshRenderState>;
+refreshRender(): Promise<ApplianceRefreshRenderState>;
+refreshViewTextRender(viewId: string): Promise<ApplianceRefreshRenderState>;
+refreshTextRender(): Promise<ApplianceRefreshRenderState>;
+```
+
+| 方法 | 作用与返回 |
+| --- | --- |
+| loadFontFaces | 加载已配置的自定义字体；不阻塞插件初始化。返回类型 ApplianceFontFaceLoadState 的 status 联合包含 start/success/timeout/error；加载过程通过事件报告 start，Promise 完成后检查 success/timeout/error。 |
+| refreshViewRender(viewId) | 刷新指定 View 的 canvas 和文字 DOM。viewId 为主白板或课件对应的实际 View ID。 |
+| refreshRender() | 刷新全部 View，优先刷新当前聚焦 View。 |
+| refreshViewTextRender(viewId) | 仅刷新指定 View 的文字 DOM。 |
+| refreshTextRender() | 仅刷新全部 View 的文字 DOM，优先聚焦 View。 |
+
+四个刷新方法均异步返回 `{ status: 'success' | 'error' }`，应检查 status。全部 View 的刷新与单 View 刷新范围不同；刷新不会同步修改教具元素数据或改变其他客户端的渲染。
+
+`PublicListener.fontFaceLoadState` 报告字体加载的 start/success/timeout/error；`fontFaceRenderState` 报告字体加载后或主动调用文字刷新方法时的文字补绘 start/success/error。它们分别描述加载与文字补绘，不能代替所有 canvas 刷新的 Promise 结果。
+
+```typescript
+import type { PublicListener } from '@netless/appliance-plugin';
+const onFontLoad: PublicListener['fontFaceLoadState'] = info => console.log(info.status);
+plugin.addListener('fontFaceLoadState', onFontLoad);
+const loaded = await plugin.loadFontFaces();
+if (loaded.status === 'success') {
+  const refreshed = await plugin.refreshTextRender();
+  console.log(refreshed.status);
+}
+plugin.removeListener('fontFaceLoadState', onFontLoad);
+```
+
+先取得已初始化的插件实例。Whiteboard 接入使用初始化返回的实例，Fastboard 使用已启用的 `app.appliancePlugin`。以上为 Web 公开方法。

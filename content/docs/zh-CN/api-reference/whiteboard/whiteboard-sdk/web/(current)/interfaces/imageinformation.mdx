@@ -1,0 +1,49 @@
+---
+title: ImageInformation
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/imageinformation
+  sourcePath: html-docs/whiteboard/Web/interfaces/imageinformation.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type ImageInformation = {
+    src?: string;
+    /**
+     * 图片的唯一识别符
+     */
+    uuid: string;
+    /**
+     * 图片中点在世界坐标系中的 x 坐标
+     */
+    centerX: number;
+    /**
+     * 图片中点在世界坐标系中的 y 坐标
+     */
+    centerY: number;
+    /**
+     * 图片中点在世界坐标系中的宽
+     */
+    width: number;
+    /**
+     * 图片中点在世界坐标系中的高
+     */
+    height: number;
+    /**
+     * 图片是否被锁定
+     */
+    locked: boolean;
+    /**
+     * 图片是否禁止非等比放缩
+     */
+    uniformScale?: boolean;
+    /**
+     * 是否以跨域方式加载图片
+     */
+    crossOrigin?: boolean | string;
+};
+```

@@ -24,7 +24,7 @@ describe('OpenApiResponseHeaderRow', () => {
     expect(row).not.toHaveTextContent('optional');
     expect(
       screen.getByRole('link', {
-        name: 'Copy link to response-headers-200-x-request-id',
+        name: 'Copy link to X-Request-ID',
       }),
     ).toHaveAttribute('href', '#response-headers-200-x-request-id');
   });

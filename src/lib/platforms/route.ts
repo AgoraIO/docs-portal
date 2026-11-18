@@ -5,6 +5,21 @@ import {
   type PlatformKey,
 } from './registry';
 
+export function buildPlatformPathname(pathname: string, platform: PlatformKey) {
+  const segments = pathname.split('/').filter(Boolean);
+
+  if (segments.length < 2) {
+    return pathname;
+  }
+
+  const currentPlatform = segments.at(-1);
+  if (currentPlatform && isKnownPlatform(currentPlatform)) {
+    segments.pop();
+  }
+
+  return `/${[...segments, platform].join('/')}`;
+}
+
 type SourceLike<TPage> = {
   getPage: (slugs: string[], locale?: string) => TPage | undefined;
 };

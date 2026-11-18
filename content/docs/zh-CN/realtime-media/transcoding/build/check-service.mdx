@@ -1,0 +1,69 @@
+---
+title: "检查转码服务状态"
+description: "了解如何在云端转码中检查转码服务状态，包括适用场景、配置步骤、实现要点和注意事项。"
+---
+## 检查服务启动状态
+
+本文介绍如何检查云端转码服务的启动和运行状态，以确保转码过程正常进行。
+
+建议你通过如下步骤检查转码服务是否已成功启动：
+
+### 检查 Acquire 和 Create 的调用方式
+
+检查你是否在每次 [`Acquire`](/zh-CN/api-reference/api-ref/cloud-transcoding/acquire) 请求获取到 `builderToken` 后的 2 秒内都立即发起对应的 [`Create`](/zh-CN/api-reference/api-ref/cloud-transcoding/create) 请求。
+
+如果你批量获取 `builderToken`，再进行批量 `Create` 请求，可能会请求失败。
+
+### 检查 Create 请求结果
+
+如果 `Create` 请求响应的 HTTP 状态码为 `200`，则请求成功。如果 `Create` 请求响应的 HTTP 状态码非 `200`，则需要根据状态码采取相应措施：
+
+- 如果返回的 HTTP 状态码为 `206`，则表示请求超时，建议使用退避策略，如第一次等待 3 秒后重试、第二次等待 6 秒后重试、第三次等待 9 秒后重试，以免超过 QPS 限制导致失败。如果三次重试均失败，建议更换用户 ID 再次调用 `Acquire`，获得一个新的 `builderToken`，并用该 `builderToken` 再次调用 `Create` 方法。
+- 如果返回的 HTTP 状态码为 `409`，则表示转码任务已成功启动并在进行中，无需重试。
+- 如果返回的 HTTP 状态码为 `40x`（`409` 除外），则表示请求参数错误，需要进行排查。
+- 如果返回的 HTTP 状态码为 `50x`，可使用相同的参数重试多次，直到成功返回 `taskId` 为止。建议使用退避策略，如第一次等待 3 秒后重试、第二次等待 6 秒后重试、第三次等待 9 秒后重试，以免超过 QPS 限制导致失败。如果三次重试均失败，建议更换用户 ID 再次调用 `Acquire`，获得一个新的 `builderToken`，并用该 `builderToken` 再次调用 `Create` 方法。
+- 如果收到错误码 `65`，需要使用相同的参数再次调用 `Create`。建议使用退避策略重试两次，如第一次等待 3 秒后重试、第二次等待 6 秒后重试。
+
+### 检查 idleTimeout 取值
+
+`Create` 请求中的 `idleTimeout` 字段默认值为 300 秒。这意味着，在所有主播离开频道后，transcoder 将在 300 秒后自动销毁。
+
+调用 `Create` 启动转码时，请根据实际情况调整 `idleTimeout` 的值，以确保转码服务在短时间内频道没有主播时依然能稳定运行，避免频繁退出。如果需要 transcoder 持续运行，建议设置较大的 `idleTimeout`，以防止因主播进出频道导致 transcoder 频繁启动和退出。
+
+### 查询服务启动状态
+
+`Create` 请求成功后，你会获得 `taskId`。获得 `taskId` 之后的 5 秒后，使用退避策略调用 [`Query`](/zh-CN/api-reference/api-ref/cloud-transcoding/query) 方法查询服务启动状态。退避间隔建议小于 `Create` 请求中的 `idleTimeout`（最长空闲频道时间）。
+
+- 如果 `Query` 请求成功，且 `serverResponse` 中的 `status` 参数值为 `4` 或 `5`，则表示 transcoder 已成功启动。
+- 如果在获得 `taskId` 之后的 90 秒后，该字段仍未进入上述状态，则可以认为转码服务未成功启动或已超时退出。
+
+:::warning[注意]
+重试时，请注意：
+
+- 频道内用户 ID 不能冲突，因此建议你为 transcoder 准备一个备用用户 ID，以便在重新发起新的转码任务时使用。
+- 主用用户 ID 和备用用户 ID 可以交替使用。
+:::
+
+## 检查服务运行状态
+
+你可以通过周期性调用 `Query` 方法来确认转码服务正在进行中且状态正常。如果你对状态查询的可靠性要求较高，声网强烈建议你使用 `Query` 方法周期性查询频道内的转码状态，例如每隔 2 分钟调用一次 `Query`，并根据返回的 HTTP 状态码采取相应措施。
+
+- 如果返回的 HTTP 状态码一直为 `40x`，则表示请求参数错误，需要进行排查。
+- 如果返回的 HTTP 状态码为 `404`，且已经确认请求参数无误，则表示 transcoder 并未成功启动、或启动后中途退出。建议采用退避策略多次调用 `Query` （例如间隔 5 秒、10 秒、15 秒）进行确认。
+- 如果返回的 HTTP 状态码为 `50x`，则表示 `Query` 请求失败，但尚不明确 transcoder 是否已退出。出现 `50x` 错误的概率极小，建议使用退避策略（例如间隔 5 秒、10 秒、15 秒、30 秒）继续调用 `Query`。
+
+## 参考信息
+
+通过 `Query` 方法查询服务状态时，你可以参考响应包体中 `services.cloudTranscoder.status` 字段：
+
+|服务状态  |描述|
+|------|-----|
+|`"serviceIdle"`	|服务未开始。|
+|`"serviceStarted"`	|服务已开始。|
+|`"serviceReady"`	|服务已就绪。|
+|`"serviceInProgress"`	|服务正在进行中。|
+|`"serviceCompleted"`	|服务已经停止，任务全部完成。|
+|`"servicePartialCompleted"`	|服务已经停止，任务部分完成。|
+|`"serviceValidationFailed"`	|服务参数验证失败。|
+|`"serviceAbnormal"`	|服务异常退出。|
+|`"serviceUnknown"`	|服务未知状态。|

@@ -1,0 +1,11 @@
+sequenceDiagram
+  participant CallerApp as 主叫 App
+  participant CalleeApp as 被叫 App
+  CallerApp->>CalleeApp: 邀请（CALL_KIT_INVITE）
+  Note over CallerApp: RECEIVED_BY_CALLEE：显示"正在呼叫"
+  Note over CalleeApp: INVITATION_RECEIVED：显示来电
+  CalleeApp->>CallerApp: 接听（CALL_KIT_ACCEPT accepted）
+  Note over CalleeApp: ACCEPT_SENT_TO_CALLER：显示"接通中"
+  Note over CallerApp: ACCEPTED_BY_CALLEE：加入 RTC
+  CallerApp->>CalleeApp: 确认（CALL_KIT_ACCEPT ack）
+  Note over CalleeApp: ACCEPTED：加入 RTC

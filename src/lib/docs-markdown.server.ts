@@ -4,18 +4,14 @@ import { resolveMovedDocsRedirect } from './docs-moved-redirects';
 import {
   getSourceSlugs,
   getSourceSlugsFromContentPath,
-  isSupportedDocLocale,
+  isPublishedDocLocale,
 } from './docs-routing';
-import { isMachineReadableLocale } from './machine-readable-docs';
+import { isPublicMarkdownLocale } from './machine-readable-docs';
 import {
   isKnownPlatform,
   normalizePlatformKey,
   type PlatformKey,
 } from './platforms/registry';
-
-const MARKDOWN_RESPONSE_HEADERS = {
-  'Content-Type': 'text/markdown',
-};
 
 export async function getPublicDocsMarkdownResponse({
   locale,
@@ -36,7 +32,7 @@ export async function getPublicDocsMarkdownResponse({
     return null;
   }
 
-  if (!isSupportedDocLocale(locale) || !isMachineReadableLocale(locale)) {
+  if (!isPublishedDocLocale(locale) || !isPublicMarkdownLocale(locale)) {
     throw notFound();
   }
 
@@ -87,7 +83,7 @@ export async function getPublicDocsMarkdownResponse({
     const openApiMarkdown = await getOpenApiMarkdownByContentPath(contentPath);
 
     if (openApiMarkdown) {
-      return markdownResponse(openApiMarkdown);
+      return markdownResponse(openApiMarkdown, locale);
     }
 
     if (!page) {
@@ -102,10 +98,10 @@ export async function getPublicDocsMarkdownResponse({
       throw notFound();
     }
 
-    return markdownResponse(markdown);
+    return markdownResponse(markdown, locale);
   }
 
-  return markdownResponse(await getLLMText(page));
+  return markdownResponse(await getLLMText(page), locale);
 }
 
 function getPublicDocsMarkdownContentPath({
@@ -172,8 +168,11 @@ function resolvePublicPlatformMarkdownRoute({
   return page ? { page, platform } : null;
 }
 
-function markdownResponse(markdown: string) {
+function markdownResponse(markdown: string, locale: string) {
   return new Response(withAgentDocsDirective(markdown), {
-    headers: MARKDOWN_RESPONSE_HEADERS,
+    headers: {
+      'Content-Type':
+        locale === 'zh-CN' ? 'text/markdown; charset=utf-8' : 'text/markdown',
+    },
   });
 }

@@ -74,6 +74,29 @@ export function getDefaultOpenApiResponseStatus(
   );
 }
 
+export function getOpenApiResponseStatusLabel(
+  statusCode: string,
+  statusCodes: readonly string[],
+  locale?: string,
+): string {
+  if (statusCode !== 'default') return statusCode;
+
+  const explicitCodes = statusCodes.filter((code) => code !== 'default');
+  const isChinese = locale === 'zh-CN';
+  // A default response covers statuses not explicitly declared by this operation.
+  // It only means "non-200" when 200 is the sole explicit response.
+  if (
+    explicitCodes.length === 1 &&
+    /^(?:[1-5][0-9]{2}|[1-5]XX)$/i.test(explicitCodes[0])
+  ) {
+    return isChinese ? `非 ${explicitCodes[0]}` : `Non-${explicitCodes[0]}`;
+  }
+  if (explicitCodes.length === 0) {
+    return isChinese ? '默认响应' : 'Default response';
+  }
+  return isChinese ? '其他响应' : 'Other responses';
+}
+
 export function getDefaultOpenApiMediaType(view: OpenApiResponseView): string {
   return (
     view.mediaTypes.find((media) => media.mediaType === 'application/json')

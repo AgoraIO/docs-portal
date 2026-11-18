@@ -1,0 +1,1046 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-16",
+  "sourceRepository": "AgoraIO/shengwang-doc-source",
+  "sourceBase": "b5f0771fd840b2e6c45b28357c206bbe94129767",
+  "sourceHead": "8fd46d74070a18dcb46ef943f6d6768590be9bca",
+  "targetBase": "a02a0f9ce230d4be857ecfc8384a69669b40bfc0",
+  "sourceCommits": [
+    {
+      "sha": "047d4c4b1e1a185fbc1f5ea9acc94cdaa4908e14",
+      "committedAt": "2026-11-10T11:43:00+08:00",
+      "subject": "docs(rtm2): 添加在线体验入口和 Web 场景最佳实践 (#2146)",
+      "pr": 2146,
+      "decision": "content-pr",
+      "files": [
+        "assets/uml/rtm2/one-to-one-call-callee-state.mmd",
+        "assets/uml/rtm2/one-to-one-call-caller-state.mmd",
+        "assets/uml/rtm2/one-to-one-call-invitation-flow.mmd",
+        "assets/uml/rtm2/one-to-one-call-module-lifecycle.mmd",
+        "assets/uml/rtm2/voice-room-client-lifecycle.mmd",
+        "assets/uml/rtm2/voice-room-join-room.mmd",
+        "docs/rtm2/_sidebar_.meta.javascript.js",
+        "docs/rtm2/best-practice/one-to-one-call.javascript.mdx",
+        "docs/rtm2/best-practice/voice-room.javascript.mdx",
+        "docs/rtm2/landing-page.mdx",
+        "docs/rtm2/landing-page.mini-program.mdx",
+        "src/components/codebox/CodeStore.tsx",
+        "static/img/rtm2/one-to-one-call-callee-state.svg",
+        "static/img/rtm2/one-to-one-call-caller-state.svg",
+        "static/img/rtm2/one-to-one-call-invitation-flow.svg",
+        "static/img/rtm2/one-to-one-call-module-lifecycle.svg",
+        "static/img/rtm2/online-demo.jpg",
+        "static/img/rtm2/voice-room-client-lifecycle.svg",
+        "static/img/rtm2/voice-room-join-room.svg"
+      ]
+    },
+    {
+      "sha": "03ae3abc39058325060792851927ab9b48353078",
+      "committedAt": "2026-11-11T16:33:15+08:00",
+      "subject": "Update agent knowledge base",
+      "pr": null,
+      "decision": "excluded-source-agent-index",
+      "files": [
+        "scripts/agent/ali_file_id.json",
+        "scripts/agent/doc_mapping.json"
+      ]
+    },
+    {
+      "sha": "57b5aae77dd2afe742238b363b95113535e00dcc",
+      "committedAt": "2026-11-11T17:01:28+08:00",
+      "subject": "Repair agent knowledge base file mappings",
+      "pr": null,
+      "decision": "excluded-source-agent-index",
+      "files": [
+        "scripts/agent/ali_file_id.json"
+      ]
+    },
+    {
+      "sha": "b3f5700178cd74af628c5c1b2a2061499cedd8e6",
+      "committedAt": "2026-11-11T18:30:37+08:00",
+      "subject": "docs(convoai): 更新 v2.15 语音供应商及 Agents SDK 文档 (#2142)",
+      "pr": 2142,
+      "decision": "content-pr",
+      "files": [
+        "docs-api-reference/convoai/agent-sdk-api/overview.agent-go.mdx",
+        "docs-api-reference/convoai/agent-sdk-api/overview.agent-python.mdx",
+        "docs-api-reference/convoai/agent-sdk-api/overview.agent-typescript.mdx",
+        "docs/convoai/overview/release-notes.mdx",
+        "html-docs/convoai/RESTful/convoai.yaml"
+      ]
+    },
+    {
+      "sha": "87944935efab419af338b006ba45807364a4b544",
+      "committedAt": "2026-11-11T18:32:11+08:00",
+      "subject": "Release 0.0.543",
+      "pr": null,
+      "decision": "excluded-source-release-counter",
+      "files": [
+        "data/version.ts"
+      ]
+    },
+    {
+      "sha": "e18507c9dc611202325585548cd1e49197344d79",
+      "committedAt": "2026-11-12T18:15:36+08:00",
+      "subject": "docs(cloud-recording): enable forceCanvas for whiteboard recording (#2155)",
+      "pr": 2155,
+      "decision": "content-pr",
+      "files": [
+        "docs/cloud-recording/user-guides/web-mode/set-webpage-recording.mdx"
+      ]
+    },
+    {
+      "sha": "8fd46d74070a18dcb46ef943f6d6768590be9bca",
+      "committedAt": "2026-11-13T16:12:27+08:00",
+      "subject": "Release 0.0.544",
+      "pr": null,
+      "decision": "excluded-source-release-counter",
+      "files": [
+        "data/version.ts"
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "sourcePath": "assets/uml/rtm2/one-to-one-call-callee-state.mmd",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": null,
+      "sourceHeadSha256": "97603a07227d35b81ff5904ec18329e942a89d68a839135d0f43b539d7bdcce5",
+      "sourceDiffSha256": "0bc2040906afede21cf46b8b347ce95d07d617612e60e05399511b6c465bf949",
+      "sourceHunks": [
+        "@@ -0,0 +1,51 @@"
+      ],
+      "targets": [
+        {
+          "path": "assets/uml/rtm2/one-to-one-call-callee-state.mmd",
+          "baseSha256": "97603a07227d35b81ff5904ec18329e942a89d68a839135d0f43b539d7bdcce5",
+          "currentSha256": "97603a07227d35b81ff5904ec18329e942a89d68a839135d0f43b539d7bdcce5",
+          "sourceBytesEqual": true,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "assets/uml/rtm2/one-to-one-call-caller-state.mmd",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": null,
+      "sourceHeadSha256": "74d6fdf8ec82af73cee67f46d6d9b3f974d91faf58d6a10a0d8cba7af18132c6",
+      "sourceDiffSha256": "72427e196a59949e599b11592199497f3a3318348d516c51b9bb8af1cbfc096c",
+      "sourceHunks": [
+        "@@ -0,0 +1,51 @@"
+      ],
+      "targets": [
+        {
+          "path": "assets/uml/rtm2/one-to-one-call-caller-state.mmd",
+          "baseSha256": "74d6fdf8ec82af73cee67f46d6d9b3f974d91faf58d6a10a0d8cba7af18132c6",
+          "currentSha256": "74d6fdf8ec82af73cee67f46d6d9b3f974d91faf58d6a10a0d8cba7af18132c6",
+          "sourceBytesEqual": true,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "assets/uml/rtm2/one-to-one-call-invitation-flow.mmd",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": null,
+      "sourceHeadSha256": "39da504a378e2edb138f0647056e1623cffc756ff21ab9ef451ac90d345e94a1",
+      "sourceDiffSha256": "4c047a6892c2a98a523545f72175d54897e8abe5498e5a893b3ee959309da921",
+      "sourceHunks": [
+        "@@ -0,0 +1,11 @@"
+      ],
+      "targets": [
+        {
+          "path": "assets/uml/rtm2/one-to-one-call-invitation-flow.mmd",
+          "baseSha256": "39da504a378e2edb138f0647056e1623cffc756ff21ab9ef451ac90d345e94a1",
+          "currentSha256": "39da504a378e2edb138f0647056e1623cffc756ff21ab9ef451ac90d345e94a1",
+          "sourceBytesEqual": true,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "assets/uml/rtm2/one-to-one-call-module-lifecycle.mmd",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": null,
+      "sourceHeadSha256": "e591194d3b6a3e08a7895aa35f58e06e70dc03cc6fb8b528c99db48e06239585",
+      "sourceDiffSha256": "80027b1f6c313f4fc4b6529a9fb442c2bf00607e32aae390d923fdf14a02d3cb",
+      "sourceHunks": [
+        "@@ -0,0 +1,7 @@"
+      ],
+      "targets": [
+        {
+          "path": "assets/uml/rtm2/one-to-one-call-module-lifecycle.mmd",
+          "baseSha256": "e591194d3b6a3e08a7895aa35f58e06e70dc03cc6fb8b528c99db48e06239585",
+          "currentSha256": "e591194d3b6a3e08a7895aa35f58e06e70dc03cc6fb8b528c99db48e06239585",
+          "sourceBytesEqual": true,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "assets/uml/rtm2/voice-room-client-lifecycle.mmd",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": null,
+      "sourceHeadSha256": "7763164ae5ed5900b17ccffc7c9b3df71f94170740dcc89440bae16978852d75",
+      "sourceDiffSha256": "b184a983e696b6d753d41ad77364c9c1dcf738256eade094b6c7a8d06c58f406",
+      "sourceHunks": [
+        "@@ -0,0 +1,11 @@"
+      ],
+      "targets": [
+        {
+          "path": "assets/uml/rtm2/voice-room-client-lifecycle.mmd",
+          "baseSha256": "7763164ae5ed5900b17ccffc7c9b3df71f94170740dcc89440bae16978852d75",
+          "currentSha256": "7763164ae5ed5900b17ccffc7c9b3df71f94170740dcc89440bae16978852d75",
+          "sourceBytesEqual": true,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "assets/uml/rtm2/voice-room-join-room.mmd",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": null,
+      "sourceHeadSha256": "c44aa3bd479e63d5bead0dd07f1e568b6a54a55daa8c47333547f2b013cf1cd7",
+      "sourceDiffSha256": "45e31ba85556ba29912a10ff6c8dc18b6365a21c4de39ec1ff6583e8e0148bfb",
+      "sourceHunks": [
+        "@@ -0,0 +1,12 @@"
+      ],
+      "targets": [
+        {
+          "path": "assets/uml/rtm2/voice-room-join-room.mmd",
+          "baseSha256": "c44aa3bd479e63d5bead0dd07f1e568b6a54a55daa8c47333547f2b013cf1cd7",
+          "currentSha256": "c44aa3bd479e63d5bead0dd07f1e568b6a54a55daa8c47333547f2b013cf1cd7",
+          "sourceBytesEqual": true,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "data/version.ts",
+      "sourcePr": null,
+      "status": "excluded",
+      "reason": "Source-only release counter or agent knowledge-base/generated mappings; no published portal content.",
+      "sourceBaseSha256": "dbf7b200258148b1baf54687e1d8f04762b68fddbbcba695d958c3c5df579a21",
+      "sourceHeadSha256": "d65ee8f3e2a1f59f42d3089ee386802ae46ceb3436d60ad85c1ba004ef485fe5",
+      "sourceDiffSha256": "d2fc2b7ea9ae7214ac4e4397bb666663034b0197821ceaf6e55a8e680acc0a27",
+      "sourceHunks": [
+        "@@ -1,3 +1,3 @@"
+      ],
+      "targets": []
+    },
+    {
+      "sourcePath": "docs-api-reference/convoai/agent-sdk-api/overview.agent-go.mdx",
+      "sourcePr": 2142,
+      "status": "migrated",
+      "reason": "Applied only source delta; retained existing translated terminology, explicit heading IDs, target links and v2.14/history.",
+      "sourceBaseSha256": "24e5fd2254d0fc2c96885842c71f6e3be2e3675e29e589eda9419dec98d1a192",
+      "sourceHeadSha256": "6f4dfcef5ac6139bd5e8335f73a511d77864c42e5b43746398278ca68e54c7bf",
+      "sourceDiffSha256": "19a39290a9455a05b1c696a49d2775f993ba35af617cf5d0526fe046d1d01e8f",
+      "sourceHunks": [
+        "@@ -203,7 +203,7 @@ import Agora \"github.com/AgoraIO/agora-agents-go/v2\"",
+        "@@ -260,7 +260,7 @@ agent := agentkit.NewAgent(client,",
+        "@@ -527,8 +527,8 @@ func (s *AgentSession) Start(ctx context.Context) (string, error)",
+        "@@ -716,7 +716,7 @@ response, err := session.Raw().List(ctx, &Agora.ListAgentsRequest{",
+        "@@ -846,9 +846,22 @@ func NewMicrosoftSTT(opts MicrosoftSTTOptions) *MicrosoftSTT",
+        "@@ -872,6 +885,47 @@ MiniMax TTS 要求 `Key` 和 `Model`。此外必须提供 `VoiceSetting.VoiceID`"
+      ],
+      "targets": [
+        {
+          "path": "content/docs/zh-CN/api-reference/conversational-ai/agent-go/index.mdx",
+          "baseSha256": "ab21fce8762454e596b4aa623dbd150808fed9837ae7978828f6fd7aab9f66e6",
+          "currentSha256": "c05687dee3077900ee9aba8ca1ddaa590c45fb6f0578a67e4f08347c82d95f1b",
+          "sourceBytesEqual": false,
+          "changedThisBatch": true
+        }
+      ],
+      "checks": [
+        "NewMiniMaxDuplexTTS full section = source (table labels translated)",
+        "NewStepFunSTT full section = source (table labels translated)",
+        "6 source replacement lines applied semantically to translated prose; import paths unchanged",
+        "all existing explicit IDs retained"
+      ]
+    },
+    {
+      "sourcePath": "docs-api-reference/convoai/agent-sdk-api/overview.agent-python.mdx",
+      "sourcePr": 2142,
+      "status": "migrated",
+      "reason": "Applied only source delta; retained existing translated terminology, explicit heading IDs, target links and v2.14/history.",
+      "sourceBaseSha256": "8dd891976c2bd69c5d6859416395edef06ce7f21218ec75eee694a18e5641b2c",
+      "sourceHeadSha256": "dffd07758a7c7082bd504dbd1852a4c10007595176859db5d47159a50014f8b2",
+      "sourceDiffSha256": "5a010c5360a43dd6684c86bc0b73c532cf703d9494cb35f59c753a9079ffc2fe",
+      "sourceHunks": [
+        "@@ -140,7 +140,7 @@ Sub-client 会在首次访问时懒加载。大多数场景下，建议优先使",
+        "@@ -636,24 +636,24 @@ session.off('started', my_handler)",
+        "@@ -667,7 +667,7 @@ from agora_agent.cn import (",
+        "@@ -757,6 +757,46 @@ from agora_agent.cn import MiniMaxTTS",
+        "@@ -923,6 +963,19 @@ from agora_agent.cn import MicrosoftSTT"
+      ],
+      "targets": [
+        {
+          "path": "content/docs/zh-CN/api-reference/conversational-ai/agent-python/index.mdx",
+          "baseSha256": "de84a57d8caa2f17e1669981775b21bfb91d28557464db8699e3aac71e5f5100",
+          "currentSha256": "ced6e02b5dce4a58db5374250ff75ffe54d25f64d810d53392a2ad66a2f022aa",
+          "sourceBytesEqual": false,
+          "changedThisBatch": true
+        }
+      ],
+      "checks": [
+        "MiniMaxDuplexTTS full section = source (table labels translated)",
+        "StepFunSTT full section = source (table labels translated)",
+        "7 source replacement lines applied; client=client and local withllmvendor link retained",
+        "all existing explicit IDs retained"
+      ]
+    },
+    {
+      "sourcePath": "docs-api-reference/convoai/agent-sdk-api/overview.agent-typescript.mdx",
+      "sourcePr": 2142,
+      "status": "migrated",
+      "reason": "Applied only source delta; retained existing translated terminology, explicit heading IDs, target links and v2.14/history.",
+      "sourceBaseSha256": "3305363068a33f6a90a10c8538f57c66225e606907e81aceebf69ecd65ce3ca5",
+      "sourceHeadSha256": "b386dd99be04418e39ee0b47189c1bf1870704ff150777d16a337d3fdaa3af6f",
+      "sourceDiffSha256": "00f431d7affe996be39f62bc73d15faccc45e44240521ab0d128b9a10ffd14d0",
+      "sourceHunks": [
+        "@@ -153,7 +153,7 @@ new Agent<TTSSampleRate extends number = number>(options?: AgentOptions)",
+        "@@ -534,9 +534,9 @@ vendor 类均从 `agora-agents` 导入。将这些 vendor 实例传给 [Agent bu",
+        "@@ -545,7 +545,7 @@ import {",
+        "@@ -616,6 +616,43 @@ new MiniMaxCNTTS(options: MiniMaxCNTTSOptions)",
+        "@@ -786,6 +823,19 @@ new MicrosoftCNSTT(options: MicrosoftCNSTTOptions)"
+      ],
+      "targets": [
+        {
+          "path": "content/docs/zh-CN/api-reference/conversational-ai/agent-typescript/index.mdx",
+          "baseSha256": "88ab4911f9f208aef703067d23b44235da194a03e68e481e2ef00311aa3931cf",
+          "currentSha256": "11140856c2776437af560399fa093da4a5b70bea6efc9c3efe9b6aedbba46f4a",
+          "sourceBytesEqual": false,
+          "changedThisBatch": true
+        }
+      ],
+      "checks": [
+        "MiniMaxDuplexTTS full section = source (table labels translated)",
+        "StepFunSTT full section = source (table labels translated)",
+        "4 source replacement lines applied; constructors and identifiers unchanged",
+        "all existing explicit IDs retained"
+      ]
+    },
+    {
+      "sourcePath": "docs/cloud-recording/user-guides/web-mode/set-webpage-recording.mdx",
+      "sourcePr": 2155,
+      "status": "migrated",
+      "reason": "Added forceCanvas: true and full source rationale to the existing whiteboard recording example.",
+      "sourceBaseSha256": "b8d3a634e2a9135fee4b0cf82fb9662b6172cdb5038135b3b7fd6ea17597a104",
+      "sourceHeadSha256": "3d35ee03172299a494f2162d80cbf237134d09e05506967cc95d22eca75aa1eb",
+      "sourceDiffSha256": "399446a844ca6932d398a65231f1dc1bfc669cb1b4c3aad061dd0b91cd2daba5",
+      "sourceHunks": [
+        "@@ -328,9 +328,12 @@ import Api from '@doc-shared/cloud-recording/api-acquire-start-stop.mdx'"
+      ],
+      "targets": [
+        {
+          "path": "content/docs/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording.mdx",
+          "baseSha256": "67643ad2bfa60122a7dfe820412ba1d34a8689f09f6362150f0907a0d69d39d9",
+          "currentSha256": "01bfd44d7855cd7d5b6f66e7b92999b6f5b93b8e3b1dcc46b2de86633b69b7fb",
+          "sourceBytesEqual": false,
+          "changedThisBatch": true
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/convoai/overview/release-notes.mdx",
+      "sourcePr": 2142,
+      "status": "migrated",
+      "reason": "Applied only source delta; retained existing translated terminology, explicit heading IDs, target links and v2.14/history.",
+      "sourceBaseSha256": "5fb59c78add9fcc1be093966f36c1574d85b4a9aff02037573cbf6f5d78dcc71",
+      "sourceHeadSha256": "676a574ff1a6211675bf8c815b4ae45361aa1019c68af18412104b49fd07542e",
+      "sourceDiffSha256": "8c9f08f6046faf8c70e4fbb612bec10335f7b54bc2bf6bae76f8f4ebbf7031a1",
+      "sourceHunks": [
+        "@@ -6,6 +6,38 @@ import VersionSection, { VersionTitle, ListTitle } from '@app/mdxComponents/Vers"
+      ],
+      "targets": [
+        {
+          "path": "content/docs/zh-CN/ai/release-notes.mdx",
+          "baseSha256": "b101cf87eb8001e89851c38572f07dfe315f5688f9df51d8bf510b6d0c13366d",
+          "currentSha256": "03c886bfa2fcf457f686836c044a8c6e1b7c1a482054a09de00560e58bd815b8",
+          "sourceBytesEqual": false,
+          "changedThisBatch": true
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/rtm2/_sidebar_.meta.javascript.js",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": "e2be3db88191792148a6e7b3a082c8bf5b9204162a5e1073c9df9a0a39efa0dc",
+      "sourceHeadSha256": "d2aaee998dfc671b6e1e8949984346160a5b760a08501625cc7890752ebecd39",
+      "sourceDiffSha256": "aa4bea189d97583ef9fe547f8de1f74967e7ece62de0dce915560e3d2a51b824",
+      "sourceHunks": [
+        "@@ -305,6 +305,22 @@ module.exports = ["
+      ],
+      "targets": [
+        {
+          "path": "content/docs/zh-CN/realtime-media/rtm/meta.json",
+          "baseSha256": "3b888775e5177d9e0adf4d6202187b991313372a79ab6f6dcb19df9370f9fd1e",
+          "currentSha256": "3b888775e5177d9e0adf4d6202187b991313372a79ab6f6dcb19df9370f9fd1e",
+          "sourceBytesEqual": false,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/rtm2/best-practice/one-to-one-call.javascript.mdx",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": null,
+      "sourceHeadSha256": "d9a3660e8567248246e7fc961a867f459d14a6db75972f1239f50c83e2f8d1f2",
+      "sourceDiffSha256": "f6c27ff9b95cd99721ea6439a6172c05a3e411856c98f0f5b82032683d46451e",
+      "sourceHunks": [
+        "@@ -0,0 +1,469 @@"
+      ],
+      "targets": [
+        {
+          "path": "content/docs/zh-CN/realtime-media/rtm/best-practice/web/one-to-one-call.mdx",
+          "baseSha256": "29fce6ab8b0bcd2f7de8af4bee92296882e07ebc2a0b35c352373ac6890ed4d3",
+          "currentSha256": "29fce6ab8b0bcd2f7de8af4bee92296882e07ebc2a0b35c352373ac6890ed4d3",
+          "sourceBytesEqual": false,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/rtm2/best-practice/voice-room.javascript.mdx",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": null,
+      "sourceHeadSha256": "949f5aa3745eb5caf8a51b5db57943996602aac8a709c98fd83f6ffb34523ec3",
+      "sourceDiffSha256": "74d8d4a754a7f8969ffaf593ea74543d3b6e90a5fa5ed3e95f6ae3c0a0088406",
+      "sourceHunks": [
+        "@@ -0,0 +1,345 @@"
+      ],
+      "targets": [
+        {
+          "path": "content/docs/zh-CN/realtime-media/rtm/best-practice/web/voice-room.mdx",
+          "baseSha256": "c40f774836e6463d8fdf20e5f580257f6f9cbbd98f185e40cc03a6bbb53715f5",
+          "currentSha256": "c40f774836e6463d8fdf20e5f580257f6f9cbbd98f185e40cc03a6bbb53715f5",
+          "sourceBytesEqual": false,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/rtm2/landing-page.mdx",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": "d4c0d7d48aec81c42bd034303404624cbb4005cec82563befac1eab9bc8bbc66",
+      "sourceHeadSha256": "dadced346780838d97fb55235bb6eb192bc1da3b9dc64c3200e34a178c5dbe8c",
+      "sourceDiffSha256": "d09f22ca03648cec942dd54f696e3fef61d755e22e156eaebcc58ede4548781b",
+      "sourceHunks": [
+        "@@ -25,6 +25,18 @@ RTM 沉淀了声网多年的技术经验、应用了分布全球的网络部署"
+      ],
+      "targets": [
+        {
+          "path": "content/docs/zh-CN/realtime-media/rtm/index.mdx",
+          "baseSha256": "ebaf4dbd317aef5c6536a520a01fdd7590be1f414de5e6ff9717a193c484c604",
+          "currentSha256": "ebaf4dbd317aef5c6536a520a01fdd7590be1f414de5e6ff9717a193c484c604",
+          "sourceBytesEqual": false,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "docs/rtm2/landing-page.mini-program.mdx",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": "6b624756a97f41702a9f28e05bd6844b045610933a85b2aa7355d9bf196251a9",
+      "sourceHeadSha256": "ef652cb0ff885810a971c164fe91d04ca3f3ae3fe04047c21e06d243ddc80675",
+      "sourceDiffSha256": "3b24b0cbd7c2eec7dc7f5de768c2d75a816bbea23164ff32e096c5b87284aed9",
+      "sourceHunks": [
+        "@@ -29,6 +29,18 @@ RTM 沉淀了声网多年的技术经验、应用了分布全球的网络部署"
+      ],
+      "targets": [
+        {
+          "path": "content/docs/zh-CN/realtime-media/rtm/index.mdx",
+          "baseSha256": "ebaf4dbd317aef5c6536a520a01fdd7590be1f414de5e6ff9717a193c484c604",
+          "currentSha256": "ebaf4dbd317aef5c6536a520a01fdd7590be1f414de5e6ff9717a193c484c604",
+          "sourceBytesEqual": false,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "html-docs/convoai/RESTful/convoai.yaml",
+      "sourcePr": 2142,
+      "status": "migrated",
+      "reason": "Applied only source delta; retained existing translated terminology, explicit heading IDs, target links and v2.14/history.",
+      "sourceBaseSha256": "752d5fe6d19563043238149b5a9b6838712aefd2b05d8b8863b165aa64ad2ebe",
+      "sourceHeadSha256": "232f572c2a51022e5f5784465dd374978c1636b57eadaae4cbb090a5480b7b42",
+      "sourceDiffSha256": "8955cf6f88fca7dd6f2f2bfe7505771648a9fa9347010abb51cef508870fafaa",
+      "sourceHunks": [
+        "@@ -140,6 +140,7 @@ paths:",
+        "@@ -172,6 +173,7 @@ paths:",
+        "@@ -179,6 +181,17 @@ paths:",
+        "@@ -1035,6 +1048,38 @@ paths:",
+        "@@ -2458,6 +2503,7 @@ components:",
+        "@@ -2501,6 +2547,27 @@ components:",
+        "@@ -2773,6 +2840,21 @@ components:"
+      ],
+      "targets": [
+        {
+          "path": "content/openapi/conversational-ai/rest-api.zh-CN.yaml",
+          "baseSha256": "e7858481126bbd4c2a0e2d1e8b5eca6535e2117ccf223db2307b0125cc812541",
+          "currentSha256": "9d2b5e411933af7696951dcebb01a04551e558282650be34f4dd3b02db330084",
+          "sourceBytesEqual": false,
+          "changedThisBatch": true
+        }
+      ]
+    },
+    {
+      "sourcePath": "scripts/agent/ali_file_id.json",
+      "sourcePr": null,
+      "status": "excluded",
+      "reason": "Source-only release counter or agent knowledge-base/generated mappings; no published portal content.",
+      "sourceBaseSha256": "c609fb959368732b9aa59aab2e0c47511cd5845725256c12d46b58fb1b456b53",
+      "sourceHeadSha256": "405ca2eeb445a52adc5e128d5a56bc2271fb6ba0c44ed4c9029cc65167bfb4c0",
+      "sourceDiffSha256": "be9261037ef5bb71ee85a90eb36862203ac1b5ece043ac7d5a2d69ae67da9d14",
+      "sourceHunks": [
+        "@@ -13,14 +13,13 @@",
+        "@@ -28,7 +27,7 @@",
+        "@@ -41,9 +40,6 @@",
+        "@@ -58,16 +54,16 @@",
+        "@@ -140,7 +136,7 @@",
+        "@@ -817,7 +813,7 @@",
+        "@@ -835,7 +831,7 @@",
+        "@@ -897,46 +893,13 @@",
+        "@@ -967,7 +930,7 @@",
+        "@@ -1046,7 +1009,6 @@",
+        "@@ -1163,14 +1125,9 @@",
+        "@@ -1186,7 +1143,6 @@",
+        "@@ -1209,7 +1165,6 @@",
+        "@@ -1220,7 +1175,6 @@",
+        "@@ -1512,7 +1466,6 @@",
+        "@@ -1538,7 +1491,6 @@",
+        "@@ -1564,7 +1516,6 @@",
+        "@@ -1833,7 +1784,6 @@",
+        "@@ -1860,7 +1810,6 @@",
+        "@@ -1883,7 +1832,6 @@",
+        "@@ -2162,7 +2110,6 @@",
+        "@@ -2189,7 +2136,6 @@",
+        "@@ -2213,7 +2159,6 @@",
+        "@@ -2290,7 +2235,6 @@",
+        "@@ -2313,7 +2257,6 @@",
+        "@@ -2329,12 +2272,10 @@",
+        "@@ -2421,24 +2362,16 @@",
+        "@@ -2454,16 +2387,13 @@",
+        "@@ -2555,7 +2485,7 @@",
+        "@@ -2568,7 +2498,7 @@",
+        "@@ -2626,11 +2556,9 @@",
+        "@@ -2658,7 +2586,7 @@",
+        "@@ -2695,7 +2623,7 @@",
+        "@@ -2712,7 +2640,6 @@",
+        "@@ -2720,7 +2647,6 @@",
+        "@@ -2729,9 +2655,6 @@",
+        "@@ -2748,7 +2671,6 @@",
+        "@@ -2772,7 +2694,6 @@",
+        "@@ -2784,7 +2705,6 @@",
+        "@@ -2808,7 +2728,6 @@",
+        "@@ -2839,7 +2758,7 @@",
+        "@@ -2870,7 +2789,7 @@",
+        "@@ -2950,7 +2869,7 @@",
+        "@@ -2962,10 +2881,10 @@",
+        "@@ -3002,11 +2921,9 @@",
+        "@@ -3084,7 +3001,6 @@",
+        "@@ -3092,7 +3008,6 @@",
+        "@@ -3101,9 +3016,6 @@",
+        "@@ -3119,7 +3031,6 @@",
+        "@@ -3142,7 +3053,6 @@",
+        "@@ -3153,7 +3063,6 @@",
+        "@@ -3161,7 +3070,6 @@",
+        "@@ -3492,7 +3400,6 @@",
+        "@@ -3519,7 +3426,6 @@",
+        "@@ -3542,7 +3448,6 @@",
+        "@@ -3571,7 +3476,6 @@",
+        "@@ -3582,7 +3486,6 @@",
+        "@@ -3612,16 +3515,13 @@",
+        "@@ -3630,7 +3530,6 @@",
+        "@@ -3651,14 +3550,12 @@",
+        "@@ -4065,7 +3962,6 @@",
+        "@@ -4092,7 +3988,6 @@",
+        "@@ -4116,7 +4011,6 @@",
+        "@@ -4310,7 +4204,6 @@",
+        "@@ -4332,7 +4225,6 @@",
+        "@@ -4354,7 +4246,6 @@",
+        "@@ -4616,7 +4507,6 @@",
+        "@@ -4644,7 +4534,6 @@",
+        "@@ -4668,7 +4557,6 @@",
+        "@@ -4720,7 +4608,6 @@",
+        "@@ -4847,7 +4734,6 @@",
+        "@@ -4936,14 +4822,12 @@",
+        "@@ -4952,10 +4836,6 @@",
+        "@@ -4971,7 +4851,6 @@",
+        "@@ -4995,7 +4874,6 @@",
+        "@@ -5007,7 +4885,6 @@",
+        "@@ -5094,58 +4971,16 @@",
+        "@@ -5154,146 +4989,36 @@",
+        "@@ -5312,97 +5037,76 @@",
+        "@@ -5410,22 +5114,18 @@",
+        "@@ -5435,33 +5135,25 @@",
+        "@@ -5470,12 +5162,10 @@",
+        "@@ -5484,9 +5174,7 @@",
+        "@@ -5494,14 +5182,12 @@",
+        "@@ -5509,13 +5195,10 @@",
+        "@@ -5525,40 +5208,32 @@",
+        "@@ -5567,7 +5242,6 @@",
+        "@@ -5576,7 +5250,6 @@",
+        "@@ -5595,7 +5268,6 @@",
+        "@@ -5603,7 +5275,6 @@",
+        "@@ -5618,7 +5289,6 @@",
+        "@@ -5627,7 +5297,6 @@",
+        "@@ -5646,7 +5315,6 @@",
+        "@@ -5654,7 +5322,6 @@",
+        "@@ -5665,22 +5332,18 @@",
+        "@@ -5694,11 +5357,9 @@",
+        "@@ -5707,11 +5368,9 @@",
+        "@@ -5732,9 +5391,7 @@",
+        "@@ -5747,9 +5404,7 @@",
+        "@@ -5769,9 +5424,7 @@",
+        "@@ -5788,9 +5441,7 @@",
+        "@@ -5803,9 +5454,7 @@",
+        "@@ -5820,9 +5469,7 @@",
+        "@@ -5830,14 +5477,12 @@",
+        "@@ -5848,13 +5493,11 @@",
+        "@@ -5868,28 +5511,22 @@",
+        "@@ -5898,43 +5535,33 @@",
+        "@@ -5947,10 +5574,8 @@",
+        "@@ -5963,10 +5588,8 @@",
+        "@@ -5980,10 +5603,8 @@",
+        "@@ -5996,10 +5617,8 @@",
+        "@@ -6010,12 +5629,10 @@",
+        "@@ -6029,11 +5646,9 @@",
+        "@@ -6041,11 +5656,9 @@",
+        "@@ -6055,12 +5668,10 @@",
+        "@@ -6074,11 +5685,9 @@",
+        "@@ -6086,45 +5695,35 @@",
+        "@@ -6144,7 +5743,6 @@",
+        "@@ -6152,7 +5750,6 @@",
+        "@@ -6178,7 +5775,6 @@",
+        "@@ -6186,7 +5782,6 @@",
+        "@@ -6195,7 +5790,6 @@",
+        "@@ -6246,13 +5840,11 @@",
+        "@@ -6293,13 +5885,11 @@",
+        "@@ -6333,28 +5923,19 @@",
+        "@@ -6365,20 +5946,13 @@",
+        "@@ -6432,13 +6006,11 @@",
+        "@@ -6490,18 +6062,15 @@",
+        "@@ -6553,13 +6122,10 @@",
+        "@@ -6574,13 +6140,11 @@",
+        "@@ -6595,13 +6159,11 @@",
+        "@@ -6619,13 +6181,11 @@",
+        "@@ -6653,10 +6213,10 @@",
+        "@@ -6673,30 +6233,23 @@",
+        "@@ -6704,11 +6257,9 @@",
+        "@@ -6718,11 +6269,9 @@",
+        "@@ -6731,11 +6280,9 @@",
+        "@@ -6781,19 +6328,17 @@",
+        "@@ -6814,13 +6359,11 @@",
+        "@@ -6847,18 +6390,15 @@",
+        "@@ -6910,27 +6450,21 @@",
+        "@@ -6949,19 +6483,16 @@",
+        "@@ -6981,21 +6512,18 @@",
+        "@@ -7018,18 +6546,15 @@",
+        "@@ -7049,18 +6574,15 @@",
+        "@@ -7081,21 +6603,18 @@",
+        "@@ -7118,18 +6637,15 @@",
+        "@@ -7151,12 +6667,10 @@",
+        "@@ -7169,7 +6683,7 @@",
+        "@@ -7190,13 +6704,11 @@",
+        "@@ -7216,49 +6728,38 @@",
+        "@@ -7278,10 +6779,8 @@",
+        "@@ -7290,7 +6789,7 @@",
+        "@@ -7301,53 +6800,40 @@",
+        "@@ -7356,23 +6842,18 @@",
+        "@@ -7380,12 +6861,10 @@",
+        "@@ -7395,24 +6874,16 @@",
+        "@@ -7420,159 +6891,98 @@",
+        "@@ -7585,7 +6995,7 @@",
+        "@@ -7600,7 +7010,7 @@",
+        "@@ -7619,10 +7029,10 @@",
+        "@@ -7706,17 +7116,14 @@",
+        "@@ -7724,28 +7131,24 @@",
+        "@@ -7767,7 +7170,6 @@",
+        "@@ -7795,7 +7197,6 @@",
+        "@@ -7855,14 +7256,12 @@",
+        "@@ -7883,19 +7282,12 @@",
+        "@@ -7903,7 +7295,6 @@",
+        "@@ -7973,5 +7364,1540 @@"
+      ],
+      "targets": []
+    },
+    {
+      "sourcePath": "scripts/agent/doc_mapping.json",
+      "sourcePr": null,
+      "status": "excluded",
+      "reason": "Source-only release counter or agent knowledge-base/generated mappings; no published portal content.",
+      "sourceBaseSha256": "c1bc89fede9a363bb17657096a2884696636643ef90e838ebc0109c7fc337c96",
+      "sourceHeadSha256": "2de643d9cb44b03dc99121b453a2ba3f735171663d87137264df3325b3bbd77b",
+      "sourceDiffSha256": "077885b52af071664273b9b414a1999aa5488c2ea48a3bb407ed6a63c1d468b9",
+      "sourceHunks": [
+        "@@ -10,7 +10,7 @@",
+        "@@ -20,14 +20,14 @@",
+        "@@ -37,23 +37,23 @@",
+        "@@ -919,46 +919,46 @@",
+        "@@ -1071,11 +1071,12 @@",
+        "@@ -1087,7 +1088,7 @@",
+        "@@ -1193,15 +1194,15 @@",
+        "@@ -1218,7 +1219,7 @@",
+        "@@ -1239,10 +1240,10 @@",
+        "@@ -1251,11 +1252,11 @@",
+        "@@ -1548,7 +1549,7 @@",
+        "@@ -1574,7 +1575,7 @@",
+        "@@ -1601,7 +1602,7 @@",
+        "@@ -1674,7 +1675,7 @@",
+        "@@ -1870,7 +1871,7 @@",
+        "@@ -1898,7 +1899,7 @@",
+        "@@ -1918,10 +1919,10 @@",
+        "@@ -2000,7 +2001,7 @@",
+        "@@ -2128,7 +2129,7 @@",
+        "@@ -2205,7 +2206,7 @@",
+        "@@ -2233,7 +2234,7 @@",
+        "@@ -2254,10 +2255,10 @@",
+        "@@ -2265,7 +2266,7 @@",
+        "@@ -2335,11 +2336,11 @@",
+        "@@ -2358,7 +2359,7 @@",
+        "@@ -2374,12 +2375,12 @@",
+        "@@ -2388,6 +2389,7 @@",
+        "@@ -2454,6 +2456,7 @@",
+        "@@ -2466,28 +2469,34 @@",
+        "@@ -2499,17 +2508,18 @@",
+        "@@ -2561,6 +2571,7 @@",
+        "@@ -2572,7 +2583,7 @@",
+        "@@ -2673,11 +2684,11 @@",
+        "@@ -2759,7 +2770,7 @@",
+        "@@ -2767,7 +2778,7 @@",
+        "@@ -2776,10 +2787,10 @@",
+        "@@ -2797,7 +2808,7 @@",
+        "@@ -2818,10 +2829,10 @@",
+        "@@ -2834,7 +2845,7 @@",
+        "@@ -2859,7 +2870,7 @@",
+        "@@ -2875,8 +2886,8 @@",
+        "@@ -2954,6 +2965,7 @@",
+        "@@ -2965,7 +2977,7 @@",
+        "@@ -3057,11 +3069,11 @@",
+        "@@ -3139,7 +3151,7 @@",
+        "@@ -3147,7 +3159,7 @@",
+        "@@ -3156,10 +3168,10 @@",
+        "@@ -3176,7 +3188,7 @@",
+        "@@ -3196,10 +3208,10 @@",
+        "@@ -3212,7 +3224,7 @@",
+        "@@ -3220,7 +3232,7 @@",
+        "@@ -3353,7 +3365,7 @@",
+        "@@ -3477,7 +3489,7 @@",
+        "@@ -3553,7 +3565,7 @@",
+        "@@ -3581,7 +3593,7 @@",
+        "@@ -3602,10 +3614,10 @@",
+        "@@ -3613,7 +3625,7 @@",
+        "@@ -3635,7 +3647,7 @@",
+        "@@ -3646,8 +3658,9 @@",
+        "@@ -3676,16 +3689,16 @@",
+        "@@ -3694,7 +3707,7 @@",
+        "@@ -3715,14 +3728,15 @@",
+        "@@ -3929,7 +3943,7 @@",
+        "@@ -4130,7 +4144,7 @@",
+        "@@ -4158,7 +4172,7 @@",
+        "@@ -4179,10 +4193,10 @@",
+        "@@ -4377,7 +4391,7 @@",
+        "@@ -4399,7 +4413,7 @@",
+        "@@ -4421,7 +4435,7 @@",
+        "@@ -4683,7 +4697,7 @@",
+        "@@ -4711,7 +4725,7 @@",
+        "@@ -4732,10 +4746,10 @@",
+        "@@ -4787,12 +4801,13 @@",
+        "@@ -4805,7 +4820,7 @@",
+        "@@ -4918,7 +4933,7 @@",
+        "@@ -5007,26 +5022,27 @@",
+        "@@ -5043,10 +5059,10 @@",
+        "@@ -5064,14 +5080,14 @@",
+        "@@ -5080,7 +5096,7 @@",
+        "@@ -5132,9 +5148,9 @@",
+        "@@ -5162,223 +5178,584 @@",
+        "@@ -5398,121 +5775,147 @@",
+        "@@ -5524,34 +5927,38 @@",
+        "@@ -5559,134 +5966,155 @@",
+        "@@ -5699,7 +6127,7 @@",
+        "@@ -5708,12 +6136,14 @@",
+        "@@ -5727,7 +6157,7 @@",
+        "@@ -5735,9 +6165,11 @@",
+        "@@ -5750,7 +6182,7 @@",
+        "@@ -5759,12 +6191,14 @@",
+        "@@ -5778,7 +6212,7 @@",
+        "@@ -5786,7 +6220,9 @@",
+        "@@ -5797,24 +6233,27 @@",
+        "@@ -5822,32 +6261,37 @@",
+        "@@ -5868,9 +6312,11 @@",
+        "@@ -5885,10 +6331,12 @@",
+        "@@ -5909,9 +6357,11 @@",
+        "@@ -5930,9 +6380,11 @@",
+        "@@ -5947,9 +6399,11 @@",
+        "@@ -5966,9 +6420,11 @@",
+        "@@ -5976,17 +6432,19 @@",
+        "@@ -5994,13 +6452,14 @@",
+        "@@ -6010,33 +6469,40 @@",
+        "@@ -6044,46 +6510,56 @@",
+        "@@ -6093,14 +6569,16 @@",
+        "@@ -6109,14 +6587,16 @@",
+        "@@ -6126,14 +6606,16 @@",
+        "@@ -6142,13 +6624,15 @@",
+        "@@ -6156,16 +6640,18 @@",
+        "@@ -6178,29 +6664,33 @@",
+        "@@ -6208,16 +6698,18 @@",
+        "@@ -6230,63 +6722,75 @@",
+        "@@ -6306,7 +6810,7 @@",
+        "@@ -6314,13 +6818,15 @@",
+        "@@ -6340,7 +6846,7 @@",
+        "@@ -6348,16 +6854,17 @@",
+        "@@ -6382,8 +6889,9 @@",
+        "@@ -6399,7 +6907,7 @@",
+        "@@ -6410,16 +6918,17 @@",
+        "@@ -6434,6 +6943,7 @@",
+        "@@ -6448,7 +6958,7 @@",
+        "@@ -6462,19 +6972,21 @@",
+        "@@ -6490,7 +7002,7 @@",
+        "@@ -6504,28 +7016,33 @@",
+        "@@ -6538,22 +7055,23 @@",
+        "@@ -6578,6 +7096,7 @@",
+        "@@ -6595,7 +7114,7 @@",
+        "@@ -6609,13 +7128,14 @@",
+        "@@ -6641,14 +7161,15 @@",
+        "@@ -6672,23 +7193,24 @@",
+        "@@ -6712,6 +7234,7 @@",
+        "@@ -6728,7 +7251,7 @@",
+        "@@ -6742,17 +7265,19 @@",
+        "@@ -6768,18 +7293,20 @@",
+        "@@ -6792,17 +7319,19 @@",
+        "@@ -6818,13 +7347,14 @@",
+        "@@ -6843,6 +7373,7 @@",
+        "@@ -6859,7 +7390,7 @@",
+        "@@ -6874,13 +7405,14 @@",
+        "@@ -6888,55 +7420,64 @@",
+        "@@ -6954,6 +7495,7 @@",
+        "@@ -6970,7 +7512,7 @@",
+        "@@ -6984,17 +7526,19 @@",
+        "@@ -7019,17 +7563,19 @@",
+        "@@ -7054,18 +7600,19 @@",
+        "@@ -7089,6 +7636,7 @@",
+        "@@ -7105,7 +7653,7 @@",
+        "@@ -7119,20 +7667,22 @@",
+        "@@ -7140,14 +7690,15 @@",
+        "@@ -7157,7 +7708,7 @@",
+        "@@ -7171,11 +7722,12 @@",
+        "@@ -7183,14 +7735,15 @@",
+        "@@ -7200,7 +7753,7 @@",
+        "@@ -7214,25 +7767,27 @@",
+        "@@ -7242,7 +7797,7 @@",
+        "@@ -7256,25 +7811,27 @@",
+        "@@ -7284,7 +7841,7 @@",
+        "@@ -7298,12 +7855,13 @@",
+        "@@ -7311,14 +7869,15 @@",
+        "@@ -7328,7 +7887,7 @@",
+        "@@ -7342,37 +7901,39 @@",
+        "@@ -7381,29 +7942,75 @@",
+        "@@ -7413,7 +8020,7 @@",
+        "@@ -7427,17 +8034,19 @@",
+        "@@ -7451,7 +8060,7 @@",
+        "@@ -7465,6 +8074,7 @@",
+        "@@ -7473,76 +8083,87 @@",
+        "@@ -7557,16 +8178,18 @@",
+        "@@ -7581,76 +8204,93 @@",
+        "@@ -7658,11 +8298,12 @@",
+        "@@ -7673,12 +8314,15 @@",
+        "@@ -7687,184 +8331,319 @@",
+        "@@ -7926,7 +8705,7 @@"
+      ],
+      "targets": []
+    },
+    {
+      "sourcePath": "src/components/codebox/CodeStore.tsx",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": "d1d65c776d307c0e956f5c806987ad6957abe9fb93dd913cd7915909ca726af3",
+      "sourceHeadSha256": "dc9242c44179b16f4eee5bb40c8f41b4a185734c84cecf535c179a490d9a5319",
+      "sourceDiffSha256": "a4f276a335d6141e91369fab8d96d79e3bbdf20bb0a7c5d68c10f793feb87807",
+      "sourceHunks": [
+        "@@ -21,6 +21,41 @@ enum DemoAppGroupFieldKey {",
+        "@@ -41,7 +76,7 @@ const CodeStorePage: React.FC = () => {",
+        "@@ -206,96 +241,130 @@ const CodeStorePage: React.FC = () => {"
+      ],
+      "targets": [
+        {
+          "path": "content/docs/zh-CN/reference/demo/index.mdx",
+          "baseSha256": "dbe8254d8cbfc3d9d2ffe3183e16a97087971c763f1b32ac4e8cc9bf64cc831b",
+          "currentSha256": "dbe8254d8cbfc3d9d2ffe3183e16a97087971c763f1b32ac4e8cc9bf64cc831b",
+          "sourceBytesEqual": false,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "static/img/rtm2/one-to-one-call-callee-state.svg",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": null,
+      "sourceHeadSha256": "230825db1667bc51f0921dd53d8ed386daf878fde61249e4182de53400ad4580",
+      "sourceDiffSha256": "66954cd8ceda1e4e455ce6ddd6db3aaf6dec70b41ac770ef2431110d9467117f",
+      "sourceHunks": [
+        "@@ -0,0 +1 @@"
+      ],
+      "targets": [
+        {
+          "path": "public/img/rtm2/one-to-one-call-callee-state.svg",
+          "baseSha256": "230825db1667bc51f0921dd53d8ed386daf878fde61249e4182de53400ad4580",
+          "currentSha256": "230825db1667bc51f0921dd53d8ed386daf878fde61249e4182de53400ad4580",
+          "sourceBytesEqual": true,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "static/img/rtm2/one-to-one-call-caller-state.svg",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": null,
+      "sourceHeadSha256": "bdccb69fd6652ce8785e2df14aa3cbcf296c78627072928bc184fdc4480b2447",
+      "sourceDiffSha256": "886493865a06257f940b705e50e15ce266f1088cfb8bc0f393093639aff23f1b",
+      "sourceHunks": [
+        "@@ -0,0 +1 @@"
+      ],
+      "targets": [
+        {
+          "path": "public/img/rtm2/one-to-one-call-caller-state.svg",
+          "baseSha256": "bdccb69fd6652ce8785e2df14aa3cbcf296c78627072928bc184fdc4480b2447",
+          "currentSha256": "bdccb69fd6652ce8785e2df14aa3cbcf296c78627072928bc184fdc4480b2447",
+          "sourceBytesEqual": true,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "static/img/rtm2/one-to-one-call-invitation-flow.svg",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": null,
+      "sourceHeadSha256": "175a15cb85d870399f4b064c16ea0e6b9915951a01eb9db175dab994d138bb33",
+      "sourceDiffSha256": "a00280c403f95ec0a0ba23c105c24c507f6a8d9aa8a2331709ef37b69b8f23a2",
+      "sourceHunks": [
+        "@@ -0,0 +1 @@"
+      ],
+      "targets": [
+        {
+          "path": "public/img/rtm2/one-to-one-call-invitation-flow.svg",
+          "baseSha256": "175a15cb85d870399f4b064c16ea0e6b9915951a01eb9db175dab994d138bb33",
+          "currentSha256": "175a15cb85d870399f4b064c16ea0e6b9915951a01eb9db175dab994d138bb33",
+          "sourceBytesEqual": true,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "static/img/rtm2/one-to-one-call-module-lifecycle.svg",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": null,
+      "sourceHeadSha256": "5d4e9fdec062db25efab39dfc95aab7bdd788bcb4316fa8baa0753dab8a57007",
+      "sourceDiffSha256": "5f63045e7a695214ecf0b23f9876a497878925a7be5233ff454e080300442f1d",
+      "sourceHunks": [
+        "@@ -0,0 +1 @@"
+      ],
+      "targets": [
+        {
+          "path": "public/img/rtm2/one-to-one-call-module-lifecycle.svg",
+          "baseSha256": "5d4e9fdec062db25efab39dfc95aab7bdd788bcb4316fa8baa0753dab8a57007",
+          "currentSha256": "5d4e9fdec062db25efab39dfc95aab7bdd788bcb4316fa8baa0753dab8a57007",
+          "sourceBytesEqual": true,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "static/img/rtm2/online-demo.jpg",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": null,
+      "sourceHeadSha256": "dbbb07e2f38ab463cd4eeea743700795716c4647a6e11a97073ab6ad789ce134",
+      "sourceDiffSha256": "c8df886996b22ddf1da100ca82a4c0e3c696903a4d141c53258a89e466271e99",
+      "sourceHunks": [],
+      "targets": [
+        {
+          "path": "public/img/rtm2/online-demo.jpg",
+          "baseSha256": "dbbb07e2f38ab463cd4eeea743700795716c4647a6e11a97073ab6ad789ce134",
+          "currentSha256": "dbbb07e2f38ab463cd4eeea743700795716c4647a6e11a97073ab6ad789ce134",
+          "sourceBytesEqual": true,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "static/img/rtm2/voice-room-client-lifecycle.svg",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": null,
+      "sourceHeadSha256": "86b17f1933e37f4e528fbac90005a70b12950d66d738ce06b833202aa49be21b",
+      "sourceDiffSha256": "3a773aea61b028becaba2af454d7dc3b47b036bff97fb62e1a9c620748cc021a",
+      "sourceHunks": [
+        "@@ -0,0 +1 @@"
+      ],
+      "targets": [
+        {
+          "path": "public/img/rtm2/voice-room-client-lifecycle.svg",
+          "baseSha256": "86b17f1933e37f4e528fbac90005a70b12950d66d738ce06b833202aa49be21b",
+          "currentSha256": "86b17f1933e37f4e528fbac90005a70b12950d66d738ce06b833202aa49be21b",
+          "sourceBytesEqual": true,
+          "changedThisBatch": false
+        }
+      ]
+    },
+    {
+      "sourcePath": "static/img/rtm2/voice-room-join-room.svg",
+      "sourcePr": 2146,
+      "status": "already-present",
+      "reason": "Final merged source verified against existing target #1398/#1406; preserve portal syntax, mapped links, short titles, card layout and navigation.",
+      "sourceBaseSha256": null,
+      "sourceHeadSha256": "febcf3560c9b778546804f343b74603bf3750c9c1022ae102423b40325abd23c",
+      "sourceDiffSha256": "f69248be957a6e791c5549fda344ffb948c1a5ffcf39c4c34e96cc7a6e112ff7",
+      "sourceHunks": [
+        "@@ -0,0 +1 @@"
+      ],
+      "targets": [
+        {
+          "path": "public/img/rtm2/voice-room-join-room.svg",
+          "baseSha256": "febcf3560c9b778546804f343b74603bf3750c9c1022ae102423b40325abd23c",
+          "currentSha256": "febcf3560c9b778546804f343b74603bf3750c9c1022ae102423b40325abd23c",
+          "sourceBytesEqual": true,
+          "changedThisBatch": false
+        }
+      ]
+    }
+  ]
+}

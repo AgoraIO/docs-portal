@@ -1,0 +1,78 @@
+---
+title: ApplianceInitLoadingChangeEvent interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_appliance_init_loading_change_event
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_appliance_init_loading_change_event.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+教具初始化进度事件数据，status 为 start/success/timeout/error。
+
+可从 @shengwang/whiteboard 直接导入 ApplianceInitLoadingChangeEvent。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface ApplianceInitLoadingChangeEvent
+```
+
+| [name](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-init-loading-change-event#aad16dc1e66f5b6a185098140ee1d0f0b) | `name: 'applianceInitLoadingChange'` |
+| --- | --- |
+| [loading](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-init-loading-change-event#a40b3a7f2692f1b8933215a33ef7a5590) | `loading: boolean` |
+| [phase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-init-loading-change-event#aaca53f4561d03e44daf17d2b55721e9b) | `phase: 'plugin' \| 'worker' \| 'scene' \| 'ready'` |
+| [status](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-init-loading-change-event#a5488e2a50e6f0aebd4c298828a23c6db) | `status: 'start' \| 'success' \| 'timeout' \| 'error'` |
+
+## 变量说明
+
+<a id="aad16dc1e66f5b6a185098140ee1d0f0b"></a>
+
+### name
+
+```text
+name: 'applianceInitLoadingChange'
+```
+
+事件名为 applianceInitLoadingChange。
+
+<a id="a40b3a7f2692f1b8933215a33ef7a5590"></a>
+
+### loading
+
+```text
+loading: boolean
+```
+
+教具初始化是否仍在进行；结合 phase 和 status 判断阶段和结果。
+
+<a id="aaca53f4561d03e44daf17d2b55721e9b"></a>
+
+### phase
+
+```text
+phase: 'plugin' | 'worker' | 'scene' | 'ready'
+```
+
+初始化阶段：plugin、worker、scene 或 ready。
+
+<a id="a5488e2a50e6f0aebd4c298828a23c6db"></a>
+
+### status
+
+```text
+status: 'start' | 'success' | 'timeout' | 'error'
+```
+
+初始化阶段结果：start、success、timeout 或 error；loading=false、phase=ready、status=success 表示就绪。

@@ -1,0 +1,348 @@
+---
+title: 统一页面控制
+---
+
+<PlatformStructured platform="android">
+
+适用于 **Fastboard Android SDK 1.8.2（内置 Whiteboard 2.16.131）**。
+
+多窗口模式通过同一套接口控制主白板和课件。先完成[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)，并等待入房成功；业务发起翻页、缩放以及新增或移除主白板页面还需要可写权限。
+
+## 目标与操作
+
+| 目标 | `target` 输入 | 支持操作 |
+| --- | --- | --- |
+| MainView 主白板 | `mainView` | 前后页、跳页、缩放；[新增、移除页面](#mainview-add-remove)使用独立 API；不支持动画步骤 |
+| Slide 动态 PPT | 该窗口的 appId | 前后页、跳页、前后动画步骤、缩放（先启用 Slide 的 enableScale） |
+| Presentation 静态 PPT | 该窗口的 appId | 前后页、跳页、缩放；不支持动画步骤 |
+| DocsViewer 文档 | 该窗口的 appId | 前后页、跳页；不支持 scalePage |
+
+省略 target 时跟随当前焦点，没有焦点时使用 MainView。不能把 `Slide` 或 `Presentation` 类型名当作 appId。查询结果的 target 则是 `mainView`、`Slide`、`Presentation`、`DocsViewer` 之一，用于标识目标类型。
+
+下表列出 `dispatchDocsEvent` 支持的命令；新增和移除页面使用下文的独立 API。
+
+| 命令 | 用途与参数 |
+| --- | --- |
+| prevPage / nextPage | 前一页 / 后一页 |
+| prevStep / nextStep | 前一动画步骤 / 后一动画步骤 |
+| jumpToPage | page 为从 1 开始的整数，不能直接使用零基场景索引 |
+| scalePage | scale 为相对适配倍率，1 表示适配大小；可选范围由 pageScaleRange 约束 |
+
+<a id="mainview-add-remove"></a>
+## 新增与移除主白板页面
+
+以下公开 API 固定操作 MainView 主白板的场景页，不受当前焦点或 `target` 影响，也不用于增加或删除课件源文件中的页面。先完成多窗口入房并取得可写权限。`dispatchDocsEvent` 不接受 `addPage`、`removePage` 命令。
+
+在 Fastboard ready 后，通过公开的 `Room room = fastRoom.getRoom()` 调用；调用前确认 `room` 非空。
+
+| 操作 | `Room` 公开 API | 参数与结果 |
+| --- | --- | --- |
+| 末尾新增空白页 | `void addPage()` | 追加到主白板场景集末尾 |
+| 指定位置新增页面 | `void addPage(Scene scene, boolean after)` | `scene` 可为 `null`，表示空白页；`after = true` 插到主白板当前页之后，`false` 追加到末尾。方法无完成回调 |
+| 移除当前页面 | `void removePage(Promise<Boolean> promise)` | 删除主白板当前页，`promise` 可空 |
+| 移除指定页面 | `void removePage(int index, Promise<Boolean> promise)` | `index` 为零基索引。回调 `true` 表示删除成功；仅剩一页或索引越界时回调 `false`；异常在 `catchEx` 接收 |
+
+下面代码用于两个独立的按钮处理逻辑：
+
+```java
+import android.util.Log;
+import com.herewhite.sdk.Room;
+import com.herewhite.sdk.domain.Promise;
+import com.herewhite.sdk.domain.SDKError;
+
+// 在 Fastboard ready 后获取，调用前确认非空。
+Room room = fastRoom.getRoom();
+
+// 新增按钮：在主白板当前页之后插入空白页。
+room.addPage(null, true);
+
+// 删除按钮：删除主白板第一页；省略索引的重载可删除当前页。
+room.removePage(0, new Promise<Boolean>() {
+    @Override public void then(Boolean removed) {
+        if (!Boolean.TRUE.equals(removed)) {
+            Log.w("Whiteboard", "页面未删除，请检查页数与索引");
+        }
+    }
+    @Override public void catchEx(SDKError error) {
+        Log.e("Whiteboard", "删除页面失败", error);
+    }
+});
+```
+
+新增页面后不会自动跳到新页，需要时再发送指定 `target: "mainView"` 的跳页命令。主白板至少保留一页；仅剩一页时不能删除。
+
+**索引区别：** 删除 API 的 `index` 从 **0** 开始，`index = 0` 表示第一页；`dispatchDocsEvent("jumpToPage", ...)` 的 `page` 从 **1** 开始。传入待删除页索引前，请确认主白板的实际页数。
+
+## 发送命令与主动查询
+
+```java
+// fastRoom 已 ready；appId 是 addApp 返回的窗口 ID。
+fastRoom.dispatchDocsEvent(WindowDocsEvent.JumpToPage(2).withTarget(appId),
+    new FastResult<DispatchDocsEventResult>() {
+        @Override public void onSuccess(DispatchDocsEventResult result) {
+            if (!result.isAccepted()) Log.w("Whiteboard", result.getReason());
+        }
+        @Override public void onError(Exception error) { Log.e("Whiteboard", "命令失败", error); }
+    });
+fastRoom.getPageState(new WindowPageStateOptions().withTarget(appId),
+    new FastResult<UnifiedPageState>() {
+        @Override public void onSuccess(UnifiedPageState state) {
+            Log.i("Whiteboard", "page=" + state.getPage() + "/" + state.getPageCount()
+                + ", scale=" + state.getScale());
+        }
+        @Override public void onError(Exception error) { Log.e("Whiteboard", "查询失败", error); }
+    });
+```
+
+`dispatchDocsEvent` 的 accepted 只表示命令被接收；accepted=false 时读取 reason/message。Bridge 或宿主异常走 Promise 拒绝或原生错误回调。原因码包括 invalidEvent、invalidOptions、targetNotFound、targetNotSupported、eventNotSupported、notWritable、stateUnavailable、outOfRange、commandFailed。
+
+`getPageState` 主动查询可观察的状态，不会触发翻页。返回 page/pageCount（从 1 开始）、target、可选 appId 与 scale。尚未完成初始化或状态确认时可能失败；可等待状态事件后再次查询，或设置有限重试次数与截止时间。
+
+## 监听实际页码与缩放
+
+```java
+fastRoom.setUnifiedPageStateListener(new UnifiedPageStateListener() {
+    @Override public void onUnifiedPageStateChange(UnifiedPageStateChange state) {
+        if ("failure".equals(state.getStatus())) {
+            Log.w("Whiteboard", state.getReason());
+            return;
+        }
+        Log.i("Whiteboard", "type=" + state.getChangeType() + ", page=" + state.getPage()
+            + ", scale=" + state.getScale());
+    }
+});
+// 页面退出时清理监听：
+// fastRoom.setUnifiedPageStateListener(null);
+```
+
+结果/参数类型位于 `com.herewhite.sdk.domain`，监听接口位于 `com.herewhite.sdk.window`。`FastResult` 位于 `io.agora.board.fast.extension`。
+
+观察事件的 status 为 pending/success；`changeType: page` 表示页变化，`changeType: scale` 表示缩放变化；旧兼容事件可能省略 changeType。异步执行失败时 status=failure，并包含 event、reason 和可选 message。不要从失败事件读取有效页码/倍率。
+
+主动读取倍率使用 `getPageState` 返回的 scale；该值可能不存在，且它不是主白板相机的绝对 camera.scale。命令接收、焦点提交和页状态通知都不能代替课件全部资源或首帧完成信号。
+
+## 与 WindowManager 示例的对应关系
+
+WindowManager example 中 `dispatchUnifiedDocsEvent` 包装正式 `dispatchDocsEvent`，`queryUnifiedPageState` 包装正式 `getPageState`。`scaleChangeEvent` 是示例保存缩放通知的 UI 状态变量，来自 unifiedPageStateChange 中 changeType=scale 的消息。这三个示例名称均不是可从 SDK 导入的独立方法或事件。
+
+需要统一主白板与课件的书写参考尺寸时，继续阅读[统一笔记](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/unified-notes)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+适用于 **Fastboard iOS SDK 1.4.6（依赖 Whiteboard 2.16.145）**。
+
+多窗口模式通过同一套接口控制主白板和课件。先完成[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)，并等待入房成功；业务发起翻页、缩放以及新增或移除主白板页面还需要可写权限。
+
+## 目标与操作
+
+| 目标 | `target` 输入 | 支持操作 |
+| --- | --- | --- |
+| MainView 主白板 | `mainView` | 前后页、跳页、缩放；[新增、移除页面](#mainview-add-remove)使用独立 API；不支持动画步骤 |
+| Slide 动态 PPT | 该窗口的 appId | 前后页、跳页、前后动画步骤、缩放（先启用 Slide 的 enableScale） |
+| Presentation 静态 PPT | 该窗口的 appId | 前后页、跳页、缩放；不支持动画步骤 |
+| DocsViewer 文档 | 该窗口的 appId | 前后页、跳页；不支持 scalePage |
+
+省略 target 时跟随当前焦点，没有焦点时使用 MainView。不能把 `Slide` 或 `Presentation` 类型名当作 appId。查询结果的 target 则是 `mainView`、`Slide`、`Presentation`、`DocsViewer` 之一，用于标识目标类型。
+
+下表列出 `dispatchDocsEvent` 支持的命令；新增和移除页面使用下文的独立 API。
+
+| 命令 | 用途与参数 |
+| --- | --- |
+| prevPage / nextPage | 前一页 / 后一页 |
+| prevStep / nextStep | 前一动画步骤 / 后一动画步骤 |
+| jumpToPage | page 为从 1 开始的整数，不能直接使用零基场景索引 |
+| scalePage | scale 为相对适配倍率，1 表示适配大小；可选范围由 pageScaleRange 约束 |
+
+<a id="mainview-add-remove"></a>
+## 新增与移除主白板页面
+
+以下公开 API 固定操作 MainView 主白板的场景页，不受当前焦点或 `target` 影响，也不用于增加或删除课件源文件中的页面。先完成多窗口入房并取得可写权限。`dispatchDocsEvent` 不接受 `addPage`、`removePage` 命令。
+
+在 Fastboard 入房成功后，通过公开的 `fastRoom.room` 访问 `WhiteRoom`。以下使用其 Swift 调用形式；`room` 为空时不执行操作。
+
+| 操作 | `WhiteRoom` 公开 API（Swift 调用形式） | 参数与结果 |
+| --- | --- | --- |
+| 当前页之后新增空白页 | `room.addPage()` / `room.addPage { success in ... }` | 默认插入到主白板当前页之后；可选完成回调 |
+| 指定位置新增页面 | `room.addPage(with:afterCurrentScene:)` / `room.addPage(with:afterCurrentScene:completionHandler:)` | `scene` 可为 `nil`；`afterCurrentScene = true` 插到当前页之后，`false` 追加到末尾；带回调形式返回 `Bool` 结果 |
+| 移除当前页面 | `room.removePage { success in ... }` | 删除主白板当前页 |
+| 移除指定页面 | `room.removePage(_:completionHandler:)` | 第一个参数为零基索引。`success = true` 表示成功；仅剩一页、索引越界或调用异常时为 `false` |
+
+下面分别定义新增和删除按钮的处理逻辑：
+
+```swift
+let addMainViewPage: () -> Void = {
+    guard let room = fastRoom.room else { return }
+    room.addPage(with: nil, afterCurrentScene: true) { success in
+        if !success { print("新增页面失败") }
+    }
+}
+
+let removeFirstMainViewPage: () -> Void = {
+    guard let room = fastRoom.room else { return }
+    room.removePage(0) { success in
+        if !success { print("页面未删除，请检查页数与索引") }
+    }
+}
+// 在对应按钮处理方法中调用 addMainViewPage() 或 removeFirstMainViewPage()。
+```
+
+新增页面后不会自动跳到新页，需要时再发送指定 `target: "mainView"` 的跳页命令。主白板至少保留一页；仅剩一页时不能删除。
+
+**索引区别：** 删除 API 的 `index` 从 **0** 开始，`index = 0` 表示第一页；`dispatchDocsEvent("jumpToPage", ...)` 的 `page` 从 **1** 开始。传入待删除页索引前，请确认主白板的实际页数。
+
+## 发送命令与主动查询
+
+```swift
+let options = WhiteWindowDocsEventOptions()
+options.target = appId
+options.page = 2
+fastRoom.dispatchDocsEvent(WhiteWindowDocsEventKey(rawValue: "jumpToPage"), options: options) { result in
+    switch result {
+    case .success(let value):
+        if !value.accepted { print(value.reason as Any, value.message as Any) }
+    case .failure(let error): print(error)
+    }
+}
+let query = WhiteWindowPageStateOptions()
+query.target = appId
+fastRoom.getPageState(query) { state, error in
+    if let error = error { print(error); return }
+    if let state = state { print(state.page, state.pageCount, state.scale as Any) }
+}
+```
+
+`dispatchDocsEvent` 的 accepted 只表示命令被接收；accepted=false 时读取 reason/message。Bridge 或宿主异常走 Promise 拒绝或原生错误回调。原因码包括 invalidEvent、invalidOptions、targetNotFound、targetNotSupported、eventNotSupported、notWritable、stateUnavailable、outOfRange、commandFailed。
+
+`getPageState` 主动查询可观察的状态，不会触发翻页。返回 page/pageCount（从 1 开始）、target、可选 appId 与 scale。尚未完成初始化或状态确认时可能失败；可等待状态事件后再次查询，或设置有限重试次数与截止时间。
+
+## 监听实际页码与缩放
+
+```swift
+// 宿主实现 WhiteRoomCallbackDelegate，并保持自身存活。
+fastRoom.roomDelegate = self
+
+func onUnifiedPageStateChange(_ state: WhiteUnifiedPageStateChange) {
+    guard state.status != "failure" else { print(state.reason as Any); return }
+    print(state.changeType as Any, state.page, state.scale as Any)
+}
+// 退出时：fastRoom.roomDelegate = nil
+```
+
+通过 `roomDelegate` 接收消息，避免覆盖 Fastboard 内部 WhiteRoom 代理。
+
+观察事件的 status 为 pending/success；`changeType: page` 表示页变化，`changeType: scale` 表示缩放变化；旧兼容事件可能省略 changeType。异步执行失败时 status=failure，并包含 event、reason 和可选 message。不要从失败事件读取有效页码/倍率。
+
+主动读取倍率使用 `getPageState` 返回的 scale；该值可能不存在，且它不是主白板相机的绝对 camera.scale。命令接收、焦点提交和页状态通知都不能代替课件全部资源或首帧完成信号。
+
+## 与 WindowManager 示例的对应关系
+
+WindowManager example 中 `dispatchUnifiedDocsEvent` 包装正式 `dispatchDocsEvent`，`queryUnifiedPageState` 包装正式 `getPageState`。`scaleChangeEvent` 是示例保存缩放通知的 UI 状态变量，来自 unifiedPageStateChange 中 changeType=scale 的消息。这三个示例名称均不是可从 SDK 导入的独立方法或事件。
+
+需要统一主白板与课件的书写参考尺寸时，继续阅读[统一笔记](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/unified-notes)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+适用于 **Fastboard Web SDK 1.1.10**。
+
+多窗口模式通过同一套接口控制主白板和课件。先完成[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)，并等待入房成功；业务发起翻页、缩放以及新增或移除主白板页面还需要可写权限。
+
+## 目标与操作
+
+| 目标 | `target` 输入 | 支持操作 |
+| --- | --- | --- |
+| MainView 主白板 | `mainView` | 前后页、跳页、缩放；[新增、移除页面](#mainview-add-remove)使用独立 API；不支持动画步骤 |
+| Slide 动态 PPT | 该窗口的 appId | 前后页、跳页、前后动画步骤、缩放（先启用 Slide 的 enableScale） |
+| Presentation 静态 PPT | 该窗口的 appId | 前后页、跳页、缩放；不支持动画步骤 |
+| DocsViewer 文档 | 该窗口的 appId | 前后页、跳页；不支持 scalePage |
+
+省略 target 时跟随当前焦点，没有焦点时使用 MainView。不能把 `Slide` 或 `Presentation` 类型名当作 appId。查询结果的 target 则是 `mainView`、`Slide`、`Presentation`、`DocsViewer` 之一，用于标识目标类型。
+
+下表列出 `dispatchDocsEvent` 支持的命令；新增和移除页面使用下文的独立 API。
+
+| 命令 | 用途与参数 |
+| --- | --- |
+| prevPage / nextPage | 前一页 / 后一页 |
+| prevStep / nextStep | 前一动画步骤 / 后一动画步骤 |
+| jumpToPage | page 为从 1 开始的整数，不能直接使用零基场景索引 |
+| scalePage | scale 为相对适配倍率，1 表示适配大小；可选范围由 pageScaleRange 约束 |
+
+<a id="mainview-add-remove"></a>
+## 新增与移除主白板页面
+
+以下公开 API 固定操作 MainView 主白板的场景页，不受当前焦点或 `target` 影响，也不用于增加或删除课件源文件中的页面。先完成多窗口入房并取得可写权限。`dispatchDocsEvent` 不接受 `addPage`、`removePage` 命令。
+
+`fastboard` 为已入房的 `FastboardApp` 实例；这些方法通过其公开接口操作主白板。
+
+| 操作 | 公开 API | 参数与结果 |
+| --- | --- | --- |
+| 新增页面 | `fastboard.addPage(params?: AddPageParams): Promise<void>` | `after: true` 插到主白板当前页之后；省略或为 `false` 时追加到末尾。`scene` 可选，省略时新增空白页 |
+| 移除页面 | `fastboard.removePage(index?: number): Promise<boolean>` | 省略 `index` 删除主白板当前页；传入零基索引删除指定页。返回 `true` 表示删除成功；仅剩一页或索引越界时返回 `false`；调用异常需捕获 Promise 拒绝 |
+
+下面分别演示两个业务操作，按需调用：
+
+```typescript
+async function addMainViewPage() {
+  await fastboard.addPage({ after: true });
+}
+
+async function removeFirstMainViewPage() {
+  const removed = await fastboard.removePage(0);
+  if (!removed) console.warn("页面未删除，请检查页数与索引");
+}
+```
+
+`AddPageParams` 可从 `@netless/fastboard` 包入口导入。
+
+新增页面后不会自动跳到新页，需要时再发送指定 `target: "mainView"` 的跳页命令。主白板至少保留一页；仅剩一页时不能删除。
+
+**索引区别：** 删除 API 的 `index` 从 **0** 开始，`index = 0` 表示第一页；`dispatchDocsEvent("jumpToPage", ...)` 的 `page` 从 **1** 开始。传入待删除页索引前，请确认主白板的实际页数。
+
+## 发送命令与主动查询
+
+```typescript
+// app 为 createFastboard 成功返回的实例。
+const target = appId; // 或 "mainView"
+const result = await app.dispatchDocsEvent("jumpToPage", { target, page: 2 });
+if (!result.accepted) console.warn(result.reason, result.message);
+try {
+  const state = await app.getPageState({ target });
+  console.log(state.page, state.pageCount, state.scale);
+} catch (error) {
+  console.warn("当前状态尚不可用", error);
+}
+```
+
+`dispatchDocsEvent` 的 accepted 只表示命令被接收；accepted=false 时读取 reason/message。Bridge 或宿主异常走 Promise 拒绝或原生错误回调。原因码包括 invalidEvent、invalidOptions、targetNotFound、targetNotSupported、eventNotSupported、notWritable、stateUnavailable、outOfRange、commandFailed。
+
+`getPageState` 主动查询可观察的状态，不会触发翻页。返回 page/pageCount（从 1 开始）、target、可选 appId 与 scale。尚未完成初始化或状态确认时可能失败；可等待状态事件后再次查询，或设置有限重试次数与截止时间。
+
+## 监听实际页码与缩放
+
+```typescript
+const unsubscribe = app.manager.emitter.on("unifiedPageStateChange", state => {
+  if (state.status === "failure") {
+    console.warn(state.event, state.reason, state.message);
+    return;
+  }
+  if (state.changeType === "scale") console.log("缩放", state.scale);
+  else console.log("页码", state.page, state.pageCount);
+});
+// 页面退出或组件卸载时执行：
+unsubscribe();
+```
+
+观察事件的 status 为 pending/success；`changeType: page` 表示页变化，`changeType: scale` 表示缩放变化；旧兼容事件可能省略 changeType。异步执行失败时 status=failure，并包含 event、reason 和可选 message。不要从失败事件读取有效页码/倍率。
+
+主动读取倍率使用 `getPageState` 返回的 scale；该值可能不存在，且它不是主白板相机的绝对 camera.scale。命令接收、焦点提交和页状态通知都不能代替课件全部资源或首帧完成信号。
+
+## 与 WindowManager 示例的对应关系
+
+WindowManager example 中 `dispatchUnifiedDocsEvent` 包装正式 `dispatchDocsEvent`，`queryUnifiedPageState` 包装正式 `getPageState`。`scaleChangeEvent` 是示例保存缩放通知的 UI 状态变量，来自 unifiedPageStateChange 中 changeType=scale 的消息。这三个示例名称均不是可从 SDK 导入的独立方法或事件。
+
+需要统一主白板与课件的书写参考尺寸时，继续阅读[统一笔记](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/unified-notes)。
+
+</PlatformStructured>

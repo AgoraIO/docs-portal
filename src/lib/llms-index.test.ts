@@ -107,6 +107,14 @@ describe('machine-readable docs indexes', () => {
       expect(targets).toEqual([
         `https://docs.example.com/${locale}/introduction.md`,
       ]);
+      expect(files[0]?.content).toContain(
+        locale === 'zh-CN' ? '# 声网文档中心' : '# Agora Documentation',
+      );
+      if (locale === 'zh-CN') {
+        expect(
+          files.slice(1).every((file) => !file.content.includes('Agora')),
+        ).toBe(true);
+      }
     }
   });
 
@@ -132,6 +140,85 @@ describe('machine-readable docs indexes', () => {
         .flatMap((file) => getMarkdownTargets(file.content))
         .every((target) => target.endsWith('.md')),
     ).toBe(true);
+  });
+
+  it.each([
+    ['en', 1, 24_890],
+    ['en', 12, 24_890],
+    ['en', 100, 24_890],
+    ['zh-CN', 1, 24_907],
+    ['zh-CN', 12, 24_907],
+    ['zh-CN', 100, 24_907],
+  ] as const)(
+    'counts the final numbered heading for %s shard %i',
+    (locale, shard, fullLabelLength) => {
+      const publishedRoutes = Array.from(
+        { length: shard * 2 + 1 },
+        (_, index) => {
+          const url = `/${locale}/api-reference/guide-${String(index).padStart(3, '0')}`;
+          return { canonicalPath: url, markdownPath: `${url}.md`, url };
+        },
+      );
+      // The target pair fills the unnumbered file to exactly 50,000
+      // characters in each locale; numbering must force another split.
+      const docsIndex = publishedRoutes
+        .map((route, index) => {
+          const labelLength =
+            index === shard * 2
+              ? 10
+              : index >= (shard - 1) * 2
+                ? fullLabelLength
+                : fullLabelLength - 10;
+          return `- [${'x'.repeat(labelLength)}](${route.url})`;
+        })
+        .join('\n');
+      const files = createMachineReadableDocsIndexes({
+        baseUrl: 'https://docs.example.com',
+        docsIndex,
+        locale,
+        publishedRoutes,
+      });
+
+      expect(files.every((file) => file.content.length <= 50_000)).toBe(true);
+      expect(
+        files.slice(1).flatMap((file) => getMarkdownTargets(file.content)),
+      ).toEqual(
+        publishedRoutes.map(
+          (route) => `https://docs.example.com${route.markdownPath}`,
+        ),
+      );
+      expect(getMarkdownTargets(files[0]?.content ?? '')).toEqual(
+        files.slice(1).map((file) => `https://docs.example.com${file.path}`),
+      );
+    },
+  );
+
+  it('keeps an unnumbered section that fits the limit exactly', () => {
+    const url = '/en/api-reference/guide-000';
+    const files = createMachineReadableDocsIndexes({
+      baseUrl: 'https://docs.example.com',
+      docsIndex: `- [${'x'.repeat(49_841)}](${url})`,
+      locale: 'en',
+      publishedRoutes: [{ canonicalPath: url, markdownPath: `${url}.md`, url }],
+    });
+
+    expect(files[1]?.path).toBe('/llms/api-reference.txt');
+    expect(files[1]?.content.length).toBe(50_000);
+  });
+
+  it('rejects an indivisible entry that exceeds the limit', () => {
+    const url = '/en/api-reference/guide-000';
+
+    expect(() =>
+      createMachineReadableDocsIndexes({
+        baseUrl: 'https://docs.example.com',
+        docsIndex: `- [${'x'.repeat(49_842)}](${url})`,
+        locale: 'en',
+        publishedRoutes: [
+          { canonicalPath: url, markdownPath: `${url}.md`, url },
+        ],
+      }),
+    ).toThrow(/is 50001 characters; maximum is 50000/);
   });
 
   it('validates index references against published and emitted artifacts', async () => {
@@ -174,6 +261,38 @@ describe('machine-readable docs indexes', () => {
         publishedRoutes,
       }),
     ).rejects.toThrow('Missing machine-readable docs artifact');
+  });
+
+  it('normalizes encoded Unicode paths before checking emitted artifacts', async () => {
+    const encodedMarkdownPath =
+      '/zh-CN/introduction/terms/%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/%E5%9B%BA%E5%AE%9A%E7%94%A8%E6%B3%95/%E5%9B%BA%E5%AE%9A%E7%94%A8%E6%B3%95-RTC.md';
+    const publishedRoutes = [
+      {
+        canonicalPath: encodedMarkdownPath.replace(/\.md$/, ''),
+        markdownPath: encodedMarkdownPath,
+        url: encodedMarkdownPath.replace(/\.md$/, ''),
+      },
+    ];
+    const files = createMachineReadableDocsIndexes({
+      baseUrl: 'https://docs.example.com',
+      docsIndex: '',
+      locale: 'zh-CN',
+      publishedRoutes,
+    });
+    const emittedPaths = new Set([
+      ...files.map((file) => file.path),
+      '/zh-CN/introduction/terms/中文翻译/固定用法/固定用法-RTC.md',
+    ]);
+
+    await expect(
+      validateMachineReadableDocsArtifacts({
+        artifactExists: async (path) => emittedPaths.has(path),
+        baseUrl: 'https://docs.example.com',
+        files,
+        locale: 'zh-CN',
+        publishedRoutes,
+      }),
+    ).resolves.toBeUndefined();
   });
 });
 

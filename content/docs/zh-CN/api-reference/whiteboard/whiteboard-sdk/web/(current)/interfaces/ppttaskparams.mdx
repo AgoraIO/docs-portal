@@ -1,0 +1,44 @@
+---
+title: PPTTaskParams
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/ppttaskparams
+  sourcePath: html-docs/whiteboard/Web/interfaces/ppttaskparams.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type PPTTaskParams = {
+    /**
+     * 转换任务的唯一识别符 ``taskUUID``
+     */
+    uuid: string;
+    /**
+     * 转换所在的数据中心区域
+     */
+    region?: string;
+    /**
+     * 转换任务类型
+     */
+    kind: PPTKind;
+    /**
+     * 转换任务的 Token
+     */
+    taskToken: string;
+    /**
+     * 轮循转换任务状态的时间间隔（毫秒）
+     */
+    checkProgressInterval?: number;
+    /**
+     * 轮循转换任务的超时时间（毫秒）
+     */
+    checkProgressTimeout?: number;
+    /**
+     * 回调函数
+     */
+    callbacks?: PPTTaskCallbacks;
+};
+```

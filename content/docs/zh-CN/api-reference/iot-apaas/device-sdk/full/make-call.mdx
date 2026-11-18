@@ -1,0 +1,225 @@
+---
+title: "agora_iot_call.h"
+---
+本页提供声网灵隼设备端 SDK 的 `agora_iot_call.h` 文件的 API 参考。
+
+## 引用文件
+
+```c
+#include "agora_iot_base.h"
+```
+
+<a id="agoraiotcall"></a>
+## 函数
+### agora_iot_call
+
+```c
+agora_iot_call_result_e agora_iot_call(agora_iot_handle_t handle, const char *peer, const char *extra_msg);
+```
+
+呼叫远端用户。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `handle` | [agora_iot_init](/zh-CN/api-reference/iot-apaas/device-sdk/full/config#agoraiotinit) 返回的 SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/full/base#agoraiothandlet)。 |
+| [in] `peer` | 应答呼叫的远端用户 ID。 |
+| [in] `extra_msg` | 呼叫的附加信息。最大长度为 1024 字节（含 `'\0'`）。 |
+
+#### 返回
+
+[agora_iot_call_result_e](#agoraiotcallresulte) 中的枚举值。
+
+<a id="agoraiotanswer"></a>
+### agora_iot_answer
+
+```c
+agora_iot_call_result_e agora_iot_answer(agora_iot_handle_t handle);
+```
+
+应答远端用户发来的呼叫。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `handle` | [agora_iot_init](/zh-CN/api-reference/iot-apaas/device-sdk/full/config#agoraiotinit) 返回的 SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/full/base#agoraiothandlet)。 |
+
+#### 返回
+
+[agora_iot_call_result_e](#agoraiotcallresulte) 中的枚举值。
+
+<a id="agoraiothangup"></a>
+### agora_iot_hang_up
+
+```c
+agora_iot_call_result_e agora_iot_hang_up(agora_iot_handle_t handle);
+```
+
+拒绝远端用户发来的呼叫或挂断当前通话。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `handle` | [agora_iot_init](/zh-CN/api-reference/iot-apaas/device-sdk/full/config#agoraiotinit) 返回的 SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/full/base#agoraiothandlet)。 |
+
+#### 返回
+
+[agora_iot_call_result_e](#agoraiotcallresulte) 中的枚举值。
+
+## 常量
+
+无
+
+<a id="agoraiotcallresulte"></a>
+## 类型定义
+### agora_iot_call_result_e
+
+```c
+typedef enum {
+  ERR_AG_CALL_SUCCESS            = ERR_SUCCESS,
+  ERR_AG_CALL_FAILED             = ERR_FAILED,
+  ERR_AG_CALL_INVALID_ARGUMENT   = ERR_INVALID_ARGUMENT,
+
+  ERR_AG_CALL_PEER_BUSY          = -100001,
+  ERR_AG_CALL_CAN_NOT_ANSWER     = -100002,
+  ERR_AG_CALL_CAN_NOT_HANGUP     = -100003,
+  ERR_AG_CALL_PEER_TIMEOUT       = -100004,
+  ERR_AG_CALL_IS_CALLING         = -100005,
+  ERR_AG_CALL_ILLEGAL_ANSWER     = -100006,
+  ERR_AG_CALL_CAN_NOT_CALL_YOURSELF = -100007,
+
+	ERR_AG_CLOUD_REC_STARTED        = -200001,
+  ERR_AG_CLOUD_REC_STOPPED        = -200002,
+  ERR_AG_CLOUD_REC_NOT_PERMISSION = -200003,
+  ERR_AG_CLOUD_REC_PERMISSION_EXPIRED = -200004,
+  ERR_AG_CLOUD_REC_WITHOUT_APPID  = -200005,
+  ERR_AG_CLOUD_REC_SERVER_NOT_ENABLE  = -200006,
+
+  ERR_AG_ALARM_NOT_PERMISSION     = -999997,
+  ERR_AG_ALARM_INVALID_ARGUMENTS  = -999998,
+  ERR_AG_CALL_UNEXPECTEDLY_ERROR = -999999,
+} agora_iot_call_result_e;
+```
+
+呼叫返回结果。
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `ERR_AG_CALL_SUCCESS` | 0：调用成功。 |
+| `ERR_AG_CALL_FAILED` | -1：通用错误。 |
+| `ERR_AG_CALL_INVALID_ARGUMENT` | -2：参数无效。 |
+| `ERR_AG_CALL_PEER_BUSY` | -100001：本地用户无法重复呼叫。因为被呼叫的远端用户已经处于通话中。 |
+| `ERR_AG_CALL_CAN_NOT_ANSWER` | -100002：本地用户无法应答呼叫。因为没有外来或发出的呼叫。|
+| `ERR_AG_CALL_CAN_NOT_HANGUP` | -100003：本地用户无法挂断呼叫。因为本地用户不在呼叫中，也没有发送呼叫。 |
+| `ERR_AG_CALL_PEER_TIMEOUT` | -100004：本地用户呼叫远端用户时等待超过 30 秒。 |
+| `ERR_AG_CALL_IS_CALLING` | -100005： 已经有远端用户呼叫本地用户或本地用户已呼叫远端用户。|
+| `ERR_AG_CALL_ILLEGAL_ANSWER` | -100006：错误的应答操作。例如本地用户应答从本地发出的呼叫。 |
+| `ERR_AG_CALL_CAN_NOT_CALL_YOURSELF` | -100007：呼叫错误。因为本地用户无法呼叫自己。 |
+| `ERR_AG_CLOUD_REC_STARTED` | -200001：云录制已经开始，无法再次开启。 |
+| `ERR_AG_CLOUD_REC_STOPPED` | -200002：云录制已经停止，无法再次停止。 |
+| `ERR_AG_CLOUD_REC_NOT_PERMISSION` | -200003：没有权限进行云录制。 |
+| `ERR_AG_CLOUD_REC_PERMISSION_EXPIRED` | -200004：云录制权限已过期。 |
+| `ERR_AG_CLOUD_REC_WITHOUT_APPID` | -100007：内部错误。 |
+| `ERR_AG_CLOUD_REC_SERVER_NOT_ENABLE` | -100007：未开通声网灵隼服务。 |
+| `ERR_AG_ALARM_NOT_PERMISSION` | -100007：呼叫错误。因为本地用户无法呼叫自己。 |
+| `ERR_AG_ALARM_INVALID_ARGUMENTS` | -100007：呼叫错误。因为本地用户无法呼叫自己。 |
+| `ERR_AG_CALL_UNEXPECTEDLY_ERROR` | -999999：未知错误。 |
+
+<a id="agoracallmodee"></a>
+### agora_call_mode_e
+
+```c
+typedef enum {
+  CALL_MODE_SINGLE    = 1,
+  CALL_MODE_MUTLI     = 2,
+} agora_call_mode_e;
+```
+
+通话模式。
+
+| 枚举值             | 描述                                       |
+| :----------------- | :----------------------------------------- |
+| `CALL_MODE_SINGLE` | 1: 单人模式。只允许一位用户与设备音视频通话。 |
+| `CALL_MODE_MUTLI`  | 2: 多人模式。允许多位用户与设备音视频通话。   |
+
+<a id="agoraiotalarmtypee"></a>
+### agora_iot_alarm_type_e
+
+```c
+typedef enum {
+  AG_ALARM_TYPE_VAD           = 0,
+  AG_ALARM_TYPE_MOD           = 1,
+  AG_ALARM_TYPE_OTHERS        = 99
+} agora_iot_alarm_type_e;
+```
+
+告警类型。
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `AG_ALARM_TYPE_VAD` | 0：语音监测。 |
+| `AG_ALARM_TYPE_MOD` | 1：动作监测。 |
+| `AG_ALARM_TYPE_OTHERS` | 99：其他告警类型。 |
+
+<a id="agoraiotcallcallback"></a>
+### agora_iot_call_callback
+
+```c
+typedef struct agora_iot_call_callback {
+  void (*cb_call_request)(const char *peer_id, const char *attach_msg);
+  void (*cb_call_answered)(const char *peer_id);
+  void (*cb_call_hung_up)(const char *peer_id);
+  void (*cb_call_local_timeout)(const char *peer_id);
+  void (*cb_call_peer_timeout)(const char *peer_id);
+} agora_iot_call_callback_t;
+```
+
+SDK 呼叫事件回调。
+
+#### cb_call_request
+
+在本地用户接收到远端用户呼叫时触发。
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `peer_id` | 发送呼叫的远端用户账号。 |
+| [in] `attach_msg` | 呼叫的附加信息。 |
+
+#### cb_call_answered
+
+本地用户发出的呼叫被远端用户应答时触发。
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `peer_id` | 应答呼叫的远端用户账号。 |
+
+#### cb_call_hung_up
+
+本地用户发送的呼叫被远端用户拒绝。
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `peer_id` | 拒绝呼叫的远端用户账号。 |
+
+#### cb_call_local_timeout
+
+远端用户呼叫本地用户时，由于 30 秒内本地用户没有应答或拒绝操作导致超时。
+
+你可以[联系技术支持](https://ticket.shengwang.cn)更改超时时间。
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `peer_id` | 超时的远端用户账号。 |
+
+#### cb_call_peer_timeout
+
+本地用户呼叫远端用户时，由于 30 秒内远端用户没有进行应答或拒绝操作导致呼叫超时。
+
+你可以[联系技术支持](https://ticket.shengwang.cn)更改超时时间。
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `peer_id` | 超时的远端用户账号。 |

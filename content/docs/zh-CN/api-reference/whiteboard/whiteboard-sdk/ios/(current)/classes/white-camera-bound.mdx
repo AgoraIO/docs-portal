@@ -1,0 +1,193 @@
+---
+title: WhiteCameraBound Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteCameraBound
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteCameraBound.html
+  generator: appledoc
+  warnings: []
+---
+
+Whiteboard iOS SDK 2.16.147 公开接口。
+
+@interface WhiteCameraBound: WhiteObject
+
+## 成员
+
+- [initWithCenter\:minContent\:maxContent:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound#//api/name/initWithCenter:minContent:maxContent:)
+- [initWithFrame\:minContent\:maxContent:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound#//api/name/initWithFrame:minContent:maxContent:)
+- [defaultMinContentModeScale\:maxContentModeScale:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound#//api/name/defaultMinContentModeScale:maxContentModeScale:)
+- [centerX](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound#//api/name/centerX)
+- [centerY](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound#//api/name/centerY)
+- [width](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound#//api/name/width)
+- [height](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound#//api/name/height)
+- [maxContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound#//api/name/maxContentMode)
+- [minContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound#//api/name/minContentMode)
+
+<a id="//api/name/initWithCenter:minContent:maxContent:"></a>
+
+
+<a id="tasks"></a>
+
+### `– initWithCenter:minContent:maxContent:`
+
+<ApiSignature>
+
+\- (instancetype)initWithCenter:(CGPoint)visionCenter minContent:(WhiteContentModeConfig *)minConfig maxContent:(WhiteContentModeConfig *)maxConfig;
+
+</ApiSignature>
+
+```text
+指定白板视角边界的中心点并初始化 `WhiteCameraBound` 对象。
+
+ @param visionCenter 视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的坐标。
+
+ @param minConfig 视角边界的最小缩放设置。
+
+ @param maxConfig 视角边界的最小缩放设置。
+
+ @return 初始化的 `WhiteCameraBound` 对象。
+```
+
+Declared in Object/WhiteCameraBound.h
+
+<a id="//api/name/initWithFrame:minContent:maxContent:"></a>
+
+### `– initWithFrame:minContent:maxContent:`
+
+<ApiSignature>
+
+\- (instancetype)initWithFrame:(CGRect)visionFrame minContent:(WhiteContentModeConfig *)minConfig maxContent:(WhiteContentModeConfig *)maxConfig;
+
+</ApiSignature>
+
+```text
+指定白板视角边界的框架并初始化 `WhiteCameraBound` 对象。
+
+ @param visionFrame 视角边界的框架（宽和高）。
+
+ @param minConfig 视角边界框架的最小值（Frame * miniScale）。
+
+ @param maxConfig 视角边界框架的最大值（Frame * maxScale）。
+
+ @return 初始化的 `WhiteCameraBound` 对象。
+```
+
+Declared in Object/WhiteCameraBound.h
+
+<a id="//api/name/defaultMinContentModeScale:maxContentModeScale:"></a>
+
+### `+ defaultMinContentModeScale:maxContentModeScale:`
+
+<ApiSignature>
+
+\+ (instancetype)defaultMinContentModeScale:(CGFloat)miniScale maxContentModeScale:(CGFloat)maxScale;
+
+</ApiSignature>
+
+```text
+设置视角边界的默认最小缩放比例。
+
+ @param miniScale 视角边界的最小缩放比例。
+
+ @param maxScale 视角边界的最大缩放比例。
+```
+
+Declared in Object/WhiteCameraBound.h
+
+<a id="//api/name/centerX"></a>
+
+### `centerX`
+
+<ApiSignature>
+
+@property (nonatomic, nullable, strong) NSNumber *centerX;
+
+</ApiSignature>
+
+```text
+视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。不填则默认为 0。
+```
+
+Declared in Object/WhiteCameraBound.h
+
+<a id="//api/name/centerY"></a>
+
+### `centerY`
+
+<ApiSignature>
+
+@property (nonatomic, nullable, strong) NSNumber *centerY;
+
+</ApiSignature>
+
+```text
+视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。不填则默认为 0。
+```
+
+Declared in Object/WhiteCameraBound.h
+
+<a id="//api/name/width"></a>
+
+### `width`
+
+<ApiSignature>
+
+@property (nonatomic, nullable, strong) NSNumber *width;
+
+</ApiSignature>
+
+```text
+视角边界的宽度，单位为像素。如果不填，则表示无限制。
+```
+
+Declared in Object/WhiteCameraBound.h
+
+<a id="//api/name/height"></a>
+
+### `height`
+
+<ApiSignature>
+
+@property (nonatomic, nullable, strong) NSNumber *height;
+
+</ApiSignature>
+
+```text
+视角边界的高度，单位为像素。如果不填，则表示无限制。
+```
+
+Declared in Object/WhiteCameraBound.h
+
+<a id="//api/name/maxContentMode"></a>
+
+### `maxContentMode`
+
+<ApiSignature>
+
+@property (nonatomic, nullable, strong) WhiteContentModeConfig *maxContentMode;
+
+</ApiSignature>
+
+```text
+视角边界的最大缩放比例。最大值无上限。详见 [WhiteContentModeConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-content-mode-config)。
+```
+
+Declared in Object/WhiteCameraBound.h
+
+<a id="//api/name/minContentMode"></a>
+
+### `minContentMode`
+
+<ApiSignature>
+
+@property (nonatomic, nullable, strong) WhiteContentModeConfig *minContentMode;
+
+</ApiSignature>
+
+```text
+视角边界的最小缩放比例。最小值为 0。详见 [WhiteContentModeConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-content-mode-config)。
+```
+
+Declared in Object/WhiteCameraBound.h
