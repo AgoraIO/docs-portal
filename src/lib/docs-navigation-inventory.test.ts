@@ -1,6 +1,7 @@
 import { writeFileSync } from 'node:fs';
 import type { Folder, Node, Root } from 'fumadocs-core/page-tree';
 import { expect, it } from 'vitest';
+import { resolveZhCnApiReferenceEntry } from './api-reference-breadcrumb';
 import type { DocsMeta } from './docs-meta-schema';
 import { resolveDocsNavScope } from './docs-nav-scope';
 import { loadDocsPagePayload } from './docs-page.server';
@@ -85,7 +86,13 @@ it('audits API ownership across both locale source trees and verifies each recov
     if (page && 'redirectUrl' in page) {
       verified.push({ ...sample, redirect: page.redirectUrl });
     } else if (page) {
-      expect(page.sidebarHeader?.title).toBe(sample.title);
+      const entry =
+        sample.locale === 'zh-CN'
+          ? resolveZhCnApiReferenceEntry(sample.url)
+          : undefined;
+      expect(page.sidebarHeader?.title).toBe(
+        entry ? `${entry.product} · ${entry.platform}` : sample.title,
+      );
       verified.push({ ...sample, header: page.sidebarHeader?.title });
     }
   }
