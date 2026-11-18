@@ -1,6 +1,6 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { setTimeout as delay } from 'node:timers/promises';
-import { isPublicCnSearchUrl } from './cn-search-page';
+import { getSearchPageGroupKey, isPublicCnSearchUrl } from './cn-search-page';
 import { buildCnSearchDocuments } from './cn-search-strategy';
 import {
   assertValidSearchSection,
@@ -256,10 +256,23 @@ export async function prepareSearchIndex({
     seen.add(record.id);
   }
   const preparedRecords = buildCnSearchDocuments(records).map(
-    (document, index) => ({
-      ...document,
-      distinctKey: hash(getSearchSectionIdentity(records[index])),
-    }),
+    (document, index) => {
+      const groupKey = (url: string) =>
+        hash(
+          getSearchPageGroupKey({
+            pageUrl: url.split('#')[0],
+            product: document.product,
+            docType: document.docType,
+            version: document.version,
+          }),
+        );
+      return {
+        ...document,
+        distinctKey: hash(getSearchSectionIdentity(records[index])),
+        canonicalPageGroupKey: groupKey(document.canonicalUrl ?? document.url),
+        platformPageGroupKey: groupKey(document.url),
+      };
+    },
   );
   // 回执同时覆盖检索字段和设置；源文档相同不代表搜索行为相同。
   const checksum = hash(
