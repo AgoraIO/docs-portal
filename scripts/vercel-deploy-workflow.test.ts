@@ -103,7 +103,7 @@ describe('Vercel preview deployment workflow', () => {
     expect(syncIndex).toBeGreaterThanOrEqual(0);
     expect(replayIndex).toBeGreaterThan(syncIndex);
     expect(replay.run).toContain(
-      'bun run search:replay -- --out=global-search-replay.json',
+      'bun run search:replay -- --out=global-search-replay.json --wait-for-index',
     );
     expect(replay.run).not.toContain('--gate=');
     expect(replay['continue-on-error']).toBe(true);
