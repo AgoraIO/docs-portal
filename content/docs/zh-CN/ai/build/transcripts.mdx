@@ -468,14 +468,26 @@ conversationalAIAPI.subscribeMessage(channel_name)
 
 ### 智能体加入频道
 
-你可以通过 RESTful API 或 Agents SDK 创建并启动智能体；本文后续步骤聚焦客户端组件侧的事件订阅和消息处理。
+调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join) 接口，或在 Agents SDK 的会话配置中完成以下设置。
 
-调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口，或在 Agents SDK 的会话配置中完成以下参数设置：
+首先，开启 RTM 服务和数据传输通道，以接收字幕消息：
 
-- `advanced_features.enable_rtm: true` —— （必选）启动 RTM 服务
-- `parameters.data_channel: "rtm"` —— （必选）开启 RTM 数据传输通道
-- `parameters.enable_metrics: true` —— （按需开启）接收智能体性能数据
-- `parameters.enable_error_message: true` —— （按需开启）接收智能体错误事件
+- 将 `advanced_features.enable_rtm` 设置为 `true`。
+- 将 `parameters.data_channel` 设置为 `"rtm"`。
+
+然后，选择支持实时字幕的 TTS 供应商，将 `properties.tts.vendor` 设置为下表中对应的值：
+
+| TTS 供应商 | `tts.vendor` 值 |
+| --- | --- |
+| 火山引擎 TTS | `bytedance` |
+| 火山引擎双向流式 TTS | `bytedance_duplex` |
+| Minimax TTS | `minimax` |
+| 阿里云 CosyVoice TTS | `cosyvoice` |
+
+如需同时接收智能体性能数据或错误事件，还可以按需开启以下配置：
+
+- 将 `parameters.enable_metrics` 设置为 `true`，接收智能体性能数据。
+- 将 `parameters.enable_error_message` 设置为 `true`，接收智能体错误事件。
 
 调用成功后，智能体会加入指定 RTC 频道，用户可以开始与智能体互动。
 

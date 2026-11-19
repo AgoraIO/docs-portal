@@ -5,6 +5,44 @@ description: "查看对话式 AI 引擎的版本更新、问题修复、行为�
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="v2.16" id="v216" headingLevel={2} value="v216">
+
+### 新增特性
+
+#### 支持 Qwen ASR
+
+该版本为 Agora Agents SDK 新增 `QwenSTT` vendor。你可以通过 Go、Python 或 TypeScript SDK 配置 DashScope API Key，将阿里云百炼 Qwen ASR 接入为对话式智能体的语音识别模块。
+
+你也可以直接调用 RESTful API 创建智能体，将 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)的 `properties.asr.vendor` 设置为 `qwen`，并通过 `properties.asr.params.api_key` 配置 DashScope API Key。
+
+#### 通过系统变量注入当前时间
+
+该版本支持通过系统变量 `{{now(...)}}` 在系统消息、开场白、失败话术和静默话术中注入当前日期或时间，并按需指定时间格式和时区。详见[使用动态变量](/zh-CN/ai/build/shape-the-conversation/dynamic-variables#使用系统变量)。
+
+#### 支持云端录制 AI 对话
+
+该版本支持在纯音频单流录制模式下，分别保存用户和智能体的音频。详见[云端录制 AI 对话](/zh-CN/ai/build/harden-and-optimize/cloud-recording)。
+
+### 改进
+
+#### CosyVoice 支持逐字字幕对齐
+
+该版本为支持字级时间戳的 CosyVoice 流式模型和音色适配逐字字幕对齐，使字幕能够随语音播报进度同步显示。
+
+### API 变更
+
+#### 新增
+
+- Agora Agents SDK：
+  - Go SDK 新增 [`NewQwenSTT`](/zh-CN/api-reference/conversational-ai/agent-go#newqwenstt)。
+  - Python SDK 新增 [`QwenSTT`](/zh-CN/api-reference/conversational-ai/agent-python#qwenstt)。
+  - TypeScript SDK 新增 [`QwenSTT`](/zh-CN/api-reference/conversational-ai/agent-typescript#qwenstt)。
+- [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)
+  - <a href="/zh-CN/api-reference/api-ref/conversational-ai/join#properties.asr.vendor" target="_self"><code>properties.asr.vendor</code></a> 新增 `qwen`。
+  - <a href="/zh-CN/api-reference/api-ref/conversational-ai/join#properties.asr.params" target="_self"><code>properties.asr.params</code></a> 新增 Qwen ASR 配置。
+
+</Accordion>
+
 <Accordion title="v2.15" id="v215" headingLevel={2} value="v215">
 
 该版本于 2026 年 11 月 11 日发布。

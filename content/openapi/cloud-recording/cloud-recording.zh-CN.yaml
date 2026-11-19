@@ -913,6 +913,8 @@ components:
           $ref: '#/components/schemas/snapshotConfig'
         extensionServiceConfig:
           $ref: '#/components/schemas/extensionServiceConfig'
+        advanceConfig:
+          $ref: '#/components/schemas/advanceConfig'
     storageConfig:
       type: object
       description: 第三方云存储的配置项。
@@ -1636,6 +1638,27 @@ components:
         - clientRequest
       x-stoplight:
         id: acejkuwje97wg
+    advanceConfig:
+      type: object
+      description: '录制的高级配置项，位于 `start` 请求体的 `clientRequest` 中。'
+      properties:
+        blankAudioVideoDuration:
+          type: integer
+          description: '控制音视频流均处于静音（mute）状态时的文件截断时机，单位为毫秒。当该状态的持续时间超过配置值时，截断当前录制文件。'
+          minimum: 0
+          maximum: 2147483647
+          example: 2147483647
+        convoAiCompatibleEnable:
+          type: boolean
+          description: |-
+            是否开启对话式 AI 兼容录制模式，用于录制用户与智能体的对话音频。
+
+            - `true`：开启。录制服务使用适配对话式 AI 的录制模式，不使用常规录制的 1 秒抖动缓冲（jitter buffer）。
+            - `false`：关闭。
+
+            > [!CAUTION]
+            > 该模式仅适用于纯音频单流录制，需将 URL 中的 `mode` 设置为 `raw`，并将 `clientRequest.recordingConfig.streamTypes` 设置为 `0`。在非纯音频模式下设置此参数会导致启动请求报错。
+          default: false
     cname:
       type: string
       title: cname

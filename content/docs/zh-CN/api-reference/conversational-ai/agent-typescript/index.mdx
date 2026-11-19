@@ -531,7 +531,7 @@ import {
   AliyunLLM, BytedanceLLM, DeepSeekLLM, TencentLLM, CustomLLM,
   MiniMaxCNTTS, MiniMaxDuplexTTS, TencentTTS, BytedanceTTS, MicrosoftCNTTS,
   CosyVoiceTTS, BytedanceDuplexTTS, StepFunTTS, GenericTTS,
-  FengmingSTT, StepFunSTT, TencentSTT, MicrosoftCNSTT,
+  QwenSTT, FengmingSTT, StepFunSTT, TencentSTT, MicrosoftCNSTT,
   SensetimeAvatar, SpatiusAvatar,
 } from 'agora-agents';
 ```
@@ -775,6 +775,33 @@ new StepFunTTS(options: StepFunTTSOptions)
 ### 语音识别服务商 [#stt-vendors]
 
 与 [`withStt()`](#withsttvendor) 配合使用。
+
+#### QwenSTT
+
+阿里云百炼 Qwen ASR 服务。`QwenSTT` 继承 `BaseCNSTT`，可赋值给 `CNSttVendor`。`toConfig()` 返回 `SttConfig`，输出 `asr.vendor = "qwen"`。构造函数要求 `apiKey` 为非空字符串，否则抛出错误。
+
+```typescript
+new QwenSTT(options: QwenSTTOptions)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `apiKey` | `string` | Yes | DashScope API key，写入 `asr.params.api_key` |
+| `additionalParams` | `Record<string, unknown>` | No | 附加 Qwen ASR 参数，合并进 `asr.params`，保留显式 `false` 和空数组；其中的 `api_key` 会被显式传入的 `apiKey` 覆盖 |
+
+`QwenSTT` 和 `QwenSTTOptions` 均从 `agora-agents` 导出。识别语言通过 Agent 的 `turnDetection.language` 设置，并写入 REST 请求的 `asr.language`；未设置时默认为 `en-US`。中文识别请显式设置为 `zh-CN`。
+
+```typescript
+import { AgoraClient, Area, QwenSTT } from 'agora-agents';
+
+const client = new AgoraClient({
+  area: Area.CN,
+  appId: 'your-app-id',
+  appCertificate: 'your-app-certificate',
+});
+const agent = client.agent({ turnDetection: { language: 'zh-CN' } })
+  .withStt(new QwenSTT({ apiKey: 'your-dashscope-key' }));
+```
 
 #### FengmingSTT
 
