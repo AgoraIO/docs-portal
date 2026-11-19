@@ -1,6 +1,6 @@
 'use client';
 
-import { Link, useLocation } from '@tanstack/react-router';
+import { Link, useHydrated, useLocation } from '@tanstack/react-router';
 import {
   ArrowRightIcon,
   ArrowUpRightIcon,
@@ -86,7 +86,9 @@ export function DocsSidebarTree({
   onSelectPath: () => void;
 }) {
   const hash = useLocation({ select: (location) => location.hash });
-  const fragmentPath = hash ? activePath + '#' + hash : undefined;
+  // The server cannot see fragments. Hydrate its selection before applying the browser hash.
+  const hydrated = useHydrated();
+  const fragmentPath = hydrated && hash ? `${activePath}#${hash}` : undefined;
   const selected =
     fragmentPath && nodes.some((node) => isNodeActive(node, fragmentPath))
       ? fragmentPath
