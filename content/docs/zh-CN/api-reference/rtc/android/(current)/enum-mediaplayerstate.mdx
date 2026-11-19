@@ -54,13 +54,13 @@ _migration:
 <a id="player_state_playback_completed"></a>
 <Parameter name="PLAYER_STATE_PLAYBACK_COMPLETED">
 
-（5）：播放已完成。
+（5）：本次播放已完成，但尚未完成 `setLoopCount` 设置的循环播放次数，播放器将继续播放。
 
 </Parameter>
 <a id="player_state_playback_all_loops_completed"></a>
 <Parameter name="PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED">
 
-（6）：循环播放已完成。
+（6）：最后一次播放已结束。未设置循环播放时，单次播放结束也会上报该状态。
 
 </Parameter>
 <a id="player_state_stopped"></a>
