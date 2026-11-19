@@ -148,18 +148,18 @@ description: "了解如何快速接入实时互动 RTC，完成环境准备、�
     }
     ```
 
-2. 打开 `/app/build.gradle` 文件，在 `dependencies` 中添加声网 RTC SDK 的依赖。你可以从[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)中查询 SDK 的最新版本，并将 `x.y.z` 替换为具体的版本号。
+2. 打开 `/app/build.gradle` 文件，在 `dependencies` 中添加声网 RTC SDK 的依赖。其他版本的变更请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
 
     ```groovy
     ...
     dependencies {
         ...
         // 对于 4.6.0 及之后的版本
-        // x.y.z 替换为具体的 SDK 版本号，如：4.6.1
+        // 集成 v4.7.1
         // 集成 Full SDK
-        implementation 'cn.shengwang.rtc:full-sdk:x.y.z'
+        implementation 'cn.shengwang.rtc:full-sdk:4.7.1'
         // 集成 Lite SDK
-        implementation 'cn.shengwang.rtc:lite-sdk:x.y.z'
+        implementation 'cn.shengwang.rtc:lite-sdk:4.7.1'
 
         // 对于 4.6.0 之前的版本
         // x.y.z 替换为具体的 SDK 版本号，如：4.0.0 或 4.1.0-1
@@ -846,7 +846,7 @@ protected void onCreate(Bundle savedInstanceState) {
 1. 在终端里进入项目根目录，并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
 2. 打开 `Podfile` 文件，在文件顶部添加声网 CocoaPods CDN 源。请保留项目中已有的源配置；如果项目还依赖公共仓库中的其他 Pod，请同时保留公共源，例如 `source 'https://cdn.cocoapods.org/'`。已有项目保留原来的 SDK 包名、版本号和组件配置，仅补充源配置。
 
-    以下示例将 CocoaPods 官方公共源放在声网源前面。将 `Your App` 替换为你的 Target 名称，将 `x.y.z` 替换为具体的 SDK 版本号，可通过[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)获取版本信息。示例默认集成 v4.6.0 及之后版本的 Full SDK；如需其他版本或 Lite SDK，请注释默认的 `pod` 行，并取消对应行的注释。
+    以下示例将 CocoaPods 官方公共源放在声网源前面。将 `Your App` 替换为你的 Target 名称，其他版本可参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。示例默认集成 v4.7.1 Full SDK；如需其他版本或 Lite SDK，请注释默认的 `pod` 行，并取消对应行的注释。
 
     `Podfile` 中的平台版本应与工程的 **iOS Deployment Target** 保持一致，且不低于 SDK 支持的最低版本。
 
@@ -858,9 +858,9 @@ protected void onCreate(Bundle savedInstanceState) {
     target 'Your App' do
         # 对于 4.6.0 及之后的版本
         # 集成 Full SDK
-        pod 'ShengwangRtcEngine_iOS', 'x.y.z'
+        pod 'ShengwangRtcEngine_iOS', '4.7.1'
         # 或集成 Lite SDK
-        # pod 'ShengwangLite_iOS', 'x.y.z'
+        # pod 'ShengwangLite_iOS', '4.7.1'
 
         # 对于 4.6.0 之前的版本
         # 集成 Full SDK
@@ -904,7 +904,7 @@ protected void onCreate(Bundle savedInstanceState) {
     https://github.com/AgoraIO/AgoraRtcEngine_iOS.git
     ```
 
-2. 在 **Dependency Rule** 中选择 **Exact Version**，输入需要集成的 SDK 版本（例如 `4.7.0`），然后点击 **Add Package**。
+2. 在 **Dependency Rule** 中选择 **Exact Version**，输入需要集成的 SDK 版本（例如 `4.7.1`），然后点击 **Add Package**。
 3. 在产品列表中，为应用的 Target 选择 `RtcBasic` 基础组件，其他组件按功能需要选择，然后完成添加。
 
    添加完成后，可在工程的 **Package Dependencies** 中确认 SDK 版本。更多设置请参考 [Apple 官方文档](https://help.apple.com/xcode/mac/current/#/devb83d64851)。

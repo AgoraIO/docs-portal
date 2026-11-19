@@ -135,13 +135,13 @@ describe('Chinese download page release constraints', () => {
     },
   );
 
-  it('uses the Shengwang Maven repository for RTC Android 4.7.0 integration', () => {
+  it('uses the Shengwang Maven repository for RTC Android 4.7.1 integration', () => {
     const page = readDoc('realtime-media/rtc/reference/downloads/android.mdx');
     expect(page).toContain(
       "maven { url = 'https://download.shengwang.cn/maven/' }",
     );
     for (const artifact of ['full-sdk', 'lite-sdk', 'voice-sdk']) {
-      expect(page).toContain(`cn.shengwang.rtc:${artifact}:4.7.0`);
+      expect(page).toContain(`cn.shengwang.rtc:${artifact}:4.7.1`);
     }
   });
 

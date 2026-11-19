@@ -1842,6 +1842,7 @@ The presence feature provides the ability to monitor user online, offline, and u
 
 - Real-time event notification when a user joins or leaves a specified channel.
 - Real-time event notification when the custom temporary user state changes.
+- Query whether a specified user is online.
 - Query which channels a specified user has joined or subscribed to.
 - Query which users have joined a specified channel and their temporary user state data.
 
@@ -2016,6 +2017,81 @@ rtmClient.getPresence()!.getUserChannels(userId: "your_userID") { (response, err
         print("User is present in channels: \(getUserChannelsResponse.channels)")
     } else {
         print("No response or error.")
+    }
+}
+```
+
+### getUserOnlineStatus
+
+#### Description
+
+Queries whether a specified user is logged in to Signaling under the current App ID. Neither you nor the target user needs to join or subscribe to a channel. Each call queries one user ID. To query your own status, pass your own user ID.
+
+This method is available since v2.3.1.
+
+#### Method
+
+Call the `getUserOnlineStatus` method as follows:
+
+```swift
+getUserOnlineStatus(userId: String) async -> (AgoraRtmUserOnlineStatus?, AgoraRtmErrorInfo?)
+```
+
+```swift
+getUserOnlineStatus(userId: String, completion completionBlock: AgoraRtmGetUserOnlineStatusBlock? = nil)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--- | :--- | :---: | :---: | --- |
+| `userId` | String | Required | - | The user ID to query. Pass the exact user ID. An empty string doesn't refer to the caller. |
+| `completion` | `AgoraRtmGetUserOnlineStatusBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmUserOnlineStatus` data in the `status` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `status` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmUserOnlineStatus` data type contains the following properties:
+
+| Properties | Type | Description |
+| :--- | :---: | --- |
+| `userId` | String | The queried user ID. |
+| `online` | Bool | Whether the user is online.<br />- `true`: The user is logged in to Signaling.<br />- `false`: The user is offline or doesn't exist. |
+
+#### Usage notes
+
+- Before calling this method, log in to Signaling and make sure the connection is established. If you set `serviceType` in `AgoraRtmPrivateConfig`, it must include `.message`.
+- The query works whether Presence is enabled or disabled in Agora Console.
+- The result is a snapshot of the user's status when the server processes the query. If a user disconnects abnormally, the server takes some time to detect that the user is offline. This method doesn't return the user's last online time and doesn't notify you of later status changes.
+- A failed query doesn't mean the target user is offline. Handle failures through `errorInfo`.
+- Calling `logout` cancels pending queries. After you call `destroy`, the SDK doesn't guarantee that it returns results for pending queries.
+
+#### Errors
+
+| Value | Error code | Cause |
+| :--- | :--- | --- |
+| `-10006` | `invalidUserId` | `userId` is an empty string or not a valid user ID. |
+| `-10021` | `operationRateExceedLimitation` | The call rate exceeds the limit for this method: 20 calls per second for each client instance. |
+| `-10022` | `serviceNotSupported` | The `serviceType` in `AgoraRtmPrivateConfig` doesn't include `.message`. |
+| `-10025` | `notConnected` | The client isn't connected to Signaling. |
+| `-13012` | `presenceOperationTimeout` | No response within 5 seconds. The SDK doesn't retry the query. |
+| `-13013` | `presenceOperationFailed` | The server response is invalid. |
+| `-13015` | `presencePendingRequestCancelled` | The query was canceled because the client logged out. |
+
+#### Basic usage
+
+```swift
+// async-await
+let (status, error) = await rtmClient.getPresence()!.getUserOnlineStatus(userId: "targetUserId")
+if let errorInfo = error {
+    print("Error querying online status: \(errorInfo.reason)")
+} else if let status = status {
+    print("\(status.userId) is \(status.online ? "online" : "offline or doesn't exist")")
+}
+```
+
+```swift
+// callback
+rtmClient.getPresence()!.getUserOnlineStatus(userId: "targetUserId") { (status, error) in
+    if let errorInfo = error {
+        print("Error querying online status: \(errorInfo.reason)")
+    } else if let status = status {
+        print("\(status.userId) is \(status.online ? "online" : "offline or doesn't exist")")
     }
 }
 ```
