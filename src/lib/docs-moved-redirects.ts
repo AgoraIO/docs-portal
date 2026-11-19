@@ -104,6 +104,11 @@ const EN_SKILLS_GUIDE_PATHS = new Set([
   'realtime-media/whiteboard/build/skills',
 ]);
 
+const EN_REMOVED_AI_PAGE_PATHS = new Set([
+  'ai/models/tts/humeai',
+  'ai/platform/models/tts/humeai',
+]);
+
 function resolveEnglishMovedDocsRedirect(
   locale: string,
   tab: string,
@@ -118,6 +123,10 @@ function resolveEnglishMovedDocsRedirect(
     guidePath === 'iot/reference/communicate_with_rtc_sdk'
   ) {
     return `/en/realtime-media/iot/build/send-messages/interoperate-with-rtc-sdk${suffix}`;
+  }
+  // Hume AI retired its legacy TTS API on 2026-11-13; the vendor pages were removed.
+  if (EN_REMOVED_AI_PAGE_PATHS.has(guidePath)) {
+    return `/en/ai${suffix}`;
   }
   if (EN_MCP_GUIDE_PATHS.has(guidePath)) {
     return `/en/introduction/agora-mcp${suffix}`;
