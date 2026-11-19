@@ -32,6 +32,8 @@ Recent history uses short, direct subjects such as `feat: openAPI example`, `rem
 
 Keep local test screenshots and QA images under ignored `.agent/artifacts/`; do not commit them or add hosted screenshot links to PRs. Images tracked in the repository should be assets used by the published documentation or application.
 
+Keep Global production search sync and query replay in their own workflow after Vercel publishes the site. Retry failed search runs independently. See [Algolia search](docs/search-algolia.md#sync).
+
 ## Security & Configuration Tips
 
 Do not commit secrets, tokens, or private service credentials. Keep environment-specific configuration outside tracked content. For OpenAPI work, avoid runtime filesystem reads from deployment functions; use the existing bundled source-text pattern in `src/lib/openapi/source-text.server.ts`.
