@@ -1194,7 +1194,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/server-sdk/typescript.mdx':
     '2026-10-09T04:05:18.000Z',
   'content/docs/en/api-reference/api-ref/signaling/android.mdx':
-    '2026-11-18T07:07:55.000Z',
+    '2026-11-18T09:19:19.000Z',
   'content/docs/en/api-reference/api-ref/signaling/authentication.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/api-reference/api-ref/signaling/authentication.mdx':
@@ -1206,13 +1206,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/signaling/index.mdx':
     '2026-06-30T08:35:58.000Z',
   'content/docs/en/api-reference/api-ref/signaling/ios.mdx':
-    '2026-11-18T07:07:55.000Z',
+    '2026-11-18T09:19:19.000Z',
   'content/docs/en/api-reference/api-ref/signaling/linux-cpp.mdx':
-    '2026-11-18T07:07:55.000Z',
+    '2026-11-18T09:19:19.000Z',
   'content/docs/en/api-reference/api-ref/signaling/linux-java.mdx':
     '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/macos.mdx':
-    '2026-11-18T07:07:55.000Z',
+    '2026-11-18T09:19:19.000Z',
   'content/docs/en/api-reference/api-ref/signaling/meta.json':
     '2026-06-30T10:25:06.000Z',
   'content/docs/en/api-reference/api-ref/signaling/react-native.mdx':
@@ -1222,7 +1222,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/signaling/web.mdx':
     '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/windows-cpp.mdx':
-    '2026-11-18T07:07:55.000Z',
+    '2026-11-18T09:19:19.000Z',
   'content/docs/en/api-reference/api-ref/speech-to-text/api-callback-service.mdx':
     '2026-08-05T09:38:07.000Z',
   'content/docs/en/api-reference/api-ref/speech-to-text/authentication.md':
@@ -6236,7 +6236,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/presence.md':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx':
-    '2026-11-18T07:07:55.000Z',
+    '2026-11-18T09:19:19.000Z',
   'content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/meta.json':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.md':
@@ -6413,7 +6413,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/reference/release-notes.md':
     '2026-07-02T06:58:41.000Z',
   'content/docs/en/realtime-media/rtm/reference/release-notes.mdx':
-    '2026-11-18T07:07:55.000Z',
+    '2026-11-18T09:19:19.000Z',
   'content/docs/en/realtime-media/rtm/reference/rest-api.md':
     '2026-06-28T06:41:08.000Z',
   'content/docs/en/realtime-media/rtm/reference/security.md':
