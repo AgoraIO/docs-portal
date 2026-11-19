@@ -71,7 +71,10 @@ function parseFlow(params: URLSearchParams): AccountFlow {
     throw new Error('Missing source');
   if (
     input.source_path !== undefined &&
-    !/^\/zh-CN\/[A-Za-z0-9/_().-]{1,400}$/.test(input.source_path)
+    (!/^\/(?!\/)[A-Za-z0-9/_().-]{1,406}$/.test(input.source_path) ||
+      input.source_path
+        .split('/')
+        .some((segment) => segment === '.' || segment === '..'))
   )
     throw new Error('Invalid source');
   if (

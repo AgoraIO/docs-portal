@@ -4,7 +4,7 @@ import { loader, multiple } from 'fumadocs-core/source';
 import * as yaml from 'js-yaml';
 import { docsMetaSchema } from '../docs-meta-schema';
 import { buildDocPath, parseSourceSlugs } from '../docs-routing';
-import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from '../i18n/i18n-config';
+import type { AppLocale } from '../i18n/i18n-config';
 import {
   createLocalizedOpenApiSource,
   getOpenApiLoaderPlugin,
@@ -15,6 +15,7 @@ import {
   getPlatformGroupPanelUrls,
 } from '../platforms/platform-group-pages';
 import { docsRoute } from '../shared';
+import { getDefaultDocsLocale } from '../site-region';
 import { buildDocsSearchNavigation } from './docs-search-navigation';
 
 type StaticDocsPageData = {
@@ -26,11 +27,13 @@ type StaticDocsPageData = {
   title?: string;
 };
 
-export async function getAlgoliaSearchNavigation() {
-  const source = await createAlgoliaSearchSource();
+export async function getAlgoliaSearchNavigation(
+  locales: readonly AppLocale[],
+) {
+  const source = await createAlgoliaSearchSource(locales);
 
   return new Map(
-    SUPPORTED_LOCALES.map((locale) => {
+    locales.map((locale) => {
       const pages = source.getPages(locale);
       const pageTree = filterPlatformGroupPanelNodes(
         source.getPageTree(locale),
@@ -48,23 +51,24 @@ export async function getAlgoliaSearchNavigation() {
   );
 }
 
-async function createAlgoliaSearchSource() {
-  const docsSource = await createStaticDocsSource();
-  const openApiSource = await createLocalizedOpenApiSource();
+async function createAlgoliaSearchSource(locales: readonly AppLocale[]) {
+  const defaultLocale = getDefaultDocsLocale('global');
+  const docsSource = await createStaticDocsSource(locales);
+  const openApiSource = await createLocalizedOpenApiSource(locales);
 
   return loader({
     source: multiple({ docs: docsSource, openapi: openApiSource }),
     baseUrl: docsRoute,
     i18n: {
-      defaultLanguage: DEFAULT_LOCALE,
+      defaultLanguage: defaultLocale,
       hideLocale: 'never',
-      languages: [...SUPPORTED_LOCALES],
+      languages: [...locales],
       parser: 'dir',
     },
     url: (slugs, locale) => {
       const route = parseSourceSlugs(slugs);
       return buildDocPath(
-        locale ?? DEFAULT_LOCALE,
+        locale ?? defaultLocale,
         route.tab,
         route.slugSegments,
       );
@@ -73,22 +77,28 @@ async function createAlgoliaSearchSource() {
   });
 }
 
-async function createStaticDocsSource() {
+async function createStaticDocsSource(locales: readonly AppLocale[]) {
   const docsRoot = path.join(process.cwd(), 'content/docs');
-  const files = await scanContentFiles(docsRoot);
+  const files = await Promise.all(
+    locales.map((locale) => scanContentFiles(path.join(docsRoot, locale))),
+  );
   const pages = await Promise.all(
-    files.pages.map(async (filePath) => ({
-      type: 'page' as const,
-      path: path.relative(docsRoot, filePath),
-      data: parseFrontmatter(await readFile(filePath, 'utf8')),
-    })),
+    files
+      .flatMap((group) => group.pages)
+      .map(async (filePath) => ({
+        type: 'page' as const,
+        path: path.relative(docsRoot, filePath),
+        data: parseFrontmatter(await readFile(filePath, 'utf8')),
+      })),
   );
   const metas = await Promise.all(
-    files.metas.map(async (filePath) => ({
-      type: 'meta' as const,
-      path: path.relative(docsRoot, filePath),
-      data: docsMetaSchema.parse(yaml.load(await readFile(filePath, 'utf8'))),
-    })),
+    files
+      .flatMap((group) => group.metas)
+      .map(async (filePath) => ({
+        type: 'meta' as const,
+        path: path.relative(docsRoot, filePath),
+        data: docsMetaSchema.parse(yaml.load(await readFile(filePath, 'utf8'))),
+      })),
   );
 
   return { files: [...pages, ...metas] };

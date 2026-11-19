@@ -37,10 +37,16 @@ import {
 } from './meilisearch-client';
 import { SEARCH_PAGE_SIZE, type SearchPageState } from './search-page-state';
 
-export type CnSearchQuery = SearchPageState & { tab?: string };
+export type CnSearchQuery = SearchPageState & {
+  tab?: string;
+  pageSize?: number;
+};
 
 type EngineResponse = {
-  hits: Parameters<typeof normalizeMeilisearchHit>[0][];
+  hits: (Parameters<typeof normalizeMeilisearchHit>[0] & {
+    canonicalPageGroupKey?: string;
+    platformPageGroupKey?: string;
+  })[];
   totalHits: number;
   totalPages: number;
   page: number;
@@ -112,7 +118,14 @@ export async function queryCnSearch(
   if (codeObfuscation) filter.push('aliases = "代码混淆"');
   const identifier = getCnGuideIdentifier(query);
   const acronym = cnExactProductAcronyms.includes(query.toLowerCase());
-  const overview = state.type === 'all' && query.length > 0;
+  const grouped = state.pageSize !== undefined;
+  const distinct =
+    platform || navigationLanguage
+      ? 'platformPageGroupKey'
+      : 'canonicalPageGroupKey';
+  const hasGroupKey = (hit: EngineResponse['hits'][number]) =>
+    !grouped || (typeof hit[distinct] === 'string' && hit[distinct].length > 0);
+  const overview = !grouped && state.type === 'all' && query.length > 0;
   const familyFilter = (family: CnSearchFamily) => `searchFamily = "${family}"`;
   const makeQuery = (family?: CnSearchFamily) => ({
     ...(task.quickStart && family === 'docs'
@@ -136,7 +149,8 @@ export async function queryCnSearch(
     page: state.page,
     // A category preview must use the same candidate window as its full list:
     // grouping/default-platform selection must not depend on the surface.
-    hitsPerPage: SEARCH_PAGE_SIZE,
+    hitsPerPage: state.pageSize ?? SEARCH_PAGE_SIZE,
+    ...(grouped ? { distinct } : {}),
     facets: ['products', 'platform', 'version', 'docType'],
     attributesToHighlight: ['sectionTitle', 'content', 'summary'],
     highlightPreTag: '<mark>',
@@ -180,6 +194,7 @@ export async function queryCnSearch(
       (item) =>
         !item ||
         !Array.isArray(item.hits) ||
+        !item.hits.every(hasGroupKey) ||
         !Number.isSafeInteger(item.totalHits) ||
         !Number.isSafeInteger(item.totalPages) ||
         !Number.isSafeInteger(item.page),
@@ -216,6 +231,7 @@ export async function queryCnSearch(
     const item: EngineResponse = await fallback.json();
     if (
       !Array.isArray(item?.hits) ||
+      !item.hits.every(hasGroupKey) ||
       !Number.isSafeInteger(item.totalHits) ||
       !Number.isSafeInteger(item.totalPages) ||
       !Number.isSafeInteger(item.page)
@@ -238,7 +254,8 @@ export async function queryCnSearch(
     hits: responses.flatMap((item) =>
       item.hits.map((hit, index) => ({
         ...hit,
-        resultRank: (item.page - 1) * SEARCH_PAGE_SIZE + index + 1,
+        resultRank:
+          (item.page - 1) * (state.pageSize ?? SEARCH_PAGE_SIZE) + index + 1,
       })),
     ),
     totalHits: responses.reduce((sum, item) => sum + item.totalHits, 0),
@@ -316,6 +333,9 @@ export async function queryCnSearch(
     totalPages: Math.min(result.totalPages, 500),
     page: result.page,
     facets,
+    ...(grouped
+      ? { pageSize: state.pageSize, paginationUnit: 'groups' as const }
+      : {}),
     ...(overview
       ? {
           familyTotalHits: {

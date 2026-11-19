@@ -149,9 +149,14 @@ it('accepts the published platform, OpenAPI and FAQ records from the same search
   expect(report.counts.checkedPages).toBe(3);
 });
 
-it.each(['/zh-CN', ''])(
-  'audits unprefixed results against %s build artifacts',
-  async (prefix) => {
+it.each([
+  ['/zh-CN', false],
+  ['/zh-CN', true],
+  ['', false],
+  ['', true],
+] as const)(
+  'audits unprefixed results against %s build artifacts with concrete navigation=%s',
+  async (prefix, concreteNavigation) => {
     const root = await mkdtemp(path.join(os.tmpdir(), 'cn-url-audit-'));
     temporaryDirectories.push(root);
     const publicPath = '/realtime-media/rtc/build/token-authentication/ios';
@@ -173,7 +178,7 @@ it.each(['/zh-CN', ''])(
     );
     await writeFile(
       path.join(root, '__static/docs-search/zh-CN.json'),
-      JSON.stringify([{ url: canonicalPath }]),
+      JSON.stringify([{ url: concreteNavigation ? buildPath : canonicalPath }]),
     );
     await writeFile(
       path.join(root, 'sitemap.xml'),
@@ -213,6 +218,32 @@ it.each(['/zh-CN', ''])(
     });
     expect(report.findings.unknownRoutes).toEqual([]);
     expect(report.findings.invalidIndexedAnchors).toEqual([]);
+    expect(report.coverageExceptions.navigationWithoutRoutes).toEqual([]);
+    expect(report.findings.nonSearchableRecords).toEqual([]);
+
+    // A concrete platform link is valid only when its rendered route exists.
+    await writeFile(
+      path.join(root, '__static/docs-search/zh-CN.json'),
+      JSON.stringify([{ url: `${canonicalPath}/missing` }]),
+    );
+    const missing = spawnSync(
+      process.execPath,
+      [
+        'scripts/search/audit-cn-coverage.mjs',
+        `--records=${path.join(root, 'records.json')}`,
+        `--html=${root}`,
+        `--out=${reportPath}`,
+      ],
+      { encoding: 'utf8' },
+    );
+    expect(missing.status).toBe(1);
+    const missingReport = JSON.parse(await readFile(reportPath, 'utf8'));
+    expect(missingReport.coverageExceptions.navigationWithoutRoutes).toEqual([
+      '/realtime-media/rtc/build/token-authentication/missing',
+    ]);
+    expect(missingReport.findings.nonSearchableRecords).toEqual([
+      `${publicPath}#token`,
+    ]);
   },
 );
 

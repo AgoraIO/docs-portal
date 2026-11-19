@@ -91,6 +91,30 @@ function fixture(
 }
 
 describe('Docs confidential OAuth with encrypted cookie sessions', () => {
+  it.each(['/reference/sdks', '/zh-CN/reference/sdks'])(
+    'completes the SDK OAuth flow from %s',
+    async (sourcePath) => {
+      const f = fixture();
+      const query = new URLSearchParams({
+        flow_id: '00000000-0000-4000-8000-000000000001',
+        target: 'home',
+        resource_type: 'sdk',
+        resource_id: 'video',
+        source_path: sourcePath,
+        platform: 'android',
+        version: '4.7.0-video-sdk-android-full',
+      });
+      const attempt = await f.login(query.toString());
+      const callback = await f.call(attempt.path, attempt.jar);
+      expect(callback.status).toBe(302);
+      acceptCookies(callback, attempt.jar);
+      expect((await f.call('/api/userinfo', attempt.jar)).status).toBe(200);
+      expect(
+        f.sent.find((event) => event.event === 'docs_account_auth_succeeded'),
+      ).toMatchObject({ properties: { source_path: sourcePath } });
+    },
+  );
+
   it('binds the SDK flow to a sealed cookie and exposes only trusted minimal identity', async () => {
     const f = fixture();
     const flowId = '00000000-0000-4000-8000-000000000001';
@@ -250,6 +274,12 @@ describe('Docs confidential OAuth with encrypted cookie sessions', () => {
       'target=rtm&target=home',
       'redirect_uri=https://evil.example',
       'source_path=//evil.example',
+      'source_path=https://evil.example',
+      'source_path=/reference/../sdks',
+      'source_path=/reference/./sdks',
+      'source_path=/reference%5Csdks',
+      'source_path=/reference/sdks%3Ftoken%3Dsecret',
+      `source_path=/${'x'.repeat(407)}`,
       'anonymous_id=person%40example.com',
       'resource_type=sdk&resource_id=rtm',
     ])
