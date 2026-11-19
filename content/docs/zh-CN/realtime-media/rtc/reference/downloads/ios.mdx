@@ -1,9 +1,5 @@
 ## 通过 CocoaPods 集成 SDK
 
-:::note
-当前 CocoaPods 仓库提供的版本为 v4.7.0。如需集成 v4.7.1，请使用 [SPM](#通过-spm-集成-sdk) 或[手动下载](#下载-sdk)。
-:::
-
 通过 CocoaPods 集成 iOS SDK 前，请在 `Podfile` 顶部添加声网 CocoaPods CDN 源。请保留项目中已有的源配置；如果项目还依赖公共仓库中的其他 Pod，请同时保留公共源，例如 `source 'https://cdn.cocoapods.org/'`。
 
 以下示例将 CocoaPods 官方公共源放在声网源前面，默认集成 Full SDK 或音频 SDK。如需使用其他集成方式，请注释默认的 `pod` 行，并取消对应行的注释。
@@ -17,11 +13,11 @@ source 'https://download.shengwang.cn/cocoapods/'
 platform :ios, '9.0'
 target 'Your App' do
     # 集成 Full SDK
-    pod 'ShengwangRtcEngine_iOS', '4.7.0'
+    pod 'ShengwangRtcEngine_iOS', '4.7.1'
     # 或选择性集成 Full SDK 中的基础库和指定动态库
-    # pod 'ShengwangRtcEngine_iOS', '4.7.0', :subspecs => ['RtcBasic', 'AINS', 'ClearVision']
+    # pod 'ShengwangRtcEngine_iOS', '4.7.1', :subspecs => ['RtcBasic', 'AINS', 'ClearVision']
     # 或集成 Lite SDK
-    # pod 'ShengwangLite_iOS', '4.7.0'
+    # pod 'ShengwangLite_iOS', '4.7.1'
 end
 ```
 
@@ -32,9 +28,9 @@ source 'https://download.shengwang.cn/cocoapods/'
 platform :ios, '9.0'
 target 'Your App' do
     # 集成音频 SDK
-    pod 'ShengwangAudio_iOS', '4.7.0'
+    pod 'ShengwangAudio_iOS', '4.7.1'
     # 或选择性集成音频 SDK 中的基础库和指定动态库
-    # pod 'ShengwangAudio_iOS', '4.7.0', :subspecs => ['RtcBasic', 'AINS', 'AudioBeauty']
+    # pod 'ShengwangAudio_iOS', '4.7.1', :subspecs => ['RtcBasic', 'AINS', 'AudioBeauty']
 end
 ```
 
@@ -94,7 +90,6 @@ https://github.com/Shengwang-Lab/ShengwangAudio_iOS.git
 - 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
 - 如何使用 SDK 实现各种音视频互动功能请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
 - 集成 SDK 后增加的实际包体积数据会根据集成的动态库的不同而有所差异，本页提供的数据仅供参考。
-- v4.7.1 的包体积参考值基于 Xcode 26.6、arm64、Release（`-Os`）参考构建，统计集成默认 `RtcBasic` 及必要依赖前后未压缩 `.app` 的体积差。1 MB = 1,048,576 字节。
 :::
 
 <Tabs defaultValue="video" groupId="ios-download-sdk" persist>

@@ -148,18 +148,18 @@ description: "了解如何快速接入实时互动 RTC，完成环境准备、�
     }
     ```
 
-2. 打开 `/app/build.gradle` 文件，在 `dependencies` 中添加声网 RTC SDK 的依赖。你可以从[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)中查询 SDK 的最新版本，并将 `x.y.z` 替换为具体的版本号。
+2. 打开 `/app/build.gradle` 文件，在 `dependencies` 中添加声网 RTC SDK 的依赖。其他版本的变更请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
 
     ```groovy
     ...
     dependencies {
         ...
         // 对于 4.6.0 及之后的版本
-        // x.y.z 替换为具体的 SDK 版本号，如：4.7.1
+        // 集成 v4.7.1
         // 集成 Full SDK
-        implementation 'cn.shengwang.rtc:full-sdk:x.y.z'
+        implementation 'cn.shengwang.rtc:full-sdk:4.7.1'
         // 集成 Lite SDK
-        implementation 'cn.shengwang.rtc:lite-sdk:x.y.z'
+        implementation 'cn.shengwang.rtc:lite-sdk:4.7.1'
 
         // 对于 4.6.0 之前的版本
         // x.y.z 替换为具体的 SDK 版本号，如：4.0.0 或 4.1.0-1
@@ -843,14 +843,10 @@ protected void onCreate(Bundle savedInstanceState) {
 
 <TabsContent value="cocoapods">
 
-:::note
-当前 CocoaPods 仓库提供的版本为 v4.7.0。如需集成 v4.7.1，请参考 [SPM 集成步骤](/zh-CN/realtime-media/rtc/reference/downloads/ios#通过-spm-集成-sdk)，或切换至手动集成方式。
-:::
-
 1. 在终端里进入项目根目录，并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
 2. 打开 `Podfile` 文件，在文件顶部添加声网 CocoaPods CDN 源。请保留项目中已有的源配置；如果项目还依赖公共仓库中的其他 Pod，请同时保留公共源，例如 `source 'https://cdn.cocoapods.org/'`。已有项目保留原来的 SDK 包名、版本号和组件配置，仅补充源配置。
 
-    以下示例将 CocoaPods 官方公共源放在声网源前面。将 `Your App` 替换为你的 Target 名称，将 `x.y.z` 替换为具体的 SDK 版本号，可通过[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)获取版本信息。示例默认集成 v4.6.0 及之后版本的 Full SDK；如需其他版本或 Lite SDK，请注释默认的 `pod` 行，并取消对应行的注释。
+    以下示例将 CocoaPods 官方公共源放在声网源前面。将 `Your App` 替换为你的 Target 名称，其他版本可参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。示例默认集成 v4.7.1 Full SDK；如需其他版本或 Lite SDK，请注释默认的 `pod` 行，并取消对应行的注释。
 
     `Podfile` 中的平台版本应与工程的 **iOS Deployment Target** 保持一致，且不低于 SDK 支持的最低版本。
 
@@ -862,9 +858,9 @@ protected void onCreate(Bundle savedInstanceState) {
     target 'Your App' do
         # 对于 4.6.0 及之后的版本
         # 集成 Full SDK
-        pod 'ShengwangRtcEngine_iOS', 'x.y.z'
+        pod 'ShengwangRtcEngine_iOS', '4.7.1'
         # 或集成 Lite SDK
-        # pod 'ShengwangLite_iOS', 'x.y.z'
+        # pod 'ShengwangLite_iOS', '4.7.1'
 
         # 对于 4.6.0 之前的版本
         # 集成 Full SDK
