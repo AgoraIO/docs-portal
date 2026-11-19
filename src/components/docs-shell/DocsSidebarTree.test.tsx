@@ -6,7 +6,13 @@ import {
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import { useState } from 'react';
 import { describe, expect, it } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
@@ -14,7 +20,11 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
 import { DocsSidebarTree } from './DocsSidebarTree';
 
-function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
+function renderSidebarTree(
+  nodes: DocsSidebarNode[],
+  activePath: string,
+  initialUrl = activePath,
+) {
   const rootRoute = createRootRoute({
     component: () => <Outlet />,
   });
@@ -36,7 +46,7 @@ function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
   const router = createRouter({
     routeTree: rootRoute.addChildren([docsRoute]),
     history: createMemoryHistory({
-      initialEntries: [activePath],
+      initialEntries: [initialUrl],
     }),
   });
 
@@ -401,6 +411,41 @@ describe('DocsSidebarTree', () => {
       url + '?from=' + encodeURIComponent(fromProduct),
     );
     expect(link).not.toHaveAttribute('target', '_blank');
+  });
+
+  it('marks only the selected REST article operation as the current page', async () => {
+    const path = '/en/api-reference/api-ref/media-pull';
+    const from = '/en/realtime-media/media-pull';
+    const entries = [
+      ['Overview', ''],
+      ['Create API', '#create-api'],
+      ['Delete API', '#delete-api'],
+      ['List API', '#list-api'],
+      ['Update API', '#update-api'],
+    ];
+    renderSidebarTree(
+      entries.map(([title, fragment]) => ({
+        type: 'page',
+        title,
+        id: path + fragment,
+        url: path + fragment,
+        search: { from },
+      })),
+      path,
+      path + '?from=' + encodeURIComponent(from) + '#create-api',
+    );
+
+    const expectCurrent = (name: string) => {
+      expect(screen.getAllByRole('link', { current: 'page' })).toEqual([
+        screen.getByRole('link', { name }),
+      ]);
+    };
+    await screen.findByRole('link', { name: 'Create API' });
+    expectCurrent('Create API');
+    for (const name of ['Delete API', 'Overview']) {
+      fireEvent.click(screen.getByRole('link', { name }));
+      await waitFor(() => expectCurrent(name));
+    }
   });
 
   it('renders linked external REST API jumps with an indicator in a new tab', async () => {

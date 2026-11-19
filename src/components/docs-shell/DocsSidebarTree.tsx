@@ -1001,6 +1001,11 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
     return (
       <Link
         {...props}
+        activeOptions={
+          !isChineseSidebar && search?.from
+            ? { exact: true, includeHash: true }
+            : undefined
+        }
         aria-current={isActive ? 'page' : undefined}
         onClick={handleClick}
         params={{}}
