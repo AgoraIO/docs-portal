@@ -434,20 +434,50 @@ describe('DocsContent', () => {
     );
   });
 
-  it('renders a neutral fallback when payload metadata is missing', async () => {
+  it.each(['en', 'zh-CN'] as const)(
+    'hides unavailable update metadata in %s',
+    async (locale) => {
+      renderWithRouter(
+        <DocsContent
+          contentPath={`${locale}/introduction/about-agora.md`}
+          locale={locale}
+          slug="about-agora"
+          title="About Agora"
+          toc={[]}
+        />,
+        `/${locale}/introduction/about-agora`,
+      );
+
+      await screen.findByRole('heading', { name: 'About Agora' });
+      expect(screen.queryByTestId('docs-last-updated')).toBeNull();
+      expect(screen.queryByTestId('docs-last-updated-icon')).toBeNull();
+      expect(
+        screen.queryByText(/Last update unavailable|更新时间不可用/),
+      ).toBeNull();
+    },
+  );
+
+  it.each([
+    {
+      formatted: '1970/01/01 00:00:00',
+      iso: '1970-01-01T00:00:00.000Z',
+      source: 'fallback' as const,
+    },
+    { formatted: 'Invalid date', iso: 'not-a-date', source: 'git' as const },
+  ])('hides fallback or invalid dates: $iso', async (lastUpdated) => {
     renderWithRouter(
       <DocsContent
         contentPath="en/introduction/about-agora.md"
+        lastUpdated={lastUpdated}
         slug="about-agora"
         title="About Agora"
         toc={[]}
       />,
     );
 
-    const lastUpdated = await screen.findByTestId('docs-last-updated');
-
-    expect(lastUpdated).toHaveTextContent('Last update unavailable');
-    expect(within(lastUpdated).queryByText('1970/01/01 00:00:00')).toBeNull();
+    await screen.findByRole('heading', { name: 'About Agora' });
+    expect(screen.queryByTestId('docs-last-updated')).toBeNull();
+    expect(screen.queryByText('1970/01/01 00:00:00')).toBeNull();
   });
 
   it('does not render the copy page action when the locale has no public markdown content', async () => {
