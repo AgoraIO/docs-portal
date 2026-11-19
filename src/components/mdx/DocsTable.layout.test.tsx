@@ -156,3 +156,22 @@ it('centers the merged console reference and subtotal cells without editing them
   ).toHaveStyle({ textAlign: 'center', verticalAlign: 'middle' });
   expect(within(container).getByText('18,000')).toHaveTextContent('18,000');
 });
+
+it('vertically centers row-spanning body totals and preserves authored horizontal alignment', async () => {
+  const { container } = await renderDocsMdx(`<DocsTable>
+<thead><tr><th>Video tier</th><th>Cost</th><th>Total</th></tr></thead>
+<tbody>
+<tr><td>Full HD</td><td>3.78</td><td rowSpan={3} style={{ textAlign: 'right' }}>168.42</td></tr>
+<tr><td>2K</td><td>13.44</td></tr>
+<tr><td>2K+</td><td>151.2</td></tr>
+</tbody>
+</DocsTable>`);
+  const total = within(container).getByRole('cell', { name: '168.42' });
+  expect(total).toHaveStyle({ verticalAlign: 'middle', textAlign: 'right' });
+  expect(total).toHaveAttribute('rowspan', '3');
+  expect(within(container).getByRole('cell', { name: '3.78' })).not.toHaveStyle(
+    {
+      verticalAlign: 'middle',
+    },
+  );
+});

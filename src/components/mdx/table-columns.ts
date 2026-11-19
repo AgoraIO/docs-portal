@@ -185,18 +185,21 @@ export function prepareTableColumns(
               .every((kind) => kind === kinds[column])
               ? kinds[column]
               : undefined;
-            const centeredMerge =
+            const mergedCell = span > 1 || Number(cell.props.rowSpan ?? 1) > 1;
+            const centered =
               span > 1 ||
-              (section.type === 'thead' && Number(cell.props.rowSpan ?? 1) > 1);
+              (section.type === 'thead' && mergedCell) ||
+              kind === 'required' ||
+              kind === 'requirement';
             return cloneElement(cell, {
               'data-table-column': String(column),
               'data-table-column-kind': kind,
-              ...(kind === 'required' || kind === 'requirement' || centeredMerge
+              ...(mergedCell || centered
                 ? {
                     style: {
                       ...cell.props.style,
-                      textAlign: 'center',
-                      ...(centeredMerge ? { verticalAlign: 'middle' } : {}),
+                      ...(centered ? { textAlign: 'center' } : {}),
+                      ...(mergedCell ? { verticalAlign: 'middle' } : {}),
                     },
                   }
                 : {}),
