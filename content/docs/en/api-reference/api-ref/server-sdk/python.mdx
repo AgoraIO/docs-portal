@@ -1078,10 +1078,14 @@ from agora_agent.agentkit.vendors import SarvamTTS
 | `key` | `str` | Yes | — | Sarvam API key |
 | `speaker` | `str` | Yes | — | Speaker name |
 | `target_language_code` | `str` | Yes | — | Target language code |
-| `pitch` | `float` | No | `None` | Pitch adjustment |
+| `pitch` | `float` | No | `None` | Pitch adjustment. `bulbul:v2` only. |
 | `pace` | `float` | No | `None` | Speed of speech |
-| `loudness` | `float` | No | `None` | Volume level |
-| `sample_rate` | `int` | No | `None` | Audio sample rate in Hz |
+| `loudness` | `float` | No | `None` | Volume level. `bulbul:v2` only. |
+| `model` | `str` | No | `None` | TTS model. The service defaults to `bulbul:v3`. |
+| `speech_sample_rate` | `int` | No | `None` | Output sample rate in Hz. The service defaults to `24000`. |
+| `enable_preprocessing` | `bool` | No | `None` | Normalize English words and numeric entities before synthesis |
+| `sample_rate` | `int` | No | `None` | Deprecated. Use `speech_sample_rate`. Set only one of the two. |
+| `additional_params` | `Dict[str, Any]` | No | `None` | Additional vendor parameters. Explicit parameters take precedence over matching keys. |
 | `skip_patterns` | `List[int]` | No | `None` | Skip patterns for bracketed content |
 
 #### TypecastTTS
@@ -1706,7 +1710,7 @@ Serializes `vendor: "generic"`. For a full example, see [LemonSlice](/en/ai/mode
 Helper functions for generating and managing tokens. Use these when you need control over token lifetime or when generating tokens outside of a session.
 
 ```python
-from agora_agent.agentkit.token import generate_convo_ai_token, generate_rtc_token
+from agora_agent.agentkit.token import generate_client_token, generate_convo_ai_token, generate_rtc_token
 from agora_agent.agentkit import expires_in_hours, expires_in_minutes
 ```
 
@@ -1748,6 +1752,46 @@ token = generate_convo_ai_token(
     channel_name='support-room-123',
     uid=1,
     token_expire=expires_in_hours(12),
+)
+```
+
+### `generate_client_token()`
+
+Generates an RTC and RTM token for your app's client, for example in a token route that your front end calls. The token lets the user join the RTC channel and log in to Signaling, which carries the agent's transcripts and state. It doesn't include the ConvoAI service, so it can't authenticate Conversational AI REST requests. Generate client tokens on your server, and never send your App Certificate to a client.
+
+```python
+generate_client_token(
+    app_id: str,
+    app_certificate: str,
+    channel_name: str,
+    uid: int | str,
+    token_expire: int = 86400,
+    privilege_expire: int = 0,
+) -> str
+```
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `app_id` | `str` | Yes | — | Agora App ID |
+| `app_certificate` | `str` | Yes | — | Agora App Certificate |
+| `channel_name` | `str` | Yes | — | The channel the client joins |
+| `uid` | `int` or `str` | Yes | — | The client's numeric RTC UID or string user account. The UID is also the Signaling user ID, so it can't be `0` or empty. |
+| `token_expire` | `int` | No | `86400` | Token lifetime in seconds. Valid range: 1–86400 |
+| `privilege_expire` | `int` | No | `0` | Seconds until RTC privileges expire. `0` means same as `token_expire` |
+
+**Returns:** `str` — the generated token.
+
+**Raises:** `ValueError` if `app_id` or `app_certificate` isn't exactly 32 characters, or if `uid` is `0` or empty.
+
+```python
+import os
+from agora_agent import generate_client_token
+
+token = generate_client_token(
+    app_id=os.environ['AGORA_APP_ID'],
+    app_certificate=os.environ['AGORA_APP_CERTIFICATE'],
+    channel_name='support-room-123',
+    uid=100,
 )
 ```
 
