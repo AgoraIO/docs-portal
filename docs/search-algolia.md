@@ -30,6 +30,21 @@ ALGOLIA_INDEX_NAME=docs_portal_en
 
 ## Sync
 
+After Vercel publishes a Global release, GitHub Actions starts the
+`Global production search` workflow for the deployed commit. While the index updates,
+direct page links serve the release and search results can reflect earlier content.
+
+To retry a failed sync or replay, rerun the failed search job in GitHub Actions.
+If the deploy summary reports a dispatch failure, use the full SHA from the
+successful production deployment as `DEPLOYED_SHA`.
+
+```shell
+gh workflow run global-search.yml --ref release/prod -f release_sha="$DEPLOYED_SHA"
+```
+
+The workflow checks the requested SHA against the current release branch before
+writing to Algolia. Run the sync locally with the following command.
+
 ```shell
 bun run search:sync
 ```
@@ -48,11 +63,10 @@ but passes `--gate=preview-blockers` so only the four review blockers determine
 its exit status. The optional JSON output is suitable for retaining as rollout
 evidence.
 
-`bun run build` runs this step after the static build. If
-`VITE_ALGOLIA_APP_ID` or `ALGOLIA_ADMIN_API_KEY` is not configured, the sync
-step is skipped so local and preview builds can still complete. This sync only
-updates `docs_portal_en`; the SDK API reference index is managed separately by
-its crawler. Set
+The local sync skips indexing when `VITE_ALGOLIA_APP_ID` or
+`ALGOLIA_ADMIN_API_KEY` is missing. The production search workflow reports
+missing credentials as an error. The sync updates the docs index. A separate
+crawler maintains the SDK API reference index. Set
 `ALGOLIA_SYNC_DISABLED=true` to force-skip the step even when credentials are
 available. The sync script indexes regular docs and generated OpenAPI operation
 pages. Records include `locale`, `product`, `platform`, `tab`, and `objectType`

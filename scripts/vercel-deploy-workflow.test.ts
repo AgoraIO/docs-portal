@@ -46,7 +46,7 @@ function stepIndex(steps: WorkflowStep[], name: string): number {
   return steps.findIndex((step) => step.name === name);
 }
 
-describe('Vercel preview deployment workflow', () => {
+describe('Vercel deployment workflow', () => {
   it('publishes the preview URL before replaying global search golden queries', async () => {
     const steps = await previewSteps();
     const deployIndex = stepIndex(steps, 'Deploy prebuilt output');
@@ -94,18 +94,54 @@ describe('Vercel preview deployment workflow', () => {
     );
   });
 
-  it('keeps Production replay diagnostic and non-blocking after search sync', async () => {
+  it('dispatches search only after publishing the production site', async () => {
     const steps = await productionSteps();
-    const syncIndex = stepIndex(steps, 'Sync Algolia search index');
-    const replayIndex = stepIndex(steps, 'Replay Global search golden queries');
-    const replay = steps[replayIndex];
+    const deploy = stepIndex(steps, 'Deploy prebuilt output');
+    const dispatch = stepIndex(steps, 'Start Global search sync');
+    expect(deploy).toBeGreaterThanOrEqual(0);
+    expect(dispatch).toBeGreaterThan(deploy);
+    expect(steps[dispatch].if).toBeUndefined();
+    expect(steps[dispatch]['continue-on-error']).toBe(true);
+    expect(steps[dispatch].run).toContain(
+      'gh workflow run global-search.yml --ref release/prod',
+    );
+    expect(steps[dispatch].env?.RELEASE_SHA).toContain(
+      'inputs.release_sha || github.sha',
+    );
+    expect(JSON.stringify(steps)).not.toMatch(
+      /ALGOLIA_ADMIN_API_KEY|bun run search:(sync|replay)/,
+    );
+  });
 
-    expect(syncIndex).toBeGreaterThanOrEqual(0);
-    expect(replayIndex).toBeGreaterThan(syncIndex);
-    expect(replay.run).toContain(
+  it('verifies the release before updating the index and reports search failures separately', async () => {
+    const workflow = load(
+      await readFile('.github/workflows/global-search.yml', 'utf8'),
+    ) as {
+      on: Record<string, unknown>;
+      concurrency: { group: string; queue: string };
+      jobs: { 'sync-search': { if: string; steps: WorkflowStep[] } };
+    };
+    expect(Object.keys(workflow.on)).toEqual(['workflow_dispatch']);
+    expect(workflow.concurrency.queue).toBe('max');
+    const job = workflow.jobs['sync-search'];
+    expect(job.if).toContain("github.ref == 'refs/heads/release/prod'");
+    const steps = job.steps;
+    const verify = stepIndex(steps, 'Verify deployed revision');
+    const sync = stepIndex(steps, 'Sync Algolia search index');
+    const replay = stepIndex(steps, 'Replay Global search golden queries');
+    const upload = stepIndex(steps, 'Upload Global search replay evidence');
+    expect(steps[0].with?.ref).toBe('release/prod');
+    expect(verify).toBeGreaterThan(0);
+    expect(steps[verify].run).toContain('git rev-parse HEAD');
+    expect(sync).toBeGreaterThan(verify);
+    expect(steps[sync].run).toContain('bun run search:sync');
+    expect(replay).toBeGreaterThan(sync);
+    expect(steps[replay].run).toBe(
       'bun run search:replay -- --out=global-search-replay.json --wait-for-index',
     );
-    expect(replay.run).not.toContain('--gate=');
-    expect(replay['continue-on-error']).toBe(true);
+    expect(steps[sync]['continue-on-error']).toBeUndefined();
+    expect(steps[replay]['continue-on-error']).toBeUndefined();
+    expect(upload).toBeGreaterThan(replay);
+    expect(steps[upload].if).toBe('always()');
   });
 });

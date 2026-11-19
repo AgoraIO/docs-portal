@@ -18,6 +18,7 @@ on:
       - "AGENTS.md"
       - ".github/PULL_REQUEST_TEMPLATE.md"
       - ".github/workflows/vercel-deploy.yml"
+      - ".github/workflows/global-search.yml"
       - "vercel.json"
       - "vercel.base.json"
       - "vercel-legacy-redirects.json"
@@ -43,6 +44,7 @@ on:
       - "AGENTS.md"
       - ".github/PULL_REQUEST_TEMPLATE.md"
       - ".github/workflows/vercel-deploy.yml"
+      - ".github/workflows/global-search.yml"
       - "vercel.json"
       - "vercel.base.json"
       - "vercel-legacy-redirects.json"
@@ -390,6 +392,9 @@ jobs:
 
   deploy-production:
     name: Deploy Production to Vercel
+    permissions:
+      contents: read
+      actions: write
     if: |
       github.repository == 'AgoraIO/docs-portal' &&
       (
@@ -404,11 +409,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7.0.1
         with:
-          ref: ${{ github.event_name == 'workflow_dispatch' && 'release/prod' || github.ref }}
+          ref: ${{ github.event_name == 'workflow_dispatch' && 'release/prod' || github.sha }}
           fetch-depth: 0
 
       - name: Verify release ref
-        id: release-ref
         if: github.event_name == 'workflow_dispatch'
         env:
           RELEASE_SHA: ${{ inputs.release_sha }}
@@ -427,8 +431,6 @@ jobs:
             echo "release/prod: $current_sha"
             exit 1
           fi
-
-          echo "verified=true" >> "$GITHUB_OUTPUT"
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2.2.0
@@ -470,34 +472,6 @@ jobs:
           VERCEL_GIT_COMMIT_SHA: ${{ inputs.release_sha || github.sha }}
         run: vercel build --prod --yes --token="${{ secrets.VERCEL_TOKEN }}"
 
-      - name: Sync Algolia search index
-        if: |
-          (github.event_name == 'push' && github.ref_name == 'release/prod') ||
-          (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'production' && steps.release-ref.outputs.verified == 'true')
-        env:
-          VITE_DOCS_REGION: global
-          VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
-          ALGOLIA_ADMIN_API_KEY: ${{ secrets.ALGOLIA_ADMIN_API_KEY }}
-          ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}
-        run: bun run search:sync
-
-      - name: Replay Global search golden queries
-        continue-on-error: true
-        env:
-          VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
-          VITE_ALGOLIA_SEARCH_API_KEY: ${{ secrets.VITE_ALGOLIA_SEARCH_API_KEY }}
-          VITE_ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}
-          VITE_SEARCH_RANKING_V2: 'true'
-        run: bun run search:replay -- --out=global-search-replay.json --wait-for-index
-
-      - name: Upload Global search replay evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: global-search-replay
-          path: global-search-replay.json
-          if-no-files-found: warn
-
       - name: Verify Vercel output
         run: |
           test -f .vercel/output/config.json
@@ -529,3 +503,19 @@ jobs:
             echo
             echo "Production URL: ${DEPLOY_URL}"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Start Global search sync
+        id: start-search
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_SHA: ${{ inputs.release_sha || github.sha }}
+        run: gh workflow run global-search.yml --ref release/prod -f "release_sha=$RELEASE_SHA"
+
+      - name: Report search dispatch failure
+        if: steps.start-search.outcome == 'failure'
+        env:
+          RELEASE_SHA: ${{ inputs.release_sha || github.sha }}
+        run: |
+          echo "::warning::Site deployed. Start Global search sync manually for $RELEASE_SHA."
+          echo "Retry search with \`gh workflow run global-search.yml --ref release/prod -f release_sha=$RELEASE_SHA\`." >> "$GITHUB_STEP_SUMMARY"
