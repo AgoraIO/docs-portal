@@ -47,8 +47,8 @@ describe('RtcSdkDownloads', () => {
     expect(
       within(full).queryByText('armeabi-v7a：16.55'),
     ).not.toBeInTheDocument();
-    expect(within(full).getByText('armeabi-v7a：待补充')).toBeVisible();
-    expect(within(lite).getByText('x86_64：待补充')).toBeVisible();
+    expect(within(full).getByText('armeabi-v7a：15.26')).toBeVisible();
+    expect(within(lite).getByText('x86_64：7.97')).toBeVisible();
     expect(
       within(full).getByText('发布日期：2026 年 11 月 18 日'),
     ).toBeVisible();
@@ -97,9 +97,9 @@ describe('RtcSdkDownloads', () => {
       within(lite).getByText('9506b191ee9592a75bc8645577aa68ac'),
     ).toBeVisible();
     expect(
-      within(full).getByText(/RtcBasic 基础库参考包体积增量：待补充/),
+      within(full).getByText(/RtcBasic 基础库参考包体积增量：34.35 MB/),
     ).toBeVisible();
-    expect(within(lite).getByText('参考包体积增量：待补充')).toBeVisible();
+    expect(within(lite).getByText('参考包体积增量：15.95 MB')).toBeVisible();
     expect(
       within(full).getByText('发布日期：2026 年 11 月 18 日'),
     ).toBeVisible();

@@ -487,7 +487,16 @@ describe('SdksCatalog', () => {
         name: cardName,
       });
       expect(within(card).getByText('v4.7.1')).toBeVisible();
-      expect(within(card).getByText(/参考包体积增量：待补充/)).toBeVisible();
+      const measuredSize = cardName.includes('Lite')
+        ? '15.95'
+        : product === 'voice'
+          ? '13.26'
+          : '34.35';
+      expect(
+        within(card).getByText(
+          new RegExp(`参考包体积增量：${measuredSize} MB`),
+        ),
+      ).toBeVisible();
       expect(within(card).queryByText('包体积：')).not.toBeInTheDocument();
     },
   );

@@ -33,7 +33,7 @@ export const zhCNRtcSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
               'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.7.1_VOICE.zip',
             md5: 'ad3318830f59fe7343a0e4675d9e5853',
             packageSize:
-              'armeabi-v7a 待补充 MB；arm64-v8a 待补充 MB；x86 待补充 MB；x86_64 待补充 MB',
+              'armeabi-v7a 5.23 MB；arm64-v8a 5.79 MB；x86 5.55 MB；x86_64 5.41 MB',
             packageName: 'io.agora.rtc2.voice',
             releaseDate: '2026 年 11 月 18 日',
           }),
@@ -49,7 +49,7 @@ export const zhCNRtcSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
               'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.7.1_FULL.zip',
             md5: 'c3b3cbfae32ca1fe12d464e2577843b3',
             packageSize:
-              'armeabi-v7a 待补充 MB；arm64-v8a 待补充 MB；x86 待补充 MB；x86_64 待补充 MB',
+              'armeabi-v7a 15.26 MB；arm64-v8a 16.03 MB；x86 16.63 MB；x86_64 16.30 MB',
             packageName: 'io.agora.rtc2.video',
             releaseDate: '2026 年 11 月 18 日',
           }),
@@ -59,7 +59,7 @@ export const zhCNRtcSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             latestVariant: true,
             md5: 'f5a7e98abe8b10d3b013c8ead1dec286',
             packageSize:
-              'armeabi-v7a 待补充 MB；arm64-v8a 待补充 MB；x86 待补充 MB；x86_64 待补充 MB',
+              'armeabi-v7a 7.40 MB；arm64-v8a 8.07 MB；x86 8.12 MB；x86_64 7.97 MB',
             packageName: 'io.agora.rtc2.video',
             releaseDate: '2026 年 11 月 18 日',
           }),
@@ -80,7 +80,7 @@ export const zhCNRtcSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             downloadLink:
               'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.7.1_VOICE.zip',
             md5: 'afcb69331a575f86eb212494b13ca985',
-            packageSize: '待补充',
+            packageSize: '13.26 MB',
             packageName: 'AgoraRtcKit',
             releaseDate: '2026 年 11 月 18 日',
           }),
@@ -95,7 +95,7 @@ export const zhCNRtcSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             downloadLink:
               'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.7.1_FULL.zip',
             md5: 'e5e4c3f036426e251c2b3ed4feaaea1c',
-            packageSize: '待补充',
+            packageSize: '34.35 MB',
             packageName: 'AgoraRtcKit',
             releaseDate: '2026 年 11 月 18 日',
           }),
@@ -104,7 +104,7 @@ export const zhCNRtcSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
               'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.7.1_LITE.zip',
             latestVariant: true,
             md5: '9506b191ee9592a75bc8645577aa68ac',
-            packageSize: '待补充',
+            packageSize: '15.95 MB',
             packageName: 'AgoraRtcKit',
             releaseDate: '2026 年 11 月 18 日',
           }),

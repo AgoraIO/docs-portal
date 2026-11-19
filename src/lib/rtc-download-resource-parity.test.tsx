@@ -32,6 +32,32 @@ const release471Md5: Record<string, Record<string, string>> = {
   },
 };
 
+const android471Sizes: Record<string, Record<string, string>> = {
+  FULL: {
+    'armeabi-v7a': '15.26',
+    'arm64-v8a': '16.03',
+    x86: '16.63',
+    x86_64: '16.30',
+  },
+  LITE: {
+    'armeabi-v7a': '7.40',
+    'arm64-v8a': '8.07',
+    x86: '8.12',
+    x86_64: '7.97',
+  },
+  VOICE: {
+    'armeabi-v7a': '5.23',
+    'arm64-v8a': '5.79',
+    x86: '5.55',
+    x86_64: '5.41',
+  },
+};
+const ios471Sizes: Record<string, string> = {
+  FULL: '34.35',
+  LITE: '15.95',
+  VOICE: '13.26',
+};
+
 describe('RTC resource cards preserve legacy content and approved release updates', () => {
   it.each(Object.entries(legacy.platforms))(
     '%s preserves SDK card wording and destinations',
@@ -74,10 +100,11 @@ describe('RTC resource cards preserve legacy content and approved release update
                   .replace('v4.7.0', 'v4.7.1')
                   .replace(historical.md5, release471Md5[platform][variant])
                   .replace(
-                    /((?:armeabi-v7a|arm64-v8a|x86_64|x86)：)[\d.]+/g,
-                    '$1待补充',
+                    /(armeabi-v7a|arm64-v8a|x86_64|x86)：[\d.]+/g,
+                    (_match, abi: string) =>
+                      `${abi}：${android471Sizes[variant][abi]}`,
                   )
-                  .replace(/[\d.]+ MB/g, '待补充'),
+                  .replace(/[\d.]+ MB/g, `${ios471Sizes[variant]} MB`),
                 footer: '发布日期：2026 年 11 月 18 日',
                 href: original.href.replace('_v4.7.0_', '_v4.7.1_'),
               };
