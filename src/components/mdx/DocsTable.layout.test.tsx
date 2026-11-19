@@ -98,3 +98,61 @@ it('keeps unknown headings conservative until their roles are declared', async (
     'number',
   );
 });
+
+it('keeps a literal key column in the natural content layout', async () => {
+  const { container } = await renderDocsMdx(`| key | type | value |
+| --- | --- | --- |
+| NSMicrophoneUsageDescription | string | Allow microphone access. |`);
+  expect(
+    within(container).getByRole('columnheader', { name: 'key' }),
+  ).toHaveAttribute('data-table-column-kind', 'content');
+  expect(
+    within(container).getByRole('cell', {
+      name: 'NSMicrophoneUsageDescription',
+    }),
+  ).toHaveAttribute('data-table-column-kind', 'content');
+});
+
+it('centers merged table headings without changing their text or spans', async () => {
+  const { container } = await renderDocsMdx(`<DocsTable>
+<thead><tr><th rowSpan={2}>日期</th><th colSpan={2}>控制台展示用量（分钟）</th></tr>
+<tr><th>音频</th><th>视频</th></tr></thead>
+<tbody><tr><td>2025-02-04</td><td>12,000</td><td>18,000</td></tr></tbody>
+</DocsTable>`);
+  for (const name of ['日期', '控制台展示用量（分钟）']) {
+    expect(within(container).getByRole('columnheader', { name })).toHaveStyle({
+      textAlign: 'center',
+      verticalAlign: 'middle',
+    });
+  }
+  expect(
+    within(container).getByRole('columnheader', { name: '日期' }),
+  ).toHaveAttribute('rowspan', '2');
+  expect(
+    within(container).getByRole('columnheader', {
+      name: '控制台展示用量（分钟）',
+    }),
+  ).toHaveAttribute('colspan', '2');
+  expect(within(container).getByText('12,000')).toHaveTextContent('12,000');
+});
+
+it('centers the merged console reference and subtotal cells without editing them', async () => {
+  const { container } = await renderDocsMdx(`<DocsTable>
+<thead><tr><th>日期</th><th>实际音频</th><th>实际视频</th><th>控制台音频</th><th>控制台视频</th></tr></thead>
+<tbody>
+<tr><td>2025-02-04</td><td>12,000</td><td>18,000</td><td rowSpan={3} colSpan={2}>控制台用量仅供参考，不用作实际计费依据。</td></tr>
+<tr><td>2025-02-05</td><td>6,000</td><td>0</td></tr>
+<tr><td colSpan={3}>本月总用量</td></tr>
+</tbody>
+</DocsTable>`);
+  const note = within(container).getByRole('cell', {
+    name: '控制台用量仅供参考，不用作实际计费依据。',
+  });
+  expect(note).toHaveStyle({ textAlign: 'center', verticalAlign: 'middle' });
+  expect(note).toHaveAttribute('rowspan', '3');
+  expect(note).toHaveAttribute('colspan', '2');
+  expect(
+    within(container).getByRole('cell', { name: '本月总用量' }),
+  ).toHaveStyle({ textAlign: 'center', verticalAlign: 'middle' });
+  expect(within(container).getByText('18,000')).toHaveTextContent('18,000');
+});

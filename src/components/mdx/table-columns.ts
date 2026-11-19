@@ -59,7 +59,7 @@ function headerKind(label: string): DocsTableColumnKind {
   if (/^(类型|数据类型|json\s*类型|type|json\s*type|data\s*type)$/.test(label))
     return 'type';
   if (
-    /^(参数|参数名|参数名称|属性|名称|字段|字段名|api|常用 api|日期|date|平台|文件|功能|能力|错误码|配置项|配置路径|服务|分组|parameter|parameters|property|properties|name|names|field|fields|key|option|group)$/.test(
+    /^(参数|参数名|参数名称|属性|名称|字段|字段名|api|常用 api|日期|date|平台|文件|功能|能力|错误码|配置项|配置路径|服务|分组|parameter|parameters|property|properties|name|names|field|fields|option|group)$/.test(
       label,
     )
   )
@@ -185,11 +185,20 @@ export function prepareTableColumns(
               .every((kind) => kind === kinds[column])
               ? kinds[column]
               : undefined;
+            const centeredMerge =
+              span > 1 ||
+              (section.type === 'thead' && Number(cell.props.rowSpan ?? 1) > 1);
             return cloneElement(cell, {
               'data-table-column': String(column),
               'data-table-column-kind': kind,
-              ...(kind === 'required' || kind === 'requirement'
-                ? { style: { ...cell.props.style, textAlign: 'center' } }
+              ...(kind === 'required' || kind === 'requirement' || centeredMerge
+                ? {
+                    style: {
+                      ...cell.props.style,
+                      textAlign: 'center',
+                      ...(centeredMerge ? { verticalAlign: 'middle' } : {}),
+                    },
+                  }
                 : {}),
             });
           }),
