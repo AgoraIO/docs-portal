@@ -1053,23 +1053,21 @@
     padding-inline-end: 3.25rem;
   }
 
-  .docs-card-link::after {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    content: "→";
-    color: var(--color-fd-muted-foreground);
-    font-size: 0.9rem;
-    font-weight: 500;
-    line-height: 1;
+  .docs-card-arrow {
     transition:
       transform 160ms ease,
       color 160ms ease;
   }
 
-  .docs-card-link:hover::after {
+  .docs-card-link:hover .docs-card-arrow {
     transform: translateX(2px);
     color: var(--color-fd-card-foreground);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .docs-card-arrow {
+      transition: none;
+    }
   }
 
   :where(input, textarea, select) {
