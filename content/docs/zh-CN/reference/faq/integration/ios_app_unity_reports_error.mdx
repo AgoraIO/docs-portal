@@ -1,0 +1,59 @@
+---
+title: "为什么使用 Unity 4.x SDK 开发的 iOS App 上传到 App Store 会报错？"
+---
+## 问题描述
+
+将使用 Unity 4.x SDK 开发的 App 直接打包上传至 App Store 时，你可能会收到如下错误信息：
+
+![](https://web-cdn.agora.io/docs-files/1667533013233)
+
+## 问题原因
+
+Unity 4.x SDK 内部的 iOS 动态库带有模拟器架构，但 App Store 不允许上架 App 的 SDK 里带有模拟器架构，因此，为了 App 正常上架和测试，需要将 SDK 里的模拟器架构给删除。
+
+## 解决方案
+
+1. 在 Xcode 中，选择添加 **New Run Script Phase**。
+
+   ![](https://web-cdn.agora.io/docs-files/1667533033937)
+
+2. 添加下列脚本，在打包时自动将 SDK 里的模拟器架构删除。
+
+   ```shell
+   #!/bin/sh
+
+   # Strip invalid architectures
+
+   strip_invalid_archs() {
+   binary="$1"
+   echo "current binary ${binary}"
+   # Get architectures for current file
+   archs="$(lipo -info "$binary" | rev | cut -d ':' -f1 | rev)"
+   stripped=""
+   for arch in $archs; do
+   if ! [[ "${ARCHS}" == *"$arch"* ]]; then
+   if [ -f "$binary" ]; then
+   # Strip non-valid architectures in-place
+   lipo -remove "$arch" -output "$binary" "$binary" || exit 1
+   stripped="$stripped $arch"
+   fi
+   fi
+   done
+   if [[ "$stripped" ]]; then
+   echo "Stripped $binary of architectures:$stripped"
+   fi
+   }
+
+   APP_PATH="${TARGET_BUILD_DIR}/${WRAPPER_NAME}"
+
+   # This script loops through the frameworks embedded in the application and
+   # removes unused architectures.
+   find "$APP_PATH" -name '*.framework' -type d | while read -r FRAMEWORK
+   do
+   FRAMEWORK_EXECUTABLE_NAME=$(defaults read "$FRAMEWORK/Info.plist" CFBundleExecutable)
+   FRAMEWORK_EXECUTABLE_PATH="$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME"
+   echo "Executable is $FRAMEWORK_EXECUTABLE_PATH"
+
+   strip_invalid_archs "$FRAMEWORK_EXECUTABLE_PATH"
+   done
+   ```

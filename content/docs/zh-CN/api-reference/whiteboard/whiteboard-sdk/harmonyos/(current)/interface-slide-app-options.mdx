@@ -1,0 +1,121 @@
+---
+title: SlideAppOptions interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_slide_app_options
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_slide_app_options.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+WhiteboardOptions.slideAppOptions 的本地 Slide 配置。
+
+可从 @shengwang/whiteboard 直接导入 SlideAppOptions。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface SlideAppOptions
+```
+
+| [enableScale](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-slide-app-options#a9b9ea13a1c1b2e9deb481a38232ceba3) | `enableScale?: boolean` |
+| --- | --- |
+| [resolution](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-slide-app-options#af93f3f59a07a3b62aaf7985702fa8366) | `resolution?: number` |
+| [maxResolutionLevel](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-slide-app-options#a2e4e4c970fe829cae921bbb17b1adcf9) | `maxResolutionLevel?: number` |
+| [minFPS](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-slide-app-options#ae4adff60ddc9e66052140a39a4b82e69) | `minFPS?: number` |
+| [maxFPS](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-slide-app-options#af7bc0f757ffa402659ce24d88872cb27) | `maxFPS?: number` |
+| [enableGlobalClick](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-slide-app-options#a014d2c58430be830c82a47976738986d) | `enableGlobalClick?: boolean` |
+| [syncEventQueuePolicy](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-slide-app-options#aa6c78ad6353a57fe373f2933096d6617) | `syncEventQueuePolicy?: SlideSyncEventQueuePolicy` |
+| [navigationButtonMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-slide-app-options#aeef7c008e59e92698236cb6c0427ca8b) | `navigationButtonMode?: SlideNavigationButtonMode` |
+
+## 变量说明
+
+<a id="a9b9ea13a1c1b2e9deb481a38232ceba3"></a>
+
+### enableScale
+
+```text
+enableScale?: boolean
+```
+
+允许 Slide 内容缩放；默认 false。
+
+<a id="af93f3f59a07a3b62aaf7985702fa8366"></a>
+
+### resolution
+
+```text
+resolution?: number
+```
+
+Slide 渲染分辨倍率；未显式设置时由 Bridge 按 WebView UA 决定。
+
+<a id="a2e4e4c970fe829cae921bbb17b1adcf9"></a>
+
+### maxResolutionLevel
+
+```text
+maxResolutionLevel?: number
+```
+
+Slide 最大分辨率级别，0~4；未显式设置时由 Bridge 按 WebView UA 决定。
+
+<a id="ae4adff60ddc9e66052140a39a4b82e69"></a>
+
+### minFPS
+
+```text
+minFPS?: number
+```
+
+Slide 最小帧率；未显式设置时由内嵌 Bridge 按 WebView UA 决定。
+
+<a id="af7bc0f757ffa402659ce24d88872cb27"></a>
+
+### maxFPS
+
+```text
+maxFPS?: number
+```
+
+Slide 最大帧率；未显式设置时由内嵌 Bridge 按 WebView UA 决定。
+
+<a id="a014d2c58430be830c82a47976738986d"></a>
+
+### enableGlobalClick
+
+```text
+enableGlobalClick?: boolean
+```
+
+允许点击 Slide 画面执行下一步；默认 true。
+
+<a id="aa6c78ad6353a57fe373f2933096d6617"></a>
+
+### syncEventQueuePolicy
+
+```text
+syncEventQueuePolicy?: SlideSyncEventQueuePolicy
+```
+
+fifo（默认）或 latest-pending-render；后者需显式开启，仅合并尚未执行的渲染页，不跳过正在执行的任务，非 interactive 模式仍走 FIFO。
+
+<a id="aeef7c008e59e92698236cb6c0427ca8b"></a>
+
+### navigationButtonMode
+
+```text
+navigationButtonMode?: SlideNavigationButtonMode
+```
+
+Slide 底部前后按钮行为：page（默认）按页，step 按动画步骤；不改变其他翻页入口。

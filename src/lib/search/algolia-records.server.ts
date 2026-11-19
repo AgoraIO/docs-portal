@@ -3,7 +3,7 @@ import path from 'node:path';
 import { structure } from 'fumadocs-core/mdx-plugins';
 import { replaceSource } from 'fumadocs-core/mdx-plugins/stringifier';
 import type { DocumentRecord } from 'fumadocs-core/search/algolia';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import type { Root } from 'mdast';
 import remarkDirective from 'remark-directive';
 import remarkMdx from 'remark-mdx';
@@ -12,7 +12,11 @@ import type { VFile } from 'vfile';
 import { buildDocPath } from '../docs-routing';
 import { getSearchEntryMetadata } from '../docs-search';
 import type { AppLocale } from '../i18n/i18n-config';
-import { remarkAccordionHeadings } from '../mdx/accordion-toc';
+import {
+  remarkAccordionHeadings,
+  remarkGlobalAccordionHeadings,
+} from '../mdx/accordion-toc';
+import { remarkLiteralDirectives } from '../mdx/remark-literal-directives';
 import {
   getOpenApiEndpointUrl,
   getOpenApiLaneLocales,
@@ -87,7 +91,7 @@ const STRUCTURE_CONTENT_TYPES = [
 export async function getAlgoliaDocsRecords(): Promise<AlgoliaDocsRecord[]> {
   const [pages, navigationByLocale] = await Promise.all([
     getContentDocsPages(),
-    getAlgoliaSearchNavigation(),
+    getAlgoliaSearchNavigation(INDEXED_LOCALES),
   ]);
   const [docsRecords, openApiRecords] = await Promise.all([
     buildAlgoliaContentDocsRecords(pages, navigationByLocale),
@@ -100,7 +104,7 @@ export async function getAlgoliaDocsRecords(): Promise<AlgoliaDocsRecord[]> {
 export async function getAlgoliaContentDocsRecords() {
   const [pages, navigationByLocale] = await Promise.all([
     getContentDocsPages(),
-    getAlgoliaSearchNavigation(),
+    getAlgoliaSearchNavigation(INDEXED_LOCALES),
   ]);
 
   return buildAlgoliaContentDocsRecords(pages, navigationByLocale);
@@ -126,7 +130,10 @@ export function buildAlgoliaContentDocsRecords(
     }
 
     const title = page.title ?? route.slugSegments.at(-1) ?? page.url;
-    const { contents, headings } = extractDocSearchContent(page.content);
+    const { contents, headings } = extractDocSearchContent(
+      page.content,
+      route.locale,
+    );
     const metadata = getSearchEntryMetadata(page.url, page.content);
 
     if (contents.length === 0 && page.description) {
@@ -240,15 +247,21 @@ export function buildAlgoliaOpenApiRecord({
  * snippets read as prose instead of Markdown/table markup. `code` is kept in
  * the scanned node types so identifiers inside fenced blocks stay searchable.
  */
-export function extractDocSearchContent(markdown: string) {
+export function extractDocSearchContent(
+  markdown: string,
+  locale: AppLocale = 'en',
+) {
   const plugins = markdown.includes('<Accordion')
     ? [
         remarkMdx,
         remarkDirective,
-        remarkAccordionHeadings,
+        remarkLiteralDirectives,
+        locale === 'en'
+          ? remarkGlobalAccordionHeadings
+          : remarkAccordionHeadings,
         remarkSearchTableCells,
       ]
-    : [remarkDirective, remarkSearchTableCells];
+    : [remarkDirective, remarkLiteralDirectives, remarkSearchTableCells];
   const extracted = structure(markdown, plugins, {
     types: STRUCTURE_CONTENT_TYPES,
   });
@@ -302,6 +315,7 @@ export function toPlainText(markdown: string) {
     .replace(/\*\*([^*]+)\*\*/g, '$1') // bold
     .replace(/\*([^*\n]+)\*/g, '$1') // italic
     .replace(/~~([^~]+)~~/g, '$1') // strikethrough
+    .replace(/\\([:@])/g, '$1') // Markdown serializer escapes in literal colon/email text
     .replace(/[ \t]+/g, ' ')
     .replace(/\n{2,}/g, '\n')
     .trim();

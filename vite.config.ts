@@ -4,31 +4,48 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import react from '@vitejs/plugin-react';
 import mdx from 'fumadocs-mdx/vite';
 import { nitro } from 'nitro/vite';
-import { defineConfig } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 import { getOpenApiPrerenderPaths } from './src/lib/openapi/lanes';
+import { createPlatformQueryIndex } from './src/lib/platforms/query-route';
 import { getContentDocsPrerenderPaths } from './src/lib/prerender-content-routes';
 import { shouldPrerenderPage } from './src/lib/prerender-filter';
 import {
   createDocsPrerenderPaths,
   selectStaticDocsPrerenderPaths,
 } from './src/lib/prerender-pages';
-import { readPublishedDocsRoutes } from './src/lib/published-docs-routes.server';
+import {
+  readDocsPrerenderPaths,
+  readPublishedDocsRoutes,
+} from './src/lib/published-docs-routes.server';
 
 const isTest = process.env.VITEST === 'true';
+const buildTarget = process.env.DOCS_BUILD_TARGET;
+if (buildTarget && !['static', 'service'].includes(buildTarget)) {
+  throw new Error('DOCS_BUILD_TARGET must be static or service');
+}
+const isServiceDeployment = buildTarget === 'service';
 const isStaticDeployment =
-  process.env.TSS_STATIC_PRERENDER === 'true' ||
-  process.env.TSS_SPA_STATIC_EXPERIMENT === 'true';
+  !isServiceDeployment &&
+  (buildTarget === 'static' ||
+    process.env.TSS_STATIC_PRERENDER === 'true' ||
+    process.env.TSS_SPA_STATIC_EXPERIMENT === 'true');
 const selectedPrerenderPaths = process.env.TSS_PRERENDER_PATHS?.split(',')
   .map((path) => path.trim())
   .filter(Boolean);
-const docsPrerenderPaths = isTest
-  ? []
-  : isStaticDeployment
-    ? readPublishedDocsRoutes().map((route) => route.url)
-    : createDocsPrerenderPaths({
-        openApiPaths: getOpenApiPrerenderPaths(),
-        pages: getContentDocsPrerenderPaths().map((url) => ({ url })),
-      });
+const publishedDocsRoutes =
+  !isTest && isStaticDeployment ? readPublishedDocsRoutes() : [];
+const docsPrerenderPaths =
+  isTest || isServiceDeployment
+    ? []
+    : isStaticDeployment
+      ? [
+          ...readDocsPrerenderPaths(),
+          ...(process.env.VITE_DOCS_REGION === 'cn' ? ['/zh-CN/search'] : []),
+        ]
+      : createDocsPrerenderPaths({
+          openApiPaths: getOpenApiPrerenderPaths(),
+          pages: getContentDocsPrerenderPaths().map((url) => ({ url })),
+        });
 const prerenderPages = (
   isStaticDeployment
     ? selectStaticDocsPrerenderPaths(docsPrerenderPaths, selectedPrerenderPaths)
@@ -36,6 +53,16 @@ const prerenderPages = (
 ).map((path) => ({ path }));
 
 export default defineConfig({
+  define: {
+    'import.meta.env.DOCS_PLATFORM_QUERY_INDEX':
+      isStaticDeployment && !isTest
+        ? JSON.stringify(createPlatformQueryIndex(publishedDocsRoutes))
+        : 'undefined',
+  },
+  // The service build must not overwrite the separately published static site.
+  ...(isServiceDeployment
+    ? { publicDir: false, build: { outDir: 'dist/service' } }
+    : {}),
   server: {
     host: '127.0.0.1',
     port: 3000,
@@ -47,6 +74,7 @@ export default defineConfig({
     include: ['react', 'react/jsx-runtime', 'react/jsx-dev-runtime'],
   },
   test: {
+    exclude: [...configDefaults.exclude, '.agent/**'],
     environment: 'happy-dom',
     globals: true,
     setupFiles: './src/test/setup.ts',
@@ -59,10 +87,22 @@ export default defineConfig({
       ? [react()]
       : [
           tanstackStart({
+            ...(isServiceDeployment
+              ? {
+                  router: {
+                    entry: 'router.service.ts',
+                    // Keep Start's route transforms, without rewriting the web router's types.
+                    generatedRouteTree:
+                      'node_modules/.tmp/docs-service/routeTree.gen.ts',
+                  },
+                }
+              : {}),
             pages: prerenderPages,
             prerender: {
+              // The stream renderer waits for all Suspense content for crawlers.
+              headers: { 'User-Agent': 'DocsPortal Prerender' },
               crawlLinks: false,
-              enabled: true,
+              enabled: !isServiceDeployment,
               filter: shouldPrerenderPage,
             },
             ...(isStaticDeployment
@@ -83,7 +123,8 @@ export default defineConfig({
             ? []
             : [
                 nitro({
-                  preset: 'vercel',
+                  preset: isServiceDeployment ? 'node-server' : 'vercel',
+                  ...(isServiceDeployment ? { noPublicDir: true } : {}),
                 }),
               ]),
         ]),

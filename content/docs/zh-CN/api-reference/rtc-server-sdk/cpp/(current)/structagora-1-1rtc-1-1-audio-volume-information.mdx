@@ -1,0 +1,83 @@
+---
+title: agora::rtc::AudioVolumeInformation结构体 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourcePath: html-docs/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_audio_volume_information.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+[AudioVolumeInformation](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-audio-volume-information) 结构体。
+
+## 构造及析构函数说明
+
+<a id="aa86163c1ca4ad6ca6e0aea6c31f0d683"></a>
+
+### AudioVolumeInformation()
+
+<ApiSignature labels="inline">
+
+agora::rtc::AudioVolumeInformation::AudioVolumeInformation()
+
+</ApiSignature>
+
+## 类成员变量说明
+
+<a id="aaacd9c3a4cb5e6a7f05c404509af03b0"></a>
+
+### userId
+
+<ApiSignature>
+
+[user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) agora::rtc::AudioVolumeInformation::userId
+
+</ApiSignature>
+
+说话者的 user ID。
+
+<a id="a789c315cc4239766936ea09460f7d7e9"></a>
+
+### volume
+
+<ApiSignature>
+
+unsigned int agora::rtc::AudioVolumeInformation::volume
+
+</ApiSignature>
+
+说话者音量，取值范围 0 ~ 255。
+
+<a id="a1db5e0c8cdfb55c5e44c6e74eff667ad"></a>
+
+### vad
+
+<ApiSignature>
+
+unsigned int agora::rtc::AudioVolumeInformation::vad
+
+</ApiSignature>
+
+本地用户的人声状态。
+
+- 0：本地无人声。
+- 1：本地有人声。
+
+vad 无法报告远端用户的人声状态。对于远端用户，vad 的值始终为 0。
+
+<a id="afb700e7aff9dfcebbf5e9b0fb3b728e4"></a>
+
+### voicePitch
+
+<ApiSignature>
+
+double agora::rtc::AudioVolumeInformation::voicePitch
+
+</ApiSignature>
+
+声音频率（Hz）。

@@ -3,6 +3,7 @@ import { type InferPageType, loader, multiple } from 'fumadocs-core/source';
 import { withDocVersionMetadata } from './doc-versions';
 import { buildDocPath, parseSourceSlugs } from './docs-routing';
 import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from './i18n/i18n-config';
+import { addAccordionHeadingsToTocText } from './mdx/accordion-toc';
 import { toDocsMarkdown } from './mdx/to-markdown';
 import {
   createLocalizedOpenApiSource,
@@ -22,12 +23,14 @@ import {
   extractStructuredPlatformTabs,
 } from './platforms/processed-text';
 import { getPlatformLabel, type PlatformKey } from './platforms/registry';
+import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
+import { filterRetiredCnDocsTree } from './retired-cn-docs-tree';
 import { expandSdkCatalogMarkdown } from './sdk-catalog-markdown.server';
 import { docsRoute } from './shared';
 
 const openApiSource = await createLocalizedOpenApiSource();
 
-export const source = loader({
+const fumadocsSource = loader({
   source: multiple({
     docs: docs.toFumadocsSource(),
     openapi: openApiSource,
@@ -49,6 +52,46 @@ export const source = loader({
   },
   plugins: [getOpenApiLoaderPlugin()],
 });
+
+const publishedPageLists = new Map<
+  string | undefined,
+  InferPageType<typeof fumadocsSource>[]
+>();
+
+export const source = Object.assign(Object.create(fumadocsSource), {
+  getPages(language?: string) {
+    let pages = publishedPageLists.get(language);
+    if (!pages) {
+      pages = fumadocsSource
+        .getPages(language)
+        .filter((page) => !isRetiredCnDocsPath(page.url));
+      publishedPageLists.set(language, pages);
+    }
+    return [...pages];
+  },
+  getPageTree(language?: string) {
+    const tree = fumadocsSource.getPageTree(language);
+    return language === 'zh-CN' ? filterRetiredCnDocsTree(tree) : tree;
+  },
+  getPage(
+    slugs: Parameters<typeof fumadocsSource.getPage>[0],
+    language?: Parameters<typeof fumadocsSource.getPage>[1],
+  ) {
+    const page = fumadocsSource.getPage(slugs, language);
+
+    if (page || !slugs) {
+      return page && isRetiredCnDocsPath(page.url) ? undefined : page;
+    }
+
+    const encodedPage = fumadocsSource.getPage(
+      slugs.map((segment) => encodeURI(segment)),
+      language,
+    );
+    return encodedPage && isRetiredCnDocsPath(encodedPage.url)
+      ? undefined
+      : encodedPage;
+  },
+}) as typeof fumadocsSource;
 
 export type PageWithSource = InferPageType<typeof source>;
 
@@ -110,10 +153,10 @@ function resolveCanonicalMarkdownPageUrl(page: InferPageType<typeof source>) {
 }
 
 export async function getLLMText(page: InferPageType<typeof source>) {
-  return withDocVersionMetadata(
-    toDocsMarkdown(await readLLMText(page)),
-    page.url,
-  );
+  const markdown = await readLLMText(page);
+  return page.url.startsWith('/zh-CN/')
+    ? markdown
+    : withDocVersionMetadata(toDocsMarkdown(markdown), page.url);
 }
 
 async function readLLMText(page: InferPageType<typeof source>) {
@@ -123,7 +166,7 @@ async function readLLMText(page: InferPageType<typeof source>) {
   if (platformGroupText) {
     return locale === 'en'
       ? normalizeAgentMarkdown(platformGroupText)
-      : platformGroupText;
+      : addAccordionHeadingsToTocText(platformGroupText);
   }
 
   const processed =
@@ -132,9 +175,9 @@ async function readLLMText(page: InferPageType<typeof source>) {
       : '';
 
   if (locale !== 'en') {
-    return `# ${page.data.title} (${page.url})
+    return addAccordionHeadingsToTocText(`# ${page.data.title} (${page.url})
 
-${processed}`;
+${processed}`);
   }
 
   return normalizeAgentMarkdown(
@@ -151,8 +194,8 @@ export async function getPlatformLLMText(
   platform: PlatformKey,
 ) {
   const markdown = await readPlatformLLMText(page, platform);
-  return markdown === null
-    ? null
+  return markdown === null || page.url.startsWith('/zh-CN/')
+    ? markdown
     : withDocVersionMetadata(toDocsMarkdown(markdown), page.url);
 }
 
@@ -189,7 +232,9 @@ async function readPlatformLLMText(
 
 ${[parentText, panelText].filter((text) => text.trim()).join('\n\n')}`;
 
-    return locale === 'en' ? normalizeAgentMarkdown(markdown) : markdown;
+    return locale === 'en'
+      ? normalizeAgentMarkdown(markdown)
+      : addAccordionHeadingsToTocText(markdown);
   }
 
   if (!('getText' in page.data) || typeof page.data.getText !== 'function') {
@@ -211,7 +256,9 @@ ${[parentText, panelText].filter((text) => text.trim()).join('\n\n')}`;
     preserveSourceFormatting: locale !== 'en',
   });
 
-  return locale === 'en' ? normalizeAgentMarkdown(markdown) : markdown;
+  return locale === 'en'
+    ? normalizeAgentMarkdown(markdown)
+    : addAccordionHeadingsToTocText(markdown);
 }
 
 function normalizeAgentMarkdown(markdown: string) {

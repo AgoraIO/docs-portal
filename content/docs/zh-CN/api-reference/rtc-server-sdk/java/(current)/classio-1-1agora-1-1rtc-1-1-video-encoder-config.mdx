@@ -1,0 +1,381 @@
+---
+title: io.agora.rtc.VideoEncoderConfig类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_video_encoder_config.html
+  sourcePath: html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_video_encoder_config.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_video_encoder_config_8java.html as local text.
+---
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+VideoEncoderConfig 类。
+
+<a id="doc-constructors"></a>
+
+<a id="header-doc-constructors"></a>
+
+## 构造及析构函数说明
+
+<a id="adb147c3c2114647f23d42ea7fb0e94c5"></a>
+
+### VideoEncoderConfig() [1/2]
+
+<ApiSignature>
+
+io.agora.rtc.VideoEncoderConfig.VideoEncoderConfig()
+
+</ApiSignature>
+
+<a id="a22f0f44a0a69f3b5cead617b929f871c"></a>
+
+### VideoEncoderConfig() [2/2]
+
+<ApiSignature>
+
+io.agora.rtc.VideoEncoderConfig.VideoEncoderConfig(int *codecType*, [VideoDimensions](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-video-dimensions) *dimensions*, int *frameRate*, int *bitrate*, int *minBitrate*, int *orientationMode*, int *degradationPreference*, int *mirrorMode*)
+
+</ApiSignature>
+
+构造函数。
+
+<ParameterList title="参数">
+<Parameter name="codecType">
+
+视频编码类型。
+
+- 0：无。
+- 1：VP8。
+- 2：H.264。
+- 3：H.265。
+- 5：VP9。
+- 6：通用。
+- 7：通用 H264。
+- 12：AV1。
+- 20：JPEG。
+
+</Parameter>
+<Parameter name="dimensions">
+
+视频尺寸。
+
+</Parameter>
+<Parameter name="frameRate">
+
+视频编码的帧率（fps）。
+
+</Parameter>
+<Parameter name="bitrate">
+
+视频码率 (bps)。SDK 在通信和直播场景下采用不同的编码方式，以提升不同场景下的用户体验。 例如，通信场景保证流畅，而直播场景则更注重画面质量，因此直播场景对码率的需求大于通信场景。 建议将该参数的值设置为 0。
+
+- 0：（推荐）标准码率模式。该模式下，视频在通信和直播场景下的码率有所不同：
+
+  - 通信场景下，码率与基准码率一致。
+  - 直播场景下，码率对照基准码率翻倍。
+- -1: 适配码率模式。该模式下，视频在通信和直播场景下的码率均与基准码率一致。直播下如果选择该模式， 视频帧率可能会低于设置的值。
+
+</Parameter>
+<Parameter name="minBitrate">
+
+最低视频编码码率 (bps)。
+
+</Parameter>
+<Parameter name="orientationMode">
+
+视频编码的方向模式。
+
+- 0:（默认）自适应布局。
+- 1: 横屏布局。
+- 2: 竖屏布局。
+
+</Parameter>
+<Parameter name="degradationPreference">
+
+带宽受限时。视频编码的降低偏好。
+
+- 0：（默认）降低视频帧率，维持分辨率和视频质量不变。
+- 1：降低视频质量，维持视频帧率不变。
+- 2：在视频质量控制流程中维持分辨率不变。带宽受限时，先降低视频质量，然后降低视频帧率。
+- 3：降低视频帧率，维持分辨率不变。
+
+</Parameter>
+<Parameter name="mirrorMode">
+
+mirrorMode 设置为 1 时，将在编码前对视频帧率做镜像操作。
+
+- （默认） 0：默认的镜像模式（SDK 决定镜像模式）。
+- 1：开启镜像模式。
+- 2：关闭镜像模式。
+
+</Parameter>
+</ParameterList>
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="a719a31f344ae5818d2151a7f08b1e8f4"></a>
+
+### getBitrate()
+
+<ApiSignature>
+
+int io.agora.rtc.VideoEncoderConfig.getBitrate()
+
+</ApiSignature>
+
+<a id="ab3d075343526867fb45e0949932457f8"></a>
+
+### getCodecType()
+
+<ApiSignature>
+
+int io.agora.rtc.VideoEncoderConfig.getCodecType()
+
+</ApiSignature>
+
+<a id="a6bddb5c7cdb3ade677d460eb0c2161eb"></a>
+
+### getDegradationPreference()
+
+<ApiSignature>
+
+int io.agora.rtc.VideoEncoderConfig.getDegradationPreference()
+
+</ApiSignature>
+
+<a id="a70e478e43af5e08f9beecef50340fa06"></a>
+
+### getDimensions()
+
+<ApiSignature>
+
+[VideoDimensions](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-video-dimensions) io.agora.rtc.VideoEncoderConfig.getDimensions()
+
+</ApiSignature>
+
+<a id="ab1c6c43c4810d1efb1f6739f7d489077"></a>
+
+### getFrameRate()
+
+<ApiSignature>
+
+int io.agora.rtc.VideoEncoderConfig.getFrameRate()
+
+</ApiSignature>
+
+<a id="abb406dd82f593ab97a11cc3cbd14c3d9"></a>
+
+### getMinBitrate()
+
+<ApiSignature>
+
+int io.agora.rtc.VideoEncoderConfig.getMinBitrate()
+
+</ApiSignature>
+
+<a id="a379ddc22ac8661c04fa806c944bc509b"></a>
+
+### getMirrorMode()
+
+<ApiSignature>
+
+int io.agora.rtc.VideoEncoderConfig.getMirrorMode()
+
+</ApiSignature>
+
+<a id="a69db3bcd3950e699f0311fb44901e72d"></a>
+
+### getOrientationMode()
+
+<ApiSignature>
+
+int io.agora.rtc.VideoEncoderConfig.getOrientationMode()
+
+</ApiSignature>
+
+<a id="a744146a3524284991ce8478abf923871"></a>
+
+### setBitrate()
+
+<ApiSignature>
+
+void io.agora.rtc.VideoEncoderConfig.setBitrate(int *bitrate*)
+
+</ApiSignature>
+
+<a id="a00aad1e0406950b9dfe37e340e3805ff"></a>
+
+### setCodecType()
+
+<ApiSignature>
+
+void io.agora.rtc.VideoEncoderConfig.setCodecType(int *codecType*)
+
+</ApiSignature>
+
+<a id="ade0d5744693f8f6a58dd4a8c938474c9"></a>
+
+### setDegradationPreference()
+
+<ApiSignature>
+
+void io.agora.rtc.VideoEncoderConfig.setDegradationPreference(int *degradationPreference*)
+
+</ApiSignature>
+
+<a id="ac24d0c7816ad70f82fa79bc988ca7d04"></a>
+
+### setDimensions()
+
+<ApiSignature>
+
+void io.agora.rtc.VideoEncoderConfig.setDimensions([VideoDimensions](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-video-dimensions) *dimensions*)
+
+</ApiSignature>
+
+<a id="aa8f28124d78bdc5e496bae3571382c8e"></a>
+
+### setFrameRate()
+
+<ApiSignature>
+
+void io.agora.rtc.VideoEncoderConfig.setFrameRate(int *frameRate*)
+
+</ApiSignature>
+
+<a id="a1dcd982ac63d71c3d1b2749587ee4c45"></a>
+
+### setMinBitrate()
+
+<ApiSignature>
+
+void io.agora.rtc.VideoEncoderConfig.setMinBitrate(int *minBitrate*)
+
+</ApiSignature>
+
+<a id="a9c7b6e41abd6f29a1938a02baf420472"></a>
+
+### setMirrorMode()
+
+<ApiSignature>
+
+void io.agora.rtc.VideoEncoderConfig.setMirrorMode(int *mirrorMode*)
+
+</ApiSignature>
+
+<a id="ad388c4e91980a5f6670f5485225bb801"></a>
+
+### setOrientationMode()
+
+<ApiSignature>
+
+void io.agora.rtc.VideoEncoderConfig.setOrientationMode(int *orientationMode*)
+
+</ApiSignature>
+
+<a id="doc-variable-members"></a>
+
+<a id="header-doc-variable-members"></a>
+
+## 类成员变量说明
+
+<a id="aa034478fc49b0afe7ba6f825da0bc635"></a>
+
+### bitrate
+
+<ApiSignature labels="private">
+
+int io.agora.rtc.VideoEncoderConfig.bitrate
+
+</ApiSignature>
+
+<a id="a4e949fa41e6e883b439213acfb9f098b"></a>
+
+### codecType
+
+<ApiSignature labels="private">
+
+int io.agora.rtc.VideoEncoderConfig.codecType
+
+</ApiSignature>
+
+<a id="a07afd42cad8581c0b73a9335d36fe285"></a>
+
+### degradationPreference
+
+<ApiSignature labels="private">
+
+int io.agora.rtc.VideoEncoderConfig.degradationPreference
+
+</ApiSignature>
+
+<a id="a3f416b09f76fedd59673a0f159531983"></a>
+
+### dimensions
+
+<ApiSignature labels="private">
+
+[VideoDimensions](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-video-dimensions) io.agora.rtc.VideoEncoderConfig.dimensions
+
+</ApiSignature>
+
+<a id="a98ac78bfb62e69b241eb691e38d48eb2"></a>
+
+### frameRate
+
+<ApiSignature labels="private">
+
+int io.agora.rtc.VideoEncoderConfig.frameRate
+
+</ApiSignature>
+
+<a id="ad34a8d1c657b05fc51e39b0eb71921b3"></a>
+
+### minBitrate
+
+<ApiSignature labels="private">
+
+int io.agora.rtc.VideoEncoderConfig.minBitrate
+
+</ApiSignature>
+
+<a id="a91b880a633a45a6183b740e02e524bfb"></a>
+
+### mirrorMode
+
+<ApiSignature labels="private">
+
+int io.agora.rtc.VideoEncoderConfig.mirrorMode
+
+</ApiSignature>
+
+<a id="a4a62f1fb9fdb49ec8105f7e6f077ae19"></a>
+
+### orientationMode
+
+<ApiSignature labels="private">
+
+int io.agora.rtc.VideoEncoderConfig.orientationMode
+
+</ApiSignature>
+
+---
+
+该类的文档由以下文件生成:
+
+- VideoEncoderConfig.java

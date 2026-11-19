@@ -1,0 +1,131 @@
+---
+title: agora::rtc::IVideoTrack类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_video_track
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_video_track.html
+  generator: doxygen
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: >-
+        No local target route for
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html.
+---
+
+继承自 agora::RefCountInterface.
+
+被 [agora::rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track), 以及 [agora::rtc::IRemoteVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-video-track) 继承.
+
+<a id="details"></a>
+
+## 详细描述
+
+[`IVideoTrack`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track) 类。
+
+## 构造及析构函数说明
+
+<a id="a7730b63c7a347813939f94880b12de9e"></a>
+
+### ~IVideoTrack()
+
+<ApiSignature labels="inline protected">
+
+agora::rtc::IVideoTrack::~IVideoTrack()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="ae7d2f01bc4b60103254b7781ceb7f8e4"></a>
+
+### addRenderer()
+
+<ApiSignature labels="pure virtual">
+
+virtual bool agora::rtc::IVideoTrack::addRenderer([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) &gt; *videoRenderer*, media::base::VIDEO_MODULE_POSITION *position* = `media::base::POSITION_POST_FILTERS`, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
+
+将视频接收模块加入视频轨道，用于接收视频帧。
+
+你可以通过以下方式添加视频接收模块：
+
+- 通过实现 [`IMediaNodeFactory`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-media-node-factory) 类中的 `IVideoRenderer` 实现内置视频接收模块。
+- 通过实现 [`IVideoSinkBase`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) 类实现自定义视频接收模块。
+
+<ParameterList title="参数">
+<Parameter name="videoRenderer">
+
+需要添加的视频接收模块: [IVideoSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) 。
+
+</Parameter>
+<Parameter name="position">
+
+视频接收模块添加的位置：VIDEO_MODULE_POSITION 。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- `true`: 成功添加视频接收模块。
+- `false`: 视频接收模块添加失败。
+
+<a id="a3a9f95dd2b82c66244ae3547506e7143"></a>
+
+### removeRenderer()
+
+<ApiSignature labels="pure virtual">
+
+virtual bool agora::rtc::IVideoTrack::removeRenderer([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IVideoSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) &gt; *videoRenderer*, media::base::VIDEO_MODULE_POSITION *position* = `media::base::POSITION_POST_FILTERS`, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
+
+从视频轨道中删除视频接收模块。
+
+<ParameterList title="参数">
+<Parameter name="videoRenderer">
+
+需要删除的视频接收模块: [IVideoSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) 。
+
+</Parameter>
+<Parameter name="position">
+
+视频接收模块删除的位置： VIDEO_MODULE_POSITION 。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+- `true`: 成功删除视频接收模块。
+- `false`: 视频接收模块删除失败。
+
+<a id="a7b7a35053b6b3aea7ad9cec08a6f0033"></a>
+
+### getType()
+
+<ApiSignature labels="pure virtual">
+
+virtual [VideoTrackType](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a1a5e96c615b82373b20c842f8b20ccf9) agora::rtc::IVideoTrack::getType()
+
+</ApiSignature>
+
+获取视频轨道的轨道类型。
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+[VideoTrackType](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a1a5e96c615b82373b20c842f8b20ccf9) 。

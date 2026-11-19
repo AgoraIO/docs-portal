@@ -1,0 +1,1920 @@
+---
+title: Room
+description: Whiteboard Web SDK 2.16.59 公开 interface。
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/room
+  sourcePath: html-docs/whiteboard/Web/interfaces/room.html
+  generator: typedoc
+  warnings:
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+---
+
+```ts
+export declare interface Room extends Displayer
+```
+
+## 成员
+
+- [uuid](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#uuid)
+- [uid](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#uid)
+- [session](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#session)
+- [roomToken](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#roomtoken)
+- [phase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#phase)
+- [calibrationTimestamp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#calibrationtimestamp)
+- [state](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#state)
+- [isWritable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#iswritable)
+- [canUndoSteps](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#canundosteps)
+- [canRedoSteps](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#canredosteps)
+- [disableDeviceInputs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disabledeviceinputs)
+- [disableEraseImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableeraseimage)
+- [disableSerialization](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableserialization)
+- [timeDelay](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#timedelay)
+- [syncMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#syncmode)
+- [useNativeClipboard](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#usenativeclipboard)
+- [setWritable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setwritable)
+- [setGlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setglobalstate)
+- [setMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setmemberstate)
+- [setViewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setviewmode)
+- [setScenePath](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setscenepath)
+- [setSceneIndex](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setsceneindex)
+- [syncBlockTimestamp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#syncblocktimestamp)
+- [stopBlockTimestamp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#stopblocktimestamp)
+- [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#dispatchmagixevent)
+- [putScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#putscenes)
+- [cleanCurrentScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#cleancurrentscene)
+- [removeScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#removescenes)
+- [moveScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#movescene)
+- [exportScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#exportscene)
+- [importScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#importscene)
+- [insertImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#insertimage)
+- [lockImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#lockimage)
+- [completeImageUpload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#completeimageupload)
+- [getImagesInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#getimagesinformation)
+- [createInvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#createinvisibleplugin)
+- [insertPlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#insertplugin)
+- [removePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#removeplugin)
+- [updatePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#updateplugin)
+- [getPluginAttributes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#getpluginattributes)
+- [getPluginRectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#getpluginrectangle)
+- [duplicate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#duplicate)
+- [copy](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#copy)
+- [paste](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#paste)
+- [undo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#undo)
+- [redo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#redo)
+- [clearUndoHistory](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#clearundohistory)
+- [delete](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#delete)
+- [lockImages](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#lockimages)
+- [moveSelectedComponentsToTop](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#moveselectedcomponentstotop)
+- [moveSelectedComponentsToBottom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#moveselectedcomponentstobottom)
+- [insertText](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#inserttext)
+- [updateText](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#updatetext)
+- [updateSelectedText](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#updateselectedtext)
+- [pptNextStep](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#pptnextstep)
+- [pptPreviousStep](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#pptpreviousstep)
+- [disconnect](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disconnect)
+- [uploadLocalLogs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#uploadlocallogs)
+
+## 继承自 Displayer
+
+## Properties
+
+<a id="uuid"></a>
+
+### uuid
+
+readonly uuid: string;
+
+```text
+房间的 ``uuid``，用于唯一标识该房间。
+```
+
+<a id="uid"></a>
+
+### uid
+
+readonly uid: string;
+
+```text
+加入该房间的用户的唯一标识符
+```
+
+<a id="session"></a>
+
+### session
+
+readonly session: string;
+
+```text
+房间当前的 Session 的 ``uuid``。会被上报作为日志字段（如果开启了自动日志上报功能）。如果当前尚未与服务器建立连接，则为 ``undefined``。
+```
+
+<a id="roomtoken"></a>
+
+### roomToken
+
+readonly roomToken: string;
+
+```text
+房间 Token，即加入房间时传入的字段。
+```
+
+<a id="phase"></a>
+
+### phase
+
+readonly phase: RoomPhase;
+
+```text
+房间连接所处的阶段
+```
+
+<a id="calibrationtimestamp"></a>
+
+### calibrationTimestamp
+
+readonly calibrationTimestamp: number;
+
+```text
+与服务器时钟校准后的当前时间戳，单位为毫秒
+```
+
+<a id="state"></a>
+
+### state
+
+readonly state: RoomState;
+
+```text
+业务状态
+阅读 [《房间与回放的业务状态管理》](/javascript-zh/home/business-state-management) 、[《房间业务状态管理》](/document-zh/home/business-state-management) 以了解更多。
+```
+
+<a id="iswritable"></a>
+
+### isWritable
+
+readonly isWritable: boolean;
+
+```text
+房间是否「可写」
+```
+
+<a id="canundosteps"></a>
+
+### canUndoSteps
+
+readonly canUndoSteps: number;
+
+```text
+可撤销步骤。即此时此刻，还可以调用多少次 ``room.undo()`` 方法。
+```
+
+<a id="canredosteps"></a>
+
+### canRedoSteps
+
+readonly canRedoSteps: number;
+
+```text
+可重做步骤。即此时此刻，还可以调用多少次 ``room.redo()`` 方法。
+```
+
+<a id="disabledeviceinputs"></a>
+
+### disableDeviceInputs
+
+<ApiSignature>
+
+disableDeviceInputs: boolean;
+
+</ApiSignature>
+
+```text
+是否禁止设备操作。
+注意区分「只读模式」与「禁止设备操作」，具体参考进阶教程[《禁止设备操作｜禁止操作》](/javascript-zh/home/disable#禁止设备操作)。
+```
+
+<a id="disableeraseimage"></a>
+
+### disableEraseImage
+
+<ApiSignature>
+
+disableEraseImage: boolean;
+
+</ApiSignature>
+
+```text
+是否禁止橡皮擦除图片
+```
+
+<a id="disableserialization"></a>
+
+### disableSerialization
+
+<ApiSignature>
+
+disableSerialization: boolean;
+
+</ApiSignature>
+
+```text
+是否禁止如下方法（默认值是 ``true``）。可修改。
+
+- ``room.redo``
+- ``room.undo``
+- ``room.duplicate``
+- ``room.copy``
+- ``room.paste``
+
+房间内所有人的 ``white-web-sdk`` 的版本必须不低于 ``2.9.3`` 时，才能将该值设为 ``false``。房间内任何一个人将该值设为 ``false``，都会导致房间内低于 ``2.9.3`` 的用户前端报错且不能正常使用。
+```
+
+<a id="timedelay"></a>
+
+### timeDelay
+
+<ApiSignature>
+
+timeDelay: number;
+
+</ApiSignature>
+
+```text
+主动延迟接收的远端消息，单位是毫秒，默认值 ``0``。将该值设置成大于 ``0`` 的数字，可以人为造成类似网络时延的效果。可修改。
+```
+
+<a id="syncmode"></a>
+
+### syncMode
+
+<ApiSignature>
+
+syncMode: boolean;
+
+</ApiSignature>
+
+```text
+默认情况下，所有同步消息会按比较平滑的速度处理，以此保证观感的流畅性。
+如果设置此项为 ``true``，则所有消息一经收到立刻处理，从而保证同步的实时性。
+```
+
+<a id="usenativeclipboard"></a>
+
+### useNativeClipboard
+
+<ApiSignature>
+
+useNativeClipboard: boolean;
+
+</ApiSignature>
+
+```text
+是否使用原生剪贴板。
+设为 ``true`` 后，快捷键里的复制和粘贴将失效而使用原生 ``copy`` ``paste`` 事件。
+此功能需要浏览器支持以及用户授予剪贴板权限，如果失败，将自动回退到虚拟剪贴板实现。
+```
+
+<a id="createinvisibleplugin"></a>
+
+### createInvisiblePlugin
+
+createInvisiblePlugin&lt;K extends string, A extends Object, MA extends Object, P extends InvisiblePlugin&lt;A, MA&gt;&gt;(pluginClass: InvisiblePluginClass&lt;K, A, MA, P&gt;, attributes: A): Promise&lt;InvisiblePlugin&lt;A, MA&gt;&gt;;
+
+<a id="callbacks"></a>
+
+### callbacks
+
+readonly callbacks: Callbacks&lt;CALLBACKS&gt;;
+
+<a id="observerid"></a>
+
+### observerId
+
+readonly observerId: number;
+
+<a id="region"></a>
+
+### region
+
+readonly region: string;
+
+<a id="slice"></a>
+
+### slice
+
+readonly slice: string;
+
+<a id="version"></a>
+
+### version
+
+readonly version: string;
+
+<a id="devicetype"></a>
+
+### deviceType
+
+readonly deviceType: DeviceType;
+
+<a id="screentype"></a>
+
+### screenType
+
+readonly screenType: ScreenType;
+
+<a id="enablewritenow"></a>
+
+### enableWriteNow
+
+readonly enableWriteNow: boolean;
+
+<a id="handtoolkey"></a>
+
+### handToolKey
+
+readonly handToolKey: string | undefined;
+
+<a id="views"></a>
+
+### views
+
+readonly views: Views;
+
+<a id="usemobxstate"></a>
+
+### useMobXState
+
+readonly useMobXState: boolean;
+
+<a id="usemultiviews"></a>
+
+### useMultiViews
+
+readonly useMultiViews: boolean;
+
+<a id="handtoolactive"></a>
+
+### handToolActive
+
+<ApiSignature>
+
+handToolActive: boolean;
+
+</ApiSignature>
+
+<a id="disableothersselectingbox"></a>
+
+### disableOthersSelectingBox
+
+<ApiSignature>
+
+disableOthersSelectingBox: boolean;
+
+</ApiSignature>
+
+<a id="disablecameratransform"></a>
+
+### disableCameraTransform
+
+<ApiSignature>
+
+disableCameraTransform: boolean;
+
+</ApiSignature>
+
+<a id="commandwheeltozoom"></a>
+
+### commandWheelToZoom
+
+<ApiSignature>
+
+commandWheelToZoom: boolean;
+
+</ApiSignature>
+
+<a id="dynamicConfig"></a>
+
+### dynamicConfig
+
+readonly dynamicConfig?: DynamicConfigSnapshot;
+
+加入房间时完成求值的远端参数快照。
+
+<a id="dynamicConfigState"></a>
+
+### dynamicConfigState
+
+readonly dynamicConfigState?: DynamicConfigState;
+
+本次配置来源、运行时匹配和失败回退原因；不是配置文件原文。
+
+## Methods
+
+<a id="setwritable"></a>
+
+### setWritable
+
+<ApiSignature>
+
+setWritable(isWritable: boolean): Promise&lt;void&gt;;
+
+</ApiSignature>
+
+```text
+修改 ``room.isWritable`` 的值。
+该操作会向服务器发起请求，因此会返回一个 ``Promise`` 对象。注意通过 ``.catch()`` 的方式处理异常流程，因为请求可能被服务器拒绝，或失败。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setglobalstate"></a>
+
+### setGlobalState
+
+<ApiSignature>
+
+setGlobalState(modifyState: Partial&lt;GlobalState&gt;): GlobalState;
+
+</ApiSignature>
+
+````text
+用于修改房间的 ``globalState`` 的字段。可以通过如下方法修改特定字段。
+
+@example
+```typescript
+room.setGlobalState({
+    foobar: "hello world",
+});
+```
+
+也可以通过将某个字段置为 ``undefined``，来删掉该字段。
+
+@example
+```typescript
+room.setGlobalState({
+    foobar: undefined,
+});
+```
+````
+
+<ApiReturns>
+
+<ApiReturnType>
+
+GlobalState
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setmemberstate"></a>
+
+### setMemberState
+
+<ApiSignature>
+
+setMemberState(modifyState: Partial&lt;MemberState&gt;): MemberState;
+
+</ApiSignature>
+
+````text
+用于修改房间的 ``memberState`` 的字段。可以通过如下方法修改特定字段。
+
+@example
+```typescript
+room.setMemberState({
+    foobar: "hello world",
+});
+```
+
+@example
+也可以通过将某个字段置为 ``undefined``，来删掉该字段。
+
+```typescript
+room.setMemberState({
+    foobar: undefined,
+});
+```
+````
+
+<ApiReturns>
+
+<ApiReturnType>
+
+MemberState
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setviewmode"></a>
+
+### setViewMode
+
+<ApiSignature>
+
+setViewMode(viewMode: ViewMode): void;
+
+</ApiSignature>
+
+```text
+修改房间的 ``room.state.broadcastState.mode`` 的值。会改变自己或房间内其他人的视角模式。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setscenepath"></a>
+
+### setScenePath
+
+<ApiSignature>
+
+setScenePath(scenePath: string): void;
+
+</ApiSignature>
+
+```text
+修改当前场景地址，会将切换当前房间的场景。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setsceneindex"></a>
+
+### setSceneIndex
+
+<ApiSignature>
+
+setSceneIndex(index: number): void;
+
+</ApiSignature>
+
+```text
+修改当前场景的索引号，会将切换当前房间的场景。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="syncblocktimestamp"></a>
+
+### syncBlockTimestamp
+
+<ApiSignature>
+
+syncBlockTimestamp(timestamp: number): void;
+
+</ApiSignature>
+
+```text
+同步阻塞时间戳，以人为制造时延
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="stopblocktimestamp"></a>
+
+### stopBlockTimestamp
+
+<ApiSignature>
+
+stopBlockTimestamp(): void;
+
+</ApiSignature>
+
+```text
+停止通过同步阻塞时间戳来人为制作间延
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="dispatchmagixevent"></a>
+
+### dispatchMagixEvent
+
+<ApiSignature>
+
+dispatchMagixEvent(event: string, payload: any): void;
+
+</ApiSignature>
+
+```text
+向房间内广播自定义事件。其中，第一参数 ``event`` 是事件的名称，房间内其他成员可以通过它注册监听事件。
+第二参数 ``payload`` 是负载，可以是任意类型的值，可根据具体业务自行设计。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="putscenes"></a>
+
+### putScenes
+
+<ApiSignature>
+
+putScenes(path: string, scenes: ReadonlyArray&lt;SceneDefinition&gt;, index?: number): void;
+
+</ApiSignature>
+
+```text
+在房间中插入场景。参考[《插入新场景｜场景管理》](/javascript-zh/home/scenes-management#插入新场景)。
+@param path 想要插入到的场景组地址
+@param scenes 场景描述列表
+@param index 从哪个索引所在位置插入
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="cleancurrentscene"></a>
+
+### cleanCurrentScene
+
+<ApiSignature>
+
+cleanCurrentScene(retainPpt?: boolean): void;
+
+</ApiSignature>
+
+```text
+清理当前场景内所有内容。第一参数 ``retianPpt``
+@param retainPpt 表明是否保留 PPT 背景不被清理，默认值是 ``true``
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removescenes"></a>
+
+### removeScenes
+
+<ApiSignature>
+
+removeScenes(path: string): void;
+
+</ApiSignature>
+
+```text
+在房间中删除场景。参考[《删除场景｜场景管理》](/javascript-zh/home/scenes-management#删除场景)。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="movescene"></a>
+
+### moveScene
+
+<ApiSignature>
+
+moveScene(originalPath: string, targetPath: string): void;
+
+</ApiSignature>
+
+```text
+在房间中移动场景。参考[《移动场景｜场景管理》](/javascript-zh/home/scenes-management#移动场景)。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="exportscene"></a>
+
+### exportScene
+
+<ApiSignature>
+
+exportScene(scenePath: string): Promise&lt;Blob&gt;;
+
+</ApiSignature>
+
+```text
+导出特定场景路径的板书内容（包含 ppt 内容），可以直接保存为二进制文件(废弃)。
+@param scenePath 需要导出场景的路径，必须是 ``ScenePathType`` 为 ``page`` 的路径。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="importscene"></a>
+
+### importScene
+
+<ApiSignature>
+
+importScene(dir: string, payload: Blob, overrideName?: string): Promise&lt;SceneDefinition&gt;;
+
+</ApiSignature>
+
+```text
+导入之前导出的板书内容(废弃)。
+@param dir 当前板书内容，需要插入的场景目录位置，该目录的 ScenePathType 可以为空，但是不能为 conflict，这回导致该路径无法成功插入新场景。
+@param payload 二进制文件的文件句柄指向
+@param overrideName 不使用文件内的 name，改为覆盖指定场景
+@returns 板书内部的内容，一定会存在 name 字段，该字段不可更改；最后插入的板书路径为 dir + name。如果想修改板书路径，可以再调用 mvScene API 进行修改。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;SceneDefinition&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="insertimage"></a>
+
+### insertImage
+
+<ApiSignature>
+
+insertImage(imageInfo: ImageInformation): void;
+
+</ApiSignature>
+
+```text
+在当前场景中插入图片
+该操作往往需要和 ``room.completeImageUpload`` 配合使用，具体例子可参考[《插入图片｜教具》](/javascript-zh/home/tools#插入图片)。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="lockimage"></a>
+
+### lockImage
+
+<ApiSignature>
+
+lockImage(uuid: string, locked: boolean): void;
+
+</ApiSignature>
+
+```text
+改变图片的锁定状态。若图片被锁定，则无法被框选、无法被拖动、无法被改变大小
+@param uuid 图片的 UUID
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="completeimageupload"></a>
+
+### completeImageUpload
+
+<ApiSignature>
+
+completeImageUpload(uuid: string, src: string): void;
+
+</ApiSignature>
+
+```text
+设置图片资源。第一参数 ``uuid`` 是图片的唯一标识符，应该与 ``room.insertImage`` 中传入的 ``uuid`` 字段相同。
+第二参数 ``src`` 是图片资源的 URL。具体例子可参考[《插入图片｜教具》](/javascript-zh/home/tools#插入图片)。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getimagesinformation"></a>
+
+### getImagesInformation
+
+<ApiSignature>
+
+getImagesInformation(scenePath: string): ImageInformation[];
+
+</ApiSignature>
+
+```text
+导出特定场景的图片信息，注意这些信息可能与插入时填写的不同。
+@param scenePath 需要导出图片信息的场景路径，必须是 ``ScenePathType`` 为 ``page`` 的路径。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+ImageInformation[]
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="insertplugin"></a>
+
+### insertPlugin
+
+<ApiSignature>
+
+insertPlugin(kind: string, description?: PluginDescription): Identifier;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Identifier
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removeplugin"></a>
+
+### removePlugin
+
+<ApiSignature>
+
+removePlugin(identifier: Identifier): boolean;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateplugin"></a>
+
+### updatePlugin
+
+<ApiSignature>
+
+updatePlugin(identifier: Identifier, description: PluginDescription): boolean;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getpluginattributes"></a>
+
+### getPluginAttributes
+
+<ApiSignature>
+
+getPluginAttributes(identifier: Identifier): any | undefined;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+any | undefined
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getpluginrectangle"></a>
+
+### getPluginRectangle
+
+<ApiSignature>
+
+getPluginRectangle(identifier: string): Rectangle | undefined;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Rectangle | undefined
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="duplicate"></a>
+
+### duplicate
+
+<ApiSignature>
+
+duplicate(): void;
+
+</ApiSignature>
+
+```text
+复刻当前选择工具所选的所有组键件。只有在 ``room.disableSerialization`` 为 ``false`` 的时候可调用。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="copy"></a>
+
+### copy
+
+<ApiSignature>
+
+copy(): void;
+
+</ApiSignature>
+
+```text
+复制当前选择工具所选的所有组键件。只有在 ``room.disableSerialization`` 为 ``false`` 的时候可调用。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="paste"></a>
+
+### paste
+
+<ApiSignature>
+
+paste(): void;
+
+</ApiSignature>
+
+```text
+粘贴上一次复制的组件。只有在 ``room.disableSerialization`` 为 ``false`` 的时候可调用。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="undo"></a>
+
+### undo
+
+<ApiSignature>
+
+undo(): number;
+
+</ApiSignature>
+
+```text
+撤回上一个动作。只有在 ``room.disableSerialization`` 为 ``false`` 的时候可调用。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="redo"></a>
+
+### redo
+
+<ApiSignature>
+
+redo(): number;
+
+</ApiSignature>
+
+```text
+重做上一个动作。只有在 ``room.disableSerialization`` 为 ``false`` 的时候可调用。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="clearundohistory"></a>
+
+### clearUndoHistory
+
+<ApiSignature>
+
+clearUndoHistory(includeRedo?: boolean): void;
+
+</ApiSignature>
+
+```text
+清空可撤回的历史记录, 令 ``canUndoSteps`` 立刻等于 0。
+@param includeRedo 是否同时清空重做的记录，默认值是 ``true``
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="delete"></a>
+
+### delete
+
+<ApiSignature>
+
+delete(): void;
+
+</ApiSignature>
+
+```text
+删除当前选择工具所选的所有组件。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="lockimages"></a>
+
+### lockImages
+
+<ApiSignature>
+
+lockImages(locked: boolean): void;
+
+</ApiSignature>
+
+```text
+修改当前选中图片的锁定状态
+@param locked 是否锁定图片，当图片被锁定时，无法删除、移动、放缩。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="moveselectedcomponentstotop"></a>
+
+### moveSelectedComponentsToTop
+
+<ApiSignature>
+
+moveSelectedComponentsToTop(): void;
+
+</ApiSignature>
+
+```text
+将当前选中的组件移动到顶层
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="moveselectedcomponentstobottom"></a>
+
+### moveSelectedComponentsToBottom
+
+<ApiSignature>
+
+moveSelectedComponentsToBottom(): void;
+
+</ApiSignature>
+
+```text
+将当前选中的组件移动到底层
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="inserttext"></a>
+
+### insertText
+
+<ApiSignature>
+
+insertText(x: number, y: number, textContent?: string): Identifier;
+
+</ApiSignature>
+
+```text
+在指定位置插入文字
+@param x 第一个字的的左侧边中点，世界坐标系中的 x 坐标
+@param y 第一个字的的左侧边中点，世界坐标系中的 y 坐标
+@param textContent 初始化文字的内容，不传则为空
+@returns 该文字的标识符
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Identifier
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updatetext"></a>
+
+### updateText
+
+<ApiSignature>
+
+updateText(identifier: Identifier, textContent: string): void;
+
+</ApiSignature>
+
+```text
+编辑指定文字的内容
+@param identifier 文字的标识符。为 ``insertText()`` 的返回值。
+@param textContent 文字要改成的内容
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateselectedtext"></a>
+
+### updateSelectedText
+
+<ApiSignature>
+
+updateSelectedText(format: TextFormat): void;
+
+</ApiSignature>
+
+```text
+修改当前被选中的 text 的状态
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="pptnextstep"></a>
+
+### pptNextStep
+
+<ApiSignature>
+
+pptNextStep(): void;
+
+</ApiSignature>
+
+```text
+PPT 翻页到下一页。如果当前 PPT 没有动画，则切换到顺位索引 +1 的场景，如果有动画，则播放下一个动画。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="pptpreviousstep"></a>
+
+### pptPreviousStep
+
+<ApiSignature>
+
+pptPreviousStep(): void;
+
+</ApiSignature>
+
+```text
+PPT 翻页到前一页。如果当前 PPT 没有动画，则切换到顺位索引 -1 的场景，如果有动画，则切换到上一个动画播放完毕的样子。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="disconnect"></a>
+
+### disconnect
+
+<ApiSignature>
+
+disconnect(options?: RoomDisconnectOptions): Promise&lt;void&gt;;
+
+</ApiSignature>
+
+```text
+令房间断开连接。这是一个异步方法，会返回 ``Promise`` 对象。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="uploadlocallogs"></a>
+
+### uploadLocalLogs
+
+<ApiSignature>
+
+uploadLocalLogs(): Promise&lt;WhiteLocalLogUploadResult&gt;;
+
+</ApiSignature>
+
+上传本地日志；日志运行时和上传开关均需可用，enabled/ enabledUpload 未设置为 false 时默认尝试开启。通过返回结果和状态事件观察上传。
+
+```text
+主动上传当前房间关联的本地日志。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;WhiteLocalLogUploadResult&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="refreshviewsize"></a>
+
+### refreshViewSize
+
+<ApiSignature>
+
+refreshViewSize(): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setcamerabound"></a>
+
+### setCameraBound
+
+<ApiSignature>
+
+setCameraBound(cameraBound: CameraBound): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="createscenescallback"></a>
+
+### createScenesCallback
+
+<ApiSignature>
+
+createScenesCallback(path: string, callbacks?: Partial&lt;ScenesCallbacks&gt;): ScenesCallbacksNode | null;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+ScenesCallbacksNode | null
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="memberstate"></a>
+
+### memberState
+
+<ApiSignature>
+
+memberState(memberId: number): MemberState;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+MemberState
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="movecamera"></a>
+
+### moveCamera
+
+<ApiSignature>
+
+moveCamera(camera: Partial&lt;Camera&gt; & Readonly&lt;\{ animationMode?: AnimationMode; \}&gt;): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="movecameratocontain"></a>
+
+### moveCameraToContain
+
+<ApiSignature>
+
+moveCameraToContain(rectangle: Rectangle & Readonly&lt;\{ animationMode?: AnimationMode; \}&gt;): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="bindhtmlelement"></a>
+
+### bindHtmlElement
+
+<ApiSignature>
+
+bindHtmlElement(element: HTMLDivElement | null): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getinvisibleplugin"></a>
+
+### getInvisiblePlugin
+
+<ApiSignature>
+
+getInvisiblePlugin&lt;A extends Object, MA extends Object&gt;(kind: string): InvisiblePlugin&lt;A, MA&gt; | null;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+InvisiblePlugin&lt;A, MA&gt; | null
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="converttopointinworld"></a>
+
+### convertToPointInWorld
+
+<ApiSignature>
+
+convertToPointInWorld(point: \{ x: number; y: number; \}): \{ x: number; y: number; \};
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ x: number; y: number; \}
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="scenepreview"></a>
+
+### scenePreview
+
+<ApiSignature>
+
+scenePreview(scenePath: string, div: HTMLElement, width?: number, height?: number, engine?: RenderEngine): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="generatescreenshot"></a>
+
+### generateScreenshot
+
+<ApiSignature>
+
+generateScreenshot(scenePath?: string, width?: number, height?: number): Promise&lt;string&gt;;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;string&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="fillscenesnapshot"></a>
+
+### fillSceneSnapshot
+
+<ApiSignature>
+
+fillSceneSnapshot(scenePath: string, div: HTMLElement, width?: number, height?: number, engine?: RenderEngine): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="screenshottocanvas"></a>
+
+### screenshotToCanvas
+
+<ApiSignature>
+
+screenshotToCanvas(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: Camera, ratio?: number): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="screenshottocanvasasync"></a>
+
+### screenshotToCanvasAsync
+
+<ApiSignature>
+
+screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: Camera, ratio?: number, timeout?: number): Promise&lt;void&gt;;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getboundingrect"></a>
+
+### getBoundingRect
+
+<ApiSignature>
+
+getBoundingRect(scenePath: string): Rectangle;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Rectangle
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="addmagixeventlistener"></a>
+
+### addMagixEventListener
+
+<ApiSignature>
+
+addMagixEventListener(event: string, listener: EventListener, options?: MagixEventListenerOptions): void;
+
+</ApiSignature>
+
+<ApiSignature>
+
+addMagixEventListener(event: string, listener: EventsListener, fireInterval: number): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removemagixeventlistener"></a>
+
+### removeMagixEventListener
+
+<ApiSignature>
+
+removeMagixEventListener(event: string, listener?: EventListener): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="waitmagixevent"></a>
+
+### waitMagixEvent
+
+<ApiSignature>
+
+waitMagixEvent(filter: EventFilter): Promise&lt;Event&gt;;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;Event&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="scaleppttofit"></a>
+
+### scalePptToFit
+
+<ApiSignature>
+
+scalePptToFit(animationMode?: AnimationMode): void;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="scenepathtype"></a>
+
+### scenePathType
+
+<ApiSignature>
+
+scenePathType(path: string): ScenePathType;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+ScenePathType
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="entirescenes"></a>
+
+### entireScenes
+
+<ApiSignature>
+
+entireScenes(): SceneMap;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+SceneMap
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getscene"></a>
+
+### getScene
+
+<ApiSignature>
+
+getScene(path: string): WhiteScene | undefined;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+WhiteScene | undefined
+
+</ApiReturnType>
+
+</ApiReturns>

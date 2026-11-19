@@ -1,0 +1,60 @@
+---
+title: ReplayRoomParams
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/replayroomparams
+  sourcePath: html-docs/whiteboard/Web/interfaces/replayroomparams.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type ReplayRoomParams = ConstructRoomParams & {
+    /**
+     * 指定回放特定的「录像片段」的 ``uuid``。可以在房间尚在录制的时候，从 ``room.slice`` 获取。
+     * 当传入该参数后，表明只回放特定片段，因此禁止再传入 ``room``、``beginTimestamp``、``duration``。
+     */
+    region?: string;
+    /**
+     * 指定回放特定的「录像片段」的 ``uuid``。可以在房间尚在录制的时候，从 ``room.slice`` 获取。
+     * 当传入该参数后，需同时传入 ``room``。该参数表明只回放特定片段，因此禁止再传入 ``beginTimestamp``、``duration``。
+     */
+    slice?: string;
+    /**
+     * 指定特定房间的 ``uuid``，在构造房间时会返回，是该房间的唯一标识符。
+     * 如果仅传该参数，不传 ``beginTimestamp`` 和 ``duration``，则表明回放该房间的所有录像片段。
+     * 如果同时传入，``beginTimestamp`` 和 ``duration``，则表明回放该房间在此范围之内的所有录像片段。
+     */
+    room: string;
+    /**
+     * 房间的 Token，用于鉴权。阅读[《访问密钥｜项目与鉴权》](/document-zh/home/project-and-authority#访问密钥)以便了解如何签出房间的 Token。
+     */
+    roomToken: string;
+    /**
+     * 表明回放开始的时间戳（[unix 时间](https://zh.wikipedia.org/wiki/UNIX%E6%97%B6%E9%97%B4)，单位是毫秒）。
+     * 此参数必须和 ``room``、``duration`` 一起使用，且使用时禁止传入 ``slice`` 参数。
+     */
+    beginTimestamp?: number;
+    /**
+     * 表明回放区间的时长（单位是毫秒）。此参数必须和 ``room``、``beginTimestamp`` 一起使用，且使用时禁止传入 ``slice`` 参数。
+     */
+    duration?: number;
+    /**
+     * 回放裁剪区间
+     */
+    crops?: Array<{
+        from: number;
+        to: number;
+    }>;
+    /**
+     * 回放时间轴对齐阈值, 超过此阈值会对齐回放播放器时间, 单位 ms, 默认 600ms
+     */
+    alignmentThreshold?: number;
+    /**
+     * 回放时间轴对齐时长, 即在此值时长内将回放时间通过倍速播放对齐到外部时间戳, 单位 ms, 默认 3000ms
+     */
+    alignmentInterval?: number;
+};
+```

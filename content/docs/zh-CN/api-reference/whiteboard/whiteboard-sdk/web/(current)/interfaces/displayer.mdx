@@ -1,0 +1,869 @@
+---
+title: Displayer
+description: Whiteboard Web SDK 2.16.59 公开 interface。
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/displayer
+  sourcePath: html-docs/whiteboard/Web/interfaces/displayer.html
+  generator: typedoc
+  warnings:
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+---
+
+```ts
+export declare interface Displayer<CALLBACKS extends DisplayerCallbacks = DisplayerCallbacks>
+```
+
+## 成员
+
+- [callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#callbacks)
+- [observerId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#observerid)
+- [region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#region)
+- [slice](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#slice)
+- [version](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#version)
+- [deviceType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#devicetype)
+- [screenType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#screentype)
+- [state](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#state)
+- [enableWriteNow](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#enablewritenow)
+- [handToolKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#handtoolkey)
+- [views](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#views)
+- [useMobXState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#usemobxstate)
+- [useMultiViews](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#usemultiviews)
+- [handToolActive](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#handtoolactive)
+- [disableOthersSelectingBox](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#disableothersselectingbox)
+- [disableCameraTransform](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#disablecameratransform)
+- [commandWheelToZoom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#commandwheeltozoom)
+- [refreshViewSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#refreshviewsize)
+- [setCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#setcamerabound)
+- [createScenesCallback](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#createscenescallback)
+- [memberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#memberstate)
+- [moveCamera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#movecamera)
+- [moveCameraToContain](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#movecameratocontain)
+- [bindHtmlElement](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#bindhtmlelement)
+- [getInvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#getinvisibleplugin)
+- [convertToPointInWorld](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#converttopointinworld)
+- [scenePreview](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scenepreview)
+- [generateScreenshot](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#generatescreenshot)
+- [fillSceneSnapshot](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#fillscenesnapshot)
+- [screenshotToCanvas](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#screenshottocanvas)
+- [screenshotToCanvasAsync](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#screenshottocanvasasync)
+- [getBoundingRect](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#getboundingrect)
+- [addMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#addmagixeventlistener)
+- [removeMagixEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#removemagixeventlistener)
+- [waitMagixEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#waitmagixevent)
+- [scalePptToFit](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scaleppttofit)
+- [scenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scenepathtype)
+- [entireScenes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#entirescenes)
+- [getScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#getscene)
+
+## Properties
+
+<a id="callbacks"></a>
+
+### callbacks
+
+readonly callbacks: Callbacks&lt;CALLBACKS&gt;;
+
+````text
+回调函数，你可以通过如下方式来操作回调函数。
+
+@example
+```typescript
+function sliceChangeCallback(slice) {
+    // 监听到 onSliceChanged 回调
+}
+
+// 注册回调函数
+displayer.callbacks.on("onSliceChanged", sliceChangeCallback);
+
+// 注销回调函数
+displayer.callbacks.off("onSliceChanged", sliceChangeCallback);
+
+displayer.callbacks.once("onSliceChanged", function(slice) {
+    // 仅仅回调一次
+});
+```
+````
+
+<a id="observerid"></a>
+
+### observerId
+
+readonly observerId: number;
+
+```text
+当前观察者的用户 ID。
+若是实时房间，观察者是我自己。若是回放房间，观察者是当前跟随视角的用户，如果当前没有跟随任何用户的视角，则取值 AdminObserverId。
+```
+
+<a id="region"></a>
+
+### region
+
+readonly region: string;
+
+```text
+当前房间所在的区域
+```
+
+<a id="slice"></a>
+
+### slice
+
+readonly slice: string;
+
+```text
+当前所处的 ``slice`` 的 UUID
+```
+
+<a id="version"></a>
+
+### version
+
+readonly version: string;
+
+```text
+当前 SDK 的版本
+```
+
+<a id="devicetype"></a>
+
+### deviceType
+
+readonly deviceType: DeviceType;
+
+```text
+该客户端的设备类型，决定 SDK 如何处理鼠标事件和触碰事件
+```
+
+<a id="screentype"></a>
+
+### screenType
+
+readonly screenType: ScreenType;
+
+```text
+该客户端的屏幕类型，用于调整手势识别参数
+```
+
+<a id="state"></a>
+
+### state
+
+readonly state: DisplayerState;
+
+```text
+状态
+```
+
+<a id="enablewritenow"></a>
+
+### enableWriteNow
+
+readonly enableWriteNow: boolean;
+
+```text
+当前是否允许对房间进行写操作
+```
+
+<a id="handtoolkey"></a>
+
+### handToolKey
+
+readonly handToolKey: string | undefined;
+
+```text
+按下键盘上哪个键能唤出抓手工具抓住屏幕以供用户拖动，若为 ``undefined`` 则关闭该功能
+```
+
+<a id="views"></a>
+
+### views
+
+readonly views: Views;
+
+<a id="usemobxstate"></a>
+
+### useMobXState
+
+readonly useMobXState: boolean;
+
+<a id="usemultiviews"></a>
+
+### useMultiViews
+
+readonly useMultiViews: boolean;
+
+<a id="handtoolactive"></a>
+
+### handToolActive
+
+<ApiSignature>
+
+handToolActive: boolean;
+
+</ApiSignature>
+
+```text
+是否启动抓手工具抓住屏幕以供用户拖动
+```
+
+<a id="disableothersselectingbox"></a>
+
+### disableOthersSelectingBox
+
+<ApiSignature>
+
+disableOthersSelectingBox: boolean;
+
+</ApiSignature>
+
+```text
+是否隐藏其他人鼠标移动到白板组建上时，显示的高亮框。
+该属性不会影响自己的高亮框显示。
+```
+
+<a id="disablecameratransform"></a>
+
+### disableCameraTransform
+
+<ApiSignature>
+
+disableCameraTransform: boolean;
+
+</ApiSignature>
+
+```text
+是否禁止设备主动操作视角。
+禁止后，用户无法使用鼠标滚轮，或在 touch 设备上通过多指手势来改变视角。
+该属性不会影响 ``setCameraBound``、``moveCamera``、``moveCameraToContain`` 方法的使用。
+```
+
+<a id="commandwheeltozoom"></a>
+
+### commandWheelToZoom
+
+<ApiSignature>
+
+commandWheelToZoom: boolean;
+
+</ApiSignature>
+
+```text
+在 macOS 系统上，是否允许按住 ``command`` 键并滚动来放大缩小白板。
+此选项不影响 ``control`` 滚轮的放大缩小行为。
+默认为 ``false``。
+```
+
+## Methods
+
+<a id="refreshviewsize"></a>
+
+### refreshViewSize
+
+<ApiSignature>
+
+refreshViewSize(): void;
+
+</ApiSignature>
+
+```text
+仅当 ``autoResize: false`` 时调用有意义。
+当白板的尺寸改变后，必须主动调用该方法让其同步。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setcamerabound"></a>
+
+### setCameraBound
+
+<ApiSignature>
+
+setCameraBound(cameraBound: CameraBound): void;
+
+</ApiSignature>
+
+```text
+修改 ``cameraBound`` 以调整视角边界
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="createscenescallback"></a>
+
+### createScenesCallback
+
+<ApiSignature>
+
+createScenesCallback(path: string, callbacks?: Partial&lt;ScenesCallbacks&gt;): ScenesCallbacksNode | null;
+
+</ApiSignature>
+
+```text
+创建监听器，以监听特定地址的场景组中子场景、子场景组列表的变化情况。
+创建的监听器对象必须在使用完毕后调用 ``dispose()`` 释放。
+当某个场景组已经被监听之后，无法再次创建新的监听器，除非上一个监听器被释放。
+
+@param path 要监听的场景组地址。如果该地址对应一个场景，则取其父场景组
+@param callbacks 一开始要监听的内容，可选
+@returns 返回一个 ScenesCallbacksNode 对象，当对应地址不存在时，返回 ``null``
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+ScenesCallbacksNode | null
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="memberstate"></a>
+
+### memberState
+
+<ApiSignature>
+
+memberState(memberId: number): MemberState;
+
+</ApiSignature>
+
+```text
+获取房间内特定用户的自定义状态
+@param memberId 用户的 ID
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+MemberState
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="movecamera"></a>
+
+### moveCamera
+
+<ApiSignature>
+
+moveCamera(camera: Partial&lt;Camera&gt; & Readonly&lt;\{ animationMode?: AnimationMode; \}&gt;): void;
+
+</ApiSignature>
+
+```text
+移动视角
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="movecameratocontain"></a>
+
+### moveCameraToContain
+
+<ApiSignature>
+
+moveCameraToContain(rectangle: Rectangle & Readonly&lt;\{ animationMode?: AnimationMode; \}&gt;): void;
+
+</ApiSignature>
+
+```text
+移动视角以容纳特定的视觉矩形
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="bindhtmlelement"></a>
+
+### bindHtmlElement
+
+<ApiSignature>
+
+bindHtmlElement(element: HTMLDivElement | null): void;
+
+</ApiSignature>
+
+```text
+将白板绑定到 HTML 元素上
+@param element 用于容纳白板的 HTML 元素容器。若为 ``null``，表明解除对白板的绑定。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getinvisibleplugin"></a>
+
+### getInvisiblePlugin
+
+<ApiSignature>
+
+getInvisiblePlugin&lt;A extends Object, MA extends Object&gt;(kind: string): InvisiblePlugin&lt;A, MA&gt; | null;
+
+</ApiSignature>
+
+```text
+获取特定的不可件插件
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+InvisiblePlugin&lt;A, MA&gt; | null
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="converttopointinworld"></a>
+
+### convertToPointInWorld
+
+<ApiSignature>
+
+convertToPointInWorld(point: \{ x: number; y: number; \}): \{ x: number; y: number; \};
+
+</ApiSignature>
+
+```text
+点的坐标系转换
+@param point 屏幕坐标系上的点，以屏幕坐上角为原点。
+@returns 世界坐标系上的点
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ x: number; y: number; \}
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="scenepreview"></a>
+
+### scenePreview
+
+<ApiSignature>
+
+scenePreview(scenePath: string, div: HTMLElement, width?: number, height?: number, engine?: RenderEngine): void;
+
+</ApiSignature>
+
+```text
+生成场景预览
+@param  scenePath 想要获取预览内容的场景的场景路径
+@param  div 想要展示预览内容的 div
+@param  width 白板的缩放宽度：将当前白板内容，缩小到真实像素宽度。2.3.8 后，该参数为可选参数，如果不填，则默认为展示内容 div 的宽度。
+@param  height 白板的缩放高度：将当前白板的内容，缩小到真实像素高度。2.3.8 后，该参数为可选参数，如果不填，则默认为展示内容 div 的高度。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="generatescreenshot"></a>
+
+### generateScreenshot
+
+<ApiSignature>
+
+generateScreenshot(scenePath?: string, width?: number, height?: number): Promise&lt;string&gt;;
+
+</ApiSignature>
+
+```text
+读取场景背景图 ``scene.ppt.src`` 并生成他的 base64 URL
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;string&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="fillscenesnapshot"></a>
+
+### fillSceneSnapshot
+
+<ApiSignature>
+
+fillSceneSnapshot(scenePath: string, div: HTMLElement, width?: number, height?: number, engine?: RenderEngine): void;
+
+</ApiSignature>
+
+```text
+生成场景预览，和 {@link scenePreview} 的区别是此函数会选取一个框住所有元素的视角，而 scenePreview 选取的是用户当前视角
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="screenshottocanvas"></a>
+
+### screenshotToCanvas
+
+<ApiSignature>
+
+screenshotToCanvas(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: Camera, ratio?: number): void;
+
+</ApiSignature>
+
+````text
+生成屏幕快照，并写入指定的 CanvasRenderingContext2D 对象中。
+调用此方法时可能存在一些图片还未加载完成从而不会渲染出来。
+
+@param context canvas 2D 上下文, 你可以通过 ``canvas.getContext("2d")`` 来获取
+@param scenePath 要截图的场景路径
+@param width canvas 的宽度，单位像素
+@param height canvas 的高度，单位像素
+@param camera 目标视角
+@param ratio 缩放比例，默认为 1
+
+@example
+```javascript
+const canvas = document.createElement("canvas");
+const { scenePath } = room.state.sceneState;
+const { width, height, ...camera } = room.state.cameraState;
+canvas.width = width;
+canvas.height = height;
+room.screenshotToCanvas(canvas.getContext("2d"), scenePath, width, height, camera);
+```
+````
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="screenshottocanvasasync"></a>
+
+### screenshotToCanvasAsync
+
+<ApiSignature>
+
+screenshotToCanvasAsync(context: CanvasRenderingContext2D, scenePath: string, width: number, height: number, camera: Camera, ratio?: number, timeout?: number): Promise&lt;void&gt;;
+
+</ApiSignature>
+
+```text
+**实验性** 等待目标场景的图片加载完成，然后生成屏幕快照，写入指定的渲染上下文中。
+
+@param timeout 超时时间，单位毫秒，默认为永远等待。超时后，不会等待图片加载完成，直接进行下一步绘制操作。
+               只能设为大于 ``0`` 的数，否则等于不设超时。
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getboundingrect"></a>
+
+### getBoundingRect
+
+<ApiSignature>
+
+getBoundingRect(scenePath: string): Rectangle;
+
+</ApiSignature>
+
+```text
+获取某个场景里包含所有元素的矩形
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Rectangle
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="addmagixeventlistener"></a>
+
+### addMagixEventListener
+
+<ApiSignature>
+
+addMagixEventListener(event: string, listener: EventListener, options?: MagixEventListenerOptions): void;
+
+</ApiSignature>
+
+<ApiSignature>
+
+addMagixEventListener(event: string, listener: EventsListener, fireInterval: number): void;
+
+</ApiSignature>
+
+```text
+添加自定义事件监听器
+@param event 自定义事件名
+@param listener 自定义事件监听器
+@param options 监听配置
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+```text
+添加自定义事件监听器
+@param event 自定义事件名
+@param listener 自定义事件监听器
+@param options 监听配置
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removemagixeventlistener"></a>
+
+### removeMagixEventListener
+
+<ApiSignature>
+
+removeMagixEventListener(event: string, listener?: EventListener): void;
+
+</ApiSignature>
+
+```text
+注销自定义事件监听器
+@param event 自定定义事件名
+@param listener 要注销的监听器，若不传，则将该自定义事件之下的所有监听器全部注销
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="waitmagixevent"></a>
+
+### waitMagixEvent
+
+<ApiSignature>
+
+waitMagixEvent(filter: EventFilter): Promise&lt;Event&gt;;
+
+</ApiSignature>
+
+```text
+等待直到特定的自定义事件发生
+@param filter 用于判断是否是想要的自定义事件，若是，该方法应该返回 ``true``。
+@returns 当特定自定义事件发生时，返回该事件
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;Event&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="scaleppttofit"></a>
+
+### scalePptToFit
+
+<ApiSignature>
+
+scalePptToFit(animationMode?: AnimationMode): void;
+
+</ApiSignature>
+
+```text
+调整视角以将 PPT 充满屏幕。若当前场景没有 PPT，则什么都不做。
+@param animationMode 调整视角时的过渡动画模式
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="scenepathtype"></a>
+
+### scenePathType
+
+<ApiSignature>
+
+scenePathType(path: string): ScenePathType;
+
+</ApiSignature>
+
+```text
+查看特定场景的类型
+@param path 该场景的路径
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+ScenePathType
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="entirescenes"></a>
+
+### entireScenes
+
+<ApiSignature>
+
+entireScenes(): SceneMap;
+
+</ApiSignature>
+
+```text
+获取当前房间中所有场景信息
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+SceneMap
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getscene"></a>
+
+### getScene
+
+<ApiSignature>
+
+getScene(path: string): WhiteScene | undefined;
+
+</ApiSignature>
+
+```text
+获取特定场景信息
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+WhiteScene | undefined
+
+</ApiReturnType>
+
+</ApiReturns>

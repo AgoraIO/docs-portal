@@ -1,0 +1,107 @@
+---
+title: "应对防火墙限制"
+description: "了解 RTC 服务端 SDK 在不同平台上的应对防火墙限制方式，包括接入流程、关键配置和平台差异。"
+---
+<PlatformStructured platform="cpp">
+
+为允许你的服务端应用在有网络访问限制的环境中使用 RTC 服务端 SDK，声网提供云代理服务。你只需在防火墙上将特定的 IP 地址和端口加入白名单，并调用 API 配置声网云代理服务。
+
+## 工作原理
+
+下图展示了云代理的工作流程。
+
+![云代理工作原理](https://web-cdn.agora.io/docs-files/1673942497571)
+
+1. 声网 SDK 向声网云代理发起请求。声网云代理返回相应代理信息。
+2. 声网 SDK 向声网云代理发送数据。声网云代理接收数据并将数据透传给声网 [SD-RTN™](/zh-CN/introduction/glossary#sd-rtn)（Software Defined Real-time Network）。
+3. 声网 SD-RTN™ 向声网云代理返回数据。声网云代理接收数据并将数据发送给声网 SDK。
+
+## 实现方法
+
+### 准备工作
+
+1. 参考[跑通 RTC 服务端 SDK 示例项目](/zh-CN/realtime-media/rtc-server-sdk/get-started/run-example)文档下载 RTC 服务端 SDK 并完成开发环境准备。
+
+2. 联系 sales@shengwang.cn，提供以下信息申请开通云代理服务。
+
+   - App ID
+   - 代理服务使用区域
+   - 并发规模
+   - 网络运营商等信息
+
+### 添加白名单
+
+收到申请后，声网会提供用于云代理的 IP 地址和端口。请确保将声网提供的 IP 地址和端口添加到防火墙白名单。
+
+<a id="api"></a>
+### 调用 API
+
+调用 `agora::base::IAgoraParameters::setParameters`，通过私有参数开启云代理。
+
+1. 添加白名单后，请参考如下示例代码开启云代理：
+
+	```cpp
+	// 先在调用 connect 前开启云代理服务
+	setParameters("{\"rtc.enable_proxy\": true}");
+	// 然后从以下两种云代理配置方式中选择一种
+	// 方式一：TCP（加密）协议的云代理，即 Force TCP 云代理模式。在该模式下，SDK 始终通过 TLS 443 传输数据
+	setParameters("{\"rtc.proxy_server\":[13,\"\",0]}");
+	// 方式二：UDP 协议的云代理，即 Force UDP 云代理模式。在该模式下，SDK 始终通过 UDP 协议传输数据
+	setParameters("{\"rtc.proxy_server\":[1,\"\",0]}");
+	```
+
+2. 测试是否能正常实现音视频通话或直播。
+
+</PlatformStructured>
+
+<PlatformStructured platform="java">
+
+为允许你的服务端应用在有网络访问限制的环境中使用 RTC 服务端 SDK，声网提供云代理服务。你只需在防火墙上将特定的 IP 地址和端口加入白名单，并调用 API 配置声网云代理服务。
+
+## 工作原理
+
+下图展示了云代理的工作流程。
+
+![云代理工作原理](https://web-cdn.agora.io/docs-files/1673942497571)
+
+1. 声网 SDK 向声网云代理发起请求。声网云代理返回相应代理信息。
+2. 声网 SDK 向声网云代理发送数据。声网云代理接收数据并将数据透传给声网 [SD-RTN™](/zh-CN/introduction/glossary#sd-rtn)（Software Defined Real-time Network）。
+3. 声网 SD-RTN™ 向声网云代理返回数据。声网云代理接收数据并将数据发送给声网 SDK。
+
+## 实现方法
+
+### 准备工作
+
+1. 参考[跑通 RTC 服务端 SDK 示例项目](/zh-CN/realtime-media/rtc-server-sdk/get-started/run-example)文档下载 RTC 服务端 SDK 并完成开发环境准备。
+
+2. 联系 sales@shengwang.cn，提供以下信息申请开通云代理服务。
+
+   - App ID
+   - 代理服务使用区域
+   - 并发规模
+   - 网络运营商等信息
+
+### 添加白名单
+
+收到申请后，声网会提供用于云代理的 IP 地址和端口。请确保将声网提供的 IP 地址和端口添加到防火墙白名单。
+
+<a id="api"></a>
+### 调用 API
+
+调用 `io.agora.rtc.AgoraParameter.setParameters`，通过私有参数开启云代理。
+
+1. 添加白名单后，请参考如下示例代码开启云代理：
+
+	```java
+	// 先在调用 connect 前开启云代理服务
+	mAgoraParameter.setParameters("{\"rtc.enable_proxy\": true}");
+	// 然后从以下两种云代理配置方式中选择一种
+	// 方式一：TCP（加密）协议的云代理，即 Force TCP 云代理模式。在该模式下，SDK 始终通过 TLS 443 传输数据
+	mAgoraParameter.setParameters("{\"rtc.proxy_server\":[13,\"\",0]}");
+	// 方式二：UDP 协议的云代理，即 Force UDP 云代理模式。在该模式下，SDK 始终通过 UDP 协议传输数据
+	mAgoraParameter.setParameters("{\"rtc.proxy_server\":[1,\"\",0]}");
+	```
+
+2. 测试是否能正常实现音视频通话或直播。
+
+</PlatformStructured>

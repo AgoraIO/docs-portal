@@ -1,0 +1,77 @@
+---
+title: ReloadBackgroundImageParams interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_reload_background_image_params
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_reload_background_image_params.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+controller.reloadBackgroundImage(...) 的目标与可选替换地址。
+
+可从 @shengwang/whiteboard 直接导入 ReloadBackgroundImageParams。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface ReloadBackgroundImageParams
+```
+
+| [source](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-reload-background-image-params#a741cd1015e29fc060fc299560b122f34) | `source: BackgroundImageSource` |
+| --- | --- |
+| [viewId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-reload-background-image-params#a1cd5b76c7e7d0da117d124215d7e8b0b) | `viewId: string` |
+| [scenePath](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-reload-background-image-params#aa29884d0ad6c59d01be2a2532a3a53bc) | `scenePath?: string` |
+| [url](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-reload-background-image-params#a69cb300b2aa324e3a98194ac958b0d8f) | `url?: string` |
+
+## 变量说明
+
+<a id="a741cd1015e29fc060fc299560b122f34"></a>
+
+### source
+
+```text
+source: BackgroundImageSource
+```
+
+背景图来源：appliance，表示 Appliance Plugin 管理的背景图。
+
+<a id="a1cd5b76c7e7d0da117d124215d7e8b0b"></a>
+
+### viewId
+
+```text
+viewId: string
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="aa29884d0ad6c59d01be2a2532a3a53bc"></a>
+
+### scenePath
+
+```text
+scenePath?: string
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="a69cb300b2aa324e3a98194ac958b0d8f"></a>
+
+### url
+
+```text
+url?: string
+```
+
+可选替换重载地址，作用于目标场景所有匹配的失败资源；不按 URL 筛选。省略时按各资源原地址重载。

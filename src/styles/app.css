@@ -37,7 +37,7 @@
   font-display: swap;
   font-style: normal;
   font-weight: 400;
-  src: url("https://assets-docs.agora.io/fonts/misans/MiSans-Regular.woff2")
+  src: url("https://web-cdn.agora.io/docs-portal/fonts/misans/MiSans-Regular.woff2")
     format("woff2");
 }
 
@@ -46,7 +46,7 @@
   font-display: swap;
   font-style: normal;
   font-weight: 500;
-  src: url("https://assets-docs.agora.io/fonts/misans/MiSans-Medium.woff2")
+  src: url("https://web-cdn.agora.io/docs-portal/fonts/misans/MiSans-Medium.woff2")
     format("woff2");
 }
 
@@ -55,7 +55,7 @@
   font-display: swap;
   font-style: normal;
   font-weight: 600;
-  src: url("https://assets-docs.agora.io/fonts/misans/MiSans-Semibold.woff2")
+  src: url("https://web-cdn.agora.io/docs-portal/fonts/misans/MiSans-Semibold.woff2")
     format("woff2");
 }
 
@@ -64,7 +64,7 @@
   font-display: swap;
   font-style: normal;
   font-weight: 700;
-  src: url("https://assets-docs.agora.io/fonts/misans/MiSans-Bold.woff2")
+  src: url("https://web-cdn.agora.io/docs-portal/fonts/misans/MiSans-Bold.woff2")
     format("woff2");
 }
 
@@ -396,6 +396,17 @@
     background-position: center;
     background-size: 72px 72px;
     mask-image: radial-gradient(circle at top, black, transparent 78%);
+  }
+
+  .prose,
+  article :where(h1),
+  .openapi-operation .openapi-markdown {
+    overflow-wrap: anywhere;
+  }
+
+  .prose :where(.group\/heading > a) {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .prose {
@@ -1184,6 +1195,11 @@
     overflow-wrap: anywhere;
   }
 
+  .openapi-schema-value-container > .openapi-markdown {
+    min-width: 0;
+    max-width: 100%;
+  }
+
   .openapi-schema-children {
     position: relative;
     margin-inline-start: 16px;
@@ -1820,6 +1836,11 @@
   border-color: var(--docs-prose-table-border);
   background: var(--bg-card);
   box-shadow: var(--docs-shadow-sm);
+}
+
+/* Body row headings share the striped row surface with their descriptions. */
+.prose table :where(tbody th[scope="row"]) {
+  background: transparent;
 }
 
 :where(html.dark) .prose :where(thead):not(:where(.not-prose, .not-prose *)) {

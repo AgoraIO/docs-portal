@@ -1,0 +1,99 @@
+---
+title: MemberState interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_member_state
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_member_state.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+白板工具状态，包含当前教具、颜色、线宽和文本等属性。
+
+可从 @shengwang/whiteboard 直接导入 MemberState。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface MemberState
+```
+
+| [currentApplianceName](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-member-state#aa593d7d1e964f2273beb0f29241a394d) | `currentApplianceName?: Appliance` |
+| --- | --- |
+| [shapeType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-member-state#af32bc1ac74233e3ce35e9c19050c115e) | `shapeType?: ShapeType` |
+| [strokeColor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-member-state#a7d00511a003a98be0814122d2f44e416) | `strokeColor?: [number, number, number]` |
+| [strokeWidth](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-member-state#afff32dfc225152a15bc2a81b129db410) | `strokeWidth?: number` |
+| [textSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-member-state#a7798b22570d0eb65e83c18ba33ca9158) | `textSize?: number` |
+| [textColor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-member-state#a17cfa2d6ba6557a3756d4cb541b17c06) | `textColor?: [number, number, number]` |
+
+## 变量说明
+
+<a id="aa593d7d1e964f2273beb0f29241a394d"></a>
+
+### currentApplianceName
+
+```text
+currentApplianceName?: Appliance
+```
+
+白板工具名称
+
+<a id="af32bc1ac74233e3ce35e9c19050c115e"></a>
+
+### shapeType
+
+```text
+shapeType?: ShapeType
+```
+
+图形工具的类型。
+
+<a id="a7d00511a003a98be0814122d2f44e416"></a>
+
+### strokeColor
+
+```text
+strokeColor?: [number, number, number]
+```
+
+线条颜色，为 RGB 格式，例如，[0, 0, 255] 表示蓝色。
+
+<a id="afff32dfc225152a15bc2a81b129db410"></a>
+
+### strokeWidth
+
+```text
+strokeWidth?: number
+```
+
+线条粗细。
+
+<a id="a7798b22570d0eb65e83c18ba33ca9158"></a>
+
+### textSize
+
+```text
+textSize?: number
+```
+
+字体大小。Chrome 浏览器对于小于 12 的字体会自动调整为 12。
+
+<a id="a17cfa2d6ba6557a3756d4cb541b17c06"></a>
+
+### textColor
+
+```text
+textColor?: [number, number, number]
+```
+
+文本颜色，为 RGB 格式，例如，[0, 0, 255] 表示蓝色。不设置情况与 strokeColor 使用相同

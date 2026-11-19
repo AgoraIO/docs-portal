@@ -1,0 +1,310 @@
+---
+title: 背景图加载与恢复
+---
+
+<PlatformStructured platform="android">
+
+当前 SDK 提供 Appliance Plugin 背景图加载状态、失败恢复及插件初始化进度能力。使用背景图查询和恢复前，需同时开启 `useMultiViews=true` 与 `enableAppliancePlugin=true`。
+
+## 配置
+
+```java
+BackgroundImageLoadOptions loading = new BackgroundImageLoadOptions();
+loading.setMaxRetries(3);
+loading.setTimeoutMs(15000);
+loading.setRetryIntervalMs(1000);
+config.setBackgroundImageLoadOptions(loading);
+```
+
+`WhiteSdk.hasBackgroundImage(HasBackgroundImageParams, Promise<Boolean>)` 查询；`reloadBackgroundImage(ReloadBackgroundImageParams, Promise<ReloadBackgroundImageResult>)` 恢复。事件通过 `CommonCallback.onBackgroundImageLoad` / `onApplianceInitLoadingChange` 接收。参数和结果类型位于 `com.herewhite.sdk.domain`。
+
+| 配置 | 范围 | 默认值 |
+| --- | --- | --- |
+| `maxRetries` | -1（无限重试）或整数 0~10 | 3 |
+| `timeoutMs` | 1000~120000 毫秒 | 15000 |
+| `retryIntervalMs` | 0~30000 毫秒 | 1000 |
+
+## 插入固定图片（Native 接口）
+
+如果需求是在白板上插入不能被移动或缩放的图片，可使用 Native 图片接口，并设置 `locked=true`：
+
+```java
+import java.util.UUID;
+import com.herewhite.sdk.domain.ImageInformation;
+
+String imageId = UUID.randomUUID().toString();
+ImageInformation image = new ImageInformation();
+image.setUuid(imageId);
+image.setCenterX(0);
+image.setCenterY(0);
+image.setWidth(1280);
+image.setHeight(720);
+image.setLocked(true);
+room.insertImage(image);
+room.completeImageUpload(imageId, "https://example.com/background.png");
+```
+
+在入房成功、房间可写时调用。坐标和尺寸按照白板的世界坐标填写；`locked` 只限制移动和缩放，不等于禁止擦除。需要禁止普通橡皮擦除图片时，在入房前通过 `params.setDisableEraseImage(true)` 配置。
+
+该方式插入的是普通图片元素，不会自动转换为 Appliance Plugin 专用背景图。下方 `hasBackgroundImage` 与 `reloadBackgroundImage` 针对插件管理的背景资源，不用于查询或重载这个普通图片元素。
+
+## 配置插件背景图加载
+
+应用可对房间中的插件背景图配置显示、加载重试、存在性查询和失败恢复。在 `joinRoom` 前开启背景线程：
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+import com.herewhite.sdk.domain.AppliancePluginOptions;
+
+Map<String, Object> extras = new HashMap<>();
+extras.put("useBackgroundThread", true);
+AppliancePluginOptions pluginOptions = new AppliancePluginOptions();
+pluginOptions.setExtras(extras);
+params.setAppliancePluginOptions(pluginOptions);
+```
+
+以上配置通过 `RoomParams` 设置；加载重试策略通过 `WhiteSdkConfiguration` 设置。已有其他 extras 配置时，将该字段合并到同一个配置 Map。
+
+## 查询与恢复参数
+
+查询参数为 `viewId`、`scenePath`、`imageUrl` 和背景图来源列表 `sources`，当前填写 `new String[]{"appliance"}`。恢复参数为必填 `source`（当前填写 `'appliance'`）、`viewId` 与可选 `scenePath`、`url`；仅恢复当前聚焦场景此前失败的资源。`appliance` 表示 Appliance Plugin 管理的背景图。
+
+恢复结果为 `accepted: boolean`、`reloadedCount: number`，可选 `reason` 为 `viewNotFound`、`sceneNotFocused`、`resourceNotFound`、`alreadyLoading`。`accepted=true` 只表示已触发加载；成功与否结合加载事件判断。
+
+```java
+import com.herewhite.sdk.domain.HasBackgroundImageParams;
+import com.herewhite.sdk.domain.Promise;
+import com.herewhite.sdk.domain.ReloadBackgroundImageParams;
+import com.herewhite.sdk.domain.ReloadBackgroundImageResult;
+import com.herewhite.sdk.domain.SDKError;
+
+whiteSdk.hasBackgroundImage(new HasBackgroundImageParams(
+    "mainView", "/scene/page1", "https://example.com/background.png",
+    new String[]{"appliance"}), new Promise<Boolean>() {
+    @Override public void then(Boolean exists) { /* 更新业务状态。 */ }
+    @Override public void catchEx(SDKError error) { /* 处理接口错误。 */ }
+});
+whiteSdk.reloadBackgroundImage(new ReloadBackgroundImageParams(
+    "appliance", "mainView", "/scene/page1"), new Promise<ReloadBackgroundImageResult>() {
+    @Override public void then(ReloadBackgroundImageResult result) {
+        // result.isAccepted() 只表示请求已接收。
+    }
+    @Override public void catchEx(SDKError error) { /* 处理接口错误。 */ }
+});
+```
+
+## 回调 payload
+
+```json
+{
+  "name": "backgroundImageLoad", "state": "failed", "source": "appliance",
+  "resourceId": "RESOURCE_ID", "resourceUrl": "https://example.com/image.png",
+  "viewId": "VIEW_ID", "scenePath": "/scene/page1"
+}
+```
+
+`state` 为 `success/failed/cancelled`。插件进度事件字段为 `name: applianceInitLoadingChange`、`loading: boolean`、`phase: plugin/worker/scene/ready`、`status: start/success/timeout/error`。终态 `loading=false/phase=ready/status=success` 表示插件初始化就绪。
+
+这些事件可用于业务诊断和 UI，字段名称及大小写须保持一致。完整签名见[客户端 API](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/overview)。
+
+恢复参数中的可选 `url` 是替换重载地址，会替换目标场景中所有匹配失败资源的地址，不是按 URL 筛选某张图片；省略时使用各资源原地址。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+适用于 **Whiteboard iOS SDK 2.16.147**。开启 `useMultiViews`、`enableAppliancePlugin`，并在插件 extras 中开启 `useBackgroundThread`。
+
+## 加载策略
+
+```objc
+WhiteBackgroundImageLoadOptions *load = [WhiteBackgroundImageLoadOptions new];
+load.maxRetries = 3;
+load.timeoutMs = 15000;
+load.retryIntervalMs = 1000;
+config.backgroundImageLoadOptions = load;
+```
+
+初始化 SDK 前设置。`maxRetries` 为 -1 或 0～10，`timeoutMs` 为 1000～120000 毫秒，`retryIntervalMs` 为 0～30000 毫秒；默认分别为 3、15000、1000。当前背景图来源为 `appliance`。
+
+## 查询和恢复插件背景图
+
+```objc
+WhiteHasBackgroundImageParams *query = [WhiteHasBackgroundImageParams new];
+query.viewId = @"mainView";
+query.scenePath = @"/init/1";
+query.imageUrl = @"https://example.com/background.png";
+query.sources = @[@"appliance"];
+[whiteSDK hasBackgroundImage:query completionHandler:^(BOOL exists, NSError *error) {
+    NSLog(@"exists=%d error=%@", exists, error);
+}];
+
+WhiteReloadBackgroundImageParams *retry = [WhiteReloadBackgroundImageParams new];
+retry.source = @"appliance";
+retry.viewId = @"mainView";
+retry.scenePath = @"/init/1";
+[whiteSDK reloadBackgroundImage:retry completionHandler:^(WhiteReloadBackgroundImageResult *result, NSError *error) {
+    NSLog(@"accepted=%d count=%ld error=%@", result.accepted, (long)result.reloadedCount, error);
+}];
+```
+
+恢复针对当前聚焦场景此前失败的背景资源；`accepted` 表示请求已接收，不表示加载成功。`reloadedCount` 表示触发重载的图片数量。
+
+通过 `WhiteCommonCallbackDelegate.onBackgroundImageLoad:`、`onApplianceInitLoadingChange:` 接收事件，参数类型分别为 `WhiteBackgroundImageLoadEvent`、`WhiteApplianceInitLoadingChangeEvent`，保留 state/source/resourceUrl/viewId/scenePath 或 loading/phase/status 等字段。
+
+## 普通图片
+
+原生普通图片使用 `WhiteRoom.insertImage:src:`。锁定普通图片仅限制其编辑，不能将它转为插件背景资源；因此普通图片不使用上述背景存在性查询和恢复接口。插件背景可由房间内已经启用插件的 Web 端插入后同步显示。
+
+恢复参数中的可选 `url` 是替换重载地址，会替换目标场景中所有匹配失败资源的地址，不是按 URL 筛选某张图片；省略时使用各资源原地址。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+适用于 **Appliance Plugin 1.1.45**。先完成[启用插件](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/overview)，开启 `extras.useBackgroundThread=true`。
+
+## 加载策略
+
+初始化时设置 `extras.backgroundImageLoadOptions`：
+
+```typescript
+import type { ExtrasOptions } from '@netless/appliance-plugin';
+const extras: ExtrasOptions = {
+  useBackgroundThread: true,
+  backgroundImageLoadOptions: { maxRetries: 3, timeoutMs: 15000, retryIntervalMs: 1000 }
+};
+```
+
+`maxRetries` 为 -1 或整数 0～10，-1 表示无限重试；`timeoutMs` 范围 1000～120000 毫秒；`retryIntervalMs` 范围 0～30000 毫秒。默认分别为 3、15000、1000。当前背景图来源为 `appliance`。
+
+## 插入背景图
+
+```typescript
+plugin.insertBackgroundImage('mainView', {
+  uuid: 'background-unique-id', src: 'https://example.com/background.png',
+  centerX: 0, centerY: 0, width: 1280, height: 720, locked: true
+});
+```
+
+该 API 插入由插件管理的固定背景资源。普通可框选图片使用 SDK/插件的 `insertImage` 和 `completeImageUpload`；锁定普通图片仍不会将其转换成插件背景图。两类资源不能混用存在性查询与恢复接口。
+
+## 查询与恢复
+
+```typescript
+const exists = plugin.hasBackgroundImage({
+  viewId: 'mainView', scenePath: '/init/1',
+  imageUrl: 'https://example.com/background.png', sources: ['appliance']
+});
+const result = await plugin.reloadBackgroundImage({
+  source: 'appliance', viewId: 'mainView', scenePath: '/init/1'
+});
+console.log(exists, result.accepted, result.reloadedCount, result.reason);
+```
+
+查询按 View、场景和原始 URL 匹配。恢复针对当前聚焦场景此前失败的资源；可选 `url` 是替换重载地址，会用于该目标场景所有匹配的失败资源，不用于筛选某一张图片；省略时按各资源原地址恢复。`accepted` 表示请求被接受，`reloadedCount` 表示触发重载数量，加载结果需继续观察回调。
+
+## 加载与初始化回调
+
+通过 `ApplianceAdaptor.callbacks.onBackgroundImageLoadEvent` 和 `onInitLoadingChange` 监听；Fastboard 使用 `appliancePluginAdaptor.callbacks`。背景回调包含 state（success/failed/cancelled）、source、resourceId、resourceUrl、viewId、scenePath。初始化包含 loading、phase、status；ready/success 用于插件就绪判断。
+
+这两个回调属于 adaptor callbacks。插件 `PublicListener` 事件见[事件监听与元素查询](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/events-and-query)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+当前 SDK 提供 Appliance Plugin 背景图加载状态、失败恢复及插件初始化进度能力。使用背景图查询和恢复前，需同时开启 `useMultiViews=true` 与 `enableAppliancePlugin=true`。
+
+## 配置
+
+```typescript
+// 创建 Whiteboard 组件前配置。
+options.backgroundImageLoadOptions = {
+  maxRetries: 3, timeoutMs: 15000, retryIntervalMs: 1000
+};
+```
+
+`controller.hasBackgroundImage(params): Promise<boolean>` 查询；`controller.reloadBackgroundImage(params): Promise<ReloadBackgroundImageResult>` 恢复。事件通过 `callbacks.onBackgroundImageLoad` / `onApplianceInitLoadingChange` 接收。
+
+| 配置 | 范围 | 默认值 |
+| --- | --- | --- |
+| `maxRetries` | -1（无限重试）或整数 0~10 | 3 |
+| `timeoutMs` | 1000~120000 毫秒 | 15000 |
+| `retryIntervalMs` | 0~30000 毫秒 | 1000 |
+
+## 配置插件背景图加载
+
+应用可对房间中的插件背景资源配置显示、加载重试、存在性查询和失败恢复。在创建 Whiteboard 组件前启用背景线程：
+
+```typescript
+options.appliancePluginOptions = {
+  extras: { useBackgroundThread: true }
+};
+```
+
+加载重试策略通过 `WhiteboardOptions.backgroundImageLoadOptions` 设置；已有其他 extras 字段时，将 `useBackgroundThread` 合并到同一个配置对象。
+
+## 插入普通图片（Native 接口）
+
+在入房成功、房间可写时，可使用 `controller.insertImage(...)` 插入普通图片：
+
+```typescript
+import { ImageInformation } from '@shengwang/whiteboard';
+import { util } from '@kit.ArkTS';
+
+const image: ImageInformation = {
+  uuid: util.generateRandomUUID(),
+  url: 'https://example.com/image.png',
+  centerX: 0,
+  centerY: 0,
+  width: 1280,
+  height: 720
+};
+controller.insertImage(image);
+```
+
+图片位置和尺寸使用白板世界坐标，`url` 为可访问的图片地址。该方法同时提交图片区域和图片 URL，无需另行调用上传完成方法。
+
+该方式插入的是普通图片元素，不会自动转换为 Appliance Plugin 专用背景图。下方 `hasBackgroundImage` 与 `reloadBackgroundImage` 针对插件管理的背景资源，不用于查询或重载这个普通图片元素。
+
+## 查询与恢复参数
+
+查询参数为 `viewId`、`scenePath`、`imageUrl` 和背景图来源列表 `sources`，当前填写 `['appliance']`。恢复参数为必填 `source`（当前填写 `'appliance'`）、`viewId` 与可选 `scenePath`、`url`；仅恢复当前聚焦场景此前失败的资源。`appliance` 表示 Appliance Plugin 管理的背景图。
+
+恢复结果为 `accepted: boolean`、`reloadedCount: number`，可选 `reason` 为 `viewNotFound`、`sceneNotFocused`、`resourceNotFound`、`alreadyLoading`。`accepted=true` 只表示已触发加载；成功与否结合加载事件判断。
+
+```typescript
+// 入房成功后的异步函数体，需处理 Promise rejection。
+const exists: boolean = await controller.hasBackgroundImage({
+  viewId: 'mainView',
+  scenePath: '/scene/page1',
+  imageUrl: 'https://example.com/background.png',
+  sources: ['appliance']
+});
+const result = await controller.reloadBackgroundImage({
+  source: 'appliance',
+  viewId: 'mainView',
+  scenePath: '/scene/page1'
+});
+// result.accepted 只表示请求已接收。
+```
+
+## 回调 payload
+
+```json
+{
+  "name": "backgroundImageLoad", "state": "failed", "source": "appliance",
+  "resourceId": "RESOURCE_ID", "resourceUrl": "https://example.com/image.png",
+  "viewId": "VIEW_ID", "scenePath": "/scene/page1"
+}
+```
+
+`state` 为 `success/failed/cancelled`。插件进度事件字段为 `name: applianceInitLoadingChange`、`loading: boolean`、`phase: plugin/worker/scene/ready`、`status: start/success/timeout/error`。终态 `loading=false/phase=ready/status=success` 表示插件初始化就绪。
+
+这些事件可用于业务诊断和 UI，字段名称及大小写须保持一致。完整签名见[客户端 API](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/overview)。
+
+恢复参数中的可选 `url` 是替换重载地址，会替换目标场景中所有匹配失败资源的地址，不是按 URL 筛选某张图片；省略时使用各资源原地址。
+
+</PlatformStructured>

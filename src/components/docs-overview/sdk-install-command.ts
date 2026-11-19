@@ -4,9 +4,7 @@ export type InstallCommand = { tool: string; command: string };
 
 /**
  * Derive a copyable install command from a version's package-registry URL.
- * The version is pinned only when the URL itself carries it (Maven, pub, unpkg,
- * versioned npmjs and pypi URLs); URLs without a version are unpinned. Unknown hosts (github release pages, easemob, etc.) and a missing
- * URL return null, which the UI renders as a download-only product.
+ * Known registries yield an install command; pin the version when present in the URL.
  */
 export function deriveInstallCommand(
   version: SdkDownloadVersion,
@@ -26,6 +24,17 @@ export function deriveInstallCommand(
   const segments = url.pathname.split('/').filter(Boolean);
 
   switch (url.hostname) {
+    case 'github.com': {
+      const podspec = url.pathname.match(
+        /^\/CocoaPods\/Specs\/blob\/[^/]+\/Specs\/[^/]+\/[^/]+\/[^/]+\/([^/]+)\/([^/]+)\/[^/]+\.podspec\.json$/,
+      );
+      return podspec
+        ? {
+            tool: 'CocoaPods',
+            command: `pod '${podspec[1]}', '${podspec[2]}'`,
+          }
+        : null;
+    }
     case 'central.sonatype.com':
     case 'search.maven.org': {
       // /artifact/<group>/<artifact>/<version>/...
@@ -102,6 +111,43 @@ export function deriveInstallCommand(
         return null;
       }
       return { tool: 'Go', command: `go get ${modulePath}` };
+    }
+    default:
+      break;
+  }
+
+  switch (url.protocol) {
+    case 'gradle:': {
+      if (url.hostname && segments.length >= 2) {
+        const [artifact, gradleVersion] = segments;
+        return {
+          tool: 'Gradle',
+          command: `implementation '${url.hostname}:${artifact}:${gradleVersion}'`,
+        };
+      }
+      return null;
+    }
+    case 'cocoapods:': {
+      const pod = url.hostname;
+      const version = url.searchParams.get('version');
+      if (!pod) {
+        return null;
+      }
+      return {
+        tool: 'CocoaPods',
+        command: version ? `pod '${pod}', '${version}'` : `pod '${pod}'`,
+      };
+    }
+    case 'npm:': {
+      const name = url.hostname;
+      const version = url.searchParams.get('version');
+      if (!name) {
+        return null;
+      }
+      return {
+        tool: 'npm',
+        command: version ? `npm i ${name}@${version}` : `npm i ${name}`,
+      };
     }
     default:
       return null;

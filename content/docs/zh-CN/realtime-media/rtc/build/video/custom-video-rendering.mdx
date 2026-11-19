@@ -1,0 +1,151 @@
+---
+title: "自定义视频渲染"
+description: "了解实时互动 RTC 在不同平台上的自定义视频渲染方式，包括接入流程、关键配置和平台差异。"
+---
+<PlatformStructured platform="android">
+
+默认的声网视频模块可以与设备上已安装的 App 实现无缝互动。另外，声网 SDK 也支持使用自定义视频渲染功能，为你的 App 增加更多视频特性。
+
+## 技术原理
+
+实时视频传输过程中，声网 SDK 通常会启动默认的视频模块进行采集。然而，在以下场景中，你可能会发现默认的视频模块无法满足开发需求。例如：
+
+- App 中已有自己的视频模块。
+- 希望使用自定义的视频前处理库。
+- 某些视频采集设备被系统独占。为避免与其他业务产生冲突，需要灵活的设备管理策略。
+
+使用自定义视频渲染器管理视频渲染和播放时，你需要自行调用声网 SDK 以外的方法实现。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了获取原始视频数据的功能。详情请参考[观测原始数据](/zh-CN/realtime-media/rtc/build/video/video-processing#观测原始数据)。
+
+## 实现方法
+
+参考如下步骤，在你的项目中实现自定义视频渲染功能：
+
+1. 调用 `onCaptureVideoFrame` 或者 `onRenderVideoFrame` 方法，获取待播放的视频数据。
+2. 自行实现视频的渲染和播放。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="CustomRemoteVideoRender" href="https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/CustomRemoteVideoRender.java" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+默认的声网视频模块可以与设备上已安装的 App 实现无缝互动。另外，声网 SDK 也支持使用自定义视频渲染功能，为你的 App 增加更多视频特性。
+
+## 技术原理
+
+实时视频传输过程中，声网 SDK 通常会启动默认的视频模块进行采集。然而，在以下场景中，你可能会发现默认的视频模块无法满足开发需求。例如：
+
+- App 中已有自己的视频模块。
+- 希望使用自定义的视频前处理库。
+- 某些视频采集设备被系统独占。为避免与其他业务产生冲突，需要灵活的设备管理策略。
+
+使用自定义视频渲染器管理视频渲染和播放时，你需要自行调用声网 SDK 以外的方法实现。
+
+在 `renderPixelBuffer` 或 `renderRawData` 中，视频帧的 `rotation` 参数可能不为 0。可能的原因是视频采集端的设置问题，你需要自行设置旋转参数。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了获取原始视频数据的功能。详情请参考[观测原始数据](/zh-CN/realtime-media/rtc/build/video/video-processing#观测原始数据)。
+
+## 实现方法
+
+参考如下步骤，在你的项目中实现自定义视频渲染功能：
+
+1. 调用 `onCaptureVideoFrame` 或 `onRenderVideoFrame` 方法，获取待播放的视频数据。
+2. 自行实现视频的渲染和播放。
+
+## 参考信息
+
+### 示例项目
+
+<Cards>
+  <Card title="CustomVideoRender" href="https://github.com/Shengwang-Community/API-Examples/blob/main/iOS/APIExample/APIExample/Examples/Advanced/CustomVideoRender/CustomVideoRender.swift" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+默认的声网视频模块可以与设备上已安装的 App 实现无缝互动。另外，声网 SDK 也支持使用自定义视频渲染功能，为你的 App 增加更多视频特性。
+
+## 技术原理
+
+实时视频传输过程中，声网 SDK 通常会启动默认的视频模块进行采集。然而，在以下场景中，你可能会发现默认的视频模块无法满足开发需求。例如：
+
+- App 中已有自己的视频模块。
+- 希望使用自定义的视频前处理库。
+- 某些视频采集设备被系统独占。为避免与其他业务产生冲突，需要灵活的设备管理策略。
+
+使用自定义视频渲染器管理视频渲染和播放时，你需要自行调用声网 SDK 以外的方法实现。
+
+在 `renderPixelBuffer` 或 `renderRawData` 中，视频帧的 `rotation` 参数可能不为 0。可能的原因是视频采集端的设置问题，你需要自行设置旋转参数。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了获取原始视频数据的功能。详情请参考[观测原始数据](/zh-CN/realtime-media/rtc/build/video/video-processing#观测原始数据)。
+
+## 实现方法
+
+参考如下步骤，在你的项目中实现自定义视频渲染功能：
+
+1. 调用 `onCaptureVideoFrame` 或 `onRenderVideoFrame` 方法，获取待播放的视频数据。
+2. 自行实现视频的渲染和播放。
+
+## 参考信息
+
+### 示例项目
+
+<Cards>
+  <Card title="CustomVideoRender" href="https://github.com/Shengwang-Community/API-Examples/blob/main/macOS/APIExample/Examples/Advanced/CustomVideoRender/CustomVideoRender.swift" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+默认的声网视频模块可以与设备上已安装的 App 实现无缝互动。另外，声网 SDK 也支持使用自定义视频渲染功能，为你的 App 增加更多视频特性。
+
+## 技术原理
+
+实时视频传输过程中，声网 SDK 通常会启动默认的视频模块进行采集。然而，在以下场景中，你可能会发现默认的视频模块无法满足开发需求。例如：
+
+- App 中已有自己的视频模块。
+- 希望使用自定义的视频前处理库。
+- 某些视频采集设备被系统独占。为避免与其他业务产生冲突，需要灵活的设备管理策略。
+
+使用自定义视频渲染器管理视频渲染和播放时，你需要自行调用声网 SDK 以外的方法实现。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了获取原始视频数据的功能。详情请参考[观测原始数据](/zh-CN/realtime-media/rtc/build/video/video-processing#观测原始数据)。
+
+## 实现方法
+
+参考如下步骤，在你的项目中实现自定义视频渲染功能：
+
+1. 调用 `onCaptureVideoFrame` 或 `onRenderVideoFrame` 方法，获取待播放的视频数据。
+2. 自行实现视频的渲染和播放。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="CustomVideoCapture" href="https://github.com/Shengwang-Community/API-Examples/blob/main/windows/APIExample/APIExample/Advanced/CustomVideoCapture/CAgoraCaptureVideoDlg.cpp" />
+</Cards>
+
+</PlatformStructured>

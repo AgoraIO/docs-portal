@@ -1,0 +1,128 @@
+---
+title: Interface ClientConfig
+description: 用于控制客户端行为的接口。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/javascript/interfaces/clientconfig
+  sourcePath: html-docs/rtc/Web/interfaces/clientconfig.html
+  generator: typedoc
+  warnings: []
+---
+
+在调用 [createClient](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createclient) 创建客户端对象时，你需要配置该接口。
+
+:::caution[注意]
+[mode](/zh-CN/api-reference/rtc/web/interfaces/clientconfig#mode) 和 [codec](/zh-CN/api-reference/rtc/web/interfaces/clientconfig#codec) 属性必须设置。
+:::
+
+## Properties
+
+<a id="aiclientmode"></a>
+
+<a id="optional-aiclientmode"></a>
+
+### aiClientMode
+
+<ApiSignature labels="Optional">
+
+aiClientMode: boolean
+
+</ApiSignature>
+
+AI 客户端模式。开启后，SDK 会在创建客户端时准备 AI QoS 所需的媒体 DataChannel。
+
+:::info[自从]
+*4.24.8*
+:::
+
+<a id="clientroleoptions"></a>
+
+<a id="optional-clientroleoptions"></a>
+
+### clientRoleOptions
+
+<ApiSignature labels="Optional">
+
+clientRoleOptions: [ClientRoleOptions](/zh-CN/api-reference/rtc/web/interfaces/clientroleoptions)
+
+</ApiSignature>
+
+用户角色的具体设置，包含用户级别。
+
+用户级别确定用户在其角色权限范围内可以操作和享受到的服务级别。例如对于观众，选择接收低延时还是超低延时的视频流。不同的级别会影响计费。
+
+<a id="codec"></a>
+
+### codec
+
+<ApiSignature>
+
+codec: [SDK_CODEC](/zh-CN/api-reference/rtc/web/globals#sdk_codec)
+
+</ApiSignature>
+
+浏览器使用的编码格式。
+
+<a id="mode"></a>
+
+### mode
+
+<ApiSignature>
+
+mode: [SDK_MODE](/zh-CN/api-reference/rtc/web/globals#sdk_mode)
+
+</ApiSignature>
+
+频道场景。
+
+Agora Web SDK 需知道 app 的使用场景（例如通信场景或直播场景），从而使用不同的优化手段。
+
+声网频道支持以下场景:
+
+- `"live"`: 直播场景，有主播和观众两种用户角色，可以通过 [setClientRole](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setclientrole) 方法设置用户角色为主播或观众。主播可以发布和订阅音视频轨道，而观众只能订阅音视频轨道，无法发布。
+- `"rtc"`: 通信场景，用于常见的一对一通话或群聊，频道中的任何用户可以自由说话。
+
+<a id="multiopus"></a>
+
+<a id="optional-multiopus"></a>
+
+### multiopus
+
+<ApiSignature labels="Optional">
+
+multiopus: boolean
+
+</ApiSignature>
+
+是否启用 Multiopus 多声道音频，默认值为 `false`。
+
+设置为 `true` 后，客户端可发送和接收 4、6、8 声道音频。收发两端均需启用该配置。
+ 发送自定义多声道音频时，通过 [CustomAudioTrackInitConfig.channelCount](/zh-CN/api-reference/rtc/web/interfaces/customaudiotrackinitconfig#channelcount) 指定声道数。
+
+:::caution[注意]
+Multiopus 支持 Chrome 94 及以上版本，不支持 Firefox 和 Safari。
+ 多声道音频处理需要浏览器支持 `MediaStreamTrackProcessor` 和 `MediaStreamTrackGenerator`。
+:::
+
+:::info[自从]
+*4.24.10*
+:::
+
+<a id="role"></a>
+
+<a id="optional-role"></a>
+
+### role
+
+<ApiSignature labels="Optional">
+
+role: [ClientRole](/zh-CN/api-reference/rtc/web/globals#clientrole)
+
+</ApiSignature>
+
+直播场景中（[mode](/zh-CN/api-reference/rtc/web/interfaces/clientconfig#mode) 为 `"live"` 时）的用户角色。
+
+用户角色确定用户在 SDK 层的权限，包含是否可以发布和订阅音视频轨道、是否可以推流到 CDN。用户角色有 `"host"`（主播）和 `"audience"`（观众）。主播既可发布轨道，也可订阅轨道；观众不能进行 [publish](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#publish) 操作。直播场景中的用户角色默认为观众。如需发布音视频，必须将角色角色为主播。
+
+在创建客户端之后，你可以随时调用 [setClientRole](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setclientrole) 来改变用户角色。

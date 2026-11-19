@@ -1,14 +1,31 @@
-import { getDocsHomePath } from './site-region';
+import { getDefaultDocsLocale, getDocsHomePath } from './site-region';
 
-export const appName = 'Agora Docs';
-export const appDescription =
-  'Agora Docs is a protocol-inspired developer documentation surface for product docs, API reference, and AI-readable content.';
+export function getAppBranding(locale: string = getDefaultDocsLocale()) {
+  return locale === 'zh-CN'
+    ? {
+        name: '声网文档中心',
+        docsLabel: '文档中心',
+        description:
+          '声网文档中心：对话式 AI、实时音视频、实时消息、SDK 下载与 API 参考。',
+      }
+    : {
+        name: 'Agora Docs',
+        docsLabel: 'Docs',
+        description:
+          'Agora Docs is a protocol-inspired developer documentation surface for product docs, API reference, and AI-readable content.',
+      };
+}
+
+export const appName = getAppBranding().name;
+export const appDescription = getAppBranding().description;
 export const docsRoute = getDocsHomePath();
+
+export const internationalDocsUrl = 'https://docs.agora.io/en/introduction';
 
 export const legacyDocsBannerConfig = {
   hrefs: {
     en: 'https://docs-legacy.agora.io/en',
-    'zh-CN': 'https://doc.shengwang.cn/',
+    'zh-CN': 'https://doc-archive.shengwang.cn/archive/0.0.546/',
   },
 };
 

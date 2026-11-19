@@ -1,8 +1,14 @@
 export type SdkDownloadVersion = {
   downloadLink?: string;
   id: string;
+  latestVariant?: true;
   label: string;
+  md5?: string;
+  nativeVersion?: string;
+  packageSize?: string;
+  packageName?: string;
   packageManager?: string;
+  releaseDate?: string;
 };
 
 export type SdkDownloadProduct = {

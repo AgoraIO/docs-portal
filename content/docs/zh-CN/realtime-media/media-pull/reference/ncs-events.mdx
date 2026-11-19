@@ -1,0 +1,120 @@
+---
+title: "事件类型"
+description: "查看输入在线媒体流的事件类型，了解关键概念、参数说明、使用限制和接入注意事项。"
+---
+## 1(Player Created)
+
+当你调用 Create 成功创建一个云端播放器时，消息通知服务器会向你的服务器通知创建成功事件。
+
+### 触发时机
+
+### 事件详情
+
+`eventType` 为 `1(Player Created)`，`payload` 示例如下：
+
+```json
+{
+  "player": {
+    "channelName": "class32",
+    "playTs": 1575508644,
+    "createTs": 1575508644,
+    "id": "2a784467d647bb87b60b719f6fa56317",
+    "idleTimeout": 300,
+    "name": "teacher101",
+    "streamUrl": "rtmp://example.agora.io/live/class32/teacher101",
+    "token": "2a784467d6",
+    "uid": 101,
+    "status": "connecting"
+  },
+  "lts": 1575508644149,
+  "xRequestId": "7bbcc8a4acce48c78b53c5a261a8a564"
+}
+```
+
+- `player` 包含的字段：
+  - `channelName`：String 型字段，声网频道名称。
+  - `playTs`：Number 型字段，云端播放器开始播放在线媒体流时的 Unix 时间戳（秒）。
+  - `createTs`：Number 型字段，云端播放器创建的 Unix 时间戳（秒）。
+  - `id`：String 型字段，云端播放器的 ID。它是声网服务器生成的一个 UUID（通用唯一识别码），标识已创建的一个云端播放器。
+  - `idleTimeout`：Number 型字段，云端播放器处于“空闲”状态（即媒体流为非播放状态）的最大时长（秒）。空闲状态超过设置的 `idleTimeout` 后，该云端播放器会自动销毁。
+  - `name`：String 型字段，云端播放器的名字。
+  - `streamUrl`：String 型字段，在线媒体流 URL 地址。
+  - `token`：String 型字段，云端播放器在声网频道内使用的 Token。
+  - `uid`：Number 型字段，云端播放器在声网频道内的用户 ID。
+  - `account`：String 型字段。返回设置的云端播放器在频道内的用户 Account。
+  - `status`：String 字段，云端播放器的状态。该事件中会报告 `"connecting"`，表示业务服务器正在连接媒体流地址或正在探测音视频数据。
+- `lts`：Number 型字段，该事件在业务服务器上发生的 Unix 时间戳（毫秒）。
+- `xRequestId`：String 型字段，标识本次请求的 UUID（通用唯一识别码）。该值为本次请求 Header 中的 `X-Request-ID`。
+
+## 3(Player Destroyed)
+
+### 触发时机
+
+当一个云端播放器被销毁时，消息通知服务器会向你的服务器通知销毁成功事件。销毁的原因请查看 `destroyReason` 字段。
+
+### 事件详情
+
+`eventType` 为 `3(Player Destroyed)`，`payload` 示例如下：
+
+```json
+{
+  "player": {
+    "channelName": "class32",
+    "id": "2a784467d647bb87b60b719f6fa56317",
+    "name": "teacher101",
+    "playTs": 1575508644
+  },
+  "lts": 1575508666666,
+  "destroyReason": "Delete Request",
+  "fields": "player.name,player.channelName,player.id"
+}
+```
+
+- `player` 包含的字段：
+  - `channelName`：String 型字段，声网频道名称。
+  - `id`：String 型字段，云端播放器的 ID。它是声网服务器生成的一个 UUID（通用唯一识别码），标识已创建的一个云端播放器。
+  - `name`：String 型字段，云端播放器的名字。
+  - `playTs`：Number 型字段，云端播放器开始播放在线媒体流时的 Unix 时间戳（秒）。
+- `lts`：Number 型字段，该事件在业务服务器上发生的 Unix 时间戳（毫秒）。
+- `destroyReason`：String 型字段，描述该云端播放器销毁的原因：
+  - `Delete Request`：业务服务器收到你的 [`Delete`](/zh-CN/api-reference/api-ref/media-pull/delete) 请求。
+  - `Internal Error`：声网频道相关的错误。常见错误为 Token 无效或 Token 超时。
+  - `Idle Timeout`：在你设置的 `idleTimeout` 时间内，业务服务器无法连接你指定的媒体流地址或该媒体流无法播放。
+  - `Stream Stopped`：媒体流播放结束。
+- `fields`： JSON 编码方式的字段掩码，详见[谷歌 protobuf FieldMask 文档](https://googleapis.dev/nodejs/pubsub/latest/google.protobuf.html#.FieldMask)。用于指定返回 `player` 字段的子集。在此示例中表示声网服务器返回 `player` 字段中的 `name`、`channelName` 和 `id` 字段子集。
+
+## 4(Player Status Changed)
+
+### 触发时机
+
+成功创建一个云端播放器后，当云端播放器运行状态改变时，消息通知服务器会向你的服务器通知运行状态改变事件。
+
+### 事件详情
+
+`eventType` 为 `4(Player Status Changed)`，`payload` 示例如下：
+
+```json
+{
+  "player": {
+    "channelName": "class32",
+    "id": "2a784467d647bb87b60b719f6fa56317",
+    "name": "teacher101",
+    "status": "running"
+  },
+  "lts": 1575508645000,
+  "fields": "player.name,player.channelName,player.id,player.status"
+}
+```
+
+- `player` 包含的字段：
+  - `channelName`：String 型字段，声网频道名称。
+  - `id`：String 型字段，云端播放器的 ID。它是声网服务器生成的一个 UUID（通用唯一识别码），标识已创建的一个云端播放器。
+  - `name`：String 型字段，云端播放器的名字。
+  - `status`：String 字段，云端播放器的状态：
+    - `"connecting"`：业务服务器正在连接媒体流地址或正在探测音视频数据。该状态报告运行中的云端播放器出现问题后与业务服务器重新开始连接。
+    - `"success"`：声网服务器与媒体流地址连接成功。
+    - `"running"`：云端播放器正常运行，正在声网频道内播放媒体流。
+    - `"failed"`：业务服务器无法连接媒体流地址或该媒体流无法播放，该状态报告运行中的云端播放器出现问题。
+    - `"stopped"`：媒体流播放结束。
+- `lts`：Number 型字段，该事件在业务服务器上发生的 Unix 时间戳（毫秒）。
+- `fields`：JSON 编码方式的字段掩码，详见[谷歌 protobuf FieldMask 文档](https://googleapis.dev/nodejs/pubsub/latest/google.protobuf.html#.FieldMask)。用于指定返回 `player` 字段的子集。在此示例中表示声网服务器返回 `player` 字段中的 `name`、`channelName` 、 `id` 和 `status` 字段子集。

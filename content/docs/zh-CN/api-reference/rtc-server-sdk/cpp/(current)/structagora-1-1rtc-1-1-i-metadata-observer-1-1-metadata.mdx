@@ -1,0 +1,91 @@
+---
+title: agora::rtc::IMetadataObserver::Metadata结构体 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_i_metadata_observer_1_1_metadata
+  sourcePath: html-docs/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_i_metadata_observer_1_1_metadata.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+发送或接收的视频 Metadata。
+
+## 构造及析构函数说明
+
+<a id="ac1afe51dd29ce4efe9e290403edb9e43"></a>
+
+### Metadata()
+
+<ApiSignature labels="inline">
+
+agora::rtc::IMetadataObserver::Metadata::Metadata()
+
+</ApiSignature>
+
+## 类成员变量说明
+
+<a id="aec5efeaa06a3d5fc8d1b264f66b8b729"></a>
+
+### channelId
+
+<ApiSignature>
+
+const char* agora::rtc::IMetadataObserver::Metadata::channelId
+
+</ApiSignature>
+
+频道名，默认值为 `NULL`。
+
+<a id="a7a60f3dbe73288e3f3ae0d58c24deae1"></a>
+
+### uid
+
+<ApiSignature>
+
+unsigned int agora::rtc::IMetadataObserver::Metadata::uid
+
+</ApiSignature>
+
+发送端用户 ID。接收方读取此字段，发送方无需设置。
+
+<a id="a5e90e7099760c8f95a3c178d6ff6b70d"></a>
+
+### size
+
+<ApiSignature>
+
+unsigned int agora::rtc::IMetadataObserver::Metadata::size
+
+</ApiSignature>
+
+[Metadata](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-i-metadata-observer-1-1-metadata) 缓冲区大小，单位为字节，默认值为 `0`。
+
+<a id="aff932a17745b82ce0b1ec3b914a11cea"></a>
+
+### buffer
+
+<ApiSignature>
+
+unsigned char* agora::rtc::IMetadataObserver::Metadata::buffer
+
+</ApiSignature>
+
+[Metadata](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-i-metadata-observer-1-1-metadata) 缓冲区地址，默认值为 `NULL`。
+
+<a id="a2dd74384bb97f20667b22317110a717e"></a>
+
+### timeStampMs
+
+<ApiSignature>
+
+long long agora::rtc::IMetadataObserver::Metadata::timeStampMs
+
+</ApiSignature>
+
+[Metadata](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-i-metadata-observer-1-1-metadata) 发送时间戳，单位为毫秒，默认值为 `0`。

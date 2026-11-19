@@ -1,0 +1,1215 @@
+import { describe, expect, it, vi } from 'vitest';
+import { addAccordionHeadingsToTocText } from '../mdx/accordion-toc';
+import {
+  exportPublishedCnRecords,
+  extractPublishedCnSections,
+} from './cn-records.server';
+
+const url = '/zh-CN/api-reference/rtc/web/4.6.0/api';
+const route = { url, canonicalPath: url, markdownPath: `${url}.md` };
+const page = { url, title: 'RTC API', objectType: 'docs' as const };
+describe('published CN index export', () => {
+  it('preserves rendered API parameter identities, plan details and SDK versions', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n<Parameter name="uid" type="number" direction="[in]" required /><ApiSignature labels="pure" /><ApiReturns /><PlanCards plans={[{name:"体验套餐",features:["免费试用"],badge:"推荐",accent:"blue"}]} /><ProductSdkDownloads versionIds={["1.8.2-fastboard-android"]} /><DownloadResourceCards items={[{platform:"ios"}]} />',
+      readRenderedHtml: async () =>
+        '<article data-static-docs-body><code>uid</code><span>number</span><span>[in]</span><span>required</span><span>pure</span><p>Returns</p><h3>体验套餐</h3><li>免费试用</li><span>推荐</span><span>1.8.2</span><span>iOS</span><span>blue</span></article>',
+    });
+    expect(records).toHaveLength(1);
+    expect(records[0].content.trim()).toBe(
+      'uid\nnumber\n[in]\nrequired\npure\nReturns\n体验套餐\n免费试用\n推荐\n1.8.2\niOS',
+    );
+  });
+  it.each([
+    ['<ApiReferenceCards locale="zh-CN" type="all" />', 'C'],
+    [
+      '<Card href="/internal-config" icon="ticket" style={{ display: "grid" }} />',
+      'internal-config',
+    ],
+    [
+      '<Card href="/internal-config" icon="ticket" style={{ display: "grid" }} />',
+      'grid',
+    ],
+    [
+      '<Card href="/internal-config" icon="ticket" style={{ display: "grid" }} />',
+      'ticket',
+    ],
+  ])(
+    'does not create a search record from JSX configuration %s matching rendered text %s',
+    async (component, rendered) => {
+      const catalogUrl = '/zh-CN/api-reference/api';
+      const records = await exportPublishedCnRecords({
+        routes: [
+          route,
+          {
+            url: catalogUrl,
+            canonicalPath: catalogUrl,
+            markdownPath: `${catalogUrl}.md`,
+          },
+        ],
+        pages: [page, { url: catalogUrl, title: 'API 参考' }],
+        readMarkdown: async (path) =>
+          path === route.markdownPath
+            ? '# RTC API\n\n正常正文。'
+            : `# API 参考\n\n${component}`,
+        readRenderedHtml: async (path) =>
+          path === url
+            ? '<article data-static-docs-body><p>正常正文。</p></article>'
+            : `<article data-static-docs-body><span>${rendered}</span></article>`,
+      });
+      expect(records).toHaveLength(1);
+      expect(records[0].url).toBe('/api-reference/rtc/web/4.6.0/api');
+      expect(records[0].content).toBe('正常正文。');
+    },
+  );
+  it('preserves literal single-letter prose props without indexing matching configuration', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n<HelpHub cards={[{ title: "C", description: `A &amp; B`, href: "/internal-config" }]} />',
+      readRenderedHtml: async () =>
+        '<article data-static-docs-body><h3>C</h3><p>A &amp; B</p><span>internal-config</span></article>',
+    });
+    expect(records).toHaveLength(1);
+    expect(records[0].content.trim()).toBe('C\nA & B');
+    expect(records[0].summary).toBe('C\nA & B');
+  });
+  it('recovers literal prose supplied by a nested JSX title component', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n<Card title={<Label text="显示文本" className="internal-style" />} />',
+      readRenderedHtml: async () =>
+        '<article data-static-docs-body><span>显示文本</span><span>internal-style</span></article>',
+    });
+    expect(records).toHaveLength(1);
+    expect(records[0].content.trim()).toBe('显示文本');
+    expect(records[0].summary).toBe('显示文本');
+  });
+  it('retains visible HelpHub call-to-action text without indexing card configuration', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n<HelpHub cards={[{ title: "提交工单", description: "联系技术支持。", cta: "创建工单", href: "/internal-config", icon: "ticket" }]} />',
+      readRenderedHtml: async () =>
+        '<article data-static-docs-body><h3>提交工单</h3><p>联系技术支持。</p><span>创建工单</span><span>internal-config</span><span>ticket</span></article>',
+    });
+    expect(records).toHaveLength(1);
+    expect(records[0].content.trim()).toBe(
+      '提交工单\n联系技术支持。\n创建工单',
+    );
+  });
+  it('retains rendered demo captions and metadata without accepting other component configuration', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n<DemoMedia qrLabel="扫码体验" imageSrc="/image.png" />\n\n<DemoGallery items={[{title: "Demo", platforms: ["iOS", "Android"], products: ["RTC", "RTM"], tags: ["语聊房"], version: "4.6.0", releaseDate: "2023-12-27"}]} />\n\n<Card version="internal-version" platforms={["internal-platform"]} />',
+      readRenderedHtml: async () =>
+        '<article data-static-docs-body><figcaption>扫码体验</figcaption><h3>Demo</h3><dd>iOS、Android</dd><dd>RTC、RTM</dd><span>语聊房</span><dd>4.6.0</dd><dd>2023-12-27</dd><span>internal-version</span><span>internal-platform</span></article>',
+    });
+    expect(records).toHaveLength(1);
+    expect(records[0].content.trim()).toBe(
+      '扫码体验\nDemo\niOS、Android\nRTC、RTM\n语聊房\n4.6.0\n2023-12-27',
+    );
+  });
+  it.each([
+    '<button aria-expanded="false">帮助</button>',
+    '帮助<button aria-label="Copy Anchor Link">Copy Anchor Link</button>',
+  ])(
+    'resolves legacy anchors without removing accordion title text: %s',
+    async (heading) => {
+      const records = await exportPublishedCnRecords({
+        routes: [route],
+        pages: [page],
+        readMarkdown: async () =>
+          '# RTC API\n\n## 帮助 [#legacy]\n\n实际说明。',
+        readRenderedHtml: async () =>
+          `<article data-static-docs-body><h2 id="actual">${heading}</h2><p>实际说明。</p></article>`,
+      });
+      expect(records[0].url).toBe(`${url.replace('/zh-CN', '')}#actual`);
+      expect(records[0].content).toContain('实际说明。');
+    },
+  );
+  it.each(['help', 'legacy'])(
+    'retains visible props with source heading %s without reindexing configuration or hidden platforms',
+    async (sourceAnchor) => {
+      const records = await exportPublishedCnRecords({
+        routes: [route],
+        pages: [page],
+        readMarkdown: async () =>
+          `# RTC API\n\n## 帮助 [#${sourceAnchor}]\n\n<HelpHub cards={[{ title: "提交工单", description: "A &amp; B", href: "/internal-config", icon: "ticket" }]} />\n\n<Card title={<span>体验 Playground</span>} style={{ display: "grid" }} />\n\n<OverviewActions actions={[{ label: "隐藏配置", href: "/hidden" }]} />\n\n## 下一步 [#next]\n\n继续接入。`,
+        readRenderedHtml: async () =>
+          '<article data-static-docs-body><h1>RTC API</h1><h2 id="help">帮助</h2><div><h3>提交工单</h3><p>A &amp; B</p></div><div>体验 Playground</div><div data-platform-panel="android" hidden>隐藏配置</div><button>ticket</button><h2 id="next">下一步</h2><p>继续接入。</p></article>',
+      });
+      const help = records.find((record) => record.url.endsWith('#help'));
+      expect(help?.content).toContain('提交工单');
+      expect(help?.content).toContain('A & B');
+      expect(help?.content).toContain('体验 Playground');
+      expect(help?.content).not.toMatch(
+        /OverviewActions|HelpHub|href|internal-config|ticket|grid|隐藏配置/,
+      );
+      expect(help?.summary).toContain('提交工单');
+      const next = records.find((record) => record.url.endsWith('#next'));
+      expect(next?.content).not.toContain('提交工单');
+    },
+  );
+  it('recovers a component-only introduction without a description, including reachable ordinary tabs', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n<Card title="可见卡片" />\n\n<Tabs><Tab><Card title="可切换的内容" /></Tab></Tabs>',
+      readRenderedHtml: async () =>
+        '<article data-static-docs-body><div>可见卡片</div><div role="tabpanel" hidden data-state="inactive">可切换的内容</div></article>',
+    });
+    expect(records).toHaveLength(1);
+    expect(records[0].url).toBe('/api-reference/rtc/web/4.6.0/api');
+    expect(records[0].content).toContain('可见卡片');
+    expect(records[0].content).toContain('可切换的内容');
+    expect(records[0].content).not.toMatch(/Card|Tabs|title=/);
+  });
+  it('keeps the maintained description as the entry for a page rendered entirely by components', () => {
+    const url = '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/cpp';
+    const [entry] = extractPublishedCnSections(
+      { url, canonicalPath: url, markdownPath: `${url}.md` },
+      {
+        url,
+        title: '下载',
+        description: '获取 SDK 的下载链接、版本信息和示例项目。',
+      },
+      '# 下载\n\n## 下载 SDK [#sdk]\n\n<ProductSdkDownloads\n product="server-gateway"\n platform="linux"\n versionIdPrefixes={["server-gateway-cpp"]}\n/>',
+    );
+    expect(entry).toMatchObject({
+      url,
+      sectionTitle: '下载',
+      content: '获取 SDK 的下载链接、版本信息和示例项目。',
+      summary: '获取 SDK 的下载链接、版本信息和示例项目。',
+    });
+  });
+  it('excludes multiline component props and callout markers from prose without losing content or section offsets', () => {
+    const records = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n正文说明。\n\n<OverviewActions actions={[\n\n{ label: "开始", href: "/start" },\n\n]} />\n\n:::info[信息]\n实际提示。\n:::\n\n## Next [#next]\n\n后续步骤。\n\n```js\nclient.joinChannel();\n```',
+    );
+    expect(records[0].summary).toContain('正文说明。');
+    expect(records[0].summary).toContain('实际提示。');
+    expect(records[0].summary).not.toMatch(
+      /OverviewActions|label|href|:::|\[信息\]/,
+    );
+    expect(records.map((record) => record.content).join('\n')).not.toMatch(
+      /OverviewActions|label|href|\/start/,
+    );
+    expect(records[1]).toMatchObject({
+      url: `${url}#next`,
+      summary: '后续步骤。',
+    });
+    expect(records[1].content).toContain('client.joinChannel()');
+  });
+  it('retains literal JSX in code examples while removing component configuration from searchable content', () => {
+    const records = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n<OverviewActions actions={[\n{ label: `内部配置`, href: "/internal" },\n]} />\n\n## 示例 [#example]\n\n使用 `joinChannel` 加入频道。\n\n```tsx\n<Example client={client} />\n```\n\n内联代码 `<Button />` 也是示例。\n\n<Card title="配置属性" href="/internal">实际可见的正文</Card>',
+    );
+    const content = records.map((record) => record.content).join('\n');
+    expect(content).not.toMatch(/OverviewActions|内部配置|配置属性|\/internal/);
+    expect(content).toContain('<Example client={client} />');
+    expect(content).toContain('<Button />');
+    expect(content).toContain('joinChannel');
+    expect(content).toContain('实际可见的正文');
+    expect(records.find((record) => record.sectionTitle === '示例')?.url).toBe(
+      `${url}#example`,
+    );
+  });
+  it('keeps each release as the ancestor of its indexed subsections', async () => {
+    const url = '/zh-CN/ai/release-notes';
+    const markdown = addAccordionHeadingsToTocText(`# 发版说明
+
+<Accordions type="multiple">
+<Accordion title="v3.2" id="v32" headingLevel={2}>
+
+发布说明。
+
+### 新增特性 [#features]
+
+#### 自动接收 [#receive]
+
+enableAutoReceive 配置。
+
+</Accordion>
+<Accordion title="v3.1" id="v31" headingLevel={2}>
+
+历史发布说明。
+
+### 问题修复 [#fixes]
+
+恢复音频。
+
+</Accordion>
+</Accordions>`);
+    const records = await exportPublishedCnRecords({
+      routes: [{ url, canonicalPath: url, markdownPath: `${url}.md` }],
+      pages: [{ url, title: '发版说明', objectType: 'docs' }],
+      readMarkdown: async () => markdown,
+      readRenderedHtml: async () =>
+        '<h2 id="v32">v3.2</h2><h3 id="features">新增特性</h3><h4 id="receive">自动接收</h4><h2 id="v31">v3.1</h2><h3 id="fixes">问题修复</h3>',
+    });
+    expect(
+      records.find((record) => record.url.endsWith('#receive')),
+    ).toMatchObject({
+      headingPath: ['发版说明', 'v3.2', '新增特性', '自动接收'],
+      content: expect.stringContaining('enableAutoReceive'),
+    });
+    expect(
+      records.find((record) => record.url.endsWith('#fixes')),
+    ).toMatchObject({ headingPath: ['发版说明', 'v3.1', '问题修复'] });
+  });
+
+  it('preserves a quoted code example after serialized table fences', () => {
+    const [record, next] = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n| 新 | 旧 |\n| --- | --- |\n| ```json\n{"new": true}\n``` | ```json\n{"old": true}\n``` |\n\n> ```xml\n> <CalloutContainer type="info">\n>   <CalloutTitle>LiteralName</CalloutTitle>\n> </CalloutContainer>\n> ```\n\n<CalloutContainer type="warning">\n  <CalloutDescription>\n    实际提示。\n  </CalloutDescription>\n</CalloutContainer>\n\n## Next [#next]\n\n后续步骤。',
+    );
+    expect(record.content).toContain('{"new": true}');
+    expect(record.content).toContain('{"old": true}');
+    expect(record.content).toContain(
+      '<CalloutContainer type="info">\n  <CalloutTitle>LiteralName</CalloutTitle>\n</CalloutContainer>',
+    );
+    expect(record.content).toContain('实际提示。');
+    expect(record.content).not.toContain('CalloutDescription');
+    expect(next.url).toBe(`${url}#next`);
+  });
+  it.each([
+    [
+      'a quoted fence',
+      '> ```xml\n> <CalloutContainer type="info">\n>   <CalloutTitle>LiteralName</CalloutTitle>\n> </CalloutContainer>\n> ```',
+      '<CalloutTitle>LiteralName</CalloutTitle>',
+    ],
+    [
+      'a code example containing quoted fences',
+      '```markdown\n> ```xml\n> <CalloutContainer type="info">\n>   <CalloutTitle>LiteralName</CalloutTitle>\n> </CalloutContainer>\n> ```\n```',
+      '>   <CalloutTitle>LiteralName</CalloutTitle>',
+    ],
+    [
+      'a code example containing list fences',
+      '````markdown\n- ```xml\n  <CalloutContainer type="info">\n    <CalloutTitle>LiteralName</CalloutTitle>\n  </CalloutContainer>\n  ```\n````',
+      '    <CalloutTitle>LiteralName</CalloutTitle>',
+    ],
+    [
+      'a code example with a literal list fence opener',
+      '```markdown\n- ```\n<CalloutContainer type="info">\n  <CalloutTitle>LiteralName</CalloutTitle>\n</CalloutContainer>\n```',
+      '  <CalloutTitle>LiteralName</CalloutTitle>',
+    ],
+  ])(
+    'preserves %s in serialized platform indentation',
+    (_name, example, literal) => {
+      const indented = example
+        .split('\n')
+        .map((line) => `    ${line}`)
+        .join('\n');
+      const records = extractPublishedCnSections(
+        { ...route, platform: 'android' },
+        page,
+        `# RTC API\n\n    ## 示例 [#sample]\n\n${indented}\n\n    <CalloutContainer type="warning">\n      <CalloutDescription>\n        实际提示。\n      </CalloutDescription>\n    </CalloutContainer>\n\n    ## Next [#next]\n\n    后续步骤。`,
+      );
+      expect(records.map((record) => record.url)).toEqual([
+        `${url}#sample`,
+        `${url}#next`,
+      ]);
+      expect(records[0].content).toContain(literal);
+      expect(records[0].content).toContain('实际提示。');
+      expect(records[0].content).not.toContain('CalloutDescription');
+      expect(records[1].content).toContain('后续步骤。');
+    },
+  );
+  it.each([
+    [
+      'a blockquoted fence',
+      '> ```xml\n> <CalloutContainer type="info">\n>   <CalloutTitle>LiteralName</CalloutTitle>\n> </CalloutContainer>\n> ```',
+    ],
+    [
+      'a fence starting a list item',
+      '- ```xml\n  <CalloutContainer type="info">\n    <CalloutTitle>LiteralName</CalloutTitle>\n  </CalloutContainer>\n  ```',
+    ],
+    [
+      'a fence following list text',
+      '1. 示例\n\n   ```xml\n   <CalloutContainer type="info">\n     <CalloutTitle>LiteralName</CalloutTitle>\n   </CalloutContainer>\n   ```',
+    ],
+    [
+      'a blockquoted fence without a language',
+      '> ```\n> <CalloutContainer type="info">\n>   <CalloutTitle>LiteralName</CalloutTitle>\n> </CalloutContainer>\n> ```',
+    ],
+    [
+      'a longer tilde fence',
+      '> ~~~~xml\n> <CalloutContainer type="info">\n>   <CalloutTitle>LiteralName</CalloutTitle>\n> </CalloutContainer>\n> ~~~~',
+    ],
+    [
+      'a fence in a quoted list',
+      '> - ```xml\n>   <CalloutContainer type="info">\n>     <CalloutTitle>LiteralName</CalloutTitle>\n>   </CalloutContainer>\n>   ```',
+    ],
+  ])('preserves %s and cleans the following callout', (_name, example) => {
+    const records = extractPublishedCnSections(
+      route,
+      page,
+      `# RTC API\n\n${example}\n\n<CalloutContainer type="warning">\n  <CalloutDescription>\n    实际提示。\n  </CalloutDescription>\n</CalloutContainer>\n\n## Next [#next]\n\n后续步骤。`,
+    );
+    expect(records.map((record) => record.url)).toEqual([url, `${url}#next`]);
+    expect(records[0].content).toContain(
+      '<CalloutContainer type="info">\n  <CalloutTitle>LiteralName</CalloutTitle>\n</CalloutContainer>',
+    );
+    expect(records[0].content).toContain('实际提示。');
+    expect(records[0].content).not.toContain('CalloutDescription');
+    expect(records[0].content).not.toContain('type="warning"');
+    expect(records[1].content).toContain('后续步骤。');
+  });
+  it('keeps later platform headings after an indented callout list', () => {
+    const records = extractPublishedCnSections(
+      { ...route, platform: 'android' },
+      page,
+      '# RTC API\n\n    ## 前一节 [#before]\n\n    引导正文。\n\n    <CalloutContainer type="info">\n      <CalloutDescription>\n        * 第一条提示\n        * 第二条提示\n      </CalloutDescription>\n    </CalloutContainer>\n\n    ## 后一节 [#after]\n\n    后续步骤。',
+    );
+    expect(records.map((record) => record.url)).toEqual([
+      `${url}#before`,
+      `${url}#after`,
+    ]);
+    expect(records[0].content).toContain('第一条提示');
+    expect(records[0].content).toContain('第二条提示');
+    expect(records[1].content).toContain('后续步骤。');
+  });
+  it('preserves renderer tags inside a multiline inline-code span', () => {
+    const [record] = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n示例： `<CalloutContainer>\n<CalloutTitle>literal</CalloutTitle>\n</CalloutContainer>`',
+    );
+    expect(record.content).toBe(
+      '示例： <CalloutContainer>\n<CalloutTitle>literal</CalloutTitle>\n</CalloutContainer>',
+    );
+  });
+  it('does not treat a component name in fence metadata as a container opening', () => {
+    const [record] = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n```ts title="<CalloutContainer>"\nconst id = 1;\n```',
+    );
+    expect(record.content).toBe('const id = 1;');
+  });
+  it('leaves table-fence syntax inside a longer fenced example unchanged', () => {
+    const example =
+      '| ```json\n{"new": true}\n``` | ```json\n{"old": true}\n``` |';
+    const records = extractPublishedCnSections(
+      route,
+      page,
+      `# RTC API\n\n\`\`\`\`md\n${example}\n\`\`\`\`\n\n<CalloutContainer type="info">\n  <CalloutDescription>\n    说明。\n  </CalloutDescription>\n</CalloutContainer>`,
+    );
+    expect(records[0].content).toContain(example);
+    expect(records[0].content).toContain('说明。');
+  });
+
+  it('preserves all text after an incomplete serialized container', () => {
+    const [record] = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n<CalloutContainer type="info">\n  <CalloutDescription>\n    必须保留这段配置说明。',
+    );
+    expect(record.content).toContain('必须保留这段配置说明。');
+  });
+  it('preserves table-cell examples and clears later callouts after serialized table fences', () => {
+    const markdown =
+      '# RTC API\n\n## 配置 [#config]\n\n| 新 | 旧 |\n| --- | --- |\n| ```json\n{"new": true}\n``` | ```json\n{"old": true}\n``` |\n\n<CalloutContainer type="warning">\n  <CalloutDescription>\n    保持配置一致。\n  </CalloutDescription>\n</CalloutContainer>\n\n## 后续步骤 [#next]\n\n重新连接。';
+    const records = extractPublishedCnSections(route, page, markdown);
+    expect(records.map((record) => record.url)).toEqual([
+      `${url}#config`,
+      `${url}#next`,
+    ]);
+    expect(records[0].content).toContain('{"new": true}');
+    expect(records[0].content).toContain('{"old": true}');
+    expect(records[0].content).toContain('保持配置一致。');
+    expect(records[0].content).not.toContain('Callout');
+    expect(records[1].content).toContain('重新连接。');
+  });
+
+  it('keeps a renderer-looking example inside a platform-indented fence literal', () => {
+    const markdown =
+      '# RTC API\n\n    ## 示例 [#sample]\n\n    ```text\n    <CalloutContainer type="info">\n      <CalloutDescription>literal</CalloutDescription>\n    </CalloutContainer>\n    ```';
+    const [record] = extractPublishedCnSections(
+      { ...route, platform: 'android' },
+      page,
+      markdown,
+    );
+    expect(record.content).toContain('<CalloutContainer type="info">');
+    expect(record.content).toContain(
+      '<CalloutDescription>literal</CalloutDescription>',
+    );
+  });
+  it('normalizes a code-tab container even when an earlier table is not valid MDX', () => {
+    const markdown =
+      '# RTC API\n\n| 参数 | 说明 |\n| --- | --- |\n| channel | 频道说明。<CalloutContainer type="info">\n  <CalloutDescription>\n    长度限制。\n  </CalloutDescription>\n</CalloutContainer> |\n\n## 用法 [#usage]\n\n<CodeBlockTabs defaultValue="cURL">\n  <CodeBlockTab value="cURL">\n    ```shell tabGroup="language"\n    run();\n    ```\n  </CodeBlockTab>\n</CodeBlockTabs>';
+    const records = extractPublishedCnSections(route, page, markdown);
+    expect(records.map((record) => record.url)).toEqual([url, `${url}#usage`]);
+    const content = records.map((record) => record.content).join('\n');
+    expect(content).toContain('长度限制。');
+    expect(content).toContain('run();');
+    expect(content).not.toContain('CodeBlockTab');
+    expect(content).not.toContain('tabGroup=');
+    expect(content).not.toContain('CalloutDescription');
+  });
+
+  it('preserves literal renderer tags in a fenced example without a language', () => {
+    const markdown =
+      '# RTC API\n\n示例：\n\n```\n<CalloutContainer type="info">\n  <CalloutDescription>literal</CalloutDescription>\n</CalloutContainer>\n```\n\n正文中的 `<CalloutContainer>` 是名称。';
+    const [record] = extractPublishedCnSections(route, page, markdown);
+    expect(record.content).toContain('<CalloutContainer type="info">');
+    expect(record.content).toContain(
+      '<CalloutDescription>literal</CalloutDescription>',
+    );
+    expect(record.content).toContain('正文中的 <CalloutContainer> 是名称。');
+  });
+
+  it('normalizes code tabs nested in a list without losing surrounding instructions', () => {
+    const markdown =
+      '# RTC API\n\n- 安装依赖\n\n  <CodeBlockTabs defaultValue="npm">\n    <CodeBlockTabsList>\n      <CodeBlockTabsTrigger value="npm">\n        npm\n      </CodeBlockTabsTrigger>\n    </CodeBlockTabsList>\n\n    <CodeBlockTab value="npm">\n      ```bash tabGroup="install"\n      npm install agora-rtc-sdk-ng\n      ```\n    </CodeBlockTab>\n  </CodeBlockTabs>\n\n  配置后运行。\n\n- 再次构建';
+    const records = extractPublishedCnSections(route, page, markdown);
+    expect(records).toHaveLength(1);
+    expect(records[0].content).toContain('安装依赖');
+    expect(records[0].content).toContain('npm install agora-rtc-sdk-ng');
+    expect(records[0].content).toContain('配置后运行。');
+    expect(records[0].content).toContain('再次构建');
+    expect(records[0].content).not.toContain('CodeBlockTab');
+    expect(records[0].content).not.toContain('tabGroup=');
+  });
+  it('extracts serialized code tabs and callouts without indexing renderer metadata', () => {
+    const markdown = [
+      '# RTC API',
+      '',
+      '    ## 示例标题 [#not-a-section]',
+      '    keepIndentedExample();',
+      '',
+      '<CodeBlockTabs defaultValue="C++">',
+      '  <CodeBlockTabsList>',
+      '    <CodeBlockTabsTrigger value="C++">',
+      '      C++',
+      '    </CodeBlockTabsTrigger>',
+      '',
+      '    <CodeBlockTabsTrigger value="Python3">',
+      '      Python3',
+      '    </CodeBlockTabsTrigger>',
+      '  </CodeBlockTabsList>',
+      '',
+      '  <CodeBlockTab value="C++">',
+      '    ```cpp tabGroup="token-sample-code"',
+      '    #include <cstdlib>',
+      '    const char* tabGroup = "app";',
+      '    const char* example = "<CalloutTitle>value</CalloutTitle>";',
+      '    ```',
+      '  </CodeBlockTab>',
+      '',
+      '  <CodeBlockTab value="Python3">',
+      '    ```python tabGroup="token-sample-code"',
+      '    print("Token")',
+      '    ```',
+      '  </CodeBlockTab>',
+      '</CodeBlockTabs>',
+      '',
+      '<CalloutContainer type="warning">',
+      '  <CalloutTitle>',
+      '    注意',
+      '  </CalloutTitle>',
+      '',
+      '  <CalloutDescription>',
+      '    在服务端生成 Token。',
+      '  </CalloutDescription>',
+      '</CalloutContainer>',
+    ].join('\n');
+    const records = extractPublishedCnSections(route, page, markdown);
+    expect(records).toHaveLength(1);
+    const [record] = records;
+    expect(record.content).toContain('keepIndentedExample();');
+    expect(record.content).toContain('#include <cstdlib>');
+    expect(record.content).toContain('const char* tabGroup = "app";');
+    expect(record.content).toContain('"<CalloutTitle>value</CalloutTitle>"');
+    expect(record.content).toContain('print("Token")');
+    expect(record.content).toContain('在服务端生成 Token。');
+    expect(record.content).not.toContain('CodeBlockTabs');
+    expect(record.content).not.toContain('CalloutContainer');
+    expect(record.content).not.toContain('tabGroup=');
+  });
+  it.each([
+    ['android', 'Maven', 'maven'],
+    ['ios', 'CocoaPods', 'cocoapods'],
+    ['web', 'Package Manager', 'package-manager'],
+  ])(
+    'indexes the first rendered heading in a %s language tab',
+    async (platform, title, anchor) => {
+      const records = await exportPublishedCnRecords({
+        routes: [route],
+        pages: [page],
+        readMarkdown: async () =>
+          `# RTC API\n\n## 集成组件 [#install]\n\n  <TabsContent value="${platform}">\n    #### ${title} [#${anchor}]\n\n    安装组件依赖。\n\n    \`\`\`md\n    ## 示例标题 [#sample]\n    \`\`\`\n  </TabsContent>`,
+        readRenderedHtml: async () =>
+          `<h2 id="install">集成组件</h2><h4 id="${anchor}">${title}</h4><p>安装组件依赖。</p><pre><code>## 示例标题 [#sample]</code></pre>`,
+      });
+      expect(records.map((record) => record.url)).toEqual([
+        `${url.replace('/zh-CN', '')}#install`,
+        `${url.replace('/zh-CN', '')}#${anchor}`,
+      ]);
+      expect(records[1].content).toContain('安装组件依赖。');
+      expect(records[1].content).toContain('示例标题 [#sample]');
+    },
+  );
+
+  it('indexes a rendered platform heading nested in a preceding Markdown list', async () => {
+    const canonicalPath = '/zh-CN/solutions/art-class/get-started/quick-start';
+    const url = `${canonicalPath}/android`;
+    const records = await exportPublishedCnRecords({
+      routes: [
+        {
+          url,
+          canonicalPath,
+          markdownPath: `${url}.md`,
+          platform: 'android',
+          defaultPlatform: 'android',
+        },
+      ],
+      pages: [{ url: canonicalPath, title: '集成指引', objectType: 'docs' }],
+      readMarkdown: async () =>
+        '# 集成指引\n\n### 实时消息互动 [#实时消息互动]\n\n* SDK 下载地址\n* GitHub 示例项目\n\n    * 集成指引\n    * API 参考\n\n    ### 互动白板 [#互动白板]\n\n    教师在白板上涂鸦。\n\n    * 下载互动白板 SDK\n    * 开启和配置互动白板服务\n\n    ```md\n    ### 示例 [#sample]\n    ```\n\n    ### 未渲染标题 [#unrendered]\n\n    示例说明。\n\n## 画质增强 [#画质增强]\n\n设置视频编码属性。',
+      readRenderedHtml: async () =>
+        '<h3 id="实时消息互动">实时消息互动</h3><div data-platform-panel="android"><h3 id="互动白板">互动白板</h3><p>教师在白板上涂鸦。</p><span id="unrendered"></span></div><h2 id="画质增强">画质增强</h2>',
+    });
+    expect(records[0]).toMatchObject({
+      url: url.replace('/zh-CN', ''),
+      sectionTitle: '集成指引',
+    });
+    const chapters = records.filter((record) => record.url.includes('#'));
+    expect(chapters.map((record) => record.url)).toEqual([
+      `${url.replace('/zh-CN', '')}#实时消息互动`,
+      `${url.replace('/zh-CN', '')}#互动白板`,
+      `${url.replace('/zh-CN', '')}#画质增强`,
+    ]);
+    expect(chapters[0].content).toContain('API 参考');
+    expect(chapters[0].content).not.toContain('教师在白板上涂鸦');
+    expect(chapters[1]).toMatchObject({
+      platform: ['android'],
+      sectionTitle: '互动白板',
+      headingPath: ['集成指引', '互动白板'],
+    });
+    expect(chapters[1].content).toContain('教师在白板上涂鸦。');
+    expect(chapters[1].content).toContain('开启和配置互动白板服务');
+    expect(chapters[1].content).toContain('示例 [#sample]');
+    expect(chapters[1].content).toContain('示例说明。');
+    expect(chapters[2].content).toContain('设置视频编码属性。');
+  });
+
+  it.each(['CodeBlockTab', 'CodeBlockTabsContent', 'CodeBlockTabs'])(
+    'omits %s code interrupted by blank lines without dropping following prose',
+    (container) => {
+      const records = extractPublishedCnSections(
+        route,
+        page,
+        `# RTC API\n\n## 认证示例\n\n复制如下代码生成 Authorization。\n\n<${container} value="java">\n\`\`\`java tabGroup="language"\nimport java.io.IOException;\n\npublic class BasicAuth {\n  String token = "secret";\n}\n\`\`\`\n</${container}>\n\n之后传入请求头。`,
+      );
+      const section = records.find(
+        (record) => record.sectionTitle === '认证示例',
+      );
+      expect(section?.summary).toContain('复制如下代码生成 Authorization。');
+      expect(section?.summary).toContain('之后传入请求头。');
+      expect(section?.summary).not.toMatch(
+        /tabGroup|import java|BasicAuth|secret/,
+      );
+      expect(section?.content).toContain('import java.io.IOException;');
+    },
+  );
+  it('omits fenced code serialized inside HTML tab containers from the prose preview', () => {
+    const records = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n## 开始说话\n\n仅在手动模式下调用 manualSOS。\n\n<CodeBlockTabsContent value="android">\n    ```kotlin tabGroup="language"\n    api.manualSOS()\n    ```\n</CodeBlockTabsContent>\n\n之后检查回调。',
+    );
+    const summary = records.find(
+      (record) => record.sectionTitle === '开始说话',
+    )?.summary;
+    expect(summary).toContain('仅在手动模式下调用 manualSOS。');
+    expect(summary).toContain('之后检查回调。');
+    expect(summary).not.toContain('api.manualSOS()');
+    expect(summary).not.toContain('tabGroup');
+  });
+  it('exports explanatory prose separately from multilingual code for search previews', () => {
+    const records = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n## 开始说话\n\n仅在手动模式下调用 `manualSOS`。\n\n```kotlin tab="Android" tabGroup="language"\nclient.manualSOS()\n```\n\n```swift tab="iOS" tabGroup="language"\nclient.manualSOS()\n```',
+    );
+    const section = records.find(
+      (record) => record.sectionTitle === '开始说话',
+    );
+    expect(section).toMatchObject({
+      summary: '仅在手动模式下调用 manualSOS。',
+    });
+    expect(section?.content).toContain('client.manualSOS()');
+  });
+  it('keeps both a maintained language label and the routed Android applicability', () => {
+    const url = '/zh-CN/api-reference/rtm/android/configuration';
+    const records = extractPublishedCnSections(
+      { url, canonicalPath: url, markdownPath: `${url}.md` },
+      { url, title: '初始配置' },
+      '# 初始配置\n\n配置 RTM 客户端。',
+    );
+    expect(records[0].platform).toEqual(['java', 'android']);
+  });
+  it('uses published title applicability instead of platform words mentioned in the body', () => {
+    const url = '/zh-CN/realtime-media/rtc/build/video/multi-user-video';
+    const records = extractPublishedCnSections(
+      { url, canonicalPath: url, markdownPath: `${url}.md` },
+      {
+        url,
+        title: '多人视频场景',
+        platform: ['android', 'web'],
+        titlePlatforms: ['web'],
+      },
+      '# 多人视频场景\n\nWeb 双流配置；Android Chrome 存在限制。',
+    );
+    expect(records[0].platform).toEqual(['web']);
+  });
+  it('labels generated OpenAPI endpoints as RESTful without guessing a client SDK platform', () => {
+    const url = '/zh-CN/api-reference/api-ref/conversational-ai/join';
+    const records = extractPublishedCnSections(
+      { url, canonicalPath: url, markdownPath: `${url}.md` },
+      { url, title: '创建对话式智能体', objectType: 'openapi' },
+      '# 创建对话式智能体\n\n创建一个智能体。',
+    );
+    expect(records[0].platform).toEqual(['restful']);
+  });
+  it('uses real guide prose for a section-only page without a description', () => {
+    const url = '/zh-CN/realtime-media/rtsa/build/license';
+    const result = extractPublishedCnSections(
+      { url, canonicalPath: url, markdownPath: `${url}.md` },
+      { url, title: '许可证' },
+      '# 许可证\n\n## 配置\n\n在控制台申请许可证后配置项目。',
+    );
+    expect(result[0]).toMatchObject({
+      url,
+      sectionTitle: '许可证',
+      content: '在控制台申请许可证后配置项目。',
+    });
+  });
+  it('does not turn metadata into content for an empty or code-only page', () => {
+    const url = '/zh-CN/realtime-media/rtm';
+    const route = { url, canonicalPath: url, markdownPath: `${url}.md` };
+    const page = { url, title: 'RTM', description: '元数据说明。' };
+    expect(extractPublishedCnSections(route, page, '# RTM')).toEqual([]);
+    const code = extractPublishedCnSections(
+      route,
+      page,
+      '# RTM\n\n## 示例\n\n```ts\njoin();\n```',
+    );
+    expect(code.every((record) => record.url.includes('#'))).toBe(true);
+    const componentExample = extractPublishedCnSections(
+      route,
+      page,
+      '# RTM\n\n## 示例\n\n```tsx\n<Card title="Example" />\n```',
+    );
+    expect(componentExample.every((record) => record.url.includes('#'))).toBe(
+      true,
+    );
+  });
+  it('indexes a maintained page description when the body starts with a section', () => {
+    const url = '/zh-CN/realtime-media/rtm';
+    const records = extractPublishedCnSections(
+      { url, canonicalPath: url, markdownPath: `${url}.md` },
+      {
+        url,
+        title: '实时消息 RTM 概览',
+        description: '实时消息、信令与状态同步。',
+      },
+      '# 实时消息 RTM 概览\n\n## RTM 是什么？\n\n实时消息的能力介绍。',
+    );
+    expect(records[0]).toMatchObject({
+      url,
+      sectionTitle: '实时消息 RTM 概览',
+      content: '实时消息、信令与状态同步。',
+    });
+    expect(records[1].url).toContain('#rtm-是什么');
+  });
+  it('indexes rendered subheadings inside a non-platform release-note accordion', async () => {
+    const url = '/zh-CN/ai/release-notes';
+    const records = await exportPublishedCnRecords({
+      routes: [{ url, canonicalPath: url, markdownPath: `${url}.md` }],
+      pages: [{ url, title: '发版说明', objectType: 'docs' }],
+      readMarkdown: async () =>
+        '# 发版说明\n\n<Accordions type="multiple">\n\n### v2.13 [#v213]\n\n<Accordion title="v2.13" id="v213" headingLevel="2" value="v213">\n    该版本于 2026 年 9 月 18 日发布。\n\n    ### 改进 [#改进]\n\n    支持多轮对话上下文。\n\n    ### API 变更 [#api-变更]\n\n    新增接口参数。\n  </Accordion>\n</Accordions>',
+      readRenderedHtml: async () =>
+        '<article><h2 id="v213">v2.13</h2><h3 id="改进">改进</h3><p>支持多轮对话上下文。</p><h3 id="api-变更">API 变更</h3><p>新增接口参数。</p></article>',
+    });
+    expect(
+      records
+        .filter((record) => record.url.includes('#'))
+        .map((record) => record.url),
+    ).toEqual([
+      '/ai/release-notes#v213',
+      '/ai/release-notes#改进',
+      '/ai/release-notes#api-变更',
+    ]);
+    expect(
+      records.find((record) => record.url.endsWith('#v213'))?.content,
+    ).toContain('2026 年 9 月 18 日');
+    expect(
+      records.find((record) => record.url.endsWith('#改进'))?.content,
+    ).toContain('支持多轮对话上下文。');
+    expect(
+      records.find((record) => record.url.endsWith('#api-变更'))?.content,
+    ).toContain('新增接口参数。');
+  });
+
+  it('keeps fenced examples inside a verified accordion body out of the section index', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n## 版本 [#version]\n\n    ### 改进 [#improved]\n\n    优化连接。\n\n    ```md\n    ## 示例标题 [#not-a-section]\n    ```\n\n    ### 修复 [#fixed]\n\n    修复音频。',
+      readRenderedHtml: async () =>
+        '<h2 id="version">版本</h2><h3 id="improved">改进</h3><pre><code>## 示例标题 [#not-a-section]</code></pre><h3 id="fixed">修复</h3>',
+    });
+    expect(records.map((record) => record.url)).toEqual([
+      `${url.replace('/zh-CN', '')}#version`,
+      `${url.replace('/zh-CN', '')}#improved`,
+      `${url.replace('/zh-CN', '')}#fixed`,
+    ]);
+    expect(records[1].content).toContain('示例标题 [#not-a-section]');
+  });
+
+  it('indexes the first heading immediately after an Accordion opening tag', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n### v4.6 [#v46]\n\n<Accordion title="v4.6" id="v46" headingLevel="2">\n    ### 升级必看 [#upgrade]\n\n    更新调用方式。\n  </Accordion>',
+      readRenderedHtml: async () =>
+        '<h2 id="v46">v4.6</h2><h3 id="upgrade">升级必看</h3><p>更新调用方式。</p>',
+    });
+    expect(records.map((record) => record.url)).toEqual([
+      `${url.replace('/zh-CN', '')}#v46`,
+      `${url.replace('/zh-CN', '')}#upgrade`,
+    ]);
+    expect(records[1].content).toContain('更新调用方式。');
+  });
+
+  it('does not promote indented examples just because a non-heading element has the same ID', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n    ## 示例 [#sample]\n    code();',
+      readRenderedHtml: async () =>
+        '<span id="sample"></span><pre><code>## 示例 [#sample]\ncode();</code></pre>',
+    });
+    expect(records.map((record) => record.url)).toEqual([
+      url.replace('/zh-CN', ''),
+    ]);
+    expect(records[0].content).toContain('code();');
+  });
+
+  it('keeps recording and transcoding FAQ memberships under the navigation product IDs', () => {
+    const url = '/zh-CN/reference/faq/integration/ncs_vs_query';
+    const records = extractPublishedCnSections(
+      { url, canonicalPath: url, markdownPath: `${url}.md` },
+      { url, title: '状态监视', objectType: 'docs' },
+      '# 状态监视\n\n使用 query 或消息通知。',
+    );
+    expect(records[0].products).toEqual(['cloud-recording', 'transcoding']);
+  });
+  it.each([
+    ['/zh-CN/ai/device-kit/build/run-r1-demo', 'docs', 'device-kit'],
+    ['/zh-CN/ai/get-started/quick-start', 'docs', 'conversational-ai'],
+    ['/zh-CN/realtime-media/transcoding', 'docs', 'transcoding'],
+    [
+      '/zh-CN/api-reference/api-ref/cloud-transcoding/acquire',
+      'openapi',
+      'transcoding',
+    ],
+    ['/zh-CN/api-reference/api-ref/signaling/receive', 'docs', 'rtm'],
+    ['/zh-CN/realtime-media/cloud-recording', 'docs', 'cloud-recording'],
+  ] as const)(
+    'exports a consistent product for %s',
+    (url, objectType, product) => {
+      const records = extractPublishedCnSections(
+        { url, canonicalPath: url, markdownPath: `${url}.md` },
+        { url, title: '产品说明', objectType },
+        '# 产品说明\n\n正文内容。',
+      );
+      expect(records[0]).toMatchObject({ product, products: [product] });
+    },
+  );
+  it.each(['c++', 'objective-c', ''])(
+    'keeps following headings after table-cell fences with language %s',
+    (language) => {
+      const markdown = `# RTC API\n\n    ## 版本 [#version]\n\n    | 新 | 旧 |\n    | --- | --- |\n    | \`\`\`${language}\n    newDependency();\n    \`\`\` | \`\`\`${language}\n    oldDependency();\n    \`\`\` |\n\n    ### 改进 [#improved]\n\n    优化连接。`;
+      const records = extractPublishedCnSections(
+        { ...route, platform: 'android' },
+        page,
+        markdown,
+      );
+      expect(records.map((record) => record.url)).toEqual([
+        `${url}#version`,
+        `${url}#improved`,
+      ]);
+      expect(records[0].content).toContain('newDependency();');
+      expect(records[0].content).toContain('oldDependency();');
+    },
+  );
+  it('merges records whose corrected anchors resolve to the same rendered chapter', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n## 同一章节 [#outdated]\n\n前半内容。\n\n## 同一章节 [#current]\n\n后半内容。',
+      readRenderedHtml: async () =>
+        '<article><h2 id="current">同一章节</h2></article>',
+    });
+    expect(records).toHaveLength(1);
+    expect(records[0].id).toBe(`${url}::heading:current`);
+    expect(records[0].content).toContain('前半内容。');
+    expect(records[0].content).toContain('后半内容。');
+  });
+  it('splits renderer-annotated headings inside an indented platform block without splitting fenced examples', () => {
+    const markdown =
+      '# RTC API\n\n简介。\n\n    平台说明。\n\n    ## 技术原理 [#技术原理]\n\n    加密原理。\n\n    ```java\n    // ## 示例标题 [#not-a-section]\n    enableEncryption();\n    ```\n\n    ## 实现方法 [#实现方法]\n\n    调用 enableEncryption。';
+    const records = extractPublishedCnSections(
+      { ...route, platform: 'android' },
+      page,
+      markdown,
+    );
+    expect(records.map((record) => record.url)).toEqual([
+      url,
+      `${url}#技术原理`,
+      `${url}#实现方法`,
+    ]);
+    expect(records[1].content).toContain('enableEncryption();');
+    expect(records[1].platform).toEqual(['android']);
+  });
+
+  it('keeps an ordinary indented code example intact without platform renderer metadata', () => {
+    const records = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n    ## 示例 [#sample]\n    code();',
+    );
+    expect(records.map((record) => record.url)).toEqual([url]);
+  });
+  it('preserves both table-cell code examples without swallowing later release-note headings', () => {
+    const markdown =
+      '# RTC API\n\n    ## 版本 [#version]\n\n    | 新 | 旧 |\n    | --- | --- |\n    | ```groovy\n    newDependency();\n    ``` | ```groovy\n    oldDependency();\n    ``` |\n\n    ### 改进 [#improved]\n\n    优化连接。';
+    const records = extractPublishedCnSections(
+      { ...route, platform: 'android' },
+      page,
+      markdown,
+    );
+    expect(records.map((record) => record.url)).toEqual([
+      `${url}#version`,
+      `${url}#improved`,
+    ]);
+    expect(records[0].content).toContain('newDependency();');
+    expect(records[0].content).toContain('oldDependency();');
+    expect(records[1].content).toContain('优化连接。');
+  });
+  it('uses the rendered heading ID when processed Markdown carries an outdated anchor', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n## Heartbeat Interval 与 Presence Timeout [#outdated]\n\n连接说明。',
+      readRenderedHtml: async () =>
+        '<article><h2 id="heartbeatinterval-and-presencetimeout">Heartbeat Interval 与 Presence Timeout</h2></article>',
+    });
+    expect(records[0].url).toBe(
+      '/api-reference/rtc/web/4.6.0/api#heartbeatinterval-and-presencetimeout',
+    );
+  });
+  it('preserves all explicit FAQ products and normalizes its platform labels', () => {
+    const url = '/zh-CN/reference/faq/account/billing_basis';
+    const [record] = extractPublishedCnSections(
+      { url, canonicalPath: url, markdownPath: `${url}.md` },
+      { url, title: '计时方式' },
+      '# 计时方式\n\nFAQ 正文。',
+    );
+    expect(record).toMatchObject({
+      products: ['local-server-recording', 'rtc', 'analytics'],
+    });
+    expect(record.platform).toBeUndefined();
+  });
+
+  it('keeps FAQs scoped to all products under the reference product', () => {
+    const url = '/zh-CN/reference/faq/account/billing_account';
+    const [record] = extractPublishedCnSections(
+      { url, canonicalPath: url, markdownPath: `${url}.md` },
+      { url, title: '什么是账单、结算与账户冻结？' },
+      '# 什么是账单、结算与账户冻结？\n\nFAQ 正文。',
+    );
+    expect(record).toMatchObject({
+      product: 'reference',
+      products: ['reference'],
+    });
+  });
+
+  it('tags cloud recording FAQ with RESTful instead of the reference folder', () => {
+    const url = '/zh-CN/reference/faq/integration/return_404';
+    const [record] = extractPublishedCnSections(
+      { url, canonicalPath: url, markdownPath: `${url}.md` },
+      { url, title: 'query 返回 404' },
+      '# query 返回 404\n\nFAQ 正文。',
+    );
+    expect(record).toMatchObject({
+      product: 'cloud-recording',
+      products: ['cloud-recording'],
+      platform: ['restful'],
+    });
+  });
+  it('preserves IDs containing brackets and merges headings sharing a renderer anchor', () => {
+    const records = extractPublishedCnSections(
+      route,
+      page,
+      '# API\n\n## 类型定义 [#config]\n\n### Config [#config]\n\n配置。\n\n## loadAudioSettings\\[1/2] [#loadaudiosettings[1/2]]\n\n加载音频。\n\n### [#empty-parameters]\n\n参数。',
+    );
+    expect(records).toHaveLength(2);
+    expect(records[0]).toMatchObject({
+      sectionTitle: 'Config',
+      url: `${url}#config`,
+    });
+    expect(records[1]).toMatchObject({
+      sectionTitle: 'loadAudioSettings[1/2]',
+      url: `${url}#loadaudiosettings[1/2]`,
+    });
+    expect(records[1].content).toContain('参数。');
+  });
+  it('uses Fumadocs published heading IDs instead of slugging the anchor annotation', () => {
+    const records = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n## 加入频道 [#joinChannel]\n\n调用 joinChannel。',
+    );
+    expect(records[0]).toMatchObject({
+      url: `${url}#joinChannel`,
+      sectionTitle: '加入频道',
+      content: '加入频道\n调用 joinChannel。',
+    });
+  });
+  it('indexes the published heading ID while preserving a preceding legacy alias', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n<a id="old-method"></a>\n\n## Method [#current-method]\n\nMethod documentation.',
+      readRenderedHtml: async () =>
+        '<article><a id="old-method"></a><h2 id="current-method">Method</h2></article>',
+    });
+    expect(records[0].url).toBe(`${url.replace('/zh-CN', '')}#current-method`);
+    expect(records[0].content).toContain('Method documentation.');
+  });
+  it('keeps section anchors, duplicate heading slugs, code identifiers and platform/version metadata', () => {
+    const records = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n> For AI agents: see index.\n\n<a id="renewToken"></a>\n\n## Token\n\n调用 `renewToken`。\n\n### 参数\n\n```ts\nfiller_words.enable = true\n```\n\n## Token\n\n续期。',
+    );
+    expect(records.map((record) => record.url)).toEqual([
+      `${url}#renewToken`,
+      `${url}#参数`,
+      `${url}#token-1`,
+    ]);
+    expect(records[0]).toMatchObject({
+      product: 'rtc',
+      tab: 'api-reference',
+      platform: ['web'],
+      version: '4.6.0',
+    });
+    expect(records[1].content).toContain('filler_words.enable');
+    expect(records[1].headingPath).toEqual(['RTC API', 'Token', '参数']);
+  });
+  it('includes published OpenAPI and platform variants while excluding pages outside site navigation', async () => {
+    const canonical = '/zh-CN/api-reference/api-ref/conversational-ai/join';
+    const readMarkdown = vi
+      .fn()
+      .mockResolvedValue(
+        '# Join\n\n## 请求\n\n<table><tr><td>Token</td></tr></table>',
+      );
+    const records = await exportPublishedCnRecords({
+      pages: [{ url: canonical, title: 'Join', objectType: 'openapi' }],
+      routes: [
+        {
+          url: canonical,
+          canonicalPath: canonical,
+          markdownPath: `${canonical}.md`,
+        },
+        {
+          url: `${canonical}/web`,
+          canonicalPath: canonical,
+          markdownPath: `${canonical}/web.md`,
+          platform: 'web',
+          defaultPlatform: 'web',
+        },
+        {
+          url: '/zh-CN/hidden',
+          canonicalPath: '/zh-CN/hidden',
+          markdownPath: '/zh-CN/hidden.md',
+        },
+      ],
+      readMarkdown,
+    });
+    expect(readMarkdown).toHaveBeenCalledTimes(2);
+    expect(records[0]).toMatchObject({
+      docType: 'openapi',
+      product: 'conversational-ai',
+      content: '请求\nToken',
+      url: '/api-reference/api-ref/conversational-ai/join',
+      headingPath: ['Join'],
+    });
+    expect(records[1].platform).toEqual(['web']);
+  });
+  it('fails before publishing if a published artifact is missing or the export is empty', async () => {
+    await expect(
+      exportPublishedCnRecords({
+        routes: [route],
+        pages: [],
+        readMarkdown: vi.fn(),
+      }),
+    ).rejects.toThrow('No published CN');
+    await expect(
+      exportPublishedCnRecords({
+        routes: [route],
+        pages: [page],
+        readMarkdown: async () => {
+          throw new Error('missing artifact');
+        },
+      }),
+    ).rejects.toThrow('missing artifact');
+  });
+  it('indexes rendered platform variants instead of headings hidden in canonical tabs', async () => {
+    const readMarkdown = vi
+      .fn()
+      .mockResolvedValue('# RTC API\n\n## Token [#token]\n\nWeb 内容。');
+    const records = await exportPublishedCnRecords({
+      pages: [page],
+      routes: [
+        route,
+        {
+          ...route,
+          url: `${url}/web`,
+          markdownPath: `${url}/web.md`,
+          platform: 'web',
+          defaultPlatform: 'web',
+        },
+      ],
+      readMarkdown,
+    });
+    expect(readMarkdown).toHaveBeenCalledOnce();
+    expect(records[0]).toMatchObject({
+      url: '/api-reference/rtc/web/4.6.0/api/web#token',
+      platform: ['web'],
+    });
+  });
+
+  it('annotates platform variants with a canonical URL and complete platform list', async () => {
+    const canonical = '/zh-CN/realtime-media/rtc/build/token-authentication';
+    const records = await exportPublishedCnRecords({
+      pages: [{ url: canonical, title: '使用 Token 鉴权' }],
+      routes: [
+        {
+          url: `${canonical}/android`,
+          canonicalPath: canonical,
+          markdownPath: `${canonical}/android.md`,
+          platform: 'android',
+          defaultPlatform: 'ios',
+        },
+        {
+          url: `${canonical}/ios`,
+          canonicalPath: canonical,
+          markdownPath: `${canonical}/ios.md`,
+          platform: 'ios',
+          defaultPlatform: 'ios',
+        },
+      ],
+      readMarkdown: async () => '# 使用 Token 鉴权\n\n## Token\n\n说明。',
+    });
+
+    expect(records).toHaveLength(4);
+    expect(
+      records.filter((record) => record.platform?.includes('android')),
+    ).toHaveLength(2);
+    expect(records[0]).toMatchObject({
+      canonicalUrl: '/realtime-media/rtc/build/token-authentication',
+      availablePlatforms: ['android', 'ios'],
+      defaultPlatform: 'ios',
+      isDefaultPlatform: false,
+    });
+    expect(records[2]).toMatchObject({
+      canonicalUrl: '/realtime-media/rtc/build/token-authentication',
+      availablePlatforms: ['android', 'ios'],
+      defaultPlatform: 'ios',
+      isDefaultPlatform: true,
+    });
+  });
+
+  it('does not export records whose only product is Danmaku', async () => {
+    const url = '/zh-CN/realtime-media/danmaku/reference/response-code';
+    const records = await exportPublishedCnRecords({
+      pages: [{ url, title: '响应状态码' }],
+      routes: [{ url, canonicalPath: url, markdownPath: `${url}.md` }],
+      readMarkdown: async () => '# 响应状态码\n\n## 错误码\n\n弹幕接口错误码。',
+    });
+
+    expect(records).toEqual([]);
+  });
+
+  it.each([
+    [
+      '/zh-CN/solutions/showroom/get-started/run-example',
+      { product: 'showroom' },
+    ],
+    [
+      '/zh-CN/api-reference/rtc/csharp-windows/rtc-api-overview',
+      { product: 'rtc', platform: ['csharp'] },
+    ],
+    [
+      '/zh-CN/api-reference/rtc/react-sdk/overview',
+      { product: 'rtc', platform: ['web'] },
+    ],
+    [
+      '/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic',
+      { product: 'rtc', platform: ['csharp'] },
+    ],
+    [
+      '/zh-CN/api-reference/rtc/react-sdk/hooks',
+      { product: 'rtc', platform: ['web'] },
+    ],
+    [
+      '/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic',
+      { product: 'rtc', platform: ['cpp'] },
+    ],
+    [
+      '/zh-CN/api-reference/rtc/android/channel',
+      { product: 'rtc', platform: ['android'], version: '4.6.2' },
+    ],
+  ])('derives metadata for %s', (url, expected) => {
+    const records = extractPublishedCnSections(
+      {
+        url,
+        canonicalPath: url,
+        markdownPath: `${url}.md`,
+        ...(url.endsWith('/channel') ? { version: '4.6.2' } : {}),
+      },
+      { url, title: 'Example', objectType: 'docs' },
+      '# Example\n\n## Section\n\nContent.',
+    );
+
+    expect(records[0]).toMatchObject(expected);
+  });
+});

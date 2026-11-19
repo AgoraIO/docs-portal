@@ -21,7 +21,15 @@ const expectations = Object.entries(rtcFolderRedirects.expectations);
 
 describe('retired RTC folder redirects', () => {
   it('merges the RTC folder redirects into vercel.json after the base redirects', () => {
-    const start = baseConfig.redirects.length;
+    const start = vercelConfig.redirects.findIndex(
+      (rule) => rule.source === rtcFolderRedirects.redirects[0].source,
+    );
+    expect(start).toBeGreaterThan(0);
+    for (const rule of baseConfig.redirects.filter((rule) =>
+      rule.source.startsWith('/en/'),
+    )) {
+      expect(vercelConfig.redirects.slice(0, start)).toContainEqual(rule);
+    }
 
     expect(
       vercelConfig.redirects.slice(
@@ -32,7 +40,12 @@ describe('retired RTC folder redirects', () => {
   });
 
   it('sends every retired page URL to its expected destination', () => {
-    const matchers = vercelConfig.redirects.map(createRedirectMatcher);
+    const matchers = vercelConfig.redirects
+      .filter(
+        (rule) =>
+          rule.source.startsWith('/en/') || rule.source.startsWith('/:'),
+      )
+      .map(createRedirectMatcher);
     const mismatches = expectations.flatMap(([source, expected]) => {
       const actual = resolveRedirect(matchers, source);
       return actual === expected
@@ -52,7 +65,12 @@ describe('retired RTC folder redirects', () => {
   });
 
   it('leaves similarly named paths alone', () => {
-    const matchers = vercelConfig.redirects.map(createRedirectMatcher);
+    const matchers = vercelConfig.redirects
+      .filter(
+        (rule) =>
+          rule.source.startsWith('/en/') || rule.source.startsWith('/:'),
+      )
+      .map(createRedirectMatcher);
 
     for (const pathname of [
       '/en/realtime-media/videos',

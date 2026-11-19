@@ -1,0 +1,72 @@
+---
+title: AgoraStreamFallbackOptions
+description: 网络较差时的音视频流回退处理选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/enum_streamfallbackoptions
+  sourcePath: html-docs/rtc/macOS/API/enum_streamfallbackoptions.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_streamfallbackoptions__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="agorastreamfallbackoptiondisabled"></a>
+<Parameter name="AgoraStreamFallbackOptionDisabled">
+
+（0）：不进行音视频流回退处理，无法保证音视频质量。
+
+</Parameter>
+<a id="agorastreamfallbackoptionvideostreamlow"></a>
+<Parameter name="AgoraStreamFallbackOptionVideoStreamLow">
+
+（1）：仅接收低质量（低分辨率、低码率）的视频流。
+
+</Parameter>
+<a id="agorastreamfallbackoptionaudioonly"></a>
+<Parameter name="AgoraStreamFallbackOptionAudioOnly">
+
+（2）：当网络较差时，优先接收视频小流；若网络极差导致无法显示视频，则回退为仅接收音频流。
+
+</Parameter>
+<a id="agorastreamfallbackoptionvideostreamlayer1"></a>
+<Parameter name="AgoraStreamFallbackOptionVideoStreamLayer1">
+
+（3）：当网络较差且相关层存在时，按顺序接收来自 agora::rtc::VIDEO_STREAM_LAYER_1 的多质量层级视频流。
+
+</Parameter>
+<a id="agorastreamfallbackoptionvideostreamlayer2"></a>
+<Parameter name="AgoraStreamFallbackOptionVideoStreamLayer2">
+
+（4）：当网络较差且相关层存在时，按顺序接收来自 agora::rtc::VIDEO_STREAM_LAYER_2 的多质量层级视频流。
+
+</Parameter>
+<a id="agorastreamfallbackoptionvideostreamlayer3"></a>
+<Parameter name="AgoraStreamFallbackOptionVideoStreamLayer3">
+
+（5）：当网络较差且相关层存在时，按顺序接收来自 agora::rtc::VIDEO_STREAM_LAYER_3 的多质量层级视频流。
+
+</Parameter>
+<a id="agorastreamfallbackoptionvideostreamlayer4"></a>
+<Parameter name="AgoraStreamFallbackOptionVideoStreamLayer4">
+
+（6）：当网络较差且相关层存在时，按顺序接收来自 agora::rtc::VIDEO_STREAM_LAYER_4 的多质量层级视频流。
+
+</Parameter>
+<a id="agorastreamfallbackoptionvideostreamlayer5"></a>
+<Parameter name="AgoraStreamFallbackOptionVideoStreamLayer5">
+
+（7）：当网络较差且相关层存在时，按顺序接收来自 agora::rtc::VIDEO_STREAM_LAYER_5 的多质量层级视频流。
+
+</Parameter>
+<a id="agorastreamfallbackoptionvideostreamlayer6"></a>
+<Parameter name="AgoraStreamFallbackOptionVideoStreamLayer6">
+
+（8）：当网络较差且相关层存在时，按顺序接收来自 agora::rtc::VIDEO_STREAM_LAYER_6 的多质量层级视频流。
+
+</Parameter>
+</ParameterList>

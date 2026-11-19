@@ -1,0 +1,63 @@
+---
+title: agora::rtc::IVideoFrameSender类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_video_frame_sender
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_video_frame_sender.html
+  generator: doxygen
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: >-
+        No local target route for
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html.
+---
+
+继承自 agora::RefCountInterface.
+
+<a id="details"></a>
+
+## 详细描述
+
+[`IVideoFrameSender`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-sender) 类。
+
+## 构造及析构函数说明
+
+<a id="a8ad95e08df3d3bbf3339c3eb5af9ff13"></a>
+
+### ~IVideoFrameSender()
+
+<ApiSignature labels="inline protected">
+
+agora::rtc::IVideoFrameSender::~IVideoFrameSender()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="ac4fc87083ed3501dd93e8052a787f050"></a>
+
+### sendVideoFrame()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IVideoFrameSender::sendVideoFrame(const media::base::ExternalVideoFrame & *videoFrame*)
+
+</ApiSignature>
+
+将 YUV 格式的视频帧发送到视频轨道。
+
+<ParameterList title="参数">
+<Parameter name="videoFrame">
+
+需要发送的视频帧： [ExternalVideoFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1-external-video-frame)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

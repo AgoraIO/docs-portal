@@ -1,0 +1,358 @@
+---
+title: "事件类型"
+description: "查看旁路推流的事件类型，了解关键概念、参数说明、使用限制和接入注意事项。"
+---
+## 1 ConverterCreatedEvent
+
+当你调用 Create 成功创建一个 Converter 时，消息通知服务器会向你的服务器通知创建推流成功事件。
+
+`eventType` 为 `1(ConverterCreatedEvent)`，`payload` 示例如下：
+
+```json
+{
+  "converter": {
+    "id": "4c014467d647bb87b60b719f6fa57686",
+    "name": "show68_vertical",
+    "transcodeOptions": {
+      "rtcChannel": "show68",
+      "audioOptions": {
+        "codecProfile": "HE-AAC",
+        "sampleRate": 48000,
+        "bitrate": 128,
+        "audioChannels": 1,
+        "rtcStreamUids": [
+          201,
+          202
+        ]
+      },
+      "videoOptions": {
+        "canvas": {
+          "width": 360,
+          "height": 640,
+          "color": 0
+        },
+        "layout": [
+          {
+            "rtcStreamUid": 201,
+            "region": {
+              "xPos": 0,
+              "yPos": 0,
+              "zIndex": 1,
+              "width": 360,
+              "height": 320
+            },
+            "placeholderImageUrl": "http://example.agora.io/host_placeholder.jpg"
+          },
+          {
+            "rtcStreamUid": 202,
+            "region": {
+              "xPos": 0,
+              "yPos": 320,
+              "zIndex": 1,
+              "width": 360,
+              "height": 320
+            }
+          },
+          {
+            "imageUrl": "http://example.agora.io/watchmark.jpg",
+            "region": {
+              "xPos": 0,
+              "yPos": 0,
+              "zIndex": 2,
+              "width": 36,
+              "height": 64
+            }
+          }
+        ],
+        "codecProfile": "High",
+        "frameRate": 15,
+        "bitrate": 400,
+        "seiOptions": ""
+      }
+    },
+    "rtmpUrl": "rtmp://example.agora.io/live/show68",
+    "idleTimeout": 300,
+    "createTs": 1591786766,
+    "updateTs": 1591786835,
+    "state": "connecting"
+  },
+  "lts": 1603456600,
+  "xRequestId": "7bbcc8a4acce48c78b53c5a261a8a564"
+}
+```
+
+- `Converter` 包含的字段：
+  - `id`：String 型字段。Converter 的 ID。它是声网服务器生成的一个 UUID（通用唯一识别码），标识一个已创建的 Converter。
+  - `name`：String 型可选字段。Converter 的名字。
+  - `transcodeOptions`: JSON Object 型字段。Converter 的转码配置。
+    - `rtcChannel`: String 型字段。声网频道名称。
+    - `audioOptions`: JSON Object 型字段。Converter 的音频转码配置。
+        - `codecProfile`: String 型字段。Converter 输出的音频编解码器。
+        - `sampleRate`: Number 型字段。Converter 输出的音频编码采样率 (Hz)。
+        - `bitrate`: Number 型字段。Converter 输出的音频编码码率 (Kbps)。
+        - `audioChannels`: Number 型可选字段。Converter 输出的音频声道数。
+        - `rtcStreamUids`: JSON Array 型可选字段。参与混音的用户 ID 或用户账号。
+    - `videoOptions`: JSON Object 型字段。Converter 的视频转码配置。
+        - `canvas`: JSON Object 型字段。视频画布。
+          - `width`: Number 型字段。画布的宽度 (pixel)。
+          - `height`: Number 型字段。画布的高度 (pixel)。
+          - `color`: Number 型字段。画布的背景色。RGB 颜色值，以十进制数表示。如 255 代表蓝色。
+        - `layout`: JSON Array 型字段。画布上视频画面的内容描述。支持两种元素：
+          - RtcStreamView **元素**。画布上各用户的视频画面。包含如下**字段**：
+            - `rtcStreamUid`: Number 型字段。视频流所属用户的 UID。
+            - `region`: JSON Object 型字段。用户视频画面在画布上的显示区域。
+                - `xPos`: Number 型字段。画面在画布上的 x 坐标 (pixel)。以画布左上角为原点，x 坐标为画面左上角相对于原点的横向位移。
+                - `yPos`: Number 型字段。画面在画布上的 y 坐标 (pixel)。以画布左上角为原点，y 坐标为画面左上角相对于原点的纵向位移。
+                - `zIndex`: Number 型字段。画面的图层编号。取值范围为 [0,100]。`0` 代表最下层的图层。`100` 代表最上层的图层。
+                - `width`: Number 型字段。画面的宽度 (pixel)。
+                - `height`: Number 型字段。画面的高度 (pixel)。
+            - `placeholderImageUrl`: String 型字段。替代图片的 HTTP(s) URL。
+          - ImageView **元素**。画布上的视频图片，可用作水印。包含如下**字段**：
+            - `imageUrl`: String 型字段。图片的 HTTP(S) URL。
+            - `region`: JSON Object 型字段。图片在画布上的显示区域。
+                - `xPos`: Number 型字段。图片在画布上的 x 坐标 (pixel)。以画布左上角为原点，x 坐标为图片左上角相对于原点的横向位移。
+                - `yPos`: Number 型字段。图片在画布上的 y 坐标 (pixel)。以画布左上角为原点，y 坐标为图片左上角相对于原点的纵向位移。
+                - `zIndex`: Number 型字段。图片的图层编号。取值范围为 [0,100]。`0` 代表最下层的图层。`100` 代表最上层的图层。
+                - `width`: Number 型字段。图片的宽度 (pixel)。
+                - `height`: Number 型字段。图片的高度 (pixel)。
+        - `codecProfile`: String 型字段。输出视频的编码规格。
+        - `frameRate`: Number 型字段。输出视频的编码帧率 (fps)。
+        - `bitrate`: Number 型字段。Converter 输出的视频编码码率（Kbps）。
+        - `seiOptions`: String 型字段。输出视频中携带的用户 SEI 信息。用于向 CDN 发送用户自定义的 SEI 信息。
+    - `rtmpUrl`: String 型必填字段。CDN 推流地址。
+    - `idleTimeout`: Number 型字段。Converter 处于空闲状态的最大时长（秒）。空闲指 Converter 处理的音视频流所对应的所有用户均已离开频道。当空闲状态超过设置的 `idleTimeout` 后，该 Converter 会自动销毁。
+    - `createTs`: Number 型字段。创建 Converter 时的 Unix 时间戳（秒）。
+    - `updateTs`: Number 型字段。最近一次更新 Converter 配置时的 Unix 时间戳（秒）。
+    - `state`: String 型字段。Converter 的状态。该事件中会报告 `"connecting"`，表示 Converter 正在连接声网业务服务器。
+
+- `lts`: Number 型字段，该事件在业务服务器上发生的 Unix 时间戳（秒）。
+- `xRequestId`: String 型字段，标识本次请求的 UUID（通用唯一识别码）。该值为本次请求 header 中 `X-Request-ID`。
+
+## 2 ConverterUpdatedEvent
+
+当你调用 [`Update`](/zh-CN/api-reference/api-ref/media-push/update) 成功更新一个 Converter 配置时，消息通知服务器会向你的服务器通知推流配置更新事件。
+
+`eventType` 为 `2(ConverterUpdatedEvent)`。
+
+- 更新 `converter.transcodeOptions.videoOptions.layout`配置，`payload` 示例如下：
+
+    ```json
+    {
+      "converter": {
+        "id": "4c014467d647bb87b60b719f6fa57686",
+        "createTs": 1591786766,
+        "updateTs": 1591786835,
+        "state": "running",
+        "transcodeOptions": {
+          "rtcChannel": "show68",
+          "videoOptions": {
+            "layout": [
+              {
+                "rtcStreamUid": 201,
+                "region": {
+                  "xPos": 0,
+                  "yPos": 0,
+                  "zIndex": 1,
+                  "width": 360,
+                  "height": 320
+                },
+                "placeholderImageUrl": "http://example.agora.io/host_placeholder.jpg"
+              },
+              {
+                "rtcStreamUid": 202,
+                "region": {
+                  "xPos": 0,
+                  "yPos": 320,
+                  "zIndex": 1,
+                  "width": 360,
+                  "height": 320
+                }
+              },
+              {
+                "imageUrl": "http://example.agora.io/watchmark.jpg",
+                "region": {
+                  "xPos": 0,
+                  "yPos": 0,
+                  "zIndex": 2,
+                  "width": 36,
+                  "height": 64
+                }
+              }
+            ],
+            "codecProfile": "High",
+            "frameRate": 15,
+            "bitrate": 400,
+            "seiOptions": ""
+          }
+        }
+      },
+      "lts": 1603456600,
+      "xRequestId": "7bbcc8a4acce48c78b53c5a261a8a564",
+      "fields": "id,createTs,updateTs,state,transcodeOptions.videoOptions.layout"
+    }
+    ```
+
+    - `Converter` 包含的字段：
+      - `id`：String 型字段。Converter 的 ID。它是声网服务器生成的一个 UUID（通用唯一识别码），标识一个已创建的 Converter。
+      - `createTs`: Number 型字段。创建 Converter 时的 Unix 时间戳（秒）。
+      - `updateTs`: Number 型字段。最近一次更新 Converter 配置时的 Unix 时间戳（秒）。
+      - `state`: String 型字段。Converter 的运行状态。该事件中会报告 `"running"`，表示 Converter 正常运行，正在向 CDN 服务器推流。
+      - `transcodeOptions`: JSON Object 型必填字段。Converter 的转码配置。
+        - `rtcChannel`: String 型字段。声网频道名称。
+        - `videoOptions`: JSON Object 型可选字段。Converter 的视频转码配置。
+          - `layout`: JSON Array 型字段。画布上视频画面的内容描述。支持两种元素：
+            - RtcStreamView **元素**。画布上各用户的视频画面。包含如下**字段**：
+              - `rtcStreamUid`: Number 型字段。视频流所属用户的 UID。
+              - `region`: JSON Object 型字段。用户视频画面在画布上的显示区域。
+                - `xPos`: Number 型字段。画面在画布上的 x 坐标 (pixel)。以画布左上角为原点，x 坐标为画面左上角相对于原点的横向位移。
+                - `yPos`: Number 型字段。画面在画布上的 y 坐标 (pixel)。以画布左上角为原点，y 坐标为画面左上角相对于原点的纵向位移。
+                - `zIndex`: Number 型字段。画面的图层编号。取值范围为 [0,100]。`0` 代表最下层的图层。`100` 代表最上层的图层。
+                - `width`: Number 型字段。画面的宽度 (pixel)。
+                - `height`: Number 型字段。画面的高度 (pixel)。
+              - `placeholderImageUrl`: String 型字段。替代图片的 HTTP(s) URL。
+            - ImageView **元素**。画布上的视频图片，可用作水印。包含如下**字段**：
+              - `imageUrl`: String 型字段。图片的 HTTP(S) URL。
+              - `region`: JSON Object 型字段。图片在画布上的显示区域。
+                - `xPos`: Number 型字段。图片在画布上的 x 坐标 (pixel)。以画布左上角为原点，x 坐标为图片左上角相对于原点的横向位移。
+                - `yPos`: Number 型字段。图片在画布上的 y 坐标 (pixel)。以画布左上角为原点，y 坐标为图片左上角相对于原点的纵向位移。
+                - `zIndex`: Number 型字段。图片的图层编号。取值范围为 [0,100]。`0` 代表最下层的图层。`100` 代表最上层的图层。
+                - `width`: Number 型字段。图片的宽度 (pixel)。
+                - `height`: Number 型字段。图片的高度 (pixel)。
+        - `codecProfile`: String 型字段。输出视频的编码规格。
+        - `frameRate`: Number 型字段。输出视频的编码帧率 (fps)。
+        - `bitrate`: Number 型字段。输出视频的编码码率（Kbps）。
+        - `seiOptions`: String 型字段。输出视频中携带的用户 SEI 信息。用于向 CDN 发送用户自定义的 SEI 信息。
+    - `lts`: Number 型字段，该事件在业务服务器上发生的 Unix 时间戳（秒）。
+    - `xRequestId`: String 型字段，标识本次请求的 UUID（通用唯一识别码）。该值为本次请求 header 中 `X-Request-ID`。
+    - `fields`: String 型字段。JSON 编码方式的字段掩码，详见[谷歌 protobuf FieldMask 文档](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask)。用于指定返回 `converter` 字段的子集。在本示例中，`fields` 指定了声网服务器返回 converter 字段中的 `id`，`createTs`，`updateTs` 和 `state` 字段子集。
+
+- 更新 `converter.transcodeOptions.audioOptions` 参与混音的用户 UID 列表配置，`payload` 示例如下：
+
+    ```json
+    {
+      "converter": {
+        "id": "4c014467d647bb87b60b719f6fa57686",
+        "createTs": 1591786766,
+        "updateTs": 1591786835,
+        "state": "running",
+        "transcodeOptions": {
+          "rtcChannel": "show68",
+          "audioOptions": {
+            "rtcStreamUids": [
+              201,
+              202
+            ]
+          }
+        }
+      },
+      "lts": 1603456600,
+      "xRequestId": "7bbcc8a4acce48c78b53c5a261a8a564",
+      "fields": "id,createTs,updateTs,state,transcodeOptions.audioOptions.rtcStreamUids"
+    }
+    ```
+
+    - `Converter` 包含的字段：
+      - `id`：String 型字段。Converter 的 ID。它是声网服务器生成的一个 UUID（通用唯一识别码），标识一个已创建的 Converter。
+      - `createTs`: Number 型字段。创建 Converter 时的 Unix 时间戳（秒）。
+      - `updateTs`: Number 型字段。最近一次更新 Converter 配置时的 Unix 时间戳（秒）。
+      - `state`: String 型字段。Converter 的运行状态。该事件中会报告 `"running"`，表示 Converter 正常运行，正在向 CDN 服务器推流。
+      - `transcodeOptions`: JSON Object 型必填字段。Converter 的转码配置。
+          - rtcChannel: String 型字段。声网频道名称。
+          - `audioOptions`: JSON Object 型可选字段。Converter 的音频转码配置。
+              - `rtcStreamUids`: JSON Array 型可选字段。参与混音的用户 ID 或用户账号。
+    - `lts`: Number 型字段，该事件在业务服务器上发生的 Unix 时间戳（秒）。
+    - `xRequestId`: String 型字段，标识本次请求的 UUID（通用唯一识别码）。该值为本次请求 header 中 `X-Request-ID`。
+    - `fields`: String 型字段。JSON 编码方式的字段掩码，详见[谷歌 protobuf FieldMask 文档](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask)。用于指定返回 `converter` 字段的子集。在本示例中，`fields` 指定了声网 服务器返回 converter 字段中的 `id`，`createTs`，`updateTs` 和 `state` 等字段子集。
+
+- 更新 converter 的其他配置，如 `converter.rtmpUrl`:
+
+    ```json
+    {
+      "converter": {
+        "id": "4c014467d647bb87b60b719f6fa57686",
+        "createTs": 1591786766,
+        "updateTs": 1591786835,
+        "state": "connecting",
+        "rtmpUrl": "rtmp://example.agora.io/live/show68"
+      },
+      "lts": 1603456600,
+      "xRequestId": "7bbcc8a4acce48c78b53c5a261a8a564",
+      "fields": "id,createTs,updateTs,state,rtmpUrl"
+    }
+    ```
+
+    - `Converter` 包含的字段：
+      - `id`：String 型字段。Converter 的 ID。它是声网服务器生成的一个 UUID（通用唯一识别码），标识一个已创建的 Converter。
+      - `createTs`: Number 型字段。创建 Converter 时的 Unix 时间戳（秒）。
+      - `updateTs`: Number 型字段。最近一次更新 Converter 配置时的 Unix 时间戳（秒）。
+      - `state`: String 型字段。Converter 的运行状态。该事件中会报告 `"connecting"`，表示 Converter 正在向新的 URL 重新推流。
+      - `rtmpUrl`: String 型必填字段。CDN 推流地址。
+    - `lts`: Number 型字段，该事件在业务服务器上发生的 Unix 时间戳（秒）。
+    - `xRequestId`: String 型字段，标识本次请求的 UUID（通用唯一识别码）。该值为本次请求 header 中 `X-Request-ID`。
+    - `fields`: String 型字段。JSON 编码方式的字段掩码，详见[谷歌 protobuf FieldMask 文档](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask)。用于指定返回 `converter` 字段的子集。在本示例中，`fields` 指定了声网服务器返回 converter 字段中的 `id`，`createTs`，`updateTs` 和 `state` 等字段子集。
+
+## 3 ConverterStateChangedEvent
+
+成功创建一个 Converter 后，当 Converter 运行状态改变时，消息通知服务器会向你的服务器通知推流状态变化事件。
+
+`eventType` 为 `3(ConverterStateChangedEvent)`，`payload` 示例如下：
+
+```json
+{
+  "converter": {
+    "id": "4c014467d647bb87b60b719f6fa57686",
+    "createTs": 1603456600,
+    "updateTs": 1603456600,
+    "state": "running"
+  },
+  "lts": 1603456600,
+  "fields": "id,createTs,updateTs,state"
+}
+```
+
+- `Converter` 包含的字段：
+    - `id`：String 型字段。Converter 的 ID。它是声网服务器生成的一个 UUID（通用唯一识别码），标识一个已创建的 Converter。
+    - `createTs`: Number 型字段。创建 Converter 时的 Unix 时间戳（秒）。
+    - `updateTs`: Number 型字段。最近一次更新 Converter 配置时的 Unix 时间戳（秒）。
+    - `state`: String 型字段。Converter 的运行状态。
+       - `connecting`: 正在连接声网业务服务器。
+       - `running`: 正常运行，正在向 CDN 服务器推流。
+       - `failed`: 旁路推流失败。
+- `lts`: Number 型字段，该事件在业务服务器上发生的 Unix 时间戳（秒）。
+- `fields`: String 型字段。JSON 编码方式的字段掩码，详见[谷歌 protobuf FieldMask 文档](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask)。用于指定返回 `converter` 字段的子集。在本示例中，`fields`指定了      声网服务器返回 converter 字段中的 `id`，`createTs`，`updateTs` 和 `state` 等字段子集。
+
+## 4 ConverterDestroyedEvent
+
+当一个 Converter 被销毁而停止推流时，消息通知服务器会向你的服务器通知停止推流成功事件。
+
+:::info[信息]
+销毁的原因请参考 `destroyReason` 字段。
+:::
+
+`eventType` 为 `4(ConverterDestroyedEvent)`，`payload` 示例如下：
+
+```json
+{
+  "converter": {
+    "id": "4c014467d647bb87b60b719f6fa57686",
+    "name": "show68_vertical",
+    "createTs": 1603456600,
+    "updateTs": 1603456600
+  },
+  "lts": 1603456600,
+  "destroyReason": "Delete Request",
+  "fields": "id,name,createTs,updateTs"
+}
+```
+
+- `Converter` 包含的字段：
+    - `id`：String 型字段。Converter 的 ID。它是声网服务器生成的一个 UUID（通用唯一识别码），标识一个已创建的 Converter。
+    - `name`：String 型字段。Converter 的名字。
+    - `createTs`: Number 型字段。创建 Converter 时的 Unix 时间戳（秒）。
+    - `updateTs`: Number 型字段。最近一次更新 Converter 配置时的 Unix 时间戳（秒）。
+- `lts`: Number 型字段，该事件在业务服务器上发生的 Unix 时间戳（秒）。
+- `destroyReason`: String 型字段，描述 Converter 被销毁的原因。
+    - `Delete Request`: 业务服务器收到你的 [`Delete`](/zh-CN/api-reference/api-ref/media-push/delete) 请求。
+    - `Idle Timeout`: 超时退出。
+    - `Internal Error`: 内部错误。例如，硬件故障。
+- `fields`: String 型字段。JSON 编码方式的字段掩码，详见[谷歌 protobuf FieldMask 文档](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask)。用于指定返回 `converter` 字段的子集。在本示例中，`fields` 指定了声网服务器返回 converter 字段中的 `id`，`createTs`，`updateTs` 和 `state` 等字段子集。

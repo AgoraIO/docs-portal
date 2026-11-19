@@ -1,0 +1,551 @@
+---
+title: agora::rtc::IRtcConnectionObserver类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_rtc_connection_observer
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_rtc_connection_observer.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+[IRtcConnectionObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection-observer) 类，用于监听 SDK 的连接状态。
+
+## 构造及析构函数说明
+
+<a id="a51d1f414906f6f481c12c937a652a6d4"></a>
+
+### ~IRtcConnectionObserver()
+
+<ApiSignature labels="inline virtual">
+
+virtual agora::rtc::IRtcConnectionObserver::~IRtcConnectionObserver()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="a1df408778b1886055df47cd7d0ff8e5c"></a>
+
+### onConnected()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onConnected(const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*, [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) *reason*)
+
+</ApiSignature>
+
+SDK 与频道的连接状态变更为 `CONNECTION_STATE_CONNECTED(3)` 时触发。
+
+<ParameterList title="参数">
+<Parameter name="connectionInfo">
+
+连接信息： [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info)。
+
+</Parameter>
+<Parameter name="reason">
+
+连接状态变更原因： [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) 。
+
+</Parameter>
+</ParameterList>
+
+<a id="ae62590c268ad2904583dc9c62c337056"></a>
+
+### onDisconnected()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onDisconnected(const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*, [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) *reason*)
+
+</ApiSignature>
+
+SDK 与频道的连接状态变更为 `CONNECTION_STATE_DISCONNECTED(1)` 时触发。
+
+<ParameterList title="参数">
+<Parameter name="connectionInfo">
+
+连接信息： [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info)。
+
+</Parameter>
+<Parameter name="reason">
+
+连接状态变更原因： [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) 。
+
+</Parameter>
+</ParameterList>
+
+<a id="afc0e547898322612da27bc697d4f2806"></a>
+
+### onConnecting()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onConnecting(const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*, [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) *reason*)
+
+</ApiSignature>
+
+SDK 与频道的连接状态变更为 `CONNECTION_STATE_CONNECTING(2)` 时触发。
+
+<ParameterList title="参数">
+<Parameter name="connectionInfo">
+
+连接信息： [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info)。
+
+</Parameter>
+<Parameter name="reason">
+
+连接状态变更原因： [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) 。
+
+</Parameter>
+</ParameterList>
+
+<a id="a5eb8ab1144ac6487708e744a7e579ceb"></a>
+
+### onReconnecting()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onReconnecting(const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*, [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) *reason*)
+
+</ApiSignature>
+
+SDK 与频道的连接状态变更为 `CONNECTION_STATE_RECONNECTING(4)` 时触发。
+
+<ParameterList title="参数">
+<Parameter name="connectionInfo">
+
+连接信息： [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info)。
+
+</Parameter>
+<Parameter name="reason">
+
+连接状态变更原因： [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) 。
+
+</Parameter>
+</ParameterList>
+
+<a id="a11829011671bc54cf1483288421687ce"></a>
+
+### onConnectionLost()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onConnectionLost(const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*)
+
+</ApiSignature>
+
+SDK 与频道断开连接时触发。
+
+<ParameterList title="参数">
+<Parameter name="connectionInfo">
+
+连接信息： [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info)。
+
+</Parameter>
+</ParameterList>
+
+<a id="a255ffd92a1b67201f04d018e163118fc"></a>
+
+### onLastmileQuality()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onLastmileQuality(const [QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891) *quality*)
+
+</ApiSignature>
+
+报告 last-mile 网络质量。
+
+SDK 在调用 [startLastmileProbeTest](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#aca1f51af680b303f4ddbca3bff23baff) 两秒后触发该回调。
+
+<ParameterList title="参数">
+<Parameter name="quality">
+
+last-mile 网络质量： [QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891) 。
+
+</Parameter>
+</ParameterList>
+
+<a id="a91037dcd860c1000e31a3d0eecb1889a"></a>
+
+### onLastmileProbeResult()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onLastmileProbeResult(const [LastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-lastmile-probe-result) & *result*)
+
+</ApiSignature>
+
+通话前网络上下行 Last mile 质量探测报告回调。
+
+调用 [startLastmileProbeTest](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#aca1f51af680b303f4ddbca3bff23baff) 方法 30 秒之后触发该回调。
+
+<ParameterList title="参数">
+<Parameter name="result">
+
+上下行 Last mile 质量探测结果： [LastmileProbeResult](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-lastmile-probe-result)。
+
+</Parameter>
+</ParameterList>
+
+<a id="a27ee9184ccaba5855389412846f6949f"></a>
+
+### onTokenPrivilegeWillExpire()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onTokenPrivilegeWillExpire(const char * *token*)
+
+</ApiSignature>
+
+Token 服务将在 30s 内过期回调。
+
+在通话过程中如果 Token 即将失效，SDK 会提前 30 秒触发该回调，提醒 app 更新 Token。
+
+当收到该回调时，你需要重新在服务端生成新的 Token，然后调用 [renewToken](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a718d33addd2e49f1932b666ab3551087) 将新生成的 Token 传给 SDK。
+
+<ParameterList title="参数">
+<Parameter name="token">
+
+即将过期的 Token。
+
+</Parameter>
+</ParameterList>
+
+<a id="adf8fa47e6d34fdd75b90b42f68ea35f7"></a>
+
+### onTokenPrivilegeDidExpire()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onTokenPrivilegeDidExpire()
+
+</ApiSignature>
+
+Token 已过期回调。
+
+在通话过程中如果 Token 已失效，SDK 会触发该回调，提醒 app 更新 Token。
+
+当收到该回调时，你需要重新在服务端生成新的 Token，然后调用 `connect` 重新连接频道。
+
+<a id="a33d46c9db2a0cbff4a24aa790a69eec3"></a>
+
+### onConnectionFailure()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onConnectionFailure(const [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info) & *connectionInfo*, [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) *reason*)
+
+</ApiSignature>
+
+SDK 与频道的连接状态变更为 `CONNECTION_STATE_FAILED(5)` 时触发。
+
+<ParameterList title="参数">
+<Parameter name="connectionInfo">
+
+连接信息： [TConnectionInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-t-connection-info)。
+
+</Parameter>
+<Parameter name="reason">
+
+连接状态变更原因： [CONNECTION_CHANGED_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a329573b5363b2065b4069e5bf6013144) 。
+
+</Parameter>
+</ParameterList>
+
+<a id="ae5daa5e5f14febe188bc79f29cd3697a"></a>
+
+### onUserJoined()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onUserJoined([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*)
+
+</ApiSignature>
+
+远端用户加入频道时触发。
+
+你可以通过该回调获取远端用户的 ID。
+
+<ParameterList title="参数">
+<Parameter name="userId">
+
+用户 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="a037693bddc8c6a8b36e5199e5085cea9"></a>
+
+### onUserLeft()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onUserLeft([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, [USER_OFFLINE_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a56ebc30a718928cb6998ba1424900fef) *reason*)
+
+</ApiSignature>
+
+远端用户离开频道时触发。
+
+你可以通过 `reason` 参数获取用户离开频道的原因。
+
+<ParameterList title="参数">
+<Parameter name="userId">
+
+用户 ID。
+
+</Parameter>
+<Parameter name="reason">
+
+离开频道原因: [USER_OFFLINE_REASON_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a56ebc30a718928cb6998ba1424900fef) 。
+
+</Parameter>
+</ParameterList>
+
+<a id="aabcc0d7016f685e132fc38b0a2d0d27f"></a>
+
+### onTransportStats()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onTransportStats(const [RtcStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-stats) & *stats*)
+
+</ApiSignature>
+
+报告连接的传输统计信息。
+
+当连接状态为 `CONNECTION_STATE_CONNECTED` 时，SDK 每两秒触发一次回调。
+
+<ParameterList title="参数">
+<Parameter name="stats">
+
+连接统计信息： [RtcStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-stats)。
+
+</Parameter>
+</ParameterList>
+
+<a id="a25f2c3352be19aef2e56b4a6e78f3e2a"></a>
+
+### onChangeRoleSuccess()
+
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onChangeRoleSuccess([CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080) *oldRole*, [CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080) *newRole*)
+
+</ApiSignature>
+
+本地用户角色变更时触发。
+
+<ParameterList title="参数">
+<Parameter name="oldRole">
+
+本地用户变更前的角色：[CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080)。
+
+</Parameter>
+<Parameter name="newRole">
+
+本地用户变更前的角色：[CLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a42f167813e36b5c11a8a1c659b877080)。
+
+</Parameter>
+</ParameterList>
+
+<a id="aeaeead0ee0314b89e3bd5158c4d41648"></a>
+
+### onChangeRoleFailure()
+
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onChangeRoleFailure()
+
+</ApiSignature>
+
+本地用户角色切换失败时触发。
+
+<a id="adbeb932227fa99295d70bced528114c1"></a>
+
+### onUserNetworkQuality()
+
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onUserNetworkQuality([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, [QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891) *txQuality*, [QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891) *rxQuality*)
+
+</ApiSignature>
+
+通话中每个用户的网络上下行 last mile 质量报告回调。
+
+该回调描述每个用户在通话中的 last mile 网络状态，其中 last mile 是指设备到声网边缘服务器的网络状态。
+
+该回调每 2 秒触发一次。如果远端有多个用户，该回调每 2 秒会被触发多次。
+
+<ParameterList title="参数">
+<Parameter name="userId">
+
+用户 ID。表示该回调报告的是持有该 ID 的用户的网络质量。
+
+</Parameter>
+<Parameter name="txQuality">
+
+该用户的上行网络质量，基于发送码率、上行丢包率、平均往返时延和网络抖动计算。该值代表当前的上行网络质量，帮助判断是否可以支持当前设置的视频编码属性。 假设上行码率是 1000 Kbps，那么支持直播场景下 640 × 480 的分辨率、15 fps 的帧率没有问题，但是支持 1280 × 720 的分辨率就会有困难。详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891) 。
+
+</Parameter>
+<Parameter name="rxQuality">
+
+该用户的下行网络质量，基于下行网络的丢包率、平均往返延时和网络抖动计算。详见 [QUALITY_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aeaf419fcafaa4d58da8b6d8718e31891) 。
+
+</Parameter>
+</ParameterList>
+
+<a id="a1dbc1dca6205d5bdb4b4c98095edc451"></a>
+
+### onNetworkTypeChanged()
+
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onNetworkTypeChanged([NETWORK_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab5e06b511f978f1a997008401da46505) *type*)
+
+</ApiSignature>
+
+本地网络类型发生改变回调。
+
+本地网络连接类型发生改变时，SDK 会触发该回调，并在回调中明确当前的网络连接类型。 你可以通过该回调获取正在使用的网络类型；当连接中断时，该回调能辨别引起中断的原因是网络切换还是网络条件不好。
+
+<ParameterList title="参数">
+<Parameter name="type">
+
+网络连接类型： [NETWORK_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ab5e06b511f978f1a997008401da46505) 。
+
+</Parameter>
+</ParameterList>
+
+<a id="ad5ea867cdbf4b5f0f92895c05a6a5de5"></a>
+
+### onApiCallExecuted()
+
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onApiCallExecuted(int *err*, const char * *api*, const char * *result*)
+
+</ApiSignature>
+
+API 方法已执行回调。
+
+<ParameterList title="参数">
+<Parameter name="err">
+
+当方法调用失败时 SDK 返回的错误码。如果该方法调用成功，SDK 会返回 0。
+
+</Parameter>
+<Parameter name="api">
+
+SDK 执行的 API 方法。
+
+</Parameter>
+<Parameter name="result">
+
+SDK 调用 API 的结果。
+
+</Parameter>
+</ParameterList>
+
+<a id="a4d98ce7536aa49f929c4763fe9525c06"></a>
+
+### onError()
+
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onError(ERROR_CODE_TYPE *error*, const char * *msg*)
+
+</ApiSignature>
+
+发生错误回调。
+
+该回调方法表示 SDK 运行时出现了网络或媒体相关的错误。通常情况下，SDK 上报的错误意味着 SDK 无法自动恢复，需要 App 干预或提示用户。
+
+<ParameterList title="参数">
+<Parameter name="error">
+
+错误码。
+
+</Parameter>
+<Parameter name="msg">
+
+错误描述。
+
+</Parameter>
+</ParameterList>
+
+<a id="a0112bc3e6b3773125facd0c55d11f318"></a>
+
+### onChannelMediaRelayStateChanged()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onChannelMediaRelayStateChanged(int *state*, int *code*)
+
+</ApiSignature>
+
+跨频道媒体流转发状态发生改变回调。
+
+当跨频道媒体流转发状态发生改变时，SDK 会触发该回调，并报告当前的转发状态以及相关的错误信息。
+
+<ParameterList title="参数">
+<Parameter name="state">
+
+跨频道媒体流转发状态：
+
+</Parameter>
+</ParameterList>
+
+- `RELAY_STATE_IDLE(0)`: SDK 正在初始化。
+- `RELAY_STATE_CONNECTING(1)`: SDK 尝试跨频道。
+- `RELAY_STATE_RUNNING(2)`: 源频道主播成功加入目标频道。
+- `RELAY_STATE_FAILURE(3)`: 发生异常，详见 code 中提示的错误信息。
+
+  <ParameterList title="参数">
+  <Parameter name="code">
+
+  跨频道媒体流转发出错的错误码：
+
+  </Parameter>
+  </ParameterList>
+- `RELAY_OK(0)`: 一切正常。
+- `RELAY_ERROR_SERVER_ERROR_RESPONSE(1)`: 服务器回应出错。
+- `RELAY_ERROR_SERVER_NO_RESPONSE(2)`: 服务器无回应。你可以调用 `disconnect` 方法离开频道。
+- `RELAY_ERROR_NO_RESOURCE_AVAILABLE(3)`: SDK 无法获取服务，可能是因为服务器资源有限导致。
+- `RELAY_ERROR_FAILED_JOIN_SRC(4)`: 服务器加入源频道失败。
+- `RELAY_ERROR_FAILED_JOIN_DEST(5)`: 服务器加入目标频道失败。
+- `RELAY_ERROR_FAILED_PACKET_RECEIVED_FROM_SRC(6)`: 服务器未收到源频道发送的数据。
+- `RELAY_ERROR_FAILED_PACKET_SENT_TO_DEST(7)`: 源频道发送数据失败。
+- `RELAY_ERROR_SERVER_CONNECTION_LOST(8)`: SDK 因网络质量不佳与服务器断开。你可以调用 `disconnect` 方法离开当前频道。
+- `RELAY_ERROR_INTERNAL_ERROR(9)`: 服务器内部出错。
+- `RELAY_ERROR_SRC_TOKEN_EXPIRED(10)`: 源频道的 Token 已过期。
+- `RELAY_ERROR_DEST_TOKEN_EXPIRED(11)`: 目标频道的 Token 已过期。
+
+<a id="a1e58b7c899c5482c69c85502d36c4554"></a>
+
+### onEncryptionError()
+
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::IRtcConnectionObserver::onEncryptionError([ENCRYPTION_ERROR_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a32a0270f2e3dab57953457ac1871b521) *errorType*)
+
+</ApiSignature>
+
+内置加密出错回调。
+
+调用 [enableEncryption](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#af34378df5af2c9e95518d1c8c0167d85) 开启加密后，如果发流端、收流端出现加解密出错，SDK 会触发该回调。
+
+<ParameterList title="参数">
+<Parameter name="errorType">
+
+加密错误类型。
+
+</Parameter>
+</ParameterList>

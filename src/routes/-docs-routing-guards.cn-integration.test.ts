@@ -1,0 +1,1002 @@
+import { isNotFound, isRedirect } from '@tanstack/react-router';
+import { describe, expect, it, vi } from 'vitest';
+import type {
+  DocsPagePayload,
+  DocsRedirectPayload,
+} from '@/lib/docs-page.server';
+
+const { docsPagePayloadOverride } = vi.hoisted(() => ({
+  docsPagePayloadOverride: vi.fn(),
+}));
+const { docsTabIndexOverride } = vi.hoisted(() => ({
+  docsTabIndexOverride: vi.fn(),
+}));
+const { publishedLocaleOverride } = vi.hoisted(() => ({
+  publishedLocaleOverride: { value: false },
+}));
+const { staticLegacyRedirectOverride } = vi.hoisted(() => ({
+  staticLegacyRedirectOverride: {
+    value: undefined as
+      | {
+          preserveSearch: boolean;
+          redirectUrl: string;
+          statusCode?: 301;
+        }
+      | null
+      | undefined,
+  },
+}));
+
+vi.mock('@/lib/docs-route-preload', () => ({
+  preloadDocsPageContent: vi.fn(),
+}));
+
+vi.mock('@/lib/docs-page', () => ({
+  getDocsPagePayload: async ({
+    data,
+  }: {
+    data: {
+      locale: string;
+      search?: string;
+      slugSegments: string[];
+      tab: string;
+    };
+  }) => {
+    const override = docsPagePayloadOverride(data);
+    if (override !== undefined) {
+      return override;
+    }
+
+    const { loadDocsPagePayload } = await import('@/lib/docs-page.server');
+
+    return loadDocsPagePayload(
+      data.locale,
+      data.tab,
+      data.slugSegments,
+      data.search,
+    );
+  },
+  getDocsTabIndex: async ({
+    data,
+  }: {
+    data: { locale: string; tab: string };
+  }) => {
+    const override = docsTabIndexOverride(data);
+    if (override !== undefined) {
+      return override;
+    }
+
+    const { loadDocsTabIndex } = await import('@/lib/docs-page.server');
+
+    return loadDocsTabIndex(data.locale, data.tab);
+  },
+}));
+
+vi.mock('@/lib/docs-static-manifest', async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import('@/lib/docs-static-manifest')>();
+
+  return {
+    ...actual,
+    resolvePlatformStaticDocsPayload: vi.fn(
+      actual.resolvePlatformStaticDocsPayload,
+    ),
+    shouldUseStaticDocsPayload: vi.fn(() => false),
+  };
+});
+
+vi.mock('@/lib/docs-routing', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/docs-routing')>();
+
+  return {
+    ...actual,
+    isPublishedDocLocale: (locale: string) =>
+      publishedLocaleOverride.value
+        ? locale === 'zh-CN'
+        : actual.isPublishedDocLocale(locale),
+  };
+});
+
+vi.mock('@/lib/legacy-sitemap/static-redirects', async (importOriginal) => {
+  const actual =
+    await importOriginal<
+      typeof import('@/lib/legacy-sitemap/static-redirects')
+    >();
+
+  return {
+    ...actual,
+    resolveStaticLegacySitemapRedirect: (
+      ...args: Parameters<typeof actual.resolveStaticLegacySitemapRedirect>
+    ) =>
+      staticLegacyRedirectOverride.value !== undefined
+        ? staticLegacyRedirectOverride.value
+        : actual.resolveStaticLegacySitemapRedirect(...args),
+  };
+});
+
+import {
+  resolvePlatformStaticDocsPayload,
+  shouldUseStaticDocsPayload,
+} from '@/lib/docs-static-manifest';
+import {
+  Route as DocPageRoute,
+  getKnownPlatformSearchParam,
+  payloadSupportsPlatform,
+} from './$locale/$tab/$';
+import { Route as TabIndexRoute } from './$locale/$tab/index';
+import { Route as TabLayoutRoute } from './$locale/$tab/route';
+import { Route as LocaleIndexRoute } from './$locale/index';
+import { Route as LegacyDocRoute } from './doc/$';
+import { Route as LlmsSectionRoute } from './llms/$';
+import { Route as LlmsTextRoute } from './llms[.]txt';
+
+const REAL_DOCS_ROUTE_TIMEOUT = 300_000;
+
+function getLoader(route: { options: { loader?: unknown } }) {
+  return route.options.loader as (context: never) => Promise<unknown> | unknown;
+}
+
+function getGetHandler(route: { options: { server?: unknown } }) {
+  return (
+    route.options.server as {
+      handlers: {
+        GET: (context: never) => Promise<unknown> | unknown;
+      };
+    }
+  ).handlers.GET;
+}
+
+function createPlatformPayload(platforms: string): DocsPagePayload {
+  return {
+    activePath: '/en/realtime-media/rtm/build/presence',
+    activeTab: 'realtime-media',
+    analyticsPageContext: {
+      contentId: 'realtime-media/rtm/build/presence',
+      journeyStage: 'unknown',
+      navSection: 'unknown',
+      navSectionTitle: 'unknown',
+      pageType: 'task-guide',
+      pathname: '/en/realtime-media/rtm/build/presence',
+      product: 'unknown',
+      title: 'Presence',
+      version: 'current',
+    },
+    analyticsPageType: 'task-guide',
+    body: {
+      contentPath: 'en/realtime-media/rtm/build/presence.mdx',
+      kind: 'mdx',
+      platformTabs: {
+        canonicalPlatform: 'web',
+        defaultPlatform: 'web',
+        initialPlatform: undefined,
+        platforms,
+      },
+    },
+    breadcrumb: [],
+    contentPath: 'en/realtime-media/rtm/build/presence.mdx',
+    description: undefined,
+    hideToc: false,
+    lastUpdated: {
+      formatted: '2026/07/06 13:32:13',
+      iso: '2026-07-06T13:32:13.000Z',
+      source: 'git',
+    },
+    layoutMode: 'docs',
+    localeLinks: [],
+    markdownUrl: '/en/realtime-media/rtm/build/presence.md',
+    navigation: {},
+    productScopes: [],
+    sidebar: [],
+    sidebarHeader: {
+      backHref: '/en/realtime-media/overview',
+      backLabel: 'RTC',
+      title: 'Signaling',
+    },
+    slug: 'presence',
+    tabs: [],
+    title: 'Presence',
+    toc: [],
+  };
+}
+
+describe('docs route locale guards', () => {
+  it(
+    'redirects tab roots without index pages to their first real page',
+    async () => {
+      try {
+        await getLoader(TabLayoutRoute)({
+          location: {
+            hash: '#section',
+            pathname: '/zh-CN/realtime-media',
+            searchStr: '?from=root',
+          },
+          params: {
+            locale: 'zh-CN',
+            tab: 'realtime-media',
+          },
+        } as never);
+      } catch (error) {
+        expect(isRedirect(error)).toBe(true);
+        expect(error).toMatchObject({
+          options: {
+            href: '/zh-CN/realtime-media/overview?from=root#section',
+          },
+        });
+        return;
+      }
+
+      throw new Error('expected tab root to redirect');
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
+
+  it('leaves static tab roots to the index route payload loader', async () => {
+    vi.mocked(shouldUseStaticDocsPayload).mockReturnValueOnce(true);
+
+    await expect(
+      getLoader(TabLayoutRoute)({
+        location: {
+          hash: '',
+          pathname: '/zh-CN/introduction',
+          searchStr: '',
+        },
+        params: {
+          locale: 'zh-CN',
+          tab: 'introduction',
+        },
+      } as never),
+    ).resolves.toBeNull();
+  });
+
+  it('uses a permanent static redirect for a flattened small Build route', async () => {
+    publishedLocaleOverride.value = true;
+    vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(true);
+
+    try {
+      await getLoader(DocPageRoute)({
+        location: {
+          hash: '#details',
+          pathname:
+            '/zh-CN/realtime-media/meeting/build/setup-and-access/enable-service',
+          searchStr: '?from=legacy',
+        },
+        params: {
+          _splat: 'meeting/build/setup-and-access/enable-service',
+          locale: 'zh-CN',
+          tab: 'realtime-media',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/zh-CN/realtime-media/meeting/build/enable-service?from=legacy#details',
+          statusCode: 301,
+        },
+        status: 301,
+      });
+      return;
+    } finally {
+      publishedLocaleOverride.value = false;
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+    }
+
+    throw new Error('expected loader to reject with redirect');
+  });
+
+  it.each([
+    ['rest-tool', '/zh-CN/ai/build/shape-the-conversation/rest-tool', false],
+    [
+      'asr-keywords',
+      '/zh-CN/ai/build/custom-model-integration/asr-keywords',
+      false,
+    ],
+    [
+      'filler-words',
+      '/zh-CN/ai/build/shape-the-conversation/filler-words',
+      false,
+    ],
+    ['rest-tool', '/zh-CN/ai/build/shape-the-conversation/rest-tool', true],
+    [
+      'asr-keywords',
+      '/zh-CN/ai/build/custom-model-integration/asr-keywords',
+      true,
+    ],
+    [
+      'filler-words',
+      '/zh-CN/ai/build/shape-the-conversation/filler-words',
+      true,
+    ],
+  ] as const)(
+    'redirects moved AI guide %s to %s with query and hash (static: %s)',
+    async (slug, target, staticPayload) => {
+      publishedLocaleOverride.value = true;
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(staticPayload);
+      try {
+        await expect(
+          getLoader(DocPageRoute)({
+            location: {
+              hash: '#details',
+              pathname: `/zh-CN/ai/user-guides/${slug}`,
+              searchStr: '?from=legacy',
+            },
+            params: {
+              _splat: `user-guides/${slug}`,
+              locale: 'zh-CN',
+              tab: 'ai',
+            },
+          } as never),
+        ).rejects.toMatchObject({
+          options: {
+            href: `${target}?from=legacy#details`,
+            statusCode: 301,
+          },
+          status: 301,
+        });
+      } finally {
+        publishedLocaleOverride.value = false;
+        vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+      }
+    },
+  );
+
+  it('keeps a non-Build static legacy redirect at the default status', async () => {
+    vi.mocked(shouldUseStaticDocsPayload).mockReturnValueOnce(true);
+
+    try {
+      await getLoader(DocPageRoute)({
+        location: {
+          hash: '#details',
+          pathname: '/en/agora-chat/develop/ip_allowlist',
+          searchStr: '?from=legacy',
+        },
+        params: {
+          _splat: 'develop/ip_allowlist',
+          locale: 'en',
+          tab: 'agora-chat',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/en/realtime-media/im/build/secure-access-and-authentication/ip-allowlist?from=legacy#details',
+          statusCode: 307,
+        },
+        status: 307,
+      });
+      return;
+    }
+
+    throw new Error('expected loader to reject with redirect');
+  });
+
+  it('forwards a static resolver 301 through the tab index loader', async () => {
+    staticLegacyRedirectOverride.value = {
+      preserveSearch: true,
+      redirectUrl: '/en/realtime-media/im',
+      statusCode: 301,
+    };
+    vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(true);
+
+    try {
+      await getLoader(TabIndexRoute)({
+        location: {
+          hash: '#details',
+          pathname: '/en/introduction',
+          searchStr: '?from=legacy',
+        },
+        params: {
+          locale: 'en',
+          tab: 'introduction',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/en/realtime-media/im?from=legacy#details',
+          statusCode: 301,
+        },
+        status: 301,
+      });
+      return;
+    } finally {
+      staticLegacyRedirectOverride.value = undefined;
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+    }
+
+    throw new Error('expected loader to reject with redirect');
+  });
+
+  it('leaves child docs pages to child route loaders', async () => {
+    await expect(
+      getLoader(TabLayoutRoute)({
+        location: {
+          hash: '',
+          pathname: '/zh-CN/realtime-media/usage-analytics',
+          searchStr: '',
+        },
+        params: {
+          locale: 'zh-CN',
+          tab: 'realtime-media',
+        },
+      } as never),
+    ).resolves.toBeNull();
+  });
+
+  it('redirects a supported platform query to its platform path with other URL state', async () => {
+    docsPagePayloadOverride.mockReturnValue(
+      createPlatformPayload('["web","ios"]'),
+    );
+    try {
+      await expect(
+        getLoader(DocPageRoute)({
+          location: { hash: 'details', searchStr: '?platform=iOS&from=legacy' },
+          params: {
+            locale: 'en',
+            tab: 'realtime-media',
+            _splat: 'rtm/build/presence',
+          },
+        } as never),
+      ).rejects.toMatchObject({
+        options: {
+          href: '/en/realtime-media/rtm/build/presence/ios?from=legacy#details',
+        },
+      });
+    } finally {
+      docsPagePayloadOverride.mockReset();
+    }
+  });
+
+  it('cleans a conflicting query on an explicit platform route', async () => {
+    const payload = createPlatformPayload('["web","ios"]');
+    if (payload.body.kind !== 'openapi' && payload.body.platformTabs)
+      payload.body.platformTabs.initialPlatform = 'ios';
+    docsPagePayloadOverride.mockReturnValue(payload);
+    try {
+      await expect(
+        getLoader(DocPageRoute)({
+          location: { hash: '', searchStr: '?platform=web&from=legacy' },
+          params: {
+            locale: 'en',
+            tab: 'realtime-media',
+            _splat: 'rtm/build/presence/ios',
+          },
+        } as never),
+      ).rejects.toMatchObject({
+        options: {
+          href: '/en/realtime-media/rtm/build/presence/ios?from=legacy',
+        },
+      });
+    } finally {
+      docsPagePayloadOverride.mockReset();
+    }
+  });
+
+  for (const platform of ['android', 'ios'] as const) {
+    it(
+      `loads /en/api-reference/api-ref/uikit-sdk/${platform} without redirect and selects ${platform}`,
+      async () => {
+        const payload = await getLoader(DocPageRoute)({
+          location: {
+            hash: '',
+            searchStr: '',
+          },
+          params: {
+            _splat: `api-ref/uikit-sdk/${platform}`,
+            locale: 'en',
+            tab: 'api-reference',
+          },
+        } as never);
+
+        expect(payload).toMatchObject({
+          body: {
+            kind: 'mdx',
+            platformTabs: {
+              initialPlatform: platform,
+            },
+          },
+          markdownUrl: `/en/api-reference/api-ref/uikit-sdk/${platform}.md`,
+        });
+      },
+      REAL_DOCS_ROUTE_TIMEOUT,
+    );
+  }
+
+  it(
+    'redirects moved zh-CN Introduction routes before page fallback',
+    async () => {
+      publishedLocaleOverride.value = true;
+      try {
+        await getLoader(DocPageRoute)({
+          location: {
+            hash: '',
+            searchStr: '',
+          },
+          params: {
+            _splat: 'usage-analytics',
+            locale: 'zh-CN',
+            tab: 'introduction',
+          },
+        } as never);
+      } catch (error) {
+        expect(isRedirect(error)).toBe(true);
+        expect(error).toMatchObject({
+          options: {
+            href: '/zh-CN/realtime-media/usage-analytics',
+          },
+        });
+        publishedLocaleOverride.value = false;
+        return;
+      }
+
+      throw new Error('expected moved Usage Analytics route to redirect');
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
+
+  it(
+    'redirects moved zh-CN PPT transcoding routes before page fallback',
+    async () => {
+      publishedLocaleOverride.value = true;
+      try {
+        await getLoader(DocPageRoute)({
+          location: {
+            hash: '',
+            searchStr: '',
+          },
+          params: {
+            _splat: 'ppt-transcoding/get-started/quick-start',
+            locale: 'zh-CN',
+            tab: 'introduction',
+          },
+        } as never);
+      } catch (error) {
+        expect(isRedirect(error)).toBe(true);
+        expect(error).toMatchObject({
+          options: {
+            href: '/zh-CN/realtime-media/ppt-transcoding/get-started/quick-start',
+          },
+        });
+        publishedLocaleOverride.value = false;
+        return;
+      }
+
+      throw new Error('expected moved PPT transcoding route to redirect');
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
+
+  it.each([
+    ['ppt-transcoding', '/zh-CN/realtime-media/ppt-transcoding'],
+    [
+      'ppt-transcoding/get-started/quick-start',
+      '/zh-CN/realtime-media/ppt-transcoding/get-started/quick-start',
+    ],
+    ['status-page', '/zh-CN/realtime-media/status-page'],
+    [
+      'status-page/reference/release-notes',
+      '/zh-CN/realtime-media/status-page/reference/release-notes',
+    ],
+  ])(
+    'keeps moved Solutions root/normal path %s as a permanent redirect',
+    async (path, target) => {
+      publishedLocaleOverride.value = true;
+      try {
+        await getLoader(DocPageRoute)({
+          location: {
+            hash: '',
+            pathname: `/zh-CN/solutions/${path}`,
+            searchStr: '',
+          },
+          params: {
+            _splat: path,
+            locale: 'zh-CN',
+            tab: 'solutions',
+          },
+        } as never);
+      } catch (error) {
+        expect(isRedirect(error)).toBe(true);
+        expect(error).toMatchObject({
+          options: {
+            href: target,
+            statusCode: 301,
+          },
+        });
+        return;
+      } finally {
+        publishedLocaleOverride.value = false;
+      }
+
+      throw new Error('expected moved Solutions path to redirect permanently');
+    },
+  );
+
+  it('preserves search and hash when redirecting old Solutions product URLs', async () => {
+    publishedLocaleOverride.value = true;
+    try {
+      await getLoader(DocPageRoute)({
+        location: {
+          hash: '#billing',
+          searchStr: '?source=legacy',
+        },
+        params: {
+          _splat: 'ppt-transcoding/billing',
+          locale: 'zh-CN',
+          tab: 'solutions',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/zh-CN/realtime-media/ppt-transcoding/reference/billing?source=legacy#billing',
+          statusCode: 301,
+        },
+      });
+      publishedLocaleOverride.value = false;
+      return;
+    }
+
+    throw new Error('expected old Solutions product URL to redirect');
+  });
+
+  it('forwards an RTM 301 DocsRedirectPayload from the page route', async () => {
+    docsPagePayloadOverride.mockReturnValueOnce({
+      redirectUrl:
+        '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service',
+      statusCode: 301,
+    } satisfies DocsRedirectPayload);
+
+    try {
+      await getLoader(DocPageRoute)({
+        location: {
+          hash: '#section',
+          pathname:
+            '/en/realtime-media/rtm/build/setup-and-access/enable-service',
+          searchStr: '?from=legacy',
+        },
+        params: {
+          _splat: 'rtm/build/setup-and-access/enable-service',
+          locale: 'en',
+          tab: 'realtime-media',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service?from=legacy#section',
+          statusCode: 301,
+        },
+        status: 301,
+      });
+      return;
+    }
+
+    throw new Error('expected page route to forward a 301 redirect payload');
+  });
+
+  it.each([false, true])(
+    'forwards a product Build 301 redirect with search and hash (static payload: %s)',
+    async (useStaticPayload) => {
+      publishedLocaleOverride.value = true;
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(useStaticPayload);
+      const redirectPayload = {
+        redirectUrl:
+          '/zh-CN/realtime-media/media-push/build/enable-media-push/enable-service',
+        statusCode: 301,
+      } satisfies DocsRedirectPayload;
+      if (useStaticPayload) {
+        // Exercise the static payload loader, not the earlier legacy resolver.
+        staticLegacyRedirectOverride.value = null;
+        vi.mocked(resolvePlatformStaticDocsPayload).mockResolvedValueOnce(
+          redirectPayload,
+        );
+      } else {
+        docsPagePayloadOverride.mockReturnValueOnce(redirectPayload);
+      }
+
+      try {
+        await getLoader(DocPageRoute)({
+          location: {
+            hash: '#details',
+            pathname:
+              '/zh-CN/realtime-media/media-push/build/setup-and-access/enable-service',
+            searchStr: '?from=legacy',
+          },
+          params: {
+            _splat: 'media-push/build/setup-and-access/enable-service',
+            locale: 'zh-CN',
+            tab: 'realtime-media',
+          },
+        } as never);
+      } catch (error) {
+        if (useStaticPayload) {
+          expect(resolvePlatformStaticDocsPayload).toHaveBeenCalledWith({
+            locale: 'zh-CN',
+            slugSegments: [
+              'media-push',
+              'build',
+              'setup-and-access',
+              'enable-service',
+            ],
+            tab: 'realtime-media',
+          });
+        }
+        expect(isRedirect(error)).toBe(true);
+        expect(error).toMatchObject({
+          options: {
+            href: '/zh-CN/realtime-media/media-push/build/enable-media-push/enable-service?from=legacy#details',
+            statusCode: 301,
+          },
+          status: 301,
+        });
+        return;
+      } finally {
+        publishedLocaleOverride.value = false;
+        staticLegacyRedirectOverride.value = undefined;
+        vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+      }
+
+      throw new Error('expected product Build route to redirect');
+    },
+  );
+
+  it.each([
+    ['rtc/reference/events', false],
+    ['rtc/reference/events', true],
+    ['rtc/webhook/events', false],
+    ['rtc/webhook/events', true],
+  ] as const)(
+    'redirects duplicate RTC events %s with query/hash before payload lookup (static: %s)',
+    async (slug, useStaticPayload) => {
+      publishedLocaleOverride.value = true;
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(useStaticPayload);
+      docsPagePayloadOverride.mockReturnValue(null);
+      const searchStr =
+        '?from=%2Fzh-CN%2Frealtime-media%2Frtc&fromScope=%2Fzh-CN%2Frealtime-media%2Frtc%2Freference';
+      try {
+        await getLoader(DocPageRoute)({
+          location: {
+            hash: '#103-broadcaster-join-channel',
+            pathname: `/zh-CN/realtime-media/${slug}`,
+            searchStr,
+          },
+          params: {
+            _splat: slug,
+            locale: 'zh-CN',
+            tab: 'realtime-media',
+          },
+        } as never);
+      } catch (error) {
+        expect(isRedirect(error)).toBe(true);
+        expect(error).toMatchObject({
+          options: {
+            href: `/zh-CN/api-reference/rtc/restful/webhook/events${searchStr}#103-broadcaster-join-channel`,
+            statusCode: 301,
+          },
+          status: 301,
+        });
+        return;
+      } finally {
+        publishedLocaleOverride.value = false;
+        docsPagePayloadOverride.mockReset();
+        vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+      }
+      throw new Error('Expected duplicate RTC events to redirect permanently');
+    },
+  );
+
+  it('forwards an RTM 301 DocsRedirectPayload from the tab index route', async () => {
+    docsTabIndexOverride.mockReturnValueOnce({ url: '/en/realtime-media' });
+    docsPagePayloadOverride.mockReturnValueOnce({
+      redirectUrl:
+        '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service',
+      statusCode: 301,
+    } satisfies DocsRedirectPayload);
+
+    try {
+      await getLoader(TabIndexRoute)({
+        location: {
+          hash: '#section',
+          pathname: '/en/realtime-media',
+          searchStr: '?from=legacy',
+        },
+        params: {
+          locale: 'en',
+          tab: 'realtime-media',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service?from=legacy#section',
+          statusCode: 301,
+        },
+        status: 301,
+      });
+      return;
+    }
+
+    throw new Error(
+      'expected tab index route to forward a 301 redirect payload',
+    );
+  });
+
+  it('serves direct zh-CN .md docs page URLs as markdown', async () => {
+    publishedLocaleOverride.value = true;
+    try {
+      const response = (await getGetHandler(DocPageRoute)({
+        context: {},
+        next: vi.fn(() => {
+          throw new Error('expected zh-CN .md request to be handled directly');
+        }),
+        params: {
+          _splat: 'mcp-integrate.md',
+          locale: 'zh-CN',
+          tab: 'introduction',
+        },
+        pathname: '/zh-CN/introduction/mcp-integrate.md',
+        request: new Request(
+          'https://docs.example.com/zh-CN/introduction/mcp-integrate.md',
+        ),
+      } as never)) as Response;
+
+      await expect(response.text()).resolves.toContain(
+        '# 声网 MCP (/zh-CN/introduction/mcp-integrate)',
+      );
+      expect(response.headers.get('Content-Type')).toBe(
+        'text/markdown; charset=utf-8',
+      );
+    } finally {
+      publishedLocaleOverride.value = false;
+    }
+  });
+
+  it('serves direct zh-CN platform .md docs page URLs as markdown', async () => {
+    publishedLocaleOverride.value = true;
+    try {
+      const response = (await getGetHandler(DocPageRoute)({
+        context: {},
+        next: vi.fn(() => {
+          throw new Error(
+            'expected zh-CN platform .md request to be handled directly',
+          );
+        }),
+        params: {
+          _splat: 'api-ref/uikit-sdk/android.md',
+          locale: 'zh-CN',
+          tab: 'api-reference',
+        },
+        pathname: '/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
+        request: new Request(
+          'https://docs.example.com/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
+        ),
+      } as never)) as Response;
+      const markdown = await response.text();
+
+      expect(response.headers.get('Content-Type')).toBe(
+        'text/markdown; charset=utf-8',
+      );
+      expect(markdown).toContain(
+        '/zh-CN/api-reference/api-ref/uikit-sdk/android',
+      );
+    } finally {
+      publishedLocaleOverride.value = false;
+    }
+  });
+});
+
+describe('docs redirect fragments', () => {
+  it.each([
+    ['page', DocPageRoute],
+    ['index', TabIndexRoute],
+    ['layout', TabLayoutRoute],
+  ] as const)(
+    '%s preserves decoded router hashes in a valid Location header',
+    async (_, route) => {
+      const target = '/zh-CN/realtime-media/rtc/reference/error-code';
+      publishedLocaleOverride.value = true;
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+      docsPagePayloadOverride.mockReturnValue({ redirectUrl: target });
+      docsTabIndexOverride.mockReturnValue({ url: target });
+
+      try {
+        for (const hash of [
+          'appintoolbar',
+          '其他错误码-1',
+          '%E5%85%B6%E4%BB%96',
+        ]) {
+          const expected = `${target}?from=legacy#${hash.includes('%') ? hash : encodeURIComponent(hash)}`;
+          const result = await Promise.resolve()
+            .then(() =>
+              getLoader(route)({
+                location: {
+                  hash,
+                  pathname: '/zh-CN/api-reference',
+                  searchStr: '?from=legacy',
+                },
+                params: {
+                  locale: 'zh-CN',
+                  tab: 'api-reference',
+                  _splat: 'rtc/error-code',
+                },
+              } as never),
+            )
+            .catch((error: unknown) => error);
+          expect(isRedirect(result)).toBe(true);
+          expect((result as Response).headers.get('Location')).toBe(expected);
+        }
+      } finally {
+        publishedLocaleOverride.value = false;
+        docsPagePayloadOverride.mockReset();
+        docsTabIndexOverride.mockReset();
+      }
+    },
+  );
+});
+
+describe('legacy API deep-link platforms', () => {
+  it.each([
+    [
+      'whiteboard/fastboard/fastboard-api',
+      'appintoolbar',
+      'whiteboard/fastboard/web',
+    ],
+    [
+      'whiteboard/fastboard/fastboard-api',
+      'roomconfig',
+      'whiteboard/fastboard/ios',
+    ],
+    [
+      'rtm/toc-configuration/configuration',
+      'tokenevent',
+      'rtm/harmonyos/configuration',
+    ],
+    [
+      'rtm/toc-configuration/configuration',
+      'agorartmmessageevent',
+      'rtm/ios/configuration',
+    ],
+    ['rtm/toc-storage/storage', 'metadataitem', 'rtm/flutter/storage'],
+    ['rtm/toc-storage/storage', 'agorartmmetadata', 'rtm/ios/storage'],
+  ])('routes %s#%s to %s', async (slug, hash, target) => {
+    publishedLocaleOverride.value = true;
+    try {
+      for (const staticMode of [false, true]) {
+        vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(staticMode);
+        staticLegacyRedirectOverride.value = null;
+        const fallback = {
+          redirectUrl: '/zh-CN/api-reference/rtm/android/configuration',
+        };
+        docsPagePayloadOverride.mockReturnValue(fallback);
+        vi.mocked(resolvePlatformStaticDocsPayload).mockResolvedValue(fallback);
+        const result = await Promise.resolve()
+          .then(() =>
+            getLoader(DocPageRoute)({
+              location: {
+                hash,
+                searchStr: '?from=legacy',
+                pathname: `/zh-CN/api-reference/${slug}`,
+              },
+              params: { locale: 'zh-CN', tab: 'api-reference', _splat: slug },
+            } as never),
+          )
+          .catch((error: unknown) => error);
+        expect(isRedirect(result)).toBe(true);
+        expect((result as Response).headers.get('Location')).toBe(
+          `/zh-CN/api-reference/${target}?from=legacy#${hash}`,
+        );
+      }
+    } finally {
+      publishedLocaleOverride.value = false;
+      staticLegacyRedirectOverride.value = undefined;
+      docsPagePayloadOverride.mockReset();
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+      vi.mocked(resolvePlatformStaticDocsPayload).mockReset();
+    }
+  });
+});

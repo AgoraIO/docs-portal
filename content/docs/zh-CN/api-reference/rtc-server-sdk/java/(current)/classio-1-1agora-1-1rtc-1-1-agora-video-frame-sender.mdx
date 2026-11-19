@@ -1,0 +1,91 @@
+---
+title: io.agora.rtc.AgoraVideoFrameSender类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_video_frame_sender
+  sourcePath: html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_video_frame_sender.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_agora_video_frame_sender_8java.html as local text.
+---
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+AgoraVideoFrameSender 类。
+
+如果你需要发送自定义视频源，你可以通过该类下的方法来将已编码的视频数据直接发送到视频轨道。如果视频轨道被禁用，视频帧将会被自动丢弃。
+
+<a id="doc-constructors"></a>
+
+<a id="header-doc-constructors"></a>
+
+## 构造及析构函数说明
+
+<a id="a948a1a276f968258119cb709b3e79734"></a>
+
+### AgoraVideoFrameSender()
+
+<ApiSignature>
+
+io.agora.rtc.AgoraVideoFrameSender.AgoraVideoFrameSender(long *cptr*)
+
+</ApiSignature>
+
+构造函数。
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="af3ffccee42a3c33fdc42e3b52f261f8c"></a>
+
+### destroy()
+
+<ApiSignature>
+
+synchronized void io.agora.rtc.AgoraVideoFrameSender.destroy()
+
+</ApiSignature>
+
+销毁视频数据发送器。
+
+<a id="a6cff413f3767180045f5bf3c9b2d1a04"></a>
+
+### sendVideoFrame()
+
+<ApiSignature>
+
+int io.agora.rtc.AgoraVideoFrameSender.sendVideoFrame([ExternalVideoFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame) *frame*)
+
+</ApiSignature>
+
+将视频帧发送至服务器。
+
+<ParameterList title="参数">
+<Parameter name="frame">
+
+待发送的视频数据：[ExternalVideoFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+发送视频数据的结果。
+
+---
+
+该类的文档由以下文件生成:
+
+- AgoraVideoFrameSender.java

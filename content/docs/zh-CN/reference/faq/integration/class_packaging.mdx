@@ -1,0 +1,46 @@
+---
+title: "Mac 电脑如何打包 Windows 安装包？"
+---
+使用 Mac 电脑打包灵动课堂 Windows 安装包的步骤如下：
+
+1. 删除 node_modules 文件夹下的 agora-electron-sdk。
+
+2. 在 package.json 文件中添加如下代码：
+
+    ```json
+    "agora_electron": {
+      "electron_version": "12.0.0",
+      "prebuilt": true,
+       "platform": "win32",
+        "arch": "x64"
+    }
+    ```
+
+![json文件配置](https://web-cdn.agora.io/docs-portal/img/flexible-classroom/faq-electron-packaging1.png)
+
+3. 修改 packages/agora-demo-app/package.json 文件的 `pack:win` 命令，在末尾加上 arch 参数来指定系统架构，例如 64 位操作系统架构：
+
+    ```json
+    "pack:win": "yarn electron:copy:electron:win && electron-builder --win -p never --x64",
+    ```
+
+    若需要打包 32 位操作系统，则将末尾参数改为 `--ia32` 。
+
+4. 重新执行安装命令：
+
+    ```shell
+    yarn install
+    ```
+
+5. 执行下面命令：
+
+    ```shell
+    yarn pack:classroom:sdk
+    yarn pack:classroom:plugin
+    yarn ci:build
+    yarn pack:electron:win
+    ```
+
+6. 打包完成，生成的安装包在 `packages/agora-demo-app/release` 目录下。
+
+![生成安装包位置](https://web-cdn.agora.io/docs-portal/img/flexible-classroom/faq-electron-packaging2.png)

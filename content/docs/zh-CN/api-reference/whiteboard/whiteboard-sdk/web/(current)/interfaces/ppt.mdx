@@ -1,0 +1,36 @@
+---
+title: PPT
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/ppt
+  sourcePath: html-docs/whiteboard/Web/interfaces/ppt.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type PPT = {
+    /**
+     * 转换任务的唯一识别符 ``taskUUID``
+     */
+    uuid: string;
+    /**
+     * 转换任务的 Token
+     */
+    kind: PPTKind;
+    /**
+     * PPT 的宽
+     */
+    width: number;
+    /**
+     * PPT 的高
+     */
+    height: number;
+    /**
+     * PPT 对应的场景描述列表
+     */
+    scenes: ReadonlyArray<SceneDefinition>;
+};
+```

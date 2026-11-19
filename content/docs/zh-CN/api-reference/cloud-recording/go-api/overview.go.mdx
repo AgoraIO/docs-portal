@@ -1,0 +1,69 @@
+---
+title: "API 概览"
+---
+## Client
+
+| API | 描述 |
+|---|---|
+|[`NewClient`](/zh-CN/api-reference/cloud-recording/go-api/client.go#newclient) | 使用指定配置创建一个云端录制客户端实例。 |
+|[`IndividualRecording`](/zh-CN/api-reference/cloud-recording/go-api/client.go#individualrecording) | 返回 [`IndividualRecording`](/zh-CN/api-reference/cloud-recording/go-api/individualrecording.go) 单流录制场景实例。 |
+|[`WebRecording`](/zh-CN/api-reference/cloud-recording/go-api/client.go#webrecording) | 返回 [`WebRecording`](/zh-CN/api-reference/cloud-recording/go-api/webrecording.go) 页面录制场景实例。 |
+|[`MixRecording`](/zh-CN/api-reference/cloud-recording/go-api/client.go#mixrecording) | 返回 [`MixRecording`](/zh-CN/api-reference/cloud-recording/go-api/mixrecording.go) 合流录制场景实例。 |
+
+## IndividualRecording
+
+| API | 描述 |
+|---|---|
+|[`Acquire`](/zh-CN/api-reference/cloud-recording/go-api/individualrecording.go#acquire) | 获取单流云录制资源 ID。 |
+|[`Start`](/zh-CN/api-reference/cloud-recording/go-api/individualrecording.go#start) | 启动单流云端录制。 |
+|[`Query`](/zh-CN/api-reference/cloud-recording/go-api/individualrecording.go#query) | 查询关闭视频截图上传功能时的单流云端录制状态。 |
+|[`QueryVideoScreenshot`](/zh-CN/api-reference/cloud-recording/go-api/individualrecording.go#queryvideoscreenshot) | 查询开启视频截图采集功能时的单流云录制状态。 |
+|[`Update`](/zh-CN/api-reference/cloud-recording/go-api/individualrecording.go#update) | 更新单流录制配置。 |
+|[`Stop`](/zh-CN/api-reference/cloud-recording/go-api/individualrecording.go#stop) | 停止单流录制。 |
+
+## MixRecording
+
+| API | 描述 |
+|---|---|
+|[`Acquire`](/zh-CN/api-reference/cloud-recording/go-api/mixrecording.go#acquire) | 获取合流云端录制的资源 ID。 |
+|[`Start`](/zh-CN/api-reference/cloud-recording/go-api/mixrecording.go#start) | 启动合流云端录制。 |
+|[`QueryHLS`](/zh-CN/api-reference/cloud-recording/go-api/mixrecording.go#queryhls) | 查询视频文件格式为 HLS 时的合流录制状态。 |
+|[`QueryHLSAndMP4`](/zh-CN/api-reference/cloud-recording/go-api/mixrecording.go#queryhlsandmp4) | 查询 HLS 和 MP4 格式的合流云端录制状态。 |
+|[`Update`](/zh-CN/api-reference/cloud-recording/go-api/mixrecording.go#update) | 更新合流录制配置。 |
+|[`UpdateLayout`](/zh-CN/api-reference/cloud-recording/go-api/mixrecording.go#updatelayout) | 更新合流云端录制布局。 |
+|[`Stop`](/zh-CN/api-reference/cloud-recording/go-api/mixrecording.go#stop) | 停止合流云端录制。 |
+
+## WebRecording
+
+| API | 描述 |
+|---|---|
+|[`Acquire`](/zh-CN/api-reference/cloud-recording/go-api/webrecording.go#acquire) | 获取页面录制的资源 ID。 |
+|[`Start`](/zh-CN/api-reference/cloud-recording/go-api/webrecording.go#start) | 启动页面录制。 |
+|[`Query`](/zh-CN/api-reference/cloud-recording/go-api/webrecording.go#query) | 查询页面录制状态。 |
+|[`QueryRtmpPublish`](/zh-CN/api-reference/cloud-recording/go-api/webrecording.go#queryrtmppublish) | 查询页面录制的 CDN 推流状态。 |
+|[`Update`](/zh-CN/api-reference/cloud-recording/go-api/webrecording.go#update) | 更新页面录制配置。 |
+|[`Stop`](/zh-CN/api-reference/cloud-recording/go-api/webrecording.go#stop) | 停止页面录制。 |
+
+## Response
+
+| API | 描述 |
+|---|---|
+|[`IsSuccess`](/zh-CN/api-reference/cloud-recording/go-api/response.go#issuccess) | 判断云端录制 API 是否返回成功响应。 |
+
+## BasicAuthCredential
+
+| API | 描述 |
+|---|---|
+|[`NewBasicAuthCredential`](/zh-CN/api-reference/cloud-recording/go-api/basicauthcredential.go#newbasicauthcredential) | 创建一个新的 [`BasicAuthCredential`](/zh-CN/api-reference/cloud-recording/go-api/basicauthcredential.go) 实例。 |
+
+## BaseResponse
+
+| API | 描述 |
+|---|---|
+|[`GetRequestID`](/zh-CN/api-reference/cloud-recording/go-api/baseresponse.go#getrequestid) | 从响应中获取请求 ID。 |
+
+## SampleLogger
+
+| API | 描述 |
+|---|---|
+|[`NewDefaultLogger`](/zh-CN/api-reference/cloud-recording/go-api/samplelogger.go#newdefaultlogger) | 创建一个具有指定日志级别的默认日志记录器。 |

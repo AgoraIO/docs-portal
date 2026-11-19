@@ -1,0 +1,52 @@
+---
+title: "实时互动 API"
+description: "查看声网解决方案的实时互动 API，了解关键概念、参数说明、使用限制和接入注意事项。"
+---
+<PlatformStructured platform="android">
+
+在 MetaWorld 场景中，除了 Meta API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/zh-CN/api-reference/rtc/android/rtc-api-overview) 文档来了解详细的 RTC API 用法。
+
+本页展示 MetaWorld 中高频调用的实时互动 SDK API。
+
+|      API 名称      |        描述         |
+|:------------------|:--------------------|
+| [`create`](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize)  | 创建并初始化 RtcEngine。|
+| [`joinChannel`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2) | 设置媒体选项并加入频道。 |
+| [`leaveChannel`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_leavechannel) | 	离开频道。 |
+| [`setupLocalVideo`](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_setuplocalvideo) | 初始化本地视图。 |
+| [`create`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#create) |  创建 ILocalSpatialAudioEngine。 |
+| [`initialize`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#initialize) |  初始化 ILocalSpatialAudioEngine。 |
+| [`setAudioRecvRange`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#setaudiorecvrange) | 设置本地用户的音频接收范围。 |
+| [`updateSelfPosition`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#updateselfposition) | 更新本地用户的空间位置。 |
+| [`updateRemotePosition`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#updateremoteposition) | 更新远端用户的空间位置信息。 |
+| [`destroy`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#destroy) |  销毁 ILocalSpatialAudioEngine。 |
+| [`updatePlayerPositionInfo`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#updateplayerpositioninfo) | 更新媒体播放器的空间位置。 |
+| [`onFrame`](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#onframe) | 已获取音频帧回调。 |
+| [`sendStreamMessage`](/zh-CN/api-reference/rtc/android/metadata/datastream#api_irtcengine_sendstreammessage) | 发送数据流。 |
+| [`onStreamMessage`](/zh-CN/api-reference/rtc/android/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) | 接收到对方数据流消息的回调。 |
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+在 MetaWorld 场景中，除了 Meta API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/zh-CN/api-reference/rtc/ios/rtc-api-overview) 文档来了解详细的 RTC API 用法。
+
+本页展示 MetaWorld 中高频调用的实时互动 SDK API。
+
+|      API 名称      |        描述         |
+|:------------------|:--------------------|
+| [`sharedEngineWithConfig`](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) | 创建并初始化 AgoraRtcEngineKit。|
+| [`joinChannelByToken`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) | 设置媒体选项并加入频道。 |
+| [`leaveChannel`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_leavechannel) | 	离开频道。|
+| [`setupLocalVideo`](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setuplocalvideo) | 初始化本地视图。 |
+| [`sharedLocalSpatialAudioWithConfig`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#sharedlocalspatialaudiowithconfig) | 初始化 AgoraLocalSpatialAudioKit。|
+| [`setAudioRecvRange`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#setaudiorecvrange) | 设置本地用户的音频接收范围。 |
+| [`updateSelfPosition`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateselfposition) | 更新本地用户的空间位置。|
+| [`updateRemotePosition`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) | 更新远端用户的空间位置信息。 |
+| [`destroy`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#destroy) | 销毁 AgoraLocalSpatialAudioKit。|
+| [`updatePlayerPositionInfo`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateplayerpositioninfo) | 更新媒体播放器的空间位置。 |
+| [`didReceiveVideoFrame`](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#api_agorartcmediaplayervideoframedelegate_didreceivevideoframe) | 已获取视频帧回调。|
+| [`sendStreamMessage`](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_sendstreammessage) | 发送数据流。 |
+| [`receiveStreamMessageFromUid`](/zh-CN/api-reference/rtc/ios/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) | 接收到对方数据流消息的回调。|
+
+</PlatformStructured>

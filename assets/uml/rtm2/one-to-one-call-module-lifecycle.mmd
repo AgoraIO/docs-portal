@@ -1,0 +1,7 @@
+flowchart LR
+  A["创建 RTM client<br/>注册 App 自有监听"] --> B["login()"]
+  B --> C["安装呼叫邀请模块"]
+  C --> D["发起 / 接听呼叫"]
+  D --> E["销毁模块 dispose()"]
+  E --> F["logout()"]
+  F -->|重新登录| B

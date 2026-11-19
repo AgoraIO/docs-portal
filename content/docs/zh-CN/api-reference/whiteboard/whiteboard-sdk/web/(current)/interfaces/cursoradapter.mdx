@@ -1,0 +1,87 @@
+---
+title: CursorAdapter
+description: Whiteboard Web SDK 2.16.59 公开 interface。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/cursoradapter
+  sourcePath: html-docs/whiteboard/Web/interfaces/cursoradapter.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare interface CursorAdapter
+```
+
+## 成员
+
+- [createCursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursoradapter#createcursor)
+- [onAddedCursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursoradapter#onaddedcursor)
+- [onRemovedCursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursoradapter#onremovedcursor)
+- [onMovingCursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursoradapter#onmovingcursor)
+
+## Methods
+
+<a id="createcursor"></a>
+
+### createCursor
+
+<ApiSignature>
+
+createCursor(memberId: number): CursorDescription & \{ reactNode?: any; \};
+
+</ApiSignature>
+
+```text
+创建对光标的描述。某个用户的光标首次出现之前会被调用。
+@param memberId 该用户的 ID
+@returns 对应用户光标的描述对象
+```
+
+<ApiReturns>
+
+<ApiReturnType>
+
+CursorDescription & \{ reactNode?: any; \}
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Properties
+
+<a id="onaddedcursor"></a>
+
+### onAddedCursor
+
+readonly onAddedCursor: ((cursor: Cursor)=&gt;void) | undefined;
+
+```text
+在某个光标出现在白板上时回调
+@param cursor 光标对象
+```
+
+<a id="onremovedcursor"></a>
+
+### onRemovedCursor
+
+readonly onRemovedCursor: ((cursor: Cursor)=&gt;void) | undefined;
+
+```text
+在某个光标从白板上消失时回调
+@param cursor 光标对象
+```
+
+<a id="onmovingcursor"></a>
+
+### onMovingCursor
+
+readonly onMovingCursor: ((cursor: Cursor, positionX: number, positionY: number)=&gt;void) | undefined;
+
+```text
+在某个光标在白板上移动时回调
+@param cursor 光标对象
+@param positionX 光标指示中心点的 x 坐标（相对于白板左上角）
+@param positionY 光标指示中心点的 y 坐标（相对于白板左上角）
+```

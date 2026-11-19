@@ -2,7 +2,11 @@ import { randomUUID } from 'node:crypto';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { readPublishedDocsRoutes } from './published-docs-routes.server';
+import {
+  readDocsPrerenderPaths,
+  readPublishedDocsRoutes,
+  writeStaticDocsRouteManifests,
+} from './published-docs-routes.server';
 
 const tempPaths: string[] = [];
 
@@ -13,6 +17,37 @@ afterEach(() => {
 });
 
 describe('published docs routes manifest', () => {
+  it('publishes only readable Markdown routes while keeping redirect aliases prerendered', async () => {
+    const directory = join(
+      import.meta.dirname,
+      `../../tmp/published-docs-routes-${randomUUID()}`,
+    );
+    tempPaths.push(join(directory, 'docs-routes.json'));
+    const endpoint = {
+      canonicalPath: '/zh-CN/api-reference/api-ref/cloud-recording/acquire',
+      markdownPath: '/zh-CN/api-reference/api-ref/cloud-recording/acquire.md',
+      url: '/zh-CN/api-reference/api-ref/cloud-recording/acquire',
+    };
+    const alias = {
+      canonicalPath: '/zh-CN/api-reference/api-ref/cloud-recording',
+      markdownPath: '/zh-CN/api-reference/api-ref/cloud-recording.md',
+      url: '/zh-CN/api-reference/api-ref/cloud-recording',
+    };
+    await writeStaticDocsRouteManifests({
+      directory,
+      machineReadableRoutes: [endpoint],
+      prerenderRoutes: [alias, endpoint],
+    });
+    expect(
+      readPublishedDocsRoutes(join(directory, 'docs-routes.json')),
+    ).toEqual([endpoint]);
+    expect(
+      readDocsPrerenderPaths(join(directory, 'docs-prerender-paths.json')),
+    ).toEqual([
+      '/zh-CN/api-reference/api-ref/cloud-recording',
+      '/zh-CN/api-reference/api-ref/cloud-recording/acquire',
+    ]);
+  });
   it('reads generated render paths for the static Vite build', () => {
     const manifestPath = join(
       import.meta.dirname,
@@ -50,6 +85,25 @@ describe('published docs routes manifest', () => {
 
     expect(() => readPublishedDocsRoutes(manifestPath)).toThrow(
       'Run docs:static-payload before the static app build',
+    );
+    expect(() => readDocsPrerenderPaths(manifestPath)).toThrow(
+      'Run docs:static-payload before the static app build',
+    );
+  });
+
+  it('rejects a document manifest passed as prerender paths', () => {
+    const manifestPath = join(
+      import.meta.dirname,
+      `../../tmp/published-docs-routes-${randomUUID()}/paths.json`,
+    );
+    tempPaths.push(manifestPath);
+    mkdirSync(dirname(manifestPath), { recursive: true });
+    writeFileSync(
+      manifestPath,
+      JSON.stringify([{ url: '/zh-CN/introduction' }]),
+    );
+    expect(() => readDocsPrerenderPaths(manifestPath)).toThrow(
+      'Invalid docs prerender paths manifest',
     );
   });
 });

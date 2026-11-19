@@ -1,0 +1,14 @@
+---
+title: "为什么调试模式下在 iOS 14 及以上设备上安装的 Flutter App 无法再次打开？"
+---
+## 问题描述
+
+在 iOS 14 及以上版本的设备上，以调试模式 (Debug mode) 安装的 Flutter App 无法通过点击主屏幕图标、深度链接 (Deep link) 等方式再次打开。此外，如果 iOS App 以调试模式集成了 Flutter 模块，通过点击主屏幕图标等方式再次打开 App 时，其中集成的 Flutter 模块可能会导致 App 崩溃。
+
+## 问题原因
+
+自 iOS 14 起，Apple 对调试模式的 App 执行机制进行了调整，特别是增加了对即时编译 (JIT) 代码执行方式的限制。在调试模式下，Flutter App 依赖 JIT 来执行代码，新增的限制导致 App 无法通过常规方式从设备启动。
+
+## 解决方案
+
+关于如何解决此问题，详见 [Flutter 官方说明](https://docs.flutter.cn/platform-integration/ios/ios-debugging)。

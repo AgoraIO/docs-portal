@@ -1,4 +1,3 @@
-import { stat } from 'node:fs/promises';
 import path from 'node:path';
 import { DOCS_LAST_UPDATED_BY_PATH } from '@/generated/docs-last-updated-manifest';
 import {
@@ -18,30 +17,7 @@ export async function resolveDocsLastUpdatedMetadata(
     return createDocsLastUpdatedMetadata(manifestIso, 'git');
   }
 
-  const fileMtimeIso = await resolveMostRecentFileMtimeIso(candidates);
-
-  if (fileMtimeIso) {
-    return createDocsLastUpdatedMetadata(fileMtimeIso, 'file-mtime');
-  }
-
   return createDocsLastUpdatedMetadata();
-}
-
-async function resolveMostRecentFileMtimeIso(candidates: string[]) {
-  const mtimes = await Promise.all(
-    candidates.map(async (candidate) => {
-      try {
-        return (await stat(path.resolve(process.cwd(), candidate))).mtime;
-      } catch {
-        return null;
-      }
-    }),
-  );
-  const newest = mtimes
-    .filter((mtime): mtime is Date => mtime instanceof Date)
-    .sort((left, right) => right.valueOf() - left.valueOf())[0];
-
-  return newest?.toISOString();
 }
 
 function normalizePathCandidates(pathCandidates: string[]) {

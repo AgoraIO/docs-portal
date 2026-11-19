@@ -1,0 +1,179 @@
+---
+title: com.herewhite.sdk.WhiteboardViewOptions class 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_whiteboard_view_options
+  sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1_whiteboard_view_options.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**Whiteboard Android SDK 2.16.134**。
+
+`WhiteboardViewOptions` 类，用于配置 WhiteboardView 的初始化选项。
+
+## 属性与 JSON 字段
+
+Java 非公开字段通过对应 getter/setter 访问；可选包装类型未设置时通常不写入 JSON。初值包含字段声明及无参构造中的直接赋值；其他构造参数以签名为准。
+
+| 字段 | 声明 | 源码初值 | 说明 |
+| --- | --- | --- | --- |
+| [enableAssetsHttps](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view-options#a2ef9e1c5533845ae0de9d098837a4797) | `boolean enableAssetsHttps` | false | <Slot name="api-center-table-0" /> |
+| [assetsHttpsOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view-options#a6daa984f94ed4784b580af9866d7ae4e) | `AssetsHttpsOptions assetsHttpsOptions` | 未显式赋值 | <Slot name="api-center-table-1" /> |
+
+<Slot for="api-center-table-0">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-1">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+| 公开成员签名 |  |
+| --- | --- |
+|  | [WhiteboardViewOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view-options#a46494c39aa71b2619f021b81b815d2bc) () |
+| boolean | [isEnableAssetsHttps](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view-options#afa037e45943c4c1d2bd7d819e978b0a9) () |
+| WhiteboardViewOptions | [setEnableAssetsHttps](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view-options#a8de28cdf5bb6c957b1ef5127d6bc83fc) (boolean enableAssetsHttps) |
+| AssetsHttpsOptions | [getAssetsHttpsOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view-options#ac13c0dfb24d07c256a89fe27a985d4f8) () |
+| WhiteboardViewOptions | [setAssetsHttpsOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view-options#aff152dafd2301a7ede9419067714ca51) (AssetsHttpsOptions assetsHttpsOptions) |
+
+## 变量说明
+
+<a id="a2ef9e1c5533845ae0de9d098837a4797"></a>
+
+### enableAssetsHttps
+
+```text
+boolean enableAssetsHttps
+```
+
+源码初值：false
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a6daa984f94ed4784b580af9866d7ae4e"></a>
+
+### assetsHttpsOptions
+
+```text
+AssetsHttpsOptions assetsHttpsOptions
+```
+
+源码初值：未显式赋值
+
+模型属性；通过对应 getter/setter 访问。
+
+## 函数说明
+
+<a id="a46494c39aa71b2619f021b81b815d2bc"></a>
+
+### WhiteboardViewOptions()
+
+<ApiSignature>
+
+WhiteboardViewOptions()
+
+</ApiSignature>
+
+WhiteboardViewOptions：com.herewhite.sdk.WhiteboardViewOptions 的公开成员。参数和返回类型见下方签名。
+
+<a id="afa037e45943c4c1d2bd7d819e978b0a9"></a>
+
+### isEnableAssetsHttps()
+
+<ApiSignature>
+
+boolean isEnableAssetsHttps()
+
+</ApiSignature>
+
+获取是否启用 HTTPS 资源加载。
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+是否启用 HTTPS 资源加载。
+
+<a id="a8de28cdf5bb6c957b1ef5127d6bc83fc"></a>
+
+### setEnableAssetsHttps()
+
+<ApiSignature>
+
+WhiteboardViewOptions setEnableAssetsHttps(boolean enableAssetsHttps)
+
+</ApiSignature>
+
+设置是否启用 HTTPS 资源加载。
+&lt;p&gt;
+WhiteboardView 默认使用 file 方式加载内置白板资源，这是最稳定的运行模式。
+对于需要突破 file 协议限制的特殊场景，可通过本方法显式启用
+基于 WebViewAssetLoader 的 HTTPS 资源加载方案。
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="enableAssetsHttps">
+
+是否启用 HTTPS 资源加载。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+当前 WhiteboardViewOptions 实例，支持链式调用。
+
+<a id="ac13c0dfb24d07c256a89fe27a985d4f8"></a>
+
+### getAssetsHttpsOptions()
+
+<ApiSignature>
+
+AssetsHttpsOptions getAssetsHttpsOptions()
+
+</ApiSignature>
+
+获取 HTTPS 资源加载选项。
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+HTTPS 资源加载选项，如果未启用则返回 null。
+
+<a id="aff152dafd2301a7ede9419067714ca51"></a>
+
+### setAssetsHttpsOptions()
+
+<ApiSignature>
+
+WhiteboardViewOptions setAssetsHttpsOptions(AssetsHttpsOptions assetsHttpsOptions)
+
+</ApiSignature>
+
+设置 HTTPS 资源加载选项。
+&lt;p&gt;
+设置此选项会自动启用 HTTPS 资源加载。
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="assetsHttpsOptions">
+
+HTTPS 资源加载选项。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+当前 WhiteboardViewOptions 实例，支持链式调用。

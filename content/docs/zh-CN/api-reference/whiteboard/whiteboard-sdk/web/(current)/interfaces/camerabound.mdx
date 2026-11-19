@@ -1,0 +1,49 @@
+---
+title: CameraBound
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/camerabound
+  sourcePath: html-docs/whiteboard/Web/interfaces/camerabound.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type CameraBound = {
+    /**
+     * 当画面突破边界时的阻尼大小，取值范围为 0.0 ~ 1.0
+     * 越大，阻尼越大，取 1.0 时，无论怎么拉，视角都无法突破边界
+     * 越小，阻尼越小，取 0.0 时，视角可以被毫无阻力地拉出边界，只有松手的时候才会弹回
+     * 默认值是 0.75
+     */
+    damping?: number;
+    /**
+     * 边界的中心点在世界坐标系中的 x 坐标，默认值是 0.0
+     */
+    centerX?: number;
+    /**
+     * 边界的中心点在世界坐标系中的 y 坐标，默认值是 0.0
+     */
+    centerY?: number;
+    /**
+     * 边界在世界坐标系中的宽，如果取 Infinity，则表示不对横向设限制
+     * 默认值是 Infinity
+     */
+    width?: number;
+    /**
+     * 边界在世界坐标系中的高，如果取 Infinity，则表示不对纵向设限制
+     * 默认值是 Infinity
+     */
+    height?: number;
+    /**
+     * 对视角放大的限制模式，不填是没有限制
+     */
+    maxContentMode?: ContentMode;
+    /**
+     * 对视角缩小的限制模式，不填是没有限制
+     */
+    minContentMode?: ContentMode;
+};
+```

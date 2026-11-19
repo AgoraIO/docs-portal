@@ -1,0 +1,81 @@
+---
+title: io.agora.recording.common.Common.LEAVE_PATH_CODE 枚举类型参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/recording/java/enumio_1_1agora_1_1recording_1_1common_1_1_common_1_1_l_e_a_v_e___p_a_t_h___c_o_d_e
+  sourcePath: >-
+    html-docs/recording/Java/enumio_1_1agora_1_1recording_1_1common_1_1_common_1_1_l_e_a_v_e___p_a_t_h___c_o_d_e.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+录制端离开频道的原因。将 [`LEAVE_PATH_CODE`](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-l-e-a-v-e-p-a-t-h-c-o-d-e) 与各枚举值逐一进行按位与运算，计算结果非零的，即为退出原因。例如，code 为 `6`（二进制 110）时，将其与各枚举值逐一进行按位与计算，`LEAVE_CODE_SIG` (二进制 10）与 `LEAVE_CODE_NO_USERS` (二进制 100）的结果非零，则退出原因包括收到 SIGINT 信号以及录制超时。
+
+## 类成员变量说明
+
+<a id="af81831ccda53ea94beb9be2ab5118c0e"></a>
+
+### LEAVE_CODE_INIT
+
+<ApiSignature>
+
+io.agora.recording.common.Common.LEAVE_PATH_CODE.LEAVE_CODE_INIT =(0)
+
+</ApiSignature>
+
+0: 初始化失败。
+
+<a id="a039318d71f399f672e29e815676dca95"></a>
+
+### LEAVE_CODE_SIG
+
+<ApiSignature>
+
+io.agora.recording.common.Common.LEAVE_PATH_CODE.LEAVE_CODE_SIG =(1&lt;&lt;1)
+
+</ApiSignature>
+
+2（二进制 10）：AgoraCoreService 收到 SIGINT 信号而触发的退出。
+
+<a id="ade9392e1a7b5b7dea8bfc14ef0fe5ec1"></a>
+
+### LEAVE_CODE_NO_USERS
+
+<ApiSignature>
+
+io.agora.recording.common.Common.LEAVE_PATH_CODE.LEAVE_CODE_NO_USERS =(1&lt;&lt;2)
+
+</ApiSignature>
+
+4（二进制 100）：频道内除录制端外没有其他用户，录制端自动离开频道。
+
+<a id="ac3d72c4820ede739dc63490581463ce5"></a>
+
+### LEAVE_CODE_TIMER_CATCH
+
+<ApiSignature>
+
+io.agora.recording.common.Common.LEAVE_PATH_CODE.LEAVE_CODE_TIMER_CATCH =(1&lt;&lt;3)
+
+</ApiSignature>
+
+8（二进制 1000）：可忽略。
+
+<a id="a874d61c8bf4f8afcf35ece82ecb5183f"></a>
+
+### LEAVE_CODE_CLIENT_LEAVE
+
+<ApiSignature>
+
+io.agora.recording.common.Common.LEAVE_PATH_CODE.LEAVE_CODE_CLIENT_LEAVE =(1&lt;&lt;4)
+
+</ApiSignature>
+
+16（二进制 10000）：录制端调用 [leaveChannel](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#a498f6797e2d90999110e04af9c5ea5e1) 方法退出频道。

@@ -1,4 +1,5 @@
 import { MACHINE_READABLE_LOCALE } from './machine-readable-docs';
+import { toCnPublicSearchUrl } from './search/cn-search-urls.mjs';
 import { DOCS_REGION, type DocsRegion } from './site-region';
 
 type SitemapPage = {
@@ -9,7 +10,10 @@ const XML_HEADER = '<?xml version="1.0" encoding="UTF-8"?>';
 const URLSET_OPEN =
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 const URLSET_CLOSE = '</urlset>';
-const PUBLIC_DOCS_BASE_URL = 'https://docs.agora.io';
+const PUBLIC_DOCS_BASE_URLS = {
+  global: 'https://docs.agora.io',
+  cn: 'https://docs.shengwang.cn',
+};
 
 export function getSitemapBaseUrl(region: DocsRegion = DOCS_REGION) {
   const viteEnv = (
@@ -17,17 +21,12 @@ export function getSitemapBaseUrl(region: DocsRegion = DOCS_REGION) {
       env?: Record<string, string | undefined>;
     }
   ).env;
-  const configured =
-    process.env.SITE_URL ??
-    viteEnv?.VITE_SITE_URL ??
-    process.env.VITE_SITE_URL ??
-    process.env.PUBLIC_SITE_URL;
-
-  if (!configured && region === 'cn') {
-    throw new Error('SITE_URL is required when VITE_DOCS_REGION=cn.');
-  }
-
-  const baseUrl = configured ?? PUBLIC_DOCS_BASE_URL;
+  const baseUrl =
+    process.env.SITE_URL ||
+    viteEnv?.VITE_SITE_URL ||
+    process.env.VITE_SITE_URL ||
+    process.env.PUBLIC_SITE_URL ||
+    PUBLIC_DOCS_BASE_URLS[region];
 
   return baseUrl.replace(/\/+$/, '').replace(/\/en$/, '');
 }
@@ -48,7 +47,10 @@ export function getSitemapUrls({
         .filter((url) => url.startsWith(`/${MACHINE_READABLE_LOCALE}/`))
         .filter((url) => !url.endsWith('.md'))
         .filter((url) => !url.includes('/llms.mdx/'))
-        .map((url) => `${baseUrl}${url}`),
+        .map(
+          (url) =>
+            `${baseUrl}${DOCS_REGION === 'cn' ? toCnPublicSearchUrl(url) : url}`,
+        ),
     ),
   ).sort();
 }

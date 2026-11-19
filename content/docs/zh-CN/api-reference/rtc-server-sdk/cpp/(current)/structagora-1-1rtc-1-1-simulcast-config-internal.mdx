@@ -1,0 +1,54 @@
+---
+title: agora::rtc::SimulcastConfigInternal结构体 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_simulcast_config_internal
+  sourcePath: html-docs/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_simulcast_config_internal.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+定义多路 YUV 视频流的配置数组。
+
+## 成员函数说明
+
+<a id="a071635f92a26eb8abb66f6ca153bea87"></a>
+
+### reset()
+
+<ApiSignature labels="inline">
+
+void agora::rtc::SimulcastConfigInternal::reset()
+
+</ApiSignature>
+
+<a id="a584608c3f563bde3eca46b6eb5311a60"></a>
+
+### operator==()
+
+<ApiSignature labels="inline">
+
+bool agora::rtc::SimulcastConfigInternal::operator==(const [SimulcastConfigInternal](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-simulcast-config-internal) & *rhs*) const
+
+</ApiSignature>
+
+## 类成员变量说明
+
+<a id="af7a9fc0e6c0275ebbfad99149d823c95"></a>
+
+### simulcastlayerConfigs
+
+<ApiSignature>
+
+[StreamLayerConfigInternal](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-stream-layer-config-internal) agora::rtc::SimulcastConfigInternal::simulcastlayerConfigs[[STREAM_LAYER_COUNT_MAX](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac7c53aef1d848fde23b24e9c9e14a26da06c1204fcdf9fc528f81f6663da31343)]
+
+</ApiSignature>
+
+配置数组，最多包含 `STREAM_LAYER_COUNT_MAX` 个 [`StreamLayerConfigInternal`](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-stream-layer-config-internal) 对象。你可以分别对多路视频流进行不同的配置。

@@ -1,0 +1,80 @@
+---
+title: "agoraservice 包"
+---
+<span className="index-desc-agoraservice">`agoraservice` 包。作为 SDK 的入口，你可以通过 `agoraservice` 包创建媒体轨道和连接。</span>
+
+<a id="initialize"></a>
+## Initialize
+
+```go
+func Initialize(cfg *AgoraServiceConfig) int {
+    if agoraService.inited {
+        return 0
+    }
+    if agoraService.service == nil {
+        agoraService.service = C.agora_service_create()
+        if agoraService.service == nil {
+            return -1
+        }
+    }
+
+    ccfg := CAgoraServiceConfig(cfg)
+    defer FreeCAgoraServiceConfig(ccfg)
+
+    ret := int(C.agora_service_initialize(agoraService.service, ccfg))
+    if ret != 0 {
+        return ret
+    }
+
+    if cfg.LogPath != "" {
+        logPath := C.CString(cfg.LogPath)
+        defer C.free(unsafe.Pointer(logPath))
+        logSize := 512 * 1024
+        if cfg.LogSize > 0 {
+            logSize = cfg.LogSize
+        }
+        C.agora_service_set_log_file(agoraService.service, logPath, C.uint(logSize))
+    }
+    agoraService.inited = true
+    return 0
+}
+```
+
+<span className="index-desc-initialize">初始化 `agoraservice` 包。</span>
+
+#### 参数
+
+| 参数    | 描述                                                                 |
+|---------|----------------------------------------------------------------------|
+| `cfg` | 初始化配置。详见 [`AgoraServiceConfig`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#agoraserviceconfig)。    |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="release"></a>
+## Release
+
+```go
+func Release() int {
+    if !agoraService.inited {
+        return 0
+    }
+    if agoraService.service != nil {
+        ret := int(C.agora_service_release(agoraService.service))
+        if ret != 0 {
+            return ret
+        }
+        agoraService.service = nil
+    }
+    agoraService.inited = false
+    return 0
+}
+```
+
+<span className="index-desc-release">释放 `agoraservice` 包占用的资源。</span>
+
+:::warning[注意]
+`Release` 需要在非回调内的子线程调用，避免在回调中执行。
+:::

@@ -1,0 +1,34 @@
+---
+title: AUDIO_TRACK_TYPE
+description: 自定义音频采集轨道的类型。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/enum_audiotracktype
+  sourcePath: html-docs/rtc/Csharp/API/enum_audiotracktype.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_audiotracktype__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="audio_track_mixable"></a>
+<Parameter name="AUDIO_TRACK_MIXABLE">
+
+0：可混流的音频轨道。支持与其他音频流 (例如：麦克风采集的音频流) 混音后，再在本地播放或发布到频道中。与非混流的音频轨道相比，延迟更高。
+
+</Parameter>
+<a id="audio_track_direct"></a>
+<Parameter name="AUDIO_TRACK_DIRECT">
+
+1：非混流的音频轨道。会替代麦克风采集，且不支持与其他音频流混音。与可混流的音频轨道相比，延迟更低。
+
+:::caution
+注意： 如指定 AUDIO_TRACK_DIRECT，则必须在调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 中的 `publishMicrophoneTrack` 设为 `false`，否则加入频道失败并返回错误码 -2.
+:::
+
+</Parameter>
+</ParameterList>
