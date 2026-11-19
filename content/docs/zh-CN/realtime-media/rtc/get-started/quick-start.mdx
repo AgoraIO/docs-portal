@@ -155,7 +155,7 @@ description: "了解如何快速接入实时互动 RTC，完成环境准备、�
     dependencies {
         ...
         // 对于 4.6.0 及之后的版本
-        // x.y.z 替换为具体的 SDK 版本号，如：4.6.1
+        // x.y.z 替换为具体的 SDK 版本号，如：4.7.1
         // 集成 Full SDK
         implementation 'cn.shengwang.rtc:full-sdk:x.y.z'
         // 集成 Lite SDK
@@ -843,6 +843,10 @@ protected void onCreate(Bundle savedInstanceState) {
 
 <TabsContent value="cocoapods">
 
+:::note
+当前 CocoaPods 仓库提供的版本为 v4.7.0。如需集成 v4.7.1，请参考 [SPM 集成步骤](/zh-CN/realtime-media/rtc/reference/downloads/ios#通过-spm-集成-sdk)，或切换至手动集成方式。
+:::
+
 1. 在终端里进入项目根目录，并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
 2. 打开 `Podfile` 文件，在文件顶部添加声网 CocoaPods CDN 源。请保留项目中已有的源配置；如果项目还依赖公共仓库中的其他 Pod，请同时保留公共源，例如 `source 'https://cdn.cocoapods.org/'`。已有项目保留原来的 SDK 包名、版本号和组件配置，仅补充源配置。
 
@@ -904,7 +908,7 @@ protected void onCreate(Bundle savedInstanceState) {
     https://github.com/AgoraIO/AgoraRtcEngine_iOS.git
     ```
 
-2. 在 **Dependency Rule** 中选择 **Exact Version**，输入需要集成的 SDK 版本（例如 `4.7.0`），然后点击 **Add Package**。
+2. 在 **Dependency Rule** 中选择 **Exact Version**，输入需要集成的 SDK 版本（例如 `4.7.1`），然后点击 **Add Package**。
 3. 在产品列表中，为应用的 Target 选择 `RtcBasic` 基础组件，其他组件按功能需要选择，然后完成添加。
 
    添加完成后，可在工程的 **Package Dependencies** 中确认 SDK 版本。更多设置请参考 [Apple 官方文档](https://help.apple.com/xcode/mac/current/#/devb83d64851)。

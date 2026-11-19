@@ -61,15 +61,15 @@ describe('RTC download platform body parity', () => {
   );
 
   it.each(['android', 'ios'])(
-    'keeps the package-size qualification with the %s downloads',
+    'distinguishes ZIP download size from installed-size growth on %s',
     (platform) => {
       const body = readBody(platform);
       const downloadSection = body
         .split('## 下载 SDK\n')[1]
         .split('## 获取 Demo')[0];
-      expect(downloadSection).toContain(
-        '集成 SDK 后增加的实际包体积数据会根据集成的动态库的不同而有所差异，本页提供的数据仅供参考。',
-      );
+      expect(downloadSection).toContain('本页列出 ZIP 下载文件大小。');
+      expect(downloadSection).toContain('集成后安装包的增量取决于');
+      expect(downloadSection).toContain('1 MB = 1,000,000 字节');
     },
   );
 

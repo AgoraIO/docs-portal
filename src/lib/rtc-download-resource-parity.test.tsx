@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { cleanup, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { RtcSdkDownloads } from '@/components/docs-overview/RtcSdkDownloads';
+import { zhCNSdkDownloadPlatforms } from '@/components/docs-overview/sdk-downloads-data.zh-cn';
 import legacy from '@/test/fixtures/rtc-download-resources.json';
 
 const read = (platform: string) =>
@@ -16,7 +17,22 @@ const sdkPlatforms: Record<string, string> = {
   'unreal-blueprint': 'unreal-engine',
 };
 
-describe('RTC resource cards match the frozen legacy source', () => {
+// The original fixture remains frozen. Only the two mobile current releases
+// advance to 4.7.1; their 4.7.0 destinations and metadata remain in the catalog.
+const release471Md5: Record<string, Record<string, string>> = {
+  android: {
+    FULL: 'c3b3cbfae32ca1fe12d464e2577843b3',
+    LITE: 'f5a7e98abe8b10d3b013c8ead1dec286',
+    VOICE: 'ad3318830f59fe7343a0e4675d9e5853',
+  },
+  ios: {
+    FULL: 'e5e4c3f036426e251c2b3ed4feaaea1c',
+    LITE: '9506b191ee9592a75bc8645577aa68ac',
+    VOICE: 'afcb69331a575f86eb212494b13ca985',
+  },
+};
+
+describe('RTC resource cards preserve legacy content and approved release updates', () => {
   it.each(Object.entries(legacy.platforms))(
     '%s preserves SDK card wording and destinations',
     (platform, expected) => {
@@ -36,7 +52,28 @@ describe('RTC resource cards match the frozen legacy source', () => {
           const actual = screen.getAllByRole('article');
           expect(actual).toHaveLength(cards.length);
           actual.forEach((article, index) => {
-            const card = cards[index];
+            const original = cards[index];
+            let card = original;
+            if (platform in release471Md5) {
+              const historical = zhCNSdkDownloadPlatforms
+                .find((entry) => entry.id === platform)
+                ?.core.flatMap((sdk) => sdk.versions)
+                .find((version) => version.downloadLink === original.href);
+              expect(historical).toBeDefined();
+              expect(original.body).toContain(historical?.md5);
+              expect(original.footer).toContain(historical?.releaseDate);
+              const variant = original.href.match(
+                /_(FULL|LITE|VOICE)\.zip$/,
+              )?.[1];
+              expect(variant).toBeDefined();
+              if (!variant) throw new Error('Unknown Native SDK variant');
+              card = {
+                ...original,
+                body: `${original.body.split('最新版本：')[0]}最新版本：v4.7.1 MD5 值：${release471Md5[platform][variant]}`,
+                footer: '发布日期：2026 年 11 月 18 日',
+                href: original.href.replace('_v4.7.0_', '_v4.7.1_'),
+              };
+            }
             expect(compact(article.textContent ?? '')).toBe(
               compact(card.title + card.body + card.footer),
             );
