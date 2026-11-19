@@ -214,7 +214,7 @@ const zhCnDocsFooterContent = {
     {
       links: [
         {
-          href: '/zh-CN/solutions/overview',
+          href: 'https://www.shengwang.cn',
           label: '解决方案',
         },
         {
