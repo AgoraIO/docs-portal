@@ -19,6 +19,7 @@ For webhook setup, request format, and signature verification, see [Webhooks](..
 | Retrieve conversation history after a session | [`103 agent history`](#103-agent-history) | What was said during the session? See [Retrieve conversation history after a session ends](../build/handle-runtime-events/retrieve-session-history). |
 | Investigate failures and alert on production issues | [`110 agent error`](#110-agent-error), [`102 agent left`](#102-agent-left) | Which module failed? Did the session terminate because of that failure? See [Debug agent failures with runtime events](../build/handle-runtime-events/debug-agent-failures). |
 | Measure latency and runtime health | [`111 agent metrics`](#111-agent-metrics) | How long do LLM and TTS stages take? Are there regressions? |
+| Correlate avatar sessions with your avatar provider | [`113 agent avatar session created`](#113-agent-avatar-session-created) | Which provider-side avatar session belongs to this agent? |
 | Track telephony call progress | [`201 inbound call state`](#201-inbound-call-state), [`202 outbound call state`](#202-outbound-call-state) | Where is the SIP call in its lifecycle? |
 
 ## Request header
@@ -88,6 +89,7 @@ The Agora message notification service notifies the following Conversational AI 
 | [110](#110-agent-error) | agent error | Agent error. |
 | [111](#111-agent-metrics) | agent metrics | The performance metrics of an agent. |
 | [112](#112-turns-finished) | turns finished | Batch callback of dialogue round data after the session ends. |
+| [113](#113-agent-avatar-session-created) | agent avatar session created | An avatar session is created for the agent. |
 | [201](#201-inbound-call-state) | inbound call state | Changes in the status of an incoming call. |
 | [202](#202-outbound-call-state) | outbound call state | Changes in the status of an outgoing call. |
 
@@ -791,6 +793,53 @@ The following example shows the `end` object of an interrupted turn:
     "caused_by": "api_interrupt",
     "playback_duration_ms": 1200,
     "intended_playback_duration_ms": 2400
+  }
+}
+```
+
+### 113 agent avatar session created
+
+An `eventType` of `113` indicates that an avatar session is created for the agent. This event applies to the [Generic](../models/avatar/generic), [LemonSlice](../models/avatar/lemonslice), [Protoface](../models/avatar/protoface), and [Tavus](../models/avatar/tavus) avatar integrations. Use the session ID to correlate the agent with the session on the avatar provider's side, or to call the provider's session APIs.
+
+The event fires once when the avatar session starts. If the avatar reconnects and creates a new session, the event fires again with the new `session_id`.
+
+The `payload` contains the following fields:
+
+<ParameterList title="payload">
+  <Parameter name="agent_id" type="string">
+    Unique identifier of the agent.
+  </Parameter>
+  <Parameter name="name" type="string">
+    The agent name provided when calling [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join). Unique within a channel.
+  </Parameter>
+  <Parameter name="start_ts" type="integer">
+    Timestamp indicating when the agent was created.
+  </Parameter>
+  <Parameter name="channel" type="string">
+    The name of the channel the agent is in.
+  </Parameter>
+  <Parameter name="avatar" type="object">
+    Avatar session information. Contains the following fields:
+    <Parameter name="vendor" type="string">
+      The avatar vendor. The value is `generic` for the Generic, LemonSlice, Protoface, and Tavus integrations.
+    </Parameter>
+    <Parameter name="session_id" type="string">
+      The session ID returned by the avatar provider.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+#### Payload example
+
+```json
+{
+  "agent_id": "1NT29X10YHxxxxxWJOXLYHNYB",
+  "name": "my-agent",
+  "start_ts": 1737111452,
+  "channel": "xxxxx",
+  "avatar": {
+    "vendor": "generic",
+    "session_id": "12345678-abcd-1234-abcd-123456789abc"
   }
 }
 ```

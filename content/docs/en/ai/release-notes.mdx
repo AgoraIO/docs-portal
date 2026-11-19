@@ -17,13 +17,17 @@ Released on November 13, 2026.
 
 Included in this release:
 
+- **Avatar session created event**
+
+  A new webhook event notifies you when an avatar session is created for the Generic, LemonSlice, Protoface, or Tavus avatar integrations. The event includes the session ID returned by the avatar provider. Use it to correlate the agent with the provider's session or to call the provider's session APIs. For details, see [113 agent avatar session created](reference/event-types#113-agent-avatar-session-created).
+
 - **New TTS provider**
 
   - [Soniox](models/tts/soniox)
 
 #### API changes
 
-This release introduces the following changes for the new Soniox provider.
+This release introduces the following changes:
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -36,18 +40,21 @@ This release introduces the following changes for the new Soniox provider.
 <TabsContent value="python">
 
 - [`SonioxTTS`](/en/api-reference/api-ref/server-sdk/python#tts-vendors): New TTS vendor class for Soniox.
+- `HumeAITTS`: Removed. Hume AI TTS is no longer supported.
 
 </TabsContent>
 
 <TabsContent value="typescript">
 
 - [`SonioxTTS`](/en/api-reference/api-ref/server-sdk/typescript#tts-vendors): New TTS vendor class for Soniox.
+- `HumeAITTS`: Removed. Hume AI TTS is no longer supported.
 
 </TabsContent>
 
 <TabsContent value="go">
 
 - [`NewSonioxTTS`](/en/api-reference/api-ref/server-sdk/go#tts-vendors): New TTS vendor class for Soniox.
+- `NewHumeAITTS`: Removed. Hume AI TTS is no longer supported.
 
 </TabsContent>
 
@@ -59,8 +66,26 @@ This release introduces the following changes for the new Soniox provider.
 
     - [`tts.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-vendor) value `soniox`: Use Soniox as the TTS provider. See [Soniox](/en/ai/models/tts/soniox).
 
+  - **Removed parameter values**
+
+    - `tts.vendor` value `humeai`: Hume AI TTS is no longer supported.
+
+- Changes to [**Notification event types**](/en/ai/reference/event-types)
+
+  - **New event**
+
+    - [`113 agent avatar session created`](/en/ai/reference/event-types#113-agent-avatar-session-created): Notifies you when an avatar session is created for the Generic, LemonSlice, Protoface, or Tavus avatar integrations. Fires again with a new `session_id` if the avatar reconnects.
+
 </TabsContent>
 </Tabs>
+
+#### Removal notice
+
+:::warning[Important]
+These changes may affect your existing integration. Review each change and update your integration as needed.
+:::
+
+- **Hume AI TTS is removed.** Hume AI retired its legacy TTS API on November 13, 2026, and Conversational AI Engine no longer supports Hume AI as a TTS provider. If your agents use Hume AI TTS, switch to another provider listed in [`tts.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-vendor).
 
 </Accordion>
 
