@@ -148,8 +148,173 @@ Set `vendor` to `generic` and use the following `avatar` configuration in your r
   <Parameter name="agora_uid" type="string" required={true}>
   The unique identifier for the avatar's RTC connection. This must be different from other participants in the channel.
   </Parameter>
+  <Parameter name="action_patterns" type="array[integer]" required={false}>
+  The bracket types whose content triggers avatar gestures. Uses the same IDs as `tts.skip_patterns`:
+
+  - `1`: Chinese parentheses `（）`
+  - `2`: Chinese square brackets `【】`
+  - `3`: Parentheses `( )`
+  - `4`: Square brackets `[ ]`
+  - `5`: Curly braces `{ }`
+
+  For example, `[4]` or `[3, 4]`. Gestures are disabled by default. If you don't set this parameter, or set it to an empty array or `null`, the avatar doesn't perform gestures. For details, see [Trigger avatar gestures](#trigger-avatar-gestures).
+  </Parameter>
 </ParameterList>
 
 For advanced configuration options, refer to the [LemonSlice Agora integration](https://lemonslice.com/docs/agora) page or the [LemonSlice API documentation](https://lemonslice.com/docs/api-reference/create-self-managed-session).
+
+### Trigger avatar gestures
+
+You can make the avatar perform gestures from the agent's text. Set `action_patterns` to the bracket types you want to use, and instruct the LLM to put LemonSlice action names inside those brackets. Conversational AI Engine sends each bracketed action name in the agent's text to LemonSlice.
+
+`action_patterns` and the TTS `skip_patterns` setting use the same bracket IDs, but work independently:
+
+- `action_patterns` selects which bracketed text triggers avatar gestures.
+- `skip_patterns` selects which bracketed text the agent doesn't speak.
+
+If you set only `action_patterns`, the avatar performs the gesture, and the agent also reads the bracketed text aloud. To trigger gestures silently, set both to the same bracket ID. The following examples use square brackets (`4`) for both. In the SDKs, pass `action_patterns` in the avatar's additional parameters.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import ElevenLabsTTS, LemonSlice
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(ElevenLabsTTS(
+        key='your-elevenlabs-key',
+        model_id='eleven_v4_turbo',
+        voice_id='pNInz6obpgDQGcFmaJgB',
+        base_url='wss://api.elevenlabs.io/v1',
+        skip_patterns=[4],  # don't speak text in square brackets
+    ))
+    .with_avatar(LemonSlice(
+        api_key='<LEMONSLICE_API_KEY>',
+        api_base_url='https://lemonslice.com/api/liveai/agora',
+        avatar_id='lemonslice',
+        agora_uid='<AGORA_UID>',
+        additional_params={
+            'agent_image_url': '<IMAGE_URL>',
+            'action_patterns': [4],  # trigger gestures from text in square brackets
+        },
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, ElevenLabsTTS, LemonSlice } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(new ElevenLabsTTS({
+    key: 'your-elevenlabs-key',
+    modelId: 'eleven_v4_turbo',
+    voiceId: 'pNInz6obpgDQGcFmaJgB',
+    baseUrl: 'wss://api.elevenlabs.io/v1',
+    skipPatterns: [4], // don't speak text in square brackets
+  }))
+  .withAvatar(new LemonSlice({
+    apiKey: '<LEMONSLICE_API_KEY>',
+    apiBaseUrl: 'https://lemonslice.com/api/liveai/agora',
+    avatarId: 'lemonslice',
+    agoraUid: '<AGORA_UID>',
+    additionalParams: {
+      agent_image_url: '<IMAGE_URL>',
+      action_patterns: [4], // trigger gestures from text in square brackets
+    },
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(
+    vendors.NewElevenLabsTTS(vendors.ElevenLabsTTSOptions{
+        Key:          "your-elevenlabs-key",
+        ModelID:      "eleven_v4_turbo",
+        VoiceID:      "pNInz6obpgDQGcFmaJgB",
+        BaseURL:      "wss://api.elevenlabs.io/v1",
+        SkipPatterns: []int{4}, // don't speak text in square brackets
+    }),
+  ).
+  WithAvatar(
+    vendors.NewLemonSlice(vendors.LemonSliceOptions{
+        APIKey:     "<LEMONSLICE_API_KEY>",
+        APIBaseURL: "https://lemonslice.com/api/liveai/agora",
+        AvatarID:   "lemonslice",
+        AgoraUID:   "<AGORA_UID>",
+        AdditionalParams: map[string]interface{}{
+            "agent_image_url": "<IMAGE_URL>",
+            "action_patterns": []int{4}, // trigger gestures from text in square brackets
+        },
+    }),
+  )
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Add `skip_patterns` to your `tts` block, and `action_patterns` to the avatar `params`:
+
+```json
+"tts": {
+  "skip_patterns": [4]
+},
+"avatar": {
+  "enable": true,
+  "vendor": "generic",
+  "params": {
+    "api_key": "<LEMONSLICE_API_KEY>",
+    "api_base_url": "https://lemonslice.com/api/liveai/agora",
+    "avatar_id": "lemonslice",
+    "agent_image_url": "<IMAGE_URL>",
+    "agora_uid": "<AGORA_UID>",
+    "action_patterns": [4]
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+#### Prompt the LLM for gestures
+
+When the agent's text contains a configured bracket pair, Conversational AI Engine sends the text inside it, up to 40 characters, to LemonSlice as an action name. LemonSlice ignores action names it doesn't recognize.
+
+- In your system prompt, tell the LLM which LemonSlice action names to use, and which brackets to put them in.
+- If your prompt also uses brackets for notes that aren't gestures, such as tone indicators, use a different bracket pair for gestures.
+
+#### Limitations
+
+- Gestures work with agents that use an LLM and TTS. They aren't supported with MLLM agents or SIP calls.
+- Gestures are triggered by text from LLM responses, the [Broadcast a message using TTS](/en/api-reference/api-ref/conversational-ai/speak) API, and assistant text sent through Signaling. Pre-recorded audio greetings don't trigger gestures.
 
 This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
