@@ -331,7 +331,7 @@ describe('DocsShell', () => {
       expect(link).toHaveAccessibleName(/在新标签页打开/);
       expect(screen.getByTestId('legacy-docs-banner')).toHaveAttribute(
         'href',
-        'https://doc.shengwang.cn/',
+        'https://doc-archive.shengwang.cn/archive/0.0.546/',
       );
     },
   );
