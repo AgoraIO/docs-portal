@@ -1130,7 +1130,7 @@ new GenericAvatar(options: GenericAvatarOptions)
 
 #### Tavus
 
-Tavus avatars can omit `agoraAppId`, `agoraChannel`, and `agoraToken`. AgentKit fills them from the session at `start()`. Serializes `vendor: "generic"`. For the endpoint and a full example, see [Tavus](/en/ai/models/avatar/tavus).
+Tavus avatars can omit `agoraAppId`, `agoraChannel`, and `agoraToken`. AgentKit fills them from the session at `start()`. Serializes `vendor: "generic"`. For a full example, see [Tavus](/en/ai/models/avatar/tavus).
 
 ```typescript
 new Tavus(options: TavusOptions)
@@ -1139,7 +1139,7 @@ new Tavus(options: TavusOptions)
 | Option | Type | Required | Description |
 |---|---|---|---|
 | `apiKey` | `string` | Yes | Tavus API key |
-| `apiBaseUrl` | `string` | Yes | Tavus API base URL |
+| `apiBaseUrl` | `string` | No | Tavus API base URL. Set only to override the default endpoint. Default: `'https://tavusapi.com/v2/conversations/agora'` |
 | `avatarId` | `string` | Yes | Tavus avatar ID |
 | `agoraUid` | `string` | Yes | RTC UID for the avatar stream |
 | `agoraAppId` | `string` | No | Agora App ID override |
@@ -1150,7 +1150,7 @@ new Tavus(options: TavusOptions)
 
 #### Protoface
 
-Protoface avatars can omit `agoraAppId`, `agoraChannel`, and `agoraToken`. AgentKit fills them from the session at `start()`. Serializes `vendor: "generic"`. For the endpoint and a full example, see [Protoface](/en/ai/models/avatar/protoface).
+Protoface avatars can omit `agoraAppId`, `agoraChannel`, and `agoraToken`. AgentKit fills them from the session at `start()`. Serializes `vendor: "generic"`. For a full example, see [Protoface](/en/ai/models/avatar/protoface).
 
 ```typescript
 new Protoface(options: ProtofaceOptions)
@@ -1159,7 +1159,7 @@ new Protoface(options: ProtofaceOptions)
 | Option | Type | Required | Description |
 |---|---|---|---|
 | `apiKey` | `string` | Yes | Protoface API key |
-| `apiBaseUrl` | `string` | Yes | Protoface API base URL |
+| `apiBaseUrl` | `string` | No | Protoface API base URL. Set only to override the default endpoint. Default: `'https://api.protoface.com/v1/agora'` |
 | `avatarId` | `string` | Yes | Protoface avatar ID |
 | `agoraUid` | `string` | Yes | RTC UID for the avatar stream |
 | `agoraAppId` | `string` | No | Agora App ID override |
@@ -1170,7 +1170,7 @@ new Protoface(options: ProtofaceOptions)
 
 #### LemonSlice
 
-LemonSlice avatars can omit `agoraAppId`, `agoraChannel`, and `agoraToken`. AgentKit fills them from the session at `start()`. Serializes `vendor: "generic"`. For the endpoint and a full example, see [LemonSlice](/en/ai/models/avatar/lemonslice).
+LemonSlice avatars can omit `agoraAppId`, `agoraChannel`, and `agoraToken`. AgentKit fills them from the session at `start()`. Serializes `vendor: "generic"`. For a full example, see [LemonSlice](/en/ai/models/avatar/lemonslice).
 
 ```typescript
 new LemonSlice(options: LemonSliceOptions)
@@ -1179,8 +1179,8 @@ new LemonSlice(options: LemonSliceOptions)
 | Option | Type | Required | Description |
 |---|---|---|---|
 | `apiKey` | `string` | Yes | LemonSlice API key |
-| `apiBaseUrl` | `string` | Yes | LemonSlice API base URL |
-| `avatarId` | `string` | Yes | Always `lemonslice` |
+| `apiBaseUrl` | `string` | No | LemonSlice API base URL. Set only to override the default endpoint. Default: `'https://lemonslice.com/api/liveai/agora'` |
+| `avatarId` | `string` | No | Always `lemonslice`. Default: `'lemonslice'` |
 | `agoraUid` | `string` | Yes | RTC UID for the avatar stream |
 | `agoraAppId` | `string` | No | Agora App ID override |
 | `agoraChannel` | `string` | No | Agora channel override |
