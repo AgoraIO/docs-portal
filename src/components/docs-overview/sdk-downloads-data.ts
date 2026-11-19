@@ -138,8 +138,16 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'Voice only SDK for Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
+            id: '4.7.1-voice-sdk-android',
+            label: 'Version 4.7.1 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.7.1_VOICE.zip',
+            packageManager:
+              'https://central.sonatype.com/artifact/io.agora.rtc/voice-sdk/4.7.1/aar',
+          },
+          {
             id: '4.7.0-voice-sdk-android',
-            label: 'Version 4.7.0 (Latest)',
+            label: 'Version 4.7.0',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.7.0_VOICE.zip',
             packageManager:
@@ -337,8 +345,24 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
+            id: '4.7.1-video-sdk-android',
+            label: 'Version 4.7.1 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.7.1_FULL.zip',
+            packageManager:
+              'https://central.sonatype.com/artifact/io.agora.rtc/full-sdk/4.7.1/aar',
+          },
+          {
+            id: '4.7.1-video-sdk-android-lite',
+            label: 'Version 4.7.1 Lite (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.7.1_LITE.zip',
+            packageManager:
+              'https://central.sonatype.com/artifact/io.agora.rtc/lite-sdk/4.7.1/aar',
+          },
+          {
             id: '4.7.0-video-sdk-android',
-            label: 'Version 4.7.0 (Latest)',
+            label: 'Version 4.7.0',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.7.0_FULL.zip',
             packageManager:
@@ -346,7 +370,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '4.7.0-video-sdk-android-lite',
-            label: 'Version 4.7.0 Lite (Latest)',
+            label: 'Version 4.7.0 Lite',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.7.0_LITE.zip',
             packageManager:
@@ -903,8 +927,16 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for Voice Calling, Interactive Live Streaming (voice only), and Broadcast Streaming (voice only)',
         versions: [
           {
+            id: '4.7.1-voice-sdk-ios',
+            label: 'Version 4.7.1 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_v4.7.1_VOICE.zip',
+            packageManager:
+              'https://swiftpackageindex.com/AgoraIO/AgoraAudio_iOS',
+          },
+          {
             id: '4.7.0-voice-sdk-ios',
-            label: 'Version 4.7.0 (Latest)',
+            label: 'Version 4.7.0',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_v4.7.0_VOICE.zip',
             packageManager:
@@ -1078,8 +1110,24 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
+            id: '4.7.1-video-sdk-ios',
+            label: 'Version 4.7.1 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_v4.7.1_FULL.zip',
+            packageManager:
+              'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_iOS',
+          },
+          {
+            id: '4.7.1-video-sdk-ios-lite',
+            label: 'Version 4.7.1 Lite (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_v4.7.1_LITE.zip',
+            packageManager:
+              'https://swiftpackageindex.com/AgoraIO/AgoraLite_iOS',
+          },
+          {
             id: '4.7.0-video-sdk-ios',
-            label: 'Version 4.7.0 (Latest)',
+            label: 'Version 4.7.0',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_v4.7.0_FULL.zip',
             packageManager:
@@ -1087,7 +1135,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '4.7.0-video-sdk-ios-lite',
-            label: 'Version 4.7.0 Lite (Latest)',
+            label: 'Version 4.7.0 Lite',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_v4.7.0_LITE.zip',
             packageManager:
