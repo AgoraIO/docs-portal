@@ -15,7 +15,14 @@ export type StaticLegacyRedirectPayload = {
   statusCode?: 301;
 };
 
-const staticLegacyRedirectRules = staticRedirects as StaticLegacyRedirectRule[];
+const rulesByPath = new Map<string, StaticLegacyRedirectRule[]>();
+for (const rule of staticRedirects as StaticLegacyRedirectRule[]) {
+  const path = normalizeLegacyPath(rule.p);
+  const rules = rulesByPath.get(path);
+  if (rules) rules.push(rule);
+  else rulesByPath.set(path, [rule]);
+}
+
 export const ZH_CN_SMALL_BUILD_FLAT_IA_STATIC_REDIRECT_SOURCES = new Set(
   Object.keys(ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS)
     .filter((path) => !isRetiredCnDocsPath(`/zh-CN/${path}`))
@@ -28,15 +35,11 @@ export function resolveStaticLegacySitemapRedirect(
 ): StaticLegacyRedirectPayload | null {
   const normalizedPath = normalizeLegacyPath(legacyPath);
   const normalizedSearch = normalizeLegacySearch(legacySearch);
+  const candidates = rulesByPath.get(normalizedPath);
   const rule =
-    staticLegacyRedirectRules.find(
-      (item) =>
-        normalizeLegacyPath(item.p) === normalizedPath &&
-        normalizeLegacySearch(item.q) === normalizedSearch,
-    ) ??
-    staticLegacyRedirectRules.find(
-      (item) => normalizeLegacyPath(item.p) === normalizedPath && !item.q,
-    );
+    candidates?.find(
+      (item) => normalizeLegacySearch(item.q) === normalizedSearch,
+    ) ?? candidates?.find((item) => !item.q);
 
   return rule
     ? {

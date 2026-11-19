@@ -386,7 +386,7 @@ const LEGACY_GET_STARTED_PATHS: Record<string, (locale: string) => string> = {
   'enable-service': (locale) =>
     locale === 'zh-CN'
       ? '/zh-CN/ai/enable-service'
-      : '/en/ai/reference/enable-conversational-ai',
+      : '/en/ai/get-started/quickstart',
 };
 
 const LEGACY_AI_BUILD_GROUP_ROUTE_LEAVES: Record<string, string> = {
