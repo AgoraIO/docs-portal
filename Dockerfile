@@ -44,7 +44,9 @@ ENV VITE_DOCS_ENVIRONMENT=${VITE_DOCS_ENVIRONMENT}
 ENV VITE_DOCS_APP_RELEASE=${VITE_DOCS_APP_RELEASE}
 ENV NODE_OPTIONS=--max-old-space-size=${NODE_MAX_OLD_SPACE_SIZE}
 
-RUN bun run postinstall && bun run build
+# Prepare the timestamp snapshot with full Git history before docker build.
+# See docs/docs-last-updated-build.md; .git stays outside the image context.
+RUN bun run docs:last-updated --check && bun run postinstall && bun run build
 
 FROM nginx:1.30.6-alpine AS runtime
 

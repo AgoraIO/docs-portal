@@ -59,10 +59,10 @@ async function initHistory(root: string) {
   await commitPage(root, '2026-09-11T09:24:43Z');
 }
 
-function generate(root: string) {
-  execFileSync(
+function generate(root: string, args: string[] = []) {
+  return execFileSync(
     process.execPath,
-    ['scripts/generate-docs-last-updated-manifest.mjs'],
+    ['scripts/generate-docs-last-updated-manifest.mjs', ...args],
     {
       cwd: root,
       stdio: ['ignore', 'pipe', 'pipe'],
@@ -101,6 +101,22 @@ describe('documentation update-time generation', { timeout: 15_000 }, () => {
     });
   });
 
+  it('keeps Unicode content paths usable as page metadata keys', async () => {
+    const root = await createFixture();
+    await initHistory(root);
+    git(root, ['config', 'core.quotePath', 'true']);
+    const unicodePage = 'content/docs/zh-CN/中文术语.mdx';
+    await writeFile(path.join(root, unicodePage), '# 术语\n');
+    git(root, ['add', unicodePage]);
+    git(root, ['commit', '-m', 'Add terminology'], '2026-09-22T10:37:43Z');
+
+    generate(root);
+    expect(await readTimes(root)).toHaveProperty(
+      unicodePage,
+      '2026-09-22T10:37:43.000Z',
+    );
+  });
+
   it('preserves a verified snapshot for an unchanged Git-free build context', async () => {
     const root = await createFixture();
     await initHistory(root);
@@ -110,6 +126,58 @@ describe('documentation update-time generation', { timeout: 15_000 }, () => {
     expect(await readTimes(root)).toMatchObject({
       [pagePath]: '2026-09-11T09:24:43.000Z',
     });
+  });
+
+  it('verifies a prepared Docker snapshot without Git or modifying the file', async () => {
+    const root = await createFixture();
+    await initHistory(root);
+    generate(root);
+    const prepared = await readFile(path.join(root, manifestPath), 'utf8');
+    await rm(path.join(root, '.git'), { recursive: true });
+
+    expect(generate(root, ['--check']).toString()).toContain(
+      'verified content snapshot',
+    );
+    generate(root);
+    expect(await readFile(path.join(root, manifestPath), 'utf8')).toBe(
+      prepared,
+    );
+    expect(await readTimes(root)).toMatchObject({
+      [pagePath]: '2026-09-11T09:24:43.000Z',
+    });
+  });
+
+  it('rejects a stale Docker snapshot before it can erase all update times', async () => {
+    const root = await createFixture();
+    await initHistory(root);
+    generate(root);
+    const prepared = await readFile(path.join(root, manifestPath), 'utf8');
+    await rm(path.join(root, '.git'), { recursive: true });
+    // Even an unrelated page invalidates the whole-tree snapshot.
+    await writeFile(path.join(root, 'content/docs/zh-CN/other.mdx'), '# New\n');
+
+    expect(() => generate(root, ['--check'])).toThrow(
+      /snapshot does not match the content/,
+    );
+    expect(await readFile(path.join(root, manifestPath), 'utf8')).toBe(
+      prepared,
+    );
+  });
+
+  it('rejects a Docker context without a prepared snapshot', async () => {
+    const root = await createFixture();
+    expect(() => generate(root, ['--check'])).toThrow(
+      /snapshot does not match the content/,
+    );
+  });
+
+  it('rejects a matching but empty snapshot generated without history', async () => {
+    const root = await createFixture();
+    generate(root);
+    expect(await readTimes(root)).toEqual({});
+    expect(() => generate(root, ['--check'])).toThrow(
+      /lacks verified full history/,
+    );
   });
 
   it('does not reuse a stale snapshot after content changes without Git history', async () => {

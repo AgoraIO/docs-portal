@@ -1,0 +1,36 @@
+name: Docs update-time snapshot
+
+# The CN Docker pipeline can consume this artifact without shipping .git.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 26.13.0
+      - name: Generate timestamps from content history
+        run: node scripts/generate-docs-last-updated-manifest.mjs
+      - name: Verify snapshot matches the checkout
+        run: node scripts/generate-docs-last-updated-manifest.mjs --check
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: docs-last-updated-${{ github.event.pull_request.head.sha || github.sha }}
+          path: src/generated/docs-last-updated-manifest.ts
+          if-no-files-found: error
+          retention-days: 30
