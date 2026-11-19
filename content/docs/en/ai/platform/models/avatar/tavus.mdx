@@ -36,7 +36,6 @@ agent = (
     .with_avatar(
         Tavus(
             api_key=secret_ref("support_prod", "tavus"),
-            api_base_url="https://tavusapi.com/v2/conversations/agora",
             avatar_id="<tavus_face_id>",
             agora_uid="<avatar_rtc_uid>",
             agora_token="<avatar_rtc_token>",
@@ -60,7 +59,6 @@ const agent = new Agent({ client })
   .withAvatar(
     new Tavus({
       apiKey: secretRef('support_prod', 'tavus'),
-      apiBaseUrl: 'https://tavusapi.com/v2/conversations/agora',
       avatarId: '<tavus_face_id>',
       agoraUid: '<avatar_rtc_uid>',
       agoraToken: '<avatar_rtc_token>',
@@ -80,7 +78,6 @@ agent := agentkit.NewAgent(client).
 	WithTts( /* configure your TTS vendor */ ).
 	WithAvatar(vendors.NewTavus(vendors.TavusOptions{
 		APIKey:     agentkit.SecretRef("support_prod", "tavus"),
-		APIBaseURL: "https://tavusapi.com/v2/conversations/agora",
 		AvatarID:   "<tavus_face_id>",
 		AgoraUID:   "<avatar_rtc_uid>",
 		AgoraToken: "<avatar_rtc_token>",
@@ -133,7 +130,7 @@ The `avatar` block takes the following fields. In the SDKs, `Tavus` sets them fr
   </Parameter>
   <Parameter name="params" type="object" required={true}>
     <Parameter name="api_base_url" type="string" required={true}>
-      The base URL of the Tavus API endpoint. Set to `https://tavusapi.com/v2/conversations/agora`.
+      The base URL of the Tavus API endpoint. Set to `https://tavusapi.com/v2/conversations/agora`. The `Tavus` SDK class sets this value by default.
     </Parameter>
     <Parameter name="avatar_id" type="string" required={true}>
       The ID of the Tavus face (formerly called a replica) to render the avatar. Find or create a face in the [Tavus Developer Portal](https://maker.tavus.io/dev/faces).

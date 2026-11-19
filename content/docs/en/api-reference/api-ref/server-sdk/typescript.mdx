@@ -796,7 +796,7 @@ new CartesiaTTS<SR extends CartesiaSampleRate>(options: CartesiaTTSOptions<SR>)
 | `FishAudioTTS` | `key`, `referenceId`, `backend` |
 | `MiniMaxTTS` | `key?`, `groupId?`, `model`, `voiceId?`, `url?` |
 | `MurfTTS` | `key`, `voiceId?`, `baseUrl?`, `locale?`, `rate?`, `pitch?`, `model?`, `sampleRate?` |
-| `SarvamTTS` | `key`, `speaker`, `targetLanguageCode`, `pitch?`, `pace?`, `loudness?`, `sampleRate?` |
+| `SarvamTTS` | `key`, `speaker`, `targetLanguageCode`, `pitch?`, `pace?`, `loudness?`, `model?`, `speechSampleRate?`, `enablePreprocessing?`, `additionalParams?`, `skipPatterns?`. `sampleRate?` is deprecated; use `speechSampleRate`. |
 | `GradiumTTS` | `apiKey`, `url?`, `modelName?`, `voiceId?`, `sampleRate?`, `additionalParams?` |
 | `MistralTTS` | `apiKey`, `model?`, `voice?`, `additionalParams?` |
 | `TypecastTTS` | `apiKey`, `voiceId`, `model`, `additionalParams?` |
@@ -1130,7 +1130,7 @@ new GenericAvatar(options: GenericAvatarOptions)
 
 #### Tavus
 
-Tavus avatars can omit `agoraAppId`, `agoraChannel`, and `agoraToken`. AgentKit fills them from the session at `start()`. Serializes `vendor: "generic"`. For the endpoint and a full example, see [Tavus](/en/ai/models/avatar/tavus).
+Tavus avatars can omit `agoraAppId`, `agoraChannel`, and `agoraToken`. AgentKit fills them from the session at `start()`. Serializes `vendor: "generic"`. For a full example, see [Tavus](/en/ai/models/avatar/tavus).
 
 ```typescript
 new Tavus(options: TavusOptions)
@@ -1139,7 +1139,7 @@ new Tavus(options: TavusOptions)
 | Option | Type | Required | Description |
 |---|---|---|---|
 | `apiKey` | `string` | Yes | Tavus API key |
-| `apiBaseUrl` | `string` | Yes | Tavus API base URL |
+| `apiBaseUrl` | `string` | No | Tavus API base URL. Set only to override the default endpoint. Default: `'https://tavusapi.com/v2/conversations/agora'` |
 | `avatarId` | `string` | Yes | Tavus avatar ID |
 | `agoraUid` | `string` | Yes | RTC UID for the avatar stream |
 | `agoraAppId` | `string` | No | Agora App ID override |
@@ -1150,7 +1150,7 @@ new Tavus(options: TavusOptions)
 
 #### Protoface
 
-Protoface avatars can omit `agoraAppId`, `agoraChannel`, and `agoraToken`. AgentKit fills them from the session at `start()`. Serializes `vendor: "generic"`. For the endpoint and a full example, see [Protoface](/en/ai/models/avatar/protoface).
+Protoface avatars can omit `agoraAppId`, `agoraChannel`, and `agoraToken`. AgentKit fills them from the session at `start()`. Serializes `vendor: "generic"`. For a full example, see [Protoface](/en/ai/models/avatar/protoface).
 
 ```typescript
 new Protoface(options: ProtofaceOptions)
@@ -1159,7 +1159,7 @@ new Protoface(options: ProtofaceOptions)
 | Option | Type | Required | Description |
 |---|---|---|---|
 | `apiKey` | `string` | Yes | Protoface API key |
-| `apiBaseUrl` | `string` | Yes | Protoface API base URL |
+| `apiBaseUrl` | `string` | No | Protoface API base URL. Set only to override the default endpoint. Default: `'https://api.protoface.com/v1/agora'` |
 | `avatarId` | `string` | Yes | Protoface avatar ID |
 | `agoraUid` | `string` | Yes | RTC UID for the avatar stream |
 | `agoraAppId` | `string` | No | Agora App ID override |
@@ -1170,7 +1170,7 @@ new Protoface(options: ProtofaceOptions)
 
 #### LemonSlice
 
-LemonSlice avatars can omit `agoraAppId`, `agoraChannel`, and `agoraToken`. AgentKit fills them from the session at `start()`. Serializes `vendor: "generic"`. For the endpoint and a full example, see [LemonSlice](/en/ai/models/avatar/lemonslice).
+LemonSlice avatars can omit `agoraAppId`, `agoraChannel`, and `agoraToken`. AgentKit fills them from the session at `start()`. Serializes `vendor: "generic"`. For a full example, see [LemonSlice](/en/ai/models/avatar/lemonslice).
 
 ```typescript
 new LemonSlice(options: LemonSliceOptions)
@@ -1179,8 +1179,8 @@ new LemonSlice(options: LemonSliceOptions)
 | Option | Type | Required | Description |
 |---|---|---|---|
 | `apiKey` | `string` | Yes | LemonSlice API key |
-| `apiBaseUrl` | `string` | Yes | LemonSlice API base URL |
-| `avatarId` | `string` | Yes | Always `lemonslice` |
+| `apiBaseUrl` | `string` | No | LemonSlice API base URL. Set only to override the default endpoint. Default: `'https://lemonslice.com/api/liveai/agora'` |
+| `avatarId` | `string` | No | Always `lemonslice`. Default: `'lemonslice'` |
 | `agoraUid` | `string` | Yes | RTC UID for the avatar stream |
 | `agoraAppId` | `string` | No | Agora App ID override |
 | `agoraChannel` | `string` | No | Agora channel override |
@@ -1193,7 +1193,7 @@ new LemonSlice(options: LemonSliceOptions)
 Helper functions and classes for generating and managing tokens. Use these when you need control over token lifetime, or when generating tokens outside of a session.
 
 ```typescript
-import { generateConvoAIToken, ExpiresIn } from 'agora-agents';
+import { generateClientToken, generateConvoAIToken, ExpiresIn } from 'agora-agents';
 ```
 
 ### `generateConvoAIToken(options)`
@@ -1209,7 +1209,7 @@ generateConvoAIToken(options: GenerateConvoAITokenOptions): string
 | `appId` | `string` | Yes | Agora App ID |
 | `appCertificate` | `string` | Yes | Agora App Certificate |
 | `channelName` | `string` | Yes | The channel the token grants access to |
-| `uid` | `number` | Yes | Numeric RTC UID the token is issued for |
+| `uid` | `number \| string` | Yes | Numeric RTC UID or string user account the token is issued for |
 | `tokenExpire` | `number` | No | Token lifetime in seconds. Default: `86400` |
 | `privilegeExpire` | `number` | No | Privilege lifetime in seconds. Default: same as `tokenExpire` |
 
@@ -1224,6 +1224,36 @@ const token = generateConvoAIToken({
   channelName: 'support-room-123',
   uid: 1,
   tokenExpire: ExpiresIn.hours(12),
+});
+```
+
+### `generateClientToken(options)`
+
+Generates an RTC and RTM token for your app's client, for example in a token route that your front end calls. The token lets the user join the RTC channel and log in to Signaling, which carries the agent's transcripts and state. It doesn't include the ConvoAI service, so it can't authenticate Conversational AI REST requests. Generate client tokens on your server, and never send your App Certificate to a client.
+
+```typescript
+generateClientToken(options: GenerateClientTokenOptions): string
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `appId` | `string` | Yes | Agora App ID |
+| `appCertificate` | `string` | Yes | Agora App Certificate |
+| `channelName` | `string` | Yes | The channel the client joins |
+| `uid` | `number \| string` | Yes | The client's numeric RTC UID or string user account. The UID is also the Signaling user ID, so it can't be `0` or empty. |
+| `tokenExpire` | `number` | No | Token lifetime in seconds. Default: `86400` |
+| `privilegeExpire` | `number` | No | RTC privilege lifetime in seconds. Default: same as `tokenExpire` |
+
+**Returns:** `string` — the generated token.
+
+**Throws:** if `appId` or `appCertificate` isn't exactly 32 characters, or if `uid` is `0` or empty.
+
+```typescript
+const token = generateClientToken({
+  appId: process.env.AGORA_APP_ID!,
+  appCertificate: process.env.AGORA_APP_CERTIFICATE!,
+  channelName: 'support-room-123',
+  uid: 100,
 });
 ```
 

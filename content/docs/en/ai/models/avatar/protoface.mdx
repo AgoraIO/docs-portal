@@ -31,7 +31,6 @@ agent = (
     .with_tts(...)  # configure your TTS vendor
     .with_avatar(Protoface(
         api_key='<PROTOFACE_API_KEY>',
-        api_base_url='https://api.protoface.com/v1/agora',
         avatar_id='<PROTOFACE_AVATAR_ID>',
         agora_uid='<AGORA_UID>',
     ))
@@ -52,7 +51,6 @@ const agent = new Agent({ client })
   .withTts(/* configure your TTS vendor */)
   .withAvatar(new Protoface({
     apiKey: '<PROTOFACE_API_KEY>',
-    apiBaseUrl: 'https://api.protoface.com/v1/agora',
     avatarId: '<PROTOFACE_AVATAR_ID>',
     agoraUid: '<AGORA_UID>',
   }));
@@ -74,10 +72,9 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
   WithTts(/* configure your TTS vendor */).
   WithAvatar(
     vendors.NewProtoface(vendors.ProtofaceOptions{
-        APIKey:     "<PROTOFACE_API_KEY>",
-        APIBaseURL: "https://api.protoface.com/v1/agora",
-        AvatarID:   "<PROTOFACE_AVATAR_ID>",
-        AgoraUID:   "<AGORA_UID>",
+        APIKey:   "<PROTOFACE_API_KEY>",
+        AvatarID: "<PROTOFACE_AVATAR_ID>",
+        AgoraUID: "<AGORA_UID>",
     }),
 )
 ```
@@ -111,7 +108,7 @@ Set `vendor` to `generic` and use the following `avatar` configuration in your r
     The API key used for authentication with Protoface. Get your API key from the [Protoface dashboard](https://app.protoface.com).
   </Parameter>
   <Parameter name="api_base_url" type="string" required={true}>
-    The base URL of the Protoface API endpoint. Set to `https://api.protoface.com/v1/agora`.
+    The base URL of the Protoface API endpoint. Set to `https://api.protoface.com/v1/agora`. The `Protoface` SDK class sets this value by default.
   </Parameter>
   <Parameter name="avatar_id" type="string" required={true}>
     The ID of the Protoface avatar to use, for example, `av_stock_001`. Find a stock avatar or create your own in the [Protoface dashboard](https://app.protoface.com).

@@ -1158,11 +1158,15 @@ Panics if `Key`, `Speaker`, or `TargetLanguageCode` is empty.
 |---|---|---|---|
 | `Key` | `string` | Yes | Sarvam API key |
 | `Speaker` | `string` | Yes | Speaker name |
-| `TargetLanguageCode` | `string` | Yes | Target language code |
-| `Pitch` | `*float64` | No | Pitch adjustment |
+| `TargetLanguageCode` | `SarvamTTSLanguage` | Yes | Target language code |
+| `Pitch` | `*float64` | No | Pitch adjustment. `bulbul:v2` only. |
 | `Pace` | `*float64` | No | Speed of speech |
-| `Loudness` | `*float64` | No | Volume level |
-| `SampleRate` | `*int` | No | Audio sample rate |
+| `Loudness` | `*float64` | No | Volume level. `bulbul:v2` only. |
+| `Model` | `string` | No | TTS model. The service defaults to `bulbul:v3`. |
+| `SpeechSampleRate` | `*int` | No | Output sample rate in Hz. The service defaults to `24000`. |
+| `EnablePreprocessing` | `*bool` | No | Normalize English words and numeric entities before synthesis |
+| `SampleRate` | `*int` | No | Deprecated. Use `SpeechSampleRate`, which takes precedence. |
+| `AdditionalParams` | `map[string]interface{}` | No | Additional vendor params. Explicit options take precedence. |
 | `SkipPatterns` | `[]int` | No | Patterns to skip |
 
 #### `NewTypecastTTS`
@@ -1793,14 +1797,14 @@ Generic avatars do not enforce a fixed TTS sample rate. Use the sample rate requ
 func NewTavus(opts TavusOptions) *Tavus
 ```
 
-Panics if `APIKey`, `APIBaseURL`, `AvatarID`, or `AgoraUID` is empty. `AgoraAppID`, `AgoraChannel`, and `AgoraToken` are optional; AgentKit fills them from the session on `Start()` when omitted. Serializes `vendor: "generic"`. For the endpoint and a full example, see [Tavus](/en/ai/models/avatar/tavus).
+Panics if `APIKey`, `AvatarID`, or `AgoraUID` is empty. `AgoraAppID`, `AgoraChannel`, and `AgoraToken` are optional; AgentKit fills them from the session on `Start()` when omitted. Serializes `vendor: "generic"`. For a full example, see [Tavus](/en/ai/models/avatar/tavus).
 
 Tavus avatars do not enforce a fixed TTS sample rate.
 
 | Field | Type | Required | Description |
 |---|---|---|---|
 | `APIKey` | `string` | Yes | Tavus API key |
-| `APIBaseURL` | `string` | Yes | Tavus API endpoint |
+| `APIBaseURL` | `string` | No | Tavus API endpoint. Set only to override the default endpoint. Default: `"https://tavusapi.com/v2/conversations/agora"` |
 | `AvatarID` | `string` | Yes | Tavus avatar identifier |
 | `AgoraUID` | `string` | Yes | UID for avatar video stream; use a different UID from `AgentUID` |
 | `AgoraToken` | `string` | No | Avatar token; auto-generated with the same token format as agent tokens when omitted |
@@ -1815,14 +1819,14 @@ Tavus avatars do not enforce a fixed TTS sample rate.
 func NewProtoface(opts ProtofaceOptions) *Protoface
 ```
 
-Panics if `APIKey`, `APIBaseURL`, `AvatarID`, or `AgoraUID` is empty. `AgoraAppID`, `AgoraChannel`, and `AgoraToken` are optional; AgentKit fills them from the session on `Start()` when omitted. Serializes `vendor: "generic"`. For the endpoint and a full example, see [Protoface](/en/ai/models/avatar/protoface).
+Panics if `APIKey`, `AvatarID`, or `AgoraUID` is empty. `AgoraAppID`, `AgoraChannel`, and `AgoraToken` are optional; AgentKit fills them from the session on `Start()` when omitted. Serializes `vendor: "generic"`. For a full example, see [Protoface](/en/ai/models/avatar/protoface).
 
 Protoface avatars do not enforce a fixed TTS sample rate.
 
 | Field | Type | Required | Description |
 |---|---|---|---|
 | `APIKey` | `string` | Yes | Protoface API key |
-| `APIBaseURL` | `string` | Yes | Protoface API endpoint |
+| `APIBaseURL` | `string` | No | Protoface API endpoint. Set only to override the default endpoint. Default: `"https://api.protoface.com/v1/agora"` |
 | `AvatarID` | `string` | Yes | Protoface avatar identifier |
 | `AgoraUID` | `string` | Yes | UID for avatar video stream; use a different UID from `AgentUID` |
 | `AgoraToken` | `string` | No | Avatar token; auto-generated with the same token format as agent tokens when omitted |
@@ -1837,15 +1841,15 @@ Protoface avatars do not enforce a fixed TTS sample rate.
 func NewLemonSlice(opts LemonSliceOptions) *LemonSlice
 ```
 
-Panics if `APIKey`, `APIBaseURL`, `AvatarID`, or `AgoraUID` is empty. `AgoraAppID`, `AgoraChannel`, and `AgoraToken` are optional; AgentKit fills them from the session on `Start()` when omitted. Serializes `vendor: "generic"`. For the endpoint and a full example, see [LemonSlice](/en/ai/models/avatar/lemonslice).
+Panics if `APIKey` or `AgoraUID` is empty. `AgoraAppID`, `AgoraChannel`, and `AgoraToken` are optional; AgentKit fills them from the session on `Start()` when omitted. Serializes `vendor: "generic"`. For a full example, see [LemonSlice](/en/ai/models/avatar/lemonslice).
 
 LemonSlice avatars do not enforce a fixed TTS sample rate.
 
 | Field | Type | Required | Description |
 |---|---|---|---|
 | `APIKey` | `string` | Yes | LemonSlice API key |
-| `APIBaseURL` | `string` | Yes | LemonSlice API endpoint |
-| `AvatarID` | `string` | Yes | Always `lemonslice` |
+| `APIBaseURL` | `string` | No | LemonSlice API endpoint. Set only to override the default endpoint. Default: `"https://lemonslice.com/api/liveai/agora"` |
+| `AvatarID` | `string` | No | Always `lemonslice`. Default: `"lemonslice"` |
 | `AgoraUID` | `string` | Yes | UID for avatar video stream; use a different UID from `AgentUID` |
 | `AgoraToken` | `string` | No | Avatar token; auto-generated with the same token format as agent tokens when omitted |
 | `AgoraAppID` | `string` | No | Overrides session App ID |
@@ -1879,6 +1883,7 @@ import "github.com/AgoraIO/agora-agents-go/v2/agentkit"
 func GenerateRtcToken(opts GenerateTokenOptions) (string, error)
 func GenerateRtcTokenWithAccount(opts GenerateRtcTokenWithAccountOptions) (string, error)
 func GenerateConvoAIToken(opts GenerateConvoAITokenOptions) (string, error)
+func GenerateClientToken(opts GenerateClientTokenOptions) (string, error)
 ```
 
 ### `GenerateConvoAIToken()`
@@ -1905,6 +1910,34 @@ token, err := agentkit.GenerateConvoAIToken(agentkit.GenerateConvoAITokenOptions
     ChannelName:    "support-room-123",
     UID:            1,
     TokenExpire:    12 * 3600,
+})
+```
+
+### `GenerateClientToken()`
+
+Generates an RTC and RTM token for your app's client, for example in a token route that your front end calls. The token lets the user join the RTC channel and log in to Signaling, which carries the agent's transcripts and state. It doesn't include the ConvoAI service, so it can't authenticate Conversational AI REST requests. Generate client tokens on your server, and never send your App Certificate to a client.
+
+```go
+func GenerateClientToken(opts GenerateClientTokenOptions) (string, error)
+```
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `AppID` | `string` | Yes | Agora App ID |
+| `AppCertificate` | `string` | Yes | Agora App Certificate |
+| `ChannelName` | `string` | Yes | The channel the client joins |
+| `UID` | `string` | Yes | The client's numeric RTC UID in string form, such as `"100"`, or a string user account. The UID is also the Signaling user ID, so it can't be `0` or empty. |
+| `TokenExpire` | `int` | No | Token lifetime in seconds. Default: `86400` |
+| `PrivilegeExpire` | `int` | No | RTC privilege lifetime in seconds. `0` means the same as `TokenExpire` |
+
+Returns an error if `AppID`, `AppCertificate`, or `ChannelName` is empty, or if `UID` is `0` or empty.
+
+```go
+token, err := agentkit.GenerateClientToken(agentkit.GenerateClientTokenOptions{
+    AppID:          os.Getenv("AGORA_APP_ID"),
+    AppCertificate: os.Getenv("AGORA_APP_CERT"),
+    ChannelName:    "support-room-123",
+    UID:            "100",
 })
 ```
 
