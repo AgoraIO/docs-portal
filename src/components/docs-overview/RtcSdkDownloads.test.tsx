@@ -39,26 +39,30 @@ describe('RtcSdkDownloads', () => {
     const lite = screen.getByRole('article', { name: 'Android Lite' });
     expect(screen.getAllByRole('article')).toHaveLength(2);
 
-    expect(within(full).getByText('v4.7.0')).toBeVisible();
+    expect(within(full).getByText('v4.7.1')).toBeVisible();
     expect(
-      within(full).getByText('867fb78c2eb1ec8ff02ba073a1fd2e1d'),
+      within(full).getByText('c3b3cbfae32ca1fe12d464e2577843b3'),
     ).toBeVisible();
     expect(within(full).getByText('io.agora.rtc2.video')).toBeVisible();
-    expect(within(full).getByText('armeabi-v7a：16.55')).toBeVisible();
     expect(
-      within(full).getByText('发布日期：2026 年 9 月 22 日'),
+      within(full).queryByText('armeabi-v7a：16.55'),
+    ).not.toBeInTheDocument();
+    expect(within(full).getByText('armeabi-v7a：15.26')).toBeVisible();
+    expect(within(lite).getByText('x86_64：7.97')).toBeVisible();
+    expect(
+      within(full).getByText('发布日期：2026 年 11 月 18 日'),
     ).toBeVisible();
     expect(
       within(full).getByRole('link', { name: '下载 Android Full' }),
     ).toHaveAttribute(
       'href',
-      'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.7.0_FULL.zip',
+      'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.7.1_FULL.zip',
     );
     expect(
       within(lite).getByRole('link', { name: '下载 Android Lite' }),
     ).toHaveAttribute(
       'href',
-      'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.7.0_LITE.zip',
+      'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.7.1_LITE.zip',
     );
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
     expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
@@ -80,26 +84,24 @@ describe('RtcSdkDownloads', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('shows the Native 4.7.0 iOS variants and release metadata', () => {
+  it('shows the Native 4.7.1 iOS variants without reusing historical size estimates', () => {
     render(<RtcSdkDownloads platform="ios" product="video" />);
 
     const full = screen.getByRole('article', { name: 'iOS Full' });
     const lite = screen.getByRole('article', { name: 'iOS Lite' });
-    expect(within(full).getByText('v4.7.0')).toBeVisible();
+    expect(within(full).getByText('v4.7.1')).toBeVisible();
     expect(
-      within(full).getByText('044dafd641e8d44b9e2583c5481aeaa8'),
+      within(full).getByText('e5e4c3f036426e251c2b3ed4feaaea1c'),
     ).toBeVisible();
     expect(
-      within(lite).getByText('c29b295befc44fe4ab5023e166e93e41'),
+      within(lite).getByText('9506b191ee9592a75bc8645577aa68ac'),
     ).toBeVisible();
     expect(
-      within(full).getByText(
-        'RtcBasic 基础库参考包体积增量：31.69 MB。Full SDK 实际增量取决于集成的组件和构建配置。',
-      ),
+      within(full).getByText(/RtcBasic 基础库参考包体积增量：34.35 MB/),
     ).toBeVisible();
-    expect(within(lite).getByText('参考包体积增量：14.97 MB')).toBeVisible();
+    expect(within(lite).getByText('参考包体积增量：15.95 MB')).toBeVisible();
     expect(
-      within(full).getByText('发布日期：2026 年 9 月 22 日'),
+      within(full).getByText('发布日期：2026 年 11 月 18 日'),
     ).toBeVisible();
   });
 

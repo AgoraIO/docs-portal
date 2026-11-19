@@ -6,7 +6,6 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
-import { renderToString } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { zhCNRtsaSdkDownloadPlatform } from './rtsa-sdk-downloads-data.zh-cn';
 import { SdksCatalog } from './SdksCatalog.zh-cn';
@@ -415,10 +414,10 @@ describe('SdksCatalog', () => {
     });
     expect(within(downloadCard).getByText('io.agora.rtc2.voice')).toBeVisible();
     expect(
-      within(downloadCard).getByText('acb70a13f5e001e324cb33e46624edf8'),
+      within(downloadCard).getByText('ad3318830f59fe7343a0e4675d9e5853'),
     ).toBeVisible();
     expect(
-      within(downloadCard).getByText('发布日期：2026 年 9 月 22 日'),
+      within(downloadCard).getByText('发布日期：2026 年 11 月 18 日'),
     ).toBeVisible();
   });
 
@@ -476,28 +475,28 @@ describe('SdksCatalog', () => {
   );
 
   it.each([
-    [
-      'video',
-      '视频 SDK',
-      'iOS Full',
-      'RtcBasic 基础库参考包体积增量：31.69 MB。Full SDK 实际增量取决于集成的组件和构建配置。',
-    ],
-    ['video', '视频 SDK', 'iOS Lite', '参考包体积增量：14.97 MB'],
-    [
-      'voice',
-      '语音 SDK',
-      'iOS 音频 SDK',
-      'RtcBasic 基础库参考包体积增量：13.15 MB。实际增量取决于集成的组件和构建配置。',
-    ],
+    ['video', '视频 SDK', 'iOS Full'],
+    ['video', '视频 SDK', 'iOS Lite'],
+    ['voice', '语音 SDK', 'iOS 音频 SDK'],
   ] as const)(
-    'preserves the iOS %s package-size qualification on %s %s',
-    (product, productName, cardName, expected) => {
+    'does not carry historical iOS %s size estimates onto %s %s 4.7.1 cards',
+    (product, productName, cardName) => {
       render(<SdksCatalog locale="zh-CN" platform="ios" product={product} />);
 
       const card = within(openProductCard(productName)).getByRole('article', {
         name: cardName,
       });
-      expect(within(card).getByText(expected)).toBeVisible();
+      expect(within(card).getByText('v4.7.1')).toBeVisible();
+      const measuredSize = cardName.includes('Lite')
+        ? '15.95'
+        : product === 'voice'
+          ? '13.26'
+          : '34.35';
+      expect(
+        within(card).getByText(
+          new RegExp(`参考包体积增量：${measuredSize} MB`),
+        ),
+      ).toBeVisible();
       expect(within(card).queryByText('包体积：')).not.toBeInTheDocument();
     },
   );

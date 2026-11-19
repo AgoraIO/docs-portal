@@ -9,32 +9,30 @@ const readBody = (platform: string) =>
 
 // Legacy resources.*.mdx at shengwang-doc-source master 8c4c9a4e5.
 const platforms = [
-  ['android', 'SDK、Demo 和示例项目'],
-  ['ios', 'SDK、Demo 和示例项目'],
-  ['macos', 'SDK 和示例项目'],
-  ['web', 'SDK、Demo 和示例项目'],
-  ['windows', 'SDK 和示例项目'],
-  ['harmonyos', 'SDK 和示例项目'],
-  ['mini-program', 'SDK、Demo 和示例项目'],
-  ['electron', null],
-  ['unity', 'SDK 和示例项目'],
-  ['flutter', 'SDK 和示例项目'],
-  ['react-native', null],
-  ['unreal-cpp', 'SDK 和示例项目'],
-  ['unreal-blueprint', 'SDK 和示例项目'],
-  ['react', 'SDK、Demo 和示例项目'],
+  'android',
+  'ios',
+  'macos',
+  'web',
+  'windows',
+  'harmonyos',
+  'mini-program',
+  'electron',
+  'unity',
+  'flutter',
+  'react-native',
+  'unreal-cpp',
+  'unreal-blueprint',
+  'react',
 ] as const;
 
 describe('RTC download platform body parity', () => {
   it.each(platforms)(
-    'shows only the legacy introduction and download notice for %s',
-    (platform, intro) => {
+    'omits the platform opening sentence and preserves download notices for %s',
+    (platform) => {
       // The platform-group shell renders the shared body before each panel.
       const body = `${readBody('index')}\n${readBody(platform)}`;
       const introductions = body.match(/^本文提供获取 .+的方式。$/gm) ?? [];
-      expect(introductions).toEqual(
-        intro ? [`本文提供获取 ${intro}的方式。`] : [],
-      );
+      expect(introductions).toEqual([]);
       expect(
         body.match(/Windows C\+\+ SDK 使用 MSVC 编译工具链。/g) ?? [],
       ).toHaveLength(platform === 'windows' ? 1 : 0);
