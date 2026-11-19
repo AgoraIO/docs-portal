@@ -189,6 +189,10 @@ If the request succeeds, the API returns a `200` status code and a response body
 </TabsContent>
 </Tabs>
 
+:::note
+Semantic end-of-speech detection works only when the language is `en-US`, `en-IN`, `zh-CN`, `zh-HK`, or `zh-TW`. With any other language, or with more than one language, the agent uses VAD for end-of-speech detection instead. Agents SDK v2.15.0 and later return an error for these configurations.
+:::
+
 ## Manual interruption
 
 Conversational AI Engine supports actively triggering an interruption by calling RESTful APIs or client component APIs. This allows users to interrupt the agent through a button click or a specific command.

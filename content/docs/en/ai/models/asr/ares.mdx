@@ -101,7 +101,7 @@ Use the following `asr` configuration in your request:
   One or more BCP-47 language tags identifying the languages used for agent interaction. To recognize multiple languages, pass the tags as a single comma-separated string, for example, `"en-US,hi-IN,es-MX"`.
   See [Supported languages](/en/realtime-media/speech-to-text/reference/supported-languages#real-time-transcription) for the complete list.
 
-  Semantic end-of-speech detection (`turn_detection.config.end_of_speech.mode` set to `semantic`) supports English and Chinese only. If `language` includes any other language, the agent uses VAD for end-of-speech detection instead.
+  Semantic end-of-speech detection (`turn_detection.config.end_of_speech.mode` set to `semantic`) works only when `language` is `en-US`, `en-IN`, `zh-CN`, `zh-HK`, or `zh-TW`. If `language` includes any other language, or more than one language, the agent uses VAD for end-of-speech detection instead. Agents SDK v2.15.0 and later return an error for these configurations.
  </Parameter>
  <Parameter name="keywords" type="array[string]" required={false}>
  Keywords used to improve ASR recognition accuracy for specific terms, such as brand names, product names, or industry jargon. Supports up to 128 keywords. See [Configure ASR keywords](../../build/shape-the-conversation/asr-keywords) for details.

@@ -264,7 +264,17 @@ with_avatar(vendor: BaseAvatar) -> Agent
 Configures cascading-flow SOS/EOS voice activity detection. Use `config.start_of_speech` and `config.end_of_speech` for SOS/EOS detection. Use `with_interruption()` for interruption behavior and MLLM vendor `turn_detection` for MLLM turn detection.
 
 ```python
-with_turn_detection(config: TurnDetectionConfig) -> Agent
+with_turn_detection(config: TurnDetectionConfig | TurnDetectionDict | SemanticTurnDetectionDict) -> Agent
+```
+
+`language` sets the language of the conversation and is also sent as `asr.language`. It defaults to `en-US`. For a multi-language session, pass a list, such as `['en-US', 'es-ES']`. The SDK sends the list as one comma-separated string, without duplicates. If the list has more than one language and you don't set `config.end_of_speech.mode`, the SDK sets it to `vad`.
+
+Semantic end of speech (`config.end_of_speech.mode` set to `semantic`) works only when `language` is `en-US`, `en-IN`, `zh-CN`, `zh-HK`, or `zh-TW`. If you combine `semantic` with a list or another language, the SDK raises `ValueError` when it builds the request. Type checkers such as mypy and pyright also report the dict form of this configuration as an error.
+
+```python
+agent = agent.with_turn_detection({
+    'language': ['en-US', 'es-ES'],
+})
 ```
 
 #### `with_interruption(config)`

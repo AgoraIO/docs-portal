@@ -327,6 +327,16 @@ Configures cascading-flow turn detection. Use `Config.StartOfSpeech` and `Config
 func (a *Agent) WithTurnDetection(td *TurnDetectionConfig) *Agent
 ```
 
+`Language` sets the language of the conversation and is also sent as `asr.language`. It defaults to `en-US`. For a multi-language session, set `Languages` instead, for example `[]Agora.AsrLanguage{Agora.AsrLanguageEnUs, Agora.AsrLanguageEsEs}`. The SDK sends the list as one comma-separated string, without duplicates. If the list has more than one language and you don't set `Config.EndOfSpeech.Mode`, the SDK sets it to `vad`. Setting both `Language` and `Languages` is an error.
+
+Semantic end of speech (`Config.EndOfSpeech.Mode` set to `semantic`) works only when `Language` is `en-US`, `en-IN`, `zh-CN`, `zh-HK`, or `zh-TW`. If you combine `semantic` with `Languages` or another language, [`ToProperties()`](#toproperties) and `Start()` return an error.
+
+```go
+agent = agent.WithTurnDetection(&agentkit.TurnDetectionConfig{
+    Languages: []Agora.AsrLanguage{Agora.AsrLanguageEnUs, Agora.AsrLanguageEsEs},
+})
+```
+
 ### Other builder methods
 
 The following methods follow the same pattern — each returns a new `*Agent` with the updated configuration.
