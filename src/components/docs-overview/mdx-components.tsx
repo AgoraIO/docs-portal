@@ -53,6 +53,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { useDocVersionSelections } from '@/components/docs-shell/useDocVersionSelections';
 import {
   ReferenceFilterSelect,
   ReferenceFilterToggleGroup,
@@ -66,6 +67,8 @@ import {
   TabsTrigger as UiTabsTrigger,
 } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
+import { getDocVersionEntryHref } from '@/lib/doc-version-navigation';
+import { DOC_VERSION_SCOPES } from '@/lib/doc-versions';
 import {
   DOCS_HASH_TARGET_EVENT,
   findDocsHeadingForHash,
@@ -2933,9 +2936,33 @@ function GlobalSolutionCard({
     return <section className={cardClasses}>{content}</section>;
   }
 
+  if (DOC_VERSION_SCOPES.some((scope) => scope.entryUrl === href)) {
+    return (
+      <VersionEntryCardLink className={cardClasses} href={href}>
+        {content}
+      </VersionEntryCardLink>
+    );
+  }
   return (
     <a className={cardClasses} href={href}>
       {content}
+    </a>
+  );
+}
+
+function VersionEntryCardLink({
+  href,
+  className,
+  children,
+}: {
+  href: string;
+  className: string;
+  children: ReactNode;
+}) {
+  const selections = useDocVersionSelections();
+  return (
+    <a className={className} href={getDocVersionEntryHref(href, selections)}>
+      {children}
     </a>
   );
 }

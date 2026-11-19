@@ -3,6 +3,7 @@ import {
   CONVOAI_GUIDE_PAGES,
 } from '../generated/convoai-doc-pages';
 
+const DEFAULT_CONVOAI_VERSION = 'v1'; // v1: Main, v2: Preview
 const GUIDE_ROOT = '/en/ai';
 const API_ROOT = '/en/api-reference/api-ref/conversational-ai';
 const SDK_ROOT = '/en/api-reference/api-ref/server-sdk';
@@ -43,7 +44,7 @@ export const CONVOAI_DOC_VERSION_SCOPES = [
     preferenceKey: 'convoai',
     entryUrl: `${GUIDE_ROOT}/documentation-versions`,
     entryLinks: [GUIDE_ROOT],
-    defaultVersion: 'v1',
+    defaultVersion: DEFAULT_CONVOAI_VERSION,
     previousVersion: 'v1',
     previewMessage:
       "You're reading the Conversational AI Platform (Preview) docs.",
@@ -81,7 +82,7 @@ export const CONVOAI_DOC_VERSION_SCOPES = [
       rootUrl: '/en/api-reference',
       sectionId: 'separator-Voice Agents',
     },
-    defaultVersion: 'v1',
+    defaultVersion: DEFAULT_CONVOAI_VERSION,
     previousVersion: 'v1',
     previewMessage:
       "You're reading the Conversational AI Platform (Preview) docs.",
@@ -110,7 +111,7 @@ export const CONVOAI_DOC_VERSION_SCOPES = [
     label: 'Voice Agents SDK reference',
     preferenceKey: 'convoai',
     entryUrl: `${SDK_ROOT}/documentation-versions`,
-    defaultVersion: 'v1',
+    defaultVersion: DEFAULT_CONVOAI_VERSION,
     previousVersion: 'v1',
     previewMessage:
       "You're reading the Conversational AI Platform (Preview) SDK docs.",

@@ -10,6 +10,7 @@ import type { ComponentType, ReactNode } from 'react';
 import { hydrateRoot } from 'react-dom/client';
 import { renderToString } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
+import { DOC_VERSION_STORAGE_KEY } from '@/lib/doc-version-preference';
 import { getOverviewMDXComponents } from './mdx-components';
 
 type SolutionCardGridComponent = ComponentType<{
@@ -178,6 +179,37 @@ describe('overview MDX components', () => {
     ).toHaveAttribute('href', '/en/realtime-media/voice');
     expect(screen.getByText('Build realtime voice experiences.')).toBeVisible();
     expect(screen.getByText('Voice')).toBeVisible();
+  });
+
+  it('renders the default entry on the server and restores Preview only for the neutral card', () => {
+    const Card = getOverviewMDXComponents('en/introduction/index.mdx')
+      .SolutionCard as SolutionCardComponent;
+    const cards = (
+      <>
+        <Card
+          href="/en/ai/documentation-versions"
+          title="Explore"
+          description=""
+        />
+        <Card href="/en/ai" title="Main overview" description="" />
+      </>
+    );
+    localStorage.setItem(DOC_VERSION_STORAGE_KEY, '{"convoai":"v2"}');
+    try {
+      const html = document.createElement('div');
+      html.innerHTML = renderToString(cards);
+      expect(html.querySelector('a')).toHaveAttribute('href', '/en/ai');
+      render(cards);
+      expect(screen.getByRole('link', { name: 'Explore' })).toHaveAttribute(
+        'href',
+        '/en/ai/platform',
+      );
+      expect(
+        screen.getByRole('link', { name: 'Main overview' }),
+      ).toHaveAttribute('href', '/en/ai');
+    } finally {
+      localStorage.removeItem(DOC_VERSION_STORAGE_KEY);
+    }
   });
 
   it('renders toolkit groups for the docs home overview', () => {

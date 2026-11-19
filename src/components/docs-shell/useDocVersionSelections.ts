@@ -8,7 +8,8 @@ import { getDocVersionSelections } from '@/lib/doc-versions';
 
 const serverSnapshot = () => null;
 
-export function useDocVersionSelections(activePath: string) {
+/** Without an active path, ordinary entries follow the saved choice or site default. */
+export function useDocVersionSelections(activePath = '') {
   const snapshot = useSyncExternalStore(
     subscribeDocVersionPreferences,
     getDocVersionPreferenceSnapshot,
