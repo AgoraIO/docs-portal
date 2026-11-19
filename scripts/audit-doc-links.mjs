@@ -3117,7 +3117,7 @@ const LEGACY_GET_STARTED_PATHS = {
   'enable-service': (locale) =>
     locale === 'zh-CN'
       ? '/zh-CN/ai/enable-service'
-      : '/en/ai/reference/enable-conversational-ai',
+      : '/en/ai/get-started/quickstart',
 };
 
 const LEGACY_ABSOLUTE_PATHS = {

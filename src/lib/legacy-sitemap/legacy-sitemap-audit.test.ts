@@ -248,12 +248,12 @@ describe('legacy sitemap compatibility audit', () => {
   it('keeps the human review report aligned with the audit summary', () => {
     expect(typedReviewReport.summary).toEqual({
       broken: 0,
-      exactPath: 478,
-      exactSlug: 1934,
+      exactPath: 477,
+      exactSlug: 1932,
       native: 0,
       productFallback: 8,
       renamedPage: 39,
-      semanticPageMatch: 674,
+      semanticPageMatch: 677,
       totalLegacyUrls: compatibilityUrls.length,
       unavailable: 0,
     });
@@ -304,6 +304,16 @@ function readLegacySitemapUrls(): LegacySitemapUrl[] {
 }
 
 const reviewedRedirectTargets = [
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/conversational-ai/reference/enable-conversational-ai',
+    target: '/en/ai/get-started/quickstart',
+  },
+  ...['android', 'linux-c'].map((platform) => ({
+    legacyUrl: `https://docs.agora.io/en/iot/develop/ensure-channel-quality?platform=${platform}`,
+    target:
+      '/en/realtime-media/iot/build/manage-connections-and-quality/bitrate-adaptation',
+  })),
   {
     legacyUrl:
       'https://docs.agora.io/en/agora-chat/restful-api/user-system-registration',

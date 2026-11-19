@@ -250,6 +250,7 @@ const PRODUCT_SPECIFIC_TARGETS = {
     'rest-api/update': '/en/api-reference/api-ref/cloud-transcoding',
   },
   'conversational-ai': {
+    'reference/enable-conversational-ai': '/en/ai/get-started/quickstart',
     'develop/presets': '/en/ai/build/managed-mode',
     'models/asr/amazon': '/en/ai/models/asr/openai',
     'best-practices/cloud-recording':
@@ -318,6 +319,8 @@ const PRODUCT_SPECIFIC_TARGETS = {
       '/en/realtime-media/flexible-classroom/reference/classroom-rest-api',
   },
   iot: {
+    'develop/ensure-channel-quality':
+      '/en/realtime-media/iot/build/manage-connections-and-quality/bitrate-adaptation',
     'get-started/mcp': '/en/realtime-media/iot/product-overview',
     'get-started/skills': '/en/realtime-media/iot/product-overview',
     'reference/communicate_with_rtc_sdk':
