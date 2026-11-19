@@ -212,6 +212,16 @@ Configures cascading-flow turn detection. Pass `{ config: { start_of_speech, end
 withTurnDetection(config: TurnDetectionConfig): Agent<TTSSampleRate, TArea>
 ```
 
+`language` sets the language of the conversation and is also sent as `asr.language`. It defaults to `en-US`. For a multi-language session, pass a non-empty array, such as `['en-US', 'es-ES']`. The SDK sends the array as one comma-separated string, without duplicates. If the array has more than one language and you don't set `config.end_of_speech.mode`, the SDK sets it to `vad`.
+
+Semantic end of speech (`config.end_of_speech.mode` set to `semantic`) works only when `language` is `en-US`, `en-IN`, `zh-CN`, `zh-HK`, or `zh-TW`. If you combine `semantic` with an array or another language, TypeScript reports a compile error, and the SDK throws when it builds the request.
+
+```typescript
+const multilingualAgent = agent.withTurnDetection({
+  language: ['en-US', 'es-ES'],
+});
+```
+
 #### `withInterruption(config)`
 
 Configures unified interruption behavior using the top-level `interruption` object. Use this for `start_of_speech` and `keywords` interruption modes.
@@ -327,7 +337,7 @@ Low-level method to convert the agent configuration to the Fern request format. 
 toProperties(opts): StartAgentsRequest.Properties
 ```
 
-In cascading mode, throws if TTS or LLM isn't set. If you don't call `withStt()`, ASR defaults to ARES (`fengming` for `Area.CN`). `turnDetection.language` defaults to `en-US` and is also sent as `asr.language`.
+In cascading mode, throws if TTS or LLM isn't set. If you don't call `withStt()`, ASR defaults to ARES (`fengming` for `Area.CN`). `turnDetection.language` defaults to `en-US` and is also sent as `asr.language`. For multiple languages and semantic end-of-speech limits, see [`withTurnDetection(config)`](#withturndetectionconfig).
 
 ### Type aliases
 
