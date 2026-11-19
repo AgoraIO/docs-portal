@@ -1,0 +1,39 @@
+## 下载 SDK
+
+<ProductSdkDownloads product="signaling" platform="ios" />
+
+## 通过 CocoaPods 集成 SDK
+
+Objective-C 和 Swift 使用同一套 SDK。
+
+1. 开始前请确保你已安装 Cocoapods，如尚未安装 Cocoapods，参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 安装说明。
+2. 在终端里进入项目根目录，并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
+3. 打开 `Podfile` 文件。自 v2.3.1 起，需要添加声网 CocoaPods 源，并保留项目已有的源。将文件修改为如下内容，注意将 `Your App` 替换为你的 Target 名称。
+
+   ```ruby
+   source 'https://download.shengwang.cn/cocoapods/'
+
+   platform :ios, '11.0'
+   target 'Your App' do
+      # 对于 2.2.8 及之后版本:
+      # RtmKit 为 RTM 主库，RtmBasic 为 aosl 基础库
+      pod 'ShengWang-Rtm', '2.3.1', :subspecs => ['RtmKit']
+      pod 'ShengWang-Rtm', '2.3.1', :subspecs => ['RtmBasic']
+      # 对于 2.2.7 版本:
+      # pod 'ShengwangRtm', 'x.y.z'
+      # 对于 2.2.6 及之前版本:
+      # pod 'AgoraRtm', 'x.y.z'
+      # 如需获取 2.2.0 之前的版本，请将包名修改为 AgoraRtm_iOS
+   end
+   ```
+
+4. 在终端内运行 `pod install` 命令安装声网 SDK。成功安装后，Terminal 中会显示 `Pod installation complete!`。
+5. 成功安装后，项目文件夹下会生成一个后缀为 `.xcworkspace` 的文件，通过 Xcode 打开该文件进行后续操作。
+
+## 通过 SPM 集成 SDK
+
+在 Xcode 的 Swift Package Manager 中添加以下仓库：
+
+```text
+https://github.com/AgoraIO/AgoraRtm_Apple.git
+```

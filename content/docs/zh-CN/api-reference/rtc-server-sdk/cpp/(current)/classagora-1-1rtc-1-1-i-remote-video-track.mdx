@@ -1,0 +1,156 @@
+---
+title: agora::rtc::IRemoteVideoTrack类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_remote_video_track
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_remote_video_track.html
+  generator: doxygen
+  warnings: []
+---
+
+继承自 [agora::rtc::IVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-track).
+
+<a id="details"></a>
+
+## 详细描述
+
+[IRemoteVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-video-track) 类。
+
+## 构造及析构函数说明
+
+<a id="a83206958fae1976ea8b63acaeec7f7ac"></a>
+
+### ~IRemoteVideoTrack()
+
+<ApiSignature labels="inline protected">
+
+agora::rtc::IRemoteVideoTrack::~IRemoteVideoTrack()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="aea7a83b6554e74c363969eb80495ecb9"></a>
+
+### getStatistics()
+
+<ApiSignature labels="pure virtual">
+
+virtual bool agora::rtc::IRemoteVideoTrack::getStatistics([RemoteVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-remote-video-track-stats) & *stats*)
+
+</ApiSignature>
+
+获取远端视频轨道的统计信息。
+
+<ParameterList title="参数">
+<Parameter name="stats" direction="[out]">
+
+远端视频轨道的统计信息： [RemoteVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-remote-video-track-stats) 。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a9198277c30a29b82237876d7bd63fb63"></a>
+
+### getState()
+
+<ApiSignature labels="pure virtual">
+
+virtual [REMOTE_VIDEO_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8098bde3bb614a7716d0f39105b8f1d8) agora::rtc::IRemoteVideoTrack::getState()
+
+</ApiSignature>
+
+获取远端视频轨道的状态。
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+远端视频轨道的状态： [REMOTE_VIDEO_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8098bde3bb614a7716d0f39105b8f1d8) 。
+
+<a id="aae079a7139538bc5e9980b1259534c2e"></a>
+
+### getTrackInfo()
+
+<ApiSignature labels="pure virtual">
+
+virtual bool agora::rtc::IRemoteVideoTrack::getTrackInfo([VideoTrackInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-track-info) & *info*)
+
+</ApiSignature>
+
+获取远端视频轨道的信息。
+
+<ParameterList title="参数">
+<Parameter name="info" direction="[out]">
+
+远端视频轨道的信息: [VideoTrackInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-track-info)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a450b18c898cedacc369267fdd3b73725"></a>
+
+### registerVideoEncodedImageReceiver()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRemoteVideoTrack::registerVideoEncodedImageReceiver([IVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) * *videoReceiver*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
+
+注册 [IVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) 对象。
+
+注册成功之后， SDK 在收到已编码视频帧时触发 [OnEncodedVideoImageReceived](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver#ad4e316784b48ac30cd3208a34e840254) 回调。
+
+<ParameterList title="参数">
+<Parameter name="videoReceiver">
+
+[`IVideoEncodedImageReceiver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) 对象。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a2542a5a5622488bc1aefe76348393fc2"></a>
+
+### unregisterVideoEncodedImageReceiver()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IRemoteVideoTrack::unregisterVideoEncodedImageReceiver([IVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) * *videoReceiver*)
+
+</ApiSignature>
+
+销毁 [IVideoEncodedImageReceiver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) 对象。
+
+<ParameterList title="参数">
+<Parameter name="videoReceiver">
+
+[`IVideoEncodedImageReceiver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-receiver) 对象。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

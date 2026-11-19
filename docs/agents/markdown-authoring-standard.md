@@ -4,6 +4,10 @@ This is the minimum syntax contract for authoring and migrating docs under
 `content/docs/{en,zh-CN}`. Keep it small and copyable. Prefer standard Markdown
 first; use MDX only for the repo-approved primitives listed here.
 
+For API reference content and migrations, also follow the
+[API reference quality contract](../api-reference-quality.md). It owns shared
+renderer choices, source fidelity, cross-locale changes and release acceptance.
+
 ## Core Rules
 
 - Put a blank line before and after every block element: headings, lists,
@@ -15,8 +19,22 @@ first; use MDX only for the repo-approved primitives listed here.
   lists, raw `<img>` tags, custom tab components, or platform filters.
 - Escape literal `<`, `>`, `{`, and `}` outside code spans or code fences when
   they are text, not MDX syntax.
-- Use a code language listed in `source.config.ts`. If no better language
-  exists, use `text` for plain output.
+- Declare the source language on code fences. Shared grammars and aliases are
+  configured in `src/lib/code/languages.ts`; use `text` for plain output.
+
+## Repository Cards
+
+Use `RepositoryCardTitle` inside a Card's `title` to place a repository host icon
+beside the unchanged repository name. Supported providers are `gitee` and
+`github`. The platform label is screen-reader-only; do not append it to the
+visible title or use the separate Card icon slot.
+
+```mdx
+<Cards>
+  <Card title={<RepositoryCardTitle provider="gitee">API-Examples</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples" />
+  <Card title={<RepositoryCardTitle provider="github">API-Examples</RepositoryCardTitle>} href="https://github.com/AgoraIO/API-Examples" />
+</Cards>
+```
 
 ## Callouts
 
@@ -29,7 +47,20 @@ Tokens expire after 24 hours. Generate a new token before the old one expires.
 :::
 ```
 
-Use only these callout types: `note`, `info`, `tip`, `warning`, and `error`.
+Use only these callout types: `note`, `info`, `tip`, `caution`, `warning`, and
+`error`.
+
+Keep the source severity instead of choosing a type from body wording:
+
+- Use `note` for neutral side information, `info` for emphasized context, and
+  `tip` for recommendations.
+- Use `caution` for precautions or constraints that require attention before
+  proceeding. Legacy HTML `alert alert-warning`, `alert warning`,
+  `note attention`, and `note caution` blocks map here.
+- Use `warning` when the source explicitly uses a warning admonition or a
+  standalone warning class. Use `error` for danger or error blocks.
+- Do not infer callout severity from labels such as “注意” or “警告” when the
+  source provides a semantic class.
 
 Do not use four-colon fences or nested callouts. If you need two notices, write
 two consecutive callouts instead.
@@ -108,6 +139,11 @@ Rules:
 
 For code-only alternatives, use code fence tabs. Use MDX tabs only when a pane
 contains mixed prose, lists, images, or multiple code blocks.
+
+When several steps share one scenario choice and include mixed content, use
+MDX tabs for every synchronized set, including a step containing only code.
+Give those sets the same `groupId` and stable values (for example, `live` and
+`rtc`) so code, instructions, and expected results switch together.
 
 ````mdx
 <Tabs defaultValue="macos" groupId="install-os" persist>
@@ -311,6 +347,28 @@ Rules:
   blank lines to the list content column.
 - Do not use raw `<img>` tags in docs content.
 
+For small UI icons embedded in a sentence, use the approved `InlineImage`
+primitive with meaningful alt text and an explicit pixel width or height. It preserves
+inline alignment and does not open the screenshot zoom dialog. This is the
+exception to the standalone Markdown image rule.
+
+```mdx
+Click <InlineImage alt="Run" src="https://example.com/run.png" width={25} /> to build.
+Click <InlineImage alt="Play" src="https://example.com/play.png" height={20} /> to start.
+```
+
+Keep screenshots as Markdown unless they require an explicit display width.
+For that case, use `DocsImage` with `displayWidth` (a CSS width), which sizes
+the thumbnail but keeps the full-size zoom preview. For screenshots with a
+legacy height limit, use `displayHeight` (a CSS maximum height); the thumbnail
+keeps its aspect ratio and stays within the available width. Indent it to the list
+content column when it belongs to a list item.
+
+```mdx
+<DocsImage alt="Karaoke room" src="https://example.com/room.png" displayWidth="40%" />
+<DocsImage alt="Unity scenes" src="https://example.com/scenes.png" displayHeight="320px" />
+```
+
 ## Tables
 
 Use GFM tables only for simple, inline cell content.
@@ -324,11 +382,46 @@ Use GFM tables only for simple, inline cell content.
 
 Rules:
 
-- Do not put lists, callouts, code fences, images, or raw HTML lists inside a
-  table cell.
-- If a cell needs block content, move that content below the table under a
-  heading or list item.
+- Do not put lists, callouts, code fences, images, or raw HTML lists directly
+  inside a GFM table cell.
+- If a GFM cell needs block content, move that content below the table under a
+  heading or list item, or use the approved table `Slot` pattern when preserving
+  the tabular shape matters.
+- For table slots, put `<Slot name="..." />` alone in the table cell, then put
+  the matching `<Slot for="...">...</Slot>` block immediately after the table.
+- Put totals or other prose after all of the table's Slot definitions; text
+  between the table and those definitions prevents rich cells from rendering.
 - Keep table rows single-line whenever possible.
+- Preserve merged cells with the approved native MDX `DocsTable` primitive,
+  which uses the same accessible scroll container as GFM tables. Use native
+  `thead`, `tbody`, `tr`, `th` and `td` elements with explicit `rowSpan` and
+  `colSpan` positive integers. Keep multiple header rows inside `thead`.
+- Preserve the source's merge boundaries, including group labels, shared
+  allowances and aggregate totals. Do not repeat their text to simulate a merge,
+  and do not automatically merge independent cells just because values match.
+- For dense numeric comparisons, use `<DocsTable compact>` to fit columns to
+  the content width and wrap headings and formulas. It keeps a 40rem minimum
+  width so narrow screens can scroll without breaking numeric values apart.
+- Inside a `DocsTable` cell, write inline Markdown directly. For lists, code
+  blocks or multiple paragraphs, put blank lines after the opening cell tag and
+  before its closing tag. Rich content belongs directly in its owning cell;
+  the GFM `Slot` placeholder pattern is unnecessary there.
+- Escape literal pipes as `\|`, including inside inline code. Every body row
+  must have the same number of cells as its header. Run `bun run docs:tables`
+  to check all Chinese documents for unsupported raw HTML tables, mismatched
+  logical column counts, overlapping/out-of-range spans and rich-cell Slot placement.
+
+```mdx
+<DocsTable>
+<thead>
+<tr><th>Option</th><th>Key</th></tr>
+</thead>
+<tbody>
+<tr><td rowSpan={2}>`beauty_effect_option`</td><td>`enable`</td></tr>
+<tr><td>`smoothness`</td></tr>
+</tbody>
+</DocsTable>
+```
 
 ## Agent Checklist
 

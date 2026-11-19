@@ -1,0 +1,32 @@
+## 通过 CocoaPods 集成 SDK
+
+```ruby
+platform :ios, '12.0'
+use_frameworks!
+target 'ExampleFastboard' do
+    pod 'Fastboard', '1.4.6'
+end
+```
+
+:::info[更新 SDK]
+对于已通过 CocoaPods 集成旧版本 Fastboard SDK 的工程，运行 `pod update Fastboard` 即可更新 Fastboard iOS SDK 的版本至最新。最新版本号以及相关更新内容请查看[发版说明](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/release-notes-fb)。
+:::
+
+## 下载 SDK
+
+<ProductSdkDownloads product="fastboard" platform="ios" versionIds={['1.4.6-fastboard-ios']} />
+
+## 获取 Demo
+
+<DownloadResourceCards items={[
+  {
+    title: "Web Demo",
+    platform: "web",
+    description: "Fastboard 是基于 Whiteboard SDK 开发的新一代 SDK，提供默认白板 UI 和可自定义样式的小组件，已集成部分实用插件，且默认支持多窗口模式。可用于在线教育、在线会议、协作办公、在线互动娱乐等场景。",
+    coverSrc: "https://web-cdn.agora.io/docs-portal/img/landing-page/demo/whiteboard-demo.png",
+    href: "https://demo.whiteboard.agora.io/",
+    qrSrc: "https://web-cdn.agora.io/docs-portal/img/whiteboard/web-demo-qr.png",
+    qrAlt: "Web Demo 二维码",
+    qrExpanded: true
+  }
+]} />

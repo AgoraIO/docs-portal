@@ -335,7 +335,7 @@ The request body of notification callbacks contains the following fields:
 
 The product ID:
 
-- `1`: Realtime Communication (RTC) service
+- `1`: RTC service
 - `3`: Cloud Recording
 - `4`: Media Pull
 - `5`: Media Push
@@ -369,7 +369,7 @@ You can subscribe to the following Cloud Recording events from Agora Console:
 | [12](#session_failover)   | `session_failover` | 0 (cloud recording service)   | The cloud recording service has enabled the [high availability mechanism](/en/realtime-media/cloud-recording).                   |
 | [30](#uploader_started) | `uploader_started` | 2 (uploader module)           | The upload service starts.                                                                                                    |
 | [31](#uploaded) | `uploaded` | 2 (uploader module)           | All the recorded files are uploaded to the specified third-party cloud storage.                                               |
-| [32](#backuped) | `backuped` | 2 (uploader module)           | All the recorded files are uploaded, but at least one file is uploaded to Agora Cloud Backup.                                 |
+| [32](#backuped) | `backuped` | 2 (uploader module)           | All the recorded files are uploaded, but at least one file is uploaded to Agora Fallback Storage.                                 |
 | [33](#uploading_progress) | `uploading_progress` | 2 (uploader module)           | The progress of uploading the recorded files to the cloud storage. Not sent in individual recording.                         |
 | [40](#recorder_started) | `recorder_started` | 1 (recorder module)           | The recording starts.                                                                                                         |
 | [41](#recorder_leave) | `recorder_leave` | 1 (recorder module)           | The recording exits.                                                                                                          |
@@ -605,7 +605,7 @@ The relevant fields of each Agora Cloud Recording callback event are listed belo
 Individual recording adds the `stranded` upload status, which means that some recorded files have not yet been uploaded to your third-party cloud storage. The recording service keeps retrying the upload automatically until it succeeds, and the files are not lost. After you stop the recording, check `serverResponse.uploadingStatus` in the [`stop`](/en/api-reference/api-ref/cloud-recording#stop) response. If it is `stranded`, wait until the upload completes before you play or process files that depend on the complete recording.
 :::
 
-`eventType` 32 indicates that all the recorded files are uploaded, but at least one of them is uploaded to Agora Cloud Backup. Agora Cloud Backup automatically uploads the files to the specified third-party cloud storage. `details` includes the following fields:
+`eventType` 32 indicates that all the recorded files are uploaded, but at least one of them is uploaded to Agora Fallback Storage. Agora Fallback Storage automatically uploads the files to the specified third-party cloud storage. `details` includes the following fields:
 
 - `msgName`: String. The message name, `backuped`.
 - `status`: Number. The event status. 0 indicates normal status; other values indicate abnormal status.
@@ -937,7 +937,7 @@ In individual recording, `payload.serviceScene` in screenshot callbacks is `"rts
 | Warning code | Description                                                  |
 | :----------- | :----------------------------------------------------------- |
 | 31           | The recording service re-uploads the slice file to the specified cloud storage.                   |
-| 32           | The recording service re-uploads the slice file to Agora Cloud Backup.                            |
+| 32           | The recording service re-uploads the slice file to Agora Fallback Storage.                            |
 
 #### Error codes for the Agora Cloud Recording service
 

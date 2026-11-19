@@ -1,0 +1,109 @@
+---
+title: "如何处理 CocoaPods 常见问题？"
+---
+一般的原因有：未安装 CocoaPods、安装 CocoaPods 时由于网络连接问题导致操作超时、未配置所需的 spec 源、本地 CocoaPods 仓库过时。
+
+## pod: command not found
+
+**问题描述**
+
+在终端进入项目根目录，运行 `pod init` 后，终端提示 `pod: command not found`。
+
+**问题原因**
+
+未安装 CocoaPods。
+
+**解决方法**
+
+参考如下步骤解决问题：
+
+1. 在终端运行 `sudo gem install cocoapods`，输入管理员密码，安装 CocoaPods。
+2. 成功安装后，重新进入项目根目录，运行 `pod init`，即可在项目文件夹下生成一个 `Podfile` 文本文件。
+
+ :::warning[注意]
+ 如果运行 `sudo gem install cocoapods` 失败，请根据错误提示选择合适的解决方案：
+
+  - 如果遇到网络问题，请查看 [443: Operation timed out](#443) 解决方案。
+  - 如果遇到权限问题，例如 `You don't have write permissions for the /Library/Ruby/Gems/2.3.0 directory`，则建议运行 `sudo gem install -n /usr/bin cocoapods` 安装 CocoaPods。
+ :::
+
+<a id="443"></a>
+## 443: Operation timed out
+
+**问题描述**
+
+安装 CocoaPods 失败，终端提示访问超时。错误信息示例如下：
+
+```shell
+fatal: unable to access 'https://github.com/Homebrew/homebrew-cask/': Failed to connect to github.com port 443: Operation timed out
+```
+
+**问题原因**
+
+网络状况不好。
+
+**解决方法**
+
+参考如下步骤解决问题：
+
+1. 参考如下链接，使用 Ruby Gems 镜像源：
+   - https://mirror.tuna.tsinghua.edu.cn/help/rubygems/
+   - [https://gems.ruby-china.com](https://gems.ruby-china.com/)
+
+2. 在终端运行 `sudo gem install cocoapods`，重新安装 CocoaPods。
+
+## 无法安装最新版 RTC SDK
+
+**问题描述**
+
+安装 RTC SDK 时遇到如下问题：
+
+- 在 `Podfile` 文件中写入 `pod 'library_name'`，在终端运行 `pod install` 后，安装的 SDK 不是最新版。
+- 在 `Podfile` 文件中写入 `pod 'library_name', 'latest_version'`，在终端运行 `pod install` 后，终端提示最新版不存在。错误信息示例如下：
+
+```shell
+[!] CocoaPods could not find compatible versions for pod "AgoraRtcEngine_iOS":
+  In Podfile:
+    AgoraRtcEngine_iOS (= 4.1.0)
+None of your spec sources contain a spec satisfying the dependency: `AgoraRtcEngine_iOS (= 4.1.0)`.
+```
+
+**问题原因**
+
+可能未配置所需的 spec 源，或未更新本地的 CocoaPods 仓库。此外，`Podfile.lock` 可能锁定了旧版本，导致 `pod install` 未升级 SDK。
+
+**解决方法**
+
+参考如下步骤解决问题：
+
+集成 iOS/macOS SDK 时，请先在 `Podfile` 顶部添加声网 CocoaPods CDN 源。
+
+请保留项目中已有的源配置；如果项目还依赖公共仓库中的其他 Pod，请同时保留公共源，并将其放在声网源前面。已有项目保留原来的 SDK 包名、版本号和组件配置，仅补充源配置。以下以视频 Full SDK 为例，请选择对应的平台：
+
+```ruby tab="iOS" tabGroup="rtc-cocoapods-platform"
+source 'https://cdn.cocoapods.org/'
+source 'https://download.shengwang.cn/cocoapods/'
+
+target 'Your App' do
+  pod 'ShengwangRtcEngine_iOS', '4.7.0'
+end
+```
+
+```ruby tab="macOS" tabGroup="rtc-cocoapods-platform"
+source 'https://cdn.cocoapods.org/'
+source 'https://download.shengwang.cn/cocoapods/'
+
+target 'Your App' do
+  pod 'ShengwangRtcEngine_macOS', '4.7.0'
+end
+```
+
+完整配置请参考 [iOS 下载 SDK](/zh-CN/realtime-media/rtc/reference/downloads/ios#通过-cocoapods-集成-sdk)或 [macOS 下载 SDK](/zh-CN/realtime-media/rtc/reference/downloads/macos#通过-cocoapods-集成-sdk)。仅更新官方公共源不能替代添加声网自有源。
+
+特殊版本采用同样的修改方式。如果提示目标版本不存在，请确认完整的 Pod 名称和版本已经发布到声网源的 Podspec 和版本索引中。仅 SDK ZIP 已存在，不能保证 CocoaPods 可以找到该版本。
+
+1. 确认 `Podfile` 中指定的 Pod 名称和版本号正确。例如，v4.6.0 及之后版本中，iOS 视频 Full 包使用 `ShengwangRtcEngine_iOS`，macOS SDK 使用 `ShengwangRtcEngine_macOS`。之前版本请保留原有包名。
+2. 在 `Podfile` 所在目录运行 `pod install --repo-update`，更新已配置源的索引并安装依赖。
+3. 如需重新解析 SDK 依赖，请保持 `Podfile` 中的版本声明不变，仅针对实际使用的 Pod 运行 `pod update`。例如，iOS 视频 Full 包使用 `pod update ShengwangRtcEngine_iOS --repo-update`，macOS SDK 使用 `pod update ShengwangRtcEngine_macOS --repo-update`。保留 `Podfile.lock`，无需删除锁文件或更新所有依赖。如果需要升级 SDK，请先调整相应的版本约束。
+
+安装成功后，终端会显示 `Pod installation complete!`。请在 `Podfile.lock` 中核对实际安装的 SDK 版本，并检查 `SPEC REPOS`，核对 SDK 的实际来源。实际来源取决于已配置的源及目标版本的可用情况，执行 `pod update` 不保证切换至声网源。

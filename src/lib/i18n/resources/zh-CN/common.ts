@@ -1,6 +1,6 @@
 const zhCnCommon = {
   app: {
-    name: 'Agora Docs',
+    name: '声网文档中心',
     tagline: '像产品界面一样工作的文档系统',
     endorsement: 'Developer Surface',
   },
@@ -12,6 +12,9 @@ const zhCnCommon = {
       system: '跟随系统',
     },
     site: {
+      switchSite: '切换站点 / Switch site',
+      chinese: '简体中文',
+      english: 'English',
       label: '站点',
       description: '两个站点覆盖的产品范围并不完全相同。',
       global: '国际站',
@@ -37,27 +40,47 @@ const zhCnCommon = {
     searchFilterNoResults: '无匹配结果',
     searchFilterPlatforms: '筛选平台…',
     searchFilterProducts: '筛选产品…',
+    close: '关闭',
     searchHintClose: '关闭',
     searchHintNavigate: '导航',
     searchHintSelect: '选择',
-    tabsLabel: 'Tabs',
+    tabsLabel: '标签页',
     sectionPickerLabel: '分区',
-    pagesLabel: 'Pages',
+    pagesLabel: '页面',
+    toggleSectionPages: '展开或收起{{title}}子页面',
+    apiReturnType: '返回类型',
+    apiParameterName: '参数名',
+    apiParameterDescription: '描述',
+    tableOverflowLabel: '可横向滚动的表格',
+    tableOverflowDescription: '表格内容超出当前宽度，可横向滚动查看更多列。',
+    versionSelect: '选择文档版本',
+    versionMenuLabel: '文档版本',
     toc: '本页目录',
     tocEmpty: '当前页面没有标题。',
     lastUpdated: '更新时间',
     lastUpdatedUnavailable: '更新时间不可用',
     returnToSource: '返回 {{title}}',
+    viewProductDocs: '查看普通文档',
     next: '下一页',
     previous: '上一页',
     copyPage: '复制页面',
     downloadPage: '下载页面',
     viewMarkdown: '查看 Markdown',
+    copyLink: '复制链接',
+    wrapCode: '自动换行',
+    unwrapCode: '取消自动换行',
+    copyPageMoreActions: '复制页面更多操作',
     viewAsMarkdown: '查看 Markdown',
-    openInChatGpt: '在 ChatGPT 中打开',
-    openInClaude: '在 Claude 中打开',
-    connectToCursor: '连接到 Cursor',
-    connectToVsCode: '连接到 VS Code',
+    openInDeepSeek: '打开 DeepSeek',
+    openInDoubao: '打开豆包',
+    openInQianwen: '打开千问',
+    openInKimi: '打开 Kimi',
+    copyAiPrompt: '复制 AI 提问内容',
+    aiPromptCopied: '已复制提问内容',
+    copyMenuAiHint: '先复制提问内容，再打开 AI 助手粘贴并提问。',
+    copyAiPromptError: '复制失败，请重试，或打开 Markdown 手动复制。',
+    connectToTrae: '连接到 TRAE',
+    connectToKimiCode: '连接到 Kimi Code',
     copyMcpConfig: '复制 MCP 配置',
     copyMcpCommand: '复制 MCP 命令',
     copyMenuAiTools: 'AI 工具',
@@ -84,12 +107,13 @@ const zhCnCommon = {
     feedbackCancel: '取消',
     feedbackSubmit: '打开 issue',
     openMenu: '打开导航',
+    dismissLegacyDocsBanner: '关闭旧版文档提示',
     legacyDocsBanner: '需要访问旧版文档站？前往旧版文档官网首页。',
     opensInNewTab: '在新标签页打开',
   },
   home: {
-    eyebrow: 'Agora 开发者文档',
-    title: 'Agora 文档',
+    eyebrow: '声网开发者文档',
+    title: '声网文档中心',
     description: '对话式 AI / 语音通话 / 视频通话 / 互动直播 / 实时消息',
     shellLabel: 'Overview',
     askAi: 'AI 入口',
@@ -128,8 +152,8 @@ const zhCnCommon = {
         title: '声网能力域',
         items: {
           platformOverview: '平台总览',
-          ai: '对话式 AI',
-          rtc: '实时音视频',
+          ai: '对话式 AI 引擎',
+          rtc: '实时互动 RTC',
           messaging: '实时消息',
           media: '媒体服务',
           solutions: '场景方案',
@@ -150,12 +174,12 @@ const zhCnCommon = {
     },
     featureCards: {
       aiQuickstart: {
-        title: '对话式 AI 快速开始',
+        title: '对话式 AI 引擎快速开始',
         body: '从实时对话、语音模型和 Agent 集成开始，建立第一条 AI 交互链路。',
       },
       rtcQuickstart: {
         title: 'RTC 快速开始',
-        body: '接入实时音视频核心能力，完成通话、直播或互动场景的第一条音视频链路。',
+        body: '接入实时互动 RTC 核心能力，完成通话、直播或互动场景的第一条音视频链路。',
       },
       rtmQuickstart: {
         title: '实时消息快速开始',
@@ -173,7 +197,7 @@ const zhCnCommon = {
         },
         rtc: {
           title: 'RTC',
-          body: '客户端 SDK、服务端 SDK、实时音视频核心能力。',
+          body: '客户端 SDK、服务端 SDK、实时互动 RTC 核心能力。',
         },
         messaging: {
           title: '实时消息',
@@ -251,7 +275,7 @@ const zhCnCommon = {
       platformOverview: {
         title: '声网平台总览',
         description:
-          '声网文档以能力域优先组织，把 AI、RTC、消息、媒体服务和解决方案收敛成稳定的阅读入口，降低首次接入和长期维护的成本。。。',
+          '声网文档中心以能力域优先组织，把 AI、RTC、消息、媒体服务和解决方案收敛成稳定的阅读入口，降低首次接入和长期维护的成本。。。',
         section1: {
           title: '平台能力结构',
           body: '底层是 RTC、RTM、媒体服务等通用能力，上层是对话式 AI、会议、课堂和行业方案。文档应该反映这种分层关系，而不是直接暴露原始仓库目录。',
@@ -262,7 +286,7 @@ const zhCnCommon = {
         },
       },
       aiDomain: {
-        title: '对话式 AI',
+        title: '对话式 AI 引擎',
         description:
           '围绕 ConvoAI、Device Kit 和 Agent 集成组织文档，帮助开发者从实时语音对话走到完整的 AI 交互产品实现。',
         section1: {
@@ -277,7 +301,7 @@ const zhCnCommon = {
         },
       },
       rtcDomain: {
-        title: '实时音视频',
+        title: '实时互动 RTC',
         description:
           'RTC 是声网最核心的基础能力之一，对应客户端 SDK、服务端 SDK、互动直播和实时通话的主链路。',
         section1: {
@@ -328,7 +352,7 @@ const zhCnCommon = {
         section1: {
           title: '推荐入口',
           body: '可以优先展示会议、在线 K 歌房和秀场直播等最具代表性的方案，再逐步扩展到课堂和硬件。',
-          link1: '查看灵动会议文档',
+          link1: '查看智能云会议文档',
           link2: '查看在线 K 歌房文档',
           link3: '查看秀场直播文档',
         },

@@ -1,0 +1,308 @@
+import { codeLanguageNames } from '../code/languages';
+import { normalizeCnProductFacets } from './cn-products';
+import { type CnSearchFamily, getCnSearchFamily } from './cn-search-family';
+import { isPublicCnSearchUrl } from './cn-search-urls.mjs';
+import { getSearchSectionIdentity } from './kb-record';
+import type { SearchHit } from './meilisearch-client';
+import type { SearchPageState } from './search-page-state';
+import {
+  stripSearchComponentTags,
+  stripSearchProseMarkers,
+} from './search-prose';
+
+export { isPublicCnSearchUrl } from './cn-search-urls.mjs';
+
+export type SearchFacets = Record<string, Record<string, number>>;
+export type SearchPageGroup = {
+  groupKey?: string;
+  pageUrl: string;
+  title: string;
+  product?: string;
+  platform: string[];
+  availablePlatforms?: string[];
+  version?: string;
+  docType: SearchHit['docType'];
+  sections: SearchHit[];
+};
+export type CnSearchPageResponse = {
+  groups: SearchPageGroup[];
+  totalHits: number;
+  totalPages: number;
+  page: number;
+  facets: SearchFacets;
+  familyTotalHits?: Partial<Record<CnSearchFamily, number>>;
+  /** Explicit pageSize requests count document groups, with one best section each. */
+  pageSize?: number;
+  paginationUnit?: 'groups';
+};
+
+export type CnSearchRequest = SearchPageState & { tab?: string };
+
+export async function searchCnDocsPage(
+  state: CnSearchRequest,
+  signal?: AbortSignal,
+  measurementHeaders?: Record<string, string>,
+): Promise<CnSearchPageResponse> {
+  const params = new URLSearchParams({
+    q: state.q,
+    page: String(state.page),
+    type: state.type,
+  });
+  for (const field of ['product', 'platform', 'tab'] as const) {
+    if (state[field]) params.set(field, state[field]);
+  }
+  const response = await fetch(`/api/search?${params}`, {
+    signal,
+    headers: { Accept: 'application/json', ...measurementHeaders },
+  });
+  if (!response.ok)
+    throw new Error(`Search unavailable (HTTP ${response.status})`);
+  const result = (await response.json()) as CnSearchPageResponse;
+  if (
+    !Array.isArray(result.groups) ||
+    !Number.isSafeInteger(result.totalHits) ||
+    !Number.isSafeInteger(result.totalPages) ||
+    !Number.isSafeInteger(result.page) ||
+    !result.facets
+  ) {
+    throw new Error('Invalid search response');
+  }
+  return {
+    ...result,
+    groups: result.groups
+      .filter((group) => isPublicCnSearchUrl(group.pageUrl))
+      .map((group) => ({
+        ...group,
+        sections: group.sections.filter(
+          (section) =>
+            isPublicCnSearchUrl(section.url) &&
+            (!section.canonicalUrl ||
+              isPublicCnSearchUrl(section.canonicalUrl)),
+        ),
+      }))
+      .filter((group) => group.sections.length > 0),
+    facets: {
+      ...result.facets,
+      product: normalizeCnProductFacets(result.facets.product ?? {}),
+    },
+  };
+}
+
+export function isCnApiSearchGroup(
+  group: Pick<SearchPageGroup, 'pageUrl' | 'docType'>,
+) {
+  return getCnSearchFamily(group) === 'api';
+}
+
+// A stable, publication-wide catalog: keyword matches and a previously selected
+// platform must not remove the user's next product/platform from the controls.
+export async function loadCnSearchCatalog(signal?: AbortSignal) {
+  const result = await searchCnDocsPage(
+    { q: '', type: 'all', page: 1 },
+    signal,
+  );
+  return result.facets;
+}
+
+// Keep highlight tags while removing authoring syntax from cropped previews,
+// including older snapshots whose summaries still contain serialized MDX.
+// Meilisearch may prepend its crop marker directly to an opening fence.
+export function cleanSearchSnippet(value: string): string {
+  return stripSnippetLinks(
+    stripSearchProseMarkers(
+      stripSearchComponentTags(stripCroppedFenceHeader(value)),
+    ),
+  )
+    .replace(/\bOpenAPI:\s*\/openapi\/\S*/gi, '')
+    .replace(/\|?\s*:?-{3,}:?\s*(?=\||$)/gm, ' ')
+    .replace(/(^|\s)\|(?=\s|$)/gm, '$1')
+    .replace(/(^|\n)([ \t]*(?:…[ \t]*)?)(?:`{3,}|~{3,})[^\r\n]*/g, '$1$2')
+    .replace(/```[\w+-]*\s*/g, ' ')
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/<\/?[a-z_][^<>]*>/gi, (tag) =>
+      /^<\/?(?:mark|em)>$/i.test(tag) ? tag : '',
+    )
+    .replace(/<\/?_[a-z][^<>]*$/gi, '')
+    .replace(/(?:\*\*|__|`)/g, '')
+    .replace(/&(lt|gt|amp|quot|apos|nbsp|#160);/g, (_, entity: string) => {
+      const entities: Record<string, string> = {
+        lt: '<',
+        gt: '>',
+        amp: '&',
+        quot: '"',
+        apos: "'",
+        nbsp: ' ',
+        '#160': ' ',
+      };
+      return entities[entity];
+    })
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// API signatures contain nested [] and links can contain parentheses. A single
+// regex leaves source URLs behind; cropped destinations may also end mid-link.
+function stripSnippetLinks(value: string): string {
+  let output = '';
+  let cursor = 0;
+  while (cursor < value.length) {
+    if (value[cursor] !== '[') {
+      output += value[cursor++];
+      continue;
+    }
+    let end = cursor + 1;
+    let depth = 1;
+    for (; end < value.length && depth > 0; end++) {
+      if (value[end] === '\\') end++;
+      else if (value[end] === '[') depth++;
+      else if (value[end] === ']') depth--;
+    }
+    if (depth || value[end] !== '(') {
+      output += value[cursor++];
+      continue;
+    }
+    const label = value.slice(cursor + 1, end - 1);
+    depth = 1;
+    end++;
+    for (; end < value.length && depth > 0; end++) {
+      if (value[end] === '\\') end++;
+      else if (value[end] === '(') depth++;
+      else if (value[end] === ')') depth--;
+    }
+    if (value[cursor - 1] === '!') output = output.slice(0, -1);
+    output += label;
+    cursor = end;
+  }
+  return output;
+}
+
+function stripCroppedFenceHeader(value: string): string {
+  const firstLine = value.match(/^([ \t]*(?:…|\.{3}))[ \t]*([^\r\n]*)/);
+  if (!firstLine) return value;
+
+  // Only inspect a copy without highlights; the remaining snippet stays intact.
+  const header = firstLine[2].replace(/<\/?(?:mark|em)>/gi, '').trim();
+  if (!/^(?:`{3,}|~{3,})/.test(header)) {
+    const info = header.match(/^(\S+)[ \t]+(.+)$/);
+    if (!info || !codeLanguageNames.has(info[1].toLowerCase())) return value;
+    const remainder = info[2].replace(
+      /\b(?:tab|tabGroup|title)[ \t]*=[ \t]*(?:"[^"]*"|'[^']*')|\blineNumbers\b/g,
+      '',
+    );
+    if (remainder.trim()) return value;
+  }
+
+  return `${firstLine[1]} ${value.slice(firstLine[0].length)}`;
+}
+
+export function mergeSearchPageGroups(
+  pages: SearchPageGroup[][],
+): SearchPageGroup[] {
+  const groups = new Map<string, SearchPageGroup>();
+  for (const page of pages)
+    for (const group of page) {
+      const key = getSearchPageGroupKey(group);
+      const previous = groups.get(key);
+      if (!previous)
+        groups.set(key, {
+          ...group,
+          sections: [...group.sections],
+          platform: [...group.platform],
+          availablePlatforms: group.availablePlatforms
+            ? [...group.availablePlatforms]
+            : undefined,
+        });
+      else {
+        for (const section of group.sections)
+          if (
+            !previous.sections.some(
+              (item) =>
+                getSearchSectionIdentity(item) ===
+                getSearchSectionIdentity(section),
+            )
+          )
+            previous.sections.push(section);
+        previous.platform = [
+          ...new Set([...previous.platform, ...group.platform]),
+        ];
+        previous.availablePlatforms = [
+          ...new Set([
+            ...(previous.availablePlatforms ?? []),
+            ...(group.availablePlatforms ?? []),
+          ]),
+        ];
+      }
+    }
+  return [...groups.values()];
+}
+
+export function groupSearchSections(
+  hits: SearchHit[],
+  {
+    platformFiltered = false,
+    selectedPlatform,
+  }: { platformFiltered?: boolean; selectedPlatform?: string } = {},
+): SearchPageGroup[] {
+  const groups = new Map<string, SearchPageGroup>();
+  for (const hit of hits) {
+    const pageUrl = hit.url.split('#')[0];
+    const groupUrl = (
+      platformFiltered ? hit.url : (hit.canonicalUrl ?? hit.url)
+    ).split('#')[0];
+    const groupKey = getSearchPageGroupKey({
+      pageUrl: groupUrl,
+      product: hit.product,
+      docType: hit.docType,
+      version: hit.version,
+    });
+    const platforms = platformFiltered
+      ? selectedPlatform && hit.platform?.includes(selectedPlatform)
+        ? [selectedPlatform]
+        : (hit.platform ?? [])
+      : (hit.availablePlatforms ?? hit.platform ?? []);
+    const existing = groups.get(groupKey);
+    if (existing) {
+      if (
+        !existing.sections.some(
+          (section) =>
+            getSearchSectionIdentity(section) === getSearchSectionIdentity(hit),
+        )
+      )
+        existing.sections.push(hit);
+      existing.platform = [...new Set([...existing.platform, ...platforms])];
+      existing.availablePlatforms = [
+        ...new Set([...(existing.availablePlatforms ?? []), ...platforms]),
+      ];
+    } else {
+      groups.set(groupKey, {
+        groupKey,
+        pageUrl,
+        title: hit.pageTitle,
+        product: hit.product,
+        platform: platforms,
+        availablePlatforms: platforms,
+        version: hit.version,
+        docType: hit.docType,
+        sections: [hit],
+      });
+    }
+  }
+  return [...groups.values()];
+}
+
+export function getSearchPageGroupKey(
+  group: Pick<
+    SearchPageGroup,
+    'groupKey' | 'pageUrl' | 'product' | 'docType' | 'version'
+  >,
+): string {
+  return (
+    group.groupKey ??
+    [
+      group.pageUrl,
+      group.product ?? '',
+      group.docType,
+      group.version ?? '',
+    ].join('\u0000')
+  );
+}

@@ -1,0 +1,2045 @@
+@import "tailwindcss" source('../');
+@import "fumadocs-ui/css/lib/default-colors.css";
+@import "fumadocs-ui/css/preset.css";
+@import "fumadocs-openapi/css/preset.css";
+@import "./reference.css";
+@import "./docs-spacing.css";
+@import "./search.css";
+@import "./code-block.css";
+@import "./openapi-schema-metadata.css";
+@import "./image-spacing.css";
+
+:root {
+  --color-fd-background: var(--background);
+  --color-fd-foreground: var(--foreground);
+  --color-fd-card: var(--card);
+  --color-fd-card-foreground: var(--card-foreground);
+  --color-fd-popover: var(--popover);
+  --color-fd-popover-foreground: var(--popover-foreground);
+  --color-fd-primary: var(--primary);
+  --color-fd-primary-foreground: var(--primary-foreground);
+  --color-fd-secondary: var(--secondary);
+  --color-fd-secondary-foreground: var(--secondary-foreground);
+  --color-fd-muted: var(--muted);
+  --color-fd-muted-foreground: var(--muted-foreground);
+  --color-fd-accent: var(--accent);
+  --color-fd-accent-foreground: var(--accent-foreground);
+  --color-fd-border: var(--border);
+  --color-fd-ring: var(--ring);
+  --color-fd-overlay: var(--docs-overlay);
+  --color-fd-info: var(--docs-info);
+  --color-fd-warning: var(--docs-warning);
+  --color-fd-error: var(--docs-error);
+  --color-fd-success: var(--docs-success);
+  --color-fd-idea: var(--docs-idea);
+  --color-fd-diff-remove: var(--docs-diff-remove);
+  --color-fd-diff-remove-symbol: var(--docs-diff-remove-symbol);
+  --color-fd-diff-add: var(--docs-diff-add);
+  --color-fd-diff-add-symbol: var(--docs-diff-add-symbol);
+}
+
+@font-face {
+  font-family: "MiSans";
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+  src: url("https://assets-docs.agora.io/fonts/misans/MiSans-Regular.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-family: "MiSans";
+  font-display: swap;
+  font-style: normal;
+  font-weight: 500;
+  src: url("https://assets-docs.agora.io/fonts/misans/MiSans-Medium.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-family: "MiSans";
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+  src: url("https://assets-docs.agora.io/fonts/misans/MiSans-Semibold.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-family: "MiSans";
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+  src: url("https://assets-docs.agora.io/fonts/misans/MiSans-Bold.woff2")
+    format("woff2");
+}
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans-latin:
+    "MiSans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
+    Arial, system-ui, sans-serif;
+  --font-sans-cjk:
+    "MiSans", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC",
+    "Microsoft YaHei", sans-serif;
+  --font-sans:
+    "MiSans", "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Helvetica Neue", Arial, "Hiragino Sans GB", "Noto Sans CJK SC",
+    "Microsoft YaHei", system-ui, sans-serif;
+  --font-heading: var(--font-sans);
+  --font-mono:
+    "JetBrains Mono", "SFMono-Regular", "SF Mono", "Roboto Mono", ui-monospace,
+    monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 0.375rem);
+  --radius-md: calc(var(--radius) - 0.125rem);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.5rem);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+}
+
+@layer base {
+  :root {
+    --bg: #fbfaf7;
+    --bg-card: #fefcf8;
+    --bg-elev: #fefcf8;
+    --bg-sunken: #f4f2ec;
+    --ink-1: #0e0f12;
+    --ink-2: #2a2c33;
+    --ink-3: #5b606b;
+    --ink-4: #8a8f9a;
+    --line: rgb(14 15 18 / 0.075);
+    --line-strong: rgb(14 15 18 / 0.12);
+    --accent-brand: oklch(0.32 0.02 270);
+    --accent-brand-soft: oklch(0.32 0.02 270 / 0.08);
+    --accent-brand-ring: oklch(0.32 0.02 270 / 0.22);
+    --docs-overlay: rgb(14 15 18 / 0.18);
+    --docs-schema-value: #a16207;
+    --docs-info: #2563eb;
+    --docs-warning: #b45309;
+    --docs-error: #dc2626;
+    --docs-success: #059669;
+    --docs-idea: #d97706;
+    --docs-diff-remove: rgb(220 38 38 / 0.1);
+    --docs-diff-remove-symbol: #dc2626;
+    --docs-diff-add: rgb(22 163 74 / 0.1);
+    --docs-diff-add-symbol: #16a34a;
+    --docs-shadow-sm:
+      0 1px 0 rgb(14 15 18 / 0.04), 0 1px 2px rgb(14 15 18 / 0.04);
+    --docs-shadow-md:
+      0 1px 0 rgb(14 15 18 / 0.04), 0 8px 24px -10px rgb(14 15 18 / 0.1);
+
+    --background: var(--bg);
+    --foreground: var(--ink-1);
+    --card: var(--bg-card);
+    --card-foreground: var(--ink-1);
+    --popover: var(--bg-card);
+    --popover-foreground: var(--ink-1);
+    --primary: var(--accent-brand);
+    --primary-foreground: #ffffff;
+    --secondary: var(--bg-sunken);
+    --secondary-foreground: var(--ink-1);
+    --muted: var(--bg-sunken);
+    --muted-foreground: var(--ink-3);
+    --accent: var(--bg-sunken);
+    --accent-foreground: var(--ink-1);
+    --border: var(--line);
+    --input: var(--line-strong);
+    --ring: var(--accent-brand-ring);
+    --radius: 0.625rem;
+
+    --color-fd-background: var(--background);
+    --color-fd-foreground: var(--foreground);
+    --color-fd-card: var(--card);
+    --color-fd-card-foreground: var(--card-foreground);
+    --color-fd-popover: var(--popover);
+    --color-fd-popover-foreground: var(--popover-foreground);
+    --color-fd-primary: var(--primary);
+    --color-fd-primary-foreground: var(--primary-foreground);
+    --color-fd-secondary: var(--secondary);
+    --color-fd-secondary-foreground: var(--secondary-foreground);
+    --color-fd-muted: var(--muted);
+    --color-fd-muted-foreground: var(--muted-foreground);
+    --color-fd-accent: var(--accent);
+    --color-fd-accent-foreground: var(--accent-foreground);
+    --color-fd-border: var(--border);
+    --color-fd-ring: var(--ring);
+    --color-fd-overlay: var(--docs-overlay);
+    --color-fd-info: var(--docs-info);
+    --color-fd-warning: var(--docs-warning);
+    --color-fd-error: var(--docs-error);
+    --color-fd-success: var(--docs-success);
+    --color-fd-idea: var(--docs-idea);
+    --color-fd-diff-remove: var(--docs-diff-remove);
+    --color-fd-diff-remove-symbol: var(--docs-diff-remove-symbol);
+    --color-fd-diff-add: var(--docs-diff-add);
+    --color-fd-diff-add-symbol: var(--docs-diff-add-symbol);
+    --default-font-family: var(--font-sans);
+    --default-mono-font-family: var(--font-mono);
+
+    --protocol-home-width: 82rem;
+    --docs-text-primary: var(--ink-1);
+    --docs-text-secondary: var(--ink-2);
+    --docs-text-tertiary: var(--ink-3);
+    --docs-footer-link-hover: #006fbe;
+    --docs-soft-fill: color-mix(in srgb, var(--ink-1) 3.5%, transparent);
+    --line-soft: var(--line);
+    --surface-muted: var(--bg-sunken);
+    --docs-header-h: 52px;
+    --docs-tabs-h: 40px;
+    --content-max: 800px;
+  }
+
+  .dark {
+    --bg: #0b0c0e;
+    --bg-card: #111316;
+    --bg-elev: #15171b;
+    --bg-sunken: #0a0b0d;
+    --ink-1: #f3f4f6;
+    --ink-2: #d8dae0;
+    --ink-3: #9aa0ab;
+    --ink-4: #6c7280;
+    --line: rgb(255 255 255 / 0.07);
+    --line-strong: rgb(255 255 255 / 0.12);
+    --accent-brand: oklch(0.88 0.02 270);
+    --accent-brand-soft: oklch(0.88 0.02 270 / 0.12);
+    --accent-brand-ring: oklch(0.88 0.02 270 / 0.24);
+    --docs-overlay: rgb(0 0 0 / 0.5);
+    --docs-schema-value: #f1fa8c;
+    --docs-info: #60a5fa;
+    --docs-warning: #f59e0b;
+    --docs-error: #f87171;
+    --docs-success: #34d399;
+    --docs-idea: #fbbf24;
+    --docs-diff-remove: rgb(248 113 113 / 0.14);
+    --docs-diff-remove-symbol: #f87171;
+    --docs-diff-add: rgb(52 211 153 / 0.12);
+    --docs-diff-add-symbol: #34d399;
+    --docs-shadow-sm: 0 1px 0 rgb(0 0 0 / 0.25);
+    --docs-shadow-md: 0 8px 24px -10px rgb(0 0 0 / 0.5);
+
+    --background: var(--bg);
+    --foreground: var(--ink-1);
+    --card: var(--bg-card);
+    --card-foreground: var(--ink-1);
+    --popover: var(--bg-card);
+    --popover-foreground: var(--ink-1);
+    --primary: var(--accent-brand);
+    --primary-foreground: #0b0c0e;
+    --secondary: var(--bg-sunken);
+    --secondary-foreground: var(--ink-1);
+    --muted: var(--bg-sunken);
+    --muted-foreground: var(--ink-3);
+    --accent: var(--bg-sunken);
+    --accent-foreground: var(--ink-1);
+    --border: var(--line);
+    --input: var(--line-strong);
+    --ring: var(--accent-brand-ring);
+    --docs-text-primary: var(--ink-1);
+    --docs-text-secondary: var(--ink-2);
+    --docs-text-tertiary: var(--ink-3);
+    --docs-footer-link-hover: #70b9ff;
+    --docs-soft-fill: color-mix(in srgb, var(--ink-1) 4.5%, transparent);
+    --line-soft: var(--line);
+    --surface-muted: var(--bg-sunken);
+
+    --color-fd-background: var(--background);
+    --color-fd-foreground: var(--foreground);
+    --color-fd-card: var(--card);
+    --color-fd-card-foreground: var(--card-foreground);
+    --color-fd-primary: var(--primary);
+    --color-fd-primary-foreground: var(--primary-foreground);
+    --color-fd-secondary: var(--secondary);
+    --color-fd-secondary-foreground: var(--secondary-foreground);
+    --color-fd-muted: var(--muted);
+    --color-fd-muted-foreground: var(--muted-foreground);
+    --color-fd-accent: var(--accent);
+    --color-fd-accent-foreground: var(--accent-foreground);
+    --color-fd-border: var(--border);
+  }
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--border, currentcolor);
+  }
+
+  html {
+    scrollbar-gutter: stable;
+    background: var(--bg);
+    font-family: var(--font-sans);
+  }
+
+  .docs-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+
+  .docs-scrollbar::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  .docs-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .docs-scrollbar::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background-color: transparent;
+    background-clip: content-box;
+  }
+
+  .docs-scrollbar:focus-within::-webkit-scrollbar-thumb,
+  .docs-scrollbar:active::-webkit-scrollbar-thumb,
+  .docs-scrollbar.docs-scrollbar-visible::-webkit-scrollbar-thumb {
+    background-color: color-mix(in srgb, var(--ink-4) 48%, transparent);
+  }
+
+  .docs-scrollbar:focus-within,
+  .docs-scrollbar:active,
+  .docs-scrollbar.docs-scrollbar-visible {
+    scrollbar-color: color-mix(in srgb, var(--ink-4) 48%, transparent)
+      transparent;
+  }
+
+  .docs-scrollbar::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--ink-2);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  :where(body, button, input, textarea, select, option, label, summary) {
+    font-family: var(--font-sans);
+  }
+
+  :where(:lang(zh), :lang(zh-CN), :lang(zh-Hans)) {
+    font-family: var(--font-sans-cjk);
+    letter-spacing: 0;
+  }
+
+  .dark body {
+    background: var(--bg);
+  }
+
+  code,
+  kbd,
+  pre,
+  samp {
+    font-family: var(--font-mono);
+  }
+
+  h1,
+  h2,
+  h3,
+  [data-heading="true"] {
+    font-family: var(--font-heading);
+  }
+
+  :where(:lang(zh), :lang(zh-CN), :lang(zh-Hans))
+    :where(h1, h2, h3, [data-heading="true"]) {
+    letter-spacing: 0;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--accent-brand) 22%, transparent);
+  }
+
+  html > body[data-scroll-locked] {
+    margin-right: 0;
+    --removed-body-scroll-bar-size: 0px;
+  }
+}
+
+@layer components {
+  .home-grid {
+    background-image:
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--border) 82%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--border) 82%, transparent) 1px,
+        transparent 1px
+      );
+    background-position: center;
+    background-size: 72px 72px;
+    mask-image: radial-gradient(circle at top, black, transparent 78%);
+  }
+
+  .prose {
+    max-width: var(--content-max);
+  }
+
+  .prose,
+  .openapi-operation,
+  .openapi-markdown {
+    --docs-prose-inline-code-bg: var(--bg-sunken);
+    --docs-prose-inline-code-border: var(--line);
+    --docs-prose-code-block-bg: #f1efe7;
+    --docs-prose-code-block-border: var(--line-strong);
+    --docs-prose-code-block-border-width: 1px;
+    --docs-prose-code-block-color: var(--ink-1);
+    --docs-prose-code-block-line-number: color-mix(
+      in srgb,
+      var(--ink-3) 72%,
+      transparent
+    );
+    --docs-prose-code-block-copy-bg: color-mix(
+      in srgb,
+      var(--bg-card) 88%,
+      transparent
+    );
+    --docs-prose-code-block-copy-color: var(--ink-3);
+    --docs-prose-code-block-copy-border: var(--line-strong);
+    --docs-prose-code-block-copy-hover-bg: var(--bg-card);
+    --docs-prose-code-block-copy-hover-color: var(--ink-1);
+    --docs-prose-code-block-token-mix: 100%;
+    --docs-prose-code-block-token-boost: black;
+    --docs-prose-code-block-shadow: 0 18px 36px
+      color-mix(in srgb, var(--ink-1) 12%, transparent);
+    --docs-prose-table-border: var(--line);
+    --docs-prose-table-head-bg: color-mix(
+      in srgb,
+      var(--bg-sunken) 70%,
+      var(--bg-card)
+    );
+    --docs-prose-table-row-bg: color-mix(
+      in srgb,
+      var(--bg-sunken) 45%,
+      transparent
+    );
+  }
+
+  .dark .prose,
+  .dark .openapi-operation,
+  .dark .openapi-markdown {
+    --docs-prose-inline-code-bg: color-mix(
+      in srgb,
+      var(--bg-elev) 94%,
+      var(--accent-brand) 6%
+    );
+    --docs-prose-inline-code-border: color-mix(
+      in srgb,
+      var(--line-strong) 72%,
+      var(--accent-brand) 28%
+    );
+    --docs-prose-code-block-bg: #0b1120;
+    --docs-prose-code-block-border: rgb(148 163 184 / 0.24);
+    --docs-prose-code-block-border-width: 1px;
+    --docs-prose-code-block-color: #f8fafc;
+    --docs-prose-code-block-line-number: rgb(203 213 225 / 0.62);
+    --docs-prose-code-block-copy-bg: rgb(15 23 42 / 0.86);
+    --docs-prose-code-block-copy-color: #e2e8f0;
+    --docs-prose-code-block-copy-border: rgb(148 163 184 / 0.28);
+    --docs-prose-code-block-copy-hover-bg: rgb(30 41 59 / 0.94);
+    --docs-prose-code-block-copy-hover-color: #ffffff;
+    --docs-prose-code-block-token-mix: 88%;
+    --docs-prose-code-block-token-boost: white;
+    --docs-prose-code-block-shadow: 0 20px 38px rgb(0 0 0 / 0.46);
+    --docs-prose-table-border: rgb(255 255 255 / 0.14);
+    --docs-prose-table-head-bg: color-mix(
+      in srgb,
+      var(--bg-elev) 92%,
+      var(--accent-brand) 8%
+    );
+    --docs-prose-table-row-bg: color-mix(
+      in srgb,
+      var(--bg-elev) 62%,
+      transparent
+    );
+  }
+
+  .prose :where(h1):not(:where(.not-prose, .not-prose *)) {
+    font-size: 2.375rem;
+    line-height: 1.15;
+    letter-spacing: -0.022em;
+    font-weight: 700;
+    color: var(--ink-1);
+  }
+
+  .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
+    padding-top: 0;
+    letter-spacing: -0.012em;
+    font-size: 1.375rem;
+    font-weight: 600;
+    color: var(--ink-1);
+    scroll-margin-top: 7rem;
+  }
+
+  .prose
+    :where(h2):not(:where(.not-prose, .not-prose *)):not(
+      :where(:not(a:empty) ~ h2)
+    ) {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .prose[data-platform-header-tabs="true"]
+    [data-platform-group-shell]
+    > .docs-body:empty {
+    display: none;
+  }
+
+  .prose :where(h3):not(:where(.not-prose, .not-prose *)) {
+    letter-spacing: -0.005em;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink-1);
+    scroll-margin-top: 7rem;
+  }
+
+  .prose :where(p, li):not(:where(.not-prose, .not-prose *)) {
+    color: var(--ink-2);
+    line-height: 1.7;
+    font-weight: 400;
+  }
+
+  .prose :where(ul, ol):not(:where(.not-prose, .not-prose *)) {
+    padding-inline-start: 1.4rem;
+  }
+
+  .prose :where(ul):not(:where(.not-prose, .not-prose *)) {
+    list-style: disc;
+  }
+
+  .prose :where(ol):not(:where(.not-prose, .not-prose *)) {
+    list-style: decimal;
+  }
+
+  .prose :where(ol > li > ol):not(:where(.not-prose, .not-prose *)) {
+    list-style: lower-alpha;
+  }
+
+  .prose :where(ol > li > ol > li > ol):not(:where(.not-prose, .not-prose *)) {
+    list-style: lower-roman;
+  }
+
+  .prose :where(li):not(:where(.not-prose, .not-prose *)) {
+    padding-inline-start: 0.2rem;
+  }
+
+  .prose
+    :where(ul > li, ol > li):not(:where(.not-prose, .not-prose *))::marker {
+    color: var(--ink-4);
+    font-weight: 600;
+  }
+
+  :where(:lang(zh), :lang(zh-CN), :lang(zh-Hans))
+    .prose
+    :where(p, li):not(:where(.not-prose, .not-prose *)) {
+    font-size: 0.95rem;
+    line-height: 1.86;
+  }
+
+  :where(:lang(zh), :lang(zh-CN), :lang(zh-Hans))
+    .prose
+    :where(h1):not(:where(.not-prose, .not-prose *)) {
+    letter-spacing: 0;
+    line-height: 1.28;
+  }
+
+  :where(:lang(zh), :lang(zh-CN), :lang(zh-Hans))
+    .prose
+    :where(h2):not(:where(.not-prose, .not-prose *)) {
+    letter-spacing: 0;
+    line-height: 1.36;
+  }
+
+  .prose :where(a):not(:where(.not-prose, .not-prose *)) {
+    border-radius: 0.2rem;
+    color: var(--foreground);
+    font-weight: 500;
+    -webkit-text-decoration-color: color-mix(
+      in srgb,
+      var(--foreground) 42%,
+      transparent
+    );
+    text-decoration-line: underline;
+    text-decoration-thickness: 0.08em;
+    text-decoration-color: color-mix(
+      in srgb,
+      var(--foreground) 42%,
+      transparent
+    );
+    text-underline-offset: 0.2em;
+    transition:
+      color 160ms ease,
+      text-decoration-color 160ms ease,
+      background-color 160ms ease;
+  }
+
+  .prose :where(a):not(:where(.not-prose, .not-prose *)):hover {
+    background: transparent;
+    color: var(--foreground);
+    -webkit-text-decoration-color: var(--foreground);
+    text-decoration-color: var(--foreground);
+  }
+
+  .prose :where(a):not(:where(.not-prose, .not-prose *)):focus-visible {
+    outline: 2px solid var(--accent-brand-ring);
+    outline-offset: 2px;
+  }
+
+  .prose :where([data-parameter-description] a) {
+    border-radius: 0.2rem;
+    color: var(--foreground);
+    font-weight: 500;
+    -webkit-text-decoration-color: color-mix(
+      in srgb,
+      var(--foreground) 42%,
+      transparent
+    );
+    text-decoration-line: underline;
+    text-decoration-thickness: 0.08em;
+    text-decoration-color: color-mix(
+      in srgb,
+      var(--foreground) 42%,
+      transparent
+    );
+    text-underline-offset: 0.2em;
+    transition:
+      color 160ms ease,
+      text-decoration-color 160ms ease,
+      background-color 160ms ease;
+  }
+
+  .prose :where([data-parameter-description] a):hover {
+    background: transparent;
+    color: var(--foreground);
+    -webkit-text-decoration-color: var(--foreground);
+    text-decoration-color: var(--foreground);
+  }
+
+  .prose :where([data-parameter-description] a):focus-visible {
+    outline: 2px solid var(--accent-brand-ring);
+    outline-offset: 2px;
+  }
+
+  .prose :where(strong):not(:where(.not-prose, .not-prose *)) {
+    color: var(--docs-text-primary);
+    font-weight: 600;
+  }
+
+  .prose :where(code):not(:where(.not-prose, .not-prose *)) {
+    border: 1px solid var(--docs-prose-inline-code-border);
+    border-radius: 0.3125rem;
+    background: var(--docs-prose-inline-code-bg);
+    padding: 0.0625rem 0.375rem;
+    color: var(--ink-1);
+    font-size: 0.88em;
+    font-weight: 500;
+  }
+
+  .prose :where(:not(pre) > code):not(:where(.not-prose, .not-prose *)) {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .prose
+    :where([data-parameter-description] :not(pre) > code):not(
+      :where(
+        [data-parameter-possible-values],
+        [data-parameter-possible-values] *
+      )
+    ) {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    border: 1px solid var(--line);
+    border-radius: 0.3125rem;
+    background: var(--bg-sunken);
+    padding: 0.0625rem 0.375rem;
+    color: var(--ink-1);
+    font-size: 0.88em;
+    font-weight: 500;
+  }
+
+  .dark
+    .prose
+    :where([data-parameter-description] :not(pre) > code):not(
+      :where(
+        [data-parameter-possible-values],
+        [data-parameter-possible-values] *
+      )
+    ) {
+    border-color: var(--docs-prose-inline-code-border);
+    background: var(--docs-prose-inline-code-bg);
+  }
+
+  .prose :where(pre):not(:where(.not-prose, .not-prose *)) {
+    overflow: hidden;
+    border: var(--docs-prose-code-block-border-width) solid
+      var(--docs-prose-code-block-border);
+    border-radius: 1.125rem;
+    background: var(--docs-prose-code-block-bg);
+    color: var(--docs-prose-code-block-color);
+    box-shadow: var(--docs-prose-code-block-shadow);
+  }
+
+  .prose :where(pre .line):not(:where(.not-prose, .not-prose *)) {
+    display: block;
+    min-height: 1.45em;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .prose :where(pre code):not(:where(.not-prose, .not-prose *)) {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    color: inherit;
+  }
+
+  .prose :where(pre.shiki):not(:where(.not-prose, .not-prose *)) {
+    overflow-x: hidden;
+  }
+
+  .prose :where(blockquote):not(:where(.not-prose, .not-prose *)) {
+    border-inline-start-color: color-mix(
+      in srgb,
+      var(--accent-brand) 42%,
+      transparent
+    );
+    color: var(--ink-3);
+  }
+
+  .prose :where(table):not(:where(.not-prose, .not-prose *)) {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--docs-prose-table-border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    box-shadow: var(--docs-shadow-sm);
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .prose
+    :where(.prose-no-margin.overflow-auto > table):not(
+      :where(.not-prose, .not-prose *)
+    ) {
+    display: table;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    overflow: visible;
+  }
+
+  .prose :where(thead):not(:where(.not-prose, .not-prose *)) {
+    background: var(--docs-prose-table-head-bg);
+  }
+
+  .prose :where(th, td):not(:where(.not-prose, .not-prose *)) {
+    min-width: 6ch;
+    border-bottom: 1px solid var(--docs-prose-table-border);
+    padding: 0.625rem 0.75rem;
+    text-align: left;
+    vertical-align: top;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .prose :where(th):not(:where(.not-prose, .not-prose *)) {
+    color: var(--docs-text-primary);
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.45;
+    white-space: nowrap;
+  }
+
+  .prose :where(td):not(:where(.not-prose, .not-prose *)) {
+    color: var(--ink-2);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .prose :where(td:has(> img)):not(:where(.not-prose, .not-prose *)) {
+    width: 16rem;
+    min-width: 12rem;
+  }
+
+  .prose :where(td > img):not(:where(.not-prose, .not-prose *)) {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .prose
+    :where(th:first-child, td:first-child):not(
+      :where(.not-prose, .not-prose *)
+    ) {
+    min-width: 12ch;
+    white-space: normal;
+  }
+
+  .prose
+    :where(tbody tr:last-child :is(th, td)):not(
+      :where(.not-prose, .not-prose *)
+    ) {
+    border-bottom: 0;
+  }
+
+  .prose :where(td > :first-child):not(:where(.not-prose, .not-prose *)) {
+    margin-top: 0;
+  }
+
+  .prose :where(td > :last-child):not(:where(.not-prose, .not-prose *)) {
+    margin-bottom: 0;
+  }
+
+  .prose
+    :where(tbody tr:nth-child(even)):not(:where(.not-prose, .not-prose *)) {
+    background: var(--docs-prose-table-row-bg);
+  }
+
+  .prose :where(hr):not(:where(.not-prose, .not-prose *)) {
+    border-color: var(--line);
+  }
+
+  .prose :where([data-card]):not(:where(.not-prose, .not-prose *)) {
+    text-decoration: none;
+  }
+
+  .prose :where(.group\/heading):not(:where(.not-prose, .not-prose *)) {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .prose :where(.group\/heading > a):not(:where(.not-prose, .not-prose *)) {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .prose
+    :where(.group\/heading > a):not(:where(.not-prose, .not-prose *)):hover {
+    background: transparent;
+  }
+
+  .prose
+    :where(.group\/heading > button):not(:where(.not-prose, .not-prose *)) {
+    opacity: 0;
+  }
+
+  .prose
+    :where(.group\/heading:hover > button):not(
+      :where(.not-prose, .not-prose *)
+    ),
+  .prose
+    :where(.group\/heading > button:focus-visible):not(
+      :where(.not-prose, .not-prose *)
+    ) {
+    opacity: 1;
+  }
+
+  .docs-brand-mark {
+    position: relative;
+    height: 26px;
+    width: 26px;
+    flex: 0 0 auto;
+    overflow: hidden;
+    border-radius: 7px;
+    background:
+      radial-gradient(
+        circle at 32% 32%,
+        rgb(255 255 255 / 0.58),
+        transparent 27%
+      ),
+      linear-gradient(
+        135deg,
+        var(--ink-1),
+        color-mix(in srgb, var(--ink-1) 68%, var(--bg-card))
+      );
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.2),
+      0 6px 16px -10px rgb(14 15 18 / 0.55);
+  }
+
+  .docs-brand-mark::before,
+  .docs-brand-mark::after {
+    position: absolute;
+    inset: 7px;
+    content: "";
+    border: 2px solid var(--bg-card);
+    border-radius: 999px;
+  }
+
+  .docs-brand-mark::after {
+    inset: 10px;
+    border-width: 1.5px;
+    opacity: 0.78;
+  }
+
+  .docs-shell-search-trigger {
+    height: 36px;
+    width: 100%;
+    justify-content: flex-start;
+    border-color: var(--line-strong);
+    border-radius: 9px;
+    background: var(--bg-card);
+    padding-inline: 0.75rem 0.625rem;
+    color: var(--ink-4);
+    font-size: 13.5px;
+    font-weight: 400;
+    box-shadow: var(--docs-shadow-sm);
+  }
+
+  .docs-shell-search-trigger kbd {
+    margin-left: auto;
+    display: inline-flex;
+    height: 22px;
+    min-width: 34px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--bg-sunken);
+    color: var(--ink-4);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .docs-tab-icon {
+    display: inline-flex;
+    height: 18px;
+    width: 18px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: var(--accent-brand-soft);
+    color: var(--accent-brand);
+  }
+
+  .docs-tab-icon[data-tone="ai"] {
+    background: rgb(67 145 98 / 0.12);
+    color: #287345;
+  }
+
+  .docs-tab-icon[data-tone="media"] {
+    background: rgb(37 99 235 / 0.1);
+    color: #2f62c9;
+  }
+
+  .docs-tab-icon[data-tone="solutions"] {
+    background: rgb(217 119 6 / 0.12);
+    color: #9a5b00;
+  }
+
+  .docs-tab-icon[data-tone="api"] {
+    background: rgb(100 116 139 / 0.14);
+    color: #475569;
+  }
+
+  .docs-tab-icon[data-tone="best"] {
+    background: rgb(168 85 247 / 0.11);
+    color: #7e4cc2;
+  }
+
+  .docs-side-icon {
+    display: inline-flex;
+    height: 18px;
+    width: 18px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: var(--accent-brand-soft);
+    color: var(--accent-brand);
+  }
+
+  .docs-side-badge {
+    margin-left: auto;
+    flex: 0 0 auto;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 0.125rem 0.375rem;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .docs-side-badge[data-kind="new"] {
+    border-color: rgb(34 197 94 / 0.16);
+    background: rgb(34 197 94 / 0.1);
+    color: #15803d;
+  }
+
+  .docs-side-badge[data-kind="beta"] {
+    border-color: rgb(245 158 11 / 0.18);
+    background: rgb(245 158 11 / 0.12);
+    color: #a16207;
+  }
+
+  .docs-card-surface {
+    border: 1px solid var(--line-strong);
+    border-radius: 0.75rem;
+    background: var(--bg-card);
+    color: var(--ink-1);
+  }
+
+  .docs-card-interactive {
+    transition:
+      border-color 180ms ease-out,
+      background-color 180ms ease-out;
+  }
+
+  .docs-card-interactive:hover {
+    border-color: color-mix(in srgb, var(--ink-1) 24%, transparent);
+    background: color-mix(in srgb, var(--ink-1) 3%, var(--bg-card));
+  }
+
+  .docs-card-interactive:focus-visible {
+    outline: 2px solid var(--ink-3);
+    outline-offset: 3px;
+  }
+
+  .docs-card-link {
+    position: relative;
+    padding-inline-end: 3.25rem;
+  }
+
+  .docs-card-arrow {
+    transition:
+      transform 180ms ease-out,
+      color 180ms ease-out;
+  }
+
+  .docs-card-link:hover .docs-card-arrow {
+    transform: translateX(3px);
+    color: var(--ink-1);
+  }
+
+  .docs-mdx-card > div:has(> svg) {
+    border: 0;
+    box-shadow: none;
+    color: var(--ink-2);
+  }
+
+  .docs-mdx-card > h3 {
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  [data-docs-home] .prose .docs-body > h2 {
+    margin-top: 2rem;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .docs-card-interactive,
+    .docs-card-arrow,
+    .docs-card-surface svg {
+      transition: none;
+    }
+
+    .docs-card-surface:hover svg {
+      transform: none;
+    }
+  }
+
+  :where(input, textarea, select) {
+    border-color: var(--input);
+    background: var(--bg-card);
+    color: var(--ink-1);
+  }
+
+  :where(input, textarea, select)::placeholder {
+    color: var(--muted-foreground);
+  }
+
+  :where(button, [role="button"]):not(:disabled) {
+    border-color: var(--border);
+  }
+
+  .fd-scroll-container::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .fd-scroll-container::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--ink-1) 16%, transparent);
+    background-clip: padding-box;
+  }
+
+  .openapi-operation {
+    --fd-docs-row-1: -0.5rem;
+    --openapi-examples-sticky-top: calc(
+      var(--docs-shell-header-offset, 48px) +
+      1rem
+    );
+    container-type: inline-size;
+    width: min(100%, 1120px);
+  }
+
+  .openapi-operation .openapi-section-heading {
+    margin-block: var(--docs-space-section) var(--docs-space-section-after);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0;
+  }
+
+  .openapi-operation h2.openapi-section-heading > a {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .openapi-examples-rail-anchor {
+    position: relative;
+    min-width: 0;
+  }
+
+  .openapi-examples-rail {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  .openapi-examples-rail-content {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .openapi-schema-hidden-children {
+    display: block;
+  }
+
+  .openapi-schema-field-details {
+    padding-inline-start: 1.125rem;
+  }
+
+  .openapi-schema-children {
+    position: relative;
+    margin-inline-start: 16px;
+    padding-inline-start: 16px;
+    border-inline-start: 1px solid
+      color-mix(in srgb, var(--ink-1) 14%, transparent);
+  }
+
+  .openapi-schema-children[hidden] {
+    border-inline-start-color: transparent;
+  }
+
+  .openapi-schema-children .openapi-schema-children {
+    margin-inline-start: 16px;
+  }
+
+  @container (min-width: 40rem) {
+    .openapi-examples-rail {
+      position: sticky;
+      top: var(--openapi-examples-sticky-top, 48px);
+      max-block-size: calc(
+        100vh -
+        var(--openapi-examples-sticky-top, 48px) -
+        1rem
+      );
+      /* biome-ignore lint/suspicious/noDuplicateProperties: The dynamic viewport fallback intentionally follows the legacy viewport declaration. */
+      max-block-size: calc(
+        100dvh -
+        var(--openapi-examples-sticky-top, 48px) -
+        1rem
+      );
+      overflow-y: auto;
+      overflow-x: clip;
+      overscroll-behavior: contain;
+      scrollbar-color: color-mix(in srgb, var(--ink-1) 16%, transparent)
+        transparent;
+      scrollbar-width: thin;
+    }
+
+    [data-openapi-operation-panel="examples"] {
+      align-self: stretch;
+    }
+  }
+
+  .openapi-response-header-row .openapi-field-anchor {
+    opacity: 0;
+    transition: opacity 140ms ease;
+  }
+
+  .openapi-response-header-row:hover .openapi-field-anchor,
+  .openapi-response-header-row:focus-within .openapi-field-anchor,
+  .openapi-response-header-row:target .openapi-field-anchor,
+  .openapi-field-anchor:focus-visible {
+    opacity: 1;
+  }
+
+  [data-openapi-schema-breadcrumb] > button + button::before {
+    margin-right: 0.625rem;
+    color: var(--fd-muted-foreground);
+    content: "/";
+    opacity: 0.6;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .openapi-response-header-row .openapi-field-anchor {
+      transition: none;
+    }
+  }
+
+  .openapi-operation :where(h2, h3, h4) {
+    letter-spacing: 0;
+  }
+
+  .openapi-operation :where(pre, code) {
+    font-family: var(--font-mono);
+  }
+
+  .openapi-operation .openapi-markdown {
+    --docs-openapi-table-border: var(--docs-prose-table-border, var(--line));
+    --docs-openapi-table-head-bg: var(
+      --docs-prose-table-head-bg,
+      color-mix(in srgb, var(--bg-muted) 72%, var(--bg-card))
+    );
+    --docs-openapi-table-row-bg: var(
+      --docs-prose-table-row-bg,
+      color-mix(in srgb, var(--bg-muted) 28%, transparent)
+    );
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+  }
+
+  .openapi-operation .openapi-markdown > :first-child {
+    margin-top: 0;
+  }
+
+  .openapi-operation .openapi-markdown > :last-child {
+    margin-bottom: 0;
+  }
+
+  .openapi-operation .openapi-markdown :where(h2, h3, h4) {
+    color: var(--ink-1);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .openapi-operation .openapi-markdown > :where(h2, h3, h4):first-child {
+    margin-top: 0;
+  }
+
+  .openapi-operation .openapi-markdown :where(h2) {
+    margin-block: var(--docs-space-section) var(--docs-space-section-after);
+    font-size: 1.25rem;
+  }
+
+  .openapi-operation .openapi-markdown :where(h3) {
+    margin-block: var(--docs-space-subsection)
+      var(--docs-space-subsection-after);
+    font-size: 1.0625rem;
+  }
+
+  .openapi-operation .openapi-markdown :where(h4) {
+    margin-block: var(--docs-space-minor-section)
+      var(--docs-space-minor-section-after);
+    font-size: 0.975rem;
+  }
+
+  .openapi-operation .openapi-markdown :where(p) {
+    margin-block: var(--docs-space-block);
+    color: inherit;
+    line-height: inherit;
+  }
+
+  .openapi-operation .openapi-markdown :where(ul, ol) {
+    margin-block: var(--docs-space-block);
+    padding-inline-start: 1.35rem;
+  }
+
+  .openapi-operation .openapi-markdown :where(ul) {
+    list-style: disc;
+  }
+
+  .openapi-operation .openapi-markdown :where(ol) {
+    list-style: decimal;
+  }
+
+  .openapi-operation .openapi-markdown :where(ol > li > ol) {
+    list-style: lower-alpha;
+  }
+
+  .openapi-operation .openapi-markdown :where(ol > li > ol > li > ol) {
+    list-style: lower-roman;
+  }
+
+  .openapi-operation .openapi-markdown :where(li) {
+    margin-block: var(--docs-space-item);
+    padding-inline-start: 0.15rem;
+    color: inherit;
+    line-height: inherit;
+  }
+
+  .openapi-operation .openapi-markdown :where(ul ul, ul ol, ol ul, ol ol) {
+    margin-block: var(--docs-space-item);
+  }
+
+  .openapi-operation .openapi-markdown :where(ul > li, ol > li)::marker {
+    color: var(--ink-4);
+    font-weight: 600;
+  }
+
+  .openapi-operation .openapi-markdown :where(a) {
+    border-radius: 0.2rem;
+    color: var(--accent-brand);
+    font-weight: 500;
+    text-decoration-line: underline;
+    text-decoration-thickness: 0.08em;
+    text-decoration-color: color-mix(
+      in srgb,
+      var(--accent-brand) 38%,
+      transparent
+    );
+    text-underline-offset: 0.2em;
+    transition:
+      color 160ms ease,
+      text-decoration-color 160ms ease,
+      background-color 160ms ease;
+  }
+
+  .openapi-operation .openapi-markdown :where(a):hover {
+    background: var(--accent-brand-soft);
+    color: var(--accent-brand);
+    text-decoration-color: var(--accent-brand);
+  }
+
+  .openapi-operation .openapi-markdown :where(a):focus-visible {
+    outline: 2px solid var(--accent-brand-ring);
+    outline-offset: 2px;
+  }
+
+  .openapi-operation .openapi-markdown :where(strong) {
+    color: var(--docs-text-primary);
+    font-weight: 600;
+  }
+
+  .openapi-operation .openapi-markdown :where(code):not(:where(pre code)) {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    border: 1px solid var(--line);
+    border-radius: 0.3125rem;
+    background: var(--bg-sunken);
+    padding: 0.0625rem 0.375rem;
+    color: var(--ink-1);
+    font-size: 0.86em;
+  }
+
+  .openapi-operation .openapi-markdown :where(.docs-table-container) {
+    margin-block: var(--docs-space-block);
+  }
+
+  @media (max-width: 48rem) {
+    .openapi-schema-tree .openapi-schema-children {
+      margin-inline-start: 8px;
+      padding-inline-start: 8px;
+    }
+
+    .openapi-schema-tree .openapi-schema-children .openapi-schema-children {
+      margin-inline-start: 8px;
+      padding-inline-start: 8px;
+    }
+
+    .openapi-operation figure.shiki:has(> .fd-scroll-container) {
+      isolation: isolate;
+    }
+
+    .openapi-operation figure.shiki:has(> .fd-scroll-container)::after {
+      position: absolute;
+      top: 2.75rem;
+      right: 0;
+      bottom: 0.875rem;
+      z-index: 1;
+      width: 2.75rem;
+      pointer-events: none;
+      background: linear-gradient(
+        to left,
+        color-mix(in srgb, var(--fd-secondary) 94%, transparent),
+        color-mix(in srgb, var(--fd-secondary) 68%, transparent) 54%,
+        transparent
+      );
+      box-shadow: inset -14px 0 18px -18px
+        color-mix(in srgb, var(--ink-1) 58%, transparent);
+      content: "";
+    }
+  }
+}
+
+/* These OpenAPI code rules intentionally remain unlayered so they win over
+   Fumadocs' utility classes (`max-h-[600px]`, `w-max`) without broad globals.
+   The !important declarations are limited to the marked viewport and are
+   required to override those generated utilities. */
+.openapi-code-preview [data-openapi-code-viewport] {
+  /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */
+  max-block-size: 24rem !important;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.openapi-operation figure.shiki > .fd-scroll-container {
+  max-width: 100%;
+  scrollbar-color: transparent transparent;
+  scrollbar-width: thin;
+}
+
+.openapi-operation figure.shiki > .fd-scroll-container:hover,
+.openapi-operation figure.shiki > .fd-scroll-container:focus-within,
+.openapi-operation figure.shiki > .fd-scroll-container[data-scrollbar-visible] {
+  scrollbar-color: color-mix(in srgb, var(--ink-4) 48%, transparent) transparent;
+}
+
+.openapi-operation figure.shiki > .fd-scroll-container::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.openapi-operation
+  figure.shiki
+  > .fd-scroll-container::-webkit-scrollbar-thumb {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  background-clip: padding-box;
+}
+
+.openapi-operation
+  figure.shiki
+  > .fd-scroll-container:hover::-webkit-scrollbar-thumb,
+.openapi-operation
+  figure.shiki
+  > .fd-scroll-container:focus-within::-webkit-scrollbar-thumb,
+.openapi-operation
+  figure.shiki
+  > .fd-scroll-container[data-scrollbar-visible]::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ink-4) 48%, transparent);
+  background-clip: padding-box;
+}
+
+.openapi-operation
+  figure.shiki
+  > .fd-scroll-container::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+@container (max-width: 39.999rem) {
+  .openapi-code-preview [data-openapi-code-viewport] {
+    /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */
+    max-block-size: min(50dvh, 24rem) !important;
+  }
+}
+
+/* Fumadocs ships unlayered prose list styles after Tailwind layers.
+   Keep these unlayered overrides after the base layer so nested ordered
+   lists retain decimal, alpha, and roman markers by depth. */
+:where(html) .prose :where(ol):not(:where(.not-prose, .not-prose *)) {
+  list-style: decimal;
+}
+
+:where(html) .prose :where(ol > li > ol):not(:where(.not-prose, .not-prose *)) {
+  list-style: lower-alpha;
+}
+
+:where(html)
+  .prose
+  :where(ol > li > ol > li > ol):not(:where(.not-prose, .not-prose *)) {
+  list-style: lower-roman;
+}
+
+/* Markdown loose lists wrap item text in paragraphs. Keep item spacing equal
+   to tight lists in both the document body and nested prose containers. */
+:where(html)
+  .prose
+  :where(li > p:first-child):not(:where(.not-prose, .not-prose *)) {
+  margin-top: 0;
+}
+
+:where(html)
+  .prose
+  :where(li > p:last-child):not(:where(.not-prose, .not-prose *)) {
+  margin-bottom: 0;
+}
+
+/* Fumadocs ships unlayered prose table styles with `overflow: hidden`.
+   Keep this unlayered override after the base layer so unwrapped/raw tables
+   retain their own horizontal scrolling fallback. */
+:where(html) .prose :where(table):not(:where(.not-prose, .not-prose *)) {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Fumadocs wraps Markdown tables in a `.prose-no-margin` overflow container.
+   Let those wrapped table borders follow intrinsic columns while the wrapper
+   handles horizontal scrolling. */
+:where(html)
+  .prose
+  :where(.prose-no-margin.overflow-auto > table):not(
+    :where(.not-prose, .not-prose *)
+  ) {
+  display: table;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  overflow: visible;
+}
+
+@media (max-width: 767px) {
+  .prose
+    :where(.docs-table-container[data-table-overflow="true"]):not(
+      :where(.not-prose, .not-prose *)
+    )::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 2.75rem;
+    content: "";
+    pointer-events: none;
+    background: linear-gradient(to right, transparent, var(--bg-card));
+    opacity: 1;
+    transition: opacity 160ms ease;
+  }
+
+  .prose
+    :where(.docs-table-container[data-table-scroll-end="true"]):not(
+      :where(.not-prose, .not-prose *)
+    )::after {
+    opacity: 0;
+  }
+}
+
+/* Fumadocs emits paragraph/list margins outside Tailwind layers.
+   Keep table-cell edges tight while preserving spacing between block children. */
+:where(html)
+  .prose
+  :where(td > :first-child):not(:where(.not-prose, .not-prose *)) {
+  margin-top: 0;
+}
+
+:where(html)
+  .prose
+  :where(td > :last-child):not(:where(.not-prose, .not-prose *)) {
+  margin-bottom: 0;
+}
+
+/* Fumadocs emits unlayered prose link styles after Tailwind layers.
+   Keep the product decision for body links here so the rendered underline
+   matches the foreground text instead of the brand accent. */
+:where(html) .prose :where(a):not(:where(.not-prose, .not-prose *)),
+:where(html) .prose :where([data-parameter-description] a) {
+  color: var(--foreground);
+  -webkit-text-decoration-color: color-mix(
+    in srgb,
+    var(--foreground) 42%,
+    transparent
+  );
+  text-decoration-color: color-mix(in srgb, var(--foreground) 42%, transparent);
+}
+
+:where(html) .prose :where(a):not(:where(.not-prose, .not-prose *)):hover,
+:where(html) .prose :where([data-parameter-description] a):hover {
+  background: transparent;
+  color: var(--foreground);
+  -webkit-text-decoration-color: var(--foreground);
+  text-decoration-color: var(--foreground);
+}
+
+/* Linked screenshots retain their image-only presentation. */
+.prose a:has(img) > .docs-external-link-icon {
+  display: none;
+}
+
+/* Fumadocs prose/table/code styles are emitted outside Tailwind layers.
+   Keep these unlayered dark-mode overrides after the imports so rendered
+   Markdown tables, code blocks, and inline code get the intended contrast. */
+:where(html.dark)
+  .prose
+  :where(:not(pre) > code):not(:where(.not-prose, .not-prose *)),
+:where(html.dark)
+  .prose
+  :where([data-parameter-description] :not(pre) > code):not(
+    :where([data-parameter-possible-values], [data-parameter-possible-values] *)
+  ) {
+  border-color: var(--docs-prose-inline-code-border);
+  background: var(--docs-prose-inline-code-bg);
+  color: var(--ink-1);
+}
+
+:where(html.dark) .prose :where(pre):not(:where(.not-prose, .not-prose *)),
+:where(html.dark) .prose figure.shiki.not-prose,
+:where(html.dark) .openapi-operation figure.shiki.not-prose {
+  border-color: var(--docs-prose-code-block-border);
+  background: var(--docs-prose-code-block-bg);
+  color: var(--docs-prose-code-block-color);
+  box-shadow: var(--docs-prose-code-block-shadow);
+}
+
+:where(html.dark) .prose figure.shiki.not-prose .fd-scroll-container,
+:where(html.dark) .prose figure.shiki.not-prose figcaption,
+:where(html.dark)
+  .openapi-operation
+  figure.shiki.not-prose
+  .fd-scroll-container,
+:where(html.dark) .openapi-operation figure.shiki.not-prose figcaption {
+  color: var(--docs-prose-code-block-color);
+}
+
+:where(html.dark) .prose figure.shiki.not-prose code span,
+:where(html.dark) .openapi-operation figure.shiki.not-prose code span {
+  color: color-mix(
+    in srgb,
+    var(--shiki-dark, var(--docs-prose-code-block-color))
+      var(--docs-prose-code-block-token-mix),
+    var(--docs-prose-code-block-token-boost)
+  );
+}
+
+:where(html.dark) .prose figure.shiki.not-prose[data-line-numbers] .line::after,
+:where(html.dark)
+  .openapi-operation
+  figure.shiki.not-prose[data-line-numbers]
+  .line::after {
+  color: var(--docs-prose-code-block-line-number);
+}
+
+:where(html.dark) .prose figure.shiki.not-prose button[aria-label],
+:where(html.dark) .openapi-operation figure.shiki.not-prose button[aria-label] {
+  border: 1px solid var(--docs-prose-code-block-copy-border);
+  background: var(--docs-prose-code-block-copy-bg);
+  color: var(--docs-prose-code-block-copy-color);
+}
+
+:where(html.dark) .prose figure.shiki.not-prose button[aria-label]:hover,
+:where(html.dark)
+  .prose
+  figure.shiki.not-prose
+  button[aria-label]:focus-visible,
+:where(html.dark)
+  .prose
+  figure.shiki.not-prose
+  button[aria-label][data-checked],
+:where(html.dark)
+  .openapi-operation
+  figure.shiki.not-prose
+  button[aria-label]:hover,
+:where(html.dark)
+  .openapi-operation
+  figure.shiki.not-prose
+  button[aria-label]:focus-visible,
+:where(html.dark)
+  .openapi-operation
+  figure.shiki.not-prose
+  button[aria-label][data-checked] {
+  background: var(--docs-prose-code-block-copy-hover-bg);
+  color: var(--docs-prose-code-block-copy-hover-color);
+}
+
+:where(html.dark) .prose [role="tabpanel"] > figure.shiki.not-prose,
+:where(html.dark) .prose [role="tabpanel"] > figure.shiki.not-prose:only-child {
+  background: var(--docs-prose-code-block-bg);
+  box-shadow: none;
+}
+
+:where(html.dark) .prose :where(table):not(:where(.not-prose, .not-prose *)) {
+  border-color: var(--docs-prose-table-border);
+  background: var(--bg-card);
+  box-shadow: var(--docs-shadow-sm);
+}
+
+:where(html.dark) .prose :where(thead):not(:where(.not-prose, .not-prose *)) {
+  background: var(--docs-prose-table-head-bg);
+}
+
+:where(html.dark) .prose :where(th, td):not(:where(.not-prose, .not-prose *)) {
+  border-bottom-color: var(--docs-prose-table-border);
+}
+
+:where(html.dark) .prose :where(th):not(:where(.not-prose, .not-prose *)) {
+  background: var(--docs-prose-table-head-bg);
+}
+
+:where(html.dark)
+  .prose
+  :where(tbody tr:nth-child(even)):not(:where(.not-prose, .not-prose *)) {
+  background: var(--docs-prose-table-row-bg);
+}
+
+:root {
+  --sidebar: var(--bg);
+  --sidebar-foreground: var(--ink-3);
+  --sidebar-primary: var(--accent-brand);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent-brand-soft);
+  --sidebar-accent-foreground: var(--accent-brand);
+  --sidebar-border: var(--line);
+  --sidebar-ring: var(--accent-brand-ring);
+}
+
+.dark {
+  --sidebar: var(--bg);
+  --sidebar-foreground: var(--ink-3);
+  --sidebar-primary: var(--accent-brand);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent-brand-soft);
+  --sidebar-accent-foreground: var(--accent-brand);
+  --sidebar-border: var(--line);
+  --sidebar-ring: var(--accent-brand-ring);
+}
+
+@layer utilities {
+  .prose .docs-body > .docs-console-api-entry + h2 {
+    margin-top: 1.75rem;
+    padding-top: 0;
+  }
+
+  /* Override prose/card utilities only for the teleoperation scenario grid. */
+  .docs-teleoperation-scenarios {
+    margin-block: 1.25rem;
+  }
+
+  .docs-teleoperation-scenarios > [data-card] {
+    border-radius: 0.25rem;
+  }
+
+  .docs-teleoperation-scenarios > [data-card] > h3 {
+    margin-block: 0 1rem;
+    font-size: 1rem;
+  }
+
+  .docs-teleoperation-scenarios > [data-card]:nth-child(1) > h3 {
+    color: var(--docs-success);
+  }
+
+  .docs-teleoperation-scenarios > [data-card]:nth-child(2) > h3 {
+    color: var(--docs-info);
+  }
+
+  .docs-teleoperation-scenarios > [data-card]:nth-child(3) > h3 {
+    color: var(--docs-warning);
+  }
+
+  .docs-teleoperation-scenarios p {
+    margin-block: 0 0.75rem;
+  }
+
+  .docs-teleoperation-scenarios ul {
+    margin-block: 0;
+  }
+
+  .docs-teleoperation-scenarios li {
+    margin-block: 0.25rem;
+  }
+
+  /* Keep hash targets below the sticky shell header, including its banner. */
+  .prose :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)),
+  .docs-body a[id]:not([href]):empty,
+  .docs-body :is(h2, h3, h4)[data-accordion-value],
+  .docs-body section[id]:has([data-accordion-value]) {
+    scroll-margin-top: max(
+      7rem,
+      calc(var(--docs-shell-header-offset, 0px) + 1.5rem)
+    );
+  }
+
+  .openapi-operation .openapi-section-heading {
+    scroll-margin-top: max(
+      7rem,
+      calc(var(--docs-shell-header-offset, 0px) + 1.5rem)
+    );
+  }
+
+  .docs-body :where(*) {
+    --tw-shadow: none;
+    --tw-shadow-colored: none;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-inset-shadow: 0 0 #0000;
+    --tw-inset-ring-shadow: 0 0 #0000;
+    --tw-ring-offset-shadow: 0 0 #0000;
+    box-shadow: none;
+  }
+}
+
+/* Docs search motion polish. Hand-rolled keyframes because this project does
+   NOT ship tw-animate-css, so the shadcn `animate-in`/`zoom-in-*` utility
+   classes are no-ops here. Kept unlayered so they win over cmdk/tailwind base
+   styles. The dialog/overlay enters are driven by Radix's data-state attribute.
+   Everything collapses to instant under prefers-reduced-motion. See
+   DocsSearchDialog / SearchDetailPanel. */
+@keyframes search-result-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes search-detail-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Tailwind v4 centers the dialog with the `translate` property (translate:
+   -50% -50%), NOT `transform`. So we animate the individual `translate` and
+   `scale` properties too — matching that centering at rest — rather than a
+   `transform` that would stack on top of it and shove the dialog off-screen. */
+@keyframes search-dialog-enter {
+  from {
+    opacity: 0;
+    translate: -50% calc(-50% + 8px);
+    scale: 0.96;
+  }
+  to {
+    opacity: 1;
+    translate: -50% -50%;
+    scale: 1;
+  }
+}
+
+/* Frost fades in via compositing opacity only — the backdrop-blur radius is a
+   constant utility, so nothing animates the filter itself (no stutter). */
+@keyframes search-overlay-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.search-result-enter {
+  animation: search-result-enter 200ms ease-out both;
+}
+
+.search-detail-enter {
+  animation: search-detail-enter 180ms ease-out both;
+}
+
+/* Enter-only: Radix keeps a closing element mounted until its exit animation
+   ends, so an exit animation here would trap the dialog in the DOM. Closing is
+   left instant (matching the pre-existing behavior) and the enter is what adds
+   the polish. */
+/* Filters portal inside the dialog for scroll locking, but must escape its
+   bounds. Constrain the command surface and scroll its result list instead. */
+.docs-search-dialog > [data-slot="command"] {
+  max-height: calc(100dvh - 2rem);
+}
+
+.docs-search-dialog [cmdk-list] {
+  min-height: 0;
+}
+
+.docs-search-dialog > [data-slot="dialog-close"] {
+  top: 2px;
+  right: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+}
+
+.docs-search-dialog[data-state="open"] {
+  animation: search-dialog-enter 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.docs-search-overlay[data-state="open"] {
+  animation: search-overlay-enter 200ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Collapse every search motion to instant. The blur is a static filter, so
+     the frost still applies — it just doesn't fade. These selectors match the
+     animation rules above one-for-one and come later in source, so they win the
+     cascade without needing !important. */
+  .search-result-enter,
+  .search-detail-enter,
+  .docs-search-dialog[data-state="open"],
+  .docs-search-overlay[data-state="open"] {
+    animation: none;
+  }
+}
+
+.prose[data-platform-header-tabs="true"]
+  [data-platform-group="structured"]
+  > [data-platform-panel]:not([hidden])
+  .docs-body
+  > h2:not(:where(.not-prose, .not-prose *)):not(:where(:not(a:empty) ~ h2)) {
+  margin-top: 0.75rem;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.prose[data-platform-header-tabs="true"]
+  [data-sdk-compliance="true"]
+  + [data-platform-group="structured"]
+  > [data-platform-panel]:not([hidden])
+  .docs-body
+  > h2:not(:where(.not-prose, .not-prose *)):not(:where(:not(a:empty) ~ h2)) {
+  margin-top: 1.25rem;
+  padding-top: 0;
+  border-top: 0;
+}
+
+/* Chinese API names can exceed a narrow article column. Keep titles and
+   prose readable while tables and code retain their own scroll containers. */
+article[lang="zh-CN"] > header h1,
+article[lang="zh-CN"]
+  .docs-body
+  :where(p, li):not(:where(.not-prose, .not-prose *, table *)) {
+  overflow-wrap: anywhere;
+}
+
+/* Shrink heading text beside Fumadocs' fixed-size copy button. These follow
+   Fumadocs' unlayered typography rules so the fix also applies after build. */
+article[lang="zh-CN"] .docs-body .group\/heading > a {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Native title rows own section spacing; their headings must not add it again. */
+.openapi-operation div.flex:has(> .openapi-section-heading) {
+  margin-block: var(--docs-space-section) var(--docs-space-section-after);
+}
+
+.openapi-operation
+  div.flex:has(> .openapi-section-heading)
+  > .openapi-section-heading {
+  margin-block: 0;
+}
+
+.docs-callout {
+  margin-block: var(--docs-space-block);
+  gap: 12px;
+  padding: 1rem;
+  border-radius: 8px;
+  border-color: color-mix(in srgb, var(--callout-color) 19%, var(--line));
+  background: color-mix(in srgb, var(--callout-color) 6%, var(--bg-card));
+  box-shadow: none;
+}
+
+.docs-callout > div[role="none"] {
+  display: none;
+}
+
+.docs-callout > svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 4px;
+  margin-inline-end: 0;
+  fill: none;
+  color: var(--callout-color);
+}
+
+.docs-callout > div:last-child {
+  gap: 0.5rem;
+}
+
+.docs-callout > div:last-child > p {
+  color: var(--ink-1);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.docs-callout > div:last-child > div {
+  color: var(--ink-3);
+  font-size: 1rem;
+  line-height: 1.625;
+}
+
+.docs-callout > div:last-child > div :where(p, ul, ol, li, .openapi-markdown) {
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.docs-callout > div:last-child > div :where(p, ul, ol, li) {
+  margin-block: 0;
+}
+
+.docs-callout > div:last-child > div :where(p, ul, ol) + :where(p, ul, ol) {
+  margin-block-start: 0.75rem;
+}
+
+.docs-callout > div:last-child > div :where(li + li) {
+  margin-block-start: 0.25rem;
+}
+
+/* Keep REST parameter groups aligned with the unframed schema field trees. */
+.openapi-operation-layout
+  [class~="rounded-xl"][class~="border"][class~="bg-fd-card"][class~="px-3"]:has(
+    > .openapi-schema-parameter-fields
+  ) {
+  border: 0;
+  border-radius: 0;
+  padding-inline: 0;
+  background-color: transparent;
+}
+
+@media (min-width: 640px) {
+  .docs-callout > div:last-child > div {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+}

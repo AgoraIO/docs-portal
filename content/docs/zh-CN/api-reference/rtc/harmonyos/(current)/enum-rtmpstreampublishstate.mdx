@@ -1,0 +1,57 @@
+---
+title: RtmpStreamPublishState
+description: 推流状态。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/enum_rtmpstreampublishstate
+  sourcePath: html-docs/rtc/HarmonyOS/API/enum_rtmpstreampublishstate.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_rtmpstreampublishstate__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="idle"></a>
+<Parameter name="IDLE">
+
+0：推流未开始或已结束。
+
+</Parameter>
+<a id="connecting"></a>
+<Parameter name="CONNECTING">
+
+1：正在连接推流服务器和 CDN 服务器。
+
+</Parameter>
+<a id="running"></a>
+<Parameter name="RUNNING">
+
+2：推流正在进行。成功推流后，会返回该状态。
+
+</Parameter>
+<a id="recovering"></a>
+<Parameter name="RECOVERING">
+
+3：正在恢复推流。当 CDN 出现异常，或推流短暂中断时，SDK 会自动尝试恢复推流，并返回该状态。
+
+- 如成功恢复推流，则进入状态 RUNNING(2)。
+- 如服务器出错或 60 秒内未成功恢复，则进入状态 FAILURE(4)。如果觉得 60 秒太长，也可以主动尝试重连。
+
+</Parameter>
+<a id="failure"></a>
+<Parameter name="FAILURE">
+
+4：推流失败。失败后，你可以通过返回的错误码排查错误原因。
+
+</Parameter>
+<a id="disconnecting"></a>
+<Parameter name="DISCONNECTING">
+
+5：SDK 正在与推流服务器和 CDN 服务器断开连接。当你调用 [stopRtmpStream](/zh-CN/api-reference/rtc/harmonyos/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 方法正常结束推流时，SDK 会依次报告推流状态为 DISCONNECTING、IDLE。
+
+</Parameter>
+</ParameterList>

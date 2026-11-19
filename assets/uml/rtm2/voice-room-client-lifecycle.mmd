@@ -1,0 +1,11 @@
+%% 登录时机的两种策略见本节正文。房间操作区域内始终保持登录；会话／模块结束前先离房。
+%%{init: {"theme": "neutral", "fontFamily": "Arial, PingFang SC, Microsoft YaHei, sans-serif", "flowchart": {"htmlLabels": false, "curve": "basis", "rankSpacing": 28, "nodeSpacing": 32, "padding": 12}, "themeVariables": {"fontSize": "16px"}}}%%
+flowchart LR
+  A["创建 RTM client<br/>注册全部事件监听"] --> B["会话／模块开始<br/>login()"]
+  B --> Room
+  subgraph Room["保持登录 · 复用同一 client"]
+    direction TB
+    C["进入房间<br/>subscribe(roomId)"] --> D["离开房间<br/>unsubscribe(roomId)"]
+    D -->|再次进房| C
+  end
+  Room -->|离房后，会话／模块结束| E["logout()<br/>解绑事件监听"]

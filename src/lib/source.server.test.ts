@@ -84,7 +84,7 @@ Web instructions only.
     );
   });
   it.each(['en', 'zh-CN'])(
-    'cleans %s platform exports after selecting the requested platform',
+    'exports only the selected platform in the published %s format',
     async (locale) => {
       const processed = `<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
 <Tabs items={['Java']}>
@@ -108,10 +108,13 @@ Web instructions only.
         url: `/${locale}/test`,
       } as unknown as Parameters<typeof getPlatformLLMText>[0];
       const markdown = await getPlatformLLMText(page, 'android');
-      expect(markdown).toContain('**Java**');
+      expect(markdown).toContain(
+        locale === 'en' ? '**Java**' : "<Tabs items={['Java']}>",
+      );
       expect(markdown).toContain('```java\nif (ready) {\n  connect();\n}\n```');
       expect(markdown).not.toContain('Web instructions only.');
-      expect(markdown).not.toMatch(/<\/?(?:Tabs|Tab|_Platform)/);
+      expect(markdown).not.toContain('_Platform');
+      if (locale === 'en') expect(markdown).not.toMatch(/<\/?Tabs?\b/);
     },
   );
 
@@ -193,7 +196,7 @@ Web instructions only.
     expect(Buffer.byteLength(markdown)).toBeLessThan(50_000);
   });
 
-  it('exports Chinese component content as clean Markdown', async () => {
+  it('retains Chinese landing card destinations and descriptive text in source exports', async () => {
     const page = source.getPage(['introduction'], 'zh-CN');
 
     expect(page).toBeDefined();
@@ -203,16 +206,14 @@ Web instructions only.
 
     const markdown = await getLLMText(page);
     expect(markdown).toContain(`# ${page.data.title} (${page.url})`);
-    expect(markdown).toContain('[Voice agent 快速开始](/zh-CN/ai/quick-start)');
-    expect(markdown).toContain('15 分钟内跑通一个可用的语音智能体。');
-    expect(markdown).toContain('构建实时互动');
-    expect(markdown).toContain('Signaling');
-    expect(markdown).not.toMatch(
-      /<\/?(?:OverviewSpotlight|CapabilityMatrix|div)\b/,
-    );
+    expect(markdown).toContain('title="对话式 AI 引擎"');
+    expect(markdown).toContain('href="/zh-CN/ai/get-started/quick-start"');
+    expect(markdown).toContain('完成后端调用和客户端接入');
+    expect(markdown).toContain('开发实时互动应用');
+    expect(markdown).toContain('实时消息 RTM');
   });
 
-  it('keeps Chinese platform headings and prose in standard Markdown', async () => {
+  it('preserves the selected Chinese platform heading, anchor and source indentation', async () => {
     const page = {
       data: {
         getText:
@@ -234,9 +235,8 @@ Web instructions only.
       getPlatformLLMText(page, 'android'),
     ).resolves.toBe(`# 快速开始 (/zh-CN/test/android)
 
-## Android 设置 \\[#android]
-
-Android 内容
+    ## Android 设置 [#android]
+    Android 内容
 `);
   });
 

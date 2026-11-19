@@ -1,11 +1,7 @@
-function hashOpenApiAnchorSegment(value: string) {
-  let hash = 0;
-
-  for (let index = 0; index < value.length; index += 1) {
-    hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
-  }
-
-  return hash.toString(36);
+function encodeOpenApiAnchorIdentity(value: string) {
+  return Array.from(value)
+    .map((character) => character.codePointAt(0)?.toString(16) ?? '')
+    .join('_');
 }
 
 export function slugOpenApiAnchorSegment(value: string) {
@@ -22,6 +18,28 @@ export function buildOpenApiAnchorId(prefix: string, value: string) {
   return `${prefix}-${slugOpenApiAnchorSegment(value)}`;
 }
 
+export function getOpenApiSchemaFieldAnchorAliases(
+  fieldPath: string,
+  legacyRootPath?: string,
+) {
+  const segments = fieldPath.split('.').filter(Boolean);
+  const aliases = new Set<string>();
+
+  if (legacyRootPath && segments.length > 0) {
+    aliases.add(`${legacyRootPath}.${segments.join('.')}`);
+  }
+
+  if (segments.length > 1) {
+    aliases.add(segments.join('.'));
+  }
+
+  if (segments[0] === 'properties' && segments.length > 2) {
+    aliases.add(segments.slice(1).join('-'));
+  }
+
+  return [...aliases];
+}
+
 export function buildUniqueOpenApiAnchorIds(prefix: string, values: string[]) {
   const baseIds = values.map((value) => buildOpenApiAnchorId(prefix, value));
   const duplicateBaseIds = new Set(
@@ -32,15 +50,25 @@ export function buildUniqueOpenApiAnchorIds(prefix: string, values: string[]) {
   return values.map((value, index) => {
     const baseId = baseIds[index];
 
-    if (!duplicateBaseIds.has(baseId)) {
-      return baseId;
-    }
+    const candidate = duplicateBaseIds.has(baseId)
+      ? `${baseId}--${encodeOpenApiAnchorIdentity(value)}`
+      : baseId;
 
-    const occurrence = seen.get(baseId) ?? 0;
-    seen.set(baseId, occurrence + 1);
+    const occurrence = seen.get(candidate) ?? 0;
+    seen.set(candidate, occurrence + 1);
 
-    return `${baseId}-${hashOpenApiAnchorSegment(value)}${
-      occurrence > 0 ? `-${occurrence + 1}` : ''
-    }`;
+    return occurrence > 0 ? `${candidate}--${occurrence + 1}` : candidate;
   });
+}
+
+export function buildOpenApiResponseSchemaAnchorId(
+  status: string,
+  mediaType: string,
+  mediaTypes: string[],
+) {
+  const index = mediaTypes.indexOf(mediaType);
+  return buildUniqueOpenApiAnchorIds(
+    `response-${slugOpenApiAnchorSegment(status)}`,
+    mediaTypes,
+  )[index];
 }

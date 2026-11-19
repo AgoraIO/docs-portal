@@ -5,6 +5,8 @@ export type SearchEntry = {
   objectType?: 'docs' | 'openapi' | 'sdk-api';
   platform?: string[];
   platformUrls?: Record<string, string>;
+  /** Maintained applicability from the published page, not inferred body words. */
+  titlePlatforms?: string[];
   product?: string;
   tab?: string;
   title: string;

@@ -1566,6 +1566,7 @@ The presence feature provides the ability to monitor user online, offline, and u
 
 - Real-time event notification when a user joins or leaves a specified channel.
 - Real-time event notification when the custom temporary user state changes.
+- Query whether a specified user is online.
 - Query which channels a specified user has joined or subscribed to.
 - Query which users have joined a specified channel and their temporary user state data.
 
@@ -1718,6 +1719,87 @@ class RtmEventHandler : public IRtmEventHandler {
             for (int i = 0; i < count; i++) {
                 printf("channel: %s channel type: %d\n", channels[i].channelName, channels[i].channelType);
             }
+        }
+    }
+};
+```
+
+### getUserOnlineStatus
+
+#### Description
+
+Queries whether a specified user is logged in to Signaling under the current App ID. Neither you nor the target user needs to join or subscribe to a channel. Each call queries one user ID. To query your own status, pass your own user ID.
+
+This method is available since v2.3.1.
+
+#### Method
+
+You can call the `getUserOnlineStatus` method as follows:
+
+```cpp
+virtual void getUserOnlineStatus(const char* userId, uint64_t& requestId) = 0;
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--- | :--- | :---: | :---: | --- |
+| `userId` | const char* | Required | - | The user ID to query. Pass the exact user ID. An empty string doesn't refer to the caller. |
+| `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
+
+#### Asynchronous callback
+
+After calling this method, the SDK triggers the `onGetUserOnlineStatusResult` callback and returns the API execution result through the following parameters:
+
+| Parameters | Type | Description |
+| :--- | :--- | --- |
+| `requestId` | const uint64_t | Request identifier. |
+| `status` | `const UserOnlineStatus*` | The user's online status. This value is `NULL` if the query fails. |
+| `errorCode` | `RTM_ERROR_CODE` | [Error codes](#error-codes-table). |
+
+`IRtmEventHandler` provides an empty default implementation of `onGetUserOnlineStatusResult`. Override it to receive query results. The data that `status` points to is valid only during the callback. To use it later, copy it.
+
+The `UserOnlineStatus` data type contains the following properties:
+
+| Properties | Type | Description |
+| :--- | :---: | --- |
+| `userId` | const char* | The queried user ID. |
+| `online` | bool | Whether the user is online.<br />- `true`: The user is logged in to Signaling.<br />- `false`: The user is offline or doesn't exist. |
+
+#### Usage notes
+
+- Before calling this method, log in to Signaling and make sure the connection is established. If you set `serviceType` in `RtmPrivateConfig`, it must include `RTM_SERVICE_TYPE_MESSAGE`.
+- The query works whether Presence is enabled or disabled in Agora Console.
+- The result is a snapshot of the user's status when the server processes the query. If a user disconnects abnormally, the server takes some time to detect that the user is offline. This method doesn't return the user's last online time and doesn't notify you of later status changes.
+- A failed query doesn't mean the target user is offline. Check `errorCode` in the callback.
+- Calling `logout` cancels pending queries. After you call `release`, the SDK doesn't guarantee that it triggers callbacks for pending queries.
+
+#### Errors
+
+| Value | Error code | Cause |
+| :--- | :--- | --- |
+| `-10006` | `RTM_ERROR_INVALID_USER_ID` | `userId` is `NULL`, an empty string, or not a valid user ID. |
+| `-10021` | `RTM_ERROR_OPERATION_RATE_EXCEED_LIMITATION` | The call rate exceeds the limit for this method: 20 calls per second for each client instance. |
+| `-10022` | `RTM_ERROR_SERVICE_NOT_SUPPORTED` | The `serviceType` in `RtmPrivateConfig` doesn't include `RTM_SERVICE_TYPE_MESSAGE`. |
+| `-10025` | `RTM_ERROR_NOT_CONNECTED` | The client isn't connected to Signaling. |
+| `-13012` | `RTM_ERROR_PRESENCE_OPERATION_TIMEOUT` | No response within 5 seconds. The SDK doesn't retry the query. |
+| `-13013` | `RTM_ERROR_PRESENCE_OPERATION_FAILED` | The server response is invalid. |
+| `-13015` | `RTM_ERROR_PRESENCE_PENDING_REQUEST_CANCELLED` | The query was canceled because the client logged out. |
+
+#### Basic usage
+
+```cpp
+// Method call
+uint64_t requestId;
+rtmClient->getPresence()->getUserOnlineStatus("targetUserId", requestId);
+```
+
+```cpp
+// Asynchronous callback
+class RtmEventHandler : public IRtmEventHandler {
+    void onGetUserOnlineStatusResult(const uint64_t requestId, const UserOnlineStatus* status, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK || status == nullptr) {
+            printf("get user online status failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("%s is %s\n", status->userId, status->online ? "online" : "offline or doesn't exist");
         }
     }
 };

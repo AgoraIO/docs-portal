@@ -3,6 +3,8 @@ import path from 'node:path';
 import process from 'node:process';
 import { setTimeout as wait } from 'node:timers/promises';
 import { pathToFileURL } from 'node:url';
+import { isRetiredCnDocsPath } from '../src/lib/retired-cn-docs.mjs';
+import { maskFencedCode } from './lib/markdown-code.mjs';
 
 const DEFAULT_MAX_SAMPLES = 30;
 const DEFAULT_EXTERNAL_CONCURRENCY = 8;
@@ -22,6 +24,7 @@ const OVERVIEW_CARD_SOURCE_PATHS = [
  * @property {string} [docsRoot]
  * @property {string} [openApiRoot]
  * @property {string[]} [sourcePaths]
+ * @property {string[]} [openApiSourcePaths]
  */
 
 /**
@@ -31,9 +34,12 @@ export function auditDocsLinks({
   docsRoot = path.join(process.cwd(), 'content', 'docs'),
   openApiRoot = getDefaultOpenApiRoot(docsRoot),
   sourcePaths,
+  openApiSourcePaths,
 } = {}) {
   const stats = createStats();
-  const docsFiles = listMarkdownFiles(docsRoot);
+  const docsFiles = listMarkdownFiles(docsRoot).filter(
+    (file) => !isRetiredCnDocsPath(toContentPath(docsRoot, file)),
+  );
   const existingContentPaths = new Set(
     docsFiles.map((file) => toContentPath(docsRoot, file)),
   );
@@ -47,11 +53,17 @@ export function auditDocsLinks({
     existingRoutePaths,
   });
   const sourcePathFilter = sourcePaths ? new Set(sourcePaths) : null;
+  const openApiSourcePathFilter = openApiSourcePaths
+    ? new Set(openApiSourcePaths)
+    : null;
 
   for (const filePath of docsFiles) {
     const sourcePath = toContentPath(docsRoot, filePath);
 
-    if (sourcePathFilter && !sourcePathFilter.has(sourcePath)) {
+    if (
+      openApiSourcePathFilter ||
+      (sourcePathFilter && !sourcePathFilter.has(sourcePath))
+    ) {
       continue;
     }
 
@@ -71,12 +83,22 @@ export function auditDocsLinks({
     }
   }
 
-  if (!sourcePathFilter && fs.existsSync(openApiRoot)) {
+  if (
+    (!sourcePathFilter || openApiSourcePathFilter) &&
+    fs.existsSync(openApiRoot)
+  ) {
     const openApiFiles = listOpenApiYamlFiles(openApiRoot);
     const openApiSourceContexts = getOpenApiSourceContexts();
 
     for (const filePath of openApiFiles) {
       const sourcePath = toOpenApiSourcePath(openApiRoot, filePath);
+
+      if (isRetiredCnDocsPath(sourcePath)) continue;
+
+      if (openApiSourcePathFilter && !openApiSourcePathFilter.has(sourcePath)) {
+        continue;
+      }
+
       const sourceContextPath =
         openApiSourceContexts.get(sourcePath) ?? sourcePath;
       const yaml = fs.readFileSync(filePath, 'utf8');
@@ -112,6 +134,7 @@ function createStats() {
     invalidLinks: [],
     invalidInternalLinks: [],
     legacyRootDocLinks: [],
+    legacyShengwangDocHostLinks: [],
     openapiFiles: 0,
     apiReferenceMacroLinks: [],
     missingHashLinks: [],
@@ -378,7 +401,19 @@ function toOpenApiSourcePath(openApiRoot, filePath) {
     .join(path.posix.sep);
 }
 
+export function getZhCnOpenApiSourcePaths(openApiRoot) {
+  if (!fs.existsSync(openApiRoot)) {
+    return [];
+  }
+
+  return listOpenApiYamlFiles(openApiRoot)
+    .map((filePath) => toOpenApiSourcePath(openApiRoot, filePath))
+    .filter((sourcePath) => !isRetiredCnDocsPath(sourcePath))
+    .filter(isZhCnOpenApiSourcePath);
+}
+
 function extractLinks(markdown) {
+  markdown = maskMdxComments(markdown);
   const links = [];
   const markdownLinkPattern = /(!?)\[[\s\S]*?\]\((<[^>\n]+>|[^)\n]+)\)/g;
   const referenceLinkPattern = /^\s{0,3}\[[^\]\n]+\]:\s*(\S+)/gm;
@@ -452,9 +487,12 @@ function extractAnchors(markdown) {
 }
 
 function maskMarkdownCode(markdown) {
-  return markdown.replace(
-    /(^|\n)(`{3,}|~{3,})[\s\S]*?\n\2[^\n]*(?=\n|$)/g,
-    (match) => '\n'.repeat(match.split('\n').length - 1),
+  return maskMdxComments(maskFencedCode(markdown));
+}
+
+function maskMdxComments(markdown) {
+  return markdown.replace(/\{\/\*[\s\S]*?\*\/\}/g, (comment) =>
+    comment.replace(/[^\n]/g, ' '),
   );
 }
 
@@ -554,12 +592,40 @@ function classifyLink(
     return;
   }
 
+  if (
+    isZhCnOpenApiSourcePath(sourcePath) &&
+    isLegacyShengwangDocHostHref(href)
+  ) {
+    const entry = {
+      href,
+      reason: 'legacy-shengwang-doc-host',
+      source: link.source,
+      sourcePath,
+      target: href,
+    };
+
+    stats.legacyShengwangDocHostLinks.push(entry);
+    addInvalidLink(stats, {
+      ...entry,
+      type: 'internal',
+    });
+    return;
+  }
+
   if (href.startsWith('//')) {
     addExternalLinkCandidate(sourcePath, link, stats);
     return;
   }
 
-  if (href.startsWith('/') && isRootAssetHref(parsedHref.path)) {
+  const rootLinkEntry = href.startsWith('/')
+    ? resolveRootLink(sourceContextPath, href, existingRoutePaths)
+    : null;
+
+  if (
+    href.startsWith('/') &&
+    isRootAssetHref(parsedHref.path) &&
+    !rootLinkEntry?.resolved
+  ) {
     stats.assetLinks += 1;
     return;
   }
@@ -578,7 +644,11 @@ function classifyLink(
   }
 
   if (href.startsWith('/')) {
-    const entry = resolveRootLink(sourceContextPath, href, existingRoutePaths);
+    const entry = rootLinkEntry;
+
+    if (!entry) {
+      return;
+    }
 
     entry.source = link.source;
     entry.sourcePath = sourcePath;
@@ -699,7 +769,10 @@ function resolveRootLink(sourcePath, href, existingRoutePaths) {
     };
   }
 
-  if (isKnownLegacyHostedLink(entry) || isIntentionallyHostedReference(routePath)) {
+  if (
+    isKnownLegacyHostedLink(entry) ||
+    isIntentionallyHostedReference(routePath)
+  ) {
     return {
       ...entry,
       resolved: true,
@@ -809,7 +882,10 @@ function resolveRelativeDocsLink(
     };
   }
 
-  if (isKnownLegacyHostedLink(entry) || isIntentionallyHostedReference(routePath)) {
+  if (
+    isKnownLegacyHostedLink(entry) ||
+    isIntentionallyHostedReference(routePath)
+  ) {
     return {
       ...entry,
       resolved: true,
@@ -923,697 +999,697 @@ function decodeHashAnchor(hash) {
 }
 
 const KNOWN_LEGACY_HASH_LINKS = new Set([
-  "en/ai/best-practices/record-agent-conversation.mdx\u0000/en/api-reference/api-ref/cloud-recording#start",
-  "en/ai/build/custom-model-integration/presets.mdx\u0000/en/api-reference/api-ref/conversational-ai/authentication#implement-basic-http-authentication",
-  "en/ai/build/custom-model-integration/presets.mdx\u0000/en/api-reference/api-ref/conversational-ai/authentication#implement-token-authentication",
-  "en/api-reference/api-ref/agora-analytics/analytics-rest-api.md\u0000#20quality",
-  "en/api-reference/api-ref/agora-analytics/analytics-rest-api.md\u0000#20scale",
-  "en/api-reference/api-ref/agora-analytics/analytics-rest-api.md\u0000#realtimequality",
-  "en/api-reference/api-ref/agora-analytics/analytics-rest-api.md\u0000#realtimescale",
-  "en/api-reference/api-ref/agora-analytics/analytics-rest-api.md\u0000/en/realtime-media/agora-analytics/reference/billing-policies#how-does-agora-calculate-service-minutes",
-  "en/api-reference/api-ref/broadcast-streaming/stream-transfer.mdx\u0000#patch",
-  "en/api-reference/api-ref/flexible-classroom/classroom-rest-api.mdx\u0000#get-classroom-events",
-  "en/api-reference/api-ref/flexible-classroom/classroom-sdk.mdx\u0000#agoraedumediaencryptionconfigs",
-  "en/api-reference/api-ref/flexible-classroom/classroom-sdk.mdx\u0000#agoraeduregionstr",
-  "en/api-reference/api-ref/im/chat-group-management/create-delete-retrieve-groups.md\u0000#Modify",
-  "en/api-reference/api-ref/im/chat-group-management/create-delete-retrieve-groups.md\u0000#code",
-  "en/api-reference/api-ref/im/chat-group-management/create-delete-retrieve-groups.md\u0000#param",
-  "en/api-reference/api-ref/im/chat-group-management/create-delete-retrieve-groups.md\u0000#pubparam",
-  "en/api-reference/api-ref/im/chat-group-management/create-delete-retrieve-groups.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/chat-group-management/create-delete-retrieve-groups.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-allowlist.md\u0000#param",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-allowlist.md\u0000/en/api-reference/api-ref/im/chat-group-management/manage-group-mutelist#muting-all-chat-group-members",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-allowlist.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-allowlist.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-announcement-files.md\u0000#code",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-announcement-files.md\u0000#getall",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-announcement-files.md\u0000#param",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-announcement-files.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-announcement-files.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-blocklist.md\u0000#code",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-blocklist.md\u0000#param",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-blocklist.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-blocklist.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-members.md\u0000#code",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-members.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-members.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-mutelist.md\u0000#param",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-mutelist.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/chat-group-management/manage-group-mutelist.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-admins.md\u0000#code",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-admins.md\u0000#param",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-admins.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-admins.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-allowlist.md\u0000#param",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-allowlist.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-attributes.md\u0000#force",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-attributes.md\u0000#param",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-attributes.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-attributes.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-blocklist.md\u0000#code",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-blocklist.md\u0000#param",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-blocklist.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-members.md\u0000#code",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-members.md\u0000#param",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-members.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-members.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-mutelist.md\u0000#code",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-mutelist.md\u0000#param",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-mutelist.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatroom-mutelist.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatrooms.md\u0000#code",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatrooms.md\u0000#getall",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatrooms.md\u0000#param",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatrooms.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/chatroom-management/manage-chatrooms.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/contact-management.md\u0000#code",
-  "en/api-reference/api-ref/im/contact-management.md\u0000#param",
-  "en/api-reference/api-ref/im/contact-management.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/global-mute.md\u0000#param",
-  "en/api-reference/api-ref/im/global-mute.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/global-mute.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/index.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/message-management.md\u0000#body",
-  "en/api-reference/api-ref/im/message-management.md\u0000#download",
-  "en/api-reference/api-ref/im/message-management.md\u0000#param",
-  "en/api-reference/api-ref/im/message-management.md\u0000#request",
-  "en/api-reference/api-ref/im/message-management.md\u0000#sendmessage",
-  "en/api-reference/api-ref/im/message-management.md\u0000#upload",
-  "en/api-reference/api-ref/im/message-management.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/message-management.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/offline-push/offline-push-configuration.mdx\u0000#param",
-  "en/api-reference/api-ref/im/offline-push/offline-push-configuration.mdx\u0000#request",
-  "en/api-reference/api-ref/im/offline-push/offline-push-configuration.mdx\u0000#response",
-  "en/api-reference/api-ref/im/offline-push/offline-push-configuration.mdx\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/offline-push/offline-push-configuration.mdx\u0000/en/api-reference/api-ref/im/user-system-registration#unban",
-  "en/api-reference/api-ref/im/offline-push/offline-push-configuration.mdx\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/presence.md\u0000#param",
-  "en/api-reference/api-ref/im/presence.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/presence.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/push-notification-management.mdx\u0000#param",
-  "en/api-reference/api-ref/im/push-notification-management.mdx\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/push-notification-management.mdx\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/reaction.md\u0000#create",
-  "en/api-reference/api-ref/im/reaction.md\u0000#param",
-  "en/api-reference/api-ref/im/reaction.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/reaction.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/thread-management/create-delete-retrieve-threads.md\u0000#auth",
-  "en/api-reference/api-ref/im/thread-management/create-delete-retrieve-threads.md\u0000#request",
-  "en/api-reference/api-ref/im/thread-management/create-delete-retrieve-threads.md\u0000#response",
-  "en/api-reference/api-ref/im/thread-management/create-delete-retrieve-threads.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/thread-management/create-delete-retrieve-threads.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/thread-management/manage-thread-members.md\u0000#auth",
-  "en/api-reference/api-ref/im/thread-management/manage-thread-members.md\u0000#request",
-  "en/api-reference/api-ref/im/thread-management/manage-thread-members.md\u0000#response",
-  "en/api-reference/api-ref/im/thread-management/manage-thread-members.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/thread-management/manage-thread-members.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/user-attributes-management.md\u0000#param",
-  "en/api-reference/api-ref/im/user-attributes-management.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/user-attributes-management.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/im/user-system-registration.md\u0000#code",
-  "en/api-reference/api-ref/im/user-system-registration.md\u0000#param",
-  "en/api-reference/api-ref/im/user-system-registration.md\u0000#unban",
-  "en/api-reference/api-ref/im/user-system-registration.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides",
-  "en/api-reference/api-ref/im/user-system-registration.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project",
-  "en/api-reference/api-ref/media-pull/index.md\u0000/en/realtime-media/media-pull/build/manage-agora-account#generate-a-temporary-tokens",
-  "en/api-reference/api-ref/server-sdk/python.mdx\u0000#anthropic-1",
-  "en/api-reference/api-ref/server-sdk/python.mdx\u0000#avatar-vendors-1",
-  "en/api-reference/api-ref/server-sdk/python.mdx\u0000#azureopenai-1",
-  "en/api-reference/api-ref/server-sdk/python.mdx\u0000#builder-methods-1",
-  "en/api-reference/api-ref/server-sdk/python.mdx\u0000#gemini-1",
-  "en/api-reference/api-ref/server-sdk/python.mdx\u0000#openai-1",
-  "en/api-reference/api-ref/server-sdk/python.mdx\u0000#start-1",
-  "en/api-reference/api-ref/server-sdk/python.mdx\u0000#stt-vendors-1",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#configlinkstateeven-t",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#configlockeven-t",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#configmessageeven-t",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#configpresenceeven-t",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#configstorageeven-t",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#configtopiceven-t",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvareacod-e",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvchanneltyp-e",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvconnectionreaso-n",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvconnectionstat-e",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvencryptionmod-e",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvlinkoperatio-n",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvlinkstat-e",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvlinkstatereaso-n",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvlocktyp-e",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvlogleve-l",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvmessageqo-s",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvmessagetyp-e",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvpresencetyp-e",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvpriorit-y",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvprotocoltyp-e",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvproxytyp-e",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvrtmservicetyp-e",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvstorageeventtyp-e",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvstoragetyp-e",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#enumvtopictyp-e",
-  "en/api-reference/api-ref/signaling/android.mdx\u0000#storagemetadat-a",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#configlinkstateeven-t",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvareacod-e",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvchanneltyp-e",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvencryptionmod-e",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvlinkoperatio-n",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvlinkstat-e",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvlinkstatereaso-n",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvlocktyp-e",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvlogleve-l",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvmessageqo-s",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvmessagetyp-e",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvpresencetyp-e",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvpriorit-y",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvprotocoltyp-e",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvproxytyp-e",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvrtmservicetyp-e",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvstorageeventtyp-e",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvstoragetyp-e",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvtopictyp-e",
-  "en/api-reference/api-ref/signaling/flutter.mdx\u0000#storagemetadataite-m",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#configlinkstateeven-t",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvareacod-e",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvchanneltyp-e",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvencryptionmod-e",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvlinkoperatio-n",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvlinkstat-e",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvlinkstatereaso-n",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvlocktyp-e",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvlogleve-l",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvmessagepriorit-y",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvmessageqo-s",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvpresencetyp-e",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvprotocoltyp-e",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvproxytyp-e",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvrtmservicetyp-e",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvstorageeventtyp-e",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvstoragetyp-e",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvtopictyp-e",
-  "en/api-reference/api-ref/signaling/ios.mdx\u0000#storagemetadat-a",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#configlinkstateeven-t",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#configlockeven-t",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#configmessageeven-t",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#configpresenceeven-t",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#configstorageeven-t",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#configtopiceven-t",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvareacod-e",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvchanneltyp-e",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvconnectionreaso-n",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvconnectionstat-e",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvencryptionmod-e",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvlinkoperatio-n",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvlinkstat-e",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvlinkstatereaso-n",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvlocktyp-e",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvlogleve-l",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvmessagepriorit-y",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvmessageqo-s",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvmessagetyp-e",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvpresencetyp-e",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvprotocoltyp-e",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvproxytyp-e",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvrtmservicetyp-e",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvstorageeventtyp-e",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvstoragetyp-e",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvtopictyp-e",
-  "en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#storagemetadat-a",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#configlinkstateeven-t",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#configlockeven-t",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#configmessageeven-t",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#configpresenceeven-t",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#configstorageeven-t",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#configtopiceven-t",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvareacod-e",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvchanneltyp-e",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvconnectionreaso-n",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvconnectionstat-e",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvencryptionmod-e",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvlinkoperatio-n",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvlinkstat-e",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvlinkstatereaso-n",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvlocktyp-e",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvlogleve-l",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvmessageqo-s",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvpresencetyp-e",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvpriorit-y",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvprotocoltyp-e",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvproxytyp-e",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvrtmservicetyp-e",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvstorageeventtyp-e",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvstoragetyp-e",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvtopictyp-e",
-  "en/api-reference/api-ref/signaling/macos.mdx\u0000#storagemetadat-a",
-  "en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvareacod-e",
-  "en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvchanneltyp-e",
-  "en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvconnectionreaso-n",
-  "en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvconnectionstat-e",
-  "en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvencryptionmod-e",
-  "en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvlocktyp-e",
-  "en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvlogleve-l",
-  "en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvmessagepriorit-y",
-  "en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvmessageqo-s",
-  "en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvmessagetyp-e",
-  "en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvpresencetyp-e",
-  "en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvproxytyp-e",
-  "en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvstorageeventtyp-e",
-  "en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvstoragetyp-e",
-  "en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvtopictyp-e",
-  "en/api-reference/api-ref/signaling/web.mdx\u0000#enumvconnectionreaso-n",
-  "en/api-reference/api-ref/signaling/web.mdx\u0000#enumvconnectionstat-e",
-  "en/api-reference/api-ref/signaling/web.mdx\u0000#enumvencryptionmod-e",
-  "en/api-reference/api-ref/signaling/web.mdx\u0000#enumvlinkstat-e",
-  "en/api-reference/api-ref/signaling/web.mdx\u0000#enumvlogleve-l",
-  "en/api-reference/api-ref/signaling/web.mdx\u0000#enumvrtmservicetyp-e",
-  "en/api-reference/api-ref/signaling/web.mdx\u0000#setup#eventhandlers",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#configlinkstateeven-t",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#configlockeven-t",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#configmessageeven-t",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#configpresenceeven-t",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#configstorageeven-t",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#configtopiceven-t",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvareacod-e",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvchanneltyp-e",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvconnectionreaso-n",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvconnectionstat-e",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvencryptionmod-e",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvlinkoperatio-n",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvlinkstat-e",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvlinkstatereaso-n",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvlocktyp-e",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvlogleve-l",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvmessagepriorit-y",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvmessageqo-s",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvmessagetyp-e",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvpresencetyp-e",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvprotocoltyp-e",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvproxytyp-e",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvrtmservicetyp-e",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvstorageeventtyp-e",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvstoragetyp-e",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvtopictyp-e",
-  "en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#storagemetadat-a",
-  "en/api-reference/faq/integration/console_error_web.mdx\u0000#candidate",
-  "en/api-reference/faq/integration/image_enhancement.mdx\u0000#ref",
-  "en/api-reference/faq/integration/restful_api_call_frequency.mdx\u0000#raiselimit",
-  "en/api-reference/faq/integration/system_volume.mdx\u0000#volume-type-introduction",
-  "en/api-reference/faq/product/audio_format.mdx\u0000#advanced",
-  "en/api-reference/faq/product/audio_format.mdx\u0000#basic",
-  "en/api-reference/faq/product/browser_support.mdx\u0000#safari",
-  "en/api-reference/faq/quality/ios_bluetooth.mdx\u0000#solution",
-  "en/api-reference/faq/quality/pixelated_green_video.mdx\u0000#green_sender",
-  "en/api-reference/faq/quality/pixelated_green_video.mdx\u0000#pixelated_sender",
-  "en/realtime-media/broadcast-streaming/build/apply-effects-and-enhancements/metakit.mdx\u0000#adding-scene-view",
-  "en/realtime-media/broadcast-streaming/build/authenticate-users/deploy-token-server.mdx\u0000#api-reference",
-  "en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx\u0000#implementation-fields",
-  "en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx\u0000#subspecs-field",
-  "en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/preload-channels.mdx\u0000/en/realtime-media/broadcast-streaming/reference/pricing#cost-calculation",
-  "en/realtime-media/broadcast-streaming/quickstart.mdx\u0000#complete-code",
-  "en/realtime-media/broadcast-streaming/quickstart.mdx\u0000#get-device-permissions",
-  "en/realtime-media/broadcast-streaming/quickstart.mdx\u0000#local--tracks",
-  "en/realtime-media/broadcast-streaming/quickstart.mdx\u0000#subscribe-to--events",
-  "en/realtime-media/broadcast-streaming/reference/console-overview.md\u0000#generate-a-customer-id-and-customer-secret",
-  "en/realtime-media/broadcast-streaming/reference/console-overview.md\u0000#prerequisites",
-  "en/realtime-media/broadcast-streaming/reference/release-notes.mdx\u0000#410",
-  "en/realtime-media/broadcast-streaming/reference/release-notes.mdx\u0000#issue-fixed",
-  "en/realtime-media/broadcast-streaming/reference/release-notes.mdx\u0000/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing",
-  "en/realtime-media/broadcast-streaming/skills.mdx\u0000#agora-mcp-server",
-  "en/realtime-media/cloud-recording/build/best-practices/integration-best-practices.mdx\u0000/en/api-reference/api-ref/cloud-recording#query",
-  "en/realtime-media/cloud-recording/build/best-practices/webpage-best-practices.mdx\u0000/en/api-reference/api-ref/cloud-recording#start",
-  "en/realtime-media/cloud-recording/build/customize-the-recording/layout.mdx\u0000#bestfit",
-  "en/realtime-media/cloud-recording/build/customize-the-recording/layout.mdx\u0000#float",
-  "en/realtime-media/cloud-recording/build/customize-the-recording/layout.mdx\u0000#vertical",
-  "en/realtime-media/cloud-recording/build/customize-the-recording/layout.mdx\u0000/en/api-reference/api-ref/cloud-recording#start",
-  "en/realtime-media/cloud-recording/build/customize-the-recording/layout.mdx\u0000/en/api-reference/api-ref/cloud-recording#updatelayout",
-  "en/realtime-media/cloud-recording/build/customize-the-recording/subscription.mdx\u0000/en/api-reference/api-ref/cloud-recording#start",
-  "en/realtime-media/cloud-recording/build/customize-the-recording/subscription.mdx\u0000/en/api-reference/api-ref/cloud-recording#update",
-  "en/realtime-media/cloud-recording/build/customize-the-recording/webpage-load-timeout.mdx\u0000/en/api-reference/api-ref/cloud-recording#start",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#1-cloud_recording_error",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#100-rtmp_publish_status",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#1001-postpone_transcode_final_result",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#11-session_exit",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#12-session_failover",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#2-cloud_recording_warning",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#3-cloud_recording_status_update",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#30-uploader_started",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#31-uploaded",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#32-backuped",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#33-uploading_progress",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#4-cloud_recording_file_infos",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#40-recorder_started",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#41-recorder_leave",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#42-recorder_slice_start",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#43-recorder_audio_stream_state_changed",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#44-recorder_video_stream_state_changed",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#45-recorder_snapshot_file",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#60-vod_started",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#61-vod_triggered",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#70-web_recorder_started",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#71-web_recorder_stopped",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#72-web_recorder_capability_limit",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#73-web_recorder_reload",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#90-download_failed",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#clouderr",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#state",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#uploaderr",
-  "en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#uploadwarn",
-  "en/realtime-media/cloud-recording/build/process-recorded-files/manage-files.mdx\u0000/en/api-reference/api-ref/cloud-recording#start",
-  "en/realtime-media/cloud-recording/build/process-recorded-files/merge-files.mdx\u0000/en/api-reference/api-ref/cloud-recording#transcodingconfig",
-  "en/realtime-media/cloud-recording/build/process-recorded-files/online-play.mdx\u0000/en/api-reference/api-ref/cloud-recording#stop",
-  "en/realtime-media/cloud-recording/build/set-up-authentication/authentication-workflow.mdx\u0000/en/realtime-media/video/build/authenticate-users/deploy-token-server#enable-co-host-authentication",
-  "en/realtime-media/cloud-recording/build/start-a-recording/composite-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#acquire",
-  "en/realtime-media/cloud-recording/build/start-a-recording/composite-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#recordingconfig",
-  "en/realtime-media/cloud-recording/build/start-a-recording/composite-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#recordingfileconfig",
-  "en/realtime-media/cloud-recording/build/start-a-recording/composite-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#start",
-  "en/realtime-media/cloud-recording/build/start-a-recording/composite-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#stop",
-  "en/realtime-media/cloud-recording/build/start-a-recording/composite-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#storageconfig",
-  "en/realtime-media/cloud-recording/build/start-a-recording/individual-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#acquire",
-  "en/realtime-media/cloud-recording/build/start-a-recording/individual-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#recordingconfig",
-  "en/realtime-media/cloud-recording/build/start-a-recording/individual-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#recordingfileconfig",
-  "en/realtime-media/cloud-recording/build/start-a-recording/individual-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#start",
-  "en/realtime-media/cloud-recording/build/start-a-recording/individual-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#stop",
-  "en/realtime-media/cloud-recording/build/start-a-recording/individual-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#storageconfig",
-  "en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding.mdx\u0000/en/api-reference/api-ref/cloud-recording#acquire",
-  "en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding.mdx\u0000/en/api-reference/api-ref/cloud-recording#recordingconfig",
-  "en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding.mdx\u0000/en/api-reference/api-ref/cloud-recording#start",
-  "en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding.mdx\u0000/en/api-reference/api-ref/cloud-recording#stop",
-  "en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding.mdx\u0000/en/api-reference/api-ref/cloud-recording#storageconfig",
-  "en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding.mdx\u0000/en/api-reference/api-ref/cloud-recording#transcodingconfig",
-  "en/realtime-media/cloud-recording/build/start-a-recording/screen-capture.mdx\u0000/en/api-reference/api-ref/cloud-recording#acquire",
-  "en/realtime-media/cloud-recording/build/start-a-recording/screen-capture.mdx\u0000/en/api-reference/api-ref/cloud-recording#recordingconfig",
-  "en/realtime-media/cloud-recording/build/start-a-recording/screen-capture.mdx\u0000/en/api-reference/api-ref/cloud-recording#recordingfileconfig",
-  "en/realtime-media/cloud-recording/build/start-a-recording/screen-capture.mdx\u0000/en/api-reference/api-ref/cloud-recording#snapshotconfig",
-  "en/realtime-media/cloud-recording/build/start-a-recording/screen-capture.mdx\u0000/en/api-reference/api-ref/cloud-recording#start",
-  "en/realtime-media/cloud-recording/build/start-a-recording/screen-capture.mdx\u0000/en/api-reference/api-ref/cloud-recording#storageconfig",
-  "en/realtime-media/cloud-recording/build/start-a-recording/webpage-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#acquire",
-  "en/realtime-media/cloud-recording/build/start-a-recording/webpage-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#start",
-  "en/realtime-media/cloud-recording/build/start-a-recording/webpage-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#stop",
-  "en/realtime-media/cloud-recording/pricing-webpage-recording.mdx\u0000/en/api-reference/api-ref/cloud-recording#extensionserviceconfig",
-  "en/realtime-media/cloud-recording/reference/pricing.mdx\u0000/en/realtime-media/cloud-recording/reference/billing-policies#agoras-free-of-charge-policy-for-the-first-10000-minutes",
-  "en/realtime-media/cloud-recording/reference/pricing.mdx\u0000/en/realtime-media/cloud-recording/reference/billing-policies#billing-fee-deductions-and-account-suspension-policies",
-  "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000#acquire",
-  "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000#query",
-  "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000#start",
-  "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000#stop",
-  "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/api-reference/api-ref/cloud-recording#acquire",
-  "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/api-reference/api-ref/cloud-recording#query",
-  "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/api-reference/api-ref/cloud-recording#start",
-  "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/api-reference/api-ref/cloud-recording#stop",
-  "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/api-reference/api-ref/cloud-recording#storageconfig",
-  "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/api-reference/api-ref/cloud-recording#update",
-  "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/api-reference/api-ref/cloud-recording#updatelayout",
-  "en/realtime-media/im/build/build-core-messaging/messages/message-overview.md\u0000#limitations",
-  "en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups.mdx\u0000/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/group-overview#create-and-destroy-a-chat-group",
-  "en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/chatroom-overview.md\u0000#limitations",
-  "en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/manage-chatrooms.mdx\u0000#retrieve",
-  "en/realtime-media/im/build/build-groups-rooms-and-threads/threading/thread-management.mdx\u0000#fetch",
-  "en/realtime-media/im/build/moderate-and-manage-client-behavior/callkit.mdx\u0000#import",
-  "en/realtime-media/im/build/notifications-and-event-handling/offline-push/integrate-test.mdx\u0000#1-create-push-certificates",
-  "en/realtime-media/im/build/secure-access-and-authentication/authentication.mdx\u0000/en/realtime-media/im/get-started/manage-agora-account#sign-up-and-log-in",
-  "en/realtime-media/im/get-started-sdk.mdx\u0000#add-a-privacy-manifest-file",
-  "en/realtime-media/im/get-started-sdk.mdx\u0000#sign-in",
-  "en/realtime-media/im/get-started-uikit.mdx\u0000/en/realtime-media/im/build/build-core-messaging/user-attributes#manage-contacts",
-  "en/realtime-media/im/get-started/enable.md\u0000#userid",
-  "en/realtime-media/marketplace/build/add-video-and-ar-effects/metakit.mdx\u0000#adding-scene-view",
-  "en/realtime-media/marketplace/reference/downloads.mdx\u0000#implementation-fields",
-  "en/realtime-media/marketplace/reference/downloads.mdx\u0000#subspecs-field",
-  "en/realtime-media/marketplace/reference/security.mdx\u0000/en/realtime-media/marketplace/manage-agora-account#manage-app-certificates",
-  "en/realtime-media/media-pull/build/skills.mdx\u0000#agora-mcp-server",
-  "en/realtime-media/media-pull/reference/security.md\u0000#agora-bug-bounty-program",
-  "en/realtime-media/media-push/build/skills.mdx\u0000#agora-mcp-server",
-  "en/realtime-media/on-premise-recording/build/connect-through-a-firewall/cloud-proxy.mdx\u0000/en/api-reference/api-ref/on-premise-recording#getagoraparameter",
-  "en/realtime-media/on-premise-recording/build/customize-the-recording/layout.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setvideomixinglayout",
-  "en/realtime-media/on-premise-recording/build/customize-the-recording/layout.mdx\u0000/en/api-reference/api-ref/on-premise-recording#videomixinglayout",
-  "en/realtime-media/on-premise-recording/build/customize-the-recording/local-screenshot.mdx\u0000/en/api-reference/api-ref/on-premise-recording#enablerecordervideoframecapture",
-  "en/realtime-media/on-premise-recording/build/customize-the-recording/local-screenshot.mdx\u0000/en/api-reference/api-ref/on-premise-recording#irecordervideoframeobserver",
-  "en/realtime-media/on-premise-recording/build/customize-the-recording/local-screenshot.mdx\u0000/en/api-reference/api-ref/on-premise-recording#recordervideoframecaptureconfig",
-  "en/realtime-media/on-premise-recording/build/customize-the-recording/local-screenshot.mdx\u0000/en/api-reference/api-ref/on-premise-recording#videoframecapturetype",
-  "en/realtime-media/on-premise-recording/build/customize-the-recording/watermark.mdx\u0000/en/api-reference/api-ref/on-premise-recording#enableandupdatevideowatermarks",
-  "en/realtime-media/on-premise-recording/build/customize-the-recording/watermark.mdx\u0000/en/api-reference/api-ref/on-premise-recording#rectangle",
-  "en/realtime-media/on-premise-recording/build/customize-the-recording/watermark.mdx\u0000/en/api-reference/api-ref/on-premise-recording#watermarklitera",
-  "en/realtime-media/on-premise-recording/build/customize-the-recording/watermark.mdx\u0000/en/api-reference/api-ref/on-premise-recording#watermarkoptions",
-  "en/realtime-media/on-premise-recording/build/customize-the-recording/watermark.mdx\u0000/en/api-reference/api-ref/on-premise-recording#watermarkratio",
-  "en/realtime-media/on-premise-recording/build/customize-the-recording/watermark.mdx\u0000/en/api-reference/api-ref/on-premise-recording#watermarktimestamp",
-  "en/realtime-media/on-premise-recording/build/process-recorded-files/restore-files.mdx\u0000/en/api-reference/api-ref/on-premise-recording#getagoraparameter",
-  "en/realtime-media/on-premise-recording/build/process-recorded-files/restore-files.mdx\u0000/en/api-reference/api-ref/on-premise-recording#onrecorderstatechanged",
-  "en/realtime-media/on-premise-recording/build/process-recorded-files/restore-files.mdx\u0000/en/api-reference/api-ref/on-premise-recording#stoprecording",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#enableandupdatevideowatermarks",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#enableandupdatevideowatermarksbyuid",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#initialize",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#joinchannel",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setrecorderconfig",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setrecorderconfigbyuid",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setvideomixinglayout",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#startrecording",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#startsinglerecordingbyuid",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#stoprecording",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#stopsinglerecordingbyuid",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#enableandupdatevideowatermarks",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#enableandupdatevideowatermarksbyuid",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#initialize",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#joinchannel",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#onuserjoined",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setrecorderconfig",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setrecorderconfigbyuid",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setvideomixinglayout",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#startrecording",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#startsinglerecordingbyuid",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#stoprecording",
-  "en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#stopsinglerecordingbyuid",
-  "en/realtime-media/on-premise-recording/build/set-up-authentication/authentication-workflow.mdx\u0000/en/realtime-media/video/build/authenticate-users/deploy-token-server#enable-co-host-authentication",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#agoramediartcrecorder",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#agoraservice",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#agoraserviceconfiguration",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#createagoramediacomponentfactory",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#createagoraservice",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#initialize",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#joinchannel",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#leavechannel",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#logconfig",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#registerrecordereventhandle",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#registerrecordereventhandler",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#release",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setlogfile",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setrecorderconfig",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#startrecording",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#stoprecording",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#subscribeallaudio",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#subscribeallvideo",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#unregisterrecordereventhandle",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#unregisterrecordereventhandler",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#unsubscribeallaudio",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#unsubscribeallvideo",
-  "en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/realtime-media/on-premise-recording/manage-agora-account#generate-temporary-token",
-  "en/realtime-media/on-premise-recording/reference/pricing.mdx\u0000#aggregate",
-  "en/realtime-media/on-premise-recording/reference/pricing.mdx\u0000#question",
-  "en/realtime-media/rtm/build/connect-and-authenticate/authentication-workflow.mdx\u0000/en/api-reference/api-ref/signaling#channeljoinpropsag_platform",
-  "en/realtime-media/rtm/build/connect-and-authenticate/authentication-workflow.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios#tokenrenewrtmtokenpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling#event-listeners",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling#getonlineusers",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling#getuserchannels",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling#presencegetstatepropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling#presenceremovestatepropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling#presencesetstatepropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#event-listeners",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#getonlineusers",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#getuserchannels",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presencegetstatepropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presenceremovestatepropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presencesetstatepropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#event-listeners",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#getonlineusers",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#getuserchannels",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presencegetstatepropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presenceremovestatepropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presencesetstatepropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#event-listeners",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#lock",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagegetchannelpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagemetadataitempropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storageremovechannelpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagesetchannelpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storageupdatechannelpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#event-listeners",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#lock",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagegetchannelpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagemetadatapropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageremovechannelpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagesetchannelpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageupdatechannelpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#event-listeners",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#lock",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagegetchannelpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagemetadatapropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageremovechannelpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagesetchannelpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageupdatechannelpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#event-listeners",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagegetuserpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagemetadataitempropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storageremoveuserpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagesetuserpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagesubscribeuserpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storageunsubscribeuserpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storageupdateuserpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagegetuserpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagemetadatapropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageremoveuserpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagesetuserpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagesubscribeuserpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageunsubscribeuserpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageupdateuserpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagegetuserpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagemetadatapropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageremoveuserpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagesetuserpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagesubscribeuserpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageunsubscribeuserpropsag_platform",
-  "en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageupdateuserpropsag_platform",
-  "en/realtime-media/rtm/build/secure-your-app-and-data/data-encryption.mdx\u0000/en/api-reference/api-ref/signaling#configencryptionpropsag_platform",
-  "en/realtime-media/rtm/build/secure-your-app-and-data/data-encryption.mdx\u0000/en/api-reference/api-ref/signaling#configrtmpropsag_platform",
-  "en/realtime-media/rtm/build/secure-your-app-and-data/data-encryption.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#configencryptionpropsag_platform",
-  "en/realtime-media/rtm/build/secure-your-app-and-data/data-encryption.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#configencryptionpropsag_platform",
-  "en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx\u0000/en/api-reference/api-ref/signaling#configcreatepropsag_platform",
-  "en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx\u0000/en/api-reference/api-ref/signaling#configrtmpropsag_platform",
-  "en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx\u0000/en/api-reference/api-ref/signaling#initialization",
-  "en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#configrtmpropsag_platform",
-  "en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#create-an-instance",
-  "en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#configrtmpropsag_platform",
-  "en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#create-an-instance",
-  "en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener.mdx\u0000/en/api-reference/api-ref/signaling#event-listeners",
-  "en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling#channelsubscribepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling#channelunsubscribepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling#messagepublishpropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelsubscribepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelunsubscribepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#messagepublishpropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelsubscribepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelunsubscribepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#messagepublishpropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling#channelcreatepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling#channeljoinpropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling#channelleavepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling#channelreleasepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling#topicpublishpropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelcreatepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channeljoinpropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelleavepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelreleasepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicpublishpropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelcreatepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channeljoinpropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelleavepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelreleasepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicpublishpropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling#event-listeners",
-  "en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling#topicjoinpropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling#topicleavepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling#topicsubscribepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling#topicunsubscribepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#event-listeners",
-  "en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicjoinpropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicleavepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicsubscribepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicunsubscribepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#event-listeners",
-  "en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicjoinpropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicleavepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicsubscribepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicunsubscribepropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/user-channel.mdx\u0000/en/api-reference/api-ref/signaling#messagepublishpropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/user-channel.mdx\u0000/en/api-reference/api-ref/signaling#receive",
-  "en/realtime-media/rtm/build/work-with-channels/user-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#messagepublishpropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/user-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#receive",
-  "en/realtime-media/rtm/build/work-with-channels/user-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=objc&tab=swift#messagepublishpropsag_platform",
-  "en/realtime-media/rtm/build/work-with-channels/user-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=objc&tab=swift#receive",
-  "en/realtime-media/rtm/console-overview.md\u0000#generate-a-customer-id-and-customer-secret",
-  "en/realtime-media/rtm/console-overview.md\u0000#prerequisites",
-  "en/realtime-media/speech-to-text/reference/security.md\u0000/en/realtime-media/speech-to-text/reference/manage-agora-account#manage-app-certificates",
-  "en/realtime-media/video/build/add-advanced-video-features/metakit.mdx\u0000#adding-scene-view",
-  "en/realtime-media/video/build/authenticate-users/deploy-token-server.mdx\u0000/en/realtime-media/video/build/authenticate-users/deploy-token-server#enable-co-host-authentication",
-  "en/realtime-media/video/build/authenticate-users/integrate-token-generation.mdx\u0000/en/realtime-media/video/build/authenticate-users/authentication-workflow#generate-a-token",
-  "en/realtime-media/video/build/join-and-manage-channels/compile-run-sample-project.mdx\u0000/en/realtime-media/video/reference/supported-platforms#browsers",
-  "en/realtime-media/video/build/join-and-manage-channels/preload-channels.mdx\u0000/en/realtime-media/video/reference/pricing#cost-calculation",
-  "en/realtime-media/video/build/optimize-and-operate/app-size-optimization.mdx\u0000#implementation-fields",
-  "en/realtime-media/video/build/optimize-and-operate/app-size-optimization.mdx\u0000#subspecs-field",
-  "en/realtime-media/video/get-started-sdk.mdx\u0000#get-device-permissions",
-  "en/realtime-media/video/get-started-sdk.mdx\u0000#local--tracks",
-  "en/realtime-media/video/get-started-sdk.mdx\u0000#subscribe-to--events",
-  "en/realtime-media/video/get-started-sdk.mdx\u0000/en/api-reference/faq/quality/video_blank#issue-description",
-  "en/realtime-media/video/get-started-sdk.mdx\u0000/en/realtime-media/video/reference/supported-platforms#browsers",
-  "en/realtime-media/video/quickstart.mdx\u0000#complete-code",
-  "en/realtime-media/video/quickstart.mdx\u0000#get-device-permissions",
-  "en/realtime-media/video/quickstart.mdx\u0000#local--tracks",
-  "en/realtime-media/video/quickstart.mdx\u0000#subscribe-to--events",
-  "en/realtime-media/video/quickstart.mdx\u0000/en/api-reference/faq/quality/video_blank#issue-description",
-  "en/realtime-media/video/reference/console-overview.mdx\u0000#generate-a-customer-id-and-customer-secret",
-  "en/realtime-media/video/reference/console-overview.mdx\u0000#prerequisites",
-  "en/realtime-media/video/reference/magic-leap.md\u0000/en/realtime-media/video/manage-agora-account#generate-a-temporary-token",
-  "en/realtime-media/video/reference/migration-guide.mdx\u0000/en/realtime-media/video/get-started-sdk#project-setup",
-  "en/realtime-media/video/reference/release-notes.mdx\u0000#410",
-  "en/realtime-media/video/reference/release-notes.mdx\u0000#issue-fixed",
-  "en/realtime-media/video/reference/release-notes.mdx\u0000/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing",
-  "en/realtime-media/voice/build/optimize-and-operate/app-size-optimization.mdx\u0000#implementation-fields",
-  "en/realtime-media/voice/build/optimize-and-operate/app-size-optimization.mdx\u0000#subspecs-field",
-  "en/realtime-media/voice/quickstart.mdx\u0000#get-device-permissions",
-  "en/realtime-media/voice/quickstart.mdx\u0000#local--tracks",
-  "en/realtime-media/voice/quickstart.mdx\u0000#subscribe-to--events",
-  "en/realtime-media/voice/reference/console-overview.md\u0000#generate-a-customer-id-and-customer-secret",
-  "en/realtime-media/voice/reference/console-overview.md\u0000#prerequisites",
-  "en/realtime-media/voice/reference/migration-guide.mdx\u0000/en/realtime-media/voice/quickstart#project-setup",
-  "en/realtime-media/voice/reference/release-notes.mdx\u0000/en/realtime-media/voice/reference/pricing#ai-noise-suppression-pricing",
-  "en/realtime-media/voice/skills.mdx\u0000#agora-mcp-server",
-  "en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx\u0000#csharp",
-  "en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx\u0000#golang",
-  "en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx\u0000#java",
-  "en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx\u0000#javascript",
-  "en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx\u0000#php",
-  "en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx\u0000#ruby",
-  "en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx\u0000#typescript",
-  "en/realtime-media/whiteboard/build/display-files-and-manage-scenes/scenes/display-files-fast.mdx\u0000/en/api-reference/api-ref/uikit-sdk#nsertimg",
-  "en/realtime-media/whiteboard/build/draw-and-edit-content/whiteboard-tools.mdx\u0000#tech",
-  "en/realtime-media/whiteboard/build/migrate-and-accelerate-development/migration-guide.md\u0000#netlessaccount",
-  "en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard.md\u0000/en/realtime-media/whiteboard/build/manage-agora-account#create-an-agora-project",
-  "en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/get-started-sdk.mdx\u0000/en/realtime-media/whiteboard/build/manage-agora-account#sign-up-and-log-in",
-  "en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/get-started-uikit.mdx\u0000/en/realtime-media/whiteboard/build/manage-agora-account#sign-up-and-log-in",
-  "en/realtime-media/whiteboard/build/skills.md\u0000#agora-mcp-server",
-  "en/realtime-media/whiteboard/overview/release-notes-uikit.mdx\u0000/en/api-reference/api-ref/uikit-sdk#setresource",
-  "en/realtime-media/whiteboard/overview/release-notes-uikit.mdx\u0000/en/api-reference/api-ref/uikit-sdk#setstrokerange",
-  "en/realtime-media/whiteboard/overview/release-notes-uikit.mdx\u0000/en/api-reference/api-ref/uikit-sdk#settoolboxedgemargin",
-  "en/realtime-media/whiteboard/overview/release-notes-uikit.mdx\u0000/en/api-reference/api-ref/uikit-sdk#settoolscolors",
-  "en/realtime-media/whiteboard/overview/release-notes.mdx\u0000/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/get-started-sdk#get-the-whiteboard-sdk",
-  "en/realtime-media/agora-analytics/build/integrate-and-embed/embedded.md\u0000#url-to-a-detailed-call-inspector-page",
-  "en/realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/ai-noise-suppression.mdx\u0000/en/realtime-media/interactive-live-streaming/reference/release-notes#ai-noise-suppression",
-  "en/realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/metakit.mdx\u0000#adding-scene-view",
-  "en/realtime-media/interactive-live-streaming/build/authenticate-users/deploy-token-server.mdx\u0000#api-reference",
-  "en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx\u0000#implementation-fields",
-  "en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx\u0000#subspecs-field",
-  "en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/preload-channels.mdx\u0000/en/realtime-media/interactive-live-streaming/reference/pricing#cost-calculation",
-  "en/realtime-media/interactive-live-streaming/quickstart.mdx\u0000#complete-code",
-  "en/realtime-media/interactive-live-streaming/quickstart.mdx\u0000#get-device-permissions",
-  "en/realtime-media/interactive-live-streaming/quickstart.mdx\u0000#local--tracks",
-  "en/realtime-media/interactive-live-streaming/quickstart.mdx\u0000#subscribe-to--events",
-  "en/realtime-media/interactive-live-streaming/reference/console-overview.md\u0000#generate-a-customer-id-and-customer-secret",
-  "en/realtime-media/interactive-live-streaming/reference/console-overview.md\u0000#prerequisites",
-  "en/realtime-media/interactive-live-streaming/reference/release-notes.mdx\u0000#410",
-  "en/realtime-media/interactive-live-streaming/reference/release-notes.mdx\u0000#ai-noise-suppression",
-  "en/realtime-media/interactive-live-streaming/reference/release-notes.mdx\u0000#issue-fixed",
-  "en/realtime-media/interactive-live-streaming/reference/release-notes.mdx\u0000#super-clarity-extension",
-  "en/realtime-media/interactive-live-streaming/reference/release-notes.mdx\u0000/en/realtime-media/interactive-live-streaming/reference/pricing#ai-noise-suppression-pricing",
-  "en/realtime-media/iot/reference/channel-management-rest-api.mdx\u0000#create-a-rule-to-ban-user-privileges",
-  "zh-CN/ai/quick-start-go.mdx\u0000#\u4e0e\u667a\u80fd\u4f53\u5bf9\u8bdd",
-  "zh-CN/ai/quick-start-go.mdx\u0000#\u5b9a\u4e49\u53d8\u91cf",
-  "zh-CN/ai/quick-start-java.mdx\u0000#\u4e0e\u667a\u80fd\u4f53\u5bf9\u8bdd",
-  "zh-CN/ai/quick-start-java.mdx\u0000#\u5b9a\u4e49\u53d8\u91cf",
-  "zh-CN/ai/release-notes.md\u0000/zh-CN/ai/billing#\u4ed8\u8d39\u65b9\u5f0f",
-  "zh-CN/best-practices/release-notes.md\u0000/zh-CN/best-practices/billing#\u4ed8\u8d39\u65b9\u5f0f",
+  'en/ai/best-practices/record-agent-conversation.mdx\u0000/en/api-reference/api-ref/cloud-recording#start',
+  'en/ai/build/custom-model-integration/presets.mdx\u0000/en/api-reference/api-ref/conversational-ai/authentication#implement-basic-http-authentication',
+  'en/ai/build/custom-model-integration/presets.mdx\u0000/en/api-reference/api-ref/conversational-ai/authentication#implement-token-authentication',
+  'en/api-reference/api-ref/agora-analytics/analytics-rest-api.md\u0000#20quality',
+  'en/api-reference/api-ref/agora-analytics/analytics-rest-api.md\u0000#20scale',
+  'en/api-reference/api-ref/agora-analytics/analytics-rest-api.md\u0000#realtimequality',
+  'en/api-reference/api-ref/agora-analytics/analytics-rest-api.md\u0000#realtimescale',
+  'en/api-reference/api-ref/agora-analytics/analytics-rest-api.md\u0000/en/realtime-media/agora-analytics/reference/billing-policies#how-does-agora-calculate-service-minutes',
+  'en/api-reference/api-ref/broadcast-streaming/stream-transfer.mdx\u0000#patch',
+  'en/api-reference/api-ref/flexible-classroom/classroom-rest-api.mdx\u0000#get-classroom-events',
+  'en/api-reference/api-ref/flexible-classroom/classroom-sdk.mdx\u0000#agoraedumediaencryptionconfigs',
+  'en/api-reference/api-ref/flexible-classroom/classroom-sdk.mdx\u0000#agoraeduregionstr',
+  'en/api-reference/api-ref/im/chat-group-management/create-delete-retrieve-groups.md\u0000#Modify',
+  'en/api-reference/api-ref/im/chat-group-management/create-delete-retrieve-groups.md\u0000#code',
+  'en/api-reference/api-ref/im/chat-group-management/create-delete-retrieve-groups.md\u0000#param',
+  'en/api-reference/api-ref/im/chat-group-management/create-delete-retrieve-groups.md\u0000#pubparam',
+  'en/api-reference/api-ref/im/chat-group-management/create-delete-retrieve-groups.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/chat-group-management/create-delete-retrieve-groups.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-allowlist.md\u0000#param',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-allowlist.md\u0000/en/api-reference/api-ref/im/chat-group-management/manage-group-mutelist#muting-all-chat-group-members',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-allowlist.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-allowlist.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-announcement-files.md\u0000#code',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-announcement-files.md\u0000#getall',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-announcement-files.md\u0000#param',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-announcement-files.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-announcement-files.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-blocklist.md\u0000#code',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-blocklist.md\u0000#param',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-blocklist.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-blocklist.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-members.md\u0000#code',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-members.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-members.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-mutelist.md\u0000#param',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-mutelist.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/chat-group-management/manage-group-mutelist.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-admins.md\u0000#code',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-admins.md\u0000#param',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-admins.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-admins.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-allowlist.md\u0000#param',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-allowlist.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-attributes.md\u0000#force',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-attributes.md\u0000#param',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-attributes.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-attributes.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-blocklist.md\u0000#code',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-blocklist.md\u0000#param',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-blocklist.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-members.md\u0000#code',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-members.md\u0000#param',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-members.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-members.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-mutelist.md\u0000#code',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-mutelist.md\u0000#param',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-mutelist.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatroom-mutelist.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatrooms.md\u0000#code',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatrooms.md\u0000#getall',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatrooms.md\u0000#param',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatrooms.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/chatroom-management/manage-chatrooms.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/contact-management.md\u0000#code',
+  'en/api-reference/api-ref/im/contact-management.md\u0000#param',
+  'en/api-reference/api-ref/im/contact-management.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/global-mute.md\u0000#param',
+  'en/api-reference/api-ref/im/global-mute.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/global-mute.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/index.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/message-management.md\u0000#body',
+  'en/api-reference/api-ref/im/message-management.md\u0000#download',
+  'en/api-reference/api-ref/im/message-management.md\u0000#param',
+  'en/api-reference/api-ref/im/message-management.md\u0000#request',
+  'en/api-reference/api-ref/im/message-management.md\u0000#sendmessage',
+  'en/api-reference/api-ref/im/message-management.md\u0000#upload',
+  'en/api-reference/api-ref/im/message-management.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/message-management.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/offline-push/offline-push-configuration.mdx\u0000#param',
+  'en/api-reference/api-ref/im/offline-push/offline-push-configuration.mdx\u0000#request',
+  'en/api-reference/api-ref/im/offline-push/offline-push-configuration.mdx\u0000#response',
+  'en/api-reference/api-ref/im/offline-push/offline-push-configuration.mdx\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/offline-push/offline-push-configuration.mdx\u0000/en/api-reference/api-ref/im/user-system-registration#unban',
+  'en/api-reference/api-ref/im/offline-push/offline-push-configuration.mdx\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/presence.md\u0000#param',
+  'en/api-reference/api-ref/im/presence.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/presence.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/push-notification-management.mdx\u0000#param',
+  'en/api-reference/api-ref/im/push-notification-management.mdx\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/push-notification-management.mdx\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/reaction.md\u0000#create',
+  'en/api-reference/api-ref/im/reaction.md\u0000#param',
+  'en/api-reference/api-ref/im/reaction.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/reaction.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/thread-management/create-delete-retrieve-threads.md\u0000#auth',
+  'en/api-reference/api-ref/im/thread-management/create-delete-retrieve-threads.md\u0000#request',
+  'en/api-reference/api-ref/im/thread-management/create-delete-retrieve-threads.md\u0000#response',
+  'en/api-reference/api-ref/im/thread-management/create-delete-retrieve-threads.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/thread-management/create-delete-retrieve-threads.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/thread-management/manage-thread-members.md\u0000#auth',
+  'en/api-reference/api-ref/im/thread-management/manage-thread-members.md\u0000#request',
+  'en/api-reference/api-ref/im/thread-management/manage-thread-members.md\u0000#response',
+  'en/api-reference/api-ref/im/thread-management/manage-thread-members.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/thread-management/manage-thread-members.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/user-attributes-management.md\u0000#param',
+  'en/api-reference/api-ref/im/user-attributes-management.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/user-attributes-management.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/im/user-system-registration.md\u0000#code',
+  'en/api-reference/api-ref/im/user-system-registration.md\u0000#param',
+  'en/api-reference/api-ref/im/user-system-registration.md\u0000#unban',
+  'en/api-reference/api-ref/im/user-system-registration.md\u0000/en/api-reference/api-ref/im/limitations#call-limit-of-server-sides',
+  'en/api-reference/api-ref/im/user-system-registration.md\u0000/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project',
+  'en/api-reference/api-ref/media-pull/index.md\u0000/en/realtime-media/media-pull/build/manage-agora-account#generate-a-temporary-tokens',
+  'en/api-reference/api-ref/server-sdk/python.mdx\u0000#anthropic-1',
+  'en/api-reference/api-ref/server-sdk/python.mdx\u0000#avatar-vendors-1',
+  'en/api-reference/api-ref/server-sdk/python.mdx\u0000#azureopenai-1',
+  'en/api-reference/api-ref/server-sdk/python.mdx\u0000#builder-methods-1',
+  'en/api-reference/api-ref/server-sdk/python.mdx\u0000#gemini-1',
+  'en/api-reference/api-ref/server-sdk/python.mdx\u0000#openai-1',
+  'en/api-reference/api-ref/server-sdk/python.mdx\u0000#start-1',
+  'en/api-reference/api-ref/server-sdk/python.mdx\u0000#stt-vendors-1',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#configlinkstateeven-t',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#configlockeven-t',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#configmessageeven-t',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#configpresenceeven-t',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#configstorageeven-t',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#configtopiceven-t',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvareacod-e',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvchanneltyp-e',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvconnectionreaso-n',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvconnectionstat-e',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvencryptionmod-e',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvlinkoperatio-n',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvlinkstat-e',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvlinkstatereaso-n',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvlocktyp-e',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvlogleve-l',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvmessageqo-s',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvmessagetyp-e',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvpresencetyp-e',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvpriorit-y',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvprotocoltyp-e',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvproxytyp-e',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvrtmservicetyp-e',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvstorageeventtyp-e',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvstoragetyp-e',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#enumvtopictyp-e',
+  'en/api-reference/api-ref/signaling/android.mdx\u0000#storagemetadat-a',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#configlinkstateeven-t',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvareacod-e',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvchanneltyp-e',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvencryptionmod-e',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvlinkoperatio-n',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvlinkstat-e',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvlinkstatereaso-n',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvlocktyp-e',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvlogleve-l',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvmessageqo-s',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvmessagetyp-e',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvpresencetyp-e',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvpriorit-y',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvprotocoltyp-e',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvproxytyp-e',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvrtmservicetyp-e',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvstorageeventtyp-e',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvstoragetyp-e',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#enumvtopictyp-e',
+  'en/api-reference/api-ref/signaling/flutter.mdx\u0000#storagemetadataite-m',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#configlinkstateeven-t',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvareacod-e',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvchanneltyp-e',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvencryptionmod-e',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvlinkoperatio-n',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvlinkstat-e',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvlinkstatereaso-n',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvlocktyp-e',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvlogleve-l',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvmessagepriorit-y',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvmessageqo-s',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvpresencetyp-e',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvprotocoltyp-e',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvproxytyp-e',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvrtmservicetyp-e',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvstorageeventtyp-e',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvstoragetyp-e',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#enumvtopictyp-e',
+  'en/api-reference/api-ref/signaling/ios.mdx\u0000#storagemetadat-a',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#configlinkstateeven-t',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#configlockeven-t',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#configmessageeven-t',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#configpresenceeven-t',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#configstorageeven-t',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#configtopiceven-t',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvareacod-e',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvchanneltyp-e',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvconnectionreaso-n',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvconnectionstat-e',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvencryptionmod-e',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvlinkoperatio-n',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvlinkstat-e',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvlinkstatereaso-n',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvlocktyp-e',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvlogleve-l',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvmessagepriorit-y',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvmessageqo-s',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvmessagetyp-e',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvpresencetyp-e',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvprotocoltyp-e',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvproxytyp-e',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvrtmservicetyp-e',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvstorageeventtyp-e',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvstoragetyp-e',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#enumvtopictyp-e',
+  'en/api-reference/api-ref/signaling/linux-cpp.mdx\u0000#storagemetadat-a',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#configlinkstateeven-t',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#configlockeven-t',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#configmessageeven-t',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#configpresenceeven-t',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#configstorageeven-t',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#configtopiceven-t',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvareacod-e',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvchanneltyp-e',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvconnectionreaso-n',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvconnectionstat-e',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvencryptionmod-e',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvlinkoperatio-n',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvlinkstat-e',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvlinkstatereaso-n',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvlocktyp-e',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvlogleve-l',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvmessageqo-s',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvpresencetyp-e',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvpriorit-y',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvprotocoltyp-e',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvproxytyp-e',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvrtmservicetyp-e',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvstorageeventtyp-e',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvstoragetyp-e',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#enumvtopictyp-e',
+  'en/api-reference/api-ref/signaling/macos.mdx\u0000#storagemetadat-a',
+  'en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvareacod-e',
+  'en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvchanneltyp-e',
+  'en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvconnectionreaso-n',
+  'en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvconnectionstat-e',
+  'en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvencryptionmod-e',
+  'en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvlocktyp-e',
+  'en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvlogleve-l',
+  'en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvmessagepriorit-y',
+  'en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvmessageqo-s',
+  'en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvmessagetyp-e',
+  'en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvpresencetyp-e',
+  'en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvproxytyp-e',
+  'en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvstorageeventtyp-e',
+  'en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvstoragetyp-e',
+  'en/api-reference/api-ref/signaling/unity.mdx\u0000#enumvtopictyp-e',
+  'en/api-reference/api-ref/signaling/web.mdx\u0000#enumvconnectionreaso-n',
+  'en/api-reference/api-ref/signaling/web.mdx\u0000#enumvconnectionstat-e',
+  'en/api-reference/api-ref/signaling/web.mdx\u0000#enumvencryptionmod-e',
+  'en/api-reference/api-ref/signaling/web.mdx\u0000#enumvlinkstat-e',
+  'en/api-reference/api-ref/signaling/web.mdx\u0000#enumvlogleve-l',
+  'en/api-reference/api-ref/signaling/web.mdx\u0000#enumvrtmservicetyp-e',
+  'en/api-reference/api-ref/signaling/web.mdx\u0000#setup#eventhandlers',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#configlinkstateeven-t',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#configlockeven-t',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#configmessageeven-t',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#configpresenceeven-t',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#configstorageeven-t',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#configtopiceven-t',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvareacod-e',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvchanneltyp-e',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvconnectionreaso-n',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvconnectionstat-e',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvencryptionmod-e',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvlinkoperatio-n',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvlinkstat-e',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvlinkstatereaso-n',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvlocktyp-e',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvlogleve-l',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvmessagepriorit-y',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvmessageqo-s',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvmessagetyp-e',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvpresencetyp-e',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvprotocoltyp-e',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvproxytyp-e',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvrtmservicetyp-e',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvstorageeventtyp-e',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvstoragetyp-e',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#enumvtopictyp-e',
+  'en/api-reference/api-ref/signaling/windows-cpp.mdx\u0000#storagemetadat-a',
+  'en/api-reference/faq/integration/console_error_web.mdx\u0000#candidate',
+  'en/api-reference/faq/integration/image_enhancement.mdx\u0000#ref',
+  'en/api-reference/faq/integration/restful_api_call_frequency.mdx\u0000#raiselimit',
+  'en/api-reference/faq/integration/system_volume.mdx\u0000#volume-type-introduction',
+  'en/api-reference/faq/product/audio_format.mdx\u0000#advanced',
+  'en/api-reference/faq/product/audio_format.mdx\u0000#basic',
+  'en/api-reference/faq/product/browser_support.mdx\u0000#safari',
+  'en/api-reference/faq/quality/ios_bluetooth.mdx\u0000#solution',
+  'en/api-reference/faq/quality/pixelated_green_video.mdx\u0000#green_sender',
+  'en/api-reference/faq/quality/pixelated_green_video.mdx\u0000#pixelated_sender',
+  'en/realtime-media/broadcast-streaming/build/apply-effects-and-enhancements/metakit.mdx\u0000#adding-scene-view',
+  'en/realtime-media/broadcast-streaming/build/authenticate-users/deploy-token-server.mdx\u0000#api-reference',
+  'en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx\u0000#implementation-fields',
+  'en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx\u0000#subspecs-field',
+  'en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/preload-channels.mdx\u0000/en/realtime-media/broadcast-streaming/reference/pricing#cost-calculation',
+  'en/realtime-media/broadcast-streaming/quickstart.mdx\u0000#complete-code',
+  'en/realtime-media/broadcast-streaming/quickstart.mdx\u0000#get-device-permissions',
+  'en/realtime-media/broadcast-streaming/quickstart.mdx\u0000#local--tracks',
+  'en/realtime-media/broadcast-streaming/quickstart.mdx\u0000#subscribe-to--events',
+  'en/realtime-media/broadcast-streaming/reference/console-overview.md\u0000#generate-a-customer-id-and-customer-secret',
+  'en/realtime-media/broadcast-streaming/reference/console-overview.md\u0000#prerequisites',
+  'en/realtime-media/broadcast-streaming/reference/release-notes.mdx\u0000#410',
+  'en/realtime-media/broadcast-streaming/reference/release-notes.mdx\u0000#issue-fixed',
+  'en/realtime-media/broadcast-streaming/reference/release-notes.mdx\u0000/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing',
+  'en/realtime-media/broadcast-streaming/skills.mdx\u0000#agora-mcp-server',
+  'en/realtime-media/cloud-recording/build/best-practices/integration-best-practices.mdx\u0000/en/api-reference/api-ref/cloud-recording#query',
+  'en/realtime-media/cloud-recording/build/best-practices/webpage-best-practices.mdx\u0000/en/api-reference/api-ref/cloud-recording#start',
+  'en/realtime-media/cloud-recording/build/customize-the-recording/layout.mdx\u0000#bestfit',
+  'en/realtime-media/cloud-recording/build/customize-the-recording/layout.mdx\u0000#float',
+  'en/realtime-media/cloud-recording/build/customize-the-recording/layout.mdx\u0000#vertical',
+  'en/realtime-media/cloud-recording/build/customize-the-recording/layout.mdx\u0000/en/api-reference/api-ref/cloud-recording#start',
+  'en/realtime-media/cloud-recording/build/customize-the-recording/layout.mdx\u0000/en/api-reference/api-ref/cloud-recording#updatelayout',
+  'en/realtime-media/cloud-recording/build/customize-the-recording/subscription.mdx\u0000/en/api-reference/api-ref/cloud-recording#start',
+  'en/realtime-media/cloud-recording/build/customize-the-recording/subscription.mdx\u0000/en/api-reference/api-ref/cloud-recording#update',
+  'en/realtime-media/cloud-recording/build/customize-the-recording/webpage-load-timeout.mdx\u0000/en/api-reference/api-ref/cloud-recording#start',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#1-cloud_recording_error',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#100-rtmp_publish_status',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#1001-postpone_transcode_final_result',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#11-session_exit',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#12-session_failover',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#2-cloud_recording_warning',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#3-cloud_recording_status_update',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#30-uploader_started',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#31-uploaded',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#32-backuped',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#33-uploading_progress',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#4-cloud_recording_file_infos',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#40-recorder_started',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#41-recorder_leave',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#42-recorder_slice_start',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#43-recorder_audio_stream_state_changed',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#44-recorder_video_stream_state_changed',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#45-recorder_snapshot_file',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#60-vod_started',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#61-vod_triggered',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#70-web_recorder_started',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#71-web_recorder_stopped',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#72-web_recorder_capability_limit',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#73-web_recorder_reload',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#90-download_failed',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#clouderr',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#state',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#uploaderr',
+  'en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx\u0000#uploadwarn',
+  'en/realtime-media/cloud-recording/build/process-recorded-files/manage-files.mdx\u0000/en/api-reference/api-ref/cloud-recording#start',
+  'en/realtime-media/cloud-recording/build/process-recorded-files/merge-files.mdx\u0000/en/api-reference/api-ref/cloud-recording#transcodingconfig',
+  'en/realtime-media/cloud-recording/build/process-recorded-files/online-play.mdx\u0000/en/api-reference/api-ref/cloud-recording#stop',
+  'en/realtime-media/cloud-recording/build/set-up-authentication/authentication-workflow.mdx\u0000/en/realtime-media/video/build/authenticate-users/deploy-token-server#enable-co-host-authentication',
+  'en/realtime-media/cloud-recording/build/start-a-recording/composite-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#acquire',
+  'en/realtime-media/cloud-recording/build/start-a-recording/composite-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#recordingconfig',
+  'en/realtime-media/cloud-recording/build/start-a-recording/composite-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#recordingfileconfig',
+  'en/realtime-media/cloud-recording/build/start-a-recording/composite-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#start',
+  'en/realtime-media/cloud-recording/build/start-a-recording/composite-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#stop',
+  'en/realtime-media/cloud-recording/build/start-a-recording/composite-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#storageconfig',
+  'en/realtime-media/cloud-recording/build/start-a-recording/individual-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#acquire',
+  'en/realtime-media/cloud-recording/build/start-a-recording/individual-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#recordingconfig',
+  'en/realtime-media/cloud-recording/build/start-a-recording/individual-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#recordingfileconfig',
+  'en/realtime-media/cloud-recording/build/start-a-recording/individual-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#start',
+  'en/realtime-media/cloud-recording/build/start-a-recording/individual-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#stop',
+  'en/realtime-media/cloud-recording/build/start-a-recording/individual-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#storageconfig',
+  'en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding.mdx\u0000/en/api-reference/api-ref/cloud-recording#acquire',
+  'en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding.mdx\u0000/en/api-reference/api-ref/cloud-recording#recordingconfig',
+  'en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding.mdx\u0000/en/api-reference/api-ref/cloud-recording#start',
+  'en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding.mdx\u0000/en/api-reference/api-ref/cloud-recording#stop',
+  'en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding.mdx\u0000/en/api-reference/api-ref/cloud-recording#storageconfig',
+  'en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding.mdx\u0000/en/api-reference/api-ref/cloud-recording#transcodingconfig',
+  'en/realtime-media/cloud-recording/build/start-a-recording/screen-capture.mdx\u0000/en/api-reference/api-ref/cloud-recording#acquire',
+  'en/realtime-media/cloud-recording/build/start-a-recording/screen-capture.mdx\u0000/en/api-reference/api-ref/cloud-recording#recordingconfig',
+  'en/realtime-media/cloud-recording/build/start-a-recording/screen-capture.mdx\u0000/en/api-reference/api-ref/cloud-recording#recordingfileconfig',
+  'en/realtime-media/cloud-recording/build/start-a-recording/screen-capture.mdx\u0000/en/api-reference/api-ref/cloud-recording#snapshotconfig',
+  'en/realtime-media/cloud-recording/build/start-a-recording/screen-capture.mdx\u0000/en/api-reference/api-ref/cloud-recording#start',
+  'en/realtime-media/cloud-recording/build/start-a-recording/screen-capture.mdx\u0000/en/api-reference/api-ref/cloud-recording#storageconfig',
+  'en/realtime-media/cloud-recording/build/start-a-recording/webpage-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#acquire',
+  'en/realtime-media/cloud-recording/build/start-a-recording/webpage-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#start',
+  'en/realtime-media/cloud-recording/build/start-a-recording/webpage-mode.mdx\u0000/en/api-reference/api-ref/cloud-recording#stop',
+  'en/realtime-media/cloud-recording/pricing-webpage-recording.mdx\u0000/en/api-reference/api-ref/cloud-recording#extensionserviceconfig',
+  'en/realtime-media/cloud-recording/reference/pricing.mdx\u0000/en/realtime-media/cloud-recording/reference/billing-policies#agoras-free-of-charge-policy-for-the-first-10000-minutes',
+  'en/realtime-media/cloud-recording/reference/pricing.mdx\u0000/en/realtime-media/cloud-recording/reference/billing-policies#billing-fee-deductions-and-account-suspension-policies',
+  'en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000#acquire',
+  'en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000#query',
+  'en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000#start',
+  'en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000#stop',
+  'en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/api-reference/api-ref/cloud-recording#acquire',
+  'en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/api-reference/api-ref/cloud-recording#query',
+  'en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/api-reference/api-ref/cloud-recording#start',
+  'en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/api-reference/api-ref/cloud-recording#stop',
+  'en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/api-reference/api-ref/cloud-recording#storageconfig',
+  'en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/api-reference/api-ref/cloud-recording#update',
+  'en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/api-reference/api-ref/cloud-recording#updatelayout',
+  'en/realtime-media/im/build/build-core-messaging/messages/message-overview.md\u0000#limitations',
+  'en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups.mdx\u0000/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/group-overview#create-and-destroy-a-chat-group',
+  'en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/chatroom-overview.md\u0000#limitations',
+  'en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/manage-chatrooms.mdx\u0000#retrieve',
+  'en/realtime-media/im/build/build-groups-rooms-and-threads/threading/thread-management.mdx\u0000#fetch',
+  'en/realtime-media/im/build/moderate-and-manage-client-behavior/callkit.mdx\u0000#import',
+  'en/realtime-media/im/build/notifications-and-event-handling/offline-push/integrate-test.mdx\u0000#1-create-push-certificates',
+  'en/realtime-media/im/build/secure-access-and-authentication/authentication.mdx\u0000/en/realtime-media/im/get-started/manage-agora-account#sign-up-and-log-in',
+  'en/realtime-media/im/get-started-sdk.mdx\u0000#add-a-privacy-manifest-file',
+  'en/realtime-media/im/get-started-sdk.mdx\u0000#sign-in',
+  'en/realtime-media/im/get-started-uikit.mdx\u0000/en/realtime-media/im/build/build-core-messaging/user-attributes#manage-contacts',
+  'en/realtime-media/im/get-started/enable.md\u0000#userid',
+  'en/realtime-media/marketplace/build/add-video-and-ar-effects/metakit.mdx\u0000#adding-scene-view',
+  'en/realtime-media/marketplace/reference/downloads.mdx\u0000#implementation-fields',
+  'en/realtime-media/marketplace/reference/downloads.mdx\u0000#subspecs-field',
+  'en/realtime-media/marketplace/reference/security.mdx\u0000/en/realtime-media/marketplace/manage-agora-account#manage-app-certificates',
+  'en/realtime-media/media-pull/build/skills.mdx\u0000#agora-mcp-server',
+  'en/realtime-media/media-pull/reference/security.md\u0000#agora-bug-bounty-program',
+  'en/realtime-media/media-push/build/skills.mdx\u0000#agora-mcp-server',
+  'en/realtime-media/on-premise-recording/build/connect-through-a-firewall/cloud-proxy.mdx\u0000/en/api-reference/api-ref/on-premise-recording#getagoraparameter',
+  'en/realtime-media/on-premise-recording/build/customize-the-recording/layout.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setvideomixinglayout',
+  'en/realtime-media/on-premise-recording/build/customize-the-recording/layout.mdx\u0000/en/api-reference/api-ref/on-premise-recording#videomixinglayout',
+  'en/realtime-media/on-premise-recording/build/customize-the-recording/local-screenshot.mdx\u0000/en/api-reference/api-ref/on-premise-recording#enablerecordervideoframecapture',
+  'en/realtime-media/on-premise-recording/build/customize-the-recording/local-screenshot.mdx\u0000/en/api-reference/api-ref/on-premise-recording#irecordervideoframeobserver',
+  'en/realtime-media/on-premise-recording/build/customize-the-recording/local-screenshot.mdx\u0000/en/api-reference/api-ref/on-premise-recording#recordervideoframecaptureconfig',
+  'en/realtime-media/on-premise-recording/build/customize-the-recording/local-screenshot.mdx\u0000/en/api-reference/api-ref/on-premise-recording#videoframecapturetype',
+  'en/realtime-media/on-premise-recording/build/customize-the-recording/watermark.mdx\u0000/en/api-reference/api-ref/on-premise-recording#enableandupdatevideowatermarks',
+  'en/realtime-media/on-premise-recording/build/customize-the-recording/watermark.mdx\u0000/en/api-reference/api-ref/on-premise-recording#rectangle',
+  'en/realtime-media/on-premise-recording/build/customize-the-recording/watermark.mdx\u0000/en/api-reference/api-ref/on-premise-recording#watermarklitera',
+  'en/realtime-media/on-premise-recording/build/customize-the-recording/watermark.mdx\u0000/en/api-reference/api-ref/on-premise-recording#watermarkoptions',
+  'en/realtime-media/on-premise-recording/build/customize-the-recording/watermark.mdx\u0000/en/api-reference/api-ref/on-premise-recording#watermarkratio',
+  'en/realtime-media/on-premise-recording/build/customize-the-recording/watermark.mdx\u0000/en/api-reference/api-ref/on-premise-recording#watermarktimestamp',
+  'en/realtime-media/on-premise-recording/build/process-recorded-files/restore-files.mdx\u0000/en/api-reference/api-ref/on-premise-recording#getagoraparameter',
+  'en/realtime-media/on-premise-recording/build/process-recorded-files/restore-files.mdx\u0000/en/api-reference/api-ref/on-premise-recording#onrecorderstatechanged',
+  'en/realtime-media/on-premise-recording/build/process-recorded-files/restore-files.mdx\u0000/en/api-reference/api-ref/on-premise-recording#stoprecording',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#enableandupdatevideowatermarks',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#enableandupdatevideowatermarksbyuid',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#initialize',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#joinchannel',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setrecorderconfig',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setrecorderconfigbyuid',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setvideomixinglayout',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#startrecording',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#startsinglerecordingbyuid',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#stoprecording',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#stopsinglerecordingbyuid',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#enableandupdatevideowatermarks',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#enableandupdatevideowatermarksbyuid',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#initialize',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#joinchannel',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#onuserjoined',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setrecorderconfig',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setrecorderconfigbyuid',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setvideomixinglayout',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#startrecording',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#startsinglerecordingbyuid',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#stoprecording',
+  'en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode.mdx\u0000/en/api-reference/api-ref/on-premise-recording#stopsinglerecordingbyuid',
+  'en/realtime-media/on-premise-recording/build/set-up-authentication/authentication-workflow.mdx\u0000/en/realtime-media/video/build/authenticate-users/deploy-token-server#enable-co-host-authentication',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#agoramediartcrecorder',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#agoraservice',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#agoraserviceconfiguration',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#createagoramediacomponentfactory',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#createagoraservice',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#initialize',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#joinchannel',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#leavechannel',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#logconfig',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#registerrecordereventhandle',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#registerrecordereventhandler',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#release',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setlogfile',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#setrecorderconfig',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#startrecording',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#stoprecording',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#subscribeallaudio',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#subscribeallvideo',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#unregisterrecordereventhandle',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#unregisterrecordereventhandler',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#unsubscribeallaudio',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/api-reference/api-ref/on-premise-recording#unsubscribeallvideo',
+  'en/realtime-media/on-premise-recording/quickstart.mdx\u0000/en/realtime-media/on-premise-recording/manage-agora-account#generate-temporary-token',
+  'en/realtime-media/on-premise-recording/reference/pricing.mdx\u0000#aggregate',
+  'en/realtime-media/on-premise-recording/reference/pricing.mdx\u0000#question',
+  'en/realtime-media/rtm/build/connect-and-authenticate/authentication-workflow.mdx\u0000/en/api-reference/api-ref/signaling#channeljoinpropsag_platform',
+  'en/realtime-media/rtm/build/connect-and-authenticate/authentication-workflow.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios#tokenrenewrtmtokenpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling#event-listeners',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling#getonlineusers',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling#getuserchannels',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling#presencegetstatepropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling#presenceremovestatepropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling#presencesetstatepropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#event-listeners',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#getonlineusers',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#getuserchannels',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presencegetstatepropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presenceremovestatepropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presencesetstatepropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#event-listeners',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#getonlineusers',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#getuserchannels',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presencegetstatepropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presenceremovestatepropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presencesetstatepropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#event-listeners',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#lock',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagegetchannelpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagemetadataitempropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storageremovechannelpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagesetchannelpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storageupdatechannelpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#event-listeners',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#lock',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagegetchannelpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagemetadatapropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageremovechannelpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagesetchannelpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageupdatechannelpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#event-listeners',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#lock',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagegetchannelpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagemetadatapropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageremovechannelpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagesetchannelpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageupdatechannelpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#event-listeners',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagegetuserpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagemetadataitempropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storageremoveuserpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagesetuserpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storagesubscribeuserpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storageunsubscribeuserpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling#storageupdateuserpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagegetuserpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagemetadatapropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageremoveuserpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagesetuserpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagesubscribeuserpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageunsubscribeuserpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageupdateuserpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagegetuserpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagemetadatapropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageremoveuserpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagesetuserpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagesubscribeuserpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageunsubscribeuserpropsag_platform',
+  'en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageupdateuserpropsag_platform',
+  'en/realtime-media/rtm/build/secure-your-app-and-data/data-encryption.mdx\u0000/en/api-reference/api-ref/signaling#configencryptionpropsag_platform',
+  'en/realtime-media/rtm/build/secure-your-app-and-data/data-encryption.mdx\u0000/en/api-reference/api-ref/signaling#configrtmpropsag_platform',
+  'en/realtime-media/rtm/build/secure-your-app-and-data/data-encryption.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#configencryptionpropsag_platform',
+  'en/realtime-media/rtm/build/secure-your-app-and-data/data-encryption.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#configencryptionpropsag_platform',
+  'en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx\u0000/en/api-reference/api-ref/signaling#configcreatepropsag_platform',
+  'en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx\u0000/en/api-reference/api-ref/signaling#configrtmpropsag_platform',
+  'en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx\u0000/en/api-reference/api-ref/signaling#initialization',
+  'en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#configrtmpropsag_platform',
+  'en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#create-an-instance',
+  'en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#configrtmpropsag_platform',
+  'en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#create-an-instance',
+  'en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener.mdx\u0000/en/api-reference/api-ref/signaling#event-listeners',
+  'en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling#channelsubscribepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling#channelunsubscribepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling#messagepublishpropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelsubscribepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelunsubscribepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#messagepublishpropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelsubscribepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelunsubscribepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/message-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#messagepublishpropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling#channelcreatepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling#channeljoinpropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling#channelleavepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling#channelreleasepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling#topicpublishpropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelcreatepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channeljoinpropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelleavepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelreleasepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicpublishpropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelcreatepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channeljoinpropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelleavepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelreleasepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicpublishpropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling#event-listeners',
+  'en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling#topicjoinpropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling#topicleavepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling#topicsubscribepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling#topicunsubscribepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#event-listeners',
+  'en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicjoinpropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicleavepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicsubscribepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicunsubscribepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#event-listeners',
+  'en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicjoinpropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicleavepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicsubscribepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/topics.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicunsubscribepropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/user-channel.mdx\u0000/en/api-reference/api-ref/signaling#messagepublishpropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/user-channel.mdx\u0000/en/api-reference/api-ref/signaling#receive',
+  'en/realtime-media/rtm/build/work-with-channels/user-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#messagepublishpropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/user-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=ios&tab=objc#receive',
+  'en/realtime-media/rtm/build/work-with-channels/user-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=objc&tab=swift#messagepublishpropsag_platform',
+  'en/realtime-media/rtm/build/work-with-channels/user-channel.mdx\u0000/en/api-reference/api-ref/signaling?platform=objc&tab=swift#receive',
+  'en/realtime-media/rtm/console-overview.md\u0000#generate-a-customer-id-and-customer-secret',
+  'en/realtime-media/rtm/console-overview.md\u0000#prerequisites',
+  'en/realtime-media/speech-to-text/reference/security.md\u0000/en/realtime-media/speech-to-text/reference/manage-agora-account#manage-app-certificates',
+  'en/realtime-media/video/build/add-advanced-video-features/metakit.mdx\u0000#adding-scene-view',
+  'en/realtime-media/video/build/authenticate-users/deploy-token-server.mdx\u0000/en/realtime-media/video/build/authenticate-users/deploy-token-server#enable-co-host-authentication',
+  'en/realtime-media/video/build/authenticate-users/integrate-token-generation.mdx\u0000/en/realtime-media/video/build/authenticate-users/authentication-workflow#generate-a-token',
+  'en/realtime-media/video/build/join-and-manage-channels/compile-run-sample-project.mdx\u0000/en/realtime-media/video/reference/supported-platforms#browsers',
+  'en/realtime-media/video/build/join-and-manage-channels/preload-channels.mdx\u0000/en/realtime-media/video/reference/pricing#cost-calculation',
+  'en/realtime-media/video/build/optimize-and-operate/app-size-optimization.mdx\u0000#implementation-fields',
+  'en/realtime-media/video/build/optimize-and-operate/app-size-optimization.mdx\u0000#subspecs-field',
+  'en/realtime-media/video/get-started-sdk.mdx\u0000#get-device-permissions',
+  'en/realtime-media/video/get-started-sdk.mdx\u0000#local--tracks',
+  'en/realtime-media/video/get-started-sdk.mdx\u0000#subscribe-to--events',
+  'en/realtime-media/video/get-started-sdk.mdx\u0000/en/api-reference/faq/quality/video_blank#issue-description',
+  'en/realtime-media/video/get-started-sdk.mdx\u0000/en/realtime-media/video/reference/supported-platforms#browsers',
+  'en/realtime-media/video/quickstart.mdx\u0000#complete-code',
+  'en/realtime-media/video/quickstart.mdx\u0000#get-device-permissions',
+  'en/realtime-media/video/quickstart.mdx\u0000#local--tracks',
+  'en/realtime-media/video/quickstart.mdx\u0000#subscribe-to--events',
+  'en/realtime-media/video/quickstart.mdx\u0000/en/api-reference/faq/quality/video_blank#issue-description',
+  'en/realtime-media/video/reference/console-overview.mdx\u0000#generate-a-customer-id-and-customer-secret',
+  'en/realtime-media/video/reference/console-overview.mdx\u0000#prerequisites',
+  'en/realtime-media/video/reference/magic-leap.md\u0000/en/realtime-media/video/manage-agora-account#generate-a-temporary-token',
+  'en/realtime-media/video/reference/migration-guide.mdx\u0000/en/realtime-media/video/get-started-sdk#project-setup',
+  'en/realtime-media/video/reference/release-notes.mdx\u0000#410',
+  'en/realtime-media/video/reference/release-notes.mdx\u0000#issue-fixed',
+  'en/realtime-media/video/reference/release-notes.mdx\u0000/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing',
+  'en/realtime-media/voice/build/optimize-and-operate/app-size-optimization.mdx\u0000#implementation-fields',
+  'en/realtime-media/voice/build/optimize-and-operate/app-size-optimization.mdx\u0000#subspecs-field',
+  'en/realtime-media/voice/quickstart.mdx\u0000#get-device-permissions',
+  'en/realtime-media/voice/quickstart.mdx\u0000#local--tracks',
+  'en/realtime-media/voice/quickstart.mdx\u0000#subscribe-to--events',
+  'en/realtime-media/voice/reference/console-overview.md\u0000#generate-a-customer-id-and-customer-secret',
+  'en/realtime-media/voice/reference/console-overview.md\u0000#prerequisites',
+  'en/realtime-media/voice/reference/migration-guide.mdx\u0000/en/realtime-media/voice/quickstart#project-setup',
+  'en/realtime-media/voice/reference/release-notes.mdx\u0000/en/realtime-media/voice/reference/pricing#ai-noise-suppression-pricing',
+  'en/realtime-media/voice/skills.mdx\u0000#agora-mcp-server',
+  'en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx\u0000#csharp',
+  'en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx\u0000#golang',
+  'en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx\u0000#java',
+  'en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx\u0000#javascript',
+  'en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx\u0000#php',
+  'en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx\u0000#ruby',
+  'en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx\u0000#typescript',
+  'en/realtime-media/whiteboard/build/display-files-and-manage-scenes/scenes/display-files-fast.mdx\u0000/en/api-reference/api-ref/uikit-sdk#nsertimg',
+  'en/realtime-media/whiteboard/build/draw-and-edit-content/whiteboard-tools.mdx\u0000#tech',
+  'en/realtime-media/whiteboard/build/migrate-and-accelerate-development/migration-guide.md\u0000#netlessaccount',
+  'en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard.md\u0000/en/realtime-media/whiteboard/build/manage-agora-account#create-an-agora-project',
+  'en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/get-started-sdk.mdx\u0000/en/realtime-media/whiteboard/build/manage-agora-account#sign-up-and-log-in',
+  'en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/get-started-uikit.mdx\u0000/en/realtime-media/whiteboard/build/manage-agora-account#sign-up-and-log-in',
+  'en/realtime-media/whiteboard/build/skills.md\u0000#agora-mcp-server',
+  'en/realtime-media/whiteboard/overview/release-notes-uikit.mdx\u0000/en/api-reference/api-ref/uikit-sdk#setresource',
+  'en/realtime-media/whiteboard/overview/release-notes-uikit.mdx\u0000/en/api-reference/api-ref/uikit-sdk#setstrokerange',
+  'en/realtime-media/whiteboard/overview/release-notes-uikit.mdx\u0000/en/api-reference/api-ref/uikit-sdk#settoolboxedgemargin',
+  'en/realtime-media/whiteboard/overview/release-notes-uikit.mdx\u0000/en/api-reference/api-ref/uikit-sdk#settoolscolors',
+  'en/realtime-media/whiteboard/overview/release-notes.mdx\u0000/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/get-started-sdk#get-the-whiteboard-sdk',
+  'en/realtime-media/agora-analytics/build/integrate-and-embed/embedded.md\u0000#url-to-a-detailed-call-inspector-page',
+  'en/realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/ai-noise-suppression.mdx\u0000/en/realtime-media/interactive-live-streaming/reference/release-notes#ai-noise-suppression',
+  'en/realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/metakit.mdx\u0000#adding-scene-view',
+  'en/realtime-media/interactive-live-streaming/build/authenticate-users/deploy-token-server.mdx\u0000#api-reference',
+  'en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx\u0000#implementation-fields',
+  'en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx\u0000#subspecs-field',
+  'en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/preload-channels.mdx\u0000/en/realtime-media/interactive-live-streaming/reference/pricing#cost-calculation',
+  'en/realtime-media/interactive-live-streaming/quickstart.mdx\u0000#complete-code',
+  'en/realtime-media/interactive-live-streaming/quickstart.mdx\u0000#get-device-permissions',
+  'en/realtime-media/interactive-live-streaming/quickstart.mdx\u0000#local--tracks',
+  'en/realtime-media/interactive-live-streaming/quickstart.mdx\u0000#subscribe-to--events',
+  'en/realtime-media/interactive-live-streaming/reference/console-overview.md\u0000#generate-a-customer-id-and-customer-secret',
+  'en/realtime-media/interactive-live-streaming/reference/console-overview.md\u0000#prerequisites',
+  'en/realtime-media/interactive-live-streaming/reference/release-notes.mdx\u0000#410',
+  'en/realtime-media/interactive-live-streaming/reference/release-notes.mdx\u0000#ai-noise-suppression',
+  'en/realtime-media/interactive-live-streaming/reference/release-notes.mdx\u0000#issue-fixed',
+  'en/realtime-media/interactive-live-streaming/reference/release-notes.mdx\u0000#super-clarity-extension',
+  'en/realtime-media/interactive-live-streaming/reference/release-notes.mdx\u0000/en/realtime-media/interactive-live-streaming/reference/pricing#ai-noise-suppression-pricing',
+  'en/realtime-media/iot/reference/channel-management-rest-api.mdx\u0000#create-a-rule-to-ban-user-privileges',
+  'zh-CN/ai/quick-start-go.mdx\u0000#\u4e0e\u667a\u80fd\u4f53\u5bf9\u8bdd',
+  'zh-CN/ai/quick-start-go.mdx\u0000#\u5b9a\u4e49\u53d8\u91cf',
+  'zh-CN/ai/quick-start-java.mdx\u0000#\u4e0e\u667a\u80fd\u4f53\u5bf9\u8bdd',
+  'zh-CN/ai/quick-start-java.mdx\u0000#\u5b9a\u4e49\u53d8\u91cf',
+  'zh-CN/ai/release-notes.md\u0000/zh-CN/ai/billing#\u4ed8\u8d39\u65b9\u5f0f',
+  'zh-CN/best-practices/release-notes.md\u0000/zh-CN/best-practices/billing#\u4ed8\u8d39\u65b9\u5f0f',
 ]);
 
 const KNOWN_LEGACY_HOSTED_LINKS = new Set([
@@ -1952,7 +2028,9 @@ const KNOWN_LEGACY_HOSTED_LINKS = new Set([
 ]);
 
 function isKnownLegacyHostedLink(entry) {
-  return KNOWN_LEGACY_HOSTED_LINKS.has(`${entry.sourcePath}\0${entry.normalizedHref}`);
+  return KNOWN_LEGACY_HOSTED_LINKS.has(
+    `${entry.sourcePath}\0${entry.normalizedHref}`,
+  );
 }
 
 function isGeneratedOrRedirectedAnchor(entry, targetPage) {
@@ -1996,6 +2074,26 @@ function normalizeExternalTarget(href) {
   }
 
   return '';
+}
+
+function isLegacyShengwangDocHostHref(href) {
+  const normalizedHref = href.startsWith('//') ? `https:${href}` : href;
+
+  if (!/^https?:\/\//i.test(normalizedHref)) {
+    return false;
+  }
+
+  try {
+    return new URL(normalizedHref).host.toLowerCase() === 'doc.shengwang.cn';
+  } catch {
+    return false;
+  }
+}
+
+function isZhCnOpenApiSourcePath(sourcePath) {
+  return (
+    sourcePath.startsWith('openapi/') && /\.zh-CN\.ya?ml$/i.test(sourcePath)
+  );
 }
 
 function isApiReferenceMacroHref(href) {
@@ -2302,9 +2400,7 @@ function isTemplatedHref(href) {
 }
 
 function isRootAssetHref(hrefPath) {
-  return (
-    /\.[a-z0-9]+$/i.test(hrefPath) && !/\.mdx?$/i.test(hrefPath)
-  );
+  return /\.[a-z0-9]+$/i.test(hrefPath) && !/\.mdx?$/i.test(hrefPath);
 }
 
 function splitHref(href) {
@@ -2350,11 +2446,12 @@ function getRoutePath(contentPath) {
 
 export function getOpenApiRoutePathsForAudit() {
   return getOpenApiRouteLanesForAudit().flatMap((lane) =>
-    lane.locales.flatMap((locale) =>
-      lane.routeLeaves.map(
+    lane.locales.flatMap((locale) => [
+      ...(locale === 'zh-CN' ? [lane.parentUrls[locale]] : []),
+      ...lane.routeLeaves.map(
         (routeLeaf) => `/${locale}/${lane.routePrefix}/${routeLeaf}`,
       ),
-    ),
+    ]),
   );
 }
 
@@ -2390,21 +2487,36 @@ function getOpenApiRouteLanesForAudit() {
 
   return extractTopLevelObjects(source).map((block) => {
     const routePrefix = block.match(/routePrefix:\s*'([^']+)'/)?.[1];
+    const sourcePathsBlock = extractObjectProperty(block, 'sourcePath');
+    const hasSingleSourcePath = sourcePathsBlock.length === 0;
     const locales =
       block
         .match(/locales:\s*\[([^\]]+)\]/)?.[1]
         ?.match(/'([^']+)'/g)
-        ?.map((value) => value.slice(1, -1)) ?? SUPPORTED_LOCALES;
-    const sourcePathsBlock = extractObjectProperty(block, 'sourcePath');
-    const sourcePaths = Object.fromEntries(
-      [...sourcePathsBlock.matchAll(/'?([A-Za-z-]+)'?:\s*'([^']+)'/g)].map(
-        (match) => [match[1], match[2]],
-      ),
-    );
+        ?.map((value) => value.slice(1, -1)) ??
+      (hasSingleSourcePath ? ['zh-CN'] : SUPPORTED_LOCALES);
+    const sourcePaths =
+      sourcePathsBlock.length > 0
+        ? Object.fromEntries(
+            [
+              ...sourcePathsBlock.matchAll(/'?([A-Za-z-]+)'?:\s*'([^']+)'/g),
+            ].map((match) => [match[1], match[2]]),
+          )
+        : Object.fromEntries(
+            locales.map((locale) => [
+              locale,
+              block.match(/sourcePath:\s*'([^']+)'/)?.[1],
+            ]),
+          );
     const operationsBlock = extractObjectProperty(block, 'operations');
-    const routeLeaves = [
-      ...operationsBlock.matchAll(/routeLeaf:\s*'([^']+)'/g),
-    ].map((match) => match[1]);
+    const routeLeaves =
+      operationsBlock.length > 0
+        ? [...operationsBlock.matchAll(/routeLeaf:\s*'([^']+)'/g)].map(
+            (match) => match[1],
+          )
+        : extractTupleOperationRouteLeaves(
+            extractArrayProperty(block, 'operations'),
+          );
 
     if (!routePrefix || routeLeaves.length === 0) {
       throw new Error(
@@ -2412,8 +2524,29 @@ function getOpenApiRouteLanesForAudit() {
       );
     }
 
-    return { locales, routePrefix, routeLeaves, sourcePaths };
-  });
+    const parentUrlsBlock = extractObjectProperty(block, 'parentUrl');
+    const parentUrls = parentUrlsBlock
+      ? Object.fromEntries(
+          [...parentUrlsBlock.matchAll(/'?([A-Za-z-]+)'?:\s*'([^']+)'/g)].map(
+            (match) => [match[1], match[2]],
+          ),
+        )
+      : Object.fromEntries(
+          locales.map((locale) => [
+            locale,
+            block.match(/parentUrl:\s*'([^']+)'/)?.[1],
+          ]),
+        );
+    return { locales, parentUrls, routePrefix, routeLeaves, sourcePaths };
+  }).filter((lane) => !isRetiredCnDocsPath(lane.parentUrls['zh-CN'] ?? ''));
+}
+
+function extractTupleOperationRouteLeaves(raw) {
+  return [
+    ...raw.matchAll(
+      /\[\s*'[^']+'\s*,\s*'([^']+)'\s*,\s*'[^']*'\s*,\s*'[^']*'\s*,?\s*\]/g,
+    ),
+  ].map((match) => match[1]);
 }
 
 function extractTopLevelObjects(raw) {
@@ -2470,8 +2603,9 @@ function extractTopLevelObjects(raw) {
 function extractObjectProperty(raw, propertyName) {
   const propIndex = raw.indexOf(`${propertyName}:`);
   if (propIndex < 0) return '';
-  const start = raw.indexOf('{', propIndex);
-  if (start < 0) return '';
+  const valueStart = propIndex + propertyName.length + 1;
+  const start = raw.slice(valueStart).search(/\S/) + valueStart;
+  if (start < valueStart || raw[start] !== '{') return '';
   let depth = 0;
   let inString = false;
   let stringQuote = '';
@@ -2501,6 +2635,52 @@ function extractObjectProperty(raw, propertyName) {
     if (char === '}') {
       depth -= 1;
       if (depth === 0) return raw.slice(start, index + 1);
+    }
+  }
+
+  return '';
+}
+
+function extractArrayProperty(raw, propertyName) {
+  const propIndex = raw.indexOf(`${propertyName}:`);
+  if (propIndex < 0) return '';
+  const start = raw.indexOf('[', propIndex);
+  if (start < 0) return '';
+  let depth = 0;
+  let inString = false;
+  let stringQuote = '';
+  let escaped = false;
+
+  for (let index = start; index < raw.length; index += 1) {
+    const char = raw[index];
+
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (char === '\\') {
+        escaped = true;
+      } else if (char === stringQuote) {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (char === "'" || char === '"' || char === '`') {
+      inString = true;
+      stringQuote = char;
+      continue;
+    }
+
+    if (char === '[') {
+      depth += 1;
+      continue;
+    }
+
+    if (char === ']') {
+      depth -= 1;
+      if (depth === 0) {
+        return raw.slice(start, index + 1);
+      }
     }
   }
 
@@ -2937,7 +3117,7 @@ const LEGACY_GET_STARTED_PATHS = {
   'enable-service': (locale) =>
     locale === 'zh-CN'
       ? '/zh-CN/ai/enable-service'
-      : '/en/ai/reference/enable-conversational-ai',
+      : '/en/ai/get-started/quickstart',
 };
 
 const LEGACY_ABSOLUTE_PATHS = {
@@ -3116,6 +3296,7 @@ export function formatReport(stats, maxSamples) {
     `resolvedRelativeMarkdownLinks: ${stats.resolvedRelativeMarkdownLinks.length}`,
     `missingRelativeMarkdownLinks: ${stats.missingRelativeMarkdownLinks.length}`,
     `legacyRootDocLinks: ${stats.legacyRootDocLinks.length}`,
+    `legacyShengwangDocHostLinks: ${stats.legacyShengwangDocHostLinks.length}`,
     `apiReferenceMacroLinks: ${stats.apiReferenceMacroLinks.length}`,
     `rootLinks: ${stats.rootLinks.length}`,
     `skippedRootLinks: ${stats.skippedRootLinks.length}`,
@@ -3173,6 +3354,12 @@ export function formatReport(stats, maxSamples) {
     lines,
     'Sample legacy /doc/* links',
     stats.legacyRootDocLinks,
+    maxSamples,
+  );
+  appendInvalidSection(
+    lines,
+    'Legacy doc.shengwang.cn links in zh-CN OpenAPI',
+    stats.legacyShengwangDocHostLinks,
     maxSamples,
   );
   appendSection(
@@ -3306,6 +3493,7 @@ function parseArgs(args) {
     failOnInvalid: args.includes('--fail-on-invalid'),
     failOnMissing: args.includes('--fail-on-missing'),
     maxSamples: parseNumberArg(args, '--max-samples=', DEFAULT_MAX_SAMPLES),
+    openapiZhOnly: args.includes('--openapi-zh-only'),
     overviewCards: args.includes('--overview-cards'),
   };
 }
@@ -3343,11 +3531,16 @@ function readAllowlistFile(filePath) {
 async function main() {
   const repoRoot = process.cwd();
   const docsRoot = path.join(repoRoot, 'content', 'docs');
+  const openApiRoot = path.join(repoRoot, 'content', 'openapi');
   const options = parseArgs(process.argv.slice(2));
   const stats = auditDocsLinks({
     docsRoot,
+    openApiRoot,
     ...(options.overviewCards
       ? { sourcePaths: OVERVIEW_CARD_SOURCE_PATHS }
+      : {}),
+    ...(options.openapiZhOnly
+      ? { openApiSourcePaths: getZhCnOpenApiSourcePaths(openApiRoot) }
       : {}),
   });
 

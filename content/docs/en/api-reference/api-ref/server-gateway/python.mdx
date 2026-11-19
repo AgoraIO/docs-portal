@@ -1923,11 +1923,15 @@ class AudioSubscriptionOptions:
 
 |Parameter|Description|
 |---------|-----------|
-|`packet_only`|Whether to subscribe to audio packets only: - `0`: (Default) The SDK automatically decodes the audio. - `1`: Subscribe to audio packets only. The SDK will not decode the audio. **Note**: If this parameter is set to `1`, other parameters in the structure are invalid.|
+|`packet_only`|Controls audio packet subscription. With `0` (default), the SDK automatically decodes the audio. With `1`, the SDK subscribes to audio packets only and skips decoding.|
 |`pcm_data_only`|Whether to subscribe to PCM data only: - `0`: (Default) The SDK automatically encodes the remote audio stream. - `1`: Subscribe to PCM data only.|
 |`bytes_per_sample`|Number of bytes per audio sample.|
 |`number_of_channels`|Number of audio channels.|
 |`sample_rate_hz`|Audio sampling rate (Hz).|
+
+:::note
+When `packet_only` is set to `1`, the other parameters in this structure are invalid.
+:::
 
 #### `EncodedAudioFrameInfo`
 
@@ -2279,11 +2283,15 @@ class VideoEncoderConfiguration:
 |`dimensions`|Resolution of the video encoding (px). This parameter measures the encoding quality, represented as width × height. The default value is 640 × 360. Users can set the resolution as needed. See [`VideoDimensions`](#videodimensions) for details.|
 |`frame_rate`|Frame rate of the video encoding (fps), default is 15.|
 |`bitrate`|Video encoding bitrate, in Kbps. - `0`: (Recommended) Standard bitrate mode. In this mode, the video bitrate is twice the base bitrate. - `-1`: Adapted bitrate mode. In this mode, the video bitrate is the same as the base bitrate. When this mode is selected for live streaming, the video frame rate may be lower than the set value.|
-|`min_bitrate`|Minimum encoding bitrate, in Kbps. The SDK will automatically adjust the video encoding bitrate based on network conditions. Setting this parameter higher than the default value can force the video encoder to output higher quality images, but may cause packet loss and affect video playback fluency under poor network conditions, leading to stuttering. Therefore, unless there are special requirements for image quality, it is recommended not to modify this parameter. **Note**: This parameter is only applicable in live streaming scenarios.|
+|`min_bitrate`|Minimum encoding bitrate, in Kbps. The SDK will automatically adjust the video encoding bitrate based on network conditions. Setting this parameter higher than the default value can force the video encoder to output higher quality images, but may cause packet loss and affect video playback fluency under poor network conditions, leading to stuttering. Therefore, unless there are special requirements for image quality, it is recommended not to modify this parameter.|
 |`orientation_mode`|Orientation mode of the video encoding: - `0`: (Default) In this mode, the SDK outputs the video orientation consistent with the captured video. The receiver will rotate the video based on the received video rotation information. This mode is suitable for scenarios where the receiver can adjust the video orientation. If the captured video is in landscape mode, the output video will also be in landscape mode. If the captured video is in portrait mode, the output video will also be in portrait mode. - `1`: In this mode, the SDK outputs the video in landscape mode. If the captured video is in portrait mode, the video encoder will crop it. This mode is suitable for scenarios where the receiver cannot adjust the video orientation, such as direct push to CDN. - `2`: In this mode, the SDK outputs the video in portrait mode. If the captured video is in landscape mode, the video encoder will crop it. This mode is suitable for scenarios where the receiver cannot adjust the video orientation, such as direct push to CDN.|
 |`degradation_preference`|Video encoding degradation preference when bandwidth is limited: - `0`: (Default) When bandwidth is limited, the video encoding prioritizes reducing the frame rate while maintaining video quality. This degradation preference is suitable for scenarios where image quality is prioritized. - `1`: When bandwidth is limited, the video encoding prioritizes reducing video quality while maintaining the frame rate. This degradation preference is suitable for scenarios where smoothness is prioritized and quality reduction is acceptable. - `2`: When bandwidth is limited, the video encoding reduces both frame rate and video quality. The reduction in `2` is less than in `0` and `1`, suitable for scenarios with limited smoothness and quality. - `3`: When bandwidth is limited, the video encoding prioritizes reducing the frame rate.|
 |`mirror_mode`| Whether to enable mirror mode when sending encoded video, only affecting the video seen by the remote user. - `0`: (Default) The mirror mode is determined by the SDK. - `1`: Enable mirror mode. - `2`: Disable mirror mode.|
 |`encode_alpha`|Whether to encode and send the alpha data to the remote user when the video frame contains alpha data. - `0`: (Default) Do not encode or send the alpha data. - `1`: Encode and send the alpha data.|
+
+:::note
+`min_bitrate` is only applicable in live streaming scenarios.
+:::
 
 #### `VideoFrame`
 

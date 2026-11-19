@@ -1,0 +1,45 @@
+---
+title: VideoModulePosition
+description: 视频观测位置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/enum_videomoduleposition
+  sourcePath: html-docs/rtc/Electron/API/enum_videomoduleposition.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_videomoduleposition__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="positionpostcapturer"></a>
+<Parameter name="PositionPostCapturer">
+
+1: 本地采集视频数据并且经过前处理之后的位置，对应 [onCaptureVideoFrame](/zh-CN/api-reference/rtc/electron/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调。此处观测到的视频具备视频前处理的效果，可通过开启美颜、虚拟背景或水印等方式验证。
+
+</Parameter>
+<a id="positionprerenderer"></a>
+<Parameter name="PositionPreRenderer">
+
+2: 接收远端发送的视频在渲染前的位置，对应 [onRenderVideoFrame](/zh-CN/api-reference/rtc/electron/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调。
+
+</Parameter>
+<a id="positionpreencoder"></a>
+<Parameter name="PositionPreEncoder">
+
+4: 本地视频编码前的位置，对应 [onPreEncodeVideoFrame](/zh-CN/api-reference/rtc/electron/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调。此处观测到的视频具备视频前处理和编码前处理的效果：
+
+- 对于视频前处理效果，可通过开启美颜、虚拟背景或水印等方式验证。
+- 对于编码前处理效果，可通过设置一个较低的帧率（例如 5 fps）验证。
+
+</Parameter>
+<a id="positionpostcapturerorigin"></a>
+<Parameter name="PositionPostCapturerOrigin">
+
+8: 本地采集视频之后、前处理之前的位置。此处观测到的视频不具备前处理的效果，可通过开启美颜、虚拟背景或设置水印等方式验证。
+
+</Parameter>
+</ParameterList>

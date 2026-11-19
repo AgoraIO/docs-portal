@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { maskFencedCode } from '../../scripts/lib/markdown-code.mjs';
 import { normalizeDocsHref } from './docs-link-normalize';
 import { createPublishedDocsRoutes } from './published-docs-routes';
 import { getPagePlatformKeys, source } from './source.server';
@@ -35,6 +36,7 @@ function listMarkdownFiles(root: string): string[] {
 }
 
 function extractDocHrefs(markdown: string) {
+  const linkSource = maskFencedCode(markdown);
   const patterns = [
     /(?<!!)\[[^\]\n]*\]\(([^)\n]+)\)/g,
     /\bhref="([^"]+)"/g,
@@ -44,13 +46,24 @@ function extractDocHrefs(markdown: string) {
   return patterns.flatMap((pattern) => {
     pattern.lastIndex = 0;
 
-    return [...markdown.matchAll(pattern)]
+    return [...linkSource.matchAll(pattern)]
       .map((match) => match[1]?.trim() ?? '')
       .filter(Boolean);
   });
 }
 
 describe('docs journeys', () => {
+  it('checks links around fenced SDK examples without treating code arguments as links', () => {
+    const source = [
+      '[Overview](/en/ai)',
+      '```python',
+      'session.call(to="+14155550123")',
+      '```',
+      '<Link to="/en/missing">Broken destination</Link>',
+    ].join('\n');
+    expect(extractDocHrefs(source)).toEqual(['/en/ai', '/en/missing']);
+  });
+
   it('keeps internal links under /en/ai pointed at existing docs routes', async () => {
     const pages = new Map(
       source.getPages('en').map((page) => [page.url, page]),
@@ -170,14 +183,15 @@ describe('docs journeys', () => {
     const realtimeRtcMeta = JSON.parse(
       readDoc('zh-CN/realtime-media/rtc/meta.json'),
     );
-    expect(realtimeRtcMeta.pages).toEqual(['android', 'macOS']);
+    expect(realtimeRtcMeta.pages).toEqual(
+      expect.arrayContaining(['index', 'get-started', 'build', 'reference']),
+    );
 
-    const androidReferenceMeta = JSON.parse(
-      readDoc('zh-CN/realtime-media/rtc/android/reference/meta.json'),
+    const rtcReferenceMeta = JSON.parse(
+      readDoc('zh-CN/realtime-media/rtc/reference/meta.json'),
     );
-    expect(androidReferenceMeta.pages).toEqual(
-      expect.arrayContaining(['api-reference', 'release-notes']),
-    );
+    expect(realtimeRtcMeta.pages).toContain('reference/release-notes');
+    expect(rtcReferenceMeta.pages).not.toContain('release-notes');
 
     const englishRtcReferenceMeta = JSON.parse(
       readDoc('en/realtime-media/rtc/reference/meta.json'),

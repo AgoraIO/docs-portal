@@ -1,0 +1,21 @@
+---
+title: "IVideoFrameObserver 类"
+---
+<span className="index-desc-ivideoframeobserver">`IVideoFrameObserver` 类。</span>
+
+<a id="onframe"></a>
+## on_frame
+
+```python
+def on_frame(self, channel_id, remote_uid, frame:VideoFrame)
+```
+
+<span className="index-desc-onframe">每次收到视频帧时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `channel_id` | 频道名称。             |
+| `remote_uid` | 远端用户的用户 ID。             |
+| `frame`| 视频数据。详见 [`VideoFrame`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#videoframe)         |

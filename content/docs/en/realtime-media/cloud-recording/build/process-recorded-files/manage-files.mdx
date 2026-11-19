@@ -131,7 +131,7 @@ To generate an MP4 file, add `mp4` to `avFileType`.
 
 In individual recording, if `serverResponse.uploadingStatus` in the [`stop`](/en/api-reference/api-ref/cloud-recording#stop) response is `stranded`, some recorded files have not yet been uploaded to your third-party cloud storage. The recording service keeps retrying the upload automatically until it succeeds, and the files are not lost. Wait until the upload completes before you play or process files that depend on the complete recording.
 
-If Agora Cloud Recording fails to upload the recorded files to the third-party cloud storage, it transfers the files to the third-party cloud storage from the Agora Cloud Backup. In order not to overwrite the latest files, the transferred M3U8 file is appended with `_<tick>_<index>.m3u8`, where:
+If Agora Cloud Recording fails to upload the recorded files to the third-party cloud storage, it transfers the files to the third-party cloud storage from Agora Fallback Storage. In order not to overwrite the latest files, the transferred M3U8 file is appended with `_<tick>_<index>.m3u8`, where:
 
 - `<tick>` is related to the time when the index file is generated.
 - `<index>` is the index of the M3U8 file. The first version to be transferred has an index of `0`. The higher the index, the newer the version of the file.
@@ -147,6 +147,10 @@ When you find transferred M3U8 file(s) in the third-party cloud storage, compare
 :::
 
 The cloud recording service appends this suffix only to M3U8 file names.
+
+:::info
+Agora Fallback Storage is enabled by default to prevent loss of recorded files caused by third-party cloud storage failures or network congestion. Agora automatically deletes recorded files stored in Agora Fallback Storage after 48 hours. To disable it, contact [support@agora.io](mailto:support@agora.io).
+:::
 
 ### Server disconnected or process killed
 

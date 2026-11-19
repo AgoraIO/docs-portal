@@ -1,0 +1,42 @@
+---
+title: EarMonitoringFilterType
+description: 耳返 Audio filter 类型。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/enum_earmonitoringfiltertype
+  sourcePath: html-docs/rtc/RN/API/enum_earmonitoringfiltertype.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_earmonitoringfiltertype__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="earmonitoringfilternone"></a>
+<Parameter name="EarMonitoringFilterNone">
+
+1&lt;&lt;0: 不在耳返中添加 Audio filter。
+
+</Parameter>
+<a id="earmonitoringfilterbuiltinaudiofilters"></a>
+<Parameter name="EarMonitoringFilterBuiltInAudioFilters">
+
+1&lt;&lt;1: 在耳返中添加人声效果 Audio filter。如果你实现了美声、音效等功能，用户可以在耳返中听到添加效果后的声音。
+
+</Parameter>
+<a id="earmonitoringfilternoisesuppression"></a>
+<Parameter name="EarMonitoringFilterNoiseSuppression">
+
+1&lt;&lt;2: 在耳返中添加降噪 Audio filter。
+
+</Parameter>
+<a id="earmonitoringfilterreusepostprocessingfilter"></a>
+<Parameter name="EarMonitoringFilterReusePostProcessingFilter">
+
+1&lt;&lt;15: 复用发送端已进行过音效处理的 Audio filter。通过复用 Audio filter 降低耳返对 CPU 的占用率，但会增加耳返延迟，适用于需要降低 CPU 消耗且对耳返延迟不敏感的场景。
+
+</Parameter>
+</ParameterList>

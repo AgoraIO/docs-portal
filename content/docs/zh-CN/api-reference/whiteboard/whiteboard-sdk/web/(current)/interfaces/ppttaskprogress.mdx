@@ -1,0 +1,36 @@
+---
+title: PPTTaskProgress
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/ppttaskprogress
+  sourcePath: html-docs/whiteboard/Web/interfaces/ppttaskprogress.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type PPTTaskProgress = {
+    /**
+     * 转换任务状态
+     */
+    status: PPTTaskStatus;
+    /**
+     * 转换进行到的步骤
+     */
+    currentStep?: PPTTaskStep;
+    /**
+     * 全部页数
+     */
+    totalPageSize: number;
+    /**
+     * 已转换完的页数
+     */
+    convertedPageSize: number;
+    /**
+     * 转换进度（百分比）
+     */
+    convertedPercentage: number;
+};
+```

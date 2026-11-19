@@ -1,0 +1,91 @@
+---
+title: DynamicConfigState
+description: 配置加载来源与运行时证据。类型保留 cache，但当前实现成功读取（含有效304）标记 remote、失败标记 local，不承诺失败沿用缓存。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/dynamicconfigstate
+  sourcePath: html-docs/whiteboard/Web/interfaces/dynamicconfigstate.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export interface DynamicConfigState {
+    readonly source: "remote" | "cache" | "local";
+    readonly configVersion?: number;
+    readonly runtime: string;
+    readonly version?: string;
+    readonly region?: string;
+    readonly platform?: "web" | "android" | "ios" | "harmony";
+    readonly fieldSources?: DynamicConfigFieldSources;
+
+    readonly fallbackReason?: "timeout" | "http" | "format" | "network" | "url" | "region" | "platform";
+}
+```
+
+## Properties
+
+<a id="source"></a>
+
+### Readonly source
+
+readonly source: "remote" | "cache" | "local";
+
+加载来源。类型保留 remote/cache/local；当前 Loader 有效读取（含有效 304）记为 remote，失败回退记为 local，不保证失败后沿用缓存。
+
+<a id="configVersion"></a>
+
+### Readonly Optional configVersion
+
+readonly configVersion?: number;
+
+发布文件提供且满足格式检查的配置版本号；缺省时不存在。不是 SDK 的语义化版本号。
+
+<a id="runtime"></a>
+
+### Readonly runtime
+
+readonly runtime: string;
+
+本次运行时识别结果，用于解释配置匹配。不是原始 UA 字符串。
+
+<a id="version"></a>
+
+### Readonly Optional version
+
+readonly version?: string;
+
+识别到的运行时版本，可能缺省；不是配置版本或白板 SDK 版本。
+
+<a id="region"></a>
+
+### Readonly Optional region
+
+readonly region?: string;
+
+本次入房 region，提供时用于选择对应配置地址；未映射不跨 region 获取。
+
+<a id="platform"></a>
+
+### Readonly Optional platform
+
+readonly platform?: "web" | "android" | "ios" | "harmony";
+
+已识别的发布平台：web、android、ios 或 harmony；可能缺省。
+
+<a id="fieldSources"></a>
+
+### Readonly Optional fieldSources
+
+readonly fieldSources?: DynamicConfigFieldSources;
+
+字段路径到 DynamicConfigFieldSource 的映射，解释每个参数的求值来源。失败回退时当前实现返回空映射。
+
+<a id="fallbackReason"></a>
+
+### Readonly Optional fallbackReason
+
+readonly fallbackReason?: "timeout" | "http" | "format" | "network" | "url" | "region" | "platform";
+
+可选回退原因：timeout/http/format/network/url/region/platform；不包含配置 URL、房间身份或原始 UA。

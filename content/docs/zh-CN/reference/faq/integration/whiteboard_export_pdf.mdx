@@ -1,0 +1,62 @@
+---
+title: "如何导出 PDF？"
+---
+导出 PDF 功能需要使用 `window.postMessage` 事件发起导出任务。
+
+以下为详细步骤：
+
+## 前提条件
+
+- [@netless/app-slide](https://www.npmjs.com/package/@netless/app-slide) v0.2.23 及以上
+- [@netless/app-docs-viewer](https://www.npmjs.com/package/@netless/app-docs-viewer) v0.2.10 及以上
+
+    :::warning[注意]
+    app-docs-viewer 已包含在 v0.4.50 及以上的 [@netless/window-manager](https://www.npmjs.com/package/@netless/window-manager) 中，无需额外安装。
+    :::
+
+- [white-web-sdk](https://www.npmjs.com/package/white-web-sdk) v2.16.37 及以上
+
+## 实现步骤
+
+### 安装依赖
+
+导出 PDF 功能需要使用 `jspdf` 依赖。在项目根目录使用以下命令安装 `jspdf`：
+
+```shell
+npm install jspdf@2.5.1
+```
+
+### 发起导出任务
+
+使用 `window.postMessage` 事件发起导出白板笔迹任务，并注意在任务完成前不要重复该事件。
+
+```javascript
+window.postMessage({
+    type: "@netless/_request_save_pdf_",
+    appId:
+})
+```
+
+`postMessage` 包含以下属性：
+
+- `type`：导出文件的类型。导出 PDF 时固定为 `@netless/_result_save_pdf_`。
+- `appId`：`windowManager.addApp` 的返回值，用于指定要导出白板笔迹的窗口。
+
+### 获取导出任务进度
+
+你需要在发起导出任务前注册监听 `window.postMessage` 事件，示例代码如下：
+
+```javascript
+window.addEventListener("message", evt => {
+    if (evt.data.type === "@netless/_result_save_pdf_") {
+        console.log(evt.data);
+    }
+});
+```
+
+`data` 包含以下属性：
+
+- `type`：导出文件的类型。导出 PDF 时固定为 `@netless/_result_save_pdf_`。
+- `appId`：导出任务 ID，与发起导出任务时传入的一致。
+- `progress`：导出任务的进度。取值范围为 `0` ~ `100`。
+- `result`：PDF 保存的白板笔迹内容，仅 `progress` 为 `100` 时可见。可能值为 `{ pdf: ArrayBuffer {}, title: "a.pptx" }` 或 `null`。获取 `ArrayBuffer` 后你需要自行完成下载至本地的代码逻辑。

@@ -2,7 +2,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const SITEMAP_PATH = 'src/lib/legacy-sitemap/sitemap.xml';
-const INVENTORY_PATH = 'src/lib/legacy-sitemap/new-docs-inventory.json';
 const REDIRECTS_PATH = 'src/lib/legacy-sitemap/redirects.json';
 const REVIEW_REPORT_PATH = 'src/lib/legacy-sitemap/review-report.json';
 const SNAPSHOT_DOWNLOADED_AT = '2026-06-29';
@@ -251,6 +250,7 @@ const PRODUCT_SPECIFIC_TARGETS = {
     'rest-api/update': '/en/api-reference/api-ref/cloud-transcoding',
   },
   'conversational-ai': {
+    'reference/enable-conversational-ai': '/en/ai/get-started/quickstart',
     'develop/presets': '/en/ai/build/managed-mode',
     'models/asr/amazon': '/en/ai/models/asr/openai',
     'best-practices/cloud-recording':
@@ -319,6 +319,8 @@ const PRODUCT_SPECIFIC_TARGETS = {
       '/en/realtime-media/flexible-classroom/reference/classroom-rest-api',
   },
   iot: {
+    'develop/ensure-channel-quality':
+      '/en/realtime-media/iot/build/manage-connections-and-quality/bitrate-adaptation',
     'get-started/mcp': '/en/realtime-media/iot/product-overview',
     'get-started/skills': '/en/realtime-media/iot/product-overview',
     'reference/communicate_with_rtc_sdk':
@@ -658,11 +660,6 @@ const SHARED_TARGET_BY_PRODUCT = {
 };
 
 const inventory = buildInventory();
-writeJson(INVENTORY_PATH, {
-  generatedAt: SNAPSHOT_DOWNLOADED_AT,
-  routes: inventory,
-});
-
 const generated = buildRedirects(inventory);
 writeJson(REDIRECTS_PATH, generated.redirects);
 writeJson(REVIEW_REPORT_PATH, generated.reviewReport);

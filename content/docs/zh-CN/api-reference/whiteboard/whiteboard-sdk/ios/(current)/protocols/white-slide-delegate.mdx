@@ -1,0 +1,119 @@
+---
+title: WhiteSlideDelegate Protocol Reference
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Protocols/WhiteSlideDelegate
+  sourcePath: html-docs/whiteboard/iOS/Protocols/WhiteSlideDelegate.html
+  generator: appledoc
+  warnings:
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+---
+
+Whiteboard iOS SDK 2.16.147 公开接口。
+
+@protocol WhiteSlideDelegate &lt;NSObject&gt;
+
+## 成员
+
+- [slideUrlInterrupter\:completionHandler:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-slide-delegate#//api/name/slideUrlInterrupter:completionHandler:)
+- [slideOpenUrl:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-slide-delegate#//api/name/slideOpenUrl:)
+- [onSlideResourceMaxRetries\:error:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-slide-delegate#//api/name/onSlideResourceMaxRetries:error:)
+- [onSlideError\:errorMessage\:slideId\:slideIndex:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-slide-delegate#//api/name/onSlideError:errorMessage:slideId:slideIndex:)
+- [onSlidePageStateChanged\:page\:pageCount:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-slide-delegate#//api/name/onSlidePageStateChanged:page:pageCount:)
+
+<a id="//api/name/slideUrlInterrupter:completionHandler:"></a>
+
+
+<a id="tasks"></a>
+
+### `– slideUrlInterrupter:completionHandler:`
+
+<ApiSignature>
+
+\- (void)slideUrlInterrupter:(NSString * _Nullable)url completionHandler:(SlideUrlInterrupterCallback _Nullable)completionHandler;
+
+</ApiSignature>
+
+```text
+Slide 资源拦截回调。
+
+*Note:**
+
+ - 要触发该回调，必须在初始化白板 SDK 时，设置 `WhiteSdkConfiguration.enableSlideInterrupterAPI(YES)` 开启 Slide 拦截替换功能。详见 [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration)。
+ @param url 资源原地址。
+ @param completionHandler 替换后的地址回调，完成 url 替换后请调用该方法。
+```
+
+Declared in SDK/WhiteSlideDelegate.h
+
+<a id="//api/name/slideOpenUrl:"></a>
+
+### `– slideOpenUrl:`
+
+<ApiSignature>
+
+\- (void)slideOpenUrl:(NSString *)url;
+
+</ApiSignature>
+
+```text
+- 当 ppt 点击链接时触发该回调。
+ @param url 点击的链接地址。
+```
+
+Declared in SDK/WhiteSlideDelegate.h
+
+<a id="//api/name/onSlideResourceMaxRetries:error:"></a>
+
+### `– onSlideResourceMaxRetries:error:`
+
+<ApiSignature>
+
+\- (void)onSlideResourceMaxRetries:(NSString *)url error:(NSError *)error;
+
+</ApiSignature>
+
+```text
+Slide 资源加载失败达到最大重试次数时触发。
+ @param url 资源地址。
+ @param error 错误信息。`NSLocalizedDescriptionKey` 为错误消息，`NSDebugDescriptionErrorKey` 为 JS 堆栈。
+```
+
+Declared in SDK/WhiteSlideDelegate.h
+
+<a id="//api/name/onSlideError:errorMessage:slideId:slideIndex:"></a>
+
+### `– onSlideError:errorMessage:slideId:slideIndex:`
+
+<ApiSignature>
+
+\- (void)onSlideError:(WhiteSlideErrorType)slideError errorMessage:(NSString *)errorMessage slideId:(NSString *)slideId slideIndex:(NSInteger)slideIndex;
+
+</ApiSignature>
+
+Declared in SDK/WhiteSlideDelegate.h
+
+<a id="//api/name/onSlidePageStateChanged:page:pageCount:"></a>
+
+### `– onSlidePageStateChanged:page:pageCount:`
+
+<ApiSignature>
+
+\- (void)onSlidePageStateChanged:(NSString *)appId page:(NSInteger)page pageCount:(NSInteger)pageCount;
+
+</ApiSignature>
+
+```text
+Slide 页面状态变化回调。
+
+ @param appId SlideApp 的窗口 ID。
+ @param page 当前页码，从 1 开始。
+ @param pageCount 页面总数。
+```
+
+Declared in SDK/WhiteSlideDelegate.h

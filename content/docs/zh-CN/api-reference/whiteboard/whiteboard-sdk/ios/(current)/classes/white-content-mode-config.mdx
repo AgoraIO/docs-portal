@@ -1,0 +1,109 @@
+---
+title: WhiteContentModeConfig Class Reference
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteContentModeConfig
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteContentModeConfig.html
+  generator: appledoc
+  warnings:
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+---
+
+Whiteboard iOS SDK 2.16.147 公开接口。
+
+@interface WhiteContentModeConfig: WhiteObject
+
+## 成员
+
+- [init](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-content-mode-config#//api/name/init)
+- [initWithContentMode:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-content-mode-config#//api/name/initWithContentMode:)
+- [contentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-content-mode-config#//api/name/contentMode)
+- [scale](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-content-mode-config#//api/name/scale)
+- [space](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-content-mode-config#//api/name/space)
+
+<a id="//api/name/init"></a>
+
+### `– init`
+
+<ApiSignature>
+
+\- (instancetype)init NS_UNAVAILABLE;
+
+</ApiSignature>
+
+Declared in Object/WhiteCameraBound.h
+
+<a id="//api/name/initWithContentMode:"></a>
+
+
+<a id="tasks"></a>
+
+### `– initWithContentMode:`
+
+<ApiSignature>
+
+\- (instancetype)initWithContentMode:(WhiteContentMode)scaleMode;
+
+</ApiSignature>
+
+```text
+初始化一个 `WhiteContentMode` 对象。
+ @param scaleMode 视角边界的缩放模式，缩放比例默认值为 1.0，即保持视角边界的原始大小。详见 [WhiteContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-content-mode)。
+
+ @return 初始化的 `WhiteContentMode` 对象。
+```
+
+Declared in Object/WhiteCameraBound.h
+
+<a id="//api/name/contentMode"></a>
+
+### `contentMode`
+
+<ApiSignature>
+
+@property (nonatomic, assign, readonly) WhiteContentMode contentMode;
+
+</ApiSignature>
+
+```text
+视角边界的缩放模式和缩放比例。详见 [WhiteContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-content-mode)。
+```
+
+Declared in Object/WhiteCameraBound.h
+
+<a id="//api/name/scale"></a>
+
+### `scale`
+
+<ApiSignature>
+
+@property (nonatomic, assign) CGFloat scale;
+
+</ApiSignature>
+
+```text
+视角边界的缩放比例。只有当 scaleMode 的值为 `WhiteContentModeScale`、`WhiteContentModeAspectFitScale`、`WhiteContentModeAspectFillScale` 时设置生效。
+```
+
+Declared in Object/WhiteCameraBound.h
+
+<a id="//api/name/space"></a>
+
+### `space`
+
+<ApiSignature>
+
+@property (nonatomic, assign) CGFloat space;
+
+</ApiSignature>
+
+```text
+视角边界的缩放模式。只有当 scaleMode 为 `WhiteContentModeAspectFitSpace` 时设置生效。
+```
+
+Declared in Object/WhiteCameraBound.h

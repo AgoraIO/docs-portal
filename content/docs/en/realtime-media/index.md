@@ -1,9 +1,9 @@
 ---
-title: Overview
+title: Real-Time Communications overview
 description: Start here when you need to build, process, connect, or deliver real-time media experiences.
 ---
 
-Realtime & Media is the capability domain for products that need something to happen live. Use this section when you are deciding how people, devices, backend services, and media streams should connect, stay in sync, and keep working while a session is in progress.
+Real-Time Communications is the capability domain for products that need something to happen live. Use this section when you are deciding how people, devices, backend services, and media streams should connect, stay in sync, and keep working while a session is in progress.
 
 Instead of organizing docs around a single product story, this tab is organized around the functional layers most teams assemble when building a real-time experience: live interaction, session intelligence, media routing, large-scale delivery, and device or server participation.
 
@@ -13,7 +13,7 @@ Instead of organizing docs around a single product story, this tab is organized 
 
 Use these docs when you are defining how users join a session, exchange media, coordinate actions, or collaborate in the same live space.
 
-- [Voice & Video](/en/realtime-media/rtc): calls, meetings, co-hosting, interactive live rooms, and media quality control
+- [RTC](/en/realtime-media/rtc): calls, meetings, co-hosting, interactive live rooms, and media quality control
 - [Signaling](/en/realtime-media/rtm): channel messaging, presence, state sync, and real-time coordination
 - [Chat](/en/realtime-media/im): persistent and full-featured messaging systems beyond lightweight room coordination
 - [Whiteboard](/en/realtime-media/whiteboard): shared visual collaboration inside live sessions
@@ -49,14 +49,14 @@ Use these docs when participants are not just mobile or web clients, but also em
 
 ## How to navigate this tab
 
-- Start with [Voice & Video](/en/realtime-media/rtc), [Signaling](/en/realtime-media/rtm), [Chat](/en/realtime-media/im), or [Whiteboard](/en/realtime-media/whiteboard) when your main question is how users interact inside a live session.
+- Start with [RTC](/en/realtime-media/rtc), [Signaling](/en/realtime-media/rtm), [Chat](/en/realtime-media/im), or [Whiteboard](/en/realtime-media/whiteboard) when your main question is how users interact inside a live session.
 - Start with [Transcription & Translation](/en/realtime-media/speech-to-text), [Cloud Recording](/en/realtime-media/cloud-recording), or [Transcoding](/en/realtime-media/transcoding) when your main question is what should happen to the media during or after the session.
 - Start with [Media Push](/en/realtime-media/media-push), [Media Pull](/en/realtime-media/media-pull), [Media Gateway](/en/realtime-media/rtmp-gateway), or [Fusion CDN](/en/realtime-media/fusion-cdn) when your main question is how to move media across systems or out to larger audiences.
 - Start with [IoT & Edge](/en/realtime-media/rtsa) or [Server Gateway](/en/realtime-media/rtc-server-sdk) when your main question is how devices or backend services participate in the real-time workflow.
 
 ## Common reading paths
 
-- Interactive live streaming with large audience playback: [Voice & Video](/en/realtime-media/rtc) -> [Media Push](/en/realtime-media/media-push) -> [Fusion CDN](/en/realtime-media/fusion-cdn)
-- Meeting archive and searchable records: [Voice & Video](/en/realtime-media/rtc) -> [Cloud Recording](/en/realtime-media/cloud-recording) -> [Transcription & Translation](/en/realtime-media/speech-to-text)
-- External stream into an interactive session: [Media Pull](/en/realtime-media/media-pull) or [Media Gateway](/en/realtime-media/rtmp-gateway) -> [Voice & Video](/en/realtime-media/rtc)
+- Interactive live streaming with large audience playback: [RTC](/en/realtime-media/rtc) -> [Media Push](/en/realtime-media/media-push) -> [Fusion CDN](/en/realtime-media/fusion-cdn)
+- Meeting archive and searchable records: [RTC](/en/realtime-media/rtc) -> [Cloud Recording](/en/realtime-media/cloud-recording) -> [Transcription & Translation](/en/realtime-media/speech-to-text)
+- External stream into an interactive session: [Media Pull](/en/realtime-media/media-pull) or [Media Gateway](/en/realtime-media/rtmp-gateway) -> [RTC](/en/realtime-media/rtc)
 - Smart device connectivity with backend media control: [IoT & Edge](/en/realtime-media/rtsa) -> [Server Gateway](/en/realtime-media/rtc-server-sdk)

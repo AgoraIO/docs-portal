@@ -1,0 +1,116 @@
+import { describe, expect, it } from 'vitest';
+import {
+  buildSearchPageHref,
+  parseSearchPageState,
+  searchScopeProduct,
+} from './search-page-state';
+
+describe('search page URL state', () => {
+  it('round trips an expanded range separately from direct page links and bounds restoration', () => {
+    const state = parseSearchPageState({ q: 'Token', page: 2, loaded: 4 });
+    expect(state).toMatchObject({ page: 2, loaded: 4 });
+    expect(buildSearchPageHref('zh-CN', state)).toContain('loaded=4');
+    expect(parseSearchPageState({ page: 2, loaded: 9999 })).toMatchObject({
+      page: 2,
+      loaded: 21,
+    });
+    expect(parseSearchPageState({ page: 2, loaded: 1 })).not.toHaveProperty(
+      'loaded',
+    );
+  });
+  it('uses one server platform and ignores obsolete version filters', () => {
+    expect(
+      parseSearchPageState({
+        q: '高级美颜',
+        platform: 'restful-api',
+        version: '4.6.0',
+      }),
+    ).toMatchObject({
+      q: '高级美颜',
+      platform: 'restful',
+      version: undefined,
+    });
+    expect(
+      buildSearchPageHref('zh-CN', { q: 'joinChannel', version: '4.6.0' }),
+    ).not.toContain('version');
+  });
+  it.each([
+    ['cloud-transcoding', 'transcoding'],
+    ['signaling', 'rtm'],
+  ])(
+    'uses one product option for legacy links with %s',
+    (product, canonical) => {
+      expect(parseSearchPageState({ product }).product).toBe(canonical);
+    },
+  );
+  it.each(['api', 'faq'] as const)(
+    'round trips a shareable %s query, filters, and page without defaults',
+    (type) => {
+      const input = {
+        q: ' Token 过期 ',
+        product: 'conversational-ai',
+        platform: 'web',
+        version: '4.6.0',
+        type,
+        page: 3,
+      };
+      const href = buildSearchPageHref('zh-CN', input);
+      expect(
+        parseSearchPageState(
+          Object.fromEntries(new URL(href, 'https://docs.local').searchParams),
+        ),
+      ).toEqual({ ...input, q: 'Token 过期', version: undefined });
+      expect(buildSearchPageHref('zh-CN', { q: '' })).toBe('/zh-CN/search');
+    },
+  );
+
+  it('rejects malformed filters and bounds query and page input', () => {
+    expect(
+      parseSearchPageState({
+        q: 'x'.repeat(600),
+        product: 'rtc" OR hidden = true',
+        platform: 'fake-platform',
+        version: '../secret',
+        type: 'ai',
+        page: -1,
+      }),
+    ).toEqual({
+      q: 'x'.repeat(500),
+      product: undefined,
+      platform: undefined,
+      version: undefined,
+      type: 'all',
+      page: 1,
+    });
+    expect(parseSearchPageState({ page: '9999' }).page).toBe(500);
+    expect(parseSearchPageState({ page: '1.2' }).page).toBe(1);
+  });
+
+  it('carries product scope from the quick search dialog', () => {
+    expect(searchScopeProduct({ field: 'product', value: 'rtc' })).toBe('rtc');
+    expect(searchScopeProduct({ field: 'tab', value: 'ai' })).toBe(
+      'conversational-ai',
+    );
+    expect(
+      searchScopeProduct({ field: 'tab', value: 'introduction' }),
+    ).toBeUndefined();
+  });
+});
+
+it.each([
+  ['unreal-cpp', 'unreal'],
+  ['unreal-blueprint', 'blueprint'],
+  ['mini-program-beta', 'mini-program'],
+  ['javascript', 'web'],
+  ['server-cpp', 'cpp'],
+  ['server-java', 'java'],
+])('restores old %s filter links as %s', (platform, canonical) => {
+  expect(parseSearchPageState({ platform }).platform).toBe(canonical);
+  expect(buildSearchPageHref('zh-CN', { platform })).toBe(
+    `/zh-CN/search?platform=${canonical}`,
+  );
+});
+
+it.each(['general', 'iot'])('accepts legacy %s platform links', (platform) => {
+  expect(parseSearchPageState({ platform }).platform).toBe(platform);
+});

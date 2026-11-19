@@ -1,0 +1,90 @@
+---
+title: com.herewhite.sdk.combinePlayer.NativePlayer接口 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourcePath: >-
+    html-docs/whiteboard/Android/interfacecom_1_1herewhite_1_1sdk_1_1combine_player_1_1_native_player.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+[`NativePlayer`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1combine-player-1-1-native-player) 接口。
+
+:::info[自从]
+2.4.23
+:::
+
+## 成员函数说明
+
+<a id="ae0819cbd3b0aee50564f900af12bedfc"></a>
+
+### play()
+
+<ApiSignature>
+
+void com.herewhite.sdk.combinePlayer.NativePlayer.play()
+
+</ApiSignature>
+
+播放视频。
+
+:::info[注解]
+该方法需要由 [`PlayerSyncManager`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1combine-player-1-1-player-sync-manager) 调用，请勿主动调用。
+:::
+
+<a id="a4006f4a15e14fe8d1b742c5c5bd4b7a8"></a>
+
+### pause()
+
+<ApiSignature>
+
+void com.herewhite.sdk.combinePlayer.NativePlayer.pause()
+
+</ApiSignature>
+
+暂停播放视频。
+
+:::info[注解]
+该方法需要由 [`PlayerSyncManager`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1combine-player-1-1-player-sync-manager) 调用，请勿主动调用。
+:::
+
+<a id="aa2e8218f7d009448ccbf55ca5773453c"></a>
+
+### hasEnoughBuffer()
+
+<ApiSignature>
+
+boolean com.herewhite.sdk.combinePlayer.NativePlayer.hasEnoughBuffer()
+
+</ApiSignature>
+
+获取是否能够不经过缓冲，直接播放视频。
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+是否能够不经过缓冲，直接播放视频：
+
+- `true`：可以不经过缓冲，直接播放视频。
+- `false`：需要经过缓冲才能播放视频。
+
+<a id="ae493efedbea69b5e72a2f43e8ae252f8"></a>
+
+### getPhase()
+
+<ApiSignature>
+
+[NativePlayerPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1combine-player-1-1-native-player-1-1-native-player-phase) com.herewhite.sdk.combinePlayer.NativePlayer.getPhase()
+
+</ApiSignature>
+
+获取视频播放阶段。
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+视频播放阶段，详见 [`NativePlayerPhase`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1combine-player-1-1-native-player-1-1-native-player-phase)。

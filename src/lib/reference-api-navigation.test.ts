@@ -106,7 +106,7 @@ function routeExists(href: string) {
 }
 
 describe('product API reference navigation', () => {
-  it('models the RTC Voice Only SDK as a Realtime Communication SDK variant', () => {
+  it('models the RTC Voice Only SDK as an RTC SDK variant', () => {
     const catalog = readFileSync(
       path.join(docsRoot, 'en', 'api-reference', 'api-ref', 'index.mdx'),
       'utf8',
@@ -116,6 +116,8 @@ describe('product API reference navigation', () => {
     expect(catalog).not.toContain(
       'product: "Realtime Communication (Voice only)"',
     );
+    expect(catalog).not.toContain('product: "Realtime Communication"');
+    expect(catalog).toContain('product: "RTC"');
     expect(catalog).toContain('sdk: "RTC (Voice Only) SDK"');
     expect(catalog).toContain('sdk: "RTC SDK"');
     expect(catalog).toContain('sdkQueryParam="sdk"');

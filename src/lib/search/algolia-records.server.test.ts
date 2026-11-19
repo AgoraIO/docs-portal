@@ -152,6 +152,29 @@ describe('buildAlgoliaOpenApiRecord', () => {
 });
 
 describe('extractDocSearchContent', () => {
+  it('indexes a Chinese accordion version with its original ID and content', () => {
+    const result = extractDocSearchContent(
+      [
+        '<Accordions type="multiple" openFirst>',
+        '<Accordion title="2.3.0 版" id="230-版" headingLevel={2} value="230-版">',
+        '',
+        '该版本修复网络切换问题。',
+        '',
+        '</Accordion>',
+        '</Accordions>',
+      ].join('\n'),
+    );
+    expect(result.headings).toContainEqual({
+      content: '2.3.0 版',
+      id: '230-版',
+    });
+    expect(result.contents).toContainEqual(
+      expect.objectContaining({
+        content: '该版本修复网络切换问题。',
+        heading: '230-版',
+      }),
+    );
+  });
   const markdown = [
     '## Get started',
     '',
@@ -320,4 +343,25 @@ describe('toPlainText', () => {
       'Set filler_words.enable to true.',
     );
   });
+});
+
+it('indexes visible English card labels without indexing their links or fenced examples', () => {
+  const source = [
+    '## Use cases',
+    '<Cards>',
+    '  <Card title="Interactive Live Streaming" href="/internal-slug" description="Stream to audiences." />',
+    '</Cards>',
+    '```mdx',
+    '<Card title="Example only" />',
+    '```',
+  ].join('\n');
+  const contents = extractDocSearchContent(source).contents;
+  expect(
+    contents.some(({ content }) =>
+      content.includes('Interactive Live Streaming'),
+    ),
+  ).toBe(true);
+  expect(
+    contents.some(({ content }) => content.includes('/internal-slug')),
+  ).toBe(false);
 });

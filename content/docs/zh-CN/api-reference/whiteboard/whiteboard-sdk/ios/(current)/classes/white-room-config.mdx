@@ -1,0 +1,479 @@
+---
+title: WhiteRoomConfig Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteRoomConfig
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteRoomConfig.html
+  generator: appledoc
+  warnings: []
+---
+
+Whiteboard iOS SDK 2.16.147 公开接口。
+
+@interface WhiteRoomConfig: WhiteObject
+
+## 成员
+
+- [initWithUUID\:roomToken\:uid:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/initWithUUID:roomToken:uid:)
+- [initWithUUID\:roomToken\:uid\:userPayload:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/initWithUUID:roomToken:uid:userPayload:)
+- [uuid](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/uuid)
+- [roomToken](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/roomToken)
+- [uid](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/uid)
+- [region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/region)
+- [modulesOrigin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/modulesOrigin)
+- [disableDeviceInputs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/disableDeviceInputs)
+- [disableCameraTransform](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/disableCameraTransform)
+- [disableBezier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/disableBezier)
+- [disableEraseImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/disableEraseImage)
+- [disableTextOperations](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/disableTextOperations)
+- [floatBar](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/floatBar)
+- [cameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/cameraBound)
+- [userPayload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/userPayload)
+- [isWritable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/isWritable)
+- [disableNewPencil](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/disableNewPencil)
+- [timeout](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/timeout)
+- [undoCacheScenesCount](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/undoCacheScenesCount)
+- [windowParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/windowParams)
+- [enableWritableAssert](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/enableWritableAssert)
+- [drawOnlyApplePencil](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/drawOnlyApplePencil)
+- [appliancePluginOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config#//api/name/appliancePluginOptions)
+
+<a id="//api/name/initWithUUID:roomToken:uid:"></a>
+
+
+<a id="tasks"></a>
+
+### `– initWithUUID:roomToken:uid:`
+
+<ApiSignature>
+
+\- (instancetype)initWithUUID:(NSString *)uuid roomToken:(NSString *)roomToken uid:(NSString *)uid;
+
+</ApiSignature>
+
+```text
+设置房间 UUID 和用户信息并初始化 `WhiteRoomConfig` 对象。
+ @param uuid 房间 UUID，即房间唯一标识符。
+ @param roomToken 用于鉴权的 Room Token。生成该 Room Token 的房间 UUID 必须和上面传入的房间 UUID 一致。
+ @param uid 用户标识，可以为任意 string。
+ @return 初始化的 `WhiteRoomConfig` 对象。
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/initWithUUID:roomToken:uid:userPayload:"></a>
+
+### `– initWithUUID:roomToken:uid:userPayload:`
+
+<ApiSignature>
+
+\- (instancetype)initWithUUID:(NSString *)uuid roomToken:(NSString *)roomToken uid:(NSString *)uid userPayload:(id _Nullable)userPayload NS_DESIGNATED_INITIALIZER;
+
+</ApiSignature>
+
+```text
+设置房间 UUID 和用户信息并初始化 `WhiteRoomConfig` 对象。
+ @param uuid 房间 UUID，即房间唯一标识符。
+ @param roomToken 用于鉴权的 Room Token。生成该 Room Token 的房间 UUID 必须和上面传入的房间 UUID 一致。
+ @param uid 用户标识，可以为任意 string，字符串长度不能超过 1024，2.15.0 后必须填写。
+ @param userPayload 自定义用户信息内容，必须为字典或者 WhiteObject 子类。
+ @return 初始化的 `WhiteRoomConfig` 对象。
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/uuid"></a>
+
+### `uuid`
+
+<ApiSignature>
+
+@property (nonatomic, copy, readonly) NSString *uuid;
+
+</ApiSignature>
+
+```text
+房间 UUID，即房间唯一标识符。
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/roomToken"></a>
+
+### `roomToken`
+
+<ApiSignature>
+
+@property (nonatomic, copy, readonly) NSString *roomToken;
+
+</ApiSignature>
+
+```text
+用于鉴权的 Room Token。
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/uid"></a>
+
+### `uid`
+
+<ApiSignature>
+
+@property (nonatomic, copy, readonly) NSString *uid;
+
+</ApiSignature>
+
+```text
+用户标识记录，
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/region"></a>
+
+### `region`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteRegionKey region;
+
+</ApiSignature>
+
+```text
+待回放的互动白板房间所在的数据中心。
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/modulesOrigin"></a>
+
+### `modulesOrigin`
+
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) NSString *modulesOrigin;
+
+</ApiSignature>
+
+```text
+白板请求 modules 数据的地址，配置后不会请求白板默认地址
+@example https://modules.example.com
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/disableDeviceInputs"></a>
+
+### `disableDeviceInputs`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL disableDeviceInputs;
+
+</ApiSignature>
+
+```text
+禁止/允许工具响应用户输入。
+
+ - `YES`：禁止工具响应用户输入。
+ - `NO`：（默认）允许工具响应用户输入。
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/disableCameraTransform"></a>
+
+### `disableCameraTransform`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL disableCameraTransform;
+
+</ApiSignature>
+
+```text
+禁止/允许本地用户操作白板的视角，包括缩放和移动视角。
+
+ - `YES`：禁止本地用户操作白板视角。
+ - `NO`：（默认）允许本地用户操作白板视角。
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/disableBezier"></a>
+
+### `disableBezier`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL disableBezier;
+
+</ApiSignature>
+
+```text
+是否关闭贝塞尔曲线优化。
+
+ - `YES`：关闭贝塞尔曲线优化。
+ - `NO`：（默认）开启贝塞尔曲线优化。
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/disableEraseImage"></a>
+
+### `disableEraseImage`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL disableEraseImage;
+
+</ApiSignature>
+
+```text
+是否关闭橡皮擦擦除图片功能。
+
+ - `YES`：橡皮擦不可以擦除图片。
+ - `NO`：（默认）橡皮擦可以擦除图片。
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/disableTextOperations"></a>
+
+### `disableTextOperations`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL disableTextOperations;
+
+</ApiSignature>
+
+```text
+是否关闭 ``insertText`` 与 ``updateText`` 操作权限
+
+ - `YES`：不允许``insertText`` 与 ``updateText``。
+ - `NO`：允许``insertText`` 与 ``updateText``。
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/floatBar"></a>
+
+### `floatBar`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL floatBar;
+
+</ApiSignature>
+
+```text
+在用选择工具（``currentApplianceName="selector"``）选中物体后，出现的浮动条。
+若为 ``NO``（默认值），则永远不会出现浮动条。若为 ``YES``，则会出现浮动条。
+并且，若为 ``YES`` ， 只有选用单个物体或者同类物体才会出现浮动条。
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/cameraBound"></a>
+
+### `cameraBound`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteCameraBound *cameraBound;
+
+</ApiSignature>
+
+```text
+本地用户的视角边界。详见 [WhiteCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound)。
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/userPayload"></a>
+
+### `userPayload`
+
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) id userPayload;
+
+</ApiSignature>
+
+```text
+自定义的用户信息，可以为 JSON、NSString、NSNumber 格式，推荐格式为 NSDictionary。
+
+*Note:**
+
+ - 必须使用 [WhiteRoomConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config) 子类，以保证字段结构正确。
+ - 自定义的用户信息会被完整透传。
+ 如果要在白板房间中显示用户头像，请在 `userPayload` 中传入 `avatar` 字段并添加用户头像的地址，例如 `"avatar", "https://example.com/user.png")`。
+ 如果要在白板房间中显示用户明层，请在 `userPayload` 中传入 `cursorName` 字段并添加用户名称，例如 `"cursorName", "exampleName"`。
+ - 从 [WhiteMemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-member-information) 迁移，只需要在 `userPayload` 中，传入相同字段即可。
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/isWritable"></a>
+
+### `isWritable`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL isWritable;
+
+</ApiSignature>
+
+```text
+用户是否以互动模式加入白板房间。
+
+ 在加入房间后，也可以通过 [setWritable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/setWritable:completionHandler:) 方法切换读写模式。
+
+ - `YES`：以互动模式加入白板房间，即具有读写权限。
+ - `NO`：以订阅模式加入白板房间，即具有只读权限。不能操作工具、修改房间状态，当前用户也不会出现在 `roomMembers` 列表中。
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/disableNewPencil"></a>
+
+### `disableNewPencil`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL disableNewPencil;
+
+</ApiSignature>
+
+```text
+关闭/开启笔锋效果。
+
+ @since 2.12.2
+
+*Note:**
+
+  - 在 2.12.2 版本中，默认值为 `NO`，自 2.12.3 版本起，默认值改为 `YES`。
+  - 为正常显示笔迹，在开启笔峰效果前，请确保该房间内的所有用户使用如下 SDK：
+    - Android SDK 2.12.3 版或之后
+    - iOS SDK 2.12.3 版或之后
+    - Web SDK 2.12.5 版或之后
+
+ - `YES`: （默认）关闭笔锋效果。
+ - `NO`: 开启笔锋效果。
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/timeout"></a>
+
+### `timeout`
+
+<ApiSignature>
+
+@property (nonatomic, strong) NSNumber *timeout;
+
+</ApiSignature>
+
+```text
+加入房间的超时时间。单位为秒。
+
+ SDK 超时后会主动断连，并触发 [firePhaseChanged](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-room-callback-delegate#//api/name/firePhaseChanged:) 回调。同时触发 [fireDisconnectWithError](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-room-callback-delegate#//api/name/fireDisconnectWithError:) 回调并返回”重连时长超出 xx 毫秒”的提示。
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/undoCacheScenesCount"></a>
+
+### `undoCacheScenesCount`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSNumber *undoCacheScenesCount;
+
+</ApiSignature>
+
+```text
+撤销/重做最多保留的场景缓存数量。不设置时使用 Web SDK 默认值。
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/windowParams"></a>
+
+### `windowParams`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteWindowParams *windowParams;
+
+</ApiSignature>
+
+```text
+多窗口用的本地参数，只影响本地客户
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/enableWritableAssert"></a>
+
+### `enableWritableAssert`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL enableWritableAssert;
+
+</ApiSignature>
+
+```text
+是否启用可写状态监控。
+ 若开启，在非可写状态调用需要可写权限的房间操作会触发NSAssert，以此来强制正确的api调用。
+ 监控仅在开发环境生效，生产环境自动失效。
+ 该参数默认为`NO`
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/drawOnlyApplePencil"></a>
+
+### `drawOnlyApplePencil`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL drawOnlyApplePencil;
+
+</ApiSignature>
+
+```text
+是否只允许用ApplePencil涂鸦
+
+ 开启后，禁止手指涂鸦，只有ApplePencil的笔迹会被识别。
+ 在涂鸦时如果有手指误触，将触发 [fireRoomStateChanged](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-room-callback-delegate#//api/name/fireRoomStateChanged:) 回调，返回发生 ApplianceClickerClicker 和 ApplianceClickerPencil 教具切换。
+
+ 该参数仅在 iPad 设备上生效
+ 建议跟随`UIPencilInteraction.prefersPencilOnlyDrawing`设置
+
+ 该参数默认为`NO`
+```
+
+Declared in Room/WhiteRoomConfig.h
+
+<a id="//api/name/appliancePluginOptions"></a>
+
+### `appliancePluginOptions`
+
+<ApiSignature>
+
+@property (nonatomic, strong) WhiteAppliancePluginOptions* appliancePluginOptions;
+
+</ApiSignature>
+
+Native 插件配置；extras 保持可序列化，运行时回调通过本端 delegate/listener 设置。
+
+```text
+白板增强插件参数。
+```
+
+Declared in Room/WhiteRoomConfig.h

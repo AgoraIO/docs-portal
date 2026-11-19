@@ -5,6 +5,17 @@ import { type DocsPageType, inferDocsPageType } from './docs-page-type';
 export type { DocsPageType } from './docs-page-type';
 export { DOCS_PAGE_TYPES } from './docs-page-type';
 
+import type { BeforeSendFn } from 'posthog-js';
+import type { AccountFlow, DocsAccount } from '@/lib/auth/contracts';
+import {
+  MAX_FEEDBACK_COMMENT_LENGTH,
+  negativeFeedbackReasons,
+  positiveFeedbackReasons,
+} from '@/lib/docs-feedback';
+import type { MeasurementEvent } from './docs-measurement';
+import { measurementPath } from './measurement-path';
+import { filterCnMeasurementEvent } from './measurement-privacy';
+
 type PostHogClient = typeof import('posthog-js').default;
 
 const POSTHOG_HOST = 'https://us.i.posthog.com';
@@ -15,7 +26,71 @@ const URL_PROPERTY_NAME = /(href|referrer|url)$/i;
 const SEARCH_QUERY_MAX_LENGTH = 100;
 const SEARCH_SENSITIVE_QUERY_PATTERN =
   /(?:https?:\/\/|\b(?:token|secret|password|certificate|app[_ -]?id|appid|api[_ -]?key)\s*[:=]|\bpassword\s+is\s+\S+|\b[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}\b|\beyJ[a-z0-9_-]*\.[a-z0-9_-]+\.[a-z0-9_-]+\b|\b[a-f0-9]{24,}\b)/iu;
+const accountFlowEvents = [
+  'docs_resource_action_started',
+  'docs_account_guidance_shown',
+  'docs_account_guidance_dismissed',
+  'docs_account_login_clicked',
+] as const;
+const accountFlowProperties = new Set([
+  'flow_id',
+  'locale',
+  'resource_type',
+  'resource_id',
+  'source_path',
+  'platform',
+  'version',
+  'console_target',
+  'target_kind',
+  'account_uid',
+  'company_id',
+  '$groups',
+  'distinct_id',
+  '$lib',
+  '$lib_version',
+  '$process_person_profile',
+  '$is_identified',
+  // Public project routing key required by the browser SDK, never an SSO token.
+  'token',
+  '$anon_distinct_id',
+]);
+const filterAccountFlowEvent: BeforeSendFn = (event) => {
+  if (
+    !event ||
+    (event.event !== '$identify' &&
+      !accountFlowEvents.some((name) => name === event.event))
+  )
+    return event;
+  // The SDK merges URL/referrer and persisted properties after capture(). Apply
+  // the account-flow allowlist at the final outbound boundary, including $set.
+  return {
+    uuid: event.uuid,
+    event: event.event,
+    timestamp: event.timestamp,
+    properties: Object.fromEntries(
+      Object.entries(event.properties).filter(([key]) =>
+        accountFlowProperties.has(key),
+      ),
+    ),
+  };
+};
 
+const filterOutboundEvent: BeforeSendFn = (event) => {
+  const filtered = filterAccountFlowEvent(event);
+  if (!filtered) return filtered;
+  if (import.meta.env.VITE_DOCS_REGION === 'cn')
+    return filterCnMeasurementEvent(filtered);
+  if (!filtered.properties) return filtered;
+  return {
+    ...filtered,
+    properties: sanitizeAnalyticsProperties(
+      filtered.properties,
+      filtered.event === 'docs_page_feedback',
+    ),
+  };
+};
+
+let currentDocsAccount: DocsAccount | null = null;
 let posthogClientPromise: Promise<PostHogClient | null> | null = null;
 let registeredPageContext: RegisteredDocsPageContext | null = null;
 let capturedPageViewPathname: string | null = null;
@@ -82,6 +157,63 @@ export function queueDocsPageView({ pathname }: { pathname: string }) {
 
   pendingPageViewPathname = pathname;
   flushPendingDocsPageView(pathname);
+}
+
+export function captureAccountFlow(
+  event: (typeof accountFlowEvents)[number],
+  flow: AccountFlow,
+  account: DocsAccount | null,
+) {
+  void getPostHogClient().then((posthog) => {
+    if (!posthog) return;
+    applyDocsAccount(posthog, account);
+    posthog.capture(event, {
+      flow_id: flow.flowId,
+      locale: 'zh-CN',
+      resource_type: flow.resourceType,
+      resource_id: flow.resourceId,
+      source_path: flow.sourcePath,
+      platform: flow.platform,
+      version: flow.version,
+      console_target: flow.target,
+      target_kind: flow.target === 'home' ? 'fallback' : 'service',
+      $groups: account?.companyId ? { cid: account.companyId } : {},
+      ...(account
+        ? {
+            account_uid: account.accountUid,
+            company_id: account.companyId,
+          }
+        : {}),
+    });
+  });
+}
+
+export async function getDocsAnonymousId() {
+  const posthog = await getPostHogClient();
+  // Never ask the callback to merge a previous identified account into another.
+  return posthog && !posthog.get_property('$user_id')
+    ? posthog.get_distinct_id()
+    : undefined;
+}
+
+export async function synchronizeDocsAccount(account: DocsAccount | null) {
+  if (
+    currentDocsAccount &&
+    currentDocsAccount.accountUid !== account?.accountUid &&
+    typeof window !== 'undefined'
+  )
+    window.dispatchEvent(new Event('docs-account-changed'));
+  currentDocsAccount = account;
+  const posthog = await getPostHogClient();
+  if (!posthog) return;
+  applyDocsAccount(posthog, account);
+}
+
+function applyDocsAccount(posthog: PostHogClient, account: DocsAccount | null) {
+  const previous = posthog.get_property('$user_id');
+  if (previous && previous !== account?.accountUid) posthog.reset();
+  if (account && previous !== account.accountUid)
+    posthog.identify(account.accountUid);
 }
 
 export function captureDocsPageFeedback({
@@ -907,6 +1039,124 @@ function stripUrlQueryAndHash(value: string) {
   return value.slice(0, boundary);
 }
 
+/** True means the SDK accepted this immutable event, not server receipt confirmation. */
+export async function captureDocsFeedbackSubmission(input: {
+  id: string;
+  submittedAt: string;
+  helpfulness: DocsFeedbackValue;
+  reasons: readonly string[];
+  details: string;
+  pagePath: string;
+}): Promise<boolean> {
+  if (
+    typeof window === 'undefined' ||
+    import.meta.env.VITE_DOCS_REGION !== 'cn' ||
+    import.meta.env.VITE_DOCS_MEASUREMENT_ENABLED !== 'true'
+  )
+    return false;
+  const labels =
+    input.helpfulness === 'yes'
+      ? positiveFeedbackReasons
+      : negativeFeedbackReasons;
+  const comment = input.details.trim().slice(0, MAX_FEEDBACK_COMMENT_LENGTH);
+  if (
+    (!input.reasons.length && !comment) ||
+    input.reasons.some((reason) => !Object.hasOwn(labels, reason))
+  )
+    return false;
+  const response = [...new Set(input.reasons)].sort();
+  const properties: Record<string, unknown> = {
+    event_id: input.id,
+    feedback_id: input.id,
+    occurred_at: input.submittedAt,
+    schema_version: '1',
+    event_source: 'browser',
+    site_id: 'docs_portal',
+    deployment_region: 'cn',
+    locale: 'zh-CN',
+    environment: import.meta.env.VITE_DOCS_ENVIRONMENT || 'local',
+    app_release: import.meta.env.VITE_DOCS_APP_RELEASE || 'unknown',
+    canonical_path: measurementPath(input.pagePath),
+    value: input.helpfulness,
+    response,
+    comment,
+    has_comment: Boolean(comment),
+    feedback_destination: 'analytics',
+    feedback_scope: 'page',
+    feedback_source: 'manual',
+    surface: 'content',
+    question_id: 'reasons',
+    prompt_version: 'inline-reasons-v2',
+    evidence_source: 'self_report',
+    traffic_type: 'visitor',
+  };
+  try {
+    if (import.meta.env.VITE_DOCS_ENVIRONMENT !== 'production') {
+      const testId = sessionStorage.getItem('docs-measurement-test');
+      if (testId && /^[a-zA-Z0-9_-]{1,80}$/.test(testId)) {
+        properties.test_run_id = testId;
+        properties.traffic_type = 'internal_test';
+      }
+    }
+  } catch {
+    /* Storage can be unavailable. */
+  }
+  const account = currentDocsAccount;
+  try {
+    const posthog = await getPostHogClient();
+    if (!posthog) return false;
+    applyDocsAccount(posthog, account);
+    return Boolean(
+      posthog.capture(
+        'docs_feedback_form_submitted',
+        {
+          ...properties,
+          ...(account
+            ? {
+                account_uid: account.accountUid,
+                company_id: account.companyId,
+                $groups: { cid: account.companyId },
+              }
+            : {}),
+        },
+        {
+          uuid: input.id,
+          timestamp: new Date(input.submittedAt),
+          send_instantly: true,
+        },
+      ),
+    );
+  } catch {
+    return false;
+  }
+}
+
+export function captureMeasurementEvent(event: MeasurementEvent) {
+  if (
+    import.meta.env.VITE_DOCS_REGION !== 'cn' ||
+    import.meta.env.VITE_DOCS_MEASUREMENT_ENABLED !== 'true'
+  )
+    return;
+  const account = currentDocsAccount;
+  void getPostHogClient()
+    .then((posthog) => {
+      if (!posthog) return;
+      applyDocsAccount(posthog, account);
+      posthog.capture(
+        event.name,
+        {
+          ...event.properties,
+          ...(account
+            ? { account_uid: account.accountUid, company_id: account.companyId }
+            : {}),
+          $groups: account?.companyId ? { cid: account.companyId } : {},
+        },
+        { timestamp: new Date(String(event.properties.occurred_at)) },
+      );
+    })
+    .catch(() => {});
+}
+
 function getPostHogClient() {
   if (typeof window === 'undefined') {
     return Promise.resolve(null);
@@ -927,33 +1177,29 @@ function getPostHogClient() {
   }
 
   if (!posthogClientPromise) {
-    posthogClientPromise = import('posthog-js').then(({ default: posthog }) => {
-      posthog.init(key, {
-        api_host: import.meta.env.VITE_POSTHOG_HOST || POSTHOG_HOST,
-        autocapture: true,
-        before_send: (event) =>
-          event?.properties
-            ? {
-                ...event,
-                properties: sanitizeAnalyticsProperties(
-                  event.properties,
-                  event.event === 'docs_page_feedback',
-                ),
-              }
-            : event,
-        capture_pageview: 'history_change',
-        defaults: '2026-05-30',
-        disable_capture_url_hashes: true,
-        disable_session_recording: true,
-        mask_all_element_attributes: true,
-        mask_all_text: true,
-        person_profiles: 'never',
-        persistence: 'localStorage+cookie',
-        save_campaign_params: false,
-      });
+    posthogClientPromise = import('posthog-js')
+      .then(({ default: posthog }) => {
+        posthog.init(key, {
+          api_host: import.meta.env.VITE_POSTHOG_HOST || POSTHOG_HOST,
+          autocapture: true,
+          before_send: filterOutboundEvent,
+          capture_pageview: 'history_change',
+          defaults: '2026-05-30',
+          disable_capture_url_hashes: true,
+          disable_session_recording: true,
+          mask_all_element_attributes: true,
+          mask_all_text: true,
+          person_profiles:
+            import.meta.env.VITE_DOCS_REGION === 'cn'
+              ? 'identified_only'
+              : 'never',
+          persistence: 'localStorage+cookie',
+          save_campaign_params: false,
+        });
 
-      return posthog;
-    });
+        return posthog;
+      })
+      .catch(() => null);
   }
 
   return posthogClientPromise;

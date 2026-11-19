@@ -1,0 +1,74 @@
+---
+title: "枚举类"
+---
+<a id="combinationpolicy"></a>
+## CombinationPolicy
+
+合图策略。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `DefaultCombinationPolicy` | （默认）：除非需要延迟转码或混音，否则使用此策略。 |
+| `PostPhoneTranscodingCombinationPolicy` | 如果需要延迟转码或混音，则使用此策略。 |
+
+<a id="transmode"></a>
+## TransMode
+
+转码模式。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `PostponeTranscodingTransMode` | 延迟转码。 |
+| `AudioMixingTransMode` | 延迟混音。 |
+
+<a id="area"></a>
+## Area
+
+[`Area`](/zh-CN/api-reference/cloud-recording/go-api/enum.go#area) 表示 Open API 网关端点所在的全球区域。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+根据您的服务部署区域选择合适的区域。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `Unknown` | 未知区域。 |
+| `US` | 表示美国的西部和东部地区。 |
+| `EU` | 表示欧洲的西部和中部地区。 |
+| `AP` | 表示亚太地区的东南部和东北部地区。 |
+| `CN` | 表示中国大陆的东部和北部地区。 |
+
+<a id="level"></a>
+## Level
+
+日志消息的级别。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `DebugLevel` | 调试级别。 |
+| `InfoLevel` | 用于信息性消息。 |
+| `WarningLevel` | 用于警告消息。 |
+| `ErrLevel` | 用于错误消息。 |
+| `UnknownLevel` | 未知级别。 |

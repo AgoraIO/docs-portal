@@ -1,0 +1,117 @@
+---
+title: io.agora.rtc.IVideoFrameObserver接口 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourcePath: html-docs/rtc-server-sdk/java/interfaceio_1_1agora_1_1rtc_1_1_i_video_frame_observer.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_i_video_frame_observer_8java.html as local text.
+---
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+IVideoFrameObserve 类。
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="a0aeb003e3a14bcdec71c855f1e6a0d3a"></a>
+
+### onPreEncodeVideoFrame()
+
+<ApiSignature>
+
+int io.agora.rtc.IVideoFrameObserver.onPreEncodeVideoFrame(AgoraVideoFrameObserver *agora_video_frame_observer*, [VideoFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-video-frame) *frame*)
+
+</ApiSignature>
+
+每次获取本地视频编码前的视频数据时触发。
+
+成功注册视频数据 observer 后，SDK 会在捕捉到每个视频帧时触发该回调。你可以在回调中获取编码前的视频数据，然后根据场景需要，对视频数据进行处理。
+
+完成处理后，你可以在该回调中，通过 videoFrame 参数传入处理后的视频数据将其发送回 SDK。
+
+该回调获取的视频数据已经过预处理，即裁剪和旋转内容，优化图片。
+
+<ParameterList title="参数">
+<Parameter name="agora_video_frame_observer">
+
+一个 AgoraVideoFrameObserver 对象。
+
+</Parameter>
+<Parameter name="frame">
+
+视频帧数据。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+如果视频前处理失败，是否忽略该帧视频：
+
+- 0：不忽略。
+- 1：忽略，则该帧数据不再发送回 SDK。
+
+<a id="a141a89e0e569b224a49edbb4082df1fe"></a>
+
+### onRenderVideoFrame()
+
+<ApiSignature>
+
+int io.agora.rtc.IVideoFrameObserver.onRenderVideoFrame(AgoraVideoFrameObserver *agora_video_frame_observer*, String *channel_id*, int *uid*, [VideoFrame](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-video-frame) *frame*)
+
+</ApiSignature>
+
+每次接收到远端用户发送的视频帧时触发。
+
+成功注册视频数据 observer 后，SDK 会在接收到每个视频帧时触发该回调。你可以在回调中获取编码前的视频数据，然后根据场景需要，对视频数据进行后处理。
+
+完成处理后，你可以在该回调中，通过 videoFrame 参数传入处理后的视频数据将其发送回 SDK。
+
+<ParameterList title="参数">
+<Parameter name="agora_video_frame_observer">
+
+一个 AgoraVideoFrameObserver 对象。
+
+</Parameter>
+<Parameter name="channel_id">
+
+频道名。
+
+</Parameter>
+<Parameter name="uid">
+
+发送该视频帧的远端用户的 ID。
+
+</Parameter>
+<Parameter name="frame">
+
+视频帧数据。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+如果视频后处理失败，是否忽略该帧视频：
+
+- true：不忽略。
+- false：忽略，则该帧数据不再发送回 SDK。
+
+---
+
+该接口的文档由以下文件生成:
+
+- IVideoFrameObserver.java

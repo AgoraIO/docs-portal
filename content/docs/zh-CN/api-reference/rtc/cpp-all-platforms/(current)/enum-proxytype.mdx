@@ -1,0 +1,60 @@
+---
+title: PROXY_TYPE
+description: 云代理类型。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/enum_proxytype
+  sourcePath: html-docs/rtc/Cpp/API/enum_proxytype.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_proxytype__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="none_proxy_type"></a>
+<Parameter name="NONE_PROXY_TYPE">
+
+（0）：预留，供未来使用。
+
+</Parameter>
+<a id="udp_proxy_type"></a>
+<Parameter name="UDP_PROXY_TYPE">
+
+（1）：UDP 协议云代理，强制使用 UDP 云代理模式。在该模式下，SDK 始终通过 UDP 传输数据。
+
+</Parameter>
+<a id="tcp_proxy_type"></a>
+<Parameter name="TCP_PROXY_TYPE">
+
+（2）：TCP（加密）协议云代理，强制使用 TCP 云代理模式。在该模式下，SDK 始终通过 TCP/TLS 443 传输数据。
+
+</Parameter>
+<a id="local_proxy_type"></a>
+<Parameter name="LOCAL_PROXY_TYPE">
+
+（3）：预留，供未来使用。
+
+</Parameter>
+<a id="tcp_proxy_auto_fallback_type"></a>
+<Parameter name="TCP_PROXY_AUTO_FALLBACK_TYPE">
+
+（4）：自动模式。SDK 会尝试直接连接 SD-RTN™，若连接失败则自动切换为 TCP/TLS 443。
+
+</Parameter>
+<a id="http_proxy_type"></a>
+<Parameter name="HTTP_PROXY_TYPE">
+
+（5）：HTTP 代理。
+
+</Parameter>
+<a id="https_proxy_type"></a>
+<Parameter name="HTTPS_PROXY_TYPE">
+
+（6）：HTTPS 代理。
+
+</Parameter>
+</ParameterList>

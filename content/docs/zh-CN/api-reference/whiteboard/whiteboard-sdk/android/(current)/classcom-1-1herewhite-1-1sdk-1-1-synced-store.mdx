@@ -1,0 +1,179 @@
+---
+title: com.herewhite.sdk.SyncedStore class 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_synced_store
+  sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1_synced_store.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**Whiteboard Android SDK 2.16.134**。
+
+| 公开成员签名 |  |
+| --- | --- |
+|  | [SyncedStore](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-synced-store#a3f0132d25c56b34dafcdc93c6334ec70) (JsBridgeInterface bridge) |
+| void | [connectStorage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-synced-store#a78102b2e52246b90da87a830d4d27c03) (String name, String defaultJson, Promise&lt;String&gt; promise) |
+| String | [getStorageState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-synced-store#a306896aa848ef87dce1289f715ee27e5) (String name) |
+| void | [getStorageState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-synced-store#a0271711b2c7bcc4b42ff0a40d05494ec) (String name, Promise&lt;String&gt; promise) |
+| void | [setStorageState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-synced-store#a580397faa2a074488ea6b5b28ac6829e) (String name, String json) |
+| void | [disconnectStorage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-synced-store#a2bbcd90ffb697812f644442e66f9a7af) (String name) |
+| void | [deleteStorage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-synced-store#af9fb29127c606e021c51a9219c77e93f) (String name) |
+| void | [resetState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-synced-store#aa68344119ce27da9a626095b699bd65e) (String name) |
+| void | [addOnStateChangedListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-synced-store#a6671615519885b121c1f6bb0c163aafc) (String name, OnStateChangedListener listener) |
+| void | [removeOnStateChangedListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-synced-store#a0147c862e8c2eceda85e502cea87baae) (String name, OnStateChangedListener listener) |
+
+## 函数说明
+
+<a id="a3f0132d25c56b34dafcdc93c6334ec70"></a>
+
+### SyncedStore()
+
+<ApiSignature>
+
+SyncedStore(JsBridgeInterface bridge)
+
+</ApiSignature>
+
+SyncedStore：com.herewhite.sdk.SyncedStore 的公开成员。参数和返回类型见下方签名。
+
+<a id="a78102b2e52246b90da87a830d4d27c03"></a>
+
+### connectStorage()
+
+<ApiSignature>
+
+void connectStorage(String name, String defaultJson, Promise&lt;String&gt; promise)
+
+</ApiSignature>
+
+connectStorage：com.herewhite.sdk.SyncedStore 的公开成员。参数和返回类型见下方签名。
+
+<a id="a306896aa848ef87dce1289f715ee27e5"></a>
+
+### getStorageState()
+
+<ApiSignature>
+
+String getStorageState(String name)
+
+</ApiSignature>
+
+getStorageState：com.herewhite.sdk.SyncedStore 的公开成员。参数和返回类型见下方签名。
+
+<a id="a0271711b2c7bcc4b42ff0a40d05494ec"></a>
+
+### getStorageState()
+
+<ApiSignature>
+
+void getStorageState(String name, Promise&lt;String&gt; promise)
+
+</ApiSignature>
+
+getStorageState：com.herewhite.sdk.SyncedStore 的公开成员。参数和返回类型见下方签名。
+
+<a id="a580397faa2a074488ea6b5b28ac6829e"></a>
+
+### setStorageState()
+
+<ApiSignature>
+
+void setStorageState(String name, String json)
+
+</ApiSignature>
+
+setStorageState：com.herewhite.sdk.SyncedStore 的公开成员。参数和返回类型见下方签名。
+
+<a id="a2bbcd90ffb697812f644442e66f9a7af"></a>
+
+### disconnectStorage()
+
+<ApiSignature>
+
+void disconnectStorage(String name)
+
+</ApiSignature>
+
+Disconnect from synced storage and release listeners
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="name">
+
+: storage name
+
+</Parameter>
+</ParameterList>
+
+<a id="af9fb29127c606e021c51a9219c77e93f"></a>
+
+### deleteStorage()
+
+<ApiSignature>
+
+void deleteStorage(String name)
+
+</ApiSignature>
+
+Delete storage index with all of its data and destroy the Storage instance.
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="name">
+
+: storage name
+
+</Parameter>
+</ParameterList>
+
+<a id="aa68344119ce27da9a626095b699bd65e"></a>
+
+### resetState()
+
+<ApiSignature>
+
+void resetState(String name)
+
+</ApiSignature>
+
+reset storage state to default state
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="name" />
+</ParameterList>
+
+<a id="a6671615519885b121c1f6bb0c163aafc"></a>
+
+### addOnStateChangedListener()
+
+<ApiSignature>
+
+void addOnStateChangedListener(String name, OnStateChangedListener listener)
+
+</ApiSignature>
+
+addOnStateChangedListener：com.herewhite.sdk.SyncedStore 的公开成员。参数和返回类型见下方签名。
+
+<a id="a0147c862e8c2eceda85e502cea87baae"></a>
+
+### removeOnStateChangedListener()
+
+<ApiSignature>
+
+void removeOnStateChangedListener(String name, OnStateChangedListener listener)
+
+</ApiSignature>
+
+removeOnStateChangedListener：com.herewhite.sdk.SyncedStore 的公开成员。参数和返回类型见下方签名。

@@ -1445,6 +1445,7 @@ The presence feature provides the ability to monitor user online, offline, and u
 
 - Real-time event notification when a user joins or leaves a specified channel.
 - Real-time event notification when the custom temporary user state changes.
+- Query whether a specified user is online.
 - Query which channels a specified user has joined or subscribed to.
 - Query which users have joined a specified channel and their temporary user state data.
 
@@ -1569,6 +1570,74 @@ rtmClient.getPresence().getUserChannels(queryUserId, new ResultCallback<ArrayLis
         log(CALLBACK, "get " + queryUserId + " getUserChannels success");
         for (ChannelInfo channel : channels) {
             log(INFO, channel.toString());
+        }
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+### getUserOnlineStatus
+
+#### Description
+
+Queries whether a specified user is logged in to Signaling under the current App ID. Neither you nor the target user needs to join or subscribe to a channel. Each call queries one user ID. To query your own status, pass your own user ID.
+
+This method is available since v2.3.1.
+
+#### Method
+
+You can call the `getUserOnlineStatus` method as follows:
+
+```java
+void getUserOnlineStatus(String userId, ResultCallback<UserOnlineStatus> resultCallback);
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--- | :--- | :---: | :---: | --- |
+| `userId` | String | Required | - | The user ID to query. Pass the exact user ID. An empty string doesn't refer to the caller. |
+| `resultCallback` | `ResultCallback<UserOnlineStatus>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method and returns the `UserOnlineStatus` query result.<br />- Failure: Executes the `onFailure` method and returns an error result. |
+
+The `UserOnlineStatus` data type contains the following properties:
+
+| Properties | Type | Description |
+| :--- | :---: | --- |
+| `userId` | String | The queried user ID. Read it with `getUserId()`. |
+| `online` | boolean | Whether the user is online. Read it with `isOnline()`.<br />- `true`: The user is logged in to Signaling.<br />- `false`: The user is offline or doesn't exist. |
+
+#### Usage notes
+
+- Before calling this method, log in to Signaling and make sure the connection is established. If you set `serviceType` in `RtmPrivateConfig`, it must include `MESSAGE`.
+- The query works whether Presence is enabled or disabled in Agora Console.
+- The result is a snapshot of the user's status when the server processes the query. If a user disconnects abnormally, the server takes some time to detect that the user is offline. This method doesn't return the user's last online time and doesn't notify you of later status changes.
+- A failed query doesn't mean the target user is offline. Handle failures through `onFailure`.
+- Calling `logout` cancels pending queries. After you call `release`, the SDK doesn't guarantee that it returns results for pending queries.
+
+#### Errors
+
+| Value | Error code | Cause |
+| :--- | :--- | --- |
+| `-10006` | `INVALID_USER_ID` | `userId` is `null`, an empty string, or not a valid user ID. |
+| `-10021` | `OPERATION_RATE_EXCEED_LIMITATION` | The call rate exceeds the limit for this method: 20 calls per second for each client instance. |
+| `-10022` | `SERVICE_NOT_SUPPORTED` | The `serviceType` in `RtmPrivateConfig` doesn't include `MESSAGE`. |
+| `-10025` | `NOT_CONNECTED` | The client isn't connected to Signaling. |
+| `-13012` | `PRESENCE_OPERATION_TIMEOUT` | No response within 5 seconds. The SDK doesn't retry the query. |
+| `-13013` | `PRESENCE_OPERATION_FAILED` | The server response is invalid. |
+| `-13015` | `PRESENCE_PENDING_REQUEST_CANCELLED` | The query was canceled because the client logged out. |
+
+#### Basic usage
+
+```java
+rtmClient.getPresence().getUserOnlineStatus("targetUserId", new ResultCallback<UserOnlineStatus>() {
+    @Override
+    public void onSuccess(UserOnlineStatus status) {
+        if (status.isOnline()) {
+            log(INFO, status.getUserId() + " is online");
+        } else {
+            log(INFO, status.getUserId() + " is offline or doesn't exist");
         }
     }
 

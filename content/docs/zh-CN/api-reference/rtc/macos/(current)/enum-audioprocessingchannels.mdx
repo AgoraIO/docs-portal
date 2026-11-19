@@ -1,0 +1,41 @@
+---
+title: AgoraAudioProcessChannels
+description: 音频预处理的声道数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/enum_audioprocessingchannels
+  sourcePath: html-docs/rtc/macOS/API/enum_audioprocessingchannels.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_audioprocessingchannels__detailed_desc"></a>
+
+在需要增强真实感的场景中，例如音乐会，本地用户可能需要采集立体声并将立体声音频信号发送给远端用户。例如，歌手、吉他手和鼓手站在舞台上的不同位置，音频采集设备采集他们的立体声音频并将其发送给远端用户。远端用户可以从不同方向听到歌曲、吉他和鼓声，就像置身于音乐厅中一样。你可以设置双声道处理以实现立体声。声网推荐以下设置：
+
+1. 预处理：调用 [setAdvancedAudioOptions:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/audio-effect#api_irtcengine_setadvancedaudiooptions)，并在 [AgoraAdvancedAudioOptions](/zh-CN/api-reference/rtc/macos/class-advancedaudiooptions) 中将 `audioProcessingChannels` 设置为 `AgoraAudioProcessChannelstereo`（2）；
+2. 后处理：调用 [setAudioProfile:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#api_irtcengine_setaudioprofile2)，并将 `profile` 设置为 `AgoraAudioProfileMusicStandardStereo`（3）或 `AgoraAudioProfileMusicHighQualityStereo`（5）。
+
+:::note
+注： 仅当 SDK 使用媒体音量时，立体声设置才会生效。在 iOS 上，支持立体声的最低系统版本为 14.0，最低设备要求如下：iPhone XS、iPhone XS Max、iPhone XR、iPhone 11、iPhone 11 Pro、iPhone 11 Pro Max、iPhone SE（2020）、iPad Pro 11" 和 12.9"（第三代）、iPad Pro 11" 和 12.9"（第四代）。
+:::
+
+<a id="enum_audioprocessingchannels__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="agoraaudioprocesschannelsmono"></a>
+<Parameter name="AgoraAudioProcessChannelsMono">
+
+（1）：（默认）单声道。
+
+</Parameter>
+<a id="agoraaudioprocesschannelstereo"></a>
+<Parameter name="AgoraAudioProcessChannelstereo">
+
+（2）：立体声。
+
+</Parameter>
+</ParameterList>

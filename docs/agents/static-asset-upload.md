@@ -1,9 +1,28 @@
 # Static Asset Uploads
 
-This repo uploads docs-owned binary assets directly to the shared S3 bucket
-behind `https://assets-docs.agora.io/`. Do not add screenshots, diagrams, or
-other large docs assets to Git unless they are part of a deliberate repo-owned
-test fixture.
+Choose the asset origin by deployment region:
+
+- **CN:** existing docs assets are hosted on Aliyun OSS in
+  `oss://agora-web-cdn/docs-portal/` and served from
+  `https://web-cdn.agora.io/docs-portal/`.
+- **Global:** docs assets use the shared S3 bucket behind
+  `https://assets-docs.agora.io/`.
+
+Reuse an existing object and its stable public URL when available. Do not
+substitute the old documentation origin or generate expiring signed URLs for
+public docs images. Do not add large docs assets to Git unless they are part
+of a deliberate repo-owned test fixture.
+
+## Chinese OSS Assets
+
+Use the existing signed-in OSS Browser account and the `docs-portal` directory.
+Check the existing object before uploading; for example, platform icons are
+already under `docs-portal/img/platforms/`. Preserve the existing object path
+and use its CDN URL. Confirm the public URL is accessible before changing a
+reference. A URL change must not silently overwrite an existing object.
+
+The S3 upload script and variables documented below apply to global assets.
+Do not use them to infer the Chinese OSS bucket or credentials.
 
 ## Security Discipline
 
