@@ -487,9 +487,7 @@ describe('SdksCatalog', () => {
         name: cardName,
       });
       expect(within(card).getByText('v4.7.1')).toBeVisible();
-      expect(
-        within(card).queryByText(/参考包体积增量/),
-      ).not.toBeInTheDocument();
+      expect(within(card).getByText(/参考包体积增量：待补充/)).toBeVisible();
       expect(within(card).queryByText('包体积：')).not.toBeInTheDocument();
     },
   );
@@ -502,7 +500,7 @@ describe('SdksCatalog', () => {
       name: 'Android 音频 SDK',
     });
     expect(within(card).getByText('包名：')).toBeVisible();
-    expect(within(card).queryByText('包体积：')).not.toBeInTheDocument();
+    expect(within(card).getByText('包体积：')).toBeVisible();
     expect(within(card).queryByText('模块名：')).not.toBeInTheDocument();
   });
 

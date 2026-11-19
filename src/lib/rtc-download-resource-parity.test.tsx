@@ -60,6 +60,7 @@ describe('RTC resource cards preserve legacy content and approved release update
                 ?.core.flatMap((sdk) => sdk.versions)
                 .find((version) => version.downloadLink === original.href);
               expect(historical).toBeDefined();
+              if (!historical?.md5) throw new Error('Missing historical MD5');
               expect(original.body).toContain(historical?.md5);
               expect(original.footer).toContain(historical?.releaseDate);
               const variant = original.href.match(
@@ -69,7 +70,14 @@ describe('RTC resource cards preserve legacy content and approved release update
               if (!variant) throw new Error('Unknown Native SDK variant');
               card = {
                 ...original,
-                body: `${original.body.split('最新版本：')[0]}最新版本：v4.7.1 MD5 值：${release471Md5[platform][variant]}`,
+                body: original.body
+                  .replace('v4.7.0', 'v4.7.1')
+                  .replace(historical.md5, release471Md5[platform][variant])
+                  .replace(
+                    /((?:armeabi-v7a|arm64-v8a|x86_64|x86)：)[\d.]+/g,
+                    '$1待补充',
+                  )
+                  .replace(/[\d.]+ MB/g, '待补充'),
                 footer: '发布日期：2026 年 11 月 18 日',
                 href: original.href.replace('_v4.7.0_', '_v4.7.1_'),
               };
