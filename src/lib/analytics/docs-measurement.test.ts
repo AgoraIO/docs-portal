@@ -66,6 +66,54 @@ function fixture() {
   };
 }
 
+it('distinguishes no engine matches from matches removed before display', () => {
+  const { measurement, events } = fixture();
+  const search = measurement.startSearch({
+    surface: 'search_page',
+    query: 'Token',
+    filters: { platform: 'web' },
+  });
+  const results = measurement.prepareResults(search, {
+    count: 0,
+    unit: 'result',
+    totalHits: 12,
+    serverGroupCount: 3,
+    indexRevision: 'index-a',
+    requestId: 'request-a',
+  });
+  measurement.presentResults(results);
+  expect(events.at(-1)?.properties).toMatchObject({
+    result_count: 0,
+    total_hits: 12,
+    server_group_count: 3,
+    result_outcome: 'no_visible_results',
+    index_revision: 'index-a',
+    filter_platform: 'web',
+  });
+});
+
+it('records controlled failure details independently of empty results', () => {
+  const { measurement, events } = fixture();
+  const search = measurement.startSearch({
+    surface: 'search_dialog',
+    query: 'Token',
+  });
+  measurement.fail(search, 'request-a', {
+    stage: 'http',
+    code: 'http_error',
+    status: 503,
+  });
+  expect(events.at(-1)?.properties).toMatchObject({
+    error_stage: 'http',
+    error_code: 'http_error',
+    http_status: 503,
+    request_id: 'request-a',
+  });
+  expect(
+    events.some((event) => event.name === 'docs_search_results_presented'),
+  ).toBe(false);
+});
+
 it.each([
   ['/realtime-media/rtc/get-started', '/zh-CN/realtime-media/rtc/get-started/'],
   ['/zh-CN/realtime-media/rtc/get-started', '/realtime-media/rtc/get-started/'],

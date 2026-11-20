@@ -6,6 +6,7 @@ import {
   type MeasurementEvent,
 } from '@/lib/analytics/docs-measurement';
 import { searchCnDocsPage } from '@/lib/search/cn-search-page';
+import { SearchRequestError } from '@/lib/search/search-failure';
 import { parseSearchPageState } from '@/lib/search/search-page-state';
 import { DocsSearchPage } from './DocsSearchPage';
 
@@ -41,6 +42,79 @@ beforeEach(() => {
     entryPath: '/zh-CN/search',
   });
 });
+it('records an empty search with filters and the server response diagnostics', async () => {
+  vi.mocked(searchCnDocsPage).mockResolvedValue({
+    groups: [],
+    facets: {},
+    page: 1,
+    totalHits: 5,
+    totalPages: 1,
+    serverGroupCount: 2,
+    indexRevision: 'index-a',
+  });
+  render(
+    <DocsSearchPage
+      state={parseSearchPageState({
+        q: 'Token',
+        product: 'rtc',
+        platform: 'web',
+        type: 'api',
+      })}
+      onChange={vi.fn()}
+    />,
+  );
+  await waitFor(() =>
+    expect(
+      events.some((event) => event.name === 'docs_search_results_presented'),
+    ).toBe(true),
+  );
+  expect(
+    events.find((event) => event.name === 'docs_search_results_presented')
+      ?.properties,
+  ).toMatchObject({
+    result_count: 0,
+    total_hits: 5,
+    server_group_count: 2,
+    result_outcome: 'no_visible_results',
+    index_revision: 'index-a',
+    filter_product: 'rtc',
+    filter_platform: 'web',
+    search_type: 'api',
+  });
+  fireEvent.click(screen.getAllByRole('button', { name: '清除筛选' })[0]);
+  expect(
+    events.find((event) => event.name === 'docs_search_recovery_selected')
+      ?.properties,
+  ).toMatchObject({
+    recovery_action: 'clear_filters',
+    query_redacted: 'Token',
+    filter_platform: 'web',
+  });
+});
+
+it('preserves HTTP failure details when the error state becomes visible', async () => {
+  vi.mocked(searchCnDocsPage).mockRejectedValue(
+    new SearchRequestError('http', 'http_error', 503),
+  );
+  render(
+    <DocsSearchPage
+      state={parseSearchPageState({ q: 'Token' })}
+      onChange={vi.fn()}
+    />,
+  );
+  await waitFor(() =>
+    expect(events.some((event) => event.name === 'docs_search_failed')).toBe(
+      true,
+    ),
+  );
+  expect(
+    events.find((event) => event.name === 'docs_search_failed')?.properties,
+  ).toMatchObject({
+    error_stage: 'http',
+    error_code: 'http_error',
+    http_status: 503,
+  });
+});
 it('records the rendered error, then records an empty successful retry under one logical search', async () => {
   vi.mocked(searchCnDocsPage)
     .mockRejectedValueOnce(new Error('unavailable'))
@@ -64,6 +138,10 @@ it('records the rendered error, then records an empty successful retry under one
     ).toHaveLength(1),
   );
   fireEvent.click(screen.getByRole('button', { name: '重新搜索' }));
+  expect(
+    events.find((event) => event.name === 'docs_search_recovery_selected')
+      ?.properties.recovery_action,
+  ).toBe('retry');
   await waitFor(() =>
     expect(
       events.filter((event) => event.name === 'docs_search_results_presented'),

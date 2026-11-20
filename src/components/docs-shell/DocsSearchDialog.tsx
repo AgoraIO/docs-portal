@@ -1,7 +1,6 @@
 'use client';
 
 import { useLocation, useNavigate } from '@tanstack/react-router';
-import { useDocsSearch } from 'fumadocs-core/search/client';
 import { ArrowUpRightIcon, SearchIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,10 +20,7 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
-import type {
-  ResultsSnapshot,
-  SearchSnapshot,
-} from '@/lib/analytics/docs-measurement';
+import type { SearchSnapshot } from '@/lib/analytics/docs-measurement';
 import {
   getDocsMeasurement,
   selectDocsResult,
@@ -76,15 +72,17 @@ import {
   saveCnSearchSession,
 } from '@/lib/search/cn-search-session';
 import { createOramaDocsClient } from '@/lib/search/orama-client';
+import { searchFailureDetails } from '@/lib/search/search-failure';
 import {
   buildSearchPageHref,
   searchScopeProduct,
 } from '@/lib/search/search-page-state';
+import { useSearchRequest } from '@/lib/search/use-search-request';
 import { DocsTaskFeedback } from './DocsTaskFeedback';
 
-// Delay before an Algolia query fires after the last keystroke. The skeleton
-// "busy" bridge below runs slightly longer so it always outlasts this window.
+// Delay remote requests until the last keystroke has settled.
 const SEARCH_DEBOUNCE_MS = 200;
+const EMPTY_PAGES: SearchEntry[] = [];
 
 // First-open cascade: how many leading rows animate, and the per-row offset.
 // Capped so a long list never feels slow to appear.
@@ -204,7 +202,8 @@ export function DocsSearchDialog({
     locale: AppLocale;
     promise: Promise<SearchEntry[]>;
   } | null>(null);
-  const pages = pagesState?.locale === searchLocale ? pagesState.pages : [];
+  const pages =
+    pagesState?.locale === searchLocale ? pagesState.pages : EMPTY_PAGES;
   const searchIndexFailed =
     pagesState?.locale === searchLocale && pagesState.status === 'error';
   const algoliaConfig = getAlgoliaSearchConfig();
@@ -213,12 +212,6 @@ export function DocsSearchDialog({
   const algoliaSearchApiKey = algoliaConfig?.searchApiKey;
   const remoteSearchEnabled =
     searchLocale === 'zh-CN' || Boolean(algoliaConfig);
-  // Count of in-flight search requests. fumadocs' `isLoading` flips off the
-  // moment ANY request settles — including a superseded one whose result it then
-  // discards — which briefly reads as "settled with no results" mid-typing and
-  // flashes the empty message. Tracking every request keeps us "busy" until the
-  // latest one actually resolves.
-  const [pendingRequests, setPendingRequests] = useState(0);
   const isOpenRef = useRef(open);
   isOpenRef.current = open;
   const inputAt = useRef<number | undefined>(undefined);
@@ -227,7 +220,6 @@ export function DocsSearchDialog({
     key: string;
     snapshot: SearchSnapshot;
   } | null>(null);
-  const resultSnapshots = useRef(new WeakMap<object, ResultsSnapshot>());
   const errorSnapshots = useRef(
     new WeakMap<object, { search: SearchSnapshot; requestId: string }>(),
   );
@@ -235,31 +227,32 @@ export function DocsSearchDialog({
   const selectionMethod = useRef('keyboard');
   const searchClient = useMemo(() => {
     let headers: Record<string, string> = {};
-    const base =
+    const cnClient =
       searchLocale === 'zh-CN'
         ? createCnDocsSearchClient({
             platform: platformFilter ?? undefined,
             scope: searchScope,
             requestHeaders: () => headers,
           })
-        : algoliaAppId && algoliaIndexName && algoliaSearchApiKey
-          ? createAlgoliaDocsClient({
-              appId: algoliaAppId,
-              indexName: algoliaIndexName,
-              locale: searchLocale,
-              platform: platformFilter ?? undefined,
-              scope: searchScope,
-              searchApiKey: algoliaSearchApiKey,
-            })
-          : createOramaDocsClient({
-              pages,
-              platform: platformFilter ?? undefined,
-              scope: searchScope,
-            });
+        : undefined;
+    const base =
+      cnClient ??
+      (algoliaAppId && algoliaIndexName && algoliaSearchApiKey
+        ? createAlgoliaDocsClient({
+            appId: algoliaAppId,
+            indexName: algoliaIndexName,
+            locale: searchLocale,
+            platform: platformFilter ?? undefined,
+            scope: searchScope,
+            searchApiKey: algoliaSearchApiKey,
+          })
+        : createOramaDocsClient({
+            pages,
+            platform: platformFilter ?? undefined,
+            scope: searchScope,
+          }));
     return {
-      ...base,
       async search(query: string) {
-        setPendingRequests((count) => count + 1);
         const measurement =
           searchLocale === 'zh-CN' && isOpenRef.current && query.trim()
             ? getDocsMeasurement()
@@ -277,6 +270,7 @@ export function DocsSearchDialog({
               query,
               started: inputAt.current,
               filters: {
+                type: 'all',
                 platform: platformFilter ?? undefined,
                 product: searchScopeProduct(searchScope),
                 tab:
@@ -297,23 +291,28 @@ export function DocsSearchDialog({
               }
             : {};
         try {
-          const result = await base.search(query);
-          if (measurement && snapshot && typeof result === 'object' && result)
-            resultSnapshots.current.set(
-              result,
-              measurement.prepareResults(snapshot, {
-                count: result.length,
-                unit: 'section',
-                requestId,
-              }),
-            );
-          return result;
+          const response = cnClient?.searchWithResponse
+            ? await cnClient.searchWithResponse(query)
+            : { items: await base.search(query), response: undefined };
+          const result = response.items;
+          return {
+            items: result,
+            snapshot:
+              measurement && snapshot
+                ? measurement.prepareResults(snapshot, {
+                    count: result.length,
+                    unit: 'section',
+                    requestId,
+                    totalHits: response.response?.totalHits,
+                    serverGroupCount: response.response?.serverGroupCount,
+                    indexRevision: response.response?.indexRevision,
+                  })
+                : undefined,
+          };
         } catch (error) {
           if (snapshot && requestId && error && typeof error === 'object')
             errorSnapshots.current.set(error, { search: snapshot, requestId });
           throw error;
-        } finally {
-          setPendingRequests((count) => count - 1);
         }
       },
     };
@@ -326,96 +325,41 @@ export function DocsSearchDialog({
     searchScope,
     searchLocale,
   ]);
-  const searchDeps = useMemo(
-    () =>
-      remoteSearchEnabled
-        ? [
-            algoliaAppId,
-            algoliaIndexName,
-            algoliaSearchApiKey,
-            searchLocale,
-            platformFilter,
-            searchScope,
-          ]
-        : [pages, searchLocale],
-    [
-      algoliaAppId,
-      algoliaIndexName,
-      algoliaSearchApiKey,
-      pages,
-      platformFilter,
-      remoteSearchEnabled,
-      searchScope,
-      searchLocale,
-    ],
-  );
   const {
     search,
     setSearch,
-    query: { data: searchResults, error: searchError, isLoading },
-  } = useDocsSearch(
-    {
-      client: searchClient,
-      delayMs: remoteSearchEnabled ? SEARCH_DEBOUNCE_MS : 0,
-    },
-    searchDeps,
+    data: acceptedResults,
+    error: searchError,
+    isLoading,
+  } = useSearchRequest(
+    searchClient.search,
+    remoteSearchEnabled ? SEARCH_DEBOUNCE_MS : 0,
+    open,
   );
-  const normalizedSearchResults =
-    !searchResults || searchResults === 'empty' ? [] : searchResults;
+  const normalizedSearchResults = acceptedResults?.items ?? [];
   const hasQuery = search.trim() !== '';
   const showActiveDetail = !isCn || hasQuery;
   const isSearchUnavailable = searchIndexFailed || Boolean(searchError);
-  // fumadocs only flips `isLoading` once the debounced query fires (delayMs).
-  // During that pre-fetch window `isLoading` is false and `results` still holds
-  // the previous/initial value, which briefly flashes the empty state after a
-  // keystroke. Treat the debounce window as busy so the skeleton bridges the gap.
-  const [debouncePending, setDebouncePending] = useState(false);
-  // The remote config objects are recreated on render, so depend on a stable
-  // boolean to avoid re-running this effect (and re-arming the timer) endlessly.
-  const remoteSearchConfigured = remoteSearchEnabled;
-  const debounceRequest = useMemo(
-    () => ({ query: search, platform: platformFilter, scope: scopeId }),
-    [search, platformFilter, scopeId],
-  );
   useEffect(() => {
-    if (!remoteSearchConfigured || debounceRequest.query.trim() === '') {
-      setDebouncePending(false);
-      return;
-    }
-    setDebouncePending(true);
-    const id = window.setTimeout(
-      () => setDebouncePending(false),
-      SEARCH_DEBOUNCE_MS + 30,
-    );
-    return () => window.clearTimeout(id);
-  }, [remoteSearchConfigured, debounceRequest]);
-  useEffect(() => {
-    if (isLoading) {
-      setDebouncePending(false);
-    }
-  }, [isLoading]);
-  // Once the user starts typing, the cascade would replay on every keystroke and
-  // read as lag, so disarm it as soon as there's a query.
-  useEffect(() => {
-    if (search.trim() !== '') {
-      setStaggerArmed(false);
-    }
+    if (search.trim() !== '') setStaggerArmed(false);
   }, [search]);
-  const isBusy = isLoading || debouncePending || pendingRequests > 0;
-  const visibleSnapshot =
-    searchResults && typeof searchResults === 'object'
-      ? resultSnapshots.current.get(searchResults)
-      : undefined;
+  const isBusy = isLoading;
+  const visibleSnapshot = acceptedResults?.snapshot;
   useEffect(() => {
-    if (!open || !resultsContainer.current || !hasQuery) return;
+    if (!open || !resultsContainer.current || !hasQuery || isBusy) return;
     return observeVisible(resultsContainer.current, () => {
       const measurement = getDocsMeasurement();
       if (searchError && typeof searchError === 'object') {
         const failure = errorSnapshots.current.get(searchError);
-        if (failure) measurement?.fail(failure.search, failure.requestId);
+        if (failure)
+          measurement?.fail(
+            failure.search,
+            failure.requestId,
+            searchFailureDetails(searchError),
+          );
       } else if (visibleSnapshot) measurement?.presentResults(visibleSnapshot);
     });
-  }, [open, hasQuery, visibleSnapshot, searchError]);
+  }, [open, hasQuery, isBusy, visibleSnapshot, searchError]);
   const platformOptions = useMemo(
     () =>
       isCn
@@ -685,6 +629,19 @@ export function DocsSearchDialog({
     platform: pageSearch?.platform ?? undefined,
   };
   const openFullSearch = (type: 'all' | CnSearchFamily = 'all') => {
+    const snapshot = logicalSearch.current?.snapshot;
+    const currentKey = JSON.stringify([
+      draftSearch.trim(),
+      platformFilter,
+      searchScope,
+    ]);
+    if (
+      isCn &&
+      snapshot &&
+      draftSearch.trim() &&
+      logicalSearch.current?.key === currentKey
+    )
+      getDocsMeasurement()?.recoverSearch(snapshot, 'open_full_search');
     if (isCn && searchOrigin.current === pathname)
       saveCnSearchSession(pathname, currentSearch.current);
     navigatingRef.current = true;
