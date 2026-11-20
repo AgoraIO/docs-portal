@@ -208,8 +208,8 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     query: 'video calling',
     expectedIntent: 'product',
     expectedKind: 'guide',
-    expectedTitle: 'RTC Overview',
-    expectedUrl: '/en/api-reference/api-ref/rtc',
+    expectedTitle: 'RTC overview',
+    expectedUrl: '/en/realtime-media/rtc',
   },
   {
     query: 'interactive live streaming',
