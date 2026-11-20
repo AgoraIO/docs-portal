@@ -1518,8 +1518,6 @@ function addRealtimeProductAliasCandidates(candidates, target) {
       'cloud-recording/get-started/middleware-quickstart',
     'realtime-media/cloud-recording/pricing-webpage-recording':
       'cloud-recording/overview/pricing-webpage-recording',
-    'realtime-media/cloud-recording/reference/common-errors':
-      'cloud-recording/rest-api/status-codes',
     'realtime-media/cloud-recording/reference/restful-api':
       'cloud-recording/rest-api/overview',
     'realtime-media/cloud-recording/rest-quickstart':
