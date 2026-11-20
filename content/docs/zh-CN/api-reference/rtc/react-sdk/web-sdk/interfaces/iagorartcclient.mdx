@@ -2304,10 +2304,11 @@ setRemoteVideoStreamType(uid: [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/g
 
 :::caution[注意]
 - 该方法只可在发送端通过 [enableDualStream](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#enabledualstream) 开启双流模式的情况下使用。
-- 若该方法和 [setStreamFallbackOption](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setstreamfallbackoption) 同时被调用，用户实际订阅的视频流取决于不同的设置。主要包括以下两种情况：
+- 对同一远端用户同时使用本方法和 [setStreamFallbackOption](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setstreamfallbackoption) 时，`setRemoteVideoStreamType` 指定期望订阅的视频流类型，SDK 根据 `setStreamFallbackOption` 配置的回退策略和网络状况动态调整实际订阅状态。回退策略如下：
 
-  - [setStreamFallbackOption](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setstreamfallbackoption) 的参数设置为 `0` (DISABLE)时，订阅的视频流类型将由 `setRemoteVideoStreamType` 的设置决定。
-  - [setStreamFallbackOption](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setstreamfallbackoption) 的参数设置为 `1` (VIDEO_STREAM_LOW) 或 `2` (VIDEO_STREAM_HIGH)，则订阅的视频流类型会先按照 `setRemoteVideoStreamType`设置，但会根据网络状况进行动态调整。 例如，将 `setRemoteVideoStreamType` 参数设置为 `0`（订阅大流），但网络状况较差，SDK 将按照 `setStreamFallbackOption` 的设置进行弱网回退操作。
+  - `0`（`DISABLE`）：不会触发自动回退，订阅的视频流类型由 `setRemoteVideoStreamType` 的设置决定。
+  - `1`（`LOW_STREAM`）：网络较差时，自动订阅视频小流。
+  - `2`（`AUDIO_ONLY`）：网络较差时，先尝试订阅视频小流；如果网络状况不足以支撑视频小流，则进一步回退到纯音频。设置该策略表示允许在弱网下回退至纯音频，是否触发回退取决于网络状况。
 :::
 
 <ParameterList title="Parameters">
@@ -2330,7 +2331,7 @@ setRemoteVideoStreamType(uid: [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/g
 
 </ParameterType>
 
-订阅的视频流类型，0 代表大流，1 代表小流，详见 [RemoteStreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/remotestreamtype)。
+订阅的视频流类型，`0`（`HIGH_STREAM`）代表大流，`1`（`LOW_STREAM`）代表小流，详见 [RemoteStreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/remotestreamtype)。
 
 </Parameter>
 </ParameterList>
