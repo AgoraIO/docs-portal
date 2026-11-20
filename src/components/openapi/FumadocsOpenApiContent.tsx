@@ -46,6 +46,7 @@ import {
   slugOpenApiAnchorSegment,
 } from '@/lib/openapi/anchors';
 import { highlightOpenApiCode } from '@/lib/openapi/code-highlight';
+import { getOpenApiMethodBadgeClassName } from '@/lib/openapi/method-badge';
 import {
   getOpenApiQuoteCallout,
   remarkOpenApiCallouts,
@@ -89,13 +90,6 @@ const OpenApiSourceOperationContext = createContext<
 const OpenApiLocaleContext = createContext<string | undefined>(undefined);
 const OpenApiCodeSourceContext = createContext<string | undefined>(undefined);
 const OPENAPI_MAJOR_SECTION_HEADING_CLASS = 'font-semibold text-2xl';
-const OPENAPI_METHOD_BADGE_CLASSES = {
-  GET: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100',
-  POST: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100',
-  PUT: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100',
-  PATCH: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100',
-  DELETE: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100',
-} as const;
 const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   Authorization: '鉴权',
   'Collapse all': '折叠全部',
@@ -746,9 +740,7 @@ function OpenApiEndpointBar({ operation }: { operation: OpenApiOperation }) {
         <Badge
           className={cn(
             'openapi-method-badge shrink-0 normal-case tracking-normal',
-            OPENAPI_METHOD_BADGE_CLASSES[
-              method as keyof typeof OPENAPI_METHOD_BADGE_CLASSES
-            ] ?? 'bg-muted text-muted-foreground',
+            getOpenApiMethodBadgeClassName(method),
           )}
           data-method={method}
           data-openapi-method={method}

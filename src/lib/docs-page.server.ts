@@ -90,6 +90,11 @@ import {
   type PlatformKey,
 } from './platforms/registry';
 import { resolvePlatformRoutePage } from './platforms/route';
+import {
+  articleSidebarItems,
+  getRestArticleOutline,
+} from './product-rest-article';
+import { getProductSidebarSource } from './product-rest-sidebar';
 import { getRealtimeMediaApiReferenceLinks } from './realtime-media-api-reference-links';
 import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
 import { resolveCnSdkPublication } from './search/cn-sdk-publication.server';
@@ -811,7 +816,7 @@ export async function loadDocsPagePayload(
     isOpenApiPage || (locale === 'zh-CN' && openApiLaneRoute !== null)
       ? 'openapi'
       : 'docs';
-  const sidebar = await getDocsSidebarNodes({
+  const baseSidebar = await getDocsSidebarNodes({
     activePath: page.url,
     locale: supportedLocale,
     pageTree,
@@ -819,6 +824,9 @@ export async function loadDocsPagePayload(
     source,
     tab,
   });
+  const sidebar = getProductSidebarSource(page.url)
+    ? await embedProductRestSidebar(baseSidebar, page.url, pageTree, source)
+    : baseSidebar;
   const title = page.data.title ?? page.slugs.at(-1) ?? page.url;
   const navScope = getDocsNavScope({
     activePath: page.url,
@@ -2356,6 +2364,97 @@ async function getDocsSidebarNodes({
     : openApiSidebar;
 
   return markZhCnProductApiReferenceLinks(restoredOpenApiSidebar, locale);
+}
+
+// Product menus reuse the scoped API tree, including its OpenAPI operation labels.
+async function embedProductRestSidebar(
+  nodes: DocsSidebarNode[],
+  fromProduct: string,
+  pageTree: ReturnType<typeof docsSource.getPageTree>,
+  source: typeof docsSource,
+): Promise<DocsSidebarNode[]> {
+  const media = getRealtimeMediaApiReferenceLinks(fromProduct);
+  const ai = fromProduct === '/en/ai' || fromProduct.startsWith('/en/ai/');
+  const aiRoot = '/en/api-reference/api-ref/conversational-ai';
+
+  async function visit(node: DocsSidebarNode): Promise<DocsSidebarNode> {
+    if (node.type === 'section')
+      return { ...node, children: await Promise.all(node.children.map(visit)) };
+    if (
+      !(media?.restUrl && node.url === media.restUrl) &&
+      !(
+        ai &&
+        (node.title === 'RESTful API' || node.title === 'REST API') &&
+        node.url.startsWith(aiRoot)
+      )
+    )
+      return node;
+
+    const entry = node.url;
+    const root = media?.restScopeUrl ?? entry;
+    const scopePath = entry.startsWith(root + '/') ? entry : root;
+    const scope = {
+      activePath: scopePath,
+      locale: 'en' as const,
+      pageTree,
+      source,
+      tab: OPENAPI_TAB,
+    };
+    const apiNodes = getDocsNavScope(scope)
+      ? filterSidebarNodes(
+          await getDocsSidebarNodes(scope),
+          (n) => n.url === root || !!n.url?.startsWith(root + '/'),
+        )
+      : [];
+    // Some REST references are standalone articles, not API navigation scopes.
+    if (!apiNodes.length || (entry !== root && !entry.startsWith(root + '/'))) {
+      const page = source.getPage(entry.split('/').slice(2), 'en');
+      if (page?.url === entry)
+        apiNodes.unshift({
+          id: entry,
+          type: 'page',
+          title: page.data.title ?? node.title,
+          url: entry,
+        });
+    }
+    if (!apiNodes.length) return node;
+
+    function contextualize(child: DocsSidebarNode): DocsSidebarNode {
+      if (child.type === 'page') return { ...child, search: { ...child.search, from: fromProduct } };
+      return {
+        id: child.id,
+        title: child.title,
+        type: 'section',
+        collapsible: true,
+        children: child.children.map(contextualize),
+      };
+    }
+    const expanded = await Promise.all(
+      apiNodes.map(async (child): Promise<DocsSidebarNode[]> => {
+        if (child.type !== 'page') return [child];
+        const outline = getRestArticleOutline(child.url);
+        if (!outline) return [child];
+        const article = source.getPage(child.url.split('/').slice(2), 'en');
+        if (!article) return [child];
+        const toc = normalizeToc(getPageToc(article));
+        return articleSidebarItems(
+          child,
+          outline,
+          toc.length
+            ? toc
+            : await resolvePageToc(article, await readProcessedText(article)),
+        );
+      }),
+    );
+    return {
+      id: node.id,
+      title: node.title,
+      type: 'section',
+      collapsible: true,
+      children: expanded.flat().map(contextualize),
+    };
+  }
+  return Promise.all(nodes.map(visit));
 }
 
 function addRealtimeMediaApiReferenceSidebarItems(
@@ -5261,7 +5360,7 @@ function buildGlobalAiProductSidebar(
   const aiLocalePrefix = isZhCn ? '/zh-CN' : '/en';
   const restApiUrl = isZhCn
     ? `${aiLocalePrefix}/api-reference/conversational-ai/rest-api/authentication`
-    : `${aiLocalePrefix}/api-reference/api-ref/conversational-ai/authentication`;
+    : `${aiLocalePrefix}/api-reference/api-ref/conversational-ai`;
 
   const restApiPage = {
     id: restApiUrl,
@@ -5294,6 +5393,7 @@ function buildGlobalAiProductSidebar(
         (child.url === '/en/ai/reference/event-types' ||
           child.url === '/zh-CN/ai/reference/event-types' ||
           child.url === '/en/ai/reference/restful-api' ||
+          child.url === '/en/api-reference/api-ref/conversational-ai' ||
           child.url === '/zh-CN/ai/reference/restful-api' ||
           child.url === '/en/ai/reference/server-sdk' ||
           child.url === '/en/ai/reference/client-toolkit' ||

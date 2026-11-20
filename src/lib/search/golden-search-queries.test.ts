@@ -89,7 +89,7 @@ const DOC_TARGET_ROUTE_BY_QUERY: Readonly<Record<string, string>> = {
   'cloud recording': '/en/realtime-media/cloud-recording',
   'real-time transcription': '/en/realtime-media/speech-to-text',
   'speech to text': '/en/realtime-media/speech-to-text',
-  'video calling': '/en/api-reference/api-ref/rtc',
+  'video calling': '/en/realtime-media/rtc',
   'interactive live streaming': '/en/realtime-media/rtc',
   'broadcast streaming': '/en/realtime-media/rtc',
   'flexible classroom':

@@ -31,6 +31,10 @@ import {
   normalizePlatformKey,
   type PlatformKey,
 } from '@/lib/platforms/registry';
+import {
+  getProductSidebarSource,
+  withProductSidebar,
+} from '@/lib/product-rest-sidebar';
 import { recordRecentPage } from '@/lib/recently-viewed';
 import { isRetiredCnDocsPath } from '@/lib/retired-cn-docs.mjs';
 import { createDocsRouteSeoHead } from '@/lib/static-seo';
@@ -52,7 +56,10 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       },
     },
   },
-  loader: async ({ location, params }) => {
+  loaderDeps: ({ search }) => ({
+    from: getProductSidebarSource((search as { from?: unknown }).from),
+  }),
+  loader: async ({ deps, location, params }) => {
     if (!isPublishedDocLocale(params.locale)) {
       throw notFound();
     }
@@ -240,6 +247,13 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       }
     }
 
+    payload = await withProductSidebar(payload, deps?.from, (input) =>
+      shouldUseStaticDocsPayload()
+        ? resolvePlatformStaticDocsPayload<
+            DocsPagePayload | DocsRedirectPayload
+          >(input)
+        : getDocsPagePayload({ data: input }),
+    );
     await preloadDocsPageContent(payload);
 
     return normalizeDocsPagePayload(payload);
