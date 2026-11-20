@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
+  captureDocsFeedbackIssueClicked,
   captureDocsFeedbackSubmission,
   type DocsFeedbackValue,
 } from '@/lib/analytics/posthog';
@@ -148,6 +149,14 @@ export function DocsFeedbackForm({
           <Button asChild size="sm" variant="outline">
             <a
               href={buildFeedbackIssueUrl(submitted)}
+              onClick={() => {
+                if (submitted.locale === 'en')
+                  captureDocsFeedbackIssueClicked({
+                    locale: submitted.locale,
+                    feedbackId: submitted.id,
+                    value: submitted.helpfulness,
+                  });
+              }}
               target="_blank"
               rel="noopener noreferrer"
             >

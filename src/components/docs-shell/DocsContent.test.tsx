@@ -42,6 +42,7 @@ vi.mock('@/lib/analytics/posthog', () => ({
   captureDocsCodeCopied: vi.fn(),
   captureDocsFeedbackIssueClicked: vi.fn(),
   captureDocsFeedbackOpened: vi.fn(),
+  captureDocsFeedbackPrompted: vi.fn(),
   captureDocsLinkClicked: captureDocsLinkClickedMock,
   captureDocsPageFeedback: captureDocsPageFeedbackMock,
   captureDocsFeedbackSubmission: vi.fn().mockResolvedValue(true),

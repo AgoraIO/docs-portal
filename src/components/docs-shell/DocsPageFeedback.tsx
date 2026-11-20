@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { getDocsMeasurement } from '@/lib/analytics/measurement';
 import {
+  captureDocsFeedbackOpened,
+  captureDocsFeedbackPrompted,
   captureDocsPageFeedback,
   type DocsFeedbackValue,
 } from '@/lib/analytics/posthog';
@@ -32,15 +34,23 @@ export function DocsPageFeedback({
   const t = i18n.getFixedT(normalizedLocale, 'common');
   const root = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (normalizedLocale !== 'zh-CN' || !root.current) return;
-    return observeVisible(root.current, () =>
+    if (!root.current) return;
+    let prompted = false;
+    return observeVisible(root.current, () => {
+      if (normalizedLocale === 'en') {
+        if (!prompted) {
+          prompted = true;
+          captureDocsFeedbackPrompted({ locale: normalizedLocale });
+        }
+        return;
+      }
       getDocsMeasurement()?.prompt(
         'page_helpfulness',
         'content',
         'manual',
         getDocsMeasurement()?.contentContext(window.location.pathname),
-      ),
-    );
+      );
+    });
   }, [normalizedLocale]);
   const [feedback, setFeedback] = useState<DocsFeedbackValue | null>(null);
   const feedbackFormId = useId();
@@ -67,7 +77,10 @@ export function DocsPageFeedback({
         measurement.pageFeedback(value, window.location.pathname);
       else captureDocsPageFeedback({ locale: normalizedLocale, value });
     }
-    setFeedbackOpen((open) => feedbackSubmitted || feedback !== value || !open);
+    const opening = feedbackSubmitted || feedback !== value || !feedbackOpen;
+    if (opening && normalizedLocale === 'en')
+      captureDocsFeedbackOpened({ locale: normalizedLocale, value });
+    setFeedbackOpen(opening);
   };
 
   return (

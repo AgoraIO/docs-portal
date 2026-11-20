@@ -201,6 +201,16 @@ describe('PostHog analytics', () => {
       pathname: '/en/realtime-media/video/quickstart',
       search: '?platform=web&token=secret',
       value: 'yes',
+      deployment_region: 'global',
+      environment: 'local',
+      app_release: 'unknown',
+      canonical_path: '/en/realtime-media/video/quickstart',
+      feedback_scope: 'page',
+      feedback_source: 'manual',
+      surface: 'content',
+      prompt_version: 'inline-reasons-v2',
+      question_id: 'page_helpfulness',
+      evidence_source: 'self_report',
     });
 
     const config = initMock.mock.calls[0]?.[1];

@@ -4,6 +4,8 @@
 
 2026-11-20：英文站与中文站共用内联投票、补充反馈表单和提交状态；界面及 GitHub Issue 预填内容按页面语言展示。英文站继续使用全球站 PostHog 配置，上报 `deployment_region=global`、`locale=en` 和不带 query/hash 的英文路径，不要求开启中文问卷的 `VITE_DOCS_MEASUREMENT_ENABLED`。中文站保留现有采集开关和历史路径身份。两站的详细反馈事件共用最终传输过滤，保留最多 2,000 字符的主动提交说明。
 
+英文站曝光、投票、表单展开、详细提交与 GitHub 跟进点击的完整事件及查询方式见 [English page feedback analytics](english-feedback.md)。GitHub 点击事件使用已提交快照的 `feedback_id`，只表示打开新建页面，不表示已创建 Issue；不重复上报详细反馈。
+
 ## 投票与展开
 
 - 首次点击“有 / 没有”立即记录帮助度并原地展开表单，收起或离开不撤销评价。

@@ -7,6 +7,7 @@ import { DocsFeedbackForm } from './DocsFeedbackForm';
 
 const { report } = vi.hoisted(() => ({ report: vi.fn() }));
 vi.mock('@/lib/analytics/posthog', () => ({
+  captureDocsFeedbackIssueClicked: vi.fn(),
   captureDocsFeedbackSubmission: report,
 }));
 beforeEach(() => {
