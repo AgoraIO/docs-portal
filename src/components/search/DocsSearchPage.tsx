@@ -79,6 +79,10 @@ import {
   getCnSearchResultEntries,
 } from '@/lib/search/cn-search-presentation';
 import {
+  type SearchFailure,
+  searchFailureDetails,
+} from '@/lib/search/search-failure';
+import {
   parseSearchPageState,
   SEARCH_MAX_LOADED_PAGES,
   type SearchPageState,
@@ -152,7 +156,8 @@ function DocsSearchPageContent({
   );
   const resultsContainer = useRef<HTMLElement>(null);
   const failure = useRef<
-    { search: SearchSnapshot; requestId?: string } | undefined
+    | { search: SearchSnapshot; requestId?: string; details?: SearchFailure }
+    | undefined
   >(undefined);
   useEffect(() => {
     getDocsMeasurement()?.leaveContent();
@@ -167,6 +172,7 @@ function DocsSearchPageContent({
         getDocsMeasurement()?.fail(
           failure.current.search,
           failure.current.requestId,
+          failure.current.details,
         );
     });
   }, [data, status]);
@@ -292,6 +298,8 @@ function DocsSearchPageContent({
               unit: 'result',
               page: request.state.page,
               totalHits: result.totalHits,
+              serverGroupCount: result.serverGroupCount,
+              indexRevision: result.indexRevision,
               requestId,
               started: request.state.page > 1 ? restoreStarted : undefined,
             }),
@@ -299,14 +307,38 @@ function DocsSearchPageContent({
         setData(accepted);
         setStatus('loaded');
       })
-      .catch(() => {
+      .catch((error: unknown) => {
         if (!controller.signal.aborted) {
           setStatus('error');
-          if (snapshot) failure.current = { search: snapshot, requestId };
+          if (snapshot)
+            failure.current = {
+              search: snapshot,
+              requestId,
+              details: searchFailureDetails(error),
+            };
         }
       });
     return () => controller.abort();
   }, [request]);
+
+  const recordRecovery = (action: 'clear_filters' | 'retry') => {
+    const snapshot = logicalSearch.current?.snapshot;
+    if (snapshot) getDocsMeasurement()?.recoverSearch(snapshot, action);
+  };
+  const retrySearch = () => {
+    recordRecovery('retry');
+    setRetry((value) => value + 1);
+  };
+  const clearFilters = () => {
+    recordRecovery('clear_filters');
+    onChange({
+      product: undefined,
+      platform: undefined,
+      version: undefined,
+      type: 'all',
+      page: 1,
+    });
+  };
 
   const productLabel = (product?: string) =>
     getCnProductLabel(product, productScopes);
@@ -384,7 +416,7 @@ function DocsSearchPageContent({
   );
 
   function submitQuery(query: string) {
-    if (query.trim() === state.q) setRetry((value) => value + 1);
+    if (query.trim() === state.q) retrySearch();
     onChange({ q: query.trim(), page: 1 });
   }
 
@@ -450,18 +482,7 @@ function DocsSearchPageContent({
             onChange={onChange}
           />
           {hasFilters && (
-            <Button
-              onClick={() =>
-                onChange({
-                  product: undefined,
-                  platform: undefined,
-                  version: undefined,
-                  type: 'all',
-                })
-              }
-              size="sm"
-              variant="ghost"
-            >
+            <Button onClick={clearFilters} size="sm" variant="ghost">
               清除筛选
             </Button>
           )}
@@ -564,18 +585,7 @@ function DocsSearchPageContent({
                   </Button>
                 ),
             )}
-            <Button
-              onClick={() =>
-                onChange({
-                  product: undefined,
-                  platform: undefined,
-                  version: undefined,
-                  type: 'all',
-                })
-              }
-              size="sm"
-              variant="ghost"
-            >
+            <Button onClick={clearFilters} size="sm" variant="ghost">
               清除筛选
             </Button>
           </fieldset>
@@ -605,7 +615,7 @@ function DocsSearchPageContent({
             </div>
           )}
           {status === 'error' && !data && (
-            <SearchEmpty error onRetry={() => setRetry((value) => value + 1)} />
+            <SearchEmpty error onRetry={retrySearch} />
           )}
           {data &&
             (data.groups.length ? (
@@ -660,10 +670,7 @@ function DocsSearchPageContent({
                     条结果
                   </span>
                   {status === 'error' ? (
-                    <Button
-                      onClick={() => setRetry((value) => value + 1)}
-                      variant="outline"
-                    >
+                    <Button onClick={retrySearch} variant="outline">
                       加载失败，重试
                     </Button>
                   ) : (
@@ -704,19 +711,7 @@ function DocsSearchPageContent({
                 </div>
               </>
             ) : (
-              <SearchEmpty
-                onClear={
-                  hasFilters
-                    ? () =>
-                        onChange({
-                          product: undefined,
-                          platform: undefined,
-                          version: undefined,
-                          type: 'all',
-                        })
-                    : undefined
-                }
-              />
+              <SearchEmpty onClear={hasFilters ? clearFilters : undefined} />
             ))}
           {status !== 'loading' ? (
             <DocsTaskFeedback surface="search_page" />
@@ -744,11 +739,7 @@ function DocsSearchPageContent({
           {status === 'error' && (
             <div className="search-page-service-error" role="status">
               搜索暂时不可用，请稍后重试。
-              <Button
-                onClick={() => setRetry((value) => value + 1)}
-                size="sm"
-                variant="link"
-              >
+              <Button onClick={retrySearch} size="sm" variant="link">
                 重试
               </Button>
             </div>

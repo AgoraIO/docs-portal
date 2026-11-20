@@ -4,6 +4,7 @@ import { type CnSearchFamily, getCnSearchFamily } from './cn-search-family';
 import { isPublicCnSearchUrl } from './cn-search-urls.mjs';
 import { getSearchSectionIdentity } from './kb-record';
 import type { SearchHit } from './meilisearch-client';
+import { SearchRequestError } from './search-failure';
 import type { SearchPageState } from './search-page-state';
 import {
   stripSearchComponentTags,
@@ -31,6 +32,8 @@ export type CnSearchPageResponse = {
   page: number;
   facets: SearchFacets;
   familyTotalHits?: Partial<Record<CnSearchFamily, number>>;
+  serverGroupCount?: number;
+  indexRevision?: string | null;
 };
 
 export type CnSearchRequest = SearchPageState & { tab?: string };
@@ -48,24 +51,46 @@ export async function searchCnDocsPage(
   for (const field of ['product', 'platform', 'tab'] as const) {
     if (state[field]) params.set(field, state[field]);
   }
-  const response = await fetch(`/api/search?${params}`, {
-    signal,
-    headers: { Accept: 'application/json', ...measurementHeaders },
-  });
+  let response: Response;
+  try {
+    response = await fetch(`/api/search?${params}`, {
+      signal,
+      headers: { Accept: 'application/json', ...measurementHeaders },
+    });
+  } catch (error) {
+    if (signal?.aborted) throw error;
+    throw new SearchRequestError('network', 'network_error');
+  }
   if (!response.ok)
-    throw new Error(`Search unavailable (HTTP ${response.status})`);
-  const result = (await response.json()) as CnSearchPageResponse;
+    throw new SearchRequestError('http', 'http_error', response.status);
+  let result: CnSearchPageResponse;
+  try {
+    result = (await response.json()) as CnSearchPageResponse;
+  } catch {
+    throw new SearchRequestError('parse', 'invalid_response');
+  }
   if (
+    !result ||
     !Array.isArray(result.groups) ||
+    !result.groups.every(
+      (group) =>
+        group &&
+        typeof group.pageUrl === 'string' &&
+        Array.isArray(group.sections) &&
+        group.sections.every(
+          (section) => section && typeof section.url === 'string',
+        ),
+    ) ||
     !Number.isSafeInteger(result.totalHits) ||
     !Number.isSafeInteger(result.totalPages) ||
     !Number.isSafeInteger(result.page) ||
     !result.facets
   ) {
-    throw new Error('Invalid search response');
+    throw new SearchRequestError('parse', 'invalid_response');
   }
   return {
     ...result,
+    serverGroupCount: result.groups.length,
     groups: result.groups
       .filter((group) => isPublicCnSearchUrl(group.pageUrl))
       .map((group) => ({
