@@ -107,12 +107,14 @@ export function DocsTable({
         updateContent();
       });
     });
-    // Sizing mutates attributes only. Do not observe those writes and feed
-    // our own layout annotations back into the content observer.
+    // Structural span changes alter logical columns even when text is stable.
+    // Exclude our own style/data writes from the attribute filter.
     observer.observe(nativeTable, {
       childList: true,
       characterData: true,
       subtree: true,
+      attributes: true,
+      attributeFilter: ['rowspan', 'colspan'],
     });
     return () => {
       observer.disconnect();

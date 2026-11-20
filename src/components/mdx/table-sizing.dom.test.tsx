@@ -34,6 +34,57 @@ function ChangingValue() {
   );
 }
 
+function ChangingSpanRows() {
+  const [merged, setMerged] = useState(true);
+  return (
+    <>
+      <tr>
+        <td rowSpan={merged ? 2 : 1}>
+          A long description occupies the first logical column and retains
+          reading space.
+          <button type="button" onClick={() => setMerged(!merged)}>
+            Toggle span
+          </button>
+        </td>
+        <td>A</td>
+      </tr>
+      <tr>
+        <td>B</td>
+      </tr>
+    </>
+  );
+}
+
+it('updates logical column sizing for attribute-only span changes', async () => {
+  const view = render(
+    <DocsTable>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ChangingSpanRows />
+      </tbody>
+    </DocsTable>,
+  );
+  const button = within(view.container).getByRole('button');
+  const cell = within(view.container).getByText('B');
+  const text = view.container.textContent;
+  expect(cell).toHaveAttribute('data-table-column-size', 'compact');
+  fireEvent.click(button);
+  await waitFor(() =>
+    expect(cell).toHaveAttribute('data-table-column-size', 'prose'),
+  );
+  expect(view.container.textContent).toBe(text);
+  fireEvent.click(button);
+  await waitFor(() =>
+    expect(cell).toHaveAttribute('data-table-column-size', 'compact'),
+  );
+  expect(view.container.textContent).toBe(text);
+});
+
 it('updates composed child content without a parent render or an observer loop', async () => {
   let renders = 0;
   const view = render(
