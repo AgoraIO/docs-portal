@@ -133,8 +133,11 @@ export function inspectReference() {
         )
       )
         continue;
-      const expected =
-        header.textContent.trim() === '填写要求' ? 'requirement' : 'required';
+      const expected = /^(?:填写要求|requirements?)$/i.test(
+        header.textContent.trim(),
+      )
+        ? 'requirement'
+        : 'required';
       for (const row of rows) {
         const cell = row.children[column];
         if (visible(cell) && cell.dataset.tableColumnKind !== expected)

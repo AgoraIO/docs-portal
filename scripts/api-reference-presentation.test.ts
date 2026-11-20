@@ -1,4 +1,7 @@
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { prepareTableColumns } from '../src/components/mdx/table-columns';
 import { inspectReference } from './lib/api-reference-quality/probe.mjs';
 
 beforeEach(() => {
@@ -45,6 +48,79 @@ it('allows a wider conditional requirement column', () => {
   );
   expect(rules).not.toContain('unclassified-required-column');
   expect(rules).not.toContain('oversized-required-column');
+});
+
+describe.each([
+  ['填写要求', 'requirement'],
+  ['Requirements', 'requirement'],
+  ['Requirement', 'requirement'],
+  [' requirements ', 'requirement'],
+  ['是否必填', 'required'],
+  ['Required', 'required'],
+  ['OPTIONAL', 'required'],
+])('semantic column calibration: %s', (label, kind) => {
+  beforeEach(() => {
+    const children = [
+      createElement(
+        'thead',
+        { key: 'head' },
+        createElement(
+          'tr',
+          null,
+          ...['Name', 'Content', label].map((header) =>
+            createElement('th', { key: header }, header),
+          ),
+        ),
+      ),
+      createElement(
+        'tbody',
+        { key: 'body' },
+        ...Array.from({ length: 10 }, (_, index) =>
+          createElement(
+            'tr',
+            { key: index },
+            createElement('td', null, `field-${index}`),
+            createElement('td', null, 'Extension listing asset'),
+            createElement('td', null, 'Required for publication'),
+          ),
+        ),
+      ),
+    ];
+    // Use the renderer's real planner, but keep the probe's oracle independent.
+    const table = prepareTableColumns(children);
+    expect(table.kinds[2]).toBe(kind);
+    const article = document.querySelector('article');
+    if (!article) throw new Error('Missing calibration article');
+    article.insertAdjacentHTML(
+      'beforeend',
+      renderToStaticMarkup(createElement('table', null, table.children)),
+    );
+  });
+
+  const findings = () =>
+    inspectReference().issues.filter(
+      (issue: { rule: string }) =>
+        issue.rule === 'unclassified-required-column',
+    );
+
+  it('accepts the classified header and ten body cells without false positives', () => {
+    expect(findings()).toEqual([]);
+  });
+
+  it.each(['missing', 'wrong'])(
+    'still detects %s header and body markers',
+    (fault) => {
+      for (const cell of document.querySelectorAll('tr > :last-child')) {
+        if (fault === 'missing') cell.removeAttribute('data-table-column-kind');
+        else
+          cell.setAttribute(
+            'data-table-column-kind',
+            kind === 'required' ? 'requirement' : 'required',
+          );
+      }
+      expect(findings()).toHaveLength(11);
+    },
+  );
 });
 
 it('detects a prose width floor stretching a short data list', () => {
