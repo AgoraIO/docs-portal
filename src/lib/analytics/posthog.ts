@@ -78,7 +78,10 @@ const filterAccountFlowEvent: BeforeSendFn = (event) => {
 const filterOutboundEvent: BeforeSendFn = (event) => {
   const filtered = filterAccountFlowEvent(event);
   if (!filtered) return filtered;
-  if (import.meta.env.VITE_DOCS_REGION === 'cn')
+  if (
+    import.meta.env.VITE_DOCS_REGION === 'cn' ||
+    filtered.event === 'docs_feedback_form_submitted'
+  )
     return filterCnMeasurementEvent(filtered);
   if (!filtered.properties) return filtered;
   return {
@@ -1047,11 +1050,12 @@ export async function captureDocsFeedbackSubmission(input: {
   reasons: readonly string[];
   details: string;
   pagePath: string;
+  locale?: 'en' | 'zh-CN';
 }): Promise<boolean> {
+  const isCn = import.meta.env.VITE_DOCS_REGION === 'cn';
   if (
     typeof window === 'undefined' ||
-    import.meta.env.VITE_DOCS_REGION !== 'cn' ||
-    import.meta.env.VITE_DOCS_MEASUREMENT_ENABLED !== 'true'
+    (isCn && import.meta.env.VITE_DOCS_MEASUREMENT_ENABLED !== 'true')
   )
     return false;
   const labels =
@@ -1072,11 +1076,13 @@ export async function captureDocsFeedbackSubmission(input: {
     schema_version: '1',
     event_source: 'browser',
     site_id: 'docs_portal',
-    deployment_region: 'cn',
-    locale: 'zh-CN',
+    deployment_region: isCn ? 'cn' : 'global',
+    locale: input.locale ?? (isCn ? 'zh-CN' : 'en'),
     environment: import.meta.env.VITE_DOCS_ENVIRONMENT || 'local',
     app_release: import.meta.env.VITE_DOCS_APP_RELEASE || 'unknown',
-    canonical_path: measurementPath(input.pagePath),
+    canonical_path: isCn
+      ? measurementPath(input.pagePath)
+      : stripUrlQueryAndHash(input.pagePath),
     value: input.helpfulness,
     response,
     comment,

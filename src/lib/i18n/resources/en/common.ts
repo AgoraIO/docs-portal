@@ -103,6 +103,33 @@ const enCommon = {
       'Describe what is wrong, missing, confusing, or hard to use.',
     feedbackCancel: 'Cancel',
     feedbackSubmit: 'Open issue',
+    feedbackForm: {
+      submittedLabel: 'Submitted feedback',
+      submitted: 'Thanks! Your feedback has been submitted.',
+      newFeedback: 'To share more feedback, click Yes or No again.',
+      followUp:
+        'Need a follow-up? Create a GitHub issue to discuss your feedback publicly and track progress. A GitHub account is required.',
+      collapse: 'Collapse',
+      createIssue: 'Create a GitHub issue',
+      positiveLabel: 'Positive feedback',
+      negativeLabel: 'Improvement feedback',
+      positiveIntro: 'Glad this page helped! Let us know what worked well.',
+      negativeIntro:
+        'If you like, tell us what did not help so we can improve this page.',
+      positiveReasons: 'What helped you?',
+      negativeReasons: 'What went wrong?',
+      optionalMultiple: '(optional, select all that apply)',
+      details: 'Additional details',
+      optional: '(optional)',
+      positivePlaceholder:
+        'For example, which explanations or examples helped, or what else you would suggest.',
+      negativePlaceholder:
+        'For example, which step was unclear or which code example did not work.',
+      pending: 'Submitting…',
+      submit: 'Submit',
+      error:
+        'Unable to submit right now. Please try again later. Your feedback has been saved in this form.',
+    },
     openMenu: 'Open navigation',
     dismissLegacyDocsBanner: 'Dismiss legacy docs banner',
     legacyDocsBanner:

@@ -111,18 +111,75 @@ it('expands follow-up feedback below the votes without opening a modal', async (
   expect(screen.queryByText('开始新问题')).not.toBeInTheDocument();
 });
 
-it('preserves the English feedback form', async () => {
-  render(
-    <I18nextProvider i18n={i18n}>
-      <DocsPageFeedback locale="en" />
-    </I18nextProvider>,
-  );
-  fireEvent.click(screen.getByRole('button', { name: 'Send feedback' }));
-  expect(await screen.findByLabelText('Details')).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: 'Open issue' })).toHaveAttribute(
-    'href',
-    expect.stringContaining(
-      'https://github.com/AgoraIO/docs-portal/issues/new',
-    ),
-  );
-});
+it.each(['yes', 'no'] as const)(
+  'supports the English inline %s flow, retry, and GitHub follow-up',
+  async (value) => {
+    report.mockResolvedValueOnce(false).mockResolvedValue(true);
+    render(
+      <I18nextProvider i18n={i18n}>
+        <DocsPageFeedback locale="en" />
+      </I18nextProvider>,
+    );
+    expect(
+      screen.getAllByRole('button').map((button) => button.textContent),
+    ).toEqual(['Yes', 'No']);
+    const button = screen.getByRole('button', {
+      name: value === 'yes' ? 'Yes' : 'No',
+    });
+    fireEvent.click(button);
+    expect(button).toHaveAttribute('aria-expanded', 'true');
+    expect(button).toHaveAttribute('data-variant', 'default');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(screen.getAllByRole('checkbox')).toHaveLength(
+      value === 'yes' ? 5 : 6,
+    );
+    const reason =
+      value === 'yes' ? 'Useful examples' : 'Incorrect or outdated content';
+    fireEvent.click(screen.getByRole('checkbox', { name: reason }));
+    fireEvent.change(screen.getByRole('textbox'), {
+      target: { value: 'Please add a complete example.' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Collapse' }));
+    await waitFor(() => expect(button).toHaveFocus());
+    fireEvent.click(button);
+    expect(screen.getByRole('textbox')).toHaveValue(
+      'Please add a complete example.',
+    );
+    expect(screen.getByRole('checkbox', { name: reason })).toBeChecked();
+    expect(capture).toHaveBeenCalledExactlyOnceWith({ locale: 'en', value });
+    fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
+    expect(button).toBeDisabled();
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Unable to submit right now.',
+    );
+    expect(screen.getByRole('textbox')).toHaveValue(
+      'Please add a complete example.',
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
+    await screen.findByText('Thanks! Your feedback has been submitted.');
+    expect(report.mock.calls[0][0]).toEqual(report.mock.calls[1][0]);
+    expect(report.mock.calls[1][0]).toMatchObject({
+      locale: 'en',
+      helpfulness: value,
+    });
+    const url = new URL(
+      screen
+        .getByRole('link', { name: 'Create a GitHub issue' })
+        .getAttribute('href') ?? '',
+    );
+    expect(url.searchParams.get('title')).toMatch(/^Docs feedback:/);
+    expect(url.searchParams.get('body')).toContain(reason);
+    expect(url.searchParams.get('body')).toContain(
+      'Please add a complete example.',
+    );
+    expect(screen.getByTestId('docs-feedback').textContent).not.toMatch(
+      /[\u4e00-\u9fff]/,
+    );
+    fireEvent.click(button);
+    expect(screen.getByRole('checkbox', { name: reason })).not.toBeChecked();
+    expect(screen.getByRole('textbox')).toHaveValue('');
+    expect(
+      screen.queryByRole('button', { name: 'Submit' }),
+    ).not.toBeInTheDocument();
+  },
+);

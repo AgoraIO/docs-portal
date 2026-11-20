@@ -109,6 +109,50 @@ describe('PostHog analytics', () => {
     expect(await captureDocsFeedbackSubmission(payload)).toBe(false);
   });
 
+  it.each(['yes', 'no'] as const)(
+    'records global %s feedback with English context and filtered comments',
+    async (helpfulness) => {
+      vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+      vi.stubEnv('VITE_DOCS_REGION', 'global');
+      vi.stubEnv('VITE_DOCS_MEASUREMENT_ENABLED', 'false');
+      const { captureDocsFeedbackSubmission } = await import('./posthog');
+      captureMock.mockReturnValue({ event: 'docs_feedback_form_submitted' });
+      const details = `First line\n${'More details. '.repeat(200)}`;
+      const payload = {
+        id: 'global-feedback-1',
+        locale: 'en' as const,
+        helpfulness,
+        reasons: [],
+        details,
+        pagePath: '/en/video-calling/overview?token=secret#start',
+        submittedAt: '2026-11-20T06:00:00.000Z',
+      };
+      expect(await captureDocsFeedbackSubmission(payload)).toBe(true);
+      const [event, properties] = captureMock.mock.calls[0];
+      expect(properties).toMatchObject({
+        locale: 'en',
+        deployment_region: 'global',
+        canonical_path: '/en/video-calling/overview',
+        value: helpfulness,
+        comment: details.slice(0, 2000),
+        response: [],
+      });
+      const filtered = initMock.mock.calls[0][1].before_send({
+        event,
+        properties: {
+          ...properties,
+          page_title: 'not allowed',
+          $current_url:
+            'https://docs.example/en/video-calling/overview?token=secret#start',
+        },
+      });
+      expect(filtered.properties.comment).toBe(details.slice(0, 2000));
+      expect(JSON.stringify(filtered)).not.toMatch(/token=secret|not allowed/);
+      captureMock.mockReturnValueOnce(undefined);
+      expect(await captureDocsFeedbackSubmission(payload)).toBe(false);
+    },
+  );
+
   it('keeps reason-only feedback optional and rejects empty or invalid submissions', async () => {
     vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
     vi.stubEnv('VITE_DOCS_REGION', 'cn');
