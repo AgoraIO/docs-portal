@@ -1566,6 +1566,14 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
               'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.10',
           },
           {
+            id: '4.24.9-video-sdk-web',
+            label: 'Version 4.24.9',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_9_FULL.zip',
+            packageManager:
+              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.9',
+          },
+          {
             id: '4.24.8-video-sdk-web',
             label: 'Version 4.24.8',
             downloadLink:
