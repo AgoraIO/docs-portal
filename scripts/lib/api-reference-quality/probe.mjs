@@ -104,10 +104,97 @@ export function inspectReference() {
     )
       add('unstyled-description-list', list);
   }
+  // Discover semantic columns from native headers, independently of renderer tags.
+  // A missing renderer classification must not silently escape the gate.
+  for (const table of document.querySelectorAll('article table')) {
+    const head = table.querySelector(':scope > thead');
+    const rows = [
+      ...table.querySelectorAll(':scope > :is(thead, tbody, tfoot) > tr'),
+    ];
+    if (
+      !head ||
+      head.querySelectorAll(':scope > tr').length !== 1 ||
+      table.querySelector(
+        '[colspan]:not([colspan="1"]), [rowspan]:not([rowspan="1"])',
+      )
+    )
+      continue;
+    const headers = [...head.querySelectorAll(':scope > tr > th')];
+    if (
+      headers.length < 3 ||
+      headers.length > 5 ||
+      rows.some((row) => row.children.length !== headers.length)
+    )
+      continue;
+    for (const [column, header] of headers.entries()) {
+      if (
+        !/^(?:(?:是否)?(?:必填|必选|必需|必须|可选|必要)|required|optional|mandatory|填写要求|必填条件|requirements?)[?？]?$/i.test(
+          header.textContent.replace(/\s+/g, ''),
+        )
+      )
+        continue;
+      const expected = /^(?:填写要求|requirements?)$/i.test(
+        header.textContent.trim(),
+      )
+        ? 'requirement'
+        : 'required';
+      for (const row of rows) {
+        const cell = row.children[column];
+        if (visible(cell) && cell.dataset.tableColumnKind !== expected)
+          add('unclassified-required-column', cell);
+      }
+    }
+  }
   for (const cell of document.querySelectorAll('article td, article th')) {
     if (!visible(cell) || cell.closest('pre')) continue;
     const text = cell.textContent.trim(),
       style = getComputedStyle(cell);
+    const contentSize = cell.dataset.tableColumnSize;
+    if (
+      ['required', 'requirement'].includes(cell.dataset.tableColumnKind) &&
+      (!contentSize || contentSize === 'compact')
+    ) {
+      if (style.textAlign !== 'center') add('misaligned-required-column', cell);
+      if (
+        !contentSize &&
+        cell.tagName === 'TH' &&
+        style.whiteSpace !== 'nowrap'
+      )
+        add('wrapping-required-header', cell);
+      const rem =
+        parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+      if (
+        !contentSize &&
+        parseFloat(style.minWidth) >
+          rem * (cell.dataset.tableColumnKind === 'requirement' ? 6 : 4) + 0.5
+      )
+        add('oversized-required-column', cell);
+    }
+    if (contentSize === 'compact' && cell.tagName === 'TD') {
+      const blocks = [...cell.querySelectorAll('p, li')].filter(
+        (block) => block.closest('td, th') === cell,
+      );
+      const values = blocks.length
+        ? blocks.map((block) => block.textContent.trim())
+        : [text];
+      if (
+        blocks.filter((block) => block.tagName === 'P' && !block.closest('li'))
+          .length > 1 ||
+        cell.querySelector(
+          ':scope > pre, :scope > table, :scope > figure.shiki',
+        ) ||
+        values.some((value) => value.length > 80 && /\p{L}/u.test(value))
+      )
+        add('compact-table-prose', cell);
+    }
+    if (['value', 'number'].includes(cell.dataset.tableColumnKind)) {
+      for (const content of cell.querySelectorAll(
+        ':scope > p, :scope > ul, :scope > ol, :scope > .prose-no-margin',
+      )) {
+        if (parseFloat(getComputedStyle(content).minInlineSize) > 1)
+          add('prose-width-on-value-column', content);
+      }
+    }
     const width =
       cell.clientWidth -
       parseFloat(style.paddingLeft) -
@@ -118,26 +205,36 @@ export function inspectReference() {
       cell.clientHeight > parseFloat(style.lineHeight) * 4
     )
       add('squeezed-table-prose', cell, { width });
-    if (
-      !/^(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS|\d+\/(?:second|minute|hour|day|sec|s))$/.test(
+    const literal =
+      /^(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS|\d+\/(?:second|minute|hour|day|sec|s))$/.test(
         text,
-      )
-    )
-      continue;
-    const word = text.includes('/') ? text.split('/')[1] : text;
-    const walker = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT);
-    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-      const start = node.textContent.indexOf(word);
-      if (start < 0) continue;
-      const range = document.createRange();
-      range.setStart(node, start);
-      range.setEnd(node, start + word.length);
-      const lines = new Set(
-        [...range.getClientRects()]
-          .filter((rect) => rect.width && rect.height)
-          .map((rect) => Math.round(rect.y)),
       );
-      if (lines.size > 1) add('split-short-table-word', cell, { word });
+    const numericTokens =
+      cell.dataset.tableColumnKind === 'number'
+        ? [
+            ...text.matchAll(
+              /\b(?:\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d{4,}(?:\.\d+)?|minutes|seconds|Gbps|Mbps|Kbps)\b/g,
+            ),
+          ].map((match) => match[0])
+        : [];
+    const words = literal
+      ? [text.includes('/') ? text.split('/')[1] : text]
+      : numericTokens;
+    for (const word of words) {
+      const walker = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT);
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        const start = node.textContent.indexOf(word);
+        if (start < 0) continue;
+        const range = document.createRange();
+        range.setStart(node, start);
+        range.setEnd(node, start + word.length);
+        const lines = new Set(
+          [...range.getClientRects()]
+            .filter((rect) => rect.width && rect.height)
+            .map((rect) => Math.round(rect.y)),
+        );
+        if (lines.size > 1) add('split-short-table-word', cell, { word });
+      }
     }
   }
   for (const tabs of document.querySelectorAll('article [role="tablist"]')) {
@@ -305,12 +402,16 @@ export function inspectReference() {
 // These broken examples prove the detector goes red in the same browser used for QA.
 export const canaryHtml = `<!doctype html><html><body><article>
 <h1>Regression detector calibration</h1>
+<table><tbody><tr><td data-table-column-size="compact">A long prose description incorrectly classified as compact must be detected independently of the rendering implementation and its table header.</td></tr></tbody></table>
 <div style="width:200vw">Overflow</div>
 <button data-openapi-field-toggle style="width:10px;height:10px;padding:0">x</button>
 <div data-parameter-description><ul style="list-style:none;padding:0"><li>Lost marker</li></ul></div>
 <table style="table-layout:fixed;width:20px"><tr><td style="word-break:break-all;width:20px">DELETE</td></tr></table>
 <div style="border-radius:12px;overflow:visible"><div role="tablist" style="background:red">Tabs</div></div>
 <table style="table-layout:fixed;width:20px"><tr><td style="width:20px;line-height:20px">A long description that has been squeezed into a very narrow table column and is no longer readable as continuous prose.</td></tr></table>
+<table><thead><tr><th data-table-column-kind="required" style="min-width:128px;white-space:normal;text-align:right">是否必填</th></tr></thead><tbody><tr><td data-table-column-kind="required" style="min-width:128px;text-align:right">是</td></tr></tbody></table>
+<table><thead><tr><th>配置路径</th><th>是否必需</th><th>说明</th></tr></thead><tbody><tr><td>tts.vendor</td><td>是</td><td>供应商。</td></tr></tbody></table>
+<table><tbody><tr><td data-table-column-kind="value"><ul style="min-inline-size:240px"><li>SD: 200</li></ul></td></tr></tbody></table>
 <aside><nav><a style="display:block;width:20px;overflow:hidden">A clipped table of contents link</a></nav></aside>
 <figure class="shiki" data-code-language="cpp"><pre><code>int callback();</code></pre></figure>
 <figure data-code-language="cpp"><pre><code><span style="--shiki-light:red;--shiki-dark:red;color:black">int</span><span style="--shiki-light:blue;--shiki-dark:blue;color:black">callback</span></code></pre></figure>
@@ -327,12 +428,18 @@ export const canaryHtml = `<!doctype html><html><body><article>
 <section data-parameter-list><table><tbody><tr><th scope="row" style="background:beige">uid</th><td style="background:white">User identifier.</td></tr></tbody></table></section>
 </article></body></html>`;
 export const canaryRules = [
+  'compact-table-prose',
   'page-overflow',
   'small-schema-target',
   'unstyled-description-list',
   'split-short-table-word',
   'tab-frame-leak',
   'squeezed-table-prose',
+  'prose-width-on-value-column',
+  'unclassified-required-column',
+  'misaligned-required-column',
+  'wrapping-required-header',
+  'oversized-required-column',
   'toc-overflow',
   'missing-syntax-highlight',
   'flattened-syntax-highlight',

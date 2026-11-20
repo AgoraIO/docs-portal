@@ -108,6 +108,28 @@ describe('API reference quality policy', () => {
     rmSync(path.join(root, 'zh-CN/api-reference/sample/ios/index.html'));
     expect(() => inventory(root, 'cn')).toThrow(/Missing published HTML/);
   });
+  it('includes ordinary landing and billing tables outside API route names', () => {
+    const root = fixture();
+    const urls = ['/zh-CN/realtime-media/rtc', '/zh-CN/ai/reference/pricing'];
+    put(
+      root,
+      '__static/docs-routes.json',
+      urls.map((url) => ({ url, canonicalPath: url })),
+    );
+    for (const url of urls) {
+      put(root, `__static/docs${url}.json`, { body: { kind: 'mdx' } });
+      put(
+        root,
+        `${url.slice(1)}/index.html`,
+        '<main><article><table><tr><td>10 Gbps</td></tr></table></article></main>',
+      );
+    }
+    expect(
+      inventory(root, 'cn').map((row: { url: string }) => row.url),
+    ).toEqual(urls);
+    rmSync(path.join(root, 'zh-CN/ai/reference/pricing/index.html'));
+    expect(() => inventory(root, 'cn')).toThrow(/Missing published HTML/);
+  });
   it('validates declared redirect targets and refuses missing targets or cycles', () => {
     const root = fixture();
     put(root, '__static/docs-routes.json', [

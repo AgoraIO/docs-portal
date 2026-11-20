@@ -463,12 +463,6 @@ describe('app prose CSS regressions', () => {
     const headers = getRuleBody(
       '.prose :where(th):not(:where(.not-prose, .not-prose *))',
     );
-    const firstColumn = getRuleBody(
-      `.prose
-        :where(th:first-child, td:first-child):not(
-          :where(.not-prose, .not-prose *)
-        )`,
-    );
     const cellFirstChild = getRuleBody(
       '.prose :where(td > :first-child):not(:where(.not-prose, .not-prose *))',
     );
@@ -636,12 +630,7 @@ describe('app prose CSS regressions', () => {
         value: 'nowrap',
       }),
     );
-    expect(firstColumn.rule.nodes).toContainEqual(
-      expect.objectContaining({
-        prop: 'min-width',
-        value: '12ch',
-      }),
-    );
+
     expect(cellFirstChild.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'margin-top',

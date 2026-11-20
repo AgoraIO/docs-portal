@@ -4406,6 +4406,16 @@ describe('FumadocsOpenApiContent', () => {
       screen.getByText('所有使用该', { exact: false }).closest('td'),
     ).toHaveTextContent('所有使用该 ip 的用户都无法登录 App 中的任何频道。');
     const rows = within(table).getAllByRole('row');
+    await waitFor(() => {
+      expect(within(rows[1]).getAllByRole('cell')[0]).toHaveAttribute(
+        'data-table-column-size',
+        'compact',
+      );
+      expect(within(rows[1]).getAllByRole('cell')[3]).toHaveAttribute(
+        'data-table-column-size',
+        'prose',
+      );
+    });
     expect(within(rows[2]).getAllByRole('cell')[3]).toHaveTextContent(
       '该 uid 无法登录 App 中该 cname 对应的频道。',
     );

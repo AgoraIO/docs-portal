@@ -304,7 +304,13 @@ export function inventory(root, region) {
       source && existsSync(`content/docs/${source}`)
         ? readFileSync(`content/docs/${source}`, 'utf8')
         : '';
+    const htmlFile = path.join(root, route.url, 'index.html');
+    if (!existsSync(htmlFile))
+      throw new Error(`Missing published HTML: ${route.url}`);
+    const containsTable =
+      existsSync(htmlFile) && /<table\b/i.test(readFileSync(htmlFile, 'utf8'));
     if (
+      !containsTable &&
       !referencePath(route.url) &&
       !referencePath(redirectTarget(route) ?? '') &&
       !registered.has(route.url) &&
@@ -312,9 +318,6 @@ export function inventory(root, region) {
       !referenceSource(source ?? '', text)
     )
       continue;
-    const htmlFile = path.join(root, route.url, 'index.html');
-    if (!existsSync(htmlFile))
-      throw new Error(`Missing published HTML: ${route.url}`);
     rows.push({
       url: route.url,
       canonicalPath: route.canonicalPath,

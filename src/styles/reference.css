@@ -36,18 +36,6 @@ article :where(h1) {
   overflow-wrap: anywhere;
 }
 
-/* Keep multi-column tables readable on narrow screens. The existing scroll
-   wrapper exposes the remaining columns without squeezing prose into a strip. */
-.prose
-  table:not(.im-pricing-api-table):has(tr > :nth-child(3)):not(
-    :where(.not-prose, .not-prose *)
-  ),
-.openapi-operation
-  .openapi-markdown
-  table:not(.im-pricing-api-table):has(tr > :nth-child(3)) {
-  min-width: 42rem;
-}
-
 /* A code example's intrinsic width must not consume the prose columns.
    Fumadocs keeps the code's own horizontal scroll container. */
 .prose
@@ -175,13 +163,100 @@ article :where(h1) {
   overflow-wrap: break-word;
 }
 
-/* Give plain-text cells a readable floor too. Rich descriptions and longer
-   identifiers contribute their own intrinsic widths to the native layout. */
+/* Column widths belong to the shared native table surface. Short values use
+   their content; only prose columns reserve a reading measure. Logical column
+   markers work across rowSpan/colSpan and never classify nested cells by nth-child. */
+:is(.prose, .openapi-markdown) table :is(th, td)[data-table-column-kind] {
+  min-width: 6ch;
+}
+:is(.prose, .openapi-markdown)
+  table
+  :is(th, td)[data-table-column-kind="index"] {
+  min-width: 3ch;
+  width: 1%;
+  white-space: nowrap;
+}
+:is(.prose, .openapi-markdown)
+  table
+  :is(th, td)[data-table-column-kind="name"] {
+  min-width: 12ch;
+  width: 1%;
+}
+:is(.prose, .openapi-markdown)
+  table
+  :is(th, td)[data-table-column-kind="type"] {
+  min-width: 8ch;
+  width: 1%;
+}
+:is(.prose, .openapi-markdown)
+  table
+  :is(th, td)[data-table-column-kind="description"] {
+  min-width: min(24ch, calc(100vw - 4rem));
+}
+:is(.prose, .openapi-markdown)
+  table[data-table-layout="fixed"]
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td):not(
+    [data-table-column-kind="required"],
+    [data-table-column-kind="requirement"]
+  ) {
+  min-width: 0;
+}
+:is(.prose, .openapi-markdown)
+  table[data-table-layout="fixed"]
+  > :is(thead, tbody, tfoot)
+  > tr
+  > th:not(
+    [data-table-column-kind="required"],
+    [data-table-column-kind="requirement"]
+  ) {
+  overflow-wrap: anywhere;
+}
+
+/* Required flags are short categorical values, rather than prose columns.
+   Let their content grow naturally while preserving a single-line header. */
 .prose
   table:not(.im-pricing-api-table):not(:where(.not-prose, .not-prose *))
-  td,
-.openapi-operation .openapi-markdown table:not(.im-pricing-api-table) td {
-  min-width: 14ch;
+  :is(th, td):is(
+    [data-table-column-kind="required"],
+    [data-table-column-kind="requirement"]
+  ),
+.openapi-operation
+  .openapi-markdown
+  table:not(.im-pricing-api-table)
+  :is(th, td):is(
+    [data-table-column-kind="required"],
+    [data-table-column-kind="requirement"]
+  ) {
+  min-width: var(--docs-requirement-column-width, 4rem);
+  width: 1%;
+  text-align: center;
+}
+
+.prose
+  table
+  th:is(
+    [data-table-column-kind="required"],
+    [data-table-column-kind="requirement"]
+  ),
+.openapi-operation
+  .openapi-markdown
+  table
+  th:is(
+    [data-table-column-kind="required"],
+    [data-table-column-kind="requirement"]
+  ) {
+  white-space: nowrap;
+}
+
+/* Conditional requirements include short phrases such as 建议填写. */
+.prose table :is(th, td)[data-table-column-kind="requirement"],
+.openapi-operation
+  .openapi-markdown
+  table
+  :is(th, td)[data-table-column-kind="requirement"] {
+  --docs-requirement-column-width: 6rem;
 }
 
 /* Preserve intrinsic word widths for linked API names and inline declarations.
@@ -231,17 +306,170 @@ article :where(h1) {
   padding-inline-start: 0.2rem;
 }
 
-/* Reserve a readable measure for rich prose beside intrinsic API identifiers,
-   including callouts after their icon and padding. Let the wrapper scroll
-   instead of squeezing paragraphs and lists into a narrow strip. */
-.prose
-  table:not(.im-pricing-api-table):not(:where(.not-prose, .not-prose *))
-  td
-  :where(p, ul, ol, .prose-no-margin),
-.openapi-operation
-  .openapi-markdown
-  table:not(.im-pricing-api-table)
-  td
-  :where(p, ul, ol, .prose-no-margin) {
+/* Rich content follows its owning column's width. Nested tables and code
+   retain their own local scrolling instead of imposing a prose floor on lists. */
+:is(.prose, .openapi-markdown) td :where(p, ul, ol, .prose-no-margin) {
+  min-inline-size: 0;
+}
+
+/* Density belongs to this table, not to tables nested in its cells. */
+:is(.prose, .openapi-markdown)
+  table[data-table-density="compact"]
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td) {
+  padding: 0.375rem;
+}
+
+/* Unknown headers retain a conservative content measure. Only declared or
+   recognized value columns opt into short-value sizing. */
+:is(.prose, .openapi-markdown)
+  table
+  :is(th, td)[data-table-column-kind="content"] {
+  min-width: 14ch;
+}
+:is(.prose, .openapi-markdown)
+  td[data-table-column-kind="content"]
+  > :where(p, ul, ol, .prose-no-margin) {
   min-inline-size: 24ch;
+}
+:is(.prose, .openapi-markdown) td[data-table-column-kind="value"] {
+  overflow-wrap: normal;
+}
+:is(.prose, .openapi-markdown)
+  td[data-table-column-kind="value"]
+  > :where(ul, ol)
+  > li {
+  white-space: nowrap;
+}
+/* Each table's own scroll surface supplies the available inline width. */
+.docs-table-container > section {
+  container-type: inline-size;
+}
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table:not([data-table-layout="fixed"])
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td)[data-table-column-size] {
+  min-width: var(--docs-table-cell-min, 6ch);
+  width: auto;
+  white-space: normal;
+}
+
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table:not([data-table-layout="fixed"])
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td)[data-table-column-size="compact"] {
+  width: 1%;
+  overflow-wrap: normal;
+}
+
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table:not([data-table-layout="fixed"])
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td):is(
+    [data-table-column-size="prose"],
+    [data-table-column-size="code"]
+  ) {
+  min-width: clamp(
+    18ch,
+    calc(
+      (100cqw - var(--docs-table-compact-width, 0ch)) /
+      var(--docs-table-flex-columns, 1)
+    ),
+    var(--docs-table-cell-min, 24ch)
+  );
+}
+
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table:not([data-table-layout="fixed"])
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td)[data-table-column-size="code"] {
+  overflow-wrap: anywhere;
+}
+
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table:not([data-table-layout="fixed"])
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td)[data-table-column-size]
+  > :where(p, ul, ol, .prose-no-margin) {
+  min-inline-size: 0;
+}
+
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table:not([data-table-layout="fixed"])
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td)[data-table-column-size]
+  > :where(ul, ol)
+  > li {
+  white-space: normal;
+}
+
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table:not([data-table-layout="fixed"])
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td)[data-table-column-size="compact"]
+  > :where(ul, ol)
+  > li {
+  white-space: nowrap;
+}
+
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table:not([data-table-layout="fixed"])
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td):is(
+    [data-table-column-kind="required"],
+    [data-table-column-kind="requirement"]
+  ):is([data-table-column-size="prose"], [data-table-column-size="code"]) {
+  text-align: start;
+}
+
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table[data-table-content-layout="intrinsic"]:not(
+    [data-table-layout="fixed"]
+  ) {
+  width: auto;
+  min-width: 0;
+}
+
+:is(.prose, .openapi-markdown)
+  table
+  :is(th, td)[data-table-column-kind="value"] {
+  min-width: 8ch;
+}
+:is(.prose, .openapi-markdown) td[data-table-column-kind="number"],
+:is(.prose, .openapi-markdown) td[data-table-column-kind="number"] > p {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+:is(.prose, .openapi-markdown)
+  td[data-table-column-kind="number"]
+  > :where(ul, ol)
+  > li {
+  white-space: nowrap;
 }

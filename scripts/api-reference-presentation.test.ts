@@ -1,4 +1,7 @@
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { prepareTableColumns } from '../src/components/mdx/table-columns';
 import { inspectReference } from './lib/api-reference-quality/probe.mjs';
 
 beforeEach(() => {
@@ -14,6 +17,181 @@ const inspect = (html: string) => {
   document.querySelector('article')!.insertAdjacentHTML('beforeend', html);
   return inspectReference().issues.map((issue: { rule: string }) => issue.rule);
 };
+
+it('detects required-column alignment, width and wrapping regressions', () => {
+  const broken = inspect(
+    '<table><thead><tr><th data-table-column-kind="required" style="min-width:128px;white-space:normal;text-align:right">是否必填</th></tr></thead><tbody><tr><td data-table-column-kind="required" style="min-width:128px;text-align:right">是</td></tr></tbody></table>',
+  );
+  expect(broken).toContain('wrapping-required-header');
+  expect(broken).toContain('misaligned-required-column');
+  expect(broken).toContain('oversized-required-column');
+  document.body.innerHTML = '<article><h1>Reference</h1></article>';
+  const valid = inspect(
+    '<table><thead><tr><th data-table-column-kind="required" style="min-width:64px;white-space:nowrap;text-align:center">Required</th></tr></thead><tbody><tr><td data-table-column-kind="required" style="min-width:64px;text-align:center">Optional for POST</td></tr></tbody></table>',
+  );
+  expect(valid).not.toContain('wrapping-required-header');
+  expect(valid).not.toContain('misaligned-required-column');
+  expect(valid).not.toContain('oversized-required-column');
+});
+
+it('discovers unmarked semantic columns independently of renderer markers', () => {
+  expect(
+    inspect(
+      '<table><thead><tr><th>配置路径</th><th>是否必需</th><th>说明</th></tr></thead><tbody><tr><td>tts.vendor</td><td>是</td><td>供应商。</td></tr></tbody></table>',
+    ),
+  ).toContain('unclassified-required-column');
+});
+
+it('allows a wider conditional requirement column', () => {
+  const rules = inspect(
+    '<table><thead><tr><th>字段</th><th data-table-column-kind="requirement" style="min-width:96px;white-space:nowrap;text-align:center">填写要求</th><th>说明</th></tr></thead><tbody><tr><td>endpoint</td><td data-table-column-kind="requirement" style="min-width:96px;text-align:center">视场景</td><td>服务地址。</td></tr></tbody></table>',
+  );
+  expect(rules).not.toContain('unclassified-required-column');
+  expect(rules).not.toContain('oversized-required-column');
+});
+
+describe.each([
+  ['填写要求', 'requirement'],
+  ['Requirements', 'requirement'],
+  ['Requirement', 'requirement'],
+  [' requirements ', 'requirement'],
+  ['是否必填', 'required'],
+  ['Required', 'required'],
+  ['OPTIONAL', 'required'],
+])('semantic column calibration: %s', (label, kind) => {
+  beforeEach(() => {
+    const children = [
+      createElement(
+        'thead',
+        { key: 'head' },
+        createElement(
+          'tr',
+          null,
+          ...['Name', 'Content', label].map((header) =>
+            createElement('th', { key: header }, header),
+          ),
+        ),
+      ),
+      createElement(
+        'tbody',
+        { key: 'body' },
+        ...Array.from({ length: 10 }, (_, index) =>
+          createElement(
+            'tr',
+            { key: index },
+            createElement('td', null, `field-${index}`),
+            createElement('td', null, 'Extension listing asset'),
+            createElement('td', null, 'Required for publication'),
+          ),
+        ),
+      ),
+    ];
+    // Use the renderer's real planner, but keep the probe's oracle independent.
+    const table = prepareTableColumns(children);
+    expect(table.kinds[2]).toBe(kind);
+    const article = document.querySelector('article');
+    if (!article) throw new Error('Missing calibration article');
+    article.insertAdjacentHTML(
+      'beforeend',
+      renderToStaticMarkup(createElement('table', null, table.children)),
+    );
+  });
+
+  const findings = () =>
+    inspectReference().issues.filter(
+      (issue: { rule: string }) =>
+        issue.rule === 'unclassified-required-column',
+    );
+
+  it('accepts the classified header and ten body cells without false positives', () => {
+    expect(findings()).toEqual([]);
+  });
+
+  it.each(['missing', 'wrong'])(
+    'still detects %s header and body markers',
+    (fault) => {
+      for (const cell of document.querySelectorAll('tr > :last-child')) {
+        if (fault === 'missing') cell.removeAttribute('data-table-column-kind');
+        else
+          cell.setAttribute(
+            'data-table-column-kind',
+            kind === 'required' ? 'requirement' : 'required',
+          );
+      }
+      expect(findings()).toHaveLength(11);
+    },
+  );
+});
+
+describe.each(['Requirements', '填写要求'])(
+  'requirement prose calibration: %s',
+  (header) => {
+    it.each([
+      'Required when the extension has additional dependencies that must be configured before publishing',
+      '<ul><li>A full explanation of the extension asset requirements must have room for continuous reading, including every word in the list.</li></ul>',
+      '<p>Required</p><p>Optional</p>',
+    ])(
+      'accepts a reading column and rejects compact markers for %s',
+      (body) => {
+        const table = (size: string) =>
+          `<table><thead><tr><th>Name</th><th>Content</th><th data-table-column-kind="requirement" data-table-column-size="${size}">${header}</th></tr></thead><tbody><tr><td>1</td><td>Extension asset</td><td data-table-column-kind="requirement" data-table-column-size="${size}">${body}</td></tr></tbody></table>`;
+        expect(inspect(table('prose'))).not.toContain('compact-table-prose');
+        document.body.innerHTML = '<article><h1>Reference</h1></article>';
+        expect(
+          inspect(table('compact')).filter(
+            (rule) => rule === 'compact-table-prose',
+          ),
+        ).toHaveLength(1);
+      },
+    );
+  },
+);
+
+it('detects a prose width floor stretching a short data list', () => {
+  expect(
+    inspect(
+      '<table><tbody><tr><td data-table-column-kind="value"><ul style="min-inline-size:240px"><li>SD: 200</li><li>HD: 50</li></ul></td></tr></tbody></table>',
+    ),
+  ).toContain('prose-width-on-value-column');
+});
+
+it('rejects long prose incorrectly classified as compact without rejecting short numeric lists', () => {
+  expect(
+    inspect(
+      '<table><tbody><tr><td data-table-column-size="compact">A long explanation that needs room for continuous reading and cannot be treated as a short number or flag merely because of the column heading.</td></tr></tbody></table>',
+    ),
+  ).toContain('compact-table-prose');
+  document.body.innerHTML = '<article><h1>Reference</h1></article>';
+  expect(
+    inspect(
+      '<table><tbody><tr><td data-table-column-size="compact"><ul><li>SD: 200</li><li>HD: 50</li></ul></td></tr></tbody></table>',
+    ),
+  ).not.toContain('compact-table-prose');
+});
+
+it('detects prose floors on declared numeric columns', () => {
+  expect(
+    inspect(
+      '<table><tbody><tr><td data-table-column-kind="number"><ul style="min-inline-size:240px"><li>SD: 200</li></ul></td></tr></tbody></table>',
+    ),
+  ).toContain('prose-width-on-value-column');
+});
+
+it('detects comma-grouped numeric tokens split across lines', () => {
+  vi.spyOn(document, 'createRange').mockReturnValue({
+    setStart() {},
+    setEnd() {},
+    getClientRects: () => [
+      DOMRect.fromRect({ x: 0, y: 0, width: 40, height: 20 }),
+      DOMRect.fromRect({ x: 0, y: 20, width: 8, height: 20 }),
+    ],
+  } as unknown as Range);
+  expect(
+    inspect(
+      '<table><tbody><tr><td data-table-column-kind="number">12,000</td></tr></tbody></table>',
+    ),
+  ).toContain('split-short-table-word');
+});
 
 it('rejects empty return descriptions and keeps informative type-only returns', () => {
   expect(

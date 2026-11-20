@@ -399,9 +399,20 @@ Rules:
 - Preserve the source's merge boundaries, including group labels, shared
   allowances and aggregate totals. Do not repeat their text to simulate a merge,
   and do not automatically merge independent cells just because values match.
-- For dense numeric comparisons, use `<DocsTable compact>` to fit columns to
-  the content width and wrap headings and formulas. It keeps a 40rem minimum
-  width so narrow screens can scroll without breaking numeric values apart.
+- Column sizing is shared across all tables. Short values and lists use intrinsic
+  widths; columns explicitly headed Description/说明/描述 reserve a readable prose
+  measure. Known API parameter/return primitives declare their column roles.
+- Use `columns={['name', 'value', 'description']}` on `DocsTable` only when a
+  table's headers do not express its column roles. Include every logical column,
+  counting merged cells by their spans. Roles are `name`, `type`, `value`, `number`, `content`,
+  `description`, `required` and `requirement`; authored numeric alignment remains.
+- Unknown headers keep the conservative `content` role and prose sizing; they
+  are not assumed to contain short values. Declare roles for ambiguous headings.
+- For dense numeric comparisons, use automatic layout with `density="compact"`
+  and explicit `name`/`number` columns, so dates, grouped numbers and units retain
+  their intrinsic width. Fixed layout is reserved for intentionally equal-width,
+  bounded content; it keeps a 40rem minimum. The legacy `compact` prop still
+  enables fixed layout and compact density for compatibility.
 - Inside a `DocsTable` cell, write inline Markdown directly. For lists, code
   blocks or multiple paragraphs, put blank lines after the opening cell tag and
   before its closing tag. Rich content belongs directly in its owning cell;
