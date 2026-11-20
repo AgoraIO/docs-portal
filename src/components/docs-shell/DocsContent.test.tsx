@@ -2511,10 +2511,10 @@ describe('DocsPageFeedback placement', () => {
     const feedback = within(mobileFlow).getByTestId('docs-feedback');
 
     fireEvent.click(within(feedback).getByRole('button', { name: 'No' }));
-    fireEvent.click(await screen.findByLabelText('Steps or code did not work'));
+    fireEvent.click(await screen.findByLabelText("Steps or code didn't work"));
     fireEvent.change(
       screen.getByPlaceholderText(
-        'For example, which step was unclear or which code example did not work.',
+        "For example, which step was unclear or which code example didn't work.",
       ),
       {
         target: {
@@ -2536,7 +2536,7 @@ describe('DocsPageFeedback placement', () => {
       'Page: http://localhost:3000/en/introduction/about-agora',
     );
     expect(issueBody).not.toContain('?platform=web');
-    expect(issueBody).toContain('Reasons: Steps or code did not work');
+    expect(issueBody).toContain("Reasons: Steps or code didn't work");
     expect(issueBody).toContain(
       'The setup step is missing a required parameter.',
     );

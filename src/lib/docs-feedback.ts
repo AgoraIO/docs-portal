@@ -22,11 +22,11 @@ export const englishNegativeFeedbackReasons: Record<
   keyof typeof negativeFeedbackReasons,
   string
 > = {
-  not_found: 'Could not find what I needed',
+  not_found: "Couldn't find what I needed",
   wrong_context: 'Wrong product, platform, or version',
   incorrect_or_outdated: 'Incorrect or outdated content',
   unclear: 'Hard to understand',
-  steps_failed: 'Steps or code did not work',
+  steps_failed: "Steps or code didn't work",
   other: 'Other',
 };
 export const englishPositiveFeedbackReasons: Record<

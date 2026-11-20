@@ -163,13 +163,13 @@ it.each(['yes', 'no'] as const)(
     fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
     expect(button).toBeDisabled();
     expect(await screen.findByRole('alert')).toHaveTextContent(
-      'Unable to submit right now.',
+      "Couldn't submit your feedback.",
     );
     expect(screen.getByRole('textbox')).toHaveValue(
       'Please add a complete example.',
     );
     fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
-    await screen.findByText('Thanks! Your feedback has been submitted.');
+    await screen.findByText('Thanks for your feedback.');
     expect(report.mock.calls[0][0]).toEqual(report.mock.calls[1][0]);
     expect(report.mock.calls[1][0]).toMatchObject({
       locale: 'en',
