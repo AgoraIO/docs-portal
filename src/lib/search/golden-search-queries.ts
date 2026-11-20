@@ -180,7 +180,7 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     query: 'conversational AI',
     expectedIntent: 'product',
     expectedKind: 'guide',
-    expectedTitle: 'Conversational AI Overview',
+    expectedTitle: 'Voice Agent Overview',
     expectedUrl: '/en/api-reference/api-ref/conversational-ai',
   },
   {
@@ -208,7 +208,7 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     query: 'video calling',
     expectedIntent: 'product',
     expectedKind: 'guide',
-    expectedTitle: 'Voice & Video Calling',
+    expectedTitle: 'RTC Overview',
     expectedUrl: '/en/api-reference/api-ref/rtc',
   },
   {
