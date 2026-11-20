@@ -18,6 +18,65 @@ const request = (query: string) => {
   return new Request(`https://docs.example/api/search?${params}`);
 };
 
+it('returns the request identity and logs redacted completion facts independently of browser visibility', async () => {
+  vi.stubEnv('MEILI_HOST', 'http://meili.internal:7700');
+  vi.stubEnv('MEILI_INDEX_UID', 'docs_cn');
+  vi.stubEnv('MEILI_SEARCH_API_KEY', 'private-read-key');
+  vi.stubEnv('DOCS_SEARCH_INDEX_REVISION', 'a'.repeat(40));
+  vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json(empty));
+  const logs: string[] = [];
+  vi.spyOn(console, 'info').mockImplementation((message) =>
+    logs.push(String(message)),
+  );
+  const requestId = crypto.randomUUID();
+  const searchId = crypto.randomUUID();
+  const incoming = request('q=token%3Dprivate-value&platform=web');
+  incoming.headers.set('X-Docs-Request-Id', requestId);
+  incoming.headers.set('X-Docs-Search-Id', searchId);
+  const response = await handleSearchRequest(incoming);
+  expect(response.headers.get('X-Docs-Request-Id')).toBe(requestId);
+  expect(await response.json()).toMatchObject({
+    indexRevision: 'a'.repeat(40),
+  });
+  expect(JSON.parse(logs[0])).toMatchObject({
+    event: 'docs_search_request_completed',
+    event_source: 'server',
+    request_id: requestId,
+    search_id: searchId,
+    query_redacted: '[redacted]',
+    filter_platform: 'web',
+    http_status: 200,
+    total_hits: 0,
+    server_group_count: 0,
+    index_revision: 'a'.repeat(40),
+  });
+  expect(logs.join('')).not.toMatch(
+    /private-value|private-read-key|meili.internal/,
+  );
+});
+
+it('records an upstream failure as a failure rather than a zero-result response', async () => {
+  vi.stubEnv('MEILI_HOST', 'http://meili.internal:7700');
+  vi.stubEnv('MEILI_INDEX_UID', 'docs_cn');
+  vi.stubEnv('MEILI_SEARCH_API_KEY', 'private-read-key');
+  vi.spyOn(globalThis, 'fetch').mockRejectedValue(
+    new Error('private upstream'),
+  );
+  const logs: string[] = [];
+  vi.spyOn(console, 'info').mockImplementation((message) =>
+    logs.push(String(message)),
+  );
+  const response = await handleSearchRequest(request('q=Token'));
+  expect(response.status).toBe(502);
+  expect(JSON.parse(logs[0])).toMatchObject({
+    http_status: 502,
+    total_hits: null,
+    server_group_count: null,
+    error_code: 'search_unavailable',
+    index_revision: null,
+  });
+});
+
 describe('Start search API', () => {
   it.each(cnSearchPlatformOptions)(
     'accepts the selectable $label platform through the public handler',
