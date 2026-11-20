@@ -118,6 +118,9 @@ function resolveEnglishMovedDocsRedirect(
   const path = [tab, ...slugSegments].join('/');
   const suffix = path.endsWith('.md') ? '.md' : '';
   const guidePath = path.replace(/\.md$/, '');
+  if (guidePath === 'realtime-media/cloud-recording/reference/common-errors') {
+    return `/en/api-reference/api-ref/cloud-recording/status-codes${suffix}`;
+  }
   if (
     guidePath === 'realtime-media/iot/reference/communicate-with-rtc-sdk' ||
     guidePath === 'iot/reference/communicate_with_rtc_sdk'

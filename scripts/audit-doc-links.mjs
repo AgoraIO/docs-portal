@@ -1798,7 +1798,6 @@ const KNOWN_LEGACY_HOSTED_LINKS = new Set([
   "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/realtime-media/best-practices/integration-best-practices#monitor-service-status-during-a-recording",
   "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/realtime-media/best-practices/integration-best-practices#obtain-the-m3u8-file-name",
   "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/realtime-media/get-started/manage-agora-account#get-the-app-id",
-  "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/realtime-media/reference/common-errors#errors",
   "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/realtime-media/reference/rest-api-overview",
   "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/realtime-media/reference/restful-authentication",
   "en/realtime-media/im/build/build-core-messaging/contacts.mdx\u0000/en/realtime-media/im/build/limitations",

@@ -432,11 +432,10 @@ The relevant fields of each Agora Cloud Recording callback event are listed belo
   - `4`: Major
   - `5`: Fatal. A fatal error may cause the recording to exit. If you receive a message of this level, call `query` to check the current status and process the error according to the error notifications.
 - `errorCode`: Number. The error code.
-  - If the error occurs in the recorder module (`0`), see [common errors](/en/realtime-media/cloud-recording/reference/common-errors).
   - If the error occurs in the uploader (`1`), see [upload error code](#error-codes-related-to-uploading).
   - If the error occurs in the Agora Cloud Recording Service (`2`), see [cloud recording service error code](#error-codes-for-the-agora-cloud-recording-service).
-  - If the error occurs in the other modules, see [common errors](/en/realtime-media/cloud-recording/reference/common-errors).
-  If you do not find any error code in the above-mentioned pages, contact our technical support.
+
+  If the error code is not listed, check `module` and `errorMsg` for details, or contact [Agora technical support](mailto:support@agora.io).
 - `stat`: Number. The event status. 0 indicates normal status; other values indicate abnormal status.
 - `errorMsg`: String. The detailed description of the error.
 
