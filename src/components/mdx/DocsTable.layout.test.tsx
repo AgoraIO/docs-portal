@@ -1,6 +1,80 @@
+import { readFileSync } from 'node:fs';
 import { within } from '@testing-library/react';
 import { expect, it } from 'vitest';
 import { renderDocsMdx } from '@/test/render-docs-mdx';
+
+it('gives the published extension listing prose room and keeps its ordinal column compact', async () => {
+  const source = readFileSync(
+    'content/docs/en/realtime-media/marketplace/build/publish-and-document/publish-extension.md',
+    'utf8',
+  );
+  const { container } = await renderDocsMdx(
+    source.replace(/^---[\s\S]*?---/, ''),
+  );
+  const table = within(container).getByRole('table');
+  expect(
+    within(table).getByRole('columnheader', { name: 'Requirements' }),
+  ).toHaveAttribute('data-table-column-kind', 'description');
+  expect(within(table).getByRole('cell', { name: /^1$/ })).toHaveAttribute(
+    'data-table-column-kind',
+    'index',
+  );
+  expect(within(table).getByText('Must be accessible')).toHaveAttribute(
+    'data-table-column-kind',
+    'description',
+  );
+  expect(table.querySelectorAll('tbody tr')).toHaveLength(10);
+});
+
+it.each(['Requirements', '填写要求'])(
+  'keeps %s compact only when its body contains short status values',
+  async (header) => {
+    const { container } =
+      await renderDocsMdx(`| Name | ${header} | Description |
+| --- | --- | --- |
+| endpoint | Required | Storage endpoint. |
+| region | 建议填写 | Storage region. |`);
+    const table = within(container).getByRole('table');
+    for (const cell of table.querySelectorAll('tr > :nth-child(2)')) {
+      expect(cell).toHaveAttribute('data-table-column-kind', 'requirement');
+      expect(cell).toHaveStyle({ textAlign: 'center' });
+    }
+  },
+);
+
+it.each(['Requirements', '填写要求'])(
+  'preserves a reading column for prose and lists under %s',
+  async (header) => {
+    const { container } = await renderDocsMdx(`<DocsTable>
+<thead><tr><th>Name</th><th>${header}</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>logo</td><td>A 600 x 315 JPG file</td><td>Upload the final asset.</td></tr>
+<tr><td>category</td><td><ul><li>Required</li><li>Optional</li></ul></td><td>Choose the applicable category.</td></tr>
+</tbody>
+</DocsTable>`);
+    const table = within(container).getByRole('table');
+    for (const cell of table.querySelectorAll('tr > :nth-child(2)')) {
+      expect(cell).toHaveAttribute('data-table-column-kind', 'description');
+      expect(cell).not.toHaveStyle({ textAlign: 'center' });
+    }
+    expect(table.querySelectorAll('li')).toHaveLength(2);
+  },
+);
+
+it('keeps non-ordinal anonymous columns and declared roles conservative', async () => {
+  const { container } = await renderDocsMdx(`|  | Description |
+| --- | --- |
+| 100 | First value. |
+| 200 | Second value. |
+
+<DocsTable columns={['content', 'description']}>
+<thead><tr><th></th><th>Description</th></tr></thead>
+<tbody><tr><td>1</td><td>First item.</td></tr><tr><td>2</td><td>Second item.</td></tr></tbody>
+</DocsTable>`);
+  for (const table of within(container).getAllByRole('table'))
+    for (const cell of table.querySelectorAll('tr > :first-child'))
+      expect(cell).toHaveAttribute('data-table-column-kind', 'content');
+});
 
 it('assigns description width to its logical column across merged groups', async () => {
   const { container } = await renderDocsMdx(`<DocsTable>

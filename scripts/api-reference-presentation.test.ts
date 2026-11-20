@@ -123,6 +123,33 @@ describe.each([
   );
 });
 
+describe.each(['Requirements', '填写要求'])(
+  'requirement prose calibration: %s',
+  (header) => {
+    it.each([
+      'A 600 x 315 JPG file',
+      'Required when the extension has additional dependencies that must be configured before publishing',
+      '<ul><li>Required</li></ul>',
+      '<p>Required</p><p>Optional</p>',
+    ])(
+      'accepts a reading column and rejects compact markers for %s',
+      (body) => {
+        const table = (kind: string) =>
+          `<table><thead><tr><th>Name</th><th>Content</th><th data-table-column-kind="${kind}">${header}</th></tr></thead><tbody><tr><td>1</td><td>Extension asset</td><td data-table-column-kind="${kind}">${body}</td></tr></tbody></table>`;
+        expect(inspect(table('description'))).not.toContain(
+          'unclassified-required-column',
+        );
+        document.body.innerHTML = '<article><h1>Reference</h1></article>';
+        expect(
+          inspect(table('requirement')).filter(
+            (rule) => rule === 'unclassified-required-column',
+          ),
+        ).toHaveLength(2);
+      },
+    );
+  },
+);
+
 it('detects a prose width floor stretching a short data list', () => {
   expect(
     inspect(

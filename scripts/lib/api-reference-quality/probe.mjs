@@ -133,11 +133,26 @@ export function inspectReference() {
         )
       )
         continue;
-      const expected = /^(?:填写要求|requirements?)$/i.test(
-        header.textContent.trim(),
-      )
-        ? 'requirement'
-        : 'required';
+      let expected = 'required';
+      if (/^(?:填写要求|requirements?)$/i.test(header.textContent.trim())) {
+        const cells = rows
+          .filter((row) => row.parentElement.tagName === 'TBODY')
+          .map((row) => row.children[column]);
+        const compact =
+          cells.length > 0 &&
+          cells.every((cell) => {
+            const value = cell.textContent.replace(/\s+/g, ' ').trim();
+            return (
+              !cell.querySelector('ul, ol, pre, table, img, video, br') &&
+              cell.querySelectorAll('p').length <= 1 &&
+              value.length <= 48 &&
+              /^(?:(?:required|optional|mandatory|conditional|yes|no|n\/a)(?:\s+(?:for|when|if|on)\b[^.!?;:]+)?|是|否|必填|必选|必需|必须|可选|建议填写|视场景|不适用)$/i.test(
+                value,
+              )
+            );
+          });
+        expected = compact ? 'requirement' : 'description';
+      }
       for (const row of rows) {
         const cell = row.children[column];
         if (visible(cell) && cell.dataset.tableColumnKind !== expected)

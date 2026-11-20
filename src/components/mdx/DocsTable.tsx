@@ -127,7 +127,7 @@ export function DocsTable({
           style={
             {
               '--docs-table-prose-columns': Math.max(1, proseColumns),
-              '--docs-table-other-width': `${2 + table.kinds.reduce((total, kind) => total + { name: 12, type: 8, value: 8, number: 6, content: 14, required: 7, requirement: 10, description: 0 }[kind], 0)}ch`,
+              '--docs-table-other-width': `${2 + table.kinds.reduce((total, kind) => total + { index: 3, name: 12, type: 8, value: 8, number: 6, content: 14, required: 7, requirement: 10, description: 0 }[kind], 0)}ch`,
               ...style,
             } as CSSProperties
           }

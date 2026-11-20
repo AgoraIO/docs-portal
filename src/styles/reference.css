@@ -171,6 +171,13 @@ article :where(h1) {
 }
 :is(.prose, .openapi-markdown)
   table
+  :is(th, td)[data-table-column-kind="index"] {
+  min-width: 3ch;
+  width: 1%;
+  white-space: nowrap;
+}
+:is(.prose, .openapi-markdown)
+  table
   :is(th, td)[data-table-column-kind="name"] {
   min-width: 12ch;
   width: 1%;

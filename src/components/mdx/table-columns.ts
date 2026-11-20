@@ -8,6 +8,7 @@ import {
 } from 'react';
 
 export type DocsTableColumnKind =
+  | 'index'
   | 'name'
   | 'type'
   | 'value'
@@ -77,6 +78,31 @@ function headerKind(label: string): DocsTableColumnKind {
   )
     return 'value';
   return 'content';
+}
+
+// A requirement heading can introduce either status flags or full instructions.
+// Opt into compact sizing only with positive evidence from every body cell.
+function isShortRequirement(children: ReactNode): boolean {
+  let paragraphs = 0;
+  const hasRichContent = (nodes: ReactNode): boolean =>
+    elements(nodes).some((node) => {
+      const tag = String(node.type);
+      if (tag === 'p') paragraphs++;
+      return (
+        ['ul', 'ol', 'pre', 'table', 'img', 'video', 'br'].includes(tag) ||
+        hasRichContent(node.props.children)
+      );
+    });
+  const rich = hasRichContent(children);
+  const value = text(children).replace(/\s+/g, ' ').trim();
+  return (
+    !rich &&
+    paragraphs <= 1 &&
+    value.length <= 48 &&
+    /^(?:(?:required|optional|mandatory|conditional|yes|no|n\/a)(?:\s+(?:for|when|if|on)\b[^.!?;:]+)?|是|否|必填|必选|必需|必须|可选|建议填写|视场景|不适用)$/i.test(
+      value,
+    )
+  );
 }
 
 // Read only the native table's own sections. Nested tables plan their columns
@@ -162,6 +188,29 @@ export function prepareTableColumns(
           text(node.props.children).trim().toLowerCase(),
         )
       : undefined;
+  if (headers && !declared) {
+    const bodyRows = sections
+      .filter((section) => section.node.type === 'tbody')
+      .flatMap((section) => section.rows);
+    for (const [column, header] of headers.entries()) {
+      const cells = bodyRows.map((row) => row.positions[column].node);
+      if (
+        kinds[column] === 'requirement' &&
+        (!cells.length ||
+          cells.some((cell) => !isShortRequirement(cell.props.children)))
+      )
+        kinds[column] = 'description';
+      if (
+        !header &&
+        cells.length > 1 &&
+        cells.every(
+          (cell, index) =>
+            text(cell.props.children).trim() === String(index + 1),
+        )
+      )
+        kinds[column] = 'index';
+    }
+  }
   let sectionIndex = 0;
   const result = Children.map(children, (section) => {
     if (
