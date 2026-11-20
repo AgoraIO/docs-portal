@@ -526,11 +526,11 @@ void onPlayerStateChanged(Constants.MediaPlayerState state, Constants.MediaPlaye
 
 | 调用方式 | 播放行为 | 状态回调顺序 |
 | --- | --- | --- |
-| 未调用 `setLoopCount` | 播放一次 | 播放结束时，上报状态 6。 |
-| 调用 `setLoopCount(0)` | 播放一次 | 播放结束时，上报状态 6。 |
-| 调用 `setLoopCount(1)` | 播放两次 | 首次播放结束时，上报状态 5；第二次播放结束时，上报状态 6。 |
-| 调用 `setLoopCount(-1)` | 无限循环播放 | 每次播放结束时，上报状态 5，并继续循环播放。 |
-| 播放过程中成功调用 `stop()` | 停止播放 | 上报 `PLAYER_STATE_STOPPED`（7）。 |
+| 未调用 `setLoopCount` | 播放一次 | 播放结束时，上报 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`。 |
+| 调用 `setLoopCount(0)` | 播放一次 | 播放结束时，上报 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`。 |
+| 调用 `setLoopCount(1)` | 播放两次 | 首次播放结束时，上报 `PLAYER_STATE_PLAYBACK_COMPLETED`；第二次播放结束时，上报 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`。 |
+| 调用 `setLoopCount(-1)` | 无限循环播放 | 每次播放结束时，上报 `PLAYER_STATE_PLAYBACK_COMPLETED`，并继续循环播放。 |
+| 播放过程中成功调用 `stop()` | 停止播放 | 上报 `PLAYER_STATE_STOPPED`。 |
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__parameters"></a>
 
