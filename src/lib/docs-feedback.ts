@@ -1,3 +1,5 @@
+import type { AppLocale } from '@/lib/i18n/i18n-config';
+
 export const MAX_FEEDBACK_COMMENT_LENGTH = 2000;
 
 export const negativeFeedbackReasons = {
@@ -16,6 +18,28 @@ export const positiveFeedbackReasons = {
   other: '其他',
 };
 
+export const englishNegativeFeedbackReasons: Record<
+  keyof typeof negativeFeedbackReasons,
+  string
+> = {
+  not_found: "Couldn't find what I needed",
+  wrong_context: 'Wrong product, platform, or version',
+  incorrect_or_outdated: 'Incorrect or outdated content',
+  unclear: 'Hard to understand',
+  steps_failed: "Steps or code didn't work",
+  other: 'Other',
+};
+export const englishPositiveFeedbackReasons: Record<
+  keyof typeof positiveFeedbackReasons,
+  string
+> = {
+  clear: 'Clear explanations',
+  useful_examples: 'Useful examples',
+  solved_problem: 'Solved my problem',
+  easy_to_find: 'Easy to find what I needed',
+  other: 'Other',
+};
+
 export type DocsFeedbackSubmission = Readonly<{
   id: string;
   submittedAt: string;
@@ -24,6 +48,7 @@ export type DocsFeedbackSubmission = Readonly<{
   details: string;
   pageUrl: string;
   pageTitle: string;
+  locale?: AppLocale;
 }>;
 
 export function prepareDocsFeedback(
@@ -49,14 +74,43 @@ export function prepareDocsFeedback(
   });
 }
 
-export function feedbackReasonLabel(helpfulness: 'yes' | 'no', reason: string) {
+export function feedbackReasonLabel(
+  helpfulness: 'yes' | 'no',
+  reason: string,
+  locale: AppLocale = 'zh-CN',
+) {
   const labels: Record<string, string> =
-    helpfulness === 'yes' ? positiveFeedbackReasons : negativeFeedbackReasons;
+    locale === 'en'
+      ? helpfulness === 'yes'
+        ? englishPositiveFeedbackReasons
+        : englishNegativeFeedbackReasons
+      : helpfulness === 'yes'
+        ? positiveFeedbackReasons
+        : negativeFeedbackReasons;
   return labels[reason] ?? reason;
 }
 
 export function buildFeedbackIssueUrl(submission: DocsFeedbackSubmission) {
   const url = new URL('https://github.com/AgoraIO/docs-portal/issues/new');
+  if (submission.locale === 'en') {
+    const title = submission.pageTitle || 'Documentation page';
+    url.searchParams.set('title', `Docs feedback: ${title}`);
+    url.searchParams.set(
+      'body',
+      [
+        `Page: ${submission.pageUrl}`,
+        `Page title: ${title}`,
+        `Helpful: ${submission.helpfulness === 'yes' ? 'Yes' : 'No'}`,
+        `Reasons: ${submission.reasons.map((reason) => feedbackReasonLabel(submission.helpfulness, reason, 'en')).join('; ') || 'None selected'}`,
+        '',
+        'Additional details:',
+        submission.details,
+        '',
+        `Feedback ID: ${submission.id}`,
+      ].join('\n'),
+    );
+    return url.toString();
+  }
   url.searchParams.set(
     'title',
     `文档反馈：${submission.pageTitle || '文档页面'}`,

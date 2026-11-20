@@ -42,8 +42,10 @@ vi.mock('@/lib/analytics/posthog', () => ({
   captureDocsCodeCopied: vi.fn(),
   captureDocsFeedbackIssueClicked: vi.fn(),
   captureDocsFeedbackOpened: vi.fn(),
+  captureDocsFeedbackPrompted: vi.fn(),
   captureDocsLinkClicked: captureDocsLinkClickedMock,
   captureDocsPageFeedback: captureDocsPageFeedbackMock,
+  captureDocsFeedbackSubmission: vi.fn().mockResolvedValue(true),
   captureDocsTocClicked: vi.fn(),
   initializePostHog: vi.fn(),
   queueDocsPageView: vi.fn(),
@@ -2353,7 +2355,7 @@ describe('DocsMainColumn', () => {
     const pager = within(footer).getByTestId('docs-pager');
     const feedback = within(footer).getByTestId('docs-feedback');
 
-    expect(feedback).toHaveClass('flex-col', 'sm:flex-row');
+    expect(feedback.firstElementChild).toHaveClass('flex-col', 'sm:flex-row');
     expect(pager).toHaveClass('grid-cols-1', 'sm:grid-cols-2');
   });
 
@@ -2492,7 +2494,7 @@ describe('DocsPageFeedback placement', () => {
     });
   });
 
-  it('opens a feedback dialog with a prefilled issue link', async () => {
+  it('submits inline feedback before offering a prefilled issue link', async () => {
     window.history.replaceState(
       {},
       '',
@@ -2508,13 +2510,11 @@ describe('DocsPageFeedback placement', () => {
     const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
     const feedback = within(mobileFlow).getByTestId('docs-feedback');
 
-    fireEvent.click(
-      within(feedback).getByRole('button', { name: 'Send feedback' }),
-    );
-    fireEvent.click(await screen.findByLabelText('Suggestion'));
+    fireEvent.click(within(feedback).getByRole('button', { name: 'No' }));
+    fireEvent.click(await screen.findByLabelText("Steps or code didn't work"));
     fireEvent.change(
       screen.getByPlaceholderText(
-        'Describe what is wrong, missing, confusing, or hard to use.',
+        "For example, which step was unclear or which code example didn't work.",
       ),
       {
         target: {
@@ -2523,16 +2523,20 @@ describe('DocsPageFeedback placement', () => {
       },
     );
 
-    const issueLink = screen.getByRole('link', { name: 'Open issue' });
+    fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
+    const issueLink = await screen.findByRole('link', {
+      name: 'Create a GitHub issue',
+    });
     const href = issueLink.getAttribute('href') ?? '';
     const issueBody = new URL(href).searchParams.get('body') ?? '';
 
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(href).toContain('https://github.com/AgoraIO/docs-portal/issues/new');
     expect(issueBody).toContain(
-      'Page: http://localhost:3000/en/introduction/about-agora?platform=web#what-is',
+      'Page: http://localhost:3000/en/introduction/about-agora',
     );
-    expect(issueBody).toContain('Feedback type: Suggestion');
+    expect(issueBody).not.toContain('?platform=web');
+    expect(issueBody).toContain("Reasons: Steps or code didn't work");
     expect(issueBody).toContain(
       'The setup step is missing a required parameter.',
     );

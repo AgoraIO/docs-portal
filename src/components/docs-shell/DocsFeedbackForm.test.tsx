@@ -1,10 +1,13 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { useState } from 'react';
+import { I18nextProvider } from 'react-i18next';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { i18n } from '@/lib/i18n/i18n';
 import { DocsFeedbackForm } from './DocsFeedbackForm';
 
 const { report } = vi.hoisted(() => ({ report: vi.fn() }));
 vi.mock('@/lib/analytics/posthog', () => ({
+  captureDocsFeedbackIssueClicked: vi.fn(),
   captureDocsFeedbackSubmission: report,
 }));
 beforeEach(() => {
@@ -20,7 +23,7 @@ afterEach(() => vi.restoreAllMocks());
 function FeedbackHarness({ helpfulness }: { helpfulness: 'yes' | 'no' }) {
   const [expanded, setExpanded] = useState(true);
   return (
-    <>
+    <I18nextProvider i18n={i18n}>
       <button type="button" onClick={() => setExpanded(true)}>
         展开
       </button>
@@ -30,7 +33,7 @@ function FeedbackHarness({ helpfulness }: { helpfulness: 'yes' | 'no' }) {
         onCollapse={() => setExpanded(false)}
         helpfulness={helpfulness}
       />
-    </>
+    </I18nextProvider>
   );
 }
 
