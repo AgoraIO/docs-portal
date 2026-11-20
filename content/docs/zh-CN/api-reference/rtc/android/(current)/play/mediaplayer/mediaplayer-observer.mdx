@@ -516,6 +516,10 @@ void onPlayerStateChanged(Constants.MediaPlayerState state, Constants.MediaPlaye
 
 当媒体播放器的状态发生变化时，SDK 会触发该回调。
 
+点播媒体正常播放至结尾时，`PLAYER_STATE_PLAYBACK_COMPLETED` 表示本次播放已完成，但播放器仍会继续循环播放；`PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED` 表示最后一次播放已结束。
+
+判断全部播放是否正常结束，请处理 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`。未设置循环播放时，单次播放结束也会上报该状态。同一次播放结束只上报其中一个完成状态，最后一次播放结束不会先上报 `PLAYER_STATE_PLAYBACK_COMPLETED` 再上报 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`。
+
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__parameters"></a>
 
 ### 参数

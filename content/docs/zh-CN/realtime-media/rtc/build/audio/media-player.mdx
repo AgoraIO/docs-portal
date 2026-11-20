@@ -26,6 +26,8 @@ description: "了解实时互动 RTC 在不同平台上的媒体播放器方式�
 
 2. 实现媒体播放器观测器的回调。根据你的需求，你可以通过 `onPlayerStateChanged` 回调来观测播放器的状态，通过 `onPositionChanged` 回调来获取当前媒体文件的播放进度，通过 `onPlayerEvent` 来获取播放器事件。
 
+   点播媒体全部正常播放结束时，`onPlayerStateChanged` 会报告 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`。未设置循环播放时，单次播放结束也会上报该状态。`PLAYER_STATE_PLAYBACK_COMPLETED` 表示本次播放已完成，但播放器仍会继续循环播放，不应在此时执行全部播放结束的处理。
+
     ```java
     @Override
     // 报告播放器的状态
@@ -34,7 +36,8 @@ description: "了解实时互动 RTC 在不同平台上的媒体播放器方式�
         Log.e(TAG, "onPlayerStateChanged mediaPlayerError " + mediaPlayerError);
         if (mediaPlayerState.equals(PLAYER_STATE_OPEN_COMPLETED)) {
             setMediaPlayerViewEnable(true);
-        } else if (mediaPlayerState.equals(PLAYER_STATE_IDLE) || mediaPlayerState.equals(PLAYER_STATE_PLAYBACK_COMPLETED) ) {
+        } else if (mediaPlayerState.equals(PLAYER_STATE_IDLE)
+                || mediaPlayerState.equals(PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED)) {
             setMediaPlayerViewEnable(false);
         }
     }
@@ -148,7 +151,7 @@ description: "了解实时互动 RTC 在不同平台上的媒体播放器方式�
 - [`play`](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-control#api_imediaplayer_play)
 - [`pause`](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-control#api_imediaplayer_pause)
 - [`stop`](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-control#api_imediaplayer_stop)
-- [`onPlayerSourceStateChanged`](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged)
+- [`onPlayerStateChanged`](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged)
 - [`onPositionChanged`](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onpositionchanged)
 
 </PlatformStructured>

@@ -161,7 +161,7 @@ int setAudioPitch(int pitch);
 
 ## setLoopCount
 
-设置音效的循环播放次数。
+设置媒体资源的循环播放次数。
 
 <a id="api_imediaplayer_setloopcount__prototype"></a>
 
@@ -172,7 +172,9 @@ int setLoopCount(int loopCount);
 <a id="api_imediaplayer_setloopcount__detailed_desc"></a>
 
 :::note
-注： 当循环播放完成后，SDK 会触发 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调，并报告播放状态为 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`。
+点播媒体正常播放至结尾时，SDK 会触发 [onPlayerStateChanged](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调。如果尚未完成设置的循环播放次数，播放器会上报 `PLAYER_STATE_PLAYBACK_COMPLETED` 并继续播放；最后一次播放结束时，上报 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`。
+
+未调用本方法或将 `loopCount` 设为 0 时，仅播放一次，结束时直接上报 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`。同一次播放结束只上报其中一个完成状态。
 :::
 
 <a id="api_imediaplayer_setloopcount__parameters"></a>
@@ -183,10 +185,10 @@ int setLoopCount(int loopCount);
 <a id="loopcount"></a>
 <Parameter name="loopCount">
 
-音效的循环播放次数：
+首次播放之外的重复播放次数：
 
-- ≥ 0：播放的次数。例如，设置为 0 表示不循环播放，仅播放一次；设置为 1 表示循环播放一次，共播放两次。
-- -1：无限循环播放音频文件。
+- ≥ 0：重复播放的次数，总播放次数为 `loopCount + 1`。例如，设置为 0 表示不循环播放，仅播放一次；设置为 1 表示重复播放一次，共播放两次。
+- -1：无限循环播放媒体资源，每轮播放结束时上报 `PLAYER_STATE_PLAYBACK_COMPLETED`。
 
 </Parameter>
 </ParameterList>
