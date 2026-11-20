@@ -516,9 +516,21 @@ void onPlayerStateChanged(Constants.MediaPlayerState state, Constants.MediaPlaye
 
 当媒体播放器的状态发生变化时，SDK 会触发该回调。
 
-点播媒体正常播放至结尾时，`PLAYER_STATE_PLAYBACK_COMPLETED` 表示本次播放已完成，但播放器仍会继续循环播放；`PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED` 表示最后一次播放已结束。
+点播媒体正常播放至结尾时，`PLAYER_STATE_PLAYBACK_COMPLETED`（5）表示本次播放已完成，但播放器仍会继续循环播放；`PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`（6）表示最后一次播放已结束。
 
 判断全部播放是否正常结束，请处理 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`。未设置循环播放时，单次播放结束也会上报该状态。同一次播放结束只上报其中一个完成状态，最后一次播放结束不会先上报 `PLAYER_STATE_PLAYBACK_COMPLETED` 再上报 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`。
+
+### 点播场景示例
+
+下表列出不同调用方式对应的播放行为和状态回调顺序。表中仅列出播放完成或停止播放时的状态，省略打开媒体资源、播放中等中间状态。
+
+| 调用方式 | 播放行为 | 状态回调顺序 |
+| --- | --- | --- |
+| 未调用 `setLoopCount` | 播放一次 | 播放结束时，上报 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`（6）。 |
+| 调用 `setLoopCount(0)` | 播放一次 | 播放结束时，上报 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`（6）。 |
+| 调用 `setLoopCount(1)` | 播放两次 | 首次播放结束时，上报 `PLAYER_STATE_PLAYBACK_COMPLETED`（5）；第二次播放结束时，上报 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`（6）。 |
+| 调用 `setLoopCount(-1)` | 无限循环播放 | 每次播放结束时，上报 `PLAYER_STATE_PLAYBACK_COMPLETED`（5），并继续循环播放。 |
+| 播放过程中成功调用 `stop()` | 停止播放 | 上报 `PLAYER_STATE_STOPPED`（7）。 |
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__parameters"></a>
 
