@@ -14,14 +14,14 @@ it('gives the published extension listing prose room and keeps its ordinal colum
   const table = within(container).getByRole('table');
   expect(
     within(table).getByRole('columnheader', { name: 'Requirements' }),
-  ).toHaveAttribute('data-table-column-kind', 'description');
+  ).toHaveAttribute('data-table-column-size', 'prose');
   expect(within(table).getByRole('cell', { name: /^1$/ })).toHaveAttribute(
     'data-table-column-kind',
     'index',
   );
   expect(within(table).getByText('Must be accessible')).toHaveAttribute(
-    'data-table-column-kind',
-    'description',
+    'data-table-column-size',
+    'prose',
   );
   expect(table.querySelectorAll('tbody tr')).toHaveLength(10);
 });
@@ -54,7 +54,8 @@ it.each(['Requirements', '填写要求'])(
 </DocsTable>`);
     const table = within(container).getByRole('table');
     for (const cell of table.querySelectorAll('tr > :nth-child(2)')) {
-      expect(cell).toHaveAttribute('data-table-column-kind', 'description');
+      expect(cell).toHaveAttribute('data-table-column-kind', 'requirement');
+      expect(cell).toHaveAttribute('data-table-column-size', 'prose');
       expect(cell).not.toHaveStyle({ textAlign: 'center' });
     }
     expect(table.querySelectorAll('li')).toHaveLength(2);

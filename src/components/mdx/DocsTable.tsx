@@ -14,6 +14,7 @@ import { normalizeLocale } from '@/lib/i18n/i18n-config';
 import { resources } from '@/lib/i18n/resources';
 
 import { type DocsTableColumnKind, prepareTableColumns } from './table-columns';
+import { applyTableContentSizing } from './table-sizing.dom';
 
 function isSimpleParameterTable(headers: string[] | undefined): boolean {
   const labels = headers?.join('|') ?? '';
@@ -52,9 +53,6 @@ export function DocsTable({
     [children, columns],
   );
   const parameterTable = isSimpleParameterTable(table.headers);
-  const proseColumns = table.kinds.filter(
-    (kind) => kind === 'description',
-  ).length;
   const scrollRef = useRef<HTMLDivElement>(null);
   const descriptionId = useId();
   const [hasOverflow, setHasOverflow] = useState(false);
@@ -83,6 +81,8 @@ export function DocsTable({
         : new ResizeObserver(updateOverflowState);
     if (scrollRef.current) {
       resizeObserver?.observe(scrollRef.current);
+      const nativeTable = scrollRef.current.querySelector(':scope > table');
+      if (nativeTable) resizeObserver?.observe(nativeTable);
     }
 
     return () => {
@@ -91,10 +91,38 @@ export function DocsTable({
     };
   }, [updateOverflowState]);
 
+  useEffect(() => {
+    const nativeTable = scrollRef.current?.querySelector(':scope > table');
+    if (!(nativeTable instanceof HTMLTableElement)) return;
+    const updateContent = () => {
+      applyTableContentSizing(nativeTable);
+      updateOverflowState();
+    };
+    updateContent();
+    let frame: number | undefined;
+    const observer = new MutationObserver(() => {
+      if (frame !== undefined) return;
+      frame = requestAnimationFrame(() => {
+        frame = undefined;
+        updateContent();
+      });
+    });
+    // Sizing mutates attributes only. Do not observe those writes and feed
+    // our own layout annotations back into the content observer.
+    observer.observe(nativeTable, {
+      childList: true,
+      characterData: true,
+      subtree: true,
+    });
+    return () => {
+      observer.disconnect();
+      if (frame !== undefined) cancelAnimationFrame(frame);
+    };
+  }, [updateOverflowState]);
+
   return (
     <div
       className="docs-table-container relative my-[var(--docs-space-block)]"
-      data-table-multiple-prose={proseColumns > 1 ? 'true' : undefined}
       data-table-overflow={hasOverflow ? 'true' : 'false'}
       data-table-scroll-end={isAtEnd ? 'true' : 'false'}
     >
@@ -107,6 +135,13 @@ export function DocsTable({
         tabIndex={hasOverflow ? 0 : undefined}
       >
         <table
+          data-table-content-layout={
+            table.sizing
+              ? table.sizing.intrinsic
+                ? 'intrinsic'
+                : 'mixed'
+              : undefined
+          }
           data-table-layout={
             layout === 'fixed'
               ? 'fixed'
@@ -126,8 +161,11 @@ export function DocsTable({
           )}
           style={
             {
-              '--docs-table-prose-columns': Math.max(1, proseColumns),
-              '--docs-table-other-width': `${2 + table.kinds.reduce((total, kind) => total + { index: 3, name: 12, type: 8, value: 8, number: 6, content: 14, required: 7, requirement: 10, description: 0 }[kind], 0)}ch`,
+              '--docs-table-flex-columns': Math.max(
+                1,
+                table.sizing?.flexible ?? 1,
+              ),
+              '--docs-table-compact-width': `${table.sizing?.compactCh ?? 0}ch`,
               ...style,
             } as CSSProperties
           }

@@ -343,26 +343,118 @@ article :where(h1) {
   white-space: nowrap;
 }
 /* Each table's own scroll surface supplies the available inline width. */
-.docs-table-container[data-table-multiple-prose="true"] > section {
+.docs-table-container > section {
   container-type: inline-size;
 }
-@supports (width: 1cqw) {
-  :is(.prose, .openapi-markdown)
-    .docs-table-container[data-table-multiple-prose="true"]
-    > section
-    > table
-    > :is(thead, tbody, tfoot)
-    > tr
-    > :is(th, td)[data-table-column-kind="description"] {
-    min-width: clamp(
-      14rem,
-      calc(
-        (100cqw - var(--docs-table-other-width, 14ch)) /
-        var(--docs-table-prose-columns, 1)
-      ),
-      24ch
-    );
-  }
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table:not([data-table-layout="fixed"])
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td)[data-table-column-size] {
+  min-width: var(--docs-table-cell-min, 6ch);
+  width: auto;
+  white-space: normal;
+}
+
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table:not([data-table-layout="fixed"])
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td)[data-table-column-size="compact"] {
+  width: 1%;
+  overflow-wrap: normal;
+}
+
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table:not([data-table-layout="fixed"])
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td):is(
+    [data-table-column-size="prose"],
+    [data-table-column-size="code"]
+  ) {
+  min-width: clamp(
+    18ch,
+    calc(
+      (100cqw - var(--docs-table-compact-width, 0ch)) /
+      var(--docs-table-flex-columns, 1)
+    ),
+    var(--docs-table-cell-min, 24ch)
+  );
+}
+
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table:not([data-table-layout="fixed"])
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td)[data-table-column-size="code"] {
+  overflow-wrap: anywhere;
+}
+
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table:not([data-table-layout="fixed"])
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td)[data-table-column-size]
+  > :where(p, ul, ol, .prose-no-margin) {
+  min-inline-size: 0;
+}
+
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table:not([data-table-layout="fixed"])
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td)[data-table-column-size]
+  > :where(ul, ol)
+  > li {
+  white-space: normal;
+}
+
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table:not([data-table-layout="fixed"])
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td)[data-table-column-size="compact"]
+  > :where(ul, ol)
+  > li {
+  white-space: nowrap;
+}
+
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table:not([data-table-layout="fixed"])
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td):is(
+    [data-table-column-kind="required"],
+    [data-table-column-kind="requirement"]
+  ):is([data-table-column-size="prose"], [data-table-column-size="code"]) {
+  text-align: start;
+}
+
+:is(.prose, .openapi-markdown)
+  .docs-table-container
+  > section
+  > table[data-table-content-layout="intrinsic"]:not(
+    [data-table-layout="fixed"]
+  ) {
+  width: auto;
+  min-width: 0;
 }
 
 :is(.prose, .openapi-markdown)

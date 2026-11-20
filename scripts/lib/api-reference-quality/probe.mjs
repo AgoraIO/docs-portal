@@ -133,26 +133,11 @@ export function inspectReference() {
         )
       )
         continue;
-      let expected = 'required';
-      if (/^(?:填写要求|requirements?)$/i.test(header.textContent.trim())) {
-        const cells = rows
-          .filter((row) => row.parentElement.tagName === 'TBODY')
-          .map((row) => row.children[column]);
-        const compact =
-          cells.length > 0 &&
-          cells.every((cell) => {
-            const value = cell.textContent.replace(/\s+/g, ' ').trim();
-            return (
-              !cell.querySelector('ul, ol, pre, table, img, video, br') &&
-              cell.querySelectorAll('p').length <= 1 &&
-              value.length <= 48 &&
-              /^(?:(?:required|optional|mandatory|conditional|yes|no|n\/a)(?:\s+(?:for|when|if|on)\b[^.!?;:]+)?|是|否|必填|必选|必需|必须|可选|建议填写|视场景|不适用)$/i.test(
-                value,
-              )
-            );
-          });
-        expected = compact ? 'requirement' : 'description';
-      }
+      const expected = /^(?:填写要求|requirements?)$/i.test(
+        header.textContent.trim(),
+      )
+        ? 'requirement'
+        : 'required';
       for (const row of rows) {
         const cell = row.children[column];
         if (visible(cell) && cell.dataset.tableColumnKind !== expected)
@@ -164,17 +149,43 @@ export function inspectReference() {
     if (!visible(cell) || cell.closest('pre')) continue;
     const text = cell.textContent.trim(),
       style = getComputedStyle(cell);
-    if (['required', 'requirement'].includes(cell.dataset.tableColumnKind)) {
+    const contentSize = cell.dataset.tableColumnSize;
+    if (
+      ['required', 'requirement'].includes(cell.dataset.tableColumnKind) &&
+      (!contentSize || contentSize === 'compact')
+    ) {
       if (style.textAlign !== 'center') add('misaligned-required-column', cell);
-      if (cell.tagName === 'TH' && style.whiteSpace !== 'nowrap')
+      if (
+        !contentSize &&
+        cell.tagName === 'TH' &&
+        style.whiteSpace !== 'nowrap'
+      )
         add('wrapping-required-header', cell);
       const rem =
         parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
       if (
+        !contentSize &&
         parseFloat(style.minWidth) >
-        rem * (cell.dataset.tableColumnKind === 'requirement' ? 6 : 4) + 0.5
+          rem * (cell.dataset.tableColumnKind === 'requirement' ? 6 : 4) + 0.5
       )
         add('oversized-required-column', cell);
+    }
+    if (contentSize === 'compact' && cell.tagName === 'TD') {
+      const blocks = [...cell.querySelectorAll('p, li')].filter(
+        (block) => block.closest('td, th') === cell,
+      );
+      const values = blocks.length
+        ? blocks.map((block) => block.textContent.trim())
+        : [text];
+      if (
+        blocks.filter((block) => block.tagName === 'P' && !block.closest('li'))
+          .length > 1 ||
+        cell.querySelector(
+          ':scope > pre, :scope > table, :scope > figure.shiki',
+        ) ||
+        values.some((value) => value.length > 80 && /\p{L}/u.test(value))
+      )
+        add('compact-table-prose', cell);
     }
     if (['value', 'number'].includes(cell.dataset.tableColumnKind)) {
       for (const content of cell.querySelectorAll(
@@ -391,6 +402,7 @@ export function inspectReference() {
 // These broken examples prove the detector goes red in the same browser used for QA.
 export const canaryHtml = `<!doctype html><html><body><article>
 <h1>Regression detector calibration</h1>
+<table><tbody><tr><td data-table-column-size="compact">A long prose description incorrectly classified as compact must be detected independently of the rendering implementation and its table header.</td></tr></tbody></table>
 <div style="width:200vw">Overflow</div>
 <button data-openapi-field-toggle style="width:10px;height:10px;padding:0">x</button>
 <div data-parameter-description><ul style="list-style:none;padding:0"><li>Lost marker</li></ul></div>
@@ -416,6 +428,7 @@ export const canaryHtml = `<!doctype html><html><body><article>
 <section data-parameter-list><table><tbody><tr><th scope="row" style="background:beige">uid</th><td style="background:white">User identifier.</td></tr></tbody></table></section>
 </article></body></html>`;
 export const canaryRules = [
+  'compact-table-prose',
   'page-overflow',
   'small-schema-target',
   'unstyled-description-list',

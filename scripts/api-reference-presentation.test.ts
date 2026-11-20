@@ -127,24 +127,21 @@ describe.each(['Requirements', '填写要求'])(
   'requirement prose calibration: %s',
   (header) => {
     it.each([
-      'A 600 x 315 JPG file',
       'Required when the extension has additional dependencies that must be configured before publishing',
-      '<ul><li>Required</li></ul>',
+      '<ul><li>A full explanation of the extension asset requirements must have room for continuous reading, including every word in the list.</li></ul>',
       '<p>Required</p><p>Optional</p>',
     ])(
       'accepts a reading column and rejects compact markers for %s',
       (body) => {
-        const table = (kind: string) =>
-          `<table><thead><tr><th>Name</th><th>Content</th><th data-table-column-kind="${kind}">${header}</th></tr></thead><tbody><tr><td>1</td><td>Extension asset</td><td data-table-column-kind="${kind}">${body}</td></tr></tbody></table>`;
-        expect(inspect(table('description'))).not.toContain(
-          'unclassified-required-column',
-        );
+        const table = (size: string) =>
+          `<table><thead><tr><th>Name</th><th>Content</th><th data-table-column-kind="requirement" data-table-column-size="${size}">${header}</th></tr></thead><tbody><tr><td>1</td><td>Extension asset</td><td data-table-column-kind="requirement" data-table-column-size="${size}">${body}</td></tr></tbody></table>`;
+        expect(inspect(table('prose'))).not.toContain('compact-table-prose');
         document.body.innerHTML = '<article><h1>Reference</h1></article>';
         expect(
-          inspect(table('requirement')).filter(
-            (rule) => rule === 'unclassified-required-column',
+          inspect(table('compact')).filter(
+            (rule) => rule === 'compact-table-prose',
           ),
-        ).toHaveLength(2);
+        ).toHaveLength(1);
       },
     );
   },
@@ -156,6 +153,20 @@ it('detects a prose width floor stretching a short data list', () => {
       '<table><tbody><tr><td data-table-column-kind="value"><ul style="min-inline-size:240px"><li>SD: 200</li><li>HD: 50</li></ul></td></tr></tbody></table>',
     ),
   ).toContain('prose-width-on-value-column');
+});
+
+it('rejects long prose incorrectly classified as compact without rejecting short numeric lists', () => {
+  expect(
+    inspect(
+      '<table><tbody><tr><td data-table-column-size="compact">A long explanation that needs room for continuous reading and cannot be treated as a short number or flag merely because of the column heading.</td></tr></tbody></table>',
+    ),
+  ).toContain('compact-table-prose');
+  document.body.innerHTML = '<article><h1>Reference</h1></article>';
+  expect(
+    inspect(
+      '<table><tbody><tr><td data-table-column-size="compact"><ul><li>SD: 200</li><li>HD: 50</li></ul></td></tr></tbody></table>',
+    ),
+  ).not.toContain('compact-table-prose');
 });
 
 it('detects prose floors on declared numeric columns', () => {
