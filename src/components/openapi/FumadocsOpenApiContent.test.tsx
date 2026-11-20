@@ -186,7 +186,7 @@ describe('FumadocsOpenApiContent', () => {
     expect(screen.getByText('queryLimit')).not.toHaveClass('line-through');
   });
 
-  it('renders normalized method badges with semantic variants outside endpoint scrolling', () => {
+  it('renders normalized method badges with semantic variants outside endpoint scrolling', async () => {
     const cases = [
       {
         input: 'get',
@@ -246,16 +246,14 @@ describe('FumadocsOpenApiContent', () => {
     ] as const;
 
     for (const { colorClasses, input, label } of cases) {
-      const { unmount } = render(
+      const { container, unmount } = render(
         <FumadocsOpenApiContent
           pageProps={makeMinimalOpenApiPageProps(input)}
         />,
       );
-      const badge = document.querySelector<HTMLElement>(
-        `[data-openapi-method="${label}"]`,
-      );
-      expect(badge, `missing badge for ${label}`).not.toBeNull();
-      expect(badge).toHaveTextContent(label);
+      const badge = await within(container).findByText(label, {
+        selector: `[data-openapi-method="${label}"]`,
+      });
       expect(badge).toHaveAttribute('data-method', label);
       expect(badge).toHaveClass(
         'openapi-method-badge',
@@ -265,7 +263,7 @@ describe('FumadocsOpenApiContent', () => {
         ...colorClasses,
       );
 
-      const endpointBar = badge?.closest('.not-prose');
+      const endpointBar = badge.closest('.not-prose');
       const endpointScroller = endpointBar?.querySelector(
         '.flex-1.overflow-auto',
       );
