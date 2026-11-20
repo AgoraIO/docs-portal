@@ -24,6 +24,12 @@ options identify Voice Agent API and Conversational AI Platform.
 
 ## Entry, selection and memory
 
+The English Voice Agent tab (desktop and mobile) and the Explore Voice Agents
+home card link directly to the preferred overview. Static HTML uses
+`DEFAULT_CONVOAI_VERSION` in `src/lib/convoai-doc-versions.ts` (`v1` for Main,
+`v2` for Preview); after hydration the links reflect any saved choice. The
+neutral URLs remain available for existing bookmarks.
+
 | Arrival or action | Result | Saved choice |
 | --- | --- | --- |
 | First visit to a neutral entry | Main | Unchanged |
