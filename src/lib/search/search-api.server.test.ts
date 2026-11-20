@@ -72,8 +72,70 @@ it('records an upstream failure as a failure rather than a zero-result response'
     http_status: 502,
     total_hits: null,
     server_group_count: null,
-    error_code: 'search_unavailable',
+    error_code: 'search_upstream_failure',
     index_revision: null,
+  });
+});
+
+describe('search request interruption diagnostics', () => {
+  it.each([
+    'before_fetch',
+    'during_fetch',
+    'timeout',
+    'timeout_then_cancel',
+    'upstream_abort_error',
+  ])('classifies %s without inventing empty results', async (scenario) => {
+    vi.stubEnv('MEILI_HOST', 'http://meili.internal:7700');
+    vi.stubEnv('MEILI_INDEX_UID', 'docs_cn');
+    vi.stubEnv('MEILI_SEARCH_API_KEY', 'private-read-key');
+    const caller = new AbortController();
+    const deadline = new AbortController();
+    vi.spyOn(AbortSignal, 'timeout').mockReturnValue(deadline.signal);
+    if (scenario === 'before_fetch') caller.abort();
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async (_input, init) => {
+      const signal = init?.signal;
+      if (!signal) throw new Error('Missing upstream signal');
+      if (scenario === 'upstream_abort_error') {
+        throw new DOMException('Upstream aborted independently', 'AbortError');
+      }
+      if (scenario === 'during_fetch') caller.abort();
+      if (scenario.startsWith('timeout')) {
+        deadline.abort(new DOMException('Deadline reached', 'TimeoutError'));
+        if (scenario === 'timeout_then_cancel') caller.abort();
+      }
+      signal.throwIfAborted();
+      return Response.json(empty);
+    });
+    const logs: string[] = [];
+    vi.spyOn(console, 'info').mockImplementation((message) =>
+      logs.push(String(message)),
+    );
+    const response = await handleSearchRequest(
+      new Request(request('q=Token'), { signal: caller.signal }),
+    );
+    const cancelled =
+      scenario === 'before_fetch' || scenario === 'during_fetch';
+    const timedOut = scenario.startsWith('timeout');
+    const status = cancelled ? 499 : timedOut ? 504 : 502;
+    expect(response.status).toBe(status);
+    expect(logs).toHaveLength(1);
+    expect(JSON.parse(logs[0])).toMatchObject({
+      http_status: status,
+      error_code: cancelled
+        ? 'search_cancelled'
+        : timedOut
+          ? 'search_timeout'
+          : 'search_upstream_failure',
+      total_hits: null,
+      server_group_count: null,
+    });
+    expect(await response.json()).toEqual({
+      error: cancelled
+        ? 'Search request cancelled'
+        : timedOut
+          ? 'Search request timed out'
+          : 'Search service unavailable',
+    });
   });
 });
 
