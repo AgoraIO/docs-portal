@@ -137,7 +137,16 @@ export async function handleSearchRequest(request: Request): Promise<Response> {
             total_hits: result?.totalHits ?? null,
             server_group_count: result?.groups.length ?? null,
             index_revision: indexRevision,
-            error_code: status === 200 ? null : 'search_unavailable',
+            error_code:
+              status === 200
+                ? null
+                : status === 499
+                  ? 'search_cancelled'
+                  : status === 504
+                    ? 'search_timeout'
+                    : status === 502
+                      ? 'search_upstream_failure'
+                      : 'search_unavailable',
           }),
         );
       } catch {
@@ -151,7 +160,11 @@ export async function handleSearchRequest(request: Request): Promise<Response> {
             error:
               status === 400
                 ? 'Invalid search parameters'
-                : 'Search service unavailable',
+                : status === 499
+                  ? 'Search request cancelled'
+                  : status === 504
+                    ? 'Search request timed out'
+                    : 'Search service unavailable',
           },
       { status, headers },
     );
@@ -163,13 +176,21 @@ export async function handleSearchRequest(request: Request): Promise<Response> {
   }
   const config = readSearchServiceConfig();
   if (!config) return complete(503);
+  const timeout = AbortSignal.timeout(10_000);
+  const signal = AbortSignal.any([request.signal, timeout]);
   try {
-    const signal = AbortSignal.any([
-      request.signal,
-      AbortSignal.timeout(10_000),
-    ]);
-    return complete(200, await queryCnSearch(config, query, signal));
+    signal.throwIfAborted();
+    const result = await queryCnSearch(config, query, signal);
+    signal.throwIfAborted();
+    return complete(200, result);
   } catch {
+    // The combined signal retains the first cause even if the caller aborts
+    // after the deadline. An unrelated upstream AbortError is still a failure.
+    if (signal.aborted) {
+      return complete(
+        timeout.aborted && signal.reason === timeout.reason ? 504 : 499,
+      );
+    }
     return complete(502);
   }
 }
