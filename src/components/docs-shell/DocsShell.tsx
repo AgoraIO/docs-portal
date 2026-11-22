@@ -69,6 +69,7 @@ import { DocsTocRail } from './DocsTocRail';
 import { DocVersionSelector } from './DocVersionControls';
 import { getDocsSourceLinks } from './docs-source-links';
 import { SiteLogoMark } from './SiteLogoMark';
+import { useDocVersionSelections } from './useDocVersionSelections';
 
 const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
   'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]';
@@ -144,7 +145,7 @@ export function DocsShell({
   productScopes,
   sidebar,
   sidebarHeader,
-  tabs,
+  tabs: sourceTabs,
   toc,
   tocMaxDepth,
   layoutMode = 'docs',
@@ -169,6 +170,11 @@ export function DocsShell({
   tocMaxDepth?: number;
 }) {
   const { i18n } = useTranslation('common');
+  const entrySelections = useDocVersionSelections();
+  const tabs = sourceTabs.map((tab) => ({
+    ...tab,
+    url: getDocVersionEntryHref(tab.url, entrySelections),
+  }));
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
   const sourceLinks = getDocsSourceLinks(contentPath);
   const t = i18n.getFixedT(currentLocale, 'common');
@@ -627,7 +633,7 @@ export function DocsShell({
                         className="group/tab h-10 rounded-none px-3.5 text-[13.5px] font-medium after:!bottom-[-3px] group-data-[pointer-focus=true]/header-tabs:focus-visible:border-transparent group-data-[pointer-focus=true]/header-tabs:focus-visible:ring-0 group-data-[pointer-focus=true]/header-tabs:focus-visible:outline-none"
                         params={{}}
                         search={{}}
-                        to={getDocVersionEntryHref(tab.url)}
+                        to={tab.url}
                       >
                         {tab.icon ? (
                           <span className="docs-tab-icon">
@@ -811,7 +817,7 @@ function MobileSidebar({
                             onClick={onSelectPath}
                             params={{}}
                             search={{}}
-                            to={getDocVersionEntryHref(tab.url)}
+                            to={tab.url}
                           >
                             <span className="min-w-0 truncate">
                               {tab.title}

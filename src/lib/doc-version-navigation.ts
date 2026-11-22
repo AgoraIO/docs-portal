@@ -1,15 +1,26 @@
 import {
   DOC_VERSION_SCOPES,
   type DocVersionScope,
+  type DocVersionSelections,
   getDocVersionTarget,
   resolveDocVersion,
 } from './doc-versions';
 import type { DocsSidebarNode } from './docs-tree';
 
-export function getDocVersionEntryHref(href: string) {
+/** Resolve a navigation entry before following the link. Content URLs stay pinned. */
+export function getDocVersionEntryHref(
+  href: string,
+  selections: DocVersionSelections,
+) {
+  const scope = DOC_VERSION_SCOPES.find(
+    (scope) => scope.entryUrl === href || scope.entryLinks?.includes(href),
+  );
+  if (!scope) return href;
   return (
-    DOC_VERSION_SCOPES.find((scope) => scope.entryLinks?.includes(href))
-      ?.entryUrl ?? href
+    getDocVersionTarget(
+      scope.entryUrl,
+      selections[scope.id] ?? scope.defaultVersion,
+    )?.href ?? href
   );
 }
 

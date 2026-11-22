@@ -11,12 +11,15 @@ const apiRoot = '/en/api-reference/api-ref/conversational-ai';
 const sdkRoot = '/en/api-reference/api-ref/server-sdk';
 
 describe('documentation version navigation', () => {
-  it('uses neutral navigation entries while preserving explicit edition URLs', () => {
-    expect(getDocVersionEntryHref('/en/ai')).toBe(
-      '/en/ai/documentation-versions',
-    );
-    expect(getDocVersionEntryHref(apiRoot)).toBe(
-      `${apiRoot}/documentation-versions`,
+  it('links navigation entries directly to the preferred overview', () => {
+    const preview = getDocVersionSelections('', { convoai: 'v2' });
+    expect(getDocVersionEntryHref('/en/ai', {})).toBe('/en/ai');
+    expect(getDocVersionEntryHref('/en/ai', preview)).toBe('/en/ai/platform');
+    expect(
+      getDocVersionEntryHref('/en/ai/documentation-versions', preview),
+    ).toBe('/en/ai/platform');
+    expect(getDocVersionEntryHref(apiRoot, preview)).toBe(
+      `${apiRoot}/platform`,
     );
     for (const href of [
       '/en/ai/platform',
@@ -24,7 +27,7 @@ describe('documentation version navigation', () => {
       '/zh-CN/ai',
       '/en/realtime-media',
     ]) {
-      expect(getDocVersionEntryHref(href)).toBe(href);
+      expect(getDocVersionEntryHref(href, preview)).toBe(href);
     }
   });
 
