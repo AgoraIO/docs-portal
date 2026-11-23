@@ -31,15 +31,15 @@ The schema accepts uppercase `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, `O
 
 The executable coverage check reads HTTP declarations independently of frontmatter, requires a mapping for each operation section, loads the real page payloads, and checks every method/fragment against the resulting sidebar. It also checks every published English OpenAPI endpoint. Platform variants are checked separately.
 
-- **70 live authored reference pages**, with **410 operation destinations** including native platform variants.
+- **70 live authored reference pages**, with **408 operation destinations** including native platform variants.
 - **86 generated OpenAPI endpoint pages**, retaining their existing method labels.
-- **496 method-labelled destinations** in total, with **0 missing** in the final coverage export.
+- **494 method-labelled destinations** in total, with **0 missing** in the final coverage export.
 - The retained Cloud Recording condensed source redirects to the covered OpenAPI reference.
 
 | Authored reference family | Live pages | Operation destinations |
 | --- | ---: | ---: |
 | agora-analytics | 1 | 14 |
-| broadcast-streaming | 20 | 51 |
+| broadcast-streaming | 20 | 49 |
 | console | 1 | 8 |
 | extensions-marketplace | 2 | 7 |
 | flexible-classroom | 1 | 17 |
@@ -59,9 +59,15 @@ The inventory includes the canonical API reference tree and live standalone REST
 
 All 55 document bodies changed in this follow-up compare byte-for-byte with the first PR commit after excluding frontmatter. Source QA reports 0 new defects and 0 obsolete debt allowances. Shared API body renderers/styles and the API QA shared-file manifest remain unchanged; this is an English navigation/content integration change.
 
-The original full run at main `7b318fe2a` had 15 independently reproduced failures: seven OpenAPI component assertions, seven redirect-script tests under Node 22.16, and one content regression assertion. Updated full-suite results and command logs are retained locally. **Final full run: 7,408 passed, the same 15 baseline failures, 24 skipped. Type checks and lint pass.** Method coverage is not a full semantic audit or a certification of the entire regional rendering matrix.
+The original full run at main `7b318fe2a` had 15 independently reproduced failures: seven OpenAPI component assertions, seven redirect-script tests under Node 22.16, and one content regression assertion. Updated full-suite results and command logs are retained locally. **Full-suite checkpoint at `04946fa1c`: 7,408 passed, the same 15 baseline failures, 24 skipped.** The subsequent callback-scope correction passed 10 focused tests plus type checks and lint. Method coverage is not a full semantic audit or a certification of the entire regional rendering matrix.
 
 Manual smoke covers Chat desktop, native-platform links and hashes, Whiteboard mobile, Console, existing OpenAPI, and the local HTML review explorer. Independent human acceptance is pending review of this PR/preview; no independent reader's approval is claimed.
+
+## Non-REST scope audit
+
+SDK reference pages, ordinary quickstarts and pure overview/authentication topics were not given method metadata. Five changed source files live outside the canonical API-reference folder: Marketplace provisioning/usage, Whiteboard REST token generation, IoT REST channel management and a retained Cloud Recording REST reference. Their content describes HTTP interfaces; the Recording entry redirects to OpenAPI.
+
+Two callback requirement sections in Broadcast Streaming had been included because their examples contain HTTP request lines. Those are requests to customer callback servers, so their `httpMethods` entries were removed. Coverage tests now explicitly exclude callback requirement examples and verify that SDK, authentication and introductory pages remain unlabelled. The current inventory is 494 operation destinations, rather than the 496 reported before this correction.
 
 ## Existing source discrepancies
 

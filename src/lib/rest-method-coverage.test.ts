@@ -74,7 +74,11 @@ function declaredOperationFragments(text: string, file: string): string[] {
               !supportingHeading.test(heading.title),
           )
           .at(-1);
-        return heading ? [heading.fragment] : [];
+        // Callback examples describe requests sent to a customer server, not
+        // callable REST operations exposed by this reference.
+        return heading && !/callback requirements$/i.test(heading.title)
+          ? [heading.fragment]
+          : [];
       }),
     ),
   ];
@@ -107,6 +111,47 @@ describe('complete English REST method coverage', () => {
       }
     }
     expect(missing).toEqual([]);
+  });
+
+  it('does not label callback requirements or SDK/authentication examples as REST endpoints', async () => {
+    for (const [article, fragment] of [
+      ['pull-from-origin', 'pull-from-origin-callback-requirements'],
+      ['stream-transfer', 'transfer-callback-requirements'],
+    ]) {
+      const file = `content/docs/en/api-reference/api-ref/broadcast-streaming/${article}.mdx`;
+      const text = readFileSync(file, 'utf8');
+      expect(declaredOperationFragments(text, file)).not.toContain(fragment);
+      const result = await loadDocsPagePayload('en', 'api-reference', [
+        'api-ref',
+        'broadcast-streaming',
+        article,
+      ]);
+      if (!result || 'redirectUrl' in result)
+        throw new Error('Expected REST reference');
+      expect(
+        flatten(result.sidebar).some(
+          (node) => node.url.endsWith(`#${fragment}`) && node.method,
+        ),
+      ).toBe(false);
+    }
+    for (const url of [
+      '/en/introduction/about-agora',
+      '/en/api-reference/api-ref/rtc/authentication',
+      '/en/api-reference/api-ref/signaling/web',
+    ]) {
+      const [locale, tab, ...slugs] = url.slice(1).split('/');
+      const page = source.getPage([tab, ...slugs], locale);
+      expect(page?.data).not.toHaveProperty('httpMethod');
+      expect(page?.data).not.toHaveProperty('httpMethods');
+      const result = await loadDocsPagePayload(locale, tab, slugs);
+      if (!result || 'redirectUrl' in result)
+        throw new Error(`Expected document ${url}`);
+      expect(
+        flatten(result.sidebar)
+          .filter((node) => node.url === url || node.url.startsWith(`${url}#`))
+          .every((node) => !node.method),
+      ).toBe(true);
+    }
   });
 
   it('resolves every declared operation to a labeled sidebar destination, including platform variants', async () => {
