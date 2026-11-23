@@ -303,27 +303,27 @@ Use the following Web SDK APIs to control which ABR layer a subscriber receives.
 #### Manual stream selection
 
 - API: `setRemoteVideoStreamType(uid: UID, streamType: RemoteStreamType): Promise<void>`
-- Description: Selects the high or low stream for a specific remote user.
+- Description: Selects the high stream, low stream, or an available ABR layer for a specific remote user.
 - Example:
 
     ```js
-    client.setRemoteVideoStreamType(uid, 0); // HIGH_STREAM = 0
+    client.setRemoteVideoStreamType(uid, 4); // RemoteStreamType.HIGH_STREAM_LAYER1
     ```
 
-- Enum: `VideoStreamType`
+- Type: `RemoteStreamType`
 
-    ```ts
-    enum VideoStreamType {
-        HIGH_STREAM,
-        LOW_STREAM,
-        HIGH_STREAM_LAYER1,
-        HIGH_STREAM_LAYER2,
-        HIGH_STREAM_LAYER3,
-        HIGH_STREAM_LAYER4,
-        HIGH_STREAM_LAYER5,
-        HIGH_STREAM_LAYER6;
-    }
-    ```
+  Pass the Web SDK stream-type value, rather than the Gateway Layer ID. The extended layers use values `4` through `9`:
+
+  | Web SDK member | Web SDK value |
+  | --- | --- |
+  | `HIGH_STREAM` | `0` |
+  | `LOW_STREAM` | `1` |
+  | `HIGH_STREAM_LAYER1` | `4` |
+  | `HIGH_STREAM_LAYER2` | `5` |
+  | `HIGH_STREAM_LAYER3` | `6` |
+  | `HIGH_STREAM_LAYER4` | `7` |
+  | `HIGH_STREAM_LAYER5` | `8` |
+  | `HIGH_STREAM_LAYER6` | `9` |
 
 For manual switching, consider the network conditions. The following example shows how to obtain the network status:
 
