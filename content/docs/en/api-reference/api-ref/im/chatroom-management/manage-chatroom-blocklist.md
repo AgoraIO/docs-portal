@@ -1,6 +1,12 @@
 ---
 title: "Manage chat room block list"
 description: "Shows how to manage a chat room block list by calling the Agora Chat RESTful APIs."
+httpMethods:
+  retrieving-the-chat-room-blocklist: GET
+  adding-a-user-to-the-chat-room-blocklist: POST
+  adding-multiple-users-to-the-chat-room-blocklist: POST
+  removing-a-user-from-the-chat-room-blocklist: DELETE
+  removing-multiple-users-from-the-chat-room-blocklist: DELETE
 ---
 
 A chat room blocklist refers to a list of users that can neither see nor receive chat room messages. Chat provides a complete set of blocklist management methods, including adding users to the blocklist and removing them from it, as well as retrieving the members on the blocklist.

@@ -1,6 +1,15 @@
 ---
 title: "Agora Console"
 description: "Interact with Agora Console using the REST API."
+httpMethods:
+  create-a-project: POST
+  get-a-specified-project: GET
+  get-all-projects: GET
+  disable-or-enable-a-project: POST
+  set-the-ip-address-of-the-recording-server: POST
+  enable-or-disable-the-primary-app-certificate: POST
+  reset-the-primary-app-certificate: POST
+  get-project-usage: GET
 ---
 
 When you need to [create and manage Agora projects](#create-a-project) or [check usage](#get-project-usage), besides using the graphic user interface at Agora Console, you can also call the Agora Console RESTful API.

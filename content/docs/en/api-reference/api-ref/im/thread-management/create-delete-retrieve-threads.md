@@ -1,6 +1,13 @@
 ---
 title: "Create, delete, and retrieve threads"
 description: "Agora Chat RESTful APIs for creating, deleting, and retrieving threads."
+httpMethods:
+  creating-a-thread: POST
+  modifying-a-thread: PUT
+  deleting-a-thread: DELETE
+  retrieving-all-the-threads-under-the-app: GET
+  retrieving-all-the-threads-a-user-joins-under-the-app: GET
+  retrieving-all-the-threads-a-user-joins-under-a-group: GET
 ---
 
 This page shows how to create, modify, delete, and retrieve a thread by calling Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../limitations#call-limit-of-server-sides).

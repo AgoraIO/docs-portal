@@ -1,6 +1,18 @@
 ---
 title: "Message management"
 description: "Agora Chat RESTful APIs for messages, files, and message history."
+httpMethods:
+  send-a-message: POST
+  upload-a-file: POST
+  download-a-file: GET
+  download-a-thumbnail: GET
+  retrieve-historical-messages: GET
+  modify-a-text-or-custom-message: PUT
+  recall-a-message: POST
+  delete-conversations-one-way-from-the-server: DELETE
+  modify-a-text-or-custom-message-1: PUT
+  import-a-one-to-one-chat-message: POST
+  import-a-chat-group-message: POST
 ---
 
 This page shows how to call Chat RESTful APIs to send different types of messages, upload and download files, and retrieve historical messages.

@@ -1,6 +1,11 @@
 ---
 title: "Room management"
 description: "Create, query, update, and manage Interactive Whiteboard rooms through the REST API."
+httpMethods:
+  create-a-room-post: POST
+  get-room-information-get: GET
+  get-a-room-list-get: GET
+  disable-a-room-patch: PATCH
 ---
 
 ## Create a room (POST)

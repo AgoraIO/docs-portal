@@ -1,6 +1,10 @@
 ---
 title: "Scene management"
 description: "Manage whiteboard scenes through the Interactive Whiteboard REST API."
+httpMethods:
+  get-scene-path-list-get: GET
+  add-a-scene-post: POST
+  switch-to-a-scene-patch: PATCH
 ---
 
 ## Get scene path list (GET)

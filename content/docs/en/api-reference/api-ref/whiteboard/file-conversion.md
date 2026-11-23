@@ -1,6 +1,12 @@
 ---
 title: "File conversion"
 description: "Start and query Interactive Whiteboard file-conversion tasks through the REST API."
+httpMethods:
+  start-file-conversion: POST
+  query-the-progress-of-a-file-conversion-task: GET
+  query-to-be-converted-tasks: GET
+  cancel-conversion-task: DELETE
+  set-task-priority: PUT
 ---
 
 Interactive Whiteboard supports file conversion from PPT, PPTX, DOC, DOCX, and PDF files into static images, as well as from PPT/PPTX files into dynamic HTML web pages. The generated images and web pages can be presented on the whiteboard. See [File Conversion Overview](/en/realtime-media/whiteboard/build/display-files-and-manage-scenes/file-conversion-overview.md).

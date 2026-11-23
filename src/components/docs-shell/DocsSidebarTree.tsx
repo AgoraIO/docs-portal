@@ -999,7 +999,7 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
       );
     }
 
-    const [path, hash] = url.split('#', 2);
+    const [path, hash] = (href ?? url).split('#', 2);
     return (
       <Link
         {...props}

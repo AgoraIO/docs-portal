@@ -1428,3 +1428,29 @@ describe('DocsSidebarTree', () => {
     ).toBeInTheDocument();
   });
 });
+
+describe('authored REST platform destinations', () => {
+  it('uses the canonical platform href while retaining the logical fragment for selection', async () => {
+    const url = '/en/api-reference/api-ref/im/push-notification-management';
+    renderSidebarTree(
+      [
+        {
+          id: `${url}#create-a-push-label-1`,
+          url: `${url}#create-a-push-label-1`,
+          href: `${url}/ios#create-a-push-label-1`,
+          method: 'POST',
+          title: 'Create a push label',
+          type: 'page',
+          search: { from: '/en/realtime-media/im' },
+        },
+      ],
+      url,
+    );
+    const link = await screen.findByRole('link', {
+      name: 'Create a push label POST',
+    });
+    expect(link.getAttribute('href')).toBe(
+      `${url}/ios?from=%2Fen%2Frealtime-media%2Fim#create-a-push-label-1`,
+    );
+  });
+});

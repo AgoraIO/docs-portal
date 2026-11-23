@@ -1,6 +1,19 @@
 ---
 title: "Manage group members"
 description: "Shows how to manage group members by calling the Agora Chat RESTful APIs."
+httpMethods:
+  retrieving-group-members: GET
+  adding-a-user-to-the-chat-group: POST
+  adding-multiple-users-to-the-chat-group: POST
+  removing-a-chat-group-member: DELETE
+  removing-multiple-group-members: DELETE
+  setting-custom-attributes-of-a-group-member: PUT
+  retrieving-all-custom-attributes-of-a-group-member: GET
+  retrieving-custom-attributes-of-multiple-group-members-by-attribute-key: POST
+  retrieving-group-admin-list: GET
+  adding-a-group-admin: POST
+  removing-a-group-admin: DELETE
+  transferring-group-ownership: PUT
 ---
 
 Group member management involves operations such as member creation and deletion. Chat provides multiple APIs for adding and retrieving group members, adding a group administrator, and transferring the group owner.

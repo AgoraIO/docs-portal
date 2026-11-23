@@ -1,6 +1,12 @@
 ---
 title: "Manage chat group mute list"
 description: "Shows how to manage the mute list by calling Agora Chat RESTful APIs."
+httpMethods:
+  muting-a-group-member: POST
+  unmuting-a-group-member: DELETE
+  retrieving-the-mute-list: GET
+  muting-all-group-members: POST
+  unmuting-all-group-members: DELETE
 ---
 
 Muting means to prevent group users from sending messages in the group. Chat provides multiple mute management APIs, including those for getting the mute list, adding a user to the mute list, and removing a user from the mute list.

@@ -1,6 +1,12 @@
 ---
 title: "Manage chat room mute list"
 description: "Shows how to perform chat room member mute management by calling the Agora Chat RESTful APIs."
+httpMethods:
+  muting-a-chat-room-member: POST
+  unmuting-members: DELETE
+  retrieving-muted-members: GET
+  muting-all-chat-room-members: POST
+  unmuting-all-chat-room-members: DELETE
 ---
 
 This page shows how to perform chat room member mute management by calling the Chat RESTful APIs, including muting and unmuting members in a chat room, and retrieving the list of muted members.

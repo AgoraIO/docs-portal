@@ -1,6 +1,11 @@
 ---
 title: "Manage chat group allow list"
 description: "Shows how to manage a chat group allow list using the Agora Chat RESTful APIs."
+httpMethods:
+  retrieving-the-group-allow-list: GET
+  adding-a-member-to-the-group-allow-list: POST
+  adding-multiple-members-to-the-group-allow-list: POST
+  removing-members-from-the-group-allow-list: DELETE
 ---
 
 A group allow list refers to a list of group members that can send group messages after the group owner or admins have muted all the group members using the [mute-all](./manage-group-mutelist#muting-all-chat-group-members) method. Chat provides a complete set of allow list management methods, including adding users to the allow list and removing them from it, as well as retrieving the members on the allow list.

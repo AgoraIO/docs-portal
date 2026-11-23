@@ -1,6 +1,10 @@
 ---
 title: "Generate tokens using REST API"
 description: "Use the Whiteboard REST API to generate SDK tokens, room tokens, and task tokens."
+httpMethods:
+  generate-an-sdk-token-post: POST
+  generate-a-room-token-post: POST
+  generate-a-task-token-post: POST
 ---
 
 Interactive Whiteboard uses different types of tokens for user authentication. For details, see [Interactive Whiteboard Token overview](authentication-workflow.md).

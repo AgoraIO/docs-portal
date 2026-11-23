@@ -1,6 +1,11 @@
 ---
 title: "Manage chat room allow list"
 description: "Shows how to manage a chat room allow list using the Agora Chat RESTful APIs."
+httpMethods:
+  retrieving-the-chat-room-allow-list: GET
+  adding-a-user-to-the-chat-room-allow-list: POST
+  adding-multiple-members-to-the-chat-room-allow-list: POST
+  removing-users-from-the-chat-room-allow-list: DELETE
 ---
 
 A chat room allow list refers to a list of chat room members that can send messages after the chat room owner or admins have muted all the chat room members using the global mute method. Chat provides a complete set of allow list management methods, including adding users to the allow list and removing them from it, as well as retrieving the members on the allow list.

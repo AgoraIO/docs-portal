@@ -25,8 +25,7 @@ renderer choices, source fidelity, cross-locale changes and release acceptance.
 ## REST API sidebar methods
 
 For English REST references, declare `httpMethod: POST` in frontmatter when the
-page documents one operation. For an article whose operations appear as sidebar
-anchor links, use an `httpMethods` map keyed by the actual TOC fragment (without
+page documents one operation. For a multi-operation article, use an `httpMethods` map keyed by the actual TOC fragment (without
 `#`):
 
 ```yaml
@@ -41,8 +40,11 @@ Supported values are uppercase `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`,
 `OPTIONS`, and `TRACE`. Verify each method against the documented request.
 Do not assign one page-level method to an article with multiple operations, or
 to authentication/overview pages that merely include request examples. Keep
-fragment keys synchronized when renaming headings. OpenAPI methods continue to
-come from the maintained YAML.
+fragment keys synchronized when renaming headings. The English sidebar expands
+mapped operations into a collapsible article menu, using the actual TOC labels.
+For platform content, map each platform's actual generated fragment, including
+its deduplication suffix; links use the canonical platform route. OpenAPI methods
+continue to come from the maintained YAML.
 
 ## Repository Cards
 

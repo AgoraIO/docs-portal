@@ -1,6 +1,16 @@
 ---
 title: "Create, delete, and retrieve chat groups"
 description: "Shows how to create, retrieve, modify, and delete a group by calling Agora Chat RESTful APIs."
+httpMethods:
+  creating-a-group: POST
+  banning-a-group: POST
+  unbanning-a-group: POST
+  checking-whether-a-user-has-joined-a-group: GET
+  retrieving-group-details: GET
+  modifying-group-information: PUT
+  deleting-a-group: DELETE
+  retrieving-all-groups: GET
+  retrieving-all-the-groups-a-user-joins: GET
 ---
 
 Upon login to Chat, you can create, modify, or delete a group.

@@ -1,6 +1,13 @@
 ---
 title: "Manage chat group announcement and files"
 description: "Shows how to manage the group announcement and group files by calling Agora Chat RESTful APIs."
+httpMethods:
+  retrieving-the-group-announcement: GET
+  modifying-the-group-announcement: POST
+  retrieving-the-group-shared-files: GET
+  uploading-a-group-shared-file: POST
+  downloading-the-group-shared-file: GET
+  deleting-a-group-shared-file: DELETE
 ---
 
 This page shows how to manage the group announcement and group files by calling Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../limitations#call-limit-of-server-sides).

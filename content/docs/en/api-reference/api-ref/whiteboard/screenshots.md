@@ -1,6 +1,9 @@
 ---
 title: "Screenshot management"
 description: "Capture and manage whiteboard screenshots through the Interactive Whiteboard REST API."
+httpMethods:
+  screenshot-a-scene: POST
+  screenshot-a-scene-directory: POST
 ---
 
 The screenshot-management feature is implemented by Interactive Whiteboard. You can take screenshots for a single scene or a scene directory, generate images in PNG format, and upload them to a third-party cloud storage space.

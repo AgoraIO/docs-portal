@@ -1,58 +1,72 @@
 # English REST Markdown/MDX HTTP method badges
 
-## Problem and expected behavior
+## Expected behavior
 
-The English product sidebar already renders colored method badges for generated OpenAPI operations. Authored REST references have the same HTTP semantics, but their sidebar entries have no method metadata. Media Push is an example: its Create, Delete, Update, Get and List entries are fragments of one Markdown article, rather than five generated pages.
-
-Render the existing method label on each explicitly annotated REST link, on desktop and in the mobile navigation. Keep the article overview, authentication, type definitions and API limits free of method labels. Preserve page content, routes, fragments and product return context.
+Every documented REST operation has its existing HTTP method badge in desktop and mobile navigation, including operations authored inside multi-endpoint MD/MDX articles. Supporting overview, authentication, status-code and API-limit topics retain ordinary labels. Existing OpenAPI methods remain authoritative.
 
 ## Content contract
 
-Single-operation MD/MDX pages declare a method in frontmatter:
-
-```yaml
-httpMethod: POST
-```
-
-Multi-operation articles declare methods by their existing TOC fragment, without the `#`:
+A single-operation page declares `httpMethod: POST` in frontmatter. A multi-operation article declares its methods using existing TOC fragments, without the `#`:
 
 ```yaml
 httpMethods:
-  create-create-a-converter: POST
-  delete-destroy-the-converter: DELETE
-  update-update-the-converter: PATCH
-  get-get-the-streaming-status-of-the-converter: GET
-  list-query-the-converters-of-all-or-specified-channels-under-a-project: GET
+  create-api: POST
+  delete-api: DELETE
+  list-api: GET
+  update-api: PATCH
 ```
 
-Use uppercase `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, `OPTIONS` or `TRACE`. The collection schema rejects unsupported values. Obtain each value from the documented HTTP request, not an operation name or an authentication example. When renaming a heading, update its mapping and verify the actual generated TOC.
-
-A page with several endpoints has no single `httpMethod`. A fragment without an explicit mapping receives no badge, even if its containing page has a page-level method. This avoids labeling an overview or rate-limit section as an endpoint.
+The schema accepts uppercase `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, `OPTIONS` and `TRACE`. Values come from the documented Method/HTTP request declaration. A method in an authentication example does not make that supporting topic an operation. Preserve exact generated fragment IDs, including suffixes for repeated platform headings, when changing titles.
 
 ## Implementation
 
-1. `source.config.ts` retains and validates both frontmatter fields in the MDX collection.
-2. `withDocsHttpMethods` builds a URL lookup from authored pages, traverses the completed sidebar once, and resolves page methods or exact fragment methods. Existing OpenAPI node methods take precedence. External links are skipped.
-3. `loadDocsPagePayload` applies the decorator for English after product REST menus and article outlines have been assembled. Static payload generation uses this same loader, so no runtime Markdown scanning or browser request is needed.
-4. Existing `DocsSidebarTree` / `SidebarPageLabel` renders the resulting `node.method`. Color, wrapping, accessible labels, dark mode and mobile behavior are shared with English OpenAPI links. No new badge component, CSS or dependency is introduced.
+- `source.config.ts` validates and retains both fields. Metadata is authored content; methods are not inferred from prose, titles or the first cURL command at runtime.
+- `loadDocsPagePayload` applies metadata after English product REST menus have been assembled. It resolves only the TOCs needed by the current sidebar and caches them per source object/platform.
+- `withDocsHttpMethods` creates collapsible article groups containing an Overview and the explicitly mapped operations. Existing article outline links are reused without duplicates. Unresolved fragments are not invented. OpenAPI metadata and external links keep their existing behavior.
+- For platform articles, the current supported platform is used. A general product menu selects the first platform with documented operations. Logical URLs retain the article identity for selection and product restoration, while `href` uses the canonical platform route and exact fragment. This links directly to the selected platform and fragment without relying on a compatibility `?platform=` redirect. The sidebar anchor respects that internal `href` override.
+- Deep links to retained references absent from the global menu receive an article-local operation menu. This does not add retired products to the catalog or global navigation.
+- Existing sidebar components and HTTP method colors render all labels. Static payloads use the same loader. No new renderer skin, dependency, endpoint route or API body transformation is introduced.
 
-Complexity is O(pages + sidebar nodes) per payload, using metadata already loaded for navigation. Chinese navigation is not decorated by this English rollout.
+## Complete coverage inventory
 
-## Rollout
+The executable coverage check reads HTTP declarations independently of frontmatter, requires a mapping for each operation section, loads the real page payloads, and checks every method/fragment against the resulting sidebar. It also checks every published English OpenAPI endpoint. Platform variants are checked separately.
 
-- 40 fragment entries: Media Push (5), Media Pull (4), Flexible Classroom (17), Agora Analytics (14).
-- 12 single-operation MDX pages: Speech-to-Text v5/v6 (10 existing deprecated reference pages), Broadcast Streaming custom/standard recording entry-point settings (2).
-- Overview/authentication pages and other multi-operation reference articles stay unannotated at page level. Other reference families can adopt this metadata when their existing navigation exposes individual operations. This change does not create new endpoint routes or expand additional article outlines.
+- **70 live authored reference pages**, with **410 operation destinations** including native platform variants.
+- **86 generated OpenAPI endpoint pages**, retaining their existing method labels.
+- **496 method-labelled destinations** in total, with **0 missing** in the final coverage export.
+- The retained Cloud Recording condensed source redirects to the covered OpenAPI reference.
 
-## Validation
+| Authored reference family | Live pages | Operation destinations |
+| --- | ---: | ---: |
+| agora-analytics | 1 | 14 |
+| broadcast-streaming | 20 | 51 |
+| console | 1 | 8 |
+| extensions-marketplace | 2 | 7 |
+| flexible-classroom | 1 | 17 |
+| im | 24 | 263 |
+| iot | 1 | 5 |
+| marketplace | 2 | 7 |
+| media-pull | 1 | 4 |
+| media-push | 1 | 5 |
+| speech-to-text | 10 | 10 |
+| whiteboard | 6 | 19 |
 
-Focused tests cover nested fragments, page versus fragment isolation, OpenAPI precedence, external links, retained product context, and schema rejection of invalid methods. Real-source navigation tests check all four expanded article families against their generated TOCs and check STT methods against OpenAPI v7 coexistence. Run the full Vitest suite and type checks. Browser review covers Media Push, Media Pull, a single-operation MDX reference, existing Media Gateway OpenAPI badges, mobile navigation, dark theme, and fragment navigation. Local screenshots belong under ignored `.agent/artifacts/`, not in the PR.
+The inventory includes the canonical API reference tree and live standalone REST references for Marketplace provisioning/usage, Whiteboard token generation and legacy IoT channel management. Guide examples, SDK functions, authentication examples and Console configuration procedures are supporting content rather than REST operation definitions.
 
-### Results at main baseline `7b318fe2a`
+## Validation and review
 
-- Focused navigation/schema/sidebar regressions: **62 passed** across 4 files.
-- `bun run types:check`: passed.
-- `bun run lint`: passed, with existing warnings.
-- `bun run test`: **7,402 passed**, 15 failed, 24 skipped. All 15 failure names were reproduced in a separate unmodified main checkout using the same dependencies/environment: 7 OpenAPI component assertions, 7 redirect-script tests (Node 22.16 cannot import `.ts` in spawned scripts), and 1 content regression assertion. These are not attributed to this change.
-- Visual smoke: 1440×1000 desktop Media Push/Pull and Media Gateway; 390×844 Media Push navigation in light/dark; STT v6 MDX in dark. Media Push fragment URL retained the product context and positioned the Update heading at approximately 155px with no horizontal page overflow. This is targeted browser verification, not a full API content audit.
-- Screenshots and command logs are local-only under `.agent/artifacts/en-rest-mdx-method-badges/`.
+`src/lib/rest-method-coverage.test.ts` checks page-level metadata, per-operation declaration coverage, actual sidebar destinations, all six native Chat platform variants and all 86 OpenAPI endpoints. Unit tests cover nested links, platform destinations, product context, deduplication, OpenAPI precedence, external links and absent fragments. The Console rail test now checks its Overview plus eight endpoint entries.
+
+All 55 document bodies changed in this follow-up compare byte-for-byte with the first PR commit after excluding frontmatter. Source QA reports 0 new defects and 0 obsolete debt allowances. Shared API body renderers/styles and the API QA shared-file manifest remain unchanged; this is an English navigation/content integration change.
+
+The original full run at main `7b318fe2a` had 15 independently reproduced failures: seven OpenAPI component assertions, seven redirect-script tests under Node 22.16, and one content regression assertion. Updated full-suite results and command logs are retained locally. **Final full run: 7,408 passed, the same 15 baseline failures, 24 skipped. Type checks and lint pass.** Method coverage is not a full semantic audit or a certification of the entire regional rendering matrix.
+
+Manual smoke covers Chat desktop, native-platform links and hashes, Whiteboard mobile, Console, existing OpenAPI, and the local HTML review explorer. Independent human acceptance is pending review of this PR/preview; no independent reader's approval is claimed.
+
+## Existing source discrepancies
+
+Badges follow explicit request declarations. Existing examples disagree with those declarations in four retained sections: Flexible Classroom Get recording list (GET versus PATCH), Chat room Remove custom attributes (DELETE versus POST), Chat room Retrieving muted members (GET versus DELETE), and Chat room Modifying the announcement (POST versus GET). Their body text is preserved for API-owner review; this change does not silently resolve those semantic discrepancies.
+
+## Local review
+
+Start the app at `http://localhost:3100`. The local-only HTML explorer at `http://localhost:3102/review.html` shows the complete inventory, first-PR versus current method labels, document/platform/method filters, and a live embedded document. Its data comes from the actual coverage test export. Screenshots, HTML and logs stay under ignored `.agent/artifacts/en-rest-mdx-method-badges/`.

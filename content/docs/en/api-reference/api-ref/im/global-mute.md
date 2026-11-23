@@ -1,6 +1,10 @@
 ---
 title: "Global mute"
 description: "Introduces the global-mute feature."
+httpMethods:
+  globally-mute-a-specified-user: POST
+  query-the-detailed-information-of-global-mute: GET
+  retrieve-all-globally-muted-users: GET
 ---
 
 With increasingly strict rules and regulations on app compliance, content supervision has become a crucial part of the app lifecycle. To meet this need, Chat provides the global-mute feature, which enables you to mute any user ID in one-to-one chats, chat groups, or chat rooms, preventing these users from sending messages to other chat users, chat groups, or chat rooms. When global-mute expires, the chat server automatically unmutes the user ID, and this user resumes the privilege of sending messages.

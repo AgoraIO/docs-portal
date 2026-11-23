@@ -1,6 +1,11 @@
 ---
 title: "Reaction"
 description: "Introduces the reaction functionalities provided by Agora Chat RESTful APIs."
+httpMethods:
+  createadd-a-reaction: POST
+  retrieve-reactions-with-message-ids: GET
+  delete-a-reaction: DELETE
+  retrieve-the-detailed-information-of-the-reaction: GET
 ---
 
 During one-to-one chats and group chats, users can reply to a message with emojis, which adds fun and diversity to real-time chatting. In Agora Chat, this feature is known as reaction. For a message, one emoji is counted as one reaction even if it is added repeatedly. A maximum of 20 reactions can be added for one message. To increase the upper limit, contact [support@agora.io](mailto:support@agora.io).

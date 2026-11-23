@@ -79,3 +79,50 @@ describe('authored REST HTTP methods', () => {
     expect(node).not.toHaveProperty('method');
   });
 });
+
+describe('REST article menus', () => {
+  it('expands mapped headings into endpoint links and preserves platform and product context', () => {
+    const result = withDocsHttpMethods(
+      [{ ...page(), search: { from: '/en/realtime-media/im' } }],
+      [
+        {
+          url,
+          data: { httpMethods: { create: 'POST', remove: 'DELETE' } },
+          toc: [
+            { title: 'Create', url: '#create', search: { platform: 'ios' } },
+            { title: 'Limits', url: '#limits' },
+            { title: 'Remove', url: '#remove', search: { platform: 'ios' } },
+          ],
+        },
+      ],
+    );
+    expect(result[0]).toMatchObject({
+      type: 'section',
+      title: 'Example',
+      collapsible: true,
+      children: [
+        { title: 'Overview', url },
+        {
+          title: 'Create',
+          url: `${url}#create`,
+          method: 'POST',
+          search: { from: '/en/realtime-media/im' },
+          href: `${url}/ios#create`,
+        },
+        { title: 'Remove', url: `${url}#remove`, method: 'DELETE' },
+      ],
+    });
+  });
+
+  it('does not duplicate existing article links or manufacture unresolved fragments', () => {
+    const nodes = [page(), page('#create')];
+    const result = withDocsHttpMethods(nodes, [
+      {
+        url,
+        data: { httpMethods: { create: 'POST', missing: 'GET' } },
+        toc: [{ title: 'Create', url: '#create' }],
+      },
+    ]);
+    expect(result).toEqual([page(), { ...page('#create'), method: 'POST' }]);
+  });
+});
