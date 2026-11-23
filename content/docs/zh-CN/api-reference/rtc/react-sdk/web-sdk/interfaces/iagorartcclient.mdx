@@ -637,12 +637,12 @@ is-using-cloud-proxy(isUsingProxy: boolean): void
 
 :::info[自从]
 *4.4.0*
+:::
 
 SDK 通过这个回调通知当前媒体流是否经云代理服务转发。触发时机如下：
 
 - v4.10.0 之前：成功调用 [publish](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#publish) 后。
 - v4.10.0 及之后：成功调用 [join](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#join) 后。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="isUsingProxy" type="boolean" required>
@@ -679,11 +679,11 @@ join-fallback-to-proxy(proxyServer: string): void
 
 :::warning[deprecated]
 自 4.19.0 起废弃。SDK 不再使用代理保障连通性，因此不会再触发该回调。
+:::
 
 SDK 自动切换至 TCP/TLS 443 回调。
 
 自 v4.11.0 起，如果调用 [join](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#join) 后 SDK 直接连接 SD-RTN™ 失败，SDK 会自动切换到 TCP/TLS 443 通道，从而保障 SDK 的连通性。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="proxyServer" type="string" required>
@@ -918,11 +918,11 @@ published-user-list(users: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-
 
 :::info[自从]
 *4.11.0*
+:::
 
 如果开启了单频道支持 128 位主播的功能，该回调会在调用 [join](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#join) 时触发，返回当前频道内发布音频和视频轨道的用户。
 
-**注意事项：**
-
+:::note[注意事项]
 - 频道内所有用户必须都使用整数型用户 ID（`uid`），`published-user-list` 才会触发。
 - `published-user-list` 对 [AgoraRTCClient.on("user-joined")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_joined) 和 [AgoraRTCClient.on("user-published")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 有以下影响：
 
@@ -1523,12 +1523,12 @@ localTracks: [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces
 
 :::info[自从]
 *4.0.0*
+:::
 
 保存当前正在发布的本地轨道对象列表。
 
 - 调用 [publish](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#publish) 成功后，发布的轨道对象会自动添加到这个列表中。
 - 调用 [unpublish](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#unpublish) 成功后，取消发布的轨道对象会自动从这个列表中移除。
-:::
 
 <a id="remoteusers"></a>
 
@@ -2689,9 +2689,9 @@ getLocalAudioStats(): [LocalAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/
 
 :::info[自从]
 *4.1.0*
+:::
 
 获取本地音频相关信息。
-:::
 
 <ApiReturns>
 
@@ -2769,11 +2769,11 @@ getRemoteAudioStats(): object
 
 :::info[自从]
 *4.1.0*
+:::
 
 获取远端用户的音频相关信息。
 
-**Note:**
-
+:::note[Note]
 统计信息需要在订阅远端流后进行计算，可能耗费 0-3 秒时间。你可以循环调用该方法。
 :::
 
@@ -2811,9 +2811,9 @@ getRemoteNetworkQuality(): object
 
 :::info[自从]
 *4.2.0*
+:::
 
 获取本地订阅的所有远端用户的上下行网络质量。
-:::
 
 <ApiReturns>
 
@@ -2849,11 +2849,11 @@ getRemoteVideoStats(): object
 
 :::info[自从]
 *4.1.0*
+:::
 
 获取远端用户的视频统计信息。
 
-**Note:**
-
+:::note[Note]
 统计信息需要在订阅远端流后进行计算，可能耗费 0-3 秒时间。你可以循环调用该方法。
 :::
 
@@ -2891,6 +2891,7 @@ massSubscribe(subscribeList: object[]): Promise&lt;object[]&gt;
 
 :::info[自从]
 *4.11.0*
+:::
 
 批量订阅远端用户的音视频轨道。
 
@@ -2912,7 +2913,6 @@ for(const {track, mediaType, error} of result) {
   }
 }
 ```
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="subscribeList" type="object[]" required>
@@ -2960,13 +2960,13 @@ massUnsubscribe(unsubscribeList: object[]): Promise&lt;void&gt;
 
 :::info[自从]
 *4.11.0*
+:::
 
 批量取消订阅远端用户的音视频轨道。
 
 ```javascript
 client.massUnsubscribe([{user:userA}, {user: userB}]);
 ```
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="unsubscribeList" type="object[]" required>
@@ -4431,17 +4431,18 @@ setLocalAccessPointsV2(config: [LocalAccessPointConfig](/zh-CN/api-reference/rtc
 
 :::info[自从]
 *4.16.0*
+:::
 
 配置声网混合云或私有化平台的相关服务。
 
 成功部署声网混合云或私有化平台并在内网终端集成 Agora Web SDK 后，你可以调用该方法设置访问节点和相关服务。
  联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 了解和部署声网混合云或声网私有化平台。
 
-**Note:**
-
+:::note[Note]
 - 使用混合云或私有化平台时，不支持开启云代理服务，因此该方法不能与 [startProxyServer](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#startproxyserver) 一起调用。
 - 成功配置混合云或私有化平台后，SDK 如果直接连接 SD-RTN™ 失败，将不会自动切换到 TCP/TLS 443 通道，即不会再触发 `join-fallback-to-proxy` 回调。
 - 由于 [Chrome 已知问题](https://bugs.chromium.org/p/chromium/issues/detail?id=1290390)，使用该接口过程中 Chrome 控制台可能会误报错误信息提示，开发者可以忽略。
+:::
 
 ```javascript
 client.setLocalAccessPointsV2({
@@ -4459,7 +4460,6 @@ client.setLocalAccessPointsV2({
   }
 })
 ```
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="config" required>
@@ -4499,6 +4499,7 @@ setProxyServer(proxyServer: string): void
 
 :::info[自从]
 *4.18.0*
+:::
 
 部署你的代理服务器。
 
@@ -4507,8 +4508,7 @@ setProxyServer(proxyServer: string): void
 - `setProxyServer`：自定义代理，可以用于信令传输、日志上传、事件上报等，但不能用于媒体传输。
 - `startProxyServer`：声网提供的云代理服务，可以传输媒体流、信令等，只需简单设置即可使用。详见[使用云代理服务](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)。
 
-**注意事项：**
-
+:::note[注意事项]
 - 该方法必须在 [join](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#join) 之前调用。
 - 在使用 Firefox 浏览器时，跨运营商代理速度会比较慢。声网建议使用同运营商进行代理。如果必须使用跨运营商代理，则避免使用 Firefox 浏览器。
 :::

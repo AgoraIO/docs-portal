@@ -280,6 +280,7 @@ onAudioAutoplayFailed: function
 
 :::warning[deprecated]
 自 4.6.0 起废弃，请改用 [onAutoplayFailed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onautoplayfailed)。
+:::
 
 该回调在音频轨道自动播放失败的时候触发。如果短时间内有多个音频轨道对象都调用了 `play`，SDK 会触发多次 `onAudioAutoplayFailed`。
 
@@ -290,9 +291,9 @@ onAudioAutoplayFailed: function
 - 如果不希望收到 `onAudioAutoplayFailed` 回调，就确保在调用 `RemoteAudioTrack.play` 和 `LocalAudioTrack.play` 之前用户已经和页面发生了点击交互。
 - 如果无法保证在调用 `RemoteAudioTrack.play` 和 `LocalAudioTrack.play` 之前用户已经和页面发生点击交互，就监听 `onAudioAutoplayFailed` 回调，通过回调在页面上显示一个按钮引导用户点击。
 
-**注意：**
-
+:::caution[注意]
 无论使用何种方案，只要浏览器启用了自动播放策略，都需要用户至少触发一次点击交互操作才能播放音频。随着用户使用某个页面的次数变多，浏览器会在这个页面上默认关闭自动播放策略，此时不需要任何交互也可以播放音频了，但是我们无法通过 JavaScript 去感知浏览器这个行为。
+:::
 
 下面的示例代码演示了当检测到自动播放失败后的处理：在页面上动态显示一个按钮让用户点击。
 
@@ -312,8 +313,7 @@ onAudioAutoplayFailed: function
 };
 ```
 
-**注意：**
-
+:::caution[注意]
 需要注意的是，短时间内可能会有多个音频轨道对象都调用了 `play`，此时会触发多次 `onAudioAutoplayFailed`。示例代码中通过 `isAudioAutoplayFailed` 这个对象防止创建重复的按钮对象。
 :::
 

@@ -477,11 +477,11 @@ join-fallback-to-proxy(proxyServer: string): void
 
 :::warning[deprecated]
 自 4.19.0 起废弃。SDK 不再使用代理保障连通性，因此不会再触发该回调。
+:::
 
 SDK 自动切换至 TCP/TLS 443 回调。
 
 自 v4.11.0 起，如果调用 [join](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#join) 后 SDK 直接连接 SD-RTN™ 失败，SDK 会自动切换到 TCP/TLS 443 通道，从而保障 SDK 的连通性。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="proxyServer" type="string" required>

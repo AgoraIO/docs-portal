@@ -96,9 +96,9 @@ audio-context-state-changed(currState: AudioContextState | "interrupted", prevSt
 
 :::info[自从]
 *4.20.0*
+:::
 
 音频上下文 ([Audio Context](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext)) 状态发生改变回调。该回调中的 `"interrupted"` 状态当前只会在 iOS 上触发。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="currState" type="AudioContextState | &quot;interrupted&quot;" required>
@@ -142,6 +142,7 @@ autoplay-failed(): void
 
 :::info[自从]
 *4.18.0*
+:::
 
 如果你需要更灵活地监听自动播放失败事件，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#on) 方法中传入该回调来代替 [onAutoplayFailed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#onautoplayfailed)。
 
@@ -150,7 +151,6 @@ AgoraRTC.on("autoplay-failed", () => {
   console.log("Autoplay failed!");
 });
 ```
-:::
 
 <ApiReturns>
 
@@ -174,6 +174,7 @@ camera-changed(deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-s
 
 :::info[自从]
 *4.18.0*
+:::
 
 如果你需要更灵活地监听视频采集设备状态变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#on) 方法中传入该回调来代替 [onCameraChanged](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#oncamerachanged)。
 
@@ -182,7 +183,6 @@ AgoraRTC.on("camera-changed", (info) => {
   console.log("Camera changed!", info.state, info.device);
 });
 ```
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="deviceInfo" required>
@@ -220,6 +220,7 @@ microphone-changed(deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/w
 
 :::info[自从]
 *4.18.0*
+:::
 
 如果你需要更灵活地监听麦克风设备变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#on) 方法中传入该回调来代替 [onMicrophoneChanged](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#onmicrophonechanged)。
 
@@ -228,7 +229,6 @@ AgoraRTC.on("microphone-changed", (info) => {
   console.log("Microphone changed!", info.state, info.device);
 });
 ```
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="deviceInfo" required>
@@ -266,6 +266,7 @@ playback-device-changed(deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/react-
 
 :::info[自从]
 *4.18.0*
+:::
 
 如果你需要更灵活地监听音频播放设备变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#on) 方法中传入该回调来代替 [onPlaybackDeviceChanged](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#onplaybackdevicechanged)。
 
@@ -274,7 +275,6 @@ AgoraRTC.on("playback-device-changed", (info) => {
   console.log("Playback device changed!", info.state, info.device);
 });
 ```
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="deviceInfo" required>
@@ -312,6 +312,7 @@ security-policy-violation(): void
 
 :::info[自从]
 *4.18.0*
+:::
 
 如果你需要更灵活地监听触发 CSP 规则事件，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#on) 方法中传入该回调来代替 [onSecurityPolicyViolation](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#onsecuritypolicyviolation)。
 
@@ -320,7 +321,6 @@ AgoraRTC.on("security-policy-violation", (info) => {
   console.log("Security policy violation!", info.state, info.device);
 });
 ```
-:::
 
 <ApiReturns>
 
@@ -352,6 +352,7 @@ onAudioAutoplayFailed: function
 
 :::warning[deprecated]
 自 4.6.0 起废弃，请改用 [onAutoplayFailed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#onautoplayfailed)。
+:::
 
 该回调在音频轨道自动播放失败的时候触发。如果短时间内有多个音频轨道对象都调用了 `play`，SDK 会触发多次 `onAudioAutoplayFailed`。
 
@@ -362,9 +363,9 @@ onAudioAutoplayFailed: function
 - 如果不希望收到 `onAudioAutoplayFailed` 回调，就确保在调用 `RemoteAudioTrack.play` 和 `LocalAudioTrack.play` 之前用户已经和页面发生了点击交互。
 - 如果无法保证在调用 `RemoteAudioTrack.play` 和 `LocalAudioTrack.play` 之前用户已经和页面发生点击交互，就监听 `onAudioAutoplayFailed` 回调，通过回调在页面上显示一个按钮引导用户点击。
 
-**注意：**
-
+:::caution[注意]
 无论使用何种方案，只要浏览器启用了自动播放策略，都需要用户至少触发一次点击交互操作才能播放音频。随着用户使用某个页面的次数变多，浏览器会在这个页面上默认关闭自动播放策略，此时不需要任何交互也可以播放音频了，但是我们无法通过 JavaScript 去感知浏览器这个行为。
+:::
 
 下面的示例代码演示了当检测到自动播放失败后的处理：在页面上动态显示一个按钮让用户点击。
 
@@ -384,8 +385,7 @@ onAudioAutoplayFailed: function
 };
 ```
 
-**注意：**
-
+:::caution[注意]
 需要注意的是，短时间内可能会有多个音频轨道对象都调用了 `play`，此时会触发多次 `onAudioAutoplayFailed`。示例代码中通过 `isAudioAutoplayFailed` 这个对象防止创建重复的按钮对象。
 :::
 
@@ -423,6 +423,7 @@ onAutoplayFailed: function
 
 :::info[自从]
 *4.6.0*
+:::
 
 SDK 在音频或视频轨道自动播放失败时触发该回调。
 
@@ -434,9 +435,9 @@ SDK 在音频或视频轨道自动播放失败时触发该回调。
 - 如果不希望收到 `onAutoplayFailed` 回调，就确保在调用 `RemoteTrack.play` 和 `LocalTrack.play` 之前用户已经和页面发生了点击交互。
 - 如果无法保证在调用 `RemoteTrack.play` 和 `LocalTrack.play` 之前用户已经和页面发生点击交互，就监听 `onAutoplayFailed` 回调，通过回调在页面上显示一个按钮引导用户点击。
 
-**注意：**
-
+:::caution[注意]
 无论使用何种方案，只要浏览器启用了自动播放策略，都需要用户至少触发一次点击交互操作才能播放音频或视频。随着用户使用某个页面的次数变多，浏览器会在这个页面上默认关闭自动播放策略，此时不需要任何交互也可以播放音频和视频了，但是我们无法通过 JavaScript 去感知浏览器这个行为。
+:::
 
 下面的示例代码演示了当检测到自动播放失败后的处理：在页面上动态显示一个按钮让用户点击。
 
@@ -451,8 +452,7 @@ SDK 在音频或视频轨道自动播放失败时触发该回调。
 };
 ```
 
-**注意：**
-
+:::caution[注意]
 由于自动播放失败后在用户通过手势点击恢复播放之前，`onAutoplayFailed` 只会触发一次，因此在业务代码中不需要像 `onAudioAutoplayFailed` 回调一样维护 `isAutoplayFailed` 状态。
 :::
 
@@ -608,6 +608,7 @@ onPlaybackDeviceChanged: function
 
 :::info[自从]
 *4.1.0*
+:::
 
 音频播放设备状态变化回调。
 
@@ -622,7 +623,6 @@ AgoraRTC.onPlaybackDeviceChanged = (info) => {
 **Parameters**
 
 - **deviceInfo**：设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/deviceinfo)。
-:::
 
 #### Type declaration
 
@@ -668,12 +668,12 @@ onSecurityPolicyViolation: function
 
 :::info[自从]
 *4.15.0*
+:::
 
 触发 CSP 规则回调。
 
 当声网服务相关的资源加载或请求发送因为触发浏览器的 CSP（Content Security Policy，内容安全策略）规则而失败时，SDK 会触发该回调。
  收到该回调后，请及时调整你的 CSP 设置，确保能正常体验声网的服务。
-:::
 
 #### Type declaration
 
@@ -1486,13 +1486,13 @@ getPlaybackDevices(skipPermissionCheck?: boolean): Promise&lt;MediaDeviceInfo[]&
 
 :::info[自从]
 *4.1.0*
+:::
 
 该方法枚举可用的音频播放设备，比如扬声器。
 
 调用成功后 SDK 会通过 [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) 对象返回可用的音频播放设备。
 
-**注意：**
-
+:::caution[注意]
 - Chrome、Firefox、Edge 浏览器上支持该方法。Safari 支持情况如下：macOS 上的 Safari 18.4 及以上版本支持该方法；iOS 上的 Safari 26 及以上版本支持该方法。
 - 调用本方法会暂时打开麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+ 和 Firefox 70+ 浏览器上，没有媒体设备权限时无法获取到准确的设备信息。
 :::
@@ -2173,6 +2173,7 @@ processExternalMediaAEC(element: HTMLMediaElement): void
 
 :::info[自从]
 *4.5.0*
+:::
 
 对本地播放的音频启用回声消除。
 
@@ -2186,8 +2187,7 @@ processExternalMediaAEC(element: HTMLMediaElement): void
 </script>
 ```
 
-**注意事项：**
-
+:::note[注意事项]
 如果本地播放的媒体元素的地址是跨域地址，必须设置 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement) 中的 `crossOrigin` 属性为 `"anonymous"` 以允许跨域媒体被重采集。
 :::
 
@@ -2221,6 +2221,7 @@ registerExtensions(extensions: IExtension&lt;any&gt;[]): void
 
 :::info[自从]
 *4.10.0*
+:::
 
 注册插件。
 
@@ -2229,7 +2230,6 @@ registerExtensions(extensions: IExtension&lt;any&gt;[]): void
 - 虚拟背景插件
 - AI 降噪插件
 - 美颜插件
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="extensions" type="IExtension &amp; lt;any &amp; gt;[]" required>
@@ -2322,6 +2322,7 @@ setArea(area: [AREAS](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/areas)[] 
 
 :::info[自从]
 *4.2.0*
+:::
 
 设置访问区域。
 
@@ -2335,7 +2336,6 @@ AgoraRTC.setArea({
   areaCode:"NORTH_AMERICA"
 })
 ```
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="area" required>

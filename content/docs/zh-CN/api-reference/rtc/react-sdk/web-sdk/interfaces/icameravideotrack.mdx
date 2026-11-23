@@ -97,9 +97,9 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
 
 :::info[自从]
 *4.10.0*
+:::
 
 本地视频轨道上当前媒体处理链路的最终节点。
-:::
 
 <a id="trackmediatype"></a>
 
@@ -134,11 +134,11 @@ Overrides [ILocalVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfac
 
 :::info[自从]
 *4.19.0*
+:::
 
 复制当前的视频轨道对象，生成一个新的视频轨道。
 
 在视频会议、在线教育等场景中，你可以用该方法实现同一视频流的两路显示，并为每路显示设置不同的分辨率、帧率、码率等参数。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="config" optional>
@@ -211,11 +211,11 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
 
 :::info[自从]
 *4.1.0*
+:::
 
 获取当前渲染的视频帧数据。
 
-**注意：**
-
+:::caution[注意]
 只有在播放后才能调用此方法，如果没有调用 [play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#play) 则返回空数据。
 :::
 
@@ -698,9 +698,9 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
 
 :::info[自从]
 *4.10.0*
+:::
 
 将 `Processor` 注入本地视频轨道。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="processor" type="IBaseProcessor" required>
@@ -816,6 +816,7 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
 
 :::info[自从]
 *4.17.0*
+:::
 
 替换本地视频轨道。
 
@@ -826,8 +827,7 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
 
 新的视频轨道可以通过 [ILocalVideoTrack.getMediaStreamTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocalvideotrack#getmediastreamtrack) 或者 `mediaStream.getVideoTracks` 方法获取。你可以选择是否停止被替换的视频轨道。
 
-**注意事项：**
-
+:::note[注意事项]
 - 支持 Chrome 65+，Safari 以及最新版 Firefox 浏览器。
 - 部分移动设备上该方法可能不生效。
 - 建议在相同类型、相同编码配置的视频轨道之间进行替换，原因如下：
@@ -836,6 +836,7 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
   - 如果编码配置（`encoderConfig`）不同，可能导致实际发送的分辨率或帧率不准。
 - 订阅端无法知悉视频轨道被替换。
 - 如果需要切换媒体输入设备，推荐使用 [ICameraVideoTrack.setDevice](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#setdevice) 方法。
+:::
 
 **示例代码**
 
@@ -849,7 +850,6 @@ const newTrack = await navigator.mediaDevices.getUserMedia({audio: true, video: 
 // 替换本地视频轨道，并且停止原有的视频轨道
 await localVideoTrack.replaceTrack(newTrack, true);
 ```
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="track" type="MediaStreamTrack" required>
@@ -969,13 +969,13 @@ Overrides [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/i
 
 :::info[自从]
 *4.0.0*
+:::
 
 启用/禁用该轨道。
 
 轨道禁用后，播放和发布都将被停止。
 
-**注意：**
-
+:::caution[注意]
 - 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_track_ended) 事件。
 - 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 事件。
 - `setEnabled` 和 `setMuted` 不能同时调用。
@@ -1056,11 +1056,11 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-
 
 :::info[自从]
 *4.6.0*
+:::
 
 如果该轨道已发布，调用 `setMuted(true)` 后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_unpublished) 事件。再调用 `setMuted(false)` 后，远端会触发 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 事件。
 
-**注意：**
-
+:::caution[注意]
 - 与 [setEnabled](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/icameravideotrack#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](/zh-CN/reference/faq/integration/set_enabled_set_muted)。
 - `setEnabled` 和 `setMuted` 不能同时调用。
 :::
@@ -1100,13 +1100,13 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
 
 :::info[自从]
 *4.2.0*
+:::
 
 设置视频传输优化模式。
 
 你可以在视频通话、视频直播或屏幕共享过程中调用此方法动态调整视频的传输优化模式。例如你想要把屏幕共享内容从演示文稿切换为视频时，你可以将传输优化模式从 `"detail"` 切换为 `"motion"`，确保视频画面在网络波动时不会出现卡顿。
 
-**注意事项：**
-
+:::note[注意事项]
 该方法只支持 Chrome 浏览器。
 :::
 
@@ -1179,9 +1179,9 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
 
 :::info[自从]
 *4.10.0*
+:::
 
 取消本地视频轨道上注入的 `Processor`。
-:::
 
 <ApiReturns>
 
