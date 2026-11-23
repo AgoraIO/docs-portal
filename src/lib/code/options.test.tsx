@@ -60,6 +60,7 @@ describe('shared code highlighting', () => {
       );
       const $ = load(html);
       expect($('figure').attr('data-code-language')).toBe(language);
+      expect($('figcaption').text()).toBe(language);
       expect($('pre').text()).toBe(source);
       expect($('pre span[style*="--shiki-light"]').length).toBeGreaterThan(0);
       expect($('pre span[style*="--shiki-dark"]').length).toBeGreaterThan(0);
