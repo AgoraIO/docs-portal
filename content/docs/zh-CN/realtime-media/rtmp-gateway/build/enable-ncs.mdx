@@ -113,7 +113,7 @@ public class Base64Encoding {
 
     // 处理接收到的 POST 请求
     app.post('/', express.json({ type: 'application/json' }), (req, res) => {
-        const event = request.body;
+        const event = req.body;
         // 5 秒后发送响应
         setTimeout(() => {
             res.status(200).json({message: 'Success'});
