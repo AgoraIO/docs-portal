@@ -243,8 +243,24 @@ export function sourceFingerprint() {
 }
 export function inventory(root, region) {
   const locale = localeFor(region),
-    routes = readJson(path.join(root, '__static/docs-routes.json'));
-  const byUrl = new Map(routes.map((route) => [route.url, route]));
+    readableRoutes = readJson(path.join(root, '__static/docs-routes.json')),
+    prerenderPaths = readJson(
+      path.join(root, '__static/docs-prerender-paths.json'),
+    );
+  if (
+    !Array.isArray(prerenderPaths) ||
+    !prerenderPaths.every(
+      (url) =>
+        typeof url === 'string' && url.startsWith('/') && !url.startsWith('//'),
+    )
+  )
+    throw new Error('Invalid docs prerender paths manifest');
+  const byUrl = new Map(readableRoutes.map((route) => [route.url, route]));
+  // Redirect payloads are intentionally absent from machine-readable routes.
+  // Their prerendered entrances still belong to the browser acceptance surface.
+  for (const url of prerenderPaths)
+    if (!byUrl.has(url)) byUrl.set(url, { url, canonicalPath: url });
+  const routes = [...byUrl.values()];
   const payloads = new Map();
   const load = (route) => {
     if (payloads.has(route.canonicalPath))

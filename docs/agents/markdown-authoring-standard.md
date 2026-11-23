@@ -94,6 +94,11 @@ Do not mix indentation, close the directive at a different level, or use `::::`.
 
 Use fenced code blocks with a language.
 
+The shared highlighter preserves authored language labels while mapping known
+aliases to bundled grammars: `C++`/`c++` to `cpp`, `gradle` to Groovy, and
+`proguard` to Java for its class/member specifications. Keep ProGuard rules and
+Gradle dependency declarations unchanged; these mappings affect highlighting only.
+
 ````mdx
 ```bash
 npm install agora-rtc-sdk-ng
@@ -399,18 +404,20 @@ Rules:
 - Preserve the source's merge boundaries, including group labels, shared
   allowances and aggregate totals. Do not repeat their text to simulate a merge,
   and do not automatically merge independent cells just because values match.
-- Column sizing is shared across all tables. Short values and lists use intrinsic
-  widths; columns explicitly headed Description/说明/描述 reserve a readable prose
-  measure. Known API parameter/return primitives declare their column roles.
-- Use `columns={['name', 'value', 'description']}` on `DocsTable` only when a
-  table's headers do not express its column roles. Include every logical column,
-  counting merged cells by their spans. Roles are `name`, `type`, `value`, `number`, `content`,
-  `description`, `required` and `requirement`; authored numeric alignment remains.
-- Unknown headers keep the conservative `content` role and prose sizing; they
-  are not assumed to contain short values. Declare roles for ambiguous headings.
+- Column sizing is shared across GFM, native MDX and API reference tables and
+  follows the actual cell content. Short values and numeric lists stay compact;
+  prose, long lists, code, identifiers and nested tables retain reading space.
+  The browser's automatic table layout adjusts these measures to the viewport.
+- Header labels and column roles do not impose column widths. A column headed
+  Description can stay compact when its values are short; a Requirements column
+  containing sentences or lists receives space for that content.
+- The optional `columns` prop records logical column roles; it is not a width
+  control and is unnecessary for content sizing. If supplied, include every
+  logical column, counting merged cells by their spans. Roles are `name`, `type`,
+  `value`, `number`, `content`, `description`, `required` and `requirement`.
+  Preserve authored alignment and native merged spans.
 - For dense numeric comparisons, use automatic layout with `density="compact"`
-  and explicit `name`/`number` columns, so dates, grouped numbers and units retain
-  their intrinsic width. Fixed layout is reserved for intentionally equal-width,
+  for tighter cell spacing. Fixed layout is reserved for intentionally equal-width,
   bounded content; it keeps a 40rem minimum. The legacy `compact` prop still
   enables fixed layout and compact density for compatibility.
 - Inside a `DocsTable` cell, write inline Markdown directly. For lists, code

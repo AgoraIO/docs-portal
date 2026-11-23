@@ -17,6 +17,18 @@ describe('shared runtime code highlighting', () => {
   it.each([
     ['arkts', 'public getValue(): string { return this.value; }\n'],
     ['cpp', 'virtual int callback(const Config& config);\n'],
+    [
+      'C++',
+      'static std::string BuildTokenWithUid(const std::string& app_id);\n',
+    ],
+    [
+      'gradle',
+      "dependencies { implementation 'com.google.code.gson:gson:2.10.1' }\n",
+    ],
+    [
+      'proguard',
+      '-keep class com.example.whiteboard.AutoShapeMemberState { *; }\n',
+    ],
     ['curl', 'curl --request POST https://example.com\n'],
     ['json', '{"value": 1}\n'],
   ])('uses real dual-theme Shiki tokens for %s', async (language, source) => {
