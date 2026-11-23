@@ -72,4 +72,4 @@ With adaptive mode, quality is judged by `freezeRate` (in per-mille, so `30` mea
 Dual-stream failover isn't instantaneous: Media Gateway takes about 10 seconds to detect that the primary stream is inactive. Failover also only helps if the two streams are genuinely independent. If both streams come from the same encoder or network uplink, a failure on one is likely to affect the other too.
 :::
 
-Each protected source also counts as two streams against your [concurrent task limit](../../reference/integration.md#maximum-number-of-concurrent-tasks): one for the primary push and one for the backup, even while the backup is on standby.
+For concurrent stream quotas and how dual streaming counts against them, see [Limitations](/en/api-reference/api-ref/rtmp-gateway/limitations#maximum-number-of-concurrent-tasks).

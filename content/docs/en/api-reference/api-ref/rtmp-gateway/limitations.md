@@ -25,4 +25,6 @@ The concurrent stream limits are:
 | Streams with video transcoding | 10 |
 | Streams without transcoding | 50 |
 
+With [dual-stream high availability](/en/realtime-media/rtmp-gateway/build/push-streams/enable-dual-stream-ha), each protected source counts as two streams: one for the primary push and one for the backup, even while the backup is on standby.
+
 For higher quotas, contact [Agora technical support](mailto:support@agora.io).
