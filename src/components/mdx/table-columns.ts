@@ -8,28 +8,27 @@ import {
   type ReactNode,
 } from 'react';
 import {
+  type DocsTableColumnKind,
+  planTableColumnKinds,
+  type TableMetadataCell,
+  tableCellAlignment,
+  tableCellKind,
+} from './table-metadata';
+import {
   planTableSizing,
   sizingForCell,
   type TableCellContent,
-  type TableSizingCell,
 } from './table-sizing';
 
-export type DocsTableColumnKind =
-  | 'index'
-  | 'name'
-  | 'type'
-  | 'value'
-  | 'content'
-  | 'number'
-  | 'description'
-  | 'required'
-  | 'requirement';
+export type { DocsTableColumnKind } from './table-metadata';
 
 type CellProps = ComponentProps<'td'> & {
   'data-table-column'?: string;
   'data-table-column-kind'?: DocsTableColumnKind;
   'data-table-column-size'?: string;
-  'data-table-original-align'?: string;
+  'data-table-align'?: 'center';
+  'data-table-vertical-align'?: 'middle';
+  'data-table-bottom-edge'?: string;
 };
 type CellPosition = {
   node: ReactElement<CellProps>;
@@ -78,43 +77,6 @@ function cellContent(children: ReactNode): TableCellContent {
   };
   visit(children);
   return content;
-}
-
-function headerKind(label: string): DocsTableColumnKind {
-  if (
-    /^(?:(?:是否)?(?:必填|必选|必需|必须|可选)|required|optional|mandatory)$/.test(
-      label,
-    )
-  )
-    return 'required';
-  if (/^(填写要求|requirements?)$/.test(label)) return 'requirement';
-  if (
-    /^(描述|说明|功能描述|含义与作用|含义|作用|解释|备注|错误描述|原因及解决方法|实现功能|sdk 行为|鉴权步骤|状态说明和排障指导|用法说明|配置方式及示例|连接后的用户体验|description|descriptions|details|meaning|notes)$/.test(
-      label,
-    )
-  )
-    return 'description';
-  if (/^(类型|数据类型|json\s*类型|type|json\s*type|data\s*type)$/.test(label))
-    return 'type';
-  if (
-    /^(参数|参数名|参数名称|属性|名称|字段|字段名|api|常用 api|日期|date|平台|文件|功能|能力|错误码|配置项|配置路径|服务|分组|parameter|parameters|property|properties|name|names|field|fields|option|group)$/.test(
-      label,
-    )
-  )
-    return 'name';
-  if (
-    /^(单价|价格|服务费用|费用(?:合计|总和)?|数量|时长用量|用量|price|cost|quantity)(?:[（(][^）)]*[）)])?$/.test(
-      label,
-    )
-  )
-    return 'number';
-  if (
-    /^(值|默认值|单位|分辨率|视频质量层|视频质量等级|value|default(?: value)?|unit|resolution|tier)$/.test(
-      label,
-    )
-  )
-    return 'value';
-  return 'content';
 }
 
 // Read only the native table's own sections. Nested tables plan their columns
@@ -181,53 +143,32 @@ export function prepareTableColumns(
       `DocsTable columns must describe all ${width} logical columns`,
     );
 
-  const kinds = Array<DocsTableColumnKind>(width).fill('content');
-  const head = sections.find((section) => section.node.type === 'thead');
-  for (const row of head?.rows ?? [])
-    for (const cell of row.positions) {
-      const label = text(cell.node.props.children)
-        .replace(/\s+/g, ' ')
-        .trim()
-        .toLowerCase();
-      for (let offset = 0; offset < cell.span; offset++)
-        kinds[cell.column + offset] = headerKind(label);
-    }
-  if (declared) kinds.splice(0, width, ...declared);
+  const sizingCells: TableMetadataCell[] = sections.flatMap((section) =>
+    section.rows.flatMap((row, rowIndex) =>
+      row.positions.map((cell) => ({
+        column: cell.column,
+        span: cell.span,
+        rowSpan: Number(cell.node.props.rowSpan ?? 1),
+        row: rowIndex,
+        section: section.node.type as TableMetadataCell['section'],
+        header: section.node.type === 'thead',
+        content: cellContent(cell.node.props.children),
+      })),
+    ),
+  );
+  const kinds = planTableColumnKinds(width, sizingCells, declared);
   if (!valid) return { children, headers: undefined, kinds };
+  const head = sections.find((section) => section.node.type === 'thead');
   const headers =
     !merged && head?.rows.length === 1
       ? head.rows[0].positions.map(({ node }) =>
           text(node.props.children).trim().toLowerCase(),
         )
       : undefined;
-  if (headers && !declared) {
-    const bodyRows = sections
-      .filter((section) => section.node.type === 'tbody')
-      .flatMap((section) => section.rows);
-    for (const [column, header] of headers.entries()) {
-      const cells = bodyRows.map((row) => row.positions[column].node);
-      if (
-        !header &&
-        cells.length > 1 &&
-        cells.every(
-          (cell, index) =>
-            text(cell.props.children).trim() === String(index + 1),
-        )
-      )
-        kinds[column] = 'index';
-    }
-  }
-  const sizingCells: TableSizingCell[] = sections.flatMap((section) =>
-    section.rows.flatMap((row) =>
-      row.positions.map((cell) => ({
-        column: cell.column,
-        span: cell.span,
-        header: section.node.type === 'thead',
-        content: cellContent(cell.node.props.children),
-      })),
-    ),
-  );
   const sizing = planTableSizing(width, sizingCells);
+  const lastSection = [...sections]
+    .reverse()
+    .find((section) => section.rows.length > 0);
   let sectionIndex = 0;
   const result = Children.map(children, (section) => {
     if (
@@ -240,46 +181,39 @@ export function prepareTableColumns(
     return cloneElement(section, {
       children: Children.map(section.props.children, (row) => {
         if (!isValidElement<CellProps>(row)) return row;
-        const positions = plan.rows[rowIndex++].positions;
+        const index = rowIndex++;
+        const positions = plan.rows[index].positions;
         let cellIndex = 0;
         return cloneElement(row, {
           children: Children.map(row.props.children, (cell) => {
             if (!isValidElement<CellProps>(cell)) return cell;
             const { column, span } = positions[cellIndex++];
-            const kind = kinds
-              .slice(column, column + span)
-              .every((kind) => kind === kinds[column])
-              ? kinds[column]
-              : undefined;
-            const mergedCell = span > 1 || Number(cell.props.rowSpan ?? 1) > 1;
+            const kind = tableCellKind(kinds, column, span);
+            const rowSpan = Number(cell.props.rowSpan ?? 1);
             const size = sizingForCell(sizing.columns, {
               column,
               span,
               header: section.type === 'thead',
               content: cellContent(cell.props.children),
             });
-            const status = kind === 'required' || kind === 'requirement';
-            const centered =
-              span > 1 ||
-              (section.type === 'thead' && mergedCell) ||
-              (status && size.kind === 'compact');
+            const alignment = tableCellAlignment(
+              { span, rowSpan, header: section.type === 'thead' },
+              kind,
+              size,
+            );
             return cloneElement(cell, {
               'data-table-column': String(column),
               'data-table-column-kind': kind,
               'data-table-column-size': size.kind,
-              ...(status &&
-              span === 1 &&
-              !(section.type === 'thead' && mergedCell)
-                ? {
-                    'data-table-original-align':
-                      cell.props.style?.textAlign ?? '',
-                  }
-                : {}),
+              'data-table-bottom-edge':
+                plan === lastSection && index + rowSpan === plan.rows.length
+                  ? ''
+                  : undefined,
+              'data-table-align': alignment.textAlign,
+              'data-table-vertical-align': alignment.verticalAlign,
               style: {
                 ...cell.props.style,
                 '--docs-table-cell-min': `${size.minCh}ch`,
-                ...(centered ? { textAlign: 'center' } : {}),
-                ...(mergedCell ? { verticalAlign: 'middle' } : {}),
               } as CSSProperties,
             });
           }),

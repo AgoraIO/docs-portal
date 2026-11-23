@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import {
   createMemoryHistory,
   createRootRoute,
@@ -23,7 +24,15 @@ import type {
   ReactNode,
 } from 'react';
 import { renderToString } from 'react-dom/server';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest';
 import { DOCS_HASH_TARGET_EVENT } from '@/lib/docs-hash';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import { AccountGuidance } from './account-guidance/AccountGuidance';
@@ -3932,3 +3941,11 @@ describe('common MDX registry', () => {
     expect(components.RecipesCatalog).toBeUndefined();
   });
 });
+
+const referenceStyles = readFileSync('src/styles/reference.css', 'utf8');
+const tableStyles = document.createElement('style');
+beforeAll(() => {
+  tableStyles.textContent = referenceStyles;
+  document.head.append(tableStyles);
+});
+afterAll(() => tableStyles.remove());

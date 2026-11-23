@@ -95,7 +95,7 @@ export function DocsTable({
     const nativeTable = scrollRef.current?.querySelector(':scope > table');
     if (!(nativeTable instanceof HTMLTableElement)) return;
     const updateContent = () => {
-      applyTableContentSizing(nativeTable);
+      applyTableContentSizing(nativeTable, columns);
       updateOverflowState();
     };
     updateContent();
@@ -120,7 +120,7 @@ export function DocsTable({
       observer.disconnect();
       if (frame !== undefined) cancelAnimationFrame(frame);
     };
-  }, [updateOverflowState]);
+  }, [columns, updateOverflowState]);
 
   return (
     <div

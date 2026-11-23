@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { within } from '@testing-library/react';
-import { expect, it } from 'vitest';
+import { afterAll, beforeAll, expect, it } from 'vitest';
 import { renderDocsMdx } from '@/test/render-docs-mdx';
 
 it('gives the published extension listing prose room and keeps its ordinal column compact', async () => {
@@ -250,3 +250,11 @@ it('vertically centers row-spanning body totals and preserves authored horizonta
     },
   );
 });
+
+const referenceStyles = readFileSync('src/styles/reference.css', 'utf8');
+const tableStyles = document.createElement('style');
+beforeAll(() => {
+  tableStyles.textContent = referenceStyles;
+  document.head.append(tableStyles);
+});
+afterAll(() => tableStyles.remove());

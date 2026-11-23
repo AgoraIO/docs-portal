@@ -1,8 +1,14 @@
 import {
+  type DocsTableColumnKind,
+  planTableColumnKinds,
+  type TableMetadataCell,
+  tableCellAlignment,
+  tableCellKind,
+} from './table-metadata';
+import {
   planTableSizing,
   sizingForCell,
   type TableCellContent,
-  type TableSizingCell,
 } from './table-sizing';
 
 function contentOf(cell: HTMLTableCellElement): TableCellContent {
@@ -34,12 +40,24 @@ function contentOf(cell: HTMLTableCellElement): TableCellContent {
 
 // Composed API rows and lazy content are only inspectable after rendering.
 // This adapter uses the same policy as SSR; it never edits cell contents.
-export function applyTableContentSizing(table: HTMLTableElement) {
-  const cells: (TableSizingCell & { element: HTMLTableCellElement })[] = [];
+export function applyTableContentSizing(
+  table: HTMLTableElement,
+  declared?: readonly DocsTableColumnKind[],
+) {
+  const cells: (TableMetadataCell & {
+    element: HTMLTableCellElement;
+    bottomEdge: boolean;
+  })[] = [];
   let width = 0;
-  for (const section of [...table.children].filter((node) =>
+  const sections = [...table.children].filter((node) =>
     ['THEAD', 'TBODY', 'TFOOT'].includes(node.tagName),
-  )) {
+  );
+  const lastSection = [...sections]
+    .reverse()
+    .find((section) =>
+      [...section.children].some((row) => row.tagName === 'TR'),
+    );
+  for (const section of sections) {
     const occupied: number[] = [];
     const rows = [...section.children].filter((row) => row.tagName === 'TR');
     for (const [rowIndex, row] of rows.entries()) {
@@ -60,6 +78,12 @@ export function applyTableContentSizing(table: HTMLTableElement) {
         cells.push({
           column,
           span,
+          rowSpan,
+          bottomEdge:
+            section === lastSection && rowIndex + rowSpan === rows.length,
+          row: rowIndex,
+          section:
+            section.tagName.toLowerCase() as TableMetadataCell['section'],
           header: section.tagName === 'THEAD',
           content: contentOf(element),
           element,
@@ -72,6 +96,7 @@ export function applyTableContentSizing(table: HTMLTableElement) {
     }
   }
   if (!width) return;
+  const kinds = planTableColumnKinds(width, cells, declared);
   const sizing = planTableSizing(width, cells);
   table.dataset.tableContentLayout = sizing.intrinsic ? 'intrinsic' : 'mixed';
   table.style.setProperty(
@@ -84,13 +109,19 @@ export function applyTableContentSizing(table: HTMLTableElement) {
   );
   for (const cell of cells) {
     const size = sizingForCell(sizing.columns, cell);
+    const kind = tableCellKind(kinds, cell.column, cell.span);
+    const alignment = tableCellAlignment(cell, kind, size);
+    cell.element.dataset.tableColumn = String(cell.column);
+    cell.element.toggleAttribute('data-table-bottom-edge', cell.bottomEdge);
+    if (kind) cell.element.dataset.tableColumnKind = kind;
+    else delete cell.element.dataset.tableColumnKind;
     cell.element.dataset.tableColumnSize = size.kind;
     cell.element.style.setProperty('--docs-table-cell-min', `${size.minCh}ch`);
-    if (cell.element.hasAttribute('data-table-original-align')) {
-      cell.element.style.textAlign =
-        size.kind === 'compact'
-          ? 'center'
-          : (cell.element.dataset.tableOriginalAlign ?? '');
-    }
+    if (alignment.textAlign)
+      cell.element.dataset.tableAlign = alignment.textAlign;
+    else delete cell.element.dataset.tableAlign;
+    if (alignment.verticalAlign)
+      cell.element.dataset.tableVerticalAlign = alignment.verticalAlign;
+    else delete cell.element.dataset.tableVerticalAlign;
   }
 }

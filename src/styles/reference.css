@@ -473,3 +473,24 @@ article :where(h1) {
   > li {
   white-space: nowrap;
 }
+
+/* Layout alignment does not overwrite the author's inline styles. Removing
+   a span/status override immediately exposes the current authored value. */
+.docs-table-container
+  > section
+  > table
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td)[data-table-align="center"] {
+  /* biome-ignore lint/complexity/noImportantStyles: Temporary layout alignment must override inline authored styles without replacing them. */
+  text-align: center !important;
+}
+.docs-table-container
+  > section
+  > table
+  > :is(thead, tbody, tfoot)
+  > tr
+  > :is(th, td)[data-table-vertical-align="middle"] {
+  /* biome-ignore lint/complexity/noImportantStyles: Preserve authored inline alignment for restoration when the merged span ends. */
+  vertical-align: middle !important;
+}
