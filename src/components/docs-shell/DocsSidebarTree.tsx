@@ -27,6 +27,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/cn';
 import {
@@ -155,6 +156,7 @@ function SidebarNodeRenderer({
       href={node.href}
       linked={node.linked}
       method={node.method}
+      methodSource={node.methodSource}
       onSelectPath={onSelectPath}
       search={node.search}
       showNavigationArrow={node.showNavigationArrow}
@@ -359,6 +361,7 @@ function SidebarSection({
                       external={child.external}
                       linked={child.linked}
                       method={child.method}
+                      methodSource={child.methodSource}
                       showNavigationArrow={child.showNavigationArrow}
                       title={getSidebarDisplayTitle(child.title, child.url)}
                     />
@@ -516,6 +519,7 @@ function SidebarLinkedSection({
                       external={child.external}
                       linked={child.linked}
                       method={child.method}
+                      methodSource={child.methodSource}
                       showNavigationArrow={child.showNavigationArrow}
                       title={getSidebarDisplayTitle(child.title, child.url)}
                     />
@@ -598,6 +602,7 @@ function SidebarQuickstartGroup({
                     external={child.external}
                     linked={child.linked}
                     method={child.method}
+                    methodSource={child.methodSource}
                     showNavigationArrow={child.showNavigationArrow}
                     title={getSidebarDisplayTitle(child.title, child.url)}
                   />
@@ -689,6 +694,7 @@ function SidebarNestedSection({
                   <SidebarPageLabel
                     linked={child.linked}
                     method={child.method}
+                    methodSource={child.methodSource}
                     showNavigationArrow={child.showNavigationArrow}
                     title={getSidebarDisplayTitle(child.title, child.url)}
                   />
@@ -895,6 +901,7 @@ function SidebarPageLink({
   href,
   linked,
   method,
+  methodSource,
   onSelectPath,
   search,
   showNavigationArrow,
@@ -906,6 +913,7 @@ function SidebarPageLink({
   href?: string;
   linked?: boolean;
   method?: string;
+  methodSource?: 'authored';
   onSelectPath: () => void;
   search?: Record<string, string>;
   showNavigationArrow?: boolean;
@@ -936,6 +944,7 @@ function SidebarPageLink({
             external={external}
             linked={linked}
             method={method}
+            methodSource={methodSource}
             showNavigationArrow={showNavigationArrow}
             title={getSidebarDisplayTitle(title, url)}
           />
@@ -1003,11 +1012,8 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
     return (
       <Link
         {...props}
-        activeOptions={
-          !isChineseSidebar && search?.from
-            ? { exact: true, includeHash: true }
-            : undefined
-        }
+        activeOptions={{ exact: true, includeHash: true }}
+        activeProps={{ 'aria-current': isActive ? 'page' : undefined }}
         aria-current={isActive ? 'page' : undefined}
         onClick={handleClick}
         params={{}}
@@ -1034,17 +1040,23 @@ function SidebarPageLabel({
   external,
   linked,
   method,
+  methodSource,
   showNavigationArrow,
   title,
 }: {
   external?: boolean;
   linked?: boolean;
   method?: string;
+  methodSource?: 'authored';
   showNavigationArrow?: boolean;
   title: string;
 }) {
   const isChineseSidebar = useContext(ChineseSidebarContext);
-  if (isChineseSidebar && method) {
+  const { isMobile } = useSidebar();
+  if (
+    method &&
+    (isChineseSidebar || (methodSource === 'authored' && !isMobile))
+  ) {
     return <DocsSidebarEndpointLabel method={method} title={title} />;
   }
 

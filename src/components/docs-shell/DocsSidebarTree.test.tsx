@@ -18,12 +18,14 @@ import { describe, expect, it } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
+import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsSidebarTree } from './DocsSidebarTree';
 
 function renderSidebarTree(
   nodes: DocsSidebarNode[],
   activePath: string,
   initialUrl = activePath,
+  withHeader = false,
 ) {
   const rootRoute = createRootRoute({
     component: () => <Outlet />,
@@ -34,6 +36,18 @@ function renderSidebarTree(
     component: () => (
       <AppProviders>
         <SidebarProvider>
+          {withHeader ? (
+            <DocsSidebarHeaderBlock
+              header={{
+                title: 'Chat',
+                backLabel: 'Reference',
+                backHref: '/en/api-reference',
+              }}
+              locale="en"
+              mode="desktop"
+              onSelectPath={() => {}}
+            />
+          ) : null}
           <DocsSidebarTree
             activePath={activePath}
             nodes={nodes}
@@ -1430,6 +1444,37 @@ describe('DocsSidebarTree', () => {
 });
 
 describe('authored REST platform destinations', () => {
+  it('reuses the endpoint label for authored desktop rows and marks only the selected fragment current', async () => {
+    const url = '/en/api-reference/example';
+    renderSidebarTree(
+      [
+        { id: url, url, title: 'Overview', type: 'page' },
+        ...['create', 'query'].map((fragment) => ({
+          id: `${url}#${fragment}`,
+          url: `${url}#${fragment}`,
+          title: fragment,
+          type: 'page' as const,
+          method: 'POST',
+          methodSource: 'authored' as const,
+        })),
+      ],
+      url,
+      `${url}#query`,
+      true,
+    );
+    const selected = await screen.findByRole('link', { name: 'query POST' });
+    await waitFor(() =>
+      expect(selected).toHaveAttribute('aria-current', 'page'),
+    );
+    expect(
+      screen
+        .getAllByRole('link')
+        .filter((link) => link.hasAttribute('aria-current')),
+    ).toEqual([selected]);
+    expect(
+      selected.querySelector('[data-openapi-method="POST"]'),
+    ).not.toBeNull();
+  });
   it('uses the canonical platform href while retaining the logical fragment for selection', async () => {
     const url = '/en/api-reference/api-ref/im/push-notification-management';
     renderSidebarTree(

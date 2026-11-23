@@ -20,10 +20,10 @@ The schema accepts uppercase `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, `O
 
 ## Implementation
 
-- `source.config.ts` validates and retains both fields. Metadata is authored content; methods are not inferred from prose, titles or the first cURL command at runtime.
+- `source.config.ts` retains valid optional fields and ignores invalid method entries at runtime. The authoring coverage check reports invalid entries with source file and key. Metadata is authored content; methods are not inferred from prose, titles or the first cURL command at runtime.
 - `loadDocsPagePayload` applies metadata after English product REST menus have been assembled. It resolves only the TOCs needed by the current sidebar and caches them per source object/platform.
 - `withDocsHttpMethods` creates collapsible article groups containing an Overview and the explicitly mapped operations. Existing article outline links are reused without duplicates. Unresolved fragments are not invented. OpenAPI metadata and external links keep their existing behavior.
-- For platform articles, the current supported platform is used. A general product menu selects the first platform with documented operations. Logical URLs retain the article identity for selection and product restoration, while `href` uses the canonical platform route and exact fragment. This links directly to the selected platform and fragment without relying on a compatibility `?platform=` redirect. The sidebar anchor respects that internal `href` override.
+- For platform articles, the current supported platform is used. A general product menu uses each article's default platform; a platform without operation headings keeps an ordinary article entrance. Logical URLs retain the article identity for selection and product restoration, while `href` uses the canonical platform route and exact fragment. This links directly to the selected platform and fragment without relying on a compatibility `?platform=` redirect. The sidebar anchor respects that internal `href` override.
 - Deep links to retained references absent from the global menu receive an article-local operation menu. This does not add retired products to the catalog or global navigation.
 - Existing sidebar components and HTTP method colors render all labels. Static payloads use the same loader. No new renderer skin, dependency, endpoint route or API body transformation is introduced.
 
@@ -76,3 +76,16 @@ Badges follow explicit request declarations. Existing examples disagree with tho
 ## Local review
 
 Start the app at `http://localhost:3100`. The local-only HTML explorer at `http://localhost:3102/review.html` shows the complete inventory, first-PR versus current method labels, document/platform/method filters, and a live embedded document. Its data comes from the actual coverage test export. Screenshots, HTML and logs stay under ignored `.agent/artifacts/en-rest-mdx-method-badges/`.
+
+
+## Review follow-up (2026-11-23)
+
+- Isolated sibling TOC failures, retained plain article links and evicted rejected cache promises so later requests retry in the same process.
+- Retained the existing reference rail when appending an article-local menu. Broadcast Streaming `stream-transfer` retains the Reference entrance and more than 70 existing destinations.
+- Optional invalid method entries no longer reject the shared source import. Valid siblings remain; authoring checks report the file and offending field.
+- Existing and newly added operation links use verified headings for the selected platform. Web does not fall back to Android operations. Restoring `?from=` preserves the article's iOS operation menu and product context.
+- Desktop authored operations reuse `DocsSidebarEndpointLabel`; English OpenAPI and mobile labels keep their existing presentation. Fragment selection announces one current operation, including when the reference back link is present.
+
+Targeted validation: 76 navigation/schema/coverage tests passed; the final header/label regression run passed 45 tests. Types and lint passed, and both regional source gates reported zero new duplicate headings and zero obsolete allowances. Local Chromium checks used 1440x900 and 390x844: the multiple-user title fits two desktop lines; the longest title remains three lines; mobile entries remain 1–2 lines. Verified native iOS `?from=` links and heading positioning, Web absence of Android links, and unchanged English OpenAPI label markup. Screenshots remain in ignored `.agent/artifacts/pr1516/`.
+
+The first full run (7,429 passed, 24 skipped) exposed the existing Signaling manual-install content assertion plus the newly added header-current regression before its fix. The header regression subsequently passed; a full run of the final candidate is recorded in the PR follow-up. Full regional browser matrix and independent human acceptance are pending; local targeted evidence is not full API certification.

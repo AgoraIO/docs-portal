@@ -841,6 +841,7 @@ export async function loadDocsPagePayload(
     (page.data.httpMethod || page.data.httpMethods) &&
     !collectSidebarPageUrls(expandedSidebar).has(page.url)
       ? [
+          ...expandedSidebar,
           {
             id: page.url,
             title: page.data.title ?? page.url,
@@ -856,7 +857,7 @@ export async function loadDocsPagePayload(
           await getAuthoredRestNavigationPages(
             authoredRestSidebar,
             localePages,
-            requestedPlatform,
+            artifactPlatform,
           ),
         )
       : authoredRestSidebar;
@@ -2129,36 +2130,29 @@ async function getAuthoredRestNavigationPages(
           const text = await readProcessedText(page);
           const tabs = extractStructuredPlatformTabs(text);
           if (!tabs) return resolvePageToc(page, text);
-          const platforms = [
-            ...(preferredPlatform && tabs.platforms.includes(preferredPlatform)
-              ? [preferredPlatform]
-              : []),
-            ...tabs.platforms.filter(
-              (platform) => platform !== preferredPlatform,
-            ),
-          ];
-          for (const platform of platforms) {
-            const platformToc = normalizeToc(
-              await getTableOfContents(buildPlatformTocText(text, platform), [
-                remarkMdx,
-              ]),
-            );
-            if (
-              platformToc.some((item) =>
-                Object.hasOwn(page.data.httpMethods ?? {}, item.url.slice(1)),
-              )
-            ) {
-              return platformToc.map((item) => ({
-                ...item,
-                search: { platform },
-              }));
-            }
-          }
-          return [];
+          const platform =
+            preferredPlatform && tabs.platforms.includes(preferredPlatform)
+              ? preferredPlatform
+              : tabs.defaultPlatform;
+          const platformToc = normalizeToc(
+            await getTableOfContents(buildPlatformTocText(text, platform), [
+              remarkMdx,
+            ]),
+          );
+          return platformToc.map((item) => ({ ...item, search: { platform } }));
         })();
         variants.set(key, toc);
       }
-      return [toc.then((toc) => ({ url: page.url, data: page.data, toc }))];
+      return [
+        toc.then(
+          (toc) => ({ url: page.url, data: page.data, toc }),
+          () => {
+            // A transient sibling failure must not poison subsequent requests.
+            variants.delete(key);
+            return { url: page.url, data: page.data };
+          },
+        ),
+      ];
     }),
   );
 }

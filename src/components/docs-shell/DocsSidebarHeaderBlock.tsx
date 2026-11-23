@@ -46,6 +46,7 @@ export function DocsSidebarHeaderBlock({
     >
       {header.backHref && header.backLabel ? (
         <Link
+          activeOptions={{ exact: true }}
           className={cn(
             'flex items-center gap-2 rounded-[7px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]',
             mode === 'desktop'

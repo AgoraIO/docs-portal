@@ -38,6 +38,9 @@ httpMethods:
 
 Supported values are uppercase `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`,
 `OPTIONS`, and `TRACE`. Verify each method against the documented request.
+These fields are optional at runtime: an invalid value loses only its badge.
+Run `bun run test src/lib/rest-method-coverage.test.ts` to report invalid
+metadata with the source file and fragment key before publishing.
 Do not assign one page-level method to an article with multiple operations, or
 to authentication/overview pages that merely include request examples. Keep
 fragment keys synchronized when renaming headings. The English sidebar expands

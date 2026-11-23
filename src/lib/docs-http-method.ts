@@ -13,6 +13,52 @@ export const HTTP_METHODS = [
 
 export type HttpMethod = (typeof HTTP_METHODS)[number];
 
+export function parseHttpMethod(value: unknown): HttpMethod | undefined {
+  return typeof value === 'string' && HTTP_METHODS.includes(value as HttpMethod)
+    ? (value as HttpMethod)
+    : undefined;
+}
+
+export function parseHttpMethods(
+  value: unknown,
+): Record<string, HttpMethod> | undefined {
+  if (!value || typeof value !== 'object' || Array.isArray(value))
+    return undefined;
+  return Object.fromEntries(
+    Object.entries(value).flatMap(([key, value]) => {
+      const method = parseHttpMethod(value);
+      return key && method ? [[key, method]] : [];
+    }),
+  );
+}
+
+// Authoring checks retain file/key diagnostics; runtime metadata is optional.
+export function validateHttpMethodMetadata(
+  value: Record<string, unknown>,
+  file: string,
+): string[] {
+  const errors: string[] = [];
+  if (value.httpMethod !== undefined && !parseHttpMethod(value.httpMethod))
+    errors.push(`${file}: httpMethod must be an uppercase HTTP method`);
+  if (value.httpMethods !== undefined) {
+    if (
+      !value.httpMethods ||
+      typeof value.httpMethods !== 'object' ||
+      Array.isArray(value.httpMethods)
+    )
+      errors.push(
+        `${file}: httpMethods must map heading fragments to HTTP methods`,
+      );
+    else
+      for (const [key, method] of Object.entries(value.httpMethods))
+        if (!key || !parseHttpMethod(method))
+          errors.push(
+            `${file}: httpMethods.${key} must be an uppercase HTTP method`,
+          );
+  }
+  return errors;
+}
+
 export type RestMethodTocItem = {
   title: string;
   url: string;
@@ -37,11 +83,24 @@ export function withDocsHttpMethods(
   pages: DocsHttpMethodPage[],
 ): DocsSidebarNode[] {
   const metadata = new Map(pages.map((page) => [page.url, page]));
+  function targetFor(node: Extract<DocsSidebarNode, { type: 'page' }>) {
+    const [pageUrl, fragment] = node.url.split('#');
+    const toc = metadata.get(pageUrl)?.toc;
+    return fragment
+      ? (toc?.find((item) => item.url === `#${fragment}`) ??
+          toc?.find((item) => item.title === node.title))
+      : undefined;
+  }
   const existingUrls = new Set<string>();
   function collect(nodes: DocsSidebarNode[]) {
     for (const node of nodes) {
       if (node.type === 'section') collect(node.children);
-      else existingUrls.add(node.url);
+      else {
+        const target = targetFor(node);
+        existingUrls.add(
+          target ? node.url.split('#')[0] + target.url : node.url,
+        );
+      }
     }
   }
   collect(nodes);
@@ -67,8 +126,9 @@ export function withDocsHttpMethods(
           {
             ...node,
             id: url,
-            ...(platform ? { href: `${pageUrl}/${platform}${item.url}` } : {}),
+            href: platform ? `${pageUrl}/${platform}${item.url}` : url,
             method: data.httpMethods?.[fragment],
+            methodSource: 'authored' as const,
             search,
             title: item.title,
             url,
@@ -85,12 +145,35 @@ export function withDocsHttpMethods(
         };
       }
     }
-    const method = fragment
-      ? data?.httpMethods && Object.hasOwn(data.httpMethods, fragment)
-        ? data.httpMethods[fragment]
+    const target = targetFor(node);
+    const methodFragment = target?.url.slice(1) ?? fragment;
+    const method = methodFragment
+      ? data?.httpMethods && Object.hasOwn(data.httpMethods, methodFragment)
+        ? data.httpMethods[methodFragment]
         : undefined
       : data?.httpMethod;
-    return method ? { ...node, method } : node;
+    if (fragment && page?.toc && !target) {
+      // Keep the old article entrance, but never link into an absent platform heading.
+      return { ...node, url: pageUrl, href: pageUrl, method: undefined };
+    }
+    const { platform, ...search } = { ...node.search, ...target?.search };
+    return method
+      ? {
+          ...node,
+          method,
+          methodSource: 'authored',
+          ...(target
+            ? {
+                title: target.title,
+                url: pageUrl + target.url,
+                search,
+                href: platform
+                  ? `${pageUrl}/${platform}${target.url}`
+                  : pageUrl + target.url,
+              }
+            : {}),
+        }
+      : node;
   }
 
   return nodes.map(visit);

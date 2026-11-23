@@ -47,7 +47,7 @@ describe('source config', () => {
     );
   }, 30000);
 
-  it('validates explicit methods for authored REST pages and fragments', async () => {
+  it('drops invalid optional methods without rejecting the document', async () => {
     const { docs } = await import('../../source.config');
     const schema = docs.docs.schema;
     if (!schema || typeof schema === 'function')
@@ -58,10 +58,14 @@ describe('source config', () => {
         httpMethods: { create: 'POST', query: 'GET' },
       }).success,
     ).toBe(true);
-    expect(schema.safeParse({ httpMethod: 'FETCH' }).success).toBe(false);
-    expect(schema.safeParse({ httpMethods: { create: 'post' } }).success).toBe(
-      false,
-    );
+    const result = schema.parse({
+      title: 'Still readable',
+      httpMethod: 'FETCH',
+      httpMethods: { create: 'post', query: 'GET' },
+    });
+    expect(result.title).toBe('Still readable');
+    expect(result.httpMethod).toBeUndefined();
+    expect(result.httpMethods).toEqual({ query: 'GET' });
   });
 
   it('creates scoped docs collection globs for a focused dev subtree', () => {

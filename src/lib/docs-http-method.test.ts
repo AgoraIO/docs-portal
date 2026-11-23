@@ -81,6 +81,29 @@ describe('authored REST HTTP methods', () => {
 });
 
 describe('REST article menus', () => {
+  it('retargets old operation links to headings in the selected platform without duplicates', () => {
+    const result = withDocsHttpMethods(
+      [page(), { ...page('#create'), title: 'Create' }],
+      [
+        {
+          url,
+          data: { httpMethods: { create: 'POST', 'create-1': 'POST' } },
+          toc: [
+            { title: 'Create', url: '#create-1', search: { platform: 'ios' } },
+          ],
+        },
+      ],
+    );
+    expect(result).toMatchObject([
+      page(),
+      {
+        title: 'Create',
+        url: `${url}#create-1`,
+        href: `${url}/ios#create-1`,
+        method: 'POST',
+      },
+    ]);
+  });
   it('expands mapped headings into endpoint links and preserves platform and product context', () => {
     const result = withDocsHttpMethods(
       [{ ...page(), search: { from: '/en/realtime-media/im' } }],
@@ -123,6 +146,14 @@ describe('REST article menus', () => {
         toc: [{ title: 'Create', url: '#create' }],
       },
     ]);
-    expect(result).toEqual([page(), { ...page('#create'), method: 'POST' }]);
+    expect(result).toMatchObject([
+      page(),
+      {
+        ...page('#create'),
+        title: 'Create',
+        method: 'POST',
+        href: `${url}#create`,
+      },
+    ]);
   });
 });

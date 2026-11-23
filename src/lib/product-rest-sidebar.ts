@@ -43,8 +43,61 @@ export async function withProductSidebar(
     ? {
         ...api,
         activeTab: product.activeTab,
-        sidebar: product.sidebar,
+        sidebar: restoreArticleNavigation(product.sidebar, api, from),
         sidebarHeader: product.sidebarHeader,
       }
     : api;
+}
+
+// Product overviews have no selected SDK platform. The article's verified menu
+// is authoritative when restoring ?from= context on a platform route.
+function restoreArticleNavigation(
+  nodes: DocsSidebarNode[],
+  api: DocsPagePayload,
+  from: string,
+): DocsSidebarNode[] {
+  if (api.body.kind === 'openapi' || !api.body.platformTabs) return nodes;
+  const article = api.activePath;
+  function isArticleMenu(node: DocsSidebarNode) {
+    return (
+      node.type === 'section' &&
+      node.children.length > 0 &&
+      node.children.every(
+        (child) => child.type === 'page' && child.url.split('#')[0] === article,
+      ) &&
+      node.children.some(
+        (child) => child.type === 'page' && child.url === article,
+      )
+    );
+  }
+  function findMenu(nodes: DocsSidebarNode[]): DocsSidebarNode | undefined {
+    for (const node of nodes) {
+      if (node.type !== 'section') continue;
+      if (isArticleMenu(node)) return node;
+      const found = findMenu(node.children);
+      if (found) return found;
+    }
+  }
+  const menu = findMenu(api.sidebar);
+  function withContext(node: DocsSidebarNode): DocsSidebarNode {
+    return node.type === 'section'
+      ? { ...node, children: node.children.map(withContext) }
+      : { ...node, search: { ...node.search, from } };
+  }
+  function restore(node: DocsSidebarNode): DocsSidebarNode {
+    if (node.type === 'section') {
+      if (isArticleMenu(node)) {
+        if (menu) return withContext(menu);
+        // A platform without REST operations still retains its article link.
+        const overview = node.children.find(
+          (child) => child.type === 'page' && child.url === article,
+        );
+        if (overview) return withContext(overview);
+      }
+      return { ...node, children: node.children.map(restore) };
+    }
+    if (node.url === article && menu) return withContext(menu);
+    return node;
+  }
+  return nodes.map(restore);
 }

@@ -8,7 +8,10 @@ import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
 import { describe, expect, it } from 'vitest';
-import type { DocsHttpMethodMetadata } from './docs-http-method';
+import {
+  type DocsHttpMethodMetadata,
+  validateHttpMethodMetadata,
+} from './docs-http-method';
 import { loadDocsPagePayload } from './docs-page.server';
 import type { DocsSidebarNode, DocsSidebarPageNode } from './docs-tree';
 import { resolveOpenApiEndpointRoute } from './openapi/lanes';
@@ -85,6 +88,25 @@ function declaredOperationFragments(text: string, file: string): string[] {
 }
 
 describe('complete English REST method coverage', () => {
+  it('reports invalid optional method metadata with its source file and key', () => {
+    const errors = references.flatMap((file) => {
+      const text = readFileSync(file, 'utf8');
+      const frontmatter = /^---\n([\s\S]*?)\n---/.exec(text)?.[1];
+      return validateHttpMethodMetadata(
+        (loadYaml(frontmatter ?? '') ?? {}) as Record<string, unknown>,
+        file,
+      );
+    });
+    expect(errors).toEqual([]);
+    expect(
+      validateHttpMethodMetadata(
+        { httpMethods: { create: 'post' } },
+        'broken.mdx',
+      ),
+    ).toEqual([
+      'broken.mdx: httpMethods.create must be an uppercase HTTP method',
+    ]);
+  });
   it('requires method metadata on every REST reference with HTTP request declarations', () => {
     const missing = references.filter((file) => {
       const text = readFileSync(file, 'utf8');
