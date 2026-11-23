@@ -3,7 +3,7 @@ title: Media Gateway event types
 description: Event types returned by Media Gateway channel event callbacks.
 ---
 
-After you enable the Agora message notification service, Agora sends channel event notifications to your server through HTTPS `POST` callbacks. When the callback request body contains `product_id: 10`, the event belongs to Media Gateway.
+After you enable the Agora message notification service, Agora sends channel event notifications to your server through HTTPS `POST` callbacks. When the callback request body contains `productId: 10`, the event belongs to Media Gateway.
 
 This page describes the Media Gateway event types returned in channel event callbacks.
 
