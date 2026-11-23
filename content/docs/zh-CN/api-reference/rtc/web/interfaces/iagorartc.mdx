@@ -75,8 +75,8 @@ autoplay-failed(): void
 如果你需要更灵活地监听自动播放失败事件，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 方法中传入该回调来代替 [onAutoplayFailed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onautoplayfailed)。
 
 ```javascript
-AgoraRTC.on("autoplay-failed", (info) => {
-  console.log("Autoplay failed!", info.state, info.device);
+AgoraRTC.on("autoplay-failed", () => {
+  console.log("Autoplay failed!");
 });
 ```
 
@@ -304,7 +304,7 @@ onAudioAutoplayFailed: function
   isAudioAutoplayFailed = true;
   const btn = document.createElement("button");
   btn.innerText = "Click me to resume the audio playback";
-  btn.onClick = () => {
+  btn.onclick = () => {
     isAudioAutoplayFailed = false;
     btn.remove();
   };
@@ -316,6 +316,8 @@ onAudioAutoplayFailed: function
 
 需要注意的是，短时间内可能会有多个音频轨道对象都调用了 `play`，此时会触发多次 `onAudioAutoplayFailed`。示例代码中通过 `isAudioAutoplayFailed` 这个对象防止创建重复的按钮对象。
 :::
+
+使用 `agora-rtc-sdk-ng/esm` 的具名导出时，调用 `onAudioAutoplayFailed(callback)` 注册回调。该 ESM 函数接收回调函数作为参数；上面的 `AgoraRTC` 对象属性采用赋值方式。
 
 #### Type declaration
 
@@ -373,15 +375,18 @@ SDK 在音频或视频轨道自动播放失败时触发该回调。
  AgoraRTC.onAutoplayFailed = () => {
   const btn = document.createElement("button");
   btn.innerText = "Click me to resume the audio/video playback";
-  btn.onClick = () => {
+  btn.onclick = () => {
     btn.remove();
   };
   document.body.append(btn);
+};
 ```
 
 :::caution[注意]
 由于自动播放失败后在用户通过手势点击恢复播放之前，`onAutoplayFailed` 只会触发一次，因此在业务代码中不需要像 `onAudioAutoplayFailed` 回调一样维护 `isAutoplayFailed` 状态。
 :::
+
+使用 `agora-rtc-sdk-ng/esm` 的具名导出时，调用 `onAutoplayFailed(callback)` 注册回调。该 ESM 函数接收回调函数作为参数；上面的 `AgoraRTC` 对象属性采用赋值方式。
 
 #### Type declaration
 
@@ -430,6 +435,8 @@ AgoraRTC.onCameraChanged = (info) => {
 **Parameters**
 
 - **deviceInfo**：设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)。
+
+使用 `agora-rtc-sdk-ng/esm` 的具名导出时，调用 `onCameraChanged(callback)` 注册回调。该 ESM 函数接收回调函数作为参数；上面的 `AgoraRTC` 对象属性采用赋值方式。
 
 #### Type declaration
 
@@ -490,6 +497,8 @@ AgoraRTC.onMicrophoneChanged = (info) => {
 **Parameters**
 
 - **deviceInfo**：设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)。
+
+使用 `agora-rtc-sdk-ng/esm` 的具名导出时，调用 `onMicrophoneChanged(callback)` 注册回调。该 ESM 函数接收回调函数作为参数；上面的 `AgoraRTC` 对象属性采用赋值方式。
 
 #### Type declaration
 
@@ -601,6 +610,8 @@ onSecurityPolicyViolation: function
 
 当声网服务相关的资源加载或请求发送因为触发浏览器的 CSP（Content Security Policy，内容安全策略）规则而失败时，SDK 会触发该回调。
  收到该回调后，请及时调整你的 CSP 设置，确保能正常体验声网的服务。
+
+使用 `agora-rtc-sdk-ng/esm` 的具名导出时，调用 `onSecurityPolicyViolation(callback)` 注册回调。该 ESM 函数接收回调函数作为参数；上面的 `AgoraRTC` 对象属性采用赋值方式。
 
 #### Type declaration
 
@@ -1682,7 +1693,7 @@ getSupportedCodec(): Promise&lt;object&gt;
 
 获取 Agora Web SDK 对当前浏览器支持的编解码格式。
 
-调用该方法会返回声网服务与当前浏览器同时支持的编解码格式。目前而言，视频支持 VP8 及 H.264 格式，音频支持 OPUS 格式。
+该方法解析浏览器 SDP 中声明的编解码格式。实际返回的项目取决于浏览器能力，不代表这些格式在每种频道或 SDK 互通组合中都可用。
 
 :::note[注意事项]
 - 该方法支持所有浏览器。对于不支持 WebRTC 或无法识别的浏览器环境，编解码列表返回为空。
@@ -1707,8 +1718,8 @@ Promise&lt;object&gt;
 
 调用该方法会返回一个 `Promise` 对象，在 `.then(function(result){})` 回调中，`result` 包含以下属性：
 
-- `video`: 数组类型，支持的视频编解码格式。可能含有 `"H264"`、`"VP8"` 两种取值，或为空数组。
-- `audio`: 数组类型，支持的音频编解码格式。可能含有 `"OPUS"`，或为空数组。
+- `video`: 数组类型，支持的视频编解码格式。可能含有 `"VP8"`、`"VP9"`、`"AV1"`、`"H264"`、`"H265"`，或为空数组。
+- `audio`: 数组类型，支持的音频编解码格式。可能含有 `"OPUS"`、`"PCMU"`、`"PCMA"`、`"G722"`，或为空数组。
 
 </ApiReturns>
 

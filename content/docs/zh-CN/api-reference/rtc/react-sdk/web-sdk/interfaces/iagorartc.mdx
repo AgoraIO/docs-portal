@@ -146,8 +146,8 @@ autoplay-failed(): void
 如果你需要更灵活地监听自动播放失败事件，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#on) 方法中传入该回调来代替 [onAutoplayFailed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#onautoplayfailed)。
 
 ```javascript
-AgoraRTC.on("autoplay-failed", (info) => {
-  console.log("Autoplay failed!", info.state, info.device);
+AgoraRTC.on("autoplay-failed", () => {
+  console.log("Autoplay failed!");
 });
 ```
 :::
@@ -376,7 +376,7 @@ onAudioAutoplayFailed: function
   isAudioAutoplayFailed = true;
   const btn = document.createElement("button");
   btn.innerText = "Click me to resume the audio playback";
-  btn.onClick = () => {
+  btn.onclick = () => {
     isAudioAutoplayFailed = false;
     btn.remove();
   };
@@ -444,10 +444,11 @@ SDK 在音频或视频轨道自动播放失败时触发该回调。
  AgoraRTC.onAutoplayFailed = () => {
   const btn = document.createElement("button");
   btn.innerText = "Click me to resume the audio/video playback";
-  btn.onClick = () => {
+  btn.onclick = () => {
     btn.remove();
   };
   document.body.append(btn);
+};
 ```
 
 **注意：**

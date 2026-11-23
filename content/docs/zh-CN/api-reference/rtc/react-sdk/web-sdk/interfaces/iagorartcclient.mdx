@@ -763,7 +763,7 @@ live-streaming-warning(url: string, warning: AgoraRTCError): void
 
 在调用 [startLiveStreaming](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#startlivestreaming) 成功开始推流后，推流中途发生警告时，会通过这个事件抛出。
 
-你可以访问 `err.code` 来获取警告码字符串，下面列举可能出现的警告：
+你可以访问 `warning.code` 来获取警告码字符串，下面列举可能出现的警告：
 
 - `LIVE_STREAMING_WARN_STREAM_NUM_REACH_LIMIT`: 推流超过 10 路流。
 - `LIVE_STREAMING_WARN_FAILED_LOAD_IMAGE`: 推流中的背景图片或者水印地址无法拉取。
@@ -1710,7 +1710,7 @@ publish(tracks: [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfa
 
 </ParameterType>
 
-通过 [AgoraRTC.createMicrophoneAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createmicrophoneaudiotrack) / [AgoraRTC.createCameraTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createcameravideotrack) 或其他方法创建的本地 Track 对象。
+通过 [AgoraRTC.createMicrophoneAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createmicrophoneaudiotrack) / [AgoraRTC.createCameraVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createcameravideotrack) 或其他方法创建的本地 Track 对象。
 
 </Parameter>
 </ParameterList>
@@ -1740,7 +1740,7 @@ subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk
 订阅远端用户的音视频轨道。
 
 ```javascript
-await client.subscribe(user，"audio");
+await client.subscribe(user, "audio");
 user.audioTrack.play();
 ```
 
@@ -1794,7 +1794,7 @@ subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk
 订阅远端用户的音视频轨道。
 
 ```javascript
-await client.subscribe(user，"audio");
+await client.subscribe(user, "audio");
 user.audioTrack.play();
 ```
 
@@ -1852,7 +1852,7 @@ subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/react-sdk/web-sdk
 订阅远端用户的音视频轨道。
 
 ```javascript
-await client.subscribe(user，"audio");
+await client.subscribe(user, "audio");
 user.audioTrack.play();
 ```
 
@@ -2014,10 +2014,10 @@ startChannelMediaRelay(config: [IChannelMediaRelayConfiguration](/zh-CN/api-refe
 
 - [AgoraRTCClient.on("channel-media-relay-state")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_channel_media_relay_state)，报告当前的跨频道媒体流转发状态和错误码。
 
-  - 如果转发中途出现异常，该回调中 `state` 为 3，`code` 为错误码。你可以尝试再次调用本方法。
+  - 如果转发中途出现异常，该回调中 `state` 为 `"RELAY_STATE_FAILURE"`，`code` 为错误码。你可以尝试再次调用本方法。
 - [AgoraRTCClient.on("channel-media-relay-event")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_channel_media_relay_event)，报告跨频道媒体流转发相关的事件。
 
-  - 如果跨频道服务开始向目标频道发送数据包，会触发回调，`code` 为 4.
+  - 如果跨频道服务开始向目标频道发送数据包，会触发回调，`event` 为 `"PACKET_SENT_TO_DEST_CHANNEL"`。
 
 :::note[注意事项]
 - 跨频道媒体流转发功能需要联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 开通。
@@ -2712,6 +2712,10 @@ getLocalAudioStats(): [LocalAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/
 getLocalVideoStats(): [LocalVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats)
 
 </ApiSignature>
+
+:::info[自从]
+*4.1.0*
+:::
 
 获取本地视频相关信息。
 

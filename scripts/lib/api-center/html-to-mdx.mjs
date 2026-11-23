@@ -318,6 +318,9 @@ function loadHtmlPage({
       : article.find('.shortdesc, .lead, .tsd-comment-shortform');
   const descriptionNode = descriptionCandidates
     .filter((_, node) => {
+      // A TypeDoc member's lead belongs to that member, even when the page
+      // has no introduction. Promoting it also removes it from the body.
+      if ($(node).closest('.tsd-member').length > 0) return false;
       const nodeArticle = $(node).closest('article').get(0);
       return (nodeArticle ?? articleNode) === (titleArticle ?? articleNode);
     })

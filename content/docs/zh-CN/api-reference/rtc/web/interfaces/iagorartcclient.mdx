@@ -312,6 +312,7 @@ SDK 监测到异常事件回调。
 | 2001 | AUDIO_INPUT_LEVEL_TOO_LOW | 发送音量过低 |
 | 2002 | AUDIO_OUTPUT_LEVEL_TOO_LOW | 接收音量过低 |
 | 2003 | SEND_AUDIO_BITRATE_TOO_LOW | 音频发送码率过低 |
+| 2004 | VIDEO_ENCODE_FAILED | 本地视频编码失败 |
 | 2005 | RECV_AUDIO_DECODE_FAILED | 接收音频解码失败 |
 
 **恢复事件**详见下表：
@@ -325,6 +326,7 @@ SDK 监测到异常事件回调。
 | 4001 | AUDIO_INPUT_LEVEL_TOO_LOW_RECOVER | 发送音量恢复正常 |
 | 4002 | AUDIO_OUTPUT_LEVEL_TOO_LOW_RECOVER | 接收音量恢复正常 |
 | 4003 | SEND_AUDIO_BITRATE_TOO_LOW_RECOVER | 音频发送码率恢复正常 |
+| 4004 | VIDEO_ENCODE_FAILED_RECOVER | 本地视频编码恢复正常 |
 | 4005 | RECV_AUDIO_DECODE_FAILED_RECOVER | 接收音频解码恢复正常 |
 
 <ParameterList title="Parameters">
@@ -559,7 +561,7 @@ live-streaming-warning(url: string, warning: AgoraRTCError): void
 
 在调用 [startLiveStreaming](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#startlivestreaming) 成功开始推流后，推流中途发生警告时，会通过这个事件抛出。
 
-你可以访问 `err.code` 来获取警告码字符串，下面列举可能出现的警告：
+你可以访问 `warning.code` 来获取警告码字符串，下面列举可能出现的警告：
 
 - `LIVE_STREAMING_WARN_STREAM_NUM_REACH_LIMIT`: 推流超过 10 路流。
 - `LIVE_STREAMING_WARN_FAILED_LOAD_IMAGE`: 推流中的背景图片或者水印地址无法拉取。
@@ -1554,7 +1556,7 @@ publish(tracks: [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrac
 
 </ParameterType>
 
-通过 [AgoraRTC.createMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createmicrophoneaudiotrack) / [AgoraRTC.createCameraTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcameravideotrack) 或其他方法创建的本地 Track 对象。
+通过 [AgoraRTC.createMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createmicrophoneaudiotrack) / [AgoraRTC.createCameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcameravideotrack) 或其他方法创建的本地 Track 对象。
 
 </Parameter>
 </ParameterList>
@@ -1584,7 +1586,7 @@ subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/ia
 订阅远端用户的音视频轨道。
 
 ```javascript
-await client.subscribe(user，"audio");
+await client.subscribe(user, "audio");
 user.audioTrack.play();
 ```
 
@@ -1638,7 +1640,7 @@ subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/ia
 订阅远端用户的音视频轨道。
 
 ```javascript
-await client.subscribe(user，"audio");
+await client.subscribe(user, "audio");
 user.audioTrack.play();
 ```
 
@@ -1696,7 +1698,7 @@ subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/ia
 订阅远端用户的音视频轨道。
 
 ```javascript
-await client.subscribe(user，"audio");
+await client.subscribe(user, "audio");
 user.audioTrack.play();
 ```
 
@@ -1858,10 +1860,10 @@ startChannelMediaRelay(config: [IChannelMediaRelayConfiguration](/zh-CN/api-refe
 
 - [AgoraRTCClient.on("channel-media-relay-state")](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_channel_media_relay_state)，报告当前的跨频道媒体流转发状态和错误码。
 
-  - 如果转发中途出现异常，该回调中 `state` 为 3，`code` 为错误码。你可以尝试再次调用本方法。
+  - 如果转发中途出现异常，该回调中 `state` 为 `"RELAY_STATE_FAILURE"`，`code` 为错误码。你可以尝试再次调用本方法。
 - [AgoraRTCClient.on("channel-media-relay-event")](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_channel_media_relay_event)，报告跨频道媒体流转发相关的事件。
 
-  - 如果跨频道服务开始向目标频道发送数据包，会触发回调，`code` 为 4.
+  - 如果跨频道服务开始向目标频道发送数据包，会触发回调，`event` 为 `"PACKET_SENT_TO_DEST_CHANNEL"`。
 
 :::note[注意事项]
 - 跨频道媒体流转发功能需要联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 开通。
@@ -2055,7 +2057,7 @@ setLowStreamParameter(streamParameter: [LowStreamParameter](/zh-CN/api-reference
 
 如果你调用 [enableDualStream](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#enabledualstream) 开启了双流模式，该方法设置小流的视频属性。
 
-如果你不设置小流的视频属性，SDK 会根据你的视频流属性自动适配小流的视频属性。
+如果不设置，SDK 使用默认的小流配置：分辨率（宽 × 高）160 × 120、帧率 15 fps、码率 50 Kbps。浏览器限制可能使实际生效的参数与配置不同。
 
 :::note[注意事项]
 - 由于不同的设备和浏览器对于视频参数设置有不同的限制，`setLowStreamParameter` 设置的视频参数可能不会生效：
@@ -2601,6 +2603,10 @@ getLocalAudioStats(): [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interf
 getLocalVideoStats(): [LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localvideotrackstats)
 
 </ApiSignature>
+
+:::info[自从]
+*4.1.0*
+:::
 
 获取本地视频相关信息。
 
@@ -4314,13 +4320,13 @@ setDualStreamMode(mode: [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/web/enu
 
 你可以通过该方法设置如下双流模式：
 
-- `AUTO_SIMULCAST_MODE`，小流自适应模式，即发送端不主动发送小流。发送端在收到小流申请后，开始自动发送小流。
-- `DISABLE_SIMULCAST_MODE`，表示始终不发送小流。
-- `ENABLE_SIMULCAST_MODE`，表示始终发送小流。
+- `AUTO_SIMULCAST_STREAM`，小流自适应模式，即发送端不主动发送小流。发送端在收到小流申请后，开始自动发送小流。
+- `DISABLE_SIMULCAST_STREM`，表示始终不发送小流。
+- `ENABLE_SIMULCAST_STREAM`，表示始终发送小流。
 
 和原来的 [enableDualStream](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#enabledualstream)/[disableDualStream](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#disabledualstream) 相比：
 
-- 调用 `setDualStreamMode` 并设置 `mode` 为 `DISABLE_SIMULCAST_MODE`，跟调用 `disableDualStream` 效果相同；调用 `setDualStreamMode` 并设置 `mode` 为 `ENABLE_SIMULCAST_MODE`，跟调用 `enableDualStream` 效果相同。
+- 调用 `setDualStreamMode` 并设置 `mode` 为 `DISABLE_SIMULCAST_STREM`，跟调用 `disableDualStream` 效果相同；调用 `setDualStreamMode` 并设置 `mode` 为 `ENABLE_SIMULCAST_STREAM`，跟调用 `enableDualStream` 效果相同。
 - `setDualStreamMode` 和 `enableDualStream`/`disableDualStream` 在加入频道前后都能调用；如果同时调用，则以后调用的方法中的设置为准。
 
 为确保集成逻辑清晰，我们建议你选取一套 API 进行集成。声网规划在后续版本中逐渐废弃原来的 `enableDualStream` 和 `disableDualStream`。

@@ -30,6 +30,42 @@ async function compileGeneratedMdx(source: string) {
 }
 
 describe('API Center shared HTML to MDX converter', () => {
+  it.each(['en', 'zh-CN'])(
+    'keeps the first TypeDoc member lead under its anchor in %s',
+    async (locale) => {
+      const memberDescription =
+        locale === 'en'
+          ? 'High-resolution video stream.'
+          : '高分辨率的视频大流。';
+      const options = {
+        html: `<main><h1>StreamType</h1><section class="tsd-panel tsd-member"><a name="high_stream"></a><h3>HIGH_STREAM</h3><div class="tsd-comment"><div class="lead"><p>${memberDescription}</p></div></div></section></main>`,
+        sourcePath: 'enums/streamtype.html',
+        sourceUrl: 'https://example.com/enums/streamtype',
+        rootSelector: 'main',
+      };
+      expect(extractHtmlPageMetadata(options).description).toBe('');
+      const result = await convertHtmlToMdx(options);
+      expect(result.description).toBe('');
+      expect(result.body).toContain(memberDescription);
+      expect(result.body.indexOf('high_stream')).toBeLessThan(
+        result.body.indexOf(memberDescription),
+      );
+      await expect(compileGeneratedMdx(result.body)).resolves.toBeTruthy();
+    },
+  );
+
+  it('promotes the page introduction while retaining member descriptions', async () => {
+    const result = await convertHtmlToMdx({
+      html: '<main><h1>Options</h1><section class="tsd-panel tsd-comment"><div class="lead"><p>Page introduction.</p></div></section><section class="tsd-panel tsd-member"><h3>level</h3><div class="lead"><p>Member description.</p></div></section></main>',
+      sourcePath: 'interfaces/options.html',
+      sourceUrl: 'https://example.com/interfaces/options',
+      rootSelector: 'main',
+    });
+    expect(result.description).toBe('Page introduction.');
+    expect(result.body).toContain('Member description.');
+    expect(result.body).not.toContain('Page introduction.');
+  });
+
   it.each([
     'href="mai\' + \'lto:sales@shengwang.cn"',
     'href="#" onclick="location.href=\'mailto:sales@shengwang.cn\'; return false;"',
