@@ -1234,10 +1234,9 @@ components:
           maximum: 20000
           description: >-
             Encoding bitrate of the main stream in Kbps. If omitted, the source stream bitrate is
-            followed; for H.264, the output bitrate is limited to the corresponding reference bitrate.
-            If set to `0`, Agora automatically chooses a bitrate based on width and height.
-            If set to a positive value, Agora uses that value without automatically reducing it to
-            the recommended bitrate. For H.264 reference values, see
+            used. If set to `0`, Agora automatically chooses a bitrate based on width and height.
+            If you specify a positive value within the supported range, Agora does not automatically
+            adjust that setting to match the recommended bitrate. For H.264 reference values, see
             [Common video profiles](/en/realtime-media/rtmp-gateway/reference/video-profile).
           x-docs-callouts:
             - type: info

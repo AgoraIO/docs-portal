@@ -1,9 +1,9 @@
 ---
 title: "Common video profiles"
-description: "Recommended video bitrates and bitrate selection behavior for Media Gateway transcoding."
+description: "Reference bitrates for configuring Media Gateway video transcoding."
 ---
 
-Use the following reference values when configuring the output resolution, frame rate, and bitrate in `settings.transcoding.video` of a stream configuration template. These recommendations apply to H.264 video in live broadcasting scenarios.
+When video transcoding is enabled, use the following reference values to configure the output resolution, frame rate, and bitrate in `settings.transcoding.video` of a stream configuration template. These recommendations apply to H.264 video in live broadcasting scenarios.
 
 ## Recommended bitrates
 
@@ -21,14 +21,9 @@ Use the following reference values when configuring the output resolution, frame
 | 1920 × 1080 | 30 | 3780 |
 | 1920 × 1080 | 60 | 5730 |
 
-## How the output bitrate is selected
+## Bitrate considerations
 
-The `settings.transcoding.video.bitrate` value controls bitrate selection:
+- If you specify a positive `video.bitrate` value within the API's supported range, Media Gateway does not automatically adjust that setting to match the recommendations in the table. Choose an appropriate value for your resolution and frame rate.
+- In bitrate-following mode, Media Gateway uses these reference values to limit the bitrate.
 
-- **Omitted (follow the source bitrate)**: Media Gateway follows the source stream bitrate and limits the output bitrate to the corresponding reference bitrate above.
-- **Set to `0` (automatic selection)**: Media Gateway chooses a bitrate based on the configured width and height.
-- **Set to a positive value (explicit bitrate)**: Media Gateway uses the specified bitrate in Kbps. It does not automatically reduce this value to the recommended bitrate, even if the specified value exceeds the recommendation. Use the table to choose an appropriate value for your resolution and frame rate.
-
-For example, the recommended bitrate for 1280 × 720 at 30 fps is `2400` Kbps. If you explicitly set `video.bitrate` to `5000`, Media Gateway does not reduce that configured value to `2400`.
-
-For the full configuration schema, see [Create or reset a stream configuration template](/en/api-reference/api-ref/rtmp-gateway/create-reset-template).
+For parameter ranges and the behavior when `video.bitrate` is omitted or set to `0`, see [Create or reset a stream configuration template](/en/api-reference/api-ref/rtmp-gateway/create-reset-template).
