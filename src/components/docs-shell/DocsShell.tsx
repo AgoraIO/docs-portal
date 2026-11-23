@@ -572,9 +572,8 @@ export function DocsShell({
                       productScopes={productScopes}
                     />
                   </div>
-                ) : (
-                  <DocsSiteMenu locale={currentLocale} />
-                )}
+                ) : null}
+                <DocsSiteMenu locale={currentLocale} />
                 <Button
                   aria-label={themeLabel}
                   aria-pressed={isDarkTheme}
@@ -885,47 +884,25 @@ function MobileSidebar({
               </>
             )}
           </div>
-          {currentLocale === 'en' && (
-            <div className="flex flex-col gap-2 border-t border-border pt-4">
-              <div className="flex items-center gap-2">
-                <Button
-                  aria-label={themeLabel}
-                  aria-pressed={isDarkTheme}
-                  onClick={toggleTheme}
-                  size="icon"
-                  variant="ghost"
-                >
-                  {isDarkTheme ? <SunIcon /> : <MoonIcon />}
-                  <span className="sr-only">{themeLabel}</span>
-                </Button>
-              </div>
-            </div>
-          )}
         </div>
       </ScrollArea>
-      {currentLocale === 'zh-CN' && (
-        <div
-          className="flex shrink-0 items-center gap-2 border-t border-border px-3 py-2 text-muted-foreground sm:px-4"
-          data-testid="docs-mobile-sidebar-tools"
+      <div
+        className="flex shrink-0 items-center gap-2 border-t border-border px-3 py-2 text-muted-foreground sm:px-4"
+        data-testid="docs-mobile-sidebar-tools"
+      >
+        <DocsSiteMenu locale={currentLocale} mobile onNavigate={onSelectPath} />
+        <Button
+          aria-label={themeLabel}
+          aria-pressed={isDarkTheme}
+          className="size-11"
+          onClick={toggleTheme}
+          size="icon"
+          variant="ghost"
         >
-          <DocsSiteMenu
-            locale={currentLocale}
-            mobile
-            onNavigate={onSelectPath}
-          />
-          <Button
-            aria-label={themeLabel}
-            aria-pressed={isDarkTheme}
-            className="size-11"
-            onClick={toggleTheme}
-            size="icon"
-            variant="ghost"
-          >
-            {isDarkTheme ? <SunIcon /> : <MoonIcon />}
-            <span className="sr-only">{themeLabel}</span>
-          </Button>
-        </div>
-      )}
+          {isDarkTheme ? <SunIcon /> : <MoonIcon />}
+          <span className="sr-only">{themeLabel}</span>
+        </Button>
+      </div>
     </div>
   );
 }
