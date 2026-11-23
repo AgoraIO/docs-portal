@@ -52,3 +52,32 @@ it('rejects an empty or invalid response and preserves positive comments', () =>
   expect(submission?.reasons).toEqual(['useful_examples']);
   expect(submission?.details).toBe('正向说明');
 });
+
+it.each(['yes', 'no'] as const)(
+  'builds an English %s GitHub handoff without query or hash',
+  (helpfulness) => {
+    const submission = prepareDocsFeedback({
+      ...base,
+      locale: 'en',
+      pageTitle: 'Video Calling overview',
+      helpfulness,
+      reasons: [
+        helpfulness === 'yes' ? 'useful_examples' : 'incorrect_or_outdated',
+      ],
+      details: 'Please add an example.',
+    });
+    if (!submission) throw new Error('Expected valid English feedback');
+    const url = new URL(buildFeedbackIssueUrl(submission));
+    expect(url.searchParams.get('title')).toBe(
+      'Docs feedback: Video Calling overview',
+    );
+    const body = url.searchParams.get('body') ?? '';
+    expect(body).toContain(
+      helpfulness === 'yes'
+        ? 'Useful examples'
+        : 'Incorrect or outdated content',
+    );
+    expect(body).toContain(`Helpful: ${helpfulness === 'yes' ? 'Yes' : 'No'}`);
+    expect(body).not.toMatch(/[\u4e00-\u9fff]|secret=hidden|#section/);
+  },
+);

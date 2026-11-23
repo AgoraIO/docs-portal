@@ -1,16 +1,20 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { I18nextProvider } from 'react-i18next';
-import { beforeEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { i18n } from '@/lib/i18n/i18n';
 import { DocsPageFeedback } from './DocsPageFeedback';
 
-const { capture, report } = vi.hoisted(() => ({
+const { capture, report, opened, prompted, issueClicked } = vi.hoisted(() => ({
   capture: vi.fn(),
   report: vi.fn(),
+  opened: vi.fn(),
+  prompted: vi.fn(),
+  issueClicked: vi.fn(),
 }));
 vi.mock('@/lib/analytics/posthog', () => ({
-  captureDocsFeedbackOpened: vi.fn(),
-  captureDocsFeedbackIssueClicked: vi.fn(),
+  captureDocsFeedbackOpened: opened,
+  captureDocsFeedbackPrompted: prompted,
+  captureDocsFeedbackIssueClicked: issueClicked,
   captureDocsPageFeedback: capture,
   captureDocsFeedbackSubmission: report,
 }));
@@ -19,8 +23,12 @@ vi.mock('@/lib/analytics/measurement', () => ({
 }));
 beforeEach(() => {
   capture.mockClear();
+  opened.mockClear();
+  prompted.mockClear();
+  issueClicked.mockClear();
   report.mockReset().mockResolvedValue(true);
 });
+afterEach(() => vi.restoreAllMocks());
 
 it('expands follow-up feedback below the votes without opening a modal', async () => {
   render(
@@ -109,20 +117,155 @@ it('expands follow-up feedback below the votes without opening a modal', async (
   expect(report.mock.calls[0][0]).toEqual(first);
   expect(capture).toHaveBeenCalledTimes(2);
   expect(screen.queryByText('开始新问题')).not.toBeInTheDocument();
+  expect(opened).not.toHaveBeenCalled();
+  expect(issueClicked).not.toHaveBeenCalled();
 });
 
-it('preserves the English feedback form', async () => {
+it.each(['yes', 'no'] as const)(
+  'supports the English inline %s flow, retry, and GitHub follow-up',
+  async (value) => {
+    report.mockResolvedValueOnce(false).mockResolvedValue(true);
+    render(
+      <I18nextProvider i18n={i18n}>
+        <DocsPageFeedback locale="en" />
+      </I18nextProvider>,
+    );
+    expect(
+      screen.getAllByRole('button').map((button) => button.textContent),
+    ).toEqual(['Yes', 'No']);
+    const button = screen.getByRole('button', {
+      name: value === 'yes' ? 'Yes' : 'No',
+    });
+    fireEvent.click(button);
+    expect(opened).toHaveBeenCalledExactlyOnceWith({ locale: 'en', value });
+    expect(button).toHaveAttribute('aria-expanded', 'true');
+    expect(button).toHaveAttribute('data-variant', 'default');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(screen.getAllByRole('checkbox')).toHaveLength(
+      value === 'yes' ? 5 : 6,
+    );
+    const reason =
+      value === 'yes' ? 'Useful examples' : 'Incorrect or outdated content';
+    fireEvent.click(screen.getByRole('checkbox', { name: reason }));
+    fireEvent.change(screen.getByRole('textbox'), {
+      target: { value: 'Please add a complete example.' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Collapse' }));
+    expect(opened).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(button).toHaveFocus());
+    fireEvent.click(button);
+    expect(opened).toHaveBeenCalledTimes(2);
+    expect(screen.getByRole('textbox')).toHaveValue(
+      'Please add a complete example.',
+    );
+    expect(screen.getByRole('checkbox', { name: reason })).toBeChecked();
+    expect(capture).toHaveBeenCalledExactlyOnceWith({ locale: 'en', value });
+    fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
+    expect(button).toBeDisabled();
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      "Couldn't submit your feedback.",
+    );
+    expect(screen.getByRole('textbox')).toHaveValue(
+      'Please add a complete example.',
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
+    await screen.findByText('Thanks for your feedback.');
+    expect(report.mock.calls[0][0]).toEqual(report.mock.calls[1][0]);
+    expect(report.mock.calls[1][0]).toMatchObject({
+      locale: 'en',
+      helpfulness: value,
+    });
+    const url = new URL(
+      screen
+        .getByRole('link', { name: 'Create a GitHub issue' })
+        .getAttribute('href') ?? '',
+    );
+    expect(url.searchParams.get('title')).toMatch(/^Docs feedback:/);
+    expect(url.searchParams.get('body')).toContain(reason);
+    expect(url.searchParams.get('body')).toContain(
+      'Please add a complete example.',
+    );
+    expect(issueClicked).not.toHaveBeenCalled();
+    const issueLink = screen.getByRole('link', {
+      name: 'Create a GitHub issue',
+    });
+    issueLink.addEventListener('click', (event) => event.preventDefault());
+    fireEvent.click(issueLink);
+    expect(issueClicked).toHaveBeenCalledExactlyOnceWith({
+      locale: 'en',
+      value,
+      feedbackId: report.mock.calls[1][0].id,
+    });
+    expect(report).toHaveBeenCalledTimes(2);
+    expect(screen.getByTestId('docs-feedback').textContent).not.toMatch(
+      /[\u4e00-\u9fff]/,
+    );
+    fireEvent.click(button);
+    expect(screen.getByRole('checkbox', { name: reason })).not.toBeChecked();
+    expect(screen.getByRole('textbox')).toHaveValue('');
+    expect(
+      screen.queryByRole('button', { name: 'Submit' }),
+    ).not.toBeInTheDocument();
+  },
+);
+
+it('tracks English exposure once only after the feedback enters the viewport', async () => {
+  let top = window.innerHeight + 100;
+  vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(
+    () => ({
+      width: 100,
+      height: 100,
+      top,
+      bottom: top + 100,
+      left: 0,
+      right: 100,
+      x: 0,
+      y: top,
+      toJSON: () => ({}),
+    }),
+  );
   render(
     <I18nextProvider i18n={i18n}>
       <DocsPageFeedback locale="en" />
     </I18nextProvider>,
   );
-  fireEvent.click(screen.getByRole('button', { name: 'Send feedback' }));
-  expect(await screen.findByLabelText('Details')).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: 'Open issue' })).toHaveAttribute(
-    'href',
-    expect.stringContaining(
-      'https://github.com/AgoraIO/docs-portal/issues/new',
-    ),
+  await new Promise<void>((resolve) =>
+    window.requestAnimationFrame(() => resolve()),
   );
+  expect(prompted).not.toHaveBeenCalled();
+  top = 0;
+  document.dispatchEvent(new Event('visibilitychange'));
+  await waitFor(() =>
+    expect(prompted).toHaveBeenCalledExactlyOnceWith({ locale: 'en' }),
+  );
+  document.dispatchEvent(new Event('visibilitychange'));
+  await new Promise<void>((resolve) =>
+    window.requestAnimationFrame(() => resolve()),
+  );
+  expect(prompted).toHaveBeenCalledTimes(1);
+});
+
+it('tracks switching and reopening English forms but not collapsing them', () => {
+  render(
+    <I18nextProvider i18n={i18n}>
+      <DocsPageFeedback locale="en" />
+    </I18nextProvider>,
+  );
+  const yes = screen.getByRole('button', { name: 'Yes' });
+  const no = screen.getByRole('button', { name: 'No' });
+  fireEvent.click(yes);
+  fireEvent.click(yes);
+  expect(opened).toHaveBeenCalledTimes(1);
+  fireEvent.click(yes);
+  fireEvent.click(no);
+  fireEvent.click(no);
+  expect(opened.mock.calls.map(([input]) => input.value)).toEqual([
+    'yes',
+    'yes',
+    'no',
+  ]);
+  expect(capture.mock.calls.map(([input]) => input.value)).toEqual([
+    'yes',
+    'no',
+  ]);
 });
