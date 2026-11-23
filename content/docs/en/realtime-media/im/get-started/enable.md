@@ -1,167 +1,93 @@
 ---
-title: "Enable and configure Chat"
-description: "Introduces how to enable and configure Agora Chat."
+title: "Enable Chat"
+description: "Enable Agora Chat for your project, get your Chat connection details, and create test users and tokens."
 ---
 
-Before using Chat, you need to enable and configure it through [Agora Console](https://console.agora.io/).
+Before using Chat, enable it for your project in [Agora Console](https://console.agora.io/). This page shows you how to enable Chat, get the connection details that your app needs, and create users and tokens for testing.
 
 ## Prerequisites
 
 To enable Chat, make sure that you have the following:
 
 - A valid [Agora account](/en/introduction/account#sign-up-for-an-agora-account).
-- An [Agora project](/en/introduction/account#your-first-agora-project) that uses  **App ID** and **Token** for authentication.
-- A Chat pricing plan. For details on how to subscribe, see [Subscribe to the pricing plan](/en/realtime-media/im/reference/pricing#subscribe-to-the-pricing-plan).
+- An [Agora project](/en/introduction/account#your-first-agora-project) that uses **App ID** and **Token** for authentication.
 
 ## Enable Chat
 
-1. Log in to the [Agora Console](https://console.agora.io/).
+To enable Chat for your project:
 
-2. In the left navigation bar, click **Project Management** and click **Config** for the project that you want to use.
+1. In [Agora Console](https://console.agora.io/), select your project from the **Project** list at the top of the page.
 
-3. In the **Features** section of the **Edit Project** page, click **Enable** next to **Chat** to enable Chat.
+1. In the sidebar, click **RTC Services**.
 
+1. Under **Messaging & Signaling**, turn on the **Chat** toggle. The Chat **Basic Information** panel opens.
 
+1. Select the **Data Center** closest to where most of your end users are located, then click **Enable Chat**.
 
-    If this is your first Chat project, select and subscribe to a Chat package:
+   ![Select a data center and enable Chat](/temp/chat-console/chat-data-center.png)
 
-    ![](https://assets-docs.agora.io/images/im/subscribe.png)
+   :::caution
+   You can't change the data center after you enable Chat.
+   :::
 
-1. Select a data center closest to where most of your end users are located.
+When Chat is enabled, the **Chat** card shows your plan and data center, and an **Open Chat Console** button. New Chat projects use the Free plan. To turn on Chat features or change your plan, see [Manage Chat in Agora Console](/en/realtime-media/im/reference/console/manage-chat).
 
-    ![img](https://web-cdn.agora.io/docs-files/1665386519450)
+![Chat card after Chat is enabled](/temp/chat-console/chat-card-enabled.png)
 
-    Once Chat is enabled, you are redirected to the Chat config page.
+## Get your Chat connection details [#get-chat-project-information]
 
-1. Enable the advanced Chat features based on your business requirements.
+Your app uses the following details to connect to Chat:
 
-    ![](https://assets-docs.agora.io/images/im/chat_feature_overview.png)
+- **App ID**: The unique identifier of your Agora project. Chat SDK initialization and RESTful API requests use the App ID. To find it, see [Get the App ID and App Certificate](/en/introduction/account#get-the-app-id-and-app-certificate).
+- **Data Center**: The region where Chat stores your project's data. Agora provides several data centers for the service in different regions, including Singapore, Frankfurt (Germany), and Virginia (USA).
+- **API Request URL**: The domains of the WebSocket and RESTful API requests that Agora assigns to each project.
 
-For details about these advanced features, see the following:
-- [Message Callback](/en/realtime-media/im/build/notifications-and-event-handling/setup-webhooks)
-- [Message Recall](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#recall-a-message)
-- [Message Thread](/en/realtime-media/im/build/build-groups-rooms-and-threads/threading/thread-management)
-- [Reaction](/en/realtime-media/im/build/build-core-messaging/reaction)
-- [Offline Message Push (Advanced)](/en/realtime-media/im/build/notifications-and-event-handling/offline-push/overview)
-- [Presence](/en/realtime-media/im/build/build-core-messaging/presence)
-- [Translation](/en/realtime-media/im/build/build-core-messaging/messages/translate-messages)
-- [Moderation](/en/realtime-media/im/build/moderate-and-manage-client-behavior/moderation-mechanism)
+:::info
+As of v1.4.0, the Chat SDK uses the App ID instead of the App Key. Apps that integrated an earlier SDK version using the App Key continue to work without changes. If your app uses the App Key, get the **AppKey**, **OrgName**, and **AppName** from **Legacy Integration Details** in the Chat **Basic Information** panel.
+:::
 
-## Get Chat project information
+To get these details:
 
-Agora Console assigns the following information to each project that enables Chat:
+1. On the **RTC Services** page, click the settings icon on the **Chat** card to open the Chat **Basic Information** panel.
 
-- **Data Center**: Agora provides several data centers for the service in different regions, including Singapore, Frankfurt (Germany), and Virginia (USA). After the plan is changed, the data center remains unchanged.
-- **AppKey**: The unique identifier that Chat assigns to each app. The **AppKey** is of the form `${OrgName}#{AppName}`.
-    :::info
-    The **AppKey** is not the same as your project App ID. You can get your **AppKey** from the Chat configuration section of Agora Console.
-    :::
-- **OrgName**: The unique identifier that Chat assigns to each enterprise (organization).
-- **AppName**: The name that Chat assigns to each app. Each app under the same enterprise (organization) must have a unique App Name.
-- **API request url**: The domain of the WebSocket and RESTful API request that Agora assigns to each project.
+1. Get the following values:
 
-Follow these steps to get the project information:
+   - **Data Center**: Shown in the **Data Center** section.
+   - **WebSocket Address** and **REST API**: Shown in the **API Request URL** section.
+   - **AppKey**, **OrgName**, and **AppName** (legacy apps only): Click **Expand details** next to **Legacy Integration Details**.
 
-1. Find your Chat-enabled project on the [Project Management](https://console.agora.io/legacy/project-management) page on Agora Console and click **Config**.
-2. On the project edit page, find **Chat** and click **Config**.
-3. On the Chat config page, get the values of **Data Center**, **AppKey**, **OrgName**, **AppName**, **WebSocket Address**, and **REST API**.
+   ![Chat Basic Information panel](/temp/chat-console/chat-basic-information.png)
+
+<!-- TODO(chat-console): Confirm that the settings icon on the Chat card opens the Chat Basic Information panel. -->
 
 ## Manage users and generate tokens
 
-For development purposes, Agora enables you to manage users and generate Chat user authentication tokens using Agora Console. In a production environment, you use the [RESTful API](/en/api-reference/api-ref/im/user-system-registration) to manage users and a token server to [generate user authentication tokens](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
-
-This section shows you how to register Chat users and generate temporary tokens using Agora Console.
+For development purposes, you can manage users and generate temporary Chat tokens in Agora Console. In a production environment, use the [RESTful API](/en/api-reference/api-ref/im/user-system-registration) to manage users and a token server to [generate user authentication tokens](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
 
 ### Register a user
 
-To register a user, do the following:
+To register a user:
 
-1. On the **Project Management** page, click **Config** for the project that you want to use.
+1. On the **RTC Services** page, click **Open Chat Console** on the **Chat** card.
 
-    ![](https://web-cdn.agora.io/docs-files/1664531061644)
+1. In the Chat Console sidebar, click **User Management**, then click **Create User**.
 
-2. On the **Edit Project** page, click **Config** next to **Chat** below **Features**.
+1. Enter a **User ID** and click **Save**. For supported characters, see [User registration](/en/api-reference/api-ref/im/user-system-registration).
 
-    ![](https://web-cdn.agora.io/docs-files/1664531091562)
+   ![Chat Console User Management page](/temp/chat-console/chat-user-management.png)
 
-3. In the left-navigation pane, select **Operation Management** > **User** and click **Create User**.
-
-    ![](https://web-cdn.agora.io/docs-files/1664531141100)
-
-4. In the **Create User** dialog box, fill in the **User ID**, **Nickname**, and **Password**, and click **Save** to create a user.
-
-    ![](https://web-cdn.agora.io/docs-files/1664531162872)
+<!-- TODO(chat-console): Document the UID auto-creation toggle on User Management once its behavior is confirmed. -->
 
 ### Generate an app token
 
-In the **Data Center** section of the **Application Information** page, click **Generate** next to **Chat App Temp Token** to generate a token with app privileges.
-
-    ![token_generate_app_token](https://assets-docs.agora.io/images/im/token_generate_app_token.png)
+In the Chat **Basic Information** panel, under **Chat App Temp Token**, click **Generate**.
 
 ### Generate a user token
 
 To ensure communication security, Agora recommends using tokens to authenticate users who log in to Chat.
 
-For testing purposes, Agora Console supports generating temporary tokens for Chat. To generate a user token, do the following:
-
-1. On the **Project Management** page, click **Config** for the project that you want to use.
-
-    ![](https://web-cdn.agora.io/docs-files/1664531061644)
-
-2. On the **Edit Project** page, click **Config** next to **Chat** below **Features**.
-
-    ![](https://web-cdn.agora.io/docs-files/1664531091562)
-
-3. In the **Data Center** section of the **Application Information** page, enter the [user ID](#userid) in the **Chat User Temp Token** box and click **Generate** to generate a token with user privileges.
-
-    ![](https://web-cdn.agora.io/docs-files/1664531214169)
-
-## Change the Chat plan
-
-1. Log in to the [Agora Console](https://console.agora.io/).
-
-2. In the left navigation bar, click **Package**.
-
-3. On the **Subscribe** tab, you can change your Chat plan by clicking **Subscribe** next to the desired plan.
-
-    ![img](https://web-cdn.agora.io/docs-files/1665389469534)
-
-   **Note:**
-   - The plan change takes effect immediately.
-   - Agora doesn't recommend plan downgrading, as it could impact the capacity of your applications and availability of certain features.
-
-## Disable Chat
-
-1. Log in to the [Agora Console](https://console.agora.io/).
-
-2. In the left navigation bar, click **Project Management** and click **Config** for the project that you want to use.
-
-3. In the **Features** section of the **Edit Project** page, click **Enable/Configure** next to **Chat**.
-
-4. On the **Application Information** page, disable Chat in the **Chat Service Status** section.
-
-   **Note:** When you disable Chat, the Chat-related data is still stored in the Chat data center, and you are still charged for the plan activation fee.
-
-   ![img](https://web-cdn.agora.io/docs-files/1665387330975)
-
-## Unsubscribe Chat
-
-Before unsubscribing Chat, disable all projects that have Chat enabled.
-
-1. Log in to the [Agora Console](https://console.agora.io/).
-
-2. In the left navigation bar, click **Package**.
-
-3. On the **Subscribe** tab, scroll down to the bottom and click **Unsubscribe**.
-
-    ![img](https://web-cdn.agora.io/docs-files/1665389814916)
-
-    **Note:**
-
-    When you unsubscribe Chat:
-    - All Chat-related data is purged.
-    - You are still billed with a pro-rated monthly fee and the usage that occurred during that month.
+To generate a temporary user token for testing, in the Chat **Basic Information** panel, under **Chat User Temp Token**, enter a registered user ID, then click **Generate**.
 
 ## Next steps
 
-After enabling and configuring Chat, the Chat-related features in Agora Analytics are enabled by default to help you keep track of usage trends and quality details. For more information, see [Data Insights](/en/realtime-media/im/reference/console/data-insights) and [Data Metrics](/en/realtime-media/im/reference/console/data-metrics).
+To build your first Chat app, see the [SDK quickstart](/en/realtime-media/im/get-started-sdk) or the [UI Kit quickstart](/en/realtime-media/im/get-started-uikit).
