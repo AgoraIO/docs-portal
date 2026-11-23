@@ -1425,6 +1425,32 @@ from agora_agent.agentkit.vendors import SmallestAISTT
 
 Boolean options are serialized as the strings `"true"` or `"false"` for the Smallest AI wire protocol. For details, see [Smallest AI](/en/ai/models/asr/smallest-ai).
 
+#### ElevenLabsSTT
+
+```python
+from agora_agent.agentkit.vendors import ElevenLabsSTT
+```
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `api_key` | `str` | Yes | — | ElevenLabs API key. Takes precedence over `additional_params["api_key"]` |
+| `additional_params` | `Dict[str, Any]` | No | `None` | Additional ElevenLabs parameters, such as `model_id` and `language_code` |
+
+For details, see [ElevenLabs](/en/ai/models/asr/elevenlabs).
+
+#### FishAudioSTT
+
+```python
+from agora_agent.agentkit.vendors import FishAudioSTT
+```
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `api_key` | `str` | Yes | — | Fish Audio API key. Takes precedence over `additional_params["api_key"]` |
+| `additional_params` | `Dict[str, Any]` | No | `None` | Additional Fish Audio parameters, such as `model` and `context_terms` |
+
+For details, see [Fish Audio](/en/ai/models/asr/fish-audio).
+
 ### MLLM vendors
 
 Use with [`with_mllm()`](#with_mllmvendor) for multimodal end-to-end audio processing without separate STT or TTS steps. Calling `with_mllm()` automatically enables the MLLM module (sets `mllm.enable=true`); the older `advanced_features.enable_mllm` flag is deprecated.

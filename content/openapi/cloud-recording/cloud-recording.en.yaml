@@ -1349,6 +1349,40 @@ components:
           $ref: "#/components/schemas/snapshotConfig"
         extensionServiceConfig:
           $ref: "#/components/schemas/extensionServiceConfig"
+        advanceConfig:
+          $ref: "#/components/schemas/advanceConfig"
+    advanceConfig:
+      type: object
+      description: Advanced recording settings in the `clientRequest` of the `start` request body.
+      properties:
+        blankAudioVideoDuration:
+          type: integer
+          minimum: 0
+          maximum: 2147483647
+          example: 2147483647
+          description: >-
+            How long, in milliseconds, the audio and video streams can both stay muted before the
+            recording service ends the current recording file. When both streams stay muted
+            longer than this value, the service ends the current file.
+        convoAiCompatibleEnable:
+          type: boolean
+          default: false
+          description: >-
+            Whether to enable the Conversational AI compatible recording mode, which records the
+            audio of conversations between users and agents.
+
+            - `true`: Enable. The recording service uses a recording mode adapted for
+            Conversational AI and skips the 1-second jitter buffer that regular recording uses.
+
+            - `false`: Disable.
+          x-docs-callouts:
+            - type: info
+              title: Note
+              markdown: >
+                This mode supports audio-only individual recording only. Set `mode` in the URL to
+                `raw` and `clientRequest.recordingConfig.streamTypes` to `0`. If you set this
+                parameter in any other recording configuration, the `start` request returns an
+                error.
     storageConfig:
       type: object
       description: >-

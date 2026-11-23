@@ -1,19 +1,19 @@
 ---
 title: Record agent conversations
-description: Configure Cloud Recording to capture Voice Agent conversations without breaking the audio experience.
+description: Use Cloud Recording to save the audio of conversations between users and a Voice Agent.
 ---
 
-This guide explains how to configure Agora [Cloud Recording](/en/api-reference/api-ref/cloud-recording) for Voice Agent conversations and avoid audio-scene conflicts when recording starts.
+This guide explains how to use Agora [Cloud Recording](/en/api-reference/api-ref/cloud-recording) to save the audio of conversations between users and an agent, how to configure the agent and the recording, and what to consider when you record.
 
-## Why this needs special handling
+## Supported recording mode
 
-When you run a Voice Agent and Cloud Recording in the same channel, recording startup can briefly interrupt audio. The issue is usually caused by the agent audio scene falling back to a default mode when Cloud Recording joins the channel.
+To record conversations with an agent, Cloud Recording provides a Conversational AI compatible recording mode. Unlike regular recording, this mode doesn't use a 1-second jitter buffer. You enable the mode in the Cloud Recording `start` request. For details, see [Start recording](#start-recording).
 
-To keep audio stable, set the agent `audio_scenario` to `"chorus"` when you start the agent.
+This mode supports audio-only individual recording. It saves the user's audio and the agent's audio in separate files. Video recording and composite recording aren't supported in this mode.
 
 ## Configure the agent
 
-Set the agent's RTC audio scenario to `chorus` when you configure the agent:
+The recorded files can start with silence from before the agent starts speaking. To reduce this silence, set `parameters.rtc.publish_audio_auto_publishing` to `false` when you start the agent:
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -30,11 +30,13 @@ from agora_agent import Agent
 
 # client is your configured Agora client
 agent = (
-    Agent(client)
+    Agent(
+        client,
+        parameters={"rtc": {"publish_audio_auto_publishing": False}},
+    )
     .with_stt(...)  # configure your STT vendor
     .with_llm(...)  # configure your LLM vendor
     .with_tts(...)  # configure your TTS vendor
-    .with_audio_scenario('chorus')
 )
 ```
 
@@ -42,43 +44,27 @@ agent = (
 
 <TabsContent value="typescript">
 
-```typescript
-import { Agent } from 'agora-agents';
-
-// client is your configured Agora client
-const agent = new Agent({ client })
-  .withStt(/* configure your STT vendor */)
-  .withLlm(/* configure your LLM vendor */)
-  .withTts(/* configure your TTS vendor */)
-  .withAudioScenario('chorus');
-```
+The TypeScript SDK doesn't support `parameters.rtc` yet. To set `publish_audio_auto_publishing`, start the agent with the REST API.
 
 </TabsContent>
 
 <TabsContent value="go">
 
-```go
-import "github.com/AgoraIO/agora-agents-go/v2/agentkit"
-
-// client is your configured *agentkit.AgoraClient
-agent := agentkit.NewAgent(client).
-    WithStt(/* configure your STT vendor */).
-    WithLlm(/* configure your LLM vendor */).
-    WithTts(/* configure your TTS vendor */).
-    WithAudioScenario(agentkit.AudioScenarioChorus)
-```
+The Go SDK doesn't support `parameters.rtc` yet. To set `publish_audio_auto_publishing`, start the agent with the REST API.
 
 </TabsContent>
 
 <TabsContent value="rest-api">
 
-Add or modify the `audio_scenario` field in the agent startup parameters:
+In the request to [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), add the following configuration:
 
 ```json
 {
   "properties": {
     "parameters": {
-      "audio_scenario": "chorus"
+      "rtc": {
+        "publish_audio_auto_publishing": false
+      }
     }
   }
 }
@@ -87,16 +73,18 @@ Add or modify the `audio_scenario` field in the agent startup parameters:
 </TabsContent>
 </Tabs>
 
-## Complete example
+This setting doesn't enable the Conversational AI compatible recording mode. You enable that mode in the Cloud Recording `start` request. For details, see [Start recording](#start-recording).
 
-The following example shows an agent launch request with the recommended recording-safe configuration:
+### Complete example
+
+The following example shows a complete request body for starting an agent with this configuration:
 
 ```json
 {
   "name": "TestConvoAgent",
   "properties": {
-    "channel": "{{AccessChannel}}",
-    "token": "{{token}}",
+    "channel": "<your_channel_name>",
+    "token": "<your_rtc_token>",
     "agent_rtc_uid": "0",
     "remote_rtc_uids": [
       "*"
@@ -135,8 +123,10 @@ The following example shows an agent launch request with the recommended recordi
     "parameters": {
       "enable_dump": true,
       "enable_error_message": true,
-      "audio_scenario": "chorus",
-      "enable_delay": true
+      "enable_delay": true,
+      "rtc": {
+        "publish_audio_auto_publishing": false
+      }
     }
   }
 }
@@ -144,40 +134,43 @@ The following example shows an agent launch request with the recommended recordi
 
 ## Start recording
 
-After the agent is running, call the [Start Cloud Recording API](/en/api-reference/api-ref/cloud-recording/start) to begin recording.
+To record the whole conversation, start Cloud Recording first. Start the agent only after the recording service joins the channel and subscribes to the audio streams.
 
-Example Cloud Recording request body:
+1. Follow the steps in [Individual recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode#get-a-resource-id) to get a resource ID. Prepare the channel name, recording UID, token, and cloud storage configuration. Use a recording UID that's different from the agent's and the user's UIDs.
+2. Call [Start recording](/en/api-reference/api-ref/cloud-recording/start). In the request URL, set `mode` to `raw`. In the request body, set `clientRequest.recordingConfig.streamTypes` to `0` to record audio only.
+3. To enable the Conversational AI compatible recording mode, add the following configuration to `clientRequest.advanceConfig` in the request body:
 
-```json
-{
-  "cname": "{{AccessChannel}}",
-  "uid": "{{RecordingUID}}",
-  "clientRequest": {
-    "token": "{{token}}",
-    "recordingConfig": {
-      "maxIdleTime": 120,
-      "streamTypes": 0,
-      "audioProfile": 1,
-      "channelType": 1
-    },
-    "recordingFileConfig": {
-      "avFileType": [
-        "hls",
-        "mp4"
-      ]
-    },
-    "storageConfig": {
-      "vendor": "{{Vendor}}",
-      "region": "{{Region}}",
-      "bucket": "{{Bucket}}",
-      "accessKey": "{{AccessKey}}",
-      "secretKey": "{{SecretKey}}"
-    }
-  }
-}
-```
+   ```json
+   {
+     "clientRequest": {
+       "advanceConfig": {
+         "blankAudioVideoDuration": 2147483647,
+         "convoAiCompatibleEnable": true
+       }
+     }
+   }
+   ```
+
+4. After the recording service joins the channel and subscribes to the audio streams, start the agent with the configuration from [Configure the agent](#configure-the-agent).
+
+The following table describes the `advanceConfig` fields:
+
+| Field | Description |
+| --- | --- |
+| `blankAudioVideoDuration` | How long, in milliseconds, the audio and video streams can both stay muted before the recording service ends the current recording file. |
+| `convoAiCompatibleEnable` | Set to `true` to enable the Conversational AI compatible recording mode. |
+
+For details about each field, see the [Start recording](/en/api-reference/api-ref/cloud-recording/start) API reference.
+
+## Considerations
+
+Keep the following in mind when you record agent conversations:
+
+- If you start recording during a conversation, or recording resumes after the recording service fails or restarts, the recording might miss the speech the agent is playing at that moment, or capture only its end.
+- The order of speech and the points where users interrupt the agent in the recorded files can differ from what the user heard. For example, the agent's speech in the recording might stop before the user speech that interrupted it begins.
 
 ## Related pages
 
 - [Start and stop an agent](../build/start-stop-agent)
+- [Individual recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode)
 - [Cloud Recording API reference](/en/api-reference/api-ref/cloud-recording)

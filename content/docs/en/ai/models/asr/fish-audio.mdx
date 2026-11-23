@@ -1,0 +1,108 @@
+---
+title: Fish Audio
+description: >
+  Integrate Fish Audio ASR with the Conversational AI Engine.
+---
+
+Fish Audio provides real-time automatic speech recognition (ASR) over WebSocket. Fish Audio detects the spoken language from the audio, so you don't need to set a language.
+
+{/* TODO(v2.16): Written from Agents SDK v2.15.0 and the TEN extension `fish_asr_python`. Before publishing, confirm with engineering: (1) the `params` fields the engine forwards, including `context_terms` (the extension's flat name for Fish Audio's `context.terms`); (2) whether `turn_mode`, `eager`, and `silence_timeout_ms` should stay undocumented because the engine handles turn detection; (3) the SDKs always send `asr.language` (default `en-US`): confirm the engine ignores it for `fishaudio` and Fish Audio still detects the language. Then live-verify the samples with a real Fish Audio key. */}
+
+### Sample configuration
+
+The following example shows a starting `asr` parameter configuration you can use when you [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import FishAudioSTT
+
+# ... other agent configuration ...
+.with_stt(FishAudioSTT(
+    api_key='your-fish-audio-api-key',
+    additional_params={
+        'model': 'transcribe-stream-1',
+        'context_terms': ['Agora', 'Conversational AI'],
+    },
+))
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { FishAudioSTT } from 'agora-agents';
+
+// ... other agent configuration ...
+.withStt(new FishAudioSTT({
+  apiKey: 'your-fish-audio-api-key',
+  additionalParams: {
+    model: 'transcribe-stream-1',
+    context_terms: ['Agora', 'Conversational AI'],
+  },
+}));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// ... other agent configuration ...
+WithStt(
+    vendors.NewFishAudioSTT(vendors.FishAudioSTTOptions{
+        APIKey: "your-fish-audio-api-key",
+        AdditionalParams: map[string]any{
+            "model":         "transcribe-stream-1",
+            "context_terms": []string{"Agora", "Conversational AI"},
+        },
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```json
+"asr": {
+  "vendor": "fishaudio",
+  "params": {
+    "api_key": "${env:FISH_AUDIO_API_KEY}",
+    "model": "transcribe-stream-1",
+    "context_terms": ["Agora", "Conversational AI"]
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+    The Fish Audio API key used to authenticate requests. You must provide a valid key for the service to function.
+  </Parameter>
+  <Parameter name="model" type="string" required={false}>
+    The Fish Audio realtime speech-to-text model. Defaults to `transcribe-stream-1`.
+  </Parameter>
+  <Parameter name="context_terms" type="array[string]" required={false}>
+    Terms that improve recognition accuracy for names, product names, or jargon. You can set up to 100 terms, each up to 32 characters.
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Fish Audio realtime speech-to-text documentation](https://docs.fish.audio/api-reference/endpoint/websocket/asr-realtime).
+:::
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.

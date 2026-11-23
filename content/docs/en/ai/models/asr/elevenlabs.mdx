@@ -1,0 +1,108 @@
+---
+title: ElevenLabs
+description: >
+  Integrate ElevenLabs ASR with the Conversational AI Engine.
+---
+
+ElevenLabs provides real-time automatic speech recognition (ASR) over WebSocket with its Scribe models.
+
+{/* TODO(v2.16): Written from Agents SDK v2.15.0 and the TEN extension `elevenlabs_asr_python`. Before publishing, confirm with engineering: (1) the `params` fields the engine forwards (the extension forwards every field except `api_key` and `ws_url` as an ElevenLabs query parameter); (2) the `model_id` value: the extension README says `scribe_v2`, but the ElevenLabs realtime API accepts `scribe_v2_realtime`; (3) whether the engine fills `ws_url` (required by the extension). Then live-verify the samples with a real ElevenLabs key. */}
+
+### Sample configuration
+
+The following example shows a starting `asr` parameter configuration you can use when you [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join).
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import ElevenLabsSTT
+
+# ... other agent configuration ...
+.with_stt(ElevenLabsSTT(
+    api_key='your-elevenlabs-api-key',
+    additional_params={
+        'model_id': 'scribe_v2_realtime',
+        'language_code': 'en',
+    },
+))
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { ElevenLabsSTT } from 'agora-agents';
+
+// ... other agent configuration ...
+.withStt(new ElevenLabsSTT({
+  apiKey: 'your-elevenlabs-api-key',
+  additionalParams: {
+    model_id: 'scribe_v2_realtime',
+    language_code: 'en',
+  },
+}));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// ... other agent configuration ...
+WithStt(
+    vendors.NewElevenLabsSTT(vendors.ElevenLabsSTTOptions{
+        APIKey: "your-elevenlabs-api-key",
+        AdditionalParams: map[string]any{
+            "model_id":      "scribe_v2_realtime",
+            "language_code": "en",
+        },
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```json
+"asr": {
+  "vendor": "elevenlabs",
+  "params": {
+    "api_key": "${env:ELEVENLABS_API_KEY}",
+    "model_id": "scribe_v2_realtime",
+    "language_code": "en"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+    The ElevenLabs API key used to authenticate requests. You must provide a valid key for the service to function.
+  </Parameter>
+  <Parameter name="model_id" type="string" required={false}>
+    The ElevenLabs realtime speech-to-text model. For example, `scribe_v2_realtime`. For supported models, refer to the [ElevenLabs documentation](https://elevenlabs.io/docs/api-reference/speech-to-text/v-1-speech-to-text-realtime).
+  </Parameter>
+  <Parameter name="language_code" type="string" required={false}>
+    The language of the audio, as an ISO 639-1 or ISO 639-3 code. For example, `en` for English. If you set this parameter, it takes precedence over `asr.language`.
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [ElevenLabs realtime speech-to-text documentation](https://elevenlabs.io/docs/api-reference/speech-to-text/v-1-speech-to-text-realtime).
+:::
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.

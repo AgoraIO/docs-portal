@@ -3,9 +3,9 @@ title: Record agent conversations
 description: Record conversations with an agent using Cloud Recording, without interrupting the audio.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/best-practices/record-agent-conversation.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-27, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/best-practices/record-agent-conversation.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-27, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. Recording flow updated to the Conversational AI compatible recording mode on 2026-11-16 (v2.16). */}
 
-This guide explains how to record conversations with a Conversational AI Platform agent using Agora [Cloud Recording](/en/api-reference/api-ref/cloud-recording), and how to avoid audio interruptions when recording starts.
+This guide explains how to record conversations with a Conversational AI Platform agent using Agora [Cloud Recording](/en/api-reference/api-ref/cloud-recording), how to avoid audio interruptions when recording starts, and what to consider when you record.
 
 ## Why this needs special handling
 
@@ -111,38 +111,44 @@ The audio scenario is a session setting, not part of the agent. Set it only for 
 
 ## Start recording
 
-After the session is running, call the [Start Cloud Recording](/en/api-reference/api-ref/cloud-recording/start) API to begin recording. Use a recording UID that's different from the agent's and the user's UIDs.
+To record the whole conversation, start Cloud Recording first. Start the session only after the recording service joins the channel and subscribes to the audio streams.
 
-The following example shows a Cloud Recording request body:
+To record conversations with an agent, Cloud Recording provides a Conversational AI compatible recording mode. Unlike regular recording, this mode doesn't use a 1-second jitter buffer. It supports audio-only individual recording and saves the user's audio and the agent's audio in separate files. Video recording and composite recording aren't supported in this mode.
 
-```json
-{
-  "cname": "<your_channel_name>",
-  "uid": "<your_recording_uid>",
-  "clientRequest": {
-    "token": "<your_recording_token>",
-    "recordingConfig": {
-      "maxIdleTime": 120,
-      "streamTypes": 0,
-      "audioProfile": 1,
-      "channelType": 1
-    },
-    "recordingFileConfig": {
-      "avFileType": [
-        "hls",
-        "mp4"
-      ]
-    },
-    "storageConfig": {
-      "vendor": "<your_storage_vendor>",
-      "region": "<your_storage_region>",
-      "bucket": "<your_bucket>",
-      "accessKey": "<your_access_key>",
-      "secretKey": "<your_secret_key>"
-    }
-  }
-}
-```
+{/* TODO(platform-confirm): The Voice Agent API reduces silence at the start of recorded files with `parameters.rtc.publish_audio_auto_publishing: false`. The Platform API has no equivalent session field. Confirm whether the Platform needs one. */}
+
+1. Follow the steps in [Individual recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode#get-a-resource-id) to get a resource ID. Prepare the channel name, recording UID, token, and cloud storage configuration. Use a recording UID that's different from the agent's and the user's UIDs.
+2. Call [Start recording](/en/api-reference/api-ref/cloud-recording/start). In the request URL, set `mode` to `raw`. In the request body, set `clientRequest.recordingConfig.streamTypes` to `0` to record audio only.
+3. To enable the Conversational AI compatible recording mode, add the following configuration to `clientRequest.advanceConfig` in the request body:
+
+   ```json
+   {
+     "clientRequest": {
+       "advanceConfig": {
+         "blankAudioVideoDuration": 2147483647,
+         "convoAiCompatibleEnable": true
+       }
+     }
+   }
+   ```
+
+4. After the recording service joins the channel and subscribes to the audio streams, [start the session](#start-the-session-with-the-chorus-audio-scenario).
+
+The following table describes the `advanceConfig` fields:
+
+| Field | Description |
+| --- | --- |
+| `blankAudioVideoDuration` | How long, in milliseconds, the audio and video streams can both stay muted before the recording service ends the current recording file. |
+| `convoAiCompatibleEnable` | Set to `true` to enable the Conversational AI compatible recording mode. |
+
+For details about each field, see the [Start recording](/en/api-reference/api-ref/cloud-recording/start) API reference.
+
+## Considerations
+
+Keep the following in mind when you record agent conversations:
+
+- If you start recording during a conversation, or recording resumes after the recording service fails or restarts, the recording might miss the speech the agent is playing at that moment, or capture only its end.
+- The order of speech and the points where users interrupt the agent in the recorded files can differ from what the user heard. For example, the agent's speech in the recording might stop before the user speech that interrupted it begins.
 
 ## Reference
 
@@ -150,6 +156,7 @@ For more information, see the following pages:
 
 - [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent)
 - [Optimize audio quality](/en/ai/platform/best-practices/audio-setup)
+- [Individual recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode)
 
 ### API reference
 
