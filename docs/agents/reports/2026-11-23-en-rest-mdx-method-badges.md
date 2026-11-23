@@ -89,3 +89,18 @@ Start the app at `http://localhost:3100`. The local-only HTML explorer at `http:
 Targeted validation: 76 navigation/schema/coverage tests passed; the final header/label regression run passed 45 tests. Types and lint passed, and both regional source gates reported zero new duplicate headings and zero obsolete allowances. Local Chromium checks used 1440x900 and 390x844: the multiple-user title fits two desktop lines; the longest title remains three lines; mobile entries remain 1–2 lines. Verified native iOS `?from=` links and heading positioning, Web absence of Android links, and unchanged English OpenAPI label markup. Screenshots remain in ignored `.agent/artifacts/pr1516/`.
 
 The first full run (7,429 passed, 24 skipped) exposed the existing Signaling manual-install content assertion plus the newly added header-current regression before its fix. The header regression subsequently passed; a full run of the final candidate is recorded in the PR follow-up. Full regional browser matrix and independent human acceptance are pending; local targeted evidence is not full API certification.
+
+
+### Static deployment follow-up
+
+The first Global static preview passed the automated 442-page gate, but manual
+platform navigation found that canonical JSON fallback still supplied Android
+operations to Web/iOS pages. Dynamic development checks did not cover this
+boundary. The generator now writes actual platform-specific JSON for English
+authored REST articles with optional method metadata. Other platform payloads
+retain their existing generation strategy. An integration regression writes
+these artifacts to a temporary directory, reads them through the actual static
+resolver, and restores the product sidebar: Web has no Android operations, iOS
+operations retain iOS destinations, and unrelated product navigation remains.
+Static resolver and resilience integration: 23 tests passed. Final deployed
+candidate acceptance is recorded in the PR after its new preview completes.

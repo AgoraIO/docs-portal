@@ -1,3 +1,6 @@
+import { promises as fs } from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { afterEach, expect, it, vi } from 'vitest';
 import type { DocsSidebarNode } from './docs-tree';
 
@@ -18,7 +21,7 @@ vi.mock('fumadocs-core/content/toc', async (original) => {
   };
 });
 
-import { loadDocsPagePayload } from './docs-page.server';
+import { type DocsPagePayload, loadDocsPagePayload } from './docs-page.server';
 import { withProductSidebar } from './product-rest-sidebar';
 
 async function load(path: string) {
@@ -98,3 +101,70 @@ it('keeps the selected iOS platform when restoring a product sidebar', async () 
       .sort();
   expect(unrelated(result.sidebar)).toEqual(unrelated(product.sidebar));
 });
+
+it('writes platform-specific static REST payloads instead of inheriting Android navigation', async () => {
+  const { writeAuthoredRestPlatformPayloads } = await import(
+    '../../scripts/generate-static-docs-payload.worker.mjs'
+  );
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'rest-static-'));
+  try {
+    await writeAuthoredRestPlatformPayloads(root, {
+      locale: 'en',
+      tab: 'api-reference',
+      slugSegments: ['api-ref', 'im', 'push-notification-management'],
+      platforms: ['web', 'ios'],
+    });
+    vi.stubGlobal('fetch', async (url: string) => {
+      try {
+        const json = JSON.parse(
+          await fs.readFile(
+            path.join(root, url.replace('/__static/docs/', '')),
+            'utf8',
+          ),
+        );
+        return { ok: true, json: async () => json };
+      } catch {
+        return { ok: false, status: 404 };
+      }
+    });
+    const { resolvePlatformStaticDocsPayload } = await import(
+      './docs-static-manifest'
+    );
+    for (const platform of ['web', 'ios']) {
+      const api = await resolvePlatformStaticDocsPayload<DocsPagePayload>({
+        locale: 'en',
+        tab: 'api-reference',
+        slugSegments: [
+          'api-ref',
+          'im',
+          'push-notification-management',
+          platform,
+        ],
+      });
+      expect(api).toBeTruthy();
+      if (!api) throw new Error(`Missing static ${platform} payload`);
+      const result = await withProductSidebar(
+        api,
+        '/en/realtime-media/im',
+        ({ locale, tab, slugSegments }) =>
+          loadDocsPagePayload(locale, tab, slugSegments),
+      );
+      const operations = links(result.sidebar).filter(
+        (n) => n.url.startsWith(push + '#') && n.method,
+      );
+      if (platform === 'web') expect(operations).toEqual([]);
+      else {
+        expect(operations.length).toBeGreaterThan(0);
+        expect(
+          operations.every((n) => n.href?.startsWith(push + '/ios#')),
+        ).toBe(true);
+      }
+      expect(links(result.sidebar).some((n) => !n.url.startsWith(push))).toBe(
+        true,
+      );
+    }
+  } finally {
+    vi.unstubAllGlobals();
+    await fs.rm(root, { recursive: true, force: true });
+  }
+}, 30000);
