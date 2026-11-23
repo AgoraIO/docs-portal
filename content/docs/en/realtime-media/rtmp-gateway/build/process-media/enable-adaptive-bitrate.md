@@ -303,27 +303,27 @@ Use the following Web SDK APIs to control which ABR layer a subscriber receives.
 #### Manual stream selection
 
 - API: `setRemoteVideoStreamType(uid: UID, streamType: RemoteStreamType): Promise<void>`
-- Description: Selects the high or low stream for a specific remote user.
+- Description: Selects an available video stream layer for a specific remote user.
 - Example:
 
     ```js
     client.setRemoteVideoStreamType(uid, 0); // HIGH_STREAM = 0
     ```
 
-- Enum: `VideoStreamType`
+The `streamType` parameter uses [RemoteStreamType](https://api-ref.agora.io/en/video-sdk/web/4.x/enums/remotestreamtype.html). Its values differ from Media Gateway Layer IDs:
 
-    ```ts
-    enum VideoStreamType {
-        HIGH_STREAM,
-        LOW_STREAM,
-        HIGH_STREAM_LAYER1,
-        HIGH_STREAM_LAYER2,
-        HIGH_STREAM_LAYER3,
-        HIGH_STREAM_LAYER4,
-        HIGH_STREAM_LAYER5,
-        HIGH_STREAM_LAYER6;
-    }
-    ```
+| Media Gateway output | RemoteStreamType member | streamType value |
+| --- | --- | --- |
+| Main stream | `HIGH_STREAM` | `0` |
+| Layer ID 1 | `HIGH_STREAM_LAYER1` | `4` |
+| Layer ID 2 | `HIGH_STREAM_LAYER2` | `5` |
+| Layer ID 3 | `HIGH_STREAM_LAYER3` | `6` |
+| Layer ID 4 | `HIGH_STREAM_LAYER4` | `7` |
+| Layer ID 5 | `HIGH_STREAM_LAYER5` | `8` |
+| Layer ID 6 | `HIGH_STREAM_LAYER6` | `9` |
+| Layer ID 7 | `LOW_STREAM` | `1` |
+
+For example, to select a configured Layer ID 1, pass `4` as `streamType`. Passing `1` selects the low stream, which corresponds to Layer ID 7. Do not reuse values from [RemoteStreamFallbackType](https://api-ref.agora.io/en/video-sdk/web/4.x/enums/remotestreamfallbacktype.html), which configures fallback behavior rather than manual stream selection.
 
 For manual switching, consider the network conditions. The following example shows how to obtain the network status:
 
