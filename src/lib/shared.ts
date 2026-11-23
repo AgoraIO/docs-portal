@@ -20,6 +20,7 @@ export const appName = getAppBranding().name;
 export const appDescription = getAppBranding().description;
 export const docsRoute = getDocsHomePath();
 
+export const chineseDocsUrl = 'https://docs.shengwang.cn/introduction';
 export const internationalDocsUrl = 'https://docs.agora.io/en/introduction';
 
 export const legacyDocsBannerConfig = {
