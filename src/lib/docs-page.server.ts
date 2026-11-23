@@ -2420,7 +2420,8 @@ async function embedProductRestSidebar(
     if (!apiNodes.length) return node;
 
     function contextualize(child: DocsSidebarNode): DocsSidebarNode {
-      if (child.type === 'page') return { ...child, search: { ...child.search, from: fromProduct } };
+      if (child.type === 'page')
+        return { ...child, search: { ...child.search, from: fromProduct } };
       return {
         id: child.id,
         title: child.title,

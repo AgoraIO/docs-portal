@@ -48,3 +48,16 @@ code-review 两路独立审查分别核对规范/正确性与已确认范围。�
 - 本轮运行环境为 Bun 1.4.2 / Node 24.21.0；原检查为 Node 22.23.2，均不代表已在声明的 Node >=26.13.0 上认证。
 
 本轮没有新增界面改动或重做浏览器验收。真实 PostHog 链路、三条 SQL 的远端执行、服务日志留存、英文搜索入口及断连传播仍为部署验收，索引版本无法确认时保留 `null`。
+
+## 2026-11-23：适配当前 main 和合并准备
+
+旧 PR 仍为草稿，目标为中文集成分支，生产未包含本次修复。现基于 `main` 的 `7b318fe2a6cbcb574ac8b876a0e434bf78788cc0` 重放两次修复提交，目标改为 `main`。main 已拆分中英文弹窗，修复移动至 `DocsSearchDialog.zh-cn.tsx`；全局/英文 `DocsSearchDialog.tsx` 与 main 完全一致。保留 main 新增的 `pageSize` / `paginationUnit` 分组分页响应字段。
+
+- 重新安装当前 lockfile 的依赖后，`bun run types:check` 通过。
+- `bun run lint` 通过，现有 81 warnings / 11 infos。main 的 `docs-page.server.ts` 有一处换行不符合 Biome，本次仅格式化该语句以恢复 lint。
+- 中文埋点、完整页、英文弹窗、PostHog 及隐私/错误分类专项回归：10 个文件、194 项通过。
+- 本机 Bun 1.4.2 / Node 22.23.2，仍不代表声明的 Node >=26.13.0 环境认证。
+
+全量测试发现英文 RTM 下载文档断言仍要求 `pod 'AgoraRtm_iOS'`，单独复跑同样失败。测试文件与 `content/docs/en/realtime-media/rtm/reference/downloads.mdx` 均与 main 的文件哈希一致，本次未修改；记录为既有基线失败。
+
+实际 PostHog 验证遇到项目权限阻塞：浏览器已登录，但项目 `509917` 显示 Access denied，需有权限的账号继续核对真实事件。合并不等于生产部署；真实收数、远端 SQL 和日志留存仍按上述部署验收执行。
