@@ -1,6 +1,12 @@
 ---
 title: "Media Push Overview"
 description: "Introduces the RESTful APIs for Media Push provided by Agora."
+httpMethods:
+  create-create-a-converter: POST
+  delete-destroy-the-converter: DELETE
+  update-update-the-converter: PATCH
+  get-get-the-streaming-status-of-the-converter: GET
+  list-query-the-converters-of-all-or-specified-channels-under-a-project: GET
 ---
 
 This article contains detailed help for the Media Push RESTful APIs.

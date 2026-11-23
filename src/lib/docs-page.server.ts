@@ -15,6 +15,7 @@ import {
 } from './api-reference-breadcrumb';
 import { resolveZhCnApiReferenceProductDocsHref } from './api-reference-product-docs';
 import { resolveDocVersion } from './doc-versions';
+import { withDocsHttpMethods } from './docs-http-method';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import type { DocsMeta } from './docs-meta-schema';
@@ -824,9 +825,16 @@ export async function loadDocsPagePayload(
     source,
     tab,
   });
-  const sidebar = getProductSidebarSource(page.url)
+  const expandedSidebar = getProductSidebarSource(page.url)
     ? await embedProductRestSidebar(baseSidebar, page.url, pageTree, source)
     : baseSidebar;
+  const sidebar =
+    locale === 'en'
+      ? withDocsHttpMethods(
+          expandedSidebar,
+          localePages.filter((page) => page.type === 'docs'),
+        )
+      : expandedSidebar;
   const title = page.data.title ?? page.slugs.at(-1) ?? page.url;
   const navScope = getDocsNavScope({
     activePath: page.url,
@@ -2420,7 +2428,8 @@ async function embedProductRestSidebar(
     if (!apiNodes.length) return node;
 
     function contextualize(child: DocsSidebarNode): DocsSidebarNode {
-      if (child.type === 'page') return { ...child, search: { ...child.search, from: fromProduct } };
+      if (child.type === 'page')
+        return { ...child, search: { ...child.search, from: fromProduct } };
       return {
         id: child.id,
         title: child.title,
