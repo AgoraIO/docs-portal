@@ -304,12 +304,11 @@ The media player supports the following media formats and protocols:
 
 ### Playback completion states
 
-For on-demand playback, the callback sequences below show only playback-completion and stop states. Intermediate states such as opening and playing are omitted. Each playback iteration reports only one completion state; the final iteration reports `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED` (6) without first reporting `PLAYER_STATE_PLAYBACK_COMPLETED` (5).
+The following table shows the state callbacks the SDK reports during on-demand playback. It lists only playback-completion and stop states, and omits intermediate states such as opening and playing. Each playback iteration reports only one completion state. The final iteration reports `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED` (6) without first reporting `PLAYER_STATE_PLAYBACK_COMPLETED` (5).
 
 | Method call | Playback behavior | State callback sequence |
 | --- | --- | --- |
-| No call to `setLoopCount` | Plays once | Reports `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED` (6) when playback completes. |
-| `setLoopCount(0)` | Plays once | Reports `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED` (6) when playback completes. |
+| No call to `setLoopCount`, or `setLoopCount(0)` | Plays once | Reports `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED` (6) when playback completes. |
 | `setLoopCount(1)` | Plays twice | Reports `PLAYER_STATE_PLAYBACK_COMPLETED` (5) after the first playback, then `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED` (6) after the second playback. |
 | `setLoopCount(-1)` | Repeats indefinitely | Reports `PLAYER_STATE_PLAYBACK_COMPLETED` (5) after each playback, then repeats. |
 | Successful `stop()` during playback | Stops playback | Reports `PLAYER_STATE_STOPPED` (7). |

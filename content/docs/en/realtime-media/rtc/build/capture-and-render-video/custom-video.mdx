@@ -3,31 +3,31 @@ title: "Custom video source"
 description: "Integrate a custom video or audio capture into your client"
 ---
 
-Custom video capture refers to the collection of a video stream from a custom source. Unlike the default video capture method, custom video capture enables you to control the capture source, and precisely adjust video attributes. You can dynamically adjust parameters such as video quality, resolution, and frame rate to adapt to various application use-cases. For example, you can capture video from high-definition cameras, and drone cameras.
+Custom video capture refers to the collection of a video stream from a custom source. Unlike the default video capture method, custom video capture enables you to control the capture source, and precisely adjust video attributes. You can dynamically adjust parameters such as video quality, resolution, and frame rate to adapt to various application use cases. For example, you can capture video from high-definition cameras, and drone cameras.
 
-Agora recommends default video capture for its stability, reliability, and ease of integration. Custom video capture offers flexibility and customization for specific video capture use-cases where default video capture does not fulfill your requirements.
+Agora recommends default video capture for its stability, reliability, and ease of integration. Custom video capture offers flexibility and customization for specific video capture use cases where default video capture does not fulfill your requirements.
 
 <PlatformStructured platform="android">
+
+## Understand the tech
+
+RTC SDK uses custom video tracks to publish video that you capture yourself. You can create and publish custom video tracks to one or more channels. Your capture module drives the capture device and sends the captured video frames to the SDK through a video track.
+
+The following figure illustrates the video data transmission process when custom video capture is implemented:
+
+![Custom video source](https://assets-docs.agora.io/images/video-sdk/publish-custom-tracks-in-a-channel.svg)
 
 ## Choose an integration approach
 
 For new Android integrations, Agora recommends using `io.agora.base.VideoFrame` with `pushExternalVideoFrameById(VideoFrame frame, int videoTrackId)`.
 
-- To publish one custom video stream to a channel, enable the external video source with `setExternalVideoSource` before joining. Set `publishCustomVideoTrack` to `true` and `customVideoTrackId` to `0` in `ChannelMediaOptions`. The SDK creates the default custom video track automatically; you do not need to call `createCustomVideoTrack`.
+- To publish one custom video stream to a channel, enable the external video source with `setExternalVideoSource` before joining. Set `publishCustomVideoTrack` to `true` and `customVideoTrackId` to `0` in `ChannelMediaOptions`. The SDK creates the default custom video track automatically. You do not need to call `createCustomVideoTrack`.
 - To publish multiple custom video streams, or different custom streams to different channels, call `createCustomVideoTrack` to create a separate track for each stream.
 - If an existing capture module uses `AgoraVideoFrame`, you can continue using `pushExternalVideoFrameById(AgoraVideoFrame frame, int videoTrackId)`. This overload does not support Texture data and offers fewer extension capabilities than the `VideoFrame` overload.
 
 :::info
-`VideoFrame` supports buffer types including I420, NV21, NV12, and Texture. `VideoFrame.TextureBuffer` provides access to the texture type, EGL context, transform matrix, and fence object. `AgoraVideoFrame` uses individual fields to describe a frame; its `buf` field can hold raw data such as NV21 for simple byte-array capture integrations.
+`VideoFrame` supports buffer types including I420, NV21, NV12, and Texture. `VideoFrame.TextureBuffer` provides access to the texture type, EGL context, transform matrix, and fence object. `AgoraVideoFrame` uses individual fields to describe a frame. Its `buf` field can hold raw data such as NV21 for simple byte-array capture integrations.
 :::
-
-## Understand the tech
-
-RTC SDK provides a custom video track method for video self-collection. You can create and publish custom video tracks to one or more channels. You use the self-capture module to drive the capture device, and send the captured video frames to the SDK through the video track.
-
-The following figure illustrates the video data transmission process when custom video capture is implemented:
-
-![Custom video source](https://assets-docs.agora.io/images/video-sdk/publish-custom-tracks-in-a-channel.svg)
 
 ## Prerequisites
 
@@ -45,7 +45,7 @@ The following figure shows the workflow you implement to capture and stream a cu
 
 ![API call sequence](https://assets-docs.agora.io/images/video-sdk/custom-video-capture.svg)
 
-Choose the default track for a single custom video stream, or explicitly created tracks for multiple streams. Then follow the steps below.
+Use the default track for a single custom video stream, or explicitly created tracks for multiple streams. For details, see [Choose an integration approach](#choose-an-integration-approach). Take the following steps to implement this workflow:
 
 1. Create custom video tracks, if required
 
@@ -74,7 +74,7 @@ Choose the default track for a single custom video stream, or explicitly created
 
     **Default track for a single stream**
 
-    Enable the external video source before joining the channel, and publish track ID `0`. Set the second argument of `setExternalVideoSource` to `true` if you push Texture data; otherwise, set it to `false`.
+    Enable the external video source before joining the channel, and publish track ID `0`. Set the second argument of `setExternalVideoSource` to `true` if you push Texture data, or `false` otherwise.
 
     ```java tab="Java" tabGroup="custom-video-single-track"
     // Enable external capture before joining the channel.
@@ -126,7 +126,7 @@ Choose the default track for a single custom video stream, or explicitly created
         // Enable auto subscription of audio and video
         option.autoSubscribeAudio = true;
         option.autoSubscribeVideo = true;
-        // Publish self-captured video stream
+        // Publish the custom video stream
         option.publishCustomVideoTrack = true;
         // Set custom video track ID
         option.customVideoTrackId = videoTrackId;
@@ -144,7 +144,7 @@ Choose the default track for a single custom video stream, or explicitly created
          // Enable auto subscription of audio and video
          autoSubscribeAudio = true
          autoSubscribeVideo = true
-         // Publish self-captured video stream
+         // Publish the custom video stream
          publishCustomVideoTrack = true
          // Set custom video track ID
          customVideoTrackId = videoTrackId
@@ -156,23 +156,21 @@ Choose the default track for a single custom video stream, or explicitly created
     </CodeBlockTab>
 
     </CodeBlockTabs>
-3. Implement your self-capture module
+3. Implement your capture module
 
     Agora provides the [VideoFileReader](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/utils/VideoFileReader.java) demo project that shows you how to read `YUV` format video data from a local file. In a production environment, create a custom video module for your device using RTC SDK based on your business requirements.
 
 4. Push video data to the SDK
 
-    Before sending captured video frames to RTC SDK, integrate your video module with the `VideoFrame`. To ensure audio-video synchronization, best practice is to obtain the current monotonic time from RTC SDK and pass it as the timestamp parameter in the `VideoFrame`.
+    Before sending captured video frames to RTC SDK, integrate your video module with the `VideoFrame`.
 
     :::note
-    To ensure audio-video synchronization, set the timestamp parameter of `VideoFrame` to the system's Monotonic Time. Use `getCurrentMonotonicTimeInMs` to obtain the current monotonic Time.
+    To ensure audio-video synchronization, set the timestamp of each `VideoFrame` to the current monotonic time. Call `getCurrentMonotonicTimeInMs` to obtain it. This method returns milliseconds, but the `VideoFrame` constructor's `timestampNs` argument expects nanoseconds. Multiply the value by 1,000,000 before you construct the frame, as the samples do.
     :::
 
     Call `pushExternalVideoFrameById` to push the captured video frames through the video track to RTC SDK. Use `0` for the default track, or the track ID returned by `createCustomVideoTrack` for an explicitly created track. The ID must match the `customVideoTrackId` specified when joining the channel.
 
-    The following samples use the recommended `io.agora.base.VideoFrame` overload. The `AgoraVideoFrame` overload does not support Texture data. `getCurrentMonotonicTimeInMs` returns milliseconds, while the `VideoFrame` constructor's `timestampNs` argument uses nanoseconds; convert the value before constructing the frame, as shown in the samples.
-
-    The following code samples demonstrate pushing `I420`, `NV21`, `NV12`, and `Texture` format video data:
+    The following samples use the recommended `io.agora.base.VideoFrame` overload to push `I420`, `NV21`, `NV12`, and `Texture` format video data:
 
     - **I420**
 
@@ -413,7 +411,7 @@ Choose the default track for a single custom video stream, or explicitly created
         </CodeBlockTabs>
 
     :::note
-    If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the RTC SDK. This helps eliminate anomalies during internal data encoding processes.
+    If you capture Texture video and remote users see flickering or distortion, duplicate the video data and send both the original and the duplicate to RTC SDK. This helps eliminate anomalies during internal encoding.
     :::
 
 5. Destroy custom video tracks
@@ -464,22 +462,22 @@ Choose the default track for a single custom video stream, or explicitly created
 
 ### Custom video rendering
 
-To implement custom video rendering in your app, refer to the following steps:
+To implement custom video rendering in your app, take the following steps:
 
-1. Set up `onCaptureVideoFrame` or `onRenderVideoFrame` callback to obtain the video data to be played.
+1. Set up the `onCaptureVideoFrame` or `onRenderVideoFrame` callback to obtain the video data to be played.
 1. Implement video rendering and playback yourself.
 
 ## Reference
 
-This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+This section lists use cases, advantages, sample projects, and API references for custom video capture on Android.
 
-### Applicable use-cases
+### Applicable use cases
 
-Use custom video capture in the following industries and use-cases:
+Use custom video capture in the following industries and use cases:
 
 **Specialized video processing and enhancement**
 
-In specific gaming or virtual reality use-cases, real-time effects processing, filter handling, or other enhancement effects necessitate direct access to the original video stream. Custom video capture facilitates this, enabling seamless real-time processing and enhances the overall gaming or virtual reality experience for a more realistic outcome.
+In some gaming or virtual reality use cases, real-time effects, filters, or other enhancements need direct access to the original video stream. Custom video capture provides this access, which enables real-time processing and a more realistic gaming or virtual reality experience.
 
 **High-precision video capture**
 
@@ -487,15 +485,15 @@ In video surveillance applications, detailed observation and analysis of scene d
 
 **Capture from specific video sources**
 
-Industries such as IoT and live streaming often require the use of specific cameras, monitoring devices, or non-camera video sources, such as video capture cards or screen recording data. In such situations, default RTC SDK capture may not meet your requirements, necessitating use of custom video capture.
+Industries such as IoT and live streaming often require the use of specific cameras, monitoring devices, or non-camera video sources, such as video capture cards or screen recording data. In such situations, default RTC SDK capture may not meet your requirements, and you need custom video capture.
 
 **Seamless integration with specific devices or third-party applications**
 
-In smart home or IoT applications, transmitting video from devices to users' smartphones or computers for monitoring and control may require the use of specific devices or applications for video capture. Custom video capture facilitates seamless integration of specific devices or applications with the RTC SDK.
+In smart home or IoT applications, transmitting video from devices to users' smartphones or computers for monitoring and control may require the use of specific devices or applications for video capture. Custom video capture lets you integrate these devices or applications with RTC SDK.
 
 **Specific video encoding formats**
 
-In certain live streaming use-cases, specific video encoding formats may be needed to meet business requirements. In such cases, RTC SDK default capture might not suffice, and custom video capture is required to capture and encode videos in specific formats.
+In some live streaming use cases, your business requirements may call for specific video encoding formats. In such cases, RTC SDK default capture might not suffice, and you need custom video capture to capture and encode video in those formats.
 
 ### Advantages
 
@@ -503,7 +501,7 @@ Using custom video capture offers the following advantages:
 
 **More types of video streams**
 
-Custom video capture allows the use of higher quality and a greater variety of capture devices and cameras, resulting in clearer and smoother video streams. This enhances the user viewing experience and makes the product more competitive.
+Custom video capture lets you use higher quality and a greater variety of capture devices and cameras, resulting in clearer and smoother video streams. This enhances the user viewing experience and makes the product more competitive.
 
 **More flexible video effects**
 
@@ -511,13 +509,13 @@ Custom video capture enables you to implement richer and more personalized video
 
 **Adaptation to diverse use-case requirements**
 
-Custom video capture helps applications better adapt to the requirements of various use-cases, such as live streaming, video conferencing, and online education. You can customize different video capture solutions based on the use-case requirements to provide a more robust application.
+Custom video capture helps applications better adapt to the requirements of various use cases, such as live streaming, video conferencing, and online education. You can customize different video capture solutions based on the use-case requirements to provide a more robust application.
 
 ### Sample projects
 
 Agora provides the following open-source sample projects for your reference. Download the project or view the source code for a more detailed example.
 
-* [MultiVideoSourceTracks](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/MultiVideoSourceTracks.java): Video self-capture
+* [MultiVideoSourceTracks](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/MultiVideoSourceTracks.java): Custom video capture
 * [CustomRemoteVideoRender](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/CustomRemoteVideoRender.java): Custom remote video rendering
 
 ### API reference
