@@ -20,33 +20,27 @@ title: "跑通基于 C API 的 Linux 示例项目"
 
 ## 获取 SDK
 
-本文以 x86_64 的 SDK 包为例。你可以点击[下载](/zh-CN/realtime-media/rtsa/reference/downloads)获取其他平台的 SDK 包。
+以下命令下载并解压 RTSA C SDK v1.10.1 的 `x86_64-linux-gnu` 包。如需其他版本或平台，请在 [SDK 下载页](/zh-CN/realtime-media/rtsa/reference/downloads)找到对应的包，复制完整下载链接，替换命令中的 URL。包名也可能随版本变化，仅修改版本号可能导致下载失败。
 
 ```shell
-# 将 x.y.z 替换为具体的 SDK 版本号，如 1.9.1
-# 可通过发版说明获取最新版本号
-# 获取 SDK
-wget https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmAcAjCP-x86_64-linux-gnu-vx.y.z.tgz
-# 解压缩
-tar xvf Agora-RTSALite-RmAcAjCP-x86_64-linux-gnu-vx.y.z.tgz
+wget -O rtsa-sdk.tgz 'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAuAcAjCF-x86_64-linux-gnu-v1.10.1-20260907_142436-1285790.tgz' &&
+  tar -xzf rtsa-sdk.tgz
 ```
 
 ## 编译示例项目
 
-在 SDK 包 `example` 目录下运行以下命令编译示例项目：
+解压后，运行以下命令编译 x86_64 示例项目：
 
 ```shell
-# 切换到示例项目目录
-cd agora_rtc_sdk/example
-# 构建示例项目
-./build-x86_64.sh
+cd agora_rtsa_sdk/example
+./build.sh -a x86_64
 ```
 
 :::info[信息]
 如果你需要在设备端（通常是 ARM Linux 系统）运行 `hello_rtsa`，请先参考 SDK 包中的移植指南（`PORTING.md` 文件）。
 :::
 
-编译完成后，会在当前目录下生成以下可执行文件：
+编译完成后，可以在 `out/x86_64` 目录下找到以下可执行文件：
 
 -  `hello_rtsa`
 -  `hello_rtm`
