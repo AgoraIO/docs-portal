@@ -99,7 +99,7 @@ curl --request PUT \
 - Specify bitrates in decreasing order by Layer ID
 - If specified, layer width and height must decrease monotonically as the Layer ID increases
 - Each layer FPS must not exceed the effective main-stream FPS or that of the preceding layer. Equal frame rates, such as the 30 fps main stream and layers in the example, are supported.
-- Clients must specify the Layer ID when subscribing to receive the corresponding quality layer
+- To select a configured Gateway layer, pass the corresponding stream type from your SDK's mapping table.
 
 ### Layer ID selection
 
@@ -285,7 +285,8 @@ Use the following Web SDK APIs to control which ABR layer a subscriber receives.
 
 #### Enable bandwidth estimation
 
-- API: `.setParameter("ENABLE_AUT_CC", true);`
+- API: `AgoraRTC.setParameter("ENABLE_AUT_CC", true);`
+- Call this method before `client.join(...)`. The Web SDK reads this setting when building the join request.
 - Description: AUT-CC is a server-side Bandwidth Estimation (BWE) mechanism that relies on packet loss. Its main inputs include the number of packets, packet size, feedback on packet loss, and the timing of that feedback. The output is the currently available bandwidth.
 
 #### Configure remote subscriber fallback
