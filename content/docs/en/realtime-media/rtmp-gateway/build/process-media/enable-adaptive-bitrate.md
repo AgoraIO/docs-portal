@@ -223,12 +223,15 @@ Use the following Native SDK APIs to control which ABR layer a subscriber receiv
 #### Customize the fallback policy (optional)
 
 - API: `setRemoteSubscribeFallbackOption(StreamFallbackOptions option)`
-- Description: Customizes the fallback policy for subscribed audio and video streams under poor network conditions. Call this method when your application requires a custom policy, such as limiting fallback to a medium-quality video layer or allowing fallback to audio only. You do not need to call this method for the default automatic switching between video layers.
 
-  Specify the minimum acceptable fallback level:
+:::note
+Customizes the fallback policy for subscribed audio and video streams under poor network conditions. Call this method when your application requires a custom policy, such as limiting fallback to a medium-quality video layer or allowing fallback to audio only. You do not need to call this method for the default automatic switching between video layers.
+:::
 
-  - To limit fallback to a specific video layer, use the corresponding `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LAYER_1` through `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LAYER_6` value.
-  - To fall back to audio only, use `STREAM_FALLBACK_OPTION_AUDIO_ONLY`.
+Specify the minimum acceptable fallback level:
+
+- To limit fallback to a specific video layer, use the corresponding `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LAYER_1` through `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LAYER_6` value.
+- To fall back to audio only, use `STREAM_FALLBACK_OPTION_AUDIO_ONLY`.
 
 - Supported values:
   - `STREAM_FALLBACK_OPTION_DISABLED`
@@ -293,7 +296,10 @@ Use the following Web SDK APIs to control which ABR layer a subscriber receives.
 #### Customize the fallback policy (optional)
 
 - API: `setStreamFallbackOption(uid: UID, fallbackType: RemoteStreamFallbackType): Promise<void>`
-- Description: Customizes the fallback policy for a specified remote user under poor network conditions. Call this method when your application requires a custom policy, such as limiting fallback to a medium-quality video layer or allowing fallback to audio only. You do not need to call this method for the default automatic switching between video layers.
+
+:::note
+Customizes the fallback policy for a specified remote user under poor network conditions. Call this method when your application requires a custom policy, such as limiting fallback to a medium-quality video layer or allowing fallback to audio only. You do not need to call this method for the default automatic switching between video layers.
+:::
 
 - Example (optional): Explicitly configure fallback down to the low video stream.
 
