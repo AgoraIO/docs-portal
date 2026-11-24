@@ -2216,7 +2216,7 @@ setStreamFallbackOption(uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid), fa
  [AgoraRTCClient.on("stream-type-changed")](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_stream_type_changed) 回调。当订阅流回退为音频流或从音频流恢复为音视频流时，本地会触发 [AgoraRTCClient.on("stream-fallback")](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_stream_fallback) 回调。
 
 :::caution[注意]
-- 该方法仅在远端用户调用 [enableDualStream](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#enabledualstream) 开启双流模式后生效。
+- 回退到视频小流要求远端能够提供可订阅的小流，例如 Web SDK 发送端可通过 [enableDualStream](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#enabledualstream) 开启双流。是否实际回退取决于网络状况和所选回退策略。
 - 远端用户开启双流模式后，如果本地没有调用过 `setStreamFallbackOption`，默认的回退策略将生效，即在弱网环境下 SDK 会自动订阅远端用户的视频小流（[RemoteStreamFallbackType](/zh-CN/api-reference/rtc/web/enums/remotestreamfallbacktype) 为 `1`）。
 :::
 
