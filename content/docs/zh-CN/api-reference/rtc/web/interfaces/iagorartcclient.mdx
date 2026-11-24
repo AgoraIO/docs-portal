@@ -1869,7 +1869,7 @@ startChannelMediaRelay(config: [IChannelMediaRelayConfiguration](/zh-CN/api-refe
 - [AgoraRTCClient.on("channel-media-relay-event")](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_channel_media_relay_event)，报告跨频道媒体流转发相关的事件。
 
   - 如果跨频道服务开始向目标频道发送数据包，会触发回调，`event` 为 `"PACKET_SENT_TO_DEST_CHANNEL"`。
-  - 临时信令断连可通过该事件中的 `"NETWORK_DISCONNECTED"` 观察。断连后成功恢复时，可能先后收到 `"RELAY_STATE_IDLE"` 和 `"RELAY_STATE_RUNNING"` 状态，而未触发 `"RELAY_STATE_FAILURE"`；不应仅监听失败状态来判断是否发生过中断。
+  - 临时信令断连可通过该事件中的 `"NETWORK_DISCONNECTED"` 观察。断连后成功恢复时，状态回调 `channel-media-relay-state` 可能先后报告 `"RELAY_STATE_IDLE"` 和 `"RELAY_STATE_RUNNING"`，而未触发 `"RELAY_STATE_FAILURE"`；不应仅监听失败状态来判断是否发生过信令断连。
 
 :::note[注意事项]
 - 跨频道媒体流转发功能需要联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 开通。
