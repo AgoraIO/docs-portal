@@ -99,8 +99,8 @@ The gateway has received an RTMP or SRT stream but terminated it for some reason
     "uid": "1234"
   },
   "beginAt": "2023-11-21T02:27:31Z",
-  "errorCode": 100,
-  "reason": "invalid"
+  "errorCode": 11,
+  "reason": "close by command"
 }
 ```
 
@@ -118,19 +118,29 @@ The gateway has received an RTMP or SRT stream but terminated it for some reason
 | `errorCode` | Description | Recommended action |
 | :---------- | :---------- | :----------------- |
 | `1` | Illegal `streamKey`, for example an empty `channelName` or unsupported characters. | Check the `streamKey` format, especially for locally generated keys. |
-| `2` | Invalid `streamKey`, such as an expired or deleted key. | Create a new `streamKey` and try again. |
+| `2` | The key has expired or been deleted, or the acquire request could not be processed. | Inspect `reason` to distinguish a key error from a service-side acquire failure; do not always replace the key. |
 | `3` | No permission to use this `streamKey`, for example when the custom domain and app ID do not match. | Check whether the `streamKey` matches the domain name used for the push. |
 | `4` | Number of concurrent streams exceeds the limit. | Wait and retry. |
 | `5` | Conflict detected, for example pushing to the same channel at the same time. | If the streams are not being pushed at the same time, try again after 5 to 10 seconds. |
 | `6` | Stream attribute exceeds the limit. Currently, this applies to bitrate only. | Check the streaming software configuration and lower the target bitrate. |
-| `7` | Streaming without audio or video data for more than 10 seconds. | Check whether the last push exited abnormally, and then try again. |
+| `7` | No audio or video data arrived before the configured publisher idle timeout. The default is 10 seconds; a project override takes precedence. | Check the source and network, and use the actual configured timeout when diagnosing the stream. |
 | `8` | Failed to join the channel. | The `reason` field provides the specific error reason, for example `connect to rtc failed, reason:$N`. |
 | `9` | Disconnected from the main network. | Try again several times. If the problem persists, contact technical support to confirm whether the app certificate provided during activation is valid. |
 | `10` | Unknown internal service error. | Try again several times. If the problem persists, contact technical support. |
+| `11` | The stream was closed by a control command. | Check whether your application requested the disconnection. |
+| `12` | The source is not a valid media stream. | Check the source media and the streaming software configuration. |
+| `14` | The service is overloaded. | Retry with backoff. If the problem persists, contact technical support. |
+
+Always inspect `errorCode` together with `reason`. Handle unknown error codes without rejecting the callback, and retain the reason for troubleshooting.
+
 
 ## `live_profile_updated`
 
-Stream properties have been updated. For example, the first audio or video frame has been received, or the audio or video profile has changed.
+The input source stream properties have been updated, for example when the first audio or video frame is received or an input profile changes. These are source properties, not the transcoded output profile.
+
+The selected callback fields affect when this event is sent and which fields are present. `videoProfile` is omitted until a valid video width is available, and `audioProfile` is omitted until a valid sample rate is available. Individual unavailable fields, such as `height` or `gop`, can also be omitted. Do not require the complete example payload in every callback.
+
+`rtcInfo.uid` is serialized as a JSON string even when it represents a numeric UID. To inspect transcoded outputs, use the `output`/`outputs` information from online stream queries rather than treating this callback as an output profile.
 
 ```json
 {
@@ -162,6 +172,6 @@ Stream properties have been updated. For example, the first audio or video frame
 | `region` | String | The server area that has received the pushed stream. |
 | `streamKey` | String | The streaming key used by the stream. |
 | `rtcInfo` | Object | RTC information, including `channel` and `uid`. |
-| `videoProfile` | Object | Video properties. Not applicable for audio-only streams. Includes `codec`, `width`, `height`, and `gop`. |
-| `audioProfile` | Object | Audio properties, including `sampleRate` and `channels`. |
+| `videoProfile` | Object | Optional input video properties. May include `codec`, `width`, `height`, and `gop`; unavailable fields are omitted. |
+| `audioProfile` | Object | Optional input audio properties. May include `sampleRate` and `channels`. |
 | `beginAt` | String | The streaming start time in RFC 3339 format. |

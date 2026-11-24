@@ -287,20 +287,20 @@ paths:
               example:
                 status: success
                 data:
-                  - sid: string
-                    channel: string
-                    uid: string
-                    url: string
-                    status: Running
-                    beginAt: string
-                    bitrate: 0
-                    video:
-                      width: 0
-                      height: 0
-                      fps: 0
-                    audio:
-                      channels: 0
-                      sampleRate: 0
+                  sid: string
+                  channel: string
+                  uid: string
+                  url: string
+                  status: Running
+                  beginAt: string
+                  bitrate: 0
+                  video:
+                    width: 0
+                    height: 0
+                    fps: 0
+                  audio:
+                    channels: 0
+                    sampleRate: 0
         "401":
           $ref: "#/components/responses/error"
         default:
@@ -323,9 +323,11 @@ paths:
               --header 'X-Request-ID: '
       x-docs-callouts:
         - markdown: >-
-            Make sure to delete the streaming key first; otherwise, after using this API to force a
-            disconnection, the push software will immediately reconnect. A new push session,
-            corresponding to a new SID, will be generated, and the disconnection will fail.
+            This API stops the session identified by the SID; it does not revoke the streaming key.
+            To prevent further pushes, revoke the key first, then stop the active session. A client
+            with automatic reconnection enabled may reconnect while its key remains valid. A later
+            connection does not mean the original stop failed. Whether it reuses the SID depends on
+            the project's reconnection settings.
           position: after-description
           title: Important
           type: warning
@@ -348,6 +350,12 @@ paths:
                 status: success
         "401":
           $ref: "#/components/responses/error"
+        "422":
+          description: The session has no valid gateway node routing information.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error-response"
         default:
           $ref: "#/components/responses/error"
       x-docs-sections:
@@ -367,7 +375,7 @@ paths:
             channel](/en/api-reference/api-ref/rtc/ban-user-privileges-best-practices#kick-a-user-out-of-a-channel). This API can also force
             the user to disconnect. If the kicking API has been integrated, you can continue to use
             it to disconnect the stream.
-  /{region}/{version}/projects/{appId}/rtls/ingress/online-streams/mute/{sid}:
+  /{region}/{version}/projects/{appId}/rtls/ingress/online-streams/{sid}/mute:
     servers:
       - url: https://api.sd-rtn.com
         description: Media Gateway stream control host.
@@ -380,7 +388,7 @@ paths:
           label: curl
           source: |-
             curl --request post \
-              --url https://api.sd-rtn.com/:region/:version/projects/:appId/rtls/ingress/online-streams/mute/:sid \
+              --url https://api.sd-rtn.com/:region/:version/projects/:appId/rtls/ingress/online-streams/:sid/mute \
               --header 'Authorization: Basic <credentials>' \
               --header 'X-Request-ID: <string>' \
               --data '
@@ -437,6 +445,12 @@ paths:
                 status: success
         "401":
           $ref: "#/components/responses/error"
+        "422":
+          description: The session has no valid gateway node routing information.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error-response"
         default:
           $ref: "#/components/responses/error"
       x-docs-sections:
@@ -473,7 +487,7 @@ paths:
                     }
                         },
                         "audio": {
-                            "enabled": false,
+                            "enabled": true,
                             "profile": 3
                         }
                     },
@@ -516,7 +530,7 @@ paths:
                       fps: 24
                       bitrate: 1670
                   audio:
-                    enabled: false
+                    enabled: true
                     profile: 3
                 jitterBuffer:
                   size: 500
@@ -566,7 +580,7 @@ paths:
         - lang: bash
           label: curl
           source: >-
-            curl --location -g --request PUT
+            curl --location -g --request PATCH
             'https://api.agora.io/{{region}}/v1/projects/{{appId}}/rtls/ingress/stream-templates/{{templateId}}'
             \
 
@@ -602,10 +616,9 @@ paths:
             to update the `fps` field of `transcoding.video`, you need to pass in the entire
             `transcoding.video` field with the modified `fps` field and other fields unchanged.
 
-            - `transcoding.video`, `transcoding.audio`, and `jitterBuffer` are independent of each
-            other. If only `transcoding.video` is passed in, then only its parameters will be
-            updated and the parameters of `transcoding.audio` and `jitterBuffer` will not be
-            affected.
+            - You can update `transcoding.video`, `transcoding.audio`, and `jitterBuffer` separately.
+            However, enabling video transcoding also enables audio transcoding. Providing only the
+            video object does not allow audio to remain in passthrough mode when video is transcoded.
         - markdown: >-
             - This interface can only be called if the flow configuration template already exists.
 
@@ -944,12 +957,13 @@ components:
       required: true
       schema:
         type: string
-        maxLength: 12
-        pattern: ^[A-Za-z0-9]+$
+        minLength: 1
+        maxLength: 33
+        pattern: ^[A-Za-z0-9_-]{1,33}$
         example: 720p
       description: >-
-        The flow configuration template ID. The value can contain only lowercase letters, uppercase
-        letters, and numbers, and cannot exceed 12 bytes. Set the value according to your business
+        The flow configuration template ID: 1–33 bytes containing letters, numbers, hyphens (`-`),
+        or underscores (`_`). Set the value according to your business
         use case. For example, use `"720p"` and `"1080p"` for different target resolutions, or
         `"gameA"` and `"gameB"` for different game use cases.
     channel:
@@ -1070,9 +1084,7 @@ components:
           type: string
           description: Request status. `success` means the request succeeds.
         data:
-          type: array
-          items:
-            $ref: "#/components/schemas/online-stream"
+          $ref: "#/components/schemas/online-stream"
     online-stream:
       type: object
       properties:
@@ -1176,11 +1188,16 @@ components:
           $ref: "#/components/schemas/jitter-buffer"
     video-transcoding:
       type: object
+      required:
+        - enabled
       properties:
         enabled:
           type: boolean
           default: false
-          description: Whether to enable video transcoding.
+          description: >-
+            Whether to enable video transcoding. Required when the `video` object is provided.
+            Enabling video transcoding also enables audio transcoding, even if `audio.enabled`
+            is set to `false`. If the `video` object is omitted, video transcoding is disabled by default.
         mode:
           type: string
           default: force
@@ -1196,7 +1213,11 @@ components:
           enum:
             - H.264
             - VP8
-          description: Codec format for transcoding.
+            - AV1
+          description: >-
+            Video transcoding output codec. Configure it in the stream template independently of
+            the ingest protocol and source codec. H.265 input is supported by some ingest protocols,
+            but H.265 is not a supported transcoding output codec.
         width:
           type: integer
           minimum: 0
@@ -1208,7 +1229,9 @@ components:
             - type: info
               title: Note
               markdown: |
-                If the ABR function is enabled, this field is required.
+                When ABR is enabled, set at least one of `width` or `height` to a positive value.
+                If only one dimension is set, the other is derived from the source aspect ratio.
+                For example, `width: 0, height: 720` specifies one dimension.
         height:
           type: integer
           minimum: 0
@@ -1220,7 +1243,9 @@ components:
             - type: info
               title: Note
               markdown: |
-                If the ABR function is enabled, this field is required.
+                When ABR is enabled, set at least one of `width` or `height` to a positive value.
+                If only one dimension is set, the other is derived from the source aspect ratio.
+                For example, `width: 0, height: 720` specifies one dimension.
         fps:
           type: integer
           minimum: 0
@@ -1234,30 +1259,18 @@ components:
           maximum: 20000
           description: >-
             Encoding bitrate of the main stream in Kbps. If omitted, the source stream bitrate is
-            used. If set to `0`, Agora automatically chooses a bitrate based on width and height.
+            used. If set to `0`, Agora automatically chooses a target bitrate based on output resolution and frame rate.
           x-docs-callouts:
             - type: info
               title: Note
               markdown: >
-                If you enable low-speed streaming (provide the following `simulcastStream` object),
-                this field is required. If you do not enable low-speed streaming, it is recommended
-                to use the automatically matched bitrate without setting the bitrate yourself.
+                The main-stream bitrate can be omitted when `simulcastStream` is configured.
+                Omission follows the source bitrate, `0` selects an automatic target, and a positive
+                value sets an explicit target. The effective main and low streams must maintain
+                the required bitrate hierarchy.
         advancedOptions:
           type: object
           properties:
-            pvc:
-              type: object
-              properties:
-                enabled:
-                  type: boolean
-                  default: false
-                  description: Whether to enable PVC.
-                saveBitrateRatio:
-                  type: integer
-                  description: >-
-                    Bitrate saving ratio for PVC. For example, `20` means saving 20 percent of the
-                    bitrate. This parameter is effective only when `video.bitrate` is missing or
-                    `0`.
             superResolution:
               type: object
               properties:
@@ -1311,24 +1324,26 @@ components:
             `video.height / 2` is used.
         fps:
           type: integer
-          default: 15
           minimum: 0
           maximum: 60
           description: >-
-            Frame rate in fps. The value must be less than or equal to `video.fps`. If omitted or
-            set to `0`, the default value is `15`.
+            Frame rate in fps. The effective frame rate must not exceed the main-stream target.
+            If omitted or set to `0`, it is `max(7, main-stream target fps / 2)`, using integer
+            division. For example, 24 fps gives 12 fps and 60 fps gives 30 fps.
         bitrate:
           type: integer
           description: >-
-            Bitrate of the low-quality video stream in Kbps. The value must be less than
-            `video.bitrate`. If omitted or set to `0`, Agora chooses an appropriate bitrate based on
-            resolution and fps.
+            Bitrate of the low-quality video stream in Kbps. If omitted or set to `0`, Agora
+            chooses a bitrate based on output resolution and frame rate. A positive value sets an
+            explicit target. When `video.bitrate` is explicitly positive, the requested low-stream
+            bitrate must not exceed it. The effective output layers are also validated at runtime.
           x-docs-callouts:
             - type: info
               title: Note
               markdown: >
-                When enabling the low-quality stream and specifying low-quality `bitrate`, you need
-                to specify `video.bitrate` at the same time.
+                You can specify a low-stream bitrate while omitting `video.bitrate`; the main
+                stream then follows the source bitrate. Its final target must remain compatible
+                with the low-stream output.
     simulcast-stream-layer:
       type: object
       required:
@@ -1353,8 +1368,10 @@ components:
         fps:
           type: integer
           description: >-
-            Encoding frame rate of the layer in fps. If specified, this value must be smaller than
-            `video.fps`. If omitted or set to `0`, the main stream frame rate is used.
+            Encoding frame rate of the layer in fps. It must not exceed the effective main-stream
+            frame rate or the preceding layer frame rate. Equal frame rates are supported.
+            If omitted or set to `0`, it follows the main stream and is capped at the actual
+            main-stream target frame rate.
         bitrate:
           type: integer
           description: >-
@@ -1362,11 +1379,16 @@ components:
             and decrease monotonically by layer ID.
     audio-transcoding:
       type: object
+      required:
+        - enabled
       properties:
         enabled:
           type: boolean
           default: true
-          description: Whether to enable audio transcoding.
+          description: >-
+            Whether to enable audio transcoding. Required when the `audio` object is provided.
+            When video transcoding is enabled, audio transcoding is also enabled regardless of
+            this value; if no audio profile was supplied, profile `3` is applied.
         profile:
           type: integer
           default: 0
@@ -1376,9 +1398,13 @@ components:
             for other profile settings.
         bitrate:
           type: integer
-          minimum: 64
+          minimum: 16
           maximum: 320
-          description: Audio encoding bitrate in Kbps. If omitted, the value is determined by `profile`.
+          description: >-
+            Audio encoding bitrate in Kbps. Valid range: 16–320 for stream templates. If omitted,
+            the value is determined by `profile`. The default is sufficient for general use.
+            For music, 128 Kbps is recommended. For higher quality, keep the bitrate at or below
+            200 Kbps. Legacy inline app configuration has a different minimum of 64 Kbps.
     jitter-buffer:
       type: object
       description: >-
