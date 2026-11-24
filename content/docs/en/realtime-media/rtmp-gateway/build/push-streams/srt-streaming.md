@@ -15,6 +15,8 @@ When using the SRT protocol to push streams to Media Gateway, the following code
 - **Video**: H.264, H.265
 - **Audio**: AAC, OPUS
 
+For primary and backup entry domains, see [Ensure high availability of streaming services](../../reference/integration.md#ensure-high-availability-of-streaming-services). Retry with a backup for the same region and protocol.
+
 ## Configure with OBS
 
 Set up SRT streaming in OBS Studio by configuring the server and streaming key settings.

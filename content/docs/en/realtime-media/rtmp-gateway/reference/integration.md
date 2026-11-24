@@ -25,24 +25,34 @@ Use the table below as a reference when setting `settings.transcoding.video` in 
 | 1920 × 1080 | 30 | 3780 |
 | 1920 × 1080 | 60 | 5730 |
 
-If you set `video.bitrate` to a supported positive value, Media Gateway does not automatically adjust it to match these recommendations. In bitrate-following mode, these reference values are used to limit the bitrate.
+If you set `video.bitrate` to a supported positive value, Media Gateway does not automatically adjust it to match these recommendations. In bitrate-following mode, these reference values are used to limit the bitrate. If `video.bitrate` is `0`, Media Gateway calculates the encoding target from the output resolution and frame rate. An encoding target is not a guarantee of the measured sending bitrate.
 
 ## Ensure high availability of streaming services
 
-Agora provides alternate domain names to reduce outages caused by regional network failures.
+Use the primary and backup domains for the same region and ingest protocol:
 
-| Geographical area | Primary domain name | Alternate primary domain name | Secondary domain name |
+| Region | Protocol | Primary domain | Backup domain |
 | --- | --- | --- | --- |
-| North America | `rtls-ingress-prod-na.agoramdn.com` | `na.rtmpg.rtelink.com` | `na-backup.rtmpg.rtelink.com` |
-| Europe | `rtls-ingress-prod-eu.agoramdn.com` | `eu.rtmpg.rtelink.com` | `eu-backup.rtmpg.rtelink.com` |
-| Asia excluding Mainland China | `rtls-ingress-prod-ap.agoramdn.com` | `ap.rtmpg.rtelink.com` | `ap-backup.rtmpg.rtelink.com` |
-| Mainland China | `rtls-ingress-prod-cn.agoramdn.com` | none | `rtls-ingress-prod-backup-cn.agoramdn.com` |
+| `cn` | RTMP | `rtls-ingress-prod-cn.agoramdn.com` | `cn.mediagw.realtimemesh.com` |
+| `cn` | SRT | `srtlive-rtcpush-prod-cn.agoramdn.com` | `srtlive-cn.mediagw.realtimemesh.com` |
+| `cn` | WHIP | `whip-rtcpush-prod-cn.agoramdn.com` | `whip-cn.mediagw.realtimemesh.com` |
+| `ap` | RTMP | `rtls-ingress-prod-ap.agoramdn.com` | `ap.rtmpg.rtelink.com` |
+| `ap` | SRT | `srtlive-rtcpush-prod-ap.agoramdn.com` | `srtlive-ap.rtmpg.rtelink.com` |
+| `ap` | WHIP | `whip-rtcpush-prod-ap.agoramdn.com` | `whip-ap.rtmpg.rtelink.com` |
+| `eu` | RTMP | `rtls-ingress-prod-eu.agoramdn.com` | `eu.rtmpg.rtelink.com` |
+| `eu` | SRT | `srtlive-rtcpush-prod-eu.agoramdn.com` | `srtlive-eu.rtmpg.rtelink.com` |
+| `eu` | WHIP | `whip-rtcpush-prod-eu.agoramdn.com` | `whip-eu.rtmpg.rtelink.com` |
+| `na` | RTMP | `rtls-ingress-prod-na.agoramdn.com` | `na.rtmpg.rtelink.com` |
+| `na` | SRT | `srtlive-rtcpush-prod-na.agoramdn.com` | `srtlive-na.rtmpg.rtelink.com` |
+| `na` | WHIP | `whip-rtcpush-prod-na.agoramdn.com` | `whip-na.rtmpg.rtelink.com` |
 
-Best practice:
+Use `rtmp://{domain}/live` as the RTMP server address, `srt://{domain}:6001` with the SRT `streamid`, or `https://{domain}/whip` with the streaming key as the Bearer token for WHIP.
 
-1. Use the primary domain based on the geographical location of your source stream.
-2. If the request fails, retry using the same primary domain.
-3. If the retry still fails, try the alternate domain name.
+1. Choose the primary domain for the source region and protocol.
+2. If the connection fails, retry the primary domain with backoff.
+3. If it still fails, retry the backup domain for that same region and protocol.
+
+These steps change the entry domain for one source connection. Continuous primary/standby streaming is a separate mechanism.
 
 For continuous protection against a degraded connection or a mid-broadcast drop, rather than just a failed push, see [Dual-stream](../build/push-streams/enable-dual-stream-ha.md).
 

@@ -331,18 +331,20 @@ console.log(`streamkey is ${streamkey}`);
 
 ## Recommended encoding settings for web client playback
 
-Media Gateway doesn't transcode a stream by default, so if your channel includes web clients, your source stream must already use encoding parameters that web playback supports. Make sure your streaming software uses the following encoding parameters:
+Media Gateway passes video through by default. If your channel includes web clients, use video encoding parameters supported by web playback:
 
 - Key frame interval (GOP): `2s`
-- Video profile: `baseline`
-- x264 options: `threads=6`
+- Rate Control: `CBR`
+- Video profile: `high`
+- x264 options: `bframes=0` to disable B-frames
+- Tune: `zerolatency` for low-latency scenarios
 - Frame rate (FPS): At 1080 resolution, the frame rate must not exceed 30; for resolutions below that, the frame rate must not exceed 60. If not necessary, 30 is sufficient.
 
 Taking OBS as an example, configure it as follows:
 
-1. On the **Settings > Output > Live** page, configure the video profile, keyframe interval, and x264 options.
+1. In **Settings > Output > Streaming**, set **Output Mode** to **Advanced** and **Video Encoder** to **x264**. Set **Rate Control** to **CBR**, **Keyframe Interval** to **2 s**, **Profile** to **high**, and **x264 Options** to **bframes=0**. For low-latency scenarios, select **zerolatency** for **Tune**. The `high` profile alone does not disable B-frames.
 
-    ![Encoder settings](https://assets-docs.agora.io/images/media-gateway/obs-encoder-settings.png)
+    ![Encoder settings](https://assets-docs.agora.io/images/media-gateway/obs-x264-20261123.png)
 
 2. On the **Settings > Video** page, configure common frame rates.
 
@@ -352,7 +354,7 @@ Taking OBS as an example, configure it as follows:
 
 After completing the configuration, you can push an RTMP stream to Agora channels. Media Gateway publishes the stream to the corresponding channel under the host's identity.
 
-By default, Media Gateway doesn't transcode a pushed stream and publishes it directly to the Agora channel. To transcode streams instead, use a stream configuration template.
+For compatibility with WebRTC viewers, Media Gateway applies different default settings by ingest protocol. For RTMP, RTMPS, and SRT, video passes through and audio is transcoded. For WHIP, both video and audio pass through because the input audio already uses Opus. Use a stream configuration template to configure transcoding explicitly.
 
 ## Related resources
 
