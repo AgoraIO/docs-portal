@@ -1,0 +1,421 @@
+---
+title: Use dynamic variables
+description: Insert business information and the current date or time into the agent's system messages, greeting, and other text.
+---
+
+Dynamic variables let you reference business information, such as the user's name or your company name, in the agent's system messages and scripted messages. You can also insert the current date or time. This way, the same prompts and messages work for different users and business scenarios.
+
+## Understand the tech
+
+There are two types of dynamic variables. They differ in where their values come from:
+
+| Type | Value source | Example |
+| --- | --- | --- |
+| Custom variable | You provide the value in `llm.template_variables` when you start the agent. | `{{user_name}}` |
+| System variable | The Conversational AI Engine provides the value. You don't declare it in `template_variables`. The `now()` system variable returns the current date or time. | `{{now(timezone='America/New_York')}}` |
+
+## Prerequisites
+
+Before you begin, implement the basic logic for interacting with a conversational AI agent by following the [quickstart](../../get-started/quickstart).
+
+## Implementation
+
+You configure dynamic variables when you start the agent, using either an Agora Agents SDK or the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) REST API.
+
+### Configure custom variables
+
+Define variables in `llm.template_variables`, then reference them as `{{variable_name}}` in the target text. Variable values must be strings.
+
+The following example creates a personalized greeting for each user:
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import OpenAI
+
+# ... other agent configuration ...
+.with_llm(OpenAI(
+    api_key='your-llm-api-key',
+    model='gpt-4o-mini',
+    base_url='https://api.openai.com/v1/chat/completions',
+    template_variables={
+        'user_name': 'John',
+        'company_name': 'Agora',
+    },
+    greeting_message='Hello {{user_name}}, welcome to {{company_name}}. How can I help you?',
+))
+# ... continue with .with_tts() and .create_session() ...
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { OpenAI } from 'agora-agents';
+
+// ... other agent configuration ...
+.withLlm(new OpenAI({
+  apiKey: 'your-llm-api-key',
+  model: 'gpt-4o-mini',
+  url: 'https://api.openai.com/v1/chat/completions',
+  templateVariables: {
+    user_name: 'John',
+    company_name: 'Agora',
+  },
+  greetingMessage: 'Hello {{user_name}}, welcome to {{company_name}}. How can I help you?',
+}))
+// ... continue with .withTts() and .createSession() ...
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// ... other agent configuration ...
+WithLlm(vendors.NewOpenAI(vendors.OpenAIOptions{
+    APIKey:  "your-llm-api-key",
+    Model:   "gpt-4o-mini",
+    BaseURL: "https://api.openai.com/v1/chat/completions",
+    TemplateVariables: map[string]string{
+        "user_name":    "John",
+        "company_name": "Agora",
+    },
+    GreetingMessage: "Hello {{user_name}}, welcome to {{company_name}}. How can I help you?",
+}))
+// ... continue with WithTts() and CreateSession() ...
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```json
+{
+  "properties": {
+    "llm": {
+      "template_variables": {
+        "user_name": "John",
+        "company_name": "Agora"
+      },
+      "greeting_message": "Hello {{user_name}}, welcome to {{company_name}}. How can I help you?"
+    }
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+After the engine replaces the variables, the agent says the following greeting:
+
+```text
+Hello John, welcome to Agora. How can I help you?
+```
+
+### Use system variables
+
+System variables are values that the Conversational AI Engine provides at the moment it renders the text. You don't declare them in `template_variables`. `now()` is the only system variable. It returns the current date or time, which lets the agent answer time-sensitive questions or greet users according to the time of day.
+
+To insert the current time, use `{{now(...)}}` directly in a system message or scripted message. Set the time zone your business needs explicitly, and choose a format that fits your use case:
+
+| Use case | Recommended syntax |
+| --- | --- |
+| Current date in New York | `{{now(format='yyyy-MM-dd', timezone='America/New_York')}}` |
+| Current hour and minute in New York | `{{now(format='HH:mm', timezone='America/New_York')}}` |
+| Current date and time in New York | `{{now(timezone='America/New_York')}}` |
+
+:::info
+When you reference the current time in a system message, choose a time precision that fits your use case. A value precise to the second changes often, which can reduce how much of the prompt the LLM can reuse from its cache from that point on.
+
+If your use case only needs the current date, use `{{now(format='yyyy-MM-dd', timezone='America/New_York')}}`. Use hour, minute, or second precision only when the agent needs the exact time. Always set the time zone for where your business operates.
+:::
+
+The following example extends the customer service example from [Configure custom variables](#configure-custom-variables). It combines the user's name, the company name, and the current date in New York in the system message. It also references the current time in the greeting, the failure message, and the silence message:
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, OpenAI
+
+# client is your configured Agora client
+agent = (
+    Agent(
+        client,
+        parameters={
+            'silence_config': {
+                'action': 'speak',
+                'timeout_ms': 10000,
+                'content': "{{user_name}}, it's {{now(format='HH:mm', timezone='America/New_York')}} in New York. Do you still need help?",
+            },
+        },
+    )
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(OpenAI(
+        api_key='your-llm-api-key',
+        model='gpt-4o-mini',
+        base_url='https://api.openai.com/v1/chat/completions',
+        template_variables={
+            'user_name': 'John',
+            'company_name': 'Agora',
+        },
+        system_messages=[{
+            'role': 'system',
+            'content': "You are a customer service agent for {{company_name}}, helping {{user_name}}. Today's date in New York is {{now(format='yyyy-MM-dd', timezone='America/New_York')}}.",
+        }],
+        greeting_message="Hello {{user_name}}, welcome to {{company_name}}. It's {{now(format='HH:mm', timezone='America/New_York')}} in New York. How can I help you?",
+        failure_message="Sorry {{user_name}}, I can't process your request right now. It's {{now(format='HH:mm', timezone='America/New_York')}} in New York. Please try again later.",
+    ))
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, OpenAI } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({
+  client,
+  parameters: {
+    silence_config: {
+      action: 'speak',
+      timeout_ms: 10000,
+      content: "{{user_name}}, it's {{now(format='HH:mm', timezone='America/New_York')}} in New York. Do you still need help?",
+    },
+  },
+})
+  .withStt(/* configure your STT vendor */)
+  .withLlm(new OpenAI({
+    apiKey: 'your-llm-api-key',
+    model: 'gpt-4o-mini',
+    url: 'https://api.openai.com/v1/chat/completions',
+    templateVariables: {
+      user_name: 'John',
+      company_name: 'Agora',
+    },
+    systemMessages: [{
+      role: 'system',
+      content: "You are a customer service agent for {{company_name}}, helping {{user_name}}. Today's date in New York is {{now(format='yyyy-MM-dd', timezone='America/New_York')}}.",
+    }],
+    greetingMessage: "Hello {{user_name}}, welcome to {{company_name}}. It's {{now(format='HH:mm', timezone='America/New_York')}} in New York. How can I help you?",
+    failureMessage: "Sorry {{user_name}}, I can't process your request right now. It's {{now(format='HH:mm', timezone='America/New_York')}} in New York. Please try again later.",
+  }))
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured *agentkit.AgoraClient
+agent := agentkit.NewAgent(client, agentkit.WithParameters(&agentkit.SessionParams{
+    SilenceConfig: &agentkit.SilenceConfig{
+        Action:    agentkit.SilenceActionSpeak.Ptr(),
+        TimeoutMs: Agora.Int(10000),
+        Content:   Agora.String("{{user_name}}, it's {{now(format='HH:mm', timezone='America/New_York')}} in New York. Do you still need help?"),
+    },
+})).
+    WithStt(/* configure your STT vendor */).
+    WithLlm(vendors.NewOpenAI(vendors.OpenAIOptions{
+        APIKey:  "your-llm-api-key",
+        Model:   "gpt-4o-mini",
+        BaseURL: "https://api.openai.com/v1/chat/completions",
+        TemplateVariables: map[string]string{
+            "user_name":    "John",
+            "company_name": "Agora",
+        },
+        SystemMessages: []map[string]interface{}{
+            {"role": "system", "content": "You are a customer service agent for {{company_name}}, helping {{user_name}}. Today's date in New York is {{now(format='yyyy-MM-dd', timezone='America/New_York')}}."},
+        },
+        GreetingMessage: "Hello {{user_name}}, welcome to {{company_name}}. It's {{now(format='HH:mm', timezone='America/New_York')}} in New York. How can I help you?",
+        FailureMessage:  "Sorry {{user_name}}, I can't process your request right now. It's {{now(format='HH:mm', timezone='America/New_York')}} in New York. Please try again later.",
+    })).
+    WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```json
+{
+  "properties": {
+    "llm": {
+      "template_variables": {
+        "user_name": "John",
+        "company_name": "Agora"
+      },
+      "system_messages": [
+        {
+          "role": "system",
+          "content": "You are a customer service agent for {{company_name}}, helping {{user_name}}. Today's date in New York is {{now(format='yyyy-MM-dd', timezone='America/New_York')}}."
+        }
+      ],
+      "greeting_message": "Hello {{user_name}}, welcome to {{company_name}}. It's {{now(format='HH:mm', timezone='America/New_York')}} in New York. How can I help you?",
+      "failure_message": "Sorry {{user_name}}, I can't process your request right now. It's {{now(format='HH:mm', timezone='America/New_York')}} in New York. Please try again later."
+    },
+    "parameters": {
+      "silence_config": {
+        "action": "speak",
+        "timeout_ms": 10000,
+        "content": "{{user_name}}, it's {{now(format='HH:mm', timezone='America/New_York')}} in New York. Do you still need help?"
+      }
+    }
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+If the engine renders the system message at `2026-11-04 14:35:08` New York time, the LLM receives the following text:
+
+```text
+You are a customer service agent for Agora, helping John. Today's date in New York is 2026-11-04.
+```
+
+If the silence timeout ends at `14:36:10` New York time, the agent says the following:
+
+```text
+John, it's 14:36 in New York. Do you still need help?
+```
+
+### Understand when the time updates
+
+The engine gets the system time each time it evaluates the expression:
+
+- **System messages**: evaluated again before each request to the LLM, including later turns in the same session.
+- **Greeting, failure, and silence messages**: evaluated each time the message is rendered. When the silence or failure message is triggered again, the engine gets the time again.
+- **Updates, restarts, and reconnections**: after an update takes effect, or after the agent restarts or reconnects, the next evaluation uses the latest time.
+
+All time expressions in one system message list, or in one rendered message, share the same moment. The engine then converts that moment to each time zone and format. For example, a New York time and a Tokyo time in the same rendered message represent the same moment.
+
+An expression that outputs only the date also updates at the next evaluation after the date changes in the target time zone.
+
+## Supported text fields
+
+You can reference the same variable in several text fields. Both custom variables and system variables work in the following fields:
+
+| Field | Description |
+| --- | --- |
+| `llm.system_messages[].content` (string) | System message. Gives the LLM a role, prompt, or sample answers. |
+| `llm.greeting_message` | Greeting. The text the agent says when a user joins. |
+| `llm.failure_message` | Failure message. The text the agent says when the LLM call fails. |
+| `parameters.silence_config.content` | Silence message. After the silence timeout, the agent says this text if `action` is `speak`, or passes it to the LLM if `action` is `think`. |
+
+Rendering replaces only text. Message roles, the order of text segments, and non-text content stay the same. For the full definition of each field, see [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join).
+
+## Reference
+
+This section describes the time function syntax, supported time formats, and replacement rules.
+
+### Time function parameters
+
+The time function accepts two parameters: `format` and `timezone`. Name both parameters explicitly:
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `format` | String | The output format of the time. | `yyyy-MM-dd HH:mm:ss` |
+| `timezone` | String | An IANA time zone name or alias, such as `America/New_York`, `Asia/Tokyo`, or `UTC`. | The local time zone of the engine's runtime environment |
+
+Parameter names are case-sensitive, and you can pass the two named parameters in any order. The following table shows common syntax:
+
+| Syntax | Format and time zone |
+| --- | --- |
+| `{{now()}}` | Default format, in the local time zone of the engine's runtime environment. |
+| `{{now('yyyy-MM-dd')}}` | Date only, in the local time zone of the engine's runtime environment. |
+| `{{now('yyyy-MM-dd', 'America/New_York')}}` | The first argument sets the format, and the second sets the time zone. |
+| `{{now(timezone='America/New_York')}}` | Sets only the time zone and uses the default format. |
+| `{{now(format='yyyy-MM-dd', timezone='America/New_York')}}` | Sets the format and the time zone by parameter name. |
+| `{{now('HH:mm', timezone='America/New_York')}}` | The first argument sets the format, and `timezone` sets the time zone. |
+
+Strings can use single or double quotes. To use double quotes inside a JSON string, escape them as `\"`. For example:
+
+```json
+{
+  "properties": {
+    "llm": {
+      "greeting_message": "It's {{now(timezone=\"America/New_York\")}} in New York."
+    }
+  }
+}
+```
+
+Default values apply only when you omit a parameter. If the format, the time zone, or the syntax is invalid, the engine leaves the whole placeholder unchanged. Other variables are still replaced, and the agent still starts. For example, the engine leaves `{{now(format='HH:mm', timezone='Invalid/Zone')}}` unchanged because the time zone is invalid. It doesn't fall back to the local time.
+
+### Common time formats
+
+The following examples use `2026-11-04 14:35:08.123` in the `America/New_York` time zone:
+
+| Format | Example output |
+| --- | --- |
+| `yyyy-MM-dd HH:mm:ss` (default) | `2026-11-04 14:35:08` |
+| `yyyy-MM-dd` | `2026-11-04` |
+| `HH:mm` | `14:35` |
+| `yyyy-MM-dd'T'HH:mm:ss.SSSXXX` | `2026-11-04T14:35:08.123-05:00` |
+
+Format tokens are case-sensitive: `MM` is the month, and `mm` is the minute. `XXX` outputs the time zone offset with a colon, or `Z` for a zero offset. `'T'` is a literal, and the output doesn't include the single quotes.
+
+<Accordions type="single">
+<Accordion title="Other time formats">
+
+| Format | Example output |
+| --- | --- |
+| `HH:mm:ss` | `14:35:08` |
+| `yyyy-MM-dd'T'HH:mm:ss` | `2026-11-04T14:35:08` |
+| `yyyyMMdd` | `20261104` |
+| `HHmmss` | `143508` |
+| `yyyyMMdd'T'HHmmssXX` | `20261104T143508-0500` |
+| `yyyy` | `2026` |
+| `yyyy-MM` | `2026-11` |
+| `yyyy-DDD` | `2026-308` |
+| `yyyy-'W'ww-e` | `2026-W45-3` |
+
+- `XX`: outputs the time zone offset without a colon, or `Z` for a zero offset.
+- `yyyy-DDD`: `DDD` is the three-digit day of the year, from `001` to `366`.
+- `yyyy-'W'ww-e`: `yyyy` is the ISO week-based year, `ww` is the two-digit week number, and `e` is the day of the week from `1` (Monday) to `7` (Sunday). For example, the week date of `2024-12-30` is `2025-W01-1`. In all other formats, `yyyy` is the calendar year.
+
+</Accordion>
+</Accordions>
+
+### Replacement rules
+
+The engine replaces variables according to the following rules:
+
+- `{{now}}` uses `template_variables.now` if you provide it. Otherwise, it uses the current local time of the runtime environment in the default format. `{{now()}}` and `{{now(...)}}` with arguments always call the system time function and never read `template_variables.now`.
+- The engine replaces each variable value only once. It doesn't parse variables or time functions inside a replaced value.
+- The time function works only in the [supported text fields](#supported-text-fields). It doesn't work in user messages or in tool request parameters.
+
+## Related pages
+
+- [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join): the full definition of each configuration field.
+- [Update agent configuration](/en/api-reference/api-ref/conversational-ai/update): the fields you can update during a session.
+- [Call custom tools](../tools/custom-tools#configure-template-variables): tool URLs, headers, and request bodies use a separate `{{template_variables.user_name}}` syntax.
