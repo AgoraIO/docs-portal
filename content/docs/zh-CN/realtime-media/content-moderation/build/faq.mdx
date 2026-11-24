@@ -1,0 +1,16 @@
+---
+title: 常见问题
+description: 了解内容审核的内容存储方式、存储期限、流量费用和网易易盾密钥托管机制。
+---
+
+## 审核过程中从频道内截取的内容由谁存储？
+
+网易易盾为提交审核的内容提供 7 天存储服务。拉取已存储的内容会产生额外的流量费用。
+
+如需将音频审核产生的录制文件保存到自己的对象存储（如阿里云 OSS），可在开启云端录制任务时，通过 `storageConfig` 配置存储服务。具体参数参见[开始云端录制](/zh-CN/api-reference/api-ref/cloud-recording/start)中的 `storageConfig`；如需修改已有任务的存储配置，参见[更新云端录制设置](/zh-CN/api-reference/api-ref/cloud-recording/update)。
+
+## 是否需要自行获取网易易盾审核密钥？
+
+通过声网控制台开通内容审核服务并使用声网托管鉴权时，无需自行获取网易易盾审核密钥。密钥由声网托管。请确保控制台中对应的审核服务已启用，且审核套餐处于有效状态，即可调用声网音频审核或视频审核接口启动审核。
+
+使用音频审核 RESTful API 时，需在 `serviceParam` 中将 `useManagedAuth` 设为 `true`，此时无需传入 `businessId`、`secretId` 和 `signature`。声网 RESTful API 请求仍需通过 Basic HTTP 认证。具体接入方式参见[使用网易易盾音频审核](/zh-CN/realtime-media/content-moderation/build/audio-moderation-api)和[使用网易易盾视频审核](/zh-CN/realtime-media/content-moderation/build/netease-yidun-video-moderation)。
