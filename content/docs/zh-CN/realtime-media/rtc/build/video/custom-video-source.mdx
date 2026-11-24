@@ -8,6 +8,20 @@ description: "了解实时互动 RTC 在不同平台上的自定义视频采集�
 
 声网推荐优先使用更为稳定、可靠、集成维护难度低的 SDK 视频采集，如果你有特定的视频采集需求或无法使用 SDK 采集，那么自定义视频采集为你提供灵活、可定制的方案。
 
+## 如何选择接入方式
+
+在 Android 自采集场景中，声网推荐优先使用 `io.agora.base.VideoFrame` 配合 `pushExternalVideoFrameById(VideoFrame frame, int videoTrackId)` 推送视频帧。
+
+- 如果你只需向当前频道发布一路自采集视频，推荐在加入频道前调用 `setExternalVideoSource` 启用外部视频源，并在 `ChannelMediaOptions` 中将 `publishCustomVideoTrack` 设为 `true`、将 `customVideoTrackId` 设为 `0`。此场景下，SDK 会自动创建默认自定义视频轨道，你无需先调用 `createCustomVideoTrack`。
+- 如果你需要发布多路自采集视频，或者需要在多个频道中分别发布不同的自采集视频流，再调用 `createCustomVideoTrack` 为每一路视频创建独立的视频轨道。
+- 如果你的现有采集模块已经基于 `AgoraVideoFrame` 封装，仍可继续调用 `pushExternalVideoFrameById(AgoraVideoFrame frame, int videoTrackId)`；但该重载不支持 Texture 数据，且可扩展能力弱于 `VideoFrame`。
+
+:::info[信息]
+- `VideoFrame` 支持 `I420`、`NV21`、`NV12` 和 Texture 等多种缓冲区类型，适合新接入场景。
+- `VideoFrame.TextureBuffer` 支持获取 `TextureBuffer.Type`、EGL context、transform matrix 和 fence object；`AgoraVideoFrame` 主要使用平铺字段描述帧数据。
+- `AgoraVideoFrame` 的 `buf` 字段可直接承载 `NV21` 等裸数据；如果你只是做简单的字节数组推帧，也可以用它快速接入。
+:::
+
 ## 技术原理
 
 声网 SDK 提供自定义视频轨道方式实现视频自采集。你可以创建一个或多个自定义视频轨道，加入频道并在每个频道中发布已创建的视频轨道。你需要使用自采集模块驱动采集设备对视频进行采集，并将采集的视频帧通过视频轨道发送给 SDK。
@@ -34,9 +48,16 @@ description: "了解实时互动 RTC 在不同平台上的自定义视频采集�
 
 参考如下步骤，在你的 App 中实现自定义视频采集功能：
 
+### 选择发布模式
+
+先根据你的业务场景确定是发布一路还是多路自采集视频：
+
+- 仅发布一路自采集视频：推荐直接使用默认自定义视频轨道，跳过 `createCustomVideoTrack`。
+- 需要发布多路自采集视频，或需要在多个频道中发布不同的视频流：使用 `createCustomVideoTrack` 为每一路视频创建独立轨道。
+
 ### 1. 创建自定义视频轨道
 
-初始化 `RtcEngine` 后，调用 `createCustomVideoTrack` 创建自定义视频轨道并获得视频轨道 ID。根据场景需要，你可以创建多个自定义视频轨道。
+如果你需要发布多路自采集视频，初始化 `RtcEngine` 后，调用 `createCustomVideoTrack` 创建自定义视频轨道并获得视频轨道 ID。根据场景需要，你可以创建多个自定义视频轨道。
 
 ```java
 // 如需创建多个自定义视频轨道，可以多次调用 createCustomVideoTrack
@@ -45,7 +66,28 @@ int videoTrackId = RtcEngine.createCustomVideoTrack();
 
 ### 2. 加入频道并发布自定义视频轨道
 
-调用 `joinChannel`[2/2] 加入频道，或调用 `joinChannelEx` 加入多频道，在每个频道的 `ChannelMediaOptions` 中，将 `customVideoTrackId` 参数设置为步骤 1 中获得的视频轨道 ID，并将 `publishCustomVideoTrack` 设置为 `true`，即可在多个频道中发布指定的自定义视频轨道。
+调用 `joinChannel`[2/2] 加入频道，或调用 `joinChannelEx` 加入多频道，并在 `ChannelMediaOptions` 中开启 `publishCustomVideoTrack`。
+
+如果仅发布一路自采集视频，请使用默认视频轨道：
+
+```java
+// 加入频道前启用外部视频源
+// 如果后续推送 Texture 数据，请将第二个参数设为 true；否则设为 false
+engine.setExternalVideoSource(true, false, Constants.ExternalVideoSourceType.VIDEO_FRAME);
+
+ChannelMediaOptions option = new ChannelMediaOptions();
+option.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+option.autoSubscribeAudio = true;
+option.autoSubscribeVideo = true;
+// 发布自采集视频流
+option.publishCustomVideoTrack = true;
+// 单路自采集场景下使用默认自定义视频轨道
+option.customVideoTrackId = 0;
+// 加入单频道
+int res = engine.joinChannel(accessToken, channelId, 0, option);
+```
+
+如果需要发布多路自采集视频，请将 `customVideoTrackId` 设置为步骤 1 中获得的视频轨道 ID。
 
 加入单频道：
 
@@ -56,7 +98,7 @@ option.autoSubscribeAudio = true;
 option.autoSubscribeVideo = true;
 // 发布自采集视频流
 option.publishCustomVideoTrack = true;
-// 设置自定义视频轨道 ID
+// 多路自采集场景下，设置自定义视频轨道 ID
 option.customVideoTrackId = videoTrackId;
 // 加入单频道
 int res = engine.joinChannel(accessToken, channelId, 0, option);
@@ -72,7 +114,7 @@ option.autoSubscribeAudio = true;
 option.autoSubscribeVideo = true;
 // 发布自采集视频流
 option.publishCustomVideoTrack = true;
-// 设置自定义视频轨道 ID
+// 多路自采集场景下，设置自定义视频轨道 ID
 option.customVideoTrackId = videoTrackId;
 // 加入多频道
 int res = engine.joinChannelEx(accessToken, connection, option, new IRtcEngineEventHandler() {});
@@ -86,11 +128,12 @@ int res = engine.joinChannelEx(accessToken, connection, option, new IRtcEngineEv
 
 将采集到的视频帧发送至 SDK 之前，你需要通过设置 `VideoFrame` 的各项参数来封装视频帧数据。你可以参考以下代码，推送不同类型的自采集视频数据。为确保音视频同步，声网建议你调用 `getCurrentMonotonicTimeInMs` 获取 SDK 当前的 Monotonic Time 后，将该值传入采集的 `VideoFrame` 的时间戳参数。
 
-调用 `pushExternalVideoFrameById`[2/2] 将采集到的视频帧通过视频轨道推送至 SDK。其中，`videoTrackId` 要与步骤 2 加入频道时指定视频轨道 ID 一致，`VideoFrame` 中可以设置视频帧的像素格式、数据类型和时间戳等参数。
+调用 `pushExternalVideoFrameById`[1/2] 或 `pushExternalVideoFrameById`[2/2] 将采集到的视频帧通过视频轨道推送至 SDK。其中，`videoTrackId` 要与步骤 2 加入频道时指定的视频轨道 ID 一致，`VideoFrame` 中可以设置视频帧的像素格式、数据类型和时间戳等参数。
 
 :::info[信息]
 - 以下代码演示推送 I420、NV21、NV12 和 Texture 格式的视频数据。
-- 本节示例调用的是 `pushExternalVideoFrameById(VideoFrame frame, int videoTrackId)` 重载，其中 `VideoFrame` 指 `io.agora.base.VideoFrame`；如需使用 `AgoraVideoFrame`，请参见 `pushExternalVideoFrameById` 的另一重载。
+- 本节示例调用的是 `pushExternalVideoFrameById(VideoFrame frame, int videoTrackId)` 重载，其中 `VideoFrame` 指 `io.agora.base.VideoFrame`，也是声网推荐优先使用的重载。
+- 如需使用 `AgoraVideoFrame`，请参见 `pushExternalVideoFrameById` 的另一重载；该重载不支持 Texture 数据。
 - `getCurrentMonotonicTimeInMs` 返回的单调时间单位为毫秒；以下示例中 `VideoFrame` 构造函数的第三个参数对应 `timestampNs`，单位为纳秒，因此需要将毫秒转换为纳秒后再传入。
 :::
 
@@ -191,7 +234,9 @@ private void pushVideoFrameByTexture(int trackId, int textureId, VideoFrame.Text
 
 ### 5. 销毁自定义视频轨道
 
-如果你需要停止发布自定义采集的视频，调用 `destroyCustomVideoTrack` 销毁视频轨道。如需销毁多个视频轨道，可多次调用 `destroyCustomVideoTrack`。
+如果你使用 `createCustomVideoTrack` 创建了自定义视频轨道，并且需要停止发布自定义采集的视频，调用 `destroyCustomVideoTrack` 销毁视频轨道。如需销毁多个视频轨道，可多次调用 `destroyCustomVideoTrack`。
+
+如果你仅发布一路自采集视频并使用默认视频轨道，则无需调用 `createCustomVideoTrack`，也无需额外销毁自定义视频轨道；离开频道前停止自采集即可。若后续不再使用外部视频源，可在离开频道后调用 `setExternalVideoSource(false, false, Constants.ExternalVideoSourceType.VIDEO_FRAME)` 关闭外部视频源。
 
 ```java
 // 销毁自定义视频轨道
@@ -261,6 +306,8 @@ engine.leaveChannelEx(connection);
 - [`destroyCustomVideoTrack`](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack)
 - [`getCurrentMonotonicTimeInMs`](/zh-CN/api-reference/rtc/android/network#api_irtcengine_getcurrentmonotonictimeinms)
 - [`joinChannelEx`](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex)
+- [`setExternalVideoSource`](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_setexternalvideosource)
+- [`pushExternalVideoFrameById`[1/2]](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_pushvideoframe)
 - [`pushExternalVideoFrameById`[2/2]](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#pushexternalvideoframebyid-22)
 
 </PlatformStructured>
