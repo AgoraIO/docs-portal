@@ -266,6 +266,8 @@ curl --location --request POST 'https://api.agora.io/v1/apps/{appid}/cloud_recor
 | --- | --- | --- |
 | `clientRequest` | Object | 客户请求参数，使用音频审核时你需要设置该对象的 `resourceExpiredHour` 字段，用于设置音频审核 RESTful API 的调用时效。 |
 
+`resourceExpiredHour` 为 Number 类型，单位为小时，取值范围为 `[1, 720]`，默认值为 `72`。调用时效从成功开启审核任务并获得 `sid`（审核 ID）后开始计算。超时后，你将无法调用 `/query`、`/update` 和 `/stop` 接口。
+
 #### 响应参数
 
 响应 Body 中包含以下字段：
@@ -331,6 +333,12 @@ POST https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/acquire HTTPS/1.
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
 | `clientRequest` | Object | 特定的客户请求参数，包含 `token`、`recordingConfig` 和 `extensionServiceConfig` 等字段。 |
+
+`clientRequest` 包含以下参数：
+
+- `token`：String 类型，用于鉴权的 RTC Token。如果你的项目已启用 App 证书，则务必传入你项目的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+- `recordingConfig`：JSON Object 类型，声网频道内音频流订阅的详细设置，声网会将你订阅的音频流发送给第三方语音审核服务。详见 [recordingConfig 成员列表](#recordingConfig)。
+- `extensionServiceConfig`：JSON Object 类型，第三方语音审核服务的详细设置。详见 [extensionServiceConfig 成员列表](#extensionServiceConfig)。
 
 **recordingConfig 成员如下：** <a id="recordingConfig"></a>
 
