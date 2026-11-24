@@ -62,9 +62,13 @@ channel-media-relay-state(state: [ChannelMediaRelayState](/zh-CN/api-reference/r
 
 跨频道媒体流转发状态回调。
 
-当跨频道媒体流转发状态发生改变时，SDK 会触发该回调，并报告当前的转发状态以及相关的错误信息。
+当跨频道媒体流转发状态发生改变时，SDK 会触发该回调，并报告当前的转发状态。
 
-回调会携带当前跨频道媒体流转发服务的状态 [ChannelMediaRelayState](/zh-CN/api-reference/rtc/web/enums/channelmediarelaystate)，如果状态异常，相应的错误码可以通过 [ChannelMediaRelayError](/zh-CN/api-reference/rtc/web/enums/channelmediarelayerror) 获取（比如 token 过期，重连失败等）。
+回调携带当前跨频道媒体流转发服务的状态 [ChannelMediaRelayState](/zh-CN/api-reference/rtc/web/enums/channelmediarelaystate)。
+
+:::note[当前版本的回调参数]
+本页对应的 Web SDK 4.24.10 在运行时只传入 `state`，未传入第二个 `code` 参数。此处签名保留了发布包类型声明中的 `code`，但其运行时值为 `undefined`，请勿依赖它判断 Token 过期或其他转发失败原因。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="state" required>
@@ -86,7 +90,7 @@ channel-media-relay-state(state: [ChannelMediaRelayState](/zh-CN/api-reference/r
 
 </ParameterType>
 
-跨频道媒体流转发错误码。
+类型声明中的跨频道媒体流转发错误码参数；当前版本运行时未传入该参数，详见上方说明。
 
 </Parameter>
 </ParameterList>
@@ -1586,8 +1590,9 @@ subscribe(user: [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/ia
 订阅远端用户的音视频轨道。
 
 ```javascript
-await client.subscribe(user, "audio");
-user.audioTrack.play();
+// container 为页面已有的视频容器元素或容器 ID。
+const track = await client.subscribe(user, "video");
+track.play(container);
 ```
 
 <ParameterList title="Parameters">
@@ -1858,9 +1863,9 @@ startChannelMediaRelay(config: [IChannelMediaRelayConfiguration](/zh-CN/api-refe
 
 调用该方法后，SDK 会触发以下回调：
 
-- [AgoraRTCClient.on("channel-media-relay-state")](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_channel_media_relay_state)，报告当前的跨频道媒体流转发状态和错误码。
+- [AgoraRTCClient.on("channel-media-relay-state")](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_channel_media_relay_state)，报告当前的跨频道媒体流转发状态。
 
-  - 如果转发中途出现异常，该回调中 `state` 为 `"RELAY_STATE_FAILURE"`，`code` 为错误码。你可以尝试再次调用本方法。
+  - 如果转发中途出现异常，该回调中 `state` 为 `"RELAY_STATE_FAILURE"`。当前版本该事件不提供 `code`，不能据此获取失败原因。转发失败后，不应直接在同一转发实例上再次调用本方法。
 - [AgoraRTCClient.on("channel-media-relay-event")](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_channel_media_relay_event)，报告跨频道媒体流转发相关的事件。
 
   - 如果跨频道服务开始向目标频道发送数据包，会触发回调，`event` 为 `"PACKET_SENT_TO_DEST_CHANNEL"`。
@@ -4320,7 +4325,7 @@ setDualStreamMode(mode: [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/web/enu
 
 你可以通过该方法设置如下双流模式：
 
-- `AUTO_SIMULCAST_STREAM`，小流自适应模式，即发送端不主动发送小流。发送端在收到小流申请后，开始自动发送小流。
+- `AUTO_SIMULCAST_STREAM`，小流自适应模式。此前尚未开启小流时，发送端会在收到小流申请后才开始发送小流。如果此前已开启小流，切换到该模式不会立即关闭已开启的小流。
 - `DISABLE_SIMULCAST_STREM`，表示始终不发送小流。
 - `ENABLE_SIMULCAST_STREAM`，表示始终发送小流。
 

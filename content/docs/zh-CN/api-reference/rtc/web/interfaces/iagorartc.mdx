@@ -1696,7 +1696,7 @@ getSupportedCodec(): Promise&lt;object&gt;
 该方法解析浏览器 SDP 中声明的编解码格式。实际返回的项目取决于浏览器能力，不代表这些格式在每种频道或 SDK 互通组合中都可用。
 
 :::note[注意事项]
-- 该方法支持所有浏览器。对于不支持 WebRTC 或无法识别的浏览器环境，编解码列表返回为空。
+- 该方法需要浏览器支持 WebRTC。缺少 `RTCPeerConnection` 或创建 SDP offer 失败时，Promise 会以 `CREATE_OFFER_FAILED` 拒绝；请处理拒绝情况，不能假定总会返回空列表。
 - 返回的音视频编码为浏览器通过 SDP 声称的编码类型，为参考值。
 - 目前部分安卓手机 H.264 与其他平台 H.264 存在无法互通或单通问题，对于这部分机型推荐使用 VP8 编码格式。
 :::
@@ -1705,6 +1705,8 @@ getSupportedCodec(): Promise&lt;object&gt;
 AgoraRTC.getSupportedCodec().then(result => {
  console.log(`Supported video codec: ${result.video.join(",")}`);
  console.log(`Supported audio codec: ${result.audio.join(",")}`);
+}).catch(error => {
+ console.error("Failed to query supported codecs:", error);
 });
 ```
 
