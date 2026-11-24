@@ -8,6 +8,19 @@ Custom video capture refers to the collection of a video stream from a custom so
 Agora recommends default video capture for its stability, reliability, and ease of integration. Custom video capture offers flexibility and customization for specific video capture use-cases where default video capture does not fulfill your requirements.
 
 <PlatformStructured platform="android">
+
+## Choose an integration approach
+
+For new Android integrations, Agora recommends using `io.agora.base.VideoFrame` with `pushExternalVideoFrameById(VideoFrame frame, int videoTrackId)`.
+
+- To publish one custom video stream to a channel, enable the external video source with `setExternalVideoSource` before joining. Set `publishCustomVideoTrack` to `true` and `customVideoTrackId` to `0` in `ChannelMediaOptions`. The SDK creates the default custom video track automatically; you do not need to call `createCustomVideoTrack`.
+- To publish multiple custom video streams, or different custom streams to different channels, call `createCustomVideoTrack` to create a separate track for each stream.
+- If an existing capture module uses `AgoraVideoFrame`, you can continue using `pushExternalVideoFrameById(AgoraVideoFrame frame, int videoTrackId)`. This overload does not support Texture data and offers fewer extension capabilities than the `VideoFrame` overload.
+
+:::info
+`VideoFrame` supports buffer types including I420, NV21, NV12, and Texture. `VideoFrame.TextureBuffer` provides access to the texture type, EGL context, transform matrix, and fence object. `AgoraVideoFrame` uses individual fields to describe a frame; its `buf` field can hold raw data such as NV21 for simple byte-array capture integrations.
+:::
+
 ## Understand the tech
 
 RTC SDK provides a custom video track method for video self-collection. You can create and publish custom video tracks to one or more channels. You use the self-capture module to drive the capture device, and send the captured video frames to the SDK through the video track.
@@ -32,11 +45,11 @@ The following figure shows the workflow you implement to capture and stream a cu
 
 ![API call sequence](https://assets-docs.agora.io/images/video-sdk/custom-video-capture.svg)
 
-Take the following steps to implement this workflow:
+Choose the default track for a single custom video stream, or explicitly created tracks for multiple streams. Then follow the steps below.
 
-1. Create a custom video track
+1. Create custom video tracks, if required
 
-    To create a custom video track and obtain the video track ID, call `createCustomVideoTrack` after initializing an instance of `RtcEngine`. To create multiple custom video tracks, call the method multiple times.
+    For a single stream that uses the default custom video track, skip this step and use track ID `0` in step 2. For multiple streams, call `createCustomVideoTrack` after initializing an instance of `RtcEngine` to obtain a separate track ID for each stream.
 
     <CodeBlockTabs defaultValue="java">
     <CodeBlockTabsList>
@@ -58,6 +71,45 @@ Take the following steps to implement this workflow:
 
     </CodeBlockTabs>
 2. Join a channel and publish the custom video track
+
+    **Default track for a single stream**
+
+    Enable the external video source before joining the channel, and publish track ID `0`. Set the second argument of `setExternalVideoSource` to `true` if you push Texture data; otherwise, set it to `false`.
+
+    ```java tab="Java" tabGroup="custom-video-single-track"
+    // Enable external capture before joining the channel.
+    engine.setExternalVideoSource(
+        true, false, Constants.ExternalVideoSourceType.VIDEO_FRAME);
+
+    int videoTrackId = 0;
+    ChannelMediaOptions option = new ChannelMediaOptions();
+    option.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+    option.autoSubscribeAudio = true;
+    option.autoSubscribeVideo = true;
+    option.publishCustomVideoTrack = true;
+    option.customVideoTrackId = videoTrackId;
+    int res = engine.joinChannel(accessToken, channelId, 0, option);
+    ```
+
+    ```kotlin tab="Kotlin" tabGroup="custom-video-single-track"
+    // Enable external capture before joining the channel.
+    engine.setExternalVideoSource(
+        true, false, Constants.ExternalVideoSourceType.VIDEO_FRAME)
+
+    val videoTrackId = 0
+    val option = ChannelMediaOptions().apply {
+        clientRoleType = Constants.CLIENT_ROLE_BROADCASTER
+        autoSubscribeAudio = true
+        autoSubscribeVideo = true
+        publishCustomVideoTrack = true
+        customVideoTrackId = videoTrackId
+    }
+    val res = engine.joinChannel(accessToken, channelId, 0, option)
+    ```
+
+    **Explicit tracks for multiple streams**
+
+    Use the track ID returned in step 1. To publish different streams to different channels, set the corresponding track ID in each channel's `ChannelMediaOptions`.
 
     <CodeBlockTabs defaultValue="java">
     <CodeBlockTabsList>
@@ -116,7 +168,9 @@ Take the following steps to implement this workflow:
     To ensure audio-video synchronization, set the timestamp parameter of `VideoFrame` to the system's Monotonic Time. Use `getCurrentMonotonicTimeInMs` to obtain the current monotonic Time.
     :::
 
-    Call `pushExternalVideoFrameById` [2/2] to push the captured video frames through the video track to RTC SDK. Ensure that the `videoTrackId` matches the track ID you specified when joining the channel. Customize parameters like pixel format, data type, and timestamp in the `VideoFrame`.
+    Call `pushExternalVideoFrameById` to push the captured video frames through the video track to RTC SDK. Use `0` for the default track, or the track ID returned by `createCustomVideoTrack` for an explicitly created track. The ID must match the `customVideoTrackId` specified when joining the channel.
+
+    The following samples use the recommended `io.agora.base.VideoFrame` overload. The `AgoraVideoFrame` overload does not support Texture data. `getCurrentMonotonicTimeInMs` returns milliseconds, while the `VideoFrame` constructor's `timestampNs` argument uses nanoseconds; convert the value before constructing the frame, as shown in the samples.
 
     The following code samples demonstrate pushing `I420`, `NV21`, `NV12`, and `Texture` format video data:
 
@@ -364,7 +418,7 @@ Take the following steps to implement this workflow:
 
 5. Destroy custom video tracks
 
-    To stop custom video capture and destroy the video track, call `destroyCustomVideoTrack`.
+    If you created a track with `createCustomVideoTrack`, stop publishing it and call `destroyCustomVideoTrack` with the returned track ID. Repeat for each explicitly created track.
 
     <CodeBlockTabs defaultValue="java">
     <CodeBlockTabsList>
@@ -375,7 +429,7 @@ Take the following steps to implement this workflow:
     <CodeBlockTab value="java">
       ```java
       // Destroy custom video track
-       engine.destroyCustomVideoTrack(videoTrack);
+       engine.destroyCustomVideoTrack(videoTrackId);
        // Leave the channel
        engine.leaveChannelEx(connection);
       ```
@@ -384,7 +438,7 @@ Take the following steps to implement this workflow:
     <CodeBlockTab value="kotlin">
       ```kotlin
       // Destroy custom video track
-       engine.destroyCustomVideoTrack(videoTrack)
+       engine.destroyCustomVideoTrack(videoTrackId)
        // Leave the channel
        engine.leaveChannelEx(connection)
       ```
@@ -392,6 +446,22 @@ Take the following steps to implement this workflow:
 
     </CodeBlockTabs>
     
+    If you use the default track for a single stream, stop your capture module before leaving the channel. This path does not require `createCustomVideoTrack` or `destroyCustomVideoTrack`. After leaving the channel, disable the external video source if it is no longer needed:
+
+    ```java tab="Java" tabGroup="custom-video-default-cleanup"
+    // Stop your capture module before leaving the channel.
+    engine.leaveChannel();
+    engine.setExternalVideoSource(
+        false, false, Constants.ExternalVideoSourceType.VIDEO_FRAME);
+    ```
+
+    ```kotlin tab="Kotlin" tabGroup="custom-video-default-cleanup"
+    // Stop your capture module before leaving the channel.
+    engine.leaveChannel()
+    engine.setExternalVideoSource(
+        false, false, Constants.ExternalVideoSourceType.VIDEO_FRAME)
+    ```
+
 ### Custom video rendering
 
 To implement custom video rendering in your app, refer to the following steps:
