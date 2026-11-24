@@ -2133,7 +2133,7 @@ Promise&lt;void&gt;
 
 </ApiReturnType>
 
-Promise 对象。当 Promise resolve 后，表示更新成功，否则更新失败。出错后跨频道媒体流转发状态会被重置，你需要调用 [startChannelMediaRelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#startchannelmediarelay) 重新开始跨频道媒体流转发。
+Promise 对象。Promise resolve 表示更新成功；Promise reject 表示本次更新失败。更新失败时，原有转发可能仍处于 `RELAY_STATE_RUNNING`，不能假定转发状态已自动重置。业务应处理更新失败，并结合最近一次 [channel-media-relay-state](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_channel_media_relay_state) 事件报告的转发状态决定后续操作，不应仅因更新失败就重新调用 [startChannelMediaRelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#startchannelmediarelay)。
 
 </ApiReturns>
 
@@ -2216,7 +2216,7 @@ setLowStreamParameter(streamParameter: [LowStreamParameter](/zh-CN/api-reference
 
 如果你调用 [enableDualStream](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#enabledualstream) 开启了双流模式，该方法设置小流的视频属性。
 
-如果你不设置小流的视频属性，SDK 会根据你的视频流属性自动适配小流的视频属性。
+如果不设置，SDK 使用默认的小流配置：分辨率（宽 × 高）160 × 120、帧率 15 fps、码率 50 Kbps。浏览器限制可能使实际生效的参数与配置不同。
 
 :::note[注意事项]
 - 由于不同的设备和浏览器对于视频参数设置有不同的限制，`setLowStreamParameter` 设置的视频参数可能不会生效：
