@@ -295,6 +295,13 @@ Use the following Web SDK APIs to control which ABR layer a subscriber receives.
 - API: `setStreamFallbackOption(uid: UID, fallbackType: RemoteStreamFallbackType): Promise<void>`
 - Description: Customizes the fallback policy for a specified remote user under poor network conditions. Call this method when your application requires a custom policy, such as limiting fallback to a medium-quality video layer or allowing fallback to audio only. You do not need to call this method for the default automatic switching between video layers.
 
+- Example (optional): Explicitly configure fallback down to the low video stream.
+
+  ```js
+  // the range supports up to LOW_STREAM
+  client.setStreamFallbackOption(uid, 1);
+  ```
+
 #### Manual stream selection
 
 - API: `setRemoteVideoStreamType(uid: UID, streamType: RemoteStreamType): Promise<void>`
