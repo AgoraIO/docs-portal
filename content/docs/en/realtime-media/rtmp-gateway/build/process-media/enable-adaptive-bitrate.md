@@ -188,7 +188,9 @@ The `transcoding.video.simulcastStreamLayers` array shows the active ABR layers 
 
 ## Subscriber-side ABR stream
 
-Subscribers can choose ABR layers on the receiving side and let the SDK adapt to changing network conditions.
+When multiple video quality layers are available, the SDK automatically adapts the subscribed video stream to changing network conditions. Under poor network conditions, it switches to lower-quality layers, down to the lowest available video layer. When network conditions improve, it switches back to higher-quality layers. No additional fallback configuration is required for this default behavior.
+
+You can optionally configure a custom fallback policy, such as limiting fallback to a medium-quality video layer or allowing fallback to audio only.
 
 ### Integration guidelines
 
@@ -218,14 +220,14 @@ Subscribers can choose ABR layers on the receiving side and let the SDK adapt to
 
 Use the following Native SDK APIs to control which ABR layer a subscriber receives.
 
-#### Configure remote subscriber fallback
+#### Customize the fallback policy (optional)
 
 - API: `setRemoteSubscribeFallbackOption(StreamFallbackOptions option)`
-- Description: Sets the fallback option for subscribed audio and video streams under poor network conditions. In suboptimal network environments, real-time audio and video quality may degrade. Use this method to set a `StreamFallbackOptions` value. When the downlink network is weak and the quality is severely affected, the SDK automatically reduces the video stream to a lower layer to maintain smooth playback. The SDK continuously monitors the network and restores the higher layer when conditions improve.
+- Description: Customizes the fallback policy for subscribed audio and video streams under poor network conditions. Call this method when your application requires a custom policy, such as limiting fallback to a medium-quality video layer or allowing fallback to audio only. You do not need to call this method for the default automatic switching between video layers.
 
   Specify the minimum acceptable fallback level:
 
-  - To fall back to a lower video stream, use `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW`.
+  - To limit fallback to a specific video layer, use the corresponding `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LAYER_1` through `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LAYER_6` value.
   - To fall back to audio only, use `STREAM_FALLBACK_OPTION_AUDIO_ONLY`.
 
 - Supported values:
@@ -288,17 +290,10 @@ Use the following Web SDK APIs to control which ABR layer a subscriber receives.
 - API: `.setParameter("ENABLE_AUT_CC", true);`
 - Description: AUT-CC is a server-side Bandwidth Estimation (BWE) mechanism that relies on packet loss. Its main inputs include the number of packets, packet size, feedback on packet loss, and the timing of that feedback. The output is the currently available bandwidth.
 
-#### Configure remote subscriber fallback
+#### Customize the fallback policy (optional)
 
 - API: `setStreamFallbackOption(uid: UID, fallbackType: RemoteStreamFallbackType): Promise<void>`
-- Description: Enables automatic switching on the subscriber side under poor network conditions.
-
-- Example:
-
-    ```js
-    // the range supports up to LOW_STREAM
-    client.setStreamFallbackOption(uid, 1);
-    ```
+- Description: Customizes the fallback policy for a specified remote user under poor network conditions. Call this method when your application requires a custom policy, such as limiting fallback to a medium-quality video layer or allowing fallback to audio only. You do not need to call this method for the default automatic switching between video layers.
 
 #### Manual stream selection
 
