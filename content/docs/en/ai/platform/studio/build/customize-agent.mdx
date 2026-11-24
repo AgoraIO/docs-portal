@@ -195,7 +195,7 @@ These settings control the voice that callers hear.
 
 ### Silence
 
-Turn on this setting to have the agent check in after the caller is silent. It only prompts the caller, and doesn't end the call.
+Turn on this setting to have the agent check in after the caller is silent. It only prompts the caller, and doesn't end the call. To end the call after silence, use **Hang up after silence** in [Call](#call).
 
 - **After**: How long the caller must be silent before the agent checks in, from 1 to 60 seconds.
 - **Check-in line**: How the agent responds to the silence:
@@ -221,13 +221,19 @@ For details, see [Talking while waiting](/en/ai/platform/build/shape-the-convers
 
 These settings control how sessions end. They apply to new sessions that you start from Agent Studio or the API. Settings that you pass for a single session take precedence.
 
+- **Hang up after silence**: Ends the session when nobody speaks for the time in **After**, from 1 to 3,600 seconds. Agent Studio recommends 120 seconds. To remind the caller before the agent hangs up, also turn on [Silence](#silence) with a shorter time.
 - **Max session length**: The longest a session can last, from 1 to 3,600 seconds. Agent Studio recommends 3,600 seconds.
+- **Hang up when the caller asks to**: The agent ends the call when the caller clearly says goodbye or asks to hang up.
+- **Hang up on voicemail**: The agent ends the call when it reaches voicemail.
+- **Hang up on another AI assistant**: The agent ends the call when an AI assistant or another automated system answers.
 - **Let the agent finish**: When a session is stopped, the agent finishes its sentence first.
 - **End the session once everyone leaves**: Ends the session if the RTC session stays not ready for the time in **After**, from 0.001 to 3,600 seconds. This setting doesn't measure speech silence.
 
+{/* TODO(platform-confirm): Agent Studio allows Hang up after silence from 1 second, but ClickUp 868mtau5v says the backend minimum is 30 seconds (and the API reference requires 30,000 ms for campaigns). Which is right? */}
+
 ![Call settings](/temp/agent-studio-preview/advanced-call.png)
 
-To set call limits for an inbound number, see [Deploy an inbound agent](/en/ai/platform/studio/deploy/deploy-inbound).
+Phone numbers have their own call limits. Changes to them apply to incoming calls when you deploy the agent. See [Deploy an inbound agent](/en/ai/platform/studio/deploy/deploy-inbound).
 
 {/* TODO(platform-confirm): Max session length recommends 3,600 s, but the API default for `max_duration_ms` is 5 minutes. Does Agent Studio send 3,600 explicitly? The description of End the session once everyone leaves doesn't match its label: confirm what it does. */}
 

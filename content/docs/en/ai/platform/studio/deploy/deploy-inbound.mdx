@@ -31,11 +31,15 @@ To connect a number and deploy the agent:
 
     ![Publish dialog that lists the phone number to connect](/temp/agent-studio-preview/publish-dialog-number.png)
 
+A number's routing and call settings change only when you deploy. Until then, the number shows **Pending deployment**. On a live agent, the button is **Apply deployment**.
+
+{/* TODO(screenshot): Confirm the button labels for a first deployment (Deploy agent, then Publish agent) against the current UI, and retake deploy-tab-inbound.png and publish-dialog-number.png. */}
+
 The agent's status changes from **Draft** to **Live**, and its overview page opens. Agora deploys the agent, then connects the number. If the number fails to connect, the agent stays live and you can retry the connection separately.
 
 To answer calls on more than one number, select **Add another phone number** in the **Phone number** section.
 
-{/* TODO(platform-confirm): Where are call limits set for inbound calls? The Advanced settings Call section says they are managed here, but the Add a phone number panel has no call limits. The API's inbound `call_policy` has `max_call_duration_seconds`, `max_silence_duration_ms`, and `end_call`. */}
+{/* TODO(platform-confirm): Where are call limits set for inbound calls? The Advanced settings Call section says they are managed here, but the Add a phone number panel has no call limits. Check the number's ... menu and the Advanced settings entry in the Deploy agent tab. The API's inbound `call_policy` has `max_call_duration_seconds`, `max_silence_duration_ms`, and `end_call`. */}
 
 {/* TODO(platform-confirm): "Bind/update" suggests that publishing can replace an existing connection. If the number already answers for another agent, does publishing move it without warning? What does a failed connection look like, and where do you retry it? */}
 

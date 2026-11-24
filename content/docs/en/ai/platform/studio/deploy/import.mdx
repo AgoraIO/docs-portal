@@ -29,7 +29,7 @@ To import a phone number from your SIP trunk:
 3. Fill in the following information:
 
     - **Phone number**: The phone number, in E.164 format. For example, `+14155550100`.
-    - **Description**: A description to help you identify this number. Optional.
+    - **Name**: A name to help you identify this number. Optional.
     - **SIP host**: Your SIP trunk's hostname, without a scheme or port. For example, `sip.carrier.com`.
     - **SIP protocol**: The protocol for SIP communication. Choose **TLS** if Secure Trunking is turned on in your SIP trunk. Otherwise, choose **TCP** or **UDP**.
     - **SIP port**: The SIP signaling port.
@@ -46,7 +46,7 @@ The number is now in your project, but it isn't connected to an agent. For inbou
 
 {/* TODO(platform-confirm): The Phone number placeholder has no plus sign or country code (4155552671), but the API requires E.164. Does Agent Studio add a country code, reject the number, or save it as typed? */}
 
-{/* TODO(platform-confirm): The API allows inbound SIP traffic from any address if you omit `allowed_ips`, and doesn't mention `*`. What happens when Allowed IPs is blank? Does the default SIP port change with the protocol, as it does in the API (5061 for TLS, 5060 for TCP and UDP)? What does Refresh numbers do? */}
+{/* TODO(platform-confirm): The API allows inbound SIP traffic from any address if you omit `allowed_ips`, and doesn't mention `*` (Agent Studio's hint says "Use * to allow any source"). What happens when Allowed IPs is blank? Does the default SIP port change with the protocol, as it does in the API (5061 for TLS, 5060 for TCP and UDP)? What does Refresh numbers do? */}
 
 ## Manage imported numbers
 

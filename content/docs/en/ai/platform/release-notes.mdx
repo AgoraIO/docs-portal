@@ -9,9 +9,71 @@ The Conversational AI Platform is a new API for building and running voice agent
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="20261126 (Preview)" id="platform-20261126" headingLevel={3} value="platform-20261126">
+
+{/* TODO(platform-confirm): Before publishing, confirm the release date (planned for November 26, 2026; not a hard deadline) and that each feature in these notes ships. Remove any that move to a later release. Open questions are in the 20261126 section of the engineering requirements list. */}
+
+Released on November 26, 2026.
+
+This release expands call handling and carrier onboarding for phone calls, shows in-app and phone sessions in one list, adds Agent Studio (Preview), and removes Hume AI TTS.
+
+#### New features
+
+Included in this release:
+
+- **Call transfer enhancements**
+
+  Transfer active phone calls using SIP INVITE-based transfer, and transfer to phone numbers as well as SIP URIs. Session details include transfer event metadata.
+
+  {/* TODO(platform-confirm): Before publishing, confirm that call transfer ships. On 2026-11-24, every environment rejected `call_policy.transfer` ("Field is not supported"), and in ClickUp INVITE transfer (868mvyzhx) and phone-number targets (868mvyzj0) were in backlog with the API design not final (868mvyzj1). Document transfer in the phone-call guides, the transfer metadata and event in event types, and link the guide here. */}
+
+- **Automated SIP trunk setup for Twilio and Telnyx**
+
+  When you import a phone number from Twilio or Telnyx in Agent Studio, Agent Studio configures the SIP trunk in the carrier's portal for you. See [Import a phone number](/en/ai/platform/studio/deploy/import).
+
+  {/* TODO(platform-confirm): Before publishing, confirm that this ships. ClickUp 868mtb09w was in backlog with no release tag, and a comment says "Studio + API". Update Import a phone number from Agent Studio screenshots of the Twilio and Telnyx flows. If the Platform API supports it too, document it in Import phone numbers and mention it here. */}
+
+- **Silence hangup for inbound calls and Agent Preview**
+
+  End a session automatically when nobody speaks for a set time, with an optional reminder before the agent hangs up. Silence hangup now works for inbound calls and Agent Preview sessions, as well as outbound campaigns. The minimum silence period is 30 seconds. See [Set limits and behavior for inbound calls](/en/ai/platform/build/phone-calls/route-inbound-calls#set-limits-and-behavior-for-inbound-calls) and the Agent Studio [Call settings](/en/ai/platform/studio/build/customize-agent#call).
+
+  {/* TODO(platform-confirm): Before publishing, confirm that inbound and Agent Preview silence hangup ship (still open in ClickUp 868mtau5v on 2026-11-18), and the minimum silence period. ClickUp says the backend minimum is 30 seconds, but Agent Studio's Hang up after silence accepts 1 to 3,600 seconds, and the API reference says minimum 1 ms for inbound numbers and one-off outbound calls. Fix this sentence, the Call settings, and the API reference to match. */}
+
+- **One session list for in-app and phone sessions**
+
+  View and inspect in-app (RTC) and phone (SIP) sessions together in one session list, in both the Platform API and Agent Studio. See [Agent Analytics](/en/ai/platform/studio/observe/agent-analytics) and [List sessions](/en/api-reference/api-ref/conversational-ai/platform/list-sessions).
+
+  {/* TODO(platform-confirm): Before publishing, confirm that this ships. ClickUp 868muy6e8 had no description or release tag. On 2026-11-24, List sessions rejected a transport filter. Document the transport field and any filter in the API reference, and update Agent Analytics. */}
+
+- **Filter sessions by campaign**
+
+  Filter the List sessions results by `campaign_id` to get every session in an outbound campaign. Session details and notification events, including event `1201` and the session-end event, include `campaign_id` and a contact identifier, so you can match each call result to its campaign contact. See [Make outbound calls and run campaigns](/en/ai/platform/build/phone-calls/outbound-calls-campaigns).
+
+  {/* TODO(platform-confirm): Before publishing, confirm that this ships. ClickUp 868mx1z79 (CSD-80711) was under discussion with due month 2026-12, and on 2026-11-24 List sessions rejected `campaign_id`. Add the query parameter, the contact identifier field, and the session-end event to the API reference and event types, then name the fields here. */}
+
+- **Agent Studio (Preview)**
+
+  Agent Studio (Preview) documentation is now available. It covers the quickstart, agent customization, secrets, phone number import, inbound and outbound deployment, testing, and Agent Analytics. See the [Agent Studio overview](/en/ai/platform/studio).
+
+  {/* TODO(platform-confirm): Before publishing, PR #1385 must merge, with its temporary images moved to the assets server and its TODOs cleared. */}
+
+#### Removal notice
+
+:::warning[Important]
+These changes may affect your existing integration. Review each change and update your integration as needed.
+:::
+
+- **Hume AI TTS is removed.** Hume AI retired its legacy TTS API on November 13, 2026. Hume AI is no longer available as a TTS provider in the Conversational AI Platform API or Agent Studio. If your agents use Hume AI TTS, switch them to another [supported TTS provider](/en/ai/platform/studio/build/supported-vendors#tts-vendors) to avoid runtime failures.
+
+#### Known issues
+
+- **Silence hangup without initial audio**: If the agent has no greeting and the user never speaks, the silence hangup timer doesn't start. A fix is planned for an upcoming engine release.
+
+</Accordion>
+
 <Accordion title="20261030 (Preview)" id="platform-20261030" headingLevel={3} value="platform-20261030">
 
-{/* TODO(platform-confirm): Release date (planned for October 30, 2026). The ticket draft also mentions Agent Studio; add it once the Agent Studio scope for this release is confirmed. */}
+{/* TODO(platform-confirm): Release date (planned for October 30, 2026). */}
 
 Released on October 30, 2026.
 

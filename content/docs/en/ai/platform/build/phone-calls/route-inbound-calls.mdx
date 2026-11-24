@@ -239,7 +239,7 @@ Set `call_policy` in the number's `inbound` object:
 | Field | Description |
 |---|---|
 | `max_call_duration_seconds` | The maximum length of a call in seconds, from when it's answered. |
-| `max_silence_duration_ms` | Hang up when nobody on the call has spoken for this many milliseconds. |
+| `max_silence_duration_ms` | Hang up when nobody on the call has spoken for this many milliseconds. To remind the caller before the agent hangs up, set the agent's [`pipeline.silence_config`](/en/api-reference/api-ref/conversational-ai/platform/create-agent) with a shorter `timeout_ms`. |
 | `end_call` | The conditions under which the agent can end the call itself. Each condition is off unless you set it to `true`. `on_user_request`: the caller clearly says goodbye or asks to hang up. `on_voicemail`: the call reaches voicemail. `on_ai_assistant`: an AI assistant or another automated system answers. |
 
 If you omit a limit, it doesn't apply.
