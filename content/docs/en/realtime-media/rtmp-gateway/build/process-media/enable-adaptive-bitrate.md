@@ -188,9 +188,9 @@ The `transcoding.video.simulcastStreamLayers` array shows the active ABR layers 
 
 ## Subscriber-side ABR stream
 
-When multiple video quality layers are available, the SDK automatically adapts the subscribed video stream to changing network conditions. Under poor network conditions, it switches to lower-quality layers, down to the lowest available video layer. When network conditions improve, it switches back to higher-quality layers. No additional fallback configuration is required for this default behavior.
+When multiple video quality layers are available, the SDK automatically adapts the subscribed video stream to changing network conditions. Under poor network conditions, it switches to lower-quality layers, down to the lowest available video layer. When network conditions improve, it switches back to higher-quality layers. You don't need to configure fallback for this default behavior.
 
-You can optionally configure a custom fallback policy, such as limiting fallback to a medium-quality video layer or allowing fallback to audio only.
+You can optionally configure a custom fallback policy, such as allowing fallback to audio only. With the Native SDK, you can also limit fallback to a specific video layer.
 
 ### Integration guidelines
 
@@ -223,15 +223,12 @@ Use the following Native SDK APIs to control which ABR layer a subscriber receiv
 #### Customize the fallback policy (optional)
 
 - API: `setRemoteSubscribeFallbackOption(StreamFallbackOptions option)`
+- Description: Customizes the fallback policy for subscribed audio and video streams under poor network conditions. You don't need to call this method for the default automatic switching between video layers.
 
-:::note
-Customizes the fallback policy for subscribed audio and video streams under poor network conditions. Call this method when your application requires a custom policy, such as limiting fallback to a medium-quality video layer or allowing fallback to audio only. You do not need to call this method for the default automatic switching between video layers.
-:::
+    Specify the minimum acceptable fallback level:
 
-Specify the minimum acceptable fallback level:
-
-- To limit fallback to a specific video layer, use the corresponding `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LAYER_1` through `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LAYER_6` value.
-- To fall back to audio only, use `STREAM_FALLBACK_OPTION_AUDIO_ONLY`.
+    - To limit fallback to a specific video layer, use the `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LAYER_<n>` value for the lowest layer you accept.
+    - To fall back to audio only, use `STREAM_FALLBACK_OPTION_AUDIO_ONLY`.
 
 - Supported values:
   - `STREAM_FALLBACK_OPTION_DISABLED`
@@ -280,7 +277,7 @@ Specify the minimum acceptable fallback level:
         VIDEO_STREAM_LAYER_3,
         VIDEO_STREAM_LAYER_4,
         VIDEO_STREAM_LAYER_5,
-        VIDEO_STREAM_LAYER_6;
+        VIDEO_STREAM_LAYER_6
     }
     ```
 
@@ -296,17 +293,12 @@ Use the following Web SDK APIs to control which ABR layer a subscriber receives.
 #### Customize the fallback policy (optional)
 
 - API: `setStreamFallbackOption(uid: UID, fallbackType: RemoteStreamFallbackType): Promise<void>`
+- Description: Customizes the fallback policy for a specified remote user under poor network conditions. You don't need to call this method for the default automatic switching between video layers.
+- Example: Allow fallback to audio only.
 
-:::note
-Customizes the fallback policy for a specified remote user under poor network conditions. Call this method when your application requires a custom policy, such as limiting fallback to a medium-quality video layer or allowing fallback to audio only. You do not need to call this method for the default automatic switching between video layers.
-:::
-
-- Example (optional): Explicitly configure fallback down to the low video stream.
-
-  ```js
-  // the range supports up to LOW_STREAM
-  client.setStreamFallbackOption(uid, 1);
-  ```
+    ```js
+    client.setStreamFallbackOption(uid, 2); // AUDIO_ONLY = 2
+    ```
 
 #### Manual stream selection
 
@@ -318,18 +310,18 @@ Customizes the fallback policy for a specified remote user under poor network co
     client.setRemoteVideoStreamType(uid, 0); // HIGH_STREAM = 0
     ```
 
-- Enum: `VideoStreamType`
+- Enum: `RemoteStreamType`
 
     ```ts
-    enum VideoStreamType {
-        HIGH_STREAM,
-        LOW_STREAM,
-        HIGH_STREAM_LAYER1,
-        HIGH_STREAM_LAYER2,
-        HIGH_STREAM_LAYER3,
-        HIGH_STREAM_LAYER4,
-        HIGH_STREAM_LAYER5,
-        HIGH_STREAM_LAYER6;
+    enum RemoteStreamType {
+        HIGH_STREAM = 0,
+        LOW_STREAM = 1,
+        HIGH_STREAM_LAYER1 = 4,
+        HIGH_STREAM_LAYER2 = 5,
+        HIGH_STREAM_LAYER3 = 6,
+        HIGH_STREAM_LAYER4 = 7,
+        HIGH_STREAM_LAYER5 = 8,
+        HIGH_STREAM_LAYER6 = 9
     }
     ```
 
