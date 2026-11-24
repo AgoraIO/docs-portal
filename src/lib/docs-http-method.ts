@@ -81,6 +81,7 @@ export type DocsHttpMethodMetadata = {
 export function withDocsHttpMethods(
   nodes: DocsSidebarNode[],
   pages: DocsHttpMethodPage[],
+  platformArticle?: { url: string; href: string },
 ): DocsSidebarNode[] {
   const metadata = new Map(pages.map((page) => [page.url, page]));
   function targetFor(node: Extract<DocsSidebarNode, { type: 'page' }>) {
@@ -112,6 +113,9 @@ export function withDocsHttpMethods(
     if (node.method || node.external) return node;
 
     const [pageUrl, fragment] = node.url.split('#');
+    if (node.url === platformArticle?.url) {
+      node = { ...node, href: platformArticle.href };
+    }
     const page = metadata.get(pageUrl);
     const data = page?.data;
     if (!fragment && data?.httpMethods && page?.toc) {

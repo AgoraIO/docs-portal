@@ -859,6 +859,9 @@ export async function loadDocsPagePayload(
             localePages,
             artifactPlatform,
           ),
+          requestedPlatform && page.type === 'docs' && page.data.httpMethods
+            ? { url: page.url, href: `${page.url}/${requestedPlatform}` }
+            : undefined,
         )
       : authoredRestSidebar;
   const title = page.data.title ?? page.slugs.at(-1) ?? page.url;
@@ -2103,7 +2106,7 @@ async function readPageText(page: PageWithSource, kind: 'processed' | 'raw') {
 // cache per source object so expanding a menu does not recompile its articles.
 const restNavigationTocs = new WeakMap<
   object,
-  Map<string, Promise<RestMethodTocItem[]>>
+  Map<string, Promise<RestMethodTocItem[] | undefined>>
 >();
 
 async function getAuthoredRestNavigationPages(
@@ -2123,11 +2126,12 @@ async function getAuthoredRestNavigationPages(
         variants = new Map();
         restNavigationTocs.set(page.data, variants);
       }
+      const cache = variants;
       const key = preferredPlatform ?? '';
-      let toc = variants.get(key);
+      let toc = cache.get(key);
       if (!toc) {
         toc = (async () => {
-          const text = await readProcessedText(page);
+          const text = await page.data.getText('processed');
           const tabs = extractStructuredPlatformTabs(text);
           if (!tabs) return resolvePageToc(page, text);
           const platform =
@@ -2140,19 +2144,14 @@ async function getAuthoredRestNavigationPages(
             ]),
           );
           return platformToc.map((item) => ({ ...item, search: { platform } }));
-        })();
-        variants.set(key, toc);
+        })().catch(() => {
+          // Keep the article link and let the next request retry the menu.
+          cache.delete(key);
+          return undefined;
+        });
+        cache.set(key, toc);
       }
-      return [
-        toc.then(
-          (toc) => ({ url: page.url, data: page.data, toc }),
-          () => {
-            // A transient sibling failure must not poison subsequent requests.
-            variants.delete(key);
-            return { url: page.url, data: page.data };
-          },
-        ),
-      ];
+      return [toc.then((toc) => ({ url: page.url, data: page.data, toc }))];
     }),
   );
 }

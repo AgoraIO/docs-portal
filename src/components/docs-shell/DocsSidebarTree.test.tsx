@@ -17,7 +17,12 @@ import { useState } from 'react';
 import { describe, expect, it } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { SidebarProvider } from '@/components/ui/sidebar';
+import { loadDocsPagePayload } from '@/lib/docs-page.server';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
+import {
+  getProductSidebarSource,
+  withProductSidebar,
+} from '@/lib/product-rest-sidebar';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsSidebarTree } from './DocsSidebarTree';
 
@@ -1444,6 +1449,63 @@ describe('DocsSidebarTree', () => {
 });
 
 describe('authored REST platform destinations', () => {
+  it('stays on iOS after clicking Overview and then the synchronous push operation', async () => {
+    const article = '/en/api-reference/api-ref/im/push-notification-management';
+    const from = '/en/realtime-media/im';
+    const overviewUrl = `${article}/ios?from=${encodeURIComponent(from)}`;
+    const operationUrl = `${overviewUrl}#send-a-push-notification-in-a-synchronous-way-1`;
+    const rootRoute = createRootRoute({ component: Outlet });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$',
+      validateSearch: (search: Record<string, unknown>) => ({
+        from: getProductSidebarSource(search.from),
+      }),
+      loaderDeps: ({ search }) => search,
+      loader: async ({ params, deps }) => {
+        const page = await loadDocsPagePayload(
+          params.locale,
+          params.tab,
+          params._splat?.split('/') ?? [],
+        );
+        if (!page || 'redirectUrl' in page)
+          throw new Error('Missing push article');
+        return withProductSidebar(page, deps.from, (input) =>
+          loadDocsPagePayload(input.locale, input.tab, input.slugSegments),
+        );
+      },
+      component: () => {
+        const page = docsRoute.useLoaderData();
+        return (
+          <AppProviders>
+            <SidebarProvider>
+              <DocsSidebarTree
+                activePath={page.activePath}
+                nodes={page.sidebar}
+                onSelectPath={() => {}}
+              />
+            </SidebarProvider>
+          </AppProviders>
+        );
+      },
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({ initialEntries: [operationUrl] }),
+    });
+    await router.load();
+    render(<RouterProvider router={router} />);
+
+    const operationName = 'Send a push notification in a synchronous way POST';
+    const operation = await screen.findByRole('link', { name: operationName });
+    const menu = within(operation.closest('ul') as HTMLUListElement);
+    fireEvent.click(menu.getByRole('link', { name: 'Overview' }));
+    await waitFor(() => expect(router.state.location.href).toBe(overviewUrl));
+    const push = await screen.findByRole('link', { name: operationName });
+    fireEvent.click(push);
+    await waitFor(() => expect(router.state.location.href).toBe(operationUrl));
+  }, 15000);
+
   it('reuses the endpoint label for authored desktop rows and marks only the selected fragment current', async () => {
     const url = '/en/api-reference/example';
     renderSidebarTree(

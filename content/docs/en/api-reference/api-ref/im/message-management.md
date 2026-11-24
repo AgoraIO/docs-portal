@@ -2,7 +2,10 @@
 title: "Message management"
 description: "Agora Chat RESTful APIs for messages, files, and message history."
 httpMethods:
-  send-a-message: POST
+  send-a-one-to-one-message: POST
+  send-a-group-message: POST
+  send-a-chat-room-message: POST
+  send-a-broadcast-message-to-all-chat-rooms-under-an-app: POST
   upload-a-file: POST
   download-a-file: GET
   download-a-thumbnail: GET

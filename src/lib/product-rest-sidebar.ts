@@ -58,6 +58,7 @@ function restoreArticleNavigation(
 ): DocsSidebarNode[] {
   if (api.body.kind === 'openapi' || !api.body.platformTabs) return nodes;
   const article = api.activePath;
+  const { initialPlatform } = api.body.platformTabs;
   function isArticleMenu(node: DocsSidebarNode) {
     return (
       node.type === 'section' &&
@@ -82,7 +83,13 @@ function restoreArticleNavigation(
   function withContext(node: DocsSidebarNode): DocsSidebarNode {
     return node.type === 'section'
       ? { ...node, children: node.children.map(withContext) }
-      : { ...node, search: { ...node.search, from } };
+      : {
+          ...node,
+          ...(node.url === article && initialPlatform
+            ? { href: `${article}/${initialPlatform}` }
+            : {}),
+          search: { ...node.search, from },
+        };
   }
   function restore(node: DocsSidebarNode): DocsSidebarNode {
     if (node.type === 'section') {
@@ -96,7 +103,7 @@ function restoreArticleNavigation(
       }
       return { ...node, children: node.children.map(restore) };
     }
-    if (node.url === article && menu) return withContext(menu);
+    if (node.url === article) return withContext(menu ?? node);
     return node;
   }
   return nodes.map(restore);

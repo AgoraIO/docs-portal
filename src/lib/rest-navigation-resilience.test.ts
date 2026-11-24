@@ -23,6 +23,7 @@ vi.mock('fumadocs-core/content/toc', async (original) => {
 
 import { type DocsPagePayload, loadDocsPagePayload } from './docs-page.server';
 import { withProductSidebar } from './product-rest-sidebar';
+import { source } from './source.server';
 
 async function load(path: string) {
   const [locale, tab, ...slug] = path.slice(1).split('/');
@@ -40,20 +41,38 @@ afterEach(() => {
 });
 const push = '/en/api-reference/api-ref/im/push-notification-management';
 
-it('keeps overview body and ordinary sibling links available on TOC failure, then retries', async () => {
+it('keeps ordinary navigation available and retries both failed document reads and failed TOC parsing', async () => {
   fault.enabled = true;
-  const failed = await load('/en/realtime-media/im');
+  const failedToc = await load('/en/realtime-media/im');
   expect(fault.hits).toBeGreaterThan(0);
-  expect(failed.body).toBeTruthy();
-  expect(links(failed.sidebar).some((n) => n.url === push)).toBe(true);
+  expect(links(failedToc.sidebar).some((n) => n.url === push)).toBe(true);
   fault.enabled = false;
+
+  const article = source.getPages('en').find((page) => page.url === push);
+  if (article?.type !== 'docs') throw new Error('Missing push reference');
+  const messageManagement = '/en/api-reference/api-ref/im/message-management';
+  const getText = vi
+    .spyOn(article.data, 'getText')
+    .mockRejectedValueOnce(new Error('Temporary processed document failure'));
+  try {
+    const failed = await load('/en/realtime-media/im');
+    expect(getText).toHaveBeenCalledWith('processed');
+    expect(failed.body).toBeTruthy();
+    expect(links(failed.sidebar).some((node) => node.url === push)).toBe(true);
+    expect(
+      links(failed.sidebar).some((node) => node.url === messageManagement),
+    ).toBe(true);
+  } finally {
+    getText.mockRestore();
+  }
+
   const recovered = await load('/en/realtime-media/im');
   expect(
     links(recovered.sidebar).some(
       (n) => n.url.startsWith(push + '#') && n.method,
     ),
   ).toBe(true);
-  expect((await load('/en/realtime-media/media-pull')).body).toBeTruthy();
+  expect((await load(messageManagement)).body).toBeTruthy();
 }, 30000);
 
 it('retains the original reference navigation alongside local operations', async () => {
@@ -149,6 +168,12 @@ it('writes platform-specific static REST payloads instead of inheriting Android 
         ({ locale, tab, slugSegments }) =>
           loadDocsPagePayload(locale, tab, slugSegments),
       );
+      expect(
+        links(result.sidebar).find((node) => node.url === push),
+      ).toMatchObject({
+        href: `${push}/${platform}`,
+        search: { from: '/en/realtime-media/im' },
+      });
       const operations = links(result.sidebar).filter(
         (n) => n.url.startsWith(push + '#') && n.method,
       );

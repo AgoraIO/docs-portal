@@ -34,7 +34,12 @@ function flatten(nodes: DocsSidebarNode[]): DocsSidebarPageNode[] {
     node.type === 'page' ? [node] : flatten(node.children),
   );
 }
-const references = files('content/docs/en/api-reference/api-ref');
+const licenseReference =
+  'content/docs/en/realtime-media/iot/build/authenticate-and-secure-channels/license.mdx';
+const references = [
+  ...files('content/docs/en/api-reference/api-ref'),
+  licenseReference,
+];
 const examplesOnly =
   /\/(?:authentication|restful-authentication|how-to-call-api|signature-algorithm)\.mdx?$/;
 const declaration =
@@ -58,10 +63,12 @@ function declaredOperationFragments(text: string, file: string): string[] {
     const title = headingText(node);
     headings.push({ ...node, title, fragment: slugger.slug(title) });
   });
-  const maxDepth =
-    /flexible-classroom|agora-analytics|push-notification-management/.test(file)
-      ? 3
-      : 2;
+  const hasNestedOperations =
+    file === licenseReference ||
+    /flexible-classroom|agora-analytics|push-notification-management|\/im\/message-management\.md$/.test(
+      file,
+    );
+  const maxDepth = hasNestedOperations ? 3 : 2;
   const supportingHeading =
     /^(?:HTTP (?:request|response)(?: example)?|(?:Request|Response)(?: (?:parameters|headers?|bod(?:y|ies)|examples?))?|(?:Path|Query) parameters?|Body|Authorization|Common parameters|Examples?|Prototype|Endpoint|Basic information|Data format|API limits|Server|Authentication|Rate limits|Status codes|Ensure service reliability|[0-9]{3})$/i;
   const requests =
@@ -125,7 +132,7 @@ describe('complete English REST method coverage', () => {
       const text = readFileSync(file, 'utf8');
       if (!declaration.test(text)) continue;
       const frontmatter = text.match(/^---\n([\s\S]*?)\n---\n/)?.[1] ?? '';
-      const metadata = loadYaml(frontmatter) as DocsHttpMethodMetadata;
+      const metadata = (loadYaml(frontmatter) ?? {}) as DocsHttpMethodMetadata;
       if (metadata.httpMethod) continue;
       for (const fragment of declaredOperationFragments(text, file)) {
         if (!Object.hasOwn(metadata.httpMethods ?? {}, fragment))
