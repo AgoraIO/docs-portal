@@ -57,7 +57,6 @@ Authorization: Bearer ${YourAppToken}
 
 In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
 
-<a id="creating-a-chat-room"></a>
 ## Creating a chat room
 Creates a chat room.
 

@@ -47,15 +47,18 @@ export function DocsMainColumn({
         >
           <div className="min-w-0">{children}</div>
           <DocsPageFooter
+            key={resetKey}
             contentFillsWidth={contentFillsWidth}
             includeFeedback
-            key={resetKey}
             layoutMode={layoutMode}
             locale={locale}
             next={next}
             previous={previous}
           />
-          <DocsSiteFooter className="relative left-1/2 w-screen -translate-x-1/2 lg:hidden" />
+          <DocsSiteFooter
+            className="relative left-1/2 w-screen -translate-x-1/2 lg:hidden"
+            locale={locale}
+          />
         </div>
       </div>
     </main>
@@ -122,7 +125,7 @@ function FooterLink({
   return (
     <Link
       className={cn(
-        'flex min-w-0 flex-1 flex-col rounded-lg border border-[color:var(--line-soft)] bg-card px-4 py-3 text-sm transition-colors hover:border-[color:var(--line-strong)] hover:bg-[color:var(--surface-muted)]',
+        'docs-card-surface docs-card-interactive flex min-w-0 flex-1 flex-col px-4 py-3 text-sm',
         align === 'end' && 'items-end text-right',
       )}
       params={{}}

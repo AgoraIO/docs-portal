@@ -6,7 +6,13 @@ import {
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import { useState } from 'react';
 import { describe, expect, it } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
@@ -14,7 +20,11 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
 import { DocsSidebarTree } from './DocsSidebarTree';
 
-function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
+function renderSidebarTree(
+  nodes: DocsSidebarNode[],
+  activePath: string,
+  initialUrl = activePath,
+) {
   const rootRoute = createRootRoute({
     component: () => <Outlet />,
   });
@@ -36,11 +46,39 @@ function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
   const router = createRouter({
     routeTree: rootRoute.addChildren([docsRoute]),
     history: createMemoryHistory({
-      initialEntries: [activePath],
+      initialEntries: [initialUrl],
     }),
   });
 
   return render(<RouterProvider router={router} />);
+}
+
+function SidebarHarness({ tree }: { tree: DocsSidebarNode[] }) {
+  const [activePath, setActivePath] = useState(
+    '/en/realtime-media/video/overview',
+  );
+
+  return (
+    <>
+      <button
+        onClick={() => setActivePath('/en/realtime-media/rtm/build/presence')}
+        type="button"
+      >
+        Go to presence
+      </button>
+      <button
+        onClick={() => setActivePath('/en/realtime-media/rtm/build/channels')}
+        type="button"
+      >
+        Go to channels
+      </button>
+      <DocsSidebarTree
+        activePath={activePath}
+        nodes={tree}
+        onSelectPath={() => {}}
+      />
+    </>
+  );
 }
 
 describe('DocsSidebarTree', () => {
@@ -319,6 +357,95 @@ describe('DocsSidebarTree', () => {
       '(opens in a new tab)',
     );
     expect(link.querySelector('svg.lucide-chevron-down')).toBeNull();
+  });
+
+  it('opens product REST groups in place and links to an endpoint in the same tab', async () => {
+    const fromProduct = '/en/ai/platform';
+    const url =
+      '/en/api-reference/api-ref/conversational-ai/platform/create-agent';
+    renderSidebarTree(
+      [
+        {
+          type: 'section',
+          id: 'reference',
+          title: 'Reference',
+          children: [
+            {
+              type: 'section',
+              id: 'rest',
+              title: 'REST API',
+              collapsible: true,
+              children: [
+                {
+                  type: 'section',
+                  id: 'agents',
+                  title: 'Agents',
+                  collapsible: true,
+                  children: [
+                    {
+                      type: 'page',
+                      id: url,
+                      url,
+                      search: { from: fromProduct },
+                      title: 'Create an agent',
+                      method: 'POST',
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      fromProduct,
+    );
+    const rest = await screen.findByRole('button', { name: 'REST API' });
+    expect(rest).toHaveAttribute('aria-expanded', 'false');
+    fireEvent.click(rest);
+    const agents = screen.getByRole('button', { name: 'Agents' });
+    expect(agents).toHaveAttribute('aria-expanded', 'false');
+    fireEvent.click(agents);
+    const link = screen.getByRole('link', { name: 'Create an agent POST' });
+    expect(link).toHaveAttribute(
+      'href',
+      url + '?from=' + encodeURIComponent(fromProduct),
+    );
+    expect(link).not.toHaveAttribute('target', '_blank');
+  });
+
+  it('marks only the selected REST article operation as the current page', async () => {
+    const path = '/en/api-reference/api-ref/media-pull';
+    const from = '/en/realtime-media/media-pull';
+    const entries = [
+      ['Overview', ''],
+      ['Create API', '#create-api'],
+      ['Delete API', '#delete-api'],
+      ['List API', '#list-api'],
+      ['Update API', '#update-api'],
+    ];
+    renderSidebarTree(
+      entries.map(([title, fragment]) => ({
+        type: 'page',
+        title,
+        id: path + fragment,
+        url: path + fragment,
+        search: { from },
+      })),
+      path,
+      path + '?from=' + encodeURIComponent(from) + '#create-api',
+    );
+
+    const expectCurrent = (name: string) => {
+      expect(screen.getAllByRole('link', { current: 'page' })).toEqual([
+        screen.getByRole('link', { name }),
+      ]);
+    };
+    await screen.findByRole('link', { name: 'Create API' });
+    expectCurrent('Create API');
+    for (const name of ['Delete API', 'Overview']) {
+      fireEvent.click(screen.getByRole('link', { name }));
+      await waitFor(() => expectCurrent(name));
+    }
   });
 
   it('renders linked external REST API jumps with an indicator in a new tab', async () => {
@@ -857,37 +984,7 @@ describe('DocsSidebarTree', () => {
         type: 'section',
       },
     ];
-    function SidebarHarness() {
-      const [activePath, setActivePath] = useState(
-        '/en/realtime-media/video/overview',
-      );
 
-      return (
-        <>
-          <button
-            onClick={() =>
-              setActivePath('/en/realtime-media/rtm/build/presence')
-            }
-            type="button"
-          >
-            Go to presence
-          </button>
-          <button
-            onClick={() =>
-              setActivePath('/en/realtime-media/rtm/build/channels')
-            }
-            type="button"
-          >
-            Go to channels
-          </button>
-          <DocsSidebarTree
-            activePath={activePath}
-            nodes={tree}
-            onSelectPath={() => {}}
-          />
-        </>
-      );
-    }
     const rootRoute = createRootRoute({
       component: () => <Outlet />,
     });
@@ -897,7 +994,7 @@ describe('DocsSidebarTree', () => {
       component: () => (
         <AppProviders>
           <SidebarProvider>
-            <SidebarHarness />
+            <SidebarHarness tree={tree} />
           </SidebarProvider>
         </AppProviders>
       ),

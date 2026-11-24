@@ -34,6 +34,7 @@ agent = (
         SpeechmaticsSTT(
             api_key=secret_ref("support_prod", "speechmatics"),
             language="en",
+            uri="wss://eu2.rt.speechmatics.com/v2",
         )
     )
     .with_llm(...)  # configure your LLM vendor
@@ -54,6 +55,7 @@ const agent = new Agent({ client })
     new SpeechmaticsSTT({
       apiKey: secretRef('support_prod', 'speechmatics'),
       language: 'en',
+      uri: 'wss://eu2.rt.speechmatics.com/v2',
     }),
   )
   .withLlm(/* configure your LLM vendor */)
@@ -70,6 +72,7 @@ agent := agentkit.NewAgent(client).
 	WithStt(vendors.NewSpeechmaticsSTT(vendors.SpeechmaticsSTTOptions{
 		APIKey:   agentkit.SecretRef("support_prod", "speechmatics"),
 		Language: "en",
+		URI:      "wss://eu2.rt.speechmatics.com/v2",
 	})).
 	WithLlm( /* configure your LLM vendor */ ).
 	WithTts( /* configure your TTS vendor */ )
@@ -100,10 +103,6 @@ Set `credential.mode` to `byok` and `credential.fields.key` to a reference to yo
 
 </TabsContent>
 </Tabs>
-
-{/* TODO(platform-confirm): The pre-release API requires `params.language` for this vendor. The SDK examples need the alpha.3 SDK previews, which keep `params.language` (SDK bug list #34). Tested on 2026-10-30 from the preview branches: all three SDK examples saved with `params.language`. */}
-
-{/* TODO(platform-confirm): SDK tabs tested in pre-release testing on 2026-10-28. All three SDKs saved the BYOK example. The SDK examples omit the endpoint: the SDKs' `uri` option is sent as `params.uri`, not as the block-level `url` (SDK bug list #32). TypeScript and Python also set the block-level `language` to `en-US` (their default interaction language) instead of the vendor's language, while Go leaves it unset (SDK bug list #31). */}
 
 ## Key parameters
 

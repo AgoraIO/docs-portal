@@ -66,7 +66,8 @@ A model provider that times out or rejects a key doesn't fail the request that s
 | Reason | Status | Description |
 | --- | --- | --- |
 | `InvalidPermission` | `401` | Authentication is missing or invalid. |
-| `InvalidPermission` | `403` | The credentials don't have permission for the request. A project that doesn't belong to your account returns `404 ResourceNotFound` instead. |
+| `InvalidPermission` | `403` | The credentials don't have permission for the request. |
+| `AppIdAccountMismatch` | `403` | The App ID in the path belongs to a different account than your credentials. Check the App ID and the credentials. |
 | `ServiceNotEnabled` | `403` | Conversational AI isn't enabled for the project. |
 | `AccountSuspended` | `403` | The account is suspended. |
 
@@ -74,7 +75,7 @@ A model provider that times out or rejects a key doesn't fail the request that s
 
 | Reason | Status | Description |
 | --- | --- | --- |
-| `ResourceNotFound` | `404` | The project, agent, secret set, secret key, phone number, or campaign in the path doesn't exist, or the project doesn't belong to your account. |
+| `ResourceNotFound` | `404` | The project, agent, secret set, secret key, phone number, or campaign in the path doesn't exist. |
 | `TaskNotFound` | `404` | The session in the path doesn't exist. |
 | `AgentNotFound` | `404` | An agent in the request body, in `agent_id` or `inbound.agent`, doesn't exist. |
 | `NumberNotFound` | `404` | A number in `transport.from` doesn't exist in the project. |

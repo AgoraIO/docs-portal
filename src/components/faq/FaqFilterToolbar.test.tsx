@@ -4,7 +4,7 @@ import { FaqFilterToolbar } from './FaqFilterToolbar';
 import { FAQ_ALL_PLATFORMS, FAQ_ALL_PRODUCTS } from './faq-data';
 
 describe('FaqFilterToolbar', () => {
-  it('reports product selection', async () => {
+  it('reports product selection', () => {
     const onProductChange = vi.fn();
     render(
       <FaqFilterToolbar
@@ -17,12 +17,9 @@ describe('FaqFilterToolbar', () => {
       />,
     );
 
-    fireEvent.pointerDown(screen.getByRole('button', { name: /Product/ }), {
-      button: 0,
+    fireEvent.change(screen.getByRole('combobox', { name: 'Product' }), {
+      target: { value: 'Cloud Recording' },
     });
-    fireEvent.click(
-      await screen.findByRole('menuitem', { name: /Cloud Recording/ }),
-    );
 
     expect(onProductChange).toHaveBeenCalledWith('Cloud Recording');
   });

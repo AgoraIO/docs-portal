@@ -1,0 +1,62 @@
+---
+title: agora::base::IAgoraParameter类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1base_1_1_i_agora_parameter
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1base_1_1_i_agora_parameter.html
+  generator: doxygen
+  warnings: []
+---
+
+## 构造及析构函数说明
+
+<a id="a8fbae7c88a67667e005d9be7aaf0541c"></a>
+
+### ~IAgoraParameter()
+
+<ApiSignature labels="inline virtual">
+
+virtual agora::base::IAgoraParameter::~IAgoraParameter()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="a29bec1ab93c40253b098483e039bd702"></a>
+
+### setParameters()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::base::IAgoraParameter::setParameters(const char * *parameters*)
+
+</ApiSignature>
+
+通过 JSON 配置 SDK 提供技术预览或特别定制功能。
+
+JSON 选项默认不公开。声网工程师正在努力寻求以标准化方式公开 JSON 选项。
+
+<ParameterList title="参数">
+<Parameter name="parameters" direction="[in]">
+
+JSON 字符串形式的参数
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- 0：方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a9ee6f44dd449f69b3b53dd57639a60a5"></a>
+
+### convertPath()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::base::IAgoraParameter::convertPath(const char * *filePath*, [agora::util::AString](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1util#ac12a22b3b5dd9c39cde0aa3e2c0a9a80) & *value*)
+
+</ApiSignature>

@@ -1,0 +1,227 @@
+---
+title: Auto Shape：一笔绘制图形
+---
+
+<PlatformStructured platform="android">
+
+适用于 **Fastboard Android 1.8.2**。本页通过 Fastboard 公开的原生 SDK 对象配置教具插件。
+
+在创建 FastRoom 前通过 `FastRoomOptions.getSdkConfiguration()` 与 `getRoomParams()` 设置配置。下面的 fastRoomOptions 为业务创建的房间选项。
+
+```java
+import com.herewhite.sdk.WhiteSdkConfiguration;
+import com.herewhite.sdk.RoomParams;
+
+WhiteSdkConfiguration config = fastRoomOptions.getSdkConfiguration();
+config.setUseMultiViews(true);
+config.setEnableAppliancePlugin(true);
+RoomParams params = fastRoomOptions.getRoomParams();
+```
+
+入房成功后，通过 Fastboard 的公开 getter 获取下文使用的 Native 对象：
+
+```java
+import com.herewhite.sdk.Room;
+import com.herewhite.sdk.WhiteSdk;
+
+Room room = fastRoom.getRoom();
+WhiteSdk whiteSdk = fastRoom.getWhiteSdk();
+```
+
+下文的 `params`、`config` 指 FastRoomOptions 返回的配置；通过 Fastboard 创建 SDK 和加入房间。
+
+## Auto Shape：一笔绘制图形
+
+Auto Shape（Version ≥1.1.33）将一笔完成的铅笔笔迹识别为规则图形。用户继续使用 Pencil 绘制，抬手时完成识别；无法识别时保留普通铅笔笔迹。
+
+### 支持的图形
+
+- 直线、箭头。
+- 矩形、椭圆或圆形。
+- 三角形、菱形、五角星。
+
+闭合图形尽量一笔闭合。识别针对当前完成的一笔，不会批量转换历史笔迹。
+
+### Native Android 开启方式
+
+先按[教具插件介绍](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)开启 `useMultiViews`、`enableAppliancePlugin`，加入可写房间，在插件初始化完成后设置教具状态。
+
+2.16.131 的 SDK `MemberState` 没有内置 `setAutoShape`。可以在应用中定义 `MemberState` 子类，增加插件已支持的 `autoShape` 布尔字段，再使用公开的 `room.setMemberState(...)` 提交。
+
+示例使用 Gson 的 `@SerializedName` 固定 JSON 字段名。在应用模块的 `build.gradle` 中声明 Gson 依赖；已有该依赖的工程可复用：
+
+```gradle
+dependencies {
+    implementation 'com.google.code.gson:gson:2.10.1'
+}
+```
+
+将下面的业务自定义类保存为独立的 `AutoShapeMemberState.java` 文件，并放入应用包中。`setAutoShape` 是这个业务类的方法。
+
+```java
+import com.google.gson.annotations.SerializedName;
+import com.herewhite.sdk.domain.MemberState;
+
+public class AutoShapeMemberState extends MemberState {
+    @SerializedName("autoShape")
+    private Boolean autoShape;
+
+    public void setAutoShape(boolean enabled) {
+        this.autoShape = enabled;
+    }
+}
+```
+
+在入房成功、插件就绪后调用：
+
+```java
+import com.herewhite.sdk.domain.Appliance;
+import com.herewhite.sdk.domain.StrokeType;
+
+AutoShapeMemberState state = new AutoShapeMemberState();
+state.setCurrentApplianceName(Appliance.PENCIL);
+state.setStrokeType(StrokeType.Normal);
+state.setStrokeColor(new int[]{32, 102, 255});
+state.setStrokeWidth(4);
+state.setAutoShape(true);
+room.setMemberState(state);
+```
+
+SDK 会把子类字段和继承字段一起序列化，`autoShape` 以布尔值传给内嵌插件。用户仍然在 Android 白板视图中使用铅笔绘制。
+
+### 关闭 Auto Shape
+
+```java
+AutoShapeMemberState state = new AutoShapeMemberState();
+state.setAutoShape(false);
+room.setMemberState(state);
+```
+
+关闭时显式提交 `false`；创建不含该字段的普通 `MemberState` 不会自动清除此前设置。SDK 返回的基础 `MemberState` 没有 `autoShape` getter，业务工具栏自行记录开关状态。
+
+### 类与字段保留
+
+使用顶层类或静态嵌套类，避免匿名类或方法中的局部类被 Gson 忽略。开启 R8/ProGuard 时保留业务扩展类及字段；下面包名应替换为实际包名：
+
+```proguard
+-keep class com.example.whiteboard.AutoShapeMemberState { *; }
+```
+
+这是一种业务模型扩展方式，使用 SDK 现有 Native 方法；本版没有内置 Auto Shape 开关方法。开启后可在 Android 白板视图中书写并确认识别效果。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+适用于 **Fastboard iOS 1.4.6**。本页通过 Fastboard 公开的原生 SDK 对象配置教具插件。
+
+在创建 FastRoom 前设置配置，入房成功后使用 `fastRoom.room` 和 `fastRoom.whiteSDK`。delegate 通过 `fastRoom.commonDelegate`、`roomDelegate` 设置，避免覆盖 Fastboard 内部代理。
+
+```swift
+let config = FastRoomConfiguration(appIdentifier: appIdentifier,
+    roomUUID: uuid, roomToken: roomToken, region: .CN, userUID: uid)
+config.whiteSdkConfiguration.useMultiViews = true
+config.whiteSdkConfiguration.enableAppliancePlugin = true
+let pluginOptions = WhiteAppliancePluginOptions()
+pluginOptions.extras = ["useBackgroundThread": true]
+config.whiteRoomConfig.appliancePluginOptions = pluginOptions
+let fastRoom = Fastboard.createFastRoom(withFastRoomConfig: config)
+```
+
+以下 Objective-C 示例也可用于原生调用：`config` 表示 `FastRoomConfiguration.whiteSdkConfiguration`，`roomConfig` 表示 `whiteRoomConfig`，`room`、`whiteSDK` 分别来自已入房 FastRoom 的同名属性。
+
+Auto Shape（插件 Version ≥1.1.33）在 Pencil 抬笔时尝试将单笔识别为规则图形。
+
+## 定义业务扩展模型
+
+基础 `WhiteMemberState` 未声明 `autoShape`。在应用中定义命名子类，通过现有 `setMemberState:` 序列化提交该字段；它是业务扩展属性。
+
+```objc
+@interface AutoShapeMemberState : WhiteMemberState
+@property (nonatomic, strong) NSNumber *autoShape;
+@end
+
+@implementation AutoShapeMemberState
+@end
+```
+
+## 开启和关闭
+
+在入房成功且插件就绪后调用：
+
+```objc
+AutoShapeMemberState *state = [AutoShapeMemberState new];
+state.currentApplianceName = AppliancePencil;
+state.strokeType = @"Normal";
+state.autoShape = @YES;
+[room setMemberState:state];
+
+AutoShapeMemberState *disabled = [AutoShapeMemberState new];
+disabled.autoShape = @NO;
+[room setMemberState:disabled];
+```
+
+应用必须保留 `autoShape` 与 `strokeType` 的序列化字段名。通过 YYModel 的公开模型序列化路径提交子类属性；关闭时显式提交 NO。
+
+可识别直线、箭头、矩形、椭圆或圆、三角形、菱形和五角星。闭合图形尽量一笔闭合；无法识别时保留普通笔迹，不转换历史数据。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+适用于 **Appliance Plugin 1.1.45**。先完成[启用插件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)，`plugin` 为已初始化的插件实例。以下版本门槛指插件版本。
+
+## 小地图（Version ≥1.1.6）
+
+`createMiniMap` 不支持 simple 模式。在[初始化插件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)时将 `extras.useSimple` 显式设为 `false`；默认值为 `true`。如果插件已按 simple 模式初始化，应先销毁并按新配置重新创建。
+
+```typescript
+// 创建 Fastboard 时使用 enableAppliancePlugin: { extras: ... }。
+const extras = { useSimple: false, useBackgroundThread: true };
+```
+
+```typescript
+await plugin.createMiniMap('mainView', minimapContainer);
+// 组件卸载或窗口关闭时等待清理。
+await plugin.destroyMiniMap('mainView');
+```
+
+容器应有明确宽高。主白板的 viewId 为 `mainView`；App View 使用添加 App 返回的 ID。`destroyMiniMap` 当前返回 `Promise<void>`。
+
+## Auto Shape：一笔绘制图形（Version ≥1.1.33）
+
+```typescript
+import { ApplianceNames, EStrokeType } from '@netless/appliance-plugin';
+plugin.setMemberState({
+  currentApplianceName: ApplianceNames.pencil,
+  strokeType: EStrokeType.Normal, autoShape: true
+});
+// 关闭时显式提交 false。
+plugin.setMemberState({ autoShape: false });
+```
+
+保持 Pencil 教具，一笔完成并抬笔后尝试识别直线、箭头、矩形、椭圆/圆、三角形、菱形和五角星。识别失败保留普通笔迹；不会转换历史笔迹。
+
+## 过滤笔记（Version ≥1.1.6）
+
+```typescript
+plugin.filterRenderByUid('mainView', {
+  render: ['teacher-uid'], hide: ['student-uid']
+}, false);
+// 与设置时保持相同的 isSync 值。
+plugin.cancelFilterRender('mainView', false);
+```
+
+`render`、`hide` 和 `clear` 的 UID 指笔迹所有者。各字段可为 UID 数组或 `true`；`clear` 配置哪些用户的笔迹可被清除，不能将它当作操作者身份授权。
+
+| 配置 | 1.1.45 的行为 |
+| --- | --- |
+| `render: ['teacher-uid']` | 只显示列出的用户笔迹；此时 render 白名单优先，不再用 hide 排除白名单中的 UID |
+| `render: true, hide: ['student-uid']` | 显示其余用户，隐藏列出的用户笔迹 |
+| `render: true, hide: true` | 隐藏全部用户笔迹 |
+| 只设置 `hide` 而省略 `render` | 当前实现会隐藏全部笔迹；隐藏部分用户时同时设置 render=true |
+| `clear: ['student-uid']` | 只允许清除列出的用户笔迹；省略 clear 或为 true 时不增加此过滤限制 |
+
+`isSync` 默认 true，会同步给房间其他用户；只过滤本端时显式传 false。过滤用于呈现和操作配置，业务访问控制仍由服务端权限保证。
+
+</PlatformStructured>

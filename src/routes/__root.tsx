@@ -8,7 +8,8 @@ import type { PropsWithChildren } from 'react';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 import { appDescription, appName } from '@/lib/shared';
-import appCss from '@/styles/app.css?url';
+import globalCss from '@/styles/app.css?url';
+import chineseCss from '@/styles/app.zh-cn.css?url';
 
 function getGoogleTagManagerScript(containerId: string) {
   return `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -36,19 +37,26 @@ export const rootHead = {
     },
   ],
   links: [
+    ...(DEFAULT_LOCALE === 'zh-CN'
+      ? [{ rel: 'icon', href: '/shengwang-favicon.svg', type: 'image/svg+xml' }]
+      : [
+          {
+            rel: 'icon',
+            href: '/favicon-32x32.png',
+            type: 'image/png',
+            sizes: '32x32',
+          },
+          {
+            rel: 'icon',
+            href: '/favicon.ico',
+            type: 'image/png',
+            sizes: '32x32',
+          },
+        ]),
     {
-      rel: 'icon',
-      href: '/favicon-32x32.png',
-      type: 'image/png',
-      sizes: '32x32',
+      rel: 'stylesheet',
+      href: DEFAULT_LOCALE === 'zh-CN' ? chineseCss : globalCss,
     },
-    {
-      rel: 'icon',
-      href: '/favicon.ico',
-      type: 'image/png',
-      sizes: '32x32',
-    },
-    { rel: 'stylesheet', href: appCss },
   ],
 };
 
@@ -76,7 +84,8 @@ function RootComponent() {
 }
 
 export function RootDocument({ children }: PropsWithChildren) {
-  const googleTagManagerId = import.meta.env.VITE_GTM_ID;
+  const googleTagManagerId =
+    DEFAULT_LOCALE === 'en' ? import.meta.env.VITE_GTM_ID : undefined;
 
   return (
     <html lang={DEFAULT_LOCALE} suppressHydrationWarning>

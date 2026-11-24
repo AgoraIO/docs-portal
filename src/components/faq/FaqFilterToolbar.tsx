@@ -1,4 +1,5 @@
 import { CheckCircle2Icon, ChevronDownIcon } from 'lucide-react';
+import { ReferenceFilterSelect } from '@/components/reference-center/ReferenceFilterControls';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -52,38 +53,72 @@ function FilterDropdown({
   );
 }
 
+function FilterSelect({
+  label,
+  onSelect,
+  options,
+  value,
+}: {
+  label: string;
+  onSelect: (value: string) => void;
+  options: string[];
+  value: string;
+}) {
+  return (
+    <ReferenceFilterSelect
+      label={label}
+      onChange={onSelect}
+      options={options.map((option) => ({ label: option, value: option }))}
+      value={value}
+    />
+  );
+}
+
 export function FaqFilterToolbar({
+  clearLabel = 'Clear',
+  useDropdown = false,
   hasActiveFilters,
   onClear,
   onPlatformChange,
   onProductChange,
   platform,
+  platformLabel = 'Platform',
+  platforms = faqPlatforms,
   product,
+  productLabel = 'Product',
+  products = faqProducts,
 }: {
+  clearLabel?: string;
+  useDropdown?: boolean;
   hasActiveFilters: boolean;
   onClear: () => void;
   onPlatformChange: (platform: string) => void;
   onProductChange: (product: string) => void;
   platform: string;
+  platformLabel?: string;
+  platforms?: string[];
   product: string;
+  productLabel?: string;
+  products?: string[];
 }) {
+  const Filter = useDropdown ? FilterDropdown : FilterSelect;
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <FilterDropdown
-        label="Product"
+    <div className="flex flex-wrap items-end gap-3">
+      <Filter
+        label={productLabel}
         onSelect={onProductChange}
-        options={faqProducts}
+        options={products}
         value={product}
       />
-      <FilterDropdown
-        label="Platform"
+      <Filter
+        label={platformLabel}
         onSelect={onPlatformChange}
-        options={faqPlatforms}
+        options={platforms}
         value={platform}
       />
       {hasActiveFilters ? (
-        <Button onClick={onClear} size="sm" type="button" variant="ghost">
-          Clear
+        <Button onClick={onClear} type="button" variant="ghost">
+          {clearLabel}
         </Button>
       ) : null}
     </div>

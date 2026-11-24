@@ -1,4 +1,6 @@
-import { appDescription, appName } from './shared';
+import { toCnPublicSearchUrl } from './search/cn-search-urls.mjs';
+import { getAppBranding } from './shared';
+import { DOCS_REGION } from './site-region';
 import { getSitemapBaseUrl } from './sitemap';
 
 export type StaticSeoPage = {
@@ -140,7 +142,11 @@ export function createStaticSeoHead(
       },
       {
         property: 'og:site_name',
-        content: appName,
+        content: getAppBranding(
+          DOCS_REGION === 'cn'
+            ? 'zh-CN'
+            : new URL(metadata.canonicalUrl).pathname.split('/')[1],
+        ).name,
       },
       {
         property: 'og:title',
@@ -187,8 +193,11 @@ export function createDocsRouteSeoHead(loaderData: StaticSeoRouteData) {
   });
 }
 
-export function getDocsOgImageUrl(url: string) {
+export function getDocsOgImageUrl(url: string, baseUrl = getSitemapBaseUrl()) {
   const pathname = normalizePathname(url);
+  if (pathname.startsWith('/zh-CN/')) {
+    return `${baseUrl}/shengwang-docs-og.png`;
+  }
   const matchedRule = DOCS_OG_IMAGE_RULES.find((rule) =>
     rule.pathPrefixes.some(
       (pathPrefix) =>
@@ -203,13 +212,18 @@ function createStaticSeoMetadata(
   page: StaticSeoPage,
   baseUrl = getSitemapBaseUrl(),
 ): StaticSeoMetadata {
-  const title = normalizeText(page.title) ?? appName;
-  const description = normalizeText(page.description) ?? appDescription;
-  const canonicalUrl = `${baseUrl}${normalizePathname(page.canonicalPath ?? page.url)}`;
+  const branding = getAppBranding(normalizePathname(page.url).split('/')[1]);
+  const title = normalizeText(page.title) ?? branding.name;
+  const description = normalizeText(page.description) ?? branding.description;
+  const publicPath = (path: string) =>
+    DOCS_REGION === 'cn'
+      ? toCnPublicSearchUrl(normalizePathname(path))
+      : normalizePathname(path);
+  const canonicalUrl = `${baseUrl}${publicPath(page.canonicalPath ?? page.url)}`;
   const markdownUrl = page.markdownPath
-    ? `${baseUrl}${normalizePathname(page.markdownPath)}`
+    ? `${baseUrl}${publicPath(page.markdownPath)}`
     : `${canonicalUrl}.md`;
-  const imageUrl = getDocsOgImageUrl(page.url);
+  const imageUrl = getDocsOgImageUrl(page.url, baseUrl);
 
   return {
     canonicalUrl,
@@ -217,7 +231,9 @@ function createStaticSeoMetadata(
     imageUrl,
     markdownUrl,
     title:
-      title === appName ? appName : `${title}${META_TITLE_SEPARATOR}${appName}`,
+      title === branding.name
+        ? branding.name
+        : `${title}${META_TITLE_SEPARATOR}${branding.name}`,
   };
 }
 

@@ -1378,6 +1378,7 @@ The presence feature provides the ability to monitor user online, offline, and u
 
 - Real-time event notification when a user joins or leaves a specified channel.
 - Real-time event notification when the custom temporary user state changes.
+- Query whether a specified user is online.
 - Query which channels a specified user has joined or subscribed to.
 - Query which users have joined a specified channel and their temporary user state data.
 
@@ -1508,6 +1509,67 @@ The `AgoraRtmChannelInfo` data type contains the following properties:
         NSArray<AgoraRtmChannelInfo *> * channels = response.channels;
     } else {
         NSLog(@"getUserChannels failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+### getUserOnlineStatus
+
+#### Description
+
+Queries whether a specified user is logged in to Signaling under the current App ID. Neither you nor the target user needs to join or subscribe to a channel. Each call queries one user ID. To query your own status, pass your own user ID.
+
+This method is available since v2.3.1.
+
+#### Method
+
+You can call the `getUserOnlineStatus` method as follows:
+
+```objc
+-(void) getUserOnlineStatus:(NSString * _Nonnull)userId
+                 completion:(AgoraRtmGetUserOnlineStatusBlock _Nullable)completionBlock;
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--- | :--- | :---: | :---: | --- |
+| `userId` | NSString | Required | - | The user ID to query. Pass the exact user ID. An empty string doesn't refer to the caller. |
+| `completionBlock` | `AgoraRtmGetUserOnlineStatusBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmUserOnlineStatus` data in the `status` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `status` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmUserOnlineStatus` data type contains the following properties:
+
+| Properties | Type | Description |
+| :--- | :---: | --- |
+| `userId` | NSString | The queried user ID. |
+| `online` | BOOL | Whether the user is online.<br />- `YES`: The user is logged in to Signaling.<br />- `NO`: The user is offline or doesn't exist. |
+
+#### Usage notes
+
+- Before calling this method, log in to Signaling and make sure the connection is established. If you set `serviceType` in `AgoraRtmPrivateConfig`, it must include `AgoraRtmServiceTypeMessage`.
+- The query works whether Presence is enabled or disabled in Agora Console.
+- The result is a snapshot of the user's status when the server processes the query. If a user disconnects abnormally, the server takes some time to detect that the user is offline. This method doesn't return the user's last online time and doesn't notify you of later status changes.
+- A failed query doesn't mean the target user is offline. Handle failures through `errorInfo`.
+- Calling `logout` cancels pending queries. After you call `destroy`, the SDK doesn't guarantee that it returns results for pending queries.
+
+#### Errors
+
+| Value | Error code | Cause |
+| :--- | :--- | --- |
+| `-10006` | `AgoraRtmErrorInvalidUserId` | `userId` is `nil`, an empty string, or not a valid user ID. |
+| `-10021` | `AgoraRtmErrorOperationRateExceedLimitation` | The call rate exceeds the limit for this method: 20 calls per second for each client instance. |
+| `-10022` | `AgoraRtmErrorServiceNotSupported` | The `serviceType` in `AgoraRtmPrivateConfig` doesn't include `AgoraRtmServiceTypeMessage`. |
+| `-10025` | `AgoraRtmErrorNotConnected` | The client isn't connected to Signaling. |
+| `-13012` | `AgoraRtmErrorPresenceOperationTimeout` | No response within 5 seconds. The SDK doesn't retry the query. |
+| `-13013` | `AgoraRtmErrorPresenceOperationFailed` | The server response is invalid. |
+| `-13015` | `AgoraRtmErrorPresencePendingRequestCancelled` | The query was canceled because the client logged out. |
+
+#### Basic usage
+
+```objc
+[[rtm getPresence] getUserOnlineStatus:@"targetUserId" completion:^(AgoraRtmUserOnlineStatus * _Nullable status, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"%@ is %@", status.userId, status.online ? @"online" : @"offline or doesn't exist");
+    } else {
+        NSLog(@"getUserOnlineStatus failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
     }
 }];
 ```

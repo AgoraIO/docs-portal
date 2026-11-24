@@ -1,0 +1,80 @@
+---
+title: agora::RefCounter类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1_ref_counter.html
+  generator: doxygen
+  warnings: []
+---
+
+## 构造及析构函数说明
+
+<a id="a45598efe612c80f43a97072d4d20c731"></a>
+
+### RefCounter() [1/2]
+
+<ApiSignature labels="inline explicit">
+
+agora::RefCounter::RefCounter(int *ref_count*)
+
+</ApiSignature>
+
+<a id="ae16089b3aac490bb14409d15b76eb218"></a>
+
+### RefCounter() [2/2]
+
+<ApiSignature labels="private">
+
+agora::RefCounter::RefCounter()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="a80f999c3f247daa581dca37ab3ad265a"></a>
+
+### IncRef()
+
+<ApiSignature labels="inline">
+
+void agora::RefCounter::IncRef()
+
+</ApiSignature>
+
+<a id="ae962f18ad07b877079402918756f99bf"></a>
+
+### DecRef()
+
+<ApiSignature labels="inline">
+
+[agora::RefCountReleaseStatus](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#ad7412d9f3ea9df5f452273bf6e9226ef) agora::RefCounter::DecRef()
+
+</ApiSignature>
+
+Returns true if this was the last reference, and the resource protected by the reference counter can be deleted.
+
+<a id="ad4d043d868cc1c21f4024a677acd7fad"></a>
+
+### HasOneRef()
+
+<ApiSignature labels="inline">
+
+bool agora::RefCounter::HasOneRef() const
+
+</ApiSignature>
+
+Return whether the reference count is one. If the reference count is used in the conventional way, a reference count of 1 implies that the current thread owns the reference and no other thread shares it. This call performs the test for a reference count of one, and performs the memory barrier needed for the owning thread to act on the resource protected by the reference counter, knowing that it has exclusive access.
+
+## 类成员变量说明
+
+<a id="a5bef6864c4d2c57088ffbf43a2045536"></a>
+
+### ref_count_
+
+<ApiSignature labels="private">
+
+volatile int agora::RefCounter::ref_count_
+
+</ApiSignature>

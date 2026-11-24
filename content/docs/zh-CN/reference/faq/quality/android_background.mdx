@@ -1,0 +1,93 @@
+---
+title: "为什么部分 Android 版本 App 锁屏或切后台音视频采集或播放（渲染）无效？"
+---
+## 问题现象
+
+- Android 设备锁屏 1 分钟内，远端音频无声或看不到视频。
+- Android App 在运行过程中切换到后台，远端音频无声。
+
+## 问题原因
+
+- 自 Android 9 版本起，Android 系统对于后台 App 访问用户数据进行了限制。详见 [Android 9 行为变更](https://developer.android.com/about/versions/pie/android-9.0-changes-all)。
+- 自 Android 14 版本起，Android 系统要求 App 指定必需的前台服务类型。如果开发者将 App 的 `targetSdkVersion` 设置为 `34` 或更高，当 App 在 Android 14 或更高版本的设备上运行时，系统会触发容性检查，以验证 App 是否已正确声明其前台服务类型。如果 App 未能正确集成前台服务，用户将 App 切换到后台时，可能会遇到麦克风采集无效、远端音频无声等问题。详见 [Android 14 行为变更](https://developer.android.google.cn/about/versions/14/behavior-changes-14?hl=en)和[必需的前台服务类型](https://developer.android.google.cn/about/versions/14/changes/fgs-types-required?hl=zh-cn)。
+
+## 解决方案
+
+你需要正确集成前台服务，确保设备处于锁屏状态或 App 切换到后台时，仍能正常访问并使用麦克风、摄像头、媒体播放等功能，从而避免因系统限制造成音视频采集中断。声网提供了集成前台服务的[示例项目](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/basic/JoinChannelAudio.java#L324)供你参考，具体步骤如下：
+
+1. 在 `AndroidManifest.xml` 文件中，声明前台服务权限 (`FOREGROUND_SERVICE`) 并指定前台服务类型 (`foregroundServiceType`)。对于实时音视频互动 App 来说，通常需要指定麦克风 (`microphone`)、摄像头(`camera`) 和媒体播放 (`mediaPlayback`) 服务类型。示例代码如下：
+
+    ```xml
+    <manifest ...>
+        <!-- 声明前台服务权限 -->
+        <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+        <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+        <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+        <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+
+        <application ...>
+            ...
+            <!-- 指定前台服务类型 -->
+            <service
+                android:name=".YourForegroundService"
+                android:foregroundServiceType="microphone|camera|mediaPlayback" />
+            ...
+        </application>
+    </manifest>
+    ```
+
+2. 当服务被创建时，调用 `startForeground` 将指定服务提升为前台服务。示例代码如下：
+
+    ```java
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        // 获取默认的通知
+        Notification notification = getDefaultNotification();
+        try {
+            // 根据 Android 版本，选择合适的方式处理前台服务
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                // 对于 Android 11 及以上版本，启动前台服务并指定多种服务类型
+                int serviceTypes = ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE |
+                                ServiceInfo.FOREGROUND_SERVICE_TYPE_CAMERA |
+                                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK;
+                this.startForeground(NOTIFICATION_ID, notification, serviceTypes);
+            } else {
+                // 对于 Android 11 以下版本，无需指定服务类型，简单地启动前台服务即可
+                this.startForeground(NOTIFICATION_ID, notification);
+            }
+        } catch (Exception ex) {
+            Log.e(TAG, "Error starting foreground service", ex);
+        }
+    }
+    ```
+
+3. 当 App 切换到后台时，调用 `startForegroundService` 启动服务，确保服务的持续运行。示例代码如下：
+
+    ```java
+    @Override
+    public void onPause() {
+        super.onPause();
+        startRecordingService();
+    }
+
+    private void startRecordingService() {
+        if (joined) {
+            // 创建一个 intent
+            Intent intent = new Intent(requireContext(), LocalRecordingService.class);
+            // 根据 Android 版本，选择合适的方式启动前台服务
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                // 对于 Android 8 及以上版本，使用 startForegroundService 来启动服务
+                requireContext().startForegroundService(intent);
+            } else {
+                // 对于 Android 8 以下版本，使用 startService 来启动服务
+                requireContext().startService(intent);
+            }
+        }
+    }
+    ```
+
+如需更多信息，请参考以下官方文档：
+
+- [Foreground services](https://developer.android.com/develop/background-work/services/foreground-services)
+- [Foreground service types](https://developer.android.com/guide/components/fg-service-types)

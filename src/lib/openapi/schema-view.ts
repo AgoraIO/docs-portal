@@ -11,12 +11,22 @@ export type OpenApiSchemaPathItem = {
 
 export type OpenApiSchemaData = SchemaData & {
   allowedValues?: unknown[];
+  typeSpecified?: boolean;
+};
+
+export type OpenApiSchemaChoice = {
+  id: string;
+  options: { value: string; name: string; schema?: OpenApiSchemaData }[];
+  value: string;
 };
 
 export type OpenApiSchemaViewNode = {
   $type: string;
+  branchContainer?: boolean;
   children: OpenApiSchemaViewNode[];
+  choices?: OpenApiSchemaChoice[];
   depth: number;
+  detailsCollapsible?: boolean;
   id: string;
   name: string;
   parentPath: OpenApiSchemaPathItem[];
@@ -29,6 +39,8 @@ export type OpenApiSchemaViewNode = {
 
 export type OpenApiSchemaViewOptions = {
   includeRootContainer?: boolean;
+  /** English reference pages list union fields inline, the Chinese reference groups their branches. */
+  inlineUnionFields?: boolean;
   rootRequired?: boolean;
 };
 
@@ -86,7 +98,14 @@ export function buildOpenApiSchemaView(
         const childSchema = generated.refs[property.$type];
         if (
           !childSchema ||
-          isSyntheticAnyProperty(property.name, childSchema)
+          isSyntheticAnyProperty(property.name, childSchema) ||
+          (!options.inlineUnionFields &&
+            isSyntheticScalarMapProperty(
+              property.name,
+              childSchema,
+              parentPath,
+              generated.refs,
+            ))
         ) {
           return [];
         }
@@ -139,7 +158,7 @@ export function buildOpenApiSchemaView(
     }
 
     if (schema.type === 'and' || schema.type === 'or') {
-      return schema.items.flatMap((item) => {
+      return schema.items.flatMap((item, index): OpenApiSchemaViewNode[] => {
         const current = parentPath.at(-1);
         if (!current) return [];
 
@@ -151,14 +170,77 @@ export function buildOpenApiSchemaView(
           },
         ];
 
-        return childrenFor(
-          generated.refs[item.$type],
+        const branchSchema = generated.refs[item.$type];
+        if (options.inlineUnionFields) {
+          return childrenFor(
+            branchSchema,
+            nextParentPath,
+            fieldPath,
+            depth,
+            nextAncestors,
+            item.$type,
+          ).map((node) => ({ ...node, variant: item.name }));
+        }
+        const groupBranch =
+          schema.type === 'or' &&
+          (branchSchema?.type === 'object' || branchSchema?.type === 'array');
+        let children = childrenFor(
+          branchSchema,
           nextParentPath,
           fieldPath,
-          depth,
+          groupBranch ? depth + 1 : depth,
           nextAncestors,
           item.$type,
-        ).map((node) => ({ ...node, variant: item.name }));
+        );
+
+        if (groupBranch || (children.length === 0 && branchSchema)) {
+          const branchNodePath = [
+            ...nextParentPath,
+            { $ref: item.$type, name: item.name },
+          ];
+
+          children = [
+            {
+              $type: item.$type,
+              branchContainer: groupBranch,
+              children,
+              depth,
+              detailsCollapsible:
+                groupBranch ||
+                branchSchema.description !== undefined ||
+                (branchSchema.infoTags?.length ?? 0) > 0,
+              id: encodeOpenApiSchemaNodeId(branchNodePath),
+              name: item.name,
+              parentPath: nextParentPath,
+              path: [...fieldPath, item.name].join('.'),
+              required: false,
+              schema: branchSchema as OpenApiSchemaData,
+            },
+          ];
+        }
+
+        return children.map((node) => ({
+          ...node,
+          ...(schema.type === 'or' && schema.items.length > 1
+            ? {
+                choices: [
+                  {
+                    id: `${encodeOpenApiSchemaNodeId(parentPath)}:${activeRef}`,
+                    options: schema.items.map((option, optionIndex) => ({
+                      value: String(optionIndex),
+                      name: option.name,
+                      schema: generated.refs[option.$type] as
+                        | OpenApiSchemaData
+                        | undefined,
+                    })),
+                    value: String(index),
+                  },
+                  ...(node.choices ?? []),
+                ],
+              }
+            : {}),
+          variant: item.name,
+        }));
       });
     }
 
@@ -197,7 +279,10 @@ export function getInitialOpenApiSchemaExpandedIds(
   return new Set(
     nodes
       .filter(
-        (node) => node.depth === 0 && node.required && node.children.length > 0,
+        (node) =>
+          node.depth === 0 &&
+          node.required &&
+          (node.children.length > 0 || node.detailsCollapsible === true),
       )
       .map((node) => node.id),
   );
@@ -208,7 +293,9 @@ export function getAllOpenApiSchemaExpandableIds(
 ) {
   return new Set(
     flattenOpenApiSchemaView(nodes)
-      .filter((node) => node.children.length > 0)
+      .filter(
+        (node) => node.children.length > 0 || node.detailsCollapsible === true,
+      )
       .map((node) => node.id),
   );
 }
@@ -259,6 +346,48 @@ export function filterOpenApiSchemaView(
 function isSyntheticAnyProperty(name: string, schema: OpenApiSchemaData) {
   return (
     name === '[key: string]' &&
-    (schema.aliasName === 'any' || schema.typeName === 'any')
+    (schema.aliasName === 'any' ||
+      schema.typeName === 'any' ||
+      schema.aliasName === 'unknown' ||
+      schema.typeName === 'unknown')
+  );
+}
+
+function isSyntheticScalarMapProperty(
+  name: string,
+  schema: OpenApiSchemaData,
+  parentPath: OpenApiSchemaPathItem[],
+  refs: SchemaUIGeneratedData['refs'],
+) {
+  return (
+    name === '[key: string]' &&
+    parentPath.length > 1 &&
+    isUndocumentedScalarSchema(schema, refs)
+  );
+}
+
+function isUndocumentedScalarSchema(
+  schema: OpenApiSchemaData,
+  refs: SchemaUIGeneratedData['refs'],
+  ancestors = new Set<SchemaData>(),
+): boolean {
+  if (
+    ancestors.has(schema) ||
+    schema.description !== undefined ||
+    (schema.infoTags?.length ?? 0) > 0 ||
+    (schema.allowedValues?.length ?? 0) > 0
+  ) {
+    return false;
+  }
+  if (schema.type === 'primitive') return true;
+  if (schema.type !== 'or' && schema.type !== 'and') return false;
+
+  const nextAncestors = new Set(ancestors).add(schema);
+  return (
+    schema.items.length > 0 &&
+    schema.items.every(({ $type }) => {
+      const branch = refs[$type];
+      return branch && isUndocumentedScalarSchema(branch, refs, nextAncestors);
+    })
   );
 }

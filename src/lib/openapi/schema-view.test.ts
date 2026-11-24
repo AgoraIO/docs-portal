@@ -38,6 +38,8 @@ const generatedFixture: SchemaUIGeneratedData = {
         { $type: 'channel', name: 'channel', required: true },
         { $type: 'nested', name: 'nested', required: false },
         { $type: 'map-any', name: '[key: string]', required: false },
+        { $type: 'map-string', name: '[key: string]', required: false },
+        { $type: 'params', name: 'params', required: false },
         { $type: 'items-array', name: 'items', required: false },
         { $type: 'choice', name: 'choice', required: false },
       ],
@@ -55,6 +57,20 @@ const generatedFixture: SchemaUIGeneratedData = {
     },
     'nested-required': primitive('integer'),
     'map-any': primitive('any'),
+    'map-string': primitive('string'),
+    params: {
+      aliasName: 'Params',
+      props: [
+        {
+          $type: 'params-map-string',
+          name: '[key: string]',
+          required: false,
+        },
+      ],
+      type: 'object',
+      typeName: 'Params',
+    },
+    'params-map-string': primitive('string'),
     'items-array': {
       aliasName: 'Item[]',
       item: { $type: 'item' },
@@ -116,6 +132,32 @@ const recursiveGeneratedFixture: SchemaUIGeneratedData = {
       type: 'object',
       typeName: 'Node',
     },
+  },
+};
+
+const variantMapGeneratedFixture: SchemaUIGeneratedData = {
+  $root: 'root',
+  refs: {
+    root: {
+      aliasName: 'Root',
+      props: [{ $type: 'params', name: 'params', required: true }],
+      type: 'object',
+      typeName: 'Root',
+    },
+    params: {
+      aliasName: 'params',
+      items: [{ $type: 'minimax', name: 'Minimax' }],
+      type: 'or',
+      typeName: 'params',
+    },
+    minimax: {
+      aliasName: 'Minimax',
+      description: 'Minimax description.',
+      props: [{ $type: 'map-any', name: '[key: string]', required: false }],
+      type: 'object',
+      typeName: 'Minimax',
+    },
+    'map-any': primitive('any'),
   },
 };
 
@@ -232,6 +274,9 @@ describe('openapi schema view', () => {
     expect(flattened.map((node) => node.path)).not.toContain(
       'properties.[key: string]',
     );
+    expect(flattened.map((node) => node.path)).not.toContain(
+      'properties.params.[key: string]',
+    );
 
     const properties = view.find((node) => node.path === 'properties');
     const nestedRequired = flattened.find(
@@ -262,20 +307,24 @@ describe('openapi schema view', () => {
       ]),
     );
 
-    const variants = flattened.filter((node) =>
-      node.path.startsWith('properties.choice.'),
-    );
-    expect(
-      variants.find((node) => node.variant === 'alpha')?.parentPath.at(-1),
-    ).toEqual({
+    const variants = flattened.find(
+      (node) => node.path === 'properties.choice',
+    )?.children;
+    const alphaField = variants?.find((node) => node.name === 'alpha')
+      ?.children[0];
+    expect(alphaField?.parentPath.at(-1)).toEqual({
       $ref: 'choice',
       name: 'choice',
       tabValues: ['choice-a'],
     });
-    expect(variants.map((node) => node.variant)).toEqual(
+    expect(variants?.map((node) => node.name)).toEqual(
       expect.arrayContaining(['alpha', 'beta']),
     );
-    expect(new Set(variants.map((node) => node.id)).size).toBe(variants.length);
+    expect(alphaField?.variant).toBeUndefined();
+    expect(alphaField?.depth).toBe((variants?.[0].depth ?? 0) + 1);
+    expect(new Set(variants?.map((node) => node.id)).size).toBe(
+      variants?.length,
+    );
   });
 
   it('stops traversal when a generated ref repeats in its ancestor chain', () => {
@@ -287,6 +336,22 @@ describe('openapi schema view', () => {
     ).toHaveLength(1);
   });
 
+  it('creates a collapsed container for a union branch with only a synthetic map', () => {
+    const view = buildOpenApiSchemaView(variantMapGeneratedFixture, 'body');
+    const params = view.find((node) => node.name === 'params');
+    const branch = params?.children[0];
+
+    expect(branch).toMatchObject({
+      detailsCollapsible: true,
+      name: 'Minimax',
+      schema: { description: 'Minimax description.' },
+    });
+    expect(branch?.children).toEqual([]);
+    expect(
+      flattenOpenApiSchemaView(view).map((node) => node.name),
+    ).not.toContain('[key: string]');
+  });
+
   it('keeps union variant paths and IDs unique through array object items', () => {
     const view = buildOpenApiSchemaView(unionArrayGeneratedFixture, 'body');
     const fields = flattenOpenApiSchemaView(view).filter(
@@ -294,9 +359,11 @@ describe('openapi schema view', () => {
     );
 
     expect(fields).toHaveLength(2);
-    expect(fields.map((node) => node.variant)).toEqual(
-      expect.arrayContaining(['first', 'second']),
-    );
+    expect(view[0]?.children.map((node) => node.name)).toEqual([
+      'first',
+      'second',
+    ]);
+    expect(fields.every((node) => node.variant === undefined)).toBe(true);
     expect(
       fields.every((node) => node.parentPath.at(-1)?.tabValues?.length === 1),
     ).toBe(true);
@@ -378,10 +445,14 @@ describe('openapi schema view', () => {
         path: 'body',
         schema: { aliasName: 'Choice', type },
       });
-      expect(container?.children.map((node) => node.path)).toEqual([
-        'firstField',
-        'secondField',
-      ]);
+      expect(container?.children.map((node) => node.path)).toEqual(
+        type === 'or' ? ['first', 'second'] : ['firstField', 'secondField'],
+      );
+      expect(
+        flattenOpenApiSchemaView(container?.children ?? []).map(
+          (node) => node.path,
+        ),
+      ).toEqual(expect.arrayContaining(['firstField', 'secondField']));
       expect(new Set(container?.children.map((node) => node.id)).size).toBe(2);
     },
   );

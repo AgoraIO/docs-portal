@@ -1,5 +1,5 @@
-import { render } from '@testing-library/react';
-import { createRef } from 'react';
+import { render, screen, within } from '@testing-library/react';
+import { type AnchorHTMLAttributes, createRef, type ReactNode } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
@@ -12,8 +12,75 @@ vi.mock('./useTransientScrollbar', () => ({
   useTransientScrollbar: vi.fn(),
 }));
 
+vi.mock('@tanstack/react-router', async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import('@tanstack/react-router')>();
+
+  return {
+    ...actual,
+    useLocation: () => ({ hash: '' }),
+    Link: ({
+      children,
+      params: _params,
+      search: _search,
+      to,
+      ...props
+    }: Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> & {
+      children: ReactNode;
+      params?: unknown;
+      search?: unknown;
+      to: string;
+    }) => (
+      <a href={to} {...props}>
+        {children}
+      </a>
+    ),
+  };
+});
+
 vi.mock('./DocsSidebarTree', () => ({
-  DocsSidebarTree: () => <div data-testid="docs-sidebar-tree" />,
+  DocsSidebarTree: ({ nodes }: { nodes: DocsSidebarNode[] }) => {
+    function renderNode(node: DocsSidebarNode): ReactNode {
+      if (node.type === 'page') {
+        const search = new URLSearchParams(node.search).toString();
+        const href = `${node.href ?? node.url}${search ? `?${search}` : ''}`;
+
+        return (
+          <a data-sidebar-node={node.id} href={href} key={node.id}>
+            {node.title}
+          </a>
+        );
+      }
+
+      return (
+        <section data-testid={`sidebar-section-${node.id}`} key={node.id}>
+          <h3>{node.title}</h3>
+          {node.children.map(renderNode)}
+        </section>
+      );
+    }
+
+    return (
+      <div data-testid="docs-sidebar-tree">
+        <span aria-hidden="true">
+          {nodes.map((node) => `${node.type}:${node.title}`).join(',')}
+        </span>
+        {nodes.map(renderNode)}
+      </div>
+    );
+  },
+}));
+
+vi.mock('./DocsSidebarHeaderBlock', () => ({
+  DocsSidebarHeaderBlock: ({ header }: { header: DocsSidebarHeader }) => (
+    <div data-testid="docs-sidebar-header">{header.title}</div>
+  ),
+}));
+
+vi.mock('./DocsSidebarProductLink', () => ({
+  DocsSidebarProductLink: ({ href }: { href: string }) => (
+    <a href={href}>查看普通文档</a>
+  ),
 }));
 
 const nodes: DocsSidebarNode[] = [
@@ -31,21 +98,80 @@ const nodes: DocsSidebarNode[] = [
   },
 ];
 
+const apiReferenceNodes: DocsSidebarNode[] = [
+  {
+    id: 'api-reference',
+    title: 'API 参考',
+    type: 'page',
+    url: '/zh-CN/api-reference/api',
+  },
+  {
+    id: 'sdk-downloads',
+    title: 'SDK 下载',
+    type: 'page',
+    url: '/zh-CN/reference/sdks',
+  },
+  {
+    children: [],
+    id: 'guides',
+    title: '指南',
+    type: 'section',
+  },
+];
+
+const referenceNodes: DocsSidebarNode[] = [
+  {
+    id: 'sdk-downloads',
+    title: 'SDK 下载',
+    type: 'page',
+    url: '/zh-CN/reference/sdks',
+  },
+  {
+    id: 'demo',
+    title: 'Demo',
+    type: 'page',
+    url: '/zh-CN/reference/demo',
+  },
+  {
+    children: [
+      {
+        id: 'faq-integration',
+        title: '集成类',
+        type: 'page',
+        url: '/zh-CN/reference/faq/integration',
+      },
+    ],
+    defaultOpen: false,
+    id: 'faq',
+    title: '常见问题',
+    type: 'section',
+    url: '/zh-CN/reference/faq',
+  },
+];
+
 const scrollToTop = vi.fn();
 const useTransientScrollbarMock = vi.mocked(useTransientScrollbar);
 
 function renderDocsSidebar({
   activePath = '/en/introduction',
+  header,
+  locale = 'en',
+  sidebarNodes = nodes,
   resetKey = 'introduction',
 }: {
   activePath?: string;
+  header?: DocsSidebarHeader;
+  locale?: 'en' | 'zh-CN';
+  sidebarNodes?: DocsSidebarNode[];
   resetKey?: string;
 } = {}) {
   const view = render(
     <SidebarProvider>
       <DocsSidebar
         activePath={activePath}
-        nodes={nodes}
+        header={header}
+        locale={locale}
+        nodes={sidebarNodes}
         onSelectPath={() => {}}
         resetKey={resetKey}
       />
@@ -54,12 +180,18 @@ function renderDocsSidebar({
 
   return {
     ...view,
-    rerenderSidebar(nextProps: { activePath?: string; resetKey?: string }) {
+    rerenderSidebar(nextProps: {
+      activePath?: string;
+      resetKey?: string;
+      sidebarNodes?: DocsSidebarNode[];
+    }) {
       view.rerender(
         <SidebarProvider>
           <DocsSidebar
             activePath={nextProps.activePath ?? activePath}
-            nodes={nodes}
+            header={header}
+            locale={locale}
+            nodes={nextProps.sidebarNodes ?? sidebarNodes}
             onSelectPath={() => {}}
             resetKey={nextProps.resetKey ?? resetKey}
           />
@@ -73,6 +205,70 @@ describe('DocsSidebar', () => {
   afterEach(() => {
     scrollToTop.mockClear();
     useTransientScrollbarMock.mockReset();
+  });
+
+  it.each([
+    ['/en/ai', 'Main'],
+    ['/en/ai/platform', 'Preview'],
+  ])(
+    'renders the version selector before the page tree on %s',
+    (activePath, label) => {
+      useTransientScrollbarMock.mockReturnValue({
+        isScrollbarVisible: false,
+        scrollContainerRef: createRef<HTMLDivElement>(),
+        scrollToTop,
+      });
+
+      renderDocsSidebar({ activePath });
+
+      const selector = screen.getByRole('button', {
+        name: `Documentation: ${label}`,
+      });
+      const tree = screen.getByTestId('docs-sidebar-tree');
+      expect(
+        selector.compareDocumentPosition(tree) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+    },
+  );
+
+  it('places SDK and Demo links under General References on the Chinese introduction pages', () => {
+    useTransientScrollbarMock.mockReturnValue({
+      isScrollbarVisible: false,
+      scrollContainerRef: createRef<HTMLDivElement>(),
+      scrollToTop,
+    });
+
+    const generalReferences: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: 'glossary',
+            title: '术语库',
+            type: 'page',
+            url: '/zh-CN/introduction/glossary',
+          },
+        ],
+        id: 'separator-通用参考',
+        title: '通用参考',
+        type: 'section',
+      },
+    ];
+
+    renderDocsSidebar({
+      activePath: '/zh-CN/introduction',
+      locale: 'zh-CN',
+      sidebarNodes: generalReferences,
+    });
+
+    const section = screen.getByTestId('sidebar-section-separator-通用参考');
+    expect(within(section).getByRole('link', { name: '术语库' })).toBeVisible();
+    expect(
+      within(section).getByRole('link', { name: 'SDK 下载' }),
+    ).toHaveAttribute('href', '/zh-CN/reference/sdks');
+    expect(
+      within(section).getByRole('link', { name: '体验 Demo' }),
+    ).toHaveAttribute('href', '/zh-CN/reference/demo');
   });
 
   it('resets scroll on initial render and when resetKey changes', () => {
@@ -96,6 +292,135 @@ describe('DocsSidebar', () => {
     });
 
     expect(scrollToTop).toHaveBeenCalledTimes(2);
+  });
+
+  it('omits reference shortcuts from API Reference and keeps them in Reference', () => {
+    useTransientScrollbarMock.mockReturnValue({
+      isScrollbarVisible: false,
+      scrollContainerRef: createRef<HTMLDivElement>(),
+      scrollToTop,
+    });
+
+    const { rerenderSidebar } = renderDocsSidebar({
+      activePath: '/zh-CN/api-reference/api',
+      locale: 'zh-CN',
+      resetKey: 'api-reference',
+      sidebarNodes: apiReferenceNodes,
+    });
+
+    expect(screen.getByTestId('docs-sidebar-scroll')).toHaveClass(
+      'overflow-y-hidden',
+    );
+    const productNav = screen.getByTestId('api-reference-product-nav');
+
+    expect(screen.queryByTestId('docs-sidebar-tree')).not.toBeInTheDocument();
+    expect(productNav).toBeVisible();
+    expect(
+      screen.queryByTestId('reference-center-primary-nav'),
+    ).not.toBeInTheDocument();
+
+    rerenderSidebar({
+      activePath: '/zh-CN/reference/sdks',
+      resetKey: 'reference',
+      sidebarNodes: referenceNodes,
+    });
+
+    const referenceTree = screen.getByTestId('docs-sidebar-tree');
+    expect(referenceTree).toHaveTextContent(
+      'page:SDK 下载,page:Demo,section:常见问题',
+    );
+    expect(referenceTree).not.toHaveTextContent('API 参考');
+    expect(
+      screen.queryByTestId('reference-center-primary-nav'),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId('api-reference-product-nav'),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId('sdk-download-product-nav'),
+    ).not.toBeInTheDocument();
+
+    rerenderSidebar({
+      activePath: '/zh-CN/reference/demo',
+      resetKey: 'reference',
+      sidebarNodes: referenceNodes,
+    });
+
+    expect(
+      screen.queryByTestId('sdk-download-product-nav'),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByTestId('faq-category-nav')).not.toBeInTheDocument();
+
+    rerenderSidebar({
+      activePath: '/zh-CN/reference/faq/integration',
+      resetKey: 'reference',
+      sidebarNodes: referenceNodes,
+    });
+
+    expect(screen.queryByTestId('faq-category-nav')).not.toBeInTheDocument();
+
+    rerenderSidebar({
+      activePath: '/zh-CN/api-reference/rtc/android/overview',
+      resetKey: 'api-reference',
+    });
+
+    expect(
+      screen.queryByTestId('reference-center-primary-nav'),
+    ).not.toBeInTheDocument();
+    expect(screen.getByTestId('docs-sidebar-tree')).toBeVisible();
+  });
+
+  it('renders the ordinary docs action after the sidebar tree', () => {
+    useTransientScrollbarMock.mockReturnValue({
+      isScrollbarVisible: false,
+      scrollContainerRef: createRef<HTMLDivElement>(),
+      scrollToTop,
+    });
+
+    renderDocsSidebar({
+      activePath: '/zh-CN/api-reference/conversational-ai/android/overview',
+      header: {
+        backHref: '/zh-CN/api-reference/api',
+        backLabel: 'API 参考',
+        productDocsHref: '/zh-CN/ai',
+        title: 'Android API 参考',
+      },
+      locale: 'zh-CN',
+      resetKey: 'api-reference',
+    });
+
+    const tree = screen.getByTestId('docs-sidebar-tree');
+    const action = screen.getByRole('link', { name: '查看普通文档' });
+
+    expect(action).toHaveAttribute('href', '/zh-CN/ai');
+    expect(
+      Boolean(
+        tree.compareDocumentPosition(action) & Node.DOCUMENT_POSITION_FOLLOWING,
+      ),
+    ).toBe(true);
+  });
+
+  it('does not render the ordinary docs action without a destination', () => {
+    useTransientScrollbarMock.mockReturnValue({
+      isScrollbarVisible: false,
+      scrollContainerRef: createRef<HTMLDivElement>(),
+      scrollToTop,
+    });
+
+    renderDocsSidebar({
+      activePath: '/zh-CN/api-reference/im/android',
+      header: {
+        backHref: '/zh-CN/api-reference/api',
+        backLabel: 'API 参考',
+        title: 'Android API 参考',
+      },
+      locale: 'zh-CN',
+      resetKey: 'api-reference',
+    });
+
+    expect(
+      screen.queryByRole('link', { name: '查看普通文档' }),
+    ).not.toBeInTheDocument();
   });
 });
 

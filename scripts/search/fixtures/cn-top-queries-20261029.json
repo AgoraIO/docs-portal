@@ -1,0 +1,2090 @@
+{
+  "description": "30 observed search keywords plus 40 API and 40 documentation title queries. Historical clicks are observations, not relevance judgments. No keywords are sent to an AI service.",
+  "range": {
+    "start": "2026-07-31T00:00:00+08:00",
+    "end_exclusive": "2026-10-29T00:00:00+08:00",
+    "display_dates": "2026-07-31～2026-10-28",
+    "utc_offset": "+08:00"
+  },
+  "sourceFiles": [
+    {
+      "name": "search-keywords-top30.json",
+      "sha256": "4a871641b28fe2239486d8c70aea6687e20709443de8b56b4050a52925a0eb87"
+    },
+    {
+      "name": "top40.json",
+      "sha256": "8c8c8c3f9bde094221918f3ef0389381d630252b4d52b9107c1d9f51791b09de"
+    }
+  ],
+  "mapping": "docs/migration/redirect-inputs/legacy-url-map.json; every target checked against live staging __static/docs-routes.json on 2026-10-29",
+  "legacyUi": {
+    "products": [
+      "convoai",
+      "rtc",
+      "rtm2",
+      "fusion-cdn",
+      "rtsa",
+      "flexible-classroom",
+      "recording",
+      "rtc-server-sdk",
+      "media-push",
+      "media-pull",
+      "whiteboard",
+      "analytics",
+      "speech-to-text",
+      "status-page",
+      "conversion-ppt",
+      "console",
+      "cloud-recording",
+      "meeting",
+      "cloud-transcoder",
+      "marketplace",
+      "sdk-extension",
+      "voip-callkit",
+      "chatroom",
+      "showroom",
+      "one-to-one-live",
+      "game-voice",
+      "smart-doorbell",
+      "smart-watch",
+      "online-ktv",
+      "smart-camera",
+      "teleoperation",
+      "toybox",
+      "art-class",
+      "online-music-class",
+      "one-to-one-classroom",
+      "small-classroom",
+      "breakout-classroom",
+      "digital-learning"
+    ],
+    "platforms": [
+      "general",
+      "android",
+      "ios",
+      "macos",
+      "javascript",
+      "windows",
+      "harmonyos",
+      "cpp",
+      "c",
+      "java",
+      "react",
+      "device-c",
+      "electron",
+      "unity",
+      "flutter",
+      "rn",
+      "unreal-cpp",
+      "unreal-blueprint",
+      "csharp",
+      "mini-program",
+      "iot",
+      "restful"
+    ],
+    "sort": [
+      "productSeq:asc",
+      "platformSeq:asc",
+      "typeSeq:asc"
+    ],
+    "sourceBundle": "https://doc.shengwang.cn/assets/js/main.4878dcab.js"
+  },
+  "cases": [
+    {
+      "id": "keyword-01",
+      "suite": "top30-keyword",
+      "q": "美颜",
+      "weight": 56,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/rtc/android/advanced-features/advanced-beauty"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/video/advanced-beauty"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-02",
+      "suite": "top30-keyword",
+      "q": "屏幕共享",
+      "weight": 49,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/rtc/android/basic-features/screen-share"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/video/screen-share"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-03",
+      "suite": "top30-keyword",
+      "q": "降噪",
+      "weight": 48,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/rtc/javascript/advanced-features/extensions/noise-reduction"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/extensions/web/noise-reduction"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-04",
+      "suite": "top30-keyword",
+      "q": "水印",
+      "weight": 37,
+      "targetEvidence": "historical-click-observation",
+      "tied": true,
+      "legacyTargets": [
+        "/api-ref/rtc/flutter/API/class_watermarkbuffer"
+      ],
+      "targets": [
+        "/api-reference/rtc/flutter/class-watermarkbuffer"
+      ],
+      "legacyFamily": "api",
+      "family": "api"
+    },
+    {
+      "id": "keyword-05",
+      "suite": "top30-keyword",
+      "q": "joinChannel",
+      "weight": 34,
+      "targetEvidence": "historical-click-observation",
+      "tied": true,
+      "legacyTargets": [
+        "/doc/rtc/android/advanced-features/audio-stream-filter"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/audio/audio-stream-filter"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-06",
+      "suite": "top30-keyword",
+      "q": "token",
+      "weight": 28,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/rtc/android/basic-features/token-authentication"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/setup-and-access/token-authentication"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-07",
+      "suite": "top30-keyword",
+      "q": "大小流",
+      "weight": 28,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/rtc/javascript/advanced-features/media-fallback"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/optimize-and-operate/media-fallback"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-08",
+      "suite": "top30-keyword",
+      "q": "日志",
+      "weight": 26,
+      "targetEvidence": "historical-click-observation",
+      "tied": true,
+      "legacyTargets": [
+        "/doc/rtc/android/get-started/quick-start"
+      ],
+      "targets": [
+        "/realtime-media/rtc/get-started/quick-start"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-09",
+      "suite": "top30-keyword",
+      "q": "云录制",
+      "weight": 25,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/one-to-one-classroom/android/paas/best-practices"
+      ],
+      "targets": [
+        "/solutions/one-to-one-classroom/build/paas/best-practices"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-10",
+      "suite": "top30-keyword",
+      "q": "录制",
+      "weight": 25,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/cloud-recording/restful/landing-page"
+      ],
+      "targets": [
+        "/api-reference/cloud-recording/restful/landing-page"
+      ],
+      "legacyFamily": "docs",
+      "family": "api"
+    },
+    {
+      "id": "keyword-11",
+      "suite": "top30-keyword",
+      "q": "rtm",
+      "weight": 23,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/rtm2/android/landing-page"
+      ],
+      "targets": [
+        "/realtime-media/rtm"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-12",
+      "suite": "top30-keyword",
+      "q": "startOrUpdateChannelMediaRelay",
+      "weight": 22,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/rtc/flutter/overview/release-notes"
+      ],
+      "targets": [
+        "/realtime-media/rtc/reference/release-notes"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-13",
+      "suite": "top30-keyword",
+      "q": "云端转码",
+      "weight": 22,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/cloud-transcoder/restful/landing-page"
+      ],
+      "targets": [
+        "/realtime-media/transcoding"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-14",
+      "suite": "top30-keyword",
+      "q": "simulcast",
+      "weight": 21,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/rtc/android/overview/release-notes"
+      ],
+      "targets": [
+        "/realtime-media/rtc/reference/release-notes"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-15",
+      "suite": "top30-keyword",
+      "q": "生成token",
+      "weight": 21,
+      "targetEvidence": "historical-click-observation",
+      "tied": true,
+      "legacyTargets": [
+        "/doc/rtc/react/get-started/quick-start"
+      ],
+      "targets": [
+        "/realtime-media/rtc/get-started/quick-start"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-16",
+      "suite": "top30-keyword",
+      "q": "混淆",
+      "weight": 19,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/chatroom/android/uikit/get-started/quick-integration"
+      ],
+      "targets": [
+        "/solutions/chatroom/uikit/build/quick-integration"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-17",
+      "suite": "top30-keyword",
+      "q": "120",
+      "weight": 18,
+      "targetEvidence": "no-observed-target",
+      "tied": false,
+      "legacyTargets": [],
+      "targets": [],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-18",
+      "suite": "top30-keyword",
+      "q": "audioScenario",
+      "weight": 17,
+      "targetEvidence": "historical-click-observation",
+      "tied": true,
+      "legacyTargets": [
+        "/api-ref/rtc/electron/API/class_rtcengineconfig"
+      ],
+      "targets": [
+        "/api-reference/rtc/electron/class-rtcengineconfig"
+      ],
+      "legacyFamily": "api",
+      "family": "api"
+    },
+    {
+      "id": "keyword-19",
+      "suite": "top30-keyword",
+      "q": "onConnectionStateChanged",
+      "weight": 17,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/rtc/android/basic-features/channel-connection"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/initialize-and-channel/channel-connection"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-20",
+      "suite": "top30-keyword",
+      "q": "sendRdtMessage",
+      "weight": 17,
+      "targetEvidence": "no-observed-target",
+      "tied": false,
+      "legacyTargets": [],
+      "targets": [],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-21",
+      "suite": "top30-keyword",
+      "q": "直播",
+      "weight": 17,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/rtc/flutter/basic-features/ls-quick-start"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/advanced-channel/ls-quick-start"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-22",
+      "suite": "top30-keyword",
+      "q": "createClient",
+      "weight": 16,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/api-ref/rtc/javascript/interfaces/iagorartc"
+      ],
+      "targets": [
+        "/api-reference/rtc/web/interfaces/iagorartc"
+      ],
+      "legacyFamily": "api",
+      "family": "api"
+    },
+    {
+      "id": "keyword-23",
+      "suite": "top30-keyword",
+      "q": "enableAudioVolumeIndication",
+      "weight": 16,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/rtc/harmonyos/basic-features/volume"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/audio/volume"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-24",
+      "suite": "top30-keyword",
+      "q": "onAudioVolumeIndication",
+      "weight": 16,
+      "targetEvidence": "historical-click-observation",
+      "tied": true,
+      "legacyTargets": [
+        "/api-ref/rtc/android/API/toc_audio_basic"
+      ],
+      "targets": [
+        "/api-reference/rtc/android/audio/audio-basic"
+      ],
+      "legacyFamily": "api",
+      "family": "api"
+    },
+    {
+      "id": "keyword-25",
+      "suite": "top30-keyword",
+      "q": "webrtc",
+      "weight": 16,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/smart-doorbell/iot/paas/value-added-feature/amazon-alexa"
+      ],
+      "targets": [
+        "/solutions/smart-doorbell/build/amazon-alexa"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-26",
+      "suite": "top30-keyword",
+      "q": "setAudioProfile",
+      "weight": 15,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/rtc/android/best-practice/optimal-audio-quality"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/audio/optimal-audio-quality"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-27",
+      "suite": "top30-keyword",
+      "q": "setupRemoteVideo",
+      "weight": 15,
+      "targetEvidence": "historical-click-observation",
+      "tied": true,
+      "legacyTargets": [
+        "/api-ref/rtc/electron/API/toc_video_rendering"
+      ],
+      "targets": [
+        "/api-reference/rtc/electron/video/video-rendering"
+      ],
+      "legacyFamily": "api",
+      "family": "api"
+    },
+    {
+      "id": "keyword-28",
+      "suite": "top30-keyword",
+      "q": "屏幕共享 JavaScript",
+      "weight": 15,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/rtc/javascript/basic-features/screen-share"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/video/screen-share"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-29",
+      "suite": "top30-keyword",
+      "q": "荣耀",
+      "weight": 15,
+      "targetEvidence": "no-observed-target",
+      "tied": false,
+      "legacyTargets": [],
+      "targets": [],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "keyword-30",
+      "suite": "top30-keyword",
+      "q": "RTC",
+      "weight": 14,
+      "targetEvidence": "historical-click-observation",
+      "tied": false,
+      "legacyTargets": [
+        "/doc/analytics/general/rtc/call-search/overview"
+      ],
+      "targets": [
+        "/realtime-media/usage-analytics/build/investigate-call-problems/overview"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs"
+    },
+    {
+      "id": "popular-api-01",
+      "suite": "top40-api",
+      "q": "API 概览",
+      "weight": 5126,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc/android/API/rtc_api_overview"
+      ],
+      "targets": [
+        "/api-reference/rtc/android/rtc-api-overview"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-api-02",
+      "suite": "top40-api",
+      "q": "创建对话式智能体",
+      "weight": 2948,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/convoai/restful/convoai/operations/start-agent"
+      ],
+      "targets": [
+        "/api-reference/api-ref/conversational-ai/join"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "convoai",
+      "legacyPlatform": "restful",
+      "product": "conversational-ai",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-api-03",
+      "suite": "top40-api",
+      "q": "创建规则",
+      "weight": 2569,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule"
+      ],
+      "targets": [
+        "/api-reference/api-ref/rtc/create-ban-rule"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "restful",
+      "product": "rtc",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-api-04",
+      "suite": "top40-api",
+      "q": "API 概览",
+      "weight": 1737,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc/javascript/overview"
+      ],
+      "targets": [
+        "/api-reference/rtc/web/overview"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "javascript",
+      "product": "rtc",
+      "platform": "web"
+    },
+    {
+      "id": "popular-api-05",
+      "suite": "top40-api",
+      "q": "频道相关",
+      "weight": 1566,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc/android/API/toc_channel"
+      ],
+      "targets": [
+        "/api-reference/rtc/android/channel"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-api-06",
+      "suite": "top40-api",
+      "q": "开始云端录制",
+      "weight": 1554,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start"
+      ],
+      "targets": [
+        "/api-reference/api-ref/cloud-recording/start"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "cloud-recording",
+      "legacyPlatform": "restful",
+      "product": "cloud-recording",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-api-07",
+      "suite": "top40-api",
+      "q": "音频基础功能",
+      "weight": 1175,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc/android/API/toc_audio_basic"
+      ],
+      "targets": [
+        "/api-reference/rtc/android/audio/audio-basic"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-api-08",
+      "suite": "top40-api",
+      "q": "API 概览",
+      "weight": 1173,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc/ios/API/rtc_api_overview"
+      ],
+      "targets": [
+        "/api-reference/rtc/ios/rtc-api-overview"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "ios",
+      "product": "rtc",
+      "platform": "ios"
+    },
+    {
+      "id": "popular-api-09",
+      "suite": "top40-api",
+      "q": "API 概览",
+      "weight": 1071,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc/windows/API/rtc_api_overview"
+      ],
+      "targets": [
+        "/api-reference/rtc/cpp-all-platforms/rtc-api-overview"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "windows",
+      "product": "rtc",
+      "platform": "windows"
+    },
+    {
+      "id": "popular-api-10",
+      "suite": "top40-api",
+      "q": "视频基础功能",
+      "weight": 981,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc/android/API/toc_video_basic"
+      ],
+      "targets": [
+        "/api-reference/rtc/android/video/video-basic"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-api-11",
+      "suite": "top40-api",
+      "q": "获取云端录制资源",
+      "weight": 915,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire"
+      ],
+      "targets": [
+        "/api-reference/api-ref/cloud-recording/acquire"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "cloud-recording",
+      "legacyPlatform": "restful",
+      "product": "cloud-recording",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-api-12",
+      "suite": "top40-api",
+      "q": "Full SDK API 列表",
+      "weight": 877,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc/android/API/rtc_interface_class"
+      ],
+      "targets": [
+        "/api-reference/rtc/android/rtc-interface-class"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-api-13",
+      "suite": "top40-api",
+      "q": "网络及其他",
+      "weight": 856,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc/android/API/toc_network"
+      ],
+      "targets": [
+        "/api-reference/rtc/android/network"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-api-14",
+      "suite": "top40-api",
+      "q": "IAgoraRTC",
+      "weight": 819,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc/javascript/interfaces/iagorartc"
+      ],
+      "targets": [
+        "/api-reference/rtc/web/interfaces/iagorartc"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "javascript",
+      "product": "rtc",
+      "platform": "web"
+    },
+    {
+      "id": "popular-api-15",
+      "suite": "top40-api",
+      "q": "API 概览",
+      "weight": 769,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtsa/c/overview"
+      ],
+      "targets": [
+        "/api-reference/rtsa/c/overview"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtsa",
+      "legacyPlatform": "c",
+      "product": "rtsa",
+      "platform": "c"
+    },
+    {
+      "id": "popular-api-16",
+      "suite": "top40-api",
+      "q": "查询用户列表",
+      "weight": 703,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/restful/channel-management/operations/get-dev-v1-channel-user-appid-channelName"
+      ],
+      "targets": [
+        "/api-reference/api-ref/rtc/query-user-list"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "restful",
+      "product": "rtc",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-api-17",
+      "suite": "top40-api",
+      "q": "IAgoraRTCClient",
+      "weight": 677,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc/javascript/interfaces/iagorartcclient"
+      ],
+      "targets": [
+        "/api-reference/rtc/web/interfaces/iagorartcclient"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "javascript",
+      "product": "rtc",
+      "platform": "web"
+    },
+    {
+      "id": "popular-api-18",
+      "suite": "top40-api",
+      "q": "发布和订阅",
+      "weight": 654,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc/android/API/toc_publishnsubscribe"
+      ],
+      "targets": [
+        "/api-reference/rtc/android/publishnsubscribe"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-api-19",
+      "suite": "top40-api",
+      "q": "查询用户状态",
+      "weight": 650,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/restful/channel-management/operations/get-user-property"
+      ],
+      "targets": [
+        "/api-reference/api-ref/rtc/query-user-status"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "restful",
+      "product": "rtc",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-api-20",
+      "suite": "top40-api",
+      "q": "API 概览",
+      "weight": 648,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc-server-sdk/cpp/overview"
+      ],
+      "targets": [
+        "/api-reference/rtc-server-sdk/cpp/overview"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc-server-sdk",
+      "legacyPlatform": "cpp",
+      "product": "rtc-server-sdk",
+      "platform": "cpp"
+    },
+    {
+      "id": "popular-api-21",
+      "suite": "top40-api",
+      "q": "初始化相关",
+      "weight": 624,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc/android/API/toc_initialize"
+      ],
+      "targets": [
+        "/api-reference/rtc/android/initialize"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-api-22",
+      "suite": "top40-api",
+      "q": "加入频道开始实时转录翻译",
+      "weight": 601,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/speech-to-text/restful/v7/operations/join"
+      ],
+      "targets": [
+        "/api-reference/api-ref/speech-to-text/join"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "speech-to-text",
+      "legacyPlatform": "restful",
+      "product": "speech-to-text",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-api-23",
+      "suite": "top40-api",
+      "q": "发送消息",
+      "weight": 562,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtm2/restful/toc-message/publish"
+      ],
+      "targets": [
+        "/api-reference/api-ref/signaling/publish"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtm2",
+      "legacyPlatform": "restful",
+      "product": "rtm",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-api-24",
+      "suite": "top40-api",
+      "q": "初始配置",
+      "weight": 540,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtm2/android/toc-configuration/configuration"
+      ],
+      "targets": [
+        "/api-reference/rtm/toc-configuration/configuration"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtm2",
+      "legacyPlatform": "android",
+      "product": "rtm",
+      "platform": "android"
+    },
+    {
+      "id": "popular-api-25",
+      "suite": "top40-api",
+      "q": "API 概览",
+      "weight": 533,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc/flutter/API/rtc_api_overview"
+      ],
+      "targets": [
+        "/api-reference/rtc/flutter/rtc-api-overview"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "flutter",
+      "product": "rtc",
+      "platform": "flutter"
+    },
+    {
+      "id": "popular-api-26",
+      "suite": "top40-api",
+      "q": "agora_rtc_api.h 文件参考",
+      "weight": 504,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtsa/c/agora__rtc__api_8h"
+      ],
+      "targets": [
+        "/api-reference/rtsa/c/agora-rtc-api-8h"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtsa",
+      "legacyPlatform": "c",
+      "product": "rtsa",
+      "platform": "c"
+    },
+    {
+      "id": "popular-api-27",
+      "suite": "top40-api",
+      "q": "创建 Converter",
+      "weight": 494,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/media-push/restful/media-push/operations/post-region-v1-projects-appId-rtmp-converters"
+      ],
+      "targets": [
+        "/api-reference/api-ref/media-push/create"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "media-push",
+      "legacyPlatform": "restful",
+      "product": "media-push",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-api-28",
+      "suite": "top40-api",
+      "q": "创建项目",
+      "weight": 459,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/console/general/console/operations/post-dev-v1-project"
+      ],
+      "targets": [
+        "/api-reference/api-ref/console/create-project"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "console",
+      "legacyPlatform": "general",
+      "product": "console",
+      "scopeNote": "新版平台控件不提供通用平台，使用产品筛选；旧站保留 general。"
+    },
+    {
+      "id": "popular-api-29",
+      "suite": "top40-api",
+      "q": "创建云端播放器",
+      "weight": 458,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/media-pull/restful/media-pull/operations/get-region-v1-projects-appId-cloud-player-players"
+      ],
+      "targets": [
+        "/api-reference/api-ref/media-pull/create"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "media-pull",
+      "legacyPlatform": "restful",
+      "product": "media-pull",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-api-30",
+      "suite": "top40-api",
+      "q": "初始配置",
+      "weight": 457,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtm2/javascript/toc-configuration/configuration"
+      ],
+      "targets": [
+        "/api-reference/rtm/toc-configuration/configuration"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtm2",
+      "legacyPlatform": "javascript",
+      "product": "rtm",
+      "platform": "web"
+    },
+    {
+      "id": "popular-api-31",
+      "suite": "top40-api",
+      "q": "API 概览",
+      "weight": 446,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc/electron/API/rtc_api_overview"
+      ],
+      "targets": [
+        "/api-reference/rtc/electron/rtc-api-overview"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "electron",
+      "product": "rtc",
+      "platform": "electron"
+    },
+    {
+      "id": "popular-api-32",
+      "suite": "top40-api",
+      "q": "API 概览",
+      "weight": 437,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc/harmonyos/API/rtc_api_overview"
+      ],
+      "targets": [
+        "/api-reference/rtc/harmonyos/rtc-api-overview"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "harmonyos",
+      "product": "rtc",
+      "platform": "harmonyos"
+    },
+    {
+      "id": "popular-api-33",
+      "suite": "top40-api",
+      "q": "API 概览",
+      "weight": 418,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc/mini-program/overview"
+      ],
+      "targets": [
+        "/api-reference/rtc/mini-program/overview"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "mini-program",
+      "product": "rtc",
+      "platform": "mini-program"
+    },
+    {
+      "id": "popular-api-34",
+      "suite": "top40-api",
+      "q": "查询主播列表",
+      "weight": 369,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/restful/channel-management/operations/get-dev-v1-channel-user-appid-channelName-hosts_only"
+      ],
+      "targets": [
+        "/api-reference/api-ref/rtc/query-host-list"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "restful",
+      "product": "rtc",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-api-35",
+      "suite": "top40-api",
+      "q": "创建云端转码",
+      "weight": 365,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/cloud-transcoder/restful/cloud-transcoder/operations/post-v1-projects-appId-rtsc-cloud-transcoder-tasks"
+      ],
+      "targets": [
+        "/api-reference/api-ref/cloud-transcoding/create"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "cloud-transcoder",
+      "legacyPlatform": "restful",
+      "product": "transcoding",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-api-36",
+      "suite": "top40-api",
+      "q": "获取规则列表",
+      "weight": 354,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/restful/channel-management/operations/get-dev-v1-kicking-rule"
+      ],
+      "targets": [
+        "/api-reference/api-ref/rtc/get-ban-rule-list"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "restful",
+      "product": "rtc",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-api-37",
+      "suite": "top40-api",
+      "q": "获取频道通话列表",
+      "weight": 347,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/analytics/general/restful-aa/operations/get-beta-analytics-call-lists"
+      ],
+      "targets": [
+        "/api-reference/api-ref/agora-analytics/call-list"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "analytics",
+      "legacyPlatform": "general",
+      "product": "analytics",
+      "scopeNote": "新版平台控件不提供通用平台，使用产品筛选；旧站保留 general。"
+    },
+    {
+      "id": "popular-api-38",
+      "suite": "top40-api",
+      "q": "Go SDK API 参考",
+      "weight": 345,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/convoai/agent-go/agent-sdk-api/overview"
+      ],
+      "targets": [
+        "/api-reference/conversational-ai/agent-go"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "convoai",
+      "legacyPlatform": "agent-go",
+      "product": "conversational-ai",
+      "platform": "go"
+    },
+    {
+      "id": "popular-api-39",
+      "suite": "top40-api",
+      "q": "API 概览",
+      "weight": 343,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/api-ref/rtc-server-sdk/java/overview"
+      ],
+      "targets": [
+        "/api-reference/rtc-server-sdk/java/overview"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc-server-sdk",
+      "legacyPlatform": "java",
+      "product": "rtc-server-sdk",
+      "platform": "java"
+    },
+    {
+      "id": "popular-api-40",
+      "suite": "top40-api",
+      "q": "查询项目的频道列表",
+      "weight": 340,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/restful/channel-management/operations/get-dev-v1-channel-appid"
+      ],
+      "targets": [
+        "/api-reference/api-ref/rtc/query-channel-list"
+      ],
+      "legacyFamily": "api",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "restful",
+      "product": "rtc",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-docs-01",
+      "suite": "top40-docs",
+      "q": "实现音视频互动",
+      "weight": 2969,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/android/get-started/quick-start"
+      ],
+      "targets": [
+        "/realtime-media/rtc/get-started/quick-start",
+        "/realtime-media/rtc/get-started/quick-start/android"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-docs-02",
+      "suite": "top40-docs",
+      "q": "计费策略",
+      "weight": 2202,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/android/billing/billing-strategy"
+      ],
+      "targets": [
+        "/realtime-media/rtc/reference/billing-strategy"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-docs-03",
+      "suite": "top40-docs",
+      "q": "下载",
+      "weight": 1873,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/android/resources"
+      ],
+      "targets": [
+        "/realtime-media/rtc/reference/downloads",
+        "/realtime-media/rtc/reference/downloads/android"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-docs-04",
+      "suite": "top40-docs",
+      "q": "使用 Token 鉴权",
+      "weight": 1505,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/android/basic-features/token-authentication"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/setup-and-access/token-authentication",
+        "/realtime-media/rtc/build/setup-and-access/token-authentication/android"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-docs-05",
+      "suite": "top40-docs",
+      "q": "产品概述",
+      "weight": 1448,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/convoai/restful/overview/product-overview"
+      ],
+      "targets": [
+        "/ai"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "convoai",
+      "legacyPlatform": "restful",
+      "product": "conversational-ai",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-docs-06",
+      "suite": "top40-docs",
+      "q": "频道事件类型",
+      "weight": 1305,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/restful/webhook/events"
+      ],
+      "targets": [
+        "/api-reference/rtc/restful/webhook/events"
+      ],
+      "legacyFamily": "docs",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "restful",
+      "product": "rtc",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-docs-07",
+      "suite": "top40-docs",
+      "q": "跑通 API 示例项目",
+      "weight": 1283,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/android/get-started/run-demo"
+      ],
+      "targets": [
+        "/realtime-media/rtc/get-started/run-demo",
+        "/realtime-media/rtc/get-started/run-demo/android"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-docs-08",
+      "suite": "top40-docs",
+      "q": "申请和使用 License",
+      "weight": 1112,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtsa/c/basic-features/license"
+      ],
+      "targets": [
+        "/realtime-media/rtsa/build/project-preparation/license"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtsa",
+      "legacyPlatform": "c",
+      "product": "rtsa",
+      "platform": "c"
+    },
+    {
+      "id": "popular-docs-09",
+      "suite": "top40-docs",
+      "q": "使用 RESTful API 实现对话式 AI 引擎",
+      "weight": 1058,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/convoai/restful/get-started/quick-start"
+      ],
+      "targets": [
+        "/ai/get-started/quick-start"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "convoai",
+      "legacyPlatform": "restful",
+      "product": "conversational-ai",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-docs-10",
+      "suite": "top40-docs",
+      "q": "接收 Webhook 事件",
+      "weight": 992,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/restful/webhook/receive_webhook"
+      ],
+      "targets": [
+        "/api-reference/rtc/restful/webhook/receive-webhook"
+      ],
+      "legacyFamily": "docs",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "restful",
+      "product": "rtc",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-docs-11",
+      "suite": "top40-docs",
+      "q": "发版说明",
+      "weight": 939,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/android/overview/release-notes"
+      ],
+      "targets": [
+        "/realtime-media/rtc/reference/release-notes",
+        "/realtime-media/rtc/reference/release-notes/android"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-docs-12",
+      "suite": "top40-docs",
+      "q": "实现纯语音互动",
+      "weight": 925,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/android/basic-features/audio-quick-start"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/audio/audio-quick-start",
+        "/realtime-media/rtc/build/audio/audio-quick-start/android"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-docs-13",
+      "suite": "top40-docs",
+      "q": "实名认证",
+      "weight": 869,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/console/general/user-guides/user-identity-verification"
+      ],
+      "targets": [
+        "/introduction/user-guides/user-identity-verification"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "console",
+      "legacyPlatform": "general",
+      "product": "console",
+      "scopeNote": "新版平台控件不提供通用平台，使用产品筛选；旧站保留 general。"
+    },
+    {
+      "id": "popular-docs-14",
+      "suite": "top40-docs",
+      "q": "开始实时转录翻译",
+      "weight": 825,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/speech-to-text/restful/get-started/quick-start"
+      ],
+      "targets": [
+        "/realtime-media/speech-to-text/get-started/quick-start"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "speech-to-text",
+      "legacyPlatform": "restful",
+      "product": "speech-to-text",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-docs-15",
+      "suite": "top40-docs",
+      "q": "实现音视频互动",
+      "weight": 786,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/javascript/get-started/quick-start"
+      ],
+      "targets": [
+        "/realtime-media/rtc/get-started/quick-start",
+        "/realtime-media/rtc/get-started/quick-start/web"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "javascript",
+      "product": "rtc",
+      "platform": "web"
+    },
+    {
+      "id": "popular-docs-16",
+      "suite": "top40-docs",
+      "q": "实现极速直播",
+      "weight": 781,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/android/basic-features/ls-quick-start"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/advanced-channel/ls-quick-start",
+        "/realtime-media/rtc/build/advanced-channel/ls-quick-start/android"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-docs-17",
+      "suite": "top40-docs",
+      "q": "计费说明",
+      "weight": 759,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/convoai/restful/overview/billing"
+      ],
+      "targets": [
+        "/api-reference/conversational-ai/rest-api/overview/billing"
+      ],
+      "legacyFamily": "docs",
+      "family": "api",
+      "legacyProduct": "convoai",
+      "legacyPlatform": "restful",
+      "product": "conversational-ai",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-docs-18",
+      "suite": "top40-docs",
+      "q": "下载",
+      "weight": 726,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtsa/c/resources"
+      ],
+      "targets": [
+        "/realtime-media/rtsa/reference/downloads"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtsa",
+      "legacyPlatform": "c",
+      "product": "rtsa",
+      "platform": "c"
+    },
+    {
+      "id": "popular-docs-19",
+      "suite": "top40-docs",
+      "q": "产品概述",
+      "weight": 721,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtsa/c/overview/product-overview"
+      ],
+      "targets": [
+        "/realtime-media/rtsa"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtsa",
+      "legacyPlatform": "c",
+      "product": "rtsa",
+      "platform": "c"
+    },
+    {
+      "id": "popular-docs-20",
+      "suite": "top40-docs",
+      "q": "计费策略",
+      "weight": 643,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/ios/billing/billing-strategy"
+      ],
+      "targets": [
+        "/realtime-media/rtc/reference/billing-strategy"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "ios",
+      "product": "rtc",
+      "platform": "ios"
+    },
+    {
+      "id": "popular-docs-21",
+      "suite": "top40-docs",
+      "q": "实现媒体流和信令传输",
+      "weight": 633,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtsa/c/get-started/implement-transmission"
+      ],
+      "targets": [
+        "/realtime-media/rtsa/build/media-and-signaling-transmission/implement-transmission"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtsa",
+      "legacyPlatform": "c",
+      "product": "rtsa",
+      "platform": "c"
+    },
+    {
+      "id": "popular-docs-22",
+      "suite": "top40-docs",
+      "q": "开通服务",
+      "weight": 580,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/cloud-recording/restful/get-started/enable-service"
+      ],
+      "targets": [
+        "/api-reference/cloud-recording/restful/get-started/enable-service"
+      ],
+      "legacyFamily": "docs",
+      "family": "api",
+      "legacyProduct": "cloud-recording",
+      "legacyPlatform": "restful",
+      "product": "cloud-recording",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-docs-23",
+      "suite": "top40-docs",
+      "q": "跑通 API 示例项目",
+      "weight": 572,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/javascript/get-started/run-demo"
+      ],
+      "targets": [
+        "/realtime-media/rtc/get-started/run-demo",
+        "/realtime-media/rtc/get-started/run-demo/web"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "javascript",
+      "product": "rtc",
+      "platform": "web"
+    },
+    {
+      "id": "popular-docs-24",
+      "suite": "top40-docs",
+      "q": "跑通基于 C API 的 Linux 示例项目",
+      "weight": 570,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtsa/c/get-started/run-example"
+      ],
+      "targets": [
+        "/realtime-media/rtsa/get-started/run-example"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtsa",
+      "legacyPlatform": "c",
+      "product": "rtsa",
+      "platform": "c"
+    },
+    {
+      "id": "popular-docs-25",
+      "suite": "top40-docs",
+      "q": "开通服务",
+      "weight": 564,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/android/get-started/enable-service"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/setup-and-access/enable-service"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-docs-26",
+      "suite": "top40-docs",
+      "q": "开通服务",
+      "weight": 560,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/javascript/get-started/enable-service"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/setup-and-access/enable-service"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "javascript",
+      "product": "rtc",
+      "platform": "web"
+    },
+    {
+      "id": "popular-docs-27",
+      "suite": "top40-docs",
+      "q": "产品概述",
+      "weight": 558,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/analytics/general/overview/product-overview"
+      ],
+      "targets": [
+        "/api-reference/analytics/general/overview/product-overview"
+      ],
+      "legacyFamily": "docs",
+      "family": "api",
+      "legacyProduct": "analytics",
+      "legacyPlatform": "general",
+      "product": "analytics",
+      "scopeNote": "新版平台控件不提供通用平台，使用产品筛选；旧站保留 general。"
+    },
+    {
+      "id": "popular-docs-28",
+      "suite": "top40-docs",
+      "q": "使用 RESTful API 开始云端录制",
+      "weight": 556,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/cloud-recording/restful/get-started/quick-start"
+      ],
+      "targets": [
+        "/api-reference/cloud-recording/restful/get-started/quick-start"
+      ],
+      "legacyFamily": "docs",
+      "family": "api",
+      "legacyProduct": "cloud-recording",
+      "legacyPlatform": "restful",
+      "product": "cloud-recording",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-docs-29",
+      "suite": "top40-docs",
+      "q": "使用 Agents SDK 实现对话式 AI 引擎",
+      "weight": 546,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/convoai/restful/get-started/quick-start-agent"
+      ],
+      "targets": [
+        "/ai/get-started/quick-start-agent"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "convoai",
+      "legacyPlatform": "restful",
+      "product": "conversational-ai",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-docs-30",
+      "suite": "top40-docs",
+      "q": "高级美颜",
+      "weight": 532,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/android/advanced-features/advanced-beauty"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/video/advanced-beauty",
+        "/realtime-media/rtc/build/video/advanced-beauty/android"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-docs-31",
+      "suite": "top40-docs",
+      "q": "产品概述",
+      "weight": 531,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/android/overview/product-overview"
+      ],
+      "targets": [
+        "/realtime-media/rtc"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-docs-32",
+      "suite": "top40-docs",
+      "q": "单流和合流录制计费说明",
+      "weight": 521,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/cloud-recording/restful/overview/billing-strategy/billing"
+      ],
+      "targets": [
+        "/api-reference/cloud-recording/restful/overview/billing-strategy/billing"
+      ],
+      "legacyFamily": "docs",
+      "family": "api",
+      "legacyProduct": "cloud-recording",
+      "legacyPlatform": "restful",
+      "product": "cloud-recording",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-docs-33",
+      "suite": "top40-docs",
+      "q": "什么是账单、结算与账户冻结？",
+      "weight": 513,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/faq/account-and-billing/billing-account"
+      ],
+      "targets": [
+        "/reference/faq/account/billing_account"
+      ],
+      "legacyFamily": "faq",
+      "family": "faq"
+    },
+    {
+      "id": "popular-docs-34",
+      "suite": "top40-docs",
+      "q": "回调事件概览",
+      "weight": 476,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/cloud-recording/restful/webhook/ncs-events"
+      ],
+      "targets": [
+        "/api-reference/cloud-recording/restful/webhook/ncs-events"
+      ],
+      "legacyFamily": "docs",
+      "family": "api",
+      "legacyProduct": "cloud-recording",
+      "legacyPlatform": "restful",
+      "product": "cloud-recording",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-docs-35",
+      "suite": "top40-docs",
+      "q": "发版说明",
+      "weight": 466,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/ios/overview/release-notes"
+      ],
+      "targets": [
+        "/realtime-media/rtc/reference/release-notes",
+        "/realtime-media/rtc/reference/release-notes/ios"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "ios",
+      "product": "rtc",
+      "platform": "ios"
+    },
+    {
+      "id": "popular-docs-36",
+      "suite": "top40-docs",
+      "q": "计费说明",
+      "weight": 461,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/speech-to-text/restful/overview/billing"
+      ],
+      "targets": [
+        "/realtime-media/speech-to-text/reference/billing"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "speech-to-text",
+      "legacyPlatform": "restful",
+      "product": "speech-to-text",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-docs-37",
+      "suite": "top40-docs",
+      "q": "付费方式",
+      "weight": 460,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/android/billing/payment"
+      ],
+      "targets": [
+        "/realtime-media/rtc/reference/payment"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-docs-38",
+      "suite": "top40-docs",
+      "q": "发版说明",
+      "weight": 450,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/convoai/restful/overview/release-notes"
+      ],
+      "targets": [
+        "/ai/release-notes"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "convoai",
+      "legacyPlatform": "restful",
+      "product": "conversational-ai",
+      "platform": "restful"
+    },
+    {
+      "id": "popular-docs-39",
+      "suite": "top40-docs",
+      "q": "减小 App 体积",
+      "weight": 449,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/android/best-practice/reduce-app-size"
+      ],
+      "targets": [
+        "/realtime-media/rtc/build/optimize-and-operate/reduce-app-size",
+        "/realtime-media/rtc/build/optimize-and-operate/reduce-app-size/android"
+      ],
+      "legacyFamily": "docs",
+      "family": "docs",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "android",
+      "product": "rtc",
+      "platform": "android"
+    },
+    {
+      "id": "popular-docs-40",
+      "suite": "top40-docs",
+      "q": "实现 HTTP 基本认证",
+      "weight": 445,
+      "targetEvidence": "popular-page-title-scoped-by-product-platform",
+      "legacyTargets": [
+        "/doc/rtc/restful/user-guides/http-basic-auth"
+      ],
+      "targets": [
+        "/api-reference/rtc/restful/user-guides/http-basic-auth"
+      ],
+      "legacyFamily": "docs",
+      "family": "api",
+      "legacyProduct": "rtc",
+      "legacyPlatform": "restful",
+      "product": "rtc",
+      "platform": "restful"
+    }
+  ]
+}

@@ -1,26 +1,42 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
+import { resolveLegacyApiHashRedirect } from '@/lib/docs-api-hash-redirects';
 import { ensureDocsLastUpdatedMetadata } from '@/lib/docs-last-updated';
-import { resolveMovedDocsRedirect } from '@/lib/docs-moved-redirects';
+import {
+  isPermanentMovedDocsRedirect,
+  resolveMovedDocsRedirect,
+} from '@/lib/docs-moved-redirects';
 import { getDocsPagePayload } from '@/lib/docs-page';
 import type {
   DocsPagePayload,
   DocsRedirectPayload,
 } from '@/lib/docs-page.server';
+import { preserveRedirectSearch } from '@/lib/docs-redirect-url';
 import { preloadDocsPageContent } from '@/lib/docs-route-preload';
 import { isPublishedDocLocale } from '@/lib/docs-routing';
+import { parseProductSidebarContext } from '@/lib/docs-sidebar-context';
 import {
+  readStaticDocsPayload,
   resolvePlatformStaticDocsPayload,
   shouldUseStaticDocsPayload,
 } from '@/lib/docs-static-manifest';
 import { resolveStaticLegacySitemapRedirect } from '@/lib/legacy-sitemap/static-redirects';
 import {
+  createPlatformQueryIndex,
+  resolvePlatformQueryUrl,
+} from '@/lib/platforms/query-route';
+import {
   isKnownPlatform,
   normalizePlatformKey,
   type PlatformKey,
 } from '@/lib/platforms/registry';
+import {
+  getProductSidebarSource,
+  withProductSidebar,
+} from '@/lib/product-rest-sidebar';
 import { recordRecentPage } from '@/lib/recently-viewed';
+import { isRetiredCnDocsPath } from '@/lib/retired-cn-docs.mjs';
 import { createDocsRouteSeoHead } from '@/lib/static-seo';
 
 export const Route = createFileRoute('/$locale/$tab/$')({
@@ -40,22 +56,49 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       },
     },
   },
-  loader: async ({ location, params }) => {
+  loaderDeps: ({ search }) => ({
+    from: getProductSidebarSource((search as { from?: unknown }).from),
+  }),
+  loader: async ({ deps, location, params }) => {
     if (!isPublishedDocLocale(params.locale)) {
       throw notFound();
     }
 
     const slugSegments = (params._splat ?? '').split('/').filter(Boolean);
-
-    const movedRedirect = resolveMovedDocsRedirect(
+    if (
+      isRetiredCnDocsPath(
+        `/${[params.locale, params.tab, ...slugSegments].join('/')}`,
+      )
+    ) {
+      throw notFound();
+    }
+    const apiHashRedirect = resolveLegacyApiHashRedirect(
+      params.locale,
+      params.tab,
+      slugSegments,
+      location.hash,
+    );
+    if (apiHashRedirect) {
+      throw redirect({
+        href: preserveRedirectSearch(apiHashRedirect, location),
+      });
+    }
+    const movedDocsRedirect = resolveMovedDocsRedirect(
       params.locale,
       params.tab,
       slugSegments,
     );
-    if (movedRedirect) {
+
+    if (movedDocsRedirect) {
       throw redirect({
-        href: preserveRedirectSearch(movedRedirect, location),
-        statusCode: 301,
+        href: preserveRedirectSearch(movedDocsRedirect, location),
+        ...(isPermanentMovedDocsRedirect(
+          params.locale,
+          params.tab,
+          slugSegments,
+        )
+          ? { statusCode: 301 }
+          : {}),
       });
     }
 
@@ -72,6 +115,9 @@ export const Route = createFileRoute('/$locale/$tab/$')({
             location,
             legacyRedirect.preserveSearch,
           ),
+          ...(legacyRedirect.statusCode
+            ? { statusCode: legacyRedirect.statusCode }
+            : {}),
         });
       }
     }
@@ -95,6 +141,10 @@ export const Route = createFileRoute('/$locale/$tab/$')({
           });
 
     let payload = await loadPayload(slugSegments);
+    const currentPath = `/${[params.locale, params.tab, ...slugSegments].join('/')}`;
+    let platformRoute:
+      | { canonicalPath: string; platform: PlatformKey; url: string }
+      | undefined;
     const queryPlatform = getKnownPlatformSearchParam(location.searchStr);
 
     if (
@@ -109,8 +159,41 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       ]);
 
       if (platformPayload && !('redirectUrl' in platformPayload)) {
-        payload = platformPayload;
+        platformRoute = {
+          canonicalPath: currentPath,
+          platform: queryPlatform,
+          url: `${currentPath}/${queryPlatform}`,
+        };
       }
+    }
+
+    const explicitPlatform = payload
+      ? getPayloadPlatformTabs(payload)?.initialPlatform
+      : undefined;
+    if (
+      payload &&
+      explicitPlatform &&
+      slugSegments.at(-1) === explicitPlatform &&
+      payloadSupportsPlatform(payload, explicitPlatform)
+    ) {
+      platformRoute = {
+        canonicalPath: currentPath.slice(0, currentPath.lastIndexOf('/')),
+        platform: explicitPlatform,
+        url: currentPath,
+      };
+    }
+    if (platformRoute) {
+      const target = resolvePlatformQueryUrl(
+        new URL(
+          preserveRedirectSearch(currentPath, location),
+          'https://docs.invalid',
+        ),
+        createPlatformQueryIndex([platformRoute]),
+      );
+      if (target)
+        throw redirect({
+          href: `${target.pathname}${target.search}${target.hash}`,
+        });
     }
 
     if (!payload) {
@@ -120,7 +203,14 @@ export const Route = createFileRoute('/$locale/$tab/$')({
     if ('redirectUrl' in payload) {
       const { redirectUrl } = payload;
       const preserveSearch =
-        'preserveSearch' in payload ? payload.preserveSearch : true;
+        'preserveSearch' in payload &&
+        typeof payload.preserveSearch === 'boolean'
+          ? payload.preserveSearch
+          : true;
+      const statusCode =
+        'statusCode' in payload && typeof payload.statusCode === 'number'
+          ? payload.statusCode
+          : undefined;
 
       if (!redirectUrl) {
         throw notFound();
@@ -128,10 +218,42 @@ export const Route = createFileRoute('/$locale/$tab/$')({
 
       throw redirect({
         href: preserveRedirectSearch(redirectUrl, location, preserveSearch),
-        ...('statusCode' in payload ? { statusCode: payload.statusCode } : {}),
+        statusCode: statusCode ?? 307,
       });
     }
 
+    if (params.tab === 'api-reference' && params.locale === 'zh-CN') {
+      const productContext = parseProductSidebarContext(
+        location.searchStr,
+        params.locale,
+      );
+      if (productContext) {
+        const productPayload = await readStaticDocsPayload<
+          DocsPagePayload | DocsRedirectPayload
+        >({
+          locale: productContext.locale,
+          slugSegments: productContext.slugSegments,
+          tab: productContext.tab,
+        });
+
+        if (productPayload && !('redirectUrl' in productPayload)) {
+          payload = {
+            ...payload,
+            activeTab: productPayload.activeTab,
+            sidebar: productPayload.sidebar,
+            sidebarHeader: productPayload.sidebarHeader,
+          };
+        }
+      }
+    }
+
+    payload = await withProductSidebar(payload, deps?.from, (input) =>
+      shouldUseStaticDocsPayload()
+        ? resolvePlatformStaticDocsPayload<
+            DocsPagePayload | DocsRedirectPayload
+          >(input)
+        : getDocsPagePayload({ data: input }),
+    );
     await preloadDocsPageContent(payload);
 
     return normalizeDocsPagePayload(payload);
@@ -159,7 +281,9 @@ function Page() {
     sidebarHeader,
     slug,
     toc,
+    tocMaxDepth,
     title,
+    titlePlatforms,
   } = Route.useLoaderData();
 
   // Remember this page so the search dialog can offer it under "Recent". Keyed
@@ -193,31 +317,11 @@ function Page() {
       sidebarHeader={sidebarHeader}
       slug={slug}
       title={title}
+      titlePlatforms={titlePlatforms}
       toc={toc}
+      tocMaxDepth={tocMaxDepth}
     />
   );
-}
-
-export function preserveRedirectSearch(
-  href: string,
-  location: { hash?: string; searchStr?: string },
-  preserveSearch = true,
-) {
-  if (/[?#]/.test(href)) {
-    return href;
-  }
-
-  if (!preserveSearch) {
-    return href;
-  }
-
-  const hash = location.hash
-    ? location.hash.startsWith('#')
-      ? location.hash
-      : `#${location.hash}`
-    : '';
-
-  return `${href}${location.searchStr ?? ''}${hash}`;
 }
 
 function normalizeDocsPagePayload(payload: DocsPagePayload): DocsPagePayload {
@@ -229,7 +333,9 @@ function normalizeDocsPagePayload(payload: DocsPagePayload): DocsPagePayload {
 
 export function getKnownPlatformSearchParam(searchStr?: string) {
   const platform = new URLSearchParams(searchStr ?? '').get('platform');
-  const normalizedPlatform = platform ? normalizePlatformKey(platform) : null;
+  const normalizedPlatform = platform
+    ? normalizePlatformKey(platform.trim().toLowerCase())
+    : null;
 
   return normalizedPlatform && isKnownPlatform(normalizedPlatform)
     ? normalizedPlatform

@@ -1,0 +1,136 @@
+---
+title: com.herewhite.sdk.domain.RoomMember类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_room_member
+  sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_room_member.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/whiteboard/android/deprecated.html#_deprecated000009 as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/whiteboard/android/deprecated.html#_deprecated000010 as local text.
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+[`RoomMember`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member) 类，用于获取实时房间内互动模式（具有读写权限）用户信息。
+
+### 注解
+
+该类仅适用于互动模式的用户。订阅模式的用户不属于房间成员。
+
+## 成员函数说明
+
+<a id="a934d1e14e95dadb807bddc0eb149612b"></a>
+
+### getMemberState()
+
+<ApiSignature>
+
+[MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state) com.herewhite.sdk.domain.RoomMember.getMemberState()
+
+</ApiSignature>
+
+获取互动模式用户的所有白板工具信息。
+
+:::info[自从]
+2.4.8
+:::
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+白板工具信息，详见 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-state)。
+
+<a id="adc3e8b99d3bb703c19122ebd2430a876"></a>
+
+### getPayload()
+
+<ApiSignature>
+
+Object com.herewhite.sdk.domain.RoomMember.getPayload()
+
+</ApiSignature>
+
+获取用户加入房间时携带的自定义用户信息。
+
+:::info[自从]
+2.4.8
+:::
+
+<a id="a14f4887ee69cc739385bb870d29e38ec"></a>
+
+### getMemberId()
+
+<ApiSignature>
+
+Long com.herewhite.sdk.domain.RoomMember.getMemberId()
+
+</ApiSignature>
+
+获取用户 ID。
+
+在用户加入互动白板实时房间时，会自动分配用户 ID，用于标识房间内的用户。同一房间中的每个用户具有唯一的用户 ID。
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+用户 ID。
+
+<a id="ac20b71be02834d8a625c739803c1ed81"></a>
+
+### getCurrentApplianceName()
+
+<ApiSignature>
+
+String com.herewhite.sdk.domain.RoomMember.getCurrentApplianceName()
+
+</ApiSignature>
+
+获取用户当前使用的白板工具。
+
+:::info[自从]
+2.4.8
+:::
+
+<a id="弃用"></a>
+
+:::error[弃用:]
+该方法已废弃。请改用 [`getMemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member#a934d1e14e95dadb807bddc0eb149612b) 获取详细的白板工具信息。
+:::
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+白板工具名称。
+
+<a id="af258eda0f8afd216bbb0e459877a6881"></a>
+
+### getInformation()
+
+<ApiSignature>
+
+[MemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information) com.herewhite.sdk.domain.RoomMember.getInformation()
+
+</ApiSignature>
+
+获取用户加入房间时携带的用户信息。
+
+<a id="弃用-1"></a>
+
+:::error[弃用:]
+该方法已经废弃。请改用 [`getPayload`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-member#adc3e8b99d3bb703c19122ebd2430a876) 获取用户信息。
+:::
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+用户信息。

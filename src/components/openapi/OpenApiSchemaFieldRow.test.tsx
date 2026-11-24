@@ -47,6 +47,47 @@ function makeNode(
 }
 
 describe('OpenApiSchemaFieldRow', () => {
+  it('toggles an expandable field when its name is clicked', () => {
+    const onExpandedChange = vi.fn();
+    render(
+      <OpenApiSchemaFieldRow
+        copied={false}
+        expanded={false}
+        labels={labels}
+        node={makeNode({
+          name: 'settings',
+          children: [makeNode({ id: 'child', name: 'child' })],
+        })}
+        onCopy={() => {}}
+        onExpandedChange={onExpandedChange}
+      />,
+    );
+    fireEvent.click(screen.getByText('settings'));
+    expect(onExpandedChange).toHaveBeenCalledWith(true);
+  });
+
+  it('shows an array element type even when its alias repeats the field name', () => {
+    render(
+      <OpenApiSchemaFieldRow
+        copied={false}
+        expanded={false}
+        labels={labels}
+        node={makeNode({
+          name: 'rtcStreamUids',
+          schema: {
+            type: 'array',
+            typeName: 'number[]',
+            aliasName: 'rtcStreamUids',
+            item: { $type: 'number' },
+          },
+        })}
+        onCopy={() => {}}
+        onExpandedChange={() => {}}
+      />,
+    );
+    expect(screen.getByText('number[]')).toBeInTheDocument();
+  });
+
   it('keeps expandable and leaf fields on the same content column', () => {
     render(
       <>
@@ -107,7 +148,7 @@ describe('OpenApiSchemaFieldRow', () => {
       leafLeading?.querySelector('[data-openapi-field-gutter] button'),
     ).toBeNull();
     expect(
-      expandableLeading?.querySelector('[data-openapi-field-gutter] button'),
+      expandableLeading?.querySelector('button [data-openapi-field-gutter]'),
     ).toBeInTheDocument();
     expect(
       expandableLeading?.querySelector('.openapi-schema-field-content'),
@@ -213,6 +254,57 @@ describe('OpenApiSchemaFieldRow', () => {
     expect(screen.getByText('id').nextElementSibling).toHaveTextContent(
       'string',
     );
+  });
+
+  it('does not repeat a type alias that matches the field name', () => {
+    render(
+      <OpenApiSchemaFieldRow
+        copied={false}
+        expanded={false}
+        labels={labels}
+        node={makeNode({
+          name: 'params',
+          schema: {
+            aliasName: 'params',
+            type: 'primitive',
+            typeName: 'params',
+          },
+        })}
+        onCopy={() => {}}
+        onExpandedChange={() => {}}
+      />,
+    );
+
+    expect(screen.getAllByText('params', { exact: true })).toHaveLength(1);
+    expect(
+      document.querySelector('.openapi-schema-field-content > span'),
+    ).toBeNull();
+  });
+
+  it('uses a union variant name instead of its synthetic map placeholder', () => {
+    render(
+      <OpenApiSchemaFieldRow
+        copied={false}
+        expanded={false}
+        labels={labels}
+        node={makeNode({
+          name: '[key: string]',
+          schema: {
+            aliasName: 'unknown',
+            type: 'primitive',
+            typeName: 'unknown',
+          },
+          variant: 'Minimax',
+        })}
+        onCopy={() => {}}
+        onExpandedChange={() => {}}
+      />,
+    );
+
+    expect(screen.getByText('Minimax', { exact: true })).toBeVisible();
+    expect(screen.queryByText('[key: string]', { exact: true })).toBeNull();
+    expect(screen.queryByText('unknown', { exact: true })).toBeNull();
+    expect(screen.queryByText('(Minimax)', { exact: true })).toBeNull();
   });
 
   it('places metadata below the field identity and above its description', () => {
@@ -389,15 +481,9 @@ describe('OpenApiSchemaFieldRow', () => {
     const expandButton = screen.getByRole('button', {
       name: `Expand ${longFieldName} properties`,
     });
-    expect(expandButton).toHaveClass('size-3', 'shrink-0');
-    expect(
-      expandButton.closest('[data-openapi-field-gutter]'),
-    ).toBeInTheDocument();
-    expect(
-      expandButton
-        .closest('[data-openapi-field-leading]')
-        ?.querySelector('.openapi-schema-field-content'),
-    ).toBeInTheDocument();
+    expect(expandButton).toContainElement(screen.getByText(longFieldName));
+    expect(expandButton).toContainElement(screen.getByText(longTypeName));
+
     expect(screen.getByText(longFieldName)).toHaveClass(
       'min-w-0',
       'break-words',

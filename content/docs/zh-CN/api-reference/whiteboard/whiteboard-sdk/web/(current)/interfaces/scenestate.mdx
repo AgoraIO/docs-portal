@@ -1,0 +1,36 @@
+---
+title: SceneState
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/scenestate
+  sourcePath: html-docs/whiteboard/Web/interfaces/scenestate.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type SceneState = {
+    /**
+     * 房间内所有场景列表
+     */
+    scenes: ReadonlyArray<WhiteScene>;
+    /**
+     * 当前场景地址
+     */
+    scenePath: string;
+    /**
+     * 当前场景的名字
+     */
+    sceneName: string;
+    /**
+     * 当前场景所在的父场景组地址
+     */
+    contextPath: string;
+    /**
+     * 当前场景处于其父场景组之中的位置索引
+     */
+    index: number;
+};
+```

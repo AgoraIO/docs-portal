@@ -1,0 +1,191 @@
+---
+title: FENUMWRAP_AUDIO_EFFECT_PRESET
+description: 预设的音效选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/enum_audioeffectpreset
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/enum_audioeffectpreset.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_audioeffectpreset__detailed_desc"></a>
+
+### 详情
+
+为获取更好的音效，建议在使用预设音效前，调用 [SetAudioProfileAndScenario](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_setaudioprofile) 并按照如下推荐设置 profile 参数。
+
+| 预设音效 | profile |
+| --- | --- |
+| <Slot name="api-center-table-0" /> | AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO 或 AUDIO_PROFILE_MUSIC_STANDARD_STEREO |
+| 其他预设音效（除 AUDIO_EFFECT_OFF 以外） | AUDIO_PROFILE_MUSIC_HIGH_QUALITY 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO |
+
+<Slot for="api-center-table-0">
+
+- ROOM_ACOUSTICS_VIRTUAL_STEREO
+- ROOM_ACOUSTICS_3D_VOICE
+- ROOM_ACOUSTICS_VIRTUAL_SURROUND_SOUND
+
+</Slot>
+
+<a id="enum_audioeffectpreset__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="audio_effect_off"></a>
+<Parameter name="AUDIO_EFFECT_OFF">
+
+原声，即关闭人声音效。
+
+</Parameter>
+<a id="room_acoustics_ktv"></a>
+<Parameter name="ROOM_ACOUSTICS_KTV">
+
+KTV。
+
+</Parameter>
+<a id="room_acoustics_vocal_concert"></a>
+<Parameter name="ROOM_ACOUSTICS_VOCAL_CONCERT">
+
+演唱会。
+
+</Parameter>
+<a id="room_acoustics_studio"></a>
+<Parameter name="ROOM_ACOUSTICS_STUDIO">
+
+录音棚。
+
+</Parameter>
+<a id="room_acoustics_phonograph"></a>
+<Parameter name="ROOM_ACOUSTICS_PHONOGRAPH">
+
+留声机。
+
+</Parameter>
+<a id="room_acoustics_virtual_stereo"></a>
+<Parameter name="ROOM_ACOUSTICS_VIRTUAL_STEREO">
+
+虚拟立体声，即 SDK 将单声道的音频渲染出双声道的音效。
+
+</Parameter>
+<a id="room_acoustics_spacial"></a>
+<Parameter name="ROOM_ACOUSTICS_SPACIAL">
+
+空旷。
+
+</Parameter>
+<a id="room_acoustics_ethereal"></a>
+<Parameter name="ROOM_ACOUSTICS_ETHEREAL">
+
+空灵。
+
+</Parameter>
+<a id="room_acoustics_virtual_surround_sound"></a>
+<Parameter name="ROOM_ACOUSTICS_VIRTUAL_SURROUND_SOUND">
+
+虚拟环绕声，即 SDK 在双声道的基础上产生仿真的环绕声场，从而营造出具有环绕感的音效。
+
+:::caution
+注意： 启用虚拟环绕声后，用户需要使用支持双声道的音频播放设备才能听到预期效果。
+:::
+
+</Parameter>
+<a id="room_acoustics_chorus"></a>
+<Parameter name="ROOM_ACOUSTICS_CHORUS">
+
+合唱。声网推荐你在合唱场景下使用，使人声更具空间立体感。
+
+</Parameter>
+<a id="room_acoustics_3d_voice"></a>
+<Parameter name="ROOM_ACOUSTICS_3D_VOICE">
+
+3D 人声，即 SDK 将音频渲染出在用户周围环绕的效果。环绕周期默认为 10 秒。设置该音效后，你还可以调用 [SetAudioEffectParameters](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 修改环绕周期。
+
+:::caution
+注意： 启用 3D 人声后，用户需要使用支持双声道的音频播放设备才能听到预期效果。
+:::
+
+</Parameter>
+<a id="voice_changer_effect_uncle"></a>
+<Parameter name="VOICE_CHANGER_EFFECT_UNCLE">
+
+大叔。
+
+:::caution
+注意： 建议用于处理男声，否则无法达到预期效果。
+:::
+
+</Parameter>
+<a id="voice_changer_effect_oldman"></a>
+<Parameter name="VOICE_CHANGER_EFFECT_OLDMAN">
+
+老年男性。
+
+:::caution
+注意： 建议用于处理男声，否则无法达到预期效果。
+:::
+
+</Parameter>
+<a id="voice_changer_effect_boy"></a>
+<Parameter name="VOICE_CHANGER_EFFECT_BOY">
+
+男孩。
+
+:::caution
+注意： 建议用于处理男声，否则无法达到预期效果。
+:::
+
+</Parameter>
+<a id="voice_changer_effect_sister"></a>
+<Parameter name="VOICE_CHANGER_EFFECT_SISTER">
+
+少女。
+
+:::caution
+注意： 建议用于处理女声，否则无法达到预期效果。
+:::
+
+</Parameter>
+<a id="voice_changer_effect_girl"></a>
+<Parameter name="VOICE_CHANGER_EFFECT_GIRL">
+
+女孩。
+
+:::caution
+注意： 建议用于处理女声，否则无法达到预期效果。
+:::
+
+</Parameter>
+<a id="voice_changer_effect_pigking"></a>
+<Parameter name="VOICE_CHANGER_EFFECT_PIGKING">
+
+猪八戒。
+
+</Parameter>
+<a id="voice_changer_effect_hulk"></a>
+<Parameter name="VOICE_CHANGER_EFFECT_HULK">
+
+绿巨人。
+
+</Parameter>
+<a id="style_transformation_rnb"></a>
+<Parameter name="STYLE_TRANSFORMATION_RNB">
+
+R&B。
+
+</Parameter>
+<a id="style_transformation_popular"></a>
+<Parameter name="STYLE_TRANSFORMATION_POPULAR">
+
+流行。
+
+</Parameter>
+<a id="pitch_correction"></a>
+<Parameter name="PITCH_CORRECTION">
+
+电音，即 SDK 以主音音高为 C 的自然大调为基础修正音频的实际音高。设置该音效后，你还可以调用 [SetAudioEffectParameters](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 调整修音的基础调式和主音音高。
+
+</Parameter>
+</ParameterList>

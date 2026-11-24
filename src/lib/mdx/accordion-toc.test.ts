@@ -16,7 +16,7 @@ Release details.
 </Accordions>`;
 
     expect(addAccordionHeadingsToTocText(source)).toContain(
-      '#### v4.6.3 [#v4-6-3]',
+      '### v4.6.3 [#v4-6-3]',
     );
   });
 
@@ -72,7 +72,7 @@ Body.
 </Accordion>`;
 
     expect(addAccordionHeadingsToTocText(source)).toContain(
-      '#### v2 > v1 [#v2]',
+      '### v2 > v1 [#v2]',
     );
     expect(addAccordionHeadingsToTocText(source)).toContain(source);
   });
@@ -101,7 +101,7 @@ Body.
     );
 
     expect(toc).toContainEqual({
-      depth: 4,
+      depth: 3,
       title: 'v4.6.3',
       url: '#v4-6-3',
     });
@@ -127,7 +127,7 @@ Version-specific details.
 
     expect(toc).toEqual([
       { depth: 2, title: 'Versions', url: '#versions' },
-      { depth: 4, title: 'v2 > v1', url: '#v2' },
+      { depth: 3, title: 'v2 > v1', url: '#v2' },
     ]);
     expect(search.headings).toContainEqual({ id: 'v2', content: 'v2 > v1' });
     expect(search.contents).toContainEqual(

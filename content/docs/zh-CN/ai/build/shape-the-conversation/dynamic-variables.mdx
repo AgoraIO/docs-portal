@@ -1,0 +1,215 @@
+---
+title: 使用动态变量
+---
+
+通过动态变量，你可以在智能体的系统消息和话术中引用用户名、公司名称等业务信息，也可以注入当前日期或时间，让同一套提示词和话术适用于不同用户和业务场景。
+
+动态变量有两类，值的来源和更新方式不同：
+
+| 类型 | 值的来源 | 引用示例 |
+| --- | --- | --- |
+| 自定义变量 | 由你在创建智能体时通过 `properties.llm.template_variables` 提供。 | `{{user_name}}` |
+| 系统变量 | 由引擎提供，无需在 `template_variables` 中声明。目前支持获取当前日期或时间。 | `{{now(timezone="Asia/Shanghai")}}` |
+
+## 前提条件
+
+开始前，请参考[使用 RESTful API 实现对话式 AI 引擎](/zh-CN/ai/get-started/quick-start)，完成与智能体对话的基本逻辑。
+
+本文示例为创建智能体请求中的配置片段。
+
+## 实现方式
+
+### 配置自定义变量
+
+在创建智能体请求的 `properties.llm.template_variables` 中定义变量，再在目标文本中使用 `{{变量名}}` 引用。变量值必须是字符串。
+
+例如，为不同用户生成个性化开场白：
+
+```json
+{
+  "properties": {
+    "llm": {
+      "template_variables": {
+        "user_name": "张三",
+        "company_name": "声网科技"
+      },
+      "greeting_message": "您好，{{user_name}}，欢迎联系{{company_name}}。有什么可以帮您？"
+    }
+  }
+}
+```
+
+替换后的开场白为：
+
+```text
+您好，张三，欢迎联系声网科技。有什么可以帮您？
+```
+
+### 使用系统变量
+
+在系统消息或话术中直接使用 `{{now(...)}}`，即可在渲染时注入当前时间。建议显式指定业务所需的时区，并根据需要选择格式：
+
+| 需求 | 推荐写法 |
+| --- | --- |
+| 上海当前日期 | `{{now(format='yyyy-MM-dd', timezone='Asia/Shanghai')}}` |
+| 上海当前时分 | `{{now(format='HH:mm', timezone='Asia/Shanghai')}}` |
+| 上海当前日期和时间 | `{{now(timezone='Asia/Shanghai')}}` |
+
+:::info
+在系统消息中引用当前时间时，应根据业务需要选择时间精度。精确到秒的时间值变化较频繁，可能降低 LLM 对该位置及后续提示词的缓存复用率。
+
+如果业务只需要知道当天日期，建议使用 `{{now(format='yyyy-MM-dd', timezone='Asia/Shanghai')}}`。仅在需要判断具体时刻时使用时分或秒级格式。时区应按业务所在地显式指定。
+:::
+
+例如，在上面的客服场景中，将用户姓名、公司名称和上海当前日期组合到系统消息中，并在开场白、失败话术和静默话术中引用当前时间：
+
+```json
+{
+  "properties": {
+    "llm": {
+      "template_variables": {
+        "user_name": "张三",
+        "company_name": "声网科技"
+      },
+      "system_messages": [
+        {
+          "role": "system",
+          "content": "你是{{company_name}}的客服，正在为{{user_name}}提供服务。上海今天的日期是{{now(format='yyyy-MM-dd', timezone='Asia/Shanghai')}}。"
+        }
+      ],
+      "greeting_message": "您好，{{user_name}}，欢迎联系{{company_name}}。当前北京时间为{{now(format='HH:mm', timezone='Asia/Shanghai')}}，有什么可以帮您？",
+      "failure_message": "抱歉，{{user_name}}，暂时无法处理您的请求。当前北京时间为{{now(format='HH:mm', timezone='Asia/Shanghai')}}，请稍后重试。"
+    },
+    "parameters": {
+      "silence_config": {
+        "action": "speak",
+        "timeout_ms": 10000,
+        "content": "{{user_name}}，当前北京时间为{{now(format='HH:mm', timezone='Asia/Shanghai')}}，还需要帮助吗？"
+      }
+    }
+  }
+}
+```
+
+假设系统消息在上海时间 `2026-11-04 14:35:08` 渲染，发送给 LLM 的文本为：
+
+```text
+你是声网科技的客服，正在为张三提供服务。上海今天的日期是2026-11-04。
+```
+
+如果静默话术在上海时间 `14:36:10` 触发，播报文本为：
+
+```text
+张三，当前北京时间为14:36，还需要帮助吗？
+```
+
+#### 时间何时刷新
+
+系统时间在每次求值时获取，具体规则如下：
+
+- **系统消息**：每次向 LLM 发起请求前重新求值，包括同一会话的后续轮次。
+- **开场白、失败和静默话术**：每次渲染话术时取当前时间，静默或失败再次触发时重新取时。
+- **更新、重启或重连**：更新生效、重启或重连后再次求值时，使用最新时间。
+
+一次系统消息列表或一次话术渲染中的时间表达式共用同一时刻，再分别换算时区和格式化。例如，同次渲染中的上海时间和纽约时间表示同一时刻。
+
+只输出日期时，也会在目标时区跨日后的下一次求值更新。
+
+## 变量支持的文本位置
+
+同一个变量可以在多个文本位置引用。当前支持的自定义变量和系统变量均可用于以下位置：
+
+| 位置 | 字段 | 用途 |
+| --- | --- | --- |
+| 系统消息 | `properties.llm.system_messages[].content`（字符串） | 为 LLM 提供角色设定、提示词或回答样例 |
+| 开场白 | `properties.llm.greeting_message` | 配置智能体的问候语文本 |
+| 失败话术 | `properties.llm.failure_message` | 配置 LLM 调用失败时的提示语 |
+| 静默话术 | `properties.parameters.silence_config.content` | 在静默超时后，通过 `speak` 播报文本，或通过 `think` 将文本交给 LLM |
+
+渲染只替换文本，保留消息角色、文本段顺序和非文本内容。字段的完整定义见 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)。
+
+## 参考信息
+
+### 时间函数参数
+
+时间函数支持 `format` 和 `timezone` 两个参数。建议写明参数名，分别指定时间格式和业务时区：
+
+| 参数 | 类型 | 作用 | 默认值 |
+| --- | --- | --- | --- |
+| `format` | String | 时间的输出格式 | `yyyy-MM-dd HH:mm:ss` |
+| `timezone` | String | IANA 时区名称或别名，如 `Asia/Shanghai`、`America/New_York`、`UTC` | 引擎运行环境的本地时区 |
+
+参数名区分大小写，两个命名参数的顺序不限。常用写法如下：
+
+| 写法 | 格式与时区 |
+| --- | --- |
+| `{{now()}}` | 默认格式，引擎运行环境的本地时区 |
+| `{{now('yyyy-MM-dd')}}` | 只输出日期，引擎运行环境的本地时区 |
+| `{{now('yyyy-MM-dd', 'Asia/Shanghai')}}` | 第一个参数指定格式，第二个指定时区 |
+| `{{now(timezone='Asia/Shanghai')}}` | 只指定时区，使用默认格式 |
+| `{{now(format='yyyy-MM-dd', timezone='Asia/Shanghai')}}` | 通过参数名指定格式和时区 |
+| `{{now('HH:mm', timezone='Asia/Shanghai')}}` | 第一个参数指定格式，通过 `timezone` 指定时区 |
+
+字符串支持英文单引号或双引号；在 JSON 字符串中使用内层双引号时，需写成 `\"`。例如：
+
+```json
+{
+  "properties": {
+    "llm": {
+      "greeting_message": "当前北京时间为{{now(timezone=\"Asia/Shanghai\")}}。"
+    }
+  }
+}
+```
+
+仅在省略参数时使用默认值。格式、时区或调用语法不合法时，完整占位符会原样保留，其他变量仍正常替换，也不会阻断智能体启动。例如，`{{now(format='HH:mm', timezone='Invalid/Zone')}}` 中的时区无效，因此不会替换为本地时间。
+
+### 常用时间格式
+
+以下示例以 `Asia/Shanghai` 时区的 `2026-11-04 14:35:08.123` 为基准：
+
+| 格式 | 输出示例 |
+| --- | --- |
+| `yyyy-MM-dd HH:mm:ss`（默认） | `2026-11-04 14:35:08` |
+| `yyyy-MM-dd` | `2026-11-04` |
+| `HH:mm` | `14:35` |
+| `yyyy-MM-dd'T'HH:mm:ss.SSSXXX` | `2026-11-04T14:35:08.123+08:00` |
+
+格式标记区分大小写：`MM` 表示月份，`mm` 表示分钟；`XXX` 输出带冒号的时区偏移，零偏移时输出 `Z`。`'T'` 为字面量，输出时不带单引号。
+
+<Accordions>
+
+<Accordion title="其他时间格式" value="other-time-formats">
+
+| 格式 | 输出示例 |
+| --- | --- |
+| `HH:mm:ss` | `14:35:08` |
+| `yyyy-MM-dd'T'HH:mm:ss` | `2026-11-04T14:35:08` |
+| `yyyyMMdd` | `20261104` |
+| `HHmmss` | `143508` |
+| `yyyyMMdd'T'HHmmssXX` | `20261104T143508+0800` |
+| `yyyy` | `2026` |
+| `yyyy-MM` | `2026-11` |
+| `yyyy-DDD` | `2026-308` |
+| `yyyy-'W'ww-e` | `2026-W45-3` |
+
+- `XX`：输出不带冒号的时区偏移，零偏移时输出 `Z`。
+- `yyyy-DDD`：`DDD` 为三位年内日序，范围为 `001–366`。
+- `yyyy-'W'ww-e`：`yyyy` 表示 ISO 周所属年，`ww` 为两位周序号，`e` 为周一至周日的 `1–7`。例如，`2024-12-30` 的周日期为 `2025-W01-1`。其他格式中的 `yyyy` 使用日历年。
+
+</Accordion>
+
+</Accordions>
+
+### 替换规则
+
+- `{{now}}` 优先使用 `template_variables.now`；未提供时，使用运行环境本地当前时间和默认格式。`{{now()}}` 或带参数的 `{{now(...)}}` 始终调用系统时间函数，不读取 `template_variables.now`。
+- 变量值只替换一次，不会继续解析其中的其他变量或时间函数。
+
+时间函数仅支持上述四类文本位置，不适用于用户消息或工具请求参数。
+
+## 相关文档
+
+- [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)：查看各配置字段的完整定义。
+- [POST 更新智能体配置](/zh-CN/api-reference/api-ref/conversational-ai/update)：确认会话中可更新的字段范围。
+- [让智能体调用自定义工具](/zh-CN/ai/build/shape-the-conversation/rest-tool#配置模板变量)：工具的 URL、Header 或请求体使用独立的 `{{template_variables.user_name}}` 语法。

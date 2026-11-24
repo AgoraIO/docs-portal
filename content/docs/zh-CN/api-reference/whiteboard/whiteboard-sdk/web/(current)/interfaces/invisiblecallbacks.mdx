@@ -1,0 +1,28 @@
+---
+title: InvisibleCallbacks
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/invisiblecallbacks
+  sourcePath: html-docs/whiteboard/Web/interfaces/invisiblecallbacks.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type InvisibleCallbacks<A extends Object, MA extends Object> = {
+    /**
+     * 当 InvisiblePlugin 的 attributes 发生改变时回调。当开启 useMobXState 时不会回调。
+     */
+    onAttributesUpdate: (attributes: A)=>void;
+    /**
+     * 当 InvisiblePlugin 的 memberAttributes 发生改变时回调。当开启 useMobXState 时不会回调。
+     */
+    onMemberAttributesUpdate: (memberAttributes: MA)=>void;
+    /**
+     * 当房间里某人调用 destroy 之后，该 InvisiblePlugin 在房间内的实例都会被摧毁
+     */
+    onDestroy: ()=>void;
+};
+```

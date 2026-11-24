@@ -1,0 +1,82 @@
+---
+title: "如何处理 JavaScript SDK 常见集成问题？"
+---
+## 如何处理 Token 过期？
+
+Token 过期后，你需要先调用 `logout` 方法登出 RTM 系统，然后使用新的 Token 创建 RTM 实例，再调用 `login` 方法重新登录 RTM 系统。
+
+## 如何获取断线重连期间加入和离开 Stream Channel 的用户列表？
+
+监听 `topic` 事件通知后，在弱网环境下，如果断线重连，你会在 `topic` 中收到 `SNAPSHOT` 事件。
+
+如需获取断线重连期间加入或离开 Stream Channel 的用户列表，参考以下示例代码生成本地缓存并与 `SNAPSHOT` 事件中的用户列表进行比较：
+
+- `SNAPSHOT` 事件比本地缓存中多的用户是断线重连期间加入频道的用户。
+- `SNAPSHOT` 事件比本地缓存中少的用户是断线重连期间离开频道的用户。
+
+```javascript
+// global variable
+const channelTopics: Map<string, Map<string, RTMEvents.PublishInfo[]>> = new Map();
+// event handler
+const rtmConfig = {};
+const rtm = new RTM("appid", "uid", rtmConfig);
+rtm.addEventListener("topic", (topicEvent) => {
+      console.log(topicEvent, "topic");
+
+      const topicsCache: Map<string, RTMEvents.PublishInfo[]> = channelTopics.get(topicEvent.channelName) ?? new Map();
+      const remoteLeaved: Map<string, RTMEvents.PublishInfo[]> = new Map();
+      const remoteJoined: Map<string, RTMEvents.PublishInfo[]> = new Map();
+      const { publisher: user, channelName } = topicEvent;
+      if (topicEvent.eventType === "SNAPSHOT") {
+        topicEvent.topicInfos.forEach(({
+          publishers,
+          topicName }) => {
+          remoteJoined.set(topicName, []);
+          remoteLeaved.set(topicName, []);
+          const topicDetailsByCache = topicsCache.get(topicName) ?? [];
+
+          // removed
+          topicDetailsByCache.forEach(({ publisherMeta, publisherUserId: targetUid }) => {
+            if (!publishers.some(({ publisherUserId: eventUid }) => targetUid === eventUid)) {
+              remoteLeaved.get(topicName)?.push({ publisherUserId: targetUid, publisherMeta });
+              topicDetailsByCache.filter(({ publisherUserId: cacheUid }) => cacheUid !== targetUid);
+            }
+          });
+          // added
+          publishers.forEach(({ publisherMeta, publisherUserId: eventUid }) => {
+            if (!topicDetailsByCache.some(({ publisherUserId: cacheUid }) => {
+              return eventUid === cacheUid;
+            })) {
+              remoteJoined.get(topicName)?.push({ publisherUserId: eventUid, publisherMeta });
+              topicDetailsByCache.push({ publisherUserId: eventUid, publisherMeta })
+            }
+          });
+          topicsCache.set(topicName, topicDetailsByCache);
+        });
+      } else {
+        // your code for handling the updated event
+        topicEvent.topicInfos.forEach(({ topicName, publishers }) => {
+          const topicDetailsByCache = topicsCache.get(topicName) ?? [];
+          publishers.forEach(({ publisherMeta, publisherUserId }) => {
+            if (user === publisherUserId) {
+              switch (topicEvent.eventType) {
+                case "REMOTE_JOIN": {
+                  topicDetailsByCache.push({ publisherMeta, publisherUserId });
+                  break;
+                }
+                case "REMOTE_LEAVE": {
+                  topicDetailsByCache.filter(({publisherUserId: uid}) =>
+                    uid !== publisherUserId
+                  )
+                  break;
+                }
+              }
+              topicsCache.set(topicName, topicDetailsByCache);
+            }
+          });
+        })
+      }
+      channelTopics.set(channelName, topicsCache);
+      console.log({ remoteJoined, remoteLeaved, channelTopics, channelName }, "topic diff for debug");
+    });
+```

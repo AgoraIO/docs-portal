@@ -80,9 +80,6 @@ Chat provides the translation and content moderation features to meet your busin
 ## Plan management
 
 ### Subscribe to the pricing plan
-<a id="subscribe-to-the-pricing-plan"></a>
-<a id="subscription-packages"></a>
-<a id="top-up-packages"></a>
 
 Before using Chat, refer to the following steps to subscribe to a plan:
 
@@ -107,6 +104,5 @@ Reach out to our sales if you would like to subscribe to the Agora Chat Enterpri
 Switching to another plan takes effect immediately and the subscription base fee will be calculated on a pro-rated basis.
 
 ## Reference
-<a id="aggregate-resolution"></a>
 
 For detailed information on our pricing plans, see [Pricing Plan Details](./pricing-plan-details).

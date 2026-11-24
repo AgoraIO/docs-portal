@@ -22,7 +22,7 @@ Google Gemini supports BYOK only. It isn't available in managed mode. The follow
 
 <TabsContent value="python">
 
-Pass your key as `api_key`, and leave it out of `url`. Call `create_session()` on an `Agent`. The SDK starts an ephemeral session when you set a Platform session option, such as `max_duration` in seconds.
+Pass your key as `api_key`, and leave it out of `url`. Call `create_ephemeral_session()` on an `Agent`.
 
 ```python
 from agora_agent import Agent, DeepgramSTT, Gemini, OpenAITTS
@@ -45,12 +45,11 @@ test_agent = (
     .with_tts(OpenAITTS(model="tts-1", voice="alloy"))
 )
 
-session = test_agent.create_session(
+session = test_agent.create_ephemeral_session(
     channel="<your_channel_name>",
     token="<your_rtc_token>",
     agent_uid="1002",
     remote_uids=["1001"],
-    max_duration=600,
 )
 session_id = session.start()
 ```
@@ -59,7 +58,7 @@ session_id = session.start()
 
 <TabsContent value="typescript">
 
-Pass your key as `apiKey`, and leave it out of `url`. Call `createSession()` on an `Agent`. The SDK starts an ephemeral session when you set a Platform session option, such as `maxDuration` in seconds.
+Pass your key as `apiKey`, and leave it out of `url`. Call `createEphemeralSession()` on an `Agent`.
 
 ```ts
 import { Agent, DeepgramSTT, Gemini, OpenAITTS } from 'agora-agents';
@@ -80,12 +79,11 @@ const testAgent = new Agent({ client })
   )
   .withTts(new OpenAITTS({ model: 'tts-1', voice: 'alloy' }));
 
-const session = testAgent.createSession({
+const session = testAgent.createEphemeralSession({
   channel: '<your_channel_name>',
   token: '<your_rtc_token>',
   agentUid: '1002',
   remoteUids: ['1001'],
-  maxDuration: 600,
 });
 const sessionId = await session.start();
 ```
@@ -94,7 +92,7 @@ const sessionId = await session.start();
 
 <TabsContent value="go">
 
-Pass your key as `APIKey`, and leave it out of `URL`. Call `CreateSession()` on an `Agent`. The SDK starts an ephemeral session when you set a Platform session option, such as `MaxDuration` in seconds.
+Pass your key as `APIKey`, and leave it out of `URL`. Call `CreateEphemeralSession()` on an `Agent`.
 
 ```go
 maxHistory := 32
@@ -112,13 +110,11 @@ testAgent := agentkit.NewAgent(client).
 	})).
 	WithTts(vendors.NewOpenAITTS(vendors.OpenAITTSOptions{Model: "tts-1", Voice: "alloy"}))
 
-maxDuration := 600
-session := testAgent.CreateSession(agentkit.CreateSessionOptions{
-	Channel:     "<your_channel_name>",
-	Token:       "<your_rtc_token>",
-	AgentUID:    "1002",
-	RemoteUIDs:  []string{"1001"},
-	MaxDuration: &maxDuration,
+session := testAgent.CreateEphemeralSession(agentkit.CreateSessionOptions{
+	Channel:    "<your_channel_name>",
+	Token:      "<your_rtc_token>",
+	AgentUID:   "1002",
+	RemoteUIDs: []string{"1001"},
 })
 sessionID, err := session.Start(ctx)
 if err != nil {

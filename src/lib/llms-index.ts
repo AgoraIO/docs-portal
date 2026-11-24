@@ -20,6 +20,30 @@ export type MachineReadableDocsIndexFile = {
   path: string;
 };
 
+export function normalizeMachineReadableDocsArtifactPath(path: string) {
+  return path
+    .split('/')
+    .map((segment) => {
+      try {
+        const decoded = decodeURI(segment);
+
+        if (
+          decoded === '.' ||
+          decoded === '..' ||
+          decoded.includes('/') ||
+          decoded.includes('\\')
+        ) {
+          return segment;
+        }
+
+        return decoded;
+      } catch {
+        return segment;
+      }
+    })
+    .join('/');
+}
+
 type IndexEntry = {
   label: string;
   markdownUrl: string;
@@ -97,9 +121,10 @@ export function createMachineReadableDocsIndexes({
         ),
         group,
         maxCharacters,
+        locale,
       });
     });
-  const rootContent = renderRootIndex(sectionFiles, normalizedBaseUrl);
+  const rootContent = renderRootIndex(sectionFiles, normalizedBaseUrl, locale);
 
   assertWithinLimit('/llms.txt', rootContent, maxCharacters);
 
@@ -145,20 +170,22 @@ export async function validateMachineReadableDocsArtifacts({
       .map((route) => `${normalizedBaseUrl}${route.markdownPath}`),
   );
 
-  const artifactPaths = new Set([
-    ...files.map((file) => file.path),
-    ...sections
-      .flatMap((file) => extractLinkTargets(file.content))
-      .filter(
-        (target) =>
-          isSameOrigin(target, normalizedBaseUrl) &&
-          target.endsWith('-full.txt'),
-      )
-      .map((target) => new URL(target).pathname),
-    ...publishedRoutes
-      .filter((route) => route.url.startsWith(`/${locale}/`))
-      .map((route) => route.markdownPath),
-  ]);
+  const artifactPaths = new Set(
+    [
+      ...files.map((file) => file.path),
+      ...sections
+        .flatMap((file) => extractLinkTargets(file.content))
+        .filter(
+          (target) =>
+            isSameOrigin(target, normalizedBaseUrl) &&
+            target.endsWith('-full.txt'),
+        )
+        .map((target) => new URL(target).pathname),
+      ...publishedRoutes
+        .filter((route) => route.url.startsWith(`/${locale}/`))
+        .map((route) => route.markdownPath),
+    ].map(normalizeMachineReadableDocsArtifactPath),
+  );
 
   for (const path of artifactPaths) {
     if (!(await artifactExists(path))) {
@@ -169,6 +196,7 @@ export async function validateMachineReadableDocsArtifacts({
 
 function createSectionFiles({
   baseUrl,
+  locale,
   entries,
   group,
   maxCharacters,
@@ -176,17 +204,25 @@ function createSectionFiles({
   baseUrl: string;
   entries: IndexEntry[];
   group: IndexGroup;
+  locale: string;
   maxCharacters: number;
 }) {
+  const needsNumbering =
+    entries.length > 1 &&
+    renderSectionIndex(group.label, entries, locale, group.slug, baseUrl)
+      .length > maxCharacters;
   const chunks: IndexEntry[][] = [];
   let current: IndexEntry[] = [];
 
   for (const entry of entries) {
     const candidate = [...current, entry];
+    const label = needsNumbering
+      ? `${group.label} ${chunks.length + 1}`
+      : group.label;
 
     if (
       current.length > 0 &&
-      renderSectionIndex(group.label, candidate, group.slug, baseUrl).length >
+      renderSectionIndex(label, candidate, locale, group.slug, baseUrl).length >
         maxCharacters
     ) {
       chunks.push(current);
@@ -202,11 +238,16 @@ function createSectionFiles({
   }
 
   const files = chunks.map((chunk, index) => {
-    const suffix = chunks.length > 1 ? `-${index + 1}` : '';
-    const label =
-      chunks.length > 1 ? `${group.label} ${index + 1}` : group.label;
+    const suffix = needsNumbering ? `-${index + 1}` : '';
+    const label = needsNumbering ? `${group.label} ${index + 1}` : group.label;
     const path = `${INDEX_DIRECTORY}/${group.slug}${suffix}.txt`;
-    const content = renderSectionIndex(label, chunk, group.slug, baseUrl);
+    const content = renderSectionIndex(
+      label,
+      chunk,
+      locale,
+      group.slug,
+      baseUrl,
+    );
 
     assertWithinLimit(path, content, maxCharacters);
 
@@ -236,9 +277,10 @@ function createSectionFiles({
 function renderRootIndex(
   sectionFiles: MachineReadableDocsIndexFile[],
   baseUrl: string,
+  locale: string,
 ) {
   return [
-    '# Agora Documentation',
+    locale === 'zh-CN' ? '# 声网文档中心' : '# Agora Documentation',
     '',
     '> Machine-readable indexes for the complete documentation published on this site.',
     '',
@@ -255,6 +297,7 @@ function renderRootIndex(
 function renderSectionIndex(
   label: string,
   entries: IndexEntry[],
+  locale: string,
   slug: string,
   baseUrl: string,
 ) {
@@ -265,7 +308,9 @@ function renderSectionIndex(
   return [
     `# ${label}`,
     '',
-    '> Machine-readable Agora documentation pages in this section.',
+    locale === 'zh-CN'
+      ? '> 本分区的声网文档，供 AI 工具读取。'
+      : '> Machine-readable Agora documentation pages in this section.',
     ...(bulkLink ? ['', bulkLink] : []),
     '',
     '## Documentation',

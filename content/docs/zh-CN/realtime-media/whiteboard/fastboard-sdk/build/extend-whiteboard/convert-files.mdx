@@ -1,0 +1,154 @@
+---
+title: "使用文档转换服务"
+description: "了解如何在 Fastboard SDK 中文档转换服务，包括适用场景、配置步骤、实现要点和注意事项。"
+---
+## 功能概述
+
+本文介绍如何使用声网互动白板提供文档转换服务。
+
+声网互动白板支持以下两种文档转换服务，转换后的图片或网页可作为演示资料在互动白板中展示:
+
+- 静态文档转换：将 PPT、PPTX、DOC、DOCX 和 PDF 格式的文件转换成静态图片，简称为“文档转图片”。
+- 动态文档转换：将 PPT 和 PPTX 的文件转换为动态 HTML 网页，简称为“文档转网页”。
+
+## 前提条件
+
+使用互动白板文档转换服务前，你需要先参考[开启互动白板配套服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#开启互动白板配套服务)完成以下配置：
+
+- 配置互动白板数据中心
+- 启用文档转图片或文档转网页服务
+- 开通并配置第三方云存储
+
+## 实现文档转换
+
+下图展示了使用文档转换服务的基本流程：
+
+![使用文档转换服务的基本流程示意图](https://web-cdn.agora.io/docs-portal/img/whiteboard/file-conversion.svg)
+
+### 上传文件
+
+发起文档转换任务前，你需要将待转换的文档上传至第三方云存储空间或你自己的 Nginx 服务器，生成一个声网互动白板服务可访问的 URL 地址，确保可通过该 URL 地址访问待转换的文档。
+
+### 使用文档转换服务
+
+文档转换服务由声网互动白板服务端提供，需要由你的业务服务端根据 App 客户端的需求，调用 RESTful API 向互动白板服务端发起文档转换请求。
+
+:::info[信息]
+声网推荐你在阅读本节的同时在新标签页打开[文档转换服务端 API 参考](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)以获得更好的开发体验：
+
+- 详细的 API 参数说明、调用示例和调用注意事项
+- 使用 API 文档右侧的“Try it”功能快捷调用 RESTful API
+- 一键生成不同语言的 RESTful API 调用代码
+:::
+
+#### 1. 发起文档转换
+
+发起文档转换任务需要传入待转换文件的 URL 地址、转换任务类型等参数，详见[发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)。以 cURL 为例：
+
+```shell
+curl --request POST \
+  --url https://api.netless.link/v5/projector/tasks \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json' \
+  --header 'region: cn-hz' \
+  --header 'token: NETLESSSDK_YWs9xxxxxxM2MjRi' \
+  --data '{
+  "resource": "https://docs-test-xx.oss-cn-hangzhou.aliyuncs.com/xxx",
+  "type": "dynamic",
+  "preview": true,
+  "webhookEndpoint": "https://example.com/agoracallback",
+  "webhookRetry": 3,
+  "imageCompressionLevel": 0
+}'
+```
+
+成功调用该 API 后，响应包体中会返回本次文档转换任务的 UUID (`uuid`)，即文档转换任务的唯一标识符，用于后续生成 Task Token 以及在白板中展示转换后的文档。
+
+#### 2. 生成 Task Token
+
+使用上一步中获得的文档转换任务 UUID 生成 Task Token，详见[生成 Task Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-task-token)。以 cURL 为例：
+
+```shell
+curl --request POST \
+  --url https://api.netless.link/v5/tokens/tasks/uuid \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json' \
+  --header 'region: cn-hz' \
+  --header 'token: NETLESSSDK_YWs9xxxxxxM2MjRi' \
+  --data '{
+  "role": "string",
+  "lifespan": 36000,
+  "ak": "i1xxxxx_xxxx47"
+}'
+```
+
+成功调用该 API 后，响应包体中会返回本次文档转换任务对应的 Task Token，用于后续调用其他转码服务端 API。
+
+#### 3. 查询文档转换任务进度
+
+查询七天内创建的文档转换任务的进度需要传入步骤 1 中返回的任务 UUID，详见[查询文档转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)。以 cURL 为例：
+
+:::info[信息]
+声网建议你设计轮询机制定时调用查询文档转换任务进度 API，以实时获取转换任务的状态。
+:::
+
+```shell
+curl --request GET \
+  --url https://api.netless.link/v5/projector/tasks/uuid \
+  --header 'Accept: application/json' \
+  --header 'region: cn-hz' \
+  --header 'token: NETLESSSDK_YWs9xxxxxxM2MjRi' \
+```
+
+成功调用该 API 后，响应包体中会返回转换结果文件地址前缀路径 (`prefixUrl`)，用于后续展示转码后页面。
+
+#### 4. 按需调用其他 API
+
+声网还提供了以下文档转换服务端 API，你可以根据业务需要选择调用：
+
+- [查询待文档转换任务](/zh-CN/api-reference/api-ref/whiteboard/restful/list-file-conversion-tasks)：列出未完成转换的所有任务。
+- [取消指定的文档转换任务](/zh-CN/api-reference/api-ref/whiteboard/restful/cancel-file-conversion-task)：取消指定任务 UUID 对应的文档转换任务。
+- [设置文档转换任务优先级](/zh-CN/api-reference/api-ref/whiteboard/restful/set-file-conversion-task-priority)：将待进行的指定文档转换任务移动至任务队列最前或最后面。
+
+### 展示转码后文档
+
+转换结果同时支持使用 [Fastboard SDK](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/downloads)、[@netless/slide](https://www.npmjs.com/package/@netless/slide) 与 [@netless/projector-plugin](https://github.com/netless-io/projector-plugin) 渲染为 canvas 页面，几个方案的不同点在于：
+
+  - Fastboard SDK 是互动白板多窗口场景下的文档转换渲染方案。
+  - @netless/slide 是纯净的文档转换渲染依赖，不包含互动白板、状态同步等内容。该方案需要你自己编写事件同步、状态保存等额外的代码以实现多人同步的效果，适用于单独使用 PPT 的场景。
+  - @netless/projector-plugin 是基于 @netless/slide 开发的互动白板 SDK 的插件，支持状态同步，但是只能在单窗口场景下工作。
+
+## 参考信息
+
+### 开发注意事项
+
+- 使用**静态文档转换**服务，你需要注意：
+  - 源文件最好在 50 页以内，超过 100 页可能会出现转换超时。
+  - 源文件内包含的图片分辨率越高，转换速度越慢。
+  - 在 PPT、PPTX、DOC、DOCX、PDF 格式的源文件中，PDF 文件的转换结果最为准确。如果转换后的文件样式过于不准确，可以将源文件转成 PDF 格式后重新转换。
+  - 本功能基于 [Aspose](https://www.aspose.app/) 实现，因此声网目前无法及时响应定制化需求。建议你在使用前先做充分的测试，如果不符合预期请使用三方转换服务。
+  - 暂不支持资源包功能，但资源路径固定，用户可以自行下载。
+
+- 使用**动态文档转换**服务，你需要注意：
+  - 暂不支持 WPS 格式的文件转换。即使将 WPS 转成 PPTX 后再进行文件转换，也不能保证成功解析。
+  - 暂不支持资源包功能，但资源路径固定，用户可以自行下载。
+  - 如果转换结果出现了字体缺失现象，可以使用 SDK 中的自定义字体功能，或者[联系技术支持](https://ticket.shengwang.cn/)。
+  - 由于 PPT 格式本身的问题，PPT 文件仍然需要在后端转换为 PPTX 进行解析，该过程仍有一定的失败率，建议直接使用 PPTX 格式的文档。
+
+### 文档转换服务按 QPS 计费
+
+QPS（Queries-Per-Second）指每秒查询率。文档转换服务的 QPS 默认值为 1，代表只能同时处理一个文档转换请求，即在前一个转换完成后才会进行第二个任务的转换。
+
+如果默认的 QPS 无法满足你的需求，你可以[联系销售](https://www.shengwang.cn/contact-sales/)，申请调整该项目的 QPS 配置并按 QPS 计费。QPS 计费方案细节详见[文档转换服务按 QPS 计费](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/qps-pricing)。
+
+### 文档转换 Webhook 回调
+
+互动白板的消息通知服务可以在业务层维护一个实时同步的状态机，实现实时监听文档转换任务的进度和运行状态信息，详见[Webhook 回调事件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/conversion-webhook)。
+
+### 相关文档
+
+- [文档转换服务 RESTful API 参考](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)
+- [文档转换服务 API 错误码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code#文档转换错误码)
+- [Webhook 回调事件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/conversion-webhook)
+- [PPT 转换效果支持情况](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/convert-ppt)
+- [为什么插入白板的图片或 PPT 资源无法显示？](/zh-CN/reference/faq/integration/whiteboard_cors)

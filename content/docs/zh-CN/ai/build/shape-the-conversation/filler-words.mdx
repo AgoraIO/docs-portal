@@ -1,0 +1,475 @@
+---
+title: "配置响应超时承接语"
+---
+当智能体需要较长时间检索资料、调用工具或生成回复时，你可以配置承接词，让 AI 在等待期间先播报一句简短提示，减少等待过程中的静默。承接词支持使用预定义文本，也支持根据当前用户消息和可选的近期对话历史动态生成。
+
+## 前提条件
+
+开始前，请确保你已参考[使用 RESTful API 实现对话式 AI 引擎](/zh-CN/ai/get-started/quick-start)或[使用 Agents SDK 实现对话式 AI 引擎](/zh-CN/ai/get-started/quick-start-agent)实现基本对话。
+
+## 选择承接词模式
+
+通过 `filler_words.content.mode` 选择承接词来源：
+
+- `static`：（默认）从 `static_config.phrases` 中选择预定义承接词。省略 `mode` 时保持该行为。
+- `generated`：根据当前用户消息和可选的近期对话历史动态生成承接词。生成结果未及时就绪、生成失败或内容无效时，从 `static_config.phrases` 中选择静态承接词。
+
+:::info[信息]
+`generated` 模式必须显式设置，且仍需配置 `static_config` 作为回退。承接词生成服务的模型服务和凭证均由声网托管，客户无需配置额外的模型、端点或凭证。
+:::
+
+## 配置静态承接词
+
+<Tabs defaultValue="go" groupId="filler-words-platform" persist>
+<TabsList>
+  <TabsTrigger value="go">Go</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+  <TabsTrigger value="restful-api">RESTful API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+```go
+// --- 此处省略智能体的其他配置 ---
+
+agent := agentkit.NewAgent(
+	client,
+	agentkit.WithFillerWords(&agentkit.FillerWordsConfig{
+		Enable: Agora.Bool(true),
+		Trigger: &agentkit.FillerWordsTrigger{
+			FixedTimeConfig: &agentkit.FillerWordsTriggerFixedTimeConfig{
+				ResponseWaitMs: Agora.Int(1500),
+			},
+		},
+		Content: &agentkit.FillerWordsContent{
+			Mode: agentkit.FillerWordsContentModeStatic.Ptr(),
+			StaticConfig: &agentkit.FillerWordsContentStaticConfig{
+				Phrases:       []string{"请稍等。", "我正在为你查询。", "好的。"},
+				SelectionRule: agentkit.FillerWordsSelectionRuleShuffle.Ptr(),
+			},
+		},
+	}),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
+# --- 此处省略智能体的其他配置 ---
+
+agent = Agent(client=client).with_filler_words(
+    FillerWordsConfig(
+        enable=True,
+        trigger=FillerWordsTrigger(
+            fixed_time_config=FillerWordsTriggerFixedTimeConfig(response_wait_ms=1500),
+        ),
+        content=FillerWordsContent(
+            mode="static",
+            static_config=FillerWordsContentStaticConfig(
+                phrases=["请稍等。", "我正在为你查询。", "好的。"],
+                selection_rule="shuffle",
+            ),
+        ),
+    )
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+// --- 此处省略智能体的其他配置 ---
+
+const agentWithFillerWords = agent.withFillerWords({
+  enable: true,
+    trigger: {
+    fixed_time_config: { response_wait_ms: 1500 },
+  },
+  content: {
+    mode: 'static',
+    static_config: {
+      phrases: ['请稍等。', '我正在为你查询。', '好的。'],
+      selection_rule: 'shuffle',
+    },
+  },
+});
+```
+
+</TabsContent>
+
+<TabsContent value="restful-api">
+
+以下配置会在主 LLM 等待时间达到 1500 ms 时，从预定义列表中选择一条承接词：
+
+```json
+{
+  "filler_words": {
+    "enable": true,
+      "trigger": {
+      "fixed_time_config": {
+        "response_wait_ms": 1500
+      }
+    },
+    "content": {
+      "mode": "static",
+      "static_config": {
+        "phrases": [
+          "请稍等。",
+          "我正在为你查询。",
+          "好的。"
+        ],
+        "selection_rule": "shuffle"
+      }
+    }
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### 参数说明
+
+<Tabs defaultValue="go" groupId="filler-words-platform" persist>
+<TabsList>
+  <TabsTrigger value="go">Go</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+  <TabsTrigger value="restful-api">RESTful API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+| 参数 | 类型 | 必选 | 说明 |
+| --- | --- | --- | --- |
+| `FillerWordsConfig.<wbr />Enable` | `*bool` | 否 | 是否启用承接词。设置为 `true` 时必须配置 `Content.StaticConfig`。默认值：`false`。 |
+| `FillerWordsTriggerFixedTimeConfig.<wbr />ResponseWaitMs` | `*int` | 否 | LLM 响应等待阈值，单位为毫秒。取值范围为 `100` 到 `10000`。默认值：`1500`。 |
+| `FillerWordsContent.<wbr />Mode` | `*FillerWordsContent<wbr />Mode` | 否 | 承接词内容模式。静态模式使用 `FillerWordsContentModeStatic`。 |
+| `FillerWordsContentStaticConfig.<wbr />Phrases` | `[]string` | 是 | 静态承接词列表，支持 1 到 100 个非空字符串；每个短语最多 20 个单词（拉丁文字）或 20 个字符（中文及其他非拉丁文字）。 |
+| `FillerWordsContentStaticConfig.<wbr />SelectionRule` | `*FillerWordsContent<wbr />SelectionRule` | 否 | 承接词选择规则。支持 `shuffle` 和 `round_robin`。默认值：`shuffle`。 |
+
+</TabsContent>
+
+<TabsContent value="python">
+
+| 参数 | 类型 | 必选 | 说明 |
+| --- | --- | --- | --- |
+| `enable` | `bool` | 否 | 是否启用承接词。设置为 `True` 时必须配置 `content.static_config`。默认值：`False`。 |
+| `trigger.fixed_time_config.response_wait_ms` | `int` | 否 | LLM 响应等待阈值，单位为毫秒。取值范围为 `100` 到 `10000`。默认值：`1500`。 |
+| `content.mode` | `str` | 否 | 承接词内容模式。静态模式设置为 `static`，也可以省略。 |
+| `content.static_config.phrases` | `List[str]` | 是 | 静态承接词列表，支持 1 到 100 个非空字符串；每个短语最多 20 个单词（拉丁文字）或 20 个字符（中文及其他非拉丁文字）。 |
+| `content.static_config.selection_rule` | `str` | 否 | 承接词选择规则。支持 `shuffle` 和 `round_robin`。默认值：`shuffle`。 |
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+| 参数 | 类型 | 必选 | 说明 |
+| --- | --- | --- | --- |
+| `enable` | `boolean` | 否 | 是否启用承接词。设置为 `true` 时必须配置 `content.static_config`。默认值：`false`。 |
+| `trigger.fixed_time_config.response_wait_ms` | `number` | 否 | LLM 响应等待阈值，单位为毫秒。取值范围为 `100` 到 `10000`。默认值：`1500`。 |
+| `content.mode` | `string` | 否 | 承接词内容模式。静态模式设置为 `static`，也可以省略。 |
+| `content.static_config.phrases` | `string[]` | 是 | 静态承接词列表，支持 1 到 100 个非空字符串；每个短语最多 20 个单词（拉丁文字）或 20 个字符（中文及其他非拉丁文字）。 |
+| `content.static_config.selection_rule` | `string` | 否 | 承接词选择规则。支持 `shuffle` 和 `round_robin`。默认值：`shuffle`。 |
+
+</TabsContent>
+
+<TabsContent value="restful-api">
+
+| 参数 | 类型 | 必选 | 说明 |
+| --- | --- | --- | --- |
+| `enable` | Boolean | 否 | 是否启用承接词。设置为 `true` 时必须配置 `content.static_config`。默认值：`false`。 |
+| `trigger.fixed_time_config.response_wait_ms` | Integer | 否 | LLM 响应等待阈值，单位为毫秒。取值范围为 `100` 到 `10000`。默认值：`1500`。 |
+| `content.mode` | String | 否 | 承接词内容模式。设置为 `static` 或省略时，使用静态承接词。默认值：`static`。 |
+| `content.static_config` | Object | 是 | 静态承接词配置。启用承接词时必须配置。 |
+| `content.static_config.phrases` | Array of String | 是 | 静态承接词列表，支持 1 到 100 个非空字符串；每个短语最多 20 个单词（拉丁文字）或 20 个字符（中文及其他非拉丁文字）。 |
+| `content.static_config.selection_rule` | String | 否 | 承接词选择规则。支持 `shuffle` 和 `round_robin`。默认值：`shuffle`。 |
+
+</TabsContent>
+</Tabs>
+
+## 配置动态承接词
+
+<Tabs defaultValue="go" groupId="filler-words-platform" persist>
+<TabsList>
+  <TabsTrigger value="go">Go</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+  <TabsTrigger value="restful-api">RESTful API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+```go
+// --- 此处省略智能体的其他配置 ---
+
+agent := agentkit.NewAgent(
+	client,
+	agentkit.WithFillerWords(&agentkit.FillerWordsConfig{
+		Enable: Agora.Bool(true),
+		Content: &agentkit.FillerWordsContent{
+			Mode: agentkit.FillerWordsContentModeGenerated.Ptr(),
+			StaticConfig: &agentkit.FillerWordsContentStaticConfig{
+				Phrases: []string{"请稍等。", "我正在处理。"},
+			},
+			GeneratedConfig: &agentkit.FillerWordsContentGeneratedConfig{
+				Prompt:                Agora.String("根据当前对话生成一句简短、自然的承接词，不要直接回答用户问题。"),
+				ContextMessageLimit:   Agora.Int(4),
+				HistoryCharacterLimit: Agora.Int(1000),
+			},
+		},
+	}),
+)
+```
+
+Go 示例未显式设置 `Trigger`，使用默认的 `fixed_time`/`1500` ms。
+
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
+# --- 此处省略智能体的其他配置 ---
+
+generated = FillerWordsConfig(
+    enable=True,
+    trigger=FillerWordsTrigger(
+        fixed_time_config=FillerWordsTriggerFixedTimeConfig(response_wait_ms=1500),
+    ),
+    content=FillerWordsContent(
+        mode="generated",
+        static_config=FillerWordsContentStaticConfig(
+            phrases=["请稍等。", "我正在处理。"],
+        ),
+        generated_config=FillerWordsContentGeneratedConfig(
+            prompt="根据当前对话生成一句简短、自然的承接词，不要直接回答用户问题。",
+            context_message_limit=4,
+            history_character_limit=1000,
+        ),
+    ),
+)
+agent = Agent(client=client).with_filler_words(generated)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+// --- 此处省略智能体的其他配置 ---
+
+const agentWithGeneratedFillerWords = agent.withFillerWords({
+  enable: true,
+  trigger: {
+    fixed_time_config: { response_wait_ms: 1500 },
+  },
+  content: {
+    mode: 'generated',
+    static_config: {
+      phrases: ['请稍等。', '我正在处理。'],
+      selection_rule: 'shuffle',
+    },
+    generated_config: {
+      prompt: '根据当前对话生成一句简短、自然的承接词，不要直接回答用户问题。',
+      context_message_limit: 4,
+      history_character_limit: 1000,
+    },
+  },
+});
+```
+
+</TabsContent>
+
+<TabsContent value="restful-api">
+
+将 `content.mode` 设为 `generated`，并保留静态回退内容：
+
+```json
+{
+  "filler_words": {
+    "enable": true,
+    "trigger": {
+      "fixed_time_config": {
+        "response_wait_ms": 1500
+      }
+    },
+    "content": {
+      "mode": "generated",
+      "static_config": {
+        "phrases": [
+          "请稍等。",
+          "我正在处理。"
+        ],
+        "selection_rule": "shuffle"
+      },
+      "generated_config": {
+        "prompt": "根据当前对话生成一句简短、自然的承接词。不要直接回答问题或声称任务已经完成，只返回承接词文本。",
+        "context_message_limit": 4,
+        "history_character_limit": 1000
+      }
+    }
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### 参数说明
+
+<Tabs defaultValue="go" groupId="filler-words-platform" persist>
+<TabsList>
+  <TabsTrigger value="go">Go</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+  <TabsTrigger value="restful-api">RESTful API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+以下字段名使用相对于 `FillerWordsConfig` 的路径。
+
+| 字段 | 类型 | 必选 | 说明 |
+| --- | --- | --- | --- |
+| `Enable` | `*bool` | 否 | 是否启用承接词。设置为 `true` 时必须配置静态回退短语。默认值：`false`。 |
+| `Trigger.FixedTimeConfig.ResponseWaitMs` | `*int` | 否 | LLM 响应等待阈值，单位为毫秒。取值范围为 `100` 到 `10000`。默认值：`1500`。 |
+| `Content.Mode` | `*FillerWordsContentMode` | 是 | 承接词内容模式。动态模式使用 `generated`。 |
+| `Content.StaticConfig.Phrases` | `[]string` | 是 | 动态承接词不可用时使用的静态回退短语列表。 |
+| `Content.GeneratedConfig.Prompt` | `string` | 否 | 生成承接词的 Prompt。设置后将完整替换默认 Prompt，并对相同的对话上下文窗口生效。 |
+| `Content.GeneratedConfig.ContextMessageLimit` | `*int` | 否 | <Slot name="filler-words-markdown-4-6-3" /> |
+| `Content.GeneratedConfig.HistoryCharacterLimit` | `*int` | 否 | <Slot name="filler-words-markdown-4-7-3" /> |
+
+<Slot for="filler-words-markdown-4-6-3">
+
+包含当前用户消息。
+
+- 取值范围：`1` 到 `6`。
+- 默认值：`1`；设置为 `2` 到 `6` 时启用近期历史。
+
+</Slot>
+
+<Slot for="filler-words-markdown-4-7-3">
+
+仅限制历史消息文本长度。
+
+- 取值范围：`0` 到 `10000`。
+- 默认值：`1000`；设置为 `0` 表示不限制历史文本长度。
+
+</Slot>
+
+</TabsContent>
+
+<TabsContent value="python">
+
+| 参数 | 类型 | 必选 | 说明 |
+| --- | --- | --- | --- |
+| `enable` | `bool` | 否 | 是否启用承接词。设置为 `True` 时必须配置静态回退短语。默认值：`False`。 |
+| `trigger.fixed_time_config.response_wait_ms` | `int` | 否 | LLM 响应等待阈值，单位为毫秒。取值范围为 `100` 到 `10000`。默认值：`1500`。 |
+| `content.mode` | `str` | 是 | 设置为 `generated`，启用动态承接词。 |
+| `content.static_config.phrases` | `List[str]` | 是 | 动态承接词不可用时使用的静态回退短语列表。 |
+| `content.generated_config.prompt` | `str` | 否 | 生成承接词的 Prompt。设置后将完整替换默认 Prompt，并对相同的对话上下文窗口生效。 |
+| `content.generated_config.context_message_limit` | `int` | 否 | <Slot name="filler-words-markdown-5-6-3" /> |
+| `content.generated_config.history_character_limit` | `int` | 否 | <Slot name="filler-words-markdown-5-7-3" /> |
+
+<Slot for="filler-words-markdown-5-6-3">
+
+包含当前用户消息。
+
+- 取值范围：`1` 到 `6`。
+- 默认值：`1`；设置为 `2` 到 `6` 时启用近期历史。
+
+</Slot>
+
+<Slot for="filler-words-markdown-5-7-3">
+
+仅限制历史消息文本长度。
+
+- 取值范围：`0` 到 `10000`。
+- 默认值：`1000`；设置为 `0` 表示不限制历史文本长度。
+
+</Slot>
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+| 参数 | 类型 | 必选 | 说明 |
+| --- | --- | --- | --- |
+| `enable` | `boolean` | 否 | 是否启用承接词。设置为 `true` 时必须配置静态回退短语。默认值：`false`。 |
+| `trigger.fixed_time_config.response_wait_ms` | `number` | 否 | LLM 响应等待阈值，单位为毫秒。取值范围为 `100` 到 `10000`。默认值：`1500`。 |
+| `content.mode` | `string` | 是 | 设置为 `generated`，启用动态承接词。 |
+| `content.static_config.phrases` | `string[]` | 是 | 动态承接词不可用时使用的静态回退短语列表。 |
+| `content.generated_config.prompt` | `string` | 否 | 生成承接词的 Prompt。设置后将完整替换默认 Prompt，并对相同的对话上下文窗口生效。 |
+| `content.generated_config.context_message_limit` | `number` | 否 | <Slot name="filler-words-markdown-6-6-3" /> |
+| `content.generated_config.history_character_limit` | `number` | 否 | <Slot name="filler-words-markdown-6-7-3" /> |
+
+<Slot for="filler-words-markdown-6-6-3">
+
+包含当前用户消息。
+
+- 取值范围：`1` 到 `6`。
+- 默认值：`1`；设置为 `2` 到 `6` 时启用近期历史。
+
+</Slot>
+
+<Slot for="filler-words-markdown-6-7-3">
+
+仅限制历史消息文本长度。
+
+- 取值范围：`0` 到 `10000`。
+- 默认值：`1000`；设置为 `0` 表示不限制历史文本长度。
+
+</Slot>
+
+</TabsContent>
+
+<TabsContent value="restful-api">
+
+| 参数 | 类型 | 必选 | 说明 |
+| --- | --- | --- | --- |
+| `enable` | Boolean | 否 | 是否启用承接词。设置为 `true` 时必须配置静态回退短语。默认值：`false`。 |
+| `trigger.fixed_time_config.response_wait_ms` | Integer | 否 | LLM 响应等待阈值，单位为毫秒。取值范围为 `100` 到 `10000`。默认值：`1500`。 |
+| `content.mode` | String | 是 | 设置为 `generated`，启用动态承接词。 |
+| `content.static_config` | Object | 是 | 静态回退配置。动态承接词不可用时，从该配置中选择静态承接词。 |
+| `content.static_config.phrases` | Array of String | 是 | 静态回退短语列表，支持 1 到 100 个非空字符串。 |
+| `content.generated_config` | Object | 否 | 动态承接词配置。省略时使用默认 Prompt。 |
+| `content.generated_config.prompt` | String | 否 | 生成承接词的 Prompt。设置后将完整替换默认 Prompt，并对相同的对话上下文窗口生效。 |
+| `content.generated_config.context_message_limit` | Integer | 否 | <Slot name="filler-words-markdown-7-8-3" /> |
+| `content.generated_config.history_character_limit` | Integer | 否 | <Slot name="filler-words-markdown-7-9-3" /> |
+
+<Slot for="filler-words-markdown-7-8-3">
+
+包含当前用户消息。
+
+- 取值范围：`1` 到 `6`。
+- 默认值：`1`，仅使用当前用户消息；设置为 `2` 到 `6` 时启用近期对话历史。
+
+</Slot>
+
+<Slot for="filler-words-markdown-7-9-3">
+
+仅限制历史消息文本长度。
+
+- 取值范围：`0` 到 `10000`。
+- 默认值：`1000`；设置为 `0` 表示不限制历史消息文本字符数，但仍受服务输入容量限制。
+
+</Slot>
+
+</TabsContent>
+</Tabs>
+
+### 配置动态承接词的对话上下文
+
+`context_message_limit` 和 `history_character_limit` 共同限定动态承接词可使用的对话历史：
+
+- `context_message_limit` 控制发送的对话消息数，包含当前用户消息。取值范围为 `1` 到 `6`，默认值为 `1`；设置为 `2` 到 `6` 后才会使用近期的用户和智能体消息。
+- `history_character_limit` 控制历史消息文本长度。取值范围为 `0` 到 `10000`，默认值为 `1000`；设置为 `0` 表示不限制历史文本长度。
+- 超出限制时优先移除较早的历史消息，不会截断当前用户消息；动态承接词无法生成时，使用静态承接词回退。
+
+:::info[信息]
+将 `context_message_limit` 设置为大于 `1` 的值后，动态承接词生成服务会使用近期对话历史，输入文本量也可能增加，生成内容也可能不准确或复述历史内容。省略该字段或将其设置为 `1` 时，不会发送历史消息。
+:::

@@ -1,0 +1,67 @@
+---
+title: agora::rtc::IRemoteAudioTrack类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_remote_audio_track
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_remote_audio_track.html
+  generator: doxygen
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: >-
+        No local target route for
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_audio_track.html.
+---
+
+继承自 agora::rtc::IAudioTrack.
+
+<a id="details"></a>
+
+## 详细描述
+
+[IRemoteAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-audio-track) 类。
+
+## 成员函数说明
+
+<a id="a7fa3cd504b1fdc3c06e133d358ab04e1"></a>
+
+### getStatistics()
+
+<ApiSignature labels="pure virtual">
+
+virtual bool agora::rtc::IRemoteAudioTrack::getStatistics([RemoteAudioTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-remote-audio-track-stats) & *stats*)
+
+</ApiSignature>
+
+获取远端音频轨道的统计信息。
+
+<ParameterList title="参数">
+<Parameter name="stats">
+
+远端音频轨道的统计信息。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- `true`: 方法调用成功。
+- `false`: 方法调用失败。
+
+<a id="abcf5b94e335602c43a25ac8e6c479bc5"></a>
+
+### getState()
+
+<ApiSignature labels="pure virtual">
+
+virtual [REMOTE_AUDIO_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aa83ef274510d1063e840d6104fd12516) agora::rtc::IRemoteAudioTrack::getState()
+
+</ApiSignature>
+
+获取远端音频状态。
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+远端音频状态。

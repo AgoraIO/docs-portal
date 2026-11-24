@@ -1,0 +1,99 @@
+---
+title: UnifiedPageStateObservation interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_unified_page_state_observation
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_unified_page_state_observation.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+统一页状态观察事件，status 为 pending 或 success。
+
+可从 @shengwang/whiteboard 直接导入 UnifiedPageStateObservation。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface UnifiedPageStateObservation extends UnifiedPageState
+```
+
+| [status](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-unified-page-state-observation#a6171ae7928940343346bce2578683319) | `status: "pending" \| "success"` |
+| --- | --- |
+| [changeType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-unified-page-state-observation#a5f5b9bb6ac876d735c7daf05063d71c2) | `changeType?: "page" \| "scale"` |
+| [mainView](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-unified-page-state-observation#a05d50ff31de5cef13ee68ff206cc657e) | `mainView?: number` |
+| [presentation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-unified-page-state-observation#a030dd48248abc3c9f836f8de20b8a8dc) | `presentation?: number` |
+| [view](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-unified-page-state-observation#a0f6372093e1083dadbc6421e302796ac) | `view?: number` |
+| [slide](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-unified-page-state-observation#acbb77fe9e1e5b9f57eb8e525cdc7495f) | `slide?: number` |
+
+## 变量说明
+
+<a id="a6171ae7928940343346bce2578683319"></a>
+
+### status
+
+```text
+status: "pending" | "success"
+```
+
+页面观察状态：pending 或 success；并非背景图或教具初始化状态。
+
+<a id="a5f5b9bb6ac876d735c7daf05063d71c2"></a>
+
+### changeType
+
+```text
+changeType?: "page" | "scale"
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="a05d50ff31de5cef13ee68ff206cc657e"></a>
+
+### mainView
+
+```text
+mainView?: number
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="a030dd48248abc3c9f836f8de20b8a8dc"></a>
+
+### presentation
+
+```text
+presentation?: number
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="a0f6372093e1083dadbc6421e302796ac"></a>
+
+### view
+
+```text
+view?: number
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="acbb77fe9e1e5b9f57eb8e525cdc7495f"></a>
+
+### slide
+
+```text
+slide?: number
+```
+
+类型成员，必填性和返回类型以声明为准。

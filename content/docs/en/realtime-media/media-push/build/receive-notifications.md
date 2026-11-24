@@ -204,13 +204,13 @@ To do this, take the following steps:
 
 1. In [Agora Console](https://console.agora.io), select **Webhooks** from the sidebar.
 
-1. Select **New Webhook**.
+2. Select **New Webhook**.
 
-1. From the **Product** dropdown, select **Media Push**.
+3. From the **Product** dropdown, select **Media Push**.
 
-1. Copy the **Signing Secret**. You use this secret to [Add signature verification](#add-signature-verification).
+4. Copy the **Signing Secret**. You use this secret to [Add signature verification](#add-signature-verification).
 
-1. Fill in the following:
+5. Fill in the following:
 
    * **Region**: Select the region where your server that receives the notifications is located. Agora connects to the nearest Agora node server based on your selection.
 
@@ -229,13 +229,13 @@ To do this, take the following steps:
    * `KeepAliveTimeout`: 10 seconds or more
    :::
 
-1. Select **Run health check**. Agora performs a health test for your configuration as follows:
+6. Select **Run health check**. Agora performs a health test for your configuration as follows:
 
    1. The health test generates test events that correspond to your subscribed events, and then sends test event callbacks to your server.
 
-   1. After receiving each test event callback, your server must respond within 10 seconds with a status code of `200`. The response body must be in JSON format.
+   2. After receiving each test event callback, your server must respond within 10 seconds with a status code of `200`. The response body must be in JSON format.
 
-1. When the health check succeeds, select **Save**.
+7. When the health check succeeds, select **Save**.
 
    If the health check fails, follow the prompt in Agora Console to troubleshoot the error. Common errors include the following:
 
@@ -338,7 +338,7 @@ The request body of notification callbacks contains the following fields:
 
 The product ID:
 
-- `1`: Realtime Communication (RTC) service
+- `1`: RTC service
 - `3`: Cloud Recording
 - `4`: Media Pull
 - `5`: Media Push

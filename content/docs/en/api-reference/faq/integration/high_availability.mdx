@@ -1,0 +1,26 @@
+---
+title: "How does Cloud Recording handle a disconnected server or a killed process?"
+---
+
+If a recording server is disconnected or its process is killed, Cloud Recording enables its high availability mechanism. The service switches to a new server within 90 seconds and resumes the recording automatically.
+
+## Why did the names of the recorded files change?
+
+After the failure is confirmed and the recording task migrates to a new server, the task generates a new M3U8 file. This file indexes the slice files recorded after the service resumes. The file name gets a `bak<n>` prefix, where `n` is the index of the migration, starting from `0` for the first migration.
+
+For example, in composite recording mode, the M3U8 file name is `<sid>_<cname>.m3u8`. After the first migration, the recording service generates a new M3U8 file named `bak0_<sid>_<cname>.m3u8`.
+
+:::info
+- After a migration, the TS, WebM, and other files that the recording task generates also get the `bak<n>` prefix.
+- A recording task can migrate at most three times. If a fourth migration occurs, the recording task stops.
+:::
+
+For more information about the recorded files and how to merge them, see [Server disconnected or process killed](/en/realtime-media/cloud-recording/build/process-recorded-files/manage-files#server-disconnected-or-process-killed).
+
+## Why does `query` return 404?
+
+When a migration occurs, the service takes up to 120 seconds to detect the failure and request the migration. Until the recording task resumes, calls to `query`, `updateLayout`, or `stop` return 404.
+
+## Why is the UID in notifications different from the recording UID I set?
+
+After a migration, the new recording task uses a randomly generated UID, and the original UID is no longer used.

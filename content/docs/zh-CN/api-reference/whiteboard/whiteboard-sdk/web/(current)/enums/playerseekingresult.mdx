@@ -1,0 +1,79 @@
+---
+title: PlayerSeekingResult
+description: Whiteboard Web SDK 2.16.59 公开 enum。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/enums/playerseekingresult
+  sourcePath: html-docs/whiteboard/Web/enums/playerseekingresult.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare enum PlayerSeekingResult {
+    /**
+     * 跳转进度条成功，并修改了进度
+     */
+    Success = "success",
+    /**
+     * 跳转进度条成功，但并未更新进度
+     */
+    SuccessButUnnecessary = "successButUnnecessary",
+    /**
+     * 跳转事件被另一个跳转操作覆盖，因此被取消
+     */
+    Override = "override",
+    /**
+     * 播放器停止，因而终止本次跳转行为
+     */
+    Stopped = "stopped",
+}
+```
+
+## 成员
+
+- [Success](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/playerseekingresult#success)
+- [SuccessButUnnecessary](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/playerseekingresult#successbutunnecessary)
+- [Override](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/playerseekingresult#override)
+- [Stopped](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/playerseekingresult#stopped)
+
+<a id="success"></a>
+
+### Success
+
+`Success = "success";`
+
+```text
+跳转进度条成功，并修改了进度
+```
+
+<a id="successbutunnecessary"></a>
+
+### SuccessButUnnecessary
+
+`SuccessButUnnecessary = "successButUnnecessary";`
+
+```text
+跳转进度条成功，但并未更新进度
+```
+
+<a id="override"></a>
+
+### Override
+
+`Override = "override";`
+
+```text
+跳转事件被另一个跳转操作覆盖，因此被取消
+```
+
+<a id="stopped"></a>
+
+### Stopped
+
+`Stopped = "stopped";`
+
+```text
+播放器停止，因而终止本次跳转行为
+```

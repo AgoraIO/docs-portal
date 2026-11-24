@@ -1,0 +1,28 @@
+---
+title: "VideoEncodedFrameObserver 类"
+---
+<span className="index-desc-videoencodedframeobserver">`VideoEncodedFrameObserver` 类</span>
+
+<a id="onencodedvideoframe"></a>
+## OnEncodedVideoFrame
+
+```go
+OnEncodedVideoFrame func(uid string, imageBuffer []byte, frameInfo *EncodedVideoFrameInfo) bool
+```
+
+<span className="index-desc-onencodedvideoframe">每次收到已编码视频帧时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `uid` | 远端用户的用户 ID。             |
+| `imageBuffer` | 视频帧缓冲区。             |
+| `frameInfo`| 已编码视频帧信息。详见 [`EncodedVideoFrameInfo`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#encodedvideoframeinfo)         |
+
+#### 返回值
+
+是否接受已编码视频帧：
+
+- `true`: 接受。
+- `false`: 不接受。

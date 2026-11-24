@@ -1,0 +1,154 @@
+---
+title: AppliancePluginExtrasOptions interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_appliance_plugin_extras_options
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_appliance_plugin_extras_options.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+appliancePluginOptions.extras 的扩展配置，包含 cursor、同步、绘制和 Worker 选项。
+
+可从 @shengwang/whiteboard 直接导入 AppliancePluginExtrasOptions。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface AppliancePluginExtrasOptions
+```
+
+| [useWorker](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-plugin-extras-options#a33c5f4b97e01e30b60f1e42aae2f771b) | `useWorker?: 'auto' \| 'mainThread'` |
+| --- | --- |
+| [useSimple](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-plugin-extras-options#a933b61e29f16e47b1fbffe20595f82ae) | `useSimple?: boolean` |
+| [useBackgroundThread](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-plugin-extras-options#a1eb2eab38bcc78657327d4c60d107e95) | `useBackgroundThread?: boolean` |
+| [canvasOpt](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-plugin-extras-options#ae902ef8137bde29f702c0a350b556aaf) | `canvasOpt?: ApplianceCanvasOptions` |
+| [cursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-plugin-extras-options#ac949aebb312f5f27eaa51ba6f6bd7669) | `cursor?: ApplianceCursorOptions` |
+| [syncOpt](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-plugin-extras-options#adaa559c108e38d36fc4690523d7f8809) | `syncOpt?: ApplianceSyncOptions` |
+| [bezier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-plugin-extras-options#a20c175fab940030d3e9cb6e4c3931357) | `bezier?: ApplianceBezierOptions` |
+| [textEditor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-plugin-extras-options#aeee67efb45f592dae0295e18b437d2e8) | `textEditor?: ApplianceTextEditorOptions` |
+| [allowImageBitmapFallback](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-plugin-extras-options#ab431561ad00f42ec36268a16f8183c38) | `allowImageBitmapFallback?: boolean` |
+| [workerRenderModeBlacklist](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-plugin-extras-options#afd83a30969a8cd5fcec2f188b5a6bd82) | `workerRenderModeBlacklist?: WorkerBlacklistByRuntime` |
+| [workerCanvasContextBlacklist](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-plugin-extras-options#adff99024f5eecb8c1df57ce5f778ef5d) | `workerCanvasContextBlacklist?: WorkerBlacklistByRuntime` |
+
+## 变量说明
+
+<a id="a33c5f4b97e01e30b60f1e42aae2f771b"></a>
+
+### useWorker
+
+```text
+useWorker?: 'auto' | 'mainThread'
+```
+
+是否使用 worker，默认 "auto"
+
+<a id="a933b61e29f16e47b1fbffe20595f82ae"></a>
+
+### useSimple
+
+```text
+useSimple?: boolean
+```
+
+是否使用简单模式，默认 true
+
+<a id="a1eb2eab38bcc78657327d4c60d107e95"></a>
+
+### useBackgroundThread
+
+```text
+useBackgroundThread?: boolean
+```
+
+是否使用背景 Svg 功能，默认 false
+
+<a id="ae902ef8137bde29f702c0a350b556aaf"></a>
+
+### canvasOpt
+
+```text
+canvasOpt?: ApplianceCanvasOptions
+```
+
+画布配置项
+
+<a id="ac949aebb312f5f27eaa51ba6f6bd7669"></a>
+
+### cursor
+
+```text
+cursor?: ApplianceCursorOptions
+```
+
+同步光标配置，入口为 WhiteboardOptions.appliancePluginOptions.extras.cursor；字段可用，但 ApplianceCursorOptions 类型名未从包入口单独导出。
+
+<a id="adaa559c108e38d36fc4690523d7f8809"></a>
+
+### syncOpt
+
+```text
+syncOpt?: ApplianceSyncOptions
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="a20c175fab940030d3e9cb6e4c3931357"></a>
+
+### bezier
+
+```text
+bezier?: ApplianceBezierOptions
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="aeee67efb45f592dae0295e18b437d2e8"></a>
+
+### textEditor
+
+```text
+textEditor?: ApplianceTextEditorOptions
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="ab431561ad00f42ec36268a16f8183c38"></a>
+
+### allowImageBitmapFallback
+
+```text
+allowImageBitmapFallback?: boolean
+```
+
+是否允许使用 ImageBitmap 回读降级路径。
+
+<a id="afd83a30969a8cd5fcec2f188b5a6bd82"></a>
+
+### workerRenderModeBlacklist
+
+```text
+workerRenderModeBlacklist?: WorkerBlacklistByRuntime
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="adff99024f5eecb8c1df57ce5f778ef5d"></a>
+
+### workerCanvasContextBlacklist
+
+```text
+workerCanvasContextBlacklist?: WorkerBlacklistByRuntime
+```
+
+类型成员，必填性和返回类型以声明为准。

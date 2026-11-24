@@ -1,7 +1,12 @@
 import type { Folder, Item, Node, Root } from 'fumadocs-core/page-tree';
 import type { ReactNode } from 'react';
 import { resolveDocVersion } from './doc-versions';
-import type { DocsMeta, DocsNavScopeVersion } from './docs-meta-schema';
+import type {
+  DocsMeta,
+  DocsNavScope,
+  DocsNavScopeVersion,
+} from './docs-meta-schema';
+import { isSamePathOrDescendant } from './docs-routing';
 import {
   type DocsSidebarNode,
   getConfiguredIconName,
@@ -21,6 +26,7 @@ export type DocsSidebarHeaderVersion = {
 export type DocsSidebarHeader = {
   backHref?: string;
   backLabel?: string;
+  productDocsHref?: string;
   title: string;
   versionSwitcher?: {
     currentId: string;
@@ -58,16 +64,21 @@ type FolderAncestor = {
 };
 
 export function resolveDocsNavScope({
-  activePath,
+  activePath: requestedActivePath,
+  contentPath,
+  getNodePath,
   getNodeMeta,
   root,
   tab,
 }: {
   activePath: string;
+  contentPath?: string;
+  getNodePath?: (node: Folder) => string | undefined;
   getNodeMeta: GetDocsNodeMeta;
   root: Root;
   tab: string;
 }): DocsNavScopeResolution | null {
+  const activePath = requestedActivePath.split(/[?#]/)[0];
   const tabNode = findTabFolder(root, tab);
   if (!tabNode) {
     return null;
@@ -144,9 +155,19 @@ export function resolveDocsNavScope({
     }
   }
 
-  const ancestors = findFolderAncestorsByUrl(tabNode, activePath);
-  if (!ancestors) {
-    return null;
+  const ancestors = findFolderAncestorsByUrl(tabNode, activePath) ?? [];
+  if (!ancestors.length && contentPath && getNodePath) {
+    const visit = (node: Folder) => {
+      const path = getNodePath(node);
+      const directory = path?.slice(0, path.lastIndexOf('/') + 1);
+      if (directory && contentPath.startsWith(directory)) ancestors.push(node);
+      for (const child of node.children)
+        if (child.type === 'folder') visit(child);
+    };
+    visit(tabNode);
+    ancestors.sort(
+      (a, b) => (getNodePath(a)?.length ?? 0) - (getNodePath(b)?.length ?? 0),
+    );
   }
 
   const scopedAncestors = ancestors
@@ -155,16 +176,27 @@ export function resolveDocsNavScope({
       Boolean(item.meta?.navScope),
     );
 
-  const scope = scopedAncestors.at(-1);
+  const scope =
+    scopedAncestors.at(-1) ??
+    (activePath.startsWith('/zh-CN/')
+      ? findScopeByVersionHref(tabNode, activePath, getNodeMeta)
+      : undefined);
   if (!scope) {
     return null;
   }
 
-  const parentScope = scopedAncestors.at(-2);
+  const parentScope = findNearestVisibleParentScope(scopedAncestors);
+  const versions = resolveContextVersions(
+    scope.node,
+    scope.meta.navScope,
+    activePath,
+  );
   const activeVersion = resolveActiveVersion({
     activePath,
+    contentPath,
+    getNodePath,
     scope: scope.node,
-    versions: scope.meta.navScope?.versions,
+    versions,
   });
   const sidebarRoot = activeVersion?.node ?? scope.node;
   const backTarget = parentScope
@@ -188,7 +220,7 @@ export function resolveDocsNavScope({
     activeVersion,
     presentation: scope.meta.navScope?.presentation,
     scope: scope.node,
-    versions: scope.meta.navScope?.versions,
+    versions,
   });
 
   if (versionSwitcher) {
@@ -213,6 +245,133 @@ export function resolveDocsNavScope({
     },
     sidebarRoot,
   };
+}
+
+function findScopeByVersionHref(
+  folder: Folder,
+  activePath: string,
+  getNodeMeta: GetDocsNodeMeta,
+): (FolderAncestor & { meta: DocsMeta }) | undefined {
+  const meta = getNodeMeta(folder);
+  const contextPath = meta?.navScope?.versionOverrides?.length
+    ? getScopeContextPath(folder, meta.navScope)
+    : undefined;
+  if (
+    (contextPath && isSamePathOrDescendant(activePath, contextPath)) ||
+    meta?.navScope?.versions?.some(
+      (version) =>
+        version.href && isSamePathOrDescendant(activePath, version.href),
+    )
+  ) {
+    if (meta) return { meta, node: folder };
+  }
+
+  for (const child of folder.children) {
+    if (child.type !== 'folder') {
+      continue;
+    }
+
+    const scope = findScopeByVersionHref(child, activePath, getNodeMeta);
+    if (scope) {
+      return scope;
+    }
+  }
+
+  return undefined;
+}
+
+function resolveContextVersions(
+  scope: Folder,
+  navScope: DocsNavScope | undefined,
+  activePath: string,
+): DocsNavScopeVersion[] | undefined {
+  if (!navScope?.versionOverrides?.length) return navScope?.versions;
+
+  const contextPath = getScopeContextPath(scope, navScope);
+  if (!contextPath) return navScope.versions;
+
+  const override = navScope.versionOverrides
+    .filter(({ path }) =>
+      isSamePathOrDescendant(activePath, `${contextPath}/${path}`),
+    )
+    .sort(
+      (left, right) =>
+        right.path.split('/').length - left.path.split('/').length,
+    )
+    .at(0);
+
+  return override?.versions ?? navScope.versions;
+}
+
+function getScopeContextPath(
+  scope: Folder,
+  navScope: DocsNavScope,
+): string | undefined {
+  const urls = getLocalPageUrls(scope);
+  const current = navScope.versions?.find(
+    ({ id, path }) =>
+      path === '.' &&
+      id === (navScope.defaultVersion ?? navScope.versions?.[0]?.id),
+  );
+  const currentHref =
+    current?.href?.startsWith('/') && !current.href.startsWith('//')
+      ? current.href.split(/[?#]/)[0]
+      : undefined;
+  const anchor = currentHref ?? scope.index?.url;
+
+  // A current href may be a landing page rather than the folder itself. Keep
+  // cross-scope sidebar links out of this trusted local boundary calculation.
+  if (anchor?.startsWith('/') && !anchor.startsWith('//')) {
+    const path = anchor.replace(/\/$/, '');
+    // Without an explicit current href, the canonical index is also the
+    // version entry point. Cross-scope sidebar links cannot widen its boundary.
+    if (!currentHref) return path;
+
+    // Explicit override entry points also establish the directory boundary
+    // when its descendants are hidden or absent from the visible page tree.
+    const hasOverrideDescendant = navScope.versionOverrides?.some((override) =>
+      override.versions.some(
+        (version) =>
+          version.path === '.' &&
+          version.href &&
+          isSamePathOrDescendant(
+            version.href.split(/[?#]/)[0],
+            `${path}/${override.path}`,
+          ),
+      ),
+    );
+    return urls.some((url) => url.startsWith(`${path}/`)) ||
+      hasOverrideDescendant
+      ? path
+      : path.slice(0, path.lastIndexOf('/')) || undefined;
+  }
+
+  const [first, ...rest] = urls.map((url) => url.split('/'));
+  if (!first) return undefined;
+
+  const common = first.slice();
+  for (const segments of rest) {
+    while (!common.every((segment, index) => segments[index] === segment)) {
+      common.pop();
+    }
+  }
+  if (urls.length === 1) common.pop();
+  return common.join('/') || undefined;
+}
+
+function getLocalPageUrls(folder: Folder): string[] {
+  const pages = folder.index
+    ? [folder.index, ...folder.children]
+    : folder.children;
+  return pages.flatMap((node) => {
+    if (node.type === 'folder') return getLocalPageUrls(node);
+    return node.type === 'page' &&
+      !node.external &&
+      node.url.startsWith('/') &&
+      !node.url.startsWith('//')
+      ? [node.url.split(/[?#]/)[0]]
+      : [];
+  });
 }
 
 export function getNavScopeSidebarNodes({
@@ -243,11 +402,39 @@ export function getScopedNavScopeSidebarNodes({
   getNodeMeta: GetDocsNodeMeta;
   navScope: DocsNavScopeResolution;
 }): DocsSidebarNode[] {
-  return flattenNavScopeSidebarNodes(
-    navScope.sidebarRoot,
-    getNodeMeta,
-    navScope.scope.meta,
-  );
+  const versionSidebar =
+    navScope.activeVersion?.sidebar ?? navScope.scope.meta.navScope?.sidebar;
+  if (versionSidebar) {
+    return versionSidebar.map((entry) =>
+      'pages' in entry
+        ? {
+            children: entry.pages.map(({ title, url }) => ({
+              id: url,
+              title,
+              type: 'page' as const,
+              url,
+            })),
+            collapsible: entry.collapsible ?? true,
+            id: `version-sidebar-${entry.title}`,
+            title: entry.title,
+            type: 'section' as const,
+          }
+        : {
+            id: entry.url,
+            title: entry.title,
+            type: 'page' as const,
+            url: entry.url,
+          },
+    );
+  }
+
+  const sidebarRootMeta = getNodeMeta(navScope.sidebarRoot);
+  return flattenNavScopeSidebarNodes(navScope.sidebarRoot, getNodeMeta, {
+    ...navScope.scope.meta,
+    ...(sidebarRootMeta?.sidebarLabels
+      ? { sidebarLabels: sidebarRootMeta.sidebarLabels }
+      : {}),
+  });
 }
 
 export function getSharedNavScopeSidebarNodes({
@@ -330,6 +517,19 @@ function hasNavScopeDescendant(
   );
 }
 
+function findNearestVisibleParentScope(
+  ancestors: Array<FolderAncestor & { meta: DocsMeta }>,
+) {
+  for (let index = ancestors.length - 2; index >= 0; index -= 1) {
+    const ancestor = ancestors[index];
+    if (!ancestor.meta.sidebarHidden) {
+      return ancestor;
+    }
+  }
+
+  return undefined;
+}
+
 function flattenParentNavScopeSidebarNodes(
   folder: Folder,
   tab: string,
@@ -349,14 +549,16 @@ function flattenParentNavScopeSidebarNodes(
 
   let currentSection: Extract<DocsSidebarNode, { type: 'section' }> | null =
     null;
+  let hideCurrentGroup = false;
 
   for (const child of folder.children) {
     if (child.type === 'separator') {
       const group = parseSidebarGroupMetadata(child.name);
       const title = group.title;
       currentSection = null;
+      hideCurrentGroup = group.sidebarHidden === true;
 
-      if (title.length > 0) {
+      if (!hideCurrentGroup && title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
@@ -372,7 +574,15 @@ function flattenParentNavScopeSidebarNodes(
       continue;
     }
 
-    for (const node of navScopeParentNodeToSidebarNodes(child, getNodeMeta)) {
+    if (hideCurrentGroup) {
+      continue;
+    }
+
+    for (const node of navScopeParentNodeToSidebarNodes(
+      child,
+      getNodeMeta,
+      getFolderHref(folder).startsWith('/zh-CN/'),
+    )) {
       if (node.type === 'page' && node.url === indexUrl) {
         continue;
       }
@@ -391,20 +601,14 @@ function flattenParentNavScopeSidebarNodes(
 function navScopeParentNodeToSidebarNodes(
   node: Node,
   getNodeMeta: GetDocsNodeMeta,
+  chinese: boolean,
 ): DocsSidebarNode[] {
   if (node.type === 'separator') {
     return [];
   }
 
   if (node.type === 'page') {
-    return [
-      {
-        id: node.url,
-        title: normalizeLabel(node.name, node.url),
-        type: 'page',
-        url: node.url,
-      },
-    ];
+    return [pageTreePageToSidebarNode(node, chinese)];
   }
 
   if (node.type !== 'folder') {
@@ -422,6 +626,19 @@ function navScopeParentNodeToSidebarNodes(
   return hasNavScopeDescendant(node, getNodeMeta)
     ? pageTreeFolderToParentSidebarNodes(node, getNodeMeta)
     : navScopeNodeToSidebarNodes(node, getNodeMeta);
+}
+
+function pageTreePageToSidebarNode(
+  item: Item,
+  chinese: boolean,
+): DocsSidebarNode {
+  return {
+    ...(chinese && item.external ? { external: true, href: item.url } : {}),
+    id: item.url,
+    title: normalizeLabel(item.name, item.url),
+    type: 'page',
+    url: item.url,
+  };
 }
 
 function flattenNavScopeSidebarNodes(
@@ -445,14 +662,16 @@ function flattenNavScopeSidebarNodes(
 
   let currentSection: Extract<DocsSidebarNode, { type: 'section' }> | null =
     null;
+  let hideCurrentGroup = false;
 
   for (const child of folder.children) {
     if (child.type === 'separator') {
       const group = parseSidebarGroupMetadata(child.name);
       const title = group.title;
       currentSection = null;
+      hideCurrentGroup = group.sidebarHidden === true;
 
-      if (title.length > 0) {
+      if (!hideCurrentGroup && title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
@@ -468,7 +687,15 @@ function flattenNavScopeSidebarNodes(
       continue;
     }
 
-    for (const node of navScopeNodeToSidebarNodes(child, getNodeMeta)) {
+    if (hideCurrentGroup) {
+      continue;
+    }
+
+    for (const node of navScopeNodeToSidebarNodes(
+      child,
+      getNodeMeta,
+      rootMeta,
+    )) {
       if (node.type === 'page' && node.url === indexUrl) {
         continue;
       }
@@ -560,6 +787,7 @@ function remapSharedSidebarUrl(
 function navScopeNodeToSidebarNodes(
   node: Node,
   getNodeMeta: GetDocsNodeMeta,
+  rootMeta?: DocsMeta,
 ): DocsSidebarNode[] {
   if (node.type === 'separator') {
     return [];
@@ -568,8 +796,11 @@ function navScopeNodeToSidebarNodes(
   if (node.type === 'page') {
     return [
       {
+        ...(node.external ? { external: true } : {}),
         id: node.url,
-        title: normalizeLabel(node.name, node.url),
+        title:
+          rootMeta?.sidebarLabels?.[node.url] ??
+          normalizeLabel(node.name, node.url),
         type: 'page',
         url: node.url,
       },
@@ -587,21 +818,23 @@ function navScopeNodeToSidebarNodes(
   if (meta?.navScope) {
     return shouldUseScopedFolderEntryInParent(node, meta, getNodeMeta)
       ? [getFolderPageNode(node, meta)]
-      : pageTreeNodeToSidebarNodes(node);
+      : pageTreeNodeToSidebarNodes(node, rootMeta?.sidebarLabels);
   }
 
   if (node.index && node.children.length === 0) {
     return [
       {
         id: node.index.url,
-        title: normalizeLabel(node.index.name, node.index.url),
+        title:
+          rootMeta?.sidebarLabels?.[node.index.url] ??
+          normalizeLabel(node.index.name, node.index.url),
         type: 'page',
         url: node.index.url,
       },
     ];
   }
 
-  return pageTreeNodeToSidebarNodes(node);
+  return pageTreeNodeToSidebarNodes(node, rootMeta?.sidebarLabels);
 }
 
 function pageTreeFolderToParentSidebarNodes(
@@ -613,14 +846,16 @@ function pageTreeFolderToParentSidebarNodes(
     null;
   let currentSection: Extract<DocsSidebarNode, { type: 'section' }> | null =
     null;
+  let hideCurrentGroup = false;
 
   for (const child of node.children) {
     if (child.type === 'separator') {
       const group = parseSidebarGroupMetadata(child.name);
       const title = group.title;
       currentSection = null;
+      hideCurrentGroup = group.sidebarHidden === true;
 
-      if (title.length > 0) {
+      if (!hideCurrentGroup && title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
@@ -636,9 +871,14 @@ function pageTreeFolderToParentSidebarNodes(
       continue;
     }
 
+    if (hideCurrentGroup) {
+      continue;
+    }
+
     for (const sidebarNode of navScopeParentNodeToSidebarNodes(
       child,
       getNodeMeta,
+      getFolderHref(node).startsWith('/zh-CN/'),
     )) {
       if (pendingIndexNode) {
         if (currentSection) {
@@ -727,7 +967,7 @@ function getFolderPageNode(
   const href = getFolderHref(node);
   return {
     id: href,
-    title: getMetaTitle(meta, node),
+    title: meta.sidebarIndexTitle ?? getMetaTitle(meta, node),
     type: 'page',
     url: href,
   };
@@ -749,10 +989,14 @@ function getFolderLinkedSectionNode(
 
 function resolveActiveVersion({
   activePath,
+  contentPath,
+  getNodePath,
   scope,
   versions,
 }: {
   activePath: string;
+  contentPath?: string;
+  getNodePath?: (node: Folder) => string | undefined;
   scope: Folder;
   versions?: DocsNavScopeVersion[];
 }) {
@@ -761,16 +1005,39 @@ function resolveActiveVersion({
   }
 
   const matches = versions.flatMap((version) => {
-    const node = findVersionFolder(scope, version);
-    if (!node || !nodeContainsUrl(node, activePath)) {
+    const node = findVersionFolder(scope, version) ?? scope;
+    const versionNode = findVersionFolder(scope, version);
+    const sourcePath = versionNode && getNodePath?.(versionNode);
+    const sourceDirectory = sourcePath?.slice(
+      0,
+      sourcePath.lastIndexOf('/') + 1,
+    );
+    const ownsSource = Boolean(
+      contentPath && sourceDirectory && contentPath.startsWith(sourceDirectory),
+    );
+    const matchesVersion =
+      ownsSource ||
+      (version.href
+        ? isSamePathOrDescendant(activePath, version.href)
+        : nodeContainsUrl(node, activePath));
+
+    if (!matchesVersion) {
       return [];
     }
 
-    return [{ ...version, node }];
+    return [
+      {
+        ...version,
+        node,
+        specificity: ownsSource
+          ? (sourceDirectory?.length ?? 0)
+          : (version.href?.length ?? 0),
+      },
+    ];
   });
 
   return (
-    matches.at(0) ??
+    matches.sort((left, right) => right.specificity - left.specificity).at(0) ??
     versions
       .map((version) => {
         const node = findVersionFolder(scope, version);
@@ -827,6 +1094,15 @@ function resolveVersionSwitcherLinks({
 
   return versions.flatMap((version) => {
     const node = findVersionFolder(scope, version);
+    if (version.href) {
+      return [
+        {
+          href: version.href,
+          id: version.id,
+          label: version.label,
+        },
+      ];
+    }
     if (!node) {
       return [];
     }
@@ -846,7 +1122,34 @@ function resolveVersionSwitcherLinks({
 
 function findTabFolder(root: Root, activeTab: string): Folder | null {
   for (const child of root.children) {
+    const result = findRootTabFolderInNode(child, activeTab);
+    if (result) {
+      return result;
+    }
+  }
+
+  for (const child of root.children) {
     const result = findTabFolderInNode(child, activeTab);
+    if (result) {
+      return result;
+    }
+  }
+
+  return null;
+}
+
+function findRootTabFolderInNode(node: Node, activeTab: string): Folder | null {
+  if (node.type !== 'folder') {
+    return null;
+  }
+
+  const index = getFolderIndex(node);
+  if (node.root === true && index && getTabIdFromUrl(index.url) === activeTab) {
+    return node;
+  }
+
+  for (const child of node.children) {
+    const result = findRootTabFolderInNode(child, activeTab);
     if (result) {
       return result;
     }
@@ -906,15 +1209,39 @@ function findVersionFolder(
   scope: Folder,
   version: DocsNavScopeVersion,
 ): Folder | null {
-  return (
-    scope.children.find(
-      (child): child is Folder =>
-        child.type === 'folder' &&
-        (String(child.name) === version.path ||
-          String(child.$id ?? '').includes(version.path) ||
-          folderPathMatchesVersion(child, version)),
-    ) ?? null
+  if (version.path === '.') {
+    return scope;
+  }
+
+  return findDescendantFolder(
+    scope,
+    (folder) =>
+      String(folder.name) === version.path ||
+      String(folder.$id ?? '').includes(version.path) ||
+      folderPathMatchesVersion(folder, version),
   );
+}
+
+function findDescendantFolder(
+  folder: Folder,
+  predicate: (folder: Folder) => boolean,
+): Folder | null {
+  for (const child of folder.children) {
+    if (child.type !== 'folder') {
+      continue;
+    }
+
+    if (predicate(child)) {
+      return child;
+    }
+
+    const match = findDescendantFolder(child, predicate);
+    if (match) {
+      return match;
+    }
+  }
+
+  return null;
 }
 
 function folderPathMatchesVersion(

@@ -1,0 +1,51 @@
+%% 保留原文状态、编号及流转条件；使用 ELK 正交连线区分主流程与终态分支。
+%%{init: {
+  "theme": "base",
+  "fontFamily": "Arial, PingFang SC, Microsoft YaHei, sans-serif",
+  "themeVariables": {
+    "fontSize": "22px",
+    "lineColor": "#61758a",
+    "edgeLabelBackground": "#ffffff"
+  },
+  "flowchart": {
+    "defaultRenderer": "elk",
+    "curve": "linear",
+    "htmlLabels": true,
+    "padding": 8
+  },
+  "elk": {
+    "mergeEdges": false,
+    "nodePlacementStrategy": "NETWORK_SIMPLEX"
+  }
+}}%%
+flowchart TB
+    CallerIdle["待发起<br/>IDLE(0)"]
+    CallerSending["发送邀请<br/>SENT_TO_CALLEE(1)"]
+    CallerWaiting["等待回应<br/>RECEIVED_BY_CALLEE(2)"]
+    CallerAccepted["已接受<br/>ACCEPTED_BY_CALLEE(3)"]
+    CallerRefused["已拒绝<br/>REFUSED_BY_CALLEE(4)"]
+    CallerCanceled["已取消<br/>CANCELED(5)"]
+    CallerFailure["失败<br/>FAILURE(6)"]
+    Start((" "))
+    Start --> CallerIdle
+    CallerIdle -->|"start"| CallerSending
+    CallerSending -->|"发送失败后重试"| CallerSending
+    CallerSending -->|"邀请发送成功"| CallerWaiting
+    CallerSending -->|"cancel"| CallerCanceled
+    CallerSending -->|"重试耗尽 / 发送超时<br/>/ 销毁"| CallerFailure
+    CallerWaiting -->|"收到接听，回复确认"| CallerAccepted
+    CallerWaiting -->|"收到拒绝"| CallerRefused
+    CallerWaiting -->|"cancel"| CallerCanceled
+    CallerWaiting -->|"等待超时 / 销毁"| CallerFailure
+    classDef active fill:#eff6ff,stroke:#6897c4,color:#183b61;
+    classDef accepted fill:#effaf3,stroke:#6ca782,color:#24573b;
+    classDef ended fill:#f5f7fa,stroke:#9aa9bb,color:#405267;
+    classDef failure fill:#fff4f2,stroke:#ca8a80,color:#8a3c33;
+    classDef start fill:#61758a,stroke:#61758a;
+    class CallerIdle,CallerSending,CallerWaiting active;
+    class CallerAccepted accepted;
+    class CallerRefused,CallerCanceled ended;
+    class CallerFailure failure;
+    class Start start;
+    linkStyle 0,1,3,6 stroke:#3279b7,stroke-width:2px;
+    linkStyle 2 stroke-dasharray:4 3;

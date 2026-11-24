@@ -1,0 +1,40 @@
+---
+title: UserOfflineReasonType
+description: 用户离线原因。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/enum_userofflinereasontype
+  sourcePath: html-docs/rtc/Electron/API/enum_userofflinereasontype.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_userofflinereasontype__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="userofflinequit"></a>
+<Parameter name="UserOfflineQuit">
+
+0: 用户主动离开。
+
+</Parameter>
+<a id="userofflinedropped"></a>
+<Parameter name="UserOfflineDropped">
+
+1: 因过长时间收不到对方数据包，超时掉线。
+
+:::note
+注： 由于 SDK 使用的是不可靠通道，也有可能对方主动离开频道，但是本地没收到对方离开消息而误判为超时掉线。
+:::
+
+</Parameter>
+<a id="userofflinebecomeaudience"></a>
+<Parameter name="UserOfflineBecomeAudience">
+
+2: 用户身份从主播切换为观众。
+
+</Parameter>
+</ParameterList>

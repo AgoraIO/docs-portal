@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
 import type { OpenApiSchemaViewNode } from '@/lib/openapi/schema-view';
+import { useGlobalSchemaPresentation } from './GlobalSchemaPresentation';
 import {
   OpenApiSchemaMetadata,
   type OpenApiSchemaMetadataItem,
@@ -23,9 +24,11 @@ export type OpenApiSchemaFieldRowLabels = {
 
 export type OpenApiSchemaFieldRowProps = {
   copied: boolean;
+  detailsCollapsible?: boolean;
   domId?: string;
   expanded: boolean;
   labels: OpenApiSchemaFieldRowLabels;
+  legacyAnchorIds?: string[];
   node: OpenApiSchemaViewNode;
   onCopy: () => void;
   onExpandedChange: (expanded: boolean) => void;
@@ -34,15 +37,25 @@ export type OpenApiSchemaFieldRowProps = {
 
 export function OpenApiSchemaFieldRow({
   copied,
+  detailsCollapsible = false,
   domId,
   expanded,
   labels,
+  legacyAnchorIds = [],
   node,
   onCopy,
   onExpandedChange,
   remainingInfoTags = [],
 }: OpenApiSchemaFieldRowProps) {
-  const expandable = node.children.length > 0;
+  const global = useGlobalSchemaPresentation();
+  const expandable = node.children.length > 0 || detailsCollapsible;
+  const isSyntheticVariant =
+    node.name === '[key: string]' && Boolean(node.variant);
+  const displayName = isSyntheticVariant ? node.variant : node.name;
+  const displayType =
+    node.schema.type === 'primitive' || node.schema.type === 'array'
+      ? node.schema.typeName
+      : node.schema.aliasName;
   const fieldIdentity = (
     <>
       <code
@@ -50,12 +63,16 @@ export function OpenApiSchemaFieldRow({
           'min-w-0 break-words font-mono text-sm font-semibold [overflow-wrap:anywhere]',
         )}
       >
-        {node.name}
+        {displayName}
       </code>
-      <span className="min-w-0 break-words font-mono text-sm text-muted-foreground [overflow-wrap:anywhere]">
-        {node.schema.aliasName}
-      </span>
-      {node.variant ? (
+      {!isSyntheticVariant &&
+      (global || node.schema.typeSpecified !== false) &&
+      displayType !== displayName ? (
+        <span className="min-w-0 break-words font-mono text-sm text-muted-foreground [overflow-wrap:anywhere]">
+          {displayType}
+        </span>
+      ) : null}
+      {!isSyntheticVariant && node.variant ? (
         <span
           className="min-w-0 break-words text-xs text-muted-foreground [overflow-wrap:anywhere]"
           data-openapi-schema-variant=""
@@ -88,7 +105,7 @@ export function OpenApiSchemaFieldRow({
 
   return (
     <div
-      className="openapi-schema-field-row min-w-0 scroll-mt-24 border-t border-border py-3 first:border-t-0 [overflow-wrap:anywhere]"
+      className="openapi-schema-field-row relative min-w-0 scroll-mt-24 border-t border-border py-3 first:border-t-0 [overflow-wrap:anywhere]"
       id={domId ?? node.id}
     >
       <div className="flex min-w-0 items-start gap-2 text-sm">
@@ -96,7 +113,7 @@ export function OpenApiSchemaFieldRow({
           className="openapi-schema-field-leading flex min-w-0 flex-1 flex-wrap items-center gap-x-1.5 gap-y-1"
           data-openapi-field-leading={expandable ? 'expandable' : 'leaf'}
         >
-          {expandable ? (
+          {expandable && global ? (
             <>
               <span
                 className="flex size-3 shrink-0 items-center justify-center"
@@ -125,8 +142,35 @@ export function OpenApiSchemaFieldRow({
                 {fieldStatuses}
               </span>
             </>
+          ) : expandable ? (
+            <Button
+              aria-expanded={expanded}
+              aria-label={`${expanded ? labels.collapse : labels.expand} ${node.name} ${labels.properties}`}
+              className="h-auto min-h-11 min-w-0 w-full cursor-pointer justify-start gap-1.5 whitespace-normal px-0 py-1 text-left hover:bg-muted/50"
+              data-openapi-field-toggle=""
+              onClick={() => onExpandedChange(!expanded)}
+              type="button"
+              variant="ghost"
+            >
+              <span
+                className="flex size-3 shrink-0 items-center justify-center"
+                data-openapi-field-gutter
+              >
+                <ChevronRight
+                  aria-hidden="true"
+                  className={cn(
+                    'size-3 transition-transform',
+                    expanded && 'rotate-90',
+                  )}
+                />
+              </span>
+              <span className="openapi-schema-field-content flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+                {fieldIdentity}
+                {fieldStatuses}
+              </span>
+            </Button>
           ) : (
-            <div className="flex min-w-0 items-center gap-1.5">
+            <div className="flex min-h-11 min-w-0 items-center gap-1.5">
               <span
                 aria-hidden="true"
                 className="flex size-3 shrink-0 items-center justify-center"
@@ -141,7 +185,7 @@ export function OpenApiSchemaFieldRow({
         </div>
         <div className="ms-auto flex shrink-0 items-center gap-2">
           <Button
-            aria-label={`${copied ? labels.copiedLink : labels.copyLink} ${node.name}`}
+            aria-label={`${copied ? labels.copiedLink : labels.copyLink} ${displayName}`}
             className="text-muted-foreground"
             onClick={onCopy}
             size="icon-xs"
@@ -156,17 +200,29 @@ export function OpenApiSchemaFieldRow({
           </Button>
         </div>
       </div>
-      {node.schema.description || remainingInfoTags.length > 0 ? (
-        <div className="openapi-schema-field-details min-w-0">
-          {remainingInfoTags.length > 0 ? (
-            <OpenApiSchemaMetadata items={remainingInfoTags} />
-          ) : null}
-          {node.schema.description ? (
-            <div className="openapi-schema-field-description mt-2 min-w-0 break-words font-normal text-muted-foreground [overflow-wrap:anywhere]">
-              {node.schema.description}
-            </div>
-          ) : null}
-        </div>
+      {legacyAnchorIds
+        .filter((id) => id !== (domId ?? node.id))
+        .map((id) => (
+          <span
+            aria-hidden="true"
+            className="absolute left-0 top-0 size-0 scroll-mt-24"
+            id={id}
+            key={id}
+          />
+        ))}
+      {!detailsCollapsible || expanded ? (
+        node.schema.description || remainingInfoTags.length > 0 ? (
+          <div className="openapi-schema-field-details min-w-0">
+            {remainingInfoTags.length > 0 ? (
+              <OpenApiSchemaMetadata items={remainingInfoTags} />
+            ) : null}
+            {node.schema.description ? (
+              <div className="openapi-schema-field-description mt-2 min-w-0 break-words font-normal text-muted-foreground [overflow-wrap:anywhere]">
+                {node.schema.description}
+              </div>
+            ) : null}
+          </div>
+        ) : null
       ) : null}
     </div>
   );

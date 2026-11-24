@@ -1,7 +1,6 @@
-import { useTranslations } from '@fuma-translate/react';
 import { createLink } from '@tanstack/react-router';
-import {
-  type Accordion as FumadocsAccordion,
+import type {
+  Accordion as FumadocsAccordion,
   Accordions as FumadocsAccordions,
 } from 'fumadocs-ui/components/accordion';
 import { Card as FumadocsCard } from 'fumadocs-ui/components/card';
@@ -23,22 +22,25 @@ import {
   AccordionContent as FumadocsAccordionContent,
   AccordionHeader as FumadocsAccordionHeader,
   AccordionItem as FumadocsAccordionItem,
+  Accordion as FumadocsAccordionRoot,
   AccordionTrigger as FumadocsAccordionTrigger,
 } from 'fumadocs-ui/components/ui/accordion';
 import { buttonVariants } from 'fumadocs-ui/components/ui/button';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
-import { Check, LinkIcon } from 'lucide-react';
+import { ArrowRightIcon, Check, CopyCheckIcon, LinkIcon } from 'lucide-react';
 import type { MDXComponents } from 'mdx/types';
 import {
   type AnchorHTMLAttributes,
   Children,
   type ComponentProps,
   type ComponentType,
+  type CSSProperties,
   createContext,
   createElement,
   type Dispatch,
   isValidElement,
+  type MouseEvent,
   type ReactElement,
   type MouseEvent as ReactMouseEvent,
   type ReactNode,
@@ -49,10 +51,26 @@ import {
   useEffect,
   useEffectEvent,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useResourceAccountGuidance } from '@/components/account-guidance/AccountGuidance';
+import { getChineseAccountGuidanceResource } from '@/components/account-guidance/resource-registry';
+import {
+  Callout as FumadocsCallout,
+  CalloutContainer as FumadocsCalloutContainer,
+} from '@/components/Callout';
+import { DocsCodeBlock as Pre } from '@/components/DocsCodeBlock';
+import {
+  CodeBlockTabContext,
+  DocsCodeBlockTab as FumadocsCodeBlockTab,
+  DocsCodeBlockTabs as FumadocsCodeBlockTabs,
+  DocsCodeBlockTabsList as FumadocsCodeBlockTabsList,
+} from '@/components/DocsCodeBlockTabs';
+import { DocsLinkIcon } from '@/components/DocsLinkIcon';
 import {
   Dialog,
   DialogContent,
@@ -66,41 +84,65 @@ import {
   DOCS_HASH_TARGET_EVENT,
   findDocsHeadingForHash,
   getActiveDocsScrollContainer,
+  getDocsHashHref,
+  scrollDocsHashTargetAfterLayout,
 } from '@/lib/docs-hash';
 import {
   type NormalizedDocsHref,
   normalizeDocsHref,
 } from '@/lib/docs-link-normalize';
+import { DEFAULT_LOCALE, normalizeLocale } from '@/lib/i18n/i18n-config';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
+import { buildPlatformPathname } from '@/lib/platforms/route';
+import {
+  ApiReturns,
+  ApiReturnType,
+  ApiSignature,
+  Parameter,
+  ParameterList,
+  ParameterType,
+} from './mdx/ApiReference';
 import { DocsHeading } from './mdx/DocsHeading';
+import { DocsTable } from './mdx/DocsTable';
 import { PlanCards, PricingCards } from './mdx/PlanCards';
 import {
   PlatformInline,
   PlatformProcessedMarker,
   PlatformStructured,
 } from './mdx/PlatformContent';
-import { PlatformPanel, PlatformTabsGroup } from './mdx/PlatformTabsGroup';
+import {
+  PlatformPanel,
+  PlatformTabsGroup,
+  usePlatformPageContext,
+} from './mdx/PlatformTabsGroup';
 import { RepositoryCardTitle } from './mdx/RepositoryCardTitle';
 import { RTCMinutesCalculator } from './mdx/RTCMinutesCalculator';
+import { getReleaseNoteCategoryIcon } from './mdx/release-note-category';
+import { useTabScrollAnchor } from './mdx/useTabScrollAnchor';
 
 type MDXContext = {
   contentPath?: string;
+  locale?: string;
 };
 
 const IM_PRICING_DETAILS_CONTENT_PATH =
   'en/realtime-media/im/reference/pricing-plan-details.md';
 const FumadocsAnchor = defaultMdxComponents.a;
 const FumadocsTable = defaultMdxComponents.table;
-const FumadocsCodeBlockTab = defaultMdxComponents.CodeBlockTab;
-const FumadocsCodeBlockTabs = defaultMdxComponents.CodeBlockTabs;
-const FumadocsCodeBlockTabsList = defaultMdxComponents.CodeBlockTabsList;
+const FumadocsCards = defaultMdxComponents.Cards as ComponentType<
+  ComponentProps<'div'>
+>;
+const FumadocsCalloutTitle = defaultMdxComponents.CalloutTitle;
 const FumadocsImage = defaultMdxComponents.img;
 const RouterFumadocsAnchor = createLink(FumadocsAnchor);
 const RouterFumadocsCard = createLink(FumadocsCard);
 const CodeBlockTabsValueContext = createContext<string | undefined>(undefined);
 const MdxTabLabelsContext = createContext<Record<string, string>>({});
 const MdxTabLabelContext = createContext<string | undefined>(undefined);
-const MdxAccordionRootContext = createContext(false);
+const MdxAccordionRootContext = createContext<{
+  values: string[];
+  reveal: (value: string) => void;
+} | null>(null);
 
 type TabsRootProps = ComponentProps<typeof FumadocsTabs> & {
   children?: ReactNode;
@@ -110,6 +152,9 @@ type TabsRootProps = ComponentProps<typeof FumadocsTabs> & {
 };
 type DocsCardProps = ComponentProps<typeof FumadocsCard> &
   Pick<AnchorHTMLAttributes<HTMLAnchorElement>, 'download' | 'rel' | 'target'>;
+type DocsCardsProps = ComponentProps<'div'> & {
+  columns?: 2 | 3 | 4;
+};
 type AccordionsRootProps = Omit<
   ComponentProps<typeof FumadocsAccordions>,
   'defaultValue' | 'onValueChange' | 'type' | 'value'
@@ -127,43 +172,33 @@ type AccordionProps = Omit<
   'children' | 'id' | 'title' | 'value'
 > & {
   children?: ReactNode;
+  chinese?: boolean;
   headingLevel?: AccordionHeadingLevel;
   id?: string;
   title: ReactNode;
   value?: string;
 };
 type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
+  chinese?: boolean;
   children?: ReactNode;
   defaultValue?: string;
   groupId?: string;
   onValueChange?: (value: string) => void;
   value?: string;
 };
-type PreProps = CodeBlockProps;
-type ParameterListProps = ComponentProps<'div'> & {
-  nullable?: boolean;
-  optional?: boolean;
-  required?: boolean;
-  title?: ReactNode;
-};
-type ParameterProps = ComponentProps<'div'> & {
-  children?: ReactNode;
-  defaultValue?: ReactNode;
-  name?: ReactNode;
-  nullable?: boolean;
-  optional?: boolean;
-  possibleValues?: ReactNode;
-  required?: boolean;
-  type?: ReactNode;
-};
+type CalloutProps = ComponentProps<typeof FumadocsCallout>;
+type CalloutContainerProps = ComponentProps<typeof FumadocsCalloutContainer>;
+type PreProps = ComponentProps<typeof Pre>;
 type TabValueElement = ReactElement<{
   children?: ReactNode;
   value?: unknown;
 }>;
 
 const ControlledFumadocsTabs = FumadocsTabs as ComponentType<TabsRootProps>;
-const ControlledFumadocsAccordions =
-  FumadocsAccordions as ComponentType<AccordionsRootProps>;
+// This wrapper owns state/hash handling. Use the primitive's stable root ref.
+const ControlledFumadocsAccordions = FumadocsAccordionRoot as ComponentType<
+  AccordionsRootProps & { collapsible?: boolean }
+>;
 
 type ActiveAccordion = {
   rootId: string;
@@ -184,13 +219,42 @@ const AccordionPageStateContext = createContext<AccordionPageState | undefined>(
 
 function Accordion({
   children,
+  chinese = false,
   headingLevel,
   id,
   title,
   value = String(title),
   ...props
 }: AccordionProps) {
-  const hasAccordionRoot = useContext(MdxAccordionRootContext);
+  const accordionRoot = useContext(MdxAccordionRootContext);
+  const [standaloneValue, setStandaloneValue] = useState(value);
+  const contentRef = useRef<HTMLElement>(null);
+  const expanded = accordionRoot
+    ? accordionRoot.values.includes(value)
+    : standaloneValue === value;
+  const reveal = useEffectEvent(() => {
+    if (accordionRoot) accordionRoot.reveal(value);
+    else setStandaloneValue(value);
+  });
+  useLayoutEffect(() => {
+    const element = contentRef.current;
+    if (headingLevel === undefined || !element) return;
+    const supportsBeforeMatch = Reflect.has(element, 'onbeforematch');
+    if (expanded) {
+      element.removeAttribute('hidden');
+      element.style.removeProperty('display');
+    } else {
+      element.setAttribute('hidden', supportsBeforeMatch ? 'until-found' : '');
+      // display:block overrides the ordinary hidden attribute in older Safari.
+      // Keep SSR and unsupported browsers collapsed until the reader opens it.
+      if (supportsBeforeMatch) element.style.removeProperty('display');
+      else element.style.display = 'none';
+    }
+    if (!supportsBeforeMatch) return;
+    const handleBeforeMatch = () => reveal();
+    element.addEventListener('beforematch', handleBeforeMatch);
+    return () => element.removeEventListener('beforematch', handleBeforeMatch);
+  }, [expanded, headingLevel]);
   const titleContent = (
     <FumadocsAccordionTrigger>{title}</FumadocsAccordionTrigger>
   );
@@ -220,26 +284,49 @@ function Accordion({
     </FumadocsAccordionHeader>
   );
 
+  const body = (
+    <div className="px-4 pb-2 text-[0.9375rem] prose-no-margin">{children}</div>
+  );
   const accordionItem = (
     <FumadocsAccordionItem value={value} {...props}>
       {header}
       <FumadocsAccordionContent
-        data-toc-hidden={headingLevel !== undefined ? 'true' : undefined}
         className={
-          headingLevel !== undefined ? 'data-[state=closed]:hidden' : undefined
+          !chinese && headingLevel !== undefined
+            ? 'data-[state=closed]:hidden'
+            : undefined
         }
+        data-toc-hidden={headingLevel !== undefined ? 'true' : undefined}
         forceMount={headingLevel !== undefined ? true : undefined}
       >
-        <div className="px-4 pb-2 text-[0.9375rem] prose-no-margin">
-          {children}
-        </div>
+        {headingLevel === undefined || !chinese
+          ? body
+          : // A custom element preserves the until-found string when enhanced
+            // after hydration; SSR stays collapsed without browser assumptions.
+            createElement(
+              'docs-accordion-body',
+              {
+                className: 'block',
+                hidden: expanded ? undefined : '',
+                style: expanded ? undefined : { display: 'none' },
+                ref: contentRef,
+              },
+              body,
+            )}
       </FumadocsAccordionContent>
     </FumadocsAccordionItem>
   );
 
-  if (!hasAccordionRoot) {
+  if (!accordionRoot) {
     return (
-      <ControlledFumadocsAccordions defaultValue={value} type="single">
+      <ControlledFumadocsAccordions
+        collapsible
+        onValueChange={(next) =>
+          setStandaloneValue(typeof next === 'string' ? next : '')
+        }
+        type="single"
+        value={standaloneValue}
+      >
         {accordionItem}
       </ControlledFumadocsAccordions>
     );
@@ -249,17 +336,21 @@ function Accordion({
 }
 
 function AccordionCopyButton({ id }: { id: string }) {
-  const t = useTranslations({ note: 'accordion' });
+  const { t } = useTranslation('common');
+  const platform = usePlatformPageContext()?.activePlatform;
   const [checked, onClick] = useCopyButton(() => {
-    const url = new URL(window.location.href);
-    url.hash = id;
+    const url = new URL(getDocsHashHref(`#${id}`), window.location.href);
+    if (platform) {
+      url.pathname = buildPlatformPathname(url.pathname, platform);
+      url.searchParams.delete('platform');
+    }
     return navigator.clipboard.writeText(url.toString());
   });
 
   return (
     <button
       type="button"
-      aria-label={t('Copy Link', { note: 'aria-label' })}
+      aria-label={t('docs.copyLink')}
       className={cn(
         buttonVariants({
           color: 'ghost',
@@ -285,7 +376,7 @@ function firstVersionValue(children: ReactNode): string | undefined {
       return;
     }
 
-    if (child.type === Accordion) {
+    if (child.type === Accordion || child.type === ChineseAccordion) {
       const { headingLevel, title, value } = child.props as AccordionProps;
       if (headingLevel) {
         first = value ?? String(title);
@@ -316,7 +407,7 @@ function hasSevenColumnHeader(children: ReactNode) {
   });
 }
 
-function createDocsTableComponent(contentPath?: string) {
+function createPricingTableComponent(contentPath?: string) {
   const isPricingDetailsPage = contentPath === IM_PRICING_DETAILS_CONTENT_PATH;
 
   return function DocsTable({ className, ...props }: ComponentProps<'table'>) {
@@ -375,6 +466,94 @@ export function MDXAccordionProvider({ children }: { children: ReactNode }) {
 
 function escapeTabValue(value: string) {
   return value.toLowerCase().replace(/\s/, '-');
+}
+
+function DocsCallout(props: CalloutProps) {
+  const isSdkCompliance = props.title === 'SDK 合规信息公示';
+
+  if (!isSdkCompliance) {
+    return <FumadocsCallout {...props} />;
+  }
+
+  return (
+    <div data-sdk-compliance="true">
+      <FumadocsCallout {...props} />
+    </div>
+  );
+}
+
+function DocsCalloutContainer(props: CalloutContainerProps) {
+  const isSdkCompliance = hasSdkComplianceCalloutTitle(props.children);
+
+  if (!isSdkCompliance) {
+    return <FumadocsCalloutContainer {...props} />;
+  }
+
+  return (
+    <div data-sdk-compliance="true">
+      <FumadocsCalloutContainer {...props} />
+    </div>
+  );
+}
+
+const docsTableComponents = new Map<
+  string | undefined,
+  (props: ComponentProps<typeof DocsTable>) => ReactElement
+>();
+
+export function createDocsTableComponent(locale?: string) {
+  const cached = docsTableComponents.get(locale);
+  if (cached) return cached;
+  // biome-ignore lint/correctness/noComponentHookFactories: Cached by page/locale at module scope; identity is covered by regression tests.
+  function LocalizedDocsTable(props: ComponentProps<typeof DocsTable>) {
+    return <DocsTable {...props} locale={locale} />;
+  }
+  docsTableComponents.set(locale, LocalizedDocsTable);
+  return LocalizedDocsTable;
+}
+
+function hasSdkComplianceCalloutTitle(children: ReactNode): boolean {
+  let found = false;
+
+  Children.forEach(children, (child) => {
+    if (found || !isValidElement(child)) {
+      return;
+    }
+
+    const element = child as ReactElement<{ children?: ReactNode }>;
+
+    if (
+      element.type === FumadocsCalloutTitle &&
+      getPlainText(element.props.children) === 'SDK 合规信息公示'
+    ) {
+      found = true;
+      return;
+    }
+
+    if (hasSdkComplianceCalloutTitle(element.props.children)) {
+      found = true;
+    }
+  });
+
+  return found;
+}
+
+function getPlainText(value: ReactNode): string {
+  if (typeof value === 'string' || typeof value === 'number') {
+    return String(value);
+  }
+
+  if (Array.isArray(value)) {
+    return value.map(getPlainText).join('');
+  }
+
+  if (isValidElement(value)) {
+    const element = value as ReactElement<{ children?: ReactNode }>;
+
+    return getPlainText(element.props.children);
+  }
+
+  return '';
 }
 
 function collectTabValues(children: ReactNode, values: string[] = []) {
@@ -525,15 +704,79 @@ function useSafeTabValue({
   };
 }
 
+function useTabHashTarget({
+  rootRef,
+  setValue,
+  groupId,
+  persist,
+}: {
+  rootRef: { current: HTMLDivElement | null };
+  setValue: (value: string) => void;
+  groupId?: string;
+  persist?: boolean;
+}) {
+  const revealHashTab = useEffectEvent((url: string) => {
+    const root = rootRef.current;
+    const target = findDocsHeadingForHash(url);
+    if (!root || !target || !root.contains(target)) return;
+    for (
+      let panel: HTMLElement | null = target;
+      panel && panel !== root;
+      panel = panel.parentElement
+    ) {
+      const tabValue =
+        panel.getAttribute('data-mdx-tab-value') ??
+        panel.getAttribute('data-code-tab-value');
+      if (
+        tabValue &&
+        panel.closest('[data-mdx-tabs-root], .docs-code-tabs') === root
+      ) {
+        if (groupId) {
+          sessionStorage.setItem(groupId, tabValue);
+          if (persist) localStorage.setItem(groupId, tabValue);
+        }
+        setValue(tabValue);
+        return;
+      }
+    }
+  });
+  useEffect(() => {
+    const applyCurrentHash = () => revealHashTab(window.location.hash);
+    const handleHashTarget = (event: Event) => {
+      const url = (event as CustomEvent<string>).detail;
+      revealHashTab(typeof url === 'string' ? url : window.location.hash);
+    };
+    applyCurrentHash();
+    window.addEventListener('hashchange', applyCurrentHash);
+    window.addEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    return () => {
+      window.removeEventListener('hashchange', applyCurrentHash);
+      window.removeEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    };
+  }, []);
+}
+
 function Tabs({
   children,
   className,
   defaultValue,
   items,
   onValueChange,
+  onMouseDownCapture,
+  onKeyDownCapture,
+  onFocusCapture,
+  ref,
   value,
   ...props
 }: TabsRootProps) {
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const setRootRef = useCallback(
+    (element: HTMLDivElement | null) => {
+      rootRef.current = element;
+      assignRef(ref, element);
+    },
+    [ref],
+  );
   const values = useTabValues({ children, items });
   const labels = useMemo(() => {
     const collected = collectTabLabels(children);
@@ -551,14 +794,33 @@ function Tabs({
     values,
   });
 
+  const scrollAnchorHandlers = useTabScrollAnchor({
+    enabled: Boolean(props.groupId),
+    rootRef,
+    value: safeValue,
+    onMouseDownCapture,
+    onKeyDownCapture,
+    onFocusCapture,
+  });
+
+  useTabHashTarget({
+    rootRef,
+    setValue: setSafeValue,
+    groupId: props.groupId,
+    persist: props.persist,
+  });
+
   return (
     <MdxTabLabelsContext value={labels}>
       <ControlledFumadocsTabs
         {...props}
+        data-mdx-tabs-root=""
+        ref={setRootRef}
         className={cn('bg-fd-card', className)}
         defaultValue={defaultValue}
         items={items}
         onValueChange={setSafeValue}
+        {...scrollAnchorHandlers}
         value={safeValue}
       >
         {children}
@@ -896,6 +1158,7 @@ function Accordions({
       </ControlledFumadocsAccordions>
     ) : (
       <ControlledFumadocsAccordions
+        collapsible
         {...props}
         defaultValue={defaultSingleValue}
         onClickCapture={captureVersionScrollAnchor}
@@ -909,19 +1172,49 @@ function Accordions({
     );
 
   return (
-    <MdxAccordionRootContext value>{accordionRoot}</MdxAccordionRootContext>
+    <MdxAccordionRootContext
+      value={{
+        values: type === 'multiple' ? selectedMultipleValue : [selectedValue],
+        reveal: (target) =>
+          handleValueChange(
+            type === 'multiple'
+              ? selectedMultipleValue.includes(target)
+                ? selectedMultipleValue
+                : [...selectedMultipleValue, target]
+              : target,
+          ),
+      }}
+    >
+      {accordionRoot}
+    </MdxAccordionRootContext>
   );
 }
 
 function CodeBlockTabs({
+  chinese = false,
   children,
   className,
   defaultValue,
   groupId,
   onValueChange,
+  onMouseDownCapture,
+  onKeyDownCapture,
+  onFocusCapture,
+  ref,
   value,
   ...props
 }: CodeBlockTabsRootProps) {
+  const Root = chinese
+    ? FumadocsCodeBlockTabs
+    : defaultMdxComponents.CodeBlockTabs;
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const setRootRef = useCallback(
+    (element: HTMLDivElement | null) => {
+      rootRef.current = element;
+      assignRef(ref, element);
+    },
+    [ref],
+  );
   const pageState = useContext(AccordionPageStateContext);
   const values = useTabValues({ children });
   const stateKey = useMemo(
@@ -935,7 +1228,7 @@ function CodeBlockTabs({
   const handleValueChange = useCallback(
     (nextValue: string) => {
       captureDocsCodeTabChanged({
-        locale: 'en',
+        locale: chinese ? 'zh-CN' : 'en',
         nextLanguage: nextValue,
       });
 
@@ -954,13 +1247,28 @@ function CodeBlockTabs({
 
       onValueChange?.(nextValue);
     },
-    [onValueChange, pageState, stateKey, value],
+    [chinese, onValueChange, pageState, stateKey, value],
   );
   const { safeValue, setSafeValue } = useSafeTabValue({
     defaultValue,
     onValueChange: handleValueChange,
     value: value ?? sharedValue,
     values,
+  });
+  const scrollAnchorHandlers = useTabScrollAnchor({
+    enabled: chinese,
+    rootRef,
+    value: safeValue,
+    onMouseDownCapture,
+    onKeyDownCapture,
+    onFocusCapture,
+  });
+
+  useTabHashTarget({
+    rootRef,
+    setValue: setSafeValue,
+    groupId,
+    persist: props.persist,
   });
 
   useEffect(() => {
@@ -981,39 +1289,20 @@ function CodeBlockTabs({
   }, [pageState, safeValue, stateKey, value]);
 
   return (
-    <FumadocsCodeBlockTabs
-      {...props}
-      className={cn('bg-fd-card', className)}
-      defaultValue={defaultValue}
-      groupId={groupId}
-      onValueChange={setSafeValue}
-      value={safeValue}
-    >
-      <CodeBlockTabsValueContext value={safeValue}>
+    <CodeBlockTabsValueContext value={safeValue}>
+      <Root
+        {...props}
+        ref={setRootRef}
+        {...scrollAnchorHandlers}
+        className={cn('overflow-hidden bg-fd-card', className)}
+        defaultValue={defaultValue}
+        groupId={groupId}
+        onValueChange={setSafeValue}
+        value={safeValue}
+      >
         {children}
-      </CodeBlockTabsValueContext>
-    </FumadocsCodeBlockTabs>
-  );
-}
-
-function Pre({ className, ...props }: PreProps) {
-  return (
-    <FumadocsCodeBlock
-      {...props}
-      data-line-numbers
-      className={cn('bg-fd-card shadow-none', className)}
-      viewportProps={{
-        ...props.viewportProps,
-        className: cn(
-          'overflow-x-hidden overflow-y-auto',
-          props.viewportProps?.className,
-        ),
-      }}
-    >
-      <FumadocsCodeBlockPre className="w-full max-w-full min-w-0 whitespace-pre-wrap [overflow-wrap:anywhere] break-words">
-        {props.children}
-      </FumadocsCodeBlockPre>
-    </FumadocsCodeBlock>
+      </Root>
+    </CodeBlockTabsValueContext>
   );
 }
 
@@ -1025,10 +1314,15 @@ function TabsContent({
   const tabValue = typeof props.value === 'string' ? props.value : undefined;
   const tabLabels = useContext(MdxTabLabelsContext);
   const tabLabel = tabValue ? tabLabels[tabValue] : undefined;
+  const codeTabContext = useMemo(
+    () => ({ label: tabLabel, sharedFrame: false }),
+    [tabLabel],
+  );
 
   return (
     <MdxTabLabelContext value={tabLabel}>
       <FumadocsTabsContent
+        data-mdx-tab-value={tabValue}
         className={cn(
           '[&>figure:only-child]:bg-fd-card [&>figure:only-child]:shadow-none',
           className,
@@ -1036,7 +1330,9 @@ function TabsContent({
         forceMount
         {...props}
       >
-        {children}
+        <CodeBlockTabContext value={codeTabContext}>
+          {children}
+        </CodeBlockTabContext>
       </FumadocsTabsContent>
     </MdxTabLabelContext>
   );
@@ -1047,15 +1343,124 @@ type MdxHeadingLevel = 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 function TabAwareHeading({
   as,
   children,
+  id,
+  className,
+  contentPath,
   ...props
-}: ComponentProps<'h2'> & { as: MdxHeadingLevel }) {
+}: ComponentProps<'h2'> & { as: MdxHeadingLevel; contentPath?: string }) {
+  const { t } = useTranslation('common');
   const tabLabel = useContext(MdxTabLabelContext);
-
-  return (
-    <DocsHeading {...props} as={as}>
+  const activePlatform = usePlatformPageContext()?.activePlatform;
+  const hash = id ? `#${id}` : '';
+  const [href, setHref] = useState(hash);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Platform changes update the URL while the heading ID stays the same.
+  useEffect(() => {
+    setHref(getDocsHashHref(hash));
+  }, [hash, activePlatform]);
+  const [checked, onCopy] = useCopyButton(() => {
+    if (!id) return;
+    return navigator.clipboard.writeText(
+      new URL(getDocsHashHref(hash), window.location.href).href,
+    );
+  });
+  const labelId = useId();
+  const icon = contentPath?.startsWith('zh-CN/')
+    ? getReleaseNoteCategoryIcon(contentPath, headingLabel(children))
+    : undefined;
+  const content = (
+    <span id={labelId}>
+      {icon && (
+        <img
+          alt=""
+          aria-hidden="true"
+          className="not-prose mr-3 inline-block h-8 w-9 align-middle"
+          width={36}
+          height={32}
+          src={icon}
+        />
+      )}
       {children}
       {tabLabel ? <span className="sr-only"> ({tabLabel})</span> : null}
-    </DocsHeading>
+    </span>
+  );
+  if (!id || href === hash) {
+    return (
+      <DocsHeading as={as} {...props} id={id} className={className}>
+        {content}
+      </DocsHeading>
+    );
+  }
+  // Fumadocs Heading has no href/copy-URL override. Adapt only platform anchors,
+  // preserving its heading chrome and leaving ordinary headings untouched.
+  const Heading = as;
+
+  return (
+    <Heading
+      {...props}
+      aria-labelledby={labelId}
+      id={id}
+      className={cn(
+        id && 'group/heading flex scroll-m-28 flex-row items-center gap-1',
+        className,
+      )}
+    >
+      {id ? (
+        <>
+          <a
+            data-card=""
+            href={href}
+            onClick={(event) => {
+              if (
+                event.button !== 0 ||
+                event.ctrlKey ||
+                event.metaKey ||
+                event.shiftKey ||
+                event.altKey
+              )
+                return;
+              event.preventDefault();
+              scrollDocsHashTargetAfterLayout(hash, { behavior: 'auto' });
+            }}
+          >
+            {content}
+          </a>
+          <button
+            type="button"
+            aria-label={t('docs.copyLink')}
+            className={cn(
+              buttonVariants({
+                variant: 'ghost',
+                size: 'icon-xs',
+              }),
+              'not-prose shrink-0 text-fd-muted-foreground opacity-0 transition-opacity group-hover/heading:opacity-100',
+            )}
+            onClick={onCopy}
+          >
+            {checked ? <CopyCheckIcon /> : <LinkIcon />}
+          </button>
+        </>
+      ) : (
+        children
+      )}
+    </Heading>
+  );
+}
+
+function headingLabel(children: ReactNode): string {
+  return Children.toArray(children)
+    .map((child) => {
+      if (typeof child === 'string' || typeof child === 'number')
+        return String(child);
+      return isValidElement<{ children?: ReactNode }>(child)
+        ? headingLabel(child.props.children)
+        : '';
+    })
+    .join('');
+}
+
+function createDocsHeading(as: MdxHeadingLevel, contentPath?: string) {
+  return (props: ComponentProps<'h2'>) => (
+    <TabAwareHeading as={as} contentPath={contentPath} {...props} />
   );
 }
 
@@ -1072,19 +1477,26 @@ function CodeBlockTabsList({
 }
 
 function CodeBlockTab({
+  chinese = false,
   className,
   value,
   ...props
-}: ComponentProps<typeof FumadocsCodeBlockTab>) {
+}: ComponentProps<typeof FumadocsCodeBlockTab> & { chinese?: boolean }) {
+  const Panel = chinese
+    ? FumadocsCodeBlockTab
+    : defaultMdxComponents.CodeBlockTab;
   const selectedValue = useContext(CodeBlockTabsValueContext);
   const isInactive = selectedValue !== undefined && selectedValue !== value;
 
   return (
-    <FumadocsCodeBlockTab
+    <Panel
       className={cn(
-        '[&>figure]:m-0 [&>figure]:rounded-none [&>figure]:border-0 [&>figure]:bg-fd-card [&>figure]:shadow-none',
+        chinese
+          ? 'p-0'
+          : '[&>figure]:m-0 [&>figure]:rounded-none [&>figure]:border-0 [&>figure]:bg-fd-card [&>figure]:shadow-none',
         className,
       )}
+      data-code-tab-value={chinese ? value : undefined}
       forceMount
       hidden={isInactive}
       value={value}
@@ -1096,10 +1508,13 @@ function CodeBlockTab({
 function CommandBlock({
   code,
   language = 'bash',
+  locale,
 }: {
   code: string;
   language?: string;
+  locale?: string;
 }) {
+  const CodeFrame = locale === 'en' ? GlobalPre : Pre;
   const lineKeys = new Map<string, number>();
   const lines = code
     .replace(/\n$/, '')
@@ -1115,7 +1530,10 @@ function CommandBlock({
     });
 
   return (
-    <Pre className={cn('shiki', `language-${language}`)}>
+    <CodeFrame
+      className={cn('shiki', `language-${language}`)}
+      {...(locale === 'en' ? {} : { locale })}
+    >
       <code className={cn('language-code', `language-${language}`)}>
         {lines.map(({ id, line }) => (
           <span className="line" key={id}>
@@ -1123,275 +1541,15 @@ function CommandBlock({
           </span>
         ))}
       </code>
-    </Pre>
+    </CodeFrame>
   );
-}
-
-function ParameterList({
-  children,
-  className,
-  nullable,
-  optional,
-  required,
-  title,
-  ...props
-}: ParameterListProps) {
-  const requiredState = getRequiredState({ optional, required });
-
-  return (
-    <section
-      className={cn(
-        'not-prose my-6 overflow-hidden rounded-lg border border-fd-border bg-fd-card text-sm shadow-sm',
-        className,
-      )}
-      data-parameter-list=""
-      {...props}
-    >
-      {title || requiredState || nullable ? (
-        <div className="flex flex-wrap items-center gap-2 border-fd-border border-b bg-fd-muted/35 px-4 py-3 font-semibold text-fd-foreground">
-          {title ? <span>{title}</span> : null}
-          <ParameterBadges requiredState={requiredState} nullable={nullable} />
-        </div>
-      ) : null}
-      <div className="divide-y divide-fd-border">{children}</div>
-    </section>
-  );
-}
-
-function ParameterBadges({
-  nullable,
-  requiredState,
-}: {
-  nullable?: boolean;
-  requiredState: 'required' | 'optional' | null;
-}) {
-  if (!requiredState && !nullable) {
-    return null;
-  }
-
-  return (
-    <span className="flex flex-wrap gap-1.5">
-      {requiredState ? (
-        <span
-          className={cn(
-            'rounded border px-1.5 py-0.5 text-[0.68rem] font-medium',
-            requiredState === 'required'
-              ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300'
-              : 'border-fd-border bg-fd-muted/60 text-fd-muted-foreground',
-          )}
-        >
-          {requiredState}
-        </span>
-      ) : null}
-      {nullable ? (
-        <span className="rounded border border-fd-border bg-fd-muted/60 px-1.5 py-0.5 text-[0.68rem] font-medium text-fd-muted-foreground">
-          nullable
-        </span>
-      ) : null}
-    </span>
-  );
-}
-
-function Parameter({
-  children,
-  className,
-  defaultValue,
-  name,
-  nullable,
-  optional,
-  possibleValues,
-  required,
-  type,
-  ...props
-}: ParameterProps) {
-  const requiredState = getRequiredState({ optional, required });
-  const childNodes = Children.toArray(children);
-  const descriptionChildren = childNodes.filter(
-    (child) => !isNestedParameterBlock(child) && !isBlankTextNode(child),
-  );
-  const nestedParameters = childNodes.filter(isNestedParameterBlock);
-  const parameterLabel = getPlainTextLabel(name);
-
-  return (
-    <div
-      className={cn('group/parameter', className)}
-      data-parameter-item=""
-      {...props}
-    >
-      <div
-        className="grid gap-3 px-4 py-4 sm:grid-cols-[minmax(0,16rem)_1fr]"
-        data-parameter-main=""
-      >
-        <div className="min-w-0 space-y-2">
-          <div className="flex min-w-0 flex-wrap items-center gap-2">
-            {name ? (
-              <code className="rounded bg-fd-muted px-1.5 py-0.5 font-mono text-[0.82rem] text-fd-foreground">
-                {name}
-              </code>
-            ) : null}
-            {type ? (
-              <span className="rounded border border-fd-border bg-fd-background px-1.5 py-0.5 font-mono text-[0.75rem] text-fd-muted-foreground">
-                {type}
-              </span>
-            ) : null}
-          </div>
-          <ParameterBadges requiredState={requiredState} nullable={nullable} />
-        </div>
-        <div
-          className="min-w-0 space-y-3 text-fd-muted-foreground [&>:first-child]:mt-0 [&>:last-child]:mb-0 [&_ol]:list-decimal [&_ol]:space-y-1 [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5"
-          data-parameter-description=""
-        >
-          {defaultValue || possibleValues ? (
-            <dl className="space-y-2 text-xs">
-              {defaultValue ? (
-                <div className="grid gap-1.5 sm:grid-cols-[max-content_minmax(0,1fr)]">
-                  <dt className="font-medium text-fd-foreground">
-                    Default value
-                  </dt>
-                  <dd className="min-w-0 break-words font-mono">
-                    {defaultValue}
-                  </dd>
-                </div>
-              ) : null}
-              {possibleValues ? (
-                <div className="grid gap-1.5 sm:grid-cols-[max-content_minmax(0,1fr)]">
-                  <dt className="font-medium text-fd-foreground">
-                    Possible values
-                  </dt>
-                  <dd className="min-w-0">
-                    {renderPossibleValues(possibleValues, parameterLabel)}
-                  </dd>
-                </div>
-              ) : null}
-            </dl>
-          ) : null}
-          {descriptionChildren}
-        </div>
-      </div>
-      {nestedParameters.length > 0 ? (
-        <section
-          aria-label={
-            parameterLabel
-              ? `Nested parameters for ${parameterLabel}`
-              : 'Nested parameters'
-          }
-          className="border-fd-border/70 border-t bg-fd-muted/20 px-4 pb-4 pt-3"
-          data-parameter-children=""
-        >
-          <div className="border-fd-border/80 border-l pl-3 sm:ml-4 sm:pl-4">
-            <div className="overflow-hidden rounded-md border border-fd-border bg-fd-background/80 shadow-sm">
-              <div className="divide-y divide-fd-border">
-                {nestedParameters}
-              </div>
-            </div>
-          </div>
-        </section>
-      ) : null}
-    </div>
-  );
-}
-
-function renderPossibleValues(
-  possibleValues: ReactNode,
-  parameterLabel?: string,
-) {
-  const ariaLabel = parameterLabel
-    ? `Possible values for ${parameterLabel}`
-    : 'Possible values';
-
-  if (typeof possibleValues === 'string') {
-    const values = getPossibleValueItems(possibleValues);
-
-    if (values.length > 0) {
-      return (
-        <ul
-          aria-label={ariaLabel}
-          className="m-0 flex min-w-0 list-none flex-wrap gap-1.5 p-0"
-          data-parameter-possible-values=""
-        >
-          {values.map((value) => (
-            <li key={value}>
-              <code className="rounded border border-fd-border bg-fd-muted/60 px-1.5 py-0.5 font-mono text-[0.72rem] text-fd-foreground">
-                {value}
-              </code>
-            </li>
-          ))}
-        </ul>
-      );
-    }
-  }
-
-  return (
-    <span className="break-words font-mono" data-parameter-possible-values="">
-      {possibleValues}
-    </span>
-  );
-}
-
-function getPossibleValueItems(possibleValues: string) {
-  const trimmed = possibleValues.trim();
-
-  if (isBracketedPossibleValue(trimmed)) {
-    return [trimmed];
-  }
-
-  return trimmed
-    .split(',')
-    .map((value) => value.trim())
-    .filter(Boolean);
-}
-
-function isBracketedPossibleValue(value: string) {
-  return (
-    (value.startsWith('[') && value.endsWith(']')) ||
-    (value.startsWith('(') && value.endsWith(')'))
-  );
-}
-
-function isNestedParameterBlock(
-  child: ReactNode,
-): child is ReactElement<ParameterProps | ParameterListProps> {
-  return (
-    isValidElement(child) &&
-    (child.type === Parameter || child.type === ParameterList)
-  );
-}
-
-function isBlankTextNode(child: ReactNode) {
-  return typeof child === 'string' && child.trim().length === 0;
-}
-
-function getPlainTextLabel(value: ReactNode) {
-  if (typeof value === 'string' || typeof value === 'number') {
-    return String(value);
-  }
-
-  return undefined;
-}
-
-export { Parameter, ParameterList };
-
-function getRequiredState({
-  optional,
-  required,
-}: {
-  optional?: boolean;
-  required?: boolean;
-}) {
-  if (required) {
-    return 'required';
-  }
-
-  if (optional || required === false) {
-    return 'optional';
-  }
-
-  return null;
 }
 
 function createDocsAnchor(contentPath?: string) {
+  // biome-ignore lint/correctness/noComponentHookFactories: Cached by page/locale at module scope; identity is covered by regression tests.
   function DocsAnchor({
     href,
+    children,
     ...props
   }: AnchorHTMLAttributes<HTMLAnchorElement>) {
     const normalized =
@@ -1401,10 +1559,22 @@ function createDocsAnchor(contentPath?: string) {
     const normalizedHref = normalized?.href ?? href;
 
     if (normalized && shouldUseRouterLink(normalized, props)) {
-      return <RouterFumadocsAnchor {...props} to={normalized.href} />;
+      return (
+        <RouterFumadocsAnchor {...props} to={normalized.href}>
+          {children}
+        </RouterFumadocsAnchor>
+      );
     }
 
-    return <FumadocsAnchor href={normalizedHref} {...props} />;
+    const target =
+      props.target ?? (normalized?.kind === 'external' ? '_blank' : undefined);
+
+    return (
+      <FumadocsAnchor href={normalizedHref} {...props}>
+        {children}
+        {children && <DocsLinkIcon href={normalizedHref} target={target} />}
+      </FumadocsAnchor>
+    );
   }
 
   return DocsAnchor;
@@ -1413,6 +1583,7 @@ function createDocsAnchor(contentPath?: string) {
 function createLegacyDocsLink(contentPath?: string) {
   const DocsAnchor = createDocsAnchor(contentPath);
 
+  // biome-ignore lint/correctness/noComponentHookFactories: Cached by page/locale at module scope; identity is covered by regression tests.
   function LegacyDocsLink({
     to,
     ...props
@@ -1426,37 +1597,105 @@ function createLegacyDocsLink(contentPath?: string) {
 }
 
 function createDocsCard(contentPath?: string) {
-  function DocsCard({ className, href, ...props }: DocsCardProps) {
+  // biome-ignore lint/correctness/noComponentHookFactories: Cached by page/locale at module scope; identity is covered by regression tests.
+  function DocsCard({
+    children,
+    className,
+    href,
+    title,
+    ...props
+  }: DocsCardProps) {
+    const startAccountGuidance = useResourceAccountGuidance();
     const normalized =
       typeof href === 'string'
         ? normalizeDocsHref(href, { contentPath })
         : null;
     const normalizedHref = normalized?.href ?? href;
-    const cardClassName = cn(href && 'docs-card-link', className);
+    const guidanceResource =
+      typeof title === 'string' && title === '立即体验'
+        ? getChineseAccountGuidanceResource(contentPath, href)
+        : null;
+    const cardProps = guidanceResource
+      ? {
+          title,
+          ...props,
+          rel: 'noopener noreferrer',
+          target: '_blank' as const,
+          onClick: (event: MouseEvent<HTMLAnchorElement>) => {
+            props.onClick?.(event);
+            startAccountGuidance({
+              resourceType: 'demo',
+              resourceId: guidanceResource.resourceId,
+              label: guidanceResource.label,
+              target: guidanceResource.target,
+            });
+          },
+        }
+      : { title, ...props };
+    const cardClassName = cn(
+      'docs-card-surface docs-mdx-card',
+      href && 'docs-card-interactive docs-card-link',
+      className,
+    );
+    const content = (
+      <>
+        {children}
+        {href ? (
+          <ArrowRightIcon
+            aria-hidden="true"
+            className="docs-card-arrow absolute right-4 top-4 size-4 text-muted-foreground"
+          />
+        ) : null}
+      </>
+    );
 
-    if (normalized && shouldUseRouterLink(normalized, props)) {
+    if (normalized && shouldUseRouterLink(normalized, cardProps)) {
       return (
         <RouterFumadocsCard
-          {...props}
+          {...cardProps}
           className={cardClassName}
           to={normalized.href}
-        />
+        >
+          {content}
+        </RouterFumadocsCard>
       );
     }
 
     return (
       <FumadocsCard
-        {...props}
+        {...cardProps}
         className={cardClassName}
         href={normalizedHref}
-      />
+      >
+        {content}
+      </FumadocsCard>
     );
   }
 
   return DocsCard;
 }
 
+function Cards({ className, columns, ...props }: DocsCardsProps) {
+  if (!columns) {
+    return <FumadocsCards className={className} {...props} />;
+  }
+
+  return (
+    <div
+      className={cn(
+        'grid gap-3 @container',
+        columns === 2 && 'grid-cols-1 md:grid-cols-2',
+        columns === 3 && 'grid-cols-1 lg:grid-cols-3',
+        columns === 4 && 'grid-cols-1 md:grid-cols-2 xl:grid-cols-4',
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
 function createPlanCardsComponent(contentPath?: string) {
+  // biome-ignore lint/correctness/noComponentHookFactories: Cached by page/locale at module scope; identity is covered by regression tests.
   function DocsPlanCards(props: ComponentProps<typeof PlanCards>) {
     return <PlanCards {...props} contentPath={contentPath} />;
   }
@@ -1465,6 +1704,7 @@ function createPlanCardsComponent(contentPath?: string) {
 }
 
 function createPricingCardsComponent(contentPath?: string) {
+  // biome-ignore lint/correctness/noComponentHookFactories: Cached by page/locale at module scope; identity is covered by regression tests.
   function DocsPricingCards(props: ComponentProps<typeof PricingCards>) {
     return <PricingCards {...props} contentPath={contentPath} />;
   }
@@ -1482,6 +1722,14 @@ function shouldUseRouterLink(
     props.download !== undefined ||
     props.target !== undefined ||
     ('external' in props && props.external)
+  ) {
+    return false;
+  }
+
+  const hashIndex = normalized.href.indexOf('#');
+  if (
+    hashIndex !== -1 &&
+    normalized.href.slice(hashIndex + 1).startsWith('//')
   ) {
     return false;
   }
@@ -1504,9 +1752,52 @@ function isDocsRouteHref(href: string) {
   );
 }
 
-function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
+function InlineImage({
+  alt,
+  width,
+  height,
+  style,
+  ...props
+}: ComponentProps<'img'>) {
+  return (
+    <img
+      referrerPolicy="no-referrer"
+      {...props}
+      alt={alt}
+      width={width}
+      height={height}
+      style={{ width, height, ...style }}
+      className="not-prose m-0 inline-block h-auto max-w-full align-middle"
+    />
+  );
+}
+
+function ZoomableImage({
+  alt = '',
+  src,
+  displayWidth,
+  displayHeight,
+  style,
+  referrerPolicy = 'no-referrer',
+  ...props
+}: ComponentProps<'img'> & {
+  displayWidth?: CSSProperties['width'];
+  displayHeight?: CSSProperties['maxHeight'];
+}) {
+  const thumbnailStyle =
+    displayHeight === undefined
+      ? style
+      : { ...style, maxHeight: displayHeight, width: 'auto', height: 'auto' };
   if (typeof src !== 'string' || src.length === 0) {
-    return <FumadocsImage alt={alt} src={src} {...props} />;
+    return (
+      <FumadocsImage
+        alt={alt}
+        src={src}
+        referrerPolicy={referrerPolicy}
+        {...props}
+        style={thumbnailStyle}
+      />
+    );
   }
 
   const title = alt || 'Documentation image';
@@ -1517,9 +1808,21 @@ function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
         <button
           aria-label={`Zoom image: ${title}`}
           className="block cursor-zoom-in"
+          data-docs-image=""
+          style={
+            displayWidth === undefined
+              ? undefined
+              : { width: displayWidth, maxWidth: '100%' }
+          }
           type="button"
         >
-          <FumadocsImage alt={alt} src={src} {...props} />
+          <FumadocsImage
+            alt={alt}
+            src={src}
+            referrerPolicy={referrerPolicy}
+            {...props}
+            style={thumbnailStyle}
+          />
         </button>
       </DialogTrigger>
       <DialogContent className="max-h-[calc(100vh-2rem)] w-fit max-w-[calc(100vw-2rem)] justify-items-center border-0 bg-transparent p-0 shadow-none sm:max-w-[calc(100vw-2rem)]">
@@ -1531,64 +1834,177 @@ function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
           alt={alt}
           className="max-h-[calc(100vh-4rem)] max-w-[calc(100vw-4rem)] rounded-md object-contain shadow-2xl"
           src={src}
+          referrerPolicy={referrerPolicy}
         />
       </DialogContent>
     </Dialog>
   );
 }
 
-export function getMDXComponents(
-  components?: MDXComponents,
-  context?: MDXContext,
-) {
-  const DocsPlanCards = createPlanCardsComponent(context?.contentPath);
-  const DocsPricingCards = createPricingCardsComponent(context?.contentPath);
+function GlobalPre({ className, ...props }: CodeBlockProps) {
+  return (
+    <FumadocsCodeBlock
+      {...props}
+      data-line-numbers
+      className={cn('bg-fd-card shadow-none', className)}
+      viewportProps={{
+        ...props.viewportProps,
+        className: cn(
+          'overflow-x-hidden overflow-y-auto',
+          props.viewportProps?.className,
+        ),
+      }}
+    >
+      <FumadocsCodeBlockPre className="w-full max-w-full min-w-0 whitespace-pre-wrap [overflow-wrap:anywhere] break-words">
+        {props.children}
+      </FumadocsCodeBlockPre>
+    </FumadocsCodeBlock>
+  );
+}
 
+// Module-level component types keep local wrapping state when the page remeasures.
+const localizedCodeComponents = {
+  en: {
+    pre: GlobalPre,
+    CommandBlock: (props: ComponentProps<typeof CommandBlock>) => (
+      <CommandBlock {...props} locale="en" />
+    ),
+    ApiSignature: (props: ComponentProps<typeof ApiSignature>) => (
+      <ApiSignature {...props} locale="en" />
+    ),
+  },
+  'zh-CN': {
+    pre: (props: PreProps) => <Pre {...props} locale="zh-CN" />,
+    CommandBlock: (props: ComponentProps<typeof CommandBlock>) => (
+      <CommandBlock {...props} locale="zh-CN" />
+    ),
+    ApiSignature: (props: ComponentProps<typeof ApiSignature>) => (
+      <ApiSignature {...props} locale="zh-CN" />
+    ),
+  },
+};
+
+function getCodeComponents(locale?: string) {
+  const normalizedLocale = normalizeLocale(locale);
+  return normalizedLocale
+    ? localizedCodeComponents[normalizedLocale]
+    : { pre: Pre, CommandBlock, ApiSignature };
+}
+
+function ChineseAccordion(props: AccordionProps) {
+  return <Accordion {...props} chinese />;
+}
+
+function ChineseCodeBlockTabs(props: CodeBlockTabsRootProps) {
+  return <CodeBlockTabs {...props} chinese />;
+}
+
+function GlobalCodeBlockTabsList({
+  className,
+  ...props
+}: ComponentProps<typeof FumadocsCodeBlockTabsList>) {
+  const List = defaultMdxComponents.CodeBlockTabsList;
+  return <List {...props} className={cn('bg-fd-card', className)} />;
+}
+
+function ChineseCodeBlockTab(props: ComponentProps<typeof CodeBlockTab>) {
+  return <CodeBlockTab {...props} chinese />;
+}
+
+function ChinesePlatformTabsGroup(
+  props: ComponentProps<typeof PlatformTabsGroup>,
+) {
+  return <PlatformTabsGroup {...props} locale="zh-CN" />;
+}
+
+function buildMDXComponents(context?: MDXContext) {
+  const locale =
+    normalizeLocale(context?.locale ?? context?.contentPath?.split('/')[0]) ??
+    DEFAULT_LOCALE;
+  const isChinese = locale === 'zh-CN';
+  const DocsTable = createDocsTableComponent(locale);
+  const codeComponents = getCodeComponents(locale);
   return {
     ...defaultMdxComponents,
+    Callout: DocsCallout,
+    CalloutContainer: DocsCalloutContainer,
     table:
       context?.contentPath === IM_PRICING_DETAILS_CONTENT_PATH
-        ? createDocsTableComponent(context.contentPath)
-        : defaultMdxComponents.table,
+        ? createPricingTableComponent(context.contentPath)
+        : isChinese
+          ? DocsTable
+          : defaultMdxComponents.table,
+    DocsTable,
     img: ZoomableImage,
-    h2: (props) => <TabAwareHeading as="h2" {...props} />,
-    h3: (props) => <TabAwareHeading as="h3" {...props} />,
-    h4: (props) => <TabAwareHeading as="h4" {...props} />,
-    h5: (props) => <TabAwareHeading as="h5" {...props} />,
-    h6: (props) => <TabAwareHeading as="h6" {...props} />,
+    DocsImage: ZoomableImage,
+    InlineImage,
+    h2: createDocsHeading('h2', context?.contentPath),
+    h3: createDocsHeading('h3', context?.contentPath),
+    h4: createDocsHeading('h4', context?.contentPath),
+    h5: createDocsHeading('h5', context?.contentPath),
+    h6: createDocsHeading('h6', context?.contentPath),
     a: createDocsAnchor(context?.contentPath),
     Link: createLegacyDocsLink(context?.contentPath),
     Card: createDocsCard(context?.contentPath),
-    CommandBlock,
+    Cards: isChinese ? Cards : defaultMdxComponents.Cards,
+    RepositoryCardTitle,
+    CommandBlock: codeComponents.CommandBlock,
     Tabs,
     Tab: FumadocsTab,
     TabsContent,
     TabsList: FumadocsTabsList,
     TabsTrigger: FumadocsTabsTrigger,
-    CodeBlockTabs,
-    CodeBlockTabsList,
-    CodeBlockTab,
-    pre: Pre,
+    CodeBlockTabs: isChinese ? ChineseCodeBlockTabs : CodeBlockTabs,
+    CodeBlockTabsList: isChinese ? CodeBlockTabsList : GlobalCodeBlockTabsList,
+    CodeBlockTab: isChinese ? ChineseCodeBlockTab : CodeBlockTab,
+    pre: codeComponents.pre,
+    ApiReturns,
+    ApiReturnType,
+    ApiSignature: codeComponents.ApiSignature,
     ParameterList,
     Parameter,
-    Accordion,
+    ParameterType,
+    Accordion: isChinese ? ChineseAccordion : Accordion,
     Accordions,
     File,
     Files,
     Folder,
     Step,
     Steps,
-    RepositoryCardTitle,
     RTCMinutesCalculator,
-    PlanCards: DocsPlanCards,
-    PricingCards: DocsPricingCards,
+    PlanCards: createPlanCardsComponent(context?.contentPath),
+    PricingCards: createPricingCardsComponent(context?.contentPath),
     PlatformInline,
     _PlatformProcessedMarker: PlatformProcessedMarker,
     PlatformStructured,
-    _PlatformTabsGroup: PlatformTabsGroup,
+    _PlatformTabsGroup: isChinese
+      ? ChinesePlatformTabsGroup
+      : PlatformTabsGroup,
     _PlatformPanel: PlatformPanel,
-    ...components,
   } satisfies MDXComponents;
+}
+
+// Dynamic MDX renderers may request the mapping repeatedly. Component types
+// must stay stable for the same page and locale so child state is not reset.
+const contextualMDXComponents = new Map<
+  string,
+  ReturnType<typeof buildMDXComponents>
+>();
+
+export function getMDXComponents(
+  components?: MDXComponents,
+  context?: MDXContext,
+) {
+  const key = JSON.stringify([
+    context?.contentPath ?? null,
+    context?.locale ?? null,
+  ]);
+  let base = contextualMDXComponents.get(key);
+  if (!base) {
+    base = buildMDXComponents(context);
+    contextualMDXComponents.set(key, base);
+  }
+  return { ...base, ...components };
 }
 
 export const useMDXComponents = getMDXComponents;
@@ -1596,3 +2012,12 @@ export const useMDXComponents = getMDXComponents;
 declare global {
   type MDXProvidedComponents = ReturnType<typeof getMDXComponents>;
 }
+
+export {
+  ApiReturns,
+  ApiReturnType,
+  ApiSignature,
+  Parameter,
+  ParameterList,
+  ParameterType,
+};

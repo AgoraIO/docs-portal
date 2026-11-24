@@ -1,6 +1,7 @@
 import { isNotFound, isRedirect } from '@tanstack/react-router';
 import { describe, expect, it, vi } from 'vitest';
 import type { DocsPagePayload } from '@/lib/docs-page.server';
+import { preserveRedirectSearch } from '@/lib/docs-redirect-url';
 import { shouldUseStaticDocsPayload } from '@/lib/docs-static-manifest';
 
 vi.mock('@/lib/docs-static-manifest', async (importOriginal) => {
@@ -48,7 +49,6 @@ import {
   Route as DocPageRoute,
   getKnownPlatformSearchParam,
   payloadSupportsPlatform,
-  preserveRedirectSearch,
 } from './$locale/$tab/$';
 import { Route as TabIndexRoute } from './$locale/$tab/index';
 import { Route as LocaleIndexRoute } from './$locale/index';
@@ -269,6 +269,7 @@ describe('docs route locale guards', () => {
   it('rejects unsupported locale on the page route before page lookup', async () => {
     try {
       await getLoader(DocPageRoute)({
+        deps: {},
         params: {
           _splat: 'index',
           locale: 'docs',
@@ -374,6 +375,7 @@ describe('docs route locale guards', () => {
       `loads /en/api-reference/api-ref/uikit-sdk/${platform} without redirect and selects ${platform}`,
       async () => {
         const payload = await getLoader(DocPageRoute)({
+          deps: {},
           location: {
             hash: '',
             searchStr: '',

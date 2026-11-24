@@ -1,0 +1,300 @@
+---
+title: Class HandUpStore
+description: HandUpStore 类提供举手上台功能相关能力。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/agora_edu_core_src_stores_domain_common_hand_up_index_andUpStore.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Electron/classes/agora_edu_core_src_stores_domain_common_hand_up_index_andUpStore.html
+  generator: typedoc
+  warnings: []
+---
+
+## Methods
+
+<a id="allowHandsUp"></a>
+
+### allowHandsUp
+
+<ApiSignature>
+
+allowHandsUp(state: 0 | 1, autoStage: boolean): void
+
+</ApiSignature>
+
+配置允许学生举手
+
+<ParameterList title="Parameters">
+<Parameter name="state" type="0 | 1" required>
+
+是否允许举手，0 不允许，1 允许
+
+</Parameter>
+<Parameter name="autoStage" type="boolean" required>
+
+是否开启自动上台
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="cancelHandUp"></a>
+
+### cancelHandUp
+
+<ApiSignature>
+
+cancelHandUp(): Promise&lt;void&gt;
+
+</ApiSignature>
+
+学生取消举手
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="confirmInvited"></a>
+
+### confirmInvited
+
+<ApiSignature>
+
+confirmInvited(): Promise&lt;void&gt;
+
+</ApiSignature>
+
+确认接受上台邀请
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="invitePodium"></a>
+
+### invitePodium
+
+<ApiSignature>
+
+invitePodium(userUuid: string, duration: number, payload?: unknown): Promise&lt;void&gt;
+
+</ApiSignature>
+
+邀请学生上台互动
+
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required>
+
+学生ID
+
+</Parameter>
+<Parameter name="duration" type="number" required>
+
+超时时长
+
+</Parameter>
+<Parameter name="payload" type="unknown" optional>
+
+扩展信息
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="offPodium"></a>
+
+### offPodium
+
+<ApiSignature>
+
+offPodium(userUuid: string): Promise&lt;void&gt;
+
+</ApiSignature>
+
+让指定学生下讲台
+
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required>
+
+用户 ID
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="offPodiumAll"></a>
+
+### offPodiumAll
+
+<ApiSignature>
+
+offPodiumAll(): Promise&lt;void&gt;
+
+</ApiSignature>
+
+让全部学生下讲台
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="onPodium"></a>
+
+### onPodium
+
+<ApiSignature>
+
+onPodium(userUuid: string, source?: [PodiumSrouce](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-hand-up-type-odium-srouce)): Promise&lt;void&gt;
+
+</ApiSignature>
+
+同意学生上讲台
+
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required>
+
+用户 ID
+
+</Parameter>
+<Parameter name="source" optional>
+
+<ParameterType>
+
+[PodiumSrouce](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-hand-up-type-odium-srouce)
+
+</ParameterType>
+
+邀请来源：
+
+- 老师从花名册邀请学生上讲台
+- 学生举手老师同意上讲台
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="rejectHandUp"></a>
+
+### rejectHandUp
+
+<ApiSignature>
+
+rejectHandUp(userUuid: string): Promise&lt;void&gt;
+
+</ApiSignature>
+
+拒绝举手上台请求
+
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required>
+
+用户 ID
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="waveArm"></a>
+
+### waveArm
+
+<ApiSignature>
+
+waveArm(teacherUuid: string, duration: number, payload?: unknown): Promise&lt;void&gt;
+
+</ApiSignature>
+
+学生挥手
+
+<ParameterList title="Parameters">
+<Parameter name="teacherUuid" type="string" required>
+
+老师 ID
+
+</Parameter>
+<Parameter name="duration" type="number" required>
+
+超时时长
+
+</Parameter>
+<Parameter name="payload" type="unknown" optional>
+
+扩展信息
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>

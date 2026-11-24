@@ -89,7 +89,7 @@ const DOC_TARGET_ROUTE_BY_QUERY: Readonly<Record<string, string>> = {
   'cloud recording': '/en/realtime-media/cloud-recording',
   'real-time transcription': '/en/realtime-media/speech-to-text',
   'speech to text': '/en/realtime-media/speech-to-text',
-  'video calling': '/en/api-reference/api-ref/rtc',
+  'video calling': '/en/realtime-media/rtc',
   'interactive live streaming': '/en/realtime-media/rtc',
   'broadcast streaming': '/en/realtime-media/rtc',
   'flexible classroom':
@@ -556,12 +556,28 @@ function createGoldenClient(query: string, intent: SearchIntent) {
       }: {
         requests: Array<{ indexName: string; query: string }>;
       }) => {
+        const relatedTitles: Record<string, string> = {
+          'cloud recording start': 'Cloud Recording overview',
+          'transcribe audio': 'Speech-to-Text overview',
+          'interactive live streaming': 'RTC overview',
+          'broadcast streaming': 'RTC overview',
+        };
+        const overview = relatedTitles[query];
         expect(requests.map(({ indexName }) => indexName)).toEqual([
           'docs_portal_en',
           'agora_APIRefSearch',
+          ...(overview ? ['docs_portal_en'] : []),
         ]);
         return Promise.resolve({
-          results: requests.map((request) => {
+          results: requests.map((request, index) => {
+            if (index === 2) {
+              expect(request).toMatchObject({
+                query: overview,
+                restrictSearchableAttributes: ['title'],
+              });
+              const target = targetDocsHit(query);
+              return { hits: target ? [target] : [] };
+            }
             const expectedQuery =
               request.indexName === 'docs_portal_en'
                 ? expectedDocsRetrievalQuery(query)

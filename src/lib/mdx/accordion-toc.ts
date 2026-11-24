@@ -46,14 +46,22 @@ export function addAccordionHeadingsToTocText(markdown: string) {
   return markdown;
 }
 
+export function remarkGlobalAccordionHeadings() {
+  return accordionHeadingTransform(true);
+}
+
 export function remarkAccordionHeadings() {
+  return accordionHeadingTransform(false);
+}
+
+function accordionHeadingTransform(global: boolean) {
   return (tree: Root, file: VFile) => {
     visit(tree, 'mdxJsxFlowElement', (node, index, parent) => {
       if (index === undefined || !parent) {
         return;
       }
 
-      const version = getAccordionVersion(node);
+      const version = getAccordionVersion(node, global);
       if (!version) {
         return;
       }
@@ -76,7 +84,7 @@ export function remarkAccordionHeadings() {
   };
 }
 
-function getAccordionVersion(node: MdxJsxFlowElement) {
+function getAccordionVersion(node: MdxJsxFlowElement, global = false) {
   if (node.name !== 'Accordion') {
     return undefined;
   }
@@ -90,7 +98,7 @@ function getAccordionVersion(node: MdxJsxFlowElement) {
   }
 
   return {
-    depth: Math.min(headingLevel + 1, 4) as 3 | 4,
+    depth: (global ? Math.min(headingLevel + 1, 4) : headingLevel) as 2 | 3 | 4,
     id,
     title,
   };

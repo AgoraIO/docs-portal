@@ -1,0 +1,194 @@
+---
+title: "如何设置日志文件？"
+---
+声网 SDK 提供设置 SDK 的输出日志文件的功能，SDK 运行时产生的所有 log 将写入该文件。
+
+## Native 平台
+
+Native 平台包括 Android、iOS、macOS 和 Windows 平台。
+
+### 设置日志文件
+
+在创建并初始化 `RtcEngine` 时，使用 `mLogConfig` 参数设置日志文件。
+
+**设置日志文件路径**
+
+默认情况下，SDK 会生成 5 个 SDK 日志文件和 5 个 API 调用日志文件，日志文件均为 UTF-8 编码。
+
+- SDK 日志文件的名称分别为：`agorasdk.log`、`agorasdk.1.log`、`agorasdk.2.log`、`agorasdk.3.log`、`agorasdk.4.log`。
+- API 调用日志文件的名称分别为：`agoraapi.log`、`agoraapi.1.log`、`agoraapi.2.log`、`agoraapi.3.log`、`agoraapi.4.log`。
+
+最新的日志永远写在 `agorasdk.log` 和 `agoraapi.log` 中。当 `agorasdk.log` 写满后，SDK 会按照以下顺序对日志文件进行操作：
+
+- 删除 `agorasdk.4.log` 文件（如有）。
+- 将`agorasdk.3.log` 重命名为 `agorasdk.4.log`。
+- 将`agorasdk.2.log` 重命名为 `agorasdk.3.log`。
+- 将`agorasdk.1.log` 重命名为 `agorasdk.2.log`。
+- 新建 `agorasdk.log` 文件。
+
+`agoraapi.log` 文件的覆盖规则与 `agorasdk.log` 相同。
+
+各平台默认的日志文件输出地址如下：
+
+- Android：`/storage/emulated/0/Android/data/<package name>/files/agorasdk.log`
+- iOS：`App Sandbox/Library/Caches/agorasdk.log`
+
+  :::warning[注意]
+  如果你用的是 v4.3.1 至 v4.5.2 版本的 iOS SDK，默认日志文件路径为 `AppSandbox/Library/documents/agorasdk.log`。
+  :::
+
+- macOS：`～/Library/Logs/agorasdk.log`
+  - 开启沙盒：`App Sandbox/Library/Logs/agorasdk.log`，如 `/Users/<username>/Library/Containers/<App Bundle Identifier>/Data/Library/Logs/agorasdk.log`
+  - 关闭沙盒：`～/Library/Logs/agorasdk.log`
+- Windows：`C:\Users\<user_name>\AppData\Local\Agora\<process_name>\agorasdk.log`
+
+:::warning[注意]
+声网建议你使用默认的日志文件储存路径，如果你需要修改储存路径，请确保指定的路径存在且可写。
+:::
+
+**设置日志输出等级**
+
+使用 `mLogConfig` 参数中的 `level` 字段设置日志输出等级。选择一个级别，你就可以看到在该级别及之前所有级别的日志信息。
+
+- `INFO` 级别: （默认）输出 `FATAL`、`ERROR`、`WARN`、`INFO` 级别的日志。我们推荐你将日志级别设为该等级。
+- `WARN` 级别: 仅输出 `FATAL`、`ERROR`、`WARN` 级别的日志。
+- `ERROR` 级别: 仅输出 `FATAL`、`ERROR` 级别的日志。
+- `FATAL` 级别: 仅输出 `FATAL` 级别的日志。
+- `NONE` 级别: 不输出任何日志。
+
+**设置日志文件大小**
+
+默认情况下，每个 SDK 日志文件的默认大小为 2,048 KB；API 调用日志文件的默认大小为 2,048 KB。如果想要设置日志文件大小，可以使用 `mLogConfig` 参数中的 `fileSizeInKB` 字段设置单个日志文件的大小。
+
+- 单个 `agorasdk.log` 日志文件大小的取值范围为 [128，20480]。
+- 该方法的设置仅对 `agorasdk.log` 文件生效，对 `agoraapi.log` 不生效。
+
+**示例代码**
+
+```java tab="Java" tabGroup="sample-code"
+RtcEngineConfig.LogConfig logConfig = new RtcEngineConfig.LogConfig();
+// 将日志过滤器等级设置为 ERROR
+logConfig.level = Constants.LogLevel.getValue(Constants.LogLevel.LOG_LEVEL_ERROR);
+// 设置 log 的文件路径
+String ts = new SimpleDateFormat("yyyyMMdd").format(new Date());
+logConfig.filePath = "/sdcard/" + ts + ".log";
+// 设置 log 的文件大小为 2MB
+logConfig.fileSize = 2048;
+
+RtcEngineConfig config = new RtcEngineConfig();
+config.mAppId = getString(R.string.agora_app_id);
+config.mEventHandler = iRtcEngineEventHandler;
+config.mContext = context.getApplicationContext();
+config.mAreaCode = getAreaCode();
+config.mLogConfig = logConfig;
+
+mRtcEngine = RtcEngine.create(config);
+```
+
+```swift tab="Swift" tabGroup="sample-code"
+let logConfig = AgoraLogConfig()
+// 将日志过滤器等级设置为 ERROR
+logConfig.level = AgoraLogLevel.error
+// 设置 log 的文件路径
+let formatter = DateFormatter()
+formatter.dateFormat = "ddMMyyyyHHmm"
+let folder = NSSearchPathForDirectoriesInDomains(.documentDirectoryuserDomainMask, true)
+logConfig.filePath = "\(folder[0])/logs/\(formatter.string(from: Date())).log"
+// 设置 log 的文件大小为 2MB
+logConfig.fileSize = 2 * 1024
+
+let config = AgoraRtcEngineConfig()
+config.appId = KeyCenter.AppId
+config.areaCode = GlobalSettings.shared.area.rawValue
+config.logConfig = logConfig
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+```
+
+```objc tab="Objective-C" tabGroup="sample-code"
+// 创建 AgoraLogConfig 对象
+AgoraLogConfig *logConfig = [[AgoraLogConfig alloc] init];
+// 将日志过滤器等级设置为 ERROR
+logConfig.level = AgoraLogLevelError;
+
+// 设置 log 的文件路径
+NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+[formatter setDateFormat:@"ddMMyyyyHHmm"];
+NSString *folder = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES )[0];
+logConfig.filePath = [NSString stringWithFormat:@"%@/logs/%@.log", folder, [formatter stringFromDate:[NSDate date]]];
+
+// 设置 log 的文件大小为 2MB
+logConfig.fileSizeInKB = 2 * 1024;
+
+// 创建 AgoraRtcEngineConfig 对象
+AgoraRtcEngineConfig *config = [[AgoraRtcEngineConfig alloc] init];
+config.appId = KeyCenter.AppId;
+config.areaCode = [GlobalSettings sharedSettings].areaCode;
+config.logConfig = logConfig;
+
+// 初始化 AgoraRtcEngineKit
+self.agoraKit = [AgoraRtcEngineKit sharedEngineWithConfig:config delegate: self];
+```
+
+```cpp tab="C++" tabGroup="sample-code"
+LogConfig logConfig;
+// 将日志过滤器等级设置为 ERROR
+logConfig.level = LOG_LEVEL::LOG_LEVEL_ERROR;
+// 设置 log 的文件路径
+time_t rawtime;
+struct tm * timeinfo;
+char buffer[128];
+time(&rawtime);
+timeinfo = localtime(&rawtime);
+strftime(buffer, sizeof(buffer), "c:\\log\\%Y%m%d.log", timeinfo);
+logConfig.filePath = buffer;
+// 设置 log 文件的大小为 2MB
+logConfig.fileSize = 2048;
+
+RtcEngineContext context;
+context.logConfig = logConfig;
+std::string strAppID = GET_APP_ID;
+context.appId = strAppID.c_str();
+context.eventHandler = &m_eventHandler;
+//initialize the RTC engine context.
+int ret = m_rtcEngine->initialize(context);
+```
+
+**API 参考**
+
+- Android
+  - [create[2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize)
+- iOS/macOS
+  - [sharedEngineWithConfig](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize)
+- Windows
+  - [initialize](/zh-CN/api-reference/rtc/cpp-all-platforms/initialize#api_irtcengine_initialize)
+
+## Web 平台
+
+### 开启/关闭日志上传
+
+你可以调用 `enableLogUpload` 方法将声网 RTC Web SDK 的日志上传到声网的服务器，调用 `disableLogUpload` 方法停止上传。
+
+为保证输出的日志完整，我们建议在创建 `Client` 前就调用 `enableLogUpload` 方法开启日志上传服务。
+
+如果没有成功加入频道，则服务器上无法查看日志信息。
+
+### 设置日志输出等级
+
+你可以调用 `setLogLevel` 方法设置日志的输出等级。选择一个级别，你就可以看到在该级别及之前所有级别的日志信息。
+
+按照输出日志最全到最少排列：
+
+- DEBUG：输出所有 API 日志信息
+- INFO：输出 INFO、WARNING 和 ERROR 级别的日志信息
+- WARNING：输出 WARNING 和 ERROR 级别的日志信息
+- ERROR：输出 ERROR 级别的日志信息
+- NONE：不输出日志信息
+
+### 示例代码
+
+```javascript
+// 开启日志上传功能
+AgoraRTC.enableLogUpload();
+// 将日志输出级别设置为 INFO
+AgoraRTC.setLogLevel(1);
+```

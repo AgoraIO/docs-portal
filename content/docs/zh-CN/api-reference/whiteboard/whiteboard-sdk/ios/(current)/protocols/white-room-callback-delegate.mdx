@@ -1,0 +1,216 @@
+---
+title: WhiteRoomCallbackDelegate Protocol Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Protocols/WhiteRoomCallbackDelegate
+  sourcePath: html-docs/whiteboard/iOS/Protocols/WhiteRoomCallbackDelegate.html
+  generator: appledoc
+  warnings: []
+---
+
+Whiteboard iOS SDK 2.16.147 公开接口。
+
+@protocol WhiteRoomCallbackDelegate &lt;NSObject&gt;
+
+## 成员
+
+- [firePhaseChanged:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-room-callback-delegate#//api/name/firePhaseChanged:)
+- [fireRoomStateChanged:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-room-callback-delegate#//api/name/fireRoomStateChanged:)
+- [fireDisconnectWithError:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-room-callback-delegate#//api/name/fireDisconnectWithError:)
+- [fireKickedWithReason:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-room-callback-delegate#//api/name/fireKickedWithReason:)
+- [fireCatchErrorWhenAppendFrame\:error:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-room-callback-delegate#//api/name/fireCatchErrorWhenAppendFrame:error:)
+- [fireCanUndoStepsUpdate:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-room-callback-delegate#//api/name/fireCanUndoStepsUpdate:)
+- [fireCanRedoStepsUpdate:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-room-callback-delegate#//api/name/fireCanRedoStepsUpdate:)
+- [fireMagixEvent:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-room-callback-delegate#//api/name/fireMagixEvent:)
+- [fireHighFrequencyEvent:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-room-callback-delegate#//api/name/fireHighFrequencyEvent:)
+- [onUnifiedPageStateChange:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-room-callback-delegate#//api/name/onUnifiedPageStateChange:)
+
+<a id="//api/name/firePhaseChanged:"></a>
+
+
+<a id="tasks"></a>
+
+### `– firePhaseChanged:`
+
+<ApiSignature>
+
+\- (void)firePhaseChanged:(WhiteRoomPhase)phase;
+
+</ApiSignature>
+
+```text
+房间连接状态发生变化回调。
+ @param phase 房间的连接状态，详见 [WhiteRoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/constants/white-room-phase)。
+```
+
+Declared in Room/WhiteRoomCallbacks.h
+
+<a id="//api/name/fireRoomStateChanged:"></a>
+
+### `– fireRoomStateChanged:`
+
+<ApiSignature>
+
+\- (void)fireRoomStateChanged:(WhiteRoomState *)modifyState;
+
+</ApiSignature>
+
+```text
+房间状态属性发生变化回调。
+
+ 该回调仅返回发生变化的房间状态属性，未发生变化的房间状态字段，均为空。
+
+ @param modifyState 发生变化的房间状态属性，详见 [WhiteRoomState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-state)。
+```
+
+Declared in Room/WhiteRoomCallbacks.h
+
+<a id="//api/name/fireDisconnectWithError:"></a>
+
+### `– fireDisconnectWithError:`
+
+<ApiSignature>
+
+\- (void)fireDisconnectWithError:(NSString *)error;
+
+</ApiSignature>
+
+```text
+白板 SDK 与白板服务器连接中断回调。
+
+ @param error 错误信息。
+```
+
+Declared in Room/WhiteRoomCallbacks.h
+
+<a id="//api/name/fireKickedWithReason:"></a>
+
+### `– fireKickedWithReason:`
+
+<ApiSignature>
+
+\- (void)fireKickedWithReason:(NSString *)reason;
+
+</ApiSignature>
+
+```text
+用户被服务器移出房间回调。
+
+ @param reason 用户被移除房间的原因。
+```
+
+Declared in Room/WhiteRoomCallbacks.h
+
+<a id="//api/name/fireCatchErrorWhenAppendFrame:error:"></a>
+
+### `– fireCatchErrorWhenAppendFrame:error:`
+
+<ApiSignature>
+
+\- (void)fireCatchErrorWhenAppendFrame:(NSUInteger)userId error:(NSString *)error;
+
+</ApiSignature>
+
+```text
+同步用户行为发生错误回调。
+
+*Note:** 该回调通常是可以忽略的，你可以根据业务情况自行决定是否监听。
+
+ @param userId 用户 ID。
+ @param error 错误原因。
+```
+
+Declared in Room/WhiteRoomCallbacks.h
+
+<a id="//api/name/fireCanUndoStepsUpdate:"></a>
+
+### `– fireCanUndoStepsUpdate:`
+
+<ApiSignature>
+
+\- (void)fireCanUndoStepsUpdate:(NSInteger)canUndoSteps;
+
+</ApiSignature>
+
+```text
+可撤销次数发生变化回调。
+
+ 当本地用户调用 [undo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/undo) 撤销上一步操作时，会触发该回调，报告剩余的可撤销次数。
+
+ @param canUndoSteps 剩余的可撤销次数。
+```
+
+Declared in Room/WhiteRoomCallbacks.h
+
+<a id="//api/name/fireCanRedoStepsUpdate:"></a>
+
+### `– fireCanRedoStepsUpdate:`
+
+<ApiSignature>
+
+\- (void)fireCanRedoStepsUpdate:(NSInteger)canRedoSteps;
+
+</ApiSignature>
+
+```text
+可重做次数发生变化回调。
+
+ 当本地用户调用 [redo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room#//api/name/redo) 重做上一步操作时，会触发该回调，报告剩余的可重做次数。
+
+ @param canRedoSteps 剩余的可重做次数。
+```
+
+Declared in Room/WhiteRoomCallbacks.h
+
+<a id="//api/name/fireMagixEvent:"></a>
+
+### `– fireMagixEvent:`
+
+<ApiSignature>
+
+\- (void)fireMagixEvent:(WhiteEvent *)event;
+
+</ApiSignature>
+
+```text
+白板自定义事件回调。
+
+ @param event 自定义事件。详见 [WhiteEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-event)。
+```
+
+Declared in Room/WhiteRoomCallbacks.h
+
+<a id="//api/name/fireHighFrequencyEvent:"></a>
+
+### `– fireHighFrequencyEvent:`
+
+<ApiSignature>
+
+\- (void)fireHighFrequencyEvent:(NSArray&lt;WhiteEvent *&gt;*)events;
+
+</ApiSignature>
+
+```text
+高频自定义事件一次性回调。
+
+ @param events 高频自定义事件。详见 [WhiteEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-event)。
+```
+
+Declared in Room/WhiteRoomCallbacks.h
+
+<a id="//api/name/onUnifiedPageStateChange:"></a>
+
+### `– onUnifiedPageStateChange:`
+
+<ApiSignature>
+
+\- (void)onUnifiedPageStateChange:(WhiteUnifiedPageStateChange *)state;
+
+</ApiSignature>
+
+```text
+MainView、DocsViewer、Slide 或 Presentation 的统一页面/缩放状态变化。
+```
+
+Declared in Room/WhiteRoomCallbacks.h

@@ -1,0 +1,64 @@
+---
+title: Fastboard SDK 概览
+description: "了解 Fastboard SDK 的核心能力、适用场景、接入路径和相关参考资源。"
+---
+Fastboard SDK 是基于 Whiteboard SDK 开发的新一代 SDK，提供默认白板 UI 和可自定义样式的小组件，已集成部分实用插件，且默认支持多窗口模式。可用于在线教育、在线会议、协作办公、在线互动娱乐等场景。
+
+<OverviewActions actions={[
+  { label: '方案对比', href: '/zh-CN/realtime-media/whiteboard' },
+  { label: '下载', href: '/zh-CN/reference/sdks?product=fastboard' },
+  { label: '客户端 API', href: '/zh-CN/api-reference/api?product=whiteboard&apiType=client' },
+  { label: '服务端 API', href: '/zh-CN/api-reference/api-ref/whiteboard/restful' },
+]} />
+
+## 开始构建
+
+<Cards>
+  <Card title="快速开始" href="/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb" description="运行示例或完成最小可用集成，快速验证核心流程。" />
+  <Card title="下载 SDK" href="/zh-CN/reference/sdks?product=fastboard" description="获取 Android、iOS 或 Web 平台的 Fastboard SDK。" />
+  <Card title="构建功能" href="/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service" description="按业务任务接入核心能力，并完成生产环境配置。" />
+  <Card title="参考信息" href="/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/billing" description="查看版本、计费、限制、错误码、API 和兼容性说明。" />
+</Cards>
+
+## 产品能力
+
+<CardGrid>
+  <FeatureCard title="默认白板 UI">
+    内置常用白板界面和交互组件，减少工具栏、页面管理、文件展示等基础界面的开发工作。
+  </FeatureCard>
+  <FeatureCard title="多人实时协作">
+    支持多人在同一个白板房间中实时书写、绘制、擦除、选择和编辑内容，并保持低延时同步。
+  </FeatureCard>
+  <FeatureCard title="文件展示和课件演示">
+    支持静态图片、动态 PPT、HTML5 课件、音频和视频等素材，适合课堂讲解、会议演示和协作批注。
+  </FeatureCard>
+  <FeatureCard title="窗口管理器">
+    支持在白板主窗口中开启多个子窗口，并在子窗口中承载文档演示、音视频播放器、代码编辑器等插件。
+  </FeatureCard>
+  <FeatureCard title="插件中心">
+    提供内置插件并支持扩展自定义插件，让白板可以承载更多业务工具和协作组件。
+  </FeatureCard>
+  <FeatureCard title="录制和回放">
+    支持记录白板操作、动态课件和自定义事件，便于课后回看、会议复盘和内容归档。
+  </FeatureCard>
+</CardGrid>
+
+## 适用场景
+
+Fastboard SDK 适用于希望快速集成白板能力的在线教育、在线会议、协作办公和互动娱乐应用。如果你需要完全自定义 UI 和白板状态管理，请选择[互动白板 SDK](/zh-CN/realtime-media/whiteboard/whiteboard-sdk)。
+
+## 与当前客户端 SDK 配合
+
+服务端先创建房间和签发 Room Token，再交给客户端加入。房间 UUID、region 和 Token 对应的权限应保持一致；SDK Token 保存在业务服务端。RESTful v5 路径由服务端接口定义，客户端 SDK 版本升级无需更改这些路径。
+
+| 客户端 | 推荐正式版本 |
+| --- | --- |
+| Whiteboard Web | 2.16.59 |
+| Whiteboard iOS | 2.16.147 |
+| Whiteboard Android | 2.16.134 |
+| Whiteboard HarmonyOS | 0.2.11 |
+| Fastboard Web | 1.1.10 |
+| Fastboard iOS | 1.4.6 |
+| Fastboard Android | 1.8.2 |
+
+Appliance Plugin 是客户端初始化与绘制配置：服务端创建房间、生成 Token、转换课件后，各客户端按自己的 SDK 入口开启插件。配置示例见 [Web 教具插件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)、[Android 教具插件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)、[iOS 教具插件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)。

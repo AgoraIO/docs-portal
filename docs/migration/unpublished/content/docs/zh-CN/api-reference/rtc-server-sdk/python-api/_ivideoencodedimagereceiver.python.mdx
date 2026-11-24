@@ -1,0 +1,27 @@
+---
+title: "IVideoEncodedImageReceiver 类"
+---
+<span className="index-desc-ivideoencodedimagereceiver">`IVideoEncodedImageReceiver` 类。</span>
+
+<a id="onencodedvideoimagereceived"></a>
+## on_encoded_video_image_received
+
+```python
+def on_encoded_video_image_received(self, image_buffer: bytes, length: int, video_encoded_frame_info: EncodedVideoFrameInfo) -> bool:
+    pass
+```
+
+<span className="index-desc-onencodedvideoimagereceived">每次收到已编码视频帧时触发。</span>
+
+#### 参数
+
+| 参数                     | 描述                         |
+|--------------------------|------------------------------|
+| `image_buffer`           | 视频帧缓冲区。               |
+| `length`                 | 视频帧数据长度。             |
+| `video_encoded_frame_info`| 已编码视频帧的信息。详见 [`EncodedVideoFrameInfo`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#encodedvideoframeinfo)。         |
+
+#### 返回值
+
+- `0`：不接受已编码视频帧。
+- `1`：接受已编码视频帧。

@@ -95,7 +95,7 @@ describe('PlanCards', () => {
       'href',
       '/zh-CN/realtime-media/rtm/reference/billing/billing-strategy',
     );
-    expect(screen.getAllByText('✓')).toHaveLength(6);
+    expect(screen.getAllByRole('listitem')).toHaveLength(6);
 
     await act(async () => {
       fireEvent.click(cta);

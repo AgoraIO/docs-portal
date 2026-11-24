@@ -1,0 +1,40 @@
+---
+title: Whiteboard iOS API 概览
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/ios/docs/headers/Agora-Interactive-Whiteboard-Objective-C-Overview
+  sourcePath: html-docs/whiteboard/iOS/docs/headers/Agora-Interactive-Whiteboard-Objective-C-Overview.html
+  generator: appledoc
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/whiteboard/ios/Classes/WhiteWindowParams.html.
+---
+
+当前版本：Whiteboard iOS 2.16.147。通过 WhiteSdkConfiguration 初始化 SDK，WhiteRoomConfig 配置入房参数，入房成功后使用 WhiteRoom；回放通过 WhitePlayer。多窗口与教具插件在 SDK 初始化前开启。
+
+## 主要入口
+
+- [WhiteSDK](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk)
+- [WhiteSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-sdk-configuration)
+- [WhiteRoom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room)
+- [WhiteRoomConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room-config)
+- [WhiteMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-member-state)
+- WhiteWindowParams
+- [WhiteSlideAppParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-slide-app-params)
+- [WhiteCommonCallbackDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-common-callback-delegate)
+- [WhiteRoomCallbackDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-room-callback-delegate)
+
+## 初始化配置
+
+```text
+WhiteSdkConfiguration *config = [[WhiteSdkConfiguration alloc] initWithApp:appIdentifier];
+config.useMultiViews = YES;
+config.enableAppliancePlugin = YES;
+```
+
+## 课件与扩展
+
+originSize、统一页面命令、页状态、forceMaximized、lazy setup 和 LRU 缓存通过本端公开模型设置；页码从 1 开始，scale 为相对适配尺寸。背景来源为 appliance，查询/恢复通过 WhiteSDK；普通图片使用 WhiteRoom.insertImage\:src:。通过 Native delegate 接收加载、初始化和页面事件。

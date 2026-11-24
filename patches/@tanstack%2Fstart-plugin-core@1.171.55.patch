@@ -1,0 +1,71 @@
+diff --git a/dist/esm/prerender.js b/dist/esm/prerender.js
+index 3dc4e19f221a2ed509bd2c710d5334157bb7ddfd..ae5b9fe3ebae2f3f1e649d85776d18fd23b966ca 100644
+--- a/dist/esm/prerender.js
++++ b/dist/esm/prerender.js
+@@ -59,10 +59,12 @@ async function prerender({ startConfig, handler }) {
+ 		}
+ 		await queue.start();
+ 		return Array.from(prerendered);
+-		function addCrawlPageTask(page) {
+-			if (seen.has(page.path)) return;
+-			seen.add(page.path);
+-			if (page.fromCrawl) startConfig.pages.push(page);
++		function addCrawlPageTask(page, retry = false) {
++			if (!retry) {
++				if (seen.has(page.path)) return;
++				seen.add(page.path);
++				if (page.fromCrawl) startConfig.pages.push(page);
++			}
+ 			if (!(page.prerender?.enabled ?? true)) return;
+ 			if (startConfig.prerender?.filter && !startConfig.prerender.filter(page)) return;
+ 			const prerenderOptions = {
+@@ -114,8 +116,8 @@ async function prerender({ startConfig, handler }) {
+ 						logger.warn(`Encountered error, retrying: ${page.path} in ${retryDelay}ms`);
+ 						await new Promise((resolve) => setTimeout(resolve, retryDelay));
+ 						retriesByPath.set(page.path, retries + 1);
+-						addCrawlPageTask(page);
+-					} else if (prerenderOptions.failOnError ?? true) throw error;
++						addCrawlPageTask(page, true);
++					} else if (prerenderOptions.failOnError ?? true) throw new Error(`Failed to prerender ${page.path} after ${retries + 1} attempts`, { cause: error });
+ 				}
+ 			});
+ 		}
+diff --git a/src/prerender.ts b/src/prerender.ts
+index 9510a9ab379923fab8b48a7d0132ab22671fc631..a4e271b9159df736e2a3d8b8cd5af4e1031388c0 100644
+--- a/src/prerender.ts
++++ b/src/prerender.ts
+@@ -110,13 +110,12 @@ export async function prerender({
+ 
+     return Array.from(prerendered)
+ 
+-    function addCrawlPageTask(page: Page) {
+-      if (seen.has(page.path)) return
+-
+-      seen.add(page.path)
+-
+-      if (page.fromCrawl) {
+-        startConfig.pages.push(page)
++    function addCrawlPageTask(page: Page, retry = false) {
++      // A retry owns an existing path; only newly discovered paths are deduplicated.
++      if (!retry) {
++        if (seen.has(page.path)) return
++        seen.add(page.path)
++        if (page.fromCrawl) startConfig.pages.push(page)
+       }
+ 
+       if (!(page.prerender?.enabled ?? true)) return
+@@ -233,9 +232,12 @@ export async function prerender({
+             )
+             await new Promise((resolve) => setTimeout(resolve, retryDelay))
+             retriesByPath.set(page.path, retries + 1)
+-            addCrawlPageTask(page)
++            addCrawlPageTask(page, true)
+           } else if (prerenderOptions.failOnError ?? true) {
+-            throw error
++            throw new Error(
++              `Failed to prerender ${page.path} after ${retries + 1} attempts`,
++              { cause: error },
++            )
+           }
+         }
+       })

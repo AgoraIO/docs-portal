@@ -1,0 +1,161 @@
+---
+title: agora::util::AutoPtr< T > 模板类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1util_1_1_auto_ptr
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1util_1_1_auto_ptr.html
+  generator: doxygen
+  warnings: []
+---
+
+被 [agora::util::CopyableAutoPtr&lt; T &gt;](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-copyable-auto-ptr) 继承.
+
+## 成员类型定义说明
+
+<a id="a49c5430118aa8f491afe93012b8573ff"></a>
+
+### value_type
+
+<ApiSignature labels="protected">
+
+typedef T [agora::util::AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)&lt; T &gt;::[value_type](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr#a49c5430118aa8f491afe93012b8573ff)
+
+</ApiSignature>
+
+<a id="ad173e3764e303895329caf204900f67f"></a>
+
+### pointer_type
+
+<ApiSignature labels="protected">
+
+typedef T* [agora::util::AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)&lt; T &gt;::[pointer_type](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr#ad173e3764e303895329caf204900f67f)
+
+</ApiSignature>
+
+## 构造及析构函数说明
+
+<a id="a97f379823e861d0880095de272f6213f"></a>
+
+### AutoPtr() [1/2]
+
+<ApiSignature labels="inline explicit">
+
+[agora::util::AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)&lt; T &gt;::[AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)([pointer_type](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr#ad173e3764e303895329caf204900f67f) *p* = `NULL`)
+
+</ApiSignature>
+
+<a id="a43baa947bb96567c44b0b6107fc6b9d7"></a>
+
+### ~AutoPtr()
+
+<ApiSignature labels="inline">
+
+[agora::util::AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)&lt; T &gt;::~[AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)()
+
+</ApiSignature>
+
+<a id="a426e890b3b156ce1342d2c4339d7c9a9"></a>
+
+### AutoPtr() [2/2]
+
+<ApiSignature labels="private">
+
+[agora::util::AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)&lt; T &gt;::[AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)(const [AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)&lt; T &gt; &)
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="a2e26bf8c5f76b7c44e4edc13acf95ea0"></a>
+
+### operator bool()
+
+<ApiSignature labels="inline">
+
+[agora::util::AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)&lt; T &gt;::operator bool() const
+
+</ApiSignature>
+
+<a id="acae1fcbd3e1cc1dd43251d34cceb145f"></a>
+
+### operator*()
+
+<ApiSignature labels="inline">
+
+[value_type](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr#a49c5430118aa8f491afe93012b8573ff)& [agora::util::AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)&lt; T &gt;::operator*() const
+
+</ApiSignature>
+
+<a id="a72c6067d1da007fddd647485b679c933"></a>
+
+### operator-&gt;()
+
+<ApiSignature labels="inline">
+
+[pointer_type](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr#ad173e3764e303895329caf204900f67f) [agora::util::AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)&lt; T &gt;::operator-&gt;() const
+
+</ApiSignature>
+
+<a id="a385fb698e748d0ff60e77676cc3875ca"></a>
+
+### get()
+
+<ApiSignature labels="inline">
+
+[pointer_type](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr#ad173e3764e303895329caf204900f67f) [agora::util::AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)&lt; T &gt;::get() const
+
+</ApiSignature>
+
+<a id="a5d33168c40e7394b16e3413b187498cc"></a>
+
+### release()
+
+<ApiSignature labels="inline">
+
+[pointer_type](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr#ad173e3764e303895329caf204900f67f) [agora::util::AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)&lt; T &gt;::release()
+
+</ApiSignature>
+
+<a id="a0b2ae6c54a1de7a9c4c2bb1bd1f40294"></a>
+
+### reset()
+
+<ApiSignature labels="inline">
+
+void [agora::util::AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)&lt; T &gt;::reset([pointer_type](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr#ad173e3764e303895329caf204900f67f) *ptr* = `NULL`)
+
+</ApiSignature>
+
+<a id="a264095d02f29ca4f1dfe5a0fa6a9d77b"></a>
+
+### queryInterface()
+
+<ApiSignature labels="inline">
+
+bool [agora::util::AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)&lt; T &gt;::queryInterface(C1 * *c*, C2 *iid*)
+
+</ApiSignature>
+
+<a id="aea4cbf6221eef35820ec17879074274b"></a>
+
+### operator=()
+
+<ApiSignature labels="private">
+
+[AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)& [agora::util::AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)&lt; T &gt;::operator=(const [AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)&lt; T &gt; &)
+
+</ApiSignature>
+
+## 类成员变量说明
+
+<a id="a74d3177909d0321cb264bb3364bfa8d6"></a>
+
+### ptr_
+
+<ApiSignature labels="private">
+
+[pointer_type](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr#ad173e3764e303895329caf204900f67f) [agora::util::AutoPtr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1util-1-1-auto-ptr)&lt; T &gt;::ptr_
+
+</ApiSignature>

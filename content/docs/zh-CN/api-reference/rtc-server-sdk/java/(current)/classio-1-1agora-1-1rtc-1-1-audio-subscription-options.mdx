@@ -1,0 +1,260 @@
+---
+title: io.agora.rtc.AudioSubscriptionOptions类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_audio_subscription_options
+  sourcePath: html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_audio_subscription_options.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_audio_subscription_options_8java.html as local text.
+---
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+音频订阅选项。
+
+<a id="doc-constructors"></a>
+
+<a id="header-doc-constructors"></a>
+
+## 构造及析构函数说明
+
+<a id="a68f2125d480ca76271e8f569b01a0898"></a>
+
+### AudioSubscriptionOptions() [1/2]
+
+<ApiSignature>
+
+io.agora.rtc.AudioSubscriptionOptions.AudioSubscriptionOptions()
+
+</ApiSignature>
+
+<a id="a0ef754692c7025191562e8a88df375fe"></a>
+
+### AudioSubscriptionOptions() [2/2]
+
+<ApiSignature>
+
+io.agora.rtc.AudioSubscriptionOptions.AudioSubscriptionOptions(int *packetOnly*, int *pcmDataOnly*, int *bytesPerSample*, int *numberOfChannels*, int *sampleRateHz*)
+
+</ApiSignature>
+
+构造函数。
+
+<ParameterList title="参数">
+<Parameter name="packetOnly">
+
+是否仅订阅音频包：
+
+- 1: 仅订阅音频包。SDK 不会对音频进行解码。
+- 0: (默认) SDK 自动对音频进行解码。
+
+</Parameter>
+</ParameterList>
+
+:::info[注解]
+如果该参数设为 1，结构体中的其他参数无效。
+:::
+
+<ParameterList title="参数">
+<Parameter name="pcmDataOnly">
+
+是否仅订阅 PCM 数据：
+
+- 1: 仅订阅 PCM 数据。
+- 0:（默认）SDK 自动对远端音频流进行编码。
+
+</Parameter>
+<Parameter name="bytesPerSample">
+
+每个音频采样的字节数。
+
+</Parameter>
+<Parameter name="numberOfChannels">
+
+音频声道数。
+
+</Parameter>
+<Parameter name="sampleRateHz">
+
+音频采样率（Hz）。
+
+</Parameter>
+</ParameterList>
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="af830261f038869e06f63994676a89ddc"></a>
+
+### getBytesPerSample()
+
+<ApiSignature>
+
+int io.agora.rtc.AudioSubscriptionOptions.getBytesPerSample()
+
+</ApiSignature>
+
+<a id="a7a9dd8c91d34f027866ef27fbcb7a519"></a>
+
+### getNumberOfChannels()
+
+<ApiSignature>
+
+int io.agora.rtc.AudioSubscriptionOptions.getNumberOfChannels()
+
+</ApiSignature>
+
+<a id="aaefd46978334cacdee8079e1f5037424"></a>
+
+### getPacketOnly()
+
+<ApiSignature>
+
+int io.agora.rtc.AudioSubscriptionOptions.getPacketOnly()
+
+</ApiSignature>
+
+<a id="ac37bd24cdb2a70371f4434e4704b3759"></a>
+
+### getPcmDataOnly()
+
+<ApiSignature>
+
+int io.agora.rtc.AudioSubscriptionOptions.getPcmDataOnly()
+
+</ApiSignature>
+
+<a id="ab9443d43494cd60fac8d3503336cd063"></a>
+
+### getSampleRateHz()
+
+<ApiSignature>
+
+int io.agora.rtc.AudioSubscriptionOptions.getSampleRateHz()
+
+</ApiSignature>
+
+<a id="a58eb94a2af5df498d3bf552bcaa6016e"></a>
+
+### setBytesPerSample()
+
+<ApiSignature>
+
+void io.agora.rtc.AudioSubscriptionOptions.setBytesPerSample(int *bytesPerSample*)
+
+</ApiSignature>
+
+<a id="abef365805492fab0852d2d401431e817"></a>
+
+### setNumberOfChannels()
+
+<ApiSignature>
+
+void io.agora.rtc.AudioSubscriptionOptions.setNumberOfChannels(int *numberOfChannels*)
+
+</ApiSignature>
+
+<a id="adb616b5eac06be45533d846e2e2f459e"></a>
+
+### setPacketOnly()
+
+<ApiSignature>
+
+void io.agora.rtc.AudioSubscriptionOptions.setPacketOnly(int *packetOnly*)
+
+</ApiSignature>
+
+<a id="a88c38985b0bbe29148014408baafa1bc"></a>
+
+### setPcmDataOnly()
+
+<ApiSignature>
+
+void io.agora.rtc.AudioSubscriptionOptions.setPcmDataOnly(int *pcmDataOnly*)
+
+</ApiSignature>
+
+<a id="af894fa4480e70d31ab52dad4e0ef8d70"></a>
+
+### setSampleRateHz()
+
+<ApiSignature>
+
+void io.agora.rtc.AudioSubscriptionOptions.setSampleRateHz(int *sampleRateHz*)
+
+</ApiSignature>
+
+<a id="doc-variable-members"></a>
+
+<a id="header-doc-variable-members"></a>
+
+## 类成员变量说明
+
+<a id="ac0d75b349118bdbb9d30e53ac580c1b4"></a>
+
+### bytesPerSample
+
+<ApiSignature labels="private">
+
+int io.agora.rtc.AudioSubscriptionOptions.bytesPerSample
+
+</ApiSignature>
+
+<a id="ac2a8229648be2790bc495cbd53d97805"></a>
+
+### numberOfChannels
+
+<ApiSignature labels="private">
+
+int io.agora.rtc.AudioSubscriptionOptions.numberOfChannels
+
+</ApiSignature>
+
+<a id="aab6a529cff35572b2e7f65b246d75d47"></a>
+
+### packetOnly
+
+<ApiSignature labels="private">
+
+int io.agora.rtc.AudioSubscriptionOptions.packetOnly
+
+</ApiSignature>
+
+<a id="a9ab5c22af2a423970406d6d3b03c8768"></a>
+
+### pcmDataOnly
+
+<ApiSignature labels="private">
+
+int io.agora.rtc.AudioSubscriptionOptions.pcmDataOnly
+
+</ApiSignature>
+
+<a id="a6b410ecd5c1d533d8df480722bb7512a"></a>
+
+### sampleRateHz
+
+<ApiSignature labels="private">
+
+int io.agora.rtc.AudioSubscriptionOptions.sampleRateHz
+
+</ApiSignature>
+
+---
+
+该类的文档由以下文件生成:
+
+- AudioSubscriptionOptions.java

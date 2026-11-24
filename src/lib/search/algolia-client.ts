@@ -10,6 +10,7 @@ import {
   aggregateApiResults,
   normalizeApiHit,
 } from './api-result-normalizer';
+import { getRelatedOverview, rankEnglishDocs } from './english-docs-ranking';
 import { classifySearchIntent, getDocsRetrievalQuery } from './search-intent';
 import {
   normalizeSearchPlatform,
@@ -21,6 +22,7 @@ import type { FederatedSearchResult, SearchRecordKind } from './search-result';
 import {
   allSearchTermsMatch,
   getRequiredApiTaskTerms,
+  hasExactJoinedSearchAlias,
 } from './search-term-matching';
 
 export type AlgoliaSearchFilters = {
@@ -353,14 +355,26 @@ async function searchWithRankingV2({
         scope,
       })
     : undefined;
+  const overview = locale === 'en' ? getRelatedOverview(intent) : undefined;
+  const overviewRequest = overview
+    ? {
+        ...docsRequest,
+        query: overview,
+        restrictSearchableAttributes: ['title'],
+      }
+    : undefined;
   let searchResponse: unknown;
   let multiRequestRejected = false;
   try {
     searchResponse = await client.searchForHits({
-      requests: [docsRequest, ...(apiRequest ? [apiRequest] : [])],
+      requests: [
+        docsRequest,
+        ...(apiRequest ? [apiRequest] : []),
+        ...(overviewRequest ? [overviewRequest] : []),
+      ],
     });
   } catch (error) {
-    if (!apiRequest) {
+    if (!apiRequest && !overviewRequest) {
       setStatus({ api: 'not-requested', docs: 'error' });
       throw error;
     }
@@ -423,6 +437,30 @@ async function searchWithRankingV2({
     const candidate = mapDocsHitForFederatedSearch(hit, intent, apiSucceeded);
     return candidate ? [candidate] : [];
   });
+  const rankedDocs =
+    locale === 'en' ? rankEnglishDocs(docsCandidates, intent) : docsCandidates;
+  if (overview && !multiRequestRejected) {
+    const hits =
+      getResultHits(getResultAt(searchResponse, apiRequest ? 2 : 1)) ?? [];
+    const match = hits.find(
+      (hit) =>
+        isRecord(hit) &&
+        typeof hit.title === 'string' &&
+        normalizeSearchText(hit.title) === normalizeSearchText(overview),
+    );
+    const related = mapDocsHitForFederatedSearch(match, intent, apiSucceeded);
+    if (related) {
+      const position = rankedDocs.findIndex(
+        (doc) => doc.url.split('#')[0] === related.url.split('#')[0],
+      );
+      const preferred = intent.intent === 'product' ? 0 : 1;
+      if (position < 0) rankedDocs.splice(preferred, 0, related);
+      else if (position > preferred) {
+        const [existing] = rankedDocs.splice(position, 1);
+        rankedDocs.splice(preferred, 0, existing);
+      }
+    }
+  }
   const normalizedApiEntries = (apiHits ?? []).flatMap((hit) => {
     const normalized = normalizeApiHit(hit, intent);
     const exactMatch = normalized
@@ -464,6 +502,15 @@ async function searchWithRankingV2({
     );
     return {
       ...exactMatch,
+      // A bare task such as "renew token" can name the SDK member exactly.
+      // Keep decorated requests and partial member names in their usual order.
+      aliasesExactMatch:
+        exactMatch.aliasesExactMatch ||
+        (intent.intent === 'api-task' &&
+          hasExactJoinedSearchAlias(
+            [result.symbol, result.displayTitle],
+            intent.terms,
+          )),
       allMajorTermsMatch,
       canonicalKey: result.canonicalKey,
       content: highlightedTitle,
@@ -494,7 +541,7 @@ async function searchWithRankingV2({
       ({ aliasesExactMatch, titleExactMatch }) =>
         titleExactMatch || aliasesExactMatch,
     );
-  const docsSection = docsCandidates.slice(0, 10);
+  const docsSection = rankedDocs.slice(0, 10);
   const apiSection = apiCandidates.slice(0, 10);
   return apiFirst
     ? [...apiSection, ...docsSection]

@@ -1,0 +1,99 @@
+---
+title: 扩展 API 与配置
+---
+
+<PlatformStructured platform="android">
+
+适用于 **Fastboard android 1.8.2**。完整签名见[Fastboard API](/zh-CN/api-reference/whiteboard/fastboard/android)。
+
+## 统一页面控制
+
+MainView、DocsViewer、Slide、Presentation 的 page 从 1 开始；target 输入可为 mainView 或 appId，省略时跟随焦点。查询输出的 target 为 mainView/DocsViewer/Slide/Presentation。scale 为相对适配尺寸倍率，1 表示适配尺寸，DocsViewer 不支持 scalePage。
+
+accepted=true 表示命令接收；accepted=false 包含 reason/message。通过统一页事件或查询观察实际状态，不能把命令回调作为首帧完成信号。
+
+## 窗口与课件配置
+
+| 参数 | 行为 |
+| --- | --- |
+| originSize | 正数 width/height 参考尺寸；MainView 与各 App 分别设置 |
+| pageScaleRange | 相对适配尺寸的 minScale/maxScale，均为有限正数 |
+| forceMaximized | 房间级强制最大化，与 useBoxesStatus 不兼容 |
+| lazySetupInMaximizedMode | 本端按焦点初始化，默认关闭 |
+| maxCachedAppsInMaximizedMode | 本端 LRU runtime 缓存，默认 4 |
+| navigationButtonMode | Slide 底部按钮：page 默认按页，step 按动画步骤 |
+| syncEventQueuePolicy | fifo 默认；latest-pending-render 仅合并待执行渲染页 |
+
+focusApp 的布尔值表示焦点提交完成；不能用它判断 setup 或全部资源就绪。插入课件需先转换，普通图片页可以创建 Presentation；原有静态文档 API 保持 DocsViewer 行为。
+
+## 当前公开入口
+
+FastRoom.insertPresentation、insertDocs、dispatchDocsEvent、getPageState、querySlidePageState、setUnifiedPageStateListener、focusApp。所有结果通过 FastResult 返回；未就绪、取消或失败通过 onError 处理。
+
+教具插件配置、可用教具和扩展接口见[教具插件介绍](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+适用于 **Fastboard ios 1.4.6**。完整签名见[Fastboard API](/zh-CN/api-reference/whiteboard/fastboard/ios)。
+
+## 统一页面控制
+
+MainView、DocsViewer、Slide、Presentation 的 page 从 1 开始；target 输入可为 mainView 或 appId，省略时跟随焦点。查询输出的 target 为 mainView/DocsViewer/Slide/Presentation。scale 为相对适配尺寸倍率，1 表示适配尺寸，DocsViewer 不支持 scalePage。
+
+accepted=true 表示命令接收；accepted=false 包含 reason/message。通过统一页事件或查询观察实际状态，不能把命令回调作为首帧完成信号。
+
+## 窗口与课件配置
+
+| 参数 | 行为 |
+| --- | --- |
+| originSize | 正数 width/height 参考尺寸；MainView 与各 App 分别设置 |
+| pageScaleRange | 相对适配尺寸的 minScale/maxScale，均为有限正数 |
+| forceMaximized | 房间级强制最大化，与 useBoxesStatus 不兼容 |
+| lazySetupInMaximizedMode | 本端按焦点初始化，默认关闭 |
+| maxCachedAppsInMaximizedMode | 本端 LRU runtime 缓存，默认 4 |
+| navigationButtonMode | Slide 底部按钮：page 默认按页，step 按动画步骤 |
+| syncEventQueuePolicy | fifo 默认；latest-pending-render 仅合并待执行渲染页 |
+
+focusApp 的布尔值表示焦点提交完成；不能用它判断 setup 或全部资源就绪。插入课件需先转换，普通图片页可以创建 Presentation；原有静态文档 API 保持 DocsViewer 行为。
+
+## 当前公开入口
+
+FastRoom.insertPresentation、dispatchDocsEvent、getPageState、querySlidePageState、focusApp、setSlideDelegate。插入 App 回调为 String?；dispatchDocsEvent 返回 Result，焦点返回 Bool 与 Error?。
+
+教具插件配置、可用教具和扩展接口见[教具插件介绍](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+适用于 **Fastboard javascript 1.1.9**。完整签名见[Fastboard API](/zh-CN/api-reference/whiteboard/fastboard/web)。
+
+## 统一页面控制
+
+MainView、DocsViewer、Slide、Presentation 的 page 从 1 开始；target 输入可为 mainView 或 appId，省略时跟随焦点。查询输出的 target 为 mainView/DocsViewer/Slide/Presentation。scale 为相对适配尺寸倍率，1 表示适配尺寸，DocsViewer 不支持 scalePage。
+
+accepted=true 表示命令接收；accepted=false 包含 reason/message。通过统一页事件或查询观察实际状态，不能把命令回调作为首帧完成信号。
+
+## 窗口与课件配置
+
+| 参数 | 行为 |
+| --- | --- |
+| originSize | 正数 width/height 参考尺寸；MainView 与各 App 分别设置 |
+| pageScaleRange | 相对适配尺寸的 minScale/maxScale，均为有限正数 |
+| forceMaximized | 房间级强制最大化，与 useBoxesStatus 不兼容 |
+| lazySetupInMaximizedMode | 本端按焦点初始化，默认关闭 |
+| maxCachedAppsInMaximizedMode | 本端 LRU runtime 缓存，默认 4 |
+| navigationButtonMode | Slide 底部按钮：page 默认按页，step 按动画步骤 |
+| syncEventQueuePolicy | fifo 默认；latest-pending-render 仅合并待执行渲染页 |
+
+focusApp 的布尔值表示焦点提交完成；不能用它判断 setup 或全部资源就绪。插入课件需先转换，普通图片页可以创建 Presentation；原有静态文档 API 保持 DocsViewer 行为。
+
+## 当前公开入口
+
+dispatchDocsEvent(app, event, options)、app.getPageState(options)、app.focusApp(appId)、app.insertDocs(params, options)、app.appliancePlugin.addListener/removeListener。
+
+教具插件配置、可用教具和扩展接口见[教具插件介绍](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)。
+
+</PlatformStructured>

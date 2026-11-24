@@ -1,0 +1,22 @@
+---
+title: "如何处理 Flutter 项目运行 pod install 命令报错？"
+---
+## 问题描述
+
+在 Flutter 项目中运行 `pod install` 时，遇到以下错误：
+
+```shell
+[!] Invalid Podfile file: /xxx/ios/Flutter/Generated.xcconfig must exist. If you’re running pod install manually, make sure flutter pub get is executed first.
+```
+
+## 问题原因
+
+报错信息提示 `Generated.xcconfig` 文件缺失，该文件是 Flutter App 在 iOS 设备上的正常构建所必需的。如果在执行 `pod install` 前未运行 `flutter pub get` 生成该文件，会导致此项报错。
+
+## 解决方案
+
+要解决这个问题，请按照以下步骤操作：
+
+1. 打开终端，导航到 Flutter 项目的根目录。
+2. 运行 `flutter pub get` 命令获取并更新项目的依赖，该命令还将生成 `Generated.xcconfig` 文件以及其他必需的配置文件。
+3. 重新运行 `pod install`。

@@ -290,6 +290,92 @@ function renderRealtimeMediaDocsShell(
   };
 }
 
+function ShellWithTabSwitcher() {
+  const [activeTab, setActiveTab] = useState<'introduction' | 'ai'>(
+    'introduction',
+  );
+
+  return (
+    <>
+      <button onClick={() => setActiveTab('ai')} type="button">
+        Switch tab
+      </button>
+      <DocsShell
+        activePath="/en/introduction"
+        activeTab={activeTab}
+        localeLinks={[
+          {
+            href: '/en/introduction',
+            isActive: true,
+            locale: 'en',
+          },
+          {
+            href: '/zh-CN/introduction',
+            isActive: false,
+            locale: 'zh-CN',
+          },
+        ]}
+        locale="en"
+        loadPages={loadSearchPages}
+        sidebar={
+          activeTab === 'introduction'
+            ? sidebar
+            : [
+                {
+                  id: 'ai-intro',
+                  title: 'AI Intro',
+                  type: 'page' as const,
+                  url: '/en/ai/get-started/quickstart',
+                },
+              ]
+        }
+        tabs={tabs}
+        toc={[]}
+      >
+        <article>Body</article>
+      </DocsShell>
+    </>
+  );
+}
+
+function ShellWithPathSwitcher() {
+  const [activePath, setActivePath] = useState('/en/introduction/about-agora');
+
+  return (
+    <>
+      <button
+        onClick={() => setActivePath('/en/introduction/quick-start')}
+        type="button"
+      >
+        Switch page
+      </button>
+      <DocsShell
+        activePath={activePath}
+        activeTab="introduction"
+        localeLinks={[
+          {
+            href: '/en/introduction',
+            isActive: true,
+            locale: 'en',
+          },
+          {
+            href: '/zh-CN/introduction',
+            isActive: false,
+            locale: 'zh-CN',
+          },
+        ]}
+        locale="en"
+        loadPages={loadSearchPages}
+        sidebar={sidebar}
+        tabs={tabs}
+        toc={[]}
+      >
+        <article>{activePath}</article>
+      </DocsShell>
+    </>
+  );
+}
+
 describe('DocsShell', () => {
   afterEach(async () => {
     vi.useRealTimers();
@@ -339,7 +425,7 @@ describe('DocsShell', () => {
 
     const mainHeaderRow = await screen.findByTestId('docs-main-header-row');
     const brandHomeLink = within(mainHeaderRow).getByRole('link', {
-      name: 'Agora Docs',
+      name: '声网文档中心',
     });
 
     expect(brandHomeLink).toHaveAttribute('href', '/zh-CN/introduction');
@@ -1132,54 +1218,6 @@ describe('DocsShell', () => {
   });
 
   it('resets desktop sidebar scroll position when the active tab changes', async () => {
-    function ShellWithTabSwitcher() {
-      const [activeTab, setActiveTab] = useState<'introduction' | 'ai'>(
-        'introduction',
-      );
-
-      return (
-        <>
-          <button onClick={() => setActiveTab('ai')} type="button">
-            Switch tab
-          </button>
-          <DocsShell
-            activePath="/en/introduction"
-            activeTab={activeTab}
-            localeLinks={[
-              {
-                href: '/en/introduction',
-                isActive: true,
-                locale: 'en',
-              },
-              {
-                href: '/zh-CN/introduction',
-                isActive: false,
-                locale: 'zh-CN',
-              },
-            ]}
-            locale="en"
-            loadPages={loadSearchPages}
-            sidebar={
-              activeTab === 'introduction'
-                ? sidebar
-                : [
-                    {
-                      id: 'ai-intro',
-                      title: 'AI Intro',
-                      type: 'page' as const,
-                      url: '/en/ai/get-started/quickstart',
-                    },
-                  ]
-            }
-            tabs={tabs}
-            toc={[]}
-          >
-            <article>Body</article>
-          </DocsShell>
-        </>
-      );
-    }
-
     renderWithRouter(<ShellWithTabSwitcher />);
 
     expect(await screen.findByText('Agora Docs')).toBeInTheDocument();
@@ -1195,46 +1233,6 @@ describe('DocsShell', () => {
   });
 
   it('delegates desktop main-column scroll restoration to the router', async () => {
-    function ShellWithPathSwitcher() {
-      const [activePath, setActivePath] = useState(
-        '/en/introduction/about-agora',
-      );
-
-      return (
-        <>
-          <button
-            onClick={() => setActivePath('/en/introduction/quick-start')}
-            type="button"
-          >
-            Switch page
-          </button>
-          <DocsShell
-            activePath={activePath}
-            activeTab="introduction"
-            localeLinks={[
-              {
-                href: '/en/introduction',
-                isActive: true,
-                locale: 'en',
-              },
-              {
-                href: '/zh-CN/introduction',
-                isActive: false,
-                locale: 'zh-CN',
-              },
-            ]}
-            locale="en"
-            loadPages={loadSearchPages}
-            sidebar={sidebar}
-            tabs={tabs}
-            toc={[]}
-          >
-            <article>{activePath}</article>
-          </DocsShell>
-        </>
-      );
-    }
-
     const windowScrollTo = vi.fn();
     Object.defineProperty(window, 'scrollTo', {
       configurable: true,
@@ -1451,7 +1449,7 @@ describe('DocsShell', () => {
     ).toHaveAttribute('data-active', 'true');
   });
 
-  it('does not expose China site or alternate zh-CN navigation in desktop chrome', async () => {
+  it('offers cross-site switching without local alternate zh-CN routes in desktop chrome', async () => {
     renderDocsShell({
       activePath: '/en/ai/get-started/quickstart',
       activeTab: 'ai',
@@ -1475,8 +1473,8 @@ describe('DocsShell', () => {
     );
 
     expect(
-      within(desktopHeaderActions).queryByRole('button', { name: 'Site' }),
-    ).toBeNull();
+      within(desktopHeaderActions).getByRole('button', { name: 'Switch site' }),
+    ).toBeInTheDocument();
     expect(
       within(desktopHeaderActions).queryByText('China site'),
     ).not.toBeInTheDocument();

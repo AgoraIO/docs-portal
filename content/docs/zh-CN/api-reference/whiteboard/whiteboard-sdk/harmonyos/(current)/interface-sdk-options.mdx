@@ -1,0 +1,160 @@
+---
+title: SdkOptions interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_sdk_options
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_sdk_options.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：@shengwang/whiteboard 0.2.11。
+
+buildSdkOptions(options) 的返回结构；函数从包入口导出，SdkOptions 类型名本身未从 @shengwang/whiteboard 包入口单独导出。业务可直接接收函数返回值，不要 import \{ SdkOptions \}。
+
+```text
+export interface SdkOptions {
+  dynamicConfig?: DynamicConfigOptions;
+  appIdentifier: string;
+  log: boolean;
+  useMultiViews?: boolean;
+  userCursor?: boolean;
+  disableNewPencilStroke: boolean;
+  enableAppliancePlugin?: boolean;
+  presentationAppOptions?: PresentationAppOptions;
+  slideAppOptions?: SlideAppOptions;
+  loggerOptions?: LoggerOptions;
+  backgroundImageLoadOptions?: BackgroundImageLoadOptions;
+}
+```
+
+| [dynamicConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-sdk-options#a39f52846475832511bf4e40a0cd4d1c3) | `dynamicConfig?: DynamicConfigOptions;` |
+| --- | --- |
+| [appIdentifier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-sdk-options#a10ad506005744605d81f04d3f5130340) | `appIdentifier: string;` |
+| [log](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-sdk-options#aa14290c4865285446a663635a271e7e6) | `log: boolean;` |
+| [useMultiViews](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-sdk-options#a9d9dbede7c3bca9f8a3cf3e0977fd038) | `useMultiViews?: boolean;` |
+| [userCursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-sdk-options#a20af04bb3a97d031ac9eb9d5d73c96a1) | `userCursor?: boolean;` |
+| [disableNewPencilStroke](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-sdk-options#afe6a98d99135b62823349e0f3a9b1a2c) | `disableNewPencilStroke: boolean;` |
+| [enableAppliancePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-sdk-options#a6b3aa3b071d3af70ce835eae0eca071a) | `enableAppliancePlugin?: boolean;` |
+| [presentationAppOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-sdk-options#a83b0f5038187a95702dd857f7fb3febd) | `presentationAppOptions?: PresentationAppOptions;` |
+| [slideAppOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-sdk-options#adf73ee82e7a3451e8aa59ceabc740886) | `slideAppOptions?: SlideAppOptions;` |
+| [loggerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-sdk-options#a41d49e2f0cb897f42d99bf145a8a54f0) | `loggerOptions?: LoggerOptions;` |
+| [backgroundImageLoadOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-sdk-options#a0ba94aaacfc47a7d93cb0ae29e0ff405) | `backgroundImageLoadOptions?: BackgroundImageLoadOptions;` |
+
+## 变量说明
+
+<a id="a39f52846475832511bf4e40a0cd4d1c3"></a>
+
+### dynamicConfig
+
+```text
+dynamicConfig?: DynamicConfigOptions;
+```
+
+可选的 region → 当前平台配置 JSON URL 映射；由 WhiteboardOptions 原样传入。
+
+<a id="a10ad506005744605d81f04d3f5130340"></a>
+
+### appIdentifier
+
+```text
+appIdentifier: string;
+```
+
+必填。来自 WhiteboardOptions.appIdentifier 的白板项目 AppIdentifier。
+
+<a id="aa14290c4865285446a663635a271e7e6"></a>
+
+### log
+
+```text
+log: boolean;
+```
+
+必填布尔值。当前 buildSdkOptions 固定为 true。
+
+<a id="a9d9dbede7c3bca9f8a3cf3e0977fd038"></a>
+
+### useMultiViews
+
+```text
+useMultiViews?: boolean;
+```
+
+可选多窗口开关。未显式提供时保留 undefined；显式 false 仍是本地覆盖，不等同于未提供。
+
+<a id="a20af04bb3a97d031ac9eb9d5d73c96a1"></a>
+
+### userCursor
+
+```text
+userCursor?: boolean;
+```
+
+可选用户光标开关。未显式提供时保留 undefined，允许动态配置参与。
+
+<a id="afe6a98d99135b62823349e0f3a9b1a2c"></a>
+
+### disableNewPencilStroke
+
+```text
+disableNewPencilStroke: boolean;
+```
+
+必填布尔值。当前 buildSdkOptions 固定为 false。
+
+<a id="a6b3aa3b071d3af70ce835eae0eca071a"></a>
+
+### enableAppliancePlugin
+
+```text
+enableAppliancePlugin?: boolean;
+```
+
+可选教具插件开关。未显式提供时保留 undefined；本地显式值优先。
+
+<a id="a83b0f5038187a95702dd857f7fb3febd"></a>
+
+### presentationAppOptions
+
+```text
+presentationAppOptions?: PresentationAppOptions;
+```
+
+可选的内置 Presentation 课件配置，来自同名宿主选项。
+
+<a id="adf73ee82e7a3451e8aa59ceabc740886"></a>
+
+### slideAppOptions
+
+```text
+slideAppOptions?: SlideAppOptions;
+```
+
+可选的动态 PPT 配置，来自同名宿主选项。
+
+<a id="a41d49e2f0cb897f42d99bf145a8a54f0"></a>
+
+### loggerOptions
+
+```text
+loggerOptions?: LoggerOptions;
+```
+
+可选日志配置。宿主提供 localLogOptions 时映射为 \{ localLog: localLogOptions \}；未提供时为 undefined。
+
+<a id="a0ba94aaacfc47a7d93cb0ae29e0ff405"></a>
+
+### backgroundImageLoadOptions
+
+```text
+backgroundImageLoadOptions?: BackgroundImageLoadOptions;
+```
+
+可选的背景图加载配置，来自宿主同名选项。

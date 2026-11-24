@@ -1,0 +1,35 @@
+---
+title: "OnReadyToSendMetadata"
+description: "发送端已准备好发送 metadata。"
+---
+<a id="callback_imetadataobserver_onreadytosendmetadata__prototype"></a>
+
+```csharp
+public virtual bool OnReadyToSendMetadata(ref Metadata metadata, VIDEO_SOURCE_TYPE source_type)
+        {
+            return false;
+        }
+```
+
+<a id="callback_imetadataobserver_onreadytosendmetadata__detailed_desc"></a>
+
+当 SDK 准备好发送 metadata 时，会触发该回调。
+
+<a id="callback_imetadataobserver_onreadytosendmetadata__parameters"></a>
+
+## 参数
+
+### `source_Type`
+
+视频数据类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videosourcetype)。
+
+### `metadata`
+
+用户想要发送的 metadata。详见 [Metadata](/zh-CN/api-reference/rtc/csharp-windows/class-metadata)。
+
+<a id="callback_imetadataobserver_onreadytosendmetadata__return_values"></a>
+
+## 返回值
+
+- true: 发送
+- false: 不发送
