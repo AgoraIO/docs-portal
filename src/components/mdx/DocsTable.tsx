@@ -1,8 +1,6 @@
 import {
-  Children,
   type ComponentProps,
-  isValidElement,
-  type ReactNode,
+  type CSSProperties,
   useCallback,
   useEffect,
   useId,
@@ -15,46 +13,18 @@ import { cn } from '@/lib/cn';
 import { normalizeLocale } from '@/lib/i18n/i18n-config';
 import { resources } from '@/lib/i18n/resources';
 
-function tableHeaderText(children: ReactNode): string {
-  return Children.toArray(children)
-    .map((child) => {
-      if (typeof child === 'string' || typeof child === 'number') {
-        return String(child);
-      }
-      return isValidElement<{ children?: ReactNode }>(child)
-        ? tableHeaderText(child.props.children)
-        : '';
-    })
-    .join('');
-}
+import { type DocsTableColumnKind, prepareTableColumns } from './table-columns';
+import { applyTableContentSizing } from './table-sizing.dom';
 
-function isSimpleParameterTable(children: ReactNode): boolean {
-  const elements = (value: ReactNode) =>
-    Children.toArray(value).filter(isValidElement<ComponentProps<'td'>>);
-  const hasMergedCells = (value: ReactNode): boolean =>
-    elements(value).some(
-      ({ props }) =>
-        (props.colSpan ?? 1) > 1 ||
-        (props.rowSpan ?? 1) > 1 ||
-        hasMergedCells(props.children),
-    );
-  const head = elements(children).find((node) => node.type === 'thead');
-  const rows = elements(head?.props.children);
-  if (rows.length !== 1 || rows[0].type !== 'tr') return false;
-  const cells = elements(rows[0].props.children);
-  if (cells.length !== 5 || cells.some((node) => node.type !== 'th'))
-    return false;
-  const labels = cells
-    .map((cell) => tableHeaderText(cell.props.children).trim().toLowerCase())
-    .join('|');
+function isSimpleParameterTable(headers: string[] | undefined): boolean {
+  const labels = headers?.join('|') ?? '';
   return (
-    !hasMergedCells(children) &&
-    (/^(?:参数|属性|名称)\|类型\|是否必填\|默认值\|(?:描述|说明)$/.test(
+    /^(?:参数|属性|名称)\|类型\|是否必填\|默认值\|(?:描述|说明)$/.test(
       labels,
     ) ||
-      /^(?:parameter|property|name)\|type\|required\|default(?: value)?\|description$/.test(
-        labels,
-      ))
+    /^(?:parameter|property|name)\|type\|required\|default(?: value)?\|description$/.test(
+      labels,
+    )
   );
 }
 
@@ -62,15 +32,27 @@ export function DocsTable({
   locale,
   className,
   compact,
+  columns,
+  layout = compact ? 'fixed' : 'auto',
+  density = compact ? 'compact' : 'normal',
+  children,
+  style,
   ...props
-}: ComponentProps<'table'> & { compact?: boolean; locale?: string }) {
+}: ComponentProps<'table'> & {
+  compact?: boolean;
+  locale?: string;
+  columns?: readonly DocsTableColumnKind[];
+  layout?: 'auto' | 'fixed';
+  density?: 'normal' | 'compact';
+}) {
   const { i18n } = useTranslation('common');
   const normalizedLocale = normalizeLocale(locale ?? i18n.language) ?? 'en';
   const copy = resources[normalizedLocale].common.docs;
-  const parameterTable = useMemo(
-    () => isSimpleParameterTable(props.children),
-    [props.children],
+  const table = useMemo(
+    () => prepareTableColumns(children, columns),
+    [children, columns],
   );
+  const parameterTable = isSimpleParameterTable(table.headers);
   const scrollRef = useRef<HTMLDivElement>(null);
   const descriptionId = useId();
   const [hasOverflow, setHasOverflow] = useState(false);
@@ -99,6 +81,8 @@ export function DocsTable({
         : new ResizeObserver(updateOverflowState);
     if (scrollRef.current) {
       resizeObserver?.observe(scrollRef.current);
+      const nativeTable = scrollRef.current.querySelector(':scope > table');
+      if (nativeTable) resizeObserver?.observe(nativeTable);
     }
 
     return () => {
@@ -106,6 +90,37 @@ export function DocsTable({
       resizeObserver?.disconnect();
     };
   }, [updateOverflowState]);
+
+  useEffect(() => {
+    const nativeTable = scrollRef.current?.querySelector(':scope > table');
+    if (!(nativeTable instanceof HTMLTableElement)) return;
+    const updateContent = () => {
+      applyTableContentSizing(nativeTable, columns);
+      updateOverflowState();
+    };
+    updateContent();
+    let frame: number | undefined;
+    const observer = new MutationObserver(() => {
+      if (frame !== undefined) return;
+      frame = requestAnimationFrame(() => {
+        frame = undefined;
+        updateContent();
+      });
+    });
+    // Structural span changes alter logical columns even when text is stable.
+    // Exclude our own style/data writes from the attribute filter.
+    observer.observe(nativeTable, {
+      childList: true,
+      characterData: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['rowspan', 'colspan'],
+    });
+    return () => {
+      observer.disconnect();
+      if (frame !== undefined) cancelAnimationFrame(frame);
+    };
+  }, [columns, updateOverflowState]);
 
   return (
     <div
@@ -122,21 +137,44 @@ export function DocsTable({
         tabIndex={hasOverflow ? 0 : undefined}
       >
         <table
-          data-table-layout={parameterTable ? 'parameters' : undefined}
+          data-table-content-layout={
+            table.sizing
+              ? table.sizing.intrinsic
+                ? 'intrinsic'
+                : 'mixed'
+              : undefined
+          }
+          data-table-layout={
+            layout === 'fixed'
+              ? 'fixed'
+              : parameterTable
+                ? 'parameters'
+                : undefined
+          }
+          data-table-density={density === 'compact' ? 'compact' : undefined}
           className={cn(
             // Physical first-child changes when earlier columns span rows.
             // The MDX compiler marks logical columns and final-row edges.
             '[&_[data-table-column]:not([data-table-column="0"])]:[border-inline-start:1px_solid_var(--docs-prose-table-border,var(--color-fd-border))]!',
             '[&_[data-table-column="0"]]:[border-inline-start:0]!',
             '[&_[data-table-bottom-edge]]:border-b-0!',
-            compact &&
-              'w-full! min-w-[40rem]! table-fixed! [&_th]:min-w-0! [&_td]:min-w-0! [&_th]:p-1.5! [&_td]:p-1.5! [&_th]:whitespace-normal! [&_th]:[overflow-wrap:anywhere] [&_td]:[overflow-wrap:anywhere]',
-            parameterTable &&
-              '[&_:is(th,td):nth-child(2)]:min-w-24 [&_:is(th,td):nth-child(3)]:min-w-16 [&_:is(th,td):nth-child(4)]:min-w-20 [&_:is(th,td):nth-child(5)]:min-w-[min(24rem,calc(100vw_-_4rem))]',
+            layout === 'fixed' && 'w-full! min-w-[40rem]! table-fixed!',
             className,
           )}
+          style={
+            {
+              '--docs-table-flex-columns': Math.max(
+                1,
+                table.sizing?.flexible ?? 1,
+              ),
+              '--docs-table-compact-width': `${table.sizing?.compactCh ?? 0}ch`,
+              ...style,
+            } as CSSProperties
+          }
           {...props}
-        />
+        >
+          {table.children}
+        </table>
       </section>
       <span className="sr-only" id={descriptionId}>
         {copy.tableOverflowDescription}

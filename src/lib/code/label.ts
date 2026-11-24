@@ -26,6 +26,8 @@ const labels: Record<string, string> = {
   objc: 'Objective-C',
   php: 'PHP',
   powershell: 'PowerShell',
+  // Keep the authored caption when Java highlights ProGuard specifications.
+  proguard: 'proguard',
   python: 'Python',
   py: 'Python',
   ruby: 'Ruby',

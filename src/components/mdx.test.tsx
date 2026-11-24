@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import {
   createMemoryHistory,
   createRootRoute,
@@ -23,7 +24,15 @@ import type {
   ReactNode,
 } from 'react';
 import { renderToString } from 'react-dom/server';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest';
 import { DOCS_HASH_TARGET_EVENT } from '@/lib/docs-hash';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import { AccountGuidance } from './account-guidance/AccountGuidance';
@@ -375,6 +384,180 @@ describe('common MDX registry', () => {
       }
     },
   );
+
+  it.each([
+    { headers: ['参数', '必填', '描述'], required: 1 },
+    { headers: ['字段', '类型', '必填', '描述'], required: 2 },
+    { headers: ['属性', '类型', '是否必填', '默认值', '说明'], required: 2 },
+    { headers: ['Parameter', 'Required', 'Description'], required: 1 },
+    { headers: ['Required', 'Parameter', 'Description'], required: 0 },
+    {
+      headers: ['Properties', 'Type', 'Required', 'Default', 'Description'],
+      required: 2,
+    },
+    { headers: ['Parameters', 'Type', 'Required', 'Description'], required: 2 },
+    { headers: ['Field', 'Optional', 'Description'], required: 1 },
+    { headers: ['配置项', '必填', '描述'], required: 1 },
+    { headers: ['参数名', '类型', '是否必选', '描述'], required: 2 },
+    { headers: ['参数名称', '类型', '是否必选', '说明'], required: 2 },
+    {
+      headers: ['配置路径', '类型', '是否必需', '默认值', '说明'],
+      required: 2,
+    },
+    { headers: ['参数', '必选', '说明'], required: 1 },
+    {
+      headers: ['字段', 'JSON 类型', '必填', '含义与作用', '生效范围与注意'],
+      required: 2,
+    },
+  ])(
+    'centers only the required column in $headers',
+    ({ headers, required }) => {
+      const Table = getMDXComponents().table as TableComponent;
+      render(
+        <Table>
+          <thead>
+            <tr>
+              {headers.map((header) => (
+                <th key={header} style={{ textAlign: 'right' }}>
+                  <strong>{header}</strong>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {headers.map((header, index) => (
+                <td key={header} style={{ textAlign: 'right' }}>
+                  {index === required ? 'POST 时可选' : `${header} value`}
+                </td>
+              ))}
+            </tr>
+          </tbody>
+        </Table>,
+      );
+      expect(
+        screen.getByRole('columnheader', { name: headers[required] }),
+      ).toHaveStyle({
+        textAlign: 'center',
+      });
+      expect(screen.getByRole('cell', { name: 'POST 时可选' })).toHaveAttribute(
+        'data-table-column-kind',
+        'required',
+      );
+      expect(screen.getByRole('cell', { name: 'POST 时可选' })).toHaveStyle({
+        textAlign: 'center',
+      });
+      for (const [index, cell] of screen.getAllByRole('cell').entries()) {
+        if (index === required) continue;
+        expect(cell).not.toHaveAttribute('data-table-column-kind', 'required');
+        expect(cell).toHaveStyle({ textAlign: 'right' });
+      }
+    },
+  );
+
+  it('keeps conditional requirements distinct from short required flags', () => {
+    const Table = getMDXComponents().table as TableComponent;
+    render(
+      <Table>
+        <thead>
+          <tr>
+            <th>字段</th>
+            <th>填写要求</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>endpoint</td>
+            <td>视场景</td>
+            <td>当 vendor 为 11 时必填。</td>
+          </tr>
+          <tr>
+            <td>region</td>
+            <td>建议填写</td>
+            <td>存储服务区域。</td>
+          </tr>
+        </tbody>
+      </Table>,
+    );
+    for (const name of ['填写要求', '视场景', '建议填写']) {
+      expect(screen.getByText(name)).toHaveAttribute(
+        'data-table-column-kind',
+        'requirement',
+      );
+      expect(screen.getByText(name)).toHaveStyle({ textAlign: 'center' });
+    }
+  });
+
+  it('preserves numeric alignment outside parameter tables', () => {
+    const Table = getMDXComponents().table as TableComponent;
+    render(
+      <Table>
+        <thead>
+          <tr>
+            <th>产品</th>
+            <th>价格</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>RTC</td>
+            <td style={{ textAlign: 'right' }}>100.00</td>
+            <td>按量计费</td>
+          </tr>
+        </tbody>
+      </Table>,
+    );
+    expect(screen.getByRole('cell', { name: '100.00' })).toHaveStyle({
+      textAlign: 'right',
+    });
+    expect(screen.getByRole('cell', { name: '100.00' })).toHaveAttribute(
+      'data-table-column-kind',
+      'number',
+    );
+  });
+
+  it('preserves spanning cells in parameter tables', () => {
+    const Table = getMDXComponents().DocsTable as TableComponent;
+    const { container } = render(
+      <Table>
+        <thead>
+          <tr>
+            <th>参数</th>
+            <th>必填</th>
+            <th>描述</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>uid</td>
+            <td rowSpan={2} style={{ textAlign: 'right' }}>
+              是
+            </td>
+            <td>用户 ID</td>
+          </tr>
+          <tr>
+            <td>token</td>
+            <td>访问凭据</td>
+          </tr>
+        </tbody>
+      </Table>,
+    );
+    expect(
+      container.querySelector('[data-table-column-kind="required"]'),
+    ).not.toBeNull();
+    expect(screen.getByRole('cell', { name: '是' })).toHaveAttribute(
+      'rowspan',
+      '2',
+    );
+    expect(screen.getByRole('cell', { name: '是' })).toHaveStyle({
+      textAlign: 'center',
+    });
+    expect(screen.getByRole('cell', { name: '访问凭据' })).toHaveTextContent(
+      '访问凭据',
+    );
+  });
 
   it('describes overflowing prose tables and exposes a pre-scroll cue', async () => {
     const components = getMDXComponents(undefined, { locale: 'zh-CN' });
@@ -3789,3 +3972,11 @@ describe('common MDX registry', () => {
     expect(components.RecipesCatalog).toBeUndefined();
   });
 });
+
+const referenceStyles = readFileSync('src/styles/reference.css', 'utf8');
+const tableStyles = document.createElement('style');
+beforeAll(() => {
+  tableStyles.textContent = referenceStyles;
+  document.head.append(tableStyles);
+});
+afterAll(() => tableStyles.remove());

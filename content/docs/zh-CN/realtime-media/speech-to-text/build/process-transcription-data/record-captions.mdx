@@ -106,7 +106,7 @@ curl --location --request POST 'https://api.sd-rtn.com/cn/api/speech-to-text/v1/
 
 ### extensionParams 字段说明
 
-| 字段 | JSON 类型 | 必填 | 含义与作用 | 生效范围与注意 |
+| 字段 | JSON 类型 | 填写要求 | 含义与作用 | 生效范围与注意 |
 | --- | --- | --- | --- | --- |
 | `endpoint` | `string` | 视场景 | 兼容 S3 存储服务的访问地址，需要填写完整 URL，例如 `http://host:9002`。 | 当 `vendor` 为 `11` 时必填。它用于明确告诉系统文件要上传到哪个存储地址。若使用自签 HTTPS 证书，需要先在运行环境中信任该证书，否则可能连接失败。 |
 | `provider` | `string` | 建议填写 | 兼容 S3 存储服务的供应商名称，例如 MinIO 对应 `Minio`。 | 通常与 `endpoint` 一起填写，用于说明连接的是哪家兼容 S3 服务。注意大小写需要与供应商名称要求保持一致。 |

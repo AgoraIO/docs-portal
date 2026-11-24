@@ -3,6 +3,8 @@ import { get } from 'node:http';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
+import { createStaticDocsRouteSets } from '../src/lib/published-docs-routes';
+import { writeStaticDocsRouteManifests } from '../src/lib/published-docs-routes.server';
 import {
   assertReceipt,
   selectRows,
@@ -22,6 +24,7 @@ afterEach(() => {
 const fixture = () => {
   const directory = mkdtempSync(path.join(tmpdir(), 'api-quality-test-'));
   directories.push(directory);
+  put(directory, '__static/docs-prerender-paths.json', []);
   return directory;
 };
 const put = (root: string, file: string, value: unknown) => {
@@ -108,6 +111,28 @@ describe('API reference quality policy', () => {
     rmSync(path.join(root, 'zh-CN/api-reference/sample/ios/index.html'));
     expect(() => inventory(root, 'cn')).toThrow(/Missing published HTML/);
   });
+  it('includes ordinary landing and billing tables outside API route names', () => {
+    const root = fixture();
+    const urls = ['/zh-CN/realtime-media/rtc', '/zh-CN/ai/reference/pricing'];
+    put(
+      root,
+      '__static/docs-routes.json',
+      urls.map((url) => ({ url, canonicalPath: url })),
+    );
+    for (const url of urls) {
+      put(root, `__static/docs${url}.json`, { body: { kind: 'mdx' } });
+      put(
+        root,
+        `${url.slice(1)}/index.html`,
+        '<main><article><table><tr><td>10 Gbps</td></tr></table></article></main>',
+      );
+    }
+    expect(
+      inventory(root, 'cn').map((row: { url: string }) => row.url),
+    ).toEqual(urls);
+    rmSync(path.join(root, 'zh-CN/ai/reference/pricing/index.html'));
+    expect(() => inventory(root, 'cn')).toThrow(/Missing published HTML/);
+  });
   it('validates declared redirect targets and refuses missing targets or cycles', () => {
     const root = fixture();
     put(root, '__static/docs-routes.json', [
@@ -143,6 +168,54 @@ describe('API reference quality policy', () => {
     expect(() => inventory(root, 'global')).toThrow(
       /Missing published redirect target/,
     );
+  });
+  it('audits redirect entrances from the real build manifests without adding them to machine-readable routes', async () => {
+    const root = fixture();
+    const entry = '/en/realtime-media/cloud-recording/reference/restful-api';
+    const catalog = '/en/api-reference/api-ref/cloud-recording';
+    const target = `${catalog}/acquire`;
+    const payloads = new Map<
+      string,
+      { redirectUrl?: string; body?: { kind: string } }
+    >([
+      [entry, { redirectUrl: catalog }],
+      [catalog, { redirectUrl: target }],
+      [target, { body: { kind: 'openapi' } }],
+    ]);
+    const readable = new Map([[target, payloads.get(target)]]);
+    const routes = createStaticDocsRouteSets({
+      canonicalPaths: payloads.keys(),
+      canonicalPayloads: readable,
+      platformPages: [],
+    });
+    expect(routes.machineReadableRoutes.map((row) => row.url)).toEqual([
+      target,
+    ]);
+    await writeStaticDocsRouteManifests({
+      directory: path.join(root, '__static'),
+      ...routes,
+    });
+    for (const [url, payload] of payloads) {
+      put(root, `__static/docs${url}.json`, payload);
+      put(
+        root,
+        `${url.slice(1)}/index.html`,
+        '<article>Published route</article>',
+      );
+    }
+    const rows = inventory(root, 'global');
+    expect(rows).toHaveLength(3);
+    expect(
+      rows.find((row: { url: string }) => row.url === entry),
+    ).toMatchObject({
+      kind: 'redirect',
+      expectedPath: target,
+    });
+    expect(
+      selectRows(rows, [{ urls: { global: [entry] } }], 'all', 'global'),
+    ).toHaveLength(3);
+    rmSync(path.join(root, entry, 'index.html'));
+    expect(() => inventory(root, 'global')).toThrow(/Missing published HTML/);
   });
   it('audits version entries against the published default destination', () => {
     const root = fixture();

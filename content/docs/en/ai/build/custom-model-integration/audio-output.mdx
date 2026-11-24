@@ -56,11 +56,36 @@ The following example shows the format of an audio request:
 
 The `audio` response includes three types of content. You can send each type to the agent independently for processing:
 
-| Audio type | Description | Source | Agent processing |
-|:-----------|:------------|:-------|:-----------------|
-| Audio data<br/>`data` | Base64-encoded PCM byte stream array | LLM generation with audio processing capabilities, or a custom audio processing service | Plays the audio directly |
-| Transcription content<br/>`transcript` | The complete text content corresponding to the audio | LLM generation | Stores the text in short-term memory (context) |
-| Verbatim subtitles<br/>`words` | Subtitle content with word-by-word timestamps | Supports LLM generation with verbatim output | Processes into verbatim real-time subtitles |
+<DocsTable columns={["name","description","description","description"]}>
+<thead>
+<tr>
+<th scope="col">Audio type</th>
+<th scope="col">Description</th>
+<th scope="col">Source</th>
+<th scope="col">Agent processing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Audio data<br/>`data`</td>
+<td>Base64-encoded PCM byte stream array</td>
+<td>LLM generation with audio processing capabilities, or a custom audio processing service</td>
+<td>Plays the audio directly</td>
+</tr>
+<tr>
+<td>Transcription content<br/>`transcript`</td>
+<td>The complete text content corresponding to the audio</td>
+<td>LLM generation</td>
+<td>Stores the text in short-term memory (context)</td>
+</tr>
+<tr>
+<td>Verbatim subtitles<br/>`words`</td>
+<td>Subtitle content with word-by-word timestamps</td>
+<td>Supports LLM generation with verbatim output</td>
+<td>Processes into verbatim real-time subtitles</td>
+</tr>
+</tbody>
+</DocsTable>
 
 The specific data structure of a streaming response is as follows:
 

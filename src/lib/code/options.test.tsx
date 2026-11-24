@@ -43,6 +43,31 @@ async function renderMarkdown(markdown: string, defaults = false) {
 
 describe('shared code highlighting', () => {
   it.each([
+    ['C++', 'static std::string BuildTokenWithUid(const std::string& app_id);'],
+    [
+      'gradle',
+      "dependencies {\n    implementation 'com.google.code.gson:gson:2.10.1'\n}",
+    ],
+    [
+      'proguard',
+      '-keep class com.example.whiteboard.AutoShapeMemberState { *; }',
+    ],
+  ])(
+    'highlights the published %s fences without changing source or language metadata',
+    async (language, source) => {
+      const { html } = await renderMarkdown(
+        [`\`\`\`${language}`, source, '```'].join('\n'),
+      );
+      const $ = load(html);
+      expect($('figure').attr('data-code-language')).toBe(language);
+      expect($('figcaption').text()).toBe(language);
+      expect($('pre').text()).toBe(source);
+      expect($('pre span[style*="--shiki-light"]').length).toBeGreaterThan(0);
+      expect($('pre span[style*="--shiki-dark"]').length).toBeGreaterThan(0);
+    },
+  );
+
+  it.each([
     ['arkts', 'ArkTS'],
     ['ruby', 'Ruby'],
     ['http', 'HTTP'],
