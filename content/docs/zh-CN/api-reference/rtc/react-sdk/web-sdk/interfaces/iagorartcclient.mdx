@@ -509,6 +509,8 @@ SDK 监测到异常事件回调。
 
 每个异常事件都有对应的恢复事件。
 
+以下表格列出本页对应的 Web SDK 4.22.0 会报告的事件。该版本不报告历史文档中的音频解码事件 `2005` 和 `4005`；接收音量过低及恢复分别对应 `2002` 和 `4002`。
+
 **异常事件**见下表：
 
 | 事件码 | 提示消息 | 异常 |
@@ -520,7 +522,6 @@ SDK 监测到异常事件回调。
 | 2001 | AUDIO_INPUT_LEVEL_TOO_LOW | 发送音量过低 |
 | 2002 | AUDIO_OUTPUT_LEVEL_TOO_LOW | 接收音量过低 |
 | 2003 | SEND_AUDIO_BITRATE_TOO_LOW | 音频发送码率过低 |
-| 2005 | RECV_AUDIO_DECODE_FAILED | 接收音频解码失败 |
 
 **恢复事件**详见下表：
 
@@ -533,7 +534,6 @@ SDK 监测到异常事件回调。
 | 4001 | AUDIO_INPUT_LEVEL_TOO_LOW_RECOVER | 发送音量恢复正常 |
 | 4002 | AUDIO_OUTPUT_LEVEL_TOO_LOW_RECOVER | 接收音量恢复正常 |
 | 4003 | SEND_AUDIO_BITRATE_TOO_LOW_RECOVER | 音频发送码率恢复正常 |
-| 4005 | RECV_AUDIO_DECODE_FAILED_RECOVER | 接收音频解码恢复正常 |
 
 <ParameterList title="Parameters">
 <Parameter name="event" type="object" required>
@@ -2019,10 +2019,11 @@ startChannelMediaRelay(config: [IChannelMediaRelayConfiguration](/zh-CN/api-refe
 
 - [AgoraRTCClient.on("channel-media-relay-state")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_channel_media_relay_state)，报告当前的跨频道媒体流转发状态。
 
-  - 如果转发中途出现异常，该回调中 `state` 为 `"RELAY_STATE_FAILURE"`。当前版本该事件不提供 `code`，不能据此获取失败原因。转发失败后，不应直接在同一转发实例上再次调用本方法。
+  - 源或目标频道 Token 过期等导致转发失败时，该回调中 `state` 为 `"RELAY_STATE_FAILURE"`。当前版本该事件不提供 `code`，不能据此获取失败原因。转发失败后，不应直接在同一转发实例上再次调用本方法。
 - [AgoraRTCClient.on("channel-media-relay-event")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_channel_media_relay_event)，报告跨频道媒体流转发相关的事件。
 
   - 如果跨频道服务开始向目标频道发送数据包，会触发回调，`event` 为 `"PACKET_SENT_TO_DEST_CHANNEL"`。
+  - 临时信令断连可通过该事件中的 `"NETWORK_DISCONNECTED"` 观察。断连后成功恢复时，可能先后收到 `"RELAY_STATE_IDLE"` 和 `"RELAY_STATE_RUNNING"` 状态，而未触发 `"RELAY_STATE_FAILURE"`；不应仅监听失败状态来判断是否发生过中断。
 
 :::note[注意事项]
 - 跨频道媒体流转发功能需要联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 开通。
