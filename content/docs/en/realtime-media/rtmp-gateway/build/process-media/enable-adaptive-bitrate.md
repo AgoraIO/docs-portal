@@ -41,22 +41,22 @@ Path parameters:
 | --- | --- | --- |
 | `region` | Yes | Region for the streaming template. Supported values are `na`, `eu`, `ap`, and `cn`. Use the same region as the input source stream. |
 | `appId` | Yes | The App ID of your Agora project. |
-| `templateId` | Yes | The flow configuration template ID. The value can contain only letters and numbers and cannot exceed 12 bytes. |
+| `templateId` | Yes | The stream configuration template ID: 1–33 bytes containing letters, numbers, hyphens (`-`), or underscores (`_`). |
 
 Relevant request fields:
 
 | Field | Required | Description |
 | --- | --- | --- |
 | `settings.transcoding.video.enabled` | Yes | Enables video transcoding. Set this field to `true` when you configure ABR layers. |
-| `settings.transcoding.video.width` | Yes | Encoding width of the main stream in pixels. Required when adaptive bitrate is enabled. |
-| `settings.transcoding.video.height` | Yes | Encoding height of the main stream in pixels. Required when adaptive bitrate is enabled. |
+| `settings.transcoding.video.width` | Conditional | Main-stream encoding width in pixels. Set at least one of `width` or `height` to a positive value; the other dimension is derived from the source aspect ratio. |
+| `settings.transcoding.video.height` | Conditional | Main-stream encoding height in pixels. Set at least one of `width` or `height` to a positive value; the other dimension is derived from the source aspect ratio. |
 | `settings.transcoding.video.fps` | No | Video encoding frame rate in fps. If omitted or set to `0`, the source stream frame rate is used. |
-| `settings.transcoding.video.bitrate` | No | Encoding bitrate of the main stream in Kbps. If omitted, the source stream bitrate is used. If set to `0`, Agora automatically chooses a bitrate based on width and height. |
+| `settings.transcoding.video.bitrate` | No | Encoding bitrate of the main stream in Kbps. If omitted, the source stream bitrate is used. If set to `0`, Agora automatically chooses a target bitrate based on output resolution and frame rate. |
 | `settings.transcoding.video.simulcastStreamLayers` | Yes | Array of layer transcoding parameters. If specified, ABR is enabled. |
 | `settings.transcoding.video.simulcastStreamLayers[].id` | Yes | Layer ID. Supported values range from `1` to `7`. |
 | `settings.transcoding.video.simulcastStreamLayers[].width` | No | Encoding width of the layer in pixels. If specified, it must be smaller than `video.width` and decrease monotonically as the layer ID increases. |
 | `settings.transcoding.video.simulcastStreamLayers[].height` | No | Encoding height of the layer in pixels. If specified, it must be smaller than `video.height` and decrease monotonically as the layer ID increases. |
-| `settings.transcoding.video.simulcastStreamLayers[].fps` | No | Encoding frame rate of the layer in fps. If specified, it must be smaller than `video.fps`. If omitted or set to `0`, the main stream frame rate is used. |
+| `settings.transcoding.video.simulcastStreamLayers[].fps` | No | Encoding frame rate of the layer in fps. It must not exceed the effective main-stream frame rate or the preceding layer frame rate. If omitted or set to `0`, it follows the main stream frame rate. Source-following layers are capped at the actual main-stream target frame rate. |
 | `settings.transcoding.video.simulcastStreamLayers[].bitrate` | Yes | Encoding bitrate of the layer in Kbps. It must be smaller than `video.bitrate` and decrease monotonically by layer ID. |
 
 ### Request example
@@ -94,11 +94,11 @@ curl --request PUT \
 ### Configuration requirements
 
 - Maximum 5 simultaneous layers per stream
-- Specify at least one dimension for the main stream when ABR is enabled
-- Specify at least one dimension for each ABR layer
+- Set at least one dimension to a positive value for the main stream when ABR is enabled. For example, `width: 0, height: 720` derives the other dimension from the source aspect ratio.
+- Set at least one dimension to a positive value for each ABR layer. Use the same unspecified dimension as the main stream so the source aspect ratio can be preserved.
 - Specify bitrates in decreasing order by Layer ID
 - If specified, layer width and height must decrease monotonically as the Layer ID increases
-- If specified, each layer FPS must be lower than the main stream FPS
+- Each layer FPS must not exceed the effective main-stream FPS or that of the preceding layer. Equal frame rates, such as the 30 fps main stream and layers in the example, are supported.
 - Clients must specify the Layer ID when subscribing to receive the corresponding quality layer
 
 ### Layer ID selection
@@ -314,16 +314,18 @@ Use the following Web SDK APIs to control which ABR layer a subscriber receives.
 
   Pass the Web SDK stream-type value, rather than the Gateway Layer ID. The extended layers use values `4` through `9`:
 
-  | Web SDK member | Web SDK value |
-  | --- | --- |
-  | `HIGH_STREAM` | `0` |
-  | `LOW_STREAM` | `1` |
-  | `HIGH_STREAM_LAYER1` | `4` |
-  | `HIGH_STREAM_LAYER2` | `5` |
-  | `HIGH_STREAM_LAYER3` | `6` |
-  | `HIGH_STREAM_LAYER4` | `7` |
-  | `HIGH_STREAM_LAYER5` | `8` |
-  | `HIGH_STREAM_LAYER6` | `9` |
+  | Media Gateway output | Web SDK member | Web SDK value |
+  | --- | --- | --- |
+  | Main stream | `HIGH_STREAM` | `0` |
+  | Layer ID 7 (low stream) | `LOW_STREAM` | `1` |
+  | Layer ID 1 | `HIGH_STREAM_LAYER1` | `4` |
+  | Layer ID 2 | `HIGH_STREAM_LAYER2` | `5` |
+  | Layer ID 3 | `HIGH_STREAM_LAYER3` | `6` |
+  | Layer ID 4 | `HIGH_STREAM_LAYER4` | `7` |
+  | Layer ID 5 | `HIGH_STREAM_LAYER5` | `8` |
+  | Layer ID 6 | `HIGH_STREAM_LAYER6` | `9` |
+
+  Use [RemoteStreamType](https://api-ref.agora.io/en/video-sdk/web/4.x/enums/remotestreamtype.html) for manual selection. For example, pass `4` to select a configured Layer ID 1. Passing `1` selects the low stream (Layer ID 7). Do not reuse values from [RemoteStreamFallbackType](https://api-ref.agora.io/en/video-sdk/web/4.x/enums/remotestreamfallbacktype.html), which configures fallback policy.
 
 For manual switching, consider the network conditions. The following example shows how to obtain the network status:
 
