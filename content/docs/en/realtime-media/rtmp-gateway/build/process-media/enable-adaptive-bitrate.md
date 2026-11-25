@@ -188,7 +188,7 @@ The `transcoding.video.simulcastStreamLayers` array shows the active ABR layers 
 
 ## Subscriber-side ABR stream
 
-When multiple video quality layers are available, the SDK automatically adapts the subscribed video stream to changing network conditions. Under poor network conditions, it switches to lower-quality layers, down to the lowest available video layer. When network conditions improve, it switches back to higher-quality layers. You don't need to configure fallback for this default behavior.
+When multiple video quality layers are available, the SDK automatically adapts the subscribed video stream to changing network conditions. Under poor network conditions, it switches to lower-quality layers, down to the lowest available video layer. With the Web SDK, the default fallback limit is `LOW_STREAM`. When network conditions improve, it switches back to higher-quality layers. You don't need any additional fallback configuration for this default behavior.
 
 You can optionally configure a custom fallback policy, such as allowing fallback to audio only. With the Native SDK, you can also limit fallback to a specific video layer.
 
@@ -293,7 +293,7 @@ Use the following Web SDK APIs to control which ABR layer a subscriber receives.
 #### Customize the fallback policy (optional)
 
 - API: `setStreamFallbackOption(uid: UID, fallbackType: RemoteStreamFallbackType): Promise<void>`
-- Description: Customizes the fallback policy for a specified remote user under poor network conditions. You don't need to call this method for the default automatic switching between video layers.
+- Description: Customizes the fallback policy for a specified remote user under poor network conditions. If you don't call this method, the default fallback limit is `LOW_STREAM` (`1`). Within this limit, the gateway selects the video layer based on the subscriber's available bandwidth and the layers that the publisher supplies. To allow fallback to audio only, call this method with `AUDIO_ONLY` (`2`).
 - Example: Allow fallback to audio only.
 
     ```js
