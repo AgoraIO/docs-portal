@@ -21,6 +21,12 @@ import { isPublicCnSearchUrl } from './search/cn-search-urls.mjs';
 import { getLLMText, source } from './source.server';
 
 const retiredPaths = [
+  ...['build', 'build/customize-and-extend', 'user-guides'].flatMap((section) =>
+    ['', '/unity', '/unreal-cpp'].map(
+      (platform) =>
+        `/zh-CN/solutions/game-voice/${section}/spatial-audio-wwise${platform}`,
+    ),
+  ),
   '/zh-CN/realtime-media/rtsa/reference/sunset',
   '/zh-CN/realtime-media/fusion-cdn',
   '/zh-CN/realtime-media/fusion-cdn/build/enable-service',
@@ -46,6 +52,31 @@ const retiredPaths = [
 ];
 
 describe('retired Chinese product documentation', () => {
+  it.each([
+    ['solutions', 'game-voice'],
+    ['solutions', 'game-voice', 'build', 'spatial-audio-sdk'],
+  ])(
+    'keeps active game voice %s Markdown free of Wwise recommendations',
+    async (...slugs) => {
+      const page = source.getPage(slugs, 'zh-CN');
+      expect(page).toBeDefined();
+      if (!page) throw new Error('Missing active game voice page');
+      expect(await getLLMText(page)).not.toMatch(/wwise/i);
+      expect(JSON.stringify(source.getPageTree('zh-CN'))).not.toContain(
+        'spatial-audio-wwise',
+      );
+      expect(
+        isRetiredCnDocsPath(
+          '/zh-CN/solutions/game-voice/build/spatial-audio-sdk',
+        ),
+      ).toBe(false);
+      expect(
+        isRetiredCnDocsPath(
+          '/zh-CN/solutions/game-voice/build/spatial-audio-wwise-other',
+        ),
+      ).toBe(false);
+    },
+  );
   it('retires RTSA Java namespaces while keeping C namespaces active', () => {
     for (const url of [
       '/zh-CN/api-reference/rtsa/java/overview',

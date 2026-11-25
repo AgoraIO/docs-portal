@@ -92,7 +92,7 @@ describe('Shengwang redirect artifacts', () => {
     const retired = candidate.records.filter((record) =>
       isRetiredCnDocsPath(record.target),
     );
-    expect(retired).toHaveLength(1076);
+    expect(retired).toHaveLength(1078);
     for (const record of retired) {
       expect(bySource.get(record.legacyPath)).toMatchObject({
         target: '',
@@ -132,7 +132,7 @@ describe('Shengwang redirect artifacts', () => {
     });
     expect(search?.notes).toContain('公开路径未变化，由新站直接服务');
     expect(finalMap.summary.redirect).toBe(
-      7119 + additionalReviewedEntries.length,
+      7117 + additionalReviewedEntries.length,
     );
     expect(finalMap.summary.noRedirect).toBe(2);
   });
@@ -182,7 +182,7 @@ describe('Shengwang redirect artifacts', () => {
     expect(finalMap.snapshot).toEqual(candidate.snapshot);
     expect(finalMap.targetUrlTransform).toBe('remove-zh-CN-prefix');
     expect(finalMap.summary.redirect).toBe(
-      7119 + additionalReviewedEntries.length,
+      7117 + additionalReviewedEntries.length,
     );
     expect(finalMap.summary.noRedirect).toBe(2);
     const expectedRecords = candidate.records.map((record) =>
@@ -246,7 +246,7 @@ describe('Shengwang redirect artifacts', () => {
     );
     expect(vercel.every((rule) => rule.statusCode === 301)).toBe(true);
     expect(vercel.some((rule) => rule.source === rule.destination)).toBe(false);
-    expect(vercel).toHaveLength(7119 + additionalReviewedEntries.length);
+    expect(vercel).toHaveLength(7117 + additionalReviewedEntries.length);
     expect(
       vercel.every(
         (rule) =>
