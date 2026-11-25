@@ -170,9 +170,7 @@ describe('ConvoAI source PR 2074 expanded shared content', () => {
     'updates all five installation methods in %s',
     (path) => {
       const page = read(path);
-      const first = page.indexOf(
-        "implementation 'io.agora.agents:agora-agent-client-toolkit:",
-      );
+      const first = page.indexOf('#### Maven');
       const react = page.indexOf(
         'pnpm add agora-agent-client-toolkit@',
         page.indexOf('- React', first),
@@ -182,15 +180,17 @@ describe('ConvoAI source PR 2074 expanded shared content', () => {
       expect(react).toBeGreaterThan(first);
       const section = page.slice(first, last);
       for (const text of [
-        'io.agora.agents:agora-agent-client-toolkit:2.10.0',
-        "pod 'agent-client-toolkit-swift', '2.10.0'",
-        'tag `2.10.0`',
-        'pnpm add agora-agent-client-toolkit@2.10.0',
-        'pnpm add agora-agent-client-toolkit@2.10.0 agora-agent-client-toolkit-react@2.10.0',
+        "maven { url = 'https://download.agora.io/maven/' }",
+        "source 'https://download.agora.io/cocoapods/'",
+        'io.agora.agents:agora-agent-client-toolkit:2.11.0',
+        "pod 'agent-client-toolkit-swift', '2.11.0'",
+        'tag `2.11.0`',
+        'pnpm add agora-agent-client-toolkit@2.11.0',
+        'pnpm add agora-agent-client-toolkit@2.11.0 agora-agent-client-toolkit-react@2.11.0',
       ]) {
         expect(section).toContain(text);
       }
-      expect(section).not.toContain('2.9.0');
+      expect(section).not.toContain('2.10.0');
     },
   );
 
@@ -199,7 +199,7 @@ describe('ConvoAI source PR 2074 expanded shared content', () => {
       'android',
       [
         '#### Maven',
-        'io.agora.agents:agora-agent-client-toolkit:2.10.0',
+        'io.agora.agents:agora-agent-client-toolkit:2.11.0',
         '#### 源码集成',
         '将 `convoaiApi` 文件夹拷贝到你的项目中',
         'title="convoaiApi"',
@@ -210,9 +210,9 @@ describe('ConvoAI source PR 2074 expanded shared content', () => {
       'ios',
       [
         '#### CocoaPods',
-        "pod 'agent-client-toolkit-swift', '2.10.0'",
+        "pod 'agent-client-toolkit-swift', '2.11.0'",
         '#### Swift Package Manager',
-        'tag `2.10.0`',
+        'tag `2.11.0`',
         '#### 源码集成',
         '将 `ConversationalAIAPI` 文件夹拷贝到你的项目中',
         'title="ConversationalAIAPI"',
@@ -223,8 +223,8 @@ describe('ConvoAI source PR 2074 expanded shared content', () => {
       'web',
       [
         '#### Package Manager',
-        'pnpm add agora-agent-client-toolkit@2.10.0',
-        'agora-agent-client-toolkit-react@2.10.0',
+        'pnpm add agora-agent-client-toolkit@2.11.0',
+        'agora-agent-client-toolkit-react@2.11.0',
         '#### 源码集成',
         'conversational-ai-api',
         'https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-ts',

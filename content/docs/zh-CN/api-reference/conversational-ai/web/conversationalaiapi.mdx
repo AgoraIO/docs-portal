@@ -102,7 +102,7 @@ public static getInstance()
 ## init
 
 ```typescript
-public static init(cfg: IConversationalAIAPIConfig)
+public static async init(cfg: IConversationalAIAPIConfig): Promise<ConversationalAIAPI>
 ```
 
 初始化 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi) 单例实例。
@@ -117,8 +117,7 @@ public static init(cfg: IConversationalAIAPIConfig)
 
 只有新词的文本和开始时间都与先前消息中已保留的词相同，组件才会跳过它。这条规则也适用于重复的词和空格。同一条新消息中的词不会互相去重。
 
-- 同一时间只能初始化一个实例。
-- 如果已初始化，将抛出错误
+在 Web 上使用 2.11.0 的逐词模式时，需使用 RTC Web SDK 4.24.0 或更高版本，在创建 RTC 客户端前调用 `AgoraRTC.setParameter('ENABLE_AUDIO_PTS', true)`。参见[实时字幕](/zh-CN/ai/build/transcripts#初始化组件)。
 
 #### 参数
 
@@ -128,7 +127,7 @@ public static init(cfg: IConversationalAIAPIConfig)
 
 #### 返回值
 
-方法调用成功，返回初始化后的 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi) 实例。
+等待此方法返回的 Promise 完成后，可获得初始化后的 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi) 实例。
 
 <a id="subscribemessage"></a>
 ## subscribeMessage

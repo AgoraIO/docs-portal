@@ -224,7 +224,7 @@ fun onTranscriptUpdated(agentUserId: String, transcript: Transcript)
 转写内容更新回调。
 
 :::warning[注意]
-该回调可能会高频触发。如需去重，请在业务层处理。
+该回调可能会高频触发。自 2.11.0 起，组件会在[逐词模式](/zh-CN/api-reference/conversational-ai/android/enum#transcriptrendermode)下按词文本和开始时间合并同一轮智能体的字幕，应用无需再按时间戳过滤词。如果界面更新过于频繁，可以在业务层控制 UI 刷新频率。
 :::
 
 #### 参数

@@ -182,10 +182,16 @@ curl --request POST \
 
 #### Maven
 
-在 Android 项目的 `build.gradle` 文件中添加如下依赖：
+在项目根目录的 `settings.gradle` 中，将以下仓库添加到现有的 `dependencyResolutionManagement.repositories`：
 
 ```groovy
-implementation 'io.agora.agents:agora-agent-client-toolkit:2.10.0'
+maven { url = 'https://download.agora.io/maven/' }
+```
+
+在应用模块的 `build.gradle` 中，将以下依赖添加到 `dependencies`：
+
+```groovy
+implementation 'io.agora.agents:agora-agent-client-toolkit:2.11.0'
 ```
 
 </TabsContent>
@@ -219,10 +225,17 @@ implementation 'io.agora.agents:agora-agent-client-toolkit:2.10.0'
 
 #### CocoaPods
 
-在 `Podfile` 中添加如下依赖：
+在 `Podfile` 顶部声明 Agora 和 CocoaPods 公共源，并保留项目使用的其他源：
 
 ```ruby
-pod 'agent-client-toolkit-swift', '2.10.0'
+source 'https://download.agora.io/cocoapods/'
+source 'https://cdn.cocoapods.org/'
+```
+
+在应用的 `target` 中添加以下依赖，然后运行 `pod install`：
+
+```ruby
+pod 'agent-client-toolkit-swift', '2.11.0'
 ```
 
 </TabsContent>
@@ -231,7 +244,7 @@ pod 'agent-client-toolkit-swift', '2.10.0'
 
 #### Swift Package Manager
 
-在 Xcode 中添加如下 Package URL，并将版本指定为 tag `2.10.0`：
+在 Xcode 中添加如下 Package URL，并将版本指定为 tag `2.11.0`：
 
 ```text
 https://github.com/AgoraIO/agent-client-toolkit-swift.git
@@ -272,13 +285,13 @@ https://github.com/AgoraIO/agent-client-toolkit-swift.git
 - Vanilla JS / TypeScript：
 
   ```shell
-  pnpm add agora-agent-client-toolkit@2.10.0
+  pnpm add agora-agent-client-toolkit@2.11.0
   ```
 
 - React：
 
   ```shell
-  pnpm add agora-agent-client-toolkit@2.10.0 agora-agent-client-toolkit-react@2.10.0
+  pnpm add agora-agent-client-toolkit@2.11.0 agora-agent-client-toolkit-react@2.11.0
   ```
 
 </TabsContent>
