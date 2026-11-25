@@ -2,7 +2,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { loadDocsPagePayload } from './docs-page.server';
-import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
+import { isRetiredCnDocsPath, retiredCnDocPages } from './retired-cn-docs.mjs';
 
 type BuildExpectation = { productPath: string; pages: string[] };
 type Migration = {
@@ -116,7 +116,6 @@ const buildExpectations: BuildExpectation[] = [
       'enable-service',
       'audio-experience-optimization',
       'spatial-audio-sdk',
-      'spatial-audio-wwise',
     ],
   },
   {
@@ -820,6 +819,9 @@ describe('zh-CN small Build flat IA migration invariants', () => {
       const expectedNames = [
         'meta.json',
         ...pages.map((page) => `${page}.mdx`),
+        ...retiredCnDocPages
+          .filter((page) => page.startsWith(`zh-CN/${productPath}/build/`))
+          .map((page) => `${page.split('/').at(-1)}.mdx`),
       ].sort();
       const actualEntries = readdirSync(buildRoot, {
         withFileTypes: true,

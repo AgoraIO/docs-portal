@@ -410,7 +410,7 @@ describe('legacy redirect Vercel artifacts', () => {
         {
           destination: 'https://doc.shengwang.cn/doc/:path*',
           source:
-            '/doc/:path((?!(?:fusion-cdn|flexible-classroom|sdk-extension|analytics/general/fls/data)(?:/|\\.(?:html|mdx?)|$)).*)?',
+            '/doc/:path((?!(?:fusion-cdn|flexible-classroom|sdk-extension|analytics/general/fls/data|game-voice/(?:unity|unreal-cpp)/user-guides/spatial-audio-wwise)(?:/|\\.(?:html|mdx?)|$)).*)?',
           statusCode: 308,
         },
         {

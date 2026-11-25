@@ -39,6 +39,15 @@ export const Route = createFileRoute('/$locale/$tab/$')({
   server: {
     handlers: {
       GET: async ({ next, params }) => {
+        if (
+          params._splat?.endsWith('.md') &&
+          isRetiredCnDocsPath(
+            `/${params.locale}/${params.tab}/${params._splat}`,
+          )
+        ) {
+          return new Response('Not Found', { status: 404 });
+        }
+
         const { getPublicDocsMarkdownResponse } = await import(
           '@/lib/docs-markdown.server'
         );

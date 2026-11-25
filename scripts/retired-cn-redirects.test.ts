@@ -17,6 +17,8 @@ const retiredRoutes = readJson('legacy-url-retired.vercel.json').routes;
 
 describe('retired Chinese products in legacy redirect delivery', () => {
   it.each([
+    '/doc/game-voice/unity/user-guides/spatial-audio-wwise',
+    '/doc/game-voice/unreal-cpp/user-guides/spatial-audio-wwise',
     '/doc/fusion-cdn/restful/overview/product-overview',
     '/doc/fusion-cdn/restful/mcp-integrate',
     '/doc/flexible-classroom/android/advanced-features/custom-ui',
@@ -49,7 +51,7 @@ describe('retired Chinese products in legacy redirect delivery', () => {
     const retired = finalMap.records.filter(
       (record: { status: string }) => record.status === 'retired',
     );
-    expect(retired).toHaveLength(1100);
+    expect(retired).toHaveLength(1102);
     const nginx = readFileSync(
       `${inputRoot}legacy-url-redirects.nginx.conf`,
       'utf8',
@@ -84,14 +86,16 @@ describe('retired Chinese products in legacy redirect delivery', () => {
     }
     expect(finalMap.summary).toMatchObject({
       total: 8221 + 715,
-      redirect: 7119 + 715,
+      redirect: 7117 + 715,
       noRedirect: 2,
-      retired: 1100,
+      retired: 1102,
     });
   });
 
   it.each([
     '/doc/sdk-extension/ios/metakit/new-deep-link?platform=ios',
+    '/doc/game-voice/unity/user-guides/spatial-audio-wwise.html',
+    '/doc/game-voice/unreal-cpp/user-guides/spatial-audio-wwise.md?platform=unreal-cpp',
     '/api-ref/flexible-classroom/ios/unknown.html#member',
     '/basics/security/flexible-classroom-sdk.html',
     '/faq/integration-issues/class-courseware.md',
@@ -105,6 +109,8 @@ describe('retired Chinese products in legacy redirect delivery', () => {
     '/doc/sdk-extension-other/overview',
     '/faq/integration-issues/class-courseware-other',
     '/doc/analytics/general/rtc/data',
+    '/doc/game-voice/unity/user-guides/spatial-audio-sdk',
+    '/doc/game-voice/unity/user-guides/spatial-audio-wwise-other',
     '/en/realtime-media/flexible-classroom',
     '/doc/%E0%A4%A',
   ])('keeps unrelated paths outside retirement: %s', (path) => {

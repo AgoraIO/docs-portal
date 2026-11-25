@@ -10,6 +10,8 @@ export const retiredCnProductIds = [
 ];
 
 export const retiredCnDocDirectories = [
+  'zh-CN/solutions/game-voice/user-guides/spatial-audio-wwise',
+  'zh-CN/solutions/game-voice/build/customize-and-extend/spatial-audio-wwise',
   'zh-CN/realtime-media/rtsa/overview/sunset',
   'zh-CN/api-reference/rtsa/java',
   'zh-CN/api-reference/api-ref/rtsa/java',
@@ -24,6 +26,7 @@ export const retiredCnDocDirectories = [
 ];
 
 export const retiredCnDocPages = [
+  'zh-CN/solutions/game-voice/build/spatial-audio-wwise',
   'zh-CN/realtime-media/rtsa/reference/sunset',
   'zh-CN/realtime-media/usage-analytics/build/view-live-data',
   'zh-CN/introduction/security/sdk-compliance/flexible-classroom-sdk',
@@ -62,6 +65,7 @@ const retiredCnLegacyDirectories = [
   'doc/sdk-extension',
 ];
 const retiredCnLegacyPages = [
+  'doc/game-voice/(?:unity|unreal-cpp)/user-guides/spatial-audio-wwise',
   'doc/analytics/general/fls/data',
   'basics/security/flexible-classroom-sdk',
   'basics/security/flexible-classroom-sdk-third-party',

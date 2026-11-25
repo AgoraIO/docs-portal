@@ -949,6 +949,26 @@ describe('docs route locale guards', () => {
     );
   });
 
+  it.each([
+    'build/spatial-audio-wwise.md',
+    'build/spatial-audio-wwise/unity.md',
+    'build/spatial-audio-wwise/unreal-cpp.md',
+    'user-guides/spatial-audio-wwise/unity.md',
+  ])('returns HTTP 404 for retired Markdown: %s', async (slug) => {
+    const next = vi.fn();
+    const response = (await getGetHandler(DocPageRoute)({
+      next,
+      params: {
+        _splat: `game-voice/${slug}`,
+        locale: 'zh-CN',
+        tab: 'solutions',
+      },
+    } as never)) as Response;
+
+    expect(response.status).toBe(404);
+    expect(next).not.toHaveBeenCalled();
+  });
+
   it(
     'serves direct .md docs page URLs as markdown',
     async () => {
