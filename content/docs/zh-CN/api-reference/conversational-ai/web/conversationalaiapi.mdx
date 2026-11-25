@@ -113,6 +113,10 @@ public static init(cfg: IConversationalAIAPIConfig)
 
 该方法用于设置 RTC 和 RTM 引擎、渲染模式以及日志选项。必须在调用 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi) 的其他方法之前调用此方法。
 
+自 2.11.0 起，逐词模式（`TranscriptHelperMode.WORD`）按词文本（`word`）和开始时间（`start_ms`，毫秒）合并同一轮智能体字幕。即使空格和后面的词（如 `long`）在同一毫秒开始，两者也都会保留。
+
+只有新词的文本和开始时间都与先前消息中已保留的词相同，组件才会跳过它。这条规则也适用于重复的词和空格。同一条新消息中的词不会互相去重。
+
 - 同一时间只能初始化一个实例。
 - 如果已初始化，将抛出错误
 
