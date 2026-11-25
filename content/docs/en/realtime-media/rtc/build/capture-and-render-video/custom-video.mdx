@@ -59,13 +59,13 @@ Use the default track for a single custom video stream, or explicitly created tr
 
     <CodeBlockTab value="java">
       ```java
-      int videoTrackId = RtcEngine.createCustomVideoTrack();
+      int videoTrackId = engine.createCustomVideoTrack();
       ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
       ```kotlin
-      val videoTrackId = RtcEngine.createCustomVideoTrack()
+      val videoTrackId = engine.createCustomVideoTrack()
       ```
     </CodeBlockTab>
 
@@ -426,19 +426,30 @@ Use the default track for a single custom video stream, or explicitly created tr
 
     <CodeBlockTab value="java">
       ```java
-      // Destroy custom video track
-       engine.destroyCustomVideoTrack(videoTrackId);
-       // Leave the channel
-       engine.leaveChannelEx(connection);
+      // Stop publishing the custom video track.
+      ChannelMediaOptions stopOptions = new ChannelMediaOptions();
+      stopOptions.customVideoTrackId = videoTrackId;
+      stopOptions.publishCustomVideoTrack = false;
+      engine.updateChannelMediaOptions(stopOptions);
+      // Destroy the custom video track.
+      engine.destroyCustomVideoTrack(videoTrackId);
+      // Leave the channel.
+      engine.leaveChannel();
       ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
       ```kotlin
-      // Destroy custom video track
-       engine.destroyCustomVideoTrack(videoTrackId)
-       // Leave the channel
-       engine.leaveChannelEx(connection)
+      // Stop publishing the custom video track.
+      val stopOptions = ChannelMediaOptions().apply {
+          customVideoTrackId = videoTrackId
+          publishCustomVideoTrack = false
+      }
+      engine.updateChannelMediaOptions(stopOptions)
+      // Destroy the custom video track.
+      engine.destroyCustomVideoTrack(videoTrackId)
+      // Leave the channel.
+      engine.leaveChannel()
       ```
     </CodeBlockTab>
 
