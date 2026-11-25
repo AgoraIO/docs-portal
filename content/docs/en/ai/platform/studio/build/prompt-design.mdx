@@ -8,9 +8,7 @@ The system prompt defines who your agent is and how it behaves. A well-structure
 
 ## Prompt templates
 
-Prompt templates are ready-made system prompts that you can customize for your agent. For common use cases, such as appointment booking or order support, select a template from the **Template** menu in the agent editor. Then replace the variables and adapt the instructions to your business.
-
-{/* TODO(platform-confirm): Does selecting a template replace an existing prompt without warning? */}
+Prompt templates are ready-made system prompts that you can customize for your agent. For common use cases, such as appointment booking or order support, select a template from the **Template** menu in the agent editor. Then replace the variables and adapt the instructions to your business. If the prompt already has text, Agent Studio asks you to confirm before the template replaces it.
 
 ## Prompt structure
 
@@ -78,7 +76,7 @@ Voice agents have different constraints than text-based chatbots. Keep the follo
 - **Keep responses short**: Callers lose attention quickly. Instruct the agent to keep responses to one or two sentences where possible.
 - **Avoid lists and formatting**: The TTS model reads text aloud. Bullet points, headers, and Markdown formatting produce unnatural speech.
 - **Handle silence explicitly**: Instruct the agent what to do if the caller doesn't respond. You can also use the [Silence](/en/ai/platform/studio/build/customize-agent#silence) setting.
-- **Define a clear exit condition**: Specify when and how the agent should end the call. For example, `End the call politely once the appointment outcome is confirmed.`
+- **Define a clear exit condition**: Specify when and how the agent should end the call. For example, `End the call politely once the appointment outcome is confirmed.` To let the agent hang up when the caller says goodbye or asks to end the call, turn on **Hang up when the caller asks to** in the [Call](/en/ai/platform/studio/build/customize-agent#call) settings.
 - **Test with real scenarios**: Write two or three realistic conversation scenarios before testing. This helps you identify gaps in your prompt before they appear in production.
 
 ## Iterate on prompts

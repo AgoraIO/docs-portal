@@ -44,9 +44,7 @@ To import a phone number from your SIP trunk:
 
 The number is now in your project, but it isn't connected to an agent. For inbound calls, the number connects when you [deploy an inbound agent](/en/ai/platform/studio/deploy/deploy-inbound) that uses it.
 
-{/* TODO(platform-confirm): The Phone number placeholder has no plus sign or country code (4155552671), but the API requires E.164. Does Agent Studio add a country code, reject the number, or save it as typed? */}
-
-{/* TODO(platform-confirm): The API allows inbound SIP traffic from any address if you omit `allowed_ips`, and doesn't mention `*` (Agent Studio's hint says "Use * to allow any source"). What happens when Allowed IPs is blank? Does the default SIP port change with the protocol, as it does in the API (5061 for TLS, 5060 for TCP and UDP)? What does Refresh numbers do? */}
+{/* TODO(platform-confirm): The API allows inbound SIP traffic from any address if you omit `allowed_ips`. What happens when Allowed IPs is blank in Agent Studio: does it accept SIP traffic from any address? If so, add it to the warning. */}
 
 ## Manage imported numbers
 
