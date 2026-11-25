@@ -4,6 +4,8 @@
 > 「按本流程迁移 <产品名>(如 Cloud Transcoding)」。
 > agent 先做「第 0 步环境自检」,再按步骤执行。
 
+先读仓库当前的 [OpenAPI 迁移手册](../docs/openapi-migration-playbook.md) 和 [API Reference 验收约定](../docs/api-reference-quality.md)，按本次改动类型选择验证步骤。
+
 ## 你的任务
 把源仓库里某个产品的 RESTful API 文档,迁移进 docs-portal 的 OpenAPI 渲染管道。
 **核心原则**:REST 端点内容只存为 OpenAPI YAML(单一真相),**不要**为每个端点建 mdx 影子页;

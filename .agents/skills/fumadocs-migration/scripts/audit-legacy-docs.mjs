@@ -3,8 +3,6 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
-const DEFAULT_SOURCE =
-  '/Users/czhen/Documents/GitHub/AgoraIO/shengwang-doc-source';
 const DEFAULT_PROFILE = 'shengwang-doc-source';
 const DOC_SOURCE_PRIVATE_PROFILE = 'doc-source-private';
 const DOC_SOURCE_PRIVATE_LANES = new Set([
@@ -60,7 +58,7 @@ const GENERATED_EXTENSIONS = new Set([
 
 function parseArgs(argv) {
   const args = {
-    source: DEFAULT_SOURCE,
+    source: process.env.SOURCE_ROOT,
     out: 'docs/superpowers/reports/fumadocs-migration-audit',
     profile: DEFAULT_PROFILE,
   };
@@ -93,7 +91,7 @@ function parseArgs(argv) {
 function usage() {
   return `Usage:
 node .agents/skills/fumadocs-migration/scripts/audit-legacy-docs.mjs \\
-  --source /Users/czhen/Documents/GitHub/AgoraIO/shengwang-doc-source \\
+  --source /path/to/shengwang-doc-source \\
   --profile shengwang-doc-source \\
   --out docs/superpowers/reports/YYYY-MM-DD-fumadocs-migration-audit`;
 }
@@ -505,9 +503,10 @@ async function main() {
     return;
   }
 
-  const sourceRoot = path.resolve(args.source);
+  const sibling = args.profile === DOC_SOURCE_PRIVATE_PROFILE ? 'Doc-Source-Private' : 'shengwang-doc-source';
+  const sourceRoot = path.resolve(args.source ?? path.join('..', sibling));
   if (!(await exists(sourceRoot))) {
-    throw new Error(`Source path does not exist: ${sourceRoot}`);
+    throw new Error(`Source path does not exist: ${sourceRoot}. Pass --source or set SOURCE_ROOT to the checkout.`);
   }
 
   const scanRoots =

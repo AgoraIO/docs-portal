@@ -1,11 +1,11 @@
 ---
 name: fumadocs-migration-private-en
-description: Use when migrating docs from /Users/czhen/Documents/GitHub/AgoraIO/Doc-Source-Private into docs-portal Fumadocs content for the English site, applying private-source routing, shared-content, and audit rules.
+description: Use when migrating docs from Doc-Source-Private into docs-portal Fumadocs content for the English site, applying private-source routing, shared-content, and audit rules.
 ---
 
 # Fumadocs Migration For Doc-Source-Private
 
-Use this skill when the source root is `/Users/czhen/Documents/GitHub/AgoraIO/Doc-Source-Private`.
+Use this skill for a checkout of `Doc-Source-Private`. Set `SOURCE_ROOT` to its local path.
 
 This is a source-specific entrypoint for the private English docs source. Reuse the shared `.agents/skills/fumadocs-migration` rules conceptually, but treat this source as a different migration contract rather than a thin `/en/**` variant.
 
@@ -17,9 +17,9 @@ This is a source-specific entrypoint for the private English docs source. Reuse 
 4. Load shared audit status guidance from `.agents/skills/fumadocs-migration/references/report-schema.md`.
 5. Load `references/private-source.md`.
 6. Load `references/lane-mapping.md`.
-7. Run the audit script with the private-source profile.
+7. Run the shared audit script with `--profile doc-source-private --source "$SOURCE_ROOT"`. For one-page migrations, follow the [single-page fidelity playbook](../../../docs/agents/private-source-single-page-migration.md).
 8. Classify the source lane as supported or deferred before editing.
-9. Verify with `bun run types:check`, and add `bun run test` or `bun run build` when routing, code, or shell behavior changes are involved.
+9. For REST API migrations, apply the [OpenAPI playbook](../../../docs/openapi-migration-playbook.md) and [API reference quality contract](../../../docs/api-reference-quality.md). Run `bun run docs:mdx-build-syntax --root=<target-directory>` for migrated MDX. Verify with `bun run types:check`, and add `bun run test` or `bun run build` when routing, code, or shell behavior changes are involved.
 
 ## Hard Rules
 

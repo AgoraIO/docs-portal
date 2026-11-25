@@ -1,6 +1,6 @@
 # Domain Docs
 
-How the engineering skills should consume this repo's domain documentation when exploring the codebase.
+The engineering skills read `GLOSSARY.md`, a link to the maintained `CONTEXT.md`. Edit domain terms in `CONTEXT.md`.
 
 ## Before exploring, read these
 
