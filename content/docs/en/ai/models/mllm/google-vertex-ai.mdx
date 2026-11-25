@@ -27,11 +27,11 @@ from agora_agent.agentkit.vendors import VertexAI
 agent = (
     Agent(client)
     .with_mllm(VertexAI(
-        model='gemini-live-2.5-flash-native-audio',
+        model='gemini-3.8-live',
         project_id='<GOOGLE_CLOUD_PROJECT_ID>',
         location='<GOOGLE_CLOUD_REGION>',
         adc_credentials_string='<GOOGLE_APPLICATION_CREDENTIALS_STRING>',
-        voice='Aoede',
+        voice='Charon',
         instructions='You are a friendly assistant.',
         transcribe_agent=True,
         transcribe_user=True,
@@ -49,11 +49,11 @@ import { Agent, VertexAI } from 'agora-agents';
 // client is your configured Agora client
 const agent = new Agent({ client })
   .withMllm(new VertexAI({
-    model: 'gemini-live-2.5-flash-native-audio',
+    model: 'gemini-3.8-live',
     projectId: '<GOOGLE_CLOUD_PROJECT_ID>',
     location: '<GOOGLE_CLOUD_REGION>',
     adcCredentialsString: '<GOOGLE_APPLICATION_CREDENTIALS_STRING>',
-    voice: 'Aoede',
+    voice: 'Charon',
     instructions: 'You are a friendly assistant.',
     transcribeAgent: true,
     transcribeUser: true,
@@ -74,11 +74,11 @@ import (
 // client is your configured Agora client
 agent := agentkit.NewAgent(client).WithMllm(
     vendors.NewVertexAI(vendors.VertexAIOptions{
-        Model:               "gemini-live-2.5-flash-native-audio",
+        Model:               "gemini-3.8-live",
         ProjectID:           "<GOOGLE_CLOUD_PROJECT_ID>",
         Location:            "<GOOGLE_CLOUD_REGION>",
         ADCredentialsString: "<GOOGLE_APPLICATION_CREDENTIALS_STRING>",
-        Voice:               "Aoede",
+        Voice:               "Charon",
         Instructions:        "You are a friendly assistant.",
         TranscribeAgent:     Agora.Bool(true),
         TranscribeUser:      Agora.Bool(true),
@@ -102,9 +102,9 @@ Use the following `mllm` configuration in your request:
     }
   ],
   "params": {
-    "model": "gemini-live-2.5-flash-native-audio",
+    "model": "gemini-3.8-live",
     "instructions": "<YOUR_SYSTEM_PROMPT>",
-    "voice": "Aoede",
+    "voice": "Charon",
     "adc_credentials_string": "<GOOGLE_APPLICATION_CREDENTIALS_STRING>",
     "project_id": "<GOOGLE_CLOUD_PROJECT_ID>",
     "location": "<GOOGLE_CLOUD_REGION>",    

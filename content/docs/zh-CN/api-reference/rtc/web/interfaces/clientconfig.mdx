@@ -32,6 +32,8 @@ aiClientMode: boolean
 
 AI 客户端模式。开启后，SDK 会在创建客户端时准备 AI QoS 所需的媒体 DataChannel。
 
+需要支持的桌面浏览器并安装 AI 音频服务。移动端浏览器和 Firefox 回退为 WebRTC 音频接收。`agora-rtc-sdk-ng/full` 构建已安装 `AiAudioModeService`，默认构建未安装。使用 ESM 时，从 `agora-rtc-sdk-ng/services/ai-audio-mode` 导入 `AiAudioModeService`，并在创建客户端前通过 `AgoraRTC.use` 安装。
+
 :::info[自从]
 *4.24.8*
 :::

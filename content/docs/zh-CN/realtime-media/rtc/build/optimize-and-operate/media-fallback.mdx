@@ -25,7 +25,7 @@ titlePlatforms:
 
 用户接收到的流从音视频流切换到纯音频流，或从纯音频流切换到音视频流时，SDK 会触发 `AgoraRTCClient.on("stream-fallback")` 回调，帮助该用户了解当前接收流的状态。当接收到的流从大流切换到小流，或从小流切换到大流时，SDK 会触发 `AgoraRTCClient.on("stream-type-changed")` 回调，帮助该用户了解当前接收到的视频流类型。
 
-以下示例代码中的 `client` 是指通过 `AgoraRTC.createClient` 创建的本地客户端对象，`remoteStream` 是指通过 `stream-added` 事件获取的远端音视频流对象。
+以下示例代码中的 `client` 是指通过 `AgoraRTC.createClient` 创建的本地客户端对象，`remoteUid` 是指远端发布用户的用户 ID，可通过 `user-published` 事件参数中的 `user.uid` 获取。
 
 ```javascript
 // 开启双流模式
@@ -36,10 +36,10 @@ client.enableDualStream().then(() => {
 });
 
 // 接收端的配置。弱网环境下先尝试接收小流；若当前网络环境无法显示视频，则只接收音频流
-client.setStreamFallbackOption(remoteStream, 2)
+client.setStreamFallbackOption(remoteUid, 2)
 
 // 接收端的配置。弱网情况下为保证通话质量，将订阅的视频大流手动切换成视频小流
-client.setRemoteVideoStreamType(remoteStream, 1);
+client.setRemoteVideoStreamType(remoteUid, 1);
 ```
 
 ## 参考信息
