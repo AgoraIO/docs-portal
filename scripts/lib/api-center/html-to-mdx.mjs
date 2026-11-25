@@ -318,6 +318,9 @@ function loadHtmlPage({
       : article.find('.shortdesc, .lead, .tsd-comment-shortform');
   const descriptionNode = descriptionCandidates
     .filter((_, node) => {
+      // A TypeDoc member's lead belongs to that member, even when the page
+      // has no introduction. Promoting it also removes it from the body.
+      if ($(node).closest('.tsd-member').length > 0) return false;
       const nodeArticle = $(node).closest('article').get(0);
       return (nodeArticle ?? articleNode) === (titleArticle ?? articleNode);
     })
@@ -1306,6 +1309,51 @@ async function renderCalloutChildren($, element, state) {
   }
 }
 
+async function renderTypeDocMetadata($, definition, state, title, deprecated) {
+  const nodes = definition.contents().toArray();
+  const meaningful = nodes.filter(
+    (node) => node.type !== 'text' || node.data.trim(),
+  );
+  if (meaningful.length === 0) return '';
+  // Legacy JSDoc often places the entire member description after @since or
+  // @deprecated. TypeDoc therefore puts prose, examples and quotations in the
+  // same <dd>. Only the metadata paragraph belongs in its notice frame.
+  let metadata = meaningful[0];
+  if (deprecated) {
+    // Some declarations put the ordinary property description first and the
+    // explicit replacement instruction next. Use that authored instruction;
+    // the tag itself, not this wording, determines the warning severity.
+    metadata =
+      definition
+        .children('p')
+        .toArray()
+        .find((node) =>
+          /(?:deprecated|废弃|弃用|^推荐使用|^use\b.*\binstead\b)/i.test(
+            cleanText($(node).text()),
+          ),
+        ) ?? metadata;
+  }
+  const index = nodes.indexOf(metadata);
+  const before = await renderNodeSequence($, nodes.slice(0, index), state);
+  const noticeBody =
+    metadata.type === 'tag'
+      ? await renderCalloutChildren($, $(metadata), state)
+      : await renderNodeSequence($, [metadata], state);
+  const after = await renderNodeSequence($, nodes.slice(index + 1), state);
+  return [
+    before,
+    deprecated && renderStableAnchor(definitionHeadingSlug(title, state)),
+    renderCallout({
+      type: deprecated ? 'warning' : 'info',
+      title,
+      body: noticeBody,
+    }),
+    after,
+  ]
+    .filter(Boolean)
+    .join('\n\n');
+}
+
 async function renderDefinitionList($, list, state) {
   const blocks = [];
   const listIsSince = classNames(list).has('since');
@@ -1335,6 +1383,27 @@ async function renderDefinitionList($, list, state) {
         listIsSince ||
         (listIsTypeDocCommentTags && isSinceDefinitionTerm(renderedTerm));
     } else {
+      if (
+        listIsTypeDocCommentTags &&
+        term &&
+        !termHasLink &&
+        (termIsSince || termPlainText.toLowerCase() === 'deprecated')
+      ) {
+        blocks.push(
+          await renderTypeDocMetadata(
+            $,
+            $(child),
+            state,
+            term,
+            termPlainText.toLowerCase() === 'deprecated',
+          ),
+        );
+        term = null;
+        termPlainText = '';
+        termHasLink = false;
+        termIsSince = false;
+        continue;
+      }
       const body =
         term &&
         (listIsDeprecated ||
