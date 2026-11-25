@@ -185,14 +185,14 @@ describe('reviewed Chinese image sizing', () => {
     const count = (entries: { count: number }[]) =>
       entries.reduce((total, entry) => total + entry.count, 0);
 
-    expect(count(dimensions.restore)).toBe(556);
-    expect(dimensions.restore).toHaveLength(311);
+    expect(count(dimensions.restore)).toBe(553);
+    expect(dimensions.restore).toHaveLength(308);
     expect(
       new Set(dimensions.restore.map((fixture) => fixture.file)).size,
-    ).toBe(158);
+    ).toBe(157);
     expect(
       count(dimensions.restore.filter((fixture) => 'displayWidth' in fixture)),
-    ).toBe(554);
+    ).toBe(551);
     expect(
       count(dimensions.restore.filter((fixture) => 'displayHeight' in fixture)),
     ).toBe(2);
