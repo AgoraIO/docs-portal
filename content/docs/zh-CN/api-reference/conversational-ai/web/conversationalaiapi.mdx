@@ -113,11 +113,11 @@ public static async init(cfg: IConversationalAIAPIConfig): Promise<Conversationa
 
 该方法用于设置 RTC 和 RTM 引擎、渲染模式以及日志选项。必须在调用 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi) 的其他方法之前调用此方法。
 
-自 2.11.0 起，逐词模式（`TranscriptHelperMode.WORD`）按词文本（`word`）和开始时间（`start_ms`，毫秒）合并同一轮智能体字幕。即使空格和后面的词（如 `long`）在同一毫秒开始，两者也都会保留。
+逐词模式（`TranscriptHelperMode.WORD`）合并同一轮智能体字幕时，只有新词的文本（`word`）和开始时间（`start_ms`，单位为毫秒）都与先前消息中已保留的词相同，才会跳过该词。同一条新消息中的词不会互相去重。
 
-只有新词的文本和开始时间都与先前消息中已保留的词相同，组件才会跳过它。这条规则也适用于重复的词和空格。同一条新消息中的词不会互相去重。
+例如，空格和后面的 `long` 即使在同一毫秒开始，也会同时保留，因为两者的文本不同。
 
-在 Web 上使用 2.11.0 的逐词模式时，需使用 RTC Web SDK 4.24.0 或更高版本，在创建 RTC 客户端前调用 `AgoraRTC.setParameter('ENABLE_AUDIO_PTS', true)`。参见[实时字幕](/zh-CN/ai/build/transcripts#初始化组件)。
+逐词模式需要 RTC Web SDK 4.24.0 或更高版本。请在创建 RTC 客户端前调用 `AgoraRTC.setParameter('ENABLE_AUDIO_PTS', true)`。参见[实时字幕](/zh-CN/ai/build/transcripts#初始化组件)。
 
 #### 参数
 
