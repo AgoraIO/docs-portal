@@ -291,7 +291,11 @@ Agora Web SDK 需知道 app 的使用场景（例如通信模式或直播模式�
 声网频道支持以下场景:
 
 - `"live"`: 直播场景，有主播和观众两种用户角色，可以通过 [setClientRole](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#setclientrole) 方法设置主播和观众的角色。主播可以收发音视频流，而观众只能接收音视频流，无法发送。
-- `"rtc"`: 通信场景，用于常见的一对一通话或群聊，频道中的任何用户可以自由说话。
+- `"rtc"`: 通信场景，频道中的任何用户均可发布音视频。
+
+:::caution[不推荐使用 RTC 模式]
+当前不推荐使用 RTC 模式（`mode: "rtc"`，即通信模式），包括一对一通话场景。建议统一使用直播模式（`mode: "live"`）。需要发送音视频的用户应将角色设为 `"host"`（主播）。
+:::
 
 <a id="screenencoderconfigurationpreset"></a>
 

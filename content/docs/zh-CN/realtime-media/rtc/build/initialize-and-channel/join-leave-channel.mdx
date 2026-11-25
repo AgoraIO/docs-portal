@@ -15,7 +15,8 @@ titlePlatforms:
 ```javascript
 const client = AgoraRTC.createClient({
   codec: "vp8",
-  mode: "rtc",
+  mode: "live",
+  role: "host",
 });
 ```
 
@@ -44,13 +45,17 @@ const client = AgoraRTC.createClient({
 
 频道场景 (`mode`) 是声网为了对不同的实时音视频场景进行针对性算法优化而提供的一种设置选项。SDK 支持两种频道场景：`"rtc"`（通信场景）和 `"live"`（直播场景）。
 
+:::caution[不推荐使用 RTC 模式]
+当前不推荐使用 RTC 模式（`mode: "rtc"`，即通信模式），包括一对一通话场景。建议统一使用直播模式（`mode: "live"`）。需要发送音视频的用户应将角色设为 `"host"`（主播）。
+:::
+
 **通信场景**
 
-`"rtc"`（通信场景）适用于频道内所有用户需要相互交流且用户总数不太多的场景，如多人会议和在线聊天。
+`"rtc"`（通信场景）中，所有用户均可发送和接收音视频。
 
 **直播场景**
 
-`"live"`（直播场景）适用于发布端很少但是订阅端很多的场景，这种场景下 SDK 定义了两种用户角色：观众（默认）和主播。主播能够发送和接收音视频，观众不能发送、只能接收音视频。你可以通过设置 `createClient` 的 [`role`](/zh-CN/api-reference/rtc/web/interfaces/clientconfig#role) 参数来指定用户角色，也可以调用 [`setClientRole`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setclientrole) 来动态修改用户角色。
+`"live"`（直播场景）适用于一对一通话及多人互动场景。SDK 定义了两种用户角色：观众（默认）和主播。主播能够发送和接收音视频，观众不能发送、只能接收音视频。你可以通过设置 `createClient` 的 [`role`](/zh-CN/api-reference/rtc/web/interfaces/clientconfig#role) 参数来指定用户角色，也可以调用 [`setClientRole`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setclientrole) 来动态修改用户角色。
 
 ## 加入频道
 
