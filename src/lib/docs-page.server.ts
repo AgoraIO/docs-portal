@@ -854,6 +854,11 @@ export async function loadDocsPagePayload(
     locale === 'zh-CN' && tab === OPENAPI_TAB
       ? resolveZhCnApiReferenceEntry(page.url)
       : undefined;
+  const titleVersionSwitcher =
+    apiReferenceEntry?.productId === 'conversational-ai' &&
+    apiReferenceEntry.apiType === 'client-api'
+      ? resolvedSidebarHeader?.versionSwitcher
+      : undefined;
   const breadcrumb = getSidebarBreadcrumb(sidebar, page.url);
   const apiReferenceBreadcrumb =
     locale === 'zh-CN' && tab === 'api-reference'
@@ -1019,10 +1024,12 @@ export async function loadDocsPagePayload(
           ),
     productScopes: getProductScopes(pageTree),
     sidebar,
+    ...(titleVersionSwitcher ? { titleVersionSwitcher } : {}),
     sidebarHeader:
       resolvedSidebarHeader && apiReferenceEntry
         ? {
             ...resolvedSidebarHeader,
+            ...(titleVersionSwitcher ? { versionSwitcher: undefined } : {}),
             title: `${apiReferenceEntry.product} · ${apiReferenceEntry.platform}`,
           }
         : resolvedSidebarHeader,

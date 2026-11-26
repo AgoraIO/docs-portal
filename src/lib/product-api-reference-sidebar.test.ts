@@ -887,6 +887,32 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
     ).toBe(false);
   });
 
+  it.each(['android', 'ios', 'web'])(
+    'keeps the %s client API version menu when opened from the AI product',
+    async (platform) => {
+      const payload = await loadDocsPagePayload(
+        'zh-CN',
+        'api-reference',
+        ['conversational-ai', platform, 'overview'],
+        '?from=%2Fzh-CN%2Fai',
+      );
+      if (!payload || 'redirectUrl' in payload)
+        throw new Error('Missing API page');
+      expect(payload.activeTab).toBe('ai');
+      expect(findSection(payload.sidebar, ['客户端组件 API'])).toBeDefined();
+      expect(payload.sidebarHeader?.versionSwitcher).toBeUndefined();
+      const versions = payload.titleVersionSwitcher;
+      expect(versions?.currentId).toBe('current');
+      expect(versions?.versions.map(({ label }) => label)).toEqual([
+        'v2.11.0',
+        'v2.10.0',
+        'v2.9.0',
+        'v1.7.0',
+        'v1.6.0',
+      ]);
+    },
+  );
+
   it('keeps the AI product root as context from a nested product page', async () => {
     const sidebar = await loadSidebar('zh-CN', 'ai', ['reference', 'pricing']);
     const joinApi = findNode(sidebar, '创建对话式智能体');

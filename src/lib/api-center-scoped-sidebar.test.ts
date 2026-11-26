@@ -114,7 +114,7 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
         title,
       });
       if (route[0] === 'conversational-ai' && route[1] === 'android') {
-        expect(payload.sidebarHeader?.versionSwitcher).toMatchObject({
+        expect(payload.titleVersionSwitcher).toMatchObject({
           currentId: 'current',
           versions: expect.arrayContaining([
             expect.objectContaining({ id: 'current', label: 'v2.11.0' }),
@@ -143,8 +143,9 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
       expect(payload.sidebarHeader).toMatchObject({
         backHref: '/zh-CN/api-reference/api',
         backLabel: 'API 参考',
-        versionSwitcher: { currentId: 'current' },
       });
+      expect(payload.sidebarHeader?.versionSwitcher).toBeUndefined();
+      expect(payload.titleVersionSwitcher?.currentId).toBe('current');
     },
   );
 
@@ -165,7 +166,7 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
           ...base,
           ...`${prefix}enum`.split('/'),
         ]);
-        expect(page.sidebarHeader?.versionSwitcher).toMatchObject({
+        expect(page.titleVersionSwitcher).toMatchObject({
           currentId: version,
           versions: expect.arrayContaining(versions),
         });

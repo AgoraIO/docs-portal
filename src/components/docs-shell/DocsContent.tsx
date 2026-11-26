@@ -72,6 +72,7 @@ import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBody } from './DocsContentBody';
 import { DocsMeasurementContext } from './DocsContentMeasurement';
 import { DocsSearchLandingEngagement } from './DocsSearchLandingEngagement';
+import { DocsVersionDropdown } from './DocsVersionDropdown';
 import { DocVersionNotice } from './DocVersionControls';
 import { DocsCopyMenu } from './docs-copy-menu';
 import { getDocsSourceLinks } from './docs-source-links';
@@ -153,6 +154,7 @@ export function DocsContent({
   slug,
   title,
   titlePlatforms = [],
+  titleVersionSwitcher,
   toc,
   tocMaxDepth,
 }: {
@@ -173,6 +175,7 @@ export function DocsContent({
   slug?: string;
   title?: string;
   titlePlatforms?: PlatformKey[];
+  titleVersionSwitcher?: DocsSidebarHeader['versionSwitcher'];
   toc: TOCItemType[];
   tocMaxDepth?: number;
 }) {
@@ -384,6 +387,12 @@ export function DocsContent({
                     fallbackPlatforms={titlePlatforms}
                     locale={currentLocale}
                     platformTabs={platformTabs}
+                  />
+                )}
+                {titleVersionSwitcher && (
+                  <DocsVersionDropdown
+                    locale={currentLocale}
+                    versionSwitcher={titleVersionSwitcher}
                   />
                 )}
               </div>

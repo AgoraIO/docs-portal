@@ -284,6 +284,7 @@ function Page() {
     tocMaxDepth,
     title,
     titlePlatforms,
+    titleVersionSwitcher,
   } = Route.useLoaderData();
 
   // Remember this page so the search dialog can offer it under "Recent". Keyed
@@ -318,6 +319,7 @@ function Page() {
       slug={slug}
       title={title}
       titlePlatforms={titlePlatforms}
+      titleVersionSwitcher={titleVersionSwitcher}
       toc={toc}
       tocMaxDepth={tocMaxDepth}
     />
