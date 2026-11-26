@@ -73,9 +73,9 @@ title: 让智能体更快回复
 
 ### 提前准备音频回复
 
-如果你的大模型接收 ASR 转写文本并能直接输出音频，可以让它在用户说完前开始生成语音。创建智能体时，将 `properties.parameters.eager_llm_response` 设为 `true`，并将 `properties.llm.output_modalities` 设为 `["audio"]`。如需模型同时返回文本和音频，改用 `["text", "audio"]`。
+如果你的大模型接收语音识别文本后能直接输出音频，可以让它在用户说完前开始生成语音。创建智能体时，将 `properties.parameters.eager_llm_response` 设为 `true`，并将 `properties.llm.output_modalities` 设为 `["audio"]`。如需模型同时返回文本和音频，改用 `["text", "audio"]`。
 
-以下是使用 `asr_auto` 触发的创建请求片段。如果你已经配置了 `eager_eos`，可以保留原有触发配置。
+以下是使用 `asr_auto` 触发的创建请求片段：
 
 ```json
 {
@@ -95,8 +95,6 @@ title: 让智能体更快回复
 }
 ```
 
-只有最终转写与候选文本匹配时，智能体才会播放提前生成的音频，并发布对应的文本或字幕。如果不匹配，智能体会根据最终转写重新生成回复。未播放的音频仍可能产生模型和音频生成费用。
-
 ## 参数说明
 
 | 字段 | 类型 | 说明 |
@@ -111,5 +109,5 @@ title: 让智能体更快回复
 | --- | --- |
 | `["asr_auto"]` | 仅使用 ASR 自动触发提前请求。 |
 | `["eager_eos"]` | 仅使用 `eager_eos` 触发提前请求。 |
-| `["asr_auto", "eager_eos"]` | 同时使用两种触发方式。相同候选文本只发起一次请求。 |
+| `["asr_auto", "eager_eos"]` | 同时使用两种触发方式，结束说话方式须设为 `semantic`。相同候选文本只发起一次请求。 |
 | 未配置或 `[]` | 使用默认值 `asr_auto`。 |
