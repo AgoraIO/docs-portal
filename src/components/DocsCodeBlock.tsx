@@ -15,7 +15,7 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import { captureDocsCodeCopied } from '@/lib/analytics/posthog';
+import { createDocsCodeCopyCapture } from '@/lib/analytics/posthog';
 import { cn } from '@/lib/cn';
 import { isSameCodeLanguage } from '@/lib/code/label';
 import { CodeBlockTabContext } from './DocsCodeBlockTabs';
@@ -175,6 +175,13 @@ export function DocsCodeCopyButton({
       decoration.replaceWith('\n');
     }
 
+    const captureCopy = createDocsCodeCopyCapture({
+      language: codeLanguage,
+      locale:
+        pageLocale === 'en' && (!locale || locale === 'en') ? 'en' : 'zh-CN',
+      source: 'code-block',
+    });
+
     clearTimeout(timeoutRef.current);
     setCopied(false);
     try {
@@ -182,17 +189,11 @@ export function DocsCodeCopyButton({
     } catch {
       return;
     }
+    captureCopy();
     if (!button.isConnected || window.location.pathname !== pathname) return;
 
     setCopied(true);
     timeoutRef.current = setTimeout(() => setCopied(false), 1500);
-    if (pageLocale === 'en' && (!locale || locale === 'en')) {
-      captureDocsCodeCopied({
-        language: codeLanguage,
-        locale: 'en',
-        source: 'code-block',
-      });
-    }
   }
 
   return (

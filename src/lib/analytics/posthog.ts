@@ -510,19 +510,39 @@ export function captureDocsSearchLandingEngaged({
   });
 }
 
-export function captureDocsCodeCopied({
-  language,
-  locale,
-  source,
-}: {
+export function captureDocsCodeCopied(properties: {
   language?: string;
   locale: string;
   source: 'code-block' | 'command-block';
 }) {
-  captureStructuredDocsEvent('docs_code_copied', locale, {
-    code_language: toSafePropertyValue(language),
-    code_source: source,
-  });
+  createDocsCodeCopyCapture(properties)();
+}
+
+export function createDocsCodeCopyCapture({
+  language,
+  locale,
+  source,
+}: Parameters<typeof captureDocsCodeCopied>[0]) {
+  const context =
+    typeof window === 'undefined' ? null : getDocsPageContext(locale);
+  const currentUrl = context
+    ? new URL(context.docs_pathname, window.location.origin).href
+    : undefined;
+
+  return () => {
+    if (!context) return;
+    captureStructuredDocsEvent(
+      'docs_code_copied',
+      locale,
+      {
+        $current_url: currentUrl,
+        $pathname: context.docs_pathname,
+        code_language: toSafePropertyValue(language),
+        code_source: source,
+      },
+      context,
+    );
+  };
 }
 
 export function captureDocsCodeTabChanged({
@@ -658,15 +678,18 @@ function captureStructuredDocsEvent(
   event: string,
   locale: string | undefined,
   properties: StructuredEventProperties,
+  originatingContext?: ReturnType<typeof getDocsPageContext>,
 ) {
   if (typeof window === 'undefined') {
     return;
   }
 
-  const context = getDocsPageContext(
-    locale,
-    typeof properties.pathname === 'string' ? properties.pathname : undefined,
-  );
+  const context =
+    originatingContext ??
+    getDocsPageContext(
+      locale,
+      typeof properties.pathname === 'string' ? properties.pathname : undefined,
+    );
   const eventLocale = locale ?? context.docs_locale;
 
   if (eventLocale !== 'en' || context.docs_locale !== 'en') {

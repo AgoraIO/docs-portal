@@ -25,6 +25,9 @@ const captureDocsCodeCopiedMock = vi.hoisted(() => vi.fn());
 vi.mock('@/lib/analytics/posthog', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/analytics/posthog')>()),
   captureDocsCodeCopied: captureDocsCodeCopiedMock,
+  createDocsCodeCopyCapture: (properties: { locale: string }) => () => {
+    if (properties.locale === 'en') captureDocsCodeCopiedMock(properties);
+  },
 }));
 
 async function renderBlocks(children: ReactNode, locale = 'en') {
@@ -203,7 +206,7 @@ describe('DocsCodeBlock', () => {
     }
   });
 
-  it('does not attribute a pending copy to another page after navigation', async () => {
+  it('records a successful pending copy even after its page unmounts', async () => {
     let resolveCopy!: () => void;
     const pending = new Promise<void>((resolve) => {
       resolveCopy = resolve;
@@ -212,15 +215,16 @@ describe('DocsCodeBlock', () => {
       writeText: vi.fn().mockReturnValue(pending),
     } as unknown as Clipboard);
     try {
-      await renderBlocks(
+      const { unmount } = await renderBlocks(
         <DocsCodeBlock>
           <code>example</code>
         </DocsCodeBlock>,
       );
       fireEvent.click(screen.getByRole('button', { name: 'Copy Text' }));
+      unmount();
       window.history.replaceState({}, '', '/en/introduction');
       await act(async () => resolveCopy());
-      expect(captureDocsCodeCopiedMock).not.toHaveBeenCalled();
+      expect(captureDocsCodeCopiedMock).toHaveBeenCalledOnce();
     } finally {
       clipboard.mockRestore();
     }

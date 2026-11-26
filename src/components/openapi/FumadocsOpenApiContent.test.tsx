@@ -15,6 +15,9 @@ const captureDocsCodeCopiedMock = vi.hoisted(() => vi.fn());
 vi.mock('@/lib/analytics/posthog', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/analytics/posthog')>()),
   captureDocsCodeCopied: captureDocsCodeCopiedMock,
+  createDocsCodeCopyCapture: (properties: { locale: string }) => () => {
+    if (properties.locale === 'en') captureDocsCodeCopiedMock(properties);
+  },
 }));
 
 beforeEach(() => {
