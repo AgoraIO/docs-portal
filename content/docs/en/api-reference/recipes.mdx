@@ -5,13 +5,17 @@ description: Agora Recipes is a growing catalog of runnable examples, integratio
 hideToc: true
 ---
 
-Browse Voice Agent and RTC examples below, or explore more projects on [Agora Recipes](https://recipes.agora.io/).
+Browse Voice Agent and RTC examples, or explore more projects on [Agora Recipes](https://recipes.agora.io/).
+
+{/* Cards display only level and stack tags. Other tags are search-only:
+    they keep each recipe findable by its original Agora Recipes project name. */}
 
 <RecipesGallery
   allCategoriesLabel="All recipe types"
-  allProductsLabel="All products"
+  allProductsLabel="All"
   allStacksLabel="All stacks"
   categoryFilterLabel="Recipe type"
+  clearFiltersLabel="Clear filters"
   emptyMessage="No recipes match the current filters."
   items={[
     {
@@ -379,7 +383,7 @@ Browse Voice Agent and RTC examples below, or explore more projects on [Agora Re
     },
     {
       category: "Add features",
-      description: "Keep lyrics in sync with playback and score a singer’s pitch in an iOS karaoke app.",
+      description: "Keep lyrics in sync with playback and score a singer's pitch in an iOS karaoke app.",
       href: "https://recipes.agora.io/recipes/ios-lyrics-view-rtc-media",
       product: "RTC",
       stack: "iOS, Swift",
@@ -392,8 +396,8 @@ Browse Voice Agent and RTC examples below, or explore more projects on [Agora Re
       href: "https://recipes.agora.io/recipes/agora-meeting-copilot",
       product: "RTC",
       stack: "TypeScript",
-      tags: ["Advanced"],
-      title: "Agora Meeting Copilot",
+      tags: ["Advanced", "Agora Meeting Copilot"],
+      title: "AI Meeting Assistant",
     },
     {
       category: "Explore scenarios",
@@ -402,11 +406,11 @@ Browse Voice Agent and RTC examples below, or explore more projects on [Agora Re
       product: "RTC",
       stack: "Web, TypeScript",
       tags: ["Intermediate", "1in8b"],
-      title: "In-Game Voice Chat (1in8b)",
+      title: "In-Game Voice Chat",
     },
     {
       category: "Explore scenarios",
-      description: "Broadcast a two-host podcast that pauses for a listener’s spoken question and resumes after the answer.",
+      description: "Broadcast a two-host podcast that pauses for a listener's spoken question and resumes after the answer.",
       href: "https://recipes.agora.io/recipes/agora-podcasts",
       product: "RTC",
       stack: "TypeScript",
@@ -415,7 +419,7 @@ Browse Voice Agent and RTC examples below, or explore more projects on [Agora Re
     },
     {
       category: "Explore scenarios",
-      description: "Turn an M5Stack StickS3 into a handheld voice client for Agora Conversational AI.",
+      description: "Turn an M5Stack StickS3 into a handheld voice client for Voice Agent.",
       href: "https://recipes.agora.io/recipes/m5-sticks3-voice-agent",
       product: "Voice Agent",
       additionalProducts: ["RTC"],

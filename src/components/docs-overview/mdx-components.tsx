@@ -2996,6 +2996,15 @@ function recipeProducts(item: GlobalRecipeItem) {
   return [item.product, ...(item.additionalProducts ?? [])];
 }
 
+// A stack such as "iOS, Swift" lists several technologies. The Tech stack
+// filter offers each one separately and matches a card on any of them.
+function recipeStacks(item: GlobalRecipeItem) {
+  return (item.stack ?? '')
+    .split(',')
+    .map((stack) => stack.trim())
+    .filter(Boolean);
+}
+
 function GlobalRecipeCard({
   item,
   showProduct,
@@ -3024,6 +3033,7 @@ function GlobalRecipesGallery({
   allProductsLabel,
   allStacksLabel,
   categoryFilterLabel,
+  clearFiltersLabel = 'Clear filters',
   emptyMessage,
   items,
   productFilterLabel,
@@ -3035,6 +3045,7 @@ function GlobalRecipesGallery({
   allProductsLabel: string;
   allStacksLabel: string;
   categoryFilterLabel: string;
+  clearFiltersLabel?: string;
   emptyMessage: string;
   items: GlobalRecipeItem[];
   productFilterLabel: string;
@@ -3047,7 +3058,13 @@ function GlobalRecipesGallery({
   const [activeCategory, setActiveCategory] = useState(allCategoriesLabel);
   const [activeProduct, setActiveProduct] = useState(allProductsLabel);
   const [activeStack, setActiveStack] = useState(() =>
-    getInitialRecipeStack(items, allStacksLabel, stackQueryParam),
+    getInitialRecipeStack(
+      items.flatMap((item) =>
+        recipeStacks(item).map((stack) => ({ ...item, stack })),
+      ),
+      allStacksLabel,
+      stackQueryParam,
+    ),
   );
   const [activeLevel, setActiveLevel] = useState(allLevelsLabel);
   const deferredQuery = useDeferredValue(query);
@@ -3066,7 +3083,9 @@ function GlobalRecipesGallery({
   const stacks = useMemo(
     () => [
       allStacksLabel,
-      ...getUniqueValues(items.map((item) => item.stack).filter(Boolean)),
+      ...getUniqueValues(items.flatMap(recipeStacks)).sort((a, b) =>
+        a.localeCompare(b, 'en', { sensitivity: 'base' }),
+      ),
     ],
     [allStacksLabel, items],
   );
@@ -3093,7 +3112,7 @@ function GlobalRecipesGallery({
       }
       if (
         activeStack !== allStacksLabel &&
-        (item.stack ?? '') !== activeStack
+        !recipeStacks(item).includes(activeStack)
       ) {
         return false;
       }
@@ -3132,6 +3151,21 @@ function GlobalRecipesGallery({
     deferredQuery,
     items,
   ]);
+
+  const hasActiveFilters =
+    query.length > 0 ||
+    activeCategory !== allCategoriesLabel ||
+    activeProduct !== allProductsLabel ||
+    activeStack !== allStacksLabel ||
+    activeLevel !== allLevelsLabel;
+
+  const resetFilters = () => {
+    setQuery('');
+    setActiveCategory(allCategoriesLabel);
+    setActiveProduct(allProductsLabel);
+    setActiveStack(allStacksLabel);
+    setActiveLevel(allLevelsLabel);
+  };
 
   const groupedByCategory = useMemo(
     () =>
@@ -3179,7 +3213,7 @@ function GlobalRecipesGallery({
                 type="button"
                 variant="ghost"
               >
-                {product === allProductsLabel ? 'All' : product}
+                {product}
               </Button>
             ))}
           </fieldset>
@@ -3199,6 +3233,15 @@ function GlobalRecipesGallery({
                 options={levels}
                 value={activeLevel}
               />
+            ) : null}
+            {hasActiveFilters ? (
+              <button
+                className="h-9 rounded-md px-2.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                onClick={resetFilters}
+                type="button"
+              >
+                {clearFiltersLabel}
+              </button>
             ) : null}
           </div>
         </div>

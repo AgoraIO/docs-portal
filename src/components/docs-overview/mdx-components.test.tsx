@@ -416,14 +416,14 @@ describe('overview MDX components', () => {
     render(
       <Gallery
         allCategoriesLabel="All types"
-        allProductsLabel="All products"
+        allProductsLabel="All"
         allStacksLabel="All stacks"
         categoryFilterLabel="Recipe type"
         emptyMessage="No matches"
         items={[
           {
             title: 'React Native voice agent',
-            product: 'Voice AI',
+            product: 'Voice Agent',
             category: 'Quickstart',
             description: '',
             href: '/voice',
@@ -437,7 +437,7 @@ describe('overview MDX components', () => {
           },
           {
             title: 'StickS3',
-            product: 'Voice AI',
+            product: 'Voice Agent',
             additionalProducts: ['RTC'],
             category: 'Explore scenarios',
             description: '',
@@ -467,16 +467,78 @@ describe('overview MDX components', () => {
     expect(screen.getAllByRole('link')).toHaveLength(1);
     expect(match).toHaveTextContent('React Native calling');
     expect(within(match).queryByText('RTC')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Clear filters' }));
+    expect(screen.getByRole('searchbox')).toHaveValue('');
+    expect(
+      products.getByRole('button', { name: 'All', pressed: true }),
+    ).toBeVisible();
+    expect(screen.getAllByRole('link')).toHaveLength(3);
     expect(
       screen.queryByRole('button', { name: 'Clear filters' }),
     ).not.toBeInTheDocument();
-    fireEvent.click(products.getByRole('button', { name: 'All' }));
-    fireEvent.change(screen.getByRole('searchbox'), { target: { value: '' } });
-    expect(screen.getAllByRole('link')).toHaveLength(3);
-    for (const product of ['RTC', 'Voice AI', 'All']) {
+    for (const product of ['RTC', 'Voice Agent', 'All']) {
       fireEvent.click(products.getByRole('button', { name: product }));
       expect(screen.getByRole('link', { name: /StickS3/ })).toBeVisible();
     }
+  });
+
+  it('offers each technology in a combined stack as its own filter option', () => {
+    const Gallery = getOverviewMDXComponents('en/api-reference/recipes.mdx')
+      .RecipesGallery as RecipesCatalogComponent;
+    render(
+      <Gallery
+        allCategoriesLabel="All types"
+        allProductsLabel="All"
+        allStacksLabel="All stacks"
+        categoryFilterLabel="Recipe type"
+        emptyMessage="No matches"
+        items={[
+          {
+            title: 'SwiftUI agent',
+            product: 'Voice Agent',
+            category: 'Quickstart',
+            description: '',
+            href: '/swiftui',
+            stack: 'iOS',
+          },
+          {
+            title: 'Swift calling',
+            product: 'RTC',
+            category: 'Quickstart',
+            description: '',
+            href: '/swift',
+            stack: 'iOS, Swift',
+          },
+          {
+            title: 'Web calling',
+            product: 'RTC',
+            category: 'Quickstart',
+            description: '',
+            href: '/web',
+            stack: 'JavaScript, Web',
+          },
+        ]}
+        productFilterLabel="Product"
+        searchPlaceholder="Search recipes"
+        stackFilterLabel="Tech stack"
+      />,
+    );
+    const stackSelect = screen.getByLabelText('Tech stack');
+    expect(
+      within(stackSelect)
+        .getAllByRole('option')
+        .map((option) => option.textContent),
+    ).toEqual(['Tech stack', 'iOS', 'JavaScript', 'Swift', 'Web']);
+    fireEvent.change(stackSelect, { target: { value: 'iOS' } });
+    expect(screen.getAllByRole('link').map((link) => link.textContent)).toEqual(
+      [
+        expect.stringContaining('SwiftUI agent'),
+        expect.stringContaining('Swift calling'),
+      ],
+    );
+    fireEvent.change(stackSelect, { target: { value: 'Web' } });
+    expect(screen.getAllByRole('link')).toHaveLength(1);
+    expect(screen.getByRole('link')).toHaveTextContent('Web calling');
   });
 
   it('filters recipe catalog cards by selected category and search query', () => {
