@@ -129,7 +129,7 @@ curl --request post \
     | Parameter Name | Type | Description |
     |----------------|--------|-----------------------------------------|
     | `agent_id` | String | The ID of the agent. |
-    | `createTs` | Integer | The Unix timestamp (seconds) when the agent was created. |
+    | `create_ts` | Integer | The Unix timestamp (seconds) when the agent was created. |
     | `status` | String | <Slot name="status" /> |
 
     <Slot for="status">

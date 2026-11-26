@@ -70,7 +70,7 @@ PACKET_RECEIVED_AUDIO_FROM_SRC: = "PACKET_RECEIVED_AUDIO_FROM_SRC"
 
 </ApiSignature>
 
-服务器收到了目标频道发送的音频流。
+服务器收到了源频道发送的音频流。
 
 <a id="packet_received_video_from_src"></a>
 
@@ -82,7 +82,7 @@ PACKET_RECEIVED_VIDEO_FROM_SRC: = "PACKET_RECEIVED_VIDEO_FROM_SRC"
 
 </ApiSignature>
 
-服务器收到了目标频道发送的视频流。
+服务器收到了源频道发送的视频流。
 
 <a id="packet_sent_to_dest_channel"></a>
 
@@ -118,7 +118,7 @@ PACKET_UPDATE_DEST_CHANNEL_NOT_CHANGE: = "PACKET_UPDATE_DEST_CHANNEL_NOT_CHANGE"
 
 </ApiSignature>
 
-目标频道未更新。
+类型定义保留的枚举值。Web SDK 4.22.0 的更新实现不会上报该事件：使用相同配置再次更新并确认成功时，仍上报 `PACKET_UPDATE_DEST_CHANNEL`。请通过 [updateChannelMediaRelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#updatechannelmediarelay) 返回的 Promise 处理本次更新结果。
 
 <a id="packet_update_dest_channel_refused"></a>
 
@@ -130,4 +130,4 @@ PACKET_UPDATE_DEST_CHANNEL_REFUSED: = "PACKET_UPDATE_DEST_CHANNEL_REFUSED"
 
 </ApiSignature>
 
-内部原因导致目标频道更新失败。
+类型定义保留的枚举值。Web SDK 4.22.0 的更新实现不会通过该事件报告更新失败；失败时返回的 Promise 会拒绝。请通过 [updateChannelMediaRelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#updatechannelmediarelay) 返回的 Promise 处理本次更新结果，不应等待该事件。
