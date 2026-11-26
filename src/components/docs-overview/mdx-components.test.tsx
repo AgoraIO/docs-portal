@@ -115,7 +115,7 @@ type RecipesCatalogComponent = ComponentType<{
   allSdksLabel?: string;
   allStacksLabel: string;
   categoryFilterLabel: string;
-  clearFiltersLabel: string;
+  clearFiltersLabel?: string;
   emptyMessage: string;
   groupByProduct?: boolean;
   items: Array<{
@@ -127,6 +127,7 @@ type RecipesCatalogComponent = ComponentType<{
       label: string;
     }>;
     product: string;
+    additionalProducts?: string[];
     sdk?: string;
     stack?: string;
     tags?: string[];
@@ -407,6 +408,75 @@ describe('overview MDX components', () => {
     expect(
       screen.getByText('Run a working voice agent in under 15 minutes.'),
     ).toBeVisible();
+  });
+
+  it('combines product and search filters in the English recipes gallery', () => {
+    const Gallery = getOverviewMDXComponents('en/api-reference/recipes.mdx')
+      .RecipesGallery as RecipesCatalogComponent;
+    render(
+      <Gallery
+        allCategoriesLabel="All types"
+        allProductsLabel="All products"
+        allStacksLabel="All stacks"
+        categoryFilterLabel="Recipe type"
+        emptyMessage="No matches"
+        items={[
+          {
+            title: 'React Native voice agent',
+            product: 'Voice AI',
+            category: 'Quickstart',
+            description: '',
+            href: '/voice',
+          },
+          {
+            title: 'React Native calling',
+            product: 'RTC',
+            category: 'Quickstart',
+            description: '',
+            href: '/calling',
+          },
+          {
+            title: 'StickS3',
+            product: 'Voice AI',
+            additionalProducts: ['RTC'],
+            category: 'Explore scenarios',
+            description: '',
+            href: '/sticks3',
+          },
+        ]}
+        productFilterLabel="Product"
+        searchPlaceholder="Search recipes"
+        stackFilterLabel="Stack"
+      />,
+    );
+    const products = within(screen.getByRole('group', { name: 'Product' }));
+    expect(
+      products.getByRole('button', { name: 'All', pressed: true }),
+    ).toBeVisible();
+    fireEvent.change(screen.getByRole('searchbox'), {
+      target: { value: 'React Native' },
+    });
+    expect(screen.getAllByRole('link')).toHaveLength(2);
+    expect(
+      within(
+        screen.getByRole('link', { name: /React Native calling/ }),
+      ).getByText('RTC'),
+    ).toBeVisible();
+    fireEvent.click(products.getByRole('button', { name: 'RTC' }));
+    const [match] = screen.getAllByRole('link');
+    expect(screen.getAllByRole('link')).toHaveLength(1);
+    expect(match).toHaveTextContent('React Native calling');
+    expect(within(match).queryByText('RTC')).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Clear filters' }),
+    ).not.toBeInTheDocument();
+    fireEvent.click(products.getByRole('button', { name: 'All' }));
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: '' } });
+    expect(screen.getAllByRole('link')).toHaveLength(3);
+    for (const product of ['RTC', 'Voice AI', 'All']) {
+      fireEvent.click(products.getByRole('button', { name: product }));
+      expect(screen.getByRole('link', { name: /StickS3/ })).toBeVisible();
+    }
   });
 
   it('filters recipe catalog cards by selected category and search query', () => {

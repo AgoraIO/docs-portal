@@ -2845,6 +2845,7 @@ function GlobalSolutionCard({
   description,
   href,
   icon,
+  openInNewTab = false,
   size = 'large',
   showDescription = true,
   tags = [],
@@ -2855,6 +2856,7 @@ function GlobalSolutionCard({
   description: string;
   href?: string;
   icon?: SolutionCardIconKind;
+  openInNewTab?: boolean;
   size?: 'large' | 'small';
   showDescription?: boolean;
   tags?: string[];
@@ -2882,7 +2884,13 @@ function GlobalSolutionCard({
         ) : (
           <span />
         )}
-        {href ? (
+        {openInNewTab ? (
+          <ExternalLinkIcon
+            aria-label="Opens in a new tab"
+            className="size-4 text-muted-foreground group-hover:text-foreground"
+            role="img"
+          />
+        ) : href ? (
           <ArrowRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
         ) : null}
       </div>
@@ -2934,7 +2942,12 @@ function GlobalSolutionCard({
   }
 
   return (
-    <a className={cardClasses} href={href}>
+    <a
+      className={cardClasses}
+      href={href}
+      rel={openInNewTab ? 'noopener noreferrer' : undefined}
+      target={openInNewTab ? '_blank' : undefined}
+    >
       {content}
     </a>
   );
@@ -2961,14 +2974,14 @@ function GlobalRecipeGallerySelect({
         {label}
       </label>
       <select
-        className="h-9 appearance-none rounded-md border border-border bg-background pr-9 pl-3 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+        className="h-9 max-w-full field-sizing-content appearance-none rounded-md border border-border bg-background pr-8 pl-3 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
         id={id}
         onChange={(event) => onChange(event.target.value)}
         value={value}
       >
         {options.map((option) => (
           <option key={option} value={option}>
-            {option === allLabel ? `${label}: All` : option}
+            {option === allLabel ? label : option}
           </option>
         ))}
       </select>
@@ -2977,12 +2990,40 @@ function GlobalRecipeGallerySelect({
   );
 }
 
+type GlobalRecipeItem = RecipeCatalogItem & { additionalProducts?: string[] };
+
+function recipeProducts(item: GlobalRecipeItem) {
+  return [item.product, ...(item.additionalProducts ?? [])];
+}
+
+function GlobalRecipeCard({
+  item,
+  showProduct,
+}: {
+  item: GlobalRecipeItem;
+  showProduct: boolean;
+}) {
+  return (
+    <GlobalSolutionCard
+      description={item.description}
+      href={item.href}
+      openInNewTab={!!item.href && isExternalHref(item.href)}
+      size="small"
+      tags={
+        showProduct
+          ? [...recipeProducts(item), ...recipeTags(item)]
+          : recipeTags(item)
+      }
+      title={item.title}
+    />
+  );
+}
+
 function GlobalRecipesGallery({
   allCategoriesLabel,
   allProductsLabel,
   allStacksLabel,
   categoryFilterLabel,
-  clearFiltersLabel,
   emptyMessage,
   items,
   productFilterLabel,
@@ -2994,9 +3035,8 @@ function GlobalRecipesGallery({
   allProductsLabel: string;
   allStacksLabel: string;
   categoryFilterLabel: string;
-  clearFiltersLabel: string;
   emptyMessage: string;
-  items: RecipeCatalogItem[];
+  items: GlobalRecipeItem[];
   productFilterLabel: string;
   searchPlaceholder: string;
   stackFilterLabel: string;
@@ -3020,10 +3060,7 @@ function GlobalRecipesGallery({
     [allCategoriesLabel, items],
   );
   const products = useMemo(
-    () => [
-      allProductsLabel,
-      ...getUniqueValues(items.map((item) => item.product)),
-    ],
+    () => [allProductsLabel, ...getUniqueValues(items.flatMap(recipeProducts))],
     [allProductsLabel, items],
   );
   const stacks = useMemo(
@@ -3050,7 +3087,7 @@ function GlobalRecipesGallery({
       }
       if (
         activeProduct !== allProductsLabel &&
-        item.product !== activeProduct
+        !recipeProducts(item).includes(activeProduct)
       ) {
         return false;
       }
@@ -3074,7 +3111,7 @@ function GlobalRecipesGallery({
         [
           item.title,
           item.description,
-          item.product,
+          ...recipeProducts(item),
           item.category,
           item.stack,
           ...(item.tags ?? []),
@@ -3095,21 +3132,6 @@ function GlobalRecipesGallery({
     deferredQuery,
     items,
   ]);
-
-  const hasActiveFilters =
-    query.length > 0 ||
-    activeCategory !== allCategoriesLabel ||
-    activeProduct !== allProductsLabel ||
-    activeStack !== allStacksLabel ||
-    activeLevel !== allLevelsLabel;
-
-  const resetFilters = () => {
-    setQuery('');
-    setActiveCategory(allCategoriesLabel);
-    setActiveProduct(allProductsLabel);
-    setActiveStack(allStacksLabel);
-    setActiveLevel(allLevelsLabel);
-  };
 
   const groupedByCategory = useMemo(
     () =>
@@ -3138,6 +3160,48 @@ function GlobalRecipesGallery({
       </label>
 
       <div className="flex flex-col gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <fieldset
+            aria-label={productFilterLabel}
+            className="inline-flex w-fit items-center rounded-lg bg-muted p-1"
+          >
+            {products.map((product) => (
+              <Button
+                aria-pressed={activeProduct === product}
+                className={cn(
+                  'rounded-md text-muted-foreground',
+                  activeProduct === product &&
+                    'bg-background text-foreground shadow-sm hover:bg-background',
+                )}
+                key={product}
+                onClick={() => setActiveProduct(product)}
+                size="sm"
+                type="button"
+                variant="ghost"
+              >
+                {product === allProductsLabel ? 'All' : product}
+              </Button>
+            ))}
+          </fieldset>
+          <div className="flex flex-wrap items-center gap-2">
+            <GlobalRecipeGallerySelect
+              allLabel={allStacksLabel}
+              label={stackFilterLabel}
+              onChange={setActiveStack}
+              options={stacks}
+              value={activeStack}
+            />
+            {levels.length > 1 ? (
+              <GlobalRecipeGallerySelect
+                allLabel={allLevelsLabel}
+                label="Level"
+                onChange={setActiveLevel}
+                options={levels}
+                value={activeLevel}
+              />
+            ) : null}
+          </div>
+        </div>
         <div
           aria-label={categoryFilterLabel}
           className="flex flex-wrap gap-1 border-border border-b"
@@ -3164,45 +3228,9 @@ function GlobalRecipesGallery({
             );
           })}
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          {products.length > 2 ? (
-            <GlobalRecipeGallerySelect
-              allLabel={allProductsLabel}
-              label={productFilterLabel}
-              onChange={setActiveProduct}
-              options={products}
-              value={activeProduct}
-            />
-          ) : null}
-          <GlobalRecipeGallerySelect
-            allLabel={allStacksLabel}
-            label={stackFilterLabel}
-            onChange={setActiveStack}
-            options={stacks}
-            value={activeStack}
-          />
-          {levels.length > 1 ? (
-            <GlobalRecipeGallerySelect
-              allLabel={allLevelsLabel}
-              label="Level"
-              onChange={setActiveLevel}
-              options={levels}
-              value={activeLevel}
-            />
-          ) : null}
-          {hasActiveFilters ? (
-            <button
-              className="h-9 rounded-md px-2.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              onClick={resetFilters}
-              type="button"
-            >
-              {clearFiltersLabel}
-            </button>
-          ) : null}
-          <span className="ml-auto text-sm text-muted-foreground">
-            {filteredItems.length} recipes
-          </span>
-        </div>
+        <span className="self-end text-sm text-muted-foreground">
+          {filteredItems.length} recipes
+        </span>
       </div>
 
       {filteredItems.length === 0 ? (
@@ -3223,13 +3251,10 @@ function GlobalRecipesGallery({
               </div>
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 {group.items.map((item) => (
-                  <GlobalSolutionCard
-                    description={item.description}
-                    href={item.href}
+                  <GlobalRecipeCard
+                    item={item}
                     key={recipeKey(item)}
-                    size="small"
-                    tags={recipeTags(item)}
-                    title={item.title}
+                    showProduct={activeProduct === allProductsLabel}
                   />
                 ))}
               </div>
@@ -3239,13 +3264,10 @@ function GlobalRecipesGallery({
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {filteredItems.map((item) => (
-            <GlobalSolutionCard
-              description={item.description}
-              href={item.href}
+            <GlobalRecipeCard
+              item={item}
               key={recipeKey(item)}
-              size="small"
-              tags={recipeTags(item)}
-              title={item.title}
+              showProduct={activeProduct === allProductsLabel}
             />
           ))}
         </div>
