@@ -1,4 +1,5 @@
 import {
+  act,
   fireEvent,
   render,
   screen,
@@ -13,11 +14,18 @@ import {
   useState,
 } from 'react';
 import { I18nextProvider } from 'react-i18next';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import enCommon from '@/lib/i18n/resources/en/common';
 import zhCommon from '@/lib/i18n/resources/zh-CN/common';
 import { DocsCodeBlock } from './DocsCodeBlock';
 import { getMDXComponents } from './mdx';
+import { AnalyticsProvider } from './providers/AnalyticsProvider';
+
+const captureDocsCodeCopiedMock = vi.hoisted(() => vi.fn());
+vi.mock('@/lib/analytics/posthog', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/analytics/posthog')>()),
+  captureDocsCodeCopied: captureDocsCodeCopiedMock,
+}));
 
 async function renderBlocks(children: ReactNode, locale = 'en') {
   const instance = createInstance();
@@ -53,6 +61,171 @@ function LanguageSelectorExample() {
 }
 
 describe('DocsCodeBlock', () => {
+  beforeEach(() => {
+    captureDocsCodeCopiedMock.mockReset();
+    window.history.replaceState({}, '', '/en/ai/get-started/quickstart');
+  });
+
+  it.each(['fence', 'command'])(
+    'captures successful %s copying without relying on aria-label',
+    async (kind) => {
+      const components = getMDXComponents(undefined, { locale: 'en' });
+      const Pre = components.pre as ComponentType<{ children: ReactNode }>;
+      const Command = components.CommandBlock as ComponentType<{
+        code: string;
+      }>;
+      const writeText = vi.fn().mockResolvedValue(undefined);
+      const clipboard = vi
+        .spyOn(navigator, 'clipboard', 'get')
+        .mockReturnValue({
+          writeText,
+        } as unknown as Clipboard);
+      try {
+        await renderBlocks(
+          kind === 'command' ? (
+            <Command code="bun install" />
+          ) : (
+            <Pre>
+              <code className="language-code language-bash">bun install</code>
+            </Pre>
+          ),
+        );
+        const button = screen.getByRole('button', { name: 'Copy Text' });
+        expect(button).not.toHaveAttribute('aria-label');
+        fireEvent.click(button);
+        await waitFor(() =>
+          expect(captureDocsCodeCopiedMock).toHaveBeenCalledOnce(),
+        );
+        expect(writeText).toHaveBeenCalledWith('bun install');
+        expect(captureDocsCodeCopiedMock).toHaveBeenCalledWith({
+          language: 'bash',
+          locale: 'en',
+          source: 'code-block',
+        });
+      } finally {
+        clipboard.mockRestore();
+      }
+    },
+  );
+
+  it('waits for successful writes and counts repeated copies once each with AnalyticsProvider mounted', async () => {
+    let resolveCopy!: () => void;
+    const pending = new Promise<void>((resolve) => {
+      resolveCopy = resolve;
+    });
+    const writeText = vi
+      .fn()
+      .mockReturnValueOnce(pending)
+      .mockResolvedValue(undefined);
+    const clipboard = vi
+      .spyOn(navigator, 'clipboard', 'get')
+      .mockReturnValue({ writeText } as unknown as Clipboard);
+    try {
+      await renderBlocks(
+        <AnalyticsProvider>
+          <DocsCodeBlock>
+            <code className="language-typescript"> private example\n</code>
+          </DocsCodeBlock>
+        </AnalyticsProvider>,
+      );
+      const button = screen.getByRole('button', { name: 'Copy Text' });
+      fireEvent.click(button);
+      expect(captureDocsCodeCopiedMock).not.toHaveBeenCalled();
+      await act(async () => resolveCopy());
+      expect(captureDocsCodeCopiedMock).toHaveBeenCalledOnce();
+      expect(captureDocsCodeCopiedMock).toHaveBeenLastCalledWith({
+        language: 'typescript',
+        locale: 'en',
+        source: 'code-block',
+      });
+      fireEvent.click(button);
+      await waitFor(() =>
+        expect(captureDocsCodeCopiedMock).toHaveBeenCalledTimes(2),
+      );
+      expect(writeText).toHaveBeenCalledTimes(2);
+      expect(
+        JSON.stringify(captureDocsCodeCopiedMock.mock.calls),
+      ).not.toContain('private example');
+    } finally {
+      clipboard.mockRestore();
+    }
+  });
+
+  it('does not report a failed copy, including after a successful copy', async () => {
+    const writeText = vi
+      .fn()
+      .mockResolvedValueOnce(undefined)
+      .mockRejectedValue(new Error('Clipboard denied'));
+    const clipboard = vi
+      .spyOn(navigator, 'clipboard', 'get')
+      .mockReturnValue({ writeText } as unknown as Clipboard);
+    try {
+      await renderBlocks(
+        <DocsCodeBlock>
+          <code>example</code>
+        </DocsCodeBlock>,
+      );
+      const button = screen.getByRole('button', { name: 'Copy Text' });
+      fireEvent.click(button);
+      await waitFor(() =>
+        expect(captureDocsCodeCopiedMock).toHaveBeenCalledOnce(),
+      );
+      fireEvent.click(button);
+      await waitFor(() => expect(writeText).toHaveBeenCalledTimes(2));
+      expect(captureDocsCodeCopiedMock).toHaveBeenCalledOnce();
+      expect(
+        screen.getByRole('button', { name: 'Copy Text' }),
+      ).not.toHaveAttribute('data-checked');
+    } finally {
+      clipboard.mockRestore();
+    }
+  });
+
+  it('keeps Chinese copying functional without sending English structured events', async () => {
+    window.history.replaceState({}, '', '/zh-CN/introduction');
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    const clipboard = vi
+      .spyOn(navigator, 'clipboard', 'get')
+      .mockReturnValue({ writeText } as unknown as Clipboard);
+    try {
+      await renderBlocks(
+        <DocsCodeBlock locale="zh-CN">
+          <code>example</code>
+        </DocsCodeBlock>,
+        'zh-CN',
+      );
+      fireEvent.click(screen.getByRole('button', { name: 'Copy Text' }));
+      await screen.findByRole('button', { name: 'Copied Text' });
+      expect(writeText).toHaveBeenCalledWith('example');
+      expect(captureDocsCodeCopiedMock).not.toHaveBeenCalled();
+    } finally {
+      clipboard.mockRestore();
+    }
+  });
+
+  it('does not attribute a pending copy to another page after navigation', async () => {
+    let resolveCopy!: () => void;
+    const pending = new Promise<void>((resolve) => {
+      resolveCopy = resolve;
+    });
+    const clipboard = vi.spyOn(navigator, 'clipboard', 'get').mockReturnValue({
+      writeText: vi.fn().mockReturnValue(pending),
+    } as unknown as Clipboard);
+    try {
+      await renderBlocks(
+        <DocsCodeBlock>
+          <code>example</code>
+        </DocsCodeBlock>,
+      );
+      fireEvent.click(screen.getByRole('button', { name: 'Copy Text' }));
+      window.history.replaceState({}, '', '/en/introduction');
+      await act(async () => resolveCopy());
+      expect(captureDocsCodeCopiedMock).not.toHaveBeenCalled();
+    } finally {
+      clipboard.mockRestore();
+    }
+  });
+
   it('uses the language tabs as the caption and copies only the selected sample', async () => {
     const components = getMDXComponents(undefined, { locale: 'zh-CN' });
     type TabsProps = {

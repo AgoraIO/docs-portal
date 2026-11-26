@@ -1,4 +1,5 @@
 import {
+  act,
   fireEvent,
   render,
   screen,
@@ -7,8 +8,70 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
+
+const captureDocsCodeCopiedMock = vi.hoisted(() => vi.fn());
+vi.mock('@/lib/analytics/posthog', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/analytics/posthog')>()),
+  captureDocsCodeCopied: captureDocsCodeCopiedMock,
+}));
+
+beforeEach(() => {
+  captureDocsCodeCopiedMock.mockReset();
+  window.history.replaceState({}, '', '/en/api-reference/api-ref/rtc');
+});
+
+it('captures an explicit OpenAPI sample only after clipboard success, never on rejection', async () => {
+  const props = makeMinimalOpenApiPageProps('get');
+  if (!('payload' in props)) throw new Error('Missing fixture payload');
+  const operation = props.payload.bundled?.paths?.['/method-get']?.get;
+  if (!operation) throw new Error('Missing fixture operation');
+  const source = 'curl --request GET https://example.com/test';
+  Object.assign(operation, {
+    'x-codeSamples': [{ lang: 'bash', label: 'Shell', source }],
+  });
+  let resolveCopy!: () => void;
+  const pending = new Promise<void>((resolve) => {
+    resolveCopy = resolve;
+  });
+  const writeText = vi
+    .fn()
+    .mockReturnValueOnce(pending)
+    .mockRejectedValue(new Error('Clipboard denied'));
+  const clipboard = vi
+    .spyOn(navigator, 'clipboard', 'get')
+    .mockReturnValue({ writeText } as unknown as Clipboard);
+  try {
+    render(<FumadocsOpenApiContent pageProps={props} />);
+    const code = await screen.findByText(
+      (_text, element) =>
+        element?.tagName === 'CODE' && element.textContent === source,
+    );
+    const button = within(code.closest('figure') as HTMLElement).getByRole(
+      'button',
+      { name: 'Copy Text' },
+    );
+    fireEvent.click(button);
+    expect(captureDocsCodeCopiedMock).not.toHaveBeenCalled();
+    await act(async () => resolveCopy());
+    expect(writeText).toHaveBeenCalledWith(source);
+    expect(captureDocsCodeCopiedMock).toHaveBeenCalledOnce();
+    expect(captureDocsCodeCopiedMock).toHaveBeenCalledWith({
+      language: 'bash',
+      locale: 'en',
+      source: 'code-block',
+    });
+    fireEvent.click(button);
+    await waitFor(() => expect(writeText).toHaveBeenCalledTimes(2));
+    expect(captureDocsCodeCopiedMock).toHaveBeenCalledOnce();
+    expect(JSON.stringify(captureDocsCodeCopiedMock.mock.calls)).not.toContain(
+      source,
+    );
+  } finally {
+    clipboard.mockRestore();
+  }
+});
 
 type Document = Extract<
   OpenAPIPageProps,

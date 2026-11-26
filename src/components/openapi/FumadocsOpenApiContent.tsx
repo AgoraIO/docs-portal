@@ -34,6 +34,7 @@ import * as JsxRuntime from 'react/jsx-runtime';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
 import { Callout as OpenApiCallout } from '@/components/Callout';
+import { DocsCodeCopyButton } from '@/components/DocsCodeBlock';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/cn';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
@@ -1767,15 +1768,18 @@ function OpenApiMarkdownCodeBlock({
   return (
     <CodeBlock
       {...props}
-      Actions={
-        source === undefined
-          ? undefined
-          : ({ className }) => (
-              <div className={cn('empty:hidden', className)}>
-                <OpenApiCodeCopyButton source={source} />
-              </div>
-            )
-      }
+      Actions={({ className, children }) => (
+        <div className={cn('empty:hidden', className)}>
+          {children && (
+            <DocsCodeCopyButton
+              source={source}
+              language={language}
+              locale="en"
+              className="inline-flex items-center justify-center rounded-md p-1 text-sm font-medium text-fd-muted-foreground transition-colors duration-100 hover:text-fd-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring disabled:pointer-events-none disabled:opacity-50 data-checked:text-fd-accent-foreground [&_svg]:size-4"
+            />
+          )}
+        </div>
+      )}
     >
       <Pre>
         {source === undefined || language === undefined
@@ -1790,24 +1794,6 @@ function getCodeBlockLanguage(className: string | undefined) {
   const match = className?.match(/(?:^|\s)language-([^\s]+)/);
 
   return match?.[1];
-}
-
-function OpenApiCodeCopyButton({ source }: { source: string }) {
-  const [checked, onClick] = useOpenApiCopyButton(() =>
-    navigator.clipboard.writeText(source),
-  );
-
-  return (
-    <button
-      aria-label={checked ? 'Copied Text' : 'Copy Text'}
-      className="inline-flex items-center justify-center rounded-md p-1 text-sm font-medium text-fd-muted-foreground transition-colors duration-100 hover:text-fd-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring disabled:pointer-events-none disabled:opacity-50 data-checked:text-fd-accent-foreground [&_svg]:size-4"
-      data-checked={checked || undefined}
-      onClick={onClick}
-      type="button"
-    >
-      {checked ? <Check /> : <Clipboard />}
-    </button>
-  );
 }
 
 function useOpenApiCopyButton(onCopy: () => void | Promise<void>) {

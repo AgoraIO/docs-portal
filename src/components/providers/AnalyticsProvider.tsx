@@ -2,7 +2,6 @@
 
 import { type ReactNode, useEffect, useRef } from 'react';
 import {
-  captureDocsCodeCopied,
   captureDocsLinkClicked,
   initializePostHog,
   queueDocsPageView,
@@ -92,23 +91,6 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
                 : 'navigation',
         });
       }
-
-      const copyButton = target.closest<HTMLButtonElement>('button');
-
-      if (copyButton?.getAttribute('aria-label') !== 'Copy Text') {
-        return;
-      }
-
-      const code = copyButton.closest('figure')?.querySelector('code');
-      const language = Array.from(code?.classList ?? [])
-        .find((className) => className.startsWith('language-'))
-        ?.slice('language-'.length);
-
-      captureDocsCodeCopied({
-        language,
-        locale,
-        source: 'code-block',
-      });
     }
 
     document.addEventListener('click', handleClick, true);

@@ -1,4 +1,4 @@
-import { act, render } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AnalyticsProvider } from './AnalyticsProvider';
 
@@ -77,6 +77,23 @@ describe('AnalyticsProvider route page-view lifecycle', () => {
     expect(queueDocsPageViewMock).toHaveBeenCalledWith({
       pathname: '/en/introduction',
     });
+  });
+
+  it('does not treat document button clicks as successful code copies', () => {
+    render(
+      <AnalyticsProvider>
+        <figure>
+          <button type="button" aria-label="Copy Text">
+            Copy
+          </button>
+          <pre>
+            <code>example</code>
+          </pre>
+        </figure>
+      </AnalyticsProvider>,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Copy Text' }));
+    expect(captureDocsCodeCopiedMock).not.toHaveBeenCalled();
   });
 
   it('queues pushState and replaceState pathnames', () => {
