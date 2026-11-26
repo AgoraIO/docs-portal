@@ -910,6 +910,21 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
         'v1.7.0',
         'v1.6.0',
       ]);
+      expect(versions?.search).toEqual({ from: '/zh-CN/ai' });
+      const older = versions?.versions.find(({ id }) => id === '2.10.0');
+      if (!older) throw new Error('Missing v2.10.0 destination');
+      const switched = await loadDocsPagePayload(
+        'zh-CN',
+        'api-reference',
+        older.href.split('/').slice(3),
+        new URLSearchParams(versions?.search).toString(),
+      );
+      if (!switched || 'redirectUrl' in switched)
+        throw new Error('Missing historical page');
+      expect(switched.activeTab).toBe('ai');
+      expect(switched.sidebar).toEqual(payload.sidebar);
+      expect(switched.sidebarHeader).toEqual(payload.sidebarHeader);
+      expect(switched.titleVersionSwitcher?.currentId).toBe('2.10.0');
     },
   );
 

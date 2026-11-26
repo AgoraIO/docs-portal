@@ -85,7 +85,7 @@ export function DocsVersionDropdown({
                     aria-current={isCurrent ? 'page' : undefined}
                     onClick={onSelectPath}
                     params={{}}
-                    search={{}}
+                    search={versionSwitcher.search ?? {}}
                     to={version.href}
                   >
                     {content}
