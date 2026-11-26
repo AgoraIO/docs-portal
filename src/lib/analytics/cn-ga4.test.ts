@@ -1,11 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+const testMeasurementId = 'G-TEST123456';
 const origin = 'https://docs.shengwang.cn';
 
 describe('CN production page views', () => {
   beforeEach(() => {
     vi.resetModules();
     vi.stubEnv('PROD', true);
+    vi.stubEnv('VITE_GA4_MEASUREMENT_ID', testMeasurementId);
     vi.stubEnv('VITE_DOCS_REGION', 'cn');
     vi.stubEnv('VITE_DOCS_ENVIRONMENT', 'production');
     vi.stubEnv('VITE_DOCS_MEASUREMENT_ENABLED', 'true');
@@ -28,6 +30,18 @@ describe('CN production page views', () => {
       vi.stubEnv(key, value);
       const { cnGa4Enabled } = await import('./cn-ga4');
       expect(cnGa4Enabled).toBe(false);
+    },
+  );
+
+  it.each([undefined, '', '  ', '396727597', 'GTM-TEST'])(
+    'skips GA4 when the measurement ID is missing or invalid (%s)',
+    async (value) => {
+      vi.stubEnv('VITE_GA4_MEASUREMENT_ID', value);
+      const append = vi.spyOn(document.body, 'append');
+      const { cnGa4Enabled, captureCnGa4PageView } = await import('./cn-ga4');
+      expect(cnGa4Enabled).toBe(false);
+      captureCnGa4PageView('/introduction');
+      expect(append).not.toHaveBeenCalled();
     },
   );
 
@@ -86,11 +100,11 @@ describe('CN production page views', () => {
     expect(append).toHaveBeenCalledTimes(1);
     expect(insertScript).toHaveBeenCalledExactlyOnceWith(
       expect.objectContaining({
-        src: 'https://www.googletagmanager.com/gtag/js?id=G-FX05ECXBR2',
+        src: `https://www.googletagmanager.com/gtag/js?id=${testMeasurementId}`,
       }),
     );
     expect(commands.filter(([key]) => key === 'event')).toEqual(
-      Array(3).fill(['event', 'page_view', { send_to: 'G-FX05ECXBR2' }]),
+      Array(3).fill(['event', 'page_view', { send_to: testMeasurementId }]),
     );
     expect(
       commands

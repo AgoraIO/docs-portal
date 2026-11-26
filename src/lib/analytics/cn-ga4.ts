@@ -1,13 +1,14 @@
 import { analyticsPath, safeAnalyticsUrl } from './measurement-privacy';
 
-const measurementId = 'G-FX05ECXBR2';
+const measurementId = import.meta.env.VITE_GA4_MEASUREMENT_ID?.trim() ?? '';
 const productionOrigin = 'https://docs.shengwang.cn';
 
 export const cnGa4Enabled =
   import.meta.env.PROD &&
   import.meta.env.VITE_DOCS_REGION === 'cn' &&
   import.meta.env.VITE_DOCS_ENVIRONMENT === 'production' &&
-  import.meta.env.VITE_DOCS_MEASUREMENT_ENABLED === 'true';
+  import.meta.env.VITE_DOCS_MEASUREMENT_ENABLED === 'true' &&
+  /^G-[A-Z0-9]+$/.test(measurementId);
 
 type TagWindow = Window & { dataLayer: IArguments[] };
 let tag: ReturnType<typeof loadTag> | undefined;
