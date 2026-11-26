@@ -15,18 +15,20 @@ Add the toolkit to your project using a package manager or by copying the source
 
 <TabsContent value="package">
 
+Use RTC Web SDK (`agora-rtc-sdk-ng`) 4.24.0 or later. If you use Signaling, check its RTC dependency as well. For example, `agora-rtm` 2.3.0 requires `agora-rtc-sdk-ng@^4.24.3`.
+
 Install the toolkit package for your project type:
 
 - Vanilla JS or TypeScript:
 
   ```bash
-  pnpm add agora-agent-client-toolkit@2.9.0
+  pnpm add agora-agent-client-toolkit@2.11.0
   ```
 
-- React:
+- React (requires React 18 or later and `agora-rtc-react` 2.0.0 or later):
 
   ```bash
-  pnpm add agora-agent-client-toolkit@2.9.0 agora-agent-client-toolkit-react@2.9.0
+  pnpm add agora-agent-client-toolkit@2.11.0 agora-agent-client-toolkit-react@2.11.0
   ```
 
 </TabsContent>
@@ -117,17 +119,18 @@ public static async init(cfg: IConversationalAIAPIConfig): Promise<Conversationa
 
 This method sets the RTC and RTM engines, rendering mode, and logging options. You must call this method before calling other methods of `ConversationalAIAPI`. Awaiting this method returns the initialized instance directly, so a separate call to [`getInstance`](#getinstance) is not required immediately after initialization.
 
-:::info
-- Only one instance can be initialized at a time.
-- If already initialized, an error is thrown.
-:::
+Calling `init` again clears the previous subscriptions and event listeners before applying the new configuration.
+
+To use `TranscriptHelperMode.WORD`, call `AgoraRTC.setParameter('ENABLE_AUDIO_PTS', true)` before creating the RTC client. See [Display live transcripts](/en/ai/build/transcripts#implementation) for an example.
+
+In word mode, the toolkit skips a word only if both its text (`word`) and its start time in milliseconds (`start_ms`) match a word kept from an earlier message in the same agent turn. It does not compare words within a single incoming message. For example, a space and the word `long` are both kept even if they start in the same millisecond.
 
 | Parameter | Type     | Description             |
 |-----------|----------|-------------------------|
 | `cfg` | `IConversationalAIAPIConfig` | Configuration object used to initialize the API. See [`IConversationalAIAPIConfig`](#iconversationalaiapiconfig). |
 
 **Return Value:**
-If the method call succeeds, a `Promise` resolving to the initialized `ConversationalAIAPI` instance.
+A `Promise` that resolves to the initialized `ConversationalAIAPI` instance.
 
 ### `subscribeMessage`
 
@@ -157,7 +160,7 @@ public unsubscribe()
 ```
 
 :::info
-This method unbinds RTC and RTM events, clears channels, and cleans up `CovSubRenderController`. You must call `subscribeMessage` before calling this method, otherwise an error is thrown.
+This method unbinds RTC and RTM events, clears channels, and cleans up `CovSubRenderController`. You can call it even if you have not called `subscribeMessage`.
 :::
 
 ### `interrupt`

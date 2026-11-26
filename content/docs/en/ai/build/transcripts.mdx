@@ -34,7 +34,7 @@ The following diagram outlines the step-by-step process to integrate live transc
 Before you begin, ensure the following:
 
 - You have implemented the Conversational AI Engine [quickstart](../get-started/quickstart).
-- Your app integrates Agora RTC SDK v4.5.1 or later and includes the [RTC SDK quickstart](../../realtime-media/rtc/get-started-sdk).
+- On Android and iOS, your app integrates Agora RTC SDK v4.5.1 or later. On Web, it integrates RTC Web SDK v4.24.0 or later. Complete the [RTC SDK quickstart](../../realtime-media/rtc/get-started-sdk) for your platform.
 - You have enabled Signaling in the Agora Console and completed the [Signaling quickstart](/en/realtime-media/rtm/quickstart) for basic messaging.
 - You maintain active and authenticated RTC and Signaling instances that persist beyond the component lifecycle. The toolkit does not manage RTC or Signaling initialization, lifecycle, or authentication.
 
@@ -248,35 +248,29 @@ This section describes how to receive transcript content from the transcript pro
 
    Add the toolkit to your project using a package manager or source code. See [Install the Web toolkit](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#installation). Refer to [Folder structure](#reference) to understand the role of each file.
 
-2. **Create a toolkit instance**
+2. **Enable audio timestamps and create the RTC client**
 
-   Before joining an RTC channel, create RTC SDK and Signaling engine instances and pass them into the toolkit instance.
+   Word mode uses RTC audio timestamps to keep transcripts in sync with speech. Enable timestamps at app startup, before creating the RTC client:
 
-   ```ts
-   // Initialize the component
-   ConversationalAIAPI.init({
-     rtcEngine,
-     rtmEngine,
+   ```javascript
+   import AgoraRTC from 'agora-rtc-sdk-ng';
 
-     /**
-      * Set the rendering mode for transcript. Available options:
-      * - ETranscriptHelperMode.WORD: render transcript word by word.
-      * - ETranscriptHelperMode.TEXT: render the full transcript at once.
-      */
-     renderMode: ETranscriptHelperMode.WORD,
-   })
-
-   // Get the API instance (singleton)
-   const conversationalAIAPI = ConversationalAIAPI.getInstance()
+   AgoraRTC.setParameter('ENABLE_AUDIO_PTS', true);
+   const rtcEngine = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
    ```
 
-3. **Set audio parameters**
+3. **Initialize the toolkit**
 
-   In word-by-word rendering mode, you must receive audio timestamp metadata from RTC to synchronize subtitles with speech. Before creating the client object, configure the following parameter:
+   Pass this RTC client and your signed-in Signaling instance to the toolkit. Wait for initialization to finish before subscribing:
 
    ```ts
-   AgoraRTC.setParameter('ENABLE_AUDIO_PTS_METADATA', true)
-   const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' })
+   import { ConversationalAIAPI, TranscriptHelperMode } from 'agora-agent-client-toolkit';
+
+   const conversationalAIAPI = await ConversationalAIAPI.init({
+     rtcEngine,
+     rtmEngine,
+     renderMode: TranscriptHelperMode.WORD,
+   });
    ```
 
 4. **Subscribe to the channel**
@@ -287,40 +281,41 @@ This section describes how to receive transcript content from the transcript pro
    conversationalAIAPI.subscribeMessage(channel_name)
    ```
 
-5. **Receive transcript**
+5. **Display transcript updates**
 
-   Register an event listener to receive transcript updates:
+   Each `TRANSCRIPT_UPDATED` event supplies the entire conversation. The toolkit can update recent entries in place. Copy the entries into a new list on each event so React renders the changes. Mount this React component after initializing the toolkit:
 
    ```tsx
-   import * as React from 'react'
+   import { useEffect, useState } from 'react';
    import {
-     type IUserTranscription,
-     type IAgentTranscription,
-     type ISubtitleHelperItem,
-     EConversationalAIAPIEvents,
-   } from '@/conversational-ai-api/type'
-   import { ConversationalAIAPI } from '@/conversational-ai-api'
+     AgoraVoiceAIEvents,
+     ConversationalAIAPI,
+     type TranscriptHelperItem,
+   } from 'agora-agent-client-toolkit';
 
-   export const ChatHistory = () => {
-     const [chatHistory, setChatHistory] = React.useState<
-       ISubtitleHelperItem<Partial<IUserTranscription | IAgentTranscription>>[]
-     >([])
+   export function ChatHistory() {
+     const [messages, setMessages] = useState<TranscriptHelperItem<unknown>[]>([]);
 
-     const conversationalAIAPI = ConversationalAIAPI.getInstance()
-     conversationalAIAPI.on(
-       EConversationalAIAPIEvents.TRANSCRIPT_UPDATED,
-       setChatHistory
-     )
+     useEffect(() => {
+       const api = ConversationalAIAPI.getInstance();
+       const onTranscriptUpdated = (history: TranscriptHelperItem<unknown>[]) => {
+         setMessages(history.map((item) => ({ ...item })));
+       };
+       api.on(AgoraVoiceAIEvents.TRANSCRIPT_UPDATED, onTranscriptUpdated);
+       return () => {
+         api.off(AgoraVoiceAIEvents.TRANSCRIPT_UPDATED, onTranscriptUpdated);
+       };
+     }, []);
 
      return (
        <>
-         {chatHistory.map((message) => (
-           <div key={`${message.uid}-${message.turn_id}`}>
+         {messages.map((message) => (
+           <div key={`${message.uid}-${message.turn_id}-${message.stream_id}`}>
              {message.uid}: {message.text}
            </div>
          ))}
        </>
-     )
+     );
    }
    ```
 
@@ -342,7 +337,7 @@ This section describes how to receive transcript content from the transcript pro
    After each agent session ends, unsubscribe from channel messages to release resources associated with callback events.
 
    ```ts
-   conversationalAIAPI.unsubscribeMessage(channel_name)
+   conversationalAIAPI.unsubscribe()
    ```
 
 8. **Release resources**
@@ -421,10 +416,10 @@ This section contains supporting information that completes the guidance on this
 
 **API reference**
 
-- [`IConversationalAIAPIEventHandler interface`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#iconversationalaiapieventhandlers-interface)
+- [`IConversationalAIAPIEventHandlers`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#iconversationalaiapieventhandlers-interface)
 - [`EConversationalAIAPIEvents`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#econversationalaiapievents)
 - [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#subscribemessage)
-- [`unsubscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#unsubscribe)
+- [`unsubscribe`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#unsubscribe)
 - [`destroy`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#destroy)
 
 </TabsContent>
