@@ -1919,9 +1919,9 @@ If the returned HTTP status code is not `200`, the request fails. Common errors 
 
 Once a message is sent, you can call this API to recall it. This API recalls a message that is saved both locally and on the server, whether it is a historical message, offline message or a roaming message on the server, or a message in the memory or local database of the message sender or recipient. If an attachment message, like an image, voice, video, or file message, is recalled, the attachment of the message is also deleted.
 
-The default time limit for recalling a message is two minutes. You can extend this time frame to up to 7 days in Agora Console. To do so, select a project that enables Agora Chat, then click **Configure** > **Features** > **Message recall**.
+The default time limit for recalling a message is two minutes. You can extend it to up to 7 days in [Agora Console](https://console.agora.io/). On the **RTC Services** page, click **Open Chat Console** on the **Chat** card, click **Message Recall**, then edit **REST API of message recall**.
 
-![message-recall](https://assets-docs.agora.io/images/im/message-recall.png)
+<!-- TODO(chat-console): The test project's REST API recall window shows 7 days, not the 2-minute default stated here. Confirm the default for REST recall. -->
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
