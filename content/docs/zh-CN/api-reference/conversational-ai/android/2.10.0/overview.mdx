@@ -1,0 +1,38 @@
+---
+title: "API 概览"
+---
+## IConversationalAIAPI
+
+| API | 描述 |
+|---|---|
+|[`chat`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapi#chat) | 向智能体发送消息。|
+|[`speak`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapi#speak) | 绕过大模型，直接让智能体播报文本。 |
+|[`think`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapi#think) | 向大模型注入文本指令并触发推理。 |
+|[`addHandler`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapi#addhandler) | 注册事件处理器，用于接收智能体会话事件。|
+|[`removeHandler`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapi#removehandler) | 移除已注册的事件处理器。|
+|[`subscribeMessage`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapi#subscribemessage) | 订阅频道以接收智能体对话事件。|
+|[`unsubscribeMessage`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapi#unsubscribemessage) | 取消订阅频道并停止接收事件。|
+|[`interrupt`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapi#interrupt) | 打断智能体当前发言。|
+|[`manualSOS`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapi#manualsos) | 发送手动 SoS 信令。|
+|[`manualEOS`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapi#manualeos) | 发送手动 EoS 信令。|
+|[`loadAudioSettings`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapi#loadaudiosettings) | 设置音频参数以优化对话性能。|
+|[`destroy`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapi#destroy) | 销毁 `API` 实例并释放资源。|
+
+## IConversationalAIAPIEventHandler
+
+| API | 描述 |
+|---|---|
+|[`onMessageError`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapieventhandler#onmessageerror) | 消息处理出错回调。|
+|[`onMessageReceiptUpdated`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapieventhandler#onmessagereceiptupdated) | 消息回执更新回调。|
+|[`onUserManualSosEvent`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapieventhandler#onusermanualsosevent) | 手动 SoS 结果回调。|
+|[`onUserManualEosEvent`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapieventhandler#onusermanualeosevent) | 手动 EoS 结果回调。|
+|[`onAgentManualEosEvent`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapieventhandler#onagentmanualeosevent) | 服务端超限自动 EoS 通知回调。|
+|[`onAgentStateChanged`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapieventhandler#onagentstatechanged) | 智能体状态变化回调。|
+|[`onAgentListeningChanged`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapieventhandler#onagentlisteningchanged) | 智能体倾听状态变化回调。|
+|[`onAgentThinkingChanged`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapieventhandler#onagentthinkingchanged) | 智能体思考状态变化回调。|
+|[`onAgentSpeakingChanged`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapieventhandler#onagentspeakingchanged) | 智能体说话状态变化回调。|
+|[`onAgentInterrupted`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapieventhandler#onagentinterrupted) | 中断事件回调。|
+|[`onAgentMetrics`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapieventhandler#onagentmetrics) | 性能指标回调。|
+|[`onAgentError`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapieventhandler#onagenterror) | 智能体错误回调。|
+|[`onTranscriptUpdated`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapieventhandler#ontranscriptupdated) | 转写内容更新回调。|
+|[`onDebugLog`](/zh-CN/api-reference/conversational-ai/android/2.10.0/iconversationalaiapieventhandler#ondebuglog) | 内部调试日志回调。|

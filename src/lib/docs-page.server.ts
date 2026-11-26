@@ -33,7 +33,10 @@ import {
 } from './docs-nav-scope';
 import { getSourceSlugs, isSamePathOrDescendant } from './docs-routing';
 import { getSearchEntryMetadata, type SearchEntry } from './docs-search';
-import { parseProductSidebarContext } from './docs-sidebar-context';
+import {
+  getProductTitleVersionSwitcher,
+  parseProductSidebarContext,
+} from './docs-sidebar-context';
 import { filterDocsToc, resolveDocsTocMaxDepth } from './docs-toc';
 import {
   type DocsSidebarNode,
@@ -1047,14 +1050,19 @@ export async function loadDocsPagePayload(
       })
     : null;
 
-  return productSidebarPayload
-    ? {
-        ...apiPayload,
-        activeTab: productSidebarPayload.activeTab,
-        sidebar: productSidebarPayload.sidebar,
-        sidebarHeader: productSidebarPayload.sidebarHeader,
-      }
-    : apiPayload;
+  const titleVersionSwitcher =
+    productSidebarPayload && productSidebarContext
+      ? getProductTitleVersionSwitcher(
+          page.url,
+          productSidebarContext,
+          resolvedSidebarHeader?.versionSwitcher,
+        )
+      : undefined;
+  return {
+    ...apiPayload,
+    ...productSidebarPayload,
+    ...(titleVersionSwitcher ? { titleVersionSwitcher } : {}),
+  };
 }
 
 function getTitlePlatforms({

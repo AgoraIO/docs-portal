@@ -78,6 +78,7 @@ vi.mock('@/lib/docs-static-manifest', async (importOriginal) => {
 
   return {
     ...actual,
+    readStaticDocsPayload: vi.fn(actual.readStaticDocsPayload),
     resolvePlatformStaticDocsPayload: vi.fn(
       actual.resolvePlatformStaticDocsPayload,
     ),
@@ -115,6 +116,7 @@ vi.mock('@/lib/legacy-sitemap/static-redirects', async (importOriginal) => {
 });
 
 import {
+  readStaticDocsPayload,
   resolvePlatformStaticDocsPayload,
   shouldUseStaticDocsPayload,
 } from '@/lib/docs-static-manifest';
@@ -229,6 +231,59 @@ describe('docs route locale guards', () => {
     },
     REAL_DOCS_ROUTE_TIMEOUT,
   );
+
+  it('keeps the canonical Toolkit menu in the sidebar and restores the AI title menu for static pages', async () => {
+    const path = 'conversational-ai/web/2.10.0/overview';
+    const url = `/zh-CN/api-reference/${path}`;
+    const versions = {
+      currentId: '2.10.0',
+      versions: [
+        {
+          id: 'current',
+          label: 'v2.11.0',
+          href: '/zh-CN/api-reference/conversational-ai/web/overview',
+        },
+      ],
+    };
+    const api = {
+      ...createPlatformPayload('[]'),
+      activePath: url,
+      activeTab: 'api-reference',
+      sidebarHeader: { title: 'Web', versionSwitcher: versions },
+    };
+    const product = {
+      ...api,
+      activePath: '/zh-CN/ai',
+      activeTab: 'ai',
+      sidebarHeader: { title: '对话式 AI 引擎' },
+    };
+    publishedLocaleOverride.value = true;
+    vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(true);
+    vi.mocked(resolvePlatformStaticDocsPayload)
+      .mockResolvedValueOnce(api)
+      .mockResolvedValueOnce(api);
+    vi.mocked(readStaticDocsPayload).mockResolvedValueOnce(product);
+    const load = (searchStr: string) =>
+      getLoader(DocPageRoute)({
+        location: { pathname: url, hash: '', searchStr },
+        params: { locale: 'zh-CN', tab: 'api-reference', _splat: path },
+      } as never);
+    try {
+      const direct = (await load('')) as DocsPagePayload;
+      expect(direct.sidebarHeader?.versionSwitcher).toEqual(versions);
+      expect(direct.titleVersionSwitcher).toBeUndefined();
+      const contextual = (await load('?from=%2Fzh-CN%2Fai')) as DocsPagePayload;
+      expect(contextual.sidebarHeader).toEqual(product.sidebarHeader);
+      expect(contextual.activeTab).toBe('ai');
+      expect(contextual.titleVersionSwitcher).toEqual({
+        ...versions,
+        search: { from: '/zh-CN/ai' },
+      });
+    } finally {
+      publishedLocaleOverride.value = false;
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+    }
+  });
 
   it('leaves static tab roots to the index route payload loader', async () => {
     vi.mocked(shouldUseStaticDocsPayload).mockReturnValueOnce(true);
