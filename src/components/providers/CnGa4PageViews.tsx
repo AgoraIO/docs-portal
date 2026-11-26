@@ -8,7 +8,7 @@ export function CnGa4PageViews() {
     select: (state) => state.resolvedLocation?.publicHref.split(/[?#]/, 1)[0],
   });
   useEffect(() => {
-    if (pathname) captureCnGa4PageView(pathname);
+    if (pathname) void captureCnGa4PageView(pathname);
   }, [pathname]);
   return null;
 }

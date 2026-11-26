@@ -6,6 +6,7 @@ const origin = 'https://docs.shengwang.cn';
 describe('CN production page views', () => {
   beforeEach(() => {
     vi.resetModules();
+    vi.spyOn(document, 'readyState', 'get').mockReturnValue('complete');
     vi.stubEnv('PROD', true);
     vi.stubEnv('VITE_GA4_MEASUREMENT_ID', testMeasurementId);
     vi.stubEnv('VITE_DOCS_REGION', 'cn');
@@ -15,6 +16,7 @@ describe('CN production page views', () => {
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
     vi.unstubAllEnvs();
@@ -64,6 +66,48 @@ describe('CN production page views', () => {
     expect(append).not.toHaveBeenCalled();
   });
 
+  it('leaves the document load event and later navigations independent of a blocked frame', async () => {
+    vi.useFakeTimers();
+    vi.spyOn(document, 'readyState', 'get').mockReturnValue('interactive');
+    const append = vi
+      .spyOn(document.body, 'append')
+      .mockImplementation(() => {});
+    const { captureCnGa4PageView } = await import('./cn-ga4');
+    const initial = captureCnGa4PageView('/introduction');
+    expect(append).not.toHaveBeenCalled();
+    window.dispatchEvent(new Event('load'));
+    await vi.advanceTimersByTimeAsync(0);
+    expect(append).toHaveBeenCalledTimes(1);
+    const frame = append.mock.calls[0][0] as HTMLIFrameElement;
+    const remove = vi.spyOn(frame, 'remove');
+    await vi.runAllTimersAsync();
+    await initial;
+    expect(remove).toHaveBeenCalledOnce();
+    await captureCnGa4PageView('/search');
+    expect(append).toHaveBeenCalledTimes(1);
+  });
+
+  it('discards an unexpected helper response without inserting a Google script or retrying', async () => {
+    const fallback = document.implementation.createHTMLDocument('Not found');
+    const script = vi.spyOn(fallback.head, 'append');
+    const append = vi
+      .spyOn(document.body, 'append')
+      .mockImplementation((frame) => {
+        if (!(frame instanceof HTMLIFrameElement))
+          throw new Error('Expected iframe');
+        Object.defineProperty(frame, 'contentWindow', {
+          value: { document: fallback },
+        });
+        Object.defineProperty(frame, 'contentDocument', { value: fallback });
+        frame.dispatchEvent(new Event('load'));
+      });
+    const { captureCnGa4PageView } = await import('./cn-ga4');
+    await captureCnGa4PageView('/introduction');
+    await captureCnGa4PageView('/search');
+    expect(append).toHaveBeenCalledTimes(1);
+    expect(script).not.toHaveBeenCalled();
+  });
+
   it('queues one clean page view per path, including a return visit', async () => {
     const tagDocument = document.implementation.createHTMLDocument();
     const marker = tagDocument.createElement('meta');
@@ -71,7 +115,11 @@ describe('CN production page views', () => {
     tagDocument.head.append(marker);
     const insertScript = vi
       .spyOn(tagDocument.head, 'append')
-      .mockImplementation(() => {});
+      .mockImplementation((script) => {
+        if (!(script instanceof HTMLScriptElement))
+          throw new Error('Expected Google tag');
+        script.dispatchEvent(new Event('load'));
+      });
     const target = { document: tagDocument, dataLayer: [] as IArguments[] };
     const append = vi
       .spyOn(document.body, 'append')
@@ -97,6 +145,14 @@ describe('CN production page views', () => {
     }
     await vi.waitFor(() => expect(target.dataLayer).toHaveLength(9));
     const commands = target.dataLayer.map((command) => Array.from(command));
+    expect(commands).toContainEqual([
+      'config',
+      testMeasurementId,
+      expect.objectContaining({
+        cookie_domain: 'none',
+        cookie_prefix: 'sw_docs',
+      }),
+    ]);
     expect(append).toHaveBeenCalledTimes(1);
     expect(insertScript).toHaveBeenCalledExactlyOnceWith(
       expect.objectContaining({
