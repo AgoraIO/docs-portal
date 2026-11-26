@@ -1,6 +1,6 @@
 'use client';
 
-import { Link } from '@tanstack/react-router';
+import { Link, useHydrated, useLocation } from '@tanstack/react-router';
 import {
   ArrowRightIcon,
   ArrowUpRightIcon,
@@ -35,6 +35,7 @@ import {
 } from '@/lib/doc-version-navigation';
 import type { DocVersionScope } from '@/lib/doc-versions';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
+import { getOpenApiMethodBadgeClassName } from '@/lib/openapi/method-badge';
 import { DocsSidebarEndpointLabel } from './DocsSidebarEndpointLabel';
 import { DocVersionSelector } from './DocVersionControls';
 import { useDocVersionSelections } from './useDocVersionSelections';
@@ -84,6 +85,14 @@ export function DocsSidebarTree({
   nodes: DocsSidebarNode[];
   onSelectPath: () => void;
 }) {
+  const hash = useLocation({ select: (location) => location.hash });
+  // The server cannot see fragments. Hydrate its selection before applying the browser hash.
+  const hydrated = useHydrated();
+  const fragmentPath = hydrated && hash ? `${activePath}#${hash}` : undefined;
+  const selected =
+    fragmentPath && nodes.some((node) => isNodeActive(node, fragmentPath))
+      ? fragmentPath
+      : activePath;
   const renderableNodes = normalizeRootSections(
     mergeBestPracticesIntoBuild(
       mergeBuildIntoGettingStarted(mergeSdkQuickstartSection(nodes)),
@@ -97,7 +106,7 @@ export function DocsSidebarTree({
           <SidebarMenu>
             {renderableNodes.map((node) => (
               <SidebarNodeRenderer
-                activePath={activePath}
+                activePath={selected}
                 key={node.id}
                 node={node}
                 onSelectPath={onSelectPath}
@@ -990,9 +999,15 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
       );
     }
 
+    const [path, hash] = url.split('#', 2);
     return (
       <Link
         {...props}
+        activeOptions={
+          !isChineseSidebar && search?.from
+            ? { exact: true, includeHash: true }
+            : undefined
+        }
         aria-current={isActive ? 'page' : undefined}
         onClick={handleClick}
         params={{}}
@@ -1000,7 +1015,8 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
         rel={isChineseSidebar && linked ? 'noreferrer noopener' : rel}
         search={search ?? {}}
         target={isChineseSidebar && linked ? '_blank' : target}
-        to={url}
+        hash={hash}
+        to={path}
       >
         {children}
       </Link>
@@ -1043,7 +1059,12 @@ function SidebarPageLabel({
         {title}
       </span>
       {method ? (
-        <span className="ml-auto shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none text-[color:var(--ink-4)]">
+        <span
+          className={cn(
+            'ml-auto shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none',
+            getOpenApiMethodBadgeClassName(method),
+          )}
+        >
           {method}
         </span>
       ) : showNavigationArrow ? (

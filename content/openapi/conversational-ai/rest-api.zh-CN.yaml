@@ -145,6 +145,7 @@ paths:
                             - `fengming`：（默认）声网凤鸣 ASR。
                             - `tencent`：腾讯 ASR。
                             - `microsoft`：微软 ASR。
+                            - `qwen`：(Beta) 阿里云百炼 Qwen ASR。
                             - `stepfun`：阶跃星辰 StepASR。
                         keywords:
                           type: array
@@ -2342,15 +2343,24 @@ components:
       type: object
       additionalProperties: {}
       description: |-
-        阿里云 CosyVoice TTS，具体协议详见[阿里云官方文档](https://help.aliyun.com/zh/model-studio/cosyvoice-large-model-for-speech-synthesis/)。以下为示例：
+        阿里云 CosyVoice TTS，具体协议详见[阿里云官方文档](https://help.aliyun.com/zh/model-studio/cosyvoice-large-model-for-speech-synthesis/)。以下为示例和参数说明：
         ```json
         "params": {
           "api_key": "your_cosyvoice_api_key",
+          "url": "wss://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/api-ws/v1/inference",
           "model": "cosyvoice-v1",
           "sample_rate": 16000,
           "voice": "longxiaochun"
         }
         ```
+        - `api_key`：（必需）String。阿里云百炼的 API Key。
+        - `url`：（可选）String。WebSocket 推理地址。请将示例中的 `{WorkspaceId}` 替换为你的阿里云账户对应的工作空间 ID，各账户的值独立。
+        - `model`：（必需）String。CosyVoice 语音合成模型名称。
+        - `sample_rate`：（可选）Integer。输出音频的采样率，单位为 Hz。
+        - `voice`：（必需）String。音色，需与所选模型匹配。
+
+        > [!TIP]
+        > 为提升推理请求的性能和稳定性，建议配置工作空间专属的 `url`。未配置时会使用旧的默认地址。详见 [CosyVoice WebSocket 接入指南](https://help.aliyun.com/zh/model-studio/cosyvoice-websocket-api)。
     tts_duplex:
       title: Bytedance Duplex
       type: object
@@ -2576,6 +2586,7 @@ components:
         - $ref: '#/components/schemas/asr_tencent'
         - $ref: '#/components/schemas/asr_microsoft'
         - $ref: '#/components/schemas/asr_stepfun'
+        - $ref: '#/components/schemas/asr_qwen'
     asr_stepfun:
       title: StepFun
       type: object
@@ -2623,6 +2634,38 @@ components:
         - `region`：（必需）String。微软 ASR 服务的区域。详见[支持的区域](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=stt)。
         - `language`：（必需）String。语言。详见[支持的语言](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=stt)。
         - `phrase_list`：（可选）Array[String]。热词列表。
+    asr_qwen:
+      title: Qwen
+      type: object
+      additionalProperties: {}
+      description: |-
+        阿里云百炼 Qwen ASR，具体协议详见[阿里云官方文档](https://docs.bailian.console.aliyun.com/zh/model-studio/qwen-audio-asr-streaming-client-events)。以下为示例：
+        ```json
+        "params": {
+            "api_key": "<your_dashscope_api_key>",
+            "model": "qwen-audio-3.1-asr-flash-streaming",
+            "format": "pcm",
+            "sample_rate": 16000,
+            "vad_model": "near_meeting_16k",
+            "max_sentence_silence": 240,
+            "keep_dialect": false,
+            "heartbeat": false,
+            "vocabulary": {
+                "声网": 5,
+                "Agora": 3
+            }
+        }
+        ```
+        - `api_key`：（必需）String。DashScope API Key。获取方式详见[获取 API Key](https://help.aliyun.com/zh/model-studio/get-api-key)。
+        - `model`：（可选）String。模型名称，默认为 `qwen-audio-3.1-asr-flash-streaming`，当前仅支持该模型。
+        - `format`：（可选）String。音频格式，默认为 `pcm`，当前仅支持 PCM。
+        - `sample_rate`：（可选）Integer。音频采样率，单位为 Hz，默认为 `16000`。
+        - `vad_model`：（可选）String。VAD 模型，可选 `near_meeting_16k`（默认，近场）或 `far_field_meeting_16k`（远场）。
+        - `max_sentence_silence`：（可选）Integer。句间静音阈值，单位为 ms，取值范围为 [200, 6000]，默认为 `240`。
+        - `keep_dialect`：（可选）Boolean。是否保留方言特征，默认为 `false`。
+        - `heartbeat`：（可选）Boolean。是否启用心跳，默认为 `false`。
+        - `vocabulary`：（可选）Object。热词及权重，最多支持 50 个热词，权重可选 1–5 或 50。
+
     avatar_params:
       title: params
       description: |-

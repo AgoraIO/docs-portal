@@ -6,6 +6,33 @@ import {
 } from './docs-moved-redirects';
 
 describe('resolveMovedDocsRedirect', () => {
+  it.each(['', '.md'])(
+    'permanently redirects the retired Cloud Recording errors page%s',
+    (suffix) => {
+      const segments = [
+        'cloud-recording',
+        'reference',
+        `common-errors${suffix}`,
+      ];
+      const target = `/en/api-reference/api-ref/cloud-recording/status-codes${suffix}`;
+      expect(resolveMovedDocsRedirect('en', 'realtime-media', segments)).toBe(
+        target,
+      );
+      expect(
+        isPermanentMovedDocsRedirect('en', 'realtime-media', segments),
+      ).toBe(true);
+      expect(
+        resolveMovedDocsRedirect('zh-CN', 'realtime-media', segments),
+      ).toBeNull();
+      const deployment = JSON.parse(readFileSync('vercel.base.json', 'utf8'));
+      expect(deployment.redirects).toContainEqual({
+        source: `/en/realtime-media/${segments.join('/')}`,
+        destination: target,
+        statusCode: 301,
+      });
+    },
+  );
+
   it('publishes the scenario redirects for both Chinese URL forms', () => {
     const deployment = JSON.parse(readFileSync('vercel.base.json', 'utf8'));
     for (const prefix of ['', '/zh-CN']) {

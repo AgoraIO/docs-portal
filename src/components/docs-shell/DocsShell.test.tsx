@@ -1449,7 +1449,7 @@ describe('DocsShell', () => {
     ).toHaveAttribute('data-active', 'true');
   });
 
-  it('does not expose China site or alternate zh-CN navigation in desktop chrome', async () => {
+  it('offers cross-site switching without local alternate zh-CN routes in desktop chrome', async () => {
     renderDocsShell({
       activePath: '/en/ai/get-started/quickstart',
       activeTab: 'ai',
@@ -1473,8 +1473,8 @@ describe('DocsShell', () => {
     );
 
     expect(
-      within(desktopHeaderActions).queryByRole('button', { name: 'Site' }),
-    ).toBeNull();
+      within(desktopHeaderActions).getByRole('button', { name: 'Switch site' }),
+    ).toBeInTheDocument();
     expect(
       within(desktopHeaderActions).queryByText('China site'),
     ).not.toBeInTheDocument();

@@ -51,7 +51,11 @@ const { apiHistoricalAdditions: november17Additions } = JSON.parse(
     placement: 'prepend' | 'append';
   }[];
 };
+const { apiHistoricalAdditions: rtc471Additions } = JSON.parse(
+  readFileSync('docs/migration/rtc-4.7.1-release-20261118.json', 'utf8'),
+) as { apiHistoricalAdditions: typeof november17Additions };
 const positionedAdditions = [
+  ...rtc471Additions,
   ...november17Additions,
   ...serverSdkAdditions,
   ...whiteboardAdditions,

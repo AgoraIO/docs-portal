@@ -78,17 +78,23 @@ To manually install the Signaling SDK for Web, do one of the following:
 <PlatformStructured platform="android">
 To manually install the Signaling SDK for Android, do one of the following:
 
-## Automatically integrate the SDK with Maven Central
+## Automatically integrate the SDK with Maven
 
-1. Open the `settings.gradle` file in the project's root directory and add the Maven Central dependency, if it doesn't already exist:
+1. Starting with v2.3.1, the Signaling SDK is distributed through the Agora Maven repository. Open the `settings.gradle` file in the project's root directory and add the repository under `dependencyResolutionManagement`. Keep your project's existing repositories:
 
-    ```text
-    repositories {
-        mavenCentral()
+    ```groovy
+    dependencyResolutionManagement {
+        repositories {
+            maven { url = 'https://download.agora.io/maven/' }
+            google()
+            mavenCentral()
+        }
     }
     ```
 
-1. Add the `io.agora.rtm:rtm-sdk` dependency in the `/app/build.gradle` file under your project. Replace `x.y.z` with the SDK version number, such as `2.3.0`. To get the latest version number, see the [Release notes](/en/realtime-media/rtm/reference/release-notes).
+    If your project doesn't use `dependencyResolutionManagement`, add the repository under `allprojects.repositories` in the root `build.gradle` file instead.
+
+1. Add the `io.agora.rtm:rtm-sdk` dependency in the `/app/build.gradle` file under your project. Replace `x.y.z` with the SDK version number, such as `2.3.1`. To get the latest version number, see the [Release notes](/en/realtime-media/rtm/reference/release-notes).
 
     ```text
     dependencies {
@@ -131,14 +137,21 @@ To manually install the Signaling SDK for iOS, do one of the following:
 
 1. Open the `Podfile`, delete all contents, and input the following code:
 
-    ```bash
+    ```ruby
+    source 'https://download.agora.io/cocoapods/'
+    source 'https://cdn.cocoapods.org/'
+
+    platform :ios, '11.0'
     target 'Your App' do
         use_frameworks!
-        pod 'AgoraRtm_iOS'
+        # RtmKit is the Signaling library. RtmBasic is the aosl library.
+        pod 'Agora-Rtm', 'x.y.z', :subspecs => ['RtmKit', 'RtmBasic']
     end
     ```
 
-1. Replace `Your App` with the target name of your project.
+1. Replace `Your App` with the target name of your project and `x.y.z` with the SDK version number, such as `2.3.1`.
+
+    Starting with v2.3.1, the Signaling SDK is distributed through the Agora CocoaPods source. Declaring any `source` replaces the CocoaPods default, so keep `https://cdn.cocoapods.org/` and any other sources your project uses. For v2.2.0 to v2.2.6, the pod name is `AgoraRtm`. For versions earlier than v2.2.0, it's `AgoraRtm_iOS`.
 
 1. Go back to Terminal, and run the `pod update` command to update the local libraries.
 
@@ -202,14 +215,21 @@ To manually install the Signaling SDK for macOS, do one of the following:
 
 1. Open the `Podfile`, delete all contents, and input the following code:
 
-    ```bash
+    ```ruby
+    source 'https://download.agora.io/cocoapods/'
+    source 'https://cdn.cocoapods.org/'
+
+    platform :osx, '10.10'
     target 'Your App' do
         use_frameworks!
-        pod 'AgoraRtm_macOS'
+        # RtmKit is the Signaling library. RtmBasic is the aosl library.
+        pod 'Agora-Rtm', 'x.y.z', :subspecs => ['RtmKit', 'RtmBasic']
     end
     ```
 
-1. Replace `Your App` with the target name of your project.
+1. Replace `Your App` with the target name of your project and `x.y.z` with the SDK version number, such as `2.3.1`.
+
+    Starting with v2.3.1, the Signaling SDK is distributed through the Agora CocoaPods source. Declaring any `source` replaces the CocoaPods default, so keep `https://cdn.cocoapods.org/` and any other sources your project uses. For v2.2.0 to v2.2.6, the pod name is `AgoraRtm`. For versions earlier than v2.2.0, it's `AgoraRtm_macOS`.
 
 1. Go back to Terminal, and run the `pod update` command to update the local libraries.
 

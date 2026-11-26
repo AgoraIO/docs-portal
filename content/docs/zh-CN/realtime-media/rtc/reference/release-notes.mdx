@@ -13,6 +13,25 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="v4.7.1" id="v471-android" headingLevel={2} value="v471-android">
+
+该版本于 2026 年 11 月 18 日发布。
+
+### 新增特性
+
+#### 本地合图支持发送 Metadata
+
+该版本新增支持在本地合图输出的视频流中发送 Metadata，可用于携带自定义业务信息。针对合图输出流，SDK 会通过 [`onReadyToSendMetadata`](/zh-CN/api-reference/rtc/android/metadata/metadata-observer#callback_imetadataobserver_onreadytosendmetadata) 回调请求待发送的 Metadata，此时 `sourceType` 为 `VIDEO_SOURCE_TRANSCODED`。有关使用方式，请参考[媒体流附属信息分发](/zh-CN/api-reference/rtc/android/metadata/metadata-observer)。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 修复了调用 [`stopRecording`](/zh-CN/api-reference/rtc/android/recording#api_imediarecorder_stoprecording) 停止本地录制后，[`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/android/video/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) 回调停止触发的问题。
+- 修复了同时使用 RTC SDK 和 RTM SDK 时，特定初始化场景下有概率发生 App 崩溃的问题。
+
+</Accordion>
+
 <Accordion title="v4.7.0" id="v470" headingLevel={2} value="v470">
 
 该版本于 2026 年 9 月 22 日发布。
@@ -2080,6 +2099,26 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 由于 AirPods Pro 不支持在通话音量模式下使用 A2DP 协议，可能会导致该设备在该模式下无法成功连接。
 
 <Accordions type="multiple" openFirst>
+
+<Accordion title="v4.7.1" id="v471-ios" headingLevel={2} value="v471-ios">
+
+该版本于 2026 年 11 月 18 日发布。
+
+### 新增特性
+
+#### 本地合图支持发送 Metadata
+
+该版本新增支持在本地合图输出的视频流中发送 Metadata，可用于携带自定义业务信息。针对合图输出流，SDK 会通过 [`readyToSendMetadataAtTimestamp:sourceType:`](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_agoramediametadatadatasource_readytosendmetadataattimestamp) 回调请求待发送的 Metadata，此时 `sourceType` 为 `AgoraVideoSourceTypeTransCoded`。有关使用方式，请参考[媒体流附属信息分发](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer)。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 修复了调用 [`stopRecording`](/zh-CN/api-reference/rtc/ios/recording#api_imediarecorder_stoprecording) 停止本地录制后，[`onEncodedVideoFrameReceived:length:info:channelId:uid:`](/zh-CN/api-reference/rtc/ios/video/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) 回调停止触发的问题。
+- 修复了 iPhone 16 系列设备在 iOS 27.x 系统上输入 BGRA 格式视频数据时，因系统兼容性问题导致发送码率可能超过预设码率的问题。
+- 修复了使用 Xcode 调试 App 时，初始化 RTC 引擎有概率触发 Main Thread Checker 告警的问题。
+
+</Accordion>
 
 <Accordion title="v4.7.0" id="v470-1" headingLevel={2} value="v470-1">
 
@@ -6017,9 +6056,9 @@ Multiopus 支持 Chrome 94 及以上版本，不支持 Firefox 和 Safari。
 
 该版本优化了音视频溯源相关链路和抖动缓冲区处理策略，有助于缩短首帧时间，减少特定场景下的音视频卡顿现象。
 
-#### 订阅与自适应策略优化
+#### 自适应策略优化
 
-该版本优化了音频订阅流程，默认采用 presubscribe 模型，提升了订阅效率和播放稳定性；同时，在开启全链路反馈且使用保帧率模式时，为分辨率降档提供下限设置能力，便于更细粒度地平衡流畅度与画面清晰度。
+在开启全链路反馈且使用保帧率模式时，可设置分辨率降档的下限，便于更细粒度地平衡流畅度与画面清晰度。
 
 ### 问题修复
 

@@ -6594,6 +6594,41 @@ This release fixes an issue where leaving a channel could be delayed after calli
 
 </Accordion>
 
+<Accordion title="v4.24.9" id="web-sdk-v4-24-9" headingLevel={3} value="v4249">
+
+Released on October 13, 2026.
+
+#### New features
+
+**High-resolution screen sharing**
+
+This release adds the following presets to [`ScreenEncoderConfigurationPreset`](https://api-ref.agora.io/en/video-sdk/web/4.x/globals.html#screenencoderconfigurationpreset):
+
+| Preset | Resolution | Frame rate |
+| --- | --- | --- |
+| `1440p_1` | 2560 × 1440 | 5 fps |
+| `1440p`, `1440p_3` | 2560 × 1440 | 15 fps |
+| `1440p_2` | 2560 × 1440 | 30 fps |
+| `4k_1` | 3840 × 2160 | 5 fps |
+| `4k`, `4k_3` | 3840 × 2160 | 15 fps |
+| `4k_2` | 3840 × 2160 | 30 fps |
+
+#### Improvements
+
+The SDK improves connection establishment and remote video first-frame rendering to reduce the time users wait for video to appear.
+
+#### Fixed issues
+
+This release fixes an issue where the encoded resolution of the low-quality video stream could differ from the configured resolution in some dual-stream scenarios.
+
+#### API changes
+
+**Added**
+
+- `1440p`, `1440p_1`, `1440p_2`, `1440p_3`, `4k`, `4k_1`, `4k_2`, and `4k_3` in `ScreenEncoderConfigurationPreset`
+
+</Accordion>
+
 <Accordion title="v4.24.8" id="web-sdk-v4-24-8" headingLevel={3} value="v4248">
 
 Released on August 31, 2026.
@@ -6683,7 +6718,7 @@ This release includes the following improvements:
 
 - Optimized the signaling flow to improve session-setup efficiency and connection success rates in complex network environments.
 - Optimized media-tracing links and jitter-buffer handling to reduce first-frame time and audio and video stuttering in certain scenarios.
-- The audio subscription flow now uses a presubscribe model by default, improving subscription efficiency and playback stability. When full-link feedback and frame-rate-priority mode are enabled, you can now set a lower bound for resolution downgrade.
+- When full-link feedback and frame-rate-priority mode are enabled, you can now set a lower bound for resolution downgrade.
 
 #### Fixed issues
 

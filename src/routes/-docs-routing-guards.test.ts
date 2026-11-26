@@ -269,6 +269,7 @@ describe('docs route locale guards', () => {
   it('rejects unsupported locale on the page route before page lookup', async () => {
     try {
       await getLoader(DocPageRoute)({
+        deps: {},
         params: {
           _splat: 'index',
           locale: 'docs',
@@ -374,6 +375,7 @@ describe('docs route locale guards', () => {
       `loads /en/api-reference/api-ref/uikit-sdk/${platform} without redirect and selects ${platform}`,
       async () => {
         const payload = await getLoader(DocPageRoute)({
+          deps: {},
           location: {
             hash: '',
             searchStr: '',

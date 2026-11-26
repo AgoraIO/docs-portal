@@ -15,7 +15,10 @@ import type {
 import { preserveRedirectSearch } from '@/lib/docs-redirect-url';
 import { preloadDocsPageContent } from '@/lib/docs-route-preload';
 import { isPublishedDocLocale } from '@/lib/docs-routing';
-import { parseProductSidebarContext } from '@/lib/docs-sidebar-context';
+import {
+  getProductTitleVersionSwitcher,
+  parseProductSidebarContext,
+} from '@/lib/docs-sidebar-context';
 import {
   readStaticDocsPayload,
   resolvePlatformStaticDocsPayload,
@@ -31,6 +34,10 @@ import {
   normalizePlatformKey,
   type PlatformKey,
 } from '@/lib/platforms/registry';
+import {
+  getProductSidebarSource,
+  withProductSidebar,
+} from '@/lib/product-rest-sidebar';
 import { recordRecentPage } from '@/lib/recently-viewed';
 import { isRetiredCnDocsPath } from '@/lib/retired-cn-docs.mjs';
 import { createDocsRouteSeoHead } from '@/lib/static-seo';
@@ -52,7 +59,17 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       },
     },
   },
-  loader: async ({ location, params }) => {
+  loaderDeps: ({ search }) => {
+    const { from, fromScope } = search as {
+      from?: unknown;
+      fromScope?: unknown;
+    };
+    return {
+      from: typeof from === 'string' ? from : undefined,
+      fromScope: typeof fromScope === 'string' ? fromScope : undefined,
+    };
+  },
+  loader: async ({ deps, location, params }) => {
     if (!isPublishedDocLocale(params.locale)) {
       throw notFound();
     }
@@ -215,7 +232,11 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       });
     }
 
-    if (params.tab === 'api-reference' && params.locale === 'zh-CN') {
+    if (
+      shouldUseStaticDocsPayload() &&
+      params.tab === 'api-reference' &&
+      params.locale === 'zh-CN'
+    ) {
       const productContext = parseProductSidebarContext(
         location.searchStr,
         params.locale,
@@ -232,6 +253,11 @@ export const Route = createFileRoute('/$locale/$tab/$')({
         if (productPayload && !('redirectUrl' in productPayload)) {
           payload = {
             ...payload,
+            titleVersionSwitcher: getProductTitleVersionSwitcher(
+              payload.activePath,
+              productContext,
+              payload.sidebarHeader?.versionSwitcher,
+            ),
             activeTab: productPayload.activeTab,
             sidebar: productPayload.sidebar,
             sidebarHeader: productPayload.sidebarHeader,
@@ -240,6 +266,16 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       }
     }
 
+    payload = await withProductSidebar(
+      payload,
+      getProductSidebarSource(deps?.from),
+      (input) =>
+        shouldUseStaticDocsPayload()
+          ? resolvePlatformStaticDocsPayload<
+              DocsPagePayload | DocsRedirectPayload
+            >(input)
+          : getDocsPagePayload({ data: input }),
+    );
     await preloadDocsPageContent(payload);
 
     return normalizeDocsPagePayload(payload);
@@ -270,6 +306,7 @@ function Page() {
     tocMaxDepth,
     title,
     titlePlatforms,
+    titleVersionSwitcher,
   } = Route.useLoaderData();
 
   // Remember this page so the search dialog can offer it under "Recent". Keyed
@@ -304,6 +341,7 @@ function Page() {
       slug={slug}
       title={title}
       titlePlatforms={titlePlatforms}
+      titleVersionSwitcher={titleVersionSwitcher}
       toc={toc}
       tocMaxDepth={tocMaxDepth}
     />

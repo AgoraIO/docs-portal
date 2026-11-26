@@ -18,6 +18,7 @@ vi.mock('@tanstack/react-router', async (importOriginal) => {
 
   return {
     ...actual,
+    useLocation: () => ({ hash: '' }),
     Link: ({
       children,
       params: _params,
@@ -205,6 +206,31 @@ describe('DocsSidebar', () => {
     scrollToTop.mockClear();
     useTransientScrollbarMock.mockReset();
   });
+
+  it.each([
+    ['/en/ai', 'Main'],
+    ['/en/ai/platform', 'Preview'],
+  ])(
+    'renders the version selector before the page tree on %s',
+    (activePath, label) => {
+      useTransientScrollbarMock.mockReturnValue({
+        isScrollbarVisible: false,
+        scrollContainerRef: createRef<HTMLDivElement>(),
+        scrollToTop,
+      });
+
+      renderDocsSidebar({ activePath });
+
+      const selector = screen.getByRole('button', {
+        name: `Documentation: ${label}`,
+      });
+      const tree = screen.getByTestId('docs-sidebar-tree');
+      expect(
+        selector.compareDocumentPosition(tree) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+    },
+  );
 
   it('places SDK and Demo links under General References on the Chinese introduction pages', () => {
     useTransientScrollbarMock.mockReturnValue({

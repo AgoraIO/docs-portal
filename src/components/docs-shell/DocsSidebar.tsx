@@ -109,6 +109,12 @@ export function DocsSidebar({
                   onSelectPath={onSelectPath}
                 />
               ) : null}
+              {!hasDocVersionCatalog(nodes, activePath) ? (
+                <DocVersionSelector
+                  activePath={activePath}
+                  className="mx-2 mb-5"
+                />
+              ) : null}
               <DocsSidebarTree
                 activePath={activePath}
                 nodes={sidebarNodes}
@@ -123,9 +129,6 @@ export function DocsSidebar({
               mode="desktop"
               onSelectPath={onSelectPath}
             />
-          ) : null}
-          {!hasDocVersionCatalog(nodes, activePath) ? (
-            <DocVersionSelector activePath={activePath} className="mx-2 mb-5" />
           ) : null}
         </div>
       </SidebarContent>

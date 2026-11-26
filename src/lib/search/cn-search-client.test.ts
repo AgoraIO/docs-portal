@@ -6,6 +6,65 @@ import { parseSearchPageState } from './search-page-state';
 
 afterEach(() => vi.restoreAllMocks());
 const empty = { groups: [], totalHits: 0, totalPages: 0, page: 1, facets: {} };
+it.each([
+  [
+    'network',
+    () => Promise.reject(new TypeError('private upstream URL')),
+    'network',
+    'network_error',
+    null,
+  ],
+  [
+    'HTTP',
+    () => Promise.resolve(new Response('', { status: 503 })),
+    'http',
+    'http_error',
+    503,
+  ],
+  [
+    'JSON',
+    () => Promise.resolve(new Response('invalid')),
+    'parse',
+    'invalid_response',
+    null,
+  ],
+  [
+    'shape',
+    () => Promise.resolve(Response.json({ hits: [] })),
+    'parse',
+    'invalid_response',
+    null,
+  ],
+  [
+    'nested groups',
+    () =>
+      Promise.resolve(
+        Response.json({
+          groups: [{ pageUrl: '/realtime-media/rtc/token' }],
+          totalHits: 1,
+          totalPages: 1,
+          page: 1,
+          facets: {},
+        }),
+      ),
+    'parse',
+    'invalid_response',
+    null,
+  ],
+] as const)(
+  'classifies %s failures without exposing the original error',
+  async (_name, fetcher, stage, code, status) => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation(fetcher);
+    await expect(
+      searchCnDocsPage(parseSearchPageState({ q: 'Token' })),
+    ).rejects.toMatchObject({
+      stage,
+      code,
+      status,
+    });
+  },
+);
+
 describe('browser search API transport', () => {
   it.each(['method', 'apiMethod'])(
     'preserves API member slots and document groups for %s',

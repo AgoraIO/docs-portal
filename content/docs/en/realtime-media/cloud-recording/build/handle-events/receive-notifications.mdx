@@ -1,6 +1,7 @@
 ---
 title: "Receive webhook notifications"
 description: "Receive notification of channel events in real time."
+tocMaxDepth: 4
 ---
 A webhook is a user-defined callback over HTTPS that allows your app or back-end system to receive notifications when certain events occur. Agora calls your webhook endpoint from its servers to send notifications about Cloud Recording events. With Notifications, you can subscribe to Cloud Recording events and receive notifications in real time.
 
@@ -355,6 +356,29 @@ The product ID:
 }
 ```
 
+### Fields in payload
+
+`payload` is a JSON object, which is the main body of the notification. `payload` in each type of event notification includes the following fields:
+
+- `cname`: String. The name of the channel to be recorded.
+- `uid`: String. The user ID of the recording client.
+- `sid`: String. The recording ID. The unique identifier of each recording.
+- `serviceScene`: String. The recording scene or stage:
+  - `"rtsc/raw-recording"`: Individual recording. Callbacks from the cloud recording service, the recorder module, and the uploader module all use this value, including screenshot event 45.
+  - `"rtc_record"`: Real-time recording other than individual recording, such as composite recording and legacy individual recording.
+  - `"rtc_snapshot"`: Screenshot capture in legacy individual recording. Screenshot callbacks in individual recording use `"rtsc/raw-recording"`.
+  - `"web_record"`: Web page recording.
+- `sequence`: Number. The serial number of the notifications, starting from 0. You can use this parameter to identify notifications that are random, lost, or resent.
+- `sendts`: Number. The time (UTC) when the event happens. Unix timestamp in ms.
+- `serviceType`: Number. The type of Agora service.
+  - `0`: The cloud recording service.
+  - `1`: The recorder module.
+  - `2`: The uploader module.
+  - `4`: The extension services.
+  - `6`: The web page recording module.
+  - `8`: The download module.
+- `details`: JSON. The details of the callback events are described in the following section. Notifications may add new fields to `details` in the future. To ensure backward compatibility, the service will not change the data format of existing fields.
+
 ### Event types
 
 You can subscribe to the following Cloud Recording events from Agora Console:
@@ -389,29 +413,6 @@ You can subscribe to the following Cloud Recording events from Agora Console:
 | [100](#rtmp_publish_status) | `rtmp_publish_status` | 	6（web page recording module） | The CDN streaming status of the web page recording changes.                                                                   |
 | [1001](#postpone_transcode_final_result) | `postpone_transcode_final_result` | 0 (cloud recording service) | The result of the transcoding.                                                                                                |
 
-#### Fields in payload
-
-`payload` is a JSON object, which is the main body of the notification. `payload` in each type of event notification includes the following fields:
-
-- `cname`: String. The name of the channel to be recorded.
-- `uid`: String. The user ID of the recording client.
-- `sid`: String. The recording ID. The unique identifier of each recording.
-- `serviceScene`: String. The recording scene or stage:
-  - `"rtsc/raw-recording"`: Individual recording. Callbacks from the cloud recording service, the recorder module, and the uploader module all use this value, including screenshot event 45.
-  - `"rtc_record"`: Real-time recording other than individual recording, such as composite recording and legacy individual recording.
-  - `"rtc_snapshot"`: Screenshot capture in legacy individual recording. Screenshot callbacks in individual recording use `"rtsc/raw-recording"`.
-  - `"web_record"`: Web page recording.
-- `sequence`: Number. The serial number of the notifications, starting from 0. You can use this parameter to identify notifications that are random, lost, or resent.
-- `sendts`: Number. The time (UTC) when the event happens. Unix timestamp in ms.
-- `serviceType`: Number. The type of Agora service.
-  - `0`: The cloud recording service.
-  - `1`: The recorder module.
-  - `2`: The uploader module.
-  - `4`: The extension services.
-  - `6`: The web page recording module.
-  - `8`: The download module.
-- `details`: JSON. The details of the callback events are described in the following section. Notifications may add new fields to `details` in the future. To ensure backward compatibility, the service will not change the data format of existing fields.
-
 The relevant fields of each Agora Cloud Recording callback event are listed below:
 
 #### cloud_recording_error
@@ -431,11 +432,10 @@ The relevant fields of each Agora Cloud Recording callback event are listed belo
   - `4`: Major
   - `5`: Fatal. A fatal error may cause the recording to exit. If you receive a message of this level, call `query` to check the current status and process the error according to the error notifications.
 - `errorCode`: Number. The error code.
-  - If the error occurs in the recorder module (`0`), see [common errors](/en/realtime-media/cloud-recording/reference/common-errors).
   - If the error occurs in the uploader (`1`), see [upload error code](#error-codes-related-to-uploading).
   - If the error occurs in the Agora Cloud Recording Service (`2`), see [cloud recording service error code](#error-codes-for-the-agora-cloud-recording-service).
-  - If the error occurs in the other modules, see [common errors](/en/realtime-media/cloud-recording/reference/common-errors).
-  If you do not find any error code in the above-mentioned pages, contact our technical support.
+
+  If the error code is not listed, check `module` and `errorMsg` for details, or contact [Agora technical support](mailto:support@agora.io).
 - `stat`: Number. The event status. 0 indicates normal status; other values indicate abnormal status.
 - `errorMsg`: String. The detailed description of the error.
 
@@ -515,7 +515,7 @@ The relevant fields of each Agora Cloud Recording callback event are listed belo
     - `false`: The file cannot be played online.
   - `sliceStartTime`: Number. The Unix time (ms) when the recording starts.
 
-#### Examples
+##### Examples
 
 - Individual recording:
 
@@ -624,7 +624,7 @@ Individual recording adds the `stranded` upload status, which means that some re
     - `false`: The file cannot be played online.
   - `sliceStartTime`: Number. The Unix time (ms) when the recording starts.
 
-#### Examples
+##### Examples
 
 - Individual recording:
 
@@ -831,7 +831,7 @@ In individual recording, `payload.serviceScene` in screenshot callbacks is `"rts
 | `5`          | `access_url_failed`   | An error occurred when opening the web page to be recorded, which causes the web page recording to stop. |
 | `6`          | `recorder_error `     | The web page recording has an error and cannot continue, causing the web page recording to stop. |
 
-#### Example
+##### Example
 ```json
 {
   "msgName": "web_recorder_stopped",
@@ -924,7 +924,7 @@ In individual recording, `payload.serviceScene` in screenshot callbacks is `"rts
 - `fileList`: JSONArray. The array contains information about the generated MP4 files.
   - `fileName`: String. The name of an individual MP4 file.
 
-#### Error codes related to uploading
+### Error codes related to uploading
 
 | Error code | Description                                                  |
 | :--------- | :----------------------------------------------------------- |
@@ -932,21 +932,21 @@ In individual recording, `payload.serviceScene` in screenshot callbacks is `"rts
 | 47         | The recording file upload fails.                             |
 | 51         | An error occurs when the uploader processes the recorded files. |
 
-#### Warning codes related to uploading
+### Warning codes related to uploading
 
 | Warning code | Description                                                  |
 | :----------- | :----------------------------------------------------------- |
 | 31           | The recording service re-uploads the slice file to the specified cloud storage.                   |
 | 32           | The recording service re-uploads the slice file to Agora Fallback Storage.                            |
 
-#### Error codes for the Agora Cloud Recording service
+### Error codes for the Agora Cloud Recording service
 
 | Error code | Description                                               |
 | :--------- | :-------------------------------------------------------- |
 | 50         | A timeout occurs in uploading the recorded files.         |
 | 52         | A timeout occurs in starting the Cloud Recording Service. |
 
-#### Status codes for the Agora Cloud Recording service
+### Status codes for the Agora Cloud Recording service
 
 | Status code | Description                                                  |
 | :---------- | :----------------------------------------------------------- |

@@ -290,7 +290,7 @@ describe('RTC upstream PR #2098 complete content parity', () => {
   });
 
   it.each(nativePlatforms)(
-    'mirrors all 4.7.0 %s cards while retaining older downloads',
+    'mirrors current %s cards while retaining older downloads',
     (platform) => {
       const canonical = zhCNRtcSdkDownloadPlatforms.find(
         (entry) => entry.id === platform,
@@ -317,7 +317,11 @@ describe('RTC upstream PR #2098 complete content parity', () => {
           sdk.id.startsWith('voice') ? 'voice' : 'video',
           mirrored ?? sdk,
         )) {
-          expect(version.version.downloadLink).toContain('_v4.7.0_');
+          expect(version.version.downloadLink).toContain(
+            platform === 'android' || platform === 'ios'
+              ? '_v4.7.1_'
+              : '_v4.7.0_',
+          );
           expect(version.version.packageManager).toBeUndefined();
         }
       }
@@ -325,7 +329,7 @@ describe('RTC upstream PR #2098 complete content parity', () => {
   );
 
   it.each(nativePlatforms)(
-    'renders the actual shared catalog consumer at 4.7.0 on %s',
+    'renders the actual shared catalog consumer at the current version on %s',
     (platform) => {
       const html = renderToStaticMarkup(
         createElement(SdksCatalog, {
@@ -334,8 +338,9 @@ describe('RTC upstream PR #2098 complete content parity', () => {
           product: 'video',
         }),
       );
-      contains(html, '_v4.7.0_FULL.zip');
-      contains(html, '2026 年 9 月 22 日');
+      const mobile = platform === 'android' || platform === 'ios';
+      contains(html, mobile ? '_v4.7.1_FULL.zip' : '_v4.7.0_FULL.zip');
+      contains(html, mobile ? '2026 年 11 月 18 日' : '2026 年 9 月 22 日');
       expect(html.includes('_v4.6.3_FULL.zip')).toBe(false);
       expect(html.includes('_v4.6.2_FULL.zip')).toBe(false);
     },

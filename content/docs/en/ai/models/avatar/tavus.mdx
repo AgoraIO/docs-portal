@@ -31,7 +31,6 @@ agent = (
     .with_tts(...)  # configure your TTS vendor
     .with_avatar(Tavus(
         api_key='<TAVUS_API_KEY>',
-        api_base_url='https://tavusapi.com/v2/conversations/agora',
         avatar_id='<TAVUS_FACE_ID>',
         agora_uid='<AGORA_UID>',
     ))
@@ -52,7 +51,6 @@ const agent = new Agent({ client })
   .withTts(/* configure your TTS vendor */)
   .withAvatar(new Tavus({
     apiKey: '<TAVUS_API_KEY>',
-    apiBaseUrl: 'https://tavusapi.com/v2/conversations/agora',
     avatarId: '<TAVUS_FACE_ID>',
     agoraUid: '<AGORA_UID>',
   }));
@@ -74,10 +72,9 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
   WithTts(/* configure your TTS vendor */).
   WithAvatar(
     vendors.NewTavus(vendors.TavusOptions{
-        APIKey:     "<TAVUS_API_KEY>",
-        APIBaseURL: "https://tavusapi.com/v2/conversations/agora",
-        AvatarID:   "<TAVUS_FACE_ID>",
-        AgoraUID:   "<AGORA_UID>",
+        APIKey:   "<TAVUS_API_KEY>",
+        AvatarID: "<TAVUS_FACE_ID>",
+        AgoraUID: "<AGORA_UID>",
     }),
 )
 ```
@@ -111,7 +108,7 @@ Set `vendor` to `generic` and use the following `avatar` configuration in your r
     The API key used for authentication with Tavus. Get your API key from your Tavus account. For details, refer to [Tavus authentication](https://docs.tavus.io/api-reference/authentication).
   </Parameter>
   <Parameter name="api_base_url" type="string" required={true}>
-    The base URL of the Tavus API endpoint. Set to `https://tavusapi.com/v2/conversations/agora`.
+    The base URL of the Tavus API endpoint. Set to `https://tavusapi.com/v2/conversations/agora`. The `Tavus` SDK class sets this value by default.
   </Parameter>
   <Parameter name="avatar_id" type="string" required={true}>
     The ID of the Tavus face (formerly called a replica) to render the avatar. Find or create a face in the [Tavus Developer Portal](https://maker.tavus.io/dev/faces).

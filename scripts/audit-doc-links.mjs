@@ -1798,7 +1798,6 @@ const KNOWN_LEGACY_HOSTED_LINKS = new Set([
   "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/realtime-media/best-practices/integration-best-practices#monitor-service-status-during-a-recording",
   "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/realtime-media/best-practices/integration-best-practices#obtain-the-m3u8-file-name",
   "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/realtime-media/get-started/manage-agora-account#get-the-app-id",
-  "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/realtime-media/reference/common-errors#errors",
   "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/realtime-media/reference/rest-api-overview",
   "en/realtime-media/cloud-recording/rest-quickstart.mdx\u0000/en/realtime-media/reference/restful-authentication",
   "en/realtime-media/im/build/build-core-messaging/contacts.mdx\u0000/en/realtime-media/im/build/limitations",
@@ -3117,7 +3116,7 @@ const LEGACY_GET_STARTED_PATHS = {
   'enable-service': (locale) =>
     locale === 'zh-CN'
       ? '/zh-CN/ai/enable-service'
-      : '/en/ai/reference/enable-conversational-ai',
+      : '/en/ai/get-started/quickstart',
 };
 
 const LEGACY_ABSOLUTE_PATHS = {

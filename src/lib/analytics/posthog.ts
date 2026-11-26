@@ -14,7 +14,7 @@ import {
 } from '@/lib/docs-feedback';
 import type { MeasurementEvent } from './docs-measurement';
 import { measurementPath } from './measurement-path';
-import { filterCnMeasurementEvent } from './measurement-privacy';
+import { analyticsPath, filterCnMeasurementEvent } from './measurement-privacy';
 
 type PostHogClient = typeof import('posthog-js').default;
 
@@ -78,7 +78,10 @@ const filterAccountFlowEvent: BeforeSendFn = (event) => {
 const filterOutboundEvent: BeforeSendFn = (event) => {
   const filtered = filterAccountFlowEvent(event);
   if (!filtered) return filtered;
-  if (import.meta.env.VITE_DOCS_REGION === 'cn')
+  if (
+    import.meta.env.VITE_DOCS_REGION === 'cn' ||
+    filtered.event === 'docs_feedback_form_submitted'
+  )
     return filterCnMeasurementEvent(filtered);
   if (!filtered.properties) return filtered;
   return {
@@ -243,7 +246,12 @@ export function captureDocsPageFeedback({
     return;
   }
 
-  captureStructuredDocsEvent('docs_page_feedback', locale, legacyProperties);
+  captureStructuredDocsEvent('docs_page_feedback', locale, {
+    ...legacyProperties,
+    ...inlineFeedbackProperties(locale),
+    question_id: 'page_helpfulness',
+    evidence_source: 'self_report',
+  });
 }
 
 export function captureDocsPageViewed({
@@ -577,19 +585,72 @@ export function captureDocsLinkClicked({
   });
 }
 
-export function captureDocsFeedbackOpened({ locale }: { locale: string }) {
-  captureStructuredDocsEvent('docs_feedback_opened', locale, {});
+function feedbackDeploymentProperties(isCn: boolean) {
+  return {
+    environment:
+      import.meta.env.VITE_DOCS_ENVIRONMENT ||
+      (isCn ? 'local' : import.meta.env.VITE_DEPLOY_ENVIRONMENT || 'local'),
+    app_release:
+      import.meta.env.VITE_DOCS_APP_RELEASE ||
+      (isCn ? 'unknown' : import.meta.env.VITE_DEPLOY_VERSION || 'unknown'),
+  };
+}
+
+function inlineFeedbackProperties(locale: string) {
+  return {
+    ...feedbackDeploymentProperties(false),
+    locale,
+    deployment_region: 'global',
+    canonical_path:
+      typeof window === 'undefined'
+        ? '/'
+        : analyticsPath(window.location.pathname),
+    feedback_scope: 'page',
+    feedback_source: 'manual',
+    surface: 'content',
+    prompt_version: 'inline-reasons-v2',
+  };
+}
+
+export function captureDocsFeedbackPrompted({ locale }: { locale: string }) {
+  captureStructuredDocsEvent('docs_feedback_prompted', locale, {
+    ...inlineFeedbackProperties(locale),
+    question_id: 'page_helpfulness',
+  });
+}
+
+export function captureDocsFeedbackOpened({
+  locale,
+  value,
+}: {
+  locale: string;
+  value?: DocsFeedbackValue;
+}) {
+  captureStructuredDocsEvent('docs_feedback_opened', locale, {
+    ...inlineFeedbackProperties(locale),
+    question_id: 'reasons',
+    value,
+  });
 }
 
 export function captureDocsFeedbackIssueClicked({
   kind,
   locale,
+  feedbackId,
+  value,
 }: {
-  kind: 'issue' | 'suggestion' | 'usability';
+  kind?: 'issue' | 'suggestion' | 'usability';
   locale: string;
+  feedbackId?: string;
+  value?: DocsFeedbackValue;
 }) {
   captureStructuredDocsEvent('docs_feedback_issue_clicked', locale, {
+    ...inlineFeedbackProperties(locale),
+    question_id: 'reasons',
     feedback_kind: kind,
+    feedback_id: feedbackId,
+    value,
+    feedback_destination: 'github',
   });
 }
 
@@ -1047,11 +1108,12 @@ export async function captureDocsFeedbackSubmission(input: {
   reasons: readonly string[];
   details: string;
   pagePath: string;
+  locale?: 'en' | 'zh-CN';
 }): Promise<boolean> {
+  const isCn = import.meta.env.VITE_DOCS_REGION === 'cn';
   if (
     typeof window === 'undefined' ||
-    import.meta.env.VITE_DOCS_REGION !== 'cn' ||
-    import.meta.env.VITE_DOCS_MEASUREMENT_ENABLED !== 'true'
+    (isCn && import.meta.env.VITE_DOCS_MEASUREMENT_ENABLED !== 'true')
   )
     return false;
   const labels =
@@ -1072,11 +1134,12 @@ export async function captureDocsFeedbackSubmission(input: {
     schema_version: '1',
     event_source: 'browser',
     site_id: 'docs_portal',
-    deployment_region: 'cn',
-    locale: 'zh-CN',
-    environment: import.meta.env.VITE_DOCS_ENVIRONMENT || 'local',
-    app_release: import.meta.env.VITE_DOCS_APP_RELEASE || 'unknown',
-    canonical_path: measurementPath(input.pagePath),
+    deployment_region: isCn ? 'cn' : 'global',
+    locale: input.locale ?? (isCn ? 'zh-CN' : 'en'),
+    ...feedbackDeploymentProperties(isCn),
+    canonical_path: isCn
+      ? measurementPath(input.pagePath)
+      : stripUrlQueryAndHash(input.pagePath),
     value: input.helpfulness,
     response,
     comment,
@@ -1091,7 +1154,7 @@ export async function captureDocsFeedbackSubmission(input: {
     traffic_type: 'visitor',
   };
   try {
-    if (import.meta.env.VITE_DOCS_ENVIRONMENT !== 'production') {
+    if (properties.environment !== 'production') {
       const testId = sessionStorage.getItem('docs-measurement-test');
       if (testId && /^[a-zA-Z0-9_-]{1,80}$/.test(testId)) {
         properties.test_run_id = testId;

@@ -31,6 +31,7 @@ export type DocsSidebarHeader = {
   versionSwitcher?: {
     currentId: string;
     presentation?: 'dropdown' | 'tabs';
+    search?: Record<string, string>;
     versions: DocsSidebarHeaderVersion[];
   };
 };

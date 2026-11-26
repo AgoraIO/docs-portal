@@ -4363,7 +4363,7 @@ Web body
     });
   });
 
-  it('adds a linked API Reference entry to Realtime Media product sidebars', async () => {
+  it('preserves REST fallback links when the API tree is unavailable and keeps SDK links unchanged', async () => {
     const rtcPayload = await loadRealtimeMediaProductPayload(
       'rtc',
       'Voice & Video',

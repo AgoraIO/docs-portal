@@ -27,6 +27,7 @@ import { buildOpenApiSchemaTree } from '../openapi/schema-tree';
 import { getOpenApiOperations } from '../openapi/source.server';
 import { getPublishedDocsLocales } from '../site-region';
 import { getAlgoliaSearchNavigation } from './algolia-search-source.server';
+import { getComponentSearchText } from './component-search-text';
 import { faqItems } from './faq-data';
 
 // Search-ranking category. Glossary pages cross-reference every term so they
@@ -91,7 +92,7 @@ const STRUCTURE_CONTENT_TYPES = [
 export async function getAlgoliaDocsRecords(): Promise<AlgoliaDocsRecord[]> {
   const [pages, navigationByLocale] = await Promise.all([
     getContentDocsPages(),
-    getAlgoliaSearchNavigation(),
+    getAlgoliaSearchNavigation(INDEXED_LOCALES),
   ]);
   const [docsRecords, openApiRecords] = await Promise.all([
     buildAlgoliaContentDocsRecords(pages, navigationByLocale),
@@ -104,7 +105,7 @@ export async function getAlgoliaDocsRecords(): Promise<AlgoliaDocsRecord[]> {
 export async function getAlgoliaContentDocsRecords() {
   const [pages, navigationByLocale] = await Promise.all([
     getContentDocsPages(),
-    getAlgoliaSearchNavigation(),
+    getAlgoliaSearchNavigation(INDEXED_LOCALES),
   ]);
 
   return buildAlgoliaContentDocsRecords(pages, navigationByLocale);
@@ -262,6 +263,8 @@ export function extractDocSearchContent(
         remarkSearchTableCells,
       ]
     : [remarkDirective, remarkLiteralDirectives, remarkSearchTableCells];
+  if (locale === 'en' && markdown.includes('<Card'))
+    plugins.push(remarkSearchCards);
   const extracted = structure(markdown, plugins, {
     types: STRUCTURE_CONTENT_TYPES,
   });
@@ -539,6 +542,33 @@ function flattenSchemaNode(node: {
   ].filter(
     (value): value is string => typeof value === 'string' && Boolean(value),
   );
+}
+
+// Card labels are visible prose in both raw HTML blocks and parsed MDX.
+function remarkSearchCards() {
+  return (tree: Root, file: VFile) => {
+    visit(tree, (node) => {
+      const isHtml = node.type === 'html';
+      const isCard =
+        node.type === 'mdxJsxFlowElement' &&
+        node.name === 'Card' &&
+        !node.children.length;
+      if (!isHtml && !isCard) return;
+      const source = isHtml
+        ? node.value
+        : String(file.value).slice(
+            node.position?.start.offset,
+            node.position?.end.offset,
+          );
+      if (!/<Card[\s/>]/u.test(source)) return;
+      const labels = getComponentSearchText(source);
+      if (!labels.length) return;
+      node.data ??= {};
+      node.data.structuredData = {
+        contents: [{ content: labels.join(' '), heading: undefined }],
+      };
+    });
+  };
 }
 
 // Source-backed GFM table cells can include their surrounding pipe delimiters.

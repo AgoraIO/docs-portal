@@ -72,6 +72,7 @@ import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBody } from './DocsContentBody';
 import { DocsMeasurementContext } from './DocsContentMeasurement';
 import { DocsSearchLandingEngagement } from './DocsSearchLandingEngagement';
+import { DocsVersionDropdown } from './DocsVersionDropdown';
 import { DocVersionNotice } from './DocVersionControls';
 import { DocsCopyMenu } from './docs-copy-menu';
 import { getDocsSourceLinks } from './docs-source-links';
@@ -153,6 +154,7 @@ export function DocsContent({
   slug,
   title,
   titlePlatforms = [],
+  titleVersionSwitcher,
   toc,
   tocMaxDepth,
 }: {
@@ -173,6 +175,7 @@ export function DocsContent({
   slug?: string;
   title?: string;
   titlePlatforms?: PlatformKey[];
+  titleVersionSwitcher?: DocsSidebarHeader['versionSwitcher'];
   toc: TOCItemType[];
   tocMaxDepth?: number;
 }) {
@@ -386,27 +389,29 @@ export function DocsContent({
                     platformTabs={platformTabs}
                   />
                 )}
-              </div>
-              <p
-                className="mt-2 inline-flex items-center gap-1.5 text-[13px] leading-5 text-[color:var(--ink-4)]"
-                data-testid="docs-last-updated"
-              >
-                <HistoryIcon
-                  aria-hidden="true"
-                  className="size-3.5 shrink-0"
-                  data-testid="docs-last-updated-icon"
-                />
-                {lastUpdatedMetadata.source === 'fallback' ? (
-                  <span>{t('docs.lastUpdatedUnavailable')}</span>
-                ) : (
-                  <>
-                    <span>{t('docs.lastUpdated')} </span>
-                    <time dateTime={lastUpdatedMetadata.iso}>
-                      {lastUpdatedMetadata.formatted}
-                    </time>
-                  </>
+                {titleVersionSwitcher && (
+                  <DocsVersionDropdown
+                    locale={currentLocale}
+                    versionSwitcher={titleVersionSwitcher}
+                  />
                 )}
-              </p>
+              </div>
+              {lastUpdatedMetadata.source !== 'fallback' && (
+                <p
+                  className="mt-2 inline-flex items-center gap-1.5 text-[13px] leading-5 text-[color:var(--ink-4)]"
+                  data-testid="docs-last-updated"
+                >
+                  <HistoryIcon
+                    aria-hidden="true"
+                    className="size-3.5 shrink-0"
+                    data-testid="docs-last-updated-icon"
+                  />
+                  <span>{t('docs.lastUpdated')} </span>
+                  <time dateTime={lastUpdatedMetadata.iso}>
+                    {lastUpdatedMetadata.formatted}
+                  </time>
+                </p>
+              )}
               {description ? (
                 <p className="mt-3 max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)] [overflow-wrap:anywhere]">
                   {description}

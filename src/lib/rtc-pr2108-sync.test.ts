@@ -114,7 +114,7 @@ describe('RTC upstream PR #2108 Maven CDN guidance', () => {
     expect(content).toContain('请根据业务需要选择其中一种');
     expect(content).toContain('// 或集成 Lite SDK');
     for (const sdk of ['full-sdk', 'lite-sdk', 'voice-sdk']) {
-      expect(content).toContain(`cn.shengwang.rtc:${sdk}:4.7.0`);
+      expect(content).toContain(`cn.shengwang.rtc:${sdk}:4.7.1`);
       expect(content).not.toContain(`cn.shengwang.rtc:${sdk}:4.6.4`);
     }
   });

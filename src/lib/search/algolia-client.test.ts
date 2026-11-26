@@ -853,7 +853,30 @@ describe('createAlgoliaDocsClient', () => {
       expect(results.map(({ id }) => id)).toEqual(['guide']);
     });
 
-    it('keeps Documentation before API Reference for API task queries', async () => {
+    it('looks up related overviews within the same product and platform and keeps the primary results when absent', async () => {
+      const searchForHits = vi.fn().mockResolvedValue({
+        results: [
+          { hits: [docsHit({ title: 'Start streaming', url: '/en/start' })] },
+          { hits: [] },
+          { hits: [] },
+        ],
+      });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+      const results = await createClient({
+        platform: 'ios',
+        scope: { field: 'product', value: 'rtc' },
+      }).search('broadcast streaming');
+      const requests = searchForHits.mock.calls[0][0].requests;
+      expect(requests[2]).toMatchObject({
+        indexName: requests[0].indexName,
+        filters: 'locale:en AND platform:ios AND product:"rtc"',
+        query: 'RTC overview',
+        restrictSearchableAttributes: ['title'],
+      });
+      expect(results.map(({ url }) => url)).toEqual(['/en/start']);
+    });
+
+    it('puts an exact spaced SDK member name ahead of task documentation', async () => {
       const searchForHits = vi.fn().mockResolvedValue(
         federatedResponse({
           apiHits: [
@@ -887,8 +910,8 @@ describe('createAlgoliaDocsClient', () => {
       const results = await client.search('renew token');
 
       expect(results.map(({ id }) => id)).toEqual([
-        'renew-guide',
         'renew-token',
+        'renew-guide',
       ]);
     });
 
@@ -930,7 +953,7 @@ describe('createAlgoliaDocsClient', () => {
       const results = await client.search('renew token');
 
       expect(results).toHaveLength(11);
-      expect(results.at(-1)).toMatchObject({ id: 'renew-token' });
+      expect(results[0]).toMatchObject({ id: 'renew-token' });
     });
 
     it('uses retrieval aliases in requests while retaining original-query intent behavior', async () => {

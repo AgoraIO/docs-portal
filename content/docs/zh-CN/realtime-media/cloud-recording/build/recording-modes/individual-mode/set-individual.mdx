@@ -41,11 +41,13 @@ title: "实现单流录制"
 
 2. 设置 `recordingConfig` 和 `recordingFileConfig` 中的参数。不同 `streamTypes` 与 `recordingFileConfig.avFileType` 配置组合对应的录制文件生成关系如下。具体设置参见 [`streamTypes` 参数说明](/zh-CN/api-reference/api-ref/cloud-recording/start)。
 
+`streamTypes` 为 `0` 时仅录制音频，为 `1` 时仅录制视频，为 `2` 时同时录制音视频。
+
 <Tabs defaultValue="streamTypes-0" groupId="streamTypes" persist>
 <TabsList>
-  <TabsTrigger value="streamTypes-0">streamTypes = 0</TabsTrigger>
-  <TabsTrigger value="streamTypes-1">streamTypes = 1</TabsTrigger>
-  <TabsTrigger value="streamTypes-2">streamTypes = 2</TabsTrigger>
+<TabsTrigger value="streamTypes-0">仅音频（0）</TabsTrigger>
+<TabsTrigger value="streamTypes-1">仅视频（1）</TabsTrigger>
+<TabsTrigger value="streamTypes-2">音视频（2）</TabsTrigger>
 </TabsList>
 
 <TabsContent value="streamTypes-0">

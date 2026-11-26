@@ -344,3 +344,24 @@ describe('toPlainText', () => {
     );
   });
 });
+
+it('indexes visible English card labels without indexing their links or fenced examples', () => {
+  const source = [
+    '## Use cases',
+    '<Cards>',
+    '  <Card title="Interactive Live Streaming" href="/internal-slug" description="Stream to audiences." />',
+    '</Cards>',
+    '```mdx',
+    '<Card title="Example only" />',
+    '```',
+  ].join('\n');
+  const contents = extractDocSearchContent(source).contents;
+  expect(
+    contents.some(({ content }) =>
+      content.includes('Interactive Live Streaming'),
+    ),
+  ).toBe(true);
+  expect(
+    contents.some(({ content }) => content.includes('/internal-slug')),
+  ).toBe(false);
+});

@@ -109,6 +109,50 @@ describe('PostHog analytics', () => {
     expect(await captureDocsFeedbackSubmission(payload)).toBe(false);
   });
 
+  it.each(['yes', 'no'] as const)(
+    'records global %s feedback with English context and filtered comments',
+    async (helpfulness) => {
+      vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+      vi.stubEnv('VITE_DOCS_REGION', 'global');
+      vi.stubEnv('VITE_DOCS_MEASUREMENT_ENABLED', 'false');
+      const { captureDocsFeedbackSubmission } = await import('./posthog');
+      captureMock.mockReturnValue({ event: 'docs_feedback_form_submitted' });
+      const details = `First line\n${'More details. '.repeat(200)}`;
+      const payload = {
+        id: 'global-feedback-1',
+        locale: 'en' as const,
+        helpfulness,
+        reasons: [],
+        details,
+        pagePath: '/en/video-calling/overview?token=secret#start',
+        submittedAt: '2026-11-20T06:00:00.000Z',
+      };
+      expect(await captureDocsFeedbackSubmission(payload)).toBe(true);
+      const [event, properties] = captureMock.mock.calls[0];
+      expect(properties).toMatchObject({
+        locale: 'en',
+        deployment_region: 'global',
+        canonical_path: '/en/video-calling/overview',
+        value: helpfulness,
+        comment: details.slice(0, 2000),
+        response: [],
+      });
+      const filtered = initMock.mock.calls[0][1].before_send({
+        event,
+        properties: {
+          ...properties,
+          page_title: 'not allowed',
+          $current_url:
+            'https://docs.example/en/video-calling/overview?token=secret#start',
+        },
+      });
+      expect(filtered.properties.comment).toBe(details.slice(0, 2000));
+      expect(JSON.stringify(filtered)).not.toMatch(/token=secret|not allowed/);
+      captureMock.mockReturnValueOnce(undefined);
+      expect(await captureDocsFeedbackSubmission(payload)).toBe(false);
+    },
+  );
+
   it('keeps reason-only feedback optional and rejects empty or invalid submissions', async () => {
     vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
     vi.stubEnv('VITE_DOCS_REGION', 'cn');
@@ -142,6 +186,166 @@ describe('PostHog analytics', () => {
     ).toBe(false);
     expect(captureMock).toHaveBeenCalledTimes(1);
   });
+
+  it.each(['yes', 'no'] as const)(
+    'captures the complete English %s feedback funnel in the global project',
+    async (value) => {
+      vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+      vi.stubEnv('VITE_POSTHOG_HOST', 'https://global.posthog.test');
+      vi.stubEnv('VITE_DOCS_REGION', 'global');
+      vi.stubEnv('VITE_DOCS_MEASUREMENT_ENABLED', 'false');
+      window.history.replaceState(
+        {},
+        '',
+        '/en/realtime-media/video/quickstart?platform=web#start',
+      );
+      const {
+        captureDocsFeedbackPrompted,
+        captureDocsFeedbackOpened,
+        captureDocsPageFeedback,
+        captureDocsFeedbackSubmission,
+        captureDocsFeedbackIssueClicked,
+      } = await import('./posthog');
+      captureMock.mockReturnValue({ event: 'accepted' });
+      const reasons = [
+        value === 'yes' ? 'useful_examples' : 'incorrect_or_outdated',
+      ];
+      captureDocsFeedbackPrompted({ locale: 'en' });
+      captureDocsPageFeedback({ locale: 'en', value });
+      captureDocsFeedbackOpened({ locale: 'en', value });
+      expect(
+        await captureDocsFeedbackSubmission({
+          id: 'english-feedback-1',
+          submittedAt: '2026-11-20T06:00:00.000Z',
+          locale: 'en',
+          helpfulness: value,
+          reasons,
+          details: 'Please add a complete example.',
+          pagePath: window.location.pathname,
+        }),
+      ).toBe(true);
+      captureDocsFeedbackIssueClicked({
+        locale: 'en',
+        value,
+        feedbackId: 'english-feedback-1',
+      });
+      await vi.waitFor(() => expect(captureMock).toHaveBeenCalledTimes(5));
+      expect(initMock).toHaveBeenCalledWith(
+        'test-key',
+        expect.objectContaining({ api_host: 'https://global.posthog.test' }),
+      );
+      expect(captureMock.mock.calls.map(([name]) => name)).toEqual([
+        'docs_feedback_prompted',
+        'docs_page_feedback',
+        'docs_feedback_opened',
+        'docs_feedback_form_submitted',
+        'docs_feedback_issue_clicked',
+      ]);
+      const filter = initMock.mock.calls[0][1].before_send;
+      for (const [event, properties] of captureMock.mock.calls) {
+        const filtered = filter({ event, properties }).properties;
+        expect(filtered).toMatchObject({
+          locale: 'en',
+          deployment_region: 'global',
+          canonical_path: '/en/realtime-media/video/quickstart',
+          feedback_scope: 'page',
+          surface: 'content',
+          prompt_version: 'inline-reasons-v2',
+        });
+        if (event !== 'docs_feedback_prompted')
+          expect(filtered.value).toBe(value);
+        if (event === 'docs_feedback_form_submitted') {
+          expect(filtered).toMatchObject({
+            feedback_id: 'english-feedback-1',
+            response: reasons,
+            comment: 'Please add a complete example.',
+            feedback_destination: 'analytics',
+          });
+        } else {
+          expect(filtered).not.toHaveProperty('comment');
+          expect(JSON.stringify(properties)).not.toContain(
+            'Please add a complete example.',
+          );
+        }
+        if (event === 'docs_feedback_issue_clicked') {
+          expect(filtered).toMatchObject({
+            feedback_id: 'english-feedback-1',
+            feedback_destination: 'github',
+          });
+          expect(JSON.stringify(properties)).not.toContain('issues/new');
+        }
+      }
+    },
+  );
+
+  it('does not add English funnel events to Chinese feedback', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+    vi.stubEnv('VITE_DOCS_REGION', 'cn');
+    window.history.replaceState({}, '', '/zh-CN/introduction');
+    const {
+      captureDocsFeedbackPrompted,
+      captureDocsFeedbackOpened,
+      captureDocsFeedbackIssueClicked,
+    } = await import('./posthog');
+    captureDocsFeedbackPrompted({ locale: 'zh-CN' });
+    captureDocsFeedbackOpened({ locale: 'zh-CN', value: 'yes' });
+    captureDocsFeedbackIssueClicked({
+      locale: 'zh-CN',
+      value: 'yes',
+      feedbackId: 'cn-feedback-1',
+    });
+    await Promise.resolve();
+    expect(captureMock).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['production', '', 'production'],
+    ['preview', 'staging', 'staging'],
+  ])(
+    'uses the global %s deployment metadata for English feedback',
+    async (deployEnvironment, docsEnvironment, expectedEnvironment) => {
+      vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+      vi.stubEnv('VITE_DOCS_REGION', 'global');
+      vi.stubEnv('VITE_DOCS_ENVIRONMENT', docsEnvironment);
+      vi.stubEnv('VITE_DOCS_APP_RELEASE', '');
+      vi.stubEnv('VITE_DEPLOY_ENVIRONMENT', deployEnvironment);
+      vi.stubEnv('VITE_DEPLOY_VERSION', 'release-sha');
+      sessionStorage.setItem('docs-measurement-test', 'feedback-qa');
+      const { captureDocsFeedbackPrompted, captureDocsFeedbackSubmission } =
+        await import('./posthog');
+      captureMock.mockReturnValue({ event: 'accepted' });
+      try {
+        captureDocsFeedbackPrompted({ locale: 'en' });
+        expect(
+          await captureDocsFeedbackSubmission({
+            id: 'deploy-feedback',
+            submittedAt: '2026-11-20T06:00:00.000Z',
+            locale: 'en',
+            helpfulness: 'yes',
+            reasons: ['clear'],
+            details: '',
+            pagePath: '/en/introduction',
+          }),
+        ).toBe(true);
+        expect(captureMock).toHaveBeenCalledTimes(2);
+        for (const [, properties] of captureMock.mock.calls) {
+          expect(properties).toMatchObject({
+            environment: expectedEnvironment,
+            app_release: 'release-sha',
+          });
+        }
+        const properties = captureMock.mock.calls[1][1];
+        expect(properties.traffic_type).toBe(
+          deployEnvironment === 'production' ? 'visitor' : 'internal_test',
+        );
+        if (deployEnvironment === 'production')
+          expect(properties).not.toHaveProperty('test_run_id');
+        else expect(properties.test_run_id).toBe('feedback-qa');
+      } finally {
+        sessionStorage.removeItem('docs-measurement-test');
+      }
+    },
+  );
 
   it('bounds feedback comments and drops comments from unrelated events', async () => {
     vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
@@ -246,6 +450,16 @@ describe('PostHog analytics', () => {
       pathname: '/en/introduction',
       search: '?platform=web',
       value: 'yes',
+      deployment_region: 'global',
+      environment: 'local',
+      app_release: 'unknown',
+      canonical_path: '/en/introduction',
+      feedback_scope: 'page',
+      feedback_source: 'manual',
+      surface: 'content',
+      prompt_version: 'inline-reasons-v2',
+      question_id: 'page_helpfulness',
+      evidence_source: 'self_report',
     });
   });
 

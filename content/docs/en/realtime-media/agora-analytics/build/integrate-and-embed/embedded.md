@@ -38,7 +38,7 @@ To obtain the URL for embedding Agora Analytics feature page in your portal, sen
 - Format: JSON
 - Method: `POST`
 - Endpoint: `https://analytics-lab.agora.io/api/getEmbedLocation`
-- Authentication: Use `clientId` and `clientSecret` to generate the Authorization parameter in the request header. To obtain your authentication credentials, click [Apply](https://console.agora.io/credentials).
+- Authentication: Use the customer ID (`clientId`) and customer secret (`clientSecret`) of an Analytics credential to generate the Authorization parameter in the request header. To create a credential, see [Get an Analytics credential](./mcp-server.mdx#get-an-analytics-credential).
 - Request body parameters:
     - `feature`: Specifies the Agora Analytics feature page to embed. Set this to one of the following:
         - `callSearch`: **Call Inspector** page.

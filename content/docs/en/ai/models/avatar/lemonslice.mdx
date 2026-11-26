@@ -31,8 +31,6 @@ agent = (
     .with_tts(...)  # configure your TTS vendor
     .with_avatar(LemonSlice(
         api_key='<LEMONSLICE_API_KEY>',
-        api_base_url='https://lemonslice.com/api/liveai/agora',
-        avatar_id='lemonslice',
         agora_uid='<AGORA_UID>',
         additional_params={
             'agent_image_url': '<IMAGE_URL>',  # or agent_id, or agent_image_base64
@@ -56,8 +54,6 @@ const agent = new Agent({ client })
   .withTts(/* configure your TTS vendor */)
   .withAvatar(new LemonSlice({
     apiKey: '<LEMONSLICE_API_KEY>',
-    apiBaseUrl: 'https://lemonslice.com/api/liveai/agora',
-    avatarId: 'lemonslice',
     agoraUid: '<AGORA_UID>',
     additionalParams: {
       agent_image_url: '<IMAGE_URL>', // or agent_id, or agent_image_base64
@@ -82,10 +78,8 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
   WithTts(/* configure your TTS vendor */).
   WithAvatar(
     vendors.NewLemonSlice(vendors.LemonSliceOptions{
-        APIKey:     "<LEMONSLICE_API_KEY>",
-        APIBaseURL: "https://lemonslice.com/api/liveai/agora",
-        AvatarID:   "lemonslice",
-        AgoraUID:   "<AGORA_UID>",
+        APIKey:   "<LEMONSLICE_API_KEY>",
+        AgoraUID: "<AGORA_UID>",
         AdditionalParams: map[string]interface{}{
             "agent_image_url": "<IMAGE_URL>", // or agent_id, or agent_image_base64
             "aspect_ratio":    "2x3",
@@ -125,10 +119,10 @@ Set `vendor` to `generic` and use the following `avatar` configuration in your r
   The API key used for authentication with LemonSlice. Get your API key from your LemonSlice account.
   </Parameter>
   <Parameter name="api_base_url" type="string" required={true}>
-  The base URL of the LemonSlice API endpoint. Set to `https://lemonslice.com/api/liveai/agora`.
+  The base URL of the LemonSlice API endpoint. Set to `https://lemonslice.com/api/liveai/agora`. The `LemonSlice` SDK class sets this value by default.
   </Parameter>
   <Parameter name="avatar_id" type="string" required={true}>
-  Fixed value that identifies the vendor integration. Always set to `lemonslice`.
+  Fixed value that identifies the vendor integration. Always set to `lemonslice`. The `LemonSlice` SDK class sets this value by default.
   </Parameter>
   <Parameter name="agent_image_url" type="string" required={false}>
   A publicly accessible URL to the avatar image. Provide exactly one of `agent_id`, `agent_image_url`, or `agent_image_base64`.

@@ -75,6 +75,10 @@ const allowedProperties = new Set([
   'result_count',
   'result_unit',
   'total_hits',
+  'server_group_count',
+  'result_outcome',
+  'recovery_action',
+  'http_status',
   'result_id',
   'result_kind',
   'result_rank',
@@ -146,7 +150,7 @@ export function analyticsPath(value: string): string {
   }
 }
 
-function safeUrl(value: unknown, originOnly = false) {
+export function safeAnalyticsUrl(value: unknown, originOnly = false) {
   if (typeof value !== 'string') return undefined;
   try {
     const url = new URL(value);
@@ -175,7 +179,7 @@ export const filterCnMeasurementEvent: BeforeSendFn = (event) => {
     }
     if (!allowedProperties.has(key)) continue;
     if (key === '$current_url' || key === '$referrer') {
-      const safe = safeUrl(value, key === '$referrer');
+      const safe = safeAnalyticsUrl(value, key === '$referrer');
       if (safe) properties[key] = safe;
     } else if (key === 'query_redacted' && typeof value === 'string') {
       properties[key] = redactSearchQuery(value);

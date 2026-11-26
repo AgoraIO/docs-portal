@@ -101,6 +101,10 @@ export default defineConfig({
             prerender: {
               // The stream renderer waits for all Suspense content for crawlers.
               headers: { 'User-Agent': 'DocsPortal Prerender' },
+              // Recover transient preview-server disconnects without skipping pages.
+              retryCount: 2,
+              retryDelay: 500,
+              failOnError: true,
               crawlLinks: false,
               enabled: !isServiceDeployment,
               filter: shouldPrerenderPage,

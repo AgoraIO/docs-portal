@@ -20,12 +20,13 @@ export const appName = getAppBranding().name;
 export const appDescription = getAppBranding().description;
 export const docsRoute = getDocsHomePath();
 
+export const chineseDocsUrl = 'https://docs.shengwang.cn/introduction';
 export const internationalDocsUrl = 'https://docs.agora.io/en/introduction';
 
 export const legacyDocsBannerConfig = {
   hrefs: {
     en: 'https://docs-legacy.agora.io/en',
-    'zh-CN': 'https://doc.shengwang.cn/',
+    'zh-CN': 'https://doc-archive.shengwang.cn/archive/0.0.546/',
   },
 };
 
