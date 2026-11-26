@@ -1,0 +1,21 @@
+---
+title: 如何查询用户在线状态？
+---
+
+## 如何判断未加入任何频道的用户是否在线？
+
+调用 `getUserOnlineStatus`，传入当前 App ID 下一个精确的 User ID。该方法查询目标用户是否存在有效的 RTM 登录连接，查询方和目标用户都无需加入或订阅频道。调用方必须具有 MESSAGE service，且 MESSAGE session 已连接。
+
+## `online=false` 是否表示调用失败？
+
+不是。目标用户离线或不存在时，查询成功并返回 `online=false`。调用失败必须按对应平台的错误码、failure callback、`errorInfo` 或 Promise rejection 处理，不能把失败转换为 `online=false`。
+
+## Presence 服务关闭或 Sync 尚未 ready 时能否查询？
+
+可以。`getUserOnlineStatus` 不依赖 Presence service 开关、Sync Database 就绪或双方的频道关系，但仍要求调用方的 MESSAGE session 已连接。
+
+## 能否获得精确的最后在线时间或持续在线状态通知？
+
+不能。该方法返回服务端响应时刻的在线状态快照，结果在返回后仍可能变化。异常断网后的离线判定受服务端失联检测窗口影响。
+
+具体流程和各平台示例见 [Presence 基础：查询用户在线状态](/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-basic/android#query-user-online-status)。

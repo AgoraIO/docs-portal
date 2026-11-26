@@ -1,6 +1,7 @@
 import SwaggerParser from '@apidevtools/swagger-parser';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import type { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
+import GlobalSwaggerParser from 'swagger-parser-global-docs';
 import { type AppLocale, DEFAULT_LOCALE } from '../i18n/i18n-config';
 import { type OpenApiJsonValue, toOpenApiJsonValue } from './json';
 import type { OpenApiLane } from './lanes';
@@ -218,9 +219,17 @@ async function loadDereferencedOpenApiDocument(
   lane: OpenApiLane,
   locale: AppLocale,
 ): Promise<OpenApiDocument> {
-  const document = yaml.load(getOpenApiSourceText(lane, locale));
+  const document = yaml.load(getOpenApiSourceText(lane, locale), {
+    // Preserve the timestamp scalar semantics of the published English specifications.
+    schema:
+      locale === 'en'
+        ? yaml.CORE_SCHEMA.withTags(yaml.timestampTag)
+        : yaml.CORE_SCHEMA,
+  });
 
-  return (await SwaggerParser.dereference(
+  // The major versions resolve sibling descriptions on $ref differently.
+  const parser = locale === 'en' ? GlobalSwaggerParser : SwaggerParser;
+  return (await parser.dereference(
     document as OpenAPIV3.Document | OpenAPIV3_1.Document,
     {
       dereference: {

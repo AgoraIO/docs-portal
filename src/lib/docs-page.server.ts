@@ -1,4 +1,6 @@
+import { existsSync } from 'node:fs';
 import { getTableOfContents } from 'fumadocs-core/content/toc';
+import type { Folder, Root } from 'fumadocs-core/page-tree';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import remarkMdx from 'remark-mdx';
@@ -7,20 +9,35 @@ import {
   type DocsPageType,
   inferDocsPageType,
 } from './analytics/docs-page-type';
+import {
+  resolveZhCnApiReferenceBreadcrumb,
+  resolveZhCnApiReferenceEntry,
+} from './api-reference-breadcrumb';
+import { resolveZhCnApiReferenceProductDocsHref } from './api-reference-product-docs';
 import { resolveDocVersion } from './doc-versions';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
-import { resolveMovedDocsRedirect } from './docs-moved-redirects';
+import type { DocsMeta } from './docs-meta-schema';
+import {
+  isPermanentMovedDocsRedirect,
+  resolveMovedDocsRedirect,
+} from './docs-moved-redirects';
 import {
   type DocsNavScopeResolution,
+  type DocsSidebarHeader,
   getNavScopeSidebarNodes,
   getNavScopeVersionLinks,
   getScopedNavScopeSidebarNodes,
   getSharedNavScopeSidebarNodes,
   resolveDocsNavScope,
 } from './docs-nav-scope';
-import { getSourceSlugs } from './docs-routing';
+import { getSourceSlugs, isSamePathOrDescendant } from './docs-routing';
 import { getSearchEntryMetadata, type SearchEntry } from './docs-search';
+import {
+  getProductTitleVersionSwitcher,
+  parseProductSidebarContext,
+} from './docs-sidebar-context';
+import { filterDocsToc, resolveDocsTocMaxDepth } from './docs-toc';
 import {
   type DocsSidebarNode,
   type DocsSidebarSectionNode,
@@ -30,24 +47,32 @@ import {
   getPrevNextLinksFromNode,
   getProductScopes,
   getSidebarBreadcrumb,
+  getSidebarNodes,
   getTabSummaries,
 } from './docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import { resolveLegacySitemapRedirectPath } from './legacy-sitemap/redirects';
 import { getLegacySolutionsRedirectUrl } from './legacy-solutions-routing';
-import { remarkAccordionHeadings } from './mdx/accordion-toc';
 import {
+  remarkAccordionHeadings,
+  remarkGlobalAccordionHeadings,
+} from './mdx/accordion-toc';
+import {
+  findOpenApiLaneByUrl,
   getOpenApiEndpointUrl,
   getOpenApiLaneLocales,
   getOpenApiLanes,
   getOpenApiOperationIds,
+  getOpenApiReferenceBackLink,
   isOpenApiTab,
   type OpenApiLane,
   resolveOpenApiEndpointRoute,
+  resolveOpenApiLaneRootRedirect,
   resolveOpenApiLaneRoute,
 } from './openapi/lanes';
 import { getOpenApiMarkdownPages } from './openapi/markdown';
 import { getOpenApiOperation } from './openapi/source.server';
+import { resolvePlatformContext } from './platforms/context';
 import {
   extendPlatformGroupPanelSearchNavigation,
   filterPlatformGroupPanelNodes,
@@ -59,11 +84,23 @@ import {
 import {
   buildCanonicalPlatformTocText,
   buildPlatformTocText,
+  extractStructuredPlatformKeys,
   extractStructuredPlatformTabs,
 } from './platforms/processed-text';
-import type { PlatformKey } from './platforms/registry';
+import {
+  isKnownPlatform,
+  normalizePlatformKey,
+  type PlatformKey,
+} from './platforms/registry';
 import { resolvePlatformRoutePage } from './platforms/route';
+import {
+  articleSidebarItems,
+  getRestArticleOutline,
+} from './product-rest-article';
+import { getProductSidebarSource } from './product-rest-sidebar';
 import { getRealtimeMediaApiReferenceLinks } from './realtime-media-api-reference-links';
+import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
+import { resolveCnSdkPublication } from './search/cn-sdk-publication.server';
 import { buildDocsSearchNavigation } from './search/docs-search-navigation';
 import { isPublishedDocsLocale, PUBLISHED_DOCS_LOCALES } from './site-region';
 import {
@@ -71,15 +108,62 @@ import {
   getPageMarkdownUrl,
   type PageWithSource,
 } from './source.server';
+import {
+  resolveZhCnProductIaRedirect,
+  ZH_CN_PRODUCT_IA_REDIRECTS,
+  ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS,
+} from './zh-cn-product-ia-redirects';
 
 const OPENAPI_TAB = 'api-reference';
+const ZH_CN_RTM_REST_API_PARENT_URL = '/zh-CN/api-reference/api-ref/signaling';
+const ZH_CN_RTM_REST_API_PAGE_URLS = [
+  '/zh-CN/api-reference/api-ref/signaling/publish',
+  '/zh-CN/api-reference/api-ref/signaling/receive',
+] as const;
+const ZH_CN_RTM_REST_API_PAGE_URL_SET = new Set<string>(
+  ZH_CN_RTM_REST_API_PAGE_URLS,
+);
+const ZH_CN_RTM_REST_API_BACK_LINK = {
+  backHref: '/zh-CN/realtime-media/rtm',
+  backLabel: '实时消息 RTM',
+};
+const ZH_CN_RTM_BUILD_IA_REDIRECT_PREFIXES = [
+  '/zh-CN/realtime-media/rtm/build/rtm-initialization/',
+  '/zh-CN/realtime-media/rtm/build/authentication-and-connection/',
+  '/zh-CN/realtime-media/rtm/build/channels-and-topics/',
+  '/zh-CN/realtime-media/rtm/build/messaging/',
+  '/zh-CN/realtime-media/rtm/build/message-design-and-history/',
+  '/zh-CN/realtime-media/rtm/build/state-and-attributes/',
+  '/zh-CN/realtime-media/rtm/build/network-and-private-deployment/',
+] as const;
+const ZH_CN_RTM_TROUBLESHOOTING_REDIRECT =
+  '/zh-CN/realtime-media/rtm/build/troubleshooting';
 const DEVICE_KIT_PATH_ENTRY_SLUG = 'quickstart-device-kit';
 const CONVERSATIONAL_AI_PATH_ENTRY_SLUG = 'quickstart-coding';
 const RECIPES_PATH_ENTRY_SLUG = 'voice-ai-recipes';
 const RECIPES_ROOT_SLUG = 'recipes';
 const SDKS_ROOT_SLUG = 'sdks';
-
+const ZH_CN_SHARED_CONCEPT_SLUGS = new Set([
+  'mcp-integrate',
+  'skills-integrate',
+]);
+const TITLE_PLATFORM_SEGMENT_MAP = new Map<string, PlatformKey>([
+  ['agent-go', 'go'],
+  ['agent-python', 'python'],
+  ['agent-typescript', 'typescript'],
+  ['cpp-all-platforms', 'cpp'],
+  ['csharp-windows', 'csharp'],
+  ['go-api', 'go'],
+  ['java-api', 'java'],
+  ['python-api', 'python'],
+  ['react-sdk', 'react'],
+  ['restclient-go', 'go'],
+  ['restclient-java', 'java'],
+  ['unreal-blueprint', 'blueprint'],
+  ['unreal-cpp', 'unreal'],
+]);
 type DocsSidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
+type ZhCnRtcRestSidebarLink = readonly [string, string];
 
 const LEGACY_CONVERSATIONAL_AI_AGENT_ROUTE_LEAVES: Record<string, string> = {
   history: 'history',
@@ -109,11 +193,274 @@ const LEGACY_BEST_PRACTICES_REDIRECTS: Record<
     'zh-CN': '/zh-CN/ai/best-practices/regional-restrictions',
   },
   'http-basic-auth': {
-    'zh-CN': '/zh-CN/api-reference/conversational-ai/rest-api/authentication',
+    'zh-CN': '/zh-CN/ai/build/http-basic-auth',
   },
   'release-notes': {
     'zh-CN': '/zh-CN/ai/release-notes',
   },
+};
+
+const ZH_CN_DELETED_API_REFERENCE_REDIRECTS: Record<string, string> = {
+  'api-ref/conversational-ai/authentication': '/zh-CN/ai/build/http-basic-auth',
+  'api-ref/cloud-recording/authentication':
+    '/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth',
+  'api-ref/media-pull/restful-authentication':
+    '/zh-CN/realtime-media/media-pull/build/http-basic-auth',
+  'api-ref/media-push/restful-authentication':
+    '/zh-CN/realtime-media/media-push/build/enable-media-push/http-basic-auth',
+  'api-ref/rtc/authentication':
+    '/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth',
+  'api-ref/voip-callkit/authentication':
+    '/zh-CN/solutions/voip-call/build/http-basic-auth',
+};
+
+const ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS: Record<string, string> = {
+  'conversational-ai/client-toolkit':
+    '/zh-CN/api-reference/conversational-ai/android/overview',
+  'conversational-ai/client-toolkit/basicauthcredential':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/basicauthcredential',
+  'conversational-ai/client-toolkit/baseresponse.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/baseresponse.go',
+  'conversational-ai/client-toolkit/client.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/client.go',
+  'conversational-ai/client-toolkit/conversationalaiapi':
+    '/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi',
+  'conversational-ai/client-toolkit/conversationalaiapieventhandler':
+    '/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler',
+  'conversational-ai/client-toolkit/convoaiclient.java':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/convoaiclient.java',
+  'conversational-ai/client-toolkit/enum':
+    '/zh-CN/api-reference/conversational-ai/android/enum',
+  'conversational-ai/client-toolkit/iconversationalaiapi':
+    '/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi',
+  'conversational-ai/client-toolkit/iconversationalaiapieventhandler':
+    '/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler',
+  'conversational-ai/client-toolkit/listoptions.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/listoptions.go',
+  'conversational-ai/client-toolkit/overview':
+    '/zh-CN/api-reference/conversational-ai/android/overview',
+  'conversational-ai/client-toolkit/overview.agent-go':
+    '/zh-CN/api-reference/conversational-ai/agent-go',
+  'conversational-ai/client-toolkit/overview.agent-python':
+    '/zh-CN/api-reference/conversational-ai/agent-python',
+  'conversational-ai/client-toolkit/overview.agent-typescript':
+    '/zh-CN/api-reference/conversational-ai/agent-typescript',
+  'conversational-ai/agent-go/overview':
+    '/zh-CN/api-reference/conversational-ai/agent-go',
+  'conversational-ai/agent-python/overview':
+    '/zh-CN/api-reference/conversational-ai/agent-python',
+  'conversational-ai/agent-typescript/overview':
+    '/zh-CN/api-reference/conversational-ai/agent-typescript',
+  'conversational-ai/client-toolkit/response.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/response.go',
+  'conversational-ai/client-toolkit/samplelogger.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/samplelogger.go',
+  'conversational-ai/client-toolkit/struct':
+    '/zh-CN/api-reference/conversational-ai/android/struct',
+  'conversational-ai/go-api/baseresponse.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/baseresponse.go',
+  'conversational-ai/go-api/basicauthcredential':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/basicauthcredential',
+  'conversational-ai/go-api/client.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/client.go',
+  'conversational-ai/go-api/enum':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/enum',
+  'conversational-ai/go-api/listoptions.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/listoptions.go',
+  'conversational-ai/go-api/overview.go':
+    '/zh-CN/api-reference/conversational-ai/agent-go',
+  'conversational-ai/go-api/response.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/response.go',
+  'conversational-ai/go-api/samplelogger.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/samplelogger.go',
+  'conversational-ai/go-api/struct':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/struct',
+  'conversational-ai/java':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/overview',
+  'conversational-ai/java/basicauthcredential':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/basicauthcredential',
+  'conversational-ai/java/convoaiclient.java':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/convoaiclient.java',
+  'conversational-ai/java/enum':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/enum',
+  'conversational-ai/java/overview':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/overview',
+  'conversational-ai/java/struct':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/struct',
+  'conversational-ai/python-api/overview.python':
+    '/zh-CN/api-reference/conversational-ai/agent-python',
+  'conversational-ai/typescript-api/conversationalaiapi':
+    '/zh-CN/api-reference/conversational-ai/web/conversationalaiapi',
+  'conversational-ai/typescript-api/enum':
+    '/zh-CN/api-reference/conversational-ai/web/enum',
+  'conversational-ai/typescript-api/overview.typescript':
+    '/zh-CN/api-reference/conversational-ai/agent-typescript',
+  'conversational-ai/typescript-api/struct':
+    '/zh-CN/api-reference/conversational-ai/web/struct',
+  'local-server-recording/agoramediartcrecorder.java':
+    '/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java',
+  'local-server-recording/agoraservice.java':
+    '/zh-CN/api-reference/local-server-recording/java/agoraservice.java',
+  'local-server-recording/api-overview':
+    '/zh-CN/api-reference/local-server-recording/java/api-overview',
+  'local-server-recording/enum':
+    '/zh-CN/api-reference/local-server-recording/java/enum',
+  'local-server-recording/iagoramediacomponentfactory.cpp':
+    '/zh-CN/api-reference/local-server-recording/cpp/iagoramediacomponentfactory.cpp',
+  'local-server-recording/iagoramediartcrecorder.cpp':
+    '/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp',
+  'local-server-recording/iagoramediartcrecordereventhandler':
+    '/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler',
+  'local-server-recording/iagoraservice.cpp':
+    '/zh-CN/api-reference/local-server-recording/cpp/iagoraservice.cpp',
+  'local-server-recording/irecordervideoframeobserver':
+    '/zh-CN/api-reference/local-server-recording/java/irecordervideoframeobserver',
+  'local-server-recording/struct':
+    '/zh-CN/api-reference/local-server-recording/java/struct',
+  'meeting/client-api': '/zh-CN/api-reference/meeting/android',
+  'api-ref/meeting/android/client-api': '/zh-CN/api-reference/meeting/android',
+  'api-ref/meeting/ios/client-api': '/zh-CN/api-reference/meeting/ios',
+  'api-ref/meeting/electron/client-api':
+    '/zh-CN/api-reference/meeting/electron',
+  'private-room/call-api': '/zh-CN/api-reference/private-room/android',
+  'api-ref/private-room/android/call-api':
+    '/zh-CN/api-reference/private-room/android',
+  'api-ref/private-room/ios/call-api': '/zh-CN/api-reference/private-room/ios',
+  rtm: '/zh-CN/api-reference/rtm/android/configuration',
+  'rtm/components-hooks':
+    '/zh-CN/api-reference/rtm/react-native/components-hooks',
+  'rtm/enumv': '/zh-CN/api-reference/rtm/android/enumv',
+  'rtm/error-codes': '/zh-CN/realtime-media/rtm/build/troubleshooting',
+  'rtm/react-native/error-codes':
+    '/zh-CN/realtime-media/rtm/build/troubleshooting',
+  'rtm/toc-channel/channel': '/zh-CN/api-reference/rtm/android/channel',
+  'rtm/toc-configuration/configuration':
+    '/zh-CN/api-reference/rtm/android/configuration',
+  'rtm/toc-lock/lock': '/zh-CN/api-reference/rtm/android/lock',
+  'rtm/toc-message/message': '/zh-CN/api-reference/rtm/android/message',
+  'rtm/toc-message/publish': '/zh-CN/api-reference/api-ref/signaling/publish',
+  'rtm/toc-message/receive': '/zh-CN/api-reference/api-ref/signaling/receive',
+  'rtm/toc-message/response-code':
+    '/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/response-code',
+  'rtm/toc-presence/presence': '/zh-CN/api-reference/rtm/android/presence',
+  'rtm/toc-storage/storage': '/zh-CN/api-reference/rtm/android/storage',
+  'rtm/toc-token/token': '/zh-CN/api-reference/rtm/android/token',
+  'rtm/toc-topic/topic': '/zh-CN/api-reference/rtm/android/topic',
+  'api-ref/signaling': '/zh-CN/api-reference/api-ref/signaling/publish',
+  'api-ref/signaling/index': '/zh-CN/api-reference/api-ref/signaling/publish',
+  'api-ref/signaling/restful': '/zh-CN/api-reference/api-ref/signaling/publish',
+  'api-ref/signaling/response-code':
+    '/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/response-code',
+  'api-ref/ppt-conversion-service/status-codes':
+    '/zh-CN/realtime-media/ppt-transcoding/reference/response-code',
+  'api-ref/whiteboard': '/zh-CN/api-reference/api-ref/whiteboard/restful',
+  'api-ref/fastboard/android/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/android',
+  'api-ref/fastboard/ios/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/ios',
+  'api-ref/fastboard/javascript/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/web',
+  'api-ref/whiteboard/android/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/android',
+  'api-ref/whiteboard/ios/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/ios',
+  'whiteboard/fastboard': '/zh-CN/api-reference/whiteboard/fastboard/android',
+  'whiteboard/fastboard/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/android',
+  'flexible-classroom/classroom-sdk':
+    '/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk',
+  'flexible-classroom/proctor-sdk':
+    '/zh-CN/api-reference/flexible-classroom/ios/api-reference/proctor-sdk',
+  'flexible-classroom/fcr-ui-scene':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/fcr-ui-scene',
+  'flexible-classroom/android':
+    '/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk',
+  'flexible-classroom/ios':
+    '/zh-CN/api-reference/flexible-classroom/ios/api-reference/classroom-sdk',
+  'flexible-classroom/web':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk',
+  'flexible-classroom/electron':
+    '/zh-CN/api-reference/flexible-classroom/electron/api-reference/classroom-sdk',
+  'flexible-classroom/restful-api':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+  'api-ref/flexible-classroom/android/classroom-sdk':
+    '/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk',
+  'api-ref/flexible-classroom/ios/classroom-sdk':
+    '/zh-CN/api-reference/flexible-classroom/ios/api-reference/classroom-sdk',
+  'api-ref/flexible-classroom/javascript/classroom-sdk':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk',
+  'api-ref/flexible-classroom/electron/classroom-sdk':
+    '/zh-CN/api-reference/flexible-classroom/electron/api-reference/classroom-sdk',
+  'api-ref/flexible-classroom/ios/proctor-sdk':
+    '/zh-CN/api-reference/flexible-classroom/ios/api-reference/proctor-sdk',
+  'api-ref/flexible-classroom/javascript/proctor-sdk':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/proctor-sdk',
+  'api-ref/flexible-classroom/electron/proctor-sdk':
+    '/zh-CN/api-reference/flexible-classroom/electron/api-reference/proctor-sdk',
+  'api-ref/flexible-classroom/javascript/fcr-ui-scene':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/fcr-ui-scene',
+  'api-ref/flexible-classroom/electron/fcr-ui-scene':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/fcr-ui-scene',
+  'api-ref/flexible-classroom/javascript/overview':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store',
+  'api-ref/flexible-classroom/electron/overview':
+    '/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store',
+  'api-ref/flexible-classroom/classroom-rest-api':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+  'api-ref/flexible-classroom/restful-api':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+  'flexible-classroom/restful/api/api-classroom':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+  'flexible-classroom/restful/api/api-recording':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-recording',
+  'flexible-classroom/restful/api/api-sync':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-sync',
+  'flexible-classroom/restful/api/api-user':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-user',
+  'flexible-classroom/restful/api/api-widget':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-widget',
+  'rtc/error-code': '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/android/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/ios/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/macos/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/windows/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/electron/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/flutter/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/react-native/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/unity/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/unreal/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/mini-program/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/web/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc-server-sdk/go/error-code':
+    '/zh-CN/realtime-media/rtc-server-sdk/reference/error-code',
+  'api-ref/rtc-server-sdk/python/error-code':
+    '/zh-CN/realtime-media/rtc-server-sdk/reference/error-code',
+  'rtc/android': '/zh-CN/api-reference/rtc/android/rtc-api-overview',
+  'rtc/cpp-all-platforms':
+    '/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-api-overview',
+  'rtc/csharp-windows':
+    '/zh-CN/api-reference/rtc/csharp-windows/rtc-api-overview',
+  'rtc/electron': '/zh-CN/api-reference/rtc/electron/rtc-api-overview',
+  'rtc/flutter': '/zh-CN/api-reference/rtc/flutter/rtc-api-overview',
+  'rtc/harmonyos': '/zh-CN/api-reference/rtc/harmonyos/rtc-api-overview',
+  'rtc/ios': '/zh-CN/api-reference/rtc/ios/rtc-api-overview',
+  'rtc/macos': '/zh-CN/api-reference/rtc/macos/rtc-api-overview',
+  'rtc/react-native': '/zh-CN/api-reference/rtc/react-native/rtc-api-overview',
+  'rtc/unity': '/zh-CN/api-reference/rtc/unity/rtc-api-overview',
+  'rtc/unreal-blueprint':
+    '/zh-CN/api-reference/rtc/unreal-blueprint/rtc-api-overview',
+  'rtc/unreal-cpp': '/zh-CN/api-reference/rtc/unreal-cpp/rtc-api-overview',
 };
 
 export async function loadDocsTabIndex(locale: string, tab: string) {
@@ -130,7 +477,8 @@ export async function loadDocsTabIndex(locale: string, tab: string) {
   const tabSummaries = getTabSummaries(pageTree);
   const tabSummary = tabSummaries.find((item) => item.id === tab);
 
-  if (tabSummary?.url === `/${locale}/${tab}`) {
+  const tabUrl = `/${locale}/${tab}`;
+  if (tabSummary?.url === tabUrl && hasDocsPageForUrl(source, tabUrl)) {
     return {
       locale,
       url: tabSummary.url,
@@ -138,7 +486,12 @@ export async function loadDocsTabIndex(locale: string, tab: string) {
     };
   }
 
-  const firstPageUrl = getFirstTabPageUrl(pageTree, tab);
+  const indexedPageUrl = getFirstTabPageUrl(pageTree, tab);
+  const firstDescendantPageUrl = getFirstChildPageUrl(pageTree, tab, []);
+  const firstPageUrl =
+    indexedPageUrl === tabUrl && !hasDocsPageForUrl(source, tabUrl)
+      ? firstDescendantPageUrl
+      : (indexedPageUrl ?? firstDescendantPageUrl);
 
   if (!firstPageUrl) {
     return null;
@@ -157,9 +510,21 @@ export async function loadDocsPagePayload(
   slugSegments: string[],
   search?: string,
 ) {
-  const movedRedirect = resolveMovedDocsRedirect(locale, tab, slugSegments);
-  if (movedRedirect) {
-    return { redirectUrl: movedRedirect, statusCode: 301 as const };
+  if (isRetiredCnDocsPath(`/${[locale, tab, ...slugSegments].join('/')}`)) {
+    return null;
+  }
+
+  const movedDocsRedirect = resolveMovedDocsRedirect(locale, tab, slugSegments);
+  if (movedDocsRedirect) {
+    return {
+      redirectUrl: canonicalizeZhCnProductIaRedirectUrl(
+        locale,
+        movedDocsRedirect,
+      ),
+      ...(isPermanentMovedDocsRedirect(locale, tab, slugSegments)
+        ? { statusCode: 301 as const }
+        : {}),
+    };
   }
 
   const apiReferenceRedirect = resolveApiReferenceRedirect(
@@ -228,6 +593,49 @@ export async function loadDocsPagePayload(
     };
   }
 
+  const deletedApiReferenceRedirect = resolveDeletedZhCnApiReferenceRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (deletedApiReferenceRedirect) {
+    return {
+      redirectUrl: deletedApiReferenceRedirect,
+    };
+  }
+
+  const sharedConceptRedirect = resolveZhCnSharedConceptRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (sharedConceptRedirect) {
+    return {
+      redirectUrl: sharedConceptRedirect,
+    };
+  }
+
+  const zhCnProductIaRedirect = resolveZhCnProductIaRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (zhCnProductIaRedirect) {
+    const path = `${tab}/${slugSegments.join('/')}`;
+    const statusCode: 301 | undefined =
+      path in ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS ||
+      path in ZH_CN_PRODUCT_IA_REDIRECTS ||
+      isZhCnRtmBuildIaRedirect(zhCnProductIaRedirect)
+        ? 301
+        : undefined;
+
+    if (statusCode === undefined) {
+      return { redirectUrl: zhCnProductIaRedirect };
+    }
+
+    return { redirectUrl: zhCnProductIaRedirect, statusCode };
+  }
+
   const realtimeMediaApiReferenceRedirect =
     resolveRealtimeMediaApiReferenceRedirect(locale, tab, slugSegments);
   if (realtimeMediaApiReferenceRedirect) {
@@ -287,6 +695,19 @@ export async function loadDocsPagePayload(
     locale,
   );
 
+  if (!page) {
+    const mergedPlatformSuffixRedirect = resolveMergedPlatformSuffixRedirect({
+      locale,
+      slugSegments,
+      source,
+      tab,
+    });
+
+    if (mergedPlatformSuffixRedirect) {
+      return mergedPlatformSuffixRedirect;
+    }
+  }
+
   let requestedPlatform: PlatformKey | undefined;
   let platformResolvedProcessedText: string | undefined;
 
@@ -310,6 +731,18 @@ export async function loadDocsPagePayload(
   }
 
   if (!page) {
+    const supportedLocale = toSupportedLocale(locale);
+    const openApiLaneRootRedirect =
+      supportedLocale && isOpenApiTab(tab)
+        ? resolveOpenApiLaneRootRedirect(supportedLocale, tab, slugSegments)
+        : null;
+
+    if (openApiLaneRootRedirect) {
+      return {
+        redirectUrl: openApiLaneRootRedirect,
+      };
+    }
+
     const pageTree = getCanonicalPageTree(source, locale);
     const fallbackUrl = getFirstChildPageUrl(pageTree, tab, slugSegments);
 
@@ -347,6 +780,14 @@ export async function loadDocsPagePayload(
 
   const pageTree = getCanonicalPageTree(source, locale);
   const supportedLocale = toSupportedLocale(locale);
+  const sourcePageUrls =
+    locale === 'zh-CN' && tab === OPENAPI_TAB
+      ? new Set(
+          localePages
+            .filter((item) => hasExistingDocsSourceFile(item, locale))
+            .map((item) => item.url),
+        )
+      : null;
   const openApiPage = isOpenApiPageWithProps(page) ? page : null;
   const isOpenApiPage = openApiPage !== null;
   const openApiRoute =
@@ -363,13 +804,22 @@ export async function loadDocsPagePayload(
   const structuredPlatformTabs = extractStructuredPlatformTabs(processedText);
   const defaultStructuredPlatform = structuredPlatformTabs?.defaultPlatform;
   const artifactPlatform = requestedPlatform ?? defaultStructuredPlatform;
-  const toc = isOpenApiPage
+  const unboundedToc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
     : await resolvePageToc(page, processedText, artifactPlatform);
+  const tocMaxDepth = resolveDocsTocMaxDepth(
+    page.data,
+    tab === OPENAPI_TAB,
+    unboundedToc,
+  );
+  const toc = filterDocsToc(unboundedToc, tocMaxDepth);
   // Only generated OpenAPI operation pages need the wide layout. Hand-written
   // pages inside an OpenAPI lane keep the docs layout and its TOC.
-  const layoutMode: DocsLayoutMode = isOpenApiPage ? 'openapi' : 'docs';
-  const sidebar = await getDocsSidebarNodes({
+  const layoutMode: DocsLayoutMode =
+    isOpenApiPage || (locale === 'zh-CN' && openApiLaneRoute !== null)
+      ? 'openapi'
+      : 'docs';
+  const baseSidebar = await getDocsSidebarNodes({
     activePath: page.url,
     locale: supportedLocale,
     pageTree,
@@ -377,6 +827,9 @@ export async function loadDocsPagePayload(
     source,
     tab,
   });
+  const sidebar = getProductSidebarSource(page.url)
+    ? await embedProductRestSidebar(baseSidebar, page.url, pageTree, source)
+    : baseSidebar;
   const title = page.data.title ?? page.slugs.at(-1) ?? page.url;
   const navScope = getDocsNavScope({
     activePath: page.url,
@@ -395,7 +848,23 @@ export async function loadDocsPagePayload(
     source,
     tab,
   });
+  const focusedOpenApiLaneHeader =
+    !navScope && supportedLocale === 'zh-CN'
+      ? resolveFocusedOpenApiLaneSidebarHeader(page.url, supportedLocale, tab)
+      : undefined;
+  const resolvedSidebarHeader = sidebarHeader ?? focusedOpenApiLaneHeader;
+  const apiReferenceEntry =
+    locale === 'zh-CN' && tab === OPENAPI_TAB
+      ? resolveZhCnApiReferenceEntry(page.url)
+      : undefined;
   const breadcrumb = getSidebarBreadcrumb(sidebar, page.url);
+  const apiReferenceBreadcrumb =
+    locale === 'zh-CN' && tab === 'api-reference'
+      ? resolveZhCnApiReferenceBreadcrumb({
+          activePath: page.url,
+          title,
+        })
+      : null;
   const platformGroup = resolvePlatformGroupDefinition(page, localePages);
   const mdxBody = platformGroup
     ? {
@@ -463,15 +932,42 @@ export async function loadDocsPagePayload(
       ]),
     ),
   );
+  const titlePlatforms = getTitlePlatforms({
+    defaultPlatform: defaultStructuredPlatform,
+    locale,
+    page,
+    processedText,
+    requestedPlatform,
+  });
+  const declaredSidebar =
+    navScope?.activeVersion?.sidebar ?? navScope?.scope.meta.navScope?.sidebar;
+  const navigationRoot =
+    declaredSidebar && navScope
+      ? {
+          name: 'Scoped navigation',
+          children: flattenSidebarPageNodes(
+            getScopedNavScopeSidebarNodes({
+              getNodeMeta: (node) =>
+                getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+              navScope,
+            }),
+          ).map(({ title, url }) => ({
+            type: 'page' as const,
+            name: title,
+            url,
+          })),
+        }
+      : (navScope?.sidebarRoot ?? pageTree);
 
-  return {
+  const apiPayload = {
     activePath: page.url,
     activeTab: tab,
     analyticsPageContext,
     analyticsPageType,
     body,
     breadcrumb:
-      navScope?.scope.meta.sidebarIndexTitle &&
+      apiReferenceBreadcrumb ??
+      (navScope?.scope.meta.sidebarIndexTitle &&
       page.url === navScope.scope.node.index?.url
         ? [
             {
@@ -486,7 +982,7 @@ export async function loadDocsPagePayload(
                 title,
                 url: page.url,
               },
-            ],
+            ]),
     contentPath: page.path,
     description: page.data.description,
     markdownUrl: getPageMarkdownUrl(page, artifactPlatform).url,
@@ -519,15 +1015,146 @@ export async function loadDocsPagePayload(
             supportedLocale,
             openApiRoute.operationId,
           )
-        : getPrevNextLinksFromNode(navScope?.sidebarRoot ?? pageTree, page.url),
+        : getPrevNextLinksFromNode(
+            navigationRoot,
+            page.url,
+            sourcePageUrls ? (url) => sourcePageUrls.has(url) : undefined,
+          ),
     productScopes: getProductScopes(pageTree),
     sidebar,
-    sidebarHeader,
+    sidebarHeader:
+      resolvedSidebarHeader && apiReferenceEntry
+        ? {
+            ...resolvedSidebarHeader,
+            title: `${apiReferenceEntry.product} · ${apiReferenceEntry.platform}`,
+          }
+        : resolvedSidebarHeader,
     slug: page.slugs.at(-1),
     tabs: getTabSummaries(pageTree),
     title: page.data.title,
+    ...(titlePlatforms.length > 0 ? { titlePlatforms } : {}),
     toc,
+    ...(tocMaxDepth === undefined ? {} : { tocMaxDepth }),
   };
+
+  const productSidebarContext =
+    supportedLocale === 'zh-CN' && tab === OPENAPI_TAB
+      ? parseProductSidebarContext(search, supportedLocale)
+      : null;
+  const productSidebarPayload = productSidebarContext
+    ? await getProductSidebarContextPayload({
+        context: productSidebarContext,
+        activePath: page.url,
+        pageTree,
+        source,
+      })
+    : null;
+
+  const titleVersionSwitcher =
+    productSidebarPayload && productSidebarContext
+      ? getProductTitleVersionSwitcher(
+          page.url,
+          productSidebarContext,
+          resolvedSidebarHeader?.versionSwitcher,
+        )
+      : undefined;
+  return {
+    ...apiPayload,
+    ...productSidebarPayload,
+    ...(titleVersionSwitcher ? { titleVersionSwitcher } : {}),
+  };
+}
+
+function getTitlePlatforms({
+  defaultPlatform,
+  locale,
+  page,
+  processedText,
+  requestedPlatform,
+}: {
+  defaultPlatform?: PlatformKey;
+  locale: string;
+  page: PageWithSource;
+  processedText: string;
+  requestedPlatform?: PlatformKey;
+}): PlatformKey[] {
+  if (locale !== 'zh-CN') {
+    return [];
+  }
+
+  const structuredPlatforms = extractStructuredPlatformKeys(processedText);
+  return resolvePlatformContext({
+    availablePlatforms: structuredPlatforms,
+    defaultPlatform,
+    explicitTitlePlatforms: getExplicitTitlePlatforms(page),
+    pathPlatforms: getPathTitlePlatforms(page),
+    requestedPlatform,
+  }).titlePlatforms;
+}
+
+function getExplicitTitlePlatforms(page: PageWithSource): PlatformKey[] {
+  if (
+    !('titlePlatforms' in page.data) ||
+    !Array.isArray(page.data.titlePlatforms)
+  ) {
+    return [];
+  }
+
+  return page.data.titlePlatforms
+    .map((platform) => normalizePlatformKey(platform))
+    .filter(isKnownPlatform);
+}
+
+function getPathTitlePlatforms(page: PageWithSource): PlatformKey[] {
+  const platforms: PlatformKey[] = [];
+
+  for (const segment of page.slugs.slice(2)) {
+    const mappedPlatform = TITLE_PLATFORM_SEGMENT_MAP.get(segment);
+    const platform = mappedPlatform ?? normalizePlatformSlugSegment(segment);
+
+    if (platform && !platforms.includes(platform)) {
+      platforms.push(platform);
+    }
+  }
+
+  return platforms.length === 1 ? platforms : [];
+}
+
+function normalizePlatformSlugSegment(
+  segment: string,
+): PlatformKey | undefined {
+  const normalizedSegment = normalizePlatformKey(segment);
+
+  return isKnownPlatform(normalizedSegment)
+    ? (normalizedSegment as PlatformKey)
+    : undefined;
+}
+
+function canonicalizeZhCnProductIaRedirectUrl(
+  locale: string,
+  redirectUrl: string,
+) {
+  if (locale !== 'zh-CN') {
+    return redirectUrl;
+  }
+
+  const [pathname, suffix = ''] = redirectUrl.split(/([?#].*)/, 2);
+  const localePrefix = `/${locale}/`;
+
+  if (!pathname.startsWith(localePrefix)) {
+    return redirectUrl;
+  }
+
+  const [targetTab, ...targetSlugSegments] = pathname
+    .slice(localePrefix.length)
+    .split('/');
+  const canonicalRedirect = resolveZhCnProductIaRedirect(
+    locale,
+    targetTab,
+    targetSlugSegments,
+  );
+
+  return canonicalRedirect ? `${canonicalRedirect}${suffix}` : redirectUrl;
 }
 
 export async function loadDocsSearchIndex(
@@ -542,9 +1169,23 @@ export async function loadDocsSearchIndex(
   const { source } = await import('./source.server');
   const localePages = source.getPages(locale);
   const searchNavigation = extendPlatformGroupPanelSearchNavigation(
-    buildDocsSearchNavigation(getCanonicalPageTree(source, supportedLocale)),
+    buildDocsSearchNavigation(
+      getCanonicalPageTree(source, supportedLocale),
+      supportedLocale,
+    ),
     localePages,
   );
+  if (supportedLocale === 'zh-CN') {
+    for (const url of searchNavigation.keys()) {
+      const [, , tab, ...slugSegments] = url.split('/');
+      if (
+        !resolveCnSdkPublication(url).searchable ||
+        resolveApiReferenceRedirect(supportedLocale, tab, slugSegments)
+      ) {
+        searchNavigation.delete(url);
+      }
+    }
+  }
   const pages = await Promise.all(
     localePages
       .filter(
@@ -558,6 +1199,11 @@ export async function loadDocsSearchIndex(
           content,
           description: item.data.description,
           ...getSearchEntryMetadata(item.url, content),
+          ...(supportedLocale === 'zh-CN'
+            ? {
+                version: resolveCnSdkPublication(item.url).version,
+              }
+            : {}),
           title: item.data.title ?? item.slugs.at(-1) ?? item.url,
           url: item.url,
         };
@@ -613,6 +1259,39 @@ function resolveLegacyBestPracticesRedirect(
   return redirect;
 }
 
+function resolveDeletedZhCnApiReferenceRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (locale !== 'zh-CN' || tab !== 'api-reference') {
+    return null;
+  }
+
+  return ZH_CN_DELETED_API_REFERENCE_REDIRECTS[slugSegments.join('/')] ?? null;
+}
+
+function resolveZhCnSharedConceptRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (locale !== 'zh-CN') {
+    return null;
+  }
+
+  const leafSlug = slugSegments.at(-1);
+  if (!leafSlug || !ZH_CN_SHARED_CONCEPT_SLUGS.has(leafSlug)) {
+    return null;
+  }
+
+  if (tab === 'introduction' && slugSegments.length === 1) {
+    return null;
+  }
+
+  return `/zh-CN/introduction/${leafSlug}`;
+}
+
 function resolveDeviceKitRedirect(
   locale: string,
   tab: string,
@@ -623,23 +1302,35 @@ function resolveDeviceKitRedirect(
   }
 
   const normalizedPath = slugSegments.join('/');
+  const isZhCn = locale === 'zh-CN';
+  const deviceKitOverviewPath = isZhCn
+    ? `/${locale}/ai/device-kit/overview/product-overview`
+    : `/${locale}/ai/device-kit/start-here/quickstart`;
+  const deviceKitQuickstartPath = isZhCn
+    ? `/${locale}/ai/device-kit/build/run-r1-demo`
+    : `/${locale}/ai/device-kit/start-here/quickstart`;
+  const deviceKitRunDemoPath = isZhCn
+    ? `/${locale}/ai/device-kit/build/run-r1-demo`
+    : `/${locale}/ai/device-kit/build/run-the-r1-demo`;
 
   if (normalizedPath === 'device-kit') {
-    return `/${locale}/ai/device-kit/start-here/quickstart`;
+    return deviceKitOverviewPath;
   }
 
   if (normalizedPath === `choose-your-path/${DEVICE_KIT_PATH_ENTRY_SLUG}`) {
-    return `/${locale}/ai/device-kit/start-here/quickstart`;
+    return deviceKitQuickstartPath;
   }
 
   const redirects: Record<string, string> = {
-    'device-kit/get-started': `/${locale}/ai/device-kit/start-here/quickstart`,
-    'device-kit/get-started/quickstart': `/${locale}/ai/device-kit/start-here/quickstart`,
+    'device-kit/get-started': deviceKitQuickstartPath,
+    'device-kit/get-started/quickstart': deviceKitQuickstartPath,
     'device-kit/get-started/enable-services': `/${locale}/ai/device-kit/reference/enable-services`,
-    'device-kit/get-started/run-the-demo': `/${locale}/ai/device-kit/build/run-the-r1-demo`,
-    'device-kit/overview': `/${locale}/ai/device-kit/build/architecture-overview`,
-    'device-kit/overview/architecture': `/${locale}/ai/device-kit/build/architecture-overview`,
-    'device-kit/reference': `/${locale}/ai/device-kit/build/device-controls`,
+    'device-kit/get-started/run-the-demo': deviceKitRunDemoPath,
+    'device-kit/overview': deviceKitOverviewPath,
+    'device-kit/overview/architecture': isZhCn
+      ? deviceKitOverviewPath
+      : `/${locale}/ai/device-kit/build/architecture-overview`,
+    'device-kit/reference': `/${locale}/ai/device-kit/reference/enable-services`,
     'device-kit/reference/device-controls': `/${locale}/ai/device-kit/build/device-controls`,
     'device-kit/overview/pricing': `/${locale}/ai/device-kit/reference/pricing`,
     'device-kit/overview/release-notes': `/${locale}/ai/device-kit/reference/release-notes`,
@@ -697,8 +1388,18 @@ function resolveApiReferenceRedirect(
     return legacyConversationalAiRestRedirect;
   }
 
+  const legacyFlexibleClassroomApiRedirect =
+    resolveLegacyFlexibleClassroomApiRedirect(locale, normalizedPath);
+  if (legacyFlexibleClassroomApiRedirect) {
+    return legacyFlexibleClassroomApiRedirect;
+  }
+
   if (normalizedPath === RECIPES_PATH_ENTRY_SLUG) {
     return `/${locale}/${OPENAPI_TAB}/${RECIPES_ROOT_SLUG}`;
+  }
+
+  if (locale === 'zh-CN' && normalizedPath === 'api-ref') {
+    return '/zh-CN/api-reference/api';
   }
 
   if (
@@ -721,6 +1422,24 @@ function resolveApiReferenceRedirect(
     return '/en/api-reference/api-ref/rtc';
   }
 
+  if (locale === 'zh-CN' && normalizedPath === 'rtc') {
+    return '/zh-CN/api-reference/api-ref/rtc';
+  }
+
+  if (locale === 'zh-CN') {
+    const placeholderRedirect =
+      ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS[normalizedPath];
+    if (placeholderRedirect) {
+      return placeholderRedirect;
+    }
+
+    const flexibleClassroomRedirect =
+      resolveFlexibleClassroomPlatformRedirect(normalizedPath);
+    if (flexibleClassroomRedirect) {
+      return flexibleClassroomRedirect;
+    }
+  }
+
   if (
     locale === 'en' &&
     isLegacyEnglishApiReferenceProductPath(normalizedPath)
@@ -730,6 +1449,43 @@ function resolveApiReferenceRedirect(
     }
 
     return `/en/${getApiReferenceProductRoot(locale)}/${normalizedPath}`;
+  }
+
+  return null;
+}
+
+function resolveFlexibleClassroomPlatformRedirect(normalizedPath: string) {
+  const match = normalizedPath.match(
+    /^flexible-classroom\/(android|ios|web|electron)\/(.+)$/,
+  );
+  if (!match) {
+    return null;
+  }
+
+  const [, platform, slug] = match;
+
+  if (slug.startsWith('api-reference/')) {
+    return null;
+  }
+
+  if (platform === 'android' || platform === 'ios') {
+    if (slug === 'classroom-sdk' || slug === 'proctor-sdk') {
+      return `/zh-CN/api-reference/flexible-classroom/${platform}/api-reference/${slug}`;
+    }
+
+    return `/zh-CN/api-reference/flexible-classroom/${platform}/api-reference/edu-context/${slug}`;
+  }
+
+  if (
+    slug === 'classroom-sdk' ||
+    slug === 'proctor-sdk' ||
+    slug === 'edu-store'
+  ) {
+    return `/zh-CN/api-reference/flexible-classroom/${platform}/api-reference/${slug}`;
+  }
+
+  if (platform === 'web' && slug === 'fcr-ui-scene') {
+    return '/zh-CN/api-reference/flexible-classroom/web/api-reference/fcr-ui-scene';
   }
 
   return null;
@@ -813,21 +1569,19 @@ function resolveLegacyConversationalAiRestRedirect(
   const prefix = 'conversational-ai/rest-api';
 
   if (normalizedPath === prefix) {
-    return locale === 'en'
-      ? `/${locale}/api-reference/api-ref/conversational-ai`
-      : null;
+    return `/${locale}/api-reference/api-ref/conversational-ai`;
   }
 
   if (normalizedPath === `${prefix}/authentication`) {
-    return locale === 'en'
-      ? `/${locale}/api-reference/api-ref/conversational-ai/authentication`
-      : null;
+    return locale === 'zh-CN'
+      ? '/zh-CN/ai/build/http-basic-auth'
+      : `/${locale}/api-reference/api-ref/conversational-ai/authentication`;
   }
 
   if (normalizedPath === `${prefix}/status-codes`) {
     return locale === 'en'
       ? `/${locale}/api-reference/api-ref/conversational-ai/status-codes`
-      : null;
+      : `/${locale}/ai/api/response-code`;
   }
 
   if (!normalizedPath.startsWith(`${prefix}/agent/`)) {
@@ -871,6 +1625,27 @@ function resolveAiDocsRedirect(
   };
 
   return redirects[normalizedPath] ?? null;
+}
+
+function resolveLegacyFlexibleClassroomApiRedirect(
+  locale: string,
+  normalizedPath: string,
+) {
+  if (locale !== 'zh-CN') {
+    return null;
+  }
+
+  const match = normalizedPath.match(
+    /^api-ref\/flexible-classroom\/(android|ios)\/API\/([^/]+)$/,
+  );
+  if (!match) {
+    return null;
+  }
+
+  const [, platform, legacySlug] = match;
+  const slug = legacySlug.replaceAll('_', '-').toLowerCase();
+
+  return `/zh-CN/api-reference/flexible-classroom/${platform}/api-reference/edu-context/${slug}`;
 }
 
 function resolveLegacyProductRedirect(
@@ -918,12 +1693,25 @@ export function resolveLegacySitemapRedirect(
   const legacyPath = `/${[locale, tab, ...slugSegments].join('/')}`;
   const rule = resolveLegacySitemapRedirectPath(legacyPath, search);
 
-  return rule
-    ? {
-        preserveSearch: rule.preserveSearch,
-        redirectUrl: rule.target,
-      }
+  if (!rule) {
+    return null;
+  }
+
+  const zhCnProductPath = legacyPath.startsWith('/zh-CN/')
+    ? legacyPath.slice('/zh-CN/'.length)
     : null;
+
+  if (
+    zhCnProductPath &&
+    zhCnProductPath in ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS
+  ) {
+    return { redirectUrl: rule.target, statusCode: 301 as const };
+  }
+
+  return {
+    preserveSearch: rule.preserveSearch,
+    redirectUrl: rule.target,
+  };
 }
 
 function resolveRealtimeMediaRedirect(
@@ -951,6 +1739,35 @@ function resolveRealtimeMediaRedirect(
   ) {
     return '/en/introduction/billing/billing-policies';
   }
+  const zhCnSpeechToTextRedirects: Record<string, string> =
+    locale === 'zh-CN'
+      ? {
+          'speech-to-text/overview': `/${locale}/realtime-media/speech-to-text`,
+          'speech-to-text/overview/product-overview': `/${locale}/realtime-media/speech-to-text`,
+          'speech-to-text/overview/release-notes': `/${locale}/realtime-media/speech-to-text/reference/release-notes`,
+          'speech-to-text/overview/billing': `/${locale}/realtime-media/speech-to-text/reference/billing`,
+          'speech-to-text/get-started/enable-service': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service`,
+          'speech-to-text/user-guides': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service`,
+          'speech-to-text/user-guides/http-basic-auth': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/http-basic-auth`,
+          'speech-to-text/user-guides/transcribe-specified-hosts': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/transcribe-specified-hosts`,
+          'speech-to-text/user-guides/translation': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/translation`,
+          'speech-to-text/user-guides/update-service': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/update-service`,
+          'speech-to-text/user-guides/how-to-use-protobuf': `/${locale}/realtime-media/speech-to-text/build/process-transcription-data/how-to-use-protobuf`,
+          'speech-to-text/user-guides/render-captions': `/${locale}/realtime-media/speech-to-text/build/process-transcription-data/render-captions`,
+          'speech-to-text/user-guides/record-captions': `/${locale}/realtime-media/speech-to-text/build/process-transcription-data/record-captions`,
+          'speech-to-text/user-guides/encrypt-captions': `/${locale}/realtime-media/speech-to-text/build/process-transcription-data/encrypt-captions`,
+          'speech-to-text/best-practices': `/${locale}/realtime-media/speech-to-text/build/extend-and-optimize/enable-from-client`,
+          'speech-to-text/best-practices/enable-from-client': `/${locale}/realtime-media/speech-to-text/build/extend-and-optimize/enable-from-client`,
+          'speech-to-text/best-practices/optimize-quality': `/${locale}/realtime-media/speech-to-text/build/extend-and-optimize/optimize-quality`,
+          'speech-to-text/audio-modality': `/${locale}/realtime-media/speech-to-text/build/extend-and-optimize/audio-modality`,
+          'speech-to-text/api': `/${locale}/realtime-media/speech-to-text/reference/response-code`,
+          'speech-to-text/api/supported-languages': `/${locale}/realtime-media/speech-to-text/reference/supported-languages`,
+          'speech-to-text/api/response-code': `/${locale}/realtime-media/speech-to-text/reference/response-code`,
+          'speech-to-text/webhook': `/${locale}/realtime-media/speech-to-text/build/monitor-events/receive-webhook`,
+          'speech-to-text/webhook/receive-webhook': `/${locale}/realtime-media/speech-to-text/build/monitor-events/receive-webhook`,
+          'speech-to-text/webhook/ncs-events': `/${locale}/realtime-media/speech-to-text/reference/ncs-events`,
+        }
+      : {};
 
   const redirects: Record<string, string> = {
     'rtc/quick-start': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
@@ -967,9 +1784,19 @@ function resolveRealtimeMediaRedirect(
     'whiteboard/overview/release-notes-uikit': `/${locale}/realtime-media/whiteboard/reference/release-notes-uikit`,
     'whiteboard/overview/supported-platforms': `/${locale}/realtime-media/whiteboard/reference/supported-platforms`,
     'whiteboard/overview/whiteboard-fastboard': `/${locale}/realtime-media/whiteboard/whiteboard-fastboard`,
+    ...zhCnSpeechToTextRedirects,
   };
 
   return redirects[normalizedPath] ?? null;
+}
+
+function isZhCnRtmBuildIaRedirect(redirectUrl: string) {
+  return (
+    redirectUrl === ZH_CN_RTM_TROUBLESHOOTING_REDIRECT ||
+    ZH_CN_RTM_BUILD_IA_REDIRECT_PREFIXES.some((prefix) =>
+      redirectUrl.startsWith(prefix),
+    )
+  );
 }
 
 function resolveRealtimeMediaApiReferenceRedirect(
@@ -1071,7 +1898,30 @@ function resolveSolutionsApiReferenceRedirect(
   tab: string,
   slugSegments: string[],
 ) {
-  if (locale !== 'en' || tab !== 'solutions') {
+  if (tab !== 'solutions') {
+    return null;
+  }
+
+  const normalizedPath = slugSegments.join('/');
+
+  if (locale === 'zh-CN') {
+    const redirects: Record<string, string> = {
+      'flexible-classroom/reference/api-classroom':
+        '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+      'flexible-classroom/reference/api-recording':
+        '/zh-CN/api-reference/flexible-classroom/restful-api/api-recording',
+      'flexible-classroom/reference/api-sync':
+        '/zh-CN/api-reference/flexible-classroom/restful-api/api-sync',
+      'flexible-classroom/reference/api-user':
+        '/zh-CN/api-reference/flexible-classroom/restful-api/api-user',
+      'flexible-classroom/reference/api-widget':
+        '/zh-CN/api-reference/flexible-classroom/restful-api/api-widget',
+    };
+
+    return redirects[normalizedPath] ?? null;
+  }
+
+  if (locale !== 'en') {
     return null;
   }
 
@@ -1096,7 +1946,75 @@ function resolveSolutionsApiReferenceRedirect(
       '/en/api-reference/api-ref/iot-channel-management-rest-api',
   };
 
-  return redirects[slugSegments.join('/')] ?? null;
+  return redirects[normalizedPath] ?? null;
+}
+
+const MERGED_PLATFORM_SUFFIXES: Record<string, PlatformKey> = {
+  cpp: 'cpp',
+  csharp: 'csharp',
+  cscrip: 'csharp',
+  cscript: 'csharp',
+  go: 'go',
+  java: 'java',
+  swift: 'swift',
+  typescript: 'typescript',
+};
+
+function resolveMergedPlatformSuffixRedirect({
+  locale,
+  slugSegments,
+  source,
+  tab,
+}: {
+  locale: string;
+  slugSegments: string[];
+  source: typeof docsSource;
+  tab: string;
+}) {
+  const requestedSlug = slugSegments.at(-1);
+  const platformSeparatorIndex = requestedSlug?.lastIndexOf('.') ?? -1;
+
+  if (!requestedSlug || platformSeparatorIndex <= 0) {
+    return null;
+  }
+
+  const baseSlug = requestedSlug.slice(0, platformSeparatorIndex);
+  const suffix = requestedSlug.slice(platformSeparatorIndex + 1);
+  const platform = MERGED_PLATFORM_SUFFIXES[suffix];
+
+  if (!platform) {
+    return null;
+  }
+
+  const targetSegments = [...slugSegments.slice(0, -1), baseSlug];
+  const targetUrl = `/${[locale, tab, ...targetSegments].join('/')}`;
+
+  const canonicalApiUrl =
+    locale === 'zh-CN' && tab === OPENAPI_TAB
+      ? ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS[targetSegments.join('/')]
+      : undefined;
+  if (canonicalApiUrl) {
+    const canonicalSegments = canonicalApiUrl.split('/').filter(Boolean);
+    const platformIndex = canonicalSegments.findIndex(
+      (segment, index) => index >= 3 && isKnownPlatform(segment),
+    );
+    if (platformIndex >= 0) {
+      canonicalSegments[platformIndex] = platform;
+      const platformUrl = `/${canonicalSegments.join('/')}`;
+      if (hasDocsPageForUrl(source, platformUrl)) {
+        return { preserveSearch: true, redirectUrl: platformUrl };
+      }
+    }
+  }
+
+  if (!hasDocsPageForUrl(source, targetUrl)) {
+    return null;
+  }
+
+  return {
+    preserveSearch: false,
+    redirectUrl: `${targetUrl}?platform=${platform}`,
+  };
 }
 
 function hasDocsPageForUrl(source: typeof docsSource, url: string) {
@@ -1118,7 +2036,9 @@ function hasDocsPageForUrl(source: typeof docsSource, url: string) {
   );
 
   return Boolean(
-    page && !isPlatformGroupPanelPage(page, source.getPages(locale)),
+    page &&
+      page.url === url &&
+      !isPlatformGroupPanelPage(page, source.getPages(locale)),
   );
 }
 
@@ -1130,7 +2050,7 @@ export type DocsPagePayload = Exclude<
 export type DocsRedirectPayload = {
   preserveSearch?: boolean;
   redirectUrl: string;
-  statusCode?: 301;
+  statusCode?: 301 | 307 | 308;
 };
 
 async function readProcessedText(page: PageWithSource) {
@@ -1160,7 +2080,11 @@ async function resolvePageToc(
 ) {
   const directToc = normalizeToc(getPageToc(page));
 
-  if (directToc.length > 0 && !platform) {
+  if (
+    directToc.length > 0 &&
+    !platform &&
+    !processedText.includes('<Accordion')
+  ) {
     return directToc;
   }
 
@@ -1169,12 +2093,13 @@ async function resolvePageToc(
       ? buildPlatformTocText(processedText, platform)
       : buildCanonicalPlatformTocText(processedText);
 
-    return normalizeToc(await getAccordionTableOfContents(tocText));
+    return normalizeToc(await getMdxAwareTableOfContents(tocText, page.url));
   } catch {
     try {
       return normalizeToc(
-        await getAccordionTableOfContents(
+        await getMdxAwareTableOfContents(
           buildCanonicalPlatformTocText(processedText),
+          page.url,
         ),
       );
     } catch {
@@ -1183,9 +2108,16 @@ async function resolvePageToc(
   }
 }
 
-function getAccordionTableOfContents(markdown: string) {
-  return markdown.includes('<Accordion')
-    ? getTableOfContents(markdown, [remarkMdx, remarkAccordionHeadings])
+function getMdxAwareTableOfContents(markdown: string, url: string) {
+  const global = url.startsWith('/en/');
+  if (markdown.includes('<Accordion')) {
+    return getTableOfContents(markdown, [
+      remarkMdx,
+      global ? remarkGlobalAccordionHeadings : remarkAccordionHeadings,
+    ]);
+  }
+  return !global && markdown.includes('<Tabs')
+    ? getTableOfContents(markdown, [remarkMdx])
     : getTableOfContents(markdown);
 }
 
@@ -1194,6 +2126,7 @@ function normalizeToc(toc: TOCItemType[] | undefined) {
     if (
       typeof item.title !== 'string' ||
       item.title.trim().length === 0 ||
+      item.title.includes('[!toc]') ||
       typeof item.url !== 'string' ||
       item.url.length === 0
     ) {
@@ -1255,7 +2188,24 @@ async function getDocsSidebarNodes({
   source: typeof docsSource;
   tab: string;
 }) {
-  if (tab === 'ai' && usesAiProductSidebar(activePath ?? pageUrl ?? '')) {
+  if (locale === 'en')
+    return getDocsSidebarNodesGlobal({
+      activePath,
+      locale,
+      pageTree,
+      pageUrl,
+      source,
+      tab,
+    });
+  const productSidebarPath = getZhCnProductSidebarPath(
+    activePath ?? pageUrl,
+    tab,
+  );
+
+  if (
+    tab === 'ai' &&
+    (locale === 'zh-CN' || usesAiProductSidebar(activePath ?? pageUrl ?? ''))
+  ) {
     const aiNodes = getNavScopeSidebarNodes({
       getNodeMeta: (node) =>
         getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
@@ -1272,13 +2222,23 @@ async function getDocsSidebarNodes({
             tab: OPENAPI_TAB,
           });
 
-    return buildAiProductSidebar(
-      aiNodes.filter(
-        (node) =>
-          node.type !== 'section' ||
-          node.title !== 'Conversational AI Platform (Preview)',
-      ),
-      apiReferenceNodes,
+    if (locale !== 'zh-CN') {
+      return buildAiProductSidebar(
+        aiNodes.filter(
+          (node) =>
+            node.type !== 'section' ||
+            node.title !== 'Conversational AI Platform (Preview)',
+        ),
+        apiReferenceNodes,
+      );
+    }
+    return embedZhCnServiceApiSidebars(
+      buildAiProductSidebar(aiNodes, apiReferenceNodes),
+      productSidebarPath,
+      locale,
+      pageTree,
+      source,
+      tab,
     );
   }
 
@@ -1291,12 +2251,28 @@ async function getDocsSidebarNodes({
       source,
     )
   ) {
-    return getSharedRtcSidebarNodes({
+    return embedZhCnServiceApiSidebars(
+      getSharedRtcSidebarNodes({
+        locale,
+        pageTree,
+        source,
+        tab,
+        activePath,
+      }),
+      productSidebarPath,
       locale,
       pageTree,
       source,
       tab,
+    );
+  }
+
+  if (isOpenApiTab(tab) && activePath && locale) {
+    return getApiReferenceSidebarNodes({
       activePath,
+      locale,
+      pageTree,
+      source,
     });
   }
 
@@ -1309,32 +2285,76 @@ async function getDocsSidebarNodes({
         tab,
       })
     : null;
+  const focusedOpenApiLaneSidebar =
+    !navScope && activePath && locale
+      ? await getFocusedOpenApiLaneSidebarNodes({
+          activePath,
+          locale,
+          pageTree,
+          source,
+          tab,
+        })
+      : null;
+  const focusedZhCnRtmRestSidebar =
+    !navScope && activePath && locale
+      ? getFocusedZhCnRtmRestSidebarNodes({
+          activePath,
+          locale,
+          source,
+          tab,
+        })
+      : null;
   const sidebar = navScope
     ? getScopedSidebarNodes({
         locale,
         navScope,
         source,
       })
-    : getNavScopeSidebarNodes({
+    : (focusedZhCnRtmRestSidebar ??
+      focusedOpenApiLaneSidebar ??
+      getNavScopeSidebarNodes({
         getNodeMeta: (node) =>
           getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
         root: pageTree,
         tab,
-      });
+      }));
+  const sourcePageUrls =
+    locale === 'zh-CN' && tab === OPENAPI_TAB
+      ? getLocaleSourcePageUrls(source, locale)
+      : null;
+  const sidebarWithSourcePagesOnly = sourcePageUrls
+    ? filterSourceBackedSidebarNodes(sidebar, sourcePageUrls)
+    : sidebar;
   const scopedReferenceProductSidebar =
     Boolean(navScope) && isReferenceProductSidebarPath(activePath ?? pageUrl);
   const sidebarWithoutReferenceProductIcons = scopedReferenceProductSidebar
-    ? stripSidebarSectionIcons(sidebar)
-    : sidebar;
+    ? stripSidebarSectionIcons(sidebarWithSourcePagesOnly)
+    : sidebarWithSourcePagesOnly;
 
   const sidebarWithRealtimeMediaApiReference =
-    addRealtimeMediaApiReferenceSidebarItems(
-      sidebarWithoutReferenceProductIcons,
-      activePath,
-    );
+    locale === 'zh-CN'
+      ? addRealtimeMediaApiReferenceSidebarItem(
+          sidebarWithoutReferenceProductIcons,
+          activePath,
+        )
+      : addRealtimeMediaApiReferenceSidebarItems(
+          sidebarWithoutReferenceProductIcons,
+          activePath,
+        );
 
   if (!isOpenApiTab(tab) || !locale) {
-    return sidebarWithRealtimeMediaApiReference;
+    const embeddedSidebar = await embedZhCnServiceApiSidebars(
+      sidebarWithRealtimeMediaApiReference,
+      productSidebarPath,
+      locale,
+      pageTree,
+      source,
+      tab,
+    );
+
+    return locale
+      ? markZhCnProductApiReferenceLinks(embeddedSidebar, locale)
+      : embeddedSidebar;
   }
 
   const openApiSidebar = await addOpenApiEndpointSidebarItems(
@@ -1347,11 +2367,103 @@ async function getDocsSidebarNodes({
       : undefined,
   );
 
-  if (isRecipesApiReferencePath(activePath)) {
-    return restoreRecipesSidebarSections(openApiSidebar);
-  }
+  const restoredOpenApiSidebar = isRecipesPath(activePath)
+    ? restoreRecipesSidebarSections(openApiSidebar)
+    : openApiSidebar;
 
-  return openApiSidebar;
+  return markZhCnProductApiReferenceLinks(restoredOpenApiSidebar, locale);
+}
+
+// Product menus reuse the scoped API tree, including its OpenAPI operation labels.
+async function embedProductRestSidebar(
+  nodes: DocsSidebarNode[],
+  fromProduct: string,
+  pageTree: ReturnType<typeof docsSource.getPageTree>,
+  source: typeof docsSource,
+): Promise<DocsSidebarNode[]> {
+  const media = getRealtimeMediaApiReferenceLinks(fromProduct);
+  const ai = fromProduct === '/en/ai' || fromProduct.startsWith('/en/ai/');
+  const aiRoot = '/en/api-reference/api-ref/conversational-ai';
+
+  async function visit(node: DocsSidebarNode): Promise<DocsSidebarNode> {
+    if (node.type === 'section')
+      return { ...node, children: await Promise.all(node.children.map(visit)) };
+    if (
+      !(media?.restUrl && node.url === media.restUrl) &&
+      !(
+        ai &&
+        (node.title === 'RESTful API' || node.title === 'REST API') &&
+        node.url.startsWith(aiRoot)
+      )
+    )
+      return node;
+
+    const entry = node.url;
+    const root = media?.restScopeUrl ?? entry;
+    const scopePath = entry.startsWith(root + '/') ? entry : root;
+    const scope = {
+      activePath: scopePath,
+      locale: 'en' as const,
+      pageTree,
+      source,
+      tab: OPENAPI_TAB,
+    };
+    const apiNodes = getDocsNavScope(scope)
+      ? filterSidebarNodes(
+          await getDocsSidebarNodes(scope),
+          (n) => n.url === root || !!n.url?.startsWith(root + '/'),
+        )
+      : [];
+    // Some REST references are standalone articles, not API navigation scopes.
+    if (!apiNodes.length || (entry !== root && !entry.startsWith(root + '/'))) {
+      const page = source.getPage(entry.split('/').slice(2), 'en');
+      if (page?.url === entry)
+        apiNodes.unshift({
+          id: entry,
+          type: 'page',
+          title: page.data.title ?? node.title,
+          url: entry,
+        });
+    }
+    if (!apiNodes.length) return node;
+
+    function contextualize(child: DocsSidebarNode): DocsSidebarNode {
+      if (child.type === 'page')
+        return { ...child, search: { ...child.search, from: fromProduct } };
+      return {
+        id: child.id,
+        title: child.title,
+        type: 'section',
+        collapsible: true,
+        children: child.children.map(contextualize),
+      };
+    }
+    const expanded = await Promise.all(
+      apiNodes.map(async (child): Promise<DocsSidebarNode[]> => {
+        if (child.type !== 'page') return [child];
+        const outline = getRestArticleOutline(child.url);
+        if (!outline) return [child];
+        const article = source.getPage(child.url.split('/').slice(2), 'en');
+        if (!article) return [child];
+        const toc = normalizeToc(getPageToc(article));
+        return articleSidebarItems(
+          child,
+          outline,
+          toc.length
+            ? toc
+            : await resolvePageToc(article, await readProcessedText(article)),
+        );
+      }),
+    );
+    return {
+      id: node.id,
+      title: node.title,
+      type: 'section',
+      collapsible: true,
+      children: expanded.flat().map(contextualize),
+    };
+  }
+  return Promise.all(nodes.map(visit));
 }
 
 function addRealtimeMediaApiReferenceSidebarItems(
@@ -1475,10 +2587,1233 @@ function getRealtimeMediaLegacyApiReferenceUrls(productSlug: string) {
   }
 }
 
-function isRecipesApiReferencePath(path?: string) {
+function getZhCnProductSidebarPath(
+  path: string | undefined,
+  tab: string,
+): string | undefined {
+  if (!path || !path.startsWith('/zh-CN/')) {
+    return path;
+  }
+
+  const [, pathTab, productSlug] = path.split('/').filter(Boolean);
+  if (pathTab !== tab || !['ai', 'realtime-media', 'solutions'].includes(tab)) {
+    return path;
+  }
+
+  if (tab === 'ai') {
+    return '/zh-CN/ai';
+  }
+
+  if (productSlug && productSlug !== 'overview') {
+    return `/zh-CN/${tab}/${productSlug}`;
+  }
+
+  return path;
+}
+
+async function getProductSidebarContextPayload({
+  activePath,
+  context,
+  pageTree,
+  source,
+}: {
+  activePath: string;
+  context: ReturnType<typeof parseProductSidebarContext>;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  source: typeof docsSource;
+}) {
+  if (!context) {
+    return null;
+  }
+
+  const productPage = source.getPage(
+    getSourceSlugs({
+      locale: context.locale,
+      slugSegments: context.slugSegments,
+      tab: context.tab,
+    }),
+    context.locale,
+  );
+
+  if (!productPage || productPage.url !== context.pathname) {
+    return null;
+  }
+
+  const sidebar = await getDocsSidebarNodes({
+    activePath: productPage.url,
+    locale: context.locale as AppLocale,
+    pageTree,
+    pageUrl: productPage.url,
+    source,
+    tab: context.tab,
+  });
+  const navScope = getDocsNavScope({
+    activePath: productPage.url,
+    locale: context.locale,
+    pageTree,
+    source,
+    tab: context.tab,
+  });
+  const sidebarHeader = resolveDocsSidebarHeader({
+    activePath: productPage.url,
+    hidePlatformTabs:
+      'hidePlatformTabs' in productPage.data
+        ? productPage.data.hidePlatformTabs
+        : undefined,
+    locale: context.locale,
+    navScope,
+    pageTree,
+    source,
+    tab: context.tab,
+  });
+
+  return {
+    activeTab: context.tab,
+    sidebar: revealActiveSidebarPath(
+      sidebar,
+      activePath,
+      context.pathname,
+      context.sidebarScope,
+    ),
+    sidebarHeader,
+  };
+}
+
+export function revealActiveSidebarPath(
+  nodes: DocsSidebarNode[],
+  activePath: string,
+  productPath?: string,
+  productScope?: string,
+): DocsSidebarNode[] {
+  return nodes.map((node) => {
+    if (node.type === 'page') {
+      return node;
+    }
+
+    const children = revealActiveSidebarPath(
+      node.children,
+      activePath,
+      productPath,
+      productScope,
+    );
+    const containsActivePath = children.some((child) =>
+      sidebarNodeContainsPath(child, activePath, productPath, productScope),
+    );
+    const containsUnscopedActivePath =
+      productScope !== undefined &&
+      children.some((child) =>
+        sidebarNodeContainsPath(child, activePath, productPath),
+      );
+
+    return containsActivePath
+      ? { ...node, children, defaultOpen: true }
+      : containsUnscopedActivePath
+        ? { ...node, children, defaultOpen: false }
+        : { ...node, children };
+  });
+}
+
+function sidebarNodeContainsPath(
+  node: DocsSidebarNode,
+  activePath: string,
+  productPath?: string,
+  productScope?: string,
+): boolean {
+  if (node.type === 'page') {
+    return (
+      node.url === activePath &&
+      (productPath === undefined || node.search?.from === productPath) &&
+      (productScope === undefined || node.search?.fromScope === productScope)
+    );
+  }
+
+  return (
+    node.url === activePath ||
+    node.children.some((child) =>
+      sidebarNodeContainsPath(child, activePath, productPath, productScope),
+    )
+  );
+}
+
+async function getApiReferenceSidebarNodes({
+  activePath,
+  locale,
+  pageTree,
+  source,
+}: {
+  activePath: string;
+  locale: AppLocale;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  source: typeof docsSource;
+}): Promise<DocsSidebarNode[]> {
+  const tab = OPENAPI_TAB;
+  const navScope = getDocsNavScope({
+    activePath,
+    locale,
+    pageTree,
+    source,
+    tab,
+  });
+  const focusedOpenApiLaneSidebar = !navScope
+    ? await getFocusedOpenApiLaneSidebarNodes({
+        activePath,
+        locale,
+        pageTree,
+        source,
+        tab,
+      })
+    : null;
+  const focusedZhCnRtmRestSidebar = !navScope
+    ? getFocusedZhCnRtmRestSidebarNodes({
+        activePath,
+        locale,
+        source,
+        tab,
+      })
+    : null;
+  const apiNavScope =
+    navScope ??
+    findApiNavScopeByPageUrl({
+      activePath,
+      locale,
+      pageTree,
+      source,
+    });
+  const sidebar = apiNavScope
+    ? getScopedSidebarNodes({
+        locale,
+        navScope: apiNavScope,
+        source,
+      })
+    : (focusedZhCnRtmRestSidebar ??
+      focusedOpenApiLaneSidebar ??
+      getNavScopeSidebarNodes({
+        getNodeMeta: (node) =>
+          getDocsMetaData(source.getNodeMeta(node, locale)),
+        root: pageTree,
+        tab,
+      }));
+  const sourcePageUrls =
+    locale === 'zh-CN' ? getLocaleSourcePageUrls(source, locale) : null;
+  const sidebarWithSourcePagesOnly = sourcePageUrls
+    ? filterSourceBackedSidebarNodes(sidebar, sourcePageUrls)
+    : sidebar;
+  const scopedReferenceProductSidebar =
+    Boolean(apiNavScope) && isReferenceProductSidebarPath(activePath);
+  const sidebarWithoutReferenceProductIcons = scopedReferenceProductSidebar
+    ? stripSidebarSectionIcons(sidebarWithSourcePagesOnly)
+    : sidebarWithSourcePagesOnly;
+  const sidebarWithProductLinks = addRealtimeMediaApiReferenceSidebarItem(
+    sidebarWithoutReferenceProductIcons,
+    activePath,
+  );
+  const openApiSidebar = await addOpenApiEndpointSidebarItems(
+    sidebarWithProductLinks,
+    locale,
+    tab,
+  );
+
+  const restoredOpenApiSidebar = isRecipesPath(activePath)
+    ? restoreRecipesSidebarSections(openApiSidebar)
+    : openApiSidebar;
+
+  const [onlyGroup] = restoredOpenApiSidebar;
+  // A scoped SDK already has its own header above this label-only wrapper.
+  const scopedSidebar =
+    locale === 'zh-CN' &&
+    navScope &&
+    restoredOpenApiSidebar.length === 1 &&
+    onlyGroup.type === 'section' &&
+    onlyGroup.title === 'API 参考' &&
+    onlyGroup.defaultOpen === undefined &&
+    !onlyGroup.url
+      ? onlyGroup.children
+      : restoredOpenApiSidebar;
+
+  return markZhCnProductApiReferenceLinks(scopedSidebar, locale);
+}
+
+function markZhCnProductApiReferenceLinks(
+  nodes: DocsSidebarNode[],
+  locale: AppLocale,
+): DocsSidebarNode[] {
+  if (locale !== 'zh-CN') {
+    return nodes;
+  }
+
+  return nodes.map((node) => {
+    if (node.type === 'page') {
+      return shouldMarkZhCnClientApiReferenceLink(node)
+        ? { ...node, linked: true }
+        : node;
+    }
+
+    return {
+      ...node,
+      children: markZhCnProductApiReferenceLinks(node.children, locale),
+    };
+  });
+}
+
+function shouldMarkZhCnClientApiReferenceLink(
+  node: DocsSidebarPageNode,
+): boolean {
+  const [pathname] = node.url.split('?');
+
+  return node.title === '客户端 API' && pathname === '/zh-CN/api-reference/api';
+}
+
+function findApiNavScopeByPageUrl({
+  activePath,
+  locale,
+  pageTree,
+  source,
+}: {
+  activePath: string;
+  locale: AppLocale;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  source: typeof docsSource;
+}): DocsNavScopeResolution | null {
+  const apiRoot = findFolderByIndexUrl(
+    pageTree,
+    `/${locale}/${OPENAPI_TAB}/api`,
+  );
+  const ancestors = apiRoot
+    ? findFolderAncestorsByPageUrl(apiRoot, activePath)
+    : null;
+  if (!ancestors) {
+    return null;
+  }
+
+  const scopedAncestors = ancestors
+    .map((node) => ({
+      meta: getDocsMetaData(source.getNodeMeta(node, locale)),
+      node,
+    }))
+    .filter((item) =>
+      Boolean(item.meta && 'navScope' in item.meta && item.meta.navScope),
+    );
+  const scopedAncestor = scopedAncestors.at(-1);
+
+  if (!scopedAncestor?.meta || !('navScope' in scopedAncestor.meta)) {
+    return null;
+  }
+  const meta = scopedAncestor.meta as DocsMeta;
+
+  return {
+    header: {
+      backHref: getFirstTabPageUrl(pageTree, OPENAPI_TAB) ?? activePath,
+      backLabel: 'API 参考',
+      title: meta.title ?? 'RESTful API',
+    },
+    scope: {
+      meta,
+      node: scopedAncestor.node,
+    },
+    sidebarRoot: scopedAncestor.node,
+  };
+}
+
+function findFolderAncestorsByPageUrl(
+  node: Folder | Root,
+  activePath: string,
+  ancestors: Folder[] = [],
+): Folder[] | null {
+  const nextAncestors =
+    node.type === 'folder' ? [...ancestors, node] : ancestors;
+
+  if (node.type === 'folder' && node.index?.url === activePath) {
+    return nextAncestors;
+  }
+
+  for (const child of node.children) {
+    if (child.type === 'page' && child.url === activePath) {
+      return nextAncestors;
+    }
+
+    if (child.type === 'folder') {
+      const result = findFolderAncestorsByPageUrl(
+        child,
+        activePath,
+        nextAncestors,
+      );
+      if (result) {
+        return result;
+      }
+    }
+  }
+
+  return null;
+}
+
+const ZH_CN_SERVICE_API_ENTRY_TITLES = new Set([
+  '服务端 API',
+  '呼叫小程序 API',
+  'License 管理 API',
+  '设备端 API',
+  '操控端 API',
+]);
+const ZH_CN_SINGLE_PAGE_SERVICE_API_ENTRY_TITLES = new Set([
+  '设备端 API',
+  '操控端 API',
+]);
+const ZH_CN_RTM_EMBEDDED_API_PREFIX = '/zh-CN/api-reference/api-ref/signaling/';
+const ZH_CN_RTMP_GATEWAY_API_ENTRY_URL =
+  '/zh-CN/api-reference/api-ref/rtmp-gateway';
+const ZH_CN_RTMP_GATEWAY_API_LANDING_URL =
+  '/zh-CN/api-reference/api-ref/rtmp-gateway/restful';
+const ZH_CN_RTC_REST_API_ENTRY_URL = '/zh-CN/api-reference/api-ref/rtc';
+const ZH_CN_WHITEBOARD_API_ENTRY_URL =
+  '/zh-CN/api-reference/api-ref/whiteboard/restful';
+const ZH_CN_RTC_REST_SIDEBAR_GROUPS: readonly {
+  id: string;
+  links: readonly ZhCnRtcRestSidebarLink[];
+  title: string;
+}[] = [
+  {
+    id: 'zh-cn-rtc-rest-guides',
+    links: [
+      [
+        '调用 RESTful API',
+        '/zh-CN/realtime-media/rtc/build/setup-and-access/call-api',
+      ],
+      [
+        'HTTP 基本认证',
+        '/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth',
+      ],
+      [
+        '管理频道和用户',
+        '/zh-CN/realtime-media/rtc/build/security-and-auth/channel-management',
+      ],
+      [
+        '封禁用户权限',
+        '/zh-CN/realtime-media/rtc/build/security-and-auth/user-privilege',
+      ],
+    ],
+    title: '接入指南',
+  },
+  {
+    id: 'zh-cn-rtc-rest-webhook',
+    links: [
+      [
+        '接收 Webhook 事件',
+        '/zh-CN/realtime-media/rtc/build/optimize-and-operate/receive_webhook',
+      ],
+      ['频道事件类型', '/zh-CN/api-reference/rtc/restful/webhook/events'],
+    ],
+    title: 'Webhook',
+  },
+  {
+    id: 'zh-cn-rtc-rest-best-practice',
+    links: [
+      [
+        '维护用户在线状态',
+        '/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status',
+      ],
+      [
+        'REST 服务高可用',
+        '/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability',
+      ],
+    ],
+    title: '最佳实践',
+  },
+];
+const ZH_CN_RTC_REST_REFERENCE_LINKS: readonly ZhCnRtcRestSidebarLink[] = [
+  ['响应状态码', '/zh-CN/realtime-media/rtc/reference/response-code'],
+];
+
+async function embedZhCnServiceApiSidebars(
+  nodes: DocsSidebarNode[],
+  productPath: string | undefined,
+  locale: AppLocale | null,
+  pageTree: ReturnType<typeof docsSource.getPageTree>,
+  source: typeof docsSource,
+  tab: string,
+  sourcePath?: string,
+): Promise<DocsSidebarNode[]> {
+  if (
+    locale !== 'zh-CN' ||
+    !productPath ||
+    !['ai', 'realtime-media', 'solutions'].includes(tab)
+  ) {
+    return nodes;
+  }
+
+  return Promise.all(
+    nodes.map(async (node) => {
+      if (node.type === 'page') {
+        if (
+          !ZH_CN_SERVICE_API_ENTRY_TITLES.has(node.title) ||
+          !node.url.startsWith('/zh-CN/api-reference/')
+        ) {
+          return node;
+        }
+
+        if (ZH_CN_SINGLE_PAGE_SERVICE_API_ENTRY_TITLES.has(node.title)) {
+          return {
+            ...node,
+            search: {
+              ...node.search,
+              from: productPath,
+            },
+          };
+        }
+
+        const apiSidebar = await getApiReferenceSidebarNodes({
+          activePath: node.url,
+          locale,
+          pageTree,
+          source,
+        });
+        const normalizedApiSidebar = normalizeZhCnEmbeddedApiSidebar(
+          apiSidebar,
+          node.url,
+        );
+
+        const apiSidebarUrls = collectSidebarPageUrls(normalizedApiSidebar);
+        const hasTargetApiPage = Array.from(apiSidebarUrls).some(
+          (url) => url === node.url || url.startsWith(`${node.url}/`),
+        );
+
+        if (normalizedApiSidebar.length === 0 || !hasTargetApiPage) {
+          return node;
+        }
+
+        return {
+          children: addProductContextToApiSidebarNodes(
+            normalizedApiSidebar,
+            productPath,
+            tab === 'ai' ? undefined : sourcePath,
+          ),
+          collapsible: true,
+          defaultOpen: false,
+          id: `${node.id}-embedded`,
+          title: node.title,
+          type: 'section' as const,
+        };
+      }
+
+      const resolvedSourcePath =
+        sourcePath ?? getEmbeddedSidebarSourcePath(node, productPath);
+
+      return {
+        ...node,
+        children: await embedZhCnServiceApiSidebars(
+          node.children,
+          productPath,
+          locale,
+          pageTree,
+          source,
+          tab,
+          resolvedSourcePath,
+        ),
+      };
+    }),
+  );
+}
+
+export function normalizeZhCnEmbeddedApiSidebar(
+  nodes: DocsSidebarNode[],
+  apiEntryUrl: string,
+): DocsSidebarNode[] {
+  const flattened = apiEntryUrl.startsWith(ZH_CN_RTM_EMBEDDED_API_PREFIX)
+    ? flattenSidebarSectionByTitle(nodes, 'RESTful API')
+    : nodes;
+  const withGuideLinks =
+    apiEntryUrl === ZH_CN_RTC_REST_API_ENTRY_URL
+      ? groupZhCnRtcRestSidebarNodes(flattened)
+      : flattened;
+
+  const landingUrl =
+    apiEntryUrl === ZH_CN_RTMP_GATEWAY_API_ENTRY_URL
+      ? ZH_CN_RTMP_GATEWAY_API_LANDING_URL
+      : apiEntryUrl === ZH_CN_WHITEBOARD_API_ENTRY_URL
+        ? ZH_CN_WHITEBOARD_API_ENTRY_URL
+        : null;
+
+  return landingUrl
+    ? removeSidebarPageByUrl(withGuideLinks, landingUrl)
+    : withGuideLinks;
+}
+
+function getZhCnRtcRestGuideSidebarNodes(): DocsSidebarPageNode[] {
+  const links: ZhCnRtcRestSidebarLink[] = [];
+
+  for (const group of ZH_CN_RTC_REST_SIDEBAR_GROUPS) {
+    links.push(...group.links);
+  }
+
+  links.push(...ZH_CN_RTC_REST_REFERENCE_LINKS);
+
+  return links.map(([title, url]) => ({
+    id: url,
+    title,
+    type: 'page',
+    url,
+  }));
+}
+
+function groupZhCnRtcRestSidebarNodes(
+  nodes: DocsSidebarNode[],
+): DocsSidebarNode[] {
+  const existingPages = new Map(
+    flattenSidebarPageNodes(nodes).map((node) => [node.url, node]),
+  );
+  const groupedUrls = new Set(
+    getZhCnRtcRestGuideSidebarNodes().map((node) => node.url),
+  );
+  const endpointPages = flattenSidebarPageNodes(nodes).filter(
+    (node) => !groupedUrls.has(node.url),
+  );
+  const interfaceChildren = [
+    ...endpointPages,
+    ...ZH_CN_RTC_REST_REFERENCE_LINKS.map((link) =>
+      createZhCnRtcRestSidebarPage(link, existingPages),
+    ),
+  ];
+
+  return [
+    ...ZH_CN_RTC_REST_SIDEBAR_GROUPS.map((group) => ({
+      children: group.links.map((link) =>
+        createZhCnRtcRestSidebarPage(link, existingPages),
+      ),
+      collapsible: true,
+      defaultOpen: false,
+      id: group.id,
+      title: group.title,
+      type: 'section' as const,
+    })),
+    {
+      children: dedupeSidebarPagesByUrl(interfaceChildren),
+      collapsible: true,
+      defaultOpen: true,
+      id: 'zh-cn-rtc-rest-api-reference',
+      title: '接口参考',
+      type: 'section' as const,
+    },
+  ].filter((node) => node.children.length > 0);
+}
+
+function createZhCnRtcRestSidebarPage(
+  [title, url]: readonly [string, string],
+  existingPages: Map<string, DocsSidebarPageNode>,
+): DocsSidebarPageNode {
+  return {
+    ...existingPages.get(url),
+    id: url,
+    title,
+    type: 'page',
+    url,
+  };
+}
+
+function flattenSidebarPageNodes(
+  nodes: DocsSidebarNode[],
+): DocsSidebarPageNode[] {
+  return nodes.flatMap((node) =>
+    node.type === 'page' ? [node] : flattenSidebarPageNodes(node.children),
+  );
+}
+
+function dedupeSidebarPagesByUrl(
+  nodes: DocsSidebarPageNode[],
+): DocsSidebarPageNode[] {
+  const seen = new Set<string>();
+
+  return nodes.filter((node) => {
+    if (seen.has(node.url)) {
+      return false;
+    }
+
+    seen.add(node.url);
+    return true;
+  });
+}
+
+function prependMissingSidebarNodes(
+  nodes: DocsSidebarNode[],
+  leadingNodes: DocsSidebarPageNode[],
+): DocsSidebarNode[] {
+  const existingUrls = collectSidebarPageUrls(nodes);
+
+  return [
+    ...leadingNodes.filter((node) => !existingUrls.has(node.url)),
+    ...nodes,
+  ];
+}
+
+function flattenSidebarSectionByTitle(
+  nodes: DocsSidebarNode[],
+  title: string,
+): DocsSidebarNode[] {
+  return nodes.flatMap((node) => {
+    if (node.type === 'section' && node.title === title) {
+      return node.children;
+    }
+
+    return [
+      node.type === 'section'
+        ? {
+            ...node,
+            children: flattenSidebarSectionByTitle(node.children, title),
+          }
+        : node,
+    ];
+  });
+}
+
+function removeSidebarPageByUrl(
+  nodes: DocsSidebarNode[],
+  url: string,
+): DocsSidebarNode[] {
+  return nodes.flatMap((node) => {
+    if (node.type === 'page' && node.url === url) {
+      return [];
+    }
+
+    return [
+      node.type === 'section'
+        ? {
+            ...node,
+            children: removeSidebarPageByUrl(node.children, url),
+          }
+        : node,
+    ];
+  });
+}
+
+function addProductContextToApiSidebarNodes(
+  nodes: DocsSidebarNode[],
+  productPath: string,
+  sourcePath?: string,
+): DocsSidebarNode[] {
+  return nodes.map((node) =>
+    node.type === 'page'
+      ? {
+          ...node,
+          search: {
+            ...node.search,
+            from: productPath,
+            ...(sourcePath ? { fromScope: sourcePath } : {}),
+          },
+        }
+      : {
+          ...node,
+          children: addProductContextToApiSidebarNodes(
+            node.children,
+            productPath,
+            sourcePath,
+          ),
+        },
+  );
+}
+
+function getEmbeddedSidebarSourcePath(
+  node: DocsSidebarNode,
+  productPath: string,
+): string | undefined {
+  const firstPageUrl = getFirstSidebarPageUrl(node);
+  if (!firstPageUrl) {
+    return undefined;
+  }
+
+  if (firstPageUrl === productPath) {
+    return productPath;
+  }
+
+  if (!firstPageUrl.startsWith(`${productPath}/`)) {
+    return undefined;
+  }
+
+  const firstProductSegment = firstPageUrl
+    .slice(productPath.length + 1)
+    .split('/')[0];
+
+  return firstProductSegment
+    ? `${productPath}/${firstProductSegment}`
+    : undefined;
+}
+
+function getFirstSidebarPageUrl(node: DocsSidebarNode): string | undefined {
+  if (node.type === 'page') {
+    return node.url;
+  }
+
+  for (const child of node.children) {
+    const url = getFirstSidebarPageUrl(child);
+    if (url) {
+      return url;
+    }
+  }
+
+  return undefined;
+}
+
+function getLocaleSourcePageUrls(source: typeof docsSource, locale: AppLocale) {
+  return new Set(
+    source
+      .getPages(locale)
+      .filter((page) => hasExistingDocsSourceFile(page, locale))
+      .map((page) => page.url),
+  );
+}
+
+function hasExistingDocsSourceFile(page: PageWithSource, locale: AppLocale) {
+  if (!('info' in page.data)) {
+    return true;
+  }
+
+  if (!page.path.startsWith(`${locale}/`)) {
+    return false;
+  }
+
+  const fullPath = page.data.info.fullPath;
+
+  if (fullPath.startsWith('/virtual/')) {
+    return true;
+  }
+
+  return existsSync(fullPath) || existsSync(`content/docs/${page.path}`);
+}
+
+function filterSourceBackedSidebarNodes(
+  nodes: DocsSidebarNode[],
+  sourcePageUrls: Set<string>,
+): DocsSidebarNode[] {
+  const filtered: DocsSidebarNode[] = [];
+
+  for (const node of nodes) {
+    if (node.type === 'page') {
+      if (
+        node.external ||
+        node.href ||
+        sourcePageUrls.has(node.url) ||
+        isOpenApiTabUrl(node.url)
+      ) {
+        filtered.push(node);
+      }
+      continue;
+    }
+
+    const children = filterSourceBackedSidebarNodes(
+      node.children,
+      sourcePageUrls,
+    );
+
+    if (children.length === 0) {
+      continue;
+    }
+
+    const filteredSection: DocsSidebarNode = {
+      ...node,
+      children,
+    };
+
+    if (node.url && !sourcePageUrls.has(node.url)) {
+      delete filteredSection.url;
+    }
+
+    filtered.push(filteredSection);
+  }
+
+  return filtered;
+}
+
+function isOpenApiTabUrl(url: string) {
+  return url.includes('/api-reference/openapi/');
+}
+
+const PRODUCT_API_REFERENCE_LINKS = [
+  {
+    locale: 'en',
+    productSlug: 'broadcast-streaming',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/rtc',
+  },
+  {
+    locale: 'en',
+    productSlug: 'cloud-recording',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/cloud-recording',
+  },
+  {
+    locale: 'en',
+    productSlug: 'im',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/im',
+  },
+  {
+    locale: 'en',
+    productSlug: 'media-pull',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/media-pull',
+  },
+  {
+    locale: 'en',
+    productSlug: 'media-push',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/media-push',
+  },
+  {
+    locale: 'en',
+    productSlug: 'on-premise-recording',
+    tab: 'realtime-media',
+    title: 'API reference',
+    url: '/en/api-reference/api-ref/on-premise-recording',
+  },
+  {
+    locale: 'en',
+    productSlug: 'rtm',
+    tab: 'realtime-media',
+    title: 'Signaling REST API',
+    url: '/en/api-reference/api-ref/signaling',
+  },
+  {
+    locale: 'en',
+    productSlug: 'rtmp-gateway',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/rtmp-gateway',
+  },
+  {
+    locale: 'en',
+    productSlug: 'speech-to-text',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/speech-to-text',
+  },
+  {
+    locale: 'en',
+    productSlug: 'video',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/rtc',
+  },
+  {
+    locale: 'en',
+    productSlug: 'voice',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/rtc',
+  },
+  {
+    locale: 'en',
+    productSlug: 'whiteboard',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/whiteboard',
+  },
+] as const;
+
+type ProductApiReferenceLink = (typeof PRODUCT_API_REFERENCE_LINKS)[number];
+
+const PRODUCT_CLIENT_API_REFERENCE_LINKS = [
+  {
+    productId: 'rtc',
+    productSlug: 'rtc',
+    tab: 'realtime-media',
+  },
+  {
+    productId: 'rtm',
+    productSlug: 'rtm',
+    tab: 'realtime-media',
+  },
+  {
+    productId: 'rtsa',
+    productSlug: 'rtsa',
+    tab: 'realtime-media',
+  },
+  {
+    productId: 'whiteboard',
+    productSlug: 'whiteboard',
+    tab: 'realtime-media',
+  },
+  {
+    productId: 'flexible-classroom',
+    productSlug: 'flexible-classroom',
+    tab: 'solutions',
+  },
+  {
+    productId: 'meeting',
+    productSlug: 'meeting',
+    tab: 'realtime-media',
+  },
+  {
+    productId: 'online-art-teaching',
+    productSlug: 'art-class',
+    tab: 'solutions',
+  },
+  {
+    productId: 'online-ktv',
+    productSlug: 'online-ktv',
+    tab: 'solutions',
+  },
+  {
+    productId: 'online-music-teaching',
+    productSlug: 'online-music-class',
+    tab: 'solutions',
+  },
+  {
+    productId: 'private-room',
+    productSlug: 'one-to-one-live',
+    tab: 'solutions',
+  },
+  {
+    productId: 'teleoperation',
+    productSlug: 'teleoperation',
+    tab: 'solutions',
+  },
+] as const;
+
+type ProductClientApiReferenceLink =
+  (typeof PRODUCT_CLIENT_API_REFERENCE_LINKS)[number];
+
+function createZhCnClientApiReferencePage(
+  productId: string,
+): DocsSidebarPageNode {
+  return {
+    id: `zh-CN-${productId}-client-api-reference`,
+    linked: true,
+    search: {
+      apiType: 'client',
+      product: productId,
+    },
+    title: '客户端 API',
+    type: 'page',
+    url: '/zh-CN/api-reference/api',
+  };
+}
+
+function addRealtimeMediaApiReferenceSidebarItem(
+  nodes: DocsSidebarNode[],
+  activePath?: string,
+): DocsSidebarNode[] {
+  const restApiLink = getProductApiReferenceLink(activePath);
+  const clientApiLink = getProductClientApiReferenceLink(activePath);
+
+  if (!restApiLink && !clientApiLink) {
+    return nodes;
+  }
+
+  const restApiPageNode = restApiLink
+    ? ({
+        id: restApiLink.url,
+        linked: true,
+        title: restApiLink.title,
+        type: 'page',
+        url: restApiLink.url,
+      } satisfies DocsSidebarPageNode)
+    : null;
+  const clientApiPageNode = clientApiLink
+    ? createZhCnClientApiReferencePage(clientApiLink.productId)
+    : null;
+  const existingRestApiUrls = restApiLink
+    ? new Set([
+        restApiLink.url,
+        ...getProductLegacyApiReferenceUrls(restApiLink),
+      ])
+    : new Set<string>();
+
+  if (restApiLink) {
+    return nodes.map((node) => {
+      if (node.type !== 'section') {
+        return node;
+      }
+
+      if (isProductReferenceSectionTitle(node.title, restApiLink.locale)) {
+        return {
+          ...node,
+          children: [
+            ...(clientApiPageNode ? [clientApiPageNode] : []),
+            ...(restApiPageNode ? [restApiPageNode] : []),
+            ...filterSidebarNodes(
+              node.children,
+              (child) =>
+                child.type !== 'page' ||
+                (child.title !== '客户端 API' &&
+                  !existingRestApiUrls.has(child.url)),
+            ),
+          ],
+        };
+      }
+
+      return {
+        ...node,
+        children: addRealtimeMediaApiReferenceSidebarItem(
+          node.children,
+          activePath,
+        ),
+      };
+    });
+  }
+
+  const insertApiNodes = (children: DocsSidebarNode[]) => {
+    const filteredChildren = filterSidebarNodes(
+      children,
+      (child) =>
+        child.type !== 'page' ||
+        (child.title !== '客户端 API' && !existingRestApiUrls.has(child.url)),
+    );
+    const apiNodes = [clientApiPageNode, restApiPageNode].filter(
+      (node): node is DocsSidebarPageNode => node !== null,
+    );
+    const lastDownloadIndex = filteredChildren.reduce(
+      (lastIndex, child, index) =>
+        child.type === 'page' && child.title === '下载' ? index : lastIndex,
+      -1,
+    );
+    const insertionIndex = lastDownloadIndex + 1;
+
+    return [
+      ...filteredChildren.slice(0, insertionIndex),
+      ...apiNodes,
+      ...filteredChildren.slice(insertionIndex),
+    ];
+  };
+
+  const visit = (
+    currentNodes: DocsSidebarNode[],
+  ): { inserted: boolean; nodes: DocsSidebarNode[] } => {
+    let inserted = false;
+    const nextNodes = currentNodes.map((node) => {
+      if (node.type !== 'section') {
+        return node;
+      }
+
+      const visitedChildren = visit(node.children);
+      if (visitedChildren.inserted) {
+        inserted = true;
+        return { ...node, children: visitedChildren.nodes };
+      }
+
+      if (isProductReferenceSectionTitle(node.title, 'zh-CN')) {
+        inserted = true;
+        return { ...node, children: insertApiNodes(visitedChildren.nodes) };
+      }
+
+      return { ...node, children: visitedChildren.nodes };
+    });
+
+    return { inserted, nodes: nextNodes };
+  };
+
+  return visit(nodes).nodes;
+}
+
+function getProductClientApiReferenceLink(
+  activePath?: string,
+): ProductClientApiReferenceLink | null {
+  const [, locale, tab, productSlug] = activePath?.split('/') ?? [];
+
+  if (locale !== 'zh-CN' || !tab || !productSlug) {
+    return null;
+  }
+
+  return (
+    PRODUCT_CLIENT_API_REFERENCE_LINKS.find(
+      (link) => link.tab === tab && link.productSlug === productSlug,
+    ) ?? null
+  );
+}
+
+function getProductApiReferenceLink(activePath?: string) {
+  const [, locale, tab, productSlug] = activePath?.split('/') ?? [];
+
+  if (!locale || !tab || !productSlug) {
+    return null;
+  }
+
+  return (
+    PRODUCT_API_REFERENCE_LINKS.find(
+      (link) =>
+        link.locale === locale &&
+        link.tab === tab &&
+        link.productSlug === productSlug,
+    ) ?? null
+  );
+}
+
+function isProductReferenceSectionTitle(title: string, locale: AppLocale) {
+  return locale === 'zh-CN'
+    ? title === '参考' || title === '参考信息'
+    : title === 'Reference';
+}
+
+function getProductLegacyApiReferenceUrls(link: ProductApiReferenceLink) {
+  if (link.locale !== 'en') {
+    return [];
+  }
+
+  const prefix = `/en/${link.tab}/${link.productSlug}`;
+
+  switch (link.productSlug) {
+    case 'broadcast-streaming':
+      return [
+        `${prefix}/reference/agora-console-rest-api`,
+        `${prefix}/reference/api-sunset`,
+        `${prefix}/reference/restful-api`,
+      ];
+    case 'cloud-recording':
+      return [
+        `${prefix}/reference/rest-api-overview`,
+        `${prefix}/reference/restful-api`,
+      ];
+    case 'im':
+      return [`${prefix}/reference/server-api`];
+    case 'media-pull':
+      return [
+        `${prefix}/reference/restful-api`,
+        `${prefix}/reference/restful-authentication`,
+      ];
+    case 'media-push':
+      return [
+        `${prefix}/build/restful-api`,
+        `${prefix}/reference/restful-authentication`,
+        `${prefix}/reference/restful-type-definition`,
+      ];
+    case 'on-premise-recording':
+      return [`${prefix}/reference/api-reference`];
+    case 'rtm':
+      return [`${prefix}/reference/rest-api`];
+    case 'rtmp-gateway':
+      return [
+        `${prefix}/reference/rest-api`,
+        `${prefix}/reference/restful-authentication`,
+      ];
+    case 'speech-to-text':
+      return [
+        `${prefix}/reference/api-callback-service`,
+        `${prefix}/reference/rest-api`,
+        `${prefix}/reference/rest-api-v5`,
+        `${prefix}/reference/rest-api-v6`,
+        `${prefix}/reference/restful-authentication`,
+      ];
+    case 'video':
+      return [
+        `${prefix}/reference/agora-console-rest-api`,
+        `${prefix}/reference/api-sunset`,
+      ];
+    case 'voice':
+      return [
+        `${prefix}/reference/agora-console-rest-api`,
+        `${prefix}/reference/api-sunset`,
+      ];
+    case 'whiteboard':
+      return [`${prefix}/reference/rest-api`, `${prefix}/reference/uikit-sdk`];
+    default:
+      return [];
+  }
+}
+
+function isRecipesPath(path?: string) {
   return (
     path?.startsWith('/en/api-reference/recipes') ||
-    path?.startsWith('/zh-CN/api-reference/recipes') ||
+    path?.startsWith('/zh-CN/reference/demo') ||
     false
   );
 }
@@ -1617,13 +3952,15 @@ function buildAiProductSidebar(
     !referenceSection ||
     !deviceKitSection
   ) {
-    return filterSidebarNodes(nodes, (node) => {
+    const filteredNodes = filterSidebarNodes(nodes, (node) => {
       if (node.type !== 'page') {
         return true;
       }
 
       return !node.url.includes('/ai/choose-your-path/');
     });
+
+    return addAiApiReferenceSidebarItems(filteredNodes);
   }
 
   const conversationalAiApiReferenceSection = findTopLevelSidebarSection(
@@ -1643,17 +3980,27 @@ function buildAiProductSidebar(
 
   const isZhCn = aiOverview.url.startsWith('/zh-CN/');
   const aiLocalePrefix = isZhCn ? '/zh-CN' : '/en';
-  const restApiUrl = isZhCn
-    ? `${aiLocalePrefix}/api-reference/conversational-ai/rest-api/authentication`
-    : `${aiLocalePrefix}/api-reference/api-ref/conversational-ai/authentication`;
-
-  const restApiPage = {
-    id: restApiUrl,
-    linked: true,
-    title: isZhCn ? 'REST API' : 'RESTful API',
-    type: 'page',
-    url: restApiUrl,
-  } satisfies DocsSidebarPageNode;
+  const restApiUrl = `${aiLocalePrefix}/api-reference/api-ref/conversational-ai`;
+  const metadataServerApiPage = isZhCn
+    ? (referenceSection.children.find(
+        (child): child is DocsSidebarPageNode =>
+          child.type === 'page' && child.title === '服务端 API',
+      ) ?? null)
+    : null;
+  const restApiPage =
+    metadataServerApiPage ??
+    (!isZhCn
+      ? ({
+          id: restApiUrl,
+          linked: true,
+          title: 'RESTful API',
+          type: 'page',
+          url: restApiUrl,
+        } satisfies DocsSidebarPageNode)
+      : null);
+  const clientApiPage = isZhCn
+    ? createZhCnClientApiReferencePage('conversational-ai')
+    : null;
   const serverSdkTypescriptUrl = isZhCn
     ? `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/typescript`
     : `${aiLocalePrefix}/api-reference/api-ref/server-sdk/typescript`;
@@ -1674,26 +4021,28 @@ function buildAiProductSidebar(
   const referenceTrailingChildren = referenceSection.children.filter(
     (child) =>
       !(
-        child.type === 'page' &&
-        (child.url === '/en/ai/reference/event-types' ||
-          child.url === '/zh-CN/ai/reference/event-types' ||
-          child.url === '/en/ai/reference/restful-api' ||
-          child.url === '/zh-CN/ai/reference/restful-api' ||
-          child.url === '/en/ai/reference/server-sdk' ||
-          child.url === '/en/ai/reference/client-toolkit' ||
-          child.url === '/zh-CN/ai/reference/server-sdk' ||
-          child.url === '/zh-CN/ai/reference/client-toolkit' ||
-          child.url === '/en/ai/release-notes' ||
-          child.url === '/zh-CN/ai/release-notes' ||
-          child.url === '/en/ai/reference/release-notes' ||
-          child.url === '/zh-CN/ai/reference/release-notes')
+        child === metadataServerApiPage ||
+        (child.type === 'page' &&
+          (child.url === '/en/ai/reference/event-types' ||
+            child.url === '/zh-CN/ai/reference/event-types' ||
+            child.url === '/en/ai/reference/restful-api' ||
+            child.url === '/zh-CN/ai/reference/restful-api' ||
+            child.url === '/en/ai/reference/server-sdk' ||
+            child.url === '/en/ai/reference/client-toolkit' ||
+            child.url === '/zh-CN/ai/reference/server-sdk' ||
+            child.url === '/zh-CN/ai/reference/client-toolkit' ||
+            child.url === '/en/ai/release-notes' ||
+            child.url === '/zh-CN/ai/release-notes' ||
+            child.url === '/en/ai/reference/release-notes' ||
+            child.url === '/zh-CN/ai/reference/release-notes'))
       ),
   );
 
   const mergedReferenceSection: DocsSidebarSectionNode = {
     ...stripSidebarSectionMeta(referenceSection),
     children: [
-      restApiPage,
+      ...(clientApiPage ? [clientApiPage] : []),
+      ...(restApiPage ? [restApiPage] : []),
       serverSdkTypescriptPage,
       ...referenceLeadingChildren,
       ...stripSidebarSectionMetaFromNodes(referenceTrailingChildren),
@@ -1767,20 +4116,152 @@ function buildAiProductSidebar(
   ];
 }
 
+function addAiApiReferenceSidebarItems(
+  nodes: DocsSidebarNode[],
+): DocsSidebarNode[] {
+  const locale = getSidebarLocale(nodes);
+
+  if (!locale) {
+    return nodes;
+  }
+
+  const restApiUrl = `/${locale}/api-reference/api-ref/conversational-ai`;
+  const restApiPage =
+    locale === 'en'
+      ? ({
+          id: restApiUrl,
+          linked: true,
+          title: 'RESTful API',
+          type: 'page',
+          url: restApiUrl,
+        } satisfies DocsSidebarPageNode)
+      : null;
+  const clientApiPage =
+    locale === 'zh-CN'
+      ? createZhCnClientApiReferencePage('conversational-ai')
+      : null;
+  const existingUrls = new Set([
+    ...(restApiPage ? [restApiUrl] : []),
+    `/${locale}/ai/reference/restful-api`,
+    ...(locale === 'zh-CN'
+      ? []
+      : [`/${locale}/api-reference/api-ref/conversational-ai/authentication`]),
+    `/${locale}/api-reference/conversational-ai/rest-api`,
+    `/${locale}/api-reference/conversational-ai/rest-api/authentication`,
+  ]);
+
+  return nodes.map((node) => {
+    if (
+      node.type !== 'section' ||
+      !isAiSoftwareClientsSectionTitle(node.title)
+    ) {
+      return node;
+    }
+
+    return {
+      ...node,
+      children: addAiApiReferenceToReferenceSection(
+        node.children,
+        [
+          ...(clientApiPage ? [clientApiPage] : []),
+          ...(restApiPage ? [restApiPage] : []),
+        ],
+        existingUrls,
+        locale,
+      ),
+    };
+  });
+}
+
+function addAiApiReferenceToReferenceSection(
+  nodes: DocsSidebarNode[],
+  apiReferencePages: DocsSidebarPageNode[],
+  existingUrls: Set<string>,
+  locale: AppLocale,
+): DocsSidebarNode[] {
+  return nodes.map((node) => {
+    if (node.type !== 'section') {
+      return node;
+    }
+
+    if (isProductReferenceSectionTitle(node.title, locale)) {
+      return {
+        ...node,
+        children: [
+          ...apiReferencePages,
+          ...filterSidebarNodes(
+            node.children,
+            (child) =>
+              child.type !== 'page' ||
+              (child.title !== '客户端 API' && !existingUrls.has(child.url)),
+          ),
+        ],
+      };
+    }
+
+    return {
+      ...node,
+      children: addAiApiReferenceToReferenceSection(
+        node.children,
+        apiReferencePages,
+        existingUrls,
+        locale,
+      ),
+    };
+  });
+}
+
+function isAiSoftwareClientsSectionTitle(title: string) {
+  return (
+    title === 'Voice Agent in apps' ||
+    title === 'Voice agent in apps' ||
+    title === '对话式 AI 引擎'
+  );
+}
+
+function getSidebarLocale(nodes: DocsSidebarNode[]): AppLocale | null {
+  for (const node of nodes) {
+    const locale = getSidebarNodeLocale(node);
+    if (locale) {
+      return locale;
+    }
+  }
+
+  return null;
+}
+
+function getSidebarNodeLocale(node: DocsSidebarNode): AppLocale | null {
+  if (node.type === 'page') {
+    if (node.url.startsWith('/zh-CN/')) {
+      return 'zh-CN';
+    }
+
+    if (node.url.startsWith('/en/')) {
+      return 'en';
+    }
+
+    return null;
+  }
+
+  for (const child of node.children) {
+    const locale = getSidebarNodeLocale(child);
+    if (locale) {
+      return locale;
+    }
+  }
+
+  return null;
+}
+
 function flattenDeviceKitSidebarChildren(
   children: DocsSidebarNode[],
 ): DocsSidebarNode[] {
   const flattened: DocsSidebarNode[] = [];
   let hasPushedReleaseNotes = false;
-  const releaseNotes =
-    findSidebarPageByExactUrlInNodes(
-      children,
-      '/en/ai/device-kit/reference/release-notes',
-    ) ??
-    findSidebarPageByExactUrlInNodes(
-      children,
-      '/zh-CN/ai/device-kit/reference/release-notes',
-    );
+  const releaseNotes = findSidebarPageByExactUrlInNodes(
+    children,
+    '/en/ai/device-kit/reference/release-notes',
+  );
 
   for (const child of children) {
     if (child.type === 'page') {
@@ -1791,10 +4272,7 @@ function flattenDeviceKitSidebarChildren(
         continue;
       }
 
-      if (
-        child.url === '/en/ai/device-kit/reference/release-notes' ||
-        child.url === '/zh-CN/ai/device-kit/reference/release-notes'
-      ) {
+      if (child.url === '/en/ai/device-kit/reference/release-notes') {
         hasPushedReleaseNotes = true;
       }
       flattened.push(child);
@@ -1802,15 +4280,10 @@ function flattenDeviceKitSidebarChildren(
     }
 
     if (child.title === 'Start here' || child.title === '从这里开始') {
-      const quickstart =
-        findSidebarPageByExactUrl(
-          child,
-          '/en/ai/device-kit/start-here/quickstart',
-        ) ??
-        findSidebarPageByExactUrl(
-          child,
-          '/zh-CN/ai/device-kit/start-here/quickstart',
-        );
+      const quickstart = findSidebarPageByExactUrl(
+        child,
+        '/en/ai/device-kit/start-here/quickstart',
+      );
 
       if (quickstart) {
         if (releaseNotes && !hasPushedReleaseNotes) {
@@ -1976,6 +4449,16 @@ function resolveDocsSidebarHeader({
   source: typeof docsSource;
   tab: string;
 }) {
+  if (locale === 'en')
+    return resolveDocsSidebarHeaderGlobal({
+      activePath,
+      hidePlatformTabs,
+      locale,
+      navScope,
+      pageTree,
+      source,
+      tab,
+    });
   if (
     tab === 'ai' &&
     (usesAiProductSidebar(activePath) ||
@@ -1988,15 +4471,43 @@ function resolveDocsSidebarHeader({
     return undefined;
   }
 
+  const openApiLane =
+    locale && SUPPORTED_LOCALES.includes(locale as AppLocale)
+      ? findOpenApiLaneByUrl(locale as AppLocale, tab, activePath)
+      : undefined;
+  const referenceBackLink = openApiLane
+    ? getOpenApiReferenceBackLink(locale as AppLocale)
+    : undefined;
+  const sidebarBackLink = isZhCnRtmRestApiPage(activePath, locale)
+    ? ZH_CN_RTM_REST_API_BACK_LINK
+    : referenceBackLink
+      ? {
+          backHref: referenceBackLink.href,
+          backLabel: referenceBackLink.label,
+        }
+      : undefined;
+  const baseHeader = sidebarBackLink
+    ? {
+        ...navScope.header,
+        ...sidebarBackLink,
+      }
+    : navScope.header;
+  const headerWithProductDocs = addProductDocsHref(
+    baseHeader,
+    activePath,
+    locale,
+    tab,
+  );
+
   if (hidePlatformTabs) {
     return {
-      ...navScope.header,
+      ...headerWithProductDocs,
       versionSwitcher: undefined,
     };
   }
 
   if (!shouldUseSharedPlatformSidebar(tab, activePath)) {
-    return navScope.header;
+    return headerWithProductDocs;
   }
 
   const versionLinks = getNavScopeVersionLinks({
@@ -2012,22 +4523,85 @@ function resolveDocsSidebarHeader({
     !versionLinks.some((link) => link.href === activePath)
   ) {
     return {
-      ...navScope.header,
+      ...headerWithProductDocs,
       versionSwitcher: undefined,
     };
   }
 
   return {
-    ...navScope.header,
+    ...headerWithProductDocs,
     versionSwitcher: {
       currentId:
         versionLinks.find((item) => item.href === activePath)?.id ??
-        navScope.header.versionSwitcher?.currentId ??
+        baseHeader.versionSwitcher?.currentId ??
         versionLinks[0].id,
       presentation: 'tabs' as const,
       versions: versionLinks,
     },
   };
+}
+
+function addProductDocsHref(
+  header: DocsSidebarHeader,
+  activePath: string,
+  locale: AppLocale | string | null,
+  tab: string,
+): DocsSidebarHeader {
+  if (locale !== 'zh-CN' || tab !== OPENAPI_TAB) {
+    return header;
+  }
+
+  const productDocsHref = resolveZhCnApiReferenceProductDocsHref(activePath);
+
+  return productDocsHref ? { ...header, productDocsHref } : header;
+}
+
+function resolveFocusedOpenApiLaneSidebarHeader(
+  activePath: string,
+  locale: AppLocale,
+  tab: string,
+): DocsSidebarHeader | undefined {
+  if (!isOpenApiTab(tab)) {
+    return undefined;
+  }
+
+  if (isZhCnRtmRestApiPage(activePath, locale)) {
+    return addProductDocsHref(
+      {
+        ...ZH_CN_RTM_REST_API_BACK_LINK,
+        title: 'RESTful API',
+      },
+      activePath,
+      locale,
+      tab,
+    );
+  }
+
+  const lane = findOpenApiLaneByUrl(locale, tab, activePath);
+
+  if (!lane) {
+    return undefined;
+  }
+
+  const referenceBackLink = getOpenApiReferenceBackLink(locale);
+
+  return addProductDocsHref(
+    {
+      backHref: referenceBackLink.href,
+      backLabel: referenceBackLink.label,
+      title: 'RESTful API',
+    },
+    activePath,
+    locale,
+    tab,
+  );
+}
+
+function isZhCnRtmRestApiPage(
+  activePath: string,
+  locale: AppLocale | string | null,
+) {
+  return locale === 'zh-CN' && ZH_CN_RTM_REST_API_PAGE_URL_SET.has(activePath);
 }
 
 function shouldUseSharedPlatformSidebar(
@@ -2147,13 +4721,27 @@ function getDocsNavScope({
   source: typeof docsSource;
   tab: string;
 }) {
-  return resolveDocsNavScope({
-    activePath,
-    getNodeMeta: (node) =>
-      getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
-    root: pageTree,
-    tab,
-  });
+  const resolve = (includeSource = false) =>
+    resolveDocsNavScope({
+      activePath,
+      contentPath: includeSource
+        ? source.getPage(
+            activePath.split('/').filter(Boolean).slice(1),
+            locale ?? undefined,
+          )?.path
+        : undefined,
+      getNodePath: (node) =>
+        source.getNodeMeta(node, locale ?? undefined)?.path,
+      getNodeMeta: (node) =>
+        getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+      root: pageTree,
+      tab,
+    });
+  // Keep existing menu/version resolution. Only unlisted API pages need fallback.
+  return (
+    resolve() ??
+    (locale === 'zh-CN' && tab === OPENAPI_TAB ? resolve(true) : null)
+  );
 }
 
 function getScopedSidebarNodes({
@@ -2212,6 +4800,191 @@ async function addOpenApiEndpointSidebarItems(
   );
 }
 
+function getFocusedZhCnRtmRestSidebarNodes({
+  activePath,
+  locale,
+  source,
+  tab,
+}: {
+  activePath: string;
+  locale: AppLocale;
+  source: typeof docsSource;
+  tab: string;
+}): DocsSidebarNode[] | null {
+  if (!isZhCnRtmRestApiPage(activePath, locale) || !isOpenApiTab(tab)) {
+    return null;
+  }
+
+  const sourcePageByUrl = new Map(
+    source
+      .getPages(locale)
+      .filter((page) => ZH_CN_RTM_REST_API_PAGE_URL_SET.has(page.url))
+      .map((page) => [page.url, page]),
+  );
+  const children = ZH_CN_RTM_REST_API_PAGE_URLS.flatMap((url) => {
+    const page = sourcePageByUrl.get(url);
+    if (!page || !hasExistingDocsSourceFile(page, locale)) {
+      return [];
+    }
+
+    return [
+      {
+        id: url,
+        title: page.data.title ?? page.slugs.at(-1) ?? url,
+        type: 'page' as const,
+        url,
+      },
+    ];
+  });
+
+  return [
+    {
+      children,
+      id: ZH_CN_RTM_REST_API_PARENT_URL,
+      title: 'RESTful API',
+      type: 'section',
+    },
+  ];
+}
+
+async function getFocusedOpenApiLaneSidebarNodes({
+  activePath,
+  locale,
+  pageTree,
+  source,
+  tab,
+}: {
+  activePath: string;
+  locale: AppLocale;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  source: typeof docsSource;
+  tab: string;
+}): Promise<DocsSidebarNode[] | null> {
+  if (!isOpenApiTab(tab)) {
+    return null;
+  }
+
+  const lane = findOpenApiLaneByUrl(locale, tab, activePath);
+
+  if (!lane) {
+    return null;
+  }
+
+  const parentUrl = lane.parentUrl[locale];
+  const operationUrls = new Set(
+    getOpenApiOperationIds(lane).map((operationId) =>
+      getOpenApiEndpointUrl(lane, locale, operationId),
+    ),
+  );
+  const sourcePages = source
+    .getPages(locale)
+    .filter(
+      (page) =>
+        isSamePathOrDescendant(page.url, parentUrl) &&
+        hasExistingDocsSourceFile(page, locale),
+    );
+  const sourcePageByUrl = new Map(sourcePages.map((page) => [page.url, page]));
+  const parentPage = sourcePageByUrl.get(parentUrl);
+  const parentNode: DocsSidebarPageNode = {
+    id: parentUrl,
+    title: parentPage?.data.title ?? '概览',
+    type: 'page',
+    url: parentUrl,
+  };
+  const manualNodes = sourcePages
+    .filter((page) => page.url !== parentUrl && !operationUrls.has(page.url))
+    .sort((left, right) => left.url.localeCompare(right.url))
+    .map(
+      (page): DocsSidebarPageNode => ({
+        id: page.url,
+        title: page.data.title ?? page.slugs.at(-1) ?? page.url,
+        type: 'page',
+        url: page.url,
+      }),
+    );
+  const operationNodes: DocsSidebarPageNode[] = await Promise.all(
+    getOpenApiOperationIds(lane).map(async (operationId) => ({
+      id: getOpenApiEndpointUrl(lane, locale, operationId),
+      method: (await getOpenApiOperation(lane, operationId, locale)).method,
+      title: lane.operations[operationId].title[locale],
+      type: 'page' as const,
+      url: getOpenApiEndpointUrl(lane, locale, operationId),
+    })),
+  );
+
+  const fallbackNodes =
+    lane.parentUrl[locale] === ZH_CN_RTC_REST_API_ENTRY_URL
+      ? operationNodes
+      : [parentNode, ...manualNodes, ...operationNodes];
+  const laneFolder = findFolderByIndexUrl(pageTree, parentUrl);
+  const laneMeta = laneFolder
+    ? getDocsMetaData(source.getNodeMeta(laneFolder, locale))
+    : undefined;
+
+  if (
+    !laneFolder ||
+    !laneMeta ||
+    !('openApiSidebarFromMeta' in laneMeta) ||
+    !laneMeta.openApiSidebarFromMeta
+  ) {
+    return fallbackNodes;
+  }
+
+  const metaNodes = getSidebarNodes(
+    {
+      children: [{ ...laneFolder, root: true }],
+      name: 'Focused OpenAPI lane',
+    } as Root,
+    tab,
+  );
+  const metaNodeUrls = collectSidebarPageUrls(metaNodes);
+
+  return [
+    ...metaNodes,
+    ...fallbackNodes.filter(
+      (node) => node.type !== 'page' || !metaNodeUrls.has(node.url),
+    ),
+  ];
+}
+
+function findFolderByIndexUrl(node: Folder | Root, url: string): Folder | null {
+  for (const child of node.children) {
+    if (child.type !== 'folder') {
+      continue;
+    }
+    if (
+      child.index?.url === url ||
+      child.children.some((item) => item.type === 'page' && item.url === url)
+    ) {
+      return child;
+    }
+
+    const match = findFolderByIndexUrl(child, url);
+    if (match) {
+      return match;
+    }
+  }
+
+  return null;
+}
+
+function collectSidebarPageUrls(nodes: DocsSidebarNode[]) {
+  const urls = new Set<string>();
+
+  for (const node of nodes) {
+    if (node.type === 'page') {
+      urls.add(node.url);
+      continue;
+    }
+
+    for (const url of collectSidebarPageUrls(node.children)) {
+      urls.add(url);
+    }
+  }
+
+  return urls;
+}
+
 async function appendEndpointPagesToOpenApiParent(
   node: DocsSidebarNode,
   locale: AppLocale,
@@ -2240,9 +5013,7 @@ async function appendEndpointPagesToOpenApiParent(
   );
 
   if (lane) {
-    const existingUrls = new Set(
-      children.flatMap((child) => (child.type === 'page' ? [child.url] : [])),
-    );
+    const existingUrls = collectSidebarPageUrls(children);
     const endpointPages: DocsSidebarNode[] = (
       await Promise.all(
         getOpenApiOperationIds(lane).map(async (operationId) => ({
@@ -2254,10 +5025,14 @@ async function appendEndpointPagesToOpenApiParent(
         })),
       )
     ).filter((item) => !existingUrls.has(item.url));
+    const childrenWithEndpointPages =
+      lane.parentUrl[locale] === ZH_CN_RTC_REST_API_ENTRY_URL
+        ? groupZhCnRtcRestSidebarNodes([...children, ...endpointPages])
+        : [...children, ...endpointPages];
 
     return {
       ...node,
-      children: [...children, ...endpointPages],
+      children: childrenWithEndpointPages,
     };
   }
 
@@ -2332,4 +5107,387 @@ function getOpenApiNavigationLink(
     title: lane.operations[operationId].title[locale],
     url: getOpenApiEndpointUrl(lane, locale, operationId),
   };
+}
+
+async function getDocsSidebarNodesGlobal({
+  activePath,
+  locale,
+  pageTree,
+  pageUrl,
+  source,
+  tab,
+}: {
+  activePath?: string;
+  locale: AppLocale | null;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  pageUrl?: string;
+  source: typeof docsSource;
+  tab: string;
+}) {
+  if (tab === 'ai' && usesAiProductSidebar(activePath ?? pageUrl ?? '')) {
+    const aiNodes = getNavScopeSidebarNodes({
+      getNodeMeta: (node) =>
+        getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+      root: pageTree,
+      tab,
+    });
+    const apiReferenceNodes =
+      locale === null
+        ? []
+        : getNavScopeSidebarNodes({
+            getNodeMeta: (node) =>
+              getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+            root: pageTree,
+            tab: OPENAPI_TAB,
+          });
+
+    return buildGlobalAiProductSidebar(
+      aiNodes.filter(
+        (node) =>
+          node.type !== 'section' ||
+          node.title !== 'Conversational AI Platform (Preview)',
+      ),
+      apiReferenceNodes,
+    );
+  }
+
+  if (
+    shouldUseSharedPlatformSidebar(
+      tab,
+      activePath ?? pageUrl,
+      locale,
+      pageTree,
+      source,
+    )
+  ) {
+    return getSharedRtcSidebarNodes({
+      locale,
+      pageTree,
+      source,
+      tab,
+      activePath,
+    });
+  }
+
+  const navScope = activePath
+    ? getDocsNavScope({
+        activePath,
+        locale,
+        pageTree,
+        source,
+        tab,
+      })
+    : null;
+  const sidebar = navScope
+    ? getScopedSidebarNodes({
+        locale,
+        navScope,
+        source,
+      })
+    : getNavScopeSidebarNodes({
+        getNodeMeta: (node) =>
+          getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+        root: pageTree,
+        tab,
+      });
+  const scopedReferenceProductSidebar =
+    Boolean(navScope) && isReferenceProductSidebarPath(activePath ?? pageUrl);
+  const sidebarWithoutReferenceProductIcons = scopedReferenceProductSidebar
+    ? stripSidebarSectionIcons(sidebar)
+    : sidebar;
+
+  const sidebarWithRealtimeMediaApiReference =
+    addRealtimeMediaApiReferenceSidebarItems(
+      sidebarWithoutReferenceProductIcons,
+      activePath,
+    );
+
+  if (!isOpenApiTab(tab) || !locale) {
+    return sidebarWithRealtimeMediaApiReference;
+  }
+
+  const openApiSidebar = await addOpenApiEndpointSidebarItems(
+    sidebarWithRealtimeMediaApiReference,
+    locale,
+    tab,
+    resolveDocVersion(activePath ?? pageUrl ?? '')?.version
+      .restrictToMappedPages
+      ? navScope?.sidebarRoot.index?.url
+      : undefined,
+  );
+
+  if (isRecipesPath(activePath)) {
+    return restoreRecipesSidebarSections(openApiSidebar);
+  }
+
+  return openApiSidebar;
+}
+
+function resolveDocsSidebarHeaderGlobal({
+  activePath,
+  hidePlatformTabs,
+  locale,
+  navScope,
+  pageTree,
+  source,
+  tab,
+}: {
+  activePath: string;
+  hidePlatformTabs?: boolean;
+  locale: AppLocale | string | null;
+  navScope: DocsNavScopeResolution | null;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  source: typeof docsSource;
+  tab: string;
+}) {
+  if (
+    tab === 'ai' &&
+    (usesAiProductSidebar(activePath) ||
+      resolveDocVersion(activePath)?.scope.id === 'convoai-guides')
+  ) {
+    return undefined;
+  }
+
+  if (!navScope) {
+    return undefined;
+  }
+
+  if (hidePlatformTabs) {
+    return {
+      ...navScope.header,
+      versionSwitcher: undefined,
+    };
+  }
+
+  if (!shouldUseSharedPlatformSidebar(tab, activePath)) {
+    return navScope.header;
+  }
+
+  const versionLinks = getNavScopeVersionLinks({
+    activePath,
+    getNodeMeta: (node) =>
+      getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+    root: pageTree,
+    tab,
+  }).filter((link) => isSharedPlatformTabUrl(activePath, link.href));
+
+  if (
+    versionLinks.length === 0 ||
+    !versionLinks.some((link) => link.href === activePath)
+  ) {
+    return {
+      ...navScope.header,
+      versionSwitcher: undefined,
+    };
+  }
+
+  return {
+    ...navScope.header,
+    versionSwitcher: {
+      currentId:
+        versionLinks.find((item) => item.href === activePath)?.id ??
+        navScope.header.versionSwitcher?.currentId ??
+        versionLinks[0].id,
+      presentation: 'tabs' as const,
+      versions: versionLinks,
+    },
+  };
+}
+
+function buildGlobalAiProductSidebar(
+  nodes: DocsSidebarNode[],
+  apiReferenceNodes: DocsSidebarNode[] = [],
+): DocsSidebarNode[] {
+  const aiOverview =
+    findSidebarPageByExactUrlInNodes(nodes, '/en/ai') ??
+    findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai');
+  const conversationalAiQuickstart =
+    findSidebarPageByExactUrlInNodes(nodes, '/en/ai/get-started/quickstart') ??
+    findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai/get-started/quickstart');
+  const conversationalAiReleaseNotes =
+    findSidebarPageByExactUrlInNodes(nodes, '/en/ai/release-notes') ??
+    findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai/release-notes') ??
+    findSidebarPageByExactUrlInNodes(nodes, '/en/ai/reference/release-notes') ??
+    findSidebarPageByExactUrlInNodes(
+      nodes,
+      '/zh-CN/ai/reference/release-notes',
+    );
+  const buildSection = findTopLevelSidebarSection(nodes, ['Build', '构建']);
+  const bestPracticesSection = findTopLevelSidebarSection(nodes, [
+    'Best practices',
+    '最佳实践',
+  ]);
+  const modelsSection = findTopLevelSidebarSection(nodes, ['Models', '模型']);
+  const referenceSection = findTopLevelSidebarSection(nodes, [
+    'Reference',
+    '参考',
+  ]);
+  const deviceKitSection = findTopLevelSidebarSection(nodes, [
+    'Convo AI Device Kit',
+  ]);
+  const _deviceKitTopLevelSection = findTopLevelSidebarSection(nodes, [
+    'Convo AI Device Kit',
+  ]);
+  const agentStudioSection = findTopLevelSidebarSection(nodes, [
+    'Agent Studio',
+  ]);
+
+  if (
+    !aiOverview ||
+    !conversationalAiQuickstart ||
+    !buildSection ||
+    !bestPracticesSection ||
+    !modelsSection ||
+    !referenceSection ||
+    !deviceKitSection
+  ) {
+    return filterSidebarNodes(nodes, (node) => {
+      if (node.type !== 'page') {
+        return true;
+      }
+
+      return !node.url.includes('/ai/choose-your-path/');
+    });
+  }
+
+  const conversationalAiApiReferenceSection = findTopLevelSidebarSection(
+    apiReferenceNodes,
+    ['Conversational AI'],
+  );
+  const _conversationalAiRestApiSection = conversationalAiApiReferenceSection
+    ? (findNestedSidebarSectionByExactUrl(
+        conversationalAiApiReferenceSection,
+        '/en/api-reference/conversational-ai/rest-api',
+      ) ??
+      findNestedSidebarSectionByExactUrl(
+        conversationalAiApiReferenceSection,
+        '/zh-CN/api-reference/conversational-ai/rest-api',
+      ))
+    : null;
+
+  const isZhCn = aiOverview.url.startsWith('/zh-CN/');
+  const aiLocalePrefix = isZhCn ? '/zh-CN' : '/en';
+  const restApiUrl = isZhCn
+    ? `${aiLocalePrefix}/api-reference/conversational-ai/rest-api/authentication`
+    : `${aiLocalePrefix}/api-reference/api-ref/conversational-ai`;
+
+  const restApiPage = {
+    id: restApiUrl,
+    linked: true,
+    title: isZhCn ? 'REST API' : 'RESTful API',
+    type: 'page',
+    url: restApiUrl,
+  } satisfies DocsSidebarPageNode;
+  const serverSdkTypescriptUrl = isZhCn
+    ? `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/typescript`
+    : `${aiLocalePrefix}/api-reference/api-ref/server-sdk/typescript`;
+  const serverSdkTypescriptPage = {
+    id: serverSdkTypescriptUrl,
+    linked: true,
+    title: isZhCn ? 'Agora Agent SDK' : 'Agora Agent SDK',
+    type: 'page',
+    url: serverSdkTypescriptUrl,
+  } satisfies DocsSidebarPageNode;
+
+  const referenceLeadingChildren = referenceSection.children.filter(
+    (child) =>
+      child.type === 'page' &&
+      (child.url === '/en/ai/reference/event-types' ||
+        child.url === '/zh-CN/ai/reference/event-types'),
+  );
+  const referenceTrailingChildren = referenceSection.children.filter(
+    (child) =>
+      !(
+        child.type === 'page' &&
+        (child.url === '/en/ai/reference/event-types' ||
+          child.url === '/zh-CN/ai/reference/event-types' ||
+          child.url === '/en/ai/reference/restful-api' ||
+          child.url === '/en/api-reference/api-ref/conversational-ai' ||
+          child.url === '/zh-CN/ai/reference/restful-api' ||
+          child.url === '/en/ai/reference/server-sdk' ||
+          child.url === '/en/ai/reference/client-toolkit' ||
+          child.url === '/zh-CN/ai/reference/server-sdk' ||
+          child.url === '/zh-CN/ai/reference/client-toolkit' ||
+          child.url === '/en/ai/release-notes' ||
+          child.url === '/zh-CN/ai/release-notes' ||
+          child.url === '/en/ai/reference/release-notes' ||
+          child.url === '/zh-CN/ai/reference/release-notes')
+      ),
+  );
+
+  const mergedReferenceSection: DocsSidebarSectionNode = {
+    ...stripSidebarSectionMeta(referenceSection),
+    children: [
+      restApiPage,
+      serverSdkTypescriptPage,
+      ...referenceLeadingChildren,
+      ...stripSidebarSectionMetaFromNodes(referenceTrailingChildren),
+    ],
+  };
+
+  const mergedBuildSection: DocsSidebarSectionNode = {
+    ...stripSidebarSectionMeta(buildSection),
+    children: stripSidebarSectionMetaFromNodes([
+      ...buildSection.children,
+      {
+        ...stripSidebarSectionMeta(bestPracticesSection),
+        children: stripSidebarSectionMetaFromNodes(
+          bestPracticesSection.children,
+        ),
+        title:
+          buildSection.title === '构建' ? '优化与加固' : 'Harden and optimize',
+      },
+    ]),
+  };
+
+  return [
+    {
+      ...aiOverview,
+      title: isZhCn ? '概览' : aiOverview.title,
+    },
+    {
+      children: stripSidebarSectionMetaFromNodes([
+        ...(conversationalAiReleaseNotes ? [conversationalAiReleaseNotes] : []),
+        {
+          ...conversationalAiQuickstart,
+          title: isZhCn ? 'Quickstart' : 'Quickstart',
+        },
+        mergedBuildSection,
+        modelsSection,
+        mergedReferenceSection,
+      ]),
+      icon: 'Bot',
+      id: 'ai-product-software-clients',
+      title: isZhCn ? 'Voice Agent in apps' : 'Voice agent in apps',
+      type: 'section',
+    },
+    ...(agentStudioSection
+      ? [
+          {
+            ...stripSidebarSectionMeta(agentStudioSection),
+            children: stripSidebarSectionMetaFromNodes(
+              agentStudioSection.children,
+            ),
+            icon: 'LayoutDashboard',
+            id: 'ai-product-agent-studio',
+            title: 'Agent Studio',
+            type: 'section',
+          } satisfies DocsSidebarSectionNode,
+        ]
+      : []),
+    {
+      ...stripSidebarSectionMeta(deviceKitSection),
+      children: [
+        ...stripSidebarSectionMetaFromNodes(
+          flattenDeviceKitSidebarChildren(deviceKitSection.children),
+        ),
+      ],
+      icon: 'Cpu',
+      id: 'ai-product-dedicated-devices',
+      title: isZhCn
+        ? 'Voice Agent on dedicated devices'
+        : 'Voice agent on dedicated devices',
+      type: 'section',
+    },
+  ];
 }

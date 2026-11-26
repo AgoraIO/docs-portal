@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router';
+import { Link, useRouter } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import {
@@ -18,6 +18,8 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AccountGuidance } from '@/components/account-guidance/AccountGuidance';
+import { IntroductionSdkDemoActions } from '@/components/docs-overview/IntroductionSdkDemoActions';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { DocsPageAnalyticsContext } from '@/lib/analytics/docs-page-context';
 import {
@@ -25,10 +27,19 @@ import {
   type DocsPageType,
   registerDocsPageContext,
 } from '@/lib/analytics/posthog';
+import {
+  type ApiReferenceLink,
+  appendApiReferenceTrail,
+  isApiReferencePath,
+  readApiReferenceTrail,
+  withApiReferenceTrail,
+} from '@/lib/api-reference-context';
 import { cn } from '@/lib/cn';
+import { isCnPublicDocsPath } from '@/lib/cn-public-routing';
 import {
   findDocsHeadingForHash,
   getActiveDocsScrollContainer,
+  getDocsHashHref,
   scrollDocsHashTargetAfterLayout,
   syncDocsHashTargetFromLocation,
 } from '@/lib/docs-hash';
@@ -38,23 +49,30 @@ import {
 } from '@/lib/docs-last-updated';
 import type { DocsLayoutMode } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
+import { filterDocsToc, getDocsHeadingTitle } from '@/lib/docs-toc';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
 import {
   type AppLocale,
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
-import { isMachineReadableLocale } from '@/lib/machine-readable-docs';
-import type { PlatformKey } from '@/lib/platforms/registry';
+import { isPublicMarkdownLocale } from '@/lib/machine-readable-docs';
+import { getPlatformLabel, type PlatformKey } from '@/lib/platforms/registry';
+import { toCnContentSearchUrl } from '@/lib/search/cn-search-urls.mjs';
+import { DOCS_REGION } from '@/lib/site-region';
 import {
   PlatformHeaderTabs,
+  PlatformPageProvider,
   PlatformPanel,
   PlatformTabsGroup,
   PlatformTabsPlacementProvider,
+  usePlatformPageContext,
 } from '../mdx/PlatformTabsGroup';
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBody } from './DocsContentBody';
+import { DocsMeasurementContext } from './DocsContentMeasurement';
 import { DocsSearchLandingEngagement } from './DocsSearchLandingEngagement';
+import { DocsVersionDropdown } from './DocsVersionDropdown';
 import { DocVersionNotice } from './DocVersionControls';
 import { DocsCopyMenu } from './docs-copy-menu';
 import { getDocsSourceLinks } from './docs-source-links';
@@ -78,6 +96,46 @@ type DocsArticleReturnLink = {
   title: string;
 };
 
+function PlatformTitleBadges({
+  fallbackPlatforms,
+  locale,
+  platformTabs,
+}: {
+  fallbackPlatforms: PlatformKey[];
+  locale: AppLocale | string;
+  platformTabs?: {
+    initialPlatform?: PlatformKey;
+  };
+}) {
+  const pageContext = usePlatformPageContext();
+  const selectedPlatform =
+    platformTabs?.initialPlatform ?? pageContext?.activePlatform;
+  const platforms = selectedPlatform ? [selectedPlatform] : fallbackPlatforms;
+  const labels = platforms.map((platform) =>
+    getPlatformLabel(platform, normalizeLocale(locale) ?? DEFAULT_LOCALE),
+  );
+
+  if (labels.length === 0) {
+    return null;
+  }
+
+  return (
+    <ul
+      aria-label={locale === 'zh-CN' ? '适用平台' : 'Platforms'}
+      className="m-0 flex list-none flex-wrap items-center gap-1.5 p-0"
+    >
+      {labels.map((label) => (
+        <li
+          className="inline-flex h-6 items-center rounded-md border border-[color:color-mix(in_srgb,var(--accent-brand)_36%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-brand)_12%,transparent)] px-2 text-xs font-semibold leading-none text-[color:var(--accent-brand)]"
+          key={label}
+        >
+          {label}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function DocsContent({
   activePath,
   activeTab,
@@ -95,7 +153,10 @@ export function DocsContent({
   sidebarHeader,
   slug,
   title,
+  titlePlatforms = [],
+  titleVersionSwitcher,
   toc,
+  tocMaxDepth,
 }: {
   activePath?: string;
   activeTab?: string;
@@ -113,11 +174,14 @@ export function DocsContent({
   sidebarHeader?: DocsSidebarHeader;
   slug?: string;
   title?: string;
+  titlePlatforms?: PlatformKey[];
+  titleVersionSwitcher?: DocsSidebarHeader['versionSwitcher'];
   toc: TOCItemType[];
+  tocMaxDepth?: number;
 }) {
   const { i18n } = useTranslation('common');
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
-  const canCopyMarkdownContent = isMachineReadableLocale(currentLocale);
+  const canCopyMarkdownContent = isPublicMarkdownLocale(currentLocale);
   const t = i18n.getFixedT(currentLocale, 'common');
   const displayTitle = title ?? slug;
   const lastUpdatedMetadata = ensureDocsLastUpdatedMetadata(lastUpdated);
@@ -127,11 +191,30 @@ export function DocsContent({
     analyticsPageContext?.pathname ??
     activePath ??
     (typeof window === 'undefined' ? '' : window.location.pathname);
-  const articleReturnLink = useDocsArticleReturnLink(currentPageKey);
+  const storedArticleReturnLink = useDocsArticleReturnLink(currentPageKey);
+  const [apiTrail, setApiTrail] = useState<ApiReferenceLink[]>([]);
+  useEffect(() => {
+    const url = currentPageKey
+      ? new URL(currentPageKey, window.location.origin)
+      : null;
+    setApiTrail(url ? readApiReferenceTrail(url) : []);
+  }, [currentPageKey]);
+  const sharedReturnLink = apiTrail.at(-1);
+  const articleReturnLink = sharedReturnLink
+    ? {
+        ...sharedReturnLink,
+        href: withApiReferenceTrail(
+          sharedReturnLink.href,
+          apiTrail.slice(0, -1),
+          window.location.origin,
+        ),
+      }
+    : storedArticleReturnLink?.href === breadcrumb[0]?.url
+      ? null
+      : storedArticleReturnLink;
   const sourceLinks = getDocsSourceLinks(contentPath);
-  const handleArticleBodyLinkClick = useTrackDocsArticleLinkNavigation({
-    sourceTitle,
-  });
+  const { bodyRef: articleBodyRef, handleClick: handleArticleBodyLinkClick } =
+    useTrackDocsArticleLinkNavigation({ sourceTitle, currentPageKey });
   // A single crumb that just repeats the page title (the H1 right below) adds no
   // wayfinding — suppress it. Multi-item breadcrumbs always render.
   const showBreadcrumb =
@@ -149,7 +232,13 @@ export function DocsContent({
   const effectiveLayoutMode = isOpenApiBody ? 'openapi' : layoutMode;
   const isOpenApiLayout = effectiveLayoutMode === 'openapi';
   // openapi and hideToc both let the article fill the width and hide the toc.
-  const contentFillsWidth = isOpenApiLayout || hideToc;
+  const isHomePage = contentPath === 'zh-CN/introduction/index.mdx';
+  const accountGuidanceEnabled =
+    currentLocale === 'zh-CN' &&
+    (contentPath === 'zh-CN/reference/sdks' ||
+      contentPath === 'zh-CN/reference/sdks.mdx' ||
+      contentPath?.startsWith('zh-CN/reference/demo/'));
+  const contentFillsWidth = isOpenApiLayout || hideToc || isHomePage;
   const platformTabs =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group'
       ? resolvedBody.platformTabs
@@ -163,6 +252,7 @@ export function DocsContent({
   const analyticsContentKind = isOpenApiBody ? 'openapi' : 'mdx';
 
   useEffect(() => {
+    if (currentLocale !== 'en') return;
     registerDocsPageContext({
       canonicalProduct: analyticsPageContext?.product,
       contentId: analyticsPageContext?.contentId,
@@ -204,11 +294,13 @@ export function DocsContent({
     };
   }, [isMdxBody]);
 
-  return (
+  const article = (
     <article
+      lang={currentLocale}
+      data-docs-home={isHomePage ? 'true' : undefined}
       className={cn(
         'flex min-w-0 flex-col',
-        'gap-4',
+        platformTabs ? 'gap-3' : 'gap-4',
         contentFillsWidth ? 'max-w-none' : 'max-w-[var(--content-max)]',
       )}
     >
@@ -216,199 +308,262 @@ export function DocsContent({
         locale={currentLocale}
         pathname={searchLandingPathname}
       />
-      <header
-        className={cn(
-          'flex flex-col gap-4 border-b border-[color:var(--line-soft)]',
-          platformTabs ? 'pb-0' : 'pb-4',
-        )}
-      >
-        {articleReturnLink ? (
-          <a
-            className="inline-flex min-w-0 w-fit items-center gap-1.5 rounded-md text-[13px] leading-5 font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
-            href={articleReturnLink.href}
-          >
-            <ArrowLeftIcon aria-hidden="true" className="size-3.5 shrink-0" />
-            <span className="truncate">
-              {t('docs.returnToSource', { title: articleReturnLink.title })}
-            </span>
-          </a>
-        ) : null}
-        {showBreadcrumb ? (
-          <nav aria-label="Breadcrumb" className="min-w-0">
-            <ol className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-[13px] leading-5 text-[color:var(--ink-4)]">
-              {breadcrumb.map((item, index) => {
-                const isLast = index === breadcrumb.length - 1;
-
-                return (
-                  <li
-                    className="flex min-w-0 items-center gap-2"
-                    key={item.url ?? item.title}
-                  >
-                    {index > 0 ? (
-                      <span
-                        aria-hidden="true"
-                        className="text-[color:var(--line-strong)]"
-                      >
-                        /
-                      </span>
-                    ) : null}
-                    {item.url && !isLast ? (
-                      <a
-                        className="truncate transition-colors hover:text-[color:var(--ink-1)]"
-                        href={item.url}
-                      >
-                        {item.title}
-                      </a>
-                    ) : (
-                      <span
-                        aria-current={isLast ? 'page' : undefined}
-                        className={cn(
-                          'truncate',
-                          isLast && 'text-[color:var(--ink-2)]',
-                        )}
-                      >
-                        {item.title}
-                      </span>
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
-          </nav>
-        ) : null}
-        <div
+      {isHomePage ? (
+        <h1 className="sr-only">{displayTitle}</h1>
+      ) : (
+        <header
           className={cn(
-            'flex flex-col gap-3',
-            canCopyMarkdownContent && 'xl:flex-row xl:items-start xl:gap-6',
+            'flex flex-col gap-4 border-b border-[color:var(--line-soft)]',
+            platformTabs ? 'pb-0' : 'pb-4',
           )}
         >
-          <div className="min-w-0 flex-1">
-            <h1 className="max-w-4xl text-[2rem] leading-[1.12] font-bold tracking-[-0.022em] text-[color:var(--ink-1)] sm:text-[2.375rem]">
-              {displayTitle}
-            </h1>
-            <p
-              className="mt-2 inline-flex items-center gap-1.5 text-[13px] leading-5 text-[color:var(--ink-4)]"
-              data-testid="docs-last-updated"
+          {articleReturnLink ? (
+            <a
+              className="inline-flex min-w-0 w-fit items-center gap-1.5 rounded-md text-[13px] leading-5 font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              href={articleReturnLink.href}
             >
-              <HistoryIcon
-                aria-hidden="true"
-                className="size-3.5 shrink-0"
-                data-testid="docs-last-updated-icon"
-              />
-              {lastUpdatedMetadata.source === 'fallback' ? (
-                <span>{t('docs.lastUpdatedUnavailable')}</span>
-              ) : (
-                <>
+              <ArrowLeftIcon aria-hidden="true" className="size-3.5 shrink-0" />
+              <span className="truncate">
+                {t('docs.returnToSource', { title: articleReturnLink.title })}
+              </span>
+            </a>
+          ) : null}
+          {showBreadcrumb ? (
+            <nav aria-label="Breadcrumb" className="min-w-0">
+              <ol className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-[13px] leading-5 text-[color:var(--ink-4)]">
+                {breadcrumb.map((item, index) => {
+                  const isLast = index === breadcrumb.length - 1;
+
+                  return (
+                    <li
+                      className="flex min-w-0 items-center gap-2"
+                      key={item.url ?? item.title}
+                    >
+                      {index > 0 ? (
+                        <span
+                          aria-hidden="true"
+                          className="text-[color:var(--line-strong)]"
+                        >
+                          /
+                        </span>
+                      ) : null}
+                      {item.url && !isLast ? (
+                        <a
+                          className="truncate transition-colors hover:text-[color:var(--ink-1)]"
+                          href={item.url}
+                        >
+                          {item.title}
+                        </a>
+                      ) : (
+                        <span
+                          aria-current={isLast ? 'page' : undefined}
+                          className={cn(
+                            'truncate',
+                            isLast && 'text-[color:var(--ink-2)]',
+                          )}
+                        >
+                          {item.title}
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
+            </nav>
+          ) : null}
+          <div
+            className={cn(
+              'flex flex-col gap-3',
+              canCopyMarkdownContent && 'lg:flex-row lg:items-start lg:gap-6',
+            )}
+          >
+            <div className="min-w-0 flex-1">
+              <div className="flex max-w-4xl flex-wrap items-center gap-x-3 gap-y-2">
+                <h1 className="min-w-0 text-[2rem] leading-[1.12] font-bold tracking-[-0.022em] text-[color:var(--ink-1)] sm:text-[2.375rem]">
+                  {displayTitle}
+                </h1>
+                {currentLocale === 'zh-CN' && (
+                  <PlatformTitleBadges
+                    fallbackPlatforms={titlePlatforms}
+                    locale={currentLocale}
+                    platformTabs={platformTabs}
+                  />
+                )}
+                {titleVersionSwitcher && (
+                  <DocsVersionDropdown
+                    locale={currentLocale}
+                    versionSwitcher={titleVersionSwitcher}
+                  />
+                )}
+              </div>
+              {lastUpdatedMetadata.source !== 'fallback' && (
+                <p
+                  className="mt-2 inline-flex items-center gap-1.5 text-[13px] leading-5 text-[color:var(--ink-4)]"
+                  data-testid="docs-last-updated"
+                >
+                  <HistoryIcon
+                    aria-hidden="true"
+                    className="size-3.5 shrink-0"
+                    data-testid="docs-last-updated-icon"
+                  />
                   <span>{t('docs.lastUpdated')} </span>
                   <time dateTime={lastUpdatedMetadata.iso}>
                     {lastUpdatedMetadata.formatted}
                   </time>
-                </>
+                </p>
               )}
-            </p>
-            {description ? (
-              <p className="mt-3 max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)]">
-                {description}
-              </p>
+              {description ? (
+                <p className="mt-3 max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)] [overflow-wrap:anywhere]">
+                  {description}
+                </p>
+              ) : null}
+            </div>
+            {canCopyMarkdownContent && markdownUrl ? (
+              <DocsCopyMenu
+                className="self-start lg:ml-auto lg:shrink-0 lg:translate-y-1"
+                locale={currentLocale}
+                markdownUrl={markdownUrl}
+                slug={slug ?? ''}
+                title={displayTitle ?? ''}
+              />
             ) : null}
           </div>
-          {canCopyMarkdownContent && markdownUrl ? (
-            <DocsCopyMenu
-              className="self-start xl:ml-auto xl:shrink-0 xl:translate-y-1"
+          {sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
+            <DocsHeaderScopeTabs header={sidebarHeader} />
+          ) : null}
+          {platformTabs && !hidePlatformTabs ? (
+            <PlatformHeaderTabs
+              canonicalPlatform={platformTabs.canonicalPlatform}
+              className="pt-1"
+              defaultPlatform={platformTabs.defaultPlatform}
+              initialPlatform={platformTabs.initialPlatform}
               locale={currentLocale}
-              markdownUrl={markdownUrl}
-              slug={slug ?? ''}
-              title={displayTitle ?? ''}
+              platforms={platformTabs.platforms}
             />
           ) : null}
-        </div>
-        {sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
-          <DocsHeaderScopeTabs header={sidebarHeader} />
-        ) : null}
-        {platformTabs && !hidePlatformTabs ? (
-          <PlatformHeaderTabs
-            canonicalPlatform={platformTabs.canonicalPlatform}
-            className="pt-1"
-            defaultPlatform={platformTabs.defaultPlatform}
-            initialPlatform={platformTabs.initialPlatform}
-            locale={currentLocale}
-            platforms={platformTabs.platforms}
-          />
-        ) : null}
-      </header>
-      {activePath ? <DocVersionNotice activePath={activePath} /> : null}
-      {isOpenApiBody ? (
-        <div data-static-docs-body onClickCapture={handleArticleBodyLinkClick}>
-          <FumadocsOpenApiContent
-            locale={currentLocale}
-            pageProps={resolvedBody.pageProps}
-          />
-        </div>
-      ) : (
-        <div
-          className="prose prose-neutral dark:prose-invert max-w-none"
-          data-platform-header-tabs={platformTabs ? 'true' : undefined}
-          data-static-docs-body
-          onClickCapture={handleArticleBodyLinkClick}
-        >
-          {resolvedBody?.kind === 'mdx' ? (
-            <Suspense fallback={<DocsContentSkeleton />}>
-              <PlatformTabsPlacementProvider
-                defaultPlatform={platformTabs?.defaultPlatform}
-                initialPlatform={platformTabs?.initialPlatform}
-                value={platformTabs || hidePlatformTabs ? 'header' : 'inline'}
-              >
-                <DocsContentBody contentPath={resolvedBody.contentPath} />
-              </PlatformTabsPlacementProvider>
-            </Suspense>
-          ) : null}
-          {resolvedBody?.kind === 'platform-group' ? (
-            <div className="flex min-w-0 flex-col gap-8">
-              <Suspense fallback={<DocsContentSkeleton />}>
-                <DocsContentBody contentPath={resolvedBody.contentPath} />
-              </Suspense>
-              <PlatformTabsPlacementProvider
-                defaultPlatform={platformTabs?.defaultPlatform}
-                initialPlatform={platformTabs?.initialPlatform}
-                value="header"
-              >
-                <PlatformTabsGroup
-                  canonicalPlatform={resolvedBody.canonicalPlatform}
-                  defaultPlatform={platformTabs?.defaultPlatform}
-                  groupMode="structured"
-                  initialPlatform={platformTabs?.initialPlatform}
-                  locale={currentLocale}
-                  platforms={JSON.stringify(resolvedBody.platforms)}
-                  showTabs="false"
-                >
-                  {resolvedBody.panels.map((panel) => (
-                    <PlatformPanel
-                      key={panel.platform}
-                      platform={panel.platform}
-                    >
-                      <div className="prose prose-neutral dark:prose-invert min-w-0 max-w-none">
-                        <Suspense fallback={<DocsContentSkeleton />}>
-                          <DocsContentBody contentPath={panel.contentPath} />
-                        </Suspense>
-                      </div>
-                    </PlatformPanel>
-                  ))}
-                </PlatformTabsGroup>
-              </PlatformTabsPlacementProvider>
-            </div>
-          ) : null}
-        </div>
+        </header>
       )}
+      {isHomePage ? <IntroductionSdkDemoActions /> : null}
+      {activePath ? <DocVersionNotice activePath={activePath} /> : null}
+      <AccountGuidance enabled={Boolean(accountGuidanceEnabled)}>
+        {isOpenApiBody ? (
+          <div
+            data-static-docs-body
+            onClickCapture={handleArticleBodyLinkClick}
+            ref={articleBodyRef}
+          >
+            <FumadocsOpenApiContent
+              contentPath={contentPath}
+              locale={currentLocale}
+              pageProps={resolvedBody.pageProps}
+            />
+          </div>
+        ) : (
+          <div
+            className="prose prose-neutral dark:prose-invert max-w-none"
+            data-platform-header-tabs={platformTabs ? 'true' : undefined}
+            data-static-docs-body
+            onClickCapture={handleArticleBodyLinkClick}
+            ref={articleBodyRef}
+          >
+            {resolvedBody?.kind === 'mdx' ? (
+              <Suspense fallback={<DocsContentSkeleton />}>
+                <PlatformTabsPlacementProvider
+                  defaultPlatform={platformTabs?.defaultPlatform}
+                  initialPlatform={platformTabs?.initialPlatform}
+                  value={platformTabs || hidePlatformTabs ? 'header' : 'inline'}
+                >
+                  <DocsContentBody
+                    contentPath={resolvedBody.contentPath}
+                    locale={currentLocale}
+                  />
+                </PlatformTabsPlacementProvider>
+              </Suspense>
+            ) : null}
+            {resolvedBody?.kind === 'platform-group' ? (
+              <div className="flex flex-col gap-4" data-platform-group-shell>
+                <Suspense fallback={<DocsContentSkeleton />}>
+                  <DocsContentBody
+                    contentPath={resolvedBody.contentPath}
+                    locale={currentLocale}
+                  />
+                </Suspense>
+                <PlatformTabsPlacementProvider
+                  defaultPlatform={platformTabs?.defaultPlatform}
+                  initialPlatform={platformTabs?.initialPlatform}
+                  value="header"
+                >
+                  <PlatformTabsGroup
+                    canonicalPlatform={resolvedBody.canonicalPlatform}
+                    defaultPlatform={platformTabs?.defaultPlatform}
+                    groupMode="structured"
+                    initialPlatform={platformTabs?.initialPlatform}
+                    locale={currentLocale}
+                    platforms={JSON.stringify(resolvedBody.platforms)}
+                    showTabs="false"
+                  >
+                    {resolvedBody.panels.map((panel) => (
+                      <PlatformPanel
+                        key={panel.platform}
+                        platform={panel.platform}
+                      >
+                        <div className="prose prose-neutral dark:prose-invert max-w-none">
+                          <Suspense fallback={<DocsContentSkeleton />}>
+                            <DocsContentBody
+                              contentPath={panel.contentPath}
+                              locale={currentLocale}
+                            />
+                          </Suspense>
+                        </div>
+                      </PlatformPanel>
+                    ))}
+                  </PlatformTabsGroup>
+                </PlatformTabsPlacementProvider>
+              </div>
+            ) : null}
+          </div>
+        )}
+      </AccountGuidance>
       {contentFillsWidth ? null : (
         <DocsTableOfContents
           className="xl:hidden"
           locale={currentLocale}
           sourceLinks={sourceLinks}
           toc={toc}
+          tocMaxDepth={tocMaxDepth}
           variant="mobile"
         />
       )}
     </article>
+  );
+
+  const measuredArticle = (
+    <DocsMeasurementContext.Provider
+      value={{
+        contentPath,
+        contentType: resolvedBody?.kind ?? 'unknown',
+        platform: titlePlatforms.length === 1 ? titlePlatforms[0] : undefined,
+        version: sidebarHeader?.versionSwitcher?.currentId,
+      }}
+    >
+      {article}
+    </DocsMeasurementContext.Provider>
+  );
+
+  if (!platformTabs) {
+    return measuredArticle;
+  }
+
+  return (
+    <PlatformPageProvider
+      locale={currentLocale}
+      canonicalPlatform={platformTabs.canonicalPlatform}
+      defaultPlatform={platformTabs.defaultPlatform}
+      initialPlatform={platformTabs.initialPlatform}
+      platforms={platformTabs.platforms}
+    >
+      {measuredArticle}
+    </PlatformPageProvider>
   );
 }
 
@@ -426,10 +581,59 @@ function useDocsArticleReturnLink(currentPageKey: string | null) {
 
 function useTrackDocsArticleLinkNavigation({
   sourceTitle,
+  currentPageKey,
 }: {
   sourceTitle: string;
+  currentPageKey: string | null;
 }) {
-  return useCallback(
+  const router = useRouter();
+  const bodyRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const body = bodyRef.current;
+    const source = getCurrentUrl();
+    if (
+      !currentPageKey ||
+      !body ||
+      !source ||
+      !isApiReferencePath(source.pathname)
+    )
+      return;
+
+    // Populate real hrefs so native new-tab navigation and Copy Link Address
+    // carry the same context as ordinary clicks, including lazily loaded MDX.
+    const prepareLinks = () => {
+      const sourceUrl = new URL(source);
+      for (const element of body.querySelectorAll<HTMLElement>(
+        'a[href], a[id], h2[id], h3[id], h4[id]',
+      )) {
+        if (
+          element instanceof HTMLAnchorElement &&
+          element.hasAttribute('href') &&
+          !element.hasAttribute('download')
+        ) {
+          const href = appendApiReferenceTrail(
+            element.href,
+            sourceUrl,
+            sourceTitle,
+          );
+          if (new URL(href, sourceUrl).href !== element.href)
+            element.href = href;
+        }
+        if (element.id) sourceUrl.hash = element.id;
+      }
+    };
+    prepareLinks();
+    const observer = new MutationObserver(prepareLinks);
+    observer.observe(body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['href'],
+    });
+    return () => observer.disconnect();
+  }, [currentPageKey, sourceTitle]);
+
+  const handleClick = useCallback(
     (event: MouseEvent<HTMLElement>) => {
       if (
         event.defaultPrevented ||
@@ -455,9 +659,37 @@ function useTrackDocsArticleLinkNavigation({
       }
 
       trackDocsArticleLinkNavigation(anchor, sourceTitle);
+      if (
+        anchor.hasAttribute('download') ||
+        (anchor.target && anchor.target !== '_self')
+      )
+        return;
+      const sourceUrl = getCurrentUrl();
+      if (!sourceUrl) return;
+      // Return to the field/section containing the clicked type, even if the
+      // reader scrolled there without changing the address bar's hash.
+      const precedingAnchor = Array.from(
+        event.currentTarget.querySelectorAll<HTMLElement>(
+          'a[id], h2[id], h3[id], h4[id]',
+        ),
+      )
+        .filter((element) =>
+          Boolean(
+            element.compareDocumentPosition(anchor) &
+              Node.DOCUMENT_POSITION_FOLLOWING,
+          ),
+        )
+        .at(-1);
+      if (precedingAnchor) sourceUrl.hash = precedingAnchor.id;
+      const href = appendApiReferenceTrail(anchor.href, sourceUrl, sourceTitle);
+      if (href !== anchor.href) {
+        event.preventDefault();
+        void router.navigate({ href });
+      }
     },
-    [sourceTitle],
+    [router, sourceTitle],
   );
+  return { bodyRef, handleClick };
 }
 
 function trackDocsArticleLinkNavigation(
@@ -636,7 +868,11 @@ function getSafeStoredDocsHref(href: string) {
 }
 
 function getDocsPageKey(url: URL) {
-  const pathname = normalizePathname(url.pathname);
+  const rawPath = normalizePathname(url.pathname);
+  const pathname =
+    DOCS_REGION === 'cn' && isCnPublicDocsPath(rawPath)
+      ? toCnContentSearchUrl(rawPath)
+      : rawPath;
 
   if (!isDocsPagePath(pathname)) {
     return null;
@@ -762,12 +998,14 @@ export function DocsTableOfContents({
   locale = DEFAULT_LOCALE,
   sourceLinks = null,
   toc,
+  tocMaxDepth,
   variant = 'rail',
 }: {
   className?: string;
   locale?: AppLocale | string;
   sourceLinks?: ReturnType<typeof getDocsSourceLinks>;
   toc: TOCItemType[];
+  tocMaxDepth?: number;
   variant?: 'mobile' | 'rail';
 }) {
   const { i18n } = useTranslation('common');
@@ -777,17 +1015,18 @@ export function DocsTableOfContents({
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const items = useMemo(() => {
     if (derivedItems.length === 0) {
-      return toc.filter((item) => typeof item.title === 'string');
+      return filterDocsToc(toc, tocMaxDepth).filter(
+        (item) => typeof item.title === 'string',
+      );
     }
 
     const sourceByUrl = new Map(toc.map((item) => [item.url, item]));
 
-    // Rendered headings define the reading order, including versions missing
-    // from the payload TOC and platform headings with different generated IDs.
-    return derivedItems
+    // Rendered headings define reading order and the active platform's IDs.
+    return filterDocsToc(derivedItems, tocMaxDepth)
       .map((item) => sourceByUrl.get(item.url) ?? item)
       .filter((item) => typeof item.title === 'string');
-  }, [derivedItems, toc]);
+  }, [derivedItems, toc, tocMaxDepth]);
   const [primaryActiveUrl, setPrimaryActiveUrl] = useState(
     () => items[0]?.url ?? '',
   );
@@ -795,16 +1034,22 @@ export function DocsTableOfContents({
     () => new Set(items[0]?.url ? [items[0].url] : []),
   );
 
-  const scrollToHeading = useCallback((url: string) => {
-    setPrimaryActiveUrl(url);
-    setVisibleUrls((current) => {
-      const next = new Set(current);
-      next.add(url);
-      return next;
-    });
-    setIsMobileOpen(false);
-    scrollDocsHashTargetAfterLayout(url, { behavior: 'auto' });
-  }, []);
+  const scrollToHeading = useCallback(
+    (url: string) => {
+      setPrimaryActiveUrl(url);
+      setVisibleUrls((current) => {
+        const next = new Set(current);
+        next.add(url);
+        return next;
+      });
+      setIsMobileOpen(false);
+      scrollDocsHashTargetAfterLayout(url, {
+        behavior: 'auto',
+        locale: currentLocale,
+      });
+    },
+    [currentLocale],
+  );
 
   useEffect(() => {
     let frame = 0;
@@ -821,7 +1066,7 @@ export function DocsTableOfContents({
 
     observer.observe(document.body, {
       attributes: true,
-      attributeFilter: ['hidden', 'aria-hidden', 'inert'],
+      attributeFilter: ['hidden', 'aria-hidden', 'inert', 'data-state'],
       childList: true,
       subtree: true,
     });
@@ -862,7 +1107,9 @@ export function DocsTableOfContents({
         let nextActiveUrl =
           firstActiveHeadingIndex >= 0
             ? (items[firstActiveHeadingIndex]?.url ?? '')
-            : (items[0]?.url ?? '');
+            : locale === 'zh-CN'
+              ? ''
+              : (items[0]?.url ?? '');
         const nextVisibleUrls = new Set<string>();
 
         for (const [index, item] of items.entries()) {
@@ -920,7 +1167,7 @@ export function DocsTableOfContents({
       window.removeEventListener('resize', updateActiveUrl);
       observer.disconnect();
     };
-  }, [items]);
+  }, [items, locale]);
 
   const linkItems =
     items.length > 0 ? (
@@ -961,7 +1208,7 @@ export function DocsTableOfContents({
           />
         </button>
       ) : (
-        <div className="px-3 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
+        <div className="px-3 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-3)] uppercase">
           {t('docs.toc')}
         </div>
       )}
@@ -1016,6 +1263,14 @@ function TocLinks({
   visibleUrls: Set<string>;
 }) {
   const activeRailLinkRef = useRef<HTMLAnchorElement | null>(null);
+  const [shareHrefs, setShareHrefs] = useState<Record<string, string>>({});
+  useEffect(() => {
+    setShareHrefs(
+      Object.fromEntries(
+        items.map((item) => [item.url, getDocsHashHref(item.url)]),
+      ),
+    );
+  }, [items]);
   const scrollActiveLinkIntoView = useCallback(() => {
     if (variant !== 'rail') {
       return;
@@ -1062,9 +1317,9 @@ function TocLinks({
           <a
             aria-current={isPrimary ? 'location' : undefined}
             className={cn(
-              'leading-5 transition-colors hover:bg-[color:var(--docs-soft-fill)]',
+              'min-w-0 [overflow-wrap:anywhere] leading-5 transition-colors hover:bg-[color:var(--docs-soft-fill)]',
               variant === 'rail'
-                ? '-ml-px rounded-r-md border-l-2 border-transparent px-3 py-1.5 text-[12.5px] text-[color:var(--ink-4)] hover:text-[color:var(--ink-2)]'
+                ? '-ml-px rounded-r-md border-l-2 border-transparent px-3 py-1.5 text-[12.5px] text-[color:var(--ink-3)] hover:text-[color:var(--ink-2)]'
                 : 'rounded-md px-2 py-2 text-sm text-[color:var(--ink-3)] hover:text-[color:var(--ink-1)]',
               isVisible &&
                 variant === 'rail' &&
@@ -1080,10 +1335,17 @@ function TocLinks({
             )}
             data-primary={isPrimary ? 'true' : undefined}
             data-visible={isVisible ? 'true' : undefined}
-            href={item.url}
+            href={shareHrefs[item.url] ?? item.url}
             key={item.url}
             onClick={(event) => {
-              if (!item.url.startsWith('#')) {
+              if (
+                !item.url.startsWith('#') ||
+                event.button !== 0 ||
+                event.ctrlKey ||
+                event.metaKey ||
+                event.shiftKey ||
+                event.altKey
+              ) {
                 return;
               }
 
@@ -1121,15 +1383,12 @@ function getVisibleArticleHeadingItems(): TOCItemType[] {
     .filter((heading) => heading.id && !isHiddenFromToc(heading))
     .map((heading) => {
       const headingDepth = Number(heading.tagName.slice(1));
-      // Fumadocs renders the heading label and copy-button announcement as siblings.
-      const headingLabel =
-        heading.querySelector(':scope > a[data-card]') ?? heading;
 
       return {
         depth: heading.hasAttribute('data-accordion-value')
           ? Math.min(headingDepth + 1, 4)
           : headingDepth,
-        title: headingLabel.textContent?.trim() ?? '',
+        title: getDocsHeadingTitle(heading),
         url: `#${heading.id}`,
       };
     })
@@ -1166,6 +1425,8 @@ function isHiddenFromToc(element: HTMLElement) {
       current.getAttribute('aria-hidden') === 'true' ||
       current.getAttribute('data-toc-hidden') === 'true' ||
       current.hasAttribute('inert') ||
+      (current.getAttribute('role') === 'tabpanel' &&
+        current.getAttribute('data-state') === 'inactive') ||
       ((current.getAttribute('role') === 'region' ||
         current.tagName === 'SECTION') &&
         current.getAttribute('data-state') === 'closed')

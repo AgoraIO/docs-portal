@@ -1,10 +1,12 @@
 import {
   ActivityIcon,
+  AppleIcon,
   AppWindowIcon,
   ArrowDownToLineIcon,
   ArrowRightIcon,
   ArrowUpFromLineIcon,
   ArrowUpRightIcon,
+  AtomIcon,
   AudioLinesIcon,
   BarChart3Icon,
   BlocksIcon,
@@ -15,19 +17,26 @@ import {
   Code2Icon,
   CpuIcon,
   CuboidIcon,
+  ExternalLinkIcon,
   FilmIcon,
+  Globe2Icon,
   GraduationCapIcon,
   HardDriveIcon,
+  LaptopIcon,
   MessagesSquareIcon,
+  MonitorIcon,
   MonitorSmartphoneIcon,
   NetworkIcon,
+  NewspaperIcon,
   PhoneIcon,
+  PlayIcon,
   PresentationIcon,
   RadioIcon,
   RadioTowerIcon,
   SearchIcon,
   ServerCogIcon,
   SmartphoneChargingIcon,
+  SmartphoneIcon,
   TerminalSquareIcon,
   TicketIcon,
   TvIcon,
@@ -44,11 +53,58 @@ import {
   useRef,
   useState,
 } from 'react';
+import {
+  ReferenceFilterSelect,
+  ReferenceFilterToggleGroup,
+  ReferenceSearchInput,
+} from '@/components/reference-center/ReferenceFilterControls';
+import { Button } from '@/components/ui/button';
+import {
+  Tabs as UiTabs,
+  TabsContent as UiTabsContent,
+  TabsList as UiTabsList,
+  TabsTrigger as UiTabsTrigger,
+} from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
+import {
+  DOCS_HASH_TARGET_EVENT,
+  findDocsHeadingForHash,
+} from '@/lib/docs-hash';
+import { DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 
 const SdksCatalog = lazy(() =>
   import('./SdksCatalog').then((module) => ({
     default: module.SdksCatalog,
+  })),
+);
+
+const RtcSdkDownloads = lazy(() =>
+  import('./RtcSdkDownloads').then((module) => ({
+    default: module.RtcSdkDownloads,
+  })),
+);
+
+const ProductSdkDownloads = lazy(() =>
+  import('./ProductSdkDownloads').then((module) => ({
+    default: module.ProductSdkDownloads,
+  })),
+);
+
+const DownloadResourceCards = lazy(() =>
+  import('./DownloadResourceCards').then((module) => ({
+    default: module.DownloadResourceCards,
+  })),
+);
+
+const KtvDownloadResources = lazy(() =>
+  import('./KtvDownloadResources').then((module) => ({
+    default: module.KtvDownloadResources,
+  })),
+);
+
+const ApiReferenceCards = lazy(() =>
+  import('./ApiReferenceCards').then((module) => ({
+    default: module.ApiReferenceCards,
   })),
 );
 
@@ -64,8 +120,78 @@ const FaqCategory = lazy(() =>
   })),
 );
 
-export function getOverviewMDXComponents(): MDXComponents {
+const overviewActionContentPaths = new Set([
+  'zh-CN/ai/aigc/index.mdx',
+  'zh-CN/ai/index.mdx',
+  'zh-CN/realtime-media/cloud-recording/index.mdx',
+  'zh-CN/realtime-media/content-moderation/index.mdx',
+  'zh-CN/realtime-media/danmaku/index.mdx',
+  'zh-CN/realtime-media/fusion-cdn/index.mdx',
+  'zh-CN/realtime-media/local-server-recording/index.mdx',
+  'zh-CN/realtime-media/marketplace/index.mdx',
+  'zh-CN/realtime-media/media-pull/index.mdx',
+  'zh-CN/realtime-media/media-push/index.mdx',
+  'zh-CN/realtime-media/rtc-server-sdk/index.mdx',
+  'zh-CN/realtime-media/rtc/index.mdx',
+  'zh-CN/realtime-media/rtmp-gateway/index.mdx',
+  'zh-CN/realtime-media/rtsa/index.mdx',
+  'zh-CN/realtime-media/sdk-extensions/metakit/index.mdx',
+  'zh-CN/realtime-media/sdk-extensions/portrait-rhythm/index.mdx',
+  'zh-CN/realtime-media/speech-to-text/index.mdx',
+  'zh-CN/realtime-media/transcoding/index.mdx',
+  'zh-CN/realtime-media/usage-analytics/index.mdx',
+  'zh-CN/realtime-media/whiteboard/fastboard-sdk/index.mdx',
+  'zh-CN/realtime-media/whiteboard/whiteboard-sdk/index.mdx',
+  'zh-CN/solutions/chatroom/sdk/index.mdx',
+  'zh-CN/solutions/chatroom/uikit/index.mdx',
+  'zh-CN/solutions/flexible-classroom/index.mdx',
+  'zh-CN/solutions/game-voice/index.mdx',
+  'zh-CN/solutions/meeting/index.mdx',
+  'zh-CN/solutions/meta-world/index.mdx',
+  'zh-CN/solutions/one-to-one-live/custom-signaling/index.mdx',
+  'zh-CN/solutions/one-to-one-live/rtm/index.mdx',
+  'zh-CN/solutions/online-ktv/auikaraoke/index.mdx',
+  'zh-CN/solutions/online-ktv/ktv-scenario/index.mdx',
+  'zh-CN/solutions/online-ktv/online-ktv-sdk/index.mdx',
+  'zh-CN/realtime-media/ppt-transcoding/index.mdx',
+  'zh-CN/solutions/showroom/index.mdx',
+  'zh-CN/realtime-media/status-page/index.mdx',
+  'zh-CN/solutions/voip-call/index.mdx',
+]);
+
+export function getOverviewMDXComponents(contentPath?: string): MDXComponents {
+  if (contentPath ? contentPath.startsWith('en/') : DEFAULT_LOCALE === 'en') {
+    return {
+      CardGrid,
+      FeatureCard: GlobalFeatureCard,
+      FaqLanding,
+      FaqCategory,
+      CapabilityGroupCard: GlobalCapabilityGroupCard,
+      CapabilityGroupGrid,
+      CapabilityMatrix: GlobalCapabilityMatrix,
+      HelpHub: GlobalHelpHub,
+      OverviewImageCard: GlobalOverviewImageCard,
+      OverviewImageCardGrid,
+      OverviewLinkBanner: GlobalOverviewLinkBanner,
+      OverviewSpotlightCard: GlobalOverviewSpotlightCard,
+      OverviewSpotlightGrid,
+      OverviewToolkits,
+      RecipesCatalog: GlobalRecipesCatalog,
+      RecipesGallery: GlobalRecipesGallery,
+      SdksCatalog,
+      SolutionCard: GlobalSolutionCard,
+      SolutionCardGrid: GlobalSolutionCardGrid,
+      ToolkitGroup,
+      ToolkitItem,
+    };
+  }
+  const ScopedOverviewActions = overviewActionContentPaths.has(
+    contentPath ?? '',
+  )
+    ? OverviewActions
+    : HiddenOverviewActions;
   return {
+    ApiReferenceCards,
     CardGrid,
     FeatureCard,
     FaqLanding,
@@ -73,21 +199,254 @@ export function getOverviewMDXComponents(): MDXComponents {
     CapabilityGroupCard,
     CapabilityGroupGrid,
     CapabilityMatrix,
+    DemoGallery,
+    DemoMedia,
+    DemoPlatform,
+    DemoPlatformTabs,
+    DownloadResourceCards,
+    KtvDownloadResources,
     HelpHub,
     OverviewImageCard,
     OverviewImageCardGrid,
+    OverviewActions: ScopedOverviewActions,
     OverviewLinkBanner,
     OverviewSpotlightCard,
     OverviewSpotlightGrid,
     OverviewToolkits,
     RecipesCatalog,
     RecipesGallery,
+    ProductSdkDownloads,
+    RtcSdkDownloads,
     SdksCatalog,
     SolutionCard,
     SolutionCardGrid,
     ToolkitGroup,
     ToolkitItem,
   } satisfies MDXComponents;
+}
+
+type OverviewAction = {
+  href: string;
+  label: string;
+};
+
+function OverviewActions({ actions }: { actions: OverviewAction[] }) {
+  if (actions.length === 0) {
+    return null;
+  }
+
+  return (
+    <nav aria-label="相关资源" className="not-prose my-5 flex flex-wrap gap-3">
+      {actions.map((action) => {
+        const external = isExternalHref(action.href);
+
+        return (
+          <Button
+            asChild
+            key={`${action.label}-${action.href}`}
+            variant="outline"
+          >
+            <a
+              className="border-primary text-primary hover:border-primary hover:bg-primary/5 hover:text-primary"
+              href={action.href}
+              rel={external ? 'noreferrer noopener' : undefined}
+              target={external ? '_blank' : undefined}
+            >
+              {action.label}
+            </a>
+          </Button>
+        );
+      })}
+    </nav>
+  );
+}
+
+function HiddenOverviewActions(_props: { actions: OverviewAction[] }) {
+  return null;
+}
+
+type DemoPlatformOption = {
+  label: string;
+  value: string;
+};
+
+const demoPlatformIcons = {
+  android: SmartphoneIcon,
+  electron: AtomIcon,
+  ios: AppleIcon,
+  macos: LaptopIcon,
+  web: Globe2Icon,
+  windows: MonitorIcon,
+};
+
+export function DemoPlatformTabs({
+  ariaLabel = '选择平台',
+  children,
+  defaultValue,
+  platforms,
+}: {
+  ariaLabel?: string;
+  children: ReactNode;
+  defaultValue: string;
+  platforms: DemoPlatformOption[];
+}) {
+  const values = useMemo(
+    () => new Set(platforms.map((platform) => platform.value)),
+    [platforms],
+  );
+  const fallbackValue = values.has(defaultValue)
+    ? defaultValue
+    : platforms.at(0)?.value;
+  const [activePlatform, setActivePlatform] = useState(fallbackValue);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const queryPlatform = new URLSearchParams(window.location.search).get(
+      'platform',
+    );
+
+    if (queryPlatform && values.has(queryPlatform)) {
+      setActivePlatform(queryPlatform);
+    }
+
+    const revealHashPlatform = (event?: Event) => {
+      const detail = (event as CustomEvent<string> | undefined)?.detail;
+      const hash = typeof detail === 'string' ? detail : window.location.hash;
+      const panel = findDocsHeadingForHash(hash)?.closest<HTMLElement>(
+        '[data-demo-platform]',
+      );
+      if (
+        !panel ||
+        panel.closest('[data-demo-platform-root]') !== rootRef.current
+      )
+        return;
+      const platform = panel.getAttribute('data-demo-platform');
+      if (platform && values.has(platform)) setActivePlatform(platform);
+    };
+    revealHashPlatform();
+    window.addEventListener('hashchange', revealHashPlatform);
+    window.addEventListener(DOCS_HASH_TARGET_EVENT, revealHashPlatform);
+    return () => {
+      window.removeEventListener('hashchange', revealHashPlatform);
+      window.removeEventListener(DOCS_HASH_TARGET_EVENT, revealHashPlatform);
+    };
+  }, [values]);
+
+  if (!activePlatform) {
+    return null;
+  }
+
+  const changePlatform = (nextPlatform: string) => {
+    setActivePlatform(nextPlatform);
+
+    const url = new URL(window.location.href);
+    url.searchParams.set('platform', nextPlatform);
+    const targetPanel = findDocsHeadingForHash(url.hash)?.closest<HTMLElement>(
+      '[data-demo-platform]',
+    );
+    if (
+      targetPanel &&
+      targetPanel.closest('[data-demo-platform-root]') === rootRef.current &&
+      targetPanel.getAttribute('data-demo-platform') !== nextPlatform
+    )
+      url.hash = '';
+    window.history.replaceState(window.history.state, '', url);
+  };
+
+  return (
+    <UiTabs
+      className="my-6 gap-0"
+      data-demo-platform-root=""
+      onValueChange={changePlatform}
+      ref={rootRef}
+      value={activePlatform}
+    >
+      <UiTabsList
+        aria-label={ariaLabel}
+        className="not-prose h-auto min-h-[46px] max-w-full justify-start gap-2 overflow-x-auto overflow-y-hidden rounded-full bg-muted p-1.5"
+      >
+        {platforms.map((platform) => {
+          const PlatformIcon =
+            demoPlatformIcons[
+              platform.value.toLowerCase() as keyof typeof demoPlatformIcons
+            ];
+
+          return (
+            <UiTabsTrigger
+              className="h-[34px] min-w-[88px] rounded-full border border-transparent px-5 text-muted-foreground data-[state=active]:border-primary data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-none"
+              key={platform.value}
+              value={platform.value}
+            >
+              {PlatformIcon ? (
+                <PlatformIcon aria-hidden className="size-4" />
+              ) : null}
+              {platform.label}
+            </UiTabsTrigger>
+          );
+        })}
+      </UiTabsList>
+      {children}
+    </UiTabs>
+  );
+}
+
+export function DemoPlatform({
+  children,
+  value,
+}: {
+  children: ReactNode;
+  value: string;
+}) {
+  return (
+    <UiTabsContent
+      className="mt-6 data-[state=inactive]:hidden"
+      data-demo-platform={value}
+      forceMount
+      value={value}
+    >
+      {children}
+    </UiTabsContent>
+  );
+}
+
+export function DemoMedia({
+  imageAlt,
+  imageSrc,
+  qrCodeAlt,
+  qrCodeSrc,
+  qrLabel,
+}: {
+  imageAlt: string;
+  imageSrc: string;
+  qrCodeAlt: string;
+  qrCodeSrc: string;
+  qrLabel: string;
+}) {
+  return (
+    <div className="not-prose my-6 flex flex-col items-start gap-x-6 gap-y-3 sm:flex-row">
+      <img
+        alt={imageAlt}
+        className="h-auto max-h-[500px] min-w-0 max-w-full shrink rounded-lg object-contain object-left"
+        decoding="async"
+        loading="lazy"
+        referrerPolicy="no-referrer"
+        src={imageSrc}
+      />
+      <figure className="m-0 w-[120px] shrink-0">
+        <img
+          alt={qrCodeAlt}
+          className="block size-[120px]"
+          decoding="async"
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          src={qrCodeSrc}
+        />
+        <figcaption className="mt-2 text-center text-xs text-muted-foreground">
+          {qrLabel}
+        </figcaption>
+      </figure>
+    </div>
+  );
 }
 
 function CardGrid({ children }: { children: ReactNode }) {
@@ -104,7 +463,7 @@ function FeatureCard({
   title: string;
 }) {
   return (
-    <section className="rounded-lg border border-border bg-card p-5 shadow-sm">
+    <section className="docs-card-surface p-5">
       <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
       <div className="mt-2 text-sm leading-6 text-muted-foreground">
         {children}
@@ -131,7 +490,7 @@ function CapabilityGroupCard({
   title: string;
 }) {
   return (
-    <section className="rounded-[24px] border border-border bg-card p-6 shadow-sm">
+    <section className="docs-card-surface p-6">
       <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
       <p className="mt-2 text-sm leading-6 text-muted-foreground">
         {description}
@@ -154,7 +513,7 @@ type HelpHubCard = {
   cta: string;
   description: string;
   href: string;
-  icon: 'discord' | 'stack-overflow' | 'status' | 'ticket';
+  icon: 'blog' | 'discord' | 'stack-overflow' | 'status' | 'ticket';
   title: string;
 };
 
@@ -166,26 +525,45 @@ type HelpHubLink = {
 function HelpHub({
   cards,
   knowledgeBase,
+  locale = 'en',
   topics,
 }: {
   cards: HelpHubCard[];
   knowledgeBase: HelpHubLink[];
+  locale?: 'en' | 'zh-CN';
   topics: HelpHubLink[];
 }) {
+  const copy =
+    locale === 'zh-CN'
+      ? {
+          browseByTopic: '按主题浏览',
+          intro: null,
+          popularKnowledgeBase: '热门知识库',
+          quickAnswers: '快速解答',
+        }
+      : {
+          browseByTopic: 'Browse By Topic',
+          intro:
+            'Choose the fastest path for product questions, service health, and community support.',
+          popularKnowledgeBase: 'Popular Knowledge Base',
+          quickAnswers: 'Quick answers',
+        };
+
   return (
     <section className="not-prose my-8 space-y-5">
-      <div className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
-        <div className="max-w-2xl">
-          <p className="text-sm leading-6 text-muted-foreground">
-            Choose the fastest path for product questions, service health, and
-            community support.
-          </p>
-        </div>
+      <div>
+        {copy.intro ? (
+          <div className="max-w-2xl">
+            <p className="text-sm leading-6 text-muted-foreground">
+              {copy.intro}
+            </p>
+          </div>
+        ) : null}
 
-        <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div className={cn('grid gap-3 sm:grid-cols-3', copy.intro && 'mt-4')}>
           {cards.map((card) => (
             <a
-              className="group flex min-h-[11.5rem] flex-col rounded-[22px] border border-border bg-background px-4 py-4 transition-colors hover:border-primary/35 hover:bg-accent/35"
+              className="docs-card-surface docs-card-interactive group flex flex-col p-4"
               href={card.href}
               key={card.title}
               rel={
@@ -205,7 +583,7 @@ function HelpHub({
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
                 {card.description}
               </p>
-              <span className="mt-auto pt-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-primary">
+              <span className="mt-auto pt-3 text-xs font-medium text-foreground">
                 {card.cta}
               </span>
             </a>
@@ -214,13 +592,13 @@ function HelpHub({
       </div>
 
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1.12fr)_minmax(18rem,0.88fr)]">
-        <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
+        <section className="docs-card-surface p-5">
           <div className="flex items-center justify-between gap-3">
             <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Popular Knowledge Base
+              {copy.popularKnowledgeBase}
             </h4>
             <span className="hidden text-[11px] uppercase tracking-[0.18em] text-muted-foreground sm:inline">
-              Quick answers
+              {copy.quickAnswers}
             </span>
           </div>
           <ul className="mt-4 space-y-2">
@@ -237,21 +615,21 @@ function HelpHub({
                   target={isExternalHref(item.href) ? '_blank' : undefined}
                 >
                   <span className="leading-6">{item.label}</span>
-                  <ArrowUpRightIcon className="size-4 shrink-0 text-muted-foreground opacity-0 transition-all group-hover:text-foreground group-hover:opacity-100" />
+                  <ArrowUpRightIcon className="size-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:text-foreground group-hover:opacity-100" />
                 </a>
               </li>
             ))}
           </ul>
         </section>
 
-        <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
+        <section className="docs-card-surface p-5">
           <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Browse By Topic
+            {copy.browseByTopic}
           </h4>
           <div className="mt-4 space-y-2">
             {topics.map((item) => (
               <a
-                className="group flex items-center justify-between gap-4 rounded-[16px] border border-border bg-background px-4 py-3.5 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-accent/35 hover:text-primary"
+                className="group flex items-center justify-between gap-4 rounded-lg px-3 py-3 text-sm text-foreground transition-colors hover:bg-accent/45 focus-visible:outline-2 focus-visible:outline-ring"
                 href={item.href}
                 key={item.label}
                 rel={
@@ -273,6 +651,10 @@ function HelpHub({
 function HelpHubIcon({ kind }: { kind: HelpHubCard['icon'] }) {
   if (kind === 'ticket') {
     return <TicketIcon className="size-4" />;
+  }
+
+  if (kind === 'blog') {
+    return <NewspaperIcon className="size-4" />;
   }
 
   if (kind === 'stack-overflow') {
@@ -298,7 +680,7 @@ type CapabilityMatrixRow = {
 
 function CapabilityMatrix({ rows }: { rows: CapabilityMatrixRow[] }) {
   return (
-    <section className="not-prose my-8 overflow-hidden rounded-[24px] border border-border bg-card shadow-sm">
+    <section className="not-prose my-8 overflow-hidden docs-card-surface">
       <div className="grid grid-cols-1 border-b border-border bg-muted/30 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground sm:grid-cols-[220px_minmax(0,1fr)_260px] sm:gap-6 sm:px-6">
         <span>Capability area</span>
         <span>What it covers</span>
@@ -360,23 +742,39 @@ function OverviewImageCard({
   description,
   href,
   imageAlt,
+  imageAspectRatio,
   imageSrc,
+  layout = 'vertical',
+  newTabLabel = 'Open in a new tab',
   title,
 }: {
   compact?: boolean;
   description: string;
   href?: string;
   imageAlt: string;
+  imageAspectRatio?: number;
   imageSrc: string;
+  layout?: 'vertical' | 'horizontal';
+  newTabLabel?: string;
   title: string;
 }) {
+  const horizontal = layout === 'horizontal';
+  const cardClasses = cn(
+    'not-prose overflow-hidden docs-card-surface',
+    horizontal
+      ? 'mb-4 grid w-full grid-cols-[6rem_minmax(0,1fr)] items-center gap-4 p-4 sm:w-1/2'
+      : 'block',
+    href && 'group docs-card-interactive',
+  );
   const content = (
     <>
       <div
         className={cn(
-          'overflow-hidden border-b border-border bg-muted/40',
+          'overflow-hidden bg-muted/40',
+          horizontal ? 'rounded-md' : 'border-b border-border',
           compact ? 'aspect-[16/8]' : 'aspect-[16/10]',
         )}
+        style={imageAspectRatio ? { aspectRatio: imageAspectRatio } : undefined}
       >
         <img
           alt={imageAlt}
@@ -389,8 +787,29 @@ function OverviewImageCard({
           src={imageSrc}
         />
       </div>
-      <div className={cn(compact ? 'p-4' : 'p-5')}>
-        <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
+      <div className={cn('min-w-0', !horizontal && (compact ? 'p-4' : 'p-5'))}>
+        <div
+          className={cn(
+            'flex items-center',
+            horizontal ? 'gap-2' : 'justify-between gap-3',
+          )}
+        >
+          <h3 className="m-0 text-base font-semibold text-foreground">
+            {title}
+          </h3>
+          {href && isExternalHref(href) ? (
+            <span
+              className="shrink-0 text-muted-foreground"
+              title={newTabLabel}
+            >
+              <ExternalLinkIcon
+                aria-label={newTabLabel}
+                className="size-4"
+                role="img"
+              />
+            </span>
+          ) : null}
+        </div>
         <p
           className={cn(
             'mt-2 text-sm text-muted-foreground',
@@ -404,17 +823,15 @@ function OverviewImageCard({
   );
 
   if (!href) {
-    return (
-      <section className="overflow-hidden rounded-[24px] border border-border bg-card shadow-sm">
-        {content}
-      </section>
-    );
+    return <section className={cardClasses}>{content}</section>;
   }
 
   return (
     <a
-      className="group overflow-hidden rounded-[24px] border border-border bg-card shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35"
+      className={cardClasses}
       href={href}
+      rel={isExternalHref(href) ? 'noopener noreferrer' : undefined}
+      target={isExternalHref(href) ? '_blank' : undefined}
     >
       {content}
     </a>
@@ -432,7 +849,7 @@ function OverviewLinkBanner({
 }) {
   return (
     <a
-      className="group not-prose my-6 flex items-center justify-between gap-4 rounded-[24px] border border-border bg-card px-6 py-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35"
+      className="group not-prose my-6 flex items-center justify-between gap-4 docs-card-surface docs-card-interactive px-5 py-4"
       href={href}
     >
       <div className="min-w-0">
@@ -558,20 +975,34 @@ function ToolkitIcon({ kind }: { kind: ToolkitIconKind }) {
   return <Code2Icon className="size-4" />;
 }
 
+export type SolutionCardSize = 'compact' | 'large' | 'small' | 'resource';
+type SolutionCardTitlePlacement = 'below-icon' | 'beside-icon';
+
 function SolutionCardGrid({
   children,
+  columns,
   size = 'large',
 }: {
   children: ReactNode;
-  size?: 'large' | 'small';
+  columns?: 2;
+  size?: SolutionCardSize;
 }) {
   return (
     <section
       className={cn(
-        'not-prose my-8 grid gap-4',
-        size === 'small'
-          ? 'grid-cols-[repeat(auto-fit,minmax(min(100%,19rem),1fr))]'
-          : 'grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))]',
+        'not-prose grid w-full max-w-full',
+        size === 'resource'
+          ? 'my-0 grid-cols-1 gap-3 sm:grid-cols-2'
+          : size === 'compact'
+            ? 'my-6 grid-cols-1 gap-3 md:grid-cols-3'
+            : cn(
+                'my-5 gap-3',
+                columns === 2
+                  ? 'grid-cols-1 sm:grid-cols-2'
+                  : size === 'small'
+                    ? 'grid-cols-[repeat(auto-fit,minmax(min(100%,19rem),1fr))]'
+                    : 'grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))]',
+              ),
       )}
     >
       {children}
@@ -587,6 +1018,8 @@ export type SolutionCardIconKind =
   | 'classroom'
   | 'cloud-recording'
   | 'device'
+  | 'download'
+  | 'play'
   | 'iot'
   | 'live-streaming'
   | 'media-pull'
@@ -631,94 +1064,199 @@ export type RecipeCatalogItem = {
   tone?: SolutionCardTone;
 };
 
+export type DemoCatalogItem = {
+  description: string;
+  href: string;
+  imageAlt: string;
+  imageSrc: string;
+  platforms: string[];
+  products: string[];
+  releaseDate: string;
+  tags: string[];
+  title: string;
+  version: string;
+};
+
 function SolutionCard({
   actions = [],
   description,
   href,
   icon,
+  imageAlt,
+  imageSrc,
   size = 'large',
   showDescription = true,
   tags = [],
   title,
+  titlePlacement = 'below-icon',
   tone = 'blue',
 }: {
   actions?: RecipeCatalogItemLink[];
   description: string;
   href?: string;
   icon?: SolutionCardIconKind;
-  size?: 'large' | 'small';
+  imageAlt?: string;
+  imageSrc?: string;
+  size?: SolutionCardSize;
   showDescription?: boolean;
   tags?: string[];
   title: string;
+  titlePlacement?: SolutionCardTitlePlacement;
   tone?: SolutionCardTone;
 }) {
+  const isCompact = size === 'compact';
+  const isResource = size === 'resource';
+  const hasBesideIconTitle =
+    titlePlacement === 'beside-icon' && !imageSrc && !isCompact;
   const cardClasses = cn(
-    'group flex min-h-40 flex-col rounded-lg border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
+    'docs-card-surface group relative',
+    href && actions.length === 0 && 'docs-card-interactive',
+    isResource
+      ? 'flex min-h-20 items-center gap-3 px-4 py-3.5'
+      : isCompact
+        ? 'flex min-h-14 flex-row items-center gap-3 p-3'
+        : hasBesideIconTitle
+          ? 'flex min-h-32 flex-col p-5'
+          : 'flex min-h-40 flex-col p-5',
     size === 'small' && 'min-h-32 p-4',
   );
 
-  const content = (
-    <>
-      <div className="flex items-start justify-between gap-3">
+  const content =
+    isCompact || isResource ? (
+      <>
         {icon ? (
           <span
             className={cn(
-              'flex size-10 items-center justify-center rounded-lg',
+              'flex size-8 shrink-0 items-center justify-center rounded-lg',
               getSolutionToneClasses(tone),
-              size === 'small' && 'size-9',
             )}
           >
             <SolutionCardIcon kind={icon} />
           </span>
-        ) : (
-          <span />
-        )}
+        ) : null}
+        <div className="min-w-0 flex-1">
+          <h3 className="m-0 text-sm font-semibold text-foreground">{title}</h3>
+          {isResource && showDescription ? (
+            <p className="m-0 mt-1 text-xs leading-5 text-muted-foreground">
+              {description}
+            </p>
+          ) : null}
+        </div>
         {href ? (
-          <ArrowRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+          <ArrowRightIcon className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
         ) : null}
-      </div>
-      <div className="mt-4 flex-1">
-        <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
-        {showDescription && description ? (
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            {description}
-          </p>
+      </>
+    ) : (
+      <>
+        {imageSrc ? (
+          <div className="mb-4 aspect-[39/20] overflow-hidden rounded-md bg-muted">
+            <img
+              alt={imageAlt ?? title}
+              className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+              loading="lazy"
+              src={imageSrc}
+            />
+          </div>
         ) : null}
-      </div>
-      {actions.length > 0 ? (
-        <div className="mt-4 flex flex-wrap gap-2">
-          {actions.map((action) => (
-            <a
-              className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-              href={action.href}
-              key={action.href}
-              rel={
-                action.href.startsWith('http')
-                  ? 'noreferrer noopener'
-                  : undefined
-              }
-              target={action.href.startsWith('http') ? '_blank' : undefined}
+        {imageSrc && href ? (
+          <span className="absolute top-4 right-4 flex size-7 items-center justify-center rounded-full bg-background/85 text-muted-foreground shadow-sm ring-1 ring-border backdrop-blur transition-colors group-hover:text-foreground">
+            <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
+          </span>
+        ) : null}
+        {imageSrc ? null : (
+          <div
+            className={cn(
+              'flex justify-between gap-3',
+              hasBesideIconTitle ? 'items-center' : 'items-start',
+            )}
+          >
+            {icon ? (
+              <span
+                className={cn(
+                  'flex size-10 items-center justify-center rounded-lg',
+                  hasBesideIconTitle && 'shrink-0',
+                  getSolutionToneClasses(tone),
+                  size === 'small' && 'size-9',
+                )}
+              >
+                <SolutionCardIcon kind={icon} />
+              </span>
+            ) : (
+              <span className={hasBesideIconTitle ? 'shrink-0' : undefined} />
+            )}
+            {hasBesideIconTitle ? (
+              <h3 className="m-0 min-w-0 flex-1 text-base font-semibold text-foreground">
+                {title}
+              </h3>
+            ) : null}
+            {href ? (
+              <ArrowRightIcon
+                className={cn(
+                  'size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground',
+                  hasBesideIconTitle && 'shrink-0',
+                )}
+              />
+            ) : null}
+          </div>
+        )}
+        <div
+          className={cn(
+            hasBesideIconTitle
+              ? 'mt-3 flex flex-1 flex-col justify-center'
+              : 'mt-4 flex-1',
+            imageSrc && 'mt-0',
+          )}
+        >
+          {hasBesideIconTitle ? null : (
+            <h3 className="m-0 text-base font-semibold text-foreground">
+              {title}
+            </h3>
+          )}
+          {showDescription && description ? (
+            <p
+              className={cn(
+                hasBesideIconTitle ? 'mt-0' : 'mt-2',
+                'text-sm leading-6 text-muted-foreground',
+              )}
             >
-              <span>{action.label}</span>
-              <ArrowRightIcon className="size-3.5" />
-            </a>
-          ))}
+              {description}
+            </p>
+          ) : null}
         </div>
-      ) : null}
-      {tags.length > 0 ? (
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {tags.map((tag) => (
-            <span
-              className="rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground"
-              key={tag}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      ) : null}
-    </>
-  );
+        {actions.length > 0 ? (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {actions.map((action) => (
+              <a
+                className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                href={action.href}
+                key={`${action.href}\u001f${action.label}`}
+                rel={
+                  action.href.startsWith('http')
+                    ? 'noreferrer noopener'
+                    : undefined
+                }
+                target={action.href.startsWith('http') ? '_blank' : undefined}
+              >
+                <span>{action.label}</span>
+                <ArrowRightIcon className="size-3.5" />
+              </a>
+            ))}
+          </div>
+        ) : null}
+        {tags.length > 0 ? (
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {tags.map((tag) => (
+              <span
+                className="rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground"
+                key={tag}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        ) : null}
+      </>
+    );
 
   if (!href || actions.length > 0) {
     return <section className={cardClasses}>{content}</section>;
@@ -731,7 +1269,272 @@ function SolutionCard({
   );
 }
 
+export function DemoGallery({
+  allPlatformsLabel,
+  allProductsLabel,
+  allTagsLabel,
+  clearFiltersLabel,
+  emptyMessage,
+  items,
+  newTabLabel = 'Open in a new tab',
+  platformFilterLabel,
+  platformLabel,
+  productFilterLabel,
+  productLabel,
+  releaseDateLabel,
+  resultCountLabel,
+  searchPlaceholder,
+  tagFilterLabel,
+  versionLabel,
+}: {
+  allPlatformsLabel: string;
+  allProductsLabel: string;
+  allTagsLabel: string;
+  clearFiltersLabel: string;
+  emptyMessage: string;
+  items: DemoCatalogItem[];
+  newTabLabel?: string;
+  platformFilterLabel: string;
+  platformLabel: string;
+  productFilterLabel: string;
+  productLabel: string;
+  releaseDateLabel: string;
+  resultCountLabel: string;
+  searchPlaceholder: string;
+  tagFilterLabel: string;
+  versionLabel: string;
+}) {
+  const [query, setQuery] = useState('');
+  const [activeTag, setActiveTag] = useState(allTagsLabel);
+  const [activeProduct, setActiveProduct] = useState(allProductsLabel);
+  const [activePlatform, setActivePlatform] = useState(allPlatformsLabel);
+  const deferredQuery = useDeferredValue(query);
+
+  const tags = useMemo(
+    () => [
+      allTagsLabel,
+      ...getUniqueValues(items.flatMap((item) => item.tags)),
+    ],
+    [allTagsLabel, items],
+  );
+  const products = useMemo(
+    () => [
+      allProductsLabel,
+      ...getUniqueValues(items.flatMap((item) => item.products)),
+    ],
+    [allProductsLabel, items],
+  );
+  const platforms = useMemo(
+    () => [
+      allPlatformsLabel,
+      ...getUniqueValues(items.flatMap((item) => item.platforms)),
+    ],
+    [allPlatformsLabel, items],
+  );
+
+  const filteredItems = useMemo(() => {
+    const normalizedQuery = normalizeRecipeFilterValue(deferredQuery);
+
+    return items.filter((item) => {
+      if (activeTag !== allTagsLabel && !item.tags.includes(activeTag)) {
+        return false;
+      }
+      if (
+        activeProduct !== allProductsLabel &&
+        !item.products.includes(activeProduct)
+      ) {
+        return false;
+      }
+      if (
+        activePlatform !== allPlatformsLabel &&
+        !item.platforms.includes(activePlatform)
+      ) {
+        return false;
+      }
+      if (!normalizedQuery) {
+        return true;
+      }
+
+      return normalizeRecipeFilterValue(
+        [
+          item.title,
+          item.description,
+          item.releaseDate,
+          item.version,
+          ...item.tags,
+          ...item.products,
+          ...item.platforms,
+        ].join(' '),
+      ).includes(normalizedQuery);
+    });
+  }, [
+    activePlatform,
+    activeProduct,
+    activeTag,
+    allPlatformsLabel,
+    allProductsLabel,
+    allTagsLabel,
+    deferredQuery,
+    items,
+  ]);
+
+  const hasActiveFilters =
+    query.length > 0 ||
+    activeTag !== allTagsLabel ||
+    activeProduct !== allProductsLabel ||
+    activePlatform !== allPlatformsLabel;
+
+  const resetFilters = () => {
+    setQuery('');
+    setActiveTag(allTagsLabel);
+    setActiveProduct(allProductsLabel);
+    setActivePlatform(allPlatformsLabel);
+  };
+
+  return (
+    <section className="not-prose m-0 flex flex-col gap-6">
+      <div className="flex flex-col gap-4 border-border border-b pb-5">
+        <ReferenceSearchInput
+          onChange={setQuery}
+          placeholder={searchPlaceholder}
+          value={query}
+        />
+        <div className="flex flex-wrap items-end gap-3">
+          <ReferenceFilterSelect
+            label={tagFilterLabel}
+            onChange={setActiveTag}
+            options={tags.map((tag) => ({ label: tag, value: tag }))}
+            value={activeTag}
+          />
+          <ReferenceFilterSelect
+            label={productFilterLabel}
+            onChange={setActiveProduct}
+            options={products.map((product) => ({
+              label: product,
+              value: product,
+            }))}
+            value={activeProduct}
+          />
+          <ReferenceFilterSelect
+            label={platformFilterLabel}
+            onChange={setActivePlatform}
+            options={platforms.map((platform) => ({
+              label: platform,
+              value: platform,
+            }))}
+            value={activePlatform}
+          />
+          {hasActiveFilters ? (
+            <Button onClick={resetFilters} type="button" variant="ghost">
+              {clearFiltersLabel}
+            </Button>
+          ) : null}
+          {filteredItems.length > 0 ? (
+            <span className="ml-auto self-end text-sm text-muted-foreground">
+              {filteredItems.length} {resultCountLabel}
+            </span>
+          ) : null}
+        </div>
+      </div>
+
+      {filteredItems.length === 0 ? (
+        <div className="rounded-lg border border-dashed border-border bg-muted/35 p-8 text-center text-sm text-muted-foreground">
+          {emptyMessage}
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {filteredItems.map((item) => (
+            <a
+              className="group relative overflow-hidden docs-card-surface docs-card-interactive"
+              href={item.href}
+              key={item.href}
+              rel={
+                isExternalHref(item.href) ? 'noopener noreferrer' : undefined
+              }
+              target={isExternalHref(item.href) ? '_blank' : undefined}
+            >
+              <div className="aspect-[7/4] overflow-hidden border-border border-b bg-muted">
+                <img
+                  alt={item.imageAlt}
+                  className="size-full object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                  src={item.imageSrc}
+                />
+              </div>
+              <span
+                className="absolute top-3 right-3 flex size-8 items-center justify-center rounded-full bg-background/90 text-muted-foreground shadow-sm ring-1 ring-border backdrop-blur transition-colors group-hover:text-foreground"
+                title={isExternalHref(item.href) ? newTabLabel : undefined}
+              >
+                {isExternalHref(item.href) ? (
+                  <ExternalLinkIcon
+                    aria-label={newTabLabel}
+                    className="size-4"
+                    role="img"
+                  />
+                ) : (
+                  <ArrowRightIcon
+                    aria-hidden="true"
+                    className="size-4 transition-transform group-hover:translate-x-0.5"
+                  />
+                )}
+              </span>
+              <div className="p-5">
+                <h2 className="m-0 text-base font-semibold text-foreground">
+                  {item.title}
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  {item.description}
+                </p>
+                <dl className="mt-4 grid gap-1 text-xs text-muted-foreground">
+                  <div className="flex gap-1">
+                    <dt className="shrink-0 whitespace-nowrap font-medium text-foreground">
+                      {platformLabel}：
+                    </dt>
+                    <dd className="m-0">{item.platforms.join('、')}</dd>
+                  </div>
+                  <div className="flex gap-1">
+                    <dt className="shrink-0 whitespace-nowrap font-medium text-foreground">
+                      {productLabel}：
+                    </dt>
+                    <dd className="m-0">{item.products.join('、')}</dd>
+                  </div>
+                  <div className="flex flex-wrap gap-x-4 gap-y-1">
+                    <div className="flex gap-1">
+                      <dt className="shrink-0 whitespace-nowrap font-medium text-foreground">
+                        {releaseDateLabel}：
+                      </dt>
+                      <dd className="m-0">{item.releaseDate}</dd>
+                    </div>
+                    <div className="flex gap-1">
+                      <dt className="shrink-0 whitespace-nowrap font-medium text-foreground">
+                        {versionLabel}：
+                      </dt>
+                      <dd className="m-0">{item.version}</dd>
+                    </div>
+                  </div>
+                </dl>
+                <div className="mt-4 flex flex-wrap gap-1.5">
+                  {item.tags.map((tag) => (
+                    <span
+                      className="rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground"
+                      key={tag}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
 export function RecipesCatalog({
+  globalCards = false,
   allCategoriesLabel,
   allProductsLabel,
   allSdksLabel,
@@ -753,6 +1556,7 @@ export function RecipesCatalog({
   stackFilterLabel,
   stackQueryParam,
 }: {
+  globalCards?: boolean;
   allCategoriesLabel: string;
   allProductsLabel: string;
   allSdksLabel?: string;
@@ -774,6 +1578,8 @@ export function RecipesCatalog({
   stackFilterLabel: string;
   stackQueryParam?: string;
 }) {
+  const CatalogCard = globalCards ? GlobalSolutionCard : SolutionCard;
+  const CatalogGrid = globalCards ? GlobalSolutionCardGrid : SolutionCardGrid;
   const [query, setQuery] = useState('');
   const [activeProduct, setActiveProduct] = useState(allProductsLabel);
   const hasInitializedProductFromQuery = useRef(false);
@@ -1057,7 +1863,7 @@ export function RecipesCatalog({
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                   {group.items.map((item) => (
-                    <SolutionCard
+                    <CatalogCard
                       actions={item.links}
                       description={item.description}
                       href={item.href}
@@ -1085,9 +1891,9 @@ export function RecipesCatalog({
             ))}
           </div>
         ) : (
-          <SolutionCardGrid size="small">
+          <CatalogGrid size="small">
             {filteredItems.map((item) => (
-              <SolutionCard
+              <CatalogCard
                 actions={item.links}
                 description={item.description}
                 href={item.href}
@@ -1110,7 +1916,7 @@ export function RecipesCatalog({
                 tone={item.tone ?? 'blue'}
               />
             ))}
-          </SolutionCardGrid>
+          </CatalogGrid>
         )
       ) : (
         <div className="mt-6 rounded-lg border border-dashed border-border bg-muted/40 p-8 text-center text-sm text-muted-foreground">
@@ -1188,27 +1994,16 @@ function RecipeGallerySelect({
   options: string[];
   value: string;
 }) {
-  const id = `recipe-filter-${label.toLowerCase().replace(/\s+/g, '-')}`;
-
   return (
-    <span className="relative shrink-0">
-      <label className="sr-only" htmlFor={id}>
-        {label}
-      </label>
-      <select
-        className="h-9 appearance-none rounded-md border border-border bg-background pr-9 pl-3 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
-        id={id}
-        onChange={(event) => onChange(event.target.value)}
-        value={value}
-      >
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option === allLabel ? `${label}: All` : option}
-          </option>
-        ))}
-      </select>
-      <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground" />
-    </span>
+    <ReferenceFilterSelect
+      label={label}
+      onChange={onChange}
+      options={options.map((option) => ({
+        label: option === allLabel ? allLabel : option,
+        value: option,
+      }))}
+      value={value}
+    />
   );
 }
 
@@ -1360,46 +2155,22 @@ export function RecipesGallery({
 
   return (
     <section className="not-prose my-8 flex flex-col gap-6">
-      <label className="relative block">
-        <span className="sr-only">{searchPlaceholder}</span>
-        <SearchIcon className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground" />
-        <input
-          className="h-11 w-full rounded-lg border border-input bg-background px-9 text-sm text-foreground shadow-xs outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
-          onChange={(event) => setQuery(event.target.value)}
+      <div className="flex flex-col gap-4 border-border border-b pb-5">
+        <ReferenceSearchInput
+          onChange={setQuery}
           placeholder={searchPlaceholder}
-          type="search"
           value={query}
         />
-      </label>
-
-      <div className="flex flex-col gap-4">
-        <div
-          aria-label={categoryFilterLabel}
-          className="flex flex-wrap gap-1 border-border border-b"
-          role="tablist"
-        >
-          {categories.map((category) => {
-            const active = category === activeCategory;
-            return (
-              <button
-                aria-selected={active}
-                className={cn(
-                  '-mb-px border-b-2 px-3 py-1.5 text-sm transition-colors',
-                  active
-                    ? 'border-primary font-semibold text-foreground'
-                    : 'border-transparent text-muted-foreground hover:text-foreground',
-                )}
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                role="tab"
-                type="button"
-              >
-                {category === allCategoriesLabel ? 'All' : category}
-              </button>
-            );
-          })}
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-end gap-3">
+          <ReferenceFilterToggleGroup
+            label={categoryFilterLabel}
+            onChange={setActiveCategory}
+            options={categories.map((category) => ({
+              label: category,
+              value: category,
+            }))}
+            value={activeCategory}
+          />
           {products.length > 2 ? (
             <RecipeGallerySelect
               allLabel={allProductsLabel}
@@ -1426,17 +2197,15 @@ export function RecipesGallery({
             />
           ) : null}
           {hasActiveFilters ? (
-            <button
-              className="h-9 rounded-md px-2.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              onClick={resetFilters}
-              type="button"
-            >
+            <Button onClick={resetFilters} type="button" variant="ghost">
               {clearFiltersLabel}
-            </button>
+            </Button>
           ) : null}
-          <span className="ml-auto text-sm text-muted-foreground">
-            {filteredItems.length} recipes
-          </span>
+          {filteredItems.length > 0 ? (
+            <span className="ml-auto self-end text-sm text-muted-foreground">
+              {filteredItems.length} recipes
+            </span>
+          ) : null}
         </div>
       </div>
 
@@ -1618,6 +2387,8 @@ export function SolutionCardIcon({ kind }: { kind: SolutionCardIconKind }) {
     classroom: <GraduationCapIcon className="size-5" />,
     'cloud-recording': <CloudIcon className="size-5" />,
     device: <CuboidIcon className="size-5" />,
+    download: <ArrowDownToLineIcon className="size-5" />,
+    play: <PlayIcon className="size-5" />,
     iot: <CpuIcon className="size-5" />,
     'live-streaming': <RadioIcon className="size-5" />,
     'media-pull': <ArrowDownToLineIcon className="size-5" />,
@@ -1679,7 +2450,7 @@ function OverviewSpotlightCard({
   return (
     <a
       className={cn(
-        'group overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
+        'group overflow-hidden docs-card-surface docs-card-interactive',
         size === 'small' && 'text-sm',
       )}
       href={href}
@@ -1762,4 +2533,852 @@ function OverviewSpotlightChecklistVisual() {
       ))}
     </div>
   );
+}
+
+function GlobalFeatureCard({
+  children,
+  title,
+}: {
+  children: ReactNode;
+  title: string;
+}) {
+  return (
+    <section className="rounded-lg border border-border bg-card p-5 shadow-sm">
+      <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
+      <div className="mt-2 text-sm leading-6 text-muted-foreground">
+        {children}
+      </div>
+    </section>
+  );
+}
+
+function GlobalCapabilityGroupCard({
+  description,
+  items,
+  title,
+}: {
+  description: string;
+  items: string[];
+  title: string;
+}) {
+  return (
+    <section className="rounded-[24px] border border-border bg-card p-6 shadow-sm">
+      <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
+      <p className="mt-2 text-sm leading-6 text-muted-foreground">
+        {description}
+      </p>
+      <div className="mt-4 flex flex-wrap gap-1.5">
+        {items.map((item) => (
+          <span
+            className="rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground"
+            key={item}
+          >
+            {item}
+          </span>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function GlobalHelpHub({
+  cards,
+  knowledgeBase,
+  topics,
+}: {
+  cards: HelpHubCard[];
+  knowledgeBase: HelpHubLink[];
+  topics: HelpHubLink[];
+}) {
+  return (
+    <section className="not-prose my-8 space-y-5">
+      <div className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
+        <div className="max-w-2xl">
+          <p className="text-sm leading-6 text-muted-foreground">
+            Choose the fastest path for product questions, service health, and
+            community support.
+          </p>
+        </div>
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {cards.map((card) => (
+            <a
+              className="group flex min-h-[11.5rem] flex-col rounded-[22px] border border-border bg-background px-4 py-4 transition-colors hover:border-primary/35 hover:bg-accent/35"
+              href={card.href}
+              key={card.title}
+              rel={
+                isExternalHref(card.href) ? 'noreferrer noopener' : undefined
+              }
+              target={isExternalHref(card.href) ? '_blank' : undefined}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <span className="flex size-7 items-center justify-center rounded-md bg-muted text-foreground">
+                  <HelpHubIcon kind={card.icon} />
+                </span>
+                <ArrowUpRightIcon className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground" />
+              </div>
+              <h4 className="mt-4 text-base font-semibold tracking-[-0.02em] text-foreground">
+                {card.title}
+              </h4>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                {card.description}
+              </p>
+              <span className="mt-auto pt-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-primary">
+                {card.cta}
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1.12fr)_minmax(18rem,0.88fr)]">
+        <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
+          <div className="flex items-center justify-between gap-3">
+            <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Popular Knowledge Base
+            </h4>
+            <span className="hidden text-[11px] uppercase tracking-[0.18em] text-muted-foreground sm:inline">
+              Quick answers
+            </span>
+          </div>
+          <ul className="mt-4 space-y-2">
+            {knowledgeBase.map((item) => (
+              <li key={item.label}>
+                <a
+                  className="group flex items-center justify-between gap-4 rounded-[16px] px-3 py-3 text-sm text-foreground transition-colors hover:bg-accent/45 hover:text-primary"
+                  href={item.href}
+                  rel={
+                    isExternalHref(item.href)
+                      ? 'noreferrer noopener'
+                      : undefined
+                  }
+                  target={isExternalHref(item.href) ? '_blank' : undefined}
+                >
+                  <span className="leading-6">{item.label}</span>
+                  <ArrowUpRightIcon className="size-4 shrink-0 text-muted-foreground opacity-0 transition-all group-hover:text-foreground group-hover:opacity-100" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            Browse By Topic
+          </h4>
+          <div className="mt-4 space-y-2">
+            {topics.map((item) => (
+              <a
+                className="group flex items-center justify-between gap-4 rounded-[16px] border border-border bg-background px-4 py-3.5 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-accent/35 hover:text-primary"
+                href={item.href}
+                key={item.label}
+                rel={
+                  isExternalHref(item.href) ? 'noreferrer noopener' : undefined
+                }
+                target={isExternalHref(item.href) ? '_blank' : undefined}
+              >
+                <span>{item.label}</span>
+                <ArrowRightIcon className="size-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+              </a>
+            ))}
+          </div>
+        </section>
+      </div>
+    </section>
+  );
+}
+
+function GlobalCapabilityMatrix({ rows }: { rows: CapabilityMatrixRow[] }) {
+  return (
+    <section className="not-prose my-8 overflow-hidden rounded-[24px] border border-border bg-card shadow-sm">
+      <div className="grid grid-cols-1 border-b border-border bg-muted/30 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground sm:grid-cols-[220px_minmax(0,1fr)_260px] sm:gap-6 sm:px-6">
+        <span>Capability area</span>
+        <span>What it covers</span>
+        <span>Includes</span>
+      </div>
+      {rows.map((row, index) => (
+        <div
+          className={cn(
+            'grid grid-cols-1 gap-3 px-5 py-4 sm:grid-cols-[220px_minmax(0,1fr)_260px] sm:items-start sm:gap-6 sm:px-6',
+            index > 0 && 'border-t border-border',
+          )}
+          key={row.title}
+        >
+          <h3 className="m-0 text-base font-semibold text-foreground">
+            {row.title}
+          </h3>
+          <p className="m-0 text-sm leading-6 text-muted-foreground">
+            {row.description}
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {row.items.map((item) => (
+              <span
+                className="rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground"
+                key={item}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+function GlobalOverviewImageCard({
+  compact = false,
+  description,
+  href,
+  imageAlt,
+  imageSrc,
+  title,
+}: {
+  compact?: boolean;
+  description: string;
+  href?: string;
+  imageAlt: string;
+  imageSrc: string;
+  title: string;
+}) {
+  const content = (
+    <>
+      <div
+        className={cn(
+          'overflow-hidden border-b border-border bg-muted/40',
+          compact ? 'aspect-[16/8]' : 'aspect-[16/10]',
+        )}
+      >
+        <img
+          alt={imageAlt}
+          className={cn(
+            'size-full object-cover',
+            href &&
+              'transition-transform duration-300 group-hover:scale-[1.02]',
+          )}
+          loading="lazy"
+          src={imageSrc}
+        />
+      </div>
+      <div className={cn(compact ? 'p-4' : 'p-5')}>
+        <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
+        <p
+          className={cn(
+            'mt-2 text-sm text-muted-foreground',
+            compact ? 'leading-5' : 'leading-6',
+          )}
+        >
+          {description}
+        </p>
+      </div>
+    </>
+  );
+
+  if (!href) {
+    return (
+      <section className="overflow-hidden rounded-[24px] border border-border bg-card shadow-sm">
+        {content}
+      </section>
+    );
+  }
+
+  return (
+    <a
+      className="group overflow-hidden rounded-[24px] border border-border bg-card shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35"
+      href={href}
+    >
+      {content}
+    </a>
+  );
+}
+
+function GlobalOverviewLinkBanner({
+  description,
+  href,
+  title,
+}: {
+  description: string;
+  href: string;
+  title: string;
+}) {
+  return (
+    <a
+      className="group not-prose my-6 flex items-center justify-between gap-4 rounded-[24px] border border-border bg-card px-6 py-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35"
+      href={href}
+    >
+      <div className="min-w-0">
+        <h3 className="m-0 text-lg font-semibold tracking-[-0.02em] text-foreground">
+          {title}
+        </h3>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">
+          {description}
+        </p>
+      </div>
+      <ArrowRightIcon className="size-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+    </a>
+  );
+}
+
+function GlobalSolutionCardGrid({
+  children,
+  size = 'large',
+}: {
+  children: ReactNode;
+  size?: 'large' | 'small';
+}) {
+  return (
+    <section
+      className={cn(
+        'not-prose my-8 grid gap-4',
+        size === 'small'
+          ? 'grid-cols-[repeat(auto-fit,minmax(min(100%,19rem),1fr))]'
+          : 'grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))]',
+      )}
+    >
+      {children}
+    </section>
+  );
+}
+
+function GlobalSolutionCard({
+  actions = [],
+  description,
+  href,
+  icon,
+  openInNewTab = false,
+  size = 'large',
+  showDescription = true,
+  tags = [],
+  title,
+  tone = 'blue',
+}: {
+  actions?: RecipeCatalogItemLink[];
+  description: string;
+  href?: string;
+  icon?: SolutionCardIconKind;
+  openInNewTab?: boolean;
+  size?: 'large' | 'small';
+  showDescription?: boolean;
+  tags?: string[];
+  title: string;
+  tone?: SolutionCardTone;
+}) {
+  const cardClasses = cn(
+    'group flex min-h-40 flex-col rounded-lg border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
+    size === 'small' && 'min-h-32 p-4',
+  );
+
+  const content = (
+    <>
+      <div className="flex items-start justify-between gap-3">
+        {icon ? (
+          <span
+            className={cn(
+              'flex size-10 items-center justify-center rounded-lg',
+              getSolutionToneClasses(tone),
+              size === 'small' && 'size-9',
+            )}
+          >
+            <SolutionCardIcon kind={icon} />
+          </span>
+        ) : (
+          <span />
+        )}
+        {openInNewTab ? (
+          <ExternalLinkIcon
+            aria-label="Opens in a new tab"
+            className="size-4 text-muted-foreground group-hover:text-foreground"
+            role="img"
+          />
+        ) : href ? (
+          <ArrowRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+        ) : null}
+      </div>
+      <div className="mt-4 flex-1">
+        <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
+        {showDescription && description ? (
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            {description}
+          </p>
+        ) : null}
+      </div>
+      {actions.length > 0 ? (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {actions.map((action) => (
+            <a
+              className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+              href={action.href}
+              key={action.href}
+              rel={
+                action.href.startsWith('http')
+                  ? 'noreferrer noopener'
+                  : undefined
+              }
+              target={action.href.startsWith('http') ? '_blank' : undefined}
+            >
+              <span>{action.label}</span>
+              <ArrowRightIcon className="size-3.5" />
+            </a>
+          ))}
+        </div>
+      ) : null}
+      {tags.length > 0 ? (
+        <div className="mt-4 flex flex-wrap gap-1.5">
+          {tags.map((tag) => (
+            <span
+              className="rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground"
+              key={tag}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      ) : null}
+    </>
+  );
+
+  if (!href || actions.length > 0) {
+    return <section className={cardClasses}>{content}</section>;
+  }
+
+  return (
+    <a
+      className={cardClasses}
+      href={href}
+      rel={openInNewTab ? 'noopener noreferrer' : undefined}
+      target={openInNewTab ? '_blank' : undefined}
+    >
+      {content}
+    </a>
+  );
+}
+
+function GlobalRecipeGallerySelect({
+  allLabel,
+  label,
+  onChange,
+  options,
+  value,
+}: {
+  allLabel: string;
+  label: string;
+  onChange: (value: string) => void;
+  options: string[];
+  value: string;
+}) {
+  const id = `recipe-filter-${label.toLowerCase().replace(/\s+/g, '-')}`;
+
+  return (
+    <span className="relative shrink-0">
+      <label className="sr-only" htmlFor={id}>
+        {label}
+      </label>
+      <select
+        className="h-9 max-w-full field-sizing-content appearance-none rounded-md border border-border bg-background pr-8 pl-3 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+        id={id}
+        onChange={(event) => onChange(event.target.value)}
+        value={value}
+      >
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option === allLabel ? label : option}
+          </option>
+        ))}
+      </select>
+      <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground" />
+    </span>
+  );
+}
+
+type GlobalRecipeItem = RecipeCatalogItem & { additionalProducts?: string[] };
+
+function recipeProducts(item: GlobalRecipeItem) {
+  return [item.product, ...(item.additionalProducts ?? [])];
+}
+
+// A stack such as "iOS, Swift" lists several technologies. The Tech stack
+// filter offers each one separately and matches a card on any of them.
+function recipeStacks(item: GlobalRecipeItem) {
+  return (item.stack ?? '')
+    .split(',')
+    .map((stack) => stack.trim())
+    .filter(Boolean);
+}
+
+function GlobalRecipeCard({
+  item,
+  showProduct,
+}: {
+  item: GlobalRecipeItem;
+  showProduct: boolean;
+}) {
+  return (
+    <GlobalSolutionCard
+      description={item.description}
+      href={item.href}
+      openInNewTab={!!item.href && isExternalHref(item.href)}
+      size="small"
+      tags={
+        showProduct
+          ? [...recipeProducts(item), ...recipeTags(item)]
+          : recipeTags(item)
+      }
+      title={item.title}
+    />
+  );
+}
+
+function GlobalRecipesGallery({
+  allCategoriesLabel,
+  allProductsLabel,
+  allStacksLabel,
+  categoryFilterLabel,
+  clearFiltersLabel = 'Clear filters',
+  emptyMessage,
+  items,
+  productFilterLabel,
+  searchPlaceholder,
+  stackFilterLabel,
+  stackQueryParam,
+}: {
+  allCategoriesLabel: string;
+  allProductsLabel: string;
+  allStacksLabel: string;
+  categoryFilterLabel: string;
+  clearFiltersLabel?: string;
+  emptyMessage: string;
+  items: GlobalRecipeItem[];
+  productFilterLabel: string;
+  searchPlaceholder: string;
+  stackFilterLabel: string;
+  stackQueryParam?: string;
+}) {
+  const allLevelsLabel = 'All levels';
+  const [query, setQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState(allCategoriesLabel);
+  const [activeProduct, setActiveProduct] = useState(allProductsLabel);
+  const [activeStack, setActiveStack] = useState(() =>
+    getInitialRecipeStack(
+      items.flatMap((item) =>
+        recipeStacks(item).map((stack) => ({ ...item, stack })),
+      ),
+      allStacksLabel,
+      stackQueryParam,
+    ),
+  );
+  const [activeLevel, setActiveLevel] = useState(allLevelsLabel);
+  const deferredQuery = useDeferredValue(query);
+
+  const categories = useMemo(
+    () => [
+      allCategoriesLabel,
+      ...getUniqueValues(items.map((item) => item.category)),
+    ],
+    [allCategoriesLabel, items],
+  );
+  const products = useMemo(
+    () => [allProductsLabel, ...getUniqueValues(items.flatMap(recipeProducts))],
+    [allProductsLabel, items],
+  );
+  const stacks = useMemo(
+    () => [
+      allStacksLabel,
+      ...getUniqueValues(items.flatMap(recipeStacks)).sort((a, b) =>
+        a.localeCompare(b, 'en', { sensitivity: 'base' }),
+      ),
+    ],
+    [allStacksLabel, items],
+  );
+  const levels = useMemo(
+    () => [allLevelsLabel, ...getUniqueValues(items.map(getRecipeLevel))],
+    [items],
+  );
+
+  const filteredItems = useMemo(() => {
+    const normalizedQuery = normalizeRecipeFilterValue(deferredQuery);
+
+    return items.filter((item) => {
+      if (
+        activeCategory !== allCategoriesLabel &&
+        item.category !== activeCategory
+      ) {
+        return false;
+      }
+      if (
+        activeProduct !== allProductsLabel &&
+        !recipeProducts(item).includes(activeProduct)
+      ) {
+        return false;
+      }
+      if (
+        activeStack !== allStacksLabel &&
+        !recipeStacks(item).includes(activeStack)
+      ) {
+        return false;
+      }
+      if (
+        activeLevel !== allLevelsLabel &&
+        getRecipeLevel(item) !== activeLevel
+      ) {
+        return false;
+      }
+      if (!normalizedQuery) {
+        return true;
+      }
+
+      const haystack = normalizeRecipeFilterValue(
+        [
+          item.title,
+          item.description,
+          ...recipeProducts(item),
+          item.category,
+          item.stack,
+          ...(item.tags ?? []),
+        ]
+          .filter(Boolean)
+          .join(' '),
+      );
+      return haystack.includes(normalizedQuery);
+    });
+  }, [
+    activeCategory,
+    activeLevel,
+    activeProduct,
+    activeStack,
+    allCategoriesLabel,
+    allProductsLabel,
+    allStacksLabel,
+    deferredQuery,
+    items,
+  ]);
+
+  const hasActiveFilters =
+    query.length > 0 ||
+    activeCategory !== allCategoriesLabel ||
+    activeProduct !== allProductsLabel ||
+    activeStack !== allStacksLabel ||
+    activeLevel !== allLevelsLabel;
+
+  const resetFilters = () => {
+    setQuery('');
+    setActiveCategory(allCategoriesLabel);
+    setActiveProduct(allProductsLabel);
+    setActiveStack(allStacksLabel);
+    setActiveLevel(allLevelsLabel);
+  };
+
+  const groupedByCategory = useMemo(
+    () =>
+      categories
+        .filter((value) => value !== allCategoriesLabel)
+        .map((category) => ({
+          category,
+          items: filteredItems.filter((item) => item.category === category),
+        }))
+        .filter((group) => group.items.length > 0),
+    [allCategoriesLabel, categories, filteredItems],
+  );
+
+  return (
+    <section className="not-prose my-8 flex flex-col gap-6">
+      <label className="relative block">
+        <span className="sr-only">{searchPlaceholder}</span>
+        <SearchIcon className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground" />
+        <input
+          className="h-11 w-full rounded-lg border border-input bg-background px-9 text-sm text-foreground shadow-xs outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder={searchPlaceholder}
+          type="search"
+          value={query}
+        />
+      </label>
+
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <fieldset
+            aria-label={productFilterLabel}
+            className="inline-flex w-fit items-center rounded-lg bg-muted p-1"
+          >
+            {products.map((product) => (
+              <Button
+                aria-pressed={activeProduct === product}
+                className={cn(
+                  'rounded-md text-muted-foreground',
+                  activeProduct === product &&
+                    'bg-background text-foreground shadow-sm hover:bg-background',
+                )}
+                key={product}
+                onClick={() => setActiveProduct(product)}
+                size="sm"
+                type="button"
+                variant="ghost"
+              >
+                {product}
+              </Button>
+            ))}
+          </fieldset>
+          <div className="flex flex-wrap items-center gap-2">
+            <GlobalRecipeGallerySelect
+              allLabel={allStacksLabel}
+              label={stackFilterLabel}
+              onChange={setActiveStack}
+              options={stacks}
+              value={activeStack}
+            />
+            {levels.length > 1 ? (
+              <GlobalRecipeGallerySelect
+                allLabel={allLevelsLabel}
+                label="Level"
+                onChange={setActiveLevel}
+                options={levels}
+                value={activeLevel}
+              />
+            ) : null}
+            {hasActiveFilters ? (
+              <button
+                className="h-9 rounded-md px-2.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                onClick={resetFilters}
+                type="button"
+              >
+                {clearFiltersLabel}
+              </button>
+            ) : null}
+          </div>
+        </div>
+        <div
+          aria-label={categoryFilterLabel}
+          className="flex flex-wrap gap-1 border-border border-b"
+          role="tablist"
+        >
+          {categories.map((category) => {
+            const active = category === activeCategory;
+            return (
+              <button
+                aria-selected={active}
+                className={cn(
+                  '-mb-px border-b-2 px-3 py-1.5 text-sm transition-colors',
+                  active
+                    ? 'border-primary font-semibold text-foreground'
+                    : 'border-transparent text-muted-foreground hover:text-foreground',
+                )}
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                role="tab"
+                type="button"
+              >
+                {category === allCategoriesLabel ? 'All' : category}
+              </button>
+            );
+          })}
+        </div>
+        <span className="self-end text-sm text-muted-foreground">
+          {filteredItems.length} recipes
+        </span>
+      </div>
+
+      {filteredItems.length === 0 ? (
+        <div className="rounded-lg border border-dashed border-border bg-muted/35 p-8 text-center text-sm text-muted-foreground">
+          {emptyMessage}
+        </div>
+      ) : activeCategory === allCategoriesLabel ? (
+        <div className="flex flex-col gap-8">
+          {groupedByCategory.map((group) => (
+            <section className="flex flex-col gap-3" key={group.category}>
+              <div className="flex items-baseline gap-2">
+                <h3 className="m-0 text-base font-semibold text-foreground">
+                  {group.category}
+                </h3>
+                <span className="text-xs font-medium text-muted-foreground">
+                  {group.items.length}
+                </span>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                {group.items.map((item) => (
+                  <GlobalRecipeCard
+                    item={item}
+                    key={recipeKey(item)}
+                    showProduct={activeProduct === allProductsLabel}
+                  />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {filteredItems.map((item) => (
+            <GlobalRecipeCard
+              item={item}
+              key={recipeKey(item)}
+              showProduct={activeProduct === allProductsLabel}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function GlobalOverviewSpotlightCard({
+  description,
+  href,
+  size = 'large',
+  title,
+  variant = 'platform',
+}: {
+  description?: string;
+  href: string;
+  size?: OverviewSpotlightSize;
+  title: string;
+  variant?: OverviewSpotlightVariant;
+}) {
+  return (
+    <a
+      className={cn(
+        'group overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
+        size === 'small' && 'text-sm',
+      )}
+      href={href}
+    >
+      <div
+        aria-hidden="true"
+        className={cn(
+          'border-b border-border bg-muted/45 p-4',
+          size === 'small' && 'p-3',
+        )}
+      >
+        <div className="mb-3 flex gap-1.5">
+          <span className="size-2 rounded-full bg-muted-foreground/35" />
+          <span className="size-2 rounded-full bg-muted-foreground/25" />
+          <span className="size-2 rounded-full bg-muted-foreground/20" />
+        </div>
+        <div className="min-h-24">
+          {variant === 'platform' ? <OverviewSpotlightPlatformVisual /> : null}
+          {variant === 'code' ? <OverviewSpotlightCodeVisual /> : null}
+          {variant === 'checklist' ? (
+            <OverviewSpotlightChecklistVisual />
+          ) : null}
+        </div>
+      </div>
+      <div className="flex items-start justify-between gap-3 p-4">
+        <div className="min-w-0">
+          <h3 className="m-0 text-base font-semibold text-foreground">
+            {title}
+          </h3>
+          {description ? (
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              {description}
+            </p>
+          ) : null}
+        </div>
+        <ArrowRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+      </div>
+    </a>
+  );
+}
+
+function GlobalRecipesCatalog(
+  props: React.ComponentProps<typeof RecipesCatalog>,
+) {
+  return <RecipesCatalog {...props} globalCards />;
 }

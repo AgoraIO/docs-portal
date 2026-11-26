@@ -24,4 +24,34 @@ describe('openapi bundled source text registry', () => {
       getOpenApiYamlSourcePaths(),
     );
   });
+
+  it('keeps Analytics REST overview links on canonical Usage Analytics pages', () => {
+    const source = fs.readFileSync(
+      'content/openapi/agora-analytics/analytics-rest-api.zh-CN.yaml',
+      'utf8',
+    );
+    expect(source).toContain(
+      '/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/overview',
+    );
+    expect(source).toContain(
+      '/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/basic',
+    );
+    expect(source).toContain(
+      '/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/plus',
+    );
+    expect(source).toContain(
+      '/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/monitor',
+    );
+    expect(source).not.toContain('/usage-analytics/build/rtc/');
+  });
+
+  it('keeps the Conversational AI default request example spelling correct', () => {
+    const source = fs.readFileSync(
+      'content/openapi/conversational-ai/rest-api.zh-CN.yaml',
+      'utf8',
+    );
+
+    expect(source).toMatch(/\n\s+Default:/);
+    expect(source).not.toContain('Defalut:');
+  });
 });

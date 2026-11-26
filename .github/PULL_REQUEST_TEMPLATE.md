@@ -22,7 +22,19 @@
 
 ## Screenshots
 
-<!-- Required for visible UI or docs-shell changes. Delete if not applicable. -->
+<!-- For visible changes, record local/preview visual review. Keep QA images under ignored .agent/artifacts/; do not commit them or add hosted screenshot links. -->
+
+## API Reference Acceptance
+
+<!-- For API content, generators, shared rendering/styles or dependency changes, follow docs/api-reference-quality.md. Otherwise delete this section. -->
+
+- Candidate commit and base:
+- Change class (content/shared rendering/QA only), affected regions / preview URLs:
+- Shared-file comparison: companion commit/source identity, result and report location (or regional-only reason):
+- Automated scope, selected pages, completed/expected states, report location:
+- Independent reviewer, manual case IDs, viewports/themes, browser versions:
+- Content owner decision and original feedback outcomes:
+- Remaining findings with owner/tracking and release decision:
 
 ## Notes for Reviewers
 

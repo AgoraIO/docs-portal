@@ -1,0 +1,73 @@
+---
+title: agora::rtc::LastmileProbeConfig结构体 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_lastmile_probe_config
+  sourcePath: html-docs/rtc-server-sdk/cpp/structagora_1_1rtc_1_1_lastmile_probe_config.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+Last mile 网络探测配置。
+
+## 类成员变量说明
+
+<a id="a1e2faafc2b91e2f46a01afb2764dfc55"></a>
+
+### probeUplink
+
+<ApiSignature>
+
+bool agora::rtc::LastmileProbeConfig::probeUplink
+
+</ApiSignature>
+
+是否探测上行网络。有些用户，如直播频道中的普通观众，不需要进行网络探测:
+
+- true：探测。
+- false：不探测。
+
+<a id="a6df33d21a54db8d1156a2ba1bd140453"></a>
+
+### probeDownlink
+
+<ApiSignature>
+
+bool agora::rtc::LastmileProbeConfig::probeDownlink
+
+</ApiSignature>
+
+是否探测下行网络。
+
+- true：探测。
+- false：不探测。
+
+<a id="aae246e9868e72e6fb199f54ad6976e83"></a>
+
+### expectedUplinkBitrate
+
+<ApiSignature>
+
+unsigned int agora::rtc::LastmileProbeConfig::expectedUplinkBitrate
+
+</ApiSignature>
+
+用户期望的最高发送码率，单位为 bps，范围为 [100000,5000000]。声网推荐参考 setVideoEncoderConfiguration 中的码率值设置该参数的值。
+
+<a id="add80e15b69184a83f7301560443dca71"></a>
+
+### expectedDownlinkBitrate
+
+<ApiSignature>
+
+unsigned int agora::rtc::LastmileProbeConfig::expectedDownlinkBitrate
+
+</ApiSignature>
+
+用户期望的最高接收码率，单位为 bps，范围为 [100000,5000000]。

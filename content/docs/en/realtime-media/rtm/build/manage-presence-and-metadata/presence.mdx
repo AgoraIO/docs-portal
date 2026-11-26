@@ -343,6 +343,7 @@ In Signaling solutions, it is often important to know a user's current online st
 
 - Get a list of users currently in a channel and their temporary status data.
 - Get a list of channels a specified user has joined or is subscribed to.
+- Check whether a specified user is online.
 - Get, set, or remove user statuses.
 - Receive real-time event notifications when users join or leave specified channels.
 - Receive user status change event notifications in real time.
@@ -581,6 +582,43 @@ mRtmClient.getPresence().getUserChannels("userid", object : ResultCallback<Array
 ```
 
 The `getUserChannels` method returns complete query results about the channels and their types that the queried user is in, without pagination.
+
+### Query user online status
+
+To check whether a user is logged in to Signaling, call `getUserOnlineStatus` with the user ID. Neither you nor the target user needs to join or subscribe to a channel. For example, use this method to check whether a contact is available before you send them a message in a user channel. This method requires Signaling SDK v2.3.1 or later. Refer to the following sample code:
+
+```java tab="Java"
+mRtmClient.getPresence().getUserOnlineStatus("userid", new ResultCallback<UserOnlineStatus>() {
+    @Override
+    public void onSuccess(UserOnlineStatus status) {
+        log(INFO, status.getUserId() + " online: " + status.isOnline());
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```kotlin tab="Kotlin"
+mRtmClient.getPresence().getUserOnlineStatus("userid", object : ResultCallback<UserOnlineStatus> {
+    override fun onSuccess(status: UserOnlineStatus) {
+        log(INFO, "${status.userId} online: ${status.isOnline}")
+    }
+
+    override fun onFailure(errorInfo: ErrorInfo) {
+        log(ERROR, errorInfo.toString())
+    }
+})
+```
+
+When you use `getUserOnlineStatus`, keep the following points in mind:
+
+- Each call queries one user. To query several users, call the method once for each user. The method has a [rate limit](/en/realtime-media/rtm/reference/limitations#operations-with-dedicated-quotas) of 20 calls per second.
+- If the user is offline or doesn't exist, the query succeeds and returns `online=false`. A failed query means that the user's online status can't be determined. To handle the failure, see [Errors](/en/api-reference/api-ref/signaling/android#errors).
+- You must be logged in to Signaling with a connected session. The query works whether Presence is enabled or disabled in Agora Console.
+- The result is a snapshot of the user's status when the server processes the query. If a user disconnects abnormally, the server takes some time to detect that the user is offline. The method doesn't return the user's last online time and doesn't notify you of later changes.
 
 ## User status management
 
@@ -893,6 +931,7 @@ This section contains content that completes the information on this page, or po
 
 - [`getOnlineUsers`](/en/api-reference/api-ref/signaling/android#getonlineusers)
 - [`getUserChannels`](/en/api-reference/api-ref/signaling/android#getuserchannels)
+- [`getUserOnlineStatus`](/en/api-reference/api-ref/signaling/android#getuseronlinestatus)
 - [`setState`](/en/api-reference/api-ref/signaling/android#setstate)
 - [`getState`](/en/api-reference/api-ref/signaling/android#getstate)
 - [`removeState`](/en/api-reference/api-ref/signaling/android#removestate)
@@ -906,6 +945,7 @@ In Signaling solutions, it is often important to know a user's current online st
 
 - Get a list of users currently in a channel and their temporary status data.
 - Get a list of channels a specified user has joined or is subscribed to.
+- Check whether a specified user is online.
 - Get, set, or remove user statuses.
 - Receive real-time event notifications when users join or leave specified channels.
 - Receive user status change event notifications in real time.
@@ -1114,6 +1154,37 @@ rtm.getPresence()?.getUserChannels("userId") { response, errorInfo in
 ```
 
 The `getUserChannels` method returns complete query results about the channels and their types that the queried user is in, without pagination.
+
+### Query user online status
+
+To check whether a user is logged in to Signaling, call `getUserOnlineStatus` with the user ID. Neither you nor the target user needs to join or subscribe to a channel. For example, use this method to check whether a contact is available before you send them a message in a user channel. This method requires Signaling SDK v2.3.1 or later. Refer to the following sample code:
+
+```swift tab="Swift"
+rtm.getPresence()?.getUserOnlineStatus(userId: "userId") { status, errorInfo in
+    if let errorInfo = errorInfo {
+        print("getUserOnlineStatus failed, errorCode \(errorInfo.errorCode), reason \(errorInfo.reason)")
+    } else if let status = status {
+        print("\(status.userId) online: \(status.online)")
+    }
+}
+```
+
+```objc tab="Objective-C"
+[[rtm getPresence] getUserOnlineStatus:@"userId" completion:^(AgoraRtmUserOnlineStatus * _Nullable status, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"%@ online: %d", status.userId, status.online);
+    } else {
+        NSLog(@"getUserOnlineStatus failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+When you use `getUserOnlineStatus`, keep the following points in mind:
+
+- Each call queries one user. To query several users, call the method once for each user. The method has a [rate limit](/en/realtime-media/rtm/reference/limitations#operations-with-dedicated-quotas) of 20 calls per second.
+- If the user is offline or doesn't exist, the query succeeds and returns `online=false`. A failed query means that the user's online status can't be determined. To handle the failure, see [Errors](/en/api-reference/api-ref/signaling/ios#errors).
+- You must be logged in to Signaling with a connected session. The query works whether Presence is enabled or disabled in Agora Console.
+- The result is a snapshot of the user's status when the server processes the query. If a user disconnects abnormally, the server takes some time to detect that the user is offline. The method doesn't return the user's last online time and doesn't notify you of later changes.
 
 ## User status management
 
@@ -1531,6 +1602,7 @@ This section contains content that completes the information on this page, or po
 
 - [`getOnlineUsers`](/en/api-reference/api-ref/signaling/ios#getonlineusers)
 - [`getUserChannels`](/en/api-reference/api-ref/signaling/ios#getuserchannels)
+- [`getUserOnlineStatus`](/en/api-reference/api-ref/signaling/ios#getuseronlinestatus)
 - [`setState`](/en/api-reference/api-ref/signaling/ios#setstate)
 - [`getState`](/en/api-reference/api-ref/signaling/ios#getstate)
 - [`removeState`](/en/api-reference/api-ref/signaling/ios#removestate)
@@ -1542,6 +1614,7 @@ This section contains content that completes the information on this page, or po
 
 - [`getOnlineUsers`](/en/api-reference/api-ref/signaling/ios#getonlineusers)
 - [`getUserChannels`](/en/api-reference/api-ref/signaling/ios#getuserchannels)
+- [`getUserOnlineStatus`](/en/api-reference/api-ref/signaling/ios#getuseronlinestatus)
 - [`setState`](/en/api-reference/api-ref/signaling/ios#setstate)
 - [`getState`](/en/api-reference/api-ref/signaling/ios#getstate)
 - [`removeState`](/en/api-reference/api-ref/signaling/ios#removestate)
@@ -1558,6 +1631,7 @@ In Signaling solutions, it is often important to know a user's current online st
 
 - Get a list of users currently in a channel and their temporary status data.
 - Get a list of channels a specified user has joined or is subscribed to.
+- Check whether a specified user is online.
 - Get, set, or remove user statuses.
 - Receive real-time event notifications when users join or leave specified channels.
 - Receive user status change event notifications in real time.
@@ -1766,6 +1840,37 @@ rtm.getPresence()?.getUserChannels("userId") { response, errorInfo in
 ```
 
 The `getUserChannels` method returns complete query results about the channels and their types that the queried user is in, without pagination.
+
+### Query user online status
+
+To check whether a user is logged in to Signaling, call `getUserOnlineStatus` with the user ID. Neither you nor the target user needs to join or subscribe to a channel. For example, use this method to check whether a contact is available before you send them a message in a user channel. This method requires Signaling SDK v2.3.1 or later. Refer to the following sample code:
+
+```swift tab="Swift"
+rtm.getPresence()?.getUserOnlineStatus(userId: "userId") { status, errorInfo in
+    if let errorInfo = errorInfo {
+        print("getUserOnlineStatus failed, errorCode \(errorInfo.errorCode), reason \(errorInfo.reason)")
+    } else if let status = status {
+        print("\(status.userId) online: \(status.online)")
+    }
+}
+```
+
+```objc tab="Objective-C"
+[[rtm getPresence] getUserOnlineStatus:@"userId" completion:^(AgoraRtmUserOnlineStatus * _Nullable status, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"%@ online: %d", status.userId, status.online);
+    } else {
+        NSLog(@"getUserOnlineStatus failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+When you use `getUserOnlineStatus`, keep the following points in mind:
+
+- Each call queries one user. To query several users, call the method once for each user. The method has a [rate limit](/en/realtime-media/rtm/reference/limitations#operations-with-dedicated-quotas) of 20 calls per second.
+- If the user is offline or doesn't exist, the query succeeds and returns `online=false`. A failed query means that the user's online status can't be determined. To handle the failure, see [Errors](/en/api-reference/api-ref/signaling/macos#errors).
+- You must be logged in to Signaling with a connected session. The query works whether Presence is enabled or disabled in Agora Console.
+- The result is a snapshot of the user's status when the server processes the query. If a user disconnects abnormally, the server takes some time to detect that the user is offline. The method doesn't return the user's last online time and doesn't notify you of later changes.
 
 ## User status management
 
@@ -2183,6 +2288,7 @@ This section contains content that completes the information on this page, or po
 
 - [`getOnlineUsers`](/en/api-reference/api-ref/signaling/macos#getonlineusers)
 - [`getUserChannels`](/en/api-reference/api-ref/signaling/macos#getuserchannels)
+- [`getUserOnlineStatus`](/en/api-reference/api-ref/signaling/macos#getuseronlinestatus)
 - [`setState`](/en/api-reference/api-ref/signaling/macos#setstate)
 - [`getState`](/en/api-reference/api-ref/signaling/macos#getstate)
 - [`removeState`](/en/api-reference/api-ref/signaling/macos#removestate)
@@ -2194,6 +2300,7 @@ This section contains content that completes the information on this page, or po
 
 - [`getOnlineUsers`](/en/api-reference/api-ref/signaling/macos#getonlineusers)
 - [`getUserChannels`](/en/api-reference/api-ref/signaling/macos#getuserchannels)
+- [`getUserOnlineStatus`](/en/api-reference/api-ref/signaling/macos#getuseronlinestatus)
 - [`setState`](/en/api-reference/api-ref/signaling/macos#setstate)
 - [`getState`](/en/api-reference/api-ref/signaling/macos#getstate)
 - [`removeState`](/en/api-reference/api-ref/signaling/macos#removestate)
@@ -2565,6 +2672,7 @@ In Signaling solutions, it is often important to know a user's current online st
 
 - Get a list of users currently in a channel and their temporary status data.
 - Get a list of channels a specified user has joined or is subscribed to.
+- Check whether a specified user is online.
 - Get, set, or remove user statuses.
 - Receive real-time event notifications when users join or leave specified channels.
 - Receive user status change event notifications in real time.
@@ -2694,6 +2802,36 @@ class RtmEventHandler : public IRtmEventHandler {
 ```
 
 The `getUserChannels` method returns complete query results about the channels and their types that the queried user is in, without pagination.
+
+### Query user online status
+
+To check whether a user is logged in to Signaling, call `getUserOnlineStatus` with the user ID. Neither you nor the target user needs to join or subscribe to a channel. For example, use this method to check whether a contact is available before you send them a message in a user channel. This method requires Signaling SDK v2.3.1 or later. Refer to the following sample code:
+
+```cpp
+uint64_t requestId;
+rtmClient->getPresence()->getUserOnlineStatus("tony", requestId);
+```
+
+After you call this method, the SDK triggers the `onGetUserOnlineStatusResult` callback to return the call result. If the query fails, `status` is `NULL`. The data that `status` points to is valid only during the callback.
+
+```cpp
+class RtmEventHandler : public IRtmEventHandler {
+    void onGetUserOnlineStatusResult(const uint64_t requestId, const UserOnlineStatus* status, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK || status == nullptr) {
+            printf("getUserOnlineStatus failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("%s online: %d\n", status->userId, status->online);
+        }
+    }
+};
+```
+
+When you use `getUserOnlineStatus`, keep the following points in mind:
+
+- Each call queries one user. To query several users, call the method once for each user. The method has a [rate limit](/en/realtime-media/rtm/reference/limitations#operations-with-dedicated-quotas) of 20 calls per second.
+- If the user is offline or doesn't exist, the query succeeds and returns `online=false`. A failed query means that the user's online status can't be determined. To handle the failure, see [Errors](/en/api-reference/api-ref/signaling/windows-cpp#errors).
+- You must be logged in to Signaling with a connected session. The query works whether Presence is enabled or disabled in Agora Console.
+- The result is a snapshot of the user's status when the server processes the query. If a user disconnects abnormally, the server takes some time to detect that the user is offline. The method doesn't return the user's last online time and doesn't notify you of later changes.
 
 ## User status management
 
@@ -2939,6 +3077,7 @@ This section contains content that completes the information on this page, or po
 
 - [`getOnlineUsers`](/en/api-reference/api-ref/signaling/windows-cpp#getonlineusers)
 - [`getUserChannels`](/en/api-reference/api-ref/signaling/windows-cpp#getuserchannels)
+- [`getUserOnlineStatus`](/en/api-reference/api-ref/signaling/windows-cpp#getuseronlinestatus)
 - [`setState`](/en/api-reference/api-ref/signaling/windows-cpp#setstate)
 - [`getState`](/en/api-reference/api-ref/signaling/windows-cpp#getstate)
 - [`removeState`](/en/api-reference/api-ref/signaling/windows-cpp#removestate)
@@ -2952,6 +3091,7 @@ In Signaling solutions, it is often important to know a user's current online st
 
 - Get a list of users currently in a channel and their temporary status data.
 - Get a list of channels a specified user has joined or is subscribed to.
+- Check whether a specified user is online.
 - Get, set, or remove user statuses.
 - Receive real-time event notifications when users join or leave specified channels.
 - Receive user status change event notifications in real time.
@@ -3081,6 +3221,36 @@ class RtmEventHandler : public IRtmEventHandler {
 ```
 
 The `getUserChannels` method returns complete query results about the channels and their types that the queried user is in, without pagination.
+
+### Query user online status
+
+To check whether a user is logged in to Signaling, call `getUserOnlineStatus` with the user ID. Neither you nor the target user needs to join or subscribe to a channel. For example, use this method to check whether a contact is available before you send them a message in a user channel. This method requires Signaling SDK v2.3.1 or later. Refer to the following sample code:
+
+```cpp
+uint64_t requestId;
+rtmClient->getPresence()->getUserOnlineStatus("tony", requestId);
+```
+
+After you call this method, the SDK triggers the `onGetUserOnlineStatusResult` callback to return the call result. If the query fails, `status` is `NULL`. The data that `status` points to is valid only during the callback.
+
+```cpp
+class RtmEventHandler : public IRtmEventHandler {
+    void onGetUserOnlineStatusResult(const uint64_t requestId, const UserOnlineStatus* status, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK || status == nullptr) {
+            printf("getUserOnlineStatus failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("%s online: %d\n", status->userId, status->online);
+        }
+    }
+};
+```
+
+When you use `getUserOnlineStatus`, keep the following points in mind:
+
+- Each call queries one user. To query several users, call the method once for each user. The method has a [rate limit](/en/realtime-media/rtm/reference/limitations#operations-with-dedicated-quotas) of 20 calls per second.
+- If the user is offline or doesn't exist, the query succeeds and returns `online=false`. A failed query means that the user's online status can't be determined. To handle the failure, see [Errors](/en/api-reference/api-ref/signaling/linux-cpp#errors).
+- You must be logged in to Signaling with a connected session. The query works whether Presence is enabled or disabled in Agora Console.
+- The result is a snapshot of the user's status when the server processes the query. If a user disconnects abnormally, the server takes some time to detect that the user is offline. The method doesn't return the user's last online time and doesn't notify you of later changes.
 
 ## User status management
 
@@ -3326,6 +3496,7 @@ This section contains content that completes the information on this page, or po
 
 - [`getOnlineUsers`](/en/api-reference/api-ref/signaling/linux-cpp#getonlineusers)
 - [`getUserChannels`](/en/api-reference/api-ref/signaling/linux-cpp#getuserchannels)
+- [`getUserOnlineStatus`](/en/api-reference/api-ref/signaling/linux-cpp#getuseronlinestatus)
 - [`setState`](/en/api-reference/api-ref/signaling/linux-cpp#setstate)
 - [`getState`](/en/api-reference/api-ref/signaling/linux-cpp#getstate)
 - [`removeState`](/en/api-reference/api-ref/signaling/linux-cpp#removestate)

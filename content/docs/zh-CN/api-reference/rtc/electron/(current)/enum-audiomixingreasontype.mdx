@@ -1,0 +1,60 @@
+---
+title: AudioMixingReasonType
+description: 音乐文件播放状态改变的原因。在 onAudioMixingStateChanged 回调中报告。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/enum_audiomixingreasontype
+  sourcePath: html-docs/rtc/Electron/API/enum_audiomixingreasontype.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_audiomixingreasontype__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="audiomixingreasonok"></a>
+<Parameter name="AudioMixingReasonOk">
+
+0: 成功打开音乐文件。
+
+</Parameter>
+<a id="audiomixingreasoncannotopen"></a>
+<Parameter name="AudioMixingReasonCanNotOpen">
+
+701: 音乐文件打开出错。例如，本地音乐文件不存在、文件格式不支持或无法访问在线音乐文件 URL。
+
+</Parameter>
+<a id="audiomixingreasontoofrequentcall"></a>
+<Parameter name="AudioMixingReasonTooFrequentCall">
+
+702: 音乐文件打开太频繁。如需多次调用 [startAudioMixing](/zh-CN/api-reference/rtc/electron/play/audio-mixing#api_irtcengine_startaudiomixing2)，请确保调用间隔大于 500 ms。
+
+</Parameter>
+<a id="audiomixingreasoninterruptedeof"></a>
+<Parameter name="AudioMixingReasonInterruptedEof">
+
+703: 音乐文件播放中断。
+
+</Parameter>
+<a id="audiomixingreasononeloopcompleted"></a>
+<Parameter name="AudioMixingReasonOneLoopCompleted">
+
+721: 音乐文件完成一次循环播放。
+
+</Parameter>
+<a id="audiomixingreasonallloopscompleted"></a>
+<Parameter name="AudioMixingReasonAllLoopsCompleted">
+
+723: 音乐文件完成所有循环播放。
+
+</Parameter>
+<a id="audiomixingreasonstoppedbyuser"></a>
+<Parameter name="AudioMixingReasonStoppedByUser">
+
+724: 成功调用 [stopAudioMixing](/zh-CN/api-reference/rtc/electron/play/audio-mixing#api_irtcengine_stopaudiomixing) 停止播放音乐文件。
+
+</Parameter>
+</ParameterList>

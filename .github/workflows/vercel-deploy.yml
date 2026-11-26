@@ -14,6 +14,11 @@ on:
       - "source.config.ts"
       - "tsconfig.json"
       - "vite.config.ts"
+      - "docs/api-reference-quality.md"
+      - "AGENTS.md"
+      - ".github/PULL_REQUEST_TEMPLATE.md"
+      - ".github/workflows/vercel-deploy.yml"
+      - ".github/workflows/global-search.yml"
       - "vercel.json"
       - "vercel.base.json"
       - "vercel-legacy-redirects.json"
@@ -35,6 +40,11 @@ on:
       - "source.config.ts"
       - "tsconfig.json"
       - "vite.config.ts"
+      - "docs/api-reference-quality.md"
+      - "AGENTS.md"
+      - ".github/PULL_REQUEST_TEMPLATE.md"
+      - ".github/workflows/vercel-deploy.yml"
+      - ".github/workflows/global-search.yml"
       - "vercel.json"
       - "vercel.base.json"
       - "vercel-legacy-redirects.json"
@@ -52,6 +62,14 @@ on:
         description: Optional PR number to comment on for preview deploys
         required: false
         type: string
+      docs_region:
+        description: Documentation region for preview builds
+        required: false
+        default: global
+        type: choice
+        options:
+          - global
+          - cn
       release_sha:
         description: Release commit SHA for production deploys triggered by Promote Production
         required: false
@@ -82,25 +100,25 @@ jobs:
     steps:
       - name: Resolve preview context
         id: preview-context
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9.0.0
         env:
-          MANUAL_PR_NUMBER: ${{ inputs.pr_number }}
+          PREVIEW_PR_NUMBER: ${{ inputs.pr_number }}
         with:
           script: |
             if (context.eventName === 'pull_request') {
               const sameRepo = context.payload.pull_request?.head?.repo?.full_name === context.payload.repository?.full_name;
               core.setOutput('should_deploy', sameRepo ? 'true' : 'false');
               core.setOutput('pr_number', sameRepo ? String(context.payload.pull_request.number) : '');
+              core.setOutput('docs_region', context.payload.pull_request.base.ref.startsWith('codex/cn-') ? 'cn' : 'global');
               core.setOutput('reason', sameRepo ? 'same-repo pull request' : 'forked pull request');
               return;
             }
 
             if (context.eventName === 'workflow_dispatch') {
-              const manualInput = process.env.MANUAL_PR_NUMBER?.trim() ?? '';
-              if (manualInput && manualInput !== 'null' && manualInput !== '') {
-                if (!/^[1-9]\d*$/.test(manualInput)) {
-                  core.setFailed('pr_number must be a positive integer.');
-                  return;
+              const manualInput = (process.env.PREVIEW_PR_NUMBER || '').trim();
+              if (manualInput) {
+                if (!/^[1-9]\d*$/.test(manualInput) || !Number.isSafeInteger(Number(manualInput))) {
+                  throw new Error('Invalid preview PR number. Expected a positive integer.');
                 }
                 core.setOutput('should_deploy', 'true');
                 core.setOutput('pr_number', manualInput);
@@ -129,6 +147,7 @@ jobs:
             if (response.data.length > 0) {
               core.setOutput('should_deploy', 'true');
               core.setOutput('pr_number', String(response.data[0].number));
+              core.setOutput('docs_region', response.data[0].base.ref.startsWith('codex/cn-') ? 'cn' : 'global');
               core.setOutput('reason', 'branch push with open pull request');
               return;
             }
@@ -150,19 +169,21 @@ jobs:
 
       - name: Checkout
         if: steps.preview-context.outputs.should_deploy == 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
 
       - name: Setup Bun
         if: steps.preview-context.outputs.should_deploy == 'true'
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@v2.2.0
         with:
-          bun-version: latest
+          bun-version: 1.4.4
 
       - name: Setup Node.js
         if: steps.preview-context.outputs.should_deploy == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7.1.0
         with:
-          node-version: 24
+          node-version: 26.13.0
 
       - name: Install Vercel CLI
         if: steps.preview-context.outputs.should_deploy == 'true'
@@ -172,6 +193,19 @@ jobs:
         if: steps.preview-context.outputs.should_deploy == 'true'
         run: bun install --frozen-lockfile
 
+      - name: Check zh-CN OpenAPI links
+        if: steps.preview-context.outputs.should_deploy == 'true'
+        run: bun run docs:links:openapi-zh:baseline
+
+      - name: Check API quality policy and prepare build evidence
+        if: steps.preview-context.outputs.should_deploy == 'true'
+        env:
+          DOCS_QA_REGION: ${{ inputs.docs_region || steps.preview-context.outputs.docs_region || 'global' }}
+        run: |
+          bun run test:api-quality
+          bun run test scripts/cn-link-browser.test.ts
+          bun run qa:api prepare --region "$DOCS_QA_REGION"
+
       - name: Pull Vercel preview environment
         if: steps.preview-context.outputs.should_deploy == 'true'
         run: vercel pull --yes --environment=preview --token="${{ secrets.VERCEL_TOKEN }}"
@@ -179,15 +213,18 @@ jobs:
       - name: Build with Vercel
         if: steps.preview-context.outputs.should_deploy == 'true'
         env:
-          VITE_DOCS_REGION: global
+          VITE_DOCS_REGION: ${{ inputs.docs_region || steps.preview-context.outputs.docs_region || 'global' }}
+          VITE_DOCS_MEASUREMENT_ENABLED: ${{ (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'cn' && 'true' || 'false' }}
+          VITE_DOCS_ENVIRONMENT: staging
+          VITE_DOCS_APP_RELEASE: ${{ github.event.pull_request.head.sha || github.sha }}
+          VITE_POSTHOG_HOST: ${{ (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'cn' && secrets.VITE_CN_POSTHOG_HOST || ((inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'global' && secrets.VITE_POSTHOG_HOST) || '' }}
+          VITE_POSTHOG_KEY: ${{ (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'cn' && secrets.VITE_CN_POSTHOG_KEY || ((inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'global' && secrets.VITE_POSTHOG_KEY) || '' }}
           VITE_DEPLOY_ENVIRONMENT: preview
           VITE_DEPLOY_VERSION: ${{ github.event.pull_request.head.sha || github.sha }}
-          VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
-          VITE_ALGOLIA_SEARCH_API_KEY: ${{ secrets.VITE_ALGOLIA_SEARCH_API_KEY }}
+          VITE_ALGOLIA_APP_ID: ${{ (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'global' && secrets.VITE_ALGOLIA_APP_ID || '' }}
+          VITE_ALGOLIA_SEARCH_API_KEY: ${{ (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'global' && secrets.VITE_ALGOLIA_SEARCH_API_KEY || '' }}
           VITE_SEARCH_RANKING_V2: 'true'
-          VITE_GTM_ID: ${{ secrets.VITE_GTM_ID }}
-          VITE_POSTHOG_HOST: ${{ secrets.VITE_POSTHOG_HOST }}
-          VITE_POSTHOG_KEY: ${{ secrets.VITE_POSTHOG_KEY }}
+          VITE_GTM_ID: ${{ (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'global' && secrets.VITE_GTM_ID || '' }}
           VERCEL_GIT_PROVIDER: github
           VERCEL_GIT_REPO_OWNER: ${{ github.repository_owner }}
           VERCEL_GIT_REPO_SLUG: ${{ github.event.repository.name }}
@@ -203,6 +240,30 @@ jobs:
           test -f .vercel/output/static/index.html
           test ! -d .vercel/output/functions
 
+      - name: Check API reference quality in Chrome
+        id: api-browser
+        # The Global workflow publishes review previews even when QA reports existing debt.
+        # Surface the failure as a required job outcome after the preview URL is available.
+        continue-on-error: ${{ (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'global' }}
+        if: steps.preview-context.outputs.should_deploy == 'true'
+        env:
+          VITE_DOCS_REGION: ${{ inputs.docs_region || steps.preview-context.outputs.docs_region || 'global' }}
+        run: |
+          npm install --global agent-browser@0.41.1
+          agent-browser install --with-deps
+          bun run qa:api seal --region "$VITE_DOCS_REGION" --root .vercel/output/static
+          bun run qa:api browser --region "$VITE_DOCS_REGION" --root .vercel/output/static --scope all
+
+      - name: Retain API quality evidence
+        if: always() && steps.preview-context.outputs.should_deploy == 'true'
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: api-reference-quality-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .agent/artifacts/api-reference-quality/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14
+
       - name: Deploy prebuilt output
         if: steps.preview-context.outputs.should_deploy == 'true'
         id: vercel-deploy
@@ -217,6 +278,12 @@ jobs:
             --meta githubCommitRef="${{ github.head_ref || github.ref_name }}" \
             --meta githubCommitSha="${{ github.event.pull_request.head.sha || github.sha }}")"
           echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Verify retired CN documentation on the deployed preview
+        if: steps.preview-context.outputs.should_deploy == 'true' && (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'cn'
+        env:
+          DEPLOY_URL: ${{ steps.vercel-deploy.outputs.url }}
+        run: node scripts/verify-retired-cn-docs-preview.mjs
 
       - name: Alias main preview URL
         if: steps.preview-context.outputs.should_deploy == 'true' && github.event_name == 'push' && github.ref_name == 'main'
@@ -255,7 +322,7 @@ jobs:
 
       - name: Comment preview URL
         if: steps.preview-context.outputs.should_deploy == 'true' && steps.preview-context.outputs.pr_number != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9.0.0
         env:
           DEPLOY_URL: ${{ steps.vercel-deploy.outputs.url }}
           PR_NUMBER: ${{ steps.preview-context.outputs.pr_number }}
@@ -319,8 +386,15 @@ jobs:
           path: global-search-replay-preview.json
           if-no-files-found: warn
 
+      - name: Report Global API reference quality failure
+        if: always() && steps.api-browser.outcome == 'failure' && (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'global'
+        run: exit 1
+
   deploy-production:
     name: Deploy Production to Vercel
+    permissions:
+      contents: read
+      actions: write
     if: |
       github.repository == 'AgoraIO/docs-portal' &&
       (
@@ -333,12 +407,12 @@ jobs:
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
         with:
-          ref: ${{ github.event_name == 'workflow_dispatch' && 'release/prod' || github.ref }}
+          ref: ${{ github.event_name == 'workflow_dispatch' && 'release/prod' || github.sha }}
+          fetch-depth: 0
 
       - name: Verify release ref
-        id: release-ref
         if: github.event_name == 'workflow_dispatch'
         env:
           RELEASE_SHA: ${{ inputs.release_sha }}
@@ -358,23 +432,24 @@ jobs:
             exit 1
           fi
 
-          echo "verified=true" >> "$GITHUB_OUTPUT"
-
       - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@v2.2.0
         with:
-          bun-version: latest
+          bun-version: 1.4.4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7.1.0
         with:
-          node-version: 24
+          node-version: 26.13.0
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
+      - name: Check zh-CN OpenAPI links
+        run: bun run docs:links:openapi-zh:baseline
 
       - name: Pull Vercel production environment
         run: vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
@@ -396,34 +471,6 @@ jobs:
           VERCEL_GIT_COMMIT_REF: release/prod
           VERCEL_GIT_COMMIT_SHA: ${{ inputs.release_sha || github.sha }}
         run: vercel build --prod --yes --token="${{ secrets.VERCEL_TOKEN }}"
-
-      - name: Sync Algolia search index
-        if: |
-          (github.event_name == 'push' && github.ref_name == 'release/prod') ||
-          (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'production' && steps.release-ref.outputs.verified == 'true')
-        env:
-          VITE_DOCS_REGION: global
-          VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
-          ALGOLIA_ADMIN_API_KEY: ${{ secrets.ALGOLIA_ADMIN_API_KEY }}
-          ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}
-        run: bun run search:sync
-
-      - name: Replay Global search golden queries
-        continue-on-error: true
-        env:
-          VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
-          VITE_ALGOLIA_SEARCH_API_KEY: ${{ secrets.VITE_ALGOLIA_SEARCH_API_KEY }}
-          VITE_ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}
-          VITE_SEARCH_RANKING_V2: 'true'
-        run: bun run search:replay -- --out=global-search-replay.json
-
-      - name: Upload Global search replay evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: global-search-replay
-          path: global-search-replay.json
-          if-no-files-found: warn
 
       - name: Verify Vercel output
         run: |
@@ -456,3 +503,19 @@ jobs:
             echo
             echo "Production URL: ${DEPLOY_URL}"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Start Global search sync
+        id: start-search
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_SHA: ${{ inputs.release_sha || github.sha }}
+        run: gh workflow run global-search.yml --ref release/prod -f "release_sha=$RELEASE_SHA"
+
+      - name: Report search dispatch failure
+        if: steps.start-search.outcome == 'failure'
+        env:
+          RELEASE_SHA: ${{ inputs.release_sha || github.sha }}
+        run: |
+          echo "::warning::Site deployed. Start Global search sync manually for $RELEASE_SHA."
+          echo "Retry search with \`gh workflow run global-search.yml --ref release/prod -f release_sha=$RELEASE_SHA\`." >> "$GITHUB_STEP_SUMMARY"

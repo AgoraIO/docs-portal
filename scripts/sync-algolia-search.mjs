@@ -1,5 +1,5 @@
 import { algoliasearch } from 'algoliasearch';
-import { sync } from 'fumadocs-core/search/algolia';
+import { updateDocuments } from 'fumadocs-core/search/algolia';
 import { getAlgoliaDocsRecords } from '../src/lib/search/algolia-records.server.ts';
 import { shouldSyncAlgoliaSearch } from '../src/lib/search/search-provider.ts';
 import { DOCS_REGION } from '../src/lib/site-region.ts';
@@ -28,14 +28,10 @@ if (!appId || !adminApiKey) {
 const client = algoliasearch(appId, adminApiKey);
 const records = await getAlgoliaDocsRecords();
 
-await sync(client, {
-  indexName,
-  documents: records,
-});
-
-await client.setSettings({
+const { taskID } = await client.setSettings({
   indexName,
   indexSettings: {
+    attributesToSnippet: [],
     attributeForDistinct: 'page_id',
     attributesForFaceting: [
       'filterOnly(locale)',
@@ -71,5 +67,9 @@ await client.setSettings({
     ],
   },
 });
+
+// replaceAllObjects copies these settings to its temporary index and waits for the swap.
+await client.waitForTask({ indexName, taskID });
+await updateDocuments(client, indexName, records);
 
 console.log(`Synced ${records.length} records to Algolia index ${indexName}.`);

@@ -1,33 +1,27 @@
 'use client';
 
 import { Link } from '@tanstack/react-router';
-import { CheckIcon, ChevronDownIcon, ChevronLeftIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { ChevronLeftIcon } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
+import type { AppLocale } from '@/lib/i18n/i18n-config';
+
+import { DocsVersionDropdown } from './DocsVersionDropdown';
 
 export function DocsSidebarHeaderBlock({
   className,
   header,
+  locale,
   mode,
   onSelectPath,
 }: {
   className?: string;
   header: DocsSidebarHeader;
+  locale: AppLocale;
   mode: 'desktop' | 'mobile';
   onSelectPath: () => void;
 }) {
   const versionSwitcher = header.versionSwitcher;
-  const currentVersion = versionSwitcher?.versions.find(
-    (version) => version.id === versionSwitcher.currentId,
-  );
 
   return (
     <div
@@ -63,57 +57,15 @@ export function DocsSidebarHeaderBlock({
       >
         {header.title}
       </div>
-      {versionSwitcher &&
-      currentVersion &&
-      versionSwitcher.presentation !== 'tabs' ? (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              aria-label="Select documentation version"
-              className={cn(
-                'mt-2 h-8 max-w-full justify-between gap-2 rounded-md px-2.5 text-[13px] data-[state=open]:bg-accent data-[state=open]:text-accent-foreground',
-                mode === 'desktop' ? 'mx-2 w-[calc(100%-1rem)]' : 'w-full',
-              )}
-              size="sm"
-              variant="outline"
-            >
-              <span className="min-w-0 truncate">{currentVersion.label}</span>
-              <ChevronDownIcon aria-hidden="true" className="opacity-60" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="start"
-            aria-label="Documentation versions"
-            className="w-48 rounded-lg p-1"
-          >
-            <DropdownMenuGroup>
-              {versionSwitcher.versions.map((version) => (
-                <DropdownMenuItem
-                  asChild
-                  className="min-h-8 cursor-pointer justify-between rounded-md px-2.5 text-[13px]"
-                  key={version.id}
-                >
-                  <Link
-                    aria-current={
-                      version.id === versionSwitcher.currentId
-                        ? 'page'
-                        : undefined
-                    }
-                    onClick={onSelectPath}
-                    params={{}}
-                    search={{}}
-                    to={version.href}
-                  >
-                    <span className="min-w-0 truncate">{version.label}</span>
-                    {version.id === versionSwitcher.currentId ? (
-                      <CheckIcon className="opacity-80" />
-                    ) : null}
-                  </Link>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+      {versionSwitcher && versionSwitcher.presentation !== 'tabs' ? (
+        <DocsVersionDropdown
+          className={
+            mode === 'desktop' ? 'mt-2 mx-2 w-[calc(100%-1rem)]' : 'mt-2 w-full'
+          }
+          locale={locale}
+          onSelectPath={onSelectPath}
+          versionSwitcher={versionSwitcher}
+        />
       ) : null}
     </div>
   );

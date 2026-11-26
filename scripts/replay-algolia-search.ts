@@ -6,6 +6,7 @@ import {
 } from '../src/lib/search/golden-search-replay';
 import { parseReplayArguments } from './replay-algolia-search-arguments';
 import { writeReplayReport } from './replay-algolia-search-report';
+import { waitForEnglishSearch } from './wait-for-english-search';
 
 const appId = process.env.VITE_ALGOLIA_APP_ID;
 const searchApiKey = process.env.VITE_ALGOLIA_SEARCH_API_KEY;
@@ -23,14 +24,21 @@ if (!appId || !searchApiKey) {
   );
 }
 
-const client = createAlgoliaDocsClient({
+const config = {
   apiReferenceIndexName,
   appId,
   indexName,
   locale: 'en',
   rankingV2: true,
   searchApiKey,
-});
+};
+if (process.argv.includes('--wait-for-index')) {
+  // Each probe needs a fresh Algolia response cache while the index propagates.
+  await waitForEnglishSearch(async (query) =>
+    createAlgoliaDocsClient(config).search(query),
+  );
+}
+const client = createAlgoliaDocsClient(config);
 const report = await replayGoldenSearchCases(
   GLOBAL_GOLDEN_SEARCH_CASES,
   async (query) =>

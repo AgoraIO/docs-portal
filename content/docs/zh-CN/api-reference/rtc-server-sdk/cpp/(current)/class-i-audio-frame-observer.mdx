@@ -1,0 +1,91 @@
+---
+title: IAudioFrameObserver类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/class_i_audio_frame_observer
+  sourcePath: html-docs/rtc-server-sdk/cpp/class_i_audio_frame_observer.html
+  generator: doxygen
+  warnings: []
+---
+
+继承自 [IAudioFrameObserverBase](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base).
+
+<a id="details"></a>
+
+## 详细描述
+
+[IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer) 类。
+
+## 成员函数说明
+
+<a id="a12ad526eb7356640f67137f2cdb6c128"></a>
+
+### onPlaybackAudioFrameBeforeMixing() [1/2]
+
+<ApiSignature labels="pure virtual">
+
+virtual bool IAudioFrameObserver::onPlaybackAudioFrameBeforeMixing(const char * *channelId*, rtc::uid_t *uid*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) & *audioFrame*)
+
+</ApiSignature>
+
+获得播放声音混音前的数据。
+
+<ParameterList title="参数">
+<Parameter name="channelId">
+
+空指针。
+
+</Parameter>
+<Parameter name="uid">
+
+远端用户的用户名。
+
+</Parameter>
+<Parameter name="audioFrame">
+
+音频原始数据。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- true: 音频帧数据有效，数据会被发送。
+- false: 音频帧数据无效，数据会被舍弃。
+
+<a id="a045b317352faf9d64a97b0274a5529ec"></a>
+
+### onPlaybackAudioFrameBeforeMixing() [2/2]
+
+<ApiSignature labels="inline">
+
+virtual bool IAudioFrameObserverBase::onPlaybackAudioFrameBeforeMixing
+
+</ApiSignature>
+
+获得播放声音混音前的数据。
+
+<ParameterList title="参数">
+<Parameter name="channelId">
+
+空指针。
+
+</Parameter>
+<Parameter name="userId">
+
+远端用户的用户名。
+
+</Parameter>
+<Parameter name="audioFrame">
+
+音频原始数据。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+- true: 音频帧数据有效，数据会被发送。
+- false: 音频帧数据无效，数据会被舍弃。

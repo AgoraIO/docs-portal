@@ -1,0 +1,66 @@
+---
+title: "IRecorderVideoFrameObserver 类"
+---
+
+用于接收录制器的视频帧回调。
+
+<a id="onyuvframecaptured"></a>
+## onYuvFrameCaptured
+
+```java
+default void onYuvFrameCaptured(String channelId, String userId, VideoFrame frame)
+```
+
+采集到 YUV 视频帧时触发的回调。
+
+调用 [`enableRecorderVideoFrameCapture`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#enablerecordervideoframecapture) 并将 [`VideoFrameCaptureType`](/zh-CN/api-reference/local-server-recording/java/enum#videoframecapturetype) 设置为 `VIDEO_FORMAT_YUV_FRAME_TYPE` 后，每次采集到 YUV 视频帧时，会触发该回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `String` | 频道 ID。 |
+| `userId` | `String` | 用户 ID。 |
+| `frame` | `VideoFrame` | 采集到的 YUV 视频帧，详见 [`VideoFrame`](/zh-CN/api-reference/local-server-recording/java/struct#videoframe)。 |
+
+<a id="onencodedframereceived"></a>
+## onEncodedFrameReceived
+
+```java
+default void onEncodedFrameReceived(String channelId, String userId, byte[] imageBuffer, EncodedVideoFrameInfo info)
+```
+
+接收到编码帧或 JPG 图像缓冲区时触发的回调。
+
+调用 [`enableRecorderVideoFrameCapture`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#enablerecordervideoframecapture) 启用录制过程中的视频采集，并将 [`VideoFrameCaptureType`](/zh-CN/api-reference/local-server-recording/java/enum#videoframecapturetype) 设置为 `VIDEO_FORMAT_ENCODED_FRAME_TYPE` 或 `VIDEO_FORMAT_JGP_FORMAT_TYPE` 后，会触发该回调：
+
+- 对于编码帧类型，每次采集到视频帧时触发该回调。
+- 对于 JPG 格式类型，该回调会按照你在 `RecorderVideoFrameCaptureConfig.jpgCaptureInternalInSec` 中设置的时间间隔触发。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `String` | 频道 ID。 |
+| `userId` | `String` | 用户 ID。 |
+| `imageBuffer` | `byte[]` | 编码图像缓冲区。 |
+| `info` | `EncodedVideoFrameInfo` | 编码帧信息，详见 [`EncodedVideoFrameInfo`](/zh-CN/api-reference/local-server-recording/java/struct#encodedvideoframeinfo)。 |
+
+<a id="onjpgfilesaved"></a>
+## onJPGFileSaved
+
+```java
+default void onJPGFileSaved(String channelId, String userId, String filename)
+```
+
+JPG 文件保存到磁盘时触发的回调。
+
+你可以通过调用 [`enableRecorderVideoFrameCapture`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#enablerecordervideoframecapture) 启用录制过程中的视频帧采集，并将 [`VideoFrameCaptureType`](/zh-CN/api-reference/local-server-recording/java/enum#videoframecapturetype) 设置为 `VIDEO_FORMAT_JPG_FILE_TYPE`。该回调会按照你在 `RecorderVideoFrameCapturedConfig.jpgCaptureIntervalInSec` 中设置的时间间隔触发，用于通知 `JPG` 文件已保存到磁盘。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelId` | `String` | 频道 ID。 |
+| `userId` | `String` | 用户 ID。 |
+| `filename` | `String` | 已保存的 `JPG` 文件的绝对路径。 |

@@ -1,0 +1,61 @@
+---
+title: Enumeration ChannelMediaRelayState
+description: 跨直播媒体流转发服务的状态码，可以通过 AgoraRTCClient.on("channel-media-relay-state") 事件获取。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/react/enums/channelmediarelaystate
+  sourcePath: html-docs/rtc/React/enums/channelmediarelaystate.html
+  generator: typedoc
+  warnings: []
+---
+
+## Enumeration members
+
+<a id="relay_state_connecting"></a>
+
+### RELAY_STATE_CONNECTING
+
+<ApiSignature>
+
+RELAY_STATE_CONNECTING: = "RELAY_STATE_CONNECTING"
+
+</ApiSignature>
+
+SDK 正在连接到跨频道媒体流转发服务。
+
+<a id="relay_state_failure"></a>
+
+### RELAY_STATE_FAILURE
+
+<ApiSignature>
+
+RELAY_STATE_FAILURE: = "RELAY_STATE_FAILURE"
+
+</ApiSignature>
+
+跨频道媒体流转发出现错误，错误代码可以参考 [ChannelMediaRelayError](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/channelmediarelayerror)。
+
+<a id="relay_state_idle"></a>
+
+### RELAY_STATE_IDLE
+
+<ApiSignature>
+
+RELAY_STATE_IDLE: = "RELAY_STATE_IDLE"
+
+</ApiSignature>
+
+SDK 报告转发服务处于空闲状态。在 Web SDK 4.22.0 中，该状态既可能表示初始化后尚未开启服务，也可能出现在临时信令断连恢复期间；不能仅因收到该状态就重新调用 [startChannelMediaRelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#startchannelmediarelay)。
+
+<a id="relay_state_running"></a>
+
+### RELAY_STATE_RUNNING
+
+<ApiSignature>
+
+RELAY_STATE_RUNNING: = "RELAY_STATE_RUNNING"
+
+</ApiSignature>
+
+SDK 报告跨频道媒体流转发服务处于运行状态；这不表示最近一次目标频道更新请求一定成功，本次更新结果应以 [updateChannelMediaRelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#updatechannelmediarelay) 返回的 Promise 为准。

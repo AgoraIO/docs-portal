@@ -27,7 +27,7 @@ await fs.mkdir(tempRoot, {
 await fs.writeFile(
   bundledEntry,
   `
-import { generateStaticDocsPayload } from '../../../scripts/generate-static-docs-payload.worker.mjs';
+import { generateStaticDocsPayload } from ${JSON.stringify(path.join(repoRoot, 'scripts', 'generate-static-docs-payload.worker.mjs'))};
 
 await generateStaticDocsPayload();
 `,
@@ -35,7 +35,7 @@ await generateStaticDocsPayload();
 await fs.writeFile(
   bundledConfigEntry,
   `
-export * from '../../../source.config.ts';
+export * from ${JSON.stringify(path.join(repoRoot, 'source.config.ts'))};
 `,
 );
 

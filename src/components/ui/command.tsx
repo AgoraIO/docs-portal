@@ -34,6 +34,8 @@ function CommandDialog({
   overlayClassName,
   shouldFilter,
   showCloseButton = true,
+  closeLabel,
+  onCloseAutoFocus,
   value,
   onValueChange,
   ...props
@@ -44,6 +46,10 @@ function CommandDialog({
   overlayClassName?: string;
   shouldFilter?: React.ComponentProps<typeof Command>['shouldFilter'];
   showCloseButton?: boolean;
+  closeLabel?: string;
+  onCloseAutoFocus?: React.ComponentProps<
+    typeof DialogContent
+  >['onCloseAutoFocus'];
   value?: React.ComponentProps<typeof Command>['value'];
   onValueChange?: React.ComponentProps<typeof Command>['onValueChange'];
 }) {
@@ -53,6 +59,8 @@ function CommandDialog({
         className={cn('overflow-hidden p-0', className)}
         overlayClassName={overlayClassName}
         showCloseButton={showCloseButton}
+        closeLabel={closeLabel}
+        onCloseAutoFocus={onCloseAutoFocus}
       >
         <DialogHeader className="sr-only">
           <DialogTitle>{title}</DialogTitle>

@@ -1,0 +1,75 @@
+---
+title: com.herewhite.sdk.domain.ViewMode 枚举类型参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/enumcom_1_1herewhite_1_1sdk_1_1domain_1_1_view_mode
+  sourcePath: html-docs/whiteboard/Android/enumcom_1_1herewhite_1_1sdk_1_1domain_1_1_view_mode.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+视角模式。
+
+## 类成员变量说明
+
+<a id="ac8c8a1d40c70ad578f3da84a0c2fcd90"></a>
+
+### Freedom
+
+<ApiSignature>
+
+com.herewhite.sdk.domain.ViewMode.Freedom
+
+</ApiSignature>
+
+（默认）自由模式。
+
+该模式下用户可以主动调整视角，不受其他用户视角模式设置的影响，也不会影响其他用户的视角模式设置。
+
+:::info[注解]
+当房间内不存在视角为主播模式的用户时，所有用户的视角都默认为自由模式。
+:::
+
+<a id="a9492e62cb29543f703712bf0318d208c"></a>
+
+### Follower
+
+<ApiSignature>
+
+com.herewhite.sdk.domain.ViewMode.Follower
+
+</ApiSignature>
+
+跟随模式。
+
+该模式下用户的视角会跟随主播的视角。
+
+:::info[注解]
+- 当一个用户的视角设置为主播模式后，房间内其他所有用户（包括新加入房间的用户）的视角会被自动设置为跟随模式。
+- 跟随模式的用户进行白板操作时，其视角会自动切换为自由模式。 如有需要，可以调用 [`disableOperations`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room#a6b265bdee91f2d961373d172bb969fe0) 禁止用户操作，以锁定用户的视角模式。
+:::
+
+<a id="a900c180bc6dcb3847e2a9e6c8b003b9e"></a>
+
+### Broadcaster
+
+<ApiSignature>
+
+com.herewhite.sdk.domain.ViewMode.Broadcaster
+
+</ApiSignature>
+
+主播模式。 该模式下用户可以主动调整视角，并将自己的视角同步给房间内所有其他用户。
+
+:::info[注解]
+- 每个房间只能有一个主播模式视角的用户。
+
+- 当一个用户的视角设置为主播模式后，房间内所有其他用户（包括新加入房间的用户）的视角会被自动设置为跟随模式。
+:::

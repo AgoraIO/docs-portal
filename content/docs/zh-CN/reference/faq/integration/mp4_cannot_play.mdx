@@ -1,0 +1,27 @@
+---
+title: "如何解决云端录制 NCS 事件返回的 MP4 地址无法播放？"
+---
+## 问题现象
+
+通过云端录制 NCS [`4 cloud_recording_file_infos`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/service#4) 事件获取到的 MP4 地址无法播放。
+
+## 问题原因
+
+这可能是由于云录制高可用机制迁移服务器引起的，属于极低概率事件。
+
+## 解决方法
+
+您可以通过如下方案解决此类问题：
+
+1、监听云端录制 NCS 中的 [`12 session_failover`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/service#12) 事件，该事件表示云端录制启用了高可用机制，且与任务一一对应。
+
+2、监听到 `12 session_failover` 事件后，使用[音视频格式转换脚本](https://download.agora.io/acrsdk/release/cloud_recording_tools.v3.8.0.69-202302061216-release-prod.tar.gz)，将对应任务的 m3u8 文件合并为 MP4 文件。示例如下：
+
+    ```shell
+    ffmpeg \
+    -i ff31bc9cf44931828c5bdd8ee759feca_1aaae7bf-f8c8-4ece-8da4-9eab7125468a.m3u8 \
+    -c copy \
+    -movflags +faststart \
+    -y \
+    ff31bc9cf44931828c5bdd8ee759feca_1aaae7bf-f8c8-4ece-8da4-9eab7125468a_0.mp4
+    ```

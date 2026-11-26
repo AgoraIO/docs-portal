@@ -36,6 +36,37 @@ import {
   PlatformTabsPlacementProvider,
 } from './mdx/PlatformTabsGroup';
 
+describe('MDX component identity', () => {
+  it('reuses contextual component types across renders without mixing paths or locales', () => {
+    const context = {
+      contentPath: 'zh-CN/realtime-media/rtc/index.mdx',
+      locale: 'zh-CN',
+    };
+    const first = getMDXComponents(undefined, context);
+    const second = getMDXComponents({}, { ...context });
+    for (const key of [
+      'table',
+      'h2',
+      'a',
+      'Link',
+      'Card',
+      'PlanCards',
+      'PricingCards',
+    ] as const) {
+      expect(second[key]).toBe(first[key]);
+    }
+    expect(
+      getMDXComponents(undefined, {
+        ...context,
+        contentPath: 'en/ai/index.mdx',
+      }).a,
+    ).not.toBe(first.a);
+    expect(
+      getMDXComponents(undefined, { ...context, locale: 'en' }).table,
+    ).not.toBe(first.table);
+  });
+});
+
 type TabsComponent = ComponentType<{
   children: ReactNode;
   defaultValue?: string;
@@ -1135,6 +1166,9 @@ describe('common MDX registry', () => {
       </ParameterList>,
     );
 
+    expect(screen.getByRole('table', { name: /params/i })).toContainElement(
+      screen.getByText('metadata.request_id'),
+    );
     expect(screen.getByText('params')).toBeVisible();
     expect(screen.getByText('language')).toBeVisible();
     expect(screen.getAllByText('string')).toHaveLength(3);
@@ -1147,7 +1181,10 @@ describe('common MDX registry', () => {
     expect(screen.getByText('Possible values')).toBeVisible();
     expect(screen.getByText('provider-specific object')).toBeVisible();
     expect(screen.getByText('metadata.request_id')).toBeVisible();
-    expect(screen.getAllByText('nullable')).toHaveLength(2);
+    expect(screen.getByText('nullable')).toBeVisible();
+    expect(
+      screen.getByText('metadata.request_id').closest('li'),
+    ).toHaveTextContent('metadata.request_id: string | null');
     expect(screen.getByText('Optional request identifier.')).toBeVisible();
   });
 

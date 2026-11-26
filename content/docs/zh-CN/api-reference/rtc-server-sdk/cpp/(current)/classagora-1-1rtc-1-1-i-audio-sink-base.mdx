@@ -1,0 +1,57 @@
+---
+title: agora::rtc::IAudioSinkBase类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_audio_sink_base.html
+  generator: doxygen
+  warnings: []
+---
+
+继承自 [agora::RefCountInterface](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-count-interface).
+
+<a id="details"></a>
+
+## 详细描述
+
+[`IAudioSinkBase`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-sink-base) 类是音频接收端的基类，可用于实现你自己的音频接收端。
+
+## 构造及析构函数说明
+
+<a id="afe20fc478b5d65db147c037b6da9192f"></a>
+
+### ~IAudioSinkBase()
+
+<ApiSignature labels="inline protected">
+
+agora::rtc::IAudioSinkBase::~IAudioSinkBase()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="aab576aa7d1a4c3a04538e8d06d816fec"></a>
+
+### onAudioFrame()
+
+<ApiSignature labels="pure virtual">
+
+virtual bool agora::rtc::IAudioSinkBase::onAudioFrame(const media::base::AudioPcmFrame & *audioFrame*)
+
+</ApiSignature>
+
+在接收到音频帧时触发。
+
+<ParameterList title="参数">
+<Parameter name="audioFrame">
+
+音频帧：AudioPcmFrame 。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

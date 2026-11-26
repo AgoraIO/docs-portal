@@ -1,0 +1,281 @@
+---
+title: 自定义教具与样式
+---
+
+<PlatformStructured platform="android">
+
+适用于 **Fastboard Android 1.8.2**。本页通过 Fastboard 公开的原生 SDK 对象配置教具插件。
+
+在创建 FastRoom 前通过 `FastRoomOptions.getSdkConfiguration()` 与 `getRoomParams()` 设置配置。下面的 fastRoomOptions 为业务创建的房间选项。
+
+```java
+import com.herewhite.sdk.WhiteSdkConfiguration;
+import com.herewhite.sdk.RoomParams;
+
+WhiteSdkConfiguration config = fastRoomOptions.getSdkConfiguration();
+config.setUseMultiViews(true);
+config.setEnableAppliancePlugin(true);
+RoomParams params = fastRoomOptions.getRoomParams();
+```
+
+入房成功后，通过 Fastboard 的公开 getter 获取下文使用的 Native 对象：
+
+```java
+import com.herewhite.sdk.Room;
+import com.herewhite.sdk.WhiteSdk;
+
+Room room = fastRoom.getRoom();
+WhiteSdk whiteSdk = fastRoom.getWhiteSdk();
+```
+
+下文的 `params`、`config` 指 FastRoomOptions 返回的配置；通过 Fastboard 创建 SDK 和加入房间。
+
+教具配置分为两类：通过教具状态设置当前用户的绘图样式，通过 `appliancePluginOptions.extras` 设置本地插件的样式与交互选项。先按[插件介绍](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)完成启用，再在入房前填写插件选项。
+
+## Selector 与属性栏
+
+```java
+import com.herewhite.sdk.domain.Appliance;
+import com.herewhite.sdk.domain.MemberState;
+
+// 入房前开启内置属性栏。
+params.setUsingFloatBar(true);
+// 入房成功后切换选择工具。
+MemberState selector = new MemberState();
+selector.setCurrentApplianceName(Appliance.SELECTOR);
+room.setMemberState(selector);
+```
+
+内置 Selector 提供选中、移动和缩放交互。单独选中一张未锁定、支持旋转的图片时可使用左下角旋转手柄。属性栏由本端本地显示，其元素属性修改通过房间同步。
+
+插件 `extras.overwriteSelectorStyles` 支持以下选择框样式：
+
+| 字段 | 作用 |
+| --- | --- |
+| `highlightBox` | 选择框外框 |
+| `highlightBoxPoint` | 普通缩放控制点 |
+| `highlightBoxPoints` | 按 LT/LC/LB/TC/RT/RC/RB/BC 方向覆盖控制点 |
+| `highlightBoxPointDot` | 端点编辑控制点 |
+| `highlightBoxLock` | 锁定图标 |
+
+## Extras 配置
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+import com.herewhite.sdk.domain.AppliancePluginOptions;
+
+Map<String, Object> box = new HashMap<>();
+box.put("borderWidth", 2);
+box.put("borderStyle", "dashed");
+box.put("borderColor", "#1677ff");
+Map<String, Object> selectorStyles = new HashMap<>();
+selectorStyles.put("highlightBox", box);
+
+Map<String, Object> dotted = new HashMap<>();
+dotted.put("lineCap", "round");
+dotted.put("segment", 1);
+dotted.put("gap", 2);
+Map<String, Object> extras = new HashMap<>();
+extras.put("overwriteSelectorStyles", selectorStyles);
+extras.put("dottedStroke", dotted);
+
+AppliancePluginOptions pluginOptions = new AppliancePluginOptions();
+pluginOptions.setExtras(extras);
+params.setAppliancePluginOptions(pluginOptions);
+```
+
+`Map<String, Object>` 按相同字段名序列化到 `appliancePluginOptions.extras`，以上配置在入房前设置。短虚线配置在教具状态选择 `StrokeType.Dotted` 时使用。
+
+插件画笔样式配置包括 `normalStroke`、`dottedStroke` 和 `longDottedStroke`。`lineCap` 为 `round` 或 `square`；虚线的 `segment/gap` 决定段长和间隔，间隔按笔宽换算。1.1.44 默认短虚线、长虚线均配置 `segment=1/gap=2`，端点为 `round`；业务可按需要分别覆盖。
+
+## Pencil 与 Shape
+
+```java
+import com.herewhite.sdk.domain.Appliance;
+import com.herewhite.sdk.domain.MemberState;
+import com.herewhite.sdk.domain.StrokeType;
+
+MemberState dottedPencil = new MemberState();
+dottedPencil.setCurrentApplianceName(Appliance.PENCIL);
+dottedPencil.setStrokeType(StrokeType.Dotted);
+dottedPencil.setStrokeColor(new int[]{32, 102, 255});
+dottedPencil.setStrokeWidth(4);
+dottedPencil.setStrokeOpacity(0.6);
+room.setMemberState(dottedPencil);
+```
+
+`StrokeType.Normal/Stroke/Dotted/LongDotted` 对应实线、笔锋、短虚线和长虚线；`strokeOpacity` 为线条透明度。后续需要实线时显式恢复 `StrokeType.Normal`。
+
+```java
+import com.herewhite.sdk.domain.MemberState;
+import com.herewhite.sdk.domain.ShapeType;
+
+MemberState triangle = new MemberState();
+triangle.setShapeType(ShapeType.Triangle);
+triangle.setStrokeColor(new int[]{32, 102, 255});
+triangle.setStrokeWidth(3);
+triangle.setFillColor(new int[]{255, 220, 100});
+triangle.setFillOpacity(0.4);
+room.setMemberState(triangle);
+```
+
+本版 `ShapeType` 提供 `Triangle/Rhombus/Pentagram/SpeechBalloon`。填充色和透明度通过 `setFillColor/setFillOpacity` 设置。
+
+## Native 教具状态字段
+
+| 字段 | Android 配置方法 |
+| --- | --- |
+| 当前教具 | `MemberState.setCurrentApplianceName(...)` |
+| 线条颜色、粗细 | `setStrokeColor(...)`、`setStrokeWidth(...)` |
+| 线型、线条透明度 | `setStrokeType(...)`、`setStrokeOpacity(...)` |
+| 图形类型 | `setShapeType(...)` |
+| 填充颜色、透明度 | `setFillColor(...)`、`setFillOpacity(...)` |
+| 文字颜色、字号 | `setTextColor(...)`、`setTextSize(...)` |
+| 橡皮尺寸 | `setPencilEraserSize(...)`，本端字段范围为 1～3 |
+
+将状态传给 `room.setMemberState(...)`。未设置的可选字段不会作为新值提交，业务切换工具时显式恢复需要重置的样式。
+
+内嵌插件还读取 `autoShape` 等扩展字段。对于本版 `MemberState` 未内置的字段，可在业务中定义命名的子类，通过同一个 Native `room.setMemberState(...)` 提交；类定义、开启和关闭示例见 [Auto Shape](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/extended-features)。扩展字段需使用插件实际接受的名称和类型，并保留其 JSON 序列化字段。
+
+## 自定义 Native 工具栏
+
+应用可使用 Android View 或 Compose 编写教具切换和样式设置面板，调用以上 Native 方法；复制、删除、撤销和重做分别使用 `room.copy()`、`room.delete()`、`room.undo()` 和 `room.redo()`。
+
+自定义工具栏通过 MemberState 控制当前用户的教具与样式；内置 Selector 和属性栏负责选中元素的交互。
+
+完整签名见[客户端 API](/zh-CN/api-reference/whiteboard/fastboard/android)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+适用于 **Fastboard iOS 1.4.6**。本页通过 Fastboard 公开的原生 SDK 对象配置教具插件。
+
+在创建 FastRoom 前设置配置，入房成功后使用 `fastRoom.room` 和 `fastRoom.whiteSDK`。delegate 通过 `fastRoom.commonDelegate`、`roomDelegate` 设置，避免覆盖 Fastboard 内部代理。
+
+```swift
+let config = FastRoomConfiguration(appIdentifier: appIdentifier,
+    roomUUID: uuid, roomToken: roomToken, region: .CN, userUID: uid)
+config.whiteSdkConfiguration.useMultiViews = true
+config.whiteSdkConfiguration.enableAppliancePlugin = true
+let pluginOptions = WhiteAppliancePluginOptions()
+pluginOptions.extras = ["useBackgroundThread": true]
+config.whiteRoomConfig.appliancePluginOptions = pluginOptions
+let fastRoom = Fastboard.createFastRoom(withFastRoomConfig: config)
+```
+
+以下 Objective-C 示例也可用于原生调用：`config` 表示 `FastRoomConfiguration.whiteSdkConfiguration`，`roomConfig` 表示 `whiteRoomConfig`，`room`、`whiteSDK` 分别来自已入房 FastRoom 的同名属性。
+
+先按[插件介绍](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)启用插件，在入房成功后提交当前用户的教具状态。
+
+```objc
+WhiteMemberState *state = [WhiteMemberState new];
+state.currentApplianceName = AppliancePencil;
+state.strokeColor = @[@32, @102, @255];
+state.strokeWidth = @4;
+state.strokeOpacity = @0.8;
+[room setMemberState:state];
+```
+
+| 字段 | 用途 |
+| --- | --- |
+| currentApplianceName | Selector/Pencil/Shape/Text 等教具切换 |
+| strokeColor / strokeWidth / strokeOpacity | RGB 颜色、粗细、线条透明度 |
+| shapeType / fillColor / fillOpacity | 图形类型、填充颜色和透明度 |
+| textColor / textSize | 文字颜色和字号 |
+| pencilEraserSize | 局部橡皮尺寸 |
+
+`WhiteRoomConfig.appliancePluginOptions.extras` 支持插件已开放的可序列化配置，例如 `dottedStroke`、`longDottedStroke`、`normalStroke`、`textEditor`、`strokeWidth`、`pencilEraser`、`overwriteSelectorStyles`。在入房前设置：
+
+```objc
+WhiteAppliancePluginOptions *options = [WhiteAppliancePluginOptions new];
+options.extras = @{
+  @"useBackgroundThread": @YES,
+  @"normalStroke": @{ @"lineCap": @"round" },
+  @"dottedStroke": @{ @"lineCap": @"round", @"segment": @1, @"gap": @2 },
+  @"overwriteSelectorStyles": @{
+    @"highlightBox": @{ @"borderColor": @"#2066ff" },
+    @"highlightBoxPoint": @{ @"backgroundColor": @"#ffffff" }
+  }
+};
+roomConfig.appliancePluginOptions = options;
+```
+
+以上 Selector 样式作用于内嵌白板界面的选中框。应用可用 UIKit/SwiftUI 控制本端工具栏，并通过 `setMemberState:` 设置教具与样式；撤销、重做、复制、删除使用本端 WhiteRoom 的公开方法。
+
+Auto Shape 可通过业务扩展模型传递，见[Auto Shape](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/extended-features)。完整签名见[客户端 API](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/docs/headers/agora-interactive-whiteboard-objective-c-overview)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+适用于 **Appliance Plugin 1.1.45**。先完成[启用插件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/overview)，下文 `plugin` 为 `AppliancePluginInstance`。
+
+## 当前用户的教具状态
+
+使用插件导出的扩展 `MemberState`，通过 `plugin.setMemberState` 提交。此状态控制当前用户，和 SDK 基础 `MemberState` 的字段集合不同。
+
+```typescript
+import { ApplianceNames, EStrokeType, ShapeType, type MemberState } from '@netless/appliance-plugin';
+
+const pencil: Partial<MemberState> = {
+  currentApplianceName: ApplianceNames.pencil,
+  strokeColor: [32, 102, 255], strokeWidth: 4,
+  strokeType: EStrokeType.Dotted, strokeOpacity: 0.8
+};
+plugin.setMemberState(pencil);
+plugin.setMemberState({
+  currentApplianceName: ApplianceNames.shape, shapeType: ShapeType.Polygon,
+  vertices: 6, fillColor: [240, 245, 255], fillOpacity: 0.4
+});
+```
+
+`strokeColor`、`fillColor` 为 RGB 数组；透明度为 0～1。切换工具时按业务需要显式恢复线型、填充和 `autoShape` 等状态。
+
+## ExtrasOptions 配置
+
+在初始化时传入 `options.extras`；Fastboard 对应 `enableAppliancePlugin.extras`。回调函数放在 adaptor，不放在 extras。
+
+```typescript
+import type { ExtrasOptions } from '@netless/appliance-plugin';
+
+const extras: ExtrasOptions = {
+  useWorker: 'auto',
+  useSimple: true,
+  useBackgroundThread: true,
+  dottedStroke: { lineCap: 'round', segment: 1, gap: 2 },
+  longDottedStroke: { lineCap: 'round', segment: 4, gap: 3 },
+  normalStroke: { lineCap: 'round' },
+  undoRedo: { maxStackLength: 20 },
+  overwriteSelectorStyles: {
+    highlightBox: { borderColor: '#2066ff' },
+    highlightBoxPoint: { backgroundColor: '#ffffff' },
+    highlightBoxPoints: { LT: { borderColor: '#2066ff' } }
+  }
+};
+```
+
+| 配置 | 用途 |
+| --- | --- |
+| useWorker / allowImageBitmapFallback / useSimple | Worker 选择和绘制模式；默认 auto、true、true |
+| useBackgroundThread | 背景图能力，默认 false |
+| pencilEraser / strokeWidth / bezier | 橡皮、笔宽和曲线处理 |
+| textEditor | 文字编辑器样式和交互 |
+| normalStroke / dottedStroke / longDottedStroke | 线型端点、长度和间隔 |
+| overwriteSelectorStyles | 框选边框、控制点和锁定图标样式 |
+| backgroundImageLoadOptions | 背景图超时与重试策略 |
+| cursor | 插件光标配置 |
+| undoRedo | 撤销重做配置；跨用户全局撤销默认关闭 |
+
+## 自定义 Selector 与属性面板
+
+通过 `getSelectedElements(viewId)` 获取快照；有效 View 未选中元素时仍返回快照，`selectedIds` 和 `selectedElements` 为空数组；没有可用 View 时可能返回 `undefined`。使用 `getFloatbarContainer(viewId)` 获得面板容器，外部容器定位可用 `getViewOffsetToContainer(container, viewId)`。
+
+更新已选中元素使用 `updateSelectedElements(viewId, changes)`，复制和删除使用 `copySelectedElements(viewId)`、`deleteSelectedElements(viewId)`，清空选择使用 `blurSelector(viewId)`。这些操作返回 Promise，业务拒绝通常通过结果的 `ok=false` 和 `reason` 表示；应检查 `ok`，不要只依赖 `catch`。`blurSelector` 在拖动/缩放/旋转中可能返回失败结果。
+
+`viewRect` 使用当前 View 的 DOM 视图坐标，不能直接当作世界坐标。修改属性前用 `isElementPropertySupported(toolsType, field)` 判断元素是否支持该属性。结果表示模型操作完成，不能泛化为资源或首帧就绪。
+
+Selector 的四类事件为 `selectedElementsChange`、`selectorGeometryChange`、`selectorTransformChange`、`remoteSelectorChange`，分别表示选中集合、最终几何、交互过程、远端同步结果。监听及清理示例见[事件监听与元素查询](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/events-and-query#selector-事件)。
+
+</PlatformStructured>

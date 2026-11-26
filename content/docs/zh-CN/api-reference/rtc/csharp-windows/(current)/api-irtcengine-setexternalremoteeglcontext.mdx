@@ -1,0 +1,48 @@
+---
+title: "SetExternalRemoteEglContext"
+description: "设置远端视频流渲染的 EGL 环境上下文。"
+---
+<a id="api_irtcengine_setexternalremoteeglcontext__prototype"></a>
+
+```csharp
+public abstract int SetExternalRemoteEglContext(IntPtr eglContext);
+```
+
+<a id="api_irtcengine_setexternalremoteeglcontext__detailed_desc"></a>
+
+通过设置该方法，开发者可以替换 SDK 内部默认的远端 EGL 环境上下文，便于实现统一的 EGL 上下文管理。
+
+引擎销毁时，SDK 会自动释放 EGL 环境上下文。
+
+<a id="api_irtcengine_setexternalremoteeglcontext__scenario"></a>
+
+## 适用场景
+
+该方法适用于使用 Texture 格式的视频数据进行远端视频自渲染的场景。
+
+<a id="api_irtcengine_setexternalremoteeglcontext__timing"></a>
+
+## 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengine_setexternalremoteeglcontext__restriction"></a>
+
+## 调用限制
+
+无。
+
+<a id="api_irtcengine_setexternalremoteeglcontext__parameters"></a>
+
+## 参数
+
+### `eglContext`
+
+用于远端视频流渲染的 EGL 环境上下文对象。
+
+<a id="api_irtcengine_setexternalremoteeglcontext__return_values"></a>
+
+## 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。

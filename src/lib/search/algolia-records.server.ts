@@ -3,7 +3,7 @@ import path from 'node:path';
 import { structure } from 'fumadocs-core/mdx-plugins';
 import { replaceSource } from 'fumadocs-core/mdx-plugins/stringifier';
 import type { DocumentRecord } from 'fumadocs-core/search/algolia';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import type { Root } from 'mdast';
 import remarkDirective from 'remark-directive';
 import remarkMdx from 'remark-mdx';
@@ -12,7 +12,11 @@ import type { VFile } from 'vfile';
 import { buildDocPath } from '../docs-routing';
 import { getSearchEntryMetadata } from '../docs-search';
 import type { AppLocale } from '../i18n/i18n-config';
-import { remarkAccordionHeadings } from '../mdx/accordion-toc';
+import {
+  remarkAccordionHeadings,
+  remarkGlobalAccordionHeadings,
+} from '../mdx/accordion-toc';
+import { remarkLiteralDirectives } from '../mdx/remark-literal-directives';
 import {
   getOpenApiEndpointUrl,
   getOpenApiLaneLocales,
@@ -23,6 +27,7 @@ import { buildOpenApiSchemaTree } from '../openapi/schema-tree';
 import { getOpenApiOperations } from '../openapi/source.server';
 import { getPublishedDocsLocales } from '../site-region';
 import { getAlgoliaSearchNavigation } from './algolia-search-source.server';
+import { getComponentSearchText } from './component-search-text';
 import { faqItems } from './faq-data';
 
 // Search-ranking category. Glossary pages cross-reference every term so they
@@ -87,7 +92,7 @@ const STRUCTURE_CONTENT_TYPES = [
 export async function getAlgoliaDocsRecords(): Promise<AlgoliaDocsRecord[]> {
   const [pages, navigationByLocale] = await Promise.all([
     getContentDocsPages(),
-    getAlgoliaSearchNavigation(),
+    getAlgoliaSearchNavigation(INDEXED_LOCALES),
   ]);
   const [docsRecords, openApiRecords] = await Promise.all([
     buildAlgoliaContentDocsRecords(pages, navigationByLocale),
@@ -100,7 +105,7 @@ export async function getAlgoliaDocsRecords(): Promise<AlgoliaDocsRecord[]> {
 export async function getAlgoliaContentDocsRecords() {
   const [pages, navigationByLocale] = await Promise.all([
     getContentDocsPages(),
-    getAlgoliaSearchNavigation(),
+    getAlgoliaSearchNavigation(INDEXED_LOCALES),
   ]);
 
   return buildAlgoliaContentDocsRecords(pages, navigationByLocale);
@@ -126,7 +131,10 @@ export function buildAlgoliaContentDocsRecords(
     }
 
     const title = page.title ?? route.slugSegments.at(-1) ?? page.url;
-    const { contents, headings } = extractDocSearchContent(page.content);
+    const { contents, headings } = extractDocSearchContent(
+      page.content,
+      route.locale,
+    );
     const metadata = getSearchEntryMetadata(page.url, page.content);
 
     if (contents.length === 0 && page.description) {
@@ -240,15 +248,23 @@ export function buildAlgoliaOpenApiRecord({
  * snippets read as prose instead of Markdown/table markup. `code` is kept in
  * the scanned node types so identifiers inside fenced blocks stay searchable.
  */
-export function extractDocSearchContent(markdown: string) {
+export function extractDocSearchContent(
+  markdown: string,
+  locale: AppLocale = 'en',
+) {
   const plugins = markdown.includes('<Accordion')
     ? [
         remarkMdx,
         remarkDirective,
-        remarkAccordionHeadings,
+        remarkLiteralDirectives,
+        locale === 'en'
+          ? remarkGlobalAccordionHeadings
+          : remarkAccordionHeadings,
         remarkSearchTableCells,
       ]
-    : [remarkDirective, remarkSearchTableCells];
+    : [remarkDirective, remarkLiteralDirectives, remarkSearchTableCells];
+  if (locale === 'en' && markdown.includes('<Card'))
+    plugins.push(remarkSearchCards);
   const extracted = structure(markdown, plugins, {
     types: STRUCTURE_CONTENT_TYPES,
   });
@@ -302,6 +318,7 @@ export function toPlainText(markdown: string) {
     .replace(/\*\*([^*]+)\*\*/g, '$1') // bold
     .replace(/\*([^*\n]+)\*/g, '$1') // italic
     .replace(/~~([^~]+)~~/g, '$1') // strikethrough
+    .replace(/\\([:@])/g, '$1') // Markdown serializer escapes in literal colon/email text
     .replace(/[ \t]+/g, ' ')
     .replace(/\n{2,}/g, '\n')
     .trim();
@@ -525,6 +542,33 @@ function flattenSchemaNode(node: {
   ].filter(
     (value): value is string => typeof value === 'string' && Boolean(value),
   );
+}
+
+// Card labels are visible prose in both raw HTML blocks and parsed MDX.
+function remarkSearchCards() {
+  return (tree: Root, file: VFile) => {
+    visit(tree, (node) => {
+      const isHtml = node.type === 'html';
+      const isCard =
+        node.type === 'mdxJsxFlowElement' &&
+        node.name === 'Card' &&
+        !node.children.length;
+      if (!isHtml && !isCard) return;
+      const source = isHtml
+        ? node.value
+        : String(file.value).slice(
+            node.position?.start.offset,
+            node.position?.end.offset,
+          );
+      if (!/<Card[\s/>]/u.test(source)) return;
+      const labels = getComponentSearchText(source);
+      if (!labels.length) return;
+      node.data ??= {};
+      node.data.structuredData = {
+        contents: [{ content: labels.join(' '), heading: undefined }],
+      };
+    });
+  };
 }
 
 // Source-backed GFM table cells can include their surrounding pipe delimiters.

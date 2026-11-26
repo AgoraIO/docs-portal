@@ -43,7 +43,9 @@ describe('docs-static-manifest', () => {
         slugSegments: ['flexible-classroom', 'quickstart'],
         tab: 'solutions',
       }),
-    ).toBe('/__static/docs/en/realtime-media/flexible-classroom/quickstart.json');
+    ).toBe(
+      '/__static/docs/en/realtime-media/flexible-classroom/quickstart.json',
+    );
   });
 
   it('keeps non-English and unknown legacy solutions payload paths unchanged', () => {
@@ -170,6 +172,206 @@ describe('docs-static-manifest', () => {
       2,
       '/__static/docs/en/introduction/about-agora.json',
     );
+  });
+
+  it('adds a selected zh-CN platform badge when falling back to a canonical payload', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce({
+          ok: false,
+          status: 404,
+          statusText: 'Not Found',
+        })
+        .mockResolvedValueOnce({
+          json: async () => ({
+            body: {
+              kind: 'mdx',
+              platformTabs: {
+                canonicalPlatform: 'web',
+                defaultPlatform: 'android',
+                platforms: '["android","windows"]',
+              },
+            },
+            markdownUrl:
+              '/zh-CN/realtime-media/rtc/build/initialize-and-channel/channel-connection/android.md',
+          }),
+          ok: true,
+          status: 200,
+          statusText: 'OK',
+        }),
+    );
+
+    await expect(
+      resolvePlatformStaticDocsPayload({
+        locale: 'zh-CN',
+        slugSegments: ['channel-connection', 'windows'],
+        tab: 'realtime-media',
+      }),
+    ).resolves.toMatchObject({
+      body: {
+        platformTabs: {
+          initialPlatform: 'windows',
+        },
+      },
+      titlePlatforms: ['windows'],
+    });
+  });
+
+  it('canonicalizes aliases before resolving static platform fallbacks', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce({
+          ok: false,
+          status: 404,
+          statusText: 'Not Found',
+        })
+        .mockResolvedValueOnce({
+          json: async () => ({
+            body: {
+              kind: 'mdx',
+              platformTabs: {
+                canonicalPlatform: 'javascript',
+                defaultPlatform: 'javascript',
+                platforms: '["javascript","web"]',
+              },
+            },
+            markdownUrl: '/zh-CN/introduction/about-agora/javascript.md',
+          }),
+          ok: true,
+          status: 200,
+          statusText: 'OK',
+        }),
+    );
+
+    await expect(
+      resolvePlatformStaticDocsPayload({
+        locale: 'zh-CN',
+        slugSegments: ['about-agora', 'react-js'],
+        tab: 'introduction',
+      }),
+    ).resolves.toMatchObject({
+      body: {
+        platformTabs: {
+          canonicalPlatform: 'javascript',
+          defaultPlatform: 'javascript',
+          initialPlatform: 'javascript',
+          platforms: '["javascript","web"]',
+        },
+      },
+      markdownUrl: '/zh-CN/introduction/about-agora/javascript.md',
+      titlePlatforms: ['javascript'],
+    });
+  });
+
+  it('canonicalizes aliases in static platform metadata and preserves the TOC', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce({
+          ok: false,
+          status: 404,
+          statusText: 'Not Found',
+        })
+        .mockResolvedValueOnce({
+          json: async () => ({
+            body: {
+              kind: 'mdx',
+              platformTabs: {
+                canonicalPlatform: 'react-js',
+                defaultPlatform: 'react-js',
+                platforms: '["react-js","web"]',
+              },
+            },
+            markdownUrl: '/zh-CN/introduction/about-agora/react-js.md',
+            toc: [{ depth: 2, title: 'React setup', url: '#react-setup' }],
+          }),
+          ok: true,
+          status: 200,
+          statusText: 'OK',
+        }),
+    );
+
+    await expect(
+      resolvePlatformStaticDocsPayload({
+        locale: 'zh-CN',
+        slugSegments: ['about-agora', 'react-js'],
+        tab: 'introduction',
+      }),
+    ).resolves.toMatchObject({
+      body: {
+        platformTabs: {
+          initialPlatform: 'javascript',
+        },
+      },
+      markdownUrl: '/zh-CN/introduction/about-agora/javascript.md',
+      titlePlatforms: ['javascript'],
+      toc: [{ title: 'React setup' }],
+    });
+  });
+
+  it('adds the default zh-CN platform badge to an existing canonical payload', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        json: async () => ({
+          body: {
+            kind: 'mdx',
+            platformTabs: {
+              canonicalPlatform: 'web',
+              defaultPlatform: 'android',
+              platforms: '["android","windows"]',
+            },
+          },
+          markdownUrl:
+            '/zh-CN/realtime-media/rtc/build/initialize-and-channel/channel-connection/android.md',
+        }),
+        ok: true,
+        status: 200,
+        statusText: 'OK',
+      }),
+    );
+
+    await expect(
+      resolvePlatformStaticDocsPayload({
+        locale: 'zh-CN',
+        slugSegments: ['channel-connection'],
+        tab: 'realtime-media',
+      }),
+    ).resolves.toMatchObject({
+      titlePlatforms: ['android'],
+    });
+  });
+
+  it('infers a zh-CN API platform badge from the static route path', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        json: async () => ({
+          body: {
+            kind: 'openapi',
+          },
+          markdownUrl: '/zh-CN/api-reference/rtc/android/overview.md',
+        }),
+        ok: true,
+        status: 200,
+        statusText: 'OK',
+      }),
+    );
+
+    await expect(
+      resolvePlatformStaticDocsPayload({
+        locale: 'zh-CN',
+        slugSegments: ['rtc', 'android', 'overview'],
+        tab: 'api-reference',
+      }),
+    ).resolves.toMatchObject({
+      titlePlatforms: ['android'],
+    });
   });
 
   it('replaces default-platform static fields and clears stale TOC for platform fallbacks', async () => {

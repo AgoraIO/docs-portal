@@ -3,14 +3,14 @@ import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
 import { createStringifier } from 'fumadocs-core/mdx-plugins/stringifier';
 import GithubSlugger from 'github-slugger';
 import type { Code, Nodes, PhrasingContent, Root, RootContent } from 'mdast';
-import { gfmToMarkdown } from 'mdast-util-gfm';
-import type { MdxJsxFlowElement, MdxJsxTextElement } from 'mdast-util-mdx-jsx';
 import {
   defaultHandlers,
   type Handle,
   type Options,
   toMarkdown,
-} from 'mdast-util-to-markdown';
+} from 'mdast-to-markdown-global-docs';
+import { gfmToMarkdown } from 'mdast-util-gfm';
+import type { MdxJsxFlowElement, MdxJsxTextElement } from 'mdast-util-mdx-jsx';
 import remarkDirective from 'remark-directive';
 import remarkMdx from 'remark-mdx';
 import remarkParse from 'remark-parse';
@@ -595,7 +595,9 @@ function renderCode(node: Code) {
 
 function createMarkdownWriter() {
   const replacements = new Map<Nodes, string | Nodes | (() => string)>();
-  const gfm = gfmToMarkdown();
+  // The GFM extension uses the common 2.x handler API. Its declaration references
+  // the current package name, while the English writer preserves the older output.
+  const gfm = gfmToMarkdown() as unknown as Options;
   const handlers: NonNullable<Options['handlers']> = { ...defaultHandlers };
   function addHandlers(extension: Options) {
     for (const child of extension.extensions ?? []) addHandlers(child);

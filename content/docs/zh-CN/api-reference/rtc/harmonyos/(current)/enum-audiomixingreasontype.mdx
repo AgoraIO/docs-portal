@@ -1,0 +1,60 @@
+---
+title: AudioMixingReason
+description: 音乐文件播放状态改变的原因。在 onAudioMixingStateChanged 回调中报告。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/enum_audiomixingreasontype
+  sourcePath: html-docs/rtc/HarmonyOS/API/enum_audiomixingreasontype.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_audiomixingreasontype__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="ok"></a>
+<Parameter name="OK">
+
+0: 成功打开音乐文件。
+
+</Parameter>
+<a id="can_not_open"></a>
+<Parameter name="CAN_NOT_OPEN">
+
+701: 音乐文件打开出错。例如，本地音乐文件不存在、文件格式不支持或无法访问在线音乐文件 URL。
+
+</Parameter>
+<a id="too_frequent_call"></a>
+<Parameter name="TOO_FREQUENT_CALL">
+
+702: 音乐文件打开太频繁。如需多次调用 startAudioMixing，请确保调用间隔大于 500 ms。
+
+</Parameter>
+<a id="interrupted_eof"></a>
+<Parameter name="INTERRUPTED_EOF">
+
+703: 音乐文件播放中断。
+
+</Parameter>
+<a id="one_loop_completed"></a>
+<Parameter name="ONE_LOOP_COMPLETED">
+
+721: 音乐文件完成一次循环播放。
+
+</Parameter>
+<a id="all_loops_completed"></a>
+<Parameter name="ALL_LOOPS_COMPLETED">
+
+723: 音乐文件完成所有循环播放。
+
+</Parameter>
+<a id="stopped_by_user"></a>
+<Parameter name="STOPPED_BY_USER">
+
+724: 成功调用 [stopAudioMixing](/zh-CN/api-reference/rtc/harmonyos/play/audio-mixing#api_irtcengine_stopaudiomixing) 停止播放音乐文件。
+
+</Parameter>
+</ParameterList>

@@ -1,0 +1,562 @@
+{
+  "audit_scope": "source-pr-delta",
+  "source_pr": 2067,
+  "source_commit": "c8472ac50360d3ed02993fd87ae112ca45c00e2d",
+  "source_endpoint": "5d03551cf64cd057ccfe8d5b256d9c4778e8fbb1",
+  "target_base": "7c6c60ead44406e69906c5c3808cd489784aa89e",
+  "read_only_source_policy": "git show/diff fixed objects only; no source workspace or env reads",
+  "independent_audit": "pending",
+  "migration_state": {
+    "migration_progress": "completed",
+    "audit_progress": "ready",
+    "audit_result": "pending"
+  },
+  "source_count": 23,
+  "canonical_content_source_count": 15,
+  "production_file_count": 19,
+  "production_files": [
+    "content/docs/zh-CN/api-reference/rtm/toc-channel/channel.mdx",
+    "content/docs/zh-CN/api-reference/rtm/toc-configuration/configuration.mdx",
+    "content/docs/zh-CN/api-reference/rtm/web/channel.mdx",
+    "content/docs/zh-CN/api-reference/rtm/web/configuration.mdx",
+    "content/docs/zh-CN/api-reference/rtm/web/enumv.mdx",
+    "content/docs/zh-CN/api-reference/rtm/web/meta.json",
+    "content/docs/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication.mdx",
+    "content/docs/zh-CN/realtime-media/rtm/build/channels-and-topics/message-channel.mdx",
+    "content/docs/zh-CN/realtime-media/rtm/build/messaging/add-event-listener.mdx",
+    "content/docs/zh-CN/realtime-media/rtm/build/network-and-private-deployment/network-configuration.mdx",
+    "content/docs/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup.mdx",
+    "content/docs/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-basic.mdx",
+    "content/docs/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-events.mdx",
+    "content/docs/zh-CN/realtime-media/rtm/build/state-and-attributes/temporary-user-state.mdx",
+    "content/docs/zh-CN/realtime-media/rtm/build/troubleshooting.mdx",
+    "content/docs/zh-CN/realtime-media/rtm/get-started/quick-start.mdx",
+    "content/docs/zh-CN/realtime-media/rtm/reference/sunset-policy.mdx",
+    "content/docs/zh-CN/reference/faq/integration/rtm2_integration_issue.mdx",
+    "src/components/docs-overview/sdk-downloads-data.zh-cn.ts"
+  ],
+  "sources": [
+    {
+      "source_path": "docs-api-reference/rtm2/_en/_javascript/_channel-en.javascript.mdx",
+      "disposition": "english-outside-cn-scope",
+      "targets": [],
+      "result": "out_of_scope",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -28,0 +29,4 @@ By calling the <code>{channel.subscribe[frontMatter.ag_platform]}</code> method,",
+          "kind": "semantic",
+          "result": "out_of_cn_scope"
+        },
+        {
+          "source_hunk": "@@ -95,0 +100,2 @@ If you no longer need to subscribe to a channel, you can call the <code>{channel",
+          "kind": "semantic",
+          "result": "out_of_cn_scope"
+        },
+        {
+          "source_hunk": "@@ -288 +294 @@ If the method call fails, the <code>{config.errorinfo[frontMatter.ag_platform]}<",
+          "kind": "formatting-only",
+          "result": "out_of_cn_scope"
+        }
+      ]
+    },
+    {
+      "source_path": "docs-api-reference/rtm2/_en/_javascript/_configuration-en.javascript.mdx",
+      "disposition": "english-outside-cn-scope",
+      "targets": [],
+      "result": "out_of_scope",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -88 +88 @@ const { RTMConfig } = AgoraRTM;",
+          "kind": "semantic",
+          "result": "out_of_cn_scope"
+        },
+        {
+          "source_hunk": "@@ -135 +135 @@ const rtm = new RTM(\"yourAppId\", \"Tony\", rtmConfig);",
+          "kind": "semantic",
+          "result": "out_of_cn_scope"
+        },
+        {
+          "source_hunk": "@@ -144 +143,0 @@ Signaling has a total of 8 types of event notifications, as shown in the followi",
+          "kind": "semantic",
+          "result": "out_of_cn_scope"
+        },
+        {
+          "source_hunk": "@@ -172,0 +172 @@ rtm.addEventListener(\"presence\", event => {",
+          "kind": "semantic",
+          "result": "out_of_cn_scope"
+        },
+        {
+          "source_hunk": "@@ -207,6 +206,0 @@ rtm.addEventListener(\"lock\", event => {",
+          "kind": "semantic",
+          "result": "out_of_cn_scope"
+        },
+        {
+          "source_hunk": "@@ -223,0 +218 @@ rtm.addEventListener('linkState', event => {",
+          "kind": "semantic",
+          "result": "out_of_cn_scope"
+        },
+        {
+          "source_hunk": "@@ -229,0 +225,12 @@ rtm.addEventListener(\"tokenPrivilegeWillExpire\", (channelName) => {",
+          "kind": "semantic",
+          "result": "out_of_cn_scope"
+        },
+        {
+          "source_hunk": "@@ -235 +242 @@ You can call the <code>{config. removedelegate[frontMatter.ag_platform]}</code>",
+          "kind": "semantic",
+          "result": "out_of_cn_scope"
+        }
+      ]
+    },
+    {
+      "source_path": "docs-api-reference/rtm2/_en/_javascript/_enumv-en.mdx",
+      "disposition": "english-outside-cn-scope",
+      "targets": [],
+      "result": "out_of_scope",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -70,31 +69,0 @@ import * as enumv from '@shared/rtm2/_enumv.mdx'",
+          "kind": "semantic",
+          "result": "out_of_cn_scope"
+        },
+        {
+          "source_hunk": "@@ -184 +153 @@ To fully utilize all services offered by Signaling, you can employ bitwise opera",
+          "kind": "formatting-only",
+          "result": "out_of_cn_scope"
+        }
+      ]
+    },
+    {
+      "source_path": "docs-api-reference/rtm2/_platforms_.meta.js",
+      "disposition": "metadata-no-redirect",
+      "targets": [
+        "content/docs/zh-CN/api-reference/rtm/web/meta.json"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -12 +12 @@ module.exports = [",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -14,0 +15,4 @@ module.exports = [",
+          "kind": "semantic",
+          "result": "patched"
+        }
+      ]
+    },
+    {
+      "source_path": "docs-api-reference/rtm2/enumv.javascript.mdx",
+      "disposition": "mapped-page",
+      "targets": [
+        "content/docs/zh-CN/api-reference/rtm/web/enumv.mdx"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -5 +4,0 @@ title: 属性",
+          "kind": "source-import-normalization",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -167,25 +165,0 @@ import * as enumv from '@shared/rtm2/_enumv.mdx'",
+          "kind": "semantic",
+          "result": "patched"
+        }
+      ]
+    },
+    {
+      "source_path": "docs-api-reference/rtm2/toc-channel/channel.javascript.mdx",
+      "disposition": "mapped-page",
+      "targets": [
+        "content/docs/zh-CN/api-reference/rtm/web/channel.mdx",
+        "content/docs/zh-CN/api-reference/rtm/toc-channel/channel.mdx"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -32,0 +33,4 @@ RTM 提供消息、状态、事件变更等事件通知能力。通过设置事",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -155,0 +160,2 @@ type SubscribeResponse = {",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -419 +424,0 @@ type LeaveChannelResponse = {",
+          "kind": "formatting-only",
+          "result": "target_native_normalization"
+        }
+      ]
+    },
+    {
+      "source_path": "docs-api-reference/rtm2/toc-configuration/configuration.javascript.mdx",
+      "disposition": "mapped-page",
+      "targets": [
+        "content/docs/zh-CN/api-reference/rtm/web/configuration.mdx",
+        "content/docs/zh-CN/api-reference/rtm/toc-configuration/configuration.mdx"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -155 +155 @@ export const TableHeaderzexaajh5x9 = [",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -301 +301 @@ const rtm = new RTM(\"yourAppId\", \"Tony\", rtmConfig);",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -310 +309,0 @@ RTM 总共有 8 种事件通知类型，如下表所示：",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -339,0 +339 @@ rtm.addEventListener(\"presence\", event => {",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -374,6 +373,0 @@ rtm.addEventListener(\"lock\", event => {",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -398,0 +393,12 @@ rtm.addEventListener(\"tokenPrivilegeWillExpire\", (channelName) => {",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -404 +410 @@ rtm.addEventListener(\"tokenPrivilegeWillExpire\", (channelName) => {",
+          "kind": "semantic",
+          "result": "patched"
+        }
+      ]
+    },
+    {
+      "source_path": "docs-faq/rtm2-integration-issue.mdx",
+      "disposition": "mapped-page",
+      "targets": [
+        "content/docs/zh-CN/reference/faq/integration/rtm2_integration_issue.mdx"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -92,94 +91,0 @@ rtm.addEventListener(\"topic\", (topicEvent) => {",
+          "kind": "semantic",
+          "result": "patched"
+        }
+      ]
+    },
+    {
+      "source_path": "docs/rtm2/_homepage_.mdx",
+      "disposition": "homepage-ignore-page-data-consumer-only",
+      "targets": [
+        "src/components/docs-overview/sdk-downloads-data.zh-cn.ts"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -79,3 +79,3 @@ hide_doc_footer: true",
+          "kind": "semantic",
+          "result": "patched"
+        }
+      ]
+    },
+    {
+      "source_path": "docs/rtm2/error-codes.javascript.mdx",
+      "disposition": "mapped-page",
+      "targets": [
+        "content/docs/zh-CN/realtime-media/rtm/build/troubleshooting.mdx"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -222,0 +223,5 @@ export const TableHeaderbcom0r3q49 = [",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -382,0 +388,5 @@ export const TableHeaderbcom0r3q49 = [",
+          "kind": "semantic",
+          "result": "patched"
+        }
+      ]
+    },
+    {
+      "source_path": "docs/rtm2/get-started/quick-start.javascript.mdx",
+      "disposition": "mapped-page",
+      "targets": [
+        "content/docs/zh-CN/realtime-media/rtm/get-started/quick-start.mdx"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -163,6 +163,10 @@ rtm.addEventListener(\"presence\", event => {",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -306,6 +310,10 @@ try {",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -379 +387 @@ try {",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -386 +394 @@ try {",
+          "kind": "formatting-only",
+          "result": "target_native_normalization"
+        }
+      ]
+    },
+    {
+      "source_path": "docs/rtm2/overview/_release-notes-en.javascript.mdx",
+      "disposition": "english-outside-cn-scope",
+      "targets": [],
+      "result": "out_of_scope",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -20,0 +21,48 @@ This page contains release information for the Signaling JavaScript SDK.",
+          "kind": "semantic",
+          "result": "out_of_cn_scope"
+        }
+      ]
+    },
+    {
+      "source_path": "docs/rtm2/overview/release-notes.javascript.mdx",
+      "disposition": "mapped-page",
+      "targets": [
+        "content/docs/zh-CN/realtime-media/rtm/reference/release-notes.mdx"
+      ],
+      "result": "already_covered",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -21,0 +22,49 @@ import * as code from '@shared/rtm2/_error-codes.mdx'",
+          "kind": "semantic",
+          "result": "already_covered"
+        }
+      ]
+    },
+    {
+      "source_path": "docs/rtm2/sunset-policy.mdx",
+      "disposition": "mapped-page",
+      "targets": [
+        "content/docs/zh-CN/realtime-media/rtm/reference/sunset-policy.mdx"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -78,0 +79 @@ RTM SDK 的版本号定义如下：",
+          "kind": "semantic",
+          "result": "patched"
+        }
+      ]
+    },
+    {
+      "source_path": "docs/rtm2/user-guide/channel/message-channel.mdx",
+      "disposition": "mapped-page",
+      "targets": [
+        "content/docs/zh-CN/realtime-media/rtm/build/channels-and-topics/message-channel.mdx"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -66,0 +67,6 @@ try {",
+          "kind": "semantic",
+          "result": "patched"
+        }
+      ]
+    },
+    {
+      "source_path": "docs/rtm2/user-guide/message/add-event-listener.mdx",
+      "disposition": "mapped-page",
+      "targets": [
+        "content/docs/zh-CN/realtime-media/rtm/build/messaging/add-event-listener.mdx"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -152,6 +151,0 @@ rtm.addEventListener(\"lock\", event => {",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -159,9 +153,9 @@ rtm.addEventListener(\"status\", event => {",
+          "kind": "semantic",
+          "result": "patched"
+        }
+      ]
+    },
+    {
+      "source_path": "docs/rtm2/user-guide/presence/event.mdx",
+      "disposition": "mapped-page",
+      "targets": [
+        "content/docs/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-events.mdx"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -80 +80 @@ Presence 事件通知有七种类型，它们分别是：",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -96 +96 @@ Presence 事件通知模式是指在频道中如何将 Presence 事件通知到",
+          "kind": "semantic",
+          "result": "patched"
+        }
+      ]
+    },
+    {
+      "source_path": "docs/rtm2/user-guide/presence/presence-basic.mdx",
+      "disposition": "mapped-page",
+      "targets": [
+        "content/docs/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-basic.mdx"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -28 +28 @@ import * as presence from '@shared/rtm2/_presence.mdx'",
+          "kind": "semantic",
+          "result": "patched"
+        }
+      ]
+    },
+    {
+      "source_path": "docs/rtm2/user-guide/presence/temporary-user-state.mdx",
+      "disposition": "mapped-page",
+      "targets": [
+        "content/docs/zh-CN/realtime-media/rtm/build/state-and-attributes/temporary-user-state.mdx"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -187,0 +188,6 @@ try {",
+          "kind": "semantic",
+          "result": "patched"
+        }
+      ]
+    },
+    {
+      "source_path": "docs/rtm2/user-guide/setup/application-setup.mdx",
+      "disposition": "mapped-page",
+      "targets": [
+        "content/docs/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup.mdx",
+        "content/docs/zh-CN/realtime-media/rtm/build/network-and-private-deployment/network-configuration.mdx"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -491,0 +492,2 @@ try {",
+          "kind": "semantic",
+          "result": "patched"
+        }
+      ]
+    },
+    {
+      "source_path": "docs/rtm2/user-guide/token/user-authentication.javascript.mdx",
+      "disposition": "mapped-page",
+      "targets": [
+        "content/docs/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication.mdx"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -125,2 +125,10 @@ RTM Token 在 App 服务器上生成，其最长有效期为 24 小时。当用",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -158,2 +166,10 @@ RTM Token 在 App 服务器上生成，其最长有效期为 24 小时。当用",
+          "kind": "semantic",
+          "result": "patched"
+        }
+      ]
+    },
+    {
+      "source_path": "shared/rtm2/_error-codes.mdx",
+      "disposition": "shared-symbol-expansion",
+      "targets": [
+        "content/docs/zh-CN/realtime-media/rtm/build/troubleshooting.mdx",
+        "content/docs/zh-CN/realtime-media/rtm/reference/release-notes.mdx"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -206,0 +207,10 @@ export const duplicateoperation = {",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -673 +683 @@ export const channelsubscribecanceled = {",
+          "kind": "semantic",
+          "result": "patched"
+        }
+      ]
+    },
+    {
+      "source_path": "shared/rtm2/_sdkdownload.mdx",
+      "disposition": "shared-javascript-expansion",
+      "targets": [
+        "content/docs/zh-CN/realtime-media/rtm/get-started/quick-start.mdx",
+        "content/docs/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup.mdx",
+        "content/docs/zh-CN/api-reference/rtm/web/configuration.mdx",
+        "content/docs/zh-CN/api-reference/rtm/toc-configuration/configuration.mdx"
+      ],
+      "result": "patched",
+      "hunk_results": [
+        {
+          "source_hunk": "@@ -8 +8 @@ import TabItem from '@theme/TabItem';",
+          "kind": "semantic",
+          "result": "patched"
+        },
+        {
+          "source_hunk": "@@ -12 +12 @@ import TabItem from '@theme/TabItem';",
+          "kind": "semantic",
+          "result": "patched"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "baseline_tests": 86,
+    "initial_red_failures": 20,
+    "final_targeted_tests": 107,
+    "types_check": "passed",
+    "mdx_full_body_real_fumadocs_compile": 17,
+    "syntax_baseline_issues": 48,
+    "syntax_current_issues": 48,
+    "new_syntax_issues": 0,
+    "scoped_links": 422,
+    "scoped_hash_candidates": 209,
+    "invalid_internal_links": 0,
+    "missing_hash_links": 0,
+    "external_links_checked_by_implementer": 0,
+    "scope_preservation_checks": 23,
+    "biome": "4 TS/test/data files passed",
+    "full_suite": "not_run_root_exclusive",
+    "build": "not_run_root_exclusive",
+    "preview": "not_run_root_exclusive",
+    "independent_spec_quality": "pending"
+  },
+  "decisions": {
+    "archive": "D006 approved by root/user; exact 0.0.492 Web2.2.4 landing externally verified by root, not by implementer",
+    "presence": "Web Announce/Interval [8,128] retained once; 2.3.0 512 detail optimization additive; mini unchanged",
+    "plan_download_url_correction": "source freezes https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.3.0.zip; do not use erroneous plan download.shengwang.cn/sdk/release host",
+    "catalog_history": "existing latest-only UI unchanged; historical data retained and fixed versionIds consumer checked"
+  },
+  "limitations": [
+    "Not a full-page migration audit; existing alias placeholders and source addEventlistener spelling are untouched.",
+    "17-page syntax baseline has 24 existing findings in each of application-setup and quick-start.",
+    "OPEN #1229 is not in target base; root must combine Web Presence into one block and narrow its old Web-not-512 assertion to mini-program.",
+    "No EN content, runtime component, OpenAPI, CSS, lockfile or generated route edits."
+  ]
+}

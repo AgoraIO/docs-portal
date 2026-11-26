@@ -1,0 +1,117 @@
+---
+title: io.agora.recording.common.Common.LiteraWatermarkConfig类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/recording/java/classio_1_1agora_1_1recording_1_1common_1_1_common_1_1_litera_watermark_config
+  sourcePath: >-
+    html-docs/recording/Java/classio_1_1agora_1_1recording_1_1common_1_1_common_1_1_litera_watermark_config.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+定义文字水印设置。
+
+## 类成员变量说明
+
+<a id="a285692e55e42b4c14c84f6e415e5600e"></a>
+
+### wmLitera
+
+<ApiSignature>
+
+String io.agora.recording.common.Common.LiteraWatermarkConfig.wmLitera = ""
+
+</ApiSignature>
+
+文字内容，字符串格式。
+
+:::info[注解]
+- 仅支持 UTF-8 编码。
+- 支持字符依赖于字体。默认字体为 NotoSansMonoCJKsc-Regular，支持的语言和字符详见[字体介绍](https://www.google.com/get/noto/help/cjk/)。你也可以设置 `font_file_path` 参数自行指定字体文件路径来更换字体。
+- 支持自动换行。当文字内容长度超过水印框宽度时，会自动换行。支持换行符。
+- 字符串长度没有限制。最终显示受字体大小和水印框大小的影响，超出水印框的部分不显示。
+- 文字颜色为黑色或白色，会根据视频画布的颜色自动调整。若视频背景较暗，则颜色为白色；若视频背景较亮，则颜色为黑色。当视频背景不均匀时，颜色为黑白相间。
+:::
+
+<a id="ab217f401bbcf3e385c00c11a67bf4994"></a>
+
+### fontFilePath
+
+<ApiSignature>
+
+String io.agora.recording.common.Common.LiteraWatermarkConfig.fontFilePath = ""
+
+</ApiSignature>
+
+指定字体文件的路径。如不指定，使用默认字体 NotoSansMonoCJKsc-Regular。
+
+:::info[注解]
+支持 ttf，otf 等字体格式。
+:::
+
+<a id="a48503e63f038b9feb3ed403a6d938e88"></a>
+
+### fontSize
+
+<ApiSignature>
+
+int io.agora.recording.common.Common.LiteraWatermarkConfig.fontSize = 10
+
+</ApiSignature>
+
+字体大小。默认值为 10，相当于 144 dpi 设备上的 10 x 15 磅。
+
+<a id="a410663b1fa509c35c0941013939bb9e3"></a>
+
+### offsetX
+
+<ApiSignature>
+
+int io.agora.recording.common.Common.LiteraWatermarkConfig.offsetX = 0
+
+</ApiSignature>
+
+水印框左上角与视频画布左上角的水平距离。单位为像素（pixel），默认值为 0。
+
+<a id="aab47ce0f9d30a4aa673d2f7cf1bfb6d2"></a>
+
+### offsetY
+
+<ApiSignature>
+
+int io.agora.recording.common.Common.LiteraWatermarkConfig.offsetY = 0
+
+</ApiSignature>
+
+水印框左上角与视频画布左上角的垂直距离。单位为像素（pixel），默认值为 0。
+
+<a id="af1cc40821f7a1a932a44f2b2a7f33b6a"></a>
+
+### wmWidth
+
+<ApiSignature>
+
+int io.agora.recording.common.Common.LiteraWatermarkConfig.wmWidth = 0
+
+</ApiSignature>
+
+水印框的宽度。单位为像素（pixel），默认值为 0。
+
+<a id="acb0b022b766f3f6c0708b5ddf0c04ab5"></a>
+
+### wmHeight
+
+<ApiSignature>
+
+int io.agora.recording.common.Common.LiteraWatermarkConfig.wmHeight = 0
+
+</ApiSignature>
+
+水印框的高度。单位为像素（pixel），默认值为 0。

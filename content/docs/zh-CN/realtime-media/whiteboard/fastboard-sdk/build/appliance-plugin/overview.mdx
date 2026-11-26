@@ -1,0 +1,186 @@
+---
+title: 教具插件介绍与启用
+---
+
+<PlatformStructured platform="android">
+
+适用于 **Fastboard Android 1.8.2**。本页通过 Fastboard 公开的原生 SDK 对象配置教具插件。
+
+在创建 FastRoom 前通过 `FastRoomOptions.getSdkConfiguration()` 与 `getRoomParams()` 设置配置。下面的 fastRoomOptions 为业务创建的房间选项。
+
+```java
+import com.herewhite.sdk.WhiteSdkConfiguration;
+import com.herewhite.sdk.RoomParams;
+
+WhiteSdkConfiguration config = fastRoomOptions.getSdkConfiguration();
+config.setUseMultiViews(true);
+config.setEnableAppliancePlugin(true);
+RoomParams params = fastRoomOptions.getRoomParams();
+```
+
+入房成功后，通过 Fastboard 的公开 getter 获取下文使用的 Native 对象：
+
+```java
+import com.herewhite.sdk.Room;
+import com.herewhite.sdk.WhiteSdk;
+
+Room room = fastRoom.getRoom();
+WhiteSdk whiteSdk = fastRoom.getWhiteSdk();
+```
+
+## 教具与操作
+
+| 教具 | 用途 |
+| --- | --- |
+| Selector | 框选、移动、缩放和旋转可编辑元素 |
+| Pencil | 自由书写，可设置颜色、粗细、线型与透明度 |
+| Eraser | 整元素擦除 |
+| Pencil Eraser | 局部笔迹擦除 |
+| Shape | 直线、箭头、矩形、椭圆、三角形、菱形、多边形与星形 |
+| Text | 文字输入、排版和样式设置 |
+| Hand | 移动视角 |
+
+同一房间各端应一致开启插件；建议先在测试房间验证已有笔迹的显示、编辑与撤销重做。操作类 API 需要可写权限，教具配置应在入房和初始化完成后使用。
+
+## 配置
+
+Fastboard 的 RoomParams 保留业务传入的插件 extras。
+
+```java
+import com.herewhite.sdk.domain.AppliancePluginOptions;
+
+AppliancePluginOptions options = new AppliancePluginOptions();
+java.util.Map<String, Object> extras = new java.util.HashMap<>();
+extras.put("useBackgroundThread", true);
+options.setExtras(extras);
+params.setAppliancePluginOptions(options);
+```
+
+## 扩展能力
+
+| 功能 | 本端接入 |
+| --- | --- |
+| 教具和样式 | [自定义教具与样式](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/custom-tools) |
+| 背景图 | [背景图加载与恢复](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/background-image-recovery) |
+| Auto Shape | [Auto Shape](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/extended-features) |
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+适用于 **Fastboard iOS 1.4.6**。本页通过 Fastboard 公开的原生 SDK 对象配置教具插件。
+
+在创建 FastRoom 前设置配置，入房成功后使用 `fastRoom.room` 和 `fastRoom.whiteSDK`。delegate 通过 `fastRoom.commonDelegate`、`roomDelegate` 设置，避免覆盖 Fastboard 内部代理。
+
+```swift
+let config = FastRoomConfiguration(appIdentifier: appIdentifier,
+    roomUUID: uuid, roomToken: roomToken, region: .CN, userUID: uid)
+config.whiteSdkConfiguration.useMultiViews = true
+config.whiteSdkConfiguration.enableAppliancePlugin = true
+let pluginOptions = WhiteAppliancePluginOptions()
+pluginOptions.extras = ["useBackgroundThread": true]
+config.whiteRoomConfig.appliancePluginOptions = pluginOptions
+let fastRoom = Fastboard.createFastRoom(withFastRoomConfig: config)
+```
+
+## 教具与操作
+
+| 教具 | 用途 |
+| --- | --- |
+| Selector | 框选、移动、缩放和旋转可编辑元素 |
+| Pencil | 自由书写，可设置颜色、粗细、线型与透明度 |
+| Eraser | 整元素擦除 |
+| Pencil Eraser | 局部笔迹擦除 |
+| Shape | 直线、箭头、矩形、椭圆、三角形、菱形、多边形与星形 |
+| Text | 文字输入、排版和样式设置 |
+| Hand | 移动视角 |
+
+同一房间各端应一致开启插件；建议先在测试房间验证已有笔迹的显示、编辑与撤销重做。操作类 API 需要可写权限，教具配置应在入房和初始化完成后使用。
+
+## 扩展能力
+
+| 功能 | 本端接入 |
+| --- | --- |
+| 教具和样式 | [自定义教具与样式](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/custom-tools) |
+| 背景图 | [背景图加载与恢复](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/background-image-recovery) |
+| Auto Shape | [Auto Shape](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/extended-features) |
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+适用于 **Appliance Plugin 1.1.45**。插件负责教具绘制、选中、文字编辑、撤销重做及多窗口 View 绑定。
+
+## 安装和 Worker 资源
+
+```shell
+npm install white-web-sdk@2.16.59 @netless/window-manager@1.0.25 @netless/appliance-plugin@1.1.45 @netless/fastboard@1.1.10
+```
+
+将同一插件版本的 `dist/fullWorker.js`、`dist/subWorker.js` 复制到站点静态资源目录 `/appliance-1.1.45/`，确保以 JavaScript MIME 返回，并按站点 CSP 允许 Worker 加载。两份 Worker 与主线程插件必须来自同一版本。
+
+```shell
+mkdir -p public/appliance-1.1.45
+cp node_modules/@netless/appliance-plugin/dist/fullWorker.js public/appliance-1.1.45/
+cp node_modules/@netless/appliance-plugin/dist/subWorker.js public/appliance-1.1.45/
+```
+
+## 启用插件
+
+```typescript
+import { createFastboard, createUI } from '@netless/fastboard';
+import '@netless/appliance-plugin/dist/style.css';
+
+const app = await createFastboard({
+  sdkConfig: { appIdentifier, region: 'cn-hz' },
+  joinRoom: { uuid, roomToken, uid },
+  enableAppliancePlugin: {
+    cdn: {
+      fullWorkerUrl: '/appliance-1.1.45/fullWorker.js',
+      subWorkerUrl: '/appliance-1.1.45/subWorker.js'
+    },
+    extras: { useBackgroundThread: true }
+  },
+  appliancePluginAdaptor: {
+    callbacks: {
+      onInitLoadingChange: info => console.log(info),
+      onBackgroundImageLoadEvent: event => console.log(event)
+    }
+  }
+});
+const ui = createUI(app, container);
+const plugin = app.appliancePlugin!;
+```
+
+`enableAppliancePlugin` 是插件配置对象；省略时不启用。Fastboard 自动注册插件并启用 `supportAppliancePlugin`；无需再调用 `ApplianceMultiPlugin.getInstance`。`appliancePluginAdaptor` 用于运行时回调和适配器，`extras` 用于配置数据。
+
+组件卸载时调用 `ui.destroy()`，随后等待 `app.destroy()` 完成。若使用 Blob Worker URL，完成销毁后再 revoke URL。
+
+## 教具与操作
+
+| 教具 | 用途 |
+| --- | --- |
+| Selector | 框选、移动、缩放和旋转可编辑元素 |
+| Pencil | 自由书写，可设置颜色、粗细、线型与透明度 |
+| Eraser | 整元素擦除 |
+| Pencil Eraser | 局部笔迹擦除 |
+| Shape | 直线、箭头、矩形、椭圆、三角形、菱形、多边形与星形 |
+| Text | 文字输入、排版和样式设置 |
+| Hand | 移动视角 |
+
+同一房间各端应一致开启插件；建议先在测试房间验证已有笔迹的显示、编辑与撤销重做。操作类 API 需要可写权限，教具配置应在入房和初始化完成后使用。
+
+## 扩展能力
+
+| 功能 | 接入入口 |
+| --- | --- |
+| 背景图 | [背景图加载与恢复](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/background-image-recovery) |
+| Selector、Pencil、Shape 与 extras | [自定义教具与样式](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/custom-tools) |
+| 小地图、Auto Shape、过滤笔记 | [扩展功能](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/extended-features) |
+| PublicListener、元素查询、Selector 事件 | [事件监听与元素查询](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/appliance-plugin/events-and-query) |
+
+## 动态配置
+
+需要远程调整教具参数时，参见[动态配置](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/dynamic-config)。本地显式 extras 优先；未提供的字段允许继承远端 appliancePlugin.extras。DOM 容器、回调函数和 Worker 资源地址仍由本地接入提供。
+
+</PlatformStructured>

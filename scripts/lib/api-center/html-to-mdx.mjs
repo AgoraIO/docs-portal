@@ -1,0 +1,2088 @@
+import * as cheerio from 'cheerio';
+import { getTableOfContents } from 'fumadocs-core/content/toc';
+import {
+  readLegacyImageSizing,
+  renderMigratedImage,
+} from '../legacy-image-sizing.mjs';
+import { layoutMergedTable, renderMergedTable } from '../merged-table.mjs';
+import { normalizeTableGrid } from '../table-grid.mjs';
+import { apiPrototypeLanguage } from './code-language.mjs';
+import { rewriteLegacyBodyLinks } from './legacy-links.mjs';
+import {
+  createWarning,
+  escapeMdxText,
+  renderCallout,
+  renderCodeFence,
+  renderSimpleTable,
+  renderStableAnchor,
+  rewriteLegacyHref,
+} from './migration-framework.mjs';
+import { typedocNotice } from './typedoc-structure.mjs';
+
+export const API_CENTER_GENERATOR_CONVERSION_OPTIONS = Object.freeze({
+  appledoc: {
+    rootSelector: 'main[role="main"]',
+    titleSelector: 'main[role="main"] > h1.title, main[role="main"] h1',
+  },
+  doxygen: {
+    rootSelector: '.contents',
+    titleSelector: '.headertitle .title',
+  },
+  oxygen: {
+    rootSelector: 'main > article',
+    titleSelector: 'main > article > h1.title, main > article > h1',
+  },
+  typedoc: {
+    rootSelector: '.col-content',
+    titleSelector: '.tsd-page-title h1',
+    blockquoteCallout: { type: 'caution', title: '注意' },
+  },
+});
+
+export const EDU_STORE_TYPEDOC_CONVERSION_PROFILE = 'edu-store-typedoc';
+
+export function apiCenterHtmlConversionProfile({
+  sourcePath = '',
+  supplementalGeneratedSource,
+} = {}) {
+  if (
+    supplementalGeneratedSource?.kind === EDU_STORE_TYPEDOC_CONVERSION_PROFILE
+  ) {
+    return EDU_STORE_TYPEDOC_CONVERSION_PROFILE;
+  }
+  return /^html-docs\/flexible-classroom\/(?:Web|Electron)\//.test(sourcePath)
+    ? EDU_STORE_TYPEDOC_CONVERSION_PROFILE
+    : undefined;
+}
+
+function cleanText(value) {
+  return String(value ?? '')
+    .replace(/\u00a0/g, ' ')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\s*\n\s*/g, ' ')
+    .trim();
+}
+
+function normalizeBlocks(value) {
+  return String(value ?? '')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function stripHeadingLinks(value) {
+  return String(value).replace(
+    /(?<!!)\[((?:[^[\]\n]|\[[^\]\n]*])*)]\((?:<[^>\n]+>|[^)\n]+)\)/g,
+    '$1',
+  );
+}
+
+function renderNoTocHeadings(body) {
+  if (!body.includes('[!toc]')) return body;
+
+  const headingSource = body.replace(/ \[!toc\](?=\s*$)/gm, '');
+  const toc = getTableOfContents(headingSource);
+  let headingIndex = 0;
+
+  return body
+    .split('\n')
+    .map((line) => {
+      const heading = line.match(/^(#{1,6}) (.+) \[!toc\]$/);
+      if (!/^#{1,6} /.test(line)) return line;
+      const item = toc[headingIndex];
+      headingIndex += 1;
+      if (!heading || !item?.url?.startsWith('#')) {
+        return line;
+      }
+      const level = heading[1].length;
+      const title = escapeMdxText(heading[2]);
+      const id = JSON.stringify(item.url.slice(1));
+      return `<h${level} data-toc-hidden="true" id={${id}}>${title}</h${level}>`;
+    })
+    .join('\n');
+}
+
+function isSinceDefinitionTerm(value) {
+  const normalized = cleanText(stripHeadingLinks(value)).toLowerCase();
+  return normalized === '自从' || normalized === 'since';
+}
+
+export function detailedDescriptionTitleMode(element) {
+  const id = String(element.attr('id') ?? element.attr('name') ?? '');
+  const deliveryTarget = String(
+    element.attr('data-deliveryTarget') ?? '',
+  ).toLowerCase();
+  const isDetailedDescription =
+    id.endsWith('__detailed_desc') || deliveryTarget === 'details';
+  if (!isDetailedDescription) return null;
+
+  const otherProperties = String(element.attr('data-otherprops') ?? '')
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean);
+  if (otherProperties.includes('no-title')) return 'suppressed';
+  if (element.children('h1, h2, h3, h4, h5, h6').length > 0) {
+    return 'explicit';
+  }
+  return cleanText(element.text()) ? 'implicit' : null;
+}
+
+function anchorFor(element) {
+  const id = element.attr('id') ?? element.attr('name');
+  return id ? renderStableAnchor(id) : '';
+}
+
+function elementName(node) {
+  return node?.type === 'tag' ? node.name.toLowerCase() : '';
+}
+
+function classNames(element) {
+  return new Set(
+    String(element.attr('class') ?? '')
+      .split(/\s+/)
+      .filter(Boolean),
+  );
+}
+
+function calloutType(element) {
+  const classes = new Set(
+    [...classNames(element)].map((className) => className.toLowerCase()),
+  );
+  const hasClass = (...names) => names.some((name) => classes.has(name));
+  const themeType = [...classes]
+    .map(
+      (name) =>
+        name.match(
+          /^theme-admonition-(note|info|tip|caution|warning|danger|error)$/,
+        )?.[1],
+    )
+    .find(Boolean);
+  if (themeType) return themeType === 'danger' ? 'error' : themeType;
+  const hasCalloutClass = (...kinds) =>
+    [...classes].some((name) => {
+      return kinds.some(
+        (kind) =>
+          name === kind ||
+          name === `alert-${kind}` ||
+          name === `alert--${kind}` ||
+          name === `admonition-${kind}` ||
+          name === `callout-${kind}` ||
+          name === `${kind}-callout`,
+      );
+    });
+  const isAlert =
+    hasClass('alert') || [...classes].some((name) => name.startsWith('alert-'));
+
+  if (hasCalloutClass('danger', 'error')) return 'error';
+  if (
+    hasCalloutClass('attention', 'caution') ||
+    (isAlert && hasCalloutClass('warn', 'warning'))
+  ) {
+    return 'caution';
+  }
+  if (hasCalloutClass('warn', 'warning')) return 'warning';
+  if (hasCalloutClass('tip', 'success')) return 'tip';
+  if (hasCalloutClass('info', 'important')) return 'info';
+  if (hasCalloutClass('note', 'admonition', 'alert')) {
+    return 'note';
+  }
+  return null;
+}
+
+function languageFromCode(element, state) {
+  for (const candidate of [element, element.parent()]) {
+    const classes = String(candidate.attr('class') ?? '').split(/\s+/);
+    const marker = classes.find((name) => /^(?:lang|language)-/.test(name));
+    if (marker) return marker.replace(/^(?:lang|language)-/, '');
+  }
+  return element.closest('[id$="__prototype"]').length
+    ? (apiPrototypeLanguage(state.sourcePath) ?? 'text')
+    : 'text';
+}
+
+function selectArticle($) {
+  const selectors = [
+    'main > article',
+    'main article',
+    'main[role="main"]',
+    'article',
+    '.col-content',
+    '.tsd-page-toolbar + .container',
+    '.tsd-panel-group',
+    '#content',
+    '.contents',
+    '.content-right',
+    'body',
+  ];
+  for (const selector of selectors) {
+    const match = $(selector).first();
+    if (match.length > 0 && cleanText(match.text()).length > 0) return match;
+  }
+  return $('body').first();
+}
+
+function removeTypeDocNavigation($, article, sourceUrl, sourcePath) {
+  article.find('.tsd-hierarchy').remove();
+  if (!article.find('.tsd-index-group').length) return;
+  const page = new URL(
+    sourceUrl || sourcePath || '',
+    'https://doc.shengwang.cn',
+  );
+  const isOverview = /(?:^|\/)(?:globals|index)(?:\.html)?$/.test(
+    sourcePath || page.pathname,
+  );
+  article.find('.tsd-index-group').each((_, node) => {
+    const index = $(node);
+    if (isOverview) {
+      // Overview indexes also contain the only links to other API pages.
+      // Keep those categories, without the Index wrapper or same-page links.
+      const pagePath = page.pathname.replace(/\.html$/, '');
+      const sourcePagePath = new URL(
+        sourcePath?.split('/').at(-1) || page.href,
+        page,
+      ).pathname.replace(/\.html$/, '');
+      index.find('.tsd-index-section').each((_, section) => {
+        const category = $(section);
+        category.find('li').each((_, item) => {
+          const href = $(item).find('a[href]').first().attr('href');
+          const target = href ? new URL(href, page) : null;
+          if (
+            !target ||
+            (target.origin === page.origin &&
+              [pagePath, sourcePagePath].includes(
+                target.pathname.replace(/\.html$/, ''),
+              ))
+          ) {
+            $(item).remove();
+          }
+        });
+        if (!category.find('a[href]').length) return;
+        category.children('h3').each((_, heading) => {
+          $(heading).replaceWith($('<h2>').text($(heading).text()));
+        });
+        index.before(category);
+      });
+    }
+    index.remove();
+  });
+}
+
+function loadHtmlPage({
+  html,
+  sourceUrl,
+  sourcePath,
+  rootSelector,
+  titleSelector,
+  conversionProfile,
+}) {
+  const $ = cheerio.load(html);
+  const preferredTitleNode = titleSelector ? $(titleSelector).first() : null;
+  const preferredTitleClone = preferredTitleNode?.clone();
+  preferredTitleClone?.find('.mlabels').remove();
+  const preferredTitle = cleanText(preferredTitleClone?.text());
+  $('script, style, footer, header').remove();
+  $('nav').each((_, node) => {
+    const element = $(node);
+    const isRelatedLinks =
+      element.hasClass('related-links') || element.find('.relinfo').length > 0;
+    if (!isRelatedLinks) element.remove();
+  });
+  const article = rootSelector ? $(rootSelector).first() : selectArticle($);
+  if (article.length === 0) {
+    return {
+      $,
+      article,
+      titleNode: null,
+      descriptionNode: null,
+      title: '',
+      description: '',
+    };
+  }
+  removeTypeDocNavigation($, article, sourceUrl, sourcePath);
+  const selectedTitleNode = titleSelector ? $(titleSelector).first() : null;
+  const titleNode =
+    selectedTitleNode?.length > 0
+      ? selectedTitleNode
+      : article.find('h1').first();
+  // The sidebar version switcher owns the SDK release label.
+  const title = cleanText(
+    preferredTitle || titleNode.text() || $('title').first().text(),
+  ).replace(/\s+v?\d+\.\d+(?:\.\d+)*(?:-[\w.-]+)?$/i, '');
+  const titleArticle = titleNode.closest('article').get(0);
+  const articleNode = article.get(0);
+  const descriptionCandidates =
+    conversionProfile === EDU_STORE_TYPEDOC_CONVERSION_PROFILE
+      ? article
+          .children('section.tsd-panel.tsd-comment')
+          .find('.shortdesc, .lead, .tsd-comment-shortform')
+      : article.find('.shortdesc, .lead, .tsd-comment-shortform');
+  const descriptionNode = descriptionCandidates
+    .filter((_, node) => {
+      // A TypeDoc member's lead belongs to that member, even when the page
+      // has no introduction. Promoting it also removes it from the body.
+      if ($(node).closest('.tsd-member').length > 0) return false;
+      const nodeArticle = $(node).closest('article').get(0);
+      return (nodeArticle ?? articleNode) === (titleArticle ?? articleNode);
+    })
+    .first();
+  return {
+    $,
+    article,
+    titleNode,
+    descriptionNode,
+    title,
+    description: cleanText(descriptionNode.text()),
+  };
+}
+
+export function extractHtmlPageMetadata(options) {
+  const { article, title, description } = loadHtmlPage(options);
+  return {
+    found: article.length > 0,
+    title,
+    description,
+  };
+}
+
+function createState(options) {
+  return {
+    ...options,
+    warnings: [],
+    assets: [],
+    definitionSlugCounts: new Map(),
+    parameterSlugCounts: new Map(),
+    tableSlotCounter: 0,
+    structuredParameters: {
+      appledoc: { fields: 0, lists: 0 },
+      doxygen: { fields: 0, lists: 0 },
+      oxygen: { fields: 0, lists: 0 },
+      typedoc: { fields: 0, lists: 0 },
+    },
+    structuredApiMembers: {
+      appledoc: { returns: 0, signatures: 0 },
+      doxygen: { returns: 0, signatures: 0 },
+      oxygen: { returns: 0, signatures: 0 },
+      typedoc: { returns: 0, signatures: 0 },
+    },
+  };
+}
+
+function renderCodeSpan(value) {
+  const content = String(value ?? '').replace(/\s*\r?\n\s*/g, ' ');
+  const longestBacktickRun = Math.max(
+    0,
+    ...[...content.matchAll(/`+/g)].map((match) => match[0].length),
+  );
+  const fence = '`'.repeat(longestBacktickRun + 1);
+  const padding = content.startsWith('`') || content.endsWith('`') ? ' ' : '';
+  return `${fence}${padding}${content}${padding}${fence}`;
+}
+
+function renderCodeWithLinks($, element, state) {
+  const parts = [];
+  let text = '';
+  const flushText = () => {
+    if (text) parts.push(renderCodeSpan(text));
+    text = '';
+  };
+  const visit = (node) => {
+    if (node.type === 'text') {
+      text += node.data ?? '';
+      return;
+    }
+    if (node.type !== 'tag') return;
+    const child = $(node);
+    if (elementName(node) === 'a' && child.attr('href')) {
+      const rewritten = rewriteLegacyHref(child.attr('href'), state);
+      if (rewritten.warning) state.warnings.push(rewritten.warning);
+      const label = child.text();
+      if (rewritten.href && label) {
+        flushText();
+        parts.push(`[${renderCodeSpan(label)}](${rewritten.href})`);
+      } else {
+        text += label;
+      }
+      return;
+    }
+    for (const nested of child.contents().toArray()) visit(nested);
+  };
+  for (const node of element.contents().toArray()) visit(node);
+  flushText();
+  return parts.join('');
+}
+
+function hasExplicitCodeLineBreak(element) {
+  return element.find('br').length > 0;
+}
+
+function normalizeMultilineCode(value) {
+  return String(value ?? '')
+    .split(/\r?\n/)
+    .map((line) => {
+      const withoutLayoutWhitespace = line.replace(/^[ \t]+|[ \t]+$/g, '');
+      const nonBreakingIndent =
+        withoutLayoutWhitespace.match(/^\u00a0+/)?.[0].length ?? 0;
+      return `${' '.repeat(nonBreakingIndent)}${withoutLayoutWhitespace
+        .slice(nonBreakingIndent)
+        .trimStart()
+        .replace(/\u00a0/g, ' ')}`;
+    })
+    .filter(Boolean)
+    .join('\n');
+}
+
+function inlineCodeElement($, node) {
+  if (node?.type !== 'tag') return null;
+  const name = elementName(node);
+  return name === 'code' || name === 'kbd' ? $(node) : null;
+}
+
+function legacySplitCodeIdentifier(node) {
+  if (node?.type !== 'text') return null;
+  const value = node.data ?? '';
+  if (value !== value.trim()) return null;
+  return /^[\p{Letter}\p{Number}_$]+$/u.test(value) ? value : null;
+}
+
+function consumeLegacySplitCodeRun($, nodes, startIndex) {
+  const opening = inlineCodeElement($, nodes[startIndex]);
+  if (!opening || cleanText(opening.text())) return null;
+
+  const identifier = legacySplitCodeIdentifier(nodes[startIndex + 1]);
+  if (!identifier) return null;
+  let content = identifier;
+  let cursor = startIndex + 2;
+  let codeChunks = 0;
+  while (cursor < nodes.length) {
+    const code = inlineCodeElement($, nodes[cursor]);
+    if (!code || !cleanText(code.text())) break;
+    content += code.text().replace(/[ \t]+/g, ' ');
+    codeChunks += 1;
+    cursor += 1;
+
+    const nextIdentifier = legacySplitCodeIdentifier(nodes[cursor]);
+    if (!nextIdentifier || !inlineCodeElement($, nodes[cursor + 1])) break;
+    content += nextIdentifier;
+    cursor += 1;
+  }
+  if (codeChunks === 0) return null;
+  return {
+    nextIndex: cursor,
+    value: renderCodeSpan(content.replace(/[ \t]+/g, ' ').trim()),
+  };
+}
+
+function tightenInlinePunctuation(value) {
+  const source = String(value);
+  let normalized = '';
+  let cursor = 0;
+  const tighten = (segment) =>
+    segment.replace(/\s+([，。！？：；、,.!?;:)\]}>])/g, '$1');
+  while (cursor < source.length) {
+    const start = source.indexOf('`', cursor);
+    if (start < 0) {
+      normalized += tighten(source.slice(cursor));
+      break;
+    }
+    let fenceEnd = start + 1;
+    while (source[fenceEnd] === '`') fenceEnd += 1;
+    const fence = source.slice(start, fenceEnd);
+    const end = source.indexOf(fence, fenceEnd);
+    if (end < 0) {
+      normalized += tighten(source.slice(cursor));
+      break;
+    }
+    normalized += tighten(source.slice(cursor, start));
+    normalized += source.slice(start, end + fence.length);
+    cursor = end + fence.length;
+  }
+  return normalized;
+}
+
+async function renderInlineNodes($, nodes, state, options = {}) {
+  const values = [];
+  for (let index = 0; index < nodes.length; index += 1) {
+    const legacySplitCode = options.rawText
+      ? null
+      : consumeLegacySplitCodeRun($, nodes, index);
+    if (legacySplitCode) {
+      values.push(legacySplitCode.value);
+      index = legacySplitCode.nextIndex - 1;
+      continue;
+    }
+    values.push(await renderInlineNode($, nodes[index], state, options));
+  }
+  const normalizedWhitespace = values.join('').replace(/[ \t]+/g, ' ');
+  if (options.rawText) return normalizedWhitespace.trim();
+  return tightenInlinePunctuation(normalizedWhitespace).trim();
+}
+
+function normalizeInlineListContent(value) {
+  return tightenInlinePunctuation(
+    String(value ?? '')
+      .replace(/\n[ \t]+/g, '\n')
+      .replace(/[ \t]+/g, ' '),
+  ).trim();
+}
+
+async function renderInlineNode($, node, state, options = {}) {
+  if (node.type === 'text') {
+    return options.rawText ? (node.data ?? '') : escapeMdxText(node.data ?? '');
+  }
+  if (node.type !== 'tag') return '';
+  const element = $(node);
+  const name = elementName(node);
+  if (name === 'code' || name === 'kbd') {
+    if (element.find('a[href]').length > 0) {
+      return renderCodeWithLinks($, element, state);
+    }
+    const codeContent = await renderInlineNodes(
+      $,
+      element.contents().toArray(),
+      state,
+      { rawText: true },
+    );
+    const linkedCode = codeContent.match(/^\[([^\]\n]+)\]\(([^\n]+)\)$/);
+    if (linkedCode) {
+      return `[${renderCodeSpan(linkedCode[1])}](${linkedCode[2]})`;
+    }
+    return renderCodeSpan(codeContent);
+  }
+  const content = await renderInlineNodes(
+    $,
+    element.contents().toArray(),
+    state,
+    options,
+  );
+  if (name === 'br') return '  \n';
+  if (name === 'strong' || name === 'b') return `**${content}**`;
+  if (name === 'em' || name === 'i') return `*${content}*`;
+  if (name === 'del' || name === 's') return `~~${content}~~`;
+  if (name === 'a') {
+    const rawHref = element.attr('href');
+    if (!content && (element.attr('id') || element.attr('name'))) {
+      return anchorFor(element);
+    }
+    if (!rawHref) {
+      const stableAnchor = anchorFor(element);
+      return `${stableAnchor}${content}`;
+    }
+    const rewritten = rewriteLegacyHref(rawHref, state);
+    if (rewritten.warning) state.warnings.push(rewritten.warning);
+    if (!rewritten.href) return content;
+    return content ? `[${content}](${rewritten.href})` : rewritten.href;
+  }
+  if (name === 'img') {
+    const rendered = await renderImage($, element, state);
+    return rendered;
+  }
+  if (['script', 'style', 'svg'].includes(name)) return '';
+  return content;
+}
+
+async function renderTypeDocInlineNode($, node, state) {
+  if (node.type === 'text') return escapeMdxText(node.data ?? '');
+  if (node.type !== 'tag') return '';
+  const element = $(node);
+  const name = elementName(node);
+  if (name === 'wbr') return '';
+  if (
+    (name === 'code' || name === 'kbd') &&
+    element.find('a[href]').length > 0
+  ) {
+    return renderCodeWithLinks($, element, state);
+  }
+  let content = '';
+  for (const child of element.contents().toArray()) {
+    content += await renderTypeDocInlineNode($, child, state);
+  }
+  if (name === 'a') {
+    const rawHref = element.attr('href');
+    if (!rawHref) return content;
+    const rewritten = rewriteLegacyHref(rawHref, state);
+    if (rewritten.warning) state.warnings.push(rewritten.warning);
+    if (!rewritten.href) return content;
+    const label = content.trim();
+    return label ? `[${label}](${rewritten.href})` : rewritten.href;
+  }
+  if (name === 'code' || name === 'kbd') {
+    const codeContent = content.trim();
+    const linkedCode = codeContent.match(/^\[([^\]\n]+)\]\(([^\n]+)\)$/);
+    if (linkedCode) {
+      return `[${renderCodeSpan(linkedCode[1])}](${linkedCode[2]})`;
+    }
+    return renderCodeSpan(codeContent);
+  }
+  if (name === 'strong' || name === 'b') return `**${content.trim()}**`;
+  if (name === 'em' || name === 'i') return `*${content.trim()}*`;
+  return content;
+}
+
+async function renderTypeDocInlineNodes($, nodes, state) {
+  let value = '';
+  for (const node of nodes) {
+    value += await renderTypeDocInlineNode($, node, state);
+  }
+  return value.replace(/\s+/g, ' ').trim();
+}
+
+function escapeMdxJsxAttribute(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\{/g, '&#123;')
+    .replace(/\}/g, '&#125;');
+}
+
+function parameterAttribute(name, value) {
+  const normalized = cleanText(value);
+  return normalized ? ` ${name}="${escapeMdxJsxAttribute(normalized)}"` : '';
+}
+
+function hasRichParameterType(value) {
+  return /(?<!!)\[[^\]]+]\([^)]+\)/.test(String(value ?? ''));
+}
+
+function normalizeTypeDocRichTypeSpacing(value) {
+  const source = String(value ?? '');
+  const markdownLinkPattern = /(?<!!)\[[^\]]+]\([^)]+\)/g;
+  let offset = 0;
+  let normalized = '';
+  const normalizeText = (text) =>
+    text
+      .replace(/\\\{\s*/g, '\\{ ')
+      .replace(/\s*\\\}/g, ' \\}')
+      .replace(/;\s*/g, '; ')
+      .replace(/:\s*/g, ': ')
+      .replace(/[ \t]+/g, ' ');
+  for (const match of source.matchAll(markdownLinkPattern)) {
+    normalized += normalizeText(source.slice(offset, match.index));
+    normalized += match[0];
+    offset = (match.index ?? 0) + match[0].length;
+  }
+  normalized += normalizeText(source.slice(offset));
+  return normalized.trim();
+}
+
+function normalizeTypeDocType(value, state) {
+  const normalized = String(value ?? '')
+    .replace(/\s*\|\s*/g, ' | ')
+    .replace(/\s*&\s*/g, ' & ')
+    .trim();
+  return state.conversionProfile === EDU_STORE_TYPEDOC_CONVERSION_PROFILE
+    ? normalizeTypeDocRichTypeSpacing(normalized)
+    : normalized;
+}
+
+function stableHeadingSlug(value, counts) {
+  const baseSlug =
+    cleanText(value)
+      .toLowerCase()
+      .replace(/[^\p{Letter}\p{Number}\p{Mark}\s_-]/gu, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '') || 'section';
+  const previousCount = counts.get(baseSlug) ?? 0;
+  counts.set(baseSlug, previousCount + 1);
+  return previousCount === 0 ? baseSlug : `${baseSlug}-${previousCount}`;
+}
+
+function parameterHeadingSlug(value, state) {
+  return stableHeadingSlug(value, state.parameterSlugCounts);
+}
+
+function definitionHeadingSlug(value, state) {
+  return stableHeadingSlug(value, state.definitionSlugCounts);
+}
+
+function renderStructuredParameter(parameter) {
+  const richType = hasRichParameterType(parameter.type);
+  const attributes = [
+    parameterAttribute('name', parameter.name),
+    richType ? '' : parameterAttribute('type', parameter.type),
+    parameterAttribute('direction', parameter.direction),
+    parameter.optional ? ' optional' : '',
+    parameter.required ? ' required' : '',
+  ].join('');
+  const blocks = [
+    richType ? `<ParameterType>\n\n${parameter.type}\n\n</ParameterType>` : '',
+    parameter.body,
+  ].filter(Boolean);
+  const component =
+    blocks.length === 0
+      ? `<Parameter${attributes} />`
+      : `<Parameter${attributes}>\n\n${blocks.join('\n\n')}\n\n</Parameter>`;
+  return [renderStableAnchor(parameter.anchor), component]
+    .filter(Boolean)
+    .join('\n');
+}
+
+function renderStructuredParameterList({ parameters, title }) {
+  const body = parameters
+    .filter((parameter) => cleanText(parameter.name))
+    .map(renderStructuredParameter)
+    .join('\n');
+  if (!body) return '';
+  return `<ParameterList${parameterAttribute('title', title)}>\n${body}\n</ParameterList>`;
+}
+
+function recordStructuredParameterList(state, generator, fieldCount) {
+  if (fieldCount <= 0) return;
+  state.structuredParameters[generator].fields += fieldCount;
+  state.structuredParameters[generator].lists += 1;
+}
+
+function renderRichMdxComponent(name, body, attributes = '') {
+  return `<${name}${attributes}>\n\n${body}\n\n</${name}>`;
+}
+
+function normalizeGeneratedSignature(
+  value,
+  { compactOpeningParenthesis = true } = {},
+) {
+  let normalized = String(value ?? '').replace(/\s+/g, ' ');
+  if (compactOpeningParenthesis) {
+    normalized = normalized.replace(/\s+\(/g, '(');
+  }
+  return normalized
+    .replace(/\(\s+/g, '(')
+    .replace(/\s+,/g, ',')
+    .replace(/,\s*/g, ', ')
+    .replace(/\s+\)/g, ')')
+    .replace(/\s+;/g, ';')
+    .trim();
+}
+
+async function parseDoxygenSignature($, container, state) {
+  const table = container.find('table.memname').first();
+  if (table.length === 0) return '';
+  const rows = table.children('tr').add(table.children('tbody').children('tr'));
+  const rowValues = [];
+  for (const row of rows.toArray()) {
+    const cells = [];
+    for (const cell of $(row).children('th, td').toArray()) {
+      const cellElement = $(cell);
+      if (
+        cellElement.hasClass('paramname') &&
+        cleanText(cellElement.text()) === ''
+      ) {
+        continue;
+      }
+      const rendered = await renderTypeDocInlineNodes(
+        $,
+        cellElement.contents().toArray(),
+        state,
+      );
+      if (rendered) cells.push(rendered);
+    }
+    if (cells.length > 0) rowValues.push(cells.join(' '));
+  }
+  const signature = normalizeGeneratedSignature(rowValues.join(' '));
+  if (!signature) return '';
+  const labels = [
+    ...new Set(
+      container
+        .find('.mlabels-right .mlabel')
+        .toArray()
+        .map((node) => cleanText($(node).text()))
+        .filter(Boolean),
+    ),
+  ];
+  state.structuredApiMembers.doxygen.signatures += 1;
+  return renderRichMdxComponent(
+    'ApiSignature',
+    signature,
+    parameterAttribute('labels', labels.join(' ')),
+  );
+}
+
+async function parseAppledocSignature($, container, state) {
+  const code = container.children('code').first();
+  if (code.length === 0) return '';
+  const signature = normalizeGeneratedSignature(
+    await renderTypeDocInlineNodes($, code.contents().toArray(), state),
+    { compactOpeningParenthesis: false },
+  );
+  if (!signature) return '';
+  state.structuredApiMembers.appledoc.signatures += 1;
+  return renderRichMdxComponent(
+    'ApiSignature',
+    signature.replace(/^([-+])\s/, '\\$1 '),
+  );
+}
+
+async function parseTypeDocSignatures($, list, state) {
+  const signatures = [];
+  for (const item of list.children('li').toArray()) {
+    const signature = await renderTypeDocInlineNodes(
+      $,
+      $(item).contents().toArray(),
+      state,
+    );
+    if (signature) signatures.push(signature);
+  }
+  state.structuredApiMembers.typedoc.signatures += signatures.length;
+  return signatures
+    .map((signature) => renderRichMdxComponent('ApiSignature', signature))
+    .join('\n\n');
+}
+
+async function parseTypeDocReturn($, title, state, description = '') {
+  const renderedTitle = await renderTypeDocInlineNodes(
+    $,
+    title.contents().toArray(),
+    state,
+  );
+  const returnType = renderedTitle.replace(/^Returns\b\s*/i, '').trim();
+  if (!returnType) return '';
+  state.structuredApiMembers.typedoc.returns += 1;
+  const typeBlock = renderRichMdxComponent('ApiReturnType', returnType);
+  return renderRichMdxComponent(
+    'ApiReturns',
+    [typeBlock, description].filter(Boolean).join('\n\n'),
+  );
+}
+
+async function parseTypeDocParameters($, list, state) {
+  const parameters = [];
+  const isTypeParameterList = list.hasClass('tsd-type-parameters');
+  const headingSelector = isTypeParameterList ? 'h4' : 'h5';
+  const unparsedItemIndexes = [];
+  for (const [itemIndex, node] of list.children('li').toArray().entries()) {
+    const item = $(node);
+    const heading = item.children(headingSelector).first();
+    if (heading.length === 0) {
+      unparsedItemIndexes.push(itemIndex);
+      continue;
+    }
+    const optional = heading.find('.ts-flagOptional').length > 0;
+    const normalizedHeading = heading.clone();
+    normalizedHeading.find('.tsd-flag').remove();
+    const renderedHeading = await renderInlineNodes(
+      $,
+      normalizedHeading.contents().toArray(),
+      state,
+    );
+    const separator = renderedHeading.indexOf(':');
+    const name = cleanText(normalizedHeading.text().split(':', 1)[0]).replace(
+      /\?$/,
+      '',
+    );
+    const type = normalizeTypeDocType(
+      separator >= 0 ? renderedHeading.slice(separator + 1) : '',
+      state,
+    );
+    const description = item.clone();
+    description.children(headingSelector).first().remove();
+    parameters.push({
+      body: await renderChildren($, description, state),
+      name,
+      optional,
+      required: !isTypeParameterList && !optional,
+      type,
+    });
+  }
+  const title = cleanText(list.prev('h4').first().text());
+  recordStructuredParameterList(state, 'typedoc', parameters.length);
+  const structured = renderStructuredParameterList({ parameters, title });
+  if (unparsedItemIndexes.length === 0) return structured;
+  const fallbackList = list.clone();
+  fallbackList.children('li').each((index, node) => {
+    if (!unparsedItemIndexes.includes(index)) {
+      $(node).remove();
+    }
+  });
+  const callbackItems = fallbackList
+    .children('li.tsd-parameter-siganture, li.tsd-parameter-signature')
+    .toArray();
+  const callbackBlocks = [];
+  for (const callbackItem of callbackItems) {
+    const callback = $(callbackItem);
+    callbackBlocks.push(await renderChildren($, callback, state));
+    callback.remove();
+  }
+  const fallback =
+    fallbackList.children('li').length > 0
+      ? await renderList($, fallbackList, state, false)
+      : '';
+  return [structured, ...callbackBlocks, fallback].filter(Boolean).join('\n\n');
+}
+
+async function parseOxygenParameters($, list, state) {
+  const parameters = [];
+  const orphanBodies = [];
+  let current = null;
+  const flushCurrent = () => {
+    if (!current) return;
+    const body = current.bodies.filter(Boolean).join('\n\n');
+    if (current.name) {
+      parameters.push({
+        anchor: parameterHeadingSlug(current.name, state),
+        body,
+        name: current.name,
+      });
+    } else if (body) orphanBodies.push(body);
+    current = null;
+  };
+  for (const node of list.children('dt, dd').toArray()) {
+    const element = $(node);
+    if (elementName(node) === 'dt') {
+      flushCurrent();
+      current = { bodies: [], name: cleanText(element.text()) };
+      continue;
+    }
+    const body = await renderChildren($, element, state);
+    if (current) current.bodies.push(body);
+    else if (body) orphanBodies.push(body);
+  }
+  flushCurrent();
+  recordStructuredParameterList(state, 'oxygen', parameters.length);
+  return [renderStructuredParameterList({ parameters }), ...orphanBodies]
+    .filter(Boolean)
+    .join('\n\n');
+}
+
+async function parseDoxygenParameters($, list, state) {
+  const parameters = [];
+  const table = list.find('> dd > table.params, > dd table.params').first();
+  for (const node of table.find('> tbody > tr, > tr').toArray()) {
+    const row = $(node);
+    const nameCell = row.children('.paramname').first();
+    if (nameCell.length === 0) continue;
+    const directionCell = row.children('.paramdir').first();
+    const descriptions = [];
+    for (const cell of row.children('th, td').toArray()) {
+      if (cell === nameCell.get(0) || cell === directionCell.get(0)) continue;
+      const body = await renderChildren($, $(cell), state);
+      if (body) descriptions.push(body);
+    }
+    parameters.push({
+      body: descriptions.join('\n\n'),
+      direction: cleanText(directionCell.text()),
+      name: cleanText(nameCell.text()),
+    });
+  }
+  recordStructuredParameterList(state, 'doxygen', parameters.length);
+  return renderStructuredParameterList({
+    parameters,
+    title: cleanText(list.children('dt').first().text()),
+  });
+}
+
+async function parseAppledocParameters($, container, state) {
+  const parameters = [];
+  const table = container.children('table.argument-def.parameter-def').first();
+  for (const node of table.find('> tbody > tr, > tr').toArray()) {
+    const row = $(node);
+    const nameCell = row.children('.argument-name').first();
+    if (nameCell.length === 0) continue;
+    const descriptions = [];
+    for (const cell of row.children('td').toArray()) {
+      const body = await renderChildren($, $(cell), state);
+      if (body) descriptions.push(body);
+    }
+    parameters.push({
+      body: descriptions.join('\n\n'),
+      name: cleanText(nameCell.text()),
+    });
+  }
+  recordStructuredParameterList(state, 'appledoc', parameters.length);
+  return renderStructuredParameterList({
+    parameters,
+    title: cleanText(
+      container.children('.method-subtitle.parameter-title').first().text(),
+    ),
+  });
+}
+
+function compactImageContext(value) {
+  const normalized = cleanText(value)
+    .replace(/[：:。,.，;；]+$/g, '')
+    .replace(/^[-*•]\s*/, '');
+  if (!normalized || normalized.length > 120) return '';
+  return normalized;
+}
+
+function contextualImageAlt($, element, state, fallbackAlt = '') {
+  const sourceAlt = cleanText(element.attr('alt') || element.attr('title'));
+  if (sourceAlt && !/^[-–—]$/.test(sourceAlt)) {
+    return { alt: sourceAlt, synthesized: false };
+  }
+
+  const source = element.attr('src') ?? '';
+  const fileName = source.split(/[?#]/, 1)[0].split('/').at(-1)?.toLowerCase();
+  if (fileName === 'closed.png') {
+    return { alt: '展开继承成员', synthesized: true };
+  }
+  if (fileName === 'open.png') {
+    return { alt: '收起继承成员', synthesized: true };
+  }
+
+  const row = element.closest('tr');
+  const cell = element.closest('th, td');
+  const rowContext = row.length
+    ? row
+        .children('th, td')
+        .toArray()
+        .filter((node) => node !== cell.get(0))
+        .map((node) => compactImageContext($(node).text()))
+        .find(Boolean)
+    : '';
+  const priorContext = element
+    .parentsUntil('body')
+    .addBack()
+    .toArray()
+    .map((node) =>
+      compactImageContext(
+        $(node)
+          .prevAll('p, h1, h2, h3, h4, h5, h6, figcaption, .caption')
+          .first()
+          .text(),
+      ),
+    )
+    .find(Boolean);
+  const context = [fallbackAlt, rowContext, priorContext]
+    .map(compactImageContext)
+    .find(Boolean);
+  if (context) {
+    return {
+      alt: /^\d+(?:-\d+)?$/.test(context) ? `${context} 人布局示意` : context,
+      synthesized: true,
+    };
+  }
+
+  return {
+    alt: state.pageTitle ? `${state.pageTitle} 图示` : '源页面图示',
+    synthesized: true,
+  };
+}
+
+async function renderImage($, element, state, fallbackAlt = '') {
+  const source = element.attr('src');
+  if (!source) return '';
+  const { alt, synthesized } = contextualImageAlt(
+    $,
+    element,
+    state,
+    fallbackAlt,
+  );
+  if (synthesized) {
+    state.warnings.push(
+      createWarning(
+        'missing-source-text',
+        `The source image ${source} has no meaningful alt or title text; the converter used contextual alt text "${alt}".`,
+        { alt, source },
+      ),
+    );
+  }
+  const sizing = readLegacyImageSizing(
+    ['width', 'height']
+      .filter((name) => element.attr(name))
+      .map((name) => `${name}=${JSON.stringify(element.attr(name))}`)
+      .join(' '),
+  );
+  const render = (src) =>
+    renderMigratedImage({
+      ...sizing,
+      src,
+      alt: sizing.width || sizing.height ? alt : escapeMdxText(alt),
+    });
+  if (!state.onAsset) {
+    state.warnings.push(
+      createWarning(
+        'asset-missing',
+        `No asset handler is configured for ${source}.`,
+      ),
+    );
+    return render(source);
+  }
+  try {
+    const target = await state.onAsset({
+      source,
+      alt,
+      sourceUrl: state.sourceUrl,
+      sourcePath: state.sourcePath,
+    });
+    state.assets.push({ source, target });
+    return render(target);
+  } catch (error) {
+    state.warnings.push(
+      createWarning('asset-missing', `${source}: ${error.message}`),
+    );
+    return render(source);
+  }
+}
+
+function indentBlock(value, count) {
+  const indent = ' '.repeat(count);
+  return String(value)
+    .split('\n')
+    .map((line) => (line ? `${indent}${line}` : ''))
+    .join('\n');
+}
+
+async function renderList($, element, state, ordered) {
+  const items = [];
+  const children = element.children('li').toArray();
+  for (const [index, node] of children.entries()) {
+    const item = $(node);
+    const marker = ordered ? `${index + 1}.` : '-';
+    const continuation = marker.length + 1;
+    const blocks = [];
+    let inline = '';
+    for (const child of item.contents().toArray()) {
+      const name = elementName(child);
+      if (name === 'ul' || name === 'ol') {
+        const normalizedInline = normalizeInlineListContent(inline);
+        if (normalizedInline) {
+          blocks.push(normalizedInline);
+          inline = '';
+        }
+        const nestedList = $(child);
+        const isTypeDocStructuralList =
+          nestedList.hasClass('tsd-descriptions') ||
+          nestedList.hasClass('tsd-parameters') ||
+          nestedList.hasClass('tsd-signatures') ||
+          nestedList.hasClass('tsd-type-parameters');
+        blocks.push(
+          isTypeDocStructuralList
+            ? await renderBlockNode($, child, state)
+            : await renderList($, nestedList, state, name === 'ol'),
+        );
+      } else if (
+        [
+          'aside',
+          'blockquote',
+          'div',
+          'dl',
+          'figure',
+          'img',
+          'p',
+          'pre',
+          'section',
+          'table',
+        ].includes(name)
+      ) {
+        const normalizedInline = normalizeInlineListContent(inline);
+        if (normalizedInline) {
+          blocks.push(normalizedInline);
+          inline = '';
+        }
+        blocks.push(await renderBlockNode($, child, state));
+      } else {
+        inline += await renderInlineNode($, child, state);
+      }
+    }
+    const normalizedInline = normalizeInlineListContent(inline);
+    if (normalizedInline) blocks.push(normalizedInline);
+    const [first = '', ...rest] = blocks.filter(Boolean);
+    const firstBlock = first
+      .split('\n')
+      .map((line, lineIndex) =>
+        lineIndex === 0 ? line : `${' '.repeat(continuation)}${line}`,
+      )
+      .join('\n');
+    let rendered = `${marker} ${firstBlock}`;
+    if (rest.length > 0) {
+      rendered += `\n\n${rest.map((block) => indentBlock(block, continuation)).join('\n\n')}`;
+    }
+    items.push(rendered.trimEnd());
+  }
+  return items.join('\n');
+}
+
+async function renderUnwrappedListItems($, element, state) {
+  const blocks = [];
+  for (const item of element.children('li').toArray()) {
+    const itemElement = $(item);
+    const body = itemElement.hasClass('tsd-description')
+      ? await renderTypeDocDescription($, itemElement, state)
+      : await renderChildren($, itemElement, state);
+    if (body) blocks.push(body);
+  }
+  return blocks.join('\n\n');
+}
+
+async function renderTable($, table, state) {
+  const rows = table
+    .find('> thead > tr, > tbody > tr, > tr')
+    .toArray()
+    .filter((row) => {
+      // Doxygen inserts empty decoration rows between members, not API records.
+      const cells = $(row).children('td, th');
+      return !(
+        table.hasClass('memberdecls') &&
+        cells.length === 1 &&
+        cells.first().hasClass('memSeparator') &&
+        !cleanText($(row).text()) &&
+        !$(row).attr('id') &&
+        !$(row).find('[id], a[name], a[href], img').length
+      );
+    });
+  if (rows.length === 0) return '';
+  const values = [];
+  const definitions = [];
+  const firstHeaderSpan = Math.max(
+    1,
+    ...$(rows[0])
+      .children('th')
+      .toArray()
+      .map((cell) => Number.parseInt($(cell).attr('rowspan') ?? '1', 10) || 1),
+  );
+  for (const [rowIndex, row] of rows.entries()) {
+    const cells = $(row).children('th, td').toArray();
+    const renderedCells = [];
+    for (const cell of cells) {
+      const element = $(cell);
+      const metadata = {
+        kind:
+          element.is('th') ||
+          $(row).parent().is('thead') ||
+          rowIndex < firstHeaderSpan
+            ? 'h'
+            : 'd',
+        colspan: Number.parseInt(element.attr('colspan') ?? '1', 10) || 1,
+        rowspan: Number.parseInt(element.attr('rowspan') ?? '1', 10) || 1,
+      };
+      const rich =
+        rowIndex > 0 &&
+        metadata.kind !== 'h' &&
+        element.find(
+          'table, ul, ol, pre, blockquote, img, div, section, p, dl, figure, [id], a[name]',
+        ).length > 0;
+      if (!rich) {
+        renderedCells.push({
+          ...metadata,
+          raw: cleanText(
+            await renderInlineNodes($, element.contents().toArray(), state),
+          ),
+        });
+        continue;
+      }
+      const body = await renderChildren($, element, state);
+      if (!body) {
+        renderedCells.push({ ...metadata, raw: '' });
+        continue;
+      }
+      const slotName = `api-center-table-${state.tableSlotCounter++}`;
+      renderedCells.push({
+        ...metadata,
+        raw: `<Slot name="${slotName}" />`,
+        nativeRaw: body,
+      });
+      definitions.push(`<Slot for="${slotName}">\n\n${body}\n\n</Slot>`);
+    }
+    values.push(renderedCells);
+  }
+  const layout = layoutMergedTable(values);
+  if (layout.hasSpans || layout.headerCount > 1) {
+    return renderMergedTable(
+      values.map((row) =>
+        row.map((cell) => ({
+          ...cell,
+          raw: cell.nativeRaw ?? cell.raw,
+        })),
+      ),
+    );
+  }
+  const { header, bodyRows } = normalizeTableGrid(values);
+  return [
+    renderSimpleTable(
+      header.map((cell) => cell.raw),
+      bodyRows.map((row) => row.map((cell) => cell.raw)),
+    ),
+    ...definitions,
+  ]
+    .filter(Boolean)
+    .join('\n\n');
+}
+
+async function renderCalloutChildren($, element, state) {
+  const previous = state.calloutDepth ?? 0;
+  state.calloutDepth = previous + 1;
+  try {
+    return await renderChildren($, element, state);
+  } finally {
+    state.calloutDepth = previous;
+  }
+}
+
+async function renderTypeDocMetadata($, definition, state, title, deprecated) {
+  const nodes = definition.contents().toArray();
+  const meaningful = nodes.filter(
+    (node) => node.type !== 'text' || node.data.trim(),
+  );
+  if (meaningful.length === 0) return '';
+  // Legacy JSDoc often places the entire member description after @since or
+  // @deprecated. TypeDoc therefore puts prose, examples and quotations in the
+  // same <dd>. Only the metadata paragraph belongs in its notice frame.
+  let metadata = meaningful[0];
+  if (deprecated) {
+    // Some declarations put the ordinary property description first and the
+    // explicit replacement instruction next. Use that authored instruction;
+    // the tag itself, not this wording, determines the warning severity.
+    metadata =
+      definition
+        .children('p')
+        .toArray()
+        .find((node) =>
+          /(?:deprecated|废弃|弃用|^推荐使用|^use\b.*\binstead\b)/i.test(
+            cleanText($(node).text()),
+          ),
+        ) ?? metadata;
+  }
+  const index = nodes.indexOf(metadata);
+  const before = await renderNodeSequence($, nodes.slice(0, index), state);
+  const noticeBody =
+    metadata.type === 'tag'
+      ? await renderCalloutChildren($, $(metadata), state)
+      : await renderNodeSequence($, [metadata], state);
+  const after = await renderNodeSequence($, nodes.slice(index + 1), state);
+  return [
+    before,
+    deprecated && renderStableAnchor(definitionHeadingSlug(title, state)),
+    renderCallout({
+      type: deprecated ? 'warning' : 'info',
+      title,
+      body: noticeBody,
+    }),
+    after,
+  ]
+    .filter(Boolean)
+    .join('\n\n');
+}
+
+async function renderDefinitionList($, list, state) {
+  const blocks = [];
+  const listIsSince = classNames(list).has('since');
+  const listIsDeprecated = classNames(list).has('deprecated');
+  const listIsTypeDocCommentTags = list.hasClass('tsd-comment-tags');
+  const listIsDoxygenMemberDetail = list.closest('.memdoc').length > 0;
+  const listIsDoxygenNote = listIsDoxygenMemberDetail && list.hasClass('note');
+  const listIsDoxygenParams =
+    listIsDoxygenMemberDetail && list.hasClass('params');
+  const listIsDoxygenReturn =
+    listIsDoxygenMemberDetail && list.hasClass('return');
+  let term = null;
+  let termPlainText = '';
+  let termHasLink = false;
+  let termIsSince = false;
+  for (const child of list.children('dt, dd').toArray()) {
+    if (elementName(child) === 'dt') {
+      const renderedTerm = cleanText(
+        await renderInlineNodes($, $(child).contents().toArray(), state),
+      );
+      termHasLink =
+        $(child).find('a').length > 0 ||
+        /(?<!!)\[[^\]]+]\([^)]+\)/.test(renderedTerm);
+      term = termHasLink ? renderedTerm : stripHeadingLinks(renderedTerm);
+      termPlainText = cleanText($(child).text());
+      termIsSince =
+        listIsSince ||
+        (listIsTypeDocCommentTags && isSinceDefinitionTerm(renderedTerm));
+    } else {
+      if (
+        listIsTypeDocCommentTags &&
+        term &&
+        !termHasLink &&
+        (termIsSince || termPlainText.toLowerCase() === 'deprecated')
+      ) {
+        blocks.push(
+          await renderTypeDocMetadata(
+            $,
+            $(child),
+            state,
+            term,
+            termPlainText.toLowerCase() === 'deprecated',
+          ),
+        );
+        term = null;
+        termPlainText = '';
+        termHasLink = false;
+        termIsSince = false;
+        continue;
+      }
+      const body =
+        term &&
+        (listIsDeprecated ||
+          termIsSince ||
+          listIsDoxygenNote ||
+          (listIsTypeDocCommentTags &&
+            termPlainText.toLowerCase() === 'deprecated'))
+          ? await renderCalloutChildren($, $(child), state)
+          : await renderChildren($, $(child), state);
+      if (term) {
+        if (listIsDeprecated) {
+          const title = termPlainText || term;
+          blocks.push(
+            [
+              renderStableAnchor(definitionHeadingSlug(title, state)),
+              renderCallout({ type: 'error', title, body }),
+            ].join('\n\n'),
+          );
+        } else if (termIsSince || listIsDoxygenNote) {
+          blocks.push(renderCallout({ type: 'info', title: term, body }));
+        } else if (listIsDoxygenParams || listIsDoxygenReturn) {
+          const title = listIsDoxygenReturn ? '返回值' : term;
+          blocks.push(`#### ${title} [!toc]\n\n${body}`);
+        } else if (listIsTypeDocCommentTags && !termHasLink) {
+          // A comment tag describes its member; it is not another API member.
+          if (termPlainText.toLowerCase() === 'deprecated') {
+            blocks.push(
+              renderStableAnchor(definitionHeadingSlug(termPlainText, state)),
+              renderCallout({ type: 'warning', title: term, body }),
+            );
+          } else blocks.push(`#### ${term}\n\n${body}`);
+        } else {
+          blocks.push(
+            `${termHasLink ? `**${term}**` : `### ${term}`}\n\n${body}`,
+          );
+        }
+      } else if (body) blocks.push(body);
+      term = null;
+      termPlainText = '';
+      termHasLink = false;
+      termIsSince = false;
+    }
+  }
+  return blocks.join('\n\n');
+}
+
+async function renderRelatedLinks($, element, state) {
+  const containers = element
+    .find('.linklist')
+    .filter(
+      (_, node) =>
+        $(node).children('strong, b').length > 0 &&
+        $(node).parents('.linklist').length === 0,
+    )
+    .toArray();
+  const blocks = [];
+  for (const node of containers.length > 0 ? containers : [element.get(0)]) {
+    const container = $(node);
+    const titleNode = container.children('strong, b').first();
+    const title = cleanText(titleNode.text());
+    if (titleNode.length > 0) titleNode.remove();
+    container.children('br').first().remove();
+    const body = await renderChildren($, container, state);
+    blocks.push(
+      [title ? `### ${escapeMdxText(title)}` : '', body]
+        .filter(Boolean)
+        .join('\n\n'),
+    );
+  }
+  return blocks.filter(Boolean).join('\n\n');
+}
+
+async function renderNodeSequence($, nodes, state) {
+  const blocks = [];
+  let inline = '';
+  for (let index = 0; index < nodes.length; index += 1) {
+    const child = nodes[index];
+    const name = elementName(child);
+    // TypeDoc stores signatures and their descriptions in parallel lists.
+    // Preserve that association in Markdown rather than flattening both lists.
+    if (name === 'ul' && $(child).hasClass('tsd-signatures')) {
+      let next = index + 1;
+      while (nodes[next]?.type === 'text' && !nodes[next].data.trim()) {
+        next += 1;
+      }
+      const descriptions = $(nodes[next]);
+      const signatures = $(child).children('li').toArray();
+      if (signatures.length > 1 && descriptions.hasClass('tsd-descriptions')) {
+        const items = descriptions.children('li').toArray();
+        if (items.length === signatures.length) {
+          if (inline.trim()) blocks.push(inline.trim());
+          inline = '';
+          blocks.push(anchorFor($(child)), anchorFor(descriptions));
+          for (const [overloadIndex, signature] of signatures.entries()) {
+            const memberName =
+              cleanText($(signature).text()).split('(')[0] || 'Call signature';
+            const list = $('<ul></ul>').append($(signature).clone());
+            blocks.push(
+              `#### ${escapeMdxText(memberName)} [${overloadIndex + 1}/${signatures.length}]`,
+              await parseTypeDocSignatures($, list, state),
+              await renderTypeDocDescription($, $(items[overloadIndex]), state),
+            );
+          }
+          index = next;
+          continue;
+        }
+        state.warnings.push(
+          createWarning(
+            'unsupported-html-structure',
+            'TypeDoc overload signature and description counts differ; their source order was preserved for review.',
+          ),
+        );
+      }
+    }
+    const isHeadingAnchor =
+      name === 'a' && $(child).children('h1, h2, h3, h4, h5, h6').length > 0;
+    const isMultilineCode =
+      name === 'code' && hasExplicitCodeLineBreak($(child));
+    const isBlock =
+      [
+        'article',
+        'aside',
+        'blockquote',
+        'details',
+        'div',
+        'dl',
+        'figure',
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+        'hr',
+        'iframe',
+        'img',
+        'nav',
+        'object',
+        'ol',
+        'p',
+        'pre',
+        'section',
+        'table',
+        'ul',
+        'video',
+      ].includes(name) ||
+      isHeadingAnchor ||
+      isMultilineCode;
+    if (isBlock) {
+      if (inline.trim()) {
+        blocks.push(inline.trim());
+        inline = '';
+      }
+      const block = await renderBlockNode($, child, state);
+      if (block) blocks.push(block);
+    } else {
+      inline += await renderInlineNode($, child, state);
+    }
+  }
+  if (inline.trim()) blocks.push(inline.trim());
+  return normalizeBlocks(blocks.filter(Boolean).join('\n\n'));
+}
+
+async function renderChildren($, element, state) {
+  return renderNodeSequence($, element.contents().toArray(), state);
+}
+
+async function renderTypeDocDescription($, item, state) {
+  const nodes = item.contents().toArray();
+  const returnsIndex = nodes.findIndex(
+    (node) =>
+      elementName(node) === 'h4' && $(node).hasClass('tsd-returns-title'),
+  );
+  if (returnsIndex < 0) return renderNodeSequence($, nodes, state);
+
+  const beforeReturns = await renderNodeSequence(
+    $,
+    nodes.slice(0, returnsIndex),
+    state,
+  );
+  const description = await renderNodeSequence(
+    $,
+    nodes.slice(returnsIndex + 1),
+    state,
+  );
+  const returns = await parseTypeDocReturn(
+    $,
+    $(nodes[returnsIndex]),
+    state,
+    description,
+  );
+  return normalizeBlocks([beforeReturns, returns].filter(Boolean).join('\n\n'));
+}
+
+async function renderBlockNode($, node, state) {
+  if (node.type === 'text') return escapeMdxText(cleanText(node.data));
+  if (node.type !== 'tag') return '';
+  const element = $(node);
+  const name = elementName(node);
+  const anchor = anchorFor(element);
+  if (name === 'div' && element.hasClass('tsd-signature')) {
+    const labels = element
+      .parent()
+      .children('h3, h4')
+      .find('.tsd-flag')
+      .toArray()
+      .map((flag) => cleanText($(flag).text()))
+      .filter(Boolean);
+    const signature = normalizeGeneratedSignature(
+      await renderTypeDocInlineNodes($, element.contents().toArray(), state),
+    );
+    if (signature) {
+      state.structuredApiMembers.typedoc.signatures += 1;
+      return [
+        anchor,
+        renderRichMdxComponent(
+          'ApiSignature',
+          signature,
+          parameterAttribute('labels', labels.join(' ')),
+        ),
+      ]
+        .filter(Boolean)
+        .join('\n\n');
+    }
+  }
+  if (name === 'nav') {
+    const isRelatedLinks =
+      element.hasClass('related-links') || element.find('.relinfo').length > 0;
+    if (!isRelatedLinks) return '';
+    return [anchor, await renderRelatedLinks($, element, state)]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  if (['script', 'style', 'footer'].includes(name)) return '';
+  if (['iframe', 'object', 'video'].includes(name)) {
+    state.warnings.push(
+      createWarning(
+        'unsupported-html-structure',
+        `Unsupported embedded <${name}> content was omitted.`,
+      ),
+    );
+    return anchor;
+  }
+  const isDoxygenSignature = name === 'div' && element.hasClass('memproto');
+  if (isDoxygenSignature) {
+    const signature = await parseDoxygenSignature($, element, state);
+    if (signature) return [anchor, signature].filter(Boolean).join('\n\n');
+  }
+  const isAppledocSignature =
+    name === 'div' && element.hasClass('method-declaration');
+  if (isAppledocSignature) {
+    const signature = await parseAppledocSignature($, element, state);
+    if (signature) return [anchor, signature].filter(Boolean).join('\n\n');
+  }
+  const isAppledocParameters =
+    name === 'div' &&
+    element.hasClass('arguments-section') &&
+    element.hasClass('parameters') &&
+    element.children('table.argument-def.parameter-def').length > 0;
+  if (isAppledocParameters) {
+    return [anchor, await parseAppledocParameters($, element, state)]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  const detectedCallout = calloutType(element);
+  if (detectedCallout && ['aside', 'div', 'section'].includes(name)) {
+    let titleNode = element
+      .find('> .admonition-heading, > .title, > strong:first-child')
+      .first();
+    const contentNode = element
+      .find('[class]')
+      .filter((_, node) =>
+        [...classNames($(node))].some((name) =>
+          /^admonitionContent(?:_|$)/.test(name),
+        ),
+      )
+      .first();
+    const header = element.children().first();
+    if (
+      contentNode.length &&
+      !header.is(contentNode) &&
+      !header.find(contentNode).length
+    )
+      titleNode = header;
+    const title = cleanText(titleNode.text());
+    if (!contentNode.length && titleNode.length > 0) titleNode.remove();
+    const body = await renderCalloutChildren(
+      $,
+      contentNode.length ? contentNode : element,
+      state,
+    );
+    return [anchor, renderCallout({ type: detectedCallout, title, body })]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  const isTypeDocSectionLabel =
+    name === 'h4' &&
+    [
+      'tsd-parameters-title',
+      'tsd-returns-title',
+      'tsd-type-parameters-title',
+    ].some((className) => element.hasClass(className));
+  if (isTypeDocSectionLabel) {
+    const isParameterTitle =
+      element.hasClass('tsd-parameters-title') ||
+      element.hasClass('tsd-type-parameters-title');
+    if (isParameterTitle) return anchor;
+    return [anchor, await parseTypeDocReturn($, element, state)]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  const isDoxygenMemberTitle = name === 'h2' && element.hasClass('memtitle');
+  if (isDoxygenMemberTitle) {
+    element.children('.permalink').remove();
+    const title = cleanText(
+      stripHeadingLinks(
+        await renderInlineNodes($, element.contents().toArray(), state),
+      ),
+    );
+    return [anchor, title ? `### ${title}` : ''].filter(Boolean).join('\n\n');
+  }
+  const isDoxygenHiddenGroupTitle =
+    name === 'h2' &&
+    element.hasClass('groupheader') &&
+    (element.attr('id') === 'header-details' ||
+      cleanText(element.text()) === '枚举类型说明');
+  if (isDoxygenHiddenGroupTitle) {
+    return anchor;
+  }
+  if (/^h[1-6]$/.test(name)) {
+    const level = Number(name.slice(1));
+    let modifierAlias = '';
+    let headingElement = element;
+    if (
+      element.find('.tsd-flag').length &&
+      element.parent().children('div.tsd-signature').length
+    ) {
+      const oldId = getTableOfContents(
+        `${'#'.repeat(level)} ${cleanText(element.text())}`,
+      )[0]?.url.slice(1);
+      headingElement = element.clone();
+      headingElement.find('.tsd-flag').remove();
+      if (oldId && oldId !== element.attr('id'))
+        modifierAlias = renderStableAnchor(oldId);
+    }
+    const nestedAnchors = element
+      .find('a[id], a[name]')
+      .toArray()
+      .map((node) => anchorFor($(node)))
+      .filter(Boolean);
+    const title = cleanText(
+      stripHeadingLinks(
+        (
+          await renderInlineNodes($, headingElement.contents().toArray(), state)
+        ).replace(/<a id=(?:"[^"]*"|'[^']*')><\/a>/g, ''),
+      ),
+    );
+    return [
+      anchor,
+      modifierAlias,
+      ...nestedAnchors,
+      `${'#'.repeat(level)} ${title}`,
+    ]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  if (name === 'p') {
+    if (element.find('img').length > 0) {
+      return [anchor, await renderChildren($, element, state)]
+        .filter(Boolean)
+        .join('\n\n');
+    }
+    const body = await renderInlineNodes(
+      $,
+      element.contents().toArray(),
+      state,
+    );
+    return [anchor, body].filter(Boolean).join('\n\n');
+  }
+  if (name === 'code' && hasExplicitCodeLineBreak(element)) {
+    const source = normalizeMultilineCode(
+      await renderInlineNodes($, element.contents().toArray(), state, {
+        rawText: true,
+      }),
+    );
+    return [anchor, renderCodeFence(source, languageFromCode(element, state))]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  if (name === 'pre') {
+    const code = element.find('code').first();
+    const source = (code.length > 0 ? code : element).text();
+    if (!source.trim()) {
+      state.warnings.push(
+        createWarning(
+          'empty-source-code',
+          'The legacy source code block is empty; its stable anchor was preserved and the empty fence was omitted.',
+        ),
+      );
+      return anchor;
+    }
+    return [
+      anchor,
+      renderCodeFence(
+        source,
+        languageFromCode(code.length ? code : element, state),
+      ),
+    ]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  if (name === 'ul' || name === 'ol') {
+    if (name === 'ul' && element.hasClass('tsd-signatures')) {
+      return [anchor, await parseTypeDocSignatures($, element, state)]
+        .filter(Boolean)
+        .join('\n\n');
+    }
+    if (
+      name === 'ul' &&
+      (element.hasClass('tsd-parameters') ||
+        element.hasClass('tsd-type-parameters'))
+    ) {
+      return [anchor, await parseTypeDocParameters($, element, state)]
+        .filter(Boolean)
+        .join('\n\n');
+    }
+    const body = element.hasClass('tsd-descriptions')
+      ? await renderUnwrappedListItems($, element, state)
+      : await renderList($, element, state, name === 'ol');
+    return [anchor, body].filter(Boolean).join('\n\n');
+  }
+  if (name === 'table') {
+    return [anchor, await renderTable($, element, state)]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  if (name === 'dl') {
+    if (element.hasClass('parml')) {
+      return [anchor, await parseOxygenParameters($, element, state)]
+        .filter(Boolean)
+        .join('\n\n');
+    }
+    if (
+      element.hasClass('params') &&
+      element.closest('.memdoc').length > 0 &&
+      element.find('table.params').length > 0
+    ) {
+      return [anchor, await parseDoxygenParameters($, element, state)]
+        .filter(Boolean)
+        .join('\n\n');
+    }
+    return [anchor, await renderDefinitionList($, element, state)]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  if (name === 'blockquote') {
+    const labeled =
+      element.parents('blockquote').length === 0 &&
+      typedocNotice(cleanText(element.text()));
+    const content =
+      labeled || state.blockquoteCallout
+        ? await renderCalloutChildren($, element, state)
+        : await renderChildren($, element, state);
+    const notice = labeled && typedocNotice(content);
+    if (notice)
+      return [
+        anchor,
+        state.calloutDepth
+          ? `**${notice.title}${notice.separator}**\n\n${notice.body}`
+          : renderCallout(notice),
+      ]
+        .filter(Boolean)
+        .join('\n\n');
+    if (state.blockquoteCallout) {
+      return [
+        anchor,
+        state.calloutDepth
+          ? content
+          : renderCallout({ ...state.blockquoteCallout, body: content }),
+      ]
+        .filter(Boolean)
+        .join('\n\n');
+    }
+    const quote = content
+      .split('\n')
+      .map((line) => `> ${line}`.trimEnd())
+      .join('\n');
+    return [anchor, quote].filter(Boolean).join('\n\n');
+  }
+  if (name === 'hr') return '---';
+  if (name === 'img') {
+    return [anchor, await renderImage($, element, state)]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  if (name === 'figure') {
+    const image = element.find('img').first();
+    const caption = cleanText(element.find('figcaption').first().text());
+    const rendered =
+      image.length > 0 ? await renderImage($, image, state, caption) : '';
+    return [anchor, rendered, caption ? `_${escapeMdxText(caption)}_` : '']
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  if (name === 'details') {
+    const summary = cleanText(element.children('summary').first().text());
+    element.children('summary').first().remove();
+    const content = await renderChildren($, element, state);
+    return [anchor, summary ? `### ${escapeMdxText(summary)}` : '', content]
+      .filter(Boolean)
+      .join('\n\n');
+  }
+  const implicitDetailHeading =
+    name === 'section' && detailedDescriptionTitleMode(element) === 'implicit'
+      ? '### 详情'
+      : '';
+  return [
+    anchor,
+    implicitDetailHeading,
+    await renderChildren($, element, state),
+  ]
+    .filter(Boolean)
+    .join('\n\n');
+}
+
+/**
+ * @param {object} options
+ * @param {string} options.html
+ * @param {string} options.sourceUrl
+ * @param {string} options.sourcePath
+ * @param {Map<string, string>} [options.routeMap]
+ * @param {Map<string, string>} [options.fragmentMap]
+ * @param {(args: { source: string, sourceUrl: string }) => Promise<string> | string} [options.onAsset]
+ * @param {string} [options.rootSelector]
+ * @param {string} [options.titleSelector]
+ * @param {string} [options.conversionProfile]
+ * @param {{type: string, title: string}} [options.blockquoteCallout]
+ */
+export async function convertHtmlToMdx({
+  html,
+  sourceUrl,
+  sourcePath,
+  routeMap = new Map(),
+  fragmentMap = new Map(),
+  onAsset,
+  rootSelector,
+  titleSelector,
+  conversionProfile,
+  blockquoteCallout,
+}) {
+  const { $, article, titleNode, descriptionNode, title, description } =
+    loadHtmlPage({
+      html,
+      sourceUrl,
+      sourcePath,
+      rootSelector,
+      titleSelector,
+      conversionProfile,
+    });
+  if (article.length === 0) {
+    return {
+      title: '',
+      description: '',
+      body: '',
+      fragments: [],
+      assets: [],
+      warnings: [
+        createWarning(
+          'unsupported-html-structure',
+          `No article body found in ${sourcePath}.`,
+        ),
+      ],
+    };
+  }
+  // Doxygen inserts hidden anti-spam text and sometimes a scripted href.
+  // Recover only a complete visible email address; never evaluate onclick.
+  article.find('a').each((_, node) => {
+    const link = $(node);
+    if (!link.text().includes('.nosp@m.')) return;
+    const visible = link.clone();
+    visible.find('.obfuscator').remove();
+    visible
+      .find('[style]')
+      .filter((_, child) =>
+        /display\s*:\s*none\b/i.test($(child).attr('style') ?? ''),
+      )
+      .remove();
+    const email = visible.text().trim();
+    if (!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email)) return;
+    link.text(email).attr('href', `mailto:${email}`).removeAttr('onclick');
+  });
+  const state = createState({
+    sourceUrl,
+    sourcePath,
+    routeMap,
+    fragmentMap,
+    onAsset,
+    conversionProfile,
+    blockquoteCallout,
+  });
+  state.pageTitle = title;
+  const fragments = [];
+  article.find('[id], a[name]').each((_, node) => {
+    const element = $(node);
+    const value = element.attr('id') ?? element.attr('name');
+    if (value && !fragments.includes(value)) fragments.push(value);
+  });
+  article.children('table.memberdecls').remove();
+  article
+    .children('.textblock, p')
+    .filter((_, node) => {
+      const element = $(node);
+      const text = cleanText(element.text());
+      const sourceLink = element
+        .find('a[href*="_source.html"]')
+        .toArray()
+        .some((link) => {
+          const filename = ($(link).attr('href') ?? '')
+            .split(/[?#]/, 1)[0]
+            .split('/')
+            .at(-1);
+          if (!filename || !/_source\.html$/i.test(filename)) return false;
+          // Doxygen source-file names encode extensions with _8. A public
+          // type such as class_background_image_source.html is not a file view.
+          return (
+            /_8[^/]*_source\.html$/i.test(filename) ||
+            !/^(?:class|struct|interface|union|enum)/i.test(filename)
+          );
+        });
+      const includeOnly =
+        text.startsWith('#include') &&
+        element.find('code').length > 0 &&
+        element.find('p').length === 0;
+      return sourceLink || includeOnly;
+    })
+    .remove();
+  const titleElement = titleNode.get(0);
+  const titleIsInsideArticle =
+    titleElement &&
+    (article.get(0) === titleElement ||
+      article.find('*').toArray().includes(titleElement));
+  if (titleIsInsideArticle) titleNode.remove();
+  if (description) descriptionNode.remove();
+  const renderedBody = renderNoTocHeadings(
+    await renderChildren($, article, state),
+  );
+  const normalizedLinks = rewriteLegacyBodyLinks(renderedBody, {
+    routeMap,
+    sourcePath,
+    sourceUrl,
+  });
+  for (const change of normalizedLinks.changes) {
+    if (change.action !== 'rendered-as-text') continue;
+    state.warnings.push(
+      createWarning(
+        'unresolved-link',
+        `No local API Center target was found for ${change.href}.`,
+        { href: change.href },
+      ),
+    );
+  }
+  for (const unresolved of normalizedLinks.unresolved) {
+    state.warnings.push(
+      createWarning(
+        'unresolved-link',
+        `No local API Center target was found for ${unresolved.href}.`,
+        { href: unresolved.href },
+      ),
+    );
+  }
+  return {
+    title,
+    description,
+    body: normalizedLinks.source,
+    fragments,
+    assets: state.assets,
+    structuredApiMembers: state.structuredApiMembers,
+    structuredParameters: state.structuredParameters,
+    warnings: state.warnings,
+    sourceTextLength: cleanText(article.text()).length,
+  };
+}

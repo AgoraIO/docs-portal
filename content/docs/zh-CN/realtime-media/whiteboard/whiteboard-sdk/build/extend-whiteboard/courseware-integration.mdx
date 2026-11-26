@@ -1,0 +1,476 @@
+---
+title: 课件接入
+---
+
+<PlatformStructured platform="android">
+
+适用于 **Whiteboard Android SDK 2.16.134**。
+
+多窗口以 App 表示课件。先完成[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)并开启多窗口；需要协同创建/操作课件时，当前端应有可写权限。保留 addApp 返回的 appId，后续用于聚焦、关闭和页面控制。
+
+## 选择课件类型
+
+| kind | 用途 | 数据来源 |
+| --- | --- | --- |
+| Slide | 动态 PPT、动画与逐步播放 | 动态转码 taskId/url，或支持的转码 scenes |
+| Presentation | 静态 PPT / PDF 图片页 | 静态转码 scenes |
+| DocsViewer | 文档场景展示 | scenes 与 scenePath；沿用原文档展示流程 |
+| MediaPlayer | 音视频文件 | 可播放的媒体 src |
+| Plyr | 基于 app-plyr 的第三方媒体课件 | 自定义 App 注册后传入 provider/src |
+| EmbeddedPage | H5 页面课件 | 自定义 App 注册后传入网页 src |
+
+图片页 scenes 中需保留转码返回的 ppt.src、width、height；scenePath 使用唯一目录，避免多个窗口复用同一绑定路径。taskId 是转码任务 ID，不能用房间 UUID 替代。
+
+## 接入内置课件
+
+Native SDK 的 Bridge 已注册内置课件；无需业务重复注册 Slide。
+
+```java
+// config 在创建 WhiteSdk 前配置。
+config.setUseMultiViews(true);
+// 以下在 joinRoom 成功后调用，保存回调返回的 appId。
+room.addApp(WindowAppParam.createSlideApp(taskId, url, "动态课件"), null);
+room.addApp(WindowAppParam.createPresentationApp("/presentation/lesson-1", scenes, "静态课件"), null);
+room.addApp(WindowAppParam.createDocsViewerApp("/docs/lesson-1", scenes, "文档"), null);
+room.addApp(WindowAppParam.createMediaPlayerApp(mediaUrl, "媒体"), null);
+```
+
+示例简写为 null 回调；业务需确认 ID 时传入 `Promise<String>`，在 then 保存 appId、catchEx 处理异常。
+
+## 配置动态 PPT
+
+```java
+WhiteSdkConfiguration.SlideAppOptions slideOptions = new WhiteSdkConfiguration.SlideAppOptions();
+slideOptions.setEnableScale(true);
+slideOptions.setSyncEventQueuePolicy(SlideSyncEventQueuePolicy.LatestPendingRender);
+config.setSlideAppOptions(slideOptions); // 创建 SDK 前设置。
+```
+
+Slide 的 enableScale 默认 false，开启后才使用页面缩放。navigationButtonMode 默认 page，可设 step 控制底部按钮按动画步骤前后移动。syncEventQueuePolicy 默认 fifo；latest-pending-render 在 interactive 模式合并积压的待渲染页，不会把所有事件都丢弃为最新一条。
+
+## 动态配置注册参数
+
+根据业务配置决定参数后，在创建 `WhiteSdk` 前写入 `WhiteSdkConfiguration`。Slide 和 Presentation 已由 Native SDK 集成，直接设置本平台公开配置即可。
+
+| 课件 | 公开配置入口 | 配置时机 |
+| --- | --- | --- |
+| Slide 动态 PPT | `config.setSlideAppOptions(slideOptions)`，参数为 `WhiteSdkConfiguration.SlideAppOptions` | 创建 SDK 前；配置项见上文“配置动态 PPT” |
+| Presentation 静态 PPT / PDF | `config.setPresentationAppOptions(presentationOptions)`，参数为 `PresentationAppOptions` | 创建 SDK 前，随后入房并添加或恢复课件 |
+
+```java
+import com.herewhite.sdk.domain.PresentationAppOptions;
+
+// 与上文 Slide 参数一起，在创建 WhiteSdk 前设置。
+PresentationAppOptions presentationOptions = new PresentationAppOptions()
+    .setMaxCameraScale(4.0)
+    .setUseScrollbar(true)
+    .setUseClipView(true);
+config.setPresentationAppOptions(presentationOptions);
+```
+
+可根据业务策略为上述 setter 传入不同值。创建 SDK 后修改原配置对象，不会自动更新已初始化的课件；需在下一次创建 SDK 时传入新的配置。
+
+### Presentation 常用参数
+
+| 参数 | 作用 |
+| --- | --- |
+| `maxCameraScale` | 最大缩放倍率相对页面适配大小计算，例如 `4` 表示最多放大到适配大小的 4 倍 |
+| `useScrollbar` | 是否显示拖动滚动条 |
+| `useClipView` | 是否裁剪课件显示区域，只显示页面内容 |
+
+这些参数在本端生效，各参与端应按业务要求配置。每个课件的 `scenePath`、`scenes` 和 `title` 仍在 `addApp` 的 options 中传入；每个窗口的 `originSize` 在 attributes 中设置，详见[统一笔记](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-notes)。
+
+## 自定义课件与 H5
+
+将课件 Web 插件编译为适用于 WebView 的脚本（例如 IIFE），随 App 分发或提供兼容的远程脚本。使用公开 Native 注册接口：
+
+```java
+// jsString 是打包后的脚本文本；变量名必须与该脚本实际导出一致。
+WindowRegisterAppParams registration = new WindowRegisterAppParams(
+    jsString, "Plyr", "NetlessAppPlyr.default", new HashMap<String, Object>());
+whiteSdk.registerApp(registration, new Promise<Boolean>() {
+    @Override public void then(Boolean registered) {
+        if (!Boolean.TRUE.equals(registered)) return;
+        // 注册完成后进入房间；入房成功后再 addApp。
+    }
+    @Override public void catchEx(SDKError error) { Log.e("Whiteboard", "注册失败", error); }
+});
+// 已入房且注册成功：
+Map<String, Object> attrs = new HashMap<>();
+attrs.put("provider", "youtube");
+attrs.put("src", "https://www.youtube.com/embed/VIDEO_ID");
+room.addApp(new WindowAppParam("Plyr", new WindowAppParam.Options("视频课件"), attrs), null);
+```
+
+EmbeddedPage 按同一方式注册其实际导出，kind 为 `EmbeddedPage`，attributes.src 为 H5 URL；不能沿用 Plyr 的变量名。也可用 `WindowRegisterAppParams(url, kind, appOptions)` 加载符合 App loader 约定的远程包，不能直接填写任意 ESM 模块地址。
+
+Fastboard Android 的 [自定义 App](https://github.com/netless-io/fastboard-android/blob/1.8.2/doc/app.md) 和 [Plyr 示例](https://github.com/netless-io/fastboard-android/blob/1.8.2/doc/youtube_plyr.md) 提供资源打包参考；Fastboard 使用 `FastRegisterAppParams` 与 `fastRoom.registerApp`，在 join 前注册。
+
+插件数据和协议参考 [app-plyr](https://github.com/netless-io/netless-app/tree/master/packages/app-plyr) 与 [app-embedded-page](https://github.com/netless-io/netless-app/tree/master/packages/app-embedded-page)。
+
+注册是本端能力，课件 attributes 是需要协同的初始数据。同房间所有参与端都需要注册兼容的同一 kind，不能只在创建端注册。注册成功后再创建窗口；已有窗口由房间状态恢复时，也需要本端已具备对应 App。
+
+H5 课件受 iframe 嵌入、CSP、跨域、登录态及移动 WebView 媒体策略约束。Plyr 的 provider/src 需遵循插件文档，不能把任意播放页 URL 当作可直接播放的媒体文件。要把 H5 内部操作同步给远端，还需要课件自己的协同实现。
+
+## 继续配置
+
+- [统一页面控制](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-page-control)：主白板、Slide、Presentation、DocsViewer 的翻页、倍率、查询和监听。
+- [统一笔记](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-notes)：分别设置 MainView、Slide、Presentation 的 originSize。
+- [课件按需加载](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/courseware-lazy-loading)：最大化模式的按焦点初始化和本端缓存。
+- [本地日志](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/local-log)：排查课件初始化、资源和运行时问题。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+适用于 **Whiteboard iOS SDK 2.16.147**。
+
+多窗口以 App 表示课件。先完成[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)并开启多窗口；需要协同创建/操作课件时，当前端应有可写权限。保留 addApp 返回的 appId，后续用于聚焦、关闭和页面控制。
+
+## 选择课件类型
+
+| kind | 用途 | 数据来源 |
+| --- | --- | --- |
+| Slide | 动态 PPT、动画与逐步播放 | 动态转码 taskId/url，或支持的转码 scenes |
+| Presentation | 静态 PPT / PDF 图片页 | 静态转码 scenes |
+| DocsViewer | 文档场景展示 | scenes 与 scenePath；沿用原文档展示流程 |
+| MediaPlayer | 音视频文件 | 可播放的媒体 src |
+| Plyr | 基于 app-plyr 的第三方媒体课件 | 自定义 App 注册后传入 provider/src |
+| EmbeddedPage | H5 页面课件 | 自定义 App 注册后传入网页 src |
+
+图片页 scenes 中需保留转码返回的 ppt.src、width、height；scenePath 使用唯一目录，避免多个窗口复用同一绑定路径。taskId 是转码任务 ID，不能用房间 UUID 替代。
+
+## 接入内置课件
+
+Native Bridge 已注册内置课件；在创建 SDK 前配置 useMultiViews，入房后添加窗口。
+
+```objc
+config.useMultiViews = YES;
+// 以下在入房成功后调用。
+WhiteAppParam *slide = [WhiteAppParam createSlideApp:@"/slide/lesson-1"
+    taskId:taskId url:url title:@"动态课件"];
+[room addApp:slide completionHandler:^(NSString *appId) { NSLog(@"%@", appId); }];
+[room addApp:[WhiteAppParam createPresentationApp:@"/presentation/lesson-1" scenes:scenes title:@"静态课件"]
+    completionHandler:^(NSString *appId) { NSLog(@"%@", appId); }];
+[room addApp:[WhiteAppParam createDocsViewerApp:@"/docs/lesson-1" scenes:scenes title:@"文档"]
+    completionHandler:^(NSString *appId) { NSLog(@"%@", appId); }];
+[room addApp:[WhiteAppParam createMediaPlayerApp:mediaUrl title:@"媒体"]
+    completionHandler:^(NSString *appId) { NSLog(@"%@", appId); }];
+```
+
+## 配置动态 PPT
+
+```objc
+config.whiteSlideAppParams.enableScale = YES;
+config.whiteSlideAppParams.syncEventQueuePolicy = WhiteSlideSyncEventQueuePolicyLatestPendingRender;
+```
+
+Slide 的 enableScale 默认 false，开启后才使用页面缩放。navigationButtonMode 默认 page，可设 step 控制底部按钮按动画步骤前后移动。syncEventQueuePolicy 默认 fifo；latest-pending-render 在 interactive 模式合并积压的待渲染页，不会把所有事件都丢弃为最新一条。
+
+## 动态配置注册参数
+
+根据业务配置决定参数后，在创建 `WhiteSDK` 前写入 `WhiteSdkConfiguration`。Slide 和 Presentation 已由 Native SDK 集成，直接设置本平台公开配置即可。
+
+| 课件 | 公开配置入口 | 配置时机 |
+| --- | --- | --- |
+| Slide 动态 PPT | `config.whiteSlideAppParams`，类型为 `WhiteSlideAppParams` | 创建 SDK 前；配置项见上文“配置动态 PPT” |
+| Presentation 静态 PPT / PDF | `config.presentationAppOptions`，类型为 `WhitePresentationAppOptions` | 创建 SDK 前，随后入房并添加或恢复课件 |
+
+```objc
+// 与上文 Slide 参数一起，在创建 WhiteSDK 前设置。
+WhitePresentationAppOptions *presentationOptions = [WhitePresentationAppOptions new];
+presentationOptions.maxCameraScale = @4;
+presentationOptions.useScrollbar = @YES;
+presentationOptions.useClipView = @YES;
+config.presentationAppOptions = presentationOptions;
+```
+
+可根据业务策略给上述属性赋不同值。创建 SDK 后修改原配置对象，不会自动更新已初始化的课件；需在下一次创建 SDK 时传入新的配置。
+
+### Presentation 常用参数
+
+| 参数 | 作用 |
+| --- | --- |
+| `maxCameraScale` | 最大缩放倍率相对页面适配大小计算，例如 `4` 表示最多放大到适配大小的 4 倍 |
+| `useScrollbar` | 是否显示拖动滚动条 |
+| `useClipView` | 是否裁剪课件显示区域，只显示页面内容 |
+
+这些参数在本端生效，各参与端应按业务要求配置。每个课件的 `scenePath`、`scenes` 和 `title` 仍在 `addApp` 的 options 中传入；每个窗口的 `originSize` 在 attributes 中设置，详见[统一笔记](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-notes)。
+
+## 自定义课件与 H5
+
+```objc
+// javascriptString 为打包脚本文本，variable 为脚本实际导出路径。
+WhiteRegisterAppParams *registration = [WhiteRegisterAppParams
+    paramsWithJavascriptString:javascriptString kind:@"Plyr"
+    appOptions:@{} variable:@"NetlessAppPlyr.default"];
+[sdk registerAppWithParams:registration completionHandler:^(NSError *error) {
+    if (error) { NSLog(@"%@", error); return; }
+    // 注册完成后进入房间，成功后再 addApp。
+}];
+// 已入房且注册成功：
+WhiteAppOptions *options = [WhiteAppOptions new];
+options.title = @"视频课件";
+WhiteAppParam *app = [[WhiteAppParam alloc] initWithKind:@"Plyr" options:options
+    attrs:@{ @"provider": @"youtube", @"src": @"https://www.youtube.com/embed/VIDEO_ID" }];
+[room addApp:app completionHandler:^(NSString *appId) { NSLog(@"%@", appId); }];
+```
+
+EmbeddedPage 同样需要先注册对应脚本和真实导出变量，随后以 `kind=EmbeddedPage`、`attrs.src=H5 URL` 添加。远程包可使用 `paramsWithUrl:kind:appOptions:`，URL 需符合 App loader 的包格式。
+
+参考 [Whiteboard iOS 自定义 App](https://github.com/netless-io/Whiteboard-iOS/blob/2.16.147/README-zh.md#自定义app插件) 和 [Fastboard iOS 自定义 JS](https://github.com/netless-io/fastboard-iOS/blob/1.4.6/CustomJS-zh.md)。Fastboard 已创建实例时可通过公开 `fastRoom.whiteSDK` 注册，保持其代理不变；在 join 前等待注册完成。
+
+插件数据和协议参考 [app-plyr](https://github.com/netless-io/netless-app/tree/master/packages/app-plyr) 与 [app-embedded-page](https://github.com/netless-io/netless-app/tree/master/packages/app-embedded-page)。
+
+注册是本端能力，课件 attributes 是需要协同的初始数据。同房间所有参与端都需要注册兼容的同一 kind，不能只在创建端注册。注册成功后再创建窗口；已有窗口由房间状态恢复时，也需要本端已具备对应 App。
+
+H5 课件受 iframe 嵌入、CSP、跨域、登录态及移动 WebView 媒体策略约束。Plyr 的 provider/src 需遵循插件文档，不能把任意播放页 URL 当作可直接播放的媒体文件。要把 H5 内部操作同步给远端，还需要课件自己的协同实现。
+
+## 继续配置
+
+- [统一页面控制](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-page-control)：主白板、Slide、Presentation、DocsViewer 的翻页、倍率、查询和监听。
+- [统一笔记](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-notes)：分别设置 MainView、Slide、Presentation 的 originSize。
+- [课件按需加载](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/courseware-lazy-loading)：最大化模式的按焦点初始化和本端缓存。
+- [本地日志](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/local-log)：排查课件初始化、资源和运行时问题。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+适用于 **Whiteboard Web SDK 2.16.59**。
+
+多窗口以 App 表示课件。先完成[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)并开启多窗口；需要协同创建/操作课件时，当前端应有可写权限。保留 addApp 返回的 appId，后续用于聚焦、关闭和页面控制。
+
+## 选择课件类型
+
+| kind | 用途 | 数据来源 |
+| --- | --- | --- |
+| Slide | 动态 PPT、动画与逐步播放 | 动态转码 taskId/url，或支持的转码 scenes |
+| Presentation | 静态 PPT / PDF 图片页 | 静态转码 scenes |
+| DocsViewer | 文档场景展示 | scenes 与 scenePath；沿用原文档展示流程 |
+| MediaPlayer | 音视频文件 | 可播放的媒体 src |
+| Plyr | 基于 app-plyr 的第三方媒体课件 | 自定义 App 注册后传入 provider/src |
+| EmbeddedPage | H5 页面课件 | 自定义 App 注册后传入网页 src |
+
+图片页 scenes 中需保留转码返回的 ppt.src、width、height；scenePath 使用唯一目录，避免多个窗口复用同一绑定路径。taskId 是转码任务 ID，不能用房间 UUID 替代。
+
+## 接入内置课件
+
+```typescript
+import { WindowManager } from '@netless/window-manager';
+import Slide, { addHooks, type AppOptions as SlideAppOptions } from '@netless/app-slide';
+// 在 mount 以及恢复房间课件前完成注册。Presentation、DocsViewer、MediaPlayer 为内置 App。
+WindowManager.register({ kind: 'Slide', src: Slide, addHooks,
+  appOptions: { enableScale: true } });
+// manager 已 mount；taskId/url/scenes 来自已完成的转码任务。
+const slideId = await manager.addApp({
+  kind: 'Slide', options: { scenePath: '/slide/lesson-1', title: '动态课件' },
+  attributes: { taskId, url }
+});
+await manager.addApp({ kind: 'Presentation',
+  options: { scenePath: '/presentation/lesson-1', scenes, title: '静态课件' } });
+await manager.addApp({ kind: 'DocsViewer',
+  options: { scenePath: '/docs/lesson-1', scenes, title: '文档' } });
+await manager.addApp({ kind: 'MediaPlayer', options: { title: '媒体' },
+  attributes: { src: mediaUrl } });
+```
+
+## 配置动态 PPT
+
+直接使用 `WindowManager.register` 时，在上述 Slide 注册的 appOptions 中按需补充 `navigationButtonMode: "step"`、`syncEventQueuePolicy: "latest-pending-render"`。不要在注册后为每个窗口重复改写全局注册表。
+
+Slide 的 enableScale 默认 false，开启后才使用页面缩放。navigationButtonMode 默认 page，可设 step 控制底部按钮按动画步骤前后移动。syncEventQueuePolicy 默认 fifo；latest-pending-render 在 interactive 模式合并积压的待渲染页，不会把所有事件都丢弃为最新一条。
+
+## 动态配置注册参数
+
+课件注册参数可以由业务配置生成。Slide 的 `appOptions` 支持对象或返回对象的函数；内置 Presentation 的参数通过 `WindowManager.mount` 设置，无需重新注册。
+
+| 课件 | 公开配置入口 | 配置时机 |
+| --- | --- | --- |
+| Slide 动态 PPT | `WindowManager.register({ kind: 'Slide', appOptions })` | 在 mount 和恢复课件前注册；参数含义见上文“配置动态 PPT” |
+| Presentation 静态 PPT / PDF | `WindowManager.mount({ builtinAppOptions: { Presentation } })` | 在 mount 时设置，供新建和恢复的 Presentation 读取 |
+
+下面示例替换前文的 Slide 注册和多窗口挂载配置；保留业务原有的其他 mount 参数。
+
+```typescript
+const coursewarePolicy = {
+  allowSlideScale: true,
+  presentationMaxScale: 4,
+  showScrollbar: true
+};
+
+await WindowManager.register({
+  kind: 'Slide', src: Slide, addHooks,
+  appOptions: (): SlideAppOptions => ({
+    enableScale: coursewarePolicy.allowSlideScale,
+    navigationButtonMode: 'step',
+    syncEventQueuePolicy: 'latest-pending-render',
+    onResourceMaxRetries: (url, error) => {
+      console.warn('课件资源重试已达上限', url, error);
+    }
+  })
+});
+
+const manager = await WindowManager.mount({
+  room, container,
+  builtinAppOptions: {
+    Presentation: {
+      maxCameraScale: coursewarePolicy.presentationMaxScale,
+      useScrollbar: coursewarePolicy.showScrollbar,
+      useClipView: true
+    }
+  }
+});
+```
+
+Slide 的函数形式在 App 读取参数时求值；修改业务变量不会向所有已初始化课件自动广播更新。Presentation 在 mount 时确定本次配置，`Presentation` 的大小写需与上例一致。
+
+### Presentation 常用参数
+
+| 参数 | 作用 |
+| --- | --- |
+| `maxCameraScale` | 最大缩放倍率相对页面适配大小计算，例如 `4` 表示最多放大到适配大小的 4 倍 |
+| `useScrollbar` | 是否显示拖动滚动条 |
+| `useClipView` | 是否裁剪课件显示区域，只显示页面内容 |
+
+这些参数在本端生效，各参与端应按业务要求配置。每个课件的 `scenePath`、`scenes` 和 `title` 仍在 `addApp` 的 options 中传入；每个窗口的 `originSize` 在 attributes 中设置，详见[统一笔记](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-notes)。
+
+## 自定义课件与 H5
+
+```typescript
+import Plyr from '@netless/app-plyr';
+import EmbeddedPage from '@netless/app-embedded-page';
+WindowManager.register({ kind: 'Plyr', src: Plyr });
+WindowManager.register({ kind: 'EmbeddedPage', src: EmbeddedPage });
+// 在 mount 前注册，入房和 mount 后再 addApp。
+await manager.addApp({ kind: 'Plyr', options: { title: '视频课件' },
+  attributes: { provider: 'youtube', src: 'https://www.youtube.com/embed/VIDEO_ID' } });
+await manager.addApp({ kind: 'EmbeddedPage', options: { title: 'H5 课件' },
+  attributes: { src: 'https://YOUR_COURSEWARE_HOST/lesson' } });
+```
+
+插件数据和协议参考 [app-plyr](https://github.com/netless-io/netless-app/tree/master/packages/app-plyr) 与 [app-embedded-page](https://github.com/netless-io/netless-app/tree/master/packages/app-embedded-page)。
+
+注册是本端能力，课件 attributes 是需要协同的初始数据。同房间所有参与端都需要注册兼容的同一 kind，不能只在创建端注册。注册成功后再创建窗口；已有窗口由房间状态恢复时，也需要本端已具备对应 App。
+
+H5 课件受 iframe 嵌入、CSP、跨域、登录态及移动 WebView 媒体策略约束。Plyr 的 provider/src 需遵循插件文档，不能把任意播放页 URL 当作可直接播放的媒体文件。要把 H5 内部操作同步给远端，还需要课件自己的协同实现。
+
+## 继续配置
+
+- [统一页面控制](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-page-control)：主白板、Slide、Presentation、DocsViewer 的翻页、倍率、查询和监听。
+- [统一笔记](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-notes)：分别设置 MainView、Slide、Presentation 的 originSize。
+- [课件按需加载](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/courseware-lazy-loading)：最大化模式的按焦点初始化和本端缓存。
+- [本地日志](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/local-log)：排查课件初始化、资源和运行时问题。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+适用于 **Whiteboard HarmonyOS SDK 0.2.11**。
+
+多窗口以 App 表示课件。先完成[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)并开启多窗口；需要协同创建/操作课件时，当前端应有可写权限。保留 addApp 返回的 appId，后续用于聚焦、关闭和页面控制。
+
+## 选择课件类型
+
+| kind | 用途 | 数据来源 |
+| --- | --- | --- |
+| Slide | 动态 PPT、动画与逐步播放 | 动态转码 taskId/url，或支持的转码 scenes |
+| Presentation | 静态 PPT / PDF 图片页 | 静态转码 scenes |
+| DocsViewer | 文档场景展示 | scenes 与 scenePath；沿用原文档展示流程 |
+| MediaPlayer | 音视频文件 | 可播放的媒体 src |
+| Plyr | 基于 app-plyr 的第三方媒体课件 | 自定义 App 注册后传入 provider/src |
+| EmbeddedPage | H5 页面课件 | 自定义 App 注册后传入网页 src |
+
+图片页 scenes 中需保留转码返回的 ppt.src、width、height；scenePath 使用唯一目录，避免多个窗口复用同一绑定路径。taskId 是转码任务 ID，不能用房间 UUID 替代。
+
+## 接入内置课件
+
+HarmonyOS 的 Bridge 已注册内置课件，使用 Native 接口 addApp。WindowAppParam 是接口，按字段构造参数。
+
+```typescript
+// WhiteboardOptions 中先设置 useMultiViews: true；以下在 onRoomReady 后调用。
+const slide: WindowAppParam = {
+  kind: 'Slide', options: { scenePath: '/slide/lesson-1', title: '动态课件' },
+  attributes: { taskId: taskId, url: url }
+};
+const slideId = await controller.addApp(slide);
+const presentation: WindowAppParam = {
+  kind: 'Presentation', options: { scenePath: '/presentation/lesson-1', scenes: scenes, title: '静态课件' }
+};
+await controller.addApp(presentation);
+const docs: WindowAppParam = {
+  kind: 'DocsViewer', options: { scenePath: '/docs/lesson-1', scenes: scenes, title: '文档' }
+};
+await controller.addApp(docs);
+const media: WindowAppParam = {
+  kind: 'MediaPlayer', options: { title: '媒体' }, attributes: { src: mediaUrl }
+};
+await controller.addApp(media);
+```
+
+## 配置动态 PPT
+
+```typescript
+// WhiteboardOptions 内设置：
+slideAppOptions: {
+  enableScale: true,
+  navigationButtonMode: 'step',
+  syncEventQueuePolicy: 'latest-pending-render'
+}
+```
+
+Slide 的 enableScale 默认 false，开启后才使用页面缩放。navigationButtonMode 默认 page，可设 step 控制底部按钮按动画步骤前后移动。syncEventQueuePolicy 默认 fifo；latest-pending-render 在 interactive 模式合并积压的待渲染页，不会把所有事件都丢弃为最新一条。
+
+## 动态配置注册参数
+
+根据业务配置决定参数后，在首次初始化白板前设置 `WhiteboardOptions`。Slide 和 Presentation 已由 Native SDK 集成，直接设置本平台公开配置即可。
+
+| 课件 | 公开配置入口 | 配置时机 |
+| --- | --- | --- |
+| Slide 动态 PPT | `WhiteboardOptions.slideAppOptions`，类型为 `SlideAppOptions` | 首次初始化白板前；配置项见上文“配置动态 PPT” |
+| Presentation 静态 PPT / PDF | `WhiteboardOptions.presentationAppOptions`，类型为 `PresentationAppOptions` | 首次初始化白板前，随后入房并添加或恢复课件 |
+
+```typescript
+import { PresentationAppOptions } from '@shengwang/whiteboard';
+
+const presentationOptions: PresentationAppOptions = {
+  maxCameraScale: 4,
+  useScrollbar: true,
+  useClipView: true
+};
+// 在传给 Whiteboard 的 WhiteboardOptions 中设置：
+// presentationAppOptions: presentationOptions
+```
+
+可根据业务策略为上述字段选择不同值。保持同一个白板节点运行期间，修改业务对象不会自动更新已初始化的课件；应在下一次初始化白板前确定新配置。
+
+### Presentation 常用参数
+
+| 参数 | 作用 |
+| --- | --- |
+| `maxCameraScale` | 最大缩放倍率相对页面适配大小计算，例如 `4` 表示最多放大到适配大小的 4 倍 |
+| `useScrollbar` | 是否显示拖动滚动条 |
+| `useClipView` | 是否裁剪课件显示区域，只显示页面内容 |
+
+这些参数在本端生效，各参与端应按业务要求配置。每个课件的 `scenePath`、`scenes` 和 `title` 仍在 `addApp` 的 options 中传入；每个窗口的 `originSize` 在 attributes 中设置，详见[统一笔记](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-notes)。
+
+## 自定义课件与 H5
+
+HarmonyOS 0.2.11 没有公开 registerApp 接口。要使用 Plyr 或 EmbeddedPage，需由 SDK/Bridge 集成方先将对应 Web App 注册到内嵌 Bridge 并交付一致资源；业务层仅调用 addApp 不能加载尚未注册的 kind。此处不提供不存在的 Native 注册示例。
+
+集成方可参考 [Whiteboard Bridge](https://github.com/netless-io/Whiteboard-bridge) 的注册链路及 [WindowManager 自定义 App 开发](https://github.com/netless-io/window-manager/blob/1.0.25/docs/develop-app.md)。待集成方完成注册后，业务通过 WindowAppParam 的 kind/options/attributes 创建课件，H5 地址使用 attributes.src。
+
+插件数据和协议参考 [app-plyr](https://github.com/netless-io/netless-app/tree/master/packages/app-plyr) 与 [app-embedded-page](https://github.com/netless-io/netless-app/tree/master/packages/app-embedded-page)。
+
+注册是本端能力，课件 attributes 是需要协同的初始数据。同房间所有参与端都需要注册兼容的同一 kind，不能只在创建端注册。注册成功后再创建窗口；已有窗口由房间状态恢复时，也需要本端已具备对应 App。
+
+H5 课件受 iframe 嵌入、CSP、跨域、登录态及移动 WebView 媒体策略约束。Plyr 的 provider/src 需遵循插件文档，不能把任意播放页 URL 当作可直接播放的媒体文件。要把 H5 内部操作同步给远端，还需要课件自己的协同实现。
+
+## 继续配置
+
+- [统一页面控制](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-page-control)：主白板、Slide、Presentation、DocsViewer 的翻页、倍率、查询和监听。
+- [统一笔记](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-notes)：分别设置 MainView、Slide、Presentation 的 originSize。
+- [课件按需加载](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/courseware-lazy-loading)：最大化模式的按焦点初始化和本端缓存。
+- [本地日志](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/local-log)：排查课件初始化、资源和运行时问题。
+
+</PlatformStructured>

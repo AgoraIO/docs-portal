@@ -1,0 +1,144 @@
+---
+title: WhiteBoardView Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteBoardView
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteBoardView.html
+  generator: appledoc
+  warnings: []
+---
+
+Whiteboard iOS SDK 2.16.147 公开接口。
+
+@interface WhiteBoardView: NTLDWKWebView
+
+## 成员
+
+- [room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-board-view#//api/name/room)
+- [player](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-board-view#//api/name/player)
+- [disableKeyboardHandler](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-board-view#//api/name/disableKeyboardHandler)
+- [init](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-board-view#//api/name/init)
+- [initCustomUrl:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-board-view#//api/name/initCustomUrl:)
+- [initWithEnableHttpsScheme:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-board-view#//api/name/initWithEnableHttpsScheme:)
+- [initCustomUrl\:enableHttpsScheme:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-board-view#//api/name/initCustomUrl:enableHttpsScheme:)
+
+<a id="//api/name/room"></a>
+
+
+<a id="tasks"></a>
+
+### `room`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteRoom *room;
+
+</ApiSignature>
+
+```text
+白板房间类。详见 [WhiteRoom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-room)。
+```
+
+Declared in Displayer/WhiteBoardView.h
+
+<a id="//api/name/player"></a>
+
+### `player`
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhitePlayer *player;
+
+</ApiSignature>
+
+```text
+白板回放类。详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player)。
+```
+
+Declared in Displayer/WhiteBoardView.h
+
+<a id="//api/name/disableKeyboardHandler"></a>
+
+### `disableKeyboardHandler`
+
+<ApiSignature>
+
+@property (nonatomic, assign) BOOL disableKeyboardHandler;
+
+</ApiSignature>
+
+```text
+是否禁用 SDK 本身对键盘偏移的处理。
+
+ - `YES`:禁用 SDK 本身对键盘偏移的处理。
+ - `NO`:启用 SDK 本身对键盘偏移的处理。
+```
+
+Declared in Displayer/WhiteBoardView.h
+
+<a id="//api/name/init"></a>
+
+### `– init`
+
+<ApiSignature>
+
+\- (instancetype)init;
+
+</ApiSignature>
+
+```text
+初始化白板界面。
+
+ @return 初始化的 `WhiteBroadView` 对象。
+```
+
+Declared in Displayer/WhiteBoardView.h
+
+<a id="//api/name/initCustomUrl:"></a>
+
+### `– initCustomUrl:`
+
+<ApiSignature>
+
+\- (instancetype)initCustomUrl:(nullable NSString *)customUrl;
+
+</ApiSignature>
+
+```text
+使用自定义 URL 加载白板资源。
+```
+
+Declared in Displayer/WhiteBoardView.h
+
+<a id="//api/name/initWithEnableHttpsScheme:"></a>
+
+### `– initWithEnableHttpsScheme:`
+
+<ApiSignature>
+
+\- (instancetype)initWithEnableHttpsScheme:(BOOL)enableHttpsScheme;
+
+</ApiSignature>
+
+```text
+初始化白板界面，并配置是否启用 https scheme 的本地资源加载方式（试验性功能）。
+```
+
+Declared in Displayer/WhiteBoardView.h
+
+<a id="//api/name/initCustomUrl:enableHttpsScheme:"></a>
+
+### `– initCustomUrl:enableHttpsScheme:`
+
+<ApiSignature>
+
+\- (instancetype)initCustomUrl:(nullable NSString *)customUrl enableHttpsScheme:(BOOL)enableHttpsScheme;
+
+</ApiSignature>
+
+```text
+使用自定义 URL 加载白板资源，并配置是否启用 https scheme 的本地资源加载方式（试验性功能）。
+```
+
+Declared in Displayer/WhiteBoardView.h

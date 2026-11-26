@@ -1,0 +1,12 @@
+sequenceDiagram
+  participant App as App 房间层
+  participant RTM as RTM SDK
+  participant RTC as RTC SDK
+  App->>App: 创建房间 store，绑定房间事件处理器
+  App->>RTM: presence.setState(roomId, ...)
+  App->>RTM: subscribe(roomId)
+  RTM-->>App: subscribe 完成（频道已订阅）
+  App->>RTC: 加入频道并订阅音频
+  RTM-->>App: presence SNAPSHOT
+  RTM-->>App: storage SNAPSHOT
+  App->>App: 房间状态已就绪，开放麦位与公告相关操作

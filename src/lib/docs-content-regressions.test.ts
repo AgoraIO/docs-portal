@@ -2123,3 +2123,38 @@ describe('docs content regressions', () => {
     );
   });
 });
+
+describe('synchronized mixed-content scenario tabs', () => {
+  it.each([
+    ['ai/build/transcripts.mdx', 'language'],
+    ['ai/get-started/quick-start-agent.mdx', 'language'],
+    ['realtime-media/rtc/get-started/quick-start.mdx', 'mode'],
+    ['api-reference/rtm/web/configuration.mdx', 'package'],
+    [
+      'realtime-media/rtm/build/rtm-initialization/application-setup.mdx',
+      'package',
+    ],
+    ['realtime-media/rtm/get-started/quick-start.mdx', 'package'],
+    [
+      'realtime-media/cloud-recording/build/monitor-events/enable-ncs.mdx',
+      'signature',
+    ],
+  ])(
+    'keeps every synchronized %s scenario step in ordinary MDX Tabs',
+    (file, groupId) => {
+      const source = readFileSync(resolve(allDocsRoot, 'zh-CN', file), 'utf8');
+      const groups = [
+        ...source.matchAll(
+          new RegExp(
+            `^[ \\t]*<(Tabs|CodeBlockTabs)\\b[^>]*\\bgroupId="${groupId}"`,
+            'gm',
+          ),
+        ),
+      ];
+      expect(groups.length).toBeGreaterThan(1);
+      expect(
+        groups.filter((match) => match[1] !== 'Tabs').map((match) => match[0]),
+      ).toEqual([]);
+    },
+  );
+});

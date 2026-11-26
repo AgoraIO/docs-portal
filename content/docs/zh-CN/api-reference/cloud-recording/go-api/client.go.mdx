@@ -1,0 +1,77 @@
+---
+title: "Client 类"
+---
+<a id="newclient"></a>
+## NewClient
+
+```go
+func NewClient(config *Config) (*Client, error)
+```
+
+使用指定配置创建一个云端录制客户端实例。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `config` | `Config` | 云端录制客户端实例的配置，详见 [`Config`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#config)。 |
+
+#### 返回值
+
+- `*Client`：方法调用成功时返回云端录制客户端实例，详见 [`Client`](/zh-CN/api-reference/cloud-recording/go-api/client.go)。
+- `error`：方法调用失败时返回错误信息。
+
+<a id="individualrecording"></a>
+## IndividualRecording
+
+```go
+func (c *Client) IndividualRecording() *scenario.IndividualRecording
+```
+
+返回 [`IndividualRecording`](/zh-CN/api-reference/cloud-recording/go-api/individualrecording.go) 单流录制场景实例。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 返回值
+
+返回单流录制场景实例，详见 [`IndividualRecording`](/zh-CN/api-reference/cloud-recording/go-api/individualrecording.go)。
+
+<a id="webrecording"></a>
+## WebRecording
+
+```go
+func (c *Client) WebRecording() *scenario.WebRecording
+```
+
+返回 [`WebRecording`](/zh-CN/api-reference/cloud-recording/go-api/webrecording.go) 页面录制场景实例。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 返回值
+
+返回页面录制场景实例，详见 [`WebRecording`](/zh-CN/api-reference/cloud-recording/go-api/webrecording.go)。
+
+<a id="mixrecording"></a>
+## MixRecording
+
+```go
+func (c *Client) MixRecording() *scenario.MixRecording
+```
+
+返回 [`MixRecording`](/zh-CN/api-reference/cloud-recording/go-api/mixrecording.go) 合流录制场景实例。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 返回值
+
+返回合流录制场景实例，详见 [`MixRecording`](/zh-CN/api-reference/cloud-recording/go-api/mixrecording.go)。

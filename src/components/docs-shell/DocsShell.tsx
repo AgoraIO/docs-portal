@@ -3,8 +3,10 @@
 import { Link } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import {
+  ArrowRightIcon,
   CheckIcon,
   ChevronDownIcon,
+  ExternalLinkIcon,
   MenuIcon,
   MoonIcon,
   SunIcon,
@@ -46,34 +48,49 @@ import type {
   ProductScope,
   TabSummary,
 } from '@/lib/docs-tree';
+import { addIntroductionResourceLinks } from '@/lib/docs-tree';
 import {
   type AppLocale,
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
-import { legacyDocsBannerConfig } from '@/lib/shared';
-import { AgoraLogoMark } from './AgoraLogoMark';
+import { getAppBranding, legacyDocsBannerConfig } from '@/lib/shared';
 import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog } from './DocsSearchDialog';
 import { DocsSidebar } from './DocsSidebar';
+import { DocsSidebarEndpointLabel } from './DocsSidebarEndpointLabel';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
+import { DocsSidebarProductLink } from './DocsSidebarProductLink';
 import { DocsSidebarTree } from './DocsSidebarTree';
 import { DocsSiteFooter } from './DocsSiteFooter';
+import { DocsSiteMenu } from './DocsSiteMenu';
 import { DocsTocRail } from './DocsTocRail';
 import { DocVersionSelector } from './DocVersionControls';
 import { getDocsSourceLinks } from './docs-source-links';
+import { SiteLogoMark } from './SiteLogoMark';
 
 const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
   'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]';
-const DOCS_DESKTOP_GRID_CLASS_NAME =
-  'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]';
+const DOCS_DESKTOP_GRID_CLASS_NAME = 'xl:grid-cols-[256px_minmax(0,1fr)_220px]';
 const DOCS_FILL_DESKTOP_GRID_CLASS_NAME = 'xl:grid-cols-[256px_minmax(0,1fr)]';
 const ENABLED_DOCS_CHROME_LOCALES = new Set<AppLocale>([DEFAULT_LOCALE]);
 export const LEGACY_DOCS_BANNER_DISMISSED_STORAGE_KEY =
   'agora-docs:legacy-docs-banner-dismissed';
 const LEGACY_DOCS_BANNER_DISMISSED_STORAGE_VALUE = 'true';
-const DISMISS_LEGACY_DOCS_BANNER_LABEL = 'Dismiss legacy docs banner';
+const mobilePageLinkClassName =
+  'relative flex min-h-10 w-full min-w-0 max-w-full items-start gap-2 overflow-hidden rounded-md px-3 py-2.5 text-left text-sm leading-5 transition-colors before:absolute before:left-1 before:top-1/2 before:h-4 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 [&>span:first-child]:min-w-0 [&>span:first-child]:flex-1 [&>span:first-child]:break-words [&>span:first-child]:whitespace-normal [&>span:first-child]:[overflow-wrap:anywhere]';
+const mobileActivePageLinkClassName =
+  'bg-[color:var(--accent-brand-soft)] font-semibold text-[color:var(--accent-brand)] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] before:bg-[color:var(--accent-brand)]';
+const mobileInactivePageLinkClassName = 'text-muted-foreground';
+const mobileSectionLabelClassName =
+  'mt-4 flex min-w-0 max-w-full rounded-md px-2 py-1 text-xs font-semibold uppercase leading-4 tracking-[0.08em] text-muted-foreground [overflow-wrap:anywhere] data-[active=true]:text-[color:var(--ink-2)] [&>span]:min-w-0 [&>span]:break-words [&>span]:whitespace-normal [&>span]:[overflow-wrap:anywhere]';
+const mobileSidebarNestedListClassNames = [
+  'ml-2 flex min-w-0 max-w-full flex-col gap-1 border-l border-border/70 pl-2',
+  'ml-1 flex min-w-0 max-w-full flex-col gap-1 border-l border-border/70 pl-2',
+  'ml-0 flex min-w-0 max-w-full flex-col gap-1 border-l border-border/70 pl-2',
+] as const;
+
 const mobileSidebarGroupLabelClassName =
   'px-1 pb-0.5 text-xs font-medium uppercase leading-4 tracking-[0.14em] text-muted-foreground';
 
@@ -129,6 +146,7 @@ export function DocsShell({
   sidebarHeader,
   tabs,
   toc,
+  tocMaxDepth,
   layoutMode = 'docs',
   hideToc = false,
 }: {
@@ -148,24 +166,52 @@ export function DocsShell({
   sidebarHeader?: DocsSidebarHeader;
   tabs: TabSummary[];
   toc: TOCItemType[];
+  tocMaxDepth?: number;
 }) {
   const { i18n } = useTranslation('common');
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
   const sourceLinks = getDocsSourceLinks(contentPath);
   const t = i18n.getFixedT(currentLocale, 'common');
   const { resolvedTheme, setTheme } = useTheme();
-  const isDarkTheme = resolvedTheme === 'dark';
+  const [hasMounted, setHasMounted] = useState(false);
+  const [isHeaderPointerFocus, setIsHeaderPointerFocus] = useState(false);
+  // next-themes cannot know the browser theme during static rendering.
+  const isDarkTheme = hasMounted && resolvedTheme === 'dark';
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  useEffect(() => {
+    // Radix focuses a tab during mousedown, which can retain :focus-visible
+    // from the previous keyboard focus. Only the header masks that pointer
+    // ring; listen outside the strip too so Tab can restore keyboard focus.
+    const showKeyboardFocus = () => setIsHeaderPointerFocus(false);
+    document.addEventListener('keydown', showKeyboardFocus, true);
+    return () => {
+      document.removeEventListener('keydown', showKeyboardFocus, true);
+    };
+  }, []);
   const themeLabel = `${t('controls.theme.label')}: ${
     isDarkTheme ? t('controls.theme.dark') : t('controls.theme.light')
   }`;
   const headerRef = useRef<HTMLElement | null>(null);
+  const bodyRef = useRef<HTMLDivElement | null>(null);
+  const railScrollPadding = useRef(
+    new WeakMap<
+      HTMLElement,
+      { base: number; extra: number; original: string }
+    >(),
+  );
   const [headerOffset, setHeaderOffset] = useState(0);
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
   const [isLegacyDocsBannerVisible, setIsLegacyDocsBannerVisible] =
     useState(true);
   const sidebarResetKey = getDocsSidebarResetKey(activeTab, sidebarHeader);
+  const branding = getAppBranding(currentLocale);
   const homeHref = buildDocPath(currentLocale, 'introduction');
   const legacyDocsHref = legacyDocsBannerConfig.hrefs[currentLocale];
+  const dismissLegacyDocsBannerLabel = t('docs.dismissLegacyDocsBanner');
 
   useEffect(() => {
     if (isLegacyDocsBannerDismissed()) {
@@ -198,6 +244,108 @@ export function DocsShell({
     };
   }, []);
 
+  useLayoutEffect(() => {
+    const body = bodyRef.current;
+    if (!body || layoutMode === 'search') return;
+
+    const releaseScrollPadding = (event: Event) => {
+      const area = event.target;
+      if (!(area instanceof HTMLElement)) return;
+      const padding = railScrollPadding.current.get(area);
+      if (!padding?.extra) return;
+      const extra =
+        area.scrollTop > 0
+          ? Math.max(
+              0,
+              area.scrollTop +
+                area.clientHeight -
+                (area.scrollHeight - padding.extra),
+            )
+          : 0;
+      if (extra >= padding.extra) return;
+      area.style.paddingBottom = extra
+        ? `${padding.base + extra}px`
+        : padding.original;
+      padding.extra = extra;
+    };
+
+    // Keep the rail tops below the header. As the site footer enters the
+    // viewport, shrink the scroll areas instead of pushing their content up.
+    const updateRailHeight = () => {
+      const height = Math.max(
+        0,
+        Math.min(window.innerHeight, body.getBoundingClientRect().bottom) -
+          headerOffset,
+      );
+      const value = `${height}px`;
+      if (body.style.getPropertyValue('--docs-shell-rail-height') === value) {
+        return;
+      }
+
+      const areas = Array.from(
+        body.querySelectorAll<HTMLElement>(
+          '[data-docs-rail-scroll], [data-docs-rail-scroll] [data-radix-scroll-area-viewport]',
+        ),
+      ).flatMap((area) => {
+        const style = window.getComputedStyle(area);
+        if (!area.clientHeight || !/^(auto|scroll)$/.test(style.overflowY)) {
+          return [];
+        }
+        let padding = railScrollPadding.current.get(area);
+        if (!padding) {
+          padding = {
+            base: Number.parseFloat(style.paddingBottom) || 0,
+            extra: 0,
+            original: area.style.paddingBottom,
+          };
+          railScrollPadding.current.set(area, padding);
+        }
+        return [
+          {
+            area,
+            padding,
+            scrollTop: area.scrollTop,
+            contentHeight: area.scrollHeight - padding.extra,
+          },
+        ];
+      });
+
+      body.style.setProperty('--docs-shell-rail-height', value);
+
+      // A taller viewport can clamp scrollTop even though the rail itself
+      // stays fixed. Keep enough space below its content to retain the anchor.
+      for (const { area, padding, scrollTop, contentHeight } of areas) {
+        const extra =
+          scrollTop > 0
+            ? Math.max(0, scrollTop + area.clientHeight - contentHeight)
+            : 0;
+        if (extra !== padding.extra) {
+          area.style.paddingBottom = extra
+            ? `${padding.base + extra}px`
+            : padding.original;
+          padding.extra = extra;
+        }
+        area.scrollTop = scrollTop;
+      }
+    };
+
+    updateRailHeight();
+    const observer =
+      typeof ResizeObserver !== 'undefined'
+        ? new ResizeObserver(updateRailHeight)
+        : null;
+    observer?.observe(body);
+    body.addEventListener('scroll', releaseScrollPadding, true);
+    window.addEventListener('scroll', updateRailHeight, { passive: true });
+    window.addEventListener('resize', updateRailHeight);
+    return () => {
+      observer?.disconnect();
+      body.removeEventListener('scroll', releaseScrollPadding, true);
+      window.removeEventListener('scroll', updateRailHeight);
+      window.removeEventListener('resize', updateRailHeight);
+    };
+  }, [headerOffset, layoutMode]);
+
   const dismissLegacyDocsBanner = () => {
     setIsLegacyDocsBannerVisible(false);
 
@@ -216,14 +364,18 @@ export function DocsShell({
     '--docs-shell-body-height': `calc(100svh - ${headerOffset}px)`,
   } as React.CSSProperties;
   const isOpenApiLayout = layoutMode === 'openapi';
+  const isSearchLayout = layoutMode === 'search';
   // openapi and hideToc drop the toc rail and let content fill the grid; every
   // layout shares the same outer shell footprint so the sidebar/nav/content
   // align across page types.
-  const contentFillsWidth = isOpenApiLayout || hideToc;
+  const isHomePage = currentLocale === 'zh-CN' && activePath === homeHref;
+  const contentFillsWidth = isOpenApiLayout || hideToc || isHomePage;
   const shellWidthClassName = DOCS_SHELL_MAX_WIDTH_CLASS_NAME;
   const desktopGridClassName = contentFillsWidth
     ? DOCS_FILL_DESKTOP_GRID_CLASS_NAME
-    : DOCS_DESKTOP_GRID_CLASS_NAME;
+    : currentLocale === 'en'
+      ? 'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]'
+      : DOCS_DESKTOP_GRID_CLASS_NAME;
   const docsChromeLocaleLinks = localeLinks.filter((item) =>
     ENABLED_DOCS_CHROME_LOCALES.has(item.locale),
   );
@@ -266,23 +418,23 @@ export function DocsShell({
                 <span className="sr-only"> ({t('docs.opensInNewTab')})</span>
               </a>
               <Button
-                aria-label={DISMISS_LEGACY_DOCS_BANNER_LABEL}
-                className="text-[color:var(--accent-brand)] hover:bg-[color:color-mix(in_srgb,var(--accent-brand)_12%,transparent)] hover:text-[color:var(--accent-brand)]"
+                aria-label={dismissLegacyDocsBannerLabel}
+                className="size-11 text-[color:var(--accent-brand)] hover:bg-[color:color-mix(in_srgb,var(--accent-brand)_12%,transparent)] hover:text-[color:var(--accent-brand)] sm:size-6"
                 onClick={dismissLegacyDocsBanner}
                 size="icon-xs"
                 type="button"
                 variant="ghost"
               >
                 <XIcon />
-                <span className="sr-only">
-                  {DISMISS_LEGACY_DOCS_BANNER_LABEL}
-                </span>
+                <span className="sr-only">{dismissLegacyDocsBannerLabel}</span>
               </Button>
             </div>
           ) : null}
           <div
             className={cn(
               'mx-auto flex h-[52px] w-full items-center gap-3 px-4 sm:px-7',
+              currentLocale === 'zh-CN' &&
+                'lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)_minmax(0,1fr)]',
               shellWidthClassName,
             )}
             data-testid="docs-main-header-row"
@@ -293,13 +445,18 @@ export function DocsShell({
                 onOpenChange={setIsMobileSheetOpen}
               >
                 <SheetTrigger asChild>
-                  <Button className="lg:hidden" size="icon" variant="ghost">
+                  <Button
+                    className="size-11 lg:hidden"
+                    size="icon"
+                    variant="ghost"
+                  >
                     <MenuIcon />
                     <span className="sr-only">{t('docs.openMenu')}</span>
                   </Button>
                 </SheetTrigger>
                 <SheetContent
                   className="w-[min(92vw,24rem)] max-w-[calc(100vw-1rem)] gap-0 overflow-hidden p-0 sm:max-w-sm"
+                  closeLabel={t('docs.close')}
                   data-testid="docs-mobile-sidebar-sheet"
                   side="left"
                 >
@@ -313,15 +470,20 @@ export function DocsShell({
                         to={homeHref}
                       >
                         <span className="sr-only">{t('app.name')}</span>
-                        <AgoraLogoMark
+                        <SiteLogoMark
                           aria-hidden="true"
-                          className="h-8 shrink-0 translate-y-2"
+                          className={
+                            currentLocale === 'en'
+                              ? 'h-8 shrink-0 translate-y-2'
+                              : undefined
+                          }
+                          locale={currentLocale}
                         />
                         <span
                           aria-hidden="true"
                           className="truncate text-[15px] font-semibold"
                         >
-                          Docs
+                          {branding.docsLabel}
                         </span>
                       </Link>
                     </SheetTitle>
@@ -354,41 +516,64 @@ export function DocsShell({
                   to={homeHref}
                 >
                   <span className="sr-only">{t('app.name')}</span>
-                  <AgoraLogoMark
+                  <SiteLogoMark
                     aria-hidden="true"
-                    className="h-8 shrink-0 translate-y-2"
+                    className={
+                      currentLocale === 'en'
+                        ? 'h-8 shrink-0 translate-y-2'
+                        : undefined
+                    }
+                    locale={currentLocale}
                   />
                   <span aria-hidden="true" className="truncate">
-                    Docs
+                    {branding.docsLabel}
                   </span>
                 </Link>
               </div>
             </div>
-            <div className="flex-1" />
-            <div className="flex items-center gap-2">
+            {currentLocale === 'en' ? <div className="flex-1" /> : null}
+            {currentLocale === 'zh-CN' && !isSearchLayout && (
               <div
-                className="lg:hidden"
-                data-testid="docs-mobile-header-actions"
+                className="hidden min-w-0 lg:block"
+                data-testid="docs-desktop-header-search"
               >
                 <DocsSearchDialog
                   loadPages={loadPages}
                   locale={currentLocale}
-                  mode="mobile"
+                  mode="desktop"
                   productScopes={productScopes}
                 />
               </div>
-              <div
-                className="hidden items-center gap-2 lg:flex"
-                data-testid="docs-desktop-header-actions"
-              >
-                <div className="w-80">
+            )}
+            <div className="ml-auto flex shrink-0 items-center gap-2 lg:col-start-3 lg:ml-0 lg:justify-self-end">
+              {!isSearchLayout && (
+                <div
+                  className="lg:hidden"
+                  data-testid="docs-mobile-header-actions"
+                >
                   <DocsSearchDialog
                     loadPages={loadPages}
                     locale={currentLocale}
-                    mode="desktop"
+                    mode="mobile"
                     productScopes={productScopes}
                   />
                 </div>
+              )}
+              <div
+                className="hidden items-center gap-2 text-muted-foreground lg:flex"
+                data-testid="docs-desktop-header-actions"
+              >
+                {currentLocale === 'en' && !isSearchLayout ? (
+                  <div className="w-80">
+                    <DocsSearchDialog
+                      loadPages={loadPages}
+                      locale={currentLocale}
+                      mode="desktop"
+                      productScopes={productScopes}
+                    />
+                  </div>
+                ) : null}
+                <DocsSiteMenu locale={currentLocale} />
                 <Button
                   aria-label={themeLabel}
                   aria-pressed={isDarkTheme}
@@ -419,8 +604,10 @@ export function DocsShell({
             </div>
           </div>
           <nav
-            className="hidden border-b border-border bg-background/80 backdrop-blur-xl md:block"
+            className="group/header-tabs hidden border-b border-border bg-background/80 backdrop-blur-xl md:block"
+            data-pointer-focus={isHeaderPointerFocus}
             data-testid="docs-tabs-strip"
+            onPointerDownCapture={() => setIsHeaderPointerFocus(true)}
           >
             <div
               className={cn(
@@ -436,7 +623,7 @@ export function DocsShell({
                   {tabs.map((tab) => (
                     <TabsTrigger asChild key={tab.id} value={tab.id}>
                       <Link
-                        className="group/tab h-10 rounded-none px-3.5 text-[13.5px] font-medium after:!bottom-[-3px]"
+                        className="group/tab h-10 rounded-none px-3.5 text-[13.5px] font-medium after:!bottom-[-3px] group-data-[pointer-focus=true]/header-tabs:focus-visible:border-transparent group-data-[pointer-focus=true]/header-tabs:focus-visible:ring-0 group-data-[pointer-focus=true]/header-tabs:focus-visible:outline-none"
                         params={{}}
                         search={{}}
                         to={getDocVersionEntryHref(tab.url)}
@@ -470,35 +657,46 @@ export function DocsShell({
         </header>
         <div
           className={cn(
-            'mx-auto grid w-full min-w-0 grid-cols-1 px-4 lg:grid-cols-[256px_minmax(0,1fr)] lg:items-start',
+            isSearchLayout
+              ? 'mx-auto w-full min-w-0 flex-1 px-4'
+              : 'mx-auto grid w-full min-w-0 grid-cols-1 px-4 lg:min-h-[var(--docs-shell-body-height)] lg:grid-cols-[256px_minmax(0,1fr)] lg:items-start',
             shellWidthClassName,
-            desktopGridClassName,
+            !isSearchLayout && desktopGridClassName,
           )}
           data-testid="docs-body-shell"
+          ref={bodyRef}
         >
-          <DocsSidebar
-            activePath={activePath}
-            header={sidebarHeader}
-            nodes={sidebar}
-            onSelectPath={() => setIsMobileSheetOpen(false)}
-            resetKey={sidebarResetKey}
-          />
-          <DocsMainColumn
-            contentFillsWidth={contentFillsWidth}
-            layoutMode={layoutMode}
-            locale={currentLocale}
-            next={next}
-            previous={previous}
-            resetKey={activePath}
-          >
-            {children}
-          </DocsMainColumn>
-          {contentFillsWidth ? null : (
-            <DocsTocRail
-              locale={currentLocale}
-              sourceLinks={sourceLinks}
-              toc={toc}
-            />
+          {isSearchLayout ? (
+            children
+          ) : (
+            <>
+              <DocsSidebar
+                activePath={activePath}
+                header={sidebarHeader}
+                locale={currentLocale}
+                nodes={sidebar}
+                onSelectPath={() => setIsMobileSheetOpen(false)}
+                resetKey={sidebarResetKey}
+              />
+              <DocsMainColumn
+                contentFillsWidth={contentFillsWidth}
+                layoutMode={layoutMode}
+                locale={currentLocale}
+                next={next}
+                previous={previous}
+                resetKey={activePath}
+              >
+                {children}
+              </DocsMainColumn>
+              {contentFillsWidth ? null : (
+                <DocsTocRail
+                  locale={currentLocale}
+                  sourceLinks={sourceLinks}
+                  toc={toc}
+                  tocMaxDepth={tocMaxDepth}
+                />
+              )}
+            </>
           )}
         </div>
         <DocsSiteFooter
@@ -507,6 +705,7 @@ export function DocsShell({
             shellWidthClassName,
           )}
           contentClassName="px-4 sm:px-6 lg:px-10"
+          locale={currentLocale}
         />
       </div>
     </SidebarProvider>
@@ -552,6 +751,11 @@ function MobileSidebar({
   const { i18n } = useTranslation('common');
   const t = i18n.getFixedT(currentLocale, 'common');
   const currentTab = tabs.find((tab) => tab.id === activeTab) ?? tabs[0];
+  const sidebarNodes = addIntroductionResourceLinks({
+    activePath,
+    locale: currentLocale,
+    nodes: sidebar,
+  });
 
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
@@ -633,39 +837,332 @@ function MobileSidebar({
             {sidebarHeader ? (
               <DocsSidebarHeaderBlock
                 header={sidebarHeader}
+                locale={currentLocale}
                 mode="mobile"
                 onSelectPath={onSelectPath}
               />
             ) : null}
-            {!hasDocVersionCatalog(sidebar, activePath) ? (
-              <DocVersionSelector
-                activePath={activePath}
-                className="mb-2"
-                onSelectPath={onSelectPath}
-              />
-            ) : null}
-            <DocsSidebarTree
-              activePath={activePath}
-              nodes={sidebar}
-              onSelectPath={onSelectPath}
-            />
-          </div>
-          <div className="flex flex-col gap-2 border-t border-border pt-4">
-            <div className="flex items-center gap-2">
-              <Button
-                aria-label={themeLabel}
-                aria-pressed={isDarkTheme}
-                onClick={toggleTheme}
-                size="icon"
-                variant="ghost"
-              >
-                {isDarkTheme ? <SunIcon /> : <MoonIcon />}
-                <span className="sr-only">{themeLabel}</span>
-              </Button>
-            </div>
+            {currentLocale === 'zh-CN' ? (
+              <>
+                <div className="flex min-w-0 flex-col gap-1">
+                  {sidebarNodes.map((node) => (
+                    <MobileSidebarNode
+                      activePath={activePath}
+                      depth={0}
+                      key={node.id}
+                      node={node}
+                      onSelectPath={onSelectPath}
+                      sectionDisclosureLabel={(title) =>
+                        t('docs.toggleSectionPages', { title })
+                      }
+                    />
+                  ))}
+                </div>
+                {sidebarHeader?.productDocsHref ? (
+                  <DocsSidebarProductLink
+                    href={sidebarHeader.productDocsHref}
+                    locale={currentLocale}
+                    mode="mobile"
+                    onSelectPath={onSelectPath}
+                  />
+                ) : null}
+              </>
+            ) : (
+              <>
+                {!hasDocVersionCatalog(sidebar, activePath) ? (
+                  <DocVersionSelector
+                    activePath={activePath}
+                    className="mb-2"
+                    onSelectPath={onSelectPath}
+                  />
+                ) : null}
+                <DocsSidebarTree
+                  activePath={activePath}
+                  nodes={sidebar}
+                  onSelectPath={onSelectPath}
+                />
+              </>
+            )}
           </div>
         </div>
       </ScrollArea>
+      <div
+        className="flex shrink-0 items-center gap-2 border-t border-border px-3 py-2 text-muted-foreground sm:px-4"
+        data-testid="docs-mobile-sidebar-tools"
+      >
+        <DocsSiteMenu locale={currentLocale} mobile onNavigate={onSelectPath} />
+        <Button
+          aria-label={themeLabel}
+          aria-pressed={isDarkTheme}
+          className="size-11"
+          onClick={toggleTheme}
+          size="icon"
+          variant="ghost"
+        >
+          {isDarkTheme ? <SunIcon /> : <MoonIcon />}
+          <span className="sr-only">{themeLabel}</span>
+        </Button>
+      </div>
     </div>
+  );
+}
+
+function MobileSidebarNode({
+  activePath,
+  depth,
+  node,
+  onSelectPath,
+  sectionDisclosureLabel,
+}: {
+  activePath: string;
+  depth: number;
+  node: DocsSidebarNode;
+  onSelectPath: () => void;
+  sectionDisclosureLabel: (title: string) => string;
+}) {
+  if (node.type === 'page') {
+    const isActive = node.url === activePath;
+    const content = (
+      <>
+        {node.method ? (
+          <DocsSidebarEndpointLabel method={node.method} title={node.title} />
+        ) : (
+          <span className="block min-w-0 flex-1 break-words whitespace-normal [overflow-wrap:anywhere]">
+            {node.title}
+          </span>
+        )}
+        {node.showNavigationArrow ? (
+          <ArrowRightIcon
+            aria-hidden="true"
+            className="ml-auto size-3.5 shrink-0 text-[color:var(--ink-4)] transition-colors group-hover:text-[color:var(--ink-1)] group-focus-visible:text-[color:var(--ink-1)]"
+          />
+        ) : node.external || node.linked ? (
+          <ExternalLinkIcon className="size-4 shrink-0 text-[color:var(--ink-4)]" />
+        ) : null}
+      </>
+    );
+    const className = cn(
+      mobilePageLinkClassName,
+      node.showNavigationArrow && 'group',
+      isActive
+        ? mobileActivePageLinkClassName
+        : mobileInactivePageLinkClassName,
+    );
+
+    if (node.external) {
+      return (
+        <a
+          aria-current={isActive ? 'page' : undefined}
+          className={className}
+          href={node.href ?? node.url}
+          onClick={onSelectPath}
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          {content}
+        </a>
+      );
+    }
+
+    return (
+      <Link
+        aria-current={isActive ? 'page' : undefined}
+        className={className}
+        onClick={onSelectPath}
+        params={{}}
+        rel={node.linked ? 'noreferrer noopener' : undefined}
+        search={node.search ?? {}}
+        target={node.linked ? '_blank' : undefined}
+        to={node.url}
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <MobileSidebarSectionNode
+      activePath={activePath}
+      depth={depth}
+      node={node}
+      onSelectPath={onSelectPath}
+      sectionDisclosureLabel={sectionDisclosureLabel}
+    />
+  );
+}
+
+function MobileSidebarSectionNode({
+  activePath,
+  depth,
+  node,
+  onSelectPath,
+  sectionDisclosureLabel,
+}: {
+  activePath: string;
+  depth: number;
+  node: Extract<DocsSidebarNode, { type: 'section' }>;
+  onSelectPath: () => void;
+  sectionDisclosureLabel: (title: string) => string;
+}) {
+  const hasActiveChild = node.children.some((child) =>
+    isMobileSidebarNodeActive(child, activePath),
+  );
+  const shouldRevealActivePath =
+    node.defaultOpen !== false && (hasActiveChild || node.url === activePath);
+  const [isOpen, setIsOpen] = useState(
+    !node.collapsible || shouldRevealActivePath,
+  );
+
+  useEffect(() => {
+    if (shouldRevealActivePath) {
+      setIsOpen(true);
+    }
+  }, [shouldRevealActivePath]);
+
+  if (!node.url && node.collapsible) {
+    return (
+      <div className="flex min-w-0 max-w-full flex-col gap-1">
+        <button
+          aria-expanded={isOpen}
+          aria-label={sectionDisclosureLabel(node.title)}
+          className={cn(
+            mobilePageLinkClassName,
+            'items-center justify-between',
+            mobileInactivePageLinkClassName,
+          )}
+          onClick={() => setIsOpen((value) => !value)}
+          type="button"
+        >
+          <span className="min-w-0 flex-1 break-words text-left whitespace-normal [overflow-wrap:anywhere]">
+            {node.title.replaceAll('-', ' ')}
+          </span>
+          <ChevronDownIcon
+            aria-hidden="true"
+            className={cn(
+              'size-4 shrink-0 transition-transform',
+              isOpen ? 'rotate-0' : '-rotate-90',
+            )}
+          />
+        </button>
+        {isOpen ? (
+          <div className={getMobileSidebarNestedListClassName(depth)}>
+            {node.children.map((child) => (
+              <MobileSidebarNode
+                activePath={activePath}
+                depth={depth + 1}
+                key={child.id}
+                node={child}
+                onSelectPath={onSelectPath}
+                sectionDisclosureLabel={sectionDisclosureLabel}
+              />
+            ))}
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+
+  if (node.url) {
+    const isActive = node.url === activePath;
+
+    return (
+      <div className="flex min-w-0 max-w-full flex-col gap-1">
+        <div className="flex min-w-0 items-stretch gap-1">
+          <Link
+            aria-current={isActive ? 'page' : undefined}
+            className={cn(
+              mobilePageLinkClassName,
+              'min-h-11 flex-1 items-center',
+              isActive
+                ? mobileActivePageLinkClassName
+                : mobileInactivePageLinkClassName,
+            )}
+            onClick={onSelectPath}
+            params={{}}
+            search={{}}
+            to={node.url}
+          >
+            <span>{node.title.replaceAll('-', ' ')}</span>
+          </Link>
+          {node.children.length > 0 ? (
+            <button
+              aria-expanded={isOpen}
+              aria-label={sectionDisclosureLabel(node.title)}
+              className="flex size-11 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              onClick={() => setIsOpen((value) => !value)}
+              type="button"
+            >
+              <ChevronDownIcon
+                aria-hidden="true"
+                className={cn(
+                  'size-4 transition-transform',
+                  isOpen ? 'rotate-0' : '-rotate-90',
+                )}
+              />
+            </button>
+          ) : null}
+        </div>
+        {isOpen ? (
+          <div className={getMobileSidebarNestedListClassName(depth)}>
+            {node.children.map((child) => (
+              <MobileSidebarNode
+                activePath={activePath}
+                depth={depth + 1}
+                key={child.id}
+                node={child}
+                onSelectPath={onSelectPath}
+                sectionDisclosureLabel={sectionDisclosureLabel}
+              />
+            ))}
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex min-w-0 max-w-full flex-col gap-1">
+      <p
+        className={mobileSectionLabelClassName}
+        data-active={hasActiveChild ? 'true' : undefined}
+      >
+        <span>{node.title.replaceAll('-', ' ')}</span>
+      </p>
+      <div className={getMobileSidebarNestedListClassName(depth)}>
+        {node.children.map((child) => (
+          <MobileSidebarNode
+            activePath={activePath}
+            depth={depth + 1}
+            key={child.id}
+            node={child}
+            onSelectPath={onSelectPath}
+            sectionDisclosureLabel={sectionDisclosureLabel}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function getMobileSidebarNestedListClassName(depth: number) {
+  return mobileSidebarNestedListClassNames[
+    Math.min(depth, mobileSidebarNestedListClassNames.length - 1)
+  ];
+}
+
+function isMobileSidebarNodeActive(
+  node: DocsSidebarNode,
+  activePath: string,
+): boolean {
+  if (node.type === 'page') {
+    return node.url === activePath;
+  }
+
+  if (node.url === activePath) {
+    return true;
+  }
+
+  return node.children.some((child) =>
+    isMobileSidebarNodeActive(child, activePath),
   );
 }

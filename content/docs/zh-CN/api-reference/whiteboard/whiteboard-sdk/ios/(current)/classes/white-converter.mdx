@@ -1,0 +1,237 @@
+---
+title: WhiteConverter Class Reference
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteConverter
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteConverter.html
+  generator: appledoc
+  warnings:
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
+---
+
+Whiteboard iOS SDK 2.16.147 公开接口。
+
+@interface WhiteConverter: NSObject
+
+## 成员
+
+- [init](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-converter#//api/name/init)
+- [initWithRoomToken:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-converter#//api/name/initWithRoomToken:)
+- [initWithRoomToken\:pollingInterval\:timeout:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-converter#//api/name/initWithRoomToken:pollingInterval:timeout:)
+- [roomToken](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-converter#//api/name/roomToken)
+- [interval](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-converter#//api/name/interval)
+- [timeout](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-converter#//api/name/timeout)
+- [taskId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-converter#//api/name/taskId)
+- [error](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-converter#//api/name/error)
+- [type](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-converter#//api/name/type)
+- [status](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-converter#//api/name/status)
+- [startConvertTask\:type\:progress\:completionHandler:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-converter#//api/name/startConvertTask:type:progress:completionHandler:)
+- [startPolling\:completionHandler:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-converter#//api/name/startPolling:completionHandler:)
+
+<a id="//api/name/init"></a>
+
+### `– init`
+
+<ApiSignature>
+
+\- (instancetype)init NS_UNAVAILABLE;
+
+</ApiSignature>
+
+Declared in Converter/V4/WhiteConverter.h
+
+<a id="//api/name/initWithRoomToken:"></a>
+
+### `– initWithRoomToken:`
+
+<ApiSignature>
+
+\- (instancetype)initWithRoomToken:(NSString *)roomToken;
+
+</ApiSignature>
+
+Declared in Converter/V4/WhiteConverter.h
+
+<a id="//api/name/initWithRoomToken:pollingInterval:timeout:"></a>
+
+### `– initWithRoomToken:pollingInterval:timeout:`
+
+<ApiSignature>
+
+\- (instancetype)initWithRoomToken:(NSString *)roomToken pollingInterval:(NSTimeInterval)interval timeout:(NSTimeInterval)timeout;
+
+</ApiSignature>
+
+Declared in Converter/V4/WhiteConverter.h
+
+<a id="//api/name/roomToken"></a>
+
+### `roomToken`
+
+<ApiSignature>
+
+@property (nonatomic, copy, readonly) NSString *roomToken;
+
+</ApiSignature>
+
+Declared in Converter/V4/WhiteConverter.h
+
+<a id="//api/name/interval"></a>
+
+### `interval`
+
+<ApiSignature>
+
+@property (nonatomic, assign) NSTimeInterval interval;
+
+</ApiSignature>
+
+```text
+轮询间隔时间，默认 15s，从前一个请求完整结束，开始计时
+```
+
+Declared in Converter/V4/WhiteConverter.h
+
+<a id="//api/name/timeout"></a>
+
+### `timeout`
+
+<ApiSignature>
+
+@property (nonatomic, assign) NSTimeInterval timeout;
+
+</ApiSignature>
+
+```text
+轮询超时停止时间，默认 3 分钟
+```
+
+Declared in Converter/V4/WhiteConverter.h
+
+<a id="//api/name/taskId"></a>
+
+### `taskId`
+
+<ApiSignature>
+
+@property (nonatomic, copy, readonly, nullable) NSString *taskId;
+
+</ApiSignature>
+
+```text
+服务器转换任务的 uuid。如遇错，可以提供 taskId 和 type 类型进行排查。
+ 只有成功创建转换任务，才会有 taskId，如果未开启服务
+```
+
+Declared in Converter/V4/WhiteConverter.h
+
+<a id="//api/name/error"></a>
+
+### `error`
+
+<ApiSignature>
+
+@property (nonatomic, strong, readonly, nullable) NSError *error;
+
+</ApiSignature>
+
+```text
+错误信息
+```
+
+Declared in Converter/V4/WhiteConverter.h
+
+<a id="//api/name/type"></a>
+
+### `type`
+
+<ApiSignature>
+
+@property (nonatomic, assign, readonly) ConvertType type;
+
+</ApiSignature>
+
+```text
+转换类型，在创建转换任务时，传入。
+```
+
+Declared in Converter/V4/WhiteConverter.h
+
+<a id="//api/name/status"></a>
+
+### `status`
+
+<ApiSignature>
+
+@property (nonatomic, assign, readonly) ConverterStatus status;
+
+</ApiSignature>
+
+Declared in Converter/V4/WhiteConverter.h
+
+<a id="//api/name/startConvertTask:type:progress:completionHandler:"></a>
+
+### `– startConvertTask:type:progress:completionHandler:`
+
+<ApiSignature>
+
+\- (void)startConvertTask:(NSString *)url type:(ConvertType)type progress:(_Nullable ConvertProgress)progress completionHandler:(_Nullable ConvertCompletionHandler)completionHandler;
+
+</ApiSignature>
+
+```text
+创建文档转换服务，并开始轮询请求服务器。
+ 部分状态下无法新建服务，具体看 @link{{ConverterStatus}} 枚举
+
+ @param url 文档所在网络地址，需要对外可下载（即使无法下载，也会成功创建转换服务，但是会立即变成转换失败状态），SDK 服务器会去下载，然后进行转换。
+ @param type 文档类型
+ @param progress 进度回调提示
+ @param completionHandler 转换完成回调(主线程回调）
+```
+
+Declared in Converter/V4/WhiteConverter.h
+
+<a id="//api/name/startPolling:completionHandler:"></a>
+
+### `– startPolling:completionHandler:`
+
+<ApiSignature>
+
+\- (void)startPolling:(_Nullable ConvertProgress)progress completionHandler:(_Nullable ConvertCompletionHandler)completionHandler;
+
+</ApiSignature>
+
+```text
+重新轮询执行检查（外部调用时，只有ConverterStatusTimeout，才允许重新开启轮询检查）
+
+ 间隔与超时时间，继承 启动文档转换服务 API 的设置
+ @param progress 进度回调
+ @param completionHandler 转换完成回调(主线程回调）
+```
+
+Declared in Converter/V4/WhiteConverter.h

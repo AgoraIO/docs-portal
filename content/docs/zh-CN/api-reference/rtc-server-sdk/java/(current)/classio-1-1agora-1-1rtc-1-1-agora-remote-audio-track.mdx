@@ -1,0 +1,147 @@
+---
+title: io.agora.rtc.AgoraRemoteAudioTrack类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_remote_audio_track
+  sourcePath: html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_remote_audio_track.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_agora_remote_audio_track_8java.html as local text.
+---
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+AgoraRemoteAudioTrack 类。
+
+<a id="doc-constructors"></a>
+
+<a id="header-doc-constructors"></a>
+
+## 构造及析构函数说明
+
+<a id="aa225e6989dd613f01e7c1a4804c7adcb"></a>
+
+### AgoraRemoteAudioTrack()
+
+<ApiSignature>
+
+io.agora.rtc.AgoraRemoteAudioTrack.AgoraRemoteAudioTrack(long *cptr*)
+
+</ApiSignature>
+
+构造函数。
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="a4cece74bb6f6d18f49ac1211b12cb0d9"></a>
+
+### destroyStatistics()
+
+<ApiSignature>
+
+native void io.agora.rtc.AgoraRemoteAudioTrack.destroyStatistics([RemoteAudioTrackStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-remote-audio-track-stats) *stats*)
+
+</ApiSignature>
+
+<a id="a3b5fa7e21d860becfe1a8b5325b4db2b"></a>
+
+### getState()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRemoteAudioTrack.getState()
+
+</ApiSignature>
+
+获取远端音频的质量数据。
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+远端音频的质量数据。
+
+<a id="a064f35164f384ea1bdd07f266f7bae5d"></a>
+
+### getStatistics()
+
+<ApiSignature>
+
+native [RemoteAudioTrackStats](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-remote-audio-track-stats) io.agora.rtc.AgoraRemoteAudioTrack.getStatistics()
+
+</ApiSignature>
+
+获取远端音频轨道的质量数据。
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+一个 RemoteAudioTrackStats 对象。
+
+<a id="a3eea83fa3fa9a0fe4e0c2c6f6ea03ac1"></a>
+
+### registerMediaPacketReceiver()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRemoteAudioTrack.registerMediaPacketReceiver([AgoraMediaPacketReceiver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-media-packet-receiver) *agora_media_packet_receiver*)
+
+</ApiSignature>
+
+注册一个 AgoraMediaPacketReceiver 对象。
+
+你需要在该方法中实现一个 AgoraMediaPacketReceiver 类。成功注册后，SDK 会在接收到音频包时触发 onMediaPacketReceived 回调。
+
+<ParameterList title="参数">
+<Parameter name="agora_media_packet_receiver">
+
+AgoraMediaPacketReceiver 对象。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ac4a9c4625073b25abccdfe8546f6dc65"></a>
+
+### unregisterMediaPacketReceiver()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraRemoteAudioTrack.unregisterMediaPacketReceiver([AgoraMediaPacketReceiver](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-media-packet-receiver) *agora_media_packet_receiver*)
+
+</ApiSignature>
+
+释放 AgoraMediaPacketReceiver 对象。
+
+<ParameterList title="参数">
+<Parameter name="agora_media_packet_receiver">
+
+AgoraMediaPacketReceiver 对象。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+---
+
+该类的文档由以下文件生成:
+
+- AgoraRemoteAudioTrack.java

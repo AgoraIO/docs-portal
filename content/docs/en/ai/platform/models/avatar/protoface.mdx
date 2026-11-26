@@ -36,7 +36,6 @@ agent = (
     .with_avatar(
         Protoface(
             api_key=secret_ref("support_prod", "protoface"),
-            api_base_url="https://api.protoface.com/v1/agora",
             avatar_id="<protoface_avatar_id>",
             agora_uid="<avatar_rtc_uid>",
             agora_token="<avatar_rtc_token>",
@@ -60,7 +59,6 @@ const agent = new Agent({ client })
   .withAvatar(
     new Protoface({
       apiKey: secretRef('support_prod', 'protoface'),
-      apiBaseUrl: 'https://api.protoface.com/v1/agora',
       avatarId: '<protoface_avatar_id>',
       agoraUid: '<avatar_rtc_uid>',
       agoraToken: '<avatar_rtc_token>',
@@ -80,7 +78,6 @@ agent := agentkit.NewAgent(client).
 	WithTts( /* configure your TTS vendor */ ).
 	WithAvatar(vendors.NewProtoface(vendors.ProtofaceOptions{
 		APIKey:     agentkit.SecretRef("support_prod", "protoface"),
-		APIBaseURL: "https://api.protoface.com/v1/agora",
 		AvatarID:   "<protoface_avatar_id>",
 		AgoraUID:   "<avatar_rtc_uid>",
 		AgoraToken: "<avatar_rtc_token>",
@@ -133,7 +130,7 @@ The `avatar` block takes the following fields. In the SDKs, `Protoface` sets the
   </Parameter>
   <Parameter name="params" type="object" required={true}>
     <Parameter name="api_base_url" type="string" required={true}>
-      The base URL of the Protoface API endpoint. Set to `https://api.protoface.com/v1/agora`.
+      The base URL of the Protoface API endpoint. Set to `https://api.protoface.com/v1/agora`. The `Protoface` SDK class sets this value by default.
     </Parameter>
     <Parameter name="avatar_id" type="string" required={true}>
       The ID of the Protoface avatar to use, for example, `av_stock_001`. Find a stock avatar or create your own in the [Protoface dashboard](https://app.protoface.com).

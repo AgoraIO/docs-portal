@@ -1,0 +1,157 @@
+---
+title: "API 概览"
+---
+## AgoraService 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [initialize](/zh-CN/api-reference/rtc-server-sdk/python-api/agoraservice.python#initialize) | 初始化 `AgoraService` 对象。 |
+| [release](/zh-CN/api-reference/rtc-server-sdk/python-api/agoraservice.python#release) | 释放 `AgoraService` 对象。 |
+| [create_rtc_connection](/zh-CN/api-reference/rtc-server-sdk/python-api/agoraservice.python#creatertcconnection) | 创建一个 RTC 连接对象。 |
+| [create_custom_audio_track_pcm](/zh-CN/api-reference/rtc-server-sdk/python-api/agoraservice.python#createcustomaudiotrackpcm) | 创建本地音频轨道对象，包含一个发送 PCM 音频数据的音频源。 |
+| [create_custom_audio_track_encoded](/zh-CN/api-reference/rtc-server-sdk/python-api/agoraservice.python#createcustomaudiotrackencoded) | 创建本地音频轨道对象，包含一个发送编码音频数据的音频源。 |
+| [create_media_node_factory](/zh-CN/api-reference/rtc-server-sdk/python-api/agoraservice.python#createmedianodefactory) | 创建一个媒体节点工厂对象。 |
+| [create_custom_video_track_frame](/zh-CN/api-reference/rtc-server-sdk/python-api/agoraservice.python#createcustomvideotrackframe) | 创建本地视频轨道对象，包含一个发送 YUV 格式视频数据的视频源。 |
+| [create_custom_video_track_encoded](/zh-CN/api-reference/rtc-server-sdk/python-api/agoraservice.python#createcustomvideotrackencoded) | 创建本地视频轨道对象，包含一个发送编码视频数据的视频源。 |
+| [set_log_file](/zh-CN/api-reference/rtc-server-sdk/python-api/agoraservice.python#setlogfile) | 设置 SDK 日志文件的路径和大小。 |
+
+## RTCConnection 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [connect](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#connect) | 连接 RTC 频道。 |
+| [disconnect](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#disconnect) | 与 RTC 频道断开连接。 |
+| [renew_token](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#renewtoken) | 更新 Token。 |
+| [register_observer](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#registerobserver) | 注册 RTC 连接 observer。 |
+| [unregister_observer](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#unregisterobserver) | 销毁 RTC 连接 observer。 |
+| [create_data_stream](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#createdatastream) | 创建数据流。 |
+| [send_stream_message](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#sendstreammessage) | 发送数据流消息。 |
+| [get_agora_parameter](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#getagoraparameter) | 获取 `AgoraParameter` 对象。 |
+| [get_local_user](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#getlocaluser) | 获取 `LocalUser` 对象。 |
+| [release](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#release) | 释放 RTC 连接。 |
+| [enable_encryption](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#enableencryption) | 开启加密功能。|
+
+## IRTCConnectionObserver 类
+
+| 回调 | 描述 |
+| --- | --- |
+| [on_connected](/zh-CN/api-reference/rtc-server-sdk/python-api/irtcconnectionobserver.python#onconnected) | SDK 与频道的连接状态变更为 `3` 时触发。 |
+| [on_disconnected](/zh-CN/api-reference/rtc-server-sdk/python-api/irtcconnectionobserver.python#ondisconnected) | SDK 与频道的连接状态变更为 `1` 时触发。 |
+| [on_token_privilege_will_expire](/zh-CN/api-reference/rtc-server-sdk/python-api/irtcconnectionobserver.python#ontokenprivilegewillexpire) | Token 服务将在 30s 内过期回调。 |
+| [on_token_privilege_did_expire](/zh-CN/api-reference/rtc-server-sdk/python-api/irtcconnectionobserver.python#ontokenprivilegedidexpire) | Token 已过期回调。 |
+| [on_user_joined](/zh-CN/api-reference/rtc-server-sdk/python-api/irtcconnectionobserver.python#onuserjoined) | 远端用户加入频道时触发。 |
+| [on_user_left](/zh-CN/api-reference/rtc-server-sdk/python-api/irtcconnectionobserver.python#onuserleft) | 远端用户离开频道时触发。 |
+| [on_stream_message_error](/zh-CN/api-reference/rtc-server-sdk/python-api/irtcconnectionobserver.python#onstreammessageerror) | 接收数据流消息发生错误的回调。 |
+| [on_error](/zh-CN/api-reference/rtc-server-sdk/python-api/irtcconnectionobserver.python#onerror) | 发生错误回调。 |
+| [on_encryption_error](/zh-CN/api-reference/rtc-server-sdk/python-api/irtcconnectionobserver.python#onencryptionerror) | 加密功能发生错误回调。|
+
+## LocalUser 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [set_user_role](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#setuserrole) | 设置用户角色。 |
+| [set_audio_encoder_configuration](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#setaudioencoderconfiguration) | 设置音频编码。 |
+| [publish_audio](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#publishaudio) | 将本地音频轨道发送到频道。 |
+| [unpublish_audio](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#unpublishaudio) | 停止将本地音频轨道发送到频道。 |
+| [publish_video](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#publishvideo) | 将本地视频轨道发送到频道。 |
+| [unpublish_video](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#unpublishvideo) | 停止将本地视频轨道发送到频道。 |
+| [subscribe_audio](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#subscribeaudio) | 订阅频道中特定的远端用户发送的音频流。 |
+| [subscribe_all_audio](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#subscribeallaudio) | 订阅频道中全部远端用户发送的音频流。 |
+| [unsubscribe_audio](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#unsubscribeaudio) | 停止订阅频道中特定的远端用户发送的音频流。 |
+| [unsubscribe_all_audio](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#unsubscribeallaudio) | 停止订阅频道中全部远端用户发送的音频流。 |
+| [set_playback_audio_frame_before_mixing_parameters](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#setplaybackaudioframebeforemixingparameters) | 设置 [on_playback_audio_frame_before_mixing](/zh-CN/api-reference/rtc-server-sdk/python-api/iaudioframeobserver.python#onplaybackaudioframebeforemixing) 报告的音频数据格式。 |
+| [register_audio_frame_observer](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#registeraudioframeobserver) | 注册音频帧观测器。 |
+| [unregister_audio_frame_observer](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#unregisteraudioframeobserver) | 销毁 [IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/python-api/iaudioframeobserver.python) 对象。 |
+| [register_video_encoded_frame_observer](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#registervideoencodedframeobserver) | 注册已编码视频帧观测器。 |
+| [unregister_video_encoded_frame_observer](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#unregistervideoencodedframeobserver) | 注销已编码视频帧观测器。 |
+| [subscribe_video](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#subscribevideo) | 订阅频道中指定远端用户发送的视频流。 |
+| [subscribe_all_video](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#subscribeallvideo) | 订阅频道中全部远端用户发送的视频流。 |
+| [unsubscribe_video](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#unsubscribevideo) | 停止订阅频道中指定远端用户发送的视频流。 |
+| [unsubscribe_all_video](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#unsubscribeallvideo) | 停止订阅频道中全部远端用户发送的视频流。 |
+| [register_local_user_observer](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#registerlocaluserobserver) | 注册本地用户观测器。 |
+| [unregister_local_user_observer](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#unregisterlocaluserobserver) | 销毁本地用户观测器。 |
+| [register_video_frame_observer](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#registervideoframeobserver) | 注册 [IVideoFrameObserver](/zh-CN/api-reference/rtc-server-sdk/python-api/ivideoframeobserver.python) 对象。 |
+| [unregister_video_frame_observer](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#unregistervideoframeobserver) | 销毁 [IVideoFrameObserver](/zh-CN/api-reference/rtc-server-sdk/python-api/ivideoframeobserver.python) 对象。 |
+| [get_rtc_connection](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#getrtcconnection) | 获取 `RtcConnection` 对象。 |
+| [release](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#release) | 释放 `LocalUser` 对象的所有资源。 |
+| [send_audio_metadata](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#sendaudiometadata) | 发送音频 Metadata 数据。 |
+
+## LocalUserObserver 类
+
+| 回调 | 描述 |
+| --- | --- |
+| [on_local_audio_track_state_changed](/zh-CN/api-reference/rtc-server-sdk/python-api/localuserobserver.python#onlocalaudiotrackstatechanged) | 在本地音频轨道状态变化时触发。 |
+| [on_user_audio_track_state_changed](/zh-CN/api-reference/rtc-server-sdk/python-api/localuserobserver.python#onuseraudiotrackstatechanged) | 在远端音频轨道状态变化时触发。 |
+| [on_stream_message](/zh-CN/api-reference/rtc-server-sdk/python-api/localuserobserver.python#onstreammessage) | 接收到数据流消息的回调。 |
+| [on_audio_meta_data_received](/zh-CN/api-reference/rtc-server-sdk/python-api/localuserobserver.python#onaudiometadatareceived) | 接收到对方音频 Metadata 数据的回调。 |
+| [on_user_info_updated](/zh-CN/api-reference/rtc-server-sdk/python-api/localuserobserver.python#onuserinfoupdated) | 用户媒体信息更新时触发。 |
+
+## LocalAudioTrack 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [set_enabled](/zh-CN/api-reference/rtc-server-sdk/python-api/localaudiotrack.python#setenabled) | 开启或关闭本地音频轨道。 |
+| [adjust_publish_volume](/zh-CN/api-reference/rtc-server-sdk/python-api/localaudiotrack.python#adjustpublishvolume) | 调整音频发布音量。 |
+| [set_max_buffer_audio_frame_number](/zh-CN/api-reference/rtc-server-sdk/python-api/localaudiotrack.python#setmaxbufferaudioframenumber) | 设置音频发送缓冲区的最大容量。 |
+| [clear_sender_buffer](/zh-CN/api-reference/rtc-server-sdk/python-api/localaudiotrack.python#clearsenderbuffer) | 清除当前音频发送缓冲区。 |
+| [set_send_delay_ms](/zh-CN/api-reference/rtc-server-sdk/python-api/localaudiotrack.python#setsenddelayms) | 设置音频发送缓冲区允许发送的最小数据时长。 |
+| [release](/zh-CN/api-reference/rtc-server-sdk/python-api/localaudiotrack.python#release) | 释放本地音频轨道资源。 |
+
+## LocalVideoTrack 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [set_enabled](/zh-CN/api-reference/rtc-server-sdk/python-api/localvideotrack.python#setenabled) | 开启或关闭本地视频轨道。 |
+| [set_video_encoder_configuration](/zh-CN/api-reference/rtc-server-sdk/python-api/localvideotrack.python#setvideoencoderconfiguration) | 设置视频编码属性。 |
+
+## MediaNodeFactory 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [create_audio_pcm_data_sender](/zh-CN/api-reference/rtc-server-sdk/python-api/medianodefactory.python#createaudiopcmdatasender) | 创建一个 PCM 数据发送模块。 |
+| [create_audio_encoded_frame_sender](/zh-CN/api-reference/rtc-server-sdk/python-api/medianodefactory.python#createaudioencodedframesender) | 创建一个已编码音频数据发送模块。 |
+| [create_video_frame_sender](/zh-CN/api-reference/rtc-server-sdk/python-api/medianodefactory.python#createvideoframesender) | 创建一个 YUV 视频帧发送模块。 |
+| [create_video_encoded_image_sender](/zh-CN/api-reference/rtc-server-sdk/python-api/medianodefactory.python#createvideoencodedimagesender) | 创建一个已编码视频发送模块。 |
+| [release](/zh-CN/api-reference/rtc-server-sdk/python-api/medianodefactory.python#release) | 释放 `MediaNodeFactory` 对象。 |
+
+## AudioPcmDataSender 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [send_audio_pcm_data](/zh-CN/api-reference/rtc-server-sdk/python-api/audiopcmdatasender.python#sendaudiopcmdata) | 将 PCM 格式的音频数据发送到本地音频轨道。 |
+
+## AudioEncodedFrameSender 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [send_encoded_audio_frame](/zh-CN/api-reference/rtc-server-sdk/python-api/audioencodedframesender.python#sendencodedaudioframe) | 将已编码的音频帧发送到本地音频轨道。 |
+
+## IAudioFrameObserver 类
+
+| 回调 | 描述 |
+| --- | --- |
+| [on_playback_audio_frame_before_mixing](/zh-CN/api-reference/rtc-server-sdk/python-api/iaudioframeobserver.python#onplaybackaudioframebeforemixing) | 获得播放声音混音前的数据。 |
+
+## VideoFrameSender 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [send_video_frame](/zh-CN/api-reference/rtc-server-sdk/python-api/videoframesender.python#sendvideoframe) | 将 YUV 格式的视频帧发送到视频轨道。 |
+
+## IVideoFrameObserver 类
+
+| 回调 | 描述 |
+| --- | --- |
+| [on_frame](/zh-CN/api-reference/rtc-server-sdk/python-api/ivideoframeobserver.python#onframe) | 每次收到视频帧时触发。 |
+
+## VideoEncodedImageSender 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [send_encoded_video_image](/zh-CN/api-reference/rtc-server-sdk/python-api/videoencodedimagesender.python#sendencodedvideoimage) | 将已编码的视频帧发送到视频轨道。 |
+
+## IVideoEncodedFrameObserver 类
+
+| 回调 | 描述 |
+| --- | --- |
+| [on_encoded_video_frame](/zh-CN/api-reference/rtc-server-sdk/python-api/ivideoencodedframeobserver.python#onencodedvideoframe) | 每次 SDK 收到已编码视频帧时触发。 |

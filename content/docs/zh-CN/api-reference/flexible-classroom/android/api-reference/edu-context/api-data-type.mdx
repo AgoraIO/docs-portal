@@ -1,0 +1,851 @@
+---
+title: "类型定义"
+description: "本页列出 Android API 所有的类型定义。"
+---
+<a id="datatype"></a>
+
+本页列出 Android API 所有的类型定义。
+
+<a id="enum_roomtype"></a>
+
+## EduContextRoomType
+
+房间类型。
+
+<a id="enum_roomtype__parameters"></a>
+
+### 枚举值
+
+#### `OneToOne`
+
+一对一互动教学
+
+#### `SmallClass`
+
+在线互动小班课
+
+#### `LargeClass`
+
+互动直播大班课
+
+<a id="enum_videorendermode"></a>
+
+## EduContextVideoRenderMode
+
+视频渲染模式。
+
+<a id="enum_videorendermode__parameters"></a>
+
+### 枚举值
+
+#### `Hidden`
+
+Hidden 模式。优先保证视窗被填满。视频尺寸等比缩放，直至整个视窗被视频填满。如果视频长宽与显示窗口不同，多出的视频将被截掉。
+
+#### `Fit`
+
+Fit 模式。优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与视窗边框对齐。如果视频长宽与显示窗口不同，视窗上未被填满的区域将被涂黑。
+
+<a id="enum_videosourcetype"></a>
+
+## AgoraEduContextVideoSourceType
+
+视频源类型。
+
+<a id="enum_videosourcetype__parameters"></a>
+
+### 枚举值
+
+#### `None`
+
+无视频
+
+#### `Camera`
+
+摄像头采集的视频
+
+#### `Screen`
+
+屏幕共享的视频
+
+<a id="enum_audiosourcetype"></a>
+
+## AgoraEduContextAudioSourceType
+
+音频源类型。
+
+<a id="enum_audiosourcetype__parameters"></a>
+
+### 枚举值
+
+#### `None`
+
+无音频
+
+#### `Camera`
+
+麦克风采集的音频
+
+<a id="enum_mediastreamtype"></a>
+
+## AgoraEduContextMediaStreamType
+
+媒体流类型。
+
+<a id="enum_mediastreamtype__parameters"></a>
+
+### 枚举值
+
+#### `None`
+
+既无音频也无视频
+
+#### `Audio`
+
+纯音频流
+
+#### `Video`
+
+纯视频流
+
+#### `Both`
+
+音视频流
+
+<a id="api_videostreamsubscribelevel"></a>
+
+## AgoraEduContextVideoStreamSubscribeLevel
+
+视频流的分辨率高低。
+
+<a id="api_videostreamsubscribelevel__parameters"></a>
+
+### 枚举值
+
+#### `LOW`
+
+分辨率低的视频流
+
+#### `HIGH`
+
+分辨率高的视频流
+
+<a id="enum_devicetype"></a>
+
+## AgoraEduContextDeviceType
+
+设备类型。
+
+<a id="enum_devicetype__parameters"></a>
+
+### 枚举值
+
+#### `Camera`
+
+摄像头
+
+#### `Mic`
+
+麦克风
+
+#### `Speaker`
+
+扬声器
+
+<a id="enum_mediasourcestate"></a>
+
+## AgoraEduContextMediaSourceState
+
+媒体源状态。
+
+<a id="enum_mediasourcestate__parameters"></a>
+
+### 枚举值
+
+#### `Error`
+
+媒体源错误
+
+#### `Close`
+
+媒体源关闭
+
+#### `Open`
+
+媒体源开启
+
+<a id="enum_devicestate"></a>
+
+## AgoraEduContextDeviceState2
+
+设备状态
+
+<a id="enum_devicestate__parameters"></a>
+
+### 枚举值
+
+#### `Error`
+
+设备错误
+
+#### `Close`
+
+设备关闭
+
+#### `Open`
+
+设备开启
+
+<a id="enum_userleavereason"></a>
+
+## EduContextUserLeftReason
+
+用户离开房间原因。
+
+<a id="enum_userleavereason__parameters"></a>
+
+### 枚举值
+
+#### `Normal`
+
+用户正常离开房间。
+
+#### `KickedOut`
+
+用户被踢出房间。
+
+<a id="enum_classstate"></a>
+
+## AgoraEduContextClassState
+
+课堂状态。
+
+<a id="enum_classstate__parameters"></a>
+
+### 枚举值
+
+#### `Before`
+
+课堂还未开始。
+
+#### `During`
+
+课堂进行中。
+
+#### `After`
+
+课堂已结束。
+
+<a id="enum_userrole"></a>
+
+## AgoraEduContextUserRole
+
+用户角色。
+
+<a id="enum_userrole__parameters"></a>
+
+### 枚举值
+
+#### `Teacher`
+
+老师
+
+#### `Student`
+
+学生
+
+#### `Assistant`
+
+助教
+
+<a id="enum_networkquality"></a>
+
+## EduContextNetworkQuality
+
+网络质量。
+
+<a id="enum_networkquality__parameters"></a>
+
+### 枚举值
+
+#### `Unknown`
+
+未知
+
+#### `Good`
+
+良好
+
+#### `Medium`
+
+中等
+
+#### `Bad`
+
+差
+
+<a id="enum_mirrormode"></a>
+
+## EduContextMirrorMode
+
+视频镜像模式。
+
+<a id="enum_mirrormode__parameters"></a>
+
+### 枚举值
+
+#### `AUTO`
+
+SDK 默认关闭镜像模式。
+
+#### `ENABLED`
+
+开启镜像模式。
+
+#### `DISABLED`
+
+关闭镜像模式。
+
+<a id="enum_connectionstate"></a>
+
+## EduContextConnectionState
+
+本地客户端与声网服务器的连接状态。
+
+<a id="enum_connectionstate__parameters"></a>
+
+### 枚举值
+
+#### `Disconnected`
+
+连接已断开。
+
+#### `Connecting`
+
+连接中。
+
+#### `Connected`
+
+已连接。
+
+#### `Reconnecting`
+
+重连中。
+
+#### `Aborted`
+
+被踢出。
+
+<a id="enum_fcrrecordingstate"></a>
+
+## FcrRecordingState
+
+录制状态。
+
+<a id="enum_fcrrecordingstate__parameters"></a>
+
+### 枚举值
+
+#### `STOPPED`
+
+不在录制中
+
+#### `STARTING`
+
+录制启动中
+
+#### `STARTED`
+
+正在录制中
+
+<a id="class_renderconfig"></a>
+
+## EduContextRenderConfig
+
+视频渲染配置。
+
+<a id="class_renderconfig__prototype"></a>
+
+```kotlin
+data class EduContextRenderConfig(
+        val renderMode: EduContextRenderMode = EduContextRenderMode.HIDDEN,
+        val mirrorMode: EduContextMirrorMode = EduContextMirrorMode.AUTO)
+```
+
+<a id="class_renderconfig__detailed_desc"></a>
+
+<a id="class_renderconfig__parameters"></a>
+
+### 属性
+
+#### `renderMode`
+
+视频渲染模式，详见 [EduContextVideoRenderMode](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#enum_videorendermode)。
+
+#### `mirrorMode`
+
+镜像模式，详见 [EduContextMirrorMode](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#enum_mirrormode)。
+
+<a id="class_streaminfo"></a>
+
+## AgoraEduContextStreamInfo
+
+流信息。
+
+<a id="class_streaminfo__prototype"></a>
+
+```kotlin
+data class AgoraEduContextStreamInfo(
+        val streamUuid: String,
+        val streamName: String?,
+        val streamType: AgoraEduContextMediaStreamType,
+        val videoSourceType: AgoraEduContextVideoSourceType,
+        val audioSourceType: AgoraEduContextAudioSourceType,
+        var videoSourceState: AgoraEduContextMediaSourceState,
+        var audioSourceState: AgoraEduContextMediaSourceState,
+        var videoState: AgoraEduContextMediaState,
+        var audioState: AgoraEduContextMediaState,
+        var owner: AgoraEduContextUserInfo)
+```
+
+<a id="class_streaminfo__detailed_desc"></a>
+
+<a id="class_streaminfo__parameters"></a>
+
+### 属性
+
+#### `streamUuid`
+
+流 ID， String 型。
+
+#### `streamName`
+
+流名称， String 型。
+
+#### `streamType`
+
+流类型，详见 [AgoraEduContextMediaStreamType](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#enum_mediastreamtype)。
+
+#### `videoSourceType`
+
+视频源类型，详见 [AgoraEduContextVideoSourceType](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#enum_videosourcetype)。
+
+#### `audioSourceType`
+
+音频源类型，详见 [AgoraEduContextAudioSourceType](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#enum_audiosourcetype)。
+
+#### `videoSourceState`
+
+视频源状态，详见 [AgoraEduContextMediaSourceState](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#enum_mediasourcestate)。
+
+#### `audioSourceState`
+
+音频源状态，详见 [AgoraEduContextMediaSourceState](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#enum_mediasourcestate)。
+
+#### `owner`
+
+流所属的用户，详见 [AgoraEduContextUserInfo](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#class_userinfo)。
+
+<a id="class_userinfo"></a>
+
+## AgoraEduContextUserInfo
+
+用户基础信息。
+
+<a id="class_userinfo__prototype"></a>
+
+```kotlin
+data class AgoraEduContextUserInfo(
+    val userUuid: String,
+    val userName: String,
+    val role: AgoraEduContextUserRole = AgoraEduContextUserRole.Student)
+```
+
+<a id="class_userinfo__detailed_desc"></a>
+
+<a id="class_userinfo__parameters"></a>
+
+### 属性
+
+#### `userUuid`
+
+用户 ID， String 型。
+
+#### `userName`
+
+用户名称， String 型。
+
+#### `role`
+
+用户角色，详见 [AgoraEduContextUserRole](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#enum_userrole)。
+
+<a id="class_deviceinfo"></a>
+
+## AgoraEduContextDeviceInfo
+
+设备信息。
+
+<a id="class_deviceinfo__prototype"></a>
+
+```kotlin
+data class AgoraEduContextDeviceInfo(
+        val deviceId: String,
+        val deviceName: String,
+        val deviceType: AgoraEduContextDeviceType
+)
+```
+
+<a id="class_deviceinfo__detailed_desc"></a>
+
+<a id="class_deviceinfo__parameters"></a>
+
+### 属性
+
+#### `deviceType`
+
+设备类型，详见 [AgoraEduContextDeviceType](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#enum_devicetype)。
+
+#### `deviceId`
+
+设备 ID， String 型。
+
+#### `deviceName`
+
+设备名称， String 型。
+
+<a id="class_roominfo"></a>
+
+## EduContextRoomInfo
+
+房间信息。
+
+<a id="class_roominfo__prototype"></a>
+
+```kotlin
+data class EduContextRoomInfo(
+    val roomUuid: String,
+    val roomName: String,
+    val roomType: EduContextRoomType
+)
+```
+
+<a id="class_roominfo__detailed_desc"></a>
+
+<a id="class_roominfo__parameters"></a>
+
+### 属性
+
+#### `roomUuid`
+
+房间 ID， String 型。
+
+#### `roomName`
+
+房间名称， String 型。
+
+#### `roomType`
+
+房间类型，详见 [EduContextRoomType](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#enum_roomtype)。
+
+<a id="class_classinfo"></a>
+
+## AgoraEduContextClassInfo
+
+课堂信息。
+
+<a id="class_classinfo__prototype"></a>
+
+```kotlin
+data class AgoraEduContextClassInfo(
+        var state: AgoraEduContextClassState = AgoraEduContextClassState.Before,
+        val startTime: Long = 0L,
+        val duration: Long = 0L,
+        val closeDelay: Long = 0L
+)
+```
+
+<a id="class_classinfo__detailed_desc"></a>
+
+<a id="class_classinfo__parameters"></a>
+
+### 属性
+
+#### `state`
+
+课堂状态，详见 [AgoraEduContextClassState](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#enum_classstate)。
+
+#### `startTime`
+
+课堂开始时间， Long 型。
+
+#### `duration`
+
+课堂时长， Long 型。
+
+#### `closeDelay`
+
+拖堂时长， Long 型。
+
+<a id="class_videostreamconfig"></a>
+
+## AgoraEduContextLocalStreamConfig
+
+视频流配置。
+
+<a id="class_videostreamconfig__prototype"></a>
+
+```kotlin
+data class AgoraEduContextLocalStreamConfig(
+        val width: Int,
+        val height: Int,
+        val frameRate: Int,
+        val bitRate: Int,
+        val mirror: Boolean
+)
+```
+
+<a id="class_videostreamconfig__detailed_desc"></a>
+
+<a id="class_videostreamconfig__parameters"></a>
+
+### 属性
+
+#### `width`
+
+视频宽， Int 型，单位为 pixel，默认值为 320。
+
+#### `height`
+
+视频高， Int 型，单位为 pixel，默认值为 240。
+
+#### `frameRate`
+
+视频帧率， Int 型，单位为 fps，默认值为 15。
+
+#### `bitRate`
+
+视频码率， Int 型，单位为 Kbps，默认值为 200。
+
+#### `mirror`
+
+视频是否镜像， Bool 型，默认值为 false。
+
+<a id="class_audiorawdataconfig"></a>
+
+## FcrAudioRawDataConfig
+
+需要回调出的音频数据配置。
+
+<a id="class_audiorawdataconfig__prototype"></a>
+
+```kotlin
+public class FcrAudioRawDataConfig {
+    public int sampleRate = 48000;
+    public int samplesPerChannel = 1024;
+    public int channels = 1;
+    public int mode = 0;
+    public int position = 2;
+}
+```
+
+<a id="class_audiorawdataconfig__parameters"></a>
+
+### 属性
+
+#### `sampleRate`
+
+采样率，可设为 8000，16000，32000，44100 或 48000。默认值 48000。
+
+#### `samplesPerChannel`
+
+每次回调时每个声道的样本点个数。默认值 1024。
+
+#### `channels`
+
+单声道或双声道。默认值 1。
+
+#### `mode`
+
+对音频数据的操作权限，目前只读 `Constants.RAW_AUDIO_FRAME_OP_MODE_READ_ONLY`。
+
+#### `position`
+
+音频数据在管道中的位置，比如录制后、播放前等，可设为
+
+- IAudioFrameObserver.POSITION_RECORD：录制后。
+- IAudioFrameObserver.POSITION_BEFORE_MIXING：多条音频流混合成一路即将播放的音频流前。
+- IAudioFrameObserver.POSITION_MIXED：所有远端与本地音频流都混合成一路音频流后。
+
+<a id="class_FcrAudioRawData"></a>
+
+## FcrAudioRawData
+
+音频数据。
+
+<a id="class_FcrAudioRawData__prototype"></a>
+
+```kotlin
+public class FcrAudioRawData {
+    public int samplesPerChannel;
+    public int bytesPerSample;
+    public int channels;
+    public int sampleRate;
+    public ByteBuffer buffer;
+}
+```
+
+<a id="class_FcrAudioRawData__parameters"></a>
+
+### 属性
+
+#### `samplesPerChannel`
+
+每个声道的采样点数。
+
+#### `bytesPerSample`
+
+每个样本的字节数，2 字节。
+
+#### `channels`
+
+声道数。
+
+#### `sampleRate`
+
+采样率。
+
+#### `buffer`
+
+指向音频数据内存的指针。buffer 的长度（字节） = (samplesPerChannel * channels * bytesPerSample)
+
+<a id="class_fcrsnapshotinfo"></a>
+
+## FcrSnapshotInfo
+
+截图信息。
+
+<a id="class_fcrsnapshotinfo__prototype"></a>
+
+```kotlin
+class FcrSnapshotInfo {
+    var roomUuid: String? = null
+    var streamUuid: String? = null
+    var filePath: String? = null
+    var width: Int? = null
+    var height: Int? = null
+}
+```
+
+<a id="class_fcrsnapshotinfo__parameters"></a>
+
+### 参数
+
+#### `roomUuid`
+
+房间 ID。
+
+#### `streamUuid`
+
+流 ID
+
+#### `filePath`
+
+截图保存地址。
+
+#### `width`
+
+图片宽度。
+
+#### `height`
+
+图片高度。
+
+<a id="class_fcrmediapacketstats"></a>
+
+## FcrMediaPacketStats
+
+媒体包信息数据。
+
+<a id="class_fcrmediapacketstats__prototype"></a>
+
+```java
+data class FcrMediaPacketStats(
+    var lastMileDelay: Int = 0,
+    var txPacketLossRate: Int = 0,
+    var rxPacketLossRate: Int = 0
+)
+```
+
+<a id="class_fcrmediapacketstats__detailed_desc"></a>
+
+### 详情
+
+#### `自从`
+
+v2.8.60
+
+<a id="class_fcrmediapacketstats__parameters"></a>
+
+### 属性
+
+#### `lastMileDelay`
+
+客户端-接入服务器延时 (毫秒)。
+
+#### `txPacketLossRate`
+
+客户端上行发送到服务器的丢包率（%）。
+
+#### `rxPacketLossRate`
+
+服务器下行发送到客户端的丢包率（%）。
+
+<a id="class_fcrperformanceinfo"></a>
+
+## FcrPerformanceInfo
+
+设备性能信息。
+
+<a id="class_fcrperformanceinfo__prototype"></a>
+
+```java
+data class FcrPerformanceInfo(
+    var cpuTotalUsage: Double = 0.0,
+    var cpuAppUsage: Double = 0.0,
+    var memoryAppUsageRatio: Double = 0.0,
+    var memoryTotalUsageRatio: Double = 0.0,
+    var memoryAppUsageInKbytes: Int = 0,
+)
+```
+
+<a id="class_fcrperformanceinfo__detailed_desc"></a>
+
+### 详情
+
+#### `自从`
+
+v2.8.60
+
+<a id="class_fcrperformanceinfo__parameters"></a>
+
+### 属性
+
+#### `cpuTotalUsage`
+
+当前系统的 CPU 使用率（%）。
+
+#### `cpuAppUsage`
+
+当前 App 的 CPU 使用率（%）。
+
+#### `memoryAppUsageRatio`
+
+当前 App 的内存占比（%）。
+
+#### `memoryTotalUsageRatio`
+
+当前系统的内存占比（%）。
+
+#### `memoryAppUsageInKbytes`
+
+当前 App 的内存大小（KB）。

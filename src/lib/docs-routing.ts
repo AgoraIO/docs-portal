@@ -68,6 +68,10 @@ export function getSourceSlugs(route: DocsRoute) {
   return slugs;
 }
 
+export function isSamePathOrDescendant(activePath: string, parentPath: string) {
+  return activePath === parentPath || activePath.startsWith(`${parentPath}/`);
+}
+
 export function getContentPathSegments(route: DocsRoute) {
   const sourceSlugs = getSourceSlugs(route);
   const leaf = sourceSlugs.at(-1);

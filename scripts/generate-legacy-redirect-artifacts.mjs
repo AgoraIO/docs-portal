@@ -2,6 +2,10 @@ import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
+import {
+  isRetiredCnDocsPath,
+  retiredCnLegacyDocsRoute,
+} from '../src/lib/retired-cn-docs.mjs';
 
 const repoRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -36,6 +40,10 @@ const vercelBasePath = path.join(repoRoot, 'vercel.base.json');
 const vercelPath = path.join(repoRoot, 'vercel.json');
 const VERCEL_BULK_REDIRECT_LIMIT = 1_000;
 const VERCEL_CONFIG_REDIRECT_LIMIT = 2_048;
+const shengwangGuideRedirectsPath = path.join(
+  repoRoot,
+  'src/lib/shengwang-guide-redirects.json',
+);
 const checkOnly = process.argv.includes('--check');
 
 const redirectsConfig = JSON.parse(await readFile(redirectsPath, 'utf8'));
@@ -49,6 +57,10 @@ const posthogObservedRedirects = JSON.parse(
   await readFile(posthogObservedRedirectsPath, 'utf8'),
 );
 const baseConfig = JSON.parse(await readFile(vercelBasePath, 'utf8'));
+const shengwangGuideRedirects = JSON.parse(
+  await readFile(shengwangGuideRedirectsPath, 'utf8'),
+);
+
 const rtcFolderRedirects = JSON.parse(
   await readFile(rtcFolderRedirectsPath, 'utf8'),
 );
@@ -57,7 +69,7 @@ const artifactRules = [
   ...gscObservedRedirects,
   ...posthogRevalidatedRedirects,
   ...posthogObservedRedirects,
-];
+].filter((rule) => !isRetiredCnDocsPath(rule.legacyPath) && !isRetiredCnDocsPath(rule.target));
 
 const staticRedirects = createStaticRedirects(artifactRules);
 const {
@@ -76,7 +88,7 @@ const vercelConfig = {
     [...baseConfig.redirects, ...rtcFolderRedirects.redirects],
     configRedirects,
   ),
-  ...createRoutesConfig(queryRedirectRoutes, baseConfig.routes),
+  ...createRoutesConfig(queryRedirectRoutes, [...(baseConfig.routes ?? [])]),
   ...(baseConfig.rewrites ? { rewrites: baseConfig.rewrites } : {}),
 };
 
@@ -207,7 +219,19 @@ function getBulkRedirectPreserveQueryParams(pathRules) {
 }
 
 function createRedirectsConfig(baseRedirects = [], configRedirects) {
-  const redirects = [...baseRedirects, ...configRedirects];
+  // Reviewed guide moves must precede the generic Shengwang old-host fallback.
+  const guideRedirects = Object.entries(shengwangGuideRedirects).map(
+    ([source, destination]) => ({ source, destination, statusCode: 301 }),
+  );
+  const redirects = [
+    ...guideRedirects,
+    ...baseRedirects.filter(
+      (rule) => !Object.hasOwn(shengwangGuideRedirects, rule.source),
+    ),
+    ...configRedirects,
+  ].filter(
+    (rule) => !isRetiredCnDocsPath(rule.destination),
+  );
 
   if (redirects.length > VERCEL_CONFIG_REDIRECT_LIMIT) {
     throw new Error(
@@ -219,7 +243,7 @@ function createRedirectsConfig(baseRedirects = [], configRedirects) {
 }
 
 function createRoutesConfig(queryRedirectRoutes, baseRoutes = []) {
-  const routes = [...queryRedirectRoutes, ...baseRoutes];
+  const routes = [...baseRoutes.filter((route) => route.status === 404), retiredCnLegacyDocsRoute, ...queryRedirectRoutes, ...baseRoutes.filter((route) => route.status !== 404)];
   return routes.length > 0 ? { routes } : {};
 }
 

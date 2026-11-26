@@ -1,3 +1,5 @@
+import { isRetiredCnDocsPath } from '../retired-cn-docs.mjs';
+import { ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS } from '../zh-cn-product-ia-redirects';
 import staticRedirects from './static-redirects.json';
 
 type StaticLegacyRedirectRule = {
@@ -10,9 +12,22 @@ type StaticLegacyRedirectRule = {
 export type StaticLegacyRedirectPayload = {
   preserveSearch: boolean;
   redirectUrl: string;
+  statusCode?: 301;
 };
 
-const staticLegacyRedirectRules = staticRedirects as StaticLegacyRedirectRule[];
+const rulesByPath = new Map<string, StaticLegacyRedirectRule[]>();
+for (const rule of staticRedirects as StaticLegacyRedirectRule[]) {
+  const path = normalizeLegacyPath(rule.p);
+  const rules = rulesByPath.get(path);
+  if (rules) rules.push(rule);
+  else rulesByPath.set(path, [rule]);
+}
+
+export const ZH_CN_SMALL_BUILD_FLAT_IA_STATIC_REDIRECT_SOURCES = new Set(
+  Object.keys(ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS)
+    .filter((path) => !isRetiredCnDocsPath(`/zh-CN/${path}`))
+    .map((path) => `/zh-CN/${path}`),
+);
 
 export function resolveStaticLegacySitemapRedirect(
   legacyPath: string,
@@ -20,20 +35,19 @@ export function resolveStaticLegacySitemapRedirect(
 ): StaticLegacyRedirectPayload | null {
   const normalizedPath = normalizeLegacyPath(legacyPath);
   const normalizedSearch = normalizeLegacySearch(legacySearch);
+  const candidates = rulesByPath.get(normalizedPath);
   const rule =
-    staticLegacyRedirectRules.find(
-      (item) =>
-        normalizeLegacyPath(item.p) === normalizedPath &&
-        normalizeLegacySearch(item.q) === normalizedSearch,
-    ) ??
-    staticLegacyRedirectRules.find(
-      (item) => normalizeLegacyPath(item.p) === normalizedPath && !item.q,
-    );
+    candidates?.find(
+      (item) => normalizeLegacySearch(item.q) === normalizedSearch,
+    ) ?? candidates?.find((item) => !item.q);
 
   return rule
     ? {
         preserveSearch: rule.s !== 0,
         redirectUrl: rule.t,
+        ...(ZH_CN_SMALL_BUILD_FLAT_IA_STATIC_REDIRECT_SOURCES.has(rule.p)
+          ? { statusCode: 301 }
+          : {}),
       }
     : null;
 }

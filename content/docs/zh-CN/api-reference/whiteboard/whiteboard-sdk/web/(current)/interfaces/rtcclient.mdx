@@ -1,0 +1,46 @@
+---
+title: RTCClient
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/rtcclient
+  sourcePath: html-docs/whiteboard/Web/interfaces/rtcclient.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type RTCClient = {
+    /**
+     * filePath: 文件路径，可以是本地文件或者网络地址
+     * loopback: true 则音频不通过 rtc 传播
+     * replace: true 则只播文件声音，不播麦克风声音，false 则是将文件和麦克风混音
+     * cycle: 循环播放文件的次数，-1 是无限循环
+     * callback: native 收到回调事件，需要用户注册监听，在接到回调后调用该方法
+     * state:
+     *  710: 成功调用 startAudioMixing 或 resumeAudioMixing
+     *  711: 成功调用 pauseAudioMixing
+     *  713: 成功调用 stopAudioMixing
+     *  714: 播放失败，error code 会有具体原因
+     */
+    startAudioMixing: (filePath: string, loopback: boolean, replace: boolean, cycle: number, callback?: (state: number, errorCode: number)=>void)=>number;
+    stopAudioMixing: (callback?: (state: number, errorCode: number)=>void)=>number;
+    pauseAudioMixing: ()=>number;
+    resumeAudioMixing: ()=>number;
+    /**
+     * 音量为 0 到 100 间整数，默认为 100
+     */
+    adjustAudioMixingVolume?: (volume: number)=>number;
+    adjustAudioMixingPlayoutVolume?: (volume: number)=>number;
+    adjustAudioMixingPublishVolume?: (volume: number)=>number;
+    getAudioMixingPlayoutVolume?: ()=>number;
+    getAudioMixingPublishVolume?: ()=>number;
+    getAudioMixingDuration?: ()=>number;
+    getAudioMixingCurrentPosition?: ()=>number;
+    /**
+     * 进度为毫秒
+     */
+    setAudioMixingPosition: (position: number)=>number;
+};
+```

@@ -6,6 +6,7 @@ import type {
   DocsPagePayload,
   DocsRedirectPayload,
 } from '@/lib/docs-page.server';
+import { preserveRedirectSearch } from '@/lib/docs-redirect-url';
 import { preloadDocsPageContent } from '@/lib/docs-route-preload';
 import { isPublishedDocLocale } from '@/lib/docs-routing';
 import {
@@ -34,6 +35,9 @@ export const Route = createFileRoute('/$locale/$tab/')({
             location,
             legacyRedirect.preserveSearch,
           ),
+          ...(legacyRedirect.statusCode
+            ? { statusCode: legacyRedirect.statusCode }
+            : {}),
         });
       }
     }
@@ -79,7 +83,14 @@ export const Route = createFileRoute('/$locale/$tab/')({
     if ('redirectUrl' in payload) {
       const { redirectUrl } = payload;
       const preserveSearch =
-        'preserveSearch' in payload ? payload.preserveSearch : true;
+        'preserveSearch' in payload &&
+        typeof payload.preserveSearch === 'boolean'
+          ? payload.preserveSearch
+          : true;
+      const statusCode =
+        'statusCode' in payload && typeof payload.statusCode === 'number'
+          ? payload.statusCode
+          : undefined;
 
       if (!redirectUrl) {
         throw notFound();
@@ -87,6 +98,7 @@ export const Route = createFileRoute('/$locale/$tab/')({
 
       throw redirect({
         href: preserveRedirectSearch(redirectUrl, location, preserveSearch),
+        statusCode: statusCode ?? 307,
       });
     }
 
@@ -120,7 +132,9 @@ function TabIndexPage() {
     sidebarHeader,
     slug,
     toc,
+    tocMaxDepth,
     title,
+    titlePlatforms,
   } = Route.useLoaderData();
 
   return (
@@ -141,29 +155,9 @@ function TabIndexPage() {
       sidebarHeader={sidebarHeader}
       slug={slug}
       title={title}
+      titlePlatforms={titlePlatforms}
       toc={toc}
+      tocMaxDepth={tocMaxDepth}
     />
   );
-}
-
-function preserveRedirectSearch(
-  href: string,
-  location: { hash?: string; searchStr?: string },
-  preserveSearch = true,
-) {
-  if (/[?#]/.test(href)) {
-    return href;
-  }
-
-  if (!preserveSearch) {
-    return href;
-  }
-
-  const hash = location.hash
-    ? location.hash.startsWith('#')
-      ? location.hash
-      : `#${location.hash}`
-    : '';
-
-  return `${href}${location.searchStr ?? ''}${hash}`;
 }

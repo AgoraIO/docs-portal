@@ -3,9 +3,28 @@ import {
   buildOpenApiResponseViews,
   getDefaultOpenApiMediaType,
   getDefaultOpenApiResponseStatus,
+  getOpenApiResponseStatusLabel,
 } from './response-view';
 
 describe('openapi response view', () => {
+  it.each([
+    ['200', ['200', 'default'], '200', '200'],
+    ['default', ['200', 'default'], '非 200', 'Non-200'],
+    ['default', ['201', 'default'], '非 201', 'Non-201'],
+    ['default', ['2XX', 'default'], '非 2XX', 'Non-2XX'],
+    ['default', ['200', '401', 'default'], '其他响应', 'Other responses'],
+    ['default', ['default'], '默认响应', 'Default response'],
+    ['非 200', ['200', '非 200'], '非 200', '非 200'],
+  ])(
+    'labels %s among %j without changing response identity',
+    (status, codes, chinese, english) => {
+      expect(getOpenApiResponseStatusLabel(status, codes, 'zh-CN')).toBe(
+        chinese,
+      );
+      expect(getOpenApiResponseStatusLabel(status, codes, 'en')).toBe(english);
+    },
+  );
+
   it('returns no views for non-record responses', () => {
     expect(buildOpenApiResponseViews(null, {})).toEqual([]);
     expect(buildOpenApiResponseViews([], {})).toEqual([]);

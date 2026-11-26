@@ -1,0 +1,36 @@
+---
+title: STREAM_FALLBACK_OPTIONS
+description: 网络条件较差时，音视频流回退处理的选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/enum_streamfallbackoptions
+  sourcePath: html-docs/rtc/Unity/API/enum_streamfallbackoptions.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_streamfallbackoptions__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="stream_fallback_option_disabled"></a>
+<Parameter name="STREAM_FALLBACK_OPTION_DISABLED">
+
+0: 不对音视频流作回退处理，但不能保证音视频流的质量。
+
+</Parameter>
+<a id="stream_fallback_option_video_stream_low"></a>
+<Parameter name="STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW">
+
+1: 只接收视频小流（低分辨率、低码率视频流）。
+
+</Parameter>
+<a id="stream_fallback_option_audio_only"></a>
+<Parameter name="STREAM_FALLBACK_OPTION_AUDIO_ONLY">
+
+2: 网络条件较差时，先尝试只接收视频小流；如果因网络环境太差无法显示视频，则再回退到只接收订阅的音频流。
+
+</Parameter>
+</ParameterList>

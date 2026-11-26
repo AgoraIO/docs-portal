@@ -1,0 +1,91 @@
+---
+title: ApplianceCursorOptions interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_appliance_cursor_options
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_appliance_cursor_options.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+光标配置，通过 WhiteboardOptions.appliancePluginOptions.extras.cursor 使用。
+
+当前版本未从 SDK 包入口单独导出此类型名；通过所述配置、参数或返回值使用其结构。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface ApplianceCursorOptions
+```
+
+## 配置示例
+
+通过已导出的 AppliancePluginExtrasOptions 描述外层配置；cursor.enable 与 cursor.expirationTime 在本版引用结构中必填。
+
+```text
+import { AppliancePluginExtrasOptions } from '@shengwang/whiteboard';
+
+const extras: AppliancePluginExtrasOptions = {
+  cursor: { enable: true, expirationTime: 3000 }
+};
+```
+
+将 extras 放入 WhiteboardOptions.appliancePluginOptions.extras，并设置 enableAppliancePlugin=true。无需单独导入 ApplianceCursorOptions。
+
+| [enable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-cursor-options#a5d2b221c30df47aa6493c4a52645f80e) | `enable: boolean` |
+| --- | --- |
+| [expirationTime](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-cursor-options#ae889c7e509b74bdfda16816f5841904f) | `expirationTime: number` |
+| [syncedLabel](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-cursor-options#a5180e06c248ede3f7639be19507d79b5) | `syncedLabel?: ApplianceCursorSyncedLabelOptions` |
+| [appearance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-appliance-cursor-options#a4b1318bc8e9f6f74621c2ccc3c52f12b) | `appearance?: ApplianceCursorAppearanceMap` |
+
+## 变量说明
+
+<a id="a5d2b221c30df47aa6493c4a52645f80e"></a>
+
+### enable
+
+```text
+enable: boolean
+```
+
+Appliance Plugin 的同步光标开关；与 WhiteboardOptions.userCursor 分属不同配置项。
+
+<a id="ae889c7e509b74bdfda16816f5841904f"></a>
+
+### expirationTime
+
+```text
+expirationTime: number
+```
+
+同步光标最后一次更新后的保留时间，单位毫秒；到期后隐藏。提供 cursor 对象时，该字段在本版 ArkTS 类型中必填。
+
+<a id="a5180e06c248ede3f7639be19507d79b5"></a>
+
+### syncedLabel
+
+```text
+syncedLabel?: ApplianceCursorSyncedLabelOptions
+```
+
+同步光标标签的全局显示配置。
+
+<a id="a4b1318bc8e9f6f74621c2ccc3c52f12b"></a>
+
+### appearance
+
+```text
+appearance?: ApplianceCursorAppearanceMap
+```
+
+按教具配置光标外观；本版 ArkTS 结构提供 pencil 和 clicker。

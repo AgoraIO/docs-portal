@@ -1,0 +1,120 @@
+---
+title: LOCAL_VIDEO_STREAM_REASON
+description: 本地视频状态改变原因。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/enum_localvideostreamreason
+  sourcePath: html-docs/rtc/Csharp/API/enum_localvideostreamreason.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_localvideostreamreason__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="local_video_stream_reason_ok"></a>
+<Parameter name="LOCAL_VIDEO_STREAM_REASON_OK">
+
+0：本地视频状态正常。
+
+</Parameter>
+<a id="local_video_stream_reason_failure"></a>
+<Parameter name="LOCAL_VIDEO_STREAM_REASON_FAILURE">
+
+1：出错原因不明确。
+
+</Parameter>
+<a id="local_video_stream_reason_device_no_permission"></a>
+<Parameter name="LOCAL_VIDEO_STREAM_REASON_DEVICE_NO_PERMISSION">
+
+2：没有权限启动本地视频采集设备。请提示用户开启设备权限后再重新加入频道。
+
+<a id="弃用"></a>
+
+:::error[弃用：]
+该枚举已废弃。请改用 [OnPermissionError](/zh-CN/api-reference/rtc/csharp-windows/network#callback_irtcengineeventhandler_onpermissionerror) 回调中的 CAMERA。
+:::
+
+</Parameter>
+<a id="local_video_stream_reason_device_busy"></a>
+<Parameter name="LOCAL_VIDEO_STREAM_REASON_DEVICE_BUSY">
+
+3：本地视频采集设备正在使用中。请提示用户检查摄像头是否被其他 App 占用，或者尝试重新加入频道。
+
+</Parameter>
+<a id="local_video_stream_reason_capture_failure"></a>
+<Parameter name="LOCAL_VIDEO_STREAM_REASON_CAPTURE_FAILURE">
+
+4：本地视频采集失败。请提示用户检查视频采集设备是否正常工作，检查摄像头是否被其他 App 占用，或者尝试重新加入频道。
+
+</Parameter>
+<a id="local_video_stream_reason_codec_not_support"></a>
+<Parameter name="LOCAL_VIDEO_STREAM_REASON_CODEC_NOT_SUPPORT">
+
+5：本地视频编码失败。
+
+</Parameter>
+<a id="local_video_stream_reason_capture_inbackground"></a>
+<Parameter name="LOCAL_VIDEO_STREAM_REASON_CAPTURE_INBACKGROUND">
+
+6：预留。
+
+</Parameter>
+<a id="local_video_stream_reason_capture_multiple_foreground_apps"></a>
+<Parameter name="LOCAL_VIDEO_STREAM_REASON_CAPTURE_MULTIPLE_FOREGROUND_APPS">
+
+7：预留。
+
+</Parameter>
+<a id="local_video_stream_reason_device_not_found"></a>
+<Parameter name="LOCAL_VIDEO_STREAM_REASON_DEVICE_NOT_FOUND">
+
+8：找不到本地视频采集设备。需检查摄像头是否与设备正常连接、摄像头是否正常工作，或者尝试重新加入频道。
+
+</Parameter>
+<a id="local_video_stream_reason_device_disconnected"></a>
+<Parameter name="LOCAL_VIDEO_STREAM_REASON_DEVICE_DISCONNECTED">
+
+9：预留。
+
+</Parameter>
+<a id="local_video_stream_reason_device_invalid_id"></a>
+<Parameter name="LOCAL_VIDEO_STREAM_REASON_DEVICE_INVALID_ID">
+
+10：SDK 无法在视频设备列表中找到该视频设备。请检查视频设备 ID 是否有效。
+
+</Parameter>
+<a id="local_video_stream_reason_screen_capture_window_minimized"></a>
+<Parameter name="LOCAL_VIDEO_STREAM_REASON_SCREEN_CAPTURE_WINDOW_MINIMIZED">
+
+11：预留。
+
+</Parameter>
+<a id="local_video_stream_reason_screen_capture_window_closed"></a>
+<Parameter name="LOCAL_VIDEO_STREAM_REASON_SCREEN_CAPTURE_WINDOW_CLOSED">
+
+12：通过窗口 ID 共享的窗口已关闭，或通过窗口 ID 共享的全屏窗口已退出全屏。退出全屏模式后，远端用户将无法看到共享的窗口。为避免远端用户看到黑屏，建议你立即结束本次共享。
+
+报告该错误码的常见场景：
+
+- 本地用户关闭共享的窗口。
+- 本地用户先播放映幻灯片，然后共享放映中的幻灯片。结束放映时，SDK 会报告该错误码。
+- 本地用户先全屏观看网页视频或网页文档，然后共享网页视频或网页文档。结束全屏时，SDK 会报告该错误码。
+
+</Parameter>
+<a id="local_video_stream_reason_screen_capture_window_occluded"></a>
+<Parameter name="LOCAL_VIDEO_STREAM_REASON_SCREEN_CAPTURE_WINDOW_OCCLUDED">
+
+13:（仅适用于 Windows）待共享的窗口被其他窗口遮挡住，被遮挡住的部分在共享时会被 SDK 涂黑。
+
+</Parameter>
+<a id="local_video_stream_reason_device_system_pressure"></a>
+<Parameter name="LOCAL_VIDEO_STREAM_REASON_DEVICE_SYSTEM_PRESSURE">
+
+101：由于系统压力过大，导致当前视频采集设备不可用。
+
+</Parameter>
+</ParameterList>

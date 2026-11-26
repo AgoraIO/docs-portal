@@ -1,0 +1,133 @@
+---
+title: Enumeration ChannelMediaRelayEvent
+description: 跨频道媒体流转发过程中的事件列表，可以通过 AgoraRTCClient.on("channel-media-relay-event") 获取。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/react/enums/channelmediarelayevent
+  sourcePath: html-docs/rtc/React/enums/channelmediarelayevent.html
+  generator: typedoc
+  warnings: []
+---
+
+## Enumeration members
+
+<a id="network_connected"></a>
+
+### NETWORK_CONNECTED
+
+<ApiSignature>
+
+NETWORK_CONNECTED: = "NETWORK_CONNECTED"
+
+</ApiSignature>
+
+用户与服务器建立连接。
+
+<a id="network_disconnected"></a>
+
+### NETWORK_DISCONNECTED
+
+<ApiSignature>
+
+NETWORK_DISCONNECTED: = "NETWORK_DISCONNECTED"
+
+</ApiSignature>
+
+网络中断导致用户与服务器连接断开。
+
+<a id="packet_joined_dest_channel"></a>
+
+### PACKET_JOINED_DEST_CHANNEL
+
+<ApiSignature>
+
+PACKET_JOINED_DEST_CHANNEL: = "PACKET_JOINED_DEST_CHANNEL"
+
+</ApiSignature>
+
+用户已加入目标频道。
+
+<a id="packet_joined_src_channel"></a>
+
+### PACKET_JOINED_SRC_CHANNEL
+
+<ApiSignature>
+
+PACKET_JOINED_SRC_CHANNEL: = "PACKET_JOINED_SRC_CHANNEL"
+
+</ApiSignature>
+
+用户已加入源频道。
+
+<a id="packet_received_audio_from_src"></a>
+
+### PACKET_RECEIVED_AUDIO_FROM_SRC
+
+<ApiSignature>
+
+PACKET_RECEIVED_AUDIO_FROM_SRC: = "PACKET_RECEIVED_AUDIO_FROM_SRC"
+
+</ApiSignature>
+
+服务器收到了源频道发送的音频流。
+
+<a id="packet_received_video_from_src"></a>
+
+### PACKET_RECEIVED_VIDEO_FROM_SRC
+
+<ApiSignature>
+
+PACKET_RECEIVED_VIDEO_FROM_SRC: = "PACKET_RECEIVED_VIDEO_FROM_SRC"
+
+</ApiSignature>
+
+服务器收到了源频道发送的视频流。
+
+<a id="packet_sent_to_dest_channel"></a>
+
+### PACKET_SENT_TO_DEST_CHANNEL
+
+<ApiSignature>
+
+PACKET_SENT_TO_DEST_CHANNEL: = "PACKET_SENT_TO_DEST_CHANNEL"
+
+</ApiSignature>
+
+SDK 开始向目标频道发送数据包。
+
+<a id="packet_update_dest_channel"></a>
+
+### PACKET_UPDATE_DEST_CHANNEL
+
+<ApiSignature>
+
+PACKET_UPDATE_DEST_CHANNEL: = "PACKET_UPDATE_DEST_CHANNEL"
+
+</ApiSignature>
+
+目标频道已更新。
+
+<a id="packet_update_dest_channel_not_change"></a>
+
+### PACKET_UPDATE_DEST_CHANNEL_NOT_CHANGE
+
+<ApiSignature>
+
+PACKET_UPDATE_DEST_CHANNEL_NOT_CHANGE: = "PACKET_UPDATE_DEST_CHANNEL_NOT_CHANGE"
+
+</ApiSignature>
+
+类型定义保留的枚举值。Web SDK 4.22.0 的更新实现不会上报该事件：使用相同配置再次更新并确认成功时，仍上报 `PACKET_UPDATE_DEST_CHANNEL`。请通过 [updateChannelMediaRelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#updatechannelmediarelay) 返回的 Promise 处理本次更新结果。
+
+<a id="packet_update_dest_channel_refused"></a>
+
+### PACKET_UPDATE_DEST_CHANNEL_REFUSED
+
+<ApiSignature>
+
+PACKET_UPDATE_DEST_CHANNEL_REFUSED: = "PACKET_UPDATE_DEST_CHANNEL_REFUSED"
+
+</ApiSignature>
+
+类型定义保留的枚举值。Web SDK 4.22.0 的更新实现不会通过该事件报告更新失败；失败时返回的 Promise 会拒绝。请通过 [updateChannelMediaRelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#updatechannelmediarelay) 返回的 Promise 处理本次更新结果，不应等待该事件。

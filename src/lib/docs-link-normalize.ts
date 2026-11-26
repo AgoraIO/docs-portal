@@ -31,7 +31,10 @@ export function normalizeDocsHref(
     }
 
     return {
-      href: normalizeRootDocsHref(href, context),
+      href: addChineseProductSidebarContext(
+        normalizeRootDocsHref(href, context),
+        context.contentPath,
+      ),
       kind: 'root',
     };
   }
@@ -69,9 +72,56 @@ export function normalizeDocsHref(
   const docPath = `${buildDocPath(locale, tab, slugSegments)}${parsed.search}${parsed.hash}`;
 
   return {
-    href: normalizeLegacyRootDocsHref(docPath),
+    href: addChineseProductSidebarContext(
+      normalizeLegacyRootDocsHref(docPath),
+      context.contentPath,
+    ),
     kind: 'internal-doc',
   };
+}
+
+function addChineseProductSidebarContext(href: string, contentPath?: string) {
+  const productPath = getChineseProductPath(contentPath);
+  if (!productPath) {
+    return href;
+  }
+
+  const parsed = splitHref(href);
+  if (
+    !parsed.path.startsWith('/zh-CN/api-reference/api-ref/') ||
+    new URLSearchParams(parsed.search).has('from')
+  ) {
+    return href;
+  }
+
+  const separator = parsed.search ? '&' : '?';
+
+  return `${parsed.path}${parsed.search}${separator}from=${encodeURIComponent(productPath)}${parsed.hash}`;
+}
+
+function getChineseProductPath(contentPath?: string) {
+  if (!contentPath) {
+    return undefined;
+  }
+
+  const [locale, tab, productSlug] = contentPath.split('/').filter(Boolean);
+  if (locale !== 'zh-CN') {
+    return undefined;
+  }
+
+  if (tab === 'ai') {
+    return '/zh-CN/ai';
+  }
+
+  if (
+    (tab === 'realtime-media' || tab === 'solutions') &&
+    productSlug &&
+    !/\.mdx?$/i.test(productSlug)
+  ) {
+    return `/${locale}/${tab}/${productSlug}`;
+  }
+
+  return undefined;
 }
 
 function normalizeRootDocsHref(
@@ -178,15 +228,17 @@ function getLegacyConversationalAiRestPath(segments: string[]) {
   }
 
   if (!group) {
-    return locale === 'en'
-      ? `/${locale}/api-reference/api-ref/conversational-ai`
-      : null;
+    return `/${locale}/api-reference/api-ref/conversational-ai`;
   }
 
   if (group === 'authentication' || group === 'status-codes') {
-    return locale === 'en'
-      ? `/${locale}/api-reference/api-ref/conversational-ai/${group}`
-      : null;
+    if (group === 'authentication' && locale === 'zh-CN') {
+      return `/${locale}/api-reference/conversational-ai/rest-api/authentication`;
+    }
+
+    return group === 'status-codes' && locale === 'zh-CN'
+      ? `/${locale}/ai/api/response-code`
+      : `/${locale}/api-reference/api-ref/conversational-ai/${group}`;
   }
 
   if (group !== 'agent' || !leaf) {
@@ -334,7 +386,7 @@ const LEGACY_GET_STARTED_PATHS: Record<string, (locale: string) => string> = {
   'enable-service': (locale) =>
     locale === 'zh-CN'
       ? '/zh-CN/ai/enable-service'
-      : '/en/ai/reference/enable-conversational-ai',
+      : '/en/ai/get-started/quickstart',
 };
 
 const LEGACY_AI_BUILD_GROUP_ROUTE_LEAVES: Record<string, string> = {

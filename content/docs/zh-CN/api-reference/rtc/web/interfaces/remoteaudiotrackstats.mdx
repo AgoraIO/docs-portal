@@ -1,0 +1,232 @@
+---
+title: Interface RemoteAudioTrackStats
+description: 远端音频轨道的统计数据，包括连接、传输等基本信息，可以通过 AgoraRTCClient.getRemoteAudioStats 获取。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/javascript/interfaces/remoteaudiotrackstats
+  sourcePath: html-docs/rtc/Web/interfaces/remoteaudiotrackstats.html
+  generator: typedoc
+  warnings: []
+---
+
+## Properties
+
+<a id="codectype"></a>
+
+<a id="optional-codectype"></a>
+
+### codecType
+
+<ApiSignature labels="Optional">
+
+codecType: "opus"|"aac"|"PCMU"|"PCMA"|"G722"
+
+</ApiSignature>
+
+音频的编码格式。
+
+- `"opus"`: 音频编码格式为 OPUS。
+- `"aac"`: 音频编码格式为 AAC。
+- `"PCMU"`: 音频编码格式为 G.711 μ-law。浏览器统计返回该编码时可获取此值。
+- `"PCMA"`: 音频编码格式为 G.711 A-law。浏览器统计返回该编码时可获取此值。
+- `"G722"`: 音频编码格式为 G.722。浏览器统计返回该编码时可获取此值。
+
+:::caution[注意]
+Firefox 上无法获取该值。
+:::
+
+<a id="currentpacketlossrate"></a>
+
+### currentPacketLossRate
+
+<ApiSignature>
+
+currentPacketLossRate: number
+
+</ApiSignature>
+
+接收的音频在 400ms 内的丢包率。
+
+<a id="end2enddelay"></a>
+
+### end2EndDelay
+
+<ApiSignature>
+
+end2EndDelay: number
+
+</ApiSignature>
+
+音频端到端延迟（ms）。
+
+从远端采集音频到本地播放音频的延迟。该延迟不包括发送端编码和接收端解码的时间。
+
+<a id="freezerate"></a>
+
+### freezeRate
+
+<ApiSignature>
+
+freezeRate: number
+
+</ApiSignature>
+
+接收的音频卡顿率。
+
+<a id="packetlossrate"></a>
+
+### packetLossRate
+
+<ApiSignature>
+
+packetLossRate: number
+
+</ApiSignature>
+
+接收的音频总丢包率。
+
+<a id="publishduration"></a>
+
+### publishDuration
+
+<ApiSignature>
+
+publishDuration: number
+
+</ApiSignature>
+
+远端发布音频时长
+ 如果为 -1，说明暂时还无法获取发布时长
+
+<a id="receivebitrate"></a>
+
+### receiveBitrate
+
+<ApiSignature>
+
+receiveBitrate: number
+
+</ApiSignature>
+
+接收的音频码率（bps）。
+
+<a id="receivebytes"></a>
+
+### receiveBytes
+
+<ApiSignature>
+
+receiveBytes: number
+
+</ApiSignature>
+
+接收的音频总字节数。
+
+<a id="receivedelay"></a>
+
+### receiveDelay
+
+<ApiSignature>
+
+receiveDelay: number
+
+</ApiSignature>
+
+接收音频延迟 (ms)。
+
+从发送到接收端播放音频的延迟时间。
+
+:::caution[注意]
+Safari 和 Firefox 上该字段不准确。
+:::
+
+<a id="receivelevel"></a>
+
+### receiveLevel
+
+<ApiSignature>
+
+receiveLevel: number
+
+</ApiSignature>
+
+接收的音频音量等级，范围为 [0,32767]。
+
+:::caution[注意]
+该值通过 WebRTC-Stats 获取，不能确保实时性。如果你想获取当前实时的音量等级，调用 [RemoteAudioTrack.getVolumeLevel](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack#getvolumelevel)。
+:::
+
+<a id="receivepackets"></a>
+
+### receivePackets
+
+<ApiSignature>
+
+receivePackets: number
+
+</ApiSignature>
+
+接收的音频总包数。
+
+<a id="receivepacketsdiscarded"></a>
+
+### receivePacketsDiscarded
+
+<ApiSignature>
+
+receivePacketsDiscarded: number
+
+</ApiSignature>
+
+因过早或过晚到达抖动缓冲器而被丢弃的数据包数量。
+
+<a id="receivepacketslost"></a>
+
+### receivePacketsLost
+
+<ApiSignature>
+
+receivePacketsLost: number
+
+</ApiSignature>
+
+接收的音频总丢包数。
+
+<a id="totalduration"></a>
+
+### totalDuration
+
+<ApiSignature>
+
+totalDuration: number
+
+</ApiSignature>
+
+接收的音频总时长，单位为秒。
+
+<a id="totalfreezetime"></a>
+
+### totalFreezeTime
+
+<ApiSignature>
+
+totalFreezeTime: number
+
+</ApiSignature>
+
+接收的音频总卡顿时长，单位为秒。
+
+<a id="transportdelay"></a>
+
+### transportDelay
+
+<ApiSignature>
+
+transportDelay: number
+
+</ApiSignature>
+
+传输延迟（ms)。
+
+从远端发送音频到本地接收音频的延迟。
