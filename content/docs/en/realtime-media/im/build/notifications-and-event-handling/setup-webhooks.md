@@ -246,7 +246,7 @@ GET https://{host}/app-id/{app_id}/callbacks/storage/info
 
 | Parameter | Type | Description | Required |
 | :--------- | :----- | :----------------------------------------------------------- | :------- |
-| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get Chat project information](../../get-started/enable#get-chat-project-information). | Yes |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get your Chat connection details](../../get-started/enable#get-your-chat-connection-details). | Yes |
 | `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 
 #### Request header
@@ -320,7 +320,7 @@ POST https://{host}/app-id/{app_id}/callbacks/storage/retry
 
 | Parameter | Type | Description | Required |
 | :--------- | :----- | :----------------------------------------------------------- | :------- |
-| `host` | String | The domain name assigned by the Agora Chat service to access RESTful APIs. For how to get the domain name, see [Get Chat project information](../../get-started/enable#get-chat-project-information). | Yes |
+| `host` | String | The domain name assigned by the Agora Chat service to access RESTful APIs. For how to get the domain name, see [Get your Chat connection details](../../get-started/enable#get-your-chat-connection-details). | Yes |
 | `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 
 #### Request header

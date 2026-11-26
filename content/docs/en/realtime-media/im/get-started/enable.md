@@ -34,7 +34,7 @@ When Chat is enabled, the **Chat** card shows your plan and data center, and an 
 
 ![Chat card after Chat is enabled](/temp/chat-console/chat-card-enabled.png)
 
-## Get your Chat connection details [#get-chat-project-information]
+## Get your Chat connection details
 
 Your app uses the following details to connect to Chat:
 
