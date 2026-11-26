@@ -190,7 +190,7 @@ The `transcoding.video.simulcastStreamLayers` array shows the active ABR layers 
 
 When multiple video quality layers are available, the SDK automatically adapts the subscribed video stream to changing network conditions. Under poor network conditions, it switches to lower-quality layers, down to the lowest available video layer. With the Web SDK, the default fallback limit is `LOW_STREAM`. When network conditions improve, it switches back to higher-quality layers. You don't need any additional fallback configuration for this default behavior.
 
-You can optionally configure a custom fallback policy, such as allowing fallback to audio only. With the Native SDK, you can also limit fallback to a specific video layer.
+You can optionally configure a custom fallback policy, such as allowing fallback to audio only.
 
 ### Integration guidelines
 
