@@ -33,8 +33,8 @@ describe('Chinese account guidance resource registry', () => {
       );
     });
 
-  it('finds the six existing demo experience entry points', () => {
-    expect(demoLinks).toHaveLength(6);
+  it('finds the seven existing demo experience entry points', () => {
+    expect(demoLinks).toHaveLength(7);
   });
 
   it.each(demoLinks)(

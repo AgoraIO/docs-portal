@@ -45,6 +45,14 @@ const demoResources: Record<string, DemoResource[]> = {
       target: 'home',
     },
   ],
+  'zh-CN/reference/demo/chat-uikit-vue.mdx': [
+    {
+      href: 'https://webim-vue3.easemob.com/login/',
+      resourceId: 'chat-uikit-vue',
+      label: '环信即时通讯云',
+      target: 'home',
+    },
+  ],
   'zh-CN/reference/demo/rtc-sdk-api-example.mdx': [
     {
       href: 'https://webdemo.agora.io',

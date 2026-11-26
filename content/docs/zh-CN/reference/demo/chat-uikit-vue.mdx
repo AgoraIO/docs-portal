@@ -1,0 +1,33 @@
+---
+title: 环信即时通讯云
+description: 在浏览器中体验环信 Vue 3 UIKit 的单聊、群聊和联系人管理，支持手机号登录和声网 App ID 登录。
+---
+
+这个 Web Demo 使用环信 Vue 3 UIKit 构建。登录后，你可以在**通讯录**中添加好友，打开好友会话收发消息，也可以创建群组并邀请好友加入群聊。
+
+<Cards>
+  <Card title="立即体验" href="https://webim-vue3.easemob.com/login/" />
+</Cards>
+
+## 体验模式：用手机号登录
+
+Demo 默认使用体验应用的 App ID，无需创建声网项目。输入手机号，点击**获取验证码**，填写收到的短信验证码。阅读并勾选服务条款和隐私政策后，点击**立即登录**。
+
+<DocsImage alt="体验模式：手机号和短信验证码登录页面" src="/img/demo/chat-uikit-vue-login.webp" displayWidth="560px" />
+
+## 开发者模式：用声网项目登录
+
+1. 在[声网控制台](https://console.shengwang.cn/overview)获取已开通即时通讯 IM 的项目 App ID、该项目下的用户 ID，以及为该用户生成的临时 Token。
+2. 在 Demo 登录面板右上角，连续点击下图红框中的 `</>` 图标 7 次，直到出现**开发者配置**。第 5 次点击后，页面会提示还需点击几次。
+
+   <DocsImage alt="登录面板右上角的开发者模式入口，红框标出了需要连续点击的代码图标" src="/img/demo/chat-uikit-vue-developer-entry.webp" displayWidth="560px" />
+
+3. 在**使用自定义 AppKey / AppID** 下填入声网 App ID，点击**保存配置**。
+4. 在下方的登录表单中输入用户 ID 和对应的临时 Token，点击**立即登录**。
+
+<DocsImage alt="完整的开发者模式页面：右侧可配置 App ID，并使用用户 ID 和 Token 登录" src="/img/demo/chat-uikit-vue-developer.webp" displayWidth="560px" />
+
+## 参考信息
+
+- [环信官网：运行 Vue 3 Demo](https://doc.easemob.com/uikit/chatuikit/web/demo_vue.html)：下载源码，在本地启动 Demo，并用两个测试用户验证单聊和群聊。
+- [社区文档：Vue 3 UIKit 快速开始](https://webim-vue-uikit-docs.easemob.com/guide/quickstart.html)：在自己的 Vue 项目中安装 UIKit，注册组件、引入主题样式并初始化客户端。
