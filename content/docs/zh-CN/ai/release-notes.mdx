@@ -9,13 +9,9 @@ description: "查看对话式 AI 引擎的版本更新、问题修复、行为�
 
 发布日期：2026 年 12 月 2 日。
 
-### 提前准备音频回复
+### 保障 REST 服务高可用
 
-使用能根据文本直接生成音频的大模型时，你可以让模型在用户说完前开始生成回复，并选择只输出音频，或同时输出文本和音频。如果同时使用 `asr_auto` 和 `eager_eos` 触发提前回复，需将结束说话检测模式设为 `semantic`。配置示例见[让智能体更快回复](/zh-CN/ai/build/shape-the-conversation/prepare-response#提前准备音频回复)。
-
-### 文档更新
-
-新增[保障 REST 服务高可用](/zh-CN/ai/build/harden-and-optimize/agent-availability)指南，说明创建请求超时后如何判断是否重试、网络故障时如何切换域名，以及未收到加入频道通知时如何查询智能体状态。指南也介绍了如何根据用户重连所需的时间设置空闲超时。
+新增[保障 REST 服务高可用](/zh-CN/ai/build/harden-and-optimize/agent-availability)指南，介绍创建请求超时后如何判断是否重试、网络故障时如何切换域名，以及未收到智能体加入频道的通知时如何查询运行状态。你也可以参考指南，根据用户重连所需的时间设置空闲超时。
 
 </Accordion>
 
