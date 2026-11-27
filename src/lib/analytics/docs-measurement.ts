@@ -1,3 +1,4 @@
+import type { SearchFailure } from '../search/search-failure';
 import { measurementContentContext } from './content-context';
 import { measurementPath } from './measurement-path';
 import { redactSearchQuery } from './measurement-privacy';
@@ -262,6 +263,8 @@ export function createDocsMeasurement(options: Options) {
         unit: string;
         page?: number;
         totalHits?: number;
+        serverGroupCount?: number;
+        indexRevision?: string | null;
         requestId?: string;
         started?: number;
       },
@@ -275,6 +278,16 @@ export function createDocsMeasurement(options: Options) {
           result_unit: input.unit,
           page: input.page ?? 1,
           total_hits: input.totalHits ?? null,
+          server_group_count: input.serverGroupCount ?? null,
+          index_revision: input.indexRevision ?? null,
+          result_outcome:
+            input.count > 0
+              ? 'results'
+              : input.totalHits === 0
+                ? 'no_hits'
+                : input.totalHits !== undefined && input.totalHits > 0
+                  ? 'no_visible_results'
+                  : 'empty_unknown',
           request_id: input.requestId ?? null,
           request_purpose: 'results',
         },
@@ -304,7 +317,7 @@ export function createDocsMeasurement(options: Options) {
         snapshot.viewId,
       );
     },
-    fail(search: SearchSnapshot, requestId?: string) {
+    fail(search: SearchSnapshot, requestId?: string, failure?: SearchFailure) {
       if (!searchIsCurrent(search)) return;
       const key = requestId ?? search.searchId;
       if (failed.has(key)) return;
@@ -312,8 +325,19 @@ export function createDocsMeasurement(options: Options) {
       send('docs_search_failed', search.journey, {
         ...searchProperties(search),
         request_id: requestId ?? null,
-        error_stage: 'request',
-        error_code: 'search_unavailable',
+        error_stage: failure?.stage ?? 'request',
+        error_code: failure?.code ?? 'search_unavailable',
+        http_status: failure?.status ?? null,
+      });
+    },
+    recoverSearch(
+      search: SearchSnapshot,
+      action: 'clear_filters' | 'retry' | 'open_full_search',
+    ) {
+      if (!searchIsCurrent(search)) return;
+      send('docs_search_recovery_selected', search.journey, {
+        ...searchProperties(search),
+        recovery_action: action,
       });
     },
     selectResult(
@@ -335,6 +359,8 @@ export function createDocsMeasurement(options: Options) {
       if (refreshBody) view = undefined;
       send('docs_search_result_selected', snapshot.search.journey, {
         ...searchProperties(snapshot.search),
+        request_id: snapshot.properties.request_id,
+        index_revision: snapshot.properties.index_revision,
         results_view_id: snapshot.viewId,
         result_id: measurementPath(result.id),
         target_path: attribution.target,

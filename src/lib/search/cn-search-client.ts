@@ -1,6 +1,6 @@
 import type { SearchClient } from 'fumadocs-core/search/client';
 import { getCnSearchFamily } from './cn-search-family';
-import { searchCnDocsPage } from './cn-search-page';
+import { type CnSearchPageResponse, searchCnDocsPage } from './cn-search-page';
 import {
   getCnSearchResponseFamilyOrder,
   getCnSearchResultEntries,
@@ -17,12 +17,17 @@ export function createCnDocsSearchClient({
   platform?: string;
   scope?: DocsSearchScope;
   requestHeaders?: () => Record<string, string>;
-}): SearchClient {
-  return {
+}): SearchClient & {
+  searchWithResponse?(query: string): Promise<{
+    items: Awaited<ReturnType<SearchClient['search']>>;
+    response?: CnSearchPageResponse;
+  }>;
+} {
+  const client = {
     deps: ['cn-search-api', platform, scope?.field, scope?.value],
-    async search(query) {
+    async searchWithResponse(query: string) {
       const q = normalizeMeilisearchQuery(query);
-      if (!q) return [];
+      if (!q) return { items: [] };
       const result = await searchCnDocsPage(
         {
           ...parseSearchPageState({
@@ -40,7 +45,7 @@ export function createCnDocsSearchClient({
         q,
         platform,
       );
-      return families.flatMap((family) =>
+      const items = families.flatMap((family) =>
         getCnSearchResultEntries(
           result.groups.filter((group) => getCnSearchFamily(group) === family),
           q,
@@ -54,6 +59,11 @@ export function createCnDocsSearchClient({
             familyTotalHits: result.familyTotalHits?.[family],
           })),
       );
+      return { items, response: result };
+    },
+    async search(query: string) {
+      return (await client.searchWithResponse(query)).items;
     },
   };
+  return client;
 }
