@@ -9,11 +9,9 @@ The Conversational AI Platform is a new API for building and running voice agent
 
 <Accordions type="multiple" openFirst>
 
-<Accordion title="20261126 (Preview)" id="platform-20261126" headingLevel={3} value="platform-20261126">
+<Accordion title="20261127 (Preview)" id="platform-20261127" headingLevel={3} value="platform-20261127">
 
-{/* TODO(platform-confirm): Before publishing, confirm the release date (planned for November 26, 2026; not a hard deadline) and that each feature in these notes ships. Remove any that move to a later release. Call transfer, Twilio and Telnyx SIP trunk setup, the unified session list, and campaign filtering are excluded from this release (ENDOC-1087). Open questions are in the 20261126 section of the engineering requirements list. */}
-
-Released on November 26, 2026.
+Released on November 27, 2026.
 
 This release adds silence hangup for inbound calls, start-of-speech settings for semantic detection, and Agent Studio (Preview). It also removes Hume AI TTS.
 
@@ -25,8 +23,6 @@ Included in this release:
 
   End a call automatically when nobody speaks for a set time, with an optional reminder before the agent hangs up. Silence hangup now works for inbound calls, as well as outbound calls and campaigns. The minimum silence period is 30 seconds. See [Set limits and behavior for inbound calls](/en/ai/platform/build/phone-calls/route-inbound-calls#set-limits-and-behavior-for-inbound-calls) and the Agent Studio [Call settings](/en/ai/platform/studio/build/customize-agent#call).
 
-  {/* TODO(platform-confirm): Before publishing, confirm that inbound silence hangup ships (ClickUp 1gakbb7tq81; on 2026-11-25, pre-release rejected the inbound field), and the minimum silence period. ClickUp says the backend minimum is 30 seconds, but Agent Studio's Hang up after silence accepts 1 to 3,600 seconds, and the API reference says minimum 1 ms for inbound numbers and one-off outbound calls. Fix this sentence, the Call settings, and the API reference to match. */}
-
 - **Start-of-speech settings for semantic detection**
 
   With semantic start-of-speech detection, you can now set `interrupt_duration_ms` (120 to 1,200 ms) to ignore speech shorter than this, and `prefix_padding_ms` (0 to 5,000 ms) to keep the audio before the detected start of speech. In Agent Studio, these are **Start after** and **Keep speech before detection**. See [Interrupt the agent mid-response](/en/ai/platform/build/shape-the-conversation/interrupt-agent) and the Agent Studio [Turn detection settings](/en/ai/platform/studio/build/customize-agent#turn-detection).
@@ -34,8 +30,6 @@ Included in this release:
 - **Agent Studio (Preview)**
 
   Agent Studio (Preview) documentation is now available. It covers the quickstart, agent customization, secrets, phone number import, inbound and outbound deployment, testing, and Agent Analytics. See the [Agent Studio overview](/en/ai/platform/studio).
-
-  {/* TODO(platform-confirm): Before publishing, PR #1385 must merge, with its temporary images moved to the assets server and its TODOs cleared. */}
 
 #### Removal notice
 

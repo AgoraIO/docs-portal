@@ -175,8 +175,6 @@ Manual turn detection requires signaling from your client, which isn't available
 
 ![Turn detection settings](/temp/agent-studio-preview/advanced-turn-detection.png)
 
-{/* TODO(platform-confirm): The API reference says manual turn detection "needs client signaling, which isn't available yet", but Agent Studio offers Manual without a warning. Does it work? Should Agent Studio hide it? */}
-
 For details, see [Interrupt the agent mid-response](/en/ai/platform/build/shape-the-conversation/interrupt-agent).
 
 ### Language model
@@ -238,8 +236,6 @@ These settings control how sessions end. They apply to new sessions that you sta
 - **Hang up on another AI assistant**: The agent ends the call when an AI assistant or another automated system answers.
 - **Let the agent finish**: When a session is stopped, the agent finishes its sentence first.
 - **End the session once everyone leaves**: Ends the session if the RTC session stays not ready for the time in **After**, from 0.001 to 3,600 seconds. This setting doesn't measure speech silence.
-
-{/* TODO(platform-confirm): Agent Studio allows Hang up after silence from 1 second, but ClickUp 868mtau5v says the backend minimum is 30 seconds (and the API reference requires 30,000 ms for campaigns). Which is right? */}
 
 ![Call settings](/temp/agent-studio-preview/advanced-call.png)
 
