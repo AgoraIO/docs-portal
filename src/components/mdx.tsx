@@ -63,7 +63,10 @@ import {
   Callout as FumadocsCallout,
   CalloutContainer as FumadocsCalloutContainer,
 } from '@/components/Callout';
-import { DocsCodeBlock as Pre } from '@/components/DocsCodeBlock';
+import {
+  DocsCodeCopyButton,
+  DocsCodeBlock as Pre,
+} from '@/components/DocsCodeBlock';
 import {
   CodeBlockTabContext,
   DocsCodeBlockTab as FumadocsCodeBlockTab,
@@ -1841,11 +1844,21 @@ function ZoomableImage({
   );
 }
 
-function GlobalPre({ className, ...props }: CodeBlockProps) {
+function GlobalPre({ className, Actions, ...props }: CodeBlockProps) {
   return (
     <FumadocsCodeBlock
       {...props}
       data-line-numbers
+      Actions={({ children, ...actionProps }) => {
+        const copyButton = children && <DocsCodeCopyButton locale="en" />;
+        return Actions ? (
+          Actions({ ...actionProps, children: copyButton })
+        ) : (
+          <div className={cn('empty:hidden', actionProps.className)}>
+            {copyButton}
+          </div>
+        );
+      }}
       className={cn('bg-fd-card shadow-none', className)}
       viewportProps={{
         ...props.viewportProps,
