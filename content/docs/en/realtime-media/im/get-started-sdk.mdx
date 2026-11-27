@@ -669,10 +669,12 @@ To implement this workflow in your app, take the following steps:
             @Override
             public void onMessageReceived(List<ChatMessage> messages) {
                 for (ChatMessage message : messages) {
-                    runOnUiThread(() ->
-                            displayMessage(((TextMessageBody) message.getBody()).getMessage(),
-                                    false)
-                    );
+                    if (message.getType() == ChatMessage.Type.TXT) {
+                        runOnUiThread(() ->
+                                displayMessage(((TextMessageBody) message.getBody()).getMessage(),
+                                        false)
+                        );
+                    }
                     showLog("Received a " + message.getType().name()
                             + " message from " + message.getFrom());
                 }
@@ -2621,6 +2623,8 @@ To implement this workflow in your app, take the following steps:
     ```c#
     public MainWindow()
     {
+        // Load the XAML UI before initializing the Chat SDK
+        InitializeComponent();
         // Initialize the thread dispatcher
         Dip = System.Windows.Threading.Dispatcher.CurrentDispatcher;
         // Initialize Chat SDK client
@@ -2681,7 +2685,7 @@ To implement this workflow in your app, take the following steps:
             onSuccess: () =>
             {
                 showLog("Sign in to Agora Chat succeed");
-                isJoined = false;
+                isJoined = true;
                 Dip?.Invoke(() =>
                 {
                     button.Content = "Leave";
