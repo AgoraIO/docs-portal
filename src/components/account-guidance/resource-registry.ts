@@ -49,7 +49,7 @@ const demoResources: Record<string, DemoResource[]> = {
     {
       href: 'https://webim-vue3.easemob.com/login/',
       resourceId: 'chat-uikit-vue',
-      label: '环信即时通讯云',
+      label: '即时通讯云',
       target: 'home',
     },
   ],
