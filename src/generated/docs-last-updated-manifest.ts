@@ -3587,7 +3587,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/introduction/security-privacy.md':
     '2026-05-21T06:46:59.000Z',
   'content/docs/en/introduction/security-privacy.mdx':
-    '2026-11-05T12:43:25.000Z',
+    '2026-11-27T12:35:01.000Z',
   'content/docs/en/introduction/speech-to-text.md': '2026-05-21T09:41:55.000Z',
   'content/docs/en/introduction/speech-to-text.mdx': '2026-06-01T06:30:44.000Z',
   'content/docs/en/introduction/start-with-ai.md': '2026-05-20T08:41:55.000Z',
