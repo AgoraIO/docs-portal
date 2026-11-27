@@ -40,17 +40,29 @@ Do not commit secrets, tokens, or private service credentials. Keep environment-
 
 ## Agent skills
 
+The [Matt Pocock setup skill](.agents/skills/setup-matt-pocock-skills/SKILL.md) configures the tracker, triage labels and domain documents. Revisit setup when those conventions change. Claude Code imports this file through `CLAUDE.md`.
+
 ### Issue tracker
 
-Issues and specs are tracked in GitHub Issues for `AgoraIO/docs-portal` (external PRs are not a triage surface). See `docs/agents/issue-tracker.md`.
+Use GitHub Issues in `AgoraIO/docs-portal` for specs (`/to-spec`), implementation tickets (`/to-tickets`) and issue triage (`/triage`). External PRs are outside the triage queue. Follow the [tracker guide](docs/agents/issue-tracker.md) for sub-issues, dependencies and Wayfinder maps.
 
 ### Triage labels
 
-Triage uses the default five-label vocabulary: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, and `wontfix`. See `docs/agents/triage-labels.md`.
+Use `needs-triage` for an issue awaiting review and `needs-info` when waiting for the reporter. After review, use `ready-for-agent`, `ready-for-human` or `wontfix` as appropriate. See the [triage label mapping](docs/agents/triage-labels.md). Wayfinder uses its own [map and ticket labels](docs/agents/issue-tracker.md#wayfinding-operations).
 
 ### Domain docs
 
-This is a single-context repo with root `CONTEXT.md` and optional ADRs under `docs/adr/`. See `docs/agents/domain.md`.
+This repository has one domain glossary. Use [GLOSSARY.md](GLOSSARY.md) for project terminology and read relevant [architecture decisions](docs/adr/) before proposing changes. The [domain guide](docs/agents/domain.md) explains where to record a term or decision.
+
+## Repository workflows
+
+| Task | Starting point | Verification |
+| --- | --- | --- |
+| Migrate legacy Shengwang content | [Fumadocs migration](.agents/skills/fumadocs-migration/SKILL.md) | Run the source audit and `bun run docs:mdx-build-syntax` on the affected directory. |
+| Migrate private English content | [Private-source migration](.agents/skills/fumadocs-migration-private-en/SKILL.md) | Check the source lane and compare the expanded source with the target using `bun run docs:single-fidelity`. |
+| Migrate REST or generated API reference | [OpenAPI migration](docs/openapi-migration-playbook.md) and [API reference quality](docs/api-reference-quality.md) | Use the checks for the relevant change class in the quality contract. |
+| Update a repository skill | Edit the two Fumadocs skills locally. For third-party skills, use the skills CLI with a reviewed upstream commit and the Codex and Claude Code targets. | Run `bun run skills:check` to verify the lock and both hosts' entries. |
+| Prepare a pull request | Use the `pr` skill with the [repository PR template](.github/PULL_REQUEST_TEMPLATE.md). | Keep the template's verification and applicable acceptance fields. Describe visual evidence and keep QA images local. |
 
 ### Markdown authoring
 

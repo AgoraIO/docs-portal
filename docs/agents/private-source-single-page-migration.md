@@ -1,7 +1,7 @@
 # Private source single-page migration playbook
 
 Use this playbook when migrating one English page from
-`/Users/yejiayi/Documents/Doc-Source-Private` into `content/docs/en/**`.
+a `Doc-Source-Private` checkout into `content/docs/en/**`. Export `SOURCE_ROOT` with the absolute path to the source checkout before running the examples.
 
 The goal is content fidelity first: expand the old source, copy the expanded
 text into the target page, and only make mechanical changes required for the new
@@ -12,11 +12,11 @@ Fumadocs portal to compile and link correctly.
 This playbook is based on the migration of:
 
 - Source wrapper:
-  `/Users/yejiayi/Documents/Doc-Source-Private/interactive-whiteboard/overview/core-concepts.mdx`
+  `$SOURCE_ROOT/interactive-whiteboard/overview/core-concepts.mdx`
 - Source shared content:
-  `/Users/yejiayi/Documents/Doc-Source-Private/shared/common/core-concepts/interactive-whiteboard.mdx`
+  `$SOURCE_ROOT/shared/common/core-concepts/interactive-whiteboard.mdx`
 - Expanded shared dependency:
-  `/Users/yejiayi/Documents/Doc-Source-Private/shared/common/core-concepts/agora-console.mdx`
+  `$SOURCE_ROOT/shared/common/core-concepts/agora-console.mdx`
 - Target page:
   `content/docs/en/realtime-media/whiteboard/reference/core-concepts.mdx`
 - Target navigation:
@@ -56,7 +56,7 @@ This playbook is based on the migration of:
 
    ```bash
    node .agents/skills/fumadocs-migration/scripts/audit-legacy-docs.mjs \
-     --source /Users/yejiayi/Documents/Doc-Source-Private \
+     --source "$SOURCE_ROOT" \
      --profile doc-source-private \
      --out /tmp/private-source-audit
    ```
@@ -66,7 +66,7 @@ This playbook is based on the migration of:
    copy/paste so the migration is repeatable.
 7. Write the target page and update `meta.json`.
 8. Verify that:
-   - The generated output matches the target file.
+   - Compare the source and target with `bun run docs:single-fidelity --old=<source-file> --new=<target-file> --source-root="$SOURCE_ROOT" --fail-on-differences`. Review any differences against the source.
    - No old source syntax remains.
    - Relative links resolve to existing files.
    - `bun run types:check` passes.
@@ -80,7 +80,7 @@ rewrites small and explicit.
 const fs = require('fs');
 const path = require('path');
 
-const sourceRoot = '/Users/yejiayi/Documents/Doc-Source-Private';
+const sourceRoot = process.env.SOURCE_ROOT;
 const wrapperPath = path.join(
   sourceRoot,
   'interactive-whiteboard/overview/core-concepts.mdx',

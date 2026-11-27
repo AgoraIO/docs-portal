@@ -5,7 +5,7 @@ description: Use when migrating legacy Shengwang/Docusaurus docs into docs-porta
 
 # Fumadocs Migration
 
-Use this skill to migrate legacy docs from `/Users/czhen/Documents/GitHub/AgoraIO/shengwang-doc-source` into this `docs-portal` repo.
+Use this skill to migrate legacy docs from a checkout of `shengwang-doc-source` into this `docs-portal` repo.
 
 ## Hard Rules
 
@@ -33,14 +33,16 @@ Use this skill to migrate legacy docs from `/Users/czhen/Documents/GitHub/AgoraI
 - For generated HTML API references, treat all non-code inline HTML as MDX-unsafe until proven otherwise. Escape literal `<`, `>`, `{`, and `}` outside code fences and preserve inline links/code spans during normalization.
 - Stable fragment IDs from legacy API references must survive migration. Prefer heading-bound IDs where possible and only use standalone anchors when compatibility requires them.
 
+For migrated MDX, run `bun run docs:mdx-build-syntax --root=<target-directory>`. For REST or generated API pages, follow [OpenAPI migration](../../../docs/openapi-migration-playbook.md) and the [API reference quality contract](../../../docs/api-reference-quality.md).
+
 ## Workflow
 
 1. Inspect current portal contracts: `package.json`, `source.config.ts`, `content/docs`, and existing `meta.json` patterns.
-2. Run or update the audit script before migrating a new batch:
+2. Set `SOURCE_ROOT` to the source checkout. Run or update the audit script before migrating a new batch:
 
    ```bash
    node .agents/skills/fumadocs-migration/scripts/audit-legacy-docs.mjs \
-     --source /Users/czhen/Documents/GitHub/AgoraIO/shengwang-doc-source \
+     --source "$SOURCE_ROOT" \
      --out docs/superpowers/reports/YYYY-MM-DD-fumadocs-migration-audit
    ```
 
