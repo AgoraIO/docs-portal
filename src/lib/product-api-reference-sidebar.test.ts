@@ -887,6 +887,47 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
     ).toBe(false);
   });
 
+  it.each(['android', 'ios', 'web'])(
+    'keeps the %s client API version menu when opened from the AI product',
+    async (platform) => {
+      const payload = await loadDocsPagePayload(
+        'zh-CN',
+        'api-reference',
+        ['conversational-ai', platform, 'overview'],
+        '?from=%2Fzh-CN%2Fai',
+      );
+      if (!payload || 'redirectUrl' in payload)
+        throw new Error('Missing API page');
+      expect(payload.activeTab).toBe('ai');
+      expect(findSection(payload.sidebar, ['客户端组件 API'])).toBeDefined();
+      expect(payload.sidebarHeader?.versionSwitcher).toBeUndefined();
+      const versions = payload.titleVersionSwitcher;
+      expect(versions?.currentId).toBe('current');
+      expect(versions?.versions.map(({ label }) => label)).toEqual([
+        'v2.11.0',
+        'v2.10.0',
+        'v2.9.0',
+        'v1.7.0',
+        'v1.6.0',
+      ]);
+      expect(versions?.search).toEqual({ from: '/zh-CN/ai' });
+      const older = versions?.versions.find(({ id }) => id === '2.10.0');
+      if (!older) throw new Error('Missing v2.10.0 destination');
+      const switched = await loadDocsPagePayload(
+        'zh-CN',
+        'api-reference',
+        older.href.split('/').slice(3),
+        new URLSearchParams(versions?.search).toString(),
+      );
+      if (!switched || 'redirectUrl' in switched)
+        throw new Error('Missing historical page');
+      expect(switched.activeTab).toBe('ai');
+      expect(switched.sidebar).toEqual(payload.sidebar);
+      expect(switched.sidebarHeader).toEqual(payload.sidebarHeader);
+      expect(switched.titleVersionSwitcher?.currentId).toBe('2.10.0');
+    },
+  );
+
   it('keeps the AI product root as context from a nested product page', async () => {
     const sidebar = await loadSidebar('zh-CN', 'ai', ['reference', 'pricing']);
     const joinApi = findNode(sidebar, '创建对话式智能体');

@@ -1,17 +1,21 @@
+import { useTranslations } from '@fuma-translate/react';
 import {
   type CodeBlockProps,
   CodeBlock as FumadocsCodeBlock,
   Pre as FumadocsCodeBlockPre,
 } from 'fumadocs-ui/components/codeblock';
 import { buttonVariants } from 'fumadocs-ui/components/ui/button';
-import { WrapText } from 'lucide-react';
+import { Check, Clipboard, WrapText } from 'lucide-react';
 import {
   type CSSProperties,
   type ReactNode,
   useContext,
+  useEffect,
+  useRef,
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { createDocsCodeCopyCapture } from '@/lib/analytics/posthog';
 import { cn } from '@/lib/cn';
 import { isSameCodeLanguage } from '@/lib/code/label';
 import { CodeBlockTabContext } from './DocsCodeBlockTabs';
@@ -94,7 +98,7 @@ export function DocsCodeBlock({
             >
               <WrapText aria-hidden="true" />
             </button>
-            {children && (copyButton ?? children)}
+            {children && (copyButton ?? <DocsCodeCopyButton locale={locale} />)}
           </>
         );
         return Actions ? (
@@ -127,5 +131,90 @@ export function DocsCodeBlock({
         {props.children}
       </FumadocsCodeBlockPre>
     </FumadocsCodeBlock>
+  );
+}
+
+export function DocsCodeCopyButton({
+  className,
+  language,
+  locale,
+  source,
+}: {
+  className?: string;
+  language?: string;
+  locale?: string;
+  source?: string;
+}) {
+  const t = useTranslations({ note: 'code block' });
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => () => clearTimeout(timeoutRef.current), []);
+
+  async function copy() {
+    const button = buttonRef.current;
+    const figure = button?.closest('figure');
+    const pre = figure?.querySelector('pre');
+    if (!button || (source === undefined && !pre)) return;
+
+    const pathname = window.location.pathname;
+    const pageLocale = pathname.split('/').filter(Boolean)[0];
+    const codeLanguage =
+      language ??
+      figure?.getAttribute('data-code-language') ??
+      Array.from(pre?.querySelector('code')?.classList ?? [])
+        .find(
+          (value) => value.startsWith('language-') && value !== 'language-code',
+        )
+        ?.slice('language-'.length);
+    const clone = pre?.cloneNode(true) as HTMLPreElement | undefined;
+    for (const decoration of clone?.querySelectorAll('.nd-copy-ignore') ?? []) {
+      decoration.replaceWith('\n');
+    }
+
+    const captureCopy = createDocsCodeCopyCapture({
+      language: codeLanguage,
+      locale:
+        pageLocale === 'en' && (!locale || locale === 'en') ? 'en' : 'zh-CN',
+      source: 'code-block',
+    });
+
+    clearTimeout(timeoutRef.current);
+    setCopied(false);
+    try {
+      await navigator.clipboard.writeText(source ?? clone?.textContent ?? '');
+    } catch {
+      return;
+    }
+    captureCopy();
+    if (!button.isConnected || window.location.pathname !== pathname) return;
+
+    setCopied(true);
+    timeoutRef.current = setTimeout(() => setCopied(false), 1500);
+  }
+
+  return (
+    <button
+      ref={buttonRef}
+      type="button"
+      data-checked={copied || undefined}
+      className={
+        className ??
+        cn(
+          buttonVariants({ size: 'icon-xs' }),
+          'hover:text-fd-accent-foreground data-checked:text-fd-accent-foreground',
+        )
+      }
+      aria-live="polite"
+      onClick={() => void copy()}
+    >
+      {copied ? <Check /> : <Clipboard />}
+      <span className="sr-only">
+        {t(copied ? 'Copied Text' : 'Copy Text', { note: 'aria-label' })}
+      </span>
+    </button>
   );
 }

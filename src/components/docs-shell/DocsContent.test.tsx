@@ -990,6 +990,27 @@ describe('DocsContent', () => {
     });
   });
 
+  it('places the client API version dropdown after the platform badge in the title row', async () => {
+    renderWithRouter(
+      <DocsContent
+        locale="zh-CN"
+        title="API 概览"
+        titlePlatforms={['android']}
+        titleVersionSwitcher={{
+          currentId: 'current',
+          versions: [{ id: 'current', label: 'v2.11.0', href: '/overview' }],
+        }}
+        toc={[]}
+      />,
+    );
+    const title = await screen.findByRole('heading', { name: 'API 概览' });
+    const platforms = screen.getByRole('list', { name: '适用平台' });
+    const button = screen.getByRole('button', { name: '选择文档版本' });
+    expect(title.nextElementSibling).toBe(platforms);
+    expect(platforms.nextElementSibling).toBe(button);
+    expect(button).toHaveTextContent('v2.11.0');
+  });
+
   it('renders scope tabs in the content header when the sidebar header requests tabs presentation', async () => {
     renderWithRouter(
       <DocsContent

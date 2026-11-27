@@ -102,7 +102,7 @@ public static getInstance()
 ## init
 
 ```typescript
-public static init(cfg: IConversationalAIAPIConfig)
+public static async init(cfg: IConversationalAIAPIConfig): Promise<ConversationalAIAPI>
 ```
 
 初始化 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi) 单例实例。
@@ -113,8 +113,11 @@ public static init(cfg: IConversationalAIAPIConfig)
 
 该方法用于设置 RTC 和 RTM 引擎、渲染模式以及日志选项。必须在调用 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi) 的其他方法之前调用此方法。
 
-- 同一时间只能初始化一个实例。
-- 如果已初始化，将抛出错误
+逐词模式（`TranscriptHelperMode.WORD`）合并同一轮智能体字幕时，只有新词的文本（`word`）和开始时间（`start_ms`，单位为毫秒）都与先前消息中已保留的词相同，才会跳过该词。同一条新消息中的词不会互相去重。
+
+例如，空格和后面的 `long` 即使在同一毫秒开始，也会同时保留，因为两者的文本不同。
+
+逐词模式需要 RTC Web SDK 4.24.0 或更高版本。请在创建 RTC 客户端前调用 `AgoraRTC.setParameter('ENABLE_AUDIO_PTS', true)`。参见[实时字幕](/zh-CN/ai/build/transcripts#初始化组件)。
 
 #### 参数
 
@@ -124,7 +127,7 @@ public static init(cfg: IConversationalAIAPIConfig)
 
 #### 返回值
 
-方法调用成功，返回初始化后的 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi) 实例。
+等待此方法返回的 Promise 完成后，可获得初始化后的 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi) 实例。
 
 <a id="subscribemessage"></a>
 ## subscribeMessage

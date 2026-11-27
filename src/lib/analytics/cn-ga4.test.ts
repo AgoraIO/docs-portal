@@ -1,0 +1,176 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+const testMeasurementId = 'G-TEST123456';
+const origin = 'https://docs.shengwang.cn';
+
+describe('CN production page views', () => {
+  beforeEach(() => {
+    vi.resetModules();
+    vi.spyOn(document, 'readyState', 'get').mockReturnValue('complete');
+    vi.stubEnv('PROD', true);
+    vi.stubEnv('VITE_GA4_MEASUREMENT_ID', testMeasurementId);
+    vi.stubEnv('VITE_DOCS_REGION', 'cn');
+    vi.stubEnv('VITE_DOCS_ENVIRONMENT', 'production');
+    vi.stubEnv('VITE_DOCS_MEASUREMENT_ENABLED', 'true');
+    vi.stubGlobal('location', new URL('/introduction', origin));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+    vi.unstubAllEnvs();
+  });
+
+  it.each([
+    ['VITE_DOCS_REGION', 'global'],
+    ['VITE_DOCS_ENVIRONMENT', 'staging'],
+    ['VITE_DOCS_MEASUREMENT_ENABLED', 'false'],
+  ])(
+    'requires the production measurement settings (%s)',
+    async (key, value) => {
+      vi.stubEnv(key, value);
+      const { cnGa4Enabled } = await import('./cn-ga4');
+      expect(cnGa4Enabled).toBe(false);
+    },
+  );
+
+  it.each([undefined, '', '  ', '396727597', 'GTM-TEST'])(
+    'skips GA4 when the measurement ID is missing or invalid (%s)',
+    async (value) => {
+      vi.stubEnv('VITE_GA4_MEASUREMENT_ID', value);
+      const append = vi.spyOn(document.body, 'append');
+      const { cnGa4Enabled, captureCnGa4PageView } = await import('./cn-ga4');
+      expect(cnGa4Enabled).toBe(false);
+      captureCnGa4PageView('/introduction');
+      expect(append).not.toHaveBeenCalled();
+    },
+  );
+
+  it.each([{ doNotTrack: '1' }, { globalPrivacyControl: true }])(
+    'skips loading the tag when the browser opts out (%j)',
+    async (signal) => {
+      vi.stubGlobal('navigator', signal);
+      const append = vi.spyOn(document.body, 'append');
+      const { captureCnGa4PageView } = await import('./cn-ga4');
+      captureCnGa4PageView(window.location.pathname);
+      expect(append).not.toHaveBeenCalled();
+    },
+  );
+
+  it('keeps previews out of the production stream', async () => {
+    vi.stubGlobal('location', new URL('https://preview.example/introduction'));
+    const append = vi.spyOn(document.body, 'append');
+    const { captureCnGa4PageView } = await import('./cn-ga4');
+    captureCnGa4PageView('/introduction');
+    expect(append).not.toHaveBeenCalled();
+  });
+
+  it('leaves the document load event and later navigations independent of a blocked frame', async () => {
+    vi.useFakeTimers();
+    vi.spyOn(document, 'readyState', 'get').mockReturnValue('interactive');
+    const append = vi
+      .spyOn(document.body, 'append')
+      .mockImplementation(() => {});
+    const { captureCnGa4PageView } = await import('./cn-ga4');
+    const initial = captureCnGa4PageView('/introduction');
+    expect(append).not.toHaveBeenCalled();
+    window.dispatchEvent(new Event('load'));
+    await vi.advanceTimersByTimeAsync(0);
+    expect(append).toHaveBeenCalledTimes(1);
+    const frame = append.mock.calls[0][0] as HTMLIFrameElement;
+    const remove = vi.spyOn(frame, 'remove');
+    await vi.runAllTimersAsync();
+    await initial;
+    expect(remove).toHaveBeenCalledOnce();
+    await captureCnGa4PageView('/search');
+    expect(append).toHaveBeenCalledTimes(1);
+  });
+
+  it('discards an unexpected helper response without inserting a Google script or retrying', async () => {
+    const fallback = document.implementation.createHTMLDocument('Not found');
+    const script = vi.spyOn(fallback.head, 'append');
+    const append = vi
+      .spyOn(document.body, 'append')
+      .mockImplementation((frame) => {
+        if (!(frame instanceof HTMLIFrameElement))
+          throw new Error('Expected iframe');
+        Object.defineProperty(frame, 'contentWindow', {
+          value: { document: fallback },
+        });
+        Object.defineProperty(frame, 'contentDocument', { value: fallback });
+        frame.dispatchEvent(new Event('load'));
+      });
+    const { captureCnGa4PageView } = await import('./cn-ga4');
+    await captureCnGa4PageView('/introduction');
+    await captureCnGa4PageView('/search');
+    expect(append).toHaveBeenCalledTimes(1);
+    expect(script).not.toHaveBeenCalled();
+  });
+
+  it('queues one clean page view per path, including a return visit', async () => {
+    const tagDocument = document.implementation.createHTMLDocument();
+    const marker = tagDocument.createElement('meta');
+    marker.name = 'cn-ga4';
+    tagDocument.head.append(marker);
+    const insertScript = vi
+      .spyOn(tagDocument.head, 'append')
+      .mockImplementation((script) => {
+        if (!(script instanceof HTMLScriptElement))
+          throw new Error('Expected Google tag');
+        script.dispatchEvent(new Event('load'));
+      });
+    const target = { document: tagDocument, dataLayer: [] as IArguments[] };
+    const append = vi
+      .spyOn(document.body, 'append')
+      .mockImplementation((frame) => {
+        if (!(frame instanceof HTMLIFrameElement))
+          throw new Error('Expected iframe');
+        Object.defineProperty(frame, 'contentWindow', { value: target });
+        Object.defineProperty(frame, 'contentDocument', { value: tagDocument });
+        frame.dispatchEvent(new Event('load'));
+      });
+    vi.spyOn(document, 'referrer', 'get').mockReturnValue(
+      'https://search.example/?q=private',
+    );
+    const { captureCnGa4PageView } = await import('./cn-ga4');
+    for (const path of [
+      '/introduction',
+      '/introduction?token=private#part',
+      '/search?q=private',
+      '/introduction',
+    ]) {
+      vi.stubGlobal('location', new URL(path, origin));
+      captureCnGa4PageView(window.location.pathname);
+    }
+    await vi.waitFor(() => expect(target.dataLayer).toHaveLength(9));
+    const commands = target.dataLayer.map((command) => Array.from(command));
+    expect(commands).toContainEqual([
+      'config',
+      testMeasurementId,
+      expect.objectContaining({
+        cookie_domain: 'none',
+        cookie_prefix: 'sw_docs',
+      }),
+    ]);
+    expect(append).toHaveBeenCalledTimes(1);
+    expect(insertScript).toHaveBeenCalledExactlyOnceWith(
+      expect.objectContaining({
+        src: `https://www.googletagmanager.com/gtag/js?id=${testMeasurementId}`,
+      }),
+    );
+    expect(commands.filter(([key]) => key === 'event')).toEqual(
+      Array(3).fill(['event', 'page_view', { send_to: testMeasurementId }]),
+    );
+    expect(
+      commands
+        .filter(([key]) => key === 'set')
+        .map(([, page]) => [page.page_location, page.page_referrer]),
+    ).toEqual([
+      [`${origin}/introduction`, 'https://search.example'],
+      [`${origin}/search`, `${origin}/introduction`],
+      [`${origin}/introduction`, `${origin}/search`],
+    ]);
+    expect(JSON.stringify(commands)).not.toContain('private');
+  });
+});
