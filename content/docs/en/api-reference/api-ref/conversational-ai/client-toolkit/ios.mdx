@@ -16,17 +16,24 @@ Add the toolkit to your project using CocoaPods, Swift Package Manager, or by co
 
 <TabsContent value="cocoapods">
 
-Add the following dependency to your `Podfile`:
+Add these sources at the top of your `Podfile`, keeping any other sources your project uses:
 
 ```ruby
-pod 'agent-client-toolkit-swift', '2.9.0'
+source 'https://download.agora.io/cocoapods/'
+source 'https://cdn.cocoapods.org/'
+```
+
+Add the toolkit to your app's target, then run `pod install`:
+
+```ruby
+pod 'agent-client-toolkit-swift', '2.11.0'
 ```
 
 </TabsContent>
 
 <TabsContent value="spm">
 
-In Xcode, add the following package URL and set the version rule to the `2.9.0` tag:
+In Xcode, add the following package URL and set the version rule to the `2.11.0` tag:
 
 ```text
 https://github.com/AgoraIO/agent-client-toolkit-swift.git
@@ -1045,6 +1052,8 @@ Transcript rendering mode.
 |--------|--------------------------------------|
 | `words` | (0): Word-by-word transcript rendering mode, updated every time a word is processed. |
 | `text`  | (1): Sentence-by-sentence transcript rendering mode, updated when the complete sentence is ready. |
+
+In word mode, the toolkit skips a word only if both its text (`word`) and its start time in milliseconds (`start_ms`) match a word kept from an earlier message in the same agent turn. It does not compare words within a single incoming message. For example, a space and the word `long` are both kept even if they start in the same millisecond.
 
 ### `TranscriptType`
 
