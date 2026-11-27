@@ -269,8 +269,8 @@ vadAgent := agent.WithTurnDetection(&agentkit.TurnDetectionConfig{
 | Field | Description |
 |---|---|
 | `speaking_interrupt_duration_ms` | How long in milliseconds the user must speak to interrupt the agent while it's speaking. The default is `160`. Increase it to make the agent harder to interrupt. Applies to `semantic` and `vad`. With `vad`, the range is 120 to 1,200. |
-| `interrupt_duration_ms` | Speech shorter than this, in milliseconds, is ignored. The range is 120 to 1,200, and the default is `160`. Applies to `vad`. |
-| `prefix_padding_ms` | How many milliseconds of audio to keep from before the detected start of speech. This keeps the beginning of the speech from being clipped. The range is 0 to 5,000, and the default is `800`. Applies to `vad`. |
+| `interrupt_duration_ms` | Speech shorter than this, in milliseconds, is ignored. The range is 120 to 1,200, and the default is `160`. Applies to `semantic` and `vad`. |
+| `prefix_padding_ms` | How many milliseconds of audio to keep from before the detected start of speech. This keeps the beginning of the speech from being clipped. The range is 0 to 5,000, and the default is `800`. Applies to `semantic` and `vad`. |
 | `speech_threshold` | The speech detection threshold, between `0` and `1`. Lower values detect speech more easily, and higher values ignore weak speech. The default is `0.5`. Set it in `turn_detection`, not in `start_of_speech`. |
 
 {/* PLATFORM-DEFERRED: The Interrupt the agent API (and Speak and Inject context) is deferred beyond the Oct 29 Preview, so the "Interrupt the agent from your server" section is removed. Restore it from the Voice Agent page when the session actions ship. */}

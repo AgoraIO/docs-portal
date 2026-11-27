@@ -1,0 +1,49 @@
+---
+analyticsPageType: task-guide
+title: Agent overview
+description: View performance metrics, charts, and sessions on an agent's overview page in Agent Studio.
+---
+
+Each agent has an overview page that helps you monitor, debug, and optimize it with performance metrics and a list of its sessions.
+
+## View an agent's overview
+
+To open the overview page, go to **Agents** in the navigation sidebar, then select a live agent. From the agent editor, select **Back to overview**.
+
+![Agent overview page with performance metrics and charts](/temp/agent-studio-preview/overview.png)
+
+You can set the data period to **7 days**, **14 days**, **30 days**, or **Custom**. For an Outbound agent, you can also filter the page by **Campaign**, and select **Start a campaign**. See [Set up a campaign](/en/ai/platform/studio/deploy/campaign).
+
+## Metrics and charts
+
+The overview page displays the following:
+
+- **Sessions**: The number of sessions in the selected period.
+- **Avg duration**: The average length of a session.
+- **Billed minutes**: The minutes billed for the agent's sessions.
+- **Sessions by channel**: The number of sessions for each channel, by day. Test sessions and app sessions use the **App** channel, and calls use the **Phone** channel.
+- **Why sessions ended**: The breakdown of the reasons that ended sessions.
+- **Session length**: The distribution of session lengths, with the median length.
+- **Busiest call hours**: The number of phone sessions by call-start hour, in UTC, including unanswered calls. It doesn't measure the answer rate.
+
+### Data collected
+
+The **Data collected** chart shows the values that the agent extracts from its sessions in the selected period. To choose what to extract, see [Analysis](/en/ai/platform/studio/build/customize-agent#analysis).
+
+## Past campaigns
+
+For an Outbound agent, **Past campaigns** lists the agent's finished campaigns, with their status, end date, and progress. To see a campaign's calls, select **Show results**. See [Set up a campaign](/en/ai/platform/studio/deploy/campaign#manage-campaigns).
+
+## Sessions
+
+The **Sessions** table lists the agent's sessions.
+
+![Sessions table with the session history and call history links](/temp/agent-studio-preview/overview-sessions.png)
+
+To find a session, filter by **Channel**, or search by **Exact session ID**. To open a session, select the open icon in its row. To download the table, select **Export CSV**.
+
+For a description of the columns, see [Session information](/en/ai/platform/studio/observe/agent-analytics#session-information).
+
+## Next steps
+
+- [Agent Analytics](/en/ai/platform/studio/observe/agent-analytics): Find and review sessions across your project.

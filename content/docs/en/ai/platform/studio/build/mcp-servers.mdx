@@ -1,0 +1,30 @@
+---
+analyticsPageType: task-guide
+title: MCP servers
+description: Let your agent in Agent Studio call tools from an MCP server during a conversation.
+---
+
+MCP (Model Context Protocol) servers let your agent call tools that external services provide. To call your own HTTP endpoints directly, use [custom tools](/en/ai/platform/studio/build/custom-tools) instead.
+
+## Add an MCP server
+
+To add an MCP server to an agent:
+
+1. In the agent editor, go to the **Integrations** section.
+2. Select **Add**, then select **MCP server**.
+3. Fill in the following fields:
+
+    - **Name**: A name for the server, from 1 to 48 letters and digits.
+    - **Endpoint**: The HTTPS URL of the server, up to 2,048 characters.
+    - **Headers**: The HTTP headers to send to the server, up to 32. Enter one `Name: value` per line. Raw credentials work for loading tools, but you can't save them. The **API key** field isn't available yet.
+    - **Timeout**: The request timeout, from 1,000 to 100,000 ms.
+    - **Allowed tools**: The tools that the agent can call. To allow only some tools, clear **Allow all tools**, select **Load tools** to get the list of tools from the endpoint, then clear the tools that you don't want the agent to call.
+
+4. Select **Save**. Agent Studio checks the server automatically.
+
+![Add an MCP server panel](/temp/agent-studio-preview/mcp-server-panel.png)
+
+## Next steps
+
+- [Customize your agent](/en/ai/platform/studio/build/customize-agent): Configure your agent in the editor.
+- [Test your agent](/en/ai/platform/studio/build/test-agent): Verify that your agent calls the server's tools correctly.

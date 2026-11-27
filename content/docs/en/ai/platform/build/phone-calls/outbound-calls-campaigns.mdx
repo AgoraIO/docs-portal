@@ -8,6 +8,10 @@ description: Have an agent call a phone number, or call a list of contacts on a 
 
 Your agent can call people from a phone number in your project. To place a single call, start a session that dials the number. To call a list of contacts, create a campaign that dials each contact on a schedule you set.
 
+:::info
+Building your agent in Agent Studio? See [Set up a campaign](/en/ai/platform/studio/deploy/campaign).
+:::
+
 ## Understand the tech
 
 An outbound call is a session that uses `telephony` transport instead of an RTC channel. The Platform dials the number from your phone number, and the agent talks to whoever answers. The session ends when the call ends, or when you stop it.
@@ -157,7 +161,7 @@ In the call policy, set limits and behavior for the call. If you omit a limit, i
 |---|---|
 | `max_ring_duration_ms` | The maximum time in milliseconds from starting the dial until the call is answered. If nobody answers in time, the dial attempt ends. |
 | `max_call_duration_seconds` | The maximum length of the call in seconds, from when it's answered. The session's `lifecycle` limits can end the call earlier. |
-| `max_silence_duration_ms` | Hang up when nobody on the call has spoken for this many milliseconds. In a campaign, the minimum is `30000`. |
+| `max_silence_duration_ms` | Hang up when nobody on the call has spoken for this many milliseconds. In a campaign, the minimum is `30000`. To remind the caller before the agent hangs up, set the agent's [`pipeline.silence_config`](/en/api-reference/api-ref/conversational-ai/platform/create-agent) with a shorter `timeout_ms`. |
 | `end_call` | The conditions under which the agent can end the call itself. Each condition is off unless you set it to `true`. `on_user_request`: the caller clearly says goodbye or asks to hang up. `on_voicemail`: the call reaches voicemail. `on_ai_assistant`: an AI assistant or another automated system answers. |
 
 ## Run a campaign
