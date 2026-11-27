@@ -16,17 +16,26 @@ Add the toolkit to your project using CocoaPods, Swift Package Manager, or by co
 
 <TabsContent value="cocoapods">
 
-Add the following dependency to your `Podfile`:
+1. At the top of your `Podfile`, add the following sources. Keep any sources your project already uses:
 
-```ruby
-pod 'agent-client-toolkit-swift', '2.9.0'
-```
+    ```ruby
+    source 'https://download.agora.io/cocoapods/'
+    source 'https://cdn.cocoapods.org/'
+    ```
+
+1. In your app `target`, add the following dependency:
+
+    ```ruby
+    pod 'agent-client-toolkit-swift', '2.11.0'
+    ```
+
+1. Run `pod install`.
 
 </TabsContent>
 
 <TabsContent value="spm">
 
-In Xcode, add the following package URL and set the version rule to the `2.9.0` tag:
+In Xcode, add the following package URL and set the version rule to the `2.11.0` tag:
 
 ```text
 https://github.com/AgoraIO/agent-client-toolkit-swift.git
@@ -1045,6 +1054,8 @@ Transcript rendering mode.
 |--------|--------------------------------------|
 | `words` | (0): Word-by-word transcript rendering mode, updated every time a word is processed. |
 | `text`  | (1): Sentence-by-sentence transcript rendering mode, updated when the complete sentence is ready. |
+
+In word mode, the toolkit merges the words of each agent turn across messages. It skips an incoming word only when both its text (`word`) and its start time (`start_ms`, in milliseconds) match a word kept from an earlier message. Words within the same incoming message are not deduplicated against each other. For example, a space and the word `long` that follows it are both kept even if they start in the same millisecond, because their text differs.
 
 ### `TranscriptType`
 

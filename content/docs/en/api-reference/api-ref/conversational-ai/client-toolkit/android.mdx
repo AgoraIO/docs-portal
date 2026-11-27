@@ -15,11 +15,17 @@ Add the toolkit to your project using Maven or by copying the source code.
 
 <TabsContent value="maven">
 
-Add the following dependency to your app-level `build.gradle` file:
+1. In the root `settings.gradle` file, add the Agora Maven repository to the existing `dependencyResolutionManagement.repositories` block:
 
-```groovy
-implementation 'io.agora.agents:agora-agent-client-toolkit:2.9.0'
-```
+    ```groovy
+    maven { url = 'https://download.agora.io/maven/' }
+    ```
+
+1. In your app-level `build.gradle` file, add the following dependency to `dependencies`:
+
+    ```groovy
+    implementation 'io.agora.agents:agora-agent-client-toolkit:2.11.0'
+    ```
 
 </TabsContent>
 
@@ -439,7 +445,7 @@ fun onTranscriptUpdated(agentUserId: String, transcript: Transcript)
 ```
 
 :::info
-This callback may trigger frequently. If deduplication is needed, handle it in your business logic.
+This callback may trigger frequently. In [word mode](#transcriptrendermode), the toolkit merges each agent turn by word text and start time, so your app doesn't need to filter words by timestamp. If UI updates are too frequent, limit the refresh rate in your app.
 :::
 
 | Parameter       | Type            | Description  |
@@ -933,6 +939,8 @@ Transcript rendering mode.
 |--------|--------------------------------------|
 | `Word` | Word-by-word transcription and rendering. |
 | `Text` | Full text transcription and rendering.    |
+
+In word mode, the toolkit merges the words of each agent turn across messages. It skips an incoming word only when both its text (`word`) and its start time (`start_ms`, in milliseconds) match a word kept from an earlier message. Words within the same incoming message are not deduplicated against each other. For example, a space and the word `long` that follows it are both kept even if they start in the same millisecond, because their text differs.
 
 ### TranscriptType
 

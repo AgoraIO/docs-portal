@@ -20,14 +20,16 @@ Install the toolkit package for your project type:
 - Vanilla JS or TypeScript:
 
   ```bash
-  pnpm add agora-agent-client-toolkit@2.9.0
+  pnpm add agora-agent-client-toolkit@2.11.0
   ```
 
 - React:
 
   ```bash
-  pnpm add agora-agent-client-toolkit@2.9.0 agora-agent-client-toolkit-react@2.9.0
+  pnpm add agora-agent-client-toolkit@2.11.0 agora-agent-client-toolkit-react@2.11.0
   ```
+
+The toolkit requires RTC Web SDK 4.24.0 or later. React projects also require React 18 or later and `agora-rtc-react` 2 or later.
 
 </TabsContent>
 
@@ -117,10 +119,11 @@ public static async init(cfg: IConversationalAIAPIConfig): Promise<Conversationa
 
 This method sets the RTC and RTM engines, rendering mode, and logging options. You must call this method before calling other methods of `ConversationalAIAPI`. Awaiting this method returns the initialized instance directly, so a separate call to [`getInstance`](#getinstance) is not required immediately after initialization.
 
-:::info
-- Only one instance can be initialized at a time.
-- If already initialized, an error is thrown.
-:::
+If an instance already exists, the toolkit cleans up its event bindings and state before reinitializing with the new configuration.
+
+In word mode (`ETranscriptHelperMode.WORD`), the toolkit merges the words of each agent turn across messages. It skips an incoming word only when both its text (`word`) and its start time (`start_ms`, in milliseconds) match a word kept from an earlier message. Words within the same incoming message are not deduplicated against each other. For example, a space and the word `long` that follows it are both kept even if they start in the same millisecond, because their text differs.
+
+Word mode synchronizes transcripts with RTC audio timestamps. Before you create the RTC client, call `AgoraRTC.setParameter('ENABLE_AUDIO_PTS', true)`. For details, see [Display live transcripts](/en/ai/build/transcripts).
 
 | Parameter | Type     | Description             |
 |-----------|----------|-------------------------|
@@ -156,9 +159,7 @@ Unsubscribes from the message channel and cleans up resources.
 public unsubscribe()
 ```
 
-:::info
-This method unbinds RTC and RTM events, clears channels, and cleans up `CovSubRenderController`. You must call `subscribeMessage` before calling this method, otherwise an error is thrown.
-:::
+This method unbinds RTC and RTM events, clears channels, and cleans up `CovSubRenderController`. You can call it even if you have not called [`subscribeMessage`](#subscribemessage).
 
 ### `interrupt`
 
@@ -495,7 +496,7 @@ Parameters used to configure the interface.
 ```javascript
 export interface IConversationalAIAPIConfig {
  rtcEngine: IAgoraRTCClient;
- rtmEngine: RTMClient;
+ rtmEngine?: RTMClient;
  renderMode?: ETranscriptHelperMode;
  enableLog?: boolean;
  enableRenderModeFallback?: boolean;
@@ -505,7 +506,7 @@ export interface IConversationalAIAPIConfig {
 | Parameter | Type     | Description             |
 |-----------|----------|-------------------------|
 | `rtcEngine` | `IAgoraRTCClient` | Agora RTC engine instance. See [`IAgoraRTCClient`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html). |
-| `rtmEngine` | `RTMClient` | Agora RTM engine instance. See the [Signaling Web API reference](https://api-ref.agora.io/en/signaling-sdk/web/2.x/index.html). |
+| `rtmEngine` | `RTMClient` | Optional. A logged-in Agora RTM engine instance. Required for RTM-based features such as `chat`, `interrupt`, `speak`, `think`, and agent state events. Omit it for RTC-only integrations. See the [Signaling Web API reference](https://api-ref.agora.io/en/signaling-sdk/web/2.x/index.html). |
 | `renderMode` | `ETranscriptHelperMode` | Rendering mode. See [`ETranscriptHelperMode`](#etranscripthelpermode). |
 | `enableLog` | `boolean` | Whether to enable logging: `true` enables logging, `false` disables logging. |
 | `enableRenderModeFallback` | `boolean` | Whether to automatically fall back to text rendering when `renderMode` is set to word-level but the server doesn't provide word-level timing data. If `true` (default), falls back to text mode automatically. If `false`, stays in word mode regardless — this can result in no transcript being displayed if the server doesn't support word-level transcription. |
@@ -614,7 +615,7 @@ Since v1.6.0
 
 | Value | Description |
 |-------|-------------|
-| `AGENT_STATE_CHANGED` | `"agent-state-changed"`: Agent state change event. |
+| `AGENT_STATE_CHANGED` | `"agent-state-changed"`: Agent state change event. Deprecated: this aggregate event is still supported, but use `AGENT_LISTENING_CHANGED`, `AGENT_THINKING_CHANGED`, and `AGENT_SPEAKING_CHANGED` instead. |
 | `AGENT_LISTENING_CHANGED` | `"agent-listening-changed"`: Agent listening state change event. |
 | `AGENT_THINKING_CHANGED` | `"agent-thinking-changed"`: Agent thinking state change event. |
 | `AGENT_SPEAKING_CHANGED` | `"agent-speaking-changed"`: Agent speaking state change event. |
@@ -718,6 +719,7 @@ Enumeration of module types for AI capabilities.
 
 | Value | Description |
 |-------|-------------|
+| `ASR` | ("asr"): Automatic speech recognition module. |
 | `LLM` | ("llm"): Large Language Model. |
 | `MLLM` | ("mllm"): Multimodal Large Language Model. |
 | `TTS` | ("tts"): Text-to-speech module. |
