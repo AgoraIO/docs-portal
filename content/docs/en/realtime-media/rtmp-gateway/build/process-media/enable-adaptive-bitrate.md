@@ -51,13 +51,15 @@ Relevant request fields:
 | `settings.transcoding.video.width` | Conditional | Main-stream encoding width in pixels. Set at least one of `width` or `height` to a positive value; the other dimension is derived from the source aspect ratio. |
 | `settings.transcoding.video.height` | Conditional | Main-stream encoding height in pixels. Set at least one of `width` or `height` to a positive value; the other dimension is derived from the source aspect ratio. |
 | `settings.transcoding.video.fps` | No | Video encoding frame rate in fps. If omitted or set to `0`, the source stream frame rate is used. |
-| `settings.transcoding.video.bitrate` | No | Encoding bitrate of the main stream in Kbps. If omitted, the source stream bitrate is used. If set to `0`, Agora automatically chooses a target bitrate based on output resolution and frame rate. |
+| `settings.transcoding.video.bitrate` | No | Encoding bitrate of the main stream in Kbps. If omitted, the source stream bitrate is used; for H.264, it is capped at the corresponding value in [Common video profiles](../../reference/integration.md#common-video-profiles). If set to `0`, Agora automatically chooses a target bitrate based on output resolution and frame rate. |
 | `settings.transcoding.video.simulcastStreamLayers` | Yes | Array of layer transcoding parameters. If specified, ABR is enabled. |
 | `settings.transcoding.video.simulcastStreamLayers[].id` | Yes | Layer ID. Supported values range from `1` to `7`. |
-| `settings.transcoding.video.simulcastStreamLayers[].width` | No | Encoding width of the layer in pixels. If specified, it must be smaller than `video.width` and decrease monotonically as the layer ID increases. |
-| `settings.transcoding.video.simulcastStreamLayers[].height` | No | Encoding height of the layer in pixels. If specified, it must be smaller than `video.height` and decrease monotonically as the layer ID increases. |
-| `settings.transcoding.video.simulcastStreamLayers[].fps` | No | Encoding frame rate of the layer in fps. It must not exceed the effective main-stream frame rate or the preceding layer frame rate. If omitted or set to `0`, it follows the main stream frame rate. Source-following layers are capped at the actual main-stream target frame rate. |
-| `settings.transcoding.video.simulcastStreamLayers[].bitrate` | Yes | Encoding bitrate of the layer in Kbps. It must be smaller than `video.bitrate` and decrease monotonically by layer ID. |
+| `settings.transcoding.video.simulcastStreamLayers[].width` | No | Encoding width of the layer in pixels. If specified, it must be smaller than the effective main-stream width and decrease monotonically as the layer ID increases. |
+| `settings.transcoding.video.simulcastStreamLayers[].height` | No | Encoding height of the layer in pixels. If specified, it must be smaller than the effective main-stream height and decrease monotonically as the layer ID increases. |
+| `settings.transcoding.video.simulcastStreamLayers[].fps` | No | Encoding frame rate of the layer in fps. It must not exceed the effective main-stream frame rate or the preceding layer frame rate. If omitted or set to `0`, it follows the main stream frame rate. |
+| `settings.transcoding.video.simulcastStreamLayers[].bitrate` | Yes | Encoding bitrate of the layer in Kbps. It must be smaller than the effective main-stream bitrate and decrease monotonically by layer ID. |
+
+Effective main-stream values are the output values after defaults and source-based calculations are applied.
 
 ### Request example
 
@@ -95,11 +97,11 @@ curl --request PUT \
 
 - Maximum 5 simultaneous layers per stream
 - Set at least one dimension to a positive value for the main stream when ABR is enabled. For example, `width: 0, height: 720` derives the other dimension from the source aspect ratio.
-- Set at least one dimension to a positive value for each ABR layer. Use the same unspecified dimension as the main stream so the source aspect ratio can be preserved.
+- Set at least one dimension to a positive value for each ABR layer. To preserve the source aspect ratio, specify the same dimension as the main stream.
 - Specify bitrates in decreasing order by Layer ID
 - If specified, layer width and height must decrease monotonically as the Layer ID increases
 - Each layer FPS must not exceed the effective main-stream FPS or that of the preceding layer. Equal frame rates, such as the 30 fps main stream and layers in the example, are supported.
-- To select a configured Gateway layer, pass the corresponding stream type from your SDK's mapping table.
+- To select a configured layer on the subscriber side, pass the SDK stream type that maps to its Layer ID. For the mapping, see [Stream quality levels](#stream-quality-levels).
 
 ### Layer ID selection
 
@@ -188,7 +190,9 @@ The `transcoding.video.simulcastStreamLayers` array shows the active ABR layers 
 
 ## Subscriber-side ABR stream
 
-Subscribers can choose ABR layers on the receiving side and let the SDK adapt to changing network conditions.
+When multiple video quality layers are available, the SDK automatically adapts the subscribed video stream to changing network conditions. Under poor network conditions, it switches to lower-quality layers, down to the lowest available video layer. With the Web SDK, the default fallback limit is `LOW_STREAM`. When network conditions improve, it switches back to higher-quality layers. You don't need any additional fallback configuration for this default behavior.
+
+You can optionally configure a custom fallback policy, such as allowing fallback to audio only. With the Native SDK, you can also limit fallback to a specific video layer.
 
 ### Integration guidelines
 
@@ -218,14 +222,14 @@ Subscribers can choose ABR layers on the receiving side and let the SDK adapt to
 
 Use the following Native SDK APIs to control which ABR layer a subscriber receives.
 
-#### Configure remote subscriber fallback
+#### Customize the fallback policy (optional)
 
 - API: `setRemoteSubscribeFallbackOption(StreamFallbackOptions option)`
-- Description: Sets the fallback option for subscribed audio and video streams under poor network conditions. In suboptimal network environments, real-time audio and video quality may degrade. Use this method to set a `StreamFallbackOptions` value. When the downlink network is weak and the quality is severely affected, the SDK automatically reduces the video stream to a lower layer to maintain smooth playback. The SDK continuously monitors the network and restores the higher layer when conditions improve.
+- Description: Customizes the fallback policy for subscribed audio and video streams under poor network conditions. You don't need to call this method for the default automatic switching between video layers.
 
   Specify the minimum acceptable fallback level:
 
-  - To fall back to a lower video stream, use `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW`.
+  - To limit fallback to a specific video layer, use the `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LAYER_<n>` value for the lowest layer you accept.
   - To fall back to audio only, use `STREAM_FALLBACK_OPTION_AUDIO_ONLY`.
 
 - Supported values:
@@ -275,7 +279,7 @@ Use the following Native SDK APIs to control which ABR layer a subscriber receiv
         VIDEO_STREAM_LAYER_3,
         VIDEO_STREAM_LAYER_4,
         VIDEO_STREAM_LAYER_5,
-        VIDEO_STREAM_LAYER_6;
+        VIDEO_STREAM_LAYER_6
     }
     ```
 
@@ -289,16 +293,14 @@ Use the following Web SDK APIs to control which ABR layer a subscriber receives.
 - Call this method before `client.join(...)`. The Web SDK reads this setting when building the join request.
 - Description: AUT-CC is a server-side Bandwidth Estimation (BWE) mechanism that relies on packet loss. Its main inputs include the number of packets, packet size, feedback on packet loss, and the timing of that feedback. The output is the currently available bandwidth.
 
-#### Configure remote subscriber fallback
+#### Customize the fallback policy (optional)
 
 - API: `setStreamFallbackOption(uid: UID, fallbackType: RemoteStreamFallbackType): Promise<void>`
-- Description: Enables automatic switching on the subscriber side under poor network conditions.
-
-- Example:
+- Description: Customizes the fallback policy for a specified remote user under poor network conditions. If you don't call this method, the default fallback limit is `LOW_STREAM` (`1`). Within this limit, the SDK selects the video layer based on the subscriber's available bandwidth and the layers that the publisher supplies. To allow fallback to audio only, call this method with `AUDIO_ONLY` (`2`).
+- Example: Allow fallback to audio only.
 
     ```js
-    // the range supports up to LOW_STREAM
-    client.setStreamFallbackOption(uid, 1);
+    client.setStreamFallbackOption(uid, 2); // AUDIO_ONLY = 2
     ```
 
 #### Manual stream selection
@@ -308,12 +310,12 @@ Use the following Web SDK APIs to control which ABR layer a subscriber receives.
 - Example:
 
     ```js
-    client.setRemoteVideoStreamType(uid, 4); // RemoteStreamType.HIGH_STREAM_LAYER1
+    client.setRemoteVideoStreamType(uid, 4); // HIGH_STREAM_LAYER1 (Layer ID 1)
     ```
 
 - Type: `RemoteStreamType`
 
-  Pass the Web SDK stream-type value, rather than the Gateway Layer ID. The extended layers use values `4` through `9`:
+  Pass the Web SDK value, not the Layer ID. The following table maps each Media Gateway output to its Web SDK value:
 
   | Media Gateway output | Web SDK member | Web SDK value |
   | --- | --- | --- |
@@ -326,7 +328,7 @@ Use the following Web SDK APIs to control which ABR layer a subscriber receives.
   | Layer ID 5 | `HIGH_STREAM_LAYER5` | `8` |
   | Layer ID 6 | `HIGH_STREAM_LAYER6` | `9` |
 
-  Use [RemoteStreamType](https://api-ref.agora.io/en/video-sdk/web/4.x/enums/remotestreamtype.html) for manual selection. For example, pass `4` to select a configured Layer ID 1. Passing `1` selects the low stream (Layer ID 7). Do not reuse values from [RemoteStreamFallbackType](https://api-ref.agora.io/en/video-sdk/web/4.x/enums/remotestreamfallbacktype.html), which configures fallback policy.
+  Use [RemoteStreamType](https://api-ref.agora.io/en/video-sdk/web/4.x/enums/remotestreamtype.html) values for manual selection. Don't use [RemoteStreamFallbackType](https://api-ref.agora.io/en/video-sdk/web/4.x/enums/remotestreamfallbacktype.html) values here. Those values set the fallback policy.
 
 For manual switching, consider the network conditions. The following example shows how to obtain the network status:
 
