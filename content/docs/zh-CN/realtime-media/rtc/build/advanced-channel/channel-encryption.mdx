@@ -64,7 +64,7 @@ description: "了解实时互动 RTC 在不同平台上的媒体流加密方式�
 
    class Example
    {
-       public bool enableEncryption(RtcEngine engine) {
+       public boolean enableEncryption(RtcEngine engine) {
            if(engine == null)
                return false;
            // 从服务端获取 Base64 编码的盐
@@ -182,17 +182,20 @@ description: "了解实时互动 RTC 在不同平台上的媒体流加密方式�
    以下示例代码展示了该逻辑的实现过程：
 
    ```swift
-   func getEncryptionSaltFromServer() -> Data {
-      // 将 Base64 编码的盐转换成 uint8_t
-      return "EncryptionKdfSaltInBase64Strings".data(using: .utf8)!
+   // 从服务端获取 Base64 编码的盐，并解码为 32 字节的 Data
+   let saltBase64 = getEncryptionKdfSaltBase64FromServer()
+   guard let encryptionKdfSalt = Data(base64Encoded: saltBase64),
+         encryptionKdfSalt.count == 32 else {
+      self.showAlert(title: "Error", message: "盐必须是有效的 Base64 编码，且解码后长度为 32 字节")
+      return
    }
 
    // 创建一个 AgoraEncryptionConfig 实例
    let config = AgoraEncryptionConfig()
    // 将加密模式设置为 AgoraEncryptionModeAES128GCM2
    config.encryptionMode = .AES128GCM2
-   // 从服务端获取 Base64 编码的盐
-   config.encryptionKdfSalt = getEncryptionKdfSaltBase64FromServer()
+   // 设置解码后的盐
+   config.encryptionKdfSalt = encryptionKdfSalt
    // 从服务端获取 String 型的密钥
    config.encryptionKey = getEncryptionKeyFromServer()
    let ret = agoraKit.enableEncryption(true, encryptionConfig: config)
@@ -226,7 +229,7 @@ description: "了解实时互动 RTC 在不同平台上的媒体流加密方式�
    ```ruby
    # platform :ios, '9.0'
    target 'Your App' do
-     pod 'AgoraRtcEngine_iOS_Crypto', '~> version
+     pod 'AgoraRtcEngine_iOS_Crypto', '~> version'
    end
    ```
 
@@ -317,17 +320,20 @@ description: "了解实时互动 RTC 在不同平台上的媒体流加密方式�
    以下示例代码展示了该逻辑的实现过程：
 
    ```swift
-   func getEncryptionSaltFromServer() -> Data {
-      // 将 Base64 编码的盐转换成 uint8_t
-      return "EncryptionKdfSaltInBase64Strings".data(using: .utf8)!
+   // 从服务端获取 Base64 编码的盐，并解码为 32 字节的 Data
+   let saltBase64 = getEncryptionKdfSaltBase64FromServer()
+   guard let encryptionKdfSalt = Data(base64Encoded: saltBase64),
+         encryptionKdfSalt.count == 32 else {
+      self.showAlert(title: "Error", message: "盐必须是有效的 Base64 编码，且解码后长度为 32 字节")
+      return
    }
 
    // 创建一个 AgoraEncryptionConfig 实例
    let config = AgoraEncryptionConfig()
    // 将加密模式设置为 AgoraEncryptionModeAES128GCM2
    config.encryptionMode = .AES128GCM2
-   // 从服务端获取 Base64 编码的盐
-   config.encryptionKdfSalt = getEncryptionKdfSaltBase64FromServer()
+   // 设置解码后的盐
+   config.encryptionKdfSalt = encryptionKdfSalt
    // 从服务端获取 String 型的密钥
    config.encryptionKey = getEncryptionKeyFromServer()
    let ret = agoraKit.enableEncryption(true, encryptionConfig: config)
@@ -360,7 +366,7 @@ description: "了解实时互动 RTC 在不同平台上的媒体流加密方式�
    ```ruby
    # platform :ios, '9.0'
    target 'Your App' do
-     pod 'AgoraRtcEngine_iOS_Crypto', '~> version
+     pod 'AgoraRtcEngine_iOS_Crypto', '~> version'
    end
    ```
 
@@ -440,7 +446,7 @@ description: "了解实时互动 RTC 在不同平台上的媒体流加密方式�
 
 ```javascript
 // 声明一个工具函数，用于将 Base64 转换成 Uint8Array
-function base64ToUint8Array(base64Str: string): Uint8Array {
+function base64ToUint8Array(base64Str) {
   const raw = window.atob(base64Str);
   const result = new Uint8Array(new ArrayBuffer(raw.length));
 
@@ -575,11 +581,12 @@ client.setEncryptionConfig("aes-256-gcm2", secret, salt);
             kdfSalt.push_back(0);
         }
         if (!getSecretAndSaltFromSever(secret, kdfSaltBase64)) return -1;
-        if (rtcEngine && decodeBase64(kdfSaltBase64, kdfSalt)) {
+        if (rtcEngine) {
+            decodeBase64(kdfSaltBase64, kdfSalt);
             // 创建一个 EncryptionConfig 实例
             agora::rtc::EncryptionConfig config;
             // 将加密模式设置为 AES_128_GCM2
-            config.encryptionMode = AES_128_GCM2;
+            config.encryptionMode = agora::rtc::AES_128_GCM2;
             // 设置密钥
             config.encryptionKey = secret.c_str();
             // 设置盐
