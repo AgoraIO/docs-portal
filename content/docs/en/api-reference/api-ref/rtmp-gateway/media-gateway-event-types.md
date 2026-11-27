@@ -118,7 +118,7 @@ The gateway has received an RTMP or SRT stream but terminated it for some reason
 | `errorCode` | Description | Recommended action |
 | :---------- | :---------- | :----------------- |
 | `1` | Illegal `streamKey`, for example an empty `channelName` or unsupported characters. | Check the `streamKey` format, especially for locally generated keys. |
-| `2` | The key has expired or been deleted, or the acquire request could not be processed. | Inspect `reason` to distinguish a key error from a service-side acquire failure; do not always replace the key. |
+| `2` | The key has expired or been deleted, or the acquire request could not be processed. | Check `reason` to determine whether the key is invalid or the acquire request failed on the service side. Create a new `streamKey` only if the key expired or was deleted. |
 | `3` | No permission to use this `streamKey`, for example when the custom domain and app ID do not match. | Check whether the `streamKey` matches the domain name used for the push. |
 | `4` | Number of concurrent streams exceeds the limit. | Wait and retry. |
 | `5` | Conflict detected, for example pushing to the same channel at the same time. | If the streams are not being pushed at the same time, try again after 5 to 10 seconds. |
@@ -131,16 +131,15 @@ The gateway has received an RTMP or SRT stream but terminated it for some reason
 | `12` | The source is not a valid media stream. | Check the source media and the streaming software configuration. |
 | `14` | The service is overloaded. | Retry with backoff. If the problem persists, contact technical support. |
 
-Always inspect `errorCode` together with `reason`. Handle unknown error codes without rejecting the callback, and retain the reason for troubleshooting.
-
+Always check `errorCode` together with `reason`. Don't reject callbacks that contain unknown error codes, and log the `reason` for troubleshooting.
 
 ## `live_profile_updated`
 
 The input source stream properties have been updated, for example when the first audio or video frame is received or an input profile changes. These are source properties, not the transcoded output profile.
 
-The selected callback fields affect when this event is sent and which fields are present. `videoProfile` is omitted until a valid video width is available, and `audioProfile` is omitted until a valid sample rate is available. Individual unavailable fields, such as `height` or `gop`, can also be omitted. Do not require the complete example payload in every callback.
+`videoProfile` is omitted until a valid video width is available, and `audioProfile` is omitted until a valid sample rate is available. Individual unavailable fields, such as `height` or `gop`, can also be omitted. Do not require the complete example payload in every callback.
 
-`rtcInfo.uid` is serialized as a JSON string even when it represents a numeric UID. To inspect transcoded outputs, use the `output`/`outputs` information from online stream queries rather than treating this callback as an output profile.
+`rtcInfo.uid` is serialized as a JSON string even when it represents a numeric UID.
 
 ```json
 {

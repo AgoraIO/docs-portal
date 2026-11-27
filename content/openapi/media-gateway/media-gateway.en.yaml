@@ -323,11 +323,11 @@ paths:
               --header 'X-Request-ID: '
       x-docs-callouts:
         - markdown: >-
-            This API stops the session identified by the SID; it does not revoke the streaming key.
-            To prevent further pushes, revoke the key first, then stop the active session. A client
-            with automatic reconnection enabled may reconnect while its key remains valid. A later
-            connection does not mean the original stop failed. Whether it reuses the SID depends on
-            the project's reconnection settings.
+            This API stops the session identified by the SID. It doesn't delete the streaming key.
+            To prevent further pushes, [delete the streaming key](delete-streaming-key) first, then
+            stop the session. If the client has automatic reconnection enabled, it can reconnect
+            while the key is still valid. This doesn't mean that the stop failed. Whether the new
+            connection reuses the SID depends on the project's reconnection settings.
           position: after-description
           title: Important
           type: warning
@@ -959,10 +959,10 @@ components:
         type: string
         minLength: 1
         maxLength: 33
-        pattern: ^[A-Za-z0-9_-]{1,33}$
+        pattern: ^[A-Za-z0-9_-]+$
         example: 720p
       description: >-
-        The flow configuration template ID: 1–33 bytes containing letters, numbers, hyphens (`-`),
+        The stream configuration template ID: 1–33 bytes containing letters, numbers, hyphens (`-`),
         or underscores (`_`). Set the value according to your business
         use case. For example, use `"720p"` and `"1080p"` for different target resolutions, or
         `"gameA"` and `"gameB"` for different game use cases.
@@ -1259,15 +1259,18 @@ components:
           maximum: 20000
           description: >-
             Encoding bitrate of the main stream in Kbps. If omitted, the source stream bitrate is
-            used. If set to `0`, Agora automatically chooses a bitrate based on width and height.
+            used. For H.264, this source-following bitrate is capped at the corresponding value in
+            [Common video profiles](/en/realtime-media/rtmp-gateway/reference/integration#common-video-profiles).
+            If set to `0`, Agora automatically chooses a target bitrate based on output resolution
+            and frame rate.
           x-docs-callouts:
             - type: info
               title: Note
               markdown: >
-                The main-stream bitrate can be omitted when `simulcastStream` is configured.
-                Omission follows the source bitrate, `0` selects an automatic target, and a positive
-                value sets an explicit target. The effective main and low streams must maintain
-                the required bitrate hierarchy.
+                You can omit the main-stream bitrate when `simulcastStream` is configured. If you
+                omit it, the main stream follows the source bitrate. Set it to `0` for an automatic
+                target, or to a positive value for an explicit target. The effective main-stream
+                bitrate must not be lower than the low-stream bitrate.
         advancedOptions:
           type: object
           properties:
@@ -1358,13 +1361,13 @@ components:
         width:
           type: integer
           description: >-
-            Encoding width of the layer in pixels. If specified, this value must be smaller than
-            `video.width` and decrease monotonically as layer ID increases.
+            Encoding width of the layer in pixels. If specified, it must be smaller than the
+            effective main-stream width and decrease monotonically as the layer ID increases.
         height:
           type: integer
           description: >-
-            Encoding height of the layer in pixels. If specified, this value must be smaller than
-            `video.height` and decrease monotonically as layer ID increases.
+            Encoding height of the layer in pixels. If specified, it must be smaller than the
+            effective main-stream height and decrease monotonically as the layer ID increases.
         fps:
           type: integer
           description: >-
@@ -1375,8 +1378,8 @@ components:
         bitrate:
           type: integer
           description: >-
-            Encoding bitrate of the layer in Kbps. This value must be smaller than `video.bitrate`
-            and decrease monotonically by layer ID.
+            Encoding bitrate of the layer in Kbps. It must be smaller than the effective main-stream
+            bitrate and decrease monotonically by layer ID.
     audio-transcoding:
       type: object
       required:
@@ -1403,8 +1406,7 @@ components:
           description: >-
             Audio encoding bitrate in Kbps. Valid range: 16–320 for stream templates. If omitted,
             the value is determined by `profile`. The default is sufficient for general use.
-            For music, 128 Kbps is recommended. For higher quality, keep the bitrate at or below
-            200 Kbps. Legacy inline app configuration has a different minimum of 64 Kbps.
+            For music, 128 Kbps is recommended.
     jitter-buffer:
       type: object
       description: >-

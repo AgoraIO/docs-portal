@@ -7,6 +7,8 @@ Enable Super Quality when creating or updating a [stream configuration template]
 
 ## Configure Super Quality
 
+In the API, Super Quality is the `superResolution` object in `settings.transcoding.video.advancedOptions`. The following example enables it:
+
 ```json
 {
   "settings": {
