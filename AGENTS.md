@@ -42,7 +42,7 @@ Do not commit secrets, tokens, or private service credentials. Keep environment-
 
 ### Issue tracker
 
-Issues and specs are tracked in GitHub Issues for `AgoraIO/docs-portal` (external PRs are not a triage surface). See `docs/agents/issue-tracker.md`.
+Issues and specs are tracked in GitHub Issues for `AgoraIO/docs-portal` (external PRs are not a triage surface). See `docs/agents/issue-tracker.md`. For CN and Global documentation handoffs, follow the [Docs Handoff status and scheduling rules](docs/agents/issue-tracker.md#cn-and-global-documentation-handoffs).
 
 ### Triage labels
 
