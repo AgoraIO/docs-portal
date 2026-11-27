@@ -12,7 +12,9 @@ WHIP (WebRTC-HTTP Ingestion Protocol) is an open standard for secure, high-bandw
 When using the WHIP protocol to push streams to Media Gateway, the following codecs are supported:
 
 - **Video**: H.264, H.265, AV1
-- **Audio**: OPUS
+- **Audio**: Opus
+
+For primary and backup entry domains, see [Ensure high availability of streaming services](../../reference/integration.md#ensure-high-availability-of-streaming-services). Retry with a backup for the same region and protocol.
 
 ## Configure with OBS
 
@@ -55,7 +57,7 @@ Check that the `configuration` line includes `--enable-muxer=whip`.
 
 ### Use the Agora unified domain name
 
-If your source video is H.264, H.265, or AV1 without B-frames, and your audio is already OPUS, push the stream without transcoding:
+FFmpeg 9.0.1 WHIP output supports only H.264 video and Opus audio. This is an FFmpeg muxer limitation, separate from Media Gateway's ingest capabilities. If your source video is H.264 without B-frames and your audio is already Opus, push without transcoding:
 
 ```bash
 ffmpeg -re -i input.mp4 -c copy \
@@ -63,7 +65,7 @@ ffmpeg -re -i input.mp4 -c copy \
     https://whip-rtcpush-prod-{region}.agoramdn.com/whip
 ```
 
-If your audio isn't OPUS, transcode only the audio. Video still passes through untouched if it's already H.264, H.265, or AV1 without B-frames:
+If your source video is H.264 without B-frames but your audio is not Opus, transcode only the audio:
 
 ```bash
 ffmpeg -re -i input.mp4 -c:v copy -c:a libopus -b:a 128k -ar 48000 -ac 2 \
@@ -71,7 +73,7 @@ ffmpeg -re -i input.mp4 -c:v copy -c:a libopus -b:a 128k -ar 48000 -ac 2 \
     https://whip-rtcpush-prod-{region}.agoramdn.com/whip
 ```
 
-If neither your video nor your audio meets those conditions, transcode both. Adjust resolution, frame rate, and bitrate as needed, and keep the other parameters as shown:
+If your source video isn't H.264, or it uses B-frames, transcode both video and audio. For example, transcode H.265 or AV1 source video to H.264 before sending it through FFmpeg WHIP output. Adjust resolution, frame rate, and bitrate as needed, and keep the other parameters as shown:
 
 ```bash
 ffmpeg -re -i input.mp4 -c:v libx264 -preset veryfast -tune zerolatency \
@@ -85,6 +87,8 @@ ffmpeg -re -i input.mp4 -c:v libx264 -preset veryfast -tune zerolatency \
 ### Use a custom domain name
 
 Replace the Agora unified domain with your own domain; the same transcoding conditions apply.
+
+The custom-domain passthrough example has the same H.264 (no B-frames) and Opus requirements:
 
 ```bash
 ffmpeg -re -i input.mp4 -c copy -f whip -authorization "{streamkey}" https://push.example.com/whip

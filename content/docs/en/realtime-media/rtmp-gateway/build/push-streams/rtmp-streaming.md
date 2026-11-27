@@ -6,6 +6,8 @@ To push streams over RTMPS using your own domain name, you need a TLS certificat
 
 This guide explains how to get a certificate, bind it to a domain, and push RTMPS to that domain.
 
+For primary and backup entry domains, see [Ensure high availability of streaming services](../../reference/integration.md#ensure-high-availability-of-streaming-services). Retry with a backup for the same region and protocol.
+
 ## Understand the tech
 
 Media Gateway selects a TLS certificate for an incoming RTMPS connection based on the domain name the client requests during the TLS handshake (SNI). To use your own domain:

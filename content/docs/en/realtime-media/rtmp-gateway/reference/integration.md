@@ -1,50 +1,58 @@
 ---
 title: "Integration best practices"
-description: "Rate limits, high-availability domain strategy, and troubleshooting guidance for Media Gateway in production."
+description: "Recommended video profiles, high-availability domain strategy, and troubleshooting guidance for Media Gateway in production."
 ---
 
 This document presents best practices for reliably integrating Media Gateway in your app. Before reading this document, follow the [Media Gateway quickstart](../quickstart.md) to understand the basic process of using Media Gateway.
 
-## API call limits
+For API call limits and concurrent stream quotas, see [Limitations](/en/api-reference/api-ref/rtmp-gateway/limitations).
 
-The Agora server limits the call rate of the Media Gateway API and returns the `429 (Too Many Requests)` status code when the rate limit is exceeded.
+## Common video profiles
 
-| API | Calling rate limit per project |
-| --- | --- |
-| `Create` | 50 per second |
-| `Delete` | 50 per second |
-| `Query` | 100 per second |
-| `Update` | 50 per second |
+Use the table below as a reference when setting `settings.transcoding.video` in a [stream configuration template](/en/api-reference/api-ref/rtmp-gateway/create-reset-template). The values apply to H.264 video transcoding in live broadcasting scenarios.
 
-## Maximum number of concurrent tasks
+| Resolution (width × height) | Frame rate (fps) | Recommended bitrate (Kbps) |
+| --- | --- | --- |
+| 640 × 360 | 15 | 680 |
+| 640 × 360 | 30 | 1030 |
+| 848 × 480 | 15 | 920 |
+| 848 × 480 | 30 | 1400 |
+| 960 × 540 | 15 | 1100 |
+| 960 × 540 | 30 | 1670 |
+| 1280 × 720 | 15 | 1600 |
+| 1280 × 720 | 30 | 2400 |
+| 1920 × 1080 | 15 | 2500 |
+| 1920 × 1080 | 30 | 3780 |
+| 1920 × 1080 | 60 | 5730 |
 
-The limitation for concurrent streams is:
-
-- 10 for streams with video transcoding
-- 50 for streams without transcoding
-
-For higher quotas, contact [Agora technical support](mailto:support@agora.io).
-
-If you use [dual-stream high availability](../build/push-streams/enable-dual-stream-ha.md), each protected source counts as two streams against this limit: one for the primary push and one for the backup, even while the backup is on standby.
+If you set `video.bitrate` to a supported positive value, Media Gateway does not automatically adjust it to match these recommendations. If you omit `video.bitrate`, the output follows the source bitrate, capped at the value in this table. If `video.bitrate` is `0`, Media Gateway calculates the encoding target from the output resolution and frame rate. An encoding target is not a guarantee of the measured sending bitrate.
 
 ## Ensure high availability of streaming services
 
-Agora provides alternate domain names to reduce outages caused by regional network failures.
+Use the primary and backup domains for the same region and ingest protocol:
 
-| Geographical area | Primary domain name | Alternate primary domain name | Secondary domain name |
+| Region | Protocol | Primary domain | Backup domain |
 | --- | --- | --- | --- |
-| North America | `rtls-ingress-prod-na.agoramdn.com` | `na.rtmpg.rtelink.com` | `na-backup.rtmpg.rtelink.com` |
-| Europe | `rtls-ingress-prod-eu.agoramdn.com` | `eu.rtmpg.rtelink.com` | `eu-backup.rtmpg.rtelink.com` |
-| Asia excluding Mainland China | `rtls-ingress-prod-ap.agoramdn.com` | `ap.rtmpg.rtelink.com` | `ap-backup.rtmpg.rtelink.com` |
-| Mainland China | `rtls-ingress-prod-cn.agoramdn.com` | none | `rtls-ingress-prod-backup-cn.agoramdn.com` |
+| `na` (North America) | RTMP | `rtls-ingress-prod-na.agoramdn.com` | `na.rtmpg.rtelink.com` |
+| `na` (North America) | SRT | `srtlive-rtcpush-prod-na.agoramdn.com` | `srtlive-na.rtmpg.rtelink.com` |
+| `na` (North America) | WHIP | `whip-rtcpush-prod-na.agoramdn.com` | `whip-na.rtmpg.rtelink.com` |
+| `eu` (Europe) | RTMP | `rtls-ingress-prod-eu.agoramdn.com` | `eu.rtmpg.rtelink.com` |
+| `eu` (Europe) | SRT | `srtlive-rtcpush-prod-eu.agoramdn.com` | `srtlive-eu.rtmpg.rtelink.com` |
+| `eu` (Europe) | WHIP | `whip-rtcpush-prod-eu.agoramdn.com` | `whip-eu.rtmpg.rtelink.com` |
+| `ap` (Asia, except Mainland China) | RTMP | `rtls-ingress-prod-ap.agoramdn.com` | `ap.rtmpg.rtelink.com` |
+| `ap` (Asia, except Mainland China) | SRT | `srtlive-rtcpush-prod-ap.agoramdn.com` | `srtlive-ap.rtmpg.rtelink.com` |
+| `ap` (Asia, except Mainland China) | WHIP | `whip-rtcpush-prod-ap.agoramdn.com` | `whip-ap.rtmpg.rtelink.com` |
+| `cn` (Mainland China) | RTMP | `rtls-ingress-prod-cn.agoramdn.com` | `cn.mediagw.realtimemesh.com` |
+| `cn` (Mainland China) | SRT | `srtlive-rtcpush-prod-cn.agoramdn.com` | `srtlive-cn.mediagw.realtimemesh.com` |
+| `cn` (Mainland China) | WHIP | `whip-rtcpush-prod-cn.agoramdn.com` | `whip-cn.mediagw.realtimemesh.com` |
 
-Best practice:
+Use `rtmp://{domain}/live` as the RTMP server address, `srt://{domain}:6001` with the SRT `streamid`, or `https://{domain}/whip` with the streaming key as the Bearer token for WHIP.
 
-1. Use the primary domain based on the geographical location of your source stream.
-2. If the request fails, retry using the same primary domain.
-3. If the retry still fails, try the alternate domain name.
+1. Choose the primary domain for the source region and protocol.
+2. If the connection fails, retry the primary domain with backoff.
+3. If it still fails, retry the backup domain for that same region and protocol.
 
-For continuous protection against a degraded connection or a mid-broadcast drop, rather than just a failed push, see [Dual-stream](../build/push-streams/enable-dual-stream-ha.md).
+These steps change only the entry domain for a single connection. For continuous protection against a degraded connection or a mid-broadcast drop, use [dual-stream high availability](../build/push-streams/enable-dual-stream-ha.md).
 
 ## Ensure high availability of REST services
 
@@ -70,8 +78,8 @@ If your primary-domain request fails, use a retry strategy with:
 | # | Importance | Check |
 | --- | --- | --- |
 | 1 | required | The Media Gateway service has been enabled for your App ID |
-| 2 | required | The API call rate is below the maximum limit |
-| 3 | required | The number of concurrent tasks in a project is less than 50 |
+| 2 | required | The API call rate is within the [documented limits](/en/api-reference/api-ref/rtmp-gateway/limitations#api-call-limits) |
+| 3 | required | The number of concurrent streams is within the [applicable quota](/en/api-reference/api-ref/rtmp-gateway/limitations#maximum-number-of-concurrent-tasks) |
 | 4 | required | The `region` is set to the geographical region of your media stream source, and the code is lowercase |
 | 5 | optional | If calling the RESTful API fails, use a back-off strategy and inspect the response status |
 | 6 | optional | If RTMP, SRT, or WHIP streaming fails, ensure that the streaming key has not expired and that OBS frame loss is normal |
