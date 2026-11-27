@@ -47,6 +47,27 @@ describe('source config', () => {
     );
   }, 30000);
 
+  it('drops invalid optional methods without rejecting the document', async () => {
+    const { docs } = await import('../../source.config');
+    const schema = docs.docs.schema;
+    if (!schema || typeof schema === 'function')
+      throw new Error('Expected docs schema');
+    expect(
+      schema.safeParse({
+        httpMethod: 'POST',
+        httpMethods: { create: 'POST', query: 'GET' },
+      }).success,
+    ).toBe(true);
+    const result = schema.parse({
+      title: 'Still readable',
+      httpMethod: 'FETCH',
+      httpMethods: { create: 'post', query: 'GET' },
+    });
+    expect(result.title).toBe('Still readable');
+    expect(result.httpMethod).toBeUndefined();
+    expect(result.httpMethods).toEqual({ query: 'GET' });
+  });
+
   it('creates scoped docs collection globs for a focused dev subtree', () => {
     expect(createScopedDocsFiles('en/ai/openai-realtime')).toEqual({
       docs: ['en/ai/openai-realtime/**/*.{mdx,md}'],

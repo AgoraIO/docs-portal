@@ -1,6 +1,12 @@
 ---
 title: "Manage chat group block list"
 description: "Shows how to manage a chat group block list by calling the Agora Chat RESTful APIs."
+httpMethods:
+  retrieving-the-chat-group-blocklist: GET
+  adding-a-user-to-the-chat-group-blocklist: POST
+  adding-multiple-users-to-the-chat-group-blocklist: POST
+  removing-a-user-from-the-chat-group-blocklist: DELETE
+  removing-multiple-users-from-the-chat-group-blocklist: DELETE
 ---
 
 A chat group blocklist refers to a list of users that can neither see nor receive group messages. Chat provides a complete set of blocklist management methods, including adding and removing chat group members from the chat group blocklist, and retrieving the blocklist.

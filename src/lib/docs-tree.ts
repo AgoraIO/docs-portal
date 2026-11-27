@@ -45,6 +45,7 @@ export type DocsSidebarPageNode = {
   id: string;
   linked?: boolean;
   method?: string;
+  methodSource?: 'authored';
   showNavigationArrow?: boolean;
   search?: Record<string, string>;
   title: string;

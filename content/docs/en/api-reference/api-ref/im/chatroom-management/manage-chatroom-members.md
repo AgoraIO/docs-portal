@@ -1,6 +1,15 @@
 ---
 title: "Manage chat room members"
 description: "Shows how to manage chat room members by calling the Agora Chat RESTful APIs."
+httpMethods:
+  adding-a-chat-room-member: POST
+  adding-multiple-chat-room-members: POST
+  retrieving-members-with-pagination: GET
+  removing-the-specified-member: DELETE
+  removing-multiple-chat-room-members: DELETE
+  adding-a-chat-room-admin: POST
+  retrieving-admins: GET
+  removing-admins: DELETE
 ---
 
 This page shows how to manage chat room members by calling the Chat RESTful APIs, including adding, retrieving, and deleting chat room members and revoking administrative privileges of chat room administrators.

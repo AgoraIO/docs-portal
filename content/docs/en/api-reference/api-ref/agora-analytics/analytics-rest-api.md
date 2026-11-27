@@ -1,6 +1,21 @@
 ---
 title: "Analytics REST API reference"
 description: "Agora Analytics REST APIs for call quality, usage, and real-time monitoring metrics."
+httpMethods:
+  get-call-list: GET
+  get-session-details: GET
+  get-quality-metrics: GET
+  get-call-statistics: GET
+  retrieve-audiovideo-freeze-rate-statistics: GET
+  retrieve-insight-statistics: GET
+  query-time-frame-usage-metrics: GET
+  query-time-series-quality-metrics: GET
+  query-aggregated-usage-metrics: POST
+  query-aggregated-quality-metrics: POST
+  query-real-time-scale-metrics: GET
+  query-real-time-quality-metrics: GET
+  query-top-20-real-time-scale-metrics: GET
+  query-top-20-real-time-quality-metrics: GET
 ---
 
 Before working with the RESTful APIs, review the Agora Analytics features in [Agora Console](https://console.agora.io/) to gain a visual understanding of the quality and usage metrics that are available. For details, see the following user guides:

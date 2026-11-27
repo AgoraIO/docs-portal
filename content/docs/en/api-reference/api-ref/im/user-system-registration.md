@@ -1,6 +1,21 @@
 ---
 title: "User system registration"
 description: "Agora Chat RESTful APIs for user system registration and management."
+httpMethods:
+  registering-a-user: POST
+  registering-multiple-users: POST
+  querying-a-user: GET
+  querying-multiple-users: GET
+  deleting-a-user: DELETE
+  deleting-multiple-users: DELETE
+  modifying-the-password: PUT
+  banning-a-user: POST
+  unbanning-a-user: POST
+  forcing-a-user-offline: GET
+  querying-the-online-state-of-a-user: GET
+  querying-the-online-state-of-multiple-users: POST
+  querying-the-number-of-offline-messages: GET
+  querying-the-delivery-state-of-an-offline-message: GET
 ---
 
 This page shows how to call Chat RESTful APIs to create and manage the user system, including how to register, modify, delete, ban, and unban a user, get user information, and force a user to log out.

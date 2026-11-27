@@ -1,6 +1,15 @@
 ---
 title: "Manage chat rooms"
 description: "Shows how to manage chat rooms by calling Agora Chat RESTful APIs."
+httpMethods:
+  creating-a-chat-room: POST
+  retrieving-basic-information-of-all-chat-rooms: GET
+  retrieving-chat-rooms-that-a-user-joins: GET
+  retrieving-detailed-information-of-the-specified-chat-rooms: GET
+  modifying-chat-room-information: PUT
+  deleting-the-specified-chat-room: DELETE
+  retrieving-a-chat-room-announcement: GET
+  modifying-the-announcement-of-a-chat-room: POST
 ---
 
 This page shows how to manage chat rooms by calling Chat RESTful APIs, including adding, deleting, modifying, and retrieving chat rooms.

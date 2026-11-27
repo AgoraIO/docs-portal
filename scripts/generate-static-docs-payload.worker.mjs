@@ -102,6 +102,7 @@ export async function generateStaticDocsPayload() {
     }
   }
   const platformPages = [];
+  const authoredRestPlatformPages = [];
 
   for (const locale of PUBLISHED_DOCS_LOCALES) {
     for (const page of source.getPages(locale)) {
@@ -113,6 +114,12 @@ export async function generateStaticDocsPayload() {
       platformKeysByPageUrl.set(page.url, platforms);
       if (platforms.length > 0) {
         platformPages.push({ platforms, url: page.url });
+        // Authored REST operation menus depend on the selected platform.
+        // Canonical JSON fallback is only safe for platform-independent menus.
+        if (locale === 'en' && page.type === 'docs' &&
+            (page.data.httpMethod || page.data.httpMethods)) {
+          authoredRestPlatformPages.push({ ...parseRoute(page.url), platforms });
+        }
       }
     }
   }
@@ -178,6 +185,10 @@ export async function generateStaticDocsPayload() {
     generated += 1;
   }
 
+  for (const page of authoredRestPlatformPages) {
+    generated += await writeAuthoredRestPlatformPayloads(outputRoot, page);
+  }
+
   const { machineReadableRoutes, prerenderRoutes } =
     createStaticDocsRouteSets({
       canonicalPaths: canonicalRoutes,
@@ -235,6 +246,20 @@ function parseRoute(route) {
     slugSegments,
     tab,
   };
+}
+
+export async function writeAuthoredRestPlatformPayloads(
+  root, { locale, tab, slugSegments, platforms },
+) {
+  let generated = 0;
+  for (const platform of platforms) {
+    const platformSlugs = [...slugSegments, platform];
+    const payload = await loadDocsPagePayload(locale, tab, platformSlugs);
+    if (!payload) continue;
+    await writePayload(root, { locale, tab, slugSegments: platformSlugs, payload });
+    generated += 1;
+  }
+  return generated;
 }
 
 async function writePayload(root, { locale, payload, slugSegments, tab }) {

@@ -1,6 +1,12 @@
 ---
 title: "Manage chat room attributes"
 description: "Explains how to manage chat room attributes via the Agora Chat RESTful APIs."
+httpMethods:
+  set-custom-attributes: PUT
+  retrieve-custom-attributes: POST
+  remove-custom-attributes: DELETE
+  forcibly-set-custom-attributes: PUT
+  forcibly-remove-custom-attributes: DELETE
 ---
 
 This page shows how to manage custom attributes by calling Agora Chat RESTful APIs, including adding, removing, modifying, and retrieving attributes that are stored as key-value maps.

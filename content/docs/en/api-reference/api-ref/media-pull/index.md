@@ -1,6 +1,11 @@
 ---
 title: "Media Pull Overview"
 description: "Introduces the RESTful APIs for the Media Pull service provided by Agora."
+httpMethods:
+  create-api: POST
+  delete-api: DELETE
+  list-api: GET
+  update-api: PATCH
 ---
 
 **The RESTful API for Media Pull** enables you to inject an online media stream into the Agora channel as a live video source. After the injection succeeds, the online media stream automatically plays in the Agora channel, and remote users can see the content of the media stream.

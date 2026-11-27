@@ -126,3 +126,82 @@ describe('English product REST menus', () => {
     ).toBe(false);
   });
 });
+
+describe('authored REST method metadata in real English navigation', () => {
+  it.each([
+    ['media-push', '', 'media-push', 5],
+    ['media-pull', '', 'media-pull', 4],
+    [
+      'flexible-classroom',
+      '/product-overview',
+      'flexible-classroom/classroom-rest-api',
+      17,
+    ],
+    [
+      'agora-analytics',
+      '/product-overview',
+      'agora-analytics/analytics-rest-api',
+      14,
+    ],
+  ] as const)(
+    'labels every declared %s operation using its actual TOC fragment',
+    async (product, suffix, article, count) => {
+      const productPath = `/en/realtime-media/${product}${suffix}`;
+      const referencePath = `/en/api-reference/api-ref/${article}`;
+      const reference = await load(referencePath);
+      const menu = flatten((await load(productPath)).sidebar);
+      const links = menu.filter(
+        (n) => n.type === 'page' && n.url.startsWith(`${referencePath}#`),
+      );
+      const labeled = links.filter((n) => n.type === 'page' && n.method);
+      expect(labeled).toHaveLength(count);
+      for (const node of labeled) {
+        if (node.type !== 'page') continue;
+        expect(reference.toc.map((item) => item.url)).toContain(
+          `#${node.url.split('#')[1]}`,
+        );
+        expect(node.search?.from).toBe(productPath);
+      }
+      expect(
+        menu.find((n) => n.type === 'page' && n.url === referencePath),
+      ).not.toHaveProperty('method');
+      expect(
+        links
+          .filter((n) => n.title === 'API limits')
+          .every((n) => n.type === 'page' && !n.method),
+      ).toBe(true);
+    },
+  );
+
+  it.each(['v5', 'v6'])(
+    'labels single-operation STT %s MDX pages without changing OpenAPI v7 methods',
+    async (version) => {
+      const reference = await load(
+        `/en/api-reference/api-ref/speech-to-text/rest-api-${version}/start`,
+      );
+      const nodes = flatten(reference.sidebar);
+      for (const [operation, method] of Object.entries({
+        acquire: 'POST',
+        start: 'POST',
+        query: 'GET',
+        stop: 'DELETE',
+        update: 'PATCH',
+      })) {
+        expect(
+          nodes.find(
+            (n) =>
+              n.type === 'page' &&
+              n.url.endsWith(`/rest-api-${version}/${operation}`),
+          ),
+        ).toMatchObject({ method });
+      }
+      expect(
+        nodes.find(
+          (n) =>
+            n.type === 'page' &&
+            n.url === '/en/api-reference/api-ref/speech-to-text/join',
+        ),
+      ).toMatchObject({ method: 'POST' });
+    },
+  );
+});

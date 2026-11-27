@@ -1,6 +1,14 @@
 ---
 title: "Contact management"
 description: "Agora Chat RESTful APIs for creating and managing contacts."
+httpMethods:
+  adding-a-contact: POST
+  removing-a-contact: DELETE
+  retrieving-the-contact-list: GET
+  retrieving-the-contact-list-with-pagination: GET
+  add-user-to-blacklist: POST
+  retrieving-the-blocklist: GET
+  removing-a-user-from-the-blocklist: DELETE
 ---
 
 Contact management refers to operations such as adding and removing contacts, and adding and removing users from the blocklist.

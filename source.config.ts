@@ -3,6 +3,7 @@ import { defineConfig, defineDocs } from 'fumadocs-mdx/config';
 import { z } from 'zod';
 import { DOCS_PAGE_TYPES } from './src/lib/analytics/docs-page-type';
 import { createScopedDocsFiles } from './src/lib/docs-dev-scope';
+import { parseHttpMethod, parseHttpMethods } from './src/lib/docs-http-method';
 import { docsMetaSchema } from './src/lib/docs-meta-schema';
 import { createDocsMdxOptions } from './src/lib/mdx/docs-preset';
 import {
@@ -44,6 +45,8 @@ function publishedCollectionFiles(
 
 const rawDocSchema = z.object({
   analyticsPageType: z.enum(DOCS_PAGE_TYPES).optional(),
+  httpMethod: z.unknown().transform(parseHttpMethod).optional(),
+  httpMethods: z.unknown().transform(parseHttpMethods).optional(),
   title: z.string().optional(),
   description: z.string().optional(),
   icon: z.string().optional(),

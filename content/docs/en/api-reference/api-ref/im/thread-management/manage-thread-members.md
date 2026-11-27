@@ -1,6 +1,10 @@
 ---
 title: "Manage thread members"
 description: "Shows how to manage thread members by calling the Agora Chat RESTful APIs."
+httpMethods:
+  retrieving-thread-members: GET
+  adding-multiple-users-to-a-thread: POST
+  removing-multiple-thread-members: DELETE
 ---
 
 This page shows how to manage thread members by calling the Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../limitations#call-limit-of-server-sides).

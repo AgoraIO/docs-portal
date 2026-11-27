@@ -1,6 +1,12 @@
 ---
 title: "Presence"
 description: "Introduces how to use the Agora Chat RESTful API to implement presence in your project."
+httpMethods:
+  set-the-presence-status-of-a-user: POST
+  subscribe-to-the-presence-status-of-multiple-users: POST
+  retrieve-the-presence-status-of-multiple-users: POST
+  unsubscribe-from-the-presence-status-of-multiple-users: DELETE
+  retrieve-the-subscriptions-of-a-user: GET
 ---
 
 The presence feature enables users to publicly display their online presence status and quickly determine the status of others. Users can customize their presence status; using more specific terms such as "busy", "away", or "in a call" can add fun and diversity to real-time chatting.

@@ -1,6 +1,10 @@
 ---
 title: "Manage chat room admins"
 description: "Shows how to manage super administrators of chat rooms by calling the Agora Chat RESTful APIs."
+httpMethods:
+  adding-a-chat-room-super-admin: POST
+  removing-a-chat-room-super-admin: DELETE
+  retrieving-super-admins-of-specified-chat-rooms-with-pagination: GET
 ---
 
 In an app integrated with Chat, only the super admin of chat rooms has the permission to create chat rooms on the client.

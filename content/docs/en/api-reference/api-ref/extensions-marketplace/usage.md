@@ -1,6 +1,10 @@
 ---
 title: "Provide usage data to Agora"
 description: Agora calls this API regularly to get the usage and billing information of a specified user
+httpMethods:
+  usage: GET
+  billing: GET
+  license: GET
 ---
 
 Before publishing your extension in the Agora Extension Marketplace, you need to implement the usage and billing API and provide the URLs to Agora. Agora calls this API regularly to get the usage and billing information of a specified user in order to notify the user in Agora Console.

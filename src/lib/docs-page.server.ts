@@ -15,6 +15,11 @@ import {
 } from './api-reference-breadcrumb';
 import { resolveZhCnApiReferenceProductDocsHref } from './api-reference-product-docs';
 import { resolveDocVersion } from './doc-versions';
+import {
+  type DocsHttpMethodPage,
+  type RestMethodTocItem,
+  withDocsHttpMethods,
+} from './docs-http-method';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import type { DocsMeta } from './docs-meta-schema';
@@ -827,9 +832,41 @@ export async function loadDocsPagePayload(
     source,
     tab,
   });
-  const sidebar = getProductSidebarSource(page.url)
+  const expandedSidebar = getProductSidebarSource(page.url)
     ? await embedProductRestSidebar(baseSidebar, page.url, pageTree, source)
     : baseSidebar;
+  // Deep links to retained references can be absent from the global menu.
+  // Give those articles their own local operation menu without publishing a
+  // new product/catalog entry.
+  const authoredRestSidebar =
+    locale === 'en' &&
+    page.type === 'docs' &&
+    (page.data.httpMethod || page.data.httpMethods) &&
+    !collectSidebarPageUrls(expandedSidebar).has(page.url)
+      ? [
+          ...expandedSidebar,
+          {
+            id: page.url,
+            title: page.data.title ?? page.url,
+            type: 'page' as const,
+            url: page.url,
+          },
+        ]
+      : expandedSidebar;
+  const sidebar =
+    locale === 'en'
+      ? withDocsHttpMethods(
+          authoredRestSidebar,
+          await getAuthoredRestNavigationPages(
+            authoredRestSidebar,
+            localePages,
+            artifactPlatform,
+          ),
+          requestedPlatform && page.type === 'docs' && page.data.httpMethods
+            ? { url: page.url, href: `${page.url}/${requestedPlatform}` }
+            : undefined,
+        )
+      : authoredRestSidebar;
   const title = page.data.title ?? page.slugs.at(-1) ?? page.url;
   const navScope = getDocsNavScope({
     activePath: page.url,
@@ -2071,6 +2108,60 @@ async function readPageText(page: PageWithSource, kind: 'processed' | 'raw') {
   } catch {
     return '';
   }
+}
+
+// Metadata is regional content; reuse the normal platform/TOC resolver and
+// cache per source object so expanding a menu does not recompile its articles.
+const restNavigationTocs = new WeakMap<
+  object,
+  Map<string, Promise<RestMethodTocItem[] | undefined>>
+>();
+
+async function getAuthoredRestNavigationPages(
+  nodes: DocsSidebarNode[],
+  pages: PageWithSource[],
+  preferredPlatform?: PlatformKey,
+): Promise<DocsHttpMethodPage[]> {
+  const visibleUrls = new Set(
+    [...collectSidebarPageUrls(nodes)].map((url) => url.split('#')[0]),
+  );
+  return Promise.all(
+    pages.flatMap<DocsHttpMethodPage | Promise<DocsHttpMethodPage>>((page) => {
+      if (page.type !== 'docs' || !visibleUrls.has(page.url)) return [];
+      if (!page.data.httpMethods) return [{ url: page.url, data: page.data }];
+      let variants = restNavigationTocs.get(page.data);
+      if (!variants) {
+        variants = new Map();
+        restNavigationTocs.set(page.data, variants);
+      }
+      const cache = variants;
+      const key = preferredPlatform ?? '';
+      let toc = cache.get(key);
+      if (!toc) {
+        toc = (async () => {
+          const text = await page.data.getText('processed');
+          const tabs = extractStructuredPlatformTabs(text);
+          if (!tabs) return resolvePageToc(page, text);
+          const platform =
+            preferredPlatform && tabs.platforms.includes(preferredPlatform)
+              ? preferredPlatform
+              : tabs.defaultPlatform;
+          const platformToc = normalizeToc(
+            await getTableOfContents(buildPlatformTocText(text, platform), [
+              remarkMdx,
+            ]),
+          );
+          return platformToc.map((item) => ({ ...item, search: { platform } }));
+        })().catch(() => {
+          // Keep the article link and let the next request retry the menu.
+          cache.delete(key);
+          return undefined;
+        });
+        cache.set(key, toc);
+      }
+      return [toc.then((toc) => ({ url: page.url, data: page.data, toc }))];
+    }),
+  );
 }
 
 async function resolvePageToc(

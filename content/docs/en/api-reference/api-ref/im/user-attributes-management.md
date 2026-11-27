@@ -1,6 +1,12 @@
 ---
 title: "User attributes management"
 description: "Agora Chat RESTful APIs for managing user attributes."
+httpMethods:
+  setting-user-attributes: PUT
+  retrieving-user-attributes: GET
+  retrieving-the-user-attributes-of-multiple-users: POST
+  retrieving-the-total-size-of-user-attributes-in-the-app: GET
+  deleting-user-attributes: DELETE
 ---
 
 User attributes refers to the label information added for the user, including key-value pairs.

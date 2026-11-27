@@ -22,6 +22,33 @@ renderer choices, source fidelity, cross-locale changes and release acceptance.
 - Declare the source language on code fences. Shared grammars and aliases are
   configured in `src/lib/code/languages.ts`; use `text` for plain output.
 
+## REST API sidebar methods
+
+For English REST references, declare `httpMethod: POST` in frontmatter when the
+page documents one operation. For a multi-operation article, use an `httpMethods` map keyed by the actual TOC fragment (without
+`#`):
+
+```yaml
+httpMethods:
+  create-api: POST
+  delete-api: DELETE
+  list-api: GET
+  update-api: PATCH
+```
+
+Supported values are uppercase `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`,
+`OPTIONS`, and `TRACE`. Verify each method against the documented request.
+These fields are optional at runtime: an invalid value loses only its badge.
+Run `bun run test src/lib/rest-method-coverage.test.ts` to report invalid
+metadata with the source file and fragment key before publishing.
+Do not assign one page-level method to an article with multiple operations, or
+to authentication/overview pages that merely include request examples. Keep
+fragment keys synchronized when renaming headings. The English sidebar expands
+mapped operations into a collapsible article menu, using the actual TOC labels.
+For platform content, map each platform's actual generated fragment, including
+its deduplication suffix; links use the canonical platform route. OpenAPI methods
+continue to come from the maintained YAML.
+
 ## Repository Cards
 
 Use `RepositoryCardTitle` inside a Card's `title` to place a repository host icon
