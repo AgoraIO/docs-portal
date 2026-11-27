@@ -342,13 +342,20 @@ Media Gateway passes video through by default. If your channel includes web clie
 
 Taking OBS as an example, configure it as follows:
 
-1. In **Settings > Output > Streaming**, set **Output Mode** to **Advanced** and **Video Encoder** to **x264**. Set **Rate Control** to **CBR**, **Keyframe Interval** to **2 s**, **Profile** to **high**, and **x264 Options** to **bframes=0**. For low-latency scenarios, select **zerolatency** for **Tune**. The `high` profile alone does not disable B-frames.
+1. In **Settings > Output**, set **Output Mode** to **Advanced**. On the **Streaming** tab, configure the following:
 
-    ![Encoder settings](https://assets-docs.agora.io/images/media-gateway/obs-x264-20261123.png)
+   - **Video Encoder**: **x264**
+   - **Rate Control**: **CBR**
+   - **Keyframe Interval**: **2 s**
+   - **Profile**: **high**
+   - **x264 Options**: **bframes=0**. The `high` profile alone doesn't disable B-frames.
+   - **Tune**: **zerolatency**, for low-latency scenarios
+
+   ![Encoder settings](https://assets-docs.agora.io/images/media-gateway/obs-x264-20261123.png)
 
 2. On the **Settings > Video** page, configure common frame rates.
 
-    ![FPS settings](https://assets-docs.agora.io/images/media-gateway/obs-fps-setting.png)
+   ![FPS settings](https://assets-docs.agora.io/images/media-gateway/obs-fps-setting.png)
 
 ## Next steps
 

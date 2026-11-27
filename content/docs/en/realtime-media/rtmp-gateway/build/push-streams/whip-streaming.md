@@ -12,7 +12,7 @@ WHIP (WebRTC-HTTP Ingestion Protocol) is an open standard for secure, high-bandw
 When using the WHIP protocol to push streams to Media Gateway, the following codecs are supported:
 
 - **Video**: H.264, H.265, AV1
-- **Audio**: OPUS
+- **Audio**: Opus
 
 For primary and backup entry domains, see [Ensure high availability of streaming services](../../reference/integration.md#ensure-high-availability-of-streaming-services). Retry with a backup for the same region and protocol.
 
@@ -73,9 +73,7 @@ ffmpeg -re -i input.mp4 -c:v copy -c:a libopus -b:a 128k -ar 48000 -ac 2 \
     https://whip-rtcpush-prod-{region}.agoramdn.com/whip
 ```
 
-If neither your video nor your audio meets those conditions, transcode both. Adjust resolution, frame rate, and bitrate as needed, and keep the other parameters as shown:
-
-For H.265 or AV1 source video, transcode to H.264 before sending it through FFmpeg WHIP output.
+If your source video isn't H.264, or it uses B-frames, transcode both video and audio. For example, transcode H.265 or AV1 source video to H.264 before sending it through FFmpeg WHIP output. Adjust resolution, frame rate, and bitrate as needed, and keep the other parameters as shown:
 
 ```bash
 ffmpeg -re -i input.mp4 -c:v libx264 -preset veryfast -tune zerolatency \
