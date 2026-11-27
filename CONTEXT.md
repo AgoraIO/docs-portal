@@ -178,6 +178,26 @@ _Avoid_: FAQ section, FAQ tag
 A single question shown with a one-line summary that links out to its own troubleshooting article; FAQ answers are never inlined.
 _Avoid_: FAQ card, inline FAQ answer, FAQ accordion item
 
+**Resource action**:
+The user's direct SDK download or external Demo experience action. Navigating to a Demo detail page, opening source code, using a package manager link, or viewing a QR-code image is not a Resource action.
+_Avoid_: resource click, Demo page visit, every outbound link
+
+**Account guidance prompt**:
+An optional post-action prompt that directs a documentation visitor to the official Agora login or registration flow without gating the Resource action.
+_Avoid_: lead capture prompt, forced authentication, blocking login gate
+
+**Current-session suppression**:
+The rule that an Account guidance prompt is shown at most once during the current browser-tab session, regardless of how many eligible Resource actions the visitor performs.
+_Avoid_: permanent suppression, per-click prompt, cross-session suppression
+
+**Account guidance event**:
+An anonymous analytics event describing the display or interaction with an Account guidance prompt, carrying only non-identifying context such as product, platform, version, Demo, and source page.
+_Avoid_: lead event, contact record, authentication-success event
+
+**Attributed account completion**:
+Successful login or registration linked to an earlier Account guidance event and identified by a stable account identifier. It represents authentication completion rather than another click and excludes contact details.
+_Avoid_: non-anonymous duplicate click, contact record, anonymous login click
+
 ## Relationships
 
 - **Content staging** contains both **MDX-authored pages** and **OpenAPI sources**.
