@@ -15,17 +15,17 @@ The Conversational AI Platform is a new API for building and running voice agent
 
 Released on November 26, 2026.
 
-This release adds silence hangup for inbound calls and Agent Preview, start-of-speech settings for semantic detection, and Agent Studio (Preview). It also removes Hume AI TTS.
+This release adds silence hangup for inbound calls, start-of-speech settings for semantic detection, and Agent Studio (Preview). It also removes Hume AI TTS.
 
 #### New features
 
 Included in this release:
 
-- **Silence hangup for inbound calls and Agent Preview**
+- **Silence hangup for inbound calls**
 
-  End a session automatically when nobody speaks for a set time, with an optional reminder before the agent hangs up. Silence hangup now works for inbound calls and Agent Preview sessions, as well as outbound campaigns. The minimum silence period is 30 seconds. See [Set limits and behavior for inbound calls](/en/ai/platform/build/phone-calls/route-inbound-calls#set-limits-and-behavior-for-inbound-calls) and the Agent Studio [Call settings](/en/ai/platform/studio/build/customize-agent#call).
+  End a call automatically when nobody speaks for a set time, with an optional reminder before the agent hangs up. Silence hangup now works for inbound calls, as well as outbound calls and campaigns. The minimum silence period is 30 seconds. See [Set limits and behavior for inbound calls](/en/ai/platform/build/phone-calls/route-inbound-calls#set-limits-and-behavior-for-inbound-calls) and the Agent Studio [Call settings](/en/ai/platform/studio/build/customize-agent#call).
 
-  {/* TODO(platform-confirm): Before publishing, confirm that inbound and Agent Preview silence hangup ship (still open in ClickUp 868mtau5v on 2026-11-18), and the minimum silence period. ClickUp says the backend minimum is 30 seconds, but Agent Studio's Hang up after silence accepts 1 to 3,600 seconds, and the API reference says minimum 1 ms for inbound numbers and one-off outbound calls. Fix this sentence, the Call settings, and the API reference to match. */}
+  {/* TODO(platform-confirm): Before publishing, confirm that inbound silence hangup ships (ClickUp 1gakbb7tq81; on 2026-11-25, pre-release rejected the inbound field), and the minimum silence period. ClickUp says the backend minimum is 30 seconds, but Agent Studio's Hang up after silence accepts 1 to 3,600 seconds, and the API reference says minimum 1 ms for inbound numbers and one-off outbound calls. Fix this sentence, the Call settings, and the API reference to match. */}
 
 - **Start-of-speech settings for semantic detection**
 
