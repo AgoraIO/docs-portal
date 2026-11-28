@@ -253,7 +253,7 @@ In order to improve the security of the project, Agora uses a token (dynamic key
 
 ### Server address
 
-Under the same project, all requests are sent to the same domain name. For how to get the domain name, see [Get the information of the Chat project](/en/realtime-media/im/get-started/enable#get-chat-project-information).
+Under the same project, all requests are sent to the same domain name. For how to get the domain name, see [Get your Chat connection details](/en/realtime-media/im/get-started/enable#get-your-chat-connection-details).
 
 ### Protocol
 

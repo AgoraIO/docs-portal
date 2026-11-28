@@ -81,27 +81,23 @@ Chat provides the translation and content moderation features to meet your busin
 
 ### Subscribe to the pricing plan
 
-Before using Chat, refer to the following steps to subscribe to a plan:
+New Chat projects use the Free plan. To subscribe to a paid plan:
 
-1. Log in to [Agora Console](https://console.agora.io/), on the left navigation bar, click **Package** > **Chat** > **Subscribe** on the left navigation bar.
-2. Check [pricing plan details](./pricing-plan-details), choose the plan you want to use, click **Subscribe**, and make the payment.
+1. In the [Agora Console](https://console.agora.io/) sidebar, click **Subscriptions**, then select the **Chat** tab.
 
-Subscription takes effect immediately. After subscribing to a plan, you can click **Package** > **Chat** > **Manage**, and on this page you can click **Show More** to view your subscription details.
+1. Click **Change plan** on the plan that you want. For the Enterprise plan, click **Contact sales**.
+
+The subscription takes effect immediately. To compare plans, see [Pricing plan details](./pricing-plan-details).
+
+<!-- TODO(chat-console): Confirm the payment step after Change plan and where to view subscription details in the new console. -->
 
 ### Unsubscribe from a plan
 
-By default, your subscription to Chat pricing plans is automatically renewed. You can unsubscribe at any time from . Cancelling your subscription takes effect immediately and will delete all the Chat-related data.
+By default, your subscription to a Chat pricing plan renews automatically. To unsubscribe from a paid plan, downgrade to the Free plan. For details, see [Unsubscribe from Chat](/en/realtime-media/im/reference/console/manage-chat#unsubscribe-from-chat).
 
 ### Switch to another plan
 
-If you want to upgrade your present plan, you can click the **Subscribe** button of another plan:
-
-1. On **Package** > **Chat** > **Subscribe** page, you can choose the plan you want to use and click **Subscribe**.
-2. Read the content in the pop-up, and then click **Save**.
-
-Reach out to our sales if you would like to subscribe to the Agora Chat Enterprise plan.
-
-Switching to another plan takes effect immediately and the subscription base fee will be calculated on a pro-rated basis.
+To switch to another paid plan, follow the steps in [Subscribe to the pricing plan](#subscribe-to-the-pricing-plan). Switching takes effect immediately, and the subscription base fee is prorated for the current month.
 
 ## Reference
 

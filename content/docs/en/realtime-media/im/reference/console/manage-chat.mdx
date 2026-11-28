@@ -1,0 +1,73 @@
+---
+title: "Manage Chat in Agora Console"
+description: "Turn on Chat features, change your Chat plan, and disable or unsubscribe from Chat in Agora Console."
+---
+
+After you [enable Chat](/en/realtime-media/im/get-started/enable#enable-chat) for a project, use Agora Console to turn on Chat features and manage your Chat plan.
+
+## Enable Chat features
+
+To turn on Chat features:
+
+1. In [Agora Console](https://console.agora.io/), select your project from the **Project** list at the top of the page.
+
+1. In the sidebar, click **RTC Services**, then click **Open Chat Console** on the **Chat** card.
+
+1. In the Chat Console sidebar, click **Features Overview**.
+
+1. Turn on the features that you need. Features that show **Upgrade Your Plan** aren't available on your current plan. To upgrade, see [Change the Chat plan](#change-the-chat-plan).
+
+   ![Chat Console Features Overview page](/temp/chat-console/chat-features-overview.png)
+
+For details about these features, see the following:
+
+- [Message Callback](/en/realtime-media/im/build/notifications-and-event-handling/setup-webhooks)
+- [Message Recall](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#recall-a-message)
+- [Message Thread](/en/realtime-media/im/build/build-groups-rooms-and-threads/threading/thread-management)
+- [Reaction](/en/realtime-media/im/build/build-core-messaging/reaction)
+- [Maximum size of attachments](/en/api-reference/api-ref/im/limitations)
+- [Presence](/en/realtime-media/im/build/build-core-messaging/presence)
+- [Translation](/en/realtime-media/im/build/build-core-messaging/messages/translate-messages)
+- [Chat room message history retrieval](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages)
+- [Moderation](/en/realtime-media/im/build/moderate-and-manage-client-behavior/moderation-mechanism)
+
+To set up offline push notifications, see [Offline push overview](/en/realtime-media/im/build/notifications-and-event-handling/offline-push/overview).
+
+## Change the Chat plan
+
+New Chat projects use the Free plan. To change your plan:
+
+1. In the [Agora Console](https://console.agora.io/) sidebar, click **Subscriptions**, then select the **Chat** tab.
+
+1. Click **Change plan** on the plan that you want. For the Enterprise plan, click **Contact sales**.
+
+:::note
+- The plan change takes effect immediately.
+- Agora doesn't recommend downgrading your plan, as it could impact the capacity of your applications and availability of certain features.
+:::
+
+For a comparison of plans, see [Pricing plan details](/en/realtime-media/im/reference/pricing-plan-details).
+
+{/* TODO(chat-console): Confirm that every new Chat project starts on the Free plan and that no subscription is required before enabling. */}
+
+## Disable Chat
+
+You can't disable Chat for a project in Agora Console. To disable Chat, [contact technical support](mailto:support@agora.io).
+
+## Unsubscribe from Chat
+
+To unsubscribe from a paid plan, downgrade to the Free plan:
+
+1. In the [Agora Console](https://console.agora.io/) sidebar, click **Subscriptions**, then select the **Chat** tab.
+
+1. Click **Change plan** on the **Free** plan.
+
+The Free plan has lower limits and fewer features. For a comparison of plans, see [Pricing plan details](/en/realtime-media/im/reference/pricing-plan-details).
+
+{/* TODO(chat-console): Confirm how billing works when you change to the Free plan (pro-rated fee for the current month?) and whether Chat data is kept. */}
+
+## Monitor Chat usage
+
+After you enable Chat, the Chat-related features in Agora Analytics are enabled by default to help you keep track of usage trends and quality details. For more information, see [Data Insights](/en/realtime-media/im/reference/console/data-insights) and [Data Metrics](/en/realtime-media/im/reference/console/data-metrics).
+
+To monitor real-time activity, message delivery, user connections, and device logs in Chat Console, see [Monitor Chat usage and quality](/en/realtime-media/im/reference/console/real-time-query).
