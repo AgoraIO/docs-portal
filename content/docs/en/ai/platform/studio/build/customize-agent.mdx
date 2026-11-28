@@ -34,7 +34,7 @@ To add the instructions, do one of the following:
 
 To add a variable to the prompt, see [Template variables](/en/ai/platform/studio/build/prompt-design#template-variables).
 
-![Template menu with prompt templates for common use cases](/temp/agent-studio-preview/template-menu.png)
+![Template menu with prompt templates for common use cases](https://assets-docs.agora.io/images/conversational-ai/agent-studio/template-menu.png)
 
 To set what the agent says when a conversation starts or the LLM fails, select **Edit greeting and failure message**:
 
@@ -44,7 +44,7 @@ To set what the agent says when a conversation starts or the LLM fails, select *
 
 Then select **Save**.
 
-![Panel with the Greeting, Delay, and Failure message fields](/temp/agent-studio-preview/greeting-failure-panel.png)
+![Panel with the Greeting, Delay, and Failure message fields](https://assets-docs.agora.io/images/conversational-ai/agent-studio/greeting-failure-panel.png)
 
 ## Voice & models [#voice-and-models]
 
@@ -58,7 +58,7 @@ To change the models or the voice, select **Edit**:
 
 **Latency** shows the estimated end-to-end latency of the models you selected. When you're done, select **Done**.
 
-![Voice and models section in edit mode, with the models, the voice, and the estimated latency](/temp/agent-studio-preview/voice-models.png)
+![Voice and models section in edit mode, with the models, the voice, and the estimated latency](https://assets-docs.agora.io/images/conversational-ai/agent-studio/voice-models.png)
 
 ### Choose a voice
 
@@ -71,7 +71,7 @@ The **Select voice** dialog lists the voices of each TTS provider. To find a voi
 
 To use a voice that isn't in the list, select **Add custom voice**.
 
-![Select voice dialog with the providers, filters, and voice list](/temp/agent-studio-preview/select-voice.png)
+![Select voice dialog with the providers, filters, and voice list](https://assets-docs.agora.io/images/conversational-ai/agent-studio/select-voice.png)
 
 ### Bring your own key
 
@@ -82,7 +82,7 @@ By default, Agora provides the key for each model, and the model dropdowns show 
 3. For **Key**, pick a saved secret, or select **Add your key** to save a new key as a secret. To open your secrets, select **Manage secrets**. See [Manage secrets](/en/ai/platform/studio/build/secrets).
 4. Select **Save**.
 
-![Speech recognition settings with Bring your own key on and the provider list open](/temp/agent-studio-preview/byok-providers.png)
+![Speech recognition settings with Bring your own key on and the provider list open](https://assets-docs.agora.io/images/conversational-ai/agent-studio/byok-providers.png)
 
 You choose the key for each model separately. For example, an agent can use Agora-provided ASR and TTS models with your own LLM key.
 
@@ -95,7 +95,7 @@ Use this section to connect your agent to external services. Select **Add**, the
 - **MCP server**: Lets your agent call tools from an MCP server. See [MCP servers](/en/ai/platform/studio/build/mcp-servers).
 - **Tool**: Lets your agent call your own HTTP endpoint. See [Custom tools](/en/ai/platform/studio/build/custom-tools).
 
-![Add menu with the MCP server and Tool options](/temp/agent-studio-preview/integrations-add.png)
+![Add menu with the MCP server and Tool options](https://assets-docs.agora.io/images/conversational-ai/agent-studio/integrations-add.png)
 
 ## Analysis
 
@@ -118,7 +118,7 @@ To add a value, under **Data collection**, select **Add data point**, then fill 
 
 To reuse a data point from another agent in this project, select it under **Or start from one used before**.
 
-![Add data point panel with the List type selected](/temp/agent-studio-preview/data-point-list-type.png)
+![Add data point panel with the List type selected](https://assets-docs.agora.io/images/conversational-ai/agent-studio/data-point-list-type.png)
 
 To review what you collect, see [Agent overview](/en/ai/platform/studio/observe/agent-overview#data-collected).
 
@@ -139,7 +139,7 @@ These settings control how the agent converts the caller's speech to text.
 - **Lock onto one speaker**: The agent focuses on the caller who is speaking and filters out other voices and background noise.
 - **Key** and **Endpoint**: See [Provider connection settings](#provider-connection-settings).
 
-![Speech recognition settings](/temp/agent-studio-preview/advanced-asr.png)
+![Speech recognition settings](https://assets-docs.agora.io/images/conversational-ai/agent-studio/advanced-asr.png)
 
 ### Turn detection
 
@@ -173,7 +173,7 @@ The custom settings are as follows:
 Manual turn detection requires signaling from your client, which isn't available yet.
 :::
 
-![Turn detection settings](/temp/agent-studio-preview/advanced-turn-detection.png)
+![Turn detection settings](https://assets-docs.agora.io/images/conversational-ai/agent-studio/advanced-turn-detection.png)
 
 For details, see [Interrupt the agent mid-response](/en/ai/platform/build/shape-the-conversation/interrupt-agent).
 
@@ -212,7 +212,7 @@ Turn on this setting to have the agent check in after the caller is silent. It o
     - **Say this line**: In **What the agent says**, enter the text that the agent speaks, as written.
     - **Ask the model**: In **The prompt the model gets**, enter an instruction for the LLM. The agent speaks the response.
 
-![Silence and filler words settings](/temp/agent-studio-preview/advanced-silence-filler.png)
+![Silence and filler words settings](https://assets-docs.agora.io/images/conversational-ai/agent-studio/advanced-silence-filler.png)
 
 ### Filler words
 
@@ -229,7 +229,7 @@ For details, see [Talking while waiting](/en/ai/platform/build/shape-the-convers
 
 These settings control how sessions end. They apply to new sessions that you start from Agent Studio or the API. Settings that you pass for a single session take precedence.
 
-- **Hang up after silence**: Ends the session when nobody speaks for the time in **After**, from 1 to 3,600 seconds. To remind the caller before the agent hangs up, also turn on [Silence](#silence) with a shorter time.
+- **Hang up after silence**: Ends a phone call when nobody speaks for the time in **After**, from 1 to 3,600 seconds. This setting doesn't apply to Agent Preview or other RTC sessions. To remind the caller before the agent hangs up, also turn on [Silence](#silence) with a shorter time.
 - **Max session length**: The longest a session can last, from 1 to 3,600 seconds.
 - **Hang up when the caller asks to**: The agent ends the call when the caller clearly says goodbye or asks to hang up.
 - **Hang up on voicemail**: The agent ends the call when it reaches voicemail.
@@ -237,7 +237,7 @@ These settings control how sessions end. They apply to new sessions that you sta
 - **Let the agent finish**: When a session is stopped, the agent finishes its sentence first.
 - **End the session once everyone leaves**: Ends the session if the RTC session stays not ready for the time in **After**, from 0.001 to 3,600 seconds. This setting doesn't measure speech silence.
 
-![Call settings](/temp/agent-studio-preview/advanced-call.png)
+![Call settings](https://assets-docs.agora.io/images/conversational-ai/agent-studio/advanced-call.png)
 
 ### Provider connection settings
 
