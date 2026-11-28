@@ -1,3 +1,5 @@
+import type { DocsSidebarHeader } from './docs-nav-scope';
+
 const PRODUCT_TABS = new Set(['ai', 'realtime-media', 'solutions']);
 
 export type ProductSidebarContext = {
@@ -52,5 +54,28 @@ export function parseProductSidebarContext(
     ...(derivedSidebarScope ? { sidebarScope: derivedSidebarScope } : {}),
     slugSegments: productSlugSegments,
     tab,
+  };
+}
+
+export function getProductTitleVersionSwitcher(
+  activePath: string,
+  context: ProductSidebarContext,
+  switcher: DocsSidebarHeader['versionSwitcher'],
+): DocsSidebarHeader['versionSwitcher'] {
+  if (
+    !switcher ||
+    context.pathname !== '/zh-CN/ai' ||
+    !/^\/zh-CN\/api-reference\/conversational-ai\/(android|ios|web)\//.test(
+      activePath,
+    )
+  )
+    return undefined;
+
+  return {
+    ...switcher,
+    search: {
+      from: context.pathname,
+      ...(context.sidebarScope ? { fromScope: context.sidebarScope } : {}),
+    },
   };
 }

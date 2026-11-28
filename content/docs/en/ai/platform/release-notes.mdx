@@ -9,9 +9,40 @@ The Conversational AI Platform is a new API for building and running voice agent
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="20261127 (Preview)" id="platform-20261127" headingLevel={3} value="platform-20261127">
+
+Released on November 27, 2026.
+
+This release adds silence hangup for inbound calls, start-of-speech settings for semantic detection, and Agent Studio (Preview). It also removes Hume AI TTS.
+
+#### New features
+
+Included in this release:
+
+- **Silence hangup for inbound calls**
+
+  End a call automatically when nobody speaks for a set time, with an optional reminder before the agent hangs up. Silence hangup now works for inbound calls, as well as outbound calls and campaigns. The minimum silence period is 30 seconds. See [Set limits and behavior for inbound calls](/en/ai/platform/build/phone-calls/route-inbound-calls#set-limits-and-behavior-for-inbound-calls) and the Agent Studio [Call settings](/en/ai/platform/studio/build/customize-agent#call).
+
+- **Start-of-speech settings for semantic detection**
+
+  With semantic start-of-speech detection, you can now set `interrupt_duration_ms` (120 to 1,200 ms) to ignore speech shorter than this, and `prefix_padding_ms` (0 to 5,000 ms) to keep the audio before the detected start of speech. In Agent Studio, these are **Start after** and **Keep speech before detection**. See [Interrupt the agent mid-response](/en/ai/platform/build/shape-the-conversation/interrupt-agent) and the Agent Studio [Turn detection settings](/en/ai/platform/studio/build/customize-agent#turn-detection).
+
+- **Agent Studio (Preview)**
+
+  Agent Studio (Preview) documentation is now available. It covers the quickstart, agent customization, secrets, phone number import, inbound and outbound deployment, testing, and Agent Analytics. See the [Agent Studio overview](/en/ai/platform/studio).
+
+#### Removal notice
+
+:::warning[Important]
+These changes may affect your existing integration. Review each change and update your integration as needed.
+:::
+
+- **Hume AI TTS is removed.** Hume AI retired its legacy TTS API on November 13, 2026. Hume AI is no longer available as a TTS provider in the Conversational AI Platform API or Agent Studio. If your agents use Hume AI TTS, switch them to another [supported TTS provider](/en/ai/platform/studio/build/supported-vendors#tts-vendors) to avoid runtime failures.
+
+</Accordion>
+
 <Accordion title="20261030 (Preview)" id="platform-20261030" headingLevel={3} value="platform-20261030">
 
-{/* TODO(platform-confirm): Release date (planned for October 30, 2026). The ticket draft also mentions Agent Studio; add it once the Agent Studio scope for this release is confirmed. */}
 
 Released on October 30, 2026.
 

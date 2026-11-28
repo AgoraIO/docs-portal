@@ -30,6 +30,42 @@ async function compileGeneratedMdx(source: string) {
 }
 
 describe('API Center shared HTML to MDX converter', () => {
+  it.each(['en', 'zh-CN'])(
+    'keeps the first TypeDoc member lead under its anchor in %s',
+    async (locale) => {
+      const memberDescription =
+        locale === 'en'
+          ? 'High-resolution video stream.'
+          : '高分辨率的视频大流。';
+      const options = {
+        html: `<main><h1>StreamType</h1><section class="tsd-panel tsd-member"><a name="high_stream"></a><h3>HIGH_STREAM</h3><div class="tsd-comment"><div class="lead"><p>${memberDescription}</p></div></div></section></main>`,
+        sourcePath: 'enums/streamtype.html',
+        sourceUrl: 'https://example.com/enums/streamtype',
+        rootSelector: 'main',
+      };
+      expect(extractHtmlPageMetadata(options).description).toBe('');
+      const result = await convertHtmlToMdx(options);
+      expect(result.description).toBe('');
+      expect(result.body).toContain(memberDescription);
+      expect(result.body.indexOf('high_stream')).toBeLessThan(
+        result.body.indexOf(memberDescription),
+      );
+      await expect(compileGeneratedMdx(result.body)).resolves.toBeTruthy();
+    },
+  );
+
+  it('promotes the page introduction while retaining member descriptions', async () => {
+    const result = await convertHtmlToMdx({
+      html: '<main><h1>Options</h1><section class="tsd-panel tsd-comment"><div class="lead"><p>Page introduction.</p></div></section><section class="tsd-panel tsd-member"><h3>level</h3><div class="lead"><p>Member description.</p></div></section></main>',
+      sourcePath: 'interfaces/options.html',
+      sourceUrl: 'https://example.com/interfaces/options',
+      rootSelector: 'main',
+    });
+    expect(result.description).toBe('Page introduction.');
+    expect(result.body).toContain('Member description.');
+    expect(result.body).not.toContain('Page introduction.');
+  });
+
   it.each([
     'href="mai\' + \'lto:sales@shengwang.cn"',
     'href="#" onclick="location.href=\'mailto:sales@shengwang.cn\'; return false;"',
@@ -1004,7 +1040,7 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).toContain(':::info[自从]\n自 v4.6.2 版本新增。\n:::');
     expect(result.body).toContain(':::info[自从]\n- v1.9.5\n:::');
     expect(result.body).toContain(
-      ':::info[自从]\n*4.17.1*\n\nTypeDoc details.\n:::',
+      ':::info[自从]\n*4.17.1*\n:::\n\nTypeDoc details.',
     );
     expect(result.body).toContain(
       ':::warning[deprecated]\nUse the replacement.\n:::',
@@ -1019,6 +1055,46 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).not.toContain('- Plain TypeDoc description.');
     expect(result.body).not.toContain('### 自从');
     expect(result.body).not.toContain('- :::info[自从]');
+  });
+
+  it.each([
+    ['自从', 'SDK 回调说明。', '需要用户交互。'],
+    ['since', 'SDK callback description.', 'Requires user interaction.'],
+  ])(
+    'keeps %s metadata separate from prose, examples and real notices',
+    async (tag, prose, note) => {
+      const result = await convertHtmlToMdx({
+        html: `<article><h1>Callbacks</h1><section class="tsd-member"><h3>onAutoplayFailed</h3><dl class="tsd-comment-tags"><dt>${tag}</dt><dd><p><em>4.6.0</em></p><p>${prose}</p><ul><li>Audio</li><li>Video</li></ul><blockquote><p>${note}</p></blockquote><pre><code class="language-javascript">AgoraRTC.onAutoplayFailed = () =&gt; {};</code></pre><blockquote><p>Only once.</p></blockquote></dd></dl></section></article>`,
+        sourcePath: 'html-docs/rtc/React/interfaces/iagorartc.html',
+        sourceUrl:
+          'https://doc.shengwang.cn/api-ref/rtc/react/interfaces/iagorartc',
+        blockquoteCallout: { type: 'caution', title: '注意' },
+      });
+      expect(result.body).toContain(
+        `:::info[${tag}]\n*4.6.0*\n:::\n\n${prose}`,
+      );
+      expect(result.body.match(/:::caution\[注意\]/g)).toHaveLength(2);
+      expect(result.body).toContain(`:::caution[注意]\n${note}\n:::`);
+      expect(result.body).toMatch(
+        /:::\n\n```javascript\nAgoraRTC\.onAutoplayFailed/,
+      );
+      await expect(compileGeneratedMdx(result.body)).resolves.toBeTruthy();
+    },
+  );
+
+  it('keeps property prose outside a deprecated replacement notice', async () => {
+    const result = await convertHtmlToMdx({
+      html: '<article><h1>Config</h1><section class="tsd-member"><h3>images</h3><dl class="tsd-comment-tags"><dt>deprecated</dt><dd><p>用于添加水印。</p><p>推荐使用 <a href="#watermark">watermark</a>。</p><blockquote><p>Only one image.</p></blockquote></dd></dl><h3 id="watermark">watermark</h3></section></article>',
+      sourcePath: 'html-docs/rtc/Web/interfaces/config.html',
+      sourceUrl:
+        'https://doc.shengwang.cn/api-ref/rtc/javascript/interfaces/config',
+      blockquoteCallout: { type: 'caution', title: '注意' },
+    });
+    expect(result.body).toMatch(
+      /用于添加水印。\n\n<a id="deprecated"><\/a>\n\n:::warning\[deprecated\]\n推荐使用/,
+    );
+    expect(result.body).toContain(':::caution[注意]\nOnly one image.\n:::');
+    await expect(compileGeneratedMdx(result.body)).resolves.toBeTruthy();
   });
 
   it('renders source-classified deprecated definitions as error callouts', async () => {

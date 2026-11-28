@@ -83,9 +83,9 @@ processorDestination: IAudioProcessor
 
 :::info[自从]
 *4.13.0*
+:::
 
 远端音频轨道上当前媒体处理链路的最终节点。
-:::
 
 <a id="trackmediatype"></a>
 
@@ -516,9 +516,9 @@ pipe(processor: IAudioProcessor): IAudioProcessor
 
 :::info[自从]
 *4.13.0*
+:::
 
 将 `Processor` 注入远端音频轨道。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="processor" type="IAudioProcessor" required>
@@ -667,11 +667,11 @@ setPlaybackDevice(deviceId: string): Promise&lt;void&gt;
 
 :::info[自从]
 *4.1.0*
+:::
 
 设置音频播放设备，比如扬声器。
 
-**注意：**
-
+:::caution[注意]
 该方法只支持桌面端的 Chrome 和 Edge 浏览器，其他浏览器调用将会抛出 `NOT_SUPPORTED` 错误。
 :::
 
@@ -759,9 +759,9 @@ unpipe(): void
 
 :::info[自从]
 *4.13.0*
+:::
 
 取消远端音频轨道上注入的 `Processor`。
-:::
 
 <ApiReturns>
 

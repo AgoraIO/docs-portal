@@ -13,6 +13,21 @@ Issues and specs for this repo live as GitHub issues in `AgoraIO/docs-portal`. U
 
 Infer the repo from `git remote -v` - `gh` does this automatically when run inside a clone.
 
+## CN and Global documentation handoffs
+
+For a CN and Global documentation handoff, add the new or existing issue to [Docs Handoff](https://github.com/orgs/AgoraIO/projects/11) and assign one owner. Track the delivery stage in the project's single-select `Status` field. Keep the template's issue type label and use [triage labels](triage-labels.md) for repository triage.
+
+| Status | When to select it |
+| --- | --- |
+| `Todo` | The issue is waiting for the owner to pick it up. |
+| `Assessing` | The owner is checking the report and which pages are affected. Record when the reporter can expect an update in the issue. |
+| `In Progress` | The change is confirmed and the author is drafting it, or a reviewer has requested revisions. |
+| `In Review` | The linked PR is ready for review. Return to this status when the author requests another review. |
+| `Awaiting release` | Review is complete and publication must wait for an SDK release or an agreed date. Record the release condition in the issue. |
+| `Done` | The live page has been verified or the decision to make no change has been explained, and CN has reported the outcome to the original reporter. Close the issue once these conditions are met. |
+
+Set `Target date` when the owner can estimate publication. While that date is unknown, leave it empty and give the next update date in the issue. If the estimate changes, update the field and explain the change in the issue so CN can relay it. Use `Estimate` for effort in person-days when needed.
+
 ## Pull requests as a triage surface
 
 **PRs as a request surface: no.** _(Set to `yes` if this repo treats external PRs as feature requests; `/triage` reads this flag.)_

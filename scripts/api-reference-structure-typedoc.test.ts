@@ -63,24 +63,27 @@ it('maps explicitly labeled notes to standard callouts and preserves actual quot
   expect(result.body).toContain('> Quoted words from another source.');
 });
 
-it('reuses HTML callout and comment-tag containers instead of nesting callout fences', async () => {
-  for (const html of [
+it('reuses genuine enclosing notices but separates notes following version metadata', async () => {
+  const enclosing = await convert(
     '<div class="admonition note"><blockquote><p>Note: Keep this text.</p></blockquote></div>',
+  );
+  expect(enclosing.body.match(/^:::\w/gm)).toHaveLength(1);
+  expect(enclosing.body).toContain('**Note:**\n\nKeep this text.');
+  const metadata = await convert(
     '<dl class="tsd-comment-tags"><dt>since</dt><dd><p>4.17.1</p><blockquote><p>Note: Keep this text.</p></blockquote></dd></dl>',
-  ]) {
-    const result = await convert(html);
-    expect(result.body.match(/^:::\w/gm)).toHaveLength(1);
-    expect(result.body).toContain('**Note:**\n\nKeep this text.');
-  }
+  );
+  expect(metadata.body).toContain(':::info[since]\n4.17.1\n:::');
+  expect(metadata.body).toContain(':::note[Note]\nKeep this text.\n:::');
+  expect(metadata.body.match(/^:::\w/gm)).toHaveLength(2);
 });
 
-it('reuses a deprecated comment-tag notice for nested notes', async () => {
+it('keeps deprecation metadata separate from a following note', async () => {
   const result = await convert(
     '<dl class="tsd-comment-tags"><dt>deprecated</dt><dd><p>Use the current callback.</p><blockquote><p>Note: Keep this condition.</p></blockquote></dd></dl>',
   );
   expect(result.body).toContain(':::warning[deprecated]');
-  expect(result.body).toContain('**Note:**\n\nKeep this condition.');
-  expect(result.body.match(/^:::\w/gm)).toHaveLength(1);
+  expect(result.body).toContain(':::note[Note]\nKeep this condition.\n:::');
+  expect(result.body.match(/^:::\w/gm)).toHaveLength(2);
 });
 
 it('keeps explicit note labels consistent between repair and a fresh legacy import', async () => {

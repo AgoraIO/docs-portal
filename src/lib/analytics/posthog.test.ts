@@ -39,6 +39,72 @@ describe('PostHog analytics', () => {
     expect(initMock).not.toHaveBeenCalled();
   });
 
+  it('keeps copy metadata on its original page when the clipboard resolves after navigation', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+    const { createDocsCodeCopyCapture, registerDocsPageContext } = await import(
+      './posthog'
+    );
+    registerDocsPageContext({
+      locale: 'en',
+      pathname: '/en/realtime-media/video/quickstart',
+      contentKind: 'mdx',
+      pageType: 'task-guide',
+      platform: 'web',
+      tab: 'realtime-media',
+    });
+    const captureCopy = createDocsCodeCopyCapture({
+      language: 'bash',
+      locale: 'en',
+      source: 'code-block',
+    });
+    expect(captureMock).not.toHaveBeenCalled();
+    window.history.replaceState({}, '', '/zh-CN/introduction?platform=android');
+    registerDocsPageContext({
+      locale: 'zh-CN',
+      pathname: '/zh-CN/introduction',
+      platform: 'android',
+    });
+    captureCopy();
+    await vi.waitFor(() => expect(captureMock).toHaveBeenCalledOnce());
+    expect(captureMock).toHaveBeenCalledWith(
+      'docs_code_copied',
+      expect.objectContaining({
+        $current_url: `${window.location.origin}/en/realtime-media/video/quickstart`,
+        $pathname: '/en/realtime-media/video/quickstart',
+        docs_pathname: '/en/realtime-media/video/quickstart',
+        docs_content_kind: 'mdx',
+        docs_locale: 'en',
+        docs_platform: 'web',
+        code_language: 'bash',
+        code_source: 'code-block',
+      }),
+    );
+    expect(JSON.stringify(captureMock.mock.calls)).not.toContain('token=');
+    expect(JSON.stringify(captureMock.mock.calls)).not.toContain('platform=');
+  });
+
+  it('does not turn a copy originating on a Chinese page into an English event after navigation', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+    window.history.replaceState({}, '', '/zh-CN/introduction');
+    const { createDocsCodeCopyCapture, registerDocsPageContext } = await import(
+      './posthog'
+    );
+    registerDocsPageContext({
+      locale: 'zh-CN',
+      pathname: '/zh-CN/introduction',
+    });
+    const captureCopy = createDocsCodeCopyCapture({
+      language: 'bash',
+      locale: 'en',
+      source: 'code-block',
+    });
+    window.history.replaceState({}, '', '/en/introduction');
+    registerDocsPageContext({ locale: 'en', pathname: '/en/introduction' });
+    captureCopy();
+    await Promise.resolve();
+    expect(captureMock).not.toHaveBeenCalled();
+  });
+
   it('does not initialize PostHog in local development', async () => {
     vi.stubEnv('MODE', 'development');
     vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');

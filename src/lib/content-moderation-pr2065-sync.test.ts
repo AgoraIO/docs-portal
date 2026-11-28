@@ -13,7 +13,7 @@ const setup =
   source.match(
     /### 开通语音审核服务\n([\s\S]*?)(?=### 通过 Basic HTTP 认证)/,
   )?.[1] ?? '';
-const stepThree = setup.match(/^3\.[\s\S]*?(?=\n\n成功开通)/m)?.[0] ?? '';
+const stepThree = setup.match(/^3\.[^\n]*/m)?.[0] ?? '';
 const moderationRoot = '/zh-CN/realtime-media/content-moderation';
 
 describe('Content Moderation upstream PR #2065 parity', () => {
@@ -63,7 +63,7 @@ describe('Content Moderation upstream PR #2065 parity', () => {
       '第三方语音审核服务依赖于声网云端录制服务，除了第三方语音审核服务费用，还会产生声网云端录制费用。',
     );
     expect(setup).toContain(
-      '成功开通语音审核服务后，你可以使用邮箱登陆网易易盾控台，进行审核策略配置，获取审核权限信息（如 `SecretId`、`SecretKey` 等），后续调用接口时需要传入。',
+      '成功开通音频审核服务后，你可以使用邮箱登录网易易盾控制台进行审核策略配置。',
     );
   });
 });

@@ -1,0 +1,117 @@
+---
+title: "Query Analytics data with MCP (Beta)"
+description: "Connect an AI assistant to the Agora Analytics MCP Server to query call and session quality data in natural language."
+---
+
+The Agora Analytics MCP Server exposes the [Call Inspector RESTful APIs](/en/api-reference/api-ref/agora-analytics/analytics-rest-api#call-inspector) as [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) tools. Connect an MCP client such as Cursor or Claude Code to the server, and your AI assistant can find calls, inspect user sessions, and analyze call quality on your behalf. For example, you can ask the assistant why a user had poor audio in a specific channel, and it queries Agora Analytics for the answer.
+
+This page shows you how to connect an MCP client to the Agora Analytics MCP Server.
+
+## Prerequisites
+
+To use the Agora Analytics MCP Server, you need:
+
+- An Agora Analytics **Standard**, **Premium**, or **Enterprise** [pricing plan](/en/realtime-media/agora-analytics/reference/pricing). These plans include both the Call Inspector RESTful API and embedding support, which the MCP Server requires.
+- An MCP client that supports remote servers over HTTP, such as [Cursor](https://cursor.com/) or [Claude Code](https://docs.claude.com/en/docs/claude-code/overview).
+
+## Get an Analytics credential
+
+The MCP Server authenticates requests with an Analytics credential, which consists of a customer ID and a customer secret. To create one:
+
+1. Log in to [Agora Console](https://console.agora.io/).
+
+2. At the bottom of the sidebar, click your user name, then select **Analytics Credentials** from the menu. Alternatively, go to [Analytics Credentials](https://console.agora.io/analytics-credentials) directly.
+
+    {/* TODO(assets): Upload this image to assets-docs, swap the URL, and delete public/temp/agora-analytics before publishing. */}
+
+    ![Analytics Credentials item in the account menu, and the Analytics Credentials page in Agora Console](/temp/agora-analytics/analytics-credentials.png)
+
+3. Click **Add Credential**, then download the customer secret and store it in a secure place.
+
+    :::warning
+    The customer secret is available only during the first successful download and can't be recovered. If you lose it, delete the credential and create a new one.
+    :::
+
+Each account can have up to 10 active Analytics credentials.
+
+:::info
+Analytics credentials are separate from the customer ID and secret on the **RESTful API Keys** page. The MCP Server accepts only Analytics credentials.
+:::
+
+## Connect your MCP client
+
+The MCP Server is hosted by Agora at the following endpoint:
+
+```text
+https://analytics-lab.agora.io/mcp
+```
+
+To connect your MCP client to the server, take the following steps:
+
+1. Generate the HTTP Basic authorization value by Base64-encoding your customer ID and customer secret, joined by a colon:
+
+    ```bash tab="macOS or Linux" tabGroup="os"
+    printf '%s' '<customer_id>:<customer_secret>' | base64
+    ```
+
+    ```text tab="Windows (PowerShell)" tabGroup="os"
+    [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes('<customer_id>:<customer_secret>'))
+    ```
+
+2. Add the Agora Analytics MCP Server to your MCP client. Replace `<base64_credentials>` with the value you generated in the previous step.
+
+    ```json tab="Cursor"
+    {
+      "mcpServers": {
+        "agora-analytics": {
+          "type": "http",
+          "url": "https://analytics-lab.agora.io/mcp",
+          "headers": {
+            "Authorization": "Basic <base64_credentials>"
+          }
+        }
+      }
+    }
+    ```
+
+    ```bash tab="Claude Code"
+    claude mcp add --transport http agora-analytics https://analytics-lab.agora.io/mcp \
+      --header "Authorization: Basic <base64_credentials>"
+    ```
+
+    In Cursor, save the configuration to `~/.cursor/mcp.json` to make the server available in all projects, or to `.cursor/mcp.json` in a project folder to limit it to that project.
+
+3. Check that your MCP client lists the `agora-analytics` server as connected and shows its tools.
+
+You can now ask your AI assistant about your call data. For example:
+
+- "List the calls in channel `demo-channel` for App ID `<app_id>` in the past 24 hours."
+- "Show the session details for user `1234` in that call."
+- "Break down the video freeze rate for that call by network type."
+
+## Available tools
+
+The MCP Server provides the following tools. Each tool calls a Call Inspector RESTful API, so the [API limits](/en/api-reference/api-ref/agora-analytics/analytics-rest-api#api-limits) of your pricing plan apply to tool calls.
+
+| Tool | Description | RESTful API |
+|:-----|:------------|:------------|
+| `list_calls` | Searches for calls that match the specified criteria. | [Get call list](/en/api-reference/api-ref/agora-analytics/analytics-rest-api#get-call-list) |
+| `list_user_sessions` | Gets the session details of each user in a call. | [Get session details](/en/api-reference/api-ref/agora-analytics/analytics-rest-api#get-session-details) |
+| `get_call_metrics` | Gets the quality metrics of a call. | [Get quality metrics](/en/api-reference/api-ref/agora-analytics/analytics-rest-api#get-quality-metrics) |
+| `get_call_statistics` | Breaks down the audio or video freeze rate of a call by a dimension such as country, network type, SDK version, operating system, or device model. | [Get call statistics](/en/api-reference/api-ref/agora-analytics/analytics-rest-api#get-call-statistics) |
+| `get_call_statistics_time_series` | Gets the participant count and freeze metrics of a call over time. | [Retrieve insight statistics](/en/api-reference/api-ref/agora-analytics/analytics-rest-api#retrieve-insight-statistics) |
+| `get_call_freeze_bucket` | Gets the audio or video freeze rate statistics of a call. | [Retrieve Audio/Video freeze rate statistics](/en/api-reference/api-ref/agora-analytics/analytics-rest-api#retrieve-audiovideo-freeze-rate-statistics) |
+
+## Security considerations
+
+Your Analytics credential grants access to your Agora Analytics data. To keep it secure:
+
+- Don't commit MCP configuration files that contain your credential to source control.
+- Don't share your credential with others.
+- If you suspect that a credential is exposed, delete it on the **Analytics Credentials** page in Agora Console and create a new one.
+
+## See also
+
+- [Analytics REST API reference](/en/api-reference/api-ref/agora-analytics/analytics-rest-api)
+- [Call Inspector](/en/realtime-media/agora-analytics/build/explore-and-analyze-data/call-search)
+- [Pricing](/en/realtime-media/agora-analytics/reference/pricing)

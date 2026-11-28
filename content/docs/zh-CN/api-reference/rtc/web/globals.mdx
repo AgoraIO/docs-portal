@@ -1,6 +1,5 @@
 ---
 title: Agora Web SDK API Reference
-description: SDK 预设的 AudioEncoderConfiguration 配置。
 _migration:
   type: generated-html
   status: warning
@@ -120,6 +119,8 @@ _migration:
 AudioEncoderConfigurationPreset: keyof typeof AUDIO_ENCODER_CONFIG_SETTINGS
 
 </ApiSignature>
+
+SDK 预设的 AudioEncoderConfiguration 配置。
 
 你可以在以下方法中传入预设值来控制本地音频的编码配置：
 
@@ -417,7 +418,11 @@ Agora Web SDK 需知道 app 的使用场景（例如通信模式或直播模式�
 声网频道支持以下场景:
 
 - `"live"`: 直播场景，有主播和观众两种用户角色，可以通过 [setClientRole](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setclientrole) 方法设置主播和观众的角色。主播可以收发音视频流，而观众只能接收音视频流，无法发送。
-- `"rtc"`: 通信场景，用于常见的一对一通话或群聊，频道中的任何用户可以自由说话。
+- `"rtc"`: 通信场景，频道中的任何用户均可发布音视频。
+
+:::caution[注意]
+通信场景（`"rtc"`）存在兼容性问题，不推荐使用。建议使用直播场景（`"live"`），该场景同时适用于一对一通话和多人互动。
+:::
 
 <a id="screenaudiotrackinitconfig"></a>
 

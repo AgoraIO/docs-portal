@@ -117,7 +117,7 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
         expect(payload.sidebarHeader?.versionSwitcher).toMatchObject({
           currentId: 'current',
           versions: expect.arrayContaining([
-            expect.objectContaining({ id: 'current', label: 'v2.9.0' }),
+            expect.objectContaining({ id: 'current', label: 'v2.11.0' }),
           ]),
         });
       }
@@ -143,8 +143,42 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
       expect(payload.sidebarHeader).toMatchObject({
         backHref: '/zh-CN/api-reference/api',
         backLabel: 'API 参考',
-        versionSwitcher: { currentId: 'current' },
       });
+      expect(payload.titleVersionSwitcher).toBeUndefined();
+      expect(payload.sidebarHeader?.versionSwitcher?.currentId).toBe('current');
+    },
+  );
+
+  it.each(['android', 'ios', 'web'])(
+    'keeps both Client Toolkit editions navigable on %s',
+    async (platform) => {
+      const base = ['conversational-ai', platform];
+      const root = `/zh-CN/api-reference/${base.join('/')}`;
+      const versions = [
+        { id: 'current', label: 'v2.11.0', href: `${root}/overview` },
+        { id: '2.10.0', label: 'v2.10.0', href: `${root}/2.10.0/overview` },
+      ];
+      for (const [version, prefix] of [
+        ['current', ''],
+        ['2.10.0', '2.10.0/'],
+      ]) {
+        const page = await loadApiReferencePayload([
+          ...base,
+          ...`${prefix}enum`.split('/'),
+        ]);
+        expect(page.titleVersionSwitcher).toBeUndefined();
+        expect(page.sidebarHeader?.versionSwitcher).toMatchObject({
+          currentId: version,
+          versions: expect.arrayContaining(versions),
+        });
+        expect(page.sidebar.map((item) => item.url)).toEqual(
+          expect.arrayContaining([
+            `${root}/${prefix}overview`,
+            `${root}/${prefix}enum`,
+            `${root}/${prefix}struct`,
+          ]),
+        );
+      }
     },
   );
 

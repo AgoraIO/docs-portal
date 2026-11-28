@@ -1815,7 +1815,11 @@ override func viewDidLoad() {
 实时音视频互动主要包含互动直播和视频通话两大场景，你可以按需搭建想要的场景：
 
 - **互动直播**：频道内的用户分为主播和观众，只有主播可以自由发言并且被其他用户看见。
-- **视频通话**：频道内的用户不区分主播和观众，所有用户都可以发言并看见彼此。
+- **视频通话**：将所有参与通话的用户设置为主播，使其都能发送和接收音视频。
+
+:::caution[注意]
+通信场景（`"rtc"`）存在兼容性问题，不推荐使用。建议使用直播场景（`"live"`），该场景同时适用于一对一通话和多人互动。
+:::
 
 <a id="rtc-web-prerequisites"></a>
 
@@ -1849,7 +1853,7 @@ override func viewDidLoad() {
 <TabsContent value="create-agora">
 
 :::info[信息]
-使用包管理工具只能快速搭建开箱即用的视频通话场景。如果你希望体验互动直播场景，请选用获取 SDK 后手动集成的方式，并在创建客户端时将 `mode` 设置为 `live`。
+使用包管理工具可以快速搭建视频通话场景。创建项目后，请检查客户端配置，将 `mode` 设置为 `"live"`，并将需要发布音视频的用户角色 `role` 设置为 `"host"`。如果你希望体验区分主播和观众的互动直播场景，请选用获取 SDK 后手动集成的方式。
 :::
 
 ### 1. 获取快速开始安装包
@@ -2098,14 +2102,15 @@ import AgoraRTC from "agora-rtc-sdk-ng"
 
 ### 4. 复制项目示例代码
 
-声网实时互动 Web SDK 提供两种模式的音视频互动，分别是视频通话和互动直播。两者创建客户端时设置的 `mode` 参数不同：
+视频通话和互动直播均推荐使用直播场景（`mode: "live"`）。视频通话中，所有参与通话的用户都应设为主播（`role: "host"`）；互动直播中，需要发布音视频的用户设为主播，仅接收音视频的用户设为观众。
 
 ```javascript
-// 视频通话场景下 mode 设为 rtc
-rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-
-// 视频直播场景下 mode 设为 live
-rtc.client = AgoraRTC.createClient({ mode: "live", codec: "vp8" });
+// 创建需要发布音视频的客户端
+rtc.client = AgoraRTC.createClient({
+  mode: "live",
+  codec: "vp8",
+  role: "host",
+});
 ```
 
 你可以直接将以下代码复制到 `basicEngagement.js` 文件中来快速体验互动直播，注意将 `appID`、`token` 和频道名替换为[你自己的 App ID 和临时 Token](#rtc-web-prerequisites)以及频道名。
@@ -2268,7 +2273,7 @@ let options = {
 
 async function startBasicCall() {
     // Create an AgoraRTCClient object.
-    rtc.client = AgoraRTC.createClient({mode: "rtc", codec: "vp8"});
+    rtc.client = AgoraRTC.createClient({mode: "live", codec: "vp8", role: "host"});
 
     // Listen for the "user-published" event, from which you can get an AgoraRTCRemoteUser object.
     rtc.client.on("user-published", async (user, mediaType) => {
@@ -2360,9 +2365,13 @@ startBasicCall();
 </Accordion>
 </Accordions>
 
-      下图展示了实现音视频互动的 API 调用流程。注意图中的方法是对不同的对象调用的。
+视频通话的 API 调用流程如下：
 
-![视频通话实现流程](https://web-cdn.agora.io/docs-portal/img/rtc/js-quick-start-rtc.svg)
+1. 调用 `AgoraRTC.createClient` 创建客户端，将 `mode` 设置为 `"live"`，将 `role` 设置为 `"host"`。
+2. 注册 `user-published` 事件监听器，收到远端用户发布事件后，调用 `client.subscribe` 订阅远端音视频轨道，再调用轨道的 `play` 方法播放。
+3. 调用 `client.join` 加入频道。
+4. 调用 `AgoraRTC.createMicrophoneAudioTrack` 和 `AgoraRTC.createCameraVideoTrack` 创建本地音视频轨道，再调用 `client.publish` 发布轨道。
+5. 结束通话时，调用本地轨道的 `close` 方法释放采集资源，再调用 `client.leave` 离开频道。
 
 </TabsContent>
 </Tabs>
@@ -8555,6 +8564,8 @@ npm install agora-rtc-react
 
 然后使用 `<AgoraRTCProvider />` 组件包裹 `<App />` 组件，方便后续使用状态和操作相关的 Hooks。
 
+本示例使用直播场景（`mode: "live"`），并将用户角色设为主播（`role: "host"`），以便所有参与通话的用户都能发布和订阅音视频。
+
 ```jsx showLineNumbers title="/src/index.js"
 import React, { StrictMode }  from 'react';
 import { createRoot } from "react-dom/client";
@@ -8565,8 +8576,8 @@ const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
 // highlight-next-line
-// 视频通话场景下，将 mode 设为 "rtc"
-const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+// 使用直播场景，并设置主播角色以发布音视频
+const client = AgoraRTC.createClient({ mode: "live", codec: "vp8", role: "host" });
 
 root.render(
   <StrictMode>

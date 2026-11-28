@@ -272,7 +272,11 @@ SDK 支持在同一时间、同一 [RtcConnection](/zh-CN/api-reference/rtc/harm
 
 频道使用场景。
 
-- COMMUNICATION (0)：通信。声网推荐使用直播场景以获取更好的音视频体验。
+:::caution[注意]
+不推荐使用通信场景。对于一对一通话及多人互动，建议使用互动直播场景（`LIVE_BROADCASTING`）。
+:::
+
+- COMMUNICATION (0)：通信。
 - LIVE_BROADCASTING (1)：（默认）直播。
 - GAME (2)：游戏语音场景。
 
@@ -281,7 +285,7 @@ SDK 支持在同一时间、同一 [RtcConnection](/zh-CN/api-reference/rtc/harm
   :::error[废弃：]
   请改用 LIVE_BROADCASTING。
   :::
-- CLOUD_GAMING (3)：互动。该场景对延时进行了优化。如果你的场景中有用户需要频繁互动，建议使用该场景。
+- CLOUD_GAMING (3)：互动。
 
   <a id="废弃-1"></a>
 

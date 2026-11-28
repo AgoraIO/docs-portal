@@ -3007,12 +3007,26 @@ components:
           const: semantic
           default: semantic
           description: "`semantic`: Detects a meaningful start of speech. If you omit `type`, the agent uses `semantic`."
+        interrupt_duration_ms:
+          type: integer
+          minimum: 120
+          maximum: 1200
+          default: 160
+          description: Speech shorter than this, in milliseconds, is ignored.
         speaking_interrupt_duration_ms:
           type: integer
           default: 160
           description: >-
             How long in milliseconds the user must speak to interrupt the agent while it's
             speaking.
+        prefix_padding_ms:
+          type: integer
+          minimum: 0
+          maximum: 5000
+          default: 800
+          description: >-
+            How many milliseconds of audio before the detected start of speech to keep, so the
+            beginning of the speech isn't clipped.
     VadStartOfSpeech:
       type: object
       title: VAD

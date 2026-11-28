@@ -331,11 +331,11 @@ getStats(): [LocalVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/in
 
 :::warning[deprecated]
 自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getLocalVideoStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalvideostats) 和 [AgoraRTCClient.getLocalAudioStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getlocalaudiostats)。
+:::
 
 获取本地轨道相关信息。
 
-**注意事项**
-
+:::note[注意事项]
 获取本地视频轨道数据时，iOS 上无法获取到 `encodeDelay` 字段。
 :::
 
@@ -663,13 +663,13 @@ setEnabled(enabled: boolean): Promise&lt;void&gt;
 
 :::info[自从]
 *4.0.0*
+:::
 
 启用/禁用该轨道。
 
 轨道禁用后，播放和发布都将被停止。
 
-**注意：**
-
+:::caution[注意]
 - 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_track_ended) 事件。
 - 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 事件。
 - `setEnabled` 和 `setMuted` 不能同时调用。
@@ -710,11 +710,11 @@ setMuted(muted: boolean): Promise&lt;void&gt;
 
 :::info[自从]
 *4.6.0*
+:::
 
 如果该轨道已发布，调用 `setMuted(true)` 后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_unpublished) 事件。再调用 `setMuted(false)` 后，远端会触发 [user-published](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#event_user_published) 事件。
 
-**注意：**
-
+:::caution[注意]
 - 与 [setEnabled](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](/zh-CN/reference/faq/integration/set_enabled_set_muted)。
 - `setEnabled` 和 `setMuted` 不能同时调用。
 :::
